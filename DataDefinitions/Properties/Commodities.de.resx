@@ -344,7 +344,10 @@
   
   
   
-  
+  <data name="Explosives" xml:space="preserve">
+    <value>Sprengstoffe</value>
+    <comment>Commodity Explosives</comment>
+  </data>
   <data name="Fish" xml:space="preserve">
     <value>Fisch</value>
     <comment>Commodity Fish</comment>
@@ -352,7 +355,10 @@
   
   
   
-  
+  <data name="FujinTea" xml:space="preserve">
+    <value>Fujin Tee</value>
+    <comment>Commodity FujinTea</comment>
+  </data>
   
   <data name="Gallite" xml:space="preserve">
     <value>Gallit</value>
@@ -368,7 +374,10 @@
     <value>Geologie-Ausrüstung</value>
     <comment>Commodity GeologicalEquipment</comment>
   </data>
-  
+  <data name="GeologicalSamples" xml:space="preserve">
+    <value>Geologische Probe</value>
+    <comment>Commodity GeologicalSamples</comment>
+  </data>
   
   
   
@@ -382,7 +391,10 @@
     <value>Goslarit</value>
     <comment>Commodity Goslarite</comment>
   </data>
-  
+  <data name="Grain" xml:space="preserve">
+    <value>Körnen</value>
+    <comment>Commodity Grain</comment>
+  </data>
   
   
   
@@ -400,8 +412,14 @@
   </data>
   
   
-  
-  
+  <data name="Hostage" xml:space="preserve">
+    <value>Geisel</value>
+    <comment>Commodity Hostage</comment>
+  </data>
+  <data name="HR7221Wheat" xml:space="preserve">
+    <value>HR 7221 Weizen</value>
+    <comment>Commodity HR7221Wheat</comment>
+  </data>
   
   
   <data name="ImperialSlaves" xml:space="preserve">
@@ -457,7 +475,10 @@
     <value>Lepidolit</value>
     <comment>Commodity Lepidolite</comment>
   </data>
-  
+  <data name="LiquidOxygen" xml:space="preserve">
+    <value>Flüssiger Sauerstoff</value>
+    <comment>Commodity LiquidOxygen</comment>
+  </data>
   <data name="Liquor" xml:space="preserve">
     <value>Spirituosen</value>
     <comment>Commodity Liquor</comment>
@@ -496,7 +517,10 @@
     <value>Mineralextraktoren</value>
     <comment>Commodity MineralExtractors</comment>
   </data>
-  
+  <data name="MineralOil" xml:space="preserve">
+    <value>Erdöl</value>
+    <comment>Commodity MineralOil</comment>
+  </data>
   
   
   
@@ -583,7 +607,10 @@
   </data>
   
   
-  
+  <data name="RadiationBaffle" xml:space="preserve">
+    <value>Strahlungsabweiser</value>
+    <comment>Commodity RadiationBaffle</comment>
+  </data>
   
   
   <data name="ReactiveArmour" xml:space="preserve">
@@ -707,18 +734,33 @@
     <value>Uran</value>
     <comment>Commodity Uranium</comment>
   </data>
-  
+  <data name="USSCargoAncientArtefact" xml:space="preserve">
+    <value>Uraltes Artefakt</value>
+    <comment>Commodity USSCargoAncientArtefact</comment>
+  </data>
   <data name="USSCargoBlackBox" xml:space="preserve">
     <value>Black Box</value>
     <comment>Commodity USSCargoBlackBox</comment>
   </data>
   
+  <data name="USSCargoMilitaryPlans" xml:space="preserve">
+    <value>Militärpläne</value>
+    <comment>Commodity USSCargoMilitaryPlans</comment>
+  </data>
   
+  <data name="USSCargoRareArtwork" xml:space="preserve">
+    <value>Seltene Kunstwerke</value>
+    <comment>Commodity USSCargoRareArtwork</comment>
+  </data>
+  <data name="USSCargoRebelTransmissions" xml:space="preserve">
+    <value>Rebellenübertragung</value>
+    <comment>Commodity USSCargoRebelTransmissions</comment>
+  </data>
   
-  
-  
-  
-  
+  <data name="USSCargoTradeData" xml:space="preserve">
+    <value>Handelsdaten</value>
+    <comment>Commodity USSCargoTradeData</comment>
+  </data>
   
   
   
@@ -735,6 +777,10 @@
   
   
   
+  <data name="Wine" xml:space="preserve">
+    <value>Wein</value>
+    <comment>Commodity Wine</comment>
+  </data>
   
   
   
@@ -749,8 +795,10 @@
   
   
   
-  
-  
+  <data name="imperialprisoner" xml:space="preserve">
+    <value>Imperialer Gefangener</value>
+    <comment>Commodity imperialprisoner</comment>
+  </data>
   
   
   
