@@ -331,7 +331,11 @@ Material Divergente Scandaten</value>
 Material Exzentrische Hyperraum-Routen</value>
     <comment>Material hyperspacetrajectories</comment>
   </data>
-  
+  <data name="securityfirmware" xml:space="preserve">
+    <value>Sicherheits-Firmware-Patch
+Material Sicherheits-Firmware-Patch</value>
+    <comment>Material securityfirmware</comment>
+  </data>
   <data name="ancientlanguagedata" xml:space="preserve">
     <value>Uralte Sprachdaten
 Material uralte Sprachdaten</value>
