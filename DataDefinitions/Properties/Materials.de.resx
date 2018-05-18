@@ -538,27 +538,23 @@ Material Schildemitter</value>
     <comment>Material thermicalloys</comment>
   </data>
   <data name="unknowntechnologycomponents" xml:space="preserve">
-    <value>Thargoiden-Technologie-Komponenten</value>
+    <value>Thargoid Technologie-Komponenten</value>
     <comment>Material unknowntechnologycomponents</comment>
   </data>
   <data name="biotechconductors" xml:space="preserve">
-    <value>Biotech-Leiter
-Material Biotech-Leiter</value>
+    <value>Biotech-Leiter</value>
     <comment>Material biotechconductors</comment>
   </data>
   <data name="fedcorecomposites" xml:space="preserve">
-    <value>Core Dynamics Compositwerkstoffe
-Material Core Dynamics Compositwerkstoffe</value>
+    <value>Core Dynamics Compositwerkstoffe</value>
     <comment>Material fedcorecomposites</comment>
   </data>
   <data name="exquisitefocuscrystals" xml:space="preserve">
-    <value>Erlesene Laserkristalle
-Material Erlesene Laserkristalle</value>
+    <value>Erlesene Laserkristalle</value>
     <comment>Material exquisitefocuscrystals</comment>
   </data>
   <data name="imperialshielding" xml:space="preserve">
-    <value>Imperiale Schilde
-Material Imperiale Schilde</value>
+    <value>Imperiale Schilde</value>
     <comment>Material imperialshielding</comment>
   </data>
   <data name="improvisedcomponents" xml:space="preserve">
