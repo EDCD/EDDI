@@ -140,7 +140,9 @@
   <data name="header_value" xml:space="preserve">
     <value>Wert</value>
   </data>
-  
+  <data name="hear_it_button" xml:space="preserve">
+    <value>Hören</value>
+  </data>
   
   
   
