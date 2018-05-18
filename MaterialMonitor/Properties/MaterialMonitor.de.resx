@@ -136,10 +136,10 @@
     <value>Name</value>
   </data>
   <data name="p1" xml:space="preserve">
-    <value>Liste aller bekannten Materialen. Sie können die einzelne Werte auf minimum, benötigt und maximum Menge verändern und EDDI wird Sie benachrichtigen, wenn der eingestellte Wert überschritten wird.</value>
+    <value>Nachfolgend finden Sie eine Liste aller bekannten Materialien. Sie können die einzelne Werte für Minimum, Gewünscht und Maximum einstellen. EDDI wird Sie benachrichtigen, wenn einer der eingestellte Wert überschritten wird.</value>
   </data>
   <data name="p2" xml:space="preserve">
-    <value>Bitte beachten Sie, dass bei fehlerhafter Anzeige des Inventars, Elite gestartet oder neu gestartet werden muss, um die Daten zu aktualisieren.</value>
+    <value>Bitte beachten Sie, dass bei fehlerhafter Anzeige des Bestands, Elite gestartet oder neu gestartet werden muss, um die Daten zu aktualisieren.</value>
   </data>
   <data name="type_header" xml:space="preserve">
     <value>Typ</value>
