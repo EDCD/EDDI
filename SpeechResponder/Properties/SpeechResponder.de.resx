@@ -193,7 +193,9 @@
   <data name="subs" xml:space="preserve">
     <value>Schreibt Kopien der Aussprache in das File %APPDATA%\EDDI\speechresponder.out</value>
   </data>
-  
+  <data name="subs_only" xml:space="preserve">
+    <value>Keine Aussprache, wenn der "gesprochene Text" in das File geschrieben wird</value>
+  </data>
   <data name="test_script" xml:space="preserve">
     <value>Test</value>
   </data>
