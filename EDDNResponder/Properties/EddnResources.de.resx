@@ -117,7 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
+  <data name="desc" xml:space="preserve">
+    <value>Sende Stations-, Sprung- und Scaninformation an EDDN. EDDN ist anderes Tool, dass Informationen über Sonnensysteme und Marktpreise sammelt und diese für die meisten Handelstools und Sternenkatalogen, wie zum Beispiel EDDB, zur Verfügung stellt.</value>
+  </data>
   <data name="name" xml:space="preserve">
     <value>EDDN Antwort</value>
   </data>
