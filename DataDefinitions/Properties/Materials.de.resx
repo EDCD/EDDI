@@ -363,8 +363,14 @@ Material uralte Technikdaten</value>
   
   
   
-  
-  
+  <data name="wornshieldemitters" xml:space="preserve">
+    <value>Gebrauchte Schildemitter</value>
+    <comment>Material wornshieldemitters</comment>
+  </data>
+  <data name="chemicalprocessors" xml:space="preserve">
+    <value>Chemische Prozessoren</value>
+    <comment>Material chemicalprocessors</comment>
+  </data>
   
   
   
@@ -384,7 +390,10 @@ Material Schildemitter</value>
   
   
   
-  
+  <data name="highdensitycomposites" xml:space="preserve">
+    <value>Komposite Hoher Dichte</value>
+    <comment>Material highdensitycomposites</comment>
+  </data>
   
   <data name="phasealloys" xml:space="preserve">
     <value>Phasenlegierungen</value>
@@ -424,8 +433,14 @@ Material Schildemitter</value>
     <value>Kompositwerkstoffe</value>
     <comment>Material fedproprietarycomposites</comment>
   </data>
-  
-  
+  <data name="protolightalloys" xml:space="preserve">
+    <value>Leichte Legierung (Proto)</value>
+    <comment>Material protolightalloys</comment>
+  </data>
+  <data name="refinedfocuscrystals" xml:space="preserve">
+    <value>Raffinierte Laserkristalle</value>
+    <comment>Material refinedfocuscrystals</comment>
+  </data>
   
   <data name="unknowntechnologycomponents" xml:space="preserve">
     <value>Thargoiden-Technologie-Komponenten</value>
