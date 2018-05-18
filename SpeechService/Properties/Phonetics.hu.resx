@@ -98,9 +98,18 @@
 	<resheader name="writer">
 		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
 	</resheader>
-  
-  
-  
+  <data name="Alrai" xml:space="preserve">
+    <value>Alra</value>
+    <comment>Optional phonetic pronunciation for Alrai</comment>
+  </data>
+  <data name="Antliae" xml:space="preserve">
+    <value>Antili</value>
+    <comment>Optional phonetic pronunciation for Antliae</comment>
+  </data>
+  <data name="Aquarii" xml:space="preserve">
+    <value>vizöntő</value>
+    <comment>Optional phonetic pronunciation for Aquarii</comment>
+  </data>
   <data name="Arietis" xml:space="preserve">
     <value>kos</value>
     <comment>Optional phonetic pronunciation for Arietis</comment>
