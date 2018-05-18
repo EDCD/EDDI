@@ -118,10 +118,10 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="cargo_monitor_desc" xml:space="preserve">
-    <value>Übersicht des Materiallagers.</value>
+    <value>Verfolgen Sie Informationen über Ihre Fracht.</value>
   </data>
   <data name="cargo_monitor_name" xml:space="preserve">
-    <value>Materiallager</value>
+    <value>Frachtübersicht</value>
   </data>
   <data name="header_haulage" xml:space="preserve">
     <value>Transport</value>
