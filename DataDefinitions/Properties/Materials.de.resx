@@ -257,7 +257,11 @@
     <value>Irreguläre Emissionsdaten</value>
     <comment>Material archivedemissiondata</comment>
   </data>
-  
+  <data name="consumerfirmware" xml:space="preserve">
+    <value>Modifizierte Consumer-Firmware
+Material Modifizierte Consumer-Firmware</value>
+    <comment>Material consumerfirmware</comment>
+  </data>
   <data name="encryptioncodes" xml:space="preserve">
     <value>Getaggte Verschlüsselungscodes</value>
     <comment>Material encryptioncodes</comment>
@@ -309,7 +313,11 @@ Material uralte Biologiedaten</value>
   </data>
   
   
-  
+  <data name="encodedscandata" xml:space="preserve">
+    <value>Divergente Scandaten
+Material Divergente Scandaten</value>
+    <comment>Material encodedscandata</comment>
+  </data>
   
   
   <data name="ancientlanguagedata" xml:space="preserve">
@@ -439,8 +447,16 @@ Material Militärische Superkondensatoren</value>
     <comment>Material militarysupercapacitors</comment>
   </data>
   
-  
-  
+  <data name="protoheatradiators" xml:space="preserve">
+    <value>Proto-Wärmestrahler
+Material Proto-Wärmestrahler</value>
+    <comment>Material protoheatradiators</comment>
+  </data>
+  <data name="protoradiolicalloys" xml:space="preserve">
+    <value>Radiologische Legierungen (Proto)
+Material Radiologische Legierungen (Proto)</value>
+    <comment>Material protoradiolicalloys</comment>
+  </data>
   <data name="unknownenergysource" xml:space="preserve">
     <value>Unbekannte Energiequelle
 Material unbekannte Energiequelle</value>
