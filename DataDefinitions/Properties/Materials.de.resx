@@ -404,9 +404,17 @@ Material uralte Technikdaten</value>
     <comment>Material unknowntechnologycomponents</comment>
   </data>
   
+  <data name="fedcorecomposites" xml:space="preserve">
+    <value>Core Dynamics Compositwerkstoffe
+Material Core Dynamics Compositwerkstoffe</value>
+    <comment>Material fedcorecomposites</comment>
+  </data>
   
-  
-  
+  <data name="imperialshielding" xml:space="preserve">
+    <value>Imperiale Schilde
+Material Imperiale Schilde</value>
+    <comment>Material imperialshielding</comment>
+  </data>
   
   
   
