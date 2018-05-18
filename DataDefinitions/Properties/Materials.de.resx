@@ -377,8 +377,14 @@ Material uralte Technikdaten</value>
     <value>Chemische Speichereinheiten</value>
     <comment>Material chemicalstorageunits</comment>
   </data>
-  
-  
+  <data name="compactcomposites" xml:space="preserve">
+    <value>Kompakt-Komposit</value>
+    <comment>Material compactcomposites</comment>
+  </data>
+  <data name="crystalshards" xml:space="preserve">
+    <value>Kristallsplitter</value>
+    <comment>Material crystalshards</comment>
+  </data>
   
   
   <data name="mechanicalscrap" xml:space="preserve">
@@ -480,7 +486,7 @@ Material Schildemitter</value>
     <comment>Material compoundshielding</comment>
   </data>
   <data name="conductivepolymers" xml:space="preserve">
-    <value>Leitfähige Polymere</value>
+    <value>Leitfähige Ploymere</value>
     <comment>Material conductivepolymers</comment>
   </data>
   <data name="configurablecomponents" xml:space="preserve">
