@@ -405,7 +405,7 @@ Material Schildemitter</value>
     <comment>Material compoundshielding</comment>
   </data>
   <data name="conductivepolymers" xml:space="preserve">
-    <value>Leitfähige Ploymere</value>
+    <value>Leitfähige Polymere</value>
     <comment>Material conductivepolymers</comment>
   </data>
   <data name="configurablecomponents" xml:space="preserve">
@@ -469,8 +469,7 @@ Material Proto-Wärmestrahler</value>
     <comment>Material protoheatradiators</comment>
   </data>
   <data name="protoradiolicalloys" xml:space="preserve">
-    <value>Radiologische Legierungen (Proto)
-Material Radiologische Legierungen (Proto)</value>
+    <value>Radiologische Legierungen (Proto)</value>
     <comment>Material protoradiolicalloys</comment>
   </data>
   <data name="unknownenergysource" xml:space="preserve">
@@ -494,8 +493,7 @@ Material Guardian Akkuzelle</value>
     <comment>Material guardian_powercell</comment>
   </data>
   <data name="guardian_weaponblueprint" xml:space="preserve">
-    <value>Guardian Waffenbauplan
-Material Guardian Waffenbauplan</value>
+    <value>Guardian Waffenbauplan</value>
     <comment>Material guardian_weaponblueprint</comment>
   </data>
   <data name="guardian_vesselblueprint" xml:space="preserve">
