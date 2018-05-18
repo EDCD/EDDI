@@ -131,7 +131,7 @@
     <value>fehlgeschlagen</value>
   </data>
   <data name="frontier_api_nok" xml:space="preserve">
-    <value>Die Frontier-API-Verbindung ist nicht btriebsbereit</value>
+    <value>Die Frontier-API-Verbindung ist nicht betriebsbereit</value>
   </data>
   <data name="frontier_api_no_logins" xml:space="preserve">
     <value>Sie haben zur Zeit keine Verbindung zur Frontier-API. Bitte geben Sie unten Ihre Elite Dangerous E-Mail-Adresse und Ihr Passwort ein.</value>
@@ -172,7 +172,9 @@
   <data name="update_message" xml:space="preserve">
     <value>Version {0} verfügbar</value>
   </data>
-  
+  <data name="voice_test_damage" xml:space="preserve">
+    <value>Schwerer Schaden für deine {0}.</value>
+  </data>
   <data name="voice_test_ship" xml:space="preserve">
     <value>So werde ich in deinem Schiff {0} klingen.</value>
   </data>
@@ -185,7 +187,9 @@
   <data name="downloading_upgrade" xml:space="preserve">
     <value>Lade Upgrade herunter.</value>
   </data>
-  
+  <data name="mandatory_upgrade" xml:space="preserve">
+    <value>Ein obligatorisches Eddi-Upgrade auf {0} ist erforderlich.</value>
+  </data>
   <data name="msg_from_eddi" xml:space="preserve">
     <value>Nachtricht von Eddi: {0}</value>
   </data>
@@ -211,8 +215,14 @@
   <data name="already_running_alert_title" xml:space="preserve">
     <value>EDDI läuft bereits</value>
   </data>
-  
-  
+  <data name="problem_load_monitor" xml:space="preserve">
+    <value>Monitor: {0} konnte nicht geladen werden</value>
+    <comment>Weapon mount type problem_load_monitor</comment>
+  </data>
+  <data name="problem_load_monitor_file" xml:space="preserve">
+    <value>Fehler beim Laden des Monitors. Stellen Sie sicher, dass {0} nicht auf einer Netzwerkfreigabe oder selbst freigegeben ist.</value>
+    <comment>Weapon mount type problem_load_monitor_file</comment>
+  </data>
   <data name="Commander" xml:space="preserve">
     <value>Kommandant</value>
     <comment>Vocative form of "Commander"</comment>
