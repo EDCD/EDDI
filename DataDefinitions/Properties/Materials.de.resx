@@ -311,14 +311,26 @@ Material uralte Biologiedaten</value>
     <value>Abweichende Schildeinsatz-Analysen</value>
     <comment>Material shieldpatternanalysis</comment>
   </data>
-  
-  
+  <data name="encryptionarchives" xml:space="preserve">
+    <value>Atypische Verschlüsselungsarchive
+Material Atypische Verschlüsselungsarchive</value>
+    <comment>Material encryptionarchives</comment>
+  </data>
+  <data name="decodedemissiondata" xml:space="preserve">
+    <value>Entschlüsselte Emissionsdaten
+Material Entschlüsselte Emissionsdaten</value>
+    <comment>Material decodedemissiondata</comment>
+  </data>
   <data name="encodedscandata" xml:space="preserve">
     <value>Divergente Scandaten
 Material Divergente Scandaten</value>
     <comment>Material encodedscandata</comment>
   </data>
-  
+  <data name="hyperspacetrajectories" xml:space="preserve">
+    <value>Exzentrische Hyperraum-Routen
+Material Exzentrische Hyperraum-Routen</value>
+    <comment>Material hyperspacetrajectories</comment>
+  </data>
   
   <data name="ancientlanguagedata" xml:space="preserve">
     <value>Uralte Sprachdaten
