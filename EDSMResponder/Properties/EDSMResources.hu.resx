@@ -142,7 +142,7 @@
     <value>Beszerzett napló</value>
   </data>
   <data name="log_button_fetching" xml:space="preserve">
-    <value>Beszerzett napló...</value>
+    <value>Napló beszerzése...</value>
   </data>
   <data name="log_button_fetching_progress" xml:space="preserve">
     <value>Napló beszerzése </value>
