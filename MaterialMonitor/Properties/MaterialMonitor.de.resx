@@ -114,7 +114,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
+  <data name="desc" xml:space="preserve">
+    <value>Beobachte die Materialmenge und sende eine Benachrichtigung, wenn der eingestellte Grenzwert erreicht wird.</value>
+  </data>
   <data name="desired_header" xml:space="preserve">
     <value>Benötigt</value>
   </data>
@@ -133,7 +135,9 @@
   <data name="name_header" xml:space="preserve">
     <value>Name</value>
   </data>
-  
+  <data name="p1" xml:space="preserve">
+    <value>Liste aller bekannten Materialen. Sie können die einzelne Werte auf minimum, benötigt und maximum Menge verändern und EDDI wird Sie benachrichtigen, wenn der eingestellte Wert überschritten wird.</value>
+  </data>
   <data name="p2" xml:space="preserve">
     <value>Bitte beachten Sie, dass bei fehlerhafter Anzeige des Inventars, Elite gestartet oder neu gestartet werden muss, um die Daten zu aktualisieren.</value>
   </data>
