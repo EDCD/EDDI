@@ -149,8 +149,14 @@
   
   
   
-  
-  
+  <data name="AncientRelic" xml:space="preserve">
+    <value>Uraltes Relikt</value>
+    <comment>Commodity AncientRelic</comment>
+  </data>
+  <data name="AncientTablet" xml:space="preserve">
+    <value>Uraltes Tablet</value>
+    <comment>Commodity AncientTablet</comment>
+  </data>
   
   
   
@@ -262,7 +268,10 @@
     <value>Kleidung</value>
     <comment>Commodity Clothing</comment>
   </data>
-  
+  <data name="CMMComposite" xml:space="preserve">
+    <value>CMM-Komposit</value>
+    <comment>Commodity CMMComposite</comment>
+  </data>
   <data name="Cobalt" xml:space="preserve">
     <value>Kobalt</value>
     <comment>Commodity Cobalt</comment>
