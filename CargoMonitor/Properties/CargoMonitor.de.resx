@@ -136,7 +136,7 @@
     <comment>Tons needed for missions</comment>
   </data>
   <data name="para2" xml:space="preserve">
-    <value>Bitte beachten Sie, dass bei fehlerhafter Anzeige des Inventarbestandes, Elite gestartet oder neu gestartet werden muss, um die Daten zu aktualisieren.</value>
+    <value>Bitte beachten Sie, dass bei fehlerhafter Anzeige des Inventars, Elite gestartet oder neu gestartet werden muss, um die Daten zu aktualisieren.</value>
   </data>
   <data name="para1" xml:space="preserve">
     <value>Unten finden Sie eine Liste Ihrer gesamten Fracht.</value>
@@ -153,7 +153,7 @@
     <value>Preis pro Tonne</value>
   </data>
   <data name="header_owned" xml:space="preserve">
-    <value>Eigener</value>
+    <value>Im Besitz</value>
     <comment>Tons of owned cargo carried</comment>
   </data>
 </root>
