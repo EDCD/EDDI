@@ -213,6 +213,6 @@
     <value>Szkript megtekintése</value>
   </data>
   <data name="warning_triggered" xml:space="preserve">
-    <value>Eseményekhez rendelt szkripteket csak letiltani lehet, törölni nem.</value>
+    <value>Szkriptek amik egy eseményre aktíválodnak csak letiltani lehet, törölni nem.</value>
   </data>
 </root>
