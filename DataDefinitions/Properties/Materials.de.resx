@@ -315,23 +315,19 @@ Material uralte Biologiedaten</value>
     <comment>Material encryptionarchives</comment>
   </data>
   <data name="decodedemissiondata" xml:space="preserve">
-    <value>Entschlüsselte Emissionsdaten
-Material Entschlüsselte Emissionsdaten</value>
+    <value>Entschlüsselte Emissionsdaten</value>
     <comment>Material decodedemissiondata</comment>
   </data>
   <data name="encodedscandata" xml:space="preserve">
-    <value>Divergente Scandaten
-Material Divergente Scandaten</value>
+    <value>Divergente Scandaten</value>
     <comment>Material encodedscandata</comment>
   </data>
   <data name="hyperspacetrajectories" xml:space="preserve">
-    <value>Exzentrische Hyperraum-Routen
-Material Exzentrische Hyperraum-Routen</value>
+    <value>Exzentrische Hyperraum-Routen</value>
     <comment>Material hyperspacetrajectories</comment>
   </data>
   <data name="securityfirmware" xml:space="preserve">
-    <value>Sicherheits-Firmware-Patch
-Material Sicherheits-Firmware-Patch</value>
+    <value>Sicherheits-Firmware-Patch</value>
     <comment>Material securityfirmware</comment>
   </data>
   <data name="ancientlanguagedata" xml:space="preserve">
