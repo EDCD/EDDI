@@ -312,14 +312,23 @@
   
   
   
+  <data name="DataCore" xml:space="preserve">
+    <value>Datenkern</value>
+    <comment>Commodity DataCore</comment>
+  </data>
+  
+  
+  <data name="DiagnosticSensor" xml:space="preserve">
+    <value>Hardware-Diagnostiksensor</value>
+    <comment>Commodity DiagnosticSensor</comment>
+  </data>
   
   
   
-  
-  
-  
-  
-  
+  <data name="Drones" xml:space="preserve">
+    <value>Drohne</value>
+    <comment>Commodity Drones</comment>
+  </data>
   
   
   
@@ -546,13 +555,22 @@
     <comment>Commodity Platinum</comment>
   </data>
   
-  
-  
+  <data name="Polymers" xml:space="preserve">
+    <value>Polymers</value>
+    <comment>Commodity Polymers</comment>
+  </data>
+  <data name="PowerConverter" xml:space="preserve">
+    <value>Energiekonverter</value>
+    <comment>Commodity PowerConverter</comment>
+  </data>
   <data name="PowerGenerators" xml:space="preserve">
     <value>Stromerzeuger</value>
     <comment>Commodity PowerGenerators</comment>
   </data>
-  
+  <data name="PowerGridAssembly" xml:space="preserve">
+    <value>Energienetz-Gruppe</value>
+    <comment>Commodity PowerGridAssembly</comment>
+  </data>
   
   <data name="Praseodymium" xml:space="preserve">
     <value>Praseodymium</value>
