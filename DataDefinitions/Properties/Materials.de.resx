@@ -354,13 +354,22 @@ Material uralte Technikdaten</value>
   
   
   
+  <data name="basicconductors" xml:space="preserve">
+    <value>Einfache Leiter</value>
+    <comment>Material basicconductors</comment>
+  </data>
+  <data name="chemicalstorageunits" xml:space="preserve">
+    <value>Chemische Speichereinheiten</value>
+    <comment>Material chemicalstorageunits</comment>
+  </data>
   
   
   
   
-  
-  
-  
+  <data name="mechanicalscrap" xml:space="preserve">
+    <value>Mechanischer Schrott</value>
+    <comment>Material mechanicalscrap</comment>
+  </data>
   
   
   <data name="wornshieldemitters" xml:space="preserve">
@@ -371,10 +380,19 @@ Material uralte Technikdaten</value>
     <value>Chemische Prozessoren</value>
     <comment>Material chemicalprocessors</comment>
   </data>
+  <data name="conductivecomponents" xml:space="preserve">
+    <value>Elektrokeramiken</value>
+    <comment>Material conductivecomponents</comment>
+  </data>
   
-  
-  
-  
+  <data name="uncutfocuscrystals" xml:space="preserve">
+    <value>Fehlerhafte Fokuskristalle</value>
+    <comment>Material uncutfocuscrystals</comment>
+  </data>
+  <data name="galvanisingalloys" xml:space="preserve">
+    <value>Galvanisierende Legierung</value>
+    <comment>Material galvanisingalloys</comment>
+  </data>
   
   
   <data name="hybridcapacitors" xml:space="preserve">
@@ -397,7 +415,10 @@ Material Schildemitter</value>
   </data>
   
   
-  
+  <data name="focuscrystals" xml:space="preserve">
+    <value>Laserkristalle</value>
+    <comment>Material focuscrystals</comment>
+  </data>
   <data name="heatexchangers" xml:space="preserve">
     <value>Wärmetauscher</value>
     <comment>Material heatexchangers</comment>
