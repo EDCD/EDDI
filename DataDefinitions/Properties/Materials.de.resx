@@ -377,24 +377,39 @@ Material uralte Technikdaten</value>
   
   
   
-  
-  
+  <data name="hybridcapacitors" xml:space="preserve">
+    <value>Hybridkondensatoren</value>
+    <comment>Material hybridcapacitors</comment>
+  </data>
+  <data name="mechanicalequipment" xml:space="preserve">
+    <value>Mechanisches Equipment</value>
+    <comment>Material mechanicalequipment</comment>
+  </data>
   <data name="shieldemitters" xml:space="preserve">
     <value>Schildemitter
 Material Schildemitter</value>
     <comment>Material shieldemitters</comment>
   </data>
   
+  <data name="chemicaldistillery" xml:space="preserve">
+    <value>Chemiedestillerie</value>
+    <comment>Material chemicaldistillery</comment>
+  </data>
   
   
   
-  
-  
+  <data name="heatexchangers" xml:space="preserve">
+    <value>Wärmetauscher</value>
+    <comment>Material heatexchangers</comment>
+  </data>
   <data name="highdensitycomposites" xml:space="preserve">
     <value>Komposite Hoher Dichte</value>
     <comment>Material highdensitycomposites</comment>
   </data>
-  
+  <data name="mechanicalcomponents" xml:space="preserve">
+    <value>Mechanische Komponenten</value>
+    <comment>Material mechanicalcomponents</comment>
+  </data>
   <data name="phasealloys" xml:space="preserve">
     <value>Phasenlegierungen</value>
     <comment>Material phasealloys</comment>
