@@ -134,12 +134,30 @@
     <comment>Optional phonetic pronunciation for BleaeThaa_Thaa</comment>
   </data>
   
-  
-  
-  
-  
-  
-  
+  <data name="Capricorni" xml:space="preserve">
+    <value>Bak</value>
+    <comment>Optional phonetic pronunciation for Capricorni</comment>
+  </data>
+  <data name="Carina" xml:space="preserve">
+    <value>hajós gerinc csillagkép</value>
+    <comment>Optional phonetic pronunciation for Carina</comment>
+  </data>
+  <data name="Cephei" xml:space="preserve">
+    <value>Cefi</value>
+    <comment>Optional phonetic pronunciation for Cephei</comment>
+  </data>
+  <data name="Cepheus" xml:space="preserve">
+    <value>Cefeusz</value>
+    <comment>Optional phonetic pronunciation for Cepheus</comment>
+  </data>
+  <data name="Ceti" xml:space="preserve">
+    <value>Ceti</value>
+    <comment>Optional phonetic pronunciation for Ceti</comment>
+  </data>
+  <data name="Chi" xml:space="preserve">
+    <value>csi</value>
+    <comment>Optional phonetic pronunciation for Chi</comment>
+  </data>
   
   
   
