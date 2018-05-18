@@ -222,7 +222,7 @@
     <comment>Module EconomyClassPassengerCabin</comment>
   </data>
   <data name="ElectronicCountermeasure" xml:space="preserve">
-    <value>Rakéta elhárító rendszer</value>
+    <value>Rakétaelhárító rendszer</value>
     <comment>Module ElectronicCountermeasure</comment>
   </data>
   <data name="EnhancedPerformanceThrusters" xml:space="preserve">
@@ -342,7 +342,7 @@
     <comment>Module MiningLaser</comment>
   </data>
   <data name="MirroredSurfaceComposite" xml:space="preserve">
-    <value>Tükrözőtt felületű burkolat</value>
+    <value>Tükrözött felületű burkolat</value>
     <comment>Module MirroredSurfaceComposite</comment>
   </data>
   <data name="MissileRack" xml:space="preserve">
@@ -370,7 +370,7 @@
     <comment>Module Pack_Hound</comment>
   </data>
   <data name="PlanetaryApproachSuite" xml:space="preserve">
-    <value>Leszállás vezérlő egység</value>
+    <value>Leszállásvezérlő egység</value>
     <comment>Module PlanetaryApproachSuite</comment>
   </data>
   <data name="PlanetaryVehicleHangar" xml:space="preserve">
