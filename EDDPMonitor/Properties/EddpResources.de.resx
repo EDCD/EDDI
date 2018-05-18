@@ -130,10 +130,10 @@
     <value>Fraktion</value>
   </data>
   <data name="max_dist_home_header" xml:space="preserve">
-    <value>Maximale Entfernung von zuhause</value>
+    <value>Max. Entfernung von zu Hause</value>
   </data>
   <data name="max_dist_ship_header" xml:space="preserve">
-    <value>Maximale Entfernung vom Schiff</value>
+    <value>Max. Entfernung vom Schiff</value>
   </data>
   <data name="name" xml:space="preserve">
     <value>EDDP Monitor</value>
@@ -142,7 +142,7 @@
     <value>Name</value>
   </data>
   <data name="new_watch" xml:space="preserve">
-    <value>Neuer Auftrag</value>
+    <value>Neue Überwachung</value>
   </data>
   <data name="p1" xml:space="preserve">
     <value>Sie können hier einen neuen Auftrag erstellen, verändern oder löschen. Wenn EDDI Information über Veränderungen in der Galaxie erhält, erfolgt eine Abgleich mit dieser Auftragsliste. Wenn die erhaltene Information einen Auftrag betrifft, erfolgt eine Benachrichtigung.
