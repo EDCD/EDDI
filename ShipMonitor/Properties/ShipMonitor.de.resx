@@ -118,7 +118,9 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   
-  
+  <data name="export_it_button" xml:space="preserve">
+    <value>Export</value>
+  </data>
   <data name="header_location" xml:space="preserve">
     <value>Standort</value>
   </data>
@@ -154,8 +156,12 @@
   </data>
   
   
-  
-  
+  <data name="p3" xml:space="preserve">
+    <value>Zum Beispiel, wenn Ihr Schiff 'Pride of Achenar' genannt wurde, dann wäre Ihr gesprochener Name 'praɪdɒvˈakɜːnɑ' (bitte beachten Sie, keine Leerzeichen in der phonetischen Version).</value>
+  </data>
+  <data name="p4" xml:space="preserve">
+    <value>Bitte beachten Sie, wenn Sie den Zugriff auf die Frontier-API nicht konfiguriert haben, einige der folgenden Daten ungenau oder nicht verfügbar sind. Wenn Sie vor der Installation von EDDI mehrere Schiffe hatten, müssen Sie diese als primäres Schiff eintauschen und einige Augenblicke warten, bis die kompletten Informationen vollständig verfügbar sind.</value>
+  </data>
   <data name="p5" xml:space="preserve">
     <value>EDDI kann einen Export Ihrer Schiffsdaten an Coriolis oder EDShipyard (3rd Party Tools) senden. Wählen Sie das gewünschte Werkzeug aus.</value>
   </data>
