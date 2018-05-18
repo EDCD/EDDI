@@ -118,13 +118,13 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="anything" xml:space="preserve">
-    <value>(Irgendwas)</value>
+    <value>(Platzhalter)</value>
   </data>
   <data name="delete_btn" xml:space="preserve">
     <value>Löschen</value>
   </data>
   <data name="desc" xml:space="preserve">
-    <value>Beobachte EDDP bezüglich Veränderungen der Systemkontrolle und des Status, und erstelle eine Benachrichtigung, wenn ein Treffer mit der Überwachungsliste vorliegt.</value>
+    <value>Beobachte EDDP bezüglich Veränderungen der Systemkontrolle und des Status, und erstelle eine Benachrichtigung, wenn ein Treffer mit der Liste vorliegt.</value>
   </data>
   <data name="faction_header" xml:space="preserve">
     <value>Fraktion</value>
