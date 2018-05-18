@@ -163,7 +163,9 @@
   <data name="delete_script_message" xml:space="preserve">
     <value>Möchten Sie Skript "{0} wirklich löschen?</value>
   </data>
-  
+  <data name="desc" xml:space="preserve">
+    <value>Reaktion auf Ereignisse mit einer Skript-Sprache, die auf den Informationen im Ereignis basiert. Nicht alle Ereignisse haben Antwort-Skripte. Wenn ein Antwort-Skript leer ist, sind die Schaltflächen 'Test' und 'Ansicht' deaktiviert.</value>
+  </data>
   <data name="edit_script" xml:space="preserve">
     <value>Bearbeiten</value>
   </data>
@@ -182,7 +184,9 @@
   <data name="help_button" xml:space="preserve">
     <value>Hilfe</value>
   </data>
-  
+  <data name="name" xml:space="preserve">
+    <value>Sprach-Skripte</value>
+  </data>
   <data name="reset_script_button" xml:space="preserve">
     <value>Auf Standard zurücksetzten</value>
   </data>
