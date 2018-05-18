@@ -431,12 +431,20 @@ Material Guardian Schiffsbauplan</value>
     <comment>Material guardian_vesselblueprint</comment>
   </data>
   <data name="guardian_techcomponent" xml:space="preserve">
-    <value>Technisches Teil der Guardians
-Material technisches Teil der Guardians</value>
+    <value>Guardian Technikteil
+Material Guardian Technikteil</value>
     <comment>Material guardian_techcomponent</comment>
   </data>
-  
-  
+  <data name="guardian_powerconduit" xml:space="preserve">
+    <value>Guardian Energieleitung
+Material Guardian Energieleitung</value>
+    <comment>Material guardian_powerconduit</comment>
+  </data>
+  <data name="guardian_moduleblueprint" xml:space="preserve">
+    <value>Guardian Modulbauplan 
+Material Modulbauplan</value>
+    <comment>Material guardian_moduleblueprint</comment>
+  </data>
   
   
   <data name="lead" xml:space="preserve">
@@ -447,8 +455,16 @@ Material Blei</value>
   
   
   
-  
-  
+  <data name="tg_weaponparts" xml:space="preserve">
+    <value>Thargoid Waffenteile
+Material Thargoid Waffenteile</value>
+    <comment>Material tg_weaponparts</comment>
+  </data>
+  <data name="tg_wreckagecomponents" xml:space="preserve">
+    <value>Thargoid Wrackteile
+Material Thargoid Wrackteile</value>
+    <comment>Material tg_wreckagecomponents</comment>
+  </data>
   
   
 </root>
