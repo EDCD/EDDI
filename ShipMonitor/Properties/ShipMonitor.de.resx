@@ -117,7 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
+  <data name="desc" xml:space="preserve">
+    <value>Verfolgen Sie Informationen über Ihre Schiffe.</value>
+  </data>
   <data name="export_it_button" xml:space="preserve">
     <value>Export</value>
   </data>
@@ -134,7 +136,7 @@
     <value>Rolle</value>
   </data>
   <data name="header_ship_ID" xml:space="preserve">
-    <value>Schiff-ID</value>
+    <value>Schiffs-ID</value>
   </data>
   <data name="header_spoken_name" xml:space="preserve">
     <value>Name (gesprochen)</value>
@@ -154,10 +156,14 @@
   <data name="name" xml:space="preserve">
     <value>Schiffe Übersicht</value>
   </data>
-  
-  
+  <data name="p1" xml:space="preserve">
+    <value>Dies erlaubt Ihnen Ihre Schiffe sehen und ihnen individuelle Rollen zuweisen. Die Informationen werden "Respondern" zur Verfügung gestellt und in Skripten zur Anpassung von Aktionen verwendet.</value>
+  </data>
+  <data name="p2" xml:space="preserve">
+    <value>Wenn der Name Ihres Schiffes für EDDI schwer auszusprechen ist, können Sie eine gesprochene Version des Schiffes hinzufügen über </value>
+  </data>
   <data name="p3" xml:space="preserve">
-    <value>Zum Beispiel, wenn Ihr Schiff 'Pride of Achenar' genannt wurde, dann wäre Ihr gesprochener Name 'praɪdɒvˈakɜːnɑ' (bitte beachten Sie, keine Leerzeichen in der phonetischen Version).</value>
+    <value>. Zum Beispiel, wenn Ihr Schiff 'Pride of Achenar' genannt wurde, dann wäre Ihr gesprochener Name 'praɪdɒvˈakɜːnɑ' (bitte beachten Sie, keine Leerzeichen in der phonetischen Version).</value>
   </data>
   <data name="p4" xml:space="preserve">
     <value>Bitte beachten Sie, wenn Sie den Zugriff auf die Frontier-API nicht konfiguriert haben, einige der folgenden Daten ungenau oder nicht verfügbar sind. Wenn Sie vor der Installation von EDDI mehrere Schiffe hatten, müssen Sie diese als primäres Schiff eintauschen und einige Augenblicke warten, bis die kompletten Informationen vollständig verfügbar sind.</value>
