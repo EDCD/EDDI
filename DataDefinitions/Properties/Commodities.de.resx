@@ -676,9 +676,15 @@
   
   
   
+  <data name="Uranium" xml:space="preserve">
+    <value>Uran</value>
+    <comment>Commodity Uranium</comment>
+  </data>
   
-  
-  
+  <data name="USSCargoBlackBox" xml:space="preserve">
+    <value>Black Box</value>
+    <comment>Commodity USSCargoBlackBox</comment>
+  </data>
   
   
   
