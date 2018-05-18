@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="desc" xml:space="preserve">
-    <value>Hajó információk követése.</value>
+    <value>Követi a hajóid információit.</value>
   </data>
   <data name="export_it_button" xml:space="preserve">
     <value>Exportálás</value>
@@ -154,7 +154,7 @@
     <value>Nemzetközi fonetikus ábécé</value>
   </data>
   <data name="name" xml:space="preserve">
-    <value>Hajó monitorozó</value>
+    <value>Hajó monitor</value>
   </data>
   <data name="p1" xml:space="preserve">
     <value>Itt láthatja a hajóit és megadhatja egyedi szerepkörüket. Az információt látják a reagálók valamint szükség van rá a kívánt akciókhoz rendelt szkriptekhez is.</value>
