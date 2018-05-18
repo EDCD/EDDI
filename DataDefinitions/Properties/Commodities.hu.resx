@@ -246,7 +246,7 @@
     <comment>Commodity AzCancriFormula42</comment>
   </data>
   <data name="BaltahSineVacuumKrill" xml:space="preserve">
-    <value>Baltah'Sine-i vákum rák</value>
+    <value>Baltah Sinei vákum rák</value>
     <comment>Commodity BaltahSineVacuumKrill</comment>
   </data>
   <data name="BankiAmphibiousLeather" xml:space="preserve">
@@ -262,7 +262,7 @@
     <comment>Commodity BasicNarcotics</comment>
   </data>
   <data name="BastSnakeGin" xml:space="preserve">
-    <value>Bast kígyó dzsin</value>
+    <value>Baszt kígyó dzsin</value>
     <comment>Commodity BastSnakeGin</comment>
   </data>
   <data name="BattleWeapons" xml:space="preserve">
@@ -330,7 +330,7 @@
     <comment>Commodity CD_75KittenBrandCoffee</comment>
   </data>
   <data name="CentauriMegaGin" xml:space="preserve">
-    <value>Kentauri mega Gin</value>
+    <value>Kentauri mega dzsin</value>
     <comment>Commodity CentauriMegaGin</comment>
   </data>
   <data name="CeramicComposites" xml:space="preserve">
@@ -338,7 +338,7 @@
     <comment>Commodity CeramicComposites</comment>
   </data>
   <data name="CeremonialHeikeTea" xml:space="preserve">
-    <value>Heike-i ünnepi tea</value>
+    <value>Heikei ünnepi tea</value>
     <comment>Commodity CeremonialHeikeTea</comment>
   </data>
   <data name="CetiAepyornisEgg" xml:space="preserve">
@@ -358,7 +358,7 @@
     <comment>Commodity ChateauDeAegaeon</comment>
   </data>
   <data name="ChemicalWaste" xml:space="preserve">
-    <value>Kémiai hulladék</value>
+    <value>Vegyi hulladék</value>
     <comment>Commodity ChemicalWaste</comment>
   </data>
   <data name="CherbonesBloodCrystals" xml:space="preserve">
