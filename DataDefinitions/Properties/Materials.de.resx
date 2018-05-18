@@ -423,7 +423,7 @@ Material uralte Technikdaten</value>
     <comment>Material uncutfocuscrystals</comment>
   </data>
   <data name="galvanisingalloys" xml:space="preserve">
-    <value>Galvanisierende Legierung</value>
+    <value>Galvanisierende Legierungen</value>
     <comment>Material galvanisingalloys</comment>
   </data>
   <data name="heatdispersionplate" xml:space="preserve">
@@ -431,7 +431,7 @@ Material uralte Technikdaten</value>
     <comment>Material heatdispersionplate</comment>
   </data>
   <data name="heatresistantceramics" xml:space="preserve">
-    <value>Hitzebeständige Keramik</value>
+    <value>Hitzefeste Keramik</value>
     <comment>Material heatresistantceramics</comment>
   </data>
   <data name="hybridcapacitors" xml:space="preserve">
