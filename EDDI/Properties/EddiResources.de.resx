@@ -166,7 +166,9 @@
   <data name="operational" xml:space="preserve">
     <value>Betriebsbereit</value>
   </data>
-  
+  <data name="preparing_log" xml:space="preserve">
+    <value>Log wird vorbereitet... </value>
+  </data>
   <data name="update_message" xml:space="preserve">
     <value>Version {0} verfügbar</value>
   </data>
