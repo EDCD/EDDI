@@ -348,11 +348,26 @@ Material uralte Technikdaten</value>
   </data>
   
   
-  
-  
-  
-  
-  
+  <data name="compactemissionsdata" xml:space="preserve">
+    <value>Anormale kompakte Emissionsdaten</value>
+    <comment>Material compactemissionsdata</comment>
+  </data>
+  <data name="adaptiveencryptors" xml:space="preserve">
+    <value>Adaptive Verschlüsselungserfassung</value>
+    <comment>Material adaptiveencryptors</comment>
+  </data>
+  <data name="classifiedscandata" xml:space="preserve">
+    <value>Geheimes Scan Fragment</value>
+    <comment>Material classifiedscandata</comment>
+  </data>
+  <data name="dataminedwake" xml:space="preserve">
+    <value>Fsa-Daten-Cache-Ausnahme</value>
+    <comment>Material dataminedwake</comment>
+  </data>
+  <data name="embeddedfirmware" xml:space="preserve">
+    <value>Modifizierte integrierte Firmware</value>
+    <comment>Material embeddedfirmware</comment>
+  </data>
   
   <data name="basicconductors" xml:space="preserve">
     <value>Einfache Leiter</value>
@@ -370,8 +385,14 @@ Material uralte Technikdaten</value>
     <value>Mechanischer Schrott</value>
     <comment>Material mechanicalscrap</comment>
   </data>
-  
-  
+  <data name="salvagedalloys" xml:space="preserve">
+    <value>Geborgene Legierungen</value>
+    <comment>Material salvagedalloys</comment>
+  </data>
+  <data name="temperedalloys" xml:space="preserve">
+    <value>Gehärtete Legierungen</value>
+    <comment>Material temperedalloys</comment>
+  </data>
   <data name="wornshieldemitters" xml:space="preserve">
     <value>Gebrauchte Schildemitter</value>
     <comment>Material wornshieldemitters</comment>
@@ -413,8 +434,14 @@ Material Schildemitter</value>
     <value>Chemiedestillerie</value>
     <comment>Material chemicaldistillery</comment>
   </data>
-  
-  
+  <data name="conductiveceramics" xml:space="preserve">
+    <value>Elektrokeramiken</value>
+    <comment>Material conductiveceramics</comment>
+  </data>
+  <data name="electrochemicalarrays" xml:space="preserve">
+    <value>Elektrochemische Detektoren</value>
+    <comment>Material electrochemicalarrays</comment>
+  </data>
   <data name="focuscrystals" xml:space="preserve">
     <value>Laserkristalle</value>
     <comment>Material focuscrystals</comment>
@@ -435,7 +462,10 @@ Material Schildemitter</value>
     <value>Phasenlegierungen</value>
     <comment>Material phasealloys</comment>
   </data>
-  
+  <data name="precipitatedalloys" xml:space="preserve">
+    <value>Gehärtete Legierungen</value>
+    <comment>Material precipitatedalloys</comment>
+  </data>
   <data name="shieldingsensors" xml:space="preserve">
     <value>Schildsensoren</value>
     <comment>Material shieldingsensors</comment>
@@ -477,7 +507,10 @@ Material Schildemitter</value>
     <value>Raffinierte Laserkristalle</value>
     <comment>Material refinedfocuscrystals</comment>
   </data>
-  
+  <data name="thermicalloys" xml:space="preserve">
+    <value>Thermische Legierungen</value>
+    <comment>Material thermicalloys</comment>
+  </data>
   <data name="unknowntechnologycomponents" xml:space="preserve">
     <value>Thargoiden-Technologie-Komponenten</value>
     <comment>Material unknowntechnologycomponents</comment>
@@ -502,7 +535,10 @@ Material Erlesene Laserkristalle</value>
 Material Imperiale Schilde</value>
     <comment>Material imperialshielding</comment>
   </data>
-  
+  <data name="improvisedcomponents" xml:space="preserve">
+    <value>Behelfskomponenten</value>
+    <comment>Material improvisedcomponents</comment>
+  </data>
   <data name="militarygradealloys" xml:space="preserve">
     <value>Militärqualitätslegierung
 Material Militärqualitätslegierung</value>
@@ -513,7 +549,10 @@ Material Militärqualitätslegierung</value>
 Material Militärische Superkondensatoren</value>
     <comment>Material militarysupercapacitors</comment>
   </data>
-  
+  <data name="pharmaceuticalisolators" xml:space="preserve">
+    <value>Pharmazeutische Isolatoren</value>
+    <comment>Material pharmaceuticalisolators</comment>
+  </data>
   <data name="protoheatradiators" xml:space="preserve">
     <value>Proto-Wärmestrahler
 Material Proto-Wärmestrahler</value>
