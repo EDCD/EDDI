@@ -123,7 +123,10 @@
   <data name="cargo_monitor_name" xml:space="preserve">
     <value>Materiallager</value>
   </data>
-  
+  <data name="header_haulage" xml:space="preserve">
+    <value>Transport</value>
+    <comment>Tons of haulage (mission cargo) carried</comment>
+  </data>
   <data name="header_name" xml:space="preserve">
     <value>Name</value>
     <comment>Name of cargo, such as "Gold"</comment>
@@ -135,9 +138,22 @@
   <data name="para2" xml:space="preserve">
     <value>Bitte beachten Sie, dass bei fehlerhaften Anzeige des Inventarbestandes, Elite gestartet oder neu gestartet werden muss, um die Daten zu aktualisieren.</value>
   </data>
-  
-  
-  
-  
-  
+  <data name="para1" xml:space="preserve">
+    <value>Vollständige Übersicht der gesamten Fracht.</value>
+  </data>
+  <data name="header_type" xml:space="preserve">
+    <value>Typ</value>
+    <comment>Type of cargo, such as "Metals"</comment>
+  </data>
+  <data name="header_stolen" xml:space="preserve">
+    <value>Gestohlen</value>
+    <comment>Tons of stolen cargo carried</comment>
+  </data>
+  <data name="header_price" xml:space="preserve">
+    <value>Preis pro Tonne</value>
+  </data>
+  <data name="header_owned" xml:space="preserve">
+    <value>Im Besitzt</value>
+    <comment>Tons of owned cargo carried</comment>
+  </data>
 </root>
