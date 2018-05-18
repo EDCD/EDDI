@@ -153,6 +153,10 @@
   <data name="p1" xml:space="preserve">
     <value>Um sich mit EDSM zu verbinden, müssen Sie bei EDSM registriert sein und ein Konto eingerichtet haben. Haben Sie dies getan, erhalten Sie Ihren API-Schlüssel, indem Sie auf Ihr Portrait in der oberen rechten Ecke des Bildschirms klicken und "Mein API-Schlüssel" auswählen</value>
   </data>
-  
-  
+  <data name="p2" xml:space="preserve">
+    <value>Wenn Sie einen anderen Commander-Namen als Ihren aktuellen registriert haben, geben Sie ihn bitte unten ein</value>
+  </data>
+  <data name="p3" xml:space="preserve">
+    <value>Nachdem Sie Ihre Daten oben eingegeben haben, können Sie Ihre vorhandenen Protokolle von EDSM abrufen, sodass EDDI weiß, wie oft Sie in jedem System waren. Sie müssen dies nur beim ersten Einrichten von EDSM tun. Beachten Sie, dass dies eine Weile dauern kann</value>
+  </data>
 </root>
