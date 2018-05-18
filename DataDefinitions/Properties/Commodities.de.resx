@@ -147,8 +147,14 @@
     <comment>Commodity Aluminium</comment>
   </data>
   
-  
-  
+  <data name="AncientCasket" xml:space="preserve">
+    <value>Uralter Schatulle</value>
+    <comment>Commodity AncientCasket</comment>
+  </data>
+  <data name="AncientOrb" xml:space="preserve">
+    <value>Uralte Kugel</value>
+    <comment>Commodity AncientOrb</comment>
+  </data>
   <data name="AncientRelic" xml:space="preserve">
     <value>Uraltes Relikt</value>
     <comment>Commodity AncientRelic</comment>
@@ -157,8 +163,14 @@
     <value>Uraltes Tablet</value>
     <comment>Commodity AncientTablet</comment>
   </data>
-  
-  
+  <data name="AncientTotem" xml:space="preserve">
+    <value>Uraltes Totem</value>
+    <comment>Commodity AncientTotem</comment>
+  </data>
+  <data name="AncientUrn" xml:space="preserve">
+    <value>Uralte Urne</value>
+    <comment>Commodity AncientUrn</comment>
+  </data>
   
   <data name="Animalmeat" xml:space="preserve">
     <value>Tierfleisch</value>
@@ -177,7 +189,10 @@
     <value>Antiquitäten</value>
     <comment>Commodity Antiquities</comment>
   </data>
-  
+  <data name="AnyNaCoffee" xml:space="preserve">
+    <value>Any Na Kaffee</value>
+    <comment>Commodity AnyNaCoffee</comment>
+  </data>
   <data name="AquaponicSystems" xml:space="preserve">
     <value>Aquaponiksysteme</value>
     <comment>Commodity AquaponicSystems</comment>
@@ -435,8 +450,14 @@
     <value>Indium</value>
     <comment>Commodity Indium</comment>
   </data>
-  
-  
+  <data name="InsulatingMembrane" xml:space="preserve">
+    <value>Isoliermembran</value>
+    <comment>Commodity InsulatingMembrane</comment>
+  </data>
+  <data name="IonDistributor" xml:space="preserve">
+    <value>Ionenverteiler</value>
+    <comment>Commodity IonDistributor</comment>
+  </data>
   
   
   
@@ -521,6 +542,10 @@
     <value>Erdöl</value>
     <comment>Commodity MineralOil</comment>
   </data>
+  <data name="ModularTerminals" xml:space="preserve">
+    <value>Modulterminals</value>
+    <comment>Commodity ModularTerminals</comment>
+  </data>
   
   
   
@@ -529,13 +554,18 @@
   
   
   
-  
-  
+  <data name="Nanobreakers" xml:space="preserve">
+    <value>Nanozertrümmerer</value>
+    <comment>Commodity Nanobreakers</comment>
+  </data>
   <data name="NaturalFabrics" xml:space="preserve">
     <value>Naturfasern</value>
     <comment>Commodity NaturalFabrics</comment>
   </data>
-  
+  <data name="NeofabricInsulation" xml:space="preserve">
+    <value>Neogewebe-Isolierung</value>
+    <comment>Commodity NeofabricInsulation</comment>
+  </data>
   
   
   
@@ -617,7 +647,10 @@
     <value>Reaktivrüstung</value>
     <comment>Commodity ReactiveArmour</comment>
   </data>
-  
+  <data name="ReinforcedMountingPlate" xml:space="preserve">
+    <value>Verstärkte Trägerplatte</value>
+    <comment>Commodity ReinforcedMountingPlate</comment>
+  </data>
   
   
   <data name="Robotics" xml:space="preserve">
