@@ -413,8 +413,16 @@ Material uralte Technikdaten</value>
   
   
   
-  
-  
+  <data name="unknownenergysource" xml:space="preserve">
+    <value>Unbekannte Energiequelle
+Material unbekannte Energiequelle</value>
+    <comment>Material unknownenergysource</comment>
+  </data>
+  <data name="unknownorganiccircuitry" xml:space="preserve">
+    <value>Unbekanntes organisches Schaltteil
+Material unbekanntes organisches Schaltteil</value>
+    <comment>Material unknownorganiccircuitry</comment>
+  </data>
   <data name="boron" xml:space="preserve">
     <value>Bor
 Material Bor</value>
@@ -465,8 +473,16 @@ Material Wrackteile der Guardian Wächterdrohne</value>
 Material Blei</value>
     <comment>Material lead</comment>
   </data>
-  
-  
+  <data name="rhenium" xml:space="preserve">
+    <value>Rhenium
+Material Rhenium</value>
+    <comment>Material rhenium</comment>
+  </data>
+  <data name="tg_propulsionelement" xml:space="preserve">
+    <value>Thargoid Antriebsteil
+Material Thargoid Antriebsteil</value>
+    <comment>Material tg_propulsionelement</comment>
+  </data>
   <data name="tg_biomechanicalconduits" xml:space="preserve">
     <value>Thargoid Bio-Mechanische Bauteile
 Material Thargoid Bio-Mechanische Bauteile</value>
