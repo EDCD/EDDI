@@ -265,7 +265,10 @@
     <value>Guardian-Plasmalader</value>
     <comment>Module GuardianPlasmaCharger</comment>
   </data>
-  
+  <data name="GuardianPowerPlant" xml:space="preserve">
+    <value>Guardian-Kraftwerk</value>
+    <comment>Module GuardianPowerPlant</comment>
+  </data>
   <data name="HatchBreakerLimpetController" xml:space="preserve">
     <value>Ladelukenbrechersteuerung</value>
     <comment>Module HatchBreakerLimpetController</comment>
@@ -328,7 +331,10 @@
     <value>Raketengestell</value>
     <comment>Module MissileRack</comment>
   </data>
-  
+  <data name="ModuleReinforcementPackage" xml:space="preserve">
+    <value>Modulverstärkung</value>
+    <comment>Module ModuleReinforcementPackage</comment>
+  </data>
   <data name="Multicannon" xml:space="preserve">
     <value>Mehrzweckgeschütz</value>
     <comment>Module Multicannon</comment>
@@ -471,8 +477,14 @@
     <comment>Module Hpt_MultiCannon_Fixed_Small_Strong</comment>
   </data>
   
-  
-  
+  <data name="GuardianPowerDistributor" xml:space="preserve">
+    <value>Guardian-Energieverteiler</value>
+    <comment>Module GuardianPowerDistributor</comment>
+  </data>
+  <data name="ShardCannon" xml:space="preserve">
+    <value>Guardian-Fragmentkanone</value>
+    <comment>Module ShardCannon</comment>
+  </data>
   
   
 </root>
