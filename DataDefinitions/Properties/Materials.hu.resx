@@ -222,11 +222,11 @@
     <comment>Material bulkscandata</comment>
   </data>
   <data name="disruptedwakeechoes" xml:space="preserve">
-    <value>Rendellenes feloszlatott ugrásnyom visszhangok</value>
+    <value>Rendellenes feloszlott ugrásnyom visszhangok</value>
     <comment>Material disruptedwakeechoes</comment>
   </data>
   <data name="shieldcyclerecordings" xml:space="preserve">
-    <value>Torzult pajzs folyamat felvételek</value>
+    <value>Torzult pajzs folyamat adatok</value>
     <comment>Material shieldcyclerecordings</comment>
   </data>
   <data name="scrambledemissiondata" xml:space="preserve">
