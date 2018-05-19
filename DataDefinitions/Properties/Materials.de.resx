@@ -547,7 +547,7 @@ Material Schildemitter</value>
     <comment>Material thermicalloys</comment>
   </data>
   <data name="unknowntechnologycomponents" xml:space="preserve">
-    <value>Thargoid Technologie-Komponenten</value>
+    <value>Thargoiden Technologie-Komponente</value>
     <comment>Material unknowntechnologycomponents</comment>
   </data>
   <data name="biotechconductors" xml:space="preserve">
@@ -646,8 +646,7 @@ Material Proto-Wärmestrahler</value>
     <comment>Material rhenium</comment>
   </data>
   <data name="tg_propulsionelement" xml:space="preserve">
-    <value>Thargoid Antriebsteil
-Material Thargoid Antriebsteil</value>
+    <value>Thargoiden Antriebsteil</value>
     <comment>Material tg_propulsionelement</comment>
   </data>
   <data name="tg_biomechanicalconduits" xml:space="preserve">
@@ -656,23 +655,19 @@ Material Thargoid Bio-Mechanische Bauteile</value>
     <comment>Material tg_biomechanicalconduits</comment>
   </data>
   <data name="tg_weaponparts" xml:space="preserve">
-    <value>Thargoid Waffenteile
-Material Thargoid Waffenteile</value>
+    <value>Thargoiden Waffenteile</value>
     <comment>Material tg_weaponparts</comment>
   </data>
   <data name="tg_wreckagecomponents" xml:space="preserve">
-    <value>Thargoid Wrackteile
-Material Thargoid Wrackteile</value>
+    <value>Thargoiden Wrackteile</value>
     <comment>Material tg_wreckagecomponents</comment>
   </data>
   <data name="tg_shipflightdata" xml:space="preserve">
-    <value>Thargoid Schiffsflugdaten
-Material Thargoid Schiffsflugdaten</value>
+    <value>Thargoiden Schiffsflugdaten</value>
     <comment>Material tg_shipflightdata</comment>
   </data>
   <data name="tg_shipsystemsdata" xml:space="preserve">
-    <value>Thargoid Schiffssystemdaten 
-Material Thargoid Schiffssystemdaten</value>
+    <value>Thargoiden Schiffssystemdaten</value>
     <comment>Material tg_shipsystemsdata</comment>
   </data>
 </root>
