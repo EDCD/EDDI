@@ -640,7 +640,10 @@
   
   
   
-  
+  <data name="PersonalEffects" xml:space="preserve">
+    <value>Persönliches</value>
+    <comment>Commodity PersonalEffects</comment>
+  </data>
   <data name="PersonalWeapons" xml:space="preserve">
     <value>Persönliche Waffen</value>
     <comment>Commodity PersonalWeapons</comment>
@@ -653,7 +656,10 @@
     <value>Platin</value>
     <comment>Commodity Platinum</comment>
   </data>
-  
+  <data name="PoliticalPrisoner" xml:space="preserve">
+    <value>Politischer Gefangener</value>
+    <comment>Commodity PoliticalPrisoner</comment>
+  </data>
   <data name="Polymers" xml:space="preserve">
     <value>Polymers</value>
     <comment>Commodity Polymers</comment>
