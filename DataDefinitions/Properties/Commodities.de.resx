@@ -203,7 +203,7 @@
   
   
   <data name="AssaultPlans" xml:space="preserve">
-    <value>Überfallpläne</value>
+    <value>Angriffspläne</value>
     <comment>Commodity AssaultPlans</comment>
   </data>
   <data name="AtmosphericExtractors" xml:space="preserve">
@@ -639,7 +639,10 @@
     <value>Nichttödliche Waffen</value>
     <comment>Commodity NonLethalWeapons</comment>
   </data>
-  
+  <data name="OccupiedCryoPod" xml:space="preserve">
+    <value>Besetzte Rettungskapsel</value>
+    <comment>Commodity OccupiedCryoPod</comment>
+  </data>
   
   
   
