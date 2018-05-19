@@ -146,10 +146,10 @@
     <comment>A hyperlink to the troubleshooting URL (in english)</comment>
   </data>
   <data name="verbose_logging_checkbox" xml:space="preserve">
-    <value>Szóbeli naplózás engedélyezése (amennyiben erre felkérést kapott az EDDI fejlesztőitől)</value>
+    <value>Verbose logging engedélyezése (amennyiben erre felkérést kapott az EDDI fejlesztőitől)</value>
   </data>
   <data name="verbose_logging_desc" xml:space="preserve">
-    <value>Amennyiben a szóbeli naplózás engedélyezve van, az EDDI készíteni fog egy csonkított naplócsomagot és elhelyezi az asztalán. Ezt a csomagot csatolhatja a Github-nak küldendő hibajelentéshez. Személyes adatokat a csomag nem tartalmaz.</value>
+    <value>Amennyiben a verbose logging engedélyezve van, az EDDI készíteni fog egy csonkított log-ot és elhelyezi az asztalán. Ezt a log-ot csatolhatja a Github-nak küldendő hibajelentéshez. Személyes adatokat a csomag nem tartalmaz.</value>
   </data>
   <data name="version_hyperlink" xml:space="preserve">
     <value>Verzió:</value>
@@ -170,13 +170,13 @@
     <value>Jelszó:</value>
   </data>
   <data name="tab_frontier_desc" xml:space="preserve">
-    <value>A Frontier-nek van egy API-ja amely engedélyezi adatok begyűjtését a birtokolt hajókról, az aktuális állomás piacának státuszáról és egyéb hasznos információkról. Ezek az adatok máshol nem elérhetőek. Ha azt szeretné, hogy az EDDI hozzáférjen ezekhez akkor meg kell adnia a Frontier-nél regisztrált email címét és jelszavát.</value>
+    <value>A Frontier-nek van egy API-ja amely engedélyezi adatok begyűjtését a birtokolt hajókról, az aktuális állomás piacáról és egyéb hasznos információkról. Ezek az adatok máshol nem elérhetőek. Ha azt szeretné, hogy az EDDI hozzáférjen ezekhez akkor meg kell adnia a Frontier-nél regisztrált email címét és jelszavát.</value>
   </data>
   <data name="tab_frontier_header" xml:space="preserve">
     <value>Frontier API</value>
   </data>
   <data name="tab_frontier_reset_desc" xml:space="preserve">
-    <value>Ha problémája adódik a kapcsolattal reszetelheti és újra bejelentkezhet, ami feltehetőleg megoldja a gondot</value>
+    <value>Ha problémája adódik a kapcsolattal újraíndithatja és újra bejelentkezhet, ami feltehetőleg megoldja a gondot</value>
   </data>
   <data name="tab_tts_desc" xml:space="preserve">
     <value>Az EDDI egy szöveg felovasó motort használ, ami feldolgozza a hangot a hajó sérülési állapotának és pilótafülkéjének méretéhez megfelelően. Ennek paramétereit itt állíthatja be.</value>
@@ -191,7 +191,7 @@
     <value>Hangfeldolgozás szintje:</value>
   </data>
   <data name="tab_tts_phonetic_speech_desc" xml:space="preserve">
-    <value>Az EDDI fonetikus beszédet alkalmaz a különböző nehezen kimondható szavak felolvasásához és szünetet tesz minden felolvasás közé, Egyes hangoknak, többnyire a Mocrosoft-éinak, gondja akadhat a fonetikus beszéddel ami az EDDI lefagyásához vagy bezárásához vezethet. Ha ilyesmit tapasztal próbálja ki az alábbi opciót</value>
+    <value>Az EDDI fonetikus beszédet alkalmaz a különböző nehezen kimondható szavak felolvasásához és szünetet tesz minden felolvasás közé, Egyes hangoknak, többnyire a Microsoft-éinak, gondja akadhat a fonetikus beszéddel ami az EDDI lefagyásához vagy bezárásához vezethet. Ha ilyesmit tapasztal próbálja ki az alábbi opciót</value>
   </data>
   <data name="tab_tts_rate_label" xml:space="preserve">
     <value>Beszéd sebessége:</value>
@@ -215,7 +215,7 @@
     <value>EDDI frissítése</value>
   </data>
   <data name="reset_button" xml:space="preserve">
-    <value>Alaphelyzetbe állítás</value>
+    <value>Visszaállítás</value>
   </data>
   <data name="tab_tts_test_desc" xml:space="preserve">
     <value>Alul tesztelheti a hangzást. Ha a hang inkompatibilis, az alapként beállított hangot fogja használni.</value>
