@@ -328,7 +328,10 @@
   </data>
   
   
-  
+  <data name="DamagedEscapePod" xml:space="preserve">
+    <value>Beschädigte Rettungskapsel</value>
+    <comment>Commodity DamagedEscapePod</comment>
+  </data>
   
   <data name="DataCore" xml:space="preserve">
     <value>Datenkern</value>
