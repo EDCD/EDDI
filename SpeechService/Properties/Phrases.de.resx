@@ -106,14 +106,35 @@
     <value>um / herum </value>
     <comment/>
   </data>
+  <data name="billion" xml:space="preserve">
+    <value>Milliarde</value>
+    <comment/>
+  </data>
   
-  
-  
-  
-  
-  
-  
-  
+  <data name="justover" xml:space="preserve">
+    <value>etwas mehr als </value>
+    <comment/>
+  </data>
+  <data name="million" xml:space="preserve">
+    <value>Millionen</value>
+    <comment/>
+  </data>
+  <data name="minus" xml:space="preserve">
+    <value> weniger als </value>
+    <comment/>
+  </data>
+  <data name="nearly" xml:space="preserve">
+    <value>fast </value>
+    <comment/>
+  </data>
+  <data name="onthewayto" xml:space="preserve">
+    <value>auf dem Weg zu </value>
+    <comment/>
+  </data>
+  <data name="over" xml:space="preserve">
+    <value>über</value>
+    <comment/>
+  </data>
   
   
   
