@@ -227,16 +227,16 @@
     <value>(ez kikapcsolja az összes SSML beszéd címkét használó funkciót, ahogy az a Speech Responder segítség fájljában is megtalálható)</value>
   </data>
   <data name="tab_tts_icao_desc" xml:space="preserve">
-    <value>Az EDDI képes az ICAO használatára, például használhatja az 'alpha'-t az 'A' helyet amikor az égitestek nevét kimondja. Ez megkönnyítheti a rendszer nevek megértését de több ideig tart a felolvasása. Amennyiben szertné meghallgatni az ICAO kiejtését jelolje be az alábbi obciót. Ez az opció nem működik ha a fonetikus beszéd ki van kapcsolva.</value>
+    <value>Az EDDI képes az ICAO használatára, például használhatja az 'alpha'-t az 'A' helyet amikor az égitestek nevét kimondja. Ez megkönnyítheti a rendszer nevek megértését de több ideig tart a felolvasása. Amennyiben szertné meghallgatni az ICAO kiejtését jelölje be az alábbi opciót. Ez az opció nem működik ha a fonetikus beszéd ki van kapcsolva.</value>
   </data>
   <data name="tab_tts_icao_label" xml:space="preserve">
     <value>ICAO engedélyezése:</value>
   </data>
   <data name="tab_commander_details_header" xml:space="preserve">
-    <value>Kapitány részletek</value>
+    <value>Parancsnok adatok</value>
   </data>
   <data name="tab_commander_gender" xml:space="preserve">
-    <value>Előnyben részesített nem és cím:</value>
+    <value>Előnyben részesített nem, megszólitáshoz és rangokhoz:</value>
   </data>
   <data name="tab_commander_gender_f" xml:space="preserve">
     <value>Nő</value>
