@@ -99,7 +99,7 @@
 		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
 	</resheader>
   <data name="andahalf" xml:space="preserve">
-    <value> anderthalb </value>
+    <value> und die Hälfte </value>
     <comment/>
   </data>
   <data name="around" xml:space="preserve">
@@ -107,16 +107,19 @@
     <comment/>
   </data>
   <data name="billion" xml:space="preserve">
-    <value>Milliarde</value>
+    <value>milliarden</value>
     <comment/>
   </data>
-  
+  <data name="dash" xml:space="preserve">
+    <value> Strich </value>
+    <comment/>
+  </data>
   <data name="justover" xml:space="preserve">
     <value>etwas mehr als </value>
     <comment/>
   </data>
   <data name="million" xml:space="preserve">
-    <value>Millionen</value>
+    <value>millionen</value>
     <comment/>
   </data>
   <data name="minus" xml:space="preserve">
@@ -144,14 +147,23 @@
     <comment/>
   </data>
   <data name="quadrillion" xml:space="preserve">
-    <value>Billiarden</value>
+    <value>billiarden</value>
     <comment/>
   </data>
   <data name="thousand" xml:space="preserve">
     <value>tausend</value>
     <comment/>
   </data>
-  
-  
-  
+  <data name="trillion" xml:space="preserve">
+    <value>billionen</value>
+    <comment/>
+  </data>
+  <data name="wellover" xml:space="preserve">
+    <value>weit über </value>
+    <comment/>
+  </data>
+  <data name="zero" xml:space="preserve">
+    <value>null</value>
+    <comment/>
+  </data>
 </root>
