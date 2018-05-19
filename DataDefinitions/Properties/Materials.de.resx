@@ -274,7 +274,10 @@
 Material Historische Kulturdaten</value>
     <comment>Material ancientculturaldata</comment>
   </data>
-  
+  <data name="tg_structuraldata" xml:space="preserve">
+    <value>Thargoiden Strukturdaten</value>
+    <comment>Material tg_structuraldata</comment>
+  </data>
   <data name="scandatabanks" xml:space="preserve">
     <value>Scandatenbank unter Verschluss</value>
     <comment>Material scandatabanks</comment>
@@ -304,8 +307,14 @@ Material Historische Kulturdaten</value>
 Material uralte Biologiedaten</value>
     <comment>Material ancientbiologicaldata</comment>
   </data>
-  
-  
+  <data name="tg_compositiondata" xml:space="preserve">
+    <value>Thargoiden Materialzusammensetzung</value>
+    <comment>Material tg_compositiondata</comment>
+  </data>
+  <data name="unknownshipsignature" xml:space="preserve">
+    <value>Thargoiden Schiffssignatur</value>
+    <comment>Material unknownshipsignature</comment>
+  </data>
   <data name="shieldpatternanalysis" xml:space="preserve">
     <value>Abweichende Schildeinsatz-Analysen</value>
     <comment>Material shieldpatternanalysis</comment>
@@ -340,8 +349,14 @@ Material uralte Sprachdaten</value>
 Material uralte Technikdaten</value>
     <comment>Material ancienttechnologicaldata</comment>
   </data>
-  
-  
+  <data name="tg_residuedata" xml:space="preserve">
+    <value>Thargoiden Rückstandsdatenanalyse</value>
+    <comment>Material tg_residuedata</comment>
+  </data>
+  <data name="unknownwakedata" xml:space="preserve">
+    <value>Thargoiden Sogwolke</value>
+    <comment>Material unknownwakedata</comment>
+  </data>
   <data name="compactemissionsdata" xml:space="preserve">
     <value>Anormale kompakte Emissionsdaten</value>
     <comment>Material compactemissionsdata</comment>
@@ -447,7 +462,10 @@ Material uralte Technikdaten</value>
 Material Schildemitter</value>
     <comment>Material shieldemitters</comment>
   </data>
-  
+  <data name="unknowncarapace" xml:space="preserve">
+    <value>Thargoiden Panzerung</value>
+    <comment>Material unknowncarapace</comment>
+  </data>
   <data name="chemicaldistillery" xml:space="preserve">
     <value>Chemiedestillerie</value>
     <comment>Material chemicaldistillery</comment>
