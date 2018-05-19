@@ -257,8 +257,14 @@
     <value>Treibstoffdrohnensteuerung</value>
     <comment>Module FuelTransferLimpetController</comment>
   </data>
-  
-  
+  <data name="GuardianGaussCannon" xml:space="preserve">
+    <value>Guardian-Gausskanone</value>
+    <comment>Module GuardianGaussCannon</comment>
+  </data>
+  <data name="GuardianPlasmaCharger" xml:space="preserve">
+    <value>Guardian-Plasmalader</value>
+    <comment>Module GuardianPlasmaCharger</comment>
+  </data>
   
   <data name="HatchBreakerLimpetController" xml:space="preserve">
     <value>Ladelukenbrechersteuerung</value>
@@ -406,7 +412,10 @@
     <value>Schildgenerator</value>
     <comment>Module ShieldGenerator</comment>
   </data>
-  
+  <data name="ShockCannon" xml:space="preserve">
+    <value>Schockkanone</value>
+    <comment>Module ShockCannon</comment>
+  </data>
   
   
   <data name="StandardDockingComputer" xml:space="preserve">
@@ -433,7 +442,10 @@
     <value>Weiße Lichterkette</value>
     <comment>Module Whitestringlights</comment>
   </data>
-  
+  <data name="XenoScanner" xml:space="preserve">
+    <value>Xeno Scanner</value>
+    <comment>Module XenoScanner</comment>
+  </data>
   <data name="Fixed" xml:space="preserve">
     <value>fest</value>
     <comment>Weapon mount type Fixed</comment>
