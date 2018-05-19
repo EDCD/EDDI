@@ -160,7 +160,7 @@
     <comment>Commodity AncientRelic</comment>
   </data>
   <data name="AncientTablet" xml:space="preserve">
-    <value>Uraltes Tablet</value>
+    <value>Uraltes Tablett</value>
     <comment>Commodity AncientTablet</comment>
   </data>
   <data name="AncientTotem" xml:space="preserve">
@@ -185,7 +185,7 @@
   </data>
   
   <data name="AntiqueJewellery" xml:space="preserve">
-    <value>Antike Juwelen</value>
+    <value>Antike Schmuck</value>
     <comment>Commodity AntiqueJewellery</comment>
   </data>
   <data name="Antiquities" xml:space="preserve">
@@ -566,7 +566,10 @@
     <comment>Commodity MetaAlloys</comment>
   </data>
   
-  
+  <data name="MethanolMonohydrateCrystals" xml:space="preserve">
+    <value>Methanol-Monohydrat-Kristalle</value>
+    <comment>Commodity MethanolMonohydrateCrystals</comment>
+  </data>
   
   <data name="MilitaryGradeFabrics" xml:space="preserve">
     <value>Militärische Stoffe</value>
@@ -819,7 +822,10 @@
     <value>Der Hutton-Becher</value>
     <comment>Commodity TheHuttonMug</comment>
   </data>
-  
+  <data name="ThermalCoolingUnits" xml:space="preserve">
+    <value>Thermal-Kühleinheiten</value>
+    <comment>Commodity ThermalCoolingUnits</comment>
+  </data>
   <data name="Thorium" xml:space="preserve">
     <value>Thorium</value>
     <comment>Commodity Thorium</comment>
