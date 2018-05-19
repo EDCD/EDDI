@@ -260,7 +260,7 @@
     <comment>Module FuelTank</comment>
   </data>
   <data name="FuelTransferLimpetController" xml:space="preserve">
-    <value>Treibstoffdrohnensteuerung</value>
+    <value>Treibstofftransfer-Drohnensteuerung</value>
     <comment>Module FuelTransferLimpetController</comment>
   </data>
   <data name="GuardianGaussCannon" xml:space="preserve">
@@ -276,7 +276,7 @@
     <comment>Module GuardianPowerPlant</comment>
   </data>
   <data name="HatchBreakerLimpetController" xml:space="preserve">
-    <value>Ladelukenbrechersteuerung</value>
+    <value>Steuereinheit Ladelukenöffner</value>
     <comment>Module HatchBreakerLimpetController</comment>
   </data>
   <data name="HeatSinkLauncher" xml:space="preserve">
@@ -392,7 +392,7 @@
     <comment>Module PrismaticShieldGenerator</comment>
   </data>
   <data name="ProspectorLimpetController" xml:space="preserve">
-    <value>Erzsuchersteuerung</value>
+    <value>Drohnensteuerung Erzsucher</value>
     <comment>Module ProspectorLimpetController</comment>
   </data>
   <data name="PulseLaser" xml:space="preserve">
