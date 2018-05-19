@@ -194,7 +194,10 @@
     <value>korrosionsbeständiger Laderaum</value>
     <comment>Module CorrosionResistantCargoRack</comment>
   </data>
-  
+  <data name="Cytoscrambler" xml:space="preserve">
+    <value>Zytostreuer</value>
+    <comment>Module Cytoscrambler</comment>
+  </data>
   <data name="DataLinkScanner" xml:space="preserve">
     <value>Datenlinkscanner</value>
     <comment>Module DataLinkScanner</comment>
