@@ -114,9 +114,18 @@
     <value>kos</value>
     <comment>Optional phonetic pronunciation for Arietis</comment>
   </data>
-  
-  
-  
+  <data name="Bei" xml:space="preserve">
+    <value>bei</value>
+    <comment>Optional phonetic pronunciation for Bei</comment>
+  </data>
+  <data name="BeiDou_Bei" xml:space="preserve">
+    <value>bei</value>
+    <comment>Optional phonetic pronunciation for BeiDou_Bei</comment>
+  </data>
+  <data name="BeiDou_Dou" xml:space="preserve">
+    <value>Dú</value>
+    <comment>Optional phonetic pronunciation for BeiDou_Dou</comment>
+  </data>
   <data name="Blanco" xml:space="preserve">
     <value>blankó</value>
     <comment>Optional phonetic pronunciation for Blanco</comment>
