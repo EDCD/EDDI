@@ -264,7 +264,7 @@ namespace EddiStarMapService
                     {
                         Dictionary<string, StarMapLogInfo> systemLogs = getStarMapLog(syncStartTime);
                         syncStartTime = DateTime.Compare(syncEndTime, syncStartTime.AddDays(7)) > 0 ? syncStartTime.AddDays(7) : syncEndTime;
-                        SyncUpdate(comments, syncSystems, systemLogs);
+                        SyncUpdate(comments, syncSystems, systemLogs, since);
                     } while (DateTime.Compare(syncEndTime, syncStartTime) > 0); // Do this while syncEndTime is greater than than syncStartTime
                 }
                 else
@@ -289,7 +289,7 @@ namespace EddiStarMapService
             }
         }
 
-        private static void SyncUpdate(Dictionary<string, string> comments, List<StarSystem> syncSystems, Dictionary<string, StarMapLogInfo> systemLogs, DateTime? since)
+        private static void SyncUpdate(Dictionary<string, string> comments, List<StarSystem> syncSystems, Dictionary<string, StarMapLogInfo> systemLogs, DateTime? since = null)
         {
             foreach (string system in systemLogs.Keys)
             {
