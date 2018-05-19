@@ -139,10 +139,10 @@
     <value>EDSM hiba: </value>
   </data>
   <data name="log_button_fetched" xml:space="preserve">
-    <value>Beszerzett napló</value>
+    <value>Beszerzett log</value>
   </data>
   <data name="log_button_fetching" xml:space="preserve">
-    <value>Napló beszerzése...</value>
+    <value>Log beszerzése...</value>
   </data>
   <data name="log_button_fetching_progress" xml:space="preserve">
     <value>Napló beszerzése </value>
@@ -157,6 +157,6 @@
     <value>Amennyiben az aktuálistól eltérő kapitány nevet regisztrált, kérjük adja meg alul</value>
   </data>
   <data name="p3" xml:space="preserve">
-    <value>Amint megadta az adatai felül letöltheti a létező naplóit az EDSM-ből annak érdekében, hogy az EDDI tudja hányszor járt az egyes rendszerekben. Ezt csak az első alkalommal kell megtennie az aEDSM beállításához. A művelet eltarthat egy ideig</value>
+    <value>Amint megadta az adatai felül letöltheti a létező logjait az EDSM-ből annak érdekében, hogy az EDDI tudja hányszor járt az egyes rendszerekben. Ezt csak az első alkalommal kell megtennie az EDSM beállításához. A művelet eltarthat egy ideig</value>
   </data>
 </root>
