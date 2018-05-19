@@ -714,8 +714,14 @@
     <value>Saxon Wein</value>
     <comment>Commodity SaxonWine</comment>
   </data>
-  
-  
+  <data name="ScientificResearch" xml:space="preserve">
+    <value>Wissenschaftliche Forschung</value>
+    <comment>Commodity ScientificResearch</comment>
+  </data>
+  <data name="ScientificSamples" xml:space="preserve">
+    <value>Wissenschaftliche Proben</value>
+    <comment>Commodity ScientificSamples</comment>
+  </data>
   <data name="Scrap" xml:space="preserve">
     <value>Schrott</value>
     <comment>Commodity Scrap</comment>
@@ -742,7 +748,10 @@
   </data>
   
   
-  
+  <data name="SpacePioneerRelics" xml:space="preserve">
+    <value>Weltraumpionier-Relikte</value>
+    <comment>Commodity SpacePioneerRelics</comment>
+  </data>
   <data name="StructuralRegulators" xml:space="preserve">
     <value>Strukturregulatoren</value>
     <comment>Commodity StructuralRegulators</comment>
@@ -764,7 +773,10 @@
     <value>Künstliches Fleisch</value>
     <comment>Commodity SyntheticMeat</comment>
   </data>
-  
+  <data name="SyntheticReagents" xml:space="preserve">
+    <value>Künstliches Fleisch</value>
+    <comment>Commodity SyntheticReagents</comment>
+  </data>
   
   
   
@@ -871,7 +883,10 @@
     <comment>Commodity Water</comment>
   </data>
   
-  
+  <data name="WatersOfShintara" xml:space="preserve">
+    <value>Shinrarta-Wasser</value>
+    <comment>Commodity WatersOfShintara</comment>
+  </data>
   
   <data name="Wine" xml:space="preserve">
     <value>Wein</value>
