@@ -344,7 +344,10 @@
     <comment>Module Multi_Cannon</comment>
   </data>
   
-  
+  <data name="Pack_Hound" xml:space="preserve">
+    <value>Pack-Hound</value>
+    <comment>Module Pack_Hound</comment>
+  </data>
   <data name="PlanetaryApproachSuite" xml:space="preserve">
     <value>Planetare Anflugs-Suite</value>
     <comment>Module PlanetaryApproachSuite</comment>
