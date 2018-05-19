@@ -4,7 +4,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
 
 ### 3.0.1-b3
   * EDSM responder
-    * Fixed a bug that was reseting system visit totals during syncs with EDSM.
+    * Fixed a bug that was reseting system visit totals during syncs with EDSM. Please re-obtain logs from EDSM to update in the information in your local database.
 
 ### 3.0.1-b2
   * Localization
