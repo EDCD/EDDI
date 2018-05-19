@@ -135,10 +135,22 @@
     <value>über</value>
     <comment/>
   </data>
-  
-  
-  
-  
+  <data name="plus" xml:space="preserve">
+    <value> mehr als </value>
+    <comment/>
+  </data>
+  <data name="point" xml:space="preserve">
+    <value> Punkt </value>
+    <comment/>
+  </data>
+  <data name="quadrillion" xml:space="preserve">
+    <value>Billiarden</value>
+    <comment/>
+  </data>
+  <data name="thousand" xml:space="preserve">
+    <value>tausend</value>
+    <comment/>
+  </data>
   
   
   
