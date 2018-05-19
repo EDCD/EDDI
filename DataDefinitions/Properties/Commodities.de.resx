@@ -639,7 +639,10 @@
   </data>
   
   
-  
+  <data name="PerformanceEnhancers" xml:space="preserve">
+    <value>Leistungssteigerer</value>
+    <comment>Commodity PerformanceEnhancers</comment>
+  </data>
   <data name="PersonalEffects" xml:space="preserve">
     <value>Persönliches</value>
     <comment>Commodity PersonalEffects</comment>
@@ -703,13 +706,19 @@
     <comment>Commodity ReinforcedMountingPlate</comment>
   </data>
   
-  
+  <data name="ResonatingSeparators" xml:space="preserve">
+    <value>Resonanzabgrenzer</value>
+    <comment>Commodity ResonatingSeparators</comment>
+  </data>
   <data name="Robotics" xml:space="preserve">
     <value>Roboter</value>
     <comment>Commodity Robotics</comment>
   </data>
   
-  
+  <data name="Rutile" xml:space="preserve">
+    <value>Rutil</value>
+    <comment>Commodity Rutile</comment>
+  </data>
   <data name="Samarium" xml:space="preserve">
     <value>Samarium</value>
     <comment>Commodity Samarium</comment>
