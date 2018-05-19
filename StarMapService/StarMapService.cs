@@ -294,7 +294,7 @@ namespace EddiStarMapService
             foreach (string system in systemLogs.Keys)
             {
                 StarSystem CurrentStarSystem = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(system, false);
-                if (since != null)
+                if (since == null)
                 {
                     /// If we're re-obtaining and resetting the flight logs, we need to replace the value.
                     /// Otherwise, the event handler increments system visits.
