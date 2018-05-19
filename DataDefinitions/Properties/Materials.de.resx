@@ -270,8 +270,7 @@
     <comment>Material scanarchives</comment>
   </data>
   <data name="ancientculturaldata" xml:space="preserve">
-    <value>Historische Kulturdaten
-Material Historische Kulturdaten</value>
+    <value>Uralte Kulturdaten</value>
     <comment>Material ancientculturaldata</comment>
   </data>
   <data name="tg_structuraldata" xml:space="preserve">
@@ -303,8 +302,7 @@ Material Historische Kulturdaten</value>
     <comment>Material shielddensityreports</comment>
   </data>
   <data name="ancientbiologicaldata" xml:space="preserve">
-    <value>Uralte Biologiedaten
-Material uralte Biologiedaten</value>
+    <value>Uralte Biologiedaten</value>
     <comment>Material ancientbiologicaldata</comment>
   </data>
   <data name="tg_compositiondata" xml:space="preserve">
@@ -340,13 +338,11 @@ Material uralte Biologiedaten</value>
     <comment>Material securityfirmware</comment>
   </data>
   <data name="ancientlanguagedata" xml:space="preserve">
-    <value>Uralte Sprachdaten
-Material uralte Sprachdaten</value>
+    <value>Uralte Sprachdaten</value>
     <comment>Material ancientlanguagedata</comment>
   </data>
   <data name="ancienttechnologicaldata" xml:space="preserve">
-    <value>Uralte Technikdaten
-Material uralte Technikdaten</value>
+    <value>Uralte Technikdaten</value>
     <comment>Material ancienttechnologicaldata</comment>
   </data>
   <data name="tg_residuedata" xml:space="preserve">
