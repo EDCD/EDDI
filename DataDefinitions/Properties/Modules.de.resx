@@ -416,7 +416,10 @@
     <value>Schockkanone</value>
     <comment>Module ShockCannon</comment>
   </data>
-  
+  <data name="ShockMineLauncher" xml:space="preserve">
+    <value>Schockminenwerfer</value>
+    <comment>Module ShockMineLauncher</comment>
+  </data>
   
   <data name="StandardDockingComputer" xml:space="preserve">
     <value>Landecomputer</value>
