@@ -960,7 +960,10 @@
     <value>Rebellenübertragung</value>
     <comment>Commodity USSCargoRebelTransmissions</comment>
   </data>
-  
+  <data name="USSCargoTechnicalBlueprints" xml:space="preserve">
+    <value>Technische Blaupausen</value>
+    <comment>Commodity USSCargoTechnicalBlueprints</comment>
+  </data>
   <data name="USSCargoTradeData" xml:space="preserve">
     <value>Handelsdaten</value>
     <comment>Commodity USSCargoTradeData</comment>
@@ -993,7 +996,10 @@
   </data>
   
   
-  
+  <data name="WreckageComponents" xml:space="preserve">
+    <value>Bergungsfähige Wrackteile</value>
+    <comment>Commodity WreckageComponents</comment>
+  </data>
   
   
   
