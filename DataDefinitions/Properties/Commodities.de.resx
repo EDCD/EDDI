@@ -335,7 +335,10 @@
     <value>Erntemaschinen</value>
     <comment>Commodity CropHarvesters</comment>
   </data>
-  
+  <data name="Cryolite" xml:space="preserve">
+    <value>Kriolyth</value>
+    <comment>Commodity Cryolite</comment>
+  </data>
   
   <data name="DamagedEscapePod" xml:space="preserve">
     <value>Beschädigte Rettungskapsel</value>
@@ -556,7 +559,10 @@
     <value>Lithium</value>
     <comment>Commodity Lithium</comment>
   </data>
-  
+  <data name="LithiumHydroxide" xml:space="preserve">
+    <value>Lithiumhydroxid</value>
+    <comment>Commodity LithiumHydroxide</comment>
+  </data>
   
   <data name="LowTemperatureDiamond" xml:space="preserve">
     <value>Niedrigtemperatur Diamanten</value>
@@ -705,7 +711,10 @@
     <comment>Commodity ProgenitorCells</comment>
   </data>
   
-  
+  <data name="Pyrophyllite" xml:space="preserve">
+    <value>Pyrophyllit</value>
+    <comment>Commodity Pyrophyllite</comment>
+  </data>
   <data name="RadiationBaffle" xml:space="preserve">
     <value>Strahlungsabweiser</value>
     <comment>Commodity RadiationBaffle</comment>
