@@ -103,11 +103,11 @@
     <comment>System state None</comment>
   </data>
   <data name="Retreat" xml:space="preserve">
-    <value>Visszavonuló</value>
+    <value>Visszavonás</value>
     <comment>System state Retreat</comment>
   </data>
   <data name="War" xml:space="preserve">
-    <value>Háborús</value>
+    <value>Háború</value>
     <comment>System state War</comment>
   </data>
   <data name="Lockdown" xml:space="preserve">
@@ -127,7 +127,7 @@
     <comment>System state Boom</comment>
   </data>
   <data name="Expansion" xml:space="preserve">
-    <value>Terjeszkedő</value>
+    <value>Terjeszkedés</value>
     <comment>System state Expansion</comment>
   </data>
   <data name="Bust" xml:space="preserve">
@@ -139,7 +139,7 @@
     <comment>System state Outbreak</comment>
   </data>
   <data name="Famine" xml:space="preserve">
-    <value>Éhinség</value>
+    <value>Éhínség</value>
     <comment>System state Famine</comment>
   </data>
   <data name="Election" xml:space="preserve">
@@ -147,7 +147,7 @@
     <comment>System state Election</comment>
   </data>
   <data name="Investment" xml:space="preserve">
-    <value>Befektetési</value>
+    <value>Befektetés</value>
     <comment>System state Investment</comment>
   </data>
 </root>
