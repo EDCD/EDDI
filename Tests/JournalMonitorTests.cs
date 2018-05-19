@@ -58,6 +58,24 @@ namespace UnitTests
             string line = @"{ ""timestamp"":""2016-10-27T08:51:23Z"", ""event"":""Scan"", ""BodyName"":""Vela Dark Region FG-Y d3"", ""DistanceFromArrivalLS"":0.000000, ""StarType"":""K"", ""StellarMass"":0.960938, ""Radius"":692146368.000000, ""AbsoluteMagnitude"":5.375961, ""Age_MY"":230, ""SurfaceTemperature"":5108.000000, ""RotationPeriod"":393121.093750, ""Rings"":[ { ""Name"":""Vela Dark Region FG-Y d3 A Belt"", ""RingClass"":""eRingClass_MetalRich"", ""MassMT"":1.2262e+10, ""InnerRad"":1.2288e+09, ""OuterRad"":2.3812e+09 } ] }";
             List<Event> events = JournalMonitor.ParseJournalEntry(line);
             Assert.IsTrue(events.Count == 1);
+
+            StarScannedEvent theEvent = (StarScannedEvent)events[0];
+
+            Assert.AreEqual(230, theEvent.age);
+            Assert.IsNull(theEvent.eccentricity);
+            Assert.AreEqual("Vela Dark Region FG-Y d3", theEvent.name);
+            Assert.IsNull(theEvent.orbitalperiod);
+            Assert.AreEqual(692146368.000000M, theEvent.radius);
+            Assert.IsNull(theEvent.semimajoraxis);
+            Assert.AreEqual(0.960938, (double)theEvent.solarmass, 0.001);
+            Assert.AreEqual("K", theEvent.stellarclass);
+            Assert.AreEqual(5108, theEvent.temperature);
+            // Stellar extras
+            Assert.AreEqual("yellow-orange", theEvent.chromaticity);
+            Assert.AreEqual(50, theEvent.massprobability);
+            Assert.AreEqual(51, theEvent.radiusprobability);
+            Assert.AreEqual(58, theEvent.tempprobability);
+            Assert.AreEqual(7, theEvent.ageprobability);
         }
 
         [TestMethod]
