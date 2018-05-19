@@ -389,7 +389,10 @@
     <value>Reagierende Oberflächenzusammensetzung</value>
     <comment>Module ReactiveSurfaceComposite</comment>
   </data>
-  
+  <data name="ReconLimpetController" xml:space="preserve">
+    <value>Steuerung Aufklärungsdrohnen</value>
+    <comment>Module ReconLimpetController</comment>
+  </data>
   <data name="Refinery" xml:space="preserve">
     <value>Raffinerie</value>
     <comment>Module Refinery</comment>
@@ -398,9 +401,18 @@
     <value>Verstärkte Legierung</value>
     <comment>Module ReinforcedAlloy</comment>
   </data>
-  
-  
-  
+  <data name="RemoteReleaseFlakLauncher" xml:space="preserve">
+    <value>Flakwerfer mit Fernzündung</value>
+    <comment>Module RemoteReleaseFlakLauncher</comment>
+  </data>
+  <data name="RepairLimpetController" xml:space="preserve">
+    <value>Steuerung Reparaturdrohnen</value>
+    <comment>Module RepairLimpetController</comment>
+  </data>
+  <data name="ResearchLimpetController" xml:space="preserve">
+    <value>Steuerung Forschungsdrohnen</value>
+    <comment>Module ResearchLimpetController</comment>
+  </data>
   
   <data name="Sensors" xml:space="preserve">
     <value>Sensoren</value>
@@ -426,7 +438,10 @@
     <value>Schockminenwerfer</value>
     <comment>Module ShockMineLauncher</comment>
   </data>
-  
+  <data name="ShutdownFieldNeutraliser" xml:space="preserve">
+    <value>Abschalt-Feldneutralisator</value>
+    <comment>Module ShutdownFieldNeutraliser</comment>
+  </data>
   <data name="StandardDockingComputer" xml:space="preserve">
     <value>Landecomputer</value>
     <comment>Module StandardDockingComputer</comment>
@@ -452,7 +467,7 @@
     <comment>Module Whitestringlights</comment>
   </data>
   <data name="XenoScanner" xml:space="preserve">
-    <value>Xeno Scanner</value>
+    <value>Xeno-Scanner</value>
     <comment>Module XenoScanner</comment>
   </data>
   <data name="Fixed" xml:space="preserve">
