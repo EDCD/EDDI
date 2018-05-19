@@ -385,7 +385,10 @@
     <value>Fisch</value>
     <comment>Commodity Fish</comment>
   </data>
-  
+  <data name="FoodCartridges" xml:space="preserve">
+    <value>Nahrungskartuschen</value>
+    <comment>Commodity FoodCartridges</comment>
+  </data>
   
   <data name="FruitAndVegetables" xml:space="preserve">
     <value>Obst und Gemüse</value>
@@ -459,8 +462,14 @@
     <value>HR 7221 Weizen</value>
     <comment>Commodity HR7221Wheat</comment>
   </data>
-  
-  
+  <data name="HydrogenFuel" xml:space="preserve">
+    <value>Wasserstoff-Treibstoff</value>
+    <comment>Commodity HydrogenFuel</comment>
+  </data>
+  <data name="HydrogenPeroxide" xml:space="preserve">
+    <value>Wasserstoffperoxid</value>
+    <comment>Commodity HydrogenPeroxide</comment>
+  </data>
   <data name="ImperialSlaves" xml:space="preserve">
     <value>Imperiale Sklaven</value>
     <comment>Commodity ImperialSlaves</comment>
@@ -552,7 +561,10 @@
   
   
   
-  
+  <data name="MetaAlloys" xml:space="preserve">
+    <value>Meta-Legierungen</value>
+    <comment>Commodity MetaAlloys</comment>
+  </data>
   
   
   
@@ -580,7 +592,10 @@
   
   
   
-  
+  <data name="MysteriousIdol" xml:space="preserve">
+    <value>Mysteriöses Idol</value>
+    <comment>Commodity MysteriousIdol</comment>
+  </data>
   <data name="Nanobreakers" xml:space="preserve">
     <value>Nanozertrümmerer</value>
     <comment>Commodity Nanobreakers</comment>
@@ -630,7 +645,10 @@
     <value>Persönliche Waffen</value>
     <comment>Commodity PersonalWeapons</comment>
   </data>
-  
+  <data name="Pesticides" xml:space="preserve">
+    <value>Pestizide</value>
+    <comment>Commodity Pesticides</comment>
+  </data>
   <data name="Platinum" xml:space="preserve">
     <value>Platin</value>
     <comment>Commodity Platinum</comment>
@@ -692,7 +710,10 @@
   </data>
   
   
-  
+  <data name="SaxonWine" xml:space="preserve">
+    <value>Saxon Wein</value>
+    <comment>Commodity SaxonWine</comment>
+  </data>
   
   
   <data name="Scrap" xml:space="preserve">
