@@ -171,7 +171,10 @@
     <value>Uralte Urne</value>
     <comment>Commodity AncientUrn</comment>
   </data>
-  
+  <data name="AnduligaFireWorks" xml:space="preserve">
+    <value>Anduliga Feuerwerk</value>
+    <comment>Commodity AnduligaFireWorks</comment>
+  </data>
   <data name="Animalmeat" xml:space="preserve">
     <value>Tierfleisch</value>
     <comment>Commodity Animalmeat</comment>
@@ -659,7 +662,10 @@
   </data>
   
   
-  
+  <data name="Samarium" xml:space="preserve">
+    <value>Samarium</value>
+    <comment>Commodity Samarium</comment>
+  </data>
   
   
   
@@ -734,7 +740,10 @@
     <value>Thallium</value>
     <comment>Commodity Thallium</comment>
   </data>
-  
+  <data name="TheHuttonMug" xml:space="preserve">
+    <value>Der Hutton Krug</value>
+    <comment>Commodity TheHuttonMug</comment>
+  </data>
   
   <data name="Thorium" xml:space="preserve">
     <value>Thorium</value>
@@ -742,7 +751,10 @@
   </data>
   
   
-  
+  <data name="TimeCapsule" xml:space="preserve">
+    <value>Zeitkapsel</value>
+    <comment>Commodity TimeCapsule</comment>
+  </data>
   
   <data name="Titanium" xml:space="preserve">
     <value>Titan</value>
