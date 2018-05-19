@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="desc" xml:space="preserve">
-    <value>Galnet figyelése új hírekért és "Galnet hír publikálása" esemény létrehozása.</value>
+    <value>Galnet figyelése új hírekért és "Galnet hír publikálása" esemény létrehozása amikor új cikk kerül publikálásra.</value>
   </data>
   <data name="language_label" xml:space="preserve">
     <value>Galnet nyelve</value>
@@ -130,6 +130,6 @@
     <value>A nyelv módosítása után előfordulhat, hogy több mint 2 percig is eltarthat mire a Galnet hírei elérhetőek lesznek.</value>
   </data>
   <data name="p2" xml:space="preserve">
-    <value>Galnet hírek olvasása kijelentkezve</value>
+    <value>Galnet hírek olvasása amikor kijelentkezel</value>
   </data>
 </root>
