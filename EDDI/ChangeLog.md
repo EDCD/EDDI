@@ -2,6 +2,10 @@
 
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
+### 3.0.1-b3
+  * EDSM responder
+    * Fixed a bug that was reseting system visit totals during syncs with EDSM.
+
 ### 3.0.1-b2
   * Localization
     * EDDI is now localized! You can choose your language in the EDDI tab or just go with the system default.

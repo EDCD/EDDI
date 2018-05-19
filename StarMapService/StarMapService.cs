@@ -193,6 +193,8 @@ namespace EddiStarMapService
             }
             else
             {
+                /// Though not documented in the api, Anthor from EDSM has confirmed that this 
+                /// unpublished parameter is valid and overrides "startdatetime" and "enddatetime".
                 request.AddParameter("fullSync", 1);
             }
             var starMapLogResponse = client.Execute<StarMapLogResponse>(request);
@@ -248,26 +250,29 @@ namespace EddiStarMapService
             Logging.Info("Syncing with EDSM");
             try
             {
-                Dictionary<string, StarMapLogInfo> systems = getStarMapLog(since);
                 Dictionary<string, string> comments = getStarMapComments();
                 List<StarSystem> syncSystems = new List<StarSystem>();
-                foreach (string system in systems.Keys)
-                {
-                    StarSystem CurrentStarSystem = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(system, false);
-                    CurrentStarSystem.visits = systems[system].visits;
-                    CurrentStarSystem.lastvisit = systems[system].lastVisit;
-                    if (comments.ContainsKey(system))
-                    {
-                        CurrentStarSystem.comment = comments[system];
-                    }
-                    syncSystems.Add(CurrentStarSystem);
 
-                    if (syncSystems.Count == syncBatchSize)
+                if (since.HasValue)
+                {
+                    // The EDSM API syncs a maximum of a week of flight logs at a time, unless we execute a `fullSync`. 
+                    // We obtain all of the missing logs for the interim period, at most one week at a time.
+                    // API reference: https://www.edsm.net/en/api-logs-v1
+                    DateTime syncStartTime = (DateTime)since;
+                    DateTime syncEndTime = DateTime.UtcNow;
+                    do
                     {
-                        saveStarSystems(syncSystems);
-                        syncSystems.Clear();
-                    }
+                        Dictionary<string, StarMapLogInfo> systemLogs = getStarMapLog(syncStartTime);
+                        syncStartTime = DateTime.Compare(syncEndTime, syncStartTime.AddDays(7)) > 0 ? syncStartTime.AddDays(7) : syncEndTime;
+                        SyncUpdate(comments, syncSystems, systemLogs);
+                    } while (DateTime.Compare(syncEndTime, syncStartTime) > 0); // Do this while syncEndTime is greater than than syncStartTime
                 }
+                else
+                {
+                    Dictionary<string, StarMapLogInfo> systemLogs = getStarMapLog(since);
+                    SyncUpdate(comments, syncSystems, systemLogs);
+                }
+
                 if (syncSystems.Count > 0)
                 {
                     saveStarSystems(syncSystems);
@@ -281,6 +286,36 @@ namespace EddiStarMapService
             catch (ThreadAbortException e)
             {
                 Logging.Debug("EDSM update stopped by user: " + e.Message);
+            }
+        }
+
+        private static void SyncUpdate(Dictionary<string, string> comments, List<StarSystem> syncSystems, Dictionary<string, StarMapLogInfo> systemLogs, DateTime? since)
+        {
+            foreach (string system in systemLogs.Keys)
+            {
+                StarSystem CurrentStarSystem = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(system, false);
+                if (since.HasValue)
+                {
+                    // If we're obtaining new logs since our last update, we need to increment the value
+                    CurrentStarSystem.visits += systemLogs[system].visits;
+                }
+                else
+                {
+                    // If we're re-obtaining and resetting the flight logs, we need to replace the value
+                    CurrentStarSystem.visits = systemLogs[system].visits;
+                }
+                CurrentStarSystem.lastvisit = systemLogs[system].lastVisit;
+                if (comments.ContainsKey(system))
+                {
+                    CurrentStarSystem.comment = comments[system];
+                }
+                syncSystems.Add(CurrentStarSystem);
+
+                if (syncSystems.Count == syncBatchSize)
+                {
+                    saveStarSystems(syncSystems);
+                    syncSystems.Clear();
+                }
             }
         }
 
