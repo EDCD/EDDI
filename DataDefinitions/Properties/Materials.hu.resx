@@ -210,7 +210,7 @@
     <comment>Material zirconium</comment>
   </data>
   <data name="antimony" xml:space="preserve">
-    <value>Antimonit</value>
+    <value>Antimon</value>
     <comment>Material antimony</comment>
   </data>
   <data name="polonium" xml:space="preserve">
