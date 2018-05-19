@@ -185,7 +185,7 @@
   </data>
   
   <data name="AntiqueJewellery" xml:space="preserve">
-    <value>Antike Schmuck</value>
+    <value>Antiker Schmuck</value>
     <comment>Commodity AntiqueJewellery</comment>
   </data>
   <data name="Antiquities" xml:space="preserve">
@@ -464,7 +464,7 @@
     <comment>Commodity Goslarite</comment>
   </data>
   <data name="Grain" xml:space="preserve">
-    <value>Körnen</value>
+    <value>Getreide</value>
     <comment>Commodity Grain</comment>
   </data>
   
@@ -827,7 +827,10 @@
     <value>Kleiner Erkundungsdatenträger</value>
     <comment>Commodity SmallExplorationDataCash</comment>
   </data>
-  
+  <data name="SoontillRelics" xml:space="preserve">
+    <value>Soontill-Relikte</value>
+    <comment>Commodity SoontillRelics</comment>
+  </data>
   
   <data name="SpacePioneerRelics" xml:space="preserve">
     <value>Weltraumpionier-Relikte</value>
