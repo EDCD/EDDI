@@ -448,7 +448,10 @@
     <comment>Module AdvancedDiscoveryScanner</comment>
   </data>
   
-  
+  <data name="Enforcer" xml:space="preserve">
+    <value>Vollstrecker Kanone</value>
+    <comment>Module Hpt_MultiCannon_Fixed_Small_Strong</comment>
+  </data>
   
   
   
