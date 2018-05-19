@@ -134,7 +134,7 @@
     <value>Frontier API kapcsolat nem működik</value>
   </data>
   <data name="frontier_api_no_logins" xml:space="preserve">
-    <value>Nincs kapcsolatod a Frontier API-hoz jelenleg. kérlek írd be az Elite Dangerous e-mail címed és jelszavad.</value>
+    <value>Nincs kapcsolatod a Frontier API-hoz jelenleg. Kérlek írd be az Elite Dangerous e-mail címed és jelszavad.</value>
   </data>
   <data name="frontier_api_ok" xml:space="preserve">
     <value>A kapcsolat a Froniter API-hoz müködik, parancsnok {0}.</value>
