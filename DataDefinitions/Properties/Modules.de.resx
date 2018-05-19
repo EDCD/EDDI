@@ -500,6 +500,9 @@
     <value>Splitterkanone</value>
     <comment>Module ShardCannon</comment>
   </data>
-  
+  <data name="FlechetteLauncher" xml:space="preserve">
+    <value>Flechet Werfer</value>
+    <comment>Modile FlechetteLauncher</comment>
+  </data>
   
 </root>
