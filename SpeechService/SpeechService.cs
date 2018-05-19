@@ -124,54 +124,57 @@ namespace EddiSpeechService
                 voice = configuration.StandardVoice;
             }
 
-            bool isAudio = false;
-            if (speech.Contains("<audio"))
-            {
-                // This is an audio file; remove other text
-                speech = Regex.Replace(speech, "^.*<audio", "<audio");
-                speech = Regex.Replace(speech, ">.*$", ">");
-                isAudio = true;
-            }
-
             // Put everything in a thread
             Thread speechThread = new Thread(() =>
             {
                 try
                 {
-                    using (MemoryStream stream = getSpeechStream(voice, speech))
+                    // Identify any statements that need to be separated into their own speech streams (e.g. audio or special voice effects)
+                    string[] separators =
                     {
-                        if (stream == null)
-                        {
-                            Logging.Debug("getSpeechStream() returned null; nothing to say");
-                            return;
-                        }
-                        if (stream.Length < 50)
-                        {
-                            Logging.Debug("getSpeechStream() returned empty stream; nothing to say");
-                            return;
-                        }
-                        else
-                        {
-                            Logging.Debug("Stream length is " + stream.Length);
-                        }
-                        Logging.Debug("Seeking back to the beginning of the stream");
-                        stream.Seek(0, SeekOrigin.Begin);
+                        @"({Transmit\(.+\)})",
+                        @"(<audio.+>)"
+                    };
+                    List<string> statements = SeparateSpeechStatements(speech, string.Join("|", separators));
 
-                        IWaveSource source = new WaveFileReader(stream);
-                        if (!isAudio)
-                        {
-                            Logging.Debug("Adding effects");
-                            addEffectsToSource(ref source, chorusLevel, reverbLevel, echoDelay, distortionLevel, radio);
-                        }
+                    foreach (string statement in statements)
+                    {
+                        bool isAudio = statement.Contains("<audio"); // This is an audio file, we will disable voice effects processing
 
-                        if (priority < activeSpeechPriority)
+                        using (MemoryStream stream = getSpeechStream(voice, statement))
                         {
-                            Logging.Debug("About to StopCurrentSpeech");
-                            StopCurrentSpeech();
-                            Logging.Debug("Finished StopCurrentSpeech");
-                        }
+                            if (stream == null)
+                            {
+                                Logging.Debug("getSpeechStream() returned null; nothing to say");
+                                return;
+                            }
+                            if (stream.Length < 50)
+                            {
+                                Logging.Debug("getSpeechStream() returned empty stream; nothing to say");
+                                return;
+                            }
+                            else
+                            {
+                                Logging.Debug("Stream length is " + stream.Length);
+                            }
+                            Logging.Debug("Seeking back to the beginning of the stream");
+                            stream.Seek(0, SeekOrigin.Begin);
 
-                        play(ref source, priority);
+                            IWaveSource source = new WaveFileReader(stream);
+                            if (!isAudio)
+                            {
+                                addEffectsToSource(ref source, chorusLevel, reverbLevel, echoDelay, distortionLevel, radio);
+                            }
+
+                            if (priority < activeSpeechPriority)
+                            {
+                                Logging.Debug("About to StopCurrentSpeech");
+                                StopCurrentSpeech();
+                                Logging.Debug("Finished StopCurrentSpeech");
+                            }
+
+                            play(ref source, priority);
+                        }
                     }
                 }
                 catch (ThreadAbortException)
@@ -201,6 +204,30 @@ namespace EddiSpeechService
             }
         }
 
+        private static List<string> SeparateSpeechStatements(string speech, string separators)
+        {
+            // Separate speech into statements that can be handled differently & sequentially by the speech service
+            List<string> statements = new List<string>();
+
+            Match match = Regex.Match(speech, separators);
+            if (match.Success)
+            {
+                string[] splitSpeech = new Regex(separators).Split(speech);
+                foreach (string split in splitSpeech)
+                {
+                    if (split != "")
+                    {
+                        statements.Add(split);
+                    }
+                }
+            }
+            else
+            {
+                statements.Add(speech);
+            }
+            return statements;
+        }
+
         private void addEffectsToSource(ref IWaveSource source, int chorusLevel, int reverbLevel, int echoDelay, int distortionLevel, bool radio)
         {
             // Effects level is increased by damage if distortion is enabled
@@ -220,7 +247,6 @@ namespace EddiSpeechService
             // We always have chorus
             if (chorusLevel != 0)
             {
-                Logging.Debug("Adding chorus");
                 source = source.AppendSource(x => new DmoChorusEffect(x) { Depth = chorusLevel, WetDryMix = Math.Min(100, (int)(180 * (effectsLevel) / ((decimal)100))), Delay = 16, Frequency = (effectsLevel / 10), Feedback = 25 });
             }
 
@@ -229,13 +255,11 @@ namespace EddiSpeechService
             {
                 if (reverbLevel != 0)
                 {
-                    Logging.Debug("Adding reverb");
                     source = source.AppendSource(x => new DmoWavesReverbEffect(x) { ReverbTime = (int)(1 + 999 * (effectsLevel) / ((decimal)100)), ReverbMix = Math.Max(-96, -96 + (96 * reverbLevel / 100)) });
                 }
 
                 if (echoDelay != 0)
                 {
-                    Logging.Debug("Adding echo");
                     source = source.AppendSource(x => new DmoEchoEffect(x) { LeftDelay = echoDelay, RightDelay = echoDelay, WetDryMix = Math.Max(5, (int)(10 * (effectsLevel) / ((decimal)100))), Feedback = 0 });
                 }
             }
@@ -247,20 +271,12 @@ namespace EddiSpeechService
                 source = sampleSource.ToWaveSource();
             }
 
+            // Adjust gain
             if (effectsLevel != 0 && chorusLevel != 0)
             {
-                Logging.Debug("Adjusting gain");
                 int radioGain = radio ? 7 : 0;
                 source = source.AppendSource(x => new DmoCompressorEffect(x) { Gain = effectsLevel / 15 + radioGain });
             }
-
-            //if (radio)
-            //{
-            //    source = source.AppendSource(x => new DmoDistortionEffect(x) { Edge = 7, Gain = -distortionLevel / 2, PostEQBandwidth = 2000, PostEQCenterFrequency = 6000 });
-            //    source = source.AppendSource(x => new DmoCompressorEffect(x) { Attack = 1, Ratio = 3, Threshold = -10 });
-            //}
-
-
         }
 
         // Play a source
