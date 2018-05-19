@@ -503,7 +503,7 @@ Material Schildemitter</value>
     <comment>Material shieldingsensors</comment>
   </data>
   <data name="unknownenergycell" xml:space="preserve">
-    <value>Thargoid Energiezellen</value>
+    <value>Thargoiden Energiezellen</value>
     <comment>Material unknownenergycell</comment>
   </data>
   <data name="chemicalmanipulators" xml:space="preserve">
@@ -650,8 +650,7 @@ Material Proto-Wärmestrahler</value>
     <comment>Material tg_propulsionelement</comment>
   </data>
   <data name="tg_biomechanicalconduits" xml:space="preserve">
-    <value>Thargoid Bio-Mechanische Bauteile
-Material Thargoid Bio-Mechanische Bauteile</value>
+    <value>Thargoiden Bio-Mechanische Bauteile</value>
     <comment>Material tg_biomechanicalconduits</comment>
   </data>
   <data name="tg_weaponparts" xml:space="preserve">
