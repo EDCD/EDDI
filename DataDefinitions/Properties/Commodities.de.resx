@@ -306,7 +306,10 @@
     <value>Kampfstabilisatoren</value>
     <comment>Commodity CombatStabilisers</comment>
   </data>
-  
+  <data name="ComercialSamples" xml:space="preserve">
+    <value>Werbeproben</value>
+    <comment>Commodity ComercialSamples</comment>
+  </data>
   <data name="ComputerComponents" xml:space="preserve">
     <value>Computer Komponenten</value>
     <comment>Commodity ComputerComponents</comment>
@@ -343,21 +346,30 @@
     <value>Hardware-Diagnostiksensor</value>
     <comment>Commodity DiagnosticSensor</comment>
   </data>
-  
+  <data name="DiplomaticBag" xml:space="preserve">
+    <value>Diplomatentasche</value>
+    <comment>Commodity DiplomaticBag</comment>
+  </data>
   
   
   <data name="Drones" xml:space="preserve">
     <value>Drohne</value>
     <comment>Commodity Drones</comment>
   </data>
-  
+  <data name="EarthRelics" xml:space="preserve">
+    <value>Erdrelikte</value>
+    <comment>Commodity EarthRelics</comment>
+  </data>
   
   
   <data name="EmergencyPowerCells" xml:space="preserve">
     <value>Notfall-Energiezellen</value>
     <comment>Commodity EmergencyPowerCells</comment>
   </data>
-  
+  <data name="EncriptedDataStorage" xml:space="preserve">
+    <value>Verschlüsselter Datenträger</value>
+    <comment>Commodity EncriptedDataStorage</comment>
+  </data>
   
   
   
@@ -375,7 +387,10 @@
   </data>
   
   
-  
+  <data name="FruitAndVegetables" xml:space="preserve">
+    <value>Obst und Gemüse</value>
+    <comment>Commodity FruitAndVegetables</comment>
+  </data>
   <data name="FujinTea" xml:space="preserve">
     <value>Fujin Tee</value>
     <comment>Commodity FujinTea</comment>
@@ -390,7 +405,10 @@
     <comment>Commodity Gallium</comment>
   </data>
   
-  
+  <data name="GeneBank" xml:space="preserve">
+    <value>Gen-Datenbank</value>
+    <comment>Commodity GeneBank</comment>
+  </data>
   <data name="GeologicalEquipment" xml:space="preserve">
     <value>Geologie-Ausrüstung</value>
     <comment>Commodity GeologicalEquipment</comment>
@@ -488,7 +506,10 @@
     <comment>Commodity Landmines</comment>
   </data>
   
-  
+  <data name="LargeExplorationDataCash" xml:space="preserve">
+    <value>Großer Erkundungsdatenspeicher</value>
+    <comment>Commodity LargeExplorationDataCash</comment>
+  </data>
   <data name="LavianBrandy" xml:space="preserve">
     <value>Lavian Brandy</value>
     <comment>Commodity LavianBrandy</comment>
@@ -694,7 +715,10 @@
     <value>Sklaven</value>
     <comment>Commodity Slaves</comment>
   </data>
-  
+  <data name="SmallExplorationDataCash" xml:space="preserve">
+    <value>Kleiner Erkundungsdatenträger</value>
+    <comment>Commodity SmallExplorationDataCash</comment>
+  </data>
   
   
   
@@ -776,7 +800,10 @@
   
   
   
-  
+  <data name="UnstableDataCore" xml:space="preserve">
+    <value>Instabiler Datenkern</value>
+    <comment>Commodity UnstableDataCore</comment>
+  </data>
   
   <data name="Uranium" xml:space="preserve">
     <value>Uran</value>
