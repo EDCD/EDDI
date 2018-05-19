@@ -518,7 +518,7 @@
     <comment>Module GuardianPowerDistributor</comment>
   </data>
   <data name="ShardCannon" xml:space="preserve">
-    <value>Splitterkanone</value>
+    <value>Guardian-Fragmentkanone</value>
     <comment>Module ShardCannon</comment>
   </data>
   <data name="FlechetteLauncher" xml:space="preserve">
