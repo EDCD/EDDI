@@ -210,7 +210,10 @@
     <value>Oberflächenscanner</value>
     <comment>Module DetailedSurfaceScanner</comment>
   </data>
-  
+  <data name="Disruptor" xml:space="preserve">
+    <value>Impulsunterbrecher</value>
+    <comment>Module Disruptor</comment>
+  </data>
   <data name="EconomyClassPassengerCabin" xml:space="preserve">
     <value>Touristen Passagierkabine</value>
     <comment>Module EconomyClassPassengerCabin</comment>
@@ -284,7 +287,10 @@
     <value>Rumpfhüllenverstärkung</value>
     <comment>Module HullReinforcementPackage</comment>
   </data>
-  
+  <data name="ImperialHammer" xml:space="preserve">
+    <value>Imperialer Hammer</value>
+    <comment>Module ImperialHammer</comment>
+  </data>
   <data name="IntermediateDiscoveryScanner" xml:space="preserve">
     <value>Mittlerer Aufklärungsscanner</value>
     <comment>Module IntermediateDiscoveryScanner</comment>
@@ -321,7 +327,10 @@
     <value>Minenwerfer</value>
     <comment>Module MineLauncher</comment>
   </data>
-  
+  <data name="MiningLance" xml:space="preserve">
+    <value>Lanzenabbaulaser</value>
+    <comment>Module MiningLance</comment>
+  </data>
   <data name="MiningLaser" xml:space="preserve">
     <value>Erzabbaulaser</value>
     <comment>Module MiningLaser</comment>
@@ -346,9 +355,12 @@
     <value>Mehrzweckgeschütz</value>
     <comment>Module Multi_Cannon</comment>
   </data>
-  
+  <data name="Pacifier" xml:space="preserve">
+    <value>Friedenstifter</value>
+    <comment>Module Pacifier</comment>
+  </data>
   <data name="Pack_Hound" xml:space="preserve">
-    <value>Pack-Hound</value>
+    <value>Schwarmwerfer</value>
     <comment>Module Pack_Hound</comment>
   </data>
   <data name="PlanetaryApproachSuite" xml:space="preserve">
@@ -497,7 +509,7 @@
     <comment>Module PlasmaRepeater (fighter module)</comment>
   </data>
   <data name="Enforcer" xml:space="preserve">
-    <value>Vollstrecker Kanone</value>
+    <value>Vollstreckerkanone</value>
     <comment>Module Hpt_MultiCannon_Fixed_Small_Strong</comment>
   </data>
   
