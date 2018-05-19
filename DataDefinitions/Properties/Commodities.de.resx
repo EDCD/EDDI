@@ -611,7 +611,10 @@
   
   
   
-  
+  <data name="MedicalDiagnosticEquipment" xml:space="preserve">
+    <value>Medizinische Diagnostikausrüstung</value>
+    <comment>Commodity MedicalDiagnosticEquipment</comment>
+  </data>
   <data name="MetaAlloys" xml:space="preserve">
     <value>Meta-Legierungen</value>
     <comment>Commodity MetaAlloys</comment>
@@ -838,7 +841,10 @@
     <value>Supraleiter</value>
     <comment>Commodity Superconductors</comment>
   </data>
-  
+  <data name="SurfaceStabilisers" xml:space="preserve">
+    <value>Oberflächenstabilisierer</value>
+    <comment>Commodity SurfaceStabilisers</comment>
+  </data>
   <data name="SurvivalEquipment" xml:space="preserve">
     <value>Überlebensausrüstung</value>
     <comment>Commodity SurvivalEquipment</comment>
@@ -909,7 +915,10 @@
     <comment>Commodity Tobacco</comment>
   </data>
   
-  
+  <data name="ToxicWaste" xml:space="preserve">
+    <value>Giftmüll</value>
+    <comment>Commodity ToxicWaste</comment>
+  </data>
   
   
   
