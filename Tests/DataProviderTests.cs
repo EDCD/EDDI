@@ -54,6 +54,7 @@ namespace UnitTests
             Assert.AreEqual(1.0, (double)sol.solarmass, 0.001);
             Assert.AreEqual(1.0, (double)sol.solarradius, 0.001);
             Assert.AreEqual("G", sol.stellarclass);
+            Assert.AreEqual("yellow-white", sol.chromaticity);
             Assert.AreEqual("Sol", sol.systemname);
             Assert.AreEqual(5778, sol.temperature);
             Assert.IsNull(sol.terraformstate);
