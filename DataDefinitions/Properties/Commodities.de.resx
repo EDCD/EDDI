@@ -972,16 +972,34 @@
   </data>
   
   
-  
-  
-  
-  
-  
+  <data name="UnknownArtifact" xml:space="preserve">
+    <value>Thargoiden-Sensor</value>
+    <comment>Commodity UnknownArtifact</comment>
+  </data>
+  <data name="UnknownArtifact2" xml:space="preserve">
+    <value>Thargoiden-Sonde</value>
+    <comment>Commodity UnknownArtifact2</comment>
+  </data>
+  <data name="UnknownArtifact3" xml:space="preserve">
+    <value>Thargoiden-Verknüpfung</value>
+    <comment>Commodity UnknownArtifact3</comment>
+  </data>
+  <data name="UnknownResin" xml:space="preserve">
+    <value>Thargoiden-Harz</value>
+    <comment>Commodity UnknownResin</comment>
+  </data>
+  <data name="UnknownTechnologySamples" xml:space="preserve">
+    <value>Thargoiden-Technologie-Beispiele</value>
+    <comment>Commodity UnknownTechnologySamples</comment>
+  </data>
   <data name="UnstableDataCore" xml:space="preserve">
     <value>Instabiler Datenkern</value>
     <comment>Commodity UnstableDataCore</comment>
   </data>
-  
+  <data name="Uraninite" xml:space="preserve">
+    <value>Uraninit</value>
+    <comment>Commodity Uraninite</comment>
+  </data>
   <data name="Uranium" xml:space="preserve">
     <value>Uran</value>
     <comment>Commodity Uranium</comment>
@@ -994,7 +1012,10 @@
     <value>Black Box</value>
     <comment>Commodity USSCargoBlackBox</comment>
   </data>
-  
+  <data name="USSCargoExperimentalChemicals" xml:space="preserve">
+    <value>Experimentelle Chemikalien</value>
+    <comment>Commodity USSCargoExperimentalChemicals</comment>
+  </data>
   <data name="USSCargoMilitaryPlans" xml:space="preserve">
     <value>Militärpläne</value>
     <comment>Commodity USSCargoMilitaryPlans</comment>
@@ -1048,13 +1069,25 @@
     <value>Bergungsfähige Wrackteile</value>
     <comment>Commodity WreckageComponents</comment>
   </data>
+  <data name="WuthieloKuFroth" xml:space="preserve">
+    <value>Schaum aus Wuthielo Ku</value>
+    <comment>Commodity WuthieloKuFroth</comment>
+  </data>
+  <data name="xihecompanions" xml:space="preserve">
+    <value>Haustiere aus Xihe</value>
+    <comment>Commodity xihecompanions</comment>
+  </data>
   
   
   
-  
-  
-  
-  
+  <data name="KinagoInstruments" xml:space="preserve">
+    <value>Violinen aus Kinago</value>
+    <comment>Commodity KinagoInstruments</comment>
+  </data>
+  <data name="KachiriginLeaches" xml:space="preserve">
+    <value>Kachiriginische Blutegel</value>
+    <comment>Commodity KachiriginLeaches</comment>
+  </data>
   
   
   
