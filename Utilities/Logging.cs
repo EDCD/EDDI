@@ -6,6 +6,7 @@ using System.IO;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using System.Linq;
+using System.Threading;
 
 namespace Utilities
 {
@@ -158,22 +159,27 @@ namespace Utilities
                 thisData.Remove("demandbracket");
                 thisData.Remove("StatusFlags");
 
-                // Report only unique messages and data
-                if (isUniqueMessage(message, thisData))
-                {
-                    RollbarLocator.RollbarInstance.Info(message, thisData);
-                    Info("Reporting unique data, anonymous ID " + RollbarLocator.RollbarInstance.Config.Person.Id + ": " + message + thisData);
-                }
-                else
-                {
-                    Warn(@"Unable to report message """ + message + @""". Invalid data type " + data.GetType());
-                }
+                Task rollbarReport = Task.Run(() => _Report(message, data, thisData));
             }
             catch (Exception)
             {
                 // Nothing to do
             }
 #endif
+        }
+
+        private static void _Report(string message, object data, Dictionary<string, object> thisData)
+        {
+            // Report only unique messages and data
+            if (isUniqueMessage(message, thisData))
+            {
+                RollbarLocator.RollbarInstance.Info(message, thisData);
+                Info("Reporting unique data, anonymous ID " + RollbarLocator.RollbarInstance.Config.Person.Id + ": " + message + thisData);
+            }
+            else
+            {
+                Warn(@"Unable to report message """ + message + @""". Invalid data type " + data.GetType());
+            }
         }
     }
 
