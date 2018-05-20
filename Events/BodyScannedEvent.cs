@@ -47,13 +47,15 @@ namespace EddiEvents
 
         public string name { get; private set; }
 
+        public string planettype => bodyclass;  // This is the object property reported from the BodyDetails() function
+
         public string bodyclass { get; private set; }
 
         public decimal? earthmass { get; private set; }
 
         public decimal? radius { get; private set; }
 
-        public decimal gravity{ get; private set; }
+        public decimal gravity { get; private set; }
 
         public decimal? temperature { get; private set; }
 
@@ -65,17 +67,23 @@ namespace EddiEvents
 
         public string atmosphere { get; private set; }
 
-        public Volcanism volcanism{ get; private set; }
+        public Volcanism volcanism { get; private set; }
+
+        public decimal distance => distancefromarrival;  // This is the object property reported from the BodyDetails() function
 
         public decimal distancefromarrival { get; private set; }
 
         public decimal orbitalperiod { get; private set; }
+
+        public decimal rotationalperiod => rotationperiod;  // This is the object property reported from the BodyDetails() function
 
         public decimal rotationperiod { get; private set; }
 
         public decimal? semimajoraxis { get; private set; }
 
         public decimal? eccentricity { get; private set; }
+
+        public decimal? inclination => orbitalinclination;  // This is the object property reported from the BodyDetails() function
 
         public decimal? orbitalinclination { get; private set; }
 
@@ -88,6 +96,8 @@ namespace EddiEvents
         public List<MaterialPresence> materials { get; private set; }
 
         public string terraformstate { get; private set; }
+
+        public decimal? tilt => axialtilt;  // This is the object property reported from the BodyDetails() function
 
         public decimal? axialtilt { get; private set; }
 
