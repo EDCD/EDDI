@@ -154,8 +154,5 @@
     <value>Ezredes</value>
     <comment>Federation rank ViceAdmiral</comment>
   </data>
-  <data name="Admiral" xml:space="preserve">
-    <value>Admirális</value>
-    <comment>Federation rank Admiral</comment>
-  </data>
+  
 </root>
