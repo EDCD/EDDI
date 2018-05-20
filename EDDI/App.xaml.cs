@@ -19,12 +19,12 @@ namespace Eddi
             // Configure Rollbar error reporting
 
             // Generate or retrieve an id unique to this configuration for bug tracking
-            string uniqueId = Eddi.Properties.Settings.Default.uniqueID ?? Guid.NewGuid().ToString();
-            if (Eddi.Properties.Settings.Default.uniqueID == null)
+            if (Eddi.Properties.Settings.Default.uniqueID == null ||
+                Eddi.Properties.Settings.Default.uniqueID == "")
             {
-                Eddi.Properties.Settings.Default.uniqueID = uniqueId;
+                Eddi.Properties.Settings.Default.uniqueID = Guid.NewGuid().ToString();
             }
-            _Rollbar.configureRollbar(uniqueId);
+            _Rollbar.configureRollbar(Eddi.Properties.Settings.Default.uniqueID);
 
             // Catch and send unhandled exceptions from Windows forms
             System.Windows.Forms.Application.ThreadException += (sender, args) =>
