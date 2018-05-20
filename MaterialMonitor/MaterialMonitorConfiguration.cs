@@ -15,6 +15,9 @@ namespace EddiMaterialMonitor
         [JsonIgnore]
         private string dataPath;
 
+        [JsonIgnore]
+        static readonly object fileLock = new object();
+
         public MaterialMonitorConfiguration()
         {
             materials = new ObservableCollection<MaterialAmount>();
@@ -81,7 +84,10 @@ namespace EddiMaterialMonitor
             }
 
             string json = JsonConvert.SerializeObject(this, Formatting.Indented);
-            Files.Write(filename, json);
+            lock (fileLock)
+            {
+                Files.Write(filename, json);
+            }
         }
     }
 }
