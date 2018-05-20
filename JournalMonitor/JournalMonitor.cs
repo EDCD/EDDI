@@ -2943,7 +2943,7 @@ namespace EddiJournalMonitor
         {
             string faction = JsonParsing.getString(data, key);
             // Might be a superpower...
-            Superpower superpowerFaction = Superpower.AllOfThem.FirstOrDefault(x => x.edname.Replace("$faction_", "").Replace(";", "") == faction);
+            Superpower superpowerFaction = Superpower.AllOfThem.FirstOrDefault(x => x.basename == faction);
             return superpowerFaction?.invariantName ?? faction;
         }
 
