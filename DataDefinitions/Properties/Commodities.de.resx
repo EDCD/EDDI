@@ -531,7 +531,10 @@
     <value>Imperiale Sklaven</value>
     <comment>Commodity ImperialSlaves</comment>
   </data>
-  
+  <data name="IndiBourbon" xml:space="preserve">
+    <value>Indi Bourbon</value>
+    <comment>Commodity IndiBourbon</comment>
+  </data>
   <data name="Indite" xml:space="preserve">
     <value>Indit</value>
     <comment>Commodity Indite</comment>
@@ -556,15 +559,24 @@
   
   
   
-  
+  <data name="KachiriginFilterLeeches" xml:space="preserve">
+    <value>Kachiriginische Blutegel</value>
+    <comment>Commodity KachiriginFilterLeeches</comment>
+  </data>
   <data name="KamitraCigars" xml:space="preserve">
     <value>Kamitra Zigarren</value>
     <comment>Commodity KamitraCigars</comment>
   </data>
+  <data name="KamorinHistoricWeapons" xml:space="preserve">
+    <value>Historische Waffen aus Kamorin</value>
+    <comment>Commodity KamorinHistoricWeapons</comment>
+  </data>
   
   
-  
-  
+  <data name="KinagoViolins" xml:space="preserve">
+    <value>Violinen aus Kinago</value>
+    <comment>Commodity KinagoViolins</comment>
+  </data>
   <data name="KonggaAle" xml:space="preserve">
     <value>Kongga Bier</value>
     <comment>Commodity KonggaAle</comment>
@@ -590,7 +602,10 @@
     <value>Leder</value>
     <comment>Commodity Leather</comment>
   </data>
-  
+  <data name="LeestianEvilJuice" xml:space="preserve">
+    <value>Teufelssaft aus Leesti</value>
+    <comment>Commodity LeestianEvilJuice</comment>
+  </data>
   <data name="Lepidolite" xml:space="preserve">
     <value>Lepidolit</value>
     <comment>Commodity Lepidolite</comment>
@@ -668,7 +683,10 @@
   
   
   
-  
+  <data name="MulachiGiantFungus" xml:space="preserve">
+    <value>Riesenpilz aus Mulachi</value>
+    <comment>Commodity MulachiGiantFungus</comment>
+  </data>
   
   <data name="MysteriousIdol" xml:space="preserve">
     <value>Mysteriöses Idol</value>
@@ -770,7 +788,10 @@
     <value>Vorläuferzellen</value>
     <comment>Commodity ProgenitorCells</comment>
   </data>
-  
+  <data name="ProhibitedResearchMaterials" xml:space="preserve">
+    <value>Verbotene Forschungsmaterialien</value>
+    <comment>Commodity ProhibitedResearchMaterials</comment>
+  </data>
   <data name="Pyrophyllite" xml:space="preserve">
     <value>Pyrophyllit</value>
     <comment>Commodity Pyrophyllite</comment>
@@ -780,7 +801,10 @@
     <comment>Commodity RadiationBaffle</comment>
   </data>
   
-  
+  <data name="RapaBaoSnakeSkins" xml:space="preserve">
+    <value>Schlangenhaut aus Rapa Bao</value>
+    <comment>Commodity RapaBaoSnakeSkins</comment>
+  </data>
   <data name="ReactiveArmour" xml:space="preserve">
     <value>Reaktivrüstung</value>
     <comment>Commodity ReactiveArmour</comment>
@@ -889,8 +913,14 @@
     <value>Tantal</value>
     <comment>Commodity Tantalum</comment>
   </data>
-  
-  
+  <data name="TarachTorSpice" xml:space="preserve">
+    <value>Gewürz aus Tarach</value>
+    <comment>Commodity TarachTorSpice</comment>
+  </data>
+  <data name="TauriChimes" xml:space="preserve">
+    <value>Glockenspiel aus Tauri</value>
+    <comment>Commodity TauriChimes</comment>
+  </data>
   <data name="Tea" xml:space="preserve">
     <value>Tee</value>
     <comment>Commodity Tea</comment>
