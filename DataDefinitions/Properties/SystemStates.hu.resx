@@ -102,10 +102,7 @@
     <value>Nincs</value>
     <comment>System state None</comment>
   </data>
-  <data name="Retreat" xml:space="preserve">
-    <value>Visszavonulás</value>
-    <comment>System state Retreat</comment>
-  </data>
+  
   <data name="War" xml:space="preserve">
     <value>Háború</value>
     <comment>System state War</comment>
