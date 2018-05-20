@@ -141,9 +141,7 @@
   <data name="compare_script_title" xml:space="preserve">
     <value>Összehasonlítás az alap szkripttel</value>
   </data>
-  <data name="default_is_read_only" xml:space="preserve">
-    <value>Az alap személyiséget nem lehet módosítani. Ha szeretnecváltoztatni rajta, hozzon létre egy másolatot.</value>
-  </data>
+  
   <data name="default_personality_script_filename" xml:space="preserve">
     <value>eddi.hu.json</value>
     <comment>Suggest "eddi.&lt;culture-code&gt;.json" e.g. "eddi.fr.json"</comment>
@@ -163,9 +161,7 @@
   <data name="delete_script_message" xml:space="preserve">
     <value>Biztos benne, hogy törölni szeretné a "{0}" szkriptet?</value>
   </data>
-  <data name="desc" xml:space="preserve">
-    <value>Skriptel beszéddel rendelkező eseményre való reagálás az eseményre jellemző információ alapján. Nincs minden eseménynek szkriptelt reagálása. Ha a szkript reagálás üres akkor a hozzá tartozó 'teszt' és 'megtekintés' gombok le vannak tiltva.</value>
-  </data>
+  
   <data name="edit_script" xml:space="preserve">
     <value>Szerkesztés</value>
   </data>
@@ -184,9 +180,7 @@
   <data name="help_button" xml:space="preserve">
     <value>Súgó</value>
   </data>
-  <data name="name" xml:space="preserve">
-    <value>Beszéd reagáló</value>
-  </data>
+  
   <data name="reset_script_button" xml:space="preserve">
     <value>Alapbeállítások visszaállítása</value>
   </data>
@@ -203,16 +197,12 @@
   <data name="test_script" xml:space="preserve">
     <value>Teszt</value>
   </data>
-  <data name="test_script_button" xml:space="preserve">
-    <value>Szkript tesztelése</value>
-  </data>
+  
   <data name="view_script" xml:space="preserve">
     <value>Nézet</value>
   </data>
   <data name="view_script_title" xml:space="preserve">
     <value>Szkript megtekintése</value>
   </data>
-  <data name="warning_triggered" xml:space="preserve">
-    <value>Szkriptek amik egy eseményre aktíválodnak csak letiltani lehet, törölni nem.</value>
-  </data>
+  
 </root>
