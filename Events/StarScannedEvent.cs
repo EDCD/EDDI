@@ -80,7 +80,7 @@ namespace EddiEvents
 
         public string chromaticity { get; private set; }
 
-        public decimal distance { get { return distancefromarrival; } } // Object property as reported from the BodyDetails() function
+        public decimal distance => distancefromarrival;  // Object property as reported from the BodyDetails() function
 
         public decimal distancefromarrival { get; private set; }
 
