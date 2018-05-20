@@ -7,6 +7,7 @@ using EddiEvents;
 using EddiJournalMonitor;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Rollbar;
 
 namespace UnitTests
 {
@@ -21,6 +22,9 @@ namespace UnitTests
         [TestInitialize]
         private void StartTestCargoMonitor()
         {
+            // Prevent telemetry data from being reported based on test results
+            RollbarLocator.RollbarInstance.Config.Enabled = false;
+            
             // Set ourselves as in beta to stop sending data to remote systems
             EDDI.Instance.eventHandler(new FileHeaderEvent(DateTime.Now, "JournalBeta.txt", "beta", "beta"));
         }

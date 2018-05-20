@@ -1,12 +1,20 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using EddiDataDefinitions;
 using EddiDataProviderService;
+using Rollbar;
 
 namespace UnitTests
 {
     [TestClass]
     public class StarSystemDataTests
     {
+        [TestInitialize]
+        public void start()
+        {
+            // Prevent telemetry data from being reported based on test results
+            RollbarLocator.RollbarInstance.Config.Enabled = false;
+        }
+
         [TestMethod]
         public void TestMerope()
         {

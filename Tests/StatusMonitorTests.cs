@@ -1,6 +1,7 @@
 ﻿using EddiDataDefinitions;
 using EddiStatusMonitor;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Rollbar;
 using System;
 
 namespace UnitTests
@@ -8,6 +9,13 @@ namespace UnitTests
     [TestClass]
     public class StatusMonitorTests
     {
+        [TestInitialize]
+        public void start()
+        {
+            // Prevent telemetry data from being reported based on test results
+            RollbarLocator.RollbarInstance.Config.Enabled = false;
+        }
+
         [TestMethod]
         public void TestParseStatusFlagsDocked()
         {
