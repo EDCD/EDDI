@@ -223,7 +223,7 @@
     <comment>Commodity AtmosphericExtractors</comment>
   </data>
   <data name="AutoFabricators" xml:space="preserve">
-    <value>Baufabrikatoren</value>
+    <value>Fabrikatoren</value>
     <comment>Commodity AutoFabricators</comment>
   </data>
   
@@ -278,7 +278,10 @@
     <value>Bromellit</value>
     <comment>Commodity Bromellite</comment>
   </data>
-  
+  <data name="BuildingFabricators" xml:space="preserve">
+    <value>Baufabrikatoren</value>
+    <comment>Commodity BuildingFabricators</comment>
+  </data>
   
   
   
@@ -364,7 +367,10 @@
     <value>Datenkern</value>
     <comment>Commodity DataCore</comment>
   </data>
-  
+  <data name="DeltaPhoenicisPalms" xml:space="preserve">
+    <value>Palmen aus Delta Phoenics</value>
+    <comment>Commodity DeltaPhoenicisPalms</comment>
+  </data>
   
   <data name="DiagnosticSensor" xml:space="preserve">
     <value>Hardware-Diagnostiksensor</value>
@@ -492,7 +498,10 @@
     <comment>Commodity HeliostaticFurnaces</comment>
   </data>
   
-  
+  <data name="HIP10175BushMeat" xml:space="preserve">
+    <value>Wildfleisch aus HIP 10175</value>
+    <comment>Commodity HIP10175BushMeat</comment>
+  </data>
   
   
   
