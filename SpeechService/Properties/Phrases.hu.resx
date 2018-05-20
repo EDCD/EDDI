@@ -130,10 +130,7 @@
     <value>közel </value>
     <comment/>
   </data>
-  <data name="onthewayto" xml:space="preserve">
-    <value>útban </value>
-    <comment/>
-  </data>
+  
   <data name="over" xml:space="preserve">
     <value>több mint </value>
     <comment/>
@@ -142,10 +139,7 @@
     <value> plusz </value>
     <comment/>
   </data>
-  <data name="point" xml:space="preserve">
-    <value> </value>
-    <comment/>
-  </data>
+  
   <data name="quadrillion" xml:space="preserve">
     <value>kvadrillió</value>
     <comment/>
