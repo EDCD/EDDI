@@ -117,6 +117,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Properties\JournalMonitor.de.resx" />
     <EmbeddedResource Include="Properties\JournalMonitor.es.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>JournalMonitor.es.Designer.cs</LastGenOutput>

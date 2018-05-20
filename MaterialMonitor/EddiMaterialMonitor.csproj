@@ -106,6 +106,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <EmbeddedResource Include="Properties\MaterialMonitor.de.resx" />
     <EmbeddedResource Include="Properties\MaterialMonitor.es.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>MaterialMonitor.es.Designer.cs</LastGenOutput>

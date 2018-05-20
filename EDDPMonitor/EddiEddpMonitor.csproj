@@ -141,6 +141,7 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Properties\EddpResources.de.resx" />
     <EmbeddedResource Include="Properties\EddpResources.es.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>EddpResources.es.Designer.cs</LastGenOutput>

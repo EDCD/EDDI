@@ -127,6 +127,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Properties\EDSMResources.de.resx" />
     <EmbeddedResource Include="Properties\EDSMResources.es.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>EDSMResources.es.Designer.cs</LastGenOutput>

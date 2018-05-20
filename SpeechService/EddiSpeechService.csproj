@@ -116,6 +116,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Properties\Phonetics.de.resx" />
     <EmbeddedResource Include="Properties\Phonetics.es.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Phonetics.es.Designer.cs</LastGenOutput>
@@ -129,6 +130,7 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Phonetics.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Phrases.de.resx" />
     <EmbeddedResource Include="Properties\Phrases.es.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Phrases.es.Designer.cs</LastGenOutput>

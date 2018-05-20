@@ -151,6 +151,7 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Properties\VoiceAttack.de.resx" />
     <EmbeddedResource Include="Properties\VoiceAttack.es.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>VoiceAttack.es.Designer.cs</LastGenOutput>

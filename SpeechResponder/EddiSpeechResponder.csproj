@@ -202,6 +202,7 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Properties\SpeechResponder.de.resx" />
     <EmbeddedResource Include="Properties\SpeechResponder.es.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>SpeechResponder.es.Designer.cs</LastGenOutput>

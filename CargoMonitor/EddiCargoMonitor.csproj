@@ -127,6 +127,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <EmbeddedResource Include="Properties\CargoMonitor.de.resx" />
     <EmbeddedResource Include="Properties\CargoMonitor.es.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>CargoMonitor.es.Designer.cs</LastGenOutput>

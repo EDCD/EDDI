@@ -149,6 +149,7 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Properties\GalnetMonitor.de.resx" />
     <EmbeddedResource Include="Properties\GalnetMonitor.es.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>GalnetMonitor.es.Designer.cs</LastGenOutput>
