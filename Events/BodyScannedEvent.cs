@@ -47,7 +47,7 @@ namespace EddiEvents
 
         public string name { get; private set; }
 
-        public string planettype { get { return bodyclass; } } // This is the object property reported from the BodyDetails() function
+        public string planettype => bodyclass;  // This is the object property reported from the BodyDetails() function
 
         public string bodyclass { get; private set; }
 
@@ -69,13 +69,13 @@ namespace EddiEvents
 
         public Volcanism volcanism { get; private set; }
 
-        public decimal distance { get { return distancefromarrival; } } // This is the object property reported from the BodyDetails() function
+        public decimal distance => distancefromarrival;  // This is the object property reported from the BodyDetails() function
 
         public decimal distancefromarrival { get; private set; }
 
         public decimal orbitalperiod { get; private set; }
 
-        public decimal rotationalperiod { get { return rotationperiod; } } // This is the object property reported from the BodyDetails() function
+        public decimal rotationalperiod => rotationperiod;  // This is the object property reported from the BodyDetails() function
 
         public decimal rotationperiod { get; private set; }
 
@@ -83,7 +83,7 @@ namespace EddiEvents
 
         public decimal? eccentricity { get; private set; }
 
-        public decimal? inclination { get { return orbitalinclination; } } // This is the object property reported from the BodyDetails() function
+        public decimal? inclination => orbitalinclination;  // This is the object property reported from the BodyDetails() function
 
         public decimal? orbitalinclination { get; private set; }
 
@@ -97,7 +97,7 @@ namespace EddiEvents
 
         public string terraformstate { get; private set; }
 
-        public decimal? tilt { get { return axialtilt; } } // This is the object property reported from the BodyDetails() function
+        public decimal? tilt => axialtilt;  // This is the object property reported from the BodyDetails() function
 
         public decimal? axialtilt { get; private set; }
 
