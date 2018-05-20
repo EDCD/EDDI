@@ -154,7 +154,7 @@
     <comment>Material manganese</comment>
   </data>
   <data name="vanadium" xml:space="preserve">
-    <value>Vandánium</value>
+    <value>Vanádium</value>
     <comment>Material vanadium</comment>
   </data>
   <data name="zinc" xml:space="preserve">
@@ -178,7 +178,7 @@
     <comment>Material niobium</comment>
   </data>
   <data name="tin" xml:space="preserve">
-    <value>Aluminium</value>
+    <value>Alumínium</value>
     <comment>Material tin</comment>
   </data>
   <data name="tungsten" xml:space="preserve">
@@ -201,13 +201,29 @@
     <value>Tellúr</value>
     <comment>Material tellurium</comment>
   </data>
+  <data name="yttrium" xml:space="preserve">
+    <value>Ittrium</value>
+    <comment>Material yttrium</comment>
+  </data>
+  <data name="zirconium" xml:space="preserve">
+    <value>Cirkónium</value>
+    <comment>Material zirconium</comment>
+  </data>
   
+  <data name="polonium" xml:space="preserve">
+    <value>Polónium</value>
+    <comment>Material polonium</comment>
+  </data>
   
   
   
   
   
   
+  <data name="ancienthistoricaldata" xml:space="preserve">
+    <value>Ős történelmi adat</value>
+    <comment>Material ancienthistoricaldata</comment>
+  </data>
   
   
   
@@ -240,9 +256,17 @@
   
   
   
+  <data name="shieldfrequencydata" xml:space="preserve">
+    <value>Különleges pajzs frekvencia adat</value>
+    <comment>Material shieldfrequencydata</comment>
+  </data>
   
   
   
+  <data name="crystalshards" xml:space="preserve">
+    <value>Kristály szilánkok</value>
+    <comment>Material crystalshards</comment>
+  </data>
   
   
   
@@ -255,57 +279,114 @@
   
   
   
+  <data name="heatresistantceramics" xml:space="preserve">
+    <value>Hőálló kerámiák</value>
+    <comment>Material heatresistantceramics</comment>
+  </data>
   
+  <data name="mechanicalequipment" xml:space="preserve">
+    <value>Mechanikai berendezés</value>
+    <comment>Material mechanicalequipment</comment>
+  </data>
   
+  <data name="unknowncarapace" xml:space="preserve">
+    <value>Thargoid páncél</value>
+    <comment>Material unknowncarapace</comment>
+  </data>
+  <data name="chemicaldistillery" xml:space="preserve">
+    <value>Kémiai desztilláló</value>
+    <comment>Material chemicaldistillery</comment>
+  </data>
   
   
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="focuscrystals" xml:space="preserve">
+    <value>Fókusz kristályok</value>
+    <comment>Material focuscrystals</comment>
+  </data>
+  <data name="heatexchangers" xml:space="preserve">
+    <value>Hőcserélők</value>
+    <comment>Material heatexchangers</comment>
+  </data>
+  <data name="highdensitycomposites" xml:space="preserve">
+    <value>Nagy sűrűségű kompozitok</value>
+    <comment>Material highdensitycomposites</comment>
+  </data>
+  <data name="mechanicalcomponents" xml:space="preserve">
+    <value>Mechanikus komponensek</value>
+    <comment>Material mechanicalcomponents</comment>
+  </data>
+  
+  
+  
+  <data name="unknownenergycell" xml:space="preserve">
+    <value>Thargoid energia cella</value>
+    <comment>Material unknownenergycell</comment>
+  </data>
+  
+  
+  
+  <data name="configurablecomponents" xml:space="preserve">
+    <value>Konfigurálható komponensek</value>
+    <comment>Material configurablecomponents</comment>
+  </data>
+  
+  
+  
+  
+  <data name="refinedfocuscrystals" xml:space="preserve">
+    <value>Finomított fókusz kristályok</value>
+    <comment>Material refinedfocuscrystals</comment>
+  </data>
+  <data name="thermicalloys" xml:space="preserve">
+    <value>Termikus ötvözetek</value>
+    <comment>Material thermicalloys</comment>
+  </data>
+  <data name="unknowntechnologycomponents" xml:space="preserve">
+    <value>Thargoid technológiai komponensek</value>
+    <comment>Material unknowntechnologycomponents</comment>
+  </data>
+  <data name="biotechconductors" xml:space="preserve">
+    <value>Biotechnológiai vezetők</value>
+    <comment>Material biotechconductors</comment>
+  </data>
+  
+  
+  
+  
+  <data name="militarygradealloys" xml:space="preserve">
+    <value>Katonai osztályú ötvözetek</value>
+    <comment>Material militarygradealloys</comment>
+  </data>
+  <data name="militarysupercapacitors" xml:space="preserve">
+    <value>Katonai szuperkondenzátorok</value>
+    <comment>Material militarysupercapacitors</comment>
+  </data>
+  
+  
+  
+  
+  
+  <data name="boron" xml:space="preserve">
+    <value>Bór</value>
+    <comment>Material boron</comment>
+  </data>
+  <data name="guardian_powercell" xml:space="preserve">
+    <value>Őrző energia cella</value>
+    <comment>Material guardian_powercell</comment>
+  </data>
+  <data name="guardian_weaponblueprint" xml:space="preserve">
+    <value>Őrző fegyver tervrajz</value>
+    <comment>Material guardian_weaponblueprint</comment>
+  </data>
+  <data name="guardian_vesselblueprint" xml:space="preserve">
+    <value>Őrző jármű tervrajz</value>
+    <comment>Material guardian_vesselblueprint</comment>
+  </data>
+  
+  <data name="guardian_powerconduit" xml:space="preserve">
+    <value>Őrző energiavezeték</value>
+    <comment>Material guardian_powerconduit</comment>
+  </data>
   
   
   

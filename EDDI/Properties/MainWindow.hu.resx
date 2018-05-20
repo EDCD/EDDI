@@ -117,52 +117,115 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="access_beta" xml:space="preserve">
+    <value>Hozzáférés EDDI béta verziókhoz</value>
+  </data>
+  <data name="EDDI_status_label" xml:space="preserve">
+    <value>EDDI státusz: </value>
+  </data>
+  
+  
+  <data name="paragraph_2" xml:space="preserve">
+    <value>A második csoport megszerzi az események információit. Ezek a fülek a amelyek Monitorral végződnek. Ezek megszerzik az eseményeket különböző helyekről és némi konfigurációt igényelnek mielőtt használhatóak lesznek.</value>
+  </data>
+  
+  <data name="paragraph_4" xml:space="preserve">
+    <value>További információkat olvashat az EDDI funkcióriól a</value>
+  </data>
+  <data name="report_issue" xml:space="preserve">
+    <value>Hiba Jelentése</value>
+  </data>
+  <data name="troubleshoot_common_issues" xml:space="preserve">
+    <value>Általános problémák megoldása</value>
+    <comment>A hyperlink to the troubleshooting URL (in english)</comment>
+  </data>
+  
+  
+  <data name="version_hyperlink" xml:space="preserve">
+    <value>Verzió:</value>
+  </data>
+  <data name="wiki_hyperlink" xml:space="preserve">
+    <value>project wiki</value>
+  </data>
+  <data name="choose_lang_label" xml:space="preserve">
+    <value>EDDI felület nyelve (EDDI újraindítása szükséges):</value>
+  </data>
+  <data name="label_code" xml:space="preserve">
+    <value>Kód:</value>
+  </data>
+  <data name="label_email" xml:space="preserve">
+    <value>E-mail:</value>
+  </data>
+  <data name="label_password" xml:space="preserve">
+    <value>Jelszó:</value>
+  </data>
+  
+  <data name="tab_frontier_header" xml:space="preserve">
+    <value>Frontier API</value>
+  </data>
+  
+  <data name="tab_tts_desc" xml:space="preserve">
+    <value>Az EDDI egy szöveg felovasó motort használ, ami feldolgozza a hangot a hajó sérülési állapotának és pilótafülkéjének méretéhez megfelelően. Ennek paramétereit itt állíthatja be.</value>
+  </data>
+  <data name="tab_tts_distort_label" xml:space="preserve">
+    <value>Hang torzítás a hajó sérüléseinek megfelelően:</value>
+  </data>
+  <data name="tab_tts_header" xml:space="preserve">
+    <value>Szövegfelolvasás</value>
+  </data>
+  <data name="tab_tts_level_label" xml:space="preserve">
+    <value>Hangfeldolgozás szintje:</value>
+  </data>
+  
+  <data name="tab_tts_rate_label" xml:space="preserve">
+    <value>Beszéd sebessége:</value>
+  </data>
+  <data name="tab_tts_test_button" xml:space="preserve">
+    <value>Hang tesztelése</value>
+  </data>
+  <data name="tab_tts_test_damaged_button" xml:space="preserve">
+    <value>Teszt hang ( erős sérülés)</value>
+  </data>
+  <data name="tab_tts_test_ship_label" xml:space="preserve">
+    <value>Hangteszthez használt hajó:</value>
+  </data>
+  <data name="tab_tts_voice_label" xml:space="preserve">
+    <value>Hang:</value>
+  </data>
+  <data name="tab_tts_volume_label" xml:space="preserve">
+    <value>Beszéd hangereje:</value>
+  </data>
+  <data name="upgrade_button" xml:space="preserve">
+    <value>EDDI frissítése</value>
+  </data>
+  
+  
+  <data name="tab_tts_disable_phonetic_speech_label" xml:space="preserve">
+    <value>Fonetikus beszéd kikapcsolása:</value>
+  </data>
+  <data name="tab_tts_disable_phonetic_speech_note" xml:space="preserve">
+    <value>(ez kikapcsolja az összes SSML beszéd címkét használó funkciót, ahogy az a Speech Responder segítség fájljában is megtalálható)</value>
+  </data>
+  
+  <data name="tab_tts_icao_label" xml:space="preserve">
+    <value>ICAO engedélyezése:</value>
+  </data>
+  
+  
+  <data name="tab_commander_gender_f" xml:space="preserve">
+    <value>Nő</value>
+  </data>
+  <data name="tab_commander_gender_m" xml:space="preserve">
+    <value>Férfi</value>
+  </data>
+  <data name="tab_commander_gender_n" xml:space="preserve">
+    <value>Egyik sem</value>
+  </data>
   
   
   
   
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="tab_commander_par2" xml:space="preserve">
+    <value>A biztosítási összeg a hajó árának bizonyos %-a, ami annak elpusztulása esetén fizetendő. Ez általában 5%, de lehet kevesebb is a korai elite alfa (2.5) és beta (3.75) támogatóinak. Ha nem biztos benne hagyja 5%-on.</value>
+  </data>
 </root>

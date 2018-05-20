@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -59,46 +59,46 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
           <xsd:element name="metadata">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0"/>
               </xsd:sequence>
-              <xsd:attribute name="name" use="required" type="xsd:string" />
-              <xsd:attribute name="type" type="xsd:string" />
-              <xsd:attribute name="mimetype" type="xsd:string" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" use="required" type="xsd:string"/>
+              <xsd:attribute name="type" type="xsd:string"/>
+              <xsd:attribute name="mimetype" type="xsd:string"/>
+              <xsd:attribute ref="xml:space"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="assembly">
             <xsd:complexType>
-              <xsd:attribute name="alias" type="xsd:string" />
-              <xsd:attribute name="name" type="xsd:string" />
+              <xsd:attribute name="alias" type="xsd:string"/>
+              <xsd:attribute name="name" type="xsd:string"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="data">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"/>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"/>
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"/>
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"/>
+              <xsd:attribute ref="xml:space"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="resheader">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" />
+              <xsd:attribute name="name" type="xsd:string" use="required"/>
             </xsd:complexType>
           </xsd:element>
         </xsd:choice>
@@ -117,4 +117,34 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="desc" xml:space="preserve">
+    <value>Ein "Responder", der innerhalb von VoiceAttack eine große Anzahl von Variablen erzeugt und benutzerdefinierte Aktionen auslöst.</value>
+  </data>
+  <data name="name" xml:space="preserve">
+    <value>VoiceAttack responder (Antwortgeber)</value>
+  </data>
+  <data name="p1" xml:space="preserve">
+    <value>Um EDDI in VoiceAttack zu integrieren, muss EDDI im VoiceAttack-Verzeichnis "Apps" installiert werden. Der Standardpfad hierfür lautet 'C: \ Programme (x86) \ VoiceAttack \ Apps'. Dies passiert bei der Standartinstallation von EDDI.</value>
+  </data>
+  <data name="p2" xml:space="preserve">
+    <value>EDDI funktioniert nur mit Versionen von VoiceAttack 1.5.12.22 und höher. Beachten Sie, dass dies eine Beta-Version ist.</value>
+  </data>
+  <data name="p3" xml:space="preserve">
+    <value>Sobald VoiceAttack installiert ist, müssen Sie die Plugin-Unterstützung aktivieren. Dazu müssen Sie in VoiceAttack auf das Symbol Einstellungen (im Hauptfenster rechts unten - ein Schraubenschlüssel) klicken und die Option 'Enable plugin support' aktivieren und VoiceAttack neu starten. Nachdem Neustart sollten Sie die Nachricht 'Plugin EDDI x. x. x initialisiert' im VoiceAttack-Fenster sehen.</value>
+  </data>
+  <data name="p4" xml:space="preserve">
+    <value>An dieser Stelle können Sie die EDDI-Variablen in Ihre eigenen VoiceAttack-Skripte integrieren. Zum Beispiel wird der Name Ihres Kommandanten in der Textvariable 'Name' gespeichert. Um auf ihn zugreifen zu können, verwenden Sie einfach '{TXT:Name}' in Ihren eigenen Befehlen. Es gibt Variablen für Ihren Kommandanten, Ihre Schiffe, das aktuelle Sternensystem und die Station, in der Sie sich befinden, und mehr. Eine vollständige Liste der Variablen ist verfügbar </value>
+  </data>
+  <data name="p4_link" xml:space="preserve">
+    <value>auf der EDDI-Hauptseite</value>
+  </data>
+  <data name="p5" xml:space="preserve">
+    <value>Zusätzlich zum Schreiben von Scripts, die Sie mit Sprach- oder Tastaturaktionen auslösen, können Sie auch Scripts schreiben, die Ereignisse auslösen, die innerhalb von Elite auftreten. Wenn Sie zum Beispiel jedes Mal ein Skript auslösen wollten, wenn das Ereignis 'Docked' auftritt, dann sollten Sie ein Skript namens '((EDDI docked))' schreiben (beachten Sie die doppelten Klammern um den Namen, um zu verhindern, dass es versehentlich aufgerufen wird, und das kleine 'd' in 'docked'). Eine vollständige Liste der Ereignisse ist ebenfalls verfügbar </value>
+  </data>
+  <data name="p5_link" xml:space="preserve">
+    <value>auf der EDDI-Hauptseite</value>
+  </data>
+  <data name="run_eddi_standalone" xml:space="preserve">
+    <value>Bitte beenden Sie VoiceAttack und führen Sie Eddi eigenständig aus, um ein Upgrade durchzuführen.</value>
+  </data>
 </root>

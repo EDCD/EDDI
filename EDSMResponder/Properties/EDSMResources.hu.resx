@@ -117,18 +117,44 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="api_key_label" xml:space="preserve">
+    <value>EDSM API kulcs:</value>
+  </data>
+  <data name="cmd_name_label" xml:space="preserve">
+    <value>EDSM kapitány név:</value>
+  </data>
+  <data name="desc" xml:space="preserve">
+    <value>Hajó napló küldése az EDSM-nek. Az EDSM egy harmadik fél által létrehozozz eszköz ami csillagrendszer információkat tartalmaz és naplózza a megálogatottakat is. A szolgáltatott tömeges adat a forrása a galaxis térképének</value>
+  </data>
+  <data name="log_button" xml:space="preserve">
+    <value>EDSM napló beszerzése</value>
+  </data>
+  <data name="log_button_companion_unconfigured" xml:space="preserve">
+    <value>EDSM API nincs konfigurálva: a naplókat nem lehet beszerezni.</value>
+  </data>
+  <data name="log_button_empty_api_key" xml:space="preserve">
+    <value>Kérem adja meg az EDSM API kulcsot a naplók beszerzéséhez</value>
+  </data>
+  <data name="log_button_error_received" xml:space="preserve">
+    <value>EDSM hiba: </value>
+  </data>
+  <data name="log_button_fetched" xml:space="preserve">
+    <value>Beszerzett log</value>
+  </data>
+  <data name="log_button_fetching" xml:space="preserve">
+    <value>Log beszerzése...</value>
+  </data>
+  <data name="log_button_fetching_progress" xml:space="preserve">
+    <value>Napló beszerzése </value>
+  </data>
+  <data name="name" xml:space="preserve">
+    <value>EDSM reagáló</value>
+  </data>
+  <data name="p1" xml:space="preserve">
+    <value>Az EDSM-hez való csatlakozáshoz regisztráció szükséges. Amint ez megvan, meg lehet szerezni az API kulcsot a kis portréra kattintva a jobb felső sarokban ahol a 'My API key'-t kell kiválasztani</value>
+  </data>
+  <data name="p2" xml:space="preserve">
+    <value>Amennyiben az aktuálistól eltérő kapitány nevet regisztrált, kérjük adja meg alul</value>
+  </data>
   
 </root>

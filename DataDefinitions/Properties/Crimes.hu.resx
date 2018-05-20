@@ -97,24 +97,66 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="assault" xml:space="preserve">
+    <value>Támadás</value>
+    <comment>Crime assault</comment>
+  </data>
+  <data name="murder" xml:space="preserve">
+    <value>Gyilkosság</value>
+    <comment>Crime murder</comment>
+  </data>
+  <data name="piracy" xml:space="preserve">
+    <value>Kalózkodás</value>
+    <comment>Crime piracy</comment>
+  </data>
+  <data name="interdiction" xml:space="preserve">
+    <value>Tiszta hajó eltérítés</value>
+    <comment>Crime interdiction</comment>
+  </data>
+  <data name="illegalCargo" xml:space="preserve">
+    <value>Illegális rakomány szállítás</value>
+    <comment>Crime illegalCargo</comment>
+  </data>
   
   
   
   
   
+  <data name="dockingMinorBlockingAirlock" xml:space="preserve">
+    <value>Légzsilip blokkolás</value>
+    <comment>Crime dockingMinorBlockingAirlock</comment>
+  </data>
+  <data name="dockingMajorBlockingAirlock" xml:space="preserve">
+    <value>Légzsilip blokkolás</value>
+    <comment>Crime dockingMajorBlockingAirlock</comment>
+  </data>
+  <data name="dockingMinorBlockingLandingPad" xml:space="preserve">
+    <value>Leszállóhely blokkolása</value>
+    <comment>Crime dockingMinorBlockingLandingPad</comment>
+  </data>
+  <data name="dockingMajorBlockingLandingPad" xml:space="preserve">
+    <value>Leszállóhely blokkolása</value>
+    <comment>Crime dockingMajorBlockingLandingPad</comment>
+  </data>
+  <data name="dockingMinorTresspass" xml:space="preserve">
+    <value>Engedély nélküli belépés</value>
+    <comment>Crime dockingMinorTresspass</comment>
+  </data>
+  <data name="dockingMajorTresspass" xml:space="preserve">
+    <value>Engedély nélküli belépés</value>
+    <comment>Crime dockingMajorTresspass</comment>
+  </data>
+  <data name="collidedAtSpeedInNoFireZone" xml:space="preserve">
+    <value>Ütközés</value>
+    <comment>Crime collidedAtSpeedInNoFireZone</comment>
+  </data>
+  <data name="collidedAtSpeedInNoFireZone_hulldamage" xml:space="preserve">
+    <value>Ütközéssel való sérülés okozása</value>
+    <comment>Crime collidedAtSpeedInNoFireZone_hulldamage</comment>
+  </data>
   
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="passengerWanted" xml:space="preserve">
+    <value>körözött személy szállítás</value>
+    <comment>Crime passengerWanted</comment>
+  </data>
 </root>

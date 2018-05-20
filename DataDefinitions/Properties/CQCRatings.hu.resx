@@ -98,13 +98,40 @@
 	<resheader name="writer">
 		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
 	</resheader>
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="Helpless" xml:space="preserve">
+    <value>Reménytelen</value>
+    <comment>CQC rating Helpless</comment>
+  </data>
+  <data name="MostlyHelpless" xml:space="preserve">
+    <value>Zöldfülű</value>
+    <comment>CQC rating MostlyHelpless</comment>
+  </data>
+  <data name="Amateur" xml:space="preserve">
+    <value>Amatőr</value>
+    <comment>CQC rating Amateur</comment>
+  </data>
+  <data name="SemiProfessional" xml:space="preserve">
+    <value>Közép-profi</value>
+    <comment>CQC rating SemiProfessional</comment>
+  </data>
+  <data name="Professional" xml:space="preserve">
+    <value>Profi</value>
+    <comment>CQC rating Professional</comment>
+  </data>
+  <data name="Champion" xml:space="preserve">
+    <value>Bajnok</value>
+    <comment>CQC rating Champion</comment>
+  </data>
+  <data name="Hero" xml:space="preserve">
+    <value>Hős</value>
+    <comment>CQC rating Hero</comment>
+  </data>
+  <data name="Legend" xml:space="preserve">
+    <value>Legenda</value>
+    <comment>CQC rating Legend</comment>
+  </data>
+  <data name="Elite" xml:space="preserve">
+    <value>Elit</value>
+    <comment>CQC rating Elite</comment>
+  </data>
 </root>

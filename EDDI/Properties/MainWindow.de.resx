@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -59,46 +59,46 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
           <xsd:element name="metadata">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0"/>
               </xsd:sequence>
-              <xsd:attribute name="name" use="required" type="xsd:string" />
-              <xsd:attribute name="type" type="xsd:string" />
-              <xsd:attribute name="mimetype" type="xsd:string" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" use="required" type="xsd:string"/>
+              <xsd:attribute name="type" type="xsd:string"/>
+              <xsd:attribute name="mimetype" type="xsd:string"/>
+              <xsd:attribute ref="xml:space"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="assembly">
             <xsd:complexType>
-              <xsd:attribute name="alias" type="xsd:string" />
-              <xsd:attribute name="name" type="xsd:string" />
+              <xsd:attribute name="alias" type="xsd:string"/>
+              <xsd:attribute name="name" type="xsd:string"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="data">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"/>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"/>
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"/>
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"/>
+              <xsd:attribute ref="xml:space"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="resheader">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" />
+              <xsd:attribute name="name" type="xsd:string" use="required"/>
             </xsd:complexType>
           </xsd:element>
         </xsd:choice>
@@ -117,4 +117,149 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="access_beta" xml:space="preserve">
+    <value>Zugriff auf die Beta-Versionen von EDDI</value>
+  </data>
+  <data name="EDDI_status_label" xml:space="preserve">
+    <value>EDDI Status: </value>
+  </data>
+  <data name="paragraph_0" xml:space="preserve">
+    <value>hat eine Reihe von Funktionen, die separat konfiguriert werden können. Es gibt drei verschiedene Arten von Gegenständen.</value>
+  </data>
+  <data name="paragraph_1" xml:space="preserve">
+    <value>Die erste Gruppe erhält und verwaltet die von EDDI verwendeten Basisinformationen. Dies sind die Registerkarten 'Kommandant Details', 'Frontier API' und 'Text-zu-Sprache'. Sie sollten diese durchgehen und so konfigurieren, dass EDDI vollen Zugriff auf Ihr ELITE hat: Gefährliche Informationen.</value>
+  </data>
+  <data name="paragraph_2" xml:space="preserve">
+    <value>Die zweite Gruppe erhält Ereignisinformationen. Dies sind die Registerkarten, die mit "Monitor" enden. Sie erhalten Ereignisse von verschiedenen Orten und benötigen nur eine minimale Konfiguration, müssen aber abgeschlossen sein, bevor sie funktionieren.</value>
+  </data>
+  <data name="paragraph_3" xml:space="preserve">
+    <value>Die dritte Gruppe reagiert auf Ereignisse. Dies sind die Registerkarten, die mit "Responder" enden. Diese haben unterschiedliche Ausbaustufen, funktionieren aber sofort.</value>
+  </data>
+  <data name="paragraph_4" xml:space="preserve">
+    <value>Mehr über die Funktionsweise von EDDI erfahren Sie auf der Seite</value>
+  </data>
+  <data name="report_issue" xml:space="preserve">
+    <value>Ein Problem melden</value>
+  </data>
+  <data name="troubleshoot_common_issues" xml:space="preserve">
+    <value>Fehlerbehebung bei bekannten Problemen</value>
+    <comment>A hyperlink to the troubleshooting URL (in english)</comment>
+  </data>
+  <data name="verbose_logging_checkbox" xml:space="preserve">
+    <value>Ausführliche Protokollierung aktivieren (nur wenn Sie von den EDDI-Entwicklern dazu aufgefordert wurden)</value>
+  </data>
+  <data name="verbose_logging_desc" xml:space="preserve">
+    <value>Wenn die ausführliche Protokollierung aktiviert ist, erstellt EDDI eine abgeschnittene Version Ihres Protokolls der letzten Stunde und legt es auf Ihrem Desktop ab. Sie können diese Protokolldatei in den Github-Problembericht einfügen. Im Protokoll werden keine persönlichen Informationen versendet.</value>
+  </data>
+  <data name="version_hyperlink" xml:space="preserve">
+    <value>Version:</value>
+  </data>
+  <data name="wiki_hyperlink" xml:space="preserve">
+    <value>Projekt Wiki</value>
+  </data>
+  <data name="choose_lang_label" xml:space="preserve">
+    <value>Wählen Sie die Sprache von EDDI (erfordert einen Neustart von EDDI):</value>
+  </data>
+  <data name="label_code" xml:space="preserve">
+    <value>Code:</value>
+  </data>
+  <data name="label_email" xml:space="preserve">
+    <value>E-Mail:</value>
+  </data>
+  <data name="label_password" xml:space="preserve">
+    <value>Passwort:</value>
+  </data>
+  <data name="tab_frontier_desc" xml:space="preserve">
+    <value>Frontier hat eine API, die es EDDI ermöglicht, Informationen über Ihre Schiffe, den Markt der aktuellen Station und verschiedene andere Elemente zu erhalten. Diese Daten sind anderweitig nicht verfügbar. Wenn Sie möchten, dass EDDI diese Informationen erhält und nutzt, müssen Sie unten Ihre Frontier-E-Mail-Adresse und Ihr Passwort eingeben.</value>
+  </data>
+  <data name="tab_frontier_header" xml:space="preserve">
+    <value>Frontier API</value>
+  </data>
+  <data name="tab_frontier_reset_desc" xml:space="preserve">
+    <value>Wenn Sie Probleme mit Ihrer Verbindung haben, können Sie diese zurücksetzen und sich erneut anmelden, wodurch das Problem behoben werden könnte</value>
+  </data>
+  <data name="tab_tts_desc" xml:space="preserve">
+    <value>EDDI verwendet eine eigene Text-to-Speech-Engine, die die Stimme abhängig von Merkmalen wie Schiffsbeschädigung und Größe des Cockpits verarbeitet. Hier können Sie die Parameter der Stimme einstellen.</value>
+  </data>
+  <data name="tab_tts_distort_label" xml:space="preserve">
+    <value>Verzerren Sie die Stimme bei Schiffsschäden:</value>
+  </data>
+  <data name="tab_tts_header" xml:space="preserve">
+    <value>Text-to-Speech</value>
+  </data>
+  <data name="tab_tts_level_label" xml:space="preserve">
+    <value>Level der Sprachverzerrung:</value>
+  </data>
+  <data name="tab_tts_phonetic_speech_desc" xml:space="preserve">
+    <value>EDDI verwendet phonetische Sprache, um verschiedene schwer zu sagende Wörter auszusprechen und Pausen zwischen Wörtern einzufügen. Einige Stimmen, oft Microsoft-Stimmen, haben ein Problem mit phonetischer Sprache und verursachen, dass EDDI hängt oder abstürzt. Wenn dies der Fall ist, versuchen Sie die folgende Option zu aktivieren</value>
+  </data>
+  <data name="tab_tts_rate_label" xml:space="preserve">
+    <value>Geschwindigkeit der Sprache:</value>
+  </data>
+  <data name="tab_tts_test_button" xml:space="preserve">
+    <value>Stimme testen</value>
+  </data>
+  <data name="tab_tts_test_damaged_button" xml:space="preserve">
+    <value>Stimme testen (schwerer Schaden)</value>
+  </data>
+  <data name="tab_tts_test_ship_label" xml:space="preserve">
+    <value>Schiff zum Testen der Stimme:</value>
+  </data>
+  <data name="tab_tts_voice_label" xml:space="preserve">
+    <value>Stimme:</value>
+  </data>
+  <data name="tab_tts_volume_label" xml:space="preserve">
+    <value>Lautstärke der Stimme:</value>
+  </data>
+  <data name="upgrade_button" xml:space="preserve">
+    <value>EDDI aktualisieren</value>
+  </data>
+  <data name="reset_button" xml:space="preserve">
+    <value>Reset</value>
+  </data>
+  <data name="tab_tts_test_desc" xml:space="preserve">
+    <value>Sie können unten testen, wie die Stimme klingen wird. Beachten Sie, dass, wenn die Stimme inkompatibel ist, stattdessen die Standard-Stimme verwendet wird.</value>
+  </data>
+  <data name="tab_tts_disable_phonetic_speech_label" xml:space="preserve">
+    <value>Phonetische Sprache deaktivieren:</value>
+  </data>
+  <data name="tab_tts_disable_phonetic_speech_note" xml:space="preserve">
+    <value>(Dies deaktiviert alle Funktionen mit SSML-Sprach-Tags, wie in der Hilfedatei des Speech Responders angegeben.)</value>
+  </data>
+  <data name="tab_tts_icao_desc" xml:space="preserve">
+    <value>EDDI kann die Aussprache laut ICAO verwenden, zum Beispiel "alpha" statt "A", wenn man Stern- und Körpernamen sagt. Dies kann das Verständnis der Systemnamen erleichtern, dauert jedoch länger. Wenn Sie die ICAO-Aussprache hören möchten, aktivieren Sie die Option unten. Beachten Sie, dass dies nicht funktioniert, wenn Sie die phonetische Sprache oben deaktiviert haben.</value>
+  </data>
+  <data name="tab_tts_icao_label" xml:space="preserve">
+    <value>ICAO aktivieren:</value>
+  </data>
+  <data name="tab_commander_details_header" xml:space="preserve">
+    <value>Kommandant Details</value>
+  </data>
+  <data name="tab_commander_gender" xml:space="preserve">
+    <value>Bevorzugtes Geschlecht für Pronomen und Titel:</value>
+  </data>
+  <data name="tab_commander_gender_f" xml:space="preserve">
+    <value>Weiblich</value>
+  </data>
+  <data name="tab_commander_gender_m" xml:space="preserve">
+    <value>Männlich</value>
+  </data>
+  <data name="tab_commander_gender_n" xml:space="preserve">
+    <value>Weder noch</value>
+  </data>
+  <data name="tab_commander_home_station" xml:space="preserve">
+    <value>Heimatstation:</value>
+  </data>
+  <data name="tab_commander_home_system" xml:space="preserve">
+    <value>Heimatsystem:</value>
+  </data>
+  <data name="tab_commander_insurance" xml:space="preserve">
+    <value>Selbstbeteiligung (%):</value>
+  </data>
+  <data name="tab_commander_par1" xml:space="preserve">
+    <value>Sie können den Namen eines bestimmten Systems und einer Station in diesem System, das Sie als Ihr Zuhause betrachten, angeben. Wenn Sie dies tun, werden die Informationen über dieses System und diese Station den Ansprechpartnern von EDDI zur Verfügung gestellt.</value>
+  </data>
+  <data name="tab_commander_par2" xml:space="preserve">
+    <value>Ihr Selbstbehalt ist der Prozentsatz des Wertes Ihres Schiffes, den Sie zahlen müssen, wenn Ihr Schiff zerstört wird. Dies sind normalerweise 5%, kann aber weniger sein, wenn Sie ein früher Unterstützer von Elite sind, bei Alpha-Unterstützer 2,5% und bei Beta-Unterstützer 3,75%. Wenn Sie sich nicht sicher sind, belassen Sie ihn bei 5%.</value>
+  </data>
 </root>

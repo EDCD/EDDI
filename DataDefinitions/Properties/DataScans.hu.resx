@@ -98,15 +98,27 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   
+  <data name="DataPoint" xml:space="preserve">
+    <value>Adat pont</value>
+    <comment>Data scan type DataPoint</comment>
+  </data>
+  
+  <data name="AbandonedDataLog" xml:space="preserve">
+    <value>Elhagyatott bejegyzés</value>
+    <comment>Data scan type AbandonedDataLog</comment>
+  </data>
   
   
   
   
   
+  <data name="AncientCodex" xml:space="preserve">
+    <value>Ősi Kódex</value>
+    <comment>Data scan type AncientCodex</comment>
+  </data>
   
-  
-  
-  
-  
-  
+  <data name="TgTransmitter" xml:space="preserve">
+    <value>Thargoid eszköz</value>
+    <comment>Data scan type TGTRANSMITTER</comment>
+  </data>
 </root>

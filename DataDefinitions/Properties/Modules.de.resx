@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -59,46 +59,46 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
           <xsd:element name="metadata">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0"/>
               </xsd:sequence>
-              <xsd:attribute name="name" use="required" type="xsd:string" />
-              <xsd:attribute name="type" type="xsd:string" />
-              <xsd:attribute name="mimetype" type="xsd:string" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" use="required" type="xsd:string"/>
+              <xsd:attribute name="type" type="xsd:string"/>
+              <xsd:attribute name="mimetype" type="xsd:string"/>
+              <xsd:attribute ref="xml:space"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="assembly">
             <xsd:complexType>
-              <xsd:attribute name="alias" type="xsd:string" />
-              <xsd:attribute name="name" type="xsd:string" />
+              <xsd:attribute name="alias" type="xsd:string"/>
+              <xsd:attribute name="name" type="xsd:string"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="data">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"/>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"/>
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"/>
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"/>
+              <xsd:attribute ref="xml:space"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="resheader">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" />
+              <xsd:attribute name="name" type="xsd:string" use="required"/>
             </xsd:complexType>
           </xsd:element>
         </xsd:choice>
@@ -117,4 +117,413 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AdvancedPlasmaAccelerator" xml:space="preserve">
+    <value>Optimierter Plasmabeschleuniger</value>
+    <comment>Module AdvancedPlasmaAccelerator</comment>
+  </data>
+  <data name="ATMulticannon" xml:space="preserve">
+    <value>AT Mehrzweckgeschütz</value>
+    <comment>Module ATMulticannon</comment>
+  </data>
+  <data name="AutoField_MaintenanceUnit" xml:space="preserve">
+    <value>Automatische Feldwartung</value>
+    <comment>Module AutoField_MaintenanceUnit</comment>
+  </data>
+  <data name="AXMissileRack" xml:space="preserve">
+    <value>AX Raketengestell</value>
+    <comment>Module AXMissileRack</comment>
+  </data>
+  <data name="AXMulti_Cannon" xml:space="preserve">
+    <value>AX Mehrzweckgeschütz</value>
+    <comment>Module AXMulti_Cannon</comment>
+  </data>
+  <data name="BasicDiscoveryScanner" xml:space="preserve">
+    <value>Einfacher Aufklärungsscanner</value>
+    <comment>Module BasicDiscoveryScanner</comment>
+  </data>
+  <data name="BeamLaser" xml:space="preserve">
+    <value>Strahlenlaser</value>
+    <comment>Module BeamLaser</comment>
+  </data>
+  <data name="Bi_WeaveShieldGenerator" xml:space="preserve">
+    <value>Bi-Wellen-Schildgenerator</value>
+    <comment>Module Bi_WeaveShieldGenerator</comment>
+  </data>
+  <data name="BurstLaser" xml:space="preserve">
+    <value>Salvenlaser</value>
+    <comment>Module BurstLaser</comment>
+  </data>
+  <data name="BusinessClassPassengerCabin" xml:space="preserve">
+    <value>Business Klasse Passagierkabine</value>
+    <comment>Module BusinessClassPassengerCabin</comment>
+  </data>
+  <data name="Cannon" xml:space="preserve">
+    <value>Kanone</value>
+    <comment>Module Cannon</comment>
+  </data>
+  <data name="CargoHatch" xml:space="preserve">
+    <value>Ladeluke</value>
+    <comment>Module CargoHatch</comment>
+  </data>
+  <data name="CargoRack" xml:space="preserve">
+    <value>Laderaum</value>
+    <comment>Module CargoRack</comment>
+  </data>
+  <data name="VoicePack_Celeste" xml:space="preserve">
+    <value>Celeste</value>
+    <comment>Module Celeste</comment>
+  </data>
+  <data name="ChaffLauncher" xml:space="preserve">
+    <value>Düppelwerfer</value>
+    <comment>Module ChaffLauncher</comment>
+  </data>
+  
+  <data name="Cockpit" xml:space="preserve">
+    <value>Cockpit</value>
+    <comment>Module Cockpit</comment>
+  </data>
+  <data name="CollectorLimpetController" xml:space="preserve">
+    <value>Steuerung Sammeldrohnen</value>
+    <comment>Module CollectorLimpetController</comment>
+  </data>
+  <data name="Colouredstringlights" xml:space="preserve">
+    <value>Farbige Lichterkette</value>
+    <comment>Module Colouredstringlights</comment>
+  </data>
+  <data name="CorrosionResistantCargoRack" xml:space="preserve">
+    <value>korrosionsbeständiger Laderaum</value>
+    <comment>Module CorrosionResistantCargoRack</comment>
+  </data>
+  <data name="Cytoscrambler" xml:space="preserve">
+    <value>Zytostreuer</value>
+    <comment>Module Cytoscrambler</comment>
+  </data>
+  <data name="DataLinkScanner" xml:space="preserve">
+    <value>Datenlinkscanner</value>
+    <comment>Module DataLinkScanner</comment>
+  </data>
+  <data name="DecontaminationLimpetController" xml:space="preserve">
+    <value>Steuerung Entseuchungsdrohnen</value>
+    <comment>Module DecontaminationLimpetController</comment>
+  </data>
+  <data name="DetailedSurfaceScanner" xml:space="preserve">
+    <value>Oberflächenscanner</value>
+    <comment>Module DetailedSurfaceScanner</comment>
+  </data>
+  <data name="Disruptor" xml:space="preserve">
+    <value>Impulsunterbrecher</value>
+    <comment>Module Disruptor</comment>
+  </data>
+  <data name="EconomyClassPassengerCabin" xml:space="preserve">
+    <value>Touristen Passagierkabine</value>
+    <comment>Module EconomyClassPassengerCabin</comment>
+  </data>
+  <data name="ElectronicCountermeasure" xml:space="preserve">
+    <value>Elektronische Gegenmaßnahme</value>
+    <comment>Module ElectronicCountermeasure</comment>
+  </data>
+  
+  <data name="FighterArmour" xml:space="preserve">
+    <value>Jägerpanzerung</value>
+    <comment>Module FighterArmour</comment>
+  </data>
+  <data name="FighterHangar" xml:space="preserve">
+    <value>Jägerhangar</value>
+    <comment>Module FighterHangar</comment>
+  </data>
+  <data name="FirstClassPassengerCabin" xml:space="preserve">
+    <value>Erste Klasse Passagierkabine</value>
+    <comment>Module FirstClassPassengerCabin</comment>
+  </data>
+  <data name="FragmentCannon" xml:space="preserve">
+    <value>Fragmentkanone</value>
+    <comment>Module FragmentCannon</comment>
+  </data>
+  <data name="FrameShiftDriveInterdictor" xml:space="preserve">
+    <value>Frameshift Unterbrecher</value>
+    <comment>Module FrameShiftDriveInterdictor</comment>
+  </data>
+  <data name="FrameShiftDrive" xml:space="preserve">
+    <value>Frameshiftantrieb</value>
+    <comment>Module FrameShiftDrive</comment>
+  </data>
+  <data name="FrameShiftWakeScanner" xml:space="preserve">
+    <value>Frameshiftwolkenscanner</value>
+    <comment>Module FrameShiftWakeScanner</comment>
+  </data>
+  <data name="FuelScoop" xml:space="preserve">
+    <value>Treibstoffsammler</value>
+    <comment>Module FuelScoop</comment>
+  </data>
+  <data name="FuelTank" xml:space="preserve">
+    <value>Treibstofftank</value>
+    <comment>Module FuelTank</comment>
+  </data>
+  <data name="FuelTransferLimpetController" xml:space="preserve">
+    <value>Treibstofftransfer-Drohnensteuerung</value>
+    <comment>Module FuelTransferLimpetController</comment>
+  </data>
+  <data name="GuardianGaussCannon" xml:space="preserve">
+    <value>Guardian-Gausskanone</value>
+    <comment>Module GuardianGaussCannon</comment>
+  </data>
+  <data name="GuardianPlasmaCharger" xml:space="preserve">
+    <value>Guardian-Plasmalader</value>
+    <comment>Module GuardianPlasmaCharger</comment>
+  </data>
+  <data name="GuardianPowerPlant" xml:space="preserve">
+    <value>Guardian-Kraftwerk</value>
+    <comment>Module GuardianPowerPlant</comment>
+  </data>
+  <data name="HatchBreakerLimpetController" xml:space="preserve">
+    <value>Steuereinheit Ladelukenöffner</value>
+    <comment>Module HatchBreakerLimpetController</comment>
+  </data>
+  <data name="HeatSinkLauncher" xml:space="preserve">
+    <value>Kühlkörperwerfer</value>
+    <comment>Module HeatSinkLauncher</comment>
+  </data>
+  <data name="HullReinforcementPackage" xml:space="preserve">
+    <value>Rumpfhüllenverstärkung</value>
+    <comment>Module HullReinforcementPackage</comment>
+  </data>
+  <data name="ImperialHammer" xml:space="preserve">
+    <value>Imperialer Hammer</value>
+    <comment>Module ImperialHammer</comment>
+  </data>
+  <data name="IntermediateDiscoveryScanner" xml:space="preserve">
+    <value>Mittlerer Aufklärungsscanner</value>
+    <comment>Module IntermediateDiscoveryScanner</comment>
+  </data>
+  <data name="KillWarrantScanner" xml:space="preserve">
+    <value>Tötungsbefehlscanner</value>
+    <comment>Module KillWarrantScanner</comment>
+  </data>
+  <data name="LifeSupport" xml:space="preserve">
+    <value>Lebenserhaltung</value>
+    <comment>Module LifeSupport</comment>
+  </data>
+  <data name="LightweightAlloy" xml:space="preserve">
+    <value>Leichte Legierung</value>
+    <comment>Module LightweightAlloy</comment>
+  </data>
+  <data name="LuxuryClassPassengerCabin" xml:space="preserve">
+    <value>Luxus Passagierkabine</value>
+    <comment>Module LuxuryClassPassengerCabin</comment>
+  </data>
+  <data name="ManifestScanner" xml:space="preserve">
+    <value>Frachtscanner</value>
+    <comment>Module ManifestScanner</comment>
+  </data>
+  <data name="MetaAlloyHullReinforcement" xml:space="preserve">
+    <value>Meta-Legierungs Hüllenverstärkung</value>
+    <comment>Module MetaAlloyHullReinforcement</comment>
+  </data>
+  <data name="MilitaryGradeComposite" xml:space="preserve">
+    <value>Militärzusammensetzung</value>
+    <comment>Module MilitaryGradeComposite</comment>
+  </data>
+  <data name="MineLauncher" xml:space="preserve">
+    <value>Minenwerfer</value>
+    <comment>Module MineLauncher</comment>
+  </data>
+  <data name="MiningLance" xml:space="preserve">
+    <value>Lanzenabbaulaser</value>
+    <comment>Module MiningLance</comment>
+  </data>
+  <data name="MiningLaser" xml:space="preserve">
+    <value>Erzabbaulaser</value>
+    <comment>Module MiningLaser</comment>
+  </data>
+  <data name="MirroredSurfaceComposite" xml:space="preserve">
+    <value>Gespiegelte Oberflächenzusammensetzung</value>
+    <comment>Module MirroredSurfaceComposite</comment>
+  </data>
+  <data name="MissileRack" xml:space="preserve">
+    <value>Raketengestell</value>
+    <comment>Module MissileRack</comment>
+  </data>
+  <data name="ModuleReinforcementPackage" xml:space="preserve">
+    <value>Modulverstärkung</value>
+    <comment>Module ModuleReinforcementPackage</comment>
+  </data>
+  <data name="Multicannon" xml:space="preserve">
+    <value>Mehrzweckgeschütz</value>
+    <comment>Module Multicannon</comment>
+  </data>
+  <data name="Multi_Cannon" xml:space="preserve">
+    <value>Mehrzweckgeschütz</value>
+    <comment>Module Multi_Cannon</comment>
+  </data>
+  <data name="Pacifier" xml:space="preserve">
+    <value>Friedenstifter</value>
+    <comment>Module Pacifier</comment>
+  </data>
+  <data name="Pack_Hound" xml:space="preserve">
+    <value>Schwarmwerfer</value>
+    <comment>Module Pack_Hound</comment>
+  </data>
+  <data name="PlanetaryApproachSuite" xml:space="preserve">
+    <value>Planetare Anflugs-Suite</value>
+    <comment>Module PlanetaryApproachSuite</comment>
+  </data>
+  <data name="PlanetaryVehicleHangar" xml:space="preserve">
+    <value>Fahrzeughangar</value>
+    <comment>Module PlanetaryVehicleHangar</comment>
+  </data>
+  <data name="PlasmaAccelerator" xml:space="preserve">
+    <value>Plasmabeschleuniger</value>
+    <comment>Module PlasmaAccelerator</comment>
+  </data>
+  <data name="PointDefence" xml:space="preserve">
+    <value>Punktverteidigung</value>
+    <comment>Module PointDefence</comment>
+  </data>
+  <data name="PowerDistributor" xml:space="preserve">
+    <value>Energieverteiler</value>
+    <comment>Module PowerDistributor</comment>
+  </data>
+  <data name="PowerPlant" xml:space="preserve">
+    <value>Kraftwerk</value>
+    <comment>Module PowerPlant</comment>
+  </data>
+  <data name="PrismaticShieldGenerator" xml:space="preserve">
+    <value>Prismatischer Schildgenerator</value>
+    <comment>Module PrismaticShieldGenerator</comment>
+  </data>
+  <data name="ProspectorLimpetController" xml:space="preserve">
+    <value>Drohnensteuerung Erzsucher</value>
+    <comment>Module ProspectorLimpetController</comment>
+  </data>
+  <data name="PulseLaser" xml:space="preserve">
+    <value>Pulslaser</value>
+    <comment>Module PulseLaser</comment>
+  </data>
+  <data name="RailGun" xml:space="preserve">
+    <value>Schienenkanone</value>
+    <comment>Module RailGun</comment>
+  </data>
+  <data name="ReactiveSurfaceComposite" xml:space="preserve">
+    <value>Reagierende Oberflächenzusammensetzung</value>
+    <comment>Module ReactiveSurfaceComposite</comment>
+  </data>
+  <data name="ReconLimpetController" xml:space="preserve">
+    <value>Steuerung Aufklärungsdrohnen</value>
+    <comment>Module ReconLimpetController</comment>
+  </data>
+  <data name="Refinery" xml:space="preserve">
+    <value>Raffinerie</value>
+    <comment>Module Refinery</comment>
+  </data>
+  <data name="ReinforcedAlloy" xml:space="preserve">
+    <value>Verstärkte Legierung</value>
+    <comment>Module ReinforcedAlloy</comment>
+  </data>
+  <data name="RemoteReleaseFlakLauncher" xml:space="preserve">
+    <value>Flakwerfer mit Fernzündung</value>
+    <comment>Module RemoteReleaseFlakLauncher</comment>
+  </data>
+  <data name="RepairLimpetController" xml:space="preserve">
+    <value>Steuerung Reparaturdrohnen</value>
+    <comment>Module RepairLimpetController</comment>
+  </data>
+  <data name="ResearchLimpetController" xml:space="preserve">
+    <value>Steuerung Forschungsdrohnen</value>
+    <comment>Module ResearchLimpetController</comment>
+  </data>
+  
+  <data name="Sensors" xml:space="preserve">
+    <value>Sensoren</value>
+    <comment>Module Sensors</comment>
+  </data>
+  <data name="ShieldBooster" xml:space="preserve">
+    <value>Schildverstärker</value>
+    <comment>Module ShieldBooster</comment>
+  </data>
+  <data name="ShieldCellBank" xml:space="preserve">
+    <value>Schildzellenbatterie</value>
+    <comment>Module ShieldCellBank</comment>
+  </data>
+  <data name="ShieldGenerator" xml:space="preserve">
+    <value>Schildgenerator</value>
+    <comment>Module ShieldGenerator</comment>
+  </data>
+  <data name="ShockCannon" xml:space="preserve">
+    <value>Schockkanone</value>
+    <comment>Module ShockCannon</comment>
+  </data>
+  <data name="ShockMineLauncher" xml:space="preserve">
+    <value>Schockminenwerfer</value>
+    <comment>Module ShockMineLauncher</comment>
+  </data>
+  <data name="ShutdownFieldNeutraliser" xml:space="preserve">
+    <value>Abschalt-Feldneutralisator</value>
+    <comment>Module ShutdownFieldNeutraliser</comment>
+  </data>
+  <data name="StandardDockingComputer" xml:space="preserve">
+    <value>Landecomputer</value>
+    <comment>Module StandardDockingComputer</comment>
+  </data>
+  <data name="Thrusters" xml:space="preserve">
+    <value>Triebwerke</value>
+    <comment>Module Thrusters</comment>
+  </data>
+  <data name="TorpedoPylon" xml:space="preserve">
+    <value>Torpedopylon</value>
+    <comment>Module TorpedoPylon</comment>
+  </data>
+  <data name="VoicePack_Verity" xml:space="preserve">
+    <value>Verity</value>
+    <comment>Module Verity</comment>
+  </data>
+  <data name="VoicePack_Victor" xml:space="preserve">
+    <value>Victor</value>
+    <comment>Module Victor</comment>
+  </data>
+  <data name="Whitestringlights" xml:space="preserve">
+    <value>Weiße Lichterkette</value>
+    <comment>Module Whitestringlights</comment>
+  </data>
+  <data name="XenoScanner" xml:space="preserve">
+    <value>Xeno-Scanner</value>
+    <comment>Module XenoScanner</comment>
+  </data>
+  <data name="Fixed" xml:space="preserve">
+    <value>fest</value>
+    <comment>Weapon mount type Fixed</comment>
+  </data>
+  <data name="Gimballed" xml:space="preserve">
+    <value>beweglich</value>
+    <comment>Weapon mount type Gimballed</comment>
+  </data>
+  <data name="Turreted" xml:space="preserve">
+    <value>turmartig</value>
+    <comment>Weapon mount type Turreted</comment>
+  </data>
+  <data name="AdvancedDiscoveryScanner" xml:space="preserve">
+    <value>Fortgeschrittener Aufklärungsscanner</value>
+    <comment>Module AdvancedDiscoveryScanner</comment>
+  </data>
+  <data name="PlasmaRepeater" xml:space="preserve">
+    <value>Plasma-Verstärker</value>
+    <comment>Module PlasmaRepeater (fighter module)</comment>
+  </data>
+  <data name="Enforcer" xml:space="preserve">
+    <value>Vollstreckerkanone</value>
+    <comment>Module Hpt_MultiCannon_Fixed_Small_Strong</comment>
+  </data>
+  
+  <data name="GuardianPowerDistributor" xml:space="preserve">
+    <value>Guardian-Energieverteiler</value>
+    <comment>Module GuardianPowerDistributor</comment>
+  </data>
+  <data name="ShardCannon" xml:space="preserve">
+    <value>Guardian-Fragmentkanone</value>
+    <comment>Module ShardCannon</comment>
+  </data>
+  <data name="FlechetteLauncher" xml:space="preserve">
+    <value>Flechet Werfer</value>
+    <comment>Modile FlechetteLauncher</comment>
+  </data>
+  
 </root>

@@ -98,13 +98,25 @@
 	<resheader name="writer">
 		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
 	</resheader>
+  <data name="Penniless" xml:space="preserve">
+    <value>Pénztelen</value>
+    <comment>Trade rating Penniless</comment>
+  </data>
+  <data name="MostlyPenniless" xml:space="preserve">
+    <value>Többnyire pénztelen</value>
+    <comment>Trade rating MostlyPenniless</comment>
+  </data>
   
   
   
+  <data name="Broker" xml:space="preserve">
+    <value>Bróker</value>
+    <comment>Trade rating Broker</comment>
+  </data>
   
   
-  
-  
-  
-  
+  <data name="Elite" xml:space="preserve">
+    <value>Elit</value>
+    <comment>Trade rating Elite</comment>
+  </data>
 </root>

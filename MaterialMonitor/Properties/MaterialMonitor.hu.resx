@@ -114,14 +114,34 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="desc" xml:space="preserve">
+    <value>Az anyagok mennyiségének figyelése és esemény generálása amennyiben az az előre beállított értéket elérte.</value>
+  </data>
+  <data name="desired_header" xml:space="preserve">
+    <value>Kívánt</value>
+  </data>
+  <data name="inventory_header" xml:space="preserve">
+    <value>Készlet</value>
+  </data>
+  <data name="max_header" xml:space="preserve">
+    <value>Maximum</value>
+  </data>
+  <data name="min_header" xml:space="preserve">
+    <value>Minimum</value>
+  </data>
+  <data name="name" xml:space="preserve">
+    <value>Anyag monitor</value>
+  </data>
+  <data name="name_header" xml:space="preserve">
+    <value>Név</value>
+  </data>
+  <data name="p1" xml:space="preserve">
+    <value>Alul található az összes ismert anyag listája. Beállíthatja a minimális, kívánt és maximális értékeket mindegyikhez, és az EDDI eseményt fog létrehozni amennyiben ezeket az értékeket elérte.</value>
+  </data>
+  <data name="p2" xml:space="preserve">
+    <value>Megjegyzés: Ha a leltár nem helyes vagy inkorrekt. Indítsd el vagy indítsd újra az Elitet, és ezek az információk frissítve lesznek.</value>
+  </data>
+  <data name="type_header" xml:space="preserve">
+    <value>Típus</value>
+  </data>
 </root>

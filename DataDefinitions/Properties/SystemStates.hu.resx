@@ -98,17 +98,53 @@
 	<resheader name="writer">
 		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
 	</resheader>
+  <data name="None" xml:space="preserve">
+    <value>Nincs</value>
+    <comment>System state None</comment>
+  </data>
   
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="War" xml:space="preserve">
+    <value>Háború</value>
+    <comment>System state War</comment>
+  </data>
+  <data name="Lockdown" xml:space="preserve">
+    <value>Kíjárási tilalom</value>
+    <comment>System state Lockdown</comment>
+  </data>
+  <data name="CivilUnrest" xml:space="preserve">
+    <value>Polgári nyugtalanság</value>
+    <comment>System state CivilUnrest</comment>
+  </data>
+  <data name="CivilWar" xml:space="preserve">
+    <value>Polgárháború</value>
+    <comment>System state CivilWar</comment>
+  </data>
+  <data name="Boom" xml:space="preserve">
+    <value>Gazdasági fellendülés</value>
+    <comment>System state Boom</comment>
+  </data>
+  <data name="Expansion" xml:space="preserve">
+    <value>Terjeszkedés</value>
+    <comment>System state Expansion</comment>
+  </data>
+  <data name="Bust" xml:space="preserve">
+    <value>Gazdasági válság</value>
+    <comment>System state Bust</comment>
+  </data>
+  <data name="Outbreak" xml:space="preserve">
+    <value>Járvány</value>
+    <comment>System state Outbreak</comment>
+  </data>
+  <data name="Famine" xml:space="preserve">
+    <value>Éhínség</value>
+    <comment>System state Famine</comment>
+  </data>
+  <data name="Election" xml:space="preserve">
+    <value>Választás</value>
+    <comment>System state Election</comment>
+  </data>
+  <data name="Investment" xml:space="preserve">
+    <value>Befektetés</value>
+    <comment>System state Investment</comment>
+  </data>
 </root>

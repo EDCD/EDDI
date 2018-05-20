@@ -118,20 +118,53 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   
+  <data name="ConsumerItems" xml:space="preserve">
+    <value>Fogyasztói cikkek</value>
+    <comment>Commodity category ConsumerItems</comment>
+  </data>
+  <data name="Foods" xml:space="preserve">
+    <value>Élelmiszerek</value>
+    <comment>Commodity category Foods</comment>
+  </data>
+  <data name="IndustrialMaterials" xml:space="preserve">
+    <value>Ipari anyagok</value>
+    <comment>Commodity category IndustrialMaterials</comment>
+  </data>
+  
+  <data name="Medicines" xml:space="preserve">
+    <value>Gyógyszerek</value>
+    <comment>Commodity category Medicines</comment>
+  </data>
+  <data name="Metals" xml:space="preserve">
+    <value>Fémek</value>
+    <comment>Commodity category Metals</comment>
+  </data>
+  
+  <data name="Narcotics" xml:space="preserve">
+    <value>Narkotikumok</value>
+    <comment>Commodity category Narcotics</comment>
+  </data>
+  <data name="NonMarketable" xml:space="preserve">
+    <value>Nem értékesíthető</value>
+    <comment>Commodity category NonMarketable</comment>
+  </data>
   
   
+  <data name="Technology" xml:space="preserve">
+    <value>Technológia</value>
+    <comment>Commodity category Technology</comment>
+  </data>
+  <data name="Textiles" xml:space="preserve">
+    <value>Textíliák</value>
+    <comment>Commodity category Textiles</comment>
+  </data>
+  <data name="Unknown" xml:space="preserve">
+    <value>Ismeretlen</value>
+    <comment>Commodity category Unknown</comment>
+  </data>
   
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="Weapons" xml:space="preserve">
+    <value>Fegyverek</value>
+    <comment>Commodity category Weapons</comment>
+  </data>
 </root>

@@ -117,19 +117,61 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="None" xml:space="preserve">
+    <value>Nincs</value>
+    <comment>Empire rank None</comment>
+  </data>
+  <data name="Outsider" xml:space="preserve">
+    <value>Kívülálló</value>
+    <comment>Empire rank Outsider</comment>
+  </data>
+  <data name="Serf" xml:space="preserve">
+    <value>Paraszt</value>
+    <comment>Empire rank Serf</comment>
+  </data>
+  <data name="Master" xml:space="preserve">
+    <value>Úrnő</value>
+    <comment>Empire rank Master</comment>
+  </data>
+  <data name="Squire" xml:space="preserve">
+    <value>Nagybirtokos</value>
+    <comment>Empire rank Squire</comment>
+  </data>
+  <data name="Knight" xml:space="preserve">
+    <value>Dáma</value>
+    <comment>Empire rank Knight</comment>
+  </data>
+  <data name="Lord" xml:space="preserve">
+    <value>Hölgy</value>
+    <comment>Empire rank Lord</comment>
+  </data>
+  <data name="Baron" xml:space="preserve">
+    <value>Bárónő</value>
+    <comment>Empire rank Baron</comment>
+  </data>
+  <data name="Viscount" xml:space="preserve">
+    <value>Algrófnő</value>
+    <comment>Empire rank Viscount</comment>
+  </data>
+  <data name="Count" xml:space="preserve">
+    <value>Grófnő</value>
+    <comment>Empire rank Count</comment>
+  </data>
+  <data name="Earl" xml:space="preserve">
+    <value>Grófné</value>
+    <comment>Empire rank Earl</comment>
+  </data>
+  <data name="Marquis" xml:space="preserve">
+    <value>Márkiné</value>
+    <comment>Empire rank Marquis</comment>
+  </data>
   
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="Prince" xml:space="preserve">
+    <value>Hercegnő</value>
+    <comment>Empire rank Prince</comment>
+  </data>
+  <data name="King" xml:space="preserve">
+    <value>Királynő</value>
+    <comment>Empire rank King</comment>
+  </data>
 </root>

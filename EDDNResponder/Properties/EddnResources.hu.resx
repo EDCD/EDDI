@@ -117,6 +117,8 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
+  <data name="desc" xml:space="preserve">
+    <value>Állomás, ugrás és szkennelési információk küldése az EDDN-nek. Az EDDN egy harmadik fél által létrehozott eszköz ami adatokat gyűjt a rendszerekről és piacokról amit továbbit a legtöbbet használt kereskedelmi és rendszeradatokat feldolgozó programoknak mint például az EDDB.</value>
+  </data>
   
 </root>

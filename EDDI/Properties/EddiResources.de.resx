@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -59,46 +59,46 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
           <xsd:element name="metadata">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0"/>
               </xsd:sequence>
-              <xsd:attribute name="name" use="required" type="xsd:string" />
-              <xsd:attribute name="type" type="xsd:string" />
-              <xsd:attribute name="mimetype" type="xsd:string" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" use="required" type="xsd:string"/>
+              <xsd:attribute name="type" type="xsd:string"/>
+              <xsd:attribute name="mimetype" type="xsd:string"/>
+              <xsd:attribute ref="xml:space"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="assembly">
             <xsd:complexType>
-              <xsd:attribute name="alias" type="xsd:string" />
-              <xsd:attribute name="name" type="xsd:string" />
+              <xsd:attribute name="alias" type="xsd:string"/>
+              <xsd:attribute name="name" type="xsd:string"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="data">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"/>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"/>
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"/>
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"/>
+              <xsd:attribute ref="xml:space"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="resheader">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" />
+              <xsd:attribute name="name" type="xsd:string" use="required"/>
             </xsd:complexType>
           </xsd:element>
         </xsd:choice>
@@ -117,4 +117,121 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="change_affect_va" xml:space="preserve">
+    <value>Alle hier vorgenommenen Änderungen werden automatisch in VoiceAttack wirksam. Sie können dieses Fenster schließen, wenn Sie fertig sind.</value>
+  </data>
+  <data name="complete" xml:space="preserve">
+    <value>Vollständig</value>
+    <comment>This is the adjective not the verb</comment>
+  </data>
+  <data name="done" xml:space="preserve">
+    <value>fertig</value>
+  </data>
+  <data name="failed" xml:space="preserve">
+    <value>fehlgeschlagen</value>
+  </data>
+  <data name="frontier_api_nok" xml:space="preserve">
+    <value>Die Frontier-API-Verbindung ist nicht betriebsbereit</value>
+  </data>
+  <data name="frontier_api_no_logins" xml:space="preserve">
+    <value>Sie haben zur Zeit keine Verbindung zur Frontier-API. Bitte geben Sie unten Ihre Elite Dangerous E-Mail-Adresse und Ihr Passwort ein.</value>
+  </data>
+  <data name="frontier_api_ok" xml:space="preserve">
+    <value>Ihre Verbindung zur Frontier-API ist betriebsbereit, Commander {0}.</value>
+  </data>
+  <data name="frontier_api_temp_nok" xml:space="preserve">
+    <value>Ihre Verbindung zur Frontier-API ist gut, hat aber temporär Probleme. Ihre Informationen sollten in Kürze verfügbar sein</value>
+  </data>
+  <data name="frontier_api_verification_code" xml:space="preserve">
+    <value>Bitte geben Sie den Bestätigungscode ein, der an Ihre E-Mail-Adresse gesendet wurde</value>
+  </data>
+  <data name="if_using_va" xml:space="preserve">
+    <value>Wenn Sie VoiceAttack verwenden, schließen Sie bitte dieses Fenster, bevor Sie VoiceAttack starten, damit Ihre Änderungen wirksam werden. Sie können auf dieses Fenster von VoiceAttack mit dem Befehl 'EDDI konfigurieren' zugreifen.</value>
+  </data>
+  <data name="invalid_station" xml:space="preserve">
+    <value>Ungültige Station</value>
+  </data>
+  <data name="invalid_system" xml:space="preserve">
+    <value>Ungültiges System</value>
+  </data>
+  <data name="login_nok_frontier_service" xml:space="preserve">
+    <value>Anmeldung nicht möglich. Dies ist normalerweise ein vorübergehendes Problem mit dem Dienst von Frontier. Bitte versuchen Sie es später erneut</value>
+  </data>
+  <data name="logout" xml:space="preserve">
+    <value>Abmelden</value>
+  </data>
+  <data name="next" xml:space="preserve">
+    <value>Weiter</value>
+  </data>
+  <data name="operational" xml:space="preserve">
+    <value>Betriebsbereit</value>
+  </data>
+  <data name="preparing_log" xml:space="preserve">
+    <value>Log wird vorbereitet... </value>
+  </data>
+  <data name="update_message" xml:space="preserve">
+    <value>Version {0} verfügbar</value>
+  </data>
+  <data name="voice_test_damage" xml:space="preserve">
+    <value>Schwerer Schaden für deine {0}.</value>
+  </data>
+  <data name="voice_test_ship" xml:space="preserve">
+    <value>So werde ich in deinem Schiff {0} klingen.</value>
+  </data>
+  <data name="plugin_enabled" xml:space="preserve">
+    <value>Plugin aktiviert</value>
+  </data>
+  <data name="download_failed" xml:space="preserve">
+    <value>Download fehlgeschlagen. Bitte versuchen Sie es später erneut.</value>
+  </data>
+  <data name="downloading_upgrade" xml:space="preserve">
+    <value>Lade Upgrade herunter.</value>
+  </data>
+  <data name="mandatory_upgrade" xml:space="preserve">
+    <value>Ein obligatorisches Eddi-Upgrade auf {0} ist erforderlich.</value>
+  </data>
+  <data name="msg_from_eddi" xml:space="preserve">
+    <value>Nachtricht von Eddi: {0}</value>
+  </data>
+  <data name="point" xml:space="preserve">
+    <value>Punkt</value>
+    <comment>spoken decimal point for reading out version numbers like "2.4.1"</comment>
+  </data>
+  <data name="update_available" xml:space="preserve">
+    <value>Eddi Version {0} ist jetzt verfügbar.</value>
+  </data>
+  <data name="upgrade_failed" xml:space="preserve">
+    <value>Upgrade fehlgeschlagen. Bitte versuchen Sie es später erneut.</value>
+  </data>
+  <data name="starting_upgrade" xml:space="preserve">
+    <value>Starte Upgrade.</value>
+  </data>
+  <data name="update_server_unreachable" xml:space="preserve">
+    <value>Ich konnte keine Verbindung zu meinem Update-Server herstellen. Sollte sich dies wiederholen, überprüfen Sie bitte im Forum, ob es sich um ein bekanntes Problem handelt.</value>
+  </data>
+  <data name="already_running_alert_body_text" xml:space="preserve">
+    <value>Nur eine EDDI-Instanz kann gleichzeitig ausgeführt werden.</value>
+  </data>
+  <data name="already_running_alert_title" xml:space="preserve">
+    <value>EDDI läuft bereits</value>
+  </data>
+  <data name="problem_load_monitor" xml:space="preserve">
+    <value>Monitor: {0} konnte nicht geladen werden</value>
+    <comment>Weapon mount type problem_load_monitor</comment>
+  </data>
+  <data name="problem_load_monitor_file" xml:space="preserve">
+    <value>Fehler beim Laden des Monitors. Stellen Sie sicher, dass {0} nicht auf einer Netzwerkfreigabe oder selbst freigegeben ist.</value>
+    <comment>Weapon mount type problem_load_monitor_file</comment>
+  </data>
+  <data name="Commander" xml:space="preserve">
+    <value>Kommandant</value>
+    <comment>Vocative form of "Commander"</comment>
+  </data>
+  <data name="system_language" xml:space="preserve">
+    <value>Automatisch</value>
+    <comment>The user's system language</comment>
+  </data>
+  <data name="safe_mode" xml:space="preserve">
+    <value>Abgesicherter Modus - Upgrade erforderlich.</value>
+  </data>
 </root>

@@ -117,23 +117,59 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="desc" xml:space="preserve">
+    <value>Követi a hajóid információit.</value>
+  </data>
+  <data name="export_it_button" xml:space="preserve">
+    <value>Exportálás</value>
+  </data>
+  <data name="header_location" xml:space="preserve">
+    <value>Pozíció</value>
+  </data>
+  <data name="header_model" xml:space="preserve">
+    <value>Modell</value>
+  </data>
+  <data name="header_name" xml:space="preserve">
+    <value>Név</value>
+  </data>
+  <data name="header_role" xml:space="preserve">
+    <value>Szerepkör</value>
+  </data>
+  <data name="header_ship_ID" xml:space="preserve">
+    <value>Hajó azonosító</value>
+  </data>
+  <data name="header_spoken_name" xml:space="preserve">
+    <value>Név (beszélt)</value>
+  </data>
+  <data name="header_value" xml:space="preserve">
+    <value>Érték</value>
+  </data>
+  <data name="hear_it_button" xml:space="preserve">
+    <value>Halljam</value>
+  </data>
+  <data name="ipa_page" xml:space="preserve">
+    <value>https://en.wikipedia.org/wiki/International_Phonetic_Alphabet</value>
+  </data>
+  <data name="link_ipa" xml:space="preserve">
+    <value>Nemzetközi fonetikus ábécé</value>
+  </data>
+  <data name="name" xml:space="preserve">
+    <value>Hajó monitor</value>
+  </data>
+  <data name="p1" xml:space="preserve">
+    <value>Itt láthatja a hajóit és megadhatja egyedi szerepkörüket. Az információt látják a reagálók valamint szükség van rá a kívánt akciókhoz rendelt szkriptekhez is.</value>
+  </data>
   
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="p3" xml:space="preserve">
+    <value>. Például ha a hajó neve 'Pride of Achenar' akkor a beszélt neve 'praɪdɒvˈakɜːnɑ' lesz ( szóközök nélkül a fonetikus verzióban).</value>
+  </data>
+  <data name="p4" xml:space="preserve">
+    <value>Amennyiben nem konfigurálta be a hozzáférést a Frontier API-hoz, az alul szereplő adatok pontatlanok vagy elérhetetlenek lesznek. Amennyiben az EDDI telepítése előtt több hajóval rendelkezett, azok csak akkor fognak megjelenni (némi késéssel), ha újra használja őket.</value>
+  </data>
+  <data name="p5" xml:space="preserve">
+    <value>Az EDDI exportálni tudja hajóid adatait a Coriolis vagy EDShipyard oldalára (harmadik fél általi alkalmazások). Válassza ki az Önnek megfelelőt.</value>
+  </data>
+  <data name="ship_ready" xml:space="preserve">
+    <value>{0} készen áll.</value>
+  </data>
 </root>

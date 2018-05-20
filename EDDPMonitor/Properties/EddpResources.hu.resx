@@ -117,16 +117,40 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="anything" xml:space="preserve">
+    <value>(bármi)</value>
+  </data>
+  <data name="delete_btn" xml:space="preserve">
+    <value>Törlés</value>
+  </data>
+  <data name="desc" xml:space="preserve">
+    <value>Az EDDP-ben történt változások figyelése, rendszer kontroll és állapot, és események generálása amik egyeznek a figyelési listában szereplőkkel.</value>
+  </data>
+  <data name="faction_header" xml:space="preserve">
+    <value>Frakció</value>
+  </data>
+  <data name="max_dist_home_header" xml:space="preserve">
+    <value>Az otthontól való maximális távolság</value>
+  </data>
+  <data name="max_dist_ship_header" xml:space="preserve">
+    <value>A hajótól való maximális távolság</value>
+  </data>
+  <data name="name" xml:space="preserve">
+    <value>EDDP monitor</value>
+  </data>
+  <data name="name_header" xml:space="preserve">
+    <value>Név</value>
+  </data>
+  <data name="new_watch" xml:space="preserve">
+    <value>Új figyelés</value>
+  </data>
+  <data name="p1" xml:space="preserve">
+    <value>Alul létrehozhat, módosíthat és törölhet figyeléseket. Amikor az EDDI változást észlel valahol a galaxisban azt összehasonlítja a figyelési listában szereplő tételekkel. Ha az információ megfelel az összes beállításnak létrehoz egy eseményt. Vegye figyelembe, hogy ez az EDDN-ből érkező adatok alapján történik. Ezek az információk azoktól a parancsnokoktól érkeznek akik az EDDI-hez hasonló programokat használnak, tehát csak azok a változások jelennek meg amik elérhetőek ezen a hálózaton.</value>
+  </data>
+  <data name="state_header" xml:space="preserve">
+    <value>Állapot</value>
+  </data>
+  <data name="system_header" xml:space="preserve">
+    <value>Rendszer</value>
+  </data>
 </root>
