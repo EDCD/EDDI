@@ -873,7 +873,10 @@
     <value>Soontill-Relikte</value>
     <comment>Commodity SoontillRelics</comment>
   </data>
-  
+  <data name="SothisCrystallineGold" xml:space="preserve">
+    <value>Kristallines Gold aus Sothis</value>
+    <comment>Commodity SothisCrystallineGold</comment>
+  </data>
   <data name="SpacePioneerRelics" xml:space="preserve">
     <value>Weltraumpionier-Relikte</value>
     <comment>Commodity SpacePioneerRelics</comment>
@@ -907,7 +910,10 @@
     <comment>Commodity SyntheticReagents</comment>
   </data>
   
-  
+  <data name="TacticalData" xml:space="preserve">
+    <value>Taktische Daten</value>
+    <comment>Commodity TacticalData</comment>
+  </data>
   
   <data name="Tantalum" xml:space="preserve">
     <value>Tantal</value>
