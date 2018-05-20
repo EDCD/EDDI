@@ -409,7 +409,10 @@
     <value>Verschlüsselter Datenträger</value>
     <comment>Commodity EncriptedDataStorage</comment>
   </data>
-  
+  <data name="EncryptedCorrespondence" xml:space="preserve">
+    <value>Verschlüsselte Korrespondenz</value>
+    <comment>Commodity EncryptedCorrespondence</comment>
+  </data>
   
   
   
@@ -920,7 +923,7 @@
   </data>
   
   <data name="TacticalData" xml:space="preserve">
-    <value>Taktische Daten</value>
+    <value>Aufklärungsdaten</value>
     <comment>Commodity TacticalData</comment>
   </data>
   
@@ -1037,7 +1040,7 @@
   </data>
   
   <data name="USSCargoRareArtwork" xml:space="preserve">
-    <value>Seltene Kunstwerke</value>
+    <value>Seltene Kunstgegenstände</value>
     <comment>Commodity USSCargoRareArtwork</comment>
   </data>
   <data name="USSCargoRebelTransmissions" xml:space="preserve">
