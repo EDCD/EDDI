@@ -1016,8 +1016,7 @@ namespace EddiShipMonitor
             {
                 do
                 {
-                    EDDI.Instance.refreshProfile();
-                    await Task.Delay(TimeSpan.FromSeconds(20));
+                    await Task.Run(() => EDDI.Instance.refreshProfile());
                     ship = GetShip(shipid);
                 } while (ship != null);
             }
@@ -1153,8 +1152,7 @@ namespace EddiShipMonitor
             {
                 do
                 {
-                    EDDI.Instance.refreshProfile();
-                    await Task.Delay(TimeSpan.FromSeconds(20));
+                    await Task.Run(() => EDDI.Instance.refreshProfile());
                     ship = GetShip(shipid);
                 } while (ship != null);
             }
