@@ -145,7 +145,7 @@
     <value>Der Standard-Charakter kann nicht modifiziert werden. Wenn Sie Änderungen durchführen möchten, erstellen Sie bitte eine Kopie.</value>
   </data>
   <data name="default_personality_script_filename" xml:space="preserve">
-    <value>eddi.json</value>
+    <value>eddi.de.json</value>
     <comment>Suggest "eddi.&lt;culture-code&gt;.json" e.g. "eddi.fr.json"</comment>
   </data>
   <data name="delete_personality_caption" xml:space="preserve">
