@@ -1577,6 +1577,15 @@
       "name": "Shutdown",
       "description": "Triggered on a clean shutdown of the game"
     },
+    "Silent running": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "default": true,
+      "name": "Silent running",
+      "description": "Triggered when you activate or deactivate silent running"
+    },
     "SRV docked": {
       "enabled": true,
       "priority": 3,
