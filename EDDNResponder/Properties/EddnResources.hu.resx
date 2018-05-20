@@ -120,7 +120,5 @@
   <data name="desc" xml:space="preserve">
     <value>Állomás, ugrás és szkennelési információk küldése az EDDN-nek. Az EDDN egy harmadik fél által létrehozott eszköz ami adatokat gyűjt a rendszerekről és piacokról amit továbbit a legtöbbet használt kereskedelmi és rendszeradatokat feldolgozó programoknak mint például az EDDB.</value>
   </data>
-  <data name="name" xml:space="preserve">
-    <value>EDDN reagáló</value>
-  </data>
+  
 </root>
