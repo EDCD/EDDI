@@ -212,10 +212,9 @@ namespace EddiDataProviderService
                         Body.solarmass = (decimal?)(double?)body["solar_masses"];
                         Body.solarradius = (decimal?)(double?)body["solar_radius"];
                         Body.age = (long?)body["age"];
-
                         Body.mainstar = (bool?)body["is_main_star"];
-
                         Body.landable = false;
+                        Body.setStellarExtras();
                     }
 
                     if (Body.type == "Planet")

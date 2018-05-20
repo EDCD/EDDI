@@ -40,7 +40,7 @@ namespace UnitTests
             Assert.IsNotNull(starSystem.bodies);
             Assert.IsFalse(starSystem.bodies.Count == 0);
 
-            Body sol = starSystem.bodies.Find(b => b.type == "Star");
+            Body sol = starSystem.bodies.Find(b => b.name == "Sol");
             Assert.AreEqual(4792, sol.age);
             Assert.IsNull(sol.atmosphere);
             Assert.AreEqual(0, sol.distance);
@@ -71,6 +71,12 @@ namespace UnitTests
             Assert.IsNull(sol.tilt);
             Assert.AreEqual("Star", sol.type);
             Assert.IsNull(sol.volcanism);
+            // Stellar extras
+            Assert.AreEqual("yellow-white", sol.chromaticity);
+            Assert.AreEqual(68, sol.massprobability);
+            Assert.AreEqual(49, sol.radiusprobability);
+            Assert.AreEqual(51, sol.tempprobability);
+            Assert.AreEqual(51, sol.ageprobability);
 
             Body mercury = starSystem.bodies.Find(n => n.name.Equals("Mercury"));
             Assert.IsNull(mercury.age);

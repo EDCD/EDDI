@@ -4,6 +4,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
 
 ### 3.0.1-b3
   * Core 
+    * Fixed a bug that was preventing chromaticity and various stellar probabilities from being set in some circumstances.
     * EDDI will now track the nearest stellar body and make that data available to EDDI's Speech Responder via the `body` variable (planet, moon, etc.).  
   * EDSM Responder
     * Fixed a bug that was resetting system visit totals during syncs with EDSM. Please re-obtain logs from EDSM to update the information in your local database.
