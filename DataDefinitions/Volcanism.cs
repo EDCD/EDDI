@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Resources;
@@ -35,16 +36,22 @@ namespace EddiDataDefinitions
         public string edType { get; set; } // Geysers/Magma
         public string invariantType => GetInvariantString(edType);
         public string localizedType => GetLocalizedString(edType);
+        [JsonIgnore, Obsolete("Please use localizedType or invariantType")]
+        public string type => localizedType;
 
         [JsonProperty("composition")]
         public string edComposition { get; set; } // Iron, Silicate, etc.
         public string invariantComposition => GetInvariantString(edComposition);
         public string localizedComposition => GetLocalizedString(edComposition);
+        [JsonIgnore, Obsolete("Please use localizedComposition or invariantComposition")]
+        public string composition => localizedComposition;
 
         [JsonProperty("amount")]
         public string edAmount { get; set; } // Minor, Major, null (for normal)
         public string invariantAmount => GetInvariantString(edAmount);
         public string localizedAmount => GetLocalizedString(edAmount);
+        [JsonIgnore, Obsolete("Please use localizedAmount or invariantAmount")]
+        public string amount => localizedAmount;
 
         private string GetInvariantString(string name)
         {
