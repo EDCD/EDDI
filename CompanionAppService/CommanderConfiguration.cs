@@ -15,6 +15,9 @@ namespace EddiCompanionAppService
         [JsonIgnore]
         private string dataPath;
 
+        [JsonIgnore]
+        static readonly object fileLock = new object();
+
         /// <summary>
         /// Obtain commander config from a file. If  If the file name is not supplied the the default
         /// path of Constants.Data_DIR\commander.json is used
@@ -66,7 +69,10 @@ namespace EddiCompanionAppService
             }
 
             string json = JsonConvert.SerializeObject(this, Formatting.Indented);
-            Files.Write(filename, json);
+            lock (fileLock)
+            {
+                Files.Write(filename, json);
+            }
         }
     }
 }

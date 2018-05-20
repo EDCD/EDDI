@@ -47,6 +47,9 @@ namespace Eddi
         [JsonIgnore]
         private string dataPath;
 
+        [JsonIgnore]
+        static readonly object fileLock = new object();
+
         public EDDIConfiguration()
         {
             Debug = false;
@@ -119,7 +122,10 @@ namespace Eddi
             }
 
             string json = JsonConvert.SerializeObject(this, Formatting.Indented);
-            Files.Write(filename, json);
+            lock (fileLock)
+            {
+                Files.Write(filename, json);
+            }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
