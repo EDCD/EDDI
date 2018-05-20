@@ -471,7 +471,7 @@
     <comment>Commodity GeologicalEquipment</comment>
   </data>
   <data name="GeologicalSamples" xml:space="preserve">
-    <value>Geologische Probe</value>
+    <value>Geologische Proben</value>
     <comment>Commodity GeologicalSamples</comment>
   </data>
   
@@ -795,7 +795,10 @@
     <value>Praseodymium</value>
     <comment>Commodity Praseodymium</comment>
   </data>
-  
+  <data name="PreciousGems" xml:space="preserve">
+    <value>Edelsteine</value>
+    <comment>Commodity PreciousGems</comment>
+  </data>
   <data name="ProgenitorCells" xml:space="preserve">
     <value>Vorläuferzellen</value>
     <comment>Commodity ProgenitorCells</comment>
@@ -878,7 +881,7 @@
     <comment>Commodity Slaves</comment>
   </data>
   <data name="SmallExplorationDataCash" xml:space="preserve">
-    <value>Kleiner Erkundungsdatenträger</value>
+    <value>Kleiner Erkundungsdatenspeicher</value>
     <comment>Commodity SmallExplorationDataCash</comment>
   </data>
   <data name="SoontillRelics" xml:space="preserve">
