@@ -357,8 +357,7 @@ namespace EddiSpeechResponder
                 string text = values[0].AsString;
                 if (values.Count == 1 || string.IsNullOrEmpty(values[1].AsString))
                 {
-                    SpeechService.Instance.Transmit(((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip(), resolveScript(text, buildStore(vars)));
-                    return "";
+                    return @"<transmit=""" + values[0].AsString + @""" />"; // This is a synthetic tag used to signal to the speech service that radio effects should be enabled.
                 }
                 else
                 {

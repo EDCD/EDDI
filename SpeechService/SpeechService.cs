@@ -77,7 +77,7 @@ namespace EddiSpeechService
             configuration = SpeechServiceConfiguration.FromFile();
         }
 
-        public void Say(Ship ship, string speech, bool wait, int priority = 3, string voice = null)
+        public void Say(Ship ship, string speech, bool wait, int priority = 3, string voice = null, bool radio = false)
         {
             if (speech == null)
             {
@@ -90,21 +90,12 @@ namespace EddiSpeechService
                 ship = ShipDefinitions.FromModel("Sidewinder");
             }
 
-            Speak(speech, voice, echoDelayForShip(ship), distortionLevelForShip(ship), chorusLevelForShip(ship), reverbLevelForShip(ship), 0, false, wait, priority);
+            Speak(speech, voice, echoDelayForShip(ship), distortionLevelForShip(ship), chorusLevelForShip(ship), reverbLevelForShip(ship), 0, radio, wait, priority);
         }
 
         public void ShutUp()
         {
             StopCurrentSpeech();
-        }
-
-        public void Transmit(Ship ship, string script, bool wait = true, int priority = 3, string voice = null)
-        {
-            if (script == null)
-            {
-                return;
-            }
-            Speak(script, voice, echoDelayForShip(ship), distortionLevelForShip(ship), chorusLevelForShip(ship), reverbLevelForShip(ship), 0, true, wait, priority);
         }
 
         public void Speak(string speech, string voice, int echoDelay, int distortionLevel, int chorusLevel, int reverbLevel, int compressLevel, bool radio = false, bool wait = true, int priority = 3)
@@ -132,14 +123,28 @@ namespace EddiSpeechService
                     // Identify any statements that need to be separated into their own speech streams (e.g. audio or special voice effects)
                     string[] separators =
                     {
-                        @"({Transmit\(.+\)})",
-                        @"(<audio.+>)"
+                        @"(<audio.+?>)",
+                        @"(<transmit.+?>)",
                     };
                     List<string> statements = SeparateSpeechStatements(speech, string.Join("|", separators));
 
-                    foreach (string statement in statements)
+                    foreach (string Statement in statements)
                     {
+                        string statement = Statement;
+
                         bool isAudio = statement.Contains("<audio"); // This is an audio file, we will disable voice effects processing
+                        bool isRadio = statement.Contains("<transmit=") || radio; // This is a radio transmission, we will enable radio voice effects processing
+
+                        if (isAudio)
+                        {
+                            statement = Regex.Replace(statement, "^.*<audio", "<audio");
+                            statement = Regex.Replace(statement, ">.*$", ">");
+                        }
+                        else if (isRadio)
+                        {
+                            statement = statement.Replace(@"<transmit=""", "");
+                            statement = statement.Replace(@""" />", "");
+                        }
 
                         using (MemoryStream stream = getSpeechStream(voice, statement))
                         {
@@ -163,7 +168,7 @@ namespace EddiSpeechService
                             IWaveSource source = new WaveFileReader(stream);
                             if (!isAudio)
                             {
-                                addEffectsToSource(ref source, chorusLevel, reverbLevel, echoDelay, distortionLevel, radio);
+                                addEffectsToSource(ref source, chorusLevel, reverbLevel, echoDelay, distortionLevel, isRadio);
                             }
 
                             if (priority < activeSpeechPriority)
@@ -215,7 +220,7 @@ namespace EddiSpeechService
                 string[] splitSpeech = new Regex(separators).Split(speech);
                 foreach (string split in splitSpeech)
                 {
-                    if (split != "")
+                    if (Regex.Match(split, @"\S").Success) // Trim out non-word statements; match only words
                     {
                         statements.Add(split);
                     }
