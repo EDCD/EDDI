@@ -90,6 +90,7 @@ namespace Eddi
         public DateTime ApiTimeStamp { get; private set; }
         //public ObservableCollection<Ship> Shipyard { get; private set; } = new ObservableCollection<Ship>();
         public Station CurrentStation { get; private set; }
+        public Body CurrentStellarBody { get; private set; }
 
         // Services made available from EDDI
         public StarMapService starMapService { get; private set; }
@@ -673,6 +674,10 @@ namespace Eddi
                     {
                         passEvent = eventStatus((StatusEvent)@event);
                     }
+                    else if (@event is NearSurfaceEvent)
+                    {
+                        passEvent = eventNearSurface((NearSurfaceEvent)@event);
+                    }
                     // Additional processing is over, send to the event responders if required
                     if (passEvent)
                     {
@@ -783,8 +788,11 @@ namespace Eddi
                 CurrentStarSystem.population = theEvent.population;
             }
 
-            if (theEvent.docked == true)
+            if (theEvent.docked == true || theEvent.bodytype.ToLowerInvariant() == "station")
             {
+                // In this case body === station and our body information is invalid
+                CurrentStellarBody = null;
+
                 // Force first location update even if it matches with 'firstLocation' bool
                 if (!firstLocation && (CurrentStation != null && CurrentStation.name == theEvent.station))
                 {
@@ -823,9 +831,37 @@ namespace Eddi
                     updateThread.Start();
                 }
             }
+            else if (theEvent.body != null)
+            {
+                // If we are not at a station then our station information is invalid 
+                CurrentStation = null;
+
+                // Force first location update even if it matches with 'firstLocation' bool 
+                if (!firstLocation && (CurrentStellarBody != null && CurrentStellarBody.name == theEvent.body))
+                {
+                    // We are already at this body; nothing to do 
+                    Logging.Debug("Already at body " + theEvent.body);
+                    return false;
+                }
+                firstLocation = false;
+
+                // Update the body 
+                Logging.Debug("Now at body " + theEvent.body);
+                Body body = CurrentStarSystem.bodies.Find(s => s.name == theEvent.body);
+                if (body == null)
+                {
+                    // This body is unknown to us, might not be in EDDB or we might not have connectivity.  Use a placeholder 
+                    body = new Body();
+                    body.name = theEvent.body;
+                    body.systemname = theEvent.system;
+                }
+
+                CurrentStellarBody = body;
+            }
             else
             {
-                // If we are not docked then our station information is invalid
+                // We are near neither a stellar body nor a station. 
+                CurrentStellarBody = null;
                 CurrentStation = null;
             }
 
@@ -898,6 +934,7 @@ namespace Eddi
             }
 
             CurrentStation = station;
+            CurrentStellarBody = null;
 
             // Kick off the profile refresh if the companion API is available
             if (CompanionAppService.Instance.CurrentState == CompanionAppService.State.READY)
@@ -924,9 +961,6 @@ namespace Eddi
         {
             // Call refreshProfile() to ensure that our ship is up-to-date
             refreshProfile();
-
-            // Remove information about the station
-            CurrentStation = null;
 
             return true;
         }
@@ -964,6 +998,10 @@ namespace Eddi
 
             // We are in the ship
             Vehicle = Constants.VEHICLE_SHIP;
+
+            // Remove information about the current station and stellar body 
+            CurrentStation = null;
+            CurrentStellarBody = null;
 
             return true;
         }
@@ -1087,6 +1125,44 @@ namespace Eddi
         private bool eventEnteredNormalSpace(EnteredNormalSpaceEvent theEvent)
         {
             Environment = Constants.ENVIRONMENT_NORMAL_SPACE;
+
+            if (theEvent.bodytype.ToLowerInvariant() == "station")
+            {
+                // In this case body == station 
+                CurrentStellarBody = null;
+
+                // Update the station 
+                Logging.Debug("Now at station " + theEvent.body);
+                Station station = CurrentStarSystem.stations.Find(s => s.name == theEvent.body);
+                if (station == null)
+                {
+                    // This station is unknown to us, might not be in EDDB or we might not have connectivity.  Use a placeholder 
+                    station = new Station();
+                    station.name = theEvent.body;
+                    station.systemname = theEvent.system;
+                }
+
+                CurrentStation = station;
+            }
+            else if (theEvent.body != null)
+            {
+                // If we are not at a station then our station information is invalid 
+                CurrentStation = null;
+
+                // Update the body 
+                Logging.Debug("Now at body " + theEvent.body);
+                Body body = CurrentStarSystem.bodies.Find(s => s.name == theEvent.body);
+                if (body == null)
+                {
+                    // This body is unknown to us, might not be in EDDB or we might not have connectivity.  Use a placeholder 
+                    body = new Body();
+                    body.name = theEvent.body;
+                    body.systemname = theEvent.system;
+                }
+
+                CurrentStellarBody = body;
+            }
+
             updateCurrentSystem(theEvent.system);
             return true;
         }
@@ -1251,6 +1327,34 @@ namespace Eddi
                 Environment = Constants.ENVIRONMENT_SUPERCRUISE;
             }
             Vehicle = theEvent.status.vehicle;
+            return true;
+        }
+
+        private bool eventNearSurface(NearSurfaceEvent theEvent)
+        {
+            if (theEvent.approaching_surface)
+            {
+                // Update the body we are approaching 
+                Logging.Debug("Now at body " + theEvent.body);
+                Body body = CurrentStarSystem.bodies.Find(s => s.name == theEvent.body);
+                if (body == null)
+                {
+                    // This body is unknown to us, might not be in EDDB or we might not have connectivity.  Use a placeholder 
+                    body = new Body();
+                    body.name = theEvent.body;
+                    body.systemname = theEvent.system;
+                }
+
+                CurrentStellarBody = body;
+            }
+            else
+            {
+                // Clear the body we are leaving 
+                CurrentStellarBody = null;
+            }
+
+            updateCurrentSystem(theEvent.system);
+
             return true;
         }
 

@@ -281,11 +281,6 @@ namespace EddiStatusMonitor
                 EDDI.Instance.eventHandler(new StatusEvent(thisStatus.timestamp, thisStatus));
 
                 // Trigger events for changed status, as applicable
-                if (thisStatus.near_surface != lastStatus.near_surface 
-                    && thisStatus.vehicle == Constants.VEHICLE_SHIP)
-                {
-                    EDDI.Instance.eventHandler(new NearSurfaceEvent(thisStatus.timestamp, thisStatus.near_surface));
-                }
                 if (thisStatus.srv_turret_deployed != lastStatus.srv_turret_deployed)
                 {
                     EDDI.Instance.eventHandler(new SRVTurretEvent(thisStatus.timestamp, thisStatus.srv_turret_deployed));

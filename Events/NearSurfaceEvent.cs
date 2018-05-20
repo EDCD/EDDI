@@ -15,14 +15,19 @@ namespace EddiEvents
         static NearSurfaceEvent()
         {
             VARIABLES.Add("approaching_surface", "A boolean value. True if you are entering the gravity well and and false if you are leaving");
+            VARIABLES.Add("system", "The name of the starsystem");
+            VARIABLES.Add("body", "The name of the body");
         }
 
-        [JsonProperty("near_surface")]
         public bool approaching_surface { get; private set; }
+        public string system { get; private set; }
+        public string body { get; private set; }
 
-        public NearSurfaceEvent(DateTime timestamp, bool nearSurface) : base(timestamp, NAME)
+        public NearSurfaceEvent(DateTime timestamp, bool approachingSurface, string system, string body) : base(timestamp, NAME)
         {
-            this.approaching_surface = nearSurface;
+            this.approaching_surface = approachingSurface;
+            this.system = system;
+            this.body = body;
         }
     }
 }

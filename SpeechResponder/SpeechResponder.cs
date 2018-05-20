@@ -233,6 +233,11 @@ namespace EddiSpeechResponder
                 dict["station"] = new ReflectionValue(EDDI.Instance.CurrentStation);
             }
 
+            if (EDDI.Instance.CurrentStellarBody != null)
+            {
+                dict["body"] = new ReflectionValue(EDDI.Instance.CurrentStellarBody);
+            }
+
             if (StatusMonitor.currentStatus != null)
             {
                 dict["status"] = new ReflectionValue(StatusMonitor.currentStatus);

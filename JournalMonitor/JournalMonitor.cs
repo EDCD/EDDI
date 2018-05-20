@@ -546,6 +546,22 @@ namespace EddiJournalMonitor
                             events.Add(new CockpitBreachedEvent(timestamp) { raw = line });
                             handled = true;
                             break;
+                        case "ApproachBody":
+                            {
+                                string system = JsonParsing.getString(data, "StarSystem");
+                                string body = JsonParsing.getString(data, "Body");
+                                events.Add(new NearSurfaceEvent(timestamp, true, system, body) { raw = line });
+                            }
+                            handled = true;
+                            break;
+                        case "LeaveBody":
+                            {
+                                string system = JsonParsing.getString(data, "StarSystem");
+                                string body = JsonParsing.getString(data, "Body");
+                                events.Add(new NearSurfaceEvent(timestamp, false, system, body) { raw = line });
+                            }
+                            handled = true;
+                            break;
                         case "ApproachSettlement":
                             {
                                 object val;
