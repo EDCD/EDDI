@@ -222,7 +222,10 @@
     <value>Elektronische Gegenmaßnahme</value>
     <comment>Module ElectronicCountermeasure</comment>
   </data>
-  
+  <data name="EnhancedPerformanceThrusters" xml:space="preserve">
+    <value>Leistungsoptimierte Triebwerke</value>
+    <comment>Module EnhancedPerformanceThrusters</comment>
+  </data>
   <data name="FighterArmour" xml:space="preserve">
     <value>Jägerpanzerung</value>
     <comment>Module FighterArmour</comment>
