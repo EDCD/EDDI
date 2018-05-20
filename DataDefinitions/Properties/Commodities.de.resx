@@ -130,7 +130,10 @@
     <value>Tiermedizin</value>
     <comment>Commodity AgriculturalMedicines</comment>
   </data>
-  
+  <data name="AiRelics" xml:space="preserve">
+    <value>AI Relikte</value>
+    <comment>Commodity AiRelics</comment>
+  </data>
   
   
   <data name="Algae" xml:space="preserve">
@@ -141,12 +144,18 @@
     <value>Lederige Eier</value>
     <comment>Commodity alieneggs</comment>
   </data>
-  
+  <data name="AltairianSkin" xml:space="preserve">
+    <value>Altairianische Haut</value>
+    <comment>Commodity AltairianSkin</comment>
+  </data>
   <data name="Aluminium" xml:space="preserve">
     <value>Aluminium</value>
     <comment>Commodity Aluminium</comment>
   </data>
-  
+  <data name="AlyaBodySoap" xml:space="preserve">
+    <value>Körperseife aus Alya</value>
+    <comment>Commodity AlyaBodySoap</comment>
+  </data>
   <data name="AncientCasket" xml:space="preserve">
     <value>Uralter Schatulle</value>
     <comment>Commodity AncientCasket</comment>
