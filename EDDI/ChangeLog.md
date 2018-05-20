@@ -12,6 +12,10 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Added `Silent running` event.
     * Updated the 'Near surface' event to include the name of the body that you are approaching or exiting. 
     * Add a new top level `body` object, which contains details of the nearest stellar body. Any values might be missing, depending on EDDI's configuration and the information available about the body. 
+  * Text-to-Speech
+    * The `Tranmit()` function no longer insists on being the first speech rendered by your script. 
+    * The `Play()` function no longer insists on being the only element rendered by your script.
+    * Add new audio function `Voice`, which allows you to render speech within a script using any installed voice which EDDI recognizes (not just the one selected in the `Text-to-Speech` tab). 
   * VoiceAttack 
     * Added the following new variables describing details of the nearest stellar body, with values as described by the 'Body' object 
       * `{DEC:Body EDDB id}`

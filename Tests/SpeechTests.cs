@@ -214,7 +214,7 @@ namespace SpeechTests
         [TestMethod, TestCategory("Speech")]
         public void TestSendAndReceive()
         {
-            SpeechService.Instance.Transmit(ShipDefinitions.FromEliteID(128049339), "Anaconda golf foxtrot lima one niner six eight returning from orbit.", true);
+            SpeechService.Instance.Say(ShipDefinitions.FromEliteID(128049339), "Anaconda golf foxtrot lima one niner six eight returning from orbit.", true, 3, null, true);
         }
 
         [TestMethod, TestCategory("Speech")]
@@ -533,7 +533,7 @@ namespace SpeechTests
         public void TestSpeechServiceRadio()
         {
             Logging.Verbose = true;
-            SpeechService.Instance.Transmit(null, "Your python has touched down.", true);
+            SpeechService.Instance.Say(null, "Your python has touched down.", true, 3, null, true);
         }
     }
 }
