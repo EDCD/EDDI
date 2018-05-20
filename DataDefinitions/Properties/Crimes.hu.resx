@@ -110,11 +110,11 @@
     <comment>Crime piracy</comment>
   </data>
   <data name="interdiction" xml:space="preserve">
-    <value>Tiszta hajó eltérítése</value>
+    <value>Tiszta hajó eltérítés</value>
     <comment>Crime interdiction</comment>
   </data>
   <data name="illegalCargo" xml:space="preserve">
-    <value>Illegális rakomány szállítása</value>
+    <value>Illegális rakomány szállítás</value>
     <comment>Crime illegalCargo</comment>
   </data>
   <data name="disobeyPolice" xml:space="preserve">
@@ -130,7 +130,7 @@
     <comment>Crime fireInStation</comment>
   </data>
   <data name="dumpingDangerous" xml:space="preserve">
-    <value>Veszélyes rakomány kidobása</value>
+    <value>Veszélyes rakomány kidobás</value>
     <comment>Crime dumpingDangerous</comment>
   </data>
   <data name="dumpingNearStation" xml:space="preserve">
@@ -138,11 +138,11 @@
     <comment>Crime dumpingNearStation</comment>
   </data>
   <data name="dockingMinorBlockingAirlock" xml:space="preserve">
-    <value>Légzsilip rövid blokkolása</value>
+    <value>Légzsilip blokkolás</value>
     <comment>Crime dockingMinorBlockingAirlock</comment>
   </data>
   <data name="dockingMajorBlockingAirlock" xml:space="preserve">
-    <value>Légzsilip hosszú blokkolása</value>
+    <value>Légzsilip blokkolás</value>
     <comment>Crime dockingMajorBlockingAirlock</comment>
   </data>
   <data name="dockingMinorBlockingLandingPad" xml:space="preserve">
@@ -154,7 +154,7 @@
     <comment>Crime dockingMajorBlockingLandingPad</comment>
   </data>
   <data name="dockingMinorTresspass" xml:space="preserve">
-    <value>Engedély nélkûli belépés</value>
+    <value>Engedély nélküli belépés</value>
     <comment>Crime dockingMinorTresspass</comment>
   </data>
   <data name="dockingMajorTresspass" xml:space="preserve">
@@ -174,7 +174,7 @@
     <comment>Crime recklessWeaponsDischarge</comment>
   </data>
   <data name="passengerWanted" xml:space="preserve">
-    <value>Körözött személy szállítása</value>
+    <value>körözött személy szállítás</value>
     <comment>Crime passengerWanted</comment>
   </data>
 </root>
