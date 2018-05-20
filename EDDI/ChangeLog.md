@@ -3,9 +3,10 @@
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
 ### 3.0.1-b3
-  * Speech Service
+  * Text-to-Speech
     * The `Tranmit()` function no longer insists on being the first speech rendered by your script. 
     * The `Play()` function no longer insists on being the only element rendered by your script.
+    * Add new audio function `Voice`, which allows you to render speech within a script using any installed voice which EDDI recognizes (not just the one selected in the `Text-to-Speech` tab). 
 
 ### 3.0.1-b2
   * Localization

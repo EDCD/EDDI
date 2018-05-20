@@ -155,7 +155,7 @@ Common usage of this is to select the word that should proceed the string (e.g. 
 
 ### Play()
 
-This function will play an audio file as supplied in the argument.  If this is in the result of a template then all other text is removed; it is not possible for EDDI to both play an audio file and speak in the same response. This function uses SSML tags.
+This function will play an audio file as supplied in the argument. This function uses SSML tags.
 
 Play() takes one argument: the path to the file to play.  This file must be a '.wav' file.  Any backslashes for path separators must be escaped, so '\\' must be written as '\\\\'
 
@@ -167,9 +167,18 @@ Common usage of this is to provide a pre-recorded custom audio file rather than 
  
 This function allows you to add a radio effect to speech. 
  
-Transmit() takes one argument: the text to speak, for example: 
+Transmit() takes one argument: the text to speak. For example: 
  
 {Transmit("{ShipName()} returning from orbit.")} 
+
+### Voice()
+
+This function allows you to include a different voice in your script than then one currently selected. This function uses SSML tags.
+
+Voice() takes two mandatory arguments: the text to speak and the voice to speak it (legal values for the voice shall match one of the voices listed by EDDI's `Text-to-Speech` tab. This is case-sensitive."). For Example:
+
+{Voice("Now I can speak", "Microsoft Zira Desktop")}
+{Voice("And I can listen", "Microsoft David Desktop")}
 
 ### ICAO()
 

@@ -123,8 +123,9 @@ namespace EddiSpeechService
                     // Identify any statements that need to be separated into their own speech streams (e.g. audio or special voice effects)
                     string[] separators =
                     {
-                        @"(<audio.+?>)",
-                        @"(<transmit.+?>)",
+                        @"(<audio.*?>)",
+                        @"(<transmit.*?>.*<\/transmit>)",
+                        @"(<voice.*?>.*<\/voice>)",
                     };
                     List<string> statements = SeparateSpeechStatements(speech, string.Join("|", separators));
 
@@ -133,7 +134,7 @@ namespace EddiSpeechService
                         string statement = Statement;
 
                         bool isAudio = statement.Contains("<audio"); // This is an audio file, we will disable voice effects processing
-                        bool isRadio = statement.Contains("<transmit=") || radio; // This is a radio transmission, we will enable radio voice effects processing
+                        bool isRadio = statement.Contains("<transmit") || radio; // This is a radio transmission, we will enable radio voice effects processing
 
                         if (isAudio)
                         {
@@ -142,8 +143,8 @@ namespace EddiSpeechService
                         }
                         else if (isRadio)
                         {
-                            statement = statement.Replace(@"<transmit=""", "");
-                            statement = statement.Replace(@""" />", "");
+                            statement = statement.Replace("<transmit>", "");
+                            statement = statement.Replace("</transmit>", "");
                         }
 
                         using (MemoryStream stream = getSpeechStream(voice, statement))
@@ -495,6 +496,10 @@ namespace EddiSpeechService
             result = Regex.Replace(result, "<(/prosody)>", "XXXXX$1YYYYY");
             result = Regex.Replace(result, "<(emphasis.*?)>", "XXXXX$1YYYYY");
             result = Regex.Replace(result, "<(/emphasis)>", "XXXXX$1YYYYY");
+            result = Regex.Replace(result, "<(transmit.*?)>", "XXXXX$1YYYYY");
+            result = Regex.Replace(result, "<(/transmit)>", "XXXXX$1YYYYY");
+            result = Regex.Replace(result, "<(voice.*?)>", "XXXXX$1YYYYY");
+            result = Regex.Replace(result, "<(/voice)>", "XXXXX$1YYYYY");
 
             // Now escape anything that is still present
             result = SecurityElement.Escape(result);

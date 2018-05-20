@@ -357,7 +357,7 @@ namespace EddiSpeechResponder
                 string text = values[0].AsString;
                 if (values.Count == 1 || string.IsNullOrEmpty(values[1].AsString))
                 {
-                    return @"<transmit=""" + values[0].AsString + @""" />"; // This is a synthetic tag used to signal to the speech service that radio effects should be enabled.
+                    return @"<transmit>" + values[0].AsString + "</transmit>"; // This is a synthetic tag used to signal to the speech service that radio effects should be enabled.
                 }
                 else
                 {
@@ -378,6 +378,20 @@ namespace EddiSpeechResponder
                 return result;
 
             }, 1);
+
+            store["Voice"] = new NativeFunction((values) =>
+            {
+                string text = values[0].AsString;
+                string voice = values[1].AsString;
+                if (values.Count == 2)
+                {
+                    return @"<voice name=""" + voice + @""">" + text + "</voice>";
+                }
+                else
+                {
+                    return "The Voice function is used improperly. Please review the documentation for correct usage.";
+                }
+            }, 1, 2);
 
             //
             // Commander-specific functions
