@@ -157,7 +157,7 @@
     <value>Schiffe Monitor</value>
   </data>
   <data name="p1" xml:space="preserve">
-    <value>Dies erlaubt Ihnen Ihre Schiffe sehen und ihnen individuelle Rollen zuweisen. Die Informationen werden "Respondern" zur Verfügung gestellt und in Skripten zur Anpassung von Aktionen verwendet.</value>
+    <value>Dies erlaubt Ihnen Ihre Schiffe zu sehen und ihnen individuelle Rollen zuweisen. Die Informationen werden "Antwort"-Gebern zur Verfügung gestellt und in Skripten zur Anpassung von Aktionen verwendet.</value>
   </data>
   <data name="p2" xml:space="preserve">
     <value>Wenn der Name Ihres Schiffes für EDDI schwer auszusprechen ist, können Sie eine gesprochene Version des Schiffes hinzufügen über </value>
