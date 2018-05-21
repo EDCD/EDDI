@@ -903,7 +903,10 @@
     <value>Ophiuch Exino Artefakte</value>
     <comment>Commodity OphiuchExinoArtefacts</comment>
   </data>
-  
+  <data name="OrrerianViciousBrew" xml:space="preserve">
+    <value>Orrerian schädliches Gebräu</value>
+    <comment>Commodity OrrerianViciousBrew</comment>
+  </data>
   <data name="Osmium" xml:space="preserve">
     <value>Osmium</value>
     <comment>Commodity Osmium</comment>
@@ -920,7 +923,10 @@
     <value>Pantaa Gebetsstöcke</value>
     <comment>Commodity PantaaPrayerSticks</comment>
   </data>
-  
+  <data name="PavonisEarGrubs" xml:space="preserve">
+    <value>Pavonis Ohr-Maden</value>
+    <comment>Commodity PavonisEarGrubs</comment>
+  </data>
   <data name="PerformanceEnhancers" xml:space="preserve">
     <value>Leistungssteigerer</value>
     <comment>Commodity PerformanceEnhancers</comment>
