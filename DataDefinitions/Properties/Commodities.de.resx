@@ -131,19 +131,31 @@
     <comment>Commodity AgriculturalMedicines</comment>
   </data>
   
-  
+  <data name="AlacarakmoSkinArt" xml:space="preserve">
+    <value>Alacarakmo Hautkunst</value>
+    <comment>Commodity AlacarakmoSkinArt</comment>
+  </data>
   
   <data name="Algae" xml:space="preserve">
     <value>Algen</value>
     <comment>Commodity Algae</comment>
   </data>
-  
-  
+  <data name="alieneggs" xml:space="preserve">
+    <value>Lederige Eier</value>
+    <comment>Commodity alieneggs</comment>
+  </data>
+  <data name="AltairianSkin" xml:space="preserve">
+    <value>Altairianische Haut</value>
+    <comment>Commodity AltairianSkin</comment>
+  </data>
   <data name="Aluminium" xml:space="preserve">
     <value>Aluminium</value>
     <comment>Commodity Aluminium</comment>
   </data>
-  
+  <data name="AlyaBodySoap" xml:space="preserve">
+    <value>Alya Körperseife</value>
+    <comment>Commodity AlyaBodySoap</comment>
+  </data>
   <data name="AncientCasket" xml:space="preserve">
     <value>Uralter Schatulle</value>
     <comment>Commodity AncientCasket</comment>
@@ -197,7 +209,10 @@
     <value>Aquaponiksysteme</value>
     <comment>Commodity AquaponicSystems</comment>
   </data>
-  
+  <data name="AroucaConventualSweets" xml:space="preserve">
+    <value>Arouca Süßigkeiten</value>
+    <comment>Commodity AroucaConventualSweets</comment>
+  </data>
   <data name="ArticulationMotors" xml:space="preserve">
     <value>Gelenkmotoren</value>
     <comment>Commodity ArticulationMotors</comment>
@@ -210,7 +225,10 @@
     <value>Atmosphärenprozessoren</value>
     <comment>Commodity AtmosphericExtractors</comment>
   </data>
-  
+  <data name="AutoFabricators" xml:space="preserve">
+    <value>Fabrikatoren</value>
+    <comment>Commodity AutoFabricators</comment>
+  </data>
   
   <data name="BaltahSineVacuumKrill" xml:space="preserve">
     <value>Baltah Sine Weltraumkrill</value>
