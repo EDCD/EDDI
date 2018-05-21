@@ -124,7 +124,7 @@
     <value>EDSM kapitány név:</value>
   </data>
   <data name="desc" xml:space="preserve">
-    <value>Hajó napló küldése az EDSM-nek. Az EDSM egy harmadik fél által létrehozozz eszköz ami csillagrendszer információkat tartalmaz és naplózza a megálogatottakat is. A szolgáltatott tömeges adat a forrása a galaxis térképének</value>
+    <value>Hajónapló küldése az EDSM számára. Az EDSM egy harmadik fél által létrehozott adatbázis, ami csillagrendszer információkat tartalmaz, valamint naplózza a látogatott rendszereket is. A tömegesen szolgáltatott adat a forrása a galaxis térképének</value>
   </data>
   <data name="log_button" xml:space="preserve">
     <value>EDSM napló beszerzése</value>
