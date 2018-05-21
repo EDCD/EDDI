@@ -1,12 +1,10 @@
 ﻿using RestSharp;
 using Rollbar;
 using System;
-using System.Runtime.CompilerServices;
-using System.IO;
 using System.Collections.Generic;
-using Newtonsoft.Json;
+using System.IO;
 using System.Linq;
-using System.Threading;
+using System.Runtime.CompilerServices;
 
 namespace Utilities
 {
@@ -159,7 +157,7 @@ namespace Utilities
                 thisData.Remove("demandbracket");
                 thisData.Remove("StatusFlags");
 
-                Task rollbarReport = Task.Run(() => _Report(message, data, thisData));
+                var rollbarReport = System.Threading.Tasks.Task.Run(() => _Report(message, data, thisData));
             }
             catch (Exception)
             {
