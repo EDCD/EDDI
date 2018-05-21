@@ -385,7 +385,10 @@
     <value>Datenkern</value>
     <comment>Commodity DataCore</comment>
   </data>
-  
+  <data name="DeltaPhoenicisPalms" xml:space="preserve">
+    <value>Delta Phoenics Palmen</value>
+    <comment>Commodity DeltaPhoenicisPalms</comment>
+  </data>
   <data name="DeuringasTruffles" xml:space="preserve">
     <value>Deuringas Trüffel</value>
     <comment>Commodity DeuringasTruffles</comment>
@@ -618,7 +621,10 @@
   
   
   
-  
+  <data name="KinagoViolins" xml:space="preserve">
+    <value>Kinago Violinen</value>
+    <comment>Commodity KinagoViolins</comment>
+  </data>
   <data name="KonggaAle" xml:space="preserve">
     <value>Kongga Bier</value>
     <comment>Commodity KonggaAle</comment>
@@ -644,7 +650,10 @@
     <value>Leder</value>
     <comment>Commodity Leather</comment>
   </data>
-  
+  <data name="LeestianEvilJuice" xml:space="preserve">
+    <value>Leesti Teufelssaft</value>
+    <comment>Commodity LeestianEvilJuice</comment>
+  </data>
   <data name="Lepidolite" xml:space="preserve">
     <value>Lepidolit</value>
     <comment>Commodity Lepidolite</comment>
@@ -731,7 +740,10 @@
   
   
   
-  
+  <data name="MulachiGiantFungus" xml:space="preserve">
+    <value>Mulachi Riesenpilz</value>
+    <comment>Commodity MulachiGiantFungus</comment>
+  </data>
   
   <data name="MysteriousIdol" xml:space="preserve">
     <value>Mysteriöses Idol</value>
@@ -852,7 +864,10 @@
     <comment>Commodity RadiationBaffle</comment>
   </data>
   
-  
+  <data name="RapaBaoSnakeSkins" xml:space="preserve">
+    <value>Rapa Bao Schlangenhaut</value>
+    <comment>Commodity RapaBaoSnakeSkins</comment>
+  </data>
   <data name="ReactiveArmour" xml:space="preserve">
     <value>Reaktivrüstung</value>
     <comment>Commodity ReactiveArmour</comment>
@@ -967,8 +982,14 @@
     <value>Tantal</value>
     <comment>Commodity Tantalum</comment>
   </data>
-  
-  
+  <data name="TarachTorSpice" xml:space="preserve">
+    <value>Tarach Gewürz</value>
+    <comment>Commodity TarachTorSpice</comment>
+  </data>
+  <data name="TauriChimes" xml:space="preserve">
+    <value>Tauri Glockenspiel</value>
+    <comment>Commodity TauriChimes</comment>
+  </data>
   <data name="Tea" xml:space="preserve">
     <value>Tee</value>
     <comment>Commodity Tea</comment>
@@ -1140,8 +1161,14 @@
     <comment>Commodity WitchhaulKobeBeef</comment>
   </data>
   
-  
-  
+  <data name="WreckageComponents" xml:space="preserve">
+    <value>Bergungsfähige Wrackteile</value>
+    <comment>Commodity WreckageComponents</comment>
+  </data>
+  <data name="WuthieloKuFroth" xml:space="preserve">
+    <value>Wuthielo Ku Schaum</value>
+    <comment>Commodity WuthieloKuFroth</comment>
+  </data>
   <data name="xihecompanions" xml:space="preserve">
     <value>Haustiere aus Xihe</value>
     <comment>Commodity xihecompanions</comment>
@@ -1152,8 +1179,14 @@
   </data>
   
   
-  
-  
+  <data name="KinagoInstruments" xml:space="preserve">
+    <value>Kinago Instrumente</value>
+    <comment>Commodity KinagoInstruments</comment>
+  </data>
+  <data name="KachiriginLeaches" xml:space="preserve">
+    <value>Kachiriginische Lauge</value>
+    <comment>Commodity KachiriginLeaches</comment>
+  </data>
   
   
   <data name="aislingpromotionalmaterials" xml:space="preserve">
