@@ -995,7 +995,10 @@
     <value>Aufklärungsdaten</value>
     <comment>Commodity TacticalData</comment>
   </data>
-  
+  <data name="TanmarkTranquilTea" xml:space="preserve">
+    <value>Tanmark beruhigender Tee</value>
+    <comment>Commodity TanmarkTranquilTea</comment>
+  </data>
   <data name="Tantalum" xml:space="preserve">
     <value>Tantal</value>
     <comment>Commodity Tantalum</comment>
@@ -1058,12 +1061,18 @@
     <value>Tabak</value>
     <comment>Commodity Tobacco</comment>
   </data>
-  
+  <data name="ToxandjiVirocide" xml:space="preserve">
+    <value>Toxandij Verozid</value>
+    <comment>Commodity ToxandjiVirocide</comment>
+  </data>
   <data name="ToxicWaste" xml:space="preserve">
     <value>Giftmüll</value>
     <comment>Commodity ToxicWaste</comment>
   </data>
-  
+  <data name="TransgenicOnionHead" xml:space="preserve">
+    <value>Lucan Zwiebelkopf</value>
+    <comment>Commodity TransgenicOnionHead</comment>
+  </data>
   
   <data name="UnknownArtifact" xml:space="preserve">
     <value>Thargoiden-Sensor</value>
@@ -1113,7 +1122,10 @@
     <value>Militärpläne</value>
     <comment>Commodity USSCargoMilitaryPlans</comment>
   </data>
-  
+  <data name="USSCargoPrototypeTech" xml:space="preserve">
+    <value>Prototyp Technologie</value>
+    <comment>Commodity USSCargoPrototypeTech</comment>
+  </data>
   <data name="USSCargoRareArtwork" xml:space="preserve">
     <value>Seltene Kunstgegenstände</value>
     <comment>Commodity USSCargoRareArtwork</comment>
@@ -1139,7 +1151,10 @@
     <comment>Commodity UtgaroarMillenialEggs</comment>
   </data>
   
-  
+  <data name="VanayequiCeratomorphaFur" xml:space="preserve">
+    <value>Vanayequi Ceratomorpha-Fell</value>
+    <comment>Commodity VanayequiCeratomorphaFur</comment>
+  </data>
   <data name="VegaSlimweed" xml:space="preserve">
     <value>Vega Slimkraut</value>
     <comment>Commodity VegaSlimweed</comment>
@@ -1196,7 +1211,10 @@
     <comment>Commodity YasoKondiLeaf</comment>
   </data>
   
-  
+  <data name="RajukruStoves" xml:space="preserve">
+    <value>Rajukru Multi-Öfen</value>
+    <comment>Commodity RajukruStoves</comment>
+  </data>
   <data name="KinagoInstruments" xml:space="preserve">
     <value>Kinago Instrumente</value>
     <comment>Commodity KinagoInstruments</comment>
@@ -1205,7 +1223,10 @@
     <value>Kachiriginische Lauge</value>
     <comment>Commodity KachiriginLeaches</comment>
   </data>
-  
+  <data name="VanayequiRhinoFur" xml:space="preserve">
+    <value>Vanayequi Ceratomorpha-Fell</value>
+    <comment>Commodity VanayequiRhinoFur</comment>
+  </data>
   
   <data name="aislingpromotionalmaterials" xml:space="preserve">
     <value>Aisling Werbematerial</value>
