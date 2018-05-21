@@ -8,6 +8,10 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * EDDI will now track the nearest stellar body and make that data available to EDDI's Speech Responder via the `body` variable (planet, moon, etc.).  
   * EDSM Responder
     * Fixed a bug that was resetting system visit totals during syncs with EDSM. Please re-obtain logs from EDSM to update the information in your local database.
+  * Localization
+    * Added partial localisations for French, Spanish, German, Hungarian and Italian. 
+      * **Please be aware that all these are incomplete work in progress.**
+      * You can join up at https://crowdin.com/project/eddi to help.
   * Speech Responder 
     * Added `Silent running` event.
     * Updated the 'Near surface' event to include the name of the body that you are approaching or exiting. 
