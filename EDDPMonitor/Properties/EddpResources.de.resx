@@ -124,7 +124,7 @@
     <value>Löschen</value>
   </data>
   <data name="desc" xml:space="preserve">
-    <value>Überwache EDDP bezüglich Veränderungen der Systemkontrollen und der Stati, und erstelle eine Benachrichtigung, wenn die Überwachungskriterien mit den Informationen von EDDP übereinstimmen.</value>
+    <value>Überwache EDDP bezüglich Veränderungen der Kontrolle von Systemen und deren Stati, und erstelle eine Benachrichtigung, wenn die Überwachungskriterien mit den Informationen von EDDP übereinstimmen.</value>
   </data>
   <data name="faction_header" xml:space="preserve">
     <value>Fraktion</value>
