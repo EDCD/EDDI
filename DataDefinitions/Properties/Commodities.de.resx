@@ -1017,7 +1017,10 @@
     <value>Roboter</value>
     <comment>Commodity Robotics</comment>
   </data>
-  
+  <data name="RusaniOldSmokey" xml:space="preserve">
+    <value>Rusani alter Raucher</value>
+    <comment>Commodity RusaniOldSmokey</comment>
+  </data>
   <data name="Rutile" xml:space="preserve">
     <value>Rutil</value>
     <comment>Commodity Rutile</comment>
@@ -1289,7 +1292,10 @@
     <comment>Commodity VegaSlimweed</comment>
   </data>
   
-  
+  <data name="VidavantianLace" xml:space="preserve">
+    <value>Vidavantian Schnürsenkel</value>
+    <comment>Commodity VidavantianLace</comment>
+  </data>
   <data name="VoidExtractCoffee" xml:space="preserve">
     <value>Void Kaffeekonzentrat</value>
     <comment>Commodity VoidExtractCoffee</comment>
@@ -1339,7 +1345,10 @@
     <value>Yaso Kondi Blatt</value>
     <comment>Commodity YasoKondiLeaf</comment>
   </data>
-  
+  <data name="ZeesszeAntGrubGlue" xml:space="preserve">
+    <value>Zeesszer Ameisenleim</value>
+    <comment>Commodity ZeesszeAntGrubGlue</comment>
+  </data>
   <data name="RajukruStoves" xml:space="preserve">
     <value>Rajukru Multi-Öfen</value>
     <comment>Commodity RajukruStoves</comment>
@@ -1356,7 +1365,10 @@
     <value>Vanayequi Ceratomorpha-Fell</value>
     <comment>Commodity VanayequiRhinoFur</comment>
   </data>
-  
+  <data name="ZeesszeAntGlue" xml:space="preserve">
+    <value>Zeesszer Ameisenkleber</value>
+    <comment>Commodity ZeesszeAntGlue</comment>
+  </data>
   <data name="aislingpromotionalmaterials" xml:space="preserve">
     <value>Aisling Werbematerial</value>
     <comment>Commodity aislingpromotionalmaterials</comment>
