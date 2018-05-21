@@ -138,7 +138,10 @@
     <value>Alacarakmo Hautkunst</value>
     <comment>Commodity AlacarakmoSkinArt</comment>
   </data>
-  
+  <data name="AlbinoQuechuaMammoth" xml:space="preserve">
+    <value>Albino Quechua Mammut</value>
+    <comment>Commodity AlbinoQuechuaMammoth</comment>
+  </data>
   <data name="Algae" xml:space="preserve">
     <value>Algen</value>
     <comment>Commodity Algae</comment>
@@ -315,7 +318,10 @@
     <value>Baufabrikatoren</value>
     <comment>Commodity BuildingFabricators</comment>
   </data>
-  
+  <data name="BurnhamBileDistillate" xml:space="preserve">
+    <value>Burnham Galle-Destillat</value>
+    <comment>Commodity BurnhamBileDistillate</comment>
+  </data>
   
   <data name="CentauriMegaGin" xml:space="preserve">
     <value>Centauri Mega Gin</value>
@@ -558,7 +564,10 @@
     <value>Geologische Proben</value>
     <comment>Commodity GeologicalSamples</comment>
   </data>
-  
+  <data name="GerasianGueuzeBeer" xml:space="preserve">
+    <value>Gerasisches Gueuze Bier</value>
+    <comment>Commodity GerasianGueuzeBeer</comment>
+  </data>
   <data name="GiantIrukamaSnails" xml:space="preserve">
     <value>Gigantische Irukama Schnecken</value>
     <comment>Commodity GiantIrukamaSnails</comment>
