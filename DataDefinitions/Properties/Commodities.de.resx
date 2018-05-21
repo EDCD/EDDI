@@ -295,7 +295,10 @@
     <value>Wismut</value>
     <comment>Commodity Bismuth</comment>
   </data>
-  
+  <data name="BlueMilk" xml:space="preserve">
+    <value>Azure Milch</value>
+    <comment>Commodity BlueMilk</comment>
+  </data>
   <data name="BootlegLiquor" xml:space="preserve">
     <value>Schmuggelschnapps</value>
     <comment>Commodity BootlegLiquor</comment>
