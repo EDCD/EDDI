@@ -102,13 +102,28 @@
   
   
   
+  <data name="Bei" xml:space="preserve">
+    <value>bei</value>
+    <comment>Optional phonetic pronunciation for Bei</comment>
+  </data>
   
   
-  
-  
-  
-  
-  
+  <data name="Blanco" xml:space="preserve">
+    <value>blankó</value>
+    <comment>Optional phonetic pronunciation for Blanco</comment>
+  </data>
+  <data name="Bleae" xml:space="preserve">
+    <value>ble a e</value>
+    <comment>Optional phonetic pronunciation for Bleae</comment>
+  </data>
+  <data name="BleaeThaa_Bleae" xml:space="preserve">
+    <value>ble a e tha a ble a e</value>
+    <comment>Optional phonetic pronunciation for BleaeThaa_Bleae</comment>
+  </data>
+  <data name="BleaeThaa_Thaa" xml:space="preserve">
+    <value>ble a e tha a tha a</value>
+    <comment>Optional phonetic pronunciation for BleaeThaa_Thaa</comment>
+  </data>
   
   
   
