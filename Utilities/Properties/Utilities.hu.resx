@@ -103,9 +103,15 @@
     <comment>ship</comment>
   </data>
   
+  <data name="fighter" xml:space="preserve">
+    <value>Vadászgép</value>
+    <comment>fighter</comment>
+  </data>
   
-  
-  
+  <data name="supercruise" xml:space="preserve">
+    <value>Szupercirkálás</value>
+    <comment>supercruise</comment>
+  </data>
   <data name="normal_space" xml:space="preserve">
     <value>Normál tér</value>
     <comment>normal_space</comment>
