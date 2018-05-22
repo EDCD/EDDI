@@ -1321,7 +1321,10 @@
     <value>Vega Slimkraut</value>
     <comment>Commodity VegaSlimweed</comment>
   </data>
-  
+  <data name="VHerculisBodyRub" xml:space="preserve">
+    <value>V Herculis Körperreibe</value>
+    <comment>Commodity VHerculisBodyRub</comment>
+  </data>
   <data name="VidavantianLace" xml:space="preserve">
     <value>Vidavantian Schnürsenkel</value>
     <comment>Commodity VidavantianLace</comment>
