@@ -130,6 +130,7 @@
       <LastGenOutput>EddnResources.fr.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\EddnResources.hu.resx" />
+    <EmbeddedResource Include="Properties\EddnResources.it.resx" />
     <EmbeddedResource Include="Properties\EddnResources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>EddnResources.Designer.cs</LastGenOutput>

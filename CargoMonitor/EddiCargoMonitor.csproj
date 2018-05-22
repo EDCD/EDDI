@@ -137,6 +137,7 @@
       <LastGenOutput>CargoMonitor.fr.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\CargoMonitor.hu.resx" />
+    <EmbeddedResource Include="Properties\CargoMonitor.it.resx" />
     <EmbeddedResource Include="Properties\CargoMonitor.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>CargoMonitor.Designer.cs</LastGenOutput>

@@ -168,6 +168,7 @@
       <LastGenOutput>ShipMonitor.fr.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\ShipMonitor.hu.resx" />
+    <EmbeddedResource Include="Properties\ShipMonitor.it.resx" />
     <EmbeddedResource Include="Properties\ShipMonitor.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>ShipMonitor.Designer.cs</LastGenOutput>
