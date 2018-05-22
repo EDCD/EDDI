@@ -159,7 +159,7 @@
     <comment>Module Cannon</comment>
   </data>
   <data name="CargoHatch" xml:space="preserve">
-    <value>Raktérajtó</value>
+    <value>Raktérzsilip</value>
     <comment>Module CargoHatch</comment>
   </data>
   <data name="CargoRack" xml:space="preserve">
@@ -237,7 +237,10 @@
     <value>Térhajtómű zavaró</value>
     <comment>Module FrameShiftDriveInterdictor</comment>
   </data>
-  
+  <data name="FrameShiftDrive" xml:space="preserve">
+    <value>Varp drájv</value>
+    <comment>Module FrameShiftDrive</comment>
+  </data>
   
   <data name="FuelScoop" xml:space="preserve">
     <value>Üzemanyag töltő egység</value>
@@ -257,7 +260,10 @@
     <value>Őrző reaktor</value>
     <comment>Module GuardianPowerPlant</comment>
   </data>
-  
+  <data name="HatchBreakerLimpetController" xml:space="preserve">
+    <value>Hekker szonda vezérlő egység</value>
+    <comment>Module HatchBreakerLimpetController</comment>
+  </data>
   <data name="HeatSinkLauncher" xml:space="preserve">
     <value>Hőcsapda kivető</value>
     <comment>Module HeatSinkLauncher</comment>
@@ -411,8 +417,14 @@
     <value>rögzített</value>
     <comment>Weapon mount type Fixed</comment>
   </data>
-  
-  
+  <data name="Gimballed" xml:space="preserve">
+    <value>célzás segítő rendszer</value>
+    <comment>Weapon mount type Gimballed</comment>
+  </data>
+  <data name="Turreted" xml:space="preserve">
+    <value>toronyba épített</value>
+    <comment>Weapon mount type Turreted</comment>
+  </data>
   
   
   
