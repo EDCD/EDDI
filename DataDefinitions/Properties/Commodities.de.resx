@@ -718,7 +718,10 @@
     <value>Kamorins historische Waffen</value>
     <comment>Commodity KamorinHistoricWeapons</comment>
   </data>
-  
+  <data name="KaretiiCouture" xml:space="preserve">
+    <value>Karetii Mode</value>
+    <comment>Commodity KaretiiCouture</comment>
+  </data>
   <data name="KarsukiLocusts" xml:space="preserve">
     <value>Karsuki Heuschrecken</value>
     <comment>Commodity KarsukiLocusts</comment>
@@ -797,8 +800,14 @@
     <value>Maritimausstattung</value>
     <comment>Commodity MarineSupplies</comment>
   </data>
-  
-  
+  <data name="MasterChefs" xml:space="preserve">
+    <value>Oberköche</value>
+    <comment>Commodity MasterChefs</comment>
+  </data>
+  <data name="MechucosHighTea" xml:space="preserve">
+    <value>Mechucos Hochlandtee</value>
+    <comment>Commodity MechucosHighTea</comment>
+  </data>
   <data name="MedbStarlube" xml:space="preserve">
     <value>Medb Sternenstaub</value>
     <comment>Commodity MedbStarlube</comment>
@@ -852,7 +861,10 @@
     <value>Mulachi Riesenpilz</value>
     <comment>Commodity MulachiGiantFungus</comment>
   </data>
-  
+  <data name="MuTomImager" xml:space="preserve">
+    <value>Muon Bildbetrachter</value>
+    <comment>Commodity MuTomImager</comment>
+  </data>
   <data name="MysteriousIdol" xml:space="preserve">
     <value>Mysteriöses Idol</value>
     <comment>Commodity MysteriousIdol</comment>
@@ -873,12 +885,18 @@
     <value>Netitus Beeren</value>
     <comment>Commodity NeritusBerries</comment>
   </data>
-  
+  <data name="NerveAgents" xml:space="preserve">
+    <value>Nervengas</value>
+    <comment>Commodity NerveAgents</comment>
+  </data>
   <data name="NgadandariFireOpals" xml:space="preserve">
     <value>Ngadandari Feueropale</value>
     <comment>Commodity NgadandariFireOpals</comment>
   </data>
-  
+  <data name="NgunaModernAntiques" xml:space="preserve">
+    <value>Nguna Moderne Antiquitäen</value>
+    <comment>Commodity NgunaModernAntiques</comment>
+  </data>
   <data name="NjangariSaddles" xml:space="preserve">
     <value>Njangari Sättel</value>
     <comment>Commodity NjangariSaddles</comment>
@@ -1117,7 +1135,10 @@
     <value>Synthetische Stoffe</value>
     <comment>Commodity SyntheticFabrics</comment>
   </data>
-  
+  <data name="SyntheticMeat" xml:space="preserve">
+    <value>Künstliches Fleisch</value>
+    <comment>Commodity SyntheticMeat</comment>
+  </data>
   <data name="SyntheticReagents" xml:space="preserve">
     <value>Synthetische Reagenzien</value>
     <comment>Commodity SyntheticReagents</comment>
