@@ -789,6 +789,14 @@
     <value>Túlélő felszerelés</value>
     <comment>Commodity SurvivalEquipment</comment>
   </data>
+  <data name="SyntheticFabrics" xml:space="preserve">
+    <value>Szintetikus szövetek</value>
+    <comment>Commodity SyntheticFabrics</comment>
+  </data>
+  <data name="SyntheticMeat" xml:space="preserve">
+    <value>Szintetikus hús</value>
+    <comment>Commodity SyntheticMeat</comment>
+  </data>
   
   
   
@@ -808,27 +816,91 @@
   
   
   
+  <data name="Titanium" xml:space="preserve">
+    <value>Titánium</value>
+    <comment>Commodity Titanium</comment>
+  </data>
+  <data name="Tobacco" xml:space="preserve">
+    <value>Dohány</value>
+    <comment>Commodity Tobacco</comment>
+  </data>
   
+  <data name="ToxicWaste" xml:space="preserve">
+    <value>Veszélyes hulladék</value>
+    <comment>Commodity ToxicWaste</comment>
+  </data>
+  <data name="TransgenicOnionHead" xml:space="preserve">
+    <value>Lucani hagymafej</value>
+    <comment>Commodity TransgenicOnionHead</comment>
+  </data>
   
+  <data name="UnknownArtifact" xml:space="preserve">
+    <value>Thargoid érzékelő</value>
+    <comment>Commodity UnknownArtifact</comment>
+  </data>
+  <data name="UnknownArtifact2" xml:space="preserve">
+    <value>Thargoid szonda</value>
+    <comment>Commodity UnknownArtifact2</comment>
+  </data>
   
   
+  <data name="UnknownTechnologySamples" xml:space="preserve">
+    <value>Thargoid technológia minták</value>
+    <comment>Commodity UnknownTechnologySamples</comment>
+  </data>
   
   
   
   
+  <data name="USSCargoBlackBox" xml:space="preserve">
+    <value>Fekete doboz</value>
+    <comment>Commodity USSCargoBlackBox</comment>
+  </data>
   
+  <data name="USSCargoMilitaryPlans" xml:space="preserve">
+    <value>Hadi tervek</value>
+    <comment>Commodity USSCargoMilitaryPlans</comment>
+  </data>
   
   
   
+  <data name="USSCargoTechnicalBlueprints" xml:space="preserve">
+    <value>Technikai tervrajzok</value>
+    <comment>Commodity USSCargoTechnicalBlueprints</comment>
+  </data>
+  <data name="USSCargoTradeData" xml:space="preserve">
+    <value>Kereskedelmi adat</value>
+    <comment>Commodity USSCargoTradeData</comment>
+  </data>
   
   
   
   
   
+  <data name="VHerculisBodyRub" xml:space="preserve">
+    <value>V Herculisi test súroló</value>
+    <comment>Commodity VHerculisBodyRub</comment>
+  </data>
   
   
   
+  <data name="Water" xml:space="preserve">
+    <value>Víz</value>
+    <comment>Commodity Water</comment>
+  </data>
+  <data name="WaterPurifiers" xml:space="preserve">
+    <value>Víztisztítók</value>
+    <comment>Commodity WaterPurifiers</comment>
+  </data>
+  <data name="WatersOfShintara" xml:space="preserve">
+    <value>Shintrai ásványvíz</value>
+    <comment>Commodity WatersOfShintara</comment>
+  </data>
   
+  <data name="Wine" xml:space="preserve">
+    <value>Bor</value>
+    <comment>Commodity Wine</comment>
+  </data>
   
   
   
@@ -837,25 +909,10 @@
   
   
   
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="KinagoInstruments" xml:space="preserve">
+    <value>Kinagoi hegedűk</value>
+    <comment>Commodity KinagoInstruments</comment>
+  </data>
   
   
   
