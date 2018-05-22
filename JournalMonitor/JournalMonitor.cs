@@ -1530,9 +1530,56 @@ namespace EddiJournalMonitor
                                 {
                                     events.Add(new ShieldsDownEvent(timestamp) { raw = line });
                                 }
-                                handled = true;
-                                break;
                             }
+                            handled = true;
+                            break;
+                        case "ShipTargeted":
+                            {
+                                bool targetlocked = JsonParsing.getBool(data, "TargetLocked");
+                                int? scanstage = JsonParsing.getOptionalInt(data, "ScanStage");
+                                string ship = JsonParsing.getString(data, "Ship");
+                                if (ship != null)
+                                {
+                                    if (ship.Contains("fighter"))
+                                    {
+                                        string shipLocalised = JsonParsing.getString(data, "Ship_Localised");
+                                        if (shipLocalised != null)
+                                        {
+                                            ship = shipLocalised + " Fighter";
+                                        }
+                                    }
+                                    else
+                                    {
+                                        Ship shipDef = ShipDefinitions.FromEDModel(ship);
+                                        if (shipDef != null)
+                                        {
+                                            ship = shipDef.model;
+                                        }
+                                    }
+                                }
+                                string name = JsonParsing.getString(data, "PilotName_Localised");
+                                CombatRating rank = new CombatRating();
+                                string pilotRank = JsonParsing.getString(data, "PilotRank");
+                                if (pilotRank != null)
+                                {
+                                    rank = CombatRating.FromEDName(pilotRank);
+                                }
+                                decimal? shieldHealth = JsonParsing.getOptionalDecimal(data, "ShieldHealth");
+                                decimal? hullHealth = JsonParsing.getOptionalDecimal(data, "HullHealth");
+                                string faction = JsonParsing.getString(data, "Faction");
+                                LegalStatus legalStatus = new LegalStatus();
+                                string pilotLegalStatus = JsonParsing.getString(data, "LegalStatus");
+                                if (pilotLegalStatus != null)
+                                {
+                                    legalStatus = LegalStatus.FromEDName(pilotLegalStatus);
+                                }
+                                int? bounty = JsonParsing.getOptionalInt(data, "Bounty");
+                                string subSystem = JsonParsing.getString(data, "Subsystem_Localised");
+                                decimal? subSystemHealth = JsonParsing.getOptionalDecimal(data, "SubsystemHealth");
+                                events.Add(new ShipTargetedEvent(timestamp, targetlocked, ship, scanstage, name, rank, faction, legalStatus, bounty, shieldHealth, hullHealth, subSystem, subSystemHealth) { raw = line });
+                            }
+                            handled = true;
+                            break;
                         case "UnderAttack":
                             {
                                 string target = JsonParsing.getString(data, "Target");

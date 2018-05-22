@@ -71,6 +71,7 @@
     <Compile Include="CommodityAmount.cs" />
     <Compile Include="HaulageAmount.cs" />
     <Compile Include="CommodityCategory.cs" />
+    <Compile Include="LegalStatus.cs" />
     <Compile Include="MaterialCategory.cs" />
     <Compile Include="Properties\CombatRatings.es.Designer.cs">
       <DependentUpon>CombatRatings.es.resx</DependentUpon>
@@ -321,6 +322,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Rarities.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\LegalStatus.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>LegalStatus.resx</DependentUpon>
     </Compile>
     <Compile Include="Properties\ShipRoles.es.Designer.cs">
       <DependentUpon>ShipRoles.es.resx</DependentUpon>
@@ -746,6 +752,10 @@
     <EmbeddedResource Include="Properties\SecurityLevels.de.resx" />
     <EmbeddedResource Include="Properties\SecurityLevels.hu.resx" />
     <EmbeddedResource Include="Properties\ShipRoles.de.resx" />
+    <EmbeddedResource Include="Properties\LegalStatus.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>LegalStatus.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\ShipRoles.es.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>ShipRoles.es.Designer.cs</LastGenOutput>
