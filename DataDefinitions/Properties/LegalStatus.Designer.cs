@@ -22,7 +22,7 @@ namespace EddiDataDefinitions.Properties {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class LegalStatus {
+    public class LegalStatus {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,7 +36,7 @@ namespace EddiDataDefinitions.Properties {
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("EddiDataDefinitions.Properties.LegalStatus", typeof(LegalStatus).Assembly);
@@ -51,7 +51,7 @@ namespace EddiDataDefinitions.Properties {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -63,7 +63,7 @@ namespace EddiDataDefinitions.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Clean.
         /// </summary>
-        internal static string Clean {
+        public static string Clean {
             get {
                 return ResourceManager.GetString("Clean", resourceCulture);
             }
@@ -72,7 +72,7 @@ namespace EddiDataDefinitions.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Enemy.
         /// </summary>
-        internal static string Enemy {
+        public static string Enemy {
             get {
                 return ResourceManager.GetString("Enemy", resourceCulture);
             }
@@ -81,7 +81,7 @@ namespace EddiDataDefinitions.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Hunter.
         /// </summary>
-        internal static string Hunter {
+        public static string Hunter {
             get {
                 return ResourceManager.GetString("Hunter", resourceCulture);
             }
@@ -90,7 +90,7 @@ namespace EddiDataDefinitions.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Lawless.
         /// </summary>
-        internal static string Lawless {
+        public static string Lawless {
             get {
                 return ResourceManager.GetString("Lawless", resourceCulture);
             }
@@ -99,7 +99,7 @@ namespace EddiDataDefinitions.Properties {
         /// <summary>
         ///   Looks up a localized string similar to None.
         /// </summary>
-        internal static string None {
+        public static string None {
             get {
                 return ResourceManager.GetString("None", resourceCulture);
             }
@@ -108,7 +108,7 @@ namespace EddiDataDefinitions.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Unknown.
         /// </summary>
-        internal static string Unknown {
+        public static string Unknown {
             get {
                 return ResourceManager.GetString("Unknown", resourceCulture);
             }
@@ -117,7 +117,7 @@ namespace EddiDataDefinitions.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Wanted.
         /// </summary>
-        internal static string Wanted {
+        public static string Wanted {
             get {
                 return ResourceManager.GetString("Wanted", resourceCulture);
             }
@@ -126,7 +126,7 @@ namespace EddiDataDefinitions.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Wanted Enemy.
         /// </summary>
-        internal static string WantedEnemy {
+        public static string WantedEnemy {
             get {
                 return ResourceManager.GetString("WantedEnemy", resourceCulture);
             }
@@ -135,7 +135,7 @@ namespace EddiDataDefinitions.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Warrant.
         /// </summary>
-        internal static string Warrant {
+        public static string Warrant {
             get {
                 return ResourceManager.GetString("Warrant", resourceCulture);
             }
