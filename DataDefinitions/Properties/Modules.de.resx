@@ -178,7 +178,7 @@
     <comment>Module ChaffLauncher</comment>
   </data>
   <data name="CockpitCanopy" xml:space="preserve">
-    <value>Cockpitüberdachung</value>
+    <value>Cockpitkabine</value>
     <comment>Module CockpitCanopy</comment>
   </data>
   <data name="Cockpit" xml:space="preserve">
