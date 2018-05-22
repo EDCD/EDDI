@@ -820,7 +820,10 @@
     <value>Meta-Legierungen</value>
     <comment>Commodity MetaAlloys</comment>
   </data>
-  
+  <data name="MethaneClathrate" xml:space="preserve">
+    <value>Methanklathrat</value>
+    <comment>Commodity MethaneClathrate</comment>
+  </data>
   <data name="MethanolMonohydrateCrystals" xml:space="preserve">
     <value>Methanol-Monohydrat-Kristalle</value>
     <comment>Commodity MethanolMonohydrateCrystals</comment>
@@ -914,9 +917,18 @@
     <value>Ochoeng Peperoni</value>
     <comment>Commodity OchoengChillies</comment>
   </data>
-  
-  
-  
+  <data name="OnionHead" xml:space="preserve">
+    <value>Zwiebelkopf</value>
+    <comment>Commodity OnionHead</comment>
+  </data>
+  <data name="OnionheadAlphaStrain" xml:space="preserve">
+    <value>Zwiebelkopf Alpha-Stamm</value>
+    <comment>Commodity OnionheadAlphaStrain</comment>
+  </data>
+  <data name="OnionheadBetaStrain" xml:space="preserve">
+    <value>Zwiebelkopf Beta-Stamm</value>
+    <comment>Commodity OnionheadBetaStrain</comment>
+  </data>
   <data name="OphiuchExinoArtefacts" xml:space="preserve">
     <value>Ophiuch Exino Artefakte</value>
     <comment>Commodity OphiuchExinoArtefacts</comment>
