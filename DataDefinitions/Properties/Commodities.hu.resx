@@ -301,7 +301,10 @@
   </data>
   
   
-  
+  <data name="CherbonesBloodCrystals" xml:space="preserve">
+    <value>Csherboneszi vérkristály</value>
+    <comment>Commodity CherbonesBloodCrystals</comment>
+  </data>
   
   
   
