@@ -1094,7 +1094,10 @@
     <value>Sirius Industrie Ausstattung</value>
     <comment>Commodity siriusindustrialequipment</comment>
   </data>
-  
+  <data name="SkimerComponents" xml:space="preserve">
+    <value>Of-Drohnen-Komponenten</value>
+    <comment>Commodity SkimerComponents</comment>
+  </data>
   <data name="Slaves" xml:space="preserve">
     <value>Sklaven</value>
     <comment>Commodity Slaves</comment>
@@ -1132,7 +1135,7 @@
     <comment>Commodity SurvivalEquipment</comment>
   </data>
   <data name="SyntheticFabrics" xml:space="preserve">
-    <value>Synthetische Stoffe</value>
+    <value>Chemiefasern</value>
     <comment>Commodity SyntheticFabrics</comment>
   </data>
   <data name="SyntheticMeat" xml:space="preserve">
