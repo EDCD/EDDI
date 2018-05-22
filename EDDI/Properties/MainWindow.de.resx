@@ -124,16 +124,16 @@
     <value>EDDI Status: </value>
   </data>
   <data name="paragraph_0" xml:space="preserve">
-    <value>hat eine Reihe von Funktionen, die separat konfiguriert werden können. Es gibt drei verschiedene Arten von Gegenständen.</value>
+    <value>hat eine Reihe von Funktionen, die separat konfiguriert werden können. Es gibt drei verschiedene Arten von Funktionen.</value>
   </data>
   <data name="paragraph_1" xml:space="preserve">
-    <value>Die erste Gruppe erhält und verwaltet die von EDDI verwendeten Basisinformationen. Dies sind die Registerkarten 'Kommandant Details', 'Frontier API' und 'Text-zu-Sprache'. Sie sollten diese durchgehen und so konfigurieren, dass EDDI vollen Zugriff auf Ihr ELITE hat: Gefährliche Informationen.</value>
+    <value>Die erste Gruppe enthält und verwaltet Basisinformationen, die von EDDI verwendet werden. Dazu gehören die Registerkarten 'Commander Details', 'Frontier API' und 'Text-to-Speech'. Sie sollten diese durchgehen und so konfigurieren, dass EDDI vollen Zugriff auf Ihr ELITE hat. Achtung: Sicherheitsrelevante Informationen.</value>
   </data>
   <data name="paragraph_2" xml:space="preserve">
-    <value>Die zweite Gruppe erhält Ereignisinformationen. Dies sind die Registerkarten, die mit "Monitor" enden. Sie erhalten Ereignisse von verschiedenen Orten und benötigen nur eine minimale Konfiguration, müssen aber abgeschlossen sein, bevor sie funktionieren.</value>
+    <value>Die zweite Gruppe enthält Ereignisinformationen. Dies sind die Registerkarten, die mit "Monitor" enden. Sie erhalten Ereignisse von verschiedenen Orten und benötigen nur eine minimale Konfiguration, müssen aber abgeschlossen sein, bevor sie funktionieren.</value>
   </data>
   <data name="paragraph_3" xml:space="preserve">
-    <value>Die dritte Gruppe reagiert auf Ereignisse. Dies sind die Registerkarten, die mit "Responder" enden. Diese haben unterschiedliche Ausbaustufen, funktionieren aber sofort.</value>
+    <value>Die dritte Gruppe reagiert auf Ereignisse. Dies sind die Registerkarten, die mit "Antwort" enden. Diese haben unterschiedliche Ausbaustufen, funktionieren aber sofort.</value>
   </data>
   <data name="paragraph_4" xml:space="preserve">
     <value>Mehr über die Funktionsweise von EDDI erfahren Sie auf der Seite</value>
@@ -224,7 +224,7 @@
     <value>Phonetische Sprache deaktivieren:</value>
   </data>
   <data name="tab_tts_disable_phonetic_speech_note" xml:space="preserve">
-    <value>(Dies deaktiviert alle Funktionen mit SSML-Sprach-Tags, wie in der Hilfedatei des Speech Responders angegeben.)</value>
+    <value>(Dies deaktiviert alle Funktionen mit SSML-Sprach-Tags, wie in der Hilfedatei unter der Reiterkarte "Sprach Antwort" angegeben.)</value>
   </data>
   <data name="tab_tts_icao_desc" xml:space="preserve">
     <value>EDDI kann die Aussprache laut ICAO verwenden, zum Beispiel "alpha" statt "A", wenn man Stern- und Körpernamen sagt. Dies kann das Verständnis der Systemnamen erleichtern, dauert jedoch länger. Wenn Sie die ICAO-Aussprache hören möchten, aktivieren Sie die Option unten. Beachten Sie, dass dies nicht funktioniert, wenn Sie die phonetische Sprache oben deaktiviert haben.</value>
@@ -233,7 +233,7 @@
     <value>ICAO aktivieren:</value>
   </data>
   <data name="tab_commander_details_header" xml:space="preserve">
-    <value>Kommandant Details</value>
+    <value>Commander Details</value>
   </data>
   <data name="tab_commander_gender" xml:space="preserve">
     <value>Bevorzugtes Geschlecht für Pronomen und Titel:</value>

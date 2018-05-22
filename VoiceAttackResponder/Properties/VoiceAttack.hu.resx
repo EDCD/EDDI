@@ -120,7 +120,9 @@
   
   
   
-  
+  <data name="p2" xml:space="preserve">
+    <value>EDDI csak a 1.5.12.22 vagy annál nagyobb verzió számú Voice Attack-kal működik mint plugin. Megjegyzés, ez egy beta kiadás.</value>
+  </data>
   
   
   

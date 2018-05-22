@@ -177,7 +177,10 @@
     <value>Düppelwerfer</value>
     <comment>Module ChaffLauncher</comment>
   </data>
-  
+  <data name="CockpitCanopy" xml:space="preserve">
+    <value>Cockpitkabine</value>
+    <comment>Module CockpitCanopy</comment>
+  </data>
   <data name="Cockpit" xml:space="preserve">
     <value>Cockpit</value>
     <comment>Module Cockpit</comment>
@@ -222,7 +225,10 @@
     <value>Elektronische Gegenmaßnahme</value>
     <comment>Module ElectronicCountermeasure</comment>
   </data>
-  
+  <data name="EnhancedPerformanceThrusters" xml:space="preserve">
+    <value>Leistungsoptimierte Triebwerke</value>
+    <comment>Module EnhancedPerformanceThrusters</comment>
+  </data>
   <data name="FighterArmour" xml:space="preserve">
     <value>Jägerpanzerung</value>
     <comment>Module FighterArmour</comment>
@@ -431,7 +437,10 @@
     <value>Steuerung Forschungsdrohnen</value>
     <comment>Module ResearchLimpetController</comment>
   </data>
-  
+  <data name="RocketPropelledFSDDisruptor" xml:space="preserve">
+    <value>Raketengetriebener FSA-Unterbrecher</value>
+    <comment>Module RocketPropelledFSDDisruptor</comment>
+  </data>
   <data name="Sensors" xml:space="preserve">
     <value>Sensoren</value>
     <comment>Module Sensors</comment>
@@ -512,7 +521,10 @@
     <value>Vollstreckerkanone</value>
     <comment>Module Hpt_MultiCannon_Fixed_Small_Strong</comment>
   </data>
-  
+  <data name="GuardianFsdBooster" xml:space="preserve">
+    <value>Guardian-FSA-Verstärker</value>
+    <comment>Module GuardianFsdBooster</comment>
+  </data>
   <data name="GuardianPowerDistributor" xml:space="preserve">
     <value>Guardian-Energieverteiler</value>
     <comment>Module GuardianPowerDistributor</comment>
@@ -525,5 +537,8 @@
     <value>Flechet Werfer</value>
     <comment>Modile FlechetteLauncher</comment>
   </data>
-  
+  <data name="EnzymeMissileRack" xml:space="preserve">
+    <value>Biologisches Raketengestell</value>
+    <comment>Module EnzymeMissileRack</comment>
+  </data>
 </root>

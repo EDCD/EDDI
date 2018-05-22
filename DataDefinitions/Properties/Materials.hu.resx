@@ -209,7 +209,10 @@
     <value>Cirkónium</value>
     <comment>Material zirconium</comment>
   </data>
-  
+  <data name="antimony" xml:space="preserve">
+    <value>Antimon</value>
+    <comment>Material antimony</comment>
+  </data>
   <data name="polonium" xml:space="preserve">
     <value>Polónium</value>
     <comment>Material polonium</comment>
@@ -224,17 +227,32 @@
     <value>Ős történelmi adat</value>
     <comment>Material ancienthistoricaldata</comment>
   </data>
+  <data name="fsdtelemetry" xml:space="preserve">
+    <value>Rendhagyó FSD telemetria</value>
+    <comment>Material fsdtelemetry</comment>
+  </data>
   
   
   
+  <data name="encryptioncodes" xml:space="preserve">
+    <value>Megjelölt titkosítási kódok</value>
+    <comment>Material encryptioncodes</comment>
+  </data>
+  
+  <data name="ancientculturaldata" xml:space="preserve">
+    <value>Ősi kulturális adat</value>
+    <comment>Material ancientculturaldata</comment>
+  </data>
+  <data name="tg_structuraldata" xml:space="preserve">
+    <value>Thargoid szerkezeti adat</value>
+    <comment>Material tg_structuraldata</comment>
+  </data>
   
   
-  
-  
-  
-  
-  
-  
+  <data name="symmetrickeys" xml:space="preserve">
+    <value>Nyitott szimmetrikus kulcsok</value>
+    <comment>Material symmetrickeys</comment>
+  </data>
   
   
   

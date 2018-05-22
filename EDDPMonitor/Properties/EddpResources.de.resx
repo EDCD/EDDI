@@ -124,7 +124,7 @@
     <value>Löschen</value>
   </data>
   <data name="desc" xml:space="preserve">
-    <value>Überwache EDDP bezüglich Veränderungen der Systemkontrollen und der Stati, und erstelle eine Benachrichtigung, wenn die Überwachungskriterien mit den Informationen von EDDP übereinstimmen.</value>
+    <value>Überwache EDDP bezüglich Veränderungen der Kontrolle von Systemen und deren Stati, und erstelle eine Benachrichtigung, wenn die Überwachungskriterien mit den Informationen von EDDP übereinstimmen.</value>
   </data>
   <data name="faction_header" xml:space="preserve">
     <value>Fraktion</value>
@@ -145,7 +145,7 @@
     <value>Neue Überwachung</value>
   </data>
   <data name="p1" xml:space="preserve">
-    <value>Sie können hier einen neuen Überwachungsauftrag erstellen, verändern oder löschen. Wenn EDDI Information über Veränderungen in der Galaxie erhält, erfolgt ein Abgleich mit dieser Überwachungsliste. Wenn die erhaltenen Information alle ausgewählten Kriterien einen Auftrages betrifft, erfolgt eine Benachrichtigung. Bitte beachten Sie, dass diese Informationen von EDDN bezogen werden. Diese Informationen werden von Kommandanten mittels Programmen wie EDDI gesammelt. Es werden nur Veränderungen angezeigt, die EDDN bekannt sind.</value>
+    <value>Sie können hier einen neuen Überwachungsauftrag erstellen, verändern oder löschen. Wenn EDDI Informationen über Veränderungen in der Galaxie erhält, erfolgt ein Abgleich mit dieser Überwachungsliste. Wenn die erhaltenen Informationen alle ausgewählten Kriterien einen Auftrages betreffen, erfolgt eine Benachrichtigung. Bitte beachten Sie, dass diese Informationen von EDDN bezogen werden. Diese Informationen werden von Kommandanten mittels Programmen wie EDDI gesammelt. Es werden nur Veränderungen angezeigt, die EDDN bekannt sind.</value>
   </data>
   <data name="state_header" xml:space="preserve">
     <value>Status</value>

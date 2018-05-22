@@ -301,25 +301,40 @@
   </data>
   
   
+  <data name="CherbonesBloodCrystals" xml:space="preserve">
+    <value>Csherboneszi vérkristály</value>
+    <comment>Commodity CherbonesBloodCrystals</comment>
+  </data>
   
   
   
   
   
   
+  <data name="CombatStabilisers" xml:space="preserve">
+    <value>Harci stabilizátorok</value>
+    <comment>Commodity CombatStabilisers</comment>
+  </data>
+  
+  
+  
+  <data name="ConsumerTechnology" xml:space="preserve">
+    <value>Fogyasztói technológia</value>
+    <comment>Commodity ConsumerTechnology</comment>
+  </data>
+  
+  <data name="Copper" xml:space="preserve">
+    <value>Réz</value>
+    <comment>Commodity Copper</comment>
+  </data>
   
   
   
   
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="DamagedEscapePod" xml:space="preserve">
+    <value>Sérült mentő kapszula</value>
+    <comment>Commodity DamagedEscapePod</comment>
+  </data>
   <data name="DamnaCarapaces" xml:space="preserve">
     <value>Damna páncélok</value>
     <comment>Commodity DamnaCarapaces</comment>
@@ -403,12 +418,18 @@
     <value>Hal</value>
     <comment>Commodity Fish</comment>
   </data>
-  
+  <data name="FoodCartridges" xml:space="preserve">
+    <value>Étel patronok</value>
+    <comment>Commodity FoodCartridges</comment>
+  </data>
   <data name="FossilRemnants" xml:space="preserve">
     <value>Fosszília maradványok</value>
     <comment>Commodity FossilRemnants</comment>
   </data>
-  
+  <data name="FruitAndVegetables" xml:space="preserve">
+    <value>Gyümölcsök és Zöldségek</value>
+    <comment>Commodity FruitAndVegetables</comment>
+  </data>
   <data name="FujinTea" xml:space="preserve">
     <value>Fujin Tea</value>
     <comment>Commodity FujinTea</comment>
@@ -445,7 +466,10 @@
     <value>Gerasiai Gueuze sör</value>
     <comment>Commodity GerasianGueuzeBeer</comment>
   </data>
-  
+  <data name="GiantIrukamaSnails" xml:space="preserve">
+    <value>Irukamai óriás csigák</value>
+    <comment>Commodity GiantIrukamaSnails</comment>
+  </data>
   <data name="GiantVerrix" xml:space="preserve">
     <value>Óriás verrix</value>
     <comment>Commodity GiantVerrix</comment>
@@ -456,7 +480,10 @@
     <comment>Commodity Gold</comment>
   </data>
   
-  
+  <data name="Goslarite" xml:space="preserve">
+    <value>Goszlarit</value>
+    <comment>Commodity Goslarite</comment>
+  </data>
   <data name="Grain" xml:space="preserve">
     <value>Gabona</value>
     <comment>Commodity Grain</comment>
@@ -485,33 +512,72 @@
   
   
   
+  <data name="HR7221Wheat" xml:space="preserve">
+    <value>HR 7221 búza</value>
+    <comment>Commodity HR7221Wheat</comment>
+  </data>
+  
+  <data name="HydrogenPeroxide" xml:space="preserve">
+    <value>Hidrogén peroxid</value>
+    <comment>Commodity HydrogenPeroxide</comment>
+  </data>
+  
+  <data name="IndiBourbon" xml:space="preserve">
+    <value>Indi börbön</value>
+    <comment>Commodity IndiBourbon</comment>
+  </data>
+  <data name="Indite" xml:space="preserve">
+    <value>Indit</value>
+    <comment>Commodity Indite</comment>
+  </data>
+  <data name="Indium" xml:space="preserve">
+    <value>Indium</value>
+    <comment>Commodity Indium</comment>
+  </data>
+  
+  <data name="IonDistributor" xml:space="preserve">
+    <value>Ion elosztó</value>
+    <comment>Commodity IonDistributor</comment>
+  </data>
   
   
   
+  <data name="JarouaRice" xml:space="preserve">
+    <value>Jarouai rizs</value>
+    <comment>Commodity JarouaRice</comment>
+  </data>
+  
+  
+  <data name="KamitraCigars" xml:space="preserve">
+    <value>Kamitra Szivarok</value>
+    <comment>Commodity KamitraCigars</comment>
+  </data>
+  
+  <data name="KaretiiCouture" xml:space="preserve">
+    <value>Karetii divatáru</value>
+    <comment>Commodity KaretiiCouture</comment>
+  </data>
+  <data name="KarsukiLocusts" xml:space="preserve">
+    <value>Karsuki sáska</value>
+    <comment>Commodity KarsukiLocusts</comment>
+  </data>
+  <data name="KinagoViolins" xml:space="preserve">
+    <value>Kinagoi hegedűk</value>
+    <comment>Commodity KinagoViolins</comment>
+  </data>
+  
+  
+  <data name="Landmines" xml:space="preserve">
+    <value>Taposóaknák</value>
+    <comment>Commodity Landmines</comment>
+  </data>
   
   
   
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="Leather" xml:space="preserve">
+    <value>Bőr</value>
+    <comment>Commodity Leather</comment>
+  </data>
   
   
   <data name="LiquidOxygen" xml:space="preserve">
@@ -526,7 +592,10 @@
     <value>Lítium</value>
     <comment>Commodity Lithium</comment>
   </data>
-  
+  <data name="LithiumHydroxide" xml:space="preserve">
+    <value>Lítium hidroxid</value>
+    <comment>Commodity LithiumHydroxide</comment>
+  </data>
   <data name="LiveHecateSeaWorms" xml:space="preserve">
     <value>Hecatei élő tengeri férgek</value>
     <comment>Commodity LiveHecateSeaWorms</comment>
@@ -548,8 +617,14 @@
   </data>
   
   
-  
-  
+  <data name="MedicalDiagnosticEquipment" xml:space="preserve">
+    <value>Egészségügyi diagnosztikai felszerelések</value>
+    <comment>Commodity MedicalDiagnosticEquipment</comment>
+  </data>
+  <data name="MetaAlloys" xml:space="preserve">
+    <value>Meta ötvözetek</value>
+    <comment>Commodity MetaAlloys</comment>
+  </data>
   
   <data name="MethanolMonohydrateCrystals" xml:space="preserve">
     <value>Metanol monohidrát kristályok</value>
@@ -575,12 +650,32 @@
     <value>Ásványi olaj</value>
     <comment>Commodity MineralOil</comment>
   </data>
+  <data name="ModularTerminals" xml:space="preserve">
+    <value>Moduláris terminálok</value>
+    <comment>Commodity ModularTerminals</comment>
+  </data>
   
   
   
+  <data name="MotronaExperienceJelly" xml:space="preserve">
+    <value>Motronai élmény zselé</value>
+    <comment>Commodity MotronaExperienceJelly</comment>
+  </data>
   
+  <data name="MulachiGiantFungus" xml:space="preserve">
+    <value>Mulachi óriásgomba</value>
+    <comment>Commodity MulachiGiantFungus</comment>
+  </data>
   
+  <data name="MysteriousIdol" xml:space="preserve">
+    <value>Rejtélyes bálvány</value>
+    <comment>Commodity MysteriousIdol</comment>
+  </data>
   
+  <data name="NaturalFabrics" xml:space="preserve">
+    <value>Természetes szövetek</value>
+    <comment>Commodity NaturalFabrics</comment>
+  </data>
   
   
   
@@ -604,12 +699,36 @@
   
   
   
+  <data name="Pesticides" xml:space="preserve">
+    <value>Rovarírtó szerek</value>
+    <comment>Commodity Pesticides</comment>
+  </data>
+  <data name="Platinum" xml:space="preserve">
+    <value>Platina</value>
+    <comment>Commodity Platinum</comment>
+  </data>
+  <data name="PoliticalPrisoner" xml:space="preserve">
+    <value>Politikai fogoly</value>
+    <comment>Commodity PoliticalPrisoner</comment>
+  </data>
   
   
   
   
   
   
+  <data name="PreciousGems" xml:space="preserve">
+    <value>Értékes ékkövek</value>
+    <comment>Commodity PreciousGems</comment>
+  </data>
+  <data name="ProgenitorCells" xml:space="preserve">
+    <value>Fiatalító sejtek</value>
+    <comment>Commodity ProgenitorCells</comment>
+  </data>
+  <data name="ProhibitedResearchMaterials" xml:space="preserve">
+    <value>Tiltott kutatási anyagok</value>
+    <comment>Commodity ProhibitedResearchMaterials</comment>
+  </data>
   
   
   
@@ -621,19 +740,63 @@
   
   
   
+  <data name="Samarium" xml:space="preserve">
+    <value>Szamárium</value>
+    <comment>Commodity Samarium</comment>
+  </data>
   
+  <data name="SAP8CoreContainer" xml:space="preserve">
+    <value>Sap 8 konténer</value>
+    <comment>Commodity SAP8CoreContainer</comment>
+  </data>
+  <data name="SaxonWine" xml:space="preserve">
+    <value>Saxoni bor</value>
+    <comment>Commodity SaxonWine</comment>
+  </data>
+  <data name="ScientificResearch" xml:space="preserve">
+    <value>Tudományos kutatás</value>
+    <comment>Commodity ScientificResearch</comment>
+  </data>
   
   
   
+  <data name="Silver" xml:space="preserve">
+    <value>Ezüst</value>
+    <comment>Commodity Silver</comment>
+  </data>
   
   
+  <data name="siriusindustrialequipment" xml:space="preserve">
+    <value>Siriusi ipari berendezés</value>
+    <comment>Commodity siriusindustrialequipment</comment>
+  </data>
   
+  <data name="Slaves" xml:space="preserve">
+    <value>Rabszolgák</value>
+    <comment>Commodity Slaves</comment>
+  </data>
   
   
   
   
   
   
+  <data name="SurfaceStabilisers" xml:space="preserve">
+    <value>Felszín stabilizálók</value>
+    <comment>Commodity SurfaceStabilisers</comment>
+  </data>
+  <data name="SurvivalEquipment" xml:space="preserve">
+    <value>Túlélő felszerelés</value>
+    <comment>Commodity SurvivalEquipment</comment>
+  </data>
+  <data name="SyntheticFabrics" xml:space="preserve">
+    <value>Szintetikus szövetek</value>
+    <comment>Commodity SyntheticFabrics</comment>
+  </data>
+  <data name="SyntheticMeat" xml:space="preserve">
+    <value>Szintetikus hús</value>
+    <comment>Commodity SyntheticMeat</comment>
+  </data>
   
   
   
@@ -653,27 +816,91 @@
   
   
   
+  <data name="Titanium" xml:space="preserve">
+    <value>Titánium</value>
+    <comment>Commodity Titanium</comment>
+  </data>
+  <data name="Tobacco" xml:space="preserve">
+    <value>Dohány</value>
+    <comment>Commodity Tobacco</comment>
+  </data>
   
+  <data name="ToxicWaste" xml:space="preserve">
+    <value>Veszélyes hulladék</value>
+    <comment>Commodity ToxicWaste</comment>
+  </data>
+  <data name="TransgenicOnionHead" xml:space="preserve">
+    <value>Lucani hagymafej</value>
+    <comment>Commodity TransgenicOnionHead</comment>
+  </data>
   
+  <data name="UnknownArtifact" xml:space="preserve">
+    <value>Thargoid érzékelő</value>
+    <comment>Commodity UnknownArtifact</comment>
+  </data>
+  <data name="UnknownArtifact2" xml:space="preserve">
+    <value>Thargoid szonda</value>
+    <comment>Commodity UnknownArtifact2</comment>
+  </data>
   
   
+  <data name="UnknownTechnologySamples" xml:space="preserve">
+    <value>Thargoid technológia minták</value>
+    <comment>Commodity UnknownTechnologySamples</comment>
+  </data>
   
   
   
   
+  <data name="USSCargoBlackBox" xml:space="preserve">
+    <value>Fekete doboz</value>
+    <comment>Commodity USSCargoBlackBox</comment>
+  </data>
   
+  <data name="USSCargoMilitaryPlans" xml:space="preserve">
+    <value>Hadi tervek</value>
+    <comment>Commodity USSCargoMilitaryPlans</comment>
+  </data>
   
   
   
+  <data name="USSCargoTechnicalBlueprints" xml:space="preserve">
+    <value>Technikai tervrajzok</value>
+    <comment>Commodity USSCargoTechnicalBlueprints</comment>
+  </data>
+  <data name="USSCargoTradeData" xml:space="preserve">
+    <value>Kereskedelmi adat</value>
+    <comment>Commodity USSCargoTradeData</comment>
+  </data>
   
   
   
   
   
+  <data name="VHerculisBodyRub" xml:space="preserve">
+    <value>V Herculisi test súroló</value>
+    <comment>Commodity VHerculisBodyRub</comment>
+  </data>
   
   
   
+  <data name="Water" xml:space="preserve">
+    <value>Víz</value>
+    <comment>Commodity Water</comment>
+  </data>
+  <data name="WaterPurifiers" xml:space="preserve">
+    <value>Víztisztítók</value>
+    <comment>Commodity WaterPurifiers</comment>
+  </data>
+  <data name="WatersOfShintara" xml:space="preserve">
+    <value>Shintrai ásványvíz</value>
+    <comment>Commodity WatersOfShintara</comment>
+  </data>
   
+  <data name="Wine" xml:space="preserve">
+    <value>Bor</value>
+    <comment>Commodity Wine</comment>
+  </data>
   
   
   
@@ -682,45 +909,10 @@
   
   
   
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="KinagoInstruments" xml:space="preserve">
+    <value>Kinagoi hegedűk</value>
+    <comment>Commodity KinagoInstruments</comment>
+  </data>
   
   
   
