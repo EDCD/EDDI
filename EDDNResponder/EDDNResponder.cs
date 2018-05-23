@@ -216,6 +216,10 @@ namespace EDDNResponder
                 List<EDDNCommodity> eddnCommodities = new List<EDDNCommodity>();
                 foreach (CommodityMarketQuote commodity in EDDI.Instance.CurrentStation.commodities)
                 {
+                    if (commodity.definition == null)
+                    {
+                        continue;
+                    }
                     if (commodity.definition.category == CommodityCategory.NonMarketable)
                     {
                         continue;
