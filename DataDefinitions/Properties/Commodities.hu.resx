@@ -146,15 +146,24 @@
     <value>Alga</value>
     <comment>Commodity Algae</comment>
   </data>
-  
+  <data name="alieneggs" xml:space="preserve">
+    <value>Bőrtojások</value>
+    <comment>Commodity alieneggs</comment>
+  </data>
   
   <data name="Aluminium" xml:space="preserve">
     <value>Alumínium</value>
     <comment>Commodity Aluminium</comment>
   </data>
   
-  
-  
+  <data name="AncientCasket" xml:space="preserve">
+    <value>Ősi érckoporsó</value>
+    <comment>Commodity AncientCasket</comment>
+  </data>
+  <data name="AncientOrb" xml:space="preserve">
+    <value>Ősi gömb</value>
+    <comment>Commodity AncientOrb</comment>
+  </data>
   <data name="AncientRelic" xml:space="preserve">
     <value>Ősi relikvia</value>
     <comment>Commodity AncientRelic</comment>
@@ -171,8 +180,14 @@
     <value>Ősi urna</value>
     <comment>Commodity AncientUrn</comment>
   </data>
-  
-  
+  <data name="AnduligaFireWorks" xml:space="preserve">
+    <value>Anduligai tűzijátékok</value>
+    <comment>Commodity AnduligaFireWorks</comment>
+  </data>
+  <data name="Animalmeat" xml:space="preserve">
+    <value>Hús</value>
+    <comment>Commodity Animalmeat</comment>
+  </data>
   
   <data name="AntimatterContainmentUnit" xml:space="preserve">
     <value>Antianyag elkülönítő egység</value>
@@ -190,7 +205,10 @@
     <value>Any Na-i kávé</value>
     <comment>Commodity AnyNaCoffee</comment>
   </data>
-  
+  <data name="AquaponicSystems" xml:space="preserve">
+    <value>Akvapónikus rendszerek</value>
+    <comment>Commodity AquaponicSystems</comment>
+  </data>
   <data name="AroucaConventualSweets" xml:space="preserve">
     <value>Arouca-i tradícionális édességek</value>
     <comment>Commodity AroucaConventualSweets</comment>
@@ -203,7 +221,10 @@
     <value>Támadási tervek</value>
     <comment>Commodity AssaultPlans</comment>
   </data>
-  
+  <data name="AtmosphericExtractors" xml:space="preserve">
+    <value>Atmoszféra processzorok</value>
+    <comment>Commodity AtmosphericExtractors</comment>
+  </data>
   
   <data name="AzCancriFormula42" xml:space="preserve">
     <value>Az Cancri Formula 42</value>
@@ -280,8 +301,14 @@
     <value>Burnham Bile párlat</value>
     <comment>Commodity BurnhamBileDistillate</comment>
   </data>
-  
-  
+  <data name="CD_75KittenBrandCoffee" xml:space="preserve">
+    <value>Cd-75 kitten brend kávé</value>
+    <comment>Commodity CD_75KittenBrandCoffee</comment>
+  </data>
+  <data name="CentauriMegaGin" xml:space="preserve">
+    <value>Kentauri mega dzsin</value>
+    <comment>Commodity CentauriMegaGin</comment>
+  </data>
   <data name="CeramicComposites" xml:space="preserve">
     <value>Kerámia kompozitok</value>
     <comment>Commodity CeramicComposites</comment>
@@ -300,23 +327,47 @@
     <comment>Commodity ChameleonCloth</comment>
   </data>
   
-  
+  <data name="ChemicalWaste" xml:space="preserve">
+    <value>Vegyi hulladék</value>
+    <comment>Commodity ChemicalWaste</comment>
+  </data>
   <data name="CherbonesBloodCrystals" xml:space="preserve">
     <value>Csherboneszi vérkristály</value>
     <comment>Commodity CherbonesBloodCrystals</comment>
   </data>
+  <data name="ChiEridaniMarinePaste" xml:space="preserve">
+    <value>Chi Eridani planktontészta</value>
+    <comment>Commodity ChiEridaniMarinePaste</comment>
+  </data>
+  <data name="Clothing" xml:space="preserve">
+    <value>Ruházat</value>
+    <comment>Commodity Clothing</comment>
+  </data>
   
-  
-  
-  
-  
-  
+  <data name="Cobalt" xml:space="preserve">
+    <value>Kobalt</value>
+    <comment>Commodity Cobalt</comment>
+  </data>
+  <data name="Coffee" xml:space="preserve">
+    <value>Kávé</value>
+    <comment>Commodity Coffee</comment>
+  </data>
+  <data name="Coltan" xml:space="preserve">
+    <value>Koltán</value>
+    <comment>Commodity Coltan</comment>
+  </data>
   <data name="CombatStabilisers" xml:space="preserve">
     <value>Harci stabilizátorok</value>
     <comment>Commodity CombatStabilisers</comment>
   </data>
-  
-  
+  <data name="ComercialSamples" xml:space="preserve">
+    <value>Termékminták</value>
+    <comment>Commodity ComercialSamples</comment>
+  </data>
+  <data name="ComputerComponents" xml:space="preserve">
+    <value>Kompjuter alkatrészek</value>
+    <comment>Commodity ComputerComponents</comment>
+  </data>
   
   <data name="ConsumerTechnology" xml:space="preserve">
     <value>Fogyasztói technológia</value>
