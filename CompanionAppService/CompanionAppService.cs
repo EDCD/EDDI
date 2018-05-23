@@ -693,9 +693,9 @@ namespace EddiCompanionAppService
                     quote.buyprice = (int)commodity["buyPrice"];
                     quote.stock = (int)commodity["stock"];
                     quote.stockbracket = (int)commodity["stockBracket"];
-                    quote.sellprice = (int)commodity["sellPrice"];
+                    quote.sellprice = commodity["sellPrice"] as int? ?? 0;
                     quote.demand = (int)commodity["demand"];
-                    quote.demandbracket = (int)commodity["demandBracket"];
+                    quote.demandbracket = commodity["demandBracket"] as int? ?? 0;
 
                     List<string> StatusFlags = new List<string>();
                     foreach (dynamic statusFlag in commodity["statusFlags"])
