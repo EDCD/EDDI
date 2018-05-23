@@ -1194,7 +1194,7 @@
     <comment>Commodity SyntheticMeat</comment>
   </data>
   <data name="SyntheticReagents" xml:space="preserve">
-    <value>Synthetische Reagenzien</value>
+    <value>Synthetische Reagenzstoffe</value>
     <comment>Commodity SyntheticReagents</comment>
   </data>
   <data name="Taaffeite" xml:space="preserve">
