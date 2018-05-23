@@ -600,7 +600,10 @@
     <value>Hafnium 178</value>
     <comment>Commodity Hafnium178</comment>
   </data>
-  
+  <data name="HaidneBlackBrew" xml:space="preserve">
+    <value>Haidne Schwarz Bräu</value>
+    <comment>Commodity HaidneBlackBrew</comment>
+  </data>
   <data name="HavasupaiDreamCatcher" xml:space="preserve">
     <value>Havasupai Traumfänger</value>
     <comment>Commodity HavasupaiDreamCatcher</comment>
@@ -779,7 +782,10 @@
     <value>Lithiumhydroxid</value>
     <comment>Commodity LithiumHydroxide</comment>
   </data>
-  
+  <data name="LiveHecateSeaWorms" xml:space="preserve">
+    <value>Hecate lebendige Seewürmer</value>
+    <comment>Commodity LiveHecateSeaWorms</comment>
+  </data>
   <data name="LowTemperatureDiamond" xml:space="preserve">
     <value>Niedrigtemperatur Diamanten</value>
     <comment>Commodity LowTemperatureDiamond</comment>
@@ -1324,7 +1330,10 @@
     <value>Utgaroar tausendjährige Eier</value>
     <comment>Commodity UtgaroarMillenialEggs</comment>
   </data>
-  
+  <data name="UzumokuLow_GWings" xml:space="preserve">
+    <value>Uzumokus Geringe-Schwerkraft-Flügel</value>
+    <comment>Commodity UzumokuLow_GWings</comment>
+  </data>
   <data name="VanayequiCeratomorphaFur" xml:space="preserve">
     <value>Vanayequi Ceratomorpha-Fell</value>
     <comment>Commodity VanayequiCeratomorphaFur</comment>
