@@ -1018,20 +1018,35 @@
   </data>
   
   
-  
-  
+  <data name="Uranium" xml:space="preserve">
+    <value>Uránium</value>
+    <comment>Commodity Uranium</comment>
+  </data>
+  <data name="USSCargoAncientArtefact" xml:space="preserve">
+    <value>Ősi műtárgy</value>
+    <comment>Commodity USSCargoAncientArtefact</comment>
+  </data>
   <data name="USSCargoBlackBox" xml:space="preserve">
     <value>Fekete doboz</value>
     <comment>Commodity USSCargoBlackBox</comment>
   </data>
-  
+  <data name="USSCargoExperimentalChemicals" xml:space="preserve">
+    <value>Kísérleti kemikáliák</value>
+    <comment>Commodity USSCargoExperimentalChemicals</comment>
+  </data>
   <data name="USSCargoMilitaryPlans" xml:space="preserve">
     <value>Hadi tervek</value>
     <comment>Commodity USSCargoMilitaryPlans</comment>
   </data>
   
-  
-  
+  <data name="USSCargoRareArtwork" xml:space="preserve">
+    <value>Ritka műalkotás</value>
+    <comment>Commodity USSCargoRareArtwork</comment>
+  </data>
+  <data name="USSCargoRebelTransmissions" xml:space="preserve">
+    <value>Lázadó adások</value>
+    <comment>Commodity USSCargoRebelTransmissions</comment>
+  </data>
   <data name="USSCargoTechnicalBlueprints" xml:space="preserve">
     <value>Technikai tervrajzok</value>
     <comment>Commodity USSCargoTechnicalBlueprints</comment>
@@ -1040,18 +1055,39 @@
     <value>Kereskedelmi adat</value>
     <comment>Commodity USSCargoTradeData</comment>
   </data>
-  
-  
-  
-  
-  
+  <data name="UszaianTreeGrub" xml:space="preserve">
+    <value>Uszaiai fahernyók</value>
+    <comment>Commodity UszaianTreeGrub</comment>
+  </data>
+  <data name="UtgaroarMillenialEggs" xml:space="preserve">
+    <value>Utgaroari milleniumi tojások</value>
+    <comment>Commodity UtgaroarMillenialEggs</comment>
+  </data>
+  <data name="UzumokuLow_GWings" xml:space="preserve">
+    <value>Uzumokui alacsony gravitációs szárnyak</value>
+    <comment>Commodity UzumokuLow_GWings</comment>
+  </data>
+  <data name="VanayequiCeratomorphaFur" xml:space="preserve">
+    <value>Vanayequii rinocérosz szőrme</value>
+    <comment>Commodity VanayequiCeratomorphaFur</comment>
+  </data>
+  <data name="VegaSlimweed" xml:space="preserve">
+    <value>Végai karcsúgyom</value>
+    <comment>Commodity VegaSlimweed</comment>
+  </data>
   <data name="VHerculisBodyRub" xml:space="preserve">
     <value>V Herculisi test súroló</value>
     <comment>Commodity VHerculisBodyRub</comment>
   </data>
+  <data name="VidavantianLace" xml:space="preserve">
+    <value>Vidavantai zsineg</value>
+    <comment>Commodity VidavantianLace</comment>
+  </data>
   
-  
-  
+  <data name="VolkhabBeeDrones" xml:space="preserve">
+    <value>Vokhabi méh drónok</value>
+    <comment>Commodity VolkhabBeeDrones</comment>
+  </data>
   <data name="Water" xml:space="preserve">
     <value>Víz</value>
     <comment>Commodity Water</comment>
