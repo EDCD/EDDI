@@ -125,7 +125,10 @@
     <value>Fortschrittliche Medikamente</value>
     <comment>Commodity AdvancedMedicines</comment>
   </data>
-  
+  <data name="AganippeRush" xml:space="preserve">
+    <value>Aganippe Ansturm</value>
+    <comment>Commodity AganippeRush</comment>
+  </data>
   <data name="AgriculturalMedicines" xml:space="preserve">
     <value>Tiermedizin</value>
     <comment>Commodity AgriculturalMedicines</comment>
@@ -322,7 +325,10 @@
     <value>Burnham Galle-Destillat</value>
     <comment>Commodity BurnhamBileDistillate</comment>
   </data>
-  
+  <data name="CD_75KittenBrandCoffee" xml:space="preserve">
+    <value>CD-75 Markenkaffee Kätzchen</value>
+    <comment>Commodity CD_75KittenBrandCoffee</comment>
+  </data>
   <data name="CentauriMegaGin" xml:space="preserve">
     <value>Centauri Mega Gin</value>
     <comment>Commodity CentauriMegaGin</comment>
@@ -471,7 +477,10 @@
     <value>Erdrelikte</value>
     <comment>Commodity EarthRelics</comment>
   </data>
-  
+  <data name="EdenApplesOfAerial" xml:space="preserve">
+    <value>Eden Luftäpfel</value>
+    <comment>Commodity EdenApplesOfAerial</comment>
+  </data>
   <data name="EleuThermals" xml:space="preserve">
     <value>Eleu Thermik</value>
     <comment>Commodity EleuThermals</comment>
@@ -740,7 +749,10 @@
     <value>Kongga Bier</value>
     <comment>Commodity KonggaAle</comment>
   </data>
-  
+  <data name="KoroKungPellets" xml:space="preserve">
+    <value>Koro Kung Pellets</value>
+    <comment>Commodity KoroKungPellets</comment>
+  </data>
   <data name="Landmines" xml:space="preserve">
     <value>Landminen</value>
     <comment>Commodity Landmines</comment>
@@ -865,10 +877,22 @@
     <value>Moissanit</value>
     <comment>Commodity Moissanite</comment>
   </data>
-  
-  
-  
-  
+  <data name="MokojingBeastFeast" xml:space="preserve">
+    <value>Mokojing Tierfest</value>
+    <comment>Commodity MokojingBeastFeast</comment>
+  </data>
+  <data name="MomusBogSpaniel" xml:space="preserve">
+    <value>Momus Wackeldackel</value>
+    <comment>Commodity MomusBogSpaniel</comment>
+  </data>
+  <data name="MotronaExperienceJelly" xml:space="preserve">
+    <value>Motrona Erlebnisgelee</value>
+    <comment>Commodity MotronaExperienceJelly</comment>
+  </data>
+  <data name="MukusubiiChitin_Os" xml:space="preserve">
+    <value>Mukusubii Chitin-Os</value>
+    <comment>Commodity MukusubiiChitin_Os</comment>
+  </data>
   <data name="MulachiGiantFungus" xml:space="preserve">
     <value>Mulachi Riesenpilz</value>
     <comment>Commodity MulachiGiantFungus</comment>
@@ -913,7 +937,10 @@
     <value>Njangari Sättel</value>
     <comment>Commodity NjangariSaddles</comment>
   </data>
-  
+  <data name="NonEuclidianExotanks" xml:space="preserve">
+    <value>Nicht euklidische Außenpanzerungen</value>
+    <comment>Commodity NonEuclidianExotanks</comment>
+  </data>
   <data name="NonLethalWeapons" xml:space="preserve">
     <value>Nichttödliche Waffen</value>
     <comment>Commodity NonLethalWeapons</comment>
@@ -1078,7 +1105,10 @@
     <value>Sanuma dekoratives Fleisch</value>
     <comment>Commodity SanumaDecorativeMeat</comment>
   </data>
-  
+  <data name="SAP8CoreContainer" xml:space="preserve">
+    <value>8 Kern Saft Behälter</value>
+    <comment>Commodity SAP8CoreContainer</comment>
+  </data>
   <data name="SaxonWine" xml:space="preserve">
     <value>Saxon Wein</value>
     <comment>Commodity SaxonWine</comment>
@@ -1203,7 +1233,10 @@
     <value>Landanreicherungssysteme</value>
     <comment>Commodity TerrainEnrichmentSystems</comment>
   </data>
-  
+  <data name="TerraMaterBloodBores" xml:space="preserve">
+    <value>Terra Mater Blutsenkung</value>
+    <comment>Commodity TerraMaterBloodBores</comment>
+  </data>
   <data name="Thallium" xml:space="preserve">
     <value>Thallium</value>
     <comment>Commodity Thallium</comment>
@@ -1232,7 +1265,10 @@
     <value>Zeitkapsel</value>
     <comment>Commodity TimeCapsule</comment>
   </data>
-  
+  <data name="TiolceWaste2PasteUnits" xml:space="preserve">
+    <value>Tiolce Recyclingpaste</value>
+    <comment>Commodity TiolceWaste2PasteUnits</comment>
+  </data>
   <data name="Titanium" xml:space="preserve">
     <value>Titan</value>
     <comment>Commodity Titanium</comment>
@@ -1385,7 +1421,10 @@
     <value>Witchhaul Kobe-Rindfleisch</value>
     <comment>Commodity WitchhaulKobeBeef</comment>
   </data>
-  
+  <data name="WolfFesh" xml:space="preserve">
+    <value>Wolf Fest</value>
+    <comment>Commodity WolfFesh</comment>
+  </data>
   <data name="WreckageComponents" xml:space="preserve">
     <value>Bergungsfähige Wrackteile</value>
     <comment>Commodity WreckageComponents</comment>
@@ -1447,7 +1486,7 @@
     <comment>Commodity aislingmediamaterials</comment>
   </data>
   <data name="undergroundsupport" xml:space="preserve">
-    <value>Schwarzmarkt</value>
+    <value>Untergrund-Unterstützung</value>
     <comment>Commodity undergroundsupport</comment>
   </data>
   <data name="torvalcommercialcontracts" xml:space="preserve">
