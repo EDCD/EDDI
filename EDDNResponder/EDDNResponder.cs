@@ -222,12 +222,12 @@ namespace EDDNResponder
                     }
                     EDDNCommodity eddnCommodity = new EDDNCommodity();
                     eddnCommodity.name = commodity.definition.edname;
-                    eddnCommodity.meanPrice = (int)commodity.definition.avgprice;
-                    eddnCommodity.buyPrice = (int)commodity.buyprice;
-                    eddnCommodity.stock = (int)commodity.stock;
+                    eddnCommodity.meanPrice = commodity.definition.avgprice;
+                    eddnCommodity.buyPrice = commodity.buyprice ?? 0;
+                    eddnCommodity.stock = commodity.stock ?? 0;
                     eddnCommodity.stockBracket = commodity.stockbracket;
-                    eddnCommodity.sellPrice = (int)commodity.sellprice;
-                    eddnCommodity.demand = (int)commodity.demand;
+                    eddnCommodity.sellPrice = commodity.sellprice ?? 0;
+                    eddnCommodity.demand = commodity.demand ?? 0;
                     eddnCommodity.demandBracket = commodity.demandbracket;
                     if (commodity.StatusFlags.Count > 0)
                     {
@@ -248,7 +248,7 @@ namespace EDDNResponder
                         data.Add("economies", eddnEconomies);
                     }
                     data.Add("commodities", eddnCommodities);
-                    if (EDDI.Instance.CurrentStation.prohibited.Count > 0)
+                    if (EDDI.Instance.CurrentStation.prohibited?.Count > 0)
                     {
                         data.Add("prohibited", EDDI.Instance.CurrentStation.prohibited);
                     }
