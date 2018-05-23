@@ -111,6 +111,9 @@ namespace Eddi
         public string Vehicle { get; private set; } = Constants.VEHICLE_SHIP;
         public Ship CurrentShip { get; set; }
 
+        // A local copy of our current status
+        private Status status { get; set; } = new Status();
+
         public ObservableConcurrentDictionary<string, object> State = new ObservableConcurrentDictionary<string, object>();
 
         /// <summary>
@@ -872,7 +875,7 @@ namespace Eddi
         {
             updateCurrentSystem(theEvent.system);
 
-            if (CurrentStation != null && CurrentStation.name == theEvent.station)
+            if (CurrentStation != null && CurrentStation.name == theEvent.station && status.docked)
             {
                 // We are already at this station; nothing to do
                 Logging.Debug("Already at station " + theEvent.station);
@@ -1130,6 +1133,19 @@ namespace Eddi
             {
                 // In this case body == station 
                 CurrentStellarBody = null;
+
+                // Update the station 	
+                Logging.Debug("Now at station " + theEvent.body);
+                Station station = CurrentStarSystem.stations.Find(s => s.name == theEvent.body);
+                if (station == null)
+                {
+                    // This station is unknown to us, might not be in EDDB or we might not have connectivity.  Use a placeholder 	
+                    station = new Station();
+                    station.name = theEvent.body;
+                    station.systemname = theEvent.system;
+                }
+
+                CurrentStation = station;
             }
             else if (theEvent.body != null)
             {
@@ -1309,6 +1325,7 @@ namespace Eddi
 
         private bool eventStatus(StatusEvent theEvent)
         {
+            status = theEvent.status;
             if (theEvent.status.supercruise == true)
             {
                 Environment = Constants.ENVIRONMENT_SUPERCRUISE;
