@@ -98,6 +98,25 @@
 	<resheader name="writer">
 		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
 	</resheader>
+  <data name="Alrai" xml:space="preserve">
+    <value>ˈalraɪ</value>
+    <comment>Optional phonetic pronunciation for Alrai</comment>
+  </data>
+  
+  
+  
+  <data name="Bei" xml:space="preserve">
+    <value>beɪ</value>
+    <comment>Optional phonetic pronunciation for Bei</comment>
+  </data>
+  <data name="BeiDou_Bei" xml:space="preserve">
+    <value>beɪ</value>
+    <comment>Optional phonetic pronunciation for BeiDou_Bei</comment>
+  </data>
+  <data name="BeiDou_Dou" xml:space="preserve">
+    <value>ˈduː</value>
+    <comment>Optional phonetic pronunciation for BeiDou_Dou</comment>
+  </data>
   
   
   
@@ -131,23 +150,31 @@
   
   
   
+  <data name="Pru" xml:space="preserve">
+    <value>pruː</value>
+    <comment>Optional phonetic pronunciation for Pru</comment>
+  </data>
+  
+  <data name="PruEuq_Pru" xml:space="preserve">
+    <value>pruː</value>
+    <comment>Optional phonetic pronunciation for PruEuq_Pru</comment>
+  </data>
+  
+  <data name="Rho" xml:space="preserve">
+    <value>rəʊ</value>
+    <comment>Optional phonetic pronunciation for Rho</comment>
+  </data>
+  
+  <data name="RhoOphiuchi_Rho" xml:space="preserve">
+    <value>rəʊ</value>
+    <comment>Optional phonetic pronunciation for RhoOphiuchi_Rho</comment>
+  </data>
   
   
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="Shui" xml:space="preserve">
+    <value>ˈʃuːi</value>
+    <comment>Optional phonetic pronunciation for Shui</comment>
+  </data>
   
   
   
