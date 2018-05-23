@@ -117,13 +117,40 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="Clean" xml:space="preserve">
+    <value>Sauber</value>
+    <comment>LegalStatus - Clean</comment>
+  </data>
+  <data name="Enemy" xml:space="preserve">
+    <value>Feind</value>
+    <comment>LegalStatus - Enemy</comment>
+  </data>
+  <data name="Hunter" xml:space="preserve">
+    <value>Jäger</value>
+    <comment>LegalStatus - Hunter</comment>
+  </data>
+  <data name="Lawless" xml:space="preserve">
+    <value>Gesetzlos</value>
+    <comment>LegalStatus - Lawless</comment>
+  </data>
+  <data name="None" xml:space="preserve">
+    <value>Keiner</value>
+    <comment>LegalStatus - None</comment>
+  </data>
+  <data name="Unknown" xml:space="preserve">
+    <value>Unbekannt</value>
+    <comment>LegalStatus - Unknown</comment>
+  </data>
+  <data name="Wanted" xml:space="preserve">
+    <value>Gesucht</value>
+    <comment>LegalStatus - Wanted</comment>
+  </data>
+  <data name="WantedEnemy" xml:space="preserve">
+    <value>Gesuchter Feind</value>
+    <comment>LegalStatus - WantedEnemy</comment>
+  </data>
+  <data name="Warrant" xml:space="preserve">
+    <value>Bevollmächtigt</value>
+    <comment>LegalStatus - Warrant</comment>
+  </data>
 </root>
