@@ -220,7 +220,7 @@ namespace Utilities
 
             if (isUniqueMessage(exception.GetType() + ": " + exception.Message, trace))
             {
-                Logging.Info("Reporting unhandled exception, anonymous ID " + RollbarLocator.RollbarInstance.Config.Person.Id);
+                Logging.Info("Reporting unhandled exception, anonymous ID " + RollbarLocator.RollbarInstance.Config.Person.Id + ":" + exception);
                 RollbarLocator.RollbarInstance.Error(exception, trace);
             }
         }
