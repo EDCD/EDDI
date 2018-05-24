@@ -97,12 +97,18 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
+  <data name="Agri" xml:space="preserve">
+    <value>Mezőgazdaság</value>
+    <comment>Economy type Agri</comment>
+  </data>
   <data name="Colony" xml:space="preserve">
     <value>Kolónia</value>
     <comment>Economy type Colony</comment>
   </data>
-  
+  <data name="Extraction" xml:space="preserve">
+    <value>Kitermelés</value>
+    <comment>Economy type Extraction</comment>
+  </data>
   
   <data name="Industrial" xml:space="preserve">
     <value>Ipari</value>
@@ -141,5 +147,8 @@
     <value>Javítás</value>
     <comment>Economy type Repair</comment>
   </data>
-  
+  <data name="Damaged" xml:space="preserve">
+    <value>Sérült</value>
+    <comment>Economy type Damaged</comment>
+  </data>
 </root>
