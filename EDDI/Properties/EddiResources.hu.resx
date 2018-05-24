@@ -207,7 +207,11 @@
     <value>Frissítés letöltésének kezdése.</value>
   </data>
   
-  
+  <data name="already_running_alert_body_text" xml:space="preserve">
+    <value>Csak egy EDDI futhatható egyszerre.
+
+Kérlek zárd be a másikat és próbálkozz újra.</value>
+  </data>
   <data name="already_running_alert_title" xml:space="preserve">
     <value>EDDI már fut</value>
   </data>
@@ -221,5 +225,7 @@
     <value>Automatikus</value>
     <comment>The user's system language</comment>
   </data>
-  
+  <data name="safe_mode" xml:space="preserve">
+    <value>Biztonsági mód - frissítés szükséges.</value>
+  </data>
 </root>

@@ -110,7 +110,10 @@
     <value>Elhagyatott bejegyzés</value>
     <comment>Data scan type AbandonedDataLog</comment>
   </data>
-  
+  <data name="WreckedShip" xml:space="preserve">
+    <value>Hajóroncs</value>
+    <comment>Data scan type WreckedShip</comment>
+  </data>
   
   
   

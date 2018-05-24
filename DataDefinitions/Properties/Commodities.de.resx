@@ -358,7 +358,7 @@
     <comment>Commodity ChateauDeAegaeon</comment>
   </data>
   <data name="ChemicalWaste" xml:space="preserve">
-    <value>Chemieabfall</value>
+    <value>Chemiemüll</value>
     <comment>Commodity ChemicalWaste</comment>
   </data>
   <data name="CherbonesBloodCrystals" xml:space="preserve">
@@ -1194,7 +1194,7 @@
     <comment>Commodity SyntheticMeat</comment>
   </data>
   <data name="SyntheticReagents" xml:space="preserve">
-    <value>Synthetische Reagenzien</value>
+    <value>Synthetische Reagenzstoffe</value>
     <comment>Commodity SyntheticReagents</comment>
   </data>
   <data name="Taaffeite" xml:space="preserve">
