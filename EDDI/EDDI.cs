@@ -111,9 +111,6 @@ namespace Eddi
         public string Vehicle { get; private set; } = Constants.VEHICLE_SHIP;
         public Ship CurrentShip { get; set; }
 
-        // A local copy of our current status
-        private Status status { get; set; } = new Status();
-
         public ObservableConcurrentDictionary<string, object> State = new ObservableConcurrentDictionary<string, object>();
 
         /// <summary>
@@ -797,13 +794,12 @@ namespace Eddi
                 CurrentStellarBody = null;
 
                 // Force first location update even if it matches with 'firstLocation' bool
-                if (!firstLocation && (CurrentStation != null && CurrentStation.name == theEvent.station))
+                if (!firstLocation && CurrentStation.name == theEvent.station)
                 {
                     // We are already at this station; nothing to do
                     Logging.Debug("Already at station " + theEvent.station);
                     return false;
                 }
-                firstLocation = false;
 
                 // Update the station
                 Logging.Debug("Now at station " + theEvent.station);
@@ -840,13 +836,12 @@ namespace Eddi
                 CurrentStation = null;
 
                 // Force first location update even if it matches with 'firstLocation' bool 
-                if (!firstLocation && (CurrentStellarBody != null && CurrentStellarBody.name == theEvent.body))
+                if (!firstLocation && CurrentStellarBody.name == theEvent.body)
                 {
                     // We are already at this body; nothing to do 
                     Logging.Debug("Already at body " + theEvent.body);
                     return false;
                 }
-                firstLocation = false;
 
                 // Update the body 
                 Logging.Debug("Now at body " + theEvent.body);
@@ -875,7 +870,7 @@ namespace Eddi
         {
             updateCurrentSystem(theEvent.system);
 
-            if (CurrentStation != null && CurrentStation.name == theEvent.station && status.docked)
+            if (!firstLocation && CurrentStation.name == theEvent.station)
             {
                 // We are already at this station; nothing to do
                 Logging.Debug("Already at station " + theEvent.station);
@@ -957,6 +952,7 @@ namespace Eddi
                 updateThread.Start();
             }
 
+            firstLocation = false;
             return true;
         }
 
@@ -964,7 +960,7 @@ namespace Eddi
         {
             // Call refreshProfile() to ensure that our ship is up-to-date
             refreshProfile();
-
+            firstLocation = false;
             return true;
         }
 
@@ -1005,7 +1001,7 @@ namespace Eddi
             // Remove information about the current station and stellar body 
             CurrentStation = null;
             CurrentStellarBody = null;
-
+            firstLocation = false;
             return true;
         }
 
@@ -1111,6 +1107,7 @@ namespace Eddi
             // After jump has completed we are always in supercruise
             Environment = Constants.ENVIRONMENT_SUPERCRUISE;
 
+            firstLocation = false;
             return passEvent;
         }
 
@@ -1122,6 +1119,7 @@ namespace Eddi
             // We are in the ship
             Vehicle = Constants.VEHICLE_SHIP;
 
+            firstLocation = false;
             return true;
         }
 
@@ -1167,6 +1165,7 @@ namespace Eddi
             }
 
             updateCurrentSystem(theEvent.system);
+            firstLocation = false;
             return true;
         }
 
@@ -1325,7 +1324,6 @@ namespace Eddi
 
         private bool eventStatus(StatusEvent theEvent)
         {
-            status = theEvent.status;
             if (theEvent.status.supercruise == true)
             {
                 Environment = Constants.ENVIRONMENT_SUPERCRUISE;
