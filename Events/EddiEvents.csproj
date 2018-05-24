@@ -69,6 +69,7 @@
     <Compile Include="FighterRebuiltEvent.cs" />
     <Compile Include="JetConeDamageEvent.cs" />
     <Compile Include="MaterialTradedEvent.cs" />
+    <Compile Include="MissionsEvent.cs" />
     <Compile Include="ShipTargetedEvent.cs" />
     <Compile Include="ShutdownEvent.cs" />
     <Compile Include="SilentRunningEvent.cs" />

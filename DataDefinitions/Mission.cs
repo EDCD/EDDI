@@ -20,8 +20,8 @@ namespace EddiDataDefinitions
         public string type;
 
         // Status of the mission - active, failed, complete
-        private string _status;
-		public string status
+        private MissionStatus _status;
+		public MissionStatus status
         {
             get
             {
@@ -35,9 +35,23 @@ namespace EddiDataDefinitions
                     NotifyPropertyChanged("status");
                 }
             }
-        }		
+        }
 
-		// The system in which the mission was accepted
+        [JsonIgnore]
+        private MissionStatus _missionStatusDef;
+        [JsonIgnore]
+        public MissionStatus missionStatusDef
+        {
+            get => _missionStatusDef;
+            set
+            {
+                _missionStatusDef = value;
+                NotifyPropertyChanged("localizedStatus");
+            }
+        }
+        public string localizedStatus => missionStatusDef?.localizedName ?? "unknown mission status";
+
+        // The system in which the mission was accepted
         public string originsystem { get; set; }
 
 		// The station in which the mission was accepted
@@ -114,13 +128,13 @@ namespace EddiDataDefinitions
 
         // Constructor for 'Missions' event
         [JsonConstructor]
-        public Mission(long MissionId, string Name, double Expires, string Status)
+        public Mission(long MissionId, string Name, decimal Expires, MissionStatus Status)
 		{
 			this.missionid = MissionId;
 			this. name = Name;
 			this.type = Name.Split('_').ElementAt(1).ToLowerInvariant();
-			this.expiry = DateTime.Now.AddSeconds(Expires);
-			this.status = Status;
+			this.expiry = DateTime.Now.AddSeconds((double)Expires);
+			this.missionStatusDef = Status;
 		}
 
         public event PropertyChangedEventHandler PropertyChanged;

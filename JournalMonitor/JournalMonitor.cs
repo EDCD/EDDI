@@ -2318,6 +2318,39 @@ namespace EddiJournalMonitor
                                 handled = true;
                                 break;
                             }
+                        case "Missions":
+                            {
+                                List<Mission> missions = new List<Mission>();
+                                object val;
+
+                                foreach (MissionStatus missionStatus in Enum.GetValues(typeof(MissionStatus)))
+                                {
+                                    string status = Enum.GetName(typeof(MissionStatus), missionStatus);
+                                    data.TryGetValue(status, out val);
+                                    List<object> missionList = (List<object>)val;
+                                    foreach (object mission in missionList)
+                                    {
+                                        Dictionary<string, object> missionProperties = (Dictionary<string, object>)mission;
+                                        long missionId = JsonParsing.getLong(missionProperties, "MissionID");
+                                        string name = JsonParsing.getString(missionProperties, "Name");
+                                        decimal expires = JsonParsing.getDecimal(missionProperties, "Expires");
+                                        Mission newMission = new Mission(missionId, name, expires, missionStatus);
+
+                                        if (newMission == null)
+                                        {
+                                            // Mal-formed mission
+                                            Logging.Report("Bad mission entry", JsonConvert.SerializeObject(mission));
+                                        }
+                                        else
+                                        {
+                                            missions.Add(newMission);
+                                        }
+                                    }
+                                }
+                                events.Add(new MissionsEvent(timestamp, missions) { raw = line });
+                                handled = true;
+                            }
+                            break;
                         case "MissionAccepted":
                             {
                                 data.TryGetValue("MissionID", out object val);

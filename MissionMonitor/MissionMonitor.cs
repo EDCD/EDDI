@@ -346,15 +346,12 @@ namespace EddiMissionMonitor
         {
             lock (missionsLock)
             {
-                if (missionid != null)
+                for (int i = 0; i < missions.Count; i++)
                 {
-                    for (int i = 0; i < missions.Count; i++)
+                    if (missions[i].missionid == missionid)
                     {
-                        if (missions[i].missionid == missionid)
-                        {
-                            missions.RemoveAt(i);
-                            break;
-                        }
+                        missions.RemoveAt(i);
+                        break;
                     }
                 }
             }
@@ -363,10 +360,6 @@ namespace EddiMissionMonitor
 
         private Mission GetMissionWithMissionId(long missionid)
         {
-            if (missionid == null)
-            {
-                return null;
-            }
             return missions.FirstOrDefault(m => m.missionid == missionid);
         }
 

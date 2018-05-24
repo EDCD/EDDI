@@ -85,6 +85,7 @@
     <Compile Include="LegalStatus.cs" />
     <Compile Include="MaterialCategory.cs" />
     <Compile Include="Mission.cs" />
+    <Compile Include="MissionStatus.cs" />
     <Compile Include="Properties\CombatRatings.es.Designer.cs">
       <DependentUpon>CombatRatings.es.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -299,6 +300,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>CommodityCategories.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\MissionStatus.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MissionStatus.resx</DependentUpon>
     </Compile>
     <Compile Include="Properties\Modules.es.Designer.cs">
       <DependentUpon>Modules.es.resx</DependentUpon>
@@ -746,6 +752,10 @@
     <EmbeddedResource Include="Properties\CommodityCategories.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>CommodityCategories.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\MissionStatus.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>MissionStatus.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Modules.de.resx" />
     <EmbeddedResource Include="Properties\Modules.es.resx">
