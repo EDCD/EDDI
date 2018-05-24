@@ -1,5 +1,8 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.Runtime.Serialization;
 
 namespace EddiDataDefinitions
 {
@@ -22,7 +25,10 @@ namespace EddiDataDefinitions
             {
                 if (_material != value)
                 {
-                    _material = value;
+                    Material My_material = Material.FromName(value) ?? Material.FromEDName(value);
+                    _material = My_material?.localizedName ?? value;
+                    edname = My_material?.edname ?? value;
+                    Category = My_material?.category.localizedName;
                     NotifyPropertyChanged("material");
                 }
             }
@@ -116,21 +122,35 @@ namespace EddiDataDefinitions
                 }
             }
         }
+        
+        [JsonExtensionData]
+        private IDictionary<string, JToken> _additionalData = new Dictionary<string, JToken>();
 
+        [OnDeserialized]
+        private void OnDeserialized(StreamingContext context)
+        {
+            if(material == null)
+            {
+                string materialName = (string)_additionalData["material"];
+                material = materialName;
+            }
+            _additionalData = null;
+        }
+        
         public MaterialAmount(Material material, int amount)
         {
             Material My_material = Material.FromEDName(material.edname);
-            this.material = My_material.invariantName;
-            this.edname = My_material.edname;
+            this.material = My_material?.invariantName;
+            this.edname = My_material?.edname;
             this.amount = amount;
-            this.Category = My_material.category.localizedName;
+            this.Category = My_material?.category.localizedName;
         }
 
         public MaterialAmount(Material material, int amount, int? minimum, int? desired, int? maximum)
         {
             Material My_material = Material.FromEDName(material.edname);
-            this.material = My_material.localizedName;
-            this.edname = My_material.edname;
+            this.material = My_material?.localizedName;
+            this.edname = My_material?.edname;
             this.amount = amount;
             this.minimum = minimum;
             this.desired = desired;
@@ -142,13 +162,13 @@ namespace EddiDataDefinitions
         public MaterialAmount(string edname, int amount, int? minimum, int? desired, int? maximum)
         {
             Material My_material = Material.FromEDName(edname);
-            this.material = My_material.localizedName;
-            this.edname = My_material.edname;
+            this.material = My_material?.localizedName;
+            this.edname = My_material?.edname;
             this.amount = amount;
             this.minimum = minimum;
             this.desired = desired;
             this.maximum = maximum;
-            this.Category = My_material.category.localizedName;
+            this.Category = My_material?.category.localizedName;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

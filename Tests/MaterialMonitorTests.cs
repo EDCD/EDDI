@@ -1,9 +1,9 @@
-﻿using System.Resources;
-using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using EddiDataDefinitions;
+﻿using EddiDataDefinitions;
 using EddiMaterialMonitor;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Newtonsoft.Json;
 using Rollbar;
+using System.Collections.Generic;
 
 namespace UnitTests
 {
@@ -51,6 +51,42 @@ namespace UnitTests
             Assert.AreEqual(50, config.materials[1].desired);
             Assert.IsNull(config.materials[1].minimum);
             Assert.AreEqual(EddiDataDefinitions.Properties.MaterialCategories.Element, Material.FromEDName(config.materials[1].edname).category.localizedName);
+        }
+
+        [TestMethod]
+        public void TestBlueprintMaterialsFromJson()
+        {
+            string json = @"{
+	""Thermal resistant Bulkheads grade 5"": {
+
+        ""materials"": [{
+				""amount"": 1,
+				""material"": ""Proto Heat Radiators""
+
+            }, {
+				""amount"": 1,
+				""material"": ""Molybdenum""
+			}, {
+				""amount"": 1,
+				""material"": ""Phase Alloys""
+			}
+		]
+	}
+}";
+            Dictionary<string, BlueprintMaterials> blueprints = JsonConvert.DeserializeObject<Dictionary<string, BlueprintMaterials>>(json);
+            Assert.AreEqual(1, blueprints.Count);
+        }
+
+        [TestMethod]
+        public void TestMaterialAmountFromJson()
+        {
+            string json = @"{
+				""amount"": 1,
+                ""material"": ""Molybdenum""
+            }";
+            MaterialAmount materialAmount = JsonConvert.DeserializeObject<MaterialAmount>(json);
+            Assert.AreEqual(1, materialAmount.amount);
+            Assert.AreEqual("Molybdenum", materialAmount.material);
         }
     }
 }
