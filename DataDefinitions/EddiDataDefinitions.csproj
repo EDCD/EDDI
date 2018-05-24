@@ -84,6 +84,7 @@
     <Compile Include="CommodityCategory.cs" />
     <Compile Include="LegalStatus.cs" />
     <Compile Include="MaterialCategory.cs" />
+    <Compile Include="Mission.cs" />
     <Compile Include="Properties\CombatRatings.es.Designer.cs">
       <DependentUpon>CombatRatings.es.resx</DependentUpon>
       <AutoGen>True</AutoGen>
