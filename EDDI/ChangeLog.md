@@ -3,8 +3,16 @@
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
 ### 3.0.1-b4
+  * Core
+    * Fixed a great many issues arising from changes necessary for internationalization: data written by old code was not being fully understood by new code. This manifested in various breakage.
   * Speech Responder 
     * Added `Ship targeted` event.
+    * Fixed `Docked` event not firing.
+    * Fixed planet mass and radius not being reported.
+    * Fixed inconsistencises in ship name pronunciation in the default personality scripts.
+  * Localization
+    * Updated the localisations for French, Spanish, German, Hungarian and Italian. 
+      * You can join up at https://crowdin.com/project/eddi to help.
 
 ### 3.0.1-b3
   * Core 
