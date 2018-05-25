@@ -106,6 +106,15 @@ namespace EddiMissionMonitor.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Type.
+        /// </summary>
+        public static string header_type {
+            get {
+                return ResourceManager.GetString("header_type", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Track information on your missions..
         /// </summary>
         public static string mission_monitor_desc {

@@ -27,7 +27,7 @@
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
-                <DataGridTextColumn Header="{x:Static resx:MissionMonitor.header_type}" Width="*" IsReadOnly="True" Binding="{Binding Path=localizedCategory}">
+                <DataGridTextColumn Header="{x:Static resx:MissionMonitor.header_type}" Width="*" IsReadOnly="True" Binding="{Binding Path=localizedType}">
                     <DataGridTextColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader">
                             <Setter Property="HorizontalContentAlignment" Value="Center" />
@@ -40,7 +40,7 @@
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
-                <utility:DataGridNumericColumn Header="{x:Static resx:MissionMonitor.header_price}" Width="120" IsReadOnly="True" Binding="{Binding Path=price}">
+                <utility:DataGridNumericColumn Header="{x:Static resx:MissionMonitor.header_status}" Width="*" IsReadOnly="True" Binding="{Binding Path=loacalizedStatus}">
                     <DataGridTextColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader">
                             <Setter Property="HorizontalContentAlignment" Value="Center" />
@@ -53,7 +53,7 @@
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </utility:DataGridNumericColumn>
-                <utility:DataGridNumericColumn Header="{x:Static resx:MissionMonitor.header_haulage}" Width="80" Binding="{Binding Path=haulage, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, TargetNullValue={x:Static System:String.Empty}}">
+                <utility:DataGridNumericColumn Header="{x:Static resx:MissionMonitor.header_destinationsystem}" Width="*" IsReadOnly="True" Binding="{Binding Path=destinationsystem}">
                     <DataGridTextColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader">
                             <Setter Property="HorizontalContentAlignment" Value="Center" />
@@ -66,7 +66,20 @@
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </utility:DataGridNumericColumn>
-                <utility:DataGridNumericColumn Header="{x:Static resx:MissionMonitor.header_owned}" Width="80" Binding="{Binding Path=owned, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, TargetNullValue={x:Static System:String.Empty}}">
+                <utility:DataGridNumericColumn Header="{x:Static resx:MissionMonitor.header_destinationstation}" Width="*" IsReadOnly="True" Binding="{Binding Path=destinationstation}">
+                    <DataGridTextColumn.HeaderStyle>
+                        <Style TargetType="DataGridColumnHeader">
+                            <Setter Property="HorizontalContentAlignment" Value="Center" />
+                        </Style>
+                    </DataGridTextColumn.HeaderStyle>
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="TextAlignment" Value="Center" />
+                            <Setter Property="Margin" Value="5, 0" />
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </utility:DataGridNumericColumn>
+                <utility:DataGridNumericColumn Header="{x:Static resx:MissionMonitor.header_expiry}" Width="*" IsReadOnly="True" Binding="{Binding Path=expiry}">
                     <DataGridTextColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader">
                             <Setter Property="HorizontalContentAlignment" Value="Center" />
