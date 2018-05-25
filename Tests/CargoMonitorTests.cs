@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Eddi;
 using EddiCargoMonitor;
+using EddiMissionMonitor;
 using EddiDataDefinitions;
 using EddiEvents;
 using EddiJournalMonitor;

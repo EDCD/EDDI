@@ -69,7 +69,6 @@
     <Compile Include="FighterRebuiltEvent.cs" />
     <Compile Include="JetConeDamageEvent.cs" />
     <Compile Include="MaterialTradedEvent.cs" />
-    <Compile Include="MissionsEvent.cs" />
     <Compile Include="ShipTargetedEvent.cs" />
     <Compile Include="ShutdownEvent.cs" />
     <Compile Include="SilentRunningEvent.cs" />
@@ -127,9 +126,6 @@
     <Compile Include="ModificationCraftedEvent.cs" />
     <Compile Include="MaterialDonatedEvent.cs" />
     <Compile Include="SynthesisedEvent.cs" />
-    <Compile Include="MissionAbandonedEvent.cs" />
-    <Compile Include="MissionCompletedEvent.cs" />
-    <Compile Include="MissionAcceptedEvent.cs" />
     <Compile Include="MissionRedirectedEvent.cs" />
     <Compile Include="SearchAndRescueEvent.cs" />
     <Compile Include="JumpingEvent.cs" />

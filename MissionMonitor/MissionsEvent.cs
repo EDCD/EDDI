@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using EddiDataDefinitions;
+﻿using EddiDataDefinitions;
+using EddiEvents;
 using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
 
-namespace EddiEvents
+
+namespace EddiMissionMonitor
 {
     public class MissionsEvent : Event
     {

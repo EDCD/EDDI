@@ -202,7 +202,11 @@ namespace EddiMissionMonitor
 
         public void _handleMissionAbandonedEvent(MissionAbandonedEvent @event)
         {
-
+            Mission mission = missions.FirstOrDefault(m => m.missionid == @event.missionid);
+            if (mission != null)
+            {
+                _RemoveMissionWithMissionId(@event.missionid);
+            }
         }
 
         private void handleMissionAcceptedEvent(MissionAcceptedEvent @event)
@@ -216,31 +220,41 @@ namespace EddiMissionMonitor
 
         public void _handleMissionAcceptedEvent(MissionAcceptedEvent @event)
         {
-            string type = @event.name.Split('_').ElementAtOrDefault(1).ToLowerInvariant();
-            switch (type)
-            {
-                case "altruism":
-                case "collect":
-                case "delivery":
-                case "mining":
-                case "piracy":
-                case "rescue":
-                case "salvage":
-                case "smuggle":
-                    {
+            MissionStatus status = MissionStatus.FromEDName("Active");
+            Mission mission = new Mission(@event.missionid ?? 0, @event.name, @event.expiry ?? DateTime.MaxValue, status);
 
-                    }
-                    break;
-            }
+            // Common parameters
+            mission.amount = @event.amount ?? 0;
+            mission.faction = @event.faction;
+            mission.influence = @event.influence;
+            mission.reputation = @event.reputation;
+            mission.reward = @event.reward ?? 0;
+            mission.wing = @event.wing;
+
+            // Set mission origin to to the current system & station
+            mission.originsystem = EDDI.Instance?.CurrentStarSystem?.name;
+            mission.originstation = EDDI.Instance?.CurrentStation?.name;
+
+            // Missions with destinations
+            mission.destinationsystem = @event.destinationsystem;
+            mission.destinationstation = @event.destinationstation;
+
+            // Missions with targets
+            mission.target = @event.target;
+            mission.targettype = @event.targettype;
+            mission.targetfaction = @event.targetfaction;
+
+            // Missions with passengers
+            mission.passengertype = @event.passengertype;
+            mission.passengervips = @event.passengervips;
         }
 
         private void handleMissionCompletedEvent(MissionCompletedEvent @event)
         {
-            if (@event.commodityDefinition != null || @event.commodityrewards != null)
-            {
-                _handleMissionCompletedEvent(@event);
-                writeMissions();
-            }
+
+            _handleMissionCompletedEvent(@event);
+            writeMissions();
+
         }
 
         public void _handleMissionCompletedEvent(MissionCompletedEvent @event)

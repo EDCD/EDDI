@@ -17,7 +17,8 @@ namespace EddiDataDefinitions
         public string name;
 
         // The type of mission
-        public string type;
+        public MissionType type;
+        public string localizedType => type?.localizedName ?? "Unknown";
 
         // Status of the mission - active, failed, complete
         private MissionStatus _status;
@@ -32,24 +33,11 @@ namespace EddiDataDefinitions
                 if (_status != value)
                 {
                     _status = value;
-                    NotifyPropertyChanged("status");
+                    NotifyPropertyChanged("localizedStatus");
                 }
             }
         }
-
-        [JsonIgnore]
-        private MissionStatus _missionStatusDef;
-        [JsonIgnore]
-        public MissionStatus missionStatusDef
-        {
-            get => _missionStatusDef;
-            set
-            {
-                _missionStatusDef = value;
-                NotifyPropertyChanged("localizedStatus");
-            }
-        }
-        public string localizedStatus => missionStatusDef?.localizedName ?? "unknown mission status";
+        public string localizedStatus => status?.localizedName ?? "Unknown";
 
         // The system in which the mission was accepted
         public string originsystem { get; set; }
@@ -65,8 +53,7 @@ namespace EddiDataDefinitions
 
         public bool wing { get; set; }
 
-        public int reward { get; set; }
-
+        public long? reward { get; set; }
 
         public string commodity { get; set; }
 
@@ -109,32 +96,25 @@ namespace EddiDataDefinitions
         }
 
         public string passengertype { get; set; }
-
         public bool? passengerwanted { get; set; }
-
-        public int? passengercount { get; set; }
+        public bool? passengervips { get; set; }
 
         public string target { get; set; }
-
         public string targettype { get; set; }
-
         public string targetfaction { get; set; }
-
-        public int? killcount { get; set; }
 
         public DateTime expiry { get; set; }
 
         public Mission() { }
 
-        // Constructor for 'Missions' event
         [JsonConstructor]
-        public Mission(long MissionId, string Name, decimal Expires, MissionStatus Status)
+        public Mission(long MissionId, string Name, DateTime expiry, MissionStatus Status)
 		{
 			this.missionid = MissionId;
 			this. name = Name;
-			this.type = Name.Split('_').ElementAt(1).ToLowerInvariant();
-			this.expiry = DateTime.Now.AddSeconds((double)Expires);
-			this.missionStatusDef = Status;
+            this.type = MissionType.FromEDName(Name.Split('_').ElementAt(1));
+			this.expiry = expiry;
+			this.status = Status;
 		}
 
         public event PropertyChangedEventHandler PropertyChanged;

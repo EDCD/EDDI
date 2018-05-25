@@ -117,24 +117,55 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Element" xml:space="preserve">
-    <value>Element</value>
-    <comment>Material category Element</comment>
+  <data name="Altruism" xml:space="preserve">
+    <value>Altruism</value>
   </data>
-  <data name="Manufactured" xml:space="preserve">
-    <value>Manufactured</value>
-    <comment>Material category Manufactured</comment>
+  <data name="AltruismCredits" xml:space="preserve">
+    <value>Donation</value>
   </data>
-  <data name="Data" xml:space="preserve">
-    <value>Data</value>
-    <comment>Material category Data</comment>
+  <data name="Assassinate" xml:space="preserve">
+    <value>Assassinate</value>
   </data>
-  <data name="Unknown" xml:space="preserve">
-    <value>Unknown</value>
-    <comment>Material category Unknown</comment>
+  <data name="Collect" xml:space="preserve">
+    <value>Collect</value>
   </data>
-  <data name="Encoded" xml:space="preserve">
-    <value>Encoded</value>
-    <comment>Material category Encoded</comment>
+  <data name="Courier" xml:space="preserve">
+    <value>Courier</value>
+  </data>
+  <data name="Delivery" xml:space="preserve">
+    <value>Delivery</value>
+  </data>
+  <data name="Disable" xml:space="preserve">
+    <value>Disable</value>
+  </data>
+  <data name="LongDistanceExpedition" xml:space="preserve">
+    <value>Expedition</value>
+  </data>
+  <data name="Massacre" xml:space="preserve">
+    <value>Massacre</value>
+  </data>
+  <data name="Mining" xml:space="preserve">
+    <value>Mining</value>
+  </data>
+  <data name="PassengerVIP" xml:space="preserve">
+    <value>Transport</value>
+  </data>
+  <data name="Piracy" xml:space="preserve">
+    <value>Piracy</value>
+  </data>
+  <data name="Rescue" xml:space="preserve">
+    <value>Rescue</value>
+  </data>
+  <data name="Salvage" xml:space="preserve">
+    <value>Salvage</value>
+  </data>
+  <data name="Scan" xml:space="preserve">
+    <value>Scan</value>
+  </data>
+  <data name="Sightseeing" xml:space="preserve">
+    <value>Sightseeing</value>
+  </data>
+  <data name="Smuggle" xml:space="preserve">
+    <value>Smuggle</value>
   </data>
 </root>

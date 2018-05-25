@@ -79,6 +79,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Encoded.
+        /// </summary>
+        public static string Encoded {
+            get {
+                return ResourceManager.GetString("Encoded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Manufactured.
         /// </summary>
         public static string Manufactured {

@@ -71,6 +71,10 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MissionAbandonedEvent.cs" />
+    <Compile Include="MissionAcceptedEvent.cs" />
+    <Compile Include="MissionCompletedEvent.cs" />
+    <Compile Include="MissionsEvent.cs" />
     <Compile Include="Properties\MissionMonitor.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

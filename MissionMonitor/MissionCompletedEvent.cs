@@ -1,8 +1,9 @@
-﻿using EddiDataDefinitions;
+﻿using EddiEvents;
+using EddiDataDefinitions;
 using System;
 using System.Collections.Generic;
 
-namespace EddiEvents
+namespace EddiMissionMonitor
 {
     public class MissionCompletedEvent: Event
     {
@@ -45,13 +46,19 @@ namespace EddiEvents
 
         public List<CommodityAmount> commodityrewards { get; }
 
+        public List<MaterialAmount> materialsrewards { get; }
+
         public long donation { get; }
 
         public string rewardCommodity { get; }
 
-        public int rewardAmount { get; }
+        public int rewardCommodityAmount { get; }
 
-        public MissionCompletedEvent(DateTime timestamp, long? missionid, string name, string faction, CommodityDefinition commodity, int? amount, bool communal, long reward, List<CommodityAmount> commodityrewards, long donation) : base(timestamp, NAME)
+        public string rewardMaterial { get; }
+
+        public int rewardMaterialAmount { get; }
+
+        public MissionCompletedEvent(DateTime timestamp, long? missionid, string name, string faction, CommodityDefinition commodity, int? amount, bool communal, long reward, List<CommodityAmount> commodityrewards, List<MaterialAmount> materialsrewards, long donation) : base(timestamp, NAME)
         {
             this.missionid = missionid;
             this.name = name;
@@ -61,12 +68,19 @@ namespace EddiEvents
             this.communal = communal;
             this.reward = reward;
             this.commodityrewards = commodityrewards ?? new List<CommodityAmount>();
+            this.materialsrewards = materialsrewards;
             this.donation = donation;
             if (this.commodityrewards.Count > 0)
             {
                 this.rewardCommodity = commodityrewards[0].commodity;
-                this.rewardAmount = commodityrewards[0].amount;
+                this.rewardMaterialAmount = commodityrewards[0].amount;
             }
+            if (materialsrewards.Count > 0)
+            {
+                this.rewardMaterial = materialsrewards[0].material;
+                this.rewardMaterialAmount = materialsrewards[0].amount;
+            }
+
         }
     }
 }

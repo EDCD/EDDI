@@ -2,6 +2,7 @@
 using EddiDataDefinitions;
 using EddiEvents;
 using EddiJournalMonitor;
+using EddiMissionMonitor;
 using System.Collections.Generic;
 using Rollbar;
 

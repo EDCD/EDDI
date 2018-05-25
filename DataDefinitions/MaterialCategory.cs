@@ -16,12 +16,14 @@ namespace EddiDataDefinitions
 
             Data = new MaterialCategory("Data");
             Element = new MaterialCategory("Element");
+            Encoded = new MaterialCategory("Encoded");
             Manufactured = new MaterialCategory("Manufactured");
             Unknown = new MaterialCategory("Unknown");
         }
 
         public static readonly MaterialCategory Data;
         public static readonly MaterialCategory Element;
+        public static readonly MaterialCategory Encoded;
         public static readonly MaterialCategory Manufactured;
         public static readonly MaterialCategory Unknown;
 

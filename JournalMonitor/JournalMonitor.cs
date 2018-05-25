@@ -2,6 +2,7 @@
 using EddiDataDefinitions;
 using EddiEvents;
 using EddiCargoMonitor;
+using EddiMissionMonitor;
 using EddiShipMonitor;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -2282,7 +2283,7 @@ namespace EddiJournalMonitor
                                 string name = JsonParsing.getString(data, "Name");
                                 string system = JsonParsing.getString(data, "System");
 
-                                events.Add(new MissionAcceptedEvent(timestamp, null, name, system, null, null, null, null, null, null, null, null, null, true, null, null, null) { raw = line });
+                                events.Add(new MissionAcceptedEvent(timestamp, null, name, system, null, null, null, null, null, null, null, null, null, null, true, null, null, null, null, false) { raw = line });
                                 handled = true;
                                 break;
                             }
@@ -2293,7 +2294,7 @@ namespace EddiJournalMonitor
                                 data.TryGetValue("Reward", out object val);
                                 long reward = (val == null ? 0 : (long)val);
 
-                                events.Add(new MissionCompletedEvent(timestamp, null, name, null, null, null, true, reward, null, 0) { raw = line });
+                                events.Add(new MissionCompletedEvent(timestamp, null, name, null, null, null, true, reward, null, null, 0) { raw = line });
                                 handled = true;
                                 break;
                             }
@@ -2334,7 +2335,8 @@ namespace EddiJournalMonitor
                                         long missionId = JsonParsing.getLong(missionProperties, "MissionID");
                                         string name = JsonParsing.getString(missionProperties, "Name");
                                         decimal expires = JsonParsing.getDecimal(missionProperties, "Expires");
-                                        Mission newMission = new Mission(missionId, name, expires, missionStatus);
+                                        DateTime expiry = DateTime.Now.AddSeconds((double)expires);
+                                        Mission newMission = new Mission(missionId, name, expiry, missionStatus);
 
                                         if (newMission == null)
                                         {
@@ -2359,6 +2361,8 @@ namespace EddiJournalMonitor
                                 DateTime? expiry = (val == null ? (DateTime?)null : (DateTime)val);
                                 string name = JsonParsing.getString(data, "Name");
                                 string faction = getFaction(data, "Faction");
+                                int? reward = JsonParsing.getOptionalInt(data, "Reward");
+                                bool wing = JsonParsing.getBool(data, "Wing");
 
                                 // Missions with destinations
                                 string destinationsystem = JsonParsing.getString(data, "DestinationSystem");
@@ -2380,8 +2384,10 @@ namespace EddiJournalMonitor
                                 }
 
                                 // Missions with passengers
+                                int? passengercount = JsonParsing.getOptionalInt(data, "PassengerCount");
                                 string passengertype = JsonParsing.getString(data, "PassengerType");
                                 bool? passengerswanted = JsonParsing.getOptionalBool(data, "PassengerWanted");
+                                bool? passengervips = JsonParsing.getOptionalBool(data, "PassengerVIPs");
                                 data.TryGetValue("PassengerCount", out val);
                                 if (val != null)
                                 {
@@ -2392,7 +2398,7 @@ namespace EddiJournalMonitor
                                 string influence = JsonParsing.getString(data, "Influence");
                                 string reputation = JsonParsing.getString(data, "Reputation");
 
-                                events.Add(new MissionAcceptedEvent(timestamp, missionid, name, faction, destinationsystem, destinationstation, commodity, amount, passengertype, passengerswanted, target, targettype, targetfaction, false, expiry, influence, reputation) { raw = line });
+                                events.Add(new MissionAcceptedEvent(timestamp, missionid, name, faction, destinationsystem, destinationstation, commodity, amount, passengerswanted, passengertype, passengervips, target, targettype, targetfaction, false, expiry, influence, reputation, reward, wing) { raw = line });
                                 handled = true;
                                 break;
                             }
@@ -2426,7 +2432,21 @@ namespace EddiJournalMonitor
                                     }
                                 }
 
-                                events.Add(new MissionCompletedEvent(timestamp, missionid, name, faction, commodity, amount, false, reward, commodityrewards, donation) { raw = line });
+                                List<MaterialAmount> materialsrewards = new List<MaterialAmount>();
+                                data.TryGetValue("MaterialsReward", out val);
+                                List<object> materialsRewardsData = (List<object>)val;
+                                if (commodityRewardsData != null)
+                                {
+                                    foreach (Dictionary<string, object> materialsRewardData in materialsRewardsData)
+                                    {
+                                        CommodityDefinition rewardCommodity = CommodityDefinition.FromName(JsonParsing.getString(materialsRewardData, "Name"));
+                                        materialsRewardData.TryGetValue("Count", out val);
+                                        int count = (int)(long)val;
+                                        commodityrewards.Add(new CommodityAmount(rewardCommodity, count));
+                                    }
+                                }
+
+                                events.Add(new MissionCompletedEvent(timestamp, missionid, name, faction, commodity, amount, false, reward, commodityrewards, materialsrewards, donation) { raw = line });
                                 handled = true;
                                 break;
                             }
