@@ -48,7 +48,7 @@ namespace EddiJournalMonitor
                     IDictionary<string, object> data = Deserializtion.DeserializeData(line);
 
                     // Every event has a timestamp field
-                    DateTime timestamp = DateTime.Now;
+                    DateTime timestamp = DateTime.UtcNow;
                     if (data.ContainsKey("timestamp"))
                     {
                         if (data["timestamp"] is DateTime)
@@ -2614,7 +2614,7 @@ namespace EddiJournalMonitor
                                     }
                                 }
 
-                                events.Add(new MaterialInventoryEvent(DateTime.Now, materials) { raw = line });
+                                events.Add(new MaterialInventoryEvent(DateTime.UtcNow, materials) { raw = line });
                             }
                             handled = true;
                             break;
@@ -2641,7 +2641,7 @@ namespace EddiJournalMonitor
                                     }
                                 }
 
-                                events.Add(new CargoInventoryEvent(DateTime.Now, inventory, cargocarried) { raw = line });
+                                events.Add(new CargoInventoryEvent(DateTime.UtcNow, inventory, cargocarried) { raw = line });
                             }
                             handled = true;
                             break;

@@ -235,7 +235,7 @@ namespace EddiMaterialMonitor
                     if (previous <= ma.maximum && ma.amount > ma.maximum)
                     {
                         // We have crossed the high water threshold for this material
-                        pendingEvents.Enqueue(new MaterialThresholdEvent(DateTime.Now, Material.FromEDName(edname), "Maximum", (int)ma.maximum, ma.amount, "Increase"));
+                        pendingEvents.Enqueue(new MaterialThresholdEvent(DateTime.UtcNow, Material.FromEDName(edname), "Maximum", (int)ma.maximum, ma.amount, "Increase"));
                     }
                 }
                 if (ma.desired.HasValue)
@@ -243,7 +243,7 @@ namespace EddiMaterialMonitor
                     if (previous < ma.desired && ma.amount >= ma.desired)
                     {
                         // We have crossed the desired threshold for this material
-                        pendingEvents.Enqueue(new MaterialThresholdEvent(DateTime.Now, Material.FromEDName(edname), "Desired", (int)ma.desired, ma.amount, "Increase"));
+                        pendingEvents.Enqueue(new MaterialThresholdEvent(DateTime.UtcNow, Material.FromEDName(edname), "Desired", (int)ma.desired, ma.amount, "Increase"));
                     }
                 }
 
@@ -277,7 +277,7 @@ namespace EddiMaterialMonitor
                     if (previous >= ma.minimum && ma.amount < ma.minimum)
                     {
                         // We have crossed the low water threshold for this material
-                        pendingEvents.Enqueue(new MaterialThresholdEvent(DateTime.Now, Material.FromEDName(edname), "Minimum", (int)ma.minimum, ma.amount, "Decrease"));
+                        pendingEvents.Enqueue(new MaterialThresholdEvent(DateTime.UtcNow, Material.FromEDName(edname), "Minimum", (int)ma.minimum, ma.amount, "Decrease"));
                     }
                 }
                 if (ma.desired.HasValue)
@@ -285,7 +285,7 @@ namespace EddiMaterialMonitor
                     if (previous >= ma.desired && ma.amount < ma.desired)
                     {
                         // We have crossed the desired threshold for this material
-                        pendingEvents.Enqueue(new MaterialThresholdEvent(DateTime.Now, Material.FromEDName(edname), "Desired", (int)ma.desired, ma.amount, "Decrease"));
+                        pendingEvents.Enqueue(new MaterialThresholdEvent(DateTime.UtcNow, Material.FromEDName(edname), "Desired", (int)ma.desired, ma.amount, "Decrease"));
                     }
                 }
 

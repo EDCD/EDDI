@@ -200,7 +200,7 @@ namespace EddiCompanionAppService
                 Logging.Debug("Leaving");
                 throw new EliteDangerousCompanionAppIllegalStateException("Service in incorrect state to provide profile (" + CurrentState + ")");
             }
-            if ((!forceRefresh) && cachedProfileExpires > DateTime.Now)
+            if ((!forceRefresh) && cachedProfileExpires > DateTime.UtcNow)
             {
                 // return the cached version
                 Logging.Debug("Returning cached profile");
@@ -250,7 +250,7 @@ namespace EddiCompanionAppService
 
             if (cachedProfile != null)
             {
-                cachedProfileExpires = DateTime.Now.AddSeconds(30);
+                cachedProfileExpires = DateTime.UtcNow.AddSeconds(30);
                 Logging.Debug("Profile is " + JsonConvert.SerializeObject(cachedProfile));
             }
 
@@ -486,7 +486,7 @@ namespace EddiCompanionAppService
                 // The expiry is embedded in the cookie value
                 if (credentials.machineId.IndexOf("%7C") == -1)
                 {
-                    machineIdCookie.Expires = DateTime.Now.AddDays(7);
+                    machineIdCookie.Expires = DateTime.UtcNow.AddDays(7);
                 }
                 else
                 {
@@ -500,7 +500,7 @@ namespace EddiCompanionAppService
                     catch (Exception)
                     {
                         Logging.Warn("Failed to handle machine id expiry seconds " + expiryseconds);
-                        machineIdCookie.Expires = DateTime.Now.AddDays(7);
+                        machineIdCookie.Expires = DateTime.UtcNow.AddDays(7);
                     }
                 }
                 cookies.Add(machineIdCookie);
@@ -520,7 +520,7 @@ namespace EddiCompanionAppService
                 // The expiry is embedded in the cookie value
                 if (credentials.machineToken.IndexOf("%7C") == -1)
                 {
-                    machineTokenCookie.Expires = DateTime.Now.AddDays(7);
+                    machineTokenCookie.Expires = DateTime.UtcNow.AddDays(7);
                 }
                 else
                 {
@@ -534,7 +534,7 @@ namespace EddiCompanionAppService
                     catch (Exception)
                     {
                         Logging.Warn("Failed to handle machine token expiry seconds " + expiryseconds);
-                        machineTokenCookie.Expires = DateTime.Now.AddDays(7);
+                        machineTokenCookie.Expires = DateTime.UtcNow.AddDays(7);
                     }
                 }
                 cookies.Add(machineTokenCookie);

@@ -244,7 +244,7 @@ namespace EDDNResponder
                 if (eddnCommodities.Count > 0)
                 {
                     IDictionary<string, object> data = new Dictionary<string, object>();
-                    data.Add("timestamp", DateTime.Now.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ"));
+                    data.Add("timestamp", DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ"));
                     data.Add("systemName", systemName);
                     data.Add("stationName", EDDI.Instance.CurrentStation.name);
                     if (eddnEconomies.Count > 0)
@@ -287,7 +287,7 @@ namespace EDDNResponder
                 if (eddnModules.Count > 0)
                 {
                     IDictionary<string, object> data = new Dictionary<string, object>();
-                    data.Add("timestamp", DateTime.Now.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ"));
+                    data.Add("timestamp", DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ"));
                     data.Add("systemName", EDDI.Instance.CurrentStation.systemname);
                     data.Add("stationName", EDDI.Instance.CurrentStation.name);
                     data.Add("modules", eddnModules);
@@ -316,7 +316,7 @@ namespace EDDNResponder
                 if (eddnShips.Count > 0)
                 {
                     IDictionary<string, object> data = new Dictionary<string, object>();
-                    data.Add("timestamp", DateTime.Now.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ"));
+                    data.Add("timestamp", DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ"));
                     data.Add("systemName", EDDI.Instance.CurrentStation.systemname);
                     data.Add("stationName", EDDI.Instance.CurrentStation.name);
                     data.Add("ships", eddnShips);
