@@ -166,7 +166,7 @@
     <comment>Commodity AlyaBodySoap</comment>
   </data>
   <data name="AncientCasket" xml:space="preserve">
-    <value>Uralter Schatulle</value>
+    <value>Uralte Schatulle</value>
     <comment>Commodity AncientCasket</comment>
   </data>
   <data name="AncientOrb" xml:space="preserve">
@@ -242,7 +242,7 @@
     <comment>Commodity AutoFabricators</comment>
   </data>
   <data name="AzCancriFormula42" xml:space="preserve">
-    <value>Az Cancri Formula 42</value>
+    <value>Az Krebs Formel 42</value>
     <comment>Commodity AzCancriFormula42</comment>
   </data>
   <data name="BaltahSineVacuumKrill" xml:space="preserve">
