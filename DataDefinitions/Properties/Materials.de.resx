@@ -454,8 +454,7 @@
     <comment>Material mechanicalequipment</comment>
   </data>
   <data name="shieldemitters" xml:space="preserve">
-    <value>Schildemitter
-Material Schildemitter</value>
+    <value>Schildemitter</value>
     <comment>Material shieldemitters</comment>
   </data>
   <data name="unknowncarapace" xml:space="preserve">
