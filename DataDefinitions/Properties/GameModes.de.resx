@@ -107,7 +107,7 @@
     <comment>Game mode Open</comment>
   </data>
   <data name="Solo" xml:space="preserve">
-    <value>Solo</value>
+    <value>Einzelspieler</value>
     <comment>Game mode Solo</comment>
   </data>
 </root>
