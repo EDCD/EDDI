@@ -1018,7 +1018,7 @@
     <comment>Commodity PoliticalPrisoner</comment>
   </data>
   <data name="Polymers" xml:space="preserve">
-    <value>Polymers</value>
+    <value>Polymere</value>
     <comment>Commodity Polymers</comment>
   </data>
   <data name="PowerConverter" xml:space="preserve">
@@ -1110,7 +1110,7 @@
     <comment>Commodity SAP8CoreContainer</comment>
   </data>
   <data name="SaxonWine" xml:space="preserve">
-    <value>Saxon Wein</value>
+    <value>Sächsischer Wein</value>
     <comment>Commodity SaxonWine</comment>
   </data>
   <data name="ScientificResearch" xml:space="preserve">
