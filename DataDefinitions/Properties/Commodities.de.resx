@@ -326,7 +326,7 @@
     <comment>Commodity BurnhamBileDistillate</comment>
   </data>
   <data name="CD_75KittenBrandCoffee" xml:space="preserve">
-    <value>CD-75 Markenkaffee Kätzchen</value>
+    <value>CD-75 Kätzchen-Marke Kaffee</value>
     <comment>Commodity CD_75KittenBrandCoffee</comment>
   </data>
   <data name="CentauriMegaGin" xml:space="preserve">
@@ -406,7 +406,7 @@
     <comment>Commodity ConductiveFabrics</comment>
   </data>
   <data name="ConsumerTechnology" xml:space="preserve">
-    <value>Haushaltsgeräte</value>
+    <value>Unterhaltungselektronik</value>
     <comment>Commodity ConsumerTechnology</comment>
   </data>
   <data name="CoolingHoses" xml:space="preserve">
@@ -426,7 +426,7 @@
     <comment>Commodity CropHarvesters</comment>
   </data>
   <data name="Cryolite" xml:space="preserve">
-    <value>Kriolyth</value>
+    <value>Kryolith</value>
     <comment>Commodity Cryolite</comment>
   </data>
   <data name="CrystallineSpheres" xml:space="preserve">
@@ -462,7 +462,7 @@
     <comment>Commodity DiplomaticBag</comment>
   </data>
   <data name="DisoMaCorn" xml:space="preserve">
-    <value>Dido Ma Korn</value>
+    <value>Diso Ma Mais</value>
     <comment>Commodity DisoMaCorn</comment>
   </data>
   <data name="DomesticAppliances" xml:space="preserve">
