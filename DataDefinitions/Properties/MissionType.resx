@@ -118,13 +118,13 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Altruism" xml:space="preserve">
-    <value>Altruism</value>
+    <value>Donation</value>
   </data>
   <data name="AltruismCredits" xml:space="preserve">
     <value>Donation</value>
   </data>
   <data name="Assassinate" xml:space="preserve">
-    <value>Assassinate</value>
+    <value>Assassination</value>
   </data>
   <data name="Collect" xml:space="preserve">
     <value>Collect</value>
@@ -147,8 +147,14 @@
   <data name="Mining" xml:space="preserve">
     <value>Mining</value>
   </data>
+  <data name="PassengerBulk" xml:space="preserve">
+    <value>Transport</value>
+  </data>
   <data name="PassengerVIP" xml:space="preserve">
     <value>Transport</value>
+  </data>
+  <data name="Permit" xml:space="preserve">
+    <value>Permit Aquisition</value>
   </data>
   <data name="Piracy" xml:space="preserve">
     <value>Piracy</value>

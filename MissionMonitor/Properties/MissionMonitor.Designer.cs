@@ -79,20 +79,20 @@ namespace EddiMissionMonitor.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Expiry.
-        /// </summary>
-        public static string header_expiry {
-            get {
-                return ResourceManager.GetString("header_expiry", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Mission ID.
         /// </summary>
         public static string header_missionid {
             get {
                 return ResourceManager.GetString("header_missionid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remaining.
+        /// </summary>
+        public static string header_remaining {
+            get {
+                return ResourceManager.GetString("header_remaining", resourceCulture);
             }
         }
         

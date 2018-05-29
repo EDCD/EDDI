@@ -19,12 +19,12 @@ namespace EddiMissionMonitor
         }
 
         [JsonProperty("missionid")]
-        public long missionid { get; private set; }
+        public long? missionid { get; private set; }
 
         [JsonProperty("name")]
         public string name { get; private set; }
 
-        public MissionAbandonedEvent(DateTime timestamp, long missionid, string name) : base(timestamp, NAME)
+        public MissionAbandonedEvent(DateTime timestamp, long? missionid, string name) : base(timestamp, NAME)
         {
             this.missionid = missionid;
             this.name = name;

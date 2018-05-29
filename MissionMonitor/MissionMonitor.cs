@@ -21,10 +21,15 @@ namespace EddiMissionMonitor
      */
     public class MissionMonitor : EDDIMonitor
     {
+        // Keep track of status
+        private bool running;
+
         // Observable collection for us to handle changes
         public ObservableCollection<Mission> missions { get; private set; }
 
         public int missioncount;
+        public int? warning;
+
         private static readonly object missionsLock = new object();
         public event EventHandler MissionUpdatedEvent;
 
@@ -81,16 +86,17 @@ namespace EddiMissionMonitor
         }
         public bool NeedsStart()
         {
-            // We don't actively do anything, just listen to events
-            return false;
+            return true;
         }
 
         public void Start()
         {
+            _start();
         }
 
         public void Stop()
         {
+            running = false;
         }
 
         public void Reload()
@@ -100,7 +106,33 @@ namespace EddiMissionMonitor
 
         }
 
-        public UserControl ConfigurationTabItem()
+        public void _start()
+        {
+            running = true;
+
+            while (running)
+            {
+                foreach (Mission mission in missions)
+                {
+                    TimeSpan span = mission.expiry.ToLocalTime() - DateTime.Now;
+                    mission.timeremaining = span.Days.ToString() + "D " + span.Hours.ToString() + "H " + span.Minutes.ToString() + "MIN";
+
+                    if (mission.expiry.ToLocalTime() < DateTime.Now)
+                    {
+                        mission.statusDef = MissionStatus.FromEDName("Failed");
+                        EDDI.Instance.eventHandler(new MissionExpiredEvent(DateTime.Now, mission.missionid, mission.name));
+                    }
+                    else if (mission.expiry.ToLocalTime() < DateTime.Now.AddMinutes(-warning ?? 60))
+                    {
+
+                    }
+                }
+                writeMissions();
+                Thread.Sleep(5000);
+            }
+        }
+
+            public UserControl ConfigurationTabItem()
         {
             return new ConfigurationWindow();
         }
@@ -174,7 +206,7 @@ namespace EddiMissionMonitor
                 Mission missionEntry = missions.FirstOrDefault(m => m.missionid == mission.missionid);
                 if (missionEntry != null)
                 {
-				    missionEntry.status = mission.status;
+				    missionEntry.statusDef = mission.statusDef;
 				}
 				else
 				{
@@ -202,10 +234,13 @@ namespace EddiMissionMonitor
 
         public void _handleMissionAbandonedEvent(MissionAbandonedEvent @event)
         {
-            Mission mission = missions.FirstOrDefault(m => m.missionid == @event.missionid);
-            if (mission != null)
+            if (@event.missionid != null)
             {
-                _RemoveMissionWithMissionId(@event.missionid);
+                Mission mission = missions.FirstOrDefault(m => m.missionid == @event.missionid);
+                if (mission != null)
+                {
+                    _RemoveMissionWithMissionId(@event.missionid ?? 0);
+                }
             }
         }
 
@@ -220,33 +255,82 @@ namespace EddiMissionMonitor
 
         public void _handleMissionAcceptedEvent(MissionAcceptedEvent @event)
         {
-            MissionStatus status = MissionStatus.FromEDName("Active");
-            Mission mission = new Mission(@event.missionid ?? 0, @event.name, @event.expiry ?? DateTime.MaxValue, status);
+            if (@event.missionid != null)
+            {
+                MissionStatus status = MissionStatus.FromEDName("Active");
+                Mission mission = new Mission(@event.missionid ?? 0, @event.name, @event.expiry ?? DateTime.MaxValue, status);
+                string type = mission.typeEDName.ToLowerInvariant();
 
-            // Common parameters
-            mission.amount = @event.amount ?? 0;
-            mission.faction = @event.faction;
-            mission.influence = @event.influence;
-            mission.reputation = @event.reputation;
-            mission.reward = @event.reward ?? 0;
-            mission.wing = @event.wing;
+                // Common parameters
+                mission.amount = @event.amount ?? 0;
+                mission.influence = @event.influence;
+                mission.reputation = @event.reputation;
+                mission.reward = @event.reward ?? 0;
+                mission.wing = @event.wing;
 
-            // Set mission origin to to the current system & station
-            mission.originsystem = EDDI.Instance?.CurrentStarSystem?.name;
-            mission.originstation = EDDI.Instance?.CurrentStation?.name;
+                // Mission faction data
+                mission.faction = @event.faction;
+                switch (type)
+                {
+                    case "altruisn":
+                    case "altruismcredits":
+                        {
+                            mission.factionstate = SystemState.FromEDName(mission.name.Split('_').ElementAt(2)).localizedName;
+                        }
+                        break;
+                }
 
-            // Missions with destinations
-            mission.destinationsystem = @event.destinationsystem;
-            mission.destinationstation = @event.destinationstation;
+                // Set mission origin to to the current system & station
+                mission.originsystem = EDDI.Instance?.CurrentStarSystem?.name;
+                mission.originsystem = EDDI.Instance?.CurrentStation?.name;
 
-            // Missions with targets
-            mission.target = @event.target;
-            mission.targettype = @event.targettype;
-            mission.targetfaction = @event.targetfaction;
+                // Missions with commodities
+                mission.commodity = @event.commodity;
 
-            // Missions with passengers
-            mission.passengertype = @event.passengertype;
-            mission.passengervips = @event.passengervips;
+                // Missions with destinations
+                if (@event.destinationsystem.Contains("$MISSIONUTIL_MULTIPLE_FINAL"))
+                {
+                    // If 'chained' mission, get the first destination system. 'Mission redirected' should take care of the rest
+                    mission.destinationsystem = @event.destinationsystem
+                        .Substring(0, @event.destinationsystem.IndexOf("$MISSIONUTIL_MULTIPLE_FINAL"))
+                        .Replace("$MISSIONUTIL_MULTIPLE_INNER_SEPARATOR;", "#")
+                        .Replace("$FINAL_SEPARATOR;", "#")
+                        .Split('#')
+                        .ElementAt(0);
+                    mission.destinationstation = String.Empty;
+                }
+                else
+                {
+                    // Populate destination system and station, depending on mission type
+                    switch (type)
+                    {
+                        case "altruisn":
+                        case "altruismcredits":
+                            {
+                                mission.destinationsystem = mission.originsystem;
+                                mission.destinationstation = mission.originsystem;
+                            }
+                            break;
+                        default:
+                            {
+                                mission.destinationsystem = @event.destinationsystem;
+                                mission.destinationstation = @event.destinationstation;
+                            }
+                            break;
+                    }
+                }
+
+                // Missions with targets
+                mission.target = @event.target;
+                mission.targettype = @event.targettype;
+                mission.targetfaction = @event.targetfaction;
+
+                // Missions with passengers
+                mission.passengertype = @event.passengertype;
+                mission.passengervips = @event.passengervips;
+
+                AddMission(mission);
+            }
         }
 
         private void handleMissionCompletedEvent(MissionCompletedEvent @event)
@@ -259,7 +343,14 @@ namespace EddiMissionMonitor
 
         public void _handleMissionCompletedEvent(MissionCompletedEvent @event)
         {
-
+            if (@event.missionid != null)
+            {
+                Mission mission = missions.FirstOrDefault(m => m.missionid == @event.missionid);
+                if (mission != null)
+                {
+                    _RemoveMissionWithMissionId(@event.missionid ?? 0);
+                }
+            }
         }
 
         private void handleMissionFailedEvent(MissionFailedEvent @event)
@@ -270,7 +361,14 @@ namespace EddiMissionMonitor
 
         public void _handleMissionFailedEvent(MissionFailedEvent @event)
         {
-
+            if (@event.missionid != null)
+            {
+                Mission mission = missions.FirstOrDefault(m => m.missionid == @event.missionid);
+                if (mission != null)
+                {
+                    _RemoveMissionWithMissionId(@event.missionid ?? 0);
+                }
+            }
         }
 
         private void handleMissionRedirectedEvent(MissionRedirectedEvent @event)
@@ -281,7 +379,33 @@ namespace EddiMissionMonitor
 
         public void _handleMissionRedirectedEvent(MissionRedirectedEvent @event)
         {
+            if (@event.missionid != null)
+            {
+                Mission mission = missions.FirstOrDefault(m => m.missionid == @event.missionid);
+                if (mission != null)
+                {
+                    mission.destinationsystem = @event.newdestinationsystem;
+                    mission.destinationstation = @event.newdestinationstation;
 
+                    string type = mission.typeEDName.ToLowerInvariant();
+                    switch (type)
+                    {
+                        case "collect":
+                        case "mining":
+                        case "piracy":
+                        case "rescue":
+                        case "salvage":
+                            {
+                                if (@event.newdestinationsystem == mission.originsystem
+                                    && @event.newdestinationstation == mission.originstation)
+                                {
+                                    mission.statusDef = MissionStatus.FromEDName("Complete");
+                                }
+                            }
+                            break;
+                    }
+                }
+            }
         }
 
         public IDictionary<string, object> GetVariables()
@@ -301,7 +425,9 @@ namespace EddiMissionMonitor
                 MissionMonitorConfiguration configuration = new MissionMonitorConfiguration();
 
                 configuration.missions = missions;
+                missioncount = missions.Count;
                 configuration.missioncount = missioncount;
+                configuration.warning = warning;
                 configuration.ToFile();
             }
             // Make sure the UI is up to date
@@ -315,11 +441,12 @@ namespace EddiMissionMonitor
                 // Obtain current missions inventory from configuration
                 configuration = configuration ?? MissionMonitorConfiguration.FromFile();
                 missioncount = configuration.missioncount;
+                warning = configuration.warning ?? 60;
 
                 // Build a new missions log
                 List<Mission> newMissions = new List<Mission>();
 
-                // Start with the materials we have in the log
+                // Start with the missions we have in the log
                 foreach (Mission mission in configuration.missions)
                 {
                     newMissions.Add(mission);

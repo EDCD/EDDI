@@ -74,6 +74,9 @@
     <Compile Include="MissionAbandonedEvent.cs" />
     <Compile Include="MissionAcceptedEvent.cs" />
     <Compile Include="MissionCompletedEvent.cs" />
+    <Compile Include="MissionExpiredEvent.cs" />
+    <Compile Include="MissionFailedEvent.cs" />
+    <Compile Include="MissionRedirectedEvent.cs" />
     <Compile Include="MissionsEvent.cs" />
     <Compile Include="Properties\MissionMonitor.Designer.cs">
       <AutoGen>True</AutoGen>

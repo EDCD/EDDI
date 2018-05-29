@@ -22,14 +22,14 @@ namespace EddiDataDefinitions.Properties {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class MissionType {
+    internal class PassengerType {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal MissionType() {
+        internal PassengerType() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace EddiDataDefinitions.Properties {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("EddiDataDefinitions.Properties.MissionType", typeof(MissionType).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("EddiDataDefinitions.Properties.PassengerType", typeof(PassengerType).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,173 +61,182 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Donation.
+        ///   Looks up a localized string similar to Aid Worker Passenger Group.
         /// </summary>
-        internal static string Altruism {
+        internal static string AidWorker {
             get {
-                return ResourceManager.GetString("Altruism", resourceCulture);
+                return ResourceManager.GetString("AidWorker", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Donation.
+        ///   Looks up a localized string similar to Business Passenger Group.
         /// </summary>
-        internal static string AltruismCredits {
+        internal static string Business {
             get {
-                return ResourceManager.GetString("AltruismCredits", resourceCulture);
+                return ResourceManager.GetString("Business", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Assassination.
+        ///   Looks up a localized string similar to Celebrity.
         /// </summary>
-        internal static string Assassinate {
+        internal static string Celebrity {
             get {
-                return ResourceManager.GetString("Assassinate", resourceCulture);
+                return ResourceManager.GetString("Celebrity", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Collect.
+        ///   Looks up a localized string similar to CEO.
         /// </summary>
-        internal static string Collect {
+        internal static string CEO {
             get {
-                return ResourceManager.GetString("Collect", resourceCulture);
+                return ResourceManager.GetString("CEO", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Courier.
+        ///   Looks up a localized string similar to Criminal.
         /// </summary>
-        internal static string Courier {
+        internal static string Criminal {
             get {
-                return ResourceManager.GetString("Courier", resourceCulture);
+                return ResourceManager.GetString("Criminal", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Delivery.
+        ///   Looks up a localized string similar to Doctor.
         /// </summary>
-        internal static string Delivery {
+        internal static string Doctor {
             get {
-                return ResourceManager.GetString("Delivery", resourceCulture);
+                return ResourceManager.GetString("Doctor", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Disable.
+        ///   Looks up a localized string similar to Explorer.
         /// </summary>
-        internal static string Disable {
+        internal static string Explorer {
             get {
-                return ResourceManager.GetString("Disable", resourceCulture);
+                return ResourceManager.GetString("Explorer", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Expedition.
+        ///   Looks up a localized string similar to Military General.
         /// </summary>
-        internal static string LongDistanceExpedition {
+        internal static string General {
             get {
-                return ResourceManager.GetString("LongDistanceExpedition", resourceCulture);
+                return ResourceManager.GetString("General", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Massacre.
+        ///   Looks up a localized string similar to Head Of State.
         /// </summary>
-        internal static string Massacre {
+        internal static string HeadOfState {
             get {
-                return ResourceManager.GetString("Massacre", resourceCulture);
+                return ResourceManager.GetString("HeadOfState", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Mining.
+        ///   Looks up a localized string similar to Medical Team.
         /// </summary>
-        internal static string Mining {
+        internal static string Medical {
             get {
-                return ResourceManager.GetString("Mining", resourceCulture);
+                return ResourceManager.GetString("Medical", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Transport.
+        ///   Looks up a localized string similar to Political Passenger Group.
         /// </summary>
-        internal static string PassengerBulk {
+        internal static string Politician {
             get {
-                return ResourceManager.GetString("PassengerBulk", resourceCulture);
+                return ResourceManager.GetString("Politician", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Transport.
+        ///   Looks up a localized string similar to Prisoner Of War.
         /// </summary>
-        internal static string PassengerVIP {
+        internal static string PrisonerOfWar {
             get {
-                return ResourceManager.GetString("PassengerVIP", resourceCulture);
+                return ResourceManager.GetString("PrisonerOfWar", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Permit Aquisition.
+        ///   Looks up a localized string similar to Protestor Passenger Group.
         /// </summary>
-        internal static string Permit {
+        internal static string Protestor {
             get {
-                return ResourceManager.GetString("Permit", resourceCulture);
+                return ResourceManager.GetString("Protestor", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Piracy.
+        ///   Looks up a localized string similar to Rebel Passenger Group.
         /// </summary>
-        internal static string Piracy {
+        internal static string Rebel {
             get {
-                return ResourceManager.GetString("Piracy", resourceCulture);
+                return ResourceManager.GetString("Rebel", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Rescue.
+        ///   Looks up a localized string similar to Refugee Passenger Group.
         /// </summary>
-        internal static string Rescue {
+        internal static string Refugee {
             get {
-                return ResourceManager.GetString("Rescue", resourceCulture);
+                return ResourceManager.GetString("Refugee", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Salvage.
+        ///   Looks up a localized string similar to Scientific Team.
         /// </summary>
-        internal static string Salvage {
+        internal static string Scientist {
             get {
-                return ResourceManager.GetString("Salvage", resourceCulture);
+                return ResourceManager.GetString("Scientist", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Scan.
+        ///   Looks up a localized string similar to Security Team.
         /// </summary>
-        internal static string Scan {
+        internal static string Security {
             get {
-                return ResourceManager.GetString("Scan", resourceCulture);
+                return ResourceManager.GetString("Security", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Sightseeing.
+        ///   Looks up a localized string similar to Rebel Leader.
         /// </summary>
-        internal static string Sightseeing {
+        internal static string Terrorist {
             get {
-                return ResourceManager.GetString("Sightseeing", resourceCulture);
+                return ResourceManager.GetString("Terrorist", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Smuggle.
+        ///   Looks up a localized string similar to Rich Tourist.
         /// </summary>
-        internal static string Smuggle {
+        internal static string Tourist {
             get {
-                return ResourceManager.GetString("Smuggle", resourceCulture);
+                return ResourceManager.GetString("Tourist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Political Prisoner.
+        /// </summary>
+        internal static string Whistleblower {
+            get {
+                return ResourceManager.GetString("Whistleblower", resourceCulture);
             }
         }
     }

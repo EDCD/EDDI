@@ -17,27 +17,62 @@ namespace EddiDataDefinitions
         public string name;
 
         // The type of mission
-        public MissionType type;
-        public string localizedType => type?.localizedName ?? "Unknown";
-
-        // Status of the mission - active, failed, complete
-        private MissionStatus _status;
-		public MissionStatus status
+        public string typeEDName
         {
-            get
-            {
-                return _status;
-            }
+            get => typeDef.edname;
             set
             {
-                if (_status != value)
-                {
-                    _status = value;
-                    NotifyPropertyChanged("localizedStatus");
-                }
+                MissionType tDef = MissionType.FromEDName(value);
+                this.typeDef = tDef;
             }
         }
-        public string localizedStatus => status?.localizedName ?? "Unknown";
+
+        [JsonIgnore]
+        private MissionType _typeDef;
+        [JsonIgnore]
+        public MissionType typeDef
+        {
+            get => _typeDef;
+            set
+            {
+                _typeDef = value;
+                NotifyPropertyChanged("localizedType");
+            }
+        }
+
+        [JsonIgnore]
+        public string localizedType => typeDef?.localizedName ?? "Unknown";
+        [JsonIgnore, Obsolete("Please use localizedName or invariantName")]
+        public string type => localizedType;
+
+        // Status of the mission
+        public string statusEDName
+        {
+            get => statusDef.edname;
+            set
+            {
+                MissionStatus sDef = MissionStatus.FromEDName(value);
+                this.statusDef = sDef;
+            }
+        }
+
+        [JsonIgnore]
+        private MissionStatus _statusDef;
+        [JsonIgnore]
+        public MissionStatus statusDef
+        {
+            get => _statusDef;
+            set
+            {
+                _statusDef = value;
+                NotifyPropertyChanged("localizedStatus");
+            }
+        }
+
+        [JsonIgnore]
+        public string localizedStatus => statusDef?.localizedName ?? "Unknown";
+        [JsonIgnore, Obsolete("Please use localizedName or invariantName")]
+        public string status => localizedStatus;
 
         // The system in which the mission was accepted
         public string originsystem { get; set; }
@@ -46,6 +81,8 @@ namespace EddiDataDefinitions
         public string originstation { get; set; }
 
         public string faction { get; set; }
+
+        public string factionstate { get; set; }
 
         public string influence { get; set; }
 
@@ -95,6 +132,26 @@ namespace EddiDataDefinitions
             }
         }
 
+        // THe destination station of the mission
+        [JsonIgnore]
+        private string _timeremaining;
+        [JsonIgnore]
+        public string timeremaining
+        {
+            get
+            {
+                return _timeremaining;
+            }
+            set
+            {
+                if (_timeremaining != value)
+                {
+                    _timeremaining = value;
+                    NotifyPropertyChanged("timeremaining");
+                }
+            }
+        }
+
         public string passengertype { get; set; }
         public bool? passengerwanted { get; set; }
         public bool? passengervips { get; set; }
@@ -112,9 +169,9 @@ namespace EddiDataDefinitions
 		{
 			this.missionid = MissionId;
 			this. name = Name;
-            this.type = MissionType.FromEDName(Name.Split('_').ElementAt(1));
+            this.typeDef = MissionType.FromEDName(Name.Split('_').ElementAt(1));
 			this.expiry = expiry;
-			this.status = Status;
+			this.statusDef = Status;
 		}
 
         public event PropertyChangedEventHandler PropertyChanged;

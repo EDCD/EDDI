@@ -2324,9 +2324,10 @@ namespace EddiJournalMonitor
                                 List<Mission> missions = new List<Mission>();
                                 object val;
 
-                                foreach (MissionStatus missionStatus in Enum.GetValues(typeof(MissionStatus)))
+                                for (int i = 0; i < 3; i++)
                                 {
-                                    string status = Enum.GetName(typeof(MissionStatus), missionStatus);
+                                    MissionStatus missionStatus = MissionStatus.FromStatus(i);
+                                    string status = missionStatus.invariantName;
                                     data.TryGetValue(status, out val);
                                     List<object> missionList = (List<object>)val;
                                     foreach (object mission in missionList)
@@ -2385,7 +2386,7 @@ namespace EddiJournalMonitor
 
                                 // Missions with passengers
                                 int? passengercount = JsonParsing.getOptionalInt(data, "PassengerCount");
-                                string passengertype = JsonParsing.getString(data, "PassengerType");
+                                PassengerType passengertype = PassengerType.FromEDName(JsonParsing.getString(data, "PassengerType"));
                                 bool? passengerswanted = JsonParsing.getOptionalBool(data, "PassengerWanted");
                                 bool? passengervips = JsonParsing.getOptionalBool(data, "PassengerVIPs");
                                 data.TryGetValue("PassengerCount", out val);

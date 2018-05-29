@@ -87,6 +87,7 @@
     <Compile Include="Mission.cs" />
     <Compile Include="MissionStatus.cs" />
     <Compile Include="MissionType.cs" />
+    <Compile Include="PassengerType.cs" />
     <Compile Include="Properties\CombatRatings.es.Designer.cs">
       <DependentUpon>CombatRatings.es.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -346,6 +347,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>LegalStatus.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\PassengerType.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PassengerType.resx</DependentUpon>
     </Compile>
     <Compile Include="Properties\ShipRoles.es.Designer.cs">
       <DependentUpon>ShipRoles.es.resx</DependentUpon>
@@ -805,6 +811,9 @@
     <EmbeddedResource Include="Properties\StationModels.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>StationModels.Designer.cs</LastGenOutput>
+    <EmbeddedResource Include="Properties\PassengerType.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>PassengerType.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\SecurityLevels.de.resx" />
     <EmbeddedResource Include="Properties\SecurityLevels.hu.resx" />

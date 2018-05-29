@@ -14,7 +14,7 @@
         <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Margin="5" Text="{x:Static resx:MissionMonitor.para2}" />
         <DataGrid Margin="0,5" AutoGenerateColumns="False" x:Name="missionsData" CanUserAddRows="false" CanUserDeleteRows="False" TargetUpdated="missionsUpdated">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="{x:Static resx:MissionMonitor.header_type}" Width="120" IsReadOnly="True" Binding="{Binding Path=localizedType}">
+                <DataGridTextColumn Header="{x:Static resx:MissionMonitor.header_type}" Width="100" IsReadOnly="True" Binding="{Binding Path=localizedType}">
                     <DataGridTextColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader">
                             <Setter Property="HorizontalContentAlignment" Value="Center" />
@@ -27,7 +27,7 @@
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
-                <utility:DataGridNumericColumn Header="{x:Static resx:MissionMonitor.header_status}" Width="120" IsReadOnly="True" Binding="{Binding Path=loacalizedStatus}">
+                <utility:DataGridNumericColumn Header="{x:Static resx:MissionMonitor.header_status}" Width="100" IsReadOnly="True" Binding="{Binding Path=localizedStatus}">
                     <DataGridTextColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader">
                             <Setter Property="HorizontalContentAlignment" Value="Center" />
@@ -66,7 +66,7 @@
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </utility:DataGridNumericColumn>
-                <utility:DataGridNumericColumn Header="{x:Static resx:MissionMonitor.header_expiry}" Width="120" IsReadOnly="True" Binding="{Binding Path=expiry}">
+                <utility:DataGridNumericColumn Header="{x:Static resx:MissionMonitor.header_remaining}" Width="160" IsReadOnly="True" Binding="{Binding Path=timeremaining}">
                     <DataGridTextColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader">
                             <Setter Property="HorizontalContentAlignment" Value="Center" />

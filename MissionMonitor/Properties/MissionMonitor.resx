@@ -123,11 +123,11 @@
   <data name="header_destinationsystem" xml:space="preserve">
     <value>Destination System</value>
   </data>
-  <data name="header_expiry" xml:space="preserve">
-    <value>Expiry</value>
-  </data>
   <data name="header_missionid" xml:space="preserve">
     <value>Mission ID</value>
+  </data>
+  <data name="header_remaining" xml:space="preserve">
+    <value>Remaining</value>
   </data>
   <data name="header_status" xml:space="preserve">
     <value>Status</value>

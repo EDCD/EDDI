@@ -13,6 +13,7 @@ namespace EddiMissionMonitor
         public ObservableCollection<Mission> missions { get; set; }
 
         public int missioncount { get; set; }
+        public int? warning { get; set; }
 
         [JsonIgnore]
         private string dataPath;
@@ -39,7 +40,7 @@ namespace EddiMissionMonitor
                 }
                 catch (Exception ex)
                 {
-                    Logging.Debug("Failed to obtain cargo configuration", ex);
+                    Logging.Debug("Failed to obtain missions configuration", ex);
                 }
             }
             return configuration;

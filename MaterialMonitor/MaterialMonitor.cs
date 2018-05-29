@@ -1,19 +1,20 @@
 ﻿using System.Collections.Generic;
 using Eddi;
 using EddiDataDefinitions;
-using System.Windows.Controls;
-using System;
 using EddiEvents;
-using Utilities;
+using EddiMissionMonitor;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System;
 using System.Linq;
 using System.Collections.ObjectModel;
 using System.Collections.Concurrent;
-using Newtonsoft.Json.Linq;
 using System.Threading;
-using System.Windows.Data;
 using System.Windows;
+using System.Windows.Data;
 using System.Windows.Threading;
+using System.Windows.Controls;
+using Utilities;
 
 namespace EddiMaterialMonitor
 {
@@ -152,6 +153,11 @@ namespace EddiMaterialMonitor
             {
                 handleTechnologyBrokerEvent((TechnologyBrokerEvent)@event);
             }
+            else if (@event is MissionCompletedEvent)
+            {
+                handleMissionCompletedEvent((MissionCompletedEvent)@event);
+            }
+
         }
 
         // Flush any pending events
@@ -233,6 +239,14 @@ namespace EddiMaterialMonitor
             foreach (MaterialAmount material in @event.materials)
             {
                 decMaterial(material.edname, material.amount);
+            }
+        }
+
+        private void handleMissionCompletedEvent(MissionCompletedEvent @event)
+        {
+            foreach (MaterialAmount material in @event.materialsrewards)
+            {
+                incMaterial(material.edname, material.amount);
             }
         }
 
