@@ -1206,7 +1206,7 @@
     <comment>Commodity TacticalData</comment>
   </data>
   <data name="TanmarkTranquilTea" xml:space="preserve">
-    <value>Tanmark beruhigender Tee</value>
+    <value>Beruhigender Tanmark Tee</value>
     <comment>Commodity TanmarkTranquilTea</comment>
   </data>
   <data name="Tantalum" xml:space="preserve">
@@ -1258,7 +1258,7 @@
     <comment>Commodity ThrutisCream</comment>
   </data>
   <data name="TiegfriesSynthSilk" xml:space="preserve">
-    <value>Tiegfries Künstliche Seide</value>
+    <value>Künstliche Tiegfries Seide</value>
     <comment>Commodity TiegfriesSynthSilk</comment>
   </data>
   <data name="TimeCapsule" xml:space="preserve">
