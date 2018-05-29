@@ -1370,7 +1370,7 @@
     <comment>Commodity UtgaroarMillenialEggs</comment>
   </data>
   <data name="UzumokuLow_GWings" xml:space="preserve">
-    <value>Uzumokus Geringe-Schwerkraft-Flügel</value>
+    <value>Uzumokusanische niedrig-G Flügel</value>
     <comment>Commodity UzumokuLow_GWings</comment>
   </data>
   <data name="VanayequiCeratomorphaFur" xml:space="preserve">
@@ -1378,7 +1378,7 @@
     <comment>Commodity VanayequiCeratomorphaFur</comment>
   </data>
   <data name="VegaSlimweed" xml:space="preserve">
-    <value>Vega Slimkraut</value>
+    <value>Veganisches Schlankheitskraut</value>
     <comment>Commodity VegaSlimweed</comment>
   </data>
   <data name="VHerculisBodyRub" xml:space="preserve">
@@ -1386,7 +1386,7 @@
     <comment>Commodity VHerculisBodyRub</comment>
   </data>
   <data name="VidavantianLace" xml:space="preserve">
-    <value>Vidavantian Schnürsenkel</value>
+    <value>Vidavantianische Spitze</value>
     <comment>Commodity VidavantianLace</comment>
   </data>
   <data name="VoidExtractCoffee" xml:space="preserve">
@@ -1422,7 +1422,7 @@
     <comment>Commodity WitchhaulKobeBeef</comment>
   </data>
   <data name="WolfFesh" xml:space="preserve">
-    <value>Wolf Fest</value>
+    <value>Wolf Fesh</value>
     <comment>Commodity WolfFesh</comment>
   </data>
   <data name="WreckageComponents" xml:space="preserve">
@@ -1458,7 +1458,7 @@
     <comment>Commodity KachiriginLeaches</comment>
   </data>
   <data name="VanayequiRhinoFur" xml:space="preserve">
-    <value>Vanayequi Ceratomorpha-Fell</value>
+    <value>Vanayequinisches Nashorn-Fell</value>
     <comment>Commodity VanayequiRhinoFur</comment>
   </data>
   <data name="ZeesszeAntGlue" xml:space="preserve">
