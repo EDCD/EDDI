@@ -122,7 +122,7 @@
     <comment>bounty voucher</comment>
   </data>
   <data name="CombatBond" xml:space="preserve">
-    <value>Kampfgutschein</value>
+    <value>Kampfbescheinigung</value>
     <comment>combat bond</comment>
   </data>
   <data name="scannable" xml:space="preserve">
