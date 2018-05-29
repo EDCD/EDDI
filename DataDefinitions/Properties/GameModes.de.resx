@@ -103,7 +103,7 @@
     <comment>Game mode Group</comment>
   </data>
   <data name="Open" xml:space="preserve">
-    <value>Open</value>
+    <value>Offenes Spiel</value>
     <comment>Game mode Open</comment>
   </data>
   <data name="Solo" xml:space="preserve">
