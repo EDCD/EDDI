@@ -930,7 +930,7 @@
     <comment>Commodity NgadandariFireOpals</comment>
   </data>
   <data name="NgunaModernAntiques" xml:space="preserve">
-    <value>Nguna Moderne Antiquitäen</value>
+    <value>Moderne Nguna Antiquitäten</value>
     <comment>Commodity NgunaModernAntiques</comment>
   </data>
   <data name="NjangariSaddles" xml:space="preserve">
@@ -970,7 +970,7 @@
     <comment>Commodity OphiuchExinoArtefacts</comment>
   </data>
   <data name="OrrerianViciousBrew" xml:space="preserve">
-    <value>Orrerian schädliches Gebräu</value>
+    <value>Schädliches Orrerian Gebräu</value>
     <comment>Commodity OrrerianViciousBrew</comment>
   </data>
   <data name="Osmium" xml:space="preserve">
