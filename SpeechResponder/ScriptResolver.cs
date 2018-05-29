@@ -8,6 +8,7 @@ using Eddi;
 using EddiCargoMonitor;
 using EddiDataDefinitions;
 using EddiDataProviderService;
+using EddiMissionMonitor;
 using EddiShipMonitor;
 using EddiSpeechService;
 using GalnetMonitor;
@@ -556,6 +557,15 @@ namespace EddiSpeechResponder
                 }
                 return (result == null ? new ReflectionValue(new object()) : new ReflectionValue(result));
             }, 1, 2);
+
+            store["MissionDetails"] = new NativeFunction((values) =>
+            {
+                List<Mission> missions = new List<Mission>();
+                missions = ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor")).missions.ToList();
+
+                Mission result = missions != null ? missions.FirstOrDefault(v => v.missionid == values[0].AsNumber) : null;
+                return (result == null ? new ReflectionValue(new object()) : new ReflectionValue(result));
+            }, 1);
 
             store["StationDetails"] = new NativeFunction((values) =>
             {

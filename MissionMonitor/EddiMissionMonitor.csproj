@@ -78,6 +78,7 @@
     <Compile Include="MissionFailedEvent.cs" />
     <Compile Include="MissionRedirectedEvent.cs" />
     <Compile Include="MissionsEvent.cs" />
+    <Compile Include="MissionWarningEvent.cs" />
     <Compile Include="Properties\MissionMonitor.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

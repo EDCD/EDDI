@@ -88,6 +88,8 @@ namespace EddiDataDefinitions
 
         public string reputation { get; set; }
 
+        public bool legal { get; set; }
+
         public bool wing { get; set; }
 
         public long? reward { get; set; }

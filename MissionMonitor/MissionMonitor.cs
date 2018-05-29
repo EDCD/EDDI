@@ -114,20 +114,25 @@ namespace EddiMissionMonitor
             {
                 foreach (Mission mission in missions)
                 {
-                    TimeSpan span = mission.expiry.ToLocalTime() - DateTime.Now;
-                    mission.timeremaining = span.Days.ToString() + "D " + span.Hours.ToString() + "H " + span.Minutes.ToString() + "MIN";
+                    if (mission.statusEDName == "active")
+                    {
+                        TimeSpan span = mission.expiry.ToLocalTime() - DateTime.Now;
+                        mission.timeremaining = span.Days.ToString() + "D " + span.Hours.ToString() + "H " + span.Minutes.ToString() + "MIN";
+                    }
+                    else
+                    {
+                        mission.timeremaining = String.Empty;
+                    }
 
                     if (mission.expiry.ToLocalTime() < DateTime.Now)
                     {
-                        mission.statusDef = MissionStatus.FromEDName("Failed");
                         EDDI.Instance.eventHandler(new MissionExpiredEvent(DateTime.Now, mission.missionid, mission.name));
                     }
                     else if (mission.expiry.ToLocalTime() < DateTime.Now.AddMinutes(-warning ?? 60))
                     {
-
+                        EDDI.Instance.eventHandler(new MissionWarningEvent(DateTime.Now, mission.missionid, mission.name));
                     }
                 }
-                writeMissions();
                 Thread.Sleep(5000);
             }
         }
@@ -184,6 +189,11 @@ namespace EddiMissionMonitor
             {
                 //
                 handleMissionFailedEvent((MissionFailedEvent)@event);
+            }
+            else if (@event is MissionExpiredEvent)
+            {
+                //
+                handleMissionExpiredEvent((MissionExpiredEvent)@event);
             }
             else if (@event is MissionRedirectedEvent)
             {
@@ -268,17 +278,12 @@ namespace EddiMissionMonitor
                 mission.reward = @event.reward ?? 0;
                 mission.wing = @event.wing;
 
-                // Mission faction data
+                // Mission faction parameters
                 mission.faction = @event.faction;
-                switch (type)
-                {
-                    case "altruisn":
-                    case "altruismcredits":
-                        {
-                            mission.factionstate = SystemState.FromEDName(mission.name.Split('_').ElementAt(2)).localizedName;
-                        }
-                        break;
-                }
+                mission.factionstate = SystemState.FromEDName(mission.name.Split('_').ElementAt(2)).localizedName;
+
+                // Mission legality
+                mission.legal = mission.name.Split('_').ElementAt(2).ToLowerInvariant() == "illegal" ? false : true;
 
                 // Set mission origin to to the current system & station
                 mission.originsystem = EDDI.Instance?.CurrentStarSystem?.name;
@@ -288,7 +293,7 @@ namespace EddiMissionMonitor
                 mission.commodity = @event.commodity;
 
                 // Missions with destinations
-                if (@event.destinationsystem.Contains("$MISSIONUTIL_MULTIPLE_FINAL"))
+                if (@event.destinationsystem.Contains("$MISSIONUTIL_MULTIPLE"))
                 {
                     // If 'chained' mission, get the first destination system. 'Mission redirected' should take care of the rest
                     mission.destinationsystem = @event.destinationsystem
@@ -349,6 +354,24 @@ namespace EddiMissionMonitor
                 if (mission != null)
                 {
                     _RemoveMissionWithMissionId(@event.missionid ?? 0);
+                }
+            }
+        }
+
+        private void handleMissionExpiredEvent(MissionExpiredEvent @event)
+        {
+            _handleMissionExpiredEvent(@event);
+            writeMissions();
+        }
+
+        public void _handleMissionExpiredEvent(MissionExpiredEvent @event)
+        {
+            if (@event.missionid != null)
+            {
+                Mission mission = missions.FirstOrDefault(m => m.missionid == @event.missionid);
+                if (mission != null)
+                {
+                    mission.statusDef = MissionStatus.FromEDName("Failed");
                 }
             }
         }
