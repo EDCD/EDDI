@@ -122,10 +122,10 @@ Any values might be missing, depending on EDDI's configuration and the informati
     - `stations` the starsystem's stations (array of Station objects)
     - `bodies` the starsystem's bodies (array of Body objects)
     - `visits` the number of visits that the commander has made to this starsystem
-    - `lastvisit` the time that the commander last visited this starsystem
+    - `lastVisitSeconds` the time that the commander last visited this starsystem, expressed as a Unix timestamp in seconds
     - `distancefromhome` the distance in LY from the commander's home starsystem
     - `comment` any comment the commander has made on the starsystem
-    - `updatedat` the timestamp at which the system information was last updated
+    - `updatedat` the timestamp at which the system information was last updated, expressed as a Unix timestamp in seconds
 
 ## Last starsystem
 

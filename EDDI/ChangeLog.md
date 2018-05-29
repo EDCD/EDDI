@@ -2,6 +2,12 @@
 
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
+### 3.0.1-b5
+  * Core
+    * Updated system definition to include new variable `lastVisitSeconds`. 
+  * Speech responder
+    * Updated `FSD engaged` script to correct a bug that was preventing sub-function `System report` from ever running.
+
 ### 3.0.1-b4
   * Core
     * Fixed issues arising in betas 2 and 3: data written to file by old code was not being read correctly by new code. This manifested in various ways: too many to list.
