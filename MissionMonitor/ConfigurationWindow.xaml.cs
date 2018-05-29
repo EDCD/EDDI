@@ -21,6 +21,10 @@ namespace EddiMissionMonitor
 
             monitor = ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor"));
             missionsData.ItemsSource = monitor.missions;
+
+            MissionMonitorConfiguration configuration = MissionMonitorConfiguration.FromFile();
+            missionWarningInt.Text = ((int)configuration.warning).ToString(CultureInfo.InvariantCulture);
+
         }
 
         private void missionsUpdated(object sender, DataTransferEventArgs e)
@@ -48,7 +52,7 @@ namespace EddiMissionMonitor
         private void EnsureValidInteger(object sender, TextCompositionEventArgs e)
         {
             // Match valid characters
-            Regex regex = new Regex(@"[0-9\.]");
+            Regex regex = new Regex(@"[0-9]");
             // Swallow the character doesn't match the regex
             e.Handled = !regex.IsMatch(e.Text);
         }
