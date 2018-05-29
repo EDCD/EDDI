@@ -1100,6 +1100,15 @@
       "name": "Mission completed",
       "description": "Triggered when you complete a mission"
     },
+    "Mission expired": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{_ Mission expired }\r\n{_ Triggered when a mission has expired }\r\n\r\n{_ Context }\r\n{SetState('eddi_context_last_subject', 'mission')}\r\n{SetState('eddi_context_last_action', 'expired')}",
+      "default": true,
+      "name": "Mission expired",
+      "description": "Triggered when a mission has expired"
+    },
     "Mission failed": {
       "enabled": true,
       "priority": 3,
@@ -1117,6 +1126,15 @@
       "default": true,
       "name": "Mission redirected",
       "description": "Triggered when a mission is redirected"
+    },
+    "Mission warning": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{_ Mission warning }\r\n{_ Triggered when a mission is about to expire, based on a set threshold }\r\n\r\n{_ Context }\r\n{SetState('eddi_context_last_subject', 'mission')}\r\n{SetState('eddi_context_last_action', 'warning')}",
+      "default": true,
+      "name": "Mission warning",
+      "description": "Triggered when a mission is about to expire, based on a set threshold"
     },
     "Modification applied": {
       "enabled": true,
