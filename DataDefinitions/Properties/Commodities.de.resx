@@ -1290,7 +1290,7 @@
     <comment>Commodity TransgenicOnionHead</comment>
   </data>
   <data name="TrinketsOfFortune" xml:space="preserve">
-    <value>Schmuckstück verborgenes Vermögen</value>
+    <value>Glücksbringer</value>
     <comment>Commodity TrinketsOfFortune</comment>
   </data>
   <data name="UnknownArtifact" xml:space="preserve">
@@ -1362,7 +1362,7 @@
     <comment>Commodity USSCargoTradeData</comment>
   </data>
   <data name="UszaianTreeGrub" xml:space="preserve">
-    <value>Uszaian Baumrodung</value>
+    <value>Uszaianisches Baumgras</value>
     <comment>Commodity UszaianTreeGrub</comment>
   </data>
   <data name="UtgaroarMillenialEggs" xml:space="preserve">
