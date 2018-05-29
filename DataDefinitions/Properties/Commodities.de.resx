@@ -1090,7 +1090,7 @@
     <comment>Commodity Robotics</comment>
   </data>
   <data name="RusaniOldSmokey" xml:space="preserve">
-    <value>Rusani alter Raucher</value>
+    <value>Alter Rusani Raucher</value>
     <comment>Commodity RusaniOldSmokey</comment>
   </data>
   <data name="Rutile" xml:space="preserve">
@@ -1102,7 +1102,7 @@
     <comment>Commodity Samarium</comment>
   </data>
   <data name="SanumaDecorativeMeat" xml:space="preserve">
-    <value>Sanuma dekoratives Fleisch</value>
+    <value>Dekoratives Sanuma Fleisch</value>
     <comment>Commodity SanumaDecorativeMeat</comment>
   </data>
   <data name="SAP8CoreContainer" xml:space="preserve">
@@ -1162,7 +1162,7 @@
     <comment>Commodity SoontillRelics</comment>
   </data>
   <data name="SothisCrystallineGold" xml:space="preserve">
-    <value>Sothis kristallines Gold</value>
+    <value>Kristallines Sothis Gold</value>
     <comment>Commodity SothisCrystallineGold</comment>
   </data>
   <data name="SpacePioneerRelics" xml:space="preserve">
