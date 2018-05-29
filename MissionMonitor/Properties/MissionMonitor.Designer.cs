@@ -149,5 +149,14 @@ namespace EddiMissionMonitor.Properties {
                 return ResourceManager.GetString("para2", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mission expiration warning threshold (Minutes):.
+        /// </summary>
+        public static string tab_mission_warning {
+            get {
+                return ResourceManager.GetString("tab_mission_warning", resourceCulture);
+            }
+        }
     }
 }
