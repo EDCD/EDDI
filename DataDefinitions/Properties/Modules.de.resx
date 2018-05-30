@@ -354,7 +354,7 @@
     <comment>Module ModuleReinforcementPackage</comment>
   </data>
   <data name="Multicannon" xml:space="preserve">
-    <value>Mehrzweckgeschütz</value>
+    <value>Mehrfachgeschütz</value>
     <comment>Module Multicannon</comment>
   </data>
   <data name="Multi_Cannon" xml:space="preserve">
@@ -446,7 +446,7 @@
     <comment>Module Sensors</comment>
   </data>
   <data name="ShieldBooster" xml:space="preserve">
-    <value>Schildverstärker</value>
+    <value>Schild-Booster</value>
     <comment>Module ShieldBooster</comment>
   </data>
   <data name="ShieldCellBank" xml:space="preserve">
