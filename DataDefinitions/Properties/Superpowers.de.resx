@@ -103,7 +103,7 @@
     <comment>Superpower type Alliance</comment>
   </data>
   <data name="Empire" xml:space="preserve">
-    <value>Empire</value>
+    <value>Imperium</value>
     <comment>Superpower type Empire</comment>
   </data>
   <data name="Federation" xml:space="preserve">
