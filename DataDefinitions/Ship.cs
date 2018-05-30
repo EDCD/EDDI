@@ -166,6 +166,7 @@ namespace EddiDataDefinitions
                 }
             }
         }
+        public string role => Role?.localizedName; // This string is made available for Cottle scripts that vary depending on the ship's role. 
 
         [JsonExtensionData]
         private IDictionary<string, JToken> additionalJsonData;

@@ -5,6 +5,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
 ### 3.0.1-b5
   * Speech responder
     * Updated `Commodity sales check` script to make use of `CommodityMarketDetails()` function.
+    * Fixed a bug that had made `{ship.role}` inaccessible via scripts.
   * Added the following Cottle function, documented in [the SpeechResponder documentation](https://github.com/EDCD/EDDI/blob/master/SpeechResponder/Help.md):
      * `CommodityMarketDetails()` for retrieving market information about commodities.
 
