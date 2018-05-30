@@ -279,7 +279,13 @@ namespace EddiMissionMonitor
 
                 // Mission faction parameters
                 mission.faction = @event.faction;
-                mission.factionstate = SystemState.FromEDName(mission.name.Split('_').ElementAt(2)).localizedName;
+                string state = mission.name.Split('_').ElementAt(2).ToLowerInvariant() ?? String.Empty;
+                mission.factionstate = SystemState.FromEDName(state)?.localizedName ?? String.Empty;
+                if (mission.factionstate == String.Empty)
+                {
+                    state = mission.name.Split('_').ElementAt(3).ToLowerInvariant() ?? String.Empty;
+                    mission.factionstate = SystemState.FromEDName(state)?.localizedName ?? String.Empty;
+                }
 
                 // Mission legality
                 mission.legal = mission.name.Split('_').ElementAt(2).ToLowerInvariant() == "illegal" ? false : true;
@@ -354,8 +360,9 @@ namespace EddiMissionMonitor
                 mission.targetfaction = @event.targetfaction;
 
                 // Missions with passengers
-                mission.passengertype = @event.passengertype;
+                mission.passengertypeEDName = @event.passengertype;
                 mission.passengervips = @event.passengervips;
+                mission.passengerwanted = @event.passengerwanted;
 
                 AddMission(mission);
             }
@@ -458,7 +465,9 @@ namespace EddiMissionMonitor
         {
             IDictionary<string, object> variables = new Dictionary<string, object>
             {
-                ["missions"] = new List<Mission>(missions)
+                ["missions"] = new List<Mission>(missions),
+                ["missioncount"] = missioncount,
+                ["missionwarning"] = warning
             };
             return variables;
         }

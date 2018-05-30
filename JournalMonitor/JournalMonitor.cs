@@ -2386,7 +2386,7 @@ namespace EddiJournalMonitor
 
                                 // Missions with passengers
                                 int? passengercount = JsonParsing.getOptionalInt(data, "PassengerCount");
-                                PassengerType passengertype = PassengerType.FromEDName(JsonParsing.getString(data, "PassengerType"));
+                                string passengertype = JsonParsing.getString(data, "PassengerType");
                                 bool? passengerswanted = JsonParsing.getOptionalBool(data, "PassengerWanted");
                                 bool? passengervips = JsonParsing.getOptionalBool(data, "PassengerVIPs");
                                 data.TryGetValue("PassengerCount", out val);

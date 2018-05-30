@@ -140,7 +140,7 @@ namespace EddiDataDefinitions
         // THe destination station of the mission
         [JsonIgnore]
         private string _timeremaining;
-        [JsonIgnore]
+
         public string timeremaining
         {
             get
@@ -157,7 +157,9 @@ namespace EddiDataDefinitions
             }
         }
 
-        public string passengertype { get; set; }
+        public string passengertypeEDName { get; set; }
+        [JsonIgnore]
+        public string passengertype => PassengerType.FromEDName(passengertypeEDName)?.localizedName;
         public bool? passengerwanted { get; set; }
         public bool? passengervips { get; set; }
 

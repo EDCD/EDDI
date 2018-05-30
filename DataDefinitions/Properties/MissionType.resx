@@ -130,13 +130,13 @@
     <value>Collect</value>
   </data>
   <data name="Courier" xml:space="preserve">
-    <value>Courier</value>
+    <value>Data Courier</value>
   </data>
   <data name="Delivery" xml:space="preserve">
     <value>Delivery</value>
   </data>
   <data name="Disable" xml:space="preserve">
-    <value>Disable</value>
+    <value>Disable Surface Installation</value>
   </data>
   <data name="LongDistanceExpedition" xml:space="preserve">
     <value>Expedition</value>
@@ -166,12 +166,12 @@
     <value>Salvage</value>
   </data>
   <data name="Scan" xml:space="preserve">
-    <value>Scan</value>
+    <value>Surface Scan</value>
   </data>
   <data name="Sightseeing" xml:space="preserve">
     <value>Sightseeing</value>
   </data>
   <data name="Smuggle" xml:space="preserve">
-    <value>Smuggle</value>
+    <value>Smuggling</value>
   </data>
 </root>

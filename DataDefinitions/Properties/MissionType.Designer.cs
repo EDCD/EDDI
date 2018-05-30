@@ -97,7 +97,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Courier.
+        ///   Looks up a localized string similar to Data Courier.
         /// </summary>
         internal static string Courier {
             get {
@@ -115,7 +115,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Disable.
+        ///   Looks up a localized string similar to Disable Surface Installation.
         /// </summary>
         internal static string Disable {
             get {
@@ -205,7 +205,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Scan.
+        ///   Looks up a localized string similar to Surface Scan.
         /// </summary>
         internal static string Scan {
             get {
@@ -223,7 +223,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Smuggle.
+        ///   Looks up a localized string similar to Smuggling.
         /// </summary>
         internal static string Smuggle {
             get {
