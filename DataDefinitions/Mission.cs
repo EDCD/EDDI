@@ -80,6 +80,9 @@ namespace EddiDataDefinitions
 		// The station in which the mission was accepted
         public string originstation { get; set; }
 
+        // Mission returns to origin
+        public bool originreturn { get; set; }
+
         public string faction { get; set; }
 
         public string factionstate { get; set; }

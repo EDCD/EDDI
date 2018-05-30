@@ -114,23 +114,23 @@ namespace EddiMissionMonitor
             {
                 foreach (Mission mission in missions)
                 {
-                    if (mission.statusEDName == "active")
+                    if (mission.statusEDName == "Active")
                     {
                         TimeSpan span = mission.expiry.ToLocalTime() - DateTime.Now;
                         mission.timeremaining = span.Days.ToString() + "D " + span.Hours.ToString() + "H " + span.Minutes.ToString() + "MIN";
+
+                        if (mission.expiry.ToLocalTime() < DateTime.Now)
+                        {
+                            EDDI.Instance.eventHandler(new MissionExpiredEvent(DateTime.Now, mission.missionid, mission.name));
+                        }
+                        else if (mission.expiry.ToLocalTime() < DateTime.Now.AddMinutes(-warning ?? 60))
+                        {
+                            EDDI.Instance.eventHandler(new MissionWarningEvent(DateTime.Now, mission.missionid, mission.name));
+                        }
                     }
                     else
                     {
                         mission.timeremaining = String.Empty;
-                    }
-
-                    if (mission.expiry.ToLocalTime() < DateTime.Now)
-                    {
-                        EDDI.Instance.eventHandler(new MissionExpiredEvent(DateTime.Now, mission.missionid, mission.name));
-                    }
-                    else if (mission.expiry.ToLocalTime() < DateTime.Now.AddMinutes(-warning ?? 60))
-                    {
-                        EDDI.Instance.eventHandler(new MissionWarningEvent(DateTime.Now, mission.missionid, mission.name));
                     }
                 }
                 Thread.Sleep(5000);
@@ -233,7 +233,6 @@ namespace EddiMissionMonitor
                     _RemoveMissionWithMissionId(missionEntry.missionid);
 				}
 			}
-
         }
 
         private void handleMissionAbandonedEvent(MissionAbandonedEvent @event)
@@ -287,7 +286,31 @@ namespace EddiMissionMonitor
 
                 // Set mission origin to to the current system & station
                 mission.originsystem = EDDI.Instance?.CurrentStarSystem?.name;
-                mission.originsystem = EDDI.Instance?.CurrentStation?.name;
+                mission.originstation = EDDI.Instance?.CurrentStation?.name;
+
+                // Mission returns to origin
+                switch (type)
+                {
+                    case "altruism":
+                    case "altruismcredits":
+                    case "assassinate":
+                    case "collect":
+                    case "disable":
+                    case "longdistanceexpedition":
+                    case "massacre":
+                    case "mining":
+                    case "piracy":
+                    case "sightseeing":
+                        {
+                            mission.originreturn = true;
+                        }
+                        break;
+                    default:
+                        {
+                            mission.originreturn = false;
+                        }
+                        break;
+                }
 
                 // Missions with commodities
                 mission.commodity = @event.commodity;
@@ -309,11 +332,11 @@ namespace EddiMissionMonitor
                     // Populate destination system and station, depending on mission type
                     switch (type)
                     {
-                        case "altruisn":
+                        case "altruism":
                         case "altruismcredits":
                             {
                                 mission.destinationsystem = mission.originsystem;
-                                mission.destinationstation = mission.originsystem;
+                                mission.destinationstation = mission.originstation;
                             }
                             break;
                         default:
