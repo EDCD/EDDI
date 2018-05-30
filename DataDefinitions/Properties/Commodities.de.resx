@@ -1385,10 +1385,7 @@
     <value>V Herculis Körperreibe</value>
     <comment>Commodity VHerculisBodyRub</comment>
   </data>
-  <data name="VidavantianLace" xml:space="preserve">
-    <value>Vidavantianische Spitze</value>
-    <comment>Commodity VidavantianLace</comment>
-  </data>
+  
   <data name="VoidExtractCoffee" xml:space="preserve">
     <value>Void Kaffeekonzentrat</value>
     <comment>Commodity VoidExtractCoffee</comment>
