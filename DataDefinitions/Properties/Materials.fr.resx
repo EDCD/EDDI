@@ -434,7 +434,7 @@
     <comment>Material uncutfocuscrystals</comment>
   </data>
   <data name="galvanisingalloys" xml:space="preserve">
-    <value>Alliage galvanique</value>
+    <value>Alliages galvaniques</value>
     <comment>Material galvanisingalloys</comment>
   </data>
   <data name="heatdispersionplate" xml:space="preserve">
