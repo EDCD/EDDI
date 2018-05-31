@@ -119,7 +119,7 @@ namespace EddiDataDefinitions
             }
         }
 
-		// THe destination station of the mission
+		// The destination station of the mission
         private string _destinationstation;
 		public string destinationstation
         {
@@ -136,11 +136,13 @@ namespace EddiDataDefinitions
                 }
             }
         }
+        // Desintation systems for chained missions
+        public string [] destinationsystems { get; set; }
 
-        // THe destination station of the mission
+        // The mission time remaining
         [JsonIgnore]
         private string _timeremaining;
-
+        [JsonIgnore]
         public string timeremaining
         {
             get

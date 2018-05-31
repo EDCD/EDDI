@@ -324,14 +324,16 @@ namespace EddiMissionMonitor
                 // Missions with destinations
                 if (@event.destinationsystem.Contains("$MISSIONUTIL_MULTIPLE"))
                 {
-                    // If 'chained' mission, get the first destination system. 'Mission redirected' should take care of the rest
-                    mission.destinationsystem = @event.destinationsystem
+                    // If 'chained' mission, get the destination systems
+                    mission.destinationsystems = @event.destinationsystem
                         .Substring(0, @event.destinationsystem.IndexOf("$MISSIONUTIL_MULTIPLE_FINAL"))
                         .Replace("$MISSIONUTIL_MULTIPLE_INNER_SEPARATOR;", "#")
                         .Replace("$FINAL_SEPARATOR;", "#")
-                        .Split('#')
-                        .ElementAt(0);
+                        .Split('#');
                     mission.destinationstation = String.Empty;
+
+                    // Load the first destination system. 'Mission redirected' should take care of the rest
+                    mission.destinationsystem = mission.destinationsystems.ElementAt(0);
                 }
                 else
                 {
