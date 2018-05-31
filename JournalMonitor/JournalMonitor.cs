@@ -2354,6 +2354,27 @@ namespace EddiJournalMonitor
                                 handled = true;
                             }
                             break;
+                        case "CargoDepot":
+                            {
+                                object val;
+                                data.TryGetValue("MissionID", out val);
+                                long missionid = (long)val;
+                                string updatetype = JsonParsing.getString(data, "UpdateType");
+
+                                // Not available in 'WingUpdate'
+                                CommodityDefinition cargotype = CommodityDefinition.FromName(JsonParsing.getString(data, "CargoType"));
+                                data.TryGetValue("Count", out val);
+                                int? count = (int?)(long?)val;
+
+                                int collected = JsonParsing.getInt(data, "ItemsCollected");
+                                int delivered = JsonParsing.getInt(data, "ItemsDelivered");
+                                int totaltodeliver = JsonParsing.getInt(data, "TotalItemsToDeliver");
+                                decimal progress = JsonParsing.getInt(data, "Progress");
+
+                                events.Add(new CargoDepotEvent(timestamp, missionid, updatetype, cargotype, count, collected, delivered, totaltodeliver, progress) { raw = line });
+                                handled = true;
+                                break;
+                            }
                         case "MissionAccepted":
                             {
                                 data.TryGetValue("MissionID", out object val);
