@@ -170,6 +170,7 @@ namespace EddiDataDefinitions
         public string targetfaction { get; set; }
 
         public DateTime expiry { get; set; }
+        public long expiryseconds { get; set; }
 
         public Mission() { }
 
@@ -180,7 +181,8 @@ namespace EddiDataDefinitions
 			this. name = Name;
             this.typeDef = MissionType.FromEDName(Name.Split('_').ElementAt(1));
 			this.expiry = expiry;
-			this.statusDef = Status;
+            this.expiryseconds = (long)expiry.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
+            this.statusDef = Status;
 		}
 
         public event PropertyChangedEventHandler PropertyChanged;
