@@ -137,7 +137,7 @@ namespace EddiMissionMonitor
             }
         }
 
-            public UserControl ConfigurationTabItem()
+        public UserControl ConfigurationTabItem()
         {
             return new ConfigurationWindow();
         }
@@ -185,7 +185,7 @@ namespace EddiMissionMonitor
             // Handle the events that we care about
             if (@event is MissionsEvent)
             {
-			    //
+                //
                 handleMissionsEvent((MissionsEvent)@event);
             }
             else if (@event is MissionAcceptedEvent)
@@ -214,28 +214,28 @@ namespace EddiMissionMonitor
         public void _handleMissionsEvent(MissionsEvent @event)
         {
             foreach (Mission mission in @event.missions)
-			{
-			    // Add missions to mission log
+            {
+                // Add missions to mission log
                 Mission missionEntry = missions.FirstOrDefault(m => m.missionid == mission.missionid);
                 if (missionEntry != null)
                 {
-				    missionEntry.statusDef = mission.statusDef;
-				}
-				else
-				{
-				    AddMission(mission);
-				}
-			}
-			// Remove strays from the mission log
-			foreach (Mission missionEntry in missions.ToList())
-			{
-			    Mission mission = @event.missions.FirstOrDefault(m => m.missionid == missionEntry.missionid);
-				if (mission == null)
-				{
+                    missionEntry.statusDef = mission.statusDef;
+                }
+                else
+                {
+                    AddMission(mission);
+                }
+            }
+            // Remove strays from the mission log
+            foreach (Mission missionEntry in missions.ToList())
+            {
+                Mission mission = @event.missions.FirstOrDefault(m => m.missionid == missionEntry.missionid);
+                if (mission == null)
+                {
                     // Strip out the stray from the mission log
                     _RemoveMissionWithMissionId(missionEntry.missionid);
-				}
-			}
+                }
+            }
         }
 
         private void handleMissionAbandonedEvent(MissionAbandonedEvent @event)
@@ -289,9 +289,6 @@ namespace EddiMissionMonitor
                     state = mission.name.Split('_').ElementAt(3).ToLowerInvariant() ?? String.Empty;
                     mission.factionstate = SystemState.FromEDName(state)?.localizedName ?? String.Empty;
                 }
-
-                // Mission legality
-                mission.legal = mission.name.Split('_').ElementAt(2).ToLowerInvariant() == "illegal" ? false : true;
 
                 // Set mission origin to to the current system & station
                 mission.originsystem = EDDI.Instance?.CurrentStarSystem?.name;
@@ -559,9 +556,23 @@ namespace EddiMissionMonitor
             writeMissions();
         }
 
-        private Mission GetMissionWithMissionId(long missionid)
+        public Mission GetMissionWithMissionId(long missionid)
         {
             return missions.FirstOrDefault(m => m.missionid == missionid);
+        }
+
+        public List<long> GetMissionIdsWithCommodity(string commodity)
+        {
+            List<long> missionIds = new List<long>();
+            foreach (Mission mission in missions)
+            {
+                if (mission.commodity == commodity)
+                {
+                    missionIds.Add(mission.missionid);
+                }
+            }
+
+            return missionIds;
         }
 
         static void RaiseOnUIThread(EventHandler handler, object sender)

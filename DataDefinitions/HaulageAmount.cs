@@ -14,7 +14,9 @@ namespace EddiDataDefinitions
         public string type => name.Split('_').ElementAtOrDefault(1)?.ToLowerInvariant();
 
         [JsonIgnore]
-        public bool legal => !name.ToLowerInvariant().Contains("illegal");
+        public bool legal => name.Split('_').ElementAtOrDefault(2)
+            .ToLowerInvariant()
+            .Contains("illegal") ? false : true;
 
         [JsonIgnore]
         public bool wing => name.ToLowerInvariant().Contains("wing");
@@ -27,6 +29,8 @@ namespace EddiDataDefinitions
 
         public bool shared { get; set; }
 
+        public string status { get; set; }
+
         public DateTime expiry { get; set; }
 
         public HaulageAmount() { }
@@ -35,6 +39,7 @@ namespace EddiDataDefinitions
         {
             this.id = id;
             this.name = name;
+            this.status = status;
             this.amount = amount;
             this.collected = collected;
             this.delivered = delivered;
@@ -46,6 +51,7 @@ namespace EddiDataDefinitions
         {
             this.id = Id;
             this.name = Name;
+            this.status = "Active";
             this.amount = Amount;
             this.expiry = Expiry;
             this.shared = Shared;

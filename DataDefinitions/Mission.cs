@@ -1,7 +1,5 @@
 ﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 
@@ -91,7 +89,10 @@ namespace EddiDataDefinitions
 
         public string reputation { get; set; }
 
-        public bool legal { get; set; }
+        [JsonIgnore]
+        public bool legal => name.Split('_').ElementAtOrDefault(2)
+            .ToLowerInvariant()
+            .Contains("illegal") ? false : true;
 
         public bool wing { get; set; }
 
@@ -170,7 +171,8 @@ namespace EddiDataDefinitions
         public string targetfaction { get; set; }
 
         public DateTime expiry { get; set; }
-        public long expiryseconds { get; set; }
+        [JsonIgnore]
+        public long expiryseconds => (long)expiry.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
 
         public Mission() { }
 
@@ -181,7 +183,6 @@ namespace EddiDataDefinitions
 			this. name = Name;
             this.typeDef = MissionType.FromEDName(Name.Split('_').ElementAt(1));
 			this.expiry = expiry;
-            this.expiryseconds = (long)expiry.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
             this.statusDef = Status;
 		}
 
