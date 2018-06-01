@@ -2346,6 +2346,11 @@ namespace EddiJournalMonitor
                                         }
                                         else
                                         {
+                                            // If "Active" and expires = 0, then mission is complete
+                                            if (missionStatus.edname == "Active" && expires == 0)
+                                            {
+                                                newMission.statusDef = MissionStatus.FromEDName("Complete");
+                                            }
                                             missions.Add(newMission);
                                         }
                                     }

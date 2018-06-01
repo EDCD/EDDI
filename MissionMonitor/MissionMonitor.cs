@@ -158,6 +158,24 @@ namespace EddiMissionMonitor
 
         public void PostHandle(Event @event)
         {
+            Logging.Debug("Received event " + JsonConvert.SerializeObject(@event));
+
+            // 'Post' handle events which remove a mission from the log
+            if (@event is MissionAbandonedEvent)
+            {
+                //
+                handleMissionAbandonedEvent((MissionAbandonedEvent)@event);
+            }
+            else if (@event is MissionCompletedEvent)
+            {
+                //
+                handleMissionCompletedEvent((MissionCompletedEvent)@event);
+            }
+            else if (@event is MissionFailedEvent)
+            {
+                //
+                handleMissionFailedEvent((MissionFailedEvent)@event);
+            }
         }
 
         public void PreHandle(Event @event)
@@ -170,25 +188,10 @@ namespace EddiMissionMonitor
 			    //
                 handleMissionsEvent((MissionsEvent)@event);
             }
-            else if (@event is MissionAbandonedEvent)
-            {
-                //
-                handleMissionAbandonedEvent((MissionAbandonedEvent)@event);
-            }
             else if (@event is MissionAcceptedEvent)
             {
                 //
                 handleMissionAcceptedEvent((MissionAcceptedEvent)@event);
-            }
-            else if (@event is MissionCompletedEvent)
-            {
-                //
-                handleMissionCompletedEvent((MissionCompletedEvent)@event);
-            }
-            else if (@event is MissionFailedEvent)
-            {
-                //
-                handleMissionFailedEvent((MissionFailedEvent)@event);
             }
             else if (@event is MissionExpiredEvent)
             {
