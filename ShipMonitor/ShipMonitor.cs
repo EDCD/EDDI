@@ -488,7 +488,7 @@ namespace EddiShipMonitor
             ship.fueltanktotalcapacity = ship.fueltankcapacity + (int)ship.compartments.Where(c => c.module != null && c.module.basename.Equals("FuelTank")).Sum(c => Math.Pow(2, c.module.@class));
 
             // Cargo capacity
-            ship.cargocapacity = (int)ship.compartments.Where(c => c.module != null && c.module.basename.Equals("CargoRack")).Sum(c => Math.Pow(2, c.module.@class));
+            ship.cargocapacity = (int)ship.compartments.Where(c => c.module != null && c.module.basename.Contains("CargoRack")).Sum(c => Math.Pow(2, c.module.@class));
             return ship;
         }
 
