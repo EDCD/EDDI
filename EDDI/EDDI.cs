@@ -1124,21 +1124,19 @@ namespace Eddi
 
         private bool eventEnteredNormalSpace(EnteredNormalSpaceEvent theEvent)
         {
+            // We won't update CurrentStation with this event, as doing so triggers false / premature updates from the Frontier API
+            CurrentStation = null;
+
             Environment = Constants.ENVIRONMENT_NORMAL_SPACE;
 
             if (theEvent.bodytype.ToLowerInvariant() == "station")
             {
                 // In this case body == station 
-                CurrentStellarBody = null;
             }
             else if (theEvent.body != null)
             {
-                // If we are not at a station then our station information is invalid 
-                CurrentStation = null;
-
                 // Update the body 
-                Logging.Debug("Now at body " + theEvent.body);
-                Body body = CurrentStarSystem.bodies.Find(s => s.name == theEvent.body);
+                Body body = CurrentStarSystem?.bodies?.Find(s => s.name == theEvent.body);
                 if (body == null)
                 {
                     // This body is unknown to us, might not be in EDDB or we might not have connectivity.  Use a placeholder 
@@ -1146,10 +1144,8 @@ namespace Eddi
                     body.name = theEvent.body;
                     body.systemname = theEvent.system;
                 }
-
                 CurrentStellarBody = body;
             }
-
             updateCurrentSystem(theEvent.system);
             return true;
         }
@@ -1319,11 +1315,13 @@ namespace Eddi
 
         private bool eventNearSurface(NearSurfaceEvent theEvent)
         {
+            // We won't update CurrentStation with this event, as doing so triggers false / premature updates from the Frontier API
+            CurrentStation = null;
+
             if (theEvent.approaching_surface)
             {
-                // Update the body we are approaching 
-                Logging.Debug("Now at body " + theEvent.body);
-                Body body = CurrentStarSystem.bodies.Find(s => s.name == theEvent.body);
+                // Update the body 
+                Body body = CurrentStarSystem?.bodies?.Find(s => s.name == theEvent.body);
                 if (body == null)
                 {
                     // This body is unknown to us, might not be in EDDB or we might not have connectivity.  Use a placeholder 
@@ -1331,7 +1329,6 @@ namespace Eddi
                     body.name = theEvent.body;
                     body.systemname = theEvent.system;
                 }
-
                 CurrentStellarBody = body;
             }
             else
@@ -1339,9 +1336,7 @@ namespace Eddi
                 // Clear the body we are leaving 
                 CurrentStellarBody = null;
             }
-
             updateCurrentSystem(theEvent.system);
-
             return true;
         }
 
