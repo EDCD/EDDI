@@ -1501,7 +1501,7 @@ namespace EddiVoiceAttackResponder
                 vaProxy.SetText(prefix + " government", system?.government);
                 vaProxy.SetText(prefix + " faction", system?.faction);
                 vaProxy.SetText(prefix + " primary economy", system?.primaryeconomy);
-                vaProxy.SetText(prefix + " state", system?.systemState.localizedName);
+                vaProxy.SetText(prefix + " state", (system?.systemState ?? SystemState.None).localizedName);
                 vaProxy.SetText(prefix + " security", system?.security);
                 vaProxy.SetText(prefix + " power", system?.power);
                 vaProxy.SetText(prefix + " power (spoken)", Translations.Power(EDDI.Instance.CurrentStarSystem?.power));
@@ -1511,7 +1511,7 @@ namespace EddiVoiceAttackResponder
                 vaProxy.SetDecimal(prefix + " Z", system?.z);
                 vaProxy.SetInt(prefix + " visits", system?.visits);
                 vaProxy.SetDate(prefix + " previous visit", system?.visits > 1 ? system.lastvisit : null);
-                vaProxy.SetDecimal(prefix + " minutes since previous visit", system?.visits > 1 && system?.lastvisit.HasValue == true ? (decimal)(long)(DateTime.Now - system.lastvisit.Value).TotalMinutes : (decimal?)null);
+                vaProxy.SetDecimal(prefix + " minutes since previous visit", system?.visits > 1 && system?.lastvisit.HasValue == true ? (decimal)(long)(DateTime.UtcNow - system.lastvisit.Value).TotalMinutes : (decimal?)null);
                 vaProxy.SetText(prefix + " comment", system?.comment);
                 vaProxy.SetDecimal(prefix + " distance from home", system?.distancefromhome);
 

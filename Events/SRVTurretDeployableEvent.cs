@@ -8,7 +8,7 @@ namespace EddiEvents
     {
         public const string NAME = "SRV turret deployable";
         public const string DESCRIPTION = "Triggered when your SRV enters or leaves the restriction zone around a ship.";
-        public static SRVTurretDeployableEvent SAMPLE = new SRVTurretDeployableEvent(DateTime.Now, true);
+        public static SRVTurretDeployableEvent SAMPLE = new SRVTurretDeployableEvent(DateTime.UtcNow, true);
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
         static SRVTurretDeployableEvent()

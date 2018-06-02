@@ -101,7 +101,7 @@ namespace EddiDataProviderService
                 StarSystem.bodies = BodiesFromEDDP(StarSystem.name, json);
             }
 
-            StarSystem.lastupdated = DateTime.Now;
+            StarSystem.lastupdated = DateTime.UtcNow;
 
             return StarSystem;
         }

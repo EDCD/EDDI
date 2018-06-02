@@ -17,7 +17,7 @@ namespace EddiDataDefinitions
         public string government { get; set; }
         public string faction { get; set; }
         public string primaryeconomy { get; set; }
-        public SystemState systemState { get; set; }
+        public SystemState systemState { get; set; } = SystemState.None;
         public string security { get; set; }
         public string power { get; set; }
         public string powerstate { get; set; }
@@ -50,6 +50,9 @@ namespace EddiDataDefinitions
 
         /// <summary>Time of last visit</summary>
         public DateTime? lastvisit;
+
+        /// <summary>Time of last visit, expressed as a Unix timestamp in seconds</summary>
+        public long? lastVisitSeconds => (visits > 1 && lastvisit != null) ? (long?)((DateTime)lastvisit).Subtract(new DateTime(1970, 1, 1)).TotalSeconds : null;
 
         /// <summary>comment on this starsystem</summary>
         public string comment;

@@ -128,7 +128,7 @@ namespace EddiShipMonitor
                             {
                                 Ship.fueltanktotalcapacity += (decimal)Math.Pow(2, compartment.module.@class);
                             }
-                            if (moduleName == "Cargo Rack")
+                            if (moduleName.Contains("Cargo Rack"))
                             {
                                 Ship.cargocapacity += (int)Math.Pow(2, compartment.module.@class);
                             }
