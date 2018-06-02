@@ -31,6 +31,7 @@ namespace EddiDataDefinitions
             var Manganese = new Material("manganese", Element, Common, "Mn", 12.9M, 15.5M);
             var Vanadium = new Material("vanadium", Element, Common, "V", 8.3M, 9.9M);
             var Zinc = new Material("zinc", Element, Common, "Zn", 9.1M, 10.9M);
+            var Zirconium = new Material("zirconium", Element, Common, "Zr", 4.1M, 5.0M);
 
             // Grade 3, Standard
             var Boron = new Material("boron", Element, Standard, "B", null, null);
@@ -47,7 +48,6 @@ namespace EddiDataDefinitions
             var Technetium = new Material("technetium", Element, Rare, "Tc", 1.3M, 1.5M);
             var Tellurium = new Material("tellurium", Element, Rare, "Te", 1.3M, 1.5M);
             var Yttrium = new Material("yttrium", Element, Rare, "Y", 2.1M, 2.5M);
-            var Zirconium = new Material("zirconium", Element, Rare, "Zr", 4.1M, 5.0M);
 
             // Grade 5, Very Rare
             var Antimony = new Material("antimony", Element, VeryRare, "Sb", 1.4M, 1.6M);
