@@ -36,7 +36,7 @@ namespace EddiEvents
 
         public string model { get; private set; }
 
-        public Superpower allegiance { get; private set; }
+        public string allegiance { get; private set; }
 
         public string faction { get; private set; }
 
@@ -56,7 +56,7 @@ namespace EddiEvents
             this.station = station;
             this.state = state;
             this.model = model;
-            this.allegiance = allegiance;
+            this.allegiance = (allegiance ?? Superpower.None).localizedName;
             this.faction = faction;
             this.factionstate = (factionstate ?? SystemState.None).localizedName;
             this.economy = (economy ?? Economy.None).localizedName;
