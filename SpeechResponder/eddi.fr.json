@@ -1613,15 +1613,6 @@
       "name": "SRV launched",
       "description": "Triggered when you launch an SRV from your ship"
     },
-    "SRV turret deployable": {
-      "enabled": true,
-      "priority": 3,
-      "responder": true,
-      "script": "{if !event.deployable:\r\n   {OneOf(\"Buggy\", \"SRV\")} standing by for recovery.\r\n}",
-      "default": true,
-      "name": "SRV turret deployable",
-      "description": "Triggered when your SRV enters or leaves the restriction zone around a ship."
-    },
     "SRV turret": {
       "enabled": true,
       "priority": 3,
@@ -1630,6 +1621,15 @@
       "default": true,
       "name": "SRV turret",
       "description": "Triggered when you deploy or retract your SRV's turret"
+    },
+    "SRV turret deployable": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{if !event.deployable:\r\n   {OneOf(\"Buggy\", \"SRV\")} standing by for recovery.\r\n}",
+      "default": true,
+      "name": "SRV turret deployable",
+      "description": "Triggered when your SRV enters or leaves the restriction zone around a ship."
     },
     "Star report": {
       "enabled": true,
