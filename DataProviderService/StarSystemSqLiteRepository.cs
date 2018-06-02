@@ -160,13 +160,13 @@ namespace EddiDataProviderService
                                     {
                                         if (!rdr.IsDBNull(4)) result.comment = rdr.GetString(4);
                                     }
-                                    if (refreshIfOutdated && result.lastupdated < DateTime.Now.AddHours(-1))
+                                    if (refreshIfOutdated && result.lastupdated < DateTime.UtcNow.AddHours(-1))
                                     {
                                         // Data is stale
                                         StarSystem updatedResult = DataProviderService.GetSystemData(name, null, null, null);
                                         updatedResult.visits = result.visits;
                                         updatedResult.lastvisit = result.lastvisit;
-                                        updatedResult.lastupdated = DateTime.Now;
+                                        updatedResult.lastupdated = DateTime.UtcNow;
                                         result = updatedResult;
                                         needToUpdate = true;
                                     }
@@ -234,14 +234,14 @@ namespace EddiDataProviderService
                                 if (system.lastvisit == null)
                                 {
                                     // DB constraints don't allow this to be null
-                                    system.lastvisit = DateTime.Now;
+                                    system.lastvisit = DateTime.UtcNow;
                                 }
 
                                 cmd.CommandText = INSERT_SQL;
                                 cmd.Prepare();
                                 cmd.Parameters.AddWithValue("@name", system.name);
                                 cmd.Parameters.AddWithValue("@totalvisits", system.visits);
-                                cmd.Parameters.AddWithValue("@lastvisit", system.lastvisit ?? DateTime.Now);
+                                cmd.Parameters.AddWithValue("@lastvisit", system.lastvisit ?? DateTime.UtcNow);
                                 cmd.Parameters.AddWithValue("@starsystem", JsonConvert.SerializeObject(system));
                                 cmd.Parameters.AddWithValue("@starsystemlastupdated", system.lastupdated);
                                 cmd.ExecuteNonQuery();
@@ -255,7 +255,7 @@ namespace EddiDataProviderService
                                 cmd.CommandText = UPDATE_SQL;
                                 cmd.Prepare();
                                 cmd.Parameters.AddWithValue("@totalvisits", system.visits);
-                                cmd.Parameters.AddWithValue("@lastvisit", system.lastvisit ?? DateTime.Now);
+                                cmd.Parameters.AddWithValue("@lastvisit", system.lastvisit ?? DateTime.UtcNow);
                                 cmd.Parameters.AddWithValue("@starsystem", JsonConvert.SerializeObject(system));
                                 cmd.Parameters.AddWithValue("@starsystemlastupdated", system.lastupdated);
                                 cmd.Parameters.AddWithValue("@name", system.name);
@@ -270,7 +270,7 @@ namespace EddiDataProviderService
         // Triggered when leaving a starsystem - just update lastvisit
         public void LeaveStarSystem(StarSystem system)
         {
-            system.lastvisit = DateTime.Now;
+            system.lastvisit = DateTime.UtcNow;
             SaveStarSystem(system);
         }
 
@@ -291,7 +291,7 @@ namespace EddiDataProviderService
                     if (system.lastvisit == null)
                     {
                         // DB constraints don't allow this to be null
-                        system.lastvisit = DateTime.Now;
+                        system.lastvisit = DateTime.UtcNow;
                     }
 
                     using (var con = SimpleDbConnection())
@@ -303,7 +303,7 @@ namespace EddiDataProviderService
                             cmd.Prepare();
                             cmd.Parameters.AddWithValue("@name", system.name);
                             cmd.Parameters.AddWithValue("@totalvisits", system.visits);
-                            cmd.Parameters.AddWithValue("@lastvisit", system.lastvisit ?? DateTime.Now);
+                            cmd.Parameters.AddWithValue("@lastvisit", system.lastvisit ?? DateTime.UtcNow);
                             cmd.Parameters.AddWithValue("@starsystem", JsonConvert.SerializeObject(system));
                             cmd.Parameters.AddWithValue("@starsystemlastupdated", system.lastupdated);
                             cmd.ExecuteNonQuery();
@@ -323,7 +323,7 @@ namespace EddiDataProviderService
                     cmd.CommandText = UPDATE_SQL;
                     cmd.Prepare();
                     cmd.Parameters.AddWithValue("@totalvisits", system.visits);
-                    cmd.Parameters.AddWithValue("@lastvisit", system.lastvisit ?? DateTime.Now);
+                    cmd.Parameters.AddWithValue("@lastvisit", system.lastvisit ?? DateTime.UtcNow);
                     cmd.Parameters.AddWithValue("@starsystem", JsonConvert.SerializeObject(system));
                     cmd.Parameters.AddWithValue("@starsystemlastupdated", system.lastupdated);
                     cmd.Parameters.AddWithValue("@name", system.name);

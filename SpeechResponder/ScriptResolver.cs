@@ -449,7 +449,7 @@ namespace EddiSpeechResponder
                 {
                     return null;
                 }
-                long now = (long)(DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
+                long? now = (long?)(DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc))).TotalSeconds;
 
                 return now - date;
             }, 1);

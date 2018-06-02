@@ -7,7 +7,7 @@ namespace EddiEvents
     {
         public const string NAME = "NPC interdiction commenced";
         public const string DESCRIPTION = "Triggered when an interdiction attempt on your ship by an NPC is detected";
-        public static readonly NPCInterdictionCommencedEvent SAMPLE = new NPCInterdictionCommencedEvent(DateTime.Now, "Police");
+        public static readonly NPCInterdictionCommencedEvent SAMPLE = new NPCInterdictionCommencedEvent(DateTime.UtcNow, "Police");
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
         static NPCInterdictionCommencedEvent()

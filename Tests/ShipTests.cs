@@ -75,7 +75,7 @@ namespace UnitTests
             string data = System.IO.File.ReadAllText("loadout.json");
 
             // Set ourselves as in beta to stop sending data to remote systems
-            EDDI.Instance.eventHandler(new FileHeaderEvent(DateTime.Now, "JournalBeta.txt", "beta", "beta"));
+            EDDI.Instance.eventHandler(new FileHeaderEvent(DateTime.UtcNow, "JournalBeta.txt", "beta", "beta"));
             Logging.Verbose = true;
 
             List<Event> events = JournalMonitor.ParseJournalEntry(data);
@@ -102,7 +102,7 @@ namespace UnitTests
             Ship courier;
 
             // Set ourselves as in beta to stop sending data to remote systems
-            EDDI.Instance.eventHandler(new FileHeaderEvent(DateTime.Now, "JournalBeta.txt", "beta", "beta"));
+            EDDI.Instance.eventHandler(new FileHeaderEvent(DateTime.UtcNow, "JournalBeta.txt", "beta", "beta"));
             Logging.Verbose = true;
 
             // Start a ship monitor

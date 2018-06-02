@@ -202,7 +202,7 @@ namespace EddiEddpMonitor
                     {
                         system.security = newsecurity;
                     }
-                    system.lastupdated = DateTime.Now;
+                    system.lastupdated = DateTime.UtcNow;
                     StarSystemSqLiteRepository.Instance.SaveStarSystem(system);
                 }
 
@@ -210,11 +210,11 @@ namespace EddiEddpMonitor
                 Event @event = null;
                 if (newfaction != null)
                 {
-                    @event = new SystemFactionChangedEvent(DateTime.Now, matchname, systemname, oldfaction, newfaction);
+                    @event = new SystemFactionChangedEvent(DateTime.UtcNow, matchname, systemname, oldfaction, newfaction);
                 }
                 else if (newstate != null)
                 {
-                    @event = new SystemStateChangedEvent(DateTime.Now, matchname, systemname, oldstate, newstate);
+                    @event = new SystemStateChangedEvent(DateTime.UtcNow, matchname, systemname, oldstate, newstate);
                 }
                 if (@event != null)
                 {

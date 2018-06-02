@@ -798,7 +798,7 @@ namespace EddiCargoMonitor
                                 // Calculate the amount of mission-related cargo still in inventory
                                 int obtained = haulageAmount.amount;
                                 // If not expired, then failure may have been due to jettisoning cargo
-                                if (haulageAmount.expiry < DateTime.Now)
+                                if (haulageAmount.expiry < DateTime.UtcNow)
                                 {
                                     obtained -= inventoryCargo.ejected;
                                     inventoryCargo.ejected = 0;
@@ -902,7 +902,7 @@ namespace EddiCargoMonitor
                 {
                     cargocarried += cargo.total;
                 }
-                EDDI.Instance.eventHandler(new CargoUpdatedEvent(DateTime.Now, cargocarried));
+                EDDI.Instance.eventHandler(new CargoUpdatedEvent(DateTime.UtcNow, cargocarried));
                 configuration.cargo = inventory;
                 configuration.cargocarried = cargocarried;
                 configuration.ToFile();

@@ -9,7 +9,7 @@ namespace EddiEddpMonitor
         public const string NAME = "System faction changed";
         public const string DESCRIPTION = "Triggered when there is a change in the controlling faction of a watched system";
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
-        public static SystemFactionChangedEvent SAMPLE = new SystemFactionChangedEvent(DateTime.Now, "home", "Shinrarta Dezhra", "The Pilots Federation", "The Dark Wheel");
+        public static SystemFactionChangedEvent SAMPLE = new SystemFactionChangedEvent(DateTime.UtcNow, "home", "Shinrarta Dezhra", "The Pilots Federation", "The Dark Wheel");
 
         static SystemFactionChangedEvent()
         {

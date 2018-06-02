@@ -51,6 +51,9 @@ namespace EddiDataDefinitions
         /// <summary>Time of last visit</summary>
         public DateTime? lastvisit;
 
+        /// <summary>Time of last visit, expressed as a Unix timestamp in seconds</summary>
+        public long? lastVisitSeconds => (visits > 1 && lastvisit != null) ? (long?)((DateTime)lastvisit).Subtract(new DateTime(1970, 1, 1)).TotalSeconds : null;
+
         /// <summary>comment on this starsystem</summary>
         public string comment;
 

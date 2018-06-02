@@ -89,7 +89,7 @@ namespace EddiDataDefinitions
 
         // Admin values
         public Flags flags;
-        public DateTime timestamp = DateTime.Now;
+        public DateTime timestamp = DateTime.UtcNow;
 
         public Status(Flags flags = Flags.None)
         {
