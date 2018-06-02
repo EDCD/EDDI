@@ -17,7 +17,7 @@ namespace EddiDataDefinitions
         public string government { get; set; }
         public string faction { get; set; }
         public string primaryeconomy { get; set; }
-        public SystemState systemState { get; set; }
+        public SystemState systemState { get; set; } = SystemState.None;
         public string security { get; set; }
         public string power { get; set; }
         public string powerstate { get; set; }
