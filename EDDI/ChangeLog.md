@@ -2,6 +2,10 @@
 
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
+### 3.0.1-rc1
+  * Core 
+    * The Search and rescue event was having its `commodity` property set to just the commodity name, rather than the commodity definition object that scripts expect. Fixed.
+
 ### 3.0.1-b4
   * Core
     * Fixed issues arising in betas 2 and 3: data written to file by old code was not being read correctly by new code. This manifested in various ways: too many to list.

@@ -286,5 +286,16 @@ namespace UnitTests
             // Clean up
             Eddi.EDDI.Instance.Cmdr.friends.Remove(testFriend);
         }
+
+        [TestMethod]
+        public void TestJournalSearchAndRescue()
+        {
+            string line = @"{""timestamp"":""2018-05-26T22:04:09Z"",""event"":""SearchAndRescue"",""MarketID"":3228973824,""Name"":""usscargoblackbox"",""Name_Localised"":""Black Box"",""Count"":1,""Reward"":21184}";
+            List<Event> events = JournalMonitor.ParseJournalEntry(line);
+            Assert.IsTrue(events.Count == 1);
+            SearchAndRescueEvent sarEvent = (SearchAndRescueEvent)events[0];
+            Assert.AreEqual("Black Box", sarEvent.commodity.invariantName);
+            Assert.AreEqual("Salvage", sarEvent.commodity.category.invariantName);
+        }
     }
 }
