@@ -6,7 +6,11 @@ Full details of the variables available for each noted event, and VoiceAttack in
   * Core
     * Updated system definition to include new variable `lastVisitSeconds`. 
   * Speech responder
+    * Updated `Commodity sales check` script to make use of `CommodityMarketDetails()` function.
+    * Fixed a bug that had made `{ship.role}` inaccessible via scripts.
     * Updated `FSD engaged` script to correct a bug that was preventing sub-function `System report` from ever running.
+  * Added the following Cottle function, documented in [the SpeechResponder documentation](https://github.com/EDCD/EDDI/blob/master/SpeechResponder/Help.md):
+     * `CommodityMarketDetails()` for retrieving market information about commodities.
 
 ### 3.0.1-b4
   * Core
