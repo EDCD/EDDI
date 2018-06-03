@@ -218,7 +218,7 @@
     <comment>Module Disruptor</comment>
   </data>
   <data name="EconomyClassPassengerCabin" xml:space="preserve">
-    <value>Touristen Passagierkabine</value>
+    <value>Economy-Klasse-Passagierkabine</value>
     <comment>Module EconomyClassPassengerCabin</comment>
   </data>
   <data name="ElectronicCountermeasure" xml:space="preserve">
@@ -254,7 +254,7 @@
     <comment>Module FrameShiftDrive</comment>
   </data>
   <data name="FrameShiftWakeScanner" xml:space="preserve">
-    <value>Frameshiftwolkenscanner</value>
+    <value>FS-Sogwolkenscanner</value>
     <comment>Module FrameShiftWakeScanner</comment>
   </data>
   <data name="FuelScoop" xml:space="preserve">
@@ -286,7 +286,7 @@
     <comment>Module HatchBreakerLimpetController</comment>
   </data>
   <data name="HeatSinkLauncher" xml:space="preserve">
-    <value>Kühlkörperwerfer</value>
+    <value>Kühlkörperabwurf</value>
     <comment>Module HeatSinkLauncher</comment>
   </data>
   <data name="HullReinforcementPackage" xml:space="preserve">
@@ -314,7 +314,7 @@
     <comment>Module LightweightAlloy</comment>
   </data>
   <data name="LuxuryClassPassengerCabin" xml:space="preserve">
-    <value>Luxus Passagierkabine</value>
+    <value>Luxury-Class-Passagierkabine</value>
     <comment>Module LuxuryClassPassengerCabin</comment>
   </data>
   <data name="ManifestScanner" xml:space="preserve">
@@ -326,7 +326,7 @@
     <comment>Module MetaAlloyHullReinforcement</comment>
   </data>
   <data name="MilitaryGradeComposite" xml:space="preserve">
-    <value>Militärzusammensetzung</value>
+    <value>Militär-Komposit</value>
     <comment>Module MilitaryGradeComposite</comment>
   </data>
   <data name="MineLauncher" xml:space="preserve">
@@ -342,7 +342,7 @@
     <comment>Module MiningLaser</comment>
   </data>
   <data name="MirroredSurfaceComposite" xml:space="preserve">
-    <value>Gespiegelte Oberflächenzusammensetzung</value>
+    <value>Gespiegelte-Oberfläche-Komposit</value>
     <comment>Module MirroredSurfaceComposite</comment>
   </data>
   <data name="MissileRack" xml:space="preserve">
@@ -354,11 +354,11 @@
     <comment>Module ModuleReinforcementPackage</comment>
   </data>
   <data name="Multicannon" xml:space="preserve">
-    <value>Mehrzweckgeschütz</value>
+    <value>Mehrfachgeschütz</value>
     <comment>Module Multicannon</comment>
   </data>
   <data name="Multi_Cannon" xml:space="preserve">
-    <value>Mehrzweckgeschütz</value>
+    <value>Mehrfachgeschütz</value>
     <comment>Module Multi_Cannon</comment>
   </data>
   <data name="Pacifier" xml:space="preserve">
@@ -370,11 +370,11 @@
     <comment>Module Pack_Hound</comment>
   </data>
   <data name="PlanetaryApproachSuite" xml:space="preserve">
-    <value>Planetare Anflugs-Suite</value>
+    <value>Planetenanflug-Suite</value>
     <comment>Module PlanetaryApproachSuite</comment>
   </data>
   <data name="PlanetaryVehicleHangar" xml:space="preserve">
-    <value>Fahrzeughangar</value>
+    <value>Planetenfahrzeughangar</value>
     <comment>Module PlanetaryVehicleHangar</comment>
   </data>
   <data name="PlasmaAccelerator" xml:space="preserve">
@@ -394,7 +394,7 @@
     <comment>Module PowerPlant</comment>
   </data>
   <data name="PrismaticShieldGenerator" xml:space="preserve">
-    <value>Prismatischer Schildgenerator</value>
+    <value>Prismaschildgenerator</value>
     <comment>Module PrismaticShieldGenerator</comment>
   </data>
   <data name="ProspectorLimpetController" xml:space="preserve">
@@ -410,7 +410,7 @@
     <comment>Module RailGun</comment>
   </data>
   <data name="ReactiveSurfaceComposite" xml:space="preserve">
-    <value>Reagierende Oberflächenzusammensetzung</value>
+    <value>Reaktive-Oberfläche-Komposit</value>
     <comment>Module ReactiveSurfaceComposite</comment>
   </data>
   <data name="ReconLimpetController" xml:space="preserve">
@@ -446,11 +446,11 @@
     <comment>Module Sensors</comment>
   </data>
   <data name="ShieldBooster" xml:space="preserve">
-    <value>Schildverstärker</value>
+    <value>Schild-Booster</value>
     <comment>Module ShieldBooster</comment>
   </data>
   <data name="ShieldCellBank" xml:space="preserve">
-    <value>Schildzellenbatterie</value>
+    <value>Schildzellenbank</value>
     <comment>Module ShieldCellBank</comment>
   </data>
   <data name="ShieldGenerator" xml:space="preserve">
@@ -470,11 +470,11 @@
     <comment>Module ShutdownFieldNeutraliser</comment>
   </data>
   <data name="StandardDockingComputer" xml:space="preserve">
-    <value>Landecomputer</value>
+    <value>Standard-Landecomputer</value>
     <comment>Module StandardDockingComputer</comment>
   </data>
   <data name="Thrusters" xml:space="preserve">
-    <value>Triebwerke</value>
+    <value>Schubdüsen</value>
     <comment>Module Thrusters</comment>
   </data>
   <data name="TorpedoPylon" xml:space="preserve">
@@ -502,7 +502,7 @@
     <comment>Weapon mount type Fixed</comment>
   </data>
   <data name="Gimballed" xml:space="preserve">
-    <value>beweglich</value>
+    <value>kardanisch</value>
     <comment>Weapon mount type Gimballed</comment>
   </data>
   <data name="Turreted" xml:space="preserve">

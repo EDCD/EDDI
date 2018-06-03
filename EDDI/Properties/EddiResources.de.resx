@@ -210,7 +210,9 @@
     <value>Ich konnte keine Verbindung zu meinem Update-Server herstellen. Sollte sich dies wiederholen, überprüfen Sie bitte im Forum, ob es sich um ein bekanntes Problem handelt.</value>
   </data>
   <data name="already_running_alert_body_text" xml:space="preserve">
-    <value>Nur eine EDDI-Instanz kann gleichzeitig ausgeführt werden.</value>
+    <value>Nur eine EDDI-Instanz kann gleichzeitig ausgeführt werden.
+
+Bitte schließe die andere Instanz und versuche es noch einmal.</value>
   </data>
   <data name="already_running_alert_title" xml:space="preserve">
     <value>EDDI läuft bereits</value>

@@ -107,7 +107,7 @@
     <comment>Combat rating MostlyHarmless</comment>
   </data>
   <data name="Novice" xml:space="preserve">
-    <value>Anfänger</value>
+    <value>Neuling</value>
     <comment>Combat rating Novice</comment>
   </data>
   <data name="Competent" xml:space="preserve">

@@ -151,7 +151,7 @@
     <comment>Government type PrisonColony</comment>
   </data>
   <data name="Theocracy" xml:space="preserve">
-    <value>Theokratie</value>
+    <value>Gottesstaat</value>
     <comment>Government type Theocracy</comment>
   </data>
   <data name="Workshop" xml:space="preserve">
