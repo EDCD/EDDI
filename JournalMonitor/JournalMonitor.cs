@@ -2329,8 +2329,9 @@ namespace EddiJournalMonitor
                                     MissionStatus missionStatus = MissionStatus.FromStatus(i);
                                     string status = missionStatus.invariantName;
                                     data.TryGetValue(status, out val);
-                                    List<object> missionList = (List<object>)val;
-                                    foreach (object mission in missionList)
+                                    List<object> missionLog = (List<object>)val;
+
+                                    foreach (object mission in missionLog)
                                     {
                                         Dictionary<string, object> missionProperties = (Dictionary<string, object>)mission;
                                         long missionId = JsonParsing.getLong(missionProperties, "MissionID");
@@ -2344,7 +2345,6 @@ namespace EddiJournalMonitor
                                         }
 
                                         Mission newMission = new Mission(missionId, name, expiry, missionStatus);
-
                                         if (newMission == null)
                                         {
                                             // Mal-formed mission
@@ -2358,6 +2358,37 @@ namespace EddiJournalMonitor
                                     }
                                 }
                                 events.Add(new MissionsEvent(timestamp, missions) { raw = line });
+                                handled = true;
+                            }
+                            break;
+                        case "Passengers":
+                            {
+                                List<Passenger> passengers = new List<Passenger>();
+                                object val;
+                                data.TryGetValue("Manifest", out val);
+                                List<object> passengerManifest = (List<object>)val;
+
+                                foreach (object passenger in passengerManifest)
+                                {
+                                    Dictionary<string, object> passengerProperties = (Dictionary<string, object>)passenger;
+                                    long missionid = JsonParsing.getLong(passengerProperties, "MissionID");
+                                    string type = JsonParsing.getString(passengerProperties, "Type");
+                                    bool vip = JsonParsing.getBool(passengerProperties, "VIP");
+                                    bool wanted = JsonParsing.getBool(passengerProperties, "Wanted");
+                                    int amount = JsonParsing.getInt(passengerProperties, "Count");
+
+                                    Passenger newPassenger = new Passenger(missionid, type, vip, wanted, amount);
+                                    if (newPassenger == null)
+                                    {
+                                        // Mal-formed mission
+                                        Logging.Report("Bad mission entry", JsonConvert.SerializeObject(passenger));
+                                    }
+                                    else
+                                    {
+                                        passengers.Add(newPassenger);
+                                    }
+                                }
+                                events.Add(new PassengersEvent(timestamp, passengers) { raw = line });
                                 handled = true;
                             }
                             break;

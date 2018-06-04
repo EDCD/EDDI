@@ -169,11 +169,12 @@ namespace EddiDataDefinitions
 
         public DateTime expiry { get; set; }
         [JsonIgnore]
-        public long expiryseconds => (long)expiry.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
+        public long? expiryseconds => (long)expiry.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
 
         public Mission() { }
 
         [JsonConstructor]
+        //Constructor for 'Missions' event
         public Mission(long MissionId, string Name, DateTime expiry, MissionStatus Status)
 		{
 			this.missionid = MissionId;
@@ -181,7 +182,20 @@ namespace EddiDataDefinitions
             this.typeDef = MissionType.FromEDName(Name.Split('_').ElementAt(1));
 			this.expiry = expiry.ToUniversalTime();
             this.statusDef = Status;
-		}
+            destinationsystems = new List<DestinationSystem>();
+        }
+
+        [JsonConstructor]
+        //Constructor for 'Passengers' event
+        public Mission(long MissionId, string Type, bool VIP, bool Wanted, int Amount)
+        {
+            this.missionid = MissionId;
+            this.passengertypeEDName = Type;
+            this.passengervips = VIP;
+            this.passengerwanted = Wanted;
+            this.amount = Amount;
+            destinationsystems = new List<DestinationSystem>();
+        }
 
         public event PropertyChangedEventHandler PropertyChanged;
 

@@ -188,6 +188,11 @@ namespace EddiMissionMonitor
                 //
                 handleDataScannedEvent((DataScannedEvent)@event);
             }
+            else if (@event is PassengersEvent)
+            {
+                //
+                handlePassengersEvent((PassengersEvent)@event);
+            }
             else if (@event is MissionsEvent)
             {
                 //
@@ -269,6 +274,15 @@ namespace EddiMissionMonitor
                 if (missionEntry != null)
                 {
                     missionEntry.statusDef = mission.statusDef;
+                    if (missionEntry.name == null)
+                    {
+                        missionEntry.name = mission.name;
+                        missionEntry.typeDef = MissionType.FromEDName(mission.name.Split('_').ElementAt(1));
+                    }
+                    if (missionEntry.expiry == null)
+                    {
+                        missionEntry.expiry = mission.expiry;
+                    }
                 }
                 else
                 {
@@ -284,6 +298,33 @@ namespace EddiMissionMonitor
                     // Strip out the stray from the mission log
                     _RemoveMissionWithMissionId(missionEntry.missionid);
                 }
+            }
+        }
+
+        private void handlePassengersEvent(PassengersEvent @event)
+        {
+            _handlePassengersEvent(@event);
+            writeMissions();
+        }
+
+        private void _handlePassengersEvent(PassengersEvent @event)
+        {
+            foreach (Passenger passenger in @event.passengers)
+            {
+                Mission mission = missions.FirstOrDefault(m => m.missionid == passenger.missionid);
+                if (mission != null)
+                {
+                    mission.passengertypeEDName = passenger.type;
+                    mission.passengervips = passenger.vip;
+                    mission.passengerwanted = passenger.wanted;
+                    mission.amount = passenger.amount;
+                }
+                else
+                {
+                    Mission newMission = new Mission(passenger.missionid, passenger.type, passenger.vip, passenger.wanted, passenger.amount);
+                    AddMission(newMission);
+                }
+
             }
         }
 
@@ -383,8 +424,7 @@ namespace EddiMissionMonitor
 
                     foreach (string system in systems)
                     {
-                        DestinationSystem destinationSystem = new DestinationSystem(system);
-                        mission.destinationsystems.Add(destinationSystem);
+                        mission.destinationsystems.Add(new DestinationSystem(system));
                     }
 
                     // Load the first destination system.
