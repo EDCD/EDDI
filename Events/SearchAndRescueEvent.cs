@@ -15,6 +15,7 @@ namespace EddiEvents
         static SearchAndRescueEvent()
         {
     	    VARIABLES.Add("commodity", "The commodity recovered");
+            VARIABLES.Add("localizedcommodityname", "The localized name of the commodity recovered");
             VARIABLES.Add("amount", "The amount of the item recovered");
             VARIABLES.Add("reward", "The monetary reward for completing the search and rescue");
         }
@@ -22,6 +23,8 @@ namespace EddiEvents
         public int? amount { get; }
 
         public long reward { get; }
+
+        public string localizedcommodityname => commodity.localizedName;
 
         [JsonProperty("commodity")]
         public CommodityDefinition commodity { get; }
