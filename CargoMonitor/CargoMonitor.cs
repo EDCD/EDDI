@@ -1254,7 +1254,7 @@ namespace EddiCargoMonitor
 
         private void CalculateCargoNeed(Cargo cargo)
         {
-            foreach (Cargo cargo in inventory)
+            if (cargo != null && cargo.haulageamounts != null && cargo.haulageamounts.Any())
             {
                 if (cargo.haulageamounts.FirstOrDefault(ha => ha.id == missionid) != null)
                 {

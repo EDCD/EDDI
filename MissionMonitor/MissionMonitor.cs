@@ -112,7 +112,7 @@ namespace EddiMissionMonitor
 
             while (running)
             {
-                foreach (Mission mission in missions)
+                foreach (Mission mission in missions.ToList())
                 {
                     if (mission.statusEDName == "Active")
                     {
@@ -183,7 +183,12 @@ namespace EddiMissionMonitor
             Logging.Debug("Received event " + JsonConvert.SerializeObject(@event));
 
             // Handle the events that we care about
-            if (@event is MissionsEvent)
+            if (@event is DataScannedEvent)
+            {
+                //
+                handleDataScannedEvent((DataScannedEvent)@event);
+            }
+            else if (@event is MissionsEvent)
             {
                 //
                 handleMissionsEvent((MissionsEvent)@event);
@@ -202,6 +207,50 @@ namespace EddiMissionMonitor
             {
                 //
                 handleMissionRedirectedEvent((MissionRedirectedEvent)@event);
+            }
+        }
+
+        private void handleDataScannedEvent(DataScannedEvent @event)
+        {
+            _handleDataScannedEvent(@event);
+            writeMissions();
+        }
+
+        private void _handleDataScannedEvent(DataScannedEvent @event)
+        {
+            string datalinktypeEDName = DataScan.FromName(@event.datalinktype).edname;
+            if (datalinktypeEDName == "TouristBeacon")
+            {
+                bool handled = false;
+                foreach (Mission mission in missions.ToList())
+                {
+                    string type = mission.typeEDName.ToLowerInvariant();
+                    switch (type)
+                    {
+                        case "sightseeing":
+                            {
+                                DestinationSystem system = mission.destinationsystems
+                                    .FirstOrDefault(s => s.name == EDDI.Instance?.CurrentStarSystem?.name);
+                                if (system != null)
+                                {
+                                    system.visited = true;
+                                    if (mission.destinationsystems.Where(s => s.visited == false).Count() > 0)
+                                    {
+                                        // Set destination system to next in chain & trigger a 'Mission redirected' event
+                                        string destinationsystem = mission.destinationsystems
+                                            .FirstOrDefault(s => s.visited == false).name;
+                                        EDDI.Instance.eventHandler(new MissionRedirectedEvent(DateTime.Now, mission.missionid, mission.name, null, null, destinationsystem, EDDI.Instance?.CurrentStarSystem?.name));
+                                    }
+                                    handled = true;
+                                }
+                            }
+                            break;
+                    }
+                    if (handled)
+                    {
+                        break;
+                    }
+                }
             }
         }
 
@@ -280,14 +329,16 @@ namespace EddiMissionMonitor
                 mission.reward = @event.reward ?? 0;
                 mission.wing = @event.wing;
 
-                // Mission faction parameters
+                // Get the minor faction name
                 mission.faction = @event.faction;
-                string state = mission.name.Split('_').ElementAt(2).ToLowerInvariant() ?? String.Empty;
-                mission.factionstate = SystemState.FromEDName(state)?.localizedName ?? String.Empty;
-                if (mission.factionstate == String.Empty)
+
+                // Get the faction state (Boom, Bust, Civil War, etc), if available
+                string state = mission.name.Split('_').ElementAtOrDefault(2)?.ToLowerInvariant();
+                mission.factionstate = SystemState.FromEDName(state)?.localizedName;
+                if (mission.factionstate == null)
                 {
-                    state = mission.name.Split('_').ElementAt(3).ToLowerInvariant() ?? String.Empty;
-                    mission.factionstate = SystemState.FromEDName(state)?.localizedName ?? String.Empty;
+                    state = mission.name.Split('_').ElementAtOrDefault(3)?.ToLowerInvariant();
+                    mission.factionstate = SystemState.FromEDName(state)?.localizedName;
                 }
 
                 // Set mission origin to to the current system & station
@@ -321,19 +372,23 @@ namespace EddiMissionMonitor
                 // Missions with commodities
                 mission.commodity = @event.commodity;
 
-                // Missions with destinations
+                // Missions with multiple destinations
                 if (@event.destinationsystem.Contains("$MISSIONUTIL_MULTIPLE"))
                 {
                     // If 'chained' mission, get the destination systems
-                    mission.destinationsystems = @event.destinationsystem
-                        .Substring(0, @event.destinationsystem.IndexOf("$MISSIONUTIL_MULTIPLE_FINAL"))
+                    string[] systems = @event.destinationsystem
                         .Replace("$MISSIONUTIL_MULTIPLE_INNER_SEPARATOR;", "#")
-                        .Replace("$FINAL_SEPARATOR;", "#")
+                        .Replace("$MISSIONUTIL_MULTIPLE_FINAL_SEPARATOR;", "#")
                         .Split('#');
-                    mission.destinationstation = String.Empty;
 
-                    // Load the first destination system. 'Mission redirected' should take care of the rest
-                    mission.destinationsystem = mission.destinationsystems.ElementAt(0);
+                    foreach (string system in systems)
+                    {
+                        DestinationSystem destinationSystem = new DestinationSystem(system);
+                        mission.destinationsystems.Add(destinationSystem);
+                    }
+
+                    // Load the first destination system.
+                    mission.destinationsystem = mission.destinationsystems.ElementAtOrDefault(0).name;
                 }
                 else
                 {
@@ -450,6 +505,7 @@ namespace EddiMissionMonitor
                         case "piracy":
                         case "rescue":
                         case "salvage":
+                        case "sightseeing":
                             {
                                 if (@event.newdestinationsystem == mission.originsystem
                                     && @event.newdestinationstation == mission.originstation)

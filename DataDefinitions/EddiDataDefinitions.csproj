@@ -80,6 +80,7 @@
       <DependentUpon>StationModels.resx</DependentUpon>
     </Compile>
     <Compile Include="StationModels.cs" />
+    <Compile Include="DestinationSystem.cs" />
     <Compile Include="HaulageAmount.cs" />
     <Compile Include="CommodityCategory.cs" />
     <Compile Include="LegalStatus.cs" />

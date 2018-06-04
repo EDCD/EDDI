@@ -1,8 +1,8 @@
 ﻿using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-
 
 namespace EddiDataDefinitions
 {
@@ -89,10 +89,7 @@ namespace EddiDataDefinitions
 
         public string reputation { get; set; }
 
-        [JsonIgnore]
-        public bool legal => name.Split('_').ElementAtOrDefault(2)
-            .ToLowerInvariant()
-            .Contains("illegal") ? false : true;
+        public bool legal => name.Contains("illegal") ? false : true;
 
         public bool wing { get; set; }
 
@@ -138,7 +135,7 @@ namespace EddiDataDefinitions
             }
         }
         // Desintation systems for chained missions
-        public string [] destinationsystems { get; set; }
+        public List<DestinationSystem> destinationsystems { get; set; }
 
         // The mission time remaining
         [JsonIgnore]
@@ -182,7 +179,7 @@ namespace EddiDataDefinitions
 			this.missionid = MissionId;
 			this. name = Name;
             this.typeDef = MissionType.FromEDName(Name.Split('_').ElementAt(1));
-			this.expiry = expiry;
+			this.expiry = expiry.ToUniversalTime();
             this.statusDef = Status;
 		}
 
