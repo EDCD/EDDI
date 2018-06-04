@@ -14,14 +14,19 @@ namespace EddiEvents
         static DockingRequestedEvent()
         {
             VARIABLES.Add("station", "The station at which the commander has requested docking");
+            VARIABLES.Add("stationtype", "The model / type of the station at which the commander has been granted docking");
         }
 
         [JsonProperty("station")]
         public string station { get; private set; }
 
-        public DockingRequestedEvent(DateTime timestamp, string station) : base(timestamp, NAME)
+        [JsonProperty("stationtype")]
+        public string stationtype { get; private set; }
+
+        public DockingRequestedEvent(DateTime timestamp, string station, string stationType) : base(timestamp, NAME)
         {
             this.station = station;
+            this.stationtype = stationType;
         }
     }
 }

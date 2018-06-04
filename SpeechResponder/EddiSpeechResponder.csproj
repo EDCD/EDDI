@@ -160,8 +160,11 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="eddi.de.json" />
     <None Include="eddi.es.json" />
     <None Include="eddi.fr.json" />
+    <None Include="eddi.hu.json" />
+    <None Include="eddi.it.json" />
     <None Include="eddi.json" />
     <None Include="packages.config" />
     <None Include="Variables.md">

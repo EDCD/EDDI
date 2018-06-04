@@ -1454,9 +1454,10 @@ namespace EddiJournalMonitor
                             {
                                 object val;
                                 string stationName = JsonParsing.getString(data, "StationName");
+                                string stationType = JsonParsing.getString(data, "StationType");
                                 data.TryGetValue("LandingPad", out val);
                                 int landingPad = (int)(long)val;
-                                events.Add(new DockingGrantedEvent(timestamp, stationName, landingPad) { raw = line });
+                                events.Add(new DockingGrantedEvent(timestamp, stationName, stationType, landingPad) { raw = line });
                             }
                             handled = true;
                             break;
