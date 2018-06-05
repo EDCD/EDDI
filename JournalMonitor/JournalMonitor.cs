@@ -1446,7 +1446,8 @@ namespace EddiJournalMonitor
                         case "DockingRequested":
                             {
                                 string stationName = JsonParsing.getString(data, "StationName");
-                                events.Add(new DockingRequestedEvent(timestamp, stationName) { raw = line });
+                                string stationType = JsonParsing.getString(data, "StationType");
+                                events.Add(new DockingRequestedEvent(timestamp, stationName, stationType) { raw = line });
                             }
                             handled = true;
                             break;
@@ -1464,22 +1465,25 @@ namespace EddiJournalMonitor
                         case "DockingDenied":
                             {
                                 string stationName = JsonParsing.getString(data, "StationName");
+                                string stationType = JsonParsing.getString(data, "StationType");
                                 string reason = JsonParsing.getString(data, "Reason");
-                                events.Add(new DockingDeniedEvent(timestamp, stationName, reason) { raw = line });
+                                events.Add(new DockingDeniedEvent(timestamp, stationName, stationType, reason) { raw = line });
                             }
                             handled = true;
                             break;
                         case "DockingCancelled":
                             {
                                 string stationName = JsonParsing.getString(data, "StationName");
-                                events.Add(new DockingCancelledEvent(timestamp, stationName) { raw = line });
+                                string stationType = JsonParsing.getString(data, "StationType");
+                                events.Add(new DockingCancelledEvent(timestamp, stationName, stationType) { raw = line });
                             }
                             handled = true;
                             break;
                         case "DockingTimeout":
                             {
                                 string stationName = JsonParsing.getString(data, "StationName");
-                                events.Add(new DockingTimedOutEvent(timestamp, stationName) { raw = line });
+                                string stationType = JsonParsing.getString(data, "StationType");
+                                events.Add(new DockingTimedOutEvent(timestamp, stationName, stationType) { raw = line });
                             }
                             handled = true;
                             break;
