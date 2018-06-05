@@ -162,7 +162,7 @@ namespace UnitTests
 
             DockingCancelledEvent theEvent = (DockingCancelledEvent)events[0];
 
-            Assert.AreEqual("Orbis", theEvent.stationtype);
+            Assert.AreEqual("Orbis", theEvent.stationDefinition.basename);
             Assert.AreEqual("Laval Terminal", theEvent.station);
         }
 
@@ -175,7 +175,7 @@ namespace UnitTests
 
             DockingDeniedEvent theEvent = (DockingDeniedEvent)events[0];
 
-            Assert.AreEqual("Coriolis", theEvent.stationtype);
+            Assert.AreEqual("Coriolis", theEvent.stationDefinition.basename);
             Assert.AreEqual("Ray Gateway", theEvent.station);
         }
 
@@ -188,7 +188,7 @@ namespace UnitTests
 
             DockingRequestedEvent theEvent = (DockingRequestedEvent)events[0];
 
-            Assert.AreEqual("Bernal", theEvent.stationtype);
+            Assert.AreEqual("Bernal", theEvent.stationDefinition.basename);
             Assert.AreEqual("Morris Enterprise", theEvent.station);
         }
 
@@ -201,7 +201,7 @@ namespace UnitTests
 
             DockingGrantedEvent theEvent = (DockingGrantedEvent)events[0];
 
-            Assert.AreEqual("AsteroidBase", theEvent.stationtype);
+            Assert.AreEqual("AsteroidBase", theEvent.stationDefinition.basename);
             Assert.AreEqual(17, theEvent.landingpad);
             Assert.AreEqual("Simbad's Refuge", theEvent.station);
         }

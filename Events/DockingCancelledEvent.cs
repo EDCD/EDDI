@@ -16,21 +16,21 @@ namespace EddiEvents
         {
             VARIABLES.Add("station", "The station at which the commander has cancelled docking");
             VARIABLES.Add("stationtype", "The localized model / type of the station at which the commander has cancelled docking");
-            VARIABLES.Add("stationType", "The model / type of the station at which the commander has cancelled docking (this is an object)");
+            VARIABLES.Add("stationDefinition", "The model / type of the station at which the commander has cancelled docking (this is an object)");
         }
 
         [JsonProperty("station")]
         public string station { get; private set; }
 
         [JsonProperty("stationType")]
-        public StationModels stationType { get; private set; }
+        public StationModels stationDefinition { get; private set; }
 
-        public string stationtype => stationType.localizedName;
+        public string stationtype => stationDefinition.localizedName;
 
         public DockingCancelledEvent(DateTime timestamp, string station, string stationType) : base(timestamp, NAME)
         {
             this.station = station;
-            this.stationType = StationModels.FromEDName(stationType);
+            this.stationDefinition = StationModels.FromEDName(stationType);
         }
     }
 }
