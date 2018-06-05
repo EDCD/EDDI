@@ -8,9 +8,9 @@ Full details of the variables available for each noted event, and VoiceAttack in
   * Speech responder
     * Updated the following events to include new property `stationtype`:
       * `Docking cancelled`
+      * `Docking denied`
       * `Docking requested`
       * `Docking granted`
-      * `Docking requested`
       * `Docking timed out`
     * Updated `Commodity sales check` script to make use of `CommodityMarketDetails()` function.
     * Updated `Docking granted` script to make use of of `stationtype` property.

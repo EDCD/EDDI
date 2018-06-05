@@ -154,6 +154,59 @@ namespace UnitTests
         }
 
         [TestMethod]
+        public void TestJournalDockingCancelled()
+        {
+            string line = @"{ ""timestamp"":""2018-06-04T07:43:11Z"", ""event"":""DockingCancelled"", ""MarketID"":3227840768, ""StationName"":""Laval Terminal"", ""StationType"":""Orbis"" }";
+            List<Event> events = JournalMonitor.ParseJournalEntry(line);
+            Assert.IsTrue(events.Count == 1);
+
+            DockingCancelledEvent theEvent = (DockingCancelledEvent)events[0];
+
+            Assert.AreEqual("Orbis", theEvent.stationtype);
+            Assert.AreEqual("Laval Terminal", theEvent.station);
+        }
+
+        [TestMethod]
+        public void TestJournalDockingDenied()
+        {
+            string line = @"{ ""timestamp"":""2018-06-04T01:53:29Z"", ""event"":""DockingDenied"", ""Reason"":""Offences"", ""MarketID"":3223343616, ""StationName"":""Ray Gateway"", ""StationType"":""Coriolis"" }";
+            List<Event> events = JournalMonitor.ParseJournalEntry(line);
+            Assert.IsTrue(events.Count == 1);
+
+            DockingDeniedEvent theEvent = (DockingDeniedEvent)events[0];
+
+            Assert.AreEqual("Coriolis", theEvent.stationtype);
+            Assert.AreEqual("Ray Gateway", theEvent.station);
+        }
+
+        [TestMethod]
+        public void TestJournalDockingRequested()
+        {
+            string line = @"{ ""timestamp"":""2018-06-04T07:34:07Z"", ""event"":""DockingRequested"", ""MarketID"":3222020352, ""StationName"":""Morris Enterprise"", ""StationType"":""Bernal"" }";
+            List<Event> events = JournalMonitor.ParseJournalEntry(line);
+            Assert.IsTrue(events.Count == 1);
+
+            DockingRequestedEvent theEvent = (DockingRequestedEvent)events[0];
+
+            Assert.AreEqual("Bernal", theEvent.stationtype);
+            Assert.AreEqual("Morris Enterprise", theEvent.station);
+        }
+
+        [TestMethod]
+        public void TestJournalDockingGranted()
+        {
+            string line = @"{ ""timestamp"":""2018-06-04T07:53:34Z"", ""event"":""DockingGranted"", ""LandingPad"":17, ""MarketID"":128850247, ""StationName"":""Simbad's Refuge"", ""StationType"":""AsteroidBase"" }";
+            List<Event> events = JournalMonitor.ParseJournalEntry(line);
+            Assert.IsTrue(events.Count == 1);
+
+            DockingGrantedEvent theEvent = (DockingGrantedEvent)events[0];
+
+            Assert.AreEqual("AsteroidBase", theEvent.stationtype);
+            Assert.AreEqual(17, theEvent.landingpad);
+            Assert.AreEqual("Simbad's Refuge", theEvent.station);
+        }
+
+        [TestMethod]
         public void TestJournalMessageReceived1()
         {
             string line = @"{ ""timestamp"":""2016-10-07T03:02:44Z"", ""event"":""ReceiveText"", ""From"":""$ShipName_Police_Federation;"", ""From_Localised"":""Federal Security Service"", ""Message"":""$Police_StartPatrol03;"", ""Message_Localised"":""Receiving five by five, I'm in the air now, joining patrol."", ""Channel"":""npc"" }";
