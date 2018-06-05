@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using EddiDataDefinitions;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 
@@ -14,19 +15,22 @@ namespace EddiEvents
         static DockingCancelledEvent()
         {
             VARIABLES.Add("station", "The station at which the commander has cancelled docking");
-            VARIABLES.Add("stationtype", "The model / type of the station at which the commander has been granted docking");
+            VARIABLES.Add("stationtype", "The localized model / type of the station at which the commander has cancelled docking");
+            VARIABLES.Add("stationType", "The model / type of the station at which the commander has cancelled docking (this is an object)");
         }
 
         [JsonProperty("station")]
         public string station { get; private set; }
 
-        [JsonProperty("stationtype")]
-        public string stationtype { get; private set; }
+        [JsonProperty("stationType")]
+        public StationModels stationType { get; private set; }
+
+        public string stationtype => stationType.localizedName;
 
         public DockingCancelledEvent(DateTime timestamp, string station, string stationType) : base(timestamp, NAME)
         {
             this.station = station;
-            this.stationtype = stationType;
+            this.stationType = StationModels.FromEDName(stationType);
         }
     }
 }

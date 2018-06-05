@@ -6,7 +6,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
   * Core
     * Updated system definition to include new variable `lastVisitSeconds`. 
   * Speech responder
-    * Updated the following events to include new property `stationtype`:
+    * Updated the following events to include new properties `stationtype` and `stationDefinition`:
       * `Docking cancelled`
       * `Docking denied`
       * `Docking requested`

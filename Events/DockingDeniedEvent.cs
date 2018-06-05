@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using EddiDataDefinitions;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 
@@ -14,15 +15,18 @@ namespace EddiEvents
         static DockingDeniedEvent()
         {
             VARIABLES.Add("station", "The station at which the commander has been denied docking");
-            VARIABLES.Add("stationtype", "The model / type of the station at which the commander has been granted docking");
+            VARIABLES.Add("stationtype", "The localized model / type of the station at which the commander has been denied docking");
+            VARIABLES.Add("stationDefinition", "The model / type of the station at which the commander has been denied docking (this is an object)");
             VARIABLES.Add("reason", "The reason why commander has been denied docking (too far, fighter deployed etc)");
         }
 
         [JsonProperty("station")]
         public string station { get; private set; }
 
-        [JsonProperty("stationtype")]
-        public string stationtype { get; private set; }
+        [JsonProperty("stationType")]
+        public StationModels stationDefinition { get; private set; }
+
+        public string stationtype => stationDefinition.localizedName;
 
         [JsonProperty("reason")]
         public string reason { get; private set; }
@@ -30,7 +34,7 @@ namespace EddiEvents
         public DockingDeniedEvent(DateTime timestamp, string station, string stationType, string reason) : base(timestamp, NAME)
         {
             this.station = station;
-            this.stationtype = stationType;
+            this.stationDefinition = StationModels.FromEDName(stationType);
             this.reason = reason;
         }
     }
