@@ -20,42 +20,36 @@ namespace EddiMissionMonitor
             VARIABLES.Add("updatetype", "The update type. One of: 'Collect', 'Deliver', 'WingUpdate'");
             VARIABLES.Add("cargotype", "The type of cargo (commodity)");
             VARIABLES.Add("count", "The amount of cargo collected or delivered for this event");
-            VARIABLES.Add("collected", "The amount of cargo collected");
-            VARIABLES.Add("delivered", "The amount of cargo delivered");
+            VARIABLES.Add("collected", "The total amount of cargo collected");
+            VARIABLES.Add("delivered", "The total amount of cargo delivered");
             VARIABLES.Add("totaltodeliver", "The total amount of cargo to deliver to complete the mission");
             VARIABLES.Add("progress", "The total amount of cargo to delivered");
         }
 
-        [JsonProperty("missionid")]
         public long? missionid { get; private set; }
 
-        [JsonProperty("updatetype")]
         public string updatetype { get; private set; }
 
-        [JsonProperty("cargotype")]
-        public string cargotype { get; private set; }
+        public CommodityDefinition commodityDefinition { get; private set; }
 
-        [JsonProperty("count")]
-        public int? count { get; private set; }
+        public string commodity => commodityDefinition?.localizedName ?? "unknown commodity";
 
-        [JsonProperty("collected")]
+        public int? amount { get; private set; }
+
         public int collected { get; private set; }
 
-        [JsonProperty("delivered")]
         public int delivered { get; private set; }
 
-        [JsonProperty("totaltodeliver")]
         public int totaltodeliver { get; private set; }
 
-        [JsonProperty("progress")]
         public decimal progress { get; private set; }
 
-        public CargoDepotEvent(DateTime timestamp, long? missionid, string updatetype, CommodityDefinition cargotype, int? count, int collected, int delivered, int totaltodeliver, decimal progress) : base(timestamp, NAME)
+        public CargoDepotEvent(DateTime timestamp, long? missionid, string updatetype, CommodityDefinition commodity, int? count, int collected, int delivered, int totaltodeliver, decimal progress) : base(timestamp, NAME)
         {
             this.missionid = missionid;
             this.updatetype = updatetype;
-            this.cargotype = cargotype?.localizedName;
-            this.count = count;
+            this.commodityDefinition = commodity;
+            this.amount = amount;
             this.collected = collected;
             this.delivered = delivered;
             this.totaltodeliver = totaltodeliver;

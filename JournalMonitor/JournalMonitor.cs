@@ -2294,7 +2294,7 @@ namespace EddiJournalMonitor
                                 data.TryGetValue("Reward", out object val);
                                 long reward = (val == null ? 0 : (long)val);
 
-                                events.Add(new MissionCompletedEvent(timestamp, null, name, null, null, null, true, reward, null, null, 0) { raw = line });
+                                events.Add(new MissionCompletedEvent(timestamp, null, name, null, null, null, true, reward, null, null, null, 0) { raw = line });
                                 handled = true;
                                 break;
                             }
@@ -2400,16 +2400,16 @@ namespace EddiJournalMonitor
                                 string updatetype = JsonParsing.getString(data, "UpdateType");
 
                                 // Not available in 'WingUpdate'
-                                CommodityDefinition cargotype = CommodityDefinition.FromName(JsonParsing.getString(data, "CargoType"));
+                                CommodityDefinition commodity = CommodityDefinition.FromEDName(JsonParsing.getString(data, "CargoType"));
                                 data.TryGetValue("Count", out val);
-                                int? count = (int?)(long?)val;
+                                int? amount = (int?)(long?)val;
 
                                 int collected = JsonParsing.getInt(data, "ItemsCollected");
                                 int delivered = JsonParsing.getInt(data, "ItemsDelivered");
                                 int totaltodeliver = JsonParsing.getInt(data, "TotalItemsToDeliver");
                                 decimal progress = JsonParsing.getInt(data, "Progress");
 
-                                events.Add(new CargoDepotEvent(timestamp, missionid, updatetype, cargotype, count, collected, delivered, totaltodeliver, progress) { raw = line });
+                                events.Add(new CargoDepotEvent(timestamp, missionid, updatetype, commodity, amount, collected, delivered, totaltodeliver, progress) { raw = line });
                                 handled = true;
                                 break;
                             }
@@ -2478,6 +2478,18 @@ namespace EddiJournalMonitor
                                 data.TryGetValue("Count", out val);
                                 int? amount = (int?)(long?)val;
 
+                                List<string> permitsAwarded = new List<string>();
+                                data.TryGetValue("PermitsAwarded", out val);
+                                List<object> permitsAwardedData = (List<object>)val;
+                                if (permitsAwardedData != null)
+                                {
+                                    foreach (Dictionary<string, object> permitAwardedData in permitsAwardedData)
+                                    {
+                                        string permitAwarded = JsonParsing.getString(permitAwardedData, "Name");
+                                        permitsAwarded.Add(permitAwarded);
+                                    }
+                                }
+
                                 List<CommodityAmount> commodityrewards = new List<CommodityAmount>();
                                 data.TryGetValue("CommodityReward", out val);
                                 List<object> commodityRewardsData = (List<object>)val;
@@ -2506,7 +2518,7 @@ namespace EddiJournalMonitor
                                     }
                                 }
 
-                                events.Add(new MissionCompletedEvent(timestamp, missionid, name, faction, commodity, amount, false, reward, commodityrewards, materialsrewards, donation) { raw = line });
+                                events.Add(new MissionCompletedEvent(timestamp, missionid, name, faction, commodity, amount, false, reward, permitsAwarded, commodityrewards, materialsrewards, donation) { raw = line });
                                 handled = true;
                                 break;
                             }

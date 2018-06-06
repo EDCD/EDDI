@@ -88,11 +88,20 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Collect.
+        ///   Looks up a localized string similar to Collection.
         /// </summary>
         internal static string Collect {
             get {
                 return ResourceManager.GetString("Collect", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Wing Collection.
+        /// </summary>
+        internal static string CollectWing {
+            get {
+                return ResourceManager.GetString("CollectWing", resourceCulture);
             }
         }
         
@@ -111,6 +120,15 @@ namespace EddiDataDefinitions.Properties {
         internal static string Delivery {
             get {
                 return ResourceManager.GetString("Delivery", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Wing Delivery.
+        /// </summary>
+        internal static string DeliveryWing {
+            get {
+                return ResourceManager.GetString("DeliveryWing", resourceCulture);
             }
         }
         

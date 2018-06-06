@@ -127,13 +127,19 @@
     <value>Assassination</value>
   </data>
   <data name="Collect" xml:space="preserve">
-    <value>Collect</value>
+    <value>Collection</value>
+  </data>
+  <data name="CollectWing" xml:space="preserve">
+    <value>Wing Collection</value>
   </data>
   <data name="Courier" xml:space="preserve">
     <value>Data Courier</value>
   </data>
   <data name="Delivery" xml:space="preserve">
     <value>Delivery</value>
+  </data>
+  <data name="DeliveryWing" xml:space="preserve">
+    <value>Wing Delivery</value>
   </data>
   <data name="Disable" xml:space="preserve">
     <value>Disable Surface Installation</value>
