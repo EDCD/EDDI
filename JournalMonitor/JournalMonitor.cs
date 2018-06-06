@@ -676,11 +676,8 @@ namespace EddiJournalMonitor
                                                 }
                                             }
                                         }
-                                        else if (val is List<object>)
+                                        else if (val is List<object> materialsJson) // 2.3 style
                                         {
-                                            // 2.3 style
-                                            List<object> materialsJson = (List<object>)val;
-
                                             foreach (Dictionary<string, object> materialJson in materialsJson)
                                             {
                                                 Material material = Material.FromEDName((string)materialJson["Name"]);
@@ -1339,7 +1336,7 @@ namespace EddiJournalMonitor
                                 {
                                     // Give priority to player messages
                                     source = channel == "wing" ? "Wing mate" : (channel == null ? "Crew mate" : "Commander");
-                                    channel = channel == null ? "multicrew" : channel;
+                                    channel = channel ?? "multicrew";
                                     events.Add(new MessageReceivedEvent(timestamp, from, source, true, channel, message) { raw = line });
                                 }
                                 else
@@ -1699,10 +1696,9 @@ namespace EddiJournalMonitor
                                 List<MaterialAmount> materials = new List<MaterialAmount>();
                                 if (data.TryGetValue("Ingredients", out val))
                                 {
-                                    if (val is Dictionary<string, object>)
+                                    // 2.2 style
+                                    if (val is Dictionary<string, object> usedData)
                                     {
-                                        // 2.2 style
-                                        Dictionary<string, object> usedData = (Dictionary<string, object>)val;
                                         foreach (KeyValuePair<string, object> used in usedData)
                                         {
                                             // Used could be a material or a commodity
@@ -1720,11 +1716,8 @@ namespace EddiJournalMonitor
                                             }
                                         }
                                     }
-                                    else if (val is List<object>)
+                                    else if (val is List<object> materialsJson) // 2.3 style
                                     {
-                                        // 2.3 style
-                                        List<object> materialsJson = (List<object>)val;
-
                                         foreach (Dictionary<string, object> materialJson in materialsJson)
                                         {
                                             Material material = Material.FromEDName(JsonParsing.getString(materialJson, "Name"));
@@ -2059,9 +2052,11 @@ namespace EddiJournalMonitor
                                 string name = JsonParsing.getString(data, "Name");
                                 name = name.Replace("$cmdr_decorate:#name=", "Commander ").Replace(";", "").Replace("&", "Commander ");
 
-                                Friend cmdr = new Friend();
-                                cmdr.name = name;
-                                cmdr.status = status;
+                                Friend cmdr = new Friend
+                                {
+                                    name = name,
+                                    status = status
+                                };
 
                                 /// Does this friend exist in our friends list?
                                 List<Friend> friends = EDDI.Instance.Cmdr.friends;
@@ -2486,10 +2481,9 @@ namespace EddiJournalMonitor
 
                                 data.TryGetValue("Materials", out object val);
                                 List<MaterialAmount> materials = new List<MaterialAmount>();
-                                if (val is Dictionary<string, object>)
+                                // 2.2 style
+                                if (val is Dictionary<string, object> materialsData)
                                 {
-                                    // 2.2 style
-                                    Dictionary<string, object> materialsData = (Dictionary<string, object>)val;
                                     if (materialsData != null)
                                     {
                                         foreach (KeyValuePair<string, object> materialData in materialsData)
@@ -2499,11 +2493,8 @@ namespace EddiJournalMonitor
                                         }
                                     }
                                 }
-                                else if (val is List<object>)
+                                else if (val is List<object> materialsJson) // 2.3 style
                                 {
-                                    // 2.3 style
-                                    List<object> materialsJson = (List<object>)val;
-
                                     foreach (Dictionary<string, object> materialJson in materialsJson)
                                     {
                                         Material material = Material.FromEDName(JsonParsing.getString(materialJson, "Name"));
@@ -2570,9 +2561,11 @@ namespace EddiJournalMonitor
                                         string name = JsonParsing.getString(cargoJson, "Name");
                                         int amount = JsonParsing.getInt(cargoJson, "Count");
                                         cargocarried += amount;
-                                        Cargo cargo = new Cargo(name, amount);
-                                        cargo.haulage = 0;
-                                        cargo.stolen = JsonParsing.getInt(cargoJson, "Stolen");
+                                        Cargo cargo = new Cargo(name, amount)
+                                        {
+                                            haulage = 0,
+                                            stolen = JsonParsing.getInt(cargoJson, "Stolen")
+                                        };
                                         cargo.owned = amount - cargo.stolen;
                                         inventory.Add(cargo);
                                     }
