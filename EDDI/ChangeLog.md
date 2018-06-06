@@ -6,10 +6,12 @@ Full details of the variables available for each noted event, and VoiceAttack in
   * Core
     * Updated system definition to include new variable `lastVisitSeconds`. 
     * The Search and rescue event was having its `commodity` property set to just the commodity name, rather than the commodity definition object that scripts expect. Fixed.
+    * Updated the `Ship refueled` event to include new boolean value `full`. True if this is a full refill and false if this is a partial refill.
   * Speech responder
     * Updated `Commodity sales check` script to make use of `CommodityMarketDetails()` function.
     * Fixed a bug that had made `{ship.role}` inaccessible via scripts.
     * Updated `FSD engaged` script to correct a bug that was preventing sub-function `System report` from ever running.
+    * Updated `Ship refueled` script to correct a bug that would cause it to sometimes report more than 100% fuel after refueling.
   * Added the following Cottle function, documented in [the SpeechResponder documentation](https://github.com/EDCD/EDDI/blob/master/SpeechResponder/Help.md):
      * `CommodityMarketDetails()` for retrieving market information about commodities.
   * VoiceAttack

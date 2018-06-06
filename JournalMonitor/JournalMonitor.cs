@@ -2077,7 +2077,7 @@ namespace EddiJournalMonitor
                                 data.TryGetValue("Cost", out val);
                                 long price = (long)val;
 
-                                events.Add(new ShipRefuelledEvent(timestamp, "Market", price, amount, null) { raw = line });
+                                events.Add(new ShipRefuelledEvent(timestamp, "Market", price, amount, null, false) { raw = line });
                                 handled = true;
                                 break;
                             }
@@ -2088,7 +2088,7 @@ namespace EddiJournalMonitor
                                 data.TryGetValue("Cost", out val);
                                 long price = (long)val;
 
-                                events.Add(new ShipRefuelledEvent(timestamp, "Market", price, amount, null) { raw = line });
+                                events.Add(new ShipRefuelledEvent(timestamp, "Market", price, amount, null, true) { raw = line });
                                 handled = true;
                                 break;
                             }
@@ -2096,8 +2096,11 @@ namespace EddiJournalMonitor
                             {
                                 decimal amount = JsonParsing.getDecimal(data, "Scooped");
                                 decimal total = JsonParsing.getDecimal(data, "Total");
+                                bool full = EDDI.Instance.CurrentShip?.fueltanktotalcapacity == null 
+                                    ? false 
+                                    : Math.Round(total) == EDDI.Instance.CurrentShip.fueltanktotalcapacity;
 
-                                events.Add(new ShipRefuelledEvent(timestamp, "Scoop", null, amount, total) { raw = line });
+                                events.Add(new ShipRefuelledEvent(timestamp, "Scoop", null, amount, total, full) { raw = line });
                                 handled = true;
                                 break;
                             }
