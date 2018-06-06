@@ -9,8 +9,8 @@ namespace EddiMissionMonitor
 {
     public class MissionsEvent : Event
     {
-        public const string NAME = "Technology broker";
-        public const string DESCRIPTION = "Triggered when using the Technology Broker to unlock new purchasable technology";
+        public const string NAME = "Missions";
+        public const string DESCRIPTION = "Triggered at startup, with basic information of the Mission Log";
         public const string SAMPLE = "{ \"timestamp\":\"2017-10-02T10:37:58Z\", \"event\":\"Missions\", \"Active\":[ { \"MissionID\":65380900, \"Name\":\"Mission_Courier_name\", \"PassengerMission\":false, \"Expires\":82751 } ], \"Failed\":[  ], \"Complete\":[  ]}";
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 

@@ -28,6 +28,7 @@ namespace EddiDataDefinitions
             var LongDistanceExpedition = new MissionType("LongDistanceExpedition");
             var Massacre = new MissionType("Massacre");
             var Mining = new MissionType("Mining");
+            var None = new MissionType("None");
             var PassengerBulk = new MissionType("PassengerBulk");
             var PassengerVIP = new MissionType("PassengerVIP");
             var Piracy = new MissionType("Piracy");

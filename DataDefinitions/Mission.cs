@@ -185,18 +185,6 @@ namespace EddiDataDefinitions
             destinationsystems = new List<DestinationSystem>();
         }
 
-        [JsonConstructor]
-        //Constructor for 'Passengers' event
-        public Mission(long MissionId, string Type, bool VIP, bool Wanted, int Amount)
-        {
-            this.missionid = MissionId;
-            this.passengertypeEDName = Type;
-            this.passengervips = VIP;
-            this.passengerwanted = Wanted;
-            this.amount = Amount;
-            destinationsystems = new List<DestinationSystem>();
-        }
-
         public event PropertyChangedEventHandler PropertyChanged;
 
         public void NotifyPropertyChanged(string propName)

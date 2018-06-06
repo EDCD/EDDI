@@ -147,6 +147,9 @@
   <data name="Mining" xml:space="preserve">
     <value>Mining</value>
   </data>
+  <data name="None" xml:space="preserve">
+    <value>None</value>
+  </data>
   <data name="PassengerBulk" xml:space="preserve">
     <value>Transport</value>
   </data>

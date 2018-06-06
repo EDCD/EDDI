@@ -16,16 +16,20 @@ namespace EddiMissionMonitor
         {
             VARIABLES.Add("missionid", "The ID of the mission");
             VARIABLES.Add("name", "The name of the mission");
+            VARIABLES.Add("remaining", "The time remaining (in minutes) to complete the mission");
         }
 
         public long? missionid { get; private set; }
 
         public string name { get; private set; }
 
-        public MissionWarningEvent(DateTime timestamp, long? MissionId, string Name) : base(timestamp, NAME)
+        public int remaining { get; private set; }
+
+        public MissionWarningEvent(DateTime timestamp, long? MissionId, string Name, int Remaining) : base(timestamp, NAME)
         {
             this.missionid = MissionId;
             this.name = Name;
+            this.remaining = Remaining;
         }
     }
 }

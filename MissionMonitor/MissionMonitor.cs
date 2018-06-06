@@ -114,18 +114,17 @@ namespace EddiMissionMonitor
             {
                 foreach (Mission mission in missions.ToList())
                 {
-                    if (mission.statusEDName == "Active")
+                    if (mission.statusEDName == "Active" || mission.statusEDName == "Complete")
                     {
                         TimeSpan span = mission.expiry.ToLocalTime() - DateTime.Now;
                         mission.timeremaining = span.Days.ToString() + "D " + span.Hours.ToString() + "H " + span.Minutes.ToString() + "MIN";
-
                         if (mission.expiry.ToLocalTime() < DateTime.Now)
                         {
                             EDDI.Instance.eventHandler(new MissionExpiredEvent(DateTime.Now, mission.missionid, mission.name));
                         }
-                        else if (mission.expiry.ToLocalTime() < DateTime.Now.AddMinutes(-warning ?? 60))
+                        else if (mission.expiry.ToLocalTime() < DateTime.Now.AddMinutes(-warning ?? -60))
                         {
-                            EDDI.Instance.eventHandler(new MissionWarningEvent(DateTime.Now, mission.missionid, mission.name));
+                            EDDI.Instance.eventHandler(new MissionWarningEvent(DateTime.Now, mission.missionid, mission.name, span.Minutes));
                         }
                     }
                     else
@@ -273,14 +272,23 @@ namespace EddiMissionMonitor
                 Mission missionEntry = missions.FirstOrDefault(m => m.missionid == mission.missionid);
                 if (missionEntry != null)
                 {
-                    missionEntry.statusDef = mission.statusDef;
-                    if (missionEntry.name == null)
+                    if (missionEntry.statusDef == MissionStatus.FromEDName("Active"))
+                    {
+                        if (missionEntry.destinationsystem == missionEntry.originsystem)
+                        {
+                            missionEntry.statusDef = MissionStatus.FromEDName("Complete");
+                        }
+                        else
+                        {
+                            missionEntry.statusDef = mission.statusDef;
+                        }
+                    }
+
+                    //If placeholder from 'Passengers' event, add 'Missions' parameters
+                    if (missionEntry.name.Contains("None"))
                     {
                         missionEntry.name = mission.name;
                         missionEntry.typeDef = MissionType.FromEDName(mission.name.Split('_').ElementAt(1));
-                    }
-                    if (missionEntry.expiry == null)
-                    {
                         missionEntry.expiry = mission.expiry;
                     }
                 }
@@ -321,7 +329,16 @@ namespace EddiMissionMonitor
                 }
                 else
                 {
-                    Mission newMission = new Mission(passenger.missionid, passenger.type, passenger.vip, passenger.wanted, passenger.amount);
+                    // Dummy mission to populate 'Passengers' parameters
+                    // 'Missions' event will populate 'name', 'status', 'type' & 'expiry'
+                    string name = "Mission_None";
+                    MissionStatus status = MissionStatus.FromEDName("Active");
+                    Mission newMission = new Mission(passenger.missionid, name, DateTime.Now.AddDays(1), status);
+                    newMission.passengertypeEDName = passenger.type;
+                    newMission.passengervips = passenger.vip;
+                    newMission.passengerwanted = passenger.wanted;
+                    newMission.amount = passenger.amount;
+
                     AddMission(newMission);
                 }
 
