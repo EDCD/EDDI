@@ -8,7 +8,7 @@ namespace Utilities
     public class Constants
     {
         public const string EDDI_NAME = "EDDI";
-        public const string EDDI_VERSION = "3.0.1-b4";
+        public const string EDDI_VERSION = "3.0.1-rc1";
         public const string EDDI_SERVER_URL = "http://edcd.github.io/EDDP/";
         public static readonly string EDDI_SYSTEM_MUTEX_NAME = $"{EDDI_SERVER_URL}/{EDDI_NAME}/{Environment.GetEnvironmentVariable("UserName")}";
 
