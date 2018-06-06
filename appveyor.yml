@@ -1,4 +1,4 @@
-version: 3.0.0-rc2-{build}
+version: 3.0.1-rc1-{build}
 branches:
   only:
   - develop
