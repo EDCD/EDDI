@@ -2096,10 +2096,11 @@ namespace EddiJournalMonitor
                             {
                                 decimal amount = JsonParsing.getDecimal(data, "Scooped");
                                 decimal total = JsonParsing.getDecimal(data, "Total");
+                                bool full = EDDI.Instance.CurrentShip?.fueltanktotalcapacity == null 
+                                    ? false 
+                                    : Math.Round(total) == EDDI.Instance.CurrentShip.fueltanktotalcapacity;
 
-                                events.Add(new ShipRefuelledEvent(timestamp, "Scoop", null, amount, total, 
-                                    EDDI.Instance.CurrentShip == null ? false : EDDI.Instance.CurrentShip.fueltanktotalcapacity == null ? false : 
-                                    Math.Round(total) == EDDI.Instance.CurrentShip.fueltanktotalcapacity) { raw = line });
+                                events.Add(new ShipRefuelledEvent(timestamp, "Scoop", null, amount, total, full) { raw = line });
                                 handled = true;
                                 break;
                             }
