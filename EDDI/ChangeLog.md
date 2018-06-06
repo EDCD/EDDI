@@ -9,6 +9,8 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Updated `Commodity sales check` script to make use of `CommodityMarketDetails()` function.
     * Fixed a bug that had made `{ship.role}` inaccessible via scripts.
     * Updated `FSD engaged` script to correct a bug that was preventing sub-function `System report` from ever running.
+  * Cargo monitor
+    * Discard all cargo if your ship is destroyed.
   * Added the following Cottle function, documented in [the SpeechResponder documentation](https://github.com/EDCD/EDDI/blob/master/SpeechResponder/Help.md):
      * `CommodityMarketDetails()` for retrieving market information about commodities.
 
