@@ -776,6 +776,11 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Rarities.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Properties\StationModels.de.resx" />
+    <EmbeddedResource Include="Properties\StationModels.es.resx" />
+    <EmbeddedResource Include="Properties\StationModels.fr.resx" />
+    <EmbeddedResource Include="Properties\StationModels.hu.resx" />
+    <EmbeddedResource Include="Properties\StationModels.it.resx" />
     <EmbeddedResource Include="Properties\StationModels.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>StationModels.Designer.cs</LastGenOutput>
