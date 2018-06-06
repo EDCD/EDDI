@@ -4,9 +4,6 @@ using Utilities;
 
 namespace EddiDataDefinitions
 {
-    /// <summary>
-    /// Crime types
-    /// </summary>
     public class StationModels : ResourceBasedLocalizedEDName<StationModels>
     {
         static StationModels()
