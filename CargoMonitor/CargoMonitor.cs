@@ -172,6 +172,11 @@ namespace EddiCargoMonitor
             {
                 handleLimpetLaunchedEvent((LimpetLaunchedEvent)@event);
             }
+            else if (@event is CargoDepotEvent)
+            {
+                // If cargo is collected or delivered in a wing mission
+                handleCargoDepotEvent((CargoDepotEvent)@event);
+            }
             else if (@event is MissionAbandonedEvent)
             {
                 // If we abandon a mission with cargo it becomes stolen
@@ -580,6 +585,62 @@ namespace EddiCargoMonitor
             {
                 cargo.owned--;
                 RemoveCargo(cargo);
+            }
+        }
+
+        private void handleCargoDepotEvent(CargoDepotEvent @event)
+        {
+            _handleCargoDepotEvent(@event);
+            writeInventory();
+        }
+
+        private void _handleCargoDepotEvent(CargoDepotEvent @event)
+        {
+            int amountRemaining = @event.totaltodeliver - @event.delivered;
+            foreach (Cargo cargo in inventory)
+            {
+                HaulageAmount haulageAmount = cargo.haulageamounts.FirstOrDefault(ha => ha.id == @event.missionid);
+                if (haulageAmount != null)
+                {
+                    string type = haulageAmount.name.Split('_').ElementAtOrDefault(1).ToLowerInvariant();
+                    switch (@event.updatetype)
+                    {
+                        case "Collect":
+                            {
+                                if (type == "CollectWing")
+                                {
+                                    cargo.owned += @event.amount ?? 0;
+                                }
+                                else if (type == "DeliveryWing")
+                                {
+                                    cargo.haulage += @event.amount ?? 0;
+                                }
+                                CalculateCargoNeed(cargo);
+                            }
+                            break;
+                        case "Deliver":
+                            {
+                                if (type == "CollectWing")
+                                {
+                                    cargo.owned -= @event.amount ?? 0;
+                                }
+                                else if (type == "DeliveryWing")
+                                {
+                                    cargo.haulage -= @event.amount ?? 0;
+                                }
+                                haulageAmount.amount = amountRemaining;
+                                CalculateCargoNeed(cargo);
+                            }
+                            break;
+                        case "WingUpdate":
+                            {
+                                haulageAmount.amount = amountRemaining;
+                                CalculateCargoNeed(cargo);
+                            }
+                            break;
+                    }
+                    break;
+                }
             }
         }
 
