@@ -607,11 +607,7 @@ namespace EddiCargoMonitor
                     {
                         case "Collect":
                             {
-                                if (type == "CollectWing")
-                                {
-                                    cargo.owned += @event.amount ?? 0;
-                                }
-                                else if (type == "DeliveryWing")
+                                if (type == "DeliveryWing")
                                 {
                                     cargo.haulage += @event.amount ?? 0;
                                 }
