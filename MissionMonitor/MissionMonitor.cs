@@ -674,20 +674,6 @@ namespace EddiMissionMonitor
             return missions.FirstOrDefault(m => m.missionid == missionid);
         }
 
-        public List<long> GetMissionIdsWithCommodity(string commodity)
-        {
-            List<long> missionIds = new List<long>();
-            foreach (Mission mission in missions)
-            {
-                if (mission.commodity == commodity)
-                {
-                    missionIds.Add(mission.missionid);
-                }
-            }
-
-            return missionIds;
-        }
-
         static void RaiseOnUIThread(EventHandler handler, object sender)
         {
             if (handler != null)
