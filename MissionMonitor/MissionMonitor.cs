@@ -381,6 +381,7 @@ namespace EddiMissionMonitor
                 string type = mission.typeEDName.ToLowerInvariant();
 
                 // Common parameters
+                mission.localisedname = @event.localisedname;
                 mission.amount = @event.amount ?? 0;
                 mission.influence = @event.influence;
                 mission.reputation = @event.reputation;

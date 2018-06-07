@@ -16,11 +16,13 @@ namespace EddiMissionMonitor
         {
             VARIABLES.Add("missionid", "The ID of the mission");
             VARIABLES.Add("name", "The name of the mission");
+            VARIABLES.Add("localisedname", "The localised name of the mission");
             VARIABLES.Add("faction", "The faction issuing the mission");
             VARIABLES.Add("destinationsystem", "The destination system for the mission (if applicable)");
             VARIABLES.Add("destinationstation", "The destination station for the mission (if applicable)");
             VARIABLES.Add("commodity", "The commodity involved in the mission (if applicable)");
             VARIABLES.Add("amount", "The amount of the commodity,  passengers or targets involved in the mission (if applicable)");
+            VARIABLES.Add("wing", "True if the mission allows wing-mates");
             VARIABLES.Add("passengercount", "The number of passengers (if applicable)");
             VARIABLES.Add("passengerwanted", "True if the passengers are wanted (if applicable)");
             VARIABLES.Add("passengertype", "The type of passengers in the mission (if applicable)");
@@ -38,6 +40,7 @@ namespace EddiMissionMonitor
 
         public long? missionid { get; private set; }
         public string name { get; private set; }
+        public string localisedname { get; private set; }
         public string faction { get; private set; }
         public int? reward { get; private set; }
         public string influence { get; private set; }
@@ -63,10 +66,11 @@ namespace EddiMissionMonitor
 
         public CommodityDefinition commodityDefinition { get; private set; }
 
-        public MissionAcceptedEvent(DateTime timestamp, long? missionid, string name, string faction, string destinationsystem, string destinationstation, CommodityDefinition commodity, int? amount, bool? passengerwanted, string passengertype, bool? passengervips, string target, string targettype, string targetfaction, bool communal, DateTime? expiry, string influence, string reputation, int? reward, bool wing) : base(timestamp, NAME)
+        public MissionAcceptedEvent(DateTime timestamp, long? missionid, string localisedname, string name, string faction, string destinationsystem, string destinationstation, CommodityDefinition commodity, int? amount, bool? passengerwanted, string passengertype, bool? passengervips, string target, string targettype, string targetfaction, bool communal, DateTime? expiry, string influence, string reputation, int? reward, bool wing) : base(timestamp, NAME)
         {
             this.missionid = missionid;
             this.name = name;
+            this.localisedname = localisedname;
             this.faction = faction;
             this.destinationsystem = destinationsystem;
             this.destinationstation = destinationstation;

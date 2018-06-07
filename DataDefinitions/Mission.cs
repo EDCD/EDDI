@@ -14,6 +14,9 @@ namespace EddiDataDefinitions
         // The name of the mission
         public string name;
 
+        // The localised name of the mission
+        public string localisedname;
+
         // The type of mission
         public string typeEDName
         {
@@ -89,7 +92,7 @@ namespace EddiDataDefinitions
 
         public string reputation { get; set; }
 
-        public bool legal => name.Contains("illegal") ? false : true;
+        public bool legal => name.ToLowerInvariant().Contains("illegal") ? false : true;
 
         public bool wing { get; set; }
 

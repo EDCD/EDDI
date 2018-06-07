@@ -2283,7 +2283,7 @@ namespace EddiJournalMonitor
                                 string name = JsonParsing.getString(data, "Name");
                                 string system = JsonParsing.getString(data, "System");
 
-                                events.Add(new MissionAcceptedEvent(timestamp, null, name, system, null, null, null, null, null, null, null, null, null, null, true, null, null, null, null, false) { raw = line });
+                                events.Add(new MissionAcceptedEvent(timestamp, null, name, null, system, null, null, null, null, null, null, null, null, null, null, true, null, null, null, null, false) { raw = line });
                                 handled = true;
                                 break;
                             }
@@ -2420,6 +2420,7 @@ namespace EddiJournalMonitor
                                 data.TryGetValue("Expiry", out val);
                                 DateTime? expiry = (val == null ? (DateTime?)null : (DateTime)val);
                                 string name = JsonParsing.getString(data, "Name");
+                                string localisedname = JsonParsing.getString(data, "LocalisedName");
                                 string faction = getFaction(data, "Faction");
                                 int? reward = JsonParsing.getOptionalInt(data, "Reward");
                                 bool wing = JsonParsing.getBool(data, "Wing");
@@ -2458,7 +2459,7 @@ namespace EddiJournalMonitor
                                 string influence = JsonParsing.getString(data, "Influence");
                                 string reputation = JsonParsing.getString(data, "Reputation");
 
-                                events.Add(new MissionAcceptedEvent(timestamp, missionid, name, faction, destinationsystem, destinationstation, commodity, amount, passengerswanted, passengertype, passengervips, target, targettype, targetfaction, false, expiry, influence, reputation, reward, wing) { raw = line });
+                                events.Add(new MissionAcceptedEvent(timestamp, missionid, name, localisedname, faction, destinationsystem, destinationstation, commodity, amount, passengerswanted, passengertype, passengervips, target, targettype, targetfaction, false, expiry, influence, reputation, reward, wing) { raw = line });
                                 handled = true;
                                 break;
                             }

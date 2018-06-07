@@ -245,7 +245,7 @@ namespace EddiCargoMonitor
                     // Found match of commodity
                     inventoryCargo.total = cargo.total;
                     inventoryCargo.stolen = cargo.stolen;
-                    if (inventoryCargo.haulageamounts == null || !inventoryCargo.haulageamounts.Any())
+                    if (inventoryCargo.haulageData == null || !inventoryCargo.haulageData.Any())
                     {
                         inventoryCargo.haulage = 0;
                         inventoryCargo.need = 0;
@@ -265,8 +265,8 @@ namespace EddiCargoMonitor
             // Remove strays from the manifest
             foreach (Cargo inventoryCargo in inventory.ToList())
             {
-                Cargo cargo = @event.inventory.FirstOrDefault(c => c.edname.ToLowerInvariant() == inventoryCargo.edname.ToLowerInvariant());
-                if (cargo == null)
+                // Keep cargo in manifest if missions are pending
+                if (inventoryCargo.haulageData == null || !inventoryCargo.haulageData.Any())
                 {
                     // Check for pending missions
                     if (inventoryCargo.haulageamounts == null || !inventoryCargo.haulageamounts.Any())
@@ -302,13 +302,12 @@ namespace EddiCargoMonitor
                 {
                     cargo.stolen++;
                 }
-                else if (cargo.haulageamounts.Any())
+                else if (cargo.haulageData.Any())
                 {
-                    foreach (HaulageAmount haulageAmount in cargo.haulageamounts)
+                    foreach (Haulage haulage in cargo.haulageData)
                     {
-                        string type = haulageAmount.name.Split('_').ElementAtOrDefault(1).ToLowerInvariant();
-                        int total = cargo.haulageamounts.Where(ha => ha.name.ToLowerInvariant().Contains(type)).Sum(ha => ha.amount);
-                        switch (type)
+                        int total = cargo.haulageData.Where(ha => ha.name.ToLowerInvariant().Contains(haulage.type)).Sum(ha => ha.amount);
+                        switch (haulage.type)
                         {
                             case "altruism":
                             case "collect":
@@ -376,14 +375,12 @@ namespace EddiCargoMonitor
                 bool handled = false;
 
                 // Check for related missions
-                if (cargo.haulageamounts.Any())
+                if (cargo.haulageData.Any())
                 {
                     cargo.ejected += @event.amount;
-                    foreach (HaulageAmount haulageAmount in cargo.haulageamounts)
+                    foreach (Haulage haulage in cargo.haulageData)
                     {
-                        string type = haulageAmount.name.Split('_').ElementAtOrDefault(1).ToLowerInvariant();
-                        int total = cargo.haulageamounts.Where(ha => ha.name.ToLowerInvariant().Contains(type)).Sum(ha => ha.amount);
-                        switch (type)
+                        switch (haulage.type)
                         {
                             case "altruism":
                             case "collect":
@@ -621,19 +618,14 @@ namespace EddiCargoMonitor
             int amountRemaining = @event.totaltodeliver - @event.delivered;
             foreach (Cargo cargo in inventory)
             {
-                HaulageAmount haulageAmount = cargo.haulageamounts.FirstOrDefault(ha => ha.id == @event.missionid);
-                if (haulageAmount != null)
+                Haulage haulage = cargo.haulageData.FirstOrDefault(ha => ha.missionid == @event.missionid);
+                if (haulage != null)
                 {
-                    string type = haulageAmount.name.Split('_').ElementAtOrDefault(1).ToLowerInvariant();
                     switch (@event.updatetype)
                     {
                         case "Collect":
                             {
-                                if (type == "CollectWing")
-                                {
-                                    cargo.owned += @event.amount ?? 0;
-                                }
-                                else if (type == "DeliveryWing")
+                                if (haulage.type == "DeliveryWing")
                                 {
                                     cargo.haulage += @event.amount ?? 0;
                                 }
@@ -642,21 +634,21 @@ namespace EddiCargoMonitor
                             break;
                         case "Deliver":
                             {
-                                if (type == "CollectWing")
+                                if (haulage.type == "CollectWing")
                                 {
                                     cargo.owned -= @event.amount ?? 0;
                                 }
-                                else if (type == "DeliveryWing")
+                                else if (haulage.type == "DeliveryWing")
                                 {
                                     cargo.haulage -= @event.amount ?? 0;
                                 }
-                                haulageAmount.amount = amountRemaining;
+                                haulage.amount = amountRemaining;
                                 CalculateCargoNeed(cargo);
                             }
                             break;
                         case "WingUpdate":
                             {
-                                haulageAmount.amount = amountRemaining;
+                                haulage.amount = amountRemaining;
                                 CalculateCargoNeed(cargo);
                             }
                             break;
@@ -676,11 +668,10 @@ namespace EddiCargoMonitor
         {
             foreach (Cargo inventoryCargo in inventory)
             {
-                HaulageAmount haulageAmount = inventoryCargo.haulageamounts.FirstOrDefault(ha => ha.id == @event.missionid);
-                if (haulageAmount != null)
+                Haulage haulage = inventoryCargo.haulageData.FirstOrDefault(ha => ha.missionid == @event.missionid);
+                if (haulage != null)
                 {
-                    string type = @event.name.Split('_').ElementAtOrDefault(1).ToLowerInvariant();
-                    switch (type)
+                    switch (haulage.type)
                     {
                         case "delivery":
                         case "deliverywing":
@@ -689,7 +680,7 @@ namespace EddiCargoMonitor
                         case "smuggle":
                             {
                                 // Calculate the amount of mission-related cargo still in inventory
-                                int obtained = haulageAmount.amount - inventoryCargo.ejected;
+                                int obtained = haulage.amount - inventoryCargo.ejected;
                                 obtained = Math.Min(inventoryCargo.haulage, obtained);
 
                                 // Convert that amount of cargo from `haulage` to `stolen`
@@ -697,14 +688,14 @@ namespace EddiCargoMonitor
                                 inventoryCargo.stolen += obtained;
 
                                 // Reduce our `need` counter by the amount of mission related cargo which had not yet been obtained.
-                                inventoryCargo.need -= (haulageAmount.amount - obtained);
+                                inventoryCargo.need -= (haulage.amount - obtained);
 
                                 // We didn't fail for ejecting cargo so we set this counter to zero
                                 inventoryCargo.ejected = 0;
                             }
                             break;
                     }
-                    inventoryCargo.haulageamounts.Remove(haulageAmount);
+                    inventoryCargo.haulageData.Remove(haulage);
 
                     RemoveCargo(inventoryCargo);
                     break;
@@ -738,13 +729,19 @@ namespace EddiCargoMonitor
                 case "salvage":
                 case "smuggle":
                     {
+<<<<<<< HEAD
                         int amount = (type == "delivery" && naval || type == "smuggle") ? @event.amount ?? 0 : 0;
                         HaulageAmount haulageAmount = new HaulageAmount(@event.missionid ?? 0, @event.name, @event.amount ?? 0, (DateTime)@event.expiry);
+=======
+                        string originSystem = EDDI.Instance?.CurrentStarSystem?.name;
+                        int amount = (type == "delivery" || type == "smuggle") ? @event.amount ?? 0 : 0;
+                        Haulage haulage = new Haulage(@event.missionid ?? 0, @event.name, originSystem, @event.amount ?? 0, (DateTime)@event.expiry);
+>>>>>>> Tweaks. Added localised mission name.
                         Cargo cargo = GetCargoWithEDName(@event.commodityDefinition?.edname);
                         if (cargo != null)
                         {
                             cargo.haulage += amount;
-                            cargo.haulageamounts.Add(haulageAmount);
+                            cargo.haulageData.Add(haulage);
                             CalculateCargoNeed(cargo);
                         }
                         else
@@ -753,7 +750,7 @@ namespace EddiCargoMonitor
                             newCargo.haulage = amount;
                             newCargo.stolen = 0;
                             newCargo.owned = 0;
-                            newCargo.haulageamounts.Add(haulageAmount);
+                            newCargo.haulageData.Add(haulage);
                             CalculateCargoNeed(newCargo);
                             AddCargo(newCargo);
                         }
@@ -776,15 +773,13 @@ namespace EddiCargoMonitor
             Cargo cargo = GetCargoWithEDName(@event.commodityDefinition?.edname);
             if (cargo != null)
             {
-                HaulageAmount haulageAmount = cargo.haulageamounts.FirstOrDefault(ha => ha.id == @event.missionid);
-                if (haulageAmount != null)
+                Haulage haulage = cargo.haulageData.FirstOrDefault(ha => ha.missionid == @event.missionid);
+                if (haulage != null)
                 {
                     int amount = Math.Min(haulageAmount.amount, @event.amount ?? 0);
                     string type = @event.name.Split('_').ElementAtOrDefault(1)
                         .ToLowerInvariant();
-                    bool legal = @event.name.Split('_').ElementAtOrDefault(2)
-                        .ToLowerInvariant()
-                        .Contains("illegal") ? false : true;
+                    bool legal = @event.name.ToLowerInvariant().Contains("illegal") ? false : true;
                     switch (type)
                     {
                         case "altruism":
@@ -826,7 +821,7 @@ namespace EddiCargoMonitor
                             }
                             break;
                     }
-                    cargo.haulageamounts.Remove(haulageAmount);
+                    cargo.haulageData.Remove(haulage);
                 }
                 else if (cargo.haulage >= @event.amount)
                 {
@@ -868,10 +863,10 @@ namespace EddiCargoMonitor
         {
             foreach (Cargo Cargo in inventory.ToList())
             {
-                HaulageAmount haulageAmount = Cargo.haulageamounts.FirstOrDefault(ha => ha.id == @event.missionid);
-                if (haulageAmount != null)
+                Haulage haulage = Cargo.haulageData.FirstOrDefault(ha => ha.missionid == @event.missionid);
+                if (haulage != null)
                 {
-                    haulageAmount.status = "Failed";
+                    haulage.status = "Failed";
                     break;
                 }
             }
@@ -887,8 +882,8 @@ namespace EddiCargoMonitor
         {
             foreach (Cargo inventoryCargo in inventory.ToList())
             {
-                HaulageAmount haulageAmount = inventoryCargo.haulageamounts.FirstOrDefault(ha => ha.id == @event.missionid);
-                if (haulageAmount != null)
+                Haulage haulage = inventoryCargo.haulageData.FirstOrDefault(ha => ha.missionid == @event.missionid);
+                if (haulage != null)
                 {
                     string type = @event.name.Split('_').ElementAtOrDefault(1).ToLowerInvariant();
                     switch (type)
@@ -900,9 +895,13 @@ namespace EddiCargoMonitor
                         case "smuggle":
                             {
                                 // Calculate the amount of mission-related cargo still in inventory
-                                int obtained = haulageAmount.amount;
+                                int obtained = haulage.amount;
                                 // If not expired, then failure may have been due to jettisoning cargo
+<<<<<<< HEAD
                                 if (haulageAmount.expiry < DateTime.UtcNow)
+=======
+                                if (haulage.expiry < DateTime.Now)
+>>>>>>> Tweaks. Added localised mission name.
                                 {
                                     obtained -= inventoryCargo.ejected;
                                     inventoryCargo.ejected = 0;
@@ -914,11 +913,11 @@ namespace EddiCargoMonitor
                                 inventoryCargo.stolen += obtained;
 
                                 // Reduce our `need` counter by the amount of mission related cargo which had not yet been obtained.
-                                inventoryCargo.need -= (haulageAmount.amount - obtained);
+                                inventoryCargo.need -= (haulage.amount - obtained);
                             }
                             break;
                     }
-                    inventoryCargo.haulageamounts.Remove(haulageAmount);
+                    inventoryCargo.haulageData.Remove(haulage);
                     RemoveCargo(inventoryCargo);
                     break;
                 }
@@ -936,24 +935,23 @@ namespace EddiCargoMonitor
             // Adjust cargo haulage & stolen amounts to account for completed missions
             foreach (Cargo cargo in inventory.ToList())
             {
-                HaulageAmount haulageAmount = cargo.haulageamounts.FirstOrDefault(ha => ha.id == @event.missionid);
-                if (haulageAmount != null)
+                Haulage haulage = cargo.haulageData.FirstOrDefault(ha => ha.missionid == @event.missionid);
+                if (haulage != null)
                 {
-                    if (haulageAmount.name.ToLowerInvariant().Contains("wing"))
+                    if (@event.newdestinationsystem == haulage.originsystem)
                     {
-                        haulageAmount.status = "Complete";
-                        int haulage = cargo.haulageamounts
+                        haulage.status = "Complete";
+                        int haulageAmount = cargo.haulageData
                             .Where(ha => ha.status == "Complete" && ha.legal)
                             .Sum(ha => ha.amount);
-                        int stolen = cargo.haulageamounts
+                        int stolenAmount = cargo.haulageData
                             .Where(ha => ha.status == "Complete" && !ha.legal)
                             .Sum(ha => ha.amount);
 
                         int total = cargo.total;
-                        cargo.haulage = Math.Max(cargo.haulage, haulage);
-                        cargo.stolen = Math.Max(cargo.stolen, stolen);
+                        cargo.haulage = Math.Max(cargo.haulage, haulageAmount);
+                        cargo.stolen = Math.Max(cargo.stolen, stolenAmount);
                         cargo.owned = total - cargo.haulage - cargo.stolen;
-
                     }
                 }
             }
@@ -1107,7 +1105,7 @@ namespace EddiCargoMonitor
         private void RemoveCargo(Cargo cargo)
         {
             // Check if missions are pending
-            if (cargo.haulageamounts == null || !cargo.haulageamounts.Any())
+            if (cargo.haulageData == null || !cargo.haulageData.Any())
             {
                 if (cargo.total < 1)
                 {
@@ -1153,16 +1151,18 @@ namespace EddiCargoMonitor
 
         private void CalculateCargoNeed(Cargo cargo)
         {
-            if (cargo != null && cargo.haulageamounts != null && cargo.haulageamounts.Any())
+            if (cargo != null && cargo.haulageData != null && cargo.haulageData.Any())
             {
+<<<<<<< HEAD
                 if (cargo.haulageamounts.FirstOrDefault(ha => ha.id == missionid) != null)
+=======
+                int haulageNeeded = 0;
+                int ownedNeeded = 0;
+                int stolenNeeded = 0;
+                foreach (Haulage haulage in cargo.haulageData)
+>>>>>>> Tweaks. Added localised mission name.
                 {
-                    string type = haulageAmount.name.Split('_').ElementAtOrDefault(1)
-                        .ToLowerInvariant();
-                    bool legal = haulageAmount.name.Split('_').ElementAtOrDefault(2)
-                        .ToLowerInvariant()
-                        .Contains("illegal") ? false : true;
-                    switch (type)
+                    switch (haulage.type)
                     {
                         case "altruism":
                         case "collect":
@@ -1170,7 +1170,7 @@ namespace EddiCargoMonitor
                         case "mining":
                         case "piracy":
                             {
-                                ownedNeeded += haulageAmount.amount;
+                                ownedNeeded += haulage.amount;
                             }
                             break;
                         case "delivery":
@@ -1178,17 +1178,17 @@ namespace EddiCargoMonitor
                         case "rescue":
                         case "smuggle":
                             {
-                                haulageNeeded += haulageAmount.amount;
+                                haulageNeeded += haulage.amount;
                             }
                             break;
                         case "salvage":
-                            if (legal)
+                            if (haulage.legal)
                             {
-                                haulageNeeded += haulageAmount.amount;
+                                haulageNeeded += haulage.amount;
                             }
                             else
                             {
-                                stolenNeeded += haulageAmount.amount;
+                                stolenNeeded += haulage.amount;
                             }
                             break;
                     }

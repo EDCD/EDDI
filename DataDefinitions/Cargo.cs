@@ -136,6 +136,8 @@ namespace EddiDataDefinitions
 
         public List<HaulageAmount> haulageamounts { get; set; }
 
+        public List<Haulage> haulageData { get; set; }
+
         [JsonExtensionData]
         private IDictionary<string, JToken> _additionalJsonData;
 
@@ -163,6 +165,7 @@ namespace EddiDataDefinitions
             this.price = price ?? commodityDef.avgprice;
             this.total = total;
             haulageamounts = new List<HaulageAmount>();
+            haulageData = new List<Haulage>();
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
