@@ -146,6 +146,7 @@ namespace EddiVoiceAttackResponder
                 {
                     IsBackground = true
                 };
+                updaterThread.Start();
 
                 vaProxy.WriteToLog("The EDDI plugin is fully operational.", "green");
                 setStatus(ref vaProxy, "Operational");
