@@ -646,25 +646,32 @@ namespace EddiSpeechResponder
             store["CommodityMarketDetails"] = new NativeFunction((values) =>
             {
                 CommodityMarketQuote result = null;
+                CommodityMarketQuote CommodityDetails(string commodityLocalizedName, Station station)
+                {
+                    return station?.commodities?.FirstOrDefault(c => c.localizedName == commodityLocalizedName);
+                }
+
                 if (values.Count == 1)
                 {
                     // Named commodity, current station
                     Station station = EDDI.Instance.CurrentStation;
-                    result = station?.commodities?.FirstOrDefault(c => c.definition.localizedName == values[0].AsString);
+                    result = CommodityDetails(values[0].AsString, station);
                 }
                 else if (values.Count == 2)
                 {
                     // Named commodity, named station, current system 
                     StarSystem system = EDDI.Instance.CurrentStarSystem;
-                    Station station = system != null && system.stations != null ? system.stations.FirstOrDefault(v => v.name == values[1].AsString) : null;
-                    result = station?.commodities?.FirstOrDefault(c => c.definition.localizedName == values[0].AsString);
+                    string stationName = values[1].AsString;
+                    Station station = system?.stations?.FirstOrDefault(v => v.name == stationName);
+                    result = CommodityDetails(values[0].AsString, station);
                 }
                 else if (values.Count == 3)
                 {
                     // Named commodity, named station, named system 
                     StarSystem system = DataProviderService.GetSystemData(values[2].AsString, null, null, null);
-                    Station station = system != null && system.stations != null ? system.stations.FirstOrDefault(v => v.name == values[1].AsString) : null;
-                    result = station?.commodities?.FirstOrDefault(c => c.definition.localizedName == values[0].AsString);
+                    string stationName = values[1].AsString;
+                    Station station = system?.stations?.FirstOrDefault(v => v.name == stationName);
+                    result = CommodityDetails(values[0].AsString, station);
                 }
                 return (result == null ? new ReflectionValue(new object()) : new ReflectionValue(result));
             }, 0, 3);
