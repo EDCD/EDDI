@@ -51,6 +51,7 @@ namespace EddiVoiceAttackResponder
             try
             {
                 GetEddiInstance(ref vaProxy);
+                App.ApplyAnyOverrideCulture();
                 EDDI.Instance.Start();
 
                 // Add notifiers for state and property changes 

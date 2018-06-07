@@ -78,7 +78,7 @@ namespace Eddi
             }
         }
 
-        private static void ApplyAnyOverrideCulture()
+        public static void ApplyAnyOverrideCulture()
         {
             try
             {
