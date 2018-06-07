@@ -58,8 +58,7 @@ namespace Eddi
             ApplyAnyOverrideCulture(); // this must be done before any UI is generated
 
             MainWindow mainWindow = null;
-            bool firstOwner = false;
-            Mutex eddiMutex = new Mutex(true, Constants.EDDI_SYSTEM_MUTEX_NAME, out firstOwner);
+            Mutex eddiMutex = new Mutex(true, Constants.EDDI_SYSTEM_MUTEX_NAME, out bool firstOwner);
 
             if (firstOwner)
             {

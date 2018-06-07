@@ -47,9 +47,11 @@ namespace EddiSpeechResponder
             InitializeComponent();
             DataContext = this;
 
-            ObservableCollection<Personality> personalities = new ObservableCollection<Personality>();
-            // Add our default personality
-            personalities.Add(Personality.Default());
+            ObservableCollection<Personality> personalities = new ObservableCollection<Personality>
+            {
+                // Add our default personality
+                Personality.Default()
+            };
             foreach (Personality personality in Personality.AllFromDirectory())
             {
                 personalities.Add(personality);
@@ -226,8 +228,8 @@ namespace EddiSpeechResponder
             CopyPersonalityWindow window = new CopyPersonalityWindow(Personality);
             if (window.ShowDialog() == true)
             {
-                string PersonalityName = window.PersonalityName == null ? null : window.PersonalityName.Trim();
-                string PersonalityDescription = window.PersonalityDescription == null ? null : window.PersonalityDescription.Trim();
+                string PersonalityName = window.PersonalityName?.Trim();
+                string PersonalityDescription = window.PersonalityDescription?.Trim();
                 Personality newPersonality = Personality.Copy(PersonalityName, PersonalityDescription);
                 Personalities.Add(newPersonality);
                 Personality = newPersonality;
