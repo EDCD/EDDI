@@ -31,8 +31,10 @@ namespace EddiSpeechResponder
         {
             random = new Random();
             if (scripts != null) { this.scripts = scripts; }
-            setting = new CustomSetting();
-            setting.Trimmer = BuiltinTrimmers.CollapseBlankCharacters;
+            setting = new CustomSetting
+            {
+                Trimmer = BuiltinTrimmers.CollapseBlankCharacters
+            };
         }
 
         public string resolve(string name, Dictionary<string, Cottle.Value> vars, bool master = true)
@@ -42,16 +44,14 @@ namespace EddiSpeechResponder
 
         public int priority(string name)
         {
-            Script script;
-            scripts.TryGetValue(name, out script);
+            scripts.TryGetValue(name, out Script script);
             return (script == null ? 5 : script.Priority);
         }
 
         public string resolve(string name, BuiltinStore store, bool master = true)
         {
             Logging.Debug("Resolving script " + name);
-            Script script;
-            scripts.TryGetValue(name, out script);
+            scripts.TryGetValue(name, out Script script);
             if (script == null || script.Value == null)
             {
                 Logging.Debug("No script");
@@ -102,8 +102,7 @@ namespace EddiSpeechResponder
                     }
 
                     EDDI.Instance.State["eddi_context_last_speech"] = stored;
-                    object lastSubject;
-                    if (EDDI.Instance.State.TryGetValue("eddi_context_last_subject", out lastSubject))
+                    if (EDDI.Instance.State.TryGetValue("eddi_context_last_subject", out object lastSubject))
                     {
                         if (lastSubject != null)
                         {
