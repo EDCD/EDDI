@@ -122,7 +122,11 @@
     <value>Ősi Kódex</value>
     <comment>Data scan type AncientCodex</comment>
   </data>
-  
+  <data name="DataPointHVT" xml:space="preserve">
+    <value>Nagy értékű célpont
+Hvt (High Value Target) Nagy Értékű Cél.</value>
+    <comment>Data scan type DataPointHVT</comment>
+  </data>
   <data name="TgTransmitter" xml:space="preserve">
     <value>Thargoid eszköz</value>
     <comment>Data scan type TGTRANSMITTER</comment>
