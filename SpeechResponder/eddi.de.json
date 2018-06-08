@@ -128,6 +128,15 @@
       "name": "Cargo updated",
       "description": "Triggered when the cargo inventory is updated"
     },
+    "Cargo wingupdate": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{_ Cargo wingupdate }\r\n{_ Triggered when a wing-mate collects or delivers cargo for a wing mission }\r\n\r\n\r\n{if event.updatetype = \"Collect\":\r\n    Your wing mate has collected {event.amount} tonne{if event.amount = 1:s} of {event.commodity} from the misison depot.\r\n|elif event.updatetype = \"Deliver\":\r\n    Your wing mate has delivered {event.amount} tonne{if event.amount = 1:s} of {event.commodity} to the mission depot.\r\n}\r\n",
+      "default": true,
+      "name": "Cargo wingupdate",
+      "description": "Triggered when a wing-mate collects or delivers cargo for a wing mission"
+    },
     "Cleared save": {
       "enabled": true,
       "priority": 3,

@@ -614,6 +614,8 @@ namespace EddiCargoMonitor
                                     cargo.haulage += @event.amount ?? 0;
                                 }
                                 CalculateCargoNeed(cargo);
+                                haulageAmount.depotcollected = @event.collected;
+                                haulageAmount.depotdelivered = @event.delivered;
                             }
                             break;
                         case "Deliver":
@@ -628,12 +630,20 @@ namespace EddiCargoMonitor
                                 }
                                 haulageAmount.amount = amountRemaining;
                                 CalculateCargoNeed(cargo);
+                                haulageAmount.depotcollected = @event.collected;
+                                haulageAmount.depotdelivered = @event.delivered;
                             }
                             break;
                         case "WingUpdate":
                             {
                                 haulageAmount.amount = amountRemaining;
                                 CalculateCargoNeed(cargo);
+
+                                int amount = Math.Max(@event.collected - haulageAmount.depotcollected, @event.delivered - haulageAmount.depotdelivered);
+                                string updatetype = @event.collected - haulageAmount.depotcollected > 0 ? "Collect" : "Deliver";
+                                EDDI.Instance.eventHandler(new CargoWingUpdateEvent(DateTime.Now, haulageAmount.id, updatetype, cargo.commodityDef, amount));
+                                haulageAmount.depotcollected = @event.collected;
+                                haulageAmount.depotdelivered = @event.delivered;
                             }
                             break;
                     }
