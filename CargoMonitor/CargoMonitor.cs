@@ -23,8 +23,8 @@ namespace EddiCargoMonitor
     {
         // Observable collection for us to handle changes
         public ObservableCollection<Cargo> inventory { get; private set; }
+        public int cargoCarried;
 
-        public int cargocarried;
         private static readonly object inventoryLock = new object();
         public event EventHandler InventoryUpdatedEvent;
 
@@ -411,7 +411,6 @@ namespace EddiCargoMonitor
                         cargo.stolen -= @event.amount;
                     }
                 }
-
                 RemoveCargo(cargo);
             }
         }
@@ -610,7 +609,7 @@ namespace EddiCargoMonitor
                     {
                         case "Collect":
                             {
-                                if (type == "DeliveryWing")
+                                if (type == "deliverywing")
                                 {
                                     cargo.haulage += @event.amount ?? 0;
                                 }
@@ -619,11 +618,11 @@ namespace EddiCargoMonitor
                             break;
                         case "Deliver":
                             {
-                                if (type == "CollectWing")
+                                if (type == "collectwing")
                                 {
                                     cargo.owned -= @event.amount ?? 0;
                                 }
-                                else if (type == "DeliveryWing")
+                                else if (type == "deliverywing")
                                 {
                                     cargo.haulage -= @event.amount ?? 0;
                                 }
@@ -757,21 +756,17 @@ namespace EddiCargoMonitor
                 {
                     string type = @event.name.Split('_').ElementAtOrDefault(1)
                         .ToLowerInvariant();
-                    string subtype = @event.name.Split('_').ElementAtOrDefault(2)
-                        .ToLowerInvariant()
-                        .Replace("$", "");
+                    bool legal = @event.name.ToLowerInvariant().Contains("illegal") ? false : true;
                     switch (type)
                     {
                         case "altruism":
                         case "collect":
-                        case "collectwing":
                         case "mining":
                             {
                                 cargo.owned -= @event.amount ?? 0;
                             }
                             break;
                         case "delivery":
-                        case "deliverywing":
                         case "rescue":
                         case "smuggle":
                             {
@@ -792,20 +787,13 @@ namespace EddiCargoMonitor
                             break;
                         case "salvage":
                             {
-                                if (subtype != null)
+                                if (legal)
                                 {
-                                    if (subtype.Contains("illegal"))
-                                    {
-                                        cargo.stolen -= @event.amount ?? 0;
-                                    }
-                                    else
-                                    {
-                                        cargo.haulage -= @event.amount ?? 0;
-                                    }
+                                    cargo.haulage -= @event.amount ?? 0;
                                 }
                                 else
                                 {
-                                    cargo.haulage -= @event.amount ?? 0;
+                                    cargo.stolen -= @event.amount ?? 0;
                                 }
                             }
                             break;
@@ -820,7 +808,6 @@ namespace EddiCargoMonitor
                 {
                     cargo.owned -= @event.amount ?? 0;
                 }
-
                 RemoveCargo(cargo);
             }
 
@@ -962,8 +949,9 @@ namespace EddiCargoMonitor
         {
             IDictionary<string, object> variables = new Dictionary<string, object>
             {
-                ["inventory"] = new List<Cargo>(inventory)
-            };
+                ["inventory"] = new List<Cargo>(inventory),
+                ["cargoCarried"] = cargoCarried
+    };
             return variables;
         }
 
@@ -973,14 +961,14 @@ namespace EddiCargoMonitor
             {
                 // Write cargo configuration with current inventory
                 CargoMonitorConfiguration configuration = new CargoMonitorConfiguration();
-                cargocarried = 0;
+                cargoCarried = 0;
                 foreach (Cargo cargo in inventory)
                 {
-                    cargocarried += cargo.total;
+                    cargoCarried += cargo.total;
                 }
-                EDDI.Instance.eventHandler(new CargoUpdatedEvent(DateTime.UtcNow, cargocarried));
+                EDDI.Instance.eventHandler(new CargoUpdatedEvent(DateTime.UtcNow, cargoCarried));
                 configuration.cargo = inventory;
-                configuration.cargocarried = cargocarried;
+                configuration.cargocarried = cargoCarried;
                 configuration.ToFile();
             }
             // Make sure the UI is up to date
@@ -993,7 +981,7 @@ namespace EddiCargoMonitor
             {
                 // Obtain current cargo inventory from configuration
                 configuration = configuration ?? CargoMonitorConfiguration.FromFile();
-                cargocarried = configuration.cargocarried;
+                cargoCarried = configuration.cargocarried;
 
                 // Build a new inventory
                 List<Cargo> newInventory = new List<Cargo>();

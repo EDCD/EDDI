@@ -92,6 +92,15 @@
       "name": "Bounty redeemed",
       "description": "Triggered when you redeem a bounty voucher"
     },
+    "Cargo depot": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{_ Cargo depot }\r\n{_ Triggered when collecting or delivering cargo for a wing mission }\r\n\r\n\r\n{for cargo in inventory:\r\n    {for ha in cargo.haulageamounts:\r\n        {if event.missionid = ha.missionid:\r\n            {set commodity to cargo.name}\r\n        }\r\n    }\r\n}\r\n\r\n{if event.updatetype = \"Collect\":\r\n    You have collected {event.amount} tonne{if event.amount = 1:s} of {commodity} from the misison depot.\r\n|elif event.updatetype = \"Deliver\":\r\n    You have delivered {event.amount} tonne{if event.amount = 1:s} of {commodity} to the mission depot.\r\n|else:\r\n    Your wing mate has made a mission depot visit.\r\n}\r\n",
+      "default": true,
+      "name": "Cargo depot",
+      "description": "Triggered when collecting or delivering cargo for a wing mission"
+    },
     "Cargo inventory": {
       "enabled": true,
       "priority": 3,

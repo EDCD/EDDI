@@ -17,7 +17,7 @@ namespace EddiEvents
             VARIABLES.Add("missionid", "The ID of the mission");
             VARIABLES.Add("updatetype", "The update type. One of: 'Collect', 'Deliver', 'WingUpdate'");
             VARIABLES.Add("cargotype", "The type of cargo (commodity)");
-            VARIABLES.Add("count", "The amount of cargo collected or delivered for this event");
+            VARIABLES.Add("amount", "The amount of cargo collected or delivered for this event");
             VARIABLES.Add("collected", "The total amount of cargo collected");
             VARIABLES.Add("delivered", "The total amount of cargo delivered");
             VARIABLES.Add("totaltodeliver", "The total amount of cargo to deliver to complete the mission");
