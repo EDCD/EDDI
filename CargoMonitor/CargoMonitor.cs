@@ -292,6 +292,7 @@ namespace EddiCargoMonitor
                         {
                             case "altruism":
                             case "collect":
+                            case "collectwing":
                             case "mining":
                             case "piracy":
                                 {
@@ -366,6 +367,7 @@ namespace EddiCargoMonitor
                         {
                             case "altruism":
                             case "collect":
+                            case "collectwing":
                             case "mining":
                             case "piracy":
                                 {
@@ -377,6 +379,7 @@ namespace EddiCargoMonitor
                                 }
                                 break;
                             case "delivery":
+                            case "deliverywing":
                             case "rescue":
                             case "salvage":
                             case "smuggle":
@@ -657,6 +660,7 @@ namespace EddiCargoMonitor
                     switch (type)
                     {
                         case "delivery":
+                        case "deliverywing":
                         case "rescue":
                         case "salvage":
                         case "smuggle":
@@ -701,7 +705,9 @@ namespace EddiCargoMonitor
             {
                 case "altruism":
                 case "collect":
+                case "collectwing":
                 case "delivery":
+                case "deliverywing":
                 case "mining":
                 case "piracy":
                 case "rescue":
@@ -758,12 +764,14 @@ namespace EddiCargoMonitor
                     {
                         case "altruism":
                         case "collect":
+                        case "collectwing":
                         case "mining":
                             {
                                 cargo.owned -= @event.amount ?? 0;
                             }
                             break;
                         case "delivery":
+                        case "deliverywing":
                         case "rescue":
                         case "smuggle":
                             {
@@ -852,6 +860,7 @@ namespace EddiCargoMonitor
                     switch (type)
                     {
                         case "delivery":
+                        case "deliverywing":
                         case "rescue":
                         case "salvage":
                         case "smuggle":
