@@ -625,31 +625,41 @@ namespace EddiCargoMonitor
                     {
                         case "Collect":
                             {
-                                if (haulage.type == "DeliveryWing")
+                                if (haulage.type == "deliverywing")
                                 {
                                     cargo.haulage += @event.amount ?? 0;
                                 }
                                 CalculateCargoNeed(cargo);
+                                haulage.depotcollected = @event.collected;
+                                haulage.depotdelivered = @event.delivered;
                             }
                             break;
                         case "Deliver":
                             {
-                                if (haulage.type == "CollectWing")
+                                if (haulage.type == "collectwing")
                                 {
                                     cargo.owned -= @event.amount ?? 0;
                                 }
-                                else if (haulage.type == "DeliveryWing")
+                                else if (haulage.type == "deliverywing")
                                 {
                                     cargo.haulage -= @event.amount ?? 0;
                                 }
                                 haulage.amount = amountRemaining;
                                 CalculateCargoNeed(cargo);
+                                haulage.depotcollected = @event.collected;
+                                haulage.depotdelivered = @event.delivered;
                             }
                             break;
                         case "WingUpdate":
                             {
                                 haulage.amount = amountRemaining;
                                 CalculateCargoNeed(cargo);
+
+                                int amount = Math.Max(@event.collected - haulage.depotcollected, @event.delivered - haulage.depotdelivered);
+                                string updatetype = @event.collected - haulage.depotcollected > 0 ? "Collect" : "Deliver";
+                                EDDI.Instance.eventHandler(new CargoWingUpdateEvent(DateTime.Now, haulage.missionid, updatetype, cargo.commodityDef, amount));
+                                haulage.depotcollected = @event.collected;
+                                haulage.depotdelivered = @event.delivered;
                             }
                             break;
                     }
@@ -729,14 +739,9 @@ namespace EddiCargoMonitor
                 case "salvage":
                 case "smuggle":
                     {
-<<<<<<< HEAD
-                        int amount = (type == "delivery" && naval || type == "smuggle") ? @event.amount ?? 0 : 0;
-                        HaulageAmount haulageAmount = new HaulageAmount(@event.missionid ?? 0, @event.name, @event.amount ?? 0, (DateTime)@event.expiry);
-=======
                         string originSystem = EDDI.Instance?.CurrentStarSystem?.name;
                         int amount = (type == "delivery" || type == "smuggle") ? @event.amount ?? 0 : 0;
                         Haulage haulage = new Haulage(@event.missionid ?? 0, @event.name, originSystem, @event.amount ?? 0, (DateTime)@event.expiry);
->>>>>>> Tweaks. Added localised mission name.
                         Cargo cargo = GetCargoWithEDName(@event.commodityDefinition?.edname);
                         if (cargo != null)
                         {
@@ -897,11 +902,7 @@ namespace EddiCargoMonitor
                                 // Calculate the amount of mission-related cargo still in inventory
                                 int obtained = haulage.amount;
                                 // If not expired, then failure may have been due to jettisoning cargo
-<<<<<<< HEAD
-                                if (haulageAmount.expiry < DateTime.UtcNow)
-=======
                                 if (haulage.expiry < DateTime.Now)
->>>>>>> Tweaks. Added localised mission name.
                                 {
                                     obtained -= inventoryCargo.ejected;
                                     inventoryCargo.ejected = 0;
@@ -1030,7 +1031,7 @@ namespace EddiCargoMonitor
             {
                 ["inventory"] = new List<Cargo>(inventory),
                 ["cargoCarried"] = cargoCarried
-    };
+            };
             return variables;
         }
 
@@ -1153,14 +1154,10 @@ namespace EddiCargoMonitor
         {
             if (cargo != null && cargo.haulageData != null && cargo.haulageData.Any())
             {
-<<<<<<< HEAD
-                if (cargo.haulageamounts.FirstOrDefault(ha => ha.id == missionid) != null)
-=======
                 int haulageNeeded = 0;
                 int ownedNeeded = 0;
                 int stolenNeeded = 0;
                 foreach (Haulage haulage in cargo.haulageData)
->>>>>>> Tweaks. Added localised mission name.
                 {
                     switch (haulage.type)
                     {

@@ -72,6 +72,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CargoDepotEvent.cs" />
+    <Compile Include="CargoWingUpdateEvent.cs" />
     <Compile Include="MissionAbandonedEvent.cs" />
     <Compile Include="MissionAcceptedEvent.cs" />
     <Compile Include="MissionCompletedEvent.cs" />
