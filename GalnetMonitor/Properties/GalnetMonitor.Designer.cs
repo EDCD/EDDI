@@ -70,6 +70,51 @@ namespace EddiGalnetMonitor.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Community Goal: .
+        /// </summary>
+        public static string galnetCategoryCommunityGoal {
+            get {
+                return ResourceManager.GetString("galnetCategoryCommunityGoal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Powerplay: Incoming Update.
+        /// </summary>
+        public static string galnetCategoryPowerplay {
+            get {
+                return ResourceManager.GetString("galnetCategoryPowerplay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Starport Status Update.
+        /// </summary>
+        public static string galnetCategoryStarportStatus {
+            get {
+                return ResourceManager.GetString("galnetCategoryStarportStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Week in Review.
+        /// </summary>
+        public static string galnetCategoryWeekInReview {
+            get {
+                return ResourceManager.GetString("galnetCategoryWeekInReview", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to https://community.elitedangerous.com/en/galnet-rss.
+        /// </summary>
+        public static string galnetSourceURL {
+            get {
+                return ResourceManager.GetString("galnetSourceURL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Galnet article language.
         /// </summary>
         public static string language_label {
