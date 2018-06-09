@@ -72,9 +72,18 @@ namespace EddiGalnetMonitor.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Community Goal: .
         /// </summary>
-        public static string galnetCategoryCommunityGoal {
+        public static string galnetCategoryCg {
             get {
-                return ResourceManager.GetString("galnetCategoryCommunityGoal", resourceCulture);
+                return ResourceManager.GetString("galnetCategoryCg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to @&quot;(has promised to reward pilots)|(The campaign.+will run for one week)|(The two organisations have set out week-long operations)|(Pilots.+can now collect their rewards)|(If the final target is met earlier than planned, the campaign will end immediately)&quot;.
+        /// </summary>
+        public static string galnetCategoryCgContentRegex {
+            get {
+                return ResourceManager.GetString("galnetCategoryCgContentRegex", resourceCulture);
             }
         }
         

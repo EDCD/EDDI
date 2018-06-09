@@ -135,7 +135,7 @@
   <data name="galnetCategoryPowerplay" xml:space="preserve">
     <value>Luttes d'influence galactiques</value>
   </data>
-  <data name="galnetCategoryCommunityGoal" xml:space="preserve">
+  <data name="galnetCategoryCg" xml:space="preserve">
     <value>Opération communautaire</value>
   </data>
   <data name="galnetCategoryStarportStatus" xml:space="preserve">
