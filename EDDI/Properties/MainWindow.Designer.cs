@@ -448,7 +448,7 @@ namespace Eddi.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to If verbose logging is enabled, EDDI will prepare a truncated version of your log from the past hour and place it on your desktop. You may paste this log file into the Github Issue report. No personal information is sent in the log..
+        ///   Looks up a localized string similar to If verbose logging is enabled, EDDI will prepare a version of your log (truncated if lengthy) and place it on your desktop. You may paste this log file into the Github Issue report. No private information is sent in the log..
         /// </summary>
         public static string verbose_logging_desc {
             get {
