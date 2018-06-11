@@ -2,6 +2,10 @@
 
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
+### 3.0.2-b1
+  * Core
+    * Implemented log rotation. EDDI will now create a new log file every time it starts, and shall retain no more than 10 log files before it starts clearing the old logs. Immense log files will be a thing of the past.  
+
 ### 3.0.1-rc6
   * EDDN responder
     * Fixed symbol for Krait Mk II in shipyard data.
