@@ -2407,7 +2407,7 @@ namespace EddiJournalMonitor
                                 int collected = JsonParsing.getInt(data, "ItemsCollected");
                                 int delivered = JsonParsing.getInt(data, "ItemsDelivered");
                                 int totaltodeliver = JsonParsing.getInt(data, "TotalItemsToDeliver");
-                                decimal progress = JsonParsing.getInt(data, "Progress");
+                                decimal progress = JsonParsing.getDecimal(data, "Progress");
 
                                 events.Add(new CargoDepotEvent(timestamp, missionid, updatetype, commodity, amount, collected, delivered, totaltodeliver, progress) { raw = line });
                                 handled = true;

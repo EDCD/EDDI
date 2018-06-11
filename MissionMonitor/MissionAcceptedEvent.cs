@@ -66,7 +66,7 @@ namespace EddiMissionMonitor
 
         public CommodityDefinition commodityDefinition { get; private set; }
 
-        public MissionAcceptedEvent(DateTime timestamp, long? missionid, string localisedname, string name, string faction, string destinationsystem, string destinationstation, CommodityDefinition commodity, int? amount, bool? passengerwanted, string passengertype, bool? passengervips, string target, string targettype, string targetfaction, bool communal, DateTime? expiry, string influence, string reputation, int? reward, bool wing) : base(timestamp, NAME)
+        public MissionAcceptedEvent(DateTime timestamp, long? missionid, string name, string localisedname, string faction, string destinationsystem, string destinationstation, CommodityDefinition commodity, int? amount, bool? passengerwanted, string passengertype, bool? passengervips, string target, string targettype, string targetfaction, bool communal, DateTime? expiry, string influence, string reputation, int? reward, bool wing) : base(timestamp, NAME)
         {
             this.missionid = missionid;
             this.name = name;
