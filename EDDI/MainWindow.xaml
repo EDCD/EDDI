@@ -69,7 +69,7 @@
                         <TextBlock Grid.Row="2" Grid.Column="0" Margin="5" TextWrapping="Wrap" Text="{x:Static resx:MainWindow.verbose_logging_checkbox}" VerticalAlignment="Top"/>
                         <CheckBox x:Name="eddiVerboseLogging" Grid.Row="2" Grid.Column="1" Margin="5" VerticalAlignment="Center" Checked="verboseLoggingEnabled" Unchecked="verboseLoggingDisabled"/>
                         <TextBlock Grid.Row="3" Grid.Column="0" Margin="5" TextWrapping="Wrap" Text="{x:Static resx:MainWindow.verbose_logging_desc}"/>
-                        <Button  x:Name="githubIssueButton" Grid.Row="3" Grid.Column="2" Content="{x:Static resx:MainWindow.report_issue}" Margin="5" Width="110" Click="createGithubIssueClicked"/>
+                        <Button  x:Name="githubIssueButton" Grid.Row="3" Grid.Column="2" Content="{x:Static resx:MainWindow.report_issue}" Margin="5" Width="auto" MinWidth="110" Click="createGithubIssueClicked"/>
                         <TextBlock Grid.Row="4" Grid.Column="0" Margin="5" TextWrapping="Wrap" Text="{x:Static resx:MainWindow.access_beta}" VerticalAlignment="Top"/>
                         <CheckBox x:Name="eddiBetaProgramme" Grid.Row="4" Grid.Column="1" Margin="5" VerticalAlignment="Center" Checked="betaProgrammeEnabled" Unchecked="betaProgrammeDisabled"/>
                     </Grid>
