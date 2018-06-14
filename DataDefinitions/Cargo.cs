@@ -178,41 +178,39 @@ namespace EddiDataDefinitions
 
         public void CalculateNeed()
         {
-            if (this != null && this.haulageamounts != null && this.haulageamounts.Any())
+            if (this != null && this.haulageData != null && this.haulageData.Any())
             {
                 int haulageNeeded = 0;
                 int ownedNeeded = 0;
                 int stolenNeeded = 0;
-                foreach (HaulageAmount haulageAmount in this.haulageamounts)
+                foreach (Haulage haulage in this.haulageData)
                 {
-                    switch (haulageAmount.type)
+                    switch (haulage.type)
                     {
                         case "altruism":
                         case "collect":
-                        case "collectwing":
                         case "mining":
                         case "piracy":
                             {
-                                ownedNeeded += haulageAmount.amount;
+                                ownedNeeded += haulage.amount;
                             }
                             break;
                         case "delivery":
-                        case "deliverywing":
                         case "rescue":
                         case "smuggle":
                             {
-                                haulageNeeded += haulageAmount.amount;
+                                haulageNeeded += haulage.amount;
                             }
                             break;
                         case "salvage":
                             {
-                                if (haulageAmount.legal)
+                                if (haulage.legal)
                                 {
-                                    haulageNeeded += haulageAmount.amount;
+                                    haulageNeeded += haulage.amount;
                                 }
                                 else
                                 {
-                                    stolenNeeded += haulageAmount.amount;
+                                    stolenNeeded += haulage.amount;
                                 }
                             }
                             break;
