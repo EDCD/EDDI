@@ -237,11 +237,11 @@ namespace EddiCargoMonitor
                     if (inventoryCargo.haulageamounts == null || !inventoryCargo.haulageamounts.Any())
                     {
                         inventoryCargo.haulage = 0;
-                        cargo.need = 0;
+                        inventoryCargo.need = 0;
                     }
                     else
                     {
-                        cargo.CalculateNeed();
+                        inventoryCargo.CalculateNeed();
                     }
                     inventoryCargo.owned = cargo.total - cargo.stolen - inventoryCargo.haulage;
                     inventoryCargo.ejected = 0;
@@ -652,8 +652,7 @@ namespace EddiCargoMonitor
                         if (haulageAmount != null)
                         {
                             // Cargo instantiated by 'Mission accepted' event
-                            string type = haulageAmount.name.Split('_').ElementAtOrDefault(1).ToLowerInvariant();
-                            if (type == "deliverywing")
+                            if (haulageAmount.type == "deliverywing")
                             {
                                 cargo.haulage -= @event.amount ?? 0;
                             }
