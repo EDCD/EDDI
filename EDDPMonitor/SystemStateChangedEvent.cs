@@ -10,7 +10,7 @@ namespace EddiEddpMonitor
         public const string NAME = "System state changed";
         public const string DESCRIPTION = "Triggered when there is a change in the state of a watched system";
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
-        public static SystemStateChangedEvent SAMPLE = new SystemStateChangedEvent(DateTime.UtcNow, "home", "Shinrarta Dezhra", SystemState.CivilUnrest, SystemState.CivilWar);
+        public static SystemStateChangedEvent SAMPLE = new SystemStateChangedEvent(DateTime.UtcNow, "home", "Shinrarta Dezhra", SystemState.FromEDName("CivilUnrest"), SystemState.FromEDName("CivilWar"));
 
         static SystemStateChangedEvent()
         {
