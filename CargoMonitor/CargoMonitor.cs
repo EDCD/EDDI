@@ -643,16 +643,18 @@ namespace EddiCargoMonitor
                             cargo.need = amountRemaining - @event.amount ?? 0;
                             AddCargo(cargo);
 
+                            string originsystem = EDDI.Instance?.CurrentStarSystem?.name;
                             if (sharedMissionHaulage == null)
                             {
                                 // First exposure to new haulage from shared mission
-                                string originsystem = EDDI.Instance?.CurrentStarSystem?.name;
+                                
                                 sharedMissionHaulage = new Haulage(@event.missionid ?? 0, "MISSION_DeliveryWing", originsystem, amountRemaining, DateTime.MaxValue);
                             }
                             else
                             {
                                 // Haulage instantiated by previous 'Cargo depot WingUpdate' event
                                 sharedMissionHaulage.name = "MISSION_DeliveryWing";
+                                sharedMissionHaulage.originsystem = originsystem;
                                 sharedMissionHaulage.amount = amountRemaining;
                             }
                             sharedMissionCommodity = cargo.commodityDef;
@@ -686,21 +688,32 @@ namespace EddiCargoMonitor
                         else
                         {
                             // Cargo instantiated by 'Market buy' event
-                            cargo.owned -= @event.amount ?? 0;
+                            string originsystem = EDDI.Instance?.CurrentStarSystem?.name;
+                            if (sharedMissionHaulage == null)
+                            {
+                                // First exposure to new haulage from shared mission
+                                string type = @event.collected > 0 ? "MISSION_DeliveryWing" : "MISSION_CollectWing";
+                                sharedMissionHaulage = new Haulage(@event.missionid ?? 0, type, originsystem, amountRemaining, DateTime.MaxValue);
+                            }
+                            else
+                            {
+                                // Haulage instantiated by previous 'Cargo depot WingUpdate' event
+                                sharedMissionHaulage.originsystem = originsystem;
+                                sharedMissionHaulage.amount = amountRemaining;
+                            }
+
+                            if (sharedMissionHaulage.type == "deliverywing")
+                            {
+                                cargo.haulage -= @event.amount ?? 0;
+                            }
+                            else
+                            {
+                                cargo.owned -= @event.amount ?? 0;
+                            }
+
+                            // Check for shared mission completion
                             if (amountRemaining > 0)
                             {
-                                if (sharedMissionHaulage == null)
-                                {
-                                    // First exposure to new haulage from shared mission
-                                    string originsystem = EDDI.Instance?.CurrentStarSystem?.name;
-                                    sharedMissionHaulage = new Haulage(@event.missionid ?? 0, "MISSION_CollectWing", originsystem, amountRemaining, DateTime.MaxValue);
-                                }
-                                else
-                                {
-                                    // Haulage instantiated by previous 'Cargo depot WingUpdate' event
-                                    sharedMissionHaulage.name = "MISSION_CollectWing";
-                                    sharedMissionHaulage.amount = amountRemaining;
-                                }
                                 sharedMissionCommodity = cargo.commodityDef;
                                 sharedMissionHaulage.depotcollected = @event.collected;
                                 sharedMissionHaulage.depotdelivered = @event.delivered;
@@ -733,7 +746,8 @@ namespace EddiCargoMonitor
                             if (sharedMissionHaulage == null)
                             {
                                 // First exposure to new haulage from shared mission
-                                sharedMissionHaulage = new Haulage(@event.missionid ?? 0, "MISSION_None", null, amountRemaining, DateTime.MaxValue);
+                                string type = @event.collected > 0 ? "MISSION_DeliveryWing" : "MISSION_CollectWing";
+                                sharedMissionHaulage = new Haulage(@event.missionid ?? 0, type, null, amountRemaining, DateTime.MaxValue);
                             }
                             else
                             {
@@ -850,7 +864,7 @@ namespace EddiCargoMonitor
                             newCargo.stolen = 0;
                             newCargo.owned = 0;
                             newCargo.haulageData.Add(haulage);
-                            cargo.CalculateNeed();
+                            newCargo.CalculateNeed();
                             AddCargo(newCargo);
                         }
                     }

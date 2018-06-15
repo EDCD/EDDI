@@ -21,7 +21,7 @@ namespace EddiDataDefinitions
         public bool legal => name.ToLowerInvariant().Contains("illegal") ? false : true;
 
         [JsonIgnore]
-        public bool wing => name.ToLowerInvariant().Contains("wing") ? false : true;
+        public bool wing => name.ToLowerInvariant().Contains("wing") ? true : false;
 
         public int amount { get; set; }
 
