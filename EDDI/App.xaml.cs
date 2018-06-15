@@ -16,6 +16,32 @@ namespace Eddi
         [STAThread]
         static void Main()
         {
+            // Start the application
+            StartRollbar(); // do immediately to initialize error reporting
+            ApplyAnyOverrideCulture(); // this must be done before any UI is generated
+
+            MainWindow mainWindow = null;
+            Mutex eddiMutex = new Mutex(true, Constants.EDDI_SYSTEM_MUTEX_NAME, out bool firstOwner);
+
+            if (firstOwner)
+            {
+                App app = new App();
+                mainWindow = new MainWindow();
+                app.Run(mainWindow);
+                eddiMutex.ReleaseMutex();
+            }
+            else
+            {
+                string localisedMultipleInstanceAlertTitle = Eddi.Properties.EddiResources.already_running_alert_title;
+                string localisedMultipleInstanceAlertText = Eddi.Properties.EddiResources.already_running_alert_body_text;
+                MessageBox.Show(localisedMultipleInstanceAlertText,
+                                localisedMultipleInstanceAlertTitle,
+                                MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+        }
+
+        public static void StartRollbar()
+        {
             // Configure Rollbar error reporting
 
             // Generate or retrieve an id unique to this configuration for bug tracking
@@ -52,29 +78,6 @@ namespace Eddi
             {
                 Debug.WriteLine(eventArgs.Exception.ToString());
             };
-
-            // Start the application
-
-            ApplyAnyOverrideCulture(); // this must be done before any UI is generated
-
-            MainWindow mainWindow = null;
-            Mutex eddiMutex = new Mutex(true, Constants.EDDI_SYSTEM_MUTEX_NAME, out bool firstOwner);
-
-            if (firstOwner)
-            {
-                App app = new App();
-                mainWindow = new MainWindow();
-                app.Run(mainWindow);
-                eddiMutex.ReleaseMutex();
-            }
-            else
-            {
-                string localisedMultipleInstanceAlertTitle = Eddi.Properties.EddiResources.already_running_alert_title;
-                string localisedMultipleInstanceAlertText = Eddi.Properties.EddiResources.already_running_alert_body_text;
-                MessageBox.Show(localisedMultipleInstanceAlertText,
-                                localisedMultipleInstanceAlertTitle,
-                                MessageBoxButton.OK, MessageBoxImage.Information);
-            }
         }
 
         public static void ApplyAnyOverrideCulture()

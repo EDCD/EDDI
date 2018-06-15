@@ -51,6 +51,7 @@ namespace EddiVoiceAttackResponder
             try
             {
                 GetEddiInstance(ref vaProxy);
+                App.StartRollbar();
                 App.ApplyAnyOverrideCulture();
                 EDDI.Instance.Start();
 
