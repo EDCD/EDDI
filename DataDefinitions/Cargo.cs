@@ -134,8 +134,6 @@ namespace EddiDataDefinitions
         [Obsolete]
         public CommodityDefinition commodity => commodityDef;
 
-        public List<HaulageAmount> haulageamounts { get; set; }
-
         public List<Haulage> haulageData { get; set; }
 
         [JsonExtensionData]
@@ -164,7 +162,8 @@ namespace EddiDataDefinitions
             this.commodityDef = CommodityDefinition.FromEDName(edname);
             this.price = price ?? commodityDef.avgprice;
             this.total = total;
-            haulageamounts = new List<HaulageAmount>();
+            this.ejected = 0;
+            this.need = 0;
             haulageData = new List<Haulage>();
         }
 

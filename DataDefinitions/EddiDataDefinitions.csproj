@@ -82,7 +82,6 @@
     <Compile Include="StationModels.cs" />
     <Compile Include="DestinationSystem.cs" />
     <Compile Include="Haulage.cs" />
-    <Compile Include="HaulageAmount.cs" />
     <Compile Include="CommodityCategory.cs" />
     <Compile Include="LegalStatus.cs" />
     <Compile Include="MaterialCategory.cs" />

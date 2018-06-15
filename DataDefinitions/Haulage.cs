@@ -33,7 +33,7 @@ namespace EddiDataDefinitions
 
         public Haulage() { }
 
-        public Haulage(Haulage HaulageAmount)
+        public Haulage(Haulage Haulage)
         {
             this.missionid = missionid;
             this.name = name;
