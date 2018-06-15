@@ -90,8 +90,7 @@ namespace EddiDataProviderService
                 StarSystem.government = (string)json["government"];
                 StarSystem.faction = (string)json["faction"];
                 StarSystem.primaryeconomy = (string)json["primary_economy"];
-                string stateName = (string)json["state"];
-                StarSystem.systemState = stateName == "None" ? null : SystemState.FromEDName(stateName);
+                StarSystem.systemState = SystemState.FromEDName((string)json["state"]) ?? SystemState.None;
                 StarSystem.security = (string)json["security"];
                 StarSystem.power = (string)json["power"] == "None" ? null : (string)json["power"];
                 StarSystem.powerstate = (string)json["power_state"];
