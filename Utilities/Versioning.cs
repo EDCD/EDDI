@@ -10,6 +10,8 @@ namespace Utilities
         /// <returns>1 if the first version is greater than the second version, 0 if they are the same, -1 if first version is less than the second version</returns>
         public static int Compare(string Version1, string Version2)
         {
+            try
+            {
             if (Version1 == null && Version2 == null)
             {
                 return 0;
@@ -74,7 +76,13 @@ namespace Utilities
                 return -1;
             }
 
-            return 0;
+                return 0;
+            }
+            catch (Exception ex)
+            {
+                Logging.Error("Version comparison failed. ", ex);
+                throw;
+            }
         }
     }
 }
