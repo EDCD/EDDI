@@ -26,7 +26,7 @@ namespace Utilities
         public static void Error(string message, string data = null, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "")
         {
             log(filePath, memberName, "E", message + " " + data);
-            Report(message, data, memberName, filePath);
+            Report(message, data, memberName, filePath, "Error");
         }
 
         public static void Warn(string message, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "")
@@ -119,26 +119,40 @@ namespace Utilities
             }
         }
 
-        public static void Report(string message, object data = null, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "")
+        public static void Report(string message, object data = null, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "", string level = "Info")
         {
 #if DEBUG
             Debug(message, data?.ToString(), memberName, filePath);
 #else
+            Dictionary<string, object> thisData = PrepRollbarData(message, ref data);
+            if (thisData != null)
+            {
+                var rollbarReport = System.Threading.Tasks.Task.Run(() => SendToRollbar(message, data, thisData, memberName, filePath, level));
+            }
+#endif
+        }
+
+        private static Dictionary<string, object> PrepRollbarData(string message, ref object data)
+        {
             try
             {
                 if (data is Exception)
                 {
-                    // Scrub out data directories, if present in the Rollbar message
-                    message.Replace(Constants.DATA_DIR, "");
-                    ((Exception)data).Message.Replace(Constants.DATA_DIR, "");
+                    // It's not possible to scrub filepaths from exception messages, so since we don't want  
+                    // to collect this personal data these exceptions need to be handled locally only.
+                    Exception ex = (Exception)data;
+                    if (ex.Message.Contains(Constants.DATA_DIR))
+                    {
+                        return null;
+                    }
                 }
                 else if (!(data is Dictionary<string, object>))
                 {
-                    var wrapppedData = new Dictionary<string, object>()
+                    var wrappedData = new Dictionary<string, object>()
                     {
                         {"data", data}
                     };
-                    data = wrapppedData;
+                    data = wrappedData;
                 }
 
                 // The Frontier API uses lowercase keys while the journal uses Titlecased keys. Establish case insensitivity before we proceed.
@@ -161,27 +175,32 @@ namespace Utilities
                 thisData.Remove("demand");
                 thisData.Remove("demandbracket");
                 thisData.Remove("StatusFlags");
-
-                var rollbarReport = System.Threading.Tasks.Task.Run(() => _Report(message, data, thisData));
+                return thisData;
             }
             catch (Exception)
             {
-                // Nothing to do
+                // Return null and don't send data to Rollbar
+                return null;
             }
-#endif
+
         }
 
-        private static void _Report(string message, object data, Dictionary<string, object> thisData)
+        private static void SendToRollbar(string message, object data, Dictionary<string, object> thisData, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "", string level = "Info")
         {
-            // Report only unique messages and data
-            if (isUniqueMessage(message, thisData))
+            switch (level)
             {
-                RollbarLocator.RollbarInstance.Info(message, thisData);
-                Info("Reporting unique data, anonymous ID " + RollbarLocator.RollbarInstance.Config.Person.Id + ": " + message + thisData);
-            }
-            else
-            {
-                Warn(@"Unable to report message """ + message + @""". Invalid data type " + data.GetType());
+                case "Error":
+                    RollbarLocator.RollbarInstance.Error(message, thisData);
+                    Error("Reporting error, anonymous ID " + RollbarLocator.RollbarInstance.Config.Person.Id + ": " + filePath, memberName, "E", message + " " + data);
+                    break;
+                default:
+                    // If this is an Info Report, report only unique messages and data
+                    if (isUniqueMessage(message, thisData))
+                    {
+                        RollbarLocator.RollbarInstance.Info(message, thisData);
+                        Info("Reporting unique data, anonymous ID " + RollbarLocator.RollbarInstance.Config.Person.Id + ": " + message + thisData);
+                    }
+                    break;
             }
         }
     }
