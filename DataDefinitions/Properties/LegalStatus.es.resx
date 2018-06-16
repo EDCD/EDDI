@@ -149,5 +149,8 @@
     <value>Enemigo Buscado</value>
     <comment>LegalStatus - WantedEnemy</comment>
   </data>
-  
+  <data name="Warrant" xml:space="preserve">
+    <value>Autorizado</value>
+    <comment>LegalStatus - Warrant</comment>
+  </data>
 </root>
