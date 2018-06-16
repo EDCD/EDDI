@@ -60,45 +60,45 @@
             : and then encoded with base64 encoding.
     -->
   <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
           <xsd:element name="metadata">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0"/>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
               </xsd:sequence>
-              <xsd:attribute name="name" use="required" type="xsd:string"/>
-              <xsd:attribute name="type" type="xsd:string"/>
-              <xsd:attribute name="mimetype" type="xsd:string"/>
-              <xsd:attribute ref="xml:space"/>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="assembly">
             <xsd:complexType>
-              <xsd:attribute name="alias" type="xsd:string"/>
-              <xsd:attribute name="name" type="xsd:string"/>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="data">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"/>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"/>
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"/>
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"/>
-              <xsd:attribute ref="xml:space"/>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="resheader">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required"/>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
             </xsd:complexType>
           </xsd:element>
         </xsd:choice>
@@ -721,10 +721,6 @@
     <value>Jotun Mookah</value>
     <comment>Commodity JotunMookah</comment>
   </data>
-  <data name="KachiriginFilterLeeches" xml:space="preserve">
-    <value>Kachiriginische Blutegel</value>
-    <comment>Commodity KachiriginFilterLeeches</comment>
-  </data>
   <data name="KamitraCigars" xml:space="preserve">
     <value>Kamitra Zigarren</value>
     <comment>Commodity KamitraCigars</comment>
@@ -740,10 +736,6 @@
   <data name="KarsukiLocusts" xml:space="preserve">
     <value>Karsuki Heuschrecken</value>
     <comment>Commodity KarsukiLocusts</comment>
-  </data>
-  <data name="KinagoViolins" xml:space="preserve">
-    <value>Kinago Violinen</value>
-    <comment>Commodity KinagoViolins</comment>
   </data>
   <data name="KonggaAle" xml:space="preserve">
     <value>Kongga Bier</value>
@@ -1061,10 +1053,6 @@
     <value>Strahlungsabweiser</value>
     <comment>Commodity RadiationBaffle</comment>
   </data>
-  <data name="RajukruMulti_Stoves" xml:space="preserve">
-    <value>Rajukru Multi-Öfen</value>
-    <comment>Commodity RajukruMulti_Stoves</comment>
-  </data>
   <data name="RapaBaoSnakeSkins" xml:space="preserve">
     <value>Rapa Bao Schlangenhäute</value>
     <comment>Commodity RapaBaoSnakeSkins</comment>
@@ -1373,10 +1361,6 @@
     <value>Uzumokusanische niedrig-G Flügel</value>
     <comment>Commodity UzumokuLow_GWings</comment>
   </data>
-  <data name="VanayequiCeratomorphaFur" xml:space="preserve">
-    <value>Vanayequi Ceratomorpha-Fell</value>
-    <comment>Commodity VanayequiCeratomorphaFur</comment>
-  </data>
   <data name="VegaSlimweed" xml:space="preserve">
     <value>Veganisches Schlankheitskraut</value>
     <comment>Commodity VegaSlimweed</comment>
@@ -1441,24 +1425,20 @@
     <value>Yaso Kondi Blatt</value>
     <comment>Commodity YasoKondiLeaf</comment>
   </data>
-  <data name="ZeesszeAntGrubGlue" xml:space="preserve">
-    <value>Zeesszer Ameisenleim</value>
-    <comment>Commodity ZeesszeAntGrubGlue</comment>
-  </data>
   <data name="RajukruStoves" xml:space="preserve">
     <value>Rajukru Multi-Öfen</value>
     <comment>Commodity RajukruStoves</comment>
   </data>
   <data name="KinagoInstruments" xml:space="preserve">
-    <value>Kinago Instrumente</value>
+    <value>Kinago Violinen</value>
     <comment>Commodity KinagoInstruments</comment>
   </data>
   <data name="KachiriginLeaches" xml:space="preserve">
-    <value>Kachiriginische Lauge</value>
+    <value>Kachiriginische Blutegel</value>
     <comment>Commodity KachiriginLeaches</comment>
   </data>
   <data name="VanayequiRhinoFur" xml:space="preserve">
-    <value>Vanayequinisches Nashorn-Fell</value>
+    <value>Vanayequi Ceratomorpha-Fell</value>
     <comment>Commodity VanayequiRhinoFur</comment>
   </data>
   <data name="ZeesszeAntGlue" xml:space="preserve">

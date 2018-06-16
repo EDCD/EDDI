@@ -27,7 +27,7 @@ namespace UnitTests
         {
             CommodityDefinition commodity = CommodityDefinition.FromName("$MagicStuff_Name;");
             Assert.AreEqual("magicstuff", commodity.invariantName);
-            Assert.AreEqual(0, commodity.EDDBID);
+            Assert.IsNull(commodity.EDDBID);
         }
 
         [TestMethod]

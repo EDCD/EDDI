@@ -115,7 +115,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Aisling Promotional Materials.
+        ///   Looks up a localized string similar to Aisling Programme Materials.
         /// </summary>
         public static string aislingpromotionalmaterials {
             get {
@@ -1458,15 +1458,6 @@ namespace EddiDataDefinitions.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Kachirigin Filter Leeches.
         /// </summary>
-        public static string KachiriginFilterLeeches {
-            get {
-                return ResourceManager.GetString("KachiriginFilterLeeches", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Kachirigin Filter Leeches.
-        /// </summary>
         public static string KachiriginLeaches {
             get {
                 return ResourceManager.GetString("KachiriginLeaches", resourceCulture);
@@ -1515,15 +1506,6 @@ namespace EddiDataDefinitions.Properties {
         public static string KinagoInstruments {
             get {
                 return ResourceManager.GetString("KinagoInstruments", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Kinago Violins.
-        /// </summary>
-        public static string KinagoViolins {
-            get {
-                return ResourceManager.GetString("KinagoViolins", resourceCulture);
             }
         }
         
@@ -1578,6 +1560,24 @@ namespace EddiDataDefinitions.Properties {
         public static string LavianBrandy {
             get {
                 return ResourceManager.GetString("LavianBrandy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Lavigny Corruption Reports.
+        /// </summary>
+        public static string lavignycorruptiondossiers {
+            get {
+                return ResourceManager.GetString("lavignycorruptiondossiers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Lavigny Garrison Supplies.
+        /// </summary>
+        public static string lavignygarisonsupplies {
+            get {
+                return ResourceManager.GetString("lavignygarisonsupplies", resourceCulture);
             }
         }
         
@@ -2241,15 +2241,6 @@ namespace EddiDataDefinitions.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Rajukru Multi-Stoves.
         /// </summary>
-        public static string RajukruMulti_Stoves {
-            get {
-                return ResourceManager.GetString("RajukruMulti_Stoves", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Rajukru Multi-Stoves.
-        /// </summary>
         public static string RajukruStoves {
             get {
                 return ResourceManager.GetString("RajukruStoves", resourceCulture);
@@ -2410,7 +2401,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Sirius Commercial Contracts.
+        ///   Looks up a localized string similar to Sirius Corporate Contracts.
         /// </summary>
         public static string siriuscommercialcontracts {
             get {
@@ -2788,7 +2779,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Underground Support.
+        ///   Looks up a localized string similar to Grom Underground Support.
         /// </summary>
         public static string undergroundsupport {
             get {
@@ -2979,15 +2970,6 @@ namespace EddiDataDefinitions.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Vanayequi Ceratomorpha Fur.
         /// </summary>
-        public static string VanayequiCeratomorphaFur {
-            get {
-                return ResourceManager.GetString("VanayequiCeratomorphaFur", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Vanayequi Ceratomorpha Fur.
-        /// </summary>
         public static string VanayequiRhinoFur {
             get {
                 return ResourceManager.GetString("VanayequiRhinoFur", resourceCulture);
@@ -3144,15 +3126,6 @@ namespace EddiDataDefinitions.Properties {
         public static string ZeesszeAntGlue {
             get {
                 return ResourceManager.GetString("ZeesszeAntGlue", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Zeessze Ant Grub Glue.
-        /// </summary>
-        public static string ZeesszeAntGrubGlue {
-            get {
-                return ResourceManager.GetString("ZeesszeAntGrubGlue", resourceCulture);
             }
         }
     }
