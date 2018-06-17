@@ -276,7 +276,22 @@ namespace EddiMissionMonitor
                     {
                         if (missionEntry.destinationsystem == missionEntry.originsystem)
                         {
-                            missionEntry.statusDef = MissionStatus.FromEDName("Complete");
+                            switch (missionEntry.typeEDName)
+                            {
+                                case "assassinate":
+                                case "disable":
+                                case "longdistanceexpedition":
+                                case "passengervip":
+                                case "piracy":
+                                case "rescue":
+                                case "salvage":
+                                case "scan":
+                                case "sightseeing":
+                                    {
+                                        missionEntry.statusDef = MissionStatus.FromEDName("Complete");
+                                    }
+                                    break;
+                            }
                         }
                         else
                         {

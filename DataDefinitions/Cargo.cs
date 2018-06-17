@@ -152,6 +152,7 @@ namespace EddiDataDefinitions
 
             _additionalJsonData = null;
         }
+        public Cargo() { }
 
         // Default Constructor
         public Cargo() { }
