@@ -32,6 +32,9 @@ namespace EddiDataDefinitions
         /// <summary>Z co-ordinate for this system</summary>
         public decimal? z { get; set; }
 
+        /// <summary>Unique 64 bit id value for system</summary>
+        public long? systemAddress { get; set; }
+
         /// <summary>Details of stations</summary>
         public List<Station> stations { get; set; }
 

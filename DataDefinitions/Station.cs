@@ -35,6 +35,12 @@ namespace EddiDataDefinitions
         /// <summary>The system in which this station resides</summary>
         public string systemname { get; set; }
 
+        /// <summary>Unique 64 bit id value for system</summary>
+        public long? systemAddress { get; set; }
+
+        /// <summary>Unique 64 bit id value for station</summary>
+        public long? marketId { get; set; }
+
         /// <summary>Does this station have refuel facilities?</summary>
         public bool? hasrefuel { get; set; }
         /// <summary>Does this station have rearm facilities?</summary>
