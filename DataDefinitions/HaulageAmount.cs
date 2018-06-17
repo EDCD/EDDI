@@ -16,16 +16,11 @@ namespace EddiDataDefinitions
         [JsonIgnore]
         public bool legal => name.ToLowerInvariant().Contains("illegal") ? false : true;
 
-        [JsonIgnore]
-        public bool wing => name.ToLowerInvariant().Contains("wing") ? false : true;
-
         public int amount { get; set; }
 
-        public int depotcollected { get; set; }
-
-        public int depotdelivered { get; set; }
-
         public DateTime expiry { get; set; }
+
+        public bool shared { get; set; }
 
         public HaulageAmount() { }
 
@@ -34,19 +29,17 @@ namespace EddiDataDefinitions
             this.id = id;
             this.name = name;
             this.amount = amount;
-            this.depotcollected = depotcollected;
-            this.depotdelivered = depotdelivered;
             this.expiry = expiry;
+            this.shared = shared;
         }
 
-        public HaulageAmount(long Id, string Name, int Amount, DateTime Expiry)
+        public HaulageAmount(long Id, string Name, int Amount, DateTime Expiry, bool Shared = false)
         {
             this.id = Id;
             this.name = Name;
             this.amount = Amount;
-            this.depotcollected = 0;
-            this.depotdelivered = 0;
             this.expiry = Expiry;
+            this.shared = Shared;
         }
     }
 }

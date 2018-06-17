@@ -2255,12 +2255,14 @@ namespace EddiJournalMonitor
                                 data.TryGetValue("Count", out val);
                                 int? amount = (int?)(long?)val;
 
+                                int startmarketid = JsonParsing.getInt(data, "StartMarketID");
+                                int endmarketid = JsonParsing.getInt(data, "EndMarketID");
                                 int collected = JsonParsing.getInt(data, "ItemsCollected");
                                 int delivered = JsonParsing.getInt(data, "ItemsDelivered");
                                 int totaltodeliver = JsonParsing.getInt(data, "TotalItemsToDeliver");
                                 decimal progress = JsonParsing.getDecimal(data, "Progress");
 
-                                events.Add(new CargoDepotEvent(timestamp, missionid, updatetype, commodity, amount, collected, delivered, totaltodeliver, progress) { raw = line });
+                                events.Add(new CargoDepotEvent(timestamp, missionid, updatetype, commodity, amount, startmarketid, endmarketid, collected, delivered, totaltodeliver, progress) { raw = line });
                                 handled = true;
                                 break;
                             }
