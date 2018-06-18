@@ -22,6 +22,10 @@ namespace EddiDataDefinitions
 
         public int amount { get; set; }
 
+        public int depotcollected { get; set; }
+
+        public int depotdelivered { get; set; }
+
         public DateTime expiry { get; set; }
 
         public bool shared { get; set; }
@@ -35,6 +39,8 @@ namespace EddiDataDefinitions
             this.originsystem = originsystem;
             this.status = status;
             this.amount = amount;
+            this.depotcollected = depotcollected;
+            this.depotdelivered = depotdelivered;
             this.expiry = expiry;
             this.shared = shared;
         }
@@ -46,6 +52,8 @@ namespace EddiDataDefinitions
             this.originsystem = OriginSystem;
             this.status = "Active";
             this.amount = Amount;
+            this.depotcollected = 0;
+            this.depotdelivered = 0;
             this.expiry = Expiry;
             this.shared = Shared;
         }

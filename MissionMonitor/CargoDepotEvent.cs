@@ -37,11 +37,11 @@ namespace EddiMissionMonitor
 
         public int? amount { get; private set; }
 
-        public int collected { get; private set; }
-
         public int startmarketid { get; private set; }
 
         public int endmarketid { get; private set; }
+
+        public int collected { get; private set; }
 
         public int delivered { get; private set; }
 

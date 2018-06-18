@@ -1469,6 +1469,7 @@
     <value>Unknown</value>
     <comment>Commodity Unknown</comment>
   </data>
+<<<<<<< HEAD
   <data name="AislingMediaResources" xml:space="preserve">
     <value>Aisling Sealed Contracts</value>
     <comment>Commodity AislingMediaResources</comment>
@@ -1605,4 +1606,6 @@
     <value>Ancient Key</value>
     <comment>Commodity Ancient Key</comment>
   </data>
+=======
+>>>>>>> Modified Cargo Monitor to handle multiple shared missions.
 </root>
