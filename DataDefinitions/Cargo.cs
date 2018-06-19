@@ -162,6 +162,7 @@ namespace EddiDataDefinitions
             this.commodityDef = CommodityDefinition.FromEDName(edname);
             this.price = price ?? commodityDef.avgprice;
             this.total = total;
+            this.haulage = 0;
             this.ejected = 0;
             this.need = 0;
             haulageamounts = new List<HaulageAmount>();
