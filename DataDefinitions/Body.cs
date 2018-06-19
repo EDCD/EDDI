@@ -36,6 +36,7 @@ namespace EddiDataDefinitions
         public long? temperature;
 
         /// <summary>The body's rings</summary>
+        [JsonConverter(typeof(RingConverter))]
         public List<Ring> rings;
 
         // Star-specific items
@@ -110,7 +111,8 @@ namespace EddiDataDefinitions
         [JsonConverter(typeof(VolcanismConverter))]
         public Volcanism volcanism;
 
-        // materials
+        /// <summary>The available materials</summary>
+        [JsonConverter(typeof(MaterialPresenceConverter))]
         public List<MaterialPresence> materials;
 
         // The reserve level

@@ -264,6 +264,25 @@ namespace EddiDataProviderService
                         }
                     }
 
+                    if (body["rings"] != null)
+                    {
+                        List<Ring> rings = new List<Ring>();
+                        foreach (dynamic ringJson in body["rings"])
+                        {
+                            string name = (string)ringJson["name"];
+                            string composition = (string)ringJson["ring_type_name"];
+                            decimal mass = (decimal)ringJson["ring_mass"];
+                            decimal innerRadius = (decimal)ringJson["ring_inner_radius"];
+                            decimal outerRadius = (decimal)ringJson["ring_outer_radius"];
+                            Ring ring = new Ring(name, composition, mass, innerRadius, outerRadius);
+                            rings.Add(ring);
+                        }
+                        if (rings.Count > 0)
+                        {
+                            Body.rings = rings.OrderByDescending(o => o.name).ToList();
+                        }
+                    }
+
                     Bodies.Add(Body);
                 }
             }

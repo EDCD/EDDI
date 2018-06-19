@@ -471,7 +471,7 @@
     <Compile Include="Role.cs" />
     <Compile Include="Vehicle.cs" />
     <Compile Include="Volcanism.cs" />
-    <Compile Include="VolcanismConverter.cs" />
+    <Compile Include="BodyObjectConverters.cs" />
     <Compile Include="Voucher.cs" />
     <Compile Include="StarClass.cs" />
     <Compile Include="TradeRating.cs" />
