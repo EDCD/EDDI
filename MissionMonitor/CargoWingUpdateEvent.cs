@@ -19,6 +19,7 @@ namespace EddiMissionMonitor
             VARIABLES.Add("updatetype", "The update type. One of: 'Collect', 'Deliver', 'WingUpdate'");
             VARIABLES.Add("commodity", "The type of cargo (commodity)");
             VARIABLES.Add("amount", "The amount of cargo collected or delivered for this event");
+            VARIABLES.Add("remaining", "The amount of cargo remaining to be delivered");
         }
 
         public long? missionid { get; private set; }
@@ -31,12 +32,15 @@ namespace EddiMissionMonitor
 
         public int? amount { get; private set; }
 
-        public CargoWingUpdateEvent(DateTime timestamp, long? missionid, string updatetype, CommodityDefinition commodity, int? amount) : base(timestamp, NAME)
+        public int remaining { get; private set; }
+
+        public CargoWingUpdateEvent(DateTime timestamp, long? missionid, string updatetype, CommodityDefinition commodity, int? amount, int remaining) : base(timestamp, NAME)
         {
             this.missionid = missionid;
             this.updatetype = updatetype;
             this.commodityDefinition = commodity;
             this.amount = amount;
+            this.remaining = remaining;
         }
     }
 }

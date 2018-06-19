@@ -10,7 +10,7 @@ namespace EddiMissionMonitor
     {
         public const string NAME = "Cargo depot";
         public const string DESCRIPTION = "Triggered when collecting or delivering cargo for a wing mission";
-        public const string SAMPLE = "{ \"timestamp\":\"2018-06-17T04:20:21Z\", \"event\":\"CargoDepot\", \"MissionID\":391606997, \"UpdateType\":\"Deliver\", \"CargoType\":\"NonLethalWeapons\", \"CargoType_Localised\":\"Non-Lethal Weapons\", \"Count\":704, \"StartMarketID\":0, \"EndMarketID\":3224777216, \"ItemsCollected\":0, \"ItemsDelivered\":704, \"TotalItemsToDeliver\":967, \"Progress\":0.000000 }";
+        public const string SAMPLE = "{ \"timestamp\":\"2018-06-17T04:20:21Z\", \"event\":\"CargoDepot\", \"MissionID\":391606997, \"UpdateType\":\"Deliver\", \"CargoType\":\"NonLethalWeapons\", \"CargoType_Localised\":\"Non-Lethal Weapons\", \"Count\":704, \"StartMarketID\":0, \"EndMarketID\":3224777216, \"ItemsCollected\":0, \"ItemsDelivered\":704, \"TotalItemsToDeliver\":704, \"Progress\":0.000000 }";
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
         static CargoDepotEvent()

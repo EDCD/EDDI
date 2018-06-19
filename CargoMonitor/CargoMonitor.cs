@@ -719,7 +719,7 @@ namespace EddiCargoMonitor
                         if (amount > 0)
                         {
                             string updatetype = @event.collected > haulage.depotcollected ? "Collect" : "Deliver";
-                            EDDI.Instance.eventHandler(new CargoWingUpdateEvent(DateTime.Now, haulage.missionid, updatetype, cargo.commodityDef, amount));
+                            EDDI.Instance.eventHandler(new CargoWingUpdateEvent(DateTime.Now, haulage.missionid, updatetype, cargo.commodityDef, amount, amountRemaining));
                         }
                         cargo.CalculateNeed();
                         haulage.depotcollected = @event.collected;
