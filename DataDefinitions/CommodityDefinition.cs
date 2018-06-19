@@ -18,6 +18,7 @@ namespace EddiDataDefinitions
             // Check https://eddb.io/archive/v5/commodities.json (for any undefined EDDBID's or undefined FDevID's) and https://github.com/EDCD/FDevIDs (for any undefined FDevID's)
             var _ = new List<CommodityDefinition>
             {
+                new CommodityDefinition(0, 0, "Unknown", Unknown, 0, false),
                 new CommodityDefinition(128049204, 1, "Explosives", Chemicals, 261, false),
                 new CommodityDefinition(128049202, 2, "HydrogenFuel", Chemicals, 110, false),
                 new CommodityDefinition(128049203, 3, "MineralOil", Chemicals, 181, false),

@@ -1458,7 +1458,7 @@
     <comment>Commodity KachiriginLeaches</comment>
   </data>
   <data name="VanayequiRhinoFur" xml:space="preserve">
-    <value>Vanayequi Ceratomorpha Fur</value>
+    <value>Vanayequi Rhino Fur</value>
     <comment>Commodity VanayequiRhinoFur</comment>
   </data>
   <data name="ZeesszeAntGlue" xml:space="preserve">
@@ -1492,5 +1492,9 @@
   <data name="torvalcommercialcontracts" xml:space="preserve">
     <value>Torval Commercial Contracts</value>
     <comment>Commodity torvalcommercialcontracts</comment>
+  </data>
+  <data name="Unknown" xml:space="preserve">
+    <value>Unknown </value>
+    <comment>Commodity Unknown</comment>
   </data>
 </root>

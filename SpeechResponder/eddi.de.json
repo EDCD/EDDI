@@ -96,7 +96,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{_ Cargo depot }\r\n{_ Triggered when collecting or delivering cargo for a wing mission }\r\n\r\n\r\n{if event.updatetype = \"Collect\":\r\n    You have collected {event.amount} tonne{if event.amount = 1:s} of {event.commodity} from the misison depot.\r\n|elif event.updatetype = \"Deliver\":\r\n    You have delivered {event.amount} tonne{if event.amount = 1:s} of {event.commodity} to the mission depot.\r\n}\r\n",
+      "script": "{_ Cargo depot }\r\n{_ Triggered when collecting or delivering cargo for a wing mission }\r\n\r\n\r\n{if event.updatetype = \"Collect\":\r\n    You have collected {event.amount} tonne{if event.amount != 1:s} of {event.commodity} from the mission depot.\r\n|elif event.updatetype = \"Deliver\":\r\n    You have delivered {event.amount} tonne{if event.amount != 1:s} of {event.commodity} to the mission depot.\r\n}\r\n\r\n{if event.updatetype != \"WingUpdate\":\r\n    {set remaining to event.totaltodeliver - event.delivered}\r\n    {if remaining = 0:\r\n        Wing mission requirements are now completed.\r\n    }\r\n}",
       "default": true,
       "name": "Cargo depot",
       "description": "Triggered when collecting or delivering cargo for a wing mission"
@@ -132,7 +132,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{_ Cargo wingupdate }\r\n{_ Triggered when a wing-mate collects or delivers cargo for a wing mission }\r\n\r\n\r\n{if event.updatetype = \"Collect\":\r\n    Your wing mate has collected {event.amount} tonne{if event.amount = 1:s} of {event.commodity} from the misison depot.\r\n|elif event.updatetype = \"Deliver\":\r\n    Your wing mate has delivered {event.amount} tonne{if event.amount = 1:s} of {event.commodity} to the mission depot.\r\n}\r\n",
+      "script": "{_ Cargo wingupdate }\r\n{_ Triggered when a wing-mate collects or delivers cargo for a wing mission }\r\n\r\n\r\n{if event.updatetype = \"Collect\":\r\n    Your wing mate has collected {event.amount} tonne{if event.amount != 1:s}\r\n    {if event.commodity != \"Unknown\": of {event.commodity}} from the mission depot.\r\n|elif event.updatetype = \"Deliver\":\r\n    Your wing mate has delivered {event.amount} tonne{if event.amount != 1:s} \r\n    {if event.commodity != \"Unknown\": of {event.commodity}} to the mission depot.\r\n}\r\n\r\n{if event.remaining = 0:\r\n    Wing mission requirements are now completed.\r\n}",
       "default": true,
       "name": "Cargo wingupdate",
       "description": "Triggered when a wing-mate collects or delivers cargo for a wing mission"
