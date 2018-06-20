@@ -197,6 +197,11 @@ namespace EddiMissionMonitor
                 //
                 handleMissionsEvent((MissionsEvent)@event);
             }
+            else if (@event is CargoDepotEvent)
+            {
+                //
+                handleCargoDepotEvent((CargoDepotEvent)@event);
+            }
             else if (@event is MissionAcceptedEvent)
             {
                 //
@@ -332,9 +337,10 @@ namespace EddiMissionMonitor
 
         private void _handlePassengersEvent(PassengersEvent @event)
         {
+            Mission mission = new Mission();
             foreach (Passenger passenger in @event.passengers)
             {
-                Mission mission = missions.FirstOrDefault(m => m.missionid == passenger.missionid);
+                mission = missions.FirstOrDefault(m => m.missionid == passenger.missionid);
                 if (mission != null)
                 {
                     mission.passengertypeEDName = passenger.type;
@@ -348,15 +354,99 @@ namespace EddiMissionMonitor
                     // 'Missions' event will populate 'name', 'status', 'type' & 'expiry'
                     string name = "Mission_None";
                     MissionStatus status = MissionStatus.FromEDName("Active");
-                    Mission newMission = new Mission(passenger.missionid, name, DateTime.Now.AddDays(1), status);
-                    newMission.passengertypeEDName = passenger.type;
-                    newMission.passengervips = passenger.vip;
-                    newMission.passengerwanted = passenger.wanted;
-                    newMission.amount = passenger.amount;
-
-                    AddMission(newMission);
+                    mission = new Mission(passenger.missionid, name, DateTime.Now.AddDays(1), status)
+                    {
+                        passengertypeEDName = passenger.type,
+                        passengervips = passenger.vip,
+                        passengerwanted = passenger.wanted,
+                        amount = passenger.amount
+                    };
+                    AddMission(mission);
                 }
 
+            }
+        }
+
+        private void handleCargoDepotEvent(CargoDepotEvent @event)
+        {
+            _handleCargoDepotEvent(@event);
+            writeMissions();
+        }
+
+        private void _handleCargoDepotEvent(CargoDepotEvent @event)
+        {
+            if (@event.missionid != null)
+            {
+                Mission mission = new Mission();
+                int amountRemaining = @event.totaltodeliver - @event.delivered;
+                switch (@event.updatetype)
+                {
+                    case "Collect":
+                        {
+                            mission = missions.FirstOrDefault(m => m.missionid == @event.missionid);
+                            if (mission == null)
+                            {
+                                MissionStatus status = MissionStatus.FromEDName("Active");
+                                mission = new Mission(@event.missionid ?? 0, "MISSION_DeliveryWing", DateTime.MaxValue, status, true)
+                                {
+                                    commodity = @event.commodity,
+                                    amount = @event.totaltodeliver,
+                                    wing = true,
+                                    originsystem = EDDI.Instance?.CurrentStarSystem?.name,
+                                    originstation = EDDI.Instance?.CurrentStation?.name,
+                                    originreturn = false
+                                };
+
+                                AddMission(mission);
+                            }
+                            else
+                            {
+
+                            }
+                        }
+                        break;
+                    case "Deliver":
+                    case "WingUpdate":
+                        {
+                            mission = missions.FirstOrDefault(m => m.missionid == @event.missionid);
+                            if (mission == null)
+                            {
+                                if (amountRemaining > 0)
+                                {
+                                    MissionStatus status = MissionStatus.FromEDName("Active");
+                                    string type = @event.collected == 0 ? "MISSION_CollectWing" : "MISSION_DeliveryWing";
+                                    mission = new Mission(@event.missionid ?? 0, type, DateTime.MaxValue, status, true)
+                                    {
+                                        amount = @event.totaltodeliver,
+                                        commodity = @event.updatetype == "Deliver" ? @event.commodity : "Unknown",
+                                        originsystem = @event.collected == 0 && @event.updatetype == "Deliver" ? EDDI.Instance?.CurrentStarSystem?.name : null,
+                                        originstation = @event.collected == 0 && @event.updatetype == "Deliver" ? EDDI.Instance?.CurrentStarSystem?.name : null,
+                                        wing = true,
+                                        originreturn = @event.collected == 0 ? true : false
+                                    };
+
+                                    AddMission(mission);
+                                }
+                            }
+                            else if (mission.shared)
+                            {
+                                if (amountRemaining > 0)
+                                {
+                                    if (@event.updatetype == "Deliver")
+                                    {
+                                        mission.commodity = @event.commodity;
+                                        mission.originsystem = EDDI.Instance?.CurrentStarSystem?.name;
+                                        mission.originstation = EDDI.Instance?.CurrentStation?.name;
+                                    }
+                                }
+                                else
+                                {
+                                    RemoveMission(mission);
+                                }
+                            }
+                        }
+                        break;
+                }
             }
         }
 
@@ -392,19 +482,37 @@ namespace EddiMissionMonitor
             if (@event.missionid != null)
             {
                 MissionStatus status = MissionStatus.FromEDName("Active");
-                Mission mission = new Mission(@event.missionid ?? 0, @event.name, @event.expiry ?? DateTime.MaxValue, status);
+                Mission mission = new Mission(@event.missionid ?? 0, @event.name, @event.expiry ?? DateTime.MaxValue, status)
+                {
+                    // Common parameters
+                    localisedname = @event.localisedname,
+                    amount = @event.amount ?? 0,
+                    influence = @event.influence,
+                    reputation = @event.reputation,
+                    reward = @event.reward ?? 0,
+                    wing = @event.wing,
+
+                    // Get the minor faction name
+                    faction = @event.faction,
+
+                    // Set mission origin to to the current system & station
+                    originsystem = EDDI.Instance?.CurrentStarSystem?.name,
+                    originstation = EDDI.Instance?.CurrentStation?.name,
+
+                    // Missions with commodities
+                    commodity = @event.commodity,
+
+                    // Missions with targets
+                    target = @event.target,
+                    targettype = @event.targettype,
+                    targetfaction = @event.targetfaction,
+
+                    // Missions with passengers
+                    passengertypeEDName = @event.passengertype,
+                    passengervips = @event.passengervips,
+                    passengerwanted = @event.passengerwanted
+                };
                 string type = mission.typeEDName.ToLowerInvariant();
-
-                // Common parameters
-                mission.localisedname = @event.localisedname;
-                mission.amount = @event.amount ?? 0;
-                mission.influence = @event.influence;
-                mission.reputation = @event.reputation;
-                mission.reward = @event.reward ?? 0;
-                mission.wing = @event.wing;
-
-                // Get the minor faction name
-                mission.faction = @event.faction;
 
                 // Get the faction state (Boom, Bust, Civil War, etc), if available
                 string state = mission.name.Split('_').ElementAtOrDefault(2)?.ToLowerInvariant();
@@ -415,10 +523,6 @@ namespace EddiMissionMonitor
                     mission.factionstate = SystemState.FromEDName(state)?.localizedName;
                 }
 
-                // Set mission origin to to the current system & station
-                mission.originsystem = EDDI.Instance?.CurrentStarSystem?.name;
-                mission.originstation = EDDI.Instance?.CurrentStation?.name;
-
                 // Mission returns to origin
                 switch (type)
                 {
@@ -426,6 +530,7 @@ namespace EddiMissionMonitor
                     case "altruismcredits":
                     case "assassinate":
                     case "collect":
+                    case "collectwing":
                     case "disable":
                     case "longdistanceexpedition":
                     case "massacre":
@@ -442,9 +547,6 @@ namespace EddiMissionMonitor
                         }
                         break;
                 }
-
-                // Missions with commodities
-                mission.commodity = @event.commodity;
 
                 // Missions with multiple destinations
                 if (@event.destinationsystem.Contains("$MISSIONUTIL_MULTIPLE"))
@@ -483,17 +585,6 @@ namespace EddiMissionMonitor
                             break;
                     }
                 }
-
-                // Missions with targets
-                mission.target = @event.target;
-                mission.targettype = @event.targettype;
-                mission.targetfaction = @event.targetfaction;
-
-                // Missions with passengers
-                mission.passengertypeEDName = @event.passengertype;
-                mission.passengervips = @event.passengervips;
-                mission.passengerwanted = @event.passengerwanted;
-
                 AddMission(mission);
             }
         }

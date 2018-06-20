@@ -85,21 +85,18 @@ namespace EddiDataDefinitions
         public bool originreturn { get; set; }
 
         public string faction { get; set; }
-
         public string factionstate { get; set; }
 
         public string influence { get; set; }
-
         public string reputation { get; set; }
 
         public bool legal => name.ToLowerInvariant().Contains("illegal") ? false : true;
-
         public bool wing { get; set; }
+        public bool shared { get; set; }
 
         public long? reward { get; set; }
 
         public string commodity { get; set; }
-
         public int? amount { get; set; }
 
 		// THe destination system of the mission
@@ -178,13 +175,14 @@ namespace EddiDataDefinitions
 
         [JsonConstructor]
         //Constructor for 'Missions' event
-        public Mission(long MissionId, string Name, DateTime expiry, MissionStatus Status)
+        public Mission(long MissionId, string Name, DateTime expiry, MissionStatus Status, bool Shared = false)
 		{
 			this.missionid = MissionId;
 			this. name = Name;
             this.typeDef = MissionType.FromEDName(Name.Split('_').ElementAt(1));
 			this.expiry = expiry.ToUniversalTime();
             this.statusDef = Status;
+            this.shared = Shared;
             destinationsystems = new List<DestinationSystem>();
         }
 
