@@ -18,9 +18,9 @@ namespace EddiDataDefinitions
 
         public int amount { get; set; }
 
-        public int depotcollected { get; set; }
+        public int collected { get; set; }
 
-        public int depotdelivered { get; set; }
+        public int delivered { get; set; }
 
         public DateTime expiry { get; set; }
 
@@ -33,8 +33,8 @@ namespace EddiDataDefinitions
             this.id = id;
             this.name = name;
             this.amount = amount;
-            this.depotcollected = depotcollected;
-            this.depotdelivered = depotdelivered;
+            this.collected = collected;
+            this.delivered = delivered;
             this.expiry = expiry;
             this.shared = shared;
         }
@@ -44,8 +44,8 @@ namespace EddiDataDefinitions
             this.id = Id;
             this.name = Name;
             this.amount = Amount;
-            this.depotcollected = 0;
-            this.depotdelivered = 0;
+            this.collected = 0;
+            this.delivered = 0;
             this.expiry = Expiry;
             this.shared = Shared;
         }

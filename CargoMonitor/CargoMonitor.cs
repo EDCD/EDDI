@@ -630,8 +630,8 @@ namespace EddiCargoMonitor
                         }
                         cargo.haulage += @event.amount ?? 0;
                         cargo.CalculateNeed();
-                        haulageAmount.depotcollected = @event.collected;
-                        haulageAmount.depotdelivered = @event.delivered;
+                        haulageAmount.collected = @event.collected;
+                        haulageAmount.delivered = @event.delivered;
                     }
                     break;
                 case "Deliver":
@@ -667,8 +667,8 @@ namespace EddiCargoMonitor
                             cargo.owned -= @event.amount ?? 0;
                         }
                         cargo.CalculateNeed();
-                        haulageAmount.depotcollected = @event.collected;
-                        haulageAmount.depotdelivered = @event.delivered;
+                        haulageAmount.collected = @event.collected;
+                        haulageAmount.delivered = @event.delivered;
 
                         // Check for shared mission completion
                         if (haulageAmount.shared && amountRemaining == 0)
@@ -697,15 +697,15 @@ namespace EddiCargoMonitor
                             cargo.haulageamounts.Add(haulageAmount);
                         }
 
-                        int amount = Math.Max(@event.collected - haulageAmount.depotcollected, @event.delivered - haulageAmount.depotdelivered);
+                        int amount = Math.Max(@event.collected - haulageAmount.collected, @event.delivered - haulageAmount.delivered);
                         if (amount > 0)
                         {
-                            string updatetype = @event.collected > haulageAmount.depotcollected ? "Collect" : "Deliver";
+                            string updatetype = @event.collected > haulageAmount.collected ? "Collect" : "Deliver";
                             EDDI.Instance.eventHandler(new CargoWingUpdateEvent(DateTime.Now, haulageAmount.id, updatetype, cargo.commodityDef, amount, amountRemaining));
                         }
                         cargo.CalculateNeed();
-                        haulageAmount.depotcollected = @event.collected;
-                        haulageAmount.depotdelivered = @event.delivered;
+                        haulageAmount.collected = @event.collected;
+                        haulageAmount.delivered = @event.delivered;
 
                         // Check for shared mission completion
                         if (haulageAmount.shared && amountRemaining == 0)
