@@ -3,7 +3,6 @@ using EddiEvents;
 using System;
 using System.Collections.Generic;
 
-
 namespace EddiMissionMonitor
 {
     public class CargoDepotEvent : Event

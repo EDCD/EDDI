@@ -93,6 +93,7 @@ namespace EddiDataDefinitions
         public bool legal => name.ToLowerInvariant().Contains("illegal") ? false : true;
         public bool wing { get; set; }
         public bool shared { get; set; }
+        public bool communal { get; set; }
 
         public long? reward { get; set; }
 
@@ -167,20 +168,21 @@ namespace EddiDataDefinitions
         public string targettype { get; set; }
         public string targetfaction { get; set; }
 
-        public DateTime expiry { get; set; }
+        public DateTime? expiry { get; set; }
         [JsonIgnore]
-        public long? expiryseconds => (long)expiry.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
+        public long? expiryseconds => (long)expiry?.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
 
+        // Default Constructor
         public Mission() { }
 
         [JsonConstructor]
-        //Constructor for 'Missions' event
-        public Mission(long MissionId, string Name, DateTime expiry, MissionStatus Status, bool Shared = false)
+        // Main Constructor
+        public Mission(long MissionId, string Name, DateTime? expiry, MissionStatus Status, bool Shared = false)
 		{
 			this.missionid = MissionId;
 			this. name = Name;
             this.typeDef = MissionType.FromEDName(Name.Split('_').ElementAt(1));
-			this.expiry = expiry.ToUniversalTime();
+			this.expiry = expiry?.ToUniversalTime();
             this.statusDef = Status;
             this.shared = Shared;
             destinationsystems = new List<DestinationSystem>();

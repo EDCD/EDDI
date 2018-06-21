@@ -2280,21 +2280,24 @@ namespace EddiJournalMonitor
                             }
                         case "CommunityGoalJoin":
                             {
+                                long cgid = JsonParsing.getLong(data, "CGID");
                                 string name = JsonParsing.getString(data, "Name");
                                 string system = JsonParsing.getString(data, "System");
 
-                                events.Add(new MissionAcceptedEvent(timestamp, null, name, null, system, null, null, null, null, null, null, null, null, null, null, true, null, null, null, null, false) { raw = line });
+                                events.Add(new MissionAcceptedEvent(timestamp, cgid, "MISSION_CommunityGoal", name, null, system, null, null, null, null, null, null, null, null, null, true, null, null, null, null, false) { raw = line });
                                 handled = true;
                                 break;
                             }
                         case "CommunityGoalReward":
                             {
+                                object val;
+                                long cgid = JsonParsing.getLong(data, "CGID");
                                 string name = JsonParsing.getString(data, "Name");
                                 string system = JsonParsing.getString(data, "System");
                                 data.TryGetValue("Reward", out object val);
                                 long reward = (val == null ? 0 : (long)val);
 
-                                events.Add(new MissionCompletedEvent(timestamp, null, name, null, null, null, true, reward, null, null, null, 0) { raw = line });
+                                events.Add(new MissionCompletedEvent(timestamp, cgid, "MISSION_CommunityGoal", name, null, null, true, reward, null, null, null, 0) { raw = line });
                                 handled = true;
                                 break;
                             }

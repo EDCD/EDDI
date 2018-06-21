@@ -132,6 +132,9 @@
   <data name="CollectWing" xml:space="preserve">
     <value>Wing Collection</value>
   </data>
+  <data name="CommunityGoal" xml:space="preserve">
+    <value>Community Goal</value>
+  </data>
   <data name="Courier" xml:space="preserve">
     <value>Data Courier</value>
   </data>

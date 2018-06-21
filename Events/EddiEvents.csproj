@@ -81,7 +81,6 @@
     <Compile Include="UnderAttackEvent.cs" />
     <Compile Include="VehicleDestroyedEvent.cs" />
     <Compile Include="DatalinkMessageEvent.cs" />
-    <Compile Include="CommunityGoalEvent.cs" />
     <Compile Include="DataVoucherAwardedEvent.cs" />
     <Compile Include="JetConeBoostEvent.cs" />
     <Compile Include="NavBeaconScanEvent.cs" />

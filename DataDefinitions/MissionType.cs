@@ -23,6 +23,7 @@ namespace EddiDataDefinitions
             var Assassinate = new MissionType("Assassinate");
             var Collect = new MissionType("Collect");
             var CollectWing = new MissionType("CollectWing");
+            var CommunityGoal = new MissionType("CommunityGoal");
             var Courier = new MissionType("Courier");
             var Delivery = new MissionType("Delivery");
             var DeliveryWing = new MissionType("DeliveryWing");

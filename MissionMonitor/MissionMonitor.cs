@@ -114,15 +114,15 @@ namespace EddiMissionMonitor
             {
                 foreach (Mission mission in missions.ToList())
                 {
-                    if (mission.statusEDName == "Active" || mission.statusEDName == "Complete")
+                    if (mission.expiry != null && (mission.statusEDName == "Active" || mission.statusEDName == "Complete"))
                     {
-                        TimeSpan span = mission.expiry.ToLocalTime() - DateTime.Now;
+                        TimeSpan span = (DateTime)mission.expiry?.ToLocalTime() - DateTime.Now;
                         mission.timeremaining = span.Days.ToString() + "D " + span.Hours.ToString() + "H " + span.Minutes.ToString() + "MIN";
-                        if (mission.expiry.ToLocalTime() < DateTime.Now)
+                        if (mission.expiry?.ToLocalTime() < DateTime.Now)
                         {
                             EDDI.Instance.eventHandler(new MissionExpiredEvent(DateTime.Now, mission.missionid, mission.name));
                         }
-                        else if (mission.expiry.ToLocalTime() < DateTime.Now.AddMinutes(-warning ?? -60))
+                        else if (mission.expiry?.ToLocalTime() < DateTime.Now.AddMinutes(-warning ?? -60))
                         {
                             EDDI.Instance.eventHandler(new MissionWarningEvent(DateTime.Now, mission.missionid, mission.name, span.Minutes));
                         }
@@ -196,6 +196,11 @@ namespace EddiMissionMonitor
             {
                 //
                 handleMissionsEvent((MissionsEvent)@event);
+            }
+            else if (@event is CommunityGoalEvent)
+            {
+                //
+                handleCommunityGoalEvent((CommunityGoalEvent)@event);
             }
             else if (@event is CargoDepotEvent)
             {
@@ -352,9 +357,8 @@ namespace EddiMissionMonitor
                 {
                     // Dummy mission to populate 'Passengers' parameters
                     // 'Missions' event will populate 'name', 'status', 'type' & 'expiry'
-                    string name = "Mission_None";
                     MissionStatus status = MissionStatus.FromEDName("Active");
-                    mission = new Mission(passenger.missionid, name, DateTime.Now.AddDays(1), status)
+                    mission = new Mission(passenger.missionid, "Mission_None", DateTime.Now.AddDays(1), status)
                     {
                         passengertypeEDName = passenger.type,
                         passengervips = passenger.vip,
@@ -367,7 +371,39 @@ namespace EddiMissionMonitor
             }
         }
 
-        private void handleCargoDepotEvent(CargoDepotEvent @event)
+        private void handleCommunityGoalEvent(CommunityGoalEvent @event)
+        {
+            _handleCommunityGoalEvent(@event);
+            writeMissions();
+        }
+
+        private void _handleCommunityGoalEvent(CommunityGoalEvent @event)
+        {
+            Mission mission = new Mission();
+            for (int i = 0; i < @event.cgid.Count(); i++)
+            {
+                mission = missions.FirstOrDefault(m => m.missionid == @event.cgid[i]);
+                if (mission == null)
+                {
+                    MissionStatus status = MissionStatus.FromEDName("Active");
+                    mission = new Mission(@event.cgid[i], "MISSION_CommunityGoal", DateTime.Now.AddSeconds(@event.expiry[i]), status)
+                    {
+                        originstation = @event.station[i]
+                    };
+
+                }
+                else
+                {
+                    if (mission.expiry == null)
+                    {
+                        mission.expiry = DateTime.Now.AddSeconds(@event.expiry[i]);
+                        mission.originstation = @event.station[i];
+                    }
+                }
+            }
+        }
+
+            private void handleCargoDepotEvent(CargoDepotEvent @event)
         {
             _handleCargoDepotEvent(@event);
             writeMissions();
@@ -387,7 +423,7 @@ namespace EddiMissionMonitor
                             if (mission == null)
                             {
                                 MissionStatus status = MissionStatus.FromEDName("Active");
-                                mission = new Mission(@event.missionid ?? 0, "MISSION_DeliveryWing", DateTime.MaxValue, status, true)
+                                mission = new Mission(@event.missionid ?? 0, "MISSION_DeliveryWing", null, status, true)
                                 {
                                     commodity = @event.commodity,
                                     amount = @event.totaltodeliver,
@@ -415,7 +451,7 @@ namespace EddiMissionMonitor
                                 {
                                     MissionStatus status = MissionStatus.FromEDName("Active");
                                     string type = @event.collected == 0 ? "MISSION_CollectWing" : "MISSION_DeliveryWing";
-                                    mission = new Mission(@event.missionid ?? 0, type, DateTime.MaxValue, status, true)
+                                    mission = new Mission(@event.missionid ?? 0, type, null, status, true)
                                     {
                                         amount = @event.totaltodeliver,
                                         commodity = @event.updatetype == "Deliver" ? @event.commodity : "Unknown",
@@ -482,7 +518,7 @@ namespace EddiMissionMonitor
             if (@event.missionid != null)
             {
                 MissionStatus status = MissionStatus.FromEDName("Active");
-                Mission mission = new Mission(@event.missionid ?? 0, @event.name, @event.expiry ?? DateTime.MaxValue, status)
+                Mission mission = new Mission(@event.missionid ?? 0, @event.name, @event.expiry, status)
                 {
                     // Common parameters
                     localisedname = @event.localisedname,
@@ -491,13 +527,14 @@ namespace EddiMissionMonitor
                     reputation = @event.reputation,
                     reward = @event.reward ?? 0,
                     wing = @event.wing,
+                    communal = @event.communal,
 
                     // Get the minor faction name
                     faction = @event.faction,
 
                     // Set mission origin to to the current system & station
-                    originsystem = EDDI.Instance?.CurrentStarSystem?.name,
-                    originstation = EDDI.Instance?.CurrentStation?.name,
+                    originsystem = @event.communal ? @event.destinationsystem : EDDI.Instance?.CurrentStarSystem?.name,
+                    originstation = @event.communal ? null : EDDI.Instance?.CurrentStation?.name,
 
                     // Missions with commodities
                     commodity = @event.commodity,
@@ -512,6 +549,7 @@ namespace EddiMissionMonitor
                     passengervips = @event.passengervips,
                     passengerwanted = @event.passengerwanted
                 };
+
                 string type = mission.typeEDName.ToLowerInvariant();
 
                 // Get the faction state (Boom, Bust, Civil War, etc), if available
@@ -531,6 +569,7 @@ namespace EddiMissionMonitor
                     case "assassinate":
                     case "collect":
                     case "collectwing":
+                    case "communitygoal":
                     case "disable":
                     case "longdistanceexpedition":
                     case "massacre":

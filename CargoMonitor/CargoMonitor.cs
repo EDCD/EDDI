@@ -655,13 +655,13 @@ namespace EddiCargoMonitor
                             AddCargo(cargo);
 
                             string originSystem = EDDI.Instance?.CurrentStarSystem?.name;
-                            haulage = new Haulage(@event.missionid ?? 0, "MISSION_DeliveryWing", originSystem, amountRemaining, DateTime.MaxValue, true);
+                            haulage = new Haulage(@event.missionid ?? 0, "MISSION_DeliveryWing", originSystem, amountRemaining, null, true);
                             cargo.haulageData.Add(haulage);
                         }
                         cargo.haulage += @event.amount ?? 0;
                         cargo.CalculateNeed();
-                        haulage.depotcollected = @event.collected;
-                        haulage.depotdelivered = @event.delivered;
+                        haulage.collected = @event.collected;
+                        haulage.delivered = @event.delivered;
                     }
                     break;
                 case "Deliver":
@@ -684,7 +684,7 @@ namespace EddiCargoMonitor
                             cargo = GetCargoWithEDName(@event.commodityDefinition.edname);
                             string originSystem = @event.collected > 0 ? null : EDDI.Instance?.CurrentStarSystem?.name;
                             string type = @event.collected > 0 ? "MISSION_DeliveryWing" : "MISSION_CollectWing";
-                            haulage = new Haulage(@event.missionid ?? 0, type, originSystem, amountRemaining, DateTime.MaxValue, true);
+                            haulage = new Haulage(@event.missionid ?? 0, type, originSystem, amountRemaining, null, true);
                             cargo.haulageData.Add(haulage);
                         }
 
@@ -697,8 +697,8 @@ namespace EddiCargoMonitor
                             cargo.owned -= @event.amount ?? 0;
                         }
                         cargo.CalculateNeed();
-                        haulage.depotcollected = @event.collected;
-                        haulage.depotdelivered = @event.delivered;
+                        haulage.collected = @event.collected;
+                        haulage.delivered = @event.delivered;
 
                         // Check for shared mission completion
                         if (haulage.shared && amountRemaining == 0)
@@ -723,19 +723,19 @@ namespace EddiCargoMonitor
                             cargo = new Cargo("Unknown", 0);
                             AddCargo(cargo);
                             string type = @event.collected > 0 ? "MISSION_DeliveryWing" : "MISSION_CollectWing";
-                            haulage = new Haulage(@event.missionid ?? 0, type, null, amountRemaining, DateTime.MaxValue, true);
+                            haulage = new Haulage(@event.missionid ?? 0, type, null, amountRemaining, null, true);
                             cargo.haulageData.Add(haulage);
                         }
 
-                        int amount = Math.Max(@event.collected - haulage.depotcollected, @event.delivered - haulage.depotdelivered);
+                        int amount = Math.Max(@event.collected - haulage.collected, @event.delivered - haulage.delivered);
                         if (amount > 0)
                         {
-                            string updatetype = @event.collected > haulage.depotcollected ? "Collect" : "Deliver";
+                            string updatetype = @event.collected > haulage.collected ? "Collect" : "Deliver";
                             EDDI.Instance.eventHandler(new CargoWingUpdateEvent(DateTime.Now, haulage.missionid, updatetype, cargo.commodityDef, amount, amountRemaining));
                         }
                         cargo.CalculateNeed();
-                        haulage.depotcollected = @event.collected;
-                        haulage.depotdelivered = @event.delivered;
+                        haulage.collected = @event.collected;
+                        haulage.delivered = @event.delivered;
 
                         // Check for shared mission completion
                         if (haulage.shared && amountRemaining == 0)
@@ -822,7 +822,7 @@ namespace EddiCargoMonitor
                     {
                         string originSystem = EDDI.Instance?.CurrentStarSystem?.name;
                         int amount = (type == "delivery" || type == "smuggle") ? @event.amount ?? 0 : 0;
-                        Haulage haulage = new Haulage(@event.missionid ?? 0, @event.name, originSystem, @event.amount ?? 0, (DateTime)@event.expiry);
+                        Haulage haulage = new Haulage(@event.missionid ?? 0, @event.name, originSystem, @event.amount ?? 0, @event.expiry);
                         cargo = GetCargoWithEDName(@event.commodityDefinition?.edname);
                         if (cargo != null)
                         {

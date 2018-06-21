@@ -106,6 +106,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Community Goal.
+        /// </summary>
+        internal static string CommunityGoal {
+            get {
+                return ResourceManager.GetString("CommunityGoal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Data Courier.
         /// </summary>
         internal static string Courier {
