@@ -136,7 +136,7 @@
     <comment>Tons needed for missions</comment>
   </data>
   <data name="para2" xml:space="preserve">
-    <value>Note that if your inventory is incorrect you will need to start or restart Elite and this information will be updated.</value>
+    <value>If your inventory is incorrect you will need to start or restart Elite and this information will be updated.</value>
   </data>
   <data name="para1" xml:space="preserve">
     <value>Below is a list of all your cargo.</value>
@@ -155,5 +155,8 @@
   <data name="header_owned" xml:space="preserve">
     <value>Owned</value>
     <comment>Tons of owned cargo carried</comment>
+  </data>
+  <data name="para3" xml:space="preserve">
+    <value>Note: For wing missions in which you have not yet made a collection or delivery, the commodity will be displayed as 'Unknown'. The commodity will be updated upon collection or delivery.</value>
   </data>
 </root>
