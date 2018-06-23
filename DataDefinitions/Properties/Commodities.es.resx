@@ -60,45 +60,45 @@
             : and then encoded with base64 encoding.
     -->
   <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
           <xsd:element name="metadata">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0"/>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
               </xsd:sequence>
-              <xsd:attribute name="name" use="required" type="xsd:string"/>
-              <xsd:attribute name="type" type="xsd:string"/>
-              <xsd:attribute name="mimetype" type="xsd:string"/>
-              <xsd:attribute ref="xml:space"/>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="assembly">
             <xsd:complexType>
-              <xsd:attribute name="alias" type="xsd:string"/>
-              <xsd:attribute name="name" type="xsd:string"/>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="data">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"/>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"/>
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"/>
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"/>
-              <xsd:attribute ref="xml:space"/>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="resheader">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required"/>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
             </xsd:complexType>
           </xsd:element>
         </xsd:choice>
@@ -722,10 +722,6 @@
     <value>Mookah de Jotun</value>
     <comment>Commodity JotunMookah</comment>
   </data>
-  <data name="KachiriginFilterLeeches" xml:space="preserve">
-    <value>Sanguijuelas filtradoras de Kachirigin</value>
-    <comment>Commodity KachiriginFilterLeeches</comment>
-  </data>
   <data name="KamitraCigars" xml:space="preserve">
     <value>Puros de Kamitra</value>
     <comment>Commodity KamitraCigars</comment>
@@ -741,10 +737,6 @@
   <data name="KarsukiLocusts" xml:space="preserve">
     <value>Langostas de Karsuki</value>
     <comment>Commodity KarsukiLocusts</comment>
-  </data>
-  <data name="KinagoViolins" xml:space="preserve">
-    <value>Violines de Kinago</value>
-    <comment>Commodity KinagoViolins</comment>
   </data>
   <data name="KonggaAle" xml:space="preserve">
     <value>Cerveza de Kongga</value>
@@ -1062,10 +1054,6 @@
     <value>Deflector de radiación</value>
     <comment>Commodity RadiationBaffle</comment>
   </data>
-  <data name="RajukruMulti_Stoves" xml:space="preserve">
-    <value>Multiestufas de Rajukru</value>
-    <comment>Commodity RajukruMulti_Stoves</comment>
-  </data>
   <data name="RapaBaoSnakeSkins" xml:space="preserve">
     <value>Pieles de serpiente de Rapa Bao</value>
     <comment>Commodity RapaBaoSnakeSkins</comment>
@@ -1374,10 +1362,6 @@
     <value>Alas de baja gravedad de Uzumoku</value>
     <comment>Commodity UzumokuLow_GWings</comment>
   </data>
-  <data name="VanayequiCeratomorphaFur" xml:space="preserve">
-    <value>Piel de ceratomorfo de Vanayequi</value>
-    <comment>Commodity VanayequiCeratomorphaFur</comment>
-  </data>
   <data name="VegaSlimweed" xml:space="preserve">
     <value>Planta parásita de Vega</value>
     <comment>Commodity VegaSlimweed</comment>
@@ -1441,10 +1425,6 @@
   <data name="YasoKondiLeaf" xml:space="preserve">
     <value>Hojas de Yaso Kondi</value>
     <comment>Commodity YasoKondiLeaf</comment>
-  </data>
-  <data name="ZeesszeAntGrubGlue" xml:space="preserve">
-    <value>Pegamento de larvas de hormigas de Zeessze</value>
-    <comment>Commodity ZeesszeAntGrubGlue</comment>
   </data>
   <data name="RajukruStoves" xml:space="preserve">
     <value>Multiestufas de Rajukru</value>

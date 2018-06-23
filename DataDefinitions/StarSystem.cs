@@ -83,7 +83,7 @@ namespace EddiDataDefinitions
             else
             {
                 // get the canonical SystemState object for the given EDName
-                systemState = SystemState.FromEDName(systemState.edname);
+                systemState = SystemState.FromEDName(systemState.edname) ?? SystemState.None;
             }
             additionalJsonData = null;
         }
