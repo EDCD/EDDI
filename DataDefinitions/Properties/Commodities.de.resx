@@ -721,10 +721,6 @@
     <value>Jotun Mookah</value>
     <comment>Commodity JotunMookah</comment>
   </data>
-  <data name="KachiriginFilterLeeches" xml:space="preserve">
-    <value>Kachiriginische Blutegel</value>
-    <comment>Commodity KachiriginFilterLeeches</comment>
-  </data>
   <data name="KamitraCigars" xml:space="preserve">
     <value>Kamitra Zigarren</value>
     <comment>Commodity KamitraCigars</comment>
@@ -740,10 +736,6 @@
   <data name="KarsukiLocusts" xml:space="preserve">
     <value>Karsuki Heuschrecken</value>
     <comment>Commodity KarsukiLocusts</comment>
-  </data>
-  <data name="KinagoViolins" xml:space="preserve">
-    <value>Kinago Violinen</value>
-    <comment>Commodity KinagoViolins</comment>
   </data>
   <data name="KonggaAle" xml:space="preserve">
     <value>Kongga Bier</value>
@@ -1061,10 +1053,6 @@
     <value>Strahlungsabweiser</value>
     <comment>Commodity RadiationBaffle</comment>
   </data>
-  <data name="RajukruMulti_Stoves" xml:space="preserve">
-    <value>Rajukru Multi-Öfen</value>
-    <comment>Commodity RajukruMulti_Stoves</comment>
-  </data>
   <data name="RapaBaoSnakeSkins" xml:space="preserve">
     <value>Rapa Bao Schlangenhäute</value>
     <comment>Commodity RapaBaoSnakeSkins</comment>
@@ -1133,10 +1121,7 @@
     <value>Silber</value>
     <comment>Commodity Silver</comment>
   </data>
-  <data name="siriuscommercialcontracts" xml:space="preserve">
-    <value>Sirius Geschäftskontakte</value>
-    <comment>Commodity siriuscommercialcontracts</comment>
-  </data>
+  
   <data name="siriusfranchisepackage" xml:space="preserve">
     <value>Sirius Franchise-Paket</value>
     <comment>Commodity siriusfranchisepackage</comment>
@@ -1373,10 +1358,6 @@
     <value>Uzumokusanische niedrig-G Flügel</value>
     <comment>Commodity UzumokuLow_GWings</comment>
   </data>
-  <data name="VanayequiCeratomorphaFur" xml:space="preserve">
-    <value>Vanayequi Ceratomorpha-Fell</value>
-    <comment>Commodity VanayequiCeratomorphaFur</comment>
-  </data>
   <data name="VegaSlimweed" xml:space="preserve">
     <value>Veganisches Schlankheitskraut</value>
     <comment>Commodity VegaSlimweed</comment>
@@ -1441,10 +1422,6 @@
     <value>Yaso Kondi Blatt</value>
     <comment>Commodity YasoKondiLeaf</comment>
   </data>
-  <data name="ZeesszeAntGrubGlue" xml:space="preserve">
-    <value>Zeesszer Ameisenleim</value>
-    <comment>Commodity ZeesszeAntGrubGlue</comment>
-  </data>
   <data name="RajukruStoves" xml:space="preserve">
     <value>Rajukru Multi-Öfen</value>
     <comment>Commodity RajukruStoves</comment>
@@ -1465,10 +1442,7 @@
     <value>Zeesszer Ameisenkleber</value>
     <comment>Commodity ZeesszeAntGlue</comment>
   </data>
-  <data name="aislingpromotionalmaterials" xml:space="preserve">
-    <value>Aisling Werbematerial</value>
-    <comment>Commodity aislingpromotionalmaterials</comment>
-  </data>
+  
   <data name="alliancelegaslativerecords" xml:space="preserve">
     <value>Allianz gesetzgebende Aufzeichnungen</value>
     <comment>Commodity alliancelegaslativerecords</comment>
@@ -1485,12 +1459,11 @@
     <value>Aisling Medienberichte</value>
     <comment>Commodity aislingmediamaterials</comment>
   </data>
-  <data name="undergroundsupport" xml:space="preserve">
-    <value>Untergrund-Unterstützung</value>
-    <comment>Commodity undergroundsupport</comment>
-  </data>
+  
   <data name="torvalcommercialcontracts" xml:space="preserve">
     <value>Torval Geschäftskontakte</value>
     <comment>Commodity torvalcommercialcontracts</comment>
   </data>
+  
+  
 </root>
