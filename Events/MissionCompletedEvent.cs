@@ -60,9 +60,9 @@ namespace EddiEvents
             this.amount = amount;
             this.communal = communal;
             this.reward = reward;
-            this.commodityrewards = commodityrewards;
+            this.commodityrewards = commodityrewards ?? new List<CommodityAmount>();
             this.donation = donation;
-            if (commodityrewards.Count > 0)
+            if (this.commodityrewards.Count > 0)
             {
                 this.rewardCommodity = commodityrewards[0].commodity;
                 this.rewardAmount = commodityrewards[0].amount;
