@@ -4,8 +4,11 @@ using Newtonsoft.Json.Linq;
 using SimpleFeedReader;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Net;
+using System.Resources;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows.Controls;
 using Utilities;
@@ -18,10 +21,10 @@ namespace GalnetMonitor
     /// </summary>
     public class GalnetMonitor : EDDIMonitor
     {
-        private readonly string SOURCE = "https://community.elitedangerous.com/";
-        private readonly string RESOURCE = "/galnet-rss";
         private static Dictionary<string, string> locales = new Dictionary<string, string>() { { "English", "en" }, { "Français", "fr" }, { "Deutsch", "de" } };
+        protected static string locale;
         private GalnetConfiguration configuration = new GalnetConfiguration();
+        protected static ResourceManager resourceManager = EddiGalnetMonitor.Properties.GalnetMonitor.ResourceManager;
 
         private bool running = false;
 
@@ -36,7 +39,6 @@ namespace GalnetMonitor
                 }
                 catch { }
             }
-
 
             configuration = GalnetConfiguration.FromFile();
         }
@@ -150,9 +152,9 @@ namespace GalnetMonitor
                     string firstUid = null;
                     try
                     {
-                        string locale = "en";
                         locales.TryGetValue(configuration.language, out locale);
-                        string url = SOURCE + locale + RESOURCE;
+                        string url = GetGalnetResource("galnetSourceURL");
+
                         Logging.Debug("Fetching Galnet articles from " + url);
                         IEnumerable<FeedItem> items = new FeedReader(new GalnetFeedItemNormalizer(), true).RetrieveFeed(url);
                         if (items != null)
@@ -171,12 +173,9 @@ namespace GalnetMonitor
                                     break;
                                 }
 
-                                if (isInteresting(item.Title))
-                                {
-                                    News newsItem = new News(item.Id, categoryFromTitle(item.Title), item.Title, item.GetContent(), item.PublishDate.DateTime, false);
-                                    newsItems.Add(newsItem);
-                                    GalnetSqLiteRepository.Instance.SaveNews(newsItem);
-                                }
+                                News newsItem = new News(item.Id, assignCategory(item.Title, item.GetContent()), item.Title, item.GetContent(), item.PublishDate.DateTime, false);
+                                newsItems.Add(newsItem);
+                                GalnetSqLiteRepository.Instance.SaveNews(newsItem);
                             }
                         }
                     }
@@ -230,126 +229,41 @@ namespace GalnetMonitor
             return null;
         }
 
-        private static bool isInteresting(string title)
-        {
-            return title != "Powerplay: Incoming Update" && title != "Luttes d'influence galactiques" && title != "Machtspiele: Neues Update";
-        }
-
         /// <summary>
         /// Pick a category for the news item given its title
         /// </summary>
         /// <param name="title"></param>
         /// <returns></returns>
-        private string categoryFromTitle(string title)
+        private string assignCategory(string title, string content)
         {
-            if (configuration.language == "English")
+            if (title.StartsWith(GetGalnetResource("galnetCategoryPowerplay")))
             {
-                if (title.StartsWith("Galactic News: Weekly "))
-                {
-                    return title.Replace("Galactic News: Weekly ", "");
-                }
-
-                if (title.StartsWith("Community Goal: "))
-                {
-                    return "Community Goal";
-                }
-
-                if (title == "Galactic News: Starport Status Update")
-                {
-                    return "Starport Status Update";
-                }
-
-                return "Article";
+                return "Powerplay";
             }
-            else if (configuration.language == "Français")
+
+            if (title.StartsWith(GetGalnetResource("galnetCategoryCg")) || 
+                Regex.IsMatch(content, GetGalnetResource("galnetCategoryCgContentRegex")))
             {
-                if (title.StartsWith("Actualité galactique : Rapport hebdomadaire - "))
-                {
-                    string subtitle = title.Replace("Actualité galactique : Rapport hebdomadaire - ", "");
-                    if (subtitle == "Démocratie")
-                    {
-                        return "Democracy Report";
-                    }
-                    else if (subtitle == "Conflits")
-                    {
-                        return "Conflict Report";
-                    }
-                    else if (subtitle == "Santé")
-                    {
-                        return "Health Report";
-                    }
-                    else if (subtitle == "Économie")
-                    {
-                        return "Economic Report";
-                    }
-                    else if (subtitle == "Sécurité")
-                    {
-                        return "Security Report";
-                    }
-                    else if (subtitle == "Expansions")
-                    {
-                        return "Expansion Report";
-                    }
-                }
-
-                if (title.StartsWith("Opération communautaire"))
-                {
-                    return "Community Goal";
-                }
-
-                if (title == "Actualité galactique : Mise à jour - État des spatioports")
-                {
-                    return "Starport Status Update";
-                }
-
-                return "Article";
+                return "Community Goal";
             }
-            else if (configuration.language == "Deutsch")
+
+            if (title.StartsWith(GetGalnetResource("galnetCategoryStarportStatus")))
             {
-                if (title.StartsWith("Galaktische News: Wöchentlicher "))
-                {
-                    string subtitle = title.Replace("Galaktische News: Wöchentlicher ", "");
-                    if (subtitle == "Demokratiereport")
-                    {
-                        return "Democracy Report";
-                    }
-                    else if (subtitle == "Konfliktreport")
-                    {
-                        return "Conflict Report";
-                    }
-                    else if (subtitle == "Gesundheitsreport")
-                    {
-                        return "Health Report";
-                    }
-                    else if (subtitle == "Wirtschaftsreport")
-                    {
-                        return "Economic Report";
-                    }
-                    else if (subtitle == "Sicherheitsreport")
-                    {
-                        return "Security Report";
-                    }
-                    else if (subtitle == "Expansionsreport")
-                    {
-                        return "Expansion Report";
-                    }
-                }
-                if (title.StartsWith("Community-Ziel"))
-                {
-                    return "Community Goal";
-                }
-
-                if (title == "Galaktische News: Sternenhafen-Status-Update")
-                {
-                    return "Starport Status Update";
-                }
-
-                return "Article";
+                return "Starport Status Update";
             }
-            else
+
+            if (title.StartsWith(GetGalnetResource("galnetCategoryWeekInReview")))
             {
-                return "Article";
+                return "Week in Review";
             }
+
+            return "Article";
+        }
+
+        private static string GetGalnetResource(string basename)
+        {
+            CultureInfo ci = locale != null ? CultureInfo.GetCultureInfo(locale) : CultureInfo.InvariantCulture;
+            return resourceManager.GetString(basename, ci) ?? null;
         }
     }
 }

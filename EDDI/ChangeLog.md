@@ -16,13 +16,21 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * `Docking timed out`
     * Updated `Commodity sales check` script to make use of `CommodityMarketDetails()` function.
     * Updated `Docking granted` script to make use of of `stationtype` property.
+    * Updated `Galnet news published` event for compatibility with revised article categories.
     * Fixed a bug that had made `{ship.role}` inaccessible via scripts.
     * Updated `FSD engaged` script to correct a bug that was preventing sub-function `System report` from ever running.
     * Updated `Ship refueled` script to correct a bug that would cause it to sometimes report more than 100% fuel after refueling.
   * Cargo monitor
     * Discard all cargo if your ship is destroyed.
   * Added the following Cottle function, documented in [the SpeechResponder documentation](https://github.com/EDCD/EDDI/blob/master/SpeechResponder/Help.md):
-     * `CommodityMarketDetails()` for retrieving market information about commodities.
+    * `CommodityMarketDetails()` for retrieving market information about commodities.
+  * Galnet Monitor
+    * Updated article category assignments to match updated article format from Frontier Developments. Updated article categories are as follows:
+      * Powerplay
+      * Community Goal
+      * Starport Status Update
+      * Article
+    * Filters used for category assignments are now a translatable resource.
   * VoiceAttack
     * The Search and rescue event has a new variable `{TXT:localizedcommodityname}` as the `commodity` varaible is now an object.
 
