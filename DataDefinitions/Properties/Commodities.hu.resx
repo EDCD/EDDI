@@ -628,7 +628,6 @@
     <comment>Commodity JarouaRice</comment>
   </data>
   
-  
   <data name="KamitraCigars" xml:space="preserve">
     <value>Kamitra Szivarok</value>
     <comment>Commodity KamitraCigars</comment>
@@ -641,10 +640,6 @@
   <data name="KarsukiLocusts" xml:space="preserve">
     <value>Karsuki sáska</value>
     <comment>Commodity KarsukiLocusts</comment>
-  </data>
-  <data name="KinagoViolins" xml:space="preserve">
-    <value>Kinagoi hegedűk</value>
-    <comment>Commodity KinagoViolins</comment>
   </data>
   
   
@@ -872,7 +867,6 @@
     <comment>Commodity Pyrophyllite</comment>
   </data>
   
-  
   <data name="RapaBaoSnakeSkins" xml:space="preserve">
     <value>Rapa Baoi kígyóbőr</value>
     <comment>Commodity RapaBaoSnakeSkins</comment>
@@ -929,10 +923,7 @@
     <value>Ezüst</value>
     <comment>Commodity Silver</comment>
   </data>
-  <data name="siriuscommercialcontracts" xml:space="preserve">
-    <value>Szíriuszi reklám szerződések</value>
-    <comment>Commodity siriuscommercialcontracts</comment>
-  </data>
+  
   
   <data name="siriusindustrialequipment" xml:space="preserve">
     <value>Siriusi ipari berendezés</value>
@@ -1067,10 +1058,6 @@
     <value>Uzumokui alacsony gravitációs szárnyak</value>
     <comment>Commodity UzumokuLow_GWings</comment>
   </data>
-  <data name="VanayequiCeratomorphaFur" xml:space="preserve">
-    <value>Vanayequii rinocérosz szőrme</value>
-    <comment>Commodity VanayequiCeratomorphaFur</comment>
-  </data>
   <data name="VegaSlimweed" xml:space="preserve">
     <value>Végai karcsúgyom</value>
     <comment>Commodity VegaSlimweed</comment>
@@ -1112,11 +1099,12 @@
   
   
   
-  
   <data name="KinagoInstruments" xml:space="preserve">
     <value>Kinagoi hegedűk</value>
     <comment>Commodity KinagoInstruments</comment>
   </data>
+  
+  
   
   
   
