@@ -381,6 +381,10 @@ namespace Eddi
                         }
                     }
                 }
+
+                // Increment to a new log file.
+                Logging.incrementLogs();
+
                 started = true;
             }
         }

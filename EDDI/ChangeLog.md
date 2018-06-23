@@ -7,6 +7,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Updated system definition to include new variable `lastVisitSeconds`. 
     * The Search and rescue event was having its `commodity` property set to just the commodity name, rather than the commodity definition object that scripts expect. Fixed.
     * Updated the `Ship refueled` event to include new boolean value `full`. True if this is a full refill and false if this is a partial refill.
+    * Immense log files will be a thing of the past. Implemented log rotation. EDDI will now create a new log file every time it starts, and shall retain no more than 10 log files before it starts clearing the old logs. 
   * Speech responder
     * Updated the following events to include new properties `stationtype` and `stationDefinition`:
       * `Docking cancelled`
