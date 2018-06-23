@@ -721,10 +721,6 @@
     <value>Mookah de Jotun</value>
     <comment>Commodity JotunMookah</comment>
   </data>
-  <data name="KachiriginFilterLeeches" xml:space="preserve">
-    <value>Sangsues de Kachirigin</value>
-    <comment>Commodity KachiriginFilterLeeches</comment>
-  </data>
   <data name="KamitraCigars" xml:space="preserve">
     <value>Cigares de Kamitra</value>
     <comment>Commodity KamitraCigars</comment>
@@ -740,10 +736,6 @@
   <data name="KarsukiLocusts" xml:space="preserve">
     <value>Sauterelles de Karsuki</value>
     <comment>Commodity KarsukiLocusts</comment>
-  </data>
-  <data name="KinagoViolins" xml:space="preserve">
-    <value>Violons de Kinago</value>
-    <comment>Commodity KinagoViolins</comment>
   </data>
   <data name="KonggaAle" xml:space="preserve">
     <value>Bière de Kongga</value>
@@ -1058,10 +1050,6 @@
     <value>Écran antiradiation</value>
     <comment>Commodity RadiationBaffle</comment>
   </data>
-  <data name="RajukruMulti_Stoves" xml:space="preserve">
-    <value>Réchaud universel de Rajukru</value>
-    <comment>Commodity RajukruMulti_Stoves</comment>
-  </data>
   <data name="RapaBaoSnakeSkins" xml:space="preserve">
     <value>Peau de serpent Rapa Bao</value>
     <comment>Commodity RapaBaoSnakeSkins</comment>
@@ -1124,10 +1112,7 @@
     <value>Argent</value>
     <comment>Commodity Silver</comment>
   </data>
-  <data name="siriuscommercialcontracts" xml:space="preserve">
-    <value>Contrats commerciaux de Sirius</value>
-    <comment>Commodity siriuscommercialcontracts</comment>
-  </data>
+  
   <data name="siriusfranchisepackage" xml:space="preserve">
     <value>Dossiers marketing de Sirius</value>
     <comment>Commodity siriusfranchisepackage</comment>
@@ -1364,10 +1349,6 @@
     <value>Ailes à faible gravité Uzumoku</value>
     <comment>Commodity UzumokuLow_GWings</comment>
   </data>
-  <data name="VanayequiCeratomorphaFur" xml:space="preserve">
-    <value>Fourrure de cératomorphe de Vanayequi</value>
-    <comment>Commodity VanayequiCeratomorphaFur</comment>
-  </data>
   <data name="VegaSlimweed" xml:space="preserve">
     <value>Algues amincissantes de Vega</value>
     <comment>Commodity VegaSlimweed</comment>
@@ -1429,10 +1410,6 @@
     <value>Feuille de Yaso Kondi</value>
     <comment>Commodity YasoKondiLeaf</comment>
   </data>
-  <data name="ZeesszeAntGrubGlue" xml:space="preserve">
-    <value>Colle de larve de fourmi de Zeessze</value>
-    <comment>Commodity ZeesszeAntGrubGlue</comment>
-  </data>
   <data name="RajukruStoves" xml:space="preserve">
     <value>Réchaud universel de Rajukru</value>
     <comment>Commodity RajukruStoves</comment>
@@ -1470,6 +1447,8 @@
     <value>Dossier de presse d'Aisling</value>
     <comment>Commodity aislingmediamaterials</comment>
   </data>
+  
+  
   
   
 </root>
