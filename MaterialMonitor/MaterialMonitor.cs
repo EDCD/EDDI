@@ -11,6 +11,9 @@ using System.Collections.ObjectModel;
 using System.Collections.Concurrent;
 using Newtonsoft.Json.Linq;
 using System.Threading;
+using System.Windows.Data;
+using System.Windows;
+using System.Windows.Threading;
 
 namespace EddiMaterialMonitor
 {
@@ -20,8 +23,9 @@ namespace EddiMaterialMonitor
     public class MaterialMonitor : EDDIMonitor
     {
         // Observable collection for us to handle
-        public ObservableCollection<MaterialAmount> inventory = new ObservableCollection<MaterialAmount>();
+        public ObservableCollection<MaterialAmount> inventory { get; private set; } = new ObservableCollection<MaterialAmount>();
         private static readonly object inventoryLock = new object();
+        public event EventHandler InventoryUpdatedEvent;
 
         // The material monitor both consumes and emits events, but only one for a given event.  We hold any pending events here so
         // they are fired at the correct time
@@ -54,11 +58,27 @@ namespace EddiMaterialMonitor
 
         public MaterialMonitor()
         {
+            BindingOperations.CollectionRegistering += Inventory_CollectionRegistering;
             readMaterials();
             populateMaterialBlueprints();
             populateMaterialLocations();
             Logging.Info("Initialised " + MonitorName() + " " + MonitorVersion());
         }
+
+        private void Inventory_CollectionRegistering(object sender, CollectionRegisteringEventArgs e)
+        {
+            if (Application.Current != null)
+            {
+                // Synchronize this collection between threads
+                BindingOperations.EnableCollectionSynchronization(inventory, inventoryLock);
+            }
+            else
+            {
+                // If started from VoiceAttack, the dispatcher is on a different thread. Invoke synchronization there.
+                Dispatcher.CurrentDispatcher.Invoke(() => { BindingOperations.EnableCollectionSynchronization(inventory, inventoryLock); });
+            }
+        }
+
 
         public bool NeedsStart()
         {
@@ -83,6 +103,16 @@ namespace EddiMaterialMonitor
         public UserControl ConfigurationTabItem()
         {
             return new ConfigurationWindow();
+        }
+
+        public void EnableConfigBinding(MainWindow configWindow)
+        {
+            configWindow.Dispatcher.Invoke(() => { BindingOperations.EnableCollectionSynchronization(inventory, inventoryLock); });
+        }
+
+        public void DisableConfigBinding(MainWindow configWindow)
+        {
+            configWindow.Dispatcher.Invoke(() => { BindingOperations.DisableCollectionSynchronization(inventory); });
         }
 
         public void PreHandle(Event @event)
@@ -331,6 +361,8 @@ namespace EddiMaterialMonitor
                 configuration.materials = inventory;
                 configuration.ToFile();
             }
+            // Make sure the UI is up to date
+            RaiseOnUIThread(InventoryUpdatedEvent, inventory);
         }
 
         private void readMaterials()
@@ -427,5 +459,22 @@ namespace EddiMaterialMonitor
                 }
             }
         }
+
+        static void RaiseOnUIThread(EventHandler handler, object sender)
+        {
+            if (handler != null)
+            {
+                SynchronizationContext uiSyncContext = SynchronizationContext.Current ?? new SynchronizationContext();
+                if (uiSyncContext == null)
+                {
+                    handler(sender, EventArgs.Empty);
+                }
+                else
+                {
+                    uiSyncContext.Send(delegate { handler(sender, EventArgs.Empty); }, null);
+                }
+            }
+        }
+
     }
 }
