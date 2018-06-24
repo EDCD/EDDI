@@ -19,8 +19,11 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Fixed a bug that had made `{ship.role}` inaccessible via scripts.
     * Updated `FSD engaged` script to correct a bug that was preventing sub-function `System report` from ever running.
     * Updated `Ship refueled` script to correct a bug that would cause it to sometimes report more than 100% fuel after refueling.
+    * Revised punctuation in the various module scripts to speak more naturally (mostly removing commas as in `You have sold a 4-D, Power Plant`).
   * Cargo monitor
     * Discard all cargo if your ship is destroyed.
+  * Localization
+    * Fixed the English pronunciation of "Biowaste" by localizing it to "bio-waste". And there was much rejoicing.
   * Added the following Cottle function, documented in [the SpeechResponder documentation](https://github.com/EDCD/EDDI/blob/master/SpeechResponder/Help.md):
      * `CommodityMarketDetails()` for retrieving market information about commodities.
   * VoiceAttack
