@@ -2788,6 +2788,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Unknown.
+        /// </summary>
+        public static string Unknown {
+            get {
+                return ResourceManager.GetString("Unknown", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Thargoid Sensor.
         /// </summary>
         public static string UnknownArtifact {
@@ -2968,7 +2977,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Vanayequi Ceratomorpha Fur.
+        ///   Looks up a localized string similar to Vanayequi Rhino Fur.
         /// </summary>
         public static string VanayequiRhinoFur {
             get {

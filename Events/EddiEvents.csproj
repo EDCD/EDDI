@@ -63,6 +63,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BeltScannedEvent.cs" />
+    <Compile Include="CargoDepotEvent.cs" />
+    <Compile Include="CargoWingUpdateEvent.cs" />
     <Compile Include="FighterRebuiltEvent.cs" />
     <Compile Include="JetConeDamageEvent.cs" />
     <Compile Include="MaterialTradedEvent.cs" />

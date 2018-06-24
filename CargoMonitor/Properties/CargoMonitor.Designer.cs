@@ -151,11 +151,20 @@ namespace EddiCargoMonitor.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Note that if your inventory is incorrect you will need to start or restart Elite and this information will be updated..
+        ///   Looks up a localized string similar to If your inventory is incorrect you will need to start or restart Elite and this information will be updated..
         /// </summary>
         public static string para2 {
             get {
                 return ResourceManager.GetString("para2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Note: For wing missions in which you have not yet made a collection or delivery, the commodity will be displayed as &apos;Unknown&apos;. The commodity will be updated upon collection or delivery..
+        /// </summary>
+        public static string para3 {
+            get {
+                return ResourceManager.GetString("para3", resourceCulture);
             }
         }
     }
