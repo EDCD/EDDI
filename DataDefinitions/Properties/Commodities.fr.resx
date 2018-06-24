@@ -1422,7 +1422,10 @@
     <value>Sangsues de Kachirigin</value>
     <comment>Commodity KachiriginLeaches</comment>
   </data>
-  
+  <data name="VanayequiRhinoFur" xml:space="preserve">
+    <value>Fourrure de cératomorphe de Vanayequi</value>
+    <comment>Commodity VanayequiRhinoFur</comment>
+  </data>
   <data name="ZeesszeAntGlue" xml:space="preserve">
     <value>Colle de larve de fourmi de Zeessze</value>
     <comment>Commodity ZeesszeAntGlue</comment>
