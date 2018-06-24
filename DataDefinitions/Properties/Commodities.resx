@@ -294,7 +294,7 @@
     <comment>Commodity BioReducingLichen</comment>
   </data>
   <data name="Biowaste" xml:space="preserve">
-    <value>Biowaste</value>
+    <value>Bio-waste</value>
     <comment>Commodity Biowaste</comment>
   </data>
   <data name="Bismuth" xml:space="preserve">

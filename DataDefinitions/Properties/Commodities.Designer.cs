@@ -484,7 +484,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Biowaste.
+        ///   Looks up a localized string similar to Bio-waste.
         /// </summary>
         public static string Biowaste {
             get {
