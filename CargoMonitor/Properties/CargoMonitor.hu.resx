@@ -135,9 +135,7 @@
     <value>Szükséges</value>
     <comment>Tons needed for missions</comment>
   </data>
-  <data name="para2" xml:space="preserve">
-    <value>Megjegyzés: Ha a leltár nem helyes vagy inkorrekt. indítsd el vagy indítsd újra az Elitet és ezek az információk frissítve lesznek.</value>
-  </data>
+  
   <data name="para1" xml:space="preserve">
     <value>Az alábbi lista tartalmazza az összes rakományod.</value>
   </data>
@@ -156,4 +154,5 @@
     <value>Saját</value>
     <comment>Tons of owned cargo carried</comment>
   </data>
+  
 </root>

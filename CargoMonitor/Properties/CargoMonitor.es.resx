@@ -135,9 +135,7 @@
     <value>Necesario</value>
     <comment>Tons needed for missions</comment>
   </data>
-  <data name="para2" xml:space="preserve">
-    <value>Tenga en cuenta que si su inventario es incorrecto, deberá iniciar o reiniciar Elite para que esta información se actualice.</value>
-  </data>
+  
   <data name="para1" xml:space="preserve">
     <value>A continuación tiene una lista de toda su carga.</value>
   </data>
@@ -156,4 +154,5 @@
     <value>De propiedad</value>
     <comment>Tons of owned cargo carried</comment>
   </data>
+  
 </root>
