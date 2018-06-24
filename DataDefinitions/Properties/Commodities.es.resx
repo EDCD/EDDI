@@ -1435,7 +1435,10 @@
     <value>Sanguijuelas filtradoras de Kachirigin</value>
     <comment>Commodity KachiriginLeaches</comment>
   </data>
-  
+  <data name="VanayequiRhinoFur" xml:space="preserve">
+    <value>Piel de ceratomorfo de Vanayequi</value>
+    <comment>Commodity VanayequiRhinoFur</comment>
+  </data>
   <data name="ZeesszeAntGlue" xml:space="preserve">
     <value>Pegamento de larvas de hormiga de Zeessze</value>
     <comment>Commodity ZeesszeAntGlue</comment>
