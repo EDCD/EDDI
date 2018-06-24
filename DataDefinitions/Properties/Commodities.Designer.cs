@@ -2797,7 +2797,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Unknown .
+        ///   Looks up a localized string similar to Unknown.
         /// </summary>
         public static string Unknown {
             get {
