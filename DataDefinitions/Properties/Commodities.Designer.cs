@@ -2977,7 +2977,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Vanayequi Rhino Fur.
+        ///   Looks up a localized string similar to Vanayequi Ceratomorpha Fur.
         /// </summary>
         public static string VanayequiRhinoFur {
             get {
