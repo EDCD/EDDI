@@ -1434,7 +1434,10 @@
     <value>Kachiriginische Lauge</value>
     <comment>Commodity KachiriginLeaches</comment>
   </data>
-  
+  <data name="VanayequiRhinoFur" xml:space="preserve">
+    <value>Vanayequi Ceratomorpha-Fell</value>
+    <comment>Commodity VanayequiRhinoFur</comment>
+  </data>
   <data name="ZeesszeAntGlue" xml:space="preserve">
     <value>Zeesszer Ameisenkleber</value>
     <comment>Commodity ZeesszeAntGlue</comment>
