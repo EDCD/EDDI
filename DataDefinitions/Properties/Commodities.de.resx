@@ -60,45 +60,45 @@
             : and then encoded with base64 encoding.
     -->
   <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
           <xsd:element name="metadata">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0"/>
               </xsd:sequence>
-              <xsd:attribute name="name" use="required" type="xsd:string" />
-              <xsd:attribute name="type" type="xsd:string" />
-              <xsd:attribute name="mimetype" type="xsd:string" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" use="required" type="xsd:string"/>
+              <xsd:attribute name="type" type="xsd:string"/>
+              <xsd:attribute name="mimetype" type="xsd:string"/>
+              <xsd:attribute ref="xml:space"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="assembly">
             <xsd:complexType>
-              <xsd:attribute name="alias" type="xsd:string" />
-              <xsd:attribute name="name" type="xsd:string" />
+              <xsd:attribute name="alias" type="xsd:string"/>
+              <xsd:attribute name="name" type="xsd:string"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="data">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"/>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"/>
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"/>
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"/>
+              <xsd:attribute ref="xml:space"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="resheader">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" />
+              <xsd:attribute name="name" type="xsd:string" use="required"/>
             </xsd:complexType>
           </xsd:element>
         </xsd:choice>
@@ -1121,10 +1121,7 @@
     <value>Silber</value>
     <comment>Commodity Silver</comment>
   </data>
-  <data name="siriuscommercialcontracts" xml:space="preserve">
-    <value>Sirius Geschäftskontakte</value>
-    <comment>Commodity siriuscommercialcontracts</comment>
-  </data>
+  
   <data name="siriusfranchisepackage" xml:space="preserve">
     <value>Sirius Franchise-Paket</value>
     <comment>Commodity siriusfranchisepackage</comment>
@@ -1430,25 +1427,22 @@
     <comment>Commodity RajukruStoves</comment>
   </data>
   <data name="KinagoInstruments" xml:space="preserve">
-    <value>Kinago Violinen</value>
+    <value>Kinago Instrumente</value>
     <comment>Commodity KinagoInstruments</comment>
   </data>
   <data name="KachiriginLeaches" xml:space="preserve">
-    <value>Kachiriginische Blutegel</value>
+    <value>Kachiriginische Lauge</value>
     <comment>Commodity KachiriginLeaches</comment>
   </data>
   <data name="VanayequiRhinoFur" xml:space="preserve">
-    <value>Vanayequi Ceratomorpha-Fell</value>
+    <value>Vanayequinisches Nashorn-Fell</value>
     <comment>Commodity VanayequiRhinoFur</comment>
   </data>
   <data name="ZeesszeAntGlue" xml:space="preserve">
     <value>Zeesszer Ameisenkleber</value>
     <comment>Commodity ZeesszeAntGlue</comment>
   </data>
-  <data name="aislingpromotionalmaterials" xml:space="preserve">
-    <value>Aisling Werbematerial</value>
-    <comment>Commodity aislingpromotionalmaterials</comment>
-  </data>
+  
   <data name="alliancelegaslativerecords" xml:space="preserve">
     <value>Allianz gesetzgebende Aufzeichnungen</value>
     <comment>Commodity alliancelegaslativerecords</comment>
@@ -1465,12 +1459,11 @@
     <value>Aisling Medienberichte</value>
     <comment>Commodity aislingmediamaterials</comment>
   </data>
-  <data name="undergroundsupport" xml:space="preserve">
-    <value>Untergrund-Unterstützung</value>
-    <comment>Commodity undergroundsupport</comment>
-  </data>
+  
   <data name="torvalcommercialcontracts" xml:space="preserve">
     <value>Torval Geschäftskontakte</value>
     <comment>Commodity torvalcommercialcontracts</comment>
   </data>
+  
+  
 </root>
