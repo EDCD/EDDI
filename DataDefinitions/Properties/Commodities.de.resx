@@ -1463,5 +1463,8 @@
   </data>
   
   
-  
+  <data name="Unknown" xml:space="preserve">
+    <value>Unbekannt</value>
+    <comment>Commodity Unknown</comment>
+  </data>
 </root>
