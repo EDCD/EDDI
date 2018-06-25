@@ -293,10 +293,7 @@
     <value>Líquenes biorreductores</value>
     <comment>Commodity BioReducingLichen</comment>
   </data>
-  <data name="Biowaste" xml:space="preserve">
-    <value>Residuos biológicos</value>
-    <comment>Commodity Biowaste</comment>
-  </data>
+  
   <data name="Bismuth" xml:space="preserve">
     <value>Bismuto</value>
     <comment>Commodity Bismuth</comment>
