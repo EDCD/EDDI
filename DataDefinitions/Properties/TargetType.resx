@@ -117,79 +117,28 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Altruism" xml:space="preserve">
-    <value>Donation</value>
+  <data name="BountyHunter" xml:space="preserve">
+    <value>Bounty Hunter</value>
   </data>
-  <data name="AltruismCredits" xml:space="preserve">
-    <value>Donation</value>
+  <data name="Civilian" xml:space="preserve">
+    <value>Civilian</value>
   </data>
-  <data name="Assassinate" xml:space="preserve">
-    <value>Assassination</value>
+  <data name="Miner" xml:space="preserve">
+    <value>Miner</value>
   </data>
-  <data name="AssassinateWing" xml:space="preserve">
-    <value>Wing Assassination</value>
+  <data name="Pirate" xml:space="preserve">
+    <value>Pirate</value>
   </data>
-  <data name="Collect" xml:space="preserve">
-    <value>Collection</value>
+  <data name="Security" xml:space="preserve">
+    <value>Security</value>
   </data>
-  <data name="CollectWing" xml:space="preserve">
-    <value>Wing Collection</value>
+  <data name="Smuggler" xml:space="preserve">
+    <value>Smuggler</value>
   </data>
-  <data name="CommunityGoal" xml:space="preserve">
-    <value>Community Goal</value>
+  <data name="Terrorist" xml:space="preserve">
+    <value>Terrorist</value>
   </data>
-  <data name="Courier" xml:space="preserve">
-    <value>Data Courier</value>
-  </data>
-  <data name="Delivery" xml:space="preserve">
-    <value>Delivery</value>
-  </data>
-  <data name="DeliveryWing" xml:space="preserve">
-    <value>Wing Delivery</value>
-  </data>
-  <data name="Disable" xml:space="preserve">
-    <value>Disable Surface Installation</value>
-  </data>
-  <data name="LongDistanceExpedition" xml:space="preserve">
-    <value>Expedition</value>
-  </data>
-  <data name="Massacre" xml:space="preserve">
-    <value>Massacre</value>
-  </data>
-  <data name="MassacreWing" xml:space="preserve">
-    <value>Wing Massacre</value>
-  </data>
-  <data name="Mining" xml:space="preserve">
-    <value>Mining</value>
-  </data>
-  <data name="None" xml:space="preserve">
-    <value>None</value>
-  </data>
-  <data name="PassengerBulk" xml:space="preserve">
-    <value>Transport</value>
-  </data>
-  <data name="PassengerVIP" xml:space="preserve">
-    <value>Transport</value>
-  </data>
-  <data name="Permit" xml:space="preserve">
-    <value>Permit Aquisition</value>
-  </data>
-  <data name="Piracy" xml:space="preserve">
-    <value>Piracy</value>
-  </data>
-  <data name="Rescue" xml:space="preserve">
-    <value>Rescue</value>
-  </data>
-  <data name="Salvage" xml:space="preserve">
-    <value>Salvage</value>
-  </data>
-  <data name="Scan" xml:space="preserve">
-    <value>Surface Scan</value>
-  </data>
-  <data name="Sightseeing" xml:space="preserve">
-    <value>Sightseeing</value>
-  </data>
-  <data name="Smuggle" xml:space="preserve">
-    <value>Smuggling</value>
+  <data name="Trader" xml:space="preserve">
+    <value>Trader</value>
   </data>
 </root>

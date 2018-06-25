@@ -388,6 +388,7 @@ namespace EddiMissionMonitor
                     MissionStatus status = MissionStatus.FromEDName("Active");
                     mission = new Mission(@event.cgid[i], "MISSION_CommunityGoal", DateTime.Now.AddSeconds(@event.expiry[i]), status)
                     {
+                        localisedname = @event.name[i],
                         originstation = @event.station[i]
                     };
 
@@ -541,7 +542,6 @@ namespace EddiMissionMonitor
 
                     // Missions with targets
                     target = @event.target,
-                    targettype = @event.targettype,
                     targetfaction = @event.targetfaction,
 
                     // Missions with passengers
@@ -552,13 +552,33 @@ namespace EddiMissionMonitor
 
                 string type = mission.typeEDName.ToLowerInvariant();
 
-                // Get the faction state (Boom, Bust, Civil War, etc), if available
-                string state = mission.name.Split('_').ElementAtOrDefault(2)?.ToLowerInvariant();
-                mission.factionstate = SystemState.FromEDName(state)?.localizedName;
-                if (mission.factionstate == null)
+                // Get the target type (Civilian, Pirate, Trader, etc), if available
+                for (int i = 1; i < @event.targettype.Split('_').Count(); i++)
                 {
-                    state = mission.name.Split('_').ElementAtOrDefault(3)?.ToLowerInvariant();
-                    mission.factionstate = SystemState.FromEDName(state)?.localizedName;
+                    TargetType targetType = TargetType.FromEDName(@event.targettype
+                        .Replace(";", "")
+                        .Split('_')
+                        .ElementAtOrDefault(i)
+                        .ToLowerInvariant());
+                    if (targetType != null)
+                    {
+                        mission.targetTypeEDName = targetType.edname;
+                        break;
+                    }
+                }
+
+                    // Get the faction state (Boom, Bust, Civil War, etc), if available
+                    for (int i = 2; i < mission.name.Split('_').Count(); i++)
+                {
+                    string factionState = SystemState.FromEDName(mission.name.Split('_')
+                        .ElementAtOrDefault(i)?
+                        .ToLowerInvariant())?
+                        .localizedName;
+                    if (factionState != null)
+                    {
+                        mission.factionstate = factionState;
+                        break;
+                    }
                 }
 
                 // Mission returns to origin
@@ -567,12 +587,14 @@ namespace EddiMissionMonitor
                     case "altruism":
                     case "altruismcredits":
                     case "assassinate":
+                    case "assassinatewing":
                     case "collect":
                     case "collectwing":
                     case "communitygoal":
                     case "disable":
                     case "longdistanceexpedition":
                     case "massacre":
+                    case "massacrewing":
                     case "mining":
                     case "piracy":
                     case "sightseeing":
@@ -703,7 +725,12 @@ namespace EddiMissionMonitor
                     string type = mission.typeEDName.ToLowerInvariant();
                     switch (type)
                     {
+                        case "assassinate":
+                        case "assassinatewing":
                         case "collect":
+                        case "collectwing":
+                        case "massacre":
+                        case "massacrewing":
                         case "mining":
                         case "piracy":
                         case "rescue":
@@ -741,7 +768,7 @@ namespace EddiMissionMonitor
                 MissionMonitorConfiguration configuration = new MissionMonitorConfiguration();
 
                 configuration.missions = missions;
-                missioncount = missions.Count;
+                missioncount = missions.Where(m => !m.shared && !m.communal).Count();
                 configuration.missioncount = missioncount;
                 configuration.warning = warning;
                 configuration.ToFile();

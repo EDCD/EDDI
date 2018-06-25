@@ -18,7 +18,7 @@
         </StackPanel>
         <DataGrid Margin="0,5" AutoGenerateColumns="False" x:Name="missionsData" CanUserAddRows="false" CanUserDeleteRows="False" TargetUpdated="missionsUpdated">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="{x:Static resx:MissionMonitor.header_type}" Width="120" IsReadOnly="True" Binding="{Binding Path=localizedType}">
+                <DataGridTextColumn Header="{x:Static resx:MissionMonitor.header_type}" Width="140" IsReadOnly="True" Binding="{Binding Path=localizedType}">
                     <DataGridTextColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader">
                             <Setter Property="HorizontalContentAlignment" Value="Center" />

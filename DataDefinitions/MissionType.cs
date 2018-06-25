@@ -21,6 +21,7 @@ namespace EddiDataDefinitions
             var Altruism = new MissionType("Altruism");
             var AltruismCredits = new MissionType("AltruismCredits");
             var Assassinate = new MissionType("Assassinate");
+            var AssassinateWing = new MissionType("AssassinateWing");
             var Collect = new MissionType("Collect");
             var CollectWing = new MissionType("CollectWing");
             var CommunityGoal = new MissionType("CommunityGoal");
@@ -30,6 +31,7 @@ namespace EddiDataDefinitions
             var Disable = new MissionType("Disable");
             var LongDistanceExpedition = new MissionType("LongDistanceExpedition");
             var Massacre = new MissionType("Massacre");
+            var MassacreWing = new MissionType("MassacreWing");
             var Mining = new MissionType("Mining");
             var None = new MissionType("None");
             var PassengerBulk = new MissionType("PassengerBulk");

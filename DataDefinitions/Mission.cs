@@ -165,8 +165,10 @@ namespace EddiDataDefinitions
         public bool? passengervips { get; set; }
 
         public string target { get; set; }
-        public string targettype { get; set; }
         public string targetfaction { get; set; }
+        public string targetTypeEDName;
+        [JsonIgnore]
+        public string targettype => TargetType.FromEDName(targetTypeEDName)?.localizedName;
 
         public DateTime? expiry { get; set; }
         [JsonIgnore]

@@ -400,6 +400,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>SystemStates.resx</DependentUpon>
     </Compile>
+    <Compile Include="Properties\TargetType.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TargetType.resx</DependentUpon>
+    </Compile>
     <Compile Include="Properties\TradeRatings.es.Designer.cs">
       <DependentUpon>TradeRatings.es.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -490,6 +495,7 @@
     <Compile Include="EmpireRating.cs" />
     <Compile Include="ExplorationRating.cs" />
     <Compile Include="Role.cs" />
+    <Compile Include="TargetType.cs" />
     <Compile Include="Vehicle.cs" />
     <Compile Include="Volcanism.cs" />
     <Compile Include="VolcanismConverter.cs" />
@@ -871,6 +877,10 @@
     <EmbeddedResource Include="Properties\SystemStates.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>SystemStates.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\TargetType.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>TargetType.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\TradeRatings.de.resx" />
     <EmbeddedResource Include="Properties\TradeRatings.es.resx">

@@ -731,7 +731,7 @@ namespace EddiCargoMonitor
                         if (amount > 0)
                         {
                             string updatetype = @event.collected > haulage.collected ? "Collect" : "Deliver";
-                            EDDI.Instance.eventHandler(new CargoWingUpdateEvent(DateTime.Now, haulage.missionid, updatetype, cargo.commodityDef, amount, amountRemaining));
+                            EDDI.Instance.eventHandler(new CargoWingUpdateEvent(DateTime.Now, haulage.missionid, updatetype, cargo.commodityDef, amount, @event.collected, @event.delivered, @event.totaltodeliver));
                         }
                         cargo.CalculateNeed();
                         haulage.collected = @event.collected;
@@ -756,40 +756,36 @@ namespace EddiCargoMonitor
 
         public void _handleMissionAbandonedEvent(MissionAbandonedEvent @event)
         {
-            foreach (Cargo inventoryCargo in inventory)
+            Cargo cargo = GetCargoWithMissionId(@event.missionid ?? 0);
+            Haulage haulage = cargo.haulageData.FirstOrDefault(ha => ha.missionid == @event.missionid);
+            if (haulage != null)
             {
-                Haulage haulage = inventoryCargo.haulageData.FirstOrDefault(ha => ha.missionid == @event.missionid);
-                if (haulage != null)
+                switch (haulage.type)
                 {
-                    switch (haulage.type)
-                    {
-                        case "delivery":
-                        case "deliverywing":
-                        case "rescue":
-                        case "salvage":
-                        case "smuggle":
-                            {
-                                // Calculate the amount of mission-related cargo still in inventory
-                                int obtained = haulage.amount - inventoryCargo.ejected;
-                                obtained = Math.Min(inventoryCargo.haulage, obtained);
+                    case "delivery":
+                    case "deliverywing":
+                    case "rescue":
+                    case "salvage":
+                    case "smuggle":
+                        {
+                            // Calculate the amount of mission-related cargo still in inventory
+                            int obtained = haulage.amount - cargo.ejected;
+                            obtained = Math.Min(cargo.haulage, obtained);
 
-                                // Convert that amount of cargo from `haulage` to `stolen`
-                                inventoryCargo.haulage -= obtained;
-                                inventoryCargo.stolen += obtained;
+                            // Convert that amount of cargo from `haulage` to `stolen`
+                            cargo.haulage -= obtained;
+                            cargo.stolen += obtained;
 
-                                // Reduce our `need` counter by the amount of mission related cargo which had not yet been obtained.
-                                inventoryCargo.need -= (haulage.amount - obtained);
+                            // Reduce our `need` counter by the amount of mission related cargo which had not yet been obtained.
+                            cargo.need -= (haulage.amount - obtained);
 
-                                // We didn't fail for ejecting cargo so we set this counter to zero
-                                inventoryCargo.ejected = 0;
-                            }
-                            break;
-                    }
-                    inventoryCargo.haulageData.Remove(haulage);
-
-                    RemoveCargo(inventoryCargo);
-                    break;
+                            // We didn't fail for ejecting cargo so we set this counter to zero
+                            cargo.ejected = 0;
+                        }
+                        break;
                 }
+                cargo.haulageData.Remove(haulage);
+                RemoveCargo(cargo);
             }
         }
 
@@ -952,14 +948,11 @@ namespace EddiCargoMonitor
 
         public void _handleMissionExpiredEvent(MissionExpiredEvent @event)
         {
-            foreach (Cargo Cargo in inventory.ToList())
+            Cargo cargo = GetCargoWithMissionId(@event.missionid ?? 0);
+            Haulage haulage = cargo.haulageData.FirstOrDefault(ha => ha.missionid == @event.missionid);
+            if (haulage != null)
             {
-                Haulage haulage = Cargo.haulageData.FirstOrDefault(ha => ha.missionid == @event.missionid);
-                if (haulage != null)
-                {
-                    haulage.status = "Failed";
-                    break;
-                }
+                haulage.status = "Failed";
             }
         }
 
@@ -1241,7 +1234,7 @@ namespace EddiCargoMonitor
 
         private Cargo GetCargoWithMissionId(long missionid)
         {
-            foreach (Cargo cargo in inventory)
+            foreach (Cargo cargo in inventory.ToList())
             {
                 if (cargo.haulageData.FirstOrDefault(ha => ha.missionid == missionid) != null)
                 {

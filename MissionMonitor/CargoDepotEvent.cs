@@ -23,7 +23,6 @@ namespace EddiMissionMonitor
             VARIABLES.Add("collected", "The total amount of cargo collected");
             VARIABLES.Add("delivered", "The total amount of cargo delivered");
             VARIABLES.Add("totaltodeliver", "The total amount of cargo to deliver to complete the mission");
-            VARIABLES.Add("progress", "The total amount of cargo to delivered");
         }
 
         public long? missionid { get; private set; }
@@ -46,9 +45,7 @@ namespace EddiMissionMonitor
 
         public int totaltodeliver { get; private set; }
 
-        public decimal progress { get; private set; }
-
-        public CargoDepotEvent(DateTime timestamp, long? missionid, string updatetype, CommodityDefinition commodity, int? amount, int startmarketid, int endmarketid, int collected, int delivered, int totaltodeliver, decimal progress) : base(timestamp, NAME)
+        public CargoDepotEvent(DateTime timestamp, long? missionid, string updatetype, CommodityDefinition commodity, int? amount, int startmarketid, int endmarketid, int collected, int delivered, int totaltodeliver) : base(timestamp, NAME)
         {
             this.missionid = missionid;
             this.updatetype = updatetype;
@@ -59,7 +56,6 @@ namespace EddiMissionMonitor
             this.collected = collected;
             this.delivered = delivered;
             this.totaltodeliver = totaltodeliver;
-            this.progress = progress;
         }
     }
 }

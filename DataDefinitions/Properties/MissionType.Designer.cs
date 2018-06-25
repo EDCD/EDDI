@@ -88,6 +88,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Wing Assassination.
+        /// </summary>
+        internal static string AssassinateWing {
+            get {
+                return ResourceManager.GetString("AssassinateWing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Collection.
         /// </summary>
         internal static string Collect {
@@ -165,6 +174,15 @@ namespace EddiDataDefinitions.Properties {
         internal static string Massacre {
             get {
                 return ResourceManager.GetString("Massacre", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Wing Massacre.
+        /// </summary>
+        internal static string MassacreWing {
+            get {
+                return ResourceManager.GetString("MassacreWing", resourceCulture);
             }
         }
         
