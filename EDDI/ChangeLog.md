@@ -4,10 +4,12 @@ Full details of the variables available for each noted event, and VoiceAttack in
 
 ### 3.0.1-rc1
   * Core
-    * Updated system definition to include new variable `lastVisitSeconds`. 
     * The Search and rescue event was having its `commodity` property set to just the commodity name, rather than the commodity definition object that scripts expect. Fixed.
     * Updated the `Ship refueled` event to include new boolean value `full`. True if this is a full refill and false if this is a partial refill.
+    * Updated system definition to include new variable `lastVisitSeconds`. 
   * Speech responder
+    * Added the following Cottle function, documented in [the SpeechResponder documentation](https://github.com/EDCD/EDDI/blob/master/SpeechResponder/Help.md):
+       * `CommodityMarketDetails()` for retrieving market information about commodities.
     * Updated the following events to include new properties `stationtype` and `stationDefinition`:
       * `Docking cancelled`
       * `Docking denied`
@@ -24,10 +26,8 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Discard all cargo if your ship is destroyed.
   * Localization
     * Fixed the English pronunciation of "Biowaste" by localizing it to "bio-waste". And there was much rejoicing.
-  * Added the following Cottle function, documented in [the SpeechResponder documentation](https://github.com/EDCD/EDDI/blob/master/SpeechResponder/Help.md):
-     * `CommodityMarketDetails()` for retrieving market information about commodities.
   * VoiceAttack
-    * The Search and rescue event has a new variable `{TXT:localizedcommodityname}` as the `commodity` varaible is now an object.
+    * The Search and rescue event has a new variable `{TXT:localizedcommodityname}` because the `commodity` varaible is now an object.
 
 ### 3.0.1-b4
   * Core
