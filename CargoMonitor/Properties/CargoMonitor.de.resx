@@ -135,7 +135,9 @@
     <value>Benötigt</value>
     <comment>Tons needed for missions</comment>
   </data>
-  
+  <data name="para2" xml:space="preserve">
+    <value>Wenn Ihr Inventar falsch ist, müssen Sie Elite starten bzw. neu starten, dann werden diese Informationen aktualisiert.</value>
+  </data>
   <data name="para1" xml:space="preserve">
     <value>Unten finden Sie eine Liste Ihrer gesamten Fracht.</value>
   </data>
@@ -154,5 +156,7 @@
     <value>Im Besitz</value>
     <comment>Tons of owned cargo carried</comment>
   </data>
-  
+  <data name="para3" xml:space="preserve">
+    <value>Hinweis: Für Wing-Missionen, in denen Sie noch keine Sammlung oder Lieferung durchgeführt haben, wird die Ware als "Unbekannt" angezeigt. Die Ware wird bei Abholung oder Lieferung aktualisiert.</value>
+  </data>
 </root>
