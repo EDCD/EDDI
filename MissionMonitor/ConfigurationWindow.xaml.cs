@@ -23,7 +23,7 @@ namespace EddiMissionMonitor
             missionsData.ItemsSource = monitor.missions;
 
             MissionMonitorConfiguration configuration = MissionMonitorConfiguration.FromFile();
-            missionWarningInt.Text = configuration.warning?.ToString(CultureInfo.InvariantCulture);
+            missionWarningInt.Text = configuration.missionWarning?.ToString(CultureInfo.InvariantCulture);
 
         }
 
@@ -39,8 +39,8 @@ namespace EddiMissionMonitor
             try
             {
                 int? warning = string.IsNullOrWhiteSpace(missionWarningInt.Text) ? 60 : Convert.ToInt32(missionWarningInt.Text, CultureInfo.InvariantCulture);
-                ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor")).warning = warning;
-                configuration.warning = warning;
+                ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor")).missionWarning = warning;
+                configuration.missionWarning = warning;
                 configuration.ToFile();
             }
             catch

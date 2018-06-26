@@ -12,8 +12,8 @@ namespace EddiMissionMonitor
     {
         public ObservableCollection<Mission> missions { get; set; }
 
-        public int missioncount { get; set; }
-        public int? warning { get; set; }
+        public int missionsCount { get; set; }
+        public int? missionWarning { get; set; }
 
         [JsonIgnore]
         private string dataPath;
