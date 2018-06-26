@@ -293,7 +293,10 @@
     <value>Bioreduzierende Flechten</value>
     <comment>Commodity BioReducingLichen</comment>
   </data>
-  
+  <data name="Biowaste" xml:space="preserve">
+    <value>Biomüll</value>
+    <comment>Commodity Biowaste</comment>
+  </data>
   <data name="Bismuth" xml:space="preserve">
     <value>Wismut</value>
     <comment>Commodity Bismuth</comment>
