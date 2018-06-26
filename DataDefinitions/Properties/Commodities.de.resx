@@ -1121,7 +1121,10 @@
     <value>Silber</value>
     <comment>Commodity Silver</comment>
   </data>
-  
+  <data name="siriuscommercialcontracts" xml:space="preserve">
+    <value>Sirius Geschäftskontakte</value>
+    <comment>Commodity siriuscommercialcontracts</comment>
+  </data>
   <data name="siriusfranchisepackage" xml:space="preserve">
     <value>Sirius Franchise-Paket</value>
     <comment>Commodity siriusfranchisepackage</comment>
@@ -1442,7 +1445,10 @@
     <value>Zeesszer Ameisenkleber</value>
     <comment>Commodity ZeesszeAntGlue</comment>
   </data>
-  
+  <data name="aislingpromotionalmaterials" xml:space="preserve">
+    <value>Aisling Werbematerial</value>
+    <comment>Commodity aislingpromotionalmaterials</comment>
+  </data>
   <data name="alliancelegaslativerecords" xml:space="preserve">
     <value>Allianz gesetzgebende Aufzeichnungen</value>
     <comment>Commodity alliancelegaslativerecords</comment>
@@ -1459,13 +1465,22 @@
     <value>Aisling Medienberichte</value>
     <comment>Commodity aislingmediamaterials</comment>
   </data>
-  
+  <data name="undergroundsupport" xml:space="preserve">
+    <value>Grom Untergrund-Unterstützung</value>
+    <comment>Commodity undergroundsupport</comment>
+  </data>
   <data name="torvalcommercialcontracts" xml:space="preserve">
     <value>Torval Geschäftskontakte</value>
     <comment>Commodity torvalcommercialcontracts</comment>
   </data>
-  
-  
+  <data name="lavignygarisonsupplies" xml:space="preserve">
+    <value>Lavigny's Garnisonszubehör</value>
+    <comment>Commodity lavignygarisonsupplies</comment>
+  </data>
+  <data name="lavignycorruptiondossiers" xml:space="preserve">
+    <value>Lavigny's Korruptionsberichte</value>
+    <comment>Commodity lavignycorruptiondossiers</comment>
+  </data>
   <data name="Unknown" xml:space="preserve">
     <value>Unbekannt</value>
     <comment>Commodity Unknown</comment>
