@@ -135,7 +135,9 @@
     <value>Nécessaire</value>
     <comment>Tons needed for missions</comment>
   </data>
-  
+  <data name="para2" xml:space="preserve">
+    <value>Si votre inventaire est incorrect, vous devez démarrer ou redémarrer Elite pour que les informations se mettent à jour.</value>
+  </data>
   <data name="para1" xml:space="preserve">
     <value>Voici une liste de tout le contenu de votre soute.</value>
   </data>
@@ -154,5 +156,7 @@
     <value>Possédé</value>
     <comment>Tons of owned cargo carried</comment>
   </data>
-  
+  <data name="para3" xml:space="preserve">
+    <value>Remarque: Pour les missions d'escadrille dans lesquelles vous n'avez pas encore effectué de collecte ou de livraison, la marchandise sera affichée comme "Inconnu". Le produit sera mis à jour lors de la collecte ou de la livraison.</value>
+  </data>
 </root>
