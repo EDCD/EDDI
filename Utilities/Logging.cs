@@ -186,18 +186,19 @@ namespace Utilities
 
         private static void SendToRollbar(string message, object data, Dictionary<string, object> thisData, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "", string level = "Info")
         {
+            string personID = RollbarLocator.RollbarInstance.Config.Person.Id;
             switch (level)
             {
                 case "Error":
                     RollbarLocator.RollbarInstance.Error(message, thisData);
-                    Error("Reporting error, anonymous ID " + RollbarLocator.RollbarInstance.Config.Person.Id + ": " + filePath, memberName, "E", message + " " + data);
+                    log($"Reporting error, anonymous ID {personID}: {filePath}", memberName, "E", $"{message} {data}");
                     break;
                 default:
                     // If this is an Info Report, report only unique messages and data
                     if (isUniqueMessage(message, thisData))
                     {
                         RollbarLocator.RollbarInstance.Info(message, thisData);
-                        Info("Reporting unique data, anonymous ID " + RollbarLocator.RollbarInstance.Config.Person.Id + ": " + message + thisData);
+                        log($"Reporting unique data, anonymous ID {personID}: {filePath}", memberName, "I", $"{message} {data}");
                     }
                     break;
             }
