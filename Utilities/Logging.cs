@@ -94,7 +94,7 @@ namespace Utilities
                     {
                         string timestamp = DateTime.UtcNow.ToString("s", System.Globalization.CultureInfo.InvariantCulture);
                         string shortPath = Path.GetFileNameWithoutExtension(path);
-                        file.WriteLine($"{timestamp} {shortPath}:{method} [{errorlevel}] {data}");
+                        file.WriteLine($"{timestamp} [{errorlevel}] {shortPath}:{method} {data}");
                     }
                 }
                 catch (Exception)
