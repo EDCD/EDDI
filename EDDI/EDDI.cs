@@ -1305,9 +1305,16 @@ namespace Eddi
 
         private bool eventStatus(StatusEvent theEvent)
         {
-            if (theEvent.status.supercruise == true)
+            if (Environment != Constants.ENVIRONMENT_WITCH_SPACE)
             {
-                Environment = Constants.ENVIRONMENT_SUPERCRUISE;
+                if (theEvent.status.supercruise)
+                {
+                    Environment = Constants.ENVIRONMENT_SUPERCRUISE;
+                }
+                else
+                {
+                    Environment = Constants.ENVIRONMENT_NORMAL_SPACE;
+                }
             }
             Vehicle = theEvent.status.vehicle;
             return true;
