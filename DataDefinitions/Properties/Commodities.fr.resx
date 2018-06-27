@@ -293,7 +293,10 @@
     <value>Lichen bioréducteur</value>
     <comment>Commodity BioReducingLichen</comment>
   </data>
-  
+  <data name="Biowaste" xml:space="preserve">
+    <value>Biodéchets</value>
+    <comment>Commodity Biowaste</comment>
+  </data>
   <data name="Bismuth" xml:space="preserve">
     <value>Bismuth</value>
     <comment>Commodity Bismuth</comment>
@@ -1109,7 +1112,10 @@
     <value>Argent</value>
     <comment>Commodity Silver</comment>
   </data>
-  
+  <data name="siriuscommercialcontracts" xml:space="preserve">
+    <value>Contrats de Sirius</value>
+    <comment>Commodity siriuscommercialcontracts</comment>
+  </data>
   <data name="siriusfranchisepackage" xml:space="preserve">
     <value>Dossiers marketing de Sirius</value>
     <comment>Commodity siriusfranchisepackage</comment>
@@ -1427,7 +1433,10 @@
     <value>Colle de larve de fourmi de Zeessze</value>
     <comment>Commodity ZeesszeAntGlue</comment>
   </data>
-  
+  <data name="aislingpromotionalmaterials" xml:space="preserve">
+    <value>Programmes d'Aisling</value>
+    <comment>Commodity aislingpromotionalmaterials</comment>
+  </data>
   <data name="alliancelegaslativerecords" xml:space="preserve">
     <value>Dossiers législatifs de l'Alliance</value>
     <comment>Commodity alliancelegaslativerecords</comment>
@@ -1444,9 +1453,24 @@
     <value>Dossier de presse d'Aisling</value>
     <comment>Commodity aislingmediamaterials</comment>
   </data>
-  
-  
-  
-  
-  
+  <data name="undergroundsupport" xml:space="preserve">
+    <value>Ravitaillement clandestin de Grom</value>
+    <comment>Commodity undergroundsupport</comment>
+  </data>
+  <data name="torvalcommercialcontracts" xml:space="preserve">
+    <value>Accords commerciaux de Torval</value>
+    <comment>Commodity torvalcommercialcontracts</comment>
+  </data>
+  <data name="lavignygarisonsupplies" xml:space="preserve">
+    <value>Ravitaillement de garnison d'Arissa</value>
+    <comment>Commodity lavignygarisonsupplies</comment>
+  </data>
+  <data name="lavignycorruptiondossiers" xml:space="preserve">
+    <value>Rapports de corruption d'Arissa</value>
+    <comment>Commodity lavignycorruptiondossiers</comment>
+  </data>
+  <data name="Unknown" xml:space="preserve">
+    <value>Inconnu</value>
+    <comment>Commodity Unknown</comment>
+  </data>
 </root>
