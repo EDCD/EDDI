@@ -2,6 +2,10 @@
 
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
+### 3.0.1-rc2
+  * Core
+    * Revised EDDI's logging code and removed an unintended recursion that could cause the log to bloat.
+
 ### 3.0.1-rc1
   * Core
     * The Search and rescue event was having its `commodity` property set to just the commodity name, rather than the commodity definition object that scripts expect. Fixed.
