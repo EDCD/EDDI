@@ -121,15 +121,11 @@ namespace Utilities
 
         public static void Report(string message, object data = null, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "", string level = "Info")
         {
-#if DEBUG
-            Debug(message, data?.ToString(), memberName, filePath);
-#else
             Dictionary<string, object> thisData = PrepRollbarData(message, ref data);
             if (thisData != null)
             {
                 var rollbarReport = System.Threading.Tasks.Task.Run(() => SendToRollbar(message, data, thisData, memberName, filePath, level));
             }
-#endif
         }
 
         private static Dictionary<string, object> PrepRollbarData(string message, ref object data)
@@ -233,6 +229,11 @@ namespace Utilities
                     Root = "/"
                 },
                 MaxReportsPerMinute = 1,
+#if DEBUG
+                Enabled = false,
+#else
+                Enabled = true,
+#endif
             };
             RollbarLocator.RollbarInstance.Configure(config);
         }
