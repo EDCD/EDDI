@@ -50,7 +50,7 @@ namespace EddiDataDefinitions
             Engineer result = ENGINEERS.FirstOrDefault(v => v.engineerId == from);
             if (result == null)
             {
-                Logging.Report("Unknown Engineer ID " + from);
+                Logging.Info("Unknown Engineer ID " + from);
             }
             return result;
         }
@@ -61,7 +61,7 @@ namespace EddiDataDefinitions
             Engineer result = ENGINEERS.FirstOrDefault(v => v.engineerName == from);
             if (result == null)
             {
-                Logging.Report("Unknown Engineer name " + from);
+                Logging.Info("Unknown Engineer name " + from);
             }
             return result;
         }

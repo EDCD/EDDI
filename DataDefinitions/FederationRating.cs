@@ -47,7 +47,7 @@ namespace EddiDataDefinitions
             FederationRating result = AllOfThem.FirstOrDefault(v => v.rank == from);
             if (result == null)
             {
-                Logging.Report("Unknown Federation Rating rank " + from);
+                Logging.Info("Unknown Federation Rating rank " + from);
             }
             return result;
         }

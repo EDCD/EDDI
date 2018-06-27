@@ -94,7 +94,7 @@ namespace EddiDataDefinitions
                 .Replace(";", "") == tidiedFrom);
             if (result == null)
             {
-                Logging.Report($"Unknown ED name {from} in resource {resourceManager.BaseName}");
+                Logging.Info($"Unknown ED name {from} in resource {resourceManager.BaseName}");
                 if (missingEDNameHandler != null)
                 {
                     result = missingEDNameHandler(from);

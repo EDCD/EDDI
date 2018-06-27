@@ -624,7 +624,7 @@ namespace EddiCompanionAppService
                                 if (Module?.invariantName == null)
                                 {
                                     // Unknown module; report the full object so that we can update the definitions
-                                    Logging.Report("Module definition error: " + (string)module["name"], JsonConvert.SerializeObject(module));
+                                    Logging.Info("Module definition error: " + (string)module["name"], JsonConvert.SerializeObject(module));
                                 }
                                 Module.price = module["cost"];
                                 Modules.Add(Module);
@@ -710,7 +710,7 @@ namespace EddiCompanionAppService
                         if (commodityDef.edname != "Drones")
                         {
                             // Unknown commodity; report the full object so that we can update the definitions
-                            Logging.Report("Commodity definition error: " + (string)commodity["name"], JsonConvert.SerializeObject(commodity));
+                            Logging.Info("Commodity definition error: " + (string)commodity["name"], JsonConvert.SerializeObject(commodity));
                         }
                     }
                 }

@@ -40,7 +40,7 @@ namespace EddiDataDefinitions
             CombatRating result = AllOfThem.FirstOrDefault(v => v.rank == from);
             if (result == null)
             {
-                Logging.Report("Unknown Combat Rating rank " + from);
+                Logging.Info("Unknown Combat Rating rank " + from);
             }
             return result;
         }

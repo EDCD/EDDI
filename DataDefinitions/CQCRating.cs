@@ -40,7 +40,7 @@ namespace EddiDataDefinitions
             CQCRating result = AllOfThem.FirstOrDefault(v => v.rank == from);
             if (result == null)
             {
-                Logging.Report("Unknown CQC Rating rank " + from);
+                Logging.Info("Unknown CQC Rating rank " + from);
             }
             return result;
         }

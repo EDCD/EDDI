@@ -140,7 +140,7 @@ namespace EddiDataProviderService
                         Station.model = ((string)station["type"]);
                         if (!stationModels.Contains((string)station["type"]))
                         {
-                            Logging.Report("Unknown station model " + ((string)station["type"]));
+                            Logging.Info("Unknown station model " + ((string)station["type"]));
                         }
                     }
 

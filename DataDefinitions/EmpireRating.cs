@@ -85,7 +85,7 @@ namespace EddiDataDefinitions
                 );
             if (result == null)
             {
-                Logging.Report("Unknown Empire Rating name " + from);
+                Logging.Info("Unknown Empire Rating name " + from);
             }
             return result;
         }
@@ -101,7 +101,7 @@ namespace EddiDataDefinitions
             EmpireRating result = AllOfThem.FirstOrDefault(v => v.edname.ToLowerInvariant() == tidiedFrom);
             if (result == null)
             {
-                Logging.Report("Unknown Empire Rating ED name " + from);
+                Logging.Info("Unknown Empire Rating ED name " + from);
             }
             return result;
         }
@@ -111,7 +111,7 @@ namespace EddiDataDefinitions
             EmpireRating result = AllOfThem.FirstOrDefault(v => v.rank == from);
             if (result == null)
             {
-                Logging.Report("Unknown Empire Rating rank " + from);
+                Logging.Info("Unknown Empire Rating rank " + from);
             }
             return result;
         }

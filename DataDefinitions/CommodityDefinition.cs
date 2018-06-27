@@ -427,7 +427,7 @@ namespace EddiDataDefinitions
             }
             catch(KeyNotFoundException)
             {
-                Logging.Report($"Unrecognized Commodity Definition EliteID {id}");
+                Logging.Info($"Unrecognized Commodity Definition EliteID {id}");
                 throw;
             }
         }

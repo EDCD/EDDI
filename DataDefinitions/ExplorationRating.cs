@@ -40,7 +40,7 @@ namespace EddiDataDefinitions
             ExplorationRating result = AllOfThem.FirstOrDefault(v => v.rank == from);
             if (result == null)
             {
-                Logging.Report("Unknown Exploration Rating rank " + from);
+                Logging.Info("Unknown Exploration Rating rank " + from);
             }
             return result;
         }

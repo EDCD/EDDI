@@ -40,7 +40,7 @@ namespace EddiDataDefinitions
             TradeRating result = AllOfThem.FirstOrDefault(v => v.rank == from);
             if (result == null)
             {
-                Logging.Report("Unknown Trade Rating rank " + from);
+                Logging.Info("Unknown Trade Rating rank " + from);
             }
             return result;
         }

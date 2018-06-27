@@ -230,7 +230,7 @@ namespace EddiDataDefinitions
             Material result = AllOfThem.FirstOrDefault(v => v.symbol == from);
             if (result == null)
             {
-                Logging.Report("Unknown material symbol " + from);
+                Logging.Info("Unknown material symbol " + from);
             }
             return result;
         }
