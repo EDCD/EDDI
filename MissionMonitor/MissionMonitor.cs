@@ -846,7 +846,7 @@ namespace EddiMissionMonitor
             writeMissions();
         }
 
-        public bool CalculateMissionsRoute(string homesystem)
+        public bool BuildMissionsRoute(string homesystem)
         {
             missionsRouteList = String.Empty;
             missionsRouteTotalDistance = 0;
@@ -858,39 +858,60 @@ namespace EddiMissionMonitor
             List<string> systems = new List<string>();      // List of eligible mission destintaion systems
 
             // If 'home system' is null, default to the current star system
-            string currentsystem = EDDI.Instance.CurrentStarSystem.name;
+            string currentsystem = EDDI.Instance?.CurrentStarSystem?.name;
             if (homesystem == null)
             {
                 homesystem = currentsystem;
             }
             systems.Add(homesystem);
 
-            // Build 'return to origin' and destination system list only for active missions
-            foreach (Mission mission in missions.Where(m => m.statusEDName == "Active").ToList())
+            // Add origin systems for 'return to origin' missions to the 'systems' list
+            foreach (Mission mission in missions.Where(m => m.statusEDName != "Failed").ToList())
             {
-                // Add origin systems for missions that are 'return to origin' to the list
-                if (mission.originreturn)
+                if (mission.originreturn && !systems.Contains(mission.originsystem))
                 {
                     systems.Add(mission.originsystem);
                 }
+            }
 
-                // Add all destination systems to the list
-                if (mission.destinationsystems == null)
+            // Add destination systems for applicable mission types to the 'systems' list
+            foreach (Mission mission in missions.Where(m => m.statusEDName == "Active").ToList())
+            {
+                string type = mission.typeEDName.ToLowerInvariant();
+                switch (type)
                 {
-                    if (mission.destinationsystem != null && !systems.Contains(mission.destinationsystem))
-                    {
-                        systems.Add(mission.destinationsystem);
-                    }
-                }
-                else
-                {
-                    foreach (DestinationSystem system in mission.destinationsystems)
-                    {
-                        if (!systems.Contains(system.name))
+                    case "assassinate":
+                    case "courier":
+                    case "delivery":
+                    case "disable":
+                    case "massacre":
+                    case "passengerbulk":
+                    case "passengervip":
+                    case "rescue":
+                    case "salvage":
+                    case "scan":
+                    case "sightseeing":
+                    case "smuggle":
                         {
-                            systems.Add(system.name);
+                            if (mission.destinationsystems == null)
+                            {
+                                if (!systems.Contains(mission.destinationsystem))
+                                {
+                                    systems.Add(mission.destinationsystem);
+                                }
+                            }
+                            else
+                            {
+                                foreach (DestinationSystem system in mission.destinationsystems)
+                                {
+                                    if (!systems.Contains(system.name))
+                                    {
+                                        systems.Add(system.name);
+                                    }
+                                }
+                            }
                         }
-                    }
+                        break;
                 }
             }
 
@@ -916,7 +937,7 @@ namespace EddiMissionMonitor
                 // Iterate through all possible routes by changing the starting system
                 for (int i = 0; i < systems.Count(); i++)
                 {
-                    // If starting system is a destination for a 'return to origin' mission, then skip
+                    // If starting system is a destination for a 'return to origin' mission, then not a viable route
                     if (DestinationOriginReturn(systems[i]))
                     {
                         break;
@@ -983,6 +1004,57 @@ namespace EddiMissionMonitor
                 Logging.Debug("Calculated Route Selected = " + missionsRouteList + ", Total Distance = " + missionsRouteTotalDistance);
             }
             return routeFound;
+        }
+
+        public bool UpdateMissionsRoute()
+        {
+            bool updated = false;
+            string currentSystem = EDDI.Instance?.CurrentStarSystem?.name;
+            string nextSystem = missionsRouteList?.Split('_').ElementAtOrDefault(0);
+
+            if (currentSystem == nextSystem)
+            {
+                foreach (Mission mission in missions.ToList())
+                {
+                    string type = mission.typeEDName.ToLowerInvariant();
+                    switch(type)
+                    {
+                        case "Active":
+                            {
+                                if (mission.destinationsystems == null)
+                                {
+                                    if (mission.destinationsystem == nextSystem)
+                                    {
+                                        return updated;
+                                    }
+                                }
+                                else
+                                {
+                                    foreach (DestinationSystem system in mission.destinationsystems)
+                                    {
+                                        if (system.name == nextSystem)
+                                        {
+                                            return updated;
+                                        }
+                                    }
+                                }
+                            }
+                            break;
+                        case "Complete":
+                            {
+                                if (mission.originsystem == nextSystem)
+                                {
+                                    return updated;
+                                }
+                            }
+                            break;
+                    }
+                }
+                nextSystem.Append('_');
+                missionsRouteList.Replace(nextSystem, "");
+                updated = true;
+            }
+            return updated;
         }
 
         private decimal CalculateDistance(StarSystem curr, StarSystem dest)
