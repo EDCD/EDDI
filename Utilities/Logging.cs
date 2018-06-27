@@ -136,11 +136,10 @@ namespace Utilities
         {
             try
             {
-                if (data is Exception)
+                // It's not possible to scrub filepaths from exception messages, so since we don't want  
+                // to collect this personal data these exceptions need to be handled locally only.
+                if (data is Exception ex)
                 {
-                    // It's not possible to scrub filepaths from exception messages, so since we don't want  
-                    // to collect this personal data these exceptions need to be handled locally only.
-                    Exception ex = (Exception)data;
                     if (ex.Message.Contains(Constants.DATA_DIR))
                     {
                         return null;
@@ -239,8 +238,10 @@ namespace Utilities
 
         public static void ExceptionHandler(Exception exception)
         {
-            Dictionary<string, object> trace = new Dictionary<string, object>();
-            trace.Add("StackTrace", exception.StackTrace ?? "StackTrace not available");
+            Dictionary<string, object> trace = new Dictionary<string, object>
+            {
+                { "StackTrace", exception.StackTrace ?? "StackTrace not available" }
+            };
 
             if (isUniqueMessage(exception.GetType() + ": " + exception.Message, trace))
             {
@@ -262,8 +263,7 @@ namespace Utilities
             var clientResponse = client.Execute<Dictionary<string, object>>(request);
             Dictionary<string, object> response = clientResponse.Data;
 
-            object val;
-            response.TryGetValue("err", out val); // Check for errors before we proceed
+            response.TryGetValue("err", out object val); // Check for errors before we proceed
             if ((long)val == 0)
             {
                 response.TryGetValue("result", out val);
@@ -316,8 +316,7 @@ namespace Utilities
             var clientResponse = client.Execute<Dictionary<string, object>>(request);
             Dictionary<string, object> response = clientResponse.Data;
 
-            object val;
-            response.TryGetValue("err", out val); // Check for errors before we proceed
+            response.TryGetValue("err", out object val); // Check for errors before we proceed
             if ((long)val == 0)
             {
                 response.TryGetValue("result", out val);
