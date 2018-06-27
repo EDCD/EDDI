@@ -23,15 +23,10 @@ namespace Utilities
             Error(ex.Message, ex.ToString(), memberName, filePath);
         }
 
-        public static void Error(string message, string data = null, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "")
+        public static void Error(string message, string data = "", [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "")
         {
-            log(filePath, memberName, "E", message + " " + data);
-            Report(message, data, memberName, filePath, "Error");
-        }
-
-        public static void Warn(string message, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "")
-        {
-            Warn(message, (string)null, memberName, filePath);
+            log(ErrorLevel.Error, message + " " + data, memberName, filePath);
+            Report(ErrorLevel.Error, message, data, memberName, filePath);
         }
 
         public static void Warn(string message, Exception ex, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "")
@@ -44,14 +39,9 @@ namespace Utilities
             Warn(ex.Message, ex.ToString(), memberName, filePath);
         }
 
-        public static void Warn(string message, string data, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "")
+        public static void Warn(string message, string data = "", [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "")
         {
-            log(filePath, memberName, "W", message + " " + data);
-        }
-
-        public static void Info(string message, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "")
-        {
-            Info(message, (string)null, memberName, filePath);
+            log(ErrorLevel.Warning, message + " " + data, memberName, filePath);
         }
 
         public static void Info(string message, Exception ex, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "")
@@ -64,17 +54,9 @@ namespace Utilities
             Info(ex.Message, ex.ToString(), memberName, filePath);
         }
 
-        public static void Info(string message, string data, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "")
+        public static void Info(string message, string data = "", [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "")
         {
-            log(filePath, memberName, "I", message + " " + data);
-        }
-
-        public static void Debug(string message, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "")
-        {
-            if (Verbose)
-            {
-                Debug(message, (string)null, memberName, filePath);
-            }
+            log(ErrorLevel.Info, message + " " + data, memberName, filePath);
         }
 
         public static void Debug(string message, Exception ex, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "")
@@ -93,15 +75,16 @@ namespace Utilities
             }
         }
 
-        public static void Debug(string message, string data, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "")
+        public static void Debug(string message, string data = "", [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "")
         {
             if (Verbose)
             {
-                log(filePath, memberName, "D", message + " " + data);
+                log(ErrorLevel.Debug, message + " " + data, memberName, filePath);
             }
         }
+
         private static readonly object logLock = new object();
-        private static void log(string path, string method, string level, string data)
+        private static void log(ErrorLevel errorlevel, string data, string method, string path)
         {
             lock (logLock)
             {
@@ -109,7 +92,9 @@ namespace Utilities
                 {
                     using (StreamWriter file = new StreamWriter(LogFile, true))
                     {
-                        file.WriteLine(DateTime.UtcNow.ToString("s", System.Globalization.CultureInfo.InvariantCulture) + " " + Path.GetFileNameWithoutExtension(path) + ":" + method + " [" + level + "] " + data);
+                        string timestamp = DateTime.UtcNow.ToString("s", System.Globalization.CultureInfo.InvariantCulture);
+                        string shortPath = Path.GetFileNameWithoutExtension(path);
+                        file.WriteLine($"{timestamp} {shortPath}:{method} [{errorlevel}] {data}");
                     }
                 }
                 catch (Exception)
@@ -119,12 +104,12 @@ namespace Utilities
             }
         }
 
-        public static void Report(string message, object data = null, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "", string level = "Info")
+        internal static void Report(ErrorLevel errorLevel, string message, object data = null, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "")
         {
             Dictionary<string, object> thisData = PrepRollbarData(message, ref data);
             if (thisData != null)
             {
-                var rollbarReport = System.Threading.Tasks.Task.Run(() => SendToRollbar(message, data, thisData, memberName, filePath, level));
+                var rollbarReport = System.Threading.Tasks.Task.Run(() => SendToRollbar(errorLevel, message, data, thisData, memberName, filePath));
             }
         }
 
@@ -180,21 +165,21 @@ namespace Utilities
 
         }
 
-        private static void SendToRollbar(string message, object data, Dictionary<string, object> thisData, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "", string level = "Info")
+        private static void SendToRollbar(ErrorLevel errorLevel, string message, object data, Dictionary<string, object> thisData, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "")
         {
             string personID = RollbarLocator.RollbarInstance.Config.Person.Id;
-            switch (level)
+            switch (errorLevel)
             {
-                case "Error":
+                case ErrorLevel.Error:
                     RollbarLocator.RollbarInstance.Error(message, thisData);
-                    log($"Reporting error, anonymous ID {personID}: {filePath}", memberName, "E", $"{message} {data}");
+                    log(errorLevel, $"{message} {data}", memberName, $"Reporting error, anonymous ID {personID}: {filePath}");
                     break;
                 default:
                     // If this is an Info Report, report only unique messages and data
                     if (isUniqueMessage(message, thisData))
                     {
-                        RollbarLocator.RollbarInstance.Info(message, thisData);
-                        log($"Reporting unique data, anonymous ID {personID}: {filePath}", memberName, "I", $"{message} {data}");
+                        RollbarLocator.RollbarInstance.Log(errorLevel, message, thisData);
+                        log(errorLevel, $"{message} {data}", memberName, $"Reporting unique data, anonymous ID {personID}: {filePath}");
                     }
                     break;
             }
