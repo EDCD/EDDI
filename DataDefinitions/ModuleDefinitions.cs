@@ -1025,10 +1025,11 @@ namespace EddiDataDefinitions
                 new Module(128833996, "Hpt_FlechetteLauncher_Fixed_Medium", -1, "FlechetteLauncher", 2, "B", 344916, ModuleMount.Fixed),
                 new Module(128833998, "Hpt_Guardian_PlasmaLauncher_Fixed_Medium", -1, "GuardianPlasmaCharger", 2, "B", 567761, ModuleMount.Fixed),
                 new Module(128834000, "Hpt_Guardian_ShardCannon_Fixed_Medium", -1, "ShardCannon", 2, "A", 445560, ModuleMount.Fixed),
+                new Module(128834001, "Hpt_Guardian_ShardCannon_Turret_Medium", -1, "ShardCannon", 2, "A", 1722825, ModuleMount.Turreted),
                 new Module(128834002, "Hpt_PlasmaShockCannon_Fixed_Medium", -1, "ShockCannon", 2, "D", 358313, ModuleMount.Fixed),
                 new Module(128834003, "Hpt_PlasmaShockCannon_Gimbal_Medium", -1, "ShockCannon", 2, "D", 495963, ModuleMount.Gimballed),
                 new Module(128834004, "Hpt_PlasmaShockCannon_Turret_Medium", -1, "ShockCannon", 2, "D", 1192698, ModuleMount.Turreted),
-
+                
                 // Needs EDDB ID & pricing
                 new Module(128833988, "Int_GuardianPowerplant_Size2", -1, "GuardianPowerPlant", 2, "A", 0),
                 new Module(128833989, "Int_GuardianPowerplant_Size3", -1, "GuardianPowerPlant", 3, "A", 0),
@@ -1047,8 +1048,7 @@ namespace EddiDataDefinitions
                 new Module(999999953, "Int_MetaAlloyHullReinforcement_Size3_Class2", -1, "MetaAlloyHullReinforcement", 3, "D", 126000),
                 new Module(999999954, "Int_MetaAlloyHullReinforcement_Size4_Class1", -1, "MetaAlloyHullReinforcement", 4, "E", 97501),
                 new Module(999999956, "Int_MetaAlloyHullReinforcement_Size5_Class1", -1, "MetaAlloyHullReinforcement", 5, "E", 225001),
-                new Module(999990012, "Hpt_Guardian_ShardCannon_Turret_Medium", -1, "ShardCannon", 2, "A", 1722825, ModuleMount.Turreted),
-
+                
                 // Needs FDev ID, EDDB ID, grade, & pricing 
                 new Module(999990001, "Int_GuardianPowerDistributor_Size1", -1, "GuardianPowerDistributor", 1, "D", 0),
                 new Module(999990002, "Int_GuardianPowerDistributor_Size2", -1, "GuardianPowerDistributor", 2, "D", 0),
