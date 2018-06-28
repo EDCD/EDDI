@@ -1029,7 +1029,19 @@ namespace EddiDataDefinitions
                 new Module(128834002, "Hpt_PlasmaShockCannon_Fixed_Medium", -1, "ShockCannon", 2, "D", 358313, ModuleMount.Fixed),
                 new Module(128834003, "Hpt_PlasmaShockCannon_Gimbal_Medium", -1, "ShockCannon", 2, "D", 495963, ModuleMount.Gimballed),
                 new Module(128834004, "Hpt_PlasmaShockCannon_Turret_Medium", -1, "ShockCannon", 2, "D", 1192698, ModuleMount.Turreted),
-                
+
+                new Module(128816569, "Krait_mkii_Armour_Grade1", -1, "LightweightAlloy", 1, "I", 0, 128816567),
+                new Module(128816570, "Krait_mkii_Armour_Grade2", -1, "ReinforcedAlloy", 1, "I", 22791270, 128816567),
+                new Module(128816571, "Krait_mkii_Armour_Grade3", -1, "MilitaryGradeComposite", 1, "I", 51280360, 128816567),
+                new Module(128816572, "Krait_mkii_Armour_Mirrored", -1, "MirroredSurfaceComposite", 1, "I", 121192590, 128816567),
+                new Module(128816573, "Krait_mkii_Armour_Reactive", -1, "ReactiveSurfaceComposite", 1, "I", 134297570, 128816567),
+
+                new Module(128816590, "TypeX_3_Armour_Grade1", -1, "LightweightAlloy", 1, "I", 0, 128816588),
+                new Module(128816591, "TypeX_3_Armour_Grade2", -1, "ReinforcedAlloy", 1, "I", 6803170, 128816588),
+                new Module(128816592, "TypeX_3_Armour_Grade3", -1, "MilitaryGradeComposite", 1, "I", 15307134, 128816588),
+                new Module(128816593, "TypeX_3_Armour_Mirrored", -1, "MirroredSurfaceComposite", 1, "I", 36175859, 128816588),
+                new Module(128816594, "TypeX_3_Armour_Reactive", -1, "ReactiveSurfaceComposite", 1, "I", 40087682, 128816588),
+
                 // Needs EDDB ID & pricing
                 new Module(128833988, "Int_GuardianPowerplant_Size2", -1, "GuardianPowerPlant", 2, "A", 0),
                 new Module(128833989, "Int_GuardianPowerplant_Size3", -1, "GuardianPowerPlant", 3, "A", 0),
