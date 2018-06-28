@@ -102,6 +102,9 @@ namespace EddiDataDefinitions
             var Tg_ShipSystemData = new Material("tg_shipsystemsdata", Data, Rare);
             var Tg_ResidueData = new Material("tg_residuedata", Data, Rare);
             var UnknownWakeScan = new Material("unknownwakedata", Data, Rare);
+            var Guardian_VesselBlueprint = new Material("guardian_vesselblueprint", Data, Rare);
+            var Guardian_WeaponBlueprint = new Material("guardian_weaponblueprint", Data, Rare);
+            var Guardian_ModuleBlueprint = new Material("guardian_moduleblueprint", Data, Rare);
 
             // Grade 5, Very Rare
             var AbnormalCompactEmissionData = new Material("compactemissionsdata", Data, VeryRare);
@@ -111,9 +114,6 @@ namespace EddiDataDefinitions
             var ModifiedEmbeddedFirmware = new Material("embeddedfirmware", Data, VeryRare);
             var PeculiarShieldFrequencyData = new Material("shieldfrequencydata", Data, VeryRare);
             // Grade 5 Xeno
-            var Guardian_ModuleBlueprint = new Material("guardian_moduleblueprint", Data, Rare);
-            var Guardian_VesselBlueprint = new Material("guardian_vesselblueprint", Data, VeryRare);
-            var Guardian_WeaponBlueprint = new Material("guardian_weaponblueprint", Data, VeryRare);
 
             ///<summary>Manufactured</summary>
 
@@ -145,7 +145,6 @@ namespace EddiDataDefinitions
             var ShieldEmitters = new Material("shieldemitters", Manufactured, Common);
             // Grade 2 Xeno
             var Guardian_PowerConduit = new Material("guardian_powerconduit", Manufactured, Common);
-            var Guardian_TechComponent = new Material("guardian_techcomponent", Manufactured, Common);
             var UnknownCarapace = new Material("unknowncarapace", Manufactured, Common);
 
             // Grade 3, Standard
@@ -162,6 +161,7 @@ namespace EddiDataDefinitions
             // Grade 3 Xeno
             var Tg_BiomechanicalConduits = new Material("tg_biomechanicalconduits", Manufactured, Standard);
             var Guardian_Sentinel_WeaponParts = new Material("guardian_sentinel_weaponparts", Manufactured, Standard);
+            var Guardian_TechComponent = new Material("guardian_techcomponent", Manufactured, Standard);
             var Tg_PropulsionElement = new Material("tg_propulsionelement", Manufactured, Standard);
             var UnknownEnergyCell = new Material("unknownenergycell", Manufactured, Standard);
             var Tg_WeaponParts = new Material("tg_weaponparts", Manufactured, Standard);
