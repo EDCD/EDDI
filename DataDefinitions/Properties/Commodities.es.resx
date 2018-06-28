@@ -293,7 +293,10 @@
     <value>Líquenes biorreductores</value>
     <comment>Commodity BioReducingLichen</comment>
   </data>
-  
+  <data name="Biowaste" xml:space="preserve">
+    <value>Residuos biológicos</value>
+    <comment>Commodity Biowaste</comment>
+  </data>
   <data name="Bismuth" xml:space="preserve">
     <value>Bismuto</value>
     <comment>Commodity Bismuth</comment>
@@ -1119,7 +1122,10 @@
     <value>Plata</value>
     <comment>Commodity Silver</comment>
   </data>
-  
+  <data name="siriuscommercialcontracts" xml:space="preserve">
+    <value>Contratos comerciales de Sirius</value>
+    <comment>Commodity siriuscommercialcontracts</comment>
+  </data>
   <data name="siriusfranchisepackage" xml:space="preserve">
     <value>Paquete de franquicia de Sirius</value>
     <comment>Commodity siriusfranchisepackage</comment>
@@ -1440,7 +1446,10 @@
     <value>Pegamento de larvas de hormiga de Zeessze</value>
     <comment>Commodity ZeesszeAntGlue</comment>
   </data>
-  
+  <data name="aislingpromotionalmaterials" xml:space="preserve">
+    <value>Materiales promocionales de Aisling</value>
+    <comment>Commodity aislingpromotionalmaterials</comment>
+  </data>
   <data name="alliancelegaslativerecords" xml:space="preserve">
     <value>Registros Legislativos de la Alianza</value>
     <comment>Commodity alliancelegaslativerecords</comment>
