@@ -1039,6 +1039,13 @@ namespace EddiDataDefinitions
                 new Module(128833993, "Int_GuardianPowerplant_Size7", -1, "GuardianPowerPlant", 7, "A", 0),
                 new Module(128833994, "Int_GuardianPowerplant_Size8", -1, "GuardianPowerPlant", 8, "A", 0),
                 new Module(128833999, "Hpt_Guardian_PlasmaLauncher_Turret_Medium", -1, "GuardianPlasmaCharger", 2, "E", 0, ModuleMount.Turreted),
+                new Module(128834778, "Hpt_Guardian_ShardCannon_Fixed_Large", -1, "ShardCannon", 3, "A", 0, ModuleMount.Fixed),
+                new Module(128834779, "Hpt_Guardian_ShardCannon_Turret_Large", -1, "ShardCannon", 3, "A", 0, ModuleMount.Turreted),
+                new Module(128834780, "Hpt_PlasmaShockCannon_Fixed_Large", -1, "ShockCannon", 3, "D", 0, ModuleMount.Fixed),
+                new Module(128834781, "Hpt_PlasmaShockCannon_Gimbal_Large", -1, "ShockCannon", 3, "D", 0, ModuleMount.Gimballed),
+                new Module(128834782, "Hpt_PlasmaShockCannon_Turret_Large", -1, "ShockCannon", 3, "D", 0, ModuleMount.Turreted),
+                new Module(128834783, "Hpt_Guardian_PlasmaLauncher_Fixed_Large", -1, "GuardianPlasmaCharger", 3, "B", 0, ModuleMount.Fixed),
+                new Module(128834784, "Hpt_Guardian_PlasmaLauncher_Turret_Large", -1, "GuardianPlasmaCharger", 3, "E", 0, ModuleMount.Turreted),
 
                 // Needs FDev ID & EDDB ID
                 new Module(999999948, "Int_MetaAlloyHullReinforcement_Size1_Class1", -1, "MetaAlloyHullReinforcement", 1, "E", 7501),
