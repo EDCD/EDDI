@@ -1022,12 +1022,12 @@ namespace EddiDataDefinitions
                 new Module(128833985, "Int_GuardianPowerDistributor_Size6", -1, "GuardianPowerDistributor", 6, "A", 5933735),
                 new Module(128833986, "Int_GuardianPowerDistributor_Size7", -1, "GuardianPowerDistributor", 7, "A", 16555121),
                 new Module(128833987, "Int_GuardianPowerDistributor_Size8", -1, "GuardianPowerDistributor", 8, "A", 46188786),
+                new Module(128833996, "Hpt_FlechetteLauncher_Fixed_Medium", -1, "FlechetteLauncher", 2, "B", 344916, ModuleMount.Fixed),
                 new Module(128833998, "Hpt_Guardian_PlasmaLauncher_Fixed_Medium", -1, "GuardianPlasmaCharger", 2, "B", 567761, ModuleMount.Fixed),
+                new Module(128834000, "Hpt_Guardian_ShardCannon_Fixed_Medium", -1, "ShardCannon", 2, "A", 445560, ModuleMount.Fixed),
                 new Module(128834002, "Hpt_PlasmaShockCannon_Fixed_Medium", -1, "ShockCannon", 2, "D", 358313, ModuleMount.Fixed),
                 new Module(128834003, "Hpt_PlasmaShockCannon_Gimbal_Medium", -1, "ShockCannon", 2, "D", 495963, ModuleMount.Gimballed),
                 new Module(128834004, "Hpt_PlasmaShockCannon_Turret_Medium", -1, "ShockCannon", 2, "D", 1192698, ModuleMount.Turreted),
-                new Module(128834000, "Hpt_Guardian_ShardCannon_Fixed_Medium", -1, "ShardCannon", 2, "A", 445560, ModuleMount.Fixed),
-                new Module(128833996, "Hpt_FlechetteLauncher_Fixed_Medium", -1, "FlechetteLauncher", 2, "B", 344916, ModuleMount.Fixed),
 
                 // Needs EDDB ID & pricing
                 new Module(128833988, "Int_GuardianPowerplant_Size2", -1, "GuardianPowerPlant", 2, "A", 0),
