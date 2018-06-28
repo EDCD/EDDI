@@ -41,11 +41,12 @@ namespace EddiDataDefinitions
             { 128049309, new Ship(128049309, "Vulture", "Core Dynamics", null, "Vulture", new List<Translation> { new Translation("vulture", "ˈvʌltʃə") }, "Small", 5) },
             { 128785619, new Ship(128785619, "Type9_Military", "Lakon Spaceways", new List<Translation> {new Translation("Lakon", "leɪkɒn") }, "Type-10 Defender", null, "Large", 5) },
             { 128816574, new Ship(128816574, "TypeX", "Lakon Spaceways", new List<Translation> {new Translation("Lakon", "leɪkɒn") }, "Alliance Chieftain", null, "Medium", 4) },
+            { 128816588, new Ship(128816588, "TypeX_3", "Lakon Spaceways", new List<Translation> {new Translation("Lakon", "leɪkɒn") }, "Alliance Challenger", null, "Medium", 4) },
+            { 128816567, new Ship(128816567, "Krait_mkii ", "Faulcon DeLacy", null, "Krait Mk. II", new List<Translation>{new Translation("Krait", "ˈkreɪt"), new Translation("Mk.", "mɑːk"), new Translation("II", "ˈtuː") }, "Medium", null) },
 
             // Speculative future ships (replace '9999999xx' with Frontier ID once known)
             { 999999902, new Ship(999999902, "Panther", "Zorgon Peterson", null, "Panther Clipper", null, "Large", null) },
             { 999999903, new Ship(999999903, "AspMkII", "Lakon Spaceways", new List<Translation> {new Translation("Lakon", "leɪkɒn") }, "Asp Mk. II", null, "Medium", null) },
-            { 999999904, new Ship(999999904, "Krait", "Faulcon DeLacy", null, "Krait", null, "Small", null) },
         };
 
         public static List<string> ShipModels = ShipsByEliteID.Select(kp => kp.Value.model).ToList();
