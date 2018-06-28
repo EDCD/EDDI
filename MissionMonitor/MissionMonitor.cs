@@ -1010,48 +1010,44 @@ namespace EddiMissionMonitor
         {
             bool updated = false;
             string currentSystem = EDDI.Instance?.CurrentStarSystem?.name;
-            string nextSystem = missionsRouteList?.Split('_').ElementAtOrDefault(0);
+            string updateSystem = missionsRouteList?.Split('_').ElementAtOrDefault(0);
 
-            if (currentSystem == nextSystem)
+            if (currentSystem == updateSystem)
             {
-                foreach (Mission mission in missions.ToList())
+                foreach (Mission mission in missions.Where(m => m.typeEDName != "Fail").ToList())
                 {
-                    string type = mission.typeEDName.ToLowerInvariant();
-                    switch(type)
+                    // Check if origin system for 'Active' and 'Complete' missions
+                    if (mission.originsystem == updateSystem)
                     {
-                        case "Active":
+                        return updated;
+                    }
+
+                    // Check if destination system for 'Active' missions
+                    if (mission.typeEDName == "Active")
+                    {
+                        if (mission.destinationsystems == null)
+                        {
+                            if (mission.destinationsystem == updateSystem)
                             {
-                                if (mission.destinationsystems == null)
-                                {
-                                    if (mission.destinationsystem == nextSystem)
-                                    {
-                                        return updated;
-                                    }
-                                }
-                                else
-                                {
-                                    foreach (DestinationSystem system in mission.destinationsystems)
-                                    {
-                                        if (system.name == nextSystem)
-                                        {
-                                            return updated;
-                                        }
-                                    }
-                                }
+                                return updated;
                             }
-                            break;
-                        case "Complete":
+                        }
+                        else
+                        {
+                            foreach (DestinationSystem system in mission.destinationsystems)
                             {
-                                if (mission.originsystem == nextSystem)
+                                if (system.name == updateSystem)
                                 {
                                     return updated;
                                 }
                             }
-                            break;
+                        }
                     }
                 }
-                nextSystem.Append('_');
-                missionsRouteList.Replace(nextSystem, "");
+
+                // 
+                updateSystem.Append('_');
+                missionsRouteList.Replace(updateSystem, "");
                 updated = true;
             }
             return updated;
