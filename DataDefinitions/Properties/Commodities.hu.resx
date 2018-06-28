@@ -876,7 +876,7 @@
     <value>Megerősített burkolólemez</value>
     <comment>Commodity ReinforcedMountingPlate</comment>
   </data>
-  <data name="republicangarisonsupplies" xml:space="preserve">
+  <data name="RepublicanGarisonSupplies" xml:space="preserve">
     <value>Köztársasági helyőrségi ellátmány</value>
     <comment>Commodity republicangarisonsupplies</comment>
   </data>
@@ -922,7 +922,7 @@
   </data>
   
   
-  <data name="siriusindustrialequipment" xml:space="preserve">
+  <data name="SiriusIndustrialEquipment" xml:space="preserve">
     <value>Siriusi ipari berendezés</value>
     <comment>Commodity siriusindustrialequipment</comment>
   </data>
