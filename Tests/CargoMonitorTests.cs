@@ -160,7 +160,7 @@ namespace UnitTests
             cargoMonitor._handlePowerCommodityObtainedEvent((PowerCommodityObtainedEvent)events[0]);
 
             Assert.AreEqual(6, cargoMonitor.inventory.Count);
-            cargo = cargoMonitor.inventory.ToList().FirstOrDefault(c => c.edname == "aislingmediamaterials");
+            cargo = cargoMonitor.inventory.ToList().FirstOrDefault(c => c.edname.ToLowerInvariant() == "aislingmediamaterials");
             Assert.AreEqual("Aisling Media Materials", cargo.invariantName);
             Assert.AreEqual(3, cargo.total);
             Assert.AreEqual(3, cargo.owned);
@@ -174,7 +174,7 @@ namespace UnitTests
             cargoMonitor._handlePowerCommodityDeliveredEvent((PowerCommodityDeliveredEvent)events[0]);
 
             Assert.AreEqual(5, cargoMonitor.inventory.Count);
-            cargo = cargoMonitor.inventory.ToList().FirstOrDefault(c => c.edname == "aislingmediamaterials");
+            cargo = cargoMonitor.inventory.ToList().FirstOrDefault(c => c.edname.ToLowerInvariant() == "aislingmediamaterials");
             Assert.IsNull(cargo);
         }
 
