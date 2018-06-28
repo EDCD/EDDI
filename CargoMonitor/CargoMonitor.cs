@@ -226,7 +226,7 @@ namespace EddiCargoMonitor
             // CargoInventoryEvent does not contain missionid or cost information so fill in gaps here
             foreach (Cargo cargo in @event.inventory)
             {
-                Cargo inventoryCargo = inventory.FirstOrDefault(c => c.edname == cargo.edname);
+                Cargo inventoryCargo = inventory.FirstOrDefault(c => c.edname.ToLowerInvariant() == cargo.edname.ToLowerInvariant());
                 if (inventoryCargo != null)
                 {
                     // Found match of commodity
@@ -256,7 +256,7 @@ namespace EddiCargoMonitor
                 // Keep cargo in manifest if missions are pending
                 if (inventoryCargo.haulageamounts == null || !inventoryCargo.haulageamounts.Any())
                 {
-                    Cargo cargo = @event.inventory.FirstOrDefault(c => c.edname == inventoryCargo.edname);
+                    Cargo cargo = @event.inventory.FirstOrDefault(c => c.edname.ToLowerInvariant() == inventoryCargo.edname.ToLowerInvariant());
                     if (cargo == null)
                     {
                         // Strip out the stray from the manifest
@@ -1122,9 +1122,10 @@ namespace EddiCargoMonitor
             {
                 if (edname != null)
                 {
+                    edname = edname.ToLowerInvariant();
                     for (int i = 0; i < inventory.Count; i++)
                     {
-                        if (inventory[i].edname == edname)
+                        if (inventory[i].edname.ToLowerInvariant() == edname)
                         {
                             inventory.RemoveAt(i);
                             break;
@@ -1141,7 +1142,8 @@ namespace EddiCargoMonitor
             {
                 return null;
             }
-            return inventory.FirstOrDefault(c => c.edname == edname);
+            edname = edname.ToLowerInvariant();
+            return inventory.FirstOrDefault(c => c.edname.ToLowerInvariant() == edname);
         }
 
         private Cargo GetCargoWithMissionId(long missionid)
