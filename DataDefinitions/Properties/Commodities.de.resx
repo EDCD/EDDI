@@ -1065,10 +1065,6 @@
     <value>Verstärkte Trägerplatte</value>
     <comment>Commodity ReinforcedMountingPlate</comment>
   </data>
-  <data name="republicangarisonsupplies" xml:space="preserve">
-    <value>Republik Garnisonszubehör</value>
-    <comment>Commodity republicangarisonsupplies</comment>
-  </data>
   <data name="ResonatingSeparators" xml:space="preserve">
     <value>Resonanzabgrenzer</value>
     <comment>Commodity ResonatingSeparators</comment>
@@ -1120,18 +1116,6 @@
   <data name="Silver" xml:space="preserve">
     <value>Silber</value>
     <comment>Commodity Silver</comment>
-  </data>
-  <data name="siriuscommercialcontracts" xml:space="preserve">
-    <value>Sirius Geschäftskontakte</value>
-    <comment>Commodity siriuscommercialcontracts</comment>
-  </data>
-  <data name="siriusfranchisepackage" xml:space="preserve">
-    <value>Sirius Franchise-Paket</value>
-    <comment>Commodity siriusfranchisepackage</comment>
-  </data>
-  <data name="siriusindustrialequipment" xml:space="preserve">
-    <value>Sirius Industrie Ausstattung</value>
-    <comment>Commodity siriusindustrialequipment</comment>
   </data>
   <data name="SkimerComponents" xml:space="preserve">
     <value>Of-Drohnen-Komponenten</value>
@@ -1485,4 +1469,37 @@
     <value>Unbekannt</value>
     <comment>Commodity Unknown</comment>
   </data>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
 </root>
