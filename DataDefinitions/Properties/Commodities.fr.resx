@@ -1062,7 +1062,6 @@
     <value>Plaque de montage renforcée</value>
     <comment>Commodity ReinforcedMountingPlate</comment>
   </data>
-  
   <data name="ResonatingSeparators" xml:space="preserve">
     <value>Séparateurs à résonance</value>
     <comment>Commodity ResonatingSeparators</comment>
@@ -1111,18 +1110,6 @@
   <data name="Silver" xml:space="preserve">
     <value>Argent</value>
     <comment>Commodity Silver</comment>
-  </data>
-  <data name="siriuscommercialcontracts" xml:space="preserve">
-    <value>Contrats de Sirius</value>
-    <comment>Commodity siriuscommercialcontracts</comment>
-  </data>
-  <data name="siriusfranchisepackage" xml:space="preserve">
-    <value>Dossiers marketing de Sirius</value>
-    <comment>Commodity siriusfranchisepackage</comment>
-  </data>
-  <data name="siriusindustrialequipment" xml:space="preserve">
-    <value>Équipement Industriel de Sirius</value>
-    <comment>Commodity siriusindustrialequipment</comment>
   </data>
   <data name="SkimerComponents" xml:space="preserve">
     <value>Composants de protecteurs</value>
@@ -1473,4 +1460,37 @@
     <value>Inconnu</value>
     <comment>Commodity Unknown</comment>
   </data>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
 </root>
