@@ -69,6 +69,11 @@
   <ItemGroup>
     <Compile Include="BlueprintMaterials.cs" />
     <Compile Include="CommodityAmount.cs" />
+    <Compile Include="Properties\Commodities.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Commodities.resx</DependentUpon>
+    </Compile>
     <Compile Include="Properties\StationModels.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -288,11 +293,6 @@
       <DependentUpon>Materials.fr.resx</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Properties\Commodities.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Commodities.resx</DependentUpon>
     </Compile>
     <Compile Include="Properties\CommodityCategories.Designer.cs">
       <AutoGen>True</AutoGen>

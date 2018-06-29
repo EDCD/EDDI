@@ -10,7 +10,7 @@ namespace EddiDataDefinitions
         static CommodityDefinition()
         {
             resourceManager = Properties.Commodities.ResourceManager;
-            resourceManager.IgnoreCase = false;
+            resourceManager.IgnoreCase = true;
             missingEDNameHandler = (edname) => new CommodityDefinition(0, null, edname, Unknown);
             CommoditiesByEliteID = new Dictionary<long, CommodityDefinition>();
 
@@ -354,48 +354,51 @@ namespace EddiDataDefinitions
                 new CommodityDefinition(128672811, 329, "DamagedEscapePod", Salvage, 11912, false),
                 new CommodityDefinition(128672161, 330, "EarthRelics", Salvage, 0, false),
                 new CommodityDefinition(128824468, 331, "ThargoidScoutTissueSample", Salvage, 15215, false),
+                new CommodityDefinition(128748428, null, "BuckyballBeerMats", ConsumerItems, 0, false),
+                new CommodityDefinition(128793113, null, "HarmaSilverSeaRum", Narcotics, 0, false),
+                new CommodityDefinition(128793114, null, "PlatinumAloy", Metals, 0, false),
 
+                // PowerPlay
+                new CommodityDefinition(128671289, null, "AislingMediaMaterials", Powerplay, 0, false),
+                new CommodityDefinition(128671290, null, "AislingMediaResources", Powerplay, 0, false),
+                new CommodityDefinition(128671291, null, "AislingPromotionalMaterials", Powerplay, 0, false),
+                new CommodityDefinition(128671292, null, "AllianceTradeAgreements", Powerplay, 0, false),
+                new CommodityDefinition(128671293, null, "AllianceLegaslativeContracts", Powerplay, 0, false),
+                new CommodityDefinition(128671294, null, "AllianceLegaslativeRecords", Powerplay, 0, false),
+                new CommodityDefinition(128671295, null, "LavignyCorruptionDossiers", Powerplay, 0, false),
+                new CommodityDefinition(128671296, null, "LavignyFieldSupplies", Powerplay, 0, false),
+                new CommodityDefinition(128671297, null, "LavignyGarisonSupplies", Powerplay, 0, false),
+                new CommodityDefinition(128671298, null, "RestrictedPackage", Powerplay, 0, false),
+                new CommodityDefinition(128671300, null, "LiberalCampaignMaterials", Powerplay, 0, false),
+                new CommodityDefinition(128671301, null, "FederalAid", Powerplay, 0, false),
+                new CommodityDefinition(128671302, null, "FederalTradeContracts", Powerplay, 0, false),
+                new CommodityDefinition(128671303, null, "LoanedArms", Powerplay, 0, false),
+                new CommodityDefinition(128671304, null, "PatreusFieldSupplies", Powerplay, 0, false),
+                new CommodityDefinition(128671305, null, "PatreusGarisonSupplies", Powerplay, 0, false),
+                new CommodityDefinition(128671306, null, "RestrictedIntel", Powerplay, 0, false),
+                new CommodityDefinition(128671307, null, "RepublicanFieldSupplies", Powerplay, 0, false),
+                new CommodityDefinition(128671308, null, "RepublicanGarisonSupplies", Powerplay, 0, false),
+                new CommodityDefinition(128671309, null, "SiriusFranchisePackage", Powerplay, 0, false),
+                new CommodityDefinition(128671310, null, "SiriusCommercialContracts", Powerplay, 0, false),
+                new CommodityDefinition(128671311, null, "SiriusIndustrialEquipment", Powerplay, 0, false),
+                new CommodityDefinition(128671312, null, "TorvalCommercialContracts", Powerplay, 0, false),
+                new CommodityDefinition(128671313, null, "ImperialPrisoner", Powerplay, 0, false),
+                new CommodityDefinition(128671314, null, "UtopianPublicity", Powerplay, 0, false),
+                new CommodityDefinition(128671315, null, "UtopianFieldSupplies", Powerplay, 0, false),
+                new CommodityDefinition(128671316, null, "UtopianDissident", Powerplay, 0, false),
+                new CommodityDefinition(128671317, null, "IllicitConsignment", Powerplay, 0, false),
+                new CommodityDefinition(128671318, null, "UnmarkedWeapons", Powerplay, 0, false),
+                new CommodityDefinition(128671319, null, "OnionheadSamples", Powerplay, 0, false),
+                new CommodityDefinition(128671320, null, "CounterCultureSupport", Powerplay, 0, false),
+                new CommodityDefinition(128671445, null, "MarkedSlaves", Powerplay, 0, false),
+                new CommodityDefinition(128671446, null, "TorvalDeeds", Powerplay, 0, false),
+                new CommodityDefinition(128671447, null, "OnionheadDerivatives", Powerplay, 0, false),
+                new CommodityDefinition(128671450, null, "OutOfDateGoods", Powerplay, 0, false),
+                new CommodityDefinition(128732548, null, "UndergroundSupport", Powerplay, 0, false),
+                new CommodityDefinition(128732549, null, "GromCounterIntelligence", Powerplay, 0, false),
+                new CommodityDefinition(128732550, null, "GromWarTrophies", Powerplay, 0, false),
+                
                 // Items for which we do not have Elite IDs
-                new CommodityDefinition(200000000, null, "aislingmediamaterials", Powerplay, 0, false),
-                new CommodityDefinition(200000001, null, "aislingpromotionalmaterials", Powerplay, 0, false),
-                // 200000002: Reserved for Aisling Sealed Contracts (Poweplay)
-                // 200000003: Reserved for Alliance Legislative Contracts (Powerplay)
-                new CommodityDefinition(200000004, null, "alliancelegaslativerecords", Powerplay, 0, false),
-                // 200000005: Reserved for Alliance Trade Agreements (Powerplay)
-                // 200000006: Reserved for Core Restricted Package (Powerplay)
-                // 200000007: Reserved for Grom Counter Intelligence (Powerplay)
-                new CommodityDefinition(200000008, null, "undergroundsupport", Powerplay, 0, false),
-                // 200000009: Reserved for Hudson Garrison Supplies (Powerplay)
-                // 200000010: Reserved for Hudson's Field Supplies (Powerplay)
-                // 200000011: Reserved for Hudson's Restricted Intel (Powerplay)
-                // 200000012: Reserved for Kumo Contraband Package (Powerplay)
-                new CommodityDefinition(2000000013, null, "lavignycorruptiondossiers", Powerplay, 0, false),
-                // 200000014: Reserved for Lavigny Field Supplies (Powerplay)
-                new CommodityDefinition(2000000015, null, "lavignygarisonsupplies", Powerplay, 0, false),
-                // 200000016: Reserved for Liberal Federal Aid (Powerplay)
-                // 200000017: Reserved for Liberal Federal Packages (Powerplay)
-                // 200000018: Reserved for Liberal Propaganda (Powerplay)
-                // 200000019: Reserved for Marked Military Arms (Powerplay)
-                // 200000020: Reserved for Marked Slaves (Powerplay)
-                // 200000021: Reserved for Onionhead Derivatives (Powerplay)
-                // 200000022: Reserved for Onionhead Samples (Powerplay)
-                // 200000023: Reserved for Out of Date Goods (Powerplay)
-                // 200000024: Reserved for Patreus Field Supplies (Powerplay)
-                // 200000025: Reserved for Patreus Garrison Supplies (Powerplay)
-                // 200000026: Reserved for Revolutionary Samples (Powerplay)
-                new CommodityDefinition(200000027, null, "siriuscommercialcontracts", Powerplay, 0, false),
-                new CommodityDefinition(200000028, null, "siriusfranchisepackage", Powerplay, 0, false),
-                new CommodityDefinition(200000029, null, "siriusindustrialequipment", Powerplay, 0, false),
-                new CommodityDefinition(200000030, null, "torvaldeeds", Powerplay, 0, false),
-                // 200000031: Reserved for Torval Political Prisoners (Powerplay)
-                new CommodityDefinition(200000032, null, "torvalcommercialcontracts", Powerplay, 0, false), // These may be Torval Trade Agreements?
-                // 200000033: Reserved for Unmarked Military Supplies (Powerplay)
-                // 200000034: Reserved for Utopian Dissident (Powerplay)
-                // 200000035: Reserved for Utopian Publicity (Powerplay)
-                // 200000036: Reserved for Utopian Supplies (Powerplay)
-                // 200000037: Reserved for Yuri Grom's Military Supplies (Powerplay)
-                new CommodityDefinition(200000038, null, "republicangarisonsupplies", Powerplay, 0, false),
-                new CommodityDefinition(200000039, null, "imperialprisoner", Salvage, 0, false),
             };
         }
         private static Dictionary<long, CommodityDefinition> CommoditiesByEliteID;

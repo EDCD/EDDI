@@ -60,45 +60,45 @@
             : and then encoded with base64 encoding.
     -->
   <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
           <xsd:element name="metadata">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0"/>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
               </xsd:sequence>
-              <xsd:attribute name="name" use="required" type="xsd:string"/>
-              <xsd:attribute name="type" type="xsd:string"/>
-              <xsd:attribute name="mimetype" type="xsd:string"/>
-              <xsd:attribute ref="xml:space"/>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="assembly">
             <xsd:complexType>
-              <xsd:attribute name="alias" type="xsd:string"/>
-              <xsd:attribute name="name" type="xsd:string"/>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="data">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"/>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"/>
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"/>
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"/>
-              <xsd:attribute ref="xml:space"/>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="resheader">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required"/>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
             </xsd:complexType>
           </xsd:element>
         </xsd:choice>
@@ -765,7 +765,6 @@
     <value>Cuir</value>
     <comment>Commodity Leather</comment>
   </data>
-  
   <data name="Lepidolite" xml:space="preserve">
     <value>Lépidolite</value>
     <comment>Commodity Lepidolite</comment>
@@ -1062,7 +1061,6 @@
     <value>Plaque de montage renforcée</value>
     <comment>Commodity ReinforcedMountingPlate</comment>
   </data>
-  
   <data name="ResonatingSeparators" xml:space="preserve">
     <value>Séparateurs à résonance</value>
     <comment>Commodity ResonatingSeparators</comment>
@@ -1071,7 +1069,6 @@
     <value>Robots</value>
     <comment>Commodity Robotics</comment>
   </data>
-  
   <data name="Rutile" xml:space="preserve">
     <value>Rutile</value>
     <comment>Commodity Rutile</comment>
@@ -1111,18 +1108,6 @@
   <data name="Silver" xml:space="preserve">
     <value>Argent</value>
     <comment>Commodity Silver</comment>
-  </data>
-  <data name="siriuscommercialcontracts" xml:space="preserve">
-    <value>Contrats de Sirius</value>
-    <comment>Commodity siriuscommercialcontracts</comment>
-  </data>
-  <data name="siriusfranchisepackage" xml:space="preserve">
-    <value>Dossiers marketing de Sirius</value>
-    <comment>Commodity siriusfranchisepackage</comment>
-  </data>
-  <data name="siriusindustrialequipment" xml:space="preserve">
-    <value>Équipement Industriel de Sirius</value>
-    <comment>Commodity siriusindustrialequipment</comment>
   </data>
   <data name="SkimerComponents" xml:space="preserve">
     <value>Composants de protecteurs</value>
@@ -1396,7 +1381,6 @@
     <value>Bœuf de Kobe de Witchhaul</value>
     <comment>Commodity WitchhaulKobeBeef</comment>
   </data>
-  
   <data name="WreckageComponents" xml:space="preserve">
     <value>Débris récupérables</value>
     <comment>Commodity WreckageComponents</comment>
@@ -1472,5 +1456,110 @@
   <data name="Unknown" xml:space="preserve">
     <value>Inconnu</value>
     <comment>Commodity Unknown</comment>
+  </data>
+  <data name="AislingMediaResources" xml:space="preserve">
+    <value>Contrats sous scellés d'Aisling</value>
+  </data>
+  <data name="AllianceLegaslativeContracts" xml:space="preserve">
+    <value>Accords législatifs de l'Alliance</value>
+  </data>
+  <data name="AllianceTradeAgreements" xml:space="preserve">
+    <value>Accords commerciaux de l'Alliance</value>
+  </data>
+  <data name="LavignyFieldSupplies" xml:space="preserve">
+    <value>Ravitaillement militaire d'Arissa</value>
+  </data>
+  <data name="LiberalCampaignMaterials" xml:space="preserve">
+    <value>Programmes libéraux</value>
+  </data>
+  <data name="LoanedArms" xml:space="preserve">
+    <value>Armes militaires marquées</value>
+  </data>
+  <data name="PatreusFieldSupplies" xml:space="preserve">
+    <value>Ravitaillement militaire de Patreus</value>
+  </data>
+  <data name="PatreusGarisonSupplies" xml:space="preserve">
+    <value>Ravitaillement de garnison de Patreus</value>
+  </data>
+  <data name="RepublicanFieldSupplies" xml:space="preserve">
+    <value>Ravitaillement militaire de Hudson</value>
+  </data>
+  <data name="RepublicanGarisonSupplies" xml:space="preserve">
+    <value>Ravitaillement de garnison de Hudson</value>
+  </data>
+  <data name="RestrictedIntel" xml:space="preserve">
+    <value>Renseignements confidentiels de Hudson</value>
+  </data>
+  <data name="SiriusCommercialContracts" xml:space="preserve">
+    <value>Contrats de Sirius</value>
+  </data>
+  <data name="SiriusFranchisePackage" xml:space="preserve">
+    <value>Dossiers marketing de Sirius</value>
+  </data>
+  <data name="SiriusIndustrialEquipment" xml:space="preserve">
+    <value>Équipements industriels de Sirius</value>
+  </data>
+  <data name="UtopianPublicity" xml:space="preserve">
+    <value>Pamphlets d'Utopia</value>
+  </data>
+  <data name="UtopianFieldSupplies" xml:space="preserve">
+    <value>Marchandises d'Utopia</value>
+  </data>
+  <data name="UtopianDissident" xml:space="preserve">
+    <value>Dissidents utopiens</value>
+  </data>
+  <data name="IllicitConsignment" xml:space="preserve">
+    <value>Marchandises de contrebande de Kumo</value>
+  </data>
+  <data name="UnmarkedWeapons" xml:space="preserve">
+    <value>Surplus militaire banalisé</value>
+  </data>
+  <data name="OnionheadSamples" xml:space="preserve">
+    <value>Échantillons de tête d'oignon</value>
+  </data>
+  <data name="CounterCultureSupport" xml:space="preserve">
+    <value>Matériel révolutionnaire</value>
+  </data>
+  <data name="MarkedSlaves" xml:space="preserve">
+    <value>Esclaves marqués</value>
+  </data>
+  <data name="OnionheadDerivatives" xml:space="preserve">
+    <value>Produits dérivés à base de tête d'oignon</value>
+  </data>
+  <data name="OutOfDateGoods" xml:space="preserve">
+    <value>Marchandises périmées</value>
+  </data>
+  <data name="GromCounterIntelligence" xml:space="preserve">
+    <value>Renseignements militaires de Grom</value>
+  </data>
+  <data name="GromWarTrophies" xml:space="preserve">
+    <value>Fournitures militaires de Yuri Grom</value>
+  </data>
+  <data name="BuckyballBeerMats" xml:space="preserve">
+    <value>Sous-bocks Buckyball</value>
+  </data>
+  <data name="PlatinumAloy" xml:space="preserve">
+    <value>Alliage de platine</value>
+  </data>
+  <data name="ThargoidScoutTissueSample" xml:space="preserve">
+    <value>Échantillon de tissu thargoid - éclaireur </value>
+  </data>
+  <data name="HarmaSilverSeaRum" xml:space="preserve">
+    <value>Rhum marin Harma Silver</value>
+  </data>
+  <data name="FederalAid" xml:space="preserve">
+    <value>Cargaisons d'aide humanitaire libérales</value>
+  </data>
+  <data name="FederalTradeContracts" xml:space="preserve">
+    <value>Colis fédéraux libéraux</value>
+  </data>
+  <data name="RestrictedPackage" xml:space="preserve">
+    <value>Colis scellés Core Holding</value>
+  </data>
+  <data name="WolfFesh" xml:space="preserve">
+    <value>Wolf fesh</value>
+  </data>
+  <data name="RusaniOldSmokey" xml:space="preserve">
+    <value>Rusani Old Smokey</value>
   </data>
 </root>

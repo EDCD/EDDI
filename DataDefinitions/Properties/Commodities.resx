@@ -1065,10 +1065,6 @@
     <value>Reinforced Mounting Plate</value>
     <comment>Commodity ReinforcedMountingPlate</comment>
   </data>
-  <data name="republicangarisonsupplies" xml:space="preserve">
-    <value>Republic Garrison Supplies</value>
-    <comment>Commodity republicangarisonsupplies</comment>
-  </data>
   <data name="ResonatingSeparators" xml:space="preserve">
     <value>Resonating Separators</value>
     <comment>Commodity ResonatingSeparators</comment>
@@ -1120,18 +1116,6 @@
   <data name="Silver" xml:space="preserve">
     <value>Silver</value>
     <comment>Commodity Silver</comment>
-  </data>
-  <data name="siriuscommercialcontracts" xml:space="preserve">
-    <value>Sirius Corporate Contracts</value>
-    <comment>Commodity siriuscommercialcontracts</comment>
-  </data>
-  <data name="siriusfranchisepackage" xml:space="preserve">
-    <value>Sirius Franchise Package</value>
-    <comment>Commodity siriusfranchisepackage</comment>
-  </data>
-  <data name="siriusindustrialequipment" xml:space="preserve">
-    <value>Sirius Industrial Equipment</value>
-    <comment>Commodity siriusindustrialequipment</comment>
   </data>
   <data name="SkimerComponents" xml:space="preserve">
     <value>Skimmer Components</value>
@@ -1484,5 +1468,137 @@
   <data name="Unknown" xml:space="preserve">
     <value>Unknown</value>
     <comment>Commodity Unknown</comment>
+  </data>
+  <data name="AislingMediaResources" xml:space="preserve">
+    <value>Aisling Sealed Contracts</value>
+    <comment>Commodity AislingMediaResources</comment>
+  </data>
+  <data name="AllianceLegaslativeContracts" xml:space="preserve">
+    <value>Alliance Legislative Contracts</value>
+    <comment>Commodity AllianceLegaslativeContracts</comment>
+  </data>
+  <data name="AllianceTradeAgreements" xml:space="preserve">
+    <value>Alliance Trade Agreements</value>
+    <comment>Commodity AllianceTradeAgreements</comment>
+  </data>
+  <data name="BuckyballBeerMats" xml:space="preserve">
+    <value>Buckyball Beer Mats</value>
+    <comment>Commodity BuckyballBeerMats</comment>
+  </data>
+  <data name="CounterCultureSupport" xml:space="preserve">
+    <value>Revolutionary supplies</value>
+    <comment>Commodity CounterCultureSupport</comment>
+  </data>
+  <data name="FederalAid" xml:space="preserve">
+    <value>Liberal Federal Aid</value>
+    <comment>Commodity FederalAid</comment>
+  </data>
+  <data name="FederalTradeContracts" xml:space="preserve">
+    <value>Liberal Federal Packages</value>
+    <comment>Commodity FederalTradeContracts</comment>
+  </data>
+  <data name="GromCounterIntelligence" xml:space="preserve">
+    <value>Grom Counter Intelligence</value>
+    <comment>Commodity GromCounterIntelligence</comment>
+  </data>
+  <data name="GromWarTrophies" xml:space="preserve">
+    <value>Yuri Grom's Military Supplies</value>
+    <comment>Commodity GromWarTrophies</comment>
+  </data>
+  <data name="HarmaSilverSeaRum" xml:space="preserve">
+    <value>Harma Silver Sea Rum</value>
+    <comment>Commodity HarmaSilverSeaRum</comment>
+  </data>
+  <data name="IllicitConsignment" xml:space="preserve">
+    <value>Kumo Contraband Package</value>
+    <comment>Commodity IllicitConsignment</comment>
+  </data>
+  <data name="LavignyFieldSupplies" xml:space="preserve">
+    <value>Lavigny Field Supplies</value>
+    <comment>Commodity LavignyFieldSupplies</comment>
+  </data>
+  <data name="LiberalCampaignMaterials" xml:space="preserve">
+    <value>Liberal Propaganda</value>
+    <comment>Commodity LiberalCampaignMaterials</comment>
+  </data>
+  <data name="LoanedArms" xml:space="preserve">
+    <value>Marked Military Arms</value>
+    <comment>Commodity LoanedArms</comment>
+  </data>
+  <data name="MarkedSlaves" xml:space="preserve">
+    <value>Marked Slaves</value>
+    <comment>Commodity MarkedSlaves</comment>
+  </data>
+  <data name="OnionheadDerivatives" xml:space="preserve">
+    <value>Onionhead Derivatives</value>
+    <comment>Commodity OnionheadDerivatives</comment>
+  </data>
+  <data name="OnionheadSamples" xml:space="preserve">
+    <value>Onionhead Samples</value>
+    <comment>Commodity OnionheadSamples</comment>
+  </data>
+  <data name="OutOfDateGoods" xml:space="preserve">
+    <value>Out Of Date Goods</value>
+    <comment>Commodity OutOfDateGoods</comment>
+  </data>
+  <data name="PatreusFieldSupplies" xml:space="preserve">
+    <value>Patreus Field Supplies</value>
+    <comment>Commodity PatreusFieldSupplies</comment>
+  </data>
+  <data name="PatreusGarisonSupplies" xml:space="preserve">
+    <value>Patreus Garrison Supplies</value>
+    <comment>Commodity PatreusGarisonSupplies</comment>
+  </data>
+  <data name="PlatinumAloy" xml:space="preserve">
+    <value>Platinum Alloy</value>
+    <comment>Commodity PlatinumAloy</comment>
+  </data>
+  <data name="RepublicanFieldSupplies" xml:space="preserve">
+    <value>Hudson's Field Supplies</value>
+    <comment>Commodity RepublicanFieldSupplies</comment>
+  </data>
+  <data name="RepublicanGarisonSupplies" xml:space="preserve">
+    <value>Hudson Garrison Supplies</value>
+    <comment>Commodity RepublicanGarisonSupplies</comment>
+  </data>
+  <data name="RestrictedIntel" xml:space="preserve">
+    <value>Hudson's Restricted Intel</value>
+    <comment>Commodity RestrictedIntel</comment>
+  </data>
+  <data name="RestrictedPackage" xml:space="preserve">
+    <value>Core Restricted Package</value>
+    <comment>Commodity RestrictedPackage</comment>
+  </data>
+  <data name="SiriusCommercialContracts" xml:space="preserve">
+    <value>Sirius Corporate Contracts</value>
+    <comment>Commodity SiriusCommercialContracts</comment>
+  </data>
+  <data name="SiriusFranchisePackage" xml:space="preserve">
+    <value>Sirius Franchise Package</value>
+    <comment>Commodity SiriusFranchisePackage</comment>
+  </data>
+  <data name="SiriusIndustrialEquipment" xml:space="preserve">
+    <value>Sirius Industrial Equipment</value>
+    <comment>Commodity SiriusIndustrialEquipment</comment>
+  </data>
+  <data name="ThargoidScoutTissueSample" xml:space="preserve">
+    <value>Thargoid Scout Tissue Sample </value>
+    <comment>Commodity ThargoidScoutTissueSample</comment>
+  </data>
+  <data name="UnmarkedWeapons" xml:space="preserve">
+    <value>Unmarked Military supplies</value>
+    <comment>Commodity UnmarkedWeapons</comment>
+  </data>
+  <data name="UtopianDissident" xml:space="preserve">
+    <value>Utopian Dissident</value>
+    <comment>Commodity UtopianDissident</comment>
+  </data>
+  <data name="UtopianFieldSupplies" xml:space="preserve">
+    <value>Utopian Supplies</value>
+    <comment>Commodity UtopianFieldSupplies</comment>
+  </data>
+  <data name="UtopianPublicity" xml:space="preserve">
+    <value>Utopian Publicity</value>
+    <comment>Commodity UtopianPublicity</comment>
   </data>
 </root>
