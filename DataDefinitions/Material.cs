@@ -102,7 +102,6 @@ namespace EddiDataDefinitions
             var Tg_ShipSystemData = new Material("tg_shipsystemsdata", Data, Rare);
             var Tg_ResidueData = new Material("tg_residuedata", Data, Rare);
             var UnknownWakeScan = new Material("unknownwakedata", Data, Rare);
-            var Guardian_VesselBlueprint = new Material("guardian_vesselblueprint", Data, Rare);
             var Guardian_WeaponBlueprint = new Material("guardian_weaponblueprint", Data, Rare);
             var Guardian_ModuleBlueprint = new Material("guardian_moduleblueprint", Data, Rare);
 
@@ -114,6 +113,7 @@ namespace EddiDataDefinitions
             var ModifiedEmbeddedFirmware = new Material("embeddedfirmware", Data, VeryRare);
             var PeculiarShieldFrequencyData = new Material("shieldfrequencydata", Data, VeryRare);
             // Grade 5 Xeno
+            var Guardian_VesselBlueprint = new Material("guardian_vesselblueprint", Data, VeryRare);
 
             ///<summary>Manufactured</summary>
 
