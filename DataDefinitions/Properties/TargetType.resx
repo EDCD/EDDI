@@ -123,11 +123,17 @@
   <data name="Civilian" xml:space="preserve">
     <value>Civilian</value>
   </data>
+  <data name="Hostage" xml:space="preserve">
+    <value>Hostage</value>
+  </data>
   <data name="Miner" xml:space="preserve">
     <value>Miner</value>
   </data>
   <data name="Pirate" xml:space="preserve">
     <value>Pirate</value>
+  </data>
+  <data name="PirateLord" xml:space="preserve">
+    <value>Pirate Lord</value>
   </data>
   <data name="Security" xml:space="preserve">
     <value>Security</value>

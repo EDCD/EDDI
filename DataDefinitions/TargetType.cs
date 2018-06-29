@@ -15,8 +15,10 @@ namespace EddiDataDefinitions
 
             var BountyHunter = new TargetType("BountyHunter");
             var Civilian = new TargetType("Civilian");
+            var Hostage = new TargetType("Hostage");
             var Miner = new TargetType("Miner");
             var Pirate = new TargetType("Pirate");
+            var PirateLord = new TargetType("PirateLord");
             var Security = new TargetType("Security");
             var Smuggler = new TargetType("Smuggler");
             var Terrorist = new TargetType("Terrorist");

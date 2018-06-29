@@ -79,6 +79,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Hostage.
+        /// </summary>
+        internal static string Hostage {
+            get {
+                return ResourceManager.GetString("Hostage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Miner.
         /// </summary>
         internal static string Miner {
@@ -93,6 +102,15 @@ namespace EddiDataDefinitions.Properties {
         internal static string Pirate {
             get {
                 return ResourceManager.GetString("Pirate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pirate Lord.
+        /// </summary>
+        internal static string PirateLord {
+            get {
+                return ResourceManager.GetString("PirateLord", resourceCulture);
             }
         }
         

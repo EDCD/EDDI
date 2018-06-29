@@ -544,6 +544,7 @@ namespace EddiMissionMonitor
                     commodity = @event.commodity,
 
                     // Missions with targets
+                    targetTypeEDName = @event.targettype?.Split('_').ElementAtOrDefault(2),
                     target = @event.target,
                     targetfaction = @event.targetfaction,
 
@@ -555,22 +556,8 @@ namespace EddiMissionMonitor
 
                 string type = mission.typeEDName.ToLowerInvariant();
 
-                // Get the target type (Civilian, Pirate, Trader, etc), if available
-                for (int i = 1; i < @event.targettype.Split('_').Count(); i++)
-                {
-                    TargetType targetType = TargetType.FromEDName(@event.targettype.Replace(";", "")
-                        .Split('_')
-                        .ElementAtOrDefault(i)?
-                        .ToLowerInvariant());
-                    if (targetType != null)
-                    {
-                        mission.targetTypeEDName = targetType.edname;
-                        break;
-                    }
-                }
-
-                    // Get the faction state (Boom, Bust, Civil War, etc), if available
-                    for (int i = 2; i < mission.name.Split('_').Count(); i++)
+                // Get the faction state (Boom, Bust, Civil War, etc), if available
+                for (int i = 2; i < mission.name.Split('_').Count(); i++)
                 {
                     string factionState = SystemState.FromEDName(mission.name.Split('_')
                         .ElementAtOrDefault(i)?
