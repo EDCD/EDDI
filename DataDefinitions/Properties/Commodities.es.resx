@@ -1066,10 +1066,6 @@
     <value>Placa de anclaje reforzada</value>
     <comment>Commodity ReinforcedMountingPlate</comment>
   </data>
-  <data name="republicangarisonsupplies" xml:space="preserve">
-    <value>Suministros de la Guarnición de la República</value>
-    <comment>Commodity republicangarisonsupplies</comment>
-  </data>
   <data name="ResonatingSeparators" xml:space="preserve">
     <value>Separadores resonantes</value>
     <comment>Commodity ResonatingSeparators</comment>
@@ -1121,18 +1117,6 @@
   <data name="Silver" xml:space="preserve">
     <value>Plata</value>
     <comment>Commodity Silver</comment>
-  </data>
-  <data name="siriuscommercialcontracts" xml:space="preserve">
-    <value>Contratos comerciales de Sirius</value>
-    <comment>Commodity siriuscommercialcontracts</comment>
-  </data>
-  <data name="siriusfranchisepackage" xml:space="preserve">
-    <value>Paquete de franquicia de Sirius</value>
-    <comment>Commodity siriusfranchisepackage</comment>
-  </data>
-  <data name="siriusindustrialequipment" xml:space="preserve">
-    <value>Equipamiento industrial de Sirius</value>
-    <comment>Commodity siriusindustrialequipment</comment>
   </data>
   <data name="SkimerComponents" xml:space="preserve">
     <value>Componentes de deslizador</value>
@@ -1483,4 +1467,37 @@
     <value>Desconocido</value>
     <comment>Commodity Unknown</comment>
   </data>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
 </root>
