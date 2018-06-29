@@ -1450,7 +1450,7 @@
     <comment>Commodity aislingmediamaterials</comment>
   </data>
   <data name="undergroundsupport" xml:space="preserve">
-    <value>Grom Untergrund-Unterstützung</value>
+    <value>Untergrund-Support für Grom</value>
     <comment>Commodity undergroundsupport</comment>
   </data>
   <data name="torvalcommercialcontracts" xml:space="preserve">
@@ -1469,37 +1469,136 @@
     <value>Unbekannt</value>
     <comment>Commodity Unknown</comment>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="AislingMediaResources" xml:space="preserve">
+    <value>Aislings abgeschlossene Verträge</value>
+    <comment>Commodity AislingMediaResources</comment>
+  </data>
+  <data name="AllianceLegaslativeContracts" xml:space="preserve">
+    <value>Gesetzesverträge der Allianz</value>
+    <comment>Commodity AllianceLegaslativeContracts</comment>
+  </data>
+  <data name="AllianceTradeAgreements" xml:space="preserve">
+    <value>Handelsabkommen der Allianz</value>
+    <comment>Commodity AllianceTradeAgreements</comment>
+  </data>
+  <data name="BuckyballBeerMats" xml:space="preserve">
+    <value>Buckyball-Bierdeckel</value>
+    <comment>Commodity BuckyballBeerMats</comment>
+  </data>
+  <data name="CounterCultureSupport" xml:space="preserve">
+    <value>Revolutionsmaterialien</value>
+    <comment>Commodity CounterCultureSupport</comment>
+  </data>
+  <data name="FederalAid" xml:space="preserve">
+    <value>Liberale Föderiertenhilfe</value>
+    <comment>Commodity FederalAid</comment>
+  </data>
+  <data name="FederalTradeContracts" xml:space="preserve">
+    <value>Liberales Föderiertenpaket</value>
+    <comment>Commodity FederalTradeContracts</comment>
+  </data>
+  <data name="GromCounterIntelligence" xml:space="preserve">
+    <value>Grom-Spionageabwehr</value>
+    <comment>Commodity GromCounterIntelligence</comment>
+  </data>
+  <data name="GromWarTrophies" xml:space="preserve">
+    <value>Yuri Groms Militärausrüstung</value>
+    <comment>Commodity GromWarTrophies</comment>
+  </data>
+  <data name="HarmaSilverSeaRum" xml:space="preserve">
+    <value>Harma Silberseerum</value>
+    <comment>Commodity HarmaSilverSeaRum</comment>
+  </data>
+  <data name="IllicitConsignment" xml:space="preserve">
+    <value>Kumo-Schmuggelwarenpaket</value>
+    <comment>Commodity IllicitConsignment</comment>
+  </data>
+  <data name="LavignyFieldSupplies" xml:space="preserve">
+    <value>Lavignys Feldversorgung</value>
+    <comment>Commodity LavignyFieldSupplies</comment>
+  </data>
+  <data name="LiberalCampaignMaterials" xml:space="preserve">
+    <value>Liberale Propaganda</value>
+    <comment>Commodity LiberalCampaignMaterials</comment>
+  </data>
+  <data name="LoanedArms" xml:space="preserve">
+    <value>Markierte Militärwaffen</value>
+    <comment>Commodity LoanedArms</comment>
+  </data>
+  <data name="MarkedSlaves" xml:space="preserve">
+    <value>Markierte Sklaven</value>
+    <comment>Commodity MarkedSlaves</comment>
+  </data>
+  <data name="OnionheadDerivatives" xml:space="preserve">
+    <value>Onionhead-Derivantien</value>
+    <comment>Commodity OnionheadDerivatives</comment>
+  </data>
+  <data name="OnionheadSamples" xml:space="preserve">
+    <value>Onionhead-Proben</value>
+    <comment>Commodity OnionheadSamples</comment>
+  </data>
+  <data name="OutOfDateGoods" xml:space="preserve">
+    <value>Abgelaufene Waren</value>
+    <comment>Commodity OutOfDateGoods</comment>
+  </data>
+  <data name="PatreusFieldSupplies" xml:space="preserve">
+    <value>Patreus' Feldversorgung</value>
+    <comment>Commodity PatreusFieldSupplies</comment>
+  </data>
+  <data name="PatreusGarisonSupplies" xml:space="preserve">
+    <value>Patreus' Garnisonsversorgung</value>
+    <comment>Commodity PatreusGarisonSupplies</comment>
+  </data>
+  <data name="PlatinumAloy" xml:space="preserve">
+    <value>Platinlegierung</value>
+    <comment>Commodity PlatinumAloy</comment>
+  </data>
+  <data name="RepublicanFieldSupplies" xml:space="preserve">
+    <value>Hudsons Feldversorgung</value>
+    <comment>Commodity RepublicanFieldSupplies</comment>
+  </data>
+  <data name="RepublicanGarisonSupplies" xml:space="preserve">
+    <value>Hudsons Garnisonsversorgung</value>
+    <comment>Commodity RepublicanGarisonSupplies</comment>
+  </data>
+  <data name="RestrictedIntel" xml:space="preserve">
+    <value>Hudsons Geheiminformationen</value>
+    <comment>Commodity RestrictedIntel</comment>
+  </data>
+  <data name="RestrictedPackage" xml:space="preserve">
+    <value>Vertrauliches Paket der Core Holding</value>
+    <comment>Commodity RestrictedPackage</comment>
+  </data>
+  <data name="SiriusCommercialContracts" xml:space="preserve">
+    <value>Sirius Unternehmensverträge</value>
+    <comment>Commodity SiriusCommercialContracts</comment>
+  </data>
+  <data name="SiriusFranchisePackage" xml:space="preserve">
+    <value>Sirius Franchise-Paket</value>
+    <comment>Commodity SiriusFranchisePackage</comment>
+  </data>
+  <data name="SiriusIndustrialEquipment" xml:space="preserve">
+    <value>Sirius Industrieausrüstung</value>
+    <comment>Commodity SiriusIndustrialEquipment</comment>
+  </data>
+  <data name="ThargoidScoutTissueSample" xml:space="preserve">
+    <value>Gewebeprobe von Thargoiden-Späher </value>
+    <comment>Commodity ThargoidScoutTissueSample</comment>
+  </data>
+  <data name="UnmarkedWeapons" xml:space="preserve">
+    <value>Unmarkierte Militärmaterialien</value>
+    <comment>Commodity UnmarkedWeapons</comment>
+  </data>
+  <data name="UtopianDissident" xml:space="preserve">
+    <value>Utopia-Dissidenten</value>
+    <comment>Commodity UtopianDissident</comment>
+  </data>
+  <data name="UtopianFieldSupplies" xml:space="preserve">
+    <value>Utopia-Versorgungsmaterialien</value>
+    <comment>Commodity UtopianFieldSupplies</comment>
+  </data>
+  <data name="UtopianPublicity" xml:space="preserve">
+    <value>Utopia-PR-Dokumente</value>
+    <comment>Commodity UtopianPublicity</comment>
+  </data>
 </root>
