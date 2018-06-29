@@ -876,10 +876,6 @@
     <value>Megerősített burkolólemez</value>
     <comment>Commodity ReinforcedMountingPlate</comment>
   </data>
-  <data name="republicangarisonsupplies" xml:space="preserve">
-    <value>Köztársasági helyőrségi ellátmány</value>
-    <comment>Commodity republicangarisonsupplies</comment>
-  </data>
   <data name="ResonatingSeparators" xml:space="preserve">
     <value>Rezonanciacsökkentők</value>
     <comment>Commodity ResonatingSeparators</comment>
@@ -919,12 +915,6 @@
   <data name="Silver" xml:space="preserve">
     <value>Ezüst</value>
     <comment>Commodity Silver</comment>
-  </data>
-  
-  
-  <data name="siriusindustrialequipment" xml:space="preserve">
-    <value>Siriusi ipari berendezés</value>
-    <comment>Commodity siriusindustrialequipment</comment>
   </data>
   
   <data name="Slaves" xml:space="preserve">
@@ -1100,6 +1090,39 @@
     <value>Kinagoi hegedűk</value>
     <comment>Commodity KinagoInstruments</comment>
   </data>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
   
   
   
