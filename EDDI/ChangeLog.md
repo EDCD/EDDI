@@ -11,6 +11,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * "modulesvalue" The value of the ship's modules (less hull)
       * "value" The total value of the ship (hull + modules)
       * "rebuy" The rebuy value of the ship
+    * Revised `Insurance check` script to take advantage of the new ship "rebuy" property.
 
 ### 3.0.1-rc3
   * Core
