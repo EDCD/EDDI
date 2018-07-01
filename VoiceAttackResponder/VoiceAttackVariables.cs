@@ -483,7 +483,6 @@ namespace EddiVoiceAttackResponder
                 vaProxy.SetText("Debt (spoken)", Translations.Humanize(cmdr?.debt));
                 vaProxy.SetText("Title", cmdr?.title ?? Eddi.Properties.EddiResources.Commander);
                 vaProxy.SetText("Gender", cmdr?.gender ?? Eddi.Properties.MainWindow.tab_commander_gender_n);
-                vaProxy.SetDecimal("Insurance", cmdr?.insurance);
 
                 // Backwards-compatibility with 1.x
                 vaProxy.SetText("System rank", cmdr?.title);

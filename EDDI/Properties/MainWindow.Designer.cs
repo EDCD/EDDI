@@ -241,29 +241,11 @@ namespace Eddi.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Insurance excess (%):.
-        /// </summary>
-        public static string tab_commander_insurance {
-            get {
-                return ResourceManager.GetString("tab_commander_insurance", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to You can provide the name of a particular system you consider home, and also a station inside that system. If you do then the information about this system and station will be made available to EDDI&apos;s responders..
         /// </summary>
         public static string tab_commander_par1 {
             get {
                 return ResourceManager.GetString("tab_commander_par1", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Your insurance excess is the % of your ship&apos;s value you have to pay if your ship is destroyed. This will usually be 5 but could be less if you are an early backer of Elite with alpha backers being 2.5 and beta backers being 3.75. If you aren&apos;t sure then leave it at 5..
-        /// </summary>
-        public static string tab_commander_par2 {
-            get {
-                return ResourceManager.GetString("tab_commander_par2", resourceCulture);
             }
         }
         

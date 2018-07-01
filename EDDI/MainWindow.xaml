@@ -114,9 +114,6 @@
                                 </Binding.ValidationRules>
                             </Binding>
                         </TextBox>
-                        <TextBlock x:Name ="eddi3Text" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="6" TextWrapping="Wrap" Margin="0,5" Text="{x:Static resx:MainWindow.tab_commander_par2}" VerticalAlignment="Top"/>
-                        <Label x:Name ="eddiInsuranceLabel" Grid.Row="4" Grid.Column="0" Margin="0,5" VerticalContentAlignment="Center" Content="{x:Static resx:MainWindow.tab_commander_insurance}"/>
-                        <TextBox x:Name="eddiInsuranceDecimal" Grid.Row="4" Grid.Column="1" Margin="0,5" PreviewTextInput="EnsureValidDecimal" TextChanged="insuranceChanged" TextAlignment="Center" VerticalContentAlignment="Center" Height="25" Width="30"/>
                         <Label x:Name ="eddiGenderLabel" Grid.Row="5" Grid.RowSpan="3" Grid.Column="0" Grid.ColumnSpan ="2" Margin="0, 5" Content="{x:Static resx:MainWindow.tab_commander_gender}"/>
                         <RadioButton x:Name ="eddiGenderMale" Content="{x:Static resx:MainWindow.tab_commander_gender_m}" HorizontalAlignment="Left" VerticalAlignment="Center"  Height="Auto" Grid.Row="5" Checked="isMale_Checked" Margin="0, 12.5, 0, 5" Grid.Column="2"/>
                         <RadioButton x:Name ="eddiGenderFemale" Content="{x:Static resx:MainWindow.tab_commander_gender_f}" HorizontalAlignment="Left" VerticalAlignment="Center"  Height="Auto" Grid.Row="6" Checked="isFemale_Checked" Margin="0, 5" Grid.Column="2"/>
