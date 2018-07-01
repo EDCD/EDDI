@@ -397,6 +397,10 @@ namespace EddiJournalMonitor
                                 string shipName = JsonParsing.getString(data, "ShipName");
                                 string shipIdent = JsonParsing.getString(data, "ShipIdent");
 
+                                long hullValue = JsonParsing.getLong(data, "HullValue");
+                                long modulesValue = JsonParsing.getLong(data, "ModulesValue");
+                                long rebuy = JsonParsing.getLong(data, "Rebuy");
+
                                 data.TryGetValue("Modules", out val);
                                 List<object> modulesData = (List<object>)val;
 
@@ -529,7 +533,7 @@ namespace EddiJournalMonitor
                                         }
                                     }
                                 }
-                                events.Add(new ShipLoadoutEvent(timestamp, ship, shipId, shipName, shipIdent, compartments, hardpoints, paintjob) { raw = line });
+                                events.Add(new ShipLoadoutEvent(timestamp, ship, shipId, shipName, shipIdent, hullValue, modulesValue, rebuy, compartments, hardpoints, paintjob) { raw = line });
                             }
                             handled = true;
                             break;

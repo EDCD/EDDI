@@ -66,6 +66,9 @@ namespace EddiDataDefinitions
             }
         }
 
+        /// <summary>the value of the ship's rebuy, in credits</summary>
+        public long rebuy { get; set; }
+
         private string _name;
         /// <summary>the name of this ship</summary>
         public string name
