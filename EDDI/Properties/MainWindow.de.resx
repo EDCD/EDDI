@@ -253,13 +253,7 @@
   <data name="tab_commander_home_system" xml:space="preserve">
     <value>Heimatsystem:</value>
   </data>
-  <data name="tab_commander_insurance" xml:space="preserve">
-    <value>Selbstbeteiligung (%):</value>
-  </data>
   <data name="tab_commander_par1" xml:space="preserve">
     <value>Sie können den Namen eines bestimmten Systems und einer Station in diesem System, das Sie als Ihr Zuhause betrachten, angeben. Wenn Sie dies tun, werden die Informationen über dieses System und diese Station den Ansprechpartnern von EDDI zur Verfügung gestellt.</value>
-  </data>
-  <data name="tab_commander_par2" xml:space="preserve">
-    <value>Ihr Selbstbehalt ist der Prozentsatz des Wertes Ihres Schiffes, den Sie zahlen müssen, wenn Ihr Schiff zerstört wird. Dies sind normalerweise 5%, kann aber weniger sein, wenn Sie ein früher Unterstützer von Elite sind, bei Alpha-Unterstützer 2,5% und bei Beta-Unterstützer 3,75%. Wenn Sie sich nicht sicher sind, belassen Sie ihn bei 5%.</value>
   </data>
 </root>
