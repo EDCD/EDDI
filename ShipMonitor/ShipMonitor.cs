@@ -422,7 +422,8 @@ namespace EddiShipMonitor
             {
                 ship.bulkheads = compartment.module;
                 // We take ship overall health from here
-                ship.health = compartment.module.health;
+                // #727 at the time of writing this is bugged to be always 1.0 -- disabling for now
+                // ship.health = compartment.module.health;
             }
 
             compartment = @event.compartments.FirstOrDefault(c => c.name == "ShipCockpit");
