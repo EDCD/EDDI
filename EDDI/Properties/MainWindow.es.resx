@@ -253,13 +253,7 @@
   <data name="tab_commander_home_system" xml:space="preserve">
     <value>Sistema hogar:</value>
   </data>
-  <data name="tab_commander_insurance" xml:space="preserve">
-    <value>Exceso de seguro (%):</value>
-  </data>
   <data name="tab_commander_par1" xml:space="preserve">
     <value>Puede especificar el nombre de un sistema y una estación en particular del mismo,  que considere como su hogar. Si lo hace, su información estará disponible para los Contestadores de EDDI.</value>
-  </data>
-  <data name="tab_commander_par2" xml:space="preserve">
-    <value>El exceso de seguro es el % del valor de su nave que debe pagar si es destruida. Por lo general, será 5, pero podría ser menor si fue uno de los primeros en dar apoyo a Elite. Si fue en la alfa ponga 2.5 y si fue en la beta 3.75. Si no está seguro, déjelo en 5.</value>
   </data>
 </root>
