@@ -197,7 +197,10 @@
     <value>Compartiment de soute résistant à la corrosion</value>
     <comment>Module CorrosionResistantCargoRack</comment>
   </data>
-  
+  <data name="Cytoscrambler" xml:space="preserve">
+    <value>Cytobrouilleur</value>
+    <comment>Module Cytoscrambler</comment>
+  </data>
   <data name="DataLinkScanner" xml:space="preserve">
     <value>Détecteur de Liaison de Données</value>
     <comment>Module DataLinkScanner</comment>
