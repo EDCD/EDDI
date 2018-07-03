@@ -69,16 +69,8 @@ namespace EddiShipMonitor
                 decimal? healthOutOf1e6 = (decimal?)(json["health"]?["hull"]);
                 if (healthOutOf1e6 != null)
                 {
-                    // Be sensible with health - round to zero decimal places unless it's very low, in which case one decimal place
                     decimal healthPercent = (decimal)healthOutOf1e6 / 10_000M;
-                    if (healthPercent < 5)
-                    {
-                        Ship.health = Math.Round(healthPercent, 1);
-                    }
-                    else
-                    {
-                        Ship.health = Math.Round(healthPercent);
-                    }
+                    Ship.health = healthPercent;
                 }
 
                 if (json["modules"] != null)
