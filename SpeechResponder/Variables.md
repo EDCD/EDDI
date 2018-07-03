@@ -41,6 +41,9 @@ Any values might be missing, depending on EDDI's configuration.
     - `model` the model of the ship (Cobra Mk III, Fer-de-Lance etc)
     - `size` the size of the ship (small/medium/large)
     - `value` the value of the ship without cargo, in credits
+    - `hullvalue` The value of the ship's hull (less modules), in credits
+    - `modulesvalue` The value of the ship's modules (less hull), in credits
+    - `rebuy` The rebuy value of the ship, in credits
     - `cargocapacity` the total tonnage cargo capacity
     - `cargocarried` the current tonnage cargo carried
     - `name` the name of the ship
@@ -59,7 +62,6 @@ Any values might be missing, depending on EDDI's configuration.
     - `hardpoints` the ship's hardpoints (this is an array of HardPoint objects)
     - `compartments` the ship's internal compartments (this is an array of Compartment objects)
     - `launchbays` the ship's internal hangars, containing SRV or Fighter 'vehicles' (this is an array of launchbay objects) 
-
 
 ## Status
 

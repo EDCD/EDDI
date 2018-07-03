@@ -2,6 +2,19 @@
 
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
+### 3.0.1-rc4
+  * Core
+    * Removed `insurance excess` from the user interface and the `insurance` property from the top level `commander` variable. FDev now gives us rebuy values directly, so this is no longer needed.
+  * Ship monitor
+    * Fix ship value and model (for unnamed ships) not being updated correctly in the Ship Monitor.
+  * Speech responder
+    * Updated the `Loadout` event to include new properties.
+      * "hullvalue" The value of the ship's hull (less modules)
+      * "modulesvalue" The value of the ship's modules (less hull)
+      * "value" The total value of the ship (hull + modules)
+      * "rebuy" The rebuy value of the ship
+    * Revised `Insurance check` script to take advantage of the new ship "rebuy" property.
+
 ### 3.0.1-rc3
   * Core
     * Added data definitions for the new ships and modules in Chapter 2.

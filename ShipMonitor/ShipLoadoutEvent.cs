@@ -18,6 +18,10 @@ namespace EddiShipMonitor
             VARIABLES.Add("shipid", "The ID of the ship");
             VARIABLES.Add("shipname", "The name of the ship");
             VARIABLES.Add("shipident", "The identification string of the ship");
+            VARIABLES.Add("hullvalue", "The value of the ship's hull (less modules)");
+            VARIABLES.Add("modulesvalue", "The value of the ship's modules (less hull)");
+            VARIABLES.Add("value", "The total value of the ship (hull + modules)");
+            VARIABLES.Add("rebuy", "The rebuy value of the ship");
             VARIABLES.Add("paintjob", "The paintjob of the ship");
             VARIABLES.Add("compartments", "The compartments of the ship");
             VARIABLES.Add("hardpoints", "The hardpoints of the ship");
@@ -27,16 +31,23 @@ namespace EddiShipMonitor
         public string ship { get; private set; }
         public string shipname { get; private set; }
         public string shipident { get; private set; }
+        public long value => hullvalue + modulesvalue;
+        public long hullvalue { get; private set; }
+        public long modulesvalue { get; private set; }
+        public long rebuy { get; private set; }
         public string paintjob { get; private set; }
         public List<Hardpoint> hardpoints { get; private set;  }
         public List<Compartment> compartments { get; private set; }
 
-        public ShipLoadoutEvent(DateTime timestamp, string ship, int? shipId, string shipName, string shipIdent, List<Compartment> compartments, List<Hardpoint> hardpoints, string paintjob) : base(timestamp, NAME)
+        public ShipLoadoutEvent(DateTime timestamp, string ship, int? shipId, string shipName, string shipIdent, long hullValue, long modulesValue, long rebuy, List<Compartment> compartments, List<Hardpoint> hardpoints, string paintjob) : base(timestamp, NAME)
         {
             this.ship = ShipDefinitions.FromEDModel(ship).model;
             this.shipid = shipId;
             this.shipname = shipName;
             this.shipident = shipIdent;
+            this.hullvalue = hullValue;
+            this.modulesvalue = modulesValue;
+            this.rebuy = rebuy;
             this.paintjob = paintjob;
             this.hardpoints = hardpoints;
             this.compartments = compartments;

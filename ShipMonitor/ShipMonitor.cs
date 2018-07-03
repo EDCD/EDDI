@@ -406,10 +406,15 @@ namespace EddiShipMonitor
             // Save a copy of the raw event so that we can send it to other 3rd party apps
             ship.raw = @event.raw;
 
-            // Update name, ident & paintjob if required
+            // Update model (in case it was solely from the edname), name, ident & paintjob if required
+            ship.model = @event.ship;
             setShipName(ship, @event.shipname);
             setShipIdent(ship, @event.shipident);
             ship.paintjob = @event.paintjob;
+
+            // Set ship value
+            ship.value = @event.value;
+            ship.rebuy = @event.rebuy;
 
             // Set the standard modules
             Compartment compartment = @event.compartments.FirstOrDefault(c => c.name == "Armour");
@@ -735,7 +740,7 @@ namespace EddiShipMonitor
 
         private void posthandleShipLoadoutEvent(ShipLoadoutEvent @event)
         {
-            /// The ship may have engineering data, request a profile refresh from the Frontier API a minute after switching
+            /// The ship may have Frontier API specific data, request a profile refresh from the Frontier API a minute after switching
             refreshProfileDelayed(@event.shipid, currentProfileId).GetAwaiter().GetResult();
         }
 

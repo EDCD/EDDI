@@ -187,7 +187,6 @@ namespace Eddi
             EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
             eddiHomeSystemText.Text = eddiConfiguration.validSystem == true ? eddiConfiguration.HomeSystem : string.Empty;
             eddiHomeStationText.Text = eddiConfiguration.validStation == true ? eddiConfiguration.HomeStation : string.Empty;
-            eddiInsuranceDecimal.Text = eddiConfiguration.Insurance.ToString(CultureInfo.InvariantCulture);
             eddiVerboseLogging.IsChecked = eddiConfiguration.Debug;
             eddiBetaProgramme.IsChecked = eddiConfiguration.Beta;
             if (eddiConfiguration.Gender == "Female")
@@ -434,20 +433,6 @@ namespace Eddi
 
             // Update the UI for invalid results
             runValidation(eddiHomeStationText);
-        }
-
-        private void insuranceChanged(object sender, TextChangedEventArgs e)
-        {
-            EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
-            try
-            {
-                eddiConfiguration.Insurance = string.IsNullOrWhiteSpace(eddiInsuranceDecimal.Text) ? 5 : Convert.ToDecimal(eddiInsuranceDecimal.Text, CultureInfo.InvariantCulture);
-                eddiConfiguration.ToFile();
-            }
-            catch
-            {
-                // Bad user input; ignore it
-            }
         }
 
         private void isMale_Checked(object sender, RoutedEventArgs e)

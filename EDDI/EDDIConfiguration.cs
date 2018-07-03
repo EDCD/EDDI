@@ -26,8 +26,6 @@ namespace Eddi
         public bool Debug { get; set; }
         [JsonProperty("beta")]
         public bool Beta { get; set; }
-        [JsonProperty("insurance")]
-        public decimal Insurance { get; set; }
         [JsonProperty("plugins")]
         public IDictionary<string, bool> Plugins { get; set; }
         [JsonProperty("Gender")]
@@ -54,7 +52,6 @@ namespace Eddi
         {
             Debug = false;
             Beta = false;
-            Insurance = 5;
             Plugins = new Dictionary<string, bool>();
             exporttarget = "Coriolis";
             Gender = "Male";

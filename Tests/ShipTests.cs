@@ -19,6 +19,10 @@ namespace UnitTests
         {
             // Prevent telemetry data from being reported based on test results
             RollbarLocator.RollbarInstance.Config.Enabled = false;
+
+            // Set ourselves as in beta to stop sending data to remote systems
+            EDDI.Instance.eventHandler(new FileHeaderEvent(DateTime.UtcNow, "JournalBeta.txt", "beta", "beta"));
+            Logging.Verbose = true;
         }
 
         [TestMethod]
@@ -69,14 +73,13 @@ namespace UnitTests
         }
 
         [TestMethod]
+        [DeploymentItem("eddi.json")]
         [DeploymentItem("loadout.json")]
+        [DeploymentItem(@"x86\SQLite.Interop.dll", "x86")]
+        [DeploymentItem(@"x64\SQLite.Interop.dll", "x64")]
         public void TestLoadoutParsing()
         {
             string data = System.IO.File.ReadAllText("loadout.json");
-
-            // Set ourselves as in beta to stop sending data to remote systems
-            EDDI.Instance.eventHandler(new FileHeaderEvent(DateTime.UtcNow, "JournalBeta.txt", "beta", "beta"));
-            Logging.Verbose = true;
 
             List<Event> events = JournalMonitor.ParseJournalEntry(data);
             Assert.AreEqual(1, events.Count);

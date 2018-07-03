@@ -164,8 +164,6 @@ namespace Eddi
                         }
                     }
 
-
-                    Cmdr.insurance = configuration.Insurance;
                     Cmdr.gender = configuration.Gender;
                     if (Cmdr.name != null)
                     {
@@ -1498,11 +1496,10 @@ namespace Eddi
                         // Use the profile as primary information for our commander and shipyard
                         Cmdr = profile.Cmdr;
 
-                        // Reinstate information not obtained from the Companion API (insurance & gender settings)
+                        // Reinstate information not obtained from the Companion API (gender settings)
                         EDDIConfiguration configuration = EDDIConfiguration.FromFile();
                         if (configuration != null)
                         {
-                            Cmdr.insurance = configuration.Insurance;
                             Cmdr.gender = configuration.Gender;
                         }
 
