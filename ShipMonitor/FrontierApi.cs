@@ -66,15 +66,19 @@ namespace EddiShipMonitor
                 Ship.value = (long)(json["value"]?["hull"] ?? 0) + (long)(json["value"]?["modules"] ?? 0);
                 Ship.cargocapacity = 0;
 
-                // Be sensible with health - round it unless it's very low
-                decimal Health = (decimal)(json["health"]?["hull"] ?? 1000000M) / 10000M;
-                if (Health < 5)
+                decimal? healthOutOf1e6 = (decimal?)(json["health"]?["hull"]);
+                if (healthOutOf1e6 != null)
                 {
-                    Ship.health = Math.Round(Health, 1);
-                }
-                else
-                {
-                    Ship.health = Math.Round(Health);
+                    // Be sensible with health - round to zero decimal places unless it's very low, in which case one decimal place
+                    decimal healthPercent = (decimal)healthOutOf1e6 / 10_000M;
+                    if (healthPercent < 5)
+                    {
+                        Ship.health = Math.Round(healthPercent, 1);
+                    }
+                    else
+                    {
+                        Ship.health = Math.Round(healthPercent);
+                    }
                 }
 
                 if (json["modules"] != null)
