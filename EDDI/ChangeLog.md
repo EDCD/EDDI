@@ -2,6 +2,10 @@
 
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
+### 3.0.1-rc4
+  * Speech responder
+    * Added variety to the script and made it less verbose, as it fires a lot in the heat of combat.
+
 ### 3.0.1-rc3
   * Core
     * Added data definitions for the new ships and modules in Chapter 2.
