@@ -253,13 +253,7 @@
   <data name="tab_commander_home_system" xml:space="preserve">
     <value>Système résidentiel:</value>
   </data>
-  <data name="tab_commander_insurance" xml:space="preserve">
-    <value>Excès de l'assurance (%):</value>
-  </data>
   <data name="tab_commander_par1" xml:space="preserve">
     <value>Vous pouvez indiquer ici le nom d'un système en particulier que vous considérez comme votre domicile ainsi qu'une station dans ce système. Si vous le faites, l'information sera utilisée par les répondeurs EDDI.</value>
-  </data>
-  <data name="tab_commander_par2" xml:space="preserve">
-    <value>Votre excès d'assurance est le pourcentage de la valeur de votre vaisseau que vous devrez payer s'il est détruit. Il s'agit en général de 5% mais cette valeur peut être inférieure si vous êtes un backer (crowdfunding) d'Elite: Dangerous, sachant que les alpha backers sont à 2.5% et beta backers à 3.75%. Si vous n'êtes pas supporter, laissez cette valeur à 5%.</value>
   </data>
 </root>
