@@ -224,8 +224,4 @@
   
   
   
-  
-  <data name="tab_commander_par2" xml:space="preserve">
-    <value>A biztosítási összeg a hajó árának bizonyos %-a, ami annak elpusztulása esetén fizetendő. Ez általában 5%, de lehet kevesebb is a korai elite alfa (2.5) és beta (3.75) támogatóinak. Ha nem biztos benne hagyja 5%-on.</value>
-  </data>
 </root>
