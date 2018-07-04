@@ -56,10 +56,10 @@ namespace EddiVoiceAttackResponder
                 App.ApplyAnyOverrideCulture();
                 EDDI.Instance.Start();
 
-                // Add notifiers for state and property changes 
+                // Add notifiers for events we want to react to
                 EDDI.Instance.State.CollectionChanged += (s, e) => setDictionaryValues(EDDI.Instance.State, "state", ref vaProxy);
-
                 SpeechService.Instance.PropertyChanged += (s, e) => setSpeaking(SpeechService.eddiSpeaking, ref vaProxy);
+                VoiceAttackResponder.OnEvent += (s, theEvent) => updateValuesOnEvent(theEvent, ref vaProxy);
 
                 // Display instance information if available
                 if (EDDI.Instance.UpgradeRequired)
@@ -85,72 +85,6 @@ namespace EddiVoiceAttackResponder
                 // Set the initial values from the main EDDI objects
                 setValues(ref vaProxy);
 
-                // Spin out a worker thread to keep the VoiceAttack events up-to-date and run event-specific commands
-                eventThread = new Thread(() =>
-                {
-                    while (true)
-                    {
-                        try
-                        {
-                            Event theEvent = EventQueue.Take();
-                            vaProxy.SetText("EDDI event", theEvent.type);
-
-                            // Event-specific values
-                            List<string> setKeys = new List<string>();
-                            // We start off setting the keys which are official and known
-                            setStandardValues(vaProxy, theEvent, setKeys);
-                            // Now we carry out a generic walk through the event object to create whatever we find
-                            setJsonValues(ref vaProxy, "EDDI " + theEvent.type.ToLowerInvariant(), JsonConvert.DeserializeObject(JsonConvert.SerializeObject(theEvent)), setKeys);
-
-                            // Fire local command if present
-                            string commandName = "((EDDI " + theEvent.type.ToLowerInvariant() + "))";
-                            Logging.Debug("Searching for command " + commandName);
-                            if (vaProxy.CommandExists(commandName))
-                            {
-                                Logging.Debug("Found command " + commandName);
-                                vaProxy.ExecuteCommand(commandName);
-                                Logging.Info("Executed command " + commandName);
-                            }
-                        }
-                        catch (ThreadAbortException)
-                        {
-                            Logging.Debug("Thread aborted");
-                        }
-                        catch (Exception ex)
-                        {
-                            Logging.Error("Failed to handle event in VoiceAttack", ex);
-                        }
-                    }
-                })
-                {
-                    IsBackground = true
-                };
-                eventThread.Start();
-
-                updaterThread = new Thread(() =>
-                {
-                    while (true)
-                    {
-                        try
-                        {
-                            // Update all standard values
-                            setValues(ref vaProxy);
-                        }
-                        catch (ThreadAbortException)
-                        {
-                            Logging.Debug("Thread aborted");
-                        }
-                        catch (Exception ex)
-                        {
-                            Logging.Error("Failed to set VoiceAttack values", ex);
-                        }
-                    }
-                })
-                {
-                    IsBackground = true
-                };
-                updaterThread.Start();
-
                 vaProxy.WriteToLog("The EDDI plugin is fully operational.", "green");
                 setStatus(ref vaProxy, "Operational");
 
@@ -168,6 +102,38 @@ namespace EddiVoiceAttackResponder
             {
                 Logging.Error("Failed to initialize VoiceAttack plugin", e);
                 vaProxy.WriteToLog("Unable to fully initialize EDDI. Some functions may not work.", "red");
+            }
+        }
+
+        public static void updateValuesOnEvent(Event theEvent, ref dynamic vaProxy)
+        {
+            try
+            {
+                vaProxy.SetText("EDDI event", theEvent.type);
+
+                // Event-specific values 
+                List<string> setKeys = new List<string>();
+                // We start off setting the keys which are official and known 
+                setStandardValues(vaProxy, theEvent, setKeys);
+                // Now we carry out a generic walk through the event object to create whatever we find 
+                setJsonValues(ref vaProxy, "EDDI " + theEvent.type.ToLowerInvariant(), JsonConvert.DeserializeObject(JsonConvert.SerializeObject(theEvent)), setKeys);
+
+                // Update all standard values 
+                setValues(ref vaProxy);
+
+                // Fire local command if present 
+                string commandName = "((EDDI " + theEvent.type.ToLowerInvariant() + "))";
+                Logging.Debug("Searching for command " + commandName);
+                if (vaProxy.CommandExists(commandName))
+                {
+                    Logging.Debug("Found command " + commandName);
+                    vaProxy.ExecuteCommand(commandName);
+                    Logging.Info("Executed command " + commandName);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logging.Error("Failed to handle event in VoiceAttack", ex);
             }
         }
 
