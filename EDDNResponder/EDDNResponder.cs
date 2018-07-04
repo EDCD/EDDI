@@ -206,9 +206,7 @@ namespace EDDNResponder
                 {
                     foreach (CompanionAppEconomy economy in EDDI.Instance.CurrentStation.economies)
                     {
-                        EDDNEconomy eddnEconomy = new EDDNEconomy();
-                        eddnEconomy.name = economy.name;
-                        eddnEconomy.proportion = economy.proportion;
+                        EDDNEconomy eddnEconomy = new EDDNEconomy(economy);
                         eddnEconomies.Add(eddnEconomy);
                     }
                 }
