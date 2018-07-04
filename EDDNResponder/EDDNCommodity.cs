@@ -26,11 +26,11 @@ namespace EDDNResponder
         {
             name = quote.definition.edname;
             meanPrice = quote.definition.avgprice;
-            buyPrice = quote.buyprice ?? 0;
-            stock = quote.stock ?? 0;
+            buyPrice = quote.buyprice;
+            stock = quote.stock;
             stockBracket = quote.stockbracket;
-            sellPrice = quote.sellprice ?? 0;
-            demand = quote.demand ?? 0;
+            sellPrice = quote.sellprice;
+            demand = quote.demand;
             demandBracket = quote.demandbracket;
             if (quote.StatusFlags.Count > 0)
             {
