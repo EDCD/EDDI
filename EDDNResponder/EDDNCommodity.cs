@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using EddiDataDefinitions;
+using System.Collections.Generic;
 
 namespace EDDNResponder
 {
@@ -19,6 +20,22 @@ namespace EDDNResponder
         {
             // Don't serialize status flags if they are empty as the schema requires that if present they contain at least 1 element
             return (statusFlags != null && statusFlags.Count > 0);
+        }
+
+        public EDDNCommodity(CommodityMarketQuote quote)
+        {
+            name = quote.definition.edname;
+            meanPrice = quote.definition.avgprice;
+            buyPrice = quote.buyprice ?? 0;
+            stock = quote.stock ?? 0;
+            stockBracket = quote.stockbracket;
+            sellPrice = quote.sellprice ?? 0;
+            demand = quote.demand ?? 0;
+            demandBracket = quote.demandbracket;
+            if (quote.StatusFlags.Count > 0)
+            {
+                statusFlags = quote.StatusFlags;
+            }
         }
     }
 }

@@ -222,19 +222,7 @@ namespace EDDNResponder
                     {
                         continue;
                     }
-                    EDDNCommodity eddnCommodity = new EDDNCommodity();
-                    eddnCommodity.name = quote.definition.edname;
-                    eddnCommodity.meanPrice = quote.definition.avgprice;
-                    eddnCommodity.buyPrice = quote.buyprice ?? 0;
-                    eddnCommodity.stock = quote.stock ?? 0;
-                    eddnCommodity.stockBracket = quote.stockbracket;
-                    eddnCommodity.sellPrice = quote.sellprice ?? 0;
-                    eddnCommodity.demand = quote.demand ?? 0;
-                    eddnCommodity.demandBracket = quote.demandbracket;
-                    if (quote.StatusFlags.Count > 0)
-                    {
-                        eddnCommodity.statusFlags = quote.StatusFlags;
-                    }
+                    EDDNCommodity eddnCommodity = new EDDNCommodity(quote);
                     eddnCommodities.Add(eddnCommodity);
                 };
 
