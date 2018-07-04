@@ -214,28 +214,28 @@ namespace EDDNResponder
                 }
 
                 List<EDDNCommodity> eddnCommodities = new List<EDDNCommodity>();
-                foreach (CommodityMarketQuote commodity in EDDI.Instance.CurrentStation.commodities)
+                foreach (CommodityMarketQuote quote in EDDI.Instance.CurrentStation.commodities)
                 {
-                    if (commodity.definition == null)
+                    if (quote.definition == null)
                     {
                         continue;
                     }
-                    if (commodity.definition.category == CommodityCategory.NonMarketable)
+                    if (quote.definition.category == CommodityCategory.NonMarketable)
                     {
                         continue;
                     }
                     EDDNCommodity eddnCommodity = new EDDNCommodity();
-                    eddnCommodity.name = commodity.definition.edname;
-                    eddnCommodity.meanPrice = commodity.definition.avgprice;
-                    eddnCommodity.buyPrice = commodity.buyprice ?? 0;
-                    eddnCommodity.stock = commodity.stock ?? 0;
-                    eddnCommodity.stockBracket = commodity.stockbracket;
-                    eddnCommodity.sellPrice = commodity.sellprice ?? 0;
-                    eddnCommodity.demand = commodity.demand ?? 0;
-                    eddnCommodity.demandBracket = commodity.demandbracket;
-                    if (commodity.StatusFlags.Count > 0)
+                    eddnCommodity.name = quote.definition.edname;
+                    eddnCommodity.meanPrice = quote.definition.avgprice;
+                    eddnCommodity.buyPrice = quote.buyprice ?? 0;
+                    eddnCommodity.stock = quote.stock ?? 0;
+                    eddnCommodity.stockBracket = quote.stockbracket;
+                    eddnCommodity.sellPrice = quote.sellprice ?? 0;
+                    eddnCommodity.demand = quote.demand ?? 0;
+                    eddnCommodity.demandBracket = quote.demandbracket;
+                    if (quote.StatusFlags.Count > 0)
                     {
-                        eddnCommodity.statusFlags = commodity.StatusFlags;
+                        eddnCommodity.statusFlags = quote.StatusFlags;
                     }
                     eddnCommodities.Add(eddnCommodity);
                 };
