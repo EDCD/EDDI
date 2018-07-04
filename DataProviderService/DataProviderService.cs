@@ -169,10 +169,10 @@ namespace EddiDataProviderService
                 {
                     CommodityDefinition commodityDefinition = CommodityDefinition.FromName((string)commodity["name"]);
                     CommodityMarketQuote quote = new CommodityMarketQuote(commodityDefinition);
-                    quote.buyprice = (int)(long)commodity["buy_price"];
-                    quote.sellprice = (int)(long)commodity["sell_price"];
-                    quote.demand = (int)(long)commodity["demand"];
-                    quote.stock = (int)(long)commodity["supply"];
+                    quote.buyprice = (int?)(long?)commodity["buy_price"] ?? quote.buyprice;
+                    quote.sellprice = (int?)(long?)commodity["sell_price"] ?? quote.sellprice;
+                    quote.demand = (int?)(long?)commodity["demand"] ?? quote.demand;
+                    quote.stock = (int?)(long?)commodity["supply"] ?? quote.stock;
                     quotes.Add(quote);
                 }
             }
