@@ -105,13 +105,13 @@ namespace EddiDataProviderService
             return StarSystem;
         }
 
-        public static List<Station> StationsFromEDDP(string systemName, dynamic json)
+        public static List<Station> StationsFromEDDP(string systemName, JObject json)
         {
             List<Station> Stations = new List<Station>();
 
             if (json["stations"] != null)
             {
-                foreach (dynamic station in json["stations"])
+                foreach (JObject station in json["stations"])
                 {
                     Station Station = new Station();
                     Station.EDDBID = (long)station["id"];
@@ -160,12 +160,12 @@ namespace EddiDataProviderService
             return Stations;
         }
 
-        public static List<CommodityMarketQuote> CommodityQuotesFromEDDP(dynamic json)
+        public static List<CommodityMarketQuote> CommodityQuotesFromEDDP(JObject json)
         {
             var quotes = new List<CommodityMarketQuote>();
             if (json["commodities"] != null)
             {
-                foreach (dynamic commodity in json["commodities"])
+                foreach (JObject commodity in json["commodities"])
                 {
                     CommodityDefinition commodityDefinition = CommodityDefinition.FromName((string)commodity["name"]);
                     CommodityMarketQuote quote = new CommodityMarketQuote(commodityDefinition);
