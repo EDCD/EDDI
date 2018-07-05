@@ -83,6 +83,9 @@ namespace EddiVoiceAttackResponder
                     SpeechService.Instance.Say(((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip(), msg, false);
                 }
 
+                // Set the initial values from the main EDDI objects
+                setValues(ref vaProxy);
+
                 vaProxy.WriteToLog("The EDDI plugin is fully operational.", "green");
                 setStatus(ref vaProxy, "Operational");
 

@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Eddi;
+﻿using Eddi;
 using EddiDataDefinitions;
 using EddiEvents;
 using EddiMissionMonitor;
@@ -7,13 +6,14 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Linq;
-using System.Collections.ObjectModel;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Threading;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Threading;
-using System.Windows.Controls;
 using Utilities;
 
 namespace EddiMaterialMonitor
@@ -79,7 +79,6 @@ namespace EddiMaterialMonitor
                 Dispatcher.CurrentDispatcher.Invoke(() => { BindingOperations.EnableCollectionSynchronization(inventory, inventoryLock); });
             }
         }
-
 
         public bool NeedsStart()
         {
