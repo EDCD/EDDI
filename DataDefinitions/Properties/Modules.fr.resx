@@ -213,7 +213,10 @@
     <value>Détecteur de surface détaillé</value>
     <comment>Module DetailedSurfaceScanner</comment>
   </data>
-  
+  <data name="Disruptor" xml:space="preserve">
+    <value>Disrupteur</value>
+    <comment>Module Disruptor</comment>
+  </data>
   <data name="EconomyClassPassengerCabin" xml:space="preserve">
     <value>Cabine passager de classe économique</value>
     <comment>Module EconomyClassPassengerCabin</comment>
@@ -510,8 +513,14 @@
     <value>Détecteur de Découverte Avancé</value>
     <comment>Module AdvancedDiscoveryScanner</comment>
   </data>
-  
-  
+  <data name="PlasmaRepeater" xml:space="preserve">
+    <value>Plasma à répétition</value>
+    <comment>Module PlasmaRepeater (fighter module)</comment>
+  </data>
+  <data name="Enforcer" xml:space="preserve">
+    <value>Canon Renforcé</value>
+    <comment>Module Hpt_MultiCannon_Fixed_Small_Strong</comment>
+  </data>
   <data name="GuardianFsdBooster" xml:space="preserve">
     <value>Survolteur FSD - Guardians</value>
     <comment>Module GuardianFsdBooster</comment>
