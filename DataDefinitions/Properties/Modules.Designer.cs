@@ -304,11 +304,29 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Enforcer Cannon.
+        /// </summary>
+        public static string Enforcer {
+            get {
+                return ResourceManager.GetString("Enforcer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Enhanced Performance Thrusters.
         /// </summary>
         public static string EnhancedPerformanceThrusters {
             get {
                 return ResourceManager.GetString("EnhancedPerformanceThrusters", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enzyme Missile Rack.
+        /// </summary>
+        public static string EnzymeMissileRack {
+            get {
+                return ResourceManager.GetString("EnzymeMissileRack", resourceCulture);
             }
         }
         
@@ -345,6 +363,15 @@ namespace EddiDataDefinitions.Properties {
         public static string Fixed {
             get {
                 return ResourceManager.GetString("Fixed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Flechette Launcher.
+        /// </summary>
+        public static string FlechetteLauncher {
+            get {
+                return ResourceManager.GetString("FlechetteLauncher", resourceCulture);
             }
         }
         
@@ -421,11 +448,38 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Guardian FSD Booster.
+        /// </summary>
+        public static string GuardianFsdBooster {
+            get {
+                return ResourceManager.GetString("GuardianFsdBooster", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Guardian Gauss Cannon.
         /// </summary>
         public static string GuardianGaussCannon {
             get {
                 return ResourceManager.GetString("GuardianGaussCannon", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Guardian Hull Reinforcement.
+        /// </summary>
+        public static string GuardianHullReinforcement {
+            get {
+                return ResourceManager.GetString("GuardianHullReinforcement", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Guardian Module Reinforcement.
+        /// </summary>
+        public static string GuardianModuleReinforcement {
+            get {
+                return ResourceManager.GetString("GuardianModuleReinforcement", resourceCulture);
             }
         }
         
@@ -439,11 +493,29 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Guardian Power Distributor.
+        /// </summary>
+        public static string GuardianPowerDistributor {
+            get {
+                return ResourceManager.GetString("GuardianPowerDistributor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Guardian Power Plant.
         /// </summary>
         public static string GuardianPowerPlant {
             get {
                 return ResourceManager.GetString("GuardianPowerPlant", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Guardian Shield Reinforcement.
+        /// </summary>
+        public static string GuardianShieldReinforcement {
+            get {
+                return ResourceManager.GetString("GuardianShieldReinforcement", resourceCulture);
             }
         }
         
@@ -619,7 +691,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Multicannon.
+        ///   Looks up a localized string similar to Multi-Cannon.
         /// </summary>
         public static string Multicannon {
             get {
@@ -669,6 +741,15 @@ namespace EddiDataDefinitions.Properties {
         public static string PlasmaAccelerator {
             get {
                 return ResourceManager.GetString("PlasmaAccelerator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Plasma Repeater.
+        /// </summary>
+        public static string PlasmaRepeater {
+            get {
+                return ResourceManager.GetString("PlasmaRepeater", resourceCulture);
             }
         }
         
@@ -813,6 +894,15 @@ namespace EddiDataDefinitions.Properties {
         public static string Sensors {
             get {
                 return ResourceManager.GetString("Sensors", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Shard Cannon.
+        /// </summary>
+        public static string ShardCannon {
+            get {
+                return ResourceManager.GetString("ShardCannon", resourceCulture);
             }
         }
         
