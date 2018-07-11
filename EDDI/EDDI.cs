@@ -1001,6 +1001,9 @@ namespace Eddi
             CurrentStation = null;
             CurrentStellarBody = null;
 
+            // Set the destination system as the current star system
+            updateCurrentSystem(@event.system);
+
             return true;
         }
 
