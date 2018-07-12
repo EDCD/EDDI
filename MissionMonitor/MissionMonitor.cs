@@ -285,31 +285,42 @@ namespace EddiMissionMonitor
                 Mission missionEntry = missions.FirstOrDefault(m => m.missionid == mission.missionid);
                 if (missionEntry != null)
                 {
-                    if (missionEntry.statusDef == MissionStatus.FromEDName("Active"))
+                    switch (mission.statusEDName)
                     {
-                        if (missionEntry.destinationsystem == missionEntry.originsystem)
-                        {
-                            switch (missionEntry.typeEDName)
+                        case "Active":
                             {
-                                case "assassinate":
-                                case "disable":
-                                case "longdistanceexpedition":
-                                case "passengervip":
-                                case "piracy":
-                                case "rescue":
-                                case "salvage":
-                                case "scan":
-                                case "sightseeing":
+                                if (missionEntry.statusEDName == "Failed" && mission.expiry > missionEntry.expiry)
+                                {
+                                    missionEntry.expiry = mission.expiry;
+                                    missionEntry.statusDef = MissionStatus.FromEDName("Active");
+                                }
+
+                                if (missionEntry.statusEDName == "Active" && missionEntry.destinationsystem == missionEntry.originsystem)
+                                {
+                                    switch (missionEntry.typeEDName)
                                     {
-                                        missionEntry.statusDef = MissionStatus.FromEDName("Complete");
+                                        case "assassinate":
+                                        case "disable":
+                                        case "longdistanceexpedition":
+                                        case "passengervip":
+                                        case "piracy":
+                                        case "rescue":
+                                        case "salvage":
+                                        case "scan":
+                                        case "sightseeing":
+                                            {
+                                                missionEntry.statusDef = MissionStatus.FromEDName("Complete");
+                                            }
+                                            break;
                                     }
-                                    break;
+                                }
                             }
-                        }
-                        else
-                        {
-                            missionEntry.statusDef = mission.statusDef;
-                        }
+                            break;
+                        case "Failed":
+                            {
+                                missionEntry.statusDef = MissionStatus.FromEDName("Failed");
+                            }
+                            break;
                     }
 
                     //If placeholder from 'Passengers' event, add 'Missions' parameters
@@ -325,6 +336,7 @@ namespace EddiMissionMonitor
                     AddMission(mission);
                 }
             }
+
             // Remove strays from the mission log
             foreach (Mission missionEntry in missions.ToList())
             {
