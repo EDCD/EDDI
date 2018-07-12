@@ -248,7 +248,7 @@ namespace EddiShipMonitor
             }
 
             // Flag if module has engineering modifications
-            module.modified = json["module"]["engineer"] != null ? true : false;
+            module.modified = json["engineer"] != null ? true : false;
 
             return module;
         }
