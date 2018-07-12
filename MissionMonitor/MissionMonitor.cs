@@ -120,7 +120,18 @@ namespace EddiMissionMonitor
                     if (mission.expiry != null && mission.statusEDName != "Failed")
                     {
                         TimeSpan span = (DateTime)mission.expiry?.ToLocalTime() - DateTime.Now;
-                        mission.timeremaining = span.Days.ToString() + "D " + span.Hours.ToString() + "H " + span.Minutes.ToString() + "MIN";
+                        if (span.Days > 6)
+                        {
+                            int weeks = Decimal.ToInt32(span.Days / 7);
+                            int days = span.Days - weeks * 7;
+                            mission.timeremaining = weeks.ToString() + "W " + days.ToString() + "D ";
+                        }
+                        else
+                        {
+                            mission.timeremaining = span.Days.ToString() + "D ";
+                        }
+                        mission.timeremaining += span.Hours.ToString() + "H " + span.Minutes.ToString() + "MIN";
+
                         if (mission.expiry?.ToLocalTime() < DateTime.Now)
                         {
                             EDDI.Instance.eventHandler(new MissionExpiredEvent(DateTime.Now, mission.missionid, mission.name));

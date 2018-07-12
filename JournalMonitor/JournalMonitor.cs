@@ -442,7 +442,7 @@ namespace EddiJournalMonitor
                                             health = Math.Round(health);
                                         }
 
-                                        //Check if module is engineered
+                                        // Flag if module has engineering modifications
                                         moduleData.TryGetValue("Engineering", out val);
                                         bool modified = val != null ? true : false;
 
