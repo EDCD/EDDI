@@ -1073,7 +1073,10 @@
     <value>Robots</value>
     <comment>Commodity Robotics</comment>
   </data>
-  
+  <data name="RusaniOldSmokey" xml:space="preserve">
+    <value>Tabac de Rusani</value>
+    <comment>Commodity RusaniOldSmokey</comment>
+  </data>
   <data name="Rutile" xml:space="preserve">
     <value>Rutile</value>
     <comment>Commodity Rutile</comment>
