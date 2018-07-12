@@ -247,11 +247,8 @@ namespace EddiShipMonitor
                 module.health = Math.Round(Health);
             }
 
-            // Flag if module has modifications
-            if (json["module"]["modifiers"] != null)
-            {
-                module.modified = true;
-            }
+            // Flag if module has engineering modifications
+            module.modified = json["module"]["engineer"] != null ? true : false;
 
             return module;
         }
