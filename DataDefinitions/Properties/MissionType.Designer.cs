@@ -284,5 +284,14 @@ namespace EddiDataDefinitions.Properties {
                 return ResourceManager.GetString("Smuggle", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Special.
+        /// </summary>
+        internal static string Special {
+            get {
+                return ResourceManager.GetString("Special", resourceCulture);
+            }
+        }
     }
 }

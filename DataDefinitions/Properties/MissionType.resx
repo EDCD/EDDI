@@ -192,4 +192,7 @@
   <data name="Smuggle" xml:space="preserve">
     <value>Smuggling</value>
   </data>
+  <data name="Special" xml:space="preserve">
+    <value>Special</value>
+  </data>
 </root>

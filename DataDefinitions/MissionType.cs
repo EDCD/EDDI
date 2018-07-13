@@ -42,6 +42,7 @@ namespace EddiDataDefinitions
             var Scan = new MissionType("Scan");
             var Sightseeing = new MissionType("Sightseeing");
             var Smuggle = new MissionType("Smuggle");
+            var Special = new MissionType("Special");
         }
 
         // dummy used to ensure that the static constructor has run

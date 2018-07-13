@@ -183,11 +183,26 @@ namespace EddiDataDefinitions
 		{
 			this.missionid = MissionId;
 			this. name = Name;
-            this.typeDef = MissionType.FromEDName(Name.Split('_').ElementAt(1));
 			this.expiry = expiry?.ToUniversalTime();
             this.statusDef = Status;
             this.shared = Shared;
             destinationsystems = new List<DestinationSystem>();
+
+            // Mechanism for identifying 'special' missions
+            string type = Name.Split('_').ElementAt(1);
+            switch (type)
+            {
+                case "TheDead":
+                    {
+                        this.typeDef = MissionType.FromEDName("Special");
+                    }
+                    break;
+                default:
+                    {
+                        this.typeDef = MissionType.FromEDName(type);
+                    }
+                    break;
+            }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
