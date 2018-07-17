@@ -541,4 +541,16 @@
     <value>Enzyme Missile Rack</value>
     <comment>Module EnzymeMissileRack</comment>
   </data>
+  <data name="GuardianHullReinforcement" xml:space="preserve">
+    <value>Guardian Hull Reinforcement</value>
+    <comment>Module GuardianHullReinforcement</comment>
+  </data>
+  <data name="GuardianModuleReinforcement" xml:space="preserve">
+    <value>Guardian Module Reinforcement</value>
+    <comment>Module GuardianModuleReinforcement</comment>
+  </data>
+  <data name="GuardianShieldReinforcement" xml:space="preserve">
+    <value>Guardian Shield Reinforcement</value>
+    <comment>Module GuardianShieldReinforcement</comment>
+  </data>
 </root>
