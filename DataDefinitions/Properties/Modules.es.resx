@@ -541,7 +541,10 @@
     <value>Lanzamisiles de Enzimas</value>
     <comment>Module EnzymeMissileRack</comment>
   </data>
-  
+  <data name="GuardianHullReinforcement" xml:space="preserve">
+    <value>Refuerzo estructural guardián</value>
+    <comment>Module GuardianHullReinforcement</comment>
+  </data>
   
   
 </root>
