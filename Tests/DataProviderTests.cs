@@ -179,7 +179,7 @@ namespace UnitTests
 
             Assert.AreEqual("Zhu Baba", system.name);
             Assert.AreEqual(159918, system.population);
-            Assert.AreEqual(3, system.stations.Count);
+            Assert.AreEqual(0, system.stations.Count);
             Assert.AreEqual(30, system.bodies.Count);
         }
     }
