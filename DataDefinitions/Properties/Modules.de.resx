@@ -541,4 +541,10 @@
     <value>Biologisches Raketengestell</value>
     <comment>Module EnzymeMissileRack</comment>
   </data>
+  <data name="GuardianHullReinforcement" xml:space="preserve">
+    <value>Guardian-Rumpfhüllenverstärkung</value>
+    <comment>Module GuardianHullReinforcement</comment>
+  </data>
+  
+  
 </root>
