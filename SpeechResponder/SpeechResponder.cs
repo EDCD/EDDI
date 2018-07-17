@@ -200,7 +200,7 @@ namespace EddiSpeechResponder
         {
             Dictionary<string, Cottle.Value> dict = new Dictionary<string, Cottle.Value>();
 
-            dict["va"] = EDDI.FromVA;
+            dict["va_active"] = EDDI.FromVA;
             dict["vehicle"] = EDDI.Instance.Vehicle;
             dict["environment"] = EDDI.Instance.Environment;
 
