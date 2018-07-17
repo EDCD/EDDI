@@ -78,10 +78,17 @@ namespace UnitTests
                 ""EDName"": null
             }";
 
-            CommodityMarketQuote commodity = JsonConvert.DeserializeObject<CommodityMarketQuote>(legacyCommodity);
-            Assert.IsNotNull(commodity);
-            Assert.AreEqual("ProgenitorCells", commodity.definition.edname); ;
-            Assert.AreEqual("Progenitor Cells", commodity.invariantName);
+            // Assert that parsing this now throws. 
+            // `Assert.ThrowsException<>(...)` doesn't seem to be available?
+            try
+            {
+                CommodityMarketQuote commodity = JsonConvert.DeserializeObject<CommodityMarketQuote>(legacyCommodity);
+                Assert.Fail("Expected invalid commodity JSON to throw");
+            }
+            catch 
+            {
+                // passed
+            }
         }
     }
 }
