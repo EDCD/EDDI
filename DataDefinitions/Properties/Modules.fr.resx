@@ -545,6 +545,9 @@
     <value>Renforcement de coque - Guardians</value>
     <comment>Module GuardianHullReinforcement</comment>
   </data>
-  
+  <data name="GuardianModuleReinforcement" xml:space="preserve">
+    <value>Renforcement de modules - Guardians</value>
+    <comment>Module GuardianModuleReinforcement</comment>
+  </data>
   
 </root>
