@@ -608,29 +608,31 @@ namespace EddiCompanionAppService
 
             if (json["lastStarport"] != null && json["lastStarport"]["modules"] != null)
             {
-                foreach (JProperty moduleJson in json["lastStarport"]["modules"])
+                foreach (dynamic moduleJson in json["lastStarport"]["modules"])
                 {
+                    dynamic module = moduleJson.Value;
+
                     // Not interested in paintjobs, decals, ...
-                    string moduleCategory = (string)moduleJson["category"]; // need to convert from LINQ to string
+                    string moduleCategory = (string)module["category"]; // need to convert from LINQ to string
                     switch (moduleCategory)
                     {
                         case "weapon":
                         case "module":
                         case "utility":
                             {
-                                long id = (long)moduleJson["id"];
-                                string edName = (string)moduleJson["name"];
+                                long id = (long)module["id"];
+                                string edName = (string)module["name"];
 
                                 Module Module = new Module(Module.FromEliteID(id) ?? Module.FromEDName(edName) ?? new Module());
                                 if (Module.invariantName == null)
                                 {
                                     // Unknown module; report the full object so that we can update the definitions
-                                    Logging.Info("Module definition error: " + edName, JsonConvert.SerializeObject(moduleJson));
+                                    Logging.Info("Module definition error: " + edName, JsonConvert.SerializeObject(module));
 
                                     // Create a basic module & supplement from the info available
-                                    Module = new Module(id, edName, -1, edName, -1, "", (long)moduleJson["cost"]);
+                                    Module = new Module(id, edName, -1, edName, -1, "", (long)module["cost"]);
                                 }
-                                Module.price = (long)moduleJson["cost"];
+                                Module.price = (long)module["cost"];
                                 Modules.Add(Module);
                             }
                             break;
