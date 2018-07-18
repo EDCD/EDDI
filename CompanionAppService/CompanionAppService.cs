@@ -608,7 +608,7 @@ namespace EddiCompanionAppService
 
             if (json["lastStarport"] != null && json["lastStarport"]["modules"] != null)
             {
-                foreach (JObject moduleJson in json["lastStarport"]["modules"])
+                foreach (JProperty moduleJson in json["lastStarport"]["modules"])
                 {
                     // Not interested in paintjobs, decals, ...
                     string moduleCategory = (string)moduleJson["category"]; // need to convert from LINQ to string
