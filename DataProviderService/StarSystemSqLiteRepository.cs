@@ -180,16 +180,17 @@ namespace EddiDataProviderService
                     updateStarSystem(result);
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                Logging.Warn("Problem reading data from database, attempting to re-obtain from source: " + ex);
+                Logging.Warn("Problem reading data from database, re-obtaining from source.");
                 try
                 {
                     result = DataProviderService.GetSystemData(name, null, null, null);
+                    updateStarSystem(result);
                 }
-                catch (Exception ex2)
+                catch (Exception ex)
                 {
-                    Logging.Warn("Problem obtaining data from source: " + ex2);
+                    Logging.Warn("Problem obtaining data from source: " + ex);
                     result = null;
                 }
             }
