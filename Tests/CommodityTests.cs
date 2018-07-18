@@ -40,9 +40,9 @@ namespace UnitTests
                 ""stockbracket"": """",
                 ""sellprice"": 7279,
                 ""demand"": 56,
-                ""demandbracket"": """",
+                ""demandbracket"": 1,
                 ""StatusFlags"": [],
-                ""EliteID"": 0,
+                ""EliteID"": 128049669,
                 ""EDDBID"": 36,
                 ""category"": ""Medicines"",
                 ""avgprice"": 6779,
@@ -53,6 +53,17 @@ namespace UnitTests
             Assert.IsNotNull(commodity);
             Assert.AreEqual("ProgenitorCells", commodity.definition.edname); ;
             Assert.AreEqual("Progenitor Cells", commodity.invariantName);
+            Assert.AreEqual(7000, commodity.buyprice);
+            Assert.AreEqual(5, commodity.stock);
+            Assert.AreEqual("", commodity.stockbracket);
+            Assert.AreEqual(7279, commodity.sellprice);
+            Assert.AreEqual(56, commodity.demand);
+            Assert.AreEqual(1, commodity.demandbracket);
+            Assert.AreEqual(128049669, commodity.EliteID);
+            Assert.AreEqual(36, commodity.EDDBID);
+            Assert.AreEqual("Medicines", commodity.definition.category.invariantName);
+            Assert.AreEqual(6779, commodity.avgprice);
+            Assert.IsFalse(commodity.rare);
         }
 
         [TestMethod]
