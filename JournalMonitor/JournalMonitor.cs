@@ -365,7 +365,7 @@ namespace EddiJournalMonitor
                                 CommodityDefinition commodity = CommodityDefinition.FromName(commodityName);
                                 if (commodity == null)
                                 {
-                                    Logging.Error("Failed to map collectcargo type " + commodityName + " to commodity");
+                                    Logging.Error("Failed to map cargo type " + commodityName + " to commodity definition", line);
                                 }
                                 bool stolen = JsonParsing.getBool(data, "Stolen");
                                 events.Add(new CommodityCollectedEvent(timestamp, commodity, stolen) { raw = line });
@@ -379,7 +379,7 @@ namespace EddiJournalMonitor
                                 CommodityDefinition commodity = CommodityDefinition.FromName(commodityName);
                                 if (commodity == null)
                                 {
-                                    Logging.Error("Failed to map ejectcargo type " + commodityName + " to commodity");
+                                    Logging.Error("Failed to map cargo type " + commodityName + " to commodity definition", line);
                                 }
                                 data.TryGetValue("Count", out object val);
                                 int amount = (int)(long)val;
@@ -1463,7 +1463,7 @@ namespace EddiJournalMonitor
                                 CommodityDefinition commodity = CommodityDefinition.FromName(commodityName);
                                 if (commodity == null)
                                 {
-                                    Logging.Error("Failed to map commodityrefined type " + commodityName + " to commodity");
+                                    Logging.Error("Failed to map cargo type " + commodityName + " to commodity definition", line);
                                 }
                                 events.Add(new CommodityRefinedEvent(timestamp, commodity) { raw = line });
                             }
@@ -1654,7 +1654,7 @@ namespace EddiJournalMonitor
                                 CommodityDefinition commodity = CommodityDefinition.FromName(commodityName);
                                 if (commodity == null)
                                 {
-                                    Logging.Error("Failed to map marketbuy type " + commodityName + " to commodity");
+                                    Logging.Error("Failed to map cargo type " + commodityName + " to commodity definition", line);
                                 }
                                 data.TryGetValue("Count", out val);
                                 int amount = (int)(long)val;
@@ -1672,7 +1672,7 @@ namespace EddiJournalMonitor
                                 CommodityDefinition commodity = CommodityDefinition.FromName(commodityName);
                                 if (commodity == null)
                                 {
-                                    Logging.Error("Failed to map marketsell type " + commodityName + " to commodity");
+                                    Logging.Error("Failed to map cargo type " + commodityName + " to commodity definition", line);
                                 }
                                 data.TryGetValue("Count", out val);
                                 int amount = (int)(long)val;
@@ -2387,7 +2387,7 @@ namespace EddiJournalMonitor
                                 CommodityDefinition commodity = CommodityDefinition.FromName(JsonParsing.getString(data, "Name"));
                                 if (commodity == null)
                                 {
-                                    Logging.Error("Failed to map SearchAndRescue commodity type " + commodityName + " to commodity");
+                                    Logging.Error("Failed to map cargo type " + commodityName + " to commodity definition", line);
                                 }
                                 data.TryGetValue("Count", out object val);
                                 int? amount = (int?)(long?)val;
