@@ -16,7 +16,7 @@ namespace EDDNResponder
         public int sellPrice;
         public int demand;
         public dynamic demandBracket; // Possible values are 0, 1, 2, 3, or ""
-        public List<string> statusFlags;
+        public List<string> statusFlags = new List<string>();
 
         public bool ShouldSerializestatusFlags()
         {
