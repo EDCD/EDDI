@@ -679,35 +679,6 @@ namespace EddiCompanionAppService
             return ProhibitedCommodities;
         }
 
-        private static CommodityMarketQuote commodityQuoteFromJson(JObject commodityJSON)
-        {
-            CommodityDefinition commodityDef = CommodityDefinition.CommodityDefinitionFromEliteID((long)commodityJSON["id"]);
-            if (commodityDef == null || (string)commodityJSON["name"] != commodityDef.edname)
-            {
-                if (commodityDef.edname != "Drones")
-                {
-                    // Unknown commodity; report the full object so that we can update the definitions
-                    Logging.Info("Commodity definition error: " + (string)commodityJSON["name"], JsonConvert.SerializeObject(commodityJSON));
-                }
-                return null;
-            }
-            CommodityMarketQuote quote = new CommodityMarketQuote(commodityDef);
-            quote.buyprice = (int)commodityJSON["buyPrice"];
-            quote.stock = (int)commodityJSON["stock"];
-            quote.stockbracket = (int)commodityJSON["stockBracket"];
-            quote.sellprice = (int)commodityJSON["sellPrice"];
-            quote.demand = (int)commodityJSON["demand"];
-            quote.demandbracket = (int)commodityJSON["demandBracket"];
-
-            List<string> StatusFlags = new List<string>();
-            foreach (dynamic statusFlag in commodityJSON["statusFlags"])
-            {
-                StatusFlags.Add((string)statusFlag);
-            }
-            quote.StatusFlags = StatusFlags;
-            return quote;
-        }
-
         // Obtain the list of commodities from the profile
         private static List<CommodityMarketQuote> CommodityQuotesFromProfile(JObject json)
         {
@@ -716,7 +687,7 @@ namespace EddiCompanionAppService
             {
                 foreach (JObject commodityJSON in json["lastStarport"]["commodities"])
                 {
-                    CommodityMarketQuote quote = commodityQuoteFromJson(commodityJSON);
+                    CommodityMarketQuote quote = CommodityMarketQuote.FromCapiJson(commodityJSON);
                     if (quote != null)
                     {
                         quotes.Add(quote);

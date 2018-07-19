@@ -84,9 +84,9 @@ namespace UnitTests
                 ""statusFlags"": [],
                 ""categoryname"": ""Chemicals"",
                 ""locName"": ""Explosives""
-            },";
+            }";
             JObject jObject = JObject.Parse(json);
-            CommodityMarketQuote quote = CompanionAppService.commodityQuoteFromJson(jObject);
+            CommodityMarketQuote quote = CommodityMarketQuote.FromCapiJson(jObject);
         }
 
         [TestMethod]
