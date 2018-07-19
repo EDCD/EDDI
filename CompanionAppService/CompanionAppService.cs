@@ -679,41 +679,48 @@ namespace EddiCompanionAppService
             return ProhibitedCommodities;
         }
 
+        private static CommodityMarketQuote commodityQuoteFromJson(JObject commodityJSON)
+        {
+            CommodityDefinition commodityDef = CommodityDefinition.CommodityDefinitionFromEliteID((long)commodityJSON["id"]);
+            if (commodityDef == null || (string)commodityJSON["name"] != commodityDef.edname)
+            {
+                if (commodityDef.edname != "Drones")
+                {
+                    // Unknown commodity; report the full object so that we can update the definitions
+                    Logging.Info("Commodity definition error: " + (string)commodityJSON["name"], JsonConvert.SerializeObject(commodityJSON));
+                }
+                return null;
+            }
+            CommodityMarketQuote quote = new CommodityMarketQuote(commodityDef);
+            quote.buyprice = (int)commodityJSON["buyPrice"];
+            quote.stock = (int)commodityJSON["stock"];
+            quote.stockbracket = (int)commodityJSON["stockBracket"];
+            quote.sellprice = (int)commodityJSON["sellPrice"];
+            quote.demand = (int)commodityJSON["demand"];
+            quote.demandbracket = (int)commodityJSON["demandBracket"];
+
+            List<string> StatusFlags = new List<string>();
+            foreach (dynamic statusFlag in commodityJSON["statusFlags"])
+            {
+                StatusFlags.Add((string)statusFlag);
+            }
+            quote.StatusFlags = StatusFlags;
+            return quote;
+        }
+
         // Obtain the list of commodities from the profile
         private static List<CommodityMarketQuote> CommodityQuotesFromProfile(JObject json)
         {
             List<CommodityMarketQuote> quotes = new List<CommodityMarketQuote>();
-
             if (json["lastStarport"] != null && json["lastStarport"]["commodities"] != null)
             {
-                foreach (JObject commodity in json["lastStarport"]["commodities"])
+                foreach (JObject commodityJSON in json["lastStarport"]["commodities"])
                 {
-                    CommodityDefinition commodityDef = CommodityDefinition.CommodityDefinitionFromEliteID((long)commodity["id"]);
-                    if (commodityDef == null || (string)commodity["name"] != commodityDef.edname)
+                    CommodityMarketQuote quote = commodityQuoteFromJson(commodityJSON);
+                    if (quote != null)
                     {
-                        if (commodityDef.edname != "Drones")
-                        {
-                            // Unknown commodity; report the full object so that we can update the definitions
-                            Logging.Info("Commodity definition error: " + (string)commodity["name"], JsonConvert.SerializeObject(commodity));
-                        }
-                        continue;
+                        quotes.Add(quote);
                     }
-
-                    CommodityMarketQuote quote = new CommodityMarketQuote(commodityDef);
-                    quote.buyprice = (int)commodity["buyPrice"];
-                    quote.stock = (int)commodity["stock"];
-                    quote.stockbracket = (int)commodity["stockBracket"];
-                    quote.sellprice = (int)commodity["sellPrice"];
-                    quote.demand = (int)commodity["demand"];
-                    quote.demandbracket = (int)commodity["demandBracket"];
-
-                    List<string> StatusFlags = new List<string>();
-                    foreach (dynamic statusFlag in commodity["statusFlags"])
-                    {
-                        StatusFlags.Add((string)statusFlag);
-                    }
-                    quote.StatusFlags = StatusFlags;
-                    quotes.Add(quote);
                 }
             }
 
