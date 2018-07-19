@@ -567,6 +567,30 @@ namespace EddiSpeechResponder
                 return (result == null ? new ReflectionValue(new object()) : new ReflectionValue(result));
             }, 1);
 
+            store["BuildMissionsRoute"] = new NativeFunction((values) =>
+            {
+                if (values.Count == 0)
+                {
+                    return (((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor")).BuildMissionsRoute());
+                }
+                else
+                {
+                    return (((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor")).BuildMissionsRoute(values[0].AsString));
+                }
+            }, 0, 1);
+
+            store["UpdateMissionsRoute"] = new NativeFunction((values) =>
+            {
+                if (values.Count == 0)
+                {
+                    return (((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor")).UpdateMissionsRoute());
+                }
+                else
+                {
+                    return (((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor")).UpdateMissionsRoute(values[0].AsString));
+                }
+            }, 0, 1);
+
             store["StationDetails"] = new NativeFunction((values) =>
             {
                 if (values.Count == 0)

@@ -278,6 +278,32 @@ Common usage of this is to provide further information about your rating, for ex
 
     You have been promoted {FederationRatingDetails("Post Commander").rank} times.
 
+### MissionDetails()
+
+This function will provide full information for a mission given its mission ID.
+
+MissionDetails() takes a single argument of the mission ID for which you want more information.
+
+Common usage of this is to provide detailed information about a previously accepted mission, for example:
+
+    {set mission to MissionDetails(event.missionid)}
+
+### BuildMissionsRoute()
+
+This function will generate an efficient route for valid mission destinations using the 'Repetitive Nearest Neighbor' algorithm.
+
+BuildMissionsRoute() takes an optional argument of the returning 'home' system. Otherwise, the current system is used. The function returns 'true' if successful. The '_' separated route list is provided in the 'missionsRouteList' variable.
+
+Common usage of this is to provide an efficient 'Nearest Neighbor' route, for example:
+
+    {if BuildMissionsRoute():
+		{set route to split(missionsRouteList, "_")}
+        {set count to len(route)}
+		Missions route calculated for {count} systems.
+		Total distance is {round(missionsRouteDistance, 1)} lightyears.
+		First destination is {route[0]}. Awaiting orders.
+	}
+
 ### SystemDetails()
 
 This function will provide full information for a star system given its name.

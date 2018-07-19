@@ -837,7 +837,7 @@ namespace EddiMissionMonitor
             writeMissions();
         }
 
-        public bool BuildMissionsRoute(string homesystem)
+        public bool BuildMissionsRoute(string homesystem = null)
         {
             missionsRouteList = String.Empty;
             missionsRouteDistance = 0;
