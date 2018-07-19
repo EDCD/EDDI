@@ -545,6 +545,12 @@
     <value>Refuerzo estructural guardián</value>
     <comment>Module GuardianHullReinforcement</comment>
   </data>
-  
-  
+  <data name="GuardianModuleReinforcement" xml:space="preserve">
+    <value>Refuerzo estructural guardián</value>
+    <comment>Module GuardianModuleReinforcement</comment>
+  </data>
+  <data name="GuardianShieldReinforcement" xml:space="preserve">
+    <value>Refuerzo de escudo guardián</value>
+    <comment>Module GuardianShieldReinforcement</comment>
+  </data>
 </root>
