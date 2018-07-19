@@ -1,7 +1,8 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
+﻿using EddiCompanionAppService;
 using EddiDataDefinitions;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Rollbar;
 
 namespace UnitTests
@@ -64,6 +65,28 @@ namespace UnitTests
             Assert.AreEqual("Medicines", commodity.definition.category.invariantName);
             Assert.AreEqual(6779, commodity.avgprice);
             Assert.IsFalse(commodity.rare);
+        }
+
+        [TestMethod]
+        public void TestParseCAPICommodityQuote()
+        {
+            string json = @"{
+                ""id"": 128049204,
+                ""name"": ""Explosives"",
+                ""legality"": """",
+                ""buyPrice"": 313,
+                ""sellPrice"": 281,
+                ""meanPrice"": 294,
+                ""demandBracket"": 0,
+                ""stockBracket"": 2,
+                ""stock"": 31881,
+                ""demand"": 1,
+                ""statusFlags"": [],
+                ""categoryname"": ""Chemicals"",
+                ""locName"": ""Explosives""
+            },";
+            JObject jObject = JObject.Parse(json);
+            CommodityMarketQuote quote = CompanionAppService.commodityQuoteFromJson(jObject);
         }
 
         [TestMethod]
