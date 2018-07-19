@@ -1,5 +1,4 @@
-﻿using EddiCompanionAppService;
-using EddiDataDefinitions;
+﻿using EddiDataDefinitions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -67,8 +66,7 @@ namespace UnitTests
             Assert.IsFalse(commodity.rare);
         }
 
-        [TestMethod]
-        public void TestParseCAPICommodityQuote()
+        private static CommodityMarketQuote CannedCAPIQuote()
         {
             string json = @"{
                 ""id"": 128049204,
@@ -87,6 +85,21 @@ namespace UnitTests
             }";
             JObject jObject = JObject.Parse(json);
             CommodityMarketQuote quote = CommodityMarketQuote.FromCapiJson(jObject);
+            return quote;
+        }
+
+        [TestMethod]
+        public void TestParseCAPICommodityQuote()
+        {
+            CommodityMarketQuote quote = CannedCAPIQuote();
+            Assert.AreEqual(313, quote.buyprice);
+            Assert.AreEqual(281, quote.sellprice);
+            // Assert.AreEqual(294, quote.avgprice); // TODO: re-enable when #731 is fixed
+            Assert.AreEqual(0, quote.demandbracket);
+            Assert.AreEqual(2, quote.stockbracket);
+            Assert.AreEqual(31881, quote.stock);
+            Assert.AreEqual(1, quote.demand);
+            Assert.AreEqual(0, quote.StatusFlags.Count);
         }
 
         [TestMethod]
