@@ -1,4 +1,5 @@
 ﻿using EddiDataDefinitions;
+using EDDNResponder;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -100,6 +101,21 @@ namespace UnitTests
             Assert.AreEqual(31881, quote.stock);
             Assert.AreEqual(1, quote.demand);
             Assert.AreEqual(0, quote.StatusFlags.Count);
+        }
+
+        [TestMethod]
+        public void TestEddnCommodityQuote()
+        {
+            CommodityMarketQuote quote = CannedCAPIQuote();
+            EDDNCommodity eddnCommodity = new EDDNCommodity(quote);
+            Assert.AreEqual(quote.buyprice, eddnCommodity.buyPrice);
+            Assert.AreEqual(quote.sellprice, eddnCommodity.sellPrice);
+            Assert.AreEqual(quote.avgprice, eddnCommodity.meanPrice);
+            Assert.AreEqual(quote.demandbracket, eddnCommodity.demandBracket);
+            Assert.AreEqual(quote.stockbracket, eddnCommodity.stockBracket);
+            Assert.AreEqual(quote.stock, eddnCommodity.stock);
+            Assert.AreEqual(quote.demand, eddnCommodity.demand);
+            Assert.AreEqual(quote.StatusFlags.Count, eddnCommodity.statusFlags.Count);
         }
 
         [TestMethod]

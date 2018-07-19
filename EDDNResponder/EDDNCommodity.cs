@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace EDDNResponder
 {
-    class EDDNCommodity
+    public class EDDNCommodity
     {
         // Schema reference: https://github.com/EDSM-NET/EDDN/blob/master/schemas/commodity-v3.0.json
         public string name;
