@@ -169,6 +169,7 @@ namespace EddiDataProviderService
                 {
                     CommodityDefinition commodityDefinition = CommodityDefinition.FromName((string)commodity["name"]);
                     CommodityMarketQuote quote = new CommodityMarketQuote(commodityDefinition);
+                    // Annoyingly, these double-casts seem to be necessary because the boxed type is `long`. A direct cast to `int?` always returns null.
                     quote.buyprice = (int?)(long?)commodity["buy_price"] ?? quote.buyprice;
                     quote.sellprice = (int?)(long?)commodity["sell_price"] ?? quote.sellprice;
                     quote.demand = (int?)(long?)commodity["demand"] ?? quote.demand;
