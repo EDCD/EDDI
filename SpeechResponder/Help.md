@@ -304,6 +304,12 @@ Common usage of this is to provide an efficient 'Nearest Neighbor' route, for ex
 		First destination is {route[0]}. Awaiting orders.
 	}
 
+### UpdateMissionsRoute()
+
+This function will shift the missions route list (left) to the 'next' destination when all missions in the 'current' destination have been serviced.
+
+UpdateMissionsRoute() takes an optional argument of a destination system to remove from the route list. Otherwise, the 'current' desitnation is removed when conditions are met. The function returns 'true' if successful.
+
 ### SystemDetails()
 
 This function will provide full information for a star system given its name.

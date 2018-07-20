@@ -236,7 +236,7 @@ The log of missions accepted by the commander is available under the `missions` 
 	- 'missions' list of missions within the commander's mission log'
 	- 'missionsCount' the number of all accepted missions
 	- 'missionWarning' the number of minutes before mission expiry in which a warning notification is generated
-	- 'missionsRouteList' list of mission destinations ordered to provide the most efficient route
+	- 'missionsRouteList'  delimited ('_') string of mission destinations, ordered to provide the most efficient route
 	- 'missionsRouteDistance' the total distance traveled for the missions route list
 
 ## Mission
@@ -293,7 +293,7 @@ Details of an individual commodity being carried.
 
 ## Haulage
 
-Mission related details of haulage under the 'haulageData' object, within the Cargo object.
+Mission related details of haulage under the 'haulageData' object, within the Cargo object, used by the Cargo Monitor.
 
 	- 'missionid' unique identifier ID of the mission
 	- 'name' name of mission
