@@ -415,6 +415,7 @@ namespace EddiDataDefinitions
 
         private CommodityDefinition(long EliteID, long? EDDBID, string edname, CommodityCategory Category, int AveragePrice = 0, bool Rare = false) : base(edname, edname)
         {
+            this.EliteID = EliteID;
             this.EDDBID = EDDBID;
             this.category = Category;
             this.avgprice = AveragePrice;

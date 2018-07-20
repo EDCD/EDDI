@@ -15,6 +15,8 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * "rebuy" The rebuy value of the ship
     * Revised `Insurance check` script to take advantage of the new ship "rebuy" property.
     * Added variety to the `Ship targeted` script and made it less verbose, as it fires a lot in the heat of combat.
+  * EDDN responder
+    * Fixed an issue whereby incomplete commodity data could be sent to EDDN.
   * VoiceAttack responder
     * Dramatically reduced CPU load. 
 

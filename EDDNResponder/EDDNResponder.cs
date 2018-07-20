@@ -206,37 +206,23 @@ namespace EDDNResponder
                 {
                     foreach (CompanionAppEconomy economy in EDDI.Instance.CurrentStation.economies)
                     {
-                        EDDNEconomy eddnEconomy = new EDDNEconomy();
-                        eddnEconomy.name = economy.name;
-                        eddnEconomy.proportion = economy.proportion;
+                        EDDNEconomy eddnEconomy = new EDDNEconomy(economy);
                         eddnEconomies.Add(eddnEconomy);
                     }
                 }
 
                 List<EDDNCommodity> eddnCommodities = new List<EDDNCommodity>();
-                foreach (CommodityMarketQuote commodity in EDDI.Instance.CurrentStation.commodities)
+                foreach (CommodityMarketQuote quote in EDDI.Instance.CurrentStation.commodities)
                 {
-                    if (commodity.definition == null)
+                    if (quote.definition == null)
                     {
                         continue;
                     }
-                    if (commodity.definition.category == CommodityCategory.NonMarketable)
+                    if (quote.definition.category == CommodityCategory.NonMarketable)
                     {
                         continue;
                     }
-                    EDDNCommodity eddnCommodity = new EDDNCommodity();
-                    eddnCommodity.name = commodity.definition.edname;
-                    eddnCommodity.meanPrice = commodity.definition.avgprice;
-                    eddnCommodity.buyPrice = commodity.buyprice ?? 0;
-                    eddnCommodity.stock = commodity.stock ?? 0;
-                    eddnCommodity.stockBracket = commodity.stockbracket;
-                    eddnCommodity.sellPrice = commodity.sellprice ?? 0;
-                    eddnCommodity.demand = commodity.demand ?? 0;
-                    eddnCommodity.demandBracket = commodity.demandbracket;
-                    if (commodity.StatusFlags.Count > 0)
-                    {
-                        eddnCommodity.statusFlags = commodity.StatusFlags;
-                    }
+                    EDDNCommodity eddnCommodity = new EDDNCommodity(quote);
                     eddnCommodities.Add(eddnCommodity);
                 };
 

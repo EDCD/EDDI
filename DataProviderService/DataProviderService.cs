@@ -105,13 +105,13 @@ namespace EddiDataProviderService
             return StarSystem;
         }
 
-        public static List<Station> StationsFromEDDP(string systemName, dynamic json)
+        public static List<Station> StationsFromEDDP(string systemName, JObject json)
         {
             List<Station> Stations = new List<Station>();
 
             if (json["stations"] != null)
             {
-                foreach (dynamic station in json["stations"])
+                foreach (JObject station in json["stations"])
                 {
                     Station Station = new Station();
                     Station.EDDBID = (long)station["id"];
@@ -160,19 +160,20 @@ namespace EddiDataProviderService
             return Stations;
         }
 
-        public static List<CommodityMarketQuote> CommodityQuotesFromEDDP(dynamic json)
+        public static List<CommodityMarketQuote> CommodityQuotesFromEDDP(JObject json)
         {
             var quotes = new List<CommodityMarketQuote>();
             if (json["commodities"] != null)
             {
-                foreach (dynamic commodity in json["commodities"])
+                foreach (JObject commodity in json["commodities"])
                 {
                     CommodityDefinition commodityDefinition = CommodityDefinition.FromName((string)commodity["name"]);
                     CommodityMarketQuote quote = new CommodityMarketQuote(commodityDefinition);
-                    quote.buyprice = (int?)(long?)commodity["buy_price"];
-                    quote.sellprice = (int?)(long?)commodity["sell_price"];
-                    quote.demand = (int?)(long?)commodity["demand"];
-                    quote.stock = (int?)(long?)commodity["supply"];
+                    // Annoyingly, these double-casts seem to be necessary because the boxed type is `long`. A direct cast to `int?` always returns null.
+                    quote.buyprice = (int?)(long?)commodity["buy_price"] ?? quote.buyprice;
+                    quote.sellprice = (int?)(long?)commodity["sell_price"] ?? quote.sellprice;
+                    quote.demand = (int?)(long?)commodity["demand"] ?? quote.demand;
+                    quote.stock = (int?)(long?)commodity["supply"] ?? quote.stock;
                     quotes.Add(quote);
                 }
             }

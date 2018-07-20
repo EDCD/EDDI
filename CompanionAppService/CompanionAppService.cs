@@ -680,38 +680,17 @@ namespace EddiCompanionAppService
         }
 
         // Obtain the list of commodities from the profile
-        private static List<CommodityMarketQuote> CommodityQuotesFromProfile(dynamic json)
+        private static List<CommodityMarketQuote> CommodityQuotesFromProfile(JObject json)
         {
             List<CommodityMarketQuote> quotes = new List<CommodityMarketQuote>();
-
             if (json["lastStarport"] != null && json["lastStarport"]["commodities"] != null)
             {
-                foreach (dynamic commodity in json["lastStarport"]["commodities"])
+                foreach (JObject commodityJSON in json["lastStarport"]["commodities"])
                 {
-                    CommodityDefinition commodityDef = CommodityDefinition.CommodityDefinitionFromEliteID((long)commodity["id"]);
-                    CommodityMarketQuote quote = new CommodityMarketQuote(commodityDef);
-                    quote.buyprice = (int)commodity["buyPrice"];
-                    quote.stock = (int)commodity["stock"];
-                    quote.stockbracket = (int)commodity["stockBracket"];
-                    quote.sellprice = commodity["sellPrice"] as int? ?? 0;
-                    quote.demand = (int)commodity["demand"];
-                    quote.demandbracket = commodity["demandBracket"] as int? ?? 0;
-
-                    List<string> StatusFlags = new List<string>();
-                    foreach (dynamic statusFlag in commodity["statusFlags"])
+                    CommodityMarketQuote quote = CommodityMarketQuote.FromCapiJson(commodityJSON);
+                    if (quote != null)
                     {
-                        StatusFlags.Add((string)statusFlag);
-                    }
-                    quote.StatusFlags = StatusFlags;
-                    quotes.Add(quote);
-
-                    if (commodityDef == null || (string)commodity["name"] != commodityDef.edname)
-                    {
-                        if (commodityDef.edname != "Drones")
-                        {
-                            // Unknown commodity; report the full object so that we can update the definitions
-                            Logging.Info("Commodity definition error: " + (string)commodity["name"], JsonConvert.SerializeObject(commodity));
-                        }
+                        quotes.Add(quote);
                     }
                 }
             }

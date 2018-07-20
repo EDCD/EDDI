@@ -1,7 +1,8 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using EddiDataDefinitions;
+﻿using EddiDataDefinitions;
+using EDDNResponder;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Rollbar;
 
 namespace UnitTests
@@ -35,14 +36,14 @@ namespace UnitTests
                 ""invariantName"": ""Progenitor Cells"",
                 ""localizedName"": ""Progenitor Cells"",
                 ""name"": ""Progenitor Cells"",
-                ""buyprice"": null,
-                ""stock"": null,
+                ""buyprice"": 7000,
+                ""stock"": 5,
                 ""stockbracket"": """",
                 ""sellprice"": 7279,
                 ""demand"": 56,
-                ""demandbracket"": """",
+                ""demandbracket"": 1,
                 ""StatusFlags"": [],
-                ""EliteID"": 0,
+                ""EliteID"": 128049669,
                 ""EDDBID"": 36,
                 ""category"": ""Medicines"",
                 ""avgprice"": 6779,
@@ -53,6 +54,68 @@ namespace UnitTests
             Assert.IsNotNull(commodity);
             Assert.AreEqual("ProgenitorCells", commodity.definition.edname); ;
             Assert.AreEqual("Progenitor Cells", commodity.invariantName);
+            Assert.AreEqual(7000, commodity.buyprice);
+            Assert.AreEqual(5, commodity.stock);
+            Assert.AreEqual("", commodity.stockbracket);
+            Assert.AreEqual(7279, commodity.sellprice);
+            Assert.AreEqual(56, commodity.demand);
+            Assert.AreEqual(1, commodity.demandbracket);
+            Assert.AreEqual(128049669, commodity.EliteID);
+            Assert.AreEqual(36, commodity.EDDBID);
+            Assert.AreEqual("Medicines", commodity.definition.category.invariantName);
+            Assert.AreEqual(6779, commodity.avgprice);
+            Assert.IsFalse(commodity.rare);
+        }
+
+        private static CommodityMarketQuote CannedCAPIQuote()
+        {
+            string json = @"{
+                ""id"": 128049204,
+                ""name"": ""Explosives"",
+                ""legality"": """",
+                ""buyPrice"": 313,
+                ""sellPrice"": 281,
+                ""meanPrice"": 294,
+                ""demandBracket"": 0,
+                ""stockBracket"": 2,
+                ""stock"": 31881,
+                ""demand"": 1,
+                ""statusFlags"": [],
+                ""categoryname"": ""Chemicals"",
+                ""locName"": ""Explosives""
+            }";
+            JObject jObject = JObject.Parse(json);
+            CommodityMarketQuote quote = CommodityMarketQuote.FromCapiJson(jObject);
+            return quote;
+        }
+
+        [TestMethod]
+        public void TestParseCAPICommodityQuote()
+        {
+            CommodityMarketQuote quote = CannedCAPIQuote();
+            Assert.AreEqual(313, quote.buyprice);
+            Assert.AreEqual(281, quote.sellprice);
+            // Assert.AreEqual(294, quote.avgprice); // TODO: re-enable when #731 is fixed
+            Assert.AreEqual(0, quote.demandbracket);
+            Assert.AreEqual(2, quote.stockbracket);
+            Assert.AreEqual(31881, quote.stock);
+            Assert.AreEqual(1, quote.demand);
+            Assert.AreEqual(0, quote.StatusFlags.Count);
+        }
+
+        [TestMethod]
+        public void TestEddnCommodityQuote()
+        {
+            CommodityMarketQuote quote = CannedCAPIQuote();
+            EDDNCommodity eddnCommodity = new EDDNCommodity(quote);
+            Assert.AreEqual(quote.buyprice, eddnCommodity.buyPrice);
+            Assert.AreEqual(quote.sellprice, eddnCommodity.sellPrice);
+            Assert.AreEqual(quote.avgprice, eddnCommodity.meanPrice);
+            Assert.AreEqual(quote.demandbracket, eddnCommodity.demandBracket);
+            Assert.AreEqual(quote.stockbracket, eddnCommodity.stockBracket);
+            Assert.AreEqual(quote.stock, eddnCommodity.stock);
+            Assert.AreEqual(quote.demand, eddnCommodity.demand);
+            Assert.AreEqual(quote.StatusFlags.Count, eddnCommodity.statusFlags.Count);
         }
 
         [TestMethod]
@@ -78,10 +141,17 @@ namespace UnitTests
                 ""EDName"": null
             }";
 
-            CommodityMarketQuote commodity = JsonConvert.DeserializeObject<CommodityMarketQuote>(legacyCommodity);
-            Assert.IsNotNull(commodity);
-            Assert.AreEqual("ProgenitorCells", commodity.definition.edname); ;
-            Assert.AreEqual("Progenitor Cells", commodity.invariantName);
+            // Assert that parsing this now throws. 
+            // `Assert.ThrowsException<>(...)` doesn't seem to be available?
+            try
+            {
+                CommodityMarketQuote commodity = JsonConvert.DeserializeObject<CommodityMarketQuote>(legacyCommodity);
+                Assert.Fail("Expected invalid commodity JSON to throw");
+            }
+            catch 
+            {
+                // passed
+            }
         }
     }
 }
