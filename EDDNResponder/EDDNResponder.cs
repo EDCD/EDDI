@@ -168,7 +168,12 @@ namespace EDDNResponder
 
             EDDNBody body = new EDDNBody();
             body.header = generateHeader();
+#if RELEASE
             body.schemaRef = "https://eddn.edcd.io/schemas/journal/1" + (EDDI.Instance.inBeta ? "/test" : "");
+#else
+            // Use the test schema while in development.
+            body.schemaRef = "https://eddn.edcd.io/schemas/journal/1/test";
+#endif
             body.message = data;
 
             sendMessage(body);
@@ -196,9 +201,6 @@ namespace EDDNResponder
 
         private void sendCommodityInformation()
         {
-            // It's possible that the commodity data, if it is here, has already come from EDDB.  We use the average price
-            // as a marker: this isn't visible in EDDB, so if we have average price we know that this is data from the companion
-            // API and should be reported
             if (EDDI.Instance.CurrentStation != null && EDDI.Instance.CurrentStation.commodities != null && EDDI.Instance.CurrentStation.commodities.Count > 0)
             {
                 List<EDDNEconomy> eddnEconomies = new List<EDDNEconomy>();
@@ -245,7 +247,12 @@ namespace EDDNResponder
 
                     EDDNBody body = new EDDNBody();
                     body.header = generateHeader();
+#if RELEASE
                     body.schemaRef = "https://eddn.edcd.io/schemas/commodity/3" + (EDDI.Instance.inBeta ? "/test" : "");
+#else
+                    // Use the test schema while in development.
+                    body.schemaRef = "https://eddn.edcd.io/schemas/commodity/3/test";
+#endif
                     body.message = data;
 
                     Logging.Debug("EDDN message is: " + JsonConvert.SerializeObject(body));
@@ -280,7 +287,12 @@ namespace EDDNResponder
 
                     EDDNBody body = new EDDNBody();
                     body.header = generateHeader();
+#if RELEASE
                     body.schemaRef = "https://eddn.edcd.io/schemas/outfitting/2" + (EDDI.Instance.inBeta ? "/test" : "");
+#else
+                    // Use the test schema while in development.
+                    body.schemaRef = "https://eddn.edcd.io/schemas/outfitting/2/test";
+#endif
                     body.message = data;
 
                     sendMessage(body);
@@ -309,7 +321,12 @@ namespace EDDNResponder
 
                     EDDNBody body = new EDDNBody();
                     body.header = generateHeader();
+#if RELEASE
                     body.schemaRef = "https://eddn.edcd.io/schemas/shipyard/2" + (EDDI.Instance.inBeta ? "/test" : "");
+#else
+                    // Use the test schema while in development.
+                    body.schemaRef = "https://eddn.edcd.io/schemas/shipyard/2/test";
+#endif
                     body.message = data;
 
                     sendMessage(body);
