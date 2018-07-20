@@ -95,7 +95,7 @@ namespace UnitTests
             CommodityMarketQuote quote = CannedCAPIQuote();
             Assert.AreEqual(313, quote.buyprice);
             Assert.AreEqual(281, quote.sellprice);
-            // Assert.AreEqual(294, quote.avgprice); // TODO: re-enable when #731 is fixed
+            Assert.AreEqual(294, quote.avgprice);
             Assert.AreEqual(0, quote.demandbracket);
             Assert.AreEqual(2, quote.stockbracket);
             Assert.AreEqual(31881, quote.stock);
