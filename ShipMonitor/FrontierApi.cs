@@ -54,7 +54,17 @@ namespace EddiShipMonitor
                 return null;
             }
 
-            Ship Ship = ShipDefinitions.FromEDModel((string)json.GetValue("name"));
+            string edName = (string)json["name"];
+            Ship Ship = ShipDefinitions.FromEDModel(edName);
+            if (Ship == null)
+            {
+                // Unknown ship; report the full object so that we can update the definitions 
+                Logging.Info("Ship definition error: " + edName, JsonConvert.SerializeObject(json));
+
+                // Create a basic ship definition & supplement from the info available 
+                Ship = new Ship();
+                Ship.EDName = edName;
+            }
 
             // We want to return a basic ship if the parsing fails so wrap this
             try
@@ -157,7 +167,7 @@ namespace EddiShipMonitor
             }
             catch (Exception ex)
             {
-                Logging.Warn("Failed to parse ship", ex);
+                Logging.Warn("Failed to parse Frontier API ship details", ex);
             }
 
             return Ship;
@@ -226,14 +236,19 @@ namespace EddiShipMonitor
         public static Module ModuleFromJson(string name, JObject json)
         {
             long id = (long)json["module"]["id"];
-            Module module = new Module(Module.FromEliteID(id));
+            string edName = (string)json["module"]["name"];
+
+            Module module = new Module(Module.FromEliteID(id) ?? Module.FromEDName(edName) ?? new Module());
             if (module.invariantName == null)
             {
-                // Unknown module; the infrastructure will have reported it
-                Logging.Error("No definition for ship module", json["module"].ToString(Formatting.None));
+                // Unknown module; report the full object so that we can update the definitions
+                Logging.Info("Module definition error: " + edName, JsonConvert.SerializeObject(json["module"]));
+
+                // Create a basic module & supplement from the info available
+                module = new Module(id, edName, -1, edName, -1, "", (long)json["module"]["value"]);
             }
 
-            module.price = (long)json["module"]["value"];
+            module.price = (long)json["module"]["value"]; // How much we actually paid for it
             module.enabled = (bool)json["module"]["on"];
             module.priority = (int)json["module"]["priority"];
             // Be sensible with health - round it unless it's very low

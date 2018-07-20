@@ -602,7 +602,7 @@ namespace EddiCompanionAppService
         }
 
         // Obtain the list of outfitting modules from the profile
-        public static List<Module> OutfittingFromProfile(dynamic json)
+        public static List<Module> OutfittingFromProfile(JObject json)
         {
             List<Module> Modules = new List<Module>();
 
@@ -611,22 +611,28 @@ namespace EddiCompanionAppService
                 foreach (dynamic moduleJson in json["lastStarport"]["modules"])
                 {
                     dynamic module = moduleJson.Value;
+
                     // Not interested in paintjobs, decals, ...
-                    string moduleCategory = module["category"]; // need to convert from LINQ to string
+                    string moduleCategory = (string)module["category"]; // need to convert from LINQ to string
                     switch (moduleCategory)
                     {
                         case "weapon":
                         case "module":
                         case "utility":
                             {
-                                long id = module["id"];
-                                Module Module = new Module(Module.FromEliteID(id));
-                                if (Module?.invariantName == null)
+                                long id = (long)module["id"];
+                                string edName = (string)module["name"];
+
+                                Module Module = new Module(Module.FromEliteID(id) ?? Module.FromEDName(edName) ?? new Module());
+                                if (Module.invariantName == null)
                                 {
                                     // Unknown module; report the full object so that we can update the definitions
-                                    Logging.Info("Module definition error: " + (string)module["name"], JsonConvert.SerializeObject(module));
+                                    Logging.Info("Module definition error: " + edName, JsonConvert.SerializeObject(module));
+
+                                    // Create a basic module & supplement from the info available
+                                    Module = new Module(id, edName, -1, edName, -1, "", (long)module["cost"]);
                                 }
-                                Module.price = module["cost"];
+                                Module.price = (long)module["cost"];
                                 Modules.Add(Module);
                             }
                             break;
@@ -686,16 +692,33 @@ namespace EddiCompanionAppService
 
             if (json["lastStarport"] != null && json["lastStarport"]["commodities"] != null)
             {
-                foreach (dynamic commodity in json["lastStarport"]["commodities"])
+                foreach (JObject commodity in json["lastStarport"]["commodities"])
                 {
-                    CommodityDefinition commodityDef = CommodityDefinition.CommodityDefinitionFromEliteID((long)commodity["id"]);
+                    long eliteId = (long)commodity["id"];
+                    string edName = (string)commodity["name"];
+                    string category = (string)commodity["category"];
+                    int meanPrice = (int)commodity["meanPrice"];
+
+                    CommodityDefinition commodityDef = CommodityDefinition.CommodityDefinitionFromEliteID(eliteId) ?? CommodityDefinition.FromEDName(edName);
+                    if (commodityDef == null || (string)commodity["name"] != commodityDef.edname)
+                    {
+                        if (commodityDef.edname != "Drones")
+                        {
+                            // Unknown commodity; report the full object so that we can update the definitions 
+                            Logging.Info("Commodity definition error: " + (string)commodity["name"], JsonConvert.SerializeObject(commodity));
+
+                            // Create a basic commodity definition from the info available 
+                            commodityDef = new CommodityDefinition(eliteId, -1, edName, CommodityCategory.FromEDName(category), meanPrice, false);
+                        }
+                    }
+
                     CommodityMarketQuote quote = new CommodityMarketQuote(commodityDef);
                     quote.buyprice = (int)commodity["buyPrice"];
                     quote.stock = (int)commodity["stock"];
-                    quote.stockbracket = (int)commodity["stockBracket"];
-                    quote.sellprice = commodity["sellPrice"] as int? ?? 0;
+                    quote.stockbracket = (int)commodity["stockBracket"] as int? ?? 0;
+                    quote.sellprice = (int)commodity["sellPrice"];
                     quote.demand = (int)commodity["demand"];
-                    quote.demandbracket = commodity["demandBracket"] as int? ?? 0;
+                    quote.demandbracket = (int)commodity["demandBracket"] as int? ?? 0;
 
                     List<string> StatusFlags = new List<string>();
                     foreach (dynamic statusFlag in commodity["statusFlags"])
@@ -704,15 +727,6 @@ namespace EddiCompanionAppService
                     }
                     quote.StatusFlags = StatusFlags;
                     quotes.Add(quote);
-
-                    if (commodityDef == null || (string)commodity["name"] != commodityDef.edname)
-                    {
-                        if (commodityDef.edname != "Drones")
-                        {
-                            // Unknown commodity; report the full object so that we can update the definitions
-                            Logging.Info("Commodity definition error: " + (string)commodity["name"], JsonConvert.SerializeObject(commodity));
-                        }
-                    }
                 }
             }
 
@@ -726,30 +740,39 @@ namespace EddiCompanionAppService
 
             if (json["lastStarport"] != null && json["lastStarport"]["ships"] != null)
             {
-                foreach (dynamic shipJson in json["lastStarport"]["ships"]["shipyard_list"])
+                foreach (JObject shipJson in json["lastStarport"]["ships"]["shipyard_list"])
                 {
-                    dynamic ship = shipJson.Value;
-                    Ship Ship = ShipDefinitions.FromEliteID((long)ship["id"]);
-                    if (Ship.EDName != null)
-                    {
-                        Ship.value = (long)ship["basevalue"];
-                        Ships.Add(Ship);
-                    }
+                    Ship Ship = ShipyardShipFromProfile(shipJson);
+                    Ships.Add(Ship);
                 }
 
-                foreach (dynamic ship in json["lastStarport"]["ships"]["unavailable_list"])
+                foreach (JObject ship in json["lastStarport"]["ships"]["unavailable_list"])
                 {
-                    dynamic shipJson = ship.Value;
-                    Ship Ship2 = ShipDefinitions.FromEliteID((long)ship["id"]);
-                    if (Ship2.EDName != null)
-                    {
-                        Ship2.value = (long)ship["basevalue"];
-                        Ships.Add(Ship2);
-                    }
+                    Ship Ship = ShipyardShipFromProfile(ship);
+                    Ships.Add(Ship);
                 }
             }
 
             return Ships;
+        }
+
+        private static Ship ShipyardShipFromProfile(JObject shipJson)
+        {
+            long id = (long)shipJson["id"];
+            string edName = (string)shipJson["name"];
+
+            Ship Ship = ShipDefinitions.FromEliteID(id) ?? ShipDefinitions.FromEDModel(edName);
+            if (Ship == null)
+            {
+                // Unknown ship; report the full object so that we can update the definitions 
+                Logging.Info("Ship definition error: " + edName, JsonConvert.SerializeObject(shipJson));
+
+                // Create a basic ship definition & supplement from the info available 
+                Ship = new Ship();
+                Ship.EDName = edName;
+            }
+            Ship.value = (long)shipJson["basevalue"];
+            return Ship;
         }
 
         public void setPassword(string password)
