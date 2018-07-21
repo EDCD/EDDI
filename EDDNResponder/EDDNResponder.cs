@@ -231,18 +231,9 @@ namespace EDDNResponder
                         // Check that the average price is greater than zero.
                         continue;
                     }
-                    if (quote.demand > 0 && quote.buyprice == 0)
-                    {
-                        // When there is demand, there should always be a buy price
-                        continue;
-                    }
-                    if (quote.stock > 0 && quote.sellprice == 0)
-                    {
-                        // When there is stock, there should always be a sell price
-                        continue;
-                    }
                     if (quote.definition.category == CommodityCategory.NonMarketable)
                     {
+                        // Include only marketable commodities.
                         continue;
                     }
                     EDDNCommodity eddnCommodity = new EDDNCommodity(quote);

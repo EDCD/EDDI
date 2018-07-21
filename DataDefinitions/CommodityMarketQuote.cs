@@ -84,11 +84,16 @@ namespace EddiDataDefinitions
         public string category => definition?.category.localizedName;
 
         // Update the definition with the new galactic average price whenever this is set.
-        public int avgprice { get { return definition.avgprice; } set { definition.avgprice = value; } }
+        public int avgprice
+        {
+            get { return definition?.avgprice ?? 0; }
+            set { definition.avgprice = value; }
+        }
 
         public bool rare => definition?.rare ?? false;
 
         // Admin... we only want to send commodity data from the Companion API to EDDN - no other sources.
+        [JsonIgnore]
         public bool fromFDev { get; set; }
 
         public CommodityMarketQuote(CommodityDefinition definition)

@@ -65,6 +65,7 @@ namespace UnitTests
             Assert.AreEqual("Medicines", commodity.definition.category.invariantName);
             Assert.AreEqual(6779, commodity.avgprice);
             Assert.IsFalse(commodity.rare);
+            Assert.IsFalse(commodity.fromFDev);
         }
 
         private static CommodityMarketQuote CannedCAPIQuote()
@@ -86,6 +87,7 @@ namespace UnitTests
             }";
             JObject jObject = JObject.Parse(json);
             CommodityMarketQuote quote = CommodityMarketQuote.FromCapiJson(jObject);
+            quote.fromFDev = true;
             return quote;
         }
 
@@ -101,6 +103,7 @@ namespace UnitTests
             Assert.AreEqual(31881, quote.stock);
             Assert.AreEqual(1, quote.demand);
             Assert.AreEqual(0, quote.StatusFlags.Count);
+            Assert.IsTrue(quote.fromFDev);
         }
 
         [TestMethod]
