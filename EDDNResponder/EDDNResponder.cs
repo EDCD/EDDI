@@ -203,42 +203,8 @@ namespace EDDNResponder
         {
             if (EDDI.Instance.CurrentStation != null && EDDI.Instance.CurrentStation.commodities != null && EDDI.Instance.CurrentStation.commodities.Count > 0)
             {
-                List<EDDNEconomy> eddnEconomies = new List<EDDNEconomy>();
-                if (EDDI.Instance.CurrentStation.economies != null)
-                {
-                    foreach (CompanionAppEconomy economy in EDDI.Instance.CurrentStation.economies)
-                    {
-                        EDDNEconomy eddnEconomy = new EDDNEconomy(economy);
-                        eddnEconomies.Add(eddnEconomy);
-                    }
-                }
-
-                List<EDDNCommodity> eddnCommodities = new List<EDDNCommodity>();
-                foreach (CommodityMarketQuote quote in EDDI.Instance.CurrentStation.commodities)
-                {
-                    if (quote.definition == null)
-                    {
-                        continue;
-                    }
-                    if (!quote.fromFDev)
-                    {
-                        // We only want data from the Frontier API (or market.json)
-                        // Data from 3rd parties (EDDB, EDSM, EDDP, etc.) is not acceptable.
-                        continue;
-                    }
-                    if (quote.avgprice == 0)
-                    {
-                        // Check that the average price is greater than zero.
-                        continue;
-                    }
-                    if (quote.definition.category == CommodityCategory.NonMarketable)
-                    {
-                        // Include only marketable commodities.
-                        continue;
-                    }
-                    EDDNCommodity eddnCommodity = new EDDNCommodity(quote);
-                    eddnCommodities.Add(eddnCommodity);
-                };
+                List<EDDNEconomy> eddnEconomies = prepareEconomyInformation();
+                List<EDDNCommodity> eddnCommodities = prepareCommodityInformation();
 
                 // Only send the message if we have commodities
                 if (eddnCommodities.Count > 0)
@@ -271,6 +237,52 @@ namespace EDDNResponder
                     sendMessage(body);
                 }
             }
+        }
+
+        private static List<EDDNEconomy> prepareEconomyInformation()
+        {
+            List<EDDNEconomy> eddnEconomies = new List<EDDNEconomy>();
+            if (EDDI.Instance.CurrentStation.economies != null)
+            {
+                foreach (CompanionAppEconomy economy in EDDI.Instance.CurrentStation.economies)
+                {
+                    EDDNEconomy eddnEconomy = new EDDNEconomy(economy);
+                    eddnEconomies.Add(eddnEconomy);
+                }
+            }
+
+            return eddnEconomies;
+        }
+
+        private static List<EDDNCommodity> prepareCommodityInformation()
+        {
+            List<EDDNCommodity> eddnCommodities = new List<EDDNCommodity>();
+            foreach (CommodityMarketQuote quote in EDDI.Instance.CurrentStation.commodities)
+            {
+                if (quote.definition == null)
+                {
+                    continue;
+                }
+                if (!quote.fromFDev)
+                {
+                    // We only want data from the Frontier API (or market.json)
+                    // Data from 3rd parties (EDDB, EDSM, EDDP, etc.) is not acceptable.
+                    continue;
+                }
+                if (quote.avgprice == 0)
+                {
+                    // Check that the average price is greater than zero.
+                    continue;
+                }
+                if (quote.definition.category == CommodityCategory.NonMarketable)
+                {
+                    // Include only marketable commodities.
+                    continue;
+                }
+                EDDNCommodity eddnCommodity = new EDDNCommodity(quote);
+                eddnCommodities.Add(eddnCommodity);
+            };
+            return eddnCommodities;
         }
 
         private void sendOutfittingInformation()
