@@ -293,7 +293,7 @@ namespace EddiCompanionAppService
                     cachedProfile.LastStation.commodities = CommodityQuotesFromProfile(marketJson);
                     cachedProfile.LastStation.prohibited = ProhibitedCommoditiesFromProfile(marketJson);
                 }
-
+                /*
                 if (cachedProfile.LastStation.hasoutfitting ?? false)
                 {
                     Logging.Debug("Getting station outfitting data");
@@ -312,6 +312,7 @@ namespace EddiCompanionAppService
                     JObject shipyardJson = JObject.Parse(shipyard);
                     cachedProfile.LastStation.shipyard = ShipyardFromProfile(shipyardJson);
                 }
+                */
             }
             catch (JsonException ex)
             {

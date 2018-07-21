@@ -87,12 +87,12 @@ namespace EddiDataDefinitions
         public int avgprice
         {
             get { return definition?.avgprice ?? 0; }
-            set { definition.avgprice = value; }
+            set { if (definition is null) { return; } else { definition.avgprice = value; } }
         }
 
         public bool rare => definition?.rare ?? false;
 
-        // Admin... we only want to send commodity data from the Companion API to EDDN - no other sources.
+        // Admin... we only want to send commodity data from the Companion API or market.json to EDDN - no data from 3rd party other sources.
         [JsonIgnore]
         public bool fromFDev { get; set; }
 
@@ -119,7 +119,7 @@ namespace EddiDataDefinitions
             }
             CommodityMarketQuote quote = new CommodityMarketQuote(commodityDef);
             quote.buyprice = (int)capiJSON["buyPrice"];
-            quote.definition.avgprice = (int)capiJSON["meanPrice"];
+            quote.avgprice = (int)capiJSON["meanPrice"];
             quote.stock = (int)capiJSON["stock"];
             quote.stockbracket = (int)capiJSON["stockBracket"];
             quote.sellprice = (int)capiJSON["sellPrice"];
