@@ -10,7 +10,7 @@ namespace EddiDataDefinitions
     public class CommodityMarketQuote
     {
         // TODO should really be readonly but we need to set it during JSON parsing
-        public CommodityDefinition definition;
+        public CommodityDefinition definition { get; private set; }
 
         [OnDeserialized]
         private void OnDeserialized(StreamingContext context)
@@ -93,10 +93,12 @@ namespace EddiDataDefinitions
                 {
                     return;
                 }
-                else
+                if (!fromFDev)
                 {
-                    definition.avgprice = value;
+                    return;
                 }
+
+                definition.avgprice = value;
             }
         }
 
@@ -128,6 +130,7 @@ namespace EddiDataDefinitions
                 return null;
             }
             CommodityMarketQuote quote = new CommodityMarketQuote(commodityDef);
+            quote.fromFDev = true;
             quote.buyprice = (int)capiJSON["buyPrice"];
             quote.avgprice = (int)capiJSON["meanPrice"];
             quote.stock = (int)capiJSON["stock"];
@@ -142,7 +145,6 @@ namespace EddiDataDefinitions
                 StatusFlags.Add((string)statusFlag);
             }
             quote.StatusFlags = StatusFlags;
-            quote.fromFDev = true;
             return quote;
         }
     }
