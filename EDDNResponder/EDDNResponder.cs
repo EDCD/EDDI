@@ -220,6 +220,12 @@ namespace EDDNResponder
                     {
                         continue;
                     }
+                    if (!quote.fromFDev)
+                    {
+                        // We only want data from the Frontier API (or market.json)
+                        // Data from 3rd parties (EDDB, EDSM, EDDP, etc.) is not acceptable.
+                        continue;
+                    }
                     if (quote.avgprice == 0)
                     {
                         // Check that the average price is greater than zero.

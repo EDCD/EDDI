@@ -88,12 +88,16 @@ namespace EddiDataDefinitions
 
         public bool rare => definition?.rare ?? false;
 
+        // Admin... we only want to send commodity data from the Companion API to EDDN - no other sources.
+        public bool fromFDev { get; set; }
+
         public CommodityMarketQuote(CommodityDefinition definition)
         {
             this.definition = definition;
             stockbracket = "";
             demandbracket = "";
             StatusFlags = new List<string>();
+            fromFDev = false;
         }
 
         public static CommodityMarketQuote FromCapiJson(JObject capiJSON)
@@ -123,6 +127,7 @@ namespace EddiDataDefinitions
                 StatusFlags.Add((string)statusFlag);
             }
             quote.StatusFlags = StatusFlags;
+            quote.fromFDev = true;
             return quote;
         }
     }
