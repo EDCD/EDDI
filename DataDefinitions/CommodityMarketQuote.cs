@@ -82,7 +82,10 @@ namespace EddiDataDefinitions
         public long? EDDBID => definition?.EDDBID;
         [Obsolete("Please use localizedName or InvariantName")]
         public string category => definition?.category.localizedName;
-        public int? avgprice => definition?.avgprice;
+
+        // Update the definition with the new galactic average price whenever this is set.
+        public int avgprice { get { return definition.avgprice; } set { definition.avgprice = value; } }
+
         public bool rare => definition?.rare ?? false;
 
         public CommodityMarketQuote(CommodityDefinition definition)
@@ -107,6 +110,7 @@ namespace EddiDataDefinitions
             }
             CommodityMarketQuote quote = new CommodityMarketQuote(commodityDef);
             quote.buyprice = (int)capiJSON["buyPrice"];
+            quote.definition.avgprice = (int)capiJSON["meanPrice"];
             quote.stock = (int)capiJSON["stock"];
             quote.stockbracket = (int)capiJSON["stockBracket"];
             quote.sellprice = (int)capiJSON["sellPrice"];

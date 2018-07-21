@@ -406,8 +406,11 @@ namespace EddiDataDefinitions
         public readonly long EliteID;
         public readonly long? EDDBID;
         public readonly CommodityCategory category;
-        public readonly int avgprice;
         public readonly bool rare;
+
+        // The average price of a commodity can change - thus this cannot be read only.
+        // Instead, this value should be updated whenever revised data is received.
+        public int avgprice; 
 
         // dummy used to ensure that the static constructor has run
         public CommodityDefinition() : this(0, null, "", Unknown)
