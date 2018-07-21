@@ -87,7 +87,17 @@ namespace EddiDataDefinitions
         public int avgprice
         {
             get { return definition?.avgprice ?? 0; }
-            set { if (definition is null) { return; } else { definition.avgprice = value; } }
+            set
+            {
+                if (definition is null)
+                {
+                    return;
+                }
+                else
+                {
+                    definition.avgprice = value;
+                }
+            }
         }
 
         public bool rare => definition?.rare ?? false;
