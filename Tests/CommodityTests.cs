@@ -107,6 +107,23 @@ namespace UnitTests
         }
 
         [TestMethod]
+        public void TestParseCAPICommodityQuoteNotOverwritten()
+        {
+            CommodityMarketQuote quote = CannedCAPIQuote();
+            CommodityMarketQuote oldQuote = new CommodityMarketQuote(quote.definition);
+            oldQuote.avgprice = 99999999;
+            Assert.AreEqual(313, quote.buyprice);
+            Assert.AreEqual(281, quote.sellprice);
+            Assert.AreEqual(294, quote.avgprice);
+            Assert.AreEqual(0, quote.demandbracket);
+            Assert.AreEqual(2, quote.stockbracket);
+            Assert.AreEqual(31881, quote.stock);
+            Assert.AreEqual(1, quote.demand);
+            Assert.AreEqual(0, quote.StatusFlags.Count);
+            Assert.IsTrue(quote.fromFDev);
+        }
+
+        [TestMethod]
         public void TestEddnCommodityQuote()
         {
             CommodityMarketQuote quote = CannedCAPIQuote();
