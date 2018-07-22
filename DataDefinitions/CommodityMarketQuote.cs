@@ -129,15 +129,32 @@ namespace EddiDataDefinitions
                 }
                 return null;
             }
+
+            dynamic intOrEmptyString(JObject jObject, string key)
+            {
+                JToken token = jObject[key];
+                switch (token.Type)
+                {
+                    case JTokenType.Integer:
+                        return (int)token;
+                    case JTokenType.String:
+                        return (string)token;
+                    case JTokenType.None:
+                        return null;
+                    default:
+                        return token.ToString();
+                }
+            }
+
             CommodityMarketQuote quote = new CommodityMarketQuote(commodityDef);
             quote.fromFDev = true;
             quote.buyprice = (int)capiJSON["buyPrice"];
             quote.avgprice = (int)capiJSON["meanPrice"];
             quote.stock = (int)capiJSON["stock"];
-            quote.stockbracket = (int)capiJSON["stockBracket"];
+            quote.stockbracket = intOrEmptyString(capiJSON, "stockBracket");
             quote.sellprice = (int)capiJSON["sellPrice"];
             quote.demand = (int)capiJSON["demand"];
-            quote.demandbracket = (int)capiJSON["demandBracket"];
+            quote.demandbracket = intOrEmptyString(capiJSON, "demandBracket");
 
             List<string> StatusFlags = new List<string>();
             foreach (dynamic statusFlag in capiJSON["statusFlags"])
