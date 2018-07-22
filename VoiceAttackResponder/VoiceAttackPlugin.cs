@@ -82,9 +82,6 @@ namespace EddiVoiceAttackResponder
                     SpeechService.Instance.Say(((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip(), msg, false);
                 }
 
-                // Set the initial values from the main EDDI objects
-                setValues(ref vaProxy);
-
                 vaProxy.WriteToLog("The EDDI plugin is fully operational.", "green");
                 setStatus(ref vaProxy, "Operational");
 
@@ -94,6 +91,16 @@ namespace EddiVoiceAttackResponder
                 if (initEventEnabled(@event.type))
                 {
                     EDDI.Instance.eventHandler(@event);
+                }
+
+                // Set a variable indicating whether EDDI is speaking
+                try
+                {
+                    setSpeaking(SpeechService.eddiSpeaking, ref vaProxy);
+                }
+                catch (Exception ex)
+                {
+                    Logging.Error("Failed to set initial speaking status", ex);
                 }
 
                 Logging.Info("EDDI VoiceAttack plugin initialization complete");
@@ -114,12 +121,12 @@ namespace EddiVoiceAttackResponder
                 // Event-specific values  
                 List<string> setKeys = new List<string>();
                 // We start off setting the keys which are official and known  
-                setStandardValues(vaProxy, theEvent, setKeys);
+                setEventValues(vaProxy, theEvent, setKeys);
                 // Now we carry out a generic walk through the event object to create whatever we find  
-                setJsonValues(ref vaProxy, "EDDI " + theEvent.type.ToLowerInvariant(), JsonConvert.DeserializeObject(JsonConvert.SerializeObject(theEvent)), setKeys);
+                setEventExtendedValues(ref vaProxy, "EDDI " + theEvent.type.ToLowerInvariant(), JsonConvert.DeserializeObject(JsonConvert.SerializeObject(theEvent)), setKeys);
 
                 // Update all standard values  
-                setValues(ref vaProxy);
+                setStandardValues(ref vaProxy);
 
                 // Fire local command if present  
                 string commandName = "((EDDI " + theEvent.type.ToLowerInvariant() + "))";
@@ -421,7 +428,7 @@ namespace EddiVoiceAttackResponder
         private static void InvokeUpdateProfile(ref dynamic vaProxy)
         {
             EDDI.Instance.refreshProfile(true);
-            setValues(ref vaProxy);
+            setStandardValues(ref vaProxy);
         }
 
         public static void InvokeEDDBSystem(ref dynamic vaProxy)
