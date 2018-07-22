@@ -367,9 +367,7 @@ namespace EddiVoiceAttackResponder
 
             try
             {
-                object val = null;
-                bool? getStatus = ((StatusMonitor)EDDI.Instance.ObtainMonitor("Status monitor"))?.GetVariables().TryGetValue("currentStatus", out val);
-                Status currentStatus = (Status)val;
+                Status currentStatus = ((StatusMonitor)EDDI.Instance.ObtainMonitor("Status monitor"))?.GetStatus();
                 if (currentStatus != Status)
                 {
                     setStatusValues(StatusMonitor.currentStatus, "Status", ref vaProxy);
