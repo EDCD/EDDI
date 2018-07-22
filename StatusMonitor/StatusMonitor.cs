@@ -328,6 +328,18 @@ namespace EddiStatusMonitor
                         EDDI.Instance.eventHandler(new ShipLowFuelEvent(thisStatus.timestamp));
                     }
                 }
+                if (thisStatus.landing_gear_down != lastStatus.landing_gear_down)
+                {
+                    EDDI.Instance.eventHandler(new ShipLandingGearEvent(thisStatus.timestamp, thisStatus.landing_gear_down));
+                }
+                if (thisStatus.cargo_scoop_deployed != lastStatus.cargo_scoop_deployed)
+                {
+                    EDDI.Instance.eventHandler(new ShipCargoScoopEvent(thisStatus.timestamp, thisStatus.cargo_scoop_deployed));
+                }
+                if (thisStatus.lights_on != lastStatus.lights_on)
+                {
+                    EDDI.Instance.eventHandler(new ShipLightsEvent(thisStatus.timestamp, thisStatus.lights_on));
+                }
             }
         }
 

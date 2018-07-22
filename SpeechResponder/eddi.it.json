@@ -119,6 +119,15 @@
       "name": "Cargo report",
       "description": "Report current cargo manifest"
     },
+    "Cargo scoop": {
+      "enabled": true,
+      "priority": 3,
+      "responder": false,
+      "script": null,
+      "default": true,
+      "name": "Cargo scoop",
+      "description": "Triggered when you deploy or retract your cargo scoop"
+    },
     "Cargo updated": {
       "enabled": true,
       "priority": 3,
@@ -812,6 +821,15 @@
       "name": "Killed",
       "description": "Triggered when you kill another player"
     },
+    "Landing gear": {
+      "enabled": true,
+      "priority": 3,
+      "responder": false,
+      "script": null,
+      "default": true,
+      "name": "Landing gear",
+      "description": "Triggered when you deploy or retract your landing gear"
+    },
     "Landing pad report": {
       "enabled": true,
       "priority": 3,
@@ -829,6 +847,15 @@
       "default": true,
       "name": "Liftoff",
       "description": "Triggered when your ship lifts off from a planet's surface"
+    },
+    "Lights": {
+      "enabled": true,
+      "priority": 3,
+      "responder": false,
+      "script": null,
+      "default": true,
+      "name": "Lights",
+      "description": "Triggered when you activate or deactivate your lights"
     },
     "Limpet check": {
       "enabled": true,
