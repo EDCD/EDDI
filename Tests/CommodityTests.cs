@@ -77,7 +77,7 @@ namespace UnitTests
                 ""buyPrice"": 313,
                 ""sellPrice"": 281,
                 ""meanPrice"": 294,
-                ""demandBracket"": 0,
+                ""demandBracket"": """",
                 ""stockBracket"": 2,
                 ""stock"": 31881,
                 ""demand"": 1,
@@ -98,7 +98,7 @@ namespace UnitTests
             Assert.AreEqual(313, quote.buyprice);
             Assert.AreEqual(281, quote.sellprice);
             Assert.AreEqual(294, quote.avgprice);
-            Assert.AreEqual(0, quote.demandbracket);
+            Assert.AreEqual("", quote.demandbracket);
             Assert.AreEqual(2, quote.stockbracket);
             Assert.AreEqual(31881, quote.stock);
             Assert.AreEqual(1, quote.demand);
@@ -115,7 +115,7 @@ namespace UnitTests
             Assert.AreEqual(313, quote.buyprice);
             Assert.AreEqual(281, quote.sellprice);
             Assert.AreEqual(294, quote.avgprice);
-            Assert.AreEqual(0, quote.demandbracket);
+            Assert.AreEqual("", quote.demandbracket);
             Assert.AreEqual(2, quote.stockbracket);
             Assert.AreEqual(31881, quote.stock);
             Assert.AreEqual(1, quote.demand);
