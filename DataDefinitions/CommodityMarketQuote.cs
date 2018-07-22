@@ -9,7 +9,7 @@ namespace EddiDataDefinitions
 {
     public class CommodityMarketQuote
     {
-        // TODO should really be readonly but we need to set it during JSON parsing
+        // should ideally be readonly but we need to set it during JSON parsing
         public CommodityDefinition definition { get; private set; }
 
         [OnDeserialized]
