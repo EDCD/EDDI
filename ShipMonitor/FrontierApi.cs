@@ -22,7 +22,7 @@ namespace EddiShipMonitor
                 if (shipJson != null)
                 {
                     // Take underlying value if present
-                    JObject shipObj = shipJson.Value == null ? shipJson : shipJson.Value;
+                    JObject shipObj = shipJson.Value ?? shipJson;
                     if (shipObj != null)
                     {
                         Ship ship = ShipFromJson(shipObj);
@@ -66,15 +66,11 @@ namespace EddiShipMonitor
                 Ship.value = (long)(json["value"]?["hull"] ?? 0) + (long)(json["value"]?["modules"] ?? 0);
                 Ship.cargocapacity = 0;
 
-                // Be sensible with health - round it unless it's very low
-                decimal Health = (decimal)(json["health"]?["hull"] ?? 1000000M) / 10000M;
-                if (Health < 5)
+                decimal? healthOutOf1e6 = (decimal?)(json["health"]?["hull"]);
+                if (healthOutOf1e6 != null)
                 {
-                    Ship.health = Math.Round(Health, 1);
-                }
-                else
-                {
-                    Ship.health = Math.Round(Health);
+                    decimal healthPercent = (decimal)healthOutOf1e6 / 10_000M;
+                    Ship.health = healthPercent;
                 }
 
                 if (json["modules"] != null)
@@ -108,8 +104,7 @@ namespace EddiShipMonitor
                     {
                         for (int i = 1; i < 12; i++)
                         {
-                            Hardpoint hardpoint;
-                            hardpoints.TryGetValue(size + "Hardpoint" + i, out hardpoint);
+                            hardpoints.TryGetValue(size + "Hardpoint" + i, out Hardpoint hardpoint);
                             if (hardpoint != null)
                             {
                                 Ship.hardpoints.Add(hardpoint);
@@ -131,10 +126,6 @@ namespace EddiShipMonitor
                             if (moduleName.Contains("Cargo Rack"))
                             {
                                 Ship.cargocapacity += (int)Math.Pow(2, compartment.module.@class);
-                            }
-                            if (moduleName == "Armour")
-                            {
-                                Ship.health = compartment.module?.health ?? 100M;
                             }
 
                             Ship.compartments.Add(compartment);
@@ -191,8 +182,7 @@ namespace EddiShipMonitor
 
             if (json.Value is JObject)
             {
-                JToken value;
-                if (json.Value.TryGetValue("module", out value))
+                if (json.Value.TryGetValue("module", out JToken value))
                 {
                     Hardpoint.module = ModuleFromJson(name, json.Value);
                 }
@@ -213,8 +203,7 @@ namespace EddiShipMonitor
 
                 if (json.Value is JObject)
                 {
-                    JToken value;
-                    if (json.Value.TryGetValue("module", out value))
+                    if (json.Value.TryGetValue("module", out JToken value))
                     {
                         Compartment.module = ModuleFromJson((string)json.Name, json.Value);
                     }
@@ -236,16 +225,7 @@ namespace EddiShipMonitor
             module.price = (long)json["module"]["value"];
             module.enabled = (bool)json["module"]["on"];
             module.priority = (int)json["module"]["priority"];
-            // Be sensible with health - round it unless it's very low
-            decimal Health = (decimal)json["module"]["health"] / 10000;
-            if (Health < 5)
-            {
-                module.health = Math.Round(Health, 1);
-            }
-            else
-            {
-                module.health = Math.Round(Health);
-            }
+            module.health = (decimal)json["module"]["health"] / 10_000M;
 
             // Flag if module has engineering modifications
             module.modified = json["engineer"] != null ? true : false;
@@ -261,10 +241,15 @@ namespace EddiShipMonitor
             {
                 if (cpt.name == launchbay.name)
                 {
-                    if (cpt.module.basename == "PlanetaryVehicleHangar")
-                        launchbay.type = "SRV";
-                    else if (cpt.module.basename == "FighterHangar")
-                        launchbay.type = "Fighter";
+                    switch (cpt.module.basename)
+                    {
+                        case "PlanetaryVehicleHangar":
+                            launchbay.type = "SRV";
+                            break;
+                        case "FighterHangar":
+                            launchbay.type = "Fighter";
+                            break;
+                    }
                 }
             }
 
@@ -276,10 +261,9 @@ namespace EddiShipMonitor
 
                 if (json.Value is JObject)
                 {
-                    JToken value;
                     for (int subslot = 0; subslot <= 5; subslot++)
                     {
-                        if (json.Value.TryGetValue("SubSlot" + subslot, out value))
+                        if (json.Value.TryGetValue("SubSlot" + subslot, out JToken value))
                         {
                             launchbay.vehicles.Add(VehicleFromJson(subslot, value));
                         }
@@ -292,21 +276,27 @@ namespace EddiShipMonitor
 
         public static Vehicle VehicleFromJson(int subslot, dynamic json)
         {
-            Vehicle vehicle = new Vehicle();
-
-            vehicle.subslot = subslot;
-            vehicle.EDName = (string)json["name"];
-            vehicle.name = (string)json["locName"];
-            vehicle.rebuilds = (int)json["rebuilds"];
+            Vehicle vehicle = new Vehicle
+            {
+                subslot = subslot,
+                EDName = (string)json["name"],
+                name = (string)json["locName"],
+                rebuilds = (int)json["rebuilds"]
+            };
 
             string loadout = (string)json["loadoutName"];
             loadout = loadout.Replace("(", "").Replace("&NBSP", "").Replace(")", "");
             string[] loadoutParts = loadout.Split(';');
             vehicle.loadout = loadoutParts[0];
             if (loadoutParts.Length > 1)
+            {
                 vehicle.mount = loadoutParts[1];
+            }
             else
+            {
                 vehicle.mount = "";
+            }
+
             return vehicle;
         }
     }
