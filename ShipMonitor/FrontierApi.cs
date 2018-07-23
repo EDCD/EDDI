@@ -228,16 +228,7 @@ namespace EddiShipMonitor
             module.price = (long)json["module"]["value"];
             module.enabled = (bool)json["module"]["on"];
             module.priority = (int)json["module"]["priority"];
-            // Be sensible with health - round it unless it's very low
-            decimal Health = (decimal)json["module"]["health"] / 10000;
-            if (Health < 5)
-            {
-                module.health = Math.Round(Health, 1);
-            }
-            else
-            {
-                module.health = Math.Round(Health);
-            }
+            module.health = (decimal)json["module"]["health"] / 10_000M;
 
             // Flag if module has modifications
             if (json["module"]["modifiers"] != null)
