@@ -8,7 +8,6 @@ namespace EDDNResponder
     {
         // Schema reference: https://github.com/EDSM-NET/EDDN/blob/master/schemas/commodity-v3.0.json
         public string name;
-        [JsonIgnore] // do not send until #731 is fixed https://github.com/EDCD/EDDI/issues/731
         public int meanPrice;
         public int buyPrice;
         public int stock;

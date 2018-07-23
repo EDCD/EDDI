@@ -65,6 +65,7 @@ namespace UnitTests
             Assert.AreEqual("Medicines", commodity.definition.category.invariantName);
             Assert.AreEqual(6779, commodity.avgprice);
             Assert.IsFalse(commodity.rare);
+            Assert.IsFalse(commodity.fromFDev);
         }
 
         private static CommodityMarketQuote CannedCAPIQuote()
@@ -76,7 +77,7 @@ namespace UnitTests
                 ""buyPrice"": 313,
                 ""sellPrice"": 281,
                 ""meanPrice"": 294,
-                ""demandBracket"": 0,
+                ""demandBracket"": """",
                 ""stockBracket"": 2,
                 ""stock"": 31881,
                 ""demand"": 1,
@@ -86,6 +87,7 @@ namespace UnitTests
             }";
             JObject jObject = JObject.Parse(json);
             CommodityMarketQuote quote = CommodityMarketQuote.FromCapiJson(jObject);
+            quote.fromFDev = true;
             return quote;
         }
 
@@ -95,12 +97,30 @@ namespace UnitTests
             CommodityMarketQuote quote = CannedCAPIQuote();
             Assert.AreEqual(313, quote.buyprice);
             Assert.AreEqual(281, quote.sellprice);
-            // Assert.AreEqual(294, quote.avgprice); // TODO: re-enable when #731 is fixed
-            Assert.AreEqual(0, quote.demandbracket);
+            Assert.AreEqual(294, quote.avgprice);
+            Assert.AreEqual("", quote.demandbracket);
             Assert.AreEqual(2, quote.stockbracket);
             Assert.AreEqual(31881, quote.stock);
             Assert.AreEqual(1, quote.demand);
             Assert.AreEqual(0, quote.StatusFlags.Count);
+            Assert.IsTrue(quote.fromFDev);
+        }
+
+        [TestMethod]
+        public void TestParseCAPICommodityQuoteNotOverwritten()
+        {
+            CommodityMarketQuote quote = CannedCAPIQuote();
+            CommodityMarketQuote oldQuote = new CommodityMarketQuote(quote.definition);
+            oldQuote.avgprice = 99999999;
+            Assert.AreEqual(313, quote.buyprice);
+            Assert.AreEqual(281, quote.sellprice);
+            Assert.AreEqual(294, quote.avgprice);
+            Assert.AreEqual("", quote.demandbracket);
+            Assert.AreEqual(2, quote.stockbracket);
+            Assert.AreEqual(31881, quote.stock);
+            Assert.AreEqual(1, quote.demand);
+            Assert.AreEqual(0, quote.StatusFlags.Count);
+            Assert.IsTrue(quote.fromFDev);
         }
 
         [TestMethod]

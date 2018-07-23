@@ -9,8 +9,8 @@ namespace EddiDataDefinitions
 {
     public class CommodityMarketQuote
     {
-        // TODO should really be readonly but we need to set it during JSON parsing
-        public CommodityDefinition definition;
+        // should ideally be readonly but we need to set it during JSON parsing
+        public CommodityDefinition definition { get; private set; }
 
         [OnDeserialized]
         private void OnDeserialized(StreamingContext context)
@@ -82,8 +82,31 @@ namespace EddiDataDefinitions
         public long? EDDBID => definition?.EDDBID;
         [Obsolete("Please use localizedName or InvariantName")]
         public string category => definition?.category.localizedName;
-        public int? avgprice => definition?.avgprice;
+
+        // Update the definition with the new galactic average price whenever this is set.
+        public int avgprice
+        {
+            get { return definition?.avgprice ?? 0; }
+            set
+            {
+                if (definition is null)
+                {
+                    return;
+                }
+                if (!fromFDev)
+                {
+                    return;
+                }
+
+                definition.avgprice = value;
+            }
+        }
+
         public bool rare => definition?.rare ?? false;
+
+        // Admin... we only want to send commodity data from the Companion API or market.json to EDDN - no data from 3rd party other sources.
+        [JsonIgnore]
+        public bool fromFDev { get; set; }
 
         public CommodityMarketQuote(CommodityDefinition definition)
         {
@@ -91,6 +114,7 @@ namespace EddiDataDefinitions
             stockbracket = "";
             demandbracket = "";
             StatusFlags = new List<string>();
+            fromFDev = false;
         }
 
         public static CommodityMarketQuote FromCapiJson(JObject capiJSON)
@@ -105,13 +129,32 @@ namespace EddiDataDefinitions
                 }
                 return null;
             }
+
+            dynamic intStringOrNull(JObject jObject, string key)
+            {
+                JToken token = jObject[key];
+                switch (token.Type)
+                {
+                    case JTokenType.Integer:
+                        return (int)token;
+                    case JTokenType.String:
+                        return (string)token;
+                    case JTokenType.None:
+                        return null;
+                    default:
+                        return token.ToString();
+                }
+            }
+
             CommodityMarketQuote quote = new CommodityMarketQuote(commodityDef);
+            quote.fromFDev = true;
             quote.buyprice = (int)capiJSON["buyPrice"];
+            quote.avgprice = (int)capiJSON["meanPrice"];
             quote.stock = (int)capiJSON["stock"];
-            quote.stockbracket = (int)capiJSON["stockBracket"];
+            quote.stockbracket = intStringOrNull(capiJSON, "stockBracket");
             quote.sellprice = (int)capiJSON["sellPrice"];
             quote.demand = (int)capiJSON["demand"];
-            quote.demandbracket = (int)capiJSON["demandBracket"];
+            quote.demandbracket = intStringOrNull(capiJSON, "demandBracket");
 
             List<string> StatusFlags = new List<string>();
             foreach (dynamic statusFlag in capiJSON["statusFlags"])

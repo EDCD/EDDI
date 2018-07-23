@@ -168,7 +168,12 @@ namespace EDDNResponder
 
             EDDNBody body = new EDDNBody();
             body.header = generateHeader();
+#if RELEASE
             body.schemaRef = "https://eddn.edcd.io/schemas/journal/1" + (EDDI.Instance.inBeta ? "/test" : "");
+#else
+            // Use the test schema while in development.
+            body.schemaRef = "https://eddn.edcd.io/schemas/journal/1/test";
+#endif
             body.message = data;
 
             sendMessage(body);
@@ -196,35 +201,10 @@ namespace EDDNResponder
 
         private void sendCommodityInformation()
         {
-            // It's possible that the commodity data, if it is here, has already come from EDDB.  We use the average price
-            // as a marker: this isn't visible in EDDB, so if we have average price we know that this is data from the companion
-            // API and should be reported
             if (EDDI.Instance.CurrentStation != null && EDDI.Instance.CurrentStation.commodities != null && EDDI.Instance.CurrentStation.commodities.Count > 0)
             {
-                List<EDDNEconomy> eddnEconomies = new List<EDDNEconomy>();
-                if (EDDI.Instance.CurrentStation.economies != null)
-                {
-                    foreach (CompanionAppEconomy economy in EDDI.Instance.CurrentStation.economies)
-                    {
-                        EDDNEconomy eddnEconomy = new EDDNEconomy(economy);
-                        eddnEconomies.Add(eddnEconomy);
-                    }
-                }
-
-                List<EDDNCommodity> eddnCommodities = new List<EDDNCommodity>();
-                foreach (CommodityMarketQuote quote in EDDI.Instance.CurrentStation.commodities)
-                {
-                    if (quote.definition == null)
-                    {
-                        continue;
-                    }
-                    if (quote.definition.category == CommodityCategory.NonMarketable)
-                    {
-                        continue;
-                    }
-                    EDDNCommodity eddnCommodity = new EDDNCommodity(quote);
-                    eddnCommodities.Add(eddnCommodity);
-                };
+                List<EDDNEconomy> eddnEconomies = prepareEconomyInformation();
+                List<EDDNCommodity> eddnCommodities = prepareCommodityInformation();
 
                 // Only send the message if we have commodities
                 if (eddnCommodities.Count > 0)
@@ -245,13 +225,64 @@ namespace EDDNResponder
 
                     EDDNBody body = new EDDNBody();
                     body.header = generateHeader();
+#if RELEASE
                     body.schemaRef = "https://eddn.edcd.io/schemas/commodity/3" + (EDDI.Instance.inBeta ? "/test" : "");
+#else
+                    // Use the test schema while in development.
+                    body.schemaRef = "https://eddn.edcd.io/schemas/commodity/3/test";
+#endif
                     body.message = data;
 
                     Logging.Debug("EDDN message is: " + JsonConvert.SerializeObject(body));
                     sendMessage(body);
                 }
             }
+        }
+
+        private static List<EDDNEconomy> prepareEconomyInformation()
+        {
+            List<EDDNEconomy> eddnEconomies = new List<EDDNEconomy>();
+            if (EDDI.Instance.CurrentStation.economies != null)
+            {
+                foreach (CompanionAppEconomy economy in EDDI.Instance.CurrentStation.economies)
+                {
+                    EDDNEconomy eddnEconomy = new EDDNEconomy(economy);
+                    eddnEconomies.Add(eddnEconomy);
+                }
+            }
+
+            return eddnEconomies;
+        }
+
+        private static List<EDDNCommodity> prepareCommodityInformation()
+        {
+            List<EDDNCommodity> eddnCommodities = new List<EDDNCommodity>();
+            foreach (CommodityMarketQuote quote in EDDI.Instance.CurrentStation.commodities)
+            {
+                if (quote.definition == null)
+                {
+                    continue;
+                }
+                if (!quote.fromFDev)
+                {
+                    // We only want data from the Frontier API (or market.json)
+                    // Data from 3rd parties (EDDB, EDSM, EDDP, etc.) is not acceptable.
+                    continue;
+                }
+                if (quote.avgprice == 0)
+                {
+                    // Check that the average price is greater than zero.
+                    continue;
+                }
+                if (quote.definition.category == CommodityCategory.NonMarketable)
+                {
+                    // Include only marketable commodities.
+                    continue;
+                }
+                EDDNCommodity eddnCommodity = new EDDNCommodity(quote);
+                eddnCommodities.Add(eddnCommodity);
+            };
+            return eddnCommodities;
         }
 
         private void sendOutfittingInformation()
@@ -280,7 +311,12 @@ namespace EDDNResponder
 
                     EDDNBody body = new EDDNBody();
                     body.header = generateHeader();
+#if RELEASE
                     body.schemaRef = "https://eddn.edcd.io/schemas/outfitting/2" + (EDDI.Instance.inBeta ? "/test" : "");
+#else
+                    // Use the test schema while in development.
+                    body.schemaRef = "https://eddn.edcd.io/schemas/outfitting/2/test";
+#endif
                     body.message = data;
 
                     sendMessage(body);
@@ -309,7 +345,12 @@ namespace EDDNResponder
 
                     EDDNBody body = new EDDNBody();
                     body.header = generateHeader();
+#if RELEASE
                     body.schemaRef = "https://eddn.edcd.io/schemas/shipyard/2" + (EDDI.Instance.inBeta ? "/test" : "");
+#else
+                    // Use the test schema while in development.
+                    body.schemaRef = "https://eddn.edcd.io/schemas/shipyard/2/test";
+#endif
                     body.message = data;
 
                     sendMessage(body);
