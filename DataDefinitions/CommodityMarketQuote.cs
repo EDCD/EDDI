@@ -130,7 +130,7 @@ namespace EddiDataDefinitions
                 return null;
             }
 
-            dynamic intOrEmptyString(JObject jObject, string key)
+            dynamic intStringOrNull(JObject jObject, string key)
             {
                 JToken token = jObject[key];
                 switch (token.Type)
@@ -151,10 +151,10 @@ namespace EddiDataDefinitions
             quote.buyprice = (int)capiJSON["buyPrice"];
             quote.avgprice = (int)capiJSON["meanPrice"];
             quote.stock = (int)capiJSON["stock"];
-            quote.stockbracket = intOrEmptyString(capiJSON, "stockBracket");
+            quote.stockbracket = intStringOrNull(capiJSON, "stockBracket");
             quote.sellprice = (int)capiJSON["sellPrice"];
             quote.demand = (int)capiJSON["demand"];
-            quote.demandbracket = intOrEmptyString(capiJSON, "demandBracket");
+            quote.demandbracket = intStringOrNull(capiJSON, "demandBracket");
 
             List<string> StatusFlags = new List<string>();
             foreach (dynamic statusFlag in capiJSON["statusFlags"])
