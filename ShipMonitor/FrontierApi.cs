@@ -22,7 +22,7 @@ namespace EddiShipMonitor
                 if (shipJson != null)
                 {
                     // Take underlying value if present
-                    JObject shipObj = shipJson.Value == null ? shipJson : shipJson.Value;
+                    JObject shipObj = shipJson.Value ?? shipJson;
                     if (shipObj != null)
                     {
                         Ship ship = ShipFromJson(shipObj);
@@ -104,8 +104,7 @@ namespace EddiShipMonitor
                     {
                         for (int i = 1; i < 12; i++)
                         {
-                            Hardpoint hardpoint;
-                            hardpoints.TryGetValue(size + "Hardpoint" + i, out hardpoint);
+                            hardpoints.TryGetValue(size + "Hardpoint" + i, out Hardpoint hardpoint);
                             if (hardpoint != null)
                             {
                                 Ship.hardpoints.Add(hardpoint);
@@ -183,8 +182,7 @@ namespace EddiShipMonitor
 
             if (json.Value is JObject)
             {
-                JToken value;
-                if (json.Value.TryGetValue("module", out value))
+                if (json.Value.TryGetValue("module", out JToken value))
                 {
                     Hardpoint.module = ModuleFromJson(name, json.Value);
                 }
@@ -205,8 +203,7 @@ namespace EddiShipMonitor
 
                 if (json.Value is JObject)
                 {
-                    JToken value;
-                    if (json.Value.TryGetValue("module", out value))
+                    if (json.Value.TryGetValue("module", out JToken value))
                     {
                         Compartment.module = ModuleFromJson((string)json.Name, json.Value);
                     }
@@ -247,10 +244,15 @@ namespace EddiShipMonitor
             {
                 if (cpt.name == launchbay.name)
                 {
-                    if (cpt.module.basename == "PlanetaryVehicleHangar")
-                        launchbay.type = "SRV";
-                    else if (cpt.module.basename == "FighterHangar")
-                        launchbay.type = "Fighter";
+                    switch (cpt.module.basename)
+                    {
+                        case "PlanetaryVehicleHangar":
+                            launchbay.type = "SRV";
+                            break;
+                        case "FighterHangar":
+                            launchbay.type = "Fighter";
+                            break;
+                    }
                 }
             }
 
@@ -262,10 +264,9 @@ namespace EddiShipMonitor
 
                 if (json.Value is JObject)
                 {
-                    JToken value;
                     for (int subslot = 0; subslot <= 5; subslot++)
                     {
-                        if (json.Value.TryGetValue("SubSlot" + subslot, out value))
+                        if (json.Value.TryGetValue("SubSlot" + subslot, out JToken value))
                         {
                             launchbay.vehicles.Add(VehicleFromJson(subslot, value));
                         }
@@ -278,21 +279,27 @@ namespace EddiShipMonitor
 
         public static Vehicle VehicleFromJson(int subslot, dynamic json)
         {
-            Vehicle vehicle = new Vehicle();
-
-            vehicle.subslot = subslot;
-            vehicle.EDName = (string)json["name"];
-            vehicle.name = (string)json["locName"];
-            vehicle.rebuilds = (int)json["rebuilds"];
+            Vehicle vehicle = new Vehicle
+            {
+                subslot = subslot,
+                EDName = (string)json["name"],
+                name = (string)json["locName"],
+                rebuilds = (int)json["rebuilds"]
+            };
 
             string loadout = (string)json["loadoutName"];
             loadout = loadout.Replace("(", "").Replace("&NBSP", "").Replace(")", "");
             string[] loadoutParts = loadout.Split(';');
             vehicle.loadout = loadoutParts[0];
             if (loadoutParts.Length > 1)
+            {
                 vehicle.mount = loadoutParts[1];
+            }
             else
+            {
                 vehicle.mount = "";
+            }
+
             return vehicle;
         }
     }
