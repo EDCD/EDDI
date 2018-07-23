@@ -2,6 +2,11 @@
 
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
+### 3.0.1-rc5
+
+  * Core
+    * Fixed some sitations on which hull was incorrectly reported as 100%. Unfortuntely not all sources of hull damage are currently reported in real-time in the journal, so EDDI may sometimes remain unwaware of new damage for a while.
+
 ### 3.0.1-rc4
   * Core
     * Removed `insurance excess` from the user interface and the `insurance` property from the top level `commander` variable. FDev now gives us rebuy values directly, so this is no longer needed.
