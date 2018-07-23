@@ -146,15 +146,17 @@ namespace EddiDataDefinitions
                 }
             }
 
-            CommodityMarketQuote quote = new CommodityMarketQuote(commodityDef);
-            quote.fromFDev = true;
-            quote.buyprice = (int)capiJSON["buyPrice"];
-            quote.avgprice = (int)capiJSON["meanPrice"];
-            quote.stock = (int)capiJSON["stock"];
-            quote.stockbracket = intStringOrNull(capiJSON, "stockBracket");
-            quote.sellprice = (int)capiJSON["sellPrice"];
-            quote.demand = (int)capiJSON["demand"];
-            quote.demandbracket = intStringOrNull(capiJSON, "demandBracket");
+            CommodityMarketQuote quote = new CommodityMarketQuote(commodityDef)
+            {
+                fromFDev = true,
+                buyprice = (int)capiJSON["buyPrice"],
+                avgprice = (int)capiJSON["meanPrice"],
+                stock = (int)capiJSON["stock"],
+                stockbracket = intStringOrNull(capiJSON, "stockBracket"),
+                sellprice = (int)capiJSON["sellPrice"],
+                demand = (int)capiJSON["demand"],
+                demandbracket = intStringOrNull(capiJSON, "demandBracket")
+            };
 
             List<string> StatusFlags = new List<string>();
             foreach (dynamic statusFlag in capiJSON["statusFlags"])
