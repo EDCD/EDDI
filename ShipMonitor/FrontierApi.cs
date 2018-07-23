@@ -128,10 +128,6 @@ namespace EddiShipMonitor
                             {
                                 Ship.cargocapacity += (int)Math.Pow(2, compartment.module.@class);
                             }
-                            if (moduleName == "Armour")
-                            {
-                                Ship.health = compartment.module?.health ?? 100M;
-                            }
 
                             Ship.compartments.Add(compartment);
                         }
