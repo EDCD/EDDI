@@ -368,6 +368,11 @@ namespace EddiStatusMonitor
             return null;
         }
 
+        public Status GetStatus()
+        {
+            return currentStatus;
+        }
+
         /// <summary>Find the latest file in a given directory matching a given expression, or null if no such file exists</summary>
         private static FileInfo FindStatusFile(string path, Regex filter = null)
         {
