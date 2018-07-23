@@ -412,8 +412,12 @@ namespace EddiShipMonitor
             setShipIdent(ship, @event.shipident);
             ship.paintjob = @event.paintjob;
 
-            // Set ship value
-            ship.value = @event.value;
+            // Write ship value, if given by the loadout event
+            if (@event.value != null)
+            {
+                ship.value = (long)@event.value;
+            }
+
             ship.rebuy = @event.rebuy;
 
             // Set the standard modules

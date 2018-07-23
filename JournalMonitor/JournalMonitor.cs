@@ -397,8 +397,8 @@ namespace EddiJournalMonitor
                                 string shipName = JsonParsing.getString(data, "ShipName");
                                 string shipIdent = JsonParsing.getString(data, "ShipIdent");
 
-                                long hullValue = JsonParsing.getLong(data, "HullValue");
-                                long modulesValue = JsonParsing.getLong(data, "ModulesValue");
+                                long? hullValue = JsonParsing.getOptionalLong(data, "HullValue");
+                                long? modulesValue = JsonParsing.getOptionalLong(data, "ModulesValue");
                                 long rebuy = JsonParsing.getLong(data, "Rebuy");
 
                                 data.TryGetValue("Modules", out val);

@@ -31,15 +31,15 @@ namespace EddiShipMonitor
         public string ship { get; private set; }
         public string shipname { get; private set; }
         public string shipident { get; private set; }
-        public long value => hullvalue + modulesvalue;
-        public long hullvalue { get; private set; }
-        public long modulesvalue { get; private set; }
+        public long? value => hullvalue + modulesvalue;
+        public long? hullvalue { get; private set; }
+        public long? modulesvalue { get; private set; }
         public long rebuy { get; private set; }
         public string paintjob { get; private set; }
         public List<Hardpoint> hardpoints { get; private set;  }
         public List<Compartment> compartments { get; private set; }
 
-        public ShipLoadoutEvent(DateTime timestamp, string ship, int? shipId, string shipName, string shipIdent, long hullValue, long modulesValue, long rebuy, List<Compartment> compartments, List<Hardpoint> hardpoints, string paintjob) : base(timestamp, NAME)
+        public ShipLoadoutEvent(DateTime timestamp, string ship, int? shipId, string shipName, string shipIdent, long? hullValue, long? modulesValue, long rebuy, List<Compartment> compartments, List<Hardpoint> hardpoints, string paintjob) : base(timestamp, NAME)
         {
             this.ship = ShipDefinitions.FromEDModel(ship).model;
             this.shipid = shipId;
