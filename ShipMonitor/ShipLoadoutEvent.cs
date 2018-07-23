@@ -31,7 +31,7 @@ namespace EddiShipMonitor
         public string ship { get; private set; }
         public string shipname { get; private set; }
         public string shipident { get; private set; }
-        public long? value => hullvalue + modulesvalue ?? null;
+        public long? value => hullvalue + modulesvalue;
         public long? hullvalue { get; private set; }
         public long? modulesvalue { get; private set; }
         public long rebuy { get; private set; }
