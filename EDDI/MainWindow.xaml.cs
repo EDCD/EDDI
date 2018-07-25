@@ -269,9 +269,14 @@ namespace Eddi
             DirectoryInfo[] subDirs = rootInfo.GetDirectories();
             foreach (DirectoryInfo dir in subDirs)
             {
+                string name = dir.Name;
+                if (name == "x86" || name == "x64")
+                {
+                    continue;
+                }
                 try
                 {
-                    CultureInfo cInfo = new CultureInfo(dir.Name);
+                    CultureInfo cInfo = new CultureInfo(name);
                     satelliteCultures.Add(new LanguageDef(cInfo));
                 }
                 catch
