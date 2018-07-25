@@ -255,10 +255,12 @@ namespace Eddi
 
         private List<LanguageDef> GetAvailableLangs()
         {
-            List<LanguageDef> cultures = new List<LanguageDef>();
+            List<LanguageDef> cultures = new List<LanguageDef>
+            {
 
-            // Add the "Automatic" culture, we are using the InvariantCulture name "" to mean user's culture
-            cultures.Add(new LanguageDef(CultureInfo.InvariantCulture, Properties.EddiResources.system_language)); 
+                // Add the "Automatic" culture, we are using the InvariantCulture name "" to mean user's culture
+                new LanguageDef(CultureInfo.InvariantCulture, Properties.EddiResources.system_language)
+            };
 
             CultureInfo neutralInfo = new CultureInfo("en"); // Add our "neutral" language "en".
             cultures.Add(new LanguageDef(neutralInfo));
@@ -301,8 +303,7 @@ namespace Eddi
                     PluginSkeleton skeleton = new PluginSkeleton(monitor.MonitorName());
                     skeleton.plugindescription.Text = monitor.MonitorDescription();
 
-                    bool enabled;
-                    if (eddiConfiguration.Plugins.TryGetValue(monitor.MonitorName(), out enabled))
+                    if (eddiConfiguration.Plugins.TryGetValue(monitor.MonitorName(), out bool enabled))
                     {
                         skeleton.pluginenabled.IsChecked = enabled;
                     }
@@ -335,8 +336,7 @@ namespace Eddi
                 PluginSkeleton skeleton = new PluginSkeleton(responder.ResponderName());
                 skeleton.plugindescription.Text = responder.ResponderDescription();
 
-                bool enabled;
-                if (eddiConfiguration.Plugins.TryGetValue(responder.ResponderName(), out enabled))
+                if (eddiConfiguration.Plugins.TryGetValue(responder.ResponderName(), out bool enabled))
                 {
                     skeleton.pluginenabled.IsChecked = enabled;
                 }
@@ -364,8 +364,10 @@ namespace Eddi
         private void ConfigureTTS()
         {
             SpeechServiceConfiguration speechServiceConfiguration = SpeechServiceConfiguration.FromFile();
-            List<string> speechOptions = new List<string>();
-            speechOptions.Add("Windows TTS default");
+            List<string> speechOptions = new List<string>
+            {
+                "Windows TTS default"
+            };
             try
             {
                 using (SpeechSynthesizer synth = new SpeechSynthesizer())
@@ -380,7 +382,7 @@ namespace Eddi
                 }
 
                 ttsVoiceDropDown.ItemsSource = speechOptions;
-                ttsVoiceDropDown.Text = speechServiceConfiguration.StandardVoice == null ? "Windows TTS default" : speechServiceConfiguration.StandardVoice;
+                ttsVoiceDropDown.Text = speechServiceConfiguration.StandardVoice ?? "Windows TTS default";
             }
             catch (Exception e)
             {
@@ -754,14 +756,16 @@ namespace Eddi
         /// </summary>
         private void ttsUpdated()
         {
-            SpeechServiceConfiguration speechConfiguration = new SpeechServiceConfiguration();
-            speechConfiguration.StandardVoice = ttsVoiceDropDown.SelectedValue == null || ttsVoiceDropDown.SelectedValue.ToString() == "Windows TTS default" ? null : ttsVoiceDropDown.SelectedValue.ToString();
-            speechConfiguration.Volume = (int)ttsVolumeSlider.Value;
-            speechConfiguration.Rate = (int)ttsRateSlider.Value;
-            speechConfiguration.EffectsLevel = (int)ttsEffectsLevelSlider.Value;
-            speechConfiguration.DistortOnDamage = ttsDistortCheckbox.IsChecked.Value;
-            speechConfiguration.DisableSsml = disableSsmlCheckbox.IsChecked.Value;
-            speechConfiguration.EnableIcao = enableIcaoCheckbox.IsChecked.Value;
+            SpeechServiceConfiguration speechConfiguration = new SpeechServiceConfiguration
+            {
+                StandardVoice = ttsVoiceDropDown.SelectedValue == null || ttsVoiceDropDown.SelectedValue.ToString() == "Windows TTS default" ? null : ttsVoiceDropDown.SelectedValue.ToString(),
+                Volume = (int)ttsVolumeSlider.Value,
+                Rate = (int)ttsRateSlider.Value,
+                EffectsLevel = (int)ttsEffectsLevelSlider.Value,
+                DistortOnDamage = ttsDistortCheckbox.IsChecked.Value,
+                DisableSsml = disableSsmlCheckbox.IsChecked.Value,
+                EnableIcao = enableIcaoCheckbox.IsChecked.Value
+            };
             speechConfiguration.ToFile();
             SpeechService.Instance.ReloadConfiguration();
         }
@@ -774,9 +778,13 @@ namespace Eddi
         public void OnVaWindowStateChange(WindowState state, bool minimizeCheck)
         {
             if (minimizeCheck && WindowState == WindowState.Minimized)
+            {
                 WindowState = WindowState.Normal;
+            }
             else if (!minimizeCheck && WindowState != state)
+            {
                 WindowState = state;
+            }
         }
 
         protected override void OnClosing(CancelEventArgs e)
