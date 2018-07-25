@@ -4,8 +4,14 @@ Full details of the variables available for each noted event, and VoiceAttack in
 
 ### 3.0.1-rc5
   * Core
-    * Fixed some sitations on which hull was incorrectly reported as 100%. Unfortuntely not all sources of hull damage are currently reported in real-time in the journal, so EDDI may sometimes remain unwaware of new damage for a while.
-    * Fixed a bug that could occur when ship hull and module values aren't written in the `Loadout` event.
+    * Fixed some sitations on which hull health was incorrectly being set to 100%. Unfortuntely not all sources of hull damage are currently reported in real-time in the journal, so EDDI may sometimes remain unaware of new damage for a while.
+    * Fixed a bug that could occur when hull and module values aren't present in the `Loadout` event.
+  * EDDN responder
+    * Fixed an issue whereby average prices where not being sent.
+    * Fixed an issue with the parsing of stock and demand bracket JSON which can be either `int` or `string`.
+    * Added test coverage for the above.
+  * VoiceAttack responder
+    * Found and fixed the remaining cause of excessive CPU load. It should now be back to 3.0.0 levels.
 
 ### 3.0.1-rc4
   * Core
