@@ -159,22 +159,26 @@ namespace EDDNResponder
                     Logging.Debug("Missing current starsystem information, cannot send message to EDDN");
                     return;
                 }
-                IList<decimal> starpos = new List<decimal>();
-                starpos.Add(systemX.Value);
-                starpos.Add(systemY.Value);
-                starpos.Add(systemZ.Value);
+                IList<decimal> starpos = new List<decimal>
+                {
+                    systemX.Value,
+                    systemY.Value,
+                    systemZ.Value
+                };
                 data.Add("StarPos", starpos);
             }
 
-            EDDNBody body = new EDDNBody();
-            body.header = generateHeader();
+            EDDNBody body = new EDDNBody
+            {
+                header = generateHeader(),
 #if DEBUG
-            // Use the test schema while in development.
-            body.schemaRef = "https://eddn.edcd.io/schemas/journal/1/test";
+                // Use the test schema while in development.
+                schemaRef = "https://eddn.edcd.io/schemas/journal/1/test",
 #else
-            body.schemaRef = "https://eddn.edcd.io/schemas/journal/1" + (EDDI.Instance.inBeta ? "/test" : "");
+                schemaRef = "https://eddn.edcd.io/schemas/journal/1" + (EDDI.Instance.inBeta ? "/test" : ""),
 #endif
-            body.message = data;
+                message = data
+            };
 
             sendMessage(body);
 
@@ -209,10 +213,12 @@ namespace EDDNResponder
                 // Only send the message if we have commodities
                 if (eddnCommodities.Count > 0)
                 {
-                    IDictionary<string, object> data = new Dictionary<string, object>();
-                    data.Add("timestamp", DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ"));
-                    data.Add("systemName", systemName);
-                    data.Add("stationName", EDDI.Instance.CurrentStation.name);
+                    IDictionary<string, object> data = new Dictionary<string, object>
+                    {
+                        { "timestamp", DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ") },
+                        { "systemName", systemName },
+                        { "stationName", EDDI.Instance.CurrentStation.name }
+                    };
                     if (eddnEconomies.Count > 0)
                     {
                         data.Add("economies", eddnEconomies);
@@ -223,15 +229,17 @@ namespace EDDNResponder
                         data.Add("prohibited", EDDI.Instance.CurrentStation.prohibited);
                     }
 
-                    EDDNBody body = new EDDNBody();
-                    body.header = generateHeader();
+                    EDDNBody body = new EDDNBody
+                    {
+                        header = generateHeader(),
 #if DEBUG
-                    // Use the test schema while in development.
-                    body.schemaRef = "https://eddn.edcd.io/schemas/commodity/3/test";
+                        // Use the test schema while in development.
+                        schemaRef = "https://eddn.edcd.io/schemas/commodity/3/test",
 #else
-                    body.schemaRef = "https://eddn.edcd.io/schemas/commodity/3" + (EDDI.Instance.inBeta ? "/test" : "");
+                        schemaRef = "https://eddn.edcd.io/schemas/commodity/3" + (EDDI.Instance.inBeta ? "/test" : ""),
 #endif
-                    body.message = data;
+                        message = data
+                    };
 
                     Logging.Debug("EDDN message is: " + JsonConvert.SerializeObject(body));
                     sendMessage(body);
@@ -303,21 +311,25 @@ namespace EDDNResponder
                 // Only send the message if we have modules
                 if (eddnModules.Count > 0)
                 {
-                    IDictionary<string, object> data = new Dictionary<string, object>();
-                    data.Add("timestamp", DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ"));
-                    data.Add("systemName", EDDI.Instance.CurrentStation.systemname);
-                    data.Add("stationName", EDDI.Instance.CurrentStation.name);
-                    data.Add("modules", eddnModules);
+                    IDictionary<string, object> data = new Dictionary<string, object>
+                    {
+                        { "timestamp", DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ") },
+                        { "systemName", EDDI.Instance.CurrentStation.systemname },
+                        { "stationName", EDDI.Instance.CurrentStation.name },
+                        { "modules", eddnModules }
+                    };
 
-                    EDDNBody body = new EDDNBody();
-                    body.header = generateHeader();
+                    EDDNBody body = new EDDNBody
+                    {
+                        header = generateHeader(),
 #if DEBUG
-                    // Use the test schema while in development.
-                    body.schemaRef = "https://eddn.edcd.io/schemas/outfitting/2/test";
+                        // Use the test schema while in development.
+                        schemaRef = "https://eddn.edcd.io/schemas/outfitting/2/test",
 #else
-                    body.schemaRef = "https://eddn.edcd.io/schemas/outfitting/2" + (EDDI.Instance.inBeta ? "/test" : "");
+                        schemaRef = "https://eddn.edcd.io/schemas/outfitting/2" + (EDDI.Instance.inBeta ? "/test" : ""),
 #endif
-                    body.message = data;
+                        message = data
+                    };
 
                     sendMessage(body);
                 }
@@ -337,21 +349,25 @@ namespace EDDNResponder
                 // Only send the message if we have ships
                 if (eddnShips.Count > 0)
                 {
-                    IDictionary<string, object> data = new Dictionary<string, object>();
-                    data.Add("timestamp", DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ"));
-                    data.Add("systemName", EDDI.Instance.CurrentStation.systemname);
-                    data.Add("stationName", EDDI.Instance.CurrentStation.name);
-                    data.Add("ships", eddnShips);
+                    IDictionary<string, object> data = new Dictionary<string, object>
+                    {
+                        { "timestamp", DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ") },
+                        { "systemName", EDDI.Instance.CurrentStation.systemname },
+                        { "stationName", EDDI.Instance.CurrentStation.name },
+                        { "ships", eddnShips }
+                    };
 
-                    EDDNBody body = new EDDNBody();
-                    body.header = generateHeader();
+                    EDDNBody body = new EDDNBody
+                    {
+                        header = generateHeader(),
 #if DEBUG
-                    // Use the test schema while in development.
-                    body.schemaRef = "https://eddn.edcd.io/schemas/shipyard/2/test";
+                        // Use the test schema while in development.
+                        schemaRef = "https://eddn.edcd.io/schemas/shipyard/2/test",
 #else
-                    body.schemaRef = "https://eddn.edcd.io/schemas/shipyard/2" + (EDDI.Instance.inBeta ? "/test" : "");
+                        schemaRef = "https://eddn.edcd.io/schemas/shipyard/2" + (EDDI.Instance.inBeta ? "/test" : ""),
 #endif
-                    body.message = data;
+                        message = data
+                    };
 
                     sendMessage(body);
                 }
@@ -376,10 +392,12 @@ namespace EDDNResponder
 
         private static EDDNHeader generateHeader()
         {
-            EDDNHeader header = new EDDNHeader();
-            header.softwareName = Constants.EDDI_NAME;
-            header.softwareVersion = Constants.EDDI_VERSION;
-            header.uploaderID = generateUploaderId();
+            EDDNHeader header = new EDDNHeader
+            {
+                softwareName = Constants.EDDI_NAME,
+                softwareVersion = Constants.EDDI_VERSION,
+                uploaderID = generateUploaderId()
+            };
             return header;
         }
 
@@ -407,9 +425,11 @@ namespace EDDNResponder
                 {
                     Logging.Warn("Failed to send error to EDDN", ex);
                 }
-            });
-            thread.Name = "EDDN message";
-            thread.IsBackground = true;
+            })
+            {
+                Name = "EDDN message",
+                IsBackground = true
+            };
             thread.Start();
         }
 

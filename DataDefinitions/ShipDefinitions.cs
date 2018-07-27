@@ -58,8 +58,7 @@ namespace EddiDataDefinitions
         public static Ship FromEliteID(long id)
         {
             Ship Ship = new Ship();
-            Ship Template;
-            if (ShipsByEliteID.TryGetValue(id, out Template))
+            if (ShipsByEliteID.TryGetValue(id, out Ship Template))
             {
                 Ship.EDID = Template.EDID;
                 Ship.EDName = Template.EDName;
@@ -85,8 +84,7 @@ namespace EddiDataDefinitions
             }
 
             Ship Ship = new Ship();
-            Ship Template;
-            if (ShipsByModel.TryGetValue(model.ToLowerInvariant(), out Template))
+            if (ShipsByModel.TryGetValue(model.ToLowerInvariant(), out Ship Template))
             {
                 Ship.EDID = Template.EDID;
                 Ship.EDName = Template.EDName;
@@ -112,8 +110,7 @@ namespace EddiDataDefinitions
                 return null;
             }
             Ship Ship = new Ship();
-            Ship Template;
-            if (ShipsByEDModel.TryGetValue(model.ToLowerInvariant().Replace(" ", "").Replace(".", "").Replace("_", ""), out Template))
+            if (ShipsByEDModel.TryGetValue(model.ToLowerInvariant().Replace(" ", "").Replace(".", "").Replace("_", ""), out Ship Template))
             {
                 Ship.EDID = Template.EDID;
                 Ship.EDName = Template.EDName;
