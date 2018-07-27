@@ -168,11 +168,11 @@ namespace EDDNResponder
 
             EDDNBody body = new EDDNBody();
             body.header = generateHeader();
-#if RELEASE
-            body.schemaRef = "https://eddn.edcd.io/schemas/journal/1" + (EDDI.Instance.inBeta ? "/test" : "");
-#else
+#if DEBUG
             // Use the test schema while in development.
             body.schemaRef = "https://eddn.edcd.io/schemas/journal/1/test";
+#else
+            body.schemaRef = "https://eddn.edcd.io/schemas/journal/1" + (EDDI.Instance.inBeta ? "/test" : "");
 #endif
             body.message = data;
 
@@ -225,11 +225,11 @@ namespace EDDNResponder
 
                     EDDNBody body = new EDDNBody();
                     body.header = generateHeader();
-#if RELEASE
-                    body.schemaRef = "https://eddn.edcd.io/schemas/commodity/3" + (EDDI.Instance.inBeta ? "/test" : "");
-#else
+#if DEBUG
                     // Use the test schema while in development.
                     body.schemaRef = "https://eddn.edcd.io/schemas/commodity/3/test";
+#else
+                    body.schemaRef = "https://eddn.edcd.io/schemas/commodity/3" + (EDDI.Instance.inBeta ? "/test" : "");
 #endif
                     body.message = data;
 
@@ -311,11 +311,11 @@ namespace EDDNResponder
 
                     EDDNBody body = new EDDNBody();
                     body.header = generateHeader();
-#if RELEASE
-                    body.schemaRef = "https://eddn.edcd.io/schemas/outfitting/2" + (EDDI.Instance.inBeta ? "/test" : "");
-#else
+#if DEBUG
                     // Use the test schema while in development.
                     body.schemaRef = "https://eddn.edcd.io/schemas/outfitting/2/test";
+#else
+                    body.schemaRef = "https://eddn.edcd.io/schemas/outfitting/2" + (EDDI.Instance.inBeta ? "/test" : "");
 #endif
                     body.message = data;
 
@@ -345,11 +345,11 @@ namespace EDDNResponder
 
                     EDDNBody body = new EDDNBody();
                     body.header = generateHeader();
-#if RELEASE
-                    body.schemaRef = "https://eddn.edcd.io/schemas/shipyard/2" + (EDDI.Instance.inBeta ? "/test" : "");
-#else
+#if DEBUG
                     // Use the test schema while in development.
                     body.schemaRef = "https://eddn.edcd.io/schemas/shipyard/2/test";
+#else
+                    body.schemaRef = "https://eddn.edcd.io/schemas/shipyard/2" + (EDDI.Instance.inBeta ? "/test" : "");
 #endif
                     body.message = data;
 
