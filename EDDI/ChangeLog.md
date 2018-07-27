@@ -3,6 +3,8 @@
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
 ### 3.0.1-rc6
+  * EDDN responder
+    * Fixed symbol for Krait Mk II in shipyard data.
 
 ### 3.0.1-rc5
   * Core
