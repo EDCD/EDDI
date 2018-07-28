@@ -545,7 +545,16 @@
     <value>Guardian-Rumpfhüllenverstärkung</value>
     <comment>Module GuardianHullReinforcement</comment>
   </data>
-  
-  
-  
+  <data name="GuardianModuleReinforcement" xml:space="preserve">
+    <value>Guardian-Modulhüllenverstärkung</value>
+    <comment>Module GuardianModuleReinforcement</comment>
+  </data>
+  <data name="GuardianShieldReinforcement" xml:space="preserve">
+    <value>Guardian-Schildverstärkung</value>
+    <comment>Module GuardianShieldReinforcement</comment>
+  </data>
+  <data name="ShipIntegrity" xml:space="preserve">
+    <value>Sciffszustand</value>
+    <comment>This is the "Ship Integrity" field in the Advanced Repair screen</comment>
+  </data>
 </root>
