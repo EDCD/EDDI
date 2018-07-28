@@ -550,5 +550,8 @@
     <comment>Module GuardianModuleReinforcement</comment>
   </data>
   
-  
+  <data name="ShipIntegrity" xml:space="preserve">
+    <value>Intégrité du Vaisseau</value>
+    <comment>This is the "Ship Integrity" field in the Advanced Repair screen</comment>
+  </data>
 </root>
