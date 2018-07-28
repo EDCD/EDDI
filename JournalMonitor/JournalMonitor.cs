@@ -2438,31 +2438,38 @@ namespace EddiJournalMonitor
                         case "Repair":
                             {
                                 string item = JsonParsing.getString(data, "Item");
-                                // Item might be a module
-                                Module module = Module.FromEDName(item);
-                                if (module != null)
+                                if (item == "Wear")
                                 {
-                                    if (module.mount != null)
+                                    item = EddiDataDefinitions.Properties.Modules.ShipIntegrity;
+                                }
+                                else
+                                {
+                                    // Item might be a module
+                                    Module module = Module.FromEDName(item);
+                                    if (module != null)
                                     {
-                                        // This is a weapon so provide a bit more information
-                                        string mount;
-                                        if (module.mount == Module.ModuleMount.Fixed)
+                                        if (module.mount != null)
                                         {
-                                            mount = "fixed";
-                                        }
-                                        else if (module.mount == Module.ModuleMount.Gimballed)
-                                        {
-                                            mount = "gimballed";
+                                            // This is a weapon so provide a bit more information
+                                            string mount;
+                                            switch (module.mount)
+                                            {
+                                                case Module.ModuleMount.Fixed:
+                                                    mount = "fixed";
+                                                    break;
+                                                case Module.ModuleMount.Gimballed:
+                                                    mount = "gimballed";
+                                                    break;
+                                                default:
+                                                    mount = "turreted";
+                                                    break;
+                                            }
+                                            item = $"{module.@class}{module.grade} {mount} {module.localizedName}";
                                         }
                                         else
                                         {
-                                            mount = "turreted";
+                                            item = module.localizedName;
                                         }
-                                        item = "" + module.@class.ToString() + module.grade + " " + mount + " " + module.localizedName;
-                                    }
-                                    else
-                                    {
-                                        item = module.localizedName;
                                     }
                                 }
                                 data.TryGetValue("Cost", out object val);

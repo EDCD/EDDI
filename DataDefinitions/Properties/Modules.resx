@@ -553,4 +553,8 @@
     <value>Guardian Shield Reinforcement</value>
     <comment>Module GuardianShieldReinforcement</comment>
   </data>
+  <data name="ShipIntegrity" xml:space="preserve">
+    <value>Ship Integrity</value>
+    <comment>This is the "Ship Integrity" field in the Advanced Repair screen</comment>
+  </data>
 </root>

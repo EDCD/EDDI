@@ -934,6 +934,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ship Integrity.
+        /// </summary>
+        public static string ShipIntegrity {
+            get {
+                return ResourceManager.GetString("ShipIntegrity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Shock Cannon.
         /// </summary>
         public static string ShockCannon {
