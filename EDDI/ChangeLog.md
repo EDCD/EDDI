@@ -5,7 +5,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
 ### 3.0.1-rc6
   * EDDN responder
     * Fixed symbol for Krait Mk II in shipyard data.
-    * Fixed release builds of EDDI using the test EDDN endpoints.
+    * Release builds of EDDI will now use the live EDDN endpoints.
 
 ### 3.0.1-rc5
   * Core
