@@ -31,10 +31,14 @@ namespace EddiEvents
         [JsonProperty("landingpad")]
         public int landingpad { get; private set; }
 
-        public DockingGrantedEvent(DateTime timestamp, string station, string stationType, int landingpad) : base(timestamp, NAME)
+        // Admin
+        public long marketId { get; private set; }
+
+        public DockingGrantedEvent(DateTime timestamp, string station, string stationType, long marketId, int landingpad) : base(timestamp, NAME)
         {
             this.station = station;
             this.stationDefinition = StationModels.FromEDName(stationType);
+            this.marketId = marketId;
             this.landingpad = landingpad;
         }
     }

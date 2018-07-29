@@ -27,10 +27,14 @@ namespace EddiEvents
 
         public string stationtype => stationDefinition.localizedName;
 
-        public DockingRequestedEvent(DateTime timestamp, string station, string stationType) : base(timestamp, NAME)
+        // Admin
+        public long marketId { get; private set; }
+
+        public DockingRequestedEvent(DateTime timestamp, string station, string stationType, long marketId) : base(timestamp, NAME)
         {
             this.station = station;
             this.stationDefinition = StationModels.FromEDName(stationType);
+            this.marketId = marketId;
         }
     }
 }

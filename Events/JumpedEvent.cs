@@ -57,9 +57,13 @@ namespace EddiEvents
 
         public long? population { get; private set; }
 
-        public JumpedEvent(DateTime timestamp, string system, decimal x, decimal y, decimal z, decimal distance, decimal fuelused, decimal fuelremaining, Superpower allegiance, string faction, SystemState factionstate, Economy economy, Government government, SecurityLevel security, long? population) : base(timestamp, NAME)
+        // Admin
+        public long systemAddress { get; private set; }
+
+        public JumpedEvent(DateTime timestamp, string system, long systemAddress, decimal x, decimal y, decimal z, decimal distance, decimal fuelused, decimal fuelremaining, Superpower allegiance, string faction, SystemState factionstate, Economy economy, Government government, SecurityLevel security, long? population) : base(timestamp, NAME)
         {
             this.system = system;
+            this.systemAddress = systemAddress;
             this.x = x;
             this.y = y;
             this.z = z;

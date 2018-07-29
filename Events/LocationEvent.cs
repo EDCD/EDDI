@@ -68,17 +68,23 @@ namespace EddiEvents
 
         public decimal? latitude { get; private set; }
 
-        public LocationEvent(DateTime timestamp, string system, decimal x, decimal y, decimal z, string body, string bodytype, bool docked, string station, string stationtype, Superpower allegiance, string faction, Economy economy, Government government, SecurityLevel security, long? population, decimal? longitude, decimal? latitude) : base(timestamp, NAME)
+        // Admin
+        public long? systemAddress { get; private set; }
+        public long? marketId { get; private set; }
+
+        public LocationEvent(DateTime timestamp, string system, decimal x, decimal y, decimal z, long systemAddress, string body, string bodytype, bool docked, string station, string stationtype, long? marketId, Superpower allegiance, string faction, Economy economy, Government government, SecurityLevel security, long? population, decimal? longitude, decimal? latitude) : base(timestamp, NAME)
         {
             this.system = system;
             this.x = x;
             this.y = y;
             this.z = z;
+            this.systemAddress = systemAddress;
             this.body = body;
             this.bodytype = bodytype;
             this.docked = docked;
             this.station = station;
             this.stationtype = stationtype;
+            this.marketId = marketId;
             this.allegiance = (allegiance ?? Superpower.None).localizedName;
             this.faction = faction;
             this.economy = (economy ?? Economy.None).localizedName;

@@ -49,7 +49,10 @@ namespace EddiShipMonitor
         [JsonProperty("storedmodule")]
         public Module storedmodule { get; private set; }
 
-        public ModulePurchasedEvent(DateTime timestamp, string ship, int? shipid, string slot, Module buymodule, long buyprice, Module sellmodule, long? sellprice, Module storedmodule) : base(timestamp, NAME)
+        // Admin
+        public long marketId { get; private set; }
+
+        public ModulePurchasedEvent(DateTime timestamp, string ship, int? shipid, string slot, Module buymodule, long buyprice, Module sellmodule, long? sellprice, Module storedmodule, long marketId) : base(timestamp, NAME)
         {
             this.ship = ShipDefinitions.FromEDModel(ship).model;
             this.shipid = shipid;
@@ -59,6 +62,7 @@ namespace EddiShipMonitor
             this.sellmodule = sellmodule;
             this.sellprice = sellprice;
             this.storedmodule = storedmodule;
+            this.marketId = marketId;
         }
     }
 }
