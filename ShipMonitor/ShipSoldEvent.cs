@@ -31,14 +31,18 @@ namespace EddiShipMonitor
         public long price { get; private set; }
         
         [JsonProperty("system")]
-        public string system { get; private set; }        
+        public string system { get; private set; }     
+        
+        // Admin
+        public long marketId { get; private set; }
 
-        public ShipSoldEvent(DateTime timestamp, string ship, int shipId, long price, string system) : base(timestamp, NAME)
+        public ShipSoldEvent(DateTime timestamp, string ship, int shipId, long price, string system, long marketId) : base(timestamp, NAME)
         {
             this.ship = ShipDefinitions.FromEDModel(ship).model;
             this.shipid = shipId;
             this.price = price;
             this.system = system;
+            this.marketId = marketId;
         }
     }
 }

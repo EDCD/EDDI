@@ -23,10 +23,14 @@ namespace EddiEvents
         public string system { get; private set; }
         public string body { get; private set; }
 
-        public NearSurfaceEvent(DateTime timestamp, bool approachingSurface, string system, string body) : base(timestamp, NAME)
+        // Admin
+        public long systemAddress { get; private set; }
+
+        public NearSurfaceEvent(DateTime timestamp, bool approachingSurface, string system, long systemAddress, string body) : base(timestamp, NAME)
         {
             this.approaching_surface = approachingSurface;
             this.system = system;
+            this.systemAddress = systemAddress;
             this.body = body;
         }
     }

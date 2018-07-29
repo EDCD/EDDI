@@ -33,12 +33,16 @@ namespace EddiShipMonitor
         [JsonProperty("modules")]
         public List<Module> modules { get; private set; }
 
-        public ModulesStoredEvent(DateTime timestamp, string ship, int? shipid, List<string> slots, List<Module> modules ) : base(timestamp, NAME)
+        // Admin
+        public long marketId { get; private set; }
+
+        public ModulesStoredEvent(DateTime timestamp, string ship, int? shipid, List<string> slots, List<Module> modules, long marketId ) : base(timestamp, NAME)
         {
             this.ship = ShipDefinitions.FromEDModel(ship).model;
             this.shipid = shipid;
             this.slots = slots;
             this.modules = modules;
+            this.marketId = marketId;
         }
     }
 }

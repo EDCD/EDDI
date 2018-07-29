@@ -31,8 +31,10 @@ namespace EddiShipMonitor
         public string engineermodifications { get; private set; }
         public Module replacementmodule { get; private set; }
 
+        // Admin
+        public long marketId { get; private set; }
 
-        public ModuleStoredEvent(DateTime timestamp, string ship, int? shipid, string slot, Module module, long? cost, string engineermodifications, Module replacementmodule) : base(timestamp, NAME)
+        public ModuleStoredEvent(DateTime timestamp, string ship, int? shipid, string slot, Module module, long? cost, string engineermodifications, Module replacementmodule, long marketId) : base(timestamp, NAME)
         {
             this.ship = ShipDefinitions.FromEDModel(ship).model;
             this.shipid = shipid;
@@ -41,6 +43,7 @@ namespace EddiShipMonitor
             this.cost = cost;
             this.engineermodifications = engineermodifications;
             this.replacementmodule = replacementmodule;
+            this.marketId = marketId;
         }
     }
 }

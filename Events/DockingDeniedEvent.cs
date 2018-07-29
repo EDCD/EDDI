@@ -31,10 +31,14 @@ namespace EddiEvents
         [JsonProperty("reason")]
         public string reason { get; private set; }
 
-        public DockingDeniedEvent(DateTime timestamp, string station, string stationType, string reason) : base(timestamp, NAME)
+        // Admin
+        public long marketId { get; private set; }
+
+        public DockingDeniedEvent(DateTime timestamp, string station, string stationType, long marketId, string reason) : base(timestamp, NAME)
         {
             this.station = station;
             this.stationDefinition = StationModels.FromEDName(stationType);
+            this.marketId = marketId;
             this.reason = reason;
         }
     }

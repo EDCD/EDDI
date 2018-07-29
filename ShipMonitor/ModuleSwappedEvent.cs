@@ -41,7 +41,10 @@ namespace EddiShipMonitor
         [JsonProperty("tomodule")]
         public Module tomodule { get; private set; }
 
-        public ModuleSwappedEvent(DateTime timestamp, string ship, int? shipid, string fromslot, Module frommodule, string toslot, Module tomodule) : base(timestamp, NAME)
+        // Admin
+        public long marketId { get; private set; }
+
+        public ModuleSwappedEvent(DateTime timestamp, string ship, int? shipid, string fromslot, Module frommodule, string toslot, Module tomodule, long marketId) : base(timestamp, NAME)
         {
             this.ship = ShipDefinitions.FromEDModel(ship).model;
             this.shipid = shipid;
@@ -49,6 +52,7 @@ namespace EddiShipMonitor
             this.frommodule = frommodule;
             this.toslot = toslot;
             this.tomodule = tomodule;
+            this.marketId = marketId;
         }
     }
 }
