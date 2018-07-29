@@ -20,6 +20,9 @@ namespace EddiDataDefinitions
         /// <summary>The name of the system in which the body resides</summary>
         public string systemname { get; set; }
 
+        /// <summary>Unique 64 bit id value for system</summary>
+        public long? systemAddress { get; set; }
+
         /// <summary>The age of the body, in millions of years</summary>
         public long? age { get; set; }
 
