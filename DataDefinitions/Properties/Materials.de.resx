@@ -570,13 +570,11 @@
     <comment>Material improvisedcomponents</comment>
   </data>
   <data name="militarygradealloys" xml:space="preserve">
-    <value>Militärqualitätslegierung
-Material Militärqualitätslegierung</value>
+    <value>Militärqualitätslegierung</value>
     <comment>Material militarygradealloys</comment>
   </data>
   <data name="militarysupercapacitors" xml:space="preserve">
-    <value>Militärische Superkondensatoren
-Material Militärische Superkondensatoren</value>
+    <value>Militärische Superkondensatoren</value>
     <comment>Material militarysupercapacitors</comment>
   </data>
   <data name="pharmaceuticalisolators" xml:space="preserve">
