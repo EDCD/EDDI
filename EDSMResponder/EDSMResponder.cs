@@ -115,7 +115,7 @@ namespace EddiEdsmResponder
             if (starMapService != null)
             {
                 /// Retrieve applicable transient game state info (metadata) 
-                /// for the event and the event with transient info to EDSM
+                /// for the event and send the event with transient info to EDSM
                 string eventData = prepareEventData(theEvent);
                 if (eventData == null)
                 {
