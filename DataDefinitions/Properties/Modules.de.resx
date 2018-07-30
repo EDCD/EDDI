@@ -554,7 +554,7 @@
     <comment>Module GuardianShieldReinforcement</comment>
   </data>
   <data name="ShipIntegrity" xml:space="preserve">
-    <value>Sciffszustand</value>
+    <value>Schiffsintegrität</value>
     <comment>This is the "Ship Integrity" field in the Advanced Repair screen</comment>
   </data>
 </root>
