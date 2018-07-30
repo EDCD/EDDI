@@ -372,7 +372,7 @@ namespace EddiJournalMonitor
                                 CommodityDefinition commodity = CommodityDefinition.FromName(commodityName);
                                 if (commodity == null)
                                 {
-                                    Logging.Error("Failed to map collectcargo type " + commodityName + " to commodity", line);
+                                    Logging.Error("Failed to map collectcargo type " + commodityName + " to commodity");
                                 }
                                 bool stolen = JsonParsing.getBool(data, "Stolen");
                                 events.Add(new CommodityCollectedEvent(timestamp, commodity, stolen) { raw = line });
@@ -386,7 +386,7 @@ namespace EddiJournalMonitor
                                 CommodityDefinition commodity = CommodityDefinition.FromName(commodityName);
                                 if (commodity == null)
                                 {
-                                    Logging.Error("Failed to map ejectcargo type " + commodityName + " to commodity", line);
+                                    Logging.Error("Failed to map ejectcargo type " + commodityName + " to commodity");
                                 }
                                 data.TryGetValue("Count", out object val);
                                 int amount = (int)(long)val;
@@ -1686,7 +1686,7 @@ namespace EddiJournalMonitor
                                 CommodityDefinition commodity = CommodityDefinition.FromName(commodityName);
                                 if (commodity == null)
                                 {
-                                    Logging.Report("Failed to map marketbuy type " + commodityName + " to commodity", line);
+                                    Logging.Error("Failed to map marketbuy type " + commodityName + " to commodity");
                                 }
                                 int amount = JsonParsing.getInt("Count", data);
                                 int price = JsonParsing.getInt("BuyPrice", data);
@@ -1701,7 +1701,7 @@ namespace EddiJournalMonitor
                                 CommodityDefinition commodity = CommodityDefinition.FromName(commodityName);
                                 if (commodity == null)
                                 {
-                                    Logging.Report("Failed to map marketsell type " + commodityName + " to commodity", line);
+                                    Logging.Error("Failed to map marketsell type " + commodityName + " to commodity");
                                 }
                                 int amount = JsonParsing.getInt("Count", data);
                                 int sellPrice = JsonParsing.getInt("SellPrice", data);
@@ -2414,7 +2414,7 @@ namespace EddiJournalMonitor
                                 CommodityDefinition commodity = CommodityDefinition.FromName(JsonParsing.getString(data, "Name"));
                                 if (commodity == null)
                                 {
-                                    Logging.Error("Failed to map SearchAndRescue commodity type " + commodityName + " to commodity", line);
+                                    Logging.Error("Failed to map SearchAndRescue commodity type " + commodityName + " to commodity");
                                 }
                                 data.TryGetValue("Count", out object val);
                                 int? amount = (int?)(long?)val;
@@ -2762,7 +2762,7 @@ namespace EddiJournalMonitor
             catch (Exception ex)
             {
                 Logging.Warn("Failed to parse line: " + ex.ToString());
-                Logging.Error("Exception whilst parsing journal line", "Raw event: " + line + ". Exception: " + ex.ToString());
+                Logging.Error("Exception whilst parsing journal line", "Raw event: " + line + ". Exception: " + ex.Message + ". " + ex.StackTrace);
             }
             return events;
         }
