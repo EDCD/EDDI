@@ -584,7 +584,7 @@ namespace EddiMissionMonitor
                 {
                     string factionState = SystemState.FromEDName(mission.name.Split('_')
                         .ElementAtOrDefault(i)?
-                        .ToLowerInvariant())
+                        .ToLowerInvariant())?
                         .localizedName;
                     if (factionState != null)
                     {

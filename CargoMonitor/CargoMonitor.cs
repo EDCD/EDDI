@@ -265,11 +265,10 @@ namespace EddiCargoMonitor
             // Remove strays from the manifest
             foreach (Cargo inventoryCargo in inventory.ToList())
             {
-                // Keep cargo in manifest if missions are pending
-                if (inventoryCargo.haulageData == null || !inventoryCargo.haulageData.Any())
+                Cargo cargo = @event.inventory.FirstOrDefault(c => c.edname.ToLowerInvariant() == inventoryCargo.edname.ToLowerInvariant());
+                if (cargo == null)
                 {
-                    // Check for pending missions
-                    if (inventoryCargo.haulageamounts == null || !inventoryCargo.haulageamounts.Any())
+                    if (inventoryCargo.haulageData == null || !inventoryCargo.haulageData.Any())
                     {
                         // Strip out the stray from the manifest
                         _RemoveCargoWithEDName(inventoryCargo.edname);
@@ -504,10 +503,18 @@ namespace EddiCargoMonitor
                 }
                 else if (@event.blackmarket && !@event.illegal)
                 {
-                    // Assume cargo is mission-related
-                    int amount = Math.Min(cargo.haulage, @event.amount);
-                    cargo.haulage -= amount;
-                    cargo.ejected += amount;
+                    if (EDDI.Instance.CurrentStation.prohibited.Contains(cargo.edname))
+                    {
+                        // Owned cargo is prohibited
+                        cargo.owned -= Math.Min(cargo.owned, @event.amount);
+                    }
+                    else
+                    {
+                        // Cargo is mission-related
+                        int amount = Math.Min(cargo.haulage, @event.amount);
+                        cargo.haulage -= amount;
+                        cargo.ejected += amount;
+                    }
                 }
                 else
                 {
