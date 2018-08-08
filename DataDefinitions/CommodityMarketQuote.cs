@@ -119,15 +119,22 @@ namespace EddiDataDefinitions
 
         public static CommodityMarketQuote FromCapiJson(JObject capiJSON)
         {
-            CommodityDefinition commodityDef = CommodityDefinition.CommodityDefinitionFromEliteID((long)capiJSON["id"]);
+            long eliteId = (long)capiJSON["id"];
+            string edName = (string)capiJSON["name"];
+            string category = (string)capiJSON["category"];
+            int meanPrice = (int)capiJSON["meanPrice"];
+
+            CommodityDefinition commodityDef = CommodityDefinition.CommodityDefinitionFromEliteID(eliteId) ?? CommodityDefinition.FromEDName(edName);
             if (commodityDef == null || (string)capiJSON["name"] != commodityDef.edname)
             {
                 if (commodityDef.edname != "Drones")
                 {
-                    // Unknown commodity; report the full object so that we can update the definitions
+                    // Unknown commodity; report the full object so that we can update the definitions 
                     Logging.Info("Commodity definition error: " + (string)capiJSON["name"], JsonConvert.SerializeObject(capiJSON));
+
+                    // Create a basic commodity definition from the info available 
+                    commodityDef = new CommodityDefinition(eliteId, -1, edName, CommodityCategory.FromEDName(category), meanPrice, false);
                 }
-                return null;
             }
 
             dynamic intStringOrNull(JObject jObject, string key)
