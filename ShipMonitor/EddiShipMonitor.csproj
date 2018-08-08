@@ -91,7 +91,10 @@
       <DependentUpon>ShipMonitor.resx</DependentUpon>
     </Compile>
     <Compile Include="ShipAfmuRepairedEvent.cs" />
+    <Compile Include="ShipLightsEvent.cs" />
     <Compile Include="ShipFsdEvent.cs" />
+    <Compile Include="ShipCargoScoopEvent.cs" />
+    <Compile Include="ShipLandingGearEvent.cs" />
     <Compile Include="ShipLowFuelEvent.cs" />
     <Compile Include="ShipRepairDroneEvent.cs" />
     <Compile Include="ConfigurationWindow.xaml.cs">
