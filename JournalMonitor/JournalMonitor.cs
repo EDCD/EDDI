@@ -2729,6 +2729,9 @@ namespace EddiJournalMonitor
                     {
                         Logging.Debug("Unhandled event: " + line);
 
+                        // Pass a basic event so that responders can react appropriately.
+                        // For example, the EDSM responder will handle raw events.
+                        events.Add(new UnhandledEvent(timestamp, edType) { raw = line });
                     }
                 }
             }
