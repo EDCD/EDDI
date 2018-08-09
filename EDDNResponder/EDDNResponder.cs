@@ -134,6 +134,7 @@ namespace EDDNResponder
             data.Remove("FuelLevel");
             data.Remove("FuelUsed");
             data.Remove("JumpDist");
+            data.Remove("Wanted");
 
             // Need to remove any keys ending with _Localised
             data = data.Where(x => !x.Key.EndsWith("_Localised")).ToDictionary(x => x.Key, x => x.Value);
