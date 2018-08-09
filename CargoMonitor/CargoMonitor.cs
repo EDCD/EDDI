@@ -253,14 +253,22 @@ namespace EddiCargoMonitor
             // Remove strays from the manifest
             foreach (Cargo inventoryCargo in inventory.ToList())
             {
-                // Keep cargo in manifest if missions are pending
-                if (inventoryCargo.haulageamounts == null || !inventoryCargo.haulageamounts.Any())
+                Cargo cargo = @event.inventory.FirstOrDefault(c => c.edname.ToLowerInvariant() == inventoryCargo.edname.ToLowerInvariant());
+                if (cargo == null)
                 {
-                    Cargo cargo = @event.inventory.FirstOrDefault(c => c.edname.ToLowerInvariant() == inventoryCargo.edname.ToLowerInvariant());
-                    if (cargo == null)
+                    // Check for pending missions
+                    if (inventoryCargo.haulageamounts == null || !inventoryCargo.haulageamounts.Any())
                     {
                         // Strip out the stray from the manifest
                         _RemoveCargoWithEDName(inventoryCargo.edname);
+                    }
+                    else
+                    {
+                        // Keep cargo entry in manifest with zeroed amounts, if missions are pending
+                        inventoryCargo.haulage = 0;
+                        inventoryCargo.owned = 0;
+                        inventoryCargo.stolen = 0;
+                        inventoryCargo.ejected = 0;
                     }
                 }
             }
@@ -481,10 +489,18 @@ namespace EddiCargoMonitor
                 }
                 else if (@event.blackmarket)
                 {
-                    // Cargo is mission-related
-                    int amount = Math.Min(cargo.haulage, @event.amount);
-                    cargo.haulage -= amount;
-                    cargo.ejected += amount;
+                    if (EDDI.Instance.CurrentStation.prohibited.Contains(cargo.edname))
+                    {
+                        // Owned cargo is prohibited
+                        cargo.owned -= Math.Min(cargo.owned, @event.amount);
+                    }
+                    else
+                    {
+                        // Cargo is mission-related
+                        int amount = Math.Min(cargo.haulage, @event.amount);
+                        cargo.haulage -= amount;
+                        cargo.ejected += amount;
+                    }
                 }
                 else
                 {
