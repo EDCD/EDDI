@@ -522,6 +522,21 @@ namespace EddiJournalMonitor
                                         {
                                             // This is a compartment
                                             Compartment compartment = new Compartment() { name = slot };
+
+                                            // Compartment slots are in the form of "Slotnn_Sizen" or "Militarynn"
+                                            if (slot.Contains("Slot"))
+                                            {
+                                                Match matches = Regex.Match(compartment.name, @"Size([0-9]+)");
+                                                if (matches.Success)
+                                                {
+                                                    compartment.size = Int32.Parse(matches.Groups[1].Value);
+                                                }
+                                            }
+                                            else if (slot.Contains("Military"))
+                                            {
+                                                compartment.size = (int)ShipDefinitions.FromEDModel(ship)?.militarysize;
+                                            }
+
                                             Module module = Module.FromEDName(item);
                                             if (module == null)
                                             {
