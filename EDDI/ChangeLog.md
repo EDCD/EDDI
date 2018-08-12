@@ -2,7 +2,7 @@
 
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
-### 3.0.1-rc7
+### 3.0.2-b1
   * Speech responder
     * Revised the `Ship targeted` script so that it won't repeat whenever switching targeted subsystems.
 
