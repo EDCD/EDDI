@@ -537,8 +537,8 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'fsd')}\r\n{SetState('eddi_context_last_action', 'disengage')}\r\n{SetState('eddi_context_system_name', event.system)}\r\n{SetState('eddi_context_body_name', event.body)}\r\n{SetState('eddi_context_body_system', event.system)}\r\n\r\n{Pause(5000)}\r\n\r\n{OneOf(\"{ShipName()} has\", \"\")} {OneOf(\"left supercruise\", \"{OneOf(\\\"entered\\\", \\\"returned to\\\", \\\"dropped to\\\")} normal space\")}\r\n\r\n{if event.bodytype = 'Planet':\r\n    {OneOf(\"near\", \"close to\", \"in the vicinity of\")} planet {P(event.body)}\r\n|elif event.bodytype = 'Star':\r\n    {OneOf(\"near\", \"close to\", \"in the vicinity of\")} star {P(event.body)}\r\n  |elif event.bodytype = 'Station':\r\n    {OneOf(\"near\", \"close to\", \"in the vicinity of\")} {P(event.body)}\r\n}.\r\n",
-      "default": true,
+      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'fsd')}\r\n{SetState('eddi_context_last_action', 'disengage')}\r\n{SetState('eddi_context_system_name', event.system)}\r\n{SetState('eddi_context_body_name', event.body)}\r\n{SetState('eddi_context_body_system', event.system)}\r\n\r\n{if status.near_surface && status.fsd_status != \"masslock\":\r\n    {Pause(5000)}\r\n\r\n    {OneOf(\"{ShipName()} has\", \"\")} \r\n    {OneOf(\"left supercruise\", \"{OneOf(\\\"entered\\\", \\\"returned to\\\", \\\"dropped to\\\")} normal space\")}\r\n\r\n    {if event.bodytype = 'Planet':\r\n        {OneOf(\"near\", \"close to\", \"in the vicinity of\")} planet {P(event.body)}\r\n    |elif event.bodytype = 'Star':\r\n        {OneOf(\"near\", \"close to\", \"in the vicinity of\")} star {P(event.body)}\r\n    |elif event.bodytype = 'Station':\r\n        {OneOf(\"near\", \"close to\", \"in the vicinity of\")} {P(event.body)}\r\n    }.\r\n}\r\n",
+      "default": false,
       "name": "Entered normal space",
       "description": "Triggered when your ship enters normal space"
     },
@@ -730,6 +730,15 @@
       "default": true,
       "name": "Galnet unread report",
       "description": "Report on unread news"
+    },
+    "Glide": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{if event.status = \"started\":\r\n   {Pause(1500)}\r\n   Glide \r\n   {Occasionally(2, \"mode\")} \r\n   {OneOf(\"initiated\", \"engaged\")}\r\n|elif event.status = \"stopped\":\r\n   Glide completed.\r\n}",
+      "default": false,
+      "name": "Glide",
+      "description": "Triggered when your ship enters or exits glide"
     },
     "Heat damage": {
       "enabled": true,
