@@ -2,6 +2,11 @@
 
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
+### 3.0.2-b1
+  * EDDI.vap (for VoiceAttack users)
+    * Fixed a typo in the description of the `((EDDI: station variables))` command
+    * Fixed a missing `;` in the command `Please repeat that;What was that?;Could you say that again?;Say that again`
+
 ### 3.0.1-rc6
   * EDDN responder
     * Fixed symbol for Krait Mk II in shipyard data.
