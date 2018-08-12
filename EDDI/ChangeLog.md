@@ -2,6 +2,10 @@
 
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
+### 3.0.2-b1
+  * Status monitor
+    * `Status.hardpoints_deployed` is now locked to false while we are in supercruise.
+
 ### 3.0.1-rc6
   * EDDN responder
     * Fixed symbol for Krait Mk II in shipyard data.
