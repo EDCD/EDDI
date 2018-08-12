@@ -59,6 +59,7 @@ namespace EddiEdsmResponder
         public void Reload()
         {
             // Set up the star map service
+            starMapService = null;
             StarMapConfiguration starMapCredentials = StarMapConfiguration.FromFile();
             if (starMapCredentials != null && starMapCredentials.apiKey != null)
             {
@@ -78,7 +79,7 @@ namespace EddiEdsmResponder
                 }
                 if (ignoredEvents == null)
                 {
-                    ignoredEvents = starMapService.getIgnoredEvents();
+                    ignoredEvents = starMapService?.getIgnoredEvents();
                 }
             }
 
