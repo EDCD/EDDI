@@ -24,6 +24,7 @@ namespace EddiStatusMonitor
         private string Directory = GetSavedGamesDir();
         public static Status currentStatus { get; set; } = new Status();
         public static Status lastStatus { get; set; } = new Status();
+        private static bool gliding = false; 
 
         // Keep track of status
         private bool running;
@@ -340,6 +341,11 @@ namespace EddiStatusMonitor
                 {
                     EDDI.Instance.eventHandler(new ShipLightsEvent(thisStatus.timestamp, thisStatus.lights_on));
                 }
+                if (gliding && thisStatus.fsd_status == "cooldown")
+                {
+                    EDDI.Instance.eventHandler(new GlideEvent(currentStatus.timestamp, "stopped"));
+                    gliding = false;
+                }
             }
         }
 
@@ -365,6 +371,21 @@ namespace EddiStatusMonitor
 
         public void PreHandle(Event @event)
         {
+            // Some events can be derived from our status during a given event
+            if (@event is EnteredNormalSpaceEvent)
+            {
+                handleEnteredNormalSpaceEvent(@event);
+            }
+        }
+
+        private void handleEnteredNormalSpaceEvent(Event @event)
+        {
+            // We can derive a "Glide" event from the context in our status
+            if (currentStatus.near_surface && currentStatus.fsd_status == "masslock")
+            {
+                EDDI.Instance.eventHandler(new GlideEvent(currentStatus.timestamp, "started"));
+                gliding = true;
+            }
         }
 
         public void PostHandle(Event @event)
