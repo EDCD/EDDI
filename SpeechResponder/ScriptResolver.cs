@@ -730,7 +730,7 @@ namespace EddiSpeechResponder
 
             store["HaulageDetails"] = new NativeFunction((values) =>
             {
-                HaulageAmount result = null;
+                Haulage result = null;
                 result = ((CargoMonitor)EDDI.Instance.ObtainMonitor("Cargo monitor")).GetHaulageWithMissionId((long)values[0].AsNumber);
                 return (result == null ? new ReflectionValue(new object()) : new ReflectionValue(result));
             }, 1);

@@ -678,6 +678,7 @@ namespace EddiCargoMonitor
                         {
                             // Cargo instantiated by either 'Mission accepted' event, previous 'WingUpdate' or 'Collect' updates 
                             haulage = cargo.haulageData.FirstOrDefault(ha => ha.missionid == @event.missionid);
+                            haulage.amount = amountRemaining;
 
                             //Update commodity definition if intantiated by previous 'WingUpdate' update
                             if (cargo.commodityDef.edname == "Unknown")
@@ -868,7 +869,7 @@ namespace EddiCargoMonitor
                 Haulage haulage = cargo.haulageData.FirstOrDefault(ha => ha.missionid == @event.missionid);
                 if (haulage != null)
                 {
-                    int amount = Math.Min(haulageAmount.amount, @event.amount ?? 0);
+                    int amount = Math.Min(haulage.amount, @event.amount ?? 0);
                     string type = @event.name.Split('_').ElementAtOrDefault(1)
                         .ToLowerInvariant();
                     bool legal = @event.name.ToLowerInvariant().Contains("illegal") ? false : true;
@@ -904,11 +905,11 @@ namespace EddiCargoMonitor
                             {
                                 if (legal)
                                 {
-                                    cargo.haulage -= @event.amount ?? 0;
+                                    cargo.haulage -= amount;
                                 }
                                 else
                                 {
-                                    cargo.stolen -= @event.amount ?? 0;
+                                    cargo.stolen -= amount;
                                 }
                             }
                             break;
@@ -1239,13 +1240,26 @@ namespace EddiCargoMonitor
             return inventory.FirstOrDefault(c => c.edname.ToLowerInvariant() == edname);
         }
 
-        private Cargo GetCargoWithMissionId(long missionid)
+        public Cargo GetCargoWithMissionId(long missionid)
         {
             foreach (Cargo cargo in inventory.ToList())
             {
                 if (cargo.haulageData.FirstOrDefault(ha => ha.missionid == missionid) != null)
                 {
                     return cargo;
+                }
+            }
+            return null;
+        }
+
+        public Haulage GetHaulageWithMissionId(long missionid)
+        {
+            foreach (Cargo cargo in inventory.ToList())
+            {
+                Haulage haulage = cargo.haulageData.FirstOrDefault(ha => ha.missionid == missionid);
+                if (haulage != null)
+                {
+                    return haulage;
                 }
             }
             return null;
