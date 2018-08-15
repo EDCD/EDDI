@@ -28,13 +28,13 @@ namespace EddiEvents
         public string stationtype => stationDefinition.localizedName;
 
         // Admin
-        public long marketid { get; private set; }
+        public long marketId { get; private set; }
 
         public DockingCancelledEvent(DateTime timestamp, string station, string stationType, long marketId) : base(timestamp, NAME)
         {
             this.station = station;
             this.stationDefinition = StationModels.FromEDName(stationType);
-            this.marketid = marketId;
+            this.marketId = marketId;
         }
     }
 }

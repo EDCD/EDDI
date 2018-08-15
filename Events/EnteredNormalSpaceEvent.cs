@@ -30,10 +30,12 @@ namespace EddiEvents
 
         // Admin
         public long bodyId { get; private set; }
+        public long systemAddress { get; private set; }
 
-        public EnteredNormalSpaceEvent(DateTime timestamp, string system, string body, string bodytype) : base(timestamp, NAME)
+        public EnteredNormalSpaceEvent(DateTime timestamp, string system, long systemAddress, string body, string bodytype) : base(timestamp, NAME)
         {
             this.system = system;
+            this.systemAddress = systemAddress;
             this.bodytype = bodytype;
             this.body = body;
         }
