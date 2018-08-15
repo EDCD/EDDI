@@ -18,10 +18,7 @@ namespace UnitTests
             RollbarLocator.RollbarInstance.Config.Enabled = false;
         }
 
-        [TestMethod]
-        public void TestCommanderFromProfile()
-        {
-            string data = @"{
+        string data = @"{
   ""commander"": {
                 ""id"": 123456,
     ""name"": ""Testy"",
@@ -5508,6 +5505,10 @@ namespace UnitTests
   }
 }
 ";
+
+        [TestMethod]
+        public void TestCommanderFromProfile()
+        {
             Profile profile = CompanionAppService.ProfileFromJson(data);
 
             JObject json = JObject.Parse(data);
@@ -5588,6 +5589,13 @@ namespace UnitTests
             List<Ship> shipyard = FrontierApi.ShipyardFromJson(null, json);
 
             Assert.AreEqual(3, shipyard.Count);
+        }
+
+        [TestMethod]
+        public void TestMarketIDFromProfile()
+        {
+            Profile profile = CompanionAppService.ProfileFromJson(data);
+            Assert.AreEqual(3226643968, profile.LastStation.marketId);
         }
     }
 }
