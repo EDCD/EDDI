@@ -25,7 +25,7 @@ namespace UnitTests
             Assert.AreEqual("Merope", starSystem.name);
             Assert.IsNull(starSystem.allegiance);
             Assert.IsNull(starSystem.government);
-            Assert.IsNull(starSystem.primaryeconomy);
+            Assert.AreEqual("None", starSystem.primaryeconomy);
             Assert.AreEqual(null, starSystem.population);
 
             Assert.AreEqual((decimal)-78.59375, starSystem.x);

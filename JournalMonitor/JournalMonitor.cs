@@ -145,9 +145,10 @@ namespace EddiJournalMonitor
                         case "SupercruiseExit":
                             {
                                 string system = JsonParsing.getString(data, "StarSystem");
+                                long systemAddress = JsonParsing.getLong(data, "SystemAddress");
                                 string body = JsonParsing.getString(data, "Body");
                                 string bodyType = JsonParsing.getString(data, "BodyType");
-                                events.Add(new EnteredNormalSpaceEvent(timestamp, system, body, bodyType) { raw = line });
+                                events.Add(new EnteredNormalSpaceEvent(timestamp, system, systemAddress, body, bodyType) { raw = line });
                             }
                             handled = true;
                             break;
@@ -168,11 +169,12 @@ namespace EddiJournalMonitor
                                 string faction = getFaction(data, "SystemFaction");
                                 SystemState factionState = SystemState.FromEDName(JsonParsing.getString(data, "FactionState"));
                                 Economy economy = Economy.FromEDName(JsonParsing.getString(data, "SystemEconomy"));
+                                Economy economy2 = Economy.FromEDName(JsonParsing.getString(data, "SystemSecondEconomy"));
                                 Government government = Government.FromEDName(JsonParsing.getString(data, "SystemGovernment"));
                                 SecurityLevel security = SecurityLevel.FromEDName(JsonParsing.getString(data, "SystemSecurity"));
                                 long? population = JsonParsing.getOptionalLong(data, "Population");
 
-                                events.Add(new JumpedEvent(timestamp, systemName, systemAddress, x, y, z, distance, fuelUsed, fuelRemaining, allegiance, faction, factionState, economy, government, security, population) { raw = line });
+                                events.Add(new JumpedEvent(timestamp, systemName, systemAddress, x, y, z, distance, fuelUsed, fuelRemaining, allegiance, faction, factionState, economy, economy2, government, security, population) { raw = line });
                             }
                             handled = true;
                             break;
@@ -1688,8 +1690,8 @@ namespace EddiJournalMonitor
                                 {
                                     Logging.Error("Failed to map marketbuy type " + commodityName + " to commodity");
                                 }
-                                int amount = JsonParsing.getInt("Count", data);
-                                int price = JsonParsing.getInt("BuyPrice", data);
+                                int amount = JsonParsing.getInt(data, "Count");
+                                int price = JsonParsing.getInt(data, "BuyPrice");
                                 events.Add(new CommodityPurchasedEvent(timestamp, marketId, commodity, amount, price) { raw = line });
                                 handled = true;
                                 break;
@@ -1703,8 +1705,8 @@ namespace EddiJournalMonitor
                                 {
                                     Logging.Error("Failed to map marketsell type " + commodityName + " to commodity");
                                 }
-                                int amount = JsonParsing.getInt("Count", data);
-                                int sellPrice = JsonParsing.getInt("SellPrice", data);
+                                int amount = JsonParsing.getInt(data, "Count");
+                                int sellPrice = JsonParsing.getInt(data, "SellPrice");
 
                                 long buyPrice = JsonParsing.getLong(data, "AvgPricePaid");
                                 // We don't care about buy price, we care about profit per unit
