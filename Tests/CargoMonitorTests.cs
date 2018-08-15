@@ -328,7 +328,7 @@ namespace UnitTests
             Assert.AreEqual(0, cargo.need + cargo.stolen + cargo.haulage);
 
             // CargoSearchAndRescueEvent
-            line = @"{ ""timestamp"":""2017-08-26T01:58:24Z"", ""event"":""SearchAndRescue"", ""Name"":""damagedescapepod"", ""Count"":2, ""Reward"":5310 }";
+            line = @"{ ""timestamp"":""2017-08-26T01:58:24Z"", ""event"":""SearchAndRescue"", ""Name"":""damagedescapepod"", ""Count"":2, ""Reward"":5310, ""MarketID"":128666762 }";
             events = JournalMonitor.ParseJournalEntry(line);
             cargoMonitor._handleSearchAndRescueEvent((SearchAndRescueEvent)events[0]);
 

@@ -29,7 +29,6 @@ namespace EddiEvents
         public string body{ get; private set; }
 
         // Admin
-        public long bodyId { get; private set; }
         public long systemAddress { get; private set; }
 
         public EnteredNormalSpaceEvent(DateTime timestamp, string system, long systemAddress, string body, string bodytype) : base(timestamp, NAME)

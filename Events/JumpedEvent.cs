@@ -24,6 +24,7 @@ namespace EddiEvents
             VARIABLES.Add("faction", "The faction controlling the system to which the commander has jumped");
             VARIABLES.Add("factionstate", "The state of the faction controlling the system to which the commander has jumped");
             VARIABLES.Add("economy", "The economy of the system to which the commander has jumped");
+            VARIABLES.Add("economy2", "The secondary economy of the system to which the commander has jumped, if any");
             VARIABLES.Add("government", "The government of the system to which the commander has jumped");
             VARIABLES.Add("security", "The security of the system to which the commander has jumped");
             VARIABLES.Add("population", "The population of the system to which the commander has jumped");
@@ -51,6 +52,8 @@ namespace EddiEvents
 
         public string economy { get; private set; }
 
+        public string economy2 { get; private set; }
+
         public string government { get; private set; }
 
         public string security { get; private set; }
@@ -60,7 +63,7 @@ namespace EddiEvents
         // Admin
         public long systemAddress { get; private set; }
 
-        public JumpedEvent(DateTime timestamp, string system, long systemAddress, decimal x, decimal y, decimal z, decimal distance, decimal fuelused, decimal fuelremaining, Superpower allegiance, string faction, SystemState factionstate, Economy economy, Government government, SecurityLevel security, long? population) : base(timestamp, NAME)
+        public JumpedEvent(DateTime timestamp, string system, long systemAddress, decimal x, decimal y, decimal z, decimal distance, decimal fuelused, decimal fuelremaining, Superpower allegiance, string faction, SystemState factionstate, Economy economy, Economy economy2, Government government, SecurityLevel security, long? population) : base(timestamp, NAME)
         {
             this.system = system;
             this.systemAddress = systemAddress;
@@ -74,6 +77,7 @@ namespace EddiEvents
             this.faction = faction;
             this.factionstate = (factionstate ?? SystemState.None).localizedName;
             this.economy = (economy ?? Economy.None).localizedName;
+            this.economy2 = (economy2 ?? Economy.None).localizedName;
             this.government = (government ?? Government.None).localizedName;
             this.security = (security ?? SecurityLevel.None).localizedName;
             this.population = population;

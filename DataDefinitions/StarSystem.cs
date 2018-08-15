@@ -16,7 +16,8 @@ namespace EddiDataDefinitions
         public string allegiance { get; set; }
         public string government { get; set; }
         public string faction { get; set; }
-        public string primaryeconomy { get; set; }
+        public string primaryeconomy => (economies[0] ?? Economy.None).localizedName;
+        public List<Economy> economies { get; set; } = new List<Economy>() { null, null };
         public SystemState systemState { get; set; } = SystemState.None;
         public string security { get; set; }
         public string power { get; set; }
