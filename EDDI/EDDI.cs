@@ -782,10 +782,14 @@ namespace Eddi
             CurrentStarSystem.z = theEvent.z;
             setSystemDistanceFromHome(CurrentStarSystem);
 
-            // Update the system population from the journal
+            // Update the mutable system data from the journal
             if (theEvent.population != null)
             {
+                CurrentStarSystem.allegiance = theEvent.allegiance;
+                CurrentStarSystem.government = theEvent.government;
                 CurrentStarSystem.population = theEvent.population;
+                CurrentStarSystem.economies[0] = Economy.FromEDName(theEvent.economy);
+                CurrentStarSystem.economies[1] = Economy.FromEDName(theEvent.economy2);
             }
 
             if (theEvent.docked == true || theEvent.bodytype.ToLowerInvariant() == "station")
