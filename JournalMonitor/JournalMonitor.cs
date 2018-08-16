@@ -204,6 +204,7 @@ namespace EddiJournalMonitor
                                 Superpower allegiance = getAllegiance(data, "SystemAllegiance");
                                 string faction = getFaction(data, "SystemFaction");
                                 Economy economy = Economy.FromEDName(JsonParsing.getString(data, "SystemEconomy"));
+                                Economy economy2 = Economy.FromEDName(JsonParsing.getString(data, "SystemSecondEconomy"));
                                 Government government = Government.FromEDName(JsonParsing.getString(data, "SystemGovernment"));
                                 SecurityLevel security = SecurityLevel.FromEDName(JsonParsing.getString(data, "SystemSecurity"));
                                 long? population = JsonParsing.getOptionalLong(data, "Population");
@@ -217,7 +218,7 @@ namespace EddiJournalMonitor
                                 decimal? latitude = JsonParsing.getOptionalDecimal(data, "Latitude");
                                 decimal? longitude = JsonParsing.getOptionalDecimal(data, "Longitude");
 
-                                events.Add(new LocationEvent(timestamp, systemName, x, y, z, systemAddress, body, bodyType, docked, station, stationtype, marketId, allegiance, faction, economy, government, security, population, longitude, latitude) { raw = line });
+                                events.Add(new LocationEvent(timestamp, systemName, x, y, z, systemAddress, body, bodyType, docked, station, stationtype, marketId, allegiance, faction, economy, economy2, government, security, population, longitude, latitude) { raw = line });
                             }
                             handled = true;
                             break;

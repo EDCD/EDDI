@@ -506,5 +506,138 @@ namespace UnitTests
             Assert.AreEqual("EXO", jumpedEvent.faction);
             Assert.AreEqual("Expansion", jumpedEvent.factionstate);
         }
+
+        [TestMethod]
+        public void TestJournalLocationEvent()
+        {
+            string line = @"{
+	""timestamp"": ""2018-08-12T02: 52: 13Z"",
+	""event"": ""Location"",
+	""Docked"": true,
+	""MarketID"": 3223343616,
+	""StationName"": ""RayGateway"",
+	""StationType"": ""Coriolis"",
+	""StarSystem"": ""Diaguandri"",
+	""SystemAddress"": 670417429889,
+	""StarPos"": [-41.06250,
+	-62.15625,
+	-103.25000],
+	""SystemAllegiance"": ""Independent"",
+	""SystemEconomy"": ""$economy_HighTech;"",
+	""SystemEconomy_Localised"": ""HighTech"",
+	""SystemSecondEconomy"": ""$economy_Refinery;"",
+	""SystemSecondEconomy_Localised"": ""Refinery"",
+	""SystemGovernment"": ""$government_Democracy;"",
+	""SystemGovernment_Localised"": ""Democracy"",
+	""SystemSecurity"": ""$SYSTEM_SECURITY_medium;"",
+	""SystemSecurity_Localised"": ""MediumSecurity"",
+	""Population"": 10303479,
+	""Body"": ""RayGateway"",
+	""BodyID"": 32,
+	""BodyType"": ""Station"",
+	""Factions"": [{
+		""Name"": ""DiaguandriInterstellar"",
+		""FactionState"": ""None"",
+		""Government"": ""Corporate"",
+		""Influence"": 0.090000,
+		""Allegiance"": ""Independent"",
+		""RecoveringStates"": [{
+			""State"": ""Boom"",
+			""Trend"": 0
+		}]
+	},
+	{
+		""Name"": ""People'sMET20Liberals"",
+		""FactionState"": ""Boom"",
+		""Government"": ""Democracy"",
+		""Influence"": 0.206000,
+		""Allegiance"": ""Federation""
+	},
+	{
+		""Name"": ""PilotsFederationLocalBranch"",
+		""FactionState"": ""None"",
+		""Government"": ""Democracy"",
+		""Influence"": 0.000000,
+		""Allegiance"": ""PilotsFederation""
+	},
+	{
+		""Name"": ""NaturalDiaguandriRegulatoryState"",
+		""FactionState"": ""Boom"",
+		""Government"": ""Dictatorship"",
+		""Influence"": 0.072000,
+		""Allegiance"": ""Independent""
+	},
+	{
+		""Name"": ""CartelofDiaguandri"",
+		""FactionState"": ""Bust"",
+		""Government"": ""Anarchy"",
+		""Influence"": 0.121000,
+		""Allegiance"": ""Independent"",
+		""PendingStates"": [{
+			""State"": ""Boom"",
+			""Trend"": 1
+		},
+		{
+			""State"": ""CivilUnrest"",
+			""Trend"": -1
+		}]
+	},
+	{
+		""Name"": ""RevolutionaryPartyofDiaguandri"",
+		""FactionState"": ""Boom"",
+		""Government"": ""Democracy"",
+		""Influence"": 0.181000,
+		""Allegiance"": ""Federation"",
+		""PendingStates"": [{
+			""State"": ""Bust"",
+			""Trend"": 0
+		}]
+	},
+	{
+		""Name"": ""TheBrotherhoodoftheDarkCircle"",
+		""FactionState"": ""Boom"",
+		""Government"": ""Corporate"",
+		""Influence"": 0.086000,
+		""Allegiance"": ""Independent""
+	},
+	{
+		""Name"": ""EXO"",
+		""FactionState"": ""None"",
+		""Government"": ""Democracy"",
+		""Influence"": 0.244000,
+		""Allegiance"": ""Independent"",
+		""PendingStates"": [{
+			""State"": ""Boom"",
+			""Trend"": 1
+		}]
+	}],
+	""SystemFaction"": ""EXO""
+}";
+
+            List<Event> events = JournalMonitor.ParseJournalEntry(line);
+            Assert.IsTrue(events.Count == 1);
+            LocationEvent @event = (LocationEvent)events[0];
+
+            Assert.AreEqual("Independent", @event.allegiance);
+            Assert.AreEqual("RayGateway", @event.body);
+            Assert.AreEqual("Station", @event.bodytype);
+            Assert.AreEqual(true, @event.docked);
+            Assert.AreEqual("High Tech", @event.economy);
+            Assert.AreEqual("Refinery", @event.economy2);
+            Assert.AreEqual("EXO", @event.faction);
+            Assert.AreEqual("Democracy", @event.government);
+            Assert.IsNull(@event.latitude);
+            Assert.IsNull(@event.longitude);
+            Assert.AreEqual(3223343616, @event.marketId);
+            Assert.AreEqual(10303479, @event.population);
+            Assert.AreEqual("Medium", @event.security);
+            Assert.AreEqual("RayGateway", @event.station);
+            Assert.AreEqual("Coriolis", @event.stationtype);
+            Assert.AreEqual("Diaguandri", @event.system);
+            Assert.AreEqual(670417429889, @event.systemAddress);
+            Assert.AreEqual(-41.06250M, @event.x);
+            Assert.AreEqual(-62.15625M, @event.y);
+            Assert.AreEqual(-103.25000M, @event.z);
+        }
     }
 }

@@ -27,6 +27,7 @@ namespace EddiEvents
             VARIABLES.Add("faction", "The faction controlling the system in which the commander resides");
             VARIABLES.Add("factionstate", "The state of the faction controlling the system in which the commander resides");
             VARIABLES.Add("economy", "The economy of the system in which the commander resides");
+            VARIABLES.Add("economy2", "The secondary economy of the system in which the commander resides, if any");
             VARIABLES.Add("government", "The government of the system in which the commander resides");
             VARIABLES.Add("security", "The security of the system in which the commander resides");
             VARIABLES.Add("longitude", "The longitude of the commander (if on the ground)");
@@ -58,6 +59,8 @@ namespace EddiEvents
 
         public string economy { get; private set; }
 
+        public string economy2 { get; private set; }
+
         public string government { get; private set; }
 
         public string security { get; private set; }
@@ -72,7 +75,7 @@ namespace EddiEvents
         public long? systemAddress { get; private set; }
         public long? marketId { get; private set; }
 
-        public LocationEvent(DateTime timestamp, string system, decimal x, decimal y, decimal z, long systemAddress, string body, string bodytype, bool docked, string station, string stationtype, long? marketId, Superpower allegiance, string faction, Economy economy, Government government, SecurityLevel security, long? population, decimal? longitude, decimal? latitude) : base(timestamp, NAME)
+        public LocationEvent(DateTime timestamp, string system, decimal x, decimal y, decimal z, long systemAddress, string body, string bodytype, bool docked, string station, string stationtype, long? marketId, Superpower allegiance, string faction, Economy economy, Economy economy2, Government government, SecurityLevel security, long? population, decimal? longitude, decimal? latitude) : base(timestamp, NAME)
         {
             this.system = system;
             this.x = x;
@@ -88,6 +91,7 @@ namespace EddiEvents
             this.allegiance = (allegiance ?? Superpower.None).localizedName;
             this.faction = faction;
             this.economy = (economy ?? Economy.None).localizedName;
+            this.economy2 = (economy2 ?? Economy.None).localizedName;
             this.government = (government ?? Government.None).localizedName;
             this.security = (security ?? SecurityLevel.None).localizedName;
             this.population = population;
