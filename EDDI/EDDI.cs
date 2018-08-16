@@ -774,16 +774,22 @@ namespace Eddi
         private bool eventLocation(LocationEvent theEvent)
         {
             updateCurrentSystem(theEvent.system);
+            // Our data source may not include the system address
+            CurrentStarSystem.systemAddress = theEvent.systemAddress;
             // Always update the current system with the current co-ordinates, just in case things have changed
             CurrentStarSystem.x = theEvent.x;
             CurrentStarSystem.y = theEvent.y;
             CurrentStarSystem.z = theEvent.z;
             setSystemDistanceFromHome(CurrentStarSystem);
 
-            // Update the system population from the journal
+            // Update the mutable system data from the journal
             if (theEvent.population != null)
             {
+                CurrentStarSystem.allegiance = theEvent.allegiance;
+                CurrentStarSystem.government = theEvent.government;
                 CurrentStarSystem.population = theEvent.population;
+                CurrentStarSystem.economies[0] = Economy.FromEDName(theEvent.economy);
+                CurrentStarSystem.economies[1] = Economy.FromEDName(theEvent.economy2);
             }
 
             if (theEvent.docked == true || theEvent.bodytype.ToLowerInvariant() == "station")
@@ -805,13 +811,17 @@ namespace Eddi
                 Station station = CurrentStarSystem.stations.Find(s => s.name == theEvent.station);
                 if (station == null)
                 {
-                    // This station is unknown to us, might not be in EDDB or we might not have connectivity.  Use a placeholder
+                    // This station is unknown to us, might not be in our data source or we might not have connectivity.  Use a placeholder
                     station = new Station();
                     station.name = theEvent.station;
                     station.systemname = theEvent.system;
                 }
 
-                // Information from the event might be more current than that from EDDB so use it in preference
+                // Our data source may not include the market id or system address
+                station.marketId = theEvent.marketId;
+                station.systemAddress = theEvent.systemAddress;
+
+                // Information from the event might be more current than that from our data source so use it in preference
                 station.faction = theEvent.faction;
                 station.government = theEvent.government;
                 station.allegiance = theEvent.allegiance;
@@ -848,10 +858,11 @@ namespace Eddi
                 Body body = CurrentStarSystem.bodies.Find(s => s.name == theEvent.body);
                 if (body == null)
                 {
-                    // This body is unknown to us, might not be in EDDB or we might not have connectivity.  Use a placeholder 
+                    // This body is unknown to us, might not be in our data source or we might not have connectivity.  Use a placeholder 
                     body = new Body();
                     body.name = theEvent.body;
                     body.systemname = theEvent.system;
+                    body.systemAddress = theEvent.systemAddress;
                 }
 
                 CurrentStellarBody = body;
@@ -885,13 +896,17 @@ namespace Eddi
             Station station = CurrentStarSystem.stations.Find(s => s.name == theEvent.station);
             if (station == null)
             {
-                // This station is unknown to us, might not be in EDDB or we might not have connectivity.  Use a placeholder
+                // This station is unknown to us, might not be in our data source or we might not have connectivity.  Use a placeholder
                 station = new Station();
                 station.name = theEvent.station;
                 station.systemname = theEvent.system;
             }
 
-            // Information from the event might be more current than that from EDDB so use it in preference
+            // Not all stations in our database will have a system address or market id, so we set them here
+            station.systemAddress = theEvent.systemAddress;
+            station.marketId = theEvent.marketId;
+            
+            // Information from the event might be more current than our data source so use it in preference
             station.state = theEvent.factionstate;
             station.faction = theEvent.faction;
             station.government = theEvent.government;
@@ -1038,13 +1053,15 @@ namespace Eddi
                 passEvent = true;
                 updateCurrentSystem(theEvent.system);
                 // The information in the event is more up-to-date than the information we obtain from external sources, so update it here
+                CurrentStarSystem.systemAddress = theEvent.systemAddress;
                 CurrentStarSystem.x = theEvent.x;
                 CurrentStarSystem.y = theEvent.y;
                 CurrentStarSystem.z = theEvent.z;
                 setSystemDistanceFromHome(CurrentStarSystem);
                 CurrentStarSystem.allegiance = theEvent.allegiance;
                 CurrentStarSystem.faction = theEvent.faction;
-                CurrentStarSystem.primaryeconomy = theEvent.economy;
+                CurrentStarSystem.economies[0] = Economy.FromEDName(theEvent.economy);
+                CurrentStarSystem.economies[1] = Economy.FromEDName(theEvent.economy2);
                 CurrentStarSystem.government = theEvent.government;
                 CurrentStarSystem.security = theEvent.security;
                 CurrentStarSystem.updatedat = (long)theEvent.timestamp.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
@@ -1071,9 +1088,11 @@ namespace Eddi
                 // plugin triggers
 
                 // The information in the event is more up-to-date than the information we obtain from external sources, so update it here
+                CurrentStarSystem.systemAddress = theEvent.systemAddress;
                 CurrentStarSystem.allegiance = theEvent.allegiance;
                 CurrentStarSystem.faction = theEvent.faction;
-                CurrentStarSystem.primaryeconomy = theEvent.economy;
+                CurrentStarSystem.economies[0] = Economy.FromEDName(theEvent.economy);
+                CurrentStarSystem.economies[1] = Economy.FromEDName(theEvent.economy2);
                 CurrentStarSystem.government = theEvent.government;
                 CurrentStarSystem.security = theEvent.security;
                 CurrentStarSystem.updatedat = (long)theEvent.timestamp.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
@@ -1086,13 +1105,15 @@ namespace Eddi
                 updateCurrentSystem(theEvent.system);
 
                 // The information in the event is more up-to-date than the information we obtain from external sources, so update it here
+                CurrentStarSystem.systemAddress = theEvent.systemAddress;
                 CurrentStarSystem.x = theEvent.x;
                 CurrentStarSystem.y = theEvent.y;
                 CurrentStarSystem.z = theEvent.z;
                 setSystemDistanceFromHome(CurrentStarSystem);
                 CurrentStarSystem.allegiance = theEvent.allegiance;
                 CurrentStarSystem.faction = theEvent.faction;
-                CurrentStarSystem.primaryeconomy = theEvent.economy;
+                CurrentStarSystem.economies[0] = Economy.FromEDName(theEvent.economy);
+                CurrentStarSystem.economies[1] = Economy.FromEDName(theEvent.economy2);
                 CurrentStarSystem.government = theEvent.government;
                 CurrentStarSystem.security = theEvent.security;
 
@@ -1329,11 +1350,13 @@ namespace Eddi
                 Body body = CurrentStarSystem?.bodies?.Find(s => s.name == theEvent.body);
                 if (body == null)
                 {
-                    // This body is unknown to us, might not be in EDDB or we might not have connectivity.  Use a placeholder 
+                    // This body is unknown to us, might not be in our data source or we might not have connectivity.  Use a placeholder 
                     body = new Body();
                     body.name = theEvent.body;
                     body.systemname = theEvent.system;
                 }
+                // System address may not be included in our data source, so we add it here. 
+                body.systemAddress = theEvent.systemAddress;
                 CurrentStellarBody = body;
             }
             else
@@ -1360,6 +1383,7 @@ namespace Eddi
                     belt.type = "Star";
                     belt.name = theEvent.name;
                     belt.systemname = CurrentStarSystem?.name;
+                    belt.systemAddress = CurrentStarSystem?.systemAddress;
                     CurrentStarSystem.bodies?.Add(belt);
                 }
 
@@ -1391,6 +1415,8 @@ namespace Eddi
                     star.systemname = CurrentStarSystem?.name;
                     CurrentStarSystem.bodies?.Add(star);
                 }
+                // Our data source may not include system address, so we include it here.
+                star.systemAddress = CurrentStarSystem?.systemAddress;
 
                 // Update with the information we have
                 star.age = theEvent.age;
@@ -1429,6 +1455,8 @@ namespace Eddi
                     body.systemname = CurrentStarSystem.name;
                     CurrentStarSystem.bodies.Add(body);
                 }
+                // Our data source may not include system address, so we include it here.
+                body.systemAddress = CurrentStarSystem?.systemAddress;
 
                 // Update with the information we have
                 body.distance = (long?)theEvent.distancefromarrival;

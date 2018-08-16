@@ -20,9 +20,12 @@ namespace EDDNResponder
     {
         // We keep track of the starsystem information locally
         public string systemName { get; private set; } = null;
+        public long? systemAddress { get; private set; } = null;
         public decimal? systemX { get; private set; } = null;
         public decimal? systemY { get; private set; } = null;
         public decimal? systemZ { get; private set; } = null;
+        public string stationName { get; private set; } = null;
+        public long? marketId { get; private set; } = null;
 
         private StarSystemRepository starSystemRepository;
 
@@ -112,17 +115,23 @@ namespace EDDNResponder
         private void handleLocationEvent(LocationEvent @event)
         {
             systemName = @event.system;
+            systemAddress = @event.systemAddress;
             systemX = @event.x;
             systemY = @event.y;
             systemZ = @event.z;
+            stationName = @event.station;
+            marketId = @event.marketId;
         }
 
         private void handleJumpedEvent(JumpedEvent @event)
         {
             systemName = @event.system;
+            systemAddress = @event.systemAddress;
             systemX = @event.x;
             systemY = @event.y;
             systemZ = @event.z;
+            stationName = null;
+            marketId = null;
         }
 
         private void handleRawEvent(Event theEvent)
@@ -143,7 +152,7 @@ namespace EDDNResponder
             // Need to add StarSystem to scan events - can only do so if we have the data
             if (theEvent is BeltScannedEvent || theEvent is StarScannedEvent || theEvent is BodyScannedEvent)
             {
-                if (systemName == null || systemX == null || systemY == null || systemZ == null)
+                if (systemName == null || systemAddress == null || systemX == null || systemY == null || systemZ == null)
                 {
                     Logging.Debug("Missing current starsystem information, cannot send message to EDDN");
                     return;
@@ -154,7 +163,7 @@ namespace EDDNResponder
             // Need to add StarPos to all events that don't already have them
             if (!data.ContainsKey("StarPos"))
             {
-                if (systemName == null || systemX == null || systemY == null || systemZ == null)
+                if (systemName == null || systemAddress == null || systemX == null || systemY == null || systemZ == null)
                 {
                     Logging.Debug("Missing current starsystem information, cannot send message to EDDN");
                     return;
@@ -181,13 +190,15 @@ namespace EDDNResponder
             };
 
             sendMessage(body);
-
         }
 
         private void handleDockedEvent(DockedEvent theEvent)
         {
-            if (eventSystemNameMatches(theEvent.system))
+            if (eventSystemMatches(theEvent.system, theEvent.systemAddress))
             {
+                stationName = theEvent.station;
+                marketId = theEvent.marketId;
+
                 // When we dock we have access to commodity and outfitting information
                 sendCommodityInformation();
                 sendOutfittingInformation();
@@ -217,14 +228,15 @@ namespace EDDNResponder
                     {
                         { "timestamp", DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ") },
                         { "systemName", systemName },
-                        { "stationName", EDDI.Instance.CurrentStation.name }
+                        { "stationName", stationName },
+                        { "marketId", marketId }
                     };
                     if (eddnEconomies.Count > 0)
                     {
                         data.Add("economies", eddnEconomies);
                     }
                     data.Add("commodities", eddnCommodities);
-                    if (EDDI.Instance.CurrentStation.prohibited?.Count > 0)
+                    if (EDDI.Instance.CurrentStation.prohibited?.Count > 0 && EDDI.Instance.CurrentStation.name == stationName)
                     {
                         data.Add("prohibited", EDDI.Instance.CurrentStation.prohibited);
                     }
@@ -314,8 +326,9 @@ namespace EDDNResponder
                     IDictionary<string, object> data = new Dictionary<string, object>
                     {
                         { "timestamp", DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ") },
-                        { "systemName", EDDI.Instance.CurrentStation.systemname },
-                        { "stationName", EDDI.Instance.CurrentStation.name },
+                        { "systemName", systemName },
+                        { "stationName", stationName },
+                        { "marketId", marketId },
                         { "modules", eddnModules }
                     };
 
@@ -352,8 +365,9 @@ namespace EDDNResponder
                     IDictionary<string, object> data = new Dictionary<string, object>
                     {
                         { "timestamp", DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ") },
-                        { "systemName", EDDI.Instance.CurrentStation.systemname },
-                        { "stationName", EDDI.Instance.CurrentStation.name },
+                        { "systemName", systemName },
+                        { "stationName", stationName },
+                        { "marketId", marketId },
                         { "ships", eddnShips }
                     };
 
@@ -438,10 +452,10 @@ namespace EDDNResponder
             return null;
         }
 
-        public bool eventSystemNameMatches(string eventSystem)
+        public bool eventSystemMatches(string eventSystem, long? eventSystemAddress)
         {
-            // Check to make sure the eventSystem given matches the systemName we expected to see.
-            if (systemName == eventSystem)
+            // Check to make sure the eventSystem given matches the system we expected to see.
+            if (systemName == eventSystem && systemAddress == eventSystemAddress)
             {
                 return true;
             }
@@ -449,8 +463,9 @@ namespace EDDNResponder
             StarSystem system = starSystemRepository.GetStarSystem(eventSystem);
             if (system != null)
             {
-                // Provide a fallback data source for system coordinate metadata if the eventSystem does not match the systemName we expected
+                // Provide a fallback data source for system metadata if the eventSystem does not match the systemName we expected
                 systemName = system.name;
+                systemAddress = system.systemAddress;
                 systemX = system.x;
                 systemY = system.y;
                 systemZ = system.z;
@@ -458,11 +473,14 @@ namespace EDDNResponder
             }
             else
             {
-                // Set values to null if data isn't available. If any data is null, data shall not be sent to EDDN.
+                // Set values to null if data isn't available. If any system metadata is null, data shall not be sent to EDDN.
                 systemName = eventSystem;
+                systemAddress = null;
                 systemX = null;
                 systemY = null;
                 systemZ = null;
+                stationName = null;
+                marketId = null;
                 return false;
             }
         }

@@ -41,7 +41,10 @@ namespace EddiShipMonitor
         [JsonProperty("storedship")]
         public string storedship { get; private set; }
 
-        public ShipSwappedEvent(DateTime timestamp, string ship, int shipId, string soldship, int? soldshipid, string storedship, int? storedshipid) : base(timestamp, NAME)
+        // Admin
+        public long marketId { get; private set; }
+
+        public ShipSwappedEvent(DateTime timestamp, string ship, int shipId, string soldship, int? soldshipid, string storedship, int? storedshipid, long marketId) : base(timestamp, NAME)
         {
             this.ship = ShipDefinitions.FromEDModel(ship).model;
             this.shipid = shipId;
@@ -49,6 +52,7 @@ namespace EddiShipMonitor
             this.soldshipid = soldshipid;
             this.storedship = storedship;
             this.storedshipid = storedshipid;
+            this.marketId = marketId;
         }
     }
 }

@@ -50,9 +50,15 @@ namespace EddiEvents
 
         public List<string> stationservices { get; private set; }
 
-        public DockedEvent(DateTime timestamp, string system, string station, string state, string model, Superpower allegiance, string faction, SystemState factionstate, Economy economy, Government government, decimal? distancefromstar, List<string> stationservices) : base(timestamp, NAME)
+        // Admin
+        public long systemAddress { get; private set; }
+        public long marketId { get; private set; }
+
+        public DockedEvent(DateTime timestamp, string system, long systemAddress, long marketId, string station, string state, string model, Superpower allegiance, string faction, SystemState factionstate, Economy economy, Government government, decimal? distancefromstar, List<string> stationservices) : base(timestamp, NAME)
         {
             this.system = system;
+            this.systemAddress = systemAddress;
+            this.marketId = marketId;
             this.station = station;
             this.state = state;
             this.model = model;

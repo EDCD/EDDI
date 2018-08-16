@@ -29,11 +29,15 @@ namespace EddiEvents
         [JsonProperty("commodity")]
         public CommodityDefinition commodity { get; }
 
-        public SearchAndRescueEvent(DateTime timestamp, CommodityDefinition commodity, int? amount, long reward) : base(timestamp, NAME)
+        // Admin
+        public long marketId { get; private set; }
+
+        public SearchAndRescueEvent(DateTime timestamp, CommodityDefinition commodity, int? amount, long reward, long marketId) : base(timestamp, NAME)
         {
             this.amount = amount;
             this.reward = reward;
             this.commodity = commodity;
+            this.marketId = marketId;
         }
     }
 }

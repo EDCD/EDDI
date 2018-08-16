@@ -89,7 +89,8 @@ namespace EddiDataProviderService
                 StarSystem.allegiance = (string)json["allegiance"];
                 StarSystem.government = (string)json["government"];
                 StarSystem.faction = (string)json["faction"];
-                StarSystem.primaryeconomy = (string)json["primary_economy"];
+                StarSystem.economies[0] = Economy.FromEDName((string)json["primary_economy"]);
+                // At present, EDDP does not provide any information about secondary economies.
                 StarSystem.systemState = SystemState.FromEDName((string)json["state"]) ?? SystemState.None;
                 StarSystem.security = (string)json["security"];
                 StarSystem.power = (string)json["power"] == "None" ? null : (string)json["power"];

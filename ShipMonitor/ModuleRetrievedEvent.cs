@@ -45,7 +45,10 @@ namespace EddiShipMonitor
         [JsonProperty("swapoutmodule")]
         public Module swapoutmodule { get; private set; }
 
-        public ModuleRetrievedEvent(DateTime timestamp, string ship, int? shipid, string slot, Module module, long? cost, string engineermodifications, Module swapoutmodule) : base(timestamp, NAME)
+        // Admin
+        public long marketId { get; private set; }
+
+        public ModuleRetrievedEvent(DateTime timestamp, string ship, int? shipid, string slot, Module module, long? cost, string engineermodifications, Module swapoutmodule, long marketId) : base(timestamp, NAME)
         {
             this.ship = ShipDefinitions.FromEDModel(ship).model;
             this.shipid = shipid;
@@ -54,6 +57,7 @@ namespace EddiShipMonitor
             this.cost = cost;
             this.engineermodifications = engineermodifications;
             this.swapoutmodule = swapoutmodule;
+            this.marketId = marketId;
         }
     }
 }
