@@ -1541,7 +1541,9 @@ namespace Eddi
 
                             // We don't know if we are docked or not at this point.  Fill in the data if we can, and
                             // let later systems worry about removing it if it's decided that we aren't docked
-                            if (profile.LastStation != null && profile.LastStation.systemname == CurrentStarSystem.name && CurrentStarSystem.stations != null)
+                            if (profile.LastStation != null && profile.LastStation.systemname == CurrentStarSystem.name 
+                                && profile.LastStation.systemAddress == CurrentStarSystem.systemAddress 
+                                && CurrentStarSystem.stations != null)
                             {
                                 CurrentStation = CurrentStarSystem.stations.FirstOrDefault(s => s.name == profile.LastStation.name);
                                 if (CurrentStation != null)
