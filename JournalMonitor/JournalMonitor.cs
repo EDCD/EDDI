@@ -1084,7 +1084,6 @@ namespace EddiJournalMonitor
                             break;
                         case "ModuleSellRemote":
                             {
-                                long marketId = JsonParsing.getLong(data, "MarketID");
                                 data.TryGetValue("ShipID", out object val);
                                 int shipId = (int)(long)val;
                                 string ship = JsonParsing.getString(data, "Ship");
@@ -1099,7 +1098,7 @@ namespace EddiJournalMonitor
                                 data.TryGetValue("ServerId", out val);
                                 long serverId = (long)val;
 
-                                events.Add(new ModuleSoldFromStorageEvent(timestamp, ship, shipId, storageSlot, serverId, module, price, marketId) { raw = line });
+                                events.Add(new ModuleSoldFromStorageEvent(timestamp, ship, shipId, storageSlot, serverId, module, price) { raw = line });
                             }
                             handled = true;
                             break;

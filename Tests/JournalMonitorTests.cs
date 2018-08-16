@@ -639,5 +639,60 @@ namespace UnitTests
             Assert.AreEqual(-62.15625M, @event.y);
             Assert.AreEqual(-103.25000M, @event.z);
         }
+
+        [TestMethod]
+        public void TestNearSurfaceEvent()
+        {
+            string line = @"{ ""timestamp"":""2018-07-24T07:08:37Z"", ""event"":""ApproachBody"", ""StarSystem"":""Ageno"", ""SystemAddress"":18262335038849, ""Body"":""Ageno B 2 a"", ""BodyID"":17 }";
+            List<Event> events = JournalMonitor.ParseJournalEntry(line);
+            NearSurfaceEvent @event = (NearSurfaceEvent)events[0];
+
+            Assert.AreEqual("Ageno", @event.system);
+            Assert.AreEqual(18262335038849, @event.systemAddress);
+            Assert.AreEqual("Ageno B 2 a", @event.body);
+
+            string line2 = @"{ ""timestamp"":""2018 - 07 - 24T07: 08:58Z"", ""event"":""LeaveBody"", ""StarSystem"":""Ageno"", ""SystemAddress"":18262335038849, ""Body"":""Ageno B 2 a"", ""BodyID"":17 }";
+            events = JournalMonitor.ParseJournalEntry(line2);
+            NearSurfaceEvent @event2 = (NearSurfaceEvent)events[0];
+
+            Assert.AreEqual("Ageno", @event2.system);
+            Assert.AreEqual(18262335038849, @event2.systemAddress);
+            Assert.AreEqual("Ageno B 2 a", @event2.body);
+        }
+
+        [TestMethod]
+        public void TestSearchAndRescueEvent()
+        {
+            string line = @"{ ""timestamp"":""2018 - 06 - 17T05: 32:32Z"", ""event"":""SearchAndRescue"", ""MarketID"":3222633216, ""Name"":""occupiedcryopod"", ""Name_Localised"":""Occupied Escape Pod"", ""Count"":2, ""Reward"":48593 }";
+            List<Event> events = JournalMonitor.ParseJournalEntry(line);
+            SearchAndRescueEvent @event = (SearchAndRescueEvent)events[0];
+
+            Assert.AreEqual(3222633216, @event.marketId);
+            Assert.AreEqual("occupiedcryopod", @event.commodity.edname.ToLowerInvariant());
+            Assert.AreEqual(2, @event.amount);
+            Assert.AreEqual(48593, @event.reward);
+        }
+
+        [TestMethod]
+        public void TestSettlementApproachedEvent()
+        {
+            string line = @"{ ""timestamp"":""2018 - 08 - 12T08: 00:25Z"", ""event"":""ApproachSettlement"", ""Name"":""Bulmer Enterprise"", ""MarketID"":3510380288 }";
+            List<Event> events = JournalMonitor.ParseJournalEntry(line);
+            SettlementApproachedEvent @event = (SettlementApproachedEvent)events[0];
+
+            Assert.AreEqual(3510380288, @event.marketId);
+            Assert.AreEqual("Bulmer Enterprise", @event.name);
+        }
+
+        [TestMethod]
+        public void TestUndockedEvent()
+        {
+            string line = @"{ ""timestamp"":""2018 - 08 - 12T02: 53:41Z"", ""event"":""Undocked"", ""StationName"":""Ray Gateway"", ""StationType"":""Coriolis"", ""MarketID"":3223343616 }";
+            List<Event> events = JournalMonitor.ParseJournalEntry(line);
+            UndockedEvent @event = (UndockedEvent)events[0];
+
+            Assert.AreEqual(3223343616, @event.marketId);
+            Assert.AreEqual("Ray Gateway", @event.station);
+        }
     }
 }

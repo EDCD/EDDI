@@ -193,6 +193,52 @@ namespace UnitTests
             SendEvents(@"{ ""timestamp"":""2017-04-24T08:27:51Z"", ""event"":""ShipyardSell"", ""ShipType"":""Empire_Courier"", ""SellShipID"":902, ""ShipPrice"":2008281, ""MarketID"":128666762 }", shipMonitor);
         }
 
+        [TestMethod]
+        public void TestModulePurchasedEvent()
+        {
+            string line = @"{ ""timestamp"":""2018 - 07 - 24T05: 49:15Z"", ""event"":""ModuleBuy"", ""Slot"":""TinyHardpoint1"", ""BuyItem"":""$hpt_crimescanner_size0_class3_name;"", ""BuyItem_Localised"":""K-Warrant Scanner"", ""MarketID"":3223343616, ""BuyPrice"":101025, ""Ship"":""krait_mkii"", ""ShipID"":81 }";
+            List<Event> events = JournalMonitor.ParseJournalEntry(line);
+            ModulePurchasedEvent @event = (ModulePurchasedEvent)events[0];
+
+            Assert.AreEqual("crimescanner_size0_class3", @event.buymodule.EDName.ToLowerInvariant());
+            Assert.AreEqual(3223343616, @event.marketId);
+            Assert.AreEqual(101025, @event.buyprice);
+            Assert.IsNull(@event.sellmodule);
+            Assert.IsNull(@event.sellprice);
+            Assert.AreEqual("Krait Mk. II", @event.ship);
+            Assert.AreEqual(81, @event.shipid);
+        }
+
+        [TestMethod]
+        public void TestModuleRetrievedEvent()
+        {
+            string line = @"{ ""timestamp"":""2018 - 06 - 29T04: 45:21Z"", ""event"":""ModuleRetrieve"", ""MarketID"":3223343616, ""Slot"":""PowerPlant"", ""RetrievedItem"":""$int_powerplant_size6_class5_name;"", ""RetrievedItem_Localised"":""Power Plant"", ""Ship"":""krait_mkii"", ""ShipID"":81, ""Hot"":false, ""EngineerModifications"":""PowerPlant_Boosted"", ""Level"":4, ""Quality"":0.000000, ""SwapOutItem"":""$int_powerplant_size6_class5_name;"", ""SwapOutItem_Localised"":""Power Plant"" }";
+            List<Event> events = JournalMonitor.ParseJournalEntry(line);
+            ModuleRetrievedEvent @event = (ModuleRetrievedEvent)events[0];
+
+            Assert.AreEqual("int_powerplant_size6_class5", @event.module.edname.ToLowerInvariant());
+            Assert.AreEqual(3223343616, @event.marketId);
+            Assert.AreEqual("PowerPlant", @event.slot);
+            Assert.AreEqual("Krait Mk. II", @event.ship);
+            Assert.AreEqual(81, @event.shipid);
+            Assert.AreEqual("int_powerplant_size6_class5", @event.swapoutmodule.edname.ToLowerInvariant());
+        }
+
+        [TestMethod]
+        public void TestModuleSoldEvent()
+        {
+            string line = @"{ ""timestamp"":""2018 - 06 - 29T02: 37:33Z"", ""event"":""ModuleSell"", ""MarketID"":128132856, ""Slot"":""Slot04_Size5"", ""SellItem"":""$int_fighterbay_size5_class1_name;"", ""SellItem_Localised"":""Fighter Hangar"", ""SellPrice"":561252, ""Ship"":""krait_mkii"", ""ShipID"":81 }";
+            List<Event> events = JournalMonitor.ParseJournalEntry(line);
+            ModuleSoldEvent @event = (ModuleSoldEvent)events[0];
+
+            Assert.AreEqual("int_fighterbay_size5_class1", @event.module.edname.ToLowerInvariant());
+            Assert.AreEqual(561252, @event.price);
+            Assert.AreEqual(128132856, @event.marketId);
+            Assert.AreEqual("Slot04_Size5", @event.slot);
+            Assert.AreEqual("Krait Mk. II", @event.ship);
+            Assert.AreEqual(81, @event.shipid);
+        }
+
         private void SendEvents(string line, ShipMonitor monitor)
         {
             List<Event> events = JournalMonitor.ParseJournalEntry(line);
