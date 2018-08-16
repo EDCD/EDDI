@@ -200,7 +200,7 @@ namespace UnitTests
             List<Event> events = JournalMonitor.ParseJournalEntry(line);
             ModulePurchasedEvent @event = (ModulePurchasedEvent)events[0];
 
-            Assert.AreEqual("crimescanner_size0_class3", @event.buymodule.EDName.ToLowerInvariant());
+            Assert.AreEqual("hpt_crimescanner_size0_class3", @event.buymodule.EDName.ToLowerInvariant());
             Assert.AreEqual(3223343616, @event.marketId);
             Assert.AreEqual(101025, @event.buyprice);
             Assert.IsNull(@event.sellmodule);
