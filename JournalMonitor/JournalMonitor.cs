@@ -174,6 +174,8 @@ namespace EddiJournalMonitor
                                 SecurityLevel security = SecurityLevel.FromEDName(JsonParsing.getString(data, "SystemSecurity"));
                                 long? population = JsonParsing.getOptionalLong(data, "Population");
 
+                                // Placeholder for factions array data
+
                                 events.Add(new JumpedEvent(timestamp, systemName, systemAddress, x, y, z, distance, fuelUsed, fuelRemaining, allegiance, faction, factionState, economy, economy2, government, security, population) { raw = line });
                             }
                             handled = true;
