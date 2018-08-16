@@ -218,6 +218,8 @@ namespace EddiJournalMonitor
                                 decimal? latitude = JsonParsing.getOptionalDecimal(data, "Latitude");
                                 decimal? longitude = JsonParsing.getOptionalDecimal(data, "Longitude");
 
+                                // Placeholder for factions array data
+
                                 events.Add(new LocationEvent(timestamp, systemName, x, y, z, systemAddress, body, bodyType, docked, station, stationtype, marketId, allegiance, faction, economy, economy2, government, security, population, longitude, latitude) { raw = line });
                             }
                             handled = true;
