@@ -130,6 +130,8 @@ namespace EDDNResponder
             systemX = @event.x;
             systemY = @event.y;
             systemZ = @event.z;
+            stationName = null;
+            marketId = null;
         }
 
         private void handleRawEvent(Event theEvent)
@@ -150,7 +152,7 @@ namespace EDDNResponder
             // Need to add StarSystem to scan events - can only do so if we have the data
             if (theEvent is BeltScannedEvent || theEvent is StarScannedEvent || theEvent is BodyScannedEvent)
             {
-                if (systemName == null || systemX == null || systemY == null || systemZ == null)
+                if (systemName == null || systemAddress == null || systemX == null || systemY == null || systemZ == null)
                 {
                     Logging.Debug("Missing current starsystem information, cannot send message to EDDN");
                     return;
@@ -161,7 +163,7 @@ namespace EDDNResponder
             // Need to add StarPos to all events that don't already have them
             if (!data.ContainsKey("StarPos"))
             {
-                if (systemName == null || systemX == null || systemY == null || systemZ == null)
+                if (systemName == null || systemAddress == null || systemX == null || systemY == null || systemZ == null)
                 {
                     Logging.Debug("Missing current starsystem information, cannot send message to EDDN");
                     return;
@@ -192,7 +194,7 @@ namespace EDDNResponder
 
         private void handleDockedEvent(DockedEvent theEvent)
         {
-            if (eventSystemNameMatches(theEvent.system))
+            if (eventSystemMatches(theEvent.system, theEvent.systemAddress))
             {
                 stationName = theEvent.station;
                 marketId = theEvent.marketId;
@@ -450,10 +452,10 @@ namespace EDDNResponder
             return null;
         }
 
-        public bool eventSystemNameMatches(string eventSystem)
+        public bool eventSystemMatches(string eventSystem, long? eventSystemAddress)
         {
-            // Check to make sure the eventSystem given matches the systemName we expected to see.
-            if (systemName == eventSystem)
+            // Check to make sure the eventSystem given matches the system we expected to see.
+            if (systemName == eventSystem && systemAddress == eventSystemAddress)
             {
                 return true;
             }
@@ -471,7 +473,7 @@ namespace EDDNResponder
             }
             else
             {
-                // Set values to null if data isn't available. If any data is null, data shall not be sent to EDDN.
+                // Set values to null if data isn't available. If any system metadata is null, data shall not be sent to EDDN.
                 systemName = eventSystem;
                 systemAddress = null;
                 systemX = null;

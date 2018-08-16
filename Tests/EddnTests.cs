@@ -40,6 +40,7 @@ namespace UnitTests
                         {
                             StarSystem result = new StarSystem();
                             result.name = "Artemis";
+                            result.systemAddress = 3107509474002;
                             result.x = 14.28125M;
                             result.y = -63.1875M;
                             result.z = -24.875M;
@@ -75,11 +76,12 @@ namespace UnitTests
             EDDNResponder.EDDNResponder responder = makeTestEDDNResponder();
             var privateObject = new PrivateObject(responder);
             privateObject.SetFieldOrProperty("systemName", "Sol");
+            privateObject.SetFieldOrProperty("systemAddress", 10477373803);
             privateObject.SetFieldOrProperty("systemX", 0.0M);
             privateObject.SetFieldOrProperty("systemY", 0.0M);
             privateObject.SetFieldOrProperty("systemZ", 0.0M);
 
-            bool matched = responder.eventSystemNameMatches("Sol");
+            bool matched = responder.eventSystemMatches("Sol", 10477373803);
 
             Assert.IsTrue(matched);
         }
@@ -91,14 +93,16 @@ namespace UnitTests
             var privateObject = new PrivateObject(responder);
             // Intentionally place our EDDN responder in a state with no coordinates available.
             privateObject.SetFieldOrProperty("systemName", "Not in this galaxy");
+            privateObject.SetFieldOrProperty("systemAddress", null);
             privateObject.SetFieldOrProperty("systemX", null);
             privateObject.SetFieldOrProperty("systemY", null);
             privateObject.SetFieldOrProperty("systemZ", null);
 
-            bool matched = responder.eventSystemNameMatches("Artemis");
+            bool matched = responder.eventSystemMatches("Artemis", 3107509474002);
 
             Assert.IsTrue(matched);
             Assert.AreEqual("Artemis", responder.systemName);
+            Assert.AreEqual(3107509474002, responder.systemAddress);
             Assert.AreEqual(14.28125M, (decimal)responder.systemX);
             Assert.AreEqual(-63.1875M, (decimal)responder.systemY);
             Assert.AreEqual(-24.875M, (decimal)responder.systemZ);
@@ -110,13 +114,15 @@ namespace UnitTests
             EDDNResponder.EDDNResponder responder = makeTestEDDNResponder();
             var privateObject = new PrivateObject(responder);
             privateObject.SetFieldOrProperty("systemName", "Sol");
+            privateObject.SetFieldOrProperty("systemAddress", 10477373803);
             privateObject.SetFieldOrProperty("systemX", 0.0M);
             privateObject.SetFieldOrProperty("systemY", 0.0M);
             privateObject.SetFieldOrProperty("systemZ", 0.0M);
 
-            bool matched = responder.eventSystemNameMatches("Not in this galaxy");
+            bool matched = responder.eventSystemMatches("Not in this galaxy", null);
 
             Assert.IsFalse(matched);
+            Assert.IsNull(responder.systemAddress);
             Assert.IsNull(responder.systemX);
             Assert.IsNull(responder.systemY);
             Assert.IsNull(responder.systemZ);
