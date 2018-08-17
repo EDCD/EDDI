@@ -18,7 +18,10 @@ namespace EddiDataDefinitions
         public string type => name.Split('_').ElementAtOrDefault(1)?.ToLowerInvariant();
 
         [JsonIgnore]
-        public bool legal => name.ToLowerInvariant().Contains("illegal") ? false : true;
+        public bool legal => !name.ToLowerInvariant().Contains("illegal");
+
+        [JsonIgnore]
+        public bool wing => name.ToLowerInvariant().Contains("wing");
 
         public int amount { get; set; }
 
