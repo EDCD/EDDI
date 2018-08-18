@@ -489,9 +489,12 @@ namespace EDDNResponder
         public bool eventStationMatches(long? eventMarketId)
         {
             Profile profile = CompanionAppService.Instance.Profile();
-            if (profile?.LastStation?.marketId == eventMarketId && (bool?)profile?.json["commander"]["docked"] == true)
+            if (profile != null)
             {
-                return true;
+                if (profile.LastStation?.marketId == eventMarketId && (bool?)profile.json["commander"]["docked"] == true)
+                {
+                    return true;
+                }
             }
             return false;
         }
