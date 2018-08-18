@@ -61,6 +61,16 @@ namespace UnitTests
 
                             return result;
                         }
+                    case "Sol":
+                        {
+                            StarSystem result = new StarSystem();
+                            result.name = "Sol";
+                            result.systemAddress = 10477373803;
+                            result.x = 0.0M;
+                            result.y = 0.0M;
+                            result.z = 0.0M;
+                            return result;
+                        }
 
                     default:
                         break;
@@ -138,7 +148,6 @@ namespace UnitTests
             bool matched = responder.eventGetCoordinates("Not in this galaxy", null);
 
             Assert.IsFalse(matched);
-            Assert.IsNull(responder.systemAddress);
             Assert.IsNull(responder.systemX);
             Assert.IsNull(responder.systemY);
             Assert.IsNull(responder.systemZ);
