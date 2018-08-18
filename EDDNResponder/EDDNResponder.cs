@@ -1,4 +1,5 @@
 ﻿using Eddi;
+using EddiCompanionAppService;
 using EddiDataDefinitions;
 using EddiDataProviderService;
 using EddiEvents;
@@ -114,6 +115,7 @@ namespace EDDNResponder
 
         private void handleLocationEvent(LocationEvent @event)
         {
+            // Set all of the information available from the event
             systemName = @event.system;
             systemAddress = @event.systemAddress;
             systemX = @event.x;
@@ -125,6 +127,7 @@ namespace EDDNResponder
 
         private void handleJumpedEvent(JumpedEvent @event)
         {
+            // Set all of the information available from the event
             systemName = @event.system;
             systemAddress = @event.systemAddress;
             systemX = @event.x;
@@ -194,11 +197,14 @@ namespace EDDNResponder
 
         private void handleDockedEvent(DockedEvent theEvent)
         {
-            if (eventSystemMatches(theEvent.system, theEvent.systemAddress))
-            {
-                stationName = theEvent.station;
-                marketId = theEvent.marketId;
+            // Set all of the information available from the event
+            systemName = theEvent.system;
+            systemAddress = theEvent.systemAddress;
+            stationName = theEvent.station;
+            marketId = theEvent.marketId;
 
+            if (eventGetCoordinates(theEvent.system, theEvent.systemAddress))
+            {
                 // When we dock we have access to commodity and outfitting information
                 sendCommodityInformation();
                 sendOutfittingInformation();
@@ -208,10 +214,15 @@ namespace EDDNResponder
 
         private void handleMarketInformationUpdatedEvent(MarketInformationUpdatedEvent theEvent)
         {
-            // When we dock we have access to commodity and outfitting information
-            sendCommodityInformation();
-            sendOutfittingInformation();
-            sendShipyardInformation();
+            // This event is triggered by an update to the profile via the Frontier API
+            // Check to make sure the marketId from the acquired profile matches our current station's marketId before continuing
+            if (eventStationMatches(marketId))
+            {
+                // When we dock we have access to commodity and outfitting information
+                sendCommodityInformation();
+                sendOutfittingInformation();
+                sendShipyardInformation();
+            }
         }
 
         private void sendCommodityInformation()
@@ -452,37 +463,37 @@ namespace EDDNResponder
             return null;
         }
 
-        public bool eventSystemMatches(string eventSystem, long? eventSystemAddress)
+        public bool eventGetCoordinates(string eventSystem, long? eventSystemAddress = null)
         {
-            // Check to make sure the eventSystem given matches the system we expected to see.
-            if (systemName == eventSystem && systemAddress == eventSystemAddress)
-            {
-                return true;
-            }
-
             StarSystem system = starSystemRepository.GetStarSystem(eventSystem);
             if (system != null)
             {
-                // Provide a fallback data source for system metadata if the eventSystem does not match the systemName we expected
-                systemName = system.name;
-                systemAddress = system.systemAddress;
-                systemX = system.x;
-                systemY = system.y;
-                systemZ = system.z;
+                if ((eventSystemAddress != null && system.systemAddress != null) ? eventSystemAddress == system.systemAddress : true)
+                {
+                    // The `Docked` event doesn't provide system coordinates, so we use coordinates from our saved star systems
+                    // If the saved star system has a system address, we use that to confirm our lookup
+                    systemX = system.x;
+                    systemY = system.y;
+                    systemZ = system.z;
+                    return true;
+                }
+            }
+
+            // Set values to null if data isn't available. If system coordinates are null, data shall not be sent to EDDN.
+            systemX = null;
+            systemY = null;
+            systemZ = null;
+            return false;
+        }
+
+        public bool eventStationMatches(long? eventMarketId)
+        {
+            Profile profile = CompanionAppService.Instance.Profile();
+            if (profile?.LastStation?.marketId == eventMarketId && (bool?)profile?.json["commander"]["docked"] == true)
+            {
                 return true;
             }
-            else
-            {
-                // Set values to null if data isn't available. If any system metadata is null, data shall not be sent to EDDN.
-                systemName = eventSystem;
-                systemAddress = null;
-                systemX = null;
-                systemY = null;
-                systemZ = null;
-                stationName = null;
-                marketId = null;
-                return false;
-            }
+            return false;
         }
     }
 }

@@ -1,12 +1,11 @@
 ﻿using EddiDataDefinitions;
 using EddiDataProviderService;
+using EddiEvents;
+using EddiJournalMonitor;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NetMQ;
-using NetMQ.Sockets;
 using Rollbar;
 using System;
-using System.IO;
-using System.IO.Compression;
+using System.Collections.Generic;
 
 namespace UnitTests
 {
@@ -46,6 +45,22 @@ namespace UnitTests
                             result.z = -24.875M;
                             return result;
                         }
+                    case "Diaguandri":
+                        {
+                            StarSystem result = new StarSystem();
+                            result.name = "Diaguandri";
+                            result.systemAddress = 670417429889;
+                            result.x = -41.06250M;
+                            result.y = -62.15625M;
+                            result.z = -103.25000M;
+
+                            Station station = new Station();
+                            station.name = "Ray Gateway";
+                            station.marketId = 3223343616;
+                            result.stations.Add(station);
+
+                            return result;
+                        }
 
                     default:
                         break;
@@ -81,7 +96,7 @@ namespace UnitTests
             privateObject.SetFieldOrProperty("systemY", 0.0M);
             privateObject.SetFieldOrProperty("systemZ", 0.0M);
 
-            bool matched = responder.eventSystemMatches("Sol", 10477373803);
+            bool matched = responder.eventGetCoordinates("Sol", 10477373803);
 
             Assert.IsTrue(matched);
         }
@@ -92,13 +107,14 @@ namespace UnitTests
             EDDNResponder.EDDNResponder responder = makeTestEDDNResponder();
             var privateObject = new PrivateObject(responder);
             // Intentionally place our EDDN responder in a state with no coordinates available.
-            privateObject.SetFieldOrProperty("systemName", "Not in this galaxy");
-            privateObject.SetFieldOrProperty("systemAddress", null);
+            // The 'Docked' event does include systemName and systemAddress, so we set those here.
+            privateObject.SetFieldOrProperty("systemName", "Artemis");
+            privateObject.SetFieldOrProperty("systemAddress", 3107509474002);
             privateObject.SetFieldOrProperty("systemX", null);
             privateObject.SetFieldOrProperty("systemY", null);
             privateObject.SetFieldOrProperty("systemZ", null);
 
-            bool matched = responder.eventSystemMatches("Artemis", 3107509474002);
+            bool matched = responder.eventGetCoordinates("Artemis", 3107509474002);
 
             Assert.IsTrue(matched);
             Assert.AreEqual("Artemis", responder.systemName);
@@ -119,13 +135,84 @@ namespace UnitTests
             privateObject.SetFieldOrProperty("systemY", 0.0M);
             privateObject.SetFieldOrProperty("systemZ", 0.0M);
 
-            bool matched = responder.eventSystemMatches("Not in this galaxy", null);
+            bool matched = responder.eventGetCoordinates("Not in this galaxy", null);
 
             Assert.IsFalse(matched);
             Assert.IsNull(responder.systemAddress);
             Assert.IsNull(responder.systemX);
             Assert.IsNull(responder.systemY);
             Assert.IsNull(responder.systemZ);
+        }
+
+        [TestMethod()]
+        public void TestEDDNResponderDockedEvent()
+        {
+            string line = @"{
+	""timestamp"": ""2018-07-30T06: 07: 47Z"",
+	""event"": ""Docked"",
+	""StationName"": ""Ray Gateway"",
+	""StationType"": ""Coriolis"",
+	""StarSystem"": ""Diaguandri"",
+	""SystemAddress"": 670417429889,
+	""MarketID"": 3223343616,
+	""StationFaction"": ""EXO"",
+	""FactionState"": ""Boom"",
+	""StationGovernment"": ""$government_Democracy;"",
+	""StationGovernment_Localised"": ""Democracy"",
+	""StationServices"": [""Dock"",
+	""Autodock"",
+	""BlackMarket"",
+	""Commodities"",
+	""Contacts"",
+	""Exploration"",
+	""Missions"",
+	""Outfitting"",
+	""CrewLounge"",
+	""Rearm"",
+	""Refuel"",
+	""Repair"",
+	""Shipyard"",
+	""Tuning"",
+	""Workshop"",
+	""MissionsGenerated"",
+	""FlightController"",
+	""StationOperations"",
+	""Powerplay"",
+	""SearchAndRescue"",
+	""MaterialTrader"",
+	""TechBroker""],
+	""StationEconomy"": ""$economy_HighTech;"",
+	""StationEconomy_Localised"": ""HighTech"",
+	""StationEconomies"": [{
+		""Name"": ""$economy_HighTech;"",
+		""Name_Localised"": ""HighTech"",
+		""Proportion"": 0.800000
+	},
+	{
+		""Name"": ""$economy_Refinery;"",
+		""Name_Localised"": ""Refinery"",
+		""Proportion"": 0.200000
+	}],
+	""DistFromStarLS"": 566.487976
+}";
+
+            List<Event> events = JournalMonitor.ParseJournalEntry(line);
+            Assert.IsTrue(events.Count == 1);
+            DockedEvent @event = (DockedEvent)events[0];
+
+            EDDNResponder.EDDNResponder responder = makeTestEDDNResponder();
+            responder.Handle(@event);
+
+            // Test that data available from the event is set correctly
+            Assert.AreEqual("Diaguandri", responder.systemName);
+            Assert.AreEqual(670417429889, responder.systemAddress);
+            Assert.AreEqual("Ray Gateway", responder.stationName);
+            Assert.AreEqual(3223343616, responder.marketId);
+
+            // Test metadata not in the event itself but retrieved from our local database
+            Assert.AreEqual(-41.06250M, responder.systemX);
+            Assert.AreEqual(-62.15625M, responder.systemY);
+            Assert.AreEqual(-103.25000M, responder.systemZ);
         }
     }
 }
