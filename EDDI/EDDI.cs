@@ -1886,7 +1886,7 @@ namespace Eddi
                 if (HomeStarSystem != null)
                 {
                     Logging.Debug("Home star system is " + HomeStarSystem.name);
-                    configuration.validSystem = HomeStarSystem.bodies.Count > 0;
+                    configuration.validSystem = HomeStarSystem.bodies.Count > 0 || HomeStarSystem.stations.Count > 0 || HomeStarSystem.population > 0;
                 }
             }
             return configuration;
