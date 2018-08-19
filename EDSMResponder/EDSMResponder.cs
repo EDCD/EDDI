@@ -116,7 +116,7 @@ namespace EddiEdsmResponder
             if (starMapService != null)
             {
                 /// Retrieve applicable transient game state info (metadata) 
-                /// for the event and the event with transient info to EDSM
+                /// for the event and send the event with transient info to EDSM
                 string eventData = prepareEventData(theEvent);
                 if (eventData == null)
                 {
@@ -182,7 +182,7 @@ namespace EddiEdsmResponder
                 case "Location":
                     {
                         LocationEvent locationEvent = (LocationEvent)theEvent;
-                        eventObject.Add("_systemAddress", null); // We don't collect this info yet
+                        eventObject.Add("_systemAddress", locationEvent.systemAddress);
                         eventObject.Add("_systemName", locationEvent.system);
                         List<decimal?> _systemCoordinates = new List<decimal?>
                         {
@@ -191,14 +191,14 @@ namespace EddiEdsmResponder
                             locationEvent.z
                         };
                         eventObject.Add("_systemCoordinates", _systemCoordinates);
-                        eventObject.Add("_marketId", null); // We don't collect this info yet
+                        eventObject.Add("_marketId", locationEvent.marketId);
                         eventObject.Add("_stationName", locationEvent.station);
                         break;
                     }
                 case "FSDJump":
                     {
                         JumpedEvent jumpedEvent = (JumpedEvent)theEvent;
-                        eventObject.Add("_systemAddress", null); // We don't collect this info yet
+                        eventObject.Add("_systemAddress", jumpedEvent.systemAddress);
                         eventObject.Add("_systemName", jumpedEvent.system);
                         List<decimal?> _systemCoordinates = new List<decimal?>
                         {
@@ -212,10 +212,10 @@ namespace EddiEdsmResponder
                 case "Docked":
                     {
                         DockedEvent dockedEvent = (DockedEvent)theEvent;
-                        eventObject.Add("_systemAddress", null); // We don't collect this info yet
+                        eventObject.Add("_systemAddress", dockedEvent.systemAddress);
                         eventObject.Add("_systemName", dockedEvent.system);
                         eventObject.Add("_systemCoordinates", null);
-                        eventObject.Add("_marketId", null); // We don't collect this info yet
+                        eventObject.Add("_marketId", dockedEvent.marketId);
                         eventObject.Add("_stationName", dockedEvent.station);
                         break;
                     }
@@ -226,7 +226,7 @@ namespace EddiEdsmResponder
             {
                 if (!eventObject.ContainsKey("_systemAddress") && !eventObject.ContainsKey("SystemAddress"))
                 {
-                    eventObject.Add("_systemAddress", null); // We don't collect this info yet
+                    eventObject.Add("_systemAddress", EDDI.Instance.CurrentStarSystem.systemAddress);
                 } 
                 if (!eventObject.ContainsKey("_systemName") && !eventObject.ContainsKey("SystemName"))
                 {
@@ -248,7 +248,7 @@ namespace EddiEdsmResponder
             {
                 if (!eventObject.ContainsKey("_marketId") && !eventObject.ContainsKey("MarketID"))
                 {
-                    eventObject.Add("_marketId", null); // We don't collect this info yet
+                    eventObject.Add("_marketId", EDDI.Instance.CurrentStation.marketId);
                 } 
                 if (!eventObject.ContainsKey("_stationName") && !eventObject.ContainsKey("StationName"))
                 {

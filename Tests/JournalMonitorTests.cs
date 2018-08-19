@@ -130,19 +130,22 @@ namespace UnitTests
         [TestMethod]
         public void TestJournalDocked1()
         {
-            string line = @"{ ""timestamp"":""2017-04-14T19:34:32Z"",""event"":""Docked"",""StationName"":""Freeholm"",""StationType"":""AsteroidBase"",""StarSystem"":""Artemis"",""StationFaction"":""Artemis Empire Assembly"",""FactionState"":""Boom"",""StationGovernment"":""$government_Patronage;"",""StationGovernment_Localised"":""Patronage"",""StationAllegiance"":""Empire"",""StationEconomy"":""$economy_Industrial;"",""StationEconomy_Localised"":""Industrial"",""DistFromStarLS"":2527.211914}";
+            string line = @"{ ""timestamp"":""2017-04-14T19:34:32Z"",""event"":""Docked"",""StationName"":""Freeholm"",""StationType"":""AsteroidBase"",""StarSystem"":""Artemis"",""StationFaction"":""Artemis Empire Assembly"",""FactionState"":""Boom"",""StationGovernment"":""$government_Patronage;"",""StationGovernment_Localised"":""Patronage"",""StationAllegiance"":""Empire"",""StationEconomy"":""$economy_Industrial;"",""StationEconomy_Localised"":""Industrial"",""DistFromStarLS"":2527.211914,""StationServices"":[""Refuel""], ""MarketID"": 128169720, ""SystemAddress"": 3107509474002}";
             List<Event> events = JournalMonitor.ParseJournalEntry(line);
             Assert.IsTrue(events.Count == 1);
 
             DockedEvent theEvent = (DockedEvent)events[0];
 
             Assert.AreEqual("AsteroidBase", theEvent.model);
+
+            Assert.AreEqual(128169720, theEvent.marketId);
+            Assert.AreEqual(3107509474002, theEvent.systemAddress);
         }
 
         [TestMethod]
         public void TestJournalDocked2()
         {
-            string line = @"{ ""timestamp"":""2017-04-14T19:34:32Z"",""event"":""Docked"",""StationName"":""Freeholm"",""StationType"":""AsteroidBase"",""StarSystem"":""Artemis"",""StationFaction"":""Artemis Empire Assembly"",""FactionState"":""Boom"",""StationGovernment"":""$government_Patronage;"",""StationGovernment_Localised"":""Patronage"",""StationAllegiance"":""Empire"",""StationEconomy"":""$economy_Industrial;"",""StationEconomy_Localised"":""Industrial"",""DistFromStarLS"":2527.211914,""StationServices"":[""Refuel""]}";
+            string line = @"{ ""timestamp"":""2017-04-14T19:34:32Z"",""event"":""Docked"",""StationName"":""Freeholm"",""StationType"":""AsteroidBase"",""StarSystem"":""Artemis"",""StationFaction"":""Artemis Empire Assembly"",""FactionState"":""Boom"",""StationGovernment"":""$government_Patronage;"",""StationGovernment_Localised"":""Patronage"",""StationAllegiance"":""Empire"",""StationEconomy"":""$economy_Industrial;"",""StationEconomy_Localised"":""Industrial"",""DistFromStarLS"":2527.211914,""StationServices"":[""Refuel""], ""MarketID"": 128169720, ""SystemAddress"": 3107509474002}";
             List<Event> events = JournalMonitor.ParseJournalEntry(line);
             Assert.IsTrue(events.Count == 1);
 
@@ -164,6 +167,7 @@ namespace UnitTests
 
             Assert.AreEqual("Orbis", theEvent.stationDefinition.basename);
             Assert.AreEqual("Laval Terminal", theEvent.station);
+            Assert.AreEqual(3227840768, theEvent.marketId);
         }
 
         [TestMethod]
@@ -177,6 +181,7 @@ namespace UnitTests
 
             Assert.AreEqual("Coriolis", theEvent.stationDefinition.basename);
             Assert.AreEqual("Ray Gateway", theEvent.station);
+            Assert.AreEqual(3223343616, theEvent.marketId);
         }
 
         [TestMethod]
@@ -190,6 +195,7 @@ namespace UnitTests
 
             Assert.AreEqual("Bernal", theEvent.stationDefinition.basename);
             Assert.AreEqual("Morris Enterprise", theEvent.station);
+            Assert.AreEqual(3222020352, theEvent.marketId);
         }
 
         [TestMethod]
@@ -204,6 +210,7 @@ namespace UnitTests
             Assert.AreEqual("AsteroidBase", theEvent.stationDefinition.basename);
             Assert.AreEqual(17, theEvent.landingpad);
             Assert.AreEqual("Simbad's Refuge", theEvent.station);
+            Assert.AreEqual(128850247, theEvent.marketId);
         }
 
         [TestMethod]
@@ -349,6 +356,343 @@ namespace UnitTests
             SearchAndRescueEvent sarEvent = (SearchAndRescueEvent)events[0];
             Assert.AreEqual("Black Box", sarEvent.commodity.invariantName);
             Assert.AreEqual("Salvage", sarEvent.commodity.category.invariantName);
+        }
+
+        [TestMethod]
+        public void TestJournalEnteredNormalSpaceEvent()
+        {
+            string line = @"{ ""timestamp"":""2018 - 02 - 07T07: 13:39Z"", ""event"":""SupercruiseExit"", ""StarSystem"":""Wyrd"", ""SystemAddress"":5031654888146, ""Body"":""Vonarburg Co-operative"", ""BodyID"":35, ""BodyType"":""Station"" }";
+            List<Event> events = JournalMonitor.ParseJournalEntry(line);
+            Assert.IsTrue(events.Count == 1);
+            EnteredNormalSpaceEvent normalSpaceEvent = (EnteredNormalSpaceEvent)events[0];
+            Assert.AreEqual("Vonarburg Co-operative", normalSpaceEvent.body);
+            Assert.AreEqual("Station", normalSpaceEvent.bodytype);
+            Assert.AreEqual("Wyrd", normalSpaceEvent.system);
+            Assert.AreEqual(5031654888146, normalSpaceEvent.systemAddress);
+        }
+
+        [TestMethod]
+        public void TestJournalJumpedEvent()
+        {
+            string line = @"{
+	""timestamp"": ""2018-08-08T06: 56: 20Z"",
+	""event"": ""FSDJump"",
+	""StarSystem"": ""Diaguandri"",
+	""SystemAddress"": 670417429889,
+	""StarPos"": [-41.06250,
+	-62.15625,
+	-103.25000],
+	""SystemAllegiance"": ""Independent"",
+	""SystemEconomy"": ""$economy_HighTech;"",
+	""SystemEconomy_Localised"": ""HighTech"",
+	""SystemSecondEconomy"": ""$economy_Refinery;"",
+	""SystemSecondEconomy_Localised"": ""Refinery"",
+	""SystemGovernment"": ""$government_Democracy;"",
+	""SystemGovernment_Localised"": ""Democracy"",
+	""SystemSecurity"": ""$SYSTEM_SECURITY_medium;"",
+	""SystemSecurity_Localised"": ""MediumSecurity"",
+	""Population"": 10303479,
+	""JumpDist"": 19.340,
+	""FuelUsed"": 2.218082,
+	""FuelLevel"": 23.899260,
+	""Factions"": [{
+		""Name"": ""DiaguandriInterstellar"",
+		""FactionState"": ""Boom"",
+		""Government"": ""Corporate"",
+		""Influence"": 0.100398,
+		""Allegiance"": ""Independent""
+	},
+	{
+		""Name"": ""People'sMET20Liberals"",
+		""FactionState"": ""Boom"",
+		""Government"": ""Democracy"",
+		""Influence"": 0.123260,
+		""Allegiance"": ""Federation""
+	},
+	{
+		""Name"": ""PilotsFederationLocalBranch"",
+		""FactionState"": ""None"",
+		""Government"": ""Democracy"",
+		""Influence"": 0.000000,
+		""Allegiance"": ""PilotsFederation""
+	},
+	{
+		""Name"": ""NaturalDiaguandriRegulatoryState"",
+		""FactionState"": ""None"",
+		""Government"": ""Dictatorship"",
+		""Influence"": 0.020875,
+		""Allegiance"": ""Independent"",
+		""RecoveringStates"": [{
+			""State"": ""CivilWar"",
+			""Trend"": 0
+		}]
+	},
+	{
+		""Name"": ""CartelofDiaguandri"",
+		""FactionState"": ""None"",
+		""Government"": ""Anarchy"",
+		""Influence"": 0.009940,
+		""Allegiance"": ""Independent"",
+		""PendingStates"": [{
+			""State"": ""Bust"",
+			""Trend"": 0
+		},
+		{
+			""State"": ""CivilUnrest"",
+			""Trend"": 1
+		}],
+		""RecoveringStates"": [{
+			""State"": ""CivilWar"",
+			""Trend"": 0
+		}]
+	},
+	{
+		""Name"": ""RevolutionaryPartyofDiaguandri"",
+		""FactionState"": ""None"",
+		""Government"": ""Democracy"",
+		""Influence"": 0.124254,
+		""Allegiance"": ""Federation"",
+		""PendingStates"": [{
+			""State"": ""Boom"",
+			""Trend"": 1
+		},
+		{
+			""State"": ""Bust"",
+			""Trend"": 1
+		}]
+	},
+	{
+		""Name"": ""TheBrotherhoodoftheDarkCircle"",
+		""FactionState"": ""None"",
+		""Government"": ""Corporate"",
+		""Influence"": 0.093439,
+		""Allegiance"": ""Independent"",
+		""RecoveringStates"": [{
+			""State"": ""CivilUnrest"",
+			""Trend"": 1
+		}]
+	},
+	{
+		""Name"": ""EXO"",
+		""FactionState"": ""Expansion"",
+		""Government"": ""Democracy"",
+		""Influence"": 0.527833,
+		""Allegiance"": ""Independent"",
+		""PendingStates"": [{
+			""State"": ""Boom"",
+			""Trend"": 1
+		}]
+	}],
+	""SystemFaction"": ""EXO"",
+	""FactionState"": ""Expansion""
+}";
+            List<Event> events = JournalMonitor.ParseJournalEntry(line);
+            Assert.IsTrue(events.Count == 1);
+            JumpedEvent jumpedEvent = (JumpedEvent)events[0];
+            Assert.AreEqual("Diaguandri", jumpedEvent.system);
+            Assert.AreEqual(670417429889, jumpedEvent.systemAddress);
+            Assert.AreEqual(-41.06250M, jumpedEvent.x);
+            Assert.AreEqual(-62.15625M, jumpedEvent.y);
+            Assert.AreEqual(-103.25000M, jumpedEvent.z);
+            Assert.AreEqual("Independent", jumpedEvent.allegiance);
+            Assert.AreEqual("High Tech", jumpedEvent.economy);
+            Assert.AreEqual("Refinery", jumpedEvent.economy2);
+            Assert.AreEqual("Democracy", jumpedEvent.government);
+            Assert.AreEqual("Medium", jumpedEvent.security);
+            Assert.AreEqual(10303479, jumpedEvent.population);
+            Assert.AreEqual(19.340M, jumpedEvent.distance);
+            Assert.AreEqual(2.218082M, jumpedEvent.fuelused);
+            Assert.AreEqual(23.899260M, jumpedEvent.fuelremaining);
+            Assert.AreEqual("EXO", jumpedEvent.faction);
+            Assert.AreEqual("Expansion", jumpedEvent.factionstate);
+        }
+
+        [TestMethod]
+        public void TestJournalLocationEvent()
+        {
+            string line = @"{
+	""timestamp"": ""2018-08-12T02: 52: 13Z"",
+	""event"": ""Location"",
+	""Docked"": true,
+	""MarketID"": 3223343616,
+	""StationName"": ""RayGateway"",
+	""StationType"": ""Coriolis"",
+	""StarSystem"": ""Diaguandri"",
+	""SystemAddress"": 670417429889,
+	""StarPos"": [-41.06250,
+	-62.15625,
+	-103.25000],
+	""SystemAllegiance"": ""Independent"",
+	""SystemEconomy"": ""$economy_HighTech;"",
+	""SystemEconomy_Localised"": ""HighTech"",
+	""SystemSecondEconomy"": ""$economy_Refinery;"",
+	""SystemSecondEconomy_Localised"": ""Refinery"",
+	""SystemGovernment"": ""$government_Democracy;"",
+	""SystemGovernment_Localised"": ""Democracy"",
+	""SystemSecurity"": ""$SYSTEM_SECURITY_medium;"",
+	""SystemSecurity_Localised"": ""MediumSecurity"",
+	""Population"": 10303479,
+	""Body"": ""RayGateway"",
+	""BodyID"": 32,
+	""BodyType"": ""Station"",
+	""Factions"": [{
+		""Name"": ""DiaguandriInterstellar"",
+		""FactionState"": ""None"",
+		""Government"": ""Corporate"",
+		""Influence"": 0.090000,
+		""Allegiance"": ""Independent"",
+		""RecoveringStates"": [{
+			""State"": ""Boom"",
+			""Trend"": 0
+		}]
+	},
+	{
+		""Name"": ""People'sMET20Liberals"",
+		""FactionState"": ""Boom"",
+		""Government"": ""Democracy"",
+		""Influence"": 0.206000,
+		""Allegiance"": ""Federation""
+	},
+	{
+		""Name"": ""PilotsFederationLocalBranch"",
+		""FactionState"": ""None"",
+		""Government"": ""Democracy"",
+		""Influence"": 0.000000,
+		""Allegiance"": ""PilotsFederation""
+	},
+	{
+		""Name"": ""NaturalDiaguandriRegulatoryState"",
+		""FactionState"": ""Boom"",
+		""Government"": ""Dictatorship"",
+		""Influence"": 0.072000,
+		""Allegiance"": ""Independent""
+	},
+	{
+		""Name"": ""CartelofDiaguandri"",
+		""FactionState"": ""Bust"",
+		""Government"": ""Anarchy"",
+		""Influence"": 0.121000,
+		""Allegiance"": ""Independent"",
+		""PendingStates"": [{
+			""State"": ""Boom"",
+			""Trend"": 1
+		},
+		{
+			""State"": ""CivilUnrest"",
+			""Trend"": -1
+		}]
+	},
+	{
+		""Name"": ""RevolutionaryPartyofDiaguandri"",
+		""FactionState"": ""Boom"",
+		""Government"": ""Democracy"",
+		""Influence"": 0.181000,
+		""Allegiance"": ""Federation"",
+		""PendingStates"": [{
+			""State"": ""Bust"",
+			""Trend"": 0
+		}]
+	},
+	{
+		""Name"": ""TheBrotherhoodoftheDarkCircle"",
+		""FactionState"": ""Boom"",
+		""Government"": ""Corporate"",
+		""Influence"": 0.086000,
+		""Allegiance"": ""Independent""
+	},
+	{
+		""Name"": ""EXO"",
+		""FactionState"": ""None"",
+		""Government"": ""Democracy"",
+		""Influence"": 0.244000,
+		""Allegiance"": ""Independent"",
+		""PendingStates"": [{
+			""State"": ""Boom"",
+			""Trend"": 1
+		}]
+	}],
+	""SystemFaction"": ""EXO""
+}";
+
+            List<Event> events = JournalMonitor.ParseJournalEntry(line);
+            Assert.IsTrue(events.Count == 1);
+            LocationEvent @event = (LocationEvent)events[0];
+
+            Assert.AreEqual("Independent", @event.allegiance);
+            Assert.AreEqual("RayGateway", @event.body);
+            Assert.AreEqual("Station", @event.bodytype);
+            Assert.AreEqual(true, @event.docked);
+            Assert.AreEqual("High Tech", @event.economy);
+            Assert.AreEqual("Refinery", @event.economy2);
+            Assert.AreEqual("EXO", @event.faction);
+            Assert.AreEqual("Democracy", @event.government);
+            Assert.IsNull(@event.latitude);
+            Assert.IsNull(@event.longitude);
+            Assert.AreEqual(3223343616, @event.marketId);
+            Assert.AreEqual(10303479, @event.population);
+            Assert.AreEqual("Medium", @event.security);
+            Assert.AreEqual("RayGateway", @event.station);
+            Assert.AreEqual("Coriolis", @event.stationtype);
+            Assert.AreEqual("Diaguandri", @event.system);
+            Assert.AreEqual(670417429889, @event.systemAddress);
+            Assert.AreEqual(-41.06250M, @event.x);
+            Assert.AreEqual(-62.15625M, @event.y);
+            Assert.AreEqual(-103.25000M, @event.z);
+        }
+
+        [TestMethod]
+        public void TestNearSurfaceEvent()
+        {
+            string line = @"{ ""timestamp"":""2018-07-24T07:08:37Z"", ""event"":""ApproachBody"", ""StarSystem"":""Ageno"", ""SystemAddress"":18262335038849, ""Body"":""Ageno B 2 a"", ""BodyID"":17 }";
+            List<Event> events = JournalMonitor.ParseJournalEntry(line);
+            NearSurfaceEvent @event = (NearSurfaceEvent)events[0];
+
+            Assert.AreEqual("Ageno", @event.system);
+            Assert.AreEqual(18262335038849, @event.systemAddress);
+            Assert.AreEqual("Ageno B 2 a", @event.body);
+
+            string line2 = @"{ ""timestamp"":""2018 - 07 - 24T07: 08:58Z"", ""event"":""LeaveBody"", ""StarSystem"":""Ageno"", ""SystemAddress"":18262335038849, ""Body"":""Ageno B 2 a"", ""BodyID"":17 }";
+            events = JournalMonitor.ParseJournalEntry(line2);
+            NearSurfaceEvent @event2 = (NearSurfaceEvent)events[0];
+
+            Assert.AreEqual("Ageno", @event2.system);
+            Assert.AreEqual(18262335038849, @event2.systemAddress);
+            Assert.AreEqual("Ageno B 2 a", @event2.body);
+        }
+
+        [TestMethod]
+        public void TestSearchAndRescueEvent()
+        {
+            string line = @"{ ""timestamp"":""2018 - 06 - 17T05: 32:32Z"", ""event"":""SearchAndRescue"", ""MarketID"":3222633216, ""Name"":""occupiedcryopod"", ""Name_Localised"":""Occupied Escape Pod"", ""Count"":2, ""Reward"":48593 }";
+            List<Event> events = JournalMonitor.ParseJournalEntry(line);
+            SearchAndRescueEvent @event = (SearchAndRescueEvent)events[0];
+
+            Assert.AreEqual(3222633216, @event.marketId);
+            Assert.AreEqual("occupiedcryopod", @event.commodity.edname.ToLowerInvariant());
+            Assert.AreEqual(2, @event.amount);
+            Assert.AreEqual(48593, @event.reward);
+        }
+
+        [TestMethod]
+        public void TestSettlementApproachedEvent()
+        {
+            string line = @"{ ""timestamp"":""2018 - 08 - 12T08: 00:25Z"", ""event"":""ApproachSettlement"", ""Name"":""Bulmer Enterprise"", ""MarketID"":3510380288 }";
+            List<Event> events = JournalMonitor.ParseJournalEntry(line);
+            SettlementApproachedEvent @event = (SettlementApproachedEvent)events[0];
+
+            Assert.AreEqual(3510380288, @event.marketId);
+            Assert.AreEqual("Bulmer Enterprise", @event.name);
+        }
+
+        [TestMethod]
+        public void TestUndockedEvent()
+        {
+            string line = @"{ ""timestamp"":""2018 - 08 - 12T02: 53:41Z"", ""event"":""Undocked"", ""StationName"":""Ray Gateway"", ""StationType"":""Coriolis"", ""MarketID"":3223343616 }";
+            List<Event> events = JournalMonitor.ParseJournalEntry(line);
+            UndockedEvent @event = (UndockedEvent)events[0];
+
+            Assert.AreEqual(3223343616, @event.marketId);
+            Assert.AreEqual("Ray Gateway", @event.station);
         }
     }
 }

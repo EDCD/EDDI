@@ -29,11 +29,15 @@ namespace EddiEvents
         [JsonProperty("edname")]
         public string edname { get; private set; }
 
-        public MaterialDonatedEvent(DateTime timestamp, Material material, int amount) : base(timestamp, NAME)
+        // Admin
+        public long marketId { get; private set; }
+
+        public MaterialDonatedEvent(DateTime timestamp, Material material, int amount, long marketId) : base(timestamp, NAME)
         {
             this.name = material?.localizedName;
             this.amount = amount;
             this.edname = material?.edname;
+            this.marketId = marketId;
         }
     }
 }

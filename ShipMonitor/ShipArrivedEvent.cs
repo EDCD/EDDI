@@ -47,7 +47,11 @@ namespace EddiShipMonitor
         [JsonProperty("time")]
         public long? time { get; private set; }
 
-        public ShipArrivedEvent(DateTime timestamp, string ship, int? shipid, string system, decimal distance, long? price, long? time, string station) : base(timestamp, NAME)
+        // Admin
+        public long fromMarketId { get; private set; }
+        public long toMarketId { get; private set; }
+
+        public ShipArrivedEvent(DateTime timestamp, string ship, int? shipid, string system, decimal distance, long? price, long? time, string station, long fromMarketId, long toMarketId) : base(timestamp, NAME)
         {
             this.ship = ShipDefinitions.FromEDModel(ship).model;
             this.shipid = shipid;
@@ -56,6 +60,8 @@ namespace EddiShipMonitor
             this.distance = distance;
             this.price = price;
             this.time = time;
+            this.fromMarketId = fromMarketId;
+            this.toMarketId = toMarketId;
         }
     }
 }

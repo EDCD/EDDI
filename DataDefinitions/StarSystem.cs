@@ -16,7 +16,8 @@ namespace EddiDataDefinitions
         public string allegiance { get; set; }
         public string government { get; set; }
         public string faction { get; set; }
-        public string primaryeconomy { get; set; }
+        public string primaryeconomy => (economies[0] ?? Economy.None).localizedName;
+        public List<Economy> economies { get; set; } = new List<Economy>() { null, null };
         public SystemState systemState { get; set; } = SystemState.None;
         public string security { get; set; }
         public string power { get; set; }
@@ -31,6 +32,9 @@ namespace EddiDataDefinitions
         public decimal? y { get; set; }
         /// <summary>Z co-ordinate for this system</summary>
         public decimal? z { get; set; }
+
+        /// <summary>Unique 64 bit id value for system</summary>
+        public long? systemAddress { get; set; }
 
         /// <summary>Details of stations</summary>
         public List<Station> stations { get; set; }

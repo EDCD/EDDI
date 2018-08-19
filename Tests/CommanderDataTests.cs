@@ -18,10 +18,7 @@ namespace UnitTests
             RollbarLocator.RollbarInstance.Config.Enabled = false;
         }
 
-        [TestMethod]
-        public void TestCommanderFromProfile()
-        {
-            string data = @"{
+        string data = @"{
   ""commander"": {
                 ""id"": 123456,
     ""name"": ""Testy"",
@@ -5508,6 +5505,10 @@ namespace UnitTests
   }
 }
 ";
+
+        [TestMethod]
+        public void TestCommanderFromProfile()
+        {
             Profile profile = CompanionAppService.ProfileFromJson(data);
 
             JObject json = JObject.Parse(data);
@@ -5549,6 +5550,9 @@ namespace UnitTests
             Assert.AreEqual("Vulture", StoredShip1.model);
             Assert.AreEqual("TZ Arietis", StoredShip1.starsystem);
             Assert.AreEqual("Snyder Enterprise", StoredShip1.station);
+
+            // Voss Dock has a MarketID of 3226643968
+            Assert.AreEqual(3226643968, profile.LastStation.marketId);
         }
 
         [TestMethod]
@@ -5588,6 +5592,13 @@ namespace UnitTests
             List<Ship> shipyard = FrontierApi.ShipyardFromJson(null, json);
 
             Assert.AreEqual(3, shipyard.Count);
+        }
+
+        [TestMethod]
+        public void TestMarketIDFromProfile()
+        {
+            Profile profile = CompanionAppService.ProfileFromJson(data);
+            Assert.AreEqual(3226643968, profile.LastStation.marketId);
         }
     }
 }

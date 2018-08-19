@@ -20,9 +20,13 @@ namespace EddiEvents
         [JsonProperty("name")]
         public string name { get; private set; }
 
-        public SettlementApproachedEvent(DateTime timestamp, string name) : base(timestamp, NAME)
+        // Admin
+        public long marketId { get; private set; }
+
+        public SettlementApproachedEvent(DateTime timestamp, string name, long marketId) : base(timestamp, NAME)
         {
             this.name = name;
+            this.marketId = marketId;
         }
     }
 }

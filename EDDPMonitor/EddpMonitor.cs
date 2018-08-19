@@ -166,6 +166,8 @@ namespace EddiEddpMonitor
             string oldeconomy = (string)json["oldeconomy"];
             string neweconomy = (string)json["neweconomy"];
 
+            // EDDP does not report currently changes to secondary economies.
+
             string oldsecurity = (string)json["oldsecurity"];
             string newsecurity = (string)json["newsecurity"];
 
@@ -196,8 +198,9 @@ namespace EddiEddpMonitor
                     }
                     if (neweconomy != null)
                     {
-                        system.primaryeconomy = neweconomy;
+                        system.economies[0] = Economy.FromEDName(neweconomy);
                     }
+                    // EDDP does not report changes to secondary economies.
                     if (newsecurity != null)
                     {
                         system.security = newsecurity;
