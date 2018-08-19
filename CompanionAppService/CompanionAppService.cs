@@ -602,31 +602,35 @@ namespace EddiCompanionAppService
         }
 
         // Obtain the list of outfitting modules from the profile
-        public static List<Module> OutfittingFromProfile(dynamic json)
+        public static List<Module> OutfittingFromProfile(JObject json)
         {
             List<Module> Modules = new List<Module>();
 
             if (json["lastStarport"] != null && json["lastStarport"]["modules"] != null)
             {
-                foreach (dynamic moduleJson in json["lastStarport"]["modules"])
+                foreach (JObject moduleJson in json["lastStarport"]["modules"])
                 {
-                    dynamic module = moduleJson.Value;
                     // Not interested in paintjobs, decals, ...
-                    string moduleCategory = module["category"]; // need to convert from LINQ to string
+                    string moduleCategory = (string)moduleJson["category"]; // need to convert from LINQ to string
                     switch (moduleCategory)
                     {
                         case "weapon":
                         case "module":
                         case "utility":
                             {
-                                long id = module["id"];
-                                Module Module = new Module(Module.FromEliteID(id));
-                                if (Module?.invariantName == null)
+                                long id = (long)moduleJson["id"];
+                                string edName = (string)moduleJson["name"];
+
+                                Module Module = new Module(Module.FromEliteID(id) ?? Module.FromEDName(edName) ?? new Module());
+                                if (Module.invariantName == null)
                                 {
                                     // Unknown module; report the full object so that we can update the definitions
-                                    Logging.Info("Module definition error: " + (string)module["name"], JsonConvert.SerializeObject(module));
+                                    Logging.Info("Module definition error: " + edName, JsonConvert.SerializeObject(moduleJson));
+
+                                    // Create a basic module & supplement from the info available
+                                    Module = new Module(id, edName, -1, edName, -1, "", (long)moduleJson["cost"]);
                                 }
-                                Module.price = module["cost"];
+                                Module.price = (long)moduleJson["cost"];
                                 Modules.Add(Module);
                             }
                             break;
@@ -705,30 +709,39 @@ namespace EddiCompanionAppService
 
             if (json["lastStarport"] != null && json["lastStarport"]["ships"] != null)
             {
-                foreach (dynamic shipJson in json["lastStarport"]["ships"]["shipyard_list"])
+                foreach (JObject shipJson in json["lastStarport"]["ships"]["shipyard_list"])
                 {
-                    dynamic ship = shipJson.Value;
-                    Ship Ship = ShipDefinitions.FromEliteID((long)ship["id"]);
-                    if (Ship.EDName != null)
-                    {
-                        Ship.value = (long)ship["basevalue"];
-                        Ships.Add(Ship);
-                    }
+                    Ship Ship = ShipyardShipFromProfile(shipJson);
+                    Ships.Add(Ship);
                 }
 
-                foreach (dynamic ship in json["lastStarport"]["ships"]["unavailable_list"])
+                foreach (JObject ship in json["lastStarport"]["ships"]["unavailable_list"])
                 {
-                    dynamic shipJson = ship.Value;
-                    Ship Ship2 = ShipDefinitions.FromEliteID((long)ship["id"]);
-                    if (Ship2.EDName != null)
-                    {
-                        Ship2.value = (long)ship["basevalue"];
-                        Ships.Add(Ship2);
-                    }
+                    Ship Ship = ShipyardShipFromProfile(ship);
+                    Ships.Add(Ship);
                 }
             }
 
             return Ships;
+        }
+
+        private static Ship ShipyardShipFromProfile(JObject shipJson)
+        {
+            long id = (long)shipJson["id"];
+            string edName = (string)shipJson["name"];
+
+            Ship Ship = ShipDefinitions.FromEliteID(id) ?? ShipDefinitions.FromEDModel(edName);
+            if (Ship == null)
+            {
+                // Unknown ship; report the full object so that we can update the definitions 
+                Logging.Info("Ship definition error: " + edName, JsonConvert.SerializeObject(shipJson));
+
+                // Create a basic ship definition & supplement from the info available 
+                Ship = new Ship();
+                Ship.EDName = edName;
+            }
+            Ship.value = (long)shipJson["basevalue"];
+            return Ship;
         }
 
         public void setPassword(string password)
