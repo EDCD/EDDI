@@ -2,7 +2,7 @@
 
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
-### 3.0.2
+### Development
   * Speech responder
     * Added new event: `Glide`, triggered when your ship enters or exits glide near a planet's surface
     * Revised script: `Entered normal space` to not announce that we are entering normal space during a glide.
