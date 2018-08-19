@@ -582,8 +582,7 @@
     <comment>Material pharmaceuticalisolators</comment>
   </data>
   <data name="protoheatradiators" xml:space="preserve">
-    <value>Proto-Wärmestrahler
-Material Proto-Wärmestrahler</value>
+    <value>Proto-Wärmestrahler</value>
     <comment>Material protoheatradiators</comment>
   </data>
   <data name="protoradiolicalloys" xml:space="preserve">
