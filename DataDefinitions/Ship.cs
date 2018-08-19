@@ -366,7 +366,7 @@ namespace EddiDataDefinitions
             if (raw != null)
             {
                 // Generate a Coriolis import URI to retain as much information as possible
-                string uri = "https://coriolis.edcd.io/import?";
+                string uri = "https://coriolis.io/import?";
 
                 // Take the ship's JSON, gzip it, then turn it in to base64 and attach it to the base uri
                 var bytes = Encoding.UTF8.GetBytes(raw);

@@ -6,6 +6,12 @@ Full details of the variables available for each noted event, and VoiceAttack in
   * EDDI.vap (for VoiceAttack users)
     * Fixed a typo in the description of the `((EDDI: station variables))` command
     * Fixed a missing `;` in the command `Please repeat that;What was that?;Could you say that again?;Say that again`
+  * EDDI will now open shipyard links to coriolis.io rather than edcd.coriolis.io (at Coriolis dev's request). 
+    * You will need to **MIGRATE** your ships!
+    * The Coriolis dev team has prepared [a handy video to show you how](https://youtu.be/4SvnLcefhtI).
+
+### 3.0.1
+  * Released!
 
 ### 3.0.1-rc6
   * EDDN responder
