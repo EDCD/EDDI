@@ -59,7 +59,7 @@ namespace EddiVoiceAttackResponder
                 // Add notifiers for events we want to react to 
                 EDDI.Instance.State.CollectionChanged += (s, e) => setDictionaryValues(EDDI.Instance.State, "state", ref vaProxy);
                 SpeechService.Instance.PropertyChanged += (s, e) => setSpeaking(SpeechService.eddiSpeaking, ref vaProxy);
-                VoiceAttackResponder.OnEvent += (s, theEvent) => updateValuesOnEvent(theEvent, ref vaProxy);
+                VoiceAttackResponder.RaiseEvent += (s, theEvent) => updateValuesOnEvent(theEvent, ref vaProxy);
 
                 // Display instance information if available
                 if (EDDI.Instance.UpgradeRequired)

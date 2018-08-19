@@ -12,7 +12,15 @@ namespace EddiVoiceAttackResponder
     /// </summary>
     class VoiceAttackResponder : EDDIResponder
     {
-        public static event EventHandler<Event> OnEvent;
+        public static event EventHandler<Event> RaiseEvent;
+
+        protected virtual void OnEvent(EventArgs @eventArgs, Event @event)
+        {
+            if (RaiseEvent != null)
+            {
+                RaiseEvent(@eventArgs, @event);
+            }
+        }
 
         public string ResponderName()
         {
@@ -43,7 +51,7 @@ namespace EddiVoiceAttackResponder
         {
             Logging.Debug("Received event " + JsonConvert.SerializeObject(theEvent));
             VoiceAttackPlugin.EventQueue.Add(theEvent);
-            OnEvent(this, theEvent);
+            OnEvent(new EventArgs(), theEvent);
         }
 
         public bool Start()
