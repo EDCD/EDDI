@@ -18,6 +18,9 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Fixed a bug that was preventing full module details from being saved to our config files correctly. 
   * Speech responder
     * Revised the `Ship targeted` script so that it won't repeat whenever switching targeted subsystems.
+    * Added `Cargo scoop` event
+    * Added `Landing gear` event
+    * Added `Lights` event
   * Status monitor
     * `Status.hardpoints_deployed` is now locked to false while we are in supercruise.
   * VoiceAttack responder
