@@ -13,6 +13,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * EDDI will now open shipyard links to coriolis.io rather than edcd.coriolis.io (at Coriolis dev's request). 
       * You will need to **MIGRATE** your ships!
       * The Coriolis dev team has prepared [a handy video to show you how](https://youtu.be/4SvnLcefhtI).
+    * Fixed a bug that was preventing full module details from being saved to our config files correctly. 
   * Speech responder
     * Revised the `Ship targeted` script so that it won't repeat whenever switching targeted subsystems.
   * VoiceAttack responder

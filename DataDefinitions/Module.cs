@@ -1,4 +1,6 @@
-﻿namespace EddiDataDefinitions
+﻿using Newtonsoft.Json;
+
+namespace EddiDataDefinitions
 {
     public partial class Module : ResourceBasedLocalizedEDName<Module>
     {
@@ -10,26 +12,41 @@
         }
 
         // Definition of the module
+        [JsonProperty]
         public int @class { get; set; }
+        [JsonProperty]
         public string grade { get; set; }
+        [JsonProperty]
         public long value { get; set; } // The undiscounted value
+
         // Additional definition for some items
+        [JsonProperty]
         public int? ShipId { get; set; } // Only for bulkheads
+        [JsonProperty]
         public ModuleMount? mount { get; set; } // Only for weapons
+        [JsonProperty]
         public int? clipcapacity { get; set; } // Only for weapons
+        [JsonProperty]
         public int? hoppercapacity { get; set; } // Only for weapons
 
         // State of the module
+        [JsonProperty]
         public long price { get; set; } // How much we actually paid for it
+        [JsonProperty]
         public bool enabled { get; set; }
+        [JsonProperty]
         public int priority { get; set; }
+        [JsonProperty]
         public decimal health { get; set; }
+        [JsonProperty]
         public bool modified { get; set; } // If the module has been modified
 
         // Admin
         // The ID in Elite: Dangerous' database
+        [JsonProperty]
         public long EDID { get; set; }
         // The ID in eddb.io
+        [JsonProperty]
         public long EDDBID { get; set; }
 
         // TEMP
