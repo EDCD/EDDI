@@ -5,6 +5,8 @@ Full details of the variables available for each noted event, and VoiceAttack in
 ### Development
   * Core
     * Fixed a bug that was preventing some events from being passed to EDSM.
+  * EDSM responder
+    * Fixed a crash when parsing an invalid EDSM configuration.
   * EDDN responder
     * Removed the `Wanted` tag from the data we send to EDDN, since all data submissions should be anonymized.
   * Ship monitor

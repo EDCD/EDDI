@@ -367,16 +367,24 @@ namespace Eddi
                     }
                     else
                     {
-                        bool responderStarted = responder.Start();
-                        if (responderStarted)
+                        try
                         {
-                            activeResponders.Add(responder);
-                            Logging.Info("Started " + responder.ResponderName());
+                            bool responderStarted = responder.Start();
+                            if (responderStarted)
+                            {
+                                activeResponders.Add(responder);
+                                Logging.Info("Started " + responder.ResponderName());
+                            }
+                            else
+                            {
+                                Logging.Warn("Failed to start " + responder.ResponderName());
+                            }
                         }
-                        else
+                        catch (Exception ex)
                         {
-                            Logging.Warn("Failed to start " + responder.ResponderName());
+                            Logging.Error("Failed to start " + responder.ResponderName(), ex);
                         }
+
                     }
                 }
                 started = true;
