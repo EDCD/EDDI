@@ -75,7 +75,7 @@ namespace EddiDataDefinitions
 
         // FDev changes hardpoints status when the discovery scanner is used in supercruise. 
         // We want to keep hardpoints_deployed false if we are in supercruise.
-        public bool hardpoints_deployed => ((flags & Flags.HardpointsDeployed) != 0) & !((flags & Flags.Supercruise) != 0);
+        public bool hardpoints_deployed => ((flags & Flags.HardpointsDeployed) != 0) && !supercruise;
 
         // Variables set from pips (these are not always present in the event)
         public decimal? pips_sys = 0;
