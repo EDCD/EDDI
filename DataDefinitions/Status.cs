@@ -66,13 +66,16 @@ namespace EddiDataDefinitions
         public bool cargo_scoop_deployed => (flags & Flags.CargoScoopDeployed) != 0;
         public bool lights_on => (flags & Flags.LightsOn) != 0;
         public bool in_wing => (flags & Flags.InWing) != 0;
-        public bool hardpoints_deployed => (flags & Flags.HardpointsDeployed) != 0;
         public bool flight_assist_off => (flags & Flags.FlightAssistOff) != 0;
         public bool supercruise => (flags & Flags.Supercruise) != 0;
         public bool shields_up => (flags & Flags.ShieldsUp) != 0;
         public bool landing_gear_down => (flags & Flags.LandingGearDown) != 0;
         public bool landed => (flags & Flags.Landed) != 0;
         public bool docked => (flags & Flags.Docked) != 0;
+
+        // FDev changes hardpoints status when the discovery scanner is used in supercruise. 
+        // We want to keep hardpoints_deployed false if we are in supercruise.
+        public bool hardpoints_deployed => ((flags & Flags.HardpointsDeployed) != 0) && !supercruise;
 
         // Variables set from pips (these are not always present in the event)
         public decimal? pips_sys = 0;
