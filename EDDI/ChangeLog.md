@@ -2,7 +2,7 @@
 
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
-### 3.0.2-b1
+### Development
   * A small window will now open when you click on the link for IPA in the ship monitor. This window contains a link to the wikipedia article describing IPA as well as to resources that can help generate IPA pronunciations. 
 
 ### 3.0.1-rc6
