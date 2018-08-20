@@ -16,6 +16,9 @@ namespace EddiDataDefinitions
         [JsonIgnore]
         public bool legal => name.ToLowerInvariant().Contains("illegal") ? false : true;
 
+        [JsonIgnore]
+        public bool wing => name.ToLowerInvariant().Contains("wing");
+
         public int amount { get; set; }
 
         public int collected { get; set; }

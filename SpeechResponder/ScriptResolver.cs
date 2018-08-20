@@ -5,6 +5,7 @@ using Cottle.Settings;
 using Cottle.Stores;
 using Cottle.Values;
 using Eddi;
+using EddiCargoMonitor;
 using EddiDataDefinitions;
 using EddiDataProviderService;
 using EddiShipMonitor;
@@ -674,6 +675,31 @@ namespace EddiSpeechResponder
                 }
                 return (result == null ? new ReflectionValue(new object()) : new ReflectionValue(result));
             }, 0, 3);
+
+            store["CargoDetails"] = new NativeFunction((values) =>
+            {
+                Cottle.Value value = values[0];
+                Cargo result = null;
+                string edname = string.Empty;
+
+                if (value.Type == Cottle.ValueContent.String)
+                {
+                    edname = CommodityDefinition.FromName(value.AsString).edname;
+                    result = ((CargoMonitor)EDDI.Instance.ObtainMonitor("Cargo monitor")).GetCargoWithEDName(edname);
+                }
+                else if (value.Type == Cottle.ValueContent.Number)
+                {
+                    result = ((CargoMonitor)EDDI.Instance.ObtainMonitor("Cargo monitor")).GetCargoWithMissionId((long)value.AsNumber);
+                }
+                return (result == null ? new ReflectionValue(new object()) : new ReflectionValue(result));
+            }, 1);
+
+            store["HaulageDetails"] = new NativeFunction((values) =>
+            {
+                HaulageAmount result = null;
+                result = ((CargoMonitor)EDDI.Instance.ObtainMonitor("Cargo monitor")).GetHaulageWithMissionId((long)values[0].AsNumber);
+                return (result == null ? new ReflectionValue(new object()) : new ReflectionValue(result));
+            }, 1);
 
             store["BlueprintDetails"] = new NativeFunction((values) =>
             {
