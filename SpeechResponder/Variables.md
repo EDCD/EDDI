@@ -244,9 +244,25 @@ Details of an individual commodity being carried.
 	- `category` the category of the commodity (e.g. Foods, Machinery, Technology)
     - `stolen` the number of units flagged as stolen
     - `haulage` the number of units associated with a mission
+	- 'haulageamounts' list of mission related specifics for associated haulage
     - `owned` the number of units privately purchased or collected (not stolen or mission related)
     - `total` the total number of units
     - `price` the price of an individual unit
+
+## Haulage
+
+Mission-related details of haulage within the 'haulageamounts' object, used by the Cargo Monitor.
+
+	- 'missionid' unique identifier ID of the mission
+	- 'name' name of mission
+	- 'type' type (altruism, delivery, massacre, etc) of the mission
+	- 'legal' true if the mission is legal
+	- 'wing' true if wing mission
+	- 'shared' true if the mission was shared by a wing-mate
+	- 'amount' amount of the commodity involved in the mission
+	- 'collected' amount of the commodity collected in a wing mission
+	- 'delivered' amount of the commodity delivered in a wing mission
+	- 'expiry' expiry date and time of the mission
 
 ## Commodity
 

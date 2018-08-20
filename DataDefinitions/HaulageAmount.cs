@@ -14,7 +14,7 @@ namespace EddiDataDefinitions
         public string type => name.Split('_').ElementAtOrDefault(1)?.ToLowerInvariant();
 
         [JsonIgnore]
-        public bool legal => name.ToLowerInvariant().Contains("illegal") ? false : true;
+        public bool legal => !name.ToLowerInvariant().Contains("illegal");
 
         [JsonIgnore]
         public bool wing => name.ToLowerInvariant().Contains("wing");
@@ -25,9 +25,9 @@ namespace EddiDataDefinitions
 
         public int delivered { get; set; }
 
-        public DateTime expiry { get; set; }
-
         public bool shared { get; set; }
+
+        public DateTime expiry { get; set; }
 
         public HaulageAmount() { }
 
