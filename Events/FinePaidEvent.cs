@@ -8,7 +8,7 @@ namespace EddiEvents
     {
         public const string NAME = "Fine paid";
         public const string DESCRIPTION = "Triggered when you pay a fine";
-        public const string SAMPLE = "{ \"timestamp\":\"2016-10-06T09:30:36Z\", \"event\":\"PayLegacyFines\", \"Amount\":255 }";
+        public const string SAMPLE = "{ \"timestamp\":\"2018-03-19T10:24:21Z\", \"event\":\"PayFines\", \"Amount\":250, \"AllFines\":false, \"Faction\":\"Batz Transport Commodities\", \"ShipID\":9 }";
 
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
@@ -16,7 +16,9 @@ namespace EddiEvents
         {
             VARIABLES.Add("amount", "The amount of the fine paid");
             VARIABLES.Add("brokerpercentage", "Broker precentage fee (if paid via a Broker)");
-            VARIABLES.Add("legacy", "True if the payment is for a legacy fine");
+            VARIABLES.Add("allfines", "Whether this payments covers all current fines (true or false)");
+            VARIABLES.Add("faction", "The faction to which the fine was paid (if the payment does not cover all current fines)");
+            VARIABLES.Add("shipid", "The ship id of the ship associated with the fine");
         }
 
         [JsonProperty("amount")]
@@ -25,13 +27,22 @@ namespace EddiEvents
         [JsonProperty("brokerpercentage")]
         public decimal? brokerpercentage { get; private set; }
 
-        [JsonProperty("legacy")]
-        public bool legacy { get; private set; }
+        [JsonProperty("allfines")]
+        public bool allfines { get; private set; }
 
-        public FinePaidEvent(DateTime timestamp, long amount, decimal? brokerpercentage, bool legacy) : base(timestamp, NAME)
+        [JsonProperty("faction")]
+        public string faction { get; private set; }
+
+        [JsonProperty("shipid")]
+        public int shipid { get; private set; }
+
+        public FinePaidEvent(DateTime timestamp, long amount, decimal? brokerpercentage, bool allFines, string faction, int shipId) : base(timestamp, NAME)
         {
             this.amount = amount;
-            this.legacy = legacy;
+            this.brokerpercentage = brokerpercentage;
+            this.allfines = allFines;
+            this.faction = faction;
+            this.shipid = shipId;
         }
     }
 }

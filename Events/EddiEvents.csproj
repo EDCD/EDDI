@@ -65,6 +65,7 @@
     <Compile Include="BeltScannedEvent.cs" />
     <Compile Include="CargoDepotEvent.cs" />
     <Compile Include="CargoWingUpdateEvent.cs" />
+    <Compile Include="BountyPaidEvent.cs" />
     <Compile Include="UnhandledEvent.cs" />
     <Compile Include="FighterRebuiltEvent.cs" />
     <Compile Include="JetConeDamageEvent.cs" />
