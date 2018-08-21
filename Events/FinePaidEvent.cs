@@ -15,7 +15,7 @@ namespace EddiEvents
         static FinePaidEvent()
         {
             VARIABLES.Add("amount", "The amount of the fine paid");
-            VARIABLES.Add("brokerpercentage", "Broker precentage fee (if paid via a Broker)");
+            VARIABLES.Add("brokerpercentage", "Broker percentage (if paid via a Broker)");
             VARIABLES.Add("allfines", "Whether this payments covers all current fines (true or false)");
             VARIABLES.Add("faction", "The faction to which the fine was paid (if the payment does not cover all current fines)");
             VARIABLES.Add("shipid", "The ship id of the ship associated with the fine");

@@ -15,7 +15,7 @@ namespace EddiEvents
         static BountyPaidEvent()
         {
             VARIABLES.Add("amount", "The amount of the bounty paid");
-            VARIABLES.Add("brokerpercentage", "Broker precentage fee (if paid via a Broker)");
+            VARIABLES.Add("brokerpercentage", "Broker percentage (if paid via a Broker)");
             VARIABLES.Add("faction", "The faction to which the bounty was paid");
             VARIABLES.Add("shipid", "The ship id of the ship associated with the fine");
         }
