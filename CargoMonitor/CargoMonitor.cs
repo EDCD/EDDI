@@ -306,8 +306,8 @@ namespace EddiCargoMonitor
                 {
                     foreach (Haulage haulage in cargo.haulageData)
                     {
-                        int total = cargo.haulageData.Where(ha => ha.name.ToLowerInvariant().Contains(haulage.type)).Sum(ha => ha.amount);
-                        switch (haulage.type)
+                        int total = cargo.haulageData.Where(ha => ha.name.ToLowerInvariant().Contains(haulage.typeEDName)).Sum(ha => ha.amount);
+                        switch (haulage.typeEDName)
                         {
                             case "altruism":
                             case "collect":
@@ -379,7 +379,7 @@ namespace EddiCargoMonitor
                     cargo.ejected += @event.amount;
                     foreach (Haulage haulage in cargo.haulageData)
                     {
-                        switch (haulage.type)
+                        switch (haulage.typeEDName)
                         {
                             case "altruism":
                             case "collect":
@@ -647,7 +647,7 @@ namespace EddiCargoMonitor
                         {
                             // Cargo instantiated by either 'Mission accepted' event or previous 'WingUpdate' update
                             haulage = cargo.haulageData.FirstOrDefault(ha => ha.missionid == @event.missionid);
-                            haulage.amount = amountRemaining;
+                            haulage.remaining = amountRemaining;
 
                             // Update commodity definition if intantiated by previous 'WingUpdate' update
                             if (cargo.commodityDef.edname == "Unknown")
@@ -684,7 +684,7 @@ namespace EddiCargoMonitor
                         {
                             // Cargo instantiated by either 'Mission accepted' event, previous 'WingUpdate' or 'Collect' updates 
                             haulage = cargo.haulageData.FirstOrDefault(ha => ha.missionid == @event.missionid);
-                            haulage.amount = amountRemaining;
+                            haulage.remaining = amountRemaining;
 
                             //Update commodity definition if intantiated by previous 'WingUpdate' update
                             if (cargo.commodityDef.edname == "Unknown")
@@ -708,7 +708,7 @@ namespace EddiCargoMonitor
                             cargo.haulageData.Add(haulage);
                         }
 
-                        if (haulage.type.Contains("delivery"))
+                        if (haulage.typeEDName.Contains("delivery"))
                         {
                             cargo.haulage -= @event.amount ?? 0;
                         }
@@ -735,7 +735,7 @@ namespace EddiCargoMonitor
                         {
                             // Cargo instantiated by either 'Mission accepted' event, previous 'WingUpdate' or 'Collect' updates
                             haulage = cargo.haulageData.FirstOrDefault(ha => ha.missionid == @event.missionid);
-                            haulage.amount = amountRemaining;
+                            haulage.remaining = amountRemaining;
                         }
                         else
                         {
@@ -780,7 +780,7 @@ namespace EddiCargoMonitor
             Haulage haulage = cargo.haulageData.FirstOrDefault(ha => ha.missionid == @event.missionid);
             if (haulage != null)
             {
-                switch (haulage.type)
+                switch (haulage.typeEDName)
                 {
                     case "delivery":
                     case "deliverywing":
@@ -789,7 +789,7 @@ namespace EddiCargoMonitor
                     case "smuggle":
                         {
                             // Calculate the amount of mission-related cargo still in inventory
-                            int obtained = haulage.amount - cargo.ejected;
+                            int obtained = haulage.remaining - cargo.ejected;
                             obtained = Math.Min(cargo.haulage, obtained);
 
                             // Convert that amount of cargo from `haulage` to `stolen`
@@ -797,7 +797,7 @@ namespace EddiCargoMonitor
                             cargo.stolen += obtained;
 
                             // Reduce our `need` counter by the amount of mission related cargo which had not yet been obtained.
-                            cargo.need -= (haulage.amount - obtained);
+                            cargo.need -= (haulage.remaining - obtained);
 
                             // We didn't fail for ejecting cargo so we set this counter to zero
                             cargo.ejected = 0;
@@ -881,8 +881,8 @@ namespace EddiCargoMonitor
                 Haulage haulage = cargo.haulageData.FirstOrDefault(ha => ha.missionid == @event.missionid);
                 if (haulage != null)
                 {
-                    int amount = Math.Min(haulage.amount, @event.amount ?? 0);
-                    switch (haulage.type)
+                    int amount = Math.Min(haulage.remaining, @event.amount ?? 0);
+                    switch (haulage.typeEDName)
                     {
                         case "altruism":
                         case "collect":
@@ -985,7 +985,7 @@ namespace EddiCargoMonitor
             if (haulage != null)
             {
                 Cargo cargo = GetCargoWithMissionId(@event.missionid ?? 0);
-                switch (haulage.type)
+                switch (haulage.typeEDName)
                 {
                     case "delivery":
                     case "deliverywing":
@@ -994,7 +994,7 @@ namespace EddiCargoMonitor
                     case "smuggle":
                         {
                             // Calculate the amount of mission-related cargo still in inventory
-                            int obtained = haulage.amount;
+                            int obtained = haulage.remaining;
 
                             // If not expired, then failure may have been due to jettisoning cargo
                             if (haulage.expiry < DateTime.Now)
@@ -1009,7 +1009,7 @@ namespace EddiCargoMonitor
                             cargo.stolen += obtained;
 
                             // Reduce our `need` counter by the amount of mission related cargo which had not yet been obtained.
-                            cargo.need -= (haulage.amount - obtained);
+                            cargo.need -= (haulage.remaining - obtained);
                         }
                         break;
                 }

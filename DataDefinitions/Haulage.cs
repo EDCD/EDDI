@@ -10,12 +10,14 @@ namespace EddiDataDefinitions
 
         public string name { get; set; }
 
+        public string typeEDName => name.Split('_').ElementAtOrDefault(1)?.ToLowerInvariant();
+
+        [JsonIgnore, Obsolete("Please use localizedName or invariantName")]
+        public string type => MissionType.FromEDName(typeEDName)?.localizedName;
+
         public string status { get; set; }
 
         public string originsystem { get; set; }
-
-        [JsonIgnore]
-        public string type => name.Split('_').ElementAtOrDefault(1)?.ToLowerInvariant();
 
         [JsonIgnore]
         public bool legal => !name.ToLowerInvariant().Contains("illegal");
@@ -24,6 +26,8 @@ namespace EddiDataDefinitions
         public bool wing => name.ToLowerInvariant().Contains("wing");
 
         public int amount { get; set; }
+
+        public int remaining { get; set; }
 
         public int collected { get; set; }
 
@@ -42,6 +46,7 @@ namespace EddiDataDefinitions
             this.originsystem = originsystem;
             this.status = status;
             this.amount = amount;
+            this.remaining = remaining;
             this.collected = collected;
             this.delivered = delivered;
             this.expiry = expiry;
@@ -55,6 +60,7 @@ namespace EddiDataDefinitions
             this.originsystem = OriginSystem;
             this.status = "Active";
             this.amount = Amount;
+            this.remaining = Amount;
             this.collected = 0;
             this.delivered = 0;
             this.expiry = Expiry;
