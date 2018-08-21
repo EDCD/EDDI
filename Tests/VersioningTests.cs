@@ -23,6 +23,14 @@ namespace UnitTests
         }
 
         [TestMethod]
+        public void TestShortFinalVersionToString()
+        {
+            Version v = new Version(1, 2, 3);
+            string s = v.ToString();
+            Assert.AreEqual("1.2.3", s);
+        }
+
+        [TestMethod]
         public void TestVersion1()
         {
             Assert.AreEqual(1, Versioning.Compare("1.1.0", "1.0.1"));

@@ -18,7 +18,7 @@ namespace Utilities
         public readonly TestPhase phase; // not printed for final
         public readonly int iteration; // not printed for final
 
-        public Version(int major, int minor, int patch, TestPhase phase, int iteration)
+        public Version(int major, int minor, int patch, TestPhase phase = TestPhase.final, int iteration = 0)
         {
             this.major = major;
             this.minor = minor;
