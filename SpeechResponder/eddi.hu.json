@@ -96,10 +96,10 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{_ Cargo depot }\r\n{_ Triggered when collecting or delivering cargo for a wing mission }\r\n\r\n\r\n{if event.updatetype = \"Collect\":\r\n    You have collected {event.amount} tonne{if event.amount != 1:s} of {event.commodity} from the mission depot.\r\n|elif event.updatetype = \"Deliver\":\r\n    You have delivered {event.amount} tonne{if event.amount != 1:s} of {event.commodity} to the mission depot.\r\n\r\n    {Pause(500)}\r\n    {set remaining to event.totaltodeliver - event.delivered}\r\n    {set haulage to HaulageDetails(event.missionsid)}\r\n    {if find(haulage.name, \"Wing\") > -1:\r\n        Wing\r\n    |elif find(haulage.name, \"Rank\") > -1:\r\n        Naval\r\n    }\r\n    {if remaining = 0:\r\n        mission requirements are now completed.\r\n    |else:\r\n        mission is now {round(event.delivered / event.totaltodeliver * 100, 0)} percent complete.\r\n    }\r\n}\r\n",
+      "script": "{_ Cargo depot }\r\n{_ Triggered when engaging with a mission depot }\r\n\r\n\r\n{if event.updatetype = \"Collect\":\r\n    You have collected {event.amount} tonne{if event.amount != 1:s} of {event.commodity} from the mission depot.\r\n|elif event.updatetype = \"Deliver\":\r\n    You have delivered {event.amount} tonne{if event.amount != 1:s} of {event.commodity} to the mission depot.\r\n\r\n    {Pause(500)}\r\n    {set remaining to event.totaltodeliver - event.delivered}\r\n    {set haulage to HaulageDetails(event.missionid)}\r\n\r\n    {if find(haulage.name, \"Wing\") > -1:\r\n        Wing\r\n    |elif find(haulage.name, \"Rank\") > -1:\r\n        Naval\r\n    |else:\r\n        Solo\r\n    }\r\n\r\n    {if remaining = 0:\r\n        mission requirements are now completed.\r\n    |else:\r\n        mission is now {round(event.delivered / event.totaltodeliver * 100, 0)} percent complete.\r\n    }\r\n}\r\n\r\n",
       "default": true,
       "name": "Cargo depot",
-      "description": "Triggered when collecting cargo from or delivering cargo to mission depot"
+      "description": "Triggered when engaging with a mission depot"
     },
     "Cargo inventory": {
       "enabled": true,
