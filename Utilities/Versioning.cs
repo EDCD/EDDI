@@ -19,7 +19,7 @@ namespace Utilities
         public readonly TestPhase phase; // not printed for final
         public readonly int iteration; // not printed for final
 
-        // can throw ArgumentException
+        // can throw ArgumentException for an invalid phase
         public Version(int major, int minor, int patch, string phase, int iteration)
         {
             this.major = major;
@@ -52,14 +52,25 @@ namespace Utilities
             // https://docs.microsoft.com/en-us/dotnet/standard/base-types/best-practices?view=netframework-4.7.2 
             // I have concluded that an interpreted rather than compiled regex is the better choice here,
             // as version strings are parsed infrequently.
-            string pattern = @"^(?<major>\d+).(?<minor>\d+).(?<patch>\d+)-(?<phase>[a-z]+)(?<iteration>\d+)$";
+            string pattern = @"^(?<major>\d+).(?<minor>\d+).(?<patch>\d+)(-(?<phase>[a-z]+)(?<iteration>\d+))?$";
             Match match = Regex.Match(input, pattern);
             GroupCollection matchGroups = match.Groups;
+
             int major = int.Parse(matchGroups["major"].Value);
             int minor = int.Parse(matchGroups["minor"].Value);
             int patch = int.Parse(matchGroups["patch"].Value);
             string phase = matchGroups["phase"].Value;
-            int iteration = int.Parse(matchGroups["iteration"].Value);
+            int iteration = 0;
+
+            // special handling for final version strings
+            if (String.IsNullOrEmpty(phase))
+            {
+                phase = TestPhase.final.ToString();
+            }
+            else
+            {
+                iteration = int.Parse(matchGroups["iteration"].Value);
+            }
 
             return new Version(major, minor, patch, phase, iteration);
         }
