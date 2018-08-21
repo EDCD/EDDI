@@ -113,6 +113,15 @@ namespace EDDNResponder
         {
         }
 
+        private bool ShouldUseTestEndpoints()
+        {
+#if DEBUG
+            return true;
+#else
+            return EDDI.Instance.inBeta;
+#endif
+        }
+
         private void handleLocationEvent(LocationEvent @event)
         {
             // Set all of the information available from the event
@@ -184,12 +193,7 @@ namespace EDDNResponder
             EDDNBody body = new EDDNBody
             {
                 header = generateHeader(),
-#if DEBUG
-                // Use the test schema while in development.
-                schemaRef = "https://eddn.edcd.io/schemas/journal/1/test",
-#else
-                schemaRef = "https://eddn.edcd.io/schemas/journal/1" + (EDDI.Instance.inBeta ? "/test" : ""),
-#endif
+                schemaRef = "https://eddn.edcd.io/schemas/journal/1" + (ShouldUseTestEndpoints() ? "/test" : ""),
                 message = data
             };
 
@@ -256,12 +260,7 @@ namespace EDDNResponder
                     EDDNBody body = new EDDNBody
                     {
                         header = generateHeader(),
-#if DEBUG
-                        // Use the test schema while in development.
-                        schemaRef = "https://eddn.edcd.io/schemas/commodity/3/test",
-#else
-                        schemaRef = "https://eddn.edcd.io/schemas/commodity/3" + (EDDI.Instance.inBeta ? "/test" : ""),
-#endif
+                        schemaRef = "https://eddn.edcd.io/schemas/commodity/3" + (ShouldUseTestEndpoints() ? "/test" : ""),
                         message = data
                     };
 
@@ -347,12 +346,7 @@ namespace EDDNResponder
                     EDDNBody body = new EDDNBody
                     {
                         header = generateHeader(),
-#if DEBUG
-                        // Use the test schema while in development.
-                        schemaRef = "https://eddn.edcd.io/schemas/outfitting/2/test",
-#else
-                        schemaRef = "https://eddn.edcd.io/schemas/outfitting/2" + (EDDI.Instance.inBeta ? "/test" : ""),
-#endif
+                        schemaRef = "https://eddn.edcd.io/schemas/outfitting/2" + (ShouldUseTestEndpoints() ? "/test" : ""),
                         message = data
                     };
 
@@ -386,12 +380,7 @@ namespace EDDNResponder
                     EDDNBody body = new EDDNBody
                     {
                         header = generateHeader(),
-#if DEBUG
-                        // Use the test schema while in development.
-                        schemaRef = "https://eddn.edcd.io/schemas/shipyard/2/test",
-#else
-                        schemaRef = "https://eddn.edcd.io/schemas/shipyard/2" + (EDDI.Instance.inBeta ? "/test" : ""),
-#endif
+                        schemaRef = "https://eddn.edcd.io/schemas/shipyard/2" + (ShouldUseTestEndpoints() ? "/test" : ""),
                         message = data
                     };
 
