@@ -15,8 +15,24 @@ namespace Utilities
         public readonly int major;
         public readonly int minor;
         public readonly int patch;
-        public readonly TestPhase phase;
-        public readonly int iteration;
+        public readonly TestPhase phase; // not printed for final
+        public readonly int iteration; // not printed for final
+
+        public Version(int major, int minor, int patch, TestPhase phase, int iteration)
+        {
+            this.major = major;
+            this.minor = minor;
+            this.patch = patch;
+            this.phase = phase;
+            this.iteration = iteration;
+        }
+
+        public override string ToString()
+        {
+            return phase == TestPhase.final 
+                ? $"{major}.{minor}.{patch}" 
+                : $"{major}.{minor}.{patch}-{phase}{iteration}";
+        }
     }
 
     public class Versioning

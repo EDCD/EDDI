@@ -7,6 +7,22 @@ namespace UnitTests
     public class VersioningTests
     {
         [TestMethod]
+        public void TestBetaVersionToString()
+        {
+            Version v = new Version(1, 2, 3, Version.TestPhase.b, 4);
+            string s = v.ToString();
+            Assert.AreEqual("1.2.3-b4", s);
+        }
+
+        [TestMethod]
+        public void TestFinalVersionToString()
+        {
+            Version v = new Version(1, 2, 3, Version.TestPhase.final, 0);
+            string s = v.ToString();
+            Assert.AreEqual("1.2.3", s);
+        }
+
+        [TestMethod]
         public void TestVersion1()
         {
             Assert.AreEqual(1, Versioning.Compare("1.1.0", "1.0.1"));
