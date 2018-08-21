@@ -2,6 +2,23 @@
 
 namespace Utilities
 {
+    public struct Version
+    {
+        public enum TestPhase
+        {
+            a = -3, // alpha
+            b = -2, // beta
+            rc = -1, // release candidate
+            final = 0, // final
+        }
+
+        public readonly int major;
+        public readonly int minor;
+        public readonly int patch;
+        public readonly TestPhase phase;
+        public readonly int iteration;
+    }
+
     public class Versioning
     {
         /// <summary>
