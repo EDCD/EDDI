@@ -109,6 +109,22 @@ namespace UnitTests
         }
 
         [TestMethod]
+        public void TestEquality()
+        {
+            Version v1 = new Version(1, 2, 3, "b", 4);
+            Version v2 = new Version(1, 2, 3, "b", 4);
+            Assert.IsTrue(v1 == v2);
+        }
+
+        [TestMethod]
+        public void TestInEquality()
+        {
+            Version v1 = new Version(1, 2, 3, "b", 4);
+            Version v2 = new Version(1, 2, 3, "b", 5);
+            Assert.IsTrue(v1 != v2);
+        }
+
+        [TestMethod]
         public void TestVersion1()
         {
             Assert.AreEqual(1, Versioning.Compare("1.1.0", "1.0.1"));

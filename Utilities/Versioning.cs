@@ -3,7 +3,7 @@ using System.Text.RegularExpressions;
 
 namespace Utilities
 {
-    public struct Version
+    public struct Version : IEquatable<Version>
     {
         public enum TestPhase
         {
@@ -73,6 +73,53 @@ namespace Utilities
             }
 
             return new Version(major, minor, patch, phase, iteration);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (!(obj is Version))
+            {
+                return false;
+            }
+
+            Version version = (Version)obj;
+            return this.Equals(version);
+        }
+
+        public bool Equals(Version version)
+        {
+            return major == version.major &&
+                   minor == version.minor &&
+                   patch == version.patch &&
+                   phase == version.phase &&
+                   iteration == version.iteration;
+        }
+
+        public override int GetHashCode()
+        {
+            var hashCode = -458428195;
+            hashCode = hashCode * -1521134295 + base.GetHashCode();
+            hashCode = hashCode * -1521134295 + major.GetHashCode();
+            hashCode = hashCode * -1521134295 + minor.GetHashCode();
+            hashCode = hashCode * -1521134295 + patch.GetHashCode();
+            hashCode = hashCode * -1521134295 + phase.GetHashCode();
+            hashCode = hashCode * -1521134295 + iteration.GetHashCode();
+            return hashCode;
+        }
+
+        public static bool operator ==(Version left, Version right)
+        {
+            return
+                left.major == right.major &&
+                left.minor == right.minor &&
+                left.patch == right.patch &&
+                left.phase == right.phase &&
+                left.iteration == right.iteration;
+        }
+
+        public static bool operator !=(Version left, Version right)
+        {
+            return !left.Equals(right);
         }
     }
 
