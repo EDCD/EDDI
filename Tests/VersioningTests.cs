@@ -53,6 +53,62 @@ namespace UnitTests
         }
 
         [TestMethod]
+        public void TestParseBetaVersion()
+        {
+            string s = "1.2.3-b4";
+            Version v = Version.Parse(s);
+            Assert.AreEqual(1, v.major);
+            Assert.AreEqual(2, v.minor);
+            Assert.AreEqual(3, v.patch);
+            Assert.AreEqual(Version.TestPhase.b, v.phase);
+            Assert.AreEqual(4, v.iteration);
+        }
+
+        [TestMethod]
+        public void TestParseFinalVersion()
+        {
+            string s = "1.2.3";
+            Version v = Version.Parse(s);
+            Assert.AreEqual(1, v.major);
+            Assert.AreEqual(2, v.minor);
+            Assert.AreEqual(3, v.patch);
+            Assert.AreEqual(Version.TestPhase.final, v.phase);
+            Assert.AreEqual(0, v.iteration);
+        }
+
+        [TestMethod]
+        public void TestParseInvalidVersion()
+        {
+            string s = "totally invalid string";
+            try
+            {
+                Version v = Version.Parse(s);
+            }
+            catch (System.Exception)
+            {
+                // pass
+                return;
+            }
+            Assert.Fail("Expected an Exception");
+        }
+
+        [TestMethod]
+        public void TestParseInvalidPhase()
+        {
+            string s = "1.2.3-invalid42";
+            try
+            {
+                Version v = Version.Parse(s);
+            }
+            catch (System.Exception)
+            {
+                // pass
+                return;
+            }
+            Assert.Fail("Expected an Exception");
+        }
+
+        [TestMethod]
         public void TestVersion1()
         {
             Assert.AreEqual(1, Versioning.Compare("1.1.0", "1.0.1"));

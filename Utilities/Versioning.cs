@@ -44,6 +44,25 @@ namespace Utilities
                 ? $"{major}.{minor}.{patch}" 
                 : $"{major}.{minor}.{patch}-{phase}{iteration}";
         }
+
+        // Can throw FormatException or ArgumentException
+        public static Version Parse(string input)
+        {
+            // Performance note: after considering 
+            // https://docs.microsoft.com/en-us/dotnet/standard/base-types/best-practices?view=netframework-4.7.2 
+            // I have concluded that an interpreted rather than compiled regex is the better choice here,
+            // as version strings are parsed infrequently.
+            string pattern = @"^(?<major>\d+).(?<minor>\d+).(?<patch>\d+)-(?<phase>[a-z]+)(?<iteration>\d+)$";
+            Match match = Regex.Match(input, pattern);
+            GroupCollection matchGroups = match.Groups;
+            int major = int.Parse(matchGroups["major"].Value);
+            int minor = int.Parse(matchGroups["minor"].Value);
+            int patch = int.Parse(matchGroups["patch"].Value);
+            string phase = matchGroups["phase"].Value;
+            int iteration = int.Parse(matchGroups["iteration"].Value);
+
+            return new Version(major, minor, patch, phase, iteration);
+        }
     }
 
     public class Versioning
