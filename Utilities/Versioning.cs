@@ -18,6 +18,16 @@ namespace Utilities
         public readonly TestPhase phase; // not printed for final
         public readonly int iteration; // not printed for final
 
+        // can throw ArgumentException
+        public Version(int major, int minor, int patch, string phase, int iteration)
+        {
+            this.major = major;
+            this.minor = minor;
+            this.patch = patch;
+            this.phase = (TestPhase)Enum.Parse(typeof(TestPhase), phase);
+            this.iteration = iteration;
+        }
+
         public Version(int major, int minor, int patch, TestPhase phase = TestPhase.final, int iteration = 0)
         {
             this.major = major;

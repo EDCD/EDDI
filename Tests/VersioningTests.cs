@@ -15,6 +15,28 @@ namespace UnitTests
         }
 
         [TestMethod]
+        public void TestVersionWithBetaPhaseAsString()
+        {
+            Version v = new Version(1, 2, 3, "b", 4);
+            Assert.AreEqual(Version.TestPhase.b, v.phase);
+        }
+
+        [TestMethod]
+        public void TestVersionWithInvalidPhaseAsStringThows()
+        {
+            try
+            {
+                Version v = new Version(1, 2, 3, "invalid", 4);
+            }
+            catch(System.ArgumentException)
+            {
+                // pass
+                return;
+            }
+            Assert.Fail("Expected an ArgumentException");
+        }
+
+        [TestMethod]
         public void TestFinalVersionToString()
         {
             Version v = new Version(1, 2, 3, Version.TestPhase.final, 0);
