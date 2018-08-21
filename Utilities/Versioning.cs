@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text.RegularExpressions;
 
 namespace Utilities
 {
@@ -67,9 +68,9 @@ namespace Utilities
                 {
                     return -1;
                 }
-                System.Text.RegularExpressions.Regex versionRegex = new System.Text.RegularExpressions.Regex(@"^([\d]+)\.([\d]+)\.([\d]+)-?([a-z]+)?([\d]+)?");
-                System.Text.RegularExpressions.MatchCollection m1 = versionRegex.Matches(Version1);
-                System.Text.RegularExpressions.MatchCollection m2 = versionRegex.Matches(Version2);
+                Regex versionRegex = new Regex(@"^([\d]+)\.([\d]+)\.([\d]+)-?([a-z]+)?([\d]+)?");
+                MatchCollection m1 = versionRegex.Matches(Version1);
+                MatchCollection m2 = versionRegex.Matches(Version2);
 
                 // Handle simple version number differences
                 for (int i = 1; i < 4; i++)
