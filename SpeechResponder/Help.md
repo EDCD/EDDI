@@ -321,8 +321,8 @@ CommodityMarketDetails() takes one mandatory argument and two optional arguments
 
 Common usage of this is to provide further information about a commodity, for example:
 
-{set marketcommodity to CommodityStationDetails("Pesticides", "Chelbin Service Station", "Wolf 397")}
-{marketcommodity.name} is selling for {marketcommodity.sellprice} with a current market demand of {marketcommodity.demand} units.
+    {set marketcommodity to CommodityStationDetails("Pesticides", "Chelbin Service Station", "Wolf 397")}
+    {marketcommodity.name} is selling for {marketcommodity.sellprice} with a current market demand of {marketcommodity.demand} units.
 
 ### CargoDetails()
 
@@ -334,13 +334,13 @@ CargoDetails() takes one mandatory argument, of two possible forms.
 
 Common usage of this is to provide further information about a particular cargo, for example:
 
-{set cargo to CargoDetails("Tea")}
-{if cargo && cargo.total > 0: You have {cargo.total} tonne{if cargo.total != 1: s} of {cargo.name} in your cargo hold.}
+    {set cargo to CargoDetails("Tea")}
+    {if cargo && cargo.total > 0: You have {cargo.total} tonne{if cargo.total != 1: s} of {cargo.name} in your cargo hold.}
 
 or for a mission-related event,
 
-{set cargo to CargoDetails(event.missionid)}
-{if cargo: {cargo.total} tonne{if cargo.total != 1: s} of {cargo.name} is in your hold for this mission.}
+    {set cargo to CargoDetails(event.missionid)}
+    {if cargo: {cargo.total} tonne{if cargo.total != 1: s} of {cargo.name} is in your hold for this mission.}
 
 ### HaulageDetails()
 
@@ -350,11 +350,11 @@ HaulageDetails() takes one mandatory argument, a mission ID associated with the 
 
 Common usage of this is to provide further information about a particular mission haulage, for example:
 
-{set haulage to HaulageDetails(event.missionid)}
-{if haulage && haulage.deleivered > 0:
-    {set total to haulage.amount + haulage.deleivered}
-	{haulage.type} mission to the cargo depot is {round(haulage.delivered / total * 100, 0)} percent complete.
-}
+    {set haulage to HaulageDetails(event.missionid)}
+    {if haulage && haulage.deleivered > 0:
+        {set total to haulage.amount + haulage.deleivered}
+	    {haulage.type} mission to the cargo depot is {round(haulage.delivered / total * 100, 0)} percent complete.
+    }
 
 ### MaterialDetails()
 
