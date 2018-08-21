@@ -89,7 +89,8 @@ namespace EddiDataProviderService
                 StarSystem.allegiance = (string)json["allegiance"];
                 StarSystem.government = (string)json["government"];
                 StarSystem.faction = (string)json["faction"];
-                StarSystem.economies[0] = Economy.FromEDName((string)json["primary_economy"]);
+                // EDDP uses invariant / English localized economies
+                StarSystem.economies[0] = Economy.FromName((string)json["primary_economy"]);
                 // At present, EDDP does not provide any information about secondary economies.
                 StarSystem.systemState = SystemState.FromEDName((string)json["state"]) ?? SystemState.None;
                 StarSystem.security = (string)json["security"];
