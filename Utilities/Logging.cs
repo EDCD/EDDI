@@ -279,7 +279,7 @@ namespace Utilities
                         }
                         else if (itemResolvedVersion != null)
                         {
-                            if (Versioning.Compare(itemResolvedVersion, Constants.EDDI_VERSION) > 0)
+                            if (Version.CompareStrings(itemResolvedVersion, Constants.EDDI_VERSION) > 0)
                             {
                                 return false; // This has been marked as resolved in a more current client version.
                             }

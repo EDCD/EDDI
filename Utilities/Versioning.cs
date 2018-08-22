@@ -19,6 +19,16 @@ namespace Utilities
         public readonly TestPhase phase; // not printed for final
         public readonly int iteration; // not printed for final
 
+        // this is the most efficient constructor as it doesn't need to do any parsing
+        public Version(int major, int minor, int patch, TestPhase phase = TestPhase.final, int iteration = 0)
+        {
+            this.major = major;
+            this.minor = minor;
+            this.patch = patch;
+            this.phase = phase;
+            this.iteration = iteration;
+        }
+
         // can throw ArgumentException for an invalid phase
         public Version(int major, int minor, int patch, string phase, int iteration)
         {
@@ -29,24 +39,8 @@ namespace Utilities
             this.iteration = iteration;
         }
 
-        public Version(int major, int minor, int patch, TestPhase phase = TestPhase.final, int iteration = 0)
-        {
-            this.major = major;
-            this.minor = minor;
-            this.patch = patch;
-            this.phase = phase;
-            this.iteration = iteration;
-        }
-
-        public override string ToString()
-        {
-            return phase == TestPhase.final 
-                ? $"{major}.{minor}.{patch}" 
-                : $"{major}.{minor}.{patch}-{phase}{iteration}";
-        }
-
         // Can throw FormatException or ArgumentException
-        public static Version Parse(string input)
+        public Version(string input)
         {
             // Performance note: after considering 
             // https://docs.microsoft.com/en-us/dotnet/standard/base-types/best-practices?view=netframework-4.7.2 
@@ -56,23 +50,29 @@ namespace Utilities
             Match match = Regex.Match(input, pattern);
             GroupCollection matchGroups = match.Groups;
 
-            int major = int.Parse(matchGroups["major"].Value);
-            int minor = int.Parse(matchGroups["minor"].Value);
-            int patch = int.Parse(matchGroups["patch"].Value);
-            string phase = matchGroups["phase"].Value;
-            int iteration = 0;
+            major = int.Parse(matchGroups["major"].Value);
+            minor = int.Parse(matchGroups["minor"].Value);
+            patch = int.Parse(matchGroups["patch"].Value);
+            string phaseStr = matchGroups["phase"].Value;
 
             // special handling for final version strings
-            if (String.IsNullOrEmpty(phase))
+            if (String.IsNullOrEmpty(phaseStr))
             {
-                phase = TestPhase.final.ToString();
+                phase = TestPhase.final;
+                iteration = 0;
             }
             else
             {
+                phase = (TestPhase)Enum.Parse(typeof(TestPhase), phaseStr);
                 iteration = int.Parse(matchGroups["iteration"].Value);
             }
+        }
 
-            return new Version(major, minor, patch, phase, iteration);
+        public override string ToString()
+        {
+            return phase == TestPhase.final
+                ? $"{major}.{minor}.{patch}"
+                : $"{major}.{minor}.{patch}-{phase}{iteration}";
         }
 
         public override bool Equals(object obj)
@@ -160,30 +160,19 @@ namespace Utilities
 
         public static bool operator ==(Version left, Version right)
         {
-            return
-                left.major == right.major &&
-                left.minor == right.minor &&
-                left.patch == right.patch &&
-                left.phase == right.phase &&
-                left.iteration == right.iteration;
+            return left.Equals(right);
         }
 
         public static bool operator !=(Version left, Version right)
         {
             return !left.Equals(right);
         }
-    }
 
-    public class Versioning
-    {
-        /// <summary>
-        /// Compare two version strings
-        /// </summary>
         /// <returns>1 if the first version is greater than the second version, 0 if they are the same, -1 if first version is less than the second version</returns>
-        public static int Compare(string Version1, string Version2)
+        public static int CompareStrings(string Version1, string Version2)
         {
-            Version v1 = Version.Parse(Version1);
-            Version v2 = Version.Parse(Version2);
+            Version v1 = new Version(Version1);
+            Version v2 = new Version(Version2);
             return v1.CompareTo(v2);
         }
     }

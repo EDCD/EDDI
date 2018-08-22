@@ -242,12 +242,13 @@ namespace Eddi
                     InstanceInfo info = configuration.Beta ? updateServerInfo.beta : updateServerInfo.production;
                     string spokenVersion = info.version.Replace(".", $" {Properties.EddiResources.point} ");
                     Motd = info.motd;
+                    Utilities.Version minVersion = new Utilities.Version(info.minversion);
                     if (updateServerInfo.productionbuilds != null)
                     {
                         ProductionBuilds = updateServerInfo.productionbuilds;
                     }
 
-                    if (Versioning.Compare(info.minversion, Constants.EDDI_VERSION) == 1)
+                    if (Utilities.Version.CompareStrings(info.minversion, Constants.EDDI_VERSION) == 1)
                     {
                         // There is a mandatory update available
                         if (!FromVA)
@@ -261,7 +262,7 @@ namespace Eddi
                         return;
                     }
 
-                    if (Versioning.Compare(info.version, Constants.EDDI_VERSION) == 1)
+                    if (Utilities.Version.CompareStrings(info.version, Constants.EDDI_VERSION) == 1)
                     {
                         // There is an update available
                         if (!FromVA)
