@@ -22,6 +22,14 @@ namespace UnitTests
         }
 
         [TestMethod]
+        public void TestBetaVersionShortString()
+        {
+            Version v = new Version(1, 2, 3, Version.TestPhase.b, 4);
+            string s = v.ShortString;
+            Assert.AreEqual("1.2.3", s);
+        }
+
+        [TestMethod]
         public void TestVersionWithInvalidPhaseAsStringThows()
         {
             try

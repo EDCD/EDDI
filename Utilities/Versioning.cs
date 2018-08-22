@@ -75,6 +75,8 @@ namespace Utilities
                 : $"{major}.{minor}.{patch}-{phase}{iteration}";
         }
 
+        public string ShortString => $"{major}.{minor}.{patch}";
+
         public override bool Equals(object obj)
         {
             if (!(obj is Version))
