@@ -410,7 +410,7 @@ namespace EDDNResponder
             EDDNHeader header = new EDDNHeader
             {
                 softwareName = Constants.EDDI_NAME,
-                softwareVersion = Constants.EDDI_VERSION,
+                softwareVersion = Constants.EDDI_VERSION.ToString(),
                 uploaderID = generateUploaderId()
             };
             return header;

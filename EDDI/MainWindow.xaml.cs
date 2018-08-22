@@ -519,7 +519,7 @@ namespace Eddi
         // Set the fields relating to status information
         private void setStatusInfo()
         {
-            versionText.Text = Constants.EDDI_VERSION;
+            versionText.Text = Constants.EDDI_VERSION.ToString();
             Title = "EDDI v." + Constants.EDDI_VERSION;
 
             if (EDDI.Instance.UpgradeVersion != null)
