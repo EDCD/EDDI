@@ -118,7 +118,8 @@ namespace EDDNResponder
 #if DEBUG
             return true;
 #else
-            return EDDI.Instance.inBeta;
+            // use test endpoints if the game is in beta or EDDI is not release candidate or final
+            return EDDI.Instance.inBeta || (Constants.EDDI_VERSION.phase < Utilities.Version.TestPhase.rc);
 #endif
         }
 
