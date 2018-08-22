@@ -125,6 +125,38 @@ namespace UnitTests
         }
 
         [TestMethod]
+        public void TestLessThan()
+        {
+            Version v1 = new Version(1, 2, 3, "b", 4);
+            Version v2 = new Version(1, 2, 3, "b", 5);
+            Assert.IsTrue(v1 < v2);
+        }
+
+        [TestMethod]
+        public void TestLessThanOrEqual()
+        {
+            Version v1 = new Version(1, 2, 3, "b", 4);
+            Version v2 = new Version(1, 2, 3, "b", 4);
+            Assert.IsTrue(v1 <= v2);
+        }
+
+        [TestMethod]
+        public void TestGreaterThan()
+        {
+            Version v1 = new Version(1, 2, 3, "b", 4);
+            Version v2 = new Version(1, 2, 3, "b", 5);
+            Assert.IsTrue(v2 > v1);
+        }
+
+        [TestMethod]
+        public void TestGreaterThanOrEqual()
+        {
+            Version v1 = new Version(1, 2, 3, "b", 4);
+            Version v2 = new Version(1, 2, 3, "b", 4);
+            Assert.IsTrue(v2 >= v1);
+        }
+
+        [TestMethod]
         public void TestVersion1()
         {
             Assert.AreEqual(1, Version.CompareStrings("1.1.0", "1.0.1"));

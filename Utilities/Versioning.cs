@@ -168,6 +168,26 @@ namespace Utilities
             return !left.Equals(right);
         }
 
+        public static bool operator <(Version left, Version right)
+        {
+            return left.CompareTo(right) < 0;
+        }
+
+        public static bool operator <=(Version left, Version right)
+        {
+            return left.CompareTo(right) <= 0;
+        }
+
+        public static bool operator >(Version left, Version right)
+        {
+            return left.CompareTo(right) > 0;
+        }
+
+        public static bool operator >=(Version left, Version right)
+        {
+            return left.CompareTo(right) >= 0;
+        }
+
         /// <returns>1 if the first version is greater than the second version, 0 if they are the same, -1 if first version is less than the second version</returns>
         public static int CompareStrings(string Version1, string Version2)
         {
