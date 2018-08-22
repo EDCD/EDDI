@@ -675,6 +675,12 @@ namespace EddiCargoMonitor
                         cargo.CalculateNeed();
                         haulage.collected = @event.collected;
                         haulage.delivered = @event.delivered;
+                        if (haulage.startmarketid == 0)
+                        {
+                            haulage.startmarketid = @event.startmarketid;
+                            haulage.endmarketid = @event.endmarketid;
+                        }
+
                     }
                     break;
                 case "Deliver":
@@ -719,6 +725,11 @@ namespace EddiCargoMonitor
                         cargo.CalculateNeed();
                         haulage.collected = @event.collected;
                         haulage.delivered = @event.delivered;
+                        if (haulage.endmarketid == 0)
+                        {
+                            haulage.endmarketid = @event.endmarketid;
+                        }
+
 
                         // Check for shared mission completion
                         if (haulage.shared && amountRemaining == 0)
@@ -752,10 +763,19 @@ namespace EddiCargoMonitor
                         {
                             string updatetype = @event.collected > haulage.collected ? "Collect" : "Deliver";
                             EDDI.Instance.eventHandler(new CargoWingUpdateEvent(DateTime.Now, haulage.missionid, updatetype, cargo.commodityDef, amount, @event.collected, @event.delivered, @event.totaltodeliver));
+                            cargo.CalculateNeed();
+                            haulage.collected = @event.collected;
+                            haulage.delivered = @event.delivered;
+                            if (updatetype == "Collect" && haulage.startmarketid == 0)
+                            {
+                                haulage.startmarketid = @event.startmarketid;
+                                haulage.endmarketid = @event.endmarketid;
+                            }
+                            else if (updatetype == "Deliver" && haulage.endmarketid == 0)
+                            {
+                                haulage.endmarketid = @event.endmarketid;
+                            }
                         }
-                        cargo.CalculateNeed();
-                        haulage.collected = @event.collected;
-                        haulage.delivered = @event.delivered;
 
                         // Check for shared mission completion
                         if (haulage.shared && amountRemaining == 0)

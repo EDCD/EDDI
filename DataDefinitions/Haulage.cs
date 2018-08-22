@@ -29,6 +29,10 @@ namespace EddiDataDefinitions
 
         public int remaining { get; set; }
 
+        public int startmarketid { get; set; }
+
+        public int endmarketid { get; set; }
+
         public int collected { get; set; }
 
         public int delivered { get; set; }
