@@ -5,6 +5,10 @@ Full details of the variables available for each noted event, and VoiceAttack in
 ### Development
   * Core
     * Fixed a bug that was preventing some events from being passed to EDSM.
+  * Cargo monitor
+    * Fixed tracking of black market cargo.
+    * Fixed tracking of cargo sold to the mission depot.
+    * Added CargoDetails() and HaulageDetails() functions for Cottle scripting.
   * EDSM responder
     * Fixed a crash when parsing an invalid EDSM configuration.
     * Now sends SystemAddress and MarketId information.
