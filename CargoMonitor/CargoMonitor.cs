@@ -487,20 +487,12 @@ namespace EddiCargoMonitor
                     // Cargo is stolen
                     cargo.stolen -= Math.Min(cargo.stolen, @event.amount);
                 }
-                else if (@event.blackmarket)
+                else if (@event.blackmarket && !@event.illegal)
                 {
-                    if (EDDI.Instance.CurrentStation.prohibited.Contains(cargo.edname))
-                    {
-                        // Owned cargo is prohibited
-                        cargo.owned -= Math.Min(cargo.owned, @event.amount);
-                    }
-                    else
-                    {
-                        // Cargo is mission-related
-                        int amount = Math.Min(cargo.haulage, @event.amount);
-                        cargo.haulage -= amount;
-                        cargo.ejected += amount;
-                    }
+                    // Assume cargo is mission-related
+                    int amount = Math.Min(cargo.haulage, @event.amount);
+                    cargo.haulage -= amount;
+                    cargo.ejected += amount;
                 }
                 else
                 {
