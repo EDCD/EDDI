@@ -200,7 +200,7 @@ namespace Utilities
         {
             var config = new RollbarConfig(rollbarWriteToken)
             {
-                Environment = Constants.EDDI_VERSION,
+                Environment = Constants.EDDI_VERSION.ToString(),
                 ScrubFields = new string[] // Scrub these fields from the reported data
                 {
                     "Commander", "apiKey", "commanderName", Constants.DATA_DIR
@@ -279,9 +279,17 @@ namespace Utilities
                         }
                         else if (itemResolvedVersion != null)
                         {
-                            if (Versioning.Compare(itemResolvedVersion, Constants.EDDI_VERSION) > 0)
+                            try
                             {
-                                return false; // This has been marked as resolved in a more current client version.
+                                Version resolvedVersion = new Version(itemResolvedVersion);
+                                if (resolvedVersion > Constants.EDDI_VERSION)
+                                {
+                                    return false; // This has been marked as resolved in a more current client version.
+                                }
+                            }
+                            catch (Exception)
+                            {
+                                // error parsing version string, ignore
                             }
                         }
                     }

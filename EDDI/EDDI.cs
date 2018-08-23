@@ -246,8 +246,8 @@ namespace Eddi
                     {
                         ProductionBuilds = updateServerInfo.productionbuilds;
                     }
-
-                    if (Versioning.Compare(info.minversion, Constants.EDDI_VERSION) == 1)
+                    Utilities.Version minVersion = new Utilities.Version(info.minversion);
+                    if (minVersion > Constants.EDDI_VERSION)
                     {
                         // There is a mandatory update available
                         if (!FromVA)
@@ -261,7 +261,8 @@ namespace Eddi
                         return;
                     }
 
-                    if (Versioning.Compare(info.version, Constants.EDDI_VERSION) == 1)
+                    Utilities.Version latestVersion = new Utilities.Version(info.version);
+                    if (latestVersion > Constants.EDDI_VERSION)
                     {
                         // There is an update available
                         if (!FromVA)

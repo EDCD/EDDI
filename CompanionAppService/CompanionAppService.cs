@@ -401,7 +401,7 @@ namespace EddiCompanionAppService
             request.AllowAutoRedirect = false;
             request.Timeout = 10000;
             request.ReadWriteTimeout = 10000;
-            request.UserAgent = "Mozilla/5.0 (iPhone; CPU iPhone OS 7_1_2 like Mac OS X) AppleWebKit/537.51.2 (KHTML, like Gecko) Mobile/11D257";
+            request.UserAgent = $"EDCD-{Constants.EDDI_NAME}-{Constants.EDDI_VERSION.ShortString}";
 
             Logging.Debug("Leaving");
             return request;

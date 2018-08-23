@@ -11,6 +11,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
   * EDDN responder
     * Removed the `Wanted` tag from the data we send to EDDN, since all data submissions should be anonymized.
     * Now sends SystemAddress and MarketId information.
+    * Alpha and beta builds will now use EDDN's test endpoints.
   * Ship monitor
     * EDDI will now open shipyard links to coriolis.io rather than edcd.coriolis.io (at Coriolis dev's request). 
       * You will need to **MIGRATE** your ships!
