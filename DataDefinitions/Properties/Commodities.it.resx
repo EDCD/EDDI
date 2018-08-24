@@ -445,16 +445,46 @@
     <value>Nucleo Dati</value>
     <comment>Commodity DataCore</comment>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="DeltaPhoenicisPalms" xml:space="preserve">
+    <value>Palme di Delta Foenicis</value>
+    <comment>Commodity DeltaPhoenicisPalms</comment>
+  </data>
+  <data name="DeuringasTruffles" xml:space="preserve">
+    <value>Tartufi di Deuringas</value>
+    <comment>Commodity DeuringasTruffles</comment>
+  </data>
+  <data name="DiagnosticSensor" xml:space="preserve">
+    <value>Sensori Diagnostici</value>
+    <comment>Commodity DiagnosticSensor</comment>
+  </data>
+  <data name="DiplomaticBag" xml:space="preserve">
+    <value>Valigia Diplomatica</value>
+    <comment>Commodity DiplomaticBag</comment>
+  </data>
+  <data name="DisoMaCorn" xml:space="preserve">
+    <value>Mais di Diso Ma</value>
+    <comment>Commodity DisoMaCorn</comment>
+  </data>
+  <data name="DomesticAppliances" xml:space="preserve">
+    <value>Elettrodomestici</value>
+    <comment>Commodity DomesticAppliances</comment>
+  </data>
+  <data name="Drones" xml:space="preserve">
+    <value>Droni</value>
+    <comment>Commodity Drones</comment>
+  </data>
+  <data name="EarthRelics" xml:space="preserve">
+    <value>Reliquie della Terra</value>
+    <comment>Commodity EarthRelics</comment>
+  </data>
+  <data name="EdenApplesOfAerial" xml:space="preserve">
+    <value>Mele dell'Eden di Aerial</value>
+    <comment>Commodity EdenApplesOfAerial</comment>
+  </data>
+  <data name="EleuThermals" xml:space="preserve">
+    <value>Vesti Termiche Eleu</value>
+    <comment>Commodity EleuThermals</comment>
+  </data>
   <data name="EmergencyPowerCells" xml:space="preserve">
     <value>Celle Energetiche di Emergenza</value>
     <comment>Commodity EmergencyPowerCells</comment>
@@ -519,7 +549,10 @@
     <value>Guida per Viaggiatori Galattici</value>
     <comment>Commodity GalacticTravelGuide</comment>
   </data>
-  
+  <data name="Gallite" xml:space="preserve">
+    <value>Gallite</value>
+    <comment>Commodity Gallite</comment>
+  </data>
   <data name="Gallium" xml:space="preserve">
     <value>Gallio</value>
     <comment>Commodity Gallium</comment>
@@ -564,13 +597,34 @@
     <value>Caffé Goman Yaupon</value>
     <comment>Commodity GomanYauponCoffee</comment>
   </data>
-  
-  
-  
-  
-  
-  
-  
+  <data name="Goslarite" xml:space="preserve">
+    <value>Goslarite</value>
+    <comment>Commodity Goslarite</comment>
+  </data>
+  <data name="Grain" xml:space="preserve">
+    <value>Grano</value>
+    <comment>Commodity Grain</comment>
+  </data>
+  <data name="Hafnium178" xml:space="preserve">
+    <value>Afnio 178</value>
+    <comment>Commodity Hafnium178</comment>
+  </data>
+  <data name="HaidneBlackBrew" xml:space="preserve">
+    <value>Té Nero di Aidne</value>
+    <comment>Commodity HaidneBlackBrew</comment>
+  </data>
+  <data name="HavasupaiDreamCatcher" xml:space="preserve">
+    <value>Cattura Sogni di Avasupai</value>
+    <comment>Commodity HavasupaiDreamCatcher</comment>
+  </data>
+  <data name="HazardousEnvironmentSuits" xml:space="preserve">
+    <value>Tute per Ambienti Ostili</value>
+    <comment>Commodity HazardousEnvironmentSuits</comment>
+  </data>
+  <data name="HeatsinkInterlink" xml:space="preserve">
+    <value>Tubi di Raffreddamento</value>
+    <comment>Commodity HeatsinkInterlink</comment>
+  </data>
   <data name="HeliostaticFurnaces" xml:space="preserve">
     <value>Forni Microbici</value>
     <comment>Commodity HeliostaticFurnaces</comment>
