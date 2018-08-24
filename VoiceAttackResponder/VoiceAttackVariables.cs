@@ -412,7 +412,7 @@ namespace EddiVoiceAttackResponder
             {
                 vaProxy.SetText("Environment", EDDI.Instance.Environment);
                 vaProxy.SetText("Vehicle", EDDI.Instance.Vehicle);
-                vaProxy.SetText("EDDI version", Constants.EDDI_VERSION);
+                vaProxy.SetText("EDDI version", Constants.EDDI_VERSION.ToString());
             }
             catch (Exception ex)
             {
