@@ -146,8 +146,20 @@
     <value>Paternalismo</value>
     <comment>Government type Patronage</comment>
   </data>
-  
-  
-  
-  
+  <data name="PrisonColony" xml:space="preserve">
+    <value>Colonia Carceraria</value>
+    <comment>Government type PrisonColony</comment>
+  </data>
+  <data name="Theocracy" xml:space="preserve">
+    <value>Teocrazia</value>
+    <comment>Government type Theocracy</comment>
+  </data>
+  <data name="Workshop" xml:space="preserve">
+    <value>Officina</value>
+    <comment>Government type Workshop</comment>
+  </data>
+  <data name="engineer" xml:space="preserve">
+    <value>Ingegnere</value>
+    <comment>Government type engineer</comment>
+  </data>
 </root>
