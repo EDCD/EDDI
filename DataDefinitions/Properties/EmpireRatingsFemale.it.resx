@@ -117,19 +117,64 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="None" xml:space="preserve">
+    <value>Nessuna</value>
+    <comment>Empire rank None</comment>
+  </data>
+  <data name="Outsider" xml:space="preserve">
+    <value>Estranea</value>
+    <comment>Empire rank Outsider</comment>
+  </data>
+  <data name="Serf" xml:space="preserve">
+    <value>Serva</value>
+    <comment>Empire rank Serf</comment>
+  </data>
+  <data name="Master" xml:space="preserve">
+    <value>Signora</value>
+    <comment>Empire rank Master</comment>
+  </data>
+  <data name="Squire" xml:space="preserve">
+    <value>Notabile</value>
+    <comment>Empire rank Squire</comment>
+  </data>
+  <data name="Knight" xml:space="preserve">
+    <value>Dama</value>
+    <comment>Empire rank Knight</comment>
+  </data>
+  <data name="Lord" xml:space="preserve">
+    <value>Gentildonna</value>
+    <comment>Empire rank Lord</comment>
+  </data>
+  <data name="Baron" xml:space="preserve">
+    <value>Baronessa</value>
+    <comment>Empire rank Baron</comment>
+  </data>
+  <data name="Viscount" xml:space="preserve">
+    <value>Viscontessa</value>
+    <comment>Empire rank Viscount</comment>
+  </data>
+  <data name="Count" xml:space="preserve">
+    <value>Contessa</value>
+    <comment>Empire rank Count</comment>
+  </data>
+  <data name="Earl" xml:space="preserve">
+    <value>Gran Contessa</value>
+    <comment>Empire rank Earl</comment>
+  </data>
+  <data name="Marquis" xml:space="preserve">
+    <value>Marchesa</value>
+    <comment>Empire rank Marquis</comment>
+  </data>
+  <data name="Duke" xml:space="preserve">
+    <value>Duchessa</value>
+    <comment>Empire rank Duke</comment>
+  </data>
+  <data name="Prince" xml:space="preserve">
+    <value>Principessa</value>
+    <comment>Empire rank Prince</comment>
+  </data>
+  <data name="King" xml:space="preserve">
+    <value>Regina</value>
+    <comment>Empire rank King</comment>
+  </data>
 </root>
