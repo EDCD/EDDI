@@ -611,8 +611,9 @@ namespace EddiCompanionAppService
 
             if (json["lastStarport"] != null && json["lastStarport"]["modules"] != null)
             {
-                foreach (JObject moduleJson in json["lastStarport"]["modules"])
+                foreach (JProperty moduleJsonProperty in json["lastStarport"]["modules"])
                 {
+                    JObject moduleJson = (JObject)moduleJsonProperty.Value;
                     // Not interested in paintjobs, decals, ...
                     string moduleCategory = (string)moduleJson["category"]; // need to convert from LINQ to string
                     switch (moduleCategory)
@@ -706,20 +707,22 @@ namespace EddiCompanionAppService
         }
 
         // Obtain the list of ships available at the station from the profile
-        public static List<Ship> ShipyardFromProfile(dynamic json)
+        public static List<Ship> ShipyardFromProfile(JObject json)
         {
             List<Ship> Ships = new List<Ship>();
 
             if (json["lastStarport"] != null && json["lastStarport"]["ships"] != null)
             {
-                foreach (JObject shipJson in json["lastStarport"]["ships"]["shipyard_list"])
+                foreach (JProperty shipJsonProperty in json["lastStarport"]["ships"]["shipyard_list"])
                 {
+                    JObject shipJson = (JObject)shipJsonProperty.Value;
                     Ship Ship = ShipyardShipFromProfile(shipJson);
                     Ships.Add(Ship);
                 }
 
-                foreach (JObject ship in json["lastStarport"]["ships"]["unavailable_list"])
+                foreach (JProperty shipProperty in json["lastStarport"]["ships"]["unavailable_list"])
                 {
+                    JObject ship = (JObject)shipProperty.Value;
                     Ship Ship = ShipyardShipFromProfile(ship);
                     Ships.Add(Ship);
                 }
