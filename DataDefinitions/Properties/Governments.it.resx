@@ -98,18 +98,54 @@
 	<resheader name="writer">
 		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
 	</resheader>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="Anarchy" xml:space="preserve">
+    <value>Anarchia</value>
+    <comment>Government type Anarchy</comment>
+  </data>
+  <data name="Colony" xml:space="preserve">
+    <value>Colonia</value>
+    <comment>Government type Colony</comment>
+  </data>
+  <data name="Communism" xml:space="preserve">
+    <value>Comunismo</value>
+    <comment>Government type Communism</comment>
+  </data>
+  <data name="Confederacy" xml:space="preserve">
+    <value>Confederazione</value>
+    <comment>Government type Confederacy</comment>
+  </data>
+  <data name="Cooperative" xml:space="preserve">
+    <value>Cooperativismo</value>
+    <comment>Government type Cooperative</comment>
+  </data>
+  <data name="Corporate" xml:space="preserve">
+    <value>Corporativismo</value>
+    <comment>Government type Corporate</comment>
+  </data>
+  <data name="Democracy" xml:space="preserve">
+    <value>Democrazia</value>
+    <comment>Government type Democracy</comment>
+  </data>
+  <data name="Dictatorship" xml:space="preserve">
+    <value>Dittatura</value>
+    <comment>Government type Dictatorship</comment>
+  </data>
+  <data name="Feudal" xml:space="preserve">
+    <value>Feudale</value>
+    <comment>Government type Feudal</comment>
+  </data>
+  <data name="Imperial" xml:space="preserve">
+    <value>Imperiale</value>
+    <comment>Government type Imperial</comment>
+  </data>
+  <data name="None" xml:space="preserve">
+    <value>Nessuno</value>
+    <comment>Government type None</comment>
+  </data>
+  <data name="Patronage" xml:space="preserve">
+    <value>Paternalismo</value>
+    <comment>Government type Patronage</comment>
+  </data>
   
   
   
