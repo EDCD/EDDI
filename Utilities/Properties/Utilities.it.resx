@@ -121,12 +121,24 @@
     <value>Nave</value>
     <comment>ship</comment>
   </data>
-  
+  <data name="srv" xml:space="preserve">
+    <value>S R V</value>
+    <comment>srv</comment>
+  </data>
   <data name="fighter" xml:space="preserve">
     <value>Caccia</value>
     <comment>fighter</comment>
   </data>
-  
-  
-  
+  <data name="witch_space" xml:space="preserve">
+    <value>Tunnel Spaziale</value>
+    <comment>witch_space</comment>
+  </data>
+  <data name="supercruise" xml:space="preserve">
+    <value>Velocità Superluce</value>
+    <comment>supercruise</comment>
+  </data>
+  <data name="normal_space" xml:space="preserve">
+    <value>Spazio Normale</value>
+    <comment>normal_space</comment>
+  </data>
 </root>

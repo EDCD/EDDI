@@ -117,16 +117,46 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="cargo_monitor_desc" xml:space="preserve">
+    <value>Informazioni sul tuo carico.</value>
+  </data>
+  <data name="cargo_monitor_name" xml:space="preserve">
+    <value>Monitoraggio del cargo</value>
+  </data>
+  <data name="header_haulage" xml:space="preserve">
+    <value>Trasporto</value>
+    <comment>Tons of haulage (mission cargo) carried</comment>
+  </data>
+  <data name="header_name" xml:space="preserve">
+    <value>Nome</value>
+    <comment>Name of cargo, such as "Gold"</comment>
+  </data>
+  <data name="header_need" xml:space="preserve">
+    <value>Necessario</value>
+    <comment>Tons needed for missions</comment>
+  </data>
+  <data name="para2" xml:space="preserve">
+    <value>Se il tuo inventario è errato, sarà necessario avviare o riavviare Elite affinché l'informazione venga aggiornata.</value>
+  </data>
+  <data name="para1" xml:space="preserve">
+    <value>Sotto puoi trovare una lista del tuo carico.</value>
+  </data>
+  <data name="header_type" xml:space="preserve">
+    <value>Tipo</value>
+    <comment>Type of cargo, such as "Metals"</comment>
+  </data>
+  <data name="header_stolen" xml:space="preserve">
+    <value>Rubato</value>
+    <comment>Tons of stolen cargo carried</comment>
+  </data>
+  <data name="header_price" xml:space="preserve">
+    <value>Prezzo per tonnellata</value>
+  </data>
+  <data name="header_owned" xml:space="preserve">
+    <value>Posseduto</value>
+    <comment>Tons of owned cargo carried</comment>
+  </data>
+  <data name="para3" xml:space="preserve">
+    <value>Nota: per missioni di gruppo nelle quali non hai ancora fatto raccolte o consegne, il prodotto verrà segnalato come "Sconosciuto". Il prodotto verrà aggiornato al momento della raccolta o della consegna.</value>
+  </data>
 </root>

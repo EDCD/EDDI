@@ -117,11 +117,22 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
-  
-  
-  
+  <data name="change_affect_va" xml:space="preserve">
+    <value>Le modifiche apportate qui avranno effetto automaticamente in VoiceAttack. Al termine, è possibile chiudere questa finestra.</value>
+  </data>
+  <data name="complete" xml:space="preserve">
+    <value>Completa</value>
+    <comment>This is the adjective not the verb</comment>
+  </data>
+  <data name="done" xml:space="preserve">
+    <value>Fatto</value>
+  </data>
+  <data name="failed" xml:space="preserve">
+    <value>Fallito</value>
+  </data>
+  <data name="frontier_api_nok" xml:space="preserve">
+    <value>L'API di Frontier non è operativo</value>
+  </data>
   
   
   

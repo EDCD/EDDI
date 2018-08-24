@@ -117,31 +117,106 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="carbon" xml:space="preserve">
+    <value>Carbone</value>
+    <comment>Material carbon</comment>
+  </data>
+  <data name="iron" xml:space="preserve">
+    <value>Ferro</value>
+    <comment>Material iron</comment>
+  </data>
+  <data name="nickel" xml:space="preserve">
+    <value>Nichel</value>
+    <comment>Material nickel</comment>
+  </data>
+  <data name="phosphorus" xml:space="preserve">
+    <value>Fosforo</value>
+    <comment>Material phosphorus</comment>
+  </data>
+  <data name="sulphur" xml:space="preserve">
+    <value>Zolfo</value>
+    <comment>Material sulphur</comment>
+  </data>
+  <data name="arsenic" xml:space="preserve">
+    <value>Arsenico</value>
+    <comment>Material arsenic</comment>
+  </data>
+  <data name="chromium" xml:space="preserve">
+    <value>Cromo</value>
+    <comment>Material chromium</comment>
+  </data>
+  <data name="germanium" xml:space="preserve">
+    <value>Germanio</value>
+    <comment>Material germanium</comment>
+  </data>
+  <data name="manganese" xml:space="preserve">
+    <value>Manganese</value>
+    <comment>Material manganese</comment>
+  </data>
+  <data name="vanadium" xml:space="preserve">
+    <value>Vanadio</value>
+    <comment>Material vanadium</comment>
+  </data>
+  <data name="zinc" xml:space="preserve">
+    <value>Zinco</value>
+    <comment>Material zinc</comment>
+  </data>
+  <data name="cadmium" xml:space="preserve">
+    <value>Cadmio</value>
+    <comment>Material cadmium</comment>
+  </data>
+  <data name="mercury" xml:space="preserve">
+    <value>Mercurio</value>
+    <comment>Material mercury</comment>
+  </data>
+  <data name="molybdenum" xml:space="preserve">
+    <value>Molibdeno</value>
+    <comment>Material molybdenum</comment>
+  </data>
+  <data name="niobium" xml:space="preserve">
+    <value>Niobio</value>
+    <comment>Material niobium</comment>
+  </data>
+  <data name="tin" xml:space="preserve">
+    <value>Stagno</value>
+    <comment>Material tin</comment>
+  </data>
+  <data name="tungsten" xml:space="preserve">
+    <value>Tungsteno</value>
+    <comment>Material tungsten</comment>
+  </data>
+  <data name="ruthenium" xml:space="preserve">
+    <value>Rutenio</value>
+    <comment>Material ruthenium</comment>
+  </data>
+  <data name="selenium" xml:space="preserve">
+    <value>Selenio</value>
+    <comment>Material selenium</comment>
+  </data>
+  <data name="technetium" xml:space="preserve">
+    <value>Tecnezio</value>
+    <comment>Material technetium</comment>
+  </data>
+  <data name="tellurium" xml:space="preserve">
+    <value>Tellurio</value>
+    <comment>Material tellurium</comment>
+  </data>
+  <data name="yttrium" xml:space="preserve">
+    <value>Ittrio</value>
+    <comment>Material yttrium</comment>
+  </data>
+  <data name="zirconium" xml:space="preserve">
+    <value>Zirconio</value>
+    <comment>Material zirconium</comment>
+  </data>
+  <data name="antimony" xml:space="preserve">
+    <value>Antimonio</value>
+    <comment>Material antimony</comment>
+  </data>
+  <data name="polonium" xml:space="preserve">
+    <value>Polonio</value>
+    <comment>Material polonium</comment>
+  </data>
   
   
   

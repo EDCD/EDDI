@@ -98,19 +98,64 @@
 	<resheader name="writer">
 		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
 	</resheader>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="None" xml:space="preserve">
+    <value>Nessuno</value>
+    <comment>Federation rank None</comment>
+  </data>
+  <data name="Recruit" xml:space="preserve">
+    <value>Recluta</value>
+    <comment>Federation rank Recruit</comment>
+  </data>
+  <data name="Cadet" xml:space="preserve">
+    <value>Cadetto</value>
+    <comment>Federation rank Cadet</comment>
+  </data>
+  <data name="Midshipman" xml:space="preserve">
+    <value>Guardiamarina</value>
+    <comment>Federation rank Midshipman</comment>
+  </data>
+  <data name="PettyOfficer" xml:space="preserve">
+    <value>Sottoufficiale</value>
+    <comment>Federation rank PettyOfficer</comment>
+  </data>
+  <data name="ChiefPettyOfficer" xml:space="preserve">
+    <value>Sottoufficiale capo</value>
+    <comment>Federation rank ChiefPettyOfficer</comment>
+  </data>
+  <data name="WarrantOfficer" xml:space="preserve">
+    <value>Maresciallo</value>
+    <comment>Federation rank WarrantOfficer</comment>
+  </data>
+  <data name="Ensign" xml:space="preserve">
+    <value>Alfiere</value>
+    <comment>Federation rank Ensign</comment>
+  </data>
+  <data name="Lieutenant" xml:space="preserve">
+    <value>Tenente</value>
+    <comment>Federation rank Lieutenant</comment>
+  </data>
+  <data name="LieutenantCommander" xml:space="preserve">
+    <value>Tenente Comandante</value>
+    <comment>Federation rank LieutenantCommander</comment>
+  </data>
+  <data name="PostCommander" xml:space="preserve">
+    <value>Post comandante</value>
+    <comment>Federation rank PostCommander</comment>
+  </data>
+  <data name="PostCaptain" xml:space="preserve">
+    <value>Post Capitano</value>
+    <comment>Federation rank PostCaptain</comment>
+  </data>
+  <data name="RearAdmiral" xml:space="preserve">
+    <value>Contrammiraglio</value>
+    <comment>Federation rank RearAdmiral</comment>
+  </data>
+  <data name="ViceAdmiral" xml:space="preserve">
+    <value>Vice Ammiraglio</value>
+    <comment>Federation rank ViceAdmiral</comment>
+  </data>
+  <data name="Admiral" xml:space="preserve">
+    <value>Ammiraglio</value>
+    <comment>Federation rank Admiral</comment>
+  </data>
 </root>
