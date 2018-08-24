@@ -52,7 +52,7 @@ namespace EddiEvents
 
         public string economy => Economy.localizedName;
 
-        public string economy2 => Economy.localizedName;
+        public string economy2 => Economy2.localizedName;
 
         public string government { get; private set; }
 
