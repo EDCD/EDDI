@@ -123,8 +123,14 @@
   
   
   
+  <data name="p4_link" xml:space="preserve">
+    <value>sul sito di EDDI</value>
+  </data>
   
-  
-  
-  
+  <data name="p5_link" xml:space="preserve">
+    <value>sul sito di EDDI</value>
+  </data>
+  <data name="run_eddi_standalone" xml:space="preserve">
+    <value>Per favore chiudi VoiceAttack e lancia EDDI da solo per aggiornarlo.</value>
+  </data>
 </root>
