@@ -198,7 +198,8 @@ namespace EddiEddpMonitor
                     }
                     if (neweconomy != null)
                     {
-                        system.economies[0] = Economy.FromEDName(neweconomy);
+                        // EDDP uses invariant English economy names
+                        system.economies[0] = Economy.FromName(neweconomy);
                     }
                     // EDDP does not report changes to secondary economies.
                     if (newsecurity != null)

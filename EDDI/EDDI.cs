@@ -797,8 +797,8 @@ namespace Eddi
                 CurrentStarSystem.allegiance = theEvent.allegiance;
                 CurrentStarSystem.government = theEvent.government;
                 CurrentStarSystem.population = theEvent.population;
-                CurrentStarSystem.economies[0] = Economy.FromEDName(theEvent.economy);
-                CurrentStarSystem.economies[1] = Economy.FromEDName(theEvent.economy2);
+                CurrentStarSystem.economies[0] = theEvent.Economy;
+                CurrentStarSystem.economies[1] = theEvent.Economy2;
             }
 
             if (theEvent.docked == true || theEvent.bodytype.ToLowerInvariant() == "station")
@@ -1072,8 +1072,8 @@ namespace Eddi
                 setSystemDistanceFromHome(CurrentStarSystem);
                 CurrentStarSystem.allegiance = theEvent.allegiance;
                 CurrentStarSystem.faction = theEvent.faction;
-                CurrentStarSystem.economies[0] = Economy.FromEDName(theEvent.economy);
-                CurrentStarSystem.economies[1] = Economy.FromEDName(theEvent.economy2);
+                CurrentStarSystem.economies[0] = theEvent.Economy;
+                CurrentStarSystem.economies[1] = theEvent.Economy2;
                 CurrentStarSystem.government = theEvent.government;
                 CurrentStarSystem.security = theEvent.security;
                 CurrentStarSystem.updatedat = (long)theEvent.timestamp.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
@@ -1103,8 +1103,8 @@ namespace Eddi
                 CurrentStarSystem.systemAddress = theEvent.systemAddress;
                 CurrentStarSystem.allegiance = theEvent.allegiance;
                 CurrentStarSystem.faction = theEvent.faction;
-                CurrentStarSystem.economies[0] = Economy.FromEDName(theEvent.economy);
-                CurrentStarSystem.economies[1] = Economy.FromEDName(theEvent.economy2);
+                CurrentStarSystem.economies[0] = theEvent.Economy;
+                CurrentStarSystem.economies[1] = theEvent.Economy2;
                 CurrentStarSystem.government = theEvent.government;
                 CurrentStarSystem.security = theEvent.security;
                 CurrentStarSystem.updatedat = (long)theEvent.timestamp.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
@@ -1124,8 +1124,8 @@ namespace Eddi
                 setSystemDistanceFromHome(CurrentStarSystem);
                 CurrentStarSystem.allegiance = theEvent.allegiance;
                 CurrentStarSystem.faction = theEvent.faction;
-                CurrentStarSystem.economies[0] = Economy.FromEDName(theEvent.economy);
-                CurrentStarSystem.economies[1] = Economy.FromEDName(theEvent.economy2);
+                CurrentStarSystem.economies[0] = theEvent.Economy;
+                CurrentStarSystem.economies[1] = theEvent.Economy2;
                 CurrentStarSystem.government = theEvent.government;
                 CurrentStarSystem.security = theEvent.security;
 
