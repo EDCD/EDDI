@@ -50,9 +50,9 @@ namespace EddiEvents
 
         public string factionstate { get; private set; }
 
-        public string economy { get; private set; }
+        public string economy => Economy.localizedName;
 
-        public string economy2 { get; private set; }
+        public string economy2 => Economy2.localizedName;
 
         public string government { get; private set; }
 
@@ -60,8 +60,10 @@ namespace EddiEvents
 
         public long? population { get; private set; }
 
-        // Admin
+        // These properties are not intended to be user facing
         public long systemAddress { get; private set; }
+        public Economy Economy { get; private set; }
+        public Economy Economy2 { get; private set; }
 
         public JumpedEvent(DateTime timestamp, string system, long systemAddress, decimal x, decimal y, decimal z, decimal distance, decimal fuelused, decimal fuelremaining, Superpower allegiance, string faction, SystemState factionstate, Economy economy, Economy economy2, Government government, SecurityLevel security, long? population) : base(timestamp, NAME)
         {
@@ -76,8 +78,8 @@ namespace EddiEvents
             this.allegiance = (allegiance ?? Superpower.None).localizedName;
             this.faction = faction;
             this.factionstate = (factionstate ?? SystemState.None).localizedName;
-            this.economy = (economy ?? Economy.None).localizedName;
-            this.economy2 = (economy2 ?? Economy.None).localizedName;
+            this.Economy = (economy ?? Economy.None);
+            this.Economy2 = (economy2 ?? Economy.None);
             this.government = (government ?? Government.None).localizedName;
             this.security = (security ?? SecurityLevel.None).localizedName;
             this.population = population;
