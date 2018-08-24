@@ -5,6 +5,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
 ### Development
   * Core
     * Fixed a bug that was preventing some events from being passed to EDSM.
+    * Added more Italian localization.
   * Cargo monitor
     * Fixed tracking of black market cargo.
     * Fixed tracking of cargo sold to the mission depot.
