@@ -44,7 +44,7 @@ namespace EddiEvents
 
         public decimal fuelremaining { get; private set; }
 
-        public string allegiance { get; private set; }
+        public string allegiance => Allegiance.localizedName;
 
         public string faction { get; private set; }
 
@@ -64,6 +64,7 @@ namespace EddiEvents
         public long systemAddress { get; private set; }
         public Economy Economy { get; private set; }
         public Economy Economy2 { get; private set; }
+        public Superpower Allegiance { get; private set; }
 
         public JumpedEvent(DateTime timestamp, string system, long systemAddress, decimal x, decimal y, decimal z, decimal distance, decimal fuelused, decimal fuelremaining, Superpower allegiance, string faction, SystemState factionstate, Economy economy, Economy economy2, Government government, SecurityLevel security, long? population) : base(timestamp, NAME)
         {
@@ -75,7 +76,7 @@ namespace EddiEvents
             this.distance = distance;
             this.fuelused = fuelused;
             this.fuelremaining = fuelremaining;
-            this.allegiance = (allegiance ?? Superpower.None).localizedName;
+            this.Allegiance = (allegiance ?? Superpower.None);
             this.faction = faction;
             this.factionstate = (factionstate ?? SystemState.None).localizedName;
             this.Economy = (economy ?? Economy.None);

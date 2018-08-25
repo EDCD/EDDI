@@ -17,6 +17,8 @@ namespace EddiDataDefinitions
             var Empire = new Superpower("$faction_Empire;");
             var Independent = new Superpower("$faction_Independent;");
             var Pirate = new Superpower("$faction_Pirate;");
+            var Guardian = new Superpower("$faction_Guardian;");
+            var Thargoid = new Superpower("$faction_Thargoid;");
         }
 
         public static readonly Superpower None;
