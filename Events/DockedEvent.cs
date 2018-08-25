@@ -36,7 +36,7 @@ namespace EddiEvents
 
         public string model { get; private set; }
 
-        public string allegiance { get; private set; }
+        public string allegiance => Allegiance.localizedName;
 
         public string faction { get; private set; }
 
@@ -50,9 +50,10 @@ namespace EddiEvents
 
         public List<string> stationservices { get; private set; }
 
-        // Admin
+        // These properties are not intended to be user facing
         public long systemAddress { get; private set; }
         public long marketId { get; private set; }
+        public Superpower Allegiance { get; private set; }
 
         public DockedEvent(DateTime timestamp, string system, long systemAddress, long marketId, string station, string state, string model, Superpower allegiance, string faction, SystemState factionstate, Economy economy, Government government, decimal? distancefromstar, List<string> stationservices) : base(timestamp, NAME)
         {
@@ -62,7 +63,7 @@ namespace EddiEvents
             this.station = station;
             this.state = state;
             this.model = model;
-            this.allegiance = (allegiance ?? Superpower.None).localizedName;
+            this.Allegiance = (allegiance ?? Superpower.None);
             this.faction = faction;
             this.factionstate = (factionstate ?? SystemState.None).localizedName;
             this.economy = (economy ?? Economy.None).localizedName;

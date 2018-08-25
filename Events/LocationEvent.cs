@@ -53,7 +53,7 @@ namespace EddiEvents
 
         public string stationtype { get; private set; }
 
-        public string allegiance { get; private set; }
+        public string allegiance => Allegiance.localizedName;
 
         public string faction { get; private set; }
 
@@ -76,6 +76,7 @@ namespace EddiEvents
         public long? marketId { get; private set; }
         public Economy Economy { get; private set; }
         public Economy Economy2 { get; private set; }
+        public Superpower Allegiance { get; private set; }
 
         public LocationEvent(DateTime timestamp, string system, decimal x, decimal y, decimal z, long systemAddress, string body, string bodytype, bool docked, string station, string stationtype, long? marketId, Superpower allegiance, string faction, Economy economy, Economy economy2, Government government, SecurityLevel security, long? population, decimal? longitude, decimal? latitude) : base(timestamp, NAME)
         {
@@ -90,7 +91,7 @@ namespace EddiEvents
             this.station = station;
             this.stationtype = stationtype;
             this.marketId = marketId;
-            this.allegiance = (allegiance ?? Superpower.None).localizedName;
+            this.Allegiance = (allegiance ?? Superpower.None);
             this.faction = faction;
             this.Economy = (economy ?? Economy.None);
             this.Economy2 = (economy2 ?? Economy.None);
