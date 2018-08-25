@@ -1,4 +1,5 @@
 ﻿using EddiDataDefinitions;
+using EddiStarMapService;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -6,6 +7,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Net;
+using System.Threading;
 using Utilities;
 
 namespace EddiDataProviderService
@@ -303,6 +305,55 @@ namespace EddiDataProviderService
             var errorUri = new Uri(BASE + "error");
             var errorServicePoint = ServicePointManager.FindServicePoint(errorUri);
             errorServicePoint.Expect100Continue = false;
+        }
+
+        public void syncFromStarMapService(StarMapService starMapService, StarMapConfiguration starMapCredentials)
+        {
+            Logging.Info("Syncing from EDSM");
+            try
+            {
+                Dictionary<string, StarMapLogInfo> systems = starMapService.getStarMapLog(starMapCredentials.lastSync);
+                Dictionary<string, string> comments = starMapService.getStarMapComments();
+                List<StarSystem> syncSystems = new List<StarSystem>();
+                foreach (string system in systems.Keys)
+                {
+                    StarSystem CurrentStarSystem = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(system, false);
+                    CurrentStarSystem.visits = systems[system].visits;
+                    CurrentStarSystem.lastvisit = systems[system].lastVisit;
+                    if (comments.ContainsKey(system))
+                    {
+                        CurrentStarSystem.comment = comments[system];
+                    }
+                    syncSystems.Add(CurrentStarSystem);
+
+                    if (syncSystems.Count == StarMapService.syncBatchSize)
+                    {
+                        saveFromStarMapService(syncSystems);
+                        syncSystems.Clear();
+                    }
+                }
+                if (syncSystems.Count > 0)
+                {
+                    saveFromStarMapService(syncSystems);
+                }
+                Logging.Info("EDSM sync completed");
+            }
+            catch (EDSMException edsme)
+            {
+                Logging.Debug("EDSM error received: " + edsme.Message);
+            }
+            catch (ThreadAbortException e)
+            {
+                Logging.Debug("EDSM update stopped by user: " + e.Message);
+            }
+        }
+
+        public static void saveFromStarMapService(List<StarSystem> syncSystems)
+        {
+            StarSystemSqLiteRepository.Instance.SaveStarSystems(syncSystems);
+            StarMapConfiguration starMapConfiguration = StarMapConfiguration.FromFile();
+            starMapConfiguration.lastSync = DateTime.UtcNow;
+            starMapConfiguration.ToFile();
         }
     }
 }

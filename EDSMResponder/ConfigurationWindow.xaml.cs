@@ -126,13 +126,13 @@ namespace EddiEdsmResponder
 
                     if (syncSystems.Count == StarMapService.syncBatchSize)
                     {
-                        StarMapService.saveStarSystems(syncSystems);
+                        DataProviderService.saveFromStarMapService(syncSystems);
                         syncSystems.Clear();
                     }
                 }
                 if (syncSystems.Count > 0)
                 {
-                    StarMapService.saveStarSystems(syncSystems);
+                    DataProviderService.saveFromStarMapService(syncSystems);
                 }
 
                 progress.Report(Properties.EDSMResources.log_button_fetched);

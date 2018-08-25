@@ -1,11 +1,9 @@
 ﻿using EddiDataDefinitions;
-using EddiDataProviderService;
 using Newtonsoft.Json;
 using RestSharp;
 using RestSharp.Serializers;
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
 using System.Threading;
 using Utilities;
@@ -24,7 +22,7 @@ namespace EddiStarMapService
 
         // For normal use, the EDSM API base URL is https://www.edsm.net/.
         // If you need to do some testing on EDSM's API, please use the https://beta.edsm.net/ endpoint.
-        public StarMapService(string apiKey, string commanderName, string baseUrl= "https://www.edsm.net/")
+        public StarMapService(string apiKey, string commanderName, string baseUrl = "https://www.edsm.net/")
         {
             this.apiKey = apiKey;
             this.commanderName = commanderName;
@@ -244,86 +242,8 @@ namespace EddiStarMapService
             }
             return vals;
         }
-
-        public void Sync(DateTime? since = null)
-        {
-            Logging.Info("Syncing with EDSM");
-            try
-            {
-                Dictionary<string, string> comments = getStarMapComments();
-                List<StarSystem> syncSystems = new List<StarSystem>();
-
-                if (since.HasValue)
-                {
-                    // The EDSM API syncs a maximum of a week of flight logs at a time, unless we execute a `fullSync`. 
-                    // We obtain all of the missing logs for the interim period, at most one week at a time.
-                    // API reference: https://www.edsm.net/en/api-logs-v1
-                    DateTime syncStartTime = (DateTime)since;
-                    DateTime syncEndTime = DateTime.UtcNow;
-                    do
-                    {
-                        Dictionary<string, StarMapLogInfo> systemLogs = getStarMapLog(syncStartTime);
-                        syncStartTime = DateTime.Compare(syncEndTime, syncStartTime.AddDays(7)) > 0 ? syncStartTime.AddDays(7) : syncEndTime;
-                        SyncUpdate(comments, syncSystems, systemLogs, since);
-                    } while (DateTime.Compare(syncEndTime, syncStartTime) > 0); // Do this while syncEndTime is greater than than syncStartTime
-                }
-                else
-                {
-                    Dictionary<string, StarMapLogInfo> systemLogs = getStarMapLog(since);
-                    SyncUpdate(comments, syncSystems, systemLogs);
-                }
-
-                if (syncSystems.Count > 0)
-                {
-                    saveStarSystems(syncSystems);
-                }
-                Logging.Info("EDSM sync completed");
-            }
-            catch (EDSMException edsme)
-            {
-                Logging.Debug("EDSM error received: " + edsme.Message);
-            }
-            catch (ThreadAbortException e)
-            {
-                Logging.Debug("EDSM update stopped by user: " + e.Message);
-            }
-        }
-
-        private static void SyncUpdate(Dictionary<string, string> comments, List<StarSystem> syncSystems, Dictionary<string, StarMapLogInfo> systemLogs, DateTime? since = null)
-        {
-            foreach (string system in systemLogs.Keys)
-            {
-                StarSystem CurrentStarSystem = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(system, false);
-                if (since == null)
-                {
-                    /// If we're re-obtaining and resetting the flight logs, we need to replace the value.
-                    /// Otherwise, the event handler increments system visits.
-                    CurrentStarSystem.visits = systemLogs[system].visits;
-                    CurrentStarSystem.lastvisit = systemLogs[system].lastVisit;
-                }
-                if (comments.ContainsKey(system))
-                {
-                    CurrentStarSystem.comment = comments[system];
-                }
-                syncSystems.Add(CurrentStarSystem);
-
-                if (syncSystems.Count == syncBatchSize)
-                {
-                    saveStarSystems(syncSystems);
-                    syncSystems.Clear();
-                }
-            }
-        }
-
-        public static void saveStarSystems(List<StarSystem> syncSystems)
-        {
-            StarSystemSqLiteRepository.Instance.SaveStarSystems(syncSystems);
-            StarMapConfiguration starMapConfiguration = StarMapConfiguration.FromFile();
-            starMapConfiguration.lastSync = DateTime.UtcNow;
-            starMapConfiguration.ToFile();
-        }
     }
-    
+   
     // response from the Star Map log API
     class StarMapResponse
     {
