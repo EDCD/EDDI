@@ -88,6 +88,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Guardian.
+        /// </summary>
+        public static string Guardian {
+            get {
+                return ResourceManager.GetString("Guardian", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Independent.
         /// </summary>
         public static string Independent {
@@ -111,6 +120,15 @@ namespace EddiDataDefinitions.Properties {
         public static string Pirate {
             get {
                 return ResourceManager.GetString("Pirate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Thargoid.
+        /// </summary>
+        public static string Thargoid {
+            get {
+                return ResourceManager.GetString("Thargoid", resourceCulture);
             }
         }
     }
