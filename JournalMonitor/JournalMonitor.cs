@@ -212,7 +212,7 @@ namespace EddiJournalMonitor
                                 // If docked
                                 string station = JsonParsing.getString(data, "StationName");
                                 string stationtype = JsonParsing.getString(data, "StationType");
-                                long? marketId = JsonParsing.getLong(data, "MarketID");
+                                long? marketId = JsonParsing.getOptionalLong(data, "MarketID");
 
                                 // If landed
                                 decimal? latitude = JsonParsing.getOptionalDecimal(data, "Latitude");
