@@ -1,5 +1,5 @@
 ﻿using Eddi;
-using EddiDataDefinitions;
+using EddiDataProviderService;
 using EddiEvents;
 using EddiShipMonitor;
 using EddiStarMapService;
@@ -61,10 +61,10 @@ namespace EddiEdsmResponder
             // Set up the star map service
             starMapService = null;
             StarMapConfiguration starMapCredentials = StarMapConfiguration.FromFile();
+            string commanderName = null;
             if (starMapCredentials != null && starMapCredentials.apiKey != null)
             {
                 // Commander name might come from star map credentials or the companion app's profile
-                string commanderName = null;
                 if (starMapCredentials.commanderName != null)
                 {
                     commanderName = starMapCredentials.commanderName;
@@ -85,8 +85,8 @@ namespace EddiEdsmResponder
 
             if (starMapService != null && updateThread == null)
             {
-                // Spin off a thread to download & sync EDSM flight logs & system comments in the background
-                updateThread = new Thread(() => starMapService.Sync(starMapCredentials.lastSync));
+                // Spin off a thread to download & sync flight logs & system comments from EDSM in the background 
+                updateThread = new Thread(() => new DataProviderService().syncFromStarMapService(starMapService, starMapCredentials));
                 updateThread.IsBackground = true;
                 updateThread.Name = "EDSM updater";
                 updateThread.Start();
