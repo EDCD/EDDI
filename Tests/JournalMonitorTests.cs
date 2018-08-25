@@ -494,7 +494,7 @@ namespace UnitTests
             Assert.AreEqual(-41.06250M, jumpedEvent.x);
             Assert.AreEqual(-62.15625M, jumpedEvent.y);
             Assert.AreEqual(-103.25000M, jumpedEvent.z);
-            Assert.AreEqual("Independent", jumpedEvent.allegiance);
+            Assert.AreEqual("Independent", jumpedEvent.Allegiance.invariantName);
             Assert.AreEqual("High Tech", jumpedEvent.economy);
             Assert.AreEqual("Refinery", jumpedEvent.economy2);
             Assert.AreEqual("Democracy", jumpedEvent.government);
@@ -618,7 +618,7 @@ namespace UnitTests
             Assert.IsTrue(events.Count == 1);
             LocationEvent @event = (LocationEvent)events[0];
 
-            Assert.AreEqual("Independent", @event.allegiance);
+            Assert.AreEqual("Independent", @event.Allegiance.invariantName);
             Assert.AreEqual("RayGateway", @event.body);
             Assert.AreEqual("Station", @event.bodytype);
             Assert.AreEqual(true, @event.docked);
@@ -693,6 +693,26 @@ namespace UnitTests
 
             Assert.AreEqual(3223343616, @event.marketId);
             Assert.AreEqual("Ray Gateway", @event.station);
+        }
+
+        [TestMethod]
+        public void TestJumpedEventAllegianceThargoid()
+        {
+            string line = @"{ ""timestamp"":""2018 - 03 - 25T02: 59:48Z"", ""event"":""FSDJump"", ""StarSystem"":""Pleiades Sector OY-R c4-19"", ""SystemAddress"":5306398479010, ""StarPos"":[-73.81250,-98.62500,-262.31250], ""SystemAllegiance"":""Thargoid"", ""SystemEconomy"":""$economy_None;"", ""SystemEconomy_Localised"":""None"", ""SystemSecondEconomy"":""$economy_None;"", ""SystemSecondEconomy_Localised"":""None"", ""SystemGovernment"":""$government_None;"", ""SystemGovernment_Localised"":""None"", ""SystemSecurity"":""$GAlAXY_MAP_INFO_state_anarchy;"", ""SystemSecurity_Localised"":""Anarchy"", ""Population"":0, ""JumpDist"":13.936, ""FuelUsed"":3.833808, ""FuelLevel"":28.166193 }";
+            List<Event> events = JournalMonitor.ParseJournalEntry(line);
+            JumpedEvent @event = (JumpedEvent)events[0];
+
+            Assert.AreEqual("Thargoid", @event.Allegiance.invariantName);
+        }
+
+        [TestMethod]
+        public void TestJumpedEventAllegianceGuardian()
+        {
+            string line = @"{ ""timestamp"":""2018-08-25T06:28:04Z"", ""event"":""FSDJump"", ""StarSystem"":""Synuefe EU-Q c21-10"", ""SystemAddress"":2833906537146, ""StarPos"":[758.65625,-176.90625,-133.21875], ""SystemAllegiance"":""Guardian"", ""SystemEconomy"":""$economy_None;"", ""SystemEconomy_Localised"":""None"", ""SystemSecondEconomy"":""$economy_None;"", ""SystemSecondEconomy_Localised"":""None"", ""SystemGovernment"":""$government_None;"", ""SystemGovernment_Localised"":""None"", ""SystemSecurity"":""$GAlAXY_MAP_INFO_state_anarchy;"", ""SystemSecurity_Localised"":""Anarchy"", ""Population"":0, ""JumpDist"":29.867, ""FuelUsed"":1.269155, ""FuelLevel"":18.824537 }";
+            List<Event> events = JournalMonitor.ParseJournalEntry(line);
+            JumpedEvent @event = (JumpedEvent)events[0];
+
+            Assert.AreEqual("Guardian", @event.Allegiance.invariantName);
         }
     }
 }
