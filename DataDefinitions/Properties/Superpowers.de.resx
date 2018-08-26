@@ -121,6 +121,12 @@
     <value>Piraten</value>
     <comment>Superpower type Pirate</comment>
   </data>
-  
-  
+  <data name="Guardian" xml:space="preserve">
+    <value>Wächter</value>
+    <comment>Superpower type Guardian</comment>
+  </data>
+  <data name="Thargoid" xml:space="preserve">
+    <value>Thargoiden</value>
+    <comment>Superpower type Thargoid</comment>
+  </data>
 </root>
