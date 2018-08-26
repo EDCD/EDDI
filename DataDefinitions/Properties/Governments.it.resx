@@ -159,7 +159,7 @@
     <comment>Government type Workshop</comment>
   </data>
   <data name="engineer" xml:space="preserve">
-    <value>Ingegnere</value>
+    <value>speciale, in quanto sede di un ingegnere</value>
     <comment>Government type engineer</comment>
   </data>
 </root>
