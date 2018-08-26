@@ -99,27 +99,27 @@
 		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
 	</resheader>
   <data name="Anarchy" xml:space="preserve">
-    <value>Anarchia</value>
+    <value>Anarchico</value>
     <comment>Government type Anarchy</comment>
   </data>
   <data name="Colony" xml:space="preserve">
-    <value>Colonia</value>
+    <value>Coloniale</value>
     <comment>Government type Colony</comment>
   </data>
   <data name="Communism" xml:space="preserve">
-    <value>Comunismo</value>
+    <value>Comunista</value>
     <comment>Government type Communism</comment>
   </data>
   <data name="Confederacy" xml:space="preserve">
-    <value>Confederazione</value>
+    <value>Confederativo</value>
     <comment>Government type Confederacy</comment>
   </data>
   <data name="Cooperative" xml:space="preserve">
-    <value>Cooperativismo</value>
+    <value>Cooperativista</value>
     <comment>Government type Cooperative</comment>
   </data>
   <data name="Corporate" xml:space="preserve">
-    <value>Corporativismo</value>
+    <value>Corporativista</value>
     <comment>Government type Corporate</comment>
   </data>
   <data name="Democracy" xml:space="preserve">
@@ -127,7 +127,7 @@
     <comment>Government type Democracy</comment>
   </data>
   <data name="Dictatorship" xml:space="preserve">
-    <value>Dittatura</value>
+    <value>Dittatoriale</value>
     <comment>Government type Dictatorship</comment>
   </data>
   <data name="Feudal" xml:space="preserve">
@@ -139,23 +139,23 @@
     <comment>Government type Imperial</comment>
   </data>
   <data name="None" xml:space="preserve">
-    <value>Nessuno</value>
+    <value>Assente</value>
     <comment>Government type None</comment>
   </data>
   <data name="Patronage" xml:space="preserve">
-    <value>Paternalismo</value>
+    <value>Paternalistico</value>
     <comment>Government type Patronage</comment>
   </data>
   <data name="PrisonColony" xml:space="preserve">
-    <value>Colonia Carceraria</value>
+    <value>di polizia, essendo una colonia penale</value>
     <comment>Government type PrisonColony</comment>
   </data>
   <data name="Theocracy" xml:space="preserve">
-    <value>Teocrazia</value>
+    <value>Teocratico</value>
     <comment>Government type Theocracy</comment>
   </data>
   <data name="Workshop" xml:space="preserve">
-    <value>Officina</value>
+    <value>speciale, in quanto sede di un ingegniere</value>
     <comment>Government type Workshop</comment>
   </data>
   <data name="engineer" xml:space="preserve">
