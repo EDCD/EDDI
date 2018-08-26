@@ -581,7 +581,10 @@
     <value>Pharmazeutische Isolatoren</value>
     <comment>Material pharmaceuticalisolators</comment>
   </data>
-  
+  <data name="protoheatradiators" xml:space="preserve">
+    <value>Proto-Wärmestrahler</value>
+    <comment>Material protoheatradiators</comment>
+  </data>
   <data name="protoradiolicalloys" xml:space="preserve">
     <value>Radiologische Legierungen (Proto)</value>
     <comment>Material protoradiolicalloys</comment>
