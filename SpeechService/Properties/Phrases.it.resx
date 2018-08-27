@@ -107,7 +107,7 @@
     <comment/>
   </data>
   <data name="billion" xml:space="preserve">
-    <value>miliardo</value>
+    <value>Miliardi</value>
     <comment/>
   </data>
   <data name="dash" xml:space="preserve">
@@ -119,7 +119,7 @@
     <comment/>
   </data>
   <data name="million" xml:space="preserve">
-    <value>milione</value>
+    <value>milioni</value>
     <comment/>
   </data>
   <data name="minus" xml:space="preserve">
@@ -131,7 +131,7 @@
     <comment/>
   </data>
   <data name="onthewayto" xml:space="preserve">
-    <value>sulla strada per </value>
+    <value>prossimo a</value>
     <comment/>
   </data>
   <data name="over" xml:space="preserve">
@@ -147,15 +147,15 @@
     <comment/>
   </data>
   <data name="quadrillion" xml:space="preserve">
-    <value>quadrillione</value>
+    <value>quadrillioni</value>
     <comment/>
   </data>
   <data name="thousand" xml:space="preserve">
-    <value>migliaia</value>
+    <value>mila</value>
     <comment/>
   </data>
   <data name="trillion" xml:space="preserve">
-    <value>trilione</value>
+    <value>trilioni</value>
     <comment/>
   </data>
   <data name="wellover" xml:space="preserve">
