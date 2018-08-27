@@ -2,7 +2,9 @@
 
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
-### Development
+### 3.0.2
+  * Additional Italian translations.
+  * Fixed an exception that occurs during location events if not docked.
 
 ### 3.0.2-b1
   * Core
