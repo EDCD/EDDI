@@ -442,71 +442,79 @@ namespace EddiMissionMonitor
             {
                 Mission mission = new Mission();
                 int amountRemaining = @event.totaltodeliver - @event.delivered;
-                switch (@event.updatetype)
+                if (@event.updatetype == "Collect")
                 {
-                    case "Collect":
+                    mission = missions.FirstOrDefault(m => m.missionid == @event.missionid);
+                    if (mission == null)
+                    {
+                        MissionStatus status = MissionStatus.FromEDName("Active");
+                        mission = new Mission(@event.missionid ?? 0, "MISSION_DeliveryWing", null, status, true)
                         {
-                            mission = missions.FirstOrDefault(m => m.missionid == @event.missionid);
-                            if (mission == null)
+                            amount = @event.totaltodeliver,
+                            commodity = @event.commodity,
+                            originsystem = EDDI.Instance?.CurrentStarSystem?.name,
+                            originstation = EDDI.Instance?.CurrentStation?.name,
+                            wing = true,
+                            originreturn = false
+                        };
+                        AddMission(mission);
+                    }
+                    else if (mission.shared)
+                    {
+                        if (mission.commodity == "Unknown")
+                        {
+                            mission.commodity = @event.commodity;
+                        }
+                        if (mission.originsystem == null)
+                        {
+                            mission.originsystem = EDDI.Instance?.CurrentStarSystem?.name;
+                            mission.originstation = EDDI.Instance?.CurrentStation?.name;
+                        }
+                    }
+                }
+                else
+                {
+                    mission = missions.FirstOrDefault(m => m.missionid == @event.missionid);
+                    if (mission == null)
+                    {
+                        if (amountRemaining > 0)
+                        {
+                            MissionStatus status = MissionStatus.FromEDName("Active");
+                            string type = @event.collected == 0 ? "MISSION_CollectWing" : "MISSION_DeliveryWing";
+                            mission = new Mission(@event.missionid ?? 0, type, null, status, true)
                             {
-                                MissionStatus status = MissionStatus.FromEDName("Active");
-                                mission = new Mission(@event.missionid ?? 0, "MISSION_DeliveryWing", null, status, true)
+                                amount = @event.totaltodeliver,
+                                commodity = @event.commodity,
+                                originsystem = @event.collected == 0 && @event.updatetype == "Deliver" ? EDDI.Instance?.CurrentStarSystem?.name : null,
+                                originstation = @event.collected == 0 && @event.updatetype == "Deliver" ? EDDI.Instance?.CurrentStarSystem?.name : null,
+                                wing = true,
+                                originreturn = @event.collected == 0
+                            };
+                            AddMission(mission);
+                        }
+                    }
+                    else if (mission.shared)
+                    {
+                        if (amountRemaining > 0)
+                        {
+                            if (@event.updatetype == "Deliver")
+                            {
+                                if (mission.commodity == "Unknown")
                                 {
-                                    amount = @event.totaltodeliver,
-                                    commodity = @event.commodity,
-                                    originsystem = EDDI.Instance?.CurrentStarSystem?.name,
-                                    originstation = EDDI.Instance?.CurrentStation?.name,
-                                    wing = true,
-                                    originreturn = false
-                                };
-                                AddMission(mission);
-                            }
-                            else
-                            {
-
+                                    mission.commodity = @event.commodity;
+                                }
+                                if (mission.originsystem == null)
+                                {
+                                    mission.originsystem = EDDI.Instance?.CurrentStarSystem?.name;
+                                    mission.originstation = EDDI.Instance?.CurrentStation?.name;
+                                }
                             }
                         }
-                        break;
-                    case "Deliver":
-                    case "WingUpdate":
+                        else
                         {
-                            mission = missions.FirstOrDefault(m => m.missionid == @event.missionid);
-                            if (mission == null)
-                            {
-                                if (amountRemaining > 0)
-                                {
-                                    MissionStatus status = MissionStatus.FromEDName("Active");
-                                    string type = @event.collected == 0 ? "MISSION_CollectWing" : "MISSION_DeliveryWing";
-                                    mission = new Mission(@event.missionid ?? 0, type, null, status, true)
-                                    {
-                                        amount = @event.totaltodeliver,
-                                        commodity = @event.commodity,
-                                        originsystem = @event.collected == 0 && @event.updatetype == "Deliver" ? EDDI.Instance?.CurrentStarSystem?.name : null,
-                                        originstation = @event.collected == 0 && @event.updatetype == "Deliver" ? EDDI.Instance?.CurrentStarSystem?.name : null,
-                                        wing = true,
-                                        originreturn = @event.collected == 0
-                                    };
-                                    AddMission(mission);
-                                }
-                            }
-                            else if (mission.shared)
-                            {
-                                if (amountRemaining > 0)
-                                {
-                                    if (@event.updatetype == "Deliver")
-                                    {
-                                        mission.commodity = @event.commodity;
-                                        mission.originsystem = EDDI.Instance?.CurrentStarSystem?.name;
-                                        mission.originstation = EDDI.Instance?.CurrentStation?.name;
-                                    }
-                                }
-                                else
-                                {
-                                    RemoveMission(mission);
-                                }
-                            }
+                            RemoveMission(mission);
                         }
-                        break;
+                    }
                 }
             }
         }
