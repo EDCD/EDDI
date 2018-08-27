@@ -190,7 +190,7 @@ namespace Utilities
             return left.CompareTo(right) >= 0;
         }
 
-        /// <returns>1 if the first version is greater than the second version, 0 if they are the same, -1 if first version is less than the second version</returns>
+        // >0 if the first version is greater than the second version, 0 if they are the same, <0 if first version is less than the second version
         public static int CompareStrings(string Version1, string Version2)
         {
             Version v1 = new Version(Version1);
