@@ -452,14 +452,13 @@ namespace EddiMissionMonitor
                                 MissionStatus status = MissionStatus.FromEDName("Active");
                                 mission = new Mission(@event.missionid ?? 0, "MISSION_DeliveryWing", null, status, true)
                                 {
-                                    commodity = @event.commodity,
                                     amount = @event.totaltodeliver,
-                                    wing = true,
+                                    commodity = @event.commodity,
                                     originsystem = EDDI.Instance?.CurrentStarSystem?.name,
                                     originstation = EDDI.Instance?.CurrentStation?.name,
+                                    wing = true,
                                     originreturn = false
                                 };
-
                                 AddMission(mission);
                             }
                             else
@@ -481,13 +480,12 @@ namespace EddiMissionMonitor
                                     mission = new Mission(@event.missionid ?? 0, type, null, status, true)
                                     {
                                         amount = @event.totaltodeliver,
-                                        commodity = @event.updatetype == "Deliver" ? @event.commodity : "Unknown",
+                                        commodity = @event.commodity,
                                         originsystem = @event.collected == 0 && @event.updatetype == "Deliver" ? EDDI.Instance?.CurrentStarSystem?.name : null,
                                         originstation = @event.collected == 0 && @event.updatetype == "Deliver" ? EDDI.Instance?.CurrentStarSystem?.name : null,
                                         wing = true,
-                                        originreturn = @event.collected == 0 ? true : false
+                                        originreturn = @event.collected == 0
                                     };
-
                                     AddMission(mission);
                                 }
                             }
@@ -608,6 +606,7 @@ namespace EddiMissionMonitor
                     case "massacrewing":
                     case "mining":
                     case "piracy":
+                    case "salvage":
                     case "sightseeing":
                         {
                             mission.originreturn = true;

@@ -31,7 +31,7 @@ namespace EddiMissionMonitor
 
         public CommodityDefinition commodityDefinition { get; private set; }
 
-        public string commodity => commodityDefinition?.localizedName ?? "unknown commodity";
+        public string commodity => commodityDefinition?.localizedName ?? "Unknown";
 
         public int? amount { get; private set; }
 
