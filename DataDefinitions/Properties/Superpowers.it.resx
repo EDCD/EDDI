@@ -98,7 +98,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Alliance" xml:space="preserve">
-    <value>Alleanza</value>
+    <value>Dell'Alleanza</value>
     <comment>Superpower type Alliance</comment>
   </data>
   <data name="Empire" xml:space="preserve">
@@ -114,7 +114,7 @@
     <comment>Superpower type Independent</comment>
   </data>
   <data name="None" xml:space="preserve">
-    <value>Indipendente</value>
+    <value>Nessuno</value>
     <comment>Superpower type None</comment>
   </data>
   <data name="Pirate" xml:space="preserve">
