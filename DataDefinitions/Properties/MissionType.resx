@@ -150,6 +150,9 @@
   <data name="Disable" xml:space="preserve">
     <value>Disable Surface Installation</value>
   </data>
+  <data name="DisableWing" xml:space="preserve">
+    <value>Wing Disable</value>
+  </data>
   <data name="LongDistanceExpedition" xml:space="preserve">
     <value>Expedition</value>
   </data>

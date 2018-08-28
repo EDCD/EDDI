@@ -65,8 +65,6 @@ namespace EddiDataDefinitions
             this.status = "Active";
             this.amount = Amount;
             this.remaining = Amount;
-            this.collected = 0;
-            this.delivered = 0;
             this.expiry = Expiry;
             this.shared = Shared;
         }

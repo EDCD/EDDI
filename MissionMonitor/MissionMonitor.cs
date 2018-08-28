@@ -480,13 +480,13 @@ namespace EddiMissionMonitor
                         if (amountRemaining > 0)
                         {
                             MissionStatus status = MissionStatus.FromEDName("Active");
-                            string type = @event.collected == 0 ? "MISSION_CollectWing" : "MISSION_DeliveryWing";
+                            string type = @event.startmarketid == 0 ? "MISSION_CollectWing" : "MISSION_DeliveryWing";
                             mission = new Mission(@event.missionid ?? 0, type, null, status, true)
                             {
                                 amount = @event.totaltodeliver,
                                 commodity = @event.commodity,
-                                originsystem = @event.collected == 0 && @event.updatetype == "Deliver" ? EDDI.Instance?.CurrentStarSystem?.name : null,
-                                originstation = @event.collected == 0 && @event.updatetype == "Deliver" ? EDDI.Instance?.CurrentStarSystem?.name : null,
+                                originsystem = @event.startmarketid == 0 && @event.updatetype == "Deliver" ? EDDI.Instance?.CurrentStarSystem?.name : null,
+                                originstation = @event.startmarketid == 0 && @event.updatetype == "Deliver" ? EDDI.Instance?.CurrentStarSystem?.name : null,
                                 wing = true,
                                 originreturn = @event.collected == 0
                             };

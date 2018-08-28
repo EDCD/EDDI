@@ -849,23 +849,16 @@ namespace EddiCargoMonitor
                 case "smuggle":
                     {
                         string originSystem = EDDI.Instance?.CurrentStarSystem?.name;
-                        int amount = (type == "delivery" || type == "smuggle") ? @event.amount ?? 0 : 0;
                         Haulage haulage = new Haulage(@event.missionid ?? 0, @event.name, originSystem, @event.amount ?? 0, @event.expiry);
                         cargo = GetCargoWithEDName(@event.commodityDefinition?.edname);
                         if (cargo != null)
                         {
-                            cargo.haulage += amount;
                             cargo.haulageData.Add(haulage);
                             cargo.CalculateNeed();
                         }
                         else
                         {
-                           cargo = new Cargo(@event.commodityDefinition?.edname, amount)
-                            {
-                                haulage = amount,
-                                stolen = 0,
-                                owned = 0
-                            };
+                            cargo = new Cargo(@event.commodityDefinition?.edname, 0);
                             cargo.haulageData.Add(haulage);
                             cargo.CalculateNeed();
                             AddCargo(cargo);

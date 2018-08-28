@@ -173,7 +173,8 @@ namespace UnitTests
             Assert.AreEqual(4, missionMonitor.missions.Count);
             Assert.AreEqual("Collect", mission.typeEDName);
             Assert.AreEqual("Active", mission.statusEDName);
-            Assert.IsFalse(mission.originreturn);
+            Assert.IsTrue(mission.originreturn);
+            Assert.IsFalse(mission.wing);
 
             //MissionCompletedEvent
             line = @"{ ""timestamp"":""2018-08-26T00:40:14Z"", ""event"":""MissionCompleted"", ""Faction"":""HIP 20277 Inc"", ""Name"":""Mission_Salvage_Planet_name"", ""MissionID"":413563829, ""Commodity"":""$Landmines_Name;"", ""Commodity_Localised"":""Landmines"", ""Count"":4, ""DestinationSystem"":""Carthage"", ""Reward"":465824, ""FactionEffects"":[ { ""Faction"":""HIP 20277 Inc"", ""Effects"":[ { ""Effect"":""$MISSIONUTIL_Interaction_Summary_civilUnrest_down;"", ""Effect_Localised"":""$#MinorFaction; are happy to report improved civil contentment, making a period of civil unrest unlikely."", ""Trend"":""DownGood"" } ], ""Influence"":[ { ""SystemAddress"":84053791442, ""Trend"":""UpGood"" } ], ""Reputation"":""UpGood"" } ] }";
@@ -187,14 +188,15 @@ namespace UnitTests
             missionMonitor._handleCargoDepotEvent((CargoDepotEvent)events[0]);
             mission = missionMonitor.missions.ToList().FirstOrDefault(m => m.missionid == 413748365);
             Assert.AreEqual(4, missionMonitor.missions.Count);
-            Assert.AreEqual("Collect", mission.typeEDName);
+            Assert.AreEqual("CollectWing", mission.typeEDName);
             Assert.AreEqual("Active", mission.statusEDName);
             Assert.IsFalse(mission.originreturn);
+            Assert.IsTrue(mission.wing);
+            Assert.IsTrue(mission.shared);
 
             line = @"{ ""timestamp"":""2018-08-26T02:56:16Z"", ""event"":""CargoDepot"", ""MissionID"":413748365, ""UpdateType"":""Deliver"", ""CargoType"":""Gold"", ""Count"":34, ""StartMarketID"":0, ""EndMarketID"":3224777216, ""ItemsCollected"":0, ""ItemsDelivered"":54, ""TotalItemsToDeliver"":54, ""Progress"":0.000000 }";
             events = JournalMonitor.ParseJournalEntry(line);
             missionMonitor._handleCargoDepotEvent((CargoDepotEvent)events[0]);
-            mission = missionMonitor.missions.ToList().FirstOrDefault(m => m.missionid == 413748365);
             Assert.AreEqual(3, missionMonitor.missions.Count);
 
         }

@@ -160,6 +160,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Wing Disable.
+        /// </summary>
+        internal static string DisableWing {
+            get {
+                return ResourceManager.GetString("DisableWing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Expedition.
         /// </summary>
         internal static string LongDistanceExpedition {
