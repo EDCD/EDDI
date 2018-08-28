@@ -244,7 +244,7 @@ namespace EddiMissionMonitor
             writeMissions();
         }
 
-        private void _handleDataScannedEvent(DataScannedEvent @event)
+        public void _handleDataScannedEvent(DataScannedEvent @event)
         {
             string datalinktypeEDName = DataScan.FromName(@event.datalinktype).edname;
             if (datalinktypeEDName == "TouristBeacon")
@@ -366,7 +366,7 @@ namespace EddiMissionMonitor
             writeMissions();
         }
 
-        private void _handlePassengersEvent(PassengersEvent @event)
+        public void _handlePassengersEvent(PassengersEvent @event)
         {
             Mission mission = new Mission();
             foreach (Passenger passenger in @event.passengers)
@@ -403,7 +403,7 @@ namespace EddiMissionMonitor
             writeMissions();
         }
 
-        private void _handleCommunityGoalEvent(CommunityGoalEvent @event)
+        public void _handleCommunityGoalEvent(CommunityGoalEvent @event)
         {
             Mission mission = new Mission();
             for (int i = 0; i < @event.cgid.Count(); i++)
@@ -430,13 +430,13 @@ namespace EddiMissionMonitor
             }
         }
 
-            private void handleCargoDepotEvent(CargoDepotEvent @event)
+        private void handleCargoDepotEvent(CargoDepotEvent @event)
         {
             _handleCargoDepotEvent(@event);
             writeMissions();
         }
 
-        private void _handleCargoDepotEvent(CargoDepotEvent @event)
+        public void _handleCargoDepotEvent(CargoDepotEvent @event)
         {
             if (@event.missionid != null)
             {

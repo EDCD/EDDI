@@ -181,6 +181,22 @@ namespace UnitTests
             missionMonitor._handleMissionCompletedEvent((MissionCompletedEvent)events[0]);
             Assert.AreEqual(3, missionMonitor.missions.Count);
 
+            //CargoDepotEvent
+            line = @"{ ""timestamp"":""2018-08-26T02:55:10Z"", ""event"":""CargoDepot"", ""MissionID"":413748365, ""UpdateType"":""WingUpdate"", ""CargoType"":""Gold"", ""Count"":20, ""StartMarketID"":0, ""EndMarketID"":3224777216, ""ItemsCollected"":0, ""ItemsDelivered"":20, ""TotalItemsToDeliver"":54, ""Progress"":0.000000 }";
+            events = JournalMonitor.ParseJournalEntry(line);
+            missionMonitor._handleCargoDepotEvent((CargoDepotEvent)events[0]);
+            mission = missionMonitor.missions.ToList().FirstOrDefault(m => m.missionid == 413748365);
+            Assert.AreEqual(4, missionMonitor.missions.Count);
+            Assert.AreEqual("Collect", mission.typeEDName);
+            Assert.AreEqual("Active", mission.statusEDName);
+            Assert.IsFalse(mission.originreturn);
+
+            line = @"{ ""timestamp"":""2018-08-26T02:56:16Z"", ""event"":""CargoDepot"", ""MissionID"":413748365, ""UpdateType"":""Deliver"", ""CargoType"":""Gold"", ""Count"":34, ""StartMarketID"":0, ""EndMarketID"":3224777216, ""ItemsCollected"":0, ""ItemsDelivered"":54, ""TotalItemsToDeliver"":54, ""Progress"":0.000000 }";
+            events = JournalMonitor.ParseJournalEntry(line);
+            missionMonitor._handleCargoDepotEvent((CargoDepotEvent)events[0]);
+            mission = missionMonitor.missions.ToList().FirstOrDefault(m => m.missionid == 413748365);
+            Assert.AreEqual(3, missionMonitor.missions.Count);
+
         }
 
         [TestCleanup]
