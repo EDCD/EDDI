@@ -785,6 +785,7 @@ namespace EddiCargoMonitor
         public void _handleMissionAcceptedEvent(MissionAcceptedEvent @event)
         {
             string type = @event.name.Split('_').ElementAtOrDefault(1).ToLowerInvariant();
+            bool naval = @event.name.ToLowerInvariant().Contains("rank");
             switch (type)
             {
                 case "altruism":
@@ -798,7 +799,7 @@ namespace EddiCargoMonitor
                 case "salvage":
                 case "smuggle":
                     {
-                        int amount = (type == "delivery" || type == "smuggle") ? @event.amount ?? 0 : 0;
+                        int amount = (type == "delivery" && naval || type == "smuggle") ? @event.amount ?? 0 : 0;
                         HaulageAmount haulageAmount = new HaulageAmount(@event.missionid ?? 0, @event.name, @event.amount ?? 0, (DateTime)@event.expiry);
                         Cargo cargo = GetCargoWithEDName(@event.commodityDefinition?.edname);
                         if (cargo != null)
