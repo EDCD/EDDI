@@ -15,6 +15,7 @@ namespace EddiEvents
         static DockedEvent()
         {
             VARIABLES.Add("station", "The station at which the commander has docked");
+            VARIABLES.Add("marketId", "The market ID of station at which the commander has docked");
             VARIABLES.Add("system", "The system at which the commander has docked");
             VARIABLES.Add("state", "The special state of the station, if applicable (\"Damaged\" for damaged stations for example)");
             VARIABLES.Add("model", "The model of the station at which the commander has docked (Orbis, Coriolis, etc)");
@@ -31,6 +32,8 @@ namespace EddiEvents
         public string system { get; private set; }
 
         public string station { get; private set; }
+
+        public long marketId { get; private set; }
 
         public string state { get; private set; }
 
@@ -52,7 +55,7 @@ namespace EddiEvents
 
         // These properties are not intended to be user facing
         public long systemAddress { get; private set; }
-        public long marketId { get; private set; }
+
         public Superpower Allegiance { get; private set; }
 
         public DockedEvent(DateTime timestamp, string system, long systemAddress, long marketId, string station, string state, string model, Superpower allegiance, string faction, SystemState factionstate, Economy economy, Government government, decimal? distancefromstar, List<string> stationservices) : base(timestamp, NAME)

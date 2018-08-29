@@ -29,9 +29,9 @@ namespace EddiDataDefinitions
 
         public int remaining { get; set; }
 
-        public int startmarketid { get; set; }
+        public long startmarketid { get; set; }
 
-        public int endmarketid { get; set; }
+        public long endmarketid { get; set; }
 
         public int collected { get; set; }
 
@@ -50,6 +50,8 @@ namespace EddiDataDefinitions
             this.originsystem = originsystem;
             this.status = status;
             this.amount = amount;
+            this.startmarketid = startmarketid;
+            this.endmarketid = endmarketid;
             this.remaining = remaining;
             this.collected = collected;
             this.delivered = delivered;

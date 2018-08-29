@@ -242,6 +242,7 @@ The log of missions accepted by the commander is available under the `missions` 
 ## Mission
 
 Details of an individual mission in the commander's mission log.
+
 	- 'missionid' unique identifier ID of the mission
 	- 'name' name of mission
 	- 'localisedname' localised name of the mission
@@ -275,7 +276,7 @@ Details of an individual mission in the commander's mission log.
 
 The inventory of cargo carried within the ship is available under the `inventory` object.
 
-    - `cargo` specific details on the cargo being carried
+    - `inventory` specific details on the cargo being carried
 
 ## Cargo
 

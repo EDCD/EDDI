@@ -185,7 +185,7 @@ namespace EddiDataDefinitions
                 int stolenNeeded = 0;
                 foreach (Haulage haulage in this.haulageData)
                 {
-                    switch (haulage.type)
+                    switch (haulage.typeEDName)
                     {
                         case "altruism":
                         case "collect":

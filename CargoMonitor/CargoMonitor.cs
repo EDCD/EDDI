@@ -662,12 +662,8 @@ namespace EddiCargoMonitor
                         cargo.CalculateNeed();
                         haulage.collected = @event.collected;
                         haulage.delivered = @event.delivered;
-                        if (haulage.startmarketid == 0)
-                        {
-                            haulage.startmarketid = @event.startmarketid;
-                            haulage.endmarketid = @event.endmarketid;
-                        }
-
+                        haulage.startmarketid = (haulage.startmarketid == 0) ? @event.startmarketid : haulage.startmarketid;
+                        haulage.endmarketid = (haulage.endmarketid == 0) ? @event.endmarketid : haulage.endmarketid;
                     }
                     break;
                 case "Deliver":
@@ -683,18 +679,15 @@ namespace EddiCargoMonitor
                             if (cargo.commodityDef.edname == "Unknown")
                             {
                                 cargo.commodityDef = @event.commodityDefinition;
-                                if (@event.startmarketid == 0)
-                                {
-                                    haulage.originsystem = EDDI.Instance?.CurrentStarSystem?.name;
-                                }
+                                haulage.originsystem = (@event.startmarketid == 0) ? EDDI.Instance?.CurrentStarSystem?.name : null;
                             }
                         }
                         else
                         {
                             // Cargo instantiated by previous 'Market buy' event
                             cargo = GetCargoWithEDName(@event.commodityDefinition.edname);
-                            string originSystem = @event.startmarketid > 0 ? null : EDDI.Instance?.CurrentStarSystem?.name;
-                            string type = @event.startmarketid > 0 ? "MISSION_DeliveryWing" : "MISSION_CollectWing";
+                            string originSystem = (@event.startmarketid == 0) ? EDDI.Instance?.CurrentStarSystem?.name : null;
+                            string type = (@event.startmarketid == 0) ? "MISSION_CollectWing" : "MISSION_DeliveryWing";
                             haulage = new Haulage(@event.missionid ?? 0, type, originSystem, amountRemaining, null, true);
                             cargo.haulageData.Add(haulage);
                         }
@@ -710,11 +703,7 @@ namespace EddiCargoMonitor
                         cargo.CalculateNeed();
                         haulage.collected = @event.collected;
                         haulage.delivered = @event.delivered;
-                        if (haulage.endmarketid == 0)
-                        {
-                            haulage.endmarketid = @event.endmarketid;
-                        }
-
+                        haulage.endmarketid = (haulage.endmarketid == 0) ? @event.endmarketid : haulage.endmarketid;
 
                         // Check for shared mission completion
                         if (haulage.shared && amountRemaining == 0)
@@ -738,7 +727,7 @@ namespace EddiCargoMonitor
                             // First exposure to new cargo, use 'Unknown' as placeholder
                             cargo = new Cargo("Unknown", 0);
                             AddCargo(cargo);
-                            string type = @event.startmarketid > 0 ? "MISSION_DeliveryWing" : "MISSION_CollectWing";
+                            string type = (@event.startmarketid == 0) ? "MISSION_CollectWing" : "MISSION_DeliveryWing";
                             haulage = new Haulage(@event.missionid ?? 0, type, null, amountRemaining, null, true);
                             cargo.haulageData.Add(haulage);
                         }
@@ -844,6 +833,9 @@ namespace EddiCargoMonitor
                         int amount = (type == "delivery" && naval || type == "smuggle") ? @event.amount ?? 0 : 0;
                         string originSystem = EDDI.Instance?.CurrentStarSystem?.name;
                         Haulage haulage = new Haulage(@event.missionid ?? 0, @event.name, originSystem, @event.amount ?? 0, @event.expiry);
+                        haulage.startmarketid = (type.Contains("delivery") && !naval) ? EDDI.Instance?.CurrentStation?.marketId ?? 0 : 0;
+                        haulage.endmarketid = (type.Contains("collect")) ? EDDI.Instance?.CurrentStation?.marketId ?? 0 : 0;
+
                         cargo = GetCargoWithEDName(@event.commodityDefinition?.edname);
                         if (cargo != null)
                         {

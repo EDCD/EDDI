@@ -14,12 +14,14 @@ namespace EddiEvents
         static UndockedEvent()
         {
             VARIABLES.Add("station", "The station from which the commander has undocked");
+            VARIABLES.Add("marketId", "Market ID of the station from which the commander has undocked");
         }
 
         [JsonProperty("station")]
         public string station { get; private set; }
 
         // Admin
+        [JsonProperty("marketId")]
         public long marketId { get; private set; }
 
         public UndockedEvent(DateTime timestamp, string station, long marketId) : base(timestamp, NAME)
