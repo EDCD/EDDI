@@ -47,8 +47,6 @@ namespace EddiDataDefinitions
             this.id = Id;
             this.name = Name;
             this.amount = Amount;
-            this.collected = 0;
-            this.delivered = 0;
             this.expiry = Expiry;
             this.shared = Shared;
         }
