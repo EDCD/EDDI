@@ -193,7 +193,7 @@ namespace EddiDataDefinitions
                         case "mining":
                         case "piracy":
                             {
-                                ownedNeeded += haulage.amount;
+                                ownedNeeded += haulage.remaining;
                             }
                             break;
                         case "delivery":
@@ -201,18 +201,18 @@ namespace EddiDataDefinitions
                         case "rescue":
                         case "smuggle":
                             {
-                                haulageNeeded += haulage.amount;
+                                haulageNeeded += haulage.remaining;
                             }
                             break;
                         case "salvage":
                             {
                                 if (haulage.legal)
                                 {
-                                    haulageNeeded += haulage.amount;
+                                    haulageNeeded += haulage.remaining;
                                 }
                                 else
                                 {
-                                    stolenNeeded += haulage.amount;
+                                    stolenNeeded += haulage.remaining;
                                 }
                             }
                             break;

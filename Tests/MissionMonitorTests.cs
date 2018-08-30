@@ -148,7 +148,7 @@ namespace UnitTests
             Assert.AreEqual(180, mission.amount);
 
             mission = config.missions.ToList().FirstOrDefault(m => m.missionid == 413563829);
-            Assert.AreEqual("Delivery", mission.typeEDName);
+            Assert.AreEqual("Salvage", mission.typeEDName);
             Assert.AreEqual(4, mission.amount);
             Assert.IsTrue(mission.originreturn);
         }
@@ -190,7 +190,7 @@ namespace UnitTests
             Assert.AreEqual(4, missionMonitor.missions.Count);
             Assert.AreEqual("CollectWing", mission.typeEDName);
             Assert.AreEqual("Active", mission.statusEDName);
-            Assert.IsFalse(mission.originreturn);
+            Assert.IsTrue(mission.originreturn);
             Assert.IsTrue(mission.wing);
             Assert.IsTrue(mission.shared);
 
