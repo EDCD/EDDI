@@ -2,6 +2,10 @@
 
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
+### 3.0.3-rc1
+  * Cargo monitor
+    * Added support for solo delivery missions using the mission depot.
+
 ### 3.0.2
   * Additional Italian translations.
   * Fixed an exception that occurs during location events if not docked.
