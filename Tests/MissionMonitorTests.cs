@@ -165,23 +165,6 @@ namespace UnitTests
             Assert.AreEqual(3, missionMonitor.missions.Count);
             Assert.AreEqual(3, missionMonitor.missions.Where(m => m.statusEDName == "Active").Count());
 
-            //MissionAcceptedEvent - 'Collect'
-            line = @"{ ""timestamp"":""2018-08-26T00:50:48Z"", ""event"":""MissionAccepted"", ""Faction"":""Calennero State Industries"", ""Name"":""Mission_Collect_Industrial"", ""LocalisedName"":""Industry needs 54 units of Tantalum"", ""Commodity"":""$Tantalum_Name;"", ""Commodity_Localised"":""Tantalum"", ""Count"":54, ""DestinationSystem"":""HIP 20277"", ""DestinationStation"":""Fabian City"", ""Expiry"":""2018-08-27T00:48:38Z"", ""Wing"":false, ""Influence"":""Med"", ""Reputation"":""Med"", ""Reward"":1909532, ""MissionID"":413748324 }";
-            events = JournalMonitor.ParseJournalEntry(line);
-            missionMonitor._handleMissionAcceptedEvent((MissionAcceptedEvent)events[0]);
-            mission = missionMonitor.missions.ToList().FirstOrDefault(m => m.missionid == 413748324);
-            Assert.AreEqual(4, missionMonitor.missions.Count);
-            Assert.AreEqual("Collect", mission.typeEDName);
-            Assert.AreEqual("Active", mission.statusEDName);
-            Assert.IsTrue(mission.originreturn);
-            Assert.IsFalse(mission.wing);
-
-            //MissionCompletedEvent
-            line = @"{ ""timestamp"":""2018-08-26T00:40:14Z"", ""event"":""MissionCompleted"", ""Faction"":""HIP 20277 Inc"", ""Name"":""Mission_Salvage_Planet_name"", ""MissionID"":413563829, ""Commodity"":""$Landmines_Name;"", ""Commodity_Localised"":""Landmines"", ""Count"":4, ""DestinationSystem"":""Carthage"", ""Reward"":465824, ""FactionEffects"":[ { ""Faction"":""HIP 20277 Inc"", ""Effects"":[ { ""Effect"":""$MISSIONUTIL_Interaction_Summary_civilUnrest_down;"", ""Effect_Localised"":""$#MinorFaction; are happy to report improved civil contentment, making a period of civil unrest unlikely."", ""Trend"":""DownGood"" } ], ""Influence"":[ { ""SystemAddress"":84053791442, ""Trend"":""UpGood"" } ], ""Reputation"":""UpGood"" } ] }";
-            events = JournalMonitor.ParseJournalEntry(line);
-            missionMonitor._handleMissionCompletedEvent((MissionCompletedEvent)events[0]);
-            Assert.AreEqual(3, missionMonitor.missions.Count);
-
             //CargoDepotEvent
             line = @"{ ""timestamp"":""2018-08-26T02:55:10Z"", ""event"":""CargoDepot"", ""MissionID"":413748365, ""UpdateType"":""WingUpdate"", ""CargoType"":""Gold"", ""Count"":20, ""StartMarketID"":0, ""EndMarketID"":3224777216, ""ItemsCollected"":0, ""ItemsDelivered"":20, ""TotalItemsToDeliver"":54, ""Progress"":0.000000 }";
             events = JournalMonitor.ParseJournalEntry(line);
@@ -193,12 +176,50 @@ namespace UnitTests
             Assert.IsTrue(mission.originreturn);
             Assert.IsTrue(mission.wing);
             Assert.IsTrue(mission.shared);
-
             line = @"{ ""timestamp"":""2018-08-26T02:56:16Z"", ""event"":""CargoDepot"", ""MissionID"":413748365, ""UpdateType"":""Deliver"", ""CargoType"":""Gold"", ""Count"":34, ""StartMarketID"":0, ""EndMarketID"":3224777216, ""ItemsCollected"":0, ""ItemsDelivered"":54, ""TotalItemsToDeliver"":54, ""Progress"":0.000000 }";
             events = JournalMonitor.ParseJournalEntry(line);
             missionMonitor._handleCargoDepotEvent((CargoDepotEvent)events[0]);
             Assert.AreEqual(3, missionMonitor.missions.Count);
 
+            //MissionAbandonedEvent
+            line = @"{ ""timestamp"":""2018-08-26T00:50:48Z"", ""event"":""MissionAbandoned"", ""Name"":""Mission_Courier_Elections_name"", ""Fine"":50000, ""MissionID"":413563499 }";
+            events = JournalMonitor.ParseJournalEntry(line);
+            missionMonitor._handleMissionAbandonedEvent((MissionAbandonedEvent)events[0]);
+            Assert.AreEqual(2, missionMonitor.missions.Count);
+
+            //MissionAcceptedEvent - 'Collect'
+            line = @"{ ""timestamp"":""2018-08-26T00:50:48Z"", ""event"":""MissionAccepted"", ""Faction"":""Calennero State Industries"", ""Name"":""Mission_Collect_Industrial"", ""LocalisedName"":""Industry needs 54 units of Tantalum"", ""Commodity"":""$Tantalum_Name;"", ""Commodity_Localised"":""Tantalum"", ""Count"":54, ""DestinationSystem"":""HIP 20277"", ""DestinationStation"":""Fabian City"", ""Expiry"":""2018-08-27T00:48:38Z"", ""Wing"":false, ""Influence"":""Med"", ""Reputation"":""Med"", ""Reward"":1909532, ""MissionID"":413748324 }";
+            events = JournalMonitor.ParseJournalEntry(line);
+            missionMonitor._handleMissionAcceptedEvent((MissionAcceptedEvent)events[0]);
+            mission = missionMonitor.missions.ToList().FirstOrDefault(m => m.missionid == 413748324);
+            Assert.AreEqual(3, missionMonitor.missions.Count);
+            Assert.AreEqual("Collect", mission.typeEDName);
+            Assert.AreEqual("Active", mission.statusEDName);
+            Assert.IsTrue(mission.originreturn);
+            Assert.IsTrue(mission.legal);
+            Assert.IsFalse(mission.wing);
+
+            //MissionAcceptedEvent - 'Smuggle'
+            line = @"{ ""timestamp"":""2018-08-29T20:51:56Z"", ""event"":""MissionAccepted"", ""Faction"":""Gcirithang Crimson Mafia"", ""Name"":""Mission_Smuggle_Famine"", ""LocalisedName"":""Smuggle 36 units of Narcotics to combat famine"", ""Commodity"":""$BasicNarcotics_Name;"", ""Commodity_Localised"":""Narcotics"", ""Count"":36, ""DestinationSystem"":""Carcinus"", ""DestinationStation"":""Wye-Delta Station"", ""Expiry"":""2018-08-30T20:55:33Z"", ""Wing"":false, ""Influence"":""Med"", ""Reputation"":""Med"", ""Reward"":180818, ""MissionID"":414732731 }";
+            events = JournalMonitor.ParseJournalEntry(line);
+            missionMonitor._handleMissionAcceptedEvent((MissionAcceptedEvent) events[0]);
+            mission = missionMonitor.missions.ToList().FirstOrDefault(m => m.missionid == 414732731);
+            Assert.AreEqual(4, missionMonitor.missions.Count);
+            Assert.AreEqual("Smuggle", mission.typeEDName);
+            Assert.IsFalse(mission.originreturn);
+            Assert.IsFalse(mission.legal);
+
+            //MissionCompletedEvent
+            line = @"{ ""timestamp"":""2018-08-26T00:40:14Z"", ""event"":""MissionCompleted"", ""Faction"":""HIP 20277 Inc"", ""Name"":""Mission_Salvage_Planet_name"", ""MissionID"":413563829, ""Commodity"":""$Landmines_Name;"", ""Commodity_Localised"":""Landmines"", ""Count"":4, ""DestinationSystem"":""Carthage"", ""Reward"":465824, ""FactionEffects"":[ { ""Faction"":""HIP 20277 Inc"", ""Effects"":[ { ""Effect"":""$MISSIONUTIL_Interaction_Summary_civilUnrest_down;"", ""Effect_Localised"":""$#MinorFaction; are happy to report improved civil contentment, making a period of civil unrest unlikely."", ""Trend"":""DownGood"" } ], ""Influence"":[ { ""SystemAddress"":84053791442, ""Trend"":""UpGood"" } ], ""Reputation"":""UpGood"" } ] }";
+            events = JournalMonitor.ParseJournalEntry(line);
+            missionMonitor._handleMissionCompletedEvent((MissionCompletedEvent)events[0]);
+            Assert.AreEqual(3, missionMonitor.missions.Count);
+
+            //MissionFailedEvent
+            line = @"{ ""timestamp"":""2018-08-26T00:50:48Z"", ""event"":""MissionFailed"", ""Name"":""Mission_Collect_Industrial"", ""Fine"":50000, ""MissionID"":413748324 }";
+            events = JournalMonitor.ParseJournalEntry(line);
+            missionMonitor._handleMissionAbandonedEvent((MissionAbandonedEvent)events[0]);
+            Assert.AreEqual(2, missionMonitor.missions.Count);
         }
 
         [TestCleanup]

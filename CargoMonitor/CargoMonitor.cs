@@ -705,11 +705,18 @@ namespace EddiCargoMonitor
                         haulage.delivered = @event.delivered;
                         haulage.endmarketid = (haulage.endmarketid == 0) ? @event.endmarketid : haulage.endmarketid;
 
-                        // Check for shared mission completion
-                        if (haulage.shared && amountRemaining == 0)
+                        // Check for mission completion
+                        if (amountRemaining == 0)
                         {
-                            cargo.haulageData.Remove(haulage);
-                            RemoveCargo(cargo);
+                            if (haulage.shared)
+                            {
+                                cargo.haulageData.Remove(haulage);
+                                RemoveCargo(cargo);
+                            }
+                            else
+                            {
+                                haulage.status = "Complete";
+                            }
                         }
                     }
                     break;
@@ -751,11 +758,18 @@ namespace EddiCargoMonitor
                             }
                         }
 
-                        // Check for shared mission completion
-                        if (haulage.shared && amountRemaining == 0)
+                        // Check for mission completion
+                        if (amountRemaining == 0)
                         {
-                            cargo.haulageData.Remove(haulage);
-                            RemoveCargo(cargo);
+                            if (haulage.shared)
+                            {
+                                cargo.haulageData.Remove(haulage);
+                                RemoveCargo(cargo);
+                            }
+                            else
+                            {
+                                haulage.status = "Complete";
+                            }
                         }
                     }
                     break;

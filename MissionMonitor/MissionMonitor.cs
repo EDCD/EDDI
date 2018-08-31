@@ -488,7 +488,7 @@ namespace EddiMissionMonitor
                                 originsystem = @event.startmarketid == 0 && @event.updatetype == "Deliver" ? EDDI.Instance?.CurrentStarSystem?.name : null,
                                 originstation = @event.startmarketid == 0 && @event.updatetype == "Deliver" ? EDDI.Instance?.CurrentStarSystem?.name : null,
                                 wing = true,
-                                originreturn = @event.collected == 0
+                                originreturn = @event.startmarketid == 0
                             };
                             AddMission(mission);
                         }
@@ -513,6 +513,14 @@ namespace EddiMissionMonitor
                         else
                         {
                             RemoveMission(mission);
+                        }
+                    }
+                    else
+                    {
+                        if (amountRemaining == 0)
+                        {
+                            MissionStatus status = MissionStatus.FromEDName("Complete");
+                            mission.statusDef = status;
                         }
                     }
                 }
