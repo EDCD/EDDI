@@ -242,7 +242,7 @@
     <comment>Material encryptedfiles</comment>
   </data>
   <data name="ancienthistoricaldata" xml:space="preserve">
-    <value>Ancient Historical Data</value>
+    <value>Pattern Gamma Obelisk Data (Historical)</value>
     <comment>Material ancienthistoricaldata</comment>
   </data>
   <data name="fsdtelemetry" xml:space="preserve">
@@ -270,7 +270,7 @@
     <comment>Material scanarchives</comment>
   </data>
   <data name="ancientculturaldata" xml:space="preserve">
-    <value>Ancient Cultural Data</value>
+    <value>Pattern Beta Obelisk Data (Cultural)</value>
     <comment>Material ancientculturaldata</comment>
   </data>
   <data name="tg_structuraldata" xml:space="preserve">
@@ -302,7 +302,7 @@
     <comment>Material shielddensityreports</comment>
   </data>
   <data name="ancientbiologicaldata" xml:space="preserve">
-    <value>Ancient Biological Data</value>
+    <value>Pattern Alpha Obelisk Data (Biological)</value>
     <comment>Material ancientbiologicaldata</comment>
   </data>
   <data name="tg_compositiondata" xml:space="preserve">
@@ -338,11 +338,11 @@
     <comment>Material securityfirmware</comment>
   </data>
   <data name="ancientlanguagedata" xml:space="preserve">
-    <value>Ancient Language Data</value>
+    <value>Pattern Delta Obelisk Data (Linguistic)</value>
     <comment>Material ancientlanguagedata</comment>
   </data>
   <data name="ancienttechnologicaldata" xml:space="preserve">
-    <value>Ancient Technological Data</value>
+    <value>Pattern Epsilon Obelisk Data (Technological)</value>
     <comment>Material ancienttechnologicaldata</comment>
   </data>
   <data name="tg_residuedata" xml:space="preserve">
