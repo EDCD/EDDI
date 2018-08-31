@@ -5,6 +5,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
 ### 3.0.3-rc1
   * Cargo monitor
     * Added support for solo delivery missions using the mission depot.
+    * Added definition for Ancient Key.
 
 ### 3.0.2
   * Additional Italian translations.
