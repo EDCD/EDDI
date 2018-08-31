@@ -1601,5 +1601,8 @@
     <value>Pamphlets d'Utopia</value>
     <comment>Commodity UtopianPublicity</comment>
   </data>
-  
+  <data name="ancientkey" xml:space="preserve">
+    <value>Clé Antique</value>
+    <comment>Commodity Ancient Key</comment>
+  </data>
 </root>
