@@ -232,6 +232,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ancient Key.
+        /// </summary>
+        public static string ancientkey {
+            get {
+                return ResourceManager.GetString("ancientkey", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ancient Orb.
         /// </summary>
         public static string AncientOrb {

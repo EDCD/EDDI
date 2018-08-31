@@ -345,6 +345,7 @@ namespace EddiDataDefinitions
                 new CommodityDefinition(128732186, 324, "AncientTablet", Salvage, 0, false),
                 new CommodityDefinition(128732187, 325, "AncientUrn", Salvage, 0, false),
                 new CommodityDefinition(128732188, 326, "AncientTotem", Salvage, 0, false),
+                new CommodityDefinition(128888499, 326, "AncientKey", Salvage, 0, false),
                 new CommodityDefinition(128793127, null, "ThargoidHeart", Salvage, 0, false),
                 new CommodityDefinition(128793128, null, "ThargoidTissueSampleType1", Salvage, 14081, false),
                 new CommodityDefinition(128793129, null, "ThargoidTissueSampleType2", Salvage, 0, false),
