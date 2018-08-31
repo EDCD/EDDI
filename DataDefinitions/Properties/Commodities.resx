@@ -1601,4 +1601,8 @@
     <value>Utopian Publicity</value>
     <comment>Commodity UtopianPublicity</comment>
   </data>
+  <data name="ancientkey" xml:space="preserve">
+    <value>Ancient Key</value>
+    <comment>Commodity Ancient Key</comment>
+  </data>
 </root>
