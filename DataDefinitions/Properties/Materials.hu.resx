@@ -223,10 +223,7 @@
   
   
   
-  <data name="ancienthistoricaldata" xml:space="preserve">
-    <value>Ős történelmi adat</value>
-    <comment>Material ancienthistoricaldata</comment>
-  </data>
+  
   <data name="fsdtelemetry" xml:space="preserve">
     <value>Rendhagyó FSD telemetria</value>
     <comment>Material fsdtelemetry</comment>
@@ -239,10 +236,7 @@
     <comment>Material encryptioncodes</comment>
   </data>
   
-  <data name="ancientculturaldata" xml:space="preserve">
-    <value>Ősi kulturális adat</value>
-    <comment>Material ancientculturaldata</comment>
-  </data>
+  
   <data name="tg_structuraldata" xml:space="preserve">
     <value>Thargoid szerkezeti adat</value>
     <comment>Material tg_structuraldata</comment>
