@@ -129,4 +129,8 @@
     <value>Thargoid</value>
     <comment>Superpower type Thargoid</comment>
   </data>
+  <data name="PilotsFederation" xml:space="preserve">
+    <value>Pilots Federation</value>
+    <comment>Superpower type Pilots Federation</comment>
+  </data>
 </root>
