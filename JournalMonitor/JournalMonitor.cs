@@ -2332,13 +2332,12 @@ namespace EddiJournalMonitor
                         case "Missions":
                             {
                                 List<Mission> missions = new List<Mission>();
-                                object val;
 
                                 for (int i = 0; i < 3; i++)
                                 {
                                     MissionStatus missionStatus = MissionStatus.FromStatus(i);
                                     string status = missionStatus.invariantName;
-                                    data.TryGetValue(status, out val);
+                                    data.TryGetValue(status, out object val);
                                     List<object> missionLog = (List<object>)val;
 
                                     foreach (object mission in missionLog)
@@ -2373,8 +2372,7 @@ namespace EddiJournalMonitor
                         case "Passengers":
                             {
                                 List<Passenger> passengers = new List<Passenger>();
-                                object val;
-                                data.TryGetValue("Manifest", out val);
+                                data.TryGetValue("Manifest", out object val);
                                 List<object> passengerManifest = (List<object>)val;
 
                                 foreach (object passenger in passengerManifest)

@@ -846,9 +846,11 @@ namespace EddiCargoMonitor
                     {
                         int amount = (type == "delivery" && naval || type == "smuggle") ? @event.amount ?? 0 : 0;
                         string originSystem = EDDI.Instance?.CurrentStarSystem?.name;
-                        Haulage haulage = new Haulage(@event.missionid ?? 0, @event.name, originSystem, @event.amount ?? 0, @event.expiry);
-                        haulage.startmarketid = (type.Contains("delivery") && !naval) ? EDDI.Instance?.CurrentStation?.marketId ?? 0 : 0;
-                        haulage.endmarketid = (type.Contains("collect")) ? EDDI.Instance?.CurrentStation?.marketId ?? 0 : 0;
+                        Haulage haulage = new Haulage(@event.missionid ?? 0, @event.name, originSystem, @event.amount ?? 0, @event.expiry)
+                        {
+                            startmarketid = (type.Contains("delivery") && !naval) ? EDDI.Instance?.CurrentStation?.marketId ?? 0 : 0,
+                            endmarketid = (type.Contains("collect")) ? EDDI.Instance?.CurrentStation?.marketId ?? 0 : 0
+                        };
 
                         cargo = GetCargoWithEDName(@event.commodityDefinition?.edname);
                         if (cargo != null)
@@ -859,8 +861,10 @@ namespace EddiCargoMonitor
                         }
                         else
                         {
-                            cargo = new Cargo(@event.commodityDefinition?.edname, 0);
-                            cargo.haulage = amount;
+                            cargo = new Cargo(@event.commodityDefinition?.edname, 0)
+                            {
+                                haulage = amount
+                            };
                             cargo.haulageData.Add(haulage);
                             cargo.CalculateNeed();
                             AddCargo(cargo);
