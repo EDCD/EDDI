@@ -2319,8 +2319,8 @@ namespace EddiJournalMonitor
                                 data.TryGetValue("Count", out val);
                                 int? amount = (int?)(long?)val;
 
-                                int startmarketid = JsonParsing.getInt(data, "StartMarketID");
-                                int endmarketid = JsonParsing.getInt(data, "EndMarketID");
+                                long startmarketid = JsonParsing.getLong(data, "StartMarketID");
+                                long endmarketid = JsonParsing.getLong(data, "EndMarketID");
                                 int collected = JsonParsing.getInt(data, "ItemsCollected");
                                 int delivered = JsonParsing.getInt(data, "ItemsDelivered");
                                 int totaltodeliver = JsonParsing.getInt(data, "TotalItemsToDeliver");

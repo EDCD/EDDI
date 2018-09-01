@@ -35,9 +35,9 @@ namespace EddiEvents
 
         public int? amount { get; private set; }
 
-        public int startmarketid { get; private set; }
+        public long startmarketid { get; private set; }
 
-        public int endmarketid { get; private set; }
+        public long endmarketid { get; private set; }
 
         public int collected { get; private set; }
 
@@ -45,7 +45,7 @@ namespace EddiEvents
 
         public int totaltodeliver { get; private set; }
 
-        public CargoDepotEvent(DateTime timestamp, long? missionid, string updatetype, CommodityDefinition commodity, int? amount, int startmarketid, int endmarketid, int collected, int delivered, int totaltodeliver) : base(timestamp, NAME)
+        public CargoDepotEvent(DateTime timestamp, long? missionid, string updatetype, CommodityDefinition commodity, int? amount, long startmarketid, long endmarketid, int collected, int delivered, int totaltodeliver) : base(timestamp, NAME)
         {
             this.missionid = missionid;
             this.updatetype = updatetype;
