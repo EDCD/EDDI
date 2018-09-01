@@ -241,10 +241,7 @@
     <value>Ungewöhnliche verschlüsselte Files</value>
     <comment>Material encryptedfiles</comment>
   </data>
-  <data name="ancienthistoricaldata" xml:space="preserve">
-    <value>Uralte Geschichtsdaten</value>
-    <comment>Material ancienthistoricaldata</comment>
-  </data>
+  
   <data name="fsdtelemetry" xml:space="preserve">
     <value>Anormale FSA-Telemetrie</value>
     <comment>Material fsdtelemetry</comment>
@@ -269,10 +266,7 @@
     <value>Unidentifizierte Scan-Archive</value>
     <comment>Material scanarchives</comment>
   </data>
-  <data name="ancientculturaldata" xml:space="preserve">
-    <value>Uralte Kulturdaten</value>
-    <comment>Material ancientculturaldata</comment>
-  </data>
+  
   <data name="tg_structuraldata" xml:space="preserve">
     <value>Thargoiden Strukturdaten</value>
     <comment>Material tg_structuraldata</comment>
@@ -301,10 +295,7 @@
     <value>Untypische Schildscans</value>
     <comment>Material shielddensityreports</comment>
   </data>
-  <data name="ancientbiologicaldata" xml:space="preserve">
-    <value>Uralte Biologiedaten</value>
-    <comment>Material ancientbiologicaldata</comment>
-  </data>
+  
   <data name="tg_compositiondata" xml:space="preserve">
     <value>Thargoiden Materialzusammensetzung</value>
     <comment>Material tg_compositiondata</comment>
@@ -337,14 +328,8 @@
     <value>Sicherheits-Firmware-Patch</value>
     <comment>Material securityfirmware</comment>
   </data>
-  <data name="ancientlanguagedata" xml:space="preserve">
-    <value>Uralte Sprachdaten</value>
-    <comment>Material ancientlanguagedata</comment>
-  </data>
-  <data name="ancienttechnologicaldata" xml:space="preserve">
-    <value>Uralte Technikdaten</value>
-    <comment>Material ancienttechnologicaldata</comment>
-  </data>
+  
+  
   <data name="tg_residuedata" xml:space="preserve">
     <value>Thargoiden Rückstandsdatenanalyse</value>
     <comment>Material tg_residuedata</comment>
