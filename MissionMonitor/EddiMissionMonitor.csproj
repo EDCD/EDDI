@@ -71,7 +71,6 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CargoDepotEvent.cs" />
     <Compile Include="CargoWingUpdateEvent.cs" />
     <Compile Include="CommunityGoalEvent.cs" />
     <Compile Include="MissionAbandonedEvent.cs" />
