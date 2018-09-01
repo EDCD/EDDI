@@ -31,6 +31,14 @@ namespace UnitTests
         }
 
         [TestMethod]
+        public void TestHaulageCopyCtor()
+        {
+            Haulage original = new Haulage(1, "name", "Sol", 42, null, false);
+            Haulage copy = new Haulage(original);
+            Assert.AreEqual(original.name, copy.name);
+        }
+
+        [TestMethod]
         public void TestCargoConfig()
         {
             string cargoConfigJson = @"{

@@ -43,32 +43,32 @@ namespace EddiDataDefinitions
 
         public Haulage() { }
 
-        public Haulage(Haulage Haulage)
+        public Haulage(Haulage haulage)
         {
-            this.missionid = missionid;
-            this.name = name;
-            this.originsystem = originsystem;
-            this.status = status;
-            this.amount = amount;
-            this.startmarketid = startmarketid;
-            this.endmarketid = endmarketid;
-            this.remaining = remaining;
-            this.collected = collected;
-            this.delivered = delivered;
-            this.expiry = expiry;
-            this.shared = shared;
+            missionid = haulage.missionid;
+            name = haulage.name;
+            originsystem = haulage.originsystem;
+            status = haulage.status;
+            amount = haulage.amount;
+            startmarketid = haulage.startmarketid;
+            endmarketid = haulage.endmarketid;
+            remaining = haulage.remaining;
+            collected = haulage.collected;
+            delivered = haulage.delivered;
+            expiry = haulage.expiry;
+            shared = haulage.shared;
         }
 
         public Haulage(long MissionId, string Name, string OriginSystem, int Amount, DateTime? Expiry, bool Shared = false)
         {
-            this.missionid = MissionId;
-            this.name = Name;
-            this.originsystem = OriginSystem;
-            this.status = "Active";
-            this.amount = Amount;
-            this.remaining = Amount;
-            this.expiry = Expiry;
-            this.shared = Shared;
+            missionid = MissionId;
+            name = Name;
+            originsystem = OriginSystem;
+            status = "Active";
+            amount = Amount;
+            remaining = Amount;
+            expiry = Expiry;
+            shared = Shared;
         }
     }
 }
