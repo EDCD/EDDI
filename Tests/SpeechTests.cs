@@ -540,9 +540,9 @@ namespace SpeechTests
         public void TestSpeechNullInvalidVoice()
         {
             // Test null voice
-            SpeechService.Instance.Say(null, "This is the default voice", true, 3, null, false);
+            SpeechService.Instance.Say(null, "Testing null voice", true, 3, null, false);
             // Test invalid voice
-            SpeechService.Instance.Say(null, "I will use this voice when the voice is null or invalid", true, 3, "No such voice", false);
+            SpeechService.Instance.Say(null, "Testing invalid voice", true, 3, "No such voice", false);
         }
     }
 }
