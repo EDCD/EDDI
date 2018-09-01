@@ -1,4 +1,4 @@
-using Eddi;
+﻿using Eddi;
 using EddiDataDefinitions;
 using EddiEvents;
 using EddiCargoMonitor;
@@ -2401,27 +2401,6 @@ namespace EddiJournalMonitor
                                 handled = true;
                             }
                             break;
-                        case "CargoDepot":
-                            {
-                                object val;
-                                data.TryGetValue("MissionID", out val);
-                                long missionid = (long)val;
-                                string updatetype = JsonParsing.getString(data, "UpdateType");
-
-                                // Not available in 'WingUpdate'
-                                CommodityDefinition commodity = CommodityDefinition.FromEDName(JsonParsing.getString(data, "CargoType"));
-                                data.TryGetValue("Count", out val);
-                                int? amount = (int?)(long?)val;
-                                long startmarketid = JsonParsing.getLong(data, "StartMarketID");
-                                long endmarketid = JsonParsing.getLong(data, "EndMarketID");
-                                int collected = JsonParsing.getInt(data, "ItemsCollected");
-                                int delivered = JsonParsing.getInt(data, "ItemsDelivered");
-                                int totaltodeliver = JsonParsing.getInt(data, "TotalItemsToDeliver");
-
-                                events.Add(new CargoDepotEvent(timestamp, missionid, updatetype, commodity, amount, startmarketid, endmarketid, collected, delivered, totaltodeliver) { raw = line });
-                                handled = true;
-                                break;
-                            }
                         case "MissionAccepted":
                             {
                                 data.TryGetValue("MissionID", out object val);
