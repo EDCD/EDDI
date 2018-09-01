@@ -2358,7 +2358,7 @@ namespace EddiJournalMonitor
                                         if (newMission == null)
                                         {
                                             // Mal-formed mission
-                                            Logging.Report("Bad mission entry", JsonConvert.SerializeObject(mission));
+                                            Logging.Error("Bad mission entry", JsonConvert.SerializeObject(mission));
                                         }
                                         else
                                         {
@@ -2390,7 +2390,7 @@ namespace EddiJournalMonitor
                                     if (newPassenger == null)
                                     {
                                         // Mal-formed mission
-                                        Logging.Report("Bad mission entry", JsonConvert.SerializeObject(passenger));
+                                        Logging.Error("Bad mission entry", JsonConvert.SerializeObject(passenger));
                                     }
                                     else
                                     {
