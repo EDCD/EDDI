@@ -241,7 +241,10 @@
     <value>Archivos encriptados atípicos</value>
     <comment>Material encryptedfiles</comment>
   </data>
-  
+  <data name="ancienthistoricaldata" xml:space="preserve">
+    <value>Datos de Obelisco de Patrón Gamma (Histórico)</value>
+    <comment>Material ancienthistoricaldata</comment>
+  </data>
   <data name="fsdtelemetry" xml:space="preserve">
     <value>Telemetría de MDD anómala</value>
     <comment>Material fsdtelemetry</comment>
@@ -266,7 +269,10 @@
     <value>Archivos de escáner no identificados</value>
     <comment>Material scanarchives</comment>
   </data>
-  
+  <data name="ancientculturaldata" xml:space="preserve">
+    <value>Datos de Obelisco de Patrón Beta (Cultural)</value>
+    <comment>Material ancientculturaldata</comment>
+  </data>
   <data name="tg_structuraldata" xml:space="preserve">
     <value>Datos Estructurales Thargoides</value>
     <comment>Material tg_structuraldata</comment>
@@ -295,7 +301,10 @@
     <value>Escáner de escudos atípico</value>
     <comment>Material shielddensityreports</comment>
   </data>
-  
+  <data name="ancientbiologicaldata" xml:space="preserve">
+    <value>Datos de Obelisco de Patrón Alpha (Biológico)</value>
+    <comment>Material ancientbiologicaldata</comment>
+  </data>
   <data name="tg_compositiondata" xml:space="preserve">
     <value>Datos de composición material Thargoide</value>
     <comment>Material tg_compositiondata</comment>
@@ -328,8 +337,14 @@
     <value>Parche de firmware de seguridad</value>
     <comment>Material securityfirmware</comment>
   </data>
-  
-  
+  <data name="ancientlanguagedata" xml:space="preserve">
+    <value>Datos de Obelisco de Patrón Delta (Lingüístico)</value>
+    <comment>Material ancientlanguagedata</comment>
+  </data>
+  <data name="ancienttechnologicaldata" xml:space="preserve">
+    <value>Datos de Obelisco de Patrón Épsilon (Tecnológico)</value>
+    <comment>Material ancienttechnologicaldata</comment>
+  </data>
   <data name="tg_residuedata" xml:space="preserve">
     <value>Datos residuales Thargoides</value>
     <comment>Material tg_residuedata</comment>
