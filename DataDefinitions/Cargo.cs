@@ -156,9 +156,6 @@ namespace EddiDataDefinitions
         // Default Constructor
         public Cargo() { }
 
-        // Default Constructor
-        public Cargo() { }
-
         [JsonConstructor]
         public Cargo(string edname, int total, int? price = null)
         {
