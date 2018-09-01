@@ -34,7 +34,7 @@ namespace EddiDataDefinitions
             MissionStatus result = AllOfThem.FirstOrDefault(v => v.status == from);
             if (result == null)
             {
-                Logging.Report("Unknown MissionStatus status " + from);
+                Logging.Error("Unknown MissionStatus status " + from);
             }
             return result;
         }
