@@ -1,4 +1,4 @@
-﻿using Eddi;
+using Eddi;
 using EddiDataDefinitions;
 using EddiEvents;
 using EddiCargoMonitor;
@@ -2298,7 +2298,6 @@ namespace EddiJournalMonitor
                             }
                         case "CommunityGoalReward":
                             {
-                                object val;
                                 long cgid = JsonParsing.getLong(data, "CGID");
                                 string name = JsonParsing.getString(data, "Name");
                                 string system = JsonParsing.getString(data, "System");
