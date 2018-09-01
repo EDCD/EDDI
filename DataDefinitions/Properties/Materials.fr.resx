@@ -241,7 +241,10 @@
     <value>Fichiers cryptés inhabituels</value>
     <comment>Material encryptedfiles</comment>
   </data>
-  
+  <data name="ancienthistoricaldata" xml:space="preserve">
+    <value>Données d'obélisque de type gamma (Historique)</value>
+    <comment>Material ancienthistoricaldata</comment>
+  </data>
   <data name="fsdtelemetry" xml:space="preserve">
     <value>Télémétrie FSD anormale</value>
     <comment>Material fsdtelemetry</comment>
@@ -266,7 +269,10 @@
     <value>Données d'analyse archivées non identifiées</value>
     <comment>Material scanarchives</comment>
   </data>
-  
+  <data name="ancientculturaldata" xml:space="preserve">
+    <value>Données d'obélisque de type bêta (Culturel)</value>
+    <comment>Material ancientculturaldata</comment>
+  </data>
   <data name="tg_structuraldata" xml:space="preserve">
     <value>Données de structure Thargoïdes</value>
     <comment>Material tg_structuraldata</comment>
@@ -295,7 +301,10 @@
     <value>Analyses de bouclier atypiques</value>
     <comment>Material shielddensityreports</comment>
   </data>
-  
+  <data name="ancientbiologicaldata" xml:space="preserve">
+    <value>Données d'obélisque de type alpha (Biologique)</value>
+    <comment>Material ancientbiologicaldata</comment>
+  </data>
   <data name="tg_compositiondata" xml:space="preserve">
     <value>Données de composition de matériau Thargoïdes</value>
     <comment>Material tg_compositiondata</comment>
@@ -328,8 +337,14 @@
     <value>Mise à jour de micrologiciel de sécurité</value>
     <comment>Material securityfirmware</comment>
   </data>
-  
-  
+  <data name="ancientlanguagedata" xml:space="preserve">
+    <value>Données d'obélisque de type delta (Linguistique)</value>
+    <comment>Material ancientlanguagedata</comment>
+  </data>
+  <data name="ancienttechnologicaldata" xml:space="preserve">
+    <value>Données d'obélisque de type epsilon (Technologique)</value>
+    <comment>Material ancienttechnologicaldata</comment>
+  </data>
   <data name="tg_residuedata" xml:space="preserve">
     <value>Données de résidu Thargoïdes</value>
     <comment>Material tg_residuedata</comment>
