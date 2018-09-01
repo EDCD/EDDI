@@ -535,5 +535,14 @@ namespace SpeechTests
             Logging.Verbose = true;
             SpeechService.Instance.Say(null, "Your python has touched down.", true, 3, null, true);
         }
+
+        [TestMethod, TestCategory("Speech")]
+        public void TestSpeechNullInvalidVoice()
+        {
+            // Test null voice
+            SpeechService.Instance.Say(null, "This is the default voice", true, 3, null, false);
+            // Test invalid voice
+            SpeechService.Instance.Say(null, "I will use this voice when the voice is null or invalid", true, 3, "No such voice", false);
+        }
     }
 }

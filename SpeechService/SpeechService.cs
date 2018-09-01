@@ -352,7 +352,7 @@ namespace EddiSpeechService
             return null;
         }
 
-        // Speak using the MS speech synthesizer
+        // Speak using the Windows SAPI speech synthesizer
         private void speak(MemoryStream stream, string voice, string speech)
         {
             var synthThread = new Thread(() =>
@@ -361,12 +361,12 @@ namespace EddiSpeechService
                 {
                     using (SpeechSynthesizer synth = new SpeechSynthesizer())
                     {
-                        if (voice != null && !voice.Contains("Microsoft Server Speech Text to Speech Voice"))
+                        if (voice != null)
                         {
                             try
                             {
                                 Logging.Debug("Selecting voice " + voice);
-                                Task t = new Task(() => synth.SelectVoice(voice));
+                                Task t = new Task(() => selectVoice(voice, synth));
                                 t.Start();
                                 if (!t.Wait(TimeSpan.FromSeconds(2)))
                                 {
@@ -423,6 +423,17 @@ namespace EddiSpeechService
             synthThread.Start();
             synthThread.Join();
             stream.Position = 0;
+        }
+
+        private static void selectVoice(string voice, SpeechSynthesizer synth)
+        {
+            foreach (InstalledVoice vc in synth.GetInstalledVoices())
+            {
+                if (vc.Enabled && vc.VoiceInfo.Name == voice && !vc.VoiceInfo.Name.Contains("Microsoft Server Speech Text to Speech Voice"))
+                {
+                    synth.SelectVoice(voice);
+                }
+            }
         }
 
         private string bestGuessCulture(SpeechSynthesizer synth)
