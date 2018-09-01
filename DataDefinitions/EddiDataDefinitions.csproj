@@ -819,6 +819,7 @@
     <EmbeddedResource Include="Properties\StationModels.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>StationModels.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\PassengerType.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>PassengerType.Designer.cs</LastGenOutput>
