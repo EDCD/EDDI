@@ -1,5 +1,4 @@
-﻿
-using EddiDataDefinitions;
+﻿using EddiDataDefinitions;
 using System;
 using System.Collections.Generic;
 
