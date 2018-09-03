@@ -1085,6 +1085,12 @@ namespace EddiDataDefinitions
                 new Module(128816572, "Krait_mkii_Armour_Mirrored", -1, "MirroredSurfaceComposite", 1, "I", 121192590, 128816567),
                 new Module(128816573, "Krait_mkii_Armour_Reactive", -1, "ReactiveSurfaceComposite", 1, "I", 134297570, 128816567),
 
+                new Module(128816583, "TypeX_2_Armour_Grade1", -1, "LightweightAlloy", 1, "I", 0, 128816581),
+                new Module(128816584, "TypeX_2_Armour_Grade2", -1, "ReinforcedAlloy", 1, "I", 9146537, 128816581),
+                new Module(128816585, "TypeX_2_Armour_Grade3", -1, "MilitaryGradeComposite", 1, "I", 20579707, 128816581),
+                new Module(128816586, "TypeX_2_Armour_Mirrored", -1, "MirroredSurfaceComposite", 1, "I", 48636709, 128816581),
+                new Module(128816587, "TypeX_2_Armour_Reactive", -1, "ReactiveSurfaceComposite", 1, "I", 53895966, 128816581),
+
                 new Module(128816590, "TypeX_3_Armour_Grade1", -1, "LightweightAlloy", 1, "I", 0, 128816588),
                 new Module(128816591, "TypeX_3_Armour_Grade2", -1, "ReinforcedAlloy", 1, "I", 12188900, 128816588),
                 new Module(128816592, "TypeX_3_Armour_Grade3", -1, "MilitaryGradeComposite", 1, "I", 27425027, 128816588),
