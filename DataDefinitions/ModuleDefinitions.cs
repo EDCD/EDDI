@@ -159,6 +159,7 @@ namespace EddiDataDefinitions
                 new Module(128049489, "Hpt_Railgun_Fixed_Medium", 877, "RailGun", 2, "B", 412800, ModuleMount.Fixed, 0, 30),
                 new Module(128049492, "Hpt_BasicMissileRack_Fixed_Small", 878, "MissileRack", 1, "B", 72600, ModuleMount.Fixed, 0, 6),
                 new Module(128049493, "Hpt_BasicMissileRack_Fixed_Medium", 879, "MissileRack", 2, "B", 512400, ModuleMount.Fixed, 0, 18),
+                new Module(128049494, "Hpt_BasicMissileRack_Fixed_Large", 1656, "MissileRack", 3, "A", 1471030, ModuleMount.Fixed, 0, 18),
                 new Module(128049500, "Hpt_MineLauncher_Fixed_Small", 880, "MineLauncher", 1, "I", 24260, ModuleMount.Fixed),
                 new Module(128049501, "Hpt_MineLauncher_Fixed_Medium", 881, "MineLauncher", 2, "I", 294080, ModuleMount.Fixed),
                 new Module(128049509, "Hpt_AdvancedTorpPylon_Fixed_Small", 882, "TorpedoPylon", 1, "I", 11200, ModuleMount.Fixed),
