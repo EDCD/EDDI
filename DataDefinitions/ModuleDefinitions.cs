@@ -1086,10 +1086,10 @@ namespace EddiDataDefinitions
                 new Module(128816573, "Krait_mkii_Armour_Reactive", -1, "ReactiveSurfaceComposite", 1, "I", 134297570, 128816567),
 
                 new Module(128816590, "TypeX_3_Armour_Grade1", -1, "LightweightAlloy", 1, "I", 0, 128816588),
-                new Module(128816591, "TypeX_3_Armour_Grade2", -1, "ReinforcedAlloy", 1, "I", 6803170, 128816588),
-                new Module(128816592, "TypeX_3_Armour_Grade3", -1, "MilitaryGradeComposite", 1, "I", 15307134, 128816588),
-                new Module(128816593, "TypeX_3_Armour_Mirrored", -1, "MirroredSurfaceComposite", 1, "I", 36175859, 128816588),
-                new Module(128816594, "TypeX_3_Armour_Reactive", -1, "ReactiveSurfaceComposite", 1, "I", 40087682, 128816588),
+                new Module(128816591, "TypeX_3_Armour_Grade2", -1, "ReinforcedAlloy", 1, "I", 12188900, 128816588),
+                new Module(128816592, "TypeX_3_Armour_Grade3", -1, "MilitaryGradeComposite", 1, "I", 27425027, 128816588),
+                new Module(128816593, "TypeX_3_Armour_Mirrored", -1, "MirroredSurfaceComposite", 1, "I", 64814481, 128816588),
+                new Module(128816594, "TypeX_3_Armour_Reactive", -1, "ReactiveSurfaceComposite", 1, "I", 71823099, 128816588),
 
                 // Needs EDDB ID & pricing
                 new Module(128833988, "Int_GuardianPowerplant_Size2", -1, "GuardianPowerPlant", 2, "A", 0),
