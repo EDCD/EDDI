@@ -1605,4 +1605,20 @@
     <value>Ancient Key</value>
     <comment>Commodity Ancient Key</comment>
   </data>
+  <data name="ThargoidTissueSampleType1" xml:space="preserve">
+    <value>Thargoid Cyclops Tissue Sample</value>
+    <comment>Commodity ThargoidTissueSampleType1</comment>
+  </data>
+  <data name="ThargoidTissueSampleType2" xml:space="preserve">
+    <value>Thargoid Basilisk Tissue Sample</value>
+    <comment>Commodity ThargoidTissueSampleType2</comment>
+  </data>
+  <data name="ThargoidTissueSampleType3" xml:space="preserve">
+    <value>Thargoid Medusa Tissue Sample</value>
+    <comment>Commodity ThargoidTissueSampleType3</comment>
+  </data>
+  <data name="ThargoidTissueSampleType4" xml:space="preserve">
+    <value>Thargoid Hydra Tissue Sample</value>
+    <comment>Commodity ThargoidTissueSampleType4</comment>
+  </data>
 </root>

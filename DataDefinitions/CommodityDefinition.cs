@@ -350,6 +350,7 @@ namespace EddiDataDefinitions
                 new CommodityDefinition(128793128, null, "ThargoidTissueSampleType1", Salvage, 14081, false),
                 new CommodityDefinition(128793129, null, "ThargoidTissueSampleType2", Salvage, 0, false),
                 new CommodityDefinition(128793130, null, "ThargoidTissueSampleType3", Salvage, 0, false),
+                new CommodityDefinition(128902652, null, "ThargoidTissueSampleType4", Salvage, 0, false),
                 new CommodityDefinition(128672137, 327, "SmallExplorationDataCash", Salvage, 0, false),
                 new CommodityDefinition(128672136, 328, "LargeExplorationDataCash", Salvage, 0, false),
                 new CommodityDefinition(128672811, 329, "DamagedEscapePod", Salvage, 11912, false),

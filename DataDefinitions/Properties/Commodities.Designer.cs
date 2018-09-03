@@ -2878,6 +2878,42 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Thargoid Cyclops Tissue Sample.
+        /// </summary>
+        public static string ThargoidTissueSampleType1 {
+            get {
+                return ResourceManager.GetString("ThargoidTissueSampleType1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Thargoid Basilisk Tissue Sample.
+        /// </summary>
+        public static string ThargoidTissueSampleType2 {
+            get {
+                return ResourceManager.GetString("ThargoidTissueSampleType2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Thargoid Medusa Tissue Sample.
+        /// </summary>
+        public static string ThargoidTissueSampleType3 {
+            get {
+                return ResourceManager.GetString("ThargoidTissueSampleType3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Thargoid Hydra Tissue Sample.
+        /// </summary>
+        public static string ThargoidTissueSampleType4 {
+            get {
+                return ResourceManager.GetString("ThargoidTissueSampleType4", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The Hutton Mug.
         /// </summary>
         public static string TheHuttonMug {
