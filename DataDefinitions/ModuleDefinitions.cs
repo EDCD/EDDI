@@ -1113,7 +1113,16 @@ namespace EddiDataDefinitions
                 new Module(128834780, "Hpt_PlasmaShockCannon_Fixed_Large", -1, "ShockCannon", 3, "D", 0, ModuleMount.Fixed),
                 new Module(128834781, "Hpt_PlasmaShockCannon_Gimbal_Large", -1, "ShockCannon", 3, "D", 0, ModuleMount.Gimballed),
                 new Module(128834782, "Hpt_PlasmaShockCannon_Turret_Large", -1, "ShockCannon", 3, "D", 0, ModuleMount.Turreted),
-                new Module(128834784, "Hpt_Guardian_PlasmaLauncher_Turret_Large", -1, "GuardianPlasmaCharger", 3, "D", 0, ModuleMount.Turreted),           
+                new Module(128834784, "Hpt_Guardian_PlasmaLauncher_Turret_Large", -1, "GuardianPlasmaCharger", 3, "D", 0, ModuleMount.Turreted),
+
+                new Module(128891603, "Hpt_PlasmaShockCannon_Turret_Small", -1, "ShockCannon", 1, "F", 0, ModuleMount.Turreted),
+                new Module(128891604, "Hpt_PlasmaShockCannon_Gimbal_Small", -1, "ShockCannon", 1, "E", 0, ModuleMount.Gimballed),
+                new Module(128891605, "Hpt_PlasmaShockCannon_Fixed_Small", -1, "ShockCannon", 1, "D", 0, ModuleMount.Fixed),
+                new Module(128891606, "Hpt_Guardian_PlasmaLauncher_Turret_Small", -1, "GuardianPlasmaCharger", 1, "F", 0, ModuleMount.Turreted),
+                new Module(128891607, "Hpt_Guardian_PlasmaLauncher_Fixed_Small", -1, "GuardianPlasmaCharger", 1, "D", 0, ModuleMount.Fixed),
+                new Module(128891608, "Hpt_Guardian_ShardCannon_Turret_Small", -1, "ShardCannon", 1, "F", 0, ModuleMount.Turreted),
+                new Module(128891609, "Hpt_Guardian_ShardCannon_Fixed_Small", -1, "ShardCannon", 1, "D", 0, ModuleMount.Fixed),
+                new Module(128891610, "Hpt_Guardian_GaussCannon_Fixed_Small", -1, "GuardianGaussCannon", 1, "D", 0, ModuleMount.Fixed),
             };
         }
         private static Dictionary<long, Module> ModulesByEliteID;
