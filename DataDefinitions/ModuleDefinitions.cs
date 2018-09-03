@@ -151,6 +151,7 @@ namespace EddiDataDefinitions
                 new Module(128049460, "Hpt_MultiCannon_Gimbal_Medium", 870, "Multi_Cannon", 2, "F", 57000, ModuleMount.Gimballed, 0, 2100),
                 new Module(128049462, "Hpt_MultiCannon_Turret_Small", 871, "Multi_Cannon", 1, "G", 81600, ModuleMount.Turreted, 0, 2100),
                 new Module(128049463, "Hpt_MultiCannon_Turret_Medium", 872, "Multi_Cannon", 2, "F", 1292800, ModuleMount.Turreted, 0, 2100),
+                new Module(128049464, "Hpt_MultiCannon_Turret_Large", 1658, "Multi_Cannon", 3, "E", 3794600, ModuleMount.Turreted, 0, 2100),
                 new Module(128049465, "Hpt_PlasmaAccelerator_Fixed_Medium", 873, "PlasmaAccelerator", 2, "C", 834200, ModuleMount.Fixed, 0, 100),
                 new Module(128049466, "Hpt_PlasmaAccelerator_Fixed_Large", 874, "PlasmaAccelerator", 3, "B", 3051200, ModuleMount.Fixed, 0, 100),
                 new Module(128049467, "Hpt_PlasmaAccelerator_Fixed_Huge", 875, "PlasmaAccelerator", 4, "A", 13793600, ModuleMount.Fixed, 0, 100),
