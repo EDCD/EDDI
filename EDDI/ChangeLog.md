@@ -2,6 +2,9 @@
 
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
+### development
+  * Addd data definitions for Beyond Chapter 3 (AKA v3.2).
+
 ### 3.0.3-rc1
   * Cargo monitor
     * Added support for solo delivery missions using the mission depot.
