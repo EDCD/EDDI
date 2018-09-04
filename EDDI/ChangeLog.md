@@ -2,6 +2,8 @@
 
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
+### Development
+
 ### 3.0.3
   * Core
     * Added data definitions for Beyond Chapter 3 (game v3.2).
