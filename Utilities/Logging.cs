@@ -202,21 +202,24 @@ namespace Utilities
 
         private static void SendToRollbar(ErrorLevel errorLevel, string message, object data, Dictionary<string, object> thisData, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "")
         {
-            string personID = RollbarLocator.RollbarInstance.Config.Person.Id;
-            switch (errorLevel)
+            if (RollbarLocator.RollbarInstance.Config.Enabled != false)
             {
-                case ErrorLevel.Error:
-                    RollbarLocator.RollbarInstance.Error(message, thisData);
-                    log(errorLevel, $"{message} {data}", memberName, $"Reporting error, anonymous ID {personID}: {filePath}");
-                    break;
-                default:
-                    // If this is an Info Report, report only unique messages and data
-                    if (isUniqueMessage(message, thisData))
-                    {
-                        RollbarLocator.RollbarInstance.Log(errorLevel, message, thisData);
-                        log(errorLevel, $"{message} {data}", memberName, $"Reporting unique data, anonymous ID {personID}: {filePath}");
-                    }
-                    break;
+                string personID = RollbarLocator.RollbarInstance.Config.Person.Id;
+                switch (errorLevel)
+                {
+                    case ErrorLevel.Error:
+                        RollbarLocator.RollbarInstance.Error(message, thisData);
+                        log(errorLevel, $"{message} {data}", memberName, $"Reporting error, anonymous ID {personID}: {filePath}");
+                        break;
+                    default:
+                        // If this is an Info Report, report only unique messages and data
+                        if (isUniqueMessage(message, thisData))
+                        {
+                            RollbarLocator.RollbarInstance.Log(errorLevel, message, thisData);
+                            log(errorLevel, $"{message} {data}", memberName, $"Reporting unique data, anonymous ID {personID}: {filePath}");
+                        }
+                        break;
+                }
             }
         }
     }
