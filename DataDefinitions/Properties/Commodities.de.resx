@@ -1605,8 +1605,20 @@
     <value>Uralter Schlüssel</value>
     <comment>Commodity Ancient Key</comment>
   </data>
-  
-  
-  
-  
+  <data name="ThargoidTissueSampleType1" xml:space="preserve">
+    <value>Thargoid Cyclops Gewebeprobe</value>
+    <comment>Commodity ThargoidTissueSampleType1</comment>
+  </data>
+  <data name="ThargoidTissueSampleType2" xml:space="preserve">
+    <value>Thargoid Basilisk Gewebeprobe</value>
+    <comment>Commodity ThargoidTissueSampleType2</comment>
+  </data>
+  <data name="ThargoidTissueSampleType3" xml:space="preserve">
+    <value>Thargoid Medusa Gewebeprobe</value>
+    <comment>Commodity ThargoidTissueSampleType3</comment>
+  </data>
+  <data name="ThargoidTissueSampleType4" xml:space="preserve">
+    <value>Thargoid Hydra Gewebeprobe</value>
+    <comment>Commodity ThargoidTissueSampleType4</comment>
+  </data>
 </root>
