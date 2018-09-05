@@ -129,5 +129,8 @@
     <value>Thargoiden</value>
     <comment>Superpower type Thargoid</comment>
   </data>
-  
+  <data name="PilotsFederation" xml:space="preserve">
+    <value>Pilotenvereinigung</value>
+    <comment>Superpower type Pilots Federation</comment>
+  </data>
 </root>
