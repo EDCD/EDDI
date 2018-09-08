@@ -250,7 +250,7 @@ namespace EddiEddpMonitor
                     continue;
                 }
 
-                if (watch.State != null && watch.State != oldstate && watch.State != newstate)
+                if (watch.State?.edname != null && watch.State?.edname != oldstate?.edname && watch.State?.edname != newstate?.edname)
                 {
                     continue;
                 }
