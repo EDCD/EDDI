@@ -22,8 +22,10 @@ namespace EddiDataDefinitions
         [JsonProperty]
         public readonly string edname;
 
+        [JsonProperty]
         public readonly string basename;
 
+        [JsonRequired]
         public string invariantName
         {
             get
@@ -34,6 +36,8 @@ namespace EddiDataDefinitions
         }
 
         public string fallbackLocalizedName { get; set; } = null;
+
+        [JsonRequired]
         public string localizedName => resourceManager.GetString(basename) ?? fallbackLocalizedName ?? basename;
 
         [Obsolete("Please be explicit and use localizedName or invariantName")]
