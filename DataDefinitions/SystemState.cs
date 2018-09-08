@@ -14,7 +14,6 @@ namespace EddiDataDefinitions
             resourceManager = Properties.SystemStates.ResourceManager;
             resourceManager.IgnoreCase = false;
             
-            var None = new SystemState("None");
             var Retreat = new SystemState("Retreat");
             var War = new SystemState("War");
             var Lockdown = new SystemState("Lockdown");
