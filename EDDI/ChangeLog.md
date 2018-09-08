@@ -4,7 +4,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
 
 ### Development
   * EDDP monitor
-    * Fixed a bug that prevented the EDDP monitor from filtering by any state other than `(anything)` and blocked filter input when any state other than `(anything)` was selected.
+    * Fixed a bug that prevented selection of any state other than `(anything)` and blocked filter input when any state other than `(anything)` was selected.
 
 ### 3.0.3
   * Core
