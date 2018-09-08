@@ -8,6 +8,9 @@ using EddiShipMonitor;
 using Utilities;
 using Eddi;
 using Rollbar;
+using Newtonsoft.Json;
+using System.Linq;
+using System.Collections.ObjectModel;
 
 namespace UnitTests
 {
@@ -94,6 +97,8 @@ namespace UnitTests
             object[] args = new object[]{loadoutEvent};
             Ship ship = privateObject.Invoke("ParseShipLoadoutEvent", args) as Ship;
             Assert.AreEqual("Peppermint", ship.name);
+            Assert.AreEqual("Int_FuelScoop_Size7_Class5", ship.compartments[0].module.edname);
+            Assert.AreEqual("Fuel Scoop", ship.compartments[0].module.invariantName);
         }
 
         [TestMethod]
@@ -104,10 +109,6 @@ namespace UnitTests
 
             Ship sidewinder;
             Ship courier;
-
-            // Set ourselves as in beta to stop sending data to remote systems
-            EDDI.Instance.eventHandler(new FileHeaderEvent(DateTime.UtcNow, "JournalBeta.txt", "beta", "beta"));
-            Logging.Verbose = true;
 
             // Start a ship monitor
             ShipMonitor shipMonitor = new ShipMonitor();
@@ -185,6 +186,8 @@ namespace UnitTests
             Assert.AreEqual(courier, shipMonitor.GetCurrentShip());
             Assert.AreEqual(courier.model, "Imperial Courier");
             Assert.AreEqual(courier.name, "Scunthorpe Bound");
+            Assert.AreEqual("Int_CargoRack_Size2_Class1", courier.compartments[0].module.EDName);
+            Assert.AreEqual("cargo rack", courier.compartments[0].module.invariantName.ToLowerInvariant());
 
             // Sell the Sidewinder
             SendEvents(@"{ ""timestamp"":""2017-04-24T08:27:51Z"", ""event"":""ShipyardSell"", ""ShipType"":""sidewinder"", ""SellShipID"":901, ""ShipPrice"":25272, ""MarketID"":128666762 }", shipMonitor);
@@ -265,6 +268,7 @@ namespace UnitTests
             Assert.AreEqual("Slot06_Size3", @event.fromslot);
             Assert.AreEqual("Slot07_Size3", @event.toslot);
             Assert.AreEqual("int_stellarbodydiscoveryscanner_advanced", @event.frommodule.edname.ToLowerInvariant());
+            Assert.AreEqual("advanced discovery scanner", @event.frommodule.invariantName.ToLowerInvariant());
             Assert.IsNull(@event.tomodule);
             Assert.AreEqual("Krait Mk. II", @event.ship);
             Assert.AreEqual(81, @event.shipid);
@@ -293,6 +297,64 @@ namespace UnitTests
             {
                 monitor.PreHandle(@event);
             }
+        }
+
+        [TestMethod]
+        [DeploymentItem("shipMonitor.json")]
+        public void TestShipMonitorDeserialization()
+        {
+            // Read from our test item "shipMonitor.json"
+            ShipMonitorConfiguration configuration = new ShipMonitorConfiguration();
+            try
+            {
+                string data = System.IO.File.ReadAllText("shipMonitor.json");
+                if (data != null)
+                {
+                    configuration = JsonConvert.DeserializeObject<ShipMonitorConfiguration>(data);
+                }
+            }
+            catch (Exception)
+            {
+                Assert.Fail("Failed to read ship configuration");
+            }
+
+            // Start a ship monitor
+            ShipMonitor shipMonitor = new ShipMonitor();
+            var privateObject = new PrivateObject(shipMonitor);
+
+            // Build a new shipyard
+            List<Ship> newShiplist = configuration.shipyard.OrderBy(s => s.model).ToList();
+
+            // Update the shipyard
+            privateObject.SetFieldOrProperty("shipyard", new ObservableCollection<Ship>(newShiplist));
+
+            Assert.AreEqual(81, shipMonitor.GetCurrentShip().LocalId);
+
+            Ship ship1 = shipMonitor.GetShip(0);
+            Ship ship2 = shipMonitor.GetShip(81);
+
+            Assert.IsNotNull(ship1);
+            Assert.AreEqual("Cobra Mk. III", ship1.model);
+            Assert.AreEqual(0, ship1.LocalId);
+            Assert.AreEqual("The Dynamo", ship1.name);
+            Assert.AreEqual("Laksak", ship1.starsystem);
+            Assert.AreEqual("Stjepan Seljan Hub", ship1.station);
+            Assert.AreEqual(8605684, ship1.value);
+
+            Assert.IsNotNull(ship2);
+            Assert.AreEqual("Krait Mk. II", ship2.model);
+            Assert.AreEqual(81, ship2.LocalId);
+            Assert.AreEqual("The Impact Kraiter", ship2.name);
+            Assert.AreEqual(16, ship2.cargocapacity);
+            Assert.AreEqual(0, ship2.cargocarried);
+            Assert.AreEqual(8, ship2.compartments.Count());
+            Assert.AreEqual("Slot01_Size6", ship2.compartments[0].name);
+            Assert.AreEqual(6, ship2.compartments[0].size);
+            Assert.IsNotNull(ship2.compartments[0].module);
+            Assert.AreEqual("Int_ShieldGenerator_Size6_Class3_Fast", ship2.compartments[0].module.EDName);
+            Assert.AreEqual("Bi-Weave Shield Generator", ship2.compartments[0].module.invariantName);
+            Assert.AreEqual("SRV", ship2.launchbays[0].type);
+            Assert.AreEqual(2, ship2.launchbays[0].vehicles.Count());
         }
     }
 }
