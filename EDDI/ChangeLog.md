@@ -3,6 +3,8 @@
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
 ### Development
+  * Localization
+    * Fixed a bug preventing localized module names from being displayed correctly within the ship object. 
 
 ### 3.0.3
   * Core
