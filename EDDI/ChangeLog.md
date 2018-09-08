@@ -3,6 +3,8 @@
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
 ### Development
+  * EDDP monitor
+    * Fixed a bug that prevented the EDDP monitor from filtering by any state other than `(anything)` and blocked filter input when any state other than `(anything)` was selected.
 
 ### 3.0.3
   * Core
