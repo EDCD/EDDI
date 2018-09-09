@@ -28,6 +28,7 @@ namespace EddiSpeechService
         private static readonly object activeSpeechLock = new object();
         private ISoundOut activeSpeech;
         private int activeSpeechPriority;
+        SpeechSynthesizer synth = new SpeechSynthesizer();
 
         private static bool _eddiSpeaking;
         public static bool eddiSpeaking
@@ -359,7 +360,7 @@ namespace EddiSpeechService
             {
                 try
                 {
-                    using (SpeechSynthesizer synth = new SpeechSynthesizer())
+                    using (synth)
                     {
                         if (voice != null)
                         {
