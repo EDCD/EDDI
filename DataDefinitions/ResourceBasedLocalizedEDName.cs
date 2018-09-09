@@ -4,11 +4,12 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Resources;
+using System.Runtime.Serialization;
 using Utilities;
 
 namespace EddiDataDefinitions
 {
-    [JsonObject(MemberSerialization.OptIn)]
+    [JsonObject(MemberSerialization.OptOut)]
     public class ResourceBasedLocalizedEDName<T> where T : ResourceBasedLocalizedEDName<T>, new()
     {
         static ResourceBasedLocalizedEDName()
@@ -19,13 +20,13 @@ namespace EddiDataDefinitions
         protected static ResourceManager resourceManager;
         protected static Func<string, T> missingEDNameHandler;
 
-        [JsonProperty]
+        [JsonProperty] // Required by the constructor
         public readonly string edname;
 
-        [JsonProperty]
+        [JsonProperty] // Required by the constructor
         public readonly string basename;
 
-        [JsonRequired]
+        [JsonIgnore]
         public string invariantName
         {
             get
@@ -35,11 +36,13 @@ namespace EddiDataDefinitions
             }
         }
 
+        [JsonIgnore]
         public string fallbackLocalizedName { get; set; } = null;
 
-        [JsonRequired]
+        [JsonIgnore]
         public string localizedName => resourceManager.GetString(basename) ?? fallbackLocalizedName ?? basename;
 
+        [JsonIgnore]
         [Obsolete("Please be explicit and use localizedName or invariantName")]
         public string name => localizedName;
 
