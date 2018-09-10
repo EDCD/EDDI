@@ -117,20 +117,92 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Icy" xml:space="preserve">
-    <value>Icy</value>
-    <comment>Composition type Icy</comment>
+  <data name="Ammonia" xml:space="preserve">
+    <value>Ammonia</value>
+    <comment>Atmosphere class "Ammonia"</comment>
   </data>
-  <data name="Metallic" xml:space="preserve">
-    <value>Metallic</value>
-    <comment>Composition type Metallic</comment>
+  <data name="AmmoniaAndOxygen" xml:space="preserve">
+    <value>Ammonia and oxygen</value>
+    <comment>Atmosphere class "Ammonia and oxygen"</comment>
   </data>
-  <data name="MetalRich" xml:space="preserve">
-    <value>Metal-rich</value>
-    <comment>Composition type MetalRich</comment>
+  <data name="AmmoniaRich" xml:space="preserve">
+    <value>Ammonia-rich</value>
+    <comment>Atmosphere class "Ammonia-rich"</comment>
   </data>
-  <data name="Rocky" xml:space="preserve">
-    <value>Rocky</value>
-    <comment>Composition type Rocky</comment>
+  <data name="Argon" xml:space="preserve">
+    <value>Argon</value>
+    <comment>Atmosphere class "Argon"</comment>
+  </data>
+  <data name="ArgonRich" xml:space="preserve">
+    <value>Argon-rich</value>
+    <comment>Atmosphere class "Argon-rich"</comment>
+  </data>
+  <data name="CarbonDioxide" xml:space="preserve">
+    <value>Carbon dioxide</value>
+    <comment>Atmosphere class "Carbon dioxide"</comment>
+  </data>
+  <data name="CarbonDioxideRich" xml:space="preserve">
+    <value>Carbon dioxide-rich</value>
+    <comment>Atmosphere class "Carbon dioxide-rich"</comment>
+  </data>
+  <data name="Helium" xml:space="preserve">
+    <value>Helium</value>
+    <comment>Atmosphere class "Helium"</comment>
+  </data>
+  <data name="MetallicVapour" xml:space="preserve">
+    <value>Metallic vapour</value>
+    <comment>Atmosphere class "Metallic vapour"</comment>
+  </data>
+  <data name="Methane" xml:space="preserve">
+    <value>Methane</value>
+    <comment>Atmosphere class "Methane"</comment>
+  </data>
+  <data name="MethaneRich" xml:space="preserve">
+    <value>Methane-rich</value>
+    <comment>Atmosphere class "Methane-rich"</comment>
+  </data>
+  <data name="Neon" xml:space="preserve">
+    <value>Neon</value>
+    <comment>Atmosphere class "Neon"</comment>
+  </data>
+  <data name="NeonRich" xml:space="preserve">
+    <value>Neon-rich</value>
+    <comment>Atmosphere class "Neon-rich"</comment>
+  </data>
+  <data name="Nitrogen" xml:space="preserve">
+    <value>Nitrogen</value>
+    <comment>Atmosphere class "Nitrogen"</comment>
+  </data>
+  <data name="NoAtmosphere" xml:space="preserve">
+    <value>No atmosphere</value>
+    <comment>Atmosphere class "No atmosphere"</comment>
+  </data>
+  <data name="Oxygen" xml:space="preserve">
+    <value>Oxygen</value>
+    <comment>Atmosphere class "Oxygen"</comment>
+  </data>
+  <data name="SilicateVapour" xml:space="preserve">
+    <value>Silicate vapour</value>
+    <comment>Atmosphere class "Silicate vapour"</comment>
+  </data>
+  <data name="SuitableForWaterBasedLife" xml:space="preserve">
+    <value>Suitable for water-based life</value>
+    <comment>Atmosphere class "Suitable for water-based life"</comment>
+  </data>
+  <data name="SulphurDioxide" xml:space="preserve">
+    <value>Sulphur dioxide</value>
+    <comment>Atmosphere class "Sulphur dioxide"</comment>
+  </data>
+  <data name="Water" xml:space="preserve">
+    <value>Water</value>
+    <comment>Atmosphere class "Water"</comment>
+  </data>
+  <data name="WaterRich" xml:space="preserve">
+    <value>Water-rich</value>
+    <comment>Atmosphere class "Water-rich"</comment>
+  </data>
+  <data name="EarthLike" xml:space="preserve">
+    <value>Earth-like</value>
+    <comment>Atmosphere class "EarthLike"</comment>
   </data>
 </root>

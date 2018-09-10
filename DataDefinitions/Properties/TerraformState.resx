@@ -117,20 +117,20 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Icy" xml:space="preserve">
-    <value>Icy</value>
-    <comment>Composition type Icy</comment>
+  <data name="None" xml:space="preserve">
+    <value>Not terraformable</value>
+    <comment>Terraform state "Null"</comment>
   </data>
-  <data name="Metallic" xml:space="preserve">
-    <value>Metallic</value>
-    <comment>Composition type Metallic</comment>
+  <data name="Terraformable" xml:space="preserve">
+    <value>Candidate for terraforming</value>
+    <comment>Terraform state "Terraformable"</comment>
   </data>
-  <data name="MetalRich" xml:space="preserve">
-    <value>Metal-rich</value>
-    <comment>Composition type MetalRich</comment>
+  <data name="Terraformed" xml:space="preserve">
+    <value>Terraforming completed</value>
+    <comment>Terraform state "Terraformed"</comment>
   </data>
-  <data name="Rocky" xml:space="preserve">
-    <value>Rocky</value>
-    <comment>Composition type Rocky</comment>
+  <data name="Terraforming" xml:space="preserve">
+    <value>Being terraformed</value>
+    <comment>Terraform state "Terraforming"</comment>
   </data>
 </root>

@@ -12,7 +12,7 @@ namespace EddiDataDefinitions
         static Composition()
         {
             resourceManager = Properties.Compositions.ResourceManager;
-            resourceManager.IgnoreCase = false;
+            resourceManager.IgnoreCase = true;
             
             var Icy = new Composition("Icy");
             var Rocky = new Composition("Rocky");

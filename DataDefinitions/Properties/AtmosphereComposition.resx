@@ -117,20 +117,56 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Icy" xml:space="preserve">
-    <value>Icy</value>
-    <comment>Composition type Icy</comment>
+  <data name="Ammonia" xml:space="preserve">
+    <value>Ammonia</value>
+    <comment>Atmosphere Composition Ammonia</comment>
   </data>
-  <data name="Metallic" xml:space="preserve">
-    <value>Metallic</value>
-    <comment>Composition type Metallic</comment>
+  <data name="CarbonDioxide" xml:space="preserve">
+    <value>Carbon dioxide</value>
+    <comment>Atmosphere Composition Carbon_dioxide</comment>
   </data>
-  <data name="MetalRich" xml:space="preserve">
-    <value>Metal-rich</value>
-    <comment>Composition type MetalRich</comment>
+  <data name="Iron" xml:space="preserve">
+    <value>Iron</value>
+    <comment>Atmosphere Composition Iron</comment>
   </data>
-  <data name="Rocky" xml:space="preserve">
-    <value>Rocky</value>
-    <comment>Composition type Rocky</comment>
+  <data name="Methane" xml:space="preserve">
+    <value>Methane</value>
+    <comment>Atmosphere Composition Methane</comment>
+  </data>
+  <data name="Nitrogen" xml:space="preserve">
+    <value>Nitrogen</value>
+    <comment>Atmosphere Composition Nitrogen</comment>
+  </data>
+  <data name="Silicates" xml:space="preserve">
+    <value>Silicates</value>
+    <comment>Atmosphere Composition Silicates</comment>
+  </data>
+  <data name="SulphurDioxide" xml:space="preserve">
+    <value>Sulphur Dioxide</value>
+    <comment>Atmosphere Composition Sulphur Dioxide</comment>
+  </data>
+  <data name="Water" xml:space="preserve">
+    <value>Water</value>
+    <comment>Atmosphere Composition Water</comment>
+  </data>
+  <data name="Oxygen" xml:space="preserve">
+    <value>Oxygen</value>
+    <comment>Atmosphere Composition Oxygen</comment>
+  </data>
+  <data name="Hydrogen" xml:space="preserve">
+    <value>Hydrogen</value>
+    <comment>Atmosphere Composition Hydrogen</comment>
+  </data>
+  <data name="Helium" xml:space="preserve">
+    <value>Helium</value>
+    <comment>Atmosphere Composition Helium</comment>
+  </data>
+  <data name="Neon" xml:space="preserve">
+    <value>Neon</value>
+    <comment>Atmosphere Composition Neon</comment>
+  </data>
+  <data name="Argon" xml:space="preserve">
+    <value>Argon</value>
+    <comment>Atmosphere Composition Argon</comment>
   </data>
 </root>

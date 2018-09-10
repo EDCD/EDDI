@@ -204,7 +204,7 @@ namespace EddiDataProviderService
                     Body.EDDBID = (long)body["id"];
                     Body.name = (string)body["name"];
                     Body.systemname = systemName;
-                    Body.type = (string)body["group_name"];
+                    Body.Type = BodyType.FromName((string)body["group_name"]);
                     Body.distance = (long?)body["distance_to_arrival"];
                     Body.temperature = (long?)body["surface_temperature"];
                     Body.tidallylocked = (bool?)body["is_rotational_period_tidally_locked"];
@@ -226,7 +226,7 @@ namespace EddiDataProviderService
                         // Planet-specific items
                         Body.landable = (bool?)body["is_landable"];
                         Body.periapsis = (decimal?)(double?)body["arg_of_periapsis"];
-                        Body.atmosphere = (string)body["atmosphere_type_name"];
+                        Body.atmosphereclass = AtmosphereClass.FromEDName((string)body["atmosphere_type_name"]);
                         Body.tilt = (decimal?)(double?)body["axis_tilt"];
                         Body.earthmass = (decimal?)(double?)body["earth_masses"];
                         Body.gravity = (decimal?)(double?)body["gravity"];
@@ -237,17 +237,17 @@ namespace EddiDataProviderService
                         Body.radius = (long?)body["radius"];
                         Body.rotationalperiod = (decimal?)(double?)body["rotational_period"];
                         Body.semimajoraxis = (decimal?)(double?)body["semi_major_axis"];
-                        Body.pressure = (decimal?)(double?)body["surface_pressure"];
-                        Body.terraformstate = (string)body["terraforming_state_name"];
-                        Body.planettype = (string)body["type_name"];
+                        Body.pressure = ConstantConverters.pascals2atm((decimal?)(double?)body["surface_pressure"]);
+                        Body.terraformState = TerraformState.FromName((string)body["terraforming_state_name"]);
+                        Body.planetClass = PlanetClass.FromName((string)body["type_name"]);
                         // Volcanism might be a simple name or an object
-                        if (body["volcanism_type_name"] != null)
-                        {
-                            Body.volcanism = Volcanism.FromName((string)body["volcanism_type_name"]);
-                        }
                         if (body["volcanism"] != null)
                         {
                             Body.volcanism = new Volcanism((string)body["volcanism"]["type"], (string)body["volcanism"]["composition"], (string)body["volcanism"]["amount"]);
+                        }
+                        else if (body["volcanism_type_name"] != null)
+                        {
+                            Body.volcanism = Volcanism.FromName((string)body["volcanism_type_name"]);
                         }
                         if (body["materials"] != null)
                         {

@@ -68,7 +68,29 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BlueprintMaterials.cs" />
+    <Compile Include="Properties\Body.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Body.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\PlanetClass.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PlanetClass.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\TerraformState.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TerraformState.resx</DependentUpon>
+    </Compile>
+    <Compile Include="SystemState.cs" />
+    <Compile Include="TerraformState.cs" />
     <Compile Include="CommodityAmount.cs" />
+    <Compile Include="Properties\AtmosphereClass.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AtmosphereClass.resx</DependentUpon>
+    </Compile>
     <Compile Include="ModuleInfo.cs" />
     <Compile Include="Properties\Commodities.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -498,8 +520,14 @@
     <Compile Include="Role.cs" />
     <Compile Include="TargetType.cs" />
     <Compile Include="Vehicle.cs" />
+    <Compile Include="Atmosphere.cs" />
     <Compile Include="Volcanism.cs" />
-    <Compile Include="VolcanismConverter.cs" />
+    <Compile Include="Properties\AtmosphereComposition.Designer.cs">
+      <DependentUpon>AtmosphereComposition.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="BodyConverters.cs" />
     <Compile Include="Voucher.cs" />
     <Compile Include="StarClass.cs" />
     <Compile Include="TradeRating.cs" />
@@ -522,7 +550,6 @@
     <Compile Include="StarSystem.cs" />
     <Compile Include="Body.cs" />
     <Compile Include="Superpower.cs" />
-    <Compile Include="SystemState.cs" />
     <Compile Include="Station.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -535,6 +562,14 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Properties\AtmosphereClass.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>AtmosphereClass.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Body.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Body.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\CombatRatings.de.resx" />
     <EmbeddedResource Include="Properties\CombatRatings.es.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
@@ -797,6 +832,10 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Modules.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Properties\PlanetClass.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>PlanetClass.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Rarities.de.resx" />
     <EmbeddedResource Include="Properties\Rarities.es.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
@@ -884,6 +923,10 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>TargetType.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Properties\TerraformState.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>TerraformState.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\TradeRatings.de.resx" />
     <EmbeddedResource Include="Properties\TradeRatings.es.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
@@ -946,6 +989,10 @@
     <EmbeddedResource Include="Properties\Superpowers.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Superpowers.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\AtmosphereComposition.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>AtmosphereComposition.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

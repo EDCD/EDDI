@@ -1369,7 +1369,7 @@ namespace Eddi
                     belt = new Body
                     {
                         EDDBID = -1,
-                        type = "Star",
+                        type = BodyType.FromEDName("Star"),
                         name = theEvent.name,
                         systemname = CurrentStarSystem?.name,
                         systemAddress = CurrentStarSystem?.systemAddress
@@ -1401,7 +1401,7 @@ namespace Eddi
                     star = new Body
                     {
                         EDDBID = -1,
-                        type = "Star",
+                        type = BodyType.FromEDName("Star"),
                         name = theEvent.name,
                         systemname = CurrentStarSystem?.name
                     };
@@ -1443,7 +1443,7 @@ namespace Eddi
                     body = new Body
                     {
                         EDDBID = -1,
-                        type = "Planet",
+                        type = BodyType.FromEDName("Planet"),
                         name = theEvent.name,
                         systemname = CurrentStarSystem.name
                     };
@@ -1458,7 +1458,9 @@ namespace Eddi
                 body.tidallylocked = theEvent.tidallylocked;
                 body.temperature = (long?)theEvent.temperature;
                 body.periapsis = theEvent.periapsis;
-                body.atmosphere = theEvent.atmosphere;
+                body.atmosphereclass = theEvent.atmosphereclass;
+                body.atmosphereCompositions = theEvent.atmospherecomposition;
+                body.solidComposition = theEvent.solidcomposition;
                 body.gravity = theEvent.gravity;
                 body.eccentricity = theEvent.eccentricity;
                 body.inclination = theEvent.orbitalinclination;
@@ -1466,24 +1468,8 @@ namespace Eddi
                 body.rotationalperiod = Math.Round(theEvent.rotationperiod / 86400, 2);
                 body.semimajoraxis = theEvent.semimajoraxis;
                 body.pressure = theEvent.pressure;
-                switch (theEvent.terraformstate)
-                {
-                    case "terrraformable":
-                    case "terraformable":
-                        body.terraformstate = "Terraformable";
-                        break;
-                    case "terraforming":
-                        body.terraformstate = "Terraforming";
-                        break;
-                    case "Terraformed":
-                        body.terraformstate = "Terraformed";
-                        break;
-                    default:
-                        body.terraformstate = "Not terraformable";
-                        break;
-                }
-                body.terraformstate = theEvent.terraformstate;
-                body.planettype = theEvent.bodyclass;
+                body.terraformState = TerraformState.FromEDName(theEvent.terraformstate);
+                body.planetClass = PlanetClass.FromName(theEvent.bodyclass);
                 body.volcanism = theEvent.volcanism;
                 body.materials = new List<MaterialPresence>();
                 foreach (MaterialPresence presence in theEvent.materials)

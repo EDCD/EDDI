@@ -22,14 +22,14 @@ namespace EddiDataDefinitions.Properties {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class Compositions {
+    public class TerraformState {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Compositions() {
+        internal TerraformState() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace EddiDataDefinitions.Properties {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("EddiDataDefinitions.Properties.Compositions", typeof(Compositions).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("EddiDataDefinitions.Properties.TerraformState", typeof(TerraformState).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,38 +61,38 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Icy.
+        ///   Looks up a localized string similar to Not terraformable.
         /// </summary>
-        public static string Icy {
+        public static string None {
             get {
-                return ResourceManager.GetString("Icy", resourceCulture);
+                return ResourceManager.GetString("None", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Metallic.
+        ///   Looks up a localized string similar to Candidate for terraforming.
         /// </summary>
-        public static string Metallic {
+        public static string Terraformable {
             get {
-                return ResourceManager.GetString("Metallic", resourceCulture);
+                return ResourceManager.GetString("Terraformable", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Metal-rich.
+        ///   Looks up a localized string similar to Terraforming completed.
         /// </summary>
-        public static string MetalRich {
+        public static string Terraformed {
             get {
-                return ResourceManager.GetString("MetalRich", resourceCulture);
+                return ResourceManager.GetString("Terraformed", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Rocky.
+        ///   Looks up a localized string similar to Being terraformed.
         /// </summary>
-        public static string Rocky {
+        public static string Terraforming {
             get {
-                return ResourceManager.GetString("Rocky", resourceCulture);
+                return ResourceManager.GetString("Terraforming", resourceCulture);
             }
         }
     }
