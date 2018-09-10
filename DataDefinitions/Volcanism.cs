@@ -80,7 +80,7 @@ namespace EddiDataDefinitions
         /// </summary>
         public static Volcanism FromName(string from)
         {
-            from = from.ToLowerInvariant();
+            from = from?.ToLowerInvariant();
 
             if (from == null || from == "" || from == "no volcanism")
             {
