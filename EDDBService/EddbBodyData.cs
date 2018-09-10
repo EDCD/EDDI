@@ -21,7 +21,7 @@ namespace EddiEddbService
                 Body body = GetBody(new KeyValuePair<string, object>(BodyQuery.bodyName, bodyName));
                 bodies.Add(body);
             }
-            return bodies;
+            return bodies.OrderBy(x => x.name).ToList();
         }
 
         /// <summary> At least one body EDDBID is required. </summary>
@@ -33,7 +33,7 @@ namespace EddiEddbService
                 Body body = GetBody(new KeyValuePair<string, object>(BodyQuery.eddbId, eddbId));
                 bodies.Add(body);
             }
-            return bodies;
+            return bodies.OrderBy(x => x.name).ToList();
         }
 
         /// <summary> Exactly one system name is required. </summary>
@@ -85,7 +85,8 @@ namespace EddiEddbService
                     List<Body> bodies = new List<Body>();
                     foreach (object response in responses)
                     {
-                        bodies.Add(ParseEddbBody(response));
+                        Body body = ParseEddbBody(response);
+                        if (body != null) { bodies.Add(body); };
                     }
                     return bodies;
                 }
