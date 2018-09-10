@@ -79,7 +79,7 @@ namespace EddiMissionMonitor
             this.reward = reward;
             this.permitsawarded = permitsawarded;
             this.commodityrewards = commodityrewards ?? new List<CommodityAmount>();
-            this.materialsrewards = materialsrewards;
+            this.materialsrewards = materialsrewards ?? new List<MaterialAmount>();
             this.donation = donation;
             if (permitsawarded.Count > 0)
             {

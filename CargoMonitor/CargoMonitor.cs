@@ -190,6 +190,11 @@ namespace EddiCargoMonitor
                 // If cargo is collected or delivered in a wing mission
                 handleCargoDepotEvent((CargoDepotEvent)@event);
             }
+            else if (@event is MissionsEvent)
+            {
+                // Remove cargo haulage stragglers for completed missions
+                handleMissionsEvent((MissionsEvent)@event);
+            }
             else if (@event is MissionAbandonedEvent)
             {
                 // If we abandon a mission with cargo it becomes stolen
@@ -773,6 +778,27 @@ namespace EddiCargoMonitor
                         }
                     }
                     break;
+            }
+        }
+
+        private void handleMissionsEvent(MissionsEvent @event)
+        {
+            _handleMissionsEvent(@event);
+            writeInventory();
+        }
+
+        public void _handleMissionsEvent(MissionsEvent @event)
+        {
+            foreach (Cargo cargo in inventory.ToList())
+            {
+                foreach (Haulage haulage in cargo.haulageData.ToList())
+                {
+                    Mission mission = @event.missions.FirstOrDefault(m => m.missionid == haulage.missionid);
+                    if (mission == null)
+                    {
+                        cargo.haulageData.Remove(haulage);
+                    }
+                }
             }
         }
 

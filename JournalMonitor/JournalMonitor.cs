@@ -2494,14 +2494,14 @@ namespace EddiJournalMonitor
                                 List<MaterialAmount> materialsrewards = new List<MaterialAmount>();
                                 data.TryGetValue("MaterialsReward", out val);
                                 List<object> materialsRewardsData = (List<object>)val;
-                                if (commodityRewardsData != null)
+                                if (materialsRewardsData != null)
                                 {
                                     foreach (Dictionary<string, object> materialsRewardData in materialsRewardsData)
                                     {
-                                        CommodityDefinition rewardCommodity = CommodityDefinition.FromName(JsonParsing.getString(materialsRewardData, "Name"));
+                                        Material rewardMaterial = Material.FromEDName(JsonParsing.getString(materialsRewardData, "Name"));
                                         materialsRewardData.TryGetValue("Count", out val);
                                         int count = (int)(long)val;
-                                        commodityrewards.Add(new CommodityAmount(rewardCommodity, count));
+                                        materialsrewards.Add(new MaterialAmount(rewardMaterial, count));
                                     }
                                 }
 
