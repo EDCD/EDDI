@@ -106,7 +106,13 @@ namespace EddiDataDefinitions
         public AtmosphereClass() : this("")
         { }
 
-        private AtmosphereClass(string edname) : base(edname, edname.Replace(" ", "").Replace("-", "").Replace("thick", "").Replace("hot", ""))
+        private AtmosphereClass(string edname) : base(edname, edname
+            .ToLowerInvariant()
+            .Replace("thick", "")
+            .Replace("thin", "")
+            .Replace("hot", "")
+            .Replace(" ", "")
+            .Replace("-", ""))
         { }
 
         new public static AtmosphereClass FromEDName(string edname)
@@ -117,7 +123,13 @@ namespace EddiDataDefinitions
             }
 
             // Temperature and pressure are defined separately so we remove them from this string (if descriptors are present)
-            string normalizedEDName = edname.Replace("-", "").Replace("thick", "").Replace("hot", "").Replace(" ", "");
+            string normalizedEDName = edname
+            .ToLowerInvariant()
+            .Replace("thick", "")
+            .Replace("thin", "")
+            .Replace("hot", "")
+            .Replace(" ", "")
+            .Replace("-", ""));
             return ResourceBasedLocalizedEDName<AtmosphereClass>.FromEDName(normalizedEDName);
         }
     }
