@@ -58,7 +58,7 @@ namespace EddiEvents
 
         public Superpower Allegiance { get; private set; }
 
-        public DockedEvent(DateTime timestamp, string system, long systemAddress, long marketId, string station, string state, string model, Superpower allegiance, string faction, SystemState factionstate, Economy economy, Government government, decimal? distancefromstar, List<string> stationservices) : base(timestamp, NAME)
+        public DockedEvent(DateTime timestamp, string system, long systemAddress, long marketId, string station, string state, string model, Superpower allegiance, string faction, State factionstate, Economy economy, Government government, decimal? distancefromstar, List<string> stationservices) : base(timestamp, NAME)
         {
             this.system = system;
             this.systemAddress = systemAddress;
@@ -68,7 +68,7 @@ namespace EddiEvents
             this.model = model;
             this.Allegiance = (allegiance ?? Superpower.None);
             this.faction = faction;
-            this.factionstate = (factionstate ?? SystemState.None).localizedName;
+            this.factionstate = (factionstate ?? State.None).localizedName;
             this.economy = (economy ?? Economy.None).localizedName;
             this.government = (government ?? Government.None).localizedName;
             this.distancefromstar = distancefromstar;

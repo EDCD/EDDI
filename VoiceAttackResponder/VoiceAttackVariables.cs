@@ -757,7 +757,7 @@ namespace EddiVoiceAttackResponder
                 vaProxy.SetText(prefix + " government", system?.government);
                 vaProxy.SetText(prefix + " faction", system?.faction);
                 vaProxy.SetText(prefix + " primary economy", system?.primaryeconomy);
-                vaProxy.SetText(prefix + " state", (system?.systemState ?? SystemState.None).localizedName);
+                vaProxy.SetText(prefix + " state", (system?.systemState ?? EddiDataDefinitions.State.None).localizedName);
                 vaProxy.SetText(prefix + " security", system?.security);
                 vaProxy.SetText(prefix + " power", system?.power);
                 vaProxy.SetText(prefix + " power (spoken)", Translations.Power(EDDI.Instance.CurrentStarSystem?.power));
