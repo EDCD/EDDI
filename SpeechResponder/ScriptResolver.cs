@@ -571,11 +571,11 @@ namespace EddiSpeechResponder
             {
                 if (values.Count == 0)
                 {
-                    return (((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor")).BuildMissionsRoute());
+                    return (((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor")).CalculateMissionsRoute());
                 }
                 else
                 {
-                    return (((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor")).BuildMissionsRoute(values[0].AsString));
+                    return (((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor")).CalculateMissionsRoute(values[0].AsString));
                 }
             }, 0, 1);
 

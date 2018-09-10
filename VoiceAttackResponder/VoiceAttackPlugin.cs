@@ -307,6 +307,12 @@ namespace EddiVoiceAttackResponder
                     case "transmit":
                         InvokeTransmit(ref vaProxy);
                         break;
+                    case "calculatemissionsroute":
+                        InvokeCalculateRoute(ref vaProxy);
+                        break;
+                    case "updatemissionsroute":
+                        InvokeUpdateRoute(ref vaProxy);
+                        break;
                 }
             }
             catch (Exception e)
@@ -837,6 +843,46 @@ namespace EddiVoiceAttackResponder
             catch (Exception e)
             {
                 setStatus(ref vaProxy, "Failed to store system comment", e);
+            }
+        }
+
+        public static void InvokeCalculateRoute(ref dynamic vaProxy)
+        {
+            try
+            {
+                string system = vaProxy.GetText("System variable");
+                if (system == null || system == string.Empty)
+                {
+                    ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor")).CalculateMissionsRoute();
+                }
+                else
+                {
+                    ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor")).CalculateMissionsRoute(system);
+                }
+            }
+            catch (Exception e)
+            {
+                setStatus(ref vaProxy, "Failed to calculate missions route", e);
+            }
+        }
+
+        public static void InvokeUpdateRoute(ref dynamic vaProxy)
+        {
+            try
+            {
+                string system = vaProxy.GetText("System variable");
+                if (system == null)
+                {
+                    ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor")).UpdateMissionsRoute();
+                }
+                else
+                {
+                    ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor")).UpdateMissionsRoute(system);
+                }
+            }
+            catch (Exception e)
+            {
+                setStatus(ref vaProxy, "Failed to update missions route", e);
             }
         }
     }
