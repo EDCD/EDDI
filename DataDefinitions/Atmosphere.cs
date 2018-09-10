@@ -129,7 +129,7 @@ namespace EddiDataDefinitions
             .Replace("thin", "")
             .Replace("hot", "")
             .Replace(" ", "")
-            .Replace("-", ""));
+            .Replace("-", "");
             return ResourceBasedLocalizedEDName<AtmosphereClass>.FromEDName(normalizedEDName);
         }
     }
