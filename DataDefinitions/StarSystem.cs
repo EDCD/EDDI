@@ -18,13 +18,13 @@ namespace EddiDataDefinitions
         public string faction { get; set; }
         public string primaryeconomy => (economies[0] ?? Economy.None).localizedName;
         public List<Economy> economies { get; set; } = new List<Economy>() { null, null };
-        public SystemState systemState { get; set; } = SystemState.None;
+        public State systemState { get; set; } = State.None;
         public string security { get; set; }
         public string power { get; set; }
         public string powerstate { get; set; }
 
         [Obsolete("Please use systemState instead")]
-        public string state => (systemState ?? SystemState.None).localizedName;
+        public string state => (systemState ?? State.None).localizedName;
 
         /// <summary>X co-ordinate for this system</summary>
         public decimal? x { get; set; }
@@ -81,13 +81,13 @@ namespace EddiDataDefinitions
                 string name = (string)additionalJsonData?["state"];
                 if (name != null)
                 {
-                    systemState = SystemState.FromEDName(name) ?? SystemState.FromName(name);
+                    systemState = State.FromEDName(name) ?? State.FromName(name);
                 }
             }
             else
             {
                 // get the canonical SystemState object for the given EDName
-                systemState = SystemState.FromEDName(systemState.edname) ?? SystemState.None;
+                systemState = State.FromEDName(systemState.edname) ?? State.None;
             }
             additionalJsonData = null;
         }

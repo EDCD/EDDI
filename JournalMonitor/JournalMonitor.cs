@@ -97,7 +97,7 @@ namespace EddiJournalMonitor
                                 string stationModel = JsonParsing.getString(data, "StationType");
                                 Superpower allegiance = getAllegiance(data, "StationAllegiance");
                                 string faction = getFaction(data, "StationFaction");
-                                SystemState factionState = SystemState.FromEDName(JsonParsing.getString(data, "FactionState"));
+                                State factionState = State.FromEDName(JsonParsing.getString(data, "FactionState"));
                                 Economy economy = Economy.FromEDName(JsonParsing.getString(data, "StationEconomy"));
                                 Government government = Government.FromEDName(JsonParsing.getString(data, "StationGovernment"));
                                 decimal? distancefromstar = JsonParsing.getOptionalDecimal(data, "DistFromStarLS");
@@ -168,7 +168,7 @@ namespace EddiJournalMonitor
                                 decimal distance = JsonParsing.getDecimal(data, "JumpDist");
                                 Superpower allegiance = getAllegiance(data, "SystemAllegiance");
                                 string faction = getFaction(data, "SystemFaction");
-                                SystemState factionState = SystemState.FromEDName(JsonParsing.getString(data, "FactionState") ?? "None");
+                                State factionState = State.FromEDName(JsonParsing.getString(data, "FactionState") ?? "None");
                                 Economy economy = Economy.FromEDName(JsonParsing.getString(data, "SystemEconomy"));
                                 Economy economy2 = Economy.FromEDName(JsonParsing.getString(data, "SystemSecondEconomy"));
                                 Government government = Government.FromEDName(JsonParsing.getString(data, "SystemGovernment"));

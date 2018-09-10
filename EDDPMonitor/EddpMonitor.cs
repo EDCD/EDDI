@@ -154,8 +154,8 @@ namespace EddiEddpMonitor
             string oldfaction = (string)json["oldfaction"];
             string newfaction = (string)json["newfaction"];
 
-            SystemState oldstate = SystemState.FromName((string)json["oldstate"]);
-            SystemState newstate = SystemState.FromName((string)json["newstate"]);
+            State oldstate = State.FromName((string)json["oldstate"]);
+            State newstate = State.FromName((string)json["newstate"]);
 
             string oldallegiance = (string)json["oldallegiance"];
             string newallegiance = (string)json["newallegiance"];
@@ -231,7 +231,7 @@ namespace EddiEddpMonitor
         /// <summary>
         /// Find a matching watch for a given set of parameters
         /// </summary>
-        private string match(string systemname, string stationname, decimal x, decimal y, decimal z, string oldfaction, string newfaction, SystemState oldstate, SystemState newstate)
+        private string match(string systemname, string stationname, decimal x, decimal y, decimal z, string oldfaction, string newfaction, State oldstate, State newstate)
         {
             foreach (Watch watch in configuration.watches)
             {

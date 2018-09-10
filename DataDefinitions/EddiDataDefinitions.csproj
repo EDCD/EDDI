@@ -83,7 +83,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>TerraformState.resx</DependentUpon>
     </Compile>
-    <Compile Include="SystemState.cs" />
+    <Compile Include="State.cs" />
     <Compile Include="TerraformState.cs" />
     <Compile Include="CommodityAmount.cs" />
     <Compile Include="Properties\AtmosphereClass.Designer.cs">
@@ -408,20 +408,20 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>StarColors.resx</DependentUpon>
     </Compile>
-    <Compile Include="Properties\SystemStates.es.Designer.cs">
-      <DependentUpon>SystemStates.es.resx</DependentUpon>
+    <Compile Include="Properties\States.es.Designer.cs">
+      <DependentUpon>States.es.resx</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="Properties\SystemStates.fr.Designer.cs">
-      <DependentUpon>SystemStates.fr.resx</DependentUpon>
+    <Compile Include="Properties\States.fr.Designer.cs">
+      <DependentUpon>States.fr.resx</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="Properties\SystemStates.Designer.cs">
+    <Compile Include="Properties\States.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>SystemStates.resx</DependentUpon>
+      <DependentUpon>States.resx</DependentUpon>
     </Compile>
     <Compile Include="Properties\TargetType.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -904,20 +904,20 @@
     <EmbeddedResource Include="Properties\Superpowers.de.resx" />
     <EmbeddedResource Include="Properties\Superpowers.hu.resx" />
     <EmbeddedResource Include="Properties\Superpowers.it.resx" />
-    <EmbeddedResource Include="Properties\SystemStates.de.resx" />
-    <EmbeddedResource Include="Properties\SystemStates.es.resx">
+    <EmbeddedResource Include="Properties\States.de.resx" />
+    <EmbeddedResource Include="Properties\States.es.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>SystemStates.es.Designer.cs</LastGenOutput>
+      <LastGenOutput>States.es.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Properties\SystemStates.fr.resx">
+    <EmbeddedResource Include="Properties\States.fr.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>SystemStates.fr.Designer.cs</LastGenOutput>
+      <LastGenOutput>States.fr.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Properties\SystemStates.hu.resx" />
-    <EmbeddedResource Include="Properties\SystemStates.it.resx" />
-    <EmbeddedResource Include="Properties\SystemStates.resx">
+    <EmbeddedResource Include="Properties\States.hu.resx" />
+    <EmbeddedResource Include="Properties\States.it.resx" />
+    <EmbeddedResource Include="Properties\States.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>SystemStates.Designer.cs</LastGenOutput>
+      <LastGenOutput>States.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\TargetType.resx">
       <Generator>ResXFileCodeGenerator</Generator>

@@ -22,12 +22,12 @@ namespace EddiEddpMonitor
         public string Faction { get; set; }
 
         [JsonProperty("state")]
-        public SystemState State
+        public State State
         {
             get { return _state; }
             set { _state = value; OnPropertyChanged("State"); }
         }
-        private SystemState _state;
+        private State _state;
 
         [JsonProperty("maxdistancefromship")]
         public long? MaxDistanceFromShip { get; set; }
