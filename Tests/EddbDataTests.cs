@@ -273,6 +273,13 @@ namespace UnitTests
             Assert.AreEqual(169800M, body.rings[0].outerradius);
         }
 
+        [TestMethod]
+        public void TestBodiesSol()
+        {
+            List<Body> bodies = EddbService.Bodies("Sol");
+            Assert.AreEqual(38, bodies.Count);
+        }
+
         /*
         [TestMethod]
         public void TestEddbSystems()
@@ -324,18 +331,31 @@ namespace UnitTests
         }
         */
 
-        /*
         [TestMethod]
-        public void TestEddbFaction()
+        public void TestEddbFactionAchali()
         {
-        // Test faction data
-        Faction faction = EddbService.GetEddbFaction("Coalition of Achali");
-        Assert.AreEqual("federation", faction.allegiance);
-        Assert.AreEqual("confederacy", faction.government);
-        Assert.IsNotNull(faction.factionState);
-        Assert.IsFalse(faction.isPlayer);
+            // Test faction data
+            Faction faction = EddbService.Faction("Coalition of Achali");
+            Assert.AreEqual("Federation", faction.Allegiance.invariantName);
+            Assert.AreEqual("Confederacy", faction.Government.invariantName);
+            Assert.IsNotNull(faction.state);
+            Assert.IsFalse(faction.isplayer);
+            Assert.IsNotNull(faction.updatedat);
+            Assert.AreEqual(6626, faction.EDDBID);
+            Assert.AreEqual(424, faction.homeSystemEddbId);
         }
-        */
+
+        [TestMethod]
+        public void TestEddbFactionsAchali()
+        {
+            // Test factions data
+            string[] factionList = { "Coalition of Achali", "Party of Achali" };
+            List<Faction> factions = EddbService.Factions(factionList);
+            Assert.AreEqual(2, factions.Count);
+
+            List<Faction> factionsHome = EddbService.Factions("Achali");
+            Assert.AreEqual(5, factionsHome.Count);
+        }
 
         /*
         [TestMethod]
