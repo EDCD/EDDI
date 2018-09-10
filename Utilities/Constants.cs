@@ -28,5 +28,37 @@ namespace Utilities
         public const double solAbsoluteMagnitude = 4.83;
         public const double solLuminosity = 3.846e26;
         public const double stefanBoltzmann = 5.670367e-8;
+        public const decimal earthGravityMetersPerSecondSquared = 9.80665M;
+        public const long astronomicalUnitsMeters = 149597870700;
+        public const decimal earthPressurePascals = 101231.65625M;
+    }
+
+    public class ConstantConverters
+    {
+        /// <summary> Convert gravity in m/s to g </summary>
+        public static decimal ms2g(decimal gravity)
+        {
+            return gravity / Constants.earthGravityMetersPerSecondSquared;
+        }
+
+        /// <summary> Convert astronomical units (AU) to km </summary>
+        public static decimal? au2km(decimal? au)
+        {
+            if (au != null)
+            {
+                return au * Constants.astronomicalUnitsMeters / 1000;
+            }
+            return null;
+        }
+
+        /// <summary> Convert pressure in Pascals to Earth atmospheres (atm) </summary>
+        public static decimal? pascals2atm(decimal? pressure)
+        {
+            if (pressure != null)
+            {
+                return pressure * Constants.earthPressurePascals;
+            }
+            return null;
+        }
     }
 }
