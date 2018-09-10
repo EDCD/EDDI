@@ -15,23 +15,25 @@ namespace EddiEddbService
         /// <summary> At least one body name is required. </summary>
         public static List<Body> Bodies(string[] bodyNames)
         {
-            List<KeyValuePair<string, object>> queryList = new List<KeyValuePair<string, object>>();
-            foreach (string body in bodyNames)
+            List<Body> bodies = new List<Body>();
+            foreach (string bodyName in bodyNames)
             {
-                queryList.Add(new KeyValuePair<string, object>(BodyQuery.bodyName, body));
+                Body body = GetBody(new KeyValuePair<string, object>(BodyQuery.bodyName, bodyName));
+                bodies.Add(body);
             }
-            return GetBodies(queryList);
+            return bodies;
         }
 
         /// <summary> At least one body EDDBID is required. </summary>
         public static List<Body> Bodies(long[] eddbBodyIds)
         {
-            List<KeyValuePair<string, object>> queryList = new List<KeyValuePair<string, object>>();
+            List<Body> bodies = new List<Body>();
             foreach (long eddbId in eddbBodyIds)
             {
-                queryList.Add(new KeyValuePair<string, object>(BodyQuery.eddbId, eddbId));
+                Body body = GetBody(new KeyValuePair<string, object>(BodyQuery.eddbId, eddbId));
+                bodies.Add(body);
             }
-            return GetBodies(queryList);
+            return bodies;
         }
 
         /// <summary> Exactly one system name is required. </summary>
@@ -91,24 +93,8 @@ namespace EddiEddbService
             return null;
         }
 
-        private static List<Body> GetBodies(List<KeyValuePair<string, object>> queryList)
-        {
-            if (queryList != null)
-            {
-                List<object> responses = GetData(Endpoint.bodies, queryList);
-
-                if (responses != null)
-                {
-                    List<Body> bodies = new List<Body>();
-                    foreach (object response in responses)
-                    {
-                        bodies.Add(ParseEddbBody(response));
-                    }
-                    return bodies;
-                }
-            }
-            return null;
-        }
+        // Though not necessary at this time, it is possible to implement methods that query the data source 
+        // based on multiple criteria (e.g. planet class, distance, etc.) by adding multiple criteria to the queryList. 
 
         private static Body ParseEddbBody(object response)
         {
