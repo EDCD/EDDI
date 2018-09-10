@@ -41,14 +41,13 @@ namespace UnitTests
             Assert.IsFalse((bool)ev.tidallylocked);
             Assert.AreEqual(ev.terraformstate, "Terraformable");
             Assert.AreEqual(ev.bodyclass, "High metal content body");
-            Assert.AreEqual(ev.atmosphere, "hot thick carbon dioxide atmosphere");
             Assert.IsNotNull(ev.volcanism);
             Assert.AreEqual("Magma", ev.volcanism.invariantType);
             Assert.AreEqual("Iron", ev.volcanism.invariantComposition);
             Assert.AreEqual("Minor", ev.volcanism.invariantAmount);
             Assert.IsTrue(ev.earthmass == (decimal)2.171783);
             Assert.IsTrue(ev.radius  == (decimal)7622170.500000);
-            Assert.AreEqual(ev.gravity, Body.ms2g((decimal)14.899396));
+            Assert.AreEqual(ev.gravity, Utilities.ConstantConverters.ms2g((decimal)14.899396));
             Assert.AreEqual(ev.temperature, (decimal)836.165466);
             Assert.AreEqual(ev.pressure, (decimal)33000114.000000);
             Assert.IsTrue(ev.landable.HasValue);
@@ -59,6 +58,69 @@ namespace UnitTests
             Assert.AreEqual(ev.periapsis, (decimal)104.416656);
             Assert.AreEqual(ev.orbitalperiod, (decimal)48801056.000000);
             Assert.AreEqual(ev.rotationperiod, (decimal)79442.242188);
+        }
+
+        [TestMethod]
+        public void TestJournalPlanetScan3()
+        {
+            string line = @"{
+        ""Atmosphere"": ""hot thick carbon dioxide atmosphere"",
+         ""AtmosphereComposition"": [
+            {
+                ""Name"": ""CarbonDioxide"",
+                 ""Percent"": 96.5
+            },
+             {
+                ""Name"": ""Nitrogen"",
+                 ""Percent"": 3.499999
+            }
+        ],
+         ""AtmosphereType"": ""CarbonDioxide"",
+         ""AxialTilt"": 3.094469,
+         ""BodyID"": 2,
+         ""BodyName"": ""Venus"",
+         ""Composition"": {
+            ""Ice"": 0.0,
+             ""Metal"": 0.3,
+             ""Rock"": 0.7
+        },
+         ""DistanceFromArrivalLS"": 360.959534,
+         ""Eccentricity"": 0.0067,
+         ""Landable"": false,
+         ""MassEM"": 0.815,
+         ""OrbitalInclination"": 3.395,
+         ""OrbitalPeriod"": 19414166.0,
+         ""Parents"": [
+            {
+                ""Star"": 0
+            }
+        ],
+         ""Periapsis"": 55.186001,
+         ""PlanetClass"": ""High metal content body"",
+         ""Radius"": 6051800.0,
+         ""RotationPeriod"": 20996798.0,
+         ""ScanType"": ""NavBeaconDetail"",
+         ""SemiMajorAxis"": 108207980544.0,
+         ""SurfaceGravity"": 8.869474,
+         ""SurfacePressure"": 9442427.0,
+         ""SurfaceTemperature"": 735.0,
+         ""SystemAddress"": 10477373803,
+         ""TerraformState"": """",
+         ""TidalLock"": true,
+         ""Volcanism"": ""minor rocky magma volcanism"",
+         ""event"": ""Scan"",
+         ""timestamp"": ""2018-09-03T19:07:54Z""
+    }";
+
+            List<Event> events = JournalMonitor.ParseJournalEntry(line);
+            Assert.IsTrue(events.Count == 1);
+            Assert.IsInstanceOfType(events[0], typeof(BodyScannedEvent));
+            BodyScannedEvent ev = events[0] as BodyScannedEvent;
+            Assert.IsNotNull(ev);
+            Assert.AreEqual("Carbon dioxide", ev.atmosphereclass.invariantName);
+            Assert.AreEqual(96.5M, ev.atmospherecomposition[0].percent);
+            Assert.AreEqual("Rock", ev.solidcomposition[0].invariantName);
+            Assert.AreEqual(70M, ev.solidcomposition[0].percent);
         }
 
         [TestMethod]

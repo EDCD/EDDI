@@ -24,24 +24,26 @@ namespace EddiEvents
             VARIABLES.Add("gravity", "The surface gravity of the body that has been scanned, relative to Earth's gravity");
             VARIABLES.Add("earthmass", "The mass of the body that has been scanned, relative to Earth's mass");
             VARIABLES.Add("radius", "The radius of the body that has been scanned, in metres");
-            VARIABLES.Add("temperature", "The surface temperature of the body that has been scanned (only available if DSS equipped)");
-            VARIABLES.Add("pressure", "The surface pressure of the body that has been scanned (only available if DSS equipped)");
+            VARIABLES.Add("temperature", "The surface temperature of the body that has been scanned, in Kelvin (only available if DSS equipped)");
+            VARIABLES.Add("pressure", "The surface pressure of the body that has been scanned, in Earth atmospheres (only available if DSS equipped)");
             VARIABLES.Add("tidallylocked", "True if the body is tidally locked (only available if DSS equipped)");
             VARIABLES.Add("landable", "True if the body is landable (only available if DSS equipped)");
             VARIABLES.Add("atmosphere", "The atmosphere of the body that has been scanned (only available if DSS equipped)");
+            VARIABLES.Add("atmospherecomposition", "The composition of the atmosphere of the body that has been scanned (only available if DSS equipped)");
+            VARIABLES.Add("solidcomposition", "The composition of the body's solids that has been scanned (only available if DSS equipped)");
             VARIABLES.Add("volcanism", "The volcanism of the body that has been scanned (only available if DSS equipped)");
             VARIABLES.Add("distancefromarrival", "The distance in LS from the main star");
             VARIABLES.Add("orbitalperiod", "The number of seconds taken for a full orbit of the main star");
             VARIABLES.Add("rotationperiod", "The number of seconds taken for a full rotation");
             VARIABLES.Add("semimajoraxis", "The semi major axis of the body");
             VARIABLES.Add("eccentricity", "The orbital eccentricity of the body");
-            VARIABLES.Add("orbitalinclination", "The orbital inclination of the body");
-            VARIABLES.Add("periapsis", "The periapsis of the body");
-            VARIABLES.Add("rings", "A list of the body's rings");
+            VARIABLES.Add("orbitalinclination", "The orbital inclination of the body, in degrees");
+            VARIABLES.Add("periapsis", "The argument of periapsis of the body, in degrees");
+            VARIABLES.Add("rings", "A list of the body's rings (as ring objects)");
             VARIABLES.Add("reserves", "The level of reserves in the rings if applicable (Pristine/Major/Common/Low/Depleted)");
             VARIABLES.Add("materials", "A list of materials present on the body that has been scanned");
             VARIABLES.Add("terraformstate", "Whether the body can be, is in the process of, or has been terraformed (only available if DSS equipped)");
-            VARIABLES.Add("axialtilt", "Axial tilt for the body (only available if DSS equipped)");
+            VARIABLES.Add("axialtilt", "Axial tilt for the body, in degrees (only available if DSS equipped)");
             VARIABLES.Add("estimatedvalue", "The estimated value of the current scan");
         }
 
@@ -66,6 +68,12 @@ namespace EddiEvents
         public bool? landable { get; private set; }
 
         public string atmosphere { get; private set; }
+
+        public AtmosphereClass atmosphereclass { get; private set; }
+
+        public List<AtmosphereComposition> atmospherecomposition { get; private set; }
+
+        public List<BodySolidComposition> solidcomposition { get; private set; }
 
         public Volcanism volcanism { get; private set; }
 
@@ -103,7 +111,7 @@ namespace EddiEvents
 
         public long? estimatedvalue { get; private set; }
         
-        public BodyScannedEvent(DateTime timestamp, string name, string bodyclass, decimal? earthmass, decimal? radius, decimal gravity, decimal? temperature, decimal? pressure, bool? tidallylocked, bool? landable, string atmosphere, Volcanism volcanism, decimal distancefromarrival, decimal orbitalperiod, decimal rotationperiod, decimal? semimajoraxis, decimal? eccentricity, decimal? orbitalinclination, decimal? periapsis, List<Ring> rings, string reserves, List<MaterialPresence> materials, string terraformstate, decimal? axialtilt, bool dssEquipped) : base(timestamp, NAME)
+        public BodyScannedEvent(DateTime timestamp, string name, string bodyclass, decimal? earthmass, decimal? radius, decimal gravity, decimal? temperature, decimal? pressure, bool? tidallylocked, bool? landable, AtmosphereClass atmosphereClass, List<AtmosphereComposition> atmosphereComposition, List<BodySolidComposition> solidCompositions, Volcanism volcanism, decimal distancefromarrival, decimal orbitalperiod, decimal rotationperiod, decimal? semimajoraxis, decimal? eccentricity, decimal? orbitalinclination, decimal? periapsis, List<Ring> rings, string reserves, List<MaterialPresence> materials, string terraformstate, decimal? axialtilt, bool dssEquipped) : base(timestamp, NAME)
         {
             this.name = name;
             this.distancefromarrival = distancefromarrival;
@@ -115,7 +123,10 @@ namespace EddiEvents
             this.pressure = pressure;
             this.tidallylocked = tidallylocked;
             this.landable = landable;
-            this.atmosphere = atmosphere;
+            this.atmosphere = atmosphereClass?.localizedName;
+            this.atmosphereclass = atmosphereClass;
+            this.atmospherecomposition = atmosphereComposition;
+            this.solidcomposition = solidCompositions;
             this.volcanism = volcanism;
             this.orbitalperiod = orbitalperiod;
             this.rotationperiod = rotationperiod;

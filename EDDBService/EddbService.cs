@@ -8,12 +8,12 @@ using Utilities;
 
 namespace EddiEddbService
 {
-    public class EddbService
+    public partial class EddbService
     {
         // Since EDDB doesn't have an official API, we make use of the "unofficial" API
         private const string baseUrl = "https://elitebgs.kodeblox.com/api/eddb/";
 
-        public static List<object> GetEddbData(string endpoint, List<KeyValuePair<string, object>> queries)
+        public static List<object> GetData(string endpoint, List<KeyValuePair<string, object>> queries)
         {
             if (queries == null) { return null; }
 

@@ -117,20 +117,61 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Icy" xml:space="preserve">
-    <value>Icy</value>
-    <comment>Composition type Icy</comment>
+  <data name="AmmoniaWorld" xml:space="preserve">
+    <value>Ammonia world</value>
   </data>
-  <data name="Metallic" xml:space="preserve">
-    <value>Metallic</value>
-    <comment>Composition type Metallic</comment>
+  <data name="EarthLikeBody" xml:space="preserve">
+    <value>Earth-like world</value>
   </data>
-  <data name="MetalRich" xml:space="preserve">
-    <value>Metal-rich</value>
-    <comment>Composition type MetalRich</comment>
+  <data name="GasGiantWithAmmoniaBasedLife" xml:space="preserve">
+    <value>Gas giant with ammonia based life</value>
   </data>
-  <data name="Rocky" xml:space="preserve">
-    <value>Rocky</value>
-    <comment>Composition type Rocky</comment>
+  <data name="GasGiantWithWaterBasedLife" xml:space="preserve">
+    <value>Gas giant with water based life</value>
+  </data>
+  <data name="HeliumGasGiant" xml:space="preserve">
+    <value>Helium gas giant</value>
+  </data>
+  <data name="HeliumRichGasGiant" xml:space="preserve">
+    <value>Helium rich gas giant</value>
+  </data>
+  <data name="HighMetalContentBody" xml:space="preserve">
+    <value>High metal content body</value>
+  </data>
+  <data name="IcyBody" xml:space="preserve">
+    <value>Icy body</value>
+  </data>
+  <data name="MetalRichBody" xml:space="preserve">
+    <value>Metal-rich body</value>
+  </data>
+  <data name="RockyBody" xml:space="preserve">
+    <value>Rocky body</value>
+  </data>
+  <data name="RockyIceBody" xml:space="preserve">
+    <value>Rocky ice body</value>
+  </data>
+  <data name="ClassIGasGiant" xml:space="preserve">
+    <value>Sudarsky class I gas giant</value>
+  </data>
+  <data name="ClassIIGasGiant" xml:space="preserve">
+    <value>Sudarsky class II gas giant</value>
+  </data>
+  <data name="ClassIIIGasGiant" xml:space="preserve">
+    <value>Sudarsky class III gas giant</value>
+  </data>
+  <data name="ClassIVGasGiant" xml:space="preserve">
+    <value>Sudarsky class IV gas giant</value>
+  </data>
+  <data name="ClassVGasGiant" xml:space="preserve">
+    <value>Sudarsky class V gas giant</value>
+  </data>
+  <data name="WaterGiant" xml:space="preserve">
+    <value>Water giant</value>
+  </data>
+  <data name="WaterGiantWithLife" xml:space="preserve">
+    <value>Water giant with life</value>
+  </data>
+  <data name="WaterWorld" xml:space="preserve">
+    <value>Water world</value>
   </data>
 </root>

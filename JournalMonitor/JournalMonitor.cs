@@ -662,11 +662,11 @@ namespace EddiJournalMonitor
                                     {
                                         string ringName = JsonParsing.getString(ringData, "Name");
                                         string ringComposition = Composition.FromEDName(JsonParsing.getString(ringData, "RingClass")).localizedName;
-                                        decimal ringMass = JsonParsing.getDecimal(ringData, "MassMT");
-                                        decimal ringInnerRadius = JsonParsing.getDecimal(ringData, "InnerRad");
-                                        decimal ringOuterRadius = JsonParsing.getDecimal(ringData, "OuterRad");
+                                        decimal ringMassMegaTons = JsonParsing.getDecimal(ringData, "MassMT");
+                                        decimal ringInnerRadiusKm = JsonParsing.getDecimal(ringData, "InnerRad") / 1000;
+                                        decimal ringOuterRadiusKm = JsonParsing.getDecimal(ringData, "OuterRad") / 1000;
 
-                                        rings.Add(new Ring(ringName, ringComposition, ringMass, ringInnerRadius, ringOuterRadius));
+                                        rings.Add(new Ring(ringName, ringComposition, ringMassMegaTons, ringInnerRadiusKm, ringOuterRadiusKm));
                                     }
                                 }
 
@@ -693,7 +693,7 @@ namespace EddiJournalMonitor
                                     decimal? earthMass = JsonParsing.getOptionalDecimal(data, "MassEM");
 
                                     // MKW: Gravity in the Journal is in m/s; must convert it to G
-                                    decimal gravity = Body.ms2g(JsonParsing.getDecimal(data, "SurfaceGravity"));
+                                    decimal gravity = ConstantConverters.ms2g(JsonParsing.getDecimal(data, "SurfaceGravity"));
 
                                     decimal? temperature = JsonParsing.getOptionalDecimal(data, "SurfaceTemperature");
 
@@ -705,7 +705,56 @@ namespace EddiJournalMonitor
 
                                     decimal? axialTilt = JsonParsing.getOptionalDecimal(data, "AxialTilt");
 
-                                    // TODO atmosphere composition
+                                    // The "Atmosphere" is most accurately described through the "AtmosphereType" and "AtmosphereComposition" 
+                                    // properties, so we use them in preference to "Atmosphere"
+                                    
+                                    AtmosphereClass atmosphereClass = AtmosphereClass.FromEDName(JsonParsing.getString(data, "AtmosphereType"));
+
+                                    data.TryGetValue("AtmosphereComposition", out val);
+                                    List<AtmosphereComposition> atmosphereCompositions = new List<AtmosphereComposition>();
+                                    if (val != null)
+                                    {
+                                        if (val is List<object> atmosJson)
+                                        {
+                                            foreach (Dictionary<string, object> atmoJson in atmosJson)
+                                            {
+                                                string composition = JsonParsing.getString(atmoJson, "Name");
+                                                decimal? percent = JsonParsing.getOptionalDecimal(atmoJson, "Percent");
+                                                if (composition != null && percent != null)
+                                                {
+                                                    atmosphereCompositions.Add(new AtmosphereComposition(composition, (decimal)percent));
+                                                }
+                                            }
+                                            if (atmosphereCompositions.Count > 0)
+                                            {
+                                                atmosphereCompositions = atmosphereCompositions.OrderByDescending(x => x.percent).ToList();
+                                            }
+                                        }
+                                    }
+
+                                    data.TryGetValue("Composition", out val);
+                                    List<BodySolidComposition> solidCompositions = new List<BodySolidComposition>();
+                                    if (val != null)
+                                    {
+                                        if (val is Dictionary<string, object> bodyCompsJson)
+                                        {
+                                            IDictionary<string, object> compositionData = (IDictionary<string, object>)val;
+                                            foreach (KeyValuePair<string, object> kv in compositionData)
+                                            {
+                                                string composition = kv.Key;
+                                                // The journal gives solid composition as a fraction of 1. Multiply by 100 to convert to a true percentage.
+                                                decimal percent = ((decimal)(double)kv.Value) * 100;
+                                                if (composition != null)
+                                                {
+                                                    solidCompositions.Add(new BodySolidComposition(composition, (decimal)percent));
+                                                }
+                                            }
+                                            if (solidCompositions.Count > 0)
+                                            {
+                                                solidCompositions = solidCompositions.OrderByDescending(x => x.percent).ToList();
+                                            }
+                                        }
+                                    }
 
                                     data.TryGetValue("Materials", out val);
                                     List<MaterialPresence> materials = new List<MaterialPresence>();
@@ -735,10 +784,9 @@ namespace EddiJournalMonitor
                                     }
 
                                     string terraformState = JsonParsing.getString(data, "TerraformState");
-                                    string atmosphere = JsonParsing.getString(data, "Atmosphere");
                                     Volcanism volcanism = Volcanism.FromName(JsonParsing.getString(data, "Volcanism"));
 
-                                    events.Add(new BodyScannedEvent(timestamp, name, bodyClass, earthMass, radius, gravity, temperature, pressure, tidallyLocked, landable, atmosphere, volcanism, distancefromarrival, (decimal)orbitalperiod, rotationperiod, semimajoraxis, eccentricity, orbitalinclination, periapsis, rings, reserves, materials, terraformState, axialTilt, dssEquipped) { raw = line });
+                                    events.Add(new BodyScannedEvent(timestamp, name, bodyClass, earthMass, radius, gravity, temperature, pressure, tidallyLocked, landable, atmosphereClass, atmosphereCompositions, solidCompositions, volcanism, distancefromarrival, (decimal)orbitalperiod, rotationperiod, semimajoraxis, eccentricity, orbitalinclination, periapsis, rings, reserves, materials, terraformState, axialTilt, dssEquipped) { raw = line });
                                     handled = true;
                                 }
                             }
