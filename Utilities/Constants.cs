@@ -56,7 +56,7 @@ namespace Utilities
         {
             if (pressure != null)
             {
-                return pressure * Constants.earthPressurePascals;
+                return pressure / Constants.earthPressurePascals;
             }
             return null;
         }

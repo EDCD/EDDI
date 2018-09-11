@@ -35,29 +35,29 @@ namespace UnitTests
             Assert.IsInstanceOfType(events[0], typeof(BodyScannedEvent));
             BodyScannedEvent ev = events[0] as BodyScannedEvent;
             Assert.IsNotNull(ev);
-            Assert.AreEqual(ev.name, "Grea Bloae HH-T d4-44 4");
-            Assert.AreEqual(ev.distancefromarrival, (decimal)703.763611);
+            Assert.AreEqual("Grea Bloae HH-T d4-44 4", ev.name);
+            Assert.AreEqual((decimal)703.763611, ev.distancefromarrival);
             Assert.IsTrue(ev.tidallylocked.HasValue);
             Assert.IsFalse((bool)ev.tidallylocked);
-            Assert.AreEqual(ev.terraformstate, "Terraformable");
-            Assert.AreEqual(ev.bodyclass, "High metal content body");
+            Assert.AreEqual("Terraformable", ev.terraformstate);
+            Assert.AreEqual("High metal content body", ev.bodyclass);
             Assert.IsNotNull(ev.volcanism);
             Assert.AreEqual("Magma", ev.volcanism.invariantType);
             Assert.AreEqual("Iron", ev.volcanism.invariantComposition);
             Assert.AreEqual("Minor", ev.volcanism.invariantAmount);
-            Assert.IsTrue(ev.earthmass == (decimal)2.171783);
-            Assert.IsTrue(ev.radius  == (decimal)7622170.500000);
-            Assert.AreEqual(ev.gravity, Utilities.ConstantConverters.ms2g((decimal)14.899396));
-            Assert.AreEqual(ev.temperature, (decimal)836.165466);
-            Assert.AreEqual(ev.pressure, (decimal)33000114.000000);
+            Assert.AreEqual((decimal)2.171783, ev.earthmass);
+            Assert.AreEqual((double)7622.170500000M, (double)ev.radius, 0.01);
+            Assert.AreEqual(Utilities.ConstantConverters.ms2g((decimal)14.899396), ev.gravity);
+            Assert.AreEqual((decimal)836.165466, ev.temperature);
+            Assert.AreEqual(325.986, (double)ev.pressure, 0.01);
             Assert.IsTrue(ev.landable.HasValue);
             Assert.IsFalse((bool)ev.landable);
-            Assert.AreEqual(ev.semimajoraxis, (decimal)210957926400.000000);
-            Assert.AreEqual(ev.eccentricity, (decimal)0.000248);
-            Assert.AreEqual(ev.orbitalinclination, (decimal)0.015659);
-            Assert.AreEqual(ev.periapsis, (decimal)104.416656);
-            Assert.AreEqual(ev.orbitalperiod, (decimal)48801056.000000);
-            Assert.AreEqual(ev.rotationperiod, (decimal)79442.242188);
+            Assert.AreEqual(1.4102, (double)ev.semimajoraxis, 0.01);
+            Assert.AreEqual((decimal)0.000248, ev.eccentricity);
+            Assert.AreEqual((decimal)0.015659, ev.orbitalinclination);
+            Assert.AreEqual((decimal)104.416656, ev.periapsis);
+            Assert.AreEqual(564.827, (double)ev.orbitalperiod, 0.01);
+            Assert.AreEqual(0.91947, (double)ev.rotationperiod, 0.01);
         }
 
         [TestMethod]
@@ -136,7 +136,7 @@ namespace UnitTests
             Assert.IsNull(theEvent.eccentricity);
             Assert.AreEqual("Vela Dark Region FG-Y d3", theEvent.name);
             Assert.IsNull(theEvent.orbitalperiod);
-            Assert.AreEqual(692146368.000000M, theEvent.radius);
+            Assert.AreEqual(692146.368000000M, theEvent.radius);
             Assert.IsNull(theEvent.semimajoraxis);
             Assert.AreEqual(0.960938, (double)theEvent.solarmass, 0.001);
             Assert.AreEqual("K", theEvent.stellarclass);
@@ -157,8 +157,8 @@ namespace UnitTests
             Assert.IsTrue(events.Count == 1);
 
             StarScannedEvent theEvent = (StarScannedEvent)events[0];
-            Assert.AreEqual(theEvent.radius, (decimal)659162816.0);
-            Assert.AreEqual(theEvent.solarradius, StarClass.solarradius((decimal)659162816.000000));
+            Assert.AreEqual((decimal)659162.816, theEvent.radius);
+            Assert.AreEqual(StarClass.solarradius((decimal)659162.816000000), theEvent.solarradius);
             Assert.AreEqual(0.94775, (double)theEvent.solarradius, 0.01);
         }
 
