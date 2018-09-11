@@ -23,7 +23,7 @@ namespace EddiEvents
             VARIABLES.Add("bodyclass", "The class of the body that has been scanned (High metal content body etc)");
             VARIABLES.Add("gravity", "The surface gravity of the body that has been scanned, relative to Earth's gravity");
             VARIABLES.Add("earthmass", "The mass of the body that has been scanned, relative to Earth's mass");
-            VARIABLES.Add("radius", "The radius of the body that has been scanned, in metres");
+            VARIABLES.Add("radius", "The radius of the body that has been scanned, in kilometres");
             VARIABLES.Add("temperature", "The surface temperature of the body that has been scanned, in Kelvin (only available if DSS equipped)");
             VARIABLES.Add("pressure", "The surface pressure of the body that has been scanned, in Earth atmospheres (only available if DSS equipped)");
             VARIABLES.Add("tidallylocked", "True if the body is tidally locked (only available if DSS equipped)");
@@ -33,9 +33,9 @@ namespace EddiEvents
             VARIABLES.Add("solidcomposition", "The composition of the body's solids that has been scanned (only available if DSS equipped)");
             VARIABLES.Add("volcanism", "The volcanism of the body that has been scanned (only available if DSS equipped)");
             VARIABLES.Add("distancefromarrival", "The distance in LS from the main star");
-            VARIABLES.Add("orbitalperiod", "The number of seconds taken for a full orbit of the main star");
-            VARIABLES.Add("rotationperiod", "The number of seconds taken for a full rotation");
-            VARIABLES.Add("semimajoraxis", "The semi major axis of the body");
+            VARIABLES.Add("orbitalperiod", "The number of days taken for a full orbit of the main star");
+            VARIABLES.Add("rotationperiod", "The number of days taken for a full rotation");
+            VARIABLES.Add("semimajoraxis", "The semi major axis of the body, in astronomical units (AU)");
             VARIABLES.Add("eccentricity", "The orbital eccentricity of the body");
             VARIABLES.Add("orbitalinclination", "The orbital inclination of the body, in degrees");
             VARIABLES.Add("periapsis", "The argument of periapsis of the body, in degrees");

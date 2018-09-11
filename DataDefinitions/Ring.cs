@@ -28,10 +28,10 @@ namespace EddiDataDefinitions
         /// <summary>The outer radius of the ring, in kilometres</summary>
         public decimal outerradius { get; set; }
 
-        public Ring(string name, string composition, decimal mass, decimal innerradius, decimal outerradius)
+        public Ring(string name, Composition composition, decimal mass, decimal innerradius, decimal outerradius)
         {
             this.name = name;
-            this.Composition = Composition.FromName(composition);
+            this.Composition = composition;
             this.mass = mass;
             this.innerradius = innerradius;
             this.outerradius = outerradius;
