@@ -61,6 +61,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Belt.
+        /// </summary>
+        public static string Belt {
+            get {
+                return ResourceManager.GetString("Belt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ice.
         /// </summary>
         public static string Ice {

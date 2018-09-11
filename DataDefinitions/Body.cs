@@ -177,6 +177,7 @@ namespace EddiDataDefinitions
 
             var Planet = new BodyType("Planet");
             var Star = new BodyType("Star");
+            var Belt = new BodyType("Belt");
         }
 
         // dummy used to ensure that the static constructor has run

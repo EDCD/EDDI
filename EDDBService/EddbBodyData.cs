@@ -101,12 +101,6 @@ namespace EddiEddbService
         {
             JObject bodyJson = ((JObject)response);
 
-            if ((string)bodyJson["group_name"] == "belt")
-            {
-                // Not interested in asteroid belts
-                return null;
-            }
-
             Body Body = new Body();
 
             // General items
@@ -136,7 +130,13 @@ namespace EddiEddbService
             Body.eccentricity = (decimal?)(double?)bodyJson["orbital_eccentricity"];
             Body.inclination = (decimal?)(double?)bodyJson["orbital_inclination"]; // Degrees
 
-            if (Body.type == "Star")
+            if (Body.Type.invariantName == "Belt")
+            {
+                // Not interested in asteroid belts, 
+                // no need to add additional information at this time.
+            }
+
+            if (Body.Type.invariantName == "Star")
             {
                 // Star-specific items
                 Body.stellarclass = ((string)bodyJson["spectral_class"]).ToUpperInvariant();
@@ -149,7 +149,7 @@ namespace EddiEddbService
                 Body.setStellarExtras();
             }
 
-            if (Body.type == "Planet")
+            if (Body.Type.invariantName == "Planet")
             {
                 // Planet-specific items
                 Body.planetClass = PlanetClass.FromEDName((string)bodyJson["type_name"]);
@@ -214,7 +214,6 @@ namespace EddiEddbService
                         Body.materials = Materials.OrderByDescending(o => o.percentage).ToList();
                     }
                 }
-
             }
 
             // Rings may be an object or may be a singular
@@ -232,7 +231,7 @@ namespace EddiEddbService
                     rings.Add(ring);
                 }
             }
-            else if (bodyJson["ring_type_name"] != null)
+            if (bodyJson["ring_type_name"].HasValues)
             {
                 string name = (string)bodyJson["name"];
                 Composition composition = Composition.FromName((string)bodyJson["ring_type_name"]);
