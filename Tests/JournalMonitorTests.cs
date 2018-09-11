@@ -39,8 +39,8 @@ namespace UnitTests
             Assert.AreEqual((decimal)703.763611, ev.distancefromarrival);
             Assert.IsTrue(ev.tidallylocked.HasValue);
             Assert.IsFalse((bool)ev.tidallylocked);
-            Assert.AreEqual("Terraformable", ev.terraformstate);
-            Assert.AreEqual("High metal content body", ev.bodyclass);
+            Assert.AreEqual("Terraformable", ev.terraformState.invariantName);
+            Assert.AreEqual("High metal content body", ev.planetClass.invariantName);
             Assert.IsNotNull(ev.volcanism);
             Assert.AreEqual("Magma", ev.volcanism.invariantType);
             Assert.AreEqual("Iron", ev.volcanism.invariantComposition);
