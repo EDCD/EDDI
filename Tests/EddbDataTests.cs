@@ -279,7 +279,7 @@ namespace UnitTests
         public void TestBodiesSol()
         {
             List<Body> bodies = EddbService.Bodies("Sol");
-            Assert.AreEqual(38, bodies.Count); // TODO: Handle belts (we handle them during scans so it would be inconsistent to not handle them from EDDB)
+            Assert.AreEqual(40, bodies.Count);
         }
 
         /*

@@ -137,4 +137,8 @@
     <value>Star</value>
     <comment>Body Type "Star"</comment>
   </data>
+  <data name="Belt" xml:space="preserve">
+    <value>Belt</value>
+    <comment>Body Type "Belt"</comment>
+  </data>
 </root>
