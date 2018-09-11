@@ -124,7 +124,7 @@ namespace UnitTests
             Assert.AreEqual(764, body.systemEDDBID);
             Assert.AreEqual("Star", body.type);
             Assert.AreEqual("K", body.stellarclass);
-            Assert.AreEqual(5398, (double)body.distance, 0.1);
+            Assert.AreEqual(5398, (double)body.distance, 10);
             Assert.AreEqual(5240, body.temperature);
             Assert.IsNotNull(body.mainstar);
             Assert.IsFalse((bool)body.mainstar);
@@ -139,7 +139,7 @@ namespace UnitTests
             Assert.IsNull(body.gravity);
             Assert.IsNull(body.pressure);
             Assert.AreEqual(9348.9066666667, (double)body.orbitalperiod, .001);
-            Assert.AreEqual(952535678.976, (double)body.semimajoraxis, .001);
+            Assert.AreEqual(6.3673077331842, (double)body.semimajoraxis, .001);
             Assert.AreEqual(0.5179, (double)body.eccentricity, .001);
             Assert.AreEqual(79.205002, (double)body.inclination, .001);
             Assert.AreEqual(296.656494, (double)body.periapsis, .001);
@@ -179,7 +179,7 @@ namespace UnitTests
             Assert.IsNotNull(body.radius);
             Assert.AreEqual(2439.7M, body.radius);
             Assert.AreEqual(58.6, (double)body.rotationalperiod, 0.1);
-            Assert.AreEqual((double)57909092.352, (double)body.semimajoraxis, 0.01);
+            Assert.AreEqual((double)0.38709837299843, (double)body.semimajoraxis, 0.01);
             Assert.IsNull(body.solarmass);
             Assert.IsNull(body.solarradius);
             Assert.IsNull(body.stellarclass);
@@ -225,7 +225,7 @@ namespace UnitTests
             Assert.AreEqual("Earth-like world", body.planettype);
             Assert.AreEqual(6378.1M, body.radius);
             Assert.AreEqual((double)1.0M, (double)body.rotationalperiod, 0.01);
-            Assert.AreEqual((double)149597978.6240M, (double)body.semimajoraxis, 0.01);
+            Assert.AreEqual((double)1.0M, (double)body.semimajoraxis, 0.01);
             Assert.AreEqual((double)1.0M, (double)body.gravity, .01);
             Assert.AreEqual((double)1.0M, (double)body.pressure, .01);
             Assert.AreEqual(288.0M, body.temperature);
@@ -261,7 +261,7 @@ namespace UnitTests
             Assert.AreEqual("No atmosphere", body.atmosphere);
             Assert.AreEqual("Not terraformable", body.terraformstate);
             Assert.AreEqual(55.31602430555556, (double)body.orbitalperiod, 0.01);
-            Assert.AreEqual((double)16610303.999, (double)body.semimajoraxis, 0.01);
+            Assert.AreEqual((double)0.11103302421536, (double)body.semimajoraxis, 0.01);
             Assert.IsFalse(body.eccentricity > 0);
             Assert.AreEqual(28.739708, (double)body.inclination, 0.01);
             Assert.AreEqual(248.851364, (double)body.periapsis, 0.01);
@@ -279,7 +279,7 @@ namespace UnitTests
         public void TestBodiesSol()
         {
             List<Body> bodies = EddbService.Bodies("Sol");
-            Assert.AreEqual(38, bodies.Count);
+            Assert.AreEqual(38, bodies.Count); // TODO: Handle belts (we handle them during scans so it would be inconsistent to not handle them from EDDB)
         }
 
         /*
