@@ -36,27 +36,37 @@ namespace Utilities
     public class ConstantConverters
     {
         /// <summary> Convert gravity in m/s to g </summary>
-        public static decimal ms2g(decimal gravity)
+        public static decimal ms2g (decimal gravity)
         {
             return gravity / Constants.earthGravityMetersPerSecondSquared;
         }
 
-        /// <summary> Convert astronomical units (AU) to km </summary>
-        public static decimal? au2km(decimal? au)
+        /// <summary> Convert meters to astronomical units (AU) </summary>
+        public static decimal? meters2au (decimal? meters)
         {
-            if (au != null)
+            if (meters != null)
             {
-                return au * Constants.astronomicalUnitsMeters / 1000;
+                return meters / Constants.astronomicalUnitsMeters;
             }
             return null;
         }
 
         /// <summary> Convert pressure in Pascals to Earth atmospheres (atm) </summary>
-        public static decimal? pascals2atm(decimal? pressure)
+        public static decimal? pascals2atm (decimal? pressure)
         {
             if (pressure != null)
             {
                 return pressure * Constants.earthPressurePascals;
+            }
+            return null;
+        }
+
+        /// <summary> Convert seconds to days </summary>
+        public static decimal? seconds2days (decimal? seconds)
+        {
+            if (seconds != null)
+            {
+                return seconds / 86400;
             }
             return null;
         }

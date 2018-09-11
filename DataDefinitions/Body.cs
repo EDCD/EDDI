@@ -116,7 +116,7 @@ namespace EddiDataDefinitions
         /// <summary>The rotational period of the planet, in days</summary>
         public decimal? rotationalperiod;
 
-        /// <summary>The semi-major axis of the planet, in km</summary>
+        /// <summary>The semi-major axis of the planet, in astronomical units (AU)</summary>
         public decimal? semimajoraxis;
 
         /// <summary>The pressure at the surface of the planet, in Earth atmospheres</summary>

@@ -630,13 +630,17 @@ namespace EddiJournalMonitor
                                 }
 
                                 // Common items
-                                decimal radius = JsonParsing.getDecimal(data, "Radius");
-                                decimal? orbitalperiod = JsonParsing.getOptionalDecimal(data, "OrbitalPeriod");
-                                decimal rotationperiod = JsonParsing.getDecimal(data, "RotationPeriod");
-                                decimal? semimajoraxis = JsonParsing.getOptionalDecimal(data, "SemiMajorAxis");
+                                // Need to convert radius from meters (per journal) to kilometers
+                                decimal radiusKm = JsonParsing.getDecimal(data, "Radius") / 1000;
+                                // Need to convert orbital period from seconds (per journal) to days
+                                decimal? orbitalPeriodDays = ConstantConverters.seconds2days(JsonParsing.getOptionalDecimal(data, "OrbitalPeriod"));
+                                // Need to convert rotation period from seconds (per journal) to days
+                                decimal rotationPeriodDays = (decimal)ConstantConverters.seconds2days(JsonParsing.getDecimal(data, "RotationPeriod"));
+                                // Need to convert meters to astronomical units (AU)
+                                decimal? semimajoraxisAU = ConstantConverters.meters2au(JsonParsing.getOptionalDecimal(data, "SemiMajorAxis"));
                                 decimal? eccentricity = JsonParsing.getOptionalDecimal(data, "Eccentricity");
-                                decimal? orbitalinclination = JsonParsing.getOptionalDecimal(data, "OrbitalInclination");
-                                decimal? periapsis = JsonParsing.getOptionalDecimal(data, "Periapsis");
+                                decimal? orbitalinclinationDegrees = JsonParsing.getOptionalDecimal(data, "OrbitalInclination");
+                                decimal? periapsisDegrees = JsonParsing.getOptionalDecimal(data, "Periapsis");
 
                                 // Check whether we have a detailed discovery scanner on board the current ship
                                 bool dssEquipped = false;
@@ -661,7 +665,7 @@ namespace EddiJournalMonitor
                                     foreach (Dictionary<string, object> ringData in ringsData)
                                     {
                                         string ringName = JsonParsing.getString(ringData, "Name");
-                                        string ringComposition = Composition.FromEDName(JsonParsing.getString(ringData, "RingClass")).localizedName;
+                                        Composition ringComposition = Composition.FromEDName(JsonParsing.getString(ringData, "RingClass"));
                                         decimal ringMassMegaTons = JsonParsing.getDecimal(ringData, "MassMT");
                                         decimal ringInnerRadiusKm = JsonParsing.getDecimal(ringData, "InnerRad") / 1000;
                                         decimal ringOuterRadiusKm = JsonParsing.getDecimal(ringData, "OuterRad") / 1000;
@@ -679,9 +683,9 @@ namespace EddiJournalMonitor
                                     string luminosityClass = JsonParsing.getString(data, "Luminosity");
                                     data.TryGetValue("Age_MY", out val);
                                     long ageMegaYears = (long)val;
-                                    decimal temperature = JsonParsing.getDecimal(data, "SurfaceTemperature");
+                                    decimal temperatureKelvin = JsonParsing.getDecimal(data, "SurfaceTemperature");
 
-                                    events.Add(new StarScannedEvent(timestamp, name, starType, stellarMass, radius, absoluteMagnitude, luminosityClass, ageMegaYears, temperature, distancefromarrival, orbitalperiod, rotationperiod, semimajoraxis, eccentricity, orbitalinclination, periapsis, rings, dssEquipped) { raw = line });
+                                    events.Add(new StarScannedEvent(timestamp, name, starType, stellarMass, radiusKm, absoluteMagnitude, luminosityClass, ageMegaYears, temperatureKelvin, distancefromarrival, orbitalPeriodDays, rotationPeriodDays, semimajoraxisAU, eccentricity, orbitalinclinationDegrees, periapsisDegrees, rings, dssEquipped) { raw = line });
                                     handled = true;
                                 }
                                 else
@@ -695,15 +699,15 @@ namespace EddiJournalMonitor
                                     // MKW: Gravity in the Journal is in m/s; must convert it to G
                                     decimal gravity = ConstantConverters.ms2g(JsonParsing.getDecimal(data, "SurfaceGravity"));
 
-                                    decimal? temperature = JsonParsing.getOptionalDecimal(data, "SurfaceTemperature");
+                                    decimal? temperatureKelvin = JsonParsing.getOptionalDecimal(data, "SurfaceTemperature");
 
-                                    decimal? pressure = JsonParsing.getOptionalDecimal(data, "SurfacePressure");
+                                    decimal? pressure = ConstantConverters.pascals2atm(JsonParsing.getOptionalDecimal(data, "SurfacePressure"));
 
                                     bool? landable = JsonParsing.getOptionalBool(data, "Landable");
 
                                     string reserves = JsonParsing.getString(data, "ReserveLevel");
 
-                                    decimal? axialTilt = JsonParsing.getOptionalDecimal(data, "AxialTilt");
+                                    decimal? axialTiltDegrees = JsonParsing.getOptionalDecimal(data, "AxialTilt");
 
                                     // The "Atmosphere" is most accurately described through the "AtmosphereType" and "AtmosphereComposition" 
                                     // properties, so we use them in preference to "Atmosphere"
@@ -718,11 +722,11 @@ namespace EddiJournalMonitor
                                         {
                                             foreach (Dictionary<string, object> atmoJson in atmosJson)
                                             {
-                                                string composition = JsonParsing.getString(atmoJson, "Name");
+                                                string edComposition = JsonParsing.getString(atmoJson, "Name");
                                                 decimal? percent = JsonParsing.getOptionalDecimal(atmoJson, "Percent");
-                                                if (composition != null && percent != null)
+                                                if (edComposition != null && percent != null)
                                                 {
-                                                    atmosphereCompositions.Add(new AtmosphereComposition(composition, (decimal)percent));
+                                                    atmosphereCompositions.Add(new AtmosphereComposition(edComposition, (decimal)percent));
                                                 }
                                             }
                                             if (atmosphereCompositions.Count > 0)
@@ -741,12 +745,12 @@ namespace EddiJournalMonitor
                                             IDictionary<string, object> compositionData = (IDictionary<string, object>)val;
                                             foreach (KeyValuePair<string, object> kv in compositionData)
                                             {
-                                                string composition = kv.Key;
+                                                string edComposition = kv.Key;
                                                 // The journal gives solid composition as a fraction of 1. Multiply by 100 to convert to a true percentage.
                                                 decimal percent = ((decimal)(double)kv.Value) * 100;
-                                                if (composition != null)
+                                                if (edComposition != null)
                                                 {
-                                                    solidCompositions.Add(new BodySolidComposition(composition, (decimal)percent));
+                                                    solidCompositions.Add(new BodySolidComposition(edComposition, (decimal)percent));
                                                 }
                                             }
                                             if (solidCompositions.Count > 0)
@@ -786,7 +790,7 @@ namespace EddiJournalMonitor
                                     string terraformState = JsonParsing.getString(data, "TerraformState");
                                     Volcanism volcanism = Volcanism.FromName(JsonParsing.getString(data, "Volcanism"));
 
-                                    events.Add(new BodyScannedEvent(timestamp, name, bodyClass, earthMass, radius, gravity, temperature, pressure, tidallyLocked, landable, atmosphereClass, atmosphereCompositions, solidCompositions, volcanism, distancefromarrival, (decimal)orbitalperiod, rotationperiod, semimajoraxis, eccentricity, orbitalinclination, periapsis, rings, reserves, materials, terraformState, axialTilt, dssEquipped) { raw = line });
+                                    events.Add(new BodyScannedEvent(timestamp, name, bodyClass, earthMass, radiusKm, gravity, temperatureKelvin, pressure, tidallyLocked, landable, atmosphereClass, atmosphereCompositions, solidCompositions, volcanism, distancefromarrival, (decimal)orbitalPeriodDays, rotationPeriodDays, semimajoraxisAU, eccentricity, orbitalinclinationDegrees, periapsisDegrees, rings, reserves, materials, terraformState, axialTiltDegrees, dssEquipped) { raw = line });
                                     handled = true;
                                 }
                             }

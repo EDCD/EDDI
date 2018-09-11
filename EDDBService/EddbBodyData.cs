@@ -125,16 +125,16 @@ namespace EddiEddbService
             */
 
             // Orbital data
-            Body.distance = (long?)bodyJson["distance_to_arrival"];
-            Body.temperature = (decimal?)bodyJson["surface_temperature"];
-            Body.tidallylocked = (bool?)bodyJson["is_rotational_period_tidally_locked"];
-            Body.rotationalperiod = (decimal?)(double?)bodyJson["rotational_period"];
-            Body.tilt = (decimal?)(double?)bodyJson["axis_tilt"];
-            Body.semimajoraxis = ConstantConverters.au2km((decimal?)(double?)bodyJson["semi_major_axis"]);
-            Body.orbitalperiod = (decimal?)(double?)bodyJson["orbital_period"];
-            Body.periapsis = (decimal?)(double?)bodyJson["arg_of_periapsis"];
+            Body.distance = (long?)bodyJson["distance_to_arrival"]; // Light seconds
+            Body.temperature = (decimal?)bodyJson["surface_temperature"]; //Kelvin
+            Body.tidallylocked = (bool?)bodyJson["is_rotational_period_tidally_locked"]; // Days
+            Body.rotationalperiod = (decimal?)(double?)bodyJson["rotational_period"]; // Days
+            Body.tilt = (decimal?)(double?)bodyJson["axis_tilt"]; // Degrees
+            Body.semimajoraxis = (decimal?)(double?)bodyJson["semi_major_axis"]; // AU
+            Body.orbitalperiod = (decimal?)(double?)bodyJson["orbital_period"]; // Days
+            Body.periapsis = (decimal?)(double?)bodyJson["arg_of_periapsis"]; // Degrees
             Body.eccentricity = (decimal?)(double?)bodyJson["orbital_eccentricity"];
-            Body.inclination = (decimal?)(double?)bodyJson["orbital_inclination"];
+            Body.inclination = (decimal?)(double?)bodyJson["orbital_inclination"]; // Degrees
 
             if (Body.type == "Star")
             {
@@ -143,7 +143,7 @@ namespace EddiEddbService
                 Body.luminosityclass = ((string)bodyJson["luminosity_class"]).ToUpperInvariant();
                 Body.solarmass = (decimal?)(double?)bodyJson["solar_masses"];
                 Body.solarradius = (decimal?)(double?)bodyJson["solar_radius"];
-                Body.age = (long?)bodyJson["age"];
+                Body.age = (long?)bodyJson["age"]; // MegaYears
                 Body.mainstar = (bool?)bodyJson["is_main_star"];
                 Body.landable = false;
                 Body.setStellarExtras();
@@ -155,8 +155,8 @@ namespace EddiEddbService
                 Body.planetClass = PlanetClass.FromEDName((string)bodyJson["type_name"]);
                 Body.landable = (bool?)bodyJson["is_landable"];
                 Body.earthmass = (decimal?)(double?)bodyJson["earth_masses"];
-                Body.gravity = (decimal?)(double?)bodyJson["gravity"];
-                Body.radius = (decimal?)bodyJson["radius"];
+                Body.gravity = (decimal?)(double?)bodyJson["gravity"]; // G's
+                Body.radius = (decimal?)bodyJson["radius"]; // Kilometers
                 Body.pressure = (decimal?)(double?)bodyJson["surface_pressure"] ?? 0;
                 Body.terraformState = TerraformState.FromName((string)bodyJson["terraforming_state_name"]);
                 Body.volcanism = Volcanism.FromName((string)bodyJson["volcanism_type_name"]);
@@ -224,22 +224,22 @@ namespace EddiEddbService
                 foreach (JObject ringJson in bodyJson["rings"])
                 {
                     string name = (string)ringJson["name"];
-                    string composition = (string)ringJson["ring_type_name"];
-                    decimal mass = (decimal)ringJson["ring_mass"];
-                    decimal innerRadius = (decimal)ringJson["ring_inner_radius"];
-                    decimal outerRadius = (decimal)ringJson["ring_outer_radius"];
-                    Ring ring = new Ring(name, composition, mass, innerRadius, outerRadius);
+                    Composition composition = Composition.FromName((string)ringJson["ring_type_name"]);
+                    decimal ringMassMegaTons = (decimal)ringJson["ring_mass"];
+                    decimal innerRadiusKm = (decimal)ringJson["ring_inner_radius"];
+                    decimal outerRadiusKm = (decimal)ringJson["ring_outer_radius"];
+                    Ring ring = new Ring(name, composition, ringMassMegaTons, innerRadiusKm, outerRadiusKm);
                     rings.Add(ring);
                 }
             }
             else if (bodyJson["ring_type_name"] != null)
             {
                 string name = (string)bodyJson["name"];
-                string composition = (string)bodyJson["ring_type_name"];
-                decimal mass = (decimal)bodyJson["ring_mass"];
-                decimal innerRadius = (decimal)bodyJson["ring_inner_radius"];
-                decimal outerRadius = (decimal)bodyJson["ring_outer_radius"];
-                Ring ring = new Ring(name, composition, mass, innerRadius, outerRadius);
+                Composition composition = Composition.FromName((string)bodyJson["ring_type_name"]);
+                decimal ringMassMegaTons = (decimal)bodyJson["ring_mass"];
+                decimal innerRadiusKm = (decimal)bodyJson["ring_inner_radius"];
+                decimal outerRadiusKm = (decimal)bodyJson["ring_outer_radius"];
+                Ring ring = new Ring(name, composition, ringMassMegaTons, innerRadiusKm, outerRadiusKm);
                 rings.Add(ring);
             }
             if (rings.Count > 0)
