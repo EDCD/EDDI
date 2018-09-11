@@ -202,7 +202,9 @@ namespace UnitTests
         {
             Body body = EddbService.Body("Earth");
             Assert.IsNull(body.age);
-            // Assert.AreEqual("Earth-like", body.atmosphereclass.invariantName); // Possibly a data source bug? Data source reports this as "Suitable for water-based life" but via Ross it is "Earthlike"
+            // Assert.AreEqual("Earth-like", body.atmosphereclass.invariantName); 
+            // Data source reports this as "Suitable for water-based life" but via Ross it is "Earthlike". 
+            // Apparently intentional from EDSM (EDDB syncs body data from EDSM): https://github.com/EDSM-NET/Alias/blob/3a904f799a4b7b4dd28f12af80eba38307789c99/Body/Planet/Atmosphere.php#L83
             Assert.AreEqual("Nitrogen", body.atmosphereCompositions[0].invariantName);
             Assert.AreEqual(77.886406M, body.atmosphereCompositions[0].percent);
             Assert.AreEqual("Oxygen", body.atmosphereCompositions[1].invariantName);
