@@ -898,7 +898,7 @@ namespace EddiMissionMonitor
                     case "sightseeing":
                     case "smuggle":
                         {
-                            if (mission.destinationsystems == null)
+                            if (mission.destinationsystems == null || !mission.destinationsystems.Any())
                             {
                                 if (!systems.Contains(mission.destinationsystem))
                                 {
@@ -996,6 +996,7 @@ namespace EddiMissionMonitor
                     // Use this route if total distance traveled is less than previous iterations
                     if (missionsRouteDistance == 0 || totalDistance < missionsRouteDistance)
                     {
+                        bestRoute.Clear();
                         int index = route.IndexOf(homesystem);
                         if (index < route.Count - 1)
                         {
@@ -1005,7 +1006,7 @@ namespace EddiMissionMonitor
                         }
                         else
                         {
-                            bestRoute = route;
+                            bestRoute = route.ToList();
                         }
                         missionsRouteDistance = totalDistance;
                         nextSystem = bestRoute[0];
