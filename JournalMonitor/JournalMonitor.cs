@@ -693,7 +693,7 @@ namespace EddiJournalMonitor
                                     // Body
                                     bool? tidallyLocked = JsonParsing.getOptionalBool(data, "TidalLock");
 
-                                    string bodyClass = JsonParsing.getString(data, "PlanetClass");
+                                    PlanetClass planetClass = PlanetClass.FromEDName(JsonParsing.getString(data, "PlanetClass"));
                                     decimal? earthMass = JsonParsing.getOptionalDecimal(data, "MassEM");
 
                                     // MKW: Gravity in the Journal is in m/s; must convert it to G
@@ -787,10 +787,10 @@ namespace EddiJournalMonitor
                                         }
                                     }
 
-                                    string terraformState = JsonParsing.getString(data, "TerraformState");
+                                    TerraformState terraformState = TerraformState.FromEDName(JsonParsing.getString(data, "TerraformState"));
                                     Volcanism volcanism = Volcanism.FromName(JsonParsing.getString(data, "Volcanism"));
 
-                                    events.Add(new BodyScannedEvent(timestamp, name, bodyClass, earthMass, radiusKm, gravity, temperatureKelvin, pressure, tidallyLocked, landable, atmosphereClass, atmosphereCompositions, solidCompositions, volcanism, distancefromarrival, (decimal)orbitalPeriodDays, rotationPeriodDays, semimajoraxisAU, eccentricity, orbitalinclinationDegrees, periapsisDegrees, rings, reserves, materials, terraformState, axialTiltDegrees, dssEquipped) { raw = line });
+                                    events.Add(new BodyScannedEvent(timestamp, name, planetClass, earthMass, radiusKm, gravity, temperatureKelvin, pressure, tidallyLocked, landable, atmosphereClass, atmosphereCompositions, solidCompositions, volcanism, distancefromarrival, (decimal)orbitalPeriodDays, rotationPeriodDays, semimajoraxisAU, eccentricity, orbitalinclinationDegrees, periapsisDegrees, rings, reserves, materials, terraformState, axialTiltDegrees, dssEquipped) { raw = line });
                                     handled = true;
                                 }
                             }
