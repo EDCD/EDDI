@@ -200,7 +200,7 @@ namespace UnitTests
         [TestMethod]
         public void TestBodyDataEarth()
         {
-            Body body = EddbService.Body("Earth");
+            Body body = EddbService.Body("Earth", "Sol");
             Assert.IsNull(body.age);
             // Assert.AreEqual("Earth-like", body.atmosphereclass.invariantName); 
             // Data source reports this as "Suitable for water-based life" but via Ross it is "Earthlike". 

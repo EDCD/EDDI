@@ -48,6 +48,15 @@ namespace EddiEddbService
             return GetBody(new KeyValuePair<string, object>(BodyQuery.bodyName, bodyName));
         }
 
+        /// <summary> Exactly one body name and system name are required. </summary>
+        public static Body Body(string bodyName, string systemName)
+        {
+            List<KeyValuePair<string, object>> queryList = new List<KeyValuePair<string, object>>();
+            queryList.Add(new KeyValuePair<string, object>(BodyQuery.bodyName, bodyName));
+            queryList.Add(new KeyValuePair<string, object>(BodyQuery.systemName, systemName));
+            return GetBody(queryList);
+        }
+
         /// <summary> Exactly one body EDDBID is required. </summary>
         public static Body Body(long eddbId)
         {
@@ -61,6 +70,20 @@ namespace EddiEddbService
                 List<KeyValuePair<string, object>> queryList = new List<KeyValuePair<string, object>>();
                 queryList.Add(query);
 
+                List<object> responses = GetData(Endpoint.bodies, queryList);
+
+                if (responses != null)
+                {
+                    return ParseEddbBody(responses[0]);
+                }
+            }
+            return null;
+        }
+
+        private static Body GetBody(List<KeyValuePair<string, object>> queryList)
+        {
+            if (queryList.Count > 0)
+            {
                 List<object> responses = GetData(Endpoint.bodies, queryList);
 
                 if (responses != null)
@@ -93,9 +116,6 @@ namespace EddiEddbService
             }
             return null;
         }
-
-        // Though not necessary at this time, it is possible to implement methods that query the data source 
-        // based on multiple criteria (e.g. planet class, distance, etc.) by adding multiple criteria to the queryList. 
 
         private static Body ParseEddbBody(object response)
         {
