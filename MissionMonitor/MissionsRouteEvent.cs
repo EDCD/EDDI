@@ -19,30 +19,38 @@ namespace EddiMissionMonitor
 
         static MissionsRouteEvent()
         {
-            VARIABLES.Add("update", "True = update, false = calculate");
-            VARIABLES.Add("nextsystem", "The next system in the calculated missions route");
-            VARIABLES.Add("route", "The remaining '_' delimited missions route");
-            VARIABLES.Add("nextdistance", "The distance of the next system in the missions route");
-            VARIABLES.Add("routedistance", "The remaining distance of the missions route");
+            VARIABLES.Add("routetype", "Type of route query. 'expiring', 'farthest', 'most', 'nearest', 'route', or 'update'");
+            VARIABLES.Add("destination", "The destination system");
+            VARIABLES.Add("route", "Delimited missions systems list, if applicable");
+            VARIABLES.Add("count", "Count of missions or systems, if applicable");
+            VARIABLES.Add("distance", "The distance to the destination system");
+            VARIABLES.Add("routedistance", "The remaining distance of the missions route, if applicable");
+            VARIABLES.Add("missionids", "The mission ID(s) associated with the destination system, if applicable");
         }
 
-        public bool update { get; private set; }
+        public string routetype { get; private set; }
 
-        public string nextsystem { get; private set; }
+        public string system { get; private set; }
 
         public string route { get; private set; }
 
-        public decimal nextdistance { get; private set; }
+        public int count { get; private set; }
+
+        public decimal distance { get; private set; }
 
         public decimal routedistance { get; private set; }
 
-        public MissionsRouteEvent(DateTime timestamp, bool Update, string NextSystem, string Route, decimal NextDistance, decimal RouteDistance) : base(timestamp, NAME)
+        public List<long> missionids { get; private set; }
+
+        public MissionsRouteEvent(DateTime timestamp, string routetype, string system, string route, int count, decimal distance, decimal routedistance, List<long> missionids) : base(timestamp, NAME)
         {
-            this.update = Update;
-            this.nextsystem = NextSystem;
-            this.route = Route;
-            this.nextdistance = NextDistance;
-            this.routedistance = RouteDistance;
+            this.routetype = routetype;
+            this.system = system;
+            this.route = route;
+            this.count = count;
+            this.distance = distance;
+            this.routedistance = routedistance;
+            this.missionids = missionids;
         }
     }
 }

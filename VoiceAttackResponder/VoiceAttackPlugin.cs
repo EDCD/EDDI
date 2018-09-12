@@ -853,11 +853,11 @@ namespace EddiVoiceAttackResponder
                 string system = vaProxy.GetText("System variable");
                 if (system == null || system == string.Empty)
                 {
-                    ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor")).CalculateMissionsRoute();
+                    ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor")).GetMissionsRoute();
                 }
                 else
                 {
-                    ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor")).CalculateMissionsRoute(system);
+                    ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor")).GetMissionsRoute(system);
                 }
             }
             catch (Exception e)

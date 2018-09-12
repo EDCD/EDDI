@@ -567,15 +567,15 @@ namespace EddiSpeechResponder
                 return (result == null ? new ReflectionValue(new object()) : new ReflectionValue(result));
             }, 1);
 
-            store["BuildMissionsRoute"] = new NativeFunction((values) =>
+            store["GetMissionsRoute"] = new NativeFunction((values) =>
             {
                 if (values.Count == 0)
                 {
-                    return (((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor")).CalculateMissionsRoute());
+                    return (((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor")).GetMissionsRoute());
                 }
                 else
                 {
-                    return (((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor")).CalculateMissionsRoute(values[0].AsString));
+                    return (((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor")).GetMissionsRoute(values[0].AsString));
                 }
             }, 0, 1);
 
