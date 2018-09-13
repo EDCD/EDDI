@@ -849,6 +849,46 @@ namespace EddiMissionMonitor
             writeMissions();
         }
 
+        public string GetExpiringRoute()
+        {
+            string expiringSystem = null;
+            decimal expiringDistance = 0;
+            long expiringSeconds = 0;
+            List<long> missionids = new List<long>();       // List of mission IDs for the next system
+
+            if (missionsCount > 0)
+            {
+                if (missionsCount > 0)
+                {
+                    string currentSystem = EDDI.Instance?.CurrentStarSystem?.name;
+                    StarSystem curr = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(currentSystem, true);
+                    StarSystem dest = new StarSystem();             // Destination star system
+
+                    foreach (Mission mission in missions.Where(m => m.statusEDName == "Active").ToList())
+                    {
+                        if (expiringSeconds == 0 || mission.expiryseconds < expiringSeconds)
+                        {
+                            expiringSeconds = mission.expiryseconds ?? 0;
+                            expiringSystem = mission.destinationsystem;
+                            if (missionids.Count() == 1)
+                            {
+                                missionids[0] = mission.missionid;
+                            }
+                            else
+                            {
+                                missionids.Add(mission.missionid);
+                            }
+                        }
+                    }
+                    dest = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(expiringSystem, true);
+                    expiringDistance = CalculateDistance(curr, dest);
+
+                }
+                EDDI.Instance.eventHandler(new MissionsRouteEvent(DateTime.Now, "expiring", expiringSystem, null, expiringSeconds, expiringDistance, 0, missionids));
+            }
+            return expiringSystem;
+        }
+
         public string GetFarthestRoute()
         {
             // Missions Route Event variables
@@ -916,7 +956,7 @@ namespace EddiMissionMonitor
             string mostSystem = null;
             string mostSystems = null;
             decimal mostDistance = 0;
-            int mostCount = 0;
+            long mostCount = 0;
             List<long> missionids = new List<long>();       // List of mission IDs for the next system
 
             List<string> systems = new List<string>();
@@ -981,6 +1021,12 @@ namespace EddiMissionMonitor
                         }
                     }
                 }
+
+                foreach (Mission mission in missions.Where(m => m.destinationsystem == mostSystem).ToList())
+                {
+                    missionids.Add(mission.missionid);
+                }
+
                 mostSystems = string.Join("_", mostList);
                 EDDI.Instance.eventHandler(new MissionsRouteEvent(DateTime.Now, "most", mostSystem, mostSystems, mostCount, mostDistance, 0, missionids));
             }

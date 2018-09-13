@@ -567,29 +567,63 @@ namespace EddiSpeechResponder
                 return (result == null ? new ReflectionValue(new object()) : new ReflectionValue(result));
             }, 1);
 
-            store["GetMissionsRoute"] = new NativeFunction((values) =>
+            store["RouteDetails"] = new NativeFunction((values) =>
             {
-                if (values.Count == 0)
+                string result = null;
+                string value = values[0].AsString;
+                if (value == null || value == "")
                 {
-                    return (((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor")).GetMissionsRoute());
+                    return null;
                 }
-                else
+                switch (value)
                 {
-                    return (((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor")).GetMissionsRoute(values[0].AsString));
+                    case "expiring":
+                        {
+                            result = ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor")).GetExpiringRoute();
+                        }
+                        break;
+                    case "farthest":
+                        {
+                            result = ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor")).GetFarthestRoute();
+                        }
+                        break;
+                    case "most":
+                        {
+                            result = ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor")).GetMostRoute();
+                        }
+                        break;
+                    case "nearest":
+                        {
+                            result = ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor")).GetNearestRoute();
+                        }
+                        break;
+                    case "route":
+                        {
+                            if (values.Count == 2)
+                            {
+                                result = ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor")).GetMissionsRoute(values[1].AsString);
+                            }
+                            else
+                            {
+                                result = ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor")).GetMissionsRoute();
+                            }
+                        }
+                        break;
+                    case "update":
+                        {
+                            if (values.Count == 2)
+                            {
+                                result = ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor")).UpdateMissionsRoute(values[1].AsString);
+                            }
+                            else
+                            {
+                                result = ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor")).UpdateMissionsRoute();
+                            }
+                        }
+                        break;
                 }
-            }, 0, 1);
-
-            store["UpdateMissionsRoute"] = new NativeFunction((values) =>
-            {
-                if (values.Count == 0)
-                {
-                    return (((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor")).UpdateMissionsRoute());
-                }
-                else
-                {
-                    return (((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor")).UpdateMissionsRoute(values[0].AsString));
-                }
-            }, 0, 1);
+                return (result == null ? new ReflectionValue(new object()) : new ReflectionValue(result));
+            }, 1, 2);
 
             store["StationDetails"] = new NativeFunction((values) =>
             {

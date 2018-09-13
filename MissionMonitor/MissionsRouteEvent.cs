@@ -22,7 +22,7 @@ namespace EddiMissionMonitor
             VARIABLES.Add("routetype", "Type of route query. 'expiring', 'farthest', 'most', 'nearest', 'route', or 'update'");
             VARIABLES.Add("destination", "The destination system");
             VARIABLES.Add("route", "Delimited missions systems list, if applicable");
-            VARIABLES.Add("count", "Count of missions or systems, if applicable");
+            VARIABLES.Add("count", "Count of missions, systems, or expiry seconds, depending on route type");
             VARIABLES.Add("distance", "The distance to the destination system");
             VARIABLES.Add("routedistance", "The remaining distance of the missions route, if applicable");
             VARIABLES.Add("missionids", "The mission ID(s) associated with the destination system, if applicable");
@@ -34,7 +34,7 @@ namespace EddiMissionMonitor
 
         public string route { get; private set; }
 
-        public int count { get; private set; }
+        public long count { get; private set; }
 
         public decimal distance { get; private set; }
 
@@ -42,7 +42,7 @@ namespace EddiMissionMonitor
 
         public List<long> missionids { get; private set; }
 
-        public MissionsRouteEvent(DateTime timestamp, string routetype, string system, string route, int count, decimal distance, decimal routedistance, List<long> missionids) : base(timestamp, NAME)
+        public MissionsRouteEvent(DateTime timestamp, string routetype, string system, string route, long count, decimal distance, decimal routedistance, List<long> missionids) : base(timestamp, NAME)
         {
             this.routetype = routetype;
             this.system = system;

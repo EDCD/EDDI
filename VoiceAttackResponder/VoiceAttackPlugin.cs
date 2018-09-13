@@ -307,11 +307,8 @@ namespace EddiVoiceAttackResponder
                     case "transmit":
                         InvokeTransmit(ref vaProxy);
                         break;
-                    case "calculatemissionsroute":
-                        InvokeCalculateRoute(ref vaProxy);
-                        break;
-                    case "updatemissionsroute":
-                        InvokeUpdateRoute(ref vaProxy);
+                    case "missionsroute":
+                        InvokeMissionsRoute(ref vaProxy);
                         break;
                 }
             }
@@ -846,43 +843,63 @@ namespace EddiVoiceAttackResponder
             }
         }
 
-        public static void InvokeCalculateRoute(ref dynamic vaProxy)
+        public static void InvokeMissionsRoute(ref dynamic vaProxy)
         {
             try
             {
+                string type = vaProxy.GetText("Type variable");
                 string system = vaProxy.GetText("System variable");
-                if (system == null || system == string.Empty)
+                switch (type)
                 {
-                    ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor")).GetMissionsRoute();
-                }
-                else
-                {
-                    ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor")).GetMissionsRoute(system);
+                    case "expiring":
+                        {
+                            ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor")).GetExpiringRoute();
+                        }
+                        break;
+                    case "farthest":
+                        {
+                            ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor")).GetFarthestRoute();
+                        }
+                        break;
+                    case "most":
+                        {
+                            ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor")).GetMostRoute();
+                        }
+                        break;
+                    case "nearest":
+                        {
+                            ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor")).GetNearestRoute();
+                        }
+                        break;
+                    case "route":
+                        {
+                            if (system == null || system == string.Empty)
+                            {
+                                ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor")).GetMissionsRoute();
+                            }
+                            else
+                            {
+                                ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor")).GetMissionsRoute(system);
+                            }
+                        }
+                        break;
+                    case "update":
+                        {
+                            if (system == null || system == string.Empty)
+                            {
+                                ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor")).UpdateMissionsRoute();
+                            }
+                            else
+                            {
+                                ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor")).UpdateMissionsRoute(system);
+                            }
+                        }
+                        break;
                 }
             }
             catch (Exception e)
             {
-                setStatus(ref vaProxy, "Failed to calculate missions route", e);
-            }
-        }
-
-        public static void InvokeUpdateRoute(ref dynamic vaProxy)
-        {
-            try
-            {
-                string system = vaProxy.GetText("System variable");
-                if (system == null)
-                {
-                    ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor")).UpdateMissionsRoute();
-                }
-                else
-                {
-                    ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor")).UpdateMissionsRoute(system);
-                }
-            }
-            catch (Exception e)
-            {
-                setStatus(ref vaProxy, "Failed to update missions route", e);
+                setStatus(ref vaProxy, "Failed to get missions route", e);
             }
         }
     }
