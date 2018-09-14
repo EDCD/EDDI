@@ -218,7 +218,7 @@ namespace UnitTests
             //MissionFailedEvent
             line = @"{ ""timestamp"":""2018-08-26T00:50:48Z"", ""event"":""MissionFailed"", ""Name"":""Mission_Collect_Industrial"", ""Fine"":50000, ""MissionID"":413748324 }";
             events = JournalMonitor.ParseJournalEntry(line);
-            missionMonitor._handleMissionAbandonedEvent((MissionAbandonedEvent)events[0]);
+            missionMonitor._handleMissionFailedEvent((MissionFailedEvent)events[0]);
             Assert.AreEqual(2, missionMonitor.missions.Count);
         }
 
