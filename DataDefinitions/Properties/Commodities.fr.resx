@@ -1282,7 +1282,7 @@
     <comment>Commodity UnknownResin</comment>
   </data>
   <data name="UnknownTechnologySamples" xml:space="preserve">
-    <value>Échantillons de technologie Thargoïds</value>
+    <value>Échantillons de technologie Thargoïd</value>
     <comment>Commodity UnknownTechnologySamples</comment>
   </data>
   <data name="UnstableDataCore" xml:space="preserve">
@@ -1582,7 +1582,7 @@
     <comment>Commodity SiriusIndustrialEquipment</comment>
   </data>
   <data name="ThargoidScoutTissueSample" xml:space="preserve">
-    <value>Échantillon de tissu thargoid - éclaireur </value>
+    <value>Échantillon de tissu Thargoïd - Éclaireur</value>
     <comment>Commodity ThargoidScoutTissueSample</comment>
   </data>
   <data name="UnmarkedWeapons" xml:space="preserve">
@@ -1605,8 +1605,20 @@
     <value>Clé Antique</value>
     <comment>Commodity Ancient Key</comment>
   </data>
-  
-  
-  
-  
+  <data name="ThargoidTissueSampleType1" xml:space="preserve">
+    <value>Échantillon de tissu Thargoïd - Cyclops</value>
+    <comment>Commodity ThargoidTissueSampleType1</comment>
+  </data>
+  <data name="ThargoidTissueSampleType2" xml:space="preserve">
+    <value>Échantillon de tissu Thargoïd - Basilisk</value>
+    <comment>Commodity ThargoidTissueSampleType2</comment>
+  </data>
+  <data name="ThargoidTissueSampleType3" xml:space="preserve">
+    <value>Échantillon de tissu Thargoïd - Medusa</value>
+    <comment>Commodity ThargoidTissueSampleType3</comment>
+  </data>
+  <data name="ThargoidTissueSampleType4" xml:space="preserve">
+    <value>Échantillon de tissu d'un Hydra Thargoïd</value>
+    <comment>Commodity ThargoidTissueSampleType4</comment>
+  </data>
 </root>
