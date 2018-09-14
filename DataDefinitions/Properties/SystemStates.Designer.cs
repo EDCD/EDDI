@@ -59,5 +59,122 @@ namespace EddiDataDefinitions.Properties {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Boom.
+        /// </summary>
+        public static string Boom {
+            get {
+                return ResourceManager.GetString("Boom", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bust.
+        /// </summary>
+        public static string Bust {
+            get {
+                return ResourceManager.GetString("Bust", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Civil Unrest.
+        /// </summary>
+        public static string CivilUnrest {
+            get {
+                return ResourceManager.GetString("CivilUnrest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Civil War.
+        /// </summary>
+        public static string CivilWar {
+            get {
+                return ResourceManager.GetString("CivilWar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Election.
+        /// </summary>
+        public static string Election {
+            get {
+                return ResourceManager.GetString("Election", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Expansion.
+        /// </summary>
+        public static string Expansion {
+            get {
+                return ResourceManager.GetString("Expansion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Famine.
+        /// </summary>
+        public static string Famine {
+            get {
+                return ResourceManager.GetString("Famine", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Investment.
+        /// </summary>
+        public static string Investment {
+            get {
+                return ResourceManager.GetString("Investment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Lockdown.
+        /// </summary>
+        public static string Lockdown {
+            get {
+                return ResourceManager.GetString("Lockdown", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to None.
+        /// </summary>
+        public static string None {
+            get {
+                return ResourceManager.GetString("None", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Outbreak.
+        /// </summary>
+        public static string Outbreak {
+            get {
+                return ResourceManager.GetString("Outbreak", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Retreat.
+        /// </summary>
+        public static string Retreat {
+            get {
+                return ResourceManager.GetString("Retreat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to War.
+        /// </summary>
+        public static string War {
+            get {
+                return ResourceManager.GetString("War", resourceCulture);
+            }
+        }
     }
 }

@@ -81,7 +81,6 @@
     <Compile Include="UnderAttackEvent.cs" />
     <Compile Include="VehicleDestroyedEvent.cs" />
     <Compile Include="DatalinkMessageEvent.cs" />
-    <Compile Include="CommunityGoalEvent.cs" />
     <Compile Include="DataVoucherAwardedEvent.cs" />
     <Compile Include="JetConeBoostEvent.cs" />
     <Compile Include="NavBeaconScanEvent.cs" />
@@ -106,7 +105,6 @@
     <Compile Include="BountyRedeemedEvent.cs" />
     <Compile Include="SettlementApproachedEvent.cs" />
     <Compile Include="EnteredCQCEvent.cs" />
-    <Compile Include="MissionFailedEvent.cs" />
     <Compile Include="NPCCargoScanCommencedEvent.cs" />
     <Compile Include="NPCAttackCommencedEvent.cs" />
     <Compile Include="NPCInterdictionCommendedEvent.cs" />
@@ -126,10 +124,6 @@
     <Compile Include="ModificationCraftedEvent.cs" />
     <Compile Include="MaterialDonatedEvent.cs" />
     <Compile Include="SynthesisedEvent.cs" />
-    <Compile Include="MissionAbandonedEvent.cs" />
-    <Compile Include="MissionCompletedEvent.cs" />
-    <Compile Include="MissionAcceptedEvent.cs" />
-    <Compile Include="MissionRedirectedEvent.cs" />
     <Compile Include="SearchAndRescueEvent.cs" />
     <Compile Include="JumpingEvent.cs" />
     <Compile Include="ExplorationDataSoldEvent.cs" />

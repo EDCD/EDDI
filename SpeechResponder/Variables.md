@@ -229,11 +229,54 @@ An engineering blueprint.
     - `modulename` the name of the applicable module (e.g. 'shield booster')
     - `grade` the grade of the engineering blueprint (e.g. 'grade 4')
 
+## Missions
+
+The log of missions accepted by the commander is available under the `missions` object.
+
+	- 'missions' list of missions within the commander's mission log'
+	- 'missionsCount' the number of all accepted missions
+	- 'missionWarning' the number of minutes before mission expiry in which a warning notification is generated
+	- 'missionsRouteList'  delimited ('_') string of mission destinations, ordered to provide the most efficient route
+	- 'missionsRouteDistance' the total distance traveled for the missions route list
+
+## Mission
+
+Details of an individual mission in the commander's mission log.
+
+	- 'missionid' unique identifier ID of the mission
+	- 'name' name of mission
+	- 'localisedname' localised name of the mission
+	- 'type' localized type (altruism, delivery, massacre, etc) of the mission
+	- 'status' localized status (active, complete, failed) of the mission
+	- 'faction' faction issuing the mission
+	- 'originsystem' origin system of the mission
+	- 'originstation' origin station of the mission
+	- 'originreturn' true if the commander must return to origin to complete the mission
+	- 'destinationsystem' destination system of the mission (if applicable)
+	- 'destinationstation' destination station of the mission (if applicable)
+	- 'destinationsystems' list of destination systems for chained missions (if applicable)
+	- 'influence' increase in the faction's influence in the system gained when completing the mission (None/Low/Med/High)
+	- 'reputation' increase in the commander's reputation with the faction gained when completing the mission (None/Low/Med/High)
+	- 'reward' expected cash reward from the mission
+	- 'legal' true if the mission is legal
+	- 'wing' true if the mission allows wing-mates
+	- 'shared' true if the mission was shared by a wing-mate
+	- 'communal' true if the mission is a community goal
+	- 'commodity' commodity involved in the mission (if applicable)
+	- 'passengertype' localized type of passengers (celebrity, doctor, etc) in the mission (if applicable)
+	- 'passengervips' true if the passengers are VIPs (if applicable)
+	- 'passengerwanted' true if the passengers are wanted
+	- 'target' name of the target of the mission (if applicable)
+	- 'targettype' localized type of the target (civilian, pirate, etc) of the mission (if applicable)
+	- 'targetfaction' faction of the target of the mission (if applicable)
+	- 'amount' amount of the commodity,  passengers or targets involved in the mission (if applicable)
+	- 'expiry' expiry date and time of the mission
+
 ## Inventory
 
 The inventory of cargo carried within the ship is available under the `inventory` object.
 
-    - `cargo` specific details on the cargo being carried
+    - `inventory` specific details on the cargo being carried
 
 ## Cargo
 
@@ -244,20 +287,21 @@ Details of an individual commodity being carried.
 	- `category` the category of the commodity (e.g. Foods, Machinery, Technology)
     - `stolen` the number of units flagged as stolen
     - `haulage` the number of units associated with a mission
-	- 'haulageamounts' list of mission related specifics for associated haulage
+	- 'haulageData' list of mission related specifics for associated haulage
     - `owned` the number of units privately purchased or collected (not stolen or mission related)
     - `total` the total number of units
     - `price` the price of an individual unit
 
 ## Haulage
 
-Mission-related details of haulage within the 'haulageamounts' object, used by the Cargo Monitor.
+Mission related details of haulage under the 'haulageData' object, within the Cargo object, used by the Cargo Monitor.
 
 	- 'missionid' unique identifier ID of the mission
 	- 'name' name of mission
+	- 'status' status (active, complete, failed) of the mission
+	- 'originsystem' origin system of the mission
 	- 'type' type (altruism, delivery, massacre, etc) of the mission
 	- 'legal' true if the mission is legal
-	- 'wing' true if wing mission
 	- 'shared' true if the mission was shared by a wing-mate
 	- 'amount' amount of the commodity involved in the mission
 	- 'collected' amount of the commodity collected in a wing mission

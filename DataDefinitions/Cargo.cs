@@ -134,7 +134,7 @@ namespace EddiDataDefinitions
         [Obsolete]
         public CommodityDefinition commodity => commodityDef;
 
-        public List<HaulageAmount> haulageamounts { get; set; }
+        public List<Haulage> haulageData { get; set; }
 
         [JsonExtensionData]
         private IDictionary<string, JToken> _additionalJsonData;
@@ -162,7 +162,7 @@ namespace EddiDataDefinitions
             this.commodityDef = CommodityDefinition.FromEDName(edname);
             this.price = price ?? commodityDef.avgprice;
             this.total = total;
-            haulageamounts = new List<HaulageAmount>();
+            haulageData = new List<Haulage>();
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -175,14 +175,14 @@ namespace EddiDataDefinitions
 
         public void CalculateNeed()
         {
-            if (this != null && this.haulageamounts != null && this.haulageamounts.Any())
+            if (this != null && this.haulageData != null && this.haulageData.Any())
             {
                 int haulageNeeded = 0;
                 int ownedNeeded = 0;
                 int stolenNeeded = 0;
-                foreach (HaulageAmount haulageAmount in this.haulageamounts)
+                foreach (Haulage haulage in this.haulageData)
                 {
-                    switch (haulageAmount.type)
+                    switch (haulage.typeEDName)
                     {
                         case "altruism":
                         case "collect":
@@ -190,7 +190,7 @@ namespace EddiDataDefinitions
                         case "mining":
                         case "piracy":
                             {
-                                ownedNeeded += haulageAmount.amount;
+                                ownedNeeded += haulage.remaining;
                             }
                             break;
                         case "delivery":
@@ -198,18 +198,18 @@ namespace EddiDataDefinitions
                         case "rescue":
                         case "smuggle":
                             {
-                                haulageNeeded += haulageAmount.amount;
+                                haulageNeeded += haulage.remaining;
                             }
                             break;
                         case "salvage":
                             {
-                                if (haulageAmount.legal)
+                                if (haulage.legal)
                                 {
-                                    haulageNeeded += haulageAmount.amount;
+                                    haulageNeeded += haulage.remaining;
                                 }
                                 else
                                 {
-                                    stolenNeeded += haulageAmount.amount;
+                                    stolenNeeded += haulage.remaining;
                                 }
                             }
                             break;

@@ -12,7 +12,7 @@ namespace EddiDataDefinitions
         public long EDDBID { get; set; }
 
         /// <summary>The name</summary>
-        public string name { get; set;  }
+        public string name { get; set; }
 
         /// <summary>The government</summary>
         public string government { get; set; }

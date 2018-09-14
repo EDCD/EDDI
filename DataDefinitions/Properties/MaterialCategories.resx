@@ -133,4 +133,8 @@
     <value>Unknown</value>
     <comment>Material category Unknown</comment>
   </data>
+  <data name="Encoded" xml:space="preserve">
+    <value>Encoded</value>
+    <comment>Material category Encoded</comment>
+  </data>
 </root>

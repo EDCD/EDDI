@@ -4,6 +4,7 @@ using EddiEvents;
 using EddiDataProviderService;
 using EddiDataDefinitions;
 using EddiMaterialMonitor;
+using EddiMissionMonitor;
 using EddiShipMonitor;
 using EddiSpeechResponder;
 using EddiSpeechService;
@@ -81,6 +82,9 @@ namespace EddiVoiceAttackResponder
                     string msg = String.Format(Eddi.Properties.EddiResources.msg_from_eddi, EDDI.Instance.Motd);
                     SpeechService.Instance.Say(((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip(), msg, false);
                 }
+
+                // Set the initial values from the main EDDI objects
+                setStandardValues(ref vaProxy);
 
                 vaProxy.WriteToLog("The EDDI plugin is fully operational.", "green");
                 setStatus(ref vaProxy, "Operational");
@@ -303,6 +307,9 @@ namespace EddiVoiceAttackResponder
                     case "transmit":
                         InvokeTransmit(ref vaProxy);
                         break;
+                    case "missionsroute":
+                        InvokeMissionsRoute(ref vaProxy);
+                        break;
                 }
             }
             catch (Exception e)
@@ -340,6 +347,7 @@ namespace EddiVoiceAttackResponder
                                 // Bind Cargo monitor inventory, Material Monitor inventory, & Ship monitor shipyard collections to the EDDI config Window
                                 ((CargoMonitor)EDDI.Instance.ObtainMonitor("Cargo monitor")).EnableConfigBinding(configWindow);
                                 ((MaterialMonitor)EDDI.Instance.ObtainMonitor("Material monitor")).EnableConfigBinding(configWindow);
+                                ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor")).EnableConfigBinding(configWindow);
                                 ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).EnableConfigBinding(configWindow);
 
                                 configWindow = null;
@@ -376,6 +384,7 @@ namespace EddiVoiceAttackResponder
                     // Unbind the Cargo Monitor inventory, Material Monitor inventory, & Ship Monitor shipyard collections from the EDDI config window
                     ((CargoMonitor)EDDI.Instance.ObtainMonitor("Cargo monitor")).DisableConfigBinding(configWindow);
                     ((MaterialMonitor)EDDI.Instance.ObtainMonitor("Material monitor")).DisableConfigBinding(configWindow);
+                    ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor")).DisableConfigBinding(configWindow);
                     ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).DisableConfigBinding(configWindow);
 
                     configWindow.Dispatcher.Invoke(configWindow.Close);
@@ -831,6 +840,66 @@ namespace EddiVoiceAttackResponder
             catch (Exception e)
             {
                 setStatus(ref vaProxy, "Failed to store system comment", e);
+            }
+        }
+
+        public static void InvokeMissionsRoute(ref dynamic vaProxy)
+        {
+            try
+            {
+                string type = vaProxy.GetText("Type variable");
+                string system = vaProxy.GetText("System variable");
+                switch (type)
+                {
+                    case "expiring":
+                        {
+                            ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor")).GetExpiringRoute();
+                        }
+                        break;
+                    case "farthest":
+                        {
+                            ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor")).GetFarthestRoute();
+                        }
+                        break;
+                    case "most":
+                        {
+                            ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor")).GetMostRoute();
+                        }
+                        break;
+                    case "nearest":
+                        {
+                            ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor")).GetNearestRoute();
+                        }
+                        break;
+                    case "route":
+                        {
+                            if (system == null || system == string.Empty)
+                            {
+                                ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor")).GetMissionsRoute();
+                            }
+                            else
+                            {
+                                ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor")).GetMissionsRoute(system);
+                            }
+                        }
+                        break;
+                    case "update":
+                        {
+                            if (system == null || system == string.Empty)
+                            {
+                                ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor")).UpdateMissionsRoute();
+                            }
+                            else
+                            {
+                                ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor")).UpdateMissionsRoute(system);
+                            }
+                        }
+                        break;
+                }
+            }
+            catch (Exception e)
+            {
+                setStatus(ref vaProxy, "Failed to get missions route", e);
             }
         }
     }

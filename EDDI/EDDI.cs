@@ -896,7 +896,7 @@ namespace Eddi
                 Logging.Debug("Already at station " + theEvent.station);
                 return false;
             }
-            
+
             // We are in the ship
             Vehicle = Constants.VEHICLE_SHIP;
 

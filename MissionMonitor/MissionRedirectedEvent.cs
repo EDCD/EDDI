@@ -1,7 +1,8 @@
+using EddiEvents;
 using System;
 using System.Collections.Generic;
 
-namespace EddiEvents
+namespace EddiMissionMonitor
 {
     public class MissionRedirectedEvent: Event
     {

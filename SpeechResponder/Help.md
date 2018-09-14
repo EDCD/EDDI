@@ -278,6 +278,63 @@ Common usage of this is to provide further information about your rating, for ex
 
     You have been promoted {FederationRatingDetails("Post Commander").rank} times.
 
+### MissionDetails()
+
+This function will provide full information for a mission given its mission ID.
+
+MissionDetails() takes a single argument of the mission ID for which you want more information.
+
+Common usage of this is to provide detailed information about a previously accepted mission, for example:
+
+    {set mission to MissionDetails(event.missionid)}
+
+### RouteDetails()
+
+This function will produce a destination/route for valid mission destinations, dependent on the following 'routetype':
+
+  * 'expiring' Destination of your next expiring mission.
+  * 'farthest' Mission destination farthest from your current location.
+  * 'most' Nearest system with the most missions.
+  * 'nearest' Mission destination nearest to your current location.
+  * 'route' 'Traveling Salesman' (RNNA) route for all active missions.
+  * 'update' Next mission destination, once all missions in current system are completed.
+
+Upon success of the query, a 'Missions route' event is triggered, providing a following event data:
+
+  * 'routetype' Type of route query (see above).
+  * 'destination' Destination system.
+  * 'route' "_" Delimited missions systems list. Results dependent on route type.
+    * 'most' Other systems with most number of missions.
+    * 'route' Missions route list
+  * 'count' Count of missions, systems, or expiry seconds, depending on route type.
+    * 'expiring' Expiry seconds.
+    * 'farthest' Missions in the system.
+    * 'most' Number of most missions.
+    * 'nearest' Missions in the system.
+    * 'route' Systems in the route.
+    * 'update' Remaining systems in the route.
+  * 'routedistance' Remaining distance of the missions route, if applicable.
+  * 'missionids' Mission ID(s) associated with the destination system.
+
+Common usage of this is to provide destination/route details, dependent on the 'routetype', for example:
+
+    {set system to RouteDetails("nearest")}
+
+
+### CalculateMissionsRoute()
+
+This function will generate an efficient route for valid mission destinations using the 'Repetitive Nearest Neighbor' algorithm.
+
+CalculateMissionsRoute() takes an optional argument of the returning 'home' system. Otherwise, the current system is used. The function returns 'true' if successful. The '_' separated route list is provided in the 'missionsRouteList' variable.
+
+Common usage of this is to provide an efficient 'Nearest Neighbor' route.
+
+### UpdateMissionsRoute()
+
+This function will shift the missions route list (left) to the 'next' destination when all missions in the 'current' destination have been serviced.
+
+UpdateMissionsRoute() takes an optional argument of a destination system to remove from the route list. Otherwise, the 'current' desitnation is removed when conditions are met. The function returns 'true' if successful.
+
 ### SystemDetails()
 
 This function will provide full information for a star system given its name.

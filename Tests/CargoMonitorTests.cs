@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Eddi;
 using EddiCargoMonitor;
+using EddiMissionMonitor;
 using EddiDataDefinitions;
 using EddiEvents;
 using EddiJournalMonitor;
@@ -30,6 +31,14 @@ namespace UnitTests
         }
 
         [TestMethod]
+        public void TestHaulageCopyCtor()
+        {
+            Haulage original = new Haulage(1, "name", "Sol", 42, null, false);
+            Haulage copy = new Haulage(original);
+            Assert.AreEqual(original.name, copy.name);
+        }
+
+        [TestMethod]
         public void TestCargoConfig()
         {
             string cargoConfigJson = @"{
@@ -42,7 +51,7 @@ namespace UnitTests
 		            ""total"": 4,
 		            ""ejected"": 0,
 		            ""price"": 11912,
-		            ""haulageamounts"": []
+		            ""haulageData"": []
 	            },
 	            {
 		            ""edname"": ""USSCargoBlackBox"",
@@ -53,7 +62,7 @@ namespace UnitTests
 		            ""total"": 4,
 		            ""ejected"": 0,
 		            ""price"": 6995,
-		            ""haulageamounts"": []
+		            ""haulageData"": []
 	            },
 	            {
 		            ""edname"": ""Drones"",
@@ -64,7 +73,7 @@ namespace UnitTests
 		            ""total"": 21,
 		            ""ejected"": 0,
 		            ""price"": 101,
-		            ""haulageamounts"": []
+		            ""haulageData"": []
 	            }],
 	            ""cargocarried"": 29
             }";
@@ -255,7 +264,7 @@ namespace UnitTests
             Assert.AreEqual(0, cargo.total);
             Assert.AreEqual(7, cargo.need);
 
-            HaulageAmount haulage = cargo.haulageamounts.FirstOrDefault(h => h.id == 375682327);
+            Haulage haulage = cargo.haulageData.FirstOrDefault(h => h.missionid == 375682327);
             Assert.AreEqual(0, cargo.haulage + cargo.stolen + cargo.owned);
             Assert.AreEqual(3, haulage.amount);
             Assert.AreEqual("Mission_Salvage_Planet", haulage.name);

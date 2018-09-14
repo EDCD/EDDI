@@ -9,7 +9,7 @@ namespace EddiEvents
         public const string NAME = "Location";
         public const string DESCRIPTION = "Triggered when the commander's location is reported, usually when they reload their game.";
         public const string SAMPLE = "{ \"timestamp\":\"2017-10-01T22:03:04Z\", \"event\":\"Location\", \"Docked\":true, \"StationName\":\"Heyerdahl Hub\", \"StationType\":\"Orbis\", \"StarSystem\":\"Alpha Caeli\", \"StarPos\":[45.219,-43.344,-20.125], \"SystemAllegiance\":\"Federation\", \"SystemEconomy\":\"$economy_Agri;\", \"SystemEconomy_Localised\":\"Agriculture\", \"SystemGovernment\":\"$government_Corporate;\", \"SystemGovernment_Localised\":\"Corporate\", \"SystemSecurity\":\"$SYSTEM_SECURITY_high;\", \"SystemSecurity_Localised\":\"High Security\", \"Population\":16796538233, \"Body\":\"Heyerdahl Hub\", \"BodyType\":\"Station\", \"Factions\":[ { \"Name\":\"Labour of Alpha Caeli\", \"FactionState\":\"Famine\", \"Government\":\"Democracy\", \"Influence\":0.056000, \"Allegiance\":\"Independent\", \"PendingStates\":[ { \"State\":\"Boom\", \"Trend\":0 } ] }, { \"Name\":\"Pilots Federation Local Branch\", \"FactionState\":\"None\", \"Government\":\"Democracy\", \"Influence\":0.000000, \"Allegiance\":\"PilotsFederation\" }, { \"Name\":\"Dangarla Creative Corp.\", \"FactionState\":\"None\", \"Government\":\"Corporate\", \"Influence\":0.081000, \"Allegiance\":\"Federation\", \"PendingStates\":[ { \"State\":\"Boom\", \"Trend\":1 }, { \"State\":\"CivilUnrest\", \"Trend\":1 } ] }, { \"Name\":\"Alpha Caeli Gold Organisation\", \"FactionState\":\"Boom\", \"Government\":\"Corporate\", \"Influence\":0.252000, \"Allegiance\":\"Federation\" }, { \"Name\":\"Alpha Caeli Freedom Party\", \"FactionState\":\"None\", \"Government\":\"Dictatorship\", \"Influence\":0.056000, \"Allegiance\":\"Independent\" }, { \"Name\":\"Blue Natural Holdings\", \"FactionState\":\"None\", \"Government\":\"Corporate\", \"Influence\":0.438000, \"Allegiance\":\"Federation\", \"PendingStates\":[ { \"State\":\"Boom\", \"Trend\":1 } ] }, { \"Name\":\"Alpha Caeli Hand Gang\", \"FactionState\":\"Boom\", \"Government\":\"Anarchy\", \"Influence\":0.046000, \"Allegiance\":\"Independent\" }, { \"Name\":\"Aurora\", \"FactionState\":\"Boom\", \"Government\":\"Corporate\", \"Influence\":0.071000, \"Allegiance\":\"Independent\" } ], \"SystemFaction\":\"Blue Natural Holdings\" }";
-        
+
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
         static LocationEvent()
@@ -22,6 +22,7 @@ namespace EddiEvents
             VARIABLES.Add("bodytype", "The type of the nearest body to the commander");
             VARIABLES.Add("docked", "True if the commander is docked");
             VARIABLES.Add("station", "The name of the station at which the commander is docked");
+            VARIABLES.Add("marketId", "The market ID of the station at which the commander is docked");
             VARIABLES.Add("stationtype", "The type of the station at which the commander is docked");
             VARIABLES.Add("allegiance", "The allegiance of the system in which the commander resides");
             VARIABLES.Add("faction", "The faction controlling the system in which the commander resides");
@@ -51,6 +52,8 @@ namespace EddiEvents
 
         public string station { get; private set; }
 
+        public long? marketId { get; private set; }
+
         public string stationtype { get; private set; }
 
         public string allegiance => Allegiance.localizedName;
@@ -73,7 +76,6 @@ namespace EddiEvents
 
         // These properties are not intended to be user facing
         public long? systemAddress { get; private set; }
-        public long? marketId { get; private set; }
         public Economy Economy { get; private set; }
         public Economy Economy2 { get; private set; }
         public Superpower Allegiance { get; private set; }

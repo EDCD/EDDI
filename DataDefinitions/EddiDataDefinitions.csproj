@@ -80,10 +80,16 @@
       <DependentUpon>StationModels.resx</DependentUpon>
     </Compile>
     <Compile Include="StationModels.cs" />
-    <Compile Include="HaulageAmount.cs" />
+    <Compile Include="DestinationSystem.cs" />
+    <Compile Include="Haulage.cs" />
     <Compile Include="CommodityCategory.cs" />
     <Compile Include="LegalStatus.cs" />
     <Compile Include="MaterialCategory.cs" />
+    <Compile Include="Mission.cs" />
+    <Compile Include="MissionStatus.cs" />
+    <Compile Include="MissionType.cs" />
+    <Compile Include="Passenger.cs" />
+    <Compile Include="PassengerType.cs" />
     <Compile Include="Properties\CombatRatings.es.Designer.cs">
       <DependentUpon>CombatRatings.es.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -299,6 +305,16 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>CommodityCategories.resx</DependentUpon>
     </Compile>
+    <Compile Include="Properties\MissionStatus.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MissionStatus.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\MissionType.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MissionType.resx</DependentUpon>
+    </Compile>
     <Compile Include="Properties\Modules.es.Designer.cs">
       <DependentUpon>Modules.es.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -333,6 +349,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>LegalStatus.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\PassengerType.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PassengerType.resx</DependentUpon>
     </Compile>
     <Compile Include="Properties\ShipRoles.es.Designer.cs">
       <DependentUpon>ShipRoles.es.resx</DependentUpon>
@@ -378,6 +399,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>SystemStates.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\TargetType.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TargetType.resx</DependentUpon>
     </Compile>
     <Compile Include="Properties\TradeRatings.es.Designer.cs">
       <DependentUpon>TradeRatings.es.resx</DependentUpon>
@@ -469,6 +495,7 @@
     <Compile Include="EmpireRating.cs" />
     <Compile Include="ExplorationRating.cs" />
     <Compile Include="Role.cs" />
+    <Compile Include="TargetType.cs" />
     <Compile Include="Vehicle.cs" />
     <Compile Include="Volcanism.cs" />
     <Compile Include="VolcanismConverter.cs" />
@@ -746,6 +773,14 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>CommodityCategories.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Properties\MissionStatus.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>MissionStatus.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\MissionType.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>MissionType.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Modules.de.resx" />
     <EmbeddedResource Include="Properties\Modules.es.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
@@ -784,6 +819,10 @@
     <EmbeddedResource Include="Properties\StationModels.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>StationModels.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\PassengerType.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>PassengerType.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\SecurityLevels.de.resx" />
     <EmbeddedResource Include="Properties\SecurityLevels.hu.resx" />
@@ -839,6 +878,10 @@
     <EmbeddedResource Include="Properties\SystemStates.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>SystemStates.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\TargetType.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>TargetType.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\TradeRatings.de.resx" />
     <EmbeddedResource Include="Properties\TradeRatings.es.resx">

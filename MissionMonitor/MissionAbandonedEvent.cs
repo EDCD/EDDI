@@ -1,8 +1,9 @@
-﻿using Newtonsoft.Json;
+﻿using EddiEvents;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 
-namespace EddiEvents
+namespace EddiMissionMonitor
 {
     public class MissionAbandonedEvent: Event
     {
@@ -18,12 +19,12 @@ namespace EddiEvents
         }
 
         [JsonProperty("missionid")]
-        public long missionid { get; private set; }
+        public long? missionid { get; private set; }
 
         [JsonProperty("name")]
         public string name { get; private set; }
 
-        public MissionAbandonedEvent(DateTime timestamp, long missionid, string name) : base(timestamp, NAME)
+        public MissionAbandonedEvent(DateTime timestamp, long? missionid, string name) : base(timestamp, NAME)
         {
             this.missionid = missionid;
             this.name = name;

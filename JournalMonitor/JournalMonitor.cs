@@ -2,6 +2,7 @@
 using EddiDataDefinitions;
 using EddiEvents;
 using EddiCargoMonitor;
+using EddiMissionMonitor;
 using EddiShipMonitor;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -2279,21 +2280,31 @@ namespace EddiJournalMonitor
                             }
                         case "CommunityGoalJoin":
                             {
+                                long cgid = JsonParsing.getLong(data, "CGID");
                                 string name = JsonParsing.getString(data, "Name");
                                 string system = JsonParsing.getString(data, "System");
 
-                                events.Add(new MissionAcceptedEvent(timestamp, null, name, system, null, null, null, null, null, null, null, null, null, true, null, null, null) { raw = line });
+                                events.Add(new MissionAcceptedEvent(timestamp, cgid, "MISSION_CommunityGoal", name, null, system, null, null, null, null, null, null, null, null, null, true, null, null, null, null, false) { raw = line });
+                                handled = true;
+                                break;
+                            }
+                        case "CommunityGoalDiscard":
+                            {
+                                long cgid = JsonParsing.getLong(data, "CGID");
+
+                                events.Add(new MissionAbandonedEvent(timestamp, cgid, "MISSION_CommunityGoal"));
                                 handled = true;
                                 break;
                             }
                         case "CommunityGoalReward":
                             {
+                                long cgid = JsonParsing.getLong(data, "CGID");
                                 string name = JsonParsing.getString(data, "Name");
                                 string system = JsonParsing.getString(data, "System");
                                 data.TryGetValue("Reward", out object val);
                                 long reward = (val == null ? 0 : (long)val);
 
-                                events.Add(new MissionCompletedEvent(timestamp, null, name, null, null, null, true, reward, null, 0) { raw = line });
+                                events.Add(new MissionCompletedEvent(timestamp, cgid, "MISSION_CommunityGoal", name, null, null, true, reward, null, null, null, 0) { raw = line });
                                 handled = true;
                                 break;
                             }
@@ -2308,8 +2319,8 @@ namespace EddiJournalMonitor
                                 data.TryGetValue("Count", out val);
                                 int? amount = (int?)(long?)val;
 
-                                int startmarketid = JsonParsing.getInt(data, "StartMarketID");
-                                int endmarketid = JsonParsing.getInt(data, "EndMarketID");
+                                long startmarketid = JsonParsing.getLong(data, "StartMarketID");
+                                long endmarketid = JsonParsing.getLong(data, "EndMarketID");
                                 int collected = JsonParsing.getInt(data, "ItemsCollected");
                                 int delivered = JsonParsing.getInt(data, "ItemsDelivered");
                                 int totaltodeliver = JsonParsing.getInt(data, "TotalItemsToDeliver");
@@ -2318,6 +2329,76 @@ namespace EddiJournalMonitor
                                 handled = true;
                                 break;
                             }
+                        case "Missions":
+                            {
+                                List<Mission> missions = new List<Mission>();
+
+                                for (int i = 0; i < 3; i++)
+                                {
+                                    MissionStatus missionStatus = MissionStatus.FromStatus(i);
+                                    string status = missionStatus.invariantName;
+                                    data.TryGetValue(status, out object val);
+                                    List<object> missionLog = (List<object>)val;
+
+                                    foreach (object mission in missionLog)
+                                    {
+                                        Dictionary<string, object> missionProperties = (Dictionary<string, object>)mission;
+                                        long missionId = JsonParsing.getLong(missionProperties, "MissionID");
+                                        string name = JsonParsing.getString(missionProperties, "Name");
+                                        decimal expires = JsonParsing.getDecimal(missionProperties, "Expires");
+                                        DateTime expiry = DateTime.Now.AddSeconds((double)expires);
+                                        if (i == 0 && expires == 0)
+                                        {
+                                            // If mission is 'Active' and 'expires' = 0, add 24 hours to expiry
+                                            expiry = DateTime.Now.AddSeconds((double)expires).AddDays(1);
+                                        }
+
+                                        Mission newMission = new Mission(missionId, name, expiry, missionStatus);
+                                        if (newMission == null)
+                                        {
+                                            // Mal-formed mission
+                                            Logging.Error("Bad mission entry", JsonConvert.SerializeObject(mission));
+                                        }
+                                        else
+                                        {
+                                            missions.Add(newMission);
+                                        }
+                                    }
+                                }
+                                events.Add(new MissionsEvent(timestamp, missions) { raw = line });
+                                handled = true;
+                            }
+                            break;
+                        case "Passengers":
+                            {
+                                List<Passenger> passengers = new List<Passenger>();
+                                data.TryGetValue("Manifest", out object val);
+                                List<object> passengerManifest = (List<object>)val;
+
+                                foreach (object passenger in passengerManifest)
+                                {
+                                    Dictionary<string, object> passengerProperties = (Dictionary<string, object>)passenger;
+                                    long missionid = JsonParsing.getLong(passengerProperties, "MissionID");
+                                    string type = JsonParsing.getString(passengerProperties, "Type");
+                                    bool vip = JsonParsing.getBool(passengerProperties, "VIP");
+                                    bool wanted = JsonParsing.getBool(passengerProperties, "Wanted");
+                                    int amount = JsonParsing.getInt(passengerProperties, "Count");
+
+                                    Passenger newPassenger = new Passenger(missionid, type, vip, wanted, amount);
+                                    if (newPassenger == null)
+                                    {
+                                        // Mal-formed mission
+                                        Logging.Error("Bad mission entry", JsonConvert.SerializeObject(passenger));
+                                    }
+                                    else
+                                    {
+                                        passengers.Add(newPassenger);
+                                    }
+                                }
+                                events.Add(new PassengersEvent(timestamp, passengers) { raw = line });
+                                handled = true;
+                            }
+                            break;
                         case "MissionAccepted":
                             {
                                 data.TryGetValue("MissionID", out object val);
@@ -2325,7 +2406,10 @@ namespace EddiJournalMonitor
                                 data.TryGetValue("Expiry", out val);
                                 DateTime? expiry = (val == null ? (DateTime?)null : (DateTime)val);
                                 string name = JsonParsing.getString(data, "Name");
+                                string localisedname = JsonParsing.getString(data, "LocalisedName");
                                 string faction = getFaction(data, "Faction");
+                                int? reward = JsonParsing.getOptionalInt(data, "Reward");
+                                bool wing = JsonParsing.getBool(data, "Wing");
 
                                 // Missions with destinations
                                 string destinationsystem = JsonParsing.getString(data, "DestinationSystem");
@@ -2347,8 +2431,10 @@ namespace EddiJournalMonitor
                                 }
 
                                 // Missions with passengers
+                                int? passengercount = JsonParsing.getOptionalInt(data, "PassengerCount");
                                 string passengertype = JsonParsing.getString(data, "PassengerType");
                                 bool? passengerswanted = JsonParsing.getOptionalBool(data, "PassengerWanted");
+                                bool? passengervips = JsonParsing.getOptionalBool(data, "PassengerVIPs");
                                 data.TryGetValue("PassengerCount", out val);
                                 if (val != null)
                                 {
@@ -2359,7 +2445,7 @@ namespace EddiJournalMonitor
                                 string influence = JsonParsing.getString(data, "Influence");
                                 string reputation = JsonParsing.getString(data, "Reputation");
 
-                                events.Add(new MissionAcceptedEvent(timestamp, missionid, name, faction, destinationsystem, destinationstation, commodity, amount, passengertype, passengerswanted, target, targettype, targetfaction, false, expiry, influence, reputation) { raw = line });
+                                events.Add(new MissionAcceptedEvent(timestamp, missionid, name, localisedname, faction, destinationsystem, destinationstation, commodity, amount, passengerswanted, passengertype, passengervips, target, targettype, targetfaction, false, expiry, influence, reputation, reward, wing) { raw = line });
                                 handled = true;
                                 break;
                             }
@@ -2379,6 +2465,18 @@ namespace EddiJournalMonitor
                                 data.TryGetValue("Count", out val);
                                 int? amount = (int?)(long?)val;
 
+                                List<string> permitsAwarded = new List<string>();
+                                data.TryGetValue("PermitsAwarded", out val);
+                                List<object> permitsAwardedData = (List<object>)val;
+                                if (permitsAwardedData != null)
+                                {
+                                    foreach (Dictionary<string, object> permitAwardedData in permitsAwardedData)
+                                    {
+                                        string permitAwarded = JsonParsing.getString(permitAwardedData, "Name");
+                                        permitsAwarded.Add(permitAwarded);
+                                    }
+                                }
+
                                 List<CommodityAmount> commodityrewards = new List<CommodityAmount>();
                                 data.TryGetValue("CommodityReward", out val);
                                 List<object> commodityRewardsData = (List<object>)val;
@@ -2393,7 +2491,21 @@ namespace EddiJournalMonitor
                                     }
                                 }
 
-                                events.Add(new MissionCompletedEvent(timestamp, missionid, name, faction, commodity, amount, false, reward, commodityrewards, donation) { raw = line });
+                                List<MaterialAmount> materialsrewards = new List<MaterialAmount>();
+                                data.TryGetValue("MaterialsReward", out val);
+                                List<object> materialsRewardsData = (List<object>)val;
+                                if (materialsRewardsData != null)
+                                {
+                                    foreach (Dictionary<string, object> materialsRewardData in materialsRewardsData)
+                                    {
+                                        Material rewardMaterial = Material.FromEDName(JsonParsing.getString(materialsRewardData, "Name"));
+                                        materialsRewardData.TryGetValue("Count", out val);
+                                        int count = (int)(long)val;
+                                        materialsrewards.Add(new MaterialAmount(rewardMaterial, count));
+                                    }
+                                }
+
+                                events.Add(new MissionCompletedEvent(timestamp, missionid, name, faction, commodity, amount, false, reward, permitsAwarded, commodityrewards, materialsrewards, donation) { raw = line });
                                 handled = true;
                                 break;
                             }

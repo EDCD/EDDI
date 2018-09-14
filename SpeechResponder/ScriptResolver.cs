@@ -8,6 +8,7 @@ using Eddi;
 using EddiCargoMonitor;
 using EddiDataDefinitions;
 using EddiDataProviderService;
+using EddiMissionMonitor;
 using EddiShipMonitor;
 using EddiSpeechService;
 using GalnetMonitor;
@@ -557,6 +558,73 @@ namespace EddiSpeechResponder
                 return (result == null ? new ReflectionValue(new object()) : new ReflectionValue(result));
             }, 1, 2);
 
+            store["MissionDetails"] = new NativeFunction((values) =>
+            {
+                List<Mission> missions = new List<Mission>();
+                missions = ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor")).missions.ToList();
+
+                Mission result = missions != null ? missions.FirstOrDefault(v => v.missionid == values[0].AsNumber) : null;
+                return (result == null ? new ReflectionValue(new object()) : new ReflectionValue(result));
+            }, 1);
+
+            store["RouteDetails"] = new NativeFunction((values) =>
+            {
+                string result = null;
+                string value = values[0].AsString;
+                if (value == null || value == "")
+                {
+                    return null;
+                }
+                switch (value)
+                {
+                    case "expiring":
+                        {
+                            result = ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor")).GetExpiringRoute();
+                        }
+                        break;
+                    case "farthest":
+                        {
+                            result = ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor")).GetFarthestRoute();
+                        }
+                        break;
+                    case "most":
+                        {
+                            result = ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor")).GetMostRoute();
+                        }
+                        break;
+                    case "nearest":
+                        {
+                            result = ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor")).GetNearestRoute();
+                        }
+                        break;
+                    case "route":
+                        {
+                            if (values.Count == 2)
+                            {
+                                result = ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor")).GetMissionsRoute(values[1].AsString);
+                            }
+                            else
+                            {
+                                result = ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor")).GetMissionsRoute();
+                            }
+                        }
+                        break;
+                    case "update":
+                        {
+                            if (values.Count == 2)
+                            {
+                                result = ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor")).UpdateMissionsRoute(values[1].AsString);
+                            }
+                            else
+                            {
+                                result = ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor")).UpdateMissionsRoute();
+                            }
+                        }
+                        break;
+                }
+                return (result == null ? new ReflectionValue(new object()) : new ReflectionValue(result));
+            }, 1, 2);
+
             store["StationDetails"] = new NativeFunction((values) =>
             {
                 if (values.Count == 0)
@@ -696,7 +764,7 @@ namespace EddiSpeechResponder
 
             store["HaulageDetails"] = new NativeFunction((values) =>
             {
-                HaulageAmount result = null;
+                Haulage result = null;
                 result = ((CargoMonitor)EDDI.Instance.ObtainMonitor("Cargo monitor")).GetHaulageWithMissionId((long)values[0].AsNumber);
                 return (result == null ? new ReflectionValue(new object()) : new ReflectionValue(result));
             }, 1);
