@@ -149,6 +149,7 @@ namespace UnitTests
 
             mission = config.missions.ToList().FirstOrDefault(m => m.missionid == 413563829);
             Assert.AreEqual("Salvage", mission.typeEDName);
+            Assert.AreEqual("Active", mission.statusEDName);
             Assert.AreEqual(4, mission.amount);
             Assert.IsTrue(mission.originreturn);
         }
@@ -165,7 +166,7 @@ namespace UnitTests
             Assert.AreEqual(3, missionMonitor.missions.Count);
             Assert.AreEqual(3, missionMonitor.missions.Where(m => m.statusEDName == "Active").Count());
 
-            //CargoDepotEvent
+            //CargoDepotEvent - 'Shared'
             line = @"{ ""timestamp"":""2018-08-26T02:55:10Z"", ""event"":""CargoDepot"", ""MissionID"":413748365, ""UpdateType"":""WingUpdate"", ""CargoType"":""Gold"", ""Count"":20, ""StartMarketID"":0, ""EndMarketID"":3224777216, ""ItemsCollected"":0, ""ItemsDelivered"":20, ""TotalItemsToDeliver"":54, ""Progress"":0.000000 }";
             events = JournalMonitor.ParseJournalEntry(line);
             missionMonitor._handleCargoDepotEvent((CargoDepotEvent)events[0]);
@@ -198,6 +199,13 @@ namespace UnitTests
             Assert.IsTrue(mission.originreturn);
             Assert.IsTrue(mission.legal);
             Assert.IsFalse(mission.wing);
+
+            //CargoDepotEvent - 'Collect'
+            line = @"{ ""timestamp"":""2018-08-26T02:55:10Z"", ""event"":""CargoDepot"", ""MissionID"":413748324, ""UpdateType"":""Deliver"", ""CargoType"":""Tantalum"", ""Count"":54, ""StartMarketID"":0, ""EndMarketID"":3224777216, ""ItemsCollected"":0, ""ItemsDelivered"":54, ""TotalItemsToDeliver"":54, ""Progress"":0.000000 }";
+            events = JournalMonitor.ParseJournalEntry(line);
+            missionMonitor._handleCargoDepotEvent((CargoDepotEvent)events[0]);
+            mission = missionMonitor.missions.ToList().FirstOrDefault(m => m.missionid == 413748324);
+            Assert.AreEqual("Complete", mission.statusEDName);
 
             //MissionAcceptedEvent - 'Smuggle'
             line = @"{ ""timestamp"":""2018-08-29T20:51:56Z"", ""event"":""MissionAccepted"", ""Faction"":""Gcirithang Crimson Mafia"", ""Name"":""Mission_Smuggle_Famine"", ""LocalisedName"":""Smuggle 36 units of Narcotics to combat famine"", ""Commodity"":""$BasicNarcotics_Name;"", ""Commodity_Localised"":""Narcotics"", ""Count"":36, ""DestinationSystem"":""Carcinus"", ""DestinationStation"":""Wye-Delta Station"", ""Expiry"":""2018-08-30T20:55:33Z"", ""Wing"":false, ""Influence"":""Med"", ""Reputation"":""Med"", ""Reward"":180818, ""MissionID"":414732731 }";
