@@ -117,31 +117,85 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="Altruism" xml:space="preserve">
+    <value>Donativo</value>
+  </data>
+  <data name="AltruismCredits" xml:space="preserve">
+    <value>Donativo</value>
+  </data>
+  <data name="Assassinate" xml:space="preserve">
+    <value>Asesinato</value>
+  </data>
+  <data name="AssassinateWing" xml:space="preserve">
+    <value>Asesinato de escuadrón</value>
+  </data>
+  <data name="Collect" xml:space="preserve">
+    <value>Recaudación</value>
+  </data>
+  <data name="CollectWing" xml:space="preserve">
+    <value>Recaudación de escuadrón</value>
+  </data>
+  <data name="CommunityGoal" xml:space="preserve">
+    <value>Objetivos de la comunidad</value>
+  </data>
+  <data name="Courier" xml:space="preserve">
+    <value>Transporte de datos</value>
+  </data>
+  <data name="Delivery" xml:space="preserve">
+    <value>Entrega</value>
+  </data>
+  <data name="DeliveryWing" xml:space="preserve">
+    <value>Entrega de Escuadrón</value>
+  </data>
+  <data name="Disable" xml:space="preserve">
+    <value>Deshabilitar instalación de superficie</value>
+  </data>
+  <data name="DisableWing" xml:space="preserve">
+    <value>Deshabilitar escuadrón</value>
+  </data>
+  <data name="LongDistanceExpedition" xml:space="preserve">
+    <value>Expedición</value>
+  </data>
+  <data name="Massacre" xml:space="preserve">
+    <value>Masacre</value>
+  </data>
+  <data name="MassacreWing" xml:space="preserve">
+    <value>Masacre de Escuadrón</value>
+  </data>
+  <data name="Mining" xml:space="preserve">
+    <value>Minería</value>
+  </data>
+  <data name="None" xml:space="preserve">
+    <value>Ninguno</value>
+  </data>
+  <data name="PassengerBulk" xml:space="preserve">
+    <value>Transporte</value>
+  </data>
+  <data name="PassengerVIP" xml:space="preserve">
+    <value>Transporte</value>
+  </data>
+  <data name="Permit" xml:space="preserve">
+    <value>Permiso de Adquisición</value>
+  </data>
+  <data name="Piracy" xml:space="preserve">
+    <value>Piratería</value>
+  </data>
+  <data name="Rescue" xml:space="preserve">
+    <value>Rescate</value>
+  </data>
+  <data name="Salvage" xml:space="preserve">
+    <value>Salvamento</value>
+  </data>
+  <data name="Scan" xml:space="preserve">
+    <value>Escaner de superfície</value>
+  </data>
+  <data name="Sightseeing" xml:space="preserve">
+    <value>Turismo</value>
+  </data>
+  <data name="Smuggle" xml:space="preserve">
+    <value>Contrabando</value>
+  </data>
+  <data name="Special" xml:space="preserve">
+    <value>Especial</value>
+  </data>
 </root>
