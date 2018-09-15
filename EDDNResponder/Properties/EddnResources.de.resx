@@ -120,7 +120,5 @@
   <data name="desc" xml:space="preserve">
     <value>Sendet Stations-, Sprung- und Scaninformation an EDDN. EDDN ist ein Drittanbieter-Tool, dass Informationen über Sonnensysteme und Marktpreise sammelt und diese für die meisten Handelstools und Sternenkataloge, wie zum Beispiel EDDB, zur Verfügung stellt.</value>
   </data>
-  <data name="name" xml:space="preserve">
-    <value>EDDN Antwort</value>
-  </data>
+  
 </root>
