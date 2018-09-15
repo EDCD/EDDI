@@ -169,7 +169,7 @@ namespace EddiShipMonitor.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Ship monitor.
+        ///   Looks up a localized string similar to Ship Monitor.
         /// </summary>
         public static string name {
             get {

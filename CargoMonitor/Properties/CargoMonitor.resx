@@ -121,7 +121,7 @@
     <value>Track information on your cargo.</value>
   </data>
   <data name="cargo_monitor_name" xml:space="preserve">
-    <value>Cargo monitor</value>
+    <value>Cargo Monitor</value>
   </data>
   <data name="header_haulage" xml:space="preserve">
     <value>Haulage</value>

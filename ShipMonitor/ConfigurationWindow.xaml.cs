@@ -28,7 +28,7 @@ namespace EddiShipMonitor
             EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
             string exporttarget = eddiConfiguration.exporttarget;
             Logging.Debug("Export target from configuration: " + exporttarget);
-            exportComboBox.Text = exporttarget == null ? "Coriolis" : exporttarget;
+            exportComboBox.Text = exporttarget ?? "Coriolis";
         }
 
         private void onExportTargetChanged(object sender, SelectionChangedEventArgs e)
@@ -78,8 +78,10 @@ namespace EddiShipMonitor
             // URI can be very long so we can't use a simple Process.Start(), as that fails
             try
             {
-                ProcessStartInfo proc = new ProcessStartInfo(Net.GetDefaultBrowserPath(), uri);
-                proc.UseShellExecute = false;
+                ProcessStartInfo proc = new ProcessStartInfo(Net.GetDefaultBrowserPath(), uri)
+                {
+                    UseShellExecute = false
+                };
                 Process.Start(proc);
             }
             catch (Exception ex)

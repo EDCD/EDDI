@@ -70,7 +70,7 @@ namespace EddiCargoMonitor.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cargo monitor.
+        ///   Looks up a localized string similar to Cargo Monitor.
         /// </summary>
         public static string cargo_monitor_name {
             get {

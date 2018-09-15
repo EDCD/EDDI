@@ -148,7 +148,7 @@
     <value>Obtaining log </value>
   </data>
   <data name="name" xml:space="preserve">
-    <value>EDSM responder</value>
+    <value>EDSM Responder</value>
   </data>
   <data name="p1" xml:space="preserve">
     <value>To connect to EDSM you need to have registered an account with them. Once you have done this you can obtain your API key by clicking on your portrait in the top-right corner of the screen and selecting 'My API Key'</value>

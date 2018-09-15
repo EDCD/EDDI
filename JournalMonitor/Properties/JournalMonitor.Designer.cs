@@ -70,7 +70,7 @@ namespace EddiJournalMonitor.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Journal monitor.
+        ///   Looks up a localized string similar to Journal Monitor.
         /// </summary>
         public static string name {
             get {

@@ -70,7 +70,7 @@ namespace EddiEddnResponder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to EDDN responder.
+        ///   Looks up a localized string similar to EDDN Responder.
         /// </summary>
         public static string name {
             get {

@@ -338,9 +338,11 @@ namespace UnitTests
             Assert.IsTrue(events.Count == 1);
 
             FriendsEvent @event = (FriendsEvent)events[0];
-            Friend testFriend = new Friend();
-            testFriend.name = @event.name;
-            testFriend.status = @event.status;
+            Friend testFriend = new Friend
+            {
+                name = @event.name,
+                status = @event.status
+            };
 
             Assert.AreEqual("Offline", @event.status);
 

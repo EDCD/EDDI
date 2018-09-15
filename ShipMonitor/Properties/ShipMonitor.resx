@@ -154,7 +154,7 @@
     <value>International Phonetic Alphabet</value>
   </data>
   <data name="name" xml:space="preserve">
-    <value>Ship monitor</value>
+    <value>Ship Monitor</value>
   </data>
   <data name="p1" xml:space="preserve">
     <value>This allows you to see your ships and give them individual roles. The information is made available to responders and is used in scripts to tailor actions.</value>

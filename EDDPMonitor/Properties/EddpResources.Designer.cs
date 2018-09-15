@@ -115,7 +115,7 @@ namespace EddiEddpMonitor.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to EDDP monitor.
+        ///   Looks up a localized string similar to EDDP Monitor.
         /// </summary>
         public static string name {
             get {

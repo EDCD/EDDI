@@ -245,12 +245,50 @@ namespace Eddi
             // Configure the Text-to-speech tab
             ConfigureTTS();
 
-            LoadMonitors(eddiConfiguration);
-
-            LoadResponders(eddiConfiguration);
+            LoadAndSortTabs(eddiConfiguration);
 
             RestoreWindowState();
             EDDI.Instance.Start();
+        }
+
+        class TabItemComparer : Comparer<TabItem>
+        {
+            public StringComparer stringComparer { get; }
+
+            public TabItemComparer(StringComparer stringComparer)
+            {
+                this.stringComparer = stringComparer;
+            }
+
+            public override int Compare(TabItem x, TabItem y)
+            {
+                return stringComparer.Compare(x.Header, y.Header);
+            }
+        }
+
+        private void LoadAndSortTabs(EDDIConfiguration eddiConfiguration)
+        {
+            // Sort all but the first TabItem by name, ignoring case
+            ItemCollection items = tabControl.Items;
+            List<TabItem> sortedItems = new List<TabItem>();
+            foreach (var item in items)
+            {
+                sortedItems.Add(item as TabItem);
+            }
+
+            List<TabItem> monitors = LoadMonitors(eddiConfiguration);
+            sortedItems.AddRange(monitors);
+            List<TabItem> responders = LoadResponders(eddiConfiguration);
+            sortedItems.AddRange(responders);
+
+            TabItemComparer comparer = new TabItemComparer(StringComparer.CurrentCultureIgnoreCase);
+            sortedItems.Sort(1, sortedItems.Count - 1, comparer);
+
+            items.Clear();
+            foreach (var item in sortedItems)
+            {
+                items.Add(item);
+            }
         }
 
         private List<LanguageDef> GetAvailableLangs()
@@ -290,8 +328,9 @@ namespace Eddi
             return cultures;
         }
 
-        private void LoadMonitors(EDDIConfiguration eddiConfiguration)
+        private List<TabItem> LoadMonitors(EDDIConfiguration eddiConfiguration)
         {
+            List<TabItem> result = new List<TabItem>();
             foreach (EDDIMonitor monitor in EDDI.Instance.monitors)
             {
                 Logging.Debug("Adding configuration tab for " + monitor.MonitorName());
@@ -322,13 +361,15 @@ namespace Eddi
 
                     TabItem item = new TabItem { Header = monitor.LocalizedMonitorName() };
                     item.Content = skeleton;
-                    tabControl.Items.Add(item);
+                    result.Add(item);
                 }
             }
+            return result;
         }
 
-        private void LoadResponders(EDDIConfiguration eddiConfiguration)
+        private List<TabItem> LoadResponders(EDDIConfiguration eddiConfiguration)
         {
+            List<TabItem> result = new List<TabItem>();
             foreach (EDDIResponder responder in EDDI.Instance.responders)
             {
                 Logging.Debug("Adding configuration tab for " + responder.ResponderName());
@@ -357,8 +398,9 @@ namespace Eddi
 
                 TabItem item = new TabItem { Header = responder.LocalizedResponderName() };
                 item.Content = skeleton;
-                tabControl.Items.Add(item);
+                result.Add(item);
             }
+            return result;
         }
 
         private void ConfigureTTS()

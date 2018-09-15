@@ -151,7 +151,7 @@ namespace EddiEdsmResponder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to EDSM responder.
+        ///   Looks up a localized string similar to EDSM Responder.
         /// </summary>
         public static string name {
             get {

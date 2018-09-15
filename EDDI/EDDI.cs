@@ -328,8 +328,7 @@ namespace Eddi
 
                 foreach (EDDIMonitor monitor in monitors)
                 {
-                    bool enabled;
-                    if (!configuration.Plugins.TryGetValue(monitor.MonitorName(), out enabled))
+                    if (!configuration.Plugins.TryGetValue(monitor.MonitorName(), out bool enabled))
                     {
                         // No information; default to enabled
                         enabled = true;
@@ -355,8 +354,7 @@ namespace Eddi
 
                 foreach (EDDIResponder responder in responders)
                 {
-                    bool enabled;
-                    if (!configuration.Plugins.TryGetValue(responder.ResponderName(), out enabled))
+                    if (!configuration.Plugins.TryGetValue(responder.ResponderName(), out bool enabled))
                     {
                         // No information; default to enabled
                         enabled = true;
@@ -437,7 +435,7 @@ namespace Eddi
         {
             foreach (EDDIMonitor monitor in monitors)
             {
-                if (monitor.MonitorName() == invariantName)
+                if (monitor.MonitorName().Equals(invariantName, StringComparison.InvariantCultureIgnoreCase))
                 {
                     return monitor;
                 }
@@ -452,7 +450,7 @@ namespace Eddi
         {
             foreach (EDDIResponder responder in responders)
             {
-                if (responder.ResponderName() == invariantName)
+                if (responder.ResponderName().Equals(invariantName, StringComparison.InvariantCultureIgnoreCase))
                 {
                     return responder;
                 }
@@ -525,9 +523,11 @@ namespace Eddi
                 {
                     try
                     {
-                        Thread monitorThread = new Thread(() => start());
-                        monitorThread.Name = name;
-                        monitorThread.IsBackground = true;
+                        Thread monitorThread = new Thread(() => start())
+                        {
+                            Name = name,
+                            IsBackground = true
+                        };
                         Logging.Info("Starting " + name + " (" + failureCount + ")");
                         monitorThread.Start();
                         monitorThread.Join();
@@ -731,9 +731,11 @@ namespace Eddi
                         {
                             Logging.Warn("Responder failed", ex);
                         }
-                    });
-                    responderThread.Name = responder.ResponderName();
-                    responderThread.IsBackground = true;
+                    })
+                    {
+                        Name = responder.ResponderName(),
+                        IsBackground = true
+                    };
                     responderThread.Start();
                 }
                 catch (ThreadAbortException tax)
@@ -821,9 +823,11 @@ namespace Eddi
                 if (station == null)
                 {
                     // This station is unknown to us, might not be in our data source or we might not have connectivity.  Use a placeholder
-                    station = new Station();
-                    station.name = theEvent.station;
-                    station.systemname = theEvent.system;
+                    station = new Station
+                    {
+                        name = theEvent.station,
+                        systemname = theEvent.system
+                    };
                 }
 
                 // Our data source may not include the market id or system address
@@ -843,8 +847,10 @@ namespace Eddi
                     // Refresh station data
                     profileUpdateNeeded = true;
                     profileStationRequired = CurrentStation.name;
-                    Thread updateThread = new Thread(() => conditionallyRefreshProfile());
-                    updateThread.IsBackground = true;
+                    Thread updateThread = new Thread(() => conditionallyRefreshProfile())
+                    {
+                        IsBackground = true
+                    };
                     updateThread.Start();
                 }
             }
@@ -868,10 +874,12 @@ namespace Eddi
                 if (body == null)
                 {
                     // This body is unknown to us, might not be in our data source or we might not have connectivity.  Use a placeholder 
-                    body = new Body();
-                    body.name = theEvent.body;
-                    body.systemname = theEvent.system;
-                    body.systemAddress = theEvent.systemAddress;
+                    body = new Body
+                    {
+                        name = theEvent.body,
+                        systemname = theEvent.system,
+                        systemAddress = theEvent.systemAddress
+                    };
                 }
 
                 CurrentStellarBody = body;
@@ -906,9 +914,11 @@ namespace Eddi
             if (station == null)
             {
                 // This station is unknown to us, might not be in our data source or we might not have connectivity.  Use a placeholder
-                station = new Station();
-                station.name = theEvent.station;
-                station.systemname = theEvent.system;
+                station = new Station
+                {
+                    name = theEvent.station,
+                    systemname = theEvent.system
+                };
             }
 
             // Not all stations in our database will have a system address or market id, so we set them here
@@ -964,15 +974,19 @@ namespace Eddi
                 // Refresh station data
                 profileUpdateNeeded = true;
                 profileStationRequired = CurrentStation.name;
-                Thread updateThread = new Thread(() => conditionallyRefreshProfile());
-                updateThread.IsBackground = true;
+                Thread updateThread = new Thread(() => conditionallyRefreshProfile())
+                {
+                    IsBackground = true
+                };
                 updateThread.Start();
             }
             else
             {
                 // Kick off a dummy that triggers a market refresh after a couple of seconds
-                Thread updateThread = new Thread(() => dummyRefreshMarketData());
-                updateThread.IsBackground = true;
+                Thread updateThread = new Thread(() => dummyRefreshMarketData())
+                {
+                    IsBackground = true
+                };
                 updateThread.Start();
             }
 
@@ -1171,9 +1185,11 @@ namespace Eddi
                 if (body == null)
                 {
                     // This body is unknown to us, might not be in EDDB or we might not have connectivity.  Use a placeholder 
-                    body = new Body();
-                    body.name = theEvent.body;
-                    body.systemname = theEvent.system;
+                    body = new Body
+                    {
+                        name = theEvent.body,
+                        systemname = theEvent.system
+                    };
                 }
                 CurrentStellarBody = body;
             }
@@ -1363,9 +1379,11 @@ namespace Eddi
                 if (body == null)
                 {
                     // This body is unknown to us, might not be in our data source or we might not have connectivity.  Use a placeholder 
-                    body = new Body();
-                    body.name = theEvent.body;
-                    body.systemname = theEvent.system;
+                    body = new Body
+                    {
+                        name = theEvent.body,
+                        systemname = theEvent.system
+                    };
                 }
                 // System address may not be included in our data source, so we add it here. 
                 body.systemAddress = theEvent.systemAddress;
@@ -1390,12 +1408,14 @@ namespace Eddi
                 {
                     Logging.Debug("Scanned belt " + theEvent.name + " is new - creating");
                     // A new item - set it up
-                    belt = new Body();
-                    belt.EDDBID = -1;
-                    belt.type = "Star";
-                    belt.name = theEvent.name;
-                    belt.systemname = CurrentStarSystem?.name;
-                    belt.systemAddress = CurrentStarSystem?.systemAddress;
+                    belt = new Body
+                    {
+                        EDDBID = -1,
+                        type = "Star",
+                        name = theEvent.name,
+                        systemname = CurrentStarSystem?.name,
+                        systemAddress = CurrentStarSystem?.systemAddress
+                    };
                     CurrentStarSystem.bodies?.Add(belt);
                 }
 
@@ -1420,11 +1440,13 @@ namespace Eddi
                 {
                     Logging.Debug("Scanned star " + theEvent.name + " is new - creating");
                     // A new item - set it up
-                    star = new Body();
-                    star.EDDBID = -1;
-                    star.type = "Star";
-                    star.name = theEvent.name;
-                    star.systemname = CurrentStarSystem?.name;
+                    star = new Body
+                    {
+                        EDDBID = -1,
+                        type = "Star",
+                        name = theEvent.name,
+                        systemname = CurrentStarSystem?.name
+                    };
                     CurrentStarSystem.bodies?.Add(star);
                 }
                 // Our data source may not include system address, so we include it here.
@@ -1460,11 +1482,13 @@ namespace Eddi
                 {
                     Logging.Debug("Scanned body " + theEvent.name + " is new - creating");
                     // A new body - set it up
-                    body = new Body();
-                    body.EDDBID = -1;
-                    body.type = "Planet";
-                    body.name = theEvent.name;
-                    body.systemname = CurrentStarSystem.name;
+                    body = new Body
+                    {
+                        EDDBID = -1,
+                        type = "Planet",
+                        name = theEvent.name,
+                        systemname = CurrentStarSystem.name
+                    };
                     CurrentStarSystem.bodies.Add(body);
                 }
                 // Our data source may not include system address, so we include it here.
@@ -1548,7 +1572,7 @@ namespace Eddi
                         // Only set the current star system if it is not present, otherwise we leave it to events
                         if (CurrentStarSystem == null)
                         {
-                            CurrentStarSystem = profile == null ? null : profile.CurrentStarSystem;
+                            CurrentStarSystem = profile?.CurrentStarSystem;
                             setSystemDistanceFromHome(CurrentStarSystem);
 
                             // We don't know if we are docked or not at this point.  Fill in the data if we can, and
@@ -1570,8 +1594,10 @@ namespace Eddi
                             // Refresh station data
                             profileUpdateNeeded = true;
                             profileStationRequired = CurrentStation.name;
-                            Thread updateThread = new Thread(() => conditionallyRefreshProfile());
-                            updateThread.IsBackground = true;
+                            Thread updateThread = new Thread(() => conditionallyRefreshProfile())
+                            {
+                                IsBackground = true
+                            };
                             updateThread.Start();
                         }
 
@@ -1597,9 +1623,11 @@ namespace Eddi
                                     {
                                         Logging.Warn("Monitor failed", ex);
                                     }
-                                });
-                                monitorThread.Name = monitor.MonitorName();
-                                monitorThread.IsBackground = true;
+                                })
+                                {
+                                    Name = monitor.MonitorName(),
+                                    IsBackground = true
+                                };
                                 monitorThread.Start();
                             }
                             catch (ThreadAbortException tax)
@@ -1701,8 +1729,7 @@ namespace Eddi
                     foreach (Exception exSub in ex.LoaderExceptions)
                     {
                         sb.AppendLine(exSub.Message);
-                        FileNotFoundException exFileNotFound = exSub as FileNotFoundException;
-                        if (exFileNotFound != null)
+                        if (exSub is FileNotFoundException exFileNotFound)
                         {
                             if (!string.IsNullOrEmpty(exFileNotFound.FusionLog))
                             {
@@ -1773,8 +1800,7 @@ namespace Eddi
                     foreach (Exception exSub in ex.LoaderExceptions)
                     {
                         sb.AppendLine(exSub.Message);
-                        FileNotFoundException exFileNotFound = exSub as FileNotFoundException;
-                        if (exFileNotFound != null)
+                        if (exSub is FileNotFoundException exFileNotFound)
                         {
                             if (!string.IsNullOrEmpty(exFileNotFound.FusionLog))
                             {
