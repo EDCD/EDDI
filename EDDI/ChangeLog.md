@@ -3,28 +3,30 @@
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
 ### Development
+  * Core
+    * Tabs are now shown on the the left, and all but the first "EDDI" tab are sorted alphabetically according to the rules of the current locale.
   * New Mission monitor feature, tracking all mission parameters. Check the Speech responder 'Variables' window for details.
-    * Added 'Mission expired' event, triggers when a mission has expired.
-    * Added 'Mission warning' event, triggers when a mission expiration is within the 'warning' threshold, set in the 'Mission monitor' tab.
+    * New 'Mission expired' event, triggers when a mission has expired.
+    * New 'Mission warning' event, triggers when a mission expiration is within the 'warning' threshold, set in the 'Mission monitor' tab.
   * Speech responder
-    * Added MissionDetails() function for Cottle scripting to access mission data.
-    * Added RouteDetails() function for Cottle scripting to query for various mission routes.
-      * 'expiring' - The destination of your next expiring mission.
-      * 'farthest' - The mission destination farthest from your current location.
-	  * 'most'     - The system with the most missions.
-	  * 'nearest'  - The mission destination nearest to your current location.
-	  * 'route'    - The 'Traveling Salesman' (RNNA) route for all active missions.
-	  * 'update'   - The next mission destination, once all missions in current system are completed.
-    * Added 'Missions route' event to provide pertinent data for mission route queries.
-    * Added 'Missions route' script to report the results of the 'Missions route' event.
-	* Added 'Mission check galaxy' script, which reports all active missions.
-    * Added 'Mission check system' script, which reports active and completed missions in your current system.
-    * Added 'Mission check station', which reports active & completed missions, if docked or station in vicinity.
-    * Revised 'Commander continued' script to include the 'Mission check galaxy' script.
-    * Revised 'Location' and 'Jumped' scripts to include the 'Mission check system' script.
-    * Revised 'Location' & 'Entered normal space' scripts to include the 'Mission check station' script.
+    * New `MissionDetails()` function for Cottle scripting to access mission data.
+    * New `RouteDetails()` function for Cottle scripting to query for various mission routes.
+      * `expiring` - The destination of your next expiring mission.
+      * `farthest` - The mission destination farthest from your current location.
+	  * `most`     - The system with the most missions.
+	  * `nearest`  - The mission destination nearest to your current location.
+	  * `route`    - The "Traveling Salesman" (RNNA) route for all active missions.
+	  * `update`   - The next mission destination, once all missions in current system are completed.
+    * New `Missions route` event to provide pertinent data for mission route queries.
+    * New `Missions route` script to report the results of the `Missions route` event.
+	* New `Mission check galaxy` script, which reports all active missions.
+    * New `Mission check system` script, which reports active and completed missions in your current system.
+    * New `Mission check station`, which reports active & completed missions, if docked or station in vicinity.
+    * Revised `Commander continued` script to include the `Mission check galaxy` script.
+    * Revised `Location` and `Jumped` scripts to include the `Mission check system` script.
+    * Revised `Location` & `Entered normal space` scripts to include the `Mission check station` script.
   * Voice Attack plugin
-    * Added 'missionsroute' external function to query for various mission routes from VA. See RouteDetails() above for query types.
+    * New `missionsroute` external function to query for various mission routes from VA. See RouteDetails() above for query types.
 
 ### 3.0.3
   * Core
