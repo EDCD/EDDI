@@ -12,6 +12,12 @@
         mc:Ignorable="d"
         Title="EDDI" Height="{Binding ElementName=defaultHeight, Path=Value}"  Width="{Binding ElementName=defaultWidth, Path=Value}">
     <DockPanel LastChildFill="True">
+        <DockPanel.Background>
+            <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+                <GradientStop Color="Black"/>
+                <GradientStop Color="#FF4E355D" Offset="1"/>
+            </LinearGradientBrush>
+        </DockPanel.Background>
         <TabControl x:Name="tabControl" DockPanel.Dock="Top" TabStripPlacement="Left">
             <TabControl.Resources>
                 <Style TargetType="TabItem">
