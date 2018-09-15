@@ -138,9 +138,7 @@
   <data name="mission_monitor_desc" xml:space="preserve">
     <value>Rastrea la información de tus misiones.</value>
   </data>
-  <data name="mission_monitor_name" xml:space="preserve">
-    <value>Monitor de Misiones</value>
-  </data>
+  
   <data name="para1" xml:space="preserve">
     <value>A continuación tienes una lista de todas tus misiones.</value>
   </data>
