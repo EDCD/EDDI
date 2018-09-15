@@ -117,14 +117,34 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="BountyHunter" xml:space="preserve">
+    <value>Caza recompensas</value>
+  </data>
+  <data name="Civilian" xml:space="preserve">
+    <value>Civil</value>
+  </data>
+  <data name="Hostage" xml:space="preserve">
+    <value>Rehén</value>
+  </data>
+  <data name="Miner" xml:space="preserve">
+    <value>Minero</value>
+  </data>
+  <data name="Pirate" xml:space="preserve">
+    <value>Pirata</value>
+  </data>
+  <data name="PirateLord" xml:space="preserve">
+    <value>Lord Pirata</value>
+  </data>
+  <data name="Security" xml:space="preserve">
+    <value>Seguridad</value>
+  </data>
+  <data name="Smuggler" xml:space="preserve">
+    <value>Contrabandista</value>
+  </data>
+  <data name="Terrorist" xml:space="preserve">
+    <value>Terrorista</value>
+  </data>
+  <data name="Trader" xml:space="preserve">
+    <value>Comerciante</value>
+  </data>
 </root>
