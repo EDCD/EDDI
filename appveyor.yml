@@ -1,7 +1,4 @@
 version: 3.1-{build}
-branches:
-  only:
-  - develop
 skip_tags: true
 image: Visual Studio 2017
 configuration: Release
