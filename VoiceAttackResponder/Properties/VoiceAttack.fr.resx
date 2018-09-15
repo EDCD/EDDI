@@ -120,9 +120,7 @@
   <data name="desc" xml:space="preserve">
     <value>Un répondeur qui génère un grand nombre de variables dans VoiceAttack et déclenche des actions définies par l'utilisateur.</value>
   </data>
-  <data name="name" xml:space="preserve">
-    <value>Répondeur VoiceAttack</value>
-  </data>
+  
   <data name="p1" xml:space="preserve">
     <value>Pour intégrer EDDI avec VoiceAttack EDDI nécessite d'être installer dans le répertoire 'Apps' de 'VoiceAttack'. Le chemin par défaut de ce dossier est 'C:\Program Files (x86)\VoiceAttack\Apps', et est l'endroit ou EDDI seras installé par défaut.</value>
   </data>
