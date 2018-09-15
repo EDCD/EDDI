@@ -153,9 +153,7 @@
   <data name="link_ipa" xml:space="preserve">
     <value>Alfabeto Fonetico Internazionale</value>
   </data>
-  <data name="name" xml:space="preserve">
-    <value>Monitoraggio nave</value>
-  </data>
+  
   <data name="p1" xml:space="preserve">
     <value>Ti permette di vedere le tue navi ed assegnargli specifici ruoli. L'informazione è usata negli script per gestire le azioni.</value>
   </data>
