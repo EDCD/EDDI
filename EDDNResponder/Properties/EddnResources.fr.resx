@@ -120,7 +120,5 @@
   <data name="desc" xml:space="preserve">
     <value>Suit la quantité de matériaux que vous possédez et génère des événements lorsque des limites sont atteintes.</value>
   </data>
-  <data name="name" xml:space="preserve">
-    <value>Répondeur EDDN</value>
-  </data>
+  
 </root>
