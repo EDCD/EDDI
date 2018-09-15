@@ -123,9 +123,7 @@
   <data name="language_label" xml:space="preserve">
     <value>Idioma de la Galnet</value>
   </data>
-  <data name="name" xml:space="preserve">
-    <value>Monitor Galnet</value>
-  </data>
+  
   <data name="p1" xml:space="preserve">
     <value>Tenga en cuenta que después de cambiar el idioma, los nuevos elementos de Galnet pueden tardar 2 minutos en estar disponibles.</value>
   </data>
