@@ -12,7 +12,7 @@
         mc:Ignorable="d"
         Title="EDDI" Height="{Binding ElementName=defaultHeight, Path=Value}"  Width="{Binding ElementName=defaultWidth, Path=Value}">
     <DockPanel LastChildFill="True">
-        <TabControl x:Name="tabControl" DockPanel.Dock="Top">
+        <TabControl x:Name="tabControl" DockPanel.Dock="Top" TabStripPlacement="Left">
             <TabItem Header="EDDI">
                 <DockPanel LastChildFill="True" Background="#FFE5E5E5">
                     <DockPanel LastChildFill="True" Background="#FFE5E5E5" DockPanel.Dock="Bottom" Margin="5">
