@@ -120,7 +120,5 @@
   <data name="desc" xml:space="preserve">
     <value>Envia info de la estación, saltos y escaneos a EDDN. EDDN es una herramienta de terceros que reúne información sobre sistemas y mercados, y proporciona datos para la mayoría de las herramientas de comercio, así como herramientas de información de sistemas estelares, como EDDB.</value>
   </data>
-  <data name="name" xml:space="preserve">
-    <value>Contestador EDDN</value>
-  </data>
+  
 </root>
