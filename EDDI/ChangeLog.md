@@ -5,9 +5,9 @@ Full details of the variables available for each noted event, and VoiceAttack in
 ### Development
   * Core
     * Tabs are now shown on the the left, and all but the first "EDDI" tab are sorted alphabetically according to the rules of the current locale.
-  * New Mission monitor feature, tracking all mission parameters. Check the Speech responder 'Variables' window for details.
-    * New 'Mission expired' event, triggers when a mission has expired.
-    * New 'Mission warning' event, triggers when a mission expiration is within the 'warning' threshold, set in the 'Mission monitor' tab.
+  * New Mission monitor feature, tracking all mission parameters. Check the Speech responder `Variables` window for details.
+    * New `Mission expired` event, triggers when a mission has expired.
+    * New `Mission warning' event, triggers when a mission expiration is within the 'warning' threshold, set in the `Mission monitor` tab.
   * Speech responder
     * New `MissionDetails()` function for Cottle scripting to access mission data.
     * New `RouteDetails()` function for Cottle scripting to query for various mission routes.
