@@ -126,12 +126,15 @@
     <comment>Material category Manufactured</comment>
   </data>
   <data name="Data" xml:space="preserve">
-    <value>Información</value>
+    <value>Datos</value>
     <comment>Material category Data</comment>
   </data>
   <data name="Unknown" xml:space="preserve">
     <value>Desconocido</value>
     <comment>Material category Unknown</comment>
   </data>
-  
+  <data name="Encoded" xml:space="preserve">
+    <value>Codificado</value>
+    <comment>Material category Encoded</comment>
+  </data>
 </root>
