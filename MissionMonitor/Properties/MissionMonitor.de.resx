@@ -117,12 +117,24 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
-  
-  
-  
-  
+  <data name="header_destinationstation" xml:space="preserve">
+    <value>Zielstation</value>
+  </data>
+  <data name="header_destinationsystem" xml:space="preserve">
+    <value>Zielsystem</value>
+  </data>
+  <data name="header_missionid" xml:space="preserve">
+    <value>Missions ID</value>
+  </data>
+  <data name="header_remaining" xml:space="preserve">
+    <value>Verbleibend</value>
+  </data>
+  <data name="header_status" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="header_type" xml:space="preserve">
+    <value>Typ</value>
+  </data>
   
   
   
