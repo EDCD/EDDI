@@ -117,24 +117,13 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Element" xml:space="preserve">
-    <value>Elemento</value>
-    <comment>Material category Element</comment>
+  <data name="Active" xml:space="preserve">
+    <value>Activo</value>
   </data>
-  <data name="Manufactured" xml:space="preserve">
-    <value>Manufacturado</value>
-    <comment>Material category Manufactured</comment>
+  <data name="Complete" xml:space="preserve">
+    <value>Completada</value>
   </data>
-  <data name="Data" xml:space="preserve">
-    <value>Datos</value>
-    <comment>Material category Data</comment>
-  </data>
-  <data name="Unknown" xml:space="preserve">
-    <value>Desconocido</value>
-    <comment>Material category Unknown</comment>
-  </data>
-  <data name="Encoded" xml:space="preserve">
-    <value>Codificado</value>
-    <comment>Material category Encoded</comment>
+  <data name="Failed" xml:space="preserve">
+    <value>Fallida</value>
   </data>
 </root>

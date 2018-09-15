@@ -117,24 +117,37 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Element" xml:space="preserve">
-    <value>Elemento</value>
-    <comment>Material category Element</comment>
+  <data name="header_destinationstation" xml:space="preserve">
+    <value>Estación de Destino</value>
   </data>
-  <data name="Manufactured" xml:space="preserve">
-    <value>Manufacturado</value>
-    <comment>Material category Manufactured</comment>
+  <data name="header_destinationsystem" xml:space="preserve">
+    <value>Sistema Destino</value>
   </data>
-  <data name="Data" xml:space="preserve">
-    <value>Datos</value>
-    <comment>Material category Data</comment>
+  <data name="header_missionid" xml:space="preserve">
+    <value>ID de Misión</value>
   </data>
-  <data name="Unknown" xml:space="preserve">
-    <value>Desconocido</value>
-    <comment>Material category Unknown</comment>
+  <data name="header_remaining" xml:space="preserve">
+    <value>Restante</value>
   </data>
-  <data name="Encoded" xml:space="preserve">
-    <value>Codificado</value>
-    <comment>Material category Encoded</comment>
+  <data name="header_status" xml:space="preserve">
+    <value>Estado</value>
+  </data>
+  <data name="header_type" xml:space="preserve">
+    <value>Tipo</value>
+  </data>
+  <data name="mission_monitor_desc" xml:space="preserve">
+    <value>Rastrea la información de tus misiones.</value>
+  </data>
+  <data name="mission_monitor_name" xml:space="preserve">
+    <value>Monitor de Misiones</value>
+  </data>
+  <data name="para1" xml:space="preserve">
+    <value>A continuación tienes una lista de todas tus misiones.</value>
+  </data>
+  <data name="para2" xml:space="preserve">
+    <value>Ten en cuenta que si tu inventario es incorrecto, deberás iniciar o reiniciar Elite para que se actualice.</value>
+  </data>
+  <data name="tab_mission_warning" xml:space="preserve">
+    <value>Umbral de advertencia de caducidad de la misión (en minutos):</value>
   </data>
 </root>
