@@ -97,24 +97,64 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="AidWorker" xml:space="preserve">
+    <value>Grupo de Pasajeros de Trabajadores Humanitarios</value>
+  </data>
+  <data name="Business" xml:space="preserve">
+    <value>Grupo de Pasajeros de Negocios</value>
+  </data>
+  <data name="Celebrity" xml:space="preserve">
+    <value>Celebridad</value>
+  </data>
+  <data name="CEO" xml:space="preserve">
+    <value>CEO</value>
+  </data>
+  <data name="Criminal" xml:space="preserve">
+    <value>Criminal</value>
+  </data>
+  <data name="Doctor" xml:space="preserve">
+    <value>Doctor</value>
+  </data>
+  <data name="Explorer" xml:space="preserve">
+    <value>Explorador</value>
+  </data>
+  <data name="General" xml:space="preserve">
+    <value>General del ejército</value>
+  </data>
+  <data name="HeadOfState" xml:space="preserve">
+    <value>Jefe de Estado</value>
+  </data>
+  <data name="Medical" xml:space="preserve">
+    <value>Equipo Médico</value>
+  </data>
+  <data name="Politician" xml:space="preserve">
+    <value>Grupo de Pasajeros Políticos</value>
+  </data>
+  <data name="PrisonerOfWar" xml:space="preserve">
+    <value>Prisioneros de Guerra</value>
+  </data>
+  <data name="Protestor" xml:space="preserve">
+    <value>Grupo de Pasajeros Manifestantes</value>
+  </data>
+  <data name="Rebel" xml:space="preserve">
+    <value>Grupo de Pasajeros de la Rebelión</value>
+  </data>
+  <data name="Refugee" xml:space="preserve">
+    <value>Grupo de Pasajeros Refugiados</value>
+  </data>
+  <data name="Scientist" xml:space="preserve">
+    <value>Equipo Científico</value>
+  </data>
+  <data name="Security" xml:space="preserve">
+    <value>Equipo de Securidad</value>
+  </data>
+  <data name="Terrorist" xml:space="preserve">
+    <value>Líder Rebelde</value>
+  </data>
+  <data name="Tourist" xml:space="preserve">
+    <value>Turista Rico</value>
+  </data>
+  <data name="Whistleblower" xml:space="preserve">
+    <value>Prisionero Político</value>
+  </data>
 </root>
