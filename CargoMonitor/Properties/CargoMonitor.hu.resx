@@ -120,9 +120,7 @@
   <data name="cargo_monitor_desc" xml:space="preserve">
     <value>Nyomonköveti a raktér tartalmát.</value>
   </data>
-  <data name="cargo_monitor_name" xml:space="preserve">
-    <value>Raktér monitor</value>
-  </data>
+  
   <data name="header_haulage" xml:space="preserve">
     <value>Rakomány</value>
     <comment>Tons of haulage (mission cargo) carried</comment>
