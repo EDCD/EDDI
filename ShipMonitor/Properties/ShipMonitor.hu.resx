@@ -153,9 +153,7 @@
   <data name="link_ipa" xml:space="preserve">
     <value>Nemzetközi fonetikus ábécé</value>
   </data>
-  <data name="name" xml:space="preserve">
-    <value>Hajó monitor</value>
-  </data>
+  
   <data name="p1" xml:space="preserve">
     <value>Itt láthatja a hajóit és megadhatja egyedi szerepkörüket. Az információt látják a reagálók valamint szükség van rá a kívánt akciókhoz rendelt szkriptekhez is.</value>
   </data>
