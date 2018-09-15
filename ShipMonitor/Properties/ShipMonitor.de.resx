@@ -153,9 +153,7 @@
   <data name="link_ipa" xml:space="preserve">
     <value>Internationales Phonetisches Alphabet</value>
   </data>
-  <data name="name" xml:space="preserve">
-    <value>Schiffe Monitor</value>
-  </data>
+  
   <data name="p1" xml:space="preserve">
     <value>Dies erlaubt Ihnen Ihre Schiffe zu sehen und ihnen individuelle Rollen zuweisen. Die Informationen werden "Antwort"-Gebern zur Verfügung gestellt und in Skripten zur Anpassung von Aktionen verwendet.</value>
   </data>
