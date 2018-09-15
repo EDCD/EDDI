@@ -129,9 +129,7 @@
   <data name="min_header" xml:space="preserve">
     <value>Mínimo</value>
   </data>
-  <data name="name" xml:space="preserve">
-    <value>Monitor de materiales</value>
-  </data>
+  
   <data name="name_header" xml:space="preserve">
     <value>Nombre</value>
   </data>
