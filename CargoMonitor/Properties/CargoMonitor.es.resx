@@ -120,9 +120,7 @@
   <data name="cargo_monitor_desc" xml:space="preserve">
     <value>Rastrea información de su carga.</value>
   </data>
-  <data name="cargo_monitor_name" xml:space="preserve">
-    <value>Monitor de carga</value>
-  </data>
+  
   <data name="header_haulage" xml:space="preserve">
     <value>Carga</value>
     <comment>Tons of haulage (mission cargo) carried</comment>
