@@ -120,9 +120,7 @@
   <data name="cargo_monitor_desc" xml:space="preserve">
     <value>Surveille les informations de votre soute.</value>
   </data>
-  <data name="cargo_monitor_name" xml:space="preserve">
-    <value>Moniteur de soute</value>
-  </data>
+  
   <data name="header_haulage" xml:space="preserve">
     <value>Transport de marchandises</value>
     <comment>Tons of haulage (mission cargo) carried</comment>
