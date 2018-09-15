@@ -112,17 +112,35 @@
     <value>Arzt</value>
   </data>
   
+  <data name="General" xml:space="preserve">
+    <value>Militärgeneral</value>
+  </data>
+  <data name="HeadOfState" xml:space="preserve">
+    <value>Staatsoberhaupt</value>
+  </data>
+  <data name="Medical" xml:space="preserve">
+    <value>Medizinisches Team</value>
+  </data>
+  
+  <data name="PrisonerOfWar" xml:space="preserve">
+    <value>Kriegsgefangene</value>
+  </data>
+  <data name="Protestor" xml:space="preserve">
+    <value>Demonstranten</value>
+  </data>
   
   
+  <data name="Scientist" xml:space="preserve">
+    <value>Wissenschaftliches Team</value>
+  </data>
+  <data name="Security" xml:space="preserve">
+    <value>Sicherheitsteam</value>
+  </data>
+  <data name="Terrorist" xml:space="preserve">
+    <value>Rebellenführer</value>
+  </data>
   
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="Whistleblower" xml:space="preserve">
+    <value>Politischer Gefangener</value>
+  </data>
 </root>
