@@ -12,7 +12,7 @@ namespace EddiMissionMonitor
     public class MissionExpiredEvent : Event
     {
         public const string NAME = "Mission expired";
-        public const string DESCRIPTION = "Triggered when a mission has expired.";
+        public const string DESCRIPTION = "Triggered when a mission has expired";
         public const string SAMPLE = null;
 
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();

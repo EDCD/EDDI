@@ -12,7 +12,7 @@ namespace EddiMissionMonitor
     public class MissionsRouteEvent : Event
     {
         public const string NAME = "Missions route";
-        public const string DESCRIPTION = "Triggered when a missions route has been generated or updated.";
+        public const string DESCRIPTION = "Triggered when a missions route has been generated or updated";
         public const string SAMPLE = null;
 
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();

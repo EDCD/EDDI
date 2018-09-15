@@ -7,7 +7,7 @@ namespace EddiMissionMonitor
     public class MissionWarningEvent : Event
     {
         public const string NAME = "Mission warning";
-        public const string DESCRIPTION = "Triggered when a mission is about to expire, based on a set threshold.";
+        public const string DESCRIPTION = "Triggered when a mission is about to expire, based on a set threshold";
         public const string SAMPLE = null;
 
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
