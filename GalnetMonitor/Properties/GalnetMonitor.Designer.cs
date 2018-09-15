@@ -79,7 +79,7 @@ namespace EddiGalnetMonitor.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Galnet monitor.
+        ///   Looks up a localized string similar to Galnet Monitor.
         /// </summary>
         public static string name {
             get {

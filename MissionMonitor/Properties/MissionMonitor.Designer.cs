@@ -124,7 +124,7 @@ namespace EddiMissionMonitor.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Mission monitor.
+        ///   Looks up a localized string similar to Mission Monitor.
         /// </summary>
         public static string mission_monitor_name {
             get {

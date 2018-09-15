@@ -121,6 +121,6 @@
     <value>Send station, jump, and scan information to EDDN. EDDN is a third-party tool that gathers information on systems and markets, and provides data for most trading tools as well as star system information tools such as EDDB.</value>
   </data>
   <data name="name" xml:space="preserve">
-    <value>EDDN responder</value>
+    <value>EDDN Responder</value>
   </data>
 </root>

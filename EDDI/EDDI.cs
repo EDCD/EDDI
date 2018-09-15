@@ -437,7 +437,7 @@ namespace Eddi
         {
             foreach (EDDIMonitor monitor in monitors)
             {
-                if (monitor.MonitorName() == invariantName)
+                if (monitor.MonitorName().Equals(invariantName, StringComparison.InvariantCultureIgnoreCase))
                 {
                     return monitor;
                 }
@@ -452,7 +452,7 @@ namespace Eddi
         {
             foreach (EDDIResponder responder in responders)
             {
-                if (responder.ResponderName() == invariantName)
+                if (responder.ResponderName().Equals(invariantName, StringComparison.InvariantCultureIgnoreCase))
                 {
                     return responder;
                 }

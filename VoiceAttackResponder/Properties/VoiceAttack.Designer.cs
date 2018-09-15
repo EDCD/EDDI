@@ -70,7 +70,7 @@ namespace EddiVoiceAttackResponder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to VoiceAttack responder.
+        ///   Looks up a localized string similar to VoiceAttack Responder.
         /// </summary>
         public static string name {
             get {

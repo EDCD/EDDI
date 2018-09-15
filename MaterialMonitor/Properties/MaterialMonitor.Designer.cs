@@ -106,7 +106,7 @@ namespace EddiMaterialMonitor.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Material monitor.
+        ///   Looks up a localized string similar to Material Monitor.
         /// </summary>
         public static string name {
             get {
