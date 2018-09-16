@@ -136,7 +136,9 @@
     <value>Typ</value>
   </data>
   
-  
+  <data name="mission_monitor_name" xml:space="preserve">
+    <value>Missionsüberwachung</value>
+  </data>
   
   
   
