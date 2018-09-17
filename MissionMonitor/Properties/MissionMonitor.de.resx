@@ -135,13 +135,19 @@
   <data name="header_type" xml:space="preserve">
     <value>Typ</value>
   </data>
-  
+  <data name="mission_monitor_desc" xml:space="preserve">
+    <value>Informationen zum Fortschritt Ihren Missionen.</value>
+  </data>
   <data name="mission_monitor_name" xml:space="preserve">
     <value>Missionsüberwachung</value>
   </data>
-  
+  <data name="para1" xml:space="preserve">
+    <value>Unten finden Sie eine Liste Ihrer Missionen.</value>
+  </data>
   <data name="para2" xml:space="preserve">
     <value>Bitte beachten, wenn das Missions-Log fehlerhaft ist, sollte ein Neustart des Spiels die Liste aktualisieren.</value>
   </data>
-  
+  <data name="tab_mission_warning" xml:space="preserve">
+    <value>Warnschwelle für den Ablauf der Mission (in Minuten):</value>
+  </data>
 </root>
