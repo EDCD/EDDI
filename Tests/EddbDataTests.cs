@@ -46,7 +46,7 @@ namespace UnitTests
             Body body = EddbService.Body("Sol");
             Assert.AreEqual(1, body.EDDBID);
             Assert.AreEqual(4792, body.age);
-            Assert.IsNull(body.atmosphere);
+            Assert.AreEqual("No atmosphere", body.atmosphereclass.invariantName);
             Assert.AreEqual(0, body.distance);
             Assert.IsNull(body.earthmass);
             Assert.IsNull(body.eccentricity);
@@ -56,10 +56,10 @@ namespace UnitTests
             Assert.IsFalse((bool)body.landable);
             Assert.IsNotNull(body.mainstar);
             Assert.IsTrue((bool)body.mainstar);
-            Assert.IsNull(body.materials);
+            Assert.AreEqual(0, body.materials.Count);
             Assert.AreEqual("Sol", body.name);
             Assert.IsNull(body.orbitalperiod);
-            Assert.IsNull(body.planettype);
+            Assert.AreEqual("None", body.planetClass.invariantName);
             Assert.IsNull(body.pressure);
             Assert.IsNull(body.radius);
             Assert.AreEqual(2.58327455873843, (double)body.rotationalperiod, .001);
@@ -68,9 +68,9 @@ namespace UnitTests
             Assert.AreEqual(1.0, (double)body.solarradius, 0.001);
             Assert.AreEqual("G", body.stellarclass);
             Assert.AreEqual(5778, body.temperature);
-            Assert.IsNull(body.terraformstate);
+            Assert.AreEqual("Not terraformable", body.terraformState.invariantName);
             Assert.AreEqual(-0.219615, (double)body.tilt, .001);
-            Assert.AreEqual("Star", body.type);
+            Assert.AreEqual("Star", body.Type.invariantName);
             Assert.IsNull(body.volcanism);
         }
 
@@ -92,7 +92,7 @@ namespace UnitTests
             Assert.AreEqual(0.90351818312491, (double)body.solarradius, 0.001);
             Assert.IsNull(body.volcanism);
             Assert.AreEqual("No atmosphere", body.atmosphereclass.invariantName);
-            Assert.IsNull(body.terraformstate);
+            Assert.AreEqual("Not terraformable", body.terraformState.invariantName);
             Assert.IsNull(body.earthmass);
             Assert.IsNull(body.radius);
             Assert.IsNull(body.gravity);
@@ -107,8 +107,8 @@ namespace UnitTests
             Assert.IsNull(body.tidallylocked);
             Assert.IsNotNull(body.landable);
             Assert.IsFalse((bool)body.landable);
-            Assert.IsNull(body.materials);
-            Assert.IsNull(body.planettype);
+            Assert.AreEqual(0, body.materials.Count);
+            Assert.AreEqual("None", body.planetClass.invariantName);
         }
 
         [TestMethod]
@@ -182,27 +182,27 @@ namespace UnitTests
             Assert.AreEqual(0.0M, body.inclination);
             Assert.AreEqual((double)365.256M, (double)body.orbitalperiod, 0.1);
             Assert.AreEqual(114.207832M, body.periapsis);
-            Assert.AreEqual("Earth-like world", body.planettype);
+            Assert.AreEqual("Earth-like world", body.planetClass.localizedName);
             Assert.AreEqual(6378.1M, body.radius);
             Assert.AreEqual((double)1.0M, (double)body.rotationalperiod, 0.01);
             Assert.AreEqual((double)1.0M, (double)body.semimajoraxis, 0.01);
             Assert.AreEqual((double)1.0M, (double)body.gravity, .01);
             Assert.AreEqual((double)1.0M, (double)body.pressure, .01);
             Assert.AreEqual(288.0M, body.temperature);
-            Assert.AreEqual("Not terraformable", body.terraformstate);
+            Assert.AreEqual("Not terraformable", body.terraformState.invariantName);
             Assert.IsNotNull(body.tidallylocked);
             Assert.IsFalse((bool)body.tidallylocked);
             Assert.IsNotNull(body.volcanism);
             Assert.AreEqual("Silicate", body.volcanism.invariantComposition);
             Assert.AreEqual("Magma", body.volcanism.invariantType);
             Assert.IsNull(body.volcanism.invariantAmount);
-            Assert.IsNull(body.materials);
+            Assert.AreEqual(0, body.materials.Count);
             Assert.AreEqual("Earth", body.name);
             Assert.IsNull(body.mainstar);
             Assert.IsNull(body.solarmass);
             Assert.IsNull(body.solarradius);
             Assert.IsNull(body.stellarclass);
-            Assert.AreEqual("Planet", body.type);
+            Assert.AreEqual("Planet", body.Type.invariantName);
         }
 
         [TestMethod]

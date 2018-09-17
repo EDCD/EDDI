@@ -143,8 +143,8 @@ namespace EddiEddbService
                 StarSystem.powerstate = (string)systemJson["power_state"];
 
                 // Stations & bodies
-                SetStationData(StarSystem);
-                SetBodyData(StarSystem);
+                SetStationSystemData(StarSystem);
+                SetBodySystemData(StarSystem);
 
                 StarSystem.updatedat = Dates.fromDateTimeStringToSeconds((string)systemJson["updated_at"]);
             }
@@ -154,7 +154,7 @@ namespace EddiEddbService
             return StarSystem;
         }
 
-        private static void SetBodyData(StarSystem StarSystem)
+        private static void SetBodySystemData(StarSystem StarSystem)
         {
             StarSystem.bodies = Bodies(StarSystem.name);
             foreach (Body body in StarSystem.bodies)
@@ -167,7 +167,7 @@ namespace EddiEddbService
             }
         }
 
-        private static void SetStationData(StarSystem StarSystem)
+        private static void SetStationSystemData(StarSystem StarSystem)
         {
             StarSystem.stations = Stations(StarSystem.name);
             foreach (Station station in StarSystem.stations)
