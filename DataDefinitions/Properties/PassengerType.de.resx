@@ -139,7 +139,9 @@
   <data name="Terrorist" xml:space="preserve">
     <value>Rebellenführer</value>
   </data>
-  
+  <data name="Tourist" xml:space="preserve">
+    <value>Reicher Tourist</value>
+  </data>
   <data name="Whistleblower" xml:space="preserve">
     <value>Politischer Gefangener</value>
   </data>
