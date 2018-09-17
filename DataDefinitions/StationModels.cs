@@ -4,28 +4,31 @@ using Utilities;
 
 namespace EddiDataDefinitions
 {
-    public class StationModels : ResourceBasedLocalizedEDName<StationModels>
+    public class StationModel : ResourceBasedLocalizedEDName<StationModel>
     {
-        static StationModels()
+        static StationModel()
         {
             resourceManager = Properties.StationModels.ResourceManager;
-            resourceManager.IgnoreCase = false;
-            missingEDNameHandler = (edname) => new StationModels(edname);
+            resourceManager.IgnoreCase = true;
+            missingEDNameHandler = (edname) => new StationModel(edname);
 
-            var AsteroidBase = new StationModels("AsteroidBase");
-            var Bernal = new StationModels("Bernal");
-            var Coriolis = new StationModels("Coriolis");
-            var Megaship = new StationModels("Megaship");
-            var Orbis = new StationModels("Orbis");
-            var Outpost = new StationModels("Outpost");
-            var SurfaceStation = new StationModels("SurfaceStation");
+            None = new StationModel("None");
+            var AsteroidBase = new StationModel("AsteroidBase");
+            var Bernal = new StationModel("Bernal");
+            var Coriolis = new StationModel("Coriolis");
+            var Megaship = new StationModel("Megaship");
+            var Orbis = new StationModel("Orbis");
+            var Outpost = new StationModel("Outpost");
+            var SurfaceStation = new StationModel("SurfaceStation");
         }
 
+        public static readonly StationModel None;
+
         // dummy used to ensure that the static constructor has run
-        public StationModels() : this("")
+        public StationModel() : this("")
         {}
 
-        private StationModels(string edname) : base(edname, edname)
+        private StationModel(string edname) : base(edname, edname)
         {}
     }
 }

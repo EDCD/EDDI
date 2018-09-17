@@ -48,15 +48,15 @@ namespace EddiEvents
 
         public string faction { get; private set; }
 
-        public string factionstate { get; private set; }
+        public string factionstate => factionState.localizedName;
 
         public string economy => Economy.localizedName;
 
         public string economy2 => Economy2.localizedName;
 
-        public string government { get; private set; }
+        public string government => Government.localizedName;
 
-        public string security { get; private set; }
+        public string security => securityLevel.localizedName;
 
         public long? population { get; private set; }
 
@@ -65,6 +65,9 @@ namespace EddiEvents
         public Economy Economy { get; private set; }
         public Economy Economy2 { get; private set; }
         public Superpower Allegiance { get; private set; }
+        public Government Government { get; private set; }
+        public SecurityLevel securityLevel { get; private set; }
+        public State factionState { get; private set; }
 
         public JumpedEvent(DateTime timestamp, string system, long systemAddress, decimal x, decimal y, decimal z, decimal distance, decimal fuelused, decimal fuelremaining, Superpower allegiance, string faction, State factionstate, Economy economy, Economy economy2, Government government, SecurityLevel security, long? population) : base(timestamp, NAME)
         {
@@ -78,11 +81,11 @@ namespace EddiEvents
             this.fuelremaining = fuelremaining;
             this.Allegiance = (allegiance ?? Superpower.None);
             this.faction = faction;
-            this.factionstate = (factionstate ?? State.None).localizedName;
+            this.factionState = (factionstate ?? State.None);
             this.Economy = (economy ?? Economy.None);
             this.Economy2 = (economy2 ?? Economy.None);
-            this.government = (government ?? Government.None).localizedName;
-            this.security = (security ?? SecurityLevel.None).localizedName;
+            this.Government = (government ?? Government.None);
+            this.securityLevel = (security ?? SecurityLevel.None);
             this.population = population;
         }
     }

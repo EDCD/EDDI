@@ -792,8 +792,7 @@ namespace EddiVoiceAttackResponder
                     vaProxy.SetInt(prefix + " starports", system.stations.Count(s => s.IsStarport()));
                     vaProxy.SetInt(prefix + " outposts", system.stations.Count(s => s.IsOutpost()));
                     vaProxy.SetInt(prefix + " planetary stations", system.stations.Count(s => s.IsPlanetary()));
-                    vaProxy.SetInt(prefix + " planetary outposts", system.stations.Count(s => s.IsPlanetaryOutpost()));
-                    vaProxy.SetInt(prefix + " planetary ports", system.stations.Count(s => s.IsPlanetaryPort()));
+                    vaProxy.SetInt(prefix + " planetary settlements", system.stations.Count(s => s.IsPlanetarySettlement()));
 
                     Body primaryBody = null;
                     if (system.bodies != null && system.bodies.Count > 0)

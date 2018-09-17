@@ -117,32 +117,20 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Ice" xml:space="preserve">
-    <value>Ice</value>
-    <comment>Body Composition "Ice"</comment>
+  <data name="Large" xml:space="preserve">
+    <value>Large</value>
+    <comment>Large Landing Pad</comment>
   </data>
-  <data name="Metal" xml:space="preserve">
-    <value>Metal</value>
-    <comment>Body Composition "Metal"</comment>
+  <data name="Medium" xml:space="preserve">
+    <value>Medium</value>
+    <comment>Medium Landing Pad</comment>
   </data>
-  <data name="Planet" xml:space="preserve">
-    <value>Planet</value>
-    <comment>Body Type "Planet"</comment>
-  </data>
-  <data name="Rock" xml:space="preserve">
-    <value>Rock</value>
-    <comment>Body Composition "Rock"</comment>
-  </data>
-  <data name="Star" xml:space="preserve">
-    <value>Star</value>
-    <comment>Body Type "Star"</comment>
-  </data>
-  <data name="Belt" xml:space="preserve">
-    <value>Belt</value>
-    <comment>Body Type "Belt"</comment>
+  <data name="Small" xml:space="preserve">
+    <value>Small</value>
+    <comment>Small Landing Pad</comment>
   </data>
   <data name="None" xml:space="preserve">
     <value>None</value>
-    <comment>None</comment>
+    <comment>No Landing Pad</comment>
   </data>
 </root>

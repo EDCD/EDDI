@@ -180,21 +180,17 @@ namespace EddiEddpMonitor
                 if (system != null)
                 {
                     // Update our local copy of the system
-                    if (newfaction != null)
+                    if (newfaction != null || newallegiance != null || newgovernment != null)
                     {
-                        system.faction = newfaction;
+                        Faction controllingFaction = system.Faction ?? new Faction();
+                        if (newfaction != null) { controllingFaction.name = newfaction; }
+                        if (newallegiance != null) { controllingFaction.Allegiance = Superpower.FromName(newallegiance); }
+                        if (newgovernment != null) { controllingFaction.Government= Government.FromName(newgovernment); }
+                        system.Faction = controllingFaction;
                     }
                     if (newstate != null)
                     {
                         system.systemState = newstate;
-                    }
-                    if (newallegiance != null)
-                    {
-                        system.allegiance = newallegiance;
-                    }
-                    if (newgovernment != null)
-                    {
-                        system.government = newgovernment;
                     }
                     if (neweconomy != null)
                     {
@@ -204,7 +200,7 @@ namespace EddiEddpMonitor
                     // EDDP does not report changes to secondary economies.
                     if (newsecurity != null)
                     {
-                        system.security = newsecurity;
+                        system.securityLevel = SecurityLevel.FromName(newsecurity);
                     }
                     system.lastupdated = DateTime.UtcNow;
                     StarSystemSqLiteRepository.Instance.SaveStarSystem(system);

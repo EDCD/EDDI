@@ -174,4 +174,7 @@
   <data name="WaterWorld" xml:space="preserve">
     <value>Water world</value>
   </data>
+  <data name="None" xml:space="preserve">
+    <value>None</value>
+  </data>
 </root>

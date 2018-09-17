@@ -7,10 +7,10 @@ namespace EDDNResponder
         public string name;
         public decimal proportion = 0M;
 
-        public EDDNEconomy(CompanionAppEconomy companionAppEconomy)
+        public EDDNEconomy(EconomyShare economyShareEconomy)
         {
-            name = companionAppEconomy.name;
-            proportion = companionAppEconomy.proportion;
+            name = economyShareEconomy.name;
+            proportion = economyShareEconomy.proportion;
         }
     }
 }

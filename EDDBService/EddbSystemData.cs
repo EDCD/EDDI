@@ -1,0 +1,139 @@
+﻿using EddiDataDefinitions;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Utilities;
+
+namespace EddiEddbService
+{
+    partial class EddbService
+    {
+        /// <summary> At least one system name is required. </summary>
+        public static List<StarSystem> Systems(string[] systemNames, bool searchPopulated = true)
+        {
+            List<StarSystem> systems = new List<StarSystem>();
+            foreach (string name in systemNames)
+            {
+                StarSystem system = GetSystem(new KeyValuePair<string, object>(SystemQuery.systemName, name));
+            }
+            return systems.OrderBy(x => x.name).ToList();
+        }
+
+        /// <summary> At least one system EDDBID is required. </summary>
+        public static List<StarSystem> Systems(long[] eddbIds, bool searchPopulated = true)
+        {
+            List<StarSystem> systems = new List<StarSystem>();
+            foreach (long eddbId in eddbIds)
+            {
+                StarSystem system = GetSystem(new KeyValuePair<string, object>(SystemQuery.eddbId, eddbId));
+            }
+            return systems.OrderBy(x => x.name).ToList();
+        }
+
+        /// <summary> Exactly one system name is required. </summary>
+        public static StarSystem System(string systemName, bool searchPopulated = true)
+        {
+            return GetSystem(new KeyValuePair<string, object>(SystemQuery.systemName, systemName), searchPopulated);
+        }
+
+        /// <summary> Exactly one system EDDBID is required. </summary>
+        public static StarSystem System(long eddbId, bool searchPopulated = true)
+        {
+            return GetSystem(new KeyValuePair<string, object>(SystemQuery.eddbId, eddbId), searchPopulated);
+        }
+
+        private static StarSystem GetSystem(KeyValuePair<string, object> query, bool searchPopulated = true)
+        {
+            if (query.Value != null)
+            {
+                List<KeyValuePair<string, object>> queryList = new List<KeyValuePair<string, object>>();
+                queryList.Add(query);
+
+                List<object> responses = new List<object>();
+                if (searchPopulated == true)
+                {
+                    responses = GetData(Endpoint.populatedSystems, queryList);
+                    if (responses == null)
+                    {
+                        // The system may not be populated. Try again searching unpopulated systems
+                        searchPopulated = false;
+                    }
+                }
+                if (searchPopulated == false)
+                {
+                    responses = GetData(Endpoint.systems, queryList);
+                }
+
+                if (responses != null)
+                {
+                    return ParseEddbSystem(responses[0], searchPopulated);
+                }
+            }
+            return null;
+        }
+
+        // Though not necessary at this time, it is possible to implement methods that query the data source 
+        // based on multiple criteria (e.g. population, state, government, etc.) by adding multiple criteria to the queryList. 
+
+        private static StarSystem ParseEddbSystem(object response, bool searchPopulated)
+        {
+            JObject systemJson = ((JObject)response);
+            StarSystem StarSystem = new StarSystem();
+            StarSystem.name = (string)systemJson["name"];
+
+            if (systemJson["is_populated"] != null)
+            {
+                // We have real data so populate the rest of the data
+
+                // General data
+                StarSystem.EDDBID = (long?)systemJson["id"];
+                StarSystem.EDSMID = (long?)systemJson["edsm_id"];
+                StarSystem.x = (decimal?)systemJson["x"];
+                StarSystem.y = (decimal?)systemJson["y"];
+                StarSystem.z = (decimal?)systemJson["z"];
+                StarSystem.Reserve = SystemReserveLevel.FromName((string)systemJson["reserve_type"]);
+
+                // Populated system data
+                StarSystem.population = (long?)systemJson["population"] == null ? 0 : (long?)systemJson["population"];
+                // EDDB uses invariant / English localized economies
+                StarSystem.economies[0] = Economy.FromName((string)systemJson["primary_economy"]);
+                // At present, EDDB does not provide any information about secondary economies.
+                StarSystem.systemState = State.FromEDName((string)systemJson["state"]) ?? State.None;
+                StarSystem.securityLevel = SecurityLevel.FromName((string)systemJson["security"]);
+
+                // Controlling faction data
+                long? factionEddbId = (long?)systemJson["controlling_minor_faction_id"];
+                Faction controllingFaction = new Faction();
+                if (factionEddbId != null)
+                {
+                    controllingFaction = Faction((long)factionEddbId);
+                }
+                if (controllingFaction != null)
+                {
+                    controllingFaction.name = (string)systemJson["controlling_minor_faction"];
+                    controllingFaction.Government = Government.FromName((string)systemJson["government"]);
+                    controllingFaction.Allegiance = Superpower.FromName((string)systemJson["allegiance"]);
+                };
+                StarSystem.Faction = controllingFaction;
+
+                // Powerplay details
+                StarSystem.power = (string)systemJson["power"] == "None" ? null : (string)systemJson["power"];
+                StarSystem.powerstate = (string)systemJson["power_state"];
+
+                // Stations & bodies
+                StarSystem.stations = Stations(StarSystem.name);
+                StarSystem.bodies = Bodies(StarSystem.name);
+
+                StarSystem.updatedat = Dates.fromDateTimeStringToSeconds((string)systemJson["updated_at"]);
+            }
+
+            StarSystem.lastupdated = DateTime.UtcNow;
+
+            return StarSystem;
+        }
+    }
+}
