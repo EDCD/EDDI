@@ -202,7 +202,7 @@
     <comment>Atmosphere class "Water-rich"</comment>
   </data>
   <data name="EarthLike" xml:space="preserve">
-    <value>Earth-like</value>
+    <value>Suitable for water-based life</value>
     <comment>Atmosphere class "EarthLike"</comment>
   </data>
 </root>

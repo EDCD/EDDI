@@ -22,14 +22,14 @@ namespace EddiDataDefinitions.Properties {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class Body {
+    public class SystemReserveLevel {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Body() {
+        internal SystemReserveLevel() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace EddiDataDefinitions.Properties {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("EddiDataDefinitions.Properties.Body", typeof(Body).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("EddiDataDefinitions.Properties.SystemReserveLevel", typeof(SystemReserveLevel).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,29 +61,38 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Belt.
+        ///   Looks up a localized string similar to Common.
         /// </summary>
-        public static string Belt {
+        public static string Common {
             get {
-                return ResourceManager.GetString("Belt", resourceCulture);
+                return ResourceManager.GetString("Common", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Ice.
+        ///   Looks up a localized string similar to Depleted.
         /// </summary>
-        public static string Ice {
+        public static string Depleted {
             get {
-                return ResourceManager.GetString("Ice", resourceCulture);
+                return ResourceManager.GetString("Depleted", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Metal.
+        ///   Looks up a localized string similar to Major.
         /// </summary>
-        public static string Metal {
+        public static string Major {
             get {
-                return ResourceManager.GetString("Metal", resourceCulture);
+                return ResourceManager.GetString("Major", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Minor.
+        /// </summary>
+        public static string Minor {
+            get {
+                return ResourceManager.GetString("Minor", resourceCulture);
             }
         }
         
@@ -97,29 +106,11 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Planet.
+        ///   Looks up a localized string similar to Pristine.
         /// </summary>
-        public static string Planet {
+        public static string Pristine {
             get {
-                return ResourceManager.GetString("Planet", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Rock.
-        /// </summary>
-        public static string Rock {
-            get {
-                return ResourceManager.GetString("Rock", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Star.
-        /// </summary>
-        public static string Star {
-            get {
-                return ResourceManager.GetString("Star", resourceCulture);
+                return ResourceManager.GetString("Pristine", resourceCulture);
             }
         }
     }

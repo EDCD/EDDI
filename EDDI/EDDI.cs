@@ -800,11 +800,17 @@ namespace Eddi
             // Update the mutable system data from the journal
             if (theEvent.population != null)
             {
-                CurrentStarSystem.allegiance = theEvent.allegiance;
-                CurrentStarSystem.government = theEvent.government;
                 CurrentStarSystem.population = theEvent.population;
                 CurrentStarSystem.economies[0] = theEvent.Economy;
                 CurrentStarSystem.economies[1] = theEvent.Economy2;
+                CurrentStarSystem.securityLevel = theEvent.securityLevel;
+
+                // Faction data
+                Faction controllingFaction = new Faction();
+                controllingFaction.name = theEvent.faction;
+                controllingFaction.Government = theEvent.Government;
+                controllingFaction.Allegiance = theEvent.Allegiance;
+                CurrentStarSystem.Faction = controllingFaction;
             }
 
             if (theEvent.docked == true || theEvent.bodytype.ToLowerInvariant() == "station")
@@ -839,9 +845,11 @@ namespace Eddi
                 station.systemAddress = theEvent.systemAddress;
 
                 // Information from the event might be more current than that from our data source so use it in preference
-                station.faction = theEvent.faction;
-                station.government = theEvent.government;
-                station.allegiance = theEvent.allegiance;
+                Faction controllingFaction = new Faction();
+                controllingFaction.name = theEvent.faction;
+                controllingFaction.Government = Government.FromEDName(theEvent.government);
+                controllingFaction.Allegiance = Superpower.FromEDName(theEvent.allegiance);
+                station.Faction = controllingFaction;
 
                 CurrentStation = station;
 
@@ -930,9 +938,13 @@ namespace Eddi
             station.marketId = theEvent.marketId;
             
             // Information from the event might be more current than our data source so use it in preference
-            station.state = theEvent.factionstate;
-            station.faction = theEvent.faction;
-            station.government = theEvent.government;
+            station.State = EddiDataDefinitions.State.FromEDName(theEvent.factionstate);
+
+            Faction controllingFaction = new Faction();
+            controllingFaction.name = theEvent.faction;
+            controllingFaction.Allegiance = Superpower.FromEDName(theEvent.allegiance);
+            controllingFaction.Government = Government.FromEDName(theEvent.government);
+            station.Faction = controllingFaction;
 
             if (theEvent.stationservices != null)
             {
@@ -1808,7 +1820,7 @@ namespace Eddi
                             // We have the required station information
                             Logging.Debug("Current station matches profile information; updating info");
                             CurrentStation.commodities = profile.LastStation.commodities;
-                            CurrentStation.economies = profile.LastStation.economies;
+                            CurrentStation.economiesShares = profile.LastStation.economiesShares;
                             CurrentStation.prohibited = profile.LastStation.prohibited;
                             CurrentStation.commoditiesupdatedat = profileTime;
                             CurrentStation.outfitting = profile.LastStation.outfitting;

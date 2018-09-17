@@ -9,22 +9,11 @@ namespace EddiDataDefinitions
     /// <summary>Details for a star system</summary>
     public class StarSystem
     {
-        // The ID in EDDB
-        public long EDDBID { get; set; }
-        public string name { get; set; }
-        public long? population { get; set; }
-        public string allegiance { get; set; }
-        public string government { get; set; }
-        public string faction { get; set; }
-        public string primaryeconomy => (economies[0] ?? Economy.None).localizedName;
-        public List<Economy> economies { get; set; } = new List<Economy>() { null, null };
-        public State systemState { get; set; } = State.None;
-        public string security { get; set; }
-        public string power { get; set; }
-        public string powerstate { get; set; }
+        // General information
 
-        [Obsolete("Please use systemState instead")]
-        public string state => (systemState ?? State.None).localizedName;
+        public string name { get; set; }
+        public long? EDDBID { get; set; } // The ID in EDDB
+        public long? EDSMID { get; set; } // The ID in EDSM
 
         /// <summary>X co-ordinate for this system</summary>
         public decimal? x { get; set; }
@@ -32,9 +21,39 @@ namespace EddiDataDefinitions
         public decimal? y { get; set; }
         /// <summary>Z co-ordinate for this system</summary>
         public decimal? z { get; set; }
-
         /// <summary>Unique 64 bit id value for system</summary>
         public long? systemAddress { get; set; }
+
+        /// <summary>Details of bodies (stars/planets)</summary>
+        public List<Body> bodies { get; set; }
+
+        /// <summary>System reserve levels</summary>
+        public SystemReserveLevel Reserve { get; set; } = SystemReserveLevel.None; // None if no rings are present
+        public string reserve => Reserve.localizedName;
+
+        // Populated system data
+
+        public long? population { get; set; }
+        public string primaryeconomy => (economies[0] ?? Economy.None).localizedName;
+        public List<Economy> economies { get; set; } = new List<Economy>() { null, null };
+        public State systemState { get; set; } = State.None;
+
+        /// <summary>The system's security level</summary>
+        public SecurityLevel securityLevel { get; set; } = SecurityLevel.None;
+        /// <summary>The system's security level (localized name)</summary>
+        public string security => securityLevel.localizedName;
+
+        public string power { get; set; }
+        public string powerstate { get; set; }
+
+        [Obsolete("Please use systemState instead")]
+        public string state => systemState.localizedName;
+
+        // Faction details
+        public Faction Faction { get; set; } = new Faction();
+        public string faction => Faction.name;
+        public string allegiance => Faction.allegiance;
+        public string government => Faction.government;
 
         /// <summary>Details of stations</summary>
         public List<Station> stations { get; set; }
@@ -46,8 +65,7 @@ namespace EddiDataDefinitions
         [JsonIgnore]
         public List<Station> orbitalstations => stations.FindAll(s => !s.IsPlanetary());
 
-        /// <summary>Details of bodies (stars/planets)</summary>
-        public List<Body> bodies { get; set; }
+        // Other data
 
         /// <summary>Number of visits</summary>
         public int visits;
@@ -97,5 +115,31 @@ namespace EddiDataDefinitions
             stations = new List<Station>();
             bodies = new List<Body>();
         }
+    }
+
+    public class SystemReserveLevel : ResourceBasedLocalizedEDName<SystemReserveLevel>
+    {
+        static SystemReserveLevel()
+        {
+            resourceManager = Properties.SystemReserveLevel.ResourceManager;
+            resourceManager.IgnoreCase = true;
+            missingEDNameHandler = (edname) => new SystemReserveLevel(edname);
+
+            None = new SystemReserveLevel("None");
+            var Depleted = new SystemReserveLevel("Depleted");
+            var Minor = new SystemReserveLevel("Minor");
+            var Common = new SystemReserveLevel("Common");
+            var Major = new SystemReserveLevel("Major");
+            var Pristine = new SystemReserveLevel("Pristine");
+        }
+
+        public static readonly SystemReserveLevel None;
+
+        // dummy used to ensure that the static constructor has run
+        public SystemReserveLevel() : this("")
+        { }
+
+        private SystemReserveLevel(string edname) : base(edname, edname)
+        { }
     }
 }

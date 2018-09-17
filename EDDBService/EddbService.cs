@@ -13,6 +13,7 @@ namespace EddiEddbService
         // Since EDDB doesn't have an official API, we make use of the "unofficial" API
         private const string baseUrl = "https://elitebgs.kodeblox.com/api/eddb/";
 
+        /// <summary> Specify the endpoint (e.g. EddiEddbService.Endpoint.bodies) and a list of queries as KeyValuePairs </summary>
         public static List<object> GetData(string endpoint, List<KeyValuePair<string, object>> queries)
         {
             if (queries == null) { return null; }
@@ -202,6 +203,9 @@ namespace EddiEddbService
 
         /// <summary> Comma seperated states of the powers in influence in the system the station is in. </summary>
         public const string powerState = "powerstatename";
+
+        /// <summary> System name. </summary>
+        public const string systemName = "systemname";
     }
 
     public class BodyQuery

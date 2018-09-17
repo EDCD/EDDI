@@ -24,7 +24,7 @@ namespace EddiEvents
         public string station { get; private set; }
 
         [JsonProperty("stationType")]
-        public StationModels stationDefinition { get; private set; }
+        public StationModel stationDefinition { get; private set; }
 
         public string stationtype => stationDefinition.localizedName;
 
@@ -37,7 +37,7 @@ namespace EddiEvents
         public DockingDeniedEvent(DateTime timestamp, string station, string stationType, long marketId, string reason) : base(timestamp, NAME)
         {
             this.station = station;
-            this.stationDefinition = StationModels.FromEDName(stationType);
+            this.stationDefinition = StationModel.FromEDName(stationType);
             this.marketId = marketId;
             this.reason = reason;
         }

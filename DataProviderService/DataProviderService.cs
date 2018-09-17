@@ -88,14 +88,20 @@ namespace EddiDataProviderService
                 // We have real data so populate the rest of the data
                 StarSystem.EDDBID = (long)json["id"];
                 StarSystem.population = (long?)json["population"] == null ? 0 : (long?)json["population"];
-                StarSystem.allegiance = (string)json["allegiance"];
-                StarSystem.government = (string)json["government"];
-                StarSystem.faction = (string)json["faction"];
                 // EDDP uses invariant / English localized economies
                 StarSystem.economies[0] = Economy.FromName((string)json["primary_economy"]);
                 // At present, EDDP does not provide any information about secondary economies.
                 StarSystem.systemState = State.FromEDName((string)json["state"]) ?? State.None;
-                StarSystem.security = (string)json["security"];
+                StarSystem.securityLevel = SecurityLevel.FromName((string)json["security"]);
+
+                // Controlling faction data
+                Faction controllingFaction = new Faction();
+                controllingFaction.name = (string)json["controlling_faction"];
+                controllingFaction.EDDBID = (long?)json["controlling_minor_faction_id"];
+                controllingFaction.Government = Government.FromName((string)json["government"]);
+                controllingFaction.Allegiance = Superpower.FromName((string)json["allegiance"]);
+                StarSystem.Faction = controllingFaction;
+
                 StarSystem.power = (string)json["power"] == "None" ? null : (string)json["power"];
                 StarSystem.powerstate = (string)json["power_state"];
                 StarSystem.updatedat = (long?)json["updated_at"];
@@ -124,10 +130,14 @@ namespace EddiDataProviderService
 
                     Station.primaryeconomy = (string)station["primary_economy"];
 
-                    Station.allegiance = (string)station["allegiance"];
-                    Station.government = (string)station["government"];
-                    Station.faction = (string)station["controlling_faction"];
-                    Station.state = (string)station["state"] == "None" ? null : (string)station["state"];
+                    // Faction data
+                    Faction controllingFaction = new Faction();
+                    controllingFaction.Allegiance = Superpower.FromName((string)station["allegiance"]);
+                    controllingFaction.Government = Government.FromName((string)station["government"]);
+                    controllingFaction.name = (string)station["controlling_faction"];
+                    Station.Faction = controllingFaction;
+
+                    Station.State = State.FromName((string)station["state"] == "None" ? null : (string)station["state"]);
                     Station.distancefromstar = (long?)station["distance_to_star"];
                     Station.hasrefuel = (bool?)station["has_refuel"];
                     Station.hasrearm = (bool?)station["has_rearm"];
@@ -141,18 +151,9 @@ namespace EddiDataProviderService
 
                     if (((string)station["type"]) != null)
                     {
-                        Station.model = ((string)station["type"]);
-                        if (!stationModels.Contains((string)station["type"]))
-                        {
-                            Logging.Info("Unknown station model " + ((string)station["type"]));
-                        }
+                        Station.Model = StationModel.FromName((string)station["type"]);
                     }
-
-                    string largestpad = (string)station["max_landing_pad_size"];
-                    if (largestpad == "S") { largestpad = "Small"; }
-                    if (largestpad == "M") { largestpad = "Medium"; }
-                    if (largestpad == "L") { largestpad = "Large"; }
-                    Station.largestpad = largestpad;
+                    Station.LargestPad = StationLargestPad.FromSize((string)station["max_landing_pad_size"]);
 
                     Station.commodities = CommodityQuotesFromEDDP(station);
                     Station.commoditiesupdatedat = (long?)station["market_updated_at"];

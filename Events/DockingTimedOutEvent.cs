@@ -23,14 +23,14 @@ namespace EddiEvents
         public string station { get; private set; }
 
         [JsonProperty("stationType")]
-        public StationModels stationDefinition { get; private set; }
+        public StationModel stationDefinition { get; private set; }
 
         public string stationtype => stationDefinition.localizedName;
 
         public DockingTimedOutEvent(DateTime timestamp, string station, string stationType) : base(timestamp, NAME)
         {
             this.station = station;
-            this.stationDefinition = StationModels.FromEDName(stationType);
+            this.stationDefinition = StationModel.FromEDName(stationType);
         }
     }
 }

@@ -79,6 +79,16 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>PlanetClass.resx</DependentUpon>
     </Compile>
+    <Compile Include="Properties\StationLargestPad.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>StationLargestPad.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\SystemReserveLevel.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SystemReserveLevel.resx</DependentUpon>
+    </Compile>
     <Compile Include="Properties\TerraformState.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -502,7 +512,7 @@
     </Compile>
     <Compile Include="Status.cs" />
     <Compile Include="Friend.cs" />
-    <Compile Include="CompanionAppEconomy.cs" />
+    <Compile Include="EconomyShare.cs" />
     <Compile Include="Composition.cs" />
     <Compile Include="Blueprint.cs" />
     <Compile Include="DataScan.cs" />
@@ -852,6 +862,10 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Rarities.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Properties\StationLargestPad.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>StationLargestPad.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\StationModels.de.resx" />
     <EmbeddedResource Include="Properties\StationModels.es.resx" />
     <EmbeddedResource Include="Properties\StationModels.fr.resx" />
@@ -919,6 +933,10 @@
     <EmbeddedResource Include="Properties\States.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>States.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\SystemReserveLevel.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>SystemReserveLevel.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\TargetType.resx">
       <Generator>ResXFileCodeGenerator</Generator>

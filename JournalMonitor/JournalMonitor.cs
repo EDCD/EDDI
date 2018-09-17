@@ -200,7 +200,7 @@ namespace EddiJournalMonitor
                                 long systemAddress = JsonParsing.getLong(data, "SystemAddress");
 
                                 string body = JsonParsing.getString(data, "Body");
-                                string bodyType = JsonParsing.getString(data, "BodyType");
+                                BodyType bodyType = BodyType.FromEDName(JsonParsing.getString(data, "BodyType"));
                                 bool docked = JsonParsing.getBool(data, "Docked");
                                 Superpower allegiance = getAllegiance(data, "SystemAllegiance");
                                 string faction = getFaction(data, "SystemFaction");
@@ -212,7 +212,7 @@ namespace EddiJournalMonitor
 
                                 // If docked
                                 string station = JsonParsing.getString(data, "StationName");
-                                string stationtype = JsonParsing.getString(data, "StationType");
+                                StationModel stationtype = StationModel.FromEDName(JsonParsing.getString(data, "StationType"));
                                 long? marketId = JsonParsing.getOptionalLong(data, "MarketID");
 
                                 // If landed

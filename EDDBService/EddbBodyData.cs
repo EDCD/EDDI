@@ -8,6 +8,10 @@ using System.Text;
 using System.Threading.Tasks;
 using Utilities;
 
+// At the DataProviderService level...
+// - Set Body.systemname = systemName;
+// - Set Body.reserves = reserves
+
 namespace EddiEddbService
 {
     partial class EddbService
@@ -128,15 +132,7 @@ namespace EddiEddbService
             Body.updatedat = (long)(Dates.fromDateTimeStringToSeconds((string)bodyJson["updated_at"]));
             Body.name = (string)bodyJson["name"];
             Body.Type = BodyType.FromEDName((string)bodyJson["group_name"]);
-
-            // System name is not given directly, but we have an EDDB ID linking to the system 
-            // that we will be able to use for lookups once our system lookup is complete.
-            // We will also need to use this lookup to find the reserve level associated with this system
             Body.systemEDDBID = (long)bodyJson["system_id"];
-            /*
-            Body.systemname = systemName;
-            Body.reserves = reserves
-            */
 
             // Orbital data
             Body.distance = (long?)bodyJson["distance_to_arrival"]; // Light seconds

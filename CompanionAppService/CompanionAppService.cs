@@ -289,7 +289,7 @@ namespace EddiCompanionAppService
 
                 if (cachedProfile.LastStation.hasmarket ?? false)
                 {
-                    cachedProfile.LastStation.economies = EconomiesFromProfile(marketJson);
+                    cachedProfile.LastStation.economiesShares = EconomiesFromProfile(marketJson);
                     cachedProfile.LastStation.commodities = CommodityQuotesFromProfile(marketJson);
                     cachedProfile.LastStation.prohibited = ProhibitedCommoditiesFromProfile(marketJson);
                 }
@@ -645,19 +645,18 @@ namespace EddiCompanionAppService
         }
 
         // Obtain the list of station economies from the profile
-        public static List<CompanionAppEconomy> EconomiesFromProfile(dynamic json)
+        public static List<EconomyShare> EconomiesFromProfile(dynamic json)
         {
-            List<CompanionAppEconomy> Economies = new List<CompanionAppEconomy>();
+            List<EconomyShare> Economies = new List<EconomyShare>();
 
             if (json["lastStarport"] != null && json["lastStarport"]["economies"] != null)
             {
                 foreach (dynamic economyJson in json["lastStarport"]["economies"])
                 {
                     dynamic economy = economyJson.Value;
-                    CompanionAppEconomy Economy = new CompanionAppEconomy();
-
-                    Economy.name = (string)economy["name"];
-                    Economy.proportion = (decimal)economy["proportion"];
+                    string name = (string)economy["name"];
+                    decimal proportion = (decimal)economy["proportion"];
+                    EconomyShare Economy = new EconomyShare(name, proportion);
                     Economies.Add(Economy);
                 }
             }

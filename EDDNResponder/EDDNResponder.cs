@@ -274,9 +274,9 @@ namespace EDDNResponder
         private static List<EDDNEconomy> prepareEconomyInformation()
         {
             List<EDDNEconomy> eddnEconomies = new List<EDDNEconomy>();
-            if (EDDI.Instance.CurrentStation.economies != null)
+            if (EDDI.Instance.CurrentStation.economiesShares != null)
             {
-                foreach (CompanionAppEconomy economy in EDDI.Instance.CurrentStation.economies)
+                foreach (EconomyShare economy in EDDI.Instance.CurrentStation.economiesShares)
                 {
                     EDDNEconomy eddnEconomy = new EDDNEconomy(economy);
                     eddnEconomies.Add(eddnEconomy);

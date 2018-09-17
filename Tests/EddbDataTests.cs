@@ -19,6 +19,7 @@ namespace UnitTests
             RollbarLocator.RollbarInstance.Config.Enabled = false;
         }
 
+        /*
         [TestMethod]
         public void TestEddbDataMultiParameters()
         {
@@ -36,48 +37,6 @@ namespace UnitTests
             Assert.IsTrue((response[0]).government.ToLowerInvariant() == "anarchy");
             Assert.IsTrue((response[0]).security.ToLowerInvariant() == "anarchy");
             Assert.IsTrue((response[0]).allegiance.ToLowerInvariant() == "empire");
-        }
-
-        /*
-        [TestMethod]
-        public void TestStarSystemCoordinates()
-        {
-            // Test coordinates
-            StarSystem starSystem = EddbService.GetEddbSystem("Merope");
-
-            Assert.AreEqual("merope", starSystem.name.ToLowerInvariant());
-            Assert.AreEqual(-78.59375M, starSystem.x);
-            Assert.AreEqual(-149.625M, starSystem.y);
-            Assert.AreEqual(-340.53125M, starSystem.z);
-        }
-        */
-
-        /*
-        [TestMethod]
-        public void TestStarSystemData()
-        {
-
-            // Test system & body data
-            StarSystem starSystem = StarMapService.GetStarMapSystem("Sol");
-
-            Assert.AreEqual("Sol", starSystem.name);
-            Assert.AreEqual((decimal)0, starSystem.x);
-            Assert.AreEqual((decimal)0, starSystem.y);
-            Assert.AreEqual((decimal)0, starSystem.z);
-            Assert.IsNotNull(starSystem.population);
-            Assert.IsNotNull(starSystem.allegiance);
-            Assert.IsNotNull(starSystem.government);
-            Assert.IsNotNull(starSystem.faction);
-            Assert.IsNotNull(starSystem.state);
-            Assert.IsNotNull(starSystem.security);
-            Assert.IsNotNull(starSystem.primaryeconomy);
-            Assert.AreEqual("Common", starSystem.reserve);
-            Assert.IsNotNull(starSystem.stations.Count);
-
-            Assert.IsNotNull(starSystem);
-            Assert.IsNotNull(starSystem.bodies);
-            Assert.IsFalse(starSystem.bodies.Count == 0);
-
         }
         */
 
@@ -124,7 +83,7 @@ namespace UnitTests
             Assert.AreEqual(764, body.systemEDDBID);
             Assert.AreEqual("Star", body.type);
             Assert.AreEqual("K", body.stellarclass);
-            Assert.AreEqual(5398, (double)body.distance, 10);
+            Assert.AreEqual(5398, (double)body.distance, 50);
             Assert.AreEqual(5240, body.temperature);
             Assert.IsNotNull(body.mainstar);
             Assert.IsFalse((bool)body.mainstar);
@@ -202,9 +161,10 @@ namespace UnitTests
         {
             Body body = EddbService.Body("Earth", "Sol");
             Assert.IsNull(body.age);
-            // Assert.AreEqual("Earth-like", body.atmosphereclass.invariantName); 
-            // Data source reports this as "Suitable for water-based life" but via Ross it is "Earthlike". 
-            // Apparently intentional from EDSM (EDDB syncs body data from EDSM): https://github.com/EDSM-NET/Alias/blob/3a904f799a4b7b4dd28f12af80eba38307789c99/Body/Planet/Atmosphere.php#L83
+            Assert.AreEqual("Suitable for water-based life", body.atmosphereclass.invariantName); 
+            // Data source reports this as "Suitable for water-based life", matching System Map, but the journal raw is "Earthlike". 
+            // Apparently intentional: 
+            // https://github.com/EDSM-NET/Alias/blob/3a904f799a4b7b4dd28f12af80eba38307789c99/Body/Planet/Atmosphere.php#L83
             Assert.AreEqual("Nitrogen", body.atmosphereCompositions[0].invariantName);
             Assert.AreEqual(77.886406M, body.atmosphereCompositions[0].percent);
             Assert.AreEqual("Oxygen", body.atmosphereCompositions[1].invariantName);
@@ -214,7 +174,7 @@ namespace UnitTests
             Assert.AreEqual("Metal", body.solidComposition[1].invariantName);
             Assert.AreEqual(30M, body.solidComposition[1].percent);
             Assert.AreEqual(2, body.solidComposition.Count);
-            Assert.AreEqual((double)499.485718M, (double)body.distance, 1);
+            Assert.AreEqual((double)499.485718M, (double)body.distance, 50);
             Assert.AreEqual(0.0167M, body.eccentricity);
             Assert.IsNotNull(body.landable);
             Assert.IsFalse((bool)body.landable);
@@ -282,56 +242,54 @@ namespace UnitTests
             Assert.AreEqual(40, bodies.Count);
         }
 
-        /*
         [TestMethod]
-        public void TestEddbSystems()
+        public void TestEddbStationJamesonMemorial()
         {
-            // Test systems obtained from a list 
-            string[] systems = { "Merope", "Sol" };
-            List<StarSystem> starSystems = EddbService.GetEddbSystems(systems);
+            // Test system station data
+            Station station = EddbService.Station("Jameson Memorial", "Shinrarta Dezhra");
+            Assert.AreEqual("Jameson Memorial", station.name);
+            Assert.AreEqual(571, station.EDDBID);
+            Assert.AreEqual(16827, station.systemEDDBID);
+            Assert.AreEqual(6815, station.bodyEDDBID);
+            Assert.AreEqual("Large", station.LargestPad.basename);
+            Assert.AreEqual("Orbis", station.Model.basename);
+            Assert.AreEqual(324, (double)station.distancefromstar, 10);
 
-            Assert.IsNotNull(starSystems.Count);
+            // Faction data
+            Assert.IsNotNull(station.Faction);
+            Assert.IsTrue(station.Faction.EDDBID > 0);
+            Assert.IsTrue(station.State is State);
+            Assert.IsTrue(station.Faction.Allegiance is Superpower);
+            Assert.IsTrue(station.Faction.Government is Government);
 
-            foreach (StarSystem starSystem in starSystems)
-            {
-                if (starSystem.name.ToLowerInvariant() == "merope")
-                {
-                    Assert.AreEqual((decimal)-78.59375, starSystem.x);
-                    Assert.AreEqual((decimal)-149.625, starSystem.y);
-                    Assert.AreEqual((decimal)-340.53125, starSystem.z);
-                    continue;
-                }
-                else if (starSystem.name == "Sol")
-                {
-                    Body body = starSystem.bodies.Find(b => b.name == "Earth");
-                    Assert.IsNotNull("Earth", body.name);
-                    continue;
-                }
-                else
-                {
-                    Assert.Fail();
-                }
-            }
+            // Economic data
+            Assert.AreEqual(2, station.economies.Count);
+            Assert.IsNotNull(station.economies[0]);
+
+            // Services
+            Assert.IsNotNull(station.imported.Count);
+            Assert.IsNotNull(station.imported[0]);
+            Assert.IsNotNull(station.exported.Count);
+            Assert.IsNotNull(station.exported[0]);
+            Assert.IsNotNull(station.prohibited.Count);
+            Assert.IsNotNull(station.prohibited[0]);
+            Assert.IsNotNull(station.shipyard.Count);
+            Assert.IsTrue(station.shipyard[0] is Ship);
+            Assert.IsNotNull(station.outfitting.Count);
+            Assert.IsTrue(station.outfitting[0] is Module);
+
+            // Timestamps
+            Assert.IsTrue(station.outfittingupdatedat > 0);
+            Assert.IsTrue(station.shipyardupdatedat > 0);
+            Assert.IsTrue(station.updatedat > 0);
         }
-        */
 
-        /*
         [TestMethod]
-        public void TestEddbStation()
+        public void TestEddbStationsSol()
         {
-        // Test system station data
-        Station station = EddbService.GetEddbStation("Jameson Memorial");
-        Assert.AreEqual("shinrarta dezhra", station.systemname.ToLowerInvariant());
-        Assert.IsNotNull(station.name);
-        Assert.IsNotNull(station.model);
-        Assert.IsNotNull(station.distancefromstar);
-        Assert.IsNotNull(station.allegiance);
-        Assert.IsNotNull(station.government);
-        Assert.IsNotNull(station.primaryeconomy);
-        Assert.IsNotNull(station.faction);
-        Assert.IsInstanceOfType(station.stationServices, typeof(List<string>));
+            List<Station> stations = EddbService.Stations("Sol");
+            Assert.AreEqual(20, stations.Count);
         }
-        */
 
         [TestMethod]
         public void TestEddbFactionAchali()
@@ -359,28 +317,92 @@ namespace UnitTests
             Assert.AreEqual(5, factionsHome.Count);
         }
 
-        /*
+        [TestMethod]
+        public void TestStarSystemCoordinates()
+        {
+            // Test coordinates
+            StarSystem starSystem = EddbService.System("Merope");
+
+            Assert.AreEqual("merope", starSystem.name.ToLowerInvariant());
+            Assert.AreEqual(-78.59375M, starSystem.x);
+            Assert.AreEqual(-149.625M, starSystem.y);
+            Assert.AreEqual(-340.53125M, starSystem.z);
+        }
+
+        [TestMethod]
+        public void TestStarSystemData()
+        {
+            // Test system & body data
+            StarSystem starSystem = EddbService.System("Sol");
+
+            Assert.AreEqual("Sol", starSystem.name);
+            Assert.AreEqual((decimal)0, starSystem.x);
+            Assert.AreEqual((decimal)0, starSystem.y);
+            Assert.AreEqual((decimal)0, starSystem.z);
+            Assert.IsNotNull(starSystem.population);
+            Assert.IsNotNull(starSystem.Faction.Allegiance.basename);
+            Assert.IsNotNull(starSystem.Faction.Government.basename);
+            Assert.IsNotNull(starSystem.Faction.name);
+            Assert.IsNotNull(starSystem.Faction);
+            Assert.IsNotNull(starSystem.systemState.basename);
+            Assert.IsNotNull(starSystem.securityLevel.basename);
+            Assert.IsNotNull(starSystem.primaryeconomy);
+            Assert.AreEqual("Common", starSystem.Reserve.basename);
+            Assert.IsNotNull(starSystem.stations.Count);
+            Assert.IsNotNull(starSystem);
+            Assert.IsNotNull(starSystem.bodies);
+            Assert.IsFalse(starSystem.bodies.Count == 0);
+        }
+
+        [TestMethod]
+        public void TestEddbSystems()
+        {
+            // Test systems obtained from a list 
+            string[] systems = { "Merope", "Sol" };
+            List<StarSystem> starSystems = EddbService.Systems(systems);
+
+            Assert.IsNotNull(starSystems.Count);
+
+            foreach (StarSystem starSystem in starSystems)
+            {
+                if (starSystem.name.ToLowerInvariant() == "merope")
+                {
+                    Assert.AreEqual((decimal)-78.59375, starSystem.x);
+                    Assert.AreEqual((decimal)-149.625, starSystem.y);
+                    Assert.AreEqual((decimal)-340.53125, starSystem.z);
+                    continue;
+                }
+                else if (starSystem.name == "Sol")
+                {
+                    Body body = starSystem.bodies.Find(b => b.name == "Earth");
+                    Assert.IsNotNull("Earth", body.name);
+                    continue;
+                }
+                else
+                {
+                    Assert.Fail();
+                }
+            }
+        }
+
         [TestMethod]
         public void TestUnknown()
         {
-        // Test that even unknown systems return a basic response
-        StarSystem starSystem = EddbService.GetEddbSystem("Unknown star system");
-        Assert.AreEqual("unknown star system", starSystem.name.ToLowerInvariant());
-        Assert.IsNull(starSystem.population);
+            // Test that even unknown systems return a basic response
+            StarSystem starSystem = EddbService.System("Unknown star system");
+            Assert.AreEqual("unknown star system", starSystem.name.ToLowerInvariant());
+            Assert.IsNull(starSystem.population);
         }
-        */
 
-        /*
         [TestMethod]
         public void TestUgrasin()
         {
-        // Test randomly
-        StarSystem starSystem = StarMapService.GetStarMapSystem("Ugrasin");
+            // Test randomly
+            StarSystem starSystem = EddbService.System("Ugrasin");
 
-        Assert.AreEqual("Ugrasin", starSystem.name);
-        Assert.AreEqual(1, starSystem.stations.Count);
-        Assert.AreEqual(starSystem.z, (decimal)11.28125);
+            Assert.AreEqual("Ugrasin", starSystem.name);
+            Assert.AreEqual(1, starSystem.stations.Count);
+            Assert.AreEqual(starSystem.z, (decimal)11.28125);
         }
-                */
     }
 }

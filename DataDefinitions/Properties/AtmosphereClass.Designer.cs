@@ -124,7 +124,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Earth-like.
+        ///   Looks up a localized string similar to Suitable for water-based life.
         /// </summary>
         public static string EarthLike {
             get {

@@ -8,6 +8,9 @@ using System.Text;
 using System.Threading.Tasks;
 using Utilities;
 
+// At the DataProviderService level...
+// - Set faction.homesystem with a System lookup
+
 namespace EddiEddbService
 {
     partial class EddbService
@@ -107,12 +110,8 @@ namespace EddiEddbService
             faction.Government = Government.FromName((string)factionJson["government"]);
             faction.Allegiance = Superpower.FromName((string)factionJson["allegiance"]);
             faction.State = State.FromName((string)factionJson["state"]);
-            faction.homeSystemEddbId = (long)factionJson["home_system_id"];
+            faction.homeSystemEddbId = (long?)factionJson["home_system_id"];
             faction.isplayer = (bool)factionJson["is_player_faction"];
-
-            // faction.homesystem is not obtainable without a second lookup from the system eddbid
-            // We will need to add this once our system lookup is complete
-            // faction.homesystem;
 
             return faction;
         }
