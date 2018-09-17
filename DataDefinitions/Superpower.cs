@@ -28,7 +28,7 @@ namespace EddiDataDefinitions
         public Superpower() : this("")
         { }
 
-        private Superpower(string edname) : base(edname, edname.Replace("$faction_", "").Replace(";", ""))
+        private Superpower(string edname) : base(edname, edname.Replace("$faction_", "").Replace(";", "").Replace(" ", ""))
         { }
 
         public static Superpower From(string from)
