@@ -660,7 +660,7 @@ namespace EddiCompanionAppService
                     Economies.Add(Economy);
                 }
             }
-
+            Economies = Economies.OrderByDescending(x => x.proportion).ToList();
             Logging.Debug("Economies are " + JsonConvert.SerializeObject(Economies));
             return Economies;
         }
