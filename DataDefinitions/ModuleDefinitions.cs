@@ -1185,5 +1185,10 @@ namespace EddiDataDefinitions
             ModulesByEliteID.TryGetValue(eliteID, out Module module);
             return module;
         }
+
+        public static Module FromEddbID(long eddbId)
+        {
+            return AllOfThem.Find(x => x.EDDBID == eddbId) ?? null;
+        }
     }
 }
