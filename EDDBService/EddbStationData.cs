@@ -1,17 +1,8 @@
 ﻿using EddiDataDefinitions;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Utilities;
-
-// At the DataProviderService level...
-// - Retrieve faction data from the database, update faction allegiance and government, & re-save
-// - Set Station.primaryeconomy equal to System.primaryeconomy
-// - Set Station.systemname equal to System.name
 
 namespace EddiEddbService
 {
@@ -23,11 +14,14 @@ namespace EddiEddbService
             List<Station> stations = new List<Station>();
             foreach (string name in stationNames)
             {
-                Station station = GetStation(new KeyValuePair<string, object>(StationQuery.stationName, name));
+                Station station = GetStation(new KeyValuePair<string, object>(StationQuery.stationName, name)) ?? new Station();
+                if (station.EDDBID == null)
+                {
+                    station.name = name;
+                }
                 stations.Add(station);
             }
-            return stations
-                .OrderBy(x => x.name).ToList();
+            return stations?.OrderBy(x => x.name).ToList();
         }
 
         /// <summary> At least one station EDDBID is required. </summary>
@@ -36,25 +30,32 @@ namespace EddiEddbService
             List<Station> stations = new List<Station>();
             foreach (long eddbId in eddbStationIds)
             {
-                Station station = GetStation(new KeyValuePair<string, object>(StationQuery.eddbId, eddbId));
+                Station station = GetStation(new KeyValuePair<string, object>(StationQuery.eddbId, eddbId)) ?? new Station();
+                if (station.EDDBID == null)
+                {
+                    station.EDDBID = eddbId;
+                }
                 stations.Add(station);
             }
-            return stations
-                .OrderBy(x => x.name).ToList();
+            return stations?.OrderBy(x => x.name).ToList();
         }
 
         /// <summary> Exactly one system name is required. </summary>
         public static List<Station> Stations(string systemName)
         {
-            List<Station> stations = new List<Station>();
             return GetStations(new KeyValuePair<string, object>(StationQuery.systemName, systemName))
-                .OrderBy(x => x.distancefromstar).ToList();
+                ?.OrderBy(x => x.distancefromstar).ToList() ?? new List<Station>();
         }
 
         /// <summary> Exactly one station name is required. </summary>
         public static Station Station(string stationName)
         {
-            return GetStation(new KeyValuePair<string, object>(StationQuery.stationName, stationName));
+            Station station = GetStation(new KeyValuePair<string, object>(StationQuery.stationName, stationName)) ?? new Station();
+            if (station.EDDBID == null)
+            {
+                station.name = stationName;
+            }
+            return station;
         }
 
         /// <summary> Exactly one station name and system name are required. </summary>

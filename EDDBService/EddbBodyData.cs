@@ -8,10 +8,6 @@ using System.Text;
 using System.Threading.Tasks;
 using Utilities;
 
-// At the DataProviderService level...
-// - Set Body.systemname = systemName;
-// - Set Body.reserves = reserves
-
 namespace EddiEddbService
 {
     partial class EddbService
@@ -22,10 +18,14 @@ namespace EddiEddbService
             List<Body> bodies = new List<Body>();
             foreach (string bodyName in bodyNames)
             {
-                Body body = GetBody(new KeyValuePair<string, object>(BodyQuery.bodyName, bodyName));
+                Body body = GetBody(new KeyValuePair<string, object>(BodyQuery.bodyName, bodyName)) ?? new Body();
+                if (body.EDDBID == null)
+                {
+                    body.name = bodyName;
+                }
                 bodies.Add(body);
             }
-            return bodies.OrderBy(x => x.name).ToList();
+            return bodies?.OrderBy(x => x.name).ToList();
         }
 
         /// <summary> At least one body EDDBID is required. </summary>
@@ -34,22 +34,31 @@ namespace EddiEddbService
             List<Body> bodies = new List<Body>();
             foreach (long eddbId in eddbBodyIds)
             {
-                Body body = GetBody(new KeyValuePair<string, object>(BodyQuery.eddbId, eddbId));
+                Body body = GetBody(new KeyValuePair<string, object>(BodyQuery.eddbId, eddbId)) ?? new Body();
+                if (body.EDDBID == null)
+                {
+                    body.EDDBID = eddbId;
+                }
                 bodies.Add(body);
             }
-            return bodies.OrderBy(x => x.name).ToList();
+            return bodies?.OrderBy(x => x.name).ToList();
         }
 
         /// <summary> Exactly one system name is required. </summary>
         public static List<Body> Bodies(string systemName)
         {
-            return GetBodies(new KeyValuePair<string, object>(BodyQuery.systemName, systemName));
+            return GetBodies(new KeyValuePair<string, object>(BodyQuery.systemName, systemName)) ?? new List<Body>();
         }
 
         /// <summary> Exactly one body name is required. </summary>
         public static Body Body(string bodyName)
         {
-            return GetBody(new KeyValuePair<string, object>(BodyQuery.bodyName, bodyName));
+            Body body = GetBody(new KeyValuePair<string, object>(BodyQuery.bodyName, bodyName)) ?? new Body();
+            if (body.EDDBID == null)
+            {
+                body.name = bodyName;
+            }
+            return body;
         }
 
         /// <summary> Exactly one body name and system name are required. </summary>
@@ -58,13 +67,24 @@ namespace EddiEddbService
             List<KeyValuePair<string, object>> queryList = new List<KeyValuePair<string, object>>();
             queryList.Add(new KeyValuePair<string, object>(BodyQuery.bodyName, bodyName));
             queryList.Add(new KeyValuePair<string, object>(BodyQuery.systemName, systemName));
-            return GetBody(queryList);
+            Body body = GetBody(queryList) ?? new Body();
+            if (body.EDDBID == null)
+            {
+                body.name = bodyName;
+                body.systemname = systemName;
+            }
+            return body;
         }
 
         /// <summary> Exactly one body EDDBID is required. </summary>
         public static Body Body(long eddbId)
         {
-            return GetBody(new KeyValuePair<string, object>(BodyQuery.eddbId, eddbId));
+            Body body = GetBody(new KeyValuePair<string, object>(BodyQuery.eddbId, eddbId)) ?? new Body();
+            if (body.EDDBID == null)
+            {
+                body.EDDBID = eddbId;
+            }
+            return body;
         }
 
         private static Body GetBody(KeyValuePair<string, object> query)

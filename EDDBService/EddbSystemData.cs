@@ -16,11 +16,15 @@ namespace EddiEddbService
         public static List<StarSystem> Systems(string[] systemNames, bool searchPopulated = true)
         {
             List<StarSystem> systems = new List<StarSystem>();
-            foreach (string name in systemNames)
+            foreach (string systemName in systemNames)
             {
-                StarSystem system = GetSystem(new KeyValuePair<string, object>(SystemQuery.systemName, name));
+                StarSystem system = GetSystem(new KeyValuePair<string, object>(SystemQuery.systemName, systemName)) ?? new StarSystem();
+                if (system.EDDBID == null)
+                {
+                    system.name = systemName;
+                }
             }
-            return systems.OrderBy(x => x.name).ToList();
+            return systems?.OrderBy(x => x.name).ToList();
         }
 
         /// <summary> At least one system EDDBID is required. </summary>
@@ -29,21 +33,35 @@ namespace EddiEddbService
             List<StarSystem> systems = new List<StarSystem>();
             foreach (long eddbId in eddbIds)
             {
-                StarSystem system = GetSystem(new KeyValuePair<string, object>(SystemQuery.eddbId, eddbId));
+                StarSystem system = GetSystem(new KeyValuePair<string, object>(SystemQuery.eddbId, eddbId)) ?? new StarSystem();
+                if (system.EDDBID == null)
+                {
+                    system.EDDBID = eddbId;
+                }
             }
-            return systems.OrderBy(x => x.name).ToList();
+            return systems?.OrderBy(x => x.name).ToList();
         }
 
         /// <summary> Exactly one system name is required. </summary>
         public static StarSystem System(string systemName, bool searchPopulated = true)
         {
-            return GetSystem(new KeyValuePair<string, object>(SystemQuery.systemName, systemName), searchPopulated);
+            StarSystem system = GetSystem(new KeyValuePair<string, object>(SystemQuery.systemName, systemName), searchPopulated) ?? new StarSystem();
+            if (system.EDDBID == null)
+            {
+                system.name = systemName;
+            }
+            return system;
         }
 
         /// <summary> Exactly one system EDDBID is required. </summary>
         public static StarSystem System(long eddbId, bool searchPopulated = true)
         {
-            return GetSystem(new KeyValuePair<string, object>(SystemQuery.eddbId, eddbId), searchPopulated);
+            StarSystem system = GetSystem(new KeyValuePair<string, object>(SystemQuery.eddbId, eddbId), searchPopulated) ?? new StarSystem();
+            if (system.EDDBID == null)
+            {
+                system.EDDBID = eddbId;
+            }
+            return system;
         }
 
         private static StarSystem GetSystem(KeyValuePair<string, object> query, bool searchPopulated = true)
@@ -125,8 +143,8 @@ namespace EddiEddbService
                 StarSystem.powerstate = (string)systemJson["power_state"];
 
                 // Stations & bodies
-                StarSystem.stations = Stations(StarSystem.name);
-                StarSystem.bodies = Bodies(StarSystem.name);
+                SetStationData(StarSystem);
+                SetBodyData(StarSystem);
 
                 StarSystem.updatedat = Dates.fromDateTimeStringToSeconds((string)systemJson["updated_at"]);
             }
@@ -134,6 +152,28 @@ namespace EddiEddbService
             StarSystem.lastupdated = DateTime.UtcNow;
 
             return StarSystem;
+        }
+
+        private static void SetBodyData(StarSystem StarSystem)
+        {
+            StarSystem.bodies = Bodies(StarSystem.name);
+            foreach (Body body in StarSystem.bodies)
+            {
+                if (body.rings?.Count() > 0)
+                {
+                    body.reserveLevel = StarSystem.Reserve;
+                }
+                body.systemname = StarSystem.name;
+            }
+        }
+
+        private static void SetStationData(StarSystem StarSystem)
+        {
+            StarSystem.stations = Stations(StarSystem.name);
+            foreach (Station station in StarSystem.stations)
+            {
+                station.systemname = StarSystem.name;
+            }
         }
     }
 }

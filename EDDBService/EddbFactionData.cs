@@ -1,15 +1,8 @@
 ﻿using EddiDataDefinitions;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Utilities;
-
-// At the DataProviderService level...
-// - Set faction.homesystem with a System lookup
 
 namespace EddiEddbService
 {
@@ -21,7 +14,11 @@ namespace EddiEddbService
             List<Faction> factions = new List<Faction>();
             foreach (string name in factionNames)
             {
-                Faction faction = GetFaction(new KeyValuePair<string, object>(FactionQuery.factionName, name));
+                Faction faction = GetFaction(new KeyValuePair<string, object>(FactionQuery.factionName, name)) ?? new Faction();
+                if (faction.EDDBID == null)
+                {
+                    faction.name = name;
+                }
                 factions.Add(faction);
             }
             return factions;
@@ -33,7 +30,11 @@ namespace EddiEddbService
             List<Faction> factions = new List<Faction>();
             foreach (long eddbId in eddbIds)
             {
-                Faction faction = GetFaction(new KeyValuePair<string, object>(FactionQuery.eddbId, eddbId));
+                Faction faction = GetFaction(new KeyValuePair<string, object>(FactionQuery.eddbId, eddbId)) ?? new Faction();
+                if (faction.EDDBID == null)
+                {
+                    faction.EDDBID = eddbId;
+                }
                 factions.Add(faction);
             }
             return factions;
@@ -42,19 +43,29 @@ namespace EddiEddbService
         /// <summary> At least one home system name is required. </summary>
         public static List<Faction> Factions(string homeSystem)
         {
-            return GetFactions(new KeyValuePair<string, object>(FactionQuery.homeSystem, homeSystem));
+            return GetFactions(new KeyValuePair<string, object>(FactionQuery.homeSystem, homeSystem)) ?? new List<Faction>();
         }
 
         /// <summary> Exactly one faction name is required. </summary>
         public static Faction Faction(string factionName)
         {
-            return GetFaction(new KeyValuePair<string, object>(FactionQuery.factionName, factionName));
+            Faction faction = GetFaction(new KeyValuePair<string, object>(FactionQuery.factionName, factionName)) ?? new Faction();
+            if (faction.EDDBID == null)
+            {
+                faction.name = factionName;
+            }
+            return faction;
         }
 
         /// <summary> Exactly one faction EDDBID is required. </summary>
         public static Faction Faction(long eddbId)
         {
-            return GetFaction(new KeyValuePair<string, object>(FactionQuery.eddbId, eddbId));
+            Faction faction = GetFaction(new KeyValuePair<string, object>(FactionQuery.eddbId, eddbId)) ?? new Faction();
+            if (faction.EDDBID == null)
+            {
+                faction.EDDBID = eddbId;
+            }
+            return faction;
         }
 
         private static Faction GetFaction(KeyValuePair<string, object> query)

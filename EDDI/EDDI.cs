@@ -1477,15 +1477,15 @@ namespace Eddi
                 body.rotationalperiod = Math.Round(theEvent.rotationperiod / 86400, 2);
                 body.semimajoraxis = theEvent.semimajoraxis;
                 body.pressure = theEvent.pressure;
-                body.terraformState = TerraformState.FromEDName(theEvent.terraformstate);
-                body.planetClass = PlanetClass.FromName(theEvent.bodyclass);
+                body.terraformState = TerraformState.FromEDName(theEvent.terraformstate) ?? TerraformState.None;
+                body.planetClass = PlanetClass.FromName(theEvent.bodyclass) ?? PlanetClass.None;
                 body.volcanism = theEvent.volcanism;
                 body.materials = new List<MaterialPresence>();
                 foreach (MaterialPresence presence in theEvent.materials)
                 {
                     body.materials.Add(new MaterialPresence(presence.definition, presence.percentage));
                 }
-                body.reserves = theEvent.reserves;
+                body.reserveLevel = SystemReserveLevel.FromEDName(theEvent.reserves) ?? SystemReserveLevel.None;
                 body.rings = theEvent.rings;
 
                 Logging.Debug("Saving data for scanned body " + theEvent.name);

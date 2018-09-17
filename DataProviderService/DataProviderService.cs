@@ -128,7 +128,12 @@ namespace EddiDataProviderService
                     Station.name = (string)station["name"];
                     Station.systemname = systemName;
 
-                    Station.primaryeconomy = (string)station["primary_economy"];
+                    Station.economies[0] = (string)station["primary_economy"];
+                    if (Station.economies[1] == (string)station["primary_economy"])
+                    {
+                        // EDDP doesn't provide data on secondary economies, but if the primary and secondary economy are equal then the secondary should be removed.
+                        Station.economies[1] = string.Empty;
+                    }
 
                     // Faction data
                     Faction controllingFaction = new Faction();

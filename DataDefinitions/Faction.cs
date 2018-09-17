@@ -18,9 +18,6 @@ namespace EddiDataDefinitions
         /// <summary> The faction's EDSM ID </summary>
         public long? EDSMID { get; set; }
 
-        /// <summary> The faction's home system </summary>
-        public string homesystem { get; set; }
-
         /// <summary> The faction's allegiance (localized name) </summary>
         public string allegiance => Allegiance.localizedName;
         /// <summary> The faction's allegiance </summary>
