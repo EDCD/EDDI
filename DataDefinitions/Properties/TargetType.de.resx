@@ -132,7 +132,9 @@
   <data name="Pirate" xml:space="preserve">
     <value>Pirat</value>
   </data>
-  
+  <data name="PirateLord" xml:space="preserve">
+    <value>Piratenfürst</value>
+  </data>
   <data name="Security" xml:space="preserve">
     <value>Sicherheit</value>
   </data>
