@@ -138,7 +138,9 @@
   <data name="CommunityGoal" xml:space="preserve">
     <value>Gemeinschaftsziel</value>
   </data>
-  
+  <data name="Courier" xml:space="preserve">
+    <value>Datenlieferung</value>
+  </data>
   <data name="Delivery" xml:space="preserve">
     <value>Lieferung</value>
   </data>
