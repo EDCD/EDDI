@@ -264,7 +264,7 @@ namespace EddiMissionMonitor
                                     if (mission.destinationsystems.Where(s => s.visited == false).Count() > 0)
                                     {
                                         // Set destination system to next in chain & trigger a 'Mission redirected' event
-                                        string destinationsystem = mission.destinationsystems
+                                        string destinationsystem = mission.destinationsystems?
                                             .FirstOrDefault(s => s.visited == false).name;
                                         EDDI.Instance.eventHandler(new MissionRedirectedEvent(DateTime.Now, mission.missionid, mission.name, null, null, destinationsystem, EDDI.Instance?.CurrentStarSystem?.name));
                                     }
