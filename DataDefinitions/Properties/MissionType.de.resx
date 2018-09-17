@@ -167,7 +167,9 @@
     <value>Bergung</value>
   </data>
   
-  
+  <data name="Sightseeing" xml:space="preserve">
+    <value>Besichtigung</value>
+  </data>
   <data name="Smuggle" xml:space="preserve">
     <value>Schmuggel</value>
   </data>
