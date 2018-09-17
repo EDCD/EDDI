@@ -126,7 +126,9 @@
   <data name="Hostage" xml:space="preserve">
     <value>Geisel</value>
   </data>
-  
+  <data name="Miner" xml:space="preserve">
+    <value>Bergmann</value>
+  </data>
   <data name="Pirate" xml:space="preserve">
     <value>Pirat</value>
   </data>
