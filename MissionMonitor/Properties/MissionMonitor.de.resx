@@ -140,6 +140,8 @@
     <value>Missionsüberwachung</value>
   </data>
   
-  
+  <data name="para2" xml:space="preserve">
+    <value>Bitte beachten, wenn das Missions-Log fehlerhaft ist, sollte ein Neustart des Spiels die Liste aktualisieren.</value>
+  </data>
   
 </root>
