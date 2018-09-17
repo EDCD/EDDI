@@ -14,7 +14,7 @@ namespace EddiDataDefinitions
             resourceManager = Properties.States.ResourceManager;
             resourceManager.IgnoreCase = false;
             
-            var None = new State("None");
+            None = new State("None");
             var Retreat = new State("Retreat");
             var War = new State("War");
             var Lockdown = new State("Lockdown");
@@ -29,7 +29,7 @@ namespace EddiDataDefinitions
             var Investment = new State("Investment");
         }
 
-        public static readonly State None = new State("None");
+        public static readonly State None;
 
         // dummy used to ensure that the static constructor has run
         public State() : this("")
