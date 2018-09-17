@@ -15,10 +15,10 @@ namespace EddiDataDefinitions
         public long EDDBID { get; set; }
 
         /// <summary>The type of the body (Star or Planet)</summary>
-        public string type => Type?.localizedName;
+        public string type => Type.localizedName;
 
         /// <summary>The type of the body (Star or Planet)</summary>
-        public BodyType Type { get; set; }
+        public BodyType Type { get; set; } = BodyType.None;
 
         /// <summary>The name of the body</summary>
         public string name { get; set; }
@@ -175,10 +175,13 @@ namespace EddiDataDefinitions
             resourceManager.IgnoreCase = true;
             missingEDNameHandler = (edname) => new BodyType(edname);
 
+            None = new BodyType("None");
             var Planet = new BodyType("Planet");
             var Star = new BodyType("Star");
             var Belt = new BodyType("Belt");
         }
+
+        public static readonly BodyType None;
 
         // dummy used to ensure that the static constructor has run
         public BodyType() : this("")
@@ -196,6 +199,7 @@ namespace EddiDataDefinitions
             resourceManager.IgnoreCase = true;
             missingEDNameHandler = (edname) => new PlanetClass(edname);
 
+            None = new PlanetClass("None");
             var AmmoniaWorld = new PlanetClass("AmmoniaWorld");
             var EarthLikeBody = new PlanetClass("EarthLikeBody");
             var GasGiantWithAmmoniaBasedLife = new PlanetClass("GasGiantWithAmmoniaBasedLife");
@@ -216,6 +220,8 @@ namespace EddiDataDefinitions
             var WaterGiantWithLife = new PlanetClass("WaterGiantWithLife");
             var WaterWorld = new PlanetClass("WaterWorld");
         }
+
+        public static readonly PlanetClass None;
 
         // dummy used to ensure that the static constructor has run
         public PlanetClass() : this("")
@@ -259,8 +265,8 @@ namespace EddiDataDefinitions
 
         [JsonProperty("composition")]
         public string edName { get; set; } // Ice, Rock, etc.
-        public string invariantName => GetInvariantString(edName);
-        public string localizedName => GetLocalizedString(edName);
+        public string invariantName => GetInvariantString(edName ?? "None");
+        public string localizedName => GetLocalizedString(edName ?? "None");
         [JsonIgnore, Obsolete("Please use localizedComposition or invariantComposition")]
         public string name => localizedName;
 
