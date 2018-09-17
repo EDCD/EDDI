@@ -145,14 +145,18 @@
   <data name="DeliveryWing" xml:space="preserve">
     <value>Handel im Geschwader</value>
   </data>
-  
+  <data name="Disable" xml:space="preserve">
+    <value>Oberflächeneinrichtung abschalten</value>
+  </data>
   <data name="DisableWing" xml:space="preserve">
     <value>Geschwader auflösen</value>
   </data>
   <data name="LongDistanceExpedition" xml:space="preserve">
     <value>Expedition</value>
   </data>
-  
+  <data name="Massacre" xml:space="preserve">
+    <value>Massaker</value>
+  </data>
   <data name="MassacreWing" xml:space="preserve">
     <value>Massaker im Geschwader</value>
   </data>
