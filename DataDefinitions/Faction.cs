@@ -21,13 +21,15 @@ namespace EddiDataDefinitions
         /// <summary> The faction's home system </summary>
         public string homesystem { get; set; }
 
-        /// <summary> The faction's allegiance </summary>
+        /// <summary> The faction's allegiance (localized name) </summary>
         public string allegiance => Allegiance.localizedName;
-        public Superpower Allegiance { get; set; }
+        /// <summary> The faction's allegiance </summary>
+        public Superpower Allegiance { get; set; } = Superpower.None;
 
-        /// <summary> The faction's government </summary>
+        /// <summary> The faction's government (localized name) </summary>
         public string government => Government.localizedName;
-        public Government Government { get; set; }
+        /// <summary> The faction's government </summary>
+        public Government Government { get; set; } = Government.None;
 
         /// <summary> The faction's current overall state (this may differ from the state in a particular system)</summary>
         public string state => State.localizedName;
@@ -45,7 +47,7 @@ namespace EddiDataDefinitions
                     // Return the most common state
                     return influence.GroupBy
                         (i => i.systemState).OrderByDescending
-                        (grp => grp.Count()).Select(grp => grp.Key).First();
+                        (grp => grp.Count()).Select(grp => grp.Key).First() ?? State.None;
                 }
             }
             set
@@ -53,7 +55,7 @@ namespace EddiDataDefinitions
                 _State = value;
             }
         }
-        private State _State { get; set; }
+        private State _State { get; set; } = State.None;
 
         /// <summary> The faction's home system EDDBID </summary>
         public long? homeSystemEddbId { get; set; }
