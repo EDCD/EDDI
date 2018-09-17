@@ -81,7 +81,7 @@ namespace UnitTests
             Assert.AreEqual(16309, body.EDDBID);
             Assert.AreEqual("Alpha Centauri B", body.name);
             Assert.AreEqual(764, body.systemEDDBID);
-            Assert.AreEqual("Star", body.type);
+            Assert.AreEqual("Star", body.Type.invariantName);
             Assert.AreEqual("K", body.stellarclass);
             Assert.AreEqual(5398, (double)body.distance, 50);
             Assert.AreEqual(5240, body.temperature);
@@ -91,7 +91,7 @@ namespace UnitTests
             Assert.AreEqual(0.855469, (double)body.solarmass, 0.001);
             Assert.AreEqual(0.90351818312491, (double)body.solarradius, 0.001);
             Assert.IsNull(body.volcanism);
-            Assert.IsNull(body.atmosphere);
+            Assert.AreEqual("No atmosphere", body.atmosphereclass.invariantName);
             Assert.IsNull(body.terraformstate);
             Assert.IsNull(body.earthmass);
             Assert.IsNull(body.radius);

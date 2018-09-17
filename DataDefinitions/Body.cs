@@ -12,7 +12,7 @@ namespace EddiDataDefinitions
     public class Body
     {
         /// <summary>The ID of this body in EDDB</summary>
-        public long EDDBID { get; set; }
+        public long? EDDBID { get; set; }
 
         /// <summary>The type of the body (Star or Planet)</summary>
         public string type => Type.localizedName;
@@ -45,11 +45,11 @@ namespace EddiDataDefinitions
         public bool? tidallylocked { get; set; }
 
         /// <summary>The surface temperature of the body, in Kelvin</summary>
-        public decimal? temperature;
+        public decimal? temperature { get; set; }
 
         /// <summary>The body's rings</summary>
         [JsonConverter(typeof(RingConverter))]
-        public List<Ring> rings;
+        public List<Ring> rings = new List<Ring>();
 
         // Star-specific items
 
@@ -57,95 +57,97 @@ namespace EddiDataDefinitions
         public bool? mainstar { get; set; }
 
         /// <summary>The stellar class of the star</summary>
-        public string stellarclass;
+        public string stellarclass { get; set; }
 
         /// <summary>The Luminosity Class of the Star (since 2.4)</summary>
         public string luminosityclass { get; set; }
 
         /// <summary>The solar mass of the star</summary>
-        public decimal? solarmass;
+        public decimal? solarmass { get; set; }
 
         /// <summary>The solar radius of the star, compared to Sol</summary>
-        public decimal? solarradius;
+        public decimal? solarradius { get; set; }
 
         /// <summary>The absolute magnitude of the star</summary> 
-        public decimal? absoluteMagnitude;
+        public decimal? absoluteMagnitude { get; set; }
 
         // Additional information
-        public string chromaticity;
-        public decimal? radiusprobability;
-        public decimal? massprobability;
-        public decimal? tempprobability;
-        public decimal? ageprobability;
+        public string chromaticity { get; set; }
+        public decimal? radiusprobability { get; set; }
+        public decimal? massprobability { get; set; }
+        public decimal? tempprobability { get; set; }
+        public decimal? ageprobability { get; set; }
 
         // Body-specific items
 
         /// <summary>The argument of periapsis, in degrees</summary>
-        public decimal? periapsis;
+        public decimal? periapsis { get; set; }
 
         /// <summary>The atmosphere</summary>
-        public string atmosphere => atmosphereclass?.localizedName;
+        public string atmosphere => atmosphereclass.localizedName;
 
         /// <summary>The atmosphere class</summary>
-        public AtmosphereClass atmosphereclass;
+        public AtmosphereClass atmosphereclass { get; set; } = AtmosphereClass.NoAtmosphere;
 
         /// <summary>The atmosphere's composition</summary>
-        public List<AtmosphereComposition> atmosphereCompositions;
+        public List<AtmosphereComposition> atmosphereCompositions { get; set; } = new List<AtmosphereComposition>();
 
         /// <summary>The axial tilt, in degrees</summary>
-        public decimal? tilt;
+        public decimal? tilt { get; set; }
 
         /// <summary>The earth mass of the planet</summary>
-        public decimal? earthmass;
+        public decimal? earthmass { get; set; }
 
         /// <summary>The gravity of the planet, in G's</summary>
-        public decimal? gravity;
+        public decimal? gravity { get; set; }
 
         /// <summary>The orbital eccentricity of the planet</summary>
-        public decimal? eccentricity;
+        public decimal? eccentricity { get; set; }
 
         /// <summary>The orbital inclination of the planet, in degrees</summary>
-        public decimal? inclination;
+        public decimal? inclination { get; set; }
 
         /// <summary>The orbital period of the planet, in days</summary>
-        public decimal? orbitalperiod;
+        public decimal? orbitalperiod { get; set; }
 
         /// <summary>The radius of the planet, in km</summary>
-        public decimal? radius;
+        public decimal? radius { get; set; }
 
         /// <summary>The rotational period of the planet, in days</summary>
-        public decimal? rotationalperiod;
+        public decimal? rotationalperiod { get; set; }
 
         /// <summary>The semi-major axis of the planet, in astronomical units (AU)</summary>
-        public decimal? semimajoraxis;
+        public decimal? semimajoraxis { get; set; }
 
         /// <summary>The pressure at the surface of the planet, in Earth atmospheres</summary>
-        public decimal? pressure;
+        public decimal? pressure { get; set; }
 
-        /// <summary>The terraform state</summary>
+        /// <summary>The terraform state (localized name)</summary>
         public string terraformstate => terraformState?.localizedName;
 
         /// <summary>The terraform state</summary>
-        public TerraformState terraformState;
+        public TerraformState terraformState { get; set; } = TerraformState.None;
+
+        /// <summary>The planet type (localized name)</summary>
+        public string planettype => planetClass.localizedName;
 
         /// <summary>The planet type</summary>
-        public string planettype => planetClass?.localizedName;
-
-        /// <summary>The planet type</summary>
-        public PlanetClass planetClass;
+        public PlanetClass planetClass { get; set; } = PlanetClass.None;
 
         /// <summary>The volcanism</summary>
         [JsonConverter(typeof(VolcanismConverter))]
-        public Volcanism volcanism;
+        public Volcanism volcanism { get; set; }
 
         /// <summary>The solid body composition of the body</summary>
-        public List<BodySolidComposition> solidComposition;
+        public List<BodySolidComposition> solidComposition { get; set; } = new List<BodySolidComposition>();
 
         /// <summary>The materials present at the surface of the body</summary>
-        public List<MaterialPresence> materials;
+        public List<MaterialPresence> materials { get; set; } = new List<MaterialPresence>();
 
+        /// <summary>The reserve level (localized name)</summary>
+        public string reserves => reserveLevel.localizedName;
         /// <summary>The reserve level</summary>
-        public string reserves;
+        public SystemReserveLevel reserveLevel { get; set; } = SystemReserveLevel.None;
 
         /// <summary> the last time the information present changed (in the data source) </summary>
         public long? updatedat { get; set; }

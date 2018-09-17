@@ -10,7 +10,7 @@ namespace EddiDataDefinitions
     public class Station
     {
         /// <summary>The ID of this station in EDDB</summary>
-        public long EDDBID { get; set; }
+        public long? EDDBID { get; set; }
 
         /// <summary>The name</summary>
         public string name { get; set; }
@@ -31,7 +31,7 @@ namespace EddiDataDefinitions
         public State State { get; set; }
 
         /// <summary>The primary economy of the station</summary>
-        public string primaryeconomy { get; set; }
+        public string primaryeconomy => economies[0];
 
         /// <summary>How far this is from the star, in light seconds</summary>
         public long? distancefromstar { get; set; }
