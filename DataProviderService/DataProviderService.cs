@@ -128,12 +128,10 @@ namespace EddiDataProviderService
                     Station.name = (string)station["name"];
                     Station.systemname = systemName;
 
-                    Station.economies[0] = (string)station["primary_economy"];
-                    if (Station.economies[1] == (string)station["primary_economy"])
-                    {
-                        // EDDP doesn't provide data on secondary economies, but if the primary and secondary economy are equal then the secondary should be removed.
-                        Station.economies[1] = string.Empty;
-                    }
+                    List<string> economies = new List<string>();
+                    economies.Add((string)station["primary_economy"]);
+                    economies.Add("None"); // EDDP doesn't provide data on secondary economies
+                    Station.economies = economies;
 
                     // Faction data
                     Faction controllingFaction = new Faction();
@@ -142,7 +140,7 @@ namespace EddiDataProviderService
                     controllingFaction.name = (string)station["controlling_faction"];
                     Station.Faction = controllingFaction;
 
-                    Station.State = State.FromName((string)station["state"] == "None" ? null : (string)station["state"]);
+                    Station.State = State.FromName((string)station["state"]) ?? State.None;
                     Station.distancefromstar = (long?)station["distance_to_star"];
                     Station.hasrefuel = (bool?)station["has_refuel"];
                     Station.hasrearm = (bool?)station["has_rearm"];
@@ -158,7 +156,7 @@ namespace EddiDataProviderService
                     {
                         Station.Model = StationModel.FromName((string)station["type"]);
                     }
-                    Station.LargestPad = StationLargestPad.FromSize((string)station["max_landing_pad_size"]);
+                    Station.LargestPad = StationLargestPad.FromSize((string)station["max_landing_pad_size"]) ?? StationLargestPad.None;
 
                     Station.commodities = CommodityQuotesFromEDDP(station);
                     Station.commoditiesupdatedat = (long?)station["market_updated_at"];
@@ -232,7 +230,7 @@ namespace EddiDataProviderService
                         // Planet-specific items
                         Body.landable = (bool?)body["is_landable"];
                         Body.periapsis = (decimal?)(double?)body["arg_of_periapsis"];
-                        Body.atmosphereclass = AtmosphereClass.FromEDName((string)body["atmosphere_type_name"]);
+                        Body.atmosphereclass = AtmosphereClass.FromName((string)body["atmosphere_type_name"]);
                         Body.tilt = (decimal?)(double?)body["axis_tilt"];
                         Body.earthmass = (decimal?)(double?)body["earth_masses"];
                         Body.gravity = (decimal?)(double?)body["gravity"];
@@ -280,30 +278,6 @@ namespace EddiDataProviderService
             // Sort bodies by distance
             return Bodies.OrderBy(o => o.distance).ToList();
         }
-
-        private static List<string> stationModels = new List<string>()
-        {
-            "Asteroid Base",
-            "Civilian Outpost",
-            "Commercial Outpost",
-            "Coriolis Starport",
-            "Industrial Outpost",
-            "Megaship",
-            "Military Outpost",
-            "Mining Outpost",
-            "Ocellus Starport",
-            "Orbis Starport",
-            "Orbital Engineer Base",
-            "Planetary Engineer Base",
-            "Planetary Outpost",
-            "Planetary Port",
-            "Planetary Settlement",
-            "Scientific Outpost",
-            "Unknown Outpost",
-            "Unknown Planetary",
-            "Unknown Starport",
-            "Unsanctioned Outpost"
-        };
 
         static DataProviderService()
         {
