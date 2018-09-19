@@ -174,7 +174,9 @@
   <data name="PassengerVIP" xml:space="preserve">
     <value>Transport</value>
   </data>
-  
+  <data name="Permit" xml:space="preserve">
+    <value>Einreisegenehmigung</value>
+  </data>
   <data name="Piracy" xml:space="preserve">
     <value>Piraterie</value>
   </data>
