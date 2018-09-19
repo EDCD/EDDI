@@ -378,7 +378,7 @@ CommodityMarketDetails() takes one mandatory argument and two optional arguments
 
 Common usage of this is to provide further information about a commodity, for example:
 
-    {set marketcommodity to CommodityStationDetails("Pesticides", "Chelbin Service Station", "Wolf 397")}
+    {set marketcommodity to CommodityMarketDetails("Pesticides", "Chelbin Service Station", "Wolf 397")}
     {marketcommodity.name} is selling for {marketcommodity.sellprice} with a current market demand of {marketcommodity.demand} units.
 
 ### CargoDetails()
