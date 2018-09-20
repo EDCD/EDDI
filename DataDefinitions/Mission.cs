@@ -188,13 +188,65 @@ namespace EddiDataDefinitions
             this.shared = Shared;
             destinationsystems = new List<DestinationSystem>();
 
-            // Mechanism for identifying 'special' missions
+            // Mechanism for identifying chained, 'welcome', and 'special' missions
             string type = Name.Split('_').ElementAt(1);
             switch (type)
             {
+                case "drawthegeneralout":
+                case "findthepiratelord":
+                case "rampantleadership":
+                case "regainfooting":
+                case "salvagejustice":
+                case "seekingasylum":
+                case "wrongtarget":
+                    {
+                        this.typeDef = MissionType.FromEDName("Assassinate");
+                    }
+                    break;
+                case "clearingthepath":
+                case "helpfinishtheorder":
+                    {
+                        this.typeDef = MissionType.FromEDName("Deliver");
+                    }
+                    break;
+                case "helpwithpreventionmeasures":
+                    {
+                        this.typeDef = MissionType.FromEDName("Massacre");
+                    }
+                    break;
+                case "miningtoorder":
+                    {
+                        this.typeDef = MissionType.FromEDName("Mining");
+                    }
+                    break;
+                case "safetravelling":
+                case "securingmyposition":
+                    {
+                        this.typeDef = MissionType.FromEDName("PassengerVIP");
+                    }
+                    break;
+                case "rescuefromthetwins":
+                case "rescuethewares":
+                    {
+                        this.typeDef = MissionType.FromEDName("Salvage");
+                    }
+                    break;
+                case "planetaryincursions":
+                    {
+                        this.typeDef = MissionType.FromEDName("Scan");
+                    }
+                    break;
                 case "TheDead":
                     {
                         this.typeDef = MissionType.FromEDName("Special");
+                    }
+                    break;
+                case "ds":
+                case "rs":
+                case "welcome":
+                    {
+                        type = Name.Split('_').ElementAt(2);
+                        this.typeDef = MissionType.FromEDName(type);
                     }
                     break;
                 default:

@@ -311,6 +311,7 @@ namespace EddiMissionMonitor
                                     {
                                         case "assassinate":
                                         case "disable":
+                                        case "hack":
                                         case "longdistanceexpedition":
                                         case "passengervip":
                                         case "piracy":
@@ -616,12 +617,15 @@ namespace EddiMissionMonitor
                     case "collect":
                     case "collectwing":
                     case "disable":
+                    case "hack":
                     case "longdistanceexpedition":
                     case "massacre":
+                    case "massacrethargoid":
                     case "massacrewing":
                     case "mining":
                     case "piracy":
                     case "salvage":
+                    case "scan":
                     case "sightseeing":
                         {
                             mission.originreturn = true;
@@ -1137,6 +1141,7 @@ namespace EddiMissionMonitor
                         case "courier":
                         case "delivery":
                         case "disable":
+                        case "hack":
                         case "massacre":
                         case "passengerbulk":
                         case "passengervip":

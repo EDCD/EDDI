@@ -153,17 +153,26 @@
   <data name="DisableWing" xml:space="preserve">
     <value>Wing Disable</value>
   </data>
+  <data name="Hack" xml:space="preserve">
+    <value>Hacking</value>
+  </data>
   <data name="LongDistanceExpedition" xml:space="preserve">
     <value>Expedition</value>
   </data>
   <data name="Massacre" xml:space="preserve">
     <value>Massacre</value>
   </data>
+  <data name="MassacreThargoid" xml:space="preserve">
+    <value>Thargoid Massacre</value>
+  </data>
   <data name="MassacreWing" xml:space="preserve">
     <value>Wing Massacre</value>
   </data>
   <data name="Mining" xml:space="preserve">
     <value>Mining</value>
+  </data>
+  <data name="MiningWing" xml:space="preserve">
+    <value>Wing Mining</value>
   </data>
   <data name="None" xml:space="preserve">
     <value>None</value>
