@@ -90,10 +90,11 @@ namespace EddiDataDefinitions
         public string influence { get; set; }
         public string reputation { get; set; }
 
-        public bool legal => !name.ToLowerInvariant().Contains("illegal") && !name.ToLowerInvariant().Contains("smuggle");
-        public bool wing { get; set; }
-        public bool shared { get; set; }
+        public bool chained => name.ToLowerInvariant().Contains("chained");
         public bool communal { get; set; }
+        public bool legal => !name.ToLowerInvariant().Contains("illegal") && !name.ToLowerInvariant().Contains("smuggle");
+        public bool shared { get; set; }
+        public bool wing { get; set; }
 
         public long? reward { get; set; }
 
