@@ -191,13 +191,22 @@ namespace UnitTests
             missionMonitor._handleMissionAbandonedEvent((MissionAbandonedEvent)events[0]);
             Assert.AreEqual(2, missionMonitor.missions.Count);
 
+            //MissionAcceptedEvent - 'AltruismCredits'
+            line = "{ \"timestamp\":\"2018-09-17T02:54:16Z\", \"event\":\"MissionAccepted\", \"Faction\":\"Merope Expeditionary Fleet\", \"Name\":\"Mission_AltruismCredits\", \"LocalisedName\":\"Donate 450,000 Cr to the cause\", \"Donation\":\"450000\", \"Expiry\":\"2018-09-17T05:01:28Z\", \"Wing\":false, \"Influence\":\"Med\", \"Reputation\":\"Med\", \"MissionID\":419646649 }";
+            events = JournalMonitor.ParseJournalEntry(line);
+            Assert.IsTrue(events.Count == 1);
+            missionMonitor._handleMissionAcceptedEvent((MissionAcceptedEvent)events[0]);
+            mission = missionMonitor.missions.ToList().FirstOrDefault(m => m.missionid == 419646649);
+            Assert.AreEqual(3, missionMonitor.missions.Count);
+            Assert.IsTrue(mission.originreturn);
+
             //MissionAcceptedEvent - 'Collect'
             line = @"{ ""timestamp"":""2018-08-26T00:50:48Z"", ""event"":""MissionAccepted"", ""Faction"":""Calennero State Industries"", ""Name"":""Mission_Collect_Industrial"", ""LocalisedName"":""Industry needs 54 units of Tantalum"", ""Commodity"":""$Tantalum_Name;"", ""Commodity_Localised"":""Tantalum"", ""Count"":54, ""DestinationSystem"":""HIP 20277"", ""DestinationStation"":""Fabian City"", ""Expiry"":""2018-08-27T00:48:38Z"", ""Wing"":false, ""Influence"":""Med"", ""Reputation"":""Med"", ""Reward"":1909532, ""MissionID"":413748324 }";
             events = JournalMonitor.ParseJournalEntry(line);
             Assert.IsTrue(events.Count == 1);
             missionMonitor._handleMissionAcceptedEvent((MissionAcceptedEvent)events[0]);
             mission = missionMonitor.missions.ToList().FirstOrDefault(m => m.missionid == 413748324);
-            Assert.AreEqual(3, missionMonitor.missions.Count);
+            Assert.AreEqual(4, missionMonitor.missions.Count);
             Assert.AreEqual("Collect", mission.typeEDName);
             Assert.AreEqual("Active", mission.statusEDName);
             Assert.IsTrue(mission.originreturn);
@@ -218,7 +227,7 @@ namespace UnitTests
             Assert.IsTrue(events.Count == 1);
             missionMonitor._handleMissionAcceptedEvent((MissionAcceptedEvent)events[0]);
             mission = missionMonitor.missions.ToList().FirstOrDefault(m => m.missionid == 420098082);
-            Assert.AreEqual(4, missionMonitor.missions.Count);
+            Assert.AreEqual(5, missionMonitor.missions.Count);
 
             //MissionAcceptedEvent - 'Smuggle'
             line = @"{ ""timestamp"":""2018-08-29T20:51:56Z"", ""event"":""MissionAccepted"", ""Faction"":""Gcirithang Crimson Mafia"", ""Name"":""Mission_Smuggle_Famine"", ""LocalisedName"":""Smuggle 36 units of Narcotics to combat famine"", ""Commodity"":""$BasicNarcotics_Name;"", ""Commodity_Localised"":""Narcotics"", ""Count"":36, ""DestinationSystem"":""Carcinus"", ""DestinationStation"":""Wye-Delta Station"", ""Expiry"":""2018-08-30T20:55:33Z"", ""Wing"":false, ""Influence"":""Med"", ""Reputation"":""Med"", ""Reward"":180818, ""MissionID"":414732731 }";
@@ -226,7 +235,7 @@ namespace UnitTests
             Assert.IsTrue(events.Count == 1);
             missionMonitor._handleMissionAcceptedEvent((MissionAcceptedEvent) events[0]);
             mission = missionMonitor.missions.ToList().FirstOrDefault(m => m.missionid == 414732731);
-            Assert.AreEqual(5, missionMonitor.missions.Count);
+            Assert.AreEqual(6, missionMonitor.missions.Count);
             Assert.AreEqual("Smuggle", mission.typeEDName);
             Assert.IsFalse(mission.originreturn);
             Assert.IsFalse(mission.legal);
@@ -236,14 +245,14 @@ namespace UnitTests
             events = JournalMonitor.ParseJournalEntry(line);
             Assert.IsTrue(events.Count == 1);
             missionMonitor._handleMissionCompletedEvent((MissionCompletedEvent)events[0]);
-            Assert.AreEqual(4, missionMonitor.missions.Count);
+            Assert.AreEqual(5, missionMonitor.missions.Count);
 
             //MissionFailedEvent
             line = @"{ ""timestamp"":""2018-08-26T00:50:48Z"", ""event"":""MissionFailed"", ""Name"":""Mission_Collect_Industrial"", ""Fine"":50000, ""MissionID"":413748324 }";
             events = JournalMonitor.ParseJournalEntry(line);
             Assert.IsTrue(events.Count == 1);
             missionMonitor._handleMissionFailedEvent((MissionFailedEvent)events[0]);
-            Assert.AreEqual(3, missionMonitor.missions.Count);
+            Assert.AreEqual(4, missionMonitor.missions.Count);
         }
 
         [TestCleanup]
