@@ -30,6 +30,7 @@ namespace EddiDataDefinitions
             var DeliveryWing = new MissionType("DeliveryWing");
             var Disable = new MissionType("Disable");
             var DisableWing = new MissionType("DisableWing");
+            var GenericPermit1 = new MissionType("GenericPermit1");
             var Hack = new MissionType("Hack");
             var LongDistanceExpedition = new MissionType("LongDistanceExpedition");
             var Massacre = new MissionType("Massacre");

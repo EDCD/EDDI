@@ -617,6 +617,7 @@ namespace EddiMissionMonitor
                     case "collect":
                     case "collectwing":
                     case "disable":
+                    case "genericpermit1":
                     case "hack":
                     case "longdistanceexpedition":
                     case "massacre":
@@ -639,7 +640,7 @@ namespace EddiMissionMonitor
                 }
 
                 // Missions with multiple destinations
-                if (@event.destinationsystem.Contains("$MISSIONUTIL_MULTIPLE"))
+                if (@event.destinationsystem != null && @event.destinationsystem.Contains("$MISSIONUTIL_MULTIPLE"))
                 {
                     // If 'chained' mission, get the destination systems
                     string[] systems = @event.destinationsystem

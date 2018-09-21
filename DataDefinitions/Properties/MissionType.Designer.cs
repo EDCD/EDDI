@@ -169,6 +169,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Permit Aquisition.
+        /// </summary>
+        internal static string GenericPermit1 {
+            get {
+                return ResourceManager.GetString("GenericPermit1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Hacking.
         /// </summary>
         internal static string Hack {
@@ -255,15 +264,6 @@ namespace EddiDataDefinitions.Properties {
         internal static string PassengerVIP {
             get {
                 return ResourceManager.GetString("PassengerVIP", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Permit Aquisition.
-        /// </summary>
-        internal static string Permit {
-            get {
-                return ResourceManager.GetString("Permit", resourceCulture);
             }
         }
         
