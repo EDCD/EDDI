@@ -17,6 +17,7 @@ namespace UnitTests
     {
         CargoMonitor cargoMonitor = new CargoMonitor();
         Cargo cargo;
+        Haulage haulage;
         string line;
         List<Event> events;
 
@@ -320,6 +321,58 @@ namespace UnitTests
             Assert.AreEqual(1, cargo.stolen);
             Assert.AreEqual(0, cargo.need);
             Assert.AreEqual(0, cargo.haulage + cargo.owned);
+
+            // CargoDepotEvent - Check response for missed 'Mission accepted' event. Verify both cargo and haulage are created
+            line = @"{ ""timestamp"":""2018-08-26T02:55:10Z"", ""event"":""CargoDepot"", ""MissionID"":413748324, ""UpdateType"":""Deliver"", ""CargoType"":""Tantalum"", ""Count"":54, ""StartMarketID"":0, ""EndMarketID"":3224777216, ""ItemsCollected"":0, ""ItemsDelivered"":54, ""TotalItemsToDeliver"":70, ""Progress"":0.000000 }";
+            events = JournalMonitor.ParseJournalEntry(line);
+            cargoMonitor._handleCargoDepotEvent((CargoDepotEvent)events[0]);
+
+            cargo = cargoMonitor.inventory.ToList().FirstOrDefault(c => c.edname == "Tantalum");
+            Assert.IsNotNull(cargo);
+            Assert.AreEqual(0, cargo.total);
+            Assert.AreEqual(0, cargo.haulage + cargo.owned);
+            Assert.AreEqual(16, cargo.need);
+
+            haulage = cargo.haulageData.FirstOrDefault(h => h.missionid == 413748324);
+            Assert.IsNotNull(haulage);
+            Assert.AreEqual(16, haulage.remaining);
+            Assert.IsTrue(haulage.shared);
+
+            // Cargo Delivery 'Mission accepted' Event with 'Cargo Depot' events
+            line = @"{ ""timestamp"":""2018-08-26T00:50:48Z"", ""event"":""MissionAccepted"", ""Faction"":""Calennero State Industries"", ""Name"":""Mission_Delivery_Boom"", ""LocalisedName"":""Boom time delivery of 60 units of Silver"", ""Commodity"":""$Silver_Name;"", ""Commodity_Localised"":""Silver"", ""Count"":60, ""DestinationSystem"":""HIP 20277"", ""DestinationStation"":""Fabian City"", ""Expiry"":""2018-08-27T00:48:38Z"", ""Wing"":false, ""Influence"":""Med"", ""Reputation"":""Med"", ""Reward"":25000000, ""MissionID"":413748339 }";
+            events = JournalMonitor.ParseJournalEntry(line);
+            cargoMonitor._handleMissionAcceptedEvent((MissionAcceptedEvent)events[0]);
+
+            cargo = cargoMonitor.inventory.ToList().FirstOrDefault(c => c.edname == "Silver");
+            Assert.IsNotNull(cargo);
+            Assert.AreEqual(0, cargo.total);
+            Assert.AreEqual(0, cargo.haulage + cargo.owned);
+            Assert.AreEqual(60, cargo.need);
+
+            haulage = cargo.haulageData.FirstOrDefault(h => h.missionid == 413748339);
+            Assert.IsNotNull(haulage);
+            Assert.AreEqual(60, haulage.remaining);
+            Assert.IsFalse(haulage.shared);
+
+            line = @"{ ""timestamp"":""2018-08-26T02:55:10Z"", ""event"":""CargoDepot"", ""MissionID"":413748339, ""UpdateType"":""Collect"", ""CargoType"":""Silver"", ""Count"":60, ""StartMarketID"":3225297216, ""EndMarketID"":3224777216, ""ItemsCollected"":60, ""ItemsDelivered"":0, ""TotalItemsToDeliver"":60, ""Progress"":0.000000 }";
+            events = JournalMonitor.ParseJournalEntry(line);
+            cargoMonitor._handleCargoDepotEvent((CargoDepotEvent)events[0]);
+
+            Assert.AreEqual(60, cargo.total);
+            Assert.AreEqual(60, cargo.haulage);
+            Assert.AreEqual(0, cargo.need);
+            Assert.AreEqual(60, haulage.remaining);
+            Assert.AreEqual(3225297216, haulage.startmarketid);
+            Assert.AreEqual(3224777216, haulage.endmarketid);
+
+            line = @"{ ""timestamp"":""2018-08-26T03:55:10Z"", ""event"":""CargoDepot"", ""MissionID"":413748339, ""UpdateType"":""Deliver"", ""CargoType"":""Silver"", ""Count"":60, ""StartMarketID"":3225297216, ""EndMarketID"":3224777216, ""ItemsCollected"":60, ""ItemsDelivered"":60, ""TotalItemsToDeliver"":60, ""Progress"":0.000000 }";
+            events = JournalMonitor.ParseJournalEntry(line);
+            cargoMonitor._handleCargoDepotEvent((CargoDepotEvent)events[0]);
+
+            Assert.AreEqual(0, cargo.total);
+            Assert.AreEqual(0, cargo.haulage);
+            Assert.AreEqual(0, cargo.need);
+            Assert.AreEqual(0, haulage.remaining);
         }
 
         [TestMethod]
