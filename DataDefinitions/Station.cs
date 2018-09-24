@@ -162,10 +162,10 @@ namespace EddiDataDefinitions
         public long? shipyardupdatedat;
 
         /// <summary>Is this station a starport?</summary>
-        public bool IsStarport() { return model == null ? false : Model?.basename == "Starport"; }
+        public bool IsStarport() { return Model == null ? false : Model?.basename == "Starport"; }
 
         /// <summary>Is this station an outpost?</summary>
-        public bool IsOutpost() { return model == null ? false : Model?.basename == "Outpost"; }
+        public bool IsOutpost() { return Model == null ? false : Model?.basename == "Outpost"; }
 
         /// <summary>Is this station planetary?</summary>
         public bool IsPlanetary() { return Model == null ? false : Model?.basename == "SurfaceStation"; }

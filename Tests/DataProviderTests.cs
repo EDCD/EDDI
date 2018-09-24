@@ -42,7 +42,7 @@ namespace UnitTests
 
             Body sol = starSystem.bodies.Find(b => b.name == "Sol");
             Assert.AreEqual(4792, sol.age);
-            Assert.AreEqual("No atmosphere", sol.atmosphere);
+            Assert.AreEqual("No atmosphere", sol.atmosphereclass.invariantName);
             Assert.AreEqual(0, sol.distance);
             Assert.IsNull(sol.earthmass);
             Assert.IsNull(sol.eccentricity);
@@ -55,7 +55,7 @@ namespace UnitTests
             Assert.AreEqual(0, sol.materials.Count);
             Assert.AreEqual("Sol", sol.name);
             Assert.IsNull(sol.orbitalperiod);
-            Assert.AreEqual("None", sol.planettype);
+            Assert.AreEqual("None", sol.Type.invariantName);
             Assert.IsNull(sol.pressure);
             Assert.IsNull(sol.radius);
             Assert.AreEqual((double)2.5832745587384M, (double)sol.rotationalperiod, 0.01);
@@ -65,7 +65,7 @@ namespace UnitTests
             Assert.AreEqual("G", sol.stellarclass);
             Assert.AreEqual("Sol", sol.systemname);
             Assert.AreEqual(5778, sol.temperature);
-            Assert.AreEqual("Not terraformable", sol.terraformstate);
+            Assert.AreEqual("Not terraformable", sol.terraformState.invariantName);
             Assert.IsNotNull(sol.tidallylocked);
             Assert.IsFalse((bool)sol.tidallylocked);
             Assert.AreEqual((double)-0.219615M, (double)sol.tilt, 0.01);
@@ -80,8 +80,8 @@ namespace UnitTests
 
             Body mercury = starSystem.bodies.Find(n => n.name.Equals("Mercury"));
             Assert.IsNull(mercury.age);
-            Assert.AreEqual("Planet", mercury.type);
-            Assert.AreEqual("No atmosphere", mercury.atmosphere);
+            Assert.AreEqual("Planet", mercury.Type.invariantName);
+            Assert.AreEqual("No atmosphere", mercury.atmosphereclass.invariantName);
             Assert.IsNotNull(mercury.distance);
             Assert.AreEqual(0.055M, mercury.earthmass);
             Assert.AreEqual(0.2056M, mercury.eccentricity);
@@ -98,7 +98,7 @@ namespace UnitTests
             Assert.AreEqual(1.0, (double)mercury.materials[10].percentage, 0.1);
             Assert.AreEqual("Mercury", mercury.name);
             Assert.AreEqual(88.0, (double)mercury.orbitalperiod, 0.1);
-            Assert.AreEqual("Metal-rich body", mercury.planettype);
+            Assert.AreEqual("Metal-rich body", mercury.planetClass.invariantName);
             Assert.IsNotNull(mercury.pressure);
             Assert.IsNotNull(mercury.radius);
             Assert.AreEqual(2440, (double)mercury.radius, 10);
@@ -109,7 +109,7 @@ namespace UnitTests
             Assert.IsNull(mercury.stellarclass);
             Assert.AreEqual("Sol", mercury.systemname);
             Assert.AreEqual(402, (double)mercury.temperature, 0.1);
-            Assert.AreEqual("Not terraformable", mercury.terraformstate);
+            Assert.AreEqual("Not terraformable", mercury.terraformState.invariantName);
             Assert.IsNotNull(mercury.tidallylocked);
             Assert.IsFalse((bool)mercury.tidallylocked);
             Assert.AreEqual((double)0.036826M, (double)mercury.tilt, .001);

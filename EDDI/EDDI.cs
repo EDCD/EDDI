@@ -1630,11 +1630,11 @@ namespace Eddi
                 Cmdr.title = Properties.EddiResources.Commander;
                 if (CurrentStarSystem != null)
                 {
-                    if (CurrentStarSystem.allegiance == "Federation" && Cmdr.federationrating != null && Cmdr.federationrating.rank > minFederationRankForTitle)
+                    if (CurrentStarSystem.Faction?.Allegiance?.invariantName == "Federation" && Cmdr.federationrating != null && Cmdr.federationrating.rank > minFederationRankForTitle)
                     {
                         Cmdr.title = Cmdr.federationrating.localizedName;
                     }
-                    else if (CurrentStarSystem.allegiance == "Empire" && Cmdr.empirerating != null && Cmdr.empirerating.rank > minEmpireRankForTitle)
+                    else if (CurrentStarSystem.Faction?.Allegiance?.invariantName == "Empire" && Cmdr.empirerating != null && Cmdr.empirerating.rank > minEmpireRankForTitle)
                     {
                         Cmdr.title = Cmdr.empirerating.maleRank.localizedName;
                     }
