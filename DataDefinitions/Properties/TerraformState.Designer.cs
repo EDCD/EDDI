@@ -70,7 +70,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Candidate for terraforming.
+        ///   Looks up a localized string similar to Terraformable.
         /// </summary>
         public static string Terraformable {
             get {
@@ -79,7 +79,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Terraforming completed.
+        ///   Looks up a localized string similar to Terraformed.
         /// </summary>
         public static string Terraformed {
             get {
@@ -88,7 +88,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Being terraformed.
+        ///   Looks up a localized string similar to Terraforming.
         /// </summary>
         public static string Terraforming {
             get {

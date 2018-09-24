@@ -122,15 +122,15 @@
     <comment>Terraform state "Null"</comment>
   </data>
   <data name="Terraformable" xml:space="preserve">
-    <value>Candidate for terraforming</value>
+    <value>Terraformable</value>
     <comment>Terraform state "Terraformable"</comment>
   </data>
   <data name="Terraformed" xml:space="preserve">
-    <value>Terraforming completed</value>
+    <value>Terraformed</value>
     <comment>Terraform state "Terraformed"</comment>
   </data>
   <data name="Terraforming" xml:space="preserve">
-    <value>Being terraformed</value>
+    <value>Terraforming</value>
     <comment>Terraform state "Terraforming"</comment>
   </data>
 </root>
