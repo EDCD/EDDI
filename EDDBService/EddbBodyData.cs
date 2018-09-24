@@ -166,13 +166,13 @@ namespace EddiEddbService
             Body.eccentricity = (decimal?)(double?)bodyJson["orbital_eccentricity"];
             Body.inclination = (decimal?)(double?)bodyJson["orbital_inclination"]; // Degrees
 
-            if (Body.Type.invariantName == "Belt")
+            if (Body.Type.edname.ToLowerInvariant() == "belt")
             {
                 // Not interested in asteroid belts, 
                 // no need to add additional information at this time.
             }
 
-            if (Body.Type.invariantName == "Star")
+            if (Body.Type.edname.ToLowerInvariant() == "star")
             {
                 // Star-specific items
                 Body.stellarclass = ((string)bodyJson["spectral_class"]).ToUpperInvariant();
@@ -185,7 +185,7 @@ namespace EddiEddbService
                 Body.setStellarExtras();
             }
 
-            if (Body.Type.invariantName == "Planet")
+            if (Body.Type.edname.ToLowerInvariant() == "planet")
             {
                 // Planet-specific items
                 Body.planetClass = PlanetClass.FromEDName((string)bodyJson["type_name"]);
@@ -195,6 +195,7 @@ namespace EddiEddbService
                 Body.radius = (decimal?)bodyJson["radius"]; // Kilometers
                 Body.pressure = (decimal?)(double?)bodyJson["surface_pressure"] ?? 0;
                 Body.terraformState = TerraformState.FromName((string)bodyJson["terraforming_state_name"]);
+                // Per Themroc @ EDDB, "Major" and "Minor" volcanism descriptors are stripped from EDDB data. 
                 Body.volcanism = Volcanism.FromName((string)bodyJson["volcanism_type_name"]);
                 Body.atmosphereclass = AtmosphereClass.FromEDName((string)bodyJson["atmosphere_type_name"]);
                 if (bodyJson["atmosphere_composition"] != null)

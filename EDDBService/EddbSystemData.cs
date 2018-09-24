@@ -142,9 +142,7 @@ namespace EddiEddbService
                 StarSystem.power = (string)systemJson["power"] == "None" ? null : (string)systemJson["power"];
                 StarSystem.powerstate = (string)systemJson["power_state"];
 
-                // Stations & bodies
-                SetStationSystemData(StarSystem);
-                SetBodySystemData(StarSystem);
+
 
                 StarSystem.updatedat = Dates.fromDateTimeStringToSeconds((string)systemJson["updated_at"]);
             }
@@ -152,28 +150,6 @@ namespace EddiEddbService
             StarSystem.lastupdated = DateTime.UtcNow;
 
             return StarSystem;
-        }
-
-        private static void SetBodySystemData(StarSystem StarSystem)
-        {
-            StarSystem.bodies = Bodies(StarSystem.name);
-            foreach (Body body in StarSystem.bodies)
-            {
-                if (body.rings?.Count() > 0)
-                {
-                    body.reserveLevel = StarSystem.Reserve;
-                }
-                body.systemname = StarSystem.name;
-            }
-        }
-
-        private static void SetStationSystemData(StarSystem StarSystem)
-        {
-            StarSystem.stations = Stations(StarSystem.name);
-            foreach (Station station in StarSystem.stations)
-            {
-                station.systemname = StarSystem.name;
-            }
         }
     }
 }
