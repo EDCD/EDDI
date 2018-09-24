@@ -740,7 +740,7 @@ namespace EddiSpeechResponder
                 else if (values.Count == 3)
                 {
                     // Named commodity, named station, named system 
-                    StarSystem system = DataProviderService.GetSystemData(values[2].AsString, null, null, null);
+                    StarSystem system = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(values[2].AsString);
                     string stationName = values[1].AsString;
                     Station station = system?.stations?.FirstOrDefault(v => v.name == stationName);
                     result = CommodityDetails(values[0].AsString, station);
