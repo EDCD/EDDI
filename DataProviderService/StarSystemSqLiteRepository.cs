@@ -85,7 +85,7 @@ namespace EddiDataProviderService
             {
                 if (fetchIfMissing)
                 {
-                    system = DataProviderService.GetSystemData(name, null, null, null);
+                    system = DataProviderService.GetFullSystemData(name);
                 }
                 if (system == null)
                 {
@@ -107,7 +107,7 @@ namespace EddiDataProviderService
             {
                 if (fetchIfMissing)
                 {
-                    system = DataProviderService.GetSystemData(name, null, null, null);
+                    system = DataProviderService.GetFullSystemData(name);
                 }
                 if (system != null)
                 {
@@ -171,7 +171,7 @@ namespace EddiDataProviderService
                                     if (refreshIfOutdated && result.lastupdated < DateTime.UtcNow.AddHours(-1))
                                     {
                                         // Data is stale
-                                        StarSystem updatedResult = DataProviderService.GetSystemData(name, null, null, null);
+                                        StarSystem updatedResult = DataProviderService.GetFullSystemData(name);
                                         updatedResult.visits = result.visits;
                                         updatedResult.lastvisit = result.lastvisit;
                                         updatedResult.lastupdated = DateTime.UtcNow;
@@ -193,7 +193,7 @@ namespace EddiDataProviderService
                 Logging.Warn("Problem reading data from database, re-obtaining from source.");
                 try
                 {
-                    result = DataProviderService.GetSystemData(name, null, null, null);
+                    result = DataProviderService.GetFullSystemData(name);
                     updateStarSystem(result);
                 }
                 catch (Exception ex)

@@ -19,14 +19,14 @@ namespace UnitTests
         [TestMethod]
         public void TestDataProviderEmptySystem()
         {
-            StarSystem starSystem = DataProviderService.GetSystemData("Lagoon Sector GW-V b2-6", null, null, null);
+            StarSystem starSystem = DataProviderService.GetFullSystemData("Lagoon Sector GW-V b2-6");
             Assert.IsNotNull(starSystem.stations);
         }
 
         [TestMethod]
         public void TestDataProviderMalformedSystem()
         {
-            StarSystem starSystem = DataProviderService.GetSystemData("Malformed with quote\" and backslash\\. So evil", null, null, null);
+            StarSystem starSystem = DataProviderService.GetSystemData("Malformed with quote\" and backslash\\. So evil");
             Assert.IsNotNull(starSystem);
         }
 
@@ -34,7 +34,7 @@ namespace UnitTests
         public void TestDataProviderBodies()
         {
             // Force obtain the data from remote source
-            StarSystem starSystem = DataProviderService.GetSystemData("Sol", null, null, null);
+            StarSystem starSystem = DataProviderService.GetFullSystemData("Sol");
             Assert.IsNotNull(starSystem);
 
             Assert.IsNotNull(starSystem.bodies);
@@ -42,7 +42,7 @@ namespace UnitTests
 
             Body sol = starSystem.bodies.Find(b => b.name == "Sol");
             Assert.AreEqual(4792, sol.age);
-            Assert.IsNull(sol.atmosphere);
+            Assert.AreEqual("No atmosphere", sol.atmosphere);
             Assert.AreEqual(0, sol.distance);
             Assert.IsNull(sol.earthmass);
             Assert.IsNull(sol.eccentricity);
@@ -52,24 +52,24 @@ namespace UnitTests
             Assert.IsFalse((bool)sol.landable);
             Assert.IsNotNull(sol.mainstar);
             Assert.IsTrue((bool)sol.mainstar);
-            Assert.IsNull(sol.materials);
+            Assert.AreEqual(0, sol.materials.Count);
             Assert.AreEqual("Sol", sol.name);
             Assert.IsNull(sol.orbitalperiod);
-            Assert.IsNull(sol.planettype);
+            Assert.AreEqual("None", sol.planettype);
             Assert.IsNull(sol.pressure);
             Assert.IsNull(sol.radius);
-            Assert.IsNull(sol.rotationalperiod);
+            Assert.AreEqual((double)2.5832745587384M, (double)sol.rotationalperiod, 0.01);
             Assert.IsNull(sol.semimajoraxis);
             Assert.AreEqual(1.0, (double)sol.solarmass, 0.001);
             Assert.AreEqual(1.0, (double)sol.solarradius, 0.001);
             Assert.AreEqual("G", sol.stellarclass);
             Assert.AreEqual("Sol", sol.systemname);
             Assert.AreEqual(5778, sol.temperature);
-            Assert.IsNull(sol.terraformstate);
+            Assert.AreEqual("Not terraformable", sol.terraformstate);
             Assert.IsNotNull(sol.tidallylocked);
             Assert.IsFalse((bool)sol.tidallylocked);
-            Assert.IsNull(sol.tilt);
-            Assert.AreEqual("Star", sol.type);
+            Assert.AreEqual((double)-0.219615M, (double)sol.tilt, 0.01);
+            Assert.AreEqual("Star", sol.Type.invariantName);
             Assert.IsNull(sol.volcanism);
             // Stellar extras
             Assert.AreEqual("yellow-white", sol.chromaticity);
@@ -80,11 +80,12 @@ namespace UnitTests
 
             Body mercury = starSystem.bodies.Find(n => n.name.Equals("Mercury"));
             Assert.IsNull(mercury.age);
+            Assert.AreEqual("Planet", mercury.type);
             Assert.AreEqual("No atmosphere", mercury.atmosphere);
             Assert.IsNotNull(mercury.distance);
             Assert.AreEqual(0.055M, mercury.earthmass);
             Assert.AreEqual(0.2056M, mercury.eccentricity);
-            Assert.AreEqual(0.38M, mercury.gravity);
+            Assert.AreEqual((double)0.38M, (double)mercury.gravity, 0.1);
             Assert.AreEqual(7, mercury.inclination);
             Assert.IsNotNull(mercury.landable);
             Assert.IsTrue((bool)mercury.landable);
@@ -100,26 +101,25 @@ namespace UnitTests
             Assert.AreEqual("Metal-rich body", mercury.planettype);
             Assert.IsNotNull(mercury.pressure);
             Assert.IsNotNull(mercury.radius);
-            Assert.AreEqual(2440, mercury.radius);
+            Assert.AreEqual(2440, (double)mercury.radius, 10);
             Assert.AreEqual(58.6, (double)mercury.rotationalperiod, 0.1);
             Assert.AreEqual(0.39, (double)mercury.semimajoraxis, 0.01);
             Assert.IsNull(mercury.solarmass);
             Assert.IsNull(mercury.solarradius);
             Assert.IsNull(mercury.stellarclass);
             Assert.AreEqual("Sol", mercury.systemname);
-            Assert.AreEqual(402, mercury.temperature);
+            Assert.AreEqual(402, (double)mercury.temperature, 0.1);
             Assert.AreEqual("Not terraformable", mercury.terraformstate);
             Assert.IsNotNull(mercury.tidallylocked);
             Assert.IsFalse((bool)mercury.tidallylocked);
-            Assert.AreEqual(2.11M, mercury.tilt);
-            Assert.AreEqual("Planet", mercury.type);
+            Assert.AreEqual((double)0.036826M, (double)mercury.tilt, .001);
             Assert.IsNull(mercury.volcanism);
         }
 
         [TestMethod]
         public void TestDataProviderUnknown()
         {
-            StarSystem starSystem = DataProviderService.GetSystemData("Not appearing in this galaxy", null, null, null);
+            StarSystem starSystem = DataProviderService.GetSystemData("Not appearing in this galaxy");
             Assert.IsNotNull(starSystem);
         }
 
@@ -181,6 +181,42 @@ namespace UnitTests
             Assert.AreEqual(159918, system.population);
             Assert.AreEqual(0, system.stations.Count);
             Assert.AreEqual(30, system.bodies.Count);
+        }
+
+
+        [TestMethod]
+        public void TestStarSystemData()
+        {
+            // Test system & body data
+            StarSystem starSystem = DataProviderService.GetFullSystemData("Sol");
+
+            Assert.AreEqual("Sol", starSystem.name);
+            Assert.AreEqual((decimal)0, starSystem.x);
+            Assert.AreEqual((decimal)0, starSystem.y);
+            Assert.AreEqual((decimal)0, starSystem.z);
+            Assert.IsNotNull(starSystem.population);
+            Assert.IsNotNull(starSystem.Faction.Allegiance.basename);
+            Assert.IsNotNull(starSystem.Faction.Government.basename);
+            Assert.IsNotNull(starSystem.Faction.name);
+            Assert.IsNotNull(starSystem.Faction);
+            Assert.IsNotNull(starSystem.systemState.basename);
+            Assert.IsNotNull(starSystem.securityLevel.basename);
+            Assert.IsNotNull(starSystem.primaryeconomy);
+            Assert.AreEqual("Common", starSystem.Reserve.basename);
+            Assert.IsNotNull(starSystem.stations.Count);
+            Assert.IsNotNull(starSystem);
+            Assert.IsNotNull(starSystem.bodies);
+            Assert.IsFalse(starSystem.bodies.Count == 0);
+        }
+
+        [TestMethod]
+        public void TestUgrasin()
+        {
+            // Test randomly
+            StarSystem starSystem = DataProviderService.GetFullSystemData("Ugrasin");
+
+            Assert.AreEqual("Ugrasin", starSystem.name);
+            Assert.AreEqual(1, starSystem.stations.Count);
         }
     }
 }

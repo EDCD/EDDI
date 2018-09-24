@@ -37,7 +37,7 @@ namespace UnitTests
             Assert.IsNotNull(ev);
             Assert.AreEqual("Grea Bloae HH-T d4-44 4", ev.name);
             Assert.AreEqual((decimal)703.763611, ev.distancefromarrival);
-            Assert.IsTrue(ev.tidallylocked.HasValue);
+            Assert.IsNotNull(ev.tidallylocked);
             Assert.IsFalse((bool)ev.tidallylocked);
             Assert.AreEqual("Terraformable", ev.terraformState.invariantName);
             Assert.AreEqual("High metal content body", ev.planetClass.invariantName);
@@ -50,7 +50,7 @@ namespace UnitTests
             Assert.AreEqual(Utilities.ConstantConverters.ms2g((decimal)14.899396), ev.gravity);
             Assert.AreEqual((decimal)836.165466, ev.temperature);
             Assert.AreEqual(325.986, (double)ev.pressure, 0.01);
-            Assert.IsTrue(ev.landable.HasValue);
+            Assert.IsNotNull(ev.landable);
             Assert.IsFalse((bool)ev.landable);
             Assert.AreEqual(1.4102, (double)ev.semimajoraxis, 0.01);
             Assert.AreEqual((decimal)0.000248, ev.eccentricity);
@@ -689,19 +689,19 @@ namespace UnitTests
 
             Assert.AreEqual("Independent", @event.Allegiance.invariantName);
             Assert.AreEqual("RayGateway", @event.body);
-            Assert.AreEqual("Station", @event.bodytype);
+            Assert.AreEqual("Station", @event.bodyType.invariantName);
             Assert.AreEqual(true, @event.docked);
-            Assert.AreEqual("High Tech", @event.economy);
-            Assert.AreEqual("Refinery", @event.economy2);
+            Assert.AreEqual("High Tech", @event.Economy.invariantName);
+            Assert.AreEqual("Refinery", @event.Economy2.invariantName);
             Assert.AreEqual("EXO", @event.faction);
-            Assert.AreEqual("Democracy", @event.government);
+            Assert.AreEqual("Democracy", @event.Government.invariantName);
             Assert.IsNull(@event.latitude);
             Assert.IsNull(@event.longitude);
             Assert.AreEqual(3223343616, @event.marketId);
             Assert.AreEqual(10303479, @event.population);
-            Assert.AreEqual("Medium", @event.security);
+            Assert.AreEqual("Medium", @event.securityLevel.invariantName);
             Assert.AreEqual("RayGateway", @event.station);
-            Assert.AreEqual("Coriolis", @event.stationtype);
+            Assert.AreEqual("Coriolis Starport", @event.stationModels.invariantName);
             Assert.AreEqual("Diaguandri", @event.system);
             Assert.AreEqual(670417429889, @event.systemAddress);
             Assert.AreEqual(-41.06250M, @event.x);
