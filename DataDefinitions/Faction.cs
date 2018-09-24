@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,17 +20,20 @@ namespace EddiDataDefinitions
         public long? EDSMID { get; set; }
 
         /// <summary> The faction's allegiance (localized name) </summary>
-        public string allegiance => Allegiance.localizedName;
+        [Obsolete("Please use Superpower instead")]
+        public string allegiance => (Allegiance ?? Superpower.None).localizedName;
         /// <summary> The faction's allegiance </summary>
         public Superpower Allegiance { get; set; } = Superpower.None;
 
         /// <summary> The faction's government (localized name) </summary>
-        public string government => Government.localizedName;
+        [Obsolete("Please use Government instead")]
+        public string government => (Government ?? Government.None).localizedName;
         /// <summary> The faction's government </summary>
         public Government Government { get; set; } = Government.None;
 
         /// <summary> The faction's current overall state (this may differ from the state in a particular system)</summary>
-        public string state => State.localizedName;
+        [Obsolete("Please use State instead")]
+        public string state => (State ?? State.None).localizedName;
         public State State
         {
             get
@@ -39,12 +43,16 @@ namespace EddiDataDefinitions
                     // Return _State if it has been set
                     return _State;
                 }
-                else
+                else if (Influences.Count > 0)
                 {
                     // Return the most common state
-                    return influence.GroupBy
+                    return Influences.GroupBy
                         (i => i.systemState).OrderByDescending
-                        (grp => grp.Count()).Select(grp => grp.Key).First() ?? State.None;
+                        (grp => grp.Count()).Select(grp => grp.Key).First();
+                }
+                else
+                {
+                    return State.None;
                 }
             }
             set
@@ -52,7 +60,7 @@ namespace EddiDataDefinitions
                 _State = value;
             }
         }
-        private State _State { get; set; } = State.None;
+        private State _State;
 
         /// <summary> The faction's home system EDDBID </summary>
         public long? homeSystemEddbId { get; set; }
@@ -61,7 +69,7 @@ namespace EddiDataDefinitions
         public bool isplayer { get; set; }
 
         /// <summary> Where this faction exerts influence </summary>
-        public List<FactionInfluence> influence { get; set; } = new List<FactionInfluence>();
+        public List<FactionInfluence> Influences { get; set; } = new List<FactionInfluence>();
 
         /// <summary> The last time the information present changed </summary> 
         public long? updatedat => Dates.fromDateTimeStringToSeconds(updatedAt.ToString());

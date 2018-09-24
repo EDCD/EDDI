@@ -16,22 +16,26 @@ namespace EddiDataDefinitions
         public string name { get; set; }
 
         /// <summary>The controlling faction</summary>
-        public Faction Faction { get; set; }
+        public Faction Faction { get; set; } = new Faction();
+
         /// <summary>The controlling faction's name</summary>
-        public string faction => Faction.name;
+        [Obsolete("Please use Faction instead")]
+        public string faction => (Faction ?? new Faction()).name;
 
         /// <summary>The controlling faction's government</summary>
-        public string government => Faction?.Government?.localizedName;
+        [Obsolete("Please use Faction.Government instead")]
+        public string government => (Faction?.Government ?? Government.None).localizedName;
 
         /// <summary>The controlling faction's allegiance</summary>
-        public string allegiance => Faction?.Allegiance?.localizedName;
+        [Obsolete("Please use Faction.Allegiance instead")]
+        public string allegiance => (Faction?.Allegiance ?? Superpower.None).localizedName;
 
         /// <summary>The controlling faction's state within the system</summary>
-        public string state => State?.localizedName;
-        public State State { get; set; }
+        public string state => (State ?? State.None).localizedName;
+        public State State { get; set; } = State.None;
 
         /// <summary>The primary economy of the station</summary>
-        public string primaryeconomy => economies[0];
+        public string primaryeconomy => economies[0] ?? Economy.None.localizedName;
 
         /// <summary>How far this is from the star, in light seconds</summary>
         public long? distancefromstar { get; set; }
@@ -69,47 +73,63 @@ namespace EddiDataDefinitions
         public bool? hasdocking { get; set; }
 
         /// <summary>The model of the station</summary>
+        [Obsolete("Please use StationModel instead")]
+        public string model => (Model ?? StationModel.None).localizedName;
         public StationModel Model { get; set; } = StationModel.None;
-        public string model => Model?.localizedName;
 
         /// <summary>What is the largest ship that can land here?</summary>
+        [Obsolete("Please use StationLargestPad instead")]
+        public string largestpad => (LargestPad ?? StationLargestPad.None).localizedName;
         public StationLargestPad LargestPad { get; set; } = StationLargestPad.None;
-        public string largestpad => LargestPad?.localizedName;
 
         /// <summary>What are the economies at the station, with proportions for each</summary>
-        public List<EconomyShare> economiesShares { get; set; }
+        public List<EconomyShare> economiesShares { get; set; } = new List<EconomyShare>();
 
         /// <summary>What are the economies at the station, without proportions (economy share / proportion is not given from EDDB)</summary>
         public List<string> economies
         {
             get
             {
-                if (economiesShares != null)
+                if (economiesShares.Count > 0)
                 {
-                    List<string> economiesFromShares = new List<string>();
+                    List<string> localizedEconomiesFromShares = new List<string>();
                     foreach (EconomyShare economyShare in economiesShares)
                     {
-                        economiesFromShares.Add(economyShare.economy.localizedName);
+                        localizedEconomiesFromShares.Add(economyShare.economy.localizedName);
                     }
-                    return economiesFromShares;
+                    return localizedEconomiesFromShares;
                 }
                 else
                 {
                     List<string> localizedEconomies = new List<string>();
-                    foreach (string economy in _economies)
+                    if (_economies != null)
                     {
-                        string localEconomyName = Economy.FromName(economy).localizedName;
-                        if (localEconomyName != null)
+                        foreach (Economy economy in _economies)
                         {
-                            localizedEconomies.Add(localEconomyName);
+                            localizedEconomies.Add((economy ?? Economy.None).localizedName);
                         }
+                    }
+                    else
+                    {
+                        localizedEconomies = new List<string>() { Economy.None.localizedName, Economy.None.localizedName };
                     }
                     return localizedEconomies;
                 };
             }
-            set { _economies = value; }
+            set
+            {
+                if (value != null)
+                {
+                    List<Economy> economiesFromInvariantNames = new List<Economy>();
+                    foreach (string invarientEconomy in value)
+                    {
+                        economiesFromInvariantNames.Add(Economy.FromName(invarientEconomy) ?? Economy.None);
+                    }
+                    _economies = economiesFromInvariantNames;
+                }
+            }
         }
-        private List<string> _economies;
+        private List<Economy> _economies; // Listed economies without proportions
 
         /// <summary>Which commodities are bought/sold by the station</summary>
         public List<CommodityMarketQuote> commodities { get; set; }
@@ -151,7 +171,7 @@ namespace EddiDataDefinitions
         public bool IsPlanetary() { return Model == null ? false : Model?.basename == "SurfaceStation"; }
 
         /// <summary>Is this station an (undockable) settlement?</summary>
-        public bool IsPlanetarySettlement() { return Model?.basename == "SurfaceStation" && largestpad == null; }
+        public bool IsPlanetarySettlement() { return Model?.basename == "SurfaceStation" && LargestPad == StationLargestPad.None; }
     }
 
     /// <summary> Station's largest landing pad size </summary>
@@ -183,7 +203,7 @@ namespace EddiDataDefinitions
             // Map old values from when we had an enum and map abbreviated sizes
             string size = string.Empty;
             if (value == "0" || value == null) { size = "None"; }
-            value?.ToLowerInvariant();
+            value = value?.ToLowerInvariant();
             if (value == "1" || value == "s") { size = "Small"; }
             if (value == "2" || value == "m") { size = "Medium"; }
             if (value == "3" || value == "l") { size = "Large"; }
