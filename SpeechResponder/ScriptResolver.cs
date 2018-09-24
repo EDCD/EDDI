@@ -554,7 +554,7 @@ namespace EddiSpeechResponder
                     system = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(values[1].AsString, true);
                 }
                 Body result = system != null && system.bodies != null ? system.bodies.FirstOrDefault(v => v.name == values[0].AsString) : null;
-                if (result != null && result.type == "Star" && result.chromaticity == null)
+                if (result != null && result.Type.invariantName == "Star" && result.chromaticity == null)
                 {
                     // Need to set our internal extras for the star
                     result.setStellarExtras();

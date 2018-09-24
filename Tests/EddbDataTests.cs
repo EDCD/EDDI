@@ -133,7 +133,7 @@ namespace UnitTests
             Assert.AreEqual(1.0, (double)body.materials[10].percentage, 0.1);
             Assert.AreEqual("Mercury", body.name);
             Assert.AreEqual(88.0, (double)body.orbitalperiod, 0.1);
-            Assert.AreEqual("Metal-rich body", body.planettype);
+            Assert.AreEqual("Metal-rich body", body.planetClass.invariantName);
             Assert.AreEqual(0, body.pressure);
             Assert.IsNotNull(body.radius);
             Assert.AreEqual(2439.7M, body.radius);
@@ -143,11 +143,11 @@ namespace UnitTests
             Assert.IsNull(body.solarradius);
             Assert.IsNull(body.stellarclass);
             Assert.AreEqual(401.965271M, body.temperature);
-            Assert.AreEqual("Not terraformable", body.terraformstate);
+            Assert.AreEqual("Not terraformable", body.terraformState.invariantName);
             Assert.IsNotNull(body.tidallylocked);
             Assert.IsFalse((bool)body.tidallylocked);
             Assert.AreEqual((double)0.036826M, (double)body.tilt, .001);
-            Assert.AreEqual("Planet", body.type);
+            Assert.AreEqual("Planet", body.Type.invariantName);
             Assert.IsNull(body.volcanism);
             Assert.AreEqual("Metal", body.solidComposition[0].invariantName);
             Assert.AreEqual(60M, body.solidComposition[0].percent);
@@ -209,8 +209,8 @@ namespace UnitTests
         public void TestBodyDataRingedGasGiant()
         {
             Body body = EddbService.Body("HD 43193 CD 7 a");
-            Assert.AreEqual("Planet", body.type);
-            Assert.AreEqual("Sudarsky class IV gas giant", body.planettype);
+            Assert.AreEqual("Planet", body.Type.invariantName);
+            Assert.AreEqual("Sudarsky class IV gas giant", body.planetClass.invariantName);
             Assert.IsNotNull(body.distance);
             Assert.IsFalse((bool)body.landable);
             Assert.AreEqual(11.175634423255477, (double)body.gravity, 0.01);
@@ -218,8 +218,8 @@ namespace UnitTests
             Assert.AreEqual(75701.896, (double)body.radius, 0.01);
             Assert.AreEqual((double)1021.42M, (double)body.temperature, 0.01);
             Assert.AreEqual(Volcanism.FromName("No volcanism"), body.volcanism);
-            Assert.AreEqual("No atmosphere", body.atmosphere);
-            Assert.AreEqual("Not terraformable", body.terraformstate);
+            Assert.AreEqual("No atmosphere", body.atmosphereclass.invariantName);
+            Assert.AreEqual("Not terraformable", body.terraformState.invariantName);
             Assert.AreEqual(55.31602430555556, (double)body.orbitalperiod, 0.01);
             Assert.AreEqual((double)0.11103302421536, (double)body.semimajoraxis, 0.01);
             Assert.IsFalse(body.eccentricity > 0);
@@ -298,7 +298,7 @@ namespace UnitTests
             Faction faction = EddbService.Faction("Coalition of Achali");
             Assert.AreEqual("Federation", faction.Allegiance.invariantName);
             Assert.AreEqual("Confederacy", faction.Government.invariantName);
-            Assert.IsNotNull(faction.state);
+            Assert.IsNotNull(faction.State.invariantName);
             Assert.IsFalse(faction.isplayer);
             Assert.IsNotNull(faction.updatedat);
             Assert.AreEqual(6626, faction.EDDBID);
