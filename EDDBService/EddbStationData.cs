@@ -173,7 +173,7 @@ namespace EddiEddbService
             Station.State = State.FromName((string)stationJson["state"] == "None" ? null : (string)stationJson["state"]);
 
             // Station facilities data
-            Station.Model = StationModel.FromName(eddbModel2journalModel((string)stationJson["type"]));
+            Station.Model = StationModel.FromName((string)stationJson["type"]);
             Station.LargestPad = StationLargestPad.FromSize((string)stationJson["max_landing_pad_size"]);
             Station.hasblackmarket = (bool?)stationJson["has_blackmarket"];
             Station.hasdocking = (bool?)stationJson["has_docking"];
@@ -256,40 +256,6 @@ namespace EddiEddbService
             Station.updatedat = Dates.fromDateTimeStringToSeconds((string)stationJson["updated_at"]);
 
             return Station;
-        }
-
-        private static string eddbModel2journalModel(string eddbModelName)
-        {
-            if (eddbModelName == null)
-            {
-                return null;
-            }
-
-            eddbModelName = eddbModelName.ToLowerInvariant();
-
-            if (eddbModelName.StartsWith("planetary") || eddbModelName.EndsWith("planetary"))
-            {
-                return "surface station";
-            }
-
-            if (eddbModelName.EndsWith("starport"))
-            {
-                eddbModelName.Replace(" starport", "");
-
-                // Ocellus starports are described by the journal as "Bernal" so we make the replacement here.
-                eddbModelName.Replace("ocellus", "bernal");
-
-                return eddbModelName;
-            }
-
-            if (eddbModelName.EndsWith("outpost"))
-            {
-                // Though EDDB provides details on the type of outpost (military, civilian, scientific, etc.), 
-                // that info is not present in the journal. Strip it for consistent output between journal and EDDB data.
-                return "outpost";
-            }
-
-            return eddbModelName;
         }
     }
 }
