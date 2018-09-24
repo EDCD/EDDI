@@ -332,9 +332,10 @@ namespace UnitTests
         [TestMethod]
         public void TestStarSystemData()
         {
-            // Test system & body data
+            // Test system data
             StarSystem starSystem = EddbService.System("Sol");
 
+            Assert.IsNotNull(starSystem);
             Assert.AreEqual("Sol", starSystem.name);
             Assert.AreEqual((decimal)0, starSystem.x);
             Assert.AreEqual((decimal)0, starSystem.y);
@@ -348,10 +349,6 @@ namespace UnitTests
             Assert.IsNotNull(starSystem.securityLevel.basename);
             Assert.IsNotNull(starSystem.primaryeconomy);
             Assert.AreEqual("Common", starSystem.Reserve.basename);
-            Assert.IsNotNull(starSystem.stations.Count);
-            Assert.IsNotNull(starSystem);
-            Assert.IsNotNull(starSystem.bodies);
-            Assert.IsFalse(starSystem.bodies.Count == 0);
         }
 
         [TestMethod]
@@ -401,7 +398,6 @@ namespace UnitTests
             StarSystem starSystem = EddbService.System("Ugrasin");
 
             Assert.AreEqual("Ugrasin", starSystem.name);
-            Assert.AreEqual(1, starSystem.stations.Count);
             Assert.AreEqual(starSystem.z, (decimal)11.28125);
         }
     }

@@ -151,7 +151,6 @@
     <Compile Include="VersioningTests.cs" />
     <Compile Include="DataProviderTests.cs" />
     <Compile Include="SpeechTests.cs" />
-    <Compile Include="StarSystemDataTests.cs" />
     <Compile Include="CommanderDataTests.cs" />
     <Compile Include="CoriolisTests.cs" />
     <Compile Include="ScriptResolverTest.cs" />

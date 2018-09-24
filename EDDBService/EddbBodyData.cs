@@ -157,7 +157,7 @@ namespace EddiEddbService
             // Orbital data
             Body.distance = (long?)bodyJson["distance_to_arrival"]; // Light seconds
             Body.temperature = (decimal?)bodyJson["surface_temperature"]; //Kelvin
-            Body.tidallylocked = (bool?)bodyJson["is_rotational_period_tidally_locked"]; // Days
+            Body.tidallylocked = (bool?)bodyJson["is_rotational_period_tidally_locked"] ?? false; // Days
             Body.rotationalperiod = (decimal?)(double?)bodyJson["rotational_period"]; // Days
             Body.tilt = (decimal?)(double?)bodyJson["axis_tilt"]; // Degrees
             Body.semimajoraxis = (decimal?)(double?)bodyJson["semi_major_axis"]; // AU
@@ -189,7 +189,7 @@ namespace EddiEddbService
             {
                 // Planet-specific items
                 Body.planetClass = PlanetClass.FromEDName((string)bodyJson["type_name"]);
-                Body.landable = (bool?)bodyJson["is_landable"];
+                Body.landable = (bool?)bodyJson["is_landable"] ?? false;
                 Body.earthmass = (decimal?)(double?)bodyJson["earth_masses"];
                 Body.gravity = (decimal?)(double?)bodyJson["gravity"]; // G's
                 Body.radius = (decimal?)bodyJson["radius"]; // Kilometers

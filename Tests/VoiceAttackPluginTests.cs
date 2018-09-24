@@ -92,7 +92,7 @@ namespace UnitTests
             Assert.IsNotNull(europa.volcanism);
             Assert.AreEqual("Magma", europa.volcanism.invariantType);
             Assert.AreEqual("Water", europa.volcanism.invariantComposition);
-            Assert.AreEqual("Major", europa.volcanism.invariantAmount);
+            // Eddb data does not include "major" or "minor" amounts 
         }
 
         [TestMethod]

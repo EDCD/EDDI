@@ -691,7 +691,7 @@ namespace EddiJournalMonitor
                                 else
                                 {
                                     // Body
-                                    bool? tidallyLocked = JsonParsing.getOptionalBool(data, "TidalLock");
+                                    bool? tidallyLocked = JsonParsing.getOptionalBool(data, "TidalLock") ?? false;
 
                                     PlanetClass planetClass = PlanetClass.FromEDName(JsonParsing.getString(data, "PlanetClass"));
                                     decimal? earthMass = JsonParsing.getOptionalDecimal(data, "MassEM");
@@ -703,7 +703,7 @@ namespace EddiJournalMonitor
 
                                     decimal? pressure = ConstantConverters.pascals2atm(JsonParsing.getOptionalDecimal(data, "SurfacePressure"));
 
-                                    bool? landable = JsonParsing.getOptionalBool(data, "Landable");
+                                    bool? landable = JsonParsing.getOptionalBool(data, "Landable") ?? false;
 
                                     string reserves = JsonParsing.getString(data, "ReserveLevel");
 
