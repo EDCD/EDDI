@@ -15,7 +15,8 @@ namespace EddiDataDefinitions
         public long? EDDBID { get; set; }
 
         /// <summary>The type of the body (Star or Planet)</summary>
-        public string type => Type.localizedName;
+        [Obsolete("Please use BodyType instead")]
+        public string type => (Type ?? BodyType.None).localizedName;
 
         /// <summary>The type of the body (Star or Planet)</summary>
         public BodyType Type { get; set; } = BodyType.None;
@@ -49,7 +50,7 @@ namespace EddiDataDefinitions
 
         /// <summary>The body's rings</summary>
         [JsonConverter(typeof(RingConverter))]
-        public List<Ring> rings = new List<Ring>();
+        public List<Ring> rings { get; set; } = new List<Ring>();
 
         // Star-specific items
 
@@ -83,11 +84,12 @@ namespace EddiDataDefinitions
         /// <summary>The argument of periapsis, in degrees</summary>
         public decimal? periapsis { get; set; }
 
-        /// <summary>The atmosphere</summary>
-        public string atmosphere => atmosphereclass.localizedName;
-
         /// <summary>The atmosphere class</summary>
         public AtmosphereClass atmosphereclass { get; set; } = AtmosphereClass.NoAtmosphere;
+
+        /// <summary>The atmosphere</summary>
+        [Obsolete("Please use AtmosphereClass instead")]
+        public string atmosphere => (atmosphereclass ?? AtmosphereClass.NoAtmosphere).localizedName;
 
         /// <summary>The atmosphere's composition</summary>
         public List<AtmosphereComposition> atmosphereCompositions { get; set; } = new List<AtmosphereComposition>();
@@ -123,13 +125,15 @@ namespace EddiDataDefinitions
         public decimal? pressure { get; set; }
 
         /// <summary>The terraform state (localized name)</summary>
-        public string terraformstate => terraformState?.localizedName;
+        [Obsolete("Please use TerraformState instead")]
+        public string terraformstate => (terraformState ?? TerraformState.None).localizedName;
 
         /// <summary>The terraform state</summary>
         public TerraformState terraformState { get; set; } = TerraformState.None;
 
         /// <summary>The planet type (localized name)</summary>
-        public string planettype => planetClass.localizedName;
+        [Obsolete("Please use PlanetClass instead")]
+        public string planettype => (planetClass ?? PlanetClass.None).localizedName;
 
         /// <summary>The planet type</summary>
         public PlanetClass planetClass { get; set; } = PlanetClass.None;
@@ -145,7 +149,8 @@ namespace EddiDataDefinitions
         public List<MaterialPresence> materials { get; set; } = new List<MaterialPresence>();
 
         /// <summary>The reserve level (localized name)</summary>
-        public string reserves => reserveLevel.localizedName;
+        [Obsolete("Please use SystemReserveLevel instead")]
+        public string reserves => (reserveLevel ?? SystemReserveLevel.None).localizedName;
         /// <summary>The reserve level</summary>
         public SystemReserveLevel reserveLevel { get; set; } = SystemReserveLevel.None;
 

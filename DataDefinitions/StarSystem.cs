@@ -27,32 +27,35 @@ namespace EddiDataDefinitions
         /// <summary>Details of bodies (stars/planets)</summary>
         public List<Body> bodies { get; set; }
 
-        /// <summary>System reserve levels</summary>
+        /// <summary>The reserve level applicable to the system's rings</summary>
         public SystemReserveLevel Reserve { get; set; } = SystemReserveLevel.None; // None if no rings are present
-        public string reserve => Reserve.localizedName;
+        public string reserve => (Reserve ?? SystemReserveLevel.None).localizedName;
 
         // Populated system data
 
         public long? population { get; set; }
         public string primaryeconomy => (economies[0] ?? Economy.None).localizedName;
-        public List<Economy> economies { get; set; } = new List<Economy>() { null, null };
-        public State systemState { get; set; } = State.None;
+        public List<Economy> economies { get; set; } = new List<Economy>() { Economy.None, Economy.None };
 
         /// <summary>The system's security level</summary>
         public SecurityLevel securityLevel { get; set; } = SecurityLevel.None;
         /// <summary>The system's security level (localized name)</summary>
-        public string security => securityLevel.localizedName;
+        public string security => (securityLevel ?? SecurityLevel.None).localizedName;
 
         public string power { get; set; }
         public string powerstate { get; set; }
 
-        [Obsolete("Please use systemState instead")]
+        [Obsolete("Please use SystemState instead")]
         public string state => systemState.localizedName;
+        public State systemState { get; set; } = State.None;
 
         // Faction details
-        public Faction Faction { get; set; } = new Faction();
+        [Obsolete("Please use Faction instead")]
         public string faction => Faction.name;
+        public Faction Faction { get; set; } = new Faction();
+        [Obsolete("Please use Faction.Allegiance instead")]
         public string allegiance => Faction.allegiance;
+        [Obsolete("Please use Faction.Government instead")]
         public string government => Faction.government;
 
         /// <summary>Details of stations</summary>
@@ -112,8 +115,8 @@ namespace EddiDataDefinitions
 
         public StarSystem()
         {
-            stations = new List<Station>();
             bodies = new List<Body>();
+            stations = new List<Station>();
         }
     }
 
