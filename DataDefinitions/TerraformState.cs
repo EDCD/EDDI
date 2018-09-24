@@ -29,5 +29,37 @@ namespace EddiDataDefinitions
 
         private TerraformState(string edname) : base(edname, edname)
         {}
+
+        new public static TerraformState FromName(string from)
+        {
+            return ResourceBasedLocalizedEDName<TerraformState>.FromName(eddbTerrformState2journalTerraformState(from));
+        }
+
+        private static string eddbTerrformState2journalTerraformState(string eddbTerraformState)
+        {
+            if (eddbTerraformState == null)
+            {
+                return null;
+            }
+
+            eddbTerraformState = eddbTerraformState.ToLowerInvariant();
+
+            if (eddbTerraformState == "candidate for terraforming")
+            {
+                return "terraformable";
+            }
+
+            if (eddbTerraformState == "terraforming completed")
+            {
+                return "terraformed";
+            }
+
+            if (eddbTerraformState == "being terraformed")
+            {
+                return "terraforming";
+            }
+
+            return eddbTerraformState;
+        }
     }
 }
