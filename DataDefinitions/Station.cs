@@ -35,7 +35,7 @@ namespace EddiDataDefinitions
         public State State { get; set; } = State.None;
 
         /// <summary>The primary economy of the station</summary>
-        public string primaryeconomy => economies[0] ?? Economy.None.localizedName;
+        public string primaryeconomy => economies != null ? economies[0] : Economy.None.localizedName;
 
         /// <summary>How far this is from the star, in light seconds</summary>
         public long? distancefromstar { get; set; }
