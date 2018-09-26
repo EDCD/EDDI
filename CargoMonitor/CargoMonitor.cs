@@ -855,7 +855,25 @@ namespace EddiCargoMonitor
         public void _handleMissionAcceptedEvent(MissionAcceptedEvent @event)
         {
             Cargo cargo = new Cargo();
-            string type = @event.name.Split('_').ElementAtOrDefault(1).ToLowerInvariant();
+
+            string type = @event.name.Split('_').ElementAt(1)?.ToLowerInvariant();
+            switch (type)
+            {
+                case "clearingthepath":
+                case "helpfinishtheorder":
+                    {
+                        type = "delivery";
+                    }
+                    break;
+                case "ds":
+                case "rs":
+                case "welcome":
+                    {
+                        type = @event.name.Split('_').ElementAt(2)?.ToLowerInvariant();
+                    }
+                    break;
+            }
+
             bool naval = @event.name.ToLowerInvariant().Contains("rank");
             switch (type)
             {

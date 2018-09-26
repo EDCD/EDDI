@@ -190,7 +190,7 @@ namespace EddiDataDefinitions
             destinationsystems = new List<DestinationSystem>();
 
             // Mechanism for identifying chained, 'welcome', and 'special' missions
-            string type = Name.Split('_').ElementAt(1);
+            string type = Name.Split('_').ElementAt(1)?.ToLowerInvariant();
             switch (type)
             {
                 case "drawthegeneralout":
@@ -237,7 +237,7 @@ namespace EddiDataDefinitions
                         this.typeDef = MissionType.FromEDName("Scan");
                     }
                     break;
-                case "TheDead":
+                case "thedead":
                     {
                         this.typeDef = MissionType.FromEDName("Special");
                     }
@@ -246,7 +246,7 @@ namespace EddiDataDefinitions
                 case "rs":
                 case "welcome":
                     {
-                        type = Name.Split('_').ElementAt(2);
+                        type = Name.Split('_').ElementAt(2)?.ToLowerInvariant();
                         this.typeDef = MissionType.FromEDName(type);
                     }
                     break;

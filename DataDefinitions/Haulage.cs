@@ -10,7 +10,7 @@ namespace EddiDataDefinitions
 
         public string name { get; set; }
 
-        public string typeEDName => name.Split('_').ElementAtOrDefault(1)?.ToLowerInvariant();
+        public string typeEDName { get; set; }
 
         [JsonIgnore, Obsolete("Please use localizedName or invariantName")]
         public string type => MissionType.FromEDName(typeEDName)?.localizedName;
@@ -47,6 +47,7 @@ namespace EddiDataDefinitions
         {
             missionid = haulage.missionid;
             name = haulage.name;
+            typeEDName = haulage.typeEDName;
             originsystem = haulage.originsystem;
             status = haulage.status;
             amount = haulage.amount;
@@ -69,6 +70,25 @@ namespace EddiDataDefinitions
             remaining = Amount;
             expiry = Expiry;
             shared = Shared;
+
+            // Mechanism for identifying chained delivery and 'welcome' missions
+            typeEDName = Name.Split('_').ElementAtOrDefault(1)?.ToLowerInvariant();
+            switch (typeEDName)
+            {
+                case "clearingthepath":
+                case "helpfinishtheorder":
+                    {
+                        typeEDName = "delivery";
+                    }
+                    break;
+                case "ds":
+                case "rs":
+                case "welcome":
+                    {
+                        typeEDName = Name.Split('_').ElementAt(2)?.ToLowerInvariant();
+                    }
+                    break;
+            }
         }
     }
 }
