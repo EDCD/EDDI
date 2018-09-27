@@ -1017,8 +1017,7 @@ namespace EddiCargoMonitor
 
         public void _handleMissionExpiredEvent(MissionExpiredEvent @event)
         {
-            Cargo cargo = GetCargoWithMissionId(@event.missionid ?? 0);
-            Haulage haulage = cargo.haulageData.FirstOrDefault(ha => ha.missionid == @event.missionid);
+            Haulage haulage = GetHaulageWithMissionId(@event.missionid ?? 0);
             if (haulage != null)
             {
                 haulage.status = "Failed";
