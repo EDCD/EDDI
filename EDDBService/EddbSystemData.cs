@@ -113,7 +113,7 @@ namespace EddiEddbService
                 StarSystem.x = (decimal?)systemJson["x"];
                 StarSystem.y = (decimal?)systemJson["y"];
                 StarSystem.z = (decimal?)systemJson["z"];
-                StarSystem.Reserve = SystemReserveLevel.FromName((string)systemJson["reserve_type"]);
+                StarSystem.Reserve = SystemReserveLevel.FromName((string)systemJson["reserve_type"]) ?? SystemReserveLevel.None;
 
                 // Populated system data
                 StarSystem.population = (long?)systemJson["population"] == null ? 0 : (long?)systemJson["population"];
