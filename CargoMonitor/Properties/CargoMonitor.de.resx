@@ -118,10 +118,10 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="cargo_monitor_desc" xml:space="preserve">
-    <value>Verfolgen Sie Informationen über Ihre Fracht.</value>
+    <value>Informationen über Ihre Fracht.</value>
   </data>
   <data name="cargo_monitor_name" xml:space="preserve">
-    <value>Fracht Monitor</value>
+    <value>Frachtüberwachung</value>
   </data>
   <data name="header_haulage" xml:space="preserve">
     <value>Transport</value>
@@ -136,7 +136,7 @@
     <comment>Tons needed for missions</comment>
   </data>
   <data name="para2" xml:space="preserve">
-    <value>Wenn Ihr Inventar falsch ist, müssen Sie Elite starten bzw. neu starten, dann werden diese Informationen aktualisiert.</value>
+    <value>Bitte beachten Sie, dass bei fehlerhafter Anzeige des Inventars, Elite gestartet oder neu gestartet werden muss, um die Daten zu aktualisieren.</value>
   </data>
   <data name="para1" xml:space="preserve">
     <value>Unten finden Sie eine Liste Ihrer gesamten Fracht.</value>

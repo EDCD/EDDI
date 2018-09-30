@@ -117,15 +117,37 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="header_destinationstation" xml:space="preserve">
+    <value>Station de destination</value>
+  </data>
+  <data name="header_destinationsystem" xml:space="preserve">
+    <value>Système de destination</value>
+  </data>
+  <data name="header_missionid" xml:space="preserve">
+    <value>ID de mission</value>
+  </data>
+  <data name="header_remaining" xml:space="preserve">
+    <value>Restante</value>
+  </data>
+  <data name="header_status" xml:space="preserve">
+    <value>Statut</value>
+  </data>
+  <data name="header_type" xml:space="preserve">
+    <value>Type</value>
+  </data>
+  <data name="mission_monitor_desc" xml:space="preserve">
+    <value>Surveille les informations de vos missions.</value>
+  </data>
+  <data name="mission_monitor_name" xml:space="preserve">
+    <value>Moniteur de mission</value>
+  </data>
+  <data name="para1" xml:space="preserve">
+    <value>Voici la liste de toutes vos missions.</value>
+  </data>
+  <data name="para2" xml:space="preserve">
+    <value>À noter que si votre journal de mission est incorrect, vous devez démarrer ou redémarrer Elite: Dangerous pour que les informations se mettent à jour.</value>
+  </data>
+  <data name="tab_mission_warning" xml:space="preserve">
+    <value>Seuil d'alerte d'expiration de mission (Minutes):</value>
+  </data>
 </root>
