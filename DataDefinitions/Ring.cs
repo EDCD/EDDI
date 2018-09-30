@@ -16,8 +16,8 @@ namespace EddiDataDefinitions
         public string composition => Composition.localizedName;
 
         public Composition Composition { get; set; }
-        public string localizedComposition => Composition.localizedName;
-        public string invariantComposition => Composition.invariantName;
+        public string localizedComposition => Composition?.localizedName;
+        public string invariantComposition => Composition?.invariantName;
 
         /// <summary>The mass of the ring, in megatonnes</summary>
         public decimal mass { get; set; }
