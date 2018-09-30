@@ -55,7 +55,7 @@ namespace UnitTests
             Assert.AreEqual(0, sol.materials.Count);
             Assert.AreEqual("Sol", sol.name);
             Assert.IsNull(sol.orbitalperiod);
-            Assert.AreEqual("None", sol.Type.invariantName);
+            Assert.AreEqual("Star", sol.Type.invariantName);
             Assert.IsNull(sol.pressure);
             Assert.IsNull(sol.radius);
             Assert.AreEqual((double)2.5832745587384M, (double)sol.rotationalperiod, 0.01);
