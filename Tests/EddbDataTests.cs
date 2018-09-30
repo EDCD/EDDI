@@ -104,7 +104,8 @@ namespace UnitTests
             Assert.AreEqual(296.656494, (double)body.periapsis, .001);
             Assert.AreEqual(4.0409704137731, (double)body.rotationalperiod, .001);
             Assert.AreEqual(0.203023, (double)body.tilt, .001);
-            Assert.IsNull(body.tidallylocked);
+            Assert.IsNotNull(body.tidallylocked);
+            Assert.IsFalse((bool)body.tidallylocked);
             Assert.IsNotNull(body.landable);
             Assert.IsFalse((bool)body.landable);
             Assert.AreEqual(0, body.materials.Count);
