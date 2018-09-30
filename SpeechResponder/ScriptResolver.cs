@@ -677,7 +677,7 @@ namespace EddiSpeechResponder
                 State result = State.FromName(values[0].AsString);
                 if (result == null)
                 {
-                    result = State.FromEDName(values[0].AsString);
+                    result = State.FromName(values[0].AsString);
                 }
                 return (result == null ? new ReflectionValue(new object()) : new ReflectionValue(result));
             }, 1);
@@ -687,7 +687,7 @@ namespace EddiSpeechResponder
                 Economy result = Economy.FromName(values[0].AsString);
                 if (result == null)
                 {
-                    result = Economy.FromEDName(values[0].AsString);
+                    result = Economy.FromName(values[0].AsString);
                 }
                 return (result == null ? new ReflectionValue(new object()) : new ReflectionValue(result));
             }, 1);
@@ -697,7 +697,7 @@ namespace EddiSpeechResponder
                 Government result = Government.FromName(values[0].AsString);
                 if (result == null)
                 {
-                    result = Government.FromEDName(values[0].AsString);
+                    result = Government.FromName(values[0].AsString);
                 }
                 return (result == null ? new ReflectionValue(new object()) : new ReflectionValue(result));
             }, 1);
@@ -707,7 +707,7 @@ namespace EddiSpeechResponder
                 SecurityLevel result = SecurityLevel.FromName(values[0].AsString);
                 if (result == null)
                 {
-                    result = SecurityLevel.FromEDName(values[0].AsString);
+                    result = SecurityLevel.FromName(values[0].AsString);
                 }
                 return (result == null ? new ReflectionValue(new object()) : new ReflectionValue(result));
             }, 1);
@@ -722,7 +722,7 @@ namespace EddiSpeechResponder
                 Material result = Material.FromName(values[0].AsString);
                 if (result == null)
                 {
-                    result = Material.FromEDName(values[0].AsString);
+                    result = Material.FromName(values[0].AsString);
                 }
                 return (result == null ? new ReflectionValue(new object()) : new ReflectionValue(result));
             }, 1);
