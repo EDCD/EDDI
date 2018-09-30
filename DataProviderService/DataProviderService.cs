@@ -50,6 +50,9 @@ namespace EddiDataProviderService
             foreach (Station station in stations)
             {
                 station.systemname = system;
+                LegacyEddpService.GetCommoditiesData(station.name, system, out List<CommodityMarketQuote> commodities, out long? commoditiesupdatedat);
+                station.commodities = commodities;
+                station.commoditiesupdatedat = commoditiesupdatedat;
             }
             return stations;
         }
