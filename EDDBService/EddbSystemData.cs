@@ -118,10 +118,10 @@ namespace EddiEddbService
                 // Populated system data
                 StarSystem.population = (long?)systemJson["population"] == null ? 0 : (long?)systemJson["population"];
                 // EDDB uses invariant / English localized economies
-                StarSystem.economies[0] = Economy.FromName((string)systemJson["primary_economy"]);
+                StarSystem.economies[0] = Economy.FromName((string)systemJson["primary_economy"]) ?? Economy.None;
                 // At present, EDDB does not provide any information about secondary economies.
                 StarSystem.systemState = State.FromEDName((string)systemJson["state"]) ?? State.None;
-                StarSystem.securityLevel = SecurityLevel.FromName((string)systemJson["security"]);
+                StarSystem.securityLevel = SecurityLevel.FromName((string)systemJson["security"]) ?? SecurityLevel.None;
 
                 // Controlling faction data
                 long? factionEddbId = (long?)systemJson["controlling_minor_faction_id"];
@@ -133,16 +133,14 @@ namespace EddiEddbService
                 if (controllingFaction != null)
                 {
                     controllingFaction.name = (string)systemJson["controlling_minor_faction"];
-                    controllingFaction.Government = Government.FromName((string)systemJson["government"]);
-                    controllingFaction.Allegiance = Superpower.FromName((string)systemJson["allegiance"]);
+                    controllingFaction.Government = Government.FromName((string)systemJson["government"]) ?? Government.None;
+                    controllingFaction.Allegiance = Superpower.FromName((string)systemJson["allegiance"]) ?? Superpower.None;
                 };
                 StarSystem.Faction = controllingFaction;
 
                 // Powerplay details
                 StarSystem.power = (string)systemJson["power"] == "None" ? null : (string)systemJson["power"];
                 StarSystem.powerstate = (string)systemJson["power_state"];
-
-
 
                 StarSystem.updatedat = Dates.fromDateTimeStringToSeconds((string)systemJson["updated_at"]);
             }
