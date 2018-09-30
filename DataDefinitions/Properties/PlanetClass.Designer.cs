@@ -63,9 +63,9 @@ namespace EddiDataDefinitions.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Ammonia world.
         /// </summary>
-        public static string AmmoniaWorld {
+        public static string Ammonia {
             get {
-                return ResourceManager.GetString("AmmoniaWorld", resourceCulture);
+                return ResourceManager.GetString("Ammonia", resourceCulture);
             }
         }
         
@@ -117,9 +117,9 @@ namespace EddiDataDefinitions.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Earth-like world.
         /// </summary>
-        public static string EarthLikeBody {
+        public static string EarthLike {
             get {
-                return ResourceManager.GetString("EarthLikeBody", resourceCulture);
+                return ResourceManager.GetString("EarthLike", resourceCulture);
             }
         }
         
@@ -162,27 +162,27 @@ namespace EddiDataDefinitions.Properties {
         /// <summary>
         ///   Looks up a localized string similar to High metal content body.
         /// </summary>
-        public static string HighMetalContentBody {
+        public static string HighMetalContent {
             get {
-                return ResourceManager.GetString("HighMetalContentBody", resourceCulture);
+                return ResourceManager.GetString("HighMetalContent", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Icy body.
         /// </summary>
-        public static string IcyBody {
+        public static string Icy {
             get {
-                return ResourceManager.GetString("IcyBody", resourceCulture);
+                return ResourceManager.GetString("Icy", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Metal-rich body.
         /// </summary>
-        public static string MetalRichBody {
+        public static string MetalRich {
             get {
-                return ResourceManager.GetString("MetalRichBody", resourceCulture);
+                return ResourceManager.GetString("MetalRich", resourceCulture);
             }
         }
         
@@ -198,18 +198,27 @@ namespace EddiDataDefinitions.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Rocky body.
         /// </summary>
-        public static string RockyBody {
+        public static string Rocky {
             get {
-                return ResourceManager.GetString("RockyBody", resourceCulture);
+                return ResourceManager.GetString("Rocky", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Rocky ice body.
         /// </summary>
-        public static string RockyIceBody {
+        public static string RockyIce {
             get {
-                return ResourceManager.GetString("RockyIceBody", resourceCulture);
+                return ResourceManager.GetString("RockyIce", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Water world.
+        /// </summary>
+        public static string Water {
+            get {
+                return ResourceManager.GetString("Water", resourceCulture);
             }
         }
         
@@ -228,15 +237,6 @@ namespace EddiDataDefinitions.Properties {
         public static string WaterGiantWithLife {
             get {
                 return ResourceManager.GetString("WaterGiantWithLife", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Water world.
-        /// </summary>
-        public static string WaterWorld {
-            get {
-                return ResourceManager.GetString("WaterWorld", resourceCulture);
             }
         }
     }

@@ -207,17 +207,17 @@ namespace EddiDataDefinitions
             missingEDNameHandler = (edname) => new PlanetClass(edname);
 
             None = new PlanetClass("None");
-            var AmmoniaWorld = new PlanetClass("AmmoniaWorld");
-            var EarthLikeBody = new PlanetClass("EarthLikeBody");
+            var Ammonia = new PlanetClass("Ammonia");
+            var EarthLike = new PlanetClass("EarthLike");
             var GasGiantWithAmmoniaBasedLife = new PlanetClass("GasGiantWithAmmoniaBasedLife");
             var GasGiantWithWaterBasedLife = new PlanetClass("GasGiantWithWaterBasedLife");
             var HeliumGasGiant = new PlanetClass("HeliumGasGiant");
             var HeliumRichGasGiant = new PlanetClass("HeliumRichGasGiant");
-            var HighMetalContentBody = new PlanetClass("HighMetalContentBody");
-            var IcyBody = new PlanetClass("IcyBody");
-            var MetalRichBody = new PlanetClass("MetalRichBody");
-            var RockyBody = new PlanetClass("RockyBody");
-            var RockyIceBody = new PlanetClass("RockyIceBody");
+            var HighMetalContent = new PlanetClass("HighMetalContent");
+            var Icy = new PlanetClass("Icy");
+            var MetalRich = new PlanetClass("MetalRich");
+            var Rock = new PlanetClass("Rocky");
+            var RockyIce = new PlanetClass("RockyIce");
             var ClassIGasGiant = new PlanetClass("ClassIGasGiant");
             var ClassIIGasGiant = new PlanetClass("ClassIIGasGiant");
             var ClassIIIGasGiant = new PlanetClass("ClassIIIGasGiant");
@@ -225,7 +225,7 @@ namespace EddiDataDefinitions
             var ClassVGasGiant = new PlanetClass("ClassVGasGiant");
             var WaterGiant = new PlanetClass("WaterGiant");
             var WaterGiantWithLife = new PlanetClass("WaterGiantWithLife");
-            var WaterWorld = new PlanetClass("WaterWorld");
+            var Water = new PlanetClass("Water");
         }
 
         public static readonly PlanetClass None;
@@ -245,7 +245,8 @@ namespace EddiDataDefinitions
             }
 
             string normalizedEDName = edname.Replace(" ", "").Replace("-", "");
-            normalizedEDName = normalizedEDName.Replace("earthlikeworld", "earthlikebody"); // EDDB uses "earth-like world" while the journal uses "Earthlike body". Fix that here.
+            normalizedEDName = normalizedEDName.Replace("world", ""); // In some cases, EDDB uses "world" while the journal uses "body". Fix that here.
+            normalizedEDName = normalizedEDName.Replace("body", ""); // In some cases, EDDB uses "world" while the journal uses "body". Fix that here.
             normalizedEDName = normalizedEDName.Replace("sudarsky", ""); // EDDB uses "class iv gas giant" while the journal uses "Sudarsky class IV gas giant". Fix that here.
             return ResourceBasedLocalizedEDName<PlanetClass>.FromEDName(normalizedEDName);
         }

@@ -117,10 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AmmoniaWorld" xml:space="preserve">
+  <data name="Ammonia" xml:space="preserve">
     <value>Ammonia world</value>
   </data>
-  <data name="EarthLikeBody" xml:space="preserve">
+  <data name="EarthLike" xml:space="preserve">
     <value>Earth-like world</value>
   </data>
   <data name="GasGiantWithAmmoniaBasedLife" xml:space="preserve">
@@ -135,19 +135,19 @@
   <data name="HeliumRichGasGiant" xml:space="preserve">
     <value>Helium rich gas giant</value>
   </data>
-  <data name="HighMetalContentBody" xml:space="preserve">
+  <data name="HighMetalContent" xml:space="preserve">
     <value>High metal content body</value>
   </data>
-  <data name="IcyBody" xml:space="preserve">
+  <data name="Icy" xml:space="preserve">
     <value>Icy body</value>
   </data>
-  <data name="MetalRichBody" xml:space="preserve">
+  <data name="MetalRich" xml:space="preserve">
     <value>Metal-rich body</value>
   </data>
-  <data name="RockyBody" xml:space="preserve">
+  <data name="Rocky" xml:space="preserve">
     <value>Rocky body</value>
   </data>
-  <data name="RockyIceBody" xml:space="preserve">
+  <data name="RockyIce" xml:space="preserve">
     <value>Rocky ice body</value>
   </data>
   <data name="ClassIGasGiant" xml:space="preserve">
@@ -171,7 +171,7 @@
   <data name="WaterGiantWithLife" xml:space="preserve">
     <value>Water giant with life</value>
   </data>
-  <data name="WaterWorld" xml:space="preserve">
+  <data name="Water" xml:space="preserve">
     <value>Water world</value>
   </data>
   <data name="None" xml:space="preserve">
