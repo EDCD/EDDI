@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 
 namespace EddiDataDefinitions
 {
@@ -46,7 +47,7 @@ namespace EddiDataDefinitions
             if (reader.TokenType == JsonToken.StartObject)
             {
                 // This is an object - use standard deserialization
-                return serializer.Deserialize<Ring>(reader);
+                return serializer.Deserialize<List<Ring>>(reader);
             }
             else
             {
