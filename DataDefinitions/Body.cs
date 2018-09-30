@@ -50,7 +50,7 @@ namespace EddiDataDefinitions
 
         /// <summary>The body's rings</summary>
         [JsonConverter(typeof(RingConverter))]
-        public List<Ring> rings { get; set; } = new List<Ring>();
+        public List<Ring> rings { get; set; }
 
         // Star-specific items
 
