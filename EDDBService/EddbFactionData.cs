@@ -118,9 +118,9 @@ namespace EddiEddbService
             faction.EDDBID = (long)factionJson["id"];
             faction.name = (string)factionJson["name"];
             faction.updatedAt = (DateTime)factionJson["updated_at"];
-            faction.Government = Government.FromName((string)factionJson["government"]);
-            faction.Allegiance = Superpower.FromName((string)factionJson["allegiance"]);
-            faction.State = State.FromName((string)factionJson["state"]);
+            faction.Government = Government.FromName((string)factionJson["government"]) ?? Government.None;
+            faction.Allegiance = Superpower.FromName((string)factionJson["allegiance"]) ?? Superpower.None;
+            faction.State = State.FromName((string)factionJson["state"]) ?? State.None;
             faction.homeSystemEddbId = (long?)factionJson["home_system_id"];
             faction.isplayer = (bool)factionJson["is_player_faction"];
 

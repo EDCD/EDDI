@@ -847,8 +847,8 @@ namespace Eddi
                 // Information from the event might be more current than that from our data source so use it in preference
                 Faction controllingFaction = new Faction();
                 controllingFaction.name = theEvent.faction;
-                controllingFaction.Government = Government.FromEDName(theEvent.government);
-                controllingFaction.Allegiance = Superpower.FromEDName(theEvent.allegiance);
+                controllingFaction.Government = theEvent.Government;
+                controllingFaction.Allegiance = theEvent.Allegiance;
                 station.Faction = controllingFaction;
 
                 CurrentStation = station;
