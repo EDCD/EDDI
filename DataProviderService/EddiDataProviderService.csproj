@@ -80,6 +80,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="LegacyEddpService.cs" />
     <Compile Include="DataProviderService.cs" />
     <Compile Include="StarSystemSqLiteRepository.cs" />
     <Compile Include="StarSystemRepository.cs" />
