@@ -28,7 +28,7 @@ namespace EddiDataProviderService
                 Logging.Debug("Failed to obtain commodity data from " + BASE + "systems/" + Uri.EscapeDataString(system));
             }
 
-            if (response != null)
+            if (response != null && response != "")
             {
                 JObject json = JObject.Parse(response);
 
