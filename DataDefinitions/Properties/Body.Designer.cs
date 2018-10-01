@@ -122,5 +122,14 @@ namespace EddiDataDefinitions.Properties {
                 return ResourceManager.GetString("Star", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Station.
+        /// </summary>
+        public static string Station {
+            get {
+                return ResourceManager.GetString("Station", resourceCulture);
+            }
+        }
     }
 }

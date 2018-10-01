@@ -102,7 +102,7 @@ namespace EddiDataDefinitions
                 string name = (string)additionalJsonData?["state"];
                 if (name != null)
                 {
-                    systemState = State.FromEDName(name) ?? State.FromName(name);
+                    systemState = State.FromEDName(name) ?? State.None;
                 }
             }
             else

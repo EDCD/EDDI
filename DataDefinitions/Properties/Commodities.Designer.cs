@@ -216,9 +216,9 @@ namespace EddiDataDefinitions.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Alya Body Soap.
         /// </summary>
-        public static string AlyaBodySoap {
+        public static string AlyaBodilySoap {
             get {
-                return ResourceManager.GetString("AlyaBodySoap", resourceCulture);
+                return ResourceManager.GetString("AlyaBodilySoap", resourceCulture);
             }
         }
         
@@ -1897,7 +1897,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Methanol Monohydrate Crystals.
+        ///   Looks up a localized string similar to Methanol Monohydrate.
         /// </summary>
         public static string MethanolMonohydrateCrystals {
             get {
@@ -2151,18 +2151,18 @@ namespace EddiDataDefinitions.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Onionhead Alpha Strain.
         /// </summary>
-        public static string OnionheadAlphaStrain {
+        public static string OnionHeadA {
             get {
-                return ResourceManager.GetString("OnionheadAlphaStrain", resourceCulture);
+                return ResourceManager.GetString("OnionHeadA", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Onionhead Beta Strain.
         /// </summary>
-        public static string OnionheadBetaStrain {
+        public static string OnionHeadB {
             get {
-                return ResourceManager.GetString("OnionheadBetaStrain", resourceCulture);
+                return ResourceManager.GetString("OnionHeadB", resourceCulture);
             }
         }
         
@@ -2187,9 +2187,9 @@ namespace EddiDataDefinitions.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Ophiuch Exino Artefacts.
         /// </summary>
-        public static string OphiuchExinoArtefacts {
+        public static string OphiuchiExinoArtefacts {
             get {
-                return ResourceManager.GetString("OphiuchExinoArtefacts", resourceCulture);
+                return ResourceManager.GetString("OphiuchiExinoArtefacts", resourceCulture);
             }
         }
         
@@ -2289,6 +2289,15 @@ namespace EddiDataDefinitions.Properties {
         public static string PersonalEffects {
             get {
                 return ResourceManager.GetString("PersonalEffects", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Personal Gifts.
+        /// </summary>
+        public static string PersonalGifts {
+            get {
+                return ResourceManager.GetString("PersonalGifts", resourceCulture);
             }
         }
         
@@ -2613,6 +2622,15 @@ namespace EddiDataDefinitions.Properties {
         public static string Semiconductors {
             get {
                 return ResourceManager.GetString("Semiconductors", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Shan&apos;s Charis Orchid.
+        /// </summary>
+        public static string ShansCharisOrchid {
+            get {
+                return ResourceManager.GetString("ShansCharisOrchid", resourceCulture);
             }
         }
         

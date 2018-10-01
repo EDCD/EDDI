@@ -198,9 +198,9 @@ namespace EddiDataDefinitions.Properties {
         /// <summary>
         ///   Looks up a localized string similar to No atmosphere.
         /// </summary>
-        public static string NoAtmosphere {
+        public static string None {
             get {
-                return ResourceManager.GetString("NoAtmosphere", resourceCulture);
+                return ResourceManager.GetString("None", resourceCulture);
             }
         }
         
