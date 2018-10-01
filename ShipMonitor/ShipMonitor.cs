@@ -230,6 +230,10 @@ namespace EddiShipMonitor
             {
                 handleModuleTransferEvent((ModuleTransferEvent)@event);
             }
+            else if (@event is ModuleInfoEvent)
+            {
+                handleModuleInfoEvent((ModuleInfoEvent)@event);
+            }
         }
 
         // Set the ship name conditionally, avoiding filtered names
@@ -486,10 +490,20 @@ namespace EddiShipMonitor
             }
 
             // Internal + restricted modules
-            ship.compartments = @event.compartments.Where(c => c.name.StartsWith("Slot") || c.name.StartsWith("Military")).ToList();
+            List<Compartment> compartments = new List<Compartment>();
+            foreach (Compartment cpt in @event.compartments.Where(c => c.name.StartsWith("Slot") || c.name.StartsWith("Military")).ToList())
+            {
+                compartments.Add(cpt);
+            }
+            ship.compartments = compartments;
 
             // Hardpoints
-            ship.hardpoints = @event.hardpoints;
+            List<Hardpoint> hardpoints = new List<Hardpoint>();
+            foreach (Hardpoint hpt in @event.hardpoints)
+            {
+                hardpoints.Add(hpt);
+            }
+            ship.hardpoints = hardpoints;
 
             // total fuel tank capacity
             ship.fueltanktotalcapacity = ship.fueltankcapacity + (int)ship.compartments.Where(c => c.module != null && c.module.basename.Equals("FuelTank")).Sum(c => Math.Pow(2, c.module.@class));
@@ -730,6 +744,37 @@ namespace EddiShipMonitor
         private void handleModuleTransferEvent(ModuleTransferEvent @event)
         {
             // We don't do anything here as the ship object is unaffected
+        }
+
+        private void handleModuleInfoEvent(ModuleInfoEvent @event)
+        {
+            Ship ship = GetCurrentShip();
+
+            ModuleInfoReader info = ModuleInfoReader.FromFile();
+            if (info != null)
+            {
+                for (int i = 0; i < info.Modules.Count(); i++)
+                {
+                    string slot = info.Modules[i].slot;
+                    if (slot.Contains("Slot"))
+                    {
+                        Compartment compartment = ship.compartments.FirstOrDefault(c => c.name == slot);
+                        if (compartment != null)
+                        {
+                            compartment.position = i;
+                        }
+                    }
+                    else if (slot.Contains("Hardpoint"))
+                    {
+                        Hardpoint hardpoint = ship.hardpoints.FirstOrDefault(h => h.name == slot);
+                        if (hardpoint != null)
+                        {
+                            hardpoint.position = i;
+                        }
+                    }
+                }
+                writeShips();
+            }
         }
 
         public void PostHandle(Event @event)

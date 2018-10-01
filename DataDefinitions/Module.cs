@@ -25,9 +25,9 @@ namespace EddiDataDefinitions
         [JsonProperty]
         public ModuleMount? mount { get; set; } // Only for weapons
         [JsonProperty]
-        public int? clipcapacity { get; set; } // Only for weapons
+        public int? ammoinclip { get; set; } // Only for weapons
         [JsonProperty]
-        public int? hoppercapacity { get; set; } // Only for weapons
+        public int? ammoinhopper { get; set; } // Only for weapons
 
         // State of the module
         [JsonProperty]
@@ -67,8 +67,8 @@ namespace EddiDataDefinitions
             this.value = Module.value;
             this.ShipId = Module.ShipId;
             this.mount = Module.mount;
-            this.clipcapacity = Module.clipcapacity;
-            this.hoppercapacity = Module.hoppercapacity;
+            this.ammoinclip = Module.ammoinclip;
+            this.ammoinhopper = Module.ammoinhopper;
             this.EDID = Module.EDID;
             this.EDDBID = Module.EDDBID;
             this.modified = Module.modified;
@@ -99,7 +99,7 @@ namespace EddiDataDefinitions
         }
 
         // Module definition for a weapon - requires mount and optional ammo
-        public Module(long EDID, string edname, long EDDBID, string basename, int Class, string Grade, long Value, ModuleMount Mount, int? AmmoClipCapacity = null, int? AmmoHopperCapacity = null) : base(edname, basename)
+        public Module(long EDID, string edname, long EDDBID, string basename, int Class, string Grade, long Value, ModuleMount Mount, int? AmmoInClip = null, int? AmmoInHopper = null) : base(edname, basename)
         {
             this.EDID = EDID;
             this.EDDBID = EDDBID;
@@ -107,8 +107,8 @@ namespace EddiDataDefinitions
             this.grade = Grade;
             this.value = Value;
             this.mount = Mount;
-            this.clipcapacity = AmmoClipCapacity;
-            this.hoppercapacity = AmmoHopperCapacity;
+            this.ammoinclip = AmmoInClip;
+            this.ammoinhopper = AmmoInHopper;
             this.modified = false;
             ModulesByEliteID[EDID] = this;
         }
