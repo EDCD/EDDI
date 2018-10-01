@@ -120,7 +120,7 @@ namespace EddiEddbService
                 // EDDB uses invariant / English localized economies
                 StarSystem.economies[0] = Economy.FromName((string)systemJson["primary_economy"]) ?? Economy.None;
                 // At present, EDDB does not provide any information about secondary economies.
-                StarSystem.systemState = State.FromEDName((string)systemJson["state"]) ?? State.None;
+                StarSystem.systemState = State.FromName((string)systemJson["state"]) ?? State.None;
                 StarSystem.securityLevel = SecurityLevel.FromName((string)systemJson["security"]) ?? SecurityLevel.None;
 
                 // Controlling faction data

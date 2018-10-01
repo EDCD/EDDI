@@ -85,11 +85,11 @@ namespace EddiDataDefinitions
         public decimal? periapsis { get; set; }
 
         /// <summary>The atmosphere class</summary>
-        public AtmosphereClass atmosphereclass { get; set; } = AtmosphereClass.NoAtmosphere;
+        public AtmosphereClass atmosphereclass { get; set; } = AtmosphereClass.None;
 
         /// <summary>The atmosphere</summary>
         [Obsolete("Please use AtmosphereClass instead")]
-        public string atmosphere => (atmosphereclass ?? AtmosphereClass.NoAtmosphere).localizedName;
+        public string atmosphere => (atmosphereclass ?? AtmosphereClass.None).localizedName;
 
         /// <summary>The atmosphere's composition</summary>
         public List<AtmosphereComposition> atmosphereCompositions { get; set; } = new List<AtmosphereComposition>();
@@ -185,6 +185,7 @@ namespace EddiDataDefinitions
             None = new BodyType("None");
             var Planet = new BodyType("Planet");
             var Star = new BodyType("Star");
+            var Station = new BodyType("Station");
             var Belt = new BodyType("Belt");
         }
 

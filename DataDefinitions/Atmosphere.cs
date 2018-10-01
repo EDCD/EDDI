@@ -76,31 +76,31 @@ namespace EddiDataDefinitions
             resourceManager.IgnoreCase = true;
             missingEDNameHandler = (edname) => new AtmosphereClass(edname);
 
-            NoAtmosphere = new AtmosphereClass("NoAtmosphere");
-            var SuitableForWaterBasedLife = new AtmosphereClass("SuitableForWaterBasedLife");
-            var AmmoniaAndOxygen = new AtmosphereClass("AmmoniaAndOxygen");
+            None = new AtmosphereClass("None");
             var Ammonia = new AtmosphereClass("Ammonia");
-            var Water = new AtmosphereClass("Water");
-            var CarbonDioxide = new AtmosphereClass("CarbonDioxide");
-            var SulphurDioxide = new AtmosphereClass("SulphurDioxide");
-            var Nitrogen = new AtmosphereClass("Nitrogen");
-            var WaterRich = new AtmosphereClass("WaterRich");
-            var MethaneRich = new AtmosphereClass("MethaneRich");
+            var AmmoniaAndOxygen = new AtmosphereClass("AmmoniaAndOxygen");
             var AmmoniaRich = new AtmosphereClass("AmmoniaRich");
-            var CarbonDioxideRich = new AtmosphereClass("CarbonDioxideRich");
-            var Methane = new AtmosphereClass("Methane");
-            var Helium = new AtmosphereClass("Helium");
-            var SilicateVapour = new AtmosphereClass("SilicateVapour");
-            var MetallicVapour = new AtmosphereClass("MetallicVapour");
-            var NeonRich = new AtmosphereClass("NeonRich");
-            var ArgonRich = new AtmosphereClass("ArgonRich");
-            var Neon = new AtmosphereClass("Neon");
             var Argon = new AtmosphereClass("Argon");
-            var Oxygen = new AtmosphereClass("Oxygen");
+            var ArgonRich = new AtmosphereClass("ArgonRich");
+            var CarbonDioxide = new AtmosphereClass("CarbonDioxide");
+            var CarbonDioxideRich = new AtmosphereClass("CarbonDioxideRich");
             var EarthLike = new AtmosphereClass("EarthLike");
+            var Helium = new AtmosphereClass("Helium");
+            var Methane = new AtmosphereClass("Methane");
+            var MethaneRich = new AtmosphereClass("MethaneRich");
+            var MetallicVapour = new AtmosphereClass("MetallicVapour");
+            var Neon = new AtmosphereClass("Neon");
+            var NeonRich = new AtmosphereClass("NeonRich");
+            var Nitrogen = new AtmosphereClass("Nitrogen");
+            var Oxygen = new AtmosphereClass("Oxygen");
+            var SilicateVapour = new AtmosphereClass("SilicateVapour");
+            var SuitableForWaterBasedLife = new AtmosphereClass("SuitableForWaterBasedLife");
+            var SulphurDioxide = new AtmosphereClass("SulphurDioxide");
+            var Water = new AtmosphereClass("Water");
+            var WaterRich = new AtmosphereClass("WaterRich");
         }
 
-        public static readonly AtmosphereClass NoAtmosphere;
+        public static readonly AtmosphereClass None;
 
         // dummy used to ensure that the static constructor has run
         public AtmosphereClass() : this("")
@@ -115,11 +115,27 @@ namespace EddiDataDefinitions
             .Replace("-", ""))
         { }
 
+        new public static AtmosphereClass FromName(string name)
+        {
+            if (name == null)
+            {
+                return None;
+            }
+
+            // Temperature and pressure are defined separately so we remove them from this string (if descriptors are present)
+            string normalizedName = name
+            .ToLowerInvariant()
+            .Replace("thick", "")
+            .Replace("thin", "")
+            .Replace("hot", "");
+            return ResourceBasedLocalizedEDName<AtmosphereClass>.FromName(normalizedName);
+        }
+
         new public static AtmosphereClass FromEDName(string edname)
         {
             if (edname == null)
             {
-                return null;
+                return None;
             }
 
             // Temperature and pressure are defined separately so we remove them from this string (if descriptors are present)

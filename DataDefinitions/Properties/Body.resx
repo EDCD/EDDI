@@ -145,4 +145,8 @@
     <value>None</value>
     <comment>None</comment>
   </data>
+  <data name="Station" xml:space="preserve">
+    <value>Station</value>
+    <comment>BodyType "Station"</comment>
+  </data>
 </root>

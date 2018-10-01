@@ -161,7 +161,7 @@
     <value>Aluminium</value>
     <comment>Commodity Aluminium</comment>
   </data>
-  <data name="AlyaBodySoap" xml:space="preserve">
+  <data name="AlyaBodilySoap" xml:space="preserve">
     <value>Alya Body Soap</value>
     <comment>Commodity AlyaBodySoap</comment>
   </data>
@@ -838,7 +838,7 @@
     <comment>Commodity MethaneClathrate</comment>
   </data>
   <data name="MethanolMonohydrateCrystals" xml:space="preserve">
-    <value>Methanol Monohydrate Crystals</value>
+    <value>Methanol Monohydrate</value>
     <comment>Commodity MethanolMonohydrateCrystals</comment>
   </data>
   <data name="MicroControllers" xml:space="preserve">
@@ -949,15 +949,15 @@
     <value>Onion Head</value>
     <comment>Commodity OnionHead</comment>
   </data>
-  <data name="OnionheadAlphaStrain" xml:space="preserve">
+  <data name="OnionHeadA" xml:space="preserve">
     <value>Onionhead Alpha Strain</value>
     <comment>Commodity OnionheadAlphaStrain</comment>
   </data>
-  <data name="OnionheadBetaStrain" xml:space="preserve">
+  <data name="OnionHeadB" xml:space="preserve">
     <value>Onionhead Beta Strain</value>
     <comment>Commodity OnionheadBetaStrain</comment>
   </data>
-  <data name="OphiuchExinoArtefacts" xml:space="preserve">
+  <data name="OphiuchiExinoArtefacts" xml:space="preserve">
     <value>Ophiuch Exino Artefacts</value>
     <comment>Commodity OphiuchExinoArtefacts</comment>
   </data>
@@ -1600,6 +1600,14 @@
   <data name="UtopianPublicity" xml:space="preserve">
     <value>Utopian Publicity</value>
     <comment>Commodity UtopianPublicity</comment>
+  </data>
+  <data name="PersonalGifts" xml:space="preserve">
+    <value>Personal Gifts</value>
+    <comment>Commodity.PersonalGifts</comment>
+  </data>
+  <data name="ShansCharisOrchid" xml:space="preserve">
+    <value>Shan's Charis Orchid</value>
+    <comment>Commodity ShansCharisOrchid</comment>
   </data>
   <data name="ancientkey" xml:space="preserve">
     <value>Ancient Key</value>

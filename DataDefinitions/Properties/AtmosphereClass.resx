@@ -173,9 +173,9 @@
     <value>Nitrogen</value>
     <comment>Atmosphere class "Nitrogen"</comment>
   </data>
-  <data name="NoAtmosphere" xml:space="preserve">
+  <data name="None" xml:space="preserve">
     <value>No atmosphere</value>
-    <comment>Atmosphere class "No atmosphere"</comment>
+    <comment>Atmosphere class "None"</comment>
   </data>
   <data name="Oxygen" xml:space="preserve">
     <value>Oxygen</value>

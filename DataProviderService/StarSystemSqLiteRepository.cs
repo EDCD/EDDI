@@ -190,7 +190,7 @@ namespace EddiDataProviderService
             }
             catch (Exception)
             {
-                Logging.Warn("Problem reading data from database, re-obtaining from source.");
+                Logging.Warn("Problem reading data for star system '" + name + "' from database, re-obtaining from source.");
                 try
                 {
                     result = DataProviderService.GetFullSystemData(name);
