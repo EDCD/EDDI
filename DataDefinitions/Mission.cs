@@ -9,10 +9,10 @@ namespace EddiDataDefinitions
     public class Mission : INotifyPropertyChanged
     {
         // The mission ID
-        public long missionid { get; set; }
+        public long missionid { get; private set; }
 
         // The name of the mission
-        public string name;
+        public string name { get; set; }
 
         // The localised name of the mission
         public string localisedname;

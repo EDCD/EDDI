@@ -6,11 +6,11 @@ namespace EddiDataDefinitions
 {
     public class Haulage
     {
-        public long missionid { get; set; }
+        public long missionid { get; private set; }
 
-        public string name { get; set; }
+        public string name { get; private set; }
 
-        public string typeEDName { get; set; }
+        public string typeEDName { get; private set; }
 
         [JsonIgnore, Obsolete("Please use localizedName or invariantName")]
         public string type => MissionType.FromEDName(typeEDName)?.localizedName;
@@ -25,7 +25,7 @@ namespace EddiDataDefinitions
         [JsonIgnore]
         public bool wing => name.ToLowerInvariant().Contains("wing");
 
-        public int amount { get; set; }
+        public int amount { get; private set; }
 
         public int remaining { get; set; }
 
@@ -39,7 +39,7 @@ namespace EddiDataDefinitions
 
         public DateTime? expiry { get; set; }
 
-        public bool shared { get; set; }
+        public bool shared { get; private set; }
 
         public Haulage() { }
 
