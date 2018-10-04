@@ -338,6 +338,9 @@ namespace EddiCargoMonitor
                                 }
                                 break;
                         }
+                        haulage.sourcesystem = EDDI.Instance?.CurrentStarSystem?.name;
+                        haulage.sourcebody = EDDI.Instance?.CurrentStellarBody?.name;
+
                         if (handled)
                         {
                             break;
@@ -450,6 +453,12 @@ namespace EddiCargoMonitor
             {
                 cargo.owned += @event.amount;
                 cargo.CalculateNeed();
+                Haulage haulage = cargo.haulageData.FirstOrDefault(h => h.typeEDName.Contains("Collect"));
+                if (haulage != null)
+                {
+                    haulage.sourcesystem = EDDI.Instance?.CurrentStarSystem?.name;
+                    haulage.sourcebody = EDDI.Instance?.CurrentStation?.name;
+                }
             }
             else
             {
@@ -890,8 +899,17 @@ namespace EddiCargoMonitor
                         Haulage haulage = new Haulage(@event.missionid ?? 0, @event.name, originSystem, @event.amount ?? 0, @event.expiry)
                         {
                             startmarketid = (type.Contains("delivery") && !naval) ? EDDI.Instance?.CurrentStation?.marketId ?? 0 : 0,
-                            endmarketid = (type.Contains("collect")) ? EDDI.Instance?.CurrentStation?.marketId ?? 0 : 0
+                            endmarketid = (type.Contains("collect")) ? EDDI.Instance?.CurrentStation?.marketId ?? 0 : 0,
                         };
+                        if (type.Contains("delivery") || type == "smuggle")
+                        {
+                            haulage.sourcesystem = EDDI.Instance?.CurrentStarSystem?.name;
+                            haulage.sourcebody = EDDI.Instance?.CurrentStation?.name;
+                        }
+                        else if (type == "rescue" || type == "salvage")
+                        {
+                            haulage.sourcesystem = @event.destinationsystem;
+                        }
 
                         cargo = GetCargoWithEDName(@event.commodityDefinition?.edname);
                         if (cargo != null)
@@ -915,7 +933,7 @@ namespace EddiCargoMonitor
             }
         }
 
-        private void handleMissionCompletedEvent(MissionCompletedEvent @event)
+            private void handleMissionCompletedEvent(MissionCompletedEvent @event)
         {
             if (@event.commodityDefinition != null || @event.commodityrewards != null)
             {
