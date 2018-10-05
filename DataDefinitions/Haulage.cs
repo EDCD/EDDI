@@ -1,11 +1,21 @@
 ﻿using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace EddiDataDefinitions
 {
     public class Haulage
     {
+        [JsonIgnore]
+        private static Dictionary<string, string> CHAINED = new Dictionary<string, string>()
+        {
+            {"clearingthepath", "delivery"},
+            {"helpfinishtheorder", "delivery"},
+            {"rescuefromthetwins", "salvage"},
+            {"rescuethewares", "salvage"}
+        };
+
         public long missionid { get; private set; }
 
         public string name { get; private set; }
@@ -73,21 +83,13 @@ namespace EddiDataDefinitions
 
             // Mechanism for identifying chained delivery and 'welcome' missions
             typeEDName = Name.Split('_').ElementAtOrDefault(1)?.ToLowerInvariant();
-            switch (typeEDName)
+            if (CHAINED.TryGetValue(typeEDName, out string value))
             {
-                case "clearingthepath":
-                case "helpfinishtheorder":
-                    {
-                        typeEDName = "delivery";
-                    }
-                    break;
-                case "ds":
-                case "rs":
-                case "welcome":
-                    {
-                        typeEDName = Name.Split('_').ElementAt(2)?.ToLowerInvariant();
-                    }
-                    break;
+                typeEDName = value;
+            }
+            else if (typeEDName == "ds" || typeEDName == "rs" || typeEDName == "welcome")
+            {
+                typeEDName = Name.Split('_').ElementAt(2)?.ToLowerInvariant();
             }
         }
     }

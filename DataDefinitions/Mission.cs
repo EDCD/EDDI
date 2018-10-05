@@ -8,6 +8,28 @@ namespace EddiDataDefinitions
 {
     public class Mission : INotifyPropertyChanged
     {
+        [JsonIgnore]
+        private static Dictionary<string, string> CHAINED = new Dictionary<string, string>()
+        {
+            {"clearingthepath", "delivery"},
+            {"drawthegeneralout", "assassinate"},
+            {"findthepiratelord", "assassinate"},
+            {"helpfinishtheorder", "delivery"},
+            {"helpwithpreventionmeasures", "massacre"},
+            {"miningtoorder", "mining"},
+            {"planetaryincursions", "scan"},
+            {"rampantleadership", "assassinate"},
+            {"regainfooting", "assassinate"},
+            {"rescuefromthetwins", "salvage"},
+            {"rescuethewares", "salvage"},
+            {"safetravelling", "passengervip"},
+            {"salvagejustice", "assassinate"},
+            {"securingmyposition", "passengervip"},
+            {"seekingasylum", "assassinate"},
+            {"thedead", "special"},
+            {"wrongtarget", "assassinate"},
+        };
+
         // The mission ID
         public long missionid { get; private set; }
 
@@ -191,71 +213,15 @@ namespace EddiDataDefinitions
 
             // Mechanism for identifying chained, 'welcome', and 'special' missions
             string type = Name.Split('_').ElementAt(1)?.ToLowerInvariant();
-            switch (type)
+            if (CHAINED.TryGetValue(typeEDName, out string value))
             {
-                case "drawthegeneralout":
-                case "findthepiratelord":
-                case "rampantleadership":
-                case "regainfooting":
-                case "salvagejustice":
-                case "seekingasylum":
-                case "wrongtarget":
-                    {
-                        this.typeDef = MissionType.FromEDName("Assassinate");
-                    }
-                    break;
-                case "clearingthepath":
-                case "helpfinishtheorder":
-                    {
-                        this.typeDef = MissionType.FromEDName("Deliver");
-                    }
-                    break;
-                case "helpwithpreventionmeasures":
-                    {
-                        this.typeDef = MissionType.FromEDName("Massacre");
-                    }
-                    break;
-                case "miningtoorder":
-                    {
-                        this.typeDef = MissionType.FromEDName("Mining");
-                    }
-                    break;
-                case "safetravelling":
-                case "securingmyposition":
-                    {
-                        this.typeDef = MissionType.FromEDName("PassengerVIP");
-                    }
-                    break;
-                case "rescuefromthetwins":
-                case "rescuethewares":
-                    {
-                        this.typeDef = MissionType.FromEDName("Salvage");
-                    }
-                    break;
-                case "planetaryincursions":
-                    {
-                        this.typeDef = MissionType.FromEDName("Scan");
-                    }
-                    break;
-                case "thedead":
-                    {
-                        this.typeDef = MissionType.FromEDName("Special");
-                    }
-                    break;
-                case "ds":
-                case "rs":
-                case "welcome":
-                    {
-                        type = Name.Split('_').ElementAt(2)?.ToLowerInvariant();
-                        this.typeDef = MissionType.FromEDName(type);
-                    }
-                    break;
-                default:
-                    {
-                        this.typeDef = MissionType.FromEDName(type);
-                    }
-                    break;
+                type = value;
             }
+            else if (typeEDName == "ds" || typeEDName == "rs" || typeEDName == "welcome")
+            {
+                type = Name.Split('_').ElementAt(2)?.ToLowerInvariant();
+            }
+            this.typeDef = MissionType.FromEDName(type);
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

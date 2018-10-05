@@ -29,6 +29,14 @@ namespace EddiCargoMonitor
         private static readonly object inventoryLock = new object();
         public event EventHandler InventoryUpdatedEvent;
 
+        private static Dictionary<string, string> CHAINED = new Dictionary<string, string>()
+        {
+            {"clearingthepath", "delivery"},
+            {"helpfinishtheorder", "delivery"},
+            {"rescuefromthetwins", "salvage"},
+            {"rescuethewares", "salvage"}
+        };
+
         public string MonitorName()
         {
             return "Cargo monitor";
@@ -857,21 +865,13 @@ namespace EddiCargoMonitor
             Cargo cargo = new Cargo();
 
             string type = @event.name.Split('_').ElementAt(1)?.ToLowerInvariant();
-            switch (type)
+            if (CHAINED.TryGetValue(type, out string value))
             {
-                case "clearingthepath":
-                case "helpfinishtheorder":
-                    {
-                        type = "delivery";
-                    }
-                    break;
-                case "ds":
-                case "rs":
-                case "welcome":
-                    {
-                        type = @event.name.Split('_').ElementAt(2)?.ToLowerInvariant();
-                    }
-                    break;
+                type = value;
+            }
+            else if (type == "ds" || type == "rs" || type == "welcome")
+            {
+                type = @event.name.Split('_').ElementAt(2)?.ToLowerInvariant();
             }
 
             bool naval = @event.name.ToLowerInvariant().Contains("rank");
@@ -893,7 +893,7 @@ namespace EddiCargoMonitor
                         Haulage haulage = new Haulage(@event.missionid ?? 0, @event.name, originSystem, @event.amount ?? 0, @event.expiry)
                         {
                             startmarketid = (type.Contains("delivery") && !naval) ? EDDI.Instance?.CurrentStation?.marketId ?? 0 : 0,
-                            endmarketid = (type.Contains("collect")) ? EDDI.Instance?.CurrentStation?.marketId ?? 0 : 0
+                            endmarketid = type.Contains("collect") ? EDDI.Instance?.CurrentStation?.marketId ?? 0 : 0
                         };
 
                         cargo = GetCargoWithEDName(@event.commodityDefinition?.edname);
