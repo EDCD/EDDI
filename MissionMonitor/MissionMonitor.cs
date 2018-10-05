@@ -31,6 +31,7 @@ namespace EddiMissionMonitor
         public int missionsCount;
         public int? missionWarning;
         private string missionsRouteList = String.Empty;
+        decimal missionsRouteDistance = 0;
 
         private static readonly object missionsLock = new object();
         public event EventHandler MissionUpdatedEvent;
@@ -1099,7 +1100,6 @@ namespace EddiMissionMonitor
             // Missions Route Event variables
             string nextSystem = null;
             decimal nextDistance = 0;
-            decimal missionsRouteDistance = 0;
             List<long> missionids = new List<long>();       // List of mission IDs for the next system
 
             StarSystem curr = new StarSystem();             // Current star system
@@ -1168,24 +1168,14 @@ namespace EddiMissionMonitor
                     }
                 }
 
-                if (systems.Count() == 2)
-                {
-                    route.Clear();
-                    route.Add(systems[1]);
-                    route.Add(systems[0]);
-                    nextSystem = systems[0];
-                    curr = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(systems[0], true);
-                    dest = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(systems[1], true);
-                    nextDistance = CalculateDistance(curr, dest);
-                    missionsRouteDistance = nextDistance * 2;
-                    missionsRouteList = string.Join("_", route);
-                }
-                else if (systems.Count() > 2)
+                if (systems.Count() > 1)
                 {
                     decimal distance;
                     decimal nearestDistance;
                     decimal totalDistance;
                     string nearestSystem = String.Empty;
+                    missionsRouteList = String.Empty;
+                    missionsRouteDistance = 0;
 
                     // Repetitive Nearest Neighbor Algorithm (RNNA)
                     // Iterate through all possible routes by changing the starting system
@@ -1261,7 +1251,7 @@ namespace EddiMissionMonitor
                         }
                     }
 
-                    if (bestRoute.Count() > 2)
+                    if (bestRoute.Count() == systems.Count())
                     {
                         nextSystem = bestRoute[0];
                         curr = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(homesystem, true);
@@ -1276,9 +1266,16 @@ namespace EddiMissionMonitor
                         }
                         Logging.Debug("Calculate Route Selected = " + missionsRouteList + ", Total Distance = " + missionsRouteDistance);
                     }
+                    else
+                    {
+                        Logging.Debug("Unable to meet missions route calculation criteria");
+                        bestRoute.Clear();
+                        missionsRouteList = string.Empty;
+                        missionsRouteDistance = 0;
+                    }
                 }
-                EDDI.Instance.eventHandler(new MissionsRouteEvent(DateTime.Now, "route", nextSystem, missionsRouteList, bestRoute.Count(), nextDistance, missionsRouteDistance, missionids));
             }
+            EDDI.Instance.eventHandler(new MissionsRouteEvent(DateTime.Now, "route", nextSystem, missionsRouteList, bestRoute.Count(), nextDistance, missionsRouteDistance, missionids));
             return nextSystem;
         }
 
@@ -1287,7 +1284,6 @@ namespace EddiMissionMonitor
             // Misisons Route Event variables
             string nextSystem = null;
             decimal nextDistance = 0;
-            decimal missionsRouteDistance = 0;
             List<long> missionids = new List<long>();       // List of mission IDs for the next system
 
             bool update = true;
@@ -1354,11 +1350,12 @@ namespace EddiMissionMonitor
                 int index = route.IndexOf(updateSystem);
                 if (index > -1)
                 {
-                    StarSystem curr = new StarSystem();             // Current star system
-                    StarSystem dest = new StarSystem();             // Destination star system
+                    StarSystem curr = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(route[index], true);
+                    StarSystem dest = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(route[index + 1], true);
+                    missionsRouteDistance -= CalculateDistance(curr, dest);
 
                     route.RemoveAt(index);
-                    missionsRouteList = string.Join("_", route);
+
 
                     if (route.Count > 0)
                     {
@@ -1367,23 +1364,20 @@ namespace EddiMissionMonitor
                         dest = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(nextSystem, true);
                         nextDistance = CalculateDistance(curr, dest);
 
-                        missionsRouteDistance = nextDistance;
-                        for (int i = 0; i < route.Count - 1; i++)
-                        {
-                            curr = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(route[i], true);
-                            dest = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(route[i + 1], true);
-                            missionsRouteDistance += CalculateDistance(curr, dest);
-                        }
-
                         foreach (Mission mission in missions.Where(m => m.destinationsystem == nextSystem
                             || (m.originreturn && m.originsystem == nextSystem)).ToList())
                         {
                             missionids.Add(mission.missionid);
                         }
+                        missionsRouteList = string.Join("_", route);
+                    }
+                    else
+                    {
+                        missionsRouteList = string.Empty;
                     }
                 }
-                EDDI.Instance.eventHandler(new MissionsRouteEvent(DateTime.Now, "update", nextSystem, missionsRouteList, route.Count(), nextDistance, missionsRouteDistance, missionids));
             }
+            EDDI.Instance.eventHandler(new MissionsRouteEvent(DateTime.Now, "update", nextSystem, missionsRouteList, route.Count(), nextDistance, missionsRouteDistance, missionids));
             return nextSystem;
         }
 
