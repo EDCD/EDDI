@@ -320,21 +320,6 @@ Common usage of this is to provide destination/route details, dependent on the '
 
     {set system to RouteDetails("nearest")}
 
-
-### CalculateMissionsRoute()
-
-This function will generate an efficient route for valid mission destinations using the 'Repetitive Nearest Neighbor' algorithm.
-
-CalculateMissionsRoute() takes an optional argument of the returning 'home' system. Otherwise, the current system is used. The function returns 'true' if successful. The '_' separated route list is provided in the 'missionsRouteList' variable.
-
-Common usage of this is to provide an efficient 'Nearest Neighbor' route.
-
-### UpdateMissionsRoute()
-
-This function will shift the missions route list (left) to the 'next' destination when all missions in the 'current' destination have been serviced.
-
-UpdateMissionsRoute() takes an optional argument of a destination system to remove from the route list. Otherwise, the 'current' desitnation is removed when conditions are met. The function returns 'true' if successful.
-
 ### SystemDetails()
 
 This function will provide full information for a star system given its name.
