@@ -7,7 +7,6 @@ namespace EddiDataDefinitions
 {
     public class Haulage
     {
-        [JsonIgnore]
         private static Dictionary<string, string> CHAINED = new Dictionary<string, string>()
         {
             {"clearingthepath", "delivery"},
@@ -83,7 +82,7 @@ namespace EddiDataDefinitions
 
             // Mechanism for identifying chained delivery and 'welcome' missions
             typeEDName = Name.Split('_').ElementAtOrDefault(1)?.ToLowerInvariant();
-            if (CHAINED.TryGetValue(typeEDName, out string value))
+            if (typeEDName != null && CHAINED.TryGetValue(typeEDName, out string value))
             {
                 typeEDName = value;
             }

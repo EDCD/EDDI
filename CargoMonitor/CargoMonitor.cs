@@ -865,7 +865,7 @@ namespace EddiCargoMonitor
             Cargo cargo = new Cargo();
 
             string type = @event.name.Split('_').ElementAt(1)?.ToLowerInvariant();
-            if (CHAINED.TryGetValue(type, out string value))
+            if (type != null && CHAINED.TryGetValue(type, out string value))
             {
                 type = value;
             }

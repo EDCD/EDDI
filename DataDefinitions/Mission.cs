@@ -8,7 +8,6 @@ namespace EddiDataDefinitions
 {
     public class Mission : INotifyPropertyChanged
     {
-        [JsonIgnore]
         private static Dictionary<string, string> CHAINED = new Dictionary<string, string>()
         {
             {"clearingthepath", "delivery"},
@@ -213,11 +212,11 @@ namespace EddiDataDefinitions
 
             // Mechanism for identifying chained, 'welcome', and 'special' missions
             string type = Name.Split('_').ElementAt(1)?.ToLowerInvariant();
-            if (CHAINED.TryGetValue(typeEDName, out string value))
+            if (type != null && CHAINED.TryGetValue(type, out string value))
             {
                 type = value;
             }
-            else if (typeEDName == "ds" || typeEDName == "rs" || typeEDName == "welcome")
+            else if (type == "ds" || type == "rs" || type == "welcome")
             {
                 type = Name.Split('_').ElementAt(2)?.ToLowerInvariant();
             }
