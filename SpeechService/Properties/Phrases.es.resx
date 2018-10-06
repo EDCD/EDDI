@@ -99,7 +99,7 @@
 		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
 	</resheader>
   <data name="andahalf" xml:space="preserve">
-    <value> y medio de </value>
+    <value> coma cinco </value>
     <comment/>
   </data>
   <data name="around" xml:space="preserve">
@@ -107,7 +107,7 @@
     <comment/>
   </data>
   <data name="billion" xml:space="preserve">
-    <value>millardo</value>
+    <value>mil millones</value>
     <comment/>
   </data>
   <data name="dash" xml:space="preserve">
@@ -135,11 +135,11 @@
     <comment/>
   </data>
   <data name="over" xml:space="preserve">
-    <value>más allá de </value>
+    <value>más de </value>
     <comment/>
   </data>
   <data name="plus" xml:space="preserve">
-    <value> mas </value>
+    <value> más </value>
     <comment/>
   </data>
   <data name="point" xml:space="preserve">
@@ -159,7 +159,7 @@
     <comment/>
   </data>
   <data name="wellover" xml:space="preserve">
-    <value>mucho más allá de </value>
+    <value>mucho más de </value>
     <comment/>
   </data>
   <data name="zero" xml:space="preserve">
