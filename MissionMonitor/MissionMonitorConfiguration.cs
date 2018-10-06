@@ -14,6 +14,8 @@ namespace EddiMissionMonitor
 
         public int missionsCount { get; set; }
         public int? missionWarning { get; set; }
+        public string missionsRouteList { get; set; }
+        public decimal missionsRouteDistance { get; set; }
 
         [JsonIgnore]
         private string dataPath;
