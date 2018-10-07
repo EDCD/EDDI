@@ -3191,7 +3191,7 @@ namespace EddiJournalMonitor
             data.TryGetValue(key, out object val);
             // FD sends "" rather than null; fix that here
             if (((string)val) == "") { val = null; }
-            return Superpower.From((string)val);
+            return Superpower.FromNameOrEdName((string)val);
         }
 
         private static string getFaction(IDictionary<string, object> data, string key)
