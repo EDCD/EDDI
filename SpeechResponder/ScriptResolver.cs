@@ -655,7 +655,7 @@ namespace EddiSpeechResponder
                 Superpower result = Superpower.FromName(values[0].AsString);
                 if (result == null)
                 {
-                    result = Superpower.From(values[0].AsString);
+                    result = Superpower.FromNameOrEdName(values[0].AsString);
                 }
                 return (result == null ? new ReflectionValue(new object()) : new ReflectionValue(result));
             }, 1);
