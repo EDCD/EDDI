@@ -191,8 +191,8 @@ namespace EddiDataDefinitions
 
         public static readonly BodyType None;
 
-        // dummy used to ensure that the static constructor has run
-        public BodyType() : this("")
+        // dummy used to ensure that the static constructor has run, defaulting to "None"
+        public BodyType() : this("None")
         { }
 
         private BodyType(string edname) : base(edname, edname)
@@ -231,8 +231,8 @@ namespace EddiDataDefinitions
 
         public static readonly PlanetClass None;
 
-        // dummy used to ensure that the static constructor has run
-        public PlanetClass() : this("")
+        // dummy used to ensure that the static constructor has run, defaulting to "None"
+        public PlanetClass() : this("None")
         { }
 
         private PlanetClass(string edname) : base(edname, edname)

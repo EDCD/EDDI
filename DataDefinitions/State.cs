@@ -31,8 +31,8 @@ namespace EddiDataDefinitions
 
         public static readonly State None;
 
-        // dummy used to ensure that the static constructor has run
-        public State() : this("")
+        // dummy used to ensure that the static constructor has run, defaulting to "None" if no state is specified
+        public State() : this("None")
         {}
 
         private State(string edname) : base(edname, edname)

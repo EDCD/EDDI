@@ -138,8 +138,8 @@ namespace EddiDataDefinitions
 
         public static readonly SystemReserveLevel None;
 
-        // dummy used to ensure that the static constructor has run
-        public SystemReserveLevel() : this("")
+        // dummy used to ensure that the static constructor has run, defaulting to "None"
+        public SystemReserveLevel() : this("None")
         { }
 
         private SystemReserveLevel(string edname) : base(edname, edname)
