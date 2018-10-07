@@ -24,14 +24,14 @@ namespace EddiDataDefinitions
 
         public static readonly Superpower None;
 
-        // dummy used to ensure that the static constructor has run
-        public Superpower() : this("")
+        // dummy used to ensure that the static constructor has run, using a default value of "None"
+        public Superpower() : this("$faction_none;")
         { }
 
         private Superpower(string edname) : base(edname, edname.Replace("$faction_", "").Replace(";", "").Replace(" ", ""))
         { }
 
-        public static Superpower From(string from)
+        public static Superpower FromNameOrEdName(string from)
         {
             if (from == null)
             {
