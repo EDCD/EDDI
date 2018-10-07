@@ -645,7 +645,7 @@
     <value>Organophosphates de Hip</value>
     <comment>Commodity HIPOrganophosphates</comment>
   </data>
-  <data name="HIPProto_Squid" xml:space="preserve">
+  <data name="HIP41181Squid" xml:space="preserve">
     <value>Proto-calamar de HIP</value>
     <comment>Commodity HIPProto_Squid</comment>
   </data>
@@ -881,7 +881,7 @@
     <value>Gelée d'expérience de Motrona</value>
     <comment>Commodity MotronaExperienceJelly</comment>
   </data>
-  <data name="MukusubiiChitin_Os" xml:space="preserve">
+  <data name="MukusubiiChitinOs" xml:space="preserve">
     <value>Os chitineux de Mukusubii</value>
     <comment>Commodity MukusubiiChitin_Os</comment>
   </data>
@@ -1357,7 +1357,7 @@
     <value>Dentelle Vidavantienne</value>
     <comment>Commodity VidavantianLace</comment>
   </data>
-  <data name="VoidExtractCoffee" xml:space="preserve">
+  <data name="LFTVoidExtractCoffee" xml:space="preserve">
     <value>Café du néant</value>
     <comment>Commodity VoidExtractCoffee</comment>
   </data>
