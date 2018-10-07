@@ -25,7 +25,7 @@ namespace EddiDataDefinitions
         public static readonly StationModel None;
 
         // dummy used to ensure that the static constructor has run
-        public StationModel() : this("")
+        public StationModel() : this("None")
         {}
 
         private StationModel(string edname) : base(edname, edname.Replace(" Starport", ""))

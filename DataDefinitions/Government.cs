@@ -33,8 +33,8 @@ namespace EddiDataDefinitions
 
         public static readonly Government None;
 
-        // dummy used to ensure that the static constructor has run
-        public Government() : this("")
+        // dummy used to ensure that the static constructor has run, defaulting to "None" if not otherwise specified
+        public Government() : this("$government_None;")
         {}
 
         private Government(string edname) : base(edname, edname.Replace("$government_", "").Replace(";", ""))

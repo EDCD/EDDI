@@ -31,8 +31,8 @@ namespace EddiDataDefinitions
 
         public static readonly Economy None;
 
-        // dummy used to ensure that the static constructor has run
-        public Economy() : this("")
+        // dummy used to ensure that the static constructor has run, defaulting to "None"
+        public Economy() : this("$economy_None")
         {}
 
         private Economy(string edname) : base(edname, edname.Replace("$economy_", "").Replace(";", ""))

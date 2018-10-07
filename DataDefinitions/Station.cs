@@ -191,8 +191,8 @@ namespace EddiDataDefinitions
 
         public static readonly StationLargestPad None;
 
-        // dummy used to ensure that the static constructor has run
-        public StationLargestPad() : this("")
+        // dummy used to ensure that the static constructor has run, defaulting to "None"
+        public StationLargestPad() : this("None")
         { }
 
         private StationLargestPad(string edname) : base(edname, edname)

@@ -102,8 +102,8 @@ namespace EddiDataDefinitions
 
         public static readonly AtmosphereClass None;
 
-        // dummy used to ensure that the static constructor has run
-        public AtmosphereClass() : this("")
+        // dummy used to ensure that the static constructor has run, defaulting to "None" if no atmosphere is specified.
+        public AtmosphereClass() : this("None")
         { }
 
         private AtmosphereClass(string edname) : base(edname, edname

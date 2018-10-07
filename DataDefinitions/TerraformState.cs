@@ -23,8 +23,8 @@ namespace EddiDataDefinitions
 
         public static readonly TerraformState None;
 
-        // dummy used to ensure that the static constructor has run
-        public TerraformState() : this("")
+        // dummy used to ensure that the static constructor has run, defaulting to "None" if not otherwise specified
+        public TerraformState() : this("None")
         {}
 
         private TerraformState(string edname) : base(edname, edname)
