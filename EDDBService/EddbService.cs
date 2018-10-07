@@ -12,7 +12,8 @@ namespace EddiEddbService
     {
         // Since EDDB doesn't have an official API, we make use of the "unofficial" API
         private const string baseUrl = "https://elitebgs.kodeblox.com/api/eddb/";
-
+        private static RestClient client = new RestClient(baseUrl);
+        
         /// <summary> Specify the endpoint (e.g. EddiEddbService.Endpoint.bodies) and a list of queries as KeyValuePairs </summary>
         public static List<object> GetData(string endpoint, List<KeyValuePair<string, object>> queries)
         {
@@ -23,15 +24,15 @@ namespace EddiEddbService
             int totalPages = 0;
             int limit = 0;
 
+            RestRequest request = new RestRequest(endpoint, Method.GET);
+            foreach (KeyValuePair<string, object> query in queries)
+            {
+                request.AddParameter(query.Key, query.Value);
+            }
+
             do
             {
-                var client = new RestClient(baseUrl);
-                var request = new RestRequest(endpoint, Method.GET);
-                foreach (KeyValuePair<string, object> query in queries)
-                {
-                    request.AddParameter(query.Key, query.Value);
-                }
-                request.AddParameter("page", currentPage);
+                request.AddOrUpdateParameter("page", currentPage);
                 RestResponse<RestRequest> clientResponse = (RestResponse<RestRequest>)client.Execute<RestRequest>(request);
 
                 if (clientResponse.IsSuccessful)
