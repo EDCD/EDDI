@@ -645,7 +645,7 @@
     <value>Organofosfati di H I P</value>
     <comment>Commodity HIPOrganophosphates</comment>
   </data>
-  <data name="HIPProto_Squid" xml:space="preserve">
+  <data name="HIP41181Squid" xml:space="preserve">
     <value>Proto Calamaro di H I P</value>
     <comment>Commodity HIPProto_Squid</comment>
   </data>

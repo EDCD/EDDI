@@ -1366,20 +1366,20 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to HIP Proto-Squid.
+        /// </summary>
+        public static string HIP41181Squid {
+            get {
+                return ResourceManager.GetString("HIP41181Squid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to HIP Organophosphates.
         /// </summary>
         public static string HIPOrganophosphates {
             get {
                 return ResourceManager.GetString("HIPOrganophosphates", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to HIP Proto-Squid.
-        /// </summary>
-        public static string HIPProto_Squid {
-            get {
-                return ResourceManager.GetString("HIPProto_Squid", resourceCulture);
             }
         }
         
@@ -1726,6 +1726,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Void Extract Coffee.
+        /// </summary>
+        public static string LFTVoidExtractCoffee {
+            get {
+                return ResourceManager.GetString("LFTVoidExtractCoffee", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Liberal Propaganda.
         /// </summary>
         public static string LiberalCampaignMaterials {
@@ -1998,9 +2007,9 @@ namespace EddiDataDefinitions.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Mukusubii Chitin-Os.
         /// </summary>
-        public static string MukusubiiChitin_Os {
+        public static string MukusubiiChitinOs {
             get {
-                return ResourceManager.GetString("MukusubiiChitin_Os", resourceCulture);
+                return ResourceManager.GetString("MukusubiiChitinOs", resourceCulture);
             }
         }
         
@@ -3333,15 +3342,6 @@ namespace EddiDataDefinitions.Properties {
         public static string VidavantianLace {
             get {
                 return ResourceManager.GetString("VidavantianLace", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Void Extract Coffee.
-        /// </summary>
-        public static string VoidExtractCoffee {
-            get {
-                return ResourceManager.GetString("VoidExtractCoffee", resourceCulture);
             }
         }
         
