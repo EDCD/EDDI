@@ -9,7 +9,7 @@ namespace EddiDataDefinitions
         static SecurityLevel()
         {
             resourceManager = Properties.SecurityLevels.ResourceManager;
-            resourceManager.IgnoreCase = false;
+            resourceManager.IgnoreCase = true;
             missingEDNameHandler = (edname) => new SecurityLevel(edname);
 
             None = new SecurityLevel("$SYSTEM_SECURITY_none;");

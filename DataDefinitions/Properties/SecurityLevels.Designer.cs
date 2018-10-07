@@ -61,7 +61,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to None.
+        ///   Looks up a localized string similar to Anarchy.
         /// </summary>
         public static string GALAXY_MAP_INFO_state_anarchy {
             get {
@@ -70,7 +70,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to None.
+        ///   Looks up a localized string similar to Lawless.
         /// </summary>
         public static string GALAXY_MAP_INFO_state_lawless {
             get {
