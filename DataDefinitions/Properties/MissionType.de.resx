@@ -153,18 +153,22 @@
   <data name="DisableWing" xml:space="preserve">
     <value>Geschwader auflösen</value>
   </data>
+  
+  
   <data name="LongDistanceExpedition" xml:space="preserve">
     <value>Expedition</value>
   </data>
   <data name="Massacre" xml:space="preserve">
     <value>Massaker</value>
   </data>
+  
   <data name="MassacreWing" xml:space="preserve">
     <value>Massaker im Geschwader</value>
   </data>
   <data name="Mining" xml:space="preserve">
     <value>Abbau</value>
   </data>
+  
   <data name="None" xml:space="preserve">
     <value>Keine</value>
   </data>
@@ -173,9 +177,6 @@
   </data>
   <data name="PassengerVIP" xml:space="preserve">
     <value>Transport</value>
-  </data>
-  <data name="Permit" xml:space="preserve">
-    <value>Einreisegenehmigung</value>
   </data>
   <data name="Piracy" xml:space="preserve">
     <value>Piraterie</value>
