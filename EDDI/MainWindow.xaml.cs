@@ -875,6 +875,16 @@ namespace Eddi
                         using (FileStream issueLog = new FileStream(issueLogFile, FileMode.Open, FileAccess.ReadWrite))
                         {
                             issueLog.Seek(-1 * maxLogSizeBytes, SeekOrigin.End);
+                            // advance to after next line end
+                            int c = 0;
+                            while ( (c = issueLog.ReadByte() ) != -1)
+                            {
+                                if (c == '\n`)
+                                {
+                                    break;
+                                }
+                                c++;
+                            }
                             issueLog.CopyTo(ms);
                             issueLog.SetLength(maxLogSizeBytes);
                             issueLog.Position = 0;
