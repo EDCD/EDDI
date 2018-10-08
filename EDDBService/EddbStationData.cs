@@ -43,8 +43,11 @@ namespace EddiEddbService
         /// <summary> Exactly one system name is required. </summary>
         public static List<Station> Stations(string systemName)
         {
-            return GetStations(new KeyValuePair<string, object>(StationQuery.systemName, systemName))
-                ?.OrderBy(x => x.distancefromstar).ToList() ?? new List<Station>();
+            List<KeyValuePair<string, object>> queryList = new List<KeyValuePair<string, object>>()
+            {
+                new KeyValuePair<string, object>(StationQuery.systemName, systemName)
+            };
+            return GetStations(queryList)?.OrderBy(x => x.distancefromstar).ToList() ?? new List<Station>();
         }
 
         /// <summary> Exactly one station name is required. </summary>
@@ -82,7 +85,7 @@ namespace EddiEddbService
 
                 List<object> responses = GetData(Endpoint.stations, queryList);
 
-                if (responses != null)
+                if (responses?.Count > 0)
                 {
                     return ParseEddbStation(responses[0]);
                 }
@@ -96,7 +99,7 @@ namespace EddiEddbService
             {
                 List<object> responses = GetData(Endpoint.stations, queryList);
 
-                if (responses != null)
+                if (responses?.Count > 0)
                 {
                     return ParseEddbStation(responses[0]);
                 }
@@ -104,16 +107,13 @@ namespace EddiEddbService
             return null;
         }
 
-        private static List<Station> GetStations(KeyValuePair<string, object> query)
+        private static List<Station> GetStations(List<KeyValuePair<string, object>> queryList)
         {
-            if (query.Value != null)
+            if (queryList.Count > 0)
             {
-                List<KeyValuePair<string, object>> queryList = new List<KeyValuePair<string, object>>();
-                queryList.Add(query);
-
                 List<object> responses = GetData(Endpoint.stations, queryList);
 
-                if (responses != null)
+                if (responses?.Count > 0)
                 {
                     List<Station> stations = new List<Station>();
                     foreach (object response in responses)
@@ -190,7 +190,7 @@ namespace EddiEddbService
                 foreach (JObject export in stationJson["economies"])
                 {
                     string economy = (string)export["name"];
-                    economies.Add(economy);
+                    if (economy != null) { economies.Add(economy); }
                 }
             }
             Station.economies = economies;
@@ -201,7 +201,7 @@ namespace EddiEddbService
                 foreach (JObject import in stationJson["import_commodities"])
                 {
                     string name = (string)import["name"];
-                    imports.Add(name);
+                    if (name != null) { imports.Add(name); }
                 }
             }
             Station.imported = imports;
@@ -212,7 +212,7 @@ namespace EddiEddbService
                 foreach (JObject export in stationJson["export_commodities"])
                 {
                     string name = (string)export["name"];
-                    exports.Add(name);
+                    if (name != null) { exports.Add(name); }
                 }
             }
             Station.exported = exports;
@@ -223,7 +223,7 @@ namespace EddiEddbService
                 foreach (JObject export in stationJson["prohibited_commodities"])
                 {
                     string name = (string)export["name"];
-                    prohibited.Add(name);
+                    if (name != null) { prohibited.Add(name); }
                 }
             }
             Station.prohibited = prohibited;
@@ -234,7 +234,7 @@ namespace EddiEddbService
                 foreach (JObject shipJson in stationJson["selling_ships"])
                 {
                     Ship ship = ShipDefinitions.FromModel((string)shipJson["name"]);
-                    shipyard.Add(ship);
+                    if (ship != null) { shipyard.Add(ship); }
                 }
             }
             Station.shipyard = shipyard;
@@ -246,7 +246,7 @@ namespace EddiEddbService
                 foreach (JValue eddbIdValue in modulesJArray)
                 {
                     Module module = Module.FromEddbID((long)eddbIdValue);
-                    outfitting.Add(module);
+                    if (module != null) { outfitting.Add(module); }
                 }
             }
             Station.outfitting = outfitting;
