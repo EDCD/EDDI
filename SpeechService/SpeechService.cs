@@ -83,7 +83,11 @@ namespace EddiSpeechService
         {
             if (disposing)
             {
-                synth?.Dispose();
+                // we use this long-winded form to keep CA2213 happy, because it is too dumb to recognize synth?.Dispose()
+                if (synth != null)
+                {
+                    synth.Dispose();
+                }
             }
         }
 
