@@ -148,9 +148,7 @@
   <data name="verbose_logging_checkbox" xml:space="preserve">
     <value>Activer le journal complet (uniquement si demandé par les développeurs d'EDDI)</value>
   </data>
-  <data name="verbose_logging_desc" xml:space="preserve">
-    <value>Si le journal complet est activé, EDDI préparera une version tronquée de votre dernier journal et le placera sur votre bureau. Vous devrez ensuite coller ce fichier journal dans votre rapport de problème GitHub (Github Issue report). Aucune information personnelle n'est collectée dans ce journal.</value>
-  </data>
+  
   <data name="version_hyperlink" xml:space="preserve">
     <value>Version:</value>
   </data>
