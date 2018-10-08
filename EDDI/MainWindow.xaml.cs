@@ -921,7 +921,7 @@ namespace Eddi
                             int c = 0;
                             while ( (c = issueLog.ReadByte() ) != -1)
                             {
-                                if (c == '\n`)
+                                if (c == '\n')
                                 {
                                     break;
                                 }
