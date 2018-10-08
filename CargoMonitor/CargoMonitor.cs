@@ -29,6 +29,14 @@ namespace EddiCargoMonitor
         private static readonly object inventoryLock = new object();
         public event EventHandler InventoryUpdatedEvent;
 
+        private static Dictionary<string, string> CHAINED = new Dictionary<string, string>()
+        {
+            {"clearingthepath", "delivery"},
+            {"helpfinishtheorder", "delivery"},
+            {"rescuefromthetwins", "salvage"},
+            {"rescuethewares", "salvage"}
+        };
+
         public string MonitorName()
         {
             return "Cargo monitor";
@@ -879,7 +887,17 @@ namespace EddiCargoMonitor
         private void _handleMissionAcceptedEvent(MissionAcceptedEvent @event)
         {
             Cargo cargo = new Cargo();
-            string type = @event.name.Split('_').ElementAtOrDefault(1).ToLowerInvariant();
+
+            string type = @event.name.Split('_').ElementAt(1)?.ToLowerInvariant();
+            if (type != null && CHAINED.TryGetValue(type, out string value))
+            {
+                type = value;
+            }
+            else if (type == "ds" || type == "rs" || type == "welcome")
+            {
+                type = @event.name.Split('_').ElementAt(2)?.ToLowerInvariant();
+            }
+
             bool naval = @event.name.ToLowerInvariant().Contains("rank");
             switch (type)
             {

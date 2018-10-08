@@ -8,11 +8,32 @@ namespace EddiDataDefinitions
 {
     public class Mission : INotifyPropertyChanged
     {
+        private static Dictionary<string, string> CHAINED = new Dictionary<string, string>()
+        {
+            {"clearingthepath", "delivery"},
+            {"drawthegeneralout", "assassinate"},
+            {"findthepiratelord", "assassinate"},
+            {"helpfinishtheorder", "delivery"},
+            {"helpwithpreventionmeasures", "massacre"},
+            {"miningtoorder", "mining"},
+            {"planetaryincursions", "scan"},
+            {"rampantleadership", "assassinate"},
+            {"regainfooting", "assassinate"},
+            {"rescuefromthetwins", "salvage"},
+            {"rescuethewares", "salvage"},
+            {"safetravelling", "passengervip"},
+            {"salvagejustice", "assassinate"},
+            {"securingmyposition", "passengervip"},
+            {"seekingasylum", "assassinate"},
+            {"thedead", "special"},
+            {"wrongtarget", "assassinate"},
+        };
+
         // The mission ID
-        public long missionid { get; set; }
+        public long missionid { get; private set; }
 
         // The name of the mission
-        public string name;
+        public string name { get; set; }
 
         // The localised name of the mission
         public string localisedname;
@@ -90,10 +111,11 @@ namespace EddiDataDefinitions
         public string influence { get; set; }
         public string reputation { get; set; }
 
-        public bool legal => !name.ToLowerInvariant().Contains("illegal") && !name.ToLowerInvariant().Contains("smuggle");
-        public bool wing { get; set; }
-        public bool shared { get; set; }
+        public bool chained => name.ToLowerInvariant().Contains("chained");
         public bool communal { get; set; }
+        public bool legal => !name.ToLowerInvariant().Contains("illegal") && !name.ToLowerInvariant().Contains("smuggle");
+        public bool shared { get; set; }
+        public bool wing { get; set; }
 
         public long? reward { get; set; }
 
@@ -188,21 +210,17 @@ namespace EddiDataDefinitions
             this.shared = Shared;
             destinationsystems = new List<DestinationSystem>();
 
-            // Mechanism for identifying 'special' missions
-            string type = Name.Split('_').ElementAt(1);
-            switch (type)
+            // Mechanism for identifying chained, 'welcome', and 'special' missions
+            string type = Name.Split('_').ElementAt(1)?.ToLowerInvariant();
+            if (type != null && CHAINED.TryGetValue(type, out string value))
             {
-                case "TheDead":
-                    {
-                        this.typeDef = MissionType.FromEDName("Special");
-                    }
-                    break;
-                default:
-                    {
-                        this.typeDef = MissionType.FromEDName(type);
-                    }
-                    break;
+                type = value;
             }
+            else if (type == "ds" || type == "rs" || type == "welcome")
+            {
+                type = Name.Split('_').ElementAt(2)?.ToLowerInvariant();
+            }
+            this.typeDef = MissionType.FromEDName(type);
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

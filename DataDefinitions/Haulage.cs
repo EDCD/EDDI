@@ -1,16 +1,25 @@
 ﻿using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace EddiDataDefinitions
 {
     public class Haulage
     {
-        public long missionid { get; set; }
+        private static Dictionary<string, string> CHAINED = new Dictionary<string, string>()
+        {
+            {"clearingthepath", "delivery"},
+            {"helpfinishtheorder", "delivery"},
+            {"rescuefromthetwins", "salvage"},
+            {"rescuethewares", "salvage"}
+        };
 
-        public string name { get; set; }
+        public long missionid { get; private set; }
 
-        public string typeEDName => name.Split('_').ElementAtOrDefault(1)?.ToLowerInvariant();
+        public string name { get; private set; }
+
+        public string typeEDName { get; private set; }
 
         [JsonIgnore, Obsolete("Please use localizedName or invariantName")]
         public string type => MissionType.FromEDName(typeEDName)?.localizedName;
@@ -29,7 +38,7 @@ namespace EddiDataDefinitions
         [JsonIgnore]
         public bool wing => name.ToLowerInvariant().Contains("wing");
 
-        public int amount { get; set; }
+        public int amount { get; private set; }
 
         public int remaining { get; set; }
 
@@ -43,7 +52,7 @@ namespace EddiDataDefinitions
 
         public DateTime? expiry { get; set; }
 
-        public bool shared { get; set; }
+        public bool shared { get; private set; }
 
         public Haulage() { }
 
@@ -51,6 +60,7 @@ namespace EddiDataDefinitions
         {
             missionid = haulage.missionid;
             name = haulage.name;
+            typeEDName = haulage.typeEDName;
             originsystem = haulage.originsystem;
             status = haulage.status;
             amount = haulage.amount;
@@ -73,6 +83,17 @@ namespace EddiDataDefinitions
             remaining = Amount;
             expiry = Expiry;
             shared = Shared;
+
+            // Mechanism for identifying chained delivery and 'welcome' missions
+            typeEDName = Name.Split('_').ElementAtOrDefault(1)?.ToLowerInvariant();
+            if (typeEDName != null && CHAINED.TryGetValue(typeEDName, out string value))
+            {
+                typeEDName = value;
+            }
+            else if (typeEDName == "ds" || typeEDName == "rs" || typeEDName == "welcome")
+            {
+                typeEDName = Name.Split('_').ElementAt(2)?.ToLowerInvariant();
+            }
         }
     }
 }

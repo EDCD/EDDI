@@ -311,6 +311,7 @@ namespace EddiMissionMonitor
                                     {
                                         case "assassinate":
                                         case "disable":
+                                        case "hack":
                                         case "longdistanceexpedition":
                                         case "passengervip":
                                         case "piracy":
@@ -616,12 +617,16 @@ namespace EddiMissionMonitor
                     case "collect":
                     case "collectwing":
                     case "disable":
+                    case "genericpermit1":
+                    case "hack":
                     case "longdistanceexpedition":
                     case "massacre":
+                    case "massacrethargoid":
                     case "massacrewing":
                     case "mining":
                     case "piracy":
                     case "salvage":
+                    case "scan":
                     case "sightseeing":
                         {
                             mission.originreturn = true;
@@ -635,7 +640,7 @@ namespace EddiMissionMonitor
                 }
 
                 // Missions with multiple destinations
-                if (@event.destinationsystem.Contains("$MISSIONUTIL_MULTIPLE"))
+                if (@event.destinationsystem != null && @event.destinationsystem.Contains("$MISSIONUTIL_MULTIPLE"))
                 {
                     // If 'chained' mission, get the destination systems
                     string[] systems = @event.destinationsystem
@@ -1137,6 +1142,7 @@ namespace EddiMissionMonitor
                         case "courier":
                         case "delivery":
                         case "disable":
+                        case "hack":
                         case "massacre":
                         case "passengerbulk":
                         case "passengervip":

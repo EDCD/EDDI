@@ -169,6 +169,24 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Permit Aquisition.
+        /// </summary>
+        internal static string GenericPermit1 {
+            get {
+                return ResourceManager.GetString("GenericPermit1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hacking.
+        /// </summary>
+        internal static string Hack {
+            get {
+                return ResourceManager.GetString("Hack", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Expedition.
         /// </summary>
         internal static string LongDistanceExpedition {
@@ -187,6 +205,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Thargoid Massacre.
+        /// </summary>
+        internal static string MassacreThargoid {
+            get {
+                return ResourceManager.GetString("MassacreThargoid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Wing Massacre.
         /// </summary>
         internal static string MassacreWing {
@@ -201,6 +228,15 @@ namespace EddiDataDefinitions.Properties {
         internal static string Mining {
             get {
                 return ResourceManager.GetString("Mining", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Wing Mining.
+        /// </summary>
+        internal static string MiningWing {
+            get {
+                return ResourceManager.GetString("MiningWing", resourceCulture);
             }
         }
         
@@ -228,15 +264,6 @@ namespace EddiDataDefinitions.Properties {
         internal static string PassengerVIP {
             get {
                 return ResourceManager.GetString("PassengerVIP", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Permit Aquisition.
-        /// </summary>
-        internal static string Permit {
-            get {
-                return ResourceManager.GetString("Permit", resourceCulture);
             }
         }
         
