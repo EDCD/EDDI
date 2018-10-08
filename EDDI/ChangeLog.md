@@ -5,6 +5,8 @@ Full details of the variables available for each noted event, and VoiceAttack in
 ### Development
   * Core
     * Tabs are now shown on the the left, and all but the first "EDDI" tab are sorted alphabetically according to the rules of the current locale.
+  * Localization
+    * Fixed a bug preventing localized module names from being displayed correctly within the ship object. 
   * New Mission monitor feature, tracking all mission parameters. Check the Speech responder `Variables` window for details.
     * New `Mission expired` event, triggers when a mission has expired.
     * New `Mission warning' event, triggers when a mission expiration is within the 'warning' threshold, set in the `Mission monitor` tab.

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Resources;
+using System.Runtime.Serialization;
 using Utilities;
 
 namespace EddiDataDefinitions
@@ -19,11 +20,13 @@ namespace EddiDataDefinitions
         protected static ResourceManager resourceManager;
         protected static Func<string, T> missingEDNameHandler;
 
-        [JsonProperty]
+        [JsonProperty] // Required by the constructor
         public readonly string edname;
 
+        [JsonProperty] // Required by the constructor
         public readonly string basename;
 
+        [JsonIgnore]
         public string invariantName
         {
             get
@@ -33,9 +36,13 @@ namespace EddiDataDefinitions
             }
         }
 
+        [JsonIgnore]
         public string fallbackLocalizedName { get; set; } = null;
+
+        [JsonIgnore]
         public string localizedName => resourceManager.GetString(basename) ?? fallbackLocalizedName ?? basename;
 
+        [JsonIgnore]
         [Obsolete("Please be explicit and use localizedName or invariantName")]
         public string name => localizedName;
 
