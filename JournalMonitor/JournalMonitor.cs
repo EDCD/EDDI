@@ -2049,23 +2049,30 @@ namespace EddiJournalMonitor
                                 handled = true;
                                 break;
                             }
+                        case "PayBounties":
+                            {
+                                data.TryGetValue("Amount", out object val);
+                                long amount = (long)val;
+                                decimal? brokerpercentage = JsonParsing.getOptionalDecimal(data, "BrokerPercentage");
+                                string faction = getFaction(data, "Faction");
+                                data.TryGetValue("ShipID", out val);
+                                int shipId = (int)(long)val;
+
+                                events.Add(new BountyPaidEvent(timestamp, amount, brokerpercentage, faction, shipId) { raw = line });
+                                handled = true;
+                                break;
+                            }
                         case "PayFines":
                             {
                                 data.TryGetValue("Amount", out object val);
                                 long amount = (long)val;
                                 decimal? brokerpercentage = JsonParsing.getOptionalDecimal(data, "BrokerPercentage");
+                                bool allFines = JsonParsing.getBool(data, "AllFines");
+                                string faction = getFaction(data, "Faction");
+                                data.TryGetValue("ShipID", out val);
+                                int shipId = (int)(long)val;
 
-                                events.Add(new FinePaidEvent(timestamp, amount, brokerpercentage, false) { raw = line });
-                                handled = true;
-                                break;
-                            }
-                        case "PayLegacyFines":
-                            {
-                                data.TryGetValue("Amount", out object val);
-                                long amount = (long)val;
-                                decimal? brokerpercentage = JsonParsing.getOptionalDecimal(data, "BrokerPercentage");
-
-                                events.Add(new FinePaidEvent(timestamp, amount, brokerpercentage, true) { raw = line });
+                                events.Add(new FinePaidEvent(timestamp, amount, brokerpercentage, allFines, faction, shipId) { raw = line });
                                 handled = true;
                                 break;
                             }
@@ -3126,7 +3133,7 @@ namespace EddiJournalMonitor
         {
             string faction = JsonParsing.getString(data, key);
             // Might be a superpower...
-            Superpower superpowerFaction = Superpower.AllOfThem.FirstOrDefault(x => x.basename == faction);
+            Superpower superpowerFaction = Superpower.From(faction);
             return superpowerFaction?.invariantName ?? faction;
         }
 

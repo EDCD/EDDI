@@ -83,6 +83,15 @@
       "name": "Bounty incurred",
       "description": "Triggered when you incur a bounty"
     },
+    "Bounty paid": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'bounty')}\r\n{SetState('eddi_context_last_action', 'pay')}\r\n{SetState('eddi_context_fine_amount', event.amount)}\r\n\r\n\r\nPaid bounty of {Humanise(event.amount)} credits.",
+      "default": true,
+      "name": "Bounty paid",
+      "description": "Triggered when you pay a bounty"
+    },
     "Bounty redeemed": {
       "enabled": true,
       "priority": 3,

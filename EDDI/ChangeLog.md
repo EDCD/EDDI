@@ -65,6 +65,8 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Added `Cargo scoop` event
     * Added `Landing gear` event
     * Added `Lights` event
+    * Added `Bounty paid` event
+    * Updated the properties available from the `Fines paid` event. (Note that legacy fines were discontinued with Elite Dangerous version 3.0, the `legacy` boolean has been removed from this event.)
   * Status monitor
     * `Status.hardpoints_deployed` is now locked to false while we are in supercruise.
   * VoiceAttack responder
