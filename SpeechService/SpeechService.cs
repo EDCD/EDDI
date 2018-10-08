@@ -8,7 +8,6 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Globalization;
 using System.IO;
 using System.Security;
 using System.Speech.Synthesis;
@@ -21,7 +20,7 @@ using Utilities;
 namespace EddiSpeechService
 {
     /// <summary>Provide speech services with a varying amount of alterations to the voice</summary>
-    public class SpeechService : INotifyPropertyChanged
+    public class SpeechService : INotifyPropertyChanged, IDisposable
     {
         private SpeechServiceConfiguration configuration;
 
@@ -72,6 +71,20 @@ namespace EddiSpeechService
         private SpeechService()
         {
             configuration = SpeechServiceConfiguration.FromFile();
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                synth?.Dispose();
+            }
         }
 
         public void ReloadConfiguration()
