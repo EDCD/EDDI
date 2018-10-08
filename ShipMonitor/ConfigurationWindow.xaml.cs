@@ -43,8 +43,8 @@ namespace EddiShipMonitor
 
         private void ipaClicked(object sender, RoutedEventArgs e)
         {
-            string url = EddiShipMonitor.Properties.ShipMonitor.ipa_page;
-            Process.Start(url);
+            IpaResourcesWindow IpaResources = new IpaResourcesWindow();
+            IpaResources.Show();
         }
 
         private void testShipName(object sender, RoutedEventArgs e)

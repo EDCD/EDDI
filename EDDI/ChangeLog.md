@@ -9,6 +9,8 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Fixed a bug that prevented selection of any state other than `(anything)` and blocked filter input when any state other than `(anything)` was selected.
   * Localization
     * Fixed a bug preventing localized module names from being displayed correctly within the ship object. 
+  * Ship Monitor
+    * Enhanced IPA help with additional links. 
   * New Mission monitor feature, tracking all mission parameters. Check the Speech responder `Variables` window for details.
     * New `Mission expired` event, triggers when a mission has expired.
     * New `Mission warning' event, triggers when a mission expiration is within the 'warning' threshold, set in the `Mission monitor` tab.
