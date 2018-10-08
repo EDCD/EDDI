@@ -234,6 +234,10 @@ namespace EddiShipMonitor
             {
                 handleModuleInfoEvent((ModuleInfoEvent)@event);
             }
+            else if (@event is JumpedEvent)
+            {
+                handleJumpedEvent((JumpedEvent)@event);
+            }
         }
 
         // Set the ship name conditionally, avoiding filtered names
@@ -777,7 +781,18 @@ namespace EddiShipMonitor
             }
         }
 
-        public void PostHandle(Event @event)
+        private void handleJumpedEvent(JumpedEvent @event)
+        {
+            Ship ship = GetCurrentShip();
+            if (@event.fuelused > ship.maxfuel)
+            {
+                ship.maxfuel = @event.fuelused;
+                ship.maxjump = @event.distance;
+                writeShips();
+            }
+        }
+
+            public void PostHandle(Event @event)
         {
             if (@event is ShipLoadoutEvent)
             {

@@ -27,10 +27,6 @@ namespace EddiShipMonitor
             Modules = new List<ModuleInfo>();
         }
 
-        /// <summary>
-        /// Obtain ships configuration from a file.  If the file name is not supplied the the default
-        /// path of Constants.Data_DIR\shipmonitor.json is used
-        /// </summary>
         public static ModuleInfoReader FromFile(string filename = null)
         {
         Regex Filter = new Regex(@"^ModulesInfo\.json$");
