@@ -900,50 +900,41 @@ namespace Eddi
                 string issueLogFile = issueLogDir + "eddi_issue.log";
                 string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @"\eddi_issue.zip";
 
-                string[] log;
+                // Create a temporary issue log file, delete any remnants from prior issue reporting
                 lock (logLock)
                 {
-                    log = File.ReadAllLines(Constants.DATA_DIR + @"\eddi.log");
+                    Directory.CreateDirectory(issueLogDir);
+                    File.WriteAllText(issueLogFile, File.ReadAllText(Constants.DATA_DIR + @"\eddi.log"));
                 }
-                if (log.Length == 0) { return; }
 
-                progress.Report("");
-                List<string> outputLines = new List<string>();
-                // Use regex to isolate DateTimes from the string
-                Regex recentLogsRegex = new Regex(@"^(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2})");
-
-                foreach (string line in log)
+                // Truncate log files more than the specified size MB in size
+                const long maxLogSizeBytes = 0x200000; // 2 MB
+                FileInfo logFile = new FileInfo(issueLogFile);
+                if (logFile.Length > maxLogSizeBytes) 
                 {
-                    try
+                    using (MemoryStream ms = new MemoryStream((int)maxLogSizeBytes))
                     {
-                        // Parse log file lines so that we can examine DateTimes
-                        string linedatestring = recentLogsRegex.Match(line).Value;
-                        string formatString = "s"; // i.e. DateTimeFormatInfo.SortableDateTimePattern
-                        if (DateTime.TryParseExact(linedatestring, formatString, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal, out DateTime linedate))
+                        using (FileStream issueLog = new FileStream(issueLogFile, FileMode.Open, FileAccess.ReadWrite))
                         {
-                            linedate = linedate.ToUniversalTime();
-                            double elapsedHours = (DateTime.UtcNow - linedate).TotalHours;
-                            // Fill the issue log with log lines from the most recent hour only
-                            if (elapsedHours < 1.0)
+                            issueLog.Seek(-1 * maxLogSizeBytes, SeekOrigin.End);
+                            // advance to after next line end
+                            int c = 0;
+                            while ( (c = issueLog.ReadByte() ) != -1)
                             {
-                                outputLines.Add(line);
+                                if (c == '\n`)
+                                {
+                                    break;
+                                }
+                                c++;
                             }
+                            issueLog.CopyTo(ms);
+                            issueLog.SetLength(maxLogSizeBytes);
+                            issueLog.Position = 0;
+                            ms.Position = 0; // Begin from the start of the memory stream
+                            ms.CopyTo(issueLog);
                         }
                     }
-                    catch (Exception)
-                    {
-                        // Do nothing, adding to the debug log creates a feedback loop
-                    }
                 }
-                if (outputLines.Count == 0)
-                {
-                    Logging.Error("Error parsing log. Algorithm failed to return any matches.");
-                    return;
-                }
-
-                // Create a temporary issue log file, delete any remnants from prior issue reporting
-                Directory.CreateDirectory(issueLogDir);
-                File.WriteAllLines(issueLogFile, outputLines);
 
                 // Copy the issue log & zip it to the desktop so that it can be added to the Github issue
                 File.Delete(desktopPath);

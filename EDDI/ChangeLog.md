@@ -6,6 +6,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
   * UI
     * Tabs are now shown on the the left, and all but the first "EDDI" tab are sorted alphabetically according to the rules of the current locale.
   * Core
+    * Implemented log rotation. EDDI will now create a new log file every time it starts, and shall retain no more than 10 log files before it starts clearing the old logs. Immense log files will be a thing of the past.  
     * Added data definitions for Guardian fighters.
   * EDDP monitor
     * Fixed a bug that prevented selection of any state other than `(anything)` and blocked filter input when any state other than `(anything)` was selected.
