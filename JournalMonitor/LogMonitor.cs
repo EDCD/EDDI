@@ -77,7 +77,7 @@ namespace EddiJournalMonitor
                 fileInfo = FindLatestFile(Directory, Filter);
                 if (fileInfo == null || fileInfo.Name != lastName)
                 {
-                    lastName = fileInfo == null ? null : fileInfo.Name;
+                    lastName = fileInfo?.Name;
                     lastSize = 0;
                     if (fileInfo != null)
                     {

@@ -193,9 +193,10 @@ namespace EddiSpeechService
                 {
                     Logging.Warn("play failed: ", ex);
                 }
-            });
-
-            speechThread.IsBackground = true;
+            })
+            {
+                IsBackground = true
+            };
 
             try
             {
@@ -326,7 +327,7 @@ namespace EddiSpeechService
                 }
                 finally
                 {
-                    if (soundOut != null) soundOut.Dispose();
+                    soundOut?.Dispose();
                 }
             }
         }
