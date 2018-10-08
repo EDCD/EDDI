@@ -236,8 +236,6 @@ The log of missions accepted by the commander is available under the `missions` 
 	- 'missions' list of missions within the commander's mission log'
 	- 'missionsCount' the number of all accepted missions
 	- 'missionWarning' the number of minutes before mission expiry in which a warning notification is generated
-	- 'missionsRouteList'  delimited ('_') string of mission destinations, ordered to provide the most efficient route
-	- 'missionsRouteDistance' the total distance traveled for the missions route list
 
 ## Mission
 
