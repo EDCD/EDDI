@@ -223,7 +223,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Suitable for water-based life.
+        ///   Looks up a localized string similar to Suitable for water based life.
         /// </summary>
         public static string SuitableForWaterBasedLife {
             get {

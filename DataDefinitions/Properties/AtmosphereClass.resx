@@ -186,7 +186,7 @@
     <comment>Atmosphere class "Silicate vapour"</comment>
   </data>
   <data name="SuitableForWaterBasedLife" xml:space="preserve">
-    <value>Suitable for water-based life</value>
+    <value>Suitable for water based life</value>
     <comment>Atmosphere class "Suitable for water-based life"</comment>
   </data>
   <data name="SulphurDioxide" xml:space="preserve">
