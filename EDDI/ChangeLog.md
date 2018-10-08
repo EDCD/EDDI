@@ -5,6 +5,8 @@ Full details of the variables available for each noted event, and VoiceAttack in
 ### Development
   * Core
     * Tabs are now shown on the the left, and all but the first "EDDI" tab are sorted alphabetically according to the rules of the current locale.
+  * EDDP monitor
+    * Fixed a bug that prevented selection of any state other than `(anything)` and blocked filter input when any state other than `(anything)` was selected.
   * Localization
     * Fixed a bug preventing localized module names from being displayed correctly within the ship object. 
   * New Mission monitor feature, tracking all mission parameters. Check the Speech responder `Variables` window for details.
