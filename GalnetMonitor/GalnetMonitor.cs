@@ -205,8 +205,10 @@ namespace GalnetMonitor
                             {
                                 Logging.Debug("Thread aborted");
                             }
-                        });
-                        thread.IsBackground = true;
+                        })
+                        {
+                            IsBackground = true
+                        };
                         thread.Start();
                     }
                 }
