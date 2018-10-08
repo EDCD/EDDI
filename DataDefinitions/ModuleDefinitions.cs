@@ -942,6 +942,7 @@ namespace EddiDataDefinitions
                 new Module(999999901, "VoicePack_Verity", -1, "Verity", 1, "I", 0),
                 new Module(999999902, "VoicePack_Victor", -1, "Victor", 1, "I", 0),
                 new Module(999999904, "VoicePack_Celeste", -1, "Celeste", 1, "I", 0),
+
                 // The FDL has its own cargo bay door.  The FDL is like that
                 new Module(999999907, "ModularCargoBayDoorFDL", -1, "CargoHatch", 1, "H", 0, 128049351),
                 new Module(999999908, "ModularCargoBayDoor", -1, "CargoHatch", 1, "H", 0, -1),
@@ -1011,7 +1012,19 @@ namespace EddiDataDefinitions
                 new Module(899990060, "Federation_Fighter_Armour_Standard", -1, "FighterArmour", 1, "I", 0, -1),
                 new Module(899990070, "Independent_Fighter_Armour_Standard", -1, "FighterArmour", 1, "I", 0, -1),
                 new Module(899990080, "Int_ShieldGenerator_Fighter_Class1", -1, "ShieldGenerator", 1, "I", 0, -1),
-                new Module(899990090, "Ext_Emitter_Standard", -1, "ShieldGenerator", 1, "I", 0, -1), 
+                new Module(899990090, "Ext_Emitter_Standard", -1, "ShieldGenerator", 1, "I", 0, -1),
+
+                // Guardian fighter stuff
+                new Module(899990190, "ext_emitter_guardian", -1, "ShieldGenerator", 1, "I", 0, -1),
+                new Module(899990101, "gdn_hybrid_fighter_v1_cockpit", -1, "CockpitCanopy", 1, "I", 0, -1),
+                new Module(899990102, "gdn_hybrid_fighter_v2_cockpit", -1, "CockpitCanopy", 1, "I", 0, -1),
+                new Module(899990103, "gdn_hybrid_fighter_v3_cockpit", -1, "CockpitCanopy", 1, "I", 0, -1),
+                new Module(899990060, "gdn_hybrid_fighter_v1_armour_standard", -1, "FighterArmour", 1, "I", 0, -1),
+                new Module(899990060, "gdn_hybrid_fighter_v2_armour_standard", -1, "FighterArmour", 1, "I", 0, -1),
+                new Module(899990060, "gdn_hybrid_fighter_v3_armour_standard", -1, "FighterArmour", 1, "I", 0, -1),
+                new Module(899990050, "hpt_guardiangauss_fixed_gdn_fighter", -1, "GuardianGaussCannon", 1, "I", 0, -1),
+                new Module(899990050, "hpt_guardianplasma_fixed_gdn_fighter", -1, "GuardianPlasmaCharger", 1, "I", 0, -1),
+                new Module(899990050, "hpt_guardianshard_fixed_gdn_fighter", -1, "ShardCannon", 1, "I", 0, -1),
 
                 // Needs EDDB ID
                 new Module(128671340, "Hpt_MiningLaser_Fixed_Small_Advanced", -1, "MiningLance", 1, "D", 28066, ModuleMount.Fixed),

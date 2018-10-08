@@ -3,8 +3,10 @@
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
 ### Development
-  * Core
+  * UI
     * Tabs are now shown on the the left, and all but the first "EDDI" tab are sorted alphabetically according to the rules of the current locale.
+  * Core
+    * Added data definitions for Guardian fighters.
   * EDDP monitor
     * Fixed a bug that prevented selection of any state other than `(anything)` and blocked filter input when any state other than `(anything)` was selected.
   * Localization
