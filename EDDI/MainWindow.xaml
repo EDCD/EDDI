@@ -11,7 +11,12 @@
         xmlns:resx="clr-namespace:Eddi.Properties"
         mc:Ignorable="d"
         Title="EDDI" Height="{Binding ElementName=defaultHeight, Path=Value}"  Width="{Binding ElementName=defaultWidth, Path=Value}">
-    <DockPanel LastChildFill="True">
+    <Window.Resources>
+        <Style TargetType="DataGrid">
+            <Setter Property="AlternatingRowBackground" Value="AliceBlue"></Setter>
+        </Style>
+    </Window.Resources>
+        <DockPanel LastChildFill="True">
         <DockPanel.Background>
             <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
                 <GradientStop Color="Black"/>
