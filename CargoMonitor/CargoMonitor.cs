@@ -239,7 +239,7 @@ namespace EddiCargoMonitor
             writeInventory();
         }
 
-        public void _handleCargoInventoryEvent(CargoInventoryEvent @event)
+        private void _handleCargoInventoryEvent(CargoInventoryEvent @event)
         {
             // CargoInventoryEvent does not contain missionid or cost information so fill in gaps here
             foreach (Cargo cargo in @event.inventory)
@@ -296,7 +296,7 @@ namespace EddiCargoMonitor
             writeInventory();
         }
 
-        public void _handleCommodityCollectedEvent(CommodityCollectedEvent @event)
+        private void _handleCommodityCollectedEvent(CommodityCollectedEvent @event)
         {
             Cargo cargo = new Cargo();
             cargo = GetCargoWithEDName(@event.commodityDefinition?.edname);
@@ -374,7 +374,7 @@ namespace EddiCargoMonitor
             writeInventory();
         }
 
-        public void _handleCommodityEjectedEvent(CommodityEjectedEvent @event)
+        private void _handleCommodityEjectedEvent(CommodityEjectedEvent @event)
         {
             Cargo cargo = GetCargoWithEDName(@event.commodityDefinition?.edname);
             if (cargo != null)
@@ -445,7 +445,7 @@ namespace EddiCargoMonitor
             writeInventory();
         }
 
-        public void _handleCommodityPurchasedEvent(CommodityPurchasedEvent @event)
+        private void _handleCommodityPurchasedEvent(CommodityPurchasedEvent @event)
         {
             Cargo cargo = new Cargo();
             cargo = GetCargoWithEDName(@event.commodityDefinition?.edname);
@@ -478,7 +478,7 @@ namespace EddiCargoMonitor
             writeInventory();
         }
 
-        public void _handleCommodityRefinedEvent(CommodityRefinedEvent @event)
+        private void _handleCommodityRefinedEvent(CommodityRefinedEvent @event)
         {
             Cargo cargo = new Cargo();
             cargo = GetCargoWithEDName(@event.commodityDefinition?.edname);
@@ -505,7 +505,7 @@ namespace EddiCargoMonitor
             writeInventory();
         }
 
-        public void _handleCommoditySoldEvent(CommoditySoldEvent @event)
+        private void _handleCommoditySoldEvent(CommoditySoldEvent @event)
         {
             Cargo cargo = GetCargoWithEDName(@event.commodityDefinition?.edname);
             if (cargo != null)
@@ -537,7 +537,7 @@ namespace EddiCargoMonitor
             writeInventory();
         }
 
-        public void _handlePowerCommodityObtainedEvent(PowerCommodityObtainedEvent @event)
+        private void _handlePowerCommodityObtainedEvent(PowerCommodityObtainedEvent @event)
         {
             Cargo cargo = new Cargo();
             cargo = GetCargoWithEDName(@event.commodityDefinition?.edname);
@@ -564,7 +564,7 @@ namespace EddiCargoMonitor
             writeInventory();
         }
 
-        public void _handlePowerCommodityDeliveredEvent(PowerCommodityDeliveredEvent @event)
+        private void _handlePowerCommodityDeliveredEvent(PowerCommodityDeliveredEvent @event)
         {
             Cargo cargo = GetCargoWithEDName(@event.commodityDefinition?.edname);
             if (cargo != null)
@@ -580,7 +580,7 @@ namespace EddiCargoMonitor
             writeInventory();
         }
 
-        public void _handleLimpetPurchasedEvent(LimpetPurchasedEvent @event)
+        private void _handleLimpetPurchasedEvent(LimpetPurchasedEvent @event)
         {
             Cargo cargo = new Cargo();
             cargo = GetCargoWithEDName("Drones");
@@ -606,7 +606,7 @@ namespace EddiCargoMonitor
             writeInventory();
         }
 
-        public void _handleLimpetSoldEvent(LimpetSoldEvent @event)
+        private void _handleLimpetSoldEvent(LimpetSoldEvent @event)
         {
             Cargo cargo = GetCargoWithEDName("Drones");
             if (cargo != null)
@@ -622,7 +622,7 @@ namespace EddiCargoMonitor
             writeInventory();
         }
 
-        public void _handleLimpetLaunchedEvent()
+        private void _handleLimpetLaunchedEvent()
         {
             Cargo cargo = GetCargoWithEDName("Drones");
             if (cargo != null)
@@ -638,7 +638,7 @@ namespace EddiCargoMonitor
             writeInventory();
         }
 
-        public void _handleCargoDepotEvent(CargoDepotEvent @event)
+        private void _handleCargoDepotEvent(CargoDepotEvent @event)
         {
             Cargo cargo = new Cargo();
             Haulage haulage = new Haulage();
@@ -811,7 +811,7 @@ namespace EddiCargoMonitor
             writeInventory();
         }
 
-        public void _handleMissionsEvent(MissionsEvent @event)
+        private void _handleMissionsEvent(MissionsEvent @event)
         {
             foreach (Cargo cargo in inventory.ToList())
             {
@@ -832,7 +832,7 @@ namespace EddiCargoMonitor
             writeInventory();
         }
 
-        public void _handleMissionAbandonedEvent(MissionAbandonedEvent @event)
+        private void _handleMissionAbandonedEvent(MissionAbandonedEvent @event)
         {
             Haulage haulage = GetHaulageWithMissionId(@event.missionid ?? 0);
             if (haulage != null)
@@ -876,7 +876,7 @@ namespace EddiCargoMonitor
             }
         }
 
-        public void _handleMissionAcceptedEvent(MissionAcceptedEvent @event)
+        private void _handleMissionAcceptedEvent(MissionAcceptedEvent @event)
         {
             Cargo cargo = new Cargo();
             string type = @event.name.Split('_').ElementAtOrDefault(1).ToLowerInvariant();
@@ -933,7 +933,7 @@ namespace EddiCargoMonitor
             }
         }
 
-            private void handleMissionCompletedEvent(MissionCompletedEvent @event)
+        private void handleMissionCompletedEvent(MissionCompletedEvent @event)
         {
             if (@event.commodityDefinition != null || @event.commodityrewards != null)
             {
@@ -942,7 +942,7 @@ namespace EddiCargoMonitor
             }
         }
 
-        public void _handleMissionCompletedEvent(MissionCompletedEvent @event)
+        private void _handleMissionCompletedEvent(MissionCompletedEvent @event)
         {
             Cargo cargo = new Cargo();
             cargo = GetCargoWithEDName(@event.commodityDefinition?.edname);
@@ -1033,7 +1033,7 @@ namespace EddiCargoMonitor
             writeInventory();
         }
 
-        public void _handleMissionExpiredEvent(MissionExpiredEvent @event)
+        private void _handleMissionExpiredEvent(MissionExpiredEvent @event)
         {
             Haulage haulage = GetHaulageWithMissionId(@event.missionid ?? 0);
             if (haulage != null)
@@ -1048,7 +1048,7 @@ namespace EddiCargoMonitor
             writeInventory();
         }
 
-        public void _handleMissionFailedEvent(MissionFailedEvent @event)
+        private void _handleMissionFailedEvent(MissionFailedEvent @event)
         {
             Haulage haulage = GetHaulageWithMissionId(@event.missionid ?? 0);
             if (haulage != null)
@@ -1093,7 +1093,7 @@ namespace EddiCargoMonitor
             writeInventory();
         }
 
-        public void _handleMissionRedirectedEvent(MissionRedirectedEvent @event)
+        private void _handleMissionRedirectedEvent(MissionRedirectedEvent @event)
         {
             // Adjust cargo haulage & stolen amounts to account for completed missions
             Haulage haulage = GetHaulageWithMissionId(@event.missionid ?? 0);
@@ -1124,7 +1124,7 @@ namespace EddiCargoMonitor
             writeInventory();
         }
 
-        public void _handleSearchAndRescueEvent(SearchAndRescueEvent @event)
+        private void _handleSearchAndRescueEvent(SearchAndRescueEvent @event)
         {
             Cargo cargo = GetCargoWithEDName(@event.commodity?.edname);
             if (cargo != null)
@@ -1143,7 +1143,7 @@ namespace EddiCargoMonitor
             }
         }
 
-        public void _handleSynthesisedEvent()
+        private void _handleSynthesisedEvent()
         {
             Cargo cargo = new Cargo();
             cargo = GetCargoWithEDName("Drones");
@@ -1169,7 +1169,7 @@ namespace EddiCargoMonitor
             writeInventory();
         }
 
-        public void _handleTechnologyBrokerEvent(TechnologyBrokerEvent @event)
+        private void _handleTechnologyBrokerEvent(TechnologyBrokerEvent @event)
         {
             foreach (CommodityAmount commodityAmount in @event.commodities)
             {
