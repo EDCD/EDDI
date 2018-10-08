@@ -866,8 +866,7 @@ namespace Eddi
                 }
 
                 // Truncate log files more than the specified size MB in size
-                long maxLogSizeMB = 2;
-                long maxLogSizeBytes = maxLogSizeMB * (long)Math.Pow(1024, 2);
+                const long maxLogSizeBytes = 0x200000; // 2 MB
                 FileInfo logFile = new FileInfo(issueLogFile);
                 if (logFile.Length > maxLogSizeBytes) 
                 {
