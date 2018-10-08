@@ -64,6 +64,7 @@ namespace EddiEddbService
             return system;
         }
 
+        /// <summary> Create a custom system query. </summary>
         private static StarSystem GetSystem(KeyValuePair<string, object> query, bool searchPopulated = true)
         {
             if (query.Value != null)
@@ -71,39 +72,44 @@ namespace EddiEddbService
                 List<KeyValuePair<string, object>> queryList = new List<KeyValuePair<string, object>>();
                 queryList.Add(query);
 
-                List<object> responses = new List<object>();
-                if (searchPopulated == true)
-                {
-                    responses = GetData(Endpoint.populatedSystems, queryList);
-                    if (responses == null)
-                    {
-                        // The system may not be populated. Try again searching unpopulated systems
-                        searchPopulated = false;
-                    }
-                }
-                if (searchPopulated == false)
-                {
-                    responses = GetData(Endpoint.systems, queryList);
-                }
+                List<object> responses = GetData(searchPopulated ? Endpoint.populatedSystems : Endpoint.systems, queryList);
 
-                if (responses != null)
+                if (responses?.Count > 0)
                 {
-                    return ParseEddbSystem(responses[0], searchPopulated);
+                    return ParseEddbSystem(responses[0]);
                 }
             }
             return null;
         }
 
-        // Though not necessary at this time, it is possible to implement methods that query the data source 
-        // based on multiple criteria (e.g. population, state, government, etc.) by adding multiple criteria to the queryList. 
+        /// <summary> Create a custom systems query. </summary>
+        private static List<StarSystem> GetSystems(List<KeyValuePair<string, object>> queryList, bool searchPopulated = true)
+        {
+            if (queryList.Count > 0)
+            {
+                List<object> responses = GetData(searchPopulated ? Endpoint.populatedSystems : Endpoint.systems, queryList);
 
-        private static StarSystem ParseEddbSystem(object response, bool searchPopulated)
+                if (responses?.Count > 0)
+                {
+                    List<StarSystem> systems = new List<StarSystem>();
+                    foreach (object response in responses)
+                    {
+                        StarSystem system = ParseEddbSystem(response);
+                        if (system != null) { systems.Add(system); };
+                    }
+                    return systems;
+                }
+            }
+            return null;
+        }
+
+        private static StarSystem ParseEddbSystem(object response)
         {
             JObject systemJson = ((JObject)response);
             StarSystem StarSystem = new StarSystem();
             StarSystem.name = (string)systemJson["name"];
 
-            if (systemJson["is_populated"] != null)
+            if ((bool?)systemJson["is_populated"] != null)
             {
                 // We have real data so populate the rest of the data
 

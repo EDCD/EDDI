@@ -47,7 +47,11 @@ namespace EddiEddbService
         /// <summary> Exactly one system name is required. </summary>
         public static List<Body> Bodies(string systemName)
         {
-            return GetBodies(new KeyValuePair<string, object>(BodyQuery.systemName, systemName)) ?? new List<Body>();
+            List<KeyValuePair<string, object>> queryList = new List<KeyValuePair<string, object>>()
+            {
+                new KeyValuePair<string, object>(BodyQuery.systemName, systemName)
+            };
+            return GetBodies(queryList) ?? new List<Body>();
         }
 
         /// <summary> Exactly one body name is required. </summary>
@@ -96,7 +100,7 @@ namespace EddiEddbService
 
                 List<object> responses = GetData(Endpoint.bodies, queryList);
 
-                if (responses != null)
+                if (responses?.Count > 0)
                 {
                     return ParseEddbBody(responses[0]);
                 }
@@ -110,7 +114,7 @@ namespace EddiEddbService
             {
                 List<object> responses = GetData(Endpoint.bodies, queryList);
 
-                if (responses != null)
+                if (responses?.Count > 0)
                 {
                     return ParseEddbBody(responses[0]);
                 }
@@ -118,16 +122,13 @@ namespace EddiEddbService
             return null;
         }
 
-        private static List<Body> GetBodies(KeyValuePair<string, object> query)
+        private static List<Body> GetBodies(List<KeyValuePair<string, object>> queryList)
         {
-            if (query.Value != null)
+            if (queryList.Count > 0)
             {
-                List<KeyValuePair<string, object>> queryList = new List<KeyValuePair<string, object>>();
-                queryList.Add(query);
-
                 List<object> responses = GetData(Endpoint.bodies, queryList);
 
-                if (responses != null)
+                if (responses?.Count > 0)
                 {
                     List<Body> bodies = new List<Body>();
                     foreach (object response in responses)

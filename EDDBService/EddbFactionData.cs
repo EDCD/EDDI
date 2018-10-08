@@ -43,7 +43,11 @@ namespace EddiEddbService
         /// <summary> At least one home system name is required. </summary>
         public static List<Faction> Factions(string homeSystem)
         {
-            return GetFactions(new KeyValuePair<string, object>(FactionQuery.homeSystem, homeSystem)) ?? new List<Faction>();
+            List<KeyValuePair<string, object>> queryList = new List<KeyValuePair<string, object>>()
+            {
+                new KeyValuePair<string, object>(FactionQuery.homeSystem, homeSystem)
+            };
+            return GetFactions(queryList) ?? new List<Faction>();
         }
 
         /// <summary> Exactly one faction name is required. </summary>
@@ -77,7 +81,7 @@ namespace EddiEddbService
 
                 List<object> responses = GetData(Endpoint.factions, queryList);
 
-                if (responses != null)
+                if (responses?.Count > 0)
                 {
                     return ParseEddbFaction(responses[0]);
                 }
@@ -85,16 +89,13 @@ namespace EddiEddbService
             return null;
         }
 
-        private static List<Faction> GetFactions(KeyValuePair<string, object> query)
+        private static List<Faction> GetFactions(List<KeyValuePair<string, object>> queryList)
         {
-            if (query.Value != null)
+            if (queryList.Count > 0)
             {
-                List<KeyValuePair<string, object>> queryList = new List<KeyValuePair<string, object>>();
-                queryList.Add(query);
-
                 List<object> responses = GetData(Endpoint.factions, queryList);
 
-                if (responses != null)
+                if (responses?.Count > 0)
                 {
                     List<Faction> factions = new List<Faction>();
                     foreach (object response in responses)
