@@ -15,6 +15,7 @@ using System.Speech.Synthesis;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
+using System.Threading.Tasks;
 using Utilities;
 
 namespace EddiSpeechService
@@ -27,6 +28,7 @@ namespace EddiSpeechService
         private static readonly object activeSpeechLock = new object();
         private ISoundOut activeSpeech;
         private int activeSpeechPriority;
+        SpeechSynthesizer synth = new SpeechSynthesizer();
 
         private static bool _eddiSpeaking;
         public static bool eddiSpeaking
@@ -351,58 +353,53 @@ namespace EddiSpeechService
             return null;
         }
 
-        // Speak using the MS speech synthesizer
+        // Speak using the Windows SAPI speech synthesizer
         private void speak(MemoryStream stream, string voice, string speech)
         {
             var synthThread = new Thread(() =>
             {
                 try
                 {
-                    using (SpeechSynthesizer synth = new SpeechSynthesizer())
+                    if (voice != null)
                     {
-                        if (voice != null && !voice.Contains("Microsoft Server Speech Text to Speech Voice"))
+                        try
                         {
-                            try
+                            Logging.Debug("Selecting voice " + voice);
+                            Task t = new Task(() => selectVoice(voice, synth));
+                            t.Start();
+                            if (!t.Wait(TimeSpan.FromSeconds(2)))
                             {
-                                Logging.Debug("Selecting voice " + voice);
-                                Thread t = new Thread(() => synth.SelectVoice(voice));
-                                t.Start();
-                                if (!t.Join(TimeSpan.FromSeconds(2)))
-                                {
-                                    t.Abort();
-                                    Logging.Warn("Failed to select voice " + voice + " (1)");
-                                }
-                            }
-                            catch (Exception ex)
-                            {
-                                Logging.Warn("Failed to select voice " + voice + " (2)", ex);
+                                t.Dispose();
+                                Logging.Warn("Failed to select voice " + voice + " (timed out)");
                             }
                         }
-                        Logging.Debug("Post-selection");
-
-                        Logging.Debug("Configuration is " + configuration == null ? "<null>" : JsonConvert.SerializeObject(configuration));
-                        synth.Rate = configuration.Rate;
-                        synth.Volume = configuration.Volume;
-
-                        synth.SetOutputToWaveStream(stream);
-
-                        // Keep XML version at 1.0. Version 1.1 is not recommended for general use. https://en.wikipedia.org/wiki/XML#Versions
-                        if (speech.Contains("<"))
+                        catch (Exception ex)
                         {
-                            Logging.Debug("Obtaining best guess culture");
-                            string culture = @" xml:lang=""" + bestGuessCulture(synth) + @"""";
-                            Logging.Debug("Best guess culture is " + culture);
-                            speech = @"<?xml version=""1.0"" encoding=""UTF-8""?><speak version=""1.0"" xmlns=""http://www.w3.org/2001/10/synthesis""" + culture + ">" + escapeSsml(speech) + @"</speak>";
-                            Logging.Debug("Feeding SSML to synthesizer: " + escapeSsml(speech));
-                            synth.SpeakSsml(speech);
+                            Logging.Warn("Failed to select voice " + voice, ex);
                         }
-                        else
-                        {
-                            Logging.Debug("Feeding normal text to synthesizer: " + speech);
-                            synth.Speak(speech);
-                        }
-                        stream.ToArray();
                     }
+                    Logging.Debug("Configuration is " + configuration == null ? "<null>" : JsonConvert.SerializeObject(configuration));
+                    synth.Rate = configuration.Rate;
+                    synth.Volume = configuration.Volume;
+
+                    synth.SetOutputToWaveStream(stream);
+
+                    // Keep XML version at 1.0. Version 1.1 is not recommended for general use. https://en.wikipedia.org/wiki/XML#Versions
+                    if (speech.Contains("<"))
+                    {
+                        Logging.Debug("Obtaining best guess culture");
+                        string culture = @" xml:lang=""" + bestGuessCulture(synth) + @"""";
+                        Logging.Debug("Best guess culture is " + culture);
+                        speech = @"<?xml version=""1.0"" encoding=""UTF-8""?><speak version=""1.0"" xmlns=""http://www.w3.org/2001/10/synthesis""" + culture + ">" + escapeSsml(speech) + @"</speak>";
+                        Logging.Debug("Feeding SSML to synthesizer: " + escapeSsml(speech));
+                        synth.SpeakSsml(speech);
+                    }
+                    else
+                    {
+                        Logging.Debug("Feeding normal text to synthesizer: " + speech);
+                        synth.Speak(speech);
+                    }
+                    stream.ToArray();
                 }
                 catch (ThreadAbortException)
                 {
@@ -421,6 +418,17 @@ namespace EddiSpeechService
             synthThread.Start();
             synthThread.Join();
             stream.Position = 0;
+        }
+
+        private static void selectVoice(string voice, SpeechSynthesizer synth)
+        {
+            foreach (InstalledVoice vc in synth.GetInstalledVoices())
+            {
+                if (vc.Enabled && vc.VoiceInfo.Name == voice && !vc.VoiceInfo.Name.Contains("Microsoft Server Speech Text to Speech Voice"))
+                {
+                    synth.SelectVoice(voice);
+                }
+            }
         }
 
         private string bestGuessCulture(SpeechSynthesizer synth)
