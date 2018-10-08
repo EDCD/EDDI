@@ -19,6 +19,10 @@ namespace EddiDataDefinitions
 
         public string originsystem { get; set; }
 
+        public string sourcesystem { get; set; }
+
+        public string sourcebody { get; set; }
+
         [JsonIgnore]
         public bool legal => !name.ToLowerInvariant().Contains("illegal");
 
