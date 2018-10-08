@@ -9,7 +9,7 @@ using Utilities;
 
 namespace EddiDataDefinitions
 {
-    [JsonObject(MemberSerialization.OptOut)]
+    [JsonObject(MemberSerialization.OptIn)]
     public class ResourceBasedLocalizedEDName<T> where T : ResourceBasedLocalizedEDName<T>, new()
     {
         static ResourceBasedLocalizedEDName()
