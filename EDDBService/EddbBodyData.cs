@@ -185,13 +185,13 @@ namespace EddiEddbService
                 inclination = (decimal?)(double?)bodyJson["orbital_inclination"] // Degrees
             };
 
-            if (Body.Type.edname.ToLowerInvariant() == "belt")
+            if ((string)bodyJson["group_name"] == "belt")
             {
                 // Not interested in asteroid belts, 
                 // no need to add additional information at this time.
             }
 
-            if (Body.Type.edname.ToLowerInvariant() == "star")
+            else if ((string)bodyJson["group_name"] == "star")
             {
                 // Star-specific items
                 Body.stellarclass = ((string)bodyJson["spectral_class"])?.ToUpperInvariant();
@@ -204,19 +204,19 @@ namespace EddiEddbService
                 Body.setStellarExtras();
             }
 
-            if (Body.Type.edname.ToLowerInvariant() == "planet")
+            else if ((string)bodyJson["group_name"] == "planet")
             {
                 // Planet-specific items
-                Body.planetClass = PlanetClass.FromEDName((string)bodyJson["type_name"]) ?? PlanetClass.None;
+                Body.planetClass = PlanetClass.FromEDName((string)bodyJson["type_name"]);
                 Body.landable = (bool?)bodyJson["is_landable"] ?? false;
                 Body.earthmass = (decimal?)(double?)bodyJson["earth_masses"];
                 Body.gravity = (decimal?)(double?)bodyJson["gravity"]; // G's
                 Body.radius = (decimal?)bodyJson["radius"]; // Kilometers
                 Body.pressure = (decimal?)(double?)bodyJson["surface_pressure"] ?? 0;
-                Body.terraformState = TerraformState.FromName((string)bodyJson["terraforming_state_name"]) ?? TerraformState.None;
+                Body.terraformState = TerraformState.FromName((string)bodyJson["terraforming_state_name"]);
                 // Per Themroc @ EDDB, "Major" and "Minor" volcanism descriptors are stripped from EDDB data. 
                 Body.volcanism = Volcanism.FromName((string)bodyJson["volcanism_type_name"]);
-                Body.atmosphereclass = AtmosphereClass.FromName((string)bodyJson["atmosphere_type_name"]) ?? AtmosphereClass.None;
+                Body.atmosphereclass = AtmosphereClass.FromName((string)bodyJson["atmosphere_type_name"]);
                 if (bodyJson["atmosphere_composition"] != null)
                 {
                     List<AtmosphereComposition> atmosphereCompositions = new List<AtmosphereComposition>();

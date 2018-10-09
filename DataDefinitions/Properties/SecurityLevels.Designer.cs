@@ -79,6 +79,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to None.
+        /// </summary>
+        public static string None {
+            get {
+                return ResourceManager.GetString("None", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to High.
         /// </summary>
         public static string SYSTEM_SECURITY_high {
@@ -111,15 +120,6 @@ namespace EddiDataDefinitions.Properties {
         public static string SYSTEM_SECURITY_medium {
             get {
                 return ResourceManager.GetString("SYSTEM_SECURITY_medium", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to None.
-        /// </summary>
-        public static string SYSTEM_SECURITY_none {
-            get {
-                return ResourceManager.GetString("SYSTEM_SECURITY_none", resourceCulture);
             }
         }
     }

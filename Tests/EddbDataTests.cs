@@ -123,7 +123,6 @@ namespace UnitTests
             Assert.IsNull(mercury.solarmass);
             Assert.IsNull(mercury.solarradius);
             Assert.IsNull(mercury.stellarclass);
-            Assert.AreEqual("Sol", mercury.systemname);
             Assert.AreEqual(402, (double)mercury.temperature, 0.1);
             Assert.AreEqual("Not terraformable", mercury.terraformState.invariantName);
             Assert.IsNotNull(mercury.tidallylocked);
