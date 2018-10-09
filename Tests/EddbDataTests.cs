@@ -20,7 +20,7 @@ namespace UnitTests
         }
 
         [TestMethod]
-        public void TestEddbDataMultiParameters()
+        public void TestMultiParameters()
         {
             PrivateType eddbService = new PrivateType(typeof(EddbService));
 
@@ -247,7 +247,7 @@ namespace UnitTests
         }
 
         [TestMethod]
-        public void TestEddbStationJamesonMemorial()
+        public void TestStationJamesonMemorial()
         {
             // Test system station data
             Station station = EddbService.Station("Jameson Memorial", "Shinrarta Dezhra");
@@ -289,14 +289,14 @@ namespace UnitTests
         }
 
         [TestMethod]
-        public void TestEddbStationsSol()
+        public void TestStationsSol()
         {
             List<Station> stations = EddbService.Stations("Sol");
             Assert.AreEqual(20, stations.Count);
         }
 
         [TestMethod]
-        public void TestEddbFactionsAchali()
+        public void TestFactionsAchali()
         {
             // Test factions data
             string[] factionList = { "Coalition of Achali", "Party of Achali" };
@@ -329,7 +329,7 @@ namespace UnitTests
         }
 
         [TestMethod]
-        public void TestEddbSystems()
+        public void TestSystems()
         {
             // Test systems obtained from a list 
             string[] systems = { "Merope", "Sol" };
