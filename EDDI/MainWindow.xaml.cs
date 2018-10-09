@@ -465,23 +465,29 @@ namespace Eddi
         private void homeSystemChanged(object sender, TextChangedEventArgs e)
         {
             EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
-            eddiConfiguration.HomeSystem = string.IsNullOrWhiteSpace(eddiHomeSystemText.Text) ? null : eddiHomeSystemText.Text.Trim();
-            eddiConfiguration = EDDI.Instance.updateHomeSystem(eddiConfiguration);
-            eddiConfiguration.ToFile();
+            if (eddiConfiguration.HomeSystem != eddiHomeSystemText.Text)
+            {
+                eddiConfiguration.HomeSystem = string.IsNullOrWhiteSpace(eddiHomeSystemText.Text) ? null : eddiHomeSystemText.Text.Trim();
+                eddiConfiguration = EDDI.Instance.updateHomeSystem(eddiConfiguration);
+                eddiConfiguration.ToFile();
 
-            // Update the UI for invalid results
-            runValidation(eddiHomeSystemText);
+                // Update the UI for invalid results
+                runValidation(eddiHomeSystemText);
+            }
         }
 
         private void homeStationChanged(object sender, TextChangedEventArgs e)
         {
             EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
-            eddiConfiguration.HomeStation = string.IsNullOrWhiteSpace(eddiHomeStationText.Text) ? null : eddiHomeStationText.Text.Trim();
-            eddiConfiguration = EDDI.Instance.updateHomeStation(eddiConfiguration);
-            eddiConfiguration.ToFile();
+            if (eddiConfiguration.HomeStation != eddiHomeStationText.Text)
+            {
+                eddiConfiguration.HomeStation = string.IsNullOrWhiteSpace(eddiHomeStationText.Text) ? null : eddiHomeStationText.Text.Trim();
+                eddiConfiguration = EDDI.Instance.updateHomeStation(eddiConfiguration);
+                eddiConfiguration.ToFile();
 
-            // Update the UI for invalid results
-            runValidation(eddiHomeStationText);
+                // Update the UI for invalid results
+                runValidation(eddiHomeStationText);
+            }
         }
 
         private void isMale_Checked(object sender, RoutedEventArgs e)
