@@ -121,7 +121,7 @@
     <value>Közepes</value>
     <comment>Security level SYSTEM_SECURITY_medium</comment>
   </data>
-  <data name="SYSTEM_SECURITY_none" xml:space="preserve">
+  <data name="None" xml:space="preserve">
     <value>Nincs</value>
     <comment>Security level SYSTEM_SECURITY_none</comment>
   </data>

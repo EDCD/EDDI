@@ -12,7 +12,7 @@ namespace EddiDataDefinitions
             resourceManager.IgnoreCase = true;
             missingEDNameHandler = (edname) => new SecurityLevel(edname);
 
-            None = new SecurityLevel("$SYSTEM_SECURITY_none;");
+            None = new SecurityLevel("None");
             var Low = new SecurityLevel("$SYSTEM_SECURITY_low;");
             var Medium = new SecurityLevel("$SYSTEM_SECURITY_medium;");
             var High = new SecurityLevel("$SYSTEM_SECURITY_high;");
@@ -24,7 +24,7 @@ namespace EddiDataDefinitions
         public static readonly SecurityLevel None;
 
         // dummy used to ensure that the static constructor has run
-        public SecurityLevel() : this("")
+        public SecurityLevel() : this("None")
         { }
 
         private SecurityLevel(string edname) : base(edname, edname.Replace("$", "").Replace(";", ""))

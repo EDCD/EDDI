@@ -184,8 +184,8 @@ namespace EddiEddbService
             {
                 controllingFaction = new Faction();
             };
-            controllingFaction.Government = Government.FromName((string)stationJson["government"]) ?? Government.None;
-            controllingFaction.Allegiance = Superpower.FromName((string)stationJson["allegiance"]) ?? Superpower.None;
+            controllingFaction.Government = Government.FromName((string)stationJson["government"]);
+            controllingFaction.Allegiance = Superpower.FromName((string)stationJson["allegiance"]);
             Station.Faction = controllingFaction;
 
             // The local state may or may not match the faction's general state, so we set it here
@@ -193,7 +193,7 @@ namespace EddiEddbService
 
             // Station facilities data
             Station.Model = StationModel.FromName((string)stationJson["type"]) ?? StationModel.None;
-            Station.LargestPad = StationLargestPad.FromSize((string)stationJson["max_landing_pad_size"]) ?? StationLargestPad.None;
+            Station.LargestPad = StationLargestPad.FromSize((string)stationJson["max_landing_pad_size"]);
             Station.hasblackmarket = (bool?)stationJson["has_blackmarket"];
             Station.hasdocking = (bool?)stationJson["has_docking"];
             Station.hasmarket = (bool?)stationJson["has_market"];
