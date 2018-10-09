@@ -296,10 +296,14 @@ namespace UnitTests
         }
 
         [TestMethod]
-        public void TestEddbFactionAchali()
+        public void TestEddbFactionsAchali()
         {
-            // Test faction data
-            Faction faction = EddbService.Faction("Coalition of Achali");
+            // Test factions data
+            string[] factionList = { "Coalition of Achali", "Party of Achali" };
+            List<Faction> factions = EddbService.Factions(factionList);
+            Assert.AreEqual(2, factions.Count);
+
+            Faction faction = factions.Find(n => n.name == "Coalition of Achali");
             Assert.AreEqual("Federation", faction.Allegiance.invariantName);
             Assert.AreEqual("Confederacy", faction.Government.invariantName);
             Assert.IsNotNull(faction.State.invariantName);
@@ -307,15 +311,6 @@ namespace UnitTests
             Assert.IsNotNull(faction.updatedat);
             Assert.AreEqual(6626, faction.EDDBID);
             Assert.AreEqual(424, faction.homeSystemEddbId);
-        }
-
-        [TestMethod]
-        public void TestEddbFactionsAchali()
-        {
-            // Test factions data
-            string[] factionList = { "Coalition of Achali", "Party of Achali" };
-            List<Faction> factions = EddbService.Factions(factionList);
-            Assert.AreEqual(2, factions.Count);
 
             List<Faction> factionsHome = EddbService.Factions("Achali");
             Assert.AreEqual(5, factionsHome.Count);
@@ -327,32 +322,10 @@ namespace UnitTests
             // Test coordinates
             StarSystem starSystem = EddbService.System("Merope");
 
-            Assert.AreEqual("merope", starSystem.name.ToLowerInvariant());
+            Assert.AreEqual("Merope", starSystem.name);
             Assert.AreEqual(-78.59375M, starSystem.x);
             Assert.AreEqual(-149.625M, starSystem.y);
             Assert.AreEqual(-340.53125M, starSystem.z);
-        }
-
-        [TestMethod]
-        public void TestStarSystemData()
-        {
-            // Test system data
-            StarSystem starSystem = EddbService.System("Sol");
-
-            Assert.IsNotNull(starSystem);
-            Assert.AreEqual("Sol", starSystem.name);
-            Assert.AreEqual((decimal)0, starSystem.x);
-            Assert.AreEqual((decimal)0, starSystem.y);
-            Assert.AreEqual((decimal)0, starSystem.z);
-            Assert.IsNotNull(starSystem.population);
-            Assert.IsNotNull(starSystem.Faction.Allegiance.basename);
-            Assert.IsNotNull(starSystem.Faction.Government.basename);
-            Assert.IsNotNull(starSystem.Faction.name);
-            Assert.IsNotNull(starSystem.Faction);
-            Assert.IsNotNull(starSystem.systemState.basename);
-            Assert.IsNotNull(starSystem.securityLevel.basename);
-            Assert.IsNotNull(starSystem.primaryeconomy);
-            Assert.AreEqual("Common", starSystem.Reserve.basename);
         }
 
         [TestMethod]
@@ -377,6 +350,19 @@ namespace UnitTests
                 {
                     Body body = starSystem.bodies.Find(b => b.name == "Earth");
                     Assert.IsNotNull("Earth", body.name);
+                    Assert.AreEqual("Sol", starSystem.name);
+                    Assert.AreEqual((decimal)0, starSystem.x);
+                    Assert.AreEqual((decimal)0, starSystem.y);
+                    Assert.AreEqual((decimal)0, starSystem.z);
+                    Assert.IsNotNull(starSystem.population);
+                    Assert.IsNotNull(starSystem.Faction.Allegiance.basename);
+                    Assert.IsNotNull(starSystem.Faction.Government.basename);
+                    Assert.IsNotNull(starSystem.Faction.name);
+                    Assert.IsNotNull(starSystem.Faction);
+                    Assert.IsNotNull(starSystem.systemState.basename);
+                    Assert.IsNotNull(starSystem.securityLevel.basename);
+                    Assert.IsNotNull(starSystem.primaryeconomy);
+                    Assert.AreEqual("Common", starSystem.Reserve.basename);
                     continue;
                 }
                 else
@@ -393,6 +379,46 @@ namespace UnitTests
             StarSystem starSystem = EddbService.System("Unknown star system");
             Assert.AreEqual("unknown star system", starSystem.name.ToLowerInvariant());
             Assert.IsNull(starSystem.population);
+        }
+
+        [TestMethod]
+        public void TestBodyLatency()
+        {
+            System.DateTime startTime = System.DateTime.UtcNow;
+            Body body = EddbService.Body("Jupiter");
+            System.TimeSpan latencyTimeSpan = System.DateTime.UtcNow - startTime;
+            Assert.IsNotNull(body);
+            Assert.IsTrue(latencyTimeSpan.Milliseconds < 50); //1.91 seconds
+        }
+
+        [TestMethod]
+        public void TestStationLatency()
+        {
+            System.DateTime startTime = System.DateTime.UtcNow;
+            Station station = EddbService.Station("Jameson Memorial");
+            System.TimeSpan latencyTimeSpan = System.DateTime.UtcNow - startTime;
+            Assert.IsNotNull(station);
+            Assert.IsTrue(latencyTimeSpan.Milliseconds < 50); //1.90 seconds
+        }
+
+        [TestMethod]
+        public void TestFactionLatency()
+        {
+            System.DateTime startTime = System.DateTime.UtcNow;
+            Faction faction = EddbService.Faction("Coalition of Achali");
+            System.TimeSpan latencyTimeSpan = System.DateTime.UtcNow - startTime;
+            Assert.IsNotNull(faction);
+            Assert.IsTrue(latencyTimeSpan.Milliseconds < 50); //0.86 seconds
+        }
+
+        [TestMethod]
+        public void TestSystemLatency()
+        {
+            System.DateTime startTime = System.DateTime.UtcNow;
+            StarSystem system = EddbService.System("Shinrarta Dezhra");
+            System.TimeSpan latencyTimeSpan = System.DateTime.UtcNow - startTime;
+            Assert.IsNotNull(system);
+            Assert.IsTrue(latencyTimeSpan.Milliseconds < 50); //1.33 seconds
         }
     }
 }
