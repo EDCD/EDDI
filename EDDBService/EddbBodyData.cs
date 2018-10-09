@@ -130,16 +130,29 @@ namespace EddiEddbService
 
                 if (responses?.Count > 0)
                 {
-                    List<Body> bodies = new List<Body>();
-                    foreach (object response in responses)
-                    {
-                        Body body = ParseEddbBody(response);
-                        if (body != null) { bodies.Add(body); };
-                    }
-                    return bodies;
+                    return ParseEddbBodiesAsync(responses);
                 }
             }
             return null;
+        }
+
+        private static List<Body> ParseEddbBodiesAsync(List<object> responses)
+        {
+            List<Task<Body>> bodyTasks = new List<Task<Body>>();
+            foreach (object response in responses)
+            {
+                bodyTasks.Add(Task.Run(() => ParseEddbBody(response)));
+            }
+            Task.WhenAll(bodyTasks.ToArray());
+
+            List<Body> bodies = new List<Body>();
+            foreach (Task<Body> task in bodyTasks)
+            {
+                Body body = task.Result;
+                if (body != null) { bodies.Add(body); };
+            }
+
+            return bodies;
         }
 
         private static Body ParseEddbBody(object response)

@@ -2,6 +2,7 @@
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Utilities;
 
 namespace EddiEddbService
@@ -115,16 +116,30 @@ namespace EddiEddbService
 
                 if (responses?.Count > 0)
                 {
-                    List<Station> stations = new List<Station>();
-                    foreach (object response in responses)
-                    {
-                        Station station = ParseEddbStation(response);
-                        if (station != null) { stations.Add(station); };
-                    }
+                    List<Station> stations = ParseEddbStationsAsync(responses);
                     return stations;
                 }
             }
             return null;
+        }
+
+        private static List<Station> ParseEddbStationsAsync(List<object> responses)
+        {
+            List<Task<Station>> stationTasks = new List<Task<Station>>();
+            foreach (object response in responses)
+            {
+                stationTasks.Add(Task.Run(() => ParseEddbStation(response)));
+            }
+            Task.WhenAll(stationTasks.ToArray());
+
+            List<Station> stations = new List<Station>();
+            foreach (Task<Station> task in stationTasks)
+            {
+                Station station = task.Result;
+                if (station != null) { stations.Add(station); };
+            }
+
+            return stations;
         }
 
         private static Station ParseEddbStation(object response)

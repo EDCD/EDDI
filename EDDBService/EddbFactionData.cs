@@ -3,6 +3,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace EddiEddbService
 {
@@ -97,15 +98,30 @@ namespace EddiEddbService
 
                 if (responses?.Count > 0)
                 {
-                    List<Faction> factions = new List<Faction>();
-                    foreach (object response in responses)
-                    {
-                        factions.Add(ParseEddbFaction(response));
-                    }
+                    List<Faction> factions = ParseEddbFactionsAsync(responses);
                     return factions.OrderBy(x => x.name).ToList();
                 }
             }
             return null;
+        }
+
+        private static List<Faction> ParseEddbFactionsAsync(List<object> responses)
+        {
+            List<Task<Faction>> factionTasks = new List<Task<Faction>>();
+            foreach (object response in responses)
+            {
+                factionTasks.Add(Task.Run(() => ParseEddbFaction(response)));
+            }
+            Task.WhenAll(factionTasks.ToArray());
+
+            List<Faction> factions = new List<Faction>();
+            foreach (Task<Faction> task in factionTasks)
+            {
+                Faction faction = task.Result;
+                if (faction != null) { factions.Add(faction); };
+            }
+
+            return factions;
         }
 
         // Though not necessary at this time, it is possible to implement methods that query the data source 
