@@ -33,7 +33,7 @@ namespace EddiDataDefinitions
 
         // Populated system data
 
-        public long? population { get; set; }
+        public long? population { get; set; } = 0;
         public string primaryeconomy => (economies[0] ?? Economy.None).localizedName;
         public List<Economy> economies { get; set; } = new List<Economy>() { Economy.None, Economy.None };
 

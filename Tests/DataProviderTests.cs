@@ -19,8 +19,8 @@ namespace UnitTests
         [TestMethod]
         public void TestDataProviderEmptySystem()
         {
-            StarSystem starSystem = DataProviderService.GetFullSystemData("Lagoon Sector GW-V b2-6");
-            Assert.IsNotNull(starSystem.stations);
+            StarSystem starSystem = DataProviderService.GetSystemData("Lagoon Sector GW-V b2-6");
+            Assert.IsNotNull(starSystem.population);
         }
 
         [TestMethod]
@@ -121,17 +121,6 @@ namespace UnitTests
             Assert.IsNotNull(starSystem);
             Assert.IsNotNull(starSystem.bodies);
             Assert.IsFalse(starSystem.bodies.Count == 0);
-        }
-
-        [TestMethod]
-        public void TestUgrasin()
-        {
-            // Test randomly
-            StarSystem starSystem = DataProviderService.GetFullSystemData("Ugrasin");
-
-            Assert.AreEqual("Ugrasin", starSystem.name);
-            Assert.AreEqual(1, starSystem.stations.Count);
-            Assert.AreEqual(starSystem.z, (decimal)11.28125);
         }
 
         [TestMethod]
