@@ -80,7 +80,6 @@ namespace UnitTests
             Assert.AreEqual(1.0, (double)sol.solarmass, 0.001);
             Assert.AreEqual(1.0, (double)sol.solarradius, 0.001);
             Assert.AreEqual("G", sol.stellarclass);
-            Assert.AreEqual("Sol", sol.systemname);
             Assert.AreEqual(5778, sol.temperature);
             Assert.AreEqual("Not terraformable", sol.terraformState.invariantName);
             Assert.IsNotNull(sol.tidallylocked);
@@ -394,46 +393,6 @@ namespace UnitTests
             StarSystem starSystem = EddbService.System("Unknown star system");
             Assert.AreEqual("unknown star system", starSystem.name.ToLowerInvariant());
             Assert.IsNull(starSystem.population);
-        }
-
-        [TestMethod]
-        public void TestBodyLatency()
-        {
-            System.DateTime startTime = System.DateTime.UtcNow; 
-            Body body = EddbService.Body("Jupiter");
-            System.TimeSpan latencyTimeSpan = System.DateTime.UtcNow - startTime;
-            Assert.IsNotNull(body);
-            Assert.IsTrue(latencyTimeSpan.Milliseconds < 50); //1.91 seconds
-        }
-
-        [TestMethod]
-        public void TestStationLatency()
-        {
-            System.DateTime startTime = System.DateTime.UtcNow;
-            Station station = EddbService.Station("Jameson Memorial");
-            System.TimeSpan latencyTimeSpan = System.DateTime.UtcNow - startTime;
-            Assert.IsNotNull(station);
-            Assert.IsTrue(latencyTimeSpan.Milliseconds < 50); //1.90 seconds
-        }
-
-        [TestMethod]
-        public void TestFactionLatency()
-        {
-            System.DateTime startTime = System.DateTime.UtcNow;
-            Faction faction = EddbService.Faction("Coalition of Achali");
-            System.TimeSpan latencyTimeSpan = System.DateTime.UtcNow - startTime;
-            Assert.IsNotNull(faction);
-            Assert.IsTrue(latencyTimeSpan.Milliseconds < 50); //0.86 seconds
-        }
-
-        [TestMethod]
-        public void TestSystemLatency()
-        {
-            System.DateTime startTime = System.DateTime.UtcNow;
-            StarSystem system = EddbService.System("Shinrarta Dezhra");
-            System.TimeSpan latencyTimeSpan = System.DateTime.UtcNow - startTime;
-            Assert.IsNotNull(system);
-            Assert.IsTrue(latencyTimeSpan.Milliseconds < 50); //1.33 seconds
         }
     }
 }
