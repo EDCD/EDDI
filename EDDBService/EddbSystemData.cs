@@ -91,16 +91,30 @@ namespace EddiEddbService
 
                 if (responses?.Count > 0)
                 {
-                    List<StarSystem> systems = new List<StarSystem>();
-                    foreach (object response in responses)
-                    {
-                        StarSystem system = ParseEddbSystem(response);
-                        if (system != null) { systems.Add(system); };
-                    }
+                    List<StarSystem> systems = ParseEddbSystemsAsync(responses);
                     return systems;
                 }
             }
             return null;
+        }
+
+        private static List<StarSystem> ParseEddbSystemsAsync(List<object> responses)
+        {
+            List<Task<StarSystem>> starSystemTasks = new List<Task<StarSystem>>();
+            foreach (object response in responses)
+            {
+                starSystemTasks.Add(Task.Run(() => ParseEddbSystem(response)));
+            }
+            Task.WhenAll(starSystemTasks.ToArray());
+
+            List<StarSystem> systems = new List<StarSystem>();
+            foreach (Task<StarSystem> task in starSystemTasks)
+            {
+                StarSystem system = task.Result;
+                if (system != null) { systems.Add(system); };
+            }
+
+            return systems;
         }
 
         private static StarSystem ParseEddbSystem(object response)
