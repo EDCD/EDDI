@@ -77,8 +77,10 @@ namespace EddiEddbService
         {
             if (query.Value != null)
             {
-                List<KeyValuePair<string, object>> queryList = new List<KeyValuePair<string, object>>();
-                queryList.Add(query);
+                List<KeyValuePair<string, object>> queryList = new List<KeyValuePair<string, object>>
+                {
+                    query
+                };
 
                 List<object> responses = GetData(Endpoint.factions, queryList);
 
@@ -130,16 +132,17 @@ namespace EddiEddbService
         private static Faction ParseEddbFaction(object response)
         {
             JObject factionJson = ((JObject)response);
-            Faction faction = new Faction();
-
-            faction.EDDBID = (long)factionJson["id"];
-            faction.name = (string)factionJson["name"];
-            faction.updatedAt = (DateTime)factionJson["updated_at"];
-            faction.Government = Government.FromName((string)factionJson["government"]) ?? Government.None;
-            faction.Allegiance = Superpower.FromName((string)factionJson["allegiance"]) ?? Superpower.None;
-            faction.State = State.FromName((string)factionJson["state"]) ?? State.None;
-            faction.homeSystemEddbId = (long?)factionJson["home_system_id"];
-            faction.isplayer = (bool)factionJson["is_player_faction"];
+            Faction faction = new Faction
+            {
+                EDDBID = (long)factionJson["id"],
+                name = (string)factionJson["name"],
+                updatedAt = (DateTime)factionJson["updated_at"],
+                Government = Government.FromName((string)factionJson["government"]) ?? Government.None,
+                Allegiance = Superpower.FromName((string)factionJson["allegiance"]) ?? Superpower.None,
+                State = State.FromName((string)factionJson["state"]) ?? State.None,
+                homeSystemEddbId = (long?)factionJson["home_system_id"],
+                isplayer = (bool)factionJson["is_player_faction"]
+            };
 
             return faction;
         }

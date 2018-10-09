@@ -65,9 +65,11 @@ namespace EddiEddbService
         /// <summary> Exactly one station name and system name are required. </summary>
         public static Station Station(string stationName, string systemName)
         {
-            List<KeyValuePair<string, object>> queryList = new List<KeyValuePair<string, object>>();
-            queryList.Add(new KeyValuePair<string, object>(StationQuery.stationName, stationName));
-            queryList.Add(new KeyValuePair<string, object>(StationQuery.systemName, systemName));
+            List<KeyValuePair<string, object>> queryList = new List<KeyValuePair<string, object>>
+            {
+                new KeyValuePair<string, object>(StationQuery.stationName, stationName),
+                new KeyValuePair<string, object>(StationQuery.systemName, systemName)
+            };
             return GetStation(queryList);
         }
 
@@ -81,8 +83,10 @@ namespace EddiEddbService
         {
             if (query.Value != null)
             {
-                List<KeyValuePair<string, object>> queryList = new List<KeyValuePair<string, object>>();
-                queryList.Add(query);
+                List<KeyValuePair<string, object>> queryList = new List<KeyValuePair<string, object>>
+                {
+                    query
+                };
 
                 List<object> responses = GetData(Endpoint.stations, queryList);
 

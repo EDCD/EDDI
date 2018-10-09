@@ -69,8 +69,10 @@ namespace EddiEddbService
         {
             if (query.Value != null)
             {
-                List<KeyValuePair<string, object>> queryList = new List<KeyValuePair<string, object>>();
-                queryList.Add(query);
+                List<KeyValuePair<string, object>> queryList = new List<KeyValuePair<string, object>>
+                {
+                    query
+                };
 
                 List<object> responses = GetData(searchPopulated ? Endpoint.populatedSystems : Endpoint.systems, queryList);
 
