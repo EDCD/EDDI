@@ -68,9 +68,11 @@ namespace EddiEddbService
         /// <summary> Exactly one body name and system name are required. </summary>
         public static Body Body(string bodyName, string systemName)
         {
-            List<KeyValuePair<string, object>> queryList = new List<KeyValuePair<string, object>>();
-            queryList.Add(new KeyValuePair<string, object>(BodyQuery.bodyName, bodyName));
-            queryList.Add(new KeyValuePair<string, object>(BodyQuery.systemName, systemName));
+            List<KeyValuePair<string, object>> queryList = new List<KeyValuePair<string, object>>
+            {
+                new KeyValuePair<string, object>(BodyQuery.bodyName, bodyName),
+                new KeyValuePair<string, object>(BodyQuery.systemName, systemName)
+            };
             Body body = GetBody(queryList) ?? new Body();
             if (body.EDDBID == null)
             {
@@ -95,8 +97,10 @@ namespace EddiEddbService
         {
             if (query.Value != null)
             {
-                List<KeyValuePair<string, object>> queryList = new List<KeyValuePair<string, object>>();
-                queryList.Add(query);
+                List<KeyValuePair<string, object>> queryList = new List<KeyValuePair<string, object>>
+                {
+                    query
+                };
 
                 List<object> responses = GetData(Endpoint.bodies, queryList);
 
@@ -159,26 +163,27 @@ namespace EddiEddbService
         {
             JObject bodyJson = ((JObject)response);
 
-            Body Body = new Body();
+            Body Body = new Body
+            {
+                // General items
+                EDDBID = (long)bodyJson["id"],
+                updatedat = (long)(Dates.fromDateTimeStringToSeconds((string)bodyJson["updated_at"])),
+                name = (string)bodyJson["name"],
+                Type = BodyType.FromEDName((string)bodyJson["group_name"]),
+                systemEDDBID = (long)bodyJson["system_id"],
 
-            // General items
-            Body.EDDBID = (long)bodyJson["id"];
-            Body.updatedat = (long)(Dates.fromDateTimeStringToSeconds((string)bodyJson["updated_at"]));
-            Body.name = (string)bodyJson["name"];
-            Body.Type = BodyType.FromEDName((string)bodyJson["group_name"]);
-            Body.systemEDDBID = (long)bodyJson["system_id"];
-
-            // Orbital data
-            Body.distance = (long?)bodyJson["distance_to_arrival"]; // Light seconds
-            Body.temperature = (decimal?)bodyJson["surface_temperature"]; //Kelvin
-            Body.tidallylocked = (bool?)bodyJson["is_rotational_period_tidally_locked"] ?? false; // Days
-            Body.rotationalperiod = (decimal?)(double?)bodyJson["rotational_period"]; // Days
-            Body.tilt = (decimal?)(double?)bodyJson["axis_tilt"]; // Degrees
-            Body.semimajoraxis = (decimal?)(double?)bodyJson["semi_major_axis"]; // AU
-            Body.orbitalperiod = (decimal?)(double?)bodyJson["orbital_period"]; // Days
-            Body.periapsis = (decimal?)(double?)bodyJson["arg_of_periapsis"]; // Degrees
-            Body.eccentricity = (decimal?)(double?)bodyJson["orbital_eccentricity"];
-            Body.inclination = (decimal?)(double?)bodyJson["orbital_inclination"]; // Degrees
+                // Orbital data
+                distance = (long?)bodyJson["distance_to_arrival"], // Light seconds
+                temperature = (decimal?)bodyJson["surface_temperature"], //Kelvin
+                tidallylocked = (bool?)bodyJson["is_rotational_period_tidally_locked"] ?? false, // Days
+                rotationalperiod = (decimal?)(double?)bodyJson["rotational_period"], // Days
+                tilt = (decimal?)(double?)bodyJson["axis_tilt"], // Degrees
+                semimajoraxis = (decimal?)(double?)bodyJson["semi_major_axis"], // AU
+                orbitalperiod = (decimal?)(double?)bodyJson["orbital_period"], // Days
+                periapsis = (decimal?)(double?)bodyJson["arg_of_periapsis"], // Degrees
+                eccentricity = (decimal?)(double?)bodyJson["orbital_eccentricity"],
+                inclination = (decimal?)(double?)bodyJson["orbital_inclination"] // Degrees
+            };
 
             if (Body.Type.edname.ToLowerInvariant() == "belt")
             {
