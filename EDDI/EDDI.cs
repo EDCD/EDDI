@@ -1079,80 +1079,34 @@ namespace Eddi
             Logging.Debug("Jumped to " + theEvent.system);
             if (CurrentStarSystem == null || CurrentStarSystem.name != theEvent.system)
             {
-                // New system
-                passEvent = true;
+                // The 'StartJump' event must have been missed
                 updateCurrentSystem(theEvent.system);
-                // The information in the event is more up-to-date than the information we obtain from external sources, so update it here
-                CurrentStarSystem.systemAddress = theEvent.systemAddress;
-                CurrentStarSystem.x = theEvent.x;
-                CurrentStarSystem.y = theEvent.y;
-                CurrentStarSystem.z = theEvent.z;
-                setSystemDistanceFromHome(CurrentStarSystem);
-                CurrentStarSystem.allegiance = theEvent.allegiance;
-                CurrentStarSystem.faction = theEvent.faction;
-                CurrentStarSystem.economies[0] = theEvent.Economy;
-                CurrentStarSystem.economies[1] = theEvent.Economy2;
-                CurrentStarSystem.government = theEvent.government;
-                CurrentStarSystem.security = theEvent.security;
-                CurrentStarSystem.updatedat = (long)theEvent.timestamp.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
-                if (theEvent.population != null)
-                {
-                    CurrentStarSystem.population = theEvent.population;
-                }
-
-                CurrentStarSystem.visits++;
-                // We don't update lastvisit because we do that when we leave
-                StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
-                setCommanderTitle();
             }
-            else if (CurrentStarSystem.name == theEvent.system && Environment == Constants.ENVIRONMENT_SUPERCRUISE)
+
+            passEvent = true;
+            CurrentStarSystem.systemAddress = theEvent.systemAddress;
+            CurrentStarSystem.x = theEvent.x;
+            CurrentStarSystem.y = theEvent.y;
+            CurrentStarSystem.z = theEvent.z;
+
+            CurrentStarSystem.allegiance = theEvent.allegiance;
+            CurrentStarSystem.faction = theEvent.faction;
+            CurrentStarSystem.economies[0] = theEvent.Economy;
+            CurrentStarSystem.economies[1] = theEvent.Economy2;
+            CurrentStarSystem.government = theEvent.government;
+            CurrentStarSystem.security = theEvent.security;
+            if (theEvent.population != null)
             {
-                // Restatement of current system
-                passEvent = false;
+                CurrentStarSystem.population = theEvent.population;
             }
-            else if (CurrentStarSystem.name == theEvent.system && Environment == Constants.ENVIRONMENT_WITCH_SPACE)
-            {
-                passEvent = true;
+            CurrentStarSystem.visits++;
 
-                // Jumped event following a Jumping event, so most information is up-to-date but we should pass this anyway for
-                // plugin triggers
+            // Update to most recent information
+            CurrentStarSystem.updatedat = (long)theEvent.timestamp.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
+            StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
 
-                // The information in the event is more up-to-date than the information we obtain from external sources, so update it here
-                CurrentStarSystem.systemAddress = theEvent.systemAddress;
-                CurrentStarSystem.allegiance = theEvent.allegiance;
-                CurrentStarSystem.faction = theEvent.faction;
-                CurrentStarSystem.economies[0] = theEvent.Economy;
-                CurrentStarSystem.economies[1] = theEvent.Economy2;
-                CurrentStarSystem.government = theEvent.government;
-                CurrentStarSystem.security = theEvent.security;
-                CurrentStarSystem.updatedat = (long)theEvent.timestamp.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
-                StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
-                setCommanderTitle();
-            }
-            else
-            {
-                passEvent = true;
-                updateCurrentSystem(theEvent.system);
-
-                // The information in the event is more up-to-date than the information we obtain from external sources, so update it here
-                CurrentStarSystem.systemAddress = theEvent.systemAddress;
-                CurrentStarSystem.x = theEvent.x;
-                CurrentStarSystem.y = theEvent.y;
-                CurrentStarSystem.z = theEvent.z;
-                setSystemDistanceFromHome(CurrentStarSystem);
-                CurrentStarSystem.allegiance = theEvent.allegiance;
-                CurrentStarSystem.faction = theEvent.faction;
-                CurrentStarSystem.economies[0] = theEvent.Economy;
-                CurrentStarSystem.economies[1] = theEvent.Economy2;
-                CurrentStarSystem.government = theEvent.government;
-                CurrentStarSystem.security = theEvent.security;
-
-                CurrentStarSystem.visits++;
-                // We don't update lastvisit because we do that when we leave
-                CurrentStarSystem.updatedat = (long)theEvent.timestamp.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
-                StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
-                setCommanderTitle();
-            }
+            setSystemDistanceFromHome(CurrentStarSystem);
+            setCommanderTitle();
 
             // After jump has completed we are always in supercruise
             Environment = Constants.ENVIRONMENT_SUPERCRUISE;
