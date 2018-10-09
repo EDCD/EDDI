@@ -609,7 +609,7 @@ namespace EddiDataDefinitions
                 new Module(128666723, "Int_FSDInterdictor_Size4_Class5", 1325, "FrameShiftDriveInterdictor", 4, "A", 21337340),
                 new Module(128666724, "Hpt_DumbfireMissileRack_Fixed_Small", 1326, "MissileRack", 1, "B", 32180, ModuleMount.Fixed, 8, 16),
                 new Module(128666725, "Hpt_DumbfireMissileRack_Fixed_Medium", 1327, "MissileRack", 2, "B", 240400, ModuleMount.Fixed, 12, 48),
-                new Module(128666762, "Hpt_DumbfireMissileRack_Fixed_Large", 1657, "MissileRack", 3, "A", 1021500, ModuleMount.Fixed, 12, 96),
+                new Module(128891602, "Hpt_DumbfireMissileRack_Fixed_Large", 1657, "MissileRack", 3, "A", 1021500, ModuleMount.Fixed, 12, 96),
                 new Module(128667598, "Int_Repairer_Size1_Class1", 1328, "Auto Field-Maintenance Unit", 1, "E", 10000),
                 new Module(128667599, "Int_Repairer_Size2_Class1", 1329, "Auto Field-Maintenance Unit", 2, "E", 18000),
                 new Module(128667600, "Int_Repairer_Size3_Class1", 1330, "Auto Field-Maintenance Unit", 3, "E", 32400),
@@ -1182,7 +1182,8 @@ namespace EddiDataDefinitions
 
         public static Module FromEliteID(long eliteID)
         {
-            return ModulesByEliteID[eliteID];
+            ModulesByEliteID.TryGetValue(eliteID, out Module module);
+            return module;
         }
     }
 }
