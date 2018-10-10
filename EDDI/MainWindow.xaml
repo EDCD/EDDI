@@ -10,7 +10,7 @@
         xmlns:local="clr-namespace:Eddi"
         xmlns:resx="clr-namespace:Eddi.Properties"
         mc:Ignorable="d"
-        Title="EDDI" Height="{Binding ElementName=defaultHeight, Path=Value}"  Width="{Binding ElementName=defaultWidth, Path=Value}">
+        Title="EDDI" ResizeMode="CanResizeWithGrip" Width="928" Height="600" MinWidth="928" MinHeight="600">
     <Window.Resources>
         <Style TargetType="DataGrid">
             <Setter Property="AlternatingRowBackground" Value="AliceBlue"></Setter>

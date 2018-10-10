@@ -90,8 +90,8 @@ namespace Eddi
 
         private void RestoreWindowState()
         {
-            const int designedHeight = 600;
-            const int designedWidth = 800;
+            int designedHeight = (int)MinHeight;
+            int designedWidth = (int)MinWidth;
 
             Rect windowPosition = Properties.Settings.Default.WindowPosition;
             Visibility = Visibility.Collapsed;
