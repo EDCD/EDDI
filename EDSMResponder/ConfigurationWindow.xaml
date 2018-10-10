@@ -28,7 +28,7 @@
             <Label Grid.Row="3" Grid.Column="0" VerticalAlignment="Center" Content="{x:Static resx:EDSMResources.cmd_name_label}"/>
             <TextBox x:Name="edsmCommanderNameTextBox" Grid.Row="3" Grid.Column="1" Margin="0, 5" Height="25" VerticalContentAlignment="Center" TextChanged="edsmCommanderNameChanged"/>
             <TextBlock Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" TextWrapping="Wrap" Margin="-5,5" Text="{x:Static resx:EDSMResources.p3}"/>
-            <Button x:Name="edsmFetchLogsButton" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" Content="{x:Static resx:EDSMResources.log_button}" Margin="0, 10" Click="edsmObtainLogClicked"/>
+            <Button x:Name="edsmFetchLogsButton" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" Content="{x:Static resx:EDSMResources.log_button}" Margin="0, 10" Click="edsmObtainLogClicked" HorizontalAlignment="Right" MinWidth="80"/>
         </Grid>
     </DockPanel>
 </UserControl>

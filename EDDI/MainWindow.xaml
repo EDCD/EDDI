@@ -16,7 +16,7 @@
             <Setter Property="AlternatingRowBackground" Value="AliceBlue"></Setter>
         </Style>
     </Window.Resources>
-        <DockPanel LastChildFill="True">
+    <DockPanel LastChildFill="True">
         <DockPanel.Background>
             <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
                 <GradientStop Color="Black"/>
@@ -62,7 +62,7 @@
                                 <TextBlock Text="{x:Static resx:MainWindow.paragraph_4}" />
                                 <Hyperlink Click="WikiClicked" >
                                     <Run Text="{x:Static resx:MainWindow.wiki_hyperlink}" />
-                                </Hyperlink>.
+                                </Hyperlink> .
                             </Paragraph>
                         </FlowDocument>
                     </RichTextBox>
@@ -150,7 +150,7 @@
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
                         <TextBlock x:Name ="companionAppResetText" Visibility="Visible" Grid.Row="0" Grid.Column="0" Margin="5" Grid.ColumnSpan="2" Text="{x:Static resx:MainWindow.tab_frontier_reset_desc}"/>
-                        <Button x:Name="companionAppResetButton" Grid.Row="1" Grid.Column="0" Content="{x:Static resx:MainWindow.reset_button}" Margin="5" Click="companionAppResetClicked"/>
+                        <Button x:Name="companionAppResetButton" Grid.Row="1" Grid.Column="0" Content="{x:Static resx:MainWindow.reset_button}" Margin="0,5,5,5" Click="companionAppResetClicked" HorizontalAlignment="Right" MinWidth="80"/>
                     </Grid>
                     <Grid DockPanel.Dock="Top">
                         <Grid.ColumnDefinitions>
@@ -168,7 +168,7 @@
                         <TextBox x:Name ="companionAppEmailText" Grid.Row="1" Grid.Column="1" Margin="5" />
                         <Label x:Name ="companionAppPasswordLabel" Grid.Row="2" Grid.Column="0" Margin="5" Content="{x:Static resx:MainWindow.label_password}"/>
                         <PasswordBox x:Name ="companionAppPasswordText" Grid.Row="2" Grid.Column="1" Margin="5" />
-                        <Button  x:Name="companionAppNextButton" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Content="{x:Static resx:EddiResources.next}" Margin="5" Click="companionAppNextClicked"/>
+                        <Button  x:Name="companionAppNextButton" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Content="{x:Static resx:EddiResources.next}" Margin="5" Click="companionAppNextClicked" HorizontalAlignment="Right" MinWidth="80" />
                         <Label x:Name ="companionAppCodeLabel" Visibility="Hidden" Grid.Row="1" Grid.Column="0" Margin="5" Content="{x:Static resx:MainWindow.label_code}"/>
                         <TextBox x:Name ="companionAppCodeText" Visibility="Hidden" Grid.Row="1" Grid.Column="1" Margin="5" />
                     </Grid>
