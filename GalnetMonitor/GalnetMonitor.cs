@@ -8,6 +8,7 @@ using System.Globalization;
 using System.IO;
 using System.Net;
 using System.Resources;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows.Controls;
 using Utilities;
@@ -152,7 +153,7 @@ namespace GalnetMonitor
                     try
                     {
                         locales.TryGetValue(configuration.language, out locale);
-                        string url = GetGalnetResource("galnetSourceURL");
+                        string url = GetGalnetResource("sourceURL");
 
                         Logging.Debug("Fetching Galnet articles from " + url);
                         IEnumerable<FeedItem> items = new FeedReader(new GalnetFeedItemNormalizer(), true).RetrieveFeed(url);
@@ -169,10 +170,10 @@ namespace GalnetMonitor
                                 if (item.Id == configuration.lastuuid)
                                 {
                                     // Reached the first item we have already seen - go no further
-                                    // break;
+                                    break;
                                 }
 
-                                News newsItem = new News(item.Id, assignCategory(item.Title), item.Title, item.GetContent(), item.PublishDate.DateTime, false);
+                                News newsItem = new News(item.Id, assignCategory(item.Title, item.GetContent()), item.Title, item.GetContent(), item.PublishDate.DateTime, false);
                                 newsItems.Add(newsItem);
                                 GalnetSqLiteRepository.Instance.SaveNews(newsItem);
                             }
@@ -235,29 +236,30 @@ namespace GalnetMonitor
         /// </summary>
         /// <param name="title"></param>
         /// <returns></returns>
-        private string assignCategory(string title)
+        private string assignCategory(string title, string content)
         {
-            if (title.StartsWith(GetGalnetResource("galnetCategoryPowerplay")))
+            if (title.StartsWith(GetGalnetResource("titleFilterPowerplay")))
             {
-                return "Powerplay";
+                return GetGalnetResource("categoryPowerplay");
             }
 
-            if (title.StartsWith(GetGalnetResource("galnetCategoryCommunityGoal")))
+            if (title.StartsWith(GetGalnetResource("titleFilterCg")) ||
+                Regex.IsMatch(content, GetGalnetResource("contentFilterCgRegex")))
             {
-                return "Community Goal";
+                return GetGalnetResource("categoryCG");
             }
 
-            if (title.StartsWith(GetGalnetResource("galnetCategoryStarportStatus")))
+            if (title.StartsWith(GetGalnetResource("titleFilterStarportStatus")))
             {
-                return "Starport Status Update";
+                return GetGalnetResource("categoryStarportStatus");
             }
 
-            if (title.StartsWith(GetGalnetResource("galnetCategoryWeekInReview")))
+            if (title.StartsWith(GetGalnetResource("titleFilterWeekInReview")))
             {
-                return "Week in Review";
+                return GetGalnetResource("categoryWeekInReview");
             }
 
-            return "Article";
+            return GetGalnetResource("categoryArticle");
         }
 
         private static string GetGalnetResource(string basename)

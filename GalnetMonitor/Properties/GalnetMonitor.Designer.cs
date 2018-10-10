@@ -61,56 +61,65 @@ namespace EddiGalnetMonitor.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Monitor Galnet for new news items and generate a &quot;Galnet news published&quot; event when new items are posted..
+        ///   Looks up a localized string similar to Article.
         /// </summary>
-        public static string desc {
+        public static string categoryArticle {
             get {
-                return ResourceManager.GetString("desc", resourceCulture);
+                return ResourceManager.GetString("categoryArticle", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Community Goal: .
+        ///   Looks up a localized string similar to Community Goal.
         /// </summary>
-        public static string galnetCategoryCommunityGoal {
+        public static string categoryCG {
             get {
-                return ResourceManager.GetString("galnetCategoryCommunityGoal", resourceCulture);
+                return ResourceManager.GetString("categoryCG", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Powerplay: Incoming Update.
+        ///   Looks up a localized string similar to Powerplay.
         /// </summary>
-        public static string galnetCategoryPowerplay {
+        public static string categoryPowerplay {
             get {
-                return ResourceManager.GetString("galnetCategoryPowerplay", resourceCulture);
+                return ResourceManager.GetString("categoryPowerplay", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Starport Status Update.
         /// </summary>
-        public static string galnetCategoryStarportStatus {
+        public static string categoryStarportStatus {
             get {
-                return ResourceManager.GetString("galnetCategoryStarportStatus", resourceCulture);
+                return ResourceManager.GetString("categoryStarportStatus", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Week in Review.
         /// </summary>
-        public static string galnetCategoryWeekInReview {
+        public static string categoryWeekInReview {
             get {
-                return ResourceManager.GetString("galnetCategoryWeekInReview", resourceCulture);
+                return ResourceManager.GetString("categoryWeekInReview", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to https://community.elitedangerous.com/en/galnet-rss.
+        ///   Looks up a localized string similar to &gt;@&quot;(has promised to reward pilots)|(The campaign.+will run for one week)|(The two organisations have set out week-long operations)|(Pilots.+can now collect their rewards)|(If the final target is met earlier than planned, the campaign will end immediately)&quot;.
         /// </summary>
-        public static string galnetSourceURL {
+        public static string contentFilterCgRegex {
             get {
-                return ResourceManager.GetString("galnetSourceURL", resourceCulture);
+                return ResourceManager.GetString("contentFilterCgRegex", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Monitor Galnet for new news items and generate a &quot;Galnet news published&quot; event when new items are posted..
+        /// </summary>
+        public static string desc {
+            get {
+                return ResourceManager.GetString("desc", resourceCulture);
             }
         }
         
@@ -147,6 +156,51 @@ namespace EddiGalnetMonitor.Properties {
         public static string p2 {
             get {
                 return ResourceManager.GetString("p2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to https://community.elitedangerous.com/en/galnet-rss.
+        /// </summary>
+        public static string sourceURL {
+            get {
+                return ResourceManager.GetString("sourceURL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Community Goal: .
+        /// </summary>
+        public static string titleFilterCg {
+            get {
+                return ResourceManager.GetString("titleFilterCg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Powerplay: Incoming Update.
+        /// </summary>
+        public static string titleFilterPowerplay {
+            get {
+                return ResourceManager.GetString("titleFilterPowerplay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Starport Status Update.
+        /// </summary>
+        public static string titleFilterStarportStatus {
+            get {
+                return ResourceManager.GetString("titleFilterStarportStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Week in Review.
+        /// </summary>
+        public static string titleFilterWeekInReview {
+            get {
+                return ResourceManager.GetString("titleFilterWeekInReview", resourceCulture);
             }
         }
     }

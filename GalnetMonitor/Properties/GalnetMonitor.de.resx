@@ -132,16 +132,16 @@
   <data name="p2" xml:space="preserve">
     <value>Lesen Sie Galnet-Artikel, wenn Sie ausgeloggt sind</value>
   </data>
-  <data name="galnetCategoryPowerplay" xml:space="preserve">
+  <data name="titleFilterPowerplay" xml:space="preserve">
     <value>Machtspiele: Neues Update</value>
   </data>
-  <data name="galnetCategoryCommunityGoal" xml:space="preserve">
+  <data name="titleFilterCg" xml:space="preserve">
     <value>Community-Ziel</value>
   </data>
-  <data name="galnetCategoryStarportStatus" xml:space="preserve">
+  <data name="titleFilterStarportStatus" xml:space="preserve">
     <value>Sternenhafen-Status-Update</value>
   </data>
-  <data name="galnetSourceURL" xml:space="preserve">
+  <data name="sourceURL" xml:space="preserve">
     <value>https://community.elitedangerous.com/de/galnet-rss</value>
   </data>
 </root>

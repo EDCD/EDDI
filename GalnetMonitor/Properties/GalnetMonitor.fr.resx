@@ -132,16 +132,16 @@
   <data name="p2" xml:space="preserve">
     <value>Lire les articles Galnet lorsque déconnecté</value>
   </data>
-  <data name="galnetCategoryPowerplay" xml:space="preserve">
+  <data name="titleFilterPowerplay" xml:space="preserve">
     <value>Luttes d'influence galactiques</value>
   </data>
-  <data name="galnetCategoryCommunityGoal" xml:space="preserve">
+  <data name="titleFilterCg" xml:space="preserve">
     <value>Opération communautaire</value>
   </data>
-  <data name="galnetCategoryStarportStatus" xml:space="preserve">
+  <data name="titleFilterStarportStatus" xml:space="preserve">
     <value>Mise à jour - État des spatioports</value>
   </data>
-  <data name="galnetSourceURL" xml:space="preserve">
+  <data name="sourceURL" xml:space="preserve">
     <value>https://community.elitedangerous.com/fr/galnet-rss</value>
   </data>
 </root>
