@@ -24,7 +24,7 @@ namespace EddiStatusMonitor
         private string Directory = GetSavedGamesDir();
         public static Status currentStatus { get; set; } = new Status();
         public static Status lastStatus { get; set; } = new Status();
-        private static bool gliding = false; 
+        private static bool gliding; 
 
         // Keep track of status
         private bool running;
@@ -343,8 +343,8 @@ namespace EddiStatusMonitor
                 }
                 if (gliding && thisStatus.fsd_status == "cooldown")
                 {
-                    EDDI.Instance.eventHandler(new GlideEvent(currentStatus.timestamp, "stopped"));
                     gliding = false;
+                    EDDI.Instance.eventHandler(new GlideEvent(currentStatus.timestamp, gliding, EDDI.Instance.CurrentStellarBody.systemname, EDDI.Instance.CurrentStellarBody.systemAddress, EDDI.Instance.CurrentStellarBody.name, EDDI.Instance.CurrentStellarBody.type));
                 }
             }
         }
@@ -383,8 +383,9 @@ namespace EddiStatusMonitor
             // We can derive a "Glide" event from the context in our status
             if (currentStatus.near_surface && currentStatus.fsd_status == "masslock")
             {
-                EDDI.Instance.eventHandler(new GlideEvent(currentStatus.timestamp, "started"));
                 gliding = true;
+                EnteredNormalSpaceEvent theEvent = (EnteredNormalSpaceEvent)@event;
+                EDDI.Instance.eventHandler(new GlideEvent(currentStatus.timestamp, gliding, theEvent.system, theEvent.systemAddress, theEvent.body, theEvent.bodytype));
             }
         }
 
