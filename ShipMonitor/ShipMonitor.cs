@@ -760,12 +760,84 @@ namespace EddiShipMonitor
                 for (int i = 0; i < info.Modules.Count(); i++)
                 {
                     string slot = info.Modules[i].slot;
+                    decimal power = info.Modules[i].power;
+                    int priority = info.Modules[i].priority;
+                    switch (slot)
+                    {
+                        case "CargoHatch":
+                            {
+                                ship.cargohatch.rank = i;
+                                ship.cargohatch.draw = power;
+                                ship.cargohatch.priority = priority;
+                            }
+                            break;
+                        case "DataLinkScanner":
+                            {
+                                ship.datalinkscanner.rank = i;
+                                ship.datalinkscanner.draw = power;
+                                ship.datalinkscanner.priority = priority;
+                            }
+                            break;
+                        case "FrameShiftDrive":
+                            {
+                                ship.frameshiftdrive.rank = i;
+                                ship.frameshiftdrive.draw = power;
+                                ship.frameshiftdrive.priority = priority;
+                            }
+                            break;
+                        case "LifeSupport":
+                            {
+                                ship.lifesupport.rank = i;
+                                ship.lifesupport.draw = power;
+                                ship.lifesupport.priority = priority;
+                            }
+                            break;
+                        case "MainEngines":
+                            {
+                                ship.thrusters.rank = i;
+                                ship.thrusters.draw = power;
+                                ship.thrusters.priority = priority;
+                            }
+                            break;
+                        case "PowerDistributor":
+                            {
+                                ship.powerdistributor.rank = i;
+                                ship.powerdistributor.draw = power;
+                                ship.powerdistributor.priority = priority;
+                            }
+                            break;
+                        case "PowerPlant":
+                            {
+                                ship.powerplant.rank = i;
+                                ship.powerplant.draw = power;
+                                ship.powerplant.priority = priority;
+                            }
+                            break;
+                        case "Radar":
+                            {
+                                ship.sensors.rank = i;
+                                ship.sensors.draw = power;
+                                ship.sensors.priority = priority;
+                            }
+                            break;
+                        case "ShipCockpit":
+                            {
+                                ship.canopy.rank = i;
+                                ship.canopy.draw = power;
+                                ship.canopy.priority = priority;
+                            }
+                            break;
+                    }
+
                     if (slot.Contains("Slot"))
                     {
                         Compartment compartment = ship.compartments.FirstOrDefault(c => c.name == slot);
                         if (compartment != null)
                         {
                             compartment.position = i;
+                            compartment.module.rank = i;
+                            compartment.module.draw = power;
+                            compartment.module.priority = priority;
                         }
                     }
                     else if (slot.Contains("Hardpoint"))
@@ -774,6 +846,9 @@ namespace EddiShipMonitor
                         if (hardpoint != null)
                         {
                             hardpoint.position = i;
+                            hardpoint.module.rank = i;
+                            hardpoint.module.draw = power;
+                            hardpoint.module.priority = priority;
                         }
                     }
                 }
