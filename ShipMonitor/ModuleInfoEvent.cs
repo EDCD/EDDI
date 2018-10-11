@@ -7,7 +7,7 @@ namespace EddiEvents
     public class ModuleInfoEvent : Event
     {
         public const string NAME = "Module Info";
-        public const string DESCRIPTION = "Triggered a ModulesInfo.json file is generated/updated";
+        public const string DESCRIPTION = "Triggered when a ModulesInfo.json file is generated/updated";
         public const string SAMPLE = null;
 
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();

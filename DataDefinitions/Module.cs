@@ -41,7 +41,7 @@ namespace EddiDataDefinitions
         [JsonProperty]
         public int priority { get; set; }
         [JsonProperty]
-        public int rank { get; set; }
+        public int position { get; set; }
         [JsonProperty]
         public decimal power { get; set; }
         [JsonProperty]

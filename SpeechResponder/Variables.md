@@ -169,17 +169,21 @@ A rating, for example a combat rating or empire rating.
 
 An internal module.
 
-    - `name` the name of the module
-    - `class` the numeric class of the module
-    - `grade` the character grade of the module
-    - `value` the base value of the module
-    - `cost` the amount of credits paid for the module
-    - `enabled` if the module is currently enabled
-    - `priority` the current power priority of the module
-    - `health` the current health of the module
-    - `mount` only for weapons, this defines the type of mount (fixed, gimballed, turreted)
-    - `clipcapacity` only for weapons with ammunition, this defines the clip capacity of the loaded weapon
-    - `hoppercapacity` only for weapons with ammunition, this defines the hopper capacity of the loaded weapon
+    - 'name' the name of the module
+    - 'class' the numeric class of the module
+    - 'grade' the character grade of the module
+    - 'value' the base value of the module
+    - 'cost' the amount of credits paid for the module
+    - 'enabled' if the module is currently enabled
+    - 'priority' the current power priority of the module
+	- 'position' position of module in 'Modules' panel, according to power usage (highest = 1)
+	- 'power' power usage, measured in MegaWatts (MW)
+    - 'health' the current health of the module
+    - 'mount' only for weapons, this defines the type of mount (fixed, gimballed, turreted)
+    - 'clipcapacity' only for weapons with ammunition, this defines the clip capacity of the loaded weapon
+    - 'hoppercapacity' only for weapons with ammunition, this defines the hopper capacity of the loaded weapon
+	- 'ammoinclip' amount of ammo loaded in the clip at time of 'Loadout' event
+	- 'ammoinhopper' amount of ammo loaded in the hopper at time of 'Loadout' event
 
 ## Hardpoint
 
@@ -269,6 +273,7 @@ Details of an individual mission in the commander's mission log.
 	- 'targetfaction' faction of the target of the mission (if applicable)
 	- 'amount' amount of the commodity,  passengers or targets involved in the mission (if applicable)
 	- 'expiry' expiry date and time of the mission
+	- 'expiryseconds' amount of seconds remaining before mission expiration
 
 ## Inventory
 
@@ -280,15 +285,16 @@ The inventory of cargo carried within the ship is available under the `inventory
 
 Details of an individual commodity being carried.
 
-    - `name` name of the cargo (e.g. Tea)
-    - `commodity` the object containing commodity details
-	- `category` the category of the commodity (e.g. Foods, Machinery, Technology)
-    - `stolen` the number of units flagged as stolen
-    - `haulage` the number of units associated with a mission
+	- 'name' name of the cargo (e.g. Tea)
+	- 'commodity' object containing commodity details
+	- 'category' category of the commodity (e.g. Foods, Machinery, Technology)
+	- 'owned' number of units privately purchased or collected (not stolen or mission related)
+	- 'stolen' number of units flagged as stolen
+	- 'haulage' number of units associated with a mission
 	- 'haulageData' list of mission related specifics for associated haulage
-    - `owned` the number of units privately purchased or collected (not stolen or mission related)
-    - `total` the total number of units
-    - `price` the price of an individual unit
+	- 'total' total number of units
+	- 'need' number of units needed to satisfy all mission requirements associated with cargo
+	- 'price' price of an individual unit
 
 ## Haulage
 
@@ -298,6 +304,8 @@ Mission related details of haulage under the 'haulageData' object, within the Ca
 	- 'name' name of mission
 	- 'status' status (active, complete, failed) of the mission
 	- 'originsystem' origin system of the mission
+	- 'sourcesystem' source system for 'source and return' and 'salvage' missions
+	- 'sourcebody' station for 'source and return' missions, body for 'salvage' missions
 	- 'type' type (altruism, delivery, massacre, etc) of the mission
 	- 'legal' true if the mission is legal
 	- 'shared' true if the mission was shared by a wing-mate

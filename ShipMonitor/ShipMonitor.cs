@@ -759,65 +759,69 @@ namespace EddiShipMonitor
             {
                 for (int i = 0; i < info.Modules.Count(); i++)
                 {
-                    string slot = info.Modules[i].slot;
-                    decimal power = info.Modules[i].power;
+                    int position = i + 1;
                     int priority = info.Modules[i].priority + 1;
+                    decimal power = info.Modules[i].power;
+
+                    string slot = info.Modules[i].slot;
                     switch (slot)
                     {
                         case "CargoHatch":
                             {
-                                ship.cargohatch.rank = i;
-                                ship.cargohatch.power = power;
+                                ship.cargohatch.position = position;
                                 ship.cargohatch.priority = priority;
+                                ship.cargohatch.power = power;
+
                             }
                             break;
                         case "FrameShiftDrive":
                             {
-                                ship.frameshiftdrive.rank = i;
-                                ship.frameshiftdrive.power = power;
+                                ship.frameshiftdrive.position = position;
                                 ship.frameshiftdrive.priority = priority;
+                                ship.frameshiftdrive.power = power;
                             }
                             break;
                         case "LifeSupport":
                             {
-                                ship.lifesupport.rank = i;
-                                ship.lifesupport.power = power;
+                                ship.lifesupport.position = position;
                                 ship.lifesupport.priority = priority;
+                                ship.lifesupport.power = power;
                             }
                             break;
                         case "MainEngines":
                             {
-                                ship.thrusters.rank = i;
-                                ship.thrusters.power = power;
+                                ship.thrusters.position = position;
                                 ship.thrusters.priority = priority;
+                                ship.thrusters.power = power;
                             }
                             break;
                         case "PowerDistributor":
                             {
-                                ship.powerdistributor.rank = i;
-                                ship.powerdistributor.power = power;
+                                ship.powerdistributor.position = position;
                                 ship.powerdistributor.priority = priority;
+                                ship.powerdistributor.power = power;
                             }
                             break;
                         case "PowerPlant":
                             {
-                                ship.powerplant.rank = i;
-                                ship.powerplant.power = power;
+                                ship.powerplant.position = position;
                                 ship.powerplant.priority = priority;
+                                ship.powerplant.power = power;
+
                             }
                             break;
                         case "Radar":
                             {
-                                ship.sensors.rank = i;
-                                ship.sensors.power = power;
+                                ship.sensors.position = position;
                                 ship.sensors.priority = priority;
+                                ship.sensors.power = power;
                             }
                             break;
                         case "ShipCockpit":
                             {
-                                ship.canopy.rank = i;
-                                ship.canopy.power = power;
+                                ship.canopy.position = position;
                                 ship.canopy.priority = priority;
+                                ship.canopy.power = power;
                             }
                             break;
                     }
@@ -827,9 +831,9 @@ namespace EddiShipMonitor
                         Compartment compartment = ship.compartments.FirstOrDefault(c => c.name == slot);
                         if (compartment != null)
                         {
-                            compartment.module.rank = i;
-                            compartment.module.power = power;
+                            compartment.module.position = position;
                             compartment.module.priority = priority;
+                            compartment.module.power = power;
                         }
                     }
                     else if (slot.Contains("Hardpoint"))
@@ -837,9 +841,9 @@ namespace EddiShipMonitor
                         Hardpoint hardpoint = ship.hardpoints.FirstOrDefault(h => h.name == slot);
                         if (hardpoint != null)
                         {
-                            hardpoint.module.rank = i;
-                            hardpoint.module.power = power;
+                            hardpoint.module.position = position;
                             hardpoint.module.priority = priority;
+                            hardpoint.module.power = power;
                         }
                     }
                 }
