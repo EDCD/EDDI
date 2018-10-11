@@ -169,21 +169,21 @@ A rating, for example a combat rating or empire rating.
 
 An internal module.
 
-    - 'name' the name of the module
-    - 'class' the numeric class of the module
-    - 'grade' the character grade of the module
-    - 'value' the base value of the module
-    - 'cost' the amount of credits paid for the module
-    - 'enabled' if the module is currently enabled
-    - 'priority' the current power priority of the module
-	- 'position' position of module in 'Modules' panel, according to power usage (highest = 1)
-	- 'power' power usage, measured in MegaWatts (MW)
-    - 'health' the current health of the module
-    - 'mount' only for weapons, this defines the type of mount (fixed, gimballed, turreted)
-    - 'clipcapacity' only for weapons with ammunition, this defines the clip capacity of the loaded weapon
-    - 'hoppercapacity' only for weapons with ammunition, this defines the hopper capacity of the loaded weapon
-	- 'ammoinclip' amount of ammo loaded in the clip at time of 'Loadout' event
-	- 'ammoinhopper' amount of ammo loaded in the hopper at time of 'Loadout' event
+    - `name` the name of the module
+    - `class` the numeric class of the module
+    - `grade` the character grade of the module
+    - `value` the base value of the module
+    - `cost` the amount of credits paid for the module
+    - `enabled` if the module is currently enabled
+    - `priority` the current power priority of the module
+	- `position` position of module in 'Modules' panel, according to power usage (highest = 1)
+	- `power` power usage, measured in MegaWatts (MW)
+    - `health` the current health of the module
+    - `mount` only for weapons, this defines the type of mount (fixed, gimballed, turreted)
+    - `clipcapacity` only for weapons with ammunition, this defines the clip capacity of the loaded weapon
+    - `hoppercapacity` only for weapons with ammunition, this defines the hopper capacity of the loaded weapon
+	- `ammoinclip` amount of ammo loaded in the clip at time of 'Loadout' event
+	- `ammoinhopper` amount of ammo loaded in the hopper at time of 'Loadout' event
 
 ## Hardpoint
 
@@ -237,43 +237,43 @@ An engineering blueprint.
 
 The log of missions accepted by the commander is available under the `missions` object.
 
-	- 'missions' list of missions within the commander's mission log'
-	- 'missionsCount' the number of all accepted missions
-	- 'missionWarning' the number of minutes before mission expiry in which a warning notification is generated
+	- `missions` list of missions within the commander's mission log'
+	- `missionsCount` the number of all accepted missions
+	- `missionWarning` the number of minutes before mission expiry in which a warning notification is generated
 
 ## Mission
 
 Details of an individual mission in the commander's mission log.
 
-	- 'missionid' unique identifier ID of the mission
-	- 'name' name of mission
-	- 'localisedname' localised name of the mission
-	- 'type' localized type (altruism, delivery, massacre, etc) of the mission
-	- 'status' localized status (active, complete, failed) of the mission
-	- 'faction' faction issuing the mission
-	- 'originsystem' origin system of the mission
-	- 'originstation' origin station of the mission
-	- 'originreturn' true if the commander must return to origin to complete the mission
-	- 'destinationsystem' destination system of the mission (if applicable)
-	- 'destinationstation' destination station of the mission (if applicable)
-	- 'destinationsystems' list of destination systems for chained missions (if applicable)
-	- 'influence' increase in the faction's influence in the system gained when completing the mission (None/Low/Med/High)
-	- 'reputation' increase in the commander's reputation with the faction gained when completing the mission (None/Low/Med/High)
-	- 'reward' expected cash reward from the mission
-	- 'legal' true if the mission is legal
-	- 'wing' true if the mission allows wing-mates
-	- 'shared' true if the mission was shared by a wing-mate
-	- 'communal' true if the mission is a community goal
-	- 'commodity' commodity involved in the mission (if applicable)
-	- 'passengertype' localized type of passengers (celebrity, doctor, etc) in the mission (if applicable)
-	- 'passengervips' true if the passengers are VIPs (if applicable)
-	- 'passengerwanted' true if the passengers are wanted
-	- 'target' name of the target of the mission (if applicable)
-	- 'targettype' localized type of the target (civilian, pirate, etc) of the mission (if applicable)
-	- 'targetfaction' faction of the target of the mission (if applicable)
-	- 'amount' amount of the commodity,  passengers or targets involved in the mission (if applicable)
-	- 'expiry' expiry date and time of the mission
-	- 'expiryseconds' amount of seconds remaining before mission expiration
+	- `missionid` unique identifier ID of the mission
+	- `name` name of mission
+	- `localisedname` localised name of the mission
+	- `type` localized type (altruism, delivery, massacre, etc) of the mission
+	- `status` localized status (active, complete, failed) of the mission
+	- `faction` faction issuing the mission
+	- `originsystem` origin system of the mission
+	- `originstation` origin station of the mission
+	- `originreturn` true if the commander must return to origin to complete the mission
+	- `destinationsystem` destination system of the mission (if applicable)
+	- `destinationstation` destination station of the mission (if applicable)
+	- `destinationsystems` list of destination systems for chained missions (if applicable)
+	- `influence` increase in the faction's influence in the system gained when completing the mission (None/Low/Med/High)
+	- `reputation` increase in the commander's reputation with the faction gained when completing the mission (None/Low/Med/High)
+	- `reward` expected cash reward from the mission
+	- `legal` true if the mission is legal
+	- `wing` true if the mission allows wing-mates
+	- `shared` true if the mission was shared by a wing-mate
+	- `communal` true if the mission is a community goal
+	- `commodity` commodity involved in the mission (if applicable)
+	- `passengertype` localized type of passengers (celebrity, doctor, etc) in the mission (if applicable)
+	- `passengervips` true if the passengers are VIPs (if applicable)
+	- `passengerwanted` true if the passengers are wanted
+	- `target` name of the target of the mission (if applicable)
+	- `targettype` localized type of the target (civilian, pirate, etc) of the mission (if applicable)
+	- `targetfaction` faction of the target of the mission (if applicable)
+	- `amount` amount of the commodity,  passengers or targets involved in the mission (if applicable)
+	- `expiry` expiry date and time of the mission
+	- `expiryseconds` amount of seconds remaining before mission expiration
 
 ## Inventory
 
@@ -285,34 +285,34 @@ The inventory of cargo carried within the ship is available under the `inventory
 
 Details of an individual commodity being carried.
 
-	- 'name' name of the cargo (e.g. Tea)
-	- 'commodity' object containing commodity details
-	- 'category' category of the commodity (e.g. Foods, Machinery, Technology)
-	- 'owned' number of units privately purchased or collected (not stolen or mission related)
-	- 'stolen' number of units flagged as stolen
-	- 'haulage' number of units associated with a mission
-	- 'haulageData' list of mission related specifics for associated haulage
-	- 'total' total number of units
-	- 'need' number of units needed to satisfy all mission requirements associated with cargo
-	- 'price' price of an individual unit
+	- `name` name of the cargo (e.g. Tea)
+	- `commodity` object containing commodity details
+	- `category` category of the commodity (e.g. Foods, Machinery, Technology)
+	- `owned` number of units privately purchased or collected (not stolen or mission related)
+	- `stolen` number of units flagged as stolen
+	- `haulage` number of units associated with a mission
+	- `haulageData` list of mission related specifics for associated haulage
+	- `total` total number of units
+	- `need` number of units needed to satisfy all mission requirements associated with cargo
+	- `price` price of an individual unit
 
 ## Haulage
 
 Mission related details of haulage under the 'haulageData' object, within the Cargo object, used by the Cargo Monitor.
 
-	- 'missionid' unique identifier ID of the mission
-	- 'name' name of mission
-	- 'status' status (active, complete, failed) of the mission
-	- 'originsystem' origin system of the mission
-	- 'sourcesystem' source system for 'source and return' and 'salvage' missions
-	- 'sourcebody' station for 'source and return' missions, body for 'salvage' missions
-	- 'type' type (altruism, delivery, massacre, etc) of the mission
-	- 'legal' true if the mission is legal
-	- 'shared' true if the mission was shared by a wing-mate
-	- 'amount' amount of the commodity involved in the mission
-	- 'collected' amount of the commodity collected in a wing mission
-	- 'delivered' amount of the commodity delivered in a wing mission
-	- 'expiry' expiry date and time of the mission
+	- `missionid` unique identifier ID of the mission
+	- `name` name of mission
+	- `status` status (active, complete, failed) of the mission
+	- `originsystem` origin system of the mission
+	- `sourcesystem` source system for 'source and return' and 'salvage' missions
+	- `sourcebody` station for 'source and return' missions, body for 'salvage' missions
+	- `type` type (altruism, delivery, massacre, etc) of the mission
+	- `legal` true if the mission is legal
+	- `shared` true if the mission was shared by a wing-mate
+	- `amount` amount of the commodity involved in the mission
+	- `collected` amount of the commodity collected in a wing mission
+	- `delivered` amount of the commodity delivered in a wing mission
+	- `expiry` expiry date and time of the mission
 
 ## Commodity
 

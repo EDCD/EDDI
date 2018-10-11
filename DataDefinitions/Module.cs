@@ -79,6 +79,10 @@ namespace EddiDataDefinitions
             this.hoppercapacity = Module.hoppercapacity;
             this.ammoinclip = Module.ammoinclip;
             this.ammoinhopper = Module.ammoinhopper;
+            this.enabled = Module.enabled;
+            this.power = Module.power;
+            this.priority = Module.priority;
+            this.position = Module.position;
             this.EDID = Module.EDID;
             this.EDDBID = Module.EDDBID;
             this.modified = Module.modified;
