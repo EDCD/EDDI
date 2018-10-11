@@ -144,4 +144,7 @@
   <data name="sourceURL" xml:space="preserve">
     <value>https://community.elitedangerous.com/fr/galnet-rss</value>
   </data>
+  <data name="titleFilterWeekInReview" xml:space="preserve">
+    <value>L'actualité de la semaine</value>
+  </data>
 </root>
