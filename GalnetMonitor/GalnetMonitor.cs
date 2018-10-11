@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Resources;
 using System.Text.RegularExpressions;
@@ -21,7 +22,7 @@ namespace GalnetMonitor
     /// </summary>
     public class GalnetMonitor : EDDIMonitor
     {
-        private static Dictionary<string, string> locales = new Dictionary<string, string>() { { "English", "en" }, { "Français", "fr" }, { "Deutsch", "de" } };
+        private static Dictionary<string, string> locales = new Dictionary<string, string>();
         protected static string locale;
         private GalnetConfiguration configuration = new GalnetConfiguration();
         protected static ResourceManager resourceManager = EddiGalnetMonitor.Properties.GalnetMonitor.ResourceManager;
@@ -88,6 +89,7 @@ namespace GalnetMonitor
         public void Start()
         {
             running = true;
+            locales = GetGalnetLocales();
             monitor();
         }
 
@@ -262,10 +264,51 @@ namespace GalnetMonitor
             return GetGalnetResource("categoryArticle");
         }
 
-        private static string GetGalnetResource(string basename)
+        private string GetGalnetResource(string basename)
         {
             CultureInfo ci = locale != null ? CultureInfo.GetCultureInfo(locale) : CultureInfo.InvariantCulture;
             return resourceManager.GetString(basename, ci) ?? null;
+        }
+
+        public Dictionary<string, string> GetGalnetLocales()
+        {
+            Dictionary<string, string> locales = new Dictionary<string, string>();
+
+            locales.Add("English", "en"); // Add our "neutral" language "en".
+
+            // Add our satellite resource language folders to the list. Since these are stored according to folder name, we can interate through folder names to identify supported resources
+            Dictionary<string, string> satelliteLocales = new Dictionary<string, string>();
+            DirectoryInfo rootInfo = new DirectoryInfo(new FileInfo(System.Reflection.Assembly.GetExecutingAssembly().Location).DirectoryName);
+            DirectoryInfo[] subDirs = rootInfo.GetDirectories();
+            foreach (DirectoryInfo dir in subDirs)
+            {
+                string name = dir.Name;
+                if (name == "x86" || name == "x64")
+                {
+                    continue;
+                }
+                try
+                {
+                    CultureInfo cInfo = new CultureInfo(name);
+                    ResourceSet resourceSet = resourceManager.GetResourceSet(cInfo, true, true);
+                    if (resourceSet.GetString("sourceURL") != null)
+                    {
+                        satelliteLocales.Add(cInfo.DisplayName, name);
+                    }
+                }
+                catch
+                { }
+            }
+
+            // Sort satellite locales prior to adding them to our list
+            var list = satelliteLocales.Keys.ToList();
+            list.Sort();
+            foreach (var key in list)
+            {
+                locales.Add(key, satelliteLocales[key]);
+            }
+
+            return locales;
         }
     }
 }
