@@ -43,7 +43,7 @@ namespace EddiDataDefinitions
         [JsonProperty]
         public int rank { get; set; }
         [JsonProperty]
-        public decimal draw { get; set; }
+        public decimal power { get; set; }
         [JsonProperty]
         public decimal health { get; set; }
         [JsonProperty]

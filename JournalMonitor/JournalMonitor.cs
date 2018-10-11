@@ -478,7 +478,7 @@ namespace EddiJournalMonitor
                                                 hardpoint.size = 4;
                                             }
 
-                                            Module module = Module.FromEDName(item);
+                                            Module module = new Module(Module.FromEDName(item));
                                             if (module == null)
                                             {
                                                 Logging.Info("Unknown module " + item, JsonConvert.SerializeObject(moduleData));
@@ -552,7 +552,7 @@ namespace EddiJournalMonitor
                                                 compartment.size = (int)ShipDefinitions.FromEDModel(ship)?.militarysize;
                                             }
 
-                                            Module module = Module.FromEDName(item);
+                                            Module module = new Module(Module.FromEDName(item));
                                             if (module == null)
                                             {
                                                 Logging.Info("Unknown module " + item, JsonConvert.SerializeObject(moduleData));
