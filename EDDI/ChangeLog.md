@@ -40,6 +40,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Revised `Commander continued` script to include the `Mission check galaxy` script.
     * Revised `Location` and `Jumped` scripts to include the `Mission check system` script.
     * Revised `Location` & `Entered normal space` scripts to include the `Mission check station` script.
+    * Revised `Galnet news published` script to identify interesting articles by category.
   * Voice Attack plugin
     * New `missionsroute` external function to query for various mission routes from VA. See RouteDetails() above for query types.
 
