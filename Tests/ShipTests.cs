@@ -99,6 +99,8 @@ namespace UnitTests
             Assert.AreEqual("Peppermint", ship.name);
             Assert.AreEqual("Int_FuelScoop_Size7_Class5", ship.compartments[0].module.edname);
             Assert.AreEqual("Fuel Scoop", ship.compartments[0].module.invariantName);
+            Assert.AreEqual(16, ship.fueltankcapacity);
+            Assert.AreEqual(24, ship.fueltanktotalcapacity);
         }
 
         [TestMethod]
