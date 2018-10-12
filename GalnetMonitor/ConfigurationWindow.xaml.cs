@@ -1,4 +1,5 @@
 ﻿using Eddi;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -15,9 +16,11 @@ namespace GalnetMonitor
         {
             InitializeComponent();
 
-            monitor = ((GalnetMonitor)EDDI.Instance.ObtainMonitor("Galnet monitor"));
+            monitor = (GalnetMonitor)EDDI.Instance.ObtainMonitor("Galnet monitor");
 
             GalnetConfiguration configuration = GalnetConfiguration.FromFile();
+            Dictionary<string, string> langs = monitor.GetGalnetLocales();
+            languageComboBox.ItemsSource = langs.Keys;
             languageComboBox.SelectedValue = configuration.language;
             galnetAlwaysOn.IsChecked = configuration.galnetAlwaysOn;
         }

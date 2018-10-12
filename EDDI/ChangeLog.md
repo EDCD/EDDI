@@ -10,8 +10,14 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Added data definitions for Guardian fighters.
   * EDDP monitor
     * Fixed a bug that prevented selection of any state other than `(anything)` and blocked filter input when any state other than `(anything)` was selected.
+  * Galnet Monitor
+    * Updated category assignments to match updated article format from Frontier Developments
+    * Filters used for category assignments are now a translatable resource.
   * Localization
     * Fixed a bug preventing localized module names from being displayed correctly within the ship object. 
+    * The filters used to assign categories to Galnet articles in the Galnet monitor are now a translatable resource.
+    * The category names for categories assigned to Galnet articles in the Galnet monitor are now a translatable resource.
+    * the source url used by the Galnet monitor for each language is now a translatable resource. For languages that do not have official Galnet feeds, translators may create unofficial feeds that follow the same format as the official Galnet feeds for use with EDDI.
   * Ship Monitor
     * Enhanced IPA help with additional links. 
   * New Mission monitor feature, tracking all mission parameters. Check the Speech responder `Variables` window for details.
@@ -34,6 +40,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Revised `Commander continued` script to include the `Mission check galaxy` script.
     * Revised `Location` and `Jumped` scripts to include the `Mission check system` script.
     * Revised `Location` & `Entered normal space` scripts to include the `Mission check station` script.
+    * Revised `Galnet news published` script to identify interesting articles by category.
   * Voice Attack plugin
     * New `missionsroute` external function to query for various mission routes from VA. See RouteDetails() above for query types.
 
