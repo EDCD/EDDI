@@ -478,7 +478,7 @@ namespace EddiJournalMonitor
                                                 hardpoint.size = 4;
                                             }
 
-                                            Module module = Module.FromEDName(item);
+                                            Module module = new Module(Module.FromEDName(item));
                                             if (module == null)
                                             {
                                                 Logging.Info("Unknown module " + item, JsonConvert.SerializeObject(moduleData));
@@ -490,8 +490,8 @@ namespace EddiJournalMonitor
                                                 module.health = health;
                                                 module.modified = modified;
                                                 module.price = price;
-                                                module.clipcapacity = clip;
-                                                module.hoppercapacity = hopper;
+                                                module.ammoinclip = clip;
+                                                module.ammoinhopper = hopper;
                                                 hardpoint.module = module;
                                                 hardpoints.Add(hardpoint);
                                             }
@@ -552,7 +552,7 @@ namespace EddiJournalMonitor
                                                 compartment.size = (int)ShipDefinitions.FromEDModel(ship)?.militarysize;
                                             }
 
-                                            Module module = Module.FromEDName(item);
+                                            Module module = new Module(Module.FromEDName(item));
                                             if (module == null)
                                             {
                                                 Logging.Info("Unknown module " + item, JsonConvert.SerializeObject(moduleData));
@@ -564,6 +564,8 @@ namespace EddiJournalMonitor
                                                 module.health = health;
                                                 module.modified = modified;
                                                 module.price = price;
+                                                module.ammoinclip = clip;
+                                                module.ammoinhopper = hopper;
                                                 compartment.module = module;
                                                 compartments.Add(compartment);
                                             }
@@ -572,6 +574,10 @@ namespace EddiJournalMonitor
                                 }
                                 events.Add(new ShipLoadoutEvent(timestamp, ship, shipId, shipName, shipIdent, hullValue, modulesValue, rebuy, compartments, hardpoints, paintjob) { raw = line });
                             }
+                            handled = true;
+                            break;
+                        case "ModuleInfo":
+                            events.Add(new ModuleInfoEvent(timestamp) { raw = line });
                             handled = true;
                             break;
                         case "CockpitBreached":

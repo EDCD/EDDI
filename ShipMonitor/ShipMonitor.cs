@@ -230,6 +230,14 @@ namespace EddiShipMonitor
             {
                 handleModuleTransferEvent((ModuleTransferEvent)@event);
             }
+            else if (@event is ModuleInfoEvent)
+            {
+                handleModuleInfoEvent((ModuleInfoEvent)@event);
+            }
+            else if (@event is JumpedEvent)
+            {
+                handleJumpedEvent((JumpedEvent)@event);
+            }
         }
 
         // Set the ship name conditionally, avoiding filtered names
@@ -486,10 +494,20 @@ namespace EddiShipMonitor
             }
 
             // Internal + restricted modules
-            ship.compartments = @event.compartments.Where(c => c.name.StartsWith("Slot") || c.name.StartsWith("Military")).ToList();
+            List<Compartment> compartments = new List<Compartment>();
+            foreach (Compartment cpt in @event.compartments.Where(c => c.name.StartsWith("Slot") || c.name.StartsWith("Military")).ToList())
+            {
+                compartments.Add(cpt);
+            }
+            ship.compartments = compartments;
 
             // Hardpoints
-            ship.hardpoints = @event.hardpoints;
+            List<Hardpoint> hardpoints = new List<Hardpoint>();
+            foreach (Hardpoint hpt in @event.hardpoints)
+            {
+                hardpoints.Add(hpt);
+            }
+            ship.hardpoints = hardpoints;
 
             // total fuel tank capacity
             ship.fueltanktotalcapacity = ship.fueltankcapacity + (int)ship.compartments.Where(c => c.module != null && c.module.basename.Equals("FuelTank")).Sum(c => Math.Pow(2, c.module.@class));
@@ -732,7 +750,119 @@ namespace EddiShipMonitor
             // We don't do anything here as the ship object is unaffected
         }
 
-        public void PostHandle(Event @event)
+        private void handleModuleInfoEvent(ModuleInfoEvent @event)
+        {
+            Ship ship = GetCurrentShip();
+
+            ModuleInfoReader info = ModuleInfoReader.FromFile();
+            if (info != null)
+            {
+                for (int i = 0; i < info.Modules.Count(); i++)
+                {
+                    int position = i + 1;
+                    int priority = info.Modules[i].priority + 1;
+                    decimal power = info.Modules[i].power;
+
+                    string slot = info.Modules[i].slot;
+                    switch (slot)
+                    {
+                        case "CargoHatch":
+                            {
+                                ship.cargohatch.position = position;
+                                ship.cargohatch.priority = priority;
+                                ship.cargohatch.power = power;
+
+                            }
+                            break;
+                        case "FrameShiftDrive":
+                            {
+                                ship.frameshiftdrive.position = position;
+                                ship.frameshiftdrive.priority = priority;
+                                ship.frameshiftdrive.power = power;
+                            }
+                            break;
+                        case "LifeSupport":
+                            {
+                                ship.lifesupport.position = position;
+                                ship.lifesupport.priority = priority;
+                                ship.lifesupport.power = power;
+                            }
+                            break;
+                        case "MainEngines":
+                            {
+                                ship.thrusters.position = position;
+                                ship.thrusters.priority = priority;
+                                ship.thrusters.power = power;
+                            }
+                            break;
+                        case "PowerDistributor":
+                            {
+                                ship.powerdistributor.position = position;
+                                ship.powerdistributor.priority = priority;
+                                ship.powerdistributor.power = power;
+                            }
+                            break;
+                        case "PowerPlant":
+                            {
+                                ship.powerplant.position = position;
+                                ship.powerplant.priority = priority;
+                                ship.powerplant.power = power;
+
+                            }
+                            break;
+                        case "Radar":
+                            {
+                                ship.sensors.position = position;
+                                ship.sensors.priority = priority;
+                                ship.sensors.power = power;
+                            }
+                            break;
+                        case "ShipCockpit":
+                            {
+                                ship.canopy.position = position;
+                                ship.canopy.priority = priority;
+                                ship.canopy.power = power;
+                            }
+                            break;
+                    }
+
+                    if (slot.Contains("Slot"))
+                    {
+                        Compartment compartment = ship.compartments.FirstOrDefault(c => c.name == slot);
+                        if (compartment != null)
+                        {
+                            compartment.module.position = position;
+                            compartment.module.priority = priority;
+                            compartment.module.power = power;
+                        }
+                    }
+                    else if (slot.Contains("Hardpoint"))
+                    {
+                        Hardpoint hardpoint = ship.hardpoints.FirstOrDefault(h => h.name == slot);
+                        if (hardpoint != null)
+                        {
+                            hardpoint.module.position = position;
+                            hardpoint.module.priority = priority;
+                            hardpoint.module.power = power;
+                        }
+                    }
+                }
+                writeShips();
+            }
+        }
+
+        private void handleJumpedEvent(JumpedEvent @event)
+        {
+            Ship ship = GetCurrentShip();
+            if (@event.fuelused > ship.maxfuel)
+            {
+                ship.maxfuel = @event.fuelused;
+                ship.maxjump = @event.distance;
+                writeShips();
+            }
+        }
+
+            public void PostHandle(Event @event)
         {
             if (@event is ShipLoadoutEvent)
             {

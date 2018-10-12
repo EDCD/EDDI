@@ -637,14 +637,14 @@
         ]
       }
     },
-    {
-      "Slot": "Slot06_Size3",
-      "Item": "Int_DroneControl_Repair_Size3_Class2",
-      "On": false,
-      "Priority": 4,
-      "Health": 1.0,
-      "Value": 10530
-    },
+	{
+    "Slot": "Slot06_Size3",
+    "Item": "int_fueltank_size3_class3",
+    "On": true,
+    "Priority": 1,
+    "Health": 1.0,
+	"Value": 7060
+	},
     {
       "Slot": "Slot07_Size2",
       "Item": "Int_DetailedSurfaceScanner_Tiny",

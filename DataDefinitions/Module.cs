@@ -28,6 +28,10 @@ namespace EddiDataDefinitions
         public int? clipcapacity { get; set; } // Only for weapons
         [JsonProperty]
         public int? hoppercapacity { get; set; } // Only for weapons
+        [JsonProperty]
+        public int? ammoinclip { get; set; } // Only for weapons
+        [JsonProperty]
+        public int? ammoinhopper { get; set; } // Only for weapons
 
         // State of the module
         [JsonProperty]
@@ -36,6 +40,10 @@ namespace EddiDataDefinitions
         public bool enabled { get; set; }
         [JsonProperty]
         public int priority { get; set; }
+        [JsonProperty]
+        public int position { get; set; }
+        [JsonProperty]
+        public decimal power { get; set; }
         [JsonProperty]
         public decimal health { get; set; }
         [JsonProperty]
@@ -69,6 +77,12 @@ namespace EddiDataDefinitions
             this.mount = Module.mount;
             this.clipcapacity = Module.clipcapacity;
             this.hoppercapacity = Module.hoppercapacity;
+            this.ammoinclip = Module.ammoinclip;
+            this.ammoinhopper = Module.ammoinhopper;
+            this.enabled = Module.enabled;
+            this.power = Module.power;
+            this.priority = Module.priority;
+            this.position = Module.position;
             this.EDID = Module.EDID;
             this.EDDBID = Module.EDDBID;
             this.modified = Module.modified;
