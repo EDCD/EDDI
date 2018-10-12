@@ -41,6 +41,8 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Revised `Location` and `Jumped` scripts to include the `Mission check system` script.
     * Revised `Location` & `Entered normal space` scripts to include the `Mission check station` script.
     * Revised `Galnet news published` script to identify interesting articles by category.
+    * Added new event: `Glide`, triggered when your ship enters or exits glide near a planet's surface
+    * Revised script: `Entered normal space` to omit a pause if it is immediately following a glide event and to check whether gravity is set prior to reporting gravity.
   * Voice Attack plugin
     * New `missionsroute` external function to query for various mission routes from VA. See RouteDetails() above for query types.
 
