@@ -12,8 +12,11 @@
         mc:Ignorable="d"
         Title="EDDI" ResizeMode="CanResizeWithGrip" Width="928" Height="600" MinWidth="928" MinHeight="600">
     <Window.Resources>
+        <SolidColorBrush x:Key="DataGridLineBrush" Color="LightGray"/>
         <Style TargetType="DataGrid">
-            <Setter Property="AlternatingRowBackground" Value="AliceBlue"></Setter>
+            <Setter Property="AlternatingRowBackground" Value="AliceBlue"/>
+            <Setter Property="HorizontalGridLinesBrush" Value="{StaticResource DataGridLineBrush}"/>
+            <Setter Property="VerticalGridLinesBrush" Value="{StaticResource DataGridLineBrush}"/>
         </Style>
     </Window.Resources>
     <DockPanel LastChildFill="True">
