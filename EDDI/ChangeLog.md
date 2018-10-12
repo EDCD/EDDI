@@ -19,6 +19,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * The category names for categories assigned to Galnet articles in the Galnet monitor are now a translatable resource.
     * the source url used by the Galnet monitor for each language is now a translatable resource. For languages that do not have official Galnet feeds, translators may create unofficial feeds that follow the same format as the official Galnet feeds for use with EDDI.
   * Ship Monitor
+    * Added 'Module info' event
     * Enhanced IPA help with additional links. 
   * New Mission monitor feature, tracking all mission parameters. Check the Speech responder `Variables` window for details.
     * New `Mission expired` event, triggers when a mission has expired.
