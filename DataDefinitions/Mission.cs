@@ -195,6 +195,8 @@ namespace EddiDataDefinitions
         public DateTime? expiry { get; set; }
         [JsonIgnore]
         public long? expiryseconds => (long)expiry?.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
+        [JsonIgnore]
+        public bool expiring { get; set; }
 
         // Default Constructor
         public Mission() { }
@@ -208,6 +210,7 @@ namespace EddiDataDefinitions
 			this.expiry = expiry?.ToUniversalTime();
             this.statusDef = Status;
             this.shared = Shared;
+            this.expiring = false;
             destinationsystems = new List<DestinationSystem>();
 
             // Mechanism for identifying chained, 'welcome', and 'special' missions

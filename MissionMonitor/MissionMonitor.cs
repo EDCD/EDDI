@@ -136,9 +136,17 @@ namespace EddiMissionMonitor
                         {
                             EDDI.Instance.eventHandler(new MissionExpiredEvent(DateTime.Now, mission.missionid, mission.name));
                         }
-                        else if (mission.expiry?.ToLocalTime() < DateTime.Now.AddMinutes(-missionWarning ?? -60))
+                        else if (mission.expiry?.ToLocalTime() < DateTime.Now.AddMinutes(missionWarning ?? 60))
                         {
-                            EDDI.Instance.eventHandler(new MissionWarningEvent(DateTime.Now, mission.missionid, mission.name, span.Minutes));
+                            if (!mission.expiring)
+                            {
+                                mission.expiring = true;
+                                EDDI.Instance.eventHandler(new MissionWarningEvent(DateTime.Now, mission.missionid, mission.name, span.Minutes));
+                            }
+                        }
+                        else if (mission.expiring)
+                        {
+                            mission.expiring = false;
                         }
                     }
                     else
