@@ -6,7 +6,7 @@ namespace EddiEvents
 {
     public class ModuleInfoEvent : Event
     {
-        public const string NAME = "Module Info";
+        public const string NAME = "Module info";
         public const string DESCRIPTION = "Triggered when a ModulesInfo.json file is generated/updated";
         public const string SAMPLE = null;
 
