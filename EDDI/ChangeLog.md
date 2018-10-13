@@ -21,6 +21,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Revised `Galnet news published` script to identify interesting articles by category.
     * Added new event: `Glide`, triggered when your ship enters or exits glide near a planet's surface
     * Revised script: `Entered normal space` to omit a pause if it is immediately following a glide event and to check whether gravity is set prior to reporting gravity.
+    * Revised script: `Star scanned` to allow us to fix pronunciations of stellar class (some voices rendered `TTS` class stars as `text-to-speech` class stars).
   * UI
     * Enhanced IPA help with additional links.
     * Corrected window size to prevent UI elements from being hidden / obscured at the default window size. 

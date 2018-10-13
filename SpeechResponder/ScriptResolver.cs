@@ -198,6 +198,10 @@ namespace EddiSpeechResponder
                         translation = ship.SpokenModel();
                     }
                 }
+                if (translation == val)
+                {
+                    translation = Translations.StellarClass(val);
+                }
                 return translation;
             }, 1);
 

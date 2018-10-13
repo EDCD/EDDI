@@ -123,6 +123,17 @@ namespace EddiSpeechService
             { "Zhang Fei", new string[] { Properties.Phonetics.zhangfei_zhang, Properties.Phonetics.zhangfei_fei } },
         };
 
+        public static string StellarClass(string val)
+        {
+            if (val == null)
+            {
+                return null;
+            }
+
+            // Some test to speech voices replace "TTS" with "text-to-speech". Fix that here.
+            return val != "TTS" ? val : val.Replace("TTS", "T T S");
+        }
+
         private static Dictionary<string, string[]> CONSTELLATION_PRONUNCIATIONS = new Dictionary<string, string[]>()
         {
             { "Alrai" , new string[] { Properties.Phonetics.Alrai } },
