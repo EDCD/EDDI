@@ -2,25 +2,35 @@
 
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
-### Development
-  * UI
-    * Tabs are now shown on the the left, and all but the first "EDDI" tab are sorted alphabetically according to the rules of the current locale.
+### 3.1.0-b2
   * Core
-    * Implemented log rotation. EDDI will now create a new log file every time it starts, and shall retain no more than 10 log files before it starts clearing the old logs. Immense log files will be a thing of the past.  
+    * Implemented log rotation. EDDI will now create a new log file every time it starts, and shall retain no more than 10 log files before it starts clearing the old logs. Immense log files are a thing of the past.  
     * Added data definitions for Guardian fighters.
   * EDDP monitor
     * Fixed a bug that prevented selection of any state other than `(anything)` and blocked filter input when any state other than `(anything)` was selected.
   * Galnet Monitor
     * Updated category assignments to match updated article format from Frontier Developments
-    * Filters used for category assignments are now a translatable resource.
   * Localization
     * Fixed a bug preventing localized module names from being displayed correctly within the ship object. 
     * The filters used to assign categories to Galnet articles in the Galnet monitor are now a translatable resource.
     * The category names for categories assigned to Galnet articles in the Galnet monitor are now a translatable resource.
-    * the source url used by the Galnet monitor for each language is now a translatable resource. For languages that do not have official Galnet feeds, translators may create unofficial feeds that follow the same format as the official Galnet feeds for use with EDDI.
+    * The source url used by the Galnet monitor for each language is now a translatable resource. For languages that do not have official Galnet feeds, translators may create unofficial feeds that follow the same format as the official Galnet feeds for use with EDDI.
   * Ship Monitor
     * Added 'Module info' event
-    * Enhanced IPA help with additional links. 
+  * Speech responder
+    * Revised `Galnet news published` script to identify interesting articles by category.
+    * Added new event: `Glide`, triggered when your ship enters or exits glide near a planet's surface
+    * Revised script: `Entered normal space` to omit a pause if it is immediately following a glide event and to check whether gravity is set prior to reporting gravity.
+  * UI
+    * Enhanced IPA help with additional links.
+    * Corrected window size to prevent UI elements from being hidden / obscured at the default window size. 
+    * Minor visual enhancements.  
+  * Voice Attack plugin / Speech synthesizer
+    * Improved stability by switching to using a single speech synthesizer instance (kudos to VoiceAttack's developer for working with us on this). 
+
+### 3.1.0-b1
+  * UI
+    * Tabs are now shown on the the left, and all but the first "EDDI" tab are sorted alphabetically according to the rules of the current locale.
   * New Mission monitor feature, tracking all mission parameters. Check the Speech responder `Variables` window for details.
     * New `Mission expired` event, triggers when a mission has expired.
     * New `Mission warning' event, triggers when a mission expiration is within the 'warning' threshold, set in the `Mission monitor` tab.
@@ -41,9 +51,6 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Revised `Commander continued` script to include the `Mission check galaxy` script.
     * Revised `Location` and `Jumped` scripts to include the `Mission check system` script.
     * Revised `Location` & `Entered normal space` scripts to include the `Mission check station` script.
-    * Revised `Galnet news published` script to identify interesting articles by category.
-    * Added new event: `Glide`, triggered when your ship enters or exits glide near a planet's surface
-    * Revised script: `Entered normal space` to omit a pause if it is immediately following a glide event and to check whether gravity is set prior to reporting gravity.
   * Voice Attack plugin
     * New `missionsroute` external function to query for various mission routes from VA. See RouteDetails() above for query types.
 
