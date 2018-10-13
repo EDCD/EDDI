@@ -2615,7 +2615,7 @@ namespace EddiJournalMonitor
                                 {
                                     item = EddiDataDefinitions.Properties.Modules.ShipIntegrity;
                                 }
-                                else
+                                else if (item != "All")
                                 {
                                     // Item might be a module
                                     Module module = Module.FromEDName(item);
