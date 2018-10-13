@@ -92,7 +92,7 @@ namespace EddiDataProviderService
                 // EDDP uses invariant / English localized economies
                 StarSystem.economies[0] = Economy.FromName((string)json["primary_economy"]);
                 // At present, EDDP does not provide any information about secondary economies.
-                StarSystem.systemState = SystemState.FromEDName((string)json["state"]) ?? SystemState.None;
+                StarSystem.systemState = SystemState.FromName((string)json["state"]) ?? SystemState.None;
                 StarSystem.security = (string)json["security"];
                 StarSystem.power = (string)json["power"] == "None" ? null : (string)json["power"];
                 StarSystem.powerstate = (string)json["power_state"];
