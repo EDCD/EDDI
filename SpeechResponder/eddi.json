@@ -1248,7 +1248,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": null,
+      "script": "{_ This event updates `ship` module information: position, power, & priority _}",
       "default": true,
       "name": "Module info",
       "description": "Triggered when a ModulesInfo.json file is generated/updated"
