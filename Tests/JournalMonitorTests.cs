@@ -717,5 +717,17 @@ namespace UnitTests
 
             Assert.AreEqual("Guardian", @event.Allegiance.invariantName);
         }
+
+        [TestMethod]
+        public void TestFactionKillBondThargoid()
+        {
+            string line = @"{""timestamp"":""2018 - 07 - 28T07: 39:54Z"",""event"":""FactionKillBond"",""Reward"":10000,""AwardingFaction"":""$faction_PilotsFederation;"",""AwardingFaction_Localised"":""Pilots Federation"",""VictimFaction"":""$faction_Thargoid;"",""VictimFaction_Localised"":""Thargoids""}";
+            List<Event> events = JournalMonitor.ParseJournalEntry(line);
+            BondAwardedEvent @event = (BondAwardedEvent)events[0];
+
+            Assert.AreEqual("Pilots Federation", @event.awardingfaction);
+            Assert.AreEqual("Thargoid", @event.victimfaction);
+        }
+
     }
 }

@@ -296,7 +296,7 @@ namespace EddiJournalMonitor
                             {
                                 data.TryGetValue("Reward", out object val);
                                 long reward = (long)val;
-                                string victimFaction = JsonParsing.getString(data, "VictimFaction");
+                                string victimFaction = getFaction(data, "VictimFaction");
 
                                 if (data.ContainsKey("AwardingFaction"))
                                 {

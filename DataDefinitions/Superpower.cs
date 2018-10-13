@@ -16,6 +16,7 @@ namespace EddiDataDefinitions
             var Alliance = new Superpower("$faction_Alliance;");
             var Empire = new Superpower("$faction_Empire;");
             var Independent = new Superpower("$faction_Independent;");
+            var PilotsFederation = new Superpower("$faction_PilotsFederation;");
             var Pirate = new Superpower("$faction_Pirate;");
             var Guardian = new Superpower("$faction_Guardian;");
             var Thargoid = new Superpower("$faction_Thargoid;");
@@ -37,7 +38,11 @@ namespace EddiDataDefinitions
                 return null;
             }
 
-            Superpower result = FromName(from) ?? FromEDName(from);
+            Superpower result = FromName(from);
+            if (result == null && from.StartsWith("$faction_"))
+            {
+                result = FromEDName(from);
+            }
             return result;
         }
     }
