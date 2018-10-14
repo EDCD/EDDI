@@ -132,8 +132,14 @@
   <data name="p2" xml:space="preserve">
     <value>Lesen Sie Galnet-Artikel, wenn Sie ausgeloggt sind</value>
   </data>
-  
-  
+  <data name="titleFilterPowerplay" xml:space="preserve">
+    <value>Powerplay: Eingehendes Update</value>
+    <comment>Title filter for determining whether an item is a Powerplay item</comment>
+  </data>
+  <data name="titleFilterCg" xml:space="preserve">
+    <value>Gemeinschaftsziel: </value>
+    <comment>Title filter for determining whether an item is a Community Goal related item</comment>
+  </data>
   
   
   
