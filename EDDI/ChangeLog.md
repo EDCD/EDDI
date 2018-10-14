@@ -2,6 +2,8 @@
 
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
+### Development
+
 ### 3.1.0-b2
   * Core
     * Implemented log rotation. EDDI will now create a new log file every time it starts, and shall retain no more than 10 log files before it starts clearing the old logs. Immense log files are a thing of the past.  
