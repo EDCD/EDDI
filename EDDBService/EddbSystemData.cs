@@ -122,8 +122,7 @@ namespace EddiEddbService
         private static StarSystem ParseEddbSystem(object response)
         {
             JObject systemJson = ((JObject)response);
-            StarSystem StarSystem = new StarSystem();
-            StarSystem.name = (string)systemJson["name"];
+            StarSystem StarSystem = new StarSystem { name = (string)systemJson["name"] };
 
             if ((bool?)systemJson["is_populated"] != null)
             {
