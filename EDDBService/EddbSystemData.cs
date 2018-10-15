@@ -146,19 +146,17 @@ namespace EddiEddbService
                 StarSystem.securityLevel = SecurityLevel.FromName((string)systemJson["security"]);
 
                 // Controlling faction data
-                long? factionEddbId = (long?)systemJson["controlling_minor_faction_id"];
-                Faction controllingFaction = new Faction();
-                if (factionEddbId != null)
+                if ((string)systemJson["controlling_minor_faction"] != null)
                 {
-                    controllingFaction = Faction((long)factionEddbId);
+                    Faction controllingFaction = new Faction()
+                    {
+                        EDDBID = (long?)systemJson["controlling_minor_faction_id"],
+                        name = (string)systemJson["controlling_minor_faction"],
+                        Government = Government.FromName((string)systemJson["government"]),
+                        Allegiance = Superpower.FromName((string)systemJson["allegiance"])
+                    };
+                    StarSystem.Faction = controllingFaction;
                 }
-                if (controllingFaction != null)
-                {
-                    controllingFaction.name = (string)systemJson["controlling_minor_faction"];
-                    controllingFaction.Government = Government.FromName((string)systemJson["government"]);
-                    controllingFaction.Allegiance = Superpower.FromName((string)systemJson["allegiance"]);
-                };
-                StarSystem.Faction = controllingFaction;
 
                 // Powerplay details
                 StarSystem.power = (string)systemJson["power"] == "None" ? null : (string)systemJson["power"];

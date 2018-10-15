@@ -122,15 +122,5 @@ namespace UnitTests
             Assert.IsNotNull(starSystem.bodies);
             Assert.IsFalse(starSystem.bodies.Count == 0);
         }
-
-        [TestMethod]
-        public void TestFullSystemLatency()
-        {
-            System.DateTime startTime = System.DateTime.UtcNow;
-            StarSystem system = DataProviderService.GetFullSystemData("Shinrarta Dezhra");
-            System.TimeSpan latencyTimeSpan = System.DateTime.UtcNow - startTime;
-            Assert.IsNotNull(system);
-            Assert.IsTrue(latencyTimeSpan.Milliseconds < 50); //8.48 seconds
-        }
     }
 }
