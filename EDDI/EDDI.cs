@@ -806,10 +806,12 @@ namespace Eddi
                 CurrentStarSystem.securityLevel = theEvent.securityLevel;
 
                 // Faction data
-                Faction controllingFaction = new Faction();
-                controllingFaction.name = theEvent.faction;
-                controllingFaction.Government = theEvent.Government;
-                controllingFaction.Allegiance = theEvent.Allegiance;
+                Faction controllingFaction = new Faction
+                {
+                    name = theEvent.faction,
+                    Government = theEvent.Government,
+                    Allegiance = theEvent.Allegiance
+                };
                 CurrentStarSystem.Faction = controllingFaction;
             }
 
@@ -1101,12 +1103,17 @@ namespace Eddi
             CurrentStarSystem.y = theEvent.y;
             CurrentStarSystem.z = theEvent.z;
 
-            CurrentStarSystem.allegiance = theEvent.allegiance;
-            CurrentStarSystem.faction = theEvent.faction;
+            Faction controllingFaction = new Faction
+            {
+                name = theEvent.faction,
+                Allegiance = theEvent.Allegiance,
+                Government = theEvent.Government
+            };
+            CurrentStarSystem.Faction = controllingFaction;
+
             CurrentStarSystem.economies[0] = theEvent.Economy;
             CurrentStarSystem.economies[1] = theEvent.Economy2;
-            CurrentStarSystem.government = theEvent.government;
-            CurrentStarSystem.security = theEvent.security;
+            CurrentStarSystem.securityLevel = theEvent.securityLevel;
             if (theEvent.population != null)
             {
                 CurrentStarSystem.population = theEvent.population;
@@ -1381,7 +1388,7 @@ namespace Eddi
                     belt = new Body
                     {
                         EDDBID = -1,
-                        type = BodyType.FromEDName("Star"),
+                        Type = BodyType.FromEDName("Star"),
                         name = theEvent.name,
                         systemname = CurrentStarSystem?.name,
                         systemAddress = CurrentStarSystem?.systemAddress
@@ -1413,7 +1420,7 @@ namespace Eddi
                     star = new Body
                     {
                         EDDBID = -1,
-                        type = BodyType.FromEDName("Star"),
+                        Type = BodyType.FromEDName("Star"),
                         name = theEvent.name,
                         systemname = CurrentStarSystem?.name
                     };
@@ -1455,7 +1462,7 @@ namespace Eddi
                     body = new Body
                     {
                         EDDBID = -1,
-                        type = BodyType.FromEDName("Planet"),
+                        Type = BodyType.FromEDName("Planet"),
                         name = theEvent.name,
                         systemname = CurrentStarSystem.name
                     };
