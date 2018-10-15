@@ -1,7 +1,7 @@
-﻿using EddiDataDefinitions;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using RestSharp;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Utilities;
@@ -11,6 +11,7 @@ namespace EddiEddbService
     public partial class EddbService
     {
         // Since EDDB doesn't have an official API, we make use of the "unofficial" API
+        // This API is high latency - reserve for targeted queries and data not available from any other source.
         private const string baseUrl = "https://elitebgs.kodeblox.com/api/eddb/";
         private static RestClient client = new RestClient(baseUrl);
         
@@ -19,10 +20,9 @@ namespace EddiEddbService
         {
             if (queries == null) { return null; }
 
-            var items = new List<object>();
+            var docs = new List<object>();
             int currentPage = 1;
             int totalPages = 0;
-            int limit = 0;
 
             RestRequest request = new RestRequest(endpoint, Method.GET);
             foreach (KeyValuePair<string, object> query in queries)
@@ -30,35 +30,51 @@ namespace EddiEddbService
                 request.AddParameter(query.Key, query.Value);
             }
 
-            do
+            // Make our initial request
+            DateTime requestTime = DateTime.UtcNow;
+
+            PageResponse response = PageRequest(request, currentPage);
+            docs.AddRange(response.docs);
+            totalPages = response.pages;
+
+            // Make additional requests as needed
+            while (currentPage < totalPages && (DateTime.UtcNow-requestTime).TotalMilliseconds > 5 )
             {
-                request.AddOrUpdateParameter("page", currentPage);
-                RestResponse<RestRequest> clientResponse = (RestResponse<RestRequest>)client.Execute<RestRequest>(request);
-
-                if (clientResponse.IsSuccessful)
+                requestTime = DateTime.UtcNow;
+                PageResponse pageResponse = PageRequest(request, ++currentPage);
+                if (pageResponse != null)
                 {
-                    string json = clientResponse.Content;
-                    var pageResponse = JsonConvert.DeserializeObject<PageResponse>(json);
-
-                    if (pageResponse != null && pageResponse.docs.Any())
-                    {
-                        items.AddRange(pageResponse.docs);
-                        totalPages = pageResponse.pages;
-                        limit = pageResponse.limit;
-                        currentPage++;
-                    }
-                    else
-                    {
-                        return null; // No results
-                    }
+                    docs.AddRange(pageResponse.docs);
                 }
-                else
+            }
+
+            return docs;
+        }
+
+        private static PageResponse PageRequest(RestRequest request, int page)
+        {
+            request.AddOrUpdateParameter("page", page);
+
+            DateTime startTime = DateTime.UtcNow;
+
+            RestResponse<RestRequest> clientResponse = (RestResponse<RestRequest>)client.Execute<RestRequest>(request);
+            if (clientResponse.IsSuccessful)
+            {
+                Logging.Info("Page response latency (ms): " + (DateTime.UtcNow - startTime).Milliseconds);
+
+                string json = clientResponse.Content;
+                var pageResponse = JsonConvert.DeserializeObject<PageResponse>(json);
+
+                if (pageResponse != null && pageResponse.docs.Any())
                 {
-                    Logging.Debug("Eddb data error: Error obtaining data from " + baseUrl + endpoint + ". Query: " + queries.ToString());
+                    return pageResponse;
                 }
-            } while (currentPage < totalPages);
-
-            return items;
+            }
+            else
+            {
+                Logging.Debug("Eddb data error: Error obtaining data from " + request.Resource + ". Query: " + request.Parameters.ToArray());
+            }
+            return null; // No results
         }
     }
 
