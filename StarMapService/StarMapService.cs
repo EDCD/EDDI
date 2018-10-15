@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using RestSharp;
 using RestSharp.Serializers;
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading;
@@ -22,11 +23,21 @@ namespace EddiStarMapService
 
         // For normal use, the EDSM API base URL is https://www.edsm.net/.
         // If you need to do some testing on EDSM's API, please use the https://beta.edsm.net/ endpoint.
-        public StarMapService(string apiKey, string commanderName, string baseUrl = "https://www.edsm.net/")
+        public StarMapService(string apiKey, string commanderName)
         {
             this.apiKey = apiKey;
             this.commanderName = commanderName;
-            this.baseUrl = baseUrl;
+            baseUrl = ShouldUseTestEndpoints() ? "https://beta.edsm.net/" : "https://www.edsm.net/";
+        }
+
+        private static bool ShouldUseTestEndpoints()
+        {
+#if DEBUG
+            return true;
+#else
+            // use test endpoints if the game is in beta or EDDI is not release candidate or final
+            return EDDI.Instance.inBeta || (Constants.EDDI_VERSION.phase < Utilities.Version.TestPhase.rc);
+#endif
         }
 
         public void sendEvent(string eventData)
