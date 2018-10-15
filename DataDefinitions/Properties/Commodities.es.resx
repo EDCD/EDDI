@@ -1608,7 +1608,6 @@
   <data name="ShansCharisOrchid" xml:space="preserve">
     <value>Orquídea Charis de Shan</value>
   </data>
-</root>
   <data name="ancientkey" xml:space="preserve">
     <value>Llave antigua</value>
     <comment>Commodity Ancient Key</comment>

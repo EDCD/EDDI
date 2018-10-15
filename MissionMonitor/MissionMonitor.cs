@@ -611,7 +611,7 @@ namespace EddiMissionMonitor
                         .ToLowerInvariant();
 
                     // Might be a faction state
-                    SystemState factionState = SystemState
+                    FactionState factionState = FactionState
                         .AllOfThem
                         .Find(s => s.edname.ToLowerInvariant() == element);
                     if (factionState != null)

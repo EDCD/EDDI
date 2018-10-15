@@ -3198,7 +3198,7 @@ namespace EddiJournalMonitor
         {
             string faction = JsonParsing.getString(data, key);
             // Might be a superpower...
-            Superpower superpowerFaction = Superpower.From(faction);
+            Superpower superpowerFaction = Superpower.FromNameOrEdName(faction);
             return superpowerFaction?.invariantName ?? faction;
         }
 
