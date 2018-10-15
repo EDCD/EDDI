@@ -12,7 +12,7 @@ using Utilities;
 namespace EddiStarMapService
 {
     /// <summary> Talk to the Elite: Dangerous Star Map service </summary>
-    public class StarMapService
+    public partial class StarMapService
     {
         // Set the maximum batch size we will use for syncing before we write systems to our sql database
         public const int syncBatchSize = 100;
@@ -70,9 +70,11 @@ namespace EddiStarMapService
                 {
                     Logging.Warn("Failed to send event to EDSM", ex);
                 }
-            });
-            thread.IsBackground = true;
-            thread.Name = "StarMapService send event";
+            })
+            {
+                IsBackground = true,
+                Name = "StarMapService send event"
+            };
             thread.Start();
         }
 
@@ -104,9 +106,11 @@ namespace EddiStarMapService
                 {
                     Logging.Warn("Failed to send comment to EDSM", ex);
                 }
-            });
-            thread.IsBackground = true;
-            thread.Name = "StarMapService send starmap comment";
+            })
+            {
+                IsBackground = true,
+                Name = "StarMapService send starmap comment"
+            };
             thread.Start();
         }
 
@@ -116,7 +120,7 @@ namespace EddiStarMapService
             var request = new RestRequest("api-journal-v1/discard", Method.POST);
             var clientResponse = client.Execute<List<string>>(request);
             List<string> response = clientResponse.Data;
-            return (response != null) ? response : null;
+            return response ?? null;
         }
 
         public string getStarMapComment(string systemName)
@@ -128,7 +132,7 @@ namespace EddiStarMapService
             commentRequest.AddParameter("systemName", systemName);
             var commentClientResponse = client.Execute<StarMapLogResponse>(commentRequest);
             StarMapLogResponse commentResponse = commentClientResponse.Data;
-            return (commentResponse != null) ? commentResponse.comment : null;
+            return commentResponse?.comment;
         }
 
         public StarMapInfo getStarMapInfo(string systemName)
@@ -161,7 +165,7 @@ namespace EddiStarMapService
 
             int visits = (logResponse != null && logResponse.logs != null) ? logResponse.logs.Count : 1;
             DateTime lastUpdate = (logResponse != null && logResponse.lastUpdate != null) ? (DateTime)logResponse.lastUpdate : new DateTime();
-            string comment = (commentResponse != null) ? commentResponse.comment : null;
+            string comment = commentResponse?.comment;
 
             return new StarMapInfo(visits, lastUpdate, comment);
         }
@@ -244,10 +248,12 @@ namespace EddiStarMapService
                     }
                     else
                     {
-                        vals[entry.system] = new StarMapLogInfo();
-                        vals[entry.system].system = entry.system;
-                        vals[entry.system].visits = 1;
-                        vals[entry.system].lastVisit = entry.date;
+                        vals[entry.system] = new StarMapLogInfo
+                        {
+                            system = entry.system,
+                            visits = 1,
+                            lastVisit = entry.date
+                        };
                     }
                 }
             }
