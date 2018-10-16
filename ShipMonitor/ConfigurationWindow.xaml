@@ -45,7 +45,7 @@
                     </DataGridTextColumn.ElementStyle>
                 </utility:DataGridNumericColumn>
                 <DataGridTextColumn Header="{x:Static resx:ShipMonitor.header_location}" IsReadOnly="True" Binding="{Binding Path=starsystem}"></DataGridTextColumn>
-                <DataGridComboBoxColumn Header="{x:Static resx:ShipMonitor.header_role}" SelectedItemBinding="{Binding Path=Role, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ItemsSource="{Binding Source={x:Static eddi:Role.Sorted}}">
+                <DataGridComboBoxColumn Header="{x:Static resx:ShipMonitor.header_role}" Width ="130" SelectedItemBinding="{Binding Path=Role, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ItemsSource="{Binding Source={x:Static eddi:Role.Sorted}}">
                     <DataGridComboBoxColumn.EditingElementStyle>
                         <Style TargetType="{x:Type ComboBox}">
                             <EventSetter Event="SelectionChanged" Handler="shipsUpdated" />

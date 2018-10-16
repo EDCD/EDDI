@@ -152,7 +152,7 @@ namespace EddiDataDefinitions
         }
 
         /// <summary>the role of this ship</summary>
-        private Role _Role = Role.MultiPurpose;
+        private Role _Role;
         [JsonProperty("ShipRole")]
         public Role Role
         {
@@ -435,7 +435,7 @@ namespace EddiDataDefinitions
                 militarysize = template.militarysize;
                 if (Role == null)
                 {
-                    Role = EddiDataDefinitions.Role.MultiPurpose;
+                    Role = EddiDataDefinitions.Role.FromEDName("MultiPurpose");
                 }
             }
         }

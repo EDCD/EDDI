@@ -59,5 +59,167 @@ namespace EddiDataDefinitions.Properties {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Assassination.
+        /// </summary>
+        public static string Assassination {
+            get {
+                return ResourceManager.GetString("Assassination", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bounty hunting.
+        /// </summary>
+        public static string BountyHunting {
+            get {
+                return ResourceManager.GetString("BountyHunting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Combat.
+        /// </summary>
+        public static string Combat {
+            get {
+                return ResourceManager.GetString("Combat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Combat support.
+        /// </summary>
+        public static string CombatSupport {
+            get {
+                return ResourceManager.GetString("CombatSupport", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Exploration.
+        /// </summary>
+        public static string Exploration {
+            get {
+                return ResourceManager.GetString("Exploration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Journalism.
+        /// </summary>
+        public static string Journalism {
+            get {
+                return ResourceManager.GetString("Journalism", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mining.
+        /// </summary>
+        public static string Mining {
+            get {
+                return ResourceManager.GetString("Mining", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MultiCrew.
+        /// </summary>
+        public static string MultiCrew {
+            get {
+                return ResourceManager.GetString("MultiCrew", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Multipurpose.
+        /// </summary>
+        public static string MultiPurpose {
+            get {
+                return ResourceManager.GetString("MultiPurpose", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Piracy.
+        /// </summary>
+        public static string Piracy {
+            get {
+                return ResourceManager.GetString("Piracy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Racing.
+        /// </summary>
+        public static string Racing {
+            get {
+                return ResourceManager.GetString("Racing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Refueling.
+        /// </summary>
+        public static string Refueling {
+            get {
+                return ResourceManager.GetString("Refueling", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Repair.
+        /// </summary>
+        public static string Repair {
+            get {
+                return ResourceManager.GetString("Repair", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Science.
+        /// </summary>
+        public static string Science {
+            get {
+                return ResourceManager.GetString("Science", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Search and Rescue.
+        /// </summary>
+        public static string SearchAndRescue {
+            get {
+                return ResourceManager.GetString("SearchAndRescue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Smuggling.
+        /// </summary>
+        public static string Smuggling {
+            get {
+                return ResourceManager.GetString("Smuggling", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Taxi.
+        /// </summary>
+        public static string Taxi {
+            get {
+                return ResourceManager.GetString("Taxi", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Trading.
+        /// </summary>
+        public static string Trading {
+            get {
+                return ResourceManager.GetString("Trading", resourceCulture);
+            }
+        }
     }
 }
