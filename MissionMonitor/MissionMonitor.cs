@@ -141,7 +141,7 @@ namespace EddiMissionMonitor
                             if (!mission.expiring)
                             {
                                 mission.expiring = true;
-                                EDDI.Instance.eventHandler(new MissionWarningEvent(DateTime.Now, mission.missionid, mission.name, span.Minutes));
+                                EDDI.Instance.eventHandler(new MissionWarningEvent(DateTime.Now, mission.missionid, mission.name, (int)span.TotalMinutes));
                             }
                         }
                         else if (mission.expiring)
