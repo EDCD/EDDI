@@ -705,13 +705,13 @@ namespace EddiCargoMonitor
                                     cargo.commodityDef = @event.commodityDefinition;
                                     haulage.originsystem = (@event.startmarketid == 0) ? EDDI.Instance?.CurrentStarSystem?.name : null;
                                 }
+                            }
                             else
-                                {
-                                    string originSystem = (@event.startmarketid == 0) ? EDDI.Instance?.CurrentStarSystem?.name : null;
-                                    string type = (@event.startmarketid == 0) ? "MISSION_CollectWing" : "MISSION_DeliveryWing";
-                                    haulage = new Haulage(@event.missionid ?? 0, type, originSystem, amountRemaining, null);
-                                    cargo.haulageData.Add(haulage);
-                                }
+                            {
+                                string originSystem = (@event.startmarketid == 0) ? EDDI.Instance?.CurrentStarSystem?.name : null;
+                                string type = (@event.startmarketid == 0) ? "MISSION_CollectWing" : "MISSION_DeliveryWing";
+                                haulage = new Haulage(@event.missionid ?? 0, type, originSystem, amountRemaining, null);
+                                cargo.haulageData.Add(haulage);
                             }
                         }
                         else
@@ -1222,12 +1222,13 @@ namespace EddiCargoMonitor
             {
                 // Write cargo configuration with current inventory
                 CargoMonitorConfiguration configuration = new CargoMonitorConfiguration();
-                cargoCarried = 0;
-                foreach (Cargo cargo in inventory)
+
+                int sum = inventory.Sum(c => c.total);
+                if (cargoCarried != sum)
                 {
-                    cargoCarried += cargo.total;
+                    cargoCarried = sum;
+                    EDDI.Instance.eventHandler(new CargoUpdatedEvent(DateTime.UtcNow, cargoCarried));
                 }
-                EDDI.Instance.eventHandler(new CargoUpdatedEvent(DateTime.UtcNow, cargoCarried));
                 configuration.cargo = inventory;
                 configuration.cargocarried = cargoCarried;
                 configuration.ToFile();

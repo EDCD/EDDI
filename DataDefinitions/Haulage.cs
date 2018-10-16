@@ -15,11 +15,11 @@ namespace EddiDataDefinitions
             {"rescuethewares", "salvage"}
         };
 
-        public long missionid { get; private set; }
+        public long missionid { get; set; }
 
-        public string name { get; private set; }
+        public string name { get; set; }
 
-        public string typeEDName { get; private set; }
+        public string typeEDName { get; set; }
 
         [JsonIgnore, Obsolete("Please use localizedName or invariantName")]
         public string type => MissionType.FromEDName(typeEDName)?.localizedName;
@@ -38,7 +38,7 @@ namespace EddiDataDefinitions
         [JsonIgnore]
         public bool wing => name.ToLowerInvariant().Contains("wing");
 
-        public int amount { get; private set; }
+        public int amount { get; set; }
 
         public int remaining { get; set; }
 
@@ -52,7 +52,7 @@ namespace EddiDataDefinitions
 
         public DateTime? expiry { get; set; }
 
-        public bool shared { get; private set; }
+        public bool shared { get; set; }
 
         public Haulage() { }
 
@@ -62,6 +62,8 @@ namespace EddiDataDefinitions
             name = haulage.name;
             typeEDName = haulage.typeEDName;
             originsystem = haulage.originsystem;
+            sourcesystem = haulage.sourcesystem;
+            sourcebody = haulage.sourcebody;
             status = haulage.status;
             amount = haulage.amount;
             startmarketid = haulage.startmarketid;
