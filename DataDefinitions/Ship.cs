@@ -435,7 +435,7 @@ namespace EddiDataDefinitions
                 militarysize = template.militarysize;
                 if (Role == null)
                 {
-                    Role = EddiDataDefinitions.Role.FromEDName("MultiPurpose");
+                    Role = Role.FromEDName("MultiPurpose");
                 }
             }
         }
