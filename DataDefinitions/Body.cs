@@ -14,6 +14,9 @@ namespace EddiDataDefinitions
         /// <summary>The ID of this body in EDDB</summary>
         public long? EDDBID { get; set; }
 
+        /// <summary>The ID of this body in EDSM</summary>
+        public long? EDSMID { get; set; }
+
         /// <summary>The type of the body (Star or Planet)</summary>
         [Obsolete("Please use BodyType instead")]
         public string type => (Type ?? BodyType.None).localizedName;
