@@ -287,6 +287,7 @@ namespace EddiDataDefinitions
             hardpoints = new List<Hardpoint>();
             compartments = new List<Compartment>();
             launchbays = new List<LaunchBay>();
+            Role = Role.FromEDName("MultiPurpose");
         }
 
         public Ship(long EDID, string EDName, string Manufacturer, List<Translation> PhoneticManufacturer, string Model, List<Translation> PhoneticModel, string Size, int? MilitarySize)
@@ -303,6 +304,7 @@ namespace EddiDataDefinitions
             hardpoints = new List<Hardpoint>();
             compartments = new List<Compartment>();
             launchbays = new List<LaunchBay>();
+            Role = Role.FromEDName("MultiPurpose");
         }
 
         public override string ToString()
