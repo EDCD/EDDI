@@ -51,7 +51,23 @@ namespace UnitTests
 		            ""total"": 4,
 		            ""ejected"": 0,
 		            ""price"": 11912,
-		            ""haulageData"": []
+		            ""haulageData"": [{
+                        ""missionid"": 413563829,
+                        ""name"": ""Mission_Salvage_Expansion"",
+                        ""typeEDName"": ""Salvage"",
+                        ""status"": ""Active"",
+                        ""originsystem"": ""HIP 20277"",
+                        ""sourcesystem"": ""Bunuson"",
+                        ""sourcebody"": null,
+                        ""amount"": 4,
+                        ""remaining"": 4,
+                        ""startmarketid"": 0,
+                        ""endmarketid"": 0,
+                        ""collected"": 0,
+                        ""delivered"": 0,
+                        ""expiry"": null,
+                        ""shared"": false
+                    }]
 	            },
 	            {
 		            ""edname"": ""USSCargoBlackBox"",
@@ -87,6 +103,16 @@ namespace UnitTests
             Assert.AreEqual(0, cargo.need);
             Assert.AreEqual(0, cargo.stolen);
             Assert.AreEqual(0, cargo.haulage);
+
+            // Verify haulage object 
+            Assert.AreEqual(1, cargo.haulageData.Count());
+            Haulage haulage = cargo.haulageData[0];
+            Assert.AreEqual(413563829, haulage.missionid);
+            Assert.AreEqual("Mission_Salvage_Expansion", haulage.name);
+            Assert.AreEqual("Salvage", haulage.typeEDName);
+            Assert.AreEqual(4, haulage.amount);
+            Assert.AreEqual(4, haulage.remaining);
+            Assert.IsFalse(haulage.shared);
         }
 
         [TestMethod]
