@@ -359,5 +359,27 @@ namespace UnitTests
             Assert.AreEqual("SRV", ship2.launchbays[0].type);
             Assert.AreEqual(2, ship2.launchbays[0].vehicles.Count());
         }
+
+        [TestMethod]
+        [DeploymentItem("shipMonitor.json")]
+        public void TestShipMonitorDeserializationDoesntMutateStatics()
+        {
+            // Read from our test item "shipMonitor.json"
+            ShipMonitorConfiguration configuration = new ShipMonitorConfiguration();
+            try
+            {
+                string data = System.IO.File.ReadAllText("shipMonitor.json");
+                if (data != null)
+                {
+                    configuration = JsonConvert.DeserializeObject<ShipMonitorConfiguration>(data);
+                }
+            }
+            catch (Exception)
+            {
+                Assert.Fail("Failed to read ship configuration");
+            }
+
+            Assert.AreEqual("Multipurpose", Role.MultiPurpose.edname);
+        }
     }
 }
