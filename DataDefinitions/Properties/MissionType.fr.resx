@@ -153,22 +153,30 @@
   <data name="DisableWing" xml:space="preserve">
     <value>Désactiver Escadrille</value>
   </data>
-  
-  
+  <data name="GenericPermit1" xml:space="preserve">
+    <value>Acquisition de permis</value>
+  </data>
+  <data name="Hack" xml:space="preserve">
+    <value>Piratage</value>
+  </data>
   <data name="LongDistanceExpedition" xml:space="preserve">
     <value>Expédition</value>
   </data>
   <data name="Massacre" xml:space="preserve">
     <value>Massacre</value>
   </data>
-  
+  <data name="MassacreThargoid" xml:space="preserve">
+    <value>Massacre Thargoïd</value>
+  </data>
   <data name="MassacreWing" xml:space="preserve">
     <value>Massacre d'Escadrille</value>
   </data>
   <data name="Mining" xml:space="preserve">
     <value>Minage</value>
   </data>
-  
+  <data name="MiningWing" xml:space="preserve">
+    <value>Escadrille minière</value>
+  </data>
   <data name="None" xml:space="preserve">
     <value>Aucun</value>
   </data>
