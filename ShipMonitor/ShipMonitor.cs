@@ -277,6 +277,7 @@ namespace EddiShipMonitor
                     // We don't know of this ship so need to create it
                     ship = ShipDefinitions.FromEDModel(@event.ship);
                     ship.LocalId = (int)@event.shipid;
+                    ship.Role = Role.FromEDName("Multipurpose");
                     AddShip(ship);
                 }
                 setShipName(ship, @event.shipname);
@@ -407,6 +408,7 @@ namespace EddiShipMonitor
                 Logging.Debug("Unknown ship ID " + @event.shipid);
                 ship = ShipDefinitions.FromEDModel(@event.ship);
                 ship.LocalId = (int)@event.shipid;
+                ship.Role = Role.FromEDName("Multipurpose");
             }
 
             // Save a copy of the raw event so that we can send it to other 3rd party apps
@@ -1119,6 +1121,7 @@ namespace EddiShipMonitor
                         // We can make one though
                         ship = ShipDefinitions.FromEDModel(model);
                         ship.LocalId = (int)localId;
+                        ship.Role = Role.FromEDName("Multipurpose");
                         AddShip(ship);
                         currentShipId = ship.LocalId;
                         Logging.Debug("Created ship ID " + localId + ";  " + JsonConvert.SerializeObject(ship));
