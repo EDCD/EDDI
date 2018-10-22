@@ -883,6 +883,18 @@ namespace EddiVoiceAttackResponder
                             }
                         }
                         break;
+                    case "source":
+                        {
+                            if (system == null || system == string.Empty)
+                            {
+                                ((CargoMonitor)EDDI.Instance.ObtainMonitor("Cargo monitor")).GetSourceRoute();
+                            }
+                            else
+                            {
+                                ((CargoMonitor)EDDI.Instance.ObtainMonitor("Cargo monitor")).GetSourceRoute(system);
+                            }
+                        }
+                        break;
                     case "update":
                         {
                             if (system == null || system == string.Empty)

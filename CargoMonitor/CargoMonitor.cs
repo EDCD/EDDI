@@ -1,5 +1,6 @@
 ﻿using Eddi;
 using EddiDataDefinitions;
+using EddiDataProviderService;
 using EddiEvents;
 using EddiMissionMonitor;
 using Newtonsoft.Json;
@@ -461,7 +462,7 @@ namespace EddiCargoMonitor
             {
                 cargo.owned += @event.amount;
                 cargo.CalculateNeed();
-                Haulage haulage = cargo.haulageData.FirstOrDefault(h => h.typeEDName.Contains("Collect"));
+                Haulage haulage = cargo.haulageData.FirstOrDefault(h => h.typeEDName == "collect");
                 if (haulage != null)
                 {
                     haulage.sourcesystem = EDDI.Instance?.CurrentStarSystem?.name;
@@ -1355,6 +1356,63 @@ namespace EddiCargoMonitor
                 }
             }
             return null;
+        }
+
+        public string GetSourceRoute(string system = null)
+        {
+            int missionsCount = inventory.Sum(c => c.haulageData.Count());
+
+            // Missions Route Event variables
+            decimal sourceDistance = 0;
+            string sourceSystem = null;
+            string sourceSystems = null;
+            List<string> sourceList = new List<string>();
+            List<long> missionids = new List<long>();       // List of mission IDs for the next system
+
+            if (missionsCount > 0)
+            {
+                var sourceDict = new SortedDictionary<long, string>();
+                string currentSystem = EDDI.Instance?.CurrentStarSystem?.name;
+                bool fromHere = system == currentSystem;
+                StarSystem curr = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(currentSystem, true);
+                StarSystem dest = new StarSystem();             // Destination star system
+
+                foreach (Cargo cargo in inventory.Where(c => c.haulageData.Any()).ToList())
+                {
+                    foreach (Haulage haulage in cargo.haulageData.Where(h => h.status == "Active" && h.sourcesystem != null).ToList())
+                    {
+                        if (fromHere && haulage.originsystem != currentSystem)
+                        {
+                            break;
+                        }
+
+                        dest = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(haulage.sourcesystem, true);
+                        long distance = (long)(CalculateDistance(curr, dest) * 100);
+                        if (!sourceDict.TryGetValue(distance, out string val))
+                        {
+                            sourceDict.Add(distance, haulage.sourcesystem);
+                        }
+                        missionids.Add(haulage.missionid);
+                    }
+                }
+
+                if (sourceDict != null)
+                {
+                    sourceList = sourceDict.Values.ToList();
+                    sourceSystem = sourceList[0];
+                    sourceDistance = (decimal)sourceDict.Keys.FirstOrDefault() / 100;
+                    sourceSystems = string.Join("_", sourceList);
+                }
+            }
+            EDDI.Instance.eventHandler(new MissionsRouteEvent(DateTime.Now, "source", sourceSystem, sourceSystems, sourceList.Count(), sourceDistance, 0, missionids));
+            return sourceSystem;
+        }
+
+        private decimal CalculateDistance(StarSystem curr, StarSystem dest)
+        {
+            return (decimal)Math.Round(Math.Sqrt(Math.Pow((double)(curr.x - dest.x), 2)
+                + Math.Pow((double)(curr.y - dest.y), 2)
+                + Math.Pow((double)(curr.z - dest.z), 2)), 2);
         }
 
         static void RaiseOnUIThread(EventHandler handler, object sender)
