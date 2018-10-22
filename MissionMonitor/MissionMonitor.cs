@@ -905,8 +905,8 @@ namespace EddiMissionMonitor
                     expiringDistance = CalculateDistance(curr, dest);
 
                 }
-                EDDI.Instance.eventHandler(new MissionsRouteEvent(DateTime.Now, "expiring", expiringSystem, null, expiringSeconds, expiringDistance, 0, missionids));
             }
+            EDDI.Instance.eventHandler(new MissionsRouteEvent(DateTime.Now, "expiring", expiringSystem, null, expiringSeconds, expiringDistance, 0, missionids));
             return expiringSystem;
         }
 
@@ -966,8 +966,8 @@ namespace EddiMissionMonitor
                         }
                     }
                 }
-                EDDI.Instance.eventHandler(new MissionsRouteEvent(DateTime.Now, "farthest", farthestSystem, null, missionids.Count(), farthestDistance, 0, missionids));
             }
+            EDDI.Instance.eventHandler(new MissionsRouteEvent(DateTime.Now, "farthest", farthestSystem, null, missionids.Count(), farthestDistance, 0, missionids));
             return farthestSystem;
         }
 
@@ -1047,10 +1047,9 @@ namespace EddiMissionMonitor
                 {
                     missionids.Add(mission.missionid);
                 }
-
                 mostSystems = string.Join("_", mostList);
-                EDDI.Instance.eventHandler(new MissionsRouteEvent(DateTime.Now, "most", mostSystem, mostSystems, mostCount, mostDistance, 0, missionids));
             }
+            EDDI.Instance.eventHandler(new MissionsRouteEvent(DateTime.Now, "most", mostSystem, mostSystems, mostCount, mostDistance, 0, missionids));
             return mostSystem;
         }
 
@@ -1110,8 +1109,8 @@ namespace EddiMissionMonitor
                         }
                     }
                 }
-                EDDI.Instance.eventHandler(new MissionsRouteEvent(DateTime.Now, "nearest", nearestSystem, null, missionids.Count(), nearestDistance, 0, missionids));
             }
+            EDDI.Instance.eventHandler(new MissionsRouteEvent(DateTime.Now, "nearest", nearestSystem, null, missionids.Count(), nearestDistance, 0, missionids));
             return nearestSystem;
         }
 

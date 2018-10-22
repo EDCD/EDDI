@@ -613,6 +613,18 @@ namespace EddiSpeechResponder
                             }
                         }
                         break;
+                    case "source":
+                        {
+                            if (values.Count == 2)
+                            {
+                                result = ((CargoMonitor)EDDI.Instance.ObtainMonitor("Cargo monitor")).GetSourceRoute(values[1].AsString);
+                            }
+                            else
+                            {
+                                result = ((CargoMonitor)EDDI.Instance.ObtainMonitor("Cargo monitor")).GetSourceRoute();
+                            }
+                        }
+                        break;
                     case "update":
                         {
                             if (values.Count == 2)
