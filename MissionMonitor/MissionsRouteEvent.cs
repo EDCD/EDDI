@@ -20,7 +20,7 @@ namespace EddiMissionMonitor
         static MissionsRouteEvent()
         {
             VARIABLES.Add("routetype", "Type of route query. 'expiring', 'farthest', 'most', 'nearest', 'route', or 'update'");
-            VARIABLES.Add("destination", "The destination system");
+            VARIABLES.Add("system", "The destination system");
             VARIABLES.Add("route", "Delimited missions systems list, if applicable");
             VARIABLES.Add("count", "Count of missions, systems, or expiry seconds, depending on route type");
             VARIABLES.Add("distance", "The distance to the destination system");
