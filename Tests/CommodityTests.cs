@@ -110,8 +110,10 @@ namespace UnitTests
         public void TestParseCAPICommodityQuoteNotOverwritten()
         {
             CommodityMarketQuote quote = CannedCAPIQuote();
-            CommodityMarketQuote oldQuote = new CommodityMarketQuote(quote.definition);
-            oldQuote.avgprice = 99999999;
+            CommodityMarketQuote oldQuote = new CommodityMarketQuote(quote.definition)
+            {
+                avgprice = 99999999
+            };
             Assert.AreEqual(313, quote.buyprice);
             Assert.AreEqual(281, quote.sellprice);
             Assert.AreEqual(294, quote.avgprice);

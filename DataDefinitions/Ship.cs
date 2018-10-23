@@ -313,7 +313,7 @@ namespace EddiDataDefinitions
 
         public string SpokenName(string defaultname = null)
         {
-            string model = (defaultname == null ? SpokenModel() : defaultname) ?? "ship";
+            string model = (defaultname ?? SpokenModel()) ?? "ship";
             string result = ("your " + model);
             if (!string.IsNullOrEmpty(phoneticname))
             {

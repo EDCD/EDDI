@@ -89,8 +89,10 @@ namespace EddiDataProviderService
                 }
                 if (system == null)
                 {
-                    system = new StarSystem();
-                    system.name = name;
+                    system = new StarSystem
+                    {
+                        name = name
+                    };
                 }
 
                 insertStarSystem(system);
@@ -117,7 +119,10 @@ namespace EddiDataProviderService
 
         public StarSystem GetStarSystem(string name, bool refreshIfOutdated = true)
         {
-            if (!File.Exists(DbFile)) return null;
+            if (!File.Exists(DbFile))
+            {
+                return null;
+            }
 
             StarSystem result = null;
             try
@@ -158,7 +163,10 @@ namespace EddiDataProviderService
                                     }
                                     if (result.comment == null)
                                     {
-                                        if (!rdr.IsDBNull(4)) result.comment = rdr.GetString(4);
+                                        if (!rdr.IsDBNull(4))
+                                        {
+                                            result.comment = rdr.GetString(4);
+                                        }
                                     }
                                     if (refreshIfOutdated && result.lastupdated < DateTime.UtcNow.AddHours(-1))
                                     {
