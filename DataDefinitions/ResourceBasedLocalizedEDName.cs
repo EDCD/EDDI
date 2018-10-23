@@ -34,10 +34,6 @@ namespace EddiDataDefinitions
                     default:
                         break;
                 }
-                if (reader.TokenType == JsonToken.Null)
-                {
-                    return null;
-                }
                 JObject jsonObject = JObject.Load(reader);
                 bool success = jsonObject.TryGetValue("edname", out JToken token);
                 if (!success)
