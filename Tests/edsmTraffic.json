@@ -1,0 +1,39 @@
+{
+	"id": 4345,
+	"id64": 3932277478106,
+	"name": "Shinrarta Dezhra",
+	"url": "https:\/\/www.edsm.net\/en\/system\/id\/4345\/name\/Shinrarta+Dezhra",
+	"discovery": {
+		"commander": "Wu Ye",
+		"date": "2014-11-22 13:39:56"
+	},
+	"traffic": {
+		"total": 9631,
+		"week": 892,
+		"day": 193
+	},
+	"breakdown": {
+		"Alliance Challenger": 2,
+		"Alliance Chieftain": 3,
+		"Alliance Crusader": 2,
+		"Anaconda": 28,
+		"Asp Explorer": 32,
+		"Beluga Liner": 1,
+		"Cobra MkIII": 1,
+		"Diamondback Explorer": 16,
+		"Dolphin": 2,
+		"Federal Corvette": 22,
+		"Fer-de-Lance": 2,
+		"Hauler": 1,
+		"Imperial Clipper": 2,
+		"Imperial Courier": 7,
+		"Imperial Cutter": 14,
+		"Imperial Eagle": 1,
+		"Krait MkII": 32,
+		"Orca": 1,
+		"Python": 13,
+		"Type-10 Defender": 3,
+		"Type-9 Heavy": 5,
+		"Viper MkIII": 1
+	}
+}

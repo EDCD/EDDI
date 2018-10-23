@@ -1,0 +1,75 @@
+{
+	"id": 4345,
+	"id64": 3932277478106,
+	"name": "Shinrarta Dezhra",
+	"url": "https:\/\/www.edsm.net\/en\/system\/id\/4345\/name\/Shinrarta+Dezhra",
+	"controllingFaction": {
+		"id": 80576,
+		"name": "Pilots Federation Local Branch",
+		"allegiance": "Pilots Federation",
+		"government": "Democracy"
+	},
+	"factions": [{
+		"id": 702,
+		"name": "The Dark Wheel",
+		"allegiance": "Independent",
+		"government": "Democracy",
+		"influence": 0.498,
+		"state": "Boom",
+		"recoveringStates": [],
+		"pendingStates": [],
+		"isPlayer": false,
+		"lastUpdate": 1539928089
+	},
+	{
+		"id": 434,
+		"name": "LTT 4487 Industry",
+		"allegiance": "Federation",
+		"government": "Corporate",
+		"influence": 0.261,
+		"state": "None",
+		"recoveringStates": [],
+		"pendingStates": [{
+			"state": "Boom",
+			"trend": 1
+		}],
+		"isPlayer": false,
+		"lastUpdate": 1539928985
+	},
+	{
+		"id": 189,
+		"name": "Los Chupacabras",
+		"allegiance": "Independent",
+		"government": "Prison colony",
+		"influence": 0.162,
+		"state": "None",
+		"recoveringStates": [],
+		"pendingStates": [],
+		"isPlayer": true,
+		"lastUpdate": 1539928985
+	},
+	{
+		"id": 240,
+		"name": "Future of Arro Naga",
+		"allegiance": "Federation",
+		"government": "Democracy",
+		"influence": 0.079,
+		"state": "Boom",
+		"recoveringStates": [],
+		"pendingStates": [],
+		"isPlayer": false,
+		"lastUpdate": 1539928985
+	},
+	{
+		"id": 61,
+		"name": "The Pilots Federation",
+		"allegiance": "Independent",
+		"government": "Democracy",
+		"influence": 0,
+		"state": "None",
+		"recoveringStates": [],
+		"pendingStates": [],
+		"isPlayer": false,
+		"lastUpdate": 1539923616
+	}]
+}
