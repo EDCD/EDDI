@@ -860,7 +860,7 @@ namespace EddiSpeechResponder
                     {
                         result = (decimal)Math.Round(Math.Sqrt(Math.Pow((double)(curr.x - dest.x), 2)
                                     + Math.Pow((double)(curr.y - dest.y), 2)
-                                    + Math.Pow((double)(curr.z - curr.z), 2)), 2);
+                                    + Math.Pow((double)(curr.z - dest.z), 2)), 2);
                     }
                 }
                 else if (values.Count == 6 && value.Type == Cottle.ValueContent.Number)
@@ -869,7 +869,7 @@ namespace EddiSpeechResponder
                                 + Math.Pow((double)(values[1].AsNumber - values[4].AsNumber), 2)
                                 + Math.Pow((double)(values[2].AsNumber - values[5].AsNumber), 2)), 2);
                 }
-                return (new ReflectionValue(result));
+                return new ReflectionValue(result);
             }, 2, 6);
 
             store["Log"] = new NativeFunction((values) =>
