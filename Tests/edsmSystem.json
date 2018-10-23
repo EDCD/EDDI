@@ -1,0 +1,23 @@
+{
+  "name": "Shinrarta Dezhra",
+  "id": 4345,
+  "coords": {
+    "x": 55.71875,
+    "y": 17.59375,
+    "z": 27.15625
+  },
+  "coordsLocked": true,
+  "requirePermit": true,
+  "permitName": "Founders World",
+  "information": {
+    "allegiance": "Pilots Federation",
+    "government": "Democracy",
+    "faction": "Pilots Federation Local Branch",
+    "factionState": "None",
+    "population": 85206935,
+    "reserve": "Common",
+    "security": "High",
+    "economy": "High Tech",
+    "secondEconomy": "Industrial"
+  }
+}
