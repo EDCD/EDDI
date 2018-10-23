@@ -47,7 +47,7 @@ namespace EddiDataDefinitions
             }
             catch (Exception)
             {
-                // let the Json.Net machinery handle the exceptoion
+                // let the Json.Net machinery handle the exception
                 throw;
             }
         }
