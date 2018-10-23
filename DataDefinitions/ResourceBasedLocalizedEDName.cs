@@ -23,6 +23,7 @@ namespace EddiDataDefinitions
         {
             try
             {
+                // bail early on known null cases
                 switch (reader.TokenType)
                 {
                     case JsonToken.None:
@@ -34,6 +35,8 @@ namespace EddiDataDefinitions
                     default:
                         break;
                 }
+
+                // get the edname
                 JObject jsonObject = JObject.Load(reader);
                 bool success = jsonObject.TryGetValue("edname", out JToken token);
                 if (!success)
@@ -41,8 +44,15 @@ namespace EddiDataDefinitions
                     return null;
                 }
                 string edname = token.Value<string>();
-                MethodInfo method = objectType.GetMethod("FromEDName", BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy, null, new Type[] { typeof(string) }, null);
-                object result = method?.Invoke(null, new object[] { edname });
+
+                // get the FromEDName() method
+                const BindingFlags bindingFlags = BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy;
+                Type[] argumentTypes = new Type[] { typeof(string) };
+                MethodInfo method = objectType.GetMethod("FromEDName", bindingFlags, binder: null, types: argumentTypes, modifiers: null);
+
+                // invoke the method
+                object[] parameters = new object[] { edname };
+                object result = method?.Invoke(null, parameters);
                 return result;
             }
             catch (Exception)
