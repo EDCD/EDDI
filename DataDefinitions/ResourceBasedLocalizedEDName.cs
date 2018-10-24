@@ -79,11 +79,11 @@ namespace EddiDataDefinitions
         protected static ResourceManager resourceManager;
         protected static Func<string, T> missingEDNameHandler;
 
-        [JsonIgnore]
-        public readonly string edname; // must not be JsonProperty as that lets Json.NET modify it, which causes chaos
+        [JsonProperty]
+        public readonly string edname;
 
         [JsonIgnore]
-        public readonly string basename; // must not be JsonProperty as that lets Json.NET modify it, which causes chaos
+        public readonly string basename;
 
         [JsonIgnore]
         public string invariantName => resourceManager.GetString(basename, CultureInfo.InvariantCulture) ?? basename;
