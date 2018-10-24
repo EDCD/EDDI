@@ -173,7 +173,7 @@ namespace EddiEddbService
                 systemEDDBID = (long)bodyJson["system_id"],
 
                 // Orbital data
-                distance = (long?)bodyJson["distance_to_arrival"], // Light seconds
+                distance = (decimal?)bodyJson["distance_to_arrival"], // Light seconds
                 temperature = (decimal?)bodyJson["surface_temperature"], //Kelvin
                 tidallylocked = (bool?)bodyJson["is_rotational_period_tidally_locked"] ?? false, // Days
                 rotationalperiod = (decimal?)(double?)bodyJson["rotational_period"], // Days
@@ -240,7 +240,7 @@ namespace EddiEddbService
                     List<BodySolidComposition> bodyCompositions = new List<BodySolidComposition>();
                     foreach (JObject bodyCompJson in bodyJson["solid_composition"])
                     {
-                        string composition = (string)bodyCompJson["solid_component_name"];
+                        BodyComposition composition = BodyComposition.FromName((string)bodyCompJson["solid_component_name"]);
                         decimal? share = (decimal?)bodyCompJson["share"];
                         if (composition != null && share != null)
                         {
@@ -279,7 +279,7 @@ namespace EddiEddbService
                 foreach (JObject ringJson in bodyJson["rings"])
                 {
                     string name = (string)ringJson["name"];
-                    Composition composition = Composition.FromName((string)ringJson["ring_type_name"]);
+                    RingComposition composition = RingComposition.FromName((string)ringJson["ring_type_name"]);
                     decimal ringMassMegaTons = (decimal)ringJson["ring_mass"];
                     decimal innerRadiusKm = (decimal)ringJson["ring_inner_radius"];
                     decimal outerRadiusKm = (decimal)ringJson["ring_outer_radius"];
@@ -290,7 +290,7 @@ namespace EddiEddbService
             if (bodyJson["ring_type_name"].HasValues)
             {
                 string name = (string)bodyJson["name"];
-                Composition composition = Composition.FromName((string)bodyJson["ring_type_name"]);
+                RingComposition composition = RingComposition.FromName((string)bodyJson["ring_type_name"]);
                 decimal ringMassMegaTons = (decimal)bodyJson["ring_mass"];
                 decimal innerRadiusKm = (decimal)bodyJson["ring_inner_radius"];
                 decimal outerRadiusKm = (decimal)bodyJson["ring_outer_radius"];

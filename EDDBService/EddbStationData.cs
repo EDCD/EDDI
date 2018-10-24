@@ -157,18 +157,19 @@ namespace EddiEddbService
 
             JObject stationJson = ((JObject)response);
 
-            Station Station = new Station();
+            Station Station = new Station
+            {
+                // General data
+                EDDBID = (long)stationJson["id"],
+                name = (string)stationJson["name"],
+                bodyEDDBID = (long?)stationJson["body_id"],
+                distancefromstar = (decimal?)stationJson["distance_to_star"], // Light seconds
 
-            // General data
-            Station.EDDBID = (long)stationJson["id"];
-            Station.name = (string)stationJson["name"];
-            Station.bodyEDDBID = (long?)stationJson["body_id"];
-            Station.distancefromstar = (long?)stationJson["distance_to_star"]; // Light seconds
-
-            // System name is not given directly, but we have an EDDB ID linking to the system 
-            // that we will be able to use for lookups once our system lookup is complete.
-            // We will also need to use this lookup to find the reserve level associated with this system
-            Station.systemEDDBID = (long?)stationJson["system_id"];
+                // System name is not given directly, but we have an EDDB ID linking to the system 
+                // that we will be able to use for lookups once our system lookup is complete.
+                // We will also need to use this lookup to find the reserve level associated with this system
+                systemEDDBID = (long?)stationJson["system_id"]
+            };
             /*
             Station.systemname = systemName;
             */
@@ -184,16 +185,13 @@ namespace EddiEddbService
             {
                 controllingFaction = new Faction();
             };
-            controllingFaction.Government = Government.FromName((string)stationJson["government"]);
             controllingFaction.Allegiance = Superpower.FromName((string)stationJson["allegiance"]);
+            controllingFaction.Government = Government.FromName((string)stationJson["government"]);
+            controllingFaction.FactionState = FactionState.FromName((string)stationJson["state"]);
             Station.Faction = controllingFaction;
 
-            // The local state may or may not match the faction's general state, so we set it here
-            Station.State = State.FromName((string)stationJson["state"]) ?? State.None;
-
             // Station facilities data
-            Station.Model = StationModel.FromName((string)stationJson["type"]) ?? StationModel.None;
-            Station.LargestPad = StationLargestPad.FromSize((string)stationJson["max_landing_pad_size"]);
+            Station.Model = StationModel.FromName((string)stationJson["type"]);
             Station.hasblackmarket = (bool?)stationJson["has_blackmarket"];
             Station.hasdocking = (bool?)stationJson["has_docking"];
             Station.hasmarket = (bool?)stationJson["has_market"];
@@ -202,17 +200,30 @@ namespace EddiEddbService
             Station.hasrepair = (bool?)stationJson["has_repair"];
             Station.hasrearm = (bool?)stationJson["has_rearm"];
             Station.hasshipyard = (bool?)stationJson["has_shipyard"];
+            if ((bool?)stationJson["has_docking"] is true)
+            {
+                // Add services which are always included when we can dock
+                Station.stationServices.Add(StationService.FromEDName("Dock"));
+                Station.stationServices.Add(StationService.FromEDName("AutoDock"));
+                Station.stationServices.Add(StationService.FromEDName("Contacts"));
+                Station.stationServices.Add(StationService.FromEDName("Exploration"));
+                Station.stationServices.Add(StationService.FromEDName("Tuning"));
+                Station.stationServices.Add(StationService.FromEDName("Workshop"));
+                Station.stationServices.Add(StationService.FromEDName("FlightController"));
+                Station.stationServices.Add(StationService.FromEDName("StationOperations"));
+                Station.stationServices.Add(StationService.FromEDName("Powerplay"));
+            }
 
-            List<string> economies = new List<string>();
+            List<Economy> Economies = new List<Economy>();
             if (stationJson["economies"] != null)
             {
                 foreach (JObject export in stationJson["economies"])
                 {
-                    string economy = (string)export["name"];
-                    if (economy != null) { economies.Add(economy); }
+                    Economy Economy = Economy.FromName((string)export["name"]);
+                    if (Economy != null) { Economies.Add(Economy); }
                 }
             }
-            Station.economies = economies;
+            Station.Economies = Economies;
 
             List<string> imports = new List<string>();
             if (stationJson["import_commodities"] != null)

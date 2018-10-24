@@ -139,7 +139,7 @@ namespace EddiEddbService
                 updatedAt = (DateTime)factionJson["updated_at"],
                 Government = Government.FromName((string)factionJson["government"]),
                 Allegiance = Superpower.FromName((string)factionJson["allegiance"]),
-                State = State.FromName((string)factionJson["state"]) ?? State.None,
+                FactionState = FactionState.FromName((string)factionJson["state"]),
                 homeSystemEddbId = (long?)factionJson["home_system_id"],
                 isplayer = (bool)factionJson["is_player_faction"]
             };
