@@ -151,9 +151,20 @@ namespace EddiDataDefinitions
             }
         }
 
+        // The type of mission
+        public string roleEDName
+        {
+            get => Role.edname;
+            set
+            {
+                Role rDef = Role.FromEDName(value);
+                this.Role = rDef;
+            }
+        }
+
         /// <summary>the role of this ship</summary>
         private Role _Role = Role.MultiPurpose;
-        [JsonProperty("ShipRole")]
+        [JsonIgnore]
         public Role Role
         {
             get
@@ -169,6 +180,8 @@ namespace EddiDataDefinitions
                 }
             }
         }
+
+        [JsonIgnore, Obsolete("Please use localizedName or invariantName")]
         public string role => Role?.localizedName; // This string is made available for Cottle scripts that vary depending on the ship's role. 
 
         [JsonExtensionData]

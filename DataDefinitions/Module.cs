@@ -57,7 +57,7 @@ namespace EddiDataDefinitions
         [JsonProperty]
         public long EDDBID { get; set; }
 
-        // TEMP
+        [JsonIgnore]
         public string EDName { get => edname; }
 
         public string LocalizedMountName()
