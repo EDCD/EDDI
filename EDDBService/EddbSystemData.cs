@@ -50,7 +50,7 @@ namespace EddiEddbService
             {
                 system.name = systemName;
             }
-            return system;
+            return system ?? new StarSystem() { name = systemName };
         }
 
         /// <summary> Exactly one system EDDBID is required. </summary>
@@ -61,7 +61,7 @@ namespace EddiEddbService
             {
                 system.EDDBID = eddbId;
             }
-            return system;
+            return system ?? new StarSystem() { EDDBID = eddbId };
         }
 
         /// <summary> Create a custom system query. </summary>
@@ -134,14 +134,13 @@ namespace EddiEddbService
                 StarSystem.x = (decimal?)systemJson["x"];
                 StarSystem.y = (decimal?)systemJson["y"];
                 StarSystem.z = (decimal?)systemJson["z"];
-                StarSystem.Reserve = SystemReserveLevel.FromName((string)systemJson["reserve_type"]);
+                StarSystem.Reserve = ReserveLevel.FromName((string)systemJson["reserve_type"]);
 
                 // Populated system data
                 StarSystem.population = (long?)systemJson["population"] == null ? 0 : (long?)systemJson["population"];
                 // EDDB uses invariant / English localized economies
-                StarSystem.economies[0] = Economy.FromName((string)systemJson["primary_economy"]);
+                StarSystem.Economies[0] = Economy.FromName((string)systemJson["primary_economy"]);
                 // At present, EDDB does not provide any information about secondary economies.
-                StarSystem.systemState = State.FromName((string)systemJson["state"]) ?? State.None;
                 StarSystem.securityLevel = SecurityLevel.FromName((string)systemJson["security"]);
 
                 // Controlling faction data
@@ -152,7 +151,8 @@ namespace EddiEddbService
                         EDDBID = (long?)systemJson["controlling_minor_faction_id"],
                         name = (string)systemJson["controlling_minor_faction"],
                         Government = Government.FromName((string)systemJson["government"]),
-                        Allegiance = Superpower.FromName((string)systemJson["allegiance"])
+                        Allegiance = Superpower.FromName((string)systemJson["allegiance"]),
+                        FactionState = FactionState.FromName((string)systemJson["state"])
                     };
                     StarSystem.Faction = controllingFaction;
                 }

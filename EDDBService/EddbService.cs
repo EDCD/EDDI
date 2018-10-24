@@ -34,21 +34,25 @@ namespace EddiEddbService
             DateTime requestTime = DateTime.UtcNow;
 
             PageResponse response = PageRequest(request, currentPage);
-            docs.AddRange(response.docs);
-            totalPages = response.pages;
-
-            // Make additional requests as needed
-            while (currentPage < totalPages && (DateTime.UtcNow-requestTime).TotalMilliseconds > 5 )
+            if (response != null)
             {
-                requestTime = DateTime.UtcNow;
-                PageResponse pageResponse = PageRequest(request, ++currentPage);
-                if (pageResponse != null)
-                {
-                    docs.AddRange(pageResponse.docs);
-                }
-            }
+                docs.AddRange(response.docs);
+                totalPages = response.pages;
 
-            return docs;
+                // Make additional requests as needed
+                while (currentPage < totalPages && (DateTime.UtcNow - requestTime).TotalMilliseconds > 5)
+                {
+                    requestTime = DateTime.UtcNow;
+                    PageResponse pageResponse = PageRequest(request, ++currentPage);
+                    if (pageResponse != null)
+                    {
+                        docs.AddRange(pageResponse.docs);
+                    }
+                }
+
+                return docs;
+            }
+            return null;
         }
 
         private static PageResponse PageRequest(RestRequest request, int page)
