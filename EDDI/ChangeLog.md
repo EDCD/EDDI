@@ -2,7 +2,20 @@
 
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
-### Development
+### 3.1.0-b3
+  * Core
+    * Fixed a bug in our JSON deserialization code that led to variables changing which were expected to remain constant. This manifested in various ways, including:
+      * Ship roles changing in unexpected ways
+      * The ship role drop-down menu becoming scrambled
+      * System state reporting becoming scrambled or fixated on a particular state
+  * Cargo monitor
+    * Fixed double report of 'Cargo updated'.
+  * Mission monitor
+    * Fixed Mission Warning event reporting wrong expiry #875
+    * Fixed Entered Normal Space event incorrectly reporting I'm near my last station #876
+    * Moved body gravity reporting to 'Glide' event script.
+  * Speech responder
+    * Fixed Mission warning 'minutes' remaining and 'Entered normal space' script for planetary ports.
 
 ### 3.1.0-b2
   * Core
