@@ -378,117 +378,90 @@ namespace UnitTests
         public void TestJournalJumpedEvent()
         {
             string line = @"{
-	""timestamp"": ""2018-08-08T06: 56: 20Z"",
-	""event"": ""FSDJump"",
-	""StarSystem"": ""Diaguandri"",
-	""SystemAddress"": 670417429889,
-	""StarPos"": [-41.06250,
-	-62.15625,
-	-103.25000],
-	""SystemAllegiance"": ""Independent"",
-	""SystemEconomy"": ""$economy_HighTech;"",
-	""SystemEconomy_Localised"": ""HighTech"",
-	""SystemSecondEconomy"": ""$economy_Refinery;"",
-	""SystemSecondEconomy_Localised"": ""Refinery"",
-	""SystemGovernment"": ""$government_Democracy;"",
-	""SystemGovernment_Localised"": ""Democracy"",
-	""SystemSecurity"": ""$SYSTEM_SECURITY_medium;"",
-	""SystemSecurity_Localised"": ""MediumSecurity"",
-	""Population"": 10303479,
-	""JumpDist"": 19.340,
-	""FuelUsed"": 2.218082,
-	""FuelLevel"": 23.899260,
-	""Factions"": [{
-		""Name"": ""DiaguandriInterstellar"",
-		""FactionState"": ""Boom"",
-		""Government"": ""Corporate"",
-		""Influence"": 0.100398,
-		""Allegiance"": ""Independent""
-	},
-	{
-		""Name"": ""People'sMET20Liberals"",
-		""FactionState"": ""Boom"",
-		""Government"": ""Democracy"",
-		""Influence"": 0.123260,
-		""Allegiance"": ""Federation""
-	},
-	{
-		""Name"": ""PilotsFederationLocalBranch"",
-		""FactionState"": ""None"",
-		""Government"": ""Democracy"",
-		""Influence"": 0.000000,
-		""Allegiance"": ""PilotsFederation""
-	},
-	{
-		""Name"": ""NaturalDiaguandriRegulatoryState"",
-		""FactionState"": ""None"",
-		""Government"": ""Dictatorship"",
-		""Influence"": 0.020875,
-		""Allegiance"": ""Independent"",
-		""RecoveringStates"": [{
-			""State"": ""CivilWar"",
-			""Trend"": 0
-		}]
-	},
-	{
-		""Name"": ""CartelofDiaguandri"",
-		""FactionState"": ""None"",
-		""Government"": ""Anarchy"",
-		""Influence"": 0.009940,
-		""Allegiance"": ""Independent"",
-		""PendingStates"": [{
-			""State"": ""Bust"",
-			""Trend"": 0
-		},
-		{
-			""State"": ""CivilUnrest"",
-			""Trend"": 1
-		}],
-		""RecoveringStates"": [{
-			""State"": ""CivilWar"",
-			""Trend"": 0
-		}]
-	},
-	{
-		""Name"": ""RevolutionaryPartyofDiaguandri"",
-		""FactionState"": ""None"",
-		""Government"": ""Democracy"",
-		""Influence"": 0.124254,
-		""Allegiance"": ""Federation"",
-		""PendingStates"": [{
-			""State"": ""Boom"",
-			""Trend"": 1
-		},
-		{
-			""State"": ""Bust"",
-			""Trend"": 1
-		}]
-	},
-	{
-		""Name"": ""TheBrotherhoodoftheDarkCircle"",
-		""FactionState"": ""None"",
-		""Government"": ""Corporate"",
-		""Influence"": 0.093439,
-		""Allegiance"": ""Independent"",
-		""RecoveringStates"": [{
-			""State"": ""CivilUnrest"",
-			""Trend"": 1
-		}]
-	},
-	{
-		""Name"": ""EXO"",
-		""FactionState"": ""Expansion"",
-		""Government"": ""Democracy"",
-		""Influence"": 0.527833,
-		""Allegiance"": ""Independent"",
-		""PendingStates"": [{
-			""State"": ""Boom"",
-			""Trend"": 1
-		}]
-	}],
-	""SystemFaction"": ""EXO"",
-	""FactionState"": ""Expansion""
-}";
+	        ""timestamp"": ""2018-08-08T06: 56: 20Z"",
+	        ""event"": ""FSDJump"",
+	        ""StarSystem"": ""Diaguandri"",
+        	""SystemAddress"": 670417429889,
+	        ""StarPos"": [-41.06250, -62.15625, -103.25000],
+	        ""SystemAllegiance"": ""Independent"",
+	        ""SystemEconomy"": ""$economy_HighTech;"",
+	        ""SystemEconomy_Localised"": ""HighTech"",
+	        ""SystemSecondEconomy"": ""$economy_Refinery;"",
+	        ""SystemSecondEconomy_Localised"": ""Refinery"",
+	        ""SystemGovernment"": ""$government_Democracy;"",
+	        ""SystemGovernment_Localised"": ""Democracy"",
+	        ""SystemSecurity"": ""$SYSTEM_SECURITY_medium;"",
+	        ""SystemSecurity_Localised"": ""MediumSecurity"",
+	        ""Population"": 10303479,
+	        ""JumpDist"": 19.340,
+	        ""FuelUsed"": 2.218082,
+	        ""FuelLevel"": 23.899260,
+	        ""Factions"": [{
+		        ""Name"": ""DiaguandriInterstellar"",
+		        ""FactionState"": ""Boom"",
+		        ""Government"": ""Corporate"",
+		        ""Influence"": 0.100398,
+		        ""Allegiance"": ""Independent""
+	        },
+	        {
+		        ""Name"": ""People'sMET20Liberals"",
+		        ""FactionState"": ""Boom"",
+		        ""Government"": ""Democracy"",
+		        ""Influence"": 0.123260,
+		        ""Allegiance"": ""Federation""
+	        },
+	        {
+		        ""Name"": ""PilotsFederationLocalBranch"",
+		        ""FactionState"": ""None"",
+		        ""Government"": ""Democracy"",
+		        ""Influence"": 0.000000,
+		        ""Allegiance"": ""PilotsFederation""
+	        },
+	        {
+		        ""Name"": ""NaturalDiaguandriRegulatoryState"",
+		        ""FactionState"": ""None"",
+		        ""Government"": ""Dictatorship"",
+		        ""Influence"": 0.020875,
+		        ""Allegiance"": ""Independent"",
+		        ""RecoveringStates"": [{""State"": ""CivilWar"", ""Trend"": 0}]
+	        },
+	        {
+		        ""Name"": ""CartelofDiaguandri"",
+		        ""FactionState"": ""None"",
+		        ""Government"": ""Anarchy"",
+		        ""Influence"": 0.009940,
+		        ""Allegiance"": ""Independent"",
+		        ""PendingStates"": [{""State"": ""Bust"", ""Trend"": 0}, {""State"": ""CivilUnrest"", ""Trend"": 1}],
+		        ""RecoveringStates"": [{""State"": ""CivilWar"", ""Trend"": 0}]
+	        },
+	        {
+		        ""Name"": ""RevolutionaryPartyofDiaguandri"",
+		        ""FactionState"": ""None"",
+		        ""Government"": ""Democracy"",
+		        ""Influence"": 0.124254,
+		        ""Allegiance"": ""Federation"",
+		        ""PendingStates"": [{""State"": ""Boom"", ""Trend"": 1}, {""State"": ""Bust"", ""Trend"": 1}]
+	        },
+	        {
+		        ""Name"": ""TheBrotherhoodoftheDarkCircle"",
+		        ""FactionState"": ""None"",
+		        ""Government"": ""Corporate"",
+		        ""Influence"": 0.093439,
+		        ""Allegiance"": ""Independent"",
+		        ""RecoveringStates"": [{""State"": ""CivilUnrest"", ""Trend"": 1}]
+            },
+            {
+		        ""Name"": ""EXO"",
+		        ""FactionState"": ""Expansion"",
+		        ""Government"": ""Democracy"",
+		        ""Influence"": 0.527833,
+		        ""Allegiance"": ""Independent"",
+		        ""PendingStates"": [{""State"": ""Boom"", ""Trend"": 1}]
+	        }],
+	        ""SystemFaction"": ""EXO"",
+	        ""FactionState"": ""Expansion""
+            }";
+
             List<Event> events = JournalMonitor.ParseJournalEntry(line);
             Assert.IsTrue(events.Count == 1);
             JumpedEvent jumpedEvent = (JumpedEvent)events[0];
@@ -508,6 +481,37 @@ namespace UnitTests
             Assert.AreEqual(23.899260M, jumpedEvent.fuelremaining);
             Assert.AreEqual("EXO", jumpedEvent.faction);
             Assert.AreEqual("Expansion", jumpedEvent.factionstate);
+        }
+
+        [TestMethod]
+        public void TestJournalJumpedEventFactionStateNull()
+        {
+            // Test for unpopulated system
+            string line = @"{
+                ""timestamp"": ""2018-10-17T00:40:45Z"",
+                ""event"": ""FSDJump"",
+                ""StarSystem"": ""Wredguia WD-K d8-65"",
+                ""SystemAddress"": 2243793258827,
+                ""StarPos"": [-319.15625,10.37500,-332.31250],
+                ""SystemAllegiance"": """",
+                ""SystemEconomy"": ""$economy_None;"",
+                ""SystemEconomy_Localised"": ""None"",
+                ""SystemSecondEconomy"": ""$economy_None;"",
+                ""SystemSecondEconomy_Localised"": ""None"",
+                ""SystemGovernment"": ""$government_None;"",
+                ""SystemGovernment_Localised"": ""None"",
+                ""SystemSecurity"": ""$GAlAXY_MAP_INFO_state_anarchy;"",
+                ""SystemSecurity_Localised"": ""Anarchy"",
+                ""Population"": 0,
+                ""JumpDist"": 24.230,
+                ""FuelUsed"": 4.271171,
+                ""FuelLevel"": 27.728828
+            }";
+
+            List<Event> events = JournalMonitor.ParseJournalEntry(line);
+            Assert.IsTrue(events.Count == 1);
+            JumpedEvent jumpedEvent = (JumpedEvent)events[0];
+            Assert.AreEqual("None", jumpedEvent.factionstate);
         }
 
         [TestMethod]
