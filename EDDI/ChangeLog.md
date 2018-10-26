@@ -2,6 +2,8 @@
 
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
+### Development
+
 ### 3.1.0-b3
   * Core
     * Fixed a bug in our JSON deserialization code that led to variables changing which were expected to remain constant. This manifested in various ways, including:
