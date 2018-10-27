@@ -1,8 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Globalization;
-using System.Resources;
 
 namespace EddiDataDefinitions
 {
@@ -40,7 +38,7 @@ namespace EddiDataDefinitions
         public long? age { get; set; }
 
         /// <summary>The distance of the body from the arrival star, in light seconds </summary>
-        public long? distance { get; set; }
+        public decimal? distance { get; set; }
 
         /// <summary>If this body can be landed upon</summary>
         public bool? landable { get; set; }
@@ -153,9 +151,9 @@ namespace EddiDataDefinitions
 
         /// <summary>The reserve level (localized name)</summary>
         [Obsolete("Please use SystemReserveLevel instead")]
-        public string reserves => (reserveLevel ?? SystemReserveLevel.None).localizedName;
+        public string reserves => (reserveLevel ?? ReserveLevel.None).localizedName;
         /// <summary>The reserve level</summary>
-        public SystemReserveLevel reserveLevel { get; set; } = SystemReserveLevel.None;
+        public ReserveLevel reserveLevel { get; set; } = ReserveLevel.None;
 
         /// <summary> the last time the information present changed (in the data source) </summary>
         public long? updatedat { get; set; }
@@ -174,135 +172,6 @@ namespace EddiDataDefinitions
                 if (age != null) ageprobability = StarClass.sanitiseCP(starClass.ageCP((decimal)age));
                 chromaticity = starClass.chromaticity.localizedName;
             }
-        }
-    }
-
-    public class BodyType : ResourceBasedLocalizedEDName<BodyType>
-    {
-        static BodyType()
-        {
-            resourceManager = Properties.Body.ResourceManager;
-            resourceManager.IgnoreCase = true;
-            missingEDNameHandler = (edname) => new BodyType(edname);
-
-            None = new BodyType("None");
-            var Planet = new BodyType("Planet");
-            var Star = new BodyType("Star");
-            var Station = new BodyType("Station");
-            var Belt = new BodyType("Belt");
-        }
-
-        public static readonly BodyType None;
-
-        // dummy used to ensure that the static constructor has run, defaulting to "None"
-        public BodyType() : this("None")
-        { }
-
-        private BodyType(string edname) : base(edname, edname)
-        { }
-    }
-
-    public class PlanetClass : ResourceBasedLocalizedEDName<PlanetClass>
-    {
-        static PlanetClass()
-        {
-            resourceManager = Properties.PlanetClass.ResourceManager;
-            resourceManager.IgnoreCase = true;
-            missingEDNameHandler = (edname) => new PlanetClass(edname);
-
-            None = new PlanetClass("None");
-            var Ammonia = new PlanetClass("Ammonia");
-            var EarthLike = new PlanetClass("EarthLike");
-            var GasGiantWithAmmoniaBasedLife = new PlanetClass("GasGiantWithAmmoniaBasedLife");
-            var GasGiantWithWaterBasedLife = new PlanetClass("GasGiantWithWaterBasedLife");
-            var HeliumGasGiant = new PlanetClass("HeliumGasGiant");
-            var HeliumRichGasGiant = new PlanetClass("HeliumRichGasGiant");
-            var HighMetalContent = new PlanetClass("HighMetalContent");
-            var Icy = new PlanetClass("Icy");
-            var MetalRich = new PlanetClass("MetalRich");
-            var Rock = new PlanetClass("Rocky");
-            var RockyIce = new PlanetClass("RockyIce");
-            var ClassIGasGiant = new PlanetClass("ClassIGasGiant");
-            var ClassIIGasGiant = new PlanetClass("ClassIIGasGiant");
-            var ClassIIIGasGiant = new PlanetClass("ClassIIIGasGiant");
-            var ClassIVGasGiant = new PlanetClass("ClassIVGasGiant");
-            var ClassVGasGiant = new PlanetClass("ClassVGasGiant");
-            var WaterGiant = new PlanetClass("WaterGiant");
-            var WaterGiantWithLife = new PlanetClass("WaterGiantWithLife");
-            var Water = new PlanetClass("Water");
-        }
-
-        public static readonly PlanetClass None;
-
-        // dummy used to ensure that the static constructor has run, defaulting to "None"
-        public PlanetClass() : this("None")
-        { }
-
-        private PlanetClass(string edname) : base(edname, edname)
-        { }
-
-        new public static PlanetClass FromEDName(string edname)
-        {
-            if (edname == null)
-            {
-                return null;
-            }
-
-            string normalizedEDName = edname.Replace(" ", "").Replace("-", "");
-            normalizedEDName = normalizedEDName.Replace("world", ""); // In some cases, EDDB uses "world" while the journal uses "body". Fix that here.
-            normalizedEDName = normalizedEDName.Replace("body", ""); // In some cases, EDDB uses "world" while the journal uses "body". Fix that here.
-            normalizedEDName = normalizedEDName.Replace("sudarsky", ""); // EDDB uses "class iv gas giant" while the journal uses "Sudarsky class IV gas giant". Fix that here.
-            return ResourceBasedLocalizedEDName<PlanetClass>.FromEDName(normalizedEDName);
-        }
-    }
-
-    /// <summary> Body Solid Composition </summary>
-    [JsonObject(MemberSerialization.OptIn)]
-    public class BodySolidComposition
-    {
-        static BodySolidComposition()
-        {
-            resourceManager = Properties.Body.ResourceManager;
-            resourceManager.IgnoreCase = true;
-
-            COMPOSITIONS.Add("Ice", "Ice");
-            COMPOSITIONS.Add("Rock", "Rock");
-            COMPOSITIONS.Add("Metal", "Metal");
-        }
-
-        public static readonly ResourceManager resourceManager;
-
-        // Translation of composition of atmosphere 
-        private static readonly IDictionary<string, string> COMPOSITIONS = new Dictionary<string, string>();
-
-        [JsonProperty("composition")]
-        public string edName { get; set; } // Ice, Rock, etc.
-        public string invariantName => GetInvariantString(edName ?? "None");
-        public string localizedName => GetLocalizedString(edName ?? "None");
-        [JsonIgnore, Obsolete("Please use localizedComposition or invariantComposition")]
-        public string name => localizedName;
-
-        [JsonProperty("share")]
-        public decimal percent { get; set; } // Percent share of the body
-
-        private string GetInvariantString(string name)
-        {
-            if (name == null) { return null; }
-            name = name.Replace(" ", "_");
-            return resourceManager.GetString(name, CultureInfo.InvariantCulture);
-        }
-
-        private string GetLocalizedString(string name)
-        {
-            if (name == null) { return null; }
-            name = name.Replace(" ", "_");
-            return resourceManager.GetString(name);
-        }
-
-        public BodySolidComposition(string composition, decimal percent)
-        {
-            this.edName = composition;
-            this.percent = percent;
         }
     }
 }
