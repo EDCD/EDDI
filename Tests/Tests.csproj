@@ -133,6 +133,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="EdsmDataTests.cs" />
     <Compile Include="EddbDataTests.cs" />
     <Compile Include="CommodityTests.cs" />
     <Compile Include="DiffTests.cs" />
@@ -247,6 +248,24 @@
   <ItemGroup>
     <None Include="App.config">
       <SubType>Designer</SubType>
+    </None>
+    <None Include="edsmBodies.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="edsmDeaths.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="edsmFactions.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="edsmStations.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="edsmSystem.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="edsmTraffic.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="loadout.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
