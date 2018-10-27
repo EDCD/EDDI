@@ -605,7 +605,7 @@ namespace EddiMissionMonitor
                 // Get the faction state (Boom, Bust, Civil War, etc), if available
                 for (int i = 2; i < mission.name.Split('_').Count(); i++)
                 {
-                    string factionState = State.FromEDName(mission.name.Split('_')
+                    string factionState = FactionState.FromEDName(mission.name.Split('_')
                         .ElementAtOrDefault(i)?
                         .ToLowerInvariant())?
                         .localizedName;
