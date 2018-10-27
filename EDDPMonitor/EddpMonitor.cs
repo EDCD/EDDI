@@ -154,8 +154,8 @@ namespace EddiEddpMonitor
             string oldfaction = (string)json["oldfaction"];
             string newfaction = (string)json["newfaction"];
 
-            State oldstate = State.FromName((string)json["oldstate"]);
-            State newstate = State.FromName((string)json["newstate"]);
+            FactionState oldstate = FactionState.FromName((string)json["oldstate"]);
+            FactionState newstate = FactionState.FromName((string)json["newstate"]);
 
             string oldallegiance = (string)json["oldallegiance"];
             string newallegiance = (string)json["newallegiance"];
@@ -180,27 +180,16 @@ namespace EddiEddpMonitor
                 if (system != null)
                 {
                     // Update our local copy of the system
-                    if (newfaction != null || newallegiance != null || newgovernment != null)
-                    {
-                        Faction controllingFaction = system.Faction ?? new Faction();
-                        if (newfaction != null) { controllingFaction.name = newfaction; }
-                        if (newallegiance != null) { controllingFaction.Allegiance = Superpower.FromName(newallegiance); }
-                        if (newgovernment != null) { controllingFaction.Government= Government.FromName(newgovernment); }
-                        system.Faction = controllingFaction;
-                    }
-                    if (newstate != null)
-                    {
-                        system.systemState = newstate;
-                    }
+                    if (system.Faction is null) { system.Faction = new Faction(); }
+                    if (newfaction != null) { system.Faction.name = newfaction; }
+                    if (newallegiance != null) { system.Faction.Allegiance = Superpower.FromName(newallegiance); }
+                    if (newgovernment != null) { system.Faction.Government = Government.FromName(newgovernment); }
+                    if (newstate != null) { system.Faction.FactionState = newstate; }
+                    if (newsecurity != null) { system.securityLevel = SecurityLevel.FromName(newsecurity); }
                     if (neweconomy != null)
                     {
-                        // EDDP uses invariant English economy names
-                        system.economies[0] = Economy.FromName(neweconomy);
-                    }
-                    // EDDP does not report changes to secondary economies.
-                    if (newsecurity != null)
-                    {
-                        system.securityLevel = SecurityLevel.FromName(newsecurity);
+                        // EDDP uses invariant English economy names and does not report changes to secondary economies.
+                        system.Economies = new List<Economy>() { Economy.FromName(neweconomy), system.Economies[1] };
                     }
                     system.lastupdated = DateTime.UtcNow;
                     StarSystemSqLiteRepository.Instance.SaveStarSystem(system);
@@ -227,7 +216,7 @@ namespace EddiEddpMonitor
         /// <summary>
         /// Find a matching watch for a given set of parameters
         /// </summary>
-        private string match(string systemname, string stationname, decimal x, decimal y, decimal z, string oldfaction, string newfaction, State oldstate, State newstate)
+        private string match(string systemname, string stationname, decimal x, decimal y, decimal z, string oldfaction, string newfaction, FactionState oldstate, FactionState newstate)
         {
             foreach (Watch watch in configuration.watches)
             {

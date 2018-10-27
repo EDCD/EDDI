@@ -18,7 +18,7 @@ namespace EddiEddpMonitor
     {
         private EddpConfiguration configuration;
 
-        public List<KeyValuePair<string, State>> StatesPlusNone { get; set; }
+        public List<KeyValuePair<string, FactionState>> StatesPlusNone { get; set; }
 
         private ObservableCollection<Watch> watches;
         public ObservableCollection<Watch> Watches
@@ -38,9 +38,9 @@ namespace EddiEddpMonitor
             DataContext = this;
 
             // Make a list of states plus a (anything) state that maps to NULL
-            StatesPlusNone = new List<KeyValuePair<string, State>>();
-            StatesPlusNone.Add(new KeyValuePair<string, State>(Properties.EddpResources.anything, null));
-            StatesPlusNone.AddRange(State.AllOfThem.Select(x => new KeyValuePair<string, State>(x.localizedName, x)));
+            StatesPlusNone = new List<KeyValuePair<string, FactionState>>();
+            StatesPlusNone.Add(new KeyValuePair<string, FactionState>(Properties.EddpResources.anything, null));
+            StatesPlusNone.AddRange(FactionState.AllOfThem.Select(x => new KeyValuePair<string, FactionState>(x.localizedName, x)));
 
             configurationFromFile();
 

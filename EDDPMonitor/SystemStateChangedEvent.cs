@@ -10,7 +10,7 @@ namespace EddiEddpMonitor
         public const string NAME = "System state changed";
         public const string DESCRIPTION = "Triggered when there is a change in the state of a watched system";
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
-        public static SystemStateChangedEvent SAMPLE = new SystemStateChangedEvent(DateTime.UtcNow, "home", "Shinrarta Dezhra", State.FromEDName("CivilUnrest"), State.FromEDName("CivilWar"));
+        public static SystemStateChangedEvent SAMPLE = new SystemStateChangedEvent(DateTime.UtcNow, "home", "Shinrarta Dezhra", FactionState.FromEDName("CivilUnrest"), FactionState.FromEDName("CivilWar"));
 
         static SystemStateChangedEvent()
         {
@@ -24,15 +24,15 @@ namespace EddiEddpMonitor
 
         public string system { get; private set; }
 
-        public State oldSystemState { get; private set; }
-        public State newSystemState { get; private set; }
+        public FactionState oldSystemState { get; private set; }
+        public FactionState newSystemState { get; private set; }
 
         [Obsolete("Please use oldSystemState instead")]
-        public string oldstate => (oldSystemState ?? State.None).localizedName;
+        public string oldstate => oldSystemState.localizedName;
         [Obsolete("Please use newSystemState instead")]
-        public string newstate => (newSystemState ?? State.None).localizedName;
+        public string newstate => newSystemState.localizedName;
 
-        public SystemStateChangedEvent(DateTime timestamp, string match, string system, State oldSystemState, State newSystemState) : base(timestamp, NAME)
+        public SystemStateChangedEvent(DateTime timestamp, string match, string system, FactionState oldSystemState, FactionState newSystemState) : base(timestamp, NAME)
         {
             this.match = match;
             this.system = system;
