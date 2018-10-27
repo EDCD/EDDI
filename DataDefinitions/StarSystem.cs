@@ -28,14 +28,14 @@ namespace EddiDataDefinitions
         public List<Body> bodies { get; set; }
 
         /// <summary>The reserve level applicable to the system's rings</summary>
-        public SystemReserveLevel Reserve { get; set; } = SystemReserveLevel.None; // None if no rings are present
-        public string reserve => (Reserve ?? SystemReserveLevel.None).localizedName;
+        public ReserveLevel Reserve { get; set; } = ReserveLevel.None;
+        public string reserve => (Reserve ?? ReserveLevel.None).localizedName;
 
         // Populated system data
 
         public long? population { get; set; } = 0;
-        public string primaryeconomy => (economies[0] ?? Economy.None).localizedName;
-        public List<Economy> economies { get; set; } = new List<Economy>() { Economy.None, Economy.None };
+        public string primaryeconomy => (Economies[0] ?? Economy.None).localizedName;
+        public List<Economy> Economies { get; set; } = new List<Economy>() { Economy.None, Economy.None };
 
         /// <summary>The system's security level</summary>
         public SecurityLevel securityLevel { get; set; } = SecurityLevel.None;
@@ -45,14 +45,15 @@ namespace EddiDataDefinitions
         public string power { get; set; }
         public string powerstate { get; set; }
 
-        [Obsolete("Please use SystemState instead")]
-        public string state => systemState.localizedName;
-        public State systemState { get; set; } = State.None;
+        [Obsolete("Please use Faction.FactionState instead")]
+        public string state => (Faction?.FactionState ?? FactionState.None).localizedName;
 
         // Faction details
+        public Faction Faction { get; set; } = new Faction();
+        public List<Faction> factions { get; set; }
+
         [Obsolete("Please use Faction instead")]
         public string faction => Faction.name;
-        public Faction Faction { get; set; } = new Faction();
         [Obsolete("Please use Faction.Allegiance instead")]
         public string allegiance => Faction.allegiance;
         [Obsolete("Please use Faction.Government instead")]
@@ -67,6 +68,12 @@ namespace EddiDataDefinitions
 
         [JsonIgnore]
         public List<Station> orbitalstations => stations.FindAll(s => !s.IsPlanetary());
+
+        /// <summary> Whether this system requires a permit for visiting </summary>
+        public bool requirespermit { get; set; }
+
+        /// <summary> The name of the permit required for visiting this system, if any </summary>
+        public string permitname { get; set; }
 
         // Other data
 
@@ -97,18 +104,20 @@ namespace EddiDataDefinitions
         [OnDeserialized]
         private void OnDeserialized(StreamingContext context)
         {
-            if (systemState == null)
+            if (Faction == null) { Faction = new Faction(); }
+            if (Faction.FactionState == null)
             {
+                // Convert legacy data
                 string name = (string)additionalJsonData?["state"];
                 if (name != null)
                 {
-                    systemState = State.FromEDName(name) ?? State.None;
+                    Faction.FactionState = FactionState.FromEDName(name ?? "None");
                 }
             }
             else
             {
-                // get the canonical SystemState object for the given EDName
-                systemState = State.FromEDName(systemState.edname) ?? State.None;
+                // get the canonical FactionState object for the given EDName
+                Faction.FactionState = FactionState.FromEDName(Faction.FactionState.edname ?? "None");
             }
             additionalJsonData = null;
         }
@@ -118,31 +127,5 @@ namespace EddiDataDefinitions
             bodies = new List<Body>();
             stations = new List<Station>();
         }
-    }
-
-    public class SystemReserveLevel : ResourceBasedLocalizedEDName<SystemReserveLevel>
-    {
-        static SystemReserveLevel()
-        {
-            resourceManager = Properties.SystemReserveLevel.ResourceManager;
-            resourceManager.IgnoreCase = true;
-            missingEDNameHandler = (edname) => new SystemReserveLevel(edname);
-
-            None = new SystemReserveLevel("None");
-            var Depleted = new SystemReserveLevel("Depleted");
-            var Minor = new SystemReserveLevel("Minor");
-            var Common = new SystemReserveLevel("Common");
-            var Major = new SystemReserveLevel("Major");
-            var Pristine = new SystemReserveLevel("Pristine");
-        }
-
-        public static readonly SystemReserveLevel None;
-
-        // dummy used to ensure that the static constructor has run, defaulting to "None"
-        public SystemReserveLevel() : this("None")
-        { }
-
-        private SystemReserveLevel(string edname) : base(edname, edname)
-        { }
     }
 }

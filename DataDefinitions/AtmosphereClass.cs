@@ -16,7 +16,6 @@ namespace EddiDataDefinitions
             resourceManager.IgnoreCase = true;
             missingEDNameHandler = (edname) => new AtmosphereClass(edname);
 
-            var None = new AtmosphereClass("None");
             var Ammonia = new AtmosphereClass("Ammonia");
             var AmmoniaAndOxygen = new AtmosphereClass("AmmoniaAndOxygen");
             var AmmoniaRich = new AtmosphereClass("AmmoniaRich");
@@ -40,7 +39,9 @@ namespace EddiDataDefinitions
             var WaterRich = new AtmosphereClass("WaterRich");
         }
 
-        // dummy used to ensure that the static constructor has run, defaulting to "None" if no atmosphere is specified.
+        public static readonly AtmosphereClass None = new AtmosphereClass("None");
+
+        // dummy used to ensure that the static constructor has run
         public AtmosphereClass() : this("")
         { }
 

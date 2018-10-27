@@ -15,7 +15,7 @@ namespace EddiDataDefinitions
         [JsonIgnore, Obsolete("Please use localizedComposition or invariantComposition")]
         public string composition => Composition.localizedName;
 
-        public Composition Composition { get; set; }
+        public RingComposition Composition { get; set; }
         public string localizedComposition => Composition?.localizedName;
         public string invariantComposition => Composition?.invariantName;
 
@@ -28,7 +28,7 @@ namespace EddiDataDefinitions
         /// <summary>The outer radius of the ring, in kilometres</summary>
         public decimal outerradius { get; set; }
 
-        public Ring(string name, Composition composition, decimal mass, decimal innerradius, decimal outerradius)
+        public Ring(string name, RingComposition composition, decimal mass, decimal innerradius, decimal outerradius)
         {
             this.name = name;
             this.Composition = composition;

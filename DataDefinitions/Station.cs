@@ -12,6 +12,9 @@ namespace EddiDataDefinitions
         /// <summary>The ID of this station in EDDB</summary>
         public long? EDDBID { get; set; }
 
+        /// <summary>The ID of this station in EDSM</summary>
+        public long? EDSMID { get; set; }
+
         /// <summary>The name</summary>
         public string name { get; set; }
 
@@ -31,14 +34,17 @@ namespace EddiDataDefinitions
         public string allegiance => (Faction?.Allegiance ?? Superpower.None).localizedName;
 
         /// <summary>The controlling faction's state within the system</summary>
-        public string state => (State ?? State.None).localizedName;
-        public State State { get; set; } = State.None;
+        [Obsolete("Please use Faction.factionState instead")]
+        public string state => (Faction?.FactionState ?? FactionState.None).localizedName;
 
         /// <summary>The primary economy of the station</summary>
-        public string primaryeconomy => economies != null && economies?.Count > 0 ? economies[0] : Economy.None.localizedName;
+        public string primaryeconomy => (Economies != null && Economies?.Count > 0 ? Economies[0] : Economy.None).localizedName;
+
+        /// <summary>The secondary economy of the station</summary>
+        public string secondaryeconomy => (Economies != null && Economies?.Count > 1 ? Economies[1] : Economy.None).localizedName;
 
         /// <summary>How far this is from the star, in light seconds</summary>
-        public long? distancefromstar { get; set; }
+        public decimal? distancefromstar { get; set; }
 
         /// <summary>The system in which this station resides</summary>
         public string systemname { get; set; }
@@ -55,37 +61,109 @@ namespace EddiDataDefinitions
         /// <summary>Unique 64 bit id value for station</summary>
         public long? marketId { get; set; }
 
+        /// <summary>A list of the services offered by this station</summary>
+        public List<StationService> stationServices { get; set; } = new List<StationService>();
+
+        /// <summary>A localized list of the services offered by this station</summary>
+        public List<string> stationservices
+        {
+            get
+            {
+                List<string> services = new List<string>();
+                foreach (StationService service in stationServices)
+                {
+                    services.Add(service.localizedName);
+                }
+                return services;
+            }
+        }
+
         /// <summary>Does this station have refuel facilities?</summary>
-        public bool? hasrefuel { get; set; }
+        public bool? hasrefuel {
+            get { return stationServices.Exists(s => s.edname == "Refuel"); }
+            set { if (value is true) { stationServices.Add(StationService.FromEDName("Refuel")); } }
+        }
         /// <summary>Does this station have rearm facilities?</summary>
-        public bool? hasrearm { get; set; }
+        public bool? hasrearm
+        {
+            get { return stationServices.Exists(s => s.edname == "Rearm"); }
+            set { if (value is true) { stationServices.Add(StationService.FromEDName("Rearm")); } }
+        }
         /// <summary>Does this station have repair facilities?</summary>
-        public bool? hasrepair { get; set; }
+        public bool? hasrepair
+        {
+            get { return stationServices.Exists(s => s.edname == "Repair"); }
+            set { if (value is true) { stationServices.Add(StationService.FromEDName("Repair")); } }
+        }
         /// <summary>Does this station have outfitting?</summary>
-        public bool? hasoutfitting { get; set; }
+        public bool? hasoutfitting
+        {
+            get { return stationServices.Exists(s => s.edname == "Outfitting"); }
+            set { if (value is true) { stationServices.Add(StationService.FromEDName("Outfitting")); } }
+        }
         /// <summary>Does this station have a shipyard?</summary>
-        public bool? hasshipyard { get; set; }
+        public bool? hasshipyard
+        {
+            get { return stationServices.Exists(s => s.edname == "Shipyard"); }
+            set { if (value is true) { stationServices.Add(StationService.FromEDName("Shipyard")); } }
+        }
         /// <summary>Does this station have a market?</summary>
-        public bool? hasmarket { get; set; }
+        public bool? hasmarket
+        {
+            get { return stationServices.Exists(s => s.edname == "Commodities"); }
+            set { if (value is true) { stationServices.Add(StationService.FromEDName("Commodities")); } }
+        }
         /// <summary>Does this station have a black market?</summary>
-        public bool? hasblackmarket { get; set; }
+        public bool? hasblackmarket
+        {
+            get { return stationServices.Exists(s => s.edname == "BlackMarket"); }
+            set { if (value is true) { stationServices.Add(StationService.FromEDName("BlackMarket")); } }
+        }
         /// <summary>Does this station allow docking?</summary>
-        public bool? hasdocking { get; set; }
+        public bool? hasdocking
+        {
+            get { return stationServices.Exists(s => s.edname == "Dock"); }
+            set { if (value is true) { stationServices.Add(StationService.FromEDName("Dock")); } }
+        }
 
         /// <summary>The model of the station</summary>
         [Obsolete("Please use StationModel instead")]
-        public string model => (Model ?? StationModel.None).localizedName;
-        public StationModel Model { get; set; } = StationModel.None;
+        public string model => Model.localizedName;
+        public StationModel Model { get; set; }
 
         /// <summary>What is the largest ship that can land here?</summary>
         [Obsolete("Please use StationLargestPad instead")]
-        public string largestpad => (LargestPad ?? StationLargestPad.None).localizedName;
-        public StationLargestPad LargestPad { get; set; } = StationLargestPad.None;
+        public string largestpad => LargestPad.localizedName;
+        // This field isn't always provided, so we derive it from the station model when it's not explicitly set.
+        public StationLargestPad LargestPad
+        {
+            get
+            {
+                if (_LargestPad != null)
+                {
+                    return _LargestPad;
+                }
+                if (Model.edname == "None")
+                {
+                    return StationLargestPad.FromSize(null);
+                }
+                if (Model.edname == "Outpost")
+                {
+                    return StationLargestPad.FromSize("m");
+                }
+                return StationLargestPad.FromSize("l");
+            }
+            set
+            {
+                _LargestPad = value;
+            }
+        }
+        private StationLargestPad _LargestPad;
 
-        /// <summary>What are the economies at the station, with proportions for each</summary>
+        /// <summary>What are the economies at the station, with proportions for each (this is only set from Frontier API data)</summary>
         public List<EconomyShare> economiesShares { get; set; } = new List<EconomyShare>();
 
-        /// <summary>What are the economies at the station, without proportions (economy share / proportion is not given from EDDB)</summary>
+        /// <summary>What are the localized economies at the stations</summary>
         public List<string> economies
         {
             get
@@ -102,9 +180,9 @@ namespace EddiDataDefinitions
                 else
                 {
                     List<string> localizedEconomies = new List<string>();
-                    if (_economies != null)
+                    if (Economies != null)
                     {
-                        foreach (Economy economy in _economies)
+                        foreach (Economy economy in Economies)
                         {
                             localizedEconomies.Add((economy ?? Economy.None).localizedName);
                         }
@@ -116,20 +194,10 @@ namespace EddiDataDefinitions
                     return localizedEconomies;
                 };
             }
-            set
-            {
-                if (value != null)
-                {
-                    List<Economy> economiesFromInvariantNames = new List<Economy>();
-                    foreach (string invarientEconomy in value)
-                    {
-                        economiesFromInvariantNames.Add(Economy.FromName(invarientEconomy) ?? Economy.None);
-                    }
-                    _economies = economiesFromInvariantNames;
-                }
-            }
         }
-        private List<Economy> _economies; // Listed economies without proportions
+
+        /// <summary>What are the economies at the station, without proportions for each</summary>
+        public List<Economy> Economies { get; set; } = new List<Economy>() { Economy.None, Economy.None };
 
         /// <summary>Which commodities are bought/sold by the station</summary>
         public List<CommodityMarketQuote> commodities { get; set; }
@@ -171,44 +239,6 @@ namespace EddiDataDefinitions
         public bool IsPlanetary() { return Model == null ? false : Model?.basename == "SurfaceStation"; }
 
         /// <summary>Is this station an (undockable) settlement?</summary>
-        public bool IsPlanetarySettlement() { return Model?.basename == "SurfaceStation" && LargestPad == StationLargestPad.None; }
-    }
-
-    /// <summary> Station's largest landing pad size </summary>
-    [JsonObject(MemberSerialization.OptIn)]
-    public class StationLargestPad : ResourceBasedLocalizedEDName<StationLargestPad>
-    {
-        static StationLargestPad()
-        {
-            resourceManager = Properties.StationLargestPad.ResourceManager;
-            resourceManager.IgnoreCase = true;
-
-            None = new StationLargestPad("None");
-            var Large = new StationLargestPad("Large");
-            var Medium = new StationLargestPad("Medium");
-            var Small = new StationLargestPad("Small");
-        }
-
-        public static readonly StationLargestPad None;
-
-        // dummy used to ensure that the static constructor has run, defaulting to "None"
-        public StationLargestPad() : this("None")
-        { }
-
-        private StationLargestPad(string edname) : base(edname, edname)
-        { }
-
-        public static StationLargestPad FromSize (string value)
-        {
-            // Map old values from when we had an enum and map abbreviated sizes
-            string size = string.Empty;
-            if (value == "0" || value == null) { size = "None"; }
-            value = value?.ToLowerInvariant();
-            if (value == "1" || value == "s") { size = "Small"; }
-            if (value == "2" || value == "m") { size = "Medium"; }
-            if (value == "3" || value == "l") { size = "Large"; }
-
-            return FromName(size);
-        }
+        public bool IsPlanetarySettlement() { return Model?.basename == "SurfaceStation" && hasdocking != true; }
     }
 }
