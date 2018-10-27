@@ -224,7 +224,7 @@ namespace UnitTests
             Assert.AreEqual(65, station.EDSMID);
             Assert.AreEqual(128666762, station.marketId);
             Assert.AreEqual("Orbis Starport", station.Model.invariantName);
-            Assert.AreEqual(324.39801, (double)station.distancefromstar, 0.01);
+            Assert.AreEqual(324.925354M, station.distancefromstar);
             Assert.AreEqual("Pilots Federation", station.Faction.Allegiance.invariantName);
             Assert.AreEqual("Democracy", station.Faction.Government.invariantName);
             Assert.AreEqual("Pilots Federation Local Branch", station.Faction.name);
@@ -241,20 +241,20 @@ namespace UnitTests
             Assert.IsTrue((bool)station.hasrepair);
             Assert.IsTrue(station.stationServices.Exists(s => s.invariantName == "Commodities"));
             Assert.IsTrue(station.stationServices.Exists(s => s.invariantName == "Technology Broker"));
-            Assert.AreEqual(1539840611, station.updatedat);
-            Assert.AreEqual(1539840581, station.shipyardupdatedat);
-            Assert.AreEqual(1539840581, station.commoditiesupdatedat);
-            Assert.AreEqual(1539840611, station.outfittingupdatedat);
+            Assert.AreEqual(1540189980, station.updatedat);
+            Assert.AreEqual(1540189980, station.shipyardupdatedat);
+            Assert.AreEqual(1540189980, station.commoditiesupdatedat);
+            Assert.AreEqual(1540189980, station.outfittingupdatedat);
 
             // Test Jameson Base (Engineer's workshop)
             station = stations.Find(s => s.name == "Jameson Base");
             Assert.AreEqual(285, station.EDSMID);
             Assert.AreEqual(128679815, station.marketId);
             Assert.AreEqual("Surface Station", station.Model.invariantName);
-            Assert.AreEqual(40.539486, (double)station.distancefromstar, 0.01);
+            Assert.AreEqual(40.333652M, station.distancefromstar);
             Assert.AreEqual("Independent", station.Faction.Allegiance.invariantName);
             Assert.AreEqual("Engineer", station.Faction.Government.invariantName);
-            Assert.AreEqual("Engineer", station.Faction.name);
+            Assert.AreEqual("Lori Jameson", station.Faction.name);
             Assert.IsNull(station.Faction.EDSMID);
             Assert.AreEqual(2, station.economies.Count);
             Assert.AreEqual("Colony", station.economies[0]);
@@ -267,10 +267,10 @@ namespace UnitTests
             Assert.IsTrue((bool)station.hasrefuel);
             Assert.IsTrue((bool)station.hasrepair);
             Assert.IsTrue(station.stationServices.Exists(s => s.invariantName == "Contacts"));
-            Assert.AreEqual(1539840568, station.updatedat);
+            Assert.AreEqual(1540179943, station.updatedat);
             Assert.AreEqual(null, station.shipyardupdatedat);
             Assert.AreEqual(null, station.commoditiesupdatedat);
-            Assert.AreEqual(1539840568, station.outfittingupdatedat);
+            Assert.AreEqual(1540179943, station.outfittingupdatedat);
         }
 
         [TestMethod]
