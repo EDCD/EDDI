@@ -1,4 +1,5 @@
 ﻿using EddiDataDefinitions;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -7,46 +8,56 @@ using Utilities;
 
 namespace EddiDataProviderService
 {
-    /// <summary>Access to EDDP data<summary>
+    /// <summary>Access to EDDP legacy server data<summary>
+
+    // Data not currently available from EDSM and that we may wish to access from here:
+    // - System: Powerplay data
+    // + Station: Commodities price listings
+    // - Station: Import commodities
+    // - Station: Export commodities
+    // - Station: Prohibited commodities 
+    // - Station: Detailed shipyard data 
+    // - Station: Detailed module data
+
     public class LegacyEddpService
     {
-        //TODO: Change this to use an EDCD server or other established data service (EDSM?)
         private const string BASE = "http://api.eddp.co/";
 
-        public static void GetCommoditiesData(string station, string system, out List<CommodityMarketQuote> commodities, out long? commoditiesupdatedat)
+        private static JObject GetData(string system)
         {
-            string response = string.Empty;
-            commodities = null;
-            commoditiesupdatedat = null;
-
             try
             {
-                response = Net.DownloadString(BASE + "systems/" + Uri.EscapeDataString(system));
+                string response = Net.DownloadString(BASE + "systems/" + Uri.EscapeDataString(system));
+                return JsonConvert.DeserializeObject<JObject>(response);
             }
             catch (WebException)
             {
-                Logging.Debug("Failed to obtain commodity data from " + BASE + "systems/" + Uri.EscapeDataString(system));
+                Logging.Debug("Failed to obtain data from " + BASE + "systems/" + Uri.EscapeDataString(system));
+                return null;
             }
+        }
 
-            if (response != null && response != "")
+        public static void GetCommoditiesData(string station, string system, out List<CommodityMarketQuote> commodities, out long? commoditiesupdatedat)
+        {
+            commodities = null;
+            commoditiesupdatedat = null;
+
+            JObject response = GetData(system);
+
+            if (response["stations"] is JArray)
             {
-                JObject json = JObject.Parse(response);
-
-                if (json["stations"] != null)
+                foreach (JObject Station in response["stations"])
                 {
-                    foreach (JObject Station in json["stations"])
+                    if ((string)Station["name"] == station)
                     {
-                        if ((string)Station["name"] == station)
-                        {
-                            commodities = CommodityQuotesFromEDDP(Station);
-                            commoditiesupdatedat = (long?)Station["market_updated_at"];
-                        }
+                        commodities = CommodityQuotesFromEDDP(Station);
+                        commoditiesupdatedat = (long?)Station["market_updated_at"];
                     }
                 }
             }
         }
 
-        public static List<CommodityMarketQuote> CommodityQuotesFromEDDP(JObject json)
+        private static List<CommodityMarketQuote> CommodityQuotesFromEDDP(JObject json)
         {
             var quotes = new List<CommodityMarketQuote>();
             if (json["commodities"] != null)
@@ -64,6 +75,16 @@ namespace EddiDataProviderService
                 }
             }
             return quotes;
+        }
+
+        public static Dictionary<string, object> PowerplayFromEDDP(JObject json)
+        {
+            Dictionary<string, object> powerplay = new Dictionary<string, object>()
+            {
+                { "power", (string)json["power"] == "None" ? null : (string)json["power"] },
+                { "power_state", (string)json["power_state"] } // Needs translatable powerplay states
+            };
+            return powerplay;
         }
 
         static LegacyEddpService()
