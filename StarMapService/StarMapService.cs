@@ -17,17 +17,17 @@ namespace EddiStarMapService
         // Set the maximum batch size we will use for syncing before we write systems to our sql database
         public const int syncBatchSize = 100;
 
-        private string commanderName;
-        private string apiKey;
-        private string baseUrl;
-
         // For normal use, the EDSM API base URL is https://www.edsm.net/.
         // If you need to do some testing on EDSM's API, please use the https://beta.edsm.net/ endpoint.
-        public StarMapService(string apiKey, string commanderName)
+        private static string baseUrl => ShouldUseTestEndpoints() ? "https://beta.edsm.net/" : "https://www.edsm.net/";
+
+        private static string commanderName;
+        private static string apiKey;
+
+        public StarMapService(string apikey, string commandername)
         {
-            this.apiKey = apiKey;
-            this.commanderName = commanderName;
-            baseUrl = ShouldUseTestEndpoints() ? "https://beta.edsm.net/" : "https://www.edsm.net/";
+            apiKey = apikey;
+            commanderName = commandername;
         }
 
         private static bool ShouldUseTestEndpoints()
