@@ -194,7 +194,6 @@ namespace Eddi
                             starMapService = new StarMapService(starMapCredentials.apiKey, commanderName);
                             Logging.Info("EDDI access to EDSM is enabled");
                         }
-
                     }
                     if (starMapService == null)
                     {
@@ -798,8 +797,7 @@ namespace Eddi
             if (theEvent.population != null)
             {
                 CurrentStarSystem.population = theEvent.population;
-                CurrentStarSystem.economies[0] = theEvent.Economy;
-                CurrentStarSystem.economies[1] = theEvent.Economy2;
+                CurrentStarSystem.Economies = new List<Economy> { theEvent.Economy, theEvent.Economy2 };
                 CurrentStarSystem.securityLevel = theEvent.securityLevel;
 
                 // Faction data
@@ -844,10 +842,12 @@ namespace Eddi
                 station.systemAddress = theEvent.systemAddress;
 
                 // Information from the event might be more current than that from our data source so use it in preference
-                Faction controllingFaction = new Faction();
-                controllingFaction.name = theEvent.faction;
-                controllingFaction.Government = theEvent.Government;
-                controllingFaction.Allegiance = theEvent.Allegiance;
+                Faction controllingFaction = new Faction
+                {
+                    name = theEvent.faction,
+                    Government = theEvent.Government,
+                    Allegiance = theEvent.Allegiance
+                };
                 station.Faction = controllingFaction;
 
                 CurrentStation = station;
@@ -935,50 +935,18 @@ namespace Eddi
             // Not all stations in our database will have a system address or market id, so we set them here
             station.systemAddress = theEvent.systemAddress;
             station.marketId = theEvent.marketId;
-            
+
             // Information from the event might be more current than our data source so use it in preference
-            station.State = EddiDataDefinitions.State.FromEDName(theEvent.factionstate);
 
-            Faction controllingFaction = new Faction();
-            controllingFaction.name = theEvent.faction;
-            controllingFaction.Allegiance = Superpower.FromEDName(theEvent.allegiance);
-            controllingFaction.Government = Government.FromEDName(theEvent.government);
-            station.Faction = controllingFaction;
-
-            if (theEvent.stationservices != null)
+            Faction controllingFaction = new Faction
             {
-                foreach (var service in theEvent.stationservices)
-                {
-                    if (service == "Refuel")
-                    {
-                        station.hasrefuel = true;
-                    }
-                    else if (service == "Rearm")
-                    {
-                        station.hasrearm = true;
-                    }
-                    else if (service == "Repair")
-                    {
-                        station.hasrepair = true;
-                    }
-                    else if (service == "Outfitting")
-                    {
-                        station.hasoutfitting = true;
-                    }
-                    else if (service == "Shipyard")
-                    {
-                        station.hasshipyard = true;
-                    }
-                    else if (service == "Commodities")
-                    {
-                        station.hasmarket = true;
-                    }
-                    else if (service == "BlackMarket")
-                    {
-                        station.hasblackmarket = true;
-                    }
-                }
-            }
+                name = theEvent.faction,
+                Allegiance = Superpower.FromEDName(theEvent.allegiance),
+                FactionState = EddiDataDefinitions.FactionState.FromEDName(theEvent.factionstate),
+                Government = Government.FromEDName(theEvent.government)
+            };
+            station.Faction = controllingFaction;
+            station.stationServices = theEvent.stationServices;
 
             CurrentStation = station;
             CurrentStellarBody = null;
@@ -1108,8 +1076,7 @@ namespace Eddi
             };
             CurrentStarSystem.Faction = controllingFaction;
 
-            CurrentStarSystem.economies[0] = theEvent.Economy;
-            CurrentStarSystem.economies[1] = theEvent.Economy2;
+            CurrentStarSystem.Economies = new List<Economy> { theEvent.Economy, theEvent.Economy2 };
             CurrentStarSystem.securityLevel = theEvent.securityLevel;
             if (theEvent.population != null)
             {
@@ -1474,7 +1441,7 @@ namespace Eddi
                 body.tidallylocked = theEvent.tidallylocked;
                 body.temperature = (long?)theEvent.temperature;
                 body.periapsis = theEvent.periapsis;
-                body.atmosphereclass = theEvent.atmosphereclass;
+                body.atmosphereclass = theEvent.atmosphereclass ?? AtmosphereClass.None;
                 body.atmosphereCompositions = theEvent.atmospherecomposition;
                 body.solidComposition = theEvent.solidcomposition;
                 body.gravity = theEvent.gravity;
@@ -1492,7 +1459,7 @@ namespace Eddi
                 {
                     body.materials.Add(new MaterialPresence(presence.definition, presence.percentage));
                 }
-                body.reserveLevel = SystemReserveLevel.FromEDName(theEvent.reserves) ?? SystemReserveLevel.None;
+                body.reserveLevel = ReserveLevel.FromEDName(theEvent.reserves);
                 body.rings = theEvent.rings;
 
                 Logging.Debug("Saving data for scanned body " + theEvent.name);
@@ -1625,8 +1592,8 @@ namespace Eddi
         }
 
         /// <summary>Work out the title for the commander in the current system</summary>
-        private static int minEmpireRankForTitle = 3;
-        private static int minFederationRankForTitle = 1;
+        private const int minEmpireRankForTitle = 3;
+        private const int minFederationRankForTitle = 1;
         private void setCommanderTitle()
         {
             if (Cmdr != null)
