@@ -132,10 +132,10 @@ namespace EddiDataDefinitions
 
             from = from.ToLowerInvariant();
             T result = AllOfThem.FirstOrDefault(
-                v => 
-                v.localizedName.ToLowerInvariant() == from 
+                v =>
+                v.localizedName.ToLowerInvariant() == from
                 || v.invariantName.ToLowerInvariant() == from);
-            return result ?? new T();
+            return result;
         }
 
         public static T FromEDName(string from)
@@ -159,7 +159,7 @@ namespace EddiDataDefinitions
                     result = missingEDNameHandler(from);
                 }
             }
-            return result ?? new T();
+            return result;
         }
     }
 }
