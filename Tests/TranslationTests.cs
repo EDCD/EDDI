@@ -7,6 +7,46 @@ namespace UnitTests
     public class TranslationTests
     {
         [TestMethod]
+        public void TestICAOEmpty()
+        {
+            string source = "";
+            string icao = Translations.ICAO(source);
+            Assert.AreEqual("", icao);
+        }
+
+        [TestMethod]
+        public void TestICAO1Char()
+        {
+            string source = "a";
+            string icao = Translations.ICAO(source);
+            Assert.AreEqual(@"<phoneme alphabet=""ipa"" ph=""ˈælfə"">alpha</phoneme>", icao);
+        }
+
+        [TestMethod]
+        public void TestICAO2Chars()
+        {
+            string source = "ab";
+            string icao = Translations.ICAO(source);
+            Assert.AreEqual(@"<phoneme alphabet=""ipa"" ph=""ˈælfə"">alpha</phoneme> <phoneme alphabet=""ipa"" ph=""ˈbrɑːˈvo"">bravo</phoneme>", icao);
+        }
+
+        [TestMethod]
+        public void TestICAO3Chars()
+        {
+            string source = "abc";
+            string icao = Translations.ICAO(source);
+            Assert.AreEqual(@"<phoneme alphabet=""ipa"" ph=""ˈælfə"">alpha</phoneme> <phoneme alphabet=""ipa"" ph=""ˈbrɑːˈvo"">bravo</phoneme> <phoneme alphabet=""ipa"" ph=""ˈtʃɑːli"">charlie</phoneme>", icao);
+        }
+
+        [TestMethod]
+        public void TestICAOAllSymbols()
+        {
+            string source = "$@!^";
+            string icao = Translations.ICAO(source);
+            Assert.AreEqual("", icao);
+        }
+
+        [TestMethod]
         public void TestTranslateBody1()
         {
             Assert.AreEqual(@"<phoneme alphabet=""ipa"" ph=""ʃɪnˈrɑːrtə"">Shinrarta</phoneme> <phoneme alphabet=""ipa"" ph=""ˈdezɦrə"">Dezhra</phoneme> A 1", Translations.Body("Shinrarta Dezhra A 1"));

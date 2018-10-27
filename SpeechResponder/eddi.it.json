@@ -1653,7 +1653,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{ShipName()} now registered with {P(system.faction)}.  Identification is {ICAO(event.ident)}.",
+      "script": "{ShipName()} now registered with {P(system.faction)}. \r\n\r\n{set ICAO_ID to ICAO(event.ident)}\r\n{if len(ICAO_ID) > 0:\r\n    Identification is {ICAO_ID}.\r\n|else:\r\n    Advisory: you have chosen a ship ID that is not pronounceable in the standard radio alphabet.\r\n}\r\n",
       "default": true,
       "name": "Ship renamed",
       "description": "Triggered when you rename a ship"

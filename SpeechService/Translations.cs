@@ -567,7 +567,7 @@ namespace EddiSpeechService
                 }
             }
 
-            return elements.Aggregate((i, j) => i + " " + j);
+            return String.Join(" ", elements);
         }
 
         public static string Humanize(decimal? value)
