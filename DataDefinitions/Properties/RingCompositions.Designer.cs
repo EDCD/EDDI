@@ -22,14 +22,14 @@ namespace EddiDataDefinitions.Properties {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class StationModel {
+    public class RingCompositions {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal StationModel() {
+        internal RingCompositions() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace EddiDataDefinitions.Properties {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("EddiDataDefinitions.Properties.StationModels", typeof(StationModel).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("EddiDataDefinitions.Properties.RingCompositions", typeof(RingCompositions).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,74 +61,38 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Asteroid Base.
+        ///   Looks up a localized string similar to Icy.
         /// </summary>
-        public static string AsteroidBase {
+        public static string Icy {
             get {
-                return ResourceManager.GetString("AsteroidBase", resourceCulture);
+                return ResourceManager.GetString("Icy", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Ocellus Starport.
+        ///   Looks up a localized string similar to Metallic.
         /// </summary>
-        public static string Bernal {
+        public static string Metallic {
             get {
-                return ResourceManager.GetString("Bernal", resourceCulture);
+                return ResourceManager.GetString("Metallic", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Coriolis Starport.
+        ///   Looks up a localized string similar to Metal-rich.
         /// </summary>
-        public static string Coriolis {
+        public static string MetalRich {
             get {
-                return ResourceManager.GetString("Coriolis", resourceCulture);
+                return ResourceManager.GetString("MetalRich", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Megaship.
+        ///   Looks up a localized string similar to Rocky.
         /// </summary>
-        public static string Megaship {
+        public static string Rocky {
             get {
-                return ResourceManager.GetString("Megaship", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Unknown Station.
-        /// </summary>
-        public static string None {
-            get {
-                return ResourceManager.GetString("None", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Orbis Starport.
-        /// </summary>
-        public static string Orbis {
-            get {
-                return ResourceManager.GetString("Orbis", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Outpost.
-        /// </summary>
-        public static string Outpost {
-            get {
-                return ResourceManager.GetString("Outpost", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Surface Station.
-        /// </summary>
-        public static string SurfaceStation {
-            get {
-                return ResourceManager.GetString("SurfaceStation", resourceCulture);
+                return ResourceManager.GetString("Rocky", resourceCulture);
             }
         }
     }

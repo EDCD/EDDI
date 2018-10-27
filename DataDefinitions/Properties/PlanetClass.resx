@@ -133,10 +133,10 @@
     <value>Helium gas giant</value>
   </data>
   <data name="HeliumRichGasGiant" xml:space="preserve">
-    <value>Helium rich gas giant</value>
+    <value>Helium-rich gas giant</value>
   </data>
   <data name="HighMetalContent" xml:space="preserve">
-    <value>High metal content body</value>
+    <value>High metal content world</value>
   </data>
   <data name="Icy" xml:space="preserve">
     <value>Icy body</value>
@@ -148,22 +148,22 @@
     <value>Rocky body</value>
   </data>
   <data name="RockyIce" xml:space="preserve">
-    <value>Rocky ice body</value>
+    <value>Rocky ice world</value>
   </data>
   <data name="ClassIGasGiant" xml:space="preserve">
-    <value>Sudarsky class I gas giant</value>
+    <value>Class I gas giant</value>
   </data>
   <data name="ClassIIGasGiant" xml:space="preserve">
-    <value>Sudarsky class II gas giant</value>
+    <value>Class II gas giant</value>
   </data>
   <data name="ClassIIIGasGiant" xml:space="preserve">
-    <value>Sudarsky class III gas giant</value>
+    <value>Class III gas giant</value>
   </data>
   <data name="ClassIVGasGiant" xml:space="preserve">
-    <value>Sudarsky class IV gas giant</value>
+    <value>Class IV gas giant</value>
   </data>
   <data name="ClassVGasGiant" xml:space="preserve">
-    <value>Sudarsky class V gas giant</value>
+    <value>Class V gas giant</value>
   </data>
   <data name="WaterGiant" xml:space="preserve">
     <value>Water giant</value>

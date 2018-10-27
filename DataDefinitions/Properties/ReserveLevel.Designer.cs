@@ -22,14 +22,14 @@ namespace EddiDataDefinitions.Properties {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class States {
+    public class ReserveLevel {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal States() {
+        internal ReserveLevel() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace EddiDataDefinitions.Properties {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("EddiDataDefinitions.Properties.States", typeof(States).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("EddiDataDefinitions.Properties.ReserveLevel", typeof(ReserveLevel).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,83 +61,38 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Boom.
+        ///   Looks up a localized string similar to Common.
         /// </summary>
-        public static string Boom {
+        public static string Common {
             get {
-                return ResourceManager.GetString("Boom", resourceCulture);
+                return ResourceManager.GetString("Common", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Bust.
+        ///   Looks up a localized string similar to Depleted.
         /// </summary>
-        public static string Bust {
+        public static string Depleted {
             get {
-                return ResourceManager.GetString("Bust", resourceCulture);
+                return ResourceManager.GetString("Depleted", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Civil Unrest.
+        ///   Looks up a localized string similar to Major.
         /// </summary>
-        public static string CivilUnrest {
+        public static string Major {
             get {
-                return ResourceManager.GetString("CivilUnrest", resourceCulture);
+                return ResourceManager.GetString("Major", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Civil War.
+        ///   Looks up a localized string similar to Minor.
         /// </summary>
-        public static string CivilWar {
+        public static string Minor {
             get {
-                return ResourceManager.GetString("CivilWar", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Election.
-        /// </summary>
-        public static string Election {
-            get {
-                return ResourceManager.GetString("Election", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Expansion.
-        /// </summary>
-        public static string Expansion {
-            get {
-                return ResourceManager.GetString("Expansion", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Famine.
-        /// </summary>
-        public static string Famine {
-            get {
-                return ResourceManager.GetString("Famine", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Investment.
-        /// </summary>
-        public static string Investment {
-            get {
-                return ResourceManager.GetString("Investment", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Lockdown.
-        /// </summary>
-        public static string Lockdown {
-            get {
-                return ResourceManager.GetString("Lockdown", resourceCulture);
+                return ResourceManager.GetString("Minor", resourceCulture);
             }
         }
         
@@ -151,29 +106,11 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Outbreak.
+        ///   Looks up a localized string similar to Pristine.
         /// </summary>
-        public static string Outbreak {
+        public static string Pristine {
             get {
-                return ResourceManager.GetString("Outbreak", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Retreat.
-        /// </summary>
-        public static string Retreat {
-            get {
-                return ResourceManager.GetString("Retreat", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to War.
-        /// </summary>
-        public static string War {
-            get {
-                return ResourceManager.GetString("War", resourceCulture);
+                return ResourceManager.GetString("Pristine", resourceCulture);
             }
         }
     }
