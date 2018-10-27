@@ -59,7 +59,7 @@ namespace EddiStarMapService
                 name = (string)station["name"],
                 marketId = (long?)station["marketId"],
                 EDSMID = (long?)station["id"],
-                Model = StationModel.FromName((string)station["type"]),
+                Model = StationModel.FromName((string)station["type"]) ?? StationModel.None,
                 distancefromstar = (decimal?)station["distanceToArrival"], // Light seconds
             };
 
@@ -68,14 +68,14 @@ namespace EddiStarMapService
             {
                 name = (string)faction["name"],
                 EDSMID = (long?)faction["id"],
-                Allegiance = Superpower.FromName((string)station["allegiance"]),
-                Government = Government.FromName((string)station["government"]),
+                Allegiance = Superpower.FromName((string)station["allegiance"]) ?? Superpower.None,
+                Government = Government.FromName((string)station["government"]) ?? Government.None,
             };
 
             List<Economy> Economies = new List<Economy>()
             {
-                Economy.FromName((string)station["economy"]),
-                Economy.FromName((string)station["secondEconomy"])
+                Economy.FromName((string)station["economy"]) ?? Economy.None,
+                Economy.FromName((string)station["secondEconomy"]) ?? Economy.None
             };
             Station.Economies = Economies;
 
@@ -97,7 +97,7 @@ namespace EddiStarMapService
             {
                 stationServices.Add(StationService.FromName(service));
             };
-            // Add always available services
+            // Add always available services for dockable stations
             stationServices.Add(StationService.FromEDName("Dock"));
             stationServices.Add(StationService.FromEDName("AutoDock"));
             stationServices.Add(StationService.FromEDName("Contacts"));

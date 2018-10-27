@@ -38,10 +38,10 @@ namespace EddiDataDefinitions
         public string state => (Faction?.FactionState ?? FactionState.None).localizedName;
 
         /// <summary>The primary economy of the station</summary>
-        public string primaryeconomy => (Economies != null && Economies?.Count > 0 ? Economies[0] : Economy.None).localizedName;
+        public string primaryeconomy => (Economies?.Count > 0 && Economies[0] != null ? Economies[0] : Economy.None).localizedName;
 
         /// <summary>The secondary economy of the station</summary>
-        public string secondaryeconomy => (Economies != null && Economies?.Count > 1 ? Economies[1] : Economy.None).localizedName;
+        public string secondaryeconomy => (Economies?.Count > 1 && Economies[1] != null ? Economies[1] : Economy.None).localizedName;
 
         /// <summary>How far this is from the star, in light seconds</summary>
         public decimal? distancefromstar { get; set; }

@@ -38,5 +38,12 @@ namespace EddiDataDefinitions
 
         private Government(string edname) : base(edname, edname.Replace("$government_", "").Replace(";", ""))
         {}
+
+        new public static Government FromName(string from)
+        {
+            // EDSM uses a special string to describe engineering workshops, standardize here.
+            from = from.Replace("Workshop (Engineer)", "engineer");
+            return ResourceBasedLocalizedEDName<Government>.FromName(from);
+        }
     }
 }

@@ -376,7 +376,9 @@ namespace UnitTests
             // Test that even unknown systems return a basic response
             StarSystem starSystem = EddbService.System("Unknown star system");
             Assert.AreEqual("Unknown star system", starSystem.name);
-            Assert.IsNull(starSystem.population);
+            Assert.IsNull(starSystem.x);
+            Assert.IsNull(starSystem.y);
+            Assert.IsNull(starSystem.z);
         }
     }
 }
