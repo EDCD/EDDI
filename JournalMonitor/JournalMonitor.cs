@@ -95,18 +95,23 @@ namespace EddiJournalMonitor
                                 string stationName = JsonParsing.getString(data, "StationName");
                                 string stationState = JsonParsing.getString(data, "StationState") ?? string.Empty;
                                 string stationModel = JsonParsing.getString(data, "StationType");
-                                Superpower allegiance = getAllegiance(data, "StationAllegiance");
+                                Superpower allegiance = getAllegiance(data, "StationAllegiance") ?? Superpower.FromEDName("None");
                                 string faction = getFaction(data, "StationFaction");
-                                State factionState = State.FromEDName(JsonParsing.getString(data, "FactionState"));
-                                Economy economy = Economy.FromEDName(JsonParsing.getString(data, "StationEconomy"));
-                                Government government = Government.FromEDName(JsonParsing.getString(data, "StationGovernment"));
+                                FactionState factionState = FactionState.FromEDName(JsonParsing.getString(data, "FactionState") ?? "None");
+                                Economy economy = Economy.FromEDName(JsonParsing.getString(data, "StationEconomy") ?? "None");
+                                Government government = Government.FromEDName(JsonParsing.getString(data, "StationGovernment" ?? "None"));
                                 decimal? distancefromstar = JsonParsing.getOptionalDecimal(data, "DistFromStarLS");
 
                                 // Get station services data
                                 data.TryGetValue("StationServices", out object val);
                                 List<string> stationservices = (val as List<object>)?.Cast<string>()?.ToList();
+                                List<StationService> stationServices = new List<StationService>();
+                                foreach (string service in stationservices)
+                                {
+                                    stationServices.Add(StationService.FromEDName(service));
+                                }
 
-                                events.Add(new DockedEvent(timestamp, systemName, systemAddress, marketId, stationName, stationState, stationModel, allegiance, faction, factionState, economy, government, distancefromstar, stationservices) { raw = line });
+                                events.Add(new DockedEvent(timestamp, systemName, systemAddress, marketId, stationName, stationState, stationModel, allegiance, faction, factionState, economy, government, distancefromstar, stationServices) { raw = line });
                             }
                             handled = true;
                             break;
@@ -148,7 +153,7 @@ namespace EddiJournalMonitor
                                 string system = JsonParsing.getString(data, "StarSystem");
                                 long systemAddress = JsonParsing.getLong(data, "SystemAddress");
                                 string body = JsonParsing.getString(data, "Body");
-                                string bodyType = JsonParsing.getString(data, "BodyType");
+                                BodyType bodyType = BodyType.FromEDName(JsonParsing.getString(data, "BodyType") ?? "None");
                                 events.Add(new EnteredNormalSpaceEvent(timestamp, system, systemAddress, body, bodyType) { raw = line });
                             }
                             handled = true;
@@ -168,7 +173,7 @@ namespace EddiJournalMonitor
                                 decimal distance = JsonParsing.getDecimal(data, "JumpDist");
                                 Superpower allegiance = getAllegiance(data, "SystemAllegiance");
                                 string faction = getFaction(data, "SystemFaction");
-                                State factionState = State.FromEDName(JsonParsing.getString(data, "FactionState") ?? "None");
+                                FactionState factionState = FactionState.FromEDName(JsonParsing.getString(data, "FactionState") ?? "None");
                                 Economy economy = Economy.FromEDName(JsonParsing.getString(data, "SystemEconomy"));
                                 Economy economy2 = Economy.FromEDName(JsonParsing.getString(data, "SystemSecondEconomy"));
                                 Government government = Government.FromEDName(JsonParsing.getString(data, "SystemGovernment"));
@@ -665,7 +670,7 @@ namespace EddiJournalMonitor
                                     foreach (Dictionary<string, object> ringData in ringsData)
                                     {
                                         string ringName = JsonParsing.getString(ringData, "Name");
-                                        Composition ringComposition = Composition.FromEDName(JsonParsing.getString(ringData, "RingClass"));
+                                        RingComposition ringComposition = RingComposition.FromEDName(JsonParsing.getString(ringData, "RingClass"));
                                         decimal ringMassMegaTons = JsonParsing.getDecimal(ringData, "MassMT");
                                         decimal ringInnerRadiusKm = JsonParsing.getDecimal(ringData, "InnerRad") / 1000;
                                         decimal ringOuterRadiusKm = JsonParsing.getDecimal(ringData, "OuterRad") / 1000;
@@ -711,8 +716,11 @@ namespace EddiJournalMonitor
 
                                     // The "Atmosphere" is most accurately described through the "AtmosphereType" and "AtmosphereComposition" 
                                     // properties, so we use them in preference to "Atmosphere"
-                                    
-                                    AtmosphereClass atmosphereClass = AtmosphereClass.FromEDName(JsonParsing.getString(data, "AtmosphereType"));
+
+                                    // Gas giants may receive an empty string in place of an atmosphere class string. Fix it, since gas giants definitely have atmospheres. 
+                                    AtmosphereClass atmosphereClass = planetClass.invariantName.Contains("gas giant") && JsonParsing.getString(data, "AtmosphereType") == string.Empty
+                                        ? AtmosphereClass.FromEDName("GasGiant") 
+                                        : AtmosphereClass.FromEDName(JsonParsing.getString(data, "AtmosphereType"));
 
                                     data.TryGetValue("AtmosphereComposition", out val);
                                     List<AtmosphereComposition> atmosphereCompositions = new List<AtmosphereComposition>();
@@ -745,12 +753,12 @@ namespace EddiJournalMonitor
                                             IDictionary<string, object> compositionData = (IDictionary<string, object>)val;
                                             foreach (KeyValuePair<string, object> kv in compositionData)
                                             {
-                                                string edComposition = kv.Key;
+                                                BodyComposition edComposition = BodyComposition.FromEDName(kv.Key);
                                                 // The journal gives solid composition as a fraction of 1. Multiply by 100 to convert to a true percentage.
                                                 decimal percent = ((decimal)(double)kv.Value) * 100;
                                                 if (edComposition != null)
                                                 {
-                                                    solidCompositions.Add(new BodySolidComposition(edComposition, (decimal)percent));
+                                                    solidCompositions.Add(new BodySolidComposition(edComposition, percent));
                                                 }
                                             }
                                             if (solidCompositions.Count > 0)
