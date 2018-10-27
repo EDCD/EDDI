@@ -39,8 +39,8 @@ namespace UnitTests
             Assert.AreEqual((decimal)703.763611, ev.distancefromarrival);
             Assert.IsNotNull(ev.tidallylocked);
             Assert.IsFalse((bool)ev.tidallylocked);
-            Assert.AreEqual("Terraformable", ev.terraformState.invariantName);
-            Assert.AreEqual("High metal content body", ev.planetClass.invariantName);
+            Assert.AreEqual("Candidate for terraforming", ev.terraformState.invariantName);
+            Assert.AreEqual("High metal content world", ev.planetClass.invariantName);
             Assert.IsNotNull(ev.volcanism);
             Assert.AreEqual("Magma", ev.volcanism.invariantType);
             Assert.AreEqual("Iron", ev.volcanism.invariantComposition);
@@ -119,7 +119,7 @@ namespace UnitTests
             Assert.IsNotNull(ev);
             Assert.AreEqual("Carbon dioxide", ev.atmosphereclass.invariantName);
             Assert.AreEqual(96.5M, ev.atmospherecomposition[0].percent);
-            Assert.AreEqual("Rock", ev.solidcomposition[0].invariantName);
+            Assert.AreEqual("Rock", ev.solidcomposition[0].composition.invariantName);
             Assert.AreEqual(70M, ev.solidcomposition[0].percent);
         }
 
@@ -545,6 +545,37 @@ namespace UnitTests
             Assert.AreEqual("Expansion", jumpedEvent.factionstate);
         }
 
+
+        [TestMethod]
+        public void TestJournalJumpedEvent2()
+        {
+            // Test for unpopulated system
+            string line = @"{
+                ""timestamp"": ""2018-10-17T00:40:45Z"",
+                ""event"": ""FSDJump"",
+                ""StarSystem"": ""Wredguia WD-K d8-65"",
+                ""SystemAddress"": 2243793258827,
+                ""StarPos"": [-319.15625,10.37500,-332.31250],
+                ""SystemAllegiance"": """",
+                ""SystemEconomy"": ""$economy_None;"",
+                ""SystemEconomy_Localised"": ""None"",
+                ""SystemSecondEconomy"": ""$economy_None;"",
+                ""SystemSecondEconomy_Localised"": ""None"",
+                ""SystemGovernment"": ""$government_None;"",
+                ""SystemGovernment_Localised"": ""None"",
+                ""SystemSecurity"": ""$GAlAXY_MAP_INFO_state_anarchy;"",
+                ""SystemSecurity_Localised"": ""Anarchy"",
+                ""Population"": 0,
+                ""JumpDist"": 24.230,
+                ""FuelUsed"": 4.271171,
+                ""FuelLevel"": 27.728828
+            }";
+            List<Event> events = JournalMonitor.ParseJournalEntry(line);
+            Assert.IsTrue(events.Count == 1);
+            JumpedEvent jumpedEvent = (JumpedEvent)events[0];
+            Assert.AreEqual("None", jumpedEvent.factionstate);
+        }
+
         [TestMethod]
         public void TestJournalJumpedEventFactionStateNull()
         {
@@ -701,7 +732,7 @@ namespace UnitTests
             Assert.AreEqual(10303479, @event.population);
             Assert.AreEqual("Medium", @event.securityLevel.invariantName);
             Assert.AreEqual("RayGateway", @event.station);
-            Assert.AreEqual("Coriolis Starport", @event.stationModels.invariantName);
+            Assert.AreEqual("Coriolis Starport", @event.stationModel.invariantName);
             Assert.AreEqual("Diaguandri", @event.system);
             Assert.AreEqual(670417429889, @event.systemAddress);
             Assert.AreEqual(-41.06250M, @event.x);

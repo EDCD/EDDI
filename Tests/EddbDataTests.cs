@@ -139,9 +139,9 @@ namespace UnitTests
             Assert.AreEqual(77.886406M, body.atmosphereCompositions[0].percent);
             Assert.AreEqual("Oxygen", body.atmosphereCompositions[1].invariantName);
             Assert.AreEqual((double)0.401426M, (double)body.tilt, .01);
-            Assert.AreEqual("Rock", body.solidComposition[0].invariantName);
+            Assert.AreEqual("Rock", body.solidComposition[0].composition.invariantName);
             Assert.AreEqual(70M, body.solidComposition[0].percent);
-            Assert.AreEqual("Metal", body.solidComposition[1].invariantName);
+            Assert.AreEqual("Metal", body.solidComposition[1].composition.invariantName);
             Assert.AreEqual(30M, body.solidComposition[1].percent);
             Assert.AreEqual(2, body.solidComposition.Count);
             Assert.AreEqual((double)499.485718M, (double)body.distance, 50);
@@ -219,7 +219,7 @@ namespace UnitTests
         {
             Body body = EddbService.Body("HD 43193 CD 7 a");
             Assert.AreEqual("Planet", body.Type.invariantName);
-            Assert.AreEqual("Sudarsky class IV gas giant", body.planetClass.invariantName);
+            Assert.AreEqual("Class IV gas giant", body.planetClass.invariantName);
             Assert.IsNotNull(body.distance);
             Assert.IsFalse((bool)body.landable);
             Assert.AreEqual(11.175634423255477, (double)body.gravity, 0.01);
@@ -255,12 +255,12 @@ namespace UnitTests
             Assert.AreEqual(6815, station.bodyEDDBID);
             Assert.AreEqual("Large", station.LargestPad.basename);
             Assert.AreEqual("Orbis", station.Model.basename);
-            Assert.AreEqual(324, (double)station.distancefromstar, 10);
+            Assert.AreEqual(324.39801, (double)station.distancefromstar, 10);
 
             // Faction data
             Assert.IsNotNull(station.Faction);
             Assert.IsTrue(station.Faction.EDDBID > 0);
-            Assert.IsTrue(station.State is State);
+            Assert.IsTrue(station.Faction.FactionState is FactionState);
             Assert.IsTrue(station.Faction.Allegiance is Superpower);
             Assert.IsTrue(station.Faction.Government is Government);
 
@@ -290,7 +290,7 @@ namespace UnitTests
         public void TestStationsSol()
         {
             List<Station> stations = EddbService.Stations("Sol");
-            Assert.AreEqual(20, stations.Count);
+            Assert.AreEqual(24, stations.Count);
         }
 
         [TestMethod]
@@ -304,7 +304,7 @@ namespace UnitTests
             Faction faction = factions.Find(n => n.name == "Coalition of Achali");
             Assert.AreEqual("Federation", faction.Allegiance.invariantName);
             Assert.AreEqual("Confederacy", faction.Government.invariantName);
-            Assert.IsNotNull(faction.State.invariantName);
+            Assert.IsNotNull(faction.FactionState.invariantName);
             Assert.IsFalse(faction.isplayer);
             Assert.IsNotNull(faction.updatedat);
             Assert.AreEqual(6626, faction.EDDBID);
@@ -353,14 +353,14 @@ namespace UnitTests
                     Assert.AreEqual((decimal)0, starSystem.y);
                     Assert.AreEqual((decimal)0, starSystem.z);
                     Assert.IsNotNull(starSystem.population);
-                    Assert.IsNotNull(starSystem.Faction.Allegiance.basename);
-                    Assert.IsNotNull(starSystem.Faction.Government.basename);
-                    Assert.IsNotNull(starSystem.Faction.name);
                     Assert.IsNotNull(starSystem.Faction);
-                    Assert.IsNotNull(starSystem.systemState.basename);
-                    Assert.IsNotNull(starSystem.securityLevel.basename);
+                    Assert.IsNotNull(starSystem.Faction.Allegiance.invariantName);
+                    Assert.IsNotNull(starSystem.Faction.Government.invariantName);
+                    Assert.IsNotNull(starSystem.Faction.FactionState.invariantName);
+                    Assert.IsNotNull(starSystem.Faction.name);
+                    Assert.IsNotNull(starSystem.securityLevel.invariantName);
                     Assert.IsNotNull(starSystem.primaryeconomy);
-                    Assert.AreEqual("Common", starSystem.Reserve.basename);
+                    Assert.AreEqual("Common", starSystem.Reserve.invariantName);
                     continue;
                 }
                 else

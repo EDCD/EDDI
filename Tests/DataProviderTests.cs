@@ -19,21 +19,21 @@ namespace UnitTests
         [TestMethod]
         public void TestDataProviderEmptySystem()
         {
-            StarSystem starSystem = DataProviderService.GetSystemData("Lagoon Sector GW-V b2-6");
+            StarSystem starSystem = DataProviderService.GetEdsmFullSystemData("Lagoon Sector GW-V b2-6");
             Assert.IsNotNull(starSystem.population);
         }
 
         [TestMethod]
         public void TestDataProviderMalformedSystem()
         {
-            StarSystem starSystem = DataProviderService.GetSystemData("Malformed with quote\" and backslash\\. So evil");
+            StarSystem starSystem = DataProviderService.GetEdsmFullSystemData("Malformed with quote\" and backslash\\. So evil");
             Assert.IsNotNull(starSystem);
         }
 
         [TestMethod]
         public void TestDataProviderUnknown()
         {
-            StarSystem starSystem = DataProviderService.GetSystemData("Not appearing in this galaxy");
+            StarSystem starSystem = DataProviderService.GetEdsmFullSystemData("Not appearing in this galaxy");
             Assert.IsNotNull(starSystem);
         }
 
@@ -97,30 +97,37 @@ namespace UnitTests
             Assert.AreEqual(30, system.bodies.Count);
         }
 
-
         [TestMethod]
         public void TestStarSystemData()
         {
             // Test system & body data in a complete star system
-            StarSystem starSystem = DataProviderService.GetFullSystemData("Sol");
+            StarSystem starSystem = DataProviderService.GetEdsmFullSystemData("Sol");
 
             Assert.AreEqual("Sol", starSystem.name);
             Assert.AreEqual((decimal)0, starSystem.x);
             Assert.AreEqual((decimal)0, starSystem.y);
             Assert.AreEqual((decimal)0, starSystem.z);
             Assert.IsNotNull(starSystem.population);
-            Assert.IsNotNull(starSystem.Faction.Allegiance.basename);
-            Assert.IsNotNull(starSystem.Faction.Government.basename);
-            Assert.IsNotNull(starSystem.Faction.name);
             Assert.IsNotNull(starSystem.Faction);
-            Assert.IsNotNull(starSystem.systemState.basename);
-            Assert.IsNotNull(starSystem.securityLevel.basename);
+            Assert.IsNotNull(starSystem.Faction.Allegiance.invariantName);
+            Assert.IsNotNull(starSystem.Faction.Government.invariantName);
+            Assert.IsNotNull(starSystem.Faction.FactionState.invariantName);
+            Assert.IsNotNull(starSystem.Faction.name);
+            Assert.IsNotNull(starSystem.securityLevel.invariantName);
             Assert.IsNotNull(starSystem.primaryeconomy);
-            Assert.AreEqual("Common", starSystem.Reserve.basename);
+            Assert.AreEqual("Common", starSystem.Reserve.invariantName);
             Assert.IsNotNull(starSystem.stations.Count);
             Assert.IsNotNull(starSystem);
             Assert.IsNotNull(starSystem.bodies);
             Assert.IsFalse(starSystem.bodies.Count == 0);
+        }
+
+        [TestMethod]
+        public void TestLatency()
+        {
+            System.DateTime startTime = System.DateTime.UtcNow;
+            StarSystem starSystem = DataProviderService.GetEdsmFullSystemData("Sol");
+            Assert.IsTrue((System.DateTime.UtcNow - startTime).Milliseconds < 1000);
         }
     }
 }
