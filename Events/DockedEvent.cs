@@ -26,7 +26,7 @@ namespace EddiEvents
             VARIABLES.Add("government", "The government of the station at which the commander has docked");
             VARIABLES.Add("security", "The security of the station at which the commander has docked");
             VARIABLES.Add("distancefromstar", "The distance of this station from the star (light seconds)");
-            VARIABLES.Add("stationservices", "A list of possible station services: Dock, Autodock, BlackMarket, Commodities, Contacts, Exploration, Initiatives, Missions, Outfitting, CrewLounge, Rearm, Refuel, Repair, Shipyard, Tuning, Workshop, MissionsGenerated, Facilitator, Research, FlightController, StationOperations, OnDockMission, Powerplay, SearchAndRescue");
+            VARIABLES.Add("stationservices", "A list of possible station services: Dock, Autodock, BlackMarket, Commodities, Contacts, Exploration, Initiatives, Missions, Outfitting, CrewLounge, Rearm, Refuel, Repair, Shipyard, Tuning, Workshop, MissionsGenerated, Facilitator, Research, FlightController, StationOperations, OnDockMission, Powerplay, SearchAndRescue, TechBroker, MaterialTrader");
         }
 
         public string system { get; private set; }
@@ -51,14 +51,27 @@ namespace EddiEvents
 
         public decimal? distancefromstar { get; private set; }
 
-        public List<string> stationservices { get; private set; }
+        public List<string> stationservices 
+        {
+            get
+            {
+                List<string> services = new List<string>();
+                foreach (StationService service in stationServices)
+                {
+                    services.Add(service.localizedName);
+                }
+                return services;
+            }
+        }
 
         // These properties are not intended to be user facing
         public long systemAddress { get; private set; }
 
-        public Superpower Allegiance { get; private set; }
+        public Superpower Allegiance { get; private set; } = Superpower.None;
 
-        public DockedEvent(DateTime timestamp, string system, long systemAddress, long marketId, string station, string state, string model, Superpower allegiance, string faction, State factionstate, Economy economy, Government government, decimal? distancefromstar, List<string> stationservices) : base(timestamp, NAME)
+        public List<StationService> stationServices { get; private set; }
+
+        public DockedEvent(DateTime timestamp, string system, long systemAddress, long marketId, string station, string state, string model, Superpower allegiance, string faction, FactionState factionstate, Economy economy, Government government, decimal? distancefromstar, List<StationService> stationServices) : base(timestamp, NAME)
         {
             this.system = system;
             this.systemAddress = systemAddress;
@@ -68,11 +81,11 @@ namespace EddiEvents
             this.model = model;
             this.Allegiance = (allegiance ?? Superpower.None);
             this.faction = faction;
-            this.factionstate = (factionstate ?? State.None).localizedName;
+            this.factionstate = (factionstate ?? FactionState.None).localizedName;
             this.economy = (economy ?? Economy.None).localizedName;
             this.government = (government ?? Government.None).localizedName;
             this.distancefromstar = distancefromstar;
-            this.stationservices = stationservices;
+            this.stationServices = stationServices;
         }
     }
 }

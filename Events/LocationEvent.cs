@@ -46,25 +46,25 @@ namespace EddiEvents
 
         public string body { get; private set; }
 
-        public string bodytype => bodyType.localizedName;
+        public string bodytype => (bodyType ?? BodyType.None).localizedName;
 
         public bool docked { get; private set; }
 
         public string station { get; private set; }
 
-        public string stationtype => stationModels.localizedName;
+        public string stationtype => (stationModel ?? StationModel.None).localizedName;
 
-        public string allegiance => Allegiance.localizedName;
+        public string allegiance => (Allegiance ?? Superpower.None).localizedName;
 
         public string faction { get; private set; }
 
-        public string economy => Economy.localizedName;
+        public string economy => (Economy ?? Economy.None).localizedName;
 
-        public string economy2 => Economy2.localizedName;
+        public string economy2 => (Economy2 ?? Economy.None).localizedName;
 
-        public string government => Government.localizedName;
+        public string government => (Government ?? Government.None).localizedName;
 
-        public string security => securityLevel.localizedName;
+        public string security => (securityLevel ?? SecurityLevel.None).localizedName;
 
         public long? population { get; private set; }
 
@@ -75,13 +75,13 @@ namespace EddiEvents
         // These properties are not intended to be user facing
         public long? systemAddress { get; private set; }
         public long? marketId { get; private set; }
-        public Economy Economy { get; private set; }
-        public Economy Economy2 { get; private set; }
-        public Superpower Allegiance { get; private set; }
-        public Government Government { get; private set; }
-        public SecurityLevel securityLevel { get; private set; }
-        public StationModel stationModels { get; private set; }
-        public BodyType bodyType { get; private set; }
+        public Economy Economy { get; private set; } = Economy.None;
+        public Economy Economy2 { get; private set; } = Economy.None;
+        public Superpower Allegiance { get; private set; } = Superpower.None;
+        public Government Government { get; private set; } = Government.None;
+        public SecurityLevel securityLevel { get; private set; } = SecurityLevel.None;
+        public StationModel stationModel { get; private set; } = StationModel.None;
+        public BodyType bodyType { get; private set; } = BodyType.None;
 
         public LocationEvent(DateTime timestamp, string system, decimal x, decimal y, decimal z, long systemAddress, string body, BodyType bodytype, bool docked, string station, StationModel stationtype, long? marketId, Superpower allegiance, string faction, Economy economy, Economy economy2, Government government, SecurityLevel security, long? population, decimal? longitude, decimal? latitude) : base(timestamp, NAME)
         {
@@ -91,17 +91,17 @@ namespace EddiEvents
             this.z = z;
             this.systemAddress = systemAddress;
             this.body = body;
-            this.bodyType = (bodytype ?? BodyType.None);
+            this.bodyType = bodytype;
             this.docked = docked;
             this.station = station;
-            this.stationModels = (stationtype ?? StationModel.None);
+            this.stationModel = stationtype;
             this.marketId = marketId;
-            this.Allegiance = (allegiance ?? Superpower.None);
+            this.Allegiance = allegiance;
             this.faction = faction;
             this.Economy = (economy ?? Economy.None);
             this.Economy2 = (economy2 ?? Economy.None);
-            this.Government = (government ?? Government.None);
-            this.securityLevel = (security ?? SecurityLevel.None);
+            this.Government = government;
+            this.securityLevel = security;
             this.population = population;
             this.longitude = longitude;
             this.latitude = latitude;
