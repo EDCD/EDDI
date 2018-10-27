@@ -133,6 +133,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Gas giant.
+        /// </summary>
+        public static string GasGiant {
+            get {
+                return ResourceManager.GetString("GasGiant", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Helium.
         /// </summary>
         public static string Helium {

@@ -205,4 +205,8 @@
     <value>Suitable for water-based life</value>
     <comment>Atmosphere class "EarthLike"</comment>
   </data>
+  <data name="GasGiant" xml:space="preserve">
+    <value>Gas giant</value>
+    <comment>Atmosphere class "Gas giant"</comment>
+  </data>
 </root>

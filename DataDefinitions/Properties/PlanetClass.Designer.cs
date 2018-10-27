@@ -70,7 +70,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Sudarsky class I gas giant.
+        ///   Looks up a localized string similar to Class I gas giant.
         /// </summary>
         public static string ClassIGasGiant {
             get {
@@ -79,7 +79,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Sudarsky class II gas giant.
+        ///   Looks up a localized string similar to Class II gas giant.
         /// </summary>
         public static string ClassIIGasGiant {
             get {
@@ -88,7 +88,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Sudarsky class III gas giant.
+        ///   Looks up a localized string similar to Class III gas giant.
         /// </summary>
         public static string ClassIIIGasGiant {
             get {
@@ -97,7 +97,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Sudarsky class IV gas giant.
+        ///   Looks up a localized string similar to Class IV gas giant.
         /// </summary>
         public static string ClassIVGasGiant {
             get {
@@ -106,7 +106,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Sudarsky class V gas giant.
+        ///   Looks up a localized string similar to Class V gas giant.
         /// </summary>
         public static string ClassVGasGiant {
             get {
@@ -151,7 +151,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Helium rich gas giant.
+        ///   Looks up a localized string similar to Helium-rich gas giant.
         /// </summary>
         public static string HeliumRichGasGiant {
             get {
@@ -160,7 +160,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to High metal content body.
+        ///   Looks up a localized string similar to High metal content world.
         /// </summary>
         public static string HighMetalContent {
             get {
@@ -205,7 +205,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Rocky ice body.
+        ///   Looks up a localized string similar to Rocky ice world.
         /// </summary>
         public static string RockyIce {
             get {

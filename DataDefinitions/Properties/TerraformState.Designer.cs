@@ -70,7 +70,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Terraformable.
+        ///   Looks up a localized string similar to Candidate for terraforming.
         /// </summary>
         public static string Terraformable {
             get {
