@@ -513,7 +513,7 @@ namespace EddiVoiceAttackResponder
                 vaProxy.SetText(prefix + " government", (station.Faction?.Government ?? Government.None).localizedName);
                 vaProxy.SetText(prefix + " allegiance", (station.Faction?.Allegiance ?? Superpower.None).localizedName);
                 vaProxy.SetText(prefix + " faction", station.Faction?.name);
-                vaProxy.SetText(prefix + " state", station.state);
+                vaProxy.SetText(prefix + " state", station.Faction?.FactionState ?? FactionState.None);
                 vaProxy.SetText(prefix + " primary economy", station.primaryeconomy);
                 // Services
                 vaProxy.SetBoolean(prefix + " has refuel", station.hasrefuel);
@@ -767,7 +767,7 @@ namespace EddiVoiceAttackResponder
                 vaProxy.SetText(prefix + " government", (system?.Faction?.Government ?? Government.None).localizedName);
                 vaProxy.SetText(prefix + " faction", system?.Faction?.name);
                 vaProxy.SetText(prefix + " primary economy", system?.primaryeconomy);
-                vaProxy.SetText(prefix + " state", (system?.systemState ?? EddiDataDefinitions.State.None).localizedName);
+                vaProxy.SetText(prefix + " state", (system?.Faction?.FactionState ?? FactionState.None).localizedName);
                 vaProxy.SetText(prefix + " security", system?.security);
                 vaProxy.SetText(prefix + " power", system?.power);
                 vaProxy.SetText(prefix + " power (spoken)", Translations.Power(EDDI.Instance.CurrentStarSystem?.power));
@@ -870,7 +870,7 @@ namespace EddiVoiceAttackResponder
             vaProxy.SetDecimal(prefix + " pressure", body?.pressure);
             vaProxy.SetText(prefix + " terraform state", (body?.terraformState ?? TerraformState.None).localizedName);
             vaProxy.SetText(prefix + " planet type", (body?.planetClass ?? PlanetClass.None).localizedName);
-            vaProxy.SetText(prefix + " reserves", (body?.reserveLevel ?? SystemReserveLevel.None).localizedName);
+            vaProxy.SetText(prefix + " reserves", (body?.reserveLevel ?? ReserveLevel.None).localizedName);
 
             Logging.Debug("Set body information (" + prefix + ")");
         }
