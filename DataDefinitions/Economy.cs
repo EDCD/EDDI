@@ -12,7 +12,6 @@ namespace EddiDataDefinitions
             resourceManager.IgnoreCase = false;
             missingEDNameHandler = (edname) => new Economy(edname);
 
-            None = new Economy("$economy_None");
             var Agriculture = new Economy("$economy_Agri");
             var Colony = new Economy("$economy_Colony");
             var Damaged = new Economy("$economy_Damaged");
@@ -29,10 +28,10 @@ namespace EddiDataDefinitions
             var Prison = new Economy("$economy_Prison");
         }
 
-        public static readonly Economy None;
+        public static readonly Economy None = new Economy("$economy_None");
 
-        // dummy used to ensure that the static constructor has run, defaulting to "None"
-        public Economy() : this("$economy_None")
+        // dummy used to ensure that the static constructor has run
+        public Economy() : this("")
         {}
 
         private Economy(string edname) : base(edname, edname.Replace("$economy_", "").Replace(";", ""))
