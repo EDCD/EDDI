@@ -104,6 +104,7 @@ namespace UnitTests
             StarSystem starSystem = DataProviderService.GetEdsmFullSystemData("Sol");
 
             Assert.AreEqual("Sol", starSystem.name);
+            Assert.AreEqual(17072, starSystem.EDDBID);
             Assert.AreEqual((decimal)0, starSystem.x);
             Assert.AreEqual((decimal)0, starSystem.y);
             Assert.AreEqual((decimal)0, starSystem.z);

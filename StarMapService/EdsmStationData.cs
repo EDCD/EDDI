@@ -100,9 +100,7 @@ namespace EddiStarMapService
             // Add always available services for dockable stations
             stationServices.Add(StationService.FromEDName("Dock"));
             stationServices.Add(StationService.FromEDName("AutoDock"));
-            stationServices.Add(StationService.FromEDName("Contacts"));
             stationServices.Add(StationService.FromEDName("Exploration"));
-            stationServices.Add(StationService.FromEDName("Tuning"));
             stationServices.Add(StationService.FromEDName("Workshop"));
             stationServices.Add(StationService.FromEDName("FlightController"));
             stationServices.Add(StationService.FromEDName("StationOperations"));
