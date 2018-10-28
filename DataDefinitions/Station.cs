@@ -72,7 +72,7 @@ namespace EddiDataDefinitions
                 List<string> services = new List<string>();
                 foreach (StationService service in stationServices)
                 {
-                    services.Add(service.localizedName);
+                    if (service != null) { services.Add(service.localizedName); }
                 }
                 return services;
             }
@@ -80,56 +80,56 @@ namespace EddiDataDefinitions
 
         /// <summary>Does this station have refuel facilities?</summary>
         public bool? hasrefuel {
-            get { return stationServices.Exists(s => s.edname == "Refuel"); }
+            get { return stationServices.Exists(s => s?.edname == "Refuel"); }
             set { if (value is true) { stationServices.Add(StationService.FromEDName("Refuel")); } }
         }
         /// <summary>Does this station have rearm facilities?</summary>
         public bool? hasrearm
         {
-            get { return stationServices.Exists(s => s.edname == "Rearm"); }
+            get { return stationServices.Exists(s => s?.edname == "Rearm"); }
             set { if (value is true) { stationServices.Add(StationService.FromEDName("Rearm")); } }
         }
         /// <summary>Does this station have repair facilities?</summary>
         public bool? hasrepair
         {
-            get { return stationServices.Exists(s => s.edname == "Repair"); }
+            get { return stationServices.Exists(s => s?.edname == "Repair"); }
             set { if (value is true) { stationServices.Add(StationService.FromEDName("Repair")); } }
         }
         /// <summary>Does this station have outfitting?</summary>
         public bool? hasoutfitting
         {
-            get { return stationServices.Exists(s => s.edname == "Outfitting"); }
+            get { return stationServices.Exists(s => s?.edname == "Outfitting"); }
             set { if (value is true) { stationServices.Add(StationService.FromEDName("Outfitting")); } }
         }
         /// <summary>Does this station have a shipyard?</summary>
         public bool? hasshipyard
         {
-            get { return stationServices.Exists(s => s.edname == "Shipyard"); }
+            get { return stationServices.Exists(s => s?.edname == "Shipyard"); }
             set { if (value is true) { stationServices.Add(StationService.FromEDName("Shipyard")); } }
         }
         /// <summary>Does this station have a market?</summary>
         public bool? hasmarket
         {
-            get { return stationServices.Exists(s => s.edname == "Commodities"); }
+            get { return stationServices.Exists(s => s?.edname == "Commodities"); }
             set { if (value is true) { stationServices.Add(StationService.FromEDName("Commodities")); } }
         }
         /// <summary>Does this station have a black market?</summary>
         public bool? hasblackmarket
         {
-            get { return stationServices.Exists(s => s.edname == "BlackMarket"); }
+            get { return stationServices.Exists(s => s?.edname == "BlackMarket"); }
             set { if (value is true) { stationServices.Add(StationService.FromEDName("BlackMarket")); } }
         }
         /// <summary>Does this station allow docking?</summary>
         public bool? hasdocking
         {
-            get { return stationServices.Exists(s => s.edname == "Dock"); }
+            get { return stationServices.Exists(s => s?.edname == "Dock"); }
             set { if (value is true) { stationServices.Add(StationService.FromEDName("Dock")); } }
         }
 
         /// <summary>The model of the station</summary>
         [Obsolete("Please use Model instead")]
-        public string model => Model.localizedName;
-        public StationModel Model { get; set; }
+        public string model => (Model ?? StationModel.None).localizedName;
+        public StationModel Model { get; set; } = StationModel.None;
 
         /// <summary>What is the largest ship that can land here?</summary>
         [Obsolete("Please use StationLargestPad instead")]
@@ -141,11 +141,11 @@ namespace EddiDataDefinitions
             {
                 if (_LargestPad != null)
                 {
-                    return _LargestPad;
+                    return _LargestPad ?? StationLargestPad.None;
                 }
                 if (Model.edname == "None")
                 {
-                    return StationLargestPad.FromSize(null);
+                    return StationLargestPad.None;
                 }
                 if (Model.edname == "Outpost")
                 {
@@ -155,7 +155,7 @@ namespace EddiDataDefinitions
             }
             set
             {
-                _LargestPad = value;
+                _LargestPad = value ?? StationLargestPad.None;
             }
         }
         private StationLargestPad _LargestPad;
