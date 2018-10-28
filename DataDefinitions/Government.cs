@@ -41,6 +41,11 @@ namespace EddiDataDefinitions
 
         new public static Government FromName(string from)
         {
+            if (from is null)
+            {
+                return None;
+            }
+
             // EDSM uses a special string to describe engineering workshops, standardize here.
             from = from.Replace("Workshop (Engineer)", "engineer");
             return ResourceBasedLocalizedEDName<Government>.FromName(from);

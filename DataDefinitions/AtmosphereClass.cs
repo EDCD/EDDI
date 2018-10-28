@@ -37,6 +37,9 @@ namespace EddiDataDefinitions
             var SulphurDioxide = new AtmosphereClass("SulphurDioxide");
             var Water = new AtmosphereClass("Water");
             var WaterRich = new AtmosphereClass("WaterRich");
+
+            // Synthetic name(s)
+            var GasGiant = new AtmosphereClass("GasGiant");
         }
 
         public static readonly AtmosphereClass None = new AtmosphereClass("None");
@@ -47,9 +50,9 @@ namespace EddiDataDefinitions
 
         private AtmosphereClass(string edname) : base(edname, edname
             .ToLowerInvariant()
-            .Replace("thick", "")
-            .Replace("thin", "")
-            .Replace("hot", "")
+            .Replace("thick ", "")
+            .Replace("thin ", "")
+            .Replace("hot ", "")
             .Replace(" ", "")
             .Replace("-", ""))
         { }
@@ -64,9 +67,9 @@ namespace EddiDataDefinitions
             // Temperature and pressure are defined separately so we remove them from this string (if descriptors are present)
             string normalizedName = name
             .ToLowerInvariant()
-            .Replace("thick", "")
-            .Replace("thin", "")
-            .Replace("hot", "");
+            .Replace("thick ", "")
+            .Replace("thin ", "")
+            .Replace("hot ", "");
             return ResourceBasedLocalizedEDName<AtmosphereClass>.FromName(normalizedName);
         }
 

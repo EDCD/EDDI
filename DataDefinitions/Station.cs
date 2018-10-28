@@ -127,7 +127,7 @@ namespace EddiDataDefinitions
         }
 
         /// <summary>The model of the station</summary>
-        [Obsolete("Please use StationModel instead")]
+        [Obsolete("Please use Model instead")]
         public string model => Model.localizedName;
         public StationModel Model { get; set; }
 

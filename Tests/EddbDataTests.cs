@@ -54,7 +54,7 @@ namespace UnitTests
             // Force obtain the data from remote source
             List<Body> bodies = EddbService.Bodies("Sol");
             Assert.IsNotNull(bodies);
-            Assert.AreEqual(40, bodies.Count);
+            Assert.AreEqual(45, bodies.Count);
 
             Body sol = bodies.Find(b => b.name == "Sol");
             Assert.AreEqual(4792, sol.age);
