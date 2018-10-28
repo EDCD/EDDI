@@ -64,6 +64,7 @@ namespace EddiDataProviderService
                         if ((string)Body["name"] == body.name)
                         {
                             body.EDDBID = (long?)response["id"];
+                            body.systemEDDBID = system.EDDBID;
                         }
                     }
                 }

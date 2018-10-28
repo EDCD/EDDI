@@ -7,7 +7,6 @@ using System.Resources;
 namespace EddiDataDefinitions
 {
     /// <summary> Body Solid Composition </summary>
-    [JsonObject(MemberSerialization.OptIn)]
     public class BodySolidComposition
     {
         public BodyComposition composition { get; set; }
@@ -20,7 +19,6 @@ namespace EddiDataDefinitions
         }
     }
 
-    [JsonObject(MemberSerialization.OptIn)]
     public class BodyComposition : ResourceBasedLocalizedEDName<BodyComposition>
     {
         static BodyComposition()

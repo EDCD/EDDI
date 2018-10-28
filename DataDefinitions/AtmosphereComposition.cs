@@ -36,9 +36,9 @@ namespace EddiDataDefinitions
         private static readonly IDictionary<string, string> COMPOSITIONS = new Dictionary<string, string>();
 
         [JsonProperty("composition")]
-        public string edName { get; set; } // Nitrogen, Oxygen, etc.
-        public string invariantName => GetInvariantString(edName);
-        public string localizedName => GetLocalizedString(edName);
+        public string edname { get; set; } // Nitrogen, Oxygen, etc.
+        public string invariantName => GetInvariantString(edname);
+        public string localizedName => GetLocalizedString(edname);
         [JsonIgnore, Obsolete("Please use localizedName or invariantName")]
         public string name => localizedName;
 
@@ -61,7 +61,7 @@ namespace EddiDataDefinitions
 
         public AtmosphereComposition(string composition, decimal percent)
         {
-            this.edName = composition;
+            this.edname = composition;
             this.percent = percent;
         }
     }

@@ -69,11 +69,12 @@ namespace EddiDataProviderService
                     List<Station> stations = StarMapService.GetStarMapStations(system);
 
                     starSystem.stations = SetStationFactionData(stations, factions);
-                    starSystem = LegacyEddpService.SetEdsmData(starSystem);
 
                     starSystem.factions = factions;
                     starSystem.stations = stations;
                 }
+
+                starSystem = LegacyEddpService.SetEdsmData(starSystem);
             }
             return starSystem ?? new StarSystem() { name = system };
         }
