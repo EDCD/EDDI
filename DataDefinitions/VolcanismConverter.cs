@@ -35,29 +35,4 @@ namespace EddiDataDefinitions
             serializer.Serialize(writer, value);
         }
     }
-
-    public class RingConverter : JsonConverter
-    {
-        public override bool CanConvert(Type objectType)
-        {
-            return (objectType == typeof(Ring));
-        }
-        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
-        {
-            if (reader.TokenType == JsonToken.StartObject)
-            {
-                // This is an object - use standard deserialization
-                return serializer.Deserialize<List<Ring>>(reader);
-            }
-            else
-            {
-                // Unsupported
-                return null;
-            }
-        }
-        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
-        {
-            serializer.Serialize(writer, value);
-        }
-    }
 }

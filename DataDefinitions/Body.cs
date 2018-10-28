@@ -50,7 +50,6 @@ namespace EddiDataDefinitions
         public decimal? temperature { get; set; }
 
         /// <summary>The body's rings</summary>
-        [JsonConverter(typeof(RingConverter))]
         public List<Ring> rings { get; set; }
 
         // Star-specific items
