@@ -768,7 +768,7 @@ namespace EddiSpeechResponder
 
                 if (value.Type == Cottle.ValueContent.String)
                 {
-                    edname = CommodityDefinition.FromName(value.AsString).edname;
+                    edname = CommodityDefinition.FromNameOrEDName(value.AsString).edname;
                     result = ((CargoMonitor)EDDI.Instance.ObtainMonitor("Cargo monitor")).GetCargoWithEDName(edname);
                 }
                 else if (value.Type == Cottle.ValueContent.Number)

@@ -17,7 +17,7 @@ namespace UnitTests
         [TestMethod]
         public void TestDataDefinitionReactiveArmour()
         {
-            CommodityDefinition commodity = CommodityDefinition.FromName("$ReactiveArmour_Name;");
+            CommodityDefinition commodity = CommodityDefinition.FromEDName("$ReactiveArmour_Name;");
             Assert.AreEqual("Reactive Armour", commodity.invariantName);
             Assert.IsNotNull(commodity.EDDBID);
         }
@@ -25,7 +25,7 @@ namespace UnitTests
         [TestMethod]
         public void TestDataDefinitionUnknownName()
         {
-            CommodityDefinition commodity = CommodityDefinition.FromName("$MagicStuff_Name;");
+            CommodityDefinition commodity = CommodityDefinition.FromEDName("$MagicStuff_Name;");
             Assert.AreEqual("magicstuff", commodity.invariantName);
             Assert.IsNull(commodity.EDDBID);
         }

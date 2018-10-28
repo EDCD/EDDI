@@ -21,7 +21,7 @@ namespace UnitTests
         public void TestMalformedCommodityName()
         {
             string malformedCommodityName = "I gotta quote\" and a backslash\\, I'm really bad.";
-            var badCommoditity = CommodityDefinition.FromName(malformedCommodityName);
+            var badCommoditity = CommodityDefinition.FromNameOrEDName(malformedCommodityName);
             Assert.AreEqual(malformedCommodityName.ToLowerInvariant(), badCommoditity.localizedName);
         }
 

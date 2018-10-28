@@ -31,7 +31,7 @@ namespace EddiDataDefinitions
                 }
                 if (name != null)
                 {
-                    definition = CommodityDefinition.FromEDName(name) ?? CommodityDefinition.FromName(name);
+                    definition = CommodityDefinition.FromNameOrEDName(name);
                 }
             }
             additionalJsonData = null;
@@ -56,7 +56,7 @@ namespace EddiDataDefinitions
             get => definition?.localizedName;
             set
             {
-                CommodityDefinition newDef = CommodityDefinition.FromName(value);
+                CommodityDefinition newDef = CommodityDefinition.FromNameOrEDName(value);
                 this.definition = newDef;
             }
         }

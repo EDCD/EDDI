@@ -106,7 +106,7 @@ namespace EddiDataProviderService
             {
                 foreach (JObject commodity in json["commodities"])
                 {
-                    CommodityDefinition commodityDefinition = CommodityDefinition.FromName((string)commodity["name"]);
+                    CommodityDefinition commodityDefinition = CommodityDefinition.FromNameOrEDName((string)commodity["name"]);
                     CommodityMarketQuote quote = new CommodityMarketQuote(commodityDefinition);
                     // Annoyingly, these double-casts seem to be necessary because the boxed type is `long`. 
                     // A direct cast to `int?` always returns null.
