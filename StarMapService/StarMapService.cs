@@ -18,7 +18,7 @@ namespace EddiStarMapService
         public const int syncBatchSize = 100;
 
         // For normal use, the EDSM API base URL is https://www.edsm.net/.
-        // If you need to do some testing on EDSM's API, please use the https://beta.edsm.net/ endpoint.
+        // If you need to do some testing on EDSM's API, please use the https://beta.edsm.net/ endpoint for sending data.
         private static string sendUrl => ShouldUseTestEndpoints() ? "https://beta.edsm.net/" : "https://www.edsm.net/";
         private static string getUrl => "https://www.edsm.net/";
 
@@ -31,7 +31,7 @@ namespace EddiStarMapService
             commanderName = commandername;
         }
 
-        private static bool ShouldUseTestEndpoints()
+        public static bool ShouldUseTestEndpoints()
         {
 #if DEBUG
             return true;
@@ -60,7 +60,7 @@ namespace EddiStarMapService
                     StarMapLogResponse response = clientResponse.Data;
                     if (response?.msgnum != 100)
                     {
-                        Logging.Warn("EDSM responded with " + response.msg);
+                        Logging.Warn("EDSM responded with " + response.msg ?? clientResponse.ErrorMessage);
                     }
                 }
                 catch (ThreadAbortException)
@@ -94,9 +94,9 @@ namespace EddiStarMapService
                 {
                     var clientResponse = client.Execute<StarMapLogResponse>(request);
                     StarMapLogResponse response = clientResponse.Data;
-                    if (response.msgnum != 100)
+                    if (response?.msgnum != 100)
                     {
-                        Logging.Warn("EDSM responded with " + response.msg);
+                        Logging.Warn("EDSM responded with " + response.msg ?? clientResponse.ErrorMessage);
                     }
                 }
                 catch (ThreadAbortException)
@@ -147,9 +147,9 @@ namespace EddiStarMapService
             logRequest.AddParameter("systemName", systemName);
             var logClientResponse = client.Execute<StarMapLogResponse>(logRequest);
             StarMapLogResponse logResponse = logClientResponse.Data;
-            if (logResponse.msgnum != 100)
+            if (logResponse?.msgnum != 100)
             {
-                Logging.Warn("EDSM responded with " + logResponse.msg);
+                Logging.Warn("EDSM responded with " + logResponse.msg ?? logClientResponse.ErrorMessage);
             }
 
             // Also grab any comment that might be present
@@ -159,9 +159,9 @@ namespace EddiStarMapService
             commentRequest.AddParameter("systemName", systemName);
             var commentClientResponse = client.Execute<StarMapLogResponse>(commentRequest);
             StarMapLogResponse commentResponse = commentClientResponse.Data;
-            if (commentResponse.msgnum != 100)
+            if (commentResponse?.msgnum != 100)
             {
-                Logging.Warn("EDSM responded with " + commentResponse.msg);
+                Logging.Warn("EDSM responded with " + commentResponse.msg ?? commentClientResponse.ErrorMessage);
             }
 
             int visits = (logResponse != null && logResponse.logs != null) ? logResponse.logs.Count : 1;

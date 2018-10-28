@@ -118,11 +118,10 @@ namespace EddiEdsmResponder
                 /// Retrieve applicable transient game state info (metadata) 
                 /// for the event and send the event with transient info to EDSM
                 string eventData = prepareEventData(theEvent);
-                if (eventData == null)
+                if (eventData != null && !StarMapService.ShouldUseTestEndpoints())
                 {
-                    return;
+                    starMapService.sendEvent(eventData);
                 }
-                starMapService.sendEvent(eventData);
             }
         }
 
