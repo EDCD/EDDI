@@ -25,46 +25,31 @@ namespace EddiDataProviderService
             StarSystem starSystem = EddbService.System(system);
 
             List<Body> bodies = EddbService.Bodies(system);
-            SetBodyReserves(starSystem, bodies);
-            starSystem.bodies = bodies;
-
-            if (starSystem?.population > 0)
-            {
-                List<Station> stations = EddbService.Stations(system);
-                SetStationSystemName(starSystem);
-                SetCommodityData(system, stations);
-                starSystem.stations = stations;
-            }
-
-            return starSystem;
-        }
-
-        public static StarSystem GetEddbSystemData(string system)
-        {
-            if (system == null) { return null; }
-            return EddbService.System(system);
-        }
-
-        private static void SetStationSystemName(StarSystem starSystem)
-        {
-            // Assign the system name to each stations. Only needed for EDDB data. 
-            foreach (Station station in starSystem.stations)
-            {
-                station.systemname = starSystem.name;
-            }
-        }
-
-        private static void SetBodyReserves(StarSystem starSystem, List<Body> bodies)
-        {
-            // Sets body reserve levels. Only needed for EDDB data.
             foreach (Body body in bodies)
             {
+                // Add missing data from our system information
                 if (body.rings?.Count() > 0)
                 {
                     body.reserveLevel = starSystem.Reserve;
                 }
                 body.systemname = starSystem.name;
+                starSystem.bodies.Add(body);
             }
+
+            if (starSystem?.population > 0)
+            {
+                List<Station> stations = EddbService.Stations(system);
+                foreach (Station station in stations)
+                {
+                    // Add missing data from our system information and EDDP server
+                    station.systemname = starSystem.name;
+                    JObject response = LegacyEddpService.GetData(system);
+                    LegacyEddpService.SetCommoditiesData(station, starSystem, response);
+                    starSystem.stations.Add(station);
+                }
+            }
+
+            return starSystem;
         }
 
         // EDSM data service
@@ -83,26 +68,20 @@ namespace EddiDataProviderService
                     List<Faction> factions = StarMapService.GetStarMapFactions(system);
                     List<Station> stations = StarMapService.GetStarMapStations(system);
 
-                    SetStationFactionData(stations, factions);
-                    SetCommodityData(system, stations);
+                    starSystem.stations = SetStationFactionData(stations, factions);
+                    starSystem = LegacyEddpService.SetEdsmData(starSystem);
 
                     starSystem.factions = factions;
                     starSystem.stations = stations;
                 }
             }
-
             return starSystem ?? new StarSystem() { name = system };
         }
 
-        public static StarSystem GetEdsmSystemData(string system)
+        private static List<Station> SetStationFactionData(List<Station> stations, List<Faction> factions)
         {
-            if (system == null) { return null; }
-            return StarMapService.GetStarMapSystem(system);
-        }
-
-        private static void SetStationFactionData(List<Station> stations, List<Faction> factions)
-        {
-            // EDSM doesn't provide FactionState information from the stations endpoint data, we need to add it from the factions endpoint data
+            // EDSM doesn't provide full faction information (like faction state) from the stations endpoint data
+            // so we add it from the factions endpoint data
             foreach (Station station in stations)
             {
                 foreach (Faction faction in factions)
@@ -113,18 +92,7 @@ namespace EddiDataProviderService
                     }
                 }
             }
-        }
-
-        // Legacy EDDP data service
-        private static void SetCommodityData (string system, List<Station> stations)
-        {
-            foreach (Station station in stations)
-            {
-                station.systemname = system;
-                LegacyEddpService.GetCommoditiesData(station.name, system, out List<CommodityMarketQuote> commodities, out long? commoditiesupdatedat);
-                station.commodities = commodities;
-                station.commoditiesupdatedat = commoditiesupdatedat;
-            }
+            return stations;
         }
 
         // EDSM flight log synchronization

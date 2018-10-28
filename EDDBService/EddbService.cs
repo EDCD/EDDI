@@ -10,6 +10,12 @@ namespace EddiEddbService
 {
     public partial class EddbService
     {
+        // Data currently solely available from EDDB:
+        // - Station: Import commodities
+        // - Station: Export commodities
+        // - Station: Prohibited commodities 
+        // - Responses to complex multi-parameter queries
+
         // Since EDDB doesn't have an official API, we make use of the "unofficial" API
         // This API is high latency - reserve for targeted queries and data not available from any other source.
         private const string baseUrl = "https://elitebgs.kodeblox.com/api/eddb/";

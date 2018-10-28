@@ -9,21 +9,27 @@ using Utilities;
 namespace EddiDataProviderService
 {
     /// <summary>Access to EDDP legacy server data<summary>
-
-    // Data not currently available from EDSM and that we may wish to access from here:
-    // - System: Powerplay data
-    // + Station: Commodities price listings
-    // - Station: Import commodities
-    // - Station: Export commodities
-    // - Station: Prohibited commodities 
-    // - Station: Detailed shipyard data 
-    // - Station: Detailed module data
-
     public class LegacyEddpService
     {
         private const string BASE = "http://api.eddp.co/";
 
-        private static JObject GetData(string system)
+        static LegacyEddpService()
+        {
+            // We need to not use an expect header as it causes problems when sending data to a REST service
+            var errorUri = new Uri(BASE + "error");
+            var errorServicePoint = ServicePointManager.FindServicePoint(errorUri);
+            errorServicePoint.Expect100Continue = false;
+        }
+
+        public static StarSystem SetEdsmData(StarSystem system)
+        {
+            JObject response = GetData(system.name);
+            SetStarSystemLegacyData(system, response);
+            SetStationLegacyData(system, response);
+            return system;
+        }
+
+        public static JObject GetData(string system)
         {
             try
             {
@@ -37,21 +43,57 @@ namespace EddiDataProviderService
             }
         }
 
-        public static void GetCommoditiesData(string station, string system, out List<CommodityMarketQuote> commodities, out long? commoditiesupdatedat)
+        private static void SetStarSystemLegacyData(StarSystem system, JObject json)
         {
-            commodities = null;
-            commoditiesupdatedat = null;
+            // Set data not currently available from EDSM: Powerplay data and EDDBID
+            // TODO: Translatable powerplay states
+            system.EDDBID = (long?)json["id"];
+            system.power = (string)json["power"] == "None" ? null : (string)json["power"];
+            system.powerstate = (string)json["power_state"] == "None" ? null : (string)json["power_state"]; 
+        }
 
-            JObject response = GetData(system);
+        private static void SetBodyLegacyData(StarSystem system, JObject response)
+        {
+            // Set data not currently available from EDSM: EDDBID
+            if (response["bodies"] is JArray)
+            {
+                foreach (JObject Body in response["bodies"])
+                {
+                    foreach (Body body in system.bodies)
+                    {
+                        if ((string)Body["name"] == body.name)
+                        {
+                            body.EDDBID = (long?)response["id"];
+                        }
+                    }
+                }
+            }
+        }
 
+        private static void SetStationLegacyData(StarSystem system, JObject response)
+        {
+            // Set data not currently available from EDSM
+            List<Station> stations = system.stations;
+            foreach (Station station in stations)
+            {
+                station.EDDBID = (long?)response["id"];
+                SetCommoditiesData(station, system, response); // Commodities price listings
+                SetShipyardData(station, system, response); // Detailed shipyard data 
+                SetOutfittingData(station, system, response); // Detailed module data
+            }
+            SetPlanetarySettlementData(system, response); // Non-landable planetary settlement data
+        }
+
+        public static void SetCommoditiesData(Station station, StarSystem system, JObject response)
+        {
             if (response["stations"] is JArray)
             {
                 foreach (JObject Station in response["stations"])
                 {
-                    if ((string)Station["name"] == station)
+                    if ((string)Station["name"] == station.name)
                     {
-                        commodities = CommodityQuotesFromEDDP(Station);
-                        commoditiesupdatedat = (long?)Station["market_updated_at"];
+                        station.commodities = CommodityQuotesFromEDDP(Station);
+                        station.commoditiesupdatedat = (long?)Station["market_updated_at"];
                     }
                 }
             }
@@ -64,9 +106,10 @@ namespace EddiDataProviderService
             {
                 foreach (JObject commodity in json["commodities"])
                 {
-                    CommodityDefinition commodityDefinition = CommodityDefinition.FromName((string)commodity["name"]);
+                    CommodityDefinition commodityDefinition = CommodityDefinition.FromEDName((string)commodity["name"]);
                     CommodityMarketQuote quote = new CommodityMarketQuote(commodityDefinition);
-                    // Annoyingly, these double-casts seem to be necessary because the boxed type is `long`. A direct cast to `int?` always returns null.
+                    // Annoyingly, these double-casts seem to be necessary because the boxed type is `long`. 
+                    // A direct cast to `int?` always returns null.
                     quote.buyprice = (int?)(long?)commodity["buy_price"] ?? quote.buyprice;
                     quote.sellprice = (int?)(long?)commodity["sell_price"] ?? quote.sellprice;
                     quote.demand = (int?)(long?)commodity["demand"] ?? quote.demand;
@@ -77,22 +120,93 @@ namespace EddiDataProviderService
             return quotes;
         }
 
-        public static Dictionary<string, object> PowerplayFromEDDP(JObject json)
+        public static void SetShipyardData(Station station, StarSystem system, JObject response)
         {
-            Dictionary<string, object> powerplay = new Dictionary<string, object>()
+            if (response["stations"] is JArray)
             {
-                { "power", (string)json["power"] == "None" ? null : (string)json["power"] },
-                { "power_state", (string)json["power_state"] } // Needs translatable powerplay states
-            };
-            return powerplay;
+                foreach (JObject Station in response["stations"])
+                {
+                    if ((string)Station["name"] == station.name)
+                    {
+                        List<Ship> shipyard = ShipyardFromEDDP(Station);
+                        station.shipyard = shipyard;
+                        station.shipyardupdatedat = (long?)Station["shipyard_updated_at"];
+                    }
+                }
+            }
         }
 
-        static LegacyEddpService()
+        private static List<Ship> ShipyardFromEDDP(JObject Station)
         {
-            // We need to not use an expect header as it causes problems when sending data to a REST service
-            var errorUri = new Uri(BASE + "error");
-            var errorServicePoint = ServicePointManager.FindServicePoint(errorUri);
-            errorServicePoint.Expect100Continue = false;
+            List<string> sellingShips = (Station["selling_ships"]).ToObject<List<string>>();
+            List<Ship> shipyard = new List<Ship>();
+            foreach (string sellingShip in sellingShips)
+            {
+                Ship ship = ShipDefinitions.FromModel(sellingShip);
+                if (ship != null) { shipyard.Add(ship); }
+            }
+            return shipyard;
+        }
+
+        public static void SetOutfittingData(Station station, StarSystem system, JObject response)
+        {
+            if (response["stations"] is JArray)
+            {
+                foreach (JObject Station in response["stations"])
+                {
+                    if ((string)Station["name"] == station.name)
+                    {
+                        List<Module> modules = ModulesFromEDDP(Station);
+                        station.outfitting = modules;
+                        station.outfittingupdatedat = (long?)Station["outfitting_updated_at"];
+                    }
+                }
+            }
+        }
+
+        private static List<Module> ModulesFromEDDP(JObject Station)
+        {
+            List<string> sellingModules = (Station["selling_modules"]).ToObject<List<string>>();
+            List<Module> modules = new List<Module>();
+            foreach (string sellingModule in sellingModules)
+            {
+                Module module = Module.FromEDName(sellingModule);
+                if (module != null) { modules.Add(module); }
+            }
+            return modules;
+        }
+
+        public static void SetPlanetarySettlementData(StarSystem system, JObject response)
+        {
+            if (response["stations"] is JArray)
+            {
+                foreach (JObject Station in response["stations"])
+                {
+                    if ((bool)Station["has_docking"] is false)
+                    {
+                        Station settlement = new Station
+                        {
+                            name = (string)Station["name"],
+                            EDDBID = (long)Station["id"],
+                            systemname = system.name,
+                            hasdocking = false,
+                            Model = StationModel.FromName((string)Station["type"]) ?? StationModel.None,
+                            Economies = new List<Economy> { Economy.FromName((string)Station["primary_economy"]), Economy.None },
+                            Faction = new Faction
+                            {
+                                name = (string)Station["controlling_faction"],
+                                Allegiance = Superpower.FromName((string)Station["allegiance"]) ?? Superpower.None,
+                                Government = Government.FromName((string)Station["government"]) ?? Government.None,
+                                FactionState = FactionState.FromName((string)Station["state"]) ?? FactionState.None
+                            },
+                            distancefromstar = (long?)Station["distance_to_star"],
+                            updatedat = (long?)Station["updated_at"]
+                        };
+
+                        system.stations.Add(settlement);
+                    }
+                }
+            }
         }
     }
 }
