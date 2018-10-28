@@ -15,7 +15,7 @@ namespace EddiEdsmResponder
     {
         private StarMapService starMapService;
         private Thread updateThread;
-        private List<string> ignoredEvents;
+        private List<string> ignoredEvents = new List<string>();
 
         public string ResponderName()
         {
