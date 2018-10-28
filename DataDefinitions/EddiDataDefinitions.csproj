@@ -550,7 +550,7 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="BodyConverters.cs" />
+    <Compile Include="VolcanismConverter.cs" />
     <Compile Include="Voucher.cs" />
     <Compile Include="StarClass.cs" />
     <Compile Include="TradeRating.cs" />
