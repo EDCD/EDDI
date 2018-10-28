@@ -15,7 +15,7 @@ namespace EddiStarMapService
         {
             if (system == null) { return null; }
 
-            var client = new RestClient("https://www.edsm.net/");
+            var client = new RestClient(getUrl);
             var request = new RestRequest("api-system-v1/factions", Method.POST);
             request.AddParameter("systemName", system);
             request.AddParameter("systemId", edsmId);

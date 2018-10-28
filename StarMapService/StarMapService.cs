@@ -19,7 +19,8 @@ namespace EddiStarMapService
 
         // For normal use, the EDSM API base URL is https://www.edsm.net/.
         // If you need to do some testing on EDSM's API, please use the https://beta.edsm.net/ endpoint.
-        private static string baseUrl => ShouldUseTestEndpoints() ? "https://beta.edsm.net/" : "https://www.edsm.net/";
+        private static string sendUrl => ShouldUseTestEndpoints() ? "https://beta.edsm.net/" : "https://www.edsm.net/";
+        private static string getUrl => "https://www.edsm.net/";
 
         private static string commanderName;
         private static string apiKey;
@@ -42,7 +43,7 @@ namespace EddiStarMapService
 
         public void sendEvent(string eventData)
         {
-            var client = new RestClient(baseUrl);
+            var client = new RestClient(sendUrl);
             var request = new RestRequest("api-journal-v1", Method.POST);
             request.AddParameter("commanderName", commanderName);
             request.AddParameter("apiKey", apiKey);
@@ -57,7 +58,7 @@ namespace EddiStarMapService
                     Logging.Debug("Sending event to EDSM: " + client.BuildUri(request).AbsoluteUri);
                     var clientResponse = client.Execute<StarMapLogResponse>(request);
                     StarMapLogResponse response = clientResponse.Data;
-                    if (response.msgnum != 100)
+                    if (response?.msgnum != 100)
                     {
                         Logging.Warn("EDSM responded with " + response.msg);
                     }
@@ -80,7 +81,7 @@ namespace EddiStarMapService
 
         public void sendStarMapComment(string systemName, string comment)
         {
-            var client = new RestClient(baseUrl);
+            var client = new RestClient(sendUrl);
             var request = new RestRequest("api-logs-v1/set-comment", Method.POST);
             request.AddParameter("apiKey", apiKey);
             request.AddParameter("commanderName", commanderName);
@@ -116,7 +117,7 @@ namespace EddiStarMapService
 
         public List<string> getIgnoredEvents()
         {
-            var client = new RestClient(baseUrl);
+            var client = new RestClient(getUrl);
             var request = new RestRequest("api-journal-v1/discard", Method.POST);
             var clientResponse = client.Execute<List<string>>(request);
             List<string> response = clientResponse.Data;
@@ -125,7 +126,7 @@ namespace EddiStarMapService
 
         public string getStarMapComment(string systemName)
         {
-            var client = new RestClient(baseUrl);
+            var client = new RestClient(getUrl);
             var commentRequest = new RestRequest("api-logs-v1/get-comment", Method.POST);
             commentRequest.AddParameter("apiKey", apiKey);
             commentRequest.AddParameter("commanderName", commanderName);
@@ -137,7 +138,7 @@ namespace EddiStarMapService
 
         public StarMapInfo getStarMapInfo(string systemName)
         {
-            var client = new RestClient(baseUrl);
+            var client = new RestClient(getUrl);
 
             // First fetch the data itself
             var logRequest = new RestRequest("api-logs-v1/get-logs", Method.POST);
@@ -172,7 +173,7 @@ namespace EddiStarMapService
 
         public Dictionary<string, string> getStarMapComments()
         {
-            var client = new RestClient(baseUrl);
+            var client = new RestClient(getUrl);
             var request = new RestRequest("api-logs-v1/get-comments", Method.POST);
             request.AddParameter("apiKey", apiKey);
             request.AddParameter("commanderName", commanderName);
@@ -196,7 +197,7 @@ namespace EddiStarMapService
 
         public Dictionary<string, StarMapLogInfo> getStarMapLog(DateTime? since = null)
         {
-            var client = new RestClient(baseUrl);
+            var client = new RestClient(getUrl);
             var request = new RestRequest("api-logs-v1/get-logs", Method.POST);
             request.AddParameter("apiKey", apiKey);
             request.AddParameter("commanderName", commanderName);
