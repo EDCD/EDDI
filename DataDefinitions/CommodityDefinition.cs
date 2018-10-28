@@ -451,7 +451,7 @@ namespace EddiDataDefinitions
                 ?.Replace(" name;", "");
         }
         
-        new public static CommodityDefinition FromName(string name)
+        public static CommodityDefinition FromNameOrEDName(string name)
         {
             if (name == null)
             {
@@ -469,7 +469,7 @@ namespace EddiDataDefinitions
             CommodityDefinition result = null;
             if (normalizedName != null)
             {
-                result = ResourceBasedLocalizedEDName<CommodityDefinition>.FromName(normalizedName);
+                result = FromName(normalizedName);
             }
             if (result == null)
             {

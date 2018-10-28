@@ -382,7 +382,7 @@ namespace EddiJournalMonitor
                         case "CollectCargo":
                             {
                                 string commodityName = JsonParsing.getString(data, "Type");
-                                CommodityDefinition commodity = CommodityDefinition.FromName(commodityName);
+                                CommodityDefinition commodity = CommodityDefinition.FromEDName(commodityName);
                                 if (commodity == null)
                                 {
                                     Logging.Error("Failed to map cargo type " + commodityName + " to commodity definition", line);
@@ -396,7 +396,7 @@ namespace EddiJournalMonitor
                         case "EjectCargo":
                             {
                                 string commodityName = JsonParsing.getString(data, "Type");
-                                CommodityDefinition commodity = CommodityDefinition.FromName(commodityName);
+                                CommodityDefinition commodity = CommodityDefinition.FromEDName(commodityName);
                                 if (commodity == null)
                                 {
                                     Logging.Error("Failed to map cargo type " + commodityName + " to commodity definition", line);
@@ -944,7 +944,7 @@ namespace EddiJournalMonitor
                                 foreach (Dictionary<string, object> _commodity in commodities)
                                 {
                                     string commodityEdName = JsonParsing.getString(_commodity, "Name");
-                                    CommodityDefinition commodity = CommodityDefinition.FromName(commodityEdName);
+                                    CommodityDefinition commodity = CommodityDefinition.FromEDName(commodityEdName);
                                     int count = JsonParsing.getInt(_commodity, "Count");
                                     if (commodity == null)
                                     {
@@ -1577,7 +1577,7 @@ namespace EddiJournalMonitor
                             {
                                 string commodityName = JsonParsing.getString(data, "Type");
 
-                                CommodityDefinition commodity = CommodityDefinition.FromName(commodityName);
+                                CommodityDefinition commodity = CommodityDefinition.FromEDName(commodityName);
                                 if (commodity == null)
                                 {
                                     Logging.Error("Failed to map cargo type " + commodityName + " to commodity definition", line);
@@ -1771,7 +1771,7 @@ namespace EddiJournalMonitor
                             {
                                 long marketId = JsonParsing.getLong(data, "MarketID");
                                 string commodityName = JsonParsing.getString(data, "Type");
-                                CommodityDefinition commodity = CommodityDefinition.FromName(commodityName);
+                                CommodityDefinition commodity = CommodityDefinition.FromEDName(commodityName);
                                 if (commodity == null)
                                 {
                                     Logging.Error("Failed to map cargo type " + commodityName + " to commodity definition", line);
@@ -1786,7 +1786,7 @@ namespace EddiJournalMonitor
                             {
                                 long marketId = JsonParsing.getLong(data, "MarketID");
                                 string commodityName = JsonParsing.getString(data, "Type");
-                                CommodityDefinition commodity = CommodityDefinition.FromName(commodityName);
+                                CommodityDefinition commodity = CommodityDefinition.FromEDName(commodityName);
                                 if (commodity == null)
                                 {
                                     Logging.Error("Failed to map cargo type " + commodityName + " to commodity definition", line);
@@ -1823,7 +1823,7 @@ namespace EddiJournalMonitor
                                         foreach (KeyValuePair<string, object> used in usedData)
                                         {
                                             // Used could be a material or a commodity
-                                            CommodityDefinition commodity = CommodityDefinition.FromName(used.Key);
+                                            CommodityDefinition commodity = CommodityDefinition.FromEDName(used.Key);
                                             if (commodity.category != null)
                                             {
                                                 // This is a real commodity
@@ -2489,7 +2489,7 @@ namespace EddiJournalMonitor
                                 string destinationstation = JsonParsing.getString(data, "DestinationStation");
 
                                 // Missions with commodities
-                                CommodityDefinition commodity = CommodityDefinition.FromName(JsonParsing.getString(data, "Commodity"));
+                                CommodityDefinition commodity = CommodityDefinition.FromEDName(JsonParsing.getString(data, "Commodity"));
                                 data.TryGetValue("Count", out val);
                                 int? amount = (int?)(long?)val;
 
@@ -2534,7 +2534,7 @@ namespace EddiJournalMonitor
                                 string faction = getFaction(data, "Faction");
 
                                 // Missions with commodities
-                                CommodityDefinition commodity = CommodityDefinition.FromName(JsonParsing.getString(data, "Commodity"));
+                                CommodityDefinition commodity = CommodityDefinition.FromEDName(JsonParsing.getString(data, "Commodity"));
                                 data.TryGetValue("Count", out val);
                                 int? amount = (int?)(long?)val;
 
@@ -2557,7 +2557,7 @@ namespace EddiJournalMonitor
                                 {
                                     foreach (Dictionary<string, object> commodityRewardData in commodityRewardsData)
                                     {
-                                        CommodityDefinition rewardCommodity = CommodityDefinition.FromName(JsonParsing.getString(commodityRewardData, "Name"));
+                                        CommodityDefinition rewardCommodity = CommodityDefinition.FromEDName(JsonParsing.getString(commodityRewardData, "Name"));
                                         commodityRewardData.TryGetValue("Count", out val);
                                         int count = (int)(long)val;
                                         commodityrewards.Add(new CommodityAmount(rewardCommodity, count));
@@ -2617,7 +2617,7 @@ namespace EddiJournalMonitor
                             {
                                 long marketId = JsonParsing.getLong(data, "MarketID");
                                 string commodityName = JsonParsing.getString(data, "Name");
-                                CommodityDefinition commodity = CommodityDefinition.FromName(JsonParsing.getString(data, "Name"));
+                                CommodityDefinition commodity = CommodityDefinition.FromEDName(JsonParsing.getString(data, "Name"));
                                 if (commodity == null)
                                 {
                                     Logging.Error("Failed to map cargo type " + commodityName + " to commodity definition", line);
@@ -2893,7 +2893,7 @@ namespace EddiJournalMonitor
                         case "PowerplayCollect":
                             {
                                 string power = JsonParsing.getString(data, "Power");
-                                CommodityDefinition commodity = CommodityDefinition.FromName(JsonParsing.getString(data, "Type"));
+                                CommodityDefinition commodity = CommodityDefinition.FromEDName(JsonParsing.getString(data, "Type"));
                                 commodity.fallbackLocalizedName = JsonParsing.getString(data, "Type_Localised");
                                 data.TryGetValue("Count", out object val);
                                 int amount = (int)(long)val;
@@ -2905,7 +2905,7 @@ namespace EddiJournalMonitor
                         case "PowerplayDeliver":
                             {
                                 string power = JsonParsing.getString(data, "Power");
-                                CommodityDefinition commodity = CommodityDefinition.FromName(JsonParsing.getString(data, "Type"));
+                                CommodityDefinition commodity = CommodityDefinition.FromEDName(JsonParsing.getString(data, "Type"));
                                 commodity.fallbackLocalizedName = JsonParsing.getString(data, "Type_Localised");
                                 data.TryGetValue("Count", out object val);
                                 int amount = (int)(long)val;
