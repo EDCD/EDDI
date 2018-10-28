@@ -83,9 +83,9 @@ namespace EddiDataDefinitions
             // Temperature and pressure are defined separately so we remove them from this string (if descriptors are present)
             string normalizedEDName = edname
             .ToLowerInvariant()
-            .Replace("thick", "")
-            .Replace("thin", "")
-            .Replace("hot", "")
+            .Replace("thick ", "")
+            .Replace("thin ", "")
+            .Replace("hot ", "")
             .Replace(" ", "")
             .Replace("-", "");
             return ResourceBasedLocalizedEDName<AtmosphereClass>.FromEDName(normalizedEDName);
