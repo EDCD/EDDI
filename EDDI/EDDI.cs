@@ -122,9 +122,6 @@ namespace Eddi
         {
             try
             {
-                // Increment to a new log file.
-                Logging.incrementLogs();
-
                 Logging.Info(Constants.EDDI_NAME + " " + Constants.EDDI_VERSION + " starting");
 
                 // Start by fetching information from the update server, and handling appropriately

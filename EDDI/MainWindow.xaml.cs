@@ -165,6 +165,9 @@ namespace Eddi
 
             this.fromVA = fromVA;
 
+            // Increment to a new log file.
+            if (!fromVA) { Logging.incrementLogs(); }
+
             // Start the EDDI instance
             EDDI.FromVA = fromVA;
             EDDI.Instance.Start();
