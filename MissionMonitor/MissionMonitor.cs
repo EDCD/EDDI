@@ -613,7 +613,7 @@ namespace EddiMissionMonitor
                     // Might be a faction state
                     SystemState factionState = SystemState
                         .AllOfThem
-                        .Find(s => s.edname == element);
+                        .Find(s => s.edname.ToLowerInvariant() == element);
                     if (factionState != null)
                     {
                         mission.factionstate = factionState.localizedName;
