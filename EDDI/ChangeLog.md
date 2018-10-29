@@ -5,7 +5,11 @@ Full details of the variables available for each noted event, and VoiceAttack in
 ### Development
   * Speech responder
     * Fixed an error converting a string, such as a ship ID, to the ICAO alphabet that was empty or all symbols (an empty string should result).
-
+  * Status monitor
+    * Recalibrated the `ShipFSD` event 
+      * `charging complete` now triggers at a more appropriate time.
+      * Added new FSD status - `charging canceled`.
+    
 ### 3.1.0-b3
   * Core
     * Fixed a bug in our JSON deserialization code that led to variables changing which were expected to remain constant. This manifested in various ways, including:
