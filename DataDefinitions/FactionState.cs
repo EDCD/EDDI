@@ -17,6 +17,7 @@ namespace EddiDataDefinitions
             var Retreat = new FactionState("Retreat");
             var War = new FactionState("War");
             var Lockdown = new FactionState("Lockdown");
+            var CivilLiberty = new FactionState("CivilLiberty");
             var CivilUnrest = new FactionState("CivilUnrest");
             var CivilWar = new FactionState("CivilWar");
             var Boom = new FactionState("Boom");
