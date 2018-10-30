@@ -79,6 +79,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Civil Liberty.
+        /// </summary>
+        public static string CivilLiberty {
+            get {
+                return ResourceManager.GetString("CivilLiberty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Civil Unrest.
         /// </summary>
         public static string CivilUnrest {
