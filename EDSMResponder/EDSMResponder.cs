@@ -75,7 +75,7 @@ namespace EddiEdsmResponder
                 }
                 if (commanderName != null)
                 {
-                    starMapService = new StarMapService(starMapCredentials.apiKey, commanderName);
+                    starMapService = new StarMapService(starMapCredentials.apiKey, commanderName, EDDI.Instance.ShouldUseTestEndpoints());
                 }
                 if (ignoredEvents == null)
                 {
@@ -118,7 +118,7 @@ namespace EddiEdsmResponder
                 /// Retrieve applicable transient game state info (metadata) 
                 /// for the event and send the event with transient info to EDSM
                 string eventData = prepareEventData(theEvent);
-                if (eventData != null && !StarMapService.ShouldUseTestEndpoints())
+                if (eventData != null && !EDDI.Instance.ShouldUseTestEndpoints())
                 {
                     starMapService.sendEvent(eventData);
                 }
