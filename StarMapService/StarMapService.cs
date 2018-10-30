@@ -19,26 +19,17 @@ namespace EddiStarMapService
 
         // For normal use, the EDSM API base URL is https://www.edsm.net/.
         // If you need to do some testing on EDSM's API, please use the https://beta.edsm.net/ endpoint for sending data.
-        private static string sendUrl => ShouldUseTestEndpoints() ? "https://beta.edsm.net/" : "https://www.edsm.net/";
+        private static string sendUrl { get; set; }
         private static string getUrl => "https://www.edsm.net/";
 
         private static string commanderName;
         private static string apiKey;
 
-        public StarMapService(string apikey, string commandername)
+        public StarMapService(string apikey, string commandername, bool useTestEndpoints = false)
         {
             apiKey = apikey;
             commanderName = commandername;
-        }
-
-        public static bool ShouldUseTestEndpoints()
-        {
-#if DEBUG
-            return true;
-#else
-            // use test endpoints if the game is in beta or EDDI is not release candidate or final
-            return EDDI.Instance.inBeta || (Constants.EDDI_VERSION.phase < Utilities.Version.TestPhase.rc);
-#endif
+            sendUrl = useTestEndpoints ? "https://beta.edsm.net/" : "https://www.edsm.net/";
         }
 
         public void sendEvent(string eventData)

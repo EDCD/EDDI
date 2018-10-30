@@ -191,7 +191,7 @@ namespace Eddi
                         }
                         if (commanderName != null)
                         {
-                            starMapService = new StarMapService(starMapCredentials.apiKey, commanderName);
+                            starMapService = new StarMapService(starMapCredentials.apiKey, commanderName, ShouldUseTestEndpoints());
                             Logging.Info("EDDI access to EDSM is enabled");
                         }
                     }
@@ -214,6 +214,16 @@ namespace Eddi
             {
                 Logging.Error("Failed to initialise", ex);
             }
+        }
+
+        public bool ShouldUseTestEndpoints()
+        {
+#if DEBUG
+            return true;
+#else
+            // use test endpoints if the game is in beta or EDDI is not release candidate or final
+            return EDDI.Instance.inBeta || (Constants.EDDI_VERSION.phase < Utilities.Version.TestPhase.rc);
+#endif
         }
 
         /// <summary>
