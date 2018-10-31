@@ -5,6 +5,10 @@ Full details of the variables available for each noted event, and VoiceAttack in
 ### Development
   * Speech responder
     * Fixed an error converting a string, such as a ship ID, to the ICAO alphabet that was empty or all symbols (an empty string should result).
+  * VoiceAttack responder
+    * Added command to open ships in EDShipyard
+    * When commands for EDDB, EDShipyard, or Coriolis are invoked, the applicable uri will be written to `{TXT:EDDI uri}`.
+    * Updated EDDI.vap to set the optional boolean `{BOOL:EDDI open uri in browser}` in applicable commands for EDDB, EDShipyard, and Coriolis. If set to false, EDDI shall not open the browser.
 
 ### 3.1.0-b3
   * Core

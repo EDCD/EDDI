@@ -251,6 +251,9 @@ namespace EddiVoiceAttackResponder
                     case "eddbstation":
                         InvokeEDDBStation(ref vaProxy);
                         break;
+                    case "edshipyard":
+                        InvokeEDShipyard(ref vaProxy);
+                        break;
                     case "profile":
                         InvokeUpdateProfile(ref vaProxy);
                         break;
@@ -440,6 +443,17 @@ namespace EddiVoiceAttackResponder
             setStandardValues(ref vaProxy);
         }
 
+        private static void OpenOrStoreURI(ref dynamic vaProxy, string systemUri)
+        {
+            if (vaProxy.GetBoolean("EDDI open uri in browser") != false)
+            {
+                Logging.Debug("Starting process with uri " + systemUri);
+                HandleUri(ref vaProxy, systemUri);
+            }
+            Logging.Debug("Writing URI to `{TXT:EDDI uri}`: " + systemUri);
+            vaProxy.SetText("EDDI uri", systemUri);
+        }
+
         public static void InvokeEDDBSystem(ref dynamic vaProxy)
         {
             Logging.Debug("Entered");
@@ -451,12 +465,8 @@ namespace EddiVoiceAttackResponder
                     return;
                 }
                 string systemUri = "https://eddb.io/system/" + EDDI.Instance.CurrentStarSystem.EDDBID;
-
-                Logging.Debug("Starting process with uri " + systemUri);
-
+                OpenOrStoreURI(vaProxy, systemUri);
                 setStatus(ref vaProxy, "Operational");
-
-                HandleUri(ref vaProxy, systemUri);
             }
             catch (Exception e)
             {
@@ -483,11 +493,7 @@ namespace EddiVoiceAttackResponder
                     return;
                 }
                 string stationUri = "https://eddb.io/station/" + thisStation.EDDBID;
-
-                Logging.Debug("Starting process with uri " + stationUri);
-
-                HandleUri(ref vaProxy, stationUri);
-
+                OpenOrStoreURI(vaProxy, stationUri);
                 setStatus(ref vaProxy, "Operational");
             }
             catch (Exception e)
@@ -509,11 +515,29 @@ namespace EddiVoiceAttackResponder
                 }
 
                 string shipUri = ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip().CoriolisUri();
+                OpenOrStoreURI(vaProxy, shipUri);
+                setStatus(ref vaProxy, "Operational");
+            }
+            catch (Exception e)
+            {
+                setStatus(ref vaProxy, "Failed to send ship data to coriolis", e);
+            }
+            Logging.Debug("Leaving");
+        }
 
-                Logging.Debug("Starting process with uri " + shipUri);
+        public static void InvokeEDShipyard(ref dynamic vaProxy)
+        {
+            Logging.Debug("Entered");
+            try
+            {
+                if (((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip() == null)
+                {
+                    Logging.Debug("No information on ship");
+                    return;
+                }
 
-                HandleUri(ref vaProxy, shipUri);
-
+                string shipUri = ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip().EDShipyardUri();
+                OpenOrStoreURI(vaProxy, shipUri);
                 setStatus(ref vaProxy, "Operational");
             }
             catch (Exception e)
