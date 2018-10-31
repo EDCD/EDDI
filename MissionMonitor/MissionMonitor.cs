@@ -579,8 +579,9 @@ namespace EddiMissionMonitor
                     wing = @event.wing,
                     communal = @event.communal,
 
-                    // Get the minor faction name
+                    // Get the minor faction stuff
                     faction = @event.faction,
+                    factionstate = SystemState.FromEDName("None").localizedName,
 
                     // Set mission origin to to the current system & station
                     originsystem = @event.communal ? @event.destinationsystem : EDDI.Instance?.CurrentStarSystem?.name,
@@ -605,13 +606,17 @@ namespace EddiMissionMonitor
                 // Get the faction state (Boom, Bust, Civil War, etc), if available
                 for (int i = 2; i < mission.name.Split('_').Count(); i++)
                 {
-                    string factionState = SystemState.FromEDName(mission.name.Split('_')
+                    string element = mission.name.Split('_')
                         .ElementAtOrDefault(i)?
-                        .ToLowerInvariant())?
-                        .localizedName;
+                        .ToLowerInvariant();
+
+                    // Might be a faction state
+                    SystemState factionState = SystemState
+                        .AllOfThem
+                        .Find(s => s.edname.ToLowerInvariant() == element);
                     if (factionState != null)
                     {
-                        mission.factionstate = factionState;
+                        mission.factionstate = factionState.localizedName;
                         break;
                     }
                 }
@@ -905,8 +910,8 @@ namespace EddiMissionMonitor
                     expiringDistance = CalculateDistance(curr, dest);
 
                 }
-                EDDI.Instance.eventHandler(new MissionsRouteEvent(DateTime.Now, "expiring", expiringSystem, null, expiringSeconds, expiringDistance, 0, missionids));
             }
+            EDDI.Instance.eventHandler(new MissionsRouteEvent(DateTime.Now, "expiring", expiringSystem, null, expiringSeconds, expiringDistance, 0, missionids));
             return expiringSystem;
         }
 
@@ -966,8 +971,8 @@ namespace EddiMissionMonitor
                         }
                     }
                 }
-                EDDI.Instance.eventHandler(new MissionsRouteEvent(DateTime.Now, "farthest", farthestSystem, null, missionids.Count(), farthestDistance, 0, missionids));
             }
+            EDDI.Instance.eventHandler(new MissionsRouteEvent(DateTime.Now, "farthest", farthestSystem, null, missionids.Count(), farthestDistance, 0, missionids));
             return farthestSystem;
         }
 
@@ -1047,10 +1052,9 @@ namespace EddiMissionMonitor
                 {
                     missionids.Add(mission.missionid);
                 }
-
                 mostSystems = string.Join("_", mostList);
-                EDDI.Instance.eventHandler(new MissionsRouteEvent(DateTime.Now, "most", mostSystem, mostSystems, mostCount, mostDistance, 0, missionids));
             }
+            EDDI.Instance.eventHandler(new MissionsRouteEvent(DateTime.Now, "most", mostSystem, mostSystems, mostCount, mostDistance, 0, missionids));
             return mostSystem;
         }
 
@@ -1110,8 +1114,8 @@ namespace EddiMissionMonitor
                         }
                     }
                 }
-                EDDI.Instance.eventHandler(new MissionsRouteEvent(DateTime.Now, "nearest", nearestSystem, null, missionids.Count(), nearestDistance, 0, missionids));
             }
+            EDDI.Instance.eventHandler(new MissionsRouteEvent(DateTime.Now, "nearest", nearestSystem, null, missionids.Count(), nearestDistance, 0, missionids));
             return nearestSystem;
         }
 
@@ -1189,7 +1193,8 @@ namespace EddiMissionMonitor
                     }
                 }
 
-                if (systems.Count() > 1)
+                int numSystems = systems.Count();
+                if (numSystems > 1)
                 {
                     decimal distance;
                     decimal nearestDistance;
@@ -1198,9 +1203,27 @@ namespace EddiMissionMonitor
                     missionsRouteList = String.Empty;
                     missionsRouteDistance = 0;
 
+                    // Pre-load all system distances
+                    decimal[][] distMatrix = new decimal[numSystems][];
+                    for (int i = 0; i < numSystems; i++)
+                    {
+                        distMatrix[i] = new decimal[numSystems];
+                    }
+                    for (int i = 0; i < numSystems - 1; i++)
+                    {
+                        curr = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(systems[i], true);
+                        for (int j = i + 1; j < numSystems; j++)
+                        {
+                            dest = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(systems[j], true);
+                            distance = CalculateDistance(curr, dest);
+                            distMatrix[i][j] = distance;
+                            distMatrix[j][i] = distance;
+                        }
+                    }
+
                     // Repetitive Nearest Neighbor Algorithm (RNNA)
                     // Iterate through all possible routes by changing the starting system
-                    for (int i = 0; i < systems.Count(); i++)
+                    for (int i = 0; i < numSystems; i++)
                     {
                         // If starting system is a destination for a 'return to origin' mission, then not a viable route
                         if (DestinationOriginReturn(systems[i]))
@@ -1208,33 +1231,31 @@ namespace EddiMissionMonitor
                             break;
                         }
 
-                        string startSystem = systems[i];
-                        curr = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(startSystem, true);
+                        int currIndex = i;
                         route.Clear();
                         totalDistance = 0;
 
                         // Repeat until all systems (except starting system) are in the route
-                        while (route.Count() < systems.Count() - 1)
+                        while (route.Count() < numSystems - 1)
                         {
                             nearestDistance = 0;
-
+                            
                             // Iterate through systems to find nearest neighbor
-                            for (int j = 1; j < systems.Count(); j++)
+                            for (int j = 1; j < numSystems; j++)
                             {
                                 // Wrap around the list
-                                int index = i + j < systems.Count() ? i + j : i + j - systems.Count();
+                                int destIndex = i + j < numSystems ? i + j : i + j - numSystems;
 
-                                // Check systems not already added to the route
-                                if (route.IndexOf(systems[index]) == -1)
+                                // Check if destination system not already added to the route
+                                if (route.IndexOf(systems[destIndex]) == -1)
                                 {
-                                    dest = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(systems[index], true);
-                                    distance = CalculateDistance(curr, dest);
+                                    distance = distMatrix[currIndex][destIndex];
 
-                                    // Save if nearest to the 'current' system
+                                    // Save if destination is nearest to the 'current' system
                                     if (nearestDistance == 0 || distance < nearestDistance)
                                     {
                                         nearestDistance = distance;
-                                        nearestSystem = systems[index];
+                                        nearestSystem = systems[destIndex];
                                     }
                                 }
                             }
@@ -1244,24 +1265,23 @@ namespace EddiMissionMonitor
                             totalDistance += nearestDistance;
 
                             // 'Nearest' system is the new 'current' system
-                            curr = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(nearestSystem, true);
+                            currIndex = systems.IndexOf(nearestSystem);
                         }
 
                         // Add 'starting system' to complete the route & add its distance to total distance traveled
-                        route.Add(startSystem);
-                        dest = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(startSystem, true);
-                        totalDistance += CalculateDistance(curr, dest);
+                        route.Add(systems[i]);
+                        totalDistance += distMatrix[i][currIndex];
                         Logging.Debug("Build Route Iteration #" + i + " - Route = " + string.Join("_", route) + ", Total Distance = " + totalDistance);
 
                         // Use this route if total distance traveled is less than previous iterations
                         if (missionsRouteDistance == 0 || totalDistance < missionsRouteDistance)
                         {
                             bestRoute.Clear();
-                            int index = route.IndexOf(homesystem);
-                            if (index < route.Count - 1)
+                            int homeIndex = route.IndexOf(homesystem);
+                            if (homeIndex < route.Count - 1)
                             {
-                                bestRoute = route.Skip(index + 1)
-                                    .Concat(route.Take(index + 1))
+                                bestRoute = route.Skip(homeIndex + 1)
+                                    .Concat(route.Take(homeIndex + 1))
                                     .ToList();
                             }
                             else
@@ -1272,12 +1292,10 @@ namespace EddiMissionMonitor
                         }
                     }
 
-                    if (bestRoute.Count() == systems.Count())
+                    if (bestRoute.Count() == numSystems)
                     {
                         nextSystem = bestRoute[0];
-                        curr = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(homesystem, true);
-                        dest = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(nextSystem, true);
-                        nextDistance = CalculateDistance(curr, dest);
+                        nextDistance = distMatrix[systems.IndexOf(homesystem)][systems.IndexOf(nextSystem)];
                         missionsRouteList = string.Join("_", bestRoute);
 
                         foreach (Mission mission in missions.Where(m => m.destinationsystem == nextSystem

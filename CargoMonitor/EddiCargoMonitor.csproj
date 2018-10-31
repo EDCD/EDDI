@@ -106,6 +106,10 @@
       <Project>{0C845B02-E283-43D8-91A7-205AD3397371}</Project>
       <Name>EddiDataDefinitions</Name>
     </ProjectReference>
+    <ProjectReference Include="..\DataProviderService\EddiDataProviderService.csproj">
+      <Project>{c5f48807-921b-456d-a9e4-a0282e5e8cf1}</Project>
+      <Name>EddiDataProviderService</Name>
+    </ProjectReference>
     <ProjectReference Include="..\EDDI\Eddi.csproj">
       <Project>{EC7BA042-A370-447F-8C3E-241358CEBCBB}</Project>
       <Name>Eddi</Name>

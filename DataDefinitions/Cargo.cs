@@ -131,7 +131,7 @@ namespace EddiDataDefinitions
             }
         }
 
-        [Obsolete]
+        [Obsolete, JsonIgnore]
         public CommodityDefinition commodity => commodityDef;
 
         public List<Haulage> haulageData { get; set; }
