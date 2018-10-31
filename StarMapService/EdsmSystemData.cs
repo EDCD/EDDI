@@ -14,7 +14,7 @@ namespace EddiStarMapService
         public static StarSystem GetStarMapSystem(string system)
         {
             if (system == null) { return null; }
-            var client = new RestClient(getUrl);
+            var client = new RestClient(baseUrl);
             var request = new RestRequest("api-v1/system", Method.POST);
             request.AddParameter("systemName", system);
             request.AddParameter("showId", 1);
@@ -33,7 +33,7 @@ namespace EddiStarMapService
         public static List<StarSystem> GetStarMapSystems(string[] systems)
         {
             if (systems == null) { return null; }
-            var client = new RestClient(getUrl);
+            var client = new RestClient(baseUrl);
             var request = new RestRequest("api-v1/systems", Method.POST);
             request.AddParameter("systemName", systems);
             request.AddParameter("showId", 1);
@@ -60,7 +60,7 @@ namespace EddiStarMapService
         public static List<Dictionary<string, object>> GetStarMapSystemsSphere(string starSystem, int minRadiusLy = 0, int maxRadiusLy = 200)
         {
             if (starSystem == null) { return null; }
-            var client = new RestClient(getUrl);
+            var client = new RestClient(baseUrl);
             var request = new RestRequest("api-v1/sphere-systems", Method.POST);
             request.AddParameter("systemName", starSystem);
             request.AddParameter("minRadius", minRadiusLy);
@@ -91,7 +91,7 @@ namespace EddiStarMapService
         public static List<StarSystem> GetStarMapSystemsCube(string starSystem, int cubeLy = 200)
         {
             if (starSystem == null) { return null; }
-            var client = new RestClient(getUrl);
+            var client = new RestClient(baseUrl);
             var request = new RestRequest("api-v1/cube-systems", Method.POST);
             request.AddParameter("systemName", starSystem);
             request.AddParameter("size", cubeLy);

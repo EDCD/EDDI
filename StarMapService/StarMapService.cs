@@ -17,24 +17,68 @@ namespace EddiStarMapService
         // Set the maximum batch size we will use for syncing before we write systems to our sql database
         public const int syncBatchSize = 100;
 
+        public static string commanderName { get; set; }
+        private static string apiKey { get; set; }
+        private static string baseUrl = "https://www.edsm.net/";
+
+        public StarMapService()
+        {
+            // Set up the star map service
+            StarMapConfiguration starMapCredentials = StarMapConfiguration.FromFile();
+            if (starMapCredentials != null && starMapCredentials.apiKey != null)
+            {
+                // Commander name might come from star map credentials or the companion app's profile
+                string commanderName = null;
+                if (starMapCredentials.commanderName != null)
+                {
+                    commanderName = starMapCredentials.commanderName;
+                }
+                if (commanderName != null)
+                {
+                    instance = new StarMapService(starMapCredentials.apiKey, commanderName);
+                    Logging.Info("EDDI access to EDSM is enabled");
+                }
+            }
+            if (instance == null)
+            {
+                Logging.Info("EDDI access to EDSM is disabled");
+            }
+        }
+
         // For normal use, the EDSM API base URL is https://www.edsm.net/.
         // If you need to do some testing on EDSM's API, please use the https://beta.edsm.net/ endpoint for sending data.
-        private static string sendUrl { get; set; }
-        private static string getUrl => "https://www.edsm.net/";
-
-        private static string commanderName;
-        private static string apiKey;
-
-        public StarMapService(string apikey, string commandername, bool useTestEndpoints = false)
+        public StarMapService(string apikey, string commandername, string baseURL = "https://www.edsm.net/")
         {
             apiKey = apikey;
             commanderName = commandername;
-            sendUrl = useTestEndpoints ? "https://beta.edsm.net/" : "https://www.edsm.net/";
+            baseUrl = baseURL;
+        }
+
+        private static readonly object instanceLock = new object();
+        private static StarMapService instance;
+        public static StarMapService Instance
+        {
+            get
+            {
+                if (instance == null)
+                {
+                    lock (instanceLock)
+                    {
+                        if (instance == null)
+                        {
+                            Logging.Debug("No StarMapService instance: creating one");
+                            instance = new StarMapService();
+                        }
+                    }
+                }
+                return instance;
+            }
         }
 
         public void sendEvent(string eventData)
         {
-            var client = new RestClient(sendUrl);
+            // The EDSM responder has a `inBeta` flag that it checks prior to sending data via this method.  
+            var client = new RestClient(baseUrl); 
             var request = new RestRequest("api-journal-v1", Method.POST);
             request.AddParameter("commanderName", commanderName);
             request.AddParameter("apiKey", apiKey);
@@ -72,7 +116,7 @@ namespace EddiStarMapService
 
         public void sendStarMapComment(string systemName, string comment)
         {
-            var client = new RestClient(sendUrl);
+            var client = new RestClient(baseUrl);
             var request = new RestRequest("api-logs-v1/set-comment", Method.POST);
             request.AddParameter("apiKey", apiKey);
             request.AddParameter("commanderName", commanderName);
@@ -108,7 +152,7 @@ namespace EddiStarMapService
 
         public List<string> getIgnoredEvents()
         {
-            var client = new RestClient(getUrl);
+            var client = new RestClient(baseUrl);
             var request = new RestRequest("api-journal-v1/discard", Method.POST);
             var clientResponse = client.Execute<List<string>>(request);
             List<string> response = clientResponse.Data;
@@ -117,7 +161,7 @@ namespace EddiStarMapService
 
         public string getStarMapComment(string systemName)
         {
-            var client = new RestClient(getUrl);
+            var client = new RestClient(baseUrl);
             var commentRequest = new RestRequest("api-logs-v1/get-comment", Method.POST);
             commentRequest.AddParameter("apiKey", apiKey);
             commentRequest.AddParameter("commanderName", commanderName);
@@ -129,7 +173,7 @@ namespace EddiStarMapService
 
         public StarMapInfo getStarMapInfo(string systemName)
         {
-            var client = new RestClient(getUrl);
+            var client = new RestClient(baseUrl);
 
             // First fetch the data itself
             var logRequest = new RestRequest("api-logs-v1/get-logs", Method.POST);
@@ -164,7 +208,7 @@ namespace EddiStarMapService
 
         public Dictionary<string, string> getStarMapComments()
         {
-            var client = new RestClient(getUrl);
+            var client = new RestClient(baseUrl);
             var request = new RestRequest("api-logs-v1/get-comments", Method.POST);
             request.AddParameter("apiKey", apiKey);
             request.AddParameter("commanderName", commanderName);
@@ -188,7 +232,7 @@ namespace EddiStarMapService
 
         public Dictionary<string, StarMapLogInfo> getStarMapLog(DateTime? since = null)
         {
-            var client = new RestClient(getUrl);
+            var client = new RestClient(baseUrl);
             var request = new RestRequest("api-logs-v1/get-logs", Method.POST);
             request.AddParameter("apiKey", apiKey);
             request.AddParameter("commanderName", commanderName);

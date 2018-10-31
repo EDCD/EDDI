@@ -59,36 +59,20 @@ namespace EddiEdsmResponder
         public void Reload()
         {
             // Set up the star map service
-            starMapService = null;
-            StarMapConfiguration starMapCredentials = StarMapConfiguration.FromFile();
-            string commanderName = null;
-            if (starMapCredentials != null && starMapCredentials.apiKey != null)
+            starMapService = new StarMapService();
+            if (ignoredEvents == null)
             {
-                // Commander name might come from star map credentials or the companion app's profile
-                if (starMapCredentials.commanderName != null)
-                {
-                    commanderName = starMapCredentials.commanderName;
-                }
-                else if (EDDI.Instance.Cmdr != null)
-                {
-                    commanderName = EDDI.Instance.Cmdr.name;
-                }
-                if (commanderName != null)
-                {
-                    starMapService = new StarMapService(starMapCredentials.apiKey, commanderName, EDDI.Instance.ShouldUseTestEndpoints());
-                }
-                if (ignoredEvents == null)
-                {
-                    ignoredEvents = starMapService?.getIgnoredEvents();
-                }
+                ignoredEvents = starMapService?.getIgnoredEvents();
             }
 
             if (starMapService != null && updateThread == null)
             {
                 // Spin off a thread to download & sync flight logs & system comments from EDSM in the background 
-                updateThread = new Thread(() => new DataProviderService().syncFromStarMapService(starMapService, starMapCredentials));
-                updateThread.IsBackground = true;
-                updateThread.Name = "EDSM updater";
+                updateThread = new Thread(() => DataProviderService.syncFromStarMapService())
+                {
+                    IsBackground = true,
+                    Name = "EDSM updater"
+                };
                 updateThread.Start();
             }
         }

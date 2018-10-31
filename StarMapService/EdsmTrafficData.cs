@@ -28,7 +28,7 @@ namespace EddiStarMapService
         {
             if (system == null) { return null; }
 
-            var client = new RestClient(getUrl);
+            var client = new RestClient(baseUrl);
             var request = new RestRequest("api-system-v1/traffic", Method.POST);
             request.AddParameter("systemName", system);
             request.AddParameter("systemId", edsmId);
@@ -51,7 +51,7 @@ namespace EddiStarMapService
         {
             if (system == null) { return null; }
 
-            var client = new RestClient(getUrl);
+            var client = new RestClient(baseUrl);
             var request = new RestRequest("api-system-v1/deaths", Method.POST);
             request.AddParameter("systemName", system);
             request.AddParameter("systemId", edsmId);

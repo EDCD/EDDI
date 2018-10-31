@@ -13,7 +13,7 @@ namespace EddiStarMapService
         public static List<Body> GetStarMapBodies(string system, long? edsmId = null)
         {
             if (system == null) { return null; }
-            var client = new RestClient(getUrl);
+            var client = new RestClient(baseUrl);
             var request = new RestRequest("api-system-v1/bodies", Method.POST);
             request.AddParameter("systemName", system);
             request.AddParameter("systemId", edsmId);
