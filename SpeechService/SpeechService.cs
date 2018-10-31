@@ -378,7 +378,7 @@ namespace EddiSpeechService
         {
             lock (synthLock)
             {
-                synth = new SpeechSynthesizer();
+                if (synth == null) { synth = new SpeechSynthesizer(); };
                 var synthThread = new Thread(() =>
                 {
                     try
@@ -446,11 +446,15 @@ namespace EddiSpeechService
 
         private static void selectVoice(string voice)
         {
+            if (synth.Voice.Name == voice)
+            {
+                return;
+            }
             foreach (InstalledVoice vc in synth.GetInstalledVoices())
             {
-                if (vc.Enabled && vc.VoiceInfo.Name == voice && !vc.VoiceInfo.Name.Contains("Microsoft Server Speech Text to Speech Voice"))
+                if (vc.VoiceInfo.Name == voice && !vc.VoiceInfo.Name.Contains("Microsoft Server Speech Text to Speech Voice"))
                 {
-                    synth.SelectVoice(voice);
+                    if (vc.Enabled) { synth.SelectVoice(voice); }
                 }
             }
         }
