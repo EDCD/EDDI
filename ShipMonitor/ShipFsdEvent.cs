@@ -14,7 +14,7 @@ namespace EddiShipMonitor
 
         static ShipFsdEvent()
         {
-            VARIABLES.Add("fsd_status", "The status of your ship's fsd ('cooldown', 'cooldown complete', 'charging', 'charging canceled', 'charging complete', 'masslock', or 'masslock cleared')");
+            VARIABLES.Add("fsd_status", "The status of your ship's fsd ('cooldown', 'cooldown complete', 'charging', 'charging cancelled', 'charging complete', 'masslock', or 'masslock cleared')");
         }
 
         [JsonProperty("fsd_status")]

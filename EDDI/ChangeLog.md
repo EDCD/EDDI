@@ -8,7 +8,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
   * Status monitor
     * Recalibrated the `ShipFSD` event 
       * `charging complete` now triggers at a more appropriate time.
-      * Added new FSD status - `charging canceled`.
+      * Added new FSD status - `charging cancelled`.
     
 ### 3.1.0-b3
   * Core

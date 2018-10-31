@@ -308,7 +308,7 @@ namespace EddiStatusMonitor
                             case "charging":
                                 if (!jumping && thisStatus.supercruise == lastStatus.supercruise)
                                 {
-                                    EDDI.Instance.eventHandler(new ShipFsdEvent(thisStatus.timestamp, "charging canceled"));
+                                    EDDI.Instance.eventHandler(new ShipFsdEvent(thisStatus.timestamp, "charging cancelled"));
                                 }
                                 jumping = false;
                                 break;
