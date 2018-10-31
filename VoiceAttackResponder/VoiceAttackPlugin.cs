@@ -193,7 +193,7 @@ namespace EddiVoiceAttackResponder
 
                     if (MessageBoxResult.Cancel == result)
                     {
-                        throw new Exception("EDDI initialization canceled by user.");
+                        throw new Exception("EDDI initialization cancelled by user.");
                     }
                 }
             }

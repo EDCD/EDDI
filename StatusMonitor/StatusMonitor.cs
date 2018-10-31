@@ -24,7 +24,8 @@ namespace EddiStatusMonitor
         private string Directory = GetSavedGamesDir();
         public static Status currentStatus { get; set; } = new Status();
         public static Status lastStatus { get; set; } = new Status();
-        private static bool gliding; 
+        private static bool gliding;
+        private static bool jumping;
 
         // Keep track of status
         private bool running;
@@ -305,7 +306,11 @@ namespace EddiStatusMonitor
                         switch(lastStatus.fsd_status)
                         {
                             case "charging":
-                                EDDI.Instance.eventHandler(new ShipFsdEvent(thisStatus.timestamp, "charging complete"));
+                                if (!jumping && thisStatus.supercruise == lastStatus.supercruise)
+                                {
+                                    EDDI.Instance.eventHandler(new ShipFsdEvent(thisStatus.timestamp, "charging cancelled"));
+                                }
+                                jumping = false;
                                 break;
                             case "cooldown":
                                 EDDI.Instance.eventHandler(new ShipFsdEvent(thisStatus.timestamp, "cooldown complete"));
@@ -376,6 +381,10 @@ namespace EddiStatusMonitor
             {
                 handleEnteredNormalSpaceEvent(@event);
             }
+            else if (@event is FSDEngagedEvent)
+            {
+                handleFSDEngagedEvent(@event);
+            }
         }
 
         private void handleEnteredNormalSpaceEvent(Event @event)
@@ -385,8 +394,17 @@ namespace EddiStatusMonitor
             {
                 gliding = true;
                 EnteredNormalSpaceEvent theEvent = (EnteredNormalSpaceEvent)@event;
-                EDDI.Instance.eventHandler(new GlideEvent(currentStatus.timestamp, gliding, theEvent.system, theEvent.systemAddress, theEvent.body, theEvent.bodytype));
+                EDDI.Instance.eventHandler(new GlideEvent(DateTime.UtcNow, gliding, theEvent.system, theEvent.systemAddress, theEvent.body, theEvent.bodytype));
             }
+        }
+
+        private void handleFSDEngagedEvent(Event @event)
+        {
+            if (((FSDEngagedEvent)@event).target == "Hyperspace")
+            {
+                jumping = true;
+            }
+            EDDI.Instance.eventHandler(new ShipFsdEvent(DateTime.UtcNow, "charging complete"));
         }
 
         public void PostHandle(Event @event)
