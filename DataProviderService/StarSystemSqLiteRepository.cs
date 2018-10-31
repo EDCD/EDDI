@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
 using System.IO;
+using System.Threading.Tasks;
 using Utilities;
 
 namespace EddiDataProviderService
@@ -187,6 +188,12 @@ namespace EddiDataProviderService
                 {
                     updateStarSystem(result);
                 }
+            }
+            catch (SQLiteException)
+            {
+                Logging.Warn("Problem reading data for star system '" + name + "' from database, refreshing database and re-obtaining from source.");
+                RecoverStarSystemDB();
+                GetStarSystem(name);
             }
             catch (Exception)
             {
@@ -403,6 +410,16 @@ namespace EddiDataProviderService
                 }
             }
             Logging.Debug("Created starsystem repository");
+        }
+
+        public static void RecoverStarSystemDB()
+        {
+            lock (editLock)
+            {
+                File.Delete(Constants.DATA_DIR + @"\EDDI.sqlite");
+                CreateDatabase();
+            }
+            var updateLogs = Task.Run(() => DataProviderService.syncFromStarMapService(true));
         }
     }
 }
