@@ -97,13 +97,15 @@ namespace EddiDataProviderService
         }
 
         // EDSM flight log synchronization
-        public void syncFromStarMapService (StarMapService starMapService, StarMapConfiguration starMapCredentials)
+        public static void syncFromStarMapService (bool forceSyncAll = false)
         {
             Logging.Info("Syncing from EDSM");
+
             try
             {
-                Dictionary<string, StarMapLogInfo> systems = starMapService.getStarMapLog(starMapCredentials.lastSync);
-                Dictionary<string, string> comments = starMapService.getStarMapComments();
+                StarMapConfiguration starMapCredentials = StarMapConfiguration.FromFile();
+                Dictionary<string, StarMapLogInfo> systems = StarMapService.Instance.getStarMapLog(forceSyncAll ? null : (DateTime?)starMapCredentials.lastSync);
+                Dictionary<string, string> comments = StarMapService.Instance.getStarMapComments();
                 List<StarSystem> syncSystems = new List<StarSystem>();
                 foreach (string system in systems.Keys)
                 {

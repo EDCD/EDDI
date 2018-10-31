@@ -16,7 +16,7 @@ namespace EddiStarMapService
         public static List<Station> GetStarMapStations(string system, long? edsmId = null)
         {
             if (system == null) { return null; }
-            var client = new RestClient(getUrl);
+            var client = new RestClient(baseUrl);
             var request = new RestRequest("api-system-v1/stations", Method.POST);
             request.AddParameter("systemName", system);
             request.AddParameter("systemId", edsmId);

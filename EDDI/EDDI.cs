@@ -178,30 +178,12 @@ namespace Eddi
                         Logging.Info("EDDI access to the companion app is disabled");
                     }
 
-                    // Set up the star map service
-                    StarMapConfiguration starMapCredentials = StarMapConfiguration.FromFile();
-                    if (starMapCredentials != null && starMapCredentials.apiKey != null)
+                    // Pass our commander name to the StarMapService (if it has been set via the Frontier API) and initialize the StarMapService
+                    if (Cmdr != null && Cmdr.name != null)
                     {
-                        // Commander name might come from star map credentials or the companion app's profile
-                        string commanderName = null;
-                        if (starMapCredentials.commanderName != null)
-                        {
-                            commanderName = starMapCredentials.commanderName;
-                        }
-                        else if (Cmdr != null && Cmdr.name != null)
-                        {
-                            commanderName = Cmdr.name;
-                        }
-                        if (commanderName != null)
-                        {
-                            starMapService = new StarMapService(starMapCredentials.apiKey, commanderName, ShouldUseTestEndpoints());
-                            Logging.Info("EDDI access to EDSM is enabled");
-                        }
+                        StarMapService.commanderName = Cmdr.name;
                     }
-                    if (starMapService == null)
-                    {
-                        Logging.Info("EDDI access to EDSM is disabled");
-                    }
+                    starMapService = new StarMapService();
                 }
                 else
                 {
