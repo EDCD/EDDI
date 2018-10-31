@@ -1385,6 +1385,13 @@ namespace EddiJournalMonitor
                                 string message = JsonParsing.getString(data, "Message");
                                 string source = "";
 
+                                if (from == string.Empty && channel == "npc" && message.StartsWith("Entered Channel: "))
+                                {
+                                    // We can safely ignore messages that simply announce that we entered a channel - no event is needed. 
+                                    handled = true;
+                                    break;
+                                }
+
                                 if (
                                     channel == "player" ||
                                     channel == "wing" ||
