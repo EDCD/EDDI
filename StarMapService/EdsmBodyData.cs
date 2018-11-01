@@ -119,7 +119,7 @@ namespace EddiStarMapService
                     if (atmosphereCompositions.Count > 0)
                     {
                         atmosphereCompositions = atmosphereCompositions.OrderByDescending(x => x.percent).ToList();
-                        Body.atmosphereCompositions = atmosphereCompositions;
+                        Body.atmospherecompositions = atmosphereCompositions;
                     }
                 }
                 Body.pressure = (decimal?)body["surfacePressure"];
@@ -152,7 +152,7 @@ namespace EddiStarMapService
                     if (bodyCompositions.Count > 0)
                     {
                         bodyCompositions = bodyCompositions.OrderByDescending(x => x.percent).ToList();
-                        Body.solidComposition = bodyCompositions;
+                        Body.solidcompositions = bodyCompositions;
                     }
                 }
 

@@ -136,15 +136,15 @@ namespace UnitTests
             // Data source reports this as "Suitable for water-based life", matching System Map, but the journal raw is "Earthlike". 
             // Apparently intentional: 
             // https://github.com/EDSM-NET/Alias/blob/3a904f799a4b7b4dd28f12af80eba38307789c99/Body/Planet/Atmosphere.php#L83
-            Assert.AreEqual("Nitrogen", body.atmosphereCompositions[0].invariantName);
-            Assert.AreEqual(77.886406M, body.atmosphereCompositions[0].percent);
-            Assert.AreEqual("Oxygen", body.atmosphereCompositions[1].invariantName);
+            Assert.AreEqual("Nitrogen", body.atmospherecompositions[0].invariantName);
+            Assert.AreEqual(77.886406M, body.atmospherecompositions[0].percent);
+            Assert.AreEqual("Oxygen", body.atmospherecompositions[1].invariantName);
             Assert.AreEqual((double)0.401426M, (double)body.tilt, .01);
-            Assert.AreEqual("Rock", body.solidComposition[0].composition.invariantName);
-            Assert.AreEqual(70M, body.solidComposition[0].percent);
-            Assert.AreEqual("Metal", body.solidComposition[1].composition.invariantName);
-            Assert.AreEqual(30M, body.solidComposition[1].percent);
-            Assert.AreEqual(2, body.solidComposition.Count);
+            Assert.AreEqual("Rock", body.solidcompositions[0].Composition.invariantName);
+            Assert.AreEqual(70M, body.solidcompositions[0].percent);
+            Assert.AreEqual("Metal", body.solidcompositions[1].Composition.invariantName);
+            Assert.AreEqual(30M, body.solidcompositions[1].percent);
+            Assert.AreEqual(2, body.solidcompositions.Count);
             Assert.AreEqual((double)499.485718M, (double)body.distance, 50);
             Assert.AreEqual(0.0167M, body.eccentricity);
             Assert.IsNotNull(body.landable);
