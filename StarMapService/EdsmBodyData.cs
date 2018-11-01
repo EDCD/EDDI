@@ -60,7 +60,7 @@ namespace EddiStarMapService
 
                 // Orbital characteristics 
                 orbitalperiod = (decimal?)body["orbitalPeriod"], // Days
-                semimajoraxis = (decimal?)body["semiMajorAxis"], // AU
+                semimajoraxis = ConstantConverters.au2ls((decimal?)body["semiMajorAxis"]), // Light seconds
                 eccentricity = (decimal?)body["orbitalEccentricity"],
                 inclination = (decimal?)body["orbitalInclination"], // Degrees
                 periapsis = (decimal?)body["argOfPeriapsis"], // Degrees

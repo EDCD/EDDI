@@ -178,7 +178,7 @@ namespace EddiEddbService
                 tidallylocked = (bool?)bodyJson["is_rotational_period_tidally_locked"] ?? false, // Days
                 rotationalperiod = (decimal?)(double?)bodyJson["rotational_period"], // Days
                 tilt = (decimal?)(double?)bodyJson["axis_tilt"], // Degrees
-                semimajoraxis = (decimal?)(double?)bodyJson["semi_major_axis"], // AU
+                semimajoraxis = ConstantConverters.au2ls((decimal?)(double?)bodyJson["semi_major_axis"]), // Light Seconds
                 orbitalperiod = (decimal?)(double?)bodyJson["orbital_period"], // Days
                 periapsis = (decimal?)(double?)bodyJson["arg_of_periapsis"], // Degrees
                 eccentricity = (decimal?)(double?)bodyJson["orbital_eccentricity"],
