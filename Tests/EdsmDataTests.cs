@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Rollbar;
 using System.Collections.Generic;
+using Utilities;
 
 namespace UnitTests
 {
@@ -47,7 +48,7 @@ namespace UnitTests
             Assert.AreEqual(0.7666015240833932, (double)star.solarradius, 0.01);
             Assert.AreEqual(4343, (double)star.temperature, 0.01);
             Assert.AreEqual(1847.1559259259259, (double)star.orbitalperiod, 0.01);
-            Assert.AreEqual(1.156960251734385, (double)star.semimajoraxis, 0.01);
+            Assert.AreEqual(577.32870032374433, (double)star.semimajoraxis, 0.01);
             Assert.AreEqual(0.018651, (double)star.eccentricity, 0.01);
             Assert.AreEqual(21.11883, (double)star.inclination, 0.01);
             Assert.AreEqual(201.271866, (double)star.periapsis, 0.01);
@@ -79,7 +80,7 @@ namespace UnitTests
             Assert.AreEqual(33.1689, (double)body.solidComposition[1].percent, 0.01);
             Assert.AreEqual("Not terraformable", body.terraformState.invariantName);
             Assert.AreEqual(10.463153935185185, (double)body.orbitalperiod, 0.01);
-            Assert.AreEqual(0.08103988373144672, (double)body.semimajoraxis, 0.01);
+            Assert.AreEqual(40.439289663517812, (double)body.semimajoraxis, 0.01);
             Assert.AreEqual(0.002692, (double)body.eccentricity, 0.01);
             Assert.AreEqual(-0.044359, (double)body.inclination, 0.01);
             Assert.AreEqual(115.330589, (double)body.periapsis, 0.01);
@@ -118,7 +119,7 @@ namespace UnitTests
             Assert.AreEqual(30, (double)body.solidComposition[1].percent, 0.01);
             Assert.AreEqual("Terraformed", body.terraformState.invariantName);
             Assert.AreEqual(248.72930555555556, (double)body.orbitalperiod, 0.01);
-            Assert.AreEqual(0.670000470213912, (double)body.semimajoraxis, 0.01);
+            Assert.AreEqual(334.33343980921632, (double)body.semimajoraxis, 0.01);
             Assert.AreEqual(0.034386, (double)body.eccentricity, 0.01);
             Assert.AreEqual(8.552103, (double)body.inclination, 0.01);
             Assert.AreEqual(183.237366, (double)body.periapsis, 0.01);
@@ -154,7 +155,7 @@ namespace UnitTests
             Assert.AreEqual(1.6882000000000001, (double)body.solidComposition[2].percent, 0.01);
             Assert.AreEqual("Not terraformable", body.terraformState.invariantName);
             Assert.AreEqual(7.854005353009259, (double)body.orbitalperiod, 0.01);
-            Assert.AreEqual(0.009837235203375124, (double)body.semimajoraxis, 0.01);
+            Assert.AreEqual(4.9088274262056295, (double)body.semimajoraxis, 0.01);
             Assert.AreEqual(0.000164, (double)body.eccentricity, 0.01);
             Assert.AreEqual(0.025755, (double)body.inclination, 0.01);
             Assert.AreEqual(300.792816, (double)body.periapsis, 0.01);
@@ -186,7 +187,7 @@ namespace UnitTests
             Assert.AreEqual(0, body.solidComposition.Count);
             Assert.AreEqual("Not terraformable", body.terraformState.invariantName);
             Assert.AreEqual(7354.8133333333335, (double)body.orbitalperiod, 0.01);
-            Assert.AreEqual(7.545593882466938, (double)body.semimajoraxis, 0.01);
+            Assert.AreEqual(3765.2874442358393, (double)body.semimajoraxis, 0.01);
             Assert.AreEqual(0.007439, (double)body.eccentricity, 0.01);
             Assert.AreEqual(-0.406597, (double)body.inclination, 0.01);
             Assert.AreEqual(305.503632, (double)body.periapsis, 0.01);

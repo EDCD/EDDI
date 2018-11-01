@@ -94,6 +94,20 @@ namespace EddiDataDefinitions
         /// <summary>The atmosphere's composition</summary>
         public List<AtmosphereComposition> atmosphereCompositions { get; set; } = new List<AtmosphereComposition>();
 
+        /// <summary>The atmosphere's composition, localized</summary>
+        public List<string> atmospherecompositions
+        {
+            get
+            {
+                List<string> compositions = new List<string>();
+                foreach (AtmosphereComposition composition in atmosphereCompositions)
+                {
+                    compositions.Add(composition.localizedName);
+                }
+                return compositions;
+            }
+        }
+
         /// <summary>The axial tilt, in degrees</summary>
         public decimal? tilt { get; set; }
 
@@ -118,7 +132,7 @@ namespace EddiDataDefinitions
         /// <summary>The rotational period of the planet, in days</summary>
         public decimal? rotationalperiod { get; set; }
 
-        /// <summary>The semi-major axis of the planet, in astronomical units (AU)</summary>
+        /// <summary>The semi-major axis of the planet, in light seconds</summary>
         public decimal? semimajoraxis { get; set; }
 
         /// <summary>The pressure at the surface of the planet, in Earth atmospheres</summary>

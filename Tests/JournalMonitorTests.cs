@@ -52,7 +52,7 @@ namespace UnitTests
             Assert.AreEqual(325.986, (double)ev.pressure, 0.01);
             Assert.IsNotNull(ev.landable);
             Assert.IsFalse((bool)ev.landable);
-            Assert.AreEqual(1.4102, (double)ev.semimajoraxis, 0.01);
+            Assert.AreEqual(703.679898444943, (double)ev.semimajoraxis, 0.01);
             Assert.AreEqual((decimal)0.000248, ev.eccentricity);
             Assert.AreEqual((decimal)0.015659, ev.orbitalinclination);
             Assert.AreEqual((decimal)104.416656, ev.periapsis);

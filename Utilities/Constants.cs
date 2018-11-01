@@ -51,6 +51,26 @@ namespace Utilities
             return null;
         }
 
+        /// <summary> Convert meters to light seconds </summary>
+        public static decimal? meters2ls(decimal? meters)
+        {
+            if (meters != null)
+            {
+                return meters / Constants.lightSpeedMetersPerSecond;
+            }
+            return null;
+        }
+
+        /// <summary> Convert astronomical units (AU) to light seconds </summary>
+        public static decimal? au2ls(decimal? au)
+        {
+            if (au != null)
+            {
+                return au * Constants.astronomicalUnitsMeters / Constants.lightSpeedMetersPerSecond;
+            }
+            return null;
+        }
+
         /// <summary> Convert pressure in Pascals to Earth atmospheres (atm) </summary>
         public static decimal? pascals2atm (decimal? pressure)
         {

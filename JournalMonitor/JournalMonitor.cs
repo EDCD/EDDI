@@ -641,11 +641,12 @@ namespace EddiJournalMonitor
                                 decimal? orbitalPeriodDays = ConstantConverters.seconds2days(JsonParsing.getOptionalDecimal(data, "OrbitalPeriod"));
                                 // Need to convert rotation period from seconds (per journal) to days
                                 decimal rotationPeriodDays = (decimal)ConstantConverters.seconds2days(JsonParsing.getDecimal(data, "RotationPeriod"));
-                                // Need to convert meters to astronomical units (AU)
-                                decimal? semimajoraxisAU = ConstantConverters.meters2au(JsonParsing.getOptionalDecimal(data, "SemiMajorAxis"));
+                                // Need to convert meters to light seconds
+                                decimal? semimajoraxisLs = ConstantConverters.meters2ls(JsonParsing.getOptionalDecimal(data, "SemiMajorAxis"));
                                 decimal? eccentricity = JsonParsing.getOptionalDecimal(data, "Eccentricity");
                                 decimal? orbitalinclinationDegrees = JsonParsing.getOptionalDecimal(data, "OrbitalInclination");
                                 decimal? periapsisDegrees = JsonParsing.getOptionalDecimal(data, "Periapsis");
+                                decimal? axialTiltDegrees = JsonParsing.getOptionalDecimal(data, "AxialTilt");
 
                                 // Check whether we have a detailed discovery scanner on board the current ship
                                 bool dssEquipped = false;
@@ -690,7 +691,7 @@ namespace EddiJournalMonitor
                                     long ageMegaYears = (long)val;
                                     decimal temperatureKelvin = JsonParsing.getDecimal(data, "SurfaceTemperature");
 
-                                    events.Add(new StarScannedEvent(timestamp, name, starType, stellarMass, radiusKm, absoluteMagnitude, luminosityClass, ageMegaYears, temperatureKelvin, distancefromarrival, orbitalPeriodDays, rotationPeriodDays, semimajoraxisAU, eccentricity, orbitalinclinationDegrees, periapsisDegrees, rings, dssEquipped) { raw = line });
+                                    events.Add(new StarScannedEvent(timestamp, name, starType, stellarMass, radiusKm, absoluteMagnitude, luminosityClass, ageMegaYears, temperatureKelvin, distancefromarrival, orbitalPeriodDays, rotationPeriodDays, semimajoraxisLs, eccentricity, orbitalinclinationDegrees, periapsisDegrees, rings, dssEquipped) { raw = line });
                                     handled = true;
                                 }
                                 else
@@ -698,7 +699,7 @@ namespace EddiJournalMonitor
                                     // Body
                                     bool? tidallyLocked = JsonParsing.getOptionalBool(data, "TidalLock") ?? false;
 
-                                    PlanetClass planetClass = PlanetClass.FromEDName(JsonParsing.getString(data, "PlanetClass"));
+                                    PlanetClass planetClass = PlanetClass.FromEDName(JsonParsing.getString(data, "PlanetClass")) ?? PlanetClass.None;
                                     decimal? earthMass = JsonParsing.getOptionalDecimal(data, "MassEM");
 
                                     // MKW: Gravity in the Journal is in m/s; must convert it to G
@@ -712,15 +713,13 @@ namespace EddiJournalMonitor
 
                                     string reserves = JsonParsing.getString(data, "ReserveLevel");
 
-                                    decimal? axialTiltDegrees = JsonParsing.getOptionalDecimal(data, "AxialTilt");
-
                                     // The "Atmosphere" is most accurately described through the "AtmosphereType" and "AtmosphereComposition" 
                                     // properties, so we use them in preference to "Atmosphere"
 
                                     // Gas giants may receive an empty string in place of an atmosphere class string. Fix it, since gas giants definitely have atmospheres. 
                                     AtmosphereClass atmosphereClass = planetClass.invariantName.Contains("gas giant") && JsonParsing.getString(data, "AtmosphereType") == string.Empty
                                         ? AtmosphereClass.FromEDName("GasGiant") 
-                                        : AtmosphereClass.FromEDName(JsonParsing.getString(data, "AtmosphereType"));
+                                        : AtmosphereClass.FromEDName(JsonParsing.getString(data, "AtmosphereType")) ?? AtmosphereClass.None;
 
                                     data.TryGetValue("AtmosphereComposition", out val);
                                     List<AtmosphereComposition> atmosphereCompositions = new List<AtmosphereComposition>();
@@ -795,10 +794,10 @@ namespace EddiJournalMonitor
                                         }
                                     }
 
-                                    TerraformState terraformState = TerraformState.FromEDName(JsonParsing.getString(data, "TerraformState"));
+                                    TerraformState terraformState = TerraformState.FromEDName(JsonParsing.getString(data, "TerraformState")) ?? TerraformState.None;
                                     Volcanism volcanism = Volcanism.FromName(JsonParsing.getString(data, "Volcanism"));
 
-                                    events.Add(new BodyScannedEvent(timestamp, name, planetClass, earthMass, radiusKm, gravity, temperatureKelvin, pressure, tidallyLocked, landable, atmosphereClass, atmosphereCompositions, solidCompositions, volcanism, distancefromarrival, (decimal)orbitalPeriodDays, rotationPeriodDays, semimajoraxisAU, eccentricity, orbitalinclinationDegrees, periapsisDegrees, rings, reserves, materials, terraformState, axialTiltDegrees, dssEquipped) { raw = line });
+                                    events.Add(new BodyScannedEvent(timestamp, name, planetClass, earthMass, radiusKm, gravity, temperatureKelvin, pressure, tidallyLocked, landable, atmosphereClass, atmosphereCompositions, solidCompositions, volcanism, distancefromarrival, (decimal)orbitalPeriodDays, rotationPeriodDays, semimajoraxisLs, eccentricity, orbitalinclinationDegrees, periapsisDegrees, rings, reserves, materials, terraformState, axialTiltDegrees, dssEquipped) { raw = line });
                                     handled = true;
                                 }
                             }

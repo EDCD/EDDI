@@ -35,7 +35,7 @@ namespace EddiEvents
             VARIABLES.Add("distancefromarrival", "The distance in LS from the main star");
             VARIABLES.Add("orbitalperiod", "The number of days taken for a full orbit of the main star");
             VARIABLES.Add("rotationperiod", "The number of days taken for a full rotation");
-            VARIABLES.Add("semimajoraxis", "The semi major axis of the body, in astronomical units (AU)");
+            VARIABLES.Add("semimajoraxis", "The semi major axis of the body's orbit, in light seconds");
             VARIABLES.Add("eccentricity", "The orbital eccentricity of the body");
             VARIABLES.Add("orbitalinclination", "The orbital inclination of the body, in degrees");
             VARIABLES.Add("periapsis", "The argument of periapsis of the body, in degrees");
@@ -174,22 +174,22 @@ namespace EddiEvents
             bool terraformable = false;
 
             // Override constants for specific types of bodies
-            if ( (terraformState.basename == "Terraformable") || (terraformState.basename == "Terraformable") )
+            if (terraformState.edname == "Terraformable")
             {
                 terraformable = true;
             }
-            if ( planetClass.basename == "AmmoniaWorld")
+            if ( planetClass.edname == "AmmoniaWorld")
             {
                 // Ammonia worlds
                 baseTypeValue = 232619;
             }
-            else if ( planetClass.basename == "EarthLikeBody" )
+            else if ( planetClass.edname == "EarthLikeBody" )
             {
                 // Earth-like worlds
                 baseTypeValue = 155581;
                 terraValue = 279088;
             }
-            else if (planetClass.basename == "WaterWorld" )
+            else if (planetClass.edname == "WaterWorld" )
             {
                 // Water worlds
                 baseTypeValue = 155581;
@@ -198,12 +198,12 @@ namespace EddiEvents
                     terraValue = 279088;
                 }
             }
-            else if (planetClass.basename == "MetalRichBody")
+            else if (planetClass.edname == "MetalRichBody")
             {
                 // Metal rich worlds
                 baseTypeValue = 52292;
             }
-            else if (planetClass.basename == "HighMetalContentBody")
+            else if (planetClass.edname == "HighMetalContentBody")
             {
                 // High metal content worlds
                 baseTypeValue = 23168;
@@ -212,7 +212,7 @@ namespace EddiEvents
                     terraValue = 241607;
                 }
             }
-            else if (planetClass.basename == "RockyBody")
+            else if (planetClass.edname == "RockyBody")
             {
                 // Rocky worlds
                 if (terraformable)
@@ -220,12 +220,12 @@ namespace EddiEvents
                     terraValue = 223971;
                 }
             }
-            else if (planetClass.basename == "ClassIGasGiant")
+            else if (planetClass.edname == "ClassIGasGiant")
             {
                 // Class I gas giants
                 baseTypeValue = 3974;
             }
-            else if (planetClass.basename == "ClassIIGasGiant")
+            else if (planetClass.edname == "ClassIIGasGiant")
             {
                 // Class II gas giants
                 baseTypeValue = 23168;
