@@ -125,7 +125,7 @@ namespace EddiDataDefinitions
         public static T FromName(string from)
         {
             EnsureSubClassStaticConstructorHasRun();
-            if (from == null)
+            if (from == null || from == string.Empty)
             {
                 return null;
             }
@@ -141,7 +141,7 @@ namespace EddiDataDefinitions
         public static T FromEDName(string from)
         {
             EnsureSubClassStaticConstructorHasRun();
-            if (from == null)
+            if (from == null || from == string.Empty)
             {
                 return null;
             }
