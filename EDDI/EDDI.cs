@@ -1434,8 +1434,8 @@ namespace Eddi
                 body.temperature = (long?)theEvent.temperature;
                 body.periapsis = theEvent.periapsis;
                 body.atmosphereclass = theEvent.atmosphereclass ?? AtmosphereClass.None;
-                body.atmosphereCompositions = theEvent.atmospherecomposition;
-                body.solidComposition = theEvent.solidcomposition;
+                body.atmospherecompositions = theEvent.atmospherecomposition;
+                body.solidcompositions = theEvent.solidcomposition;
                 body.gravity = theEvent.gravity;
                 body.eccentricity = theEvent.eccentricity;
                 body.inclination = theEvent.orbitalinclination;

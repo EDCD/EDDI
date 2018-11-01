@@ -232,7 +232,7 @@ namespace EddiEddbService
                     if (atmosphereCompositions.Count > 0)
                     {
                         atmosphereCompositions = atmosphereCompositions.OrderByDescending(x => x.percent).ToList();
-                        Body.atmosphereCompositions = atmosphereCompositions;
+                        Body.atmospherecompositions = atmosphereCompositions;
                     }
                 }
                 if (bodyJson["solid_composition"] != null)
@@ -250,7 +250,7 @@ namespace EddiEddbService
                     if (bodyCompositions.Count > 0)
                     {
                         bodyCompositions = bodyCompositions.OrderByDescending(x => x.percent).ToList();
-                        Body.solidComposition = bodyCompositions;
+                        Body.solidcompositions = bodyCompositions;
                     }
                 }
                 if (bodyJson["materials"] != null)

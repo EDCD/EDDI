@@ -92,21 +92,7 @@ namespace EddiDataDefinitions
         public string atmosphere => (atmosphereclass ?? AtmosphereClass.None).localizedName;
 
         /// <summary>The atmosphere's composition</summary>
-        public List<AtmosphereComposition> atmosphereCompositions { get; set; } = new List<AtmosphereComposition>();
-
-        /// <summary>The atmosphere's composition, localized</summary>
-        public List<string> atmospherecompositions
-        {
-            get
-            {
-                List<string> compositions = new List<string>();
-                foreach (AtmosphereComposition composition in atmosphereCompositions)
-                {
-                    compositions.Add(composition.localizedName);
-                }
-                return compositions;
-            }
-        }
+        public List<AtmosphereComposition> atmospherecompositions { get; set; } = new List<AtmosphereComposition>();
 
         /// <summary>The axial tilt, in degrees</summary>
         public decimal? tilt { get; set; }
@@ -157,7 +143,7 @@ namespace EddiDataDefinitions
         public Volcanism volcanism { get; set; }
 
         /// <summary>The solid body composition of the body</summary>
-        public List<BodySolidComposition> solidComposition { get; set; } = new List<BodySolidComposition>();
+        public List<BodySolidComposition> solidcompositions { get; set; } = new List<BodySolidComposition>();
 
         /// <summary>The materials present at the surface of the body</summary>
         public List<MaterialPresence> materials { get; set; } = new List<MaterialPresence>();

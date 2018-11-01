@@ -9,12 +9,13 @@ namespace EddiDataDefinitions
     /// <summary> Body Solid Composition </summary>
     public class BodySolidComposition
     {
-        public BodyComposition composition { get; set; }
+        public string composition => Composition.localizedName;
+        public BodyComposition Composition { get; set; }
         public decimal percent { get; set; }
 
-        public BodySolidComposition(BodyComposition composition, decimal percent)
+        public BodySolidComposition(BodyComposition Composition, decimal percent)
         {
-            this.composition = composition;
+            this.Composition = Composition;
             this.percent = percent;
         }
     }
