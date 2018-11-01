@@ -3,6 +3,15 @@
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
 ### Development
+  * Core
+    * EDDI now uses EDSM as the primary backend for server data (rather than the no longer maintained server set up by EDDI's original creator)
+    * Strings returned from the player journal and from server data have been standardized and should match each other much more closely than they have in the past.
+    * Variables.md has been updated with new fields available for our core data objects: Body, Station, and System
+      * Body: Atmospheric composition data, made available from `atmospherecompositions`
+      * Body: Solid body compositon data, made available from `solidcompositions`
+      * StarSystem: Starsystem permit data, made available from `requirespermit` and `permitname` (for the SystemDetails() method only - this info is not published to the player journal)
+      * The semi-major axis of the planetary orbit is now given in light seconds, rather than in meters
+  * Localization: new translatable strings pertaining to body, station, and system data have been added
   * Speech responder
     * Fixed an error converting a string, such as a ship ID, to the ICAO alphabet that was empty or all symbols (an empty string should result).
 
