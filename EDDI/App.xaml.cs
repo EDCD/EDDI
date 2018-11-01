@@ -17,6 +17,7 @@ namespace Eddi
         static void Main()
         {
             // Start the application
+            Logging.incrementLogs(); // Increment to a new log file.
             StartRollbar(); // do immediately to initialize error reporting
             ApplyAnyOverrideCulture(); // this must be done before any UI is generated
 
