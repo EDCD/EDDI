@@ -2,7 +2,7 @@
 
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
-### Development
+### 3.1.0-b4
   * Speech responder
     * Fixed an error converting a string, such as a ship ID, to the ICAO alphabet that was empty or all symbols (an empty string should result).
   * Status monitor
