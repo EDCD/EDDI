@@ -133,7 +133,7 @@
     <value>The second group obtains event information. These are the tabs that end in 'monitor'. They obtain events from different places, and require minimal configuration but need to be completed before they will work.</value>
   </data>
   <data name="paragraph_3" xml:space="preserve">
-    <value>The third group respond to events. These are the tabs that end in 'responder'. These come with varying degrees of configuration, but will work out of the box.</value>
+    <value>The third group responds to events. These are the tabs that end in 'responder'. These come with varying degrees of configuration, but will work out of the box.</value>
   </data>
   <data name="paragraph_4" xml:space="preserve">
     <value>You can read more about how EDDI functions on the</value>

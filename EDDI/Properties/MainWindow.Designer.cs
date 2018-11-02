@@ -142,7 +142,7 @@ namespace Eddi.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The third group respond to events. These are the tabs that end in &apos;responder&apos;. These come with varying degrees of configuration, but will work out of the box..
+        ///   Looks up a localized string similar to The third group responds to events. These are the tabs that end in &apos;responder&apos;. These come with varying degrees of configuration, but will work out of the box..
         /// </summary>
         public static string paragraph_3 {
             get {
