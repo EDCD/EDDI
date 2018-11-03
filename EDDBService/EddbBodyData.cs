@@ -237,14 +237,14 @@ namespace EddiEddbService
                 }
                 if (bodyJson["solid_composition"] != null)
                 {
-                    List<BodySolidComposition> bodyCompositions = new List<BodySolidComposition>();
+                    List<SolidComposition> bodyCompositions = new List<SolidComposition>();
                     foreach (JObject bodyCompJson in bodyJson["solid_composition"])
                     {
                         string composition = (string)bodyCompJson["solid_component_name"];
                         decimal? share = (decimal?)bodyCompJson["share"];
                         if (composition != null && share != null)
                         {
-                            bodyCompositions.Add(new BodySolidComposition(composition, (decimal)share));
+                            bodyCompositions.Add(new SolidComposition(composition, (decimal)share));
                         }
                     }
                     if (bodyCompositions.Count > 0)

@@ -744,7 +744,7 @@ namespace EddiJournalMonitor
                                     }
 
                                     data.TryGetValue("Composition", out val);
-                                    List<BodySolidComposition> solidCompositions = new List<BodySolidComposition>();
+                                    List<SolidComposition> solidCompositions = new List<SolidComposition>();
                                     if (val != null)
                                     {
                                         if (val is Dictionary<string, object> bodyCompsJson)
@@ -757,7 +757,7 @@ namespace EddiJournalMonitor
                                                 decimal percent = ((decimal)(double)kv.Value) * 100;
                                                 if (edComposition != null)
                                                 {
-                                                    solidCompositions.Add(new BodySolidComposition(edComposition, percent));
+                                                    solidCompositions.Add(new SolidComposition(edComposition, percent));
                                                 }
                                             }
                                             if (solidCompositions.Count > 0)
