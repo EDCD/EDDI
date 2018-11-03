@@ -22,25 +22,27 @@ namespace EddiDataDefinitions
         public Faction Faction { get; set; } = new Faction();
 
         /// <summary>The controlling faction's name</summary>
-        [Obsolete("Please use Faction instead")]
+        [JsonIgnore, Obsolete("Please use Faction instead")]
         public string faction => (Faction ?? new Faction()).name;
 
         /// <summary>The controlling faction's government</summary>
-        [Obsolete("Please use Faction.Government instead")]
+        [JsonIgnore, Obsolete("Please use Faction.Government instead")]
         public string government => (Faction?.Government ?? Government.None).localizedName;
 
         /// <summary>The controlling faction's allegiance</summary>
-        [Obsolete("Please use Faction.Allegiance instead")]
+        [JsonIgnore, Obsolete("Please use Faction.Allegiance instead")]
         public string allegiance => (Faction?.Allegiance ?? Superpower.None).localizedName;
 
         /// <summary>The controlling faction's state within the system</summary>
-        [Obsolete("Please use Faction.factionState instead")]
+        [JsonIgnore, Obsolete("Please use Faction.factionState instead")]
         public string state => (Faction?.FactionState ?? FactionState.None).localizedName;
 
         /// <summary>The primary economy of the station</summary>
+        [JsonIgnore]
         public string primaryeconomy => (Economies?.Count > 0 && Economies[0] != null ? Economies[0] : Economy.None).localizedName;
 
         /// <summary>The secondary economy of the station</summary>
+        [JsonIgnore]
         public string secondaryeconomy => (Economies?.Count > 1 && Economies[1] != null ? Economies[1] : Economy.None).localizedName;
 
         /// <summary>How far this is from the star, in light seconds</summary>
@@ -79,47 +81,55 @@ namespace EddiDataDefinitions
         }
 
         /// <summary>Does this station have refuel facilities?</summary>
+        [JsonIgnore]
         public bool? hasrefuel {
             get { return stationServices.Exists(s => s?.edname == "Refuel"); }
             set { if (value is true) { stationServices.Add(StationService.FromEDName("Refuel")); } }
         }
         /// <summary>Does this station have rearm facilities?</summary>
+        [JsonIgnore]
         public bool? hasrearm
         {
             get { return stationServices.Exists(s => s?.edname == "Rearm"); }
             set { if (value is true) { stationServices.Add(StationService.FromEDName("Rearm")); } }
         }
         /// <summary>Does this station have repair facilities?</summary>
+        [JsonIgnore]
         public bool? hasrepair
         {
             get { return stationServices.Exists(s => s?.edname == "Repair"); }
             set { if (value is true) { stationServices.Add(StationService.FromEDName("Repair")); } }
         }
         /// <summary>Does this station have outfitting?</summary>
+        [JsonIgnore]
         public bool? hasoutfitting
         {
             get { return stationServices.Exists(s => s?.edname == "Outfitting"); }
             set { if (value is true) { stationServices.Add(StationService.FromEDName("Outfitting")); } }
         }
         /// <summary>Does this station have a shipyard?</summary>
+        [JsonIgnore]
         public bool? hasshipyard
         {
             get { return stationServices.Exists(s => s?.edname == "Shipyard"); }
             set { if (value is true) { stationServices.Add(StationService.FromEDName("Shipyard")); } }
         }
         /// <summary>Does this station have a market?</summary>
+        [JsonIgnore]
         public bool? hasmarket
         {
             get { return stationServices.Exists(s => s?.edname == "Commodities"); }
             set { if (value is true) { stationServices.Add(StationService.FromEDName("Commodities")); } }
         }
         /// <summary>Does this station have a black market?</summary>
+        [JsonIgnore]
         public bool? hasblackmarket
         {
             get { return stationServices.Exists(s => s?.edname == "BlackMarket"); }
             set { if (value is true) { stationServices.Add(StationService.FromEDName("BlackMarket")); } }
         }
         /// <summary>Does this station allow docking?</summary>
+        [JsonIgnore]
         public bool? hasdocking
         {
             get { return stationServices.Exists(s => s?.edname == "Dock"); }
@@ -127,12 +137,12 @@ namespace EddiDataDefinitions
         }
 
         /// <summary>The model of the station</summary>
-        [Obsolete("Please use Model instead")]
+        [JsonIgnore, Obsolete("Please use Model instead")]
         public string model => (Model ?? StationModel.None).localizedName;
         public StationModel Model { get; set; } = StationModel.None;
 
         /// <summary>What is the largest ship that can land here?</summary>
-        [Obsolete("Please use StationLargestPad instead")]
+        [JsonIgnore, Obsolete("Please use StationLargestPad instead")]
         public string largestpad => LargestPad.localizedName;
         // This field isn't always provided, so we derive it from the station model when it's not explicitly set.
         public StationLargestPad LargestPad

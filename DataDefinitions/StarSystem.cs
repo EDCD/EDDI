@@ -29,34 +29,37 @@ namespace EddiDataDefinitions
 
         /// <summary>The reserve level applicable to the system's rings</summary>
         public ReserveLevel Reserve { get; set; } = ReserveLevel.None;
+        [JsonIgnore]
         public string reserve => (Reserve ?? ReserveLevel.None).localizedName;
 
         // Populated system data
 
         public long? population { get; set; } = 0;
+        [JsonIgnore]
         public string primaryeconomy => (Economies[0] ?? Economy.None).localizedName;
         public List<Economy> Economies { get; set; } = new List<Economy>() { Economy.None, Economy.None };
 
         /// <summary>The system's security level</summary>
         public SecurityLevel securityLevel { get; set; } = SecurityLevel.None;
         /// <summary>The system's security level (localized name)</summary>
+        [JsonIgnore]
         public string security => (securityLevel ?? SecurityLevel.None).localizedName;
 
         public string power { get; set; }
         public string powerstate { get; set; }
 
-        [Obsolete("Please use Faction.FactionState instead")]
+        [JsonIgnore, Obsolete("Please use Faction.FactionState instead")]
         public string state => (Faction?.FactionState ?? FactionState.None).localizedName;
 
         // Faction details
         public Faction Faction { get; set; } = new Faction();
         public List<Faction> factions { get; set; }
 
-        [Obsolete("Please use Faction instead")]
+        [JsonIgnore, Obsolete("Please use Faction instead")]
         public string faction => Faction.name;
-        [Obsolete("Please use Faction.Allegiance instead")]
+        [JsonIgnore, Obsolete("Please use Faction.Allegiance instead")]
         public string allegiance => Faction.allegiance;
-        [Obsolete("Please use Faction.Government instead")]
+        [JsonIgnore, Obsolete("Please use Faction.Government instead")]
         public string government => Faction.government;
 
         /// <summary>Details of stations</summary>
@@ -84,6 +87,7 @@ namespace EddiDataDefinitions
         public DateTime? lastvisit;
 
         /// <summary>Time of last visit, expressed as a Unix timestamp in seconds</summary>
+        [JsonIgnore]
         public long? lastVisitSeconds => (visits > 1 && lastvisit != null) ? (long?)((DateTime)lastvisit).Subtract(new DateTime(1970, 1, 1)).TotalSeconds : null;
 
         /// <summary>comment on this starsystem</summary>

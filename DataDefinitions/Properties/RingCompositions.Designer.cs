@@ -79,7 +79,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Metal-rich.
+        ///   Looks up a localized string similar to Metal Rich.
         /// </summary>
         public static string MetalRich {
             get {

@@ -24,12 +24,18 @@ namespace EddiDataDefinitions
         public RingComposition() : this("")
         {}
 
-        private RingComposition(string edname): base(edname, edname.Replace("eRingClass_", "").Replace("-", ""))
-        {}
+        private RingComposition(string edname): base(edname, edname
+            .Replace("eRingClass_", "")
+            .Replace("-", ""))
+            // .Replace("Metalic", "Metallic"))
+        { }
 
         new public static RingComposition FromEDName(string edname)
         {
-            string normalizedEDName = edname.Replace("eRingClass_", "").Replace("-", "");
+            string normalizedEDName = edname
+                .Replace("eRingClass_", "")
+                .Replace("-", "");
+                // .Replace("Metalic", "Metallic");
             return ResourceBasedLocalizedEDName<RingComposition>.FromEDName(normalizedEDName);
         }
     }

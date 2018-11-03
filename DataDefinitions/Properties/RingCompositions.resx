@@ -126,7 +126,7 @@
     <comment>Composition type Metallic</comment>
   </data>
   <data name="MetalRich" xml:space="preserve">
-    <value>Metal-rich</value>
+    <value>Metal Rich</value>
     <comment>Composition type MetalRich</comment>
   </data>
   <data name="Rocky" xml:space="preserve">

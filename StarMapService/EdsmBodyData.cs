@@ -142,7 +142,7 @@ namespace EddiStarMapService
 
                     foreach (KeyValuePair<string, decimal?> compositionKV in compositions)
                     {
-                        BodyComposition composition = BodyComposition.FromName(compositionKV.Key);
+                        string composition = compositionKV.Key;
                         decimal? share = compositionKV.Value;
                         if (composition != null && share != null)
                         {

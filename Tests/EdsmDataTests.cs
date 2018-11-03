@@ -56,7 +56,7 @@ namespace UnitTests
             Assert.AreEqual(false, star.tidallylocked);
             Assert.AreEqual(-0.041915, (double)star.tilt, 0.01);
             Assert.AreEqual(1, star.rings?.Count);
-            Assert.AreEqual("Rocky", star.rings[0].Composition.invariantName);
+            Assert.AreEqual("Rocky", star.rings[0].invariantComposition);
             Assert.AreEqual(1522275140, star.updatedat);
 
             // Test landable high metal content world
@@ -74,9 +74,9 @@ namespace UnitTests
             Assert.IsNull(body.volcanism);
             Assert.AreEqual("No atmosphere", body.atmosphereclass.invariantName);
             Assert.AreEqual(0, body.atmospherecompositions.Count);
-            Assert.AreEqual("Rock", body.solidcompositions[0].Composition.invariantName);
+            Assert.AreEqual("Rock", body.solidcompositions[0].invariantName);
             Assert.AreEqual(66.83109999999999, (double)body.solidcompositions[0].percent, 0.01);
-            Assert.AreEqual("Metal", body.solidcompositions[1].Composition.invariantName);
+            Assert.AreEqual("Metal", body.solidcompositions[1].invariantName);
             Assert.AreEqual(33.1689, (double)body.solidcompositions[1].percent, 0.01);
             Assert.AreEqual("Not terraformable", body.terraformState.invariantName);
             Assert.AreEqual(10.463153935185185, (double)body.orbitalperiod, 0.01);
@@ -113,9 +113,9 @@ namespace UnitTests
             Assert.AreEqual(91.2489, (double)body.atmospherecompositions[0].percent, 0.01);
             Assert.AreEqual("Oxygen", body.atmospherecompositions[1].invariantName);
             Assert.AreEqual(8.69037, (double)body.atmospherecompositions[1].percent, 0.01);
-            Assert.AreEqual("Rock", body.solidcompositions[0].Composition.invariantName);
+            Assert.AreEqual("Rock", body.solidcompositions[0].invariantName);
             Assert.AreEqual(70, (double)body.solidcompositions[0].percent, 0.01);
-            Assert.AreEqual("Metal", body.solidcompositions[1].Composition.invariantName);
+            Assert.AreEqual("Metal", body.solidcompositions[1].invariantName);
             Assert.AreEqual(30, (double)body.solidcompositions[1].percent, 0.01);
             Assert.AreEqual("Terraformed", body.terraformState.invariantName);
             Assert.AreEqual(248.72930555555556, (double)body.orbitalperiod, 0.01);
@@ -147,11 +147,11 @@ namespace UnitTests
             Assert.AreEqual("Magma", body.volcanism.invariantType);
             Assert.AreEqual("Methane", body.atmosphereclass.invariantName);
             Assert.AreEqual(1, body.atmospherecompositions.Count);
-            Assert.AreEqual("Ice", body.solidcompositions[0].Composition.invariantName);
+            Assert.AreEqual("Ice", body.solidcompositions[0].invariantName);
             Assert.AreEqual(81.6586, (double)body.solidcompositions[0].percent, 0.01);
-            Assert.AreEqual("Rock", body.solidcompositions[1].Composition.invariantName);
+            Assert.AreEqual("Rock", body.solidcompositions[1].invariantName);
             Assert.AreEqual(16.653200000000002, (double)body.solidcompositions[1].percent, 0.01);
-            Assert.AreEqual("Metal", body.solidcompositions[2].Composition.invariantName);
+            Assert.AreEqual("Metal", body.solidcompositions[2].invariantName);
             Assert.AreEqual(1.6882000000000001, (double)body.solidcompositions[2].percent, 0.01);
             Assert.AreEqual("Not terraformable", body.terraformState.invariantName);
             Assert.AreEqual(7.854005353009259, (double)body.orbitalperiod, 0.01);
@@ -198,7 +198,7 @@ namespace UnitTests
             Assert.IsNotNull(body.rings);
             Assert.AreEqual(1, body.rings.Count);
             Assert.AreEqual("Shinrarta Dezhra AB 2 A Ring", body.rings[0].name);
-            Assert.AreEqual("Icy", body.rings[0].Composition.invariantName);
+            Assert.AreEqual("Icy", body.rings[0].invariantComposition);
             Assert.AreEqual(239990000000, body.rings[0].mass);
             Assert.AreEqual(130900, body.rings[0].innerradius);
             Assert.AreEqual(273390, body.rings[0].outerradius);

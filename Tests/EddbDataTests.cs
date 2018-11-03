@@ -140,9 +140,9 @@ namespace UnitTests
             Assert.AreEqual(77.886406M, body.atmospherecompositions[0].percent);
             Assert.AreEqual("Oxygen", body.atmospherecompositions[1].invariantName);
             Assert.AreEqual((double)0.401426M, (double)body.tilt, .01);
-            Assert.AreEqual("Rock", body.solidcompositions[0].Composition.invariantName);
+            Assert.AreEqual("Rock", body.solidcompositions[0].invariantName);
             Assert.AreEqual(70M, body.solidcompositions[0].percent);
-            Assert.AreEqual("Metal", body.solidcompositions[1].Composition.invariantName);
+            Assert.AreEqual("Metal", body.solidcompositions[1].invariantName);
             Assert.AreEqual(30M, body.solidcompositions[1].percent);
             Assert.AreEqual(2, body.solidcompositions.Count);
             Assert.AreEqual((double)499.485718M, (double)body.distance, 50);

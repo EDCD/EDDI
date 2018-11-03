@@ -7,37 +7,36 @@ using System.Resources;
 namespace EddiDataDefinitions
 {
     /// <summary> Body Solid Composition </summary>
-    public class BodySolidComposition
+    public class BodySolidComposition : ResourceBasedLocalizedEDName<BodySolidComposition>
     {
-        public string composition => Composition.localizedName;
-        public BodyComposition Composition { get; set; }
-        public decimal percent { get; set; }
-
-        public BodySolidComposition(BodyComposition Composition, decimal percent)
-        {
-            this.Composition = Composition;
-            this.percent = percent;
-        }
-    }
-
-    public class BodyComposition : ResourceBasedLocalizedEDName<BodyComposition>
-    {
-        static BodyComposition()
+        static BodySolidComposition()
         {
             resourceManager = Properties.Body.ResourceManager;
             resourceManager.IgnoreCase = true;
-            missingEDNameHandler = (edname) => new BodyComposition(edname);
+            missingEDNameHandler = (edname) => new BodySolidComposition(edname, 0);
 
-            var Ice = new BodyComposition("Ice");
-            var Rock = new BodyComposition("Rock");
-            var Metal = new BodyComposition("Metal");
+            var Ice = new BodySolidComposition("ice", 0);
+            var Rock = new BodySolidComposition("rock", 0);
+            var Metal = new BodySolidComposition("metal", 0);
         }
 
+        [JsonIgnore, Obsolete("Please use localizedComposition or invariantComposition")]
+        public string composition => localizedName;
+        [JsonIgnore]
+        public string localizedComposition => localizedName;
+        [JsonIgnore]
+        public string invariantComposition => invariantName;
+
+        [JsonProperty]
+        public decimal percent { get; set; } // Percent share of the solid body
+
         // dummy used to ensure that the static constructor has run
-        public BodyComposition() : this("")
+        public BodySolidComposition() : this("", 0)
         { }
 
-        public BodyComposition(string edname) : base(edname, edname)
-        { }
+        public BodySolidComposition(string edComposition, decimal percent) : base(edComposition, edComposition)
+        {
+            this.percent = percent;
+        }
     }
 }
