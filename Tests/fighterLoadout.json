@@ -1,0 +1,74 @@
+{
+	"timestamp": "2018-03-23T05:39:42Z",
+	"event": "Loadout",
+	"Ship": "Federation_Fighter",
+	"ShipID": 70,
+	"ShipName": "",
+	"ShipIdent": "TK-21F",
+	"HullValue": 6093,
+	"ModulesValue": 7650,
+	"Rebuy": 688,
+	"Modules": [{
+		"Slot": "Federation_Fighter_Shield",
+		"Item": "Ext_Emitter_Standard",
+		"On": true,
+		"Priority": 2,
+		"Health": 1.000000
+	},
+	{
+		"Slot": "SmallHardpoint1",
+		"Item": "Hpt_Multicannon_Fixed_Fed_Fighter",
+		"On": true,
+		"Priority": 2,
+		"AmmoInClip": 11,
+		"AmmoInHopper": 36,
+		"Health": 1.000000
+	},
+	{
+		"Slot": "TinyHardpoint1",
+		"Item": "Hpt_ChaffLauncher_Tiny",
+		"On": true,
+		"Priority": 2,
+		"AmmoInClip": 1,
+		"AmmoInHopper": 9,
+		"Health": 1.000000,
+		"Value": 7650
+	},
+	{
+		"Slot": "SmallHardpoint2",
+		"Item": "Hpt_Multicannon_Fixed_Fed_Fighter",
+		"On": true,
+		"Priority": 2,
+		"AmmoInClip": 11,
+		"AmmoInHopper": 36,
+		"Health": 1.000000
+	},
+	{
+		"Slot": "ShieldGenerator",
+		"Item": "Int_ShieldGenerator_Fighter_Class1",
+		"On": true,
+		"Priority": 2,
+		"Health": 1.000000
+	},
+	{
+		"Slot": "Armour",
+		"Item": "Federation_Fighter_Armour_Standard",
+		"On": true,
+		"Priority": 1,
+		"Health": 1.000000
+	},
+	{
+		"Slot": "VesselVoice",
+		"Item": "VoicePack_Verity",
+		"On": true,
+		"Priority": 1,
+		"Health": 1.000000
+	},
+	{
+		"Slot": "ShipCockpit",
+		"Item": "Federation_Fighter_Cockpit",
+		"On": true,
+		"Priority": 2,
+		"Health": 1.000000
+	}]
+}

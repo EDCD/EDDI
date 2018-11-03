@@ -381,5 +381,33 @@ namespace UnitTests
 
             Assert.AreEqual("Multipurpose", Role.MultiPurpose.edname);
         }
+
+        [TestMethod]
+        [DeploymentItem("loadout.json")]
+        [DeploymentItem("fighterLoadout.json")]
+        [DeploymentItem(@"x86\SQLite.Interop.dll", "x86")]
+        [DeploymentItem(@"x64\SQLite.Interop.dll", "x64")]
+        public void TestFighterLoadoutEvent()
+        {
+            var privateObject = new PrivateObject(new ShipMonitor());
+            privateObject.SetFieldOrProperty("shipyard", new ObservableCollection<Ship>());
+
+            string data = System.IO.File.ReadAllText("loadout.json");
+            List<Event> events = JournalMonitor.ParseJournalEntry(data);
+            ShipLoadoutEvent loadoutEvent = events[0] as ShipLoadoutEvent;
+            object[] loadoutArgs = new object[] { loadoutEvent };
+            privateObject.Invoke("handleShipLoadoutEvent", loadoutArgs);
+
+            string data2 = System.IO.File.ReadAllText("fighterLoadout.json");
+            events = JournalMonitor.ParseJournalEntry(data2);
+            ShipLoadoutEvent fighterLoadoutEvent = events[0] as ShipLoadoutEvent;
+            object[] fighterLoadoutArgs = new object[] { fighterLoadoutEvent };
+            privateObject.Invoke("handleShipLoadoutEvent", fighterLoadoutArgs);
+
+            // After a loadout event generated from a fighter, 
+            // we still want to track the ship we launched from as our current ship.
+            Assert.AreEqual(loadoutEvent.shipid, EDDI.Instance.CurrentShip.LocalId);
+            Assert.AreNotEqual(fighterLoadoutEvent.shipid, EDDI.Instance.CurrentShip.LocalId);
+        }
     }
 }
