@@ -465,7 +465,7 @@ namespace EddiVoiceAttackResponder
                     return;
                 }
                 string systemUri = "https://eddb.io/system/" + EDDI.Instance.CurrentStarSystem.EDDBID;
-                OpenOrStoreURI(vaProxy, systemUri);
+                OpenOrStoreURI(ref vaProxy, systemUri);
                 setStatus(ref vaProxy, "Operational");
             }
             catch (Exception e)
@@ -493,7 +493,7 @@ namespace EddiVoiceAttackResponder
                     return;
                 }
                 string stationUri = "https://eddb.io/station/" + thisStation.EDDBID;
-                OpenOrStoreURI(vaProxy, stationUri);
+                OpenOrStoreURI(ref vaProxy, stationUri);
                 setStatus(ref vaProxy, "Operational");
             }
             catch (Exception e)
@@ -515,7 +515,7 @@ namespace EddiVoiceAttackResponder
                 }
 
                 string shipUri = ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip().CoriolisUri();
-                OpenOrStoreURI(vaProxy, shipUri);
+                OpenOrStoreURI(ref vaProxy, shipUri);
                 setStatus(ref vaProxy, "Operational");
             }
             catch (Exception e)
@@ -537,7 +537,7 @@ namespace EddiVoiceAttackResponder
                 }
 
                 string shipUri = ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip().EDShipyardUri();
-                OpenOrStoreURI(vaProxy, shipUri);
+                OpenOrStoreURI(ref vaProxy, shipUri);
                 setStatus(ref vaProxy, "Operational");
             }
             catch (Exception e)
