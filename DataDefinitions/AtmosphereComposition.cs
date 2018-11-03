@@ -7,61 +7,45 @@ using System.Resources;
 namespace EddiDataDefinitions
 {
     /// <summary> Atmosphere Composition </summary>
-    [JsonObject(MemberSerialization.OptIn)]
-    public class AtmosphereComposition
+    public class AtmosphereComposition : ResourceBasedLocalizedEDName<AtmosphereComposition>
     {
         static AtmosphereComposition()
         {
             resourceManager = Properties.AtmosphereComposition.ResourceManager;
             resourceManager.IgnoreCase = true;
+            missingEDNameHandler = (edname) => new AtmosphereComposition(edname, 0);
 
-            COMPOSITIONS.Add("water", "Water");
-            COMPOSITIONS.Add("oxygen", "Oxygen");
-            COMPOSITIONS.Add("carbondioxide", "Carbon dioxide");
-            COMPOSITIONS.Add("sulphurdioxide", "Sulphur dioxide");
-            COMPOSITIONS.Add("ammonia", "Ammonia");
-            COMPOSITIONS.Add("methane", "Methane");
-            COMPOSITIONS.Add("nitrogen", "Nitrogen");
-            COMPOSITIONS.Add("hydrogen", "Hydrogen");
-            COMPOSITIONS.Add("helium", "Helium");
-            COMPOSITIONS.Add("neon", "Neon");
-            COMPOSITIONS.Add("argon", "Argon");
-            COMPOSITIONS.Add("silicates", "Silicates");
-            COMPOSITIONS.Add("iron", "Iron");
+            var Water = new AtmosphereComposition("water", 0);
+            var Oxygen = new AtmosphereComposition("oxygen", 0);
+            var CarbonDioxide = new AtmosphereComposition("carbondioxide", 0);
+            var SulphurDioxide = new AtmosphereComposition("sulphurdioxide", 0);
+            var Ammonia = new AtmosphereComposition("ammonia", 0);
+            var Methane = new AtmosphereComposition("methane", 0);
+            var Nitrogen = new AtmosphereComposition("nitrogen", 0);
+            var Hydrogen = new AtmosphereComposition("hydrogen", 0);
+            var Helium = new AtmosphereComposition("helium", 0);
+            var Neon = new AtmosphereComposition("neon", 0);
+            var Argon = new AtmosphereComposition("argon", 0);
+            var Silicates = new AtmosphereComposition("silicates", 0);
+            var Iron = new AtmosphereComposition("iron", 0);
         }
 
-        public static readonly ResourceManager resourceManager;
+        [JsonIgnore, Obsolete("Please use localizedComposition or invariantComposition")]
+        public string composition => localizedName;
+        [JsonIgnore]
+        public string localizedComposition => localizedName;
+        [JsonIgnore]
+        public string invariantComposition => invariantName;
 
-        // Translation of composition of atmosphere 
-        private static readonly IDictionary<string, string> COMPOSITIONS = new Dictionary<string, string>();
-
-        [JsonProperty("composition")]
-        public string edname { get; set; } // Nitrogen, Oxygen, etc.
-        public string invariantName => GetInvariantString(edname);
-        public string localizedName => GetLocalizedString(edname);
-        [JsonIgnore, Obsolete("Please use localizedName or invariantName")]
-        public string name => localizedName;
-
-        [JsonProperty("share")]
+        [JsonProperty]
         public decimal percent { get; set; } // Percent share of the atmosphere
 
-        private string GetInvariantString(string name)
-        {
-            if (name == null) { return null; }
-            name = name.Replace(" ", "_");
-            return resourceManager.GetString(name, CultureInfo.InvariantCulture);
-        }
+        // dummy used to ensure that the static constructor has run
+        public AtmosphereComposition() : this("", 0)
+        { }
 
-        private string GetLocalizedString(string name)
+        public AtmosphereComposition(string edComposition, decimal percent) : base(edComposition, edComposition)
         {
-            if (name == null) { return null; }
-            name = name.Replace(" ", "_");
-            return resourceManager.GetString(name);
-        }
-
-        public AtmosphereComposition(string composition, decimal percent)
-        {
-            this.edname = composition;
             this.percent = percent;
         }
     }

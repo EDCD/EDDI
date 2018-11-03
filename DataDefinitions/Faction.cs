@@ -20,19 +20,19 @@ namespace EddiDataDefinitions
         public long? EDSMID { get; set; }
 
         /// <summary> The faction's allegiance (localized name) </summary>
-        [Obsolete("Please use Allegiance instead")]
+        [JsonIgnore, Obsolete("Please use Allegiance instead")]
         public string allegiance => (Allegiance ?? Superpower.None).localizedName;
         /// <summary> The faction's allegiance </summary>
         public Superpower Allegiance { get; set; } = Superpower.None;
 
         /// <summary> The faction's government (localized name) </summary>
-        [Obsolete("Please use Government instead")]
+        [JsonIgnore, Obsolete("Please use Government instead")]
         public string government => (Government ?? Government.None).localizedName;
         /// <summary> The faction's government </summary>
         public Government Government { get; set; } = Government.None;
 
         /// <summary> The faction's current system state (localized name) </summary>
-        [Obsolete("Please use State instead")]
+        [JsonIgnore, Obsolete("Please use State instead")]
         public string state => (FactionState ?? FactionState.None).localizedName;
         /// <summary> The faction's current system state </summary>
         public FactionState FactionState { get; set; } = FactionState.None;

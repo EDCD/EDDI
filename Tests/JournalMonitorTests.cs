@@ -119,7 +119,7 @@ namespace UnitTests
             Assert.IsNotNull(ev);
             Assert.AreEqual("Carbon dioxide", ev.atmosphereclass.invariantName);
             Assert.AreEqual(96.5M, ev.atmospherecomposition[0].percent);
-            Assert.AreEqual("Rock", ev.solidcomposition[0].Composition.invariantName);
+            Assert.AreEqual("Rock", ev.solidcomposition[0].invariantName);
             Assert.AreEqual(70M, ev.solidcomposition[0].percent);
         }
 

@@ -752,7 +752,7 @@ namespace EddiJournalMonitor
                                             IDictionary<string, object> compositionData = (IDictionary<string, object>)val;
                                             foreach (KeyValuePair<string, object> kv in compositionData)
                                             {
-                                                BodyComposition edComposition = BodyComposition.FromEDName(kv.Key);
+                                                string edComposition = kv.Key;
                                                 // The journal gives solid composition as a fraction of 1. Multiply by 100 to convert to a true percentage.
                                                 decimal percent = ((decimal)(double)kv.Value) * 100;
                                                 if (edComposition != null)

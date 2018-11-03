@@ -240,7 +240,7 @@ namespace EddiEddbService
                     List<BodySolidComposition> bodyCompositions = new List<BodySolidComposition>();
                     foreach (JObject bodyCompJson in bodyJson["solid_composition"])
                     {
-                        BodyComposition composition = BodyComposition.FromName((string)bodyCompJson["solid_component_name"]);
+                        string composition = (string)bodyCompJson["solid_component_name"];
                         decimal? share = (decimal?)bodyCompJson["share"];
                         if (composition != null && share != null)
                         {
