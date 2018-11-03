@@ -132,9 +132,7 @@
   <data name="paragraph_2" xml:space="preserve">
     <value>El segundo grupo obtiene la información de los eventos. Estas son las pestañas llamadas 'Monitor'. Obtienen eventos de diferentes fuentes y necesitan una configuración mínima, que debe hacerse antes para que funcione.</value>
   </data>
-  <data name="paragraph_3" xml:space="preserve">
-    <value>El tercer grupo corresponde a los eventos. Estas son las pestañas de 'Contestador'. Cada una tiene un distinto grado de configuración, pero funcionarán desde el primer momento.</value>
-  </data>
+  
   <data name="paragraph_4" xml:space="preserve">
     <value>Puede leer más sobre las funciones de EDDI en el </value>
   </data>
