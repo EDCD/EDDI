@@ -7,17 +7,17 @@ using System.Resources;
 namespace EddiDataDefinitions
 {
     /// <summary> Body Solid Composition </summary>
-    public class BodySolidComposition : ResourceBasedLocalizedEDName<BodySolidComposition>
+    public class SolidComposition : ResourceBasedLocalizedEDName<SolidComposition>
     {
-        static BodySolidComposition()
+        static SolidComposition()
         {
             resourceManager = Properties.Body.ResourceManager;
             resourceManager.IgnoreCase = true;
-            missingEDNameHandler = (edname) => new BodySolidComposition(edname, 0);
+            missingEDNameHandler = (edname) => new SolidComposition(edname, 0);
 
-            var Ice = new BodySolidComposition("ice", 0);
-            var Rock = new BodySolidComposition("rock", 0);
-            var Metal = new BodySolidComposition("metal", 0);
+            var Ice = new SolidComposition("ice", 0);
+            var Rock = new SolidComposition("rock", 0);
+            var Metal = new SolidComposition("metal", 0);
         }
 
         [JsonIgnore, Obsolete("Please use localizedComposition or invariantComposition")]
@@ -31,10 +31,10 @@ namespace EddiDataDefinitions
         public decimal percent { get; set; } // Percent share of the solid body
 
         // dummy used to ensure that the static constructor has run
-        public BodySolidComposition() : this("", 0)
+        public SolidComposition() : this("", 0)
         { }
 
-        public BodySolidComposition(string edComposition, decimal percent) : base(edComposition, edComposition)
+        public SolidComposition(string edComposition, decimal percent) : base(edComposition, edComposition)
         {
             this.percent = percent;
         }

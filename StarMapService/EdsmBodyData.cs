@@ -137,7 +137,7 @@ namespace EddiStarMapService
 
                 if (body["solidComposition"] is JObject)
                 {
-                    List<BodySolidComposition> bodyCompositions = new List<BodySolidComposition>();
+                    List<SolidComposition> bodyCompositions = new List<SolidComposition>();
                     var compositions = body["solidComposition"].ToObject<Dictionary<string, decimal?>>();
 
                     foreach (KeyValuePair<string, decimal?> compositionKV in compositions)
@@ -146,7 +146,7 @@ namespace EddiStarMapService
                         decimal? share = compositionKV.Value;
                         if (composition != null && share != null)
                         {
-                            bodyCompositions.Add(new BodySolidComposition(composition, (decimal)share));
+                            bodyCompositions.Add(new SolidComposition(composition, (decimal)share));
                         }
                     }
                     if (bodyCompositions.Count > 0)

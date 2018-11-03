@@ -73,7 +73,7 @@ namespace EddiEvents
 
         public List<AtmosphereComposition> atmospherecomposition { get; private set; }
 
-        public List<BodySolidComposition> solidcomposition { get; private set; }
+        public List<SolidComposition> solidcomposition { get; private set; }
 
         public Volcanism volcanism { get; private set; }
 
@@ -115,7 +115,7 @@ namespace EddiEvents
 
         public PlanetClass planetClass { get; private set; }
         
-        public BodyScannedEvent(DateTime timestamp, string name, PlanetClass planetClass, decimal? earthmass, decimal? radiusKm, decimal gravity, decimal? temperatureKelvin, decimal? pressureAtm, bool? tidallylocked, bool? landable, AtmosphereClass atmosphereClass, List<AtmosphereComposition> atmosphereComposition, List<BodySolidComposition> solidCompositions, Volcanism volcanism, decimal distancefromarrival_Ls, decimal orbitalperiodDays, decimal rotationperiodDays, decimal? semimajoraxisAU, decimal? eccentricity, decimal? orbitalinclinationDegrees, decimal? periapsisDegrees, List<Ring> rings, string reserves, List<MaterialPresence> materials, TerraformState terraformstate, decimal? axialtiltDegrees, bool dssEquipped) : base(timestamp, NAME)
+        public BodyScannedEvent(DateTime timestamp, string name, PlanetClass planetClass, decimal? earthmass, decimal? radiusKm, decimal gravity, decimal? temperatureKelvin, decimal? pressureAtm, bool? tidallylocked, bool? landable, AtmosphereClass atmosphereClass, List<AtmosphereComposition> atmosphereComposition, List<SolidComposition> solidCompositions, Volcanism volcanism, decimal distancefromarrival_Ls, decimal orbitalperiodDays, decimal rotationperiodDays, decimal? semimajoraxisAU, decimal? eccentricity, decimal? orbitalinclinationDegrees, decimal? periapsisDegrees, List<Ring> rings, string reserves, List<MaterialPresence> materials, TerraformState terraformstate, decimal? axialtiltDegrees, bool dssEquipped) : base(timestamp, NAME)
         {
             this.name = name;
             this.distancefromarrival = distancefromarrival_Ls;

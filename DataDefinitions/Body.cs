@@ -143,7 +143,7 @@ namespace EddiDataDefinitions
         public Volcanism volcanism { get; set; }
 
         /// <summary>The solid body composition of the body</summary>
-        public List<BodySolidComposition> solidcompositions { get; set; } = new List<BodySolidComposition>();
+        public List<SolidComposition> solidcompositions { get; set; } = new List<SolidComposition>();
 
         /// <summary>The materials present at the surface of the body</summary>
         public List<MaterialPresence> materials { get; set; } = new List<MaterialPresence>();
