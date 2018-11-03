@@ -772,6 +772,8 @@ namespace EddiVoiceAttackResponder
                 vaProxy.SetText(prefix + " power", system?.power);
                 vaProxy.SetText(prefix + " power (spoken)", Translations.Power(EDDI.Instance.CurrentStarSystem?.power));
                 vaProxy.SetText(prefix + " power state", system?.powerstate);
+                vaProxy.SetBoolean(prefix + " requires permit", system?.requirespermit);
+                vaProxy.SetText(prefix + " permit name", system?.permitname);
                 vaProxy.SetDecimal(prefix + " X", system?.x);
                 vaProxy.SetDecimal(prefix + " Y", system?.y);
                 vaProxy.SetDecimal(prefix + " Z", system?.z);
