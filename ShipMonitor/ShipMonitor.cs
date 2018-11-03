@@ -264,7 +264,7 @@ namespace EddiShipMonitor
 
         private void handleCommanderContinuedEvent(CommanderContinuedEvent @event)
         {
-            if (!inFighterOrBuggy(@event.ship))
+            if (!inFighter(@event.ship) && !inBuggy(@event.ship))
             {
                 SetCurrentShip(@event.shipid, @event.ship);
                 Ship ship = GetCurrentShip();
@@ -373,13 +373,16 @@ namespace EddiShipMonitor
 
         private void handleShipLoadoutEvent(ShipLoadoutEvent @event)
         {
-            Ship ship = ParseShipLoadoutEvent(@event);
+            if (!inFighter(@event.ship) && !inBuggy(@event.ship))
+            {
+                Ship ship = ParseShipLoadoutEvent(@event);
 
-            // Update the global variable
-            EDDI.Instance.CurrentShip = ship;
+                // Update the global variable
+                EDDI.Instance.CurrentShip = ship;
 
-            AddShip(ship);
-            writeShips();
+                AddShip(ship);
+                writeShips();
+            }
         }
 
         private Ship ParseShipLoadoutEvent(ShipLoadoutEvent @event)
@@ -1371,12 +1374,16 @@ namespace EddiShipMonitor
             }
         }
 
-        /// <summary>
-        /// See if we're in a fighter or a buggy
-        /// </summary>
-        private bool inFighterOrBuggy(string model)
+        /// <summary> See if we're in a fighter </summary>
+        private bool inFighter(string model)
         {
-            return (model == "Empire_Fighter" || model == "Federation_Fighter" || model == "Independent_Fighter" || model == "TestBuggy");
+            return model.Contains("Fighter");
+        }
+
+        /// <summary> See if we're in a buggy / SRV </summary>
+        private bool inBuggy(string model)
+        {
+            return model.Contains("Buggy");
         }
 
         static async Task refreshProfileDelayed(int? shipId, int? profileId)
