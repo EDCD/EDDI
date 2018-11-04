@@ -361,7 +361,7 @@ namespace UnitTests
         {
             // Unknown systems shall return null from here. We create a synthetic system in DataProviderService.cs if this returns null;
             PrivateType MockStarMapService = new PrivateType(typeof(StarMapService));
-            StarSystem system = (StarSystem)MockStarMapService.InvokeStatic("GetStarMapSystem", new object[] { "No such system" });
+            StarSystem system = (StarSystem)MockStarMapService.InvokeStatic("GetStarMapSystem", new object[] { "No such system", false, false });
 
             Assert.IsNull(system);
         }
