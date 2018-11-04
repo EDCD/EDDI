@@ -388,11 +388,11 @@ namespace EddiSpeechService
                             try
                             {
                                 Logging.Debug("Selecting voice " + voice);
-                                Task t = new Task(() => selectVoice(voice));
-                                t.Start();
+                                var timeout = new CancellationTokenSource();
+                                Task t = Task.Run(() => selectVoice(voice), timeout.Token);
                                 if (!t.Wait(TimeSpan.FromSeconds(2)))
                                 {
-                                    t.Dispose();
+                                    timeout.Cancel();
                                     Logging.Warn("Failed to select voice " + voice + " (timed out)");
                                 }
                             }
