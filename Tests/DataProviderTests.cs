@@ -19,21 +19,21 @@ namespace UnitTests
         [TestMethod]
         public void TestDataProviderEmptySystem()
         {
-            StarSystem starSystem = DataProviderService.GetFullSystemData("Lagoon Sector GW-V b2-6");
+            StarSystem starSystem = DataProviderService.GetSystemData("Lagoon Sector GW-V b2-6");
             Assert.IsNotNull(starSystem.population);
         }
 
         [TestMethod]
         public void TestDataProviderMalformedSystem()
         {
-            StarSystem starSystem = DataProviderService.GetFullSystemData("Malformed with quote\" and backslash\\. So evil");
+            StarSystem starSystem = DataProviderService.GetSystemData("Malformed with quote\" and backslash\\. So evil");
             Assert.IsNotNull(starSystem);
         }
 
         [TestMethod]
         public void TestDataProviderUnknown()
         {
-            StarSystem starSystem = DataProviderService.GetFullSystemData("Not appearing in this galaxy");
+            StarSystem starSystem = DataProviderService.GetSystemData("Not appearing in this galaxy");
             Assert.IsNotNull(starSystem);
         }
 
@@ -101,7 +101,7 @@ namespace UnitTests
         public void TestStarSystemData()
         {
             // Test system & body data in a complete star system
-            StarSystem starSystem = DataProviderService.GetFullSystemData("Sol");
+            StarSystem starSystem = DataProviderService.GetSystemData("Sol");
 
             Assert.AreEqual("Sol", starSystem.name);
             Assert.AreEqual(17072, starSystem.EDDBID);
@@ -127,7 +127,7 @@ namespace UnitTests
         public void TestLatency()
         {
             System.DateTime startTime = System.DateTime.UtcNow;
-            StarSystem starSystem = DataProviderService.GetFullSystemData("Sol");
+            StarSystem starSystem = DataProviderService.GetSystemData("Sol");
             Assert.IsTrue((System.DateTime.UtcNow - startTime).Milliseconds < 1000);
         }
     }
