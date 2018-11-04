@@ -171,17 +171,17 @@ namespace EddiDataDefinitions
         private StationLargestPad _LargestPad;
 
         /// <summary>What are the economies at the station, with proportions for each (this is only set from Frontier API data)</summary>
-        public List<EconomyShare> economiesShares { get; set; } = new List<EconomyShare>();
+        public List<EconomyShare> economyShares { get; set; } = new List<EconomyShare>();
 
         /// <summary>What are the localized economies at the stations</summary>
         public List<string> economies
         {
             get
             {
-                if (economiesShares.Count > 0)
+                if (economyShares.Count > 0)
                 {
                     List<string> localizedEconomiesFromShares = new List<string>();
-                    foreach (EconomyShare economyShare in economiesShares)
+                    foreach (EconomyShare economyShare in economyShares)
                     {
                         localizedEconomiesFromShares.Add(economyShare.economy.localizedName);
                     }

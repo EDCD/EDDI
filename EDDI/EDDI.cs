@@ -936,12 +936,13 @@ namespace Eddi
             Faction controllingFaction = new Faction
             {
                 name = theEvent.faction,
-                Allegiance = Superpower.FromEDName(theEvent.allegiance),
-                FactionState = EddiDataDefinitions.FactionState.FromEDName(theEvent.factionstate),
-                Government = Government.FromEDName(theEvent.government)
+                Allegiance = theEvent.Allegiance,
+                FactionState = theEvent.factionState,
+                Government = theEvent.Government
             };
             station.Faction = controllingFaction;
             station.stationServices = theEvent.stationServices;
+            station.economyShares = theEvent.economyShares;
 
             CurrentStation = station;
             CurrentStellarBody = null;
@@ -1786,7 +1787,7 @@ namespace Eddi
                             // We have the required station information
                             Logging.Debug("Current station matches profile information; updating info");
                             CurrentStation.commodities = profile.LastStation.commodities;
-                            CurrentStation.economiesShares = profile.LastStation.economiesShares;
+                            CurrentStation.economyShares = profile.LastStation.economyShares;
                             CurrentStation.prohibited = profile.LastStation.prohibited;
                             CurrentStation.commoditiesupdatedat = profileTime;
                             CurrentStation.outfitting = profile.LastStation.outfitting;

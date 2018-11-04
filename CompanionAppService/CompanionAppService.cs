@@ -289,7 +289,7 @@ namespace EddiCompanionAppService
 
                 if (cachedProfile.LastStation.hasmarket ?? false)
                 {
-                    cachedProfile.LastStation.economiesShares = EconomiesFromProfile(marketJson);
+                    cachedProfile.LastStation.economyShares = EconomiesFromProfile(marketJson);
                     cachedProfile.LastStation.commodities = CommodityQuotesFromProfile(marketJson);
                     cachedProfile.LastStation.prohibited = ProhibitedCommoditiesFromProfile(marketJson);
                 }

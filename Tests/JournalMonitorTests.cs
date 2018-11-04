@@ -193,30 +193,44 @@ namespace UnitTests
         [TestMethod]
         public void TestJournalDocked1()
         {
-            string line = @"{ ""timestamp"":""2017-04-14T19:34:32Z"",""event"":""Docked"",""StationName"":""Freeholm"",""StationType"":""AsteroidBase"",""StarSystem"":""Artemis"",""StationFaction"":""Artemis Empire Assembly"",""FactionState"":""Boom"",""StationGovernment"":""$government_Patronage;"",""StationGovernment_Localised"":""Patronage"",""StationAllegiance"":""Empire"",""StationEconomy"":""$economy_Industrial;"",""StationEconomy_Localised"":""Industrial"",""DistFromStarLS"":2527.211914,""StationServices"":[""Refuel""], ""MarketID"": 128169720, ""SystemAddress"": 3107509474002}";
+            string line = @"{ ""timestamp"":""2017-04-14T19:34:32Z"",""event"":""Docked"",""StationName"":""Freeholm"",""StationType"":""AsteroidBase"",""StarSystem"":""Artemis"",""StationFaction"":""Artemis Empire Assembly"",""FactionState"":""Boom"",""StationGovernment"":""$government_Patronage;"",""StationGovernment_Localised"":""Patronage"",""StationAllegiance"":""Empire"",""StationEconomy"":""$economy_Industrial;"",""StationEconomy_Localised"":""Industrial"", ""StationEconomies"": [ { ""Name"": ""$economy_Industrial;"", ""Proportion"": 0.7 }, { ""Name"": ""$economy_Extraction;"", ""Proportion"": 0.3 } ], ""DistFromStarLS"":2527.211914,""StationServices"":[""Refuel""], ""MarketID"": 128169720, ""SystemAddress"": 3107509474002}";
             List<Event> events = JournalMonitor.ParseJournalEntry(line);
             Assert.IsTrue(events.Count == 1);
 
             DockedEvent theEvent = (DockedEvent)events[0];
 
-            Assert.AreEqual("AsteroidBase", theEvent.model);
+            Assert.AreEqual("AsteroidBase", theEvent.stationModel.edname);
 
             Assert.AreEqual(128169720, theEvent.marketId);
             Assert.AreEqual(3107509474002, theEvent.systemAddress);
+            Assert.AreEqual(1, theEvent.stationservices.Count);
+            Assert.AreEqual("Refuel", theEvent.stationservices[0]);
+            Assert.AreEqual(2, theEvent.economyShares.Count);
+            Assert.AreEqual("Industrial", theEvent.economyShares[0].economy.invariantName);
+            Assert.AreEqual(0.7M, theEvent.economyShares[0].proportion);
+            Assert.AreEqual("Extraction", theEvent.economyShares[1].economy.invariantName);
+            Assert.AreEqual(0.3M, theEvent.economyShares[1].proportion);
         }
 
         [TestMethod]
         public void TestJournalDocked2()
         {
-            string line = @"{ ""timestamp"":""2017-04-14T19:34:32Z"",""event"":""Docked"",""StationName"":""Freeholm"",""StationType"":""AsteroidBase"",""StarSystem"":""Artemis"",""StationFaction"":""Artemis Empire Assembly"",""FactionState"":""Boom"",""StationGovernment"":""$government_Patronage;"",""StationGovernment_Localised"":""Patronage"",""StationAllegiance"":""Empire"",""StationEconomy"":""$economy_Industrial;"",""StationEconomy_Localised"":""Industrial"",""DistFromStarLS"":2527.211914,""StationServices"":[""Refuel""], ""MarketID"": 128169720, ""SystemAddress"": 3107509474002}";
+            string line = @"{ ""timestamp"":""2018-04-01T05:21:24Z"", ""event"":""Docked"", ""StationName"":""Donaldson"", ""StationType"":""Orbis"", ""StarSystem"":""Alioth"", ""SystemAddress"":1109989017963, ""MarketID"":128141048, ""StationFaction"":""Alioth Pro-Alliance Group"", ""FactionState"":""Boom"", ""StationGovernment"":""$government_Democracy;"", ""StationGovernment_Localised"":""Democracy"", ""StationAllegiance"":""Alliance"", ""StationServices"":[ ""Dock"", ""Autodock"", ""BlackMarket"", ""Commodities"", ""Contacts"", ""Exploration"", ""Missions"", ""Outfitting"", ""CrewLounge"", ""Rearm"", ""Refuel"", ""Repair"", ""Shipyard"", ""Tuning"", ""Workshop"", ""MissionsGenerated"", ""FlightController"", ""StationOperations"", ""Powerplay"", ""SearchAndRescue"" ], ""StationEconomy"":""$economy_Service;"", ""StationEconomy_Localised"":""Service"", ""StationEconomies"":[ { ""Name"":""$economy_Service;"", ""Name_Localised"":""Service"", ""Proportion"":1.000000 } ], ""DistFromStarLS"":4632.417480 }";
             List<Event> events = JournalMonitor.ParseJournalEntry(line);
             Assert.IsTrue(events.Count == 1);
 
             DockedEvent theEvent = (DockedEvent)events[0];
 
-            Assert.AreEqual("AsteroidBase", theEvent.model);
-            Assert.AreEqual(1, theEvent.stationservices.Count);
-            Assert.AreEqual("Refuel", theEvent.stationservices[0]);
+            Assert.AreEqual("Orbis", theEvent.stationModel.edname);
+            Assert.AreEqual("Donaldson", theEvent.station);
+            Assert.AreEqual("Alioth", theEvent.system);
+            Assert.AreEqual("Boom", theEvent.factionState.invariantName);
+            Assert.AreEqual("Democracy", theEvent.Government.invariantName);
+            Assert.AreEqual("Alliance", theEvent.Allegiance.invariantName);
+            Assert.AreEqual(20, theEvent.stationservices.Count);
+            Assert.AreEqual(1, theEvent.economyShares.Count);
+            Assert.AreEqual("Service", theEvent.economyShares[0].economy.invariantName);
+            Assert.AreEqual(1.0M, theEvent.economyShares[0].proportion);
         }
 
         [TestMethod]

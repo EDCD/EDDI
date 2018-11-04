@@ -14,6 +14,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
   * Localization: new translatable strings pertaining to body, station, and system data have been added
   * Speech responder
     * Fixed an error converting a string, such as a ship ID, to the ICAO alphabet that was empty or all symbols (an empty string should result).
+    * `Docked event`: Added `secondeconomy`.
 
 ### 3.1.0-b3
   * Core
