@@ -10,6 +10,7 @@ namespace EddiDataDefinitions
         {
             resourceManager = Properties.StationService.ResourceManager;
             resourceManager.IgnoreCase = true;
+            missingEDNameHandler = (edname) => new StationService(edname);
 
             var Dock = new StationService("Dock");
             var AutoDock = new StationService("AutoDock");
@@ -37,6 +38,7 @@ namespace EddiDataDefinitions
             var SearchAndRescue = new StationService("SearchAndRescue");
             var TechBroker = new StationService("TechBroker");
             var MaterialTrader = new StationService("MaterialTrader");
+            var StationMenu = new StationService("StationMenu");
         }
 
         public static readonly StationService None = new StationService("None");

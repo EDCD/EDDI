@@ -225,4 +225,8 @@
     <value>Material Trader</value>
     <comment>Station Service: Material Trader</comment>
   </data>
+  <data name="StationMenu" xml:space="preserve">
+    <value>Station Menu</value>
+    <comment>Station Service: Station Menu</comment>
+  </data>
 </root>
