@@ -643,18 +643,26 @@ namespace EddiSpeechResponder
                 {
                     return null;
                 }
-                StarSystem system;
-                if (values.Count == 1 || values[1].AsString.ToLowerInvariant() == EDDI.Instance.CurrentStarSystem.name.ToLowerInvariant())
+                Station result;
+                if (values[0].AsString.ToLowerInvariant() == EDDI.Instance.CurrentStation.name.ToLowerInvariant())
                 {
-                    // Current system
-                    system = EDDI.Instance.CurrentStarSystem;
+                    result = EDDI.Instance.CurrentStation;
                 }
                 else
                 {
-                    // Named system
-                    system = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(values[1].AsString, true);
+                    StarSystem system;
+                    if (values.Count == 1 || values[1].AsString.ToLowerInvariant() == EDDI.Instance.CurrentStarSystem.name.ToLowerInvariant())
+                    {
+                        // Current system
+                        system = EDDI.Instance.CurrentStarSystem;
+                    }
+                    else
+                    {
+                        // Named system
+                        system = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(values[1].AsString, true);
+                    }
+                    result = system != null && system.stations != null ? system.stations.FirstOrDefault(v => v.name == values[0].AsString) : null;
                 }
-                Station result = system != null && system.stations != null ? system.stations.FirstOrDefault(v => v.name == values[0].AsString) : null;
                 return (result == null ? new ReflectionValue(new object()) : new ReflectionValue(result));
             }, 1, 2);
 
