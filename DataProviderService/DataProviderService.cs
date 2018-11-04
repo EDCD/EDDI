@@ -1,59 +1,17 @@
-﻿using EddiEddbService;
-using EddiDataDefinitions;
+﻿using EddiDataDefinitions;
 using EddiStarMapService;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Net;
 using System.Threading;
 using Utilities;
-using System.Threading.Tasks;
 
 namespace EddiDataProviderService
 {
     /// <summary>Access data services<summary>
     public class DataProviderService
     {
-        // EDDB data service
-        public static StarSystem GetEddbFullSystemData (string system)
-        {
-            if (system == null) { return null; }
-
-            StarSystem starSystem = EddbService.System(system);
-
-            List<Body> bodies = EddbService.Bodies(system);
-            foreach (Body body in bodies)
-            {
-                // Add missing data from our system information
-                if (body.rings?.Count() > 0)
-                {
-                    body.reserveLevel = starSystem.Reserve;
-                }
-                body.systemname = starSystem.name;
-                starSystem.bodies.Add(body);
-            }
-
-            if (starSystem?.population > 0)
-            {
-                List<Station> stations = EddbService.Stations(system);
-                foreach (Station station in stations)
-                {
-                    // Add missing data from our system information and EDDP server
-                    station.systemname = starSystem.name;
-                    JObject response = LegacyEddpService.GetData(system);
-                    LegacyEddpService.SetCommoditiesData(station, starSystem, response);
-                    starSystem.stations.Add(station);
-                }
-            }
-
-            return starSystem;
-        }
-
-        // EDSM data service
-        public static StarSystem GetEdsmFullSystemData(string system)
+        // Uses the EDSM data service and legacy EDDP data
+        public static StarSystem GetFullSystemData(string system)
         {
             if (system == null) { return null; }
 

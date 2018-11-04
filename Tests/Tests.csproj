@@ -134,7 +134,6 @@
   </Choose>
   <ItemGroup>
     <Compile Include="EdsmDataTests.cs" />
-    <Compile Include="EddbDataTests.cs" />
     <Compile Include="CommodityTests.cs" />
     <Compile Include="DiffTests.cs" />
     <Compile Include="EddnTests.cs" />
@@ -163,10 +162,6 @@
     <ProjectReference Include="..\CargoMonitor\EddiCargoMonitor.csproj">
       <Project>{c1d256ba-68b9-437a-8907-599c3a388c37}</Project>
       <Name>EddiCargoMonitor</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\EDDBService\EddiEddbService.csproj">
-      <Project>{962f6d23-d9d8-44bf-8a65-516889190944}</Project>
-      <Name>EddiEddbService</Name>
     </ProjectReference>
     <ProjectReference Include="..\EDDI\Eddi.csproj">
       <Project>{ec7ba042-a370-447f-8c3e-241358cebcbb}</Project>
