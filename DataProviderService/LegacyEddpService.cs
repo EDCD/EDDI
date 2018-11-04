@@ -21,15 +21,12 @@ namespace EddiDataProviderService
             errorServicePoint.Expect100Continue = false;
         }
 
-        public static StarSystem SetEdsmData(StarSystem system, bool setSystemData = true, bool setBodyData = true, bool setStationData = true)
+        public static StarSystem SetLegacyData(StarSystem system, bool setPowerplayData = true, bool setBodyData = true, bool setStationData = true)
         {
-            if (setSystemData || setStationData)
-            {
-                JObject response = GetData(system.name);
-                if (setSystemData) { SetStarSystemLegacyData(system, response); }
-                if (setBodyData) { SetBodyLegacyData(system, response); }
-                if (setStationData) { SetStationLegacyData(system, response); }
-            }
+            JObject response = GetData(system.name);
+            SetStarSystemLegacyData(system, response, setPowerplayData);
+            if (setBodyData) { SetBodyLegacyData(system, response); }
+            if (setStationData) { SetStationLegacyData(system, response); }
             return system;
         }
 
@@ -47,13 +44,16 @@ namespace EddiDataProviderService
             }
         }
 
-        private static void SetStarSystemLegacyData(StarSystem system, JObject json)
+        private static void SetStarSystemLegacyData(StarSystem system, JObject json, bool setPowerplayData)
         {
             // Set data not currently available from EDSM: Powerplay data and EDDBID
             // TODO: Translatable powerplay states
             system.EDDBID = (long?)json["id"];
-            system.power = (string)json["power"] == "None" ? null : (string)json["power"];
-            system.powerstate = (string)json["power_state"] == "None" ? null : (string)json["power_state"]; 
+            if (setPowerplayData)
+            {
+                system.power = (string)json["power"] == "None" ? null : (string)json["power"];
+                system.powerstate = (string)json["power_state"] == "None" ? null : (string)json["power_state"];
+            }
         }
 
         private static void SetBodyLegacyData(StarSystem system, JObject response)
