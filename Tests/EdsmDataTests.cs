@@ -352,7 +352,7 @@ namespace UnitTests
         public void TestSystems()
         {
             string[] systemNames = new string[] { "Sol", "Achenar", "Alioth" };
-            List<StarSystem> starSystems = StarMapService.GetStarMapSystems(systemNames, false, true, false, false);
+            List<StarSystem> starSystems = StarMapService.GetStarMapSystems(systemNames, true, false);
             Assert.AreEqual(3, starSystems.Count);
         }
 
