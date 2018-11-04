@@ -26,6 +26,10 @@ namespace EddiStarMapService
                 JObject response = JObject.Parse(clientResponse.Content);
                 return ParseStarMapStations(response);
             }
+            else
+            {
+                Logging.Debug("EDSM responded with " + clientResponse.ErrorMessage, clientResponse.ErrorException);
+            }
             return null;
         }
 

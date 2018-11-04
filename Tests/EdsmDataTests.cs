@@ -349,6 +349,14 @@ namespace UnitTests
         }
 
         [TestMethod]
+        public void TestSystems()
+        {
+            string[] systemNames = new string[] { "Sol", "Achenar", "Alioth" };
+            List<StarSystem> starSystems = StarMapService.GetStarMapSystems(systemNames, false, true, false, false);
+            Assert.AreEqual(3, starSystems.Count);
+        }
+
+        [TestMethod]
         public void TestUnknown()
         {
             // Unknown systems shall return null from here. We create a synthetic system in DataProviderService.cs if this returns null;

@@ -11,35 +11,45 @@ namespace EddiStarMapService
     public partial class StarMapService
     {
         /// <summary> Exactly one system name is required. </summary>
-        public static StarSystem GetStarMapSystem(string system)
+        public static StarSystem GetStarMapSystem(string system, bool showEdsmId = true, bool showCoordinates = true, bool showInformation = true, bool showPermit = true, bool showPrimaryStar = true)
         {
             if (system == null) { return null; }
             var client = new RestClient(baseUrl);
             var request = new RestRequest("api-v1/system", Method.POST);
             request.AddParameter("systemName", system);
-            request.AddParameter("showId", 1);
-            request.AddParameter("showCoordinates", 1);
-            request.AddParameter("showInformation", 1);
+            request.AddParameter("showId", showEdsmId ? 1 : 0);
+            request.AddParameter("showCoordinates", showCoordinates ? 1 : 0);
+            request.AddParameter("showInformation", showInformation ? 1 : 0);
+            request.AddParameter("showPermit", showPermit ? 1 : 0);
+            request.AddParameter("showPrimaryStar", showPrimaryStar ? 1 : 0);
             var clientResponse = client.Execute<JObject>(request);
             if (clientResponse.IsSuccessful)
             {
                 JObject response = JObject.Parse(clientResponse.Content);
                 return ParseStarMapSystem(response, system);
             }
+            else
+            {
+                Logging.Debug("EDSM responded with " + clientResponse.ErrorMessage, clientResponse.ErrorException);
+            }
             return null;
         }
 
         /// <summary> At least one system name is required. </summary>
-        public static List<StarSystem> GetStarMapSystems(string[] systems)
+        public static List<StarSystem> GetStarMapSystems(string[] systems, bool showEdsmId = true, bool showCoordinates = true, bool showInformation = true, bool showPermit = true)
         {
             if (systems == null) { return null; }
             var client = new RestClient(baseUrl);
             var request = new RestRequest("api-v1/systems", Method.POST);
-            request.AddParameter("systemName", systems);
-            request.AddParameter("showId", 1);
-            request.AddParameter("showCoordinates", 1);
-            request.AddParameter("showInformation", 1);
-            var clientResponse = client.Execute<JArray>(request);
+            foreach (string system in systems)
+            {
+                request.AddParameter("systemName[]", system);
+            }
+            request.AddParameter("showId", showEdsmId ? 1 : 0);
+            request.AddParameter("showCoordinates", showCoordinates ? 1 : 0);
+            request.AddParameter("showInformation", showInformation ? 1 : 0);
+            request.AddParameter("showPermit", showPermit ? 1 : 0);
+            var clientResponse = client.Execute<List<JObject>>(request);
             if (clientResponse.IsSuccessful)
             {
                 JArray responses = JArray.Parse(clientResponse.Content);
@@ -53,11 +63,15 @@ namespace EddiStarMapService
                 }
                 return starSystems;
             }
+            else
+            {
+                Logging.Debug("EDSM responded with " + clientResponse.ErrorMessage, clientResponse.ErrorException);
+            }
             return null;
         }
 
         /// <summary> Get star systems around a specified system in a sphere or shell, with a maximum radius of 200 light years. </summary>
-        public static List<Dictionary<string, object>> GetStarMapSystemsSphere(string starSystem, int minRadiusLy = 0, int maxRadiusLy = 200)
+        public static List<Dictionary<string, object>> GetStarMapSystemsSphere(string starSystem, int minRadiusLy = 0, int maxRadiusLy = 200, bool showEdsmId = true, bool showCoordinates = true, bool showInformation = true, bool showPermit = true)
         {
             if (starSystem == null) { return null; }
             var client = new RestClient(baseUrl);
@@ -65,13 +79,14 @@ namespace EddiStarMapService
             request.AddParameter("systemName", starSystem);
             request.AddParameter("minRadius", minRadiusLy);
             request.AddParameter("radius", maxRadiusLy);
-            request.AddParameter("showId", 1);
-            request.AddParameter("showCoordinates", 1);
-            request.AddParameter("showInformation", 1);
-            var clientResponse = client.Execute<JArray>(request);
+            request.AddParameter("showId", showEdsmId ? 1 : 0);
+            request.AddParameter("showCoordinates", showCoordinates ? 1 : 0);
+            request.AddParameter("showInformation", showInformation ? 1 : 0);
+            request.AddParameter("showPermit", showPermit ? 1 : 0);
+            var clientResponse = client.Execute<JObject>(request);
             if (clientResponse.IsSuccessful)
             {
-                JArray responses = JArray.Parse(clientResponse.Content);
+                JArray responses = JObject.Parse(clientResponse.Content).ToObject<JArray>();
                 List<Dictionary<string, object>> distantSystems = new List<Dictionary<string, object>>();
                 foreach (JObject response in responses)
                 {
@@ -84,20 +99,25 @@ namespace EddiStarMapService
                 }
                 return distantSystems;
             }
+            else
+            {
+                Logging.Debug("EDSM responded with " + clientResponse.ErrorMessage, clientResponse.ErrorException);
+            }
             return null;
         }
 
         /// <summary> Get star systems around a specified system in a cube, with a maximum cube size of 200 light years. </summary>
-        public static List<StarSystem> GetStarMapSystemsCube(string starSystem, int cubeLy = 200)
+        public static List<StarSystem> GetStarMapSystemsCube(string starSystem, int cubeLy = 200, bool showEdsmId = true, bool showCoordinates = true, bool showInformation = true, bool showPermit = true)
         {
             if (starSystem == null) { return null; }
             var client = new RestClient(baseUrl);
             var request = new RestRequest("api-v1/cube-systems", Method.POST);
             request.AddParameter("systemName", starSystem);
             request.AddParameter("size", cubeLy);
-            request.AddParameter("showId", 1);
-            request.AddParameter("showCoordinates", 1);
-            request.AddParameter("showInformation", 1);
+            request.AddParameter("showId", showEdsmId ? 1 : 0);
+            request.AddParameter("showCoordinates", showCoordinates ? 1 : 0);
+            request.AddParameter("showInformation", showInformation ? 1 : 0);
+            request.AddParameter("showPermit", showPermit ? 1 : 0);
             var clientResponse = client.Execute<JArray>(request);
             if (clientResponse.IsSuccessful)
             {
