@@ -2,8 +2,9 @@
 {
     public class EconomyShare
     {
-        public string name => economy.localizedName;
         public Economy economy;
+
+        /// <summary> On a 0 to 1 scale </summary>
         public decimal proportion;
 
         public EconomyShare(string name, decimal proportion)

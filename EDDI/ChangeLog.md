@@ -12,6 +12,8 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * StarSystem: Starsystem permit data, made available from `requirespermit` and `permitname` (for the SystemDetails() method only - this info is not published to the player journal)
       * The semi-major axis of the planetary orbit is now given in light seconds, rather than in meters
   * Localization: new translatable strings pertaining to body, station, and system data have been added
+  * Speech responder
+    * `Docked event`: Added `secondeconomy`.
   * VoiceAttack responder
     * Amended reporting of cargo & limpets carried.
 

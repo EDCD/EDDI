@@ -94,11 +94,10 @@ namespace EddiJournalMonitor
                                 long marketId = JsonParsing.getLong(data, "MarketID");
                                 string stationName = JsonParsing.getString(data, "StationName");
                                 string stationState = JsonParsing.getString(data, "StationState") ?? string.Empty;
-                                string stationModel = JsonParsing.getString(data, "StationType");
+                                StationModel stationModel = StationModel.FromEDName(JsonParsing.getString(data, "StationType") ?? "None");
                                 Superpower allegiance = getAllegiance(data, "StationAllegiance") ?? Superpower.FromEDName("None");
                                 string faction = getFaction(data, "StationFaction");
                                 FactionState factionState = FactionState.FromEDName(JsonParsing.getString(data, "FactionState") ?? "None");
-                                Economy economy = Economy.FromEDName(JsonParsing.getString(data, "StationEconomy") ?? "None");
                                 Government government = Government.FromEDName(JsonParsing.getString(data, "StationGovernment" ?? "None"));
                                 decimal? distancefromstar = JsonParsing.getOptionalDecimal(data, "DistFromStarLS");
 
@@ -111,7 +110,22 @@ namespace EddiJournalMonitor
                                     stationServices.Add(StationService.FromEDName(service));
                                 }
 
-                                events.Add(new DockedEvent(timestamp, systemName, systemAddress, marketId, stationName, stationState, stationModel, allegiance, faction, factionState, economy, government, distancefromstar, stationServices) { raw = line });
+                                // Get station economies and their shares
+                                data.TryGetValue("StationEconomies", out object val2);
+                                List<object> economies = val2 as List<object>;
+                                List<EconomyShare> Economies = new List<EconomyShare>();
+                                foreach (Dictionary<string, object> economyshare in economies)
+                                {
+                                    Economy economy = Economy.FromEDName(JsonParsing.getString(economyshare, "Name"));
+                                    economy.fallbackLocalizedName = JsonParsing.getString(economyshare, "Name_Localised");
+                                    decimal share = JsonParsing.getDecimal(economyshare, "Proportion");
+                                    if (economy != Economy.None && share > 0)
+                                    {
+                                        Economies.Add(new EconomyShare(economy, share)); 
+                                    }
+                                }
+
+                                events.Add(new DockedEvent(timestamp, systemName, systemAddress, marketId, stationName, stationState, stationModel, allegiance, faction, factionState, Economies, government, distancefromstar, stationServices) { raw = line });
                             }
                             handled = true;
                             break;
