@@ -535,7 +535,15 @@ namespace EddiSpeechResponder
 
             store["SystemDetails"] = new NativeFunction((values) =>
             {
-                StarSystem result = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(values[0].AsString, true);
+                StarSystem result;
+                if (values[0].AsString.ToLowerInvariant() == EDDI.Instance.CurrentStarSystem.name.ToLowerInvariant())
+                {
+                    result = EDDI.Instance.CurrentStarSystem;
+                }
+                else
+                {
+                    result = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(values[0].AsString, true);
+                }
                 setSystemDistanceFromHome(result);
                 return (result == null ? new ReflectionValue(new object()) : new ReflectionValue(result));
             }, 1);
@@ -543,7 +551,7 @@ namespace EddiSpeechResponder
             store["BodyDetails"] = new NativeFunction((values) =>
             {
                 StarSystem system;
-                if (values.Count == 1 || string.IsNullOrEmpty(values[1].AsString))
+                if (values.Count == 1 || string.IsNullOrEmpty(values[1].AsString) || values[1].AsString.ToLowerInvariant() == EDDI.Instance.CurrentStarSystem.name.ToLowerInvariant())
                 {
                     // Current system
                     system = EDDI.Instance.CurrentStarSystem;
@@ -636,7 +644,7 @@ namespace EddiSpeechResponder
                     return null;
                 }
                 StarSystem system;
-                if (values.Count == 1)
+                if (values.Count == 1 || values[1].AsString.ToLowerInvariant() == EDDI.Instance.CurrentStarSystem.name.ToLowerInvariant())
                 {
                     // Current system
                     system = EDDI.Instance.CurrentStarSystem;
