@@ -134,10 +134,6 @@ namespace EddiShipMonitor
             {
                 handleCommanderContinuedEvent((CommanderContinuedEvent)@event);
             }
-            else if (@event is CargoUpdatedEvent)
-            {
-                handleCargoUpdatedEvent((CargoUpdatedEvent)@event);
-            }
             else if (@event is ShipPurchasedEvent)
             {
                 handleShipPurchasedEvent((ShipPurchasedEvent)@event);
@@ -284,16 +280,6 @@ namespace EddiShipMonitor
                 }
                 writeShips();
             }
-        }
-
-        private void handleCargoUpdatedEvent(CargoUpdatedEvent @event)
-        {
-            Ship ship = GetCurrentShip();
-            if (ship != null)
-            {
-                ship.cargocarried = @event.cargocarried;
-            }
-            writeShips();
         }
 
         private void handleShipPurchasedEvent(ShipPurchasedEvent @event)

@@ -291,6 +291,17 @@ namespace EddiVoiceAttackResponder
 
             try
             {
+                CargoMonitor cargoMonitor = ((CargoMonitor)EDDI.Instance.ObtainMonitor("Cargo monitor"));
+                vaProxy.SetInt("Ship cargo carried", cargoMonitor?.cargoCarried);
+                vaProxy.SetInt("Ship limpets carried", cargoMonitor?.GetCargoWithEDName("Drones")?.total ?? 0);
+            }
+            catch (Exception ex)
+            {
+                Logging.Error("Failed to set ship cargo values", ex);
+            }
+
+            try
+            {
                 ShipMonitor shipMonitor = ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor"));
 
                 try
@@ -581,7 +592,6 @@ namespace EddiVoiceAttackResponder
                 vaProxy.SetText(prefix + " value (spoken)", Translations.Humanize(ship?.value));
                 vaProxy.SetDecimal(prefix + " health", ship?.health);
                 vaProxy.SetInt(prefix + " cargo capacity", ship?.cargocapacity);
-                vaProxy.SetInt(prefix + " cargo carried", ship?.cargocarried);
 
                 setShipModuleValues(ship?.bulkheads, prefix + " bulkheads", ref vaProxy);
                 setShipModuleOutfittingValues(ship?.bulkheads, EDDI.Instance.CurrentStation?.outfitting, prefix + " bulkheads", ref vaProxy);
