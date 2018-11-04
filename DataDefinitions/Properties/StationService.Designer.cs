@@ -268,6 +268,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Station Menu.
+        /// </summary>
+        public static string StationMenu {
+            get {
+                return ResourceManager.GetString("StationMenu", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Station Operations.
         /// </summary>
         public static string StationOperations {

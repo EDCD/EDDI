@@ -10,6 +10,7 @@ namespace EddiDataDefinitions
         {
             resourceManager = Properties.Superpowers.ResourceManager;
             resourceManager.IgnoreCase = true;
+            missingEDNameHandler = (edname) => new Superpower(edname);
 
             var Federation = new Superpower("$faction_Federation;");
             var Alliance = new Superpower("$faction_Alliance;");

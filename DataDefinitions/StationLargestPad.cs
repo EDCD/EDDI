@@ -10,6 +10,7 @@ namespace EddiDataDefinitions
         {
             resourceManager = Properties.StationLargestPad.ResourceManager;
             resourceManager.IgnoreCase = true;
+            missingEDNameHandler = (edname) => new StationLargestPad(edname);
 
             var Large = new StationLargestPad("Large");
             var Medium = new StationLargestPad("Medium");

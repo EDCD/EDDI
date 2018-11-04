@@ -13,7 +13,8 @@ namespace EddiDataDefinitions
         {
             resourceManager = Properties.RingCompositions.ResourceManager;
             resourceManager.IgnoreCase = true;
-            
+            missingEDNameHandler = (edname) => new RingComposition(edname);
+
             var Icy = new RingComposition("Icy");
             var Rocky = new RingComposition("Rocky");
             var Metallic = new RingComposition("Metalic"); // sic
