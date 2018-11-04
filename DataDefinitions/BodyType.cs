@@ -8,6 +8,7 @@
             resourceManager.IgnoreCase = true;
             missingEDNameHandler = (edname) => new BodyType(edname);
 
+            var Null = new BodyType("Null"); // The journal includes references to a "Null" string
             var Planet = new BodyType("Planet");
             var Star = new BodyType("Star");
             var Station = new BodyType("Station");
