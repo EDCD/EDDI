@@ -536,7 +536,11 @@ namespace EddiSpeechResponder
             store["SystemDetails"] = new NativeFunction((values) =>
             {
                 StarSystem result;
-                if (values[0].AsString.ToLowerInvariant() == EDDI.Instance.CurrentStarSystem.name.ToLowerInvariant())
+                if (values.Count == 0)
+                {
+                    result = EDDI.Instance.CurrentStarSystem;
+                }
+                else if (values[0]?.AsString?.ToLowerInvariant() == EDDI.Instance.CurrentStarSystem?.name?.ToLowerInvariant())
                 {
                     result = EDDI.Instance.CurrentStarSystem;
                 }
@@ -551,9 +555,12 @@ namespace EddiSpeechResponder
             store["BodyDetails"] = new NativeFunction((values) =>
             {
                 StarSystem system;
-                if (values.Count == 1 || string.IsNullOrEmpty(values[1].AsString) || values[1].AsString.ToLowerInvariant() == EDDI.Instance.CurrentStarSystem.name.ToLowerInvariant())
+                if (values.Count == 0)
                 {
-                    // Current system
+                    system = EDDI.Instance.CurrentStarSystem;
+                }
+                else if (values.Count == 1 || string.IsNullOrEmpty(values[1].AsString) || values[1]?.AsString?.ToLowerInvariant() == EDDI.Instance.CurrentStarSystem?.name?.ToLowerInvariant())
+                {
                     system = EDDI.Instance.CurrentStarSystem;
                 }
                 else
@@ -639,19 +646,19 @@ namespace EddiSpeechResponder
 
             store["StationDetails"] = new NativeFunction((values) =>
             {
+                Station result;
                 if (values.Count == 0)
                 {
-                    return null;
+                    result = EDDI.Instance.CurrentStation;
                 }
-                Station result;
-                if (values[0].AsString.ToLowerInvariant() == EDDI.Instance.CurrentStation.name.ToLowerInvariant())
+                if (values[0]?.AsString?.ToLowerInvariant() == EDDI.Instance.CurrentStation?.name?.ToLowerInvariant())
                 {
                     result = EDDI.Instance.CurrentStation;
                 }
                 else
                 {
                     StarSystem system;
-                    if (values.Count == 1 || values[1].AsString.ToLowerInvariant() == EDDI.Instance.CurrentStarSystem.name.ToLowerInvariant())
+                    if (values.Count == 1 || values[1]?.AsString?.ToLowerInvariant() == EDDI.Instance.CurrentStarSystem?.name?.ToLowerInvariant())
                     {
                         // Current system
                         system = EDDI.Instance.CurrentStarSystem;
