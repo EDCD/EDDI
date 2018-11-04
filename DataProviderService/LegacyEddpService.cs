@@ -21,11 +21,15 @@ namespace EddiDataProviderService
             errorServicePoint.Expect100Continue = false;
         }
 
-        public static StarSystem SetEdsmData(StarSystem system)
+        public static StarSystem SetEdsmData(StarSystem system, bool setSystemData = true, bool setBodyData = true, bool setStationData = true)
         {
-            JObject response = GetData(system.name);
-            SetStarSystemLegacyData(system, response);
-            SetStationLegacyData(system, response);
+            if (setSystemData || setStationData)
+            {
+                JObject response = GetData(system.name);
+                if (setSystemData) { SetStarSystemLegacyData(system, response); }
+                if (setBodyData) { SetBodyLegacyData(system, response); }
+                if (setStationData) { SetStationLegacyData(system, response); }
+            }
             return system;
         }
 

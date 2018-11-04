@@ -11,28 +11,36 @@ namespace EddiDataProviderService
     public class DataProviderService
     {
         // Uses the EDSM data service and legacy EDDP data
-        public static StarSystem GetFullSystemData(string system)
+        public static StarSystem GetSystemData(string system, bool showEdsmId = true, bool showCoordinates = true, bool showInformation = true, bool showPermit = true, bool showPrimaryStar = true, bool showBodies = true, bool showStations = true, bool showFactions = true)
         {
             if (system == null) { return null; }
 
-            StarSystem starSystem = StarMapService.GetStarMapSystem(system);
+            StarSystem starSystem = StarMapService.GetStarMapSystem(system, showEdsmId, showCoordinates, showInformation, showPermit, showPrimaryStar);
             if (starSystem != null)
             {
-                List<Body> bodies = StarMapService.GetStarMapBodies(system);
-                starSystem.bodies = bodies;
+                if (showBodies)
+                {
+                    List<Body> bodies = StarMapService.GetStarMapBodies(system);
+                    starSystem.bodies = bodies;
+                }
 
                 if (starSystem?.population > 0)
                 {
-                    List<Faction> factions = StarMapService.GetStarMapFactions(system);
-                    List<Station> stations = StarMapService.GetStarMapStations(system);
-
-                    starSystem.stations = SetStationFactionData(stations, factions);
-
-                    starSystem.factions = factions;
-                    starSystem.stations = stations;
+                    List<Faction> factions = new List<Faction>();
+                    if (showFactions || showStations)
+                    {
+                        factions = StarMapService.GetStarMapFactions(system);
+                        starSystem.factions = factions;
+                    }
+                    if (showStations)
+                    {
+                        List<Station> stations = StarMapService.GetStarMapStations(system);
+                        starSystem.stations = SetStationFactionData(stations, factions);
+                        starSystem.stations = stations;
+                    }
                 }
 
-                starSystem = LegacyEddpService.SetEdsmData(starSystem);
+                starSystem = LegacyEddpService.SetEdsmData(starSystem, showInformation, showBodies, showStations);
             }
             return starSystem ?? new StarSystem() { name = system };
         }
