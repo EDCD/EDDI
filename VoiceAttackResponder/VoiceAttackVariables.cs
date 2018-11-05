@@ -860,7 +860,7 @@ namespace EddiVoiceAttackResponder
             vaProxy.SetDecimal(prefix + " rotational period", body?.rotationalperiod);
             vaProxy.SetDecimal(prefix + " semi major axis", body?.semimajoraxis);
             vaProxy.SetDecimal(prefix + " pressure", body?.pressure);
-            vaProxy.SetText(prefix + " terraform state", (body?.terraformState ?? TerraformState.None).localizedName);
+            vaProxy.SetText(prefix + " terraform state", (body?.terraformState ?? TerraformState.NotTerraformable).localizedName);
             vaProxy.SetText(prefix + " planet type", (body?.planetClass ?? PlanetClass.None).localizedName);
             vaProxy.SetText(prefix + " reserves", (body?.reserveLevel ?? ReserveLevel.None).localizedName);
 

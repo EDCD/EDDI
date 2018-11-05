@@ -46,67 +46,71 @@ namespace EddiVoiceAttackResponder
         public static Thread eventThread = null;
         public static Thread updaterThread = null;
 
+        private static readonly object vaProxyLock = new object();
+
         public static void VA_Init1(dynamic vaProxy)
         {
             Logging.Info("Initialising EDDI VoiceAttack plugin");
 
             try
             {
-                GetEddiInstance(ref vaProxy);
-                App.StartRollbar();
-                App.ApplyAnyOverrideCulture();
-                EDDI.Instance.Start();
-
-                // Add notifiers for events we want to react to 
-                EDDI.Instance.State.CollectionChanged += (s, e) => setDictionaryValues(EDDI.Instance.State, "state", ref vaProxy);
-                SpeechService.Instance.PropertyChanged += (s, e) => setSpeaking(SpeechService.eddiSpeaking, ref vaProxy);
-                VoiceAttackResponder.RaiseEvent += (s, theEvent) => updateValuesOnEvent(theEvent, ref vaProxy);
-
-                // Display instance information if available
-                if (EDDI.Instance.UpgradeRequired)
+                lock (vaProxyLock)
                 {
-                    vaProxy.WriteToLog("Please shut down VoiceAttack and run EDDI standalone to upgrade", "red");
-                    string msg = Properties.VoiceAttack.run_eddi_standalone;
-                    SpeechService.Instance.Say(((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip(), msg, false);
+                    GetEddiInstance(ref vaProxy);
+                    App.StartRollbar();
+                    App.ApplyAnyOverrideCulture();
+                    EDDI.Instance.Start();
+
+                    // Add notifiers for events we want to react to 
+                    EDDI.Instance.State.CollectionChanged += (s, e) => setDictionaryValues(EDDI.Instance.State, "state", ref vaProxy);
+                    SpeechService.Instance.PropertyChanged += (s, e) => setSpeaking(SpeechService.eddiSpeaking, ref vaProxy);
+                    VoiceAttackResponder.RaiseEvent += (s, theEvent) => updateValuesOnEvent(theEvent, ref vaProxy);
+
+                    // Display instance information if available
+                    if (EDDI.Instance.UpgradeRequired)
+                    {
+                        vaProxy.WriteToLog("Please shut down VoiceAttack and run EDDI standalone to upgrade", "red");
+                        string msg = Properties.VoiceAttack.run_eddi_standalone;
+                        SpeechService.Instance.Say(((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip(), msg, false);
+                    }
+                    else if (EDDI.Instance.UpgradeAvailable)
+                    {
+                        vaProxy.WriteToLog("Please shut down VoiceAttack and run EDDI standalone to upgrade", "orange");
+                        string msg = Properties.VoiceAttack.run_eddi_standalone;
+                        SpeechService.Instance.Say(((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip(), msg, false);
+                    }
+
+                    if (EDDI.Instance.Motd != null)
+                    {
+                        vaProxy.WriteToLog("Message from EDDI: " + EDDI.Instance.Motd, "black");
+                        string msg = String.Format(Eddi.Properties.EddiResources.msg_from_eddi, EDDI.Instance.Motd);
+                        SpeechService.Instance.Say(((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip(), msg, false);
+                    }
+
+                    // Set the initial values from the main EDDI objects
+                    setStandardValues(ref vaProxy);
+
+                    vaProxy.WriteToLog("The EDDI plugin is fully operational.", "green");
+                    setStatus(ref vaProxy, "Operational");
+
+                    // Fire an event once the VA plugin is initialized
+                    Event @event = new VAInitializedEvent(DateTime.UtcNow);
+
+                    if (initEventEnabled(@event.type))
+                    {
+                        EDDI.Instance.eventHandler(@event);
+                    }
+
+                    // Set a variable indicating whether EDDI is speaking
+                    try
+                    {
+                        setSpeaking(SpeechService.eddiSpeaking, ref vaProxy);
+                    }
+                    catch (Exception ex)
+                    {
+                        Logging.Error("Failed to set initial speaking status", ex);
+                    }
                 }
-                else if (EDDI.Instance.UpgradeAvailable)
-                {
-                    vaProxy.WriteToLog("Please shut down VoiceAttack and run EDDI standalone to upgrade", "orange");
-                    string msg = Properties.VoiceAttack.run_eddi_standalone;
-                    SpeechService.Instance.Say(((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip(), msg, false);
-                }
-
-                if (EDDI.Instance.Motd != null)
-                {
-                    vaProxy.WriteToLog("Message from EDDI: " + EDDI.Instance.Motd, "black");
-                    string msg = String.Format(Eddi.Properties.EddiResources.msg_from_eddi, EDDI.Instance.Motd);
-                    SpeechService.Instance.Say(((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip(), msg, false);
-                }
-
-                // Set the initial values from the main EDDI objects
-                setStandardValues(ref vaProxy);
-
-                vaProxy.WriteToLog("The EDDI plugin is fully operational.", "green");
-                setStatus(ref vaProxy, "Operational");
-
-                // Fire an event once the VA plugin is initialized
-                Event @event = new VAInitializedEvent(DateTime.UtcNow);
-
-                if (initEventEnabled(@event.type))
-                {
-                    EDDI.Instance.eventHandler(@event);
-                }
-
-                // Set a variable indicating whether EDDI is speaking
-                try
-                {
-                    setSpeaking(SpeechService.eddiSpeaking, ref vaProxy);
-                }
-                catch (Exception ex)
-                {
-                    Logging.Error("Failed to set initial speaking status", ex);
-                }
-
                 Logging.Info("EDDI VoiceAttack plugin initialization complete");
             }
             catch (Exception e)
@@ -120,26 +124,29 @@ namespace EddiVoiceAttackResponder
         {
             try
             {
-                vaProxy.SetText("EDDI event", theEvent.type);
-
-                // Event-specific values  
-                List<string> setKeys = new List<string>();
-                // We start off setting the keys which are official and known  
-                setEventValues(vaProxy, theEvent, setKeys);
-                // Now we carry out a generic walk through the event object to create whatever we find  
-                setEventExtendedValues(ref vaProxy, "EDDI " + theEvent.type.ToLowerInvariant(), JsonConvert.DeserializeObject(JsonConvert.SerializeObject(theEvent)), setKeys);
-
-                // Update all standard values  
-                setStandardValues(ref vaProxy);
-
-                // Fire local command if present  
-                string commandName = "((EDDI " + theEvent.type.ToLowerInvariant() + "))";
-                Logging.Debug("Searching for command " + commandName);
-                if (vaProxy.CommandExists(commandName))
+                lock (vaProxyLock)
                 {
-                    Logging.Debug("Found command " + commandName);
-                    vaProxy.ExecuteCommand(commandName);
-                    Logging.Info("Executed command " + commandName);
+                    vaProxy.SetText("EDDI event", theEvent.type);
+
+                    // Event-specific values  
+                    List<string> setKeys = new List<string>();
+                    // We start off setting the keys which are official and known  
+                    setEventValues(vaProxy, theEvent, setKeys);
+                    // Now we carry out a generic walk through the event object to create whatever we find  
+                    setEventExtendedValues(ref vaProxy, "EDDI " + theEvent.type.ToLowerInvariant(), JsonConvert.DeserializeObject(JsonConvert.SerializeObject(theEvent)), setKeys);
+
+                    // Update all standard values  
+                    setStandardValues(ref vaProxy);
+
+                    // Fire local command if present  
+                    string commandName = "((EDDI " + theEvent.type.ToLowerInvariant() + "))";
+                    Logging.Debug("Searching for command " + commandName);
+                    if (vaProxy.CommandExists(commandName))
+                    {
+                        Logging.Debug("Found command " + commandName);
+                        vaProxy.ExecuteCommand(commandName);
+                        Logging.Info("Executed command " + commandName);
+                    }
                 }
             }
             catch (Exception ex)
@@ -236,86 +243,89 @@ namespace EddiVoiceAttackResponder
 
         public static void VA_Invoke1(dynamic vaProxy)
         {
-            Logging.Debug("Invoked with context " + (string)vaProxy.Context);
+            lock (vaProxyLock)
+            {
+                Logging.Debug("Invoked with context " + (string)vaProxy.Context);
 
-            try
-            {
-                switch ((string)vaProxy.Context)
+                try
                 {
-                    case "coriolis":
-                        InvokeCoriolis(ref vaProxy);
-                        break;
-                    case "eddbsystem":
-                        InvokeEDDBSystem(ref vaProxy);
-                        break;
-                    case "eddbstation":
-                        InvokeEDDBStation(ref vaProxy);
-                        break;
-                    case "profile":
-                        InvokeUpdateProfile(ref vaProxy);
-                        break;
-                    case "say":
-                        InvokeSay(ref vaProxy);
-                        break;
-                    case "speech":
-                        InvokeSpeech(ref vaProxy);
-                        break;
-                    case "system comment":
-                        InvokeStarMapSystemComment(ref vaProxy);
-                        break;
-                    case "initialize eddi":
-                        if (eddiInstance)
-                        {
-                            vaProxy.WriteToLog("The EDDI plugin is fully operational.", "green");
-                        }
-                        else
-                        {
-                            VA_Init1(vaProxy);  // Attempt initialization again to see if it works this time...
-                        }
-                        break;
-                    case "configuration":
-                    case "configurationminimize":
-                    case "configurationmaximize":
-                    case "configurationrestore":
-                    case "configurationclose":
-                        // Ignore any attempt to access the EDDI UI if VA
-                        // doesn't own the EDDI instance.
-                        if (eddiInstance)
-                        {
-                            InvokeConfiguration(ref vaProxy);
-                        }
-                        else
-                        {
-                            vaProxy.WriteToLog("The EDDI plugin is not fully initialized.", "red");
-                        }
-                        break;
-                    case "shutup":
-                        InvokeShutUp(ref vaProxy);
-                        break;
-                    case "setstate":
-                        InvokeSetState(ref vaProxy);
-                        break;
-                    case "disablespeechresponder":
-                        InvokeDisableSpeechResponder(ref vaProxy);
-                        break;
-                    case "enablespeechresponder":
-                        InvokeEnableSpeechResponder(ref vaProxy);
-                        break;
-                    case "setspeechresponderpersonality":
-                        InvokeSetSpeechResponderPersonality(ref vaProxy);
-                        break;
-                    case "transmit":
-                        InvokeTransmit(ref vaProxy);
-                        break;
-                    case "missionsroute":
-                        InvokeMissionsRoute(ref vaProxy);
-                        break;
+                    switch ((string)vaProxy.Context)
+                    {
+                        case "coriolis":
+                            InvokeCoriolis(ref vaProxy);
+                            break;
+                        case "eddbsystem":
+                            InvokeEDDBSystem(ref vaProxy);
+                            break;
+                        case "eddbstation":
+                            InvokeEDDBStation(ref vaProxy);
+                            break;
+                        case "profile":
+                            InvokeUpdateProfile(ref vaProxy);
+                            break;
+                        case "say":
+                            InvokeSay(ref vaProxy);
+                            break;
+                        case "speech":
+                            InvokeSpeech(ref vaProxy);
+                            break;
+                        case "system comment":
+                            InvokeStarMapSystemComment(ref vaProxy);
+                            break;
+                        case "initialize eddi":
+                            if (eddiInstance)
+                            {
+                                vaProxy.WriteToLog("The EDDI plugin is fully operational.", "green");
+                            }
+                            else
+                            {
+                                VA_Init1(vaProxy);  // Attempt initialization again to see if it works this time...
+                            }
+                            break;
+                        case "configuration":
+                        case "configurationminimize":
+                        case "configurationmaximize":
+                        case "configurationrestore":
+                        case "configurationclose":
+                            // Ignore any attempt to access the EDDI UI if VA
+                            // doesn't own the EDDI instance.
+                            if (eddiInstance)
+                            {
+                                InvokeConfiguration(ref vaProxy);
+                            }
+                            else
+                            {
+                                vaProxy.WriteToLog("The EDDI plugin is not fully initialized.", "red");
+                            }
+                            break;
+                        case "shutup":
+                            InvokeShutUp(ref vaProxy);
+                            break;
+                        case "setstate":
+                            InvokeSetState(ref vaProxy);
+                            break;
+                        case "disablespeechresponder":
+                            InvokeDisableSpeechResponder(ref vaProxy);
+                            break;
+                        case "enablespeechresponder":
+                            InvokeEnableSpeechResponder(ref vaProxy);
+                            break;
+                        case "setspeechresponderpersonality":
+                            InvokeSetSpeechResponderPersonality(ref vaProxy);
+                            break;
+                        case "transmit":
+                            InvokeTransmit(ref vaProxy);
+                            break;
+                        case "missionsroute":
+                            InvokeMissionsRoute(ref vaProxy);
+                            break;
+                    }
                 }
-            }
-            catch (Exception e)
-            {
-                Logging.Error("Failed to invoke context " + vaProxy.Context, e);
-                vaProxy.WriteToLog("Failed to invoke context " + vaProxy.Context, "red");
+                catch (Exception e)
+                {
+                    Logging.Error("Failed to invoke context " + vaProxy.Context, e);
+                    vaProxy.WriteToLog("Failed to invoke context " + vaProxy.Context, "red");
+                }
             }
         }
 
