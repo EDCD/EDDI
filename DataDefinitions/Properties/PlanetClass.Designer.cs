@@ -63,63 +63,18 @@ namespace EddiDataDefinitions.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Ammonia world.
         /// </summary>
-        public static string Ammonia {
+        public static string AmmoniaWorld {
             get {
-                return ResourceManager.GetString("Ammonia", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Class I gas giant.
-        /// </summary>
-        public static string ClassIGasGiant {
-            get {
-                return ResourceManager.GetString("ClassIGasGiant", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Class II gas giant.
-        /// </summary>
-        public static string ClassIIGasGiant {
-            get {
-                return ResourceManager.GetString("ClassIIGasGiant", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Class III gas giant.
-        /// </summary>
-        public static string ClassIIIGasGiant {
-            get {
-                return ResourceManager.GetString("ClassIIIGasGiant", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Class IV gas giant.
-        /// </summary>
-        public static string ClassIVGasGiant {
-            get {
-                return ResourceManager.GetString("ClassIVGasGiant", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Class V gas giant.
-        /// </summary>
-        public static string ClassVGasGiant {
-            get {
-                return ResourceManager.GetString("ClassVGasGiant", resourceCulture);
+                return ResourceManager.GetString("AmmoniaWorld", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Earth-like world.
         /// </summary>
-        public static string EarthLike {
+        public static string EarthLikeBody {
             get {
-                return ResourceManager.GetString("EarthLike", resourceCulture);
+                return ResourceManager.GetString("EarthLikeBody", resourceCulture);
             }
         }
         
@@ -162,18 +117,18 @@ namespace EddiDataDefinitions.Properties {
         /// <summary>
         ///   Looks up a localized string similar to High metal content world.
         /// </summary>
-        public static string HighMetalContent {
+        public static string HighMetalContentBody {
             get {
-                return ResourceManager.GetString("HighMetalContent", resourceCulture);
+                return ResourceManager.GetString("HighMetalContentBody", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Icy body.
         /// </summary>
-        public static string Icy {
+        public static string IcyBody {
             get {
-                return ResourceManager.GetString("Icy", resourceCulture);
+                return ResourceManager.GetString("IcyBody", resourceCulture);
             }
         }
         
@@ -198,27 +153,63 @@ namespace EddiDataDefinitions.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Rocky body.
         /// </summary>
-        public static string Rocky {
+        public static string RockyBody {
             get {
-                return ResourceManager.GetString("Rocky", resourceCulture);
+                return ResourceManager.GetString("RockyBody", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Rocky ice world.
         /// </summary>
-        public static string RockyIce {
+        public static string RockyIceBody {
             get {
-                return ResourceManager.GetString("RockyIce", resourceCulture);
+                return ResourceManager.GetString("RockyIceBody", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Water world.
+        ///   Looks up a localized string similar to Class I gas giant.
         /// </summary>
-        public static string Water {
+        public static string SudarskyClassIGasGiant {
             get {
-                return ResourceManager.GetString("Water", resourceCulture);
+                return ResourceManager.GetString("SudarskyClassIGasGiant", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Class II gas giant.
+        /// </summary>
+        public static string SudarskyClassIIGasGiant {
+            get {
+                return ResourceManager.GetString("SudarskyClassIIGasGiant", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Class III gas giant.
+        /// </summary>
+        public static string SudarskyClassIIIGasGiant {
+            get {
+                return ResourceManager.GetString("SudarskyClassIIIGasGiant", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Class IV gas giant.
+        /// </summary>
+        public static string SudarskyClassIVGasGiant {
+            get {
+                return ResourceManager.GetString("SudarskyClassIVGasGiant", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Class V gas giant.
+        /// </summary>
+        public static string SudarskyClassVGasGiant {
+            get {
+                return ResourceManager.GetString("SudarskyClassVGasGiant", resourceCulture);
             }
         }
         
@@ -237,6 +228,15 @@ namespace EddiDataDefinitions.Properties {
         public static string WaterGiantWithLife {
             get {
                 return ResourceManager.GetString("WaterGiantWithLife", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Water world.
+        /// </summary>
+        public static string WaterWorld {
+            get {
+                return ResourceManager.GetString("WaterWorld", resourceCulture);
             }
         }
     }

@@ -126,10 +126,10 @@ namespace EddiDataDefinitions
 
         /// <summary>The terraform state (localized name)</summary>
         [JsonIgnore, Obsolete("Please use TerraformState instead")]
-        public string terraformstate => (terraformState ?? TerraformState.None).localizedName;
+        public string terraformstate => (terraformState ?? TerraformState.NotTerraformable).localizedName;
 
         /// <summary>The terraform state</summary>
-        public TerraformState terraformState { get; set; } = TerraformState.None;
+        public TerraformState terraformState { get; set; } = TerraformState.NotTerraformable;
 
         /// <summary>The planet type (localized name)</summary>
         [JsonIgnore, Obsolete("Please use PlanetClass instead")]

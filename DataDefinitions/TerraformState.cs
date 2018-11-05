@@ -20,7 +20,7 @@ namespace EddiDataDefinitions
             var Terraformed = new TerraformState("Terraformed");
         }
 
-        public static readonly TerraformState None = new TerraformState("None");
+        public static readonly TerraformState NotTerraformable = new TerraformState("NotTerraformable");
 
         // dummy used to ensure that the static constructor has run
         public TerraformState() : this("")

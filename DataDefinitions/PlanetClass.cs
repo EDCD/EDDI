@@ -11,25 +11,25 @@ namespace EddiDataDefinitions
             resourceManager.IgnoreCase = true;
             missingEDNameHandler = (edname) => new PlanetClass(edname);
 
-            var Ammonia = new PlanetClass("Ammonia");
-            var EarthLike = new PlanetClass("EarthLike");
+            var AmmoniaWorld = new PlanetClass("AmmoniaWorld");
+            var EarthLikeBody = new PlanetClass("EarthLikeBody");
             var GasGiantWithAmmoniaBasedLife = new PlanetClass("GasGiantWithAmmoniaBasedLife");
             var GasGiantWithWaterBasedLife = new PlanetClass("GasGiantWithWaterBasedLife");
             var HeliumGasGiant = new PlanetClass("HeliumGasGiant");
             var HeliumRichGasGiant = new PlanetClass("HeliumRichGasGiant");
-            var HighMetalContent = new PlanetClass("HighMetalContent");
-            var Icy = new PlanetClass("Icy");
+            var HighMetalContentBody = new PlanetClass("HighMetalContentBody");
+            var IcyBody = new PlanetClass("IcyBody");
             var MetalRich = new PlanetClass("MetalRich");
-            var Rock = new PlanetClass("Rocky");
-            var RockyIce = new PlanetClass("RockyIce");
-            var ClassIGasGiant = new PlanetClass("ClassIGasGiant");
-            var ClassIIGasGiant = new PlanetClass("ClassIIGasGiant");
-            var ClassIIIGasGiant = new PlanetClass("ClassIIIGasGiant");
-            var ClassIVGasGiant = new PlanetClass("ClassIVGasGiant");
-            var ClassVGasGiant = new PlanetClass("ClassVGasGiant");
+            var RockBody = new PlanetClass("RockyBody");
+            var RockyIceBody = new PlanetClass("RockyIceBody");
+            var SudarskyClassIGasGiant = new PlanetClass("SudarskyClassIGasGiant");
+            var SudarskyClassIIGasGiant = new PlanetClass("SudarskyClassIIGasGiant");
+            var SudarskyClassIIIGasGiant = new PlanetClass("SudarskyClassIIIGasGiant");
+            var SudarskyClassIVGasGiant = new PlanetClass("SudarskyClassIVGasGiant");
+            var SudarskyClassVGasGiant = new PlanetClass("SudarskyClassVGasGiant");
             var WaterGiant = new PlanetClass("WaterGiant");
             var WaterGiantWithLife = new PlanetClass("WaterGiantWithLife");
-            var Water = new PlanetClass("Water");
+            var WaterWorld = new PlanetClass("WaterWorld");
         }
 
         public static readonly PlanetClass None = new PlanetClass("None");
@@ -49,9 +49,6 @@ namespace EddiDataDefinitions
             }
 
             string normalizedEDName = edname.Replace(" ", "").Replace("-", "");
-            normalizedEDName = normalizedEDName.Replace("world", ""); // In some cases, EDDB uses "world" while the journal uses "body". Fix that here.
-            normalizedEDName = normalizedEDName.Replace("body", ""); // In some cases, EDDB uses "world" while the journal uses "body". Fix that here.
-            normalizedEDName = normalizedEDName.Replace("sudarsky", ""); // EDDB uses "class iv gas giant" while the journal uses "Sudarsky class IV gas giant". Fix that here.
             return ResourceBasedLocalizedEDName<PlanetClass>.FromEDName(normalizedEDName);
         }
     }

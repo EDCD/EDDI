@@ -63,9 +63,9 @@ namespace EddiDataDefinitions.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Not terraformable.
         /// </summary>
-        public static string None {
+        public static string NotTerraformable {
             get {
-                return ResourceManager.GetString("None", resourceCulture);
+                return ResourceManager.GetString("NotTerraformable", resourceCulture);
             }
         }
         
