@@ -1444,7 +1444,7 @@ namespace Eddi
                 body.rotationalperiod = Math.Round(theEvent.rotationperiod / 86400, 2);
                 body.semimajoraxis = theEvent.semimajoraxis;
                 body.pressure = theEvent.pressure;
-                body.terraformState = TerraformState.FromEDName(theEvent.terraformstate) ?? TerraformState.None;
+                body.terraformState = TerraformState.FromEDName(theEvent.terraformstate) ?? TerraformState.NotTerraformable;
                 body.planetClass = PlanetClass.FromName(theEvent.bodyclass) ?? PlanetClass.None;
                 body.volcanism = theEvent.volcanism;
                 body.materials = new List<MaterialPresence>();

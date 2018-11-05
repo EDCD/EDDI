@@ -117,10 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Ammonia" xml:space="preserve">
+  <data name="AmmoniaWorld" xml:space="preserve">
     <value>Ammonia world</value>
   </data>
-  <data name="EarthLike" xml:space="preserve">
+  <data name="EarthLikeBody" xml:space="preserve">
     <value>Earth-like world</value>
   </data>
   <data name="GasGiantWithAmmoniaBasedLife" xml:space="preserve">
@@ -135,34 +135,34 @@
   <data name="HeliumRichGasGiant" xml:space="preserve">
     <value>Helium-rich gas giant</value>
   </data>
-  <data name="HighMetalContent" xml:space="preserve">
+  <data name="HighMetalContentBody" xml:space="preserve">
     <value>High metal content world</value>
   </data>
-  <data name="Icy" xml:space="preserve">
+  <data name="IcyBody" xml:space="preserve">
     <value>Icy body</value>
   </data>
   <data name="MetalRich" xml:space="preserve">
     <value>Metal-rich body</value>
   </data>
-  <data name="Rocky" xml:space="preserve">
+  <data name="RockyBody" xml:space="preserve">
     <value>Rocky body</value>
   </data>
-  <data name="RockyIce" xml:space="preserve">
+  <data name="RockyIceBody" xml:space="preserve">
     <value>Rocky ice world</value>
   </data>
-  <data name="ClassIGasGiant" xml:space="preserve">
+  <data name="SudarskyClassIGasGiant" xml:space="preserve">
     <value>Class I gas giant</value>
   </data>
-  <data name="ClassIIGasGiant" xml:space="preserve">
+  <data name="SudarskyClassIIGasGiant" xml:space="preserve">
     <value>Class II gas giant</value>
   </data>
-  <data name="ClassIIIGasGiant" xml:space="preserve">
+  <data name="SudarskyClassIIIGasGiant" xml:space="preserve">
     <value>Class III gas giant</value>
   </data>
-  <data name="ClassIVGasGiant" xml:space="preserve">
+  <data name="SudarskyClassIVGasGiant" xml:space="preserve">
     <value>Class IV gas giant</value>
   </data>
-  <data name="ClassVGasGiant" xml:space="preserve">
+  <data name="SudarskyClassVGasGiant" xml:space="preserve">
     <value>Class V gas giant</value>
   </data>
   <data name="WaterGiant" xml:space="preserve">
@@ -171,7 +171,7 @@
   <data name="WaterGiantWithLife" xml:space="preserve">
     <value>Water giant with life</value>
   </data>
-  <data name="Water" xml:space="preserve">
+  <data name="WaterWorld" xml:space="preserve">
     <value>Water world</value>
   </data>
   <data name="None" xml:space="preserve">

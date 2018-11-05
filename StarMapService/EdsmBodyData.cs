@@ -100,7 +100,7 @@ namespace EddiStarMapService
                 Body.gravity = (decimal?)body["gravity"]; // G's
                 Body.earthmass = (decimal?)body["earthMasses"];
                 Body.radius = (decimal?)body["radius"]; // Kilometers
-                Body.terraformState = TerraformState.FromName((string)body["terraformingState"]) ?? TerraformState.None;
+                Body.terraformState = TerraformState.FromName((string)body["terraformingState"]) ?? TerraformState.NotTerraformable;
                 if ((string)body["volcanismType"] != null)
                 {
                     Body.volcanism = Volcanism.FromName((string)body["volcanismType"]);
