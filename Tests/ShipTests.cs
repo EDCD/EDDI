@@ -349,7 +349,6 @@ namespace UnitTests
             Assert.AreEqual(81, ship2.LocalId);
             Assert.AreEqual("The Impact Kraiter", ship2.name);
             Assert.AreEqual(16, ship2.cargocapacity);
-            Assert.AreEqual(0, ship2.cargocarried);
             Assert.AreEqual(8, ship2.compartments.Count());
             Assert.AreEqual("Slot01_Size6", ship2.compartments[0].name);
             Assert.AreEqual(6, ship2.compartments[0].size);

@@ -43,10 +43,6 @@ namespace EddiDataDefinitions
 
         /// <summary>the total tonnage cargo capacity</summary>
         public int cargocapacity { get; set; }
-
-        /// <summary>the current tonnage cargo carried</summary>
-        [JsonIgnore]
-        public int cargocarried { get; set; }
  
         private long _value;
         /// <summary>the value of the ship without cargo, in credits</summary>

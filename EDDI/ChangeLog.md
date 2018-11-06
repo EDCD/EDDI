@@ -3,6 +3,8 @@
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
 ### Development
+  * VoiceAttack responder
+    * Amended reporting of cargo & limpets carried.
 
 ### 3.1.0-b4
   * Speech responder
