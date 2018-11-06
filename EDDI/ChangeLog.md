@@ -7,6 +7,8 @@ Full details of the variables available for each noted event, and VoiceAttack in
 ### 3.1.0-b4
   * Speech responder
     * Fixed an error converting a string, such as a ship ID, to the ICAO alphabet that was empty or all symbols (an empty string should result).
+  * Ship monitor
+    * Fixed a bug that would cause fighters to be written to the ship monitor
   * Status monitor
     * Recalibrated the `ShipFSD` event 
       * `charging complete` now triggers at a more appropriate time.

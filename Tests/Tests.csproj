@@ -244,6 +244,9 @@
     <None Include="App.config">
       <SubType>Designer</SubType>
     </None>
+    <None Include="fighterLoadout.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="loadout.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
