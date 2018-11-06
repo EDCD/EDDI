@@ -106,13 +106,13 @@ namespace UnitTests
             privateObject.SetFieldOrProperty("systemY", 0.0M);
             privateObject.SetFieldOrProperty("systemZ", 0.0M);
 
-            bool matched = responder.eventGetCoordinates("Sol", 10477373803);
+            bool matched = responder.eventConfirmCoordinates("Sol", 10477373803);
 
             Assert.IsTrue(matched);
         }
 
         [TestMethod()]
-        public void TestEDDNResponderBadInitialGoodFinal()
+        public void TestEDDNResponderBadInitialBadFinal()
         {
             EDDNResponder.EDDNResponder responder = makeTestEDDNResponder();
             var privateObject = new PrivateObject(responder);
@@ -124,14 +124,14 @@ namespace UnitTests
             privateObject.SetFieldOrProperty("systemY", null);
             privateObject.SetFieldOrProperty("systemZ", null);
 
-            bool matched = responder.eventGetCoordinates("Artemis", 3107509474002);
+            bool matched = responder.eventConfirmCoordinates("Artemis", 3107509474002);
 
-            Assert.IsTrue(matched);
+            Assert.IsFalse(matched);
             Assert.AreEqual("Artemis", responder.systemName);
             Assert.AreEqual(3107509474002, responder.systemAddress);
-            Assert.AreEqual(14.28125M, (decimal)responder.systemX);
-            Assert.AreEqual(-63.1875M, (decimal)responder.systemY);
-            Assert.AreEqual(-24.875M, (decimal)responder.systemZ);
+            Assert.IsNull(responder.systemX);
+            Assert.IsNull(responder.systemY);
+            Assert.IsNull(responder.systemZ);
         }
 
         [TestMethod()]
@@ -145,7 +145,7 @@ namespace UnitTests
             privateObject.SetFieldOrProperty("systemY", 0.0M);
             privateObject.SetFieldOrProperty("systemZ", 0.0M);
 
-            bool matched = responder.eventGetCoordinates("Not in this galaxy", null);
+            bool matched = responder.eventConfirmCoordinates("Not in this galaxy", null);
 
             Assert.IsFalse(matched);
             Assert.IsNull(responder.systemX);
@@ -157,6 +157,111 @@ namespace UnitTests
         public void TestEDDNResponderDockedEvent()
         {
             string line = @"{
+	""timestamp"": ""2018-07-30T04:50:32Z"",
+	""event"": ""FSDJump"",
+	""StarSystem"": ""Diaguandri"",
+	""SystemAddress"": 670417429889,
+	""StarPos"": [-41.06250,
+	-62.15625,
+	-103.25000],
+	""SystemAllegiance"": ""Independent"",
+	""SystemEconomy"": ""$economy_HighTech;"",
+	""SystemEconomy_Localised"": ""High Tech"",
+	""SystemSecondEconomy"": ""$economy_Refinery;"",
+	""SystemSecondEconomy_Localised"": ""Refinery"",
+	""SystemGovernment"": ""$government_Democracy;"",
+	""SystemGovernment_Localised"": ""Democracy"",
+	""SystemSecurity"": ""$SYSTEM_SECURITY_medium;"",
+	""SystemSecurity_Localised"": ""Medium Security"",
+	""Population"": 10303479,
+	""JumpDist"": 8.018,
+	""FuelUsed"": 0.917520,
+	""FuelLevel"": 29.021893,
+	""Factions"": [{
+		""Name"": ""Diaguandri Interstellar"",
+		""FactionState"": ""Election"",
+		""Government"": ""Corporate"",
+		""Influence"": 0.072565,
+		""Allegiance"": ""Independent"",
+		""RecoveringStates"": [{
+			""State"": ""Boom"",
+			""Trend"": 0
+		}]
+	},
+	{
+		""Name"": ""People's MET 20 Liberals"",
+		""FactionState"": ""Boom"",
+		""Government"": ""Democracy"",
+		""Influence"": 0.092445,
+		""Allegiance"": ""Federation""
+	},
+	{
+		""Name"": ""Pilots Federation Local Branch"",
+		""FactionState"": ""None"",
+		""Government"": ""Democracy"",
+		""Influence"": 0.000000,
+		""Allegiance"": ""PilotsFederation""
+	},
+	{
+		""Name"": ""Natural Diaguandri Regulatory State"",
+		""FactionState"": ""CivilWar"",
+		""Government"": ""Dictatorship"",
+		""Influence"": 0.009940,
+		""Allegiance"": ""Independent""
+	},
+	{
+		""Name"": ""Cartel of Diaguandri"",
+		""FactionState"": ""CivilWar"",
+		""Government"": ""Anarchy"",
+		""Influence"": 0.009940,
+		""Allegiance"": ""Independent"",
+		""PendingStates"": [{
+			""State"": ""Bust"",
+			""Trend"": 0
+		}]
+	},
+	{
+		""Name"": ""Revolutionary Party of Diaguandri"",
+		""FactionState"": ""None"",
+		""Government"": ""Democracy"",
+		""Influence"": 0.050696,
+		""Allegiance"": ""Federation"",
+		""PendingStates"": [{
+			""State"": ""Bust"",
+			""Trend"": 1
+		}]
+	},
+	{
+		""Name"": ""The Brotherhood of the Dark Circle"",
+		""FactionState"": ""Election"",
+		""Government"": ""Corporate"",
+		""Influence"": 0.078529,
+		""Allegiance"": ""Independent"",
+		""PendingStates"": [{
+			""State"": ""CivilUnrest"",
+			""Trend"": 0
+		}],
+		""RecoveringStates"": [{
+			""State"": ""Boom"",
+			""Trend"": 0
+		}]
+	},
+	{
+		""Name"": ""EXO"",
+		""FactionState"": ""Boom"",
+		""Government"": ""Democracy"",
+		""Influence"": 0.685885,
+		""Allegiance"": ""Independent"",
+		""PendingStates"": [{
+			""State"": ""Expansion"",
+			""Trend"": 0
+		}]
+	}],
+	""SystemFaction"": ""EXO"",
+	""FactionState"": ""Boom""
+}";
+
+            string line2 = @"{
 	""timestamp"": ""2018-07-30T06: 07: 47Z"",
 	""event"": ""Docked"",
 	""StationName"": ""Ray Gateway"",
@@ -207,10 +312,15 @@ namespace UnitTests
 
             List<Event> events = JournalMonitor.ParseJournalEntry(line);
             Assert.IsTrue(events.Count == 1);
-            DockedEvent @event = (DockedEvent)events[0];
+            JumpedEvent @jumpedEvent = (JumpedEvent)events[0];
+
+            events = JournalMonitor.ParseJournalEntry(line2);
+            Assert.IsTrue(events.Count == 1);
+            DockedEvent @dockedEvent = (DockedEvent)events[0];
 
             EDDNResponder.EDDNResponder responder = makeTestEDDNResponder();
-            responder.Handle(@event);
+            responder.Handle(@jumpedEvent);
+            responder.Handle(@dockedEvent);
 
             // Test that data available from the event is set correctly
             Assert.AreEqual("Diaguandri", responder.systemName);
@@ -218,7 +328,7 @@ namespace UnitTests
             Assert.AreEqual("Ray Gateway", responder.stationName);
             Assert.AreEqual(3223343616, responder.marketId);
 
-            // Test metadata not in the event itself but retrieved from our local database
+            // Test metadata not in the event itself but retrieved from memory and confirmed by our local database
             Assert.AreEqual(-41.06250M, responder.systemX);
             Assert.AreEqual(-62.15625M, responder.systemY);
             Assert.AreEqual(-103.25000M, responder.systemZ);
