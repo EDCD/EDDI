@@ -67,8 +67,8 @@ namespace EddiStarMapService
                 distancefromstar = (decimal?)station["distanceToArrival"], // Light seconds
             };
 
-            var faction = station["controllingFaction"].ToObject<Dictionary<string, object>>();
-            Station.Faction = new Faction
+            var faction = station["controllingFaction"]?.ToObject<Dictionary<string, object>>();
+            Station.Faction = new Faction() 
             {
                 name = (string)faction["name"],
                 EDSMID = (long?)faction["id"],
