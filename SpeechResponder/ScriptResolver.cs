@@ -680,7 +680,7 @@ namespace EddiSpeechResponder
                         // Named system
                         system = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(values[1].AsString, true);
                     }
-                    result = system != null && system.stations != null ? system.stations.FirstOrDefault(v => v.name == values[0].AsString) : null;
+                    result = system != null && system.stations != null ? system.stations.FirstOrDefault(v => v.name.ToLowerInvariant() == values[0].AsString.ToLowerInvariant()) : null;
                 }
                 return (result == null ? new ReflectionValue(new object()) : new ReflectionValue(result));
             }, 1, 2);
