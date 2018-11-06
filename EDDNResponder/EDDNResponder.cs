@@ -209,7 +209,7 @@ namespace EDDNResponder
             stationName = theEvent.station;
             marketId = theEvent.marketId;
 
-            if (eventGetCoordinates(theEvent.system, theEvent.systemAddress))
+            if (eventConfirmCoordinates(theEvent.system, theEvent.systemAddress))
             {
                 // When we dock we have access to commodity and outfitting information
                 sendCommodityInformation();
@@ -454,7 +454,7 @@ namespace EDDNResponder
             return null;
         }
 
-        public bool eventGetCoordinates(string eventSystem, long? eventSystemAddress = null)
+        public bool eventConfirmCoordinates(string eventSystem, long? eventSystemAddress = null)
         {
             StarSystem system = starSystemRepository.GetStarSystem(eventSystem);
             if (system != null)
@@ -462,11 +462,11 @@ namespace EDDNResponder
                 if ((eventSystemAddress != null && system.systemAddress != null) ? eventSystemAddress == system.systemAddress : true)
                 {
                     // The `Docked` event doesn't provide system coordinates, so we use coordinates from our saved star systems
-                    // If the saved star system has a system address, we use that to confirm our lookup
-                    systemX = system.x;
-                    systemY = system.y;
-                    systemZ = system.z;
-                    return true;
+                    // to confirm the coordinates in memory. If the saved star system has a system address, we use that to confirm our lookup too.
+                    if (systemX == system.x && systemY == system.y && systemZ == system.z)
+                    {
+                        return true;
+                    }
                 }
             }
 
