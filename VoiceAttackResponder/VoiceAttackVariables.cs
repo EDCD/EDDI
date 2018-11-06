@@ -292,7 +292,7 @@ namespace EddiVoiceAttackResponder
             try
             {
                 CargoMonitor cargoMonitor = ((CargoMonitor)EDDI.Instance.ObtainMonitor("Cargo monitor"));
-                vaProxy.SetInt("Ship cargo carried", cargoMonitor?.cargoCarried);
+                vaProxy.SetInt("Ship cargo carried", cargoMonitor?.cargoCarried ?? 0);
                 vaProxy.SetInt("Ship limpets carried", cargoMonitor?.GetCargoWithEDName("Drones")?.total ?? 0);
             }
             catch (Exception ex)
