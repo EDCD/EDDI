@@ -175,31 +175,12 @@ namespace Eddi
                         Logging.Info("EDDI access to the companion app is disabled");
                     }
 
-                    // Set up the star map service
-                    StarMapConfiguration starMapCredentials = StarMapConfiguration.FromFile();
-                    if (starMapCredentials != null && starMapCredentials.apiKey != null)
+                    // Pass our commander name to the StarMapService (if it has been set via the Frontier API) and initialize the StarMapService
+                    if (Cmdr != null && Cmdr.name != null)
                     {
-                        // Commander name might come from star map credentials or the companion app's profile
-                        string commanderName = null;
-                        if (starMapCredentials.commanderName != null)
-                        {
-                            commanderName = starMapCredentials.commanderName;
-                        }
-                        else if (Cmdr != null && Cmdr.name != null)
-                        {
-                            commanderName = Cmdr.name;
-                        }
-                        if (commanderName != null)
-                        {
-                            starMapService = new StarMapService(starMapCredentials.apiKey, commanderName);
-                            Logging.Info("EDDI access to EDSM is enabled");
-                        }
-
+                        StarMapService.commanderName = Cmdr.name;
                     }
-                    if (starMapService == null)
-                    {
-                        Logging.Info("EDDI access to EDSM is disabled");
-                    }
+                    starMapService = new StarMapService();
                 }
                 else
                 {
@@ -215,6 +196,16 @@ namespace Eddi
             {
                 Logging.Error("Failed to initialise", ex);
             }
+        }
+
+        public bool ShouldUseTestEndpoints()
+        {
+#if DEBUG
+            return true;
+#else
+            // use test endpoints if the game is in beta or EDDI is not release candidate or final
+            return EDDI.Instance.inBeta || (Constants.EDDI_VERSION.phase < Utilities.Version.TestPhase.rc);
+#endif
         }
 
         /// <summary>
@@ -797,11 +788,18 @@ namespace Eddi
             // Update the mutable system data from the journal
             if (theEvent.population != null)
             {
-                CurrentStarSystem.allegiance = theEvent.allegiance;
-                CurrentStarSystem.government = theEvent.government;
                 CurrentStarSystem.population = theEvent.population;
-                CurrentStarSystem.economies[0] = theEvent.Economy;
-                CurrentStarSystem.economies[1] = theEvent.Economy2;
+                CurrentStarSystem.Economies = new List<Economy> { theEvent.Economy, theEvent.Economy2 };
+                CurrentStarSystem.securityLevel = theEvent.securityLevel;
+
+                // Faction data
+                Faction controllingFaction = new Faction
+                {
+                    name = theEvent.faction,
+                    Government = theEvent.Government,
+                    Allegiance = theEvent.Allegiance
+                };
+                CurrentStarSystem.Faction = controllingFaction;
             }
 
             if (theEvent.docked == true || theEvent.bodytype.ToLowerInvariant() == "station")
@@ -836,9 +834,13 @@ namespace Eddi
                 station.systemAddress = theEvent.systemAddress;
 
                 // Information from the event might be more current than that from our data source so use it in preference
-                station.faction = theEvent.faction;
-                station.government = theEvent.government;
-                station.allegiance = theEvent.allegiance;
+                Faction controllingFaction = new Faction
+                {
+                    name = theEvent.faction,
+                    Government = theEvent.Government,
+                    Allegiance = theEvent.Allegiance
+                };
+                station.Faction = controllingFaction;
 
                 CurrentStation = station;
 
@@ -925,46 +927,19 @@ namespace Eddi
             // Not all stations in our database will have a system address or market id, so we set them here
             station.systemAddress = theEvent.systemAddress;
             station.marketId = theEvent.marketId;
-            
-            // Information from the event might be more current than our data source so use it in preference
-            station.state = theEvent.factionstate;
-            station.faction = theEvent.faction;
-            station.government = theEvent.government;
 
-            if (theEvent.stationservices != null)
+            // Information from the event might be more current than our data source so use it in preference
+
+            Faction controllingFaction = new Faction
             {
-                foreach (var service in theEvent.stationservices)
-                {
-                    if (service == "Refuel")
-                    {
-                        station.hasrefuel = true;
-                    }
-                    else if (service == "Rearm")
-                    {
-                        station.hasrearm = true;
-                    }
-                    else if (service == "Repair")
-                    {
-                        station.hasrepair = true;
-                    }
-                    else if (service == "Outfitting")
-                    {
-                        station.hasoutfitting = true;
-                    }
-                    else if (service == "Shipyard")
-                    {
-                        station.hasshipyard = true;
-                    }
-                    else if (service == "Commodities")
-                    {
-                        station.hasmarket = true;
-                    }
-                    else if (service == "BlackMarket")
-                    {
-                        station.hasblackmarket = true;
-                    }
-                }
-            }
+                name = theEvent.faction,
+                Allegiance = theEvent.Allegiance,
+                FactionState = theEvent.factionState,
+                Government = theEvent.Government
+            };
+            station.Faction = controllingFaction;
+            station.stationServices = theEvent.stationServices;
+            station.economyShares = theEvent.economyShares;
 
             CurrentStation = station;
             CurrentStellarBody = null;
@@ -1086,12 +1061,16 @@ namespace Eddi
             CurrentStarSystem.y = theEvent.y;
             CurrentStarSystem.z = theEvent.z;
 
-            CurrentStarSystem.allegiance = theEvent.allegiance;
-            CurrentStarSystem.faction = theEvent.faction;
-            CurrentStarSystem.economies[0] = theEvent.Economy;
-            CurrentStarSystem.economies[1] = theEvent.Economy2;
-            CurrentStarSystem.government = theEvent.government;
-            CurrentStarSystem.security = theEvent.security;
+            Faction controllingFaction = new Faction
+            {
+                name = theEvent.faction,
+                Allegiance = theEvent.Allegiance,
+                Government = theEvent.Government
+            };
+            CurrentStarSystem.Faction = controllingFaction;
+
+            CurrentStarSystem.Economies = new List<Economy> { theEvent.Economy, theEvent.Economy2 };
+            CurrentStarSystem.securityLevel = theEvent.securityLevel;
             if (theEvent.population != null)
             {
                 CurrentStarSystem.population = theEvent.population;
@@ -1366,7 +1345,7 @@ namespace Eddi
                     belt = new Body
                     {
                         EDDBID = -1,
-                        type = "Star",
+                        Type = BodyType.FromEDName("Star"),
                         name = theEvent.name,
                         systemname = CurrentStarSystem?.name,
                         systemAddress = CurrentStarSystem?.systemAddress
@@ -1398,7 +1377,7 @@ namespace Eddi
                     star = new Body
                     {
                         EDDBID = -1,
-                        type = "Star",
+                        Type = BodyType.FromEDName("Star"),
                         name = theEvent.name,
                         systemname = CurrentStarSystem?.name
                     };
@@ -1440,7 +1419,7 @@ namespace Eddi
                     body = new Body
                     {
                         EDDBID = -1,
-                        type = "Planet",
+                        Type = BodyType.FromEDName("Planet"),
                         name = theEvent.name,
                         systemname = CurrentStarSystem.name
                     };
@@ -1455,7 +1434,9 @@ namespace Eddi
                 body.tidallylocked = theEvent.tidallylocked;
                 body.temperature = (long?)theEvent.temperature;
                 body.periapsis = theEvent.periapsis;
-                body.atmosphere = theEvent.atmosphere;
+                body.atmosphereclass = theEvent.atmosphereclass ?? AtmosphereClass.None;
+                body.atmospherecompositions = theEvent.atmospherecomposition;
+                body.solidcompositions = theEvent.solidcomposition;
                 body.gravity = theEvent.gravity;
                 body.eccentricity = theEvent.eccentricity;
                 body.inclination = theEvent.orbitalinclination;
@@ -1463,31 +1444,15 @@ namespace Eddi
                 body.rotationalperiod = Math.Round(theEvent.rotationperiod / 86400, 2);
                 body.semimajoraxis = theEvent.semimajoraxis;
                 body.pressure = theEvent.pressure;
-                switch (theEvent.terraformstate)
-                {
-                    case "terrraformable":
-                    case "terraformable":
-                        body.terraformstate = "Terraformable";
-                        break;
-                    case "terraforming":
-                        body.terraformstate = "Terraforming";
-                        break;
-                    case "Terraformed":
-                        body.terraformstate = "Terraformed";
-                        break;
-                    default:
-                        body.terraformstate = "Not terraformable";
-                        break;
-                }
-                body.terraformstate = theEvent.terraformstate;
-                body.planettype = theEvent.bodyclass;
+                body.terraformState = TerraformState.FromEDName(theEvent.terraformstate) ?? TerraformState.NotTerraformable;
+                body.planetClass = PlanetClass.FromName(theEvent.bodyclass) ?? PlanetClass.None;
                 body.volcanism = theEvent.volcanism;
                 body.materials = new List<MaterialPresence>();
                 foreach (MaterialPresence presence in theEvent.materials)
                 {
                     body.materials.Add(new MaterialPresence(presence.definition, presence.percentage));
                 }
-                body.reserves = theEvent.reserves;
+                body.reserveLevel = ReserveLevel.FromEDName(theEvent.reserves);
                 body.rings = theEvent.rings;
 
                 Logging.Debug("Saving data for scanned body " + theEvent.name);
@@ -1620,8 +1585,8 @@ namespace Eddi
         }
 
         /// <summary>Work out the title for the commander in the current system</summary>
-        private static int minEmpireRankForTitle = 3;
-        private static int minFederationRankForTitle = 1;
+        private const int minEmpireRankForTitle = 3;
+        private const int minFederationRankForTitle = 1;
         private void setCommanderTitle()
         {
             if (Cmdr != null)
@@ -1629,11 +1594,11 @@ namespace Eddi
                 Cmdr.title = Properties.EddiResources.Commander;
                 if (CurrentStarSystem != null)
                 {
-                    if (CurrentStarSystem.allegiance == "Federation" && Cmdr.federationrating != null && Cmdr.federationrating.rank > minFederationRankForTitle)
+                    if (CurrentStarSystem.Faction?.Allegiance?.invariantName == "Federation" && Cmdr.federationrating != null && Cmdr.federationrating.rank > minFederationRankForTitle)
                     {
                         Cmdr.title = Cmdr.federationrating.localizedName;
                     }
-                    else if (CurrentStarSystem.allegiance == "Empire" && Cmdr.empirerating != null && Cmdr.empirerating.rank > minEmpireRankForTitle)
+                    else if (CurrentStarSystem.Faction?.Allegiance?.invariantName == "Empire" && Cmdr.empirerating != null && Cmdr.empirerating.rank > minEmpireRankForTitle)
                     {
                         Cmdr.title = Cmdr.empirerating.maleRank.localizedName;
                     }
@@ -1819,7 +1784,7 @@ namespace Eddi
                             // We have the required station information
                             Logging.Debug("Current station matches profile information; updating info");
                             CurrentStation.commodities = profile.LastStation.commodities;
-                            CurrentStation.economies = profile.LastStation.economies;
+                            CurrentStation.economyShares = profile.LastStation.economyShares;
                             CurrentStation.prohibited = profile.LastStation.prohibited;
                             CurrentStation.commoditiesupdatedat = profileTime;
                             CurrentStation.outfitting = profile.LastStation.outfitting;

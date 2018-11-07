@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 
 namespace EddiDataDefinitions
@@ -9,28 +10,43 @@ namespace EddiDataDefinitions
     public class Station
     {
         /// <summary>The ID of this station in EDDB</summary>
-        public long EDDBID { get; set; }
+        public long? EDDBID { get; set; }
+
+        /// <summary>The ID of this station in EDSM</summary>
+        public long? EDSMID { get; set; }
 
         /// <summary>The name</summary>
         public string name { get; set; }
 
-        /// <summary>The government</summary>
-        public string government { get; set; }
+        /// <summary>The controlling faction</summary>
+        public Faction Faction { get; set; } = new Faction();
 
-        /// <summary>The faction</summary>
-        public string faction { get; set; }
+        /// <summary>The controlling faction's name</summary>
+        [JsonIgnore, Obsolete("Please use Faction instead")]
+        public string faction => (Faction ?? new Faction()).name;
 
-        /// <summary>The allegiance</summary>
-        public string allegiance { get; set; }
+        /// <summary>The controlling faction's government</summary>
+        [JsonIgnore, Obsolete("Please use Faction.Government instead")]
+        public string government => (Faction?.Government ?? Government.None).localizedName;
 
-        /// <summary>The state of the system</summary>
-        public string state { get; set; }
+        /// <summary>The controlling faction's allegiance</summary>
+        [JsonIgnore, Obsolete("Please use Faction.Allegiance instead")]
+        public string allegiance => (Faction?.Allegiance ?? Superpower.None).localizedName;
+
+        /// <summary>The controlling faction's state within the system</summary>
+        [JsonIgnore, Obsolete("Please use Faction.factionState instead")]
+        public string state => (Faction?.FactionState ?? FactionState.None).localizedName;
 
         /// <summary>The primary economy of the station</summary>
-        public string primaryeconomy { get; set; }
+        [JsonIgnore]
+        public string primaryeconomy => (Economies?.Count > 0 && Economies[0] != null ? Economies[0] : Economy.None).localizedName;
 
-        /// <summary>How far this is from the star</summary>
-        public long? distancefromstar { get; set; }
+        /// <summary>The secondary economy of the station</summary>
+        [JsonIgnore]
+        public string secondaryeconomy => (Economies?.Count > 1 && Economies[1] != null ? Economies[1] : Economy.None).localizedName;
+
+        /// <summary>How far this is from the star, in light seconds</summary>
+        public decimal? distancefromstar { get; set; }
 
         /// <summary>The system in which this station resides</summary>
         public string systemname { get; set; }
@@ -38,48 +54,169 @@ namespace EddiDataDefinitions
         /// <summary>Unique 64 bit id value for system</summary>
         public long? systemAddress { get; set; }
 
+        /// <summary>The ID of this station's system in EDDB</summary>
+        public long? systemEDDBID { get; set; }
+
+        /// <summary>The ID of this station's body in EDDB</summary>
+        public long? bodyEDDBID { get; set; }
+
         /// <summary>Unique 64 bit id value for station</summary>
         public long? marketId { get; set; }
 
-        /// <summary>Does this station have refuel facilities?</summary>
-        public bool? hasrefuel { get; set; }
-        /// <summary>Does this station have rearm facilities?</summary>
-        public bool? hasrearm { get; set; }
-        /// <summary>Does this station have repair facilities?</summary>
-        public bool? hasrepair { get; set; }
-        /// <summary>Does this station have outfitting?</summary>
-        public bool? hasoutfitting { get; set; }
-        /// <summary>Does this station have a shipyard?</summary>
-        public bool? hasshipyard { get; set; }
-        /// <summary>Does this station have a market?</summary>
-        public bool? hasmarket { get; set; }
-        /// <summary>Does this station have a black market?</summary>
-        public bool? hasblackmarket { get; set; }
+        /// <summary>A list of the services offered by this station</summary>
+        public List<StationService> stationServices { get; set; } = new List<StationService>();
 
-        /// <summary>The model of the station</summary>
-        public string model { get; set; }
-
-        private string LargestPad;
-        /// <summary>What is the largest ship that can land here?</summary>
-        public string largestpad
+        /// <summary>A localized list of the services offered by this station</summary>
+        public List<string> stationservices
         {
-            get { return LargestPad; }
-            set
+            get
             {
-                // Map old values from when we had an enum
-                if (value == "0") LargestPad = "None";
-                else if (value == "1") LargestPad = "Small";
-                else if (value == "2") LargestPad = "Medium";
-                else if (value == "3") LargestPad = "Large";
-                else LargestPad = value;
+                List<string> services = new List<string>();
+                foreach (StationService service in stationServices)
+                {
+                    if (service != null) { services.Add(service.localizedName); }
+                }
+                return services;
             }
         }
 
-        /// <summary>What are the economies at the station</summary>
-        public List<CompanionAppEconomy> economies { get; set; }
+        /// <summary>Does this station have refuel facilities?</summary>
+        [JsonIgnore]
+        public bool? hasrefuel {
+            get { return stationServices.Exists(s => s?.edname == "Refuel"); }
+            set { if (value is true) { stationServices.Add(StationService.FromEDName("Refuel")); } }
+        }
+        /// <summary>Does this station have rearm facilities?</summary>
+        [JsonIgnore]
+        public bool? hasrearm
+        {
+            get { return stationServices.Exists(s => s?.edname == "Rearm"); }
+            set { if (value is true) { stationServices.Add(StationService.FromEDName("Rearm")); } }
+        }
+        /// <summary>Does this station have repair facilities?</summary>
+        [JsonIgnore]
+        public bool? hasrepair
+        {
+            get { return stationServices.Exists(s => s?.edname == "Repair"); }
+            set { if (value is true) { stationServices.Add(StationService.FromEDName("Repair")); } }
+        }
+        /// <summary>Does this station have outfitting?</summary>
+        [JsonIgnore]
+        public bool? hasoutfitting
+        {
+            get { return stationServices.Exists(s => s?.edname == "Outfitting"); }
+            set { if (value is true) { stationServices.Add(StationService.FromEDName("Outfitting")); } }
+        }
+        /// <summary>Does this station have a shipyard?</summary>
+        [JsonIgnore]
+        public bool? hasshipyard
+        {
+            get { return stationServices.Exists(s => s?.edname == "Shipyard"); }
+            set { if (value is true) { stationServices.Add(StationService.FromEDName("Shipyard")); } }
+        }
+        /// <summary>Does this station have a market?</summary>
+        [JsonIgnore]
+        public bool? hasmarket
+        {
+            get { return stationServices.Exists(s => s?.edname == "Commodities"); }
+            set { if (value is true) { stationServices.Add(StationService.FromEDName("Commodities")); } }
+        }
+        /// <summary>Does this station have a black market?</summary>
+        [JsonIgnore]
+        public bool? hasblackmarket
+        {
+            get { return stationServices.Exists(s => s?.edname == "BlackMarket"); }
+            set { if (value is true) { stationServices.Add(StationService.FromEDName("BlackMarket")); } }
+        }
+        /// <summary>Does this station allow docking?</summary>
+        [JsonIgnore]
+        public bool? hasdocking
+        {
+            get { return stationServices.Exists(s => s?.edname == "Dock"); }
+            set { if (value is true) { stationServices.Add(StationService.FromEDName("Dock")); } }
+        }
+
+        /// <summary>The model of the station</summary>
+        [JsonIgnore, Obsolete("Please use Model instead")]
+        public string model => (Model ?? StationModel.None).localizedName;
+        public StationModel Model { get; set; } = StationModel.None;
+
+        /// <summary>What is the largest ship that can land here?</summary>
+        [JsonIgnore, Obsolete("Please use StationLargestPad instead")]
+        public string largestpad => LargestPad.localizedName;
+        // This field isn't always provided, so we derive it from the station model when it's not explicitly set.
+        public StationLargestPad LargestPad
+        {
+            get
+            {
+                if (_LargestPad != null)
+                {
+                    return _LargestPad ?? StationLargestPad.None;
+                }
+                if (Model.edname == "None")
+                {
+                    return StationLargestPad.None;
+                }
+                if (Model.edname == "Outpost")
+                {
+                    return StationLargestPad.FromSize("m");
+                }
+                return StationLargestPad.FromSize("l");
+            }
+            set
+            {
+                _LargestPad = value ?? StationLargestPad.None;
+            }
+        }
+        private StationLargestPad _LargestPad;
+
+        /// <summary>What are the economies at the station, with proportions for each (this is only set from Frontier API data)</summary>
+        public List<EconomyShare> economyShares { get; set; } = new List<EconomyShare>();
+
+        /// <summary>What are the localized economies at the stations</summary>
+        public List<string> economies
+        {
+            get
+            {
+                if (economyShares.Count > 0)
+                {
+                    List<string> localizedEconomiesFromShares = new List<string>();
+                    foreach (EconomyShare economyShare in economyShares)
+                    {
+                        localizedEconomiesFromShares.Add(economyShare.economy.localizedName);
+                    }
+                    return localizedEconomiesFromShares;
+                }
+                else
+                {
+                    List<string> localizedEconomies = new List<string>();
+                    if (Economies != null)
+                    {
+                        foreach (Economy economy in Economies)
+                        {
+                            localizedEconomies.Add((economy ?? Economy.None).localizedName);
+                        }
+                    }
+                    else
+                    {
+                        localizedEconomies = new List<string>() { Economy.None.localizedName, Economy.None.localizedName };
+                    }
+                    return localizedEconomies;
+                };
+            }
+        }
+
+        /// <summary>What are the economies at the station, without proportions for each</summary>
+        public List<Economy> Economies { get; set; } = new List<Economy>() { Economy.None, Economy.None };
 
         /// <summary>Which commodities are bought/sold by the station</summary>
         public List<CommodityMarketQuote> commodities { get; set; }
+
+        /// <summary>Which commodities are imported by the station</summary>
+        public List<String> imported { get; set; }
+
+        /// <summary>Which commodities are exported by the station</summary>
+        public List<String> exported { get; set; }
 
         /// <summary>Which commodities are prohibited at the station</summary>
         public List<String> prohibited { get; set; }
@@ -99,19 +236,19 @@ namespace EddiDataDefinitions
         // Admin - the last time the outfitting information present changed
         public long? outfittingupdatedat;
 
+        // Admin - the last time the shipyard information present changed
+        public long? shipyardupdatedat;
+
         /// <summary>Is this station a starport?</summary>
-        public bool IsStarport() { return model == null ? false : model.EndsWith("Starport"); }
+        public bool IsStarport() { return Model == null ? false : Model?.basename == "Starport"; }
 
         /// <summary>Is this station an outpost?</summary>
-        public bool IsOutpost() { return model == null ? false : model.EndsWith("Outpost"); }
-
-        /// <summary>Is this station a planetary outpost?</summary>
-        public bool IsPlanetaryOutpost() { return model == "Planetary Outpost"; }
-
-        /// <summary>Is this station a planetary  port?</summary>
-        public bool IsPlanetaryPort() { return model == "Planetary Port" || model == "Planetary Engineer Base"; }
+        public bool IsOutpost() { return Model == null ? false : Model?.basename == "Outpost"; }
 
         /// <summary>Is this station planetary?</summary>
-        public bool IsPlanetary() { return model == null ? false : model.Contains("Planetary"); }
+        public bool IsPlanetary() { return Model == null ? false : Model?.basename == "SurfaceStation"; }
+
+        /// <summary>Is this station an (undockable) settlement?</summary>
+        public bool IsPlanetarySettlement() { return Model?.basename == "SurfaceStation" && hasdocking != true; }
     }
 }

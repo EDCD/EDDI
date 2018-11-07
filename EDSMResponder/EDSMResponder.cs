@@ -1,5 +1,5 @@
 ﻿using Eddi;
-using EddiDataDefinitions;
+using EddiDataProviderService;
 using EddiEvents;
 using EddiShipMonitor;
 using EddiStarMapService;
@@ -15,7 +15,7 @@ namespace EddiEdsmResponder
     {
         private StarMapService starMapService;
         private Thread updateThread;
-        private List<string> ignoredEvents;
+        private List<string> ignoredEvents = new List<string>();
 
         public string ResponderName()
         {
@@ -59,36 +59,20 @@ namespace EddiEdsmResponder
         public void Reload()
         {
             // Set up the star map service
-            starMapService = null;
-            StarMapConfiguration starMapCredentials = StarMapConfiguration.FromFile();
-            if (starMapCredentials != null && starMapCredentials.apiKey != null)
+            starMapService = new StarMapService();
+            if (ignoredEvents == null)
             {
-                // Commander name might come from star map credentials or the companion app's profile
-                string commanderName = null;
-                if (starMapCredentials.commanderName != null)
-                {
-                    commanderName = starMapCredentials.commanderName;
-                }
-                else if (EDDI.Instance.Cmdr != null)
-                {
-                    commanderName = EDDI.Instance.Cmdr.name;
-                }
-                if (commanderName != null)
-                {
-                    starMapService = new StarMapService(starMapCredentials.apiKey, commanderName);
-                }
-                if (ignoredEvents == null)
-                {
-                    ignoredEvents = starMapService?.getIgnoredEvents();
-                }
+                ignoredEvents = starMapService?.getIgnoredEvents();
             }
 
             if (starMapService != null && updateThread == null)
             {
-                // Spin off a thread to download & sync EDSM flight logs & system comments in the background
-                updateThread = new Thread(() => starMapService.Sync(starMapCredentials.lastSync));
-                updateThread.IsBackground = true;
-                updateThread.Name = "EDSM updater";
+                // Spin off a thread to download & sync flight logs & system comments from EDSM in the background 
+                updateThread = new Thread(() => DataProviderService.syncFromStarMapService())
+                {
+                    IsBackground = true,
+                    Name = "EDSM updater"
+                };
                 updateThread.Start();
             }
         }
@@ -118,11 +102,10 @@ namespace EddiEdsmResponder
                 /// Retrieve applicable transient game state info (metadata) 
                 /// for the event and send the event with transient info to EDSM
                 string eventData = prepareEventData(theEvent);
-                if (eventData == null)
+                if (eventData != null && !EDDI.Instance.ShouldUseTestEndpoints())
                 {
-                    return;
+                    starMapService.sendEvent(eventData);
                 }
-                starMapService.sendEvent(eventData);
             }
         }
 

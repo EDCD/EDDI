@@ -113,16 +113,6 @@ namespace EDDNResponder
         {
         }
 
-        private bool ShouldUseTestEndpoints()
-        {
-#if DEBUG
-            return true;
-#else
-            // use test endpoints if the game is in beta or EDDI is not release candidate or final
-            return EDDI.Instance.inBeta || (Constants.EDDI_VERSION.phase < Utilities.Version.TestPhase.rc);
-#endif
-        }
-
         private void handleLocationEvent(LocationEvent @event)
         {
             // Set all of the information available from the event
@@ -194,7 +184,7 @@ namespace EDDNResponder
             EDDNBody body = new EDDNBody
             {
                 header = generateHeader(),
-                schemaRef = "https://eddn.edcd.io/schemas/journal/1" + (ShouldUseTestEndpoints() ? "/test" : ""),
+                schemaRef = "https://eddn.edcd.io/schemas/journal/1" + (EDDI.Instance.ShouldUseTestEndpoints() ? "/test" : ""),
                 message = data
             };
 
@@ -261,7 +251,7 @@ namespace EDDNResponder
                     EDDNBody body = new EDDNBody
                     {
                         header = generateHeader(),
-                        schemaRef = "https://eddn.edcd.io/schemas/commodity/3" + (ShouldUseTestEndpoints() ? "/test" : ""),
+                        schemaRef = "https://eddn.edcd.io/schemas/commodity/3" + (EDDI.Instance.ShouldUseTestEndpoints() ? "/test" : ""),
                         message = data
                     };
 
@@ -274,9 +264,9 @@ namespace EDDNResponder
         private static List<EDDNEconomy> prepareEconomyInformation()
         {
             List<EDDNEconomy> eddnEconomies = new List<EDDNEconomy>();
-            if (EDDI.Instance.CurrentStation.economies != null)
+            if (EDDI.Instance.CurrentStation.economyShares != null)
             {
-                foreach (CompanionAppEconomy economy in EDDI.Instance.CurrentStation.economies)
+                foreach (EconomyShare economy in EDDI.Instance.CurrentStation.economyShares)
                 {
                     EDDNEconomy eddnEconomy = new EDDNEconomy(economy);
                     eddnEconomies.Add(eddnEconomy);
@@ -347,7 +337,7 @@ namespace EDDNResponder
                     EDDNBody body = new EDDNBody
                     {
                         header = generateHeader(),
-                        schemaRef = "https://eddn.edcd.io/schemas/outfitting/2" + (ShouldUseTestEndpoints() ? "/test" : ""),
+                        schemaRef = "https://eddn.edcd.io/schemas/outfitting/2" + (EDDI.Instance.ShouldUseTestEndpoints() ? "/test" : ""),
                         message = data
                     };
 
@@ -381,7 +371,7 @@ namespace EDDNResponder
                     EDDNBody body = new EDDNBody
                     {
                         header = generateHeader(),
-                        schemaRef = "https://eddn.edcd.io/schemas/shipyard/2" + (ShouldUseTestEndpoints() ? "/test" : ""),
+                        schemaRef = "https://eddn.edcd.io/schemas/shipyard/2" + (EDDI.Instance.ShouldUseTestEndpoints() ? "/test" : ""),
                         message = data
                     };
 

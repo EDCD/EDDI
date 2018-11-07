@@ -12,7 +12,6 @@ namespace EddiDataDefinitions
             resourceManager.IgnoreCase = true;
             missingEDNameHandler = (edname) => new Government(edname);
 
-            None = new Government("$government_None;");
             var Anarchy = new Government("$government_Anarchy;");
             var Colony = new Government("$government_Colony;");
             var Communism = new Government("$government_Communism;");
@@ -31,7 +30,7 @@ namespace EddiDataDefinitions
             var Engineer = new Government("$government_engineer;");
         }
 
-        public static readonly Government None;
+        public static readonly Government None = new Government("$government_None;");
 
         // dummy used to ensure that the static constructor has run
         public Government() : this("")
@@ -39,5 +38,17 @@ namespace EddiDataDefinitions
 
         private Government(string edname) : base(edname, edname.Replace("$government_", "").Replace(";", ""))
         {}
+
+        new public static Government FromName(string from)
+        {
+            if (from is null)
+            {
+                return None;
+            }
+
+            // EDSM uses a special string to describe engineering workshops, standardize here.
+            from = from.Replace("Workshop (Engineer)", "engineer");
+            return ResourceBasedLocalizedEDName<Government>.FromName(from);
+        }
     }
 }

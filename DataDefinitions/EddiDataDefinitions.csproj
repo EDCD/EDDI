@@ -53,7 +53,7 @@
       <HintPath>..\packages\MathNet.Numerics.4.4.0\lib\net461\MathNet.Numerics.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.11.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -67,8 +67,53 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AtmosphereComposition.cs" />
     <Compile Include="BlueprintMaterials.cs" />
+    <Compile Include="BodyType.cs" />
+    <Compile Include="ReserveLevel.cs" />
+    <Compile Include="PlanetClass.cs" />
+    <Compile Include="BodySolidComposition.cs" />
+    <Compile Include="Faction.cs" />
+    <Compile Include="Properties\Body.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Body.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\PlanetClass.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PlanetClass.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\StationLargestPad.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>StationLargestPad.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\ReserveLevel.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ReserveLevel.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\TerraformState.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TerraformState.resx</DependentUpon>
+    </Compile>
+    <Compile Include="FactionState.cs" />
+    <Compile Include="Properties\StationService.Designer.cs">
+      <DependentUpon>StationService.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="StationLargestPad.cs" />
+    <Compile Include="StationService.cs" />
+    <Compile Include="TerraformState.cs" />
     <Compile Include="CommodityAmount.cs" />
+    <Compile Include="Properties\AtmosphereClass.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AtmosphereClass.resx</DependentUpon>
+    </Compile>
     <Compile Include="ModuleInfo.cs" />
     <Compile Include="Properties\Commodities.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -80,7 +125,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>StationModels.resx</DependentUpon>
     </Compile>
-    <Compile Include="StationModels.cs" />
+    <Compile Include="StationModel.cs" />
     <Compile Include="DestinationSystem.cs" />
     <Compile Include="Haulage.cs" />
     <Compile Include="CommodityCategory.cs" />
@@ -126,20 +171,20 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="Properties\Compositions.es.Designer.cs">
-      <DependentUpon>Compositions.es.resx</DependentUpon>
+    <Compile Include="Properties\RingCompositions.es.Designer.cs">
+      <DependentUpon>RingCompositions.es.resx</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="Properties\Compositions.fr.Designer.cs">
-      <DependentUpon>Compositions.fr.resx</DependentUpon>
+    <Compile Include="Properties\RingCompositions.fr.Designer.cs">
+      <DependentUpon>RingCompositions.fr.resx</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="Properties\Compositions.Designer.cs">
+    <Compile Include="Properties\RingCompositions.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>Compositions.resx</DependentUpon>
+      <DependentUpon>RingCompositions.resx</DependentUpon>
     </Compile>
     <Compile Include="Properties\CQCRatings.es.Designer.cs">
       <DependentUpon>CQCRatings.es.resx</DependentUpon>
@@ -386,20 +431,20 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>StarColors.resx</DependentUpon>
     </Compile>
-    <Compile Include="Properties\SystemStates.es.Designer.cs">
-      <DependentUpon>SystemStates.es.resx</DependentUpon>
+    <Compile Include="Properties\FactionStates.es.Designer.cs">
+      <DependentUpon>FactionStates.es.resx</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="Properties\SystemStates.fr.Designer.cs">
-      <DependentUpon>SystemStates.fr.resx</DependentUpon>
+    <Compile Include="Properties\FactionStates.fr.Designer.cs">
+      <DependentUpon>FactionStates.fr.resx</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="Properties\SystemStates.Designer.cs">
+    <Compile Include="Properties\FactionStates.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>SystemStates.resx</DependentUpon>
+      <DependentUpon>FactionStates.resx</DependentUpon>
     </Compile>
     <Compile Include="Properties\TargetType.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -479,8 +524,8 @@
     </Compile>
     <Compile Include="Status.cs" />
     <Compile Include="Friend.cs" />
-    <Compile Include="CompanionAppEconomy.cs" />
-    <Compile Include="Composition.cs" />
+    <Compile Include="EconomyShare.cs" />
+    <Compile Include="RingComposition.cs" />
     <Compile Include="Blueprint.cs" />
     <Compile Include="DataScan.cs" />
     <Compile Include="Engineer.cs" />
@@ -498,7 +543,13 @@
     <Compile Include="Role.cs" />
     <Compile Include="TargetType.cs" />
     <Compile Include="Vehicle.cs" />
+    <Compile Include="AtmosphereClass.cs" />
     <Compile Include="Volcanism.cs" />
+    <Compile Include="Properties\AtmosphereComposition.Designer.cs">
+      <DependentUpon>AtmosphereComposition.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="VolcanismConverter.cs" />
     <Compile Include="Voucher.cs" />
     <Compile Include="StarClass.cs" />
@@ -522,7 +573,6 @@
     <Compile Include="StarSystem.cs" />
     <Compile Include="Body.cs" />
     <Compile Include="Superpower.cs" />
-    <Compile Include="SystemState.cs" />
     <Compile Include="Station.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -535,6 +585,14 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Properties\AtmosphereClass.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>AtmosphereClass.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Body.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Body.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\CombatRatings.de.resx" />
     <EmbeddedResource Include="Properties\CombatRatings.es.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
@@ -572,20 +630,20 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\CommodityCategories.hu.resx" />
     <EmbeddedResource Include="Properties\CommodityCategories.it.resx" />
-    <EmbeddedResource Include="Properties\Compositions.de.resx" />
-    <EmbeddedResource Include="Properties\Compositions.es.resx">
+    <EmbeddedResource Include="Properties\RingCompositions.de.resx" />
+    <EmbeddedResource Include="Properties\RingCompositions.es.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Compositions.es.Designer.cs</LastGenOutput>
+      <LastGenOutput>RingCompositions.es.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Properties\Compositions.fr.resx">
+    <EmbeddedResource Include="Properties\RingCompositions.fr.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Compositions.fr.Designer.cs</LastGenOutput>
+      <LastGenOutput>RingCompositions.fr.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Properties\Compositions.hu.resx" />
-    <EmbeddedResource Include="Properties\Compositions.it.resx" />
-    <EmbeddedResource Include="Properties\Compositions.resx">
+    <EmbeddedResource Include="Properties\RingCompositions.hu.resx" />
+    <EmbeddedResource Include="Properties\RingCompositions.it.resx" />
+    <EmbeddedResource Include="Properties\RingCompositions.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Compositions.Designer.cs</LastGenOutput>
+      <LastGenOutput>RingCompositions.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\CQCRatings.de.resx" />
     <EmbeddedResource Include="Properties\CQCRatings.es.resx">
@@ -797,6 +855,10 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Modules.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Properties\PlanetClass.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>PlanetClass.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Rarities.de.resx" />
     <EmbeddedResource Include="Properties\Rarities.es.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
@@ -811,6 +873,10 @@
     <EmbeddedResource Include="Properties\Rarities.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Rarities.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\StationLargestPad.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>StationLargestPad.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\StationModels.de.resx" />
     <EmbeddedResource Include="Properties\StationModels.es.resx" />
@@ -865,24 +931,32 @@
     <EmbeddedResource Include="Properties\Superpowers.de.resx" />
     <EmbeddedResource Include="Properties\Superpowers.hu.resx" />
     <EmbeddedResource Include="Properties\Superpowers.it.resx" />
-    <EmbeddedResource Include="Properties\SystemStates.de.resx" />
-    <EmbeddedResource Include="Properties\SystemStates.es.resx">
+    <EmbeddedResource Include="Properties\FactionStates.de.resx" />
+    <EmbeddedResource Include="Properties\FactionStates.es.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>SystemStates.es.Designer.cs</LastGenOutput>
+      <LastGenOutput>FactionStates.es.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Properties\SystemStates.fr.resx">
+    <EmbeddedResource Include="Properties\FactionStates.fr.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>SystemStates.fr.Designer.cs</LastGenOutput>
+      <LastGenOutput>FactionStates.fr.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Properties\SystemStates.hu.resx" />
-    <EmbeddedResource Include="Properties\SystemStates.it.resx" />
-    <EmbeddedResource Include="Properties\SystemStates.resx">
+    <EmbeddedResource Include="Properties\FactionStates.hu.resx" />
+    <EmbeddedResource Include="Properties\FactionStates.it.resx" />
+    <EmbeddedResource Include="Properties\FactionStates.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>SystemStates.Designer.cs</LastGenOutput>
+      <LastGenOutput>FactionStates.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\ReserveLevel.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ReserveLevel.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\TargetType.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>TargetType.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\TerraformState.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>TerraformState.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\TradeRatings.de.resx" />
     <EmbeddedResource Include="Properties\TradeRatings.es.resx">
@@ -946,6 +1020,14 @@
     <EmbeddedResource Include="Properties\Superpowers.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Superpowers.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\AtmosphereComposition.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>AtmosphereComposition.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\StationService.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>StationService.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

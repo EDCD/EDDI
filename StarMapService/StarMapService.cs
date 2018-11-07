@@ -1,11 +1,10 @@
 ﻿using EddiDataDefinitions;
-using EddiDataProviderService;
 using Newtonsoft.Json;
 using RestSharp;
 using RestSharp.Serializers;
 using System;
+using System.Linq;
 using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
 using System.Threading;
 using Utilities;
@@ -13,27 +12,73 @@ using Utilities;
 namespace EddiStarMapService
 {
     /// <summary> Talk to the Elite: Dangerous Star Map service </summary>
-    public class StarMapService
+    public partial class StarMapService
     {
         // Set the maximum batch size we will use for syncing before we write systems to our sql database
         public const int syncBatchSize = 100;
 
-        private string commanderName;
-        private string apiKey;
-        private string baseUrl;
+        public static string commanderName { get; set; }
+        private static string apiKey { get; set; }
+        private static string baseUrl = "https://www.edsm.net/";
+
+        public StarMapService()
+        {
+            // Set up the star map service
+            StarMapConfiguration starMapCredentials = StarMapConfiguration.FromFile();
+            if (starMapCredentials != null && starMapCredentials.apiKey != null)
+            {
+                // Commander name might come from star map credentials or the companion app's profile
+                string commanderName = null;
+                if (starMapCredentials.commanderName != null)
+                {
+                    commanderName = starMapCredentials.commanderName;
+                }
+                if (commanderName != null)
+                {
+                    instance = new StarMapService(starMapCredentials.apiKey, commanderName);
+                    Logging.Info("EDDI access to EDSM is enabled");
+                }
+            }
+            if (instance == null)
+            {
+                Logging.Info("EDDI access to EDSM is disabled");
+            }
+        }
 
         // For normal use, the EDSM API base URL is https://www.edsm.net/.
-        // If you need to do some testing on EDSM's API, please use the https://beta.edsm.net/ endpoint.
-        public StarMapService(string apiKey, string commanderName, string baseUrl= "https://www.edsm.net/")
+        // If you need to do some testing on EDSM's API, please use the https://beta.edsm.net/ endpoint for sending data.
+        public StarMapService(string apikey, string commandername, string baseURL = "https://www.edsm.net/")
         {
-            this.apiKey = apiKey;
-            this.commanderName = commanderName;
-            this.baseUrl = baseUrl;
+            apiKey = apikey;
+            commanderName = commandername;
+            baseUrl = baseURL;
+        }
+
+        private static readonly object instanceLock = new object();
+        private static StarMapService instance;
+        public static StarMapService Instance
+        {
+            get
+            {
+                if (instance == null)
+                {
+                    lock (instanceLock)
+                    {
+                        if (instance == null)
+                        {
+                            Logging.Debug("No StarMapService instance: creating one");
+                            instance = new StarMapService();
+                        }
+                    }
+                }
+                return instance;
+            }
         }
 
         public void sendEvent(string eventData)
         {
-            var client = new RestClient(baseUrl);
+            // The EDSM responder has a `inBeta` flag that it checks prior to sending data via this method.  
+            var client = new RestClient(baseUrl); 
             var request = new RestRequest("api-journal-v1", Method.POST);
             request.AddParameter("commanderName", commanderName);
             request.AddParameter("apiKey", apiKey);
@@ -48,9 +93,9 @@ namespace EddiStarMapService
                     Logging.Debug("Sending event to EDSM: " + client.BuildUri(request).AbsoluteUri);
                     var clientResponse = client.Execute<StarMapLogResponse>(request);
                     StarMapLogResponse response = clientResponse.Data;
-                    if (response.msgnum != 100)
+                    if (response?.msgnum != 100)
                     {
-                        Logging.Warn("EDSM responded with " + response.msg);
+                        Logging.Warn("EDSM responded with " + response.msg ?? clientResponse.ErrorMessage);
                     }
                 }
                 catch (ThreadAbortException)
@@ -61,9 +106,11 @@ namespace EddiStarMapService
                 {
                     Logging.Warn("Failed to send event to EDSM", ex);
                 }
-            });
-            thread.IsBackground = true;
-            thread.Name = "StarMapService send event";
+            })
+            {
+                IsBackground = true,
+                Name = "StarMapService send event"
+            };
             thread.Start();
         }
 
@@ -82,9 +129,9 @@ namespace EddiStarMapService
                 {
                     var clientResponse = client.Execute<StarMapLogResponse>(request);
                     StarMapLogResponse response = clientResponse.Data;
-                    if (response.msgnum != 100)
+                    if (response?.msgnum != 100)
                     {
-                        Logging.Warn("EDSM responded with " + response.msg);
+                        Logging.Warn("EDSM responded with " + response.msg ?? clientResponse.ErrorMessage);
                     }
                 }
                 catch (ThreadAbortException)
@@ -95,9 +142,11 @@ namespace EddiStarMapService
                 {
                     Logging.Warn("Failed to send comment to EDSM", ex);
                 }
-            });
-            thread.IsBackground = true;
-            thread.Name = "StarMapService send starmap comment";
+            })
+            {
+                IsBackground = true,
+                Name = "StarMapService send starmap comment"
+            };
             thread.Start();
         }
 
@@ -107,7 +156,7 @@ namespace EddiStarMapService
             var request = new RestRequest("api-journal-v1/discard", Method.POST);
             var clientResponse = client.Execute<List<string>>(request);
             List<string> response = clientResponse.Data;
-            return (response != null) ? response : null;
+            return response ?? null;
         }
 
         public string getStarMapComment(string systemName)
@@ -119,7 +168,7 @@ namespace EddiStarMapService
             commentRequest.AddParameter("systemName", systemName);
             var commentClientResponse = client.Execute<StarMapLogResponse>(commentRequest);
             StarMapLogResponse commentResponse = commentClientResponse.Data;
-            return (commentResponse != null) ? commentResponse.comment : null;
+            return commentResponse?.comment;
         }
 
         public StarMapInfo getStarMapInfo(string systemName)
@@ -133,9 +182,9 @@ namespace EddiStarMapService
             logRequest.AddParameter("systemName", systemName);
             var logClientResponse = client.Execute<StarMapLogResponse>(logRequest);
             StarMapLogResponse logResponse = logClientResponse.Data;
-            if (logResponse.msgnum != 100)
+            if (logResponse?.msgnum != 100)
             {
-                Logging.Warn("EDSM responded with " + logResponse.msg);
+                Logging.Warn("EDSM responded with " + logResponse.msg ?? logClientResponse.ErrorMessage);
             }
 
             // Also grab any comment that might be present
@@ -145,14 +194,14 @@ namespace EddiStarMapService
             commentRequest.AddParameter("systemName", systemName);
             var commentClientResponse = client.Execute<StarMapLogResponse>(commentRequest);
             StarMapLogResponse commentResponse = commentClientResponse.Data;
-            if (commentResponse.msgnum != 100)
+            if (commentResponse?.msgnum != 100)
             {
-                Logging.Warn("EDSM responded with " + commentResponse.msg);
+                Logging.Warn("EDSM responded with " + commentResponse.msg ?? commentClientResponse.ErrorMessage);
             }
 
             int visits = (logResponse != null && logResponse.logs != null) ? logResponse.logs.Count : 1;
             DateTime lastUpdate = (logResponse != null && logResponse.lastUpdate != null) ? (DateTime)logResponse.lastUpdate : new DateTime();
-            string comment = (commentResponse != null) ? commentResponse.comment : null;
+            string comment = commentResponse?.comment;
 
             return new StarMapInfo(visits, lastUpdate, comment);
         }
@@ -235,95 +284,19 @@ namespace EddiStarMapService
                     }
                     else
                     {
-                        vals[entry.system] = new StarMapLogInfo();
-                        vals[entry.system].system = entry.system;
-                        vals[entry.system].visits = 1;
-                        vals[entry.system].lastVisit = entry.date;
+                        vals[entry.system] = new StarMapLogInfo
+                        {
+                            system = entry.system,
+                            visits = 1,
+                            lastVisit = entry.date
+                        };
                     }
                 }
             }
             return vals;
         }
-
-        public void Sync(DateTime? since = null)
-        {
-            Logging.Info("Syncing with EDSM");
-            try
-            {
-                Dictionary<string, string> comments = getStarMapComments();
-                List<StarSystem> syncSystems = new List<StarSystem>();
-
-                if (since.HasValue)
-                {
-                    // The EDSM API syncs a maximum of a week of flight logs at a time, unless we execute a `fullSync`. 
-                    // We obtain all of the missing logs for the interim period, at most one week at a time.
-                    // API reference: https://www.edsm.net/en/api-logs-v1
-                    DateTime syncStartTime = (DateTime)since;
-                    DateTime syncEndTime = DateTime.UtcNow;
-                    do
-                    {
-                        Dictionary<string, StarMapLogInfo> systemLogs = getStarMapLog(syncStartTime);
-                        syncStartTime = DateTime.Compare(syncEndTime, syncStartTime.AddDays(7)) > 0 ? syncStartTime.AddDays(7) : syncEndTime;
-                        SyncUpdate(comments, syncSystems, systemLogs, since);
-                    } while (DateTime.Compare(syncEndTime, syncStartTime) > 0); // Do this while syncEndTime is greater than than syncStartTime
-                }
-                else
-                {
-                    Dictionary<string, StarMapLogInfo> systemLogs = getStarMapLog(since);
-                    SyncUpdate(comments, syncSystems, systemLogs);
-                }
-
-                if (syncSystems.Count > 0)
-                {
-                    saveStarSystems(syncSystems);
-                }
-                Logging.Info("EDSM sync completed");
-            }
-            catch (EDSMException edsme)
-            {
-                Logging.Debug("EDSM error received: " + edsme.Message);
-            }
-            catch (ThreadAbortException e)
-            {
-                Logging.Debug("EDSM update stopped by user: " + e.Message);
-            }
-        }
-
-        private static void SyncUpdate(Dictionary<string, string> comments, List<StarSystem> syncSystems, Dictionary<string, StarMapLogInfo> systemLogs, DateTime? since = null)
-        {
-            foreach (string system in systemLogs.Keys)
-            {
-                StarSystem CurrentStarSystem = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(system, false);
-                if (since == null)
-                {
-                    /// If we're re-obtaining and resetting the flight logs, we need to replace the value.
-                    /// Otherwise, the event handler increments system visits.
-                    CurrentStarSystem.visits = systemLogs[system].visits;
-                    CurrentStarSystem.lastvisit = systemLogs[system].lastVisit;
-                }
-                if (comments.ContainsKey(system))
-                {
-                    CurrentStarSystem.comment = comments[system];
-                }
-                syncSystems.Add(CurrentStarSystem);
-
-                if (syncSystems.Count == syncBatchSize)
-                {
-                    saveStarSystems(syncSystems);
-                    syncSystems.Clear();
-                }
-            }
-        }
-
-        public static void saveStarSystems(List<StarSystem> syncSystems)
-        {
-            StarSystemSqLiteRepository.Instance.SaveStarSystems(syncSystems);
-            StarMapConfiguration starMapConfiguration = StarMapConfiguration.FromFile();
-            starMapConfiguration.lastSync = DateTime.UtcNow;
-            starMapConfiguration.ToFile();
-        }
     }
-    
+   
     // response from the Star Map log API
     class StarMapResponse
     {

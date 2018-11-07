@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
 using System.IO;
+using System.Threading.Tasks;
 using Utilities;
 
 namespace EddiDataProviderService
@@ -85,7 +86,7 @@ namespace EddiDataProviderService
             {
                 if (fetchIfMissing)
                 {
-                    system = DataProviderService.GetSystemData(name, null, null, null);
+                    system = DataProviderService.GetSystemData(name);
                 }
                 if (system == null)
                 {
@@ -107,7 +108,7 @@ namespace EddiDataProviderService
             {
                 if (fetchIfMissing)
                 {
-                    system = DataProviderService.GetSystemData(name, null, null, null);
+                    system = DataProviderService.GetSystemData(name);
                 }
                 if (system != null)
                 {
@@ -171,7 +172,7 @@ namespace EddiDataProviderService
                                     if (refreshIfOutdated && result.lastupdated < DateTime.UtcNow.AddHours(-1))
                                     {
                                         // Data is stale
-                                        StarSystem updatedResult = DataProviderService.GetSystemData(name, null, null, null);
+                                        StarSystem updatedResult = DataProviderService.GetSystemData(name);
                                         updatedResult.visits = result.visits;
                                         updatedResult.lastvisit = result.lastvisit;
                                         updatedResult.lastupdated = DateTime.UtcNow;
@@ -188,12 +189,18 @@ namespace EddiDataProviderService
                     updateStarSystem(result);
                 }
             }
+            catch (SQLiteException)
+            {
+                Logging.Warn("Problem reading data for star system '" + name + "' from database, refreshing database and re-obtaining from source.");
+                RecoverStarSystemDB();
+                GetStarSystem(name);
+            }
             catch (Exception)
             {
-                Logging.Warn("Problem reading data from database, re-obtaining from source.");
+                Logging.Warn("Problem reading data for star system '" + name + "' from database, re-obtaining from source.");
                 try
                 {
-                    result = DataProviderService.GetSystemData(name, null, null, null);
+                    result = DataProviderService.GetSystemData(name);
                     updateStarSystem(result);
                 }
                 catch (Exception ex)
@@ -285,24 +292,24 @@ namespace EddiDataProviderService
 
         private void insertStarSystem(StarSystem system)
         {
-            lock (editLock)
+            // Before we insert we attempt to fetch to ensure that we don't have it present
+            StarSystem existingStarSystem = GetStarSystem(system.name, false);
+            if (existingStarSystem != null)
             {
-                // Before we insert we attempt to fetch to ensure that we don't have it present
-                StarSystem existingStarSystem = GetStarSystem(system.name, false);
-                if (existingStarSystem != null)
+                Logging.Debug("Attempt to insert existing star system - updating instead");
+                updateStarSystem(system);
+            }
+            else
+            {
+                Logging.Debug("Creating new starsystem " + system.name);
+                if (system.lastvisit == null)
                 {
-                    Logging.Debug("Attempt to insert existing star system - updating instead");
-                    updateStarSystem(system);
+                    // DB constraints don't allow this to be null
+                    system.lastvisit = DateTime.UtcNow;
                 }
-                else
-                {
-                    Logging.Debug("Creating new starsystem " + system.name);
-                    if (system.lastvisit == null)
-                    {
-                        // DB constraints don't allow this to be null
-                        system.lastvisit = DateTime.UtcNow;
-                    }
 
+                lock (editLock)
+                {
                     using (var con = SimpleDbConnection())
                     {
                         con.Open();
@@ -324,19 +331,22 @@ namespace EddiDataProviderService
 
         private void updateStarSystem(StarSystem system)
         {
-            using (var con = SimpleDbConnection())
+            lock (editLock)
             {
-                con.Open();
-                using (var cmd = new SQLiteCommand(con))
+                using (var con = SimpleDbConnection())
                 {
-                    cmd.CommandText = UPDATE_SQL;
-                    cmd.Prepare();
-                    cmd.Parameters.AddWithValue("@totalvisits", system.visits);
-                    cmd.Parameters.AddWithValue("@lastvisit", system.lastvisit ?? DateTime.UtcNow);
-                    cmd.Parameters.AddWithValue("@starsystem", JsonConvert.SerializeObject(system));
-                    cmd.Parameters.AddWithValue("@starsystemlastupdated", system.lastupdated);
-                    cmd.Parameters.AddWithValue("@name", system.name);
-                    cmd.ExecuteNonQuery();
+                    con.Open();
+                    using (var cmd = new SQLiteCommand(con))
+                    {
+                        cmd.CommandText = UPDATE_SQL;
+                        cmd.Prepare();
+                        cmd.Parameters.AddWithValue("@totalvisits", system.visits);
+                        cmd.Parameters.AddWithValue("@lastvisit", system.lastvisit ?? DateTime.UtcNow);
+                        cmd.Parameters.AddWithValue("@starsystem", JsonConvert.SerializeObject(system));
+                        cmd.Parameters.AddWithValue("@starsystemlastupdated", system.lastupdated);
+                        cmd.Parameters.AddWithValue("@name", system.name);
+                        cmd.ExecuteNonQuery();
+                    }
                 }
             }
         }
@@ -400,6 +410,16 @@ namespace EddiDataProviderService
                 }
             }
             Logging.Debug("Created starsystem repository");
+        }
+
+        public static void RecoverStarSystemDB()
+        {
+            lock (editLock)
+            {
+                File.Delete(Constants.DATA_DIR + @"\EDDI.sqlite");
+                CreateDatabase();
+            }
+            var updateLogs = Task.Run(() => DataProviderService.syncFromStarMapService(true));
         }
     }
 }

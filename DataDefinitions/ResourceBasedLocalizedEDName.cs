@@ -125,15 +125,15 @@ namespace EddiDataDefinitions
         public static T FromName(string from)
         {
             EnsureSubClassStaticConstructorHasRun();
-            if (from == null)
+            if (from == null || from == string.Empty)
             {
                 return null;
             }
 
             from = from.ToLowerInvariant();
             T result = AllOfThem.FirstOrDefault(
-                v => 
-                v.localizedName.ToLowerInvariant() == from 
+                v =>
+                v.localizedName.ToLowerInvariant() == from
                 || v.invariantName.ToLowerInvariant() == from);
             return result;
         }
@@ -141,7 +141,7 @@ namespace EddiDataDefinitions
         public static T FromEDName(string from)
         {
             EnsureSubClassStaticConstructorHasRun();
-            if (from == null)
+            if (from == null || from == string.Empty)
             {
                 return null;
             }

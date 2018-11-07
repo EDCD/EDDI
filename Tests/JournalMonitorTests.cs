@@ -35,30 +35,92 @@ namespace UnitTests
             Assert.IsInstanceOfType(events[0], typeof(BodyScannedEvent));
             BodyScannedEvent ev = events[0] as BodyScannedEvent;
             Assert.IsNotNull(ev);
-            Assert.AreEqual(ev.name, "Grea Bloae HH-T d4-44 4");
-            Assert.AreEqual(ev.distancefromarrival, (decimal)703.763611);
-            Assert.IsTrue(ev.tidallylocked.HasValue);
+            Assert.AreEqual("Grea Bloae HH-T d4-44 4", ev.name);
+            Assert.AreEqual((decimal)703.763611, ev.distancefromarrival);
+            Assert.IsNotNull(ev.tidallylocked);
             Assert.IsFalse((bool)ev.tidallylocked);
-            Assert.AreEqual(ev.terraformstate, "Terraformable");
-            Assert.AreEqual(ev.bodyclass, "High metal content body");
-            Assert.AreEqual(ev.atmosphere, "hot thick carbon dioxide atmosphere");
+            Assert.AreEqual("Candidate for terraforming", ev.terraformState.invariantName);
+            Assert.AreEqual("High metal content world", ev.planetClass.invariantName);
             Assert.IsNotNull(ev.volcanism);
             Assert.AreEqual("Magma", ev.volcanism.invariantType);
             Assert.AreEqual("Iron", ev.volcanism.invariantComposition);
             Assert.AreEqual("Minor", ev.volcanism.invariantAmount);
-            Assert.IsTrue(ev.earthmass == (decimal)2.171783);
-            Assert.IsTrue(ev.radius  == (decimal)7622170.500000);
-            Assert.AreEqual(ev.gravity, Body.ms2g((decimal)14.899396));
-            Assert.AreEqual(ev.temperature, (decimal)836.165466);
-            Assert.AreEqual(ev.pressure, (decimal)33000114.000000);
-            Assert.IsTrue(ev.landable.HasValue);
+            Assert.AreEqual((decimal)2.171783, ev.earthmass);
+            Assert.AreEqual((double)7622.170500000M, (double)ev.radius, 0.01);
+            Assert.AreEqual(Utilities.ConstantConverters.ms2g((decimal)14.899396), ev.gravity);
+            Assert.AreEqual((decimal)836.165466, ev.temperature);
+            Assert.AreEqual(325.986, (double)ev.pressure, 0.01);
+            Assert.IsNotNull(ev.landable);
             Assert.IsFalse((bool)ev.landable);
-            Assert.AreEqual(ev.semimajoraxis, (decimal)210957926400.000000);
-            Assert.AreEqual(ev.eccentricity, (decimal)0.000248);
-            Assert.AreEqual(ev.orbitalinclination, (decimal)0.015659);
-            Assert.AreEqual(ev.periapsis, (decimal)104.416656);
-            Assert.AreEqual(ev.orbitalperiod, (decimal)48801056.000000);
-            Assert.AreEqual(ev.rotationperiod, (decimal)79442.242188);
+            Assert.AreEqual(703.679898444943, (double)ev.semimajoraxis, 0.01);
+            Assert.AreEqual((decimal)0.000248, ev.eccentricity);
+            Assert.AreEqual((decimal)0.015659, ev.orbitalinclination);
+            Assert.AreEqual((decimal)104.416656, ev.periapsis);
+            Assert.AreEqual(564.827, (double)ev.orbitalperiod, 0.01);
+            Assert.AreEqual(0.91947, (double)ev.rotationperiod, 0.01);
+        }
+
+        [TestMethod]
+        public void TestJournalPlanetScan3()
+        {
+            string line = @"{
+        ""Atmosphere"": ""hot thick carbon dioxide atmosphere"",
+         ""AtmosphereComposition"": [
+            {
+                ""Name"": ""CarbonDioxide"",
+                 ""Percent"": 96.5
+            },
+             {
+                ""Name"": ""Nitrogen"",
+                 ""Percent"": 3.499999
+            }
+        ],
+         ""AtmosphereType"": ""CarbonDioxide"",
+         ""AxialTilt"": 3.094469,
+         ""BodyID"": 2,
+         ""BodyName"": ""Venus"",
+         ""Composition"": {
+            ""Ice"": 0.0,
+             ""Metal"": 0.3,
+             ""Rock"": 0.7
+        },
+         ""DistanceFromArrivalLS"": 360.959534,
+         ""Eccentricity"": 0.0067,
+         ""Landable"": false,
+         ""MassEM"": 0.815,
+         ""OrbitalInclination"": 3.395,
+         ""OrbitalPeriod"": 19414166.0,
+         ""Parents"": [
+            {
+                ""Star"": 0
+            }
+        ],
+         ""Periapsis"": 55.186001,
+         ""PlanetClass"": ""High metal content body"",
+         ""Radius"": 6051800.0,
+         ""RotationPeriod"": 20996798.0,
+         ""ScanType"": ""NavBeaconDetail"",
+         ""SemiMajorAxis"": 108207980544.0,
+         ""SurfaceGravity"": 8.869474,
+         ""SurfacePressure"": 9442427.0,
+         ""SurfaceTemperature"": 735.0,
+         ""SystemAddress"": 10477373803,
+         ""TerraformState"": """",
+         ""TidalLock"": true,
+         ""Volcanism"": ""minor rocky magma volcanism"",
+         ""event"": ""Scan"",
+         ""timestamp"": ""2018-09-03T19:07:54Z""
+    }";
+
+            List<Event> events = JournalMonitor.ParseJournalEntry(line);
+            Assert.IsTrue(events.Count == 1);
+            Assert.IsInstanceOfType(events[0], typeof(BodyScannedEvent));
+            BodyScannedEvent ev = events[0] as BodyScannedEvent;
+            Assert.IsNotNull(ev);
+            Assert.AreEqual("Carbon dioxide", ev.atmosphereclass.invariantName);
+            Assert.AreEqual(96.5M, ev.atmospherecomposition[0].percent);
+            Assert.AreEqual("Rock", ev.solidcomposition[0].invariantName);
+            Assert.AreEqual(70M, ev.solidcomposition[0].percent);
         }
 
         [TestMethod]
@@ -74,7 +136,7 @@ namespace UnitTests
             Assert.IsNull(theEvent.eccentricity);
             Assert.AreEqual("Vela Dark Region FG-Y d3", theEvent.name);
             Assert.IsNull(theEvent.orbitalperiod);
-            Assert.AreEqual(692146368.000000M, theEvent.radius);
+            Assert.AreEqual(692146.368000000M, theEvent.radius);
             Assert.IsNull(theEvent.semimajoraxis);
             Assert.AreEqual(0.960938, (double)theEvent.solarmass, 0.001);
             Assert.AreEqual("K", theEvent.stellarclass);
@@ -95,8 +157,8 @@ namespace UnitTests
             Assert.IsTrue(events.Count == 1);
 
             StarScannedEvent theEvent = (StarScannedEvent)events[0];
-            Assert.AreEqual(theEvent.radius, (decimal)659162816.0);
-            Assert.AreEqual(theEvent.solarradius, StarClass.solarradius((decimal)659162816.000000));
+            Assert.AreEqual((decimal)659162.816, theEvent.radius);
+            Assert.AreEqual(StarClass.solarradius((decimal)659162.816000000), theEvent.solarradius);
             Assert.AreEqual(0.94775, (double)theEvent.solarradius, 0.01);
         }
 
@@ -131,30 +193,44 @@ namespace UnitTests
         [TestMethod]
         public void TestJournalDocked1()
         {
-            string line = @"{ ""timestamp"":""2017-04-14T19:34:32Z"",""event"":""Docked"",""StationName"":""Freeholm"",""StationType"":""AsteroidBase"",""StarSystem"":""Artemis"",""StationFaction"":""Artemis Empire Assembly"",""FactionState"":""Boom"",""StationGovernment"":""$government_Patronage;"",""StationGovernment_Localised"":""Patronage"",""StationAllegiance"":""Empire"",""StationEconomy"":""$economy_Industrial;"",""StationEconomy_Localised"":""Industrial"",""DistFromStarLS"":2527.211914,""StationServices"":[""Refuel""], ""MarketID"": 128169720, ""SystemAddress"": 3107509474002}";
+            string line = @"{ ""timestamp"":""2017-04-14T19:34:32Z"",""event"":""Docked"",""StationName"":""Freeholm"",""StationType"":""AsteroidBase"",""StarSystem"":""Artemis"",""StationFaction"":""Artemis Empire Assembly"",""FactionState"":""Boom"",""StationGovernment"":""$government_Patronage;"",""StationGovernment_Localised"":""Patronage"",""StationAllegiance"":""Empire"",""StationEconomy"":""$economy_Industrial;"",""StationEconomy_Localised"":""Industrial"", ""StationEconomies"": [ { ""Name"": ""$economy_Industrial;"", ""Proportion"": 0.7 }, { ""Name"": ""$economy_Extraction;"", ""Proportion"": 0.3 } ], ""DistFromStarLS"":2527.211914,""StationServices"":[""Refuel""], ""MarketID"": 128169720, ""SystemAddress"": 3107509474002}";
             List<Event> events = JournalMonitor.ParseJournalEntry(line);
             Assert.IsTrue(events.Count == 1);
 
             DockedEvent theEvent = (DockedEvent)events[0];
 
-            Assert.AreEqual("AsteroidBase", theEvent.model);
+            Assert.AreEqual("AsteroidBase", theEvent.stationModel.edname);
 
             Assert.AreEqual(128169720, theEvent.marketId);
             Assert.AreEqual(3107509474002, theEvent.systemAddress);
+            Assert.AreEqual(1, theEvent.stationservices.Count);
+            Assert.AreEqual("Refuel", theEvent.stationservices[0]);
+            Assert.AreEqual(2, theEvent.economyShares.Count);
+            Assert.AreEqual("Industrial", theEvent.economyShares[0].economy.invariantName);
+            Assert.AreEqual(0.7M, theEvent.economyShares[0].proportion);
+            Assert.AreEqual("Extraction", theEvent.economyShares[1].economy.invariantName);
+            Assert.AreEqual(0.3M, theEvent.economyShares[1].proportion);
         }
 
         [TestMethod]
         public void TestJournalDocked2()
         {
-            string line = @"{ ""timestamp"":""2017-04-14T19:34:32Z"",""event"":""Docked"",""StationName"":""Freeholm"",""StationType"":""AsteroidBase"",""StarSystem"":""Artemis"",""StationFaction"":""Artemis Empire Assembly"",""FactionState"":""Boom"",""StationGovernment"":""$government_Patronage;"",""StationGovernment_Localised"":""Patronage"",""StationAllegiance"":""Empire"",""StationEconomy"":""$economy_Industrial;"",""StationEconomy_Localised"":""Industrial"",""DistFromStarLS"":2527.211914,""StationServices"":[""Refuel""], ""MarketID"": 128169720, ""SystemAddress"": 3107509474002}";
+            string line = @"{ ""timestamp"":""2018-04-01T05:21:24Z"", ""event"":""Docked"", ""StationName"":""Donaldson"", ""StationType"":""Orbis"", ""StarSystem"":""Alioth"", ""SystemAddress"":1109989017963, ""MarketID"":128141048, ""StationFaction"":""Alioth Pro-Alliance Group"", ""FactionState"":""Boom"", ""StationGovernment"":""$government_Democracy;"", ""StationGovernment_Localised"":""Democracy"", ""StationAllegiance"":""Alliance"", ""StationServices"":[ ""Dock"", ""Autodock"", ""BlackMarket"", ""Commodities"", ""Contacts"", ""Exploration"", ""Missions"", ""Outfitting"", ""CrewLounge"", ""Rearm"", ""Refuel"", ""Repair"", ""Shipyard"", ""Tuning"", ""Workshop"", ""MissionsGenerated"", ""FlightController"", ""StationOperations"", ""Powerplay"", ""SearchAndRescue"" ], ""StationEconomy"":""$economy_Service;"", ""StationEconomy_Localised"":""Service"", ""StationEconomies"":[ { ""Name"":""$economy_Service;"", ""Name_Localised"":""Service"", ""Proportion"":1.000000 } ], ""DistFromStarLS"":4632.417480 }";
             List<Event> events = JournalMonitor.ParseJournalEntry(line);
             Assert.IsTrue(events.Count == 1);
 
             DockedEvent theEvent = (DockedEvent)events[0];
 
-            Assert.AreEqual("AsteroidBase", theEvent.model);
-            Assert.AreEqual(1, theEvent.stationservices.Count);
-            Assert.AreEqual("Refuel", theEvent.stationservices[0]);
+            Assert.AreEqual("Orbis", theEvent.stationModel.edname);
+            Assert.AreEqual("Donaldson", theEvent.station);
+            Assert.AreEqual("Alioth", theEvent.system);
+            Assert.AreEqual("Boom", theEvent.factionState.invariantName);
+            Assert.AreEqual("Democracy", theEvent.Government.invariantName);
+            Assert.AreEqual("Alliance", theEvent.Allegiance.invariantName);
+            Assert.AreEqual(20, theEvent.stationservices.Count);
+            Assert.AreEqual(1, theEvent.economyShares.Count);
+            Assert.AreEqual("Service", theEvent.economyShares[0].economy.invariantName);
+            Assert.AreEqual(1.0M, theEvent.economyShares[0].proportion);
         }
 
         [TestMethod]
@@ -483,6 +559,37 @@ namespace UnitTests
             Assert.AreEqual("Expansion", jumpedEvent.factionstate);
         }
 
+
+        [TestMethod]
+        public void TestJournalJumpedEvent2()
+        {
+            // Test for unpopulated system
+            string line = @"{
+                ""timestamp"": ""2018-10-17T00:40:45Z"",
+                ""event"": ""FSDJump"",
+                ""StarSystem"": ""Wredguia WD-K d8-65"",
+                ""SystemAddress"": 2243793258827,
+                ""StarPos"": [-319.15625,10.37500,-332.31250],
+                ""SystemAllegiance"": """",
+                ""SystemEconomy"": ""$economy_None;"",
+                ""SystemEconomy_Localised"": ""None"",
+                ""SystemSecondEconomy"": ""$economy_None;"",
+                ""SystemSecondEconomy_Localised"": ""None"",
+                ""SystemGovernment"": ""$government_None;"",
+                ""SystemGovernment_Localised"": ""None"",
+                ""SystemSecurity"": ""$GAlAXY_MAP_INFO_state_anarchy;"",
+                ""SystemSecurity_Localised"": ""Anarchy"",
+                ""Population"": 0,
+                ""JumpDist"": 24.230,
+                ""FuelUsed"": 4.271171,
+                ""FuelLevel"": 27.728828
+            }";
+            List<Event> events = JournalMonitor.ParseJournalEntry(line);
+            Assert.IsTrue(events.Count == 1);
+            JumpedEvent jumpedEvent = (JumpedEvent)events[0];
+            Assert.AreEqual("None", jumpedEvent.factionstate);
+        }
+
         [TestMethod]
         public void TestJournalJumpedEventFactionStateNull()
         {
@@ -627,19 +734,19 @@ namespace UnitTests
 
             Assert.AreEqual("Independent", @event.Allegiance.invariantName);
             Assert.AreEqual("RayGateway", @event.body);
-            Assert.AreEqual("Station", @event.bodytype);
+            Assert.AreEqual("Station", @event.bodyType.invariantName);
             Assert.AreEqual(true, @event.docked);
-            Assert.AreEqual("High Tech", @event.economy);
-            Assert.AreEqual("Refinery", @event.economy2);
+            Assert.AreEqual("High Tech", @event.Economy.invariantName);
+            Assert.AreEqual("Refinery", @event.Economy2.invariantName);
             Assert.AreEqual("EXO", @event.faction);
-            Assert.AreEqual("Democracy", @event.government);
+            Assert.AreEqual("Democracy", @event.Government.invariantName);
             Assert.IsNull(@event.latitude);
             Assert.IsNull(@event.longitude);
             Assert.AreEqual(3223343616, @event.marketId);
             Assert.AreEqual(10303479, @event.population);
-            Assert.AreEqual("Medium", @event.security);
+            Assert.AreEqual("Medium", @event.securityLevel.invariantName);
             Assert.AreEqual("RayGateway", @event.station);
-            Assert.AreEqual("Coriolis", @event.stationtype);
+            Assert.AreEqual("Coriolis Starport", @event.stationModel.invariantName);
             Assert.AreEqual("Diaguandri", @event.system);
             Assert.AreEqual(670417429889, @event.systemAddress);
             Assert.AreEqual(-41.06250M, @event.x);

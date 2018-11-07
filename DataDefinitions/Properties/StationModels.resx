@@ -145,4 +145,8 @@
     <value>Surface Station</value>
     <comment>A Surface Station</comment>
   </data>
+  <data name="None" xml:space="preserve">
+    <value>Unknown Station</value>
+    <comment>Unknown Station</comment>
+  </data>
 </root>

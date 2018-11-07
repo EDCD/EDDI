@@ -535,7 +535,19 @@ namespace EddiSpeechResponder
 
             store["SystemDetails"] = new NativeFunction((values) =>
             {
-                StarSystem result = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(values[0].AsString, true);
+                StarSystem result;
+                if (values.Count == 0)
+                {
+                    result = EDDI.Instance.CurrentStarSystem;
+                }
+                else if (values[0]?.AsString?.ToLowerInvariant() == EDDI.Instance.CurrentStarSystem?.name?.ToLowerInvariant())
+                {
+                    result = EDDI.Instance.CurrentStarSystem;
+                }
+                else
+                {
+                    result = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(values[0].AsString, true);
+                }
                 setSystemDistanceFromHome(result);
                 return (result == null ? new ReflectionValue(new object()) : new ReflectionValue(result));
             }, 1);
@@ -543,9 +555,12 @@ namespace EddiSpeechResponder
             store["BodyDetails"] = new NativeFunction((values) =>
             {
                 StarSystem system;
-                if (values.Count == 1 || string.IsNullOrEmpty(values[1].AsString))
+                if (values.Count == 0)
                 {
-                    // Current system
+                    system = EDDI.Instance.CurrentStarSystem;
+                }
+                else if (values.Count == 1 || string.IsNullOrEmpty(values[1].AsString) || values[1]?.AsString?.ToLowerInvariant() == EDDI.Instance.CurrentStarSystem?.name?.ToLowerInvariant())
+                {
                     system = EDDI.Instance.CurrentStarSystem;
                 }
                 else
@@ -553,8 +568,8 @@ namespace EddiSpeechResponder
                     // Named system
                     system = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(values[1].AsString, true);
                 }
-                Body result = system != null && system.bodies != null ? system.bodies.FirstOrDefault(v => v.name == values[0].AsString) : null;
-                if (result != null && result.type == "Star" && result.chromaticity == null)
+                Body result = system != null && system.bodies != null ? system.bodies.FirstOrDefault(v => v.name.ToLowerInvariant() == values[0].AsString.ToLowerInvariant()) : null;
+                if (result != null && result.Type.invariantName == "Star" && result.chromaticity == null)
                 {
                     // Need to set our internal extras for the star
                     result.setStellarExtras();
@@ -643,22 +658,30 @@ namespace EddiSpeechResponder
 
             store["StationDetails"] = new NativeFunction((values) =>
             {
+                Station result;
                 if (values.Count == 0)
                 {
-                    return null;
+                    result = EDDI.Instance.CurrentStation;
                 }
-                StarSystem system;
-                if (values.Count == 1)
+                if (values[0]?.AsString?.ToLowerInvariant() == EDDI.Instance.CurrentStation?.name?.ToLowerInvariant())
                 {
-                    // Current system
-                    system = EDDI.Instance.CurrentStarSystem;
+                    result = EDDI.Instance.CurrentStation;
                 }
                 else
                 {
-                    // Named system
-                    system = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(values[1].AsString, true);
+                    StarSystem system;
+                    if (values.Count == 1 || values[1]?.AsString?.ToLowerInvariant() == EDDI.Instance.CurrentStarSystem?.name?.ToLowerInvariant())
+                    {
+                        // Current system
+                        system = EDDI.Instance.CurrentStarSystem;
+                    }
+                    else
+                    {
+                        // Named system
+                        system = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(values[1].AsString, true);
+                    }
+                    result = system != null && system.stations != null ? system.stations.FirstOrDefault(v => v.name.ToLowerInvariant() == values[0].AsString.ToLowerInvariant()) : null;
                 }
-                Station result = system != null && system.stations != null ? system.stations.FirstOrDefault(v => v.name == values[0].AsString) : null;
                 return (result == null ? new ReflectionValue(new object()) : new ReflectionValue(result));
             }, 1, 2);
 
@@ -667,17 +690,17 @@ namespace EddiSpeechResponder
                 Superpower result = Superpower.FromName(values[0].AsString);
                 if (result == null)
                 {
-                    result = Superpower.From(values[0].AsString);
+                    result = Superpower.FromNameOrEdName(values[0].AsString);
                 }
                 return (result == null ? new ReflectionValue(new object()) : new ReflectionValue(result));
             }, 1);
 
             store["StateDetails"] = new NativeFunction((values) =>
             {
-                SystemState result = SystemState.FromName(values[0].AsString);
+                FactionState result = FactionState.FromName(values[0].AsString);
                 if (result == null)
                 {
-                    result = SystemState.FromEDName(values[0].AsString);
+                    result = FactionState.FromName(values[0].AsString);
                 }
                 return (result == null ? new ReflectionValue(new object()) : new ReflectionValue(result));
             }, 1);
@@ -687,7 +710,7 @@ namespace EddiSpeechResponder
                 Economy result = Economy.FromName(values[0].AsString);
                 if (result == null)
                 {
-                    result = Economy.FromEDName(values[0].AsString);
+                    result = Economy.FromName(values[0].AsString);
                 }
                 return (result == null ? new ReflectionValue(new object()) : new ReflectionValue(result));
             }, 1);
@@ -697,7 +720,7 @@ namespace EddiSpeechResponder
                 Government result = Government.FromName(values[0].AsString);
                 if (result == null)
                 {
-                    result = Government.FromEDName(values[0].AsString);
+                    result = Government.FromName(values[0].AsString);
                 }
                 return (result == null ? new ReflectionValue(new object()) : new ReflectionValue(result));
             }, 1);
@@ -707,7 +730,7 @@ namespace EddiSpeechResponder
                 SecurityLevel result = SecurityLevel.FromName(values[0].AsString);
                 if (result == null)
                 {
-                    result = SecurityLevel.FromEDName(values[0].AsString);
+                    result = SecurityLevel.FromName(values[0].AsString);
                 }
                 return (result == null ? new ReflectionValue(new object()) : new ReflectionValue(result));
             }, 1);
@@ -722,7 +745,7 @@ namespace EddiSpeechResponder
                 Material result = Material.FromName(values[0].AsString);
                 if (result == null)
                 {
-                    result = Material.FromEDName(values[0].AsString);
+                    result = Material.FromName(values[0].AsString);
                 }
                 return (result == null ? new ReflectionValue(new object()) : new ReflectionValue(result));
             }, 1);
@@ -752,7 +775,7 @@ namespace EddiSpeechResponder
                 else if (values.Count == 3)
                 {
                     // Named commodity, named station, named system 
-                    StarSystem system = DataProviderService.GetSystemData(values[2].AsString, null, null, null);
+                    StarSystem system = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(values[2].AsString);
                     string stationName = values[1].AsString;
                     Station station = system?.stations?.FirstOrDefault(v => v.name == stationName);
                     result = CommodityDetails(values[0].AsString, station);
@@ -768,7 +791,7 @@ namespace EddiSpeechResponder
 
                 if (value.Type == Cottle.ValueContent.String)
                 {
-                    edname = CommodityDefinition.FromName(value.AsString).edname;
+                    edname = CommodityDefinition.FromNameOrEDName(value.AsString).edname;
                     result = ((CargoMonitor)EDDI.Instance.ObtainMonitor("Cargo monitor")).GetCargoWithEDName(edname);
                 }
                 else if (value.Type == Cottle.ValueContent.Number)

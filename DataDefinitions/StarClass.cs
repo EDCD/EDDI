@@ -122,9 +122,9 @@ namespace EddiDataDefinitions
         /// <summary>
         /// Convert radius in m in to stellar radius
         /// </summary>
-        public static decimal solarradius(decimal radius)
+        public static decimal solarradius(decimal radiusKm)
         {
-            return radius / Constants.solarRadiusMeters;
+            return radiusKm * 1000 / Constants.solarRadiusMeters;
         }
 
         /// <summary>

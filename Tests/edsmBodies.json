@@ -1,0 +1,2009 @@
+{
+	"id": 4345,
+	"id64": 3932277478106,
+	"name": "Shinrarta Dezhra",
+	"url": "https:\/\/www.edsm.net\/en\/system\/bodies\/id\/4345\/name\/Shinrarta+Dezhra",
+	"bodies": [{
+		"id": 14923,
+		"id64": 36032729296442074,
+		"bodyId": 1,
+		"name": "Shinrarta Dezhra",
+		"discovery": {
+			"commander": "Redfoxxx",
+			"date": "2017-09-26 20:14:16"
+		},
+		"type": "Star",
+		"subType": "K (Yellow-Orange) Star",
+		"offset": 0,
+		"parents": [{
+			"Null": 0
+		}],
+		"distanceToArrival": 0,
+		"isMainStar": true,
+		"isScoopable": true,
+		"age": 8068,
+		"spectralClass": "K5",
+		"luminosity": "V",
+		"absoluteMagnitude": 7.129517,
+		"solarMasses": 0.648438,
+		"solarRadius": 0.7666015240833932,
+		"surfaceTemperature": 4343,
+		"orbitalPeriod": 1847.1559259259259,
+		"semiMajorAxis": 1.156960251734385,
+		"orbitalEccentricity": 0.018651,
+		"orbitalInclination": 21.11883,
+		"argOfPeriapsis": 201.271866,
+		"rotationalPeriod": 3.3057685908564816,
+		"rotationalPeriodTidallyLocked": false,
+		"axialTilt": -0.041915,
+		"belts": [{
+			"name": "Shinrarta Dezhra A A Belt",
+			"type": "Rocky",
+			"mass": 117620000000000,
+			"innerRadius": 879730,
+			"outerRadius": 2186700
+		}],
+		"updateTime": "2018-03-28 22:12:20"
+	},
+	{
+		"id": 7058,
+		"id64": 396320699486081754,
+		"bodyId": 11,
+		"name": "Shinrarta Dezhra A 1",
+		"discovery": {
+			"commander": "Redfoxxx",
+			"date": "2017-09-26 20:14:16"
+		},
+		"type": "Planet",
+		"subType": "High metal content world",
+		"offset": 2,
+		"parents": [{
+			"Star": 1
+		},
+		{
+			"Null": 0
+		}],
+		"distanceToArrival": 40.472694,
+		"isLandable": true,
+		"gravity": 0.9955175545631726,
+		"earthMasses": 0.777331,
+		"radius": 5635.897,
+		"surfaceTemperature": 581,
+		"surfacePressure": null,
+		"volcanismType": "No volcanism",
+		"atmosphereType": "No atmosphere",
+		"atmosphereComposition": null,
+		"solidComposition": {
+			"Rock": 66.83109999999999,
+			"Metal": 33.1689,
+			"Ice": 0
+		},
+		"terraformingState": null,
+		"orbitalPeriod": 10.463153935185185,
+		"semiMajorAxis": 0.08103988373144672,
+		"orbitalEccentricity": 0.002692,
+		"orbitalInclination": -0.044359,
+		"argOfPeriapsis": 115.330589,
+		"rotationalPeriod": 10.341365740740741,
+		"rotationalPeriodTidallyLocked": true,
+		"axialTilt": 0.271899,
+		"materials": {
+			"Iron": 23.1877,
+			"Nickel": 17.5382,
+			"Sulphur": 16.369,
+			"Carbon": 13.7646,
+			"Manganese": 9.57628,
+			"Phosphorus": 8.81233,
+			"Germanium": 4.83897,
+			"Arsenic": 2.16406,
+			"Niobium": 1.58475,
+			"Molybdenum": 1.51414,
+			"Polonium": 0.650011
+		},
+		"updateTime": "2018-10-19 04:07:24"
+	},
+	{
+		"id": 8138630,
+		"id64": 432349496505045722,
+		"bodyId": 12,
+		"name": "Shinrarta Dezhra A 2",
+		"discovery": {
+			"commander": "Redfoxxx",
+			"date": "2017-09-26 20:14:16"
+		},
+		"type": "Planet",
+		"subType": "High metal content world",
+		"offset": 2,
+		"parents": [{
+			"Star": 1
+		},
+		{
+			"Null": 0
+		}],
+		"distanceToArrival": 76.169716,
+		"isLandable": false,
+		"gravity": 0.710966793965662,
+		"earthMasses": 0.325897,
+		"radius": 4318.173,
+		"surfaceTemperature": 543,
+		"surfacePressure": 0.04223437886010363,
+		"volcanismType": "No volcanism",
+		"atmosphereType": "Hot thin Carbon dioxide",
+		"atmosphereComposition": {
+			"Carbon dioxide": 83.8222,
+			"Sulphur dioxide": 16.1779
+		},
+		"solidComposition": {
+			"Rock": 66.8312,
+			"Metal": 33.1688,
+			"Ice": 0
+		},
+		"terraformingState": null,
+		"orbitalPeriod": 26.94109085648148,
+		"semiMajorAxis": 0.15224179385328646,
+		"orbitalEccentricity": 0.002841,
+		"orbitalInclination": -0.006905,
+		"argOfPeriapsis": 89.081497,
+		"rotationalPeriod": 26.781712962962963,
+		"rotationalPeriodTidallyLocked": true,
+		"axialTilt": 0.445234,
+		"updateTime": "2018-10-19 04:07:24"
+	},
+	{
+		"id": 8138628,
+		"id64": 468378293524009690,
+		"bodyId": 13,
+		"name": "Shinrarta Dezhra A 3",
+		"discovery": {
+			"commander": "Redfoxxx",
+			"date": "2017-09-26 20:14:16"
+		},
+		"type": "Planet",
+		"subType": "High metal content world",
+		"offset": 2,
+		"parents": [{
+			"Star": 1
+		},
+		{
+			"Null": 0
+		}],
+		"distanceToArrival": 131.072845,
+		"isLandable": false,
+		"gravity": 1.268018906635979,
+		"earthMasses": 1.412444,
+		"radius": 6731.429,
+		"surfaceTemperature": 1114,
+		"surfacePressure": 220.9272736244757,
+		"volcanismType": "Major Rocky Magma",
+		"atmosphereType": "Hot thick Carbon dioxide",
+		"atmosphereComposition": {
+			"Carbon dioxide": 98.3722,
+			"Sulphur dioxide": 0.983722,
+			"Nitrogen": 0.643887
+		},
+		"solidComposition": {
+			"Rock": 66.8312,
+			"Metal": 33.1687,
+			"Ice": 0
+		},
+		"terraformingState": null,
+		"orbitalPeriod": 61.06592013888889,
+		"semiMajorAxis": 0.2626977420474742,
+		"orbitalEccentricity": 0.000588,
+		"orbitalInclination": 0.574221,
+		"argOfPeriapsis": 157.786255,
+		"rotationalPeriod": 60.87278356481482,
+		"rotationalPeriodTidallyLocked": true,
+		"axialTilt": -0.257752,
+		"updateTime": "2018-10-19 04:07:24"
+	},
+	{
+		"id": 12765,
+		"id64": 504407090542973658,
+		"bodyId": 14,
+		"name": "Founders World",
+		"discovery": {
+			"commander": "Redfoxxx",
+			"date": "2017-09-26 20:14:16"
+		},
+		"type": "Planet",
+		"subType": "Earth-like world",
+		"offset": 2,
+		"parents": [{
+			"Star": 1
+		},
+		{
+			"Null": 0
+		}],
+		"distanceToArrival": 324.465424,
+		"isLandable": false,
+		"gravity": 0.9327034079798093,
+		"earthMasses": 0.69,
+		"radius": 5485.766,
+		"surfaceTemperature": 298,
+		"surfacePressure": 2.3013969590426844,
+		"volcanismType": "No volcanism",
+		"atmosphereType": "Suitable for water-based life",
+		"atmosphereComposition": {
+			"Nitrogen": 91.2489,
+			"Oxygen": 8.69037
+		},
+		"solidComposition": {
+			"Rock": 70,
+			"Metal": 30,
+			"Ice": 0
+		},
+		"terraformingState": "Terraformed",
+		"orbitalPeriod": 248.72930555555556,
+		"semiMajorAxis": 0.670000470213912,
+		"orbitalEccentricity": 0.034386,
+		"orbitalInclination": 8.552103,
+		"argOfPeriapsis": 183.237366,
+		"rotationalPeriod": 41.96157696759259,
+		"rotationalPeriodTidallyLocked": false,
+		"axialTilt": 0.373026,
+		"updateTime": "2018-10-19 04:07:24"
+	},
+	{
+		"id": 8138629,
+		"id64": 648522278618829530,
+		"bodyId": 18,
+		"name": "Shinrarta Dezhra AB 1",
+		"discovery": {
+			"commander": "Redfoxxx",
+			"date": "2017-09-26 20:14:16"
+		},
+		"type": "Planet",
+		"subType": "Gas giant with water-based life",
+		"offset": 2,
+		"parents": [{
+			"Null": 0
+		}],
+		"distanceToArrival": 3246.224609,
+		"isLandable": false,
+		"gravity": 4.777506400028924,
+		"earthMasses": 685.480835,
+		"radius": 76397.92,
+		"surfaceTemperature": 170,
+		"surfacePressure": null,
+		"volcanismType": "No volcanism",
+		"atmosphereType": "No atmosphere",
+		"atmosphereComposition": {
+			"Hydrogen": 72.8168,
+			"Helium": 27.1419
+		},
+		"solidComposition": null,
+		"terraformingState": null,
+		"orbitalPeriod": 4529.747037037037,
+		"semiMajorAxis": 5.462124847315758,
+		"orbitalEccentricity": 0.000648,
+		"orbitalInclination": -0.202048,
+		"argOfPeriapsis": 279.854675,
+		"rotationalPeriod": 1.2284925672800926,
+		"rotationalPeriodTidallyLocked": false,
+		"axialTilt": -0.381037,
+		"rings": [{
+			"name": "Shinrarta Dezhra AB 1 A Ring",
+			"type": "Icy",
+			"mass": 905950000000,
+			"innerRadius": 144980,
+			"outerRadius": 306960
+		}],
+		"reserveLevel": "Common",
+		"updateTime": "2018-10-19 04:07:24"
+	},
+	{
+		"id": 8138621,
+		"id64": 720579872656757466,
+		"bodyId": 20,
+		"name": "Shinrarta Dezhra AB 1 a",
+		"discovery": {
+			"commander": "Redfoxxx",
+			"date": "2017-09-26 20:14:16"
+		},
+		"type": "Planet",
+		"subType": "Icy body",
+		"offset": 3,
+		"parents": [{
+			"Planet": 18
+		},
+		{
+			"Null": 0
+		}],
+		"distanceToArrival": 3244.377686,
+		"isLandable": true,
+		"gravity": 0.08277937036745917,
+		"earthMasses": 0.003891,
+		"radius": 1382.783125,
+		"surfaceTemperature": 74,
+		"surfacePressure": null,
+		"volcanismType": "No volcanism",
+		"atmosphereType": "No atmosphere",
+		"atmosphereComposition": null,
+		"solidComposition": {
+			"Ice": 82.4565,
+			"Rock": 15.959400000000002,
+			"Metal": 1.5841
+		},
+		"terraformingState": null,
+		"orbitalPeriod": 5.054926938657408,
+		"semiMajorAxis": 0.007333120845014808,
+		"orbitalEccentricity": 2.0e-6,
+		"orbitalInclination": -0.004319,
+		"argOfPeriapsis": 105.296463,
+		"rotationalPeriod": 5.055109953703703,
+		"rotationalPeriodTidallyLocked": true,
+		"axialTilt": -0.079228,
+		"materials": {
+			"Sulphur": 27.3373,
+			"Carbon": 22.9879,
+			"Phosphorus": 14.7172,
+			"Iron": 12.3403,
+			"Nickel": 9.3337,
+			"Chromium": 5.54985,
+			"Selenium": 4.27852,
+			"Zirconium": 1.43297,
+			"Niobium": 0.843395,
+			"Tin": 0.737439,
+			"Technetium": 0.441363
+		},
+		"updateTime": "2018-10-19 04:07:24"
+	},
+	{
+		"id": 8138660,
+		"id64": 756608669675721434,
+		"bodyId": 21,
+		"name": "Shinrarta Dezhra AB 1 b",
+		"discovery": {
+			"commander": "Redfoxxx",
+			"date": "2017-09-26 20:14:16"
+		},
+		"type": "Planet",
+		"subType": "Icy body",
+		"offset": 3,
+		"parents": [{
+			"Planet": 18
+		},
+		{
+			"Null": 0
+		}],
+		"distanceToArrival": 3250.803223,
+		"isLandable": false,
+		"gravity": 0.08637144960988087,
+		"earthMasses": 0.004357,
+		"radius": 1432.49525,
+		"surfaceTemperature": 124,
+		"surfacePressure": 0.3520057673328399,
+		"volcanismType": "Minor Nitrogen Magma",
+		"atmosphereType": "Methane",
+		"atmosphereComposition": {
+			"Methane": 100
+		},
+		"solidComposition": {
+			"Ice": 81.6586,
+			"Rock": 16.653200000000002,
+			"Metal": 1.6882000000000001
+		},
+		"terraformingState": null,
+		"orbitalPeriod": 7.854005353009259,
+		"semiMajorAxis": 0.009837235203375124,
+		"orbitalEccentricity": 0.000164,
+		"orbitalInclination": 0.025755,
+		"argOfPeriapsis": 300.792816,
+		"rotationalPeriod": 7.854289641203704,
+		"rotationalPeriodTidallyLocked": true,
+		"axialTilt": -0.287234,
+		"updateTime": "2018-10-19 04:07:24"
+	},
+	{
+		"id": 8138661,
+		"id64": 792637466694685402,
+		"bodyId": 22,
+		"name": "Shinrarta Dezhra AB 1 b a",
+		"discovery": {
+			"commander": "Redfoxxx",
+			"date": "2017-09-26 20:14:16"
+		},
+		"type": "Planet",
+		"subType": "Icy body",
+		"offset": 4,
+		"parents": [{
+			"Planet": 21
+		},
+		{
+			"Planet": 18
+		},
+		{
+			"Null": 0
+		}],
+		"distanceToArrival": 3250.785889,
+		"isLandable": false,
+		"gravity": 0.03432544331000274,
+		"earthMasses": 0.000334,
+		"radius": 629.1434375,
+		"surfaceTemperature": 174,
+		"surfacePressure": 6.327781889958056,
+		"volcanismType": "Major Water Geysers",
+		"atmosphereType": "Thick Methane",
+		"atmosphereComposition": {
+			"Methane": 100
+		},
+		"solidComposition": {
+			"Ice": 92.8607,
+			"Rock": 6.912699999999999,
+			"Metal": 0.22659999999999997
+		},
+		"terraformingState": null,
+		"orbitalPeriod": 0.6849864366319445,
+		"semiMajorAxis": 3.6729269436052205e-5,
+		"orbitalEccentricity": null,
+		"orbitalInclination": -38.992378,
+		"argOfPeriapsis": 297.994141,
+		"rotationalPeriod": 0.7107682291666667,
+		"rotationalPeriodTidallyLocked": true,
+		"axialTilt": 0.126543,
+		"updateTime": "2018-10-19 04:07:24"
+	},
+	{
+		"id": 8138653,
+		"id64": 864695060732613338,
+		"bodyId": 24,
+		"name": "Shinrarta Dezhra AB 1 c",
+		"discovery": {
+			"commander": "Redfoxxx",
+			"date": "2017-09-26 20:14:16"
+		},
+		"type": "Planet",
+		"subType": "Icy body",
+		"offset": 3,
+		"parents": [{
+			"Null": 23
+		},
+		{
+			"Planet": 18
+		},
+		{
+			"Null": 0
+		}],
+		"distanceToArrival": 3247.695313,
+		"isLandable": false,
+		"gravity": 0.09417504857588492,
+		"earthMasses": 0.005679,
+		"radius": 1566.219125,
+		"surfaceTemperature": 210,
+		"surfacePressure": 42.444485566247224,
+		"volcanismType": "Major Water Geysers",
+		"atmosphereType": "Thick Methane",
+		"atmosphereComposition": {
+			"Methane": 99.5614,
+			"Sulphur dioxide": 0.367299,
+			"Ammonia": 0.071343
+		},
+		"solidComposition": {
+			"Ice": 82.4565,
+			"Rock": 15.959400000000002,
+			"Metal": 1.5841
+		},
+		"terraformingState": null,
+		"orbitalPeriod": 1.5983805338541666,
+		"semiMajorAxis": 4.27964279841852e-5,
+		"orbitalEccentricity": 0.187655,
+		"orbitalInclination": -1.340739,
+		"argOfPeriapsis": 58.818855,
+		"rotationalPeriod": 2.2720648871527778,
+		"rotationalPeriodTidallyLocked": true,
+		"axialTilt": 0.372128,
+		"updateTime": "2018-10-19 04:07:24"
+	},
+	{
+		"id": 8138619,
+		"id64": 900723857751577306,
+		"bodyId": 25,
+		"name": "Shinrarta Dezhra AB 1 d",
+		"discovery": {
+			"commander": "Redfoxxx",
+			"date": "2017-09-26 20:14:16"
+		},
+		"type": "Planet",
+		"subType": "Icy body",
+		"offset": 3,
+		"parents": [{
+			"Null": 23
+		},
+		{
+			"Planet": 18
+		},
+		{
+			"Null": 0
+		}],
+		"distanceToArrival": 3247.741455,
+		"isLandable": false,
+		"gravity": 0.09351492470434644,
+		"earthMasses": 0.005564,
+		"radius": 1555.742125,
+		"surfaceTemperature": 209,
+		"surfacePressure": 41.85423636812238,
+		"volcanismType": "Major Water Geysers",
+		"atmosphereType": "Thick Methane",
+		"atmosphereComposition": {
+			"Methane": 99.5683,
+			"Sulphur dioxide": 0.361167,
+			"Ammonia": 0.070547
+		},
+		"solidComposition": {
+			"Ice": 82.4565,
+			"Rock": 15.959400000000002,
+			"Metal": 1.5841
+		},
+		"terraformingState": null,
+		"orbitalPeriod": 1.5983805338541666,
+		"semiMajorAxis": 4.3678064864328316e-5,
+		"orbitalEccentricity": 0.187655,
+		"orbitalInclination": -1.340739,
+		"argOfPeriapsis": 238.818848,
+		"rotationalPeriod": 2.2490178313078704,
+		"rotationalPeriodTidallyLocked": true,
+		"axialTilt": -0.085051,
+		"updateTime": "2018-10-19 04:07:24"
+	},
+	{
+		"id": 8138648,
+		"id64": 936752654770541274,
+		"bodyId": 26,
+		"name": "Shinrarta Dezhra AB 1 e",
+		"discovery": {
+			"commander": "Redfoxxx",
+			"date": "2017-09-26 20:14:16"
+		},
+		"type": "Planet",
+		"subType": "Icy body",
+		"offset": 3,
+		"parents": [{
+			"Planet": 18
+		},
+		{
+			"Null": 0
+		}],
+		"distanceToArrival": 3247.086426,
+		"isLandable": false,
+		"gravity": 0.09218795950895307,
+		"earthMasses": 0.005336,
+		"radius": 1534.459125,
+		"surfaceTemperature": 116,
+		"surfacePressure": 0.40500786454478166,
+		"volcanismType": "No volcanism",
+		"atmosphereType": "Methane",
+		"atmosphereComposition": {
+			"Methane": 100
+		},
+		"solidComposition": {
+			"Ice": 82.4565,
+			"Rock": 15.959400000000002,
+			"Metal": 1.5841
+		},
+		"terraformingState": null,
+		"orbitalPeriod": 36.28779224537037,
+		"semiMajorAxis": 0.0272888983572946,
+		"orbitalEccentricity": 0.00055,
+		"orbitalInclination": 0.005535,
+		"argOfPeriapsis": 352.351227,
+		"rotationalPeriod": 36.2891087962963,
+		"rotationalPeriodTidallyLocked": true,
+		"axialTilt": -0.256516,
+		"updateTime": "2018-10-19 04:07:24"
+	},
+	{
+		"id": 8138664,
+		"id64": 1008810248808469210,
+		"bodyId": 28,
+		"name": "Shinrarta Dezhra AB 1 f",
+		"discovery": {
+			"commander": "Redfoxxx",
+			"date": "2017-09-26 20:14:16"
+		},
+		"type": "Planet",
+		"subType": "Icy body",
+		"offset": 3,
+		"parents": [{
+			"Planet": 18
+		},
+		{
+			"Null": 0
+		}],
+		"distanceToArrival": 3250.48999,
+		"isLandable": false,
+		"gravity": 0.10187987598071616,
+		"earthMasses": 0.007146,
+		"radius": 1689.164,
+		"surfaceTemperature": 116,
+		"surfacePressure": 0.4945352593733037,
+		"volcanismType": "No volcanism",
+		"atmosphereType": "Methane",
+		"atmosphereComposition": {
+			"Methane": 100
+		},
+		"solidComposition": {
+			"Ice": 82.4565,
+			"Rock": 15.959400000000002,
+			"Metal": 1.5841
+		},
+		"terraformingState": null,
+		"orbitalPeriod": 68.46362847222223,
+		"semiMajorAxis": 0.0416663556161164,
+		"orbitalEccentricity": 0.01191,
+		"orbitalInclination": -0.707801,
+		"argOfPeriapsis": 49.249844,
+		"rotationalPeriod": 68.46610532407408,
+		"rotationalPeriodTidallyLocked": true,
+		"axialTilt": -0.163277,
+		"updateTime": "2018-10-19 04:07:24"
+	},
+	{
+		"id": 8138626,
+		"id64": 1080867842846397146,
+		"bodyId": 30,
+		"name": "Shinrarta Dezhra AB 2",
+		"discovery": {
+			"commander": "Redfoxxx",
+			"date": "2017-09-26 20:14:16"
+		},
+		"type": "Planet",
+		"subType": "Class I gas giant",
+		"offset": 2,
+		"parents": [{
+			"Null": 0
+		}],
+		"distanceToArrival": 3767.557861,
+		"isLandable": false,
+		"gravity": 3.8552143758323023,
+		"earthMasses": 484.303284,
+		"radius": 71485.664,
+		"surfaceTemperature": 123,
+		"surfacePressure": null,
+		"volcanismType": "No volcanism",
+		"atmosphereType": "No atmosphere",
+		"atmosphereComposition": {
+			"Hydrogen": 72.8469,
+			"Helium": 27.1531
+		},
+		"solidComposition": null,
+		"terraformingState": null,
+		"orbitalPeriod": 7354.8133333333335,
+		"semiMajorAxis": 7.545593882466938,
+		"orbitalEccentricity": 0.007439,
+		"orbitalInclination": -0.406597,
+		"argOfPeriapsis": 305.503632,
+		"rotationalPeriod": 1.1907941804166666,
+		"rotationalPeriodTidallyLocked": false,
+		"axialTilt": 0.868699,
+		"rings": [{
+			"name": "Shinrarta Dezhra AB 2 A Ring",
+			"type": "Icy",
+			"mass": 239990000000,
+			"innerRadius": 130900,
+			"outerRadius": 273390
+		}],
+		"reserveLevel": "Common",
+		"updateTime": "2018-10-19 04:07:24"
+	},
+	{
+		"id": 8138656,
+		"id64": 1152925436884325082,
+		"bodyId": 32,
+		"name": "Shinrarta Dezhra AB 2 a",
+		"discovery": {
+			"commander": "Redfoxxx",
+			"date": "2017-09-26 20:14:16"
+		},
+		"type": "Planet",
+		"subType": "Icy body",
+		"offset": 3,
+		"parents": [{
+			"Planet": 30
+		},
+		{
+			"Null": 0
+		}],
+		"distanceToArrival": 3766.727539,
+		"isLandable": false,
+		"gravity": 0.036948322458399144,
+		"earthMasses": 0.000357,
+		"radius": 626.9331875,
+		"surfaceTemperature": 162,
+		"surfacePressure": 6.491126943005181,
+		"volcanismType": "Major Water Geysers",
+		"atmosphereType": "Thick Methane",
+		"atmosphereComposition": {
+			"Methane": 100
+		},
+		"solidComposition": {
+			"Ice": 82.3725,
+			"Rock": 16.0324,
+			"Metal": 1.5951
+		},
+		"terraformingState": null,
+		"orbitalPeriod": 1.1000841833101853,
+		"semiMajorAxis": 0.0023637014507319454,
+		"orbitalEccentricity": 0.000154,
+		"orbitalInclination": -0.000333,
+		"argOfPeriapsis": 67.939407,
+		"rotationalPeriod": 1.1005891022916667,
+		"rotationalPeriodTidallyLocked": true,
+		"axialTilt": 0.471382,
+		"updateTime": "2018-10-19 04:07:24"
+	},
+	{
+		"id": 8138625,
+		"id64": 1188954233903289050,
+		"bodyId": 33,
+		"name": "Shinrarta Dezhra AB 2 b",
+		"discovery": {
+			"commander": "Redfoxxx",
+			"date": "2017-09-26 20:14:16"
+		},
+		"type": "Planet",
+		"subType": "Icy body",
+		"offset": 3,
+		"parents": [{
+			"Planet": 30
+		},
+		{
+			"Null": 0
+		}],
+		"distanceToArrival": 3767.790527,
+		"isLandable": false,
+		"gravity": 0.043615133146653155,
+		"earthMasses": 0.000586,
+		"radius": 739.2898125,
+		"surfaceTemperature": 166,
+		"surfacePressure": 9.068261164569455,
+		"volcanismType": "Major Water Geysers",
+		"atmosphereType": "Thick Methane",
+		"atmosphereComposition": {
+			"Methane": 100
+		},
+		"solidComposition": {
+			"Ice": 82.3725,
+			"Rock": 16.0324,
+			"Metal": 1.5951
+		},
+		"terraformingState": null,
+		"orbitalPeriod": 1.380616229027778,
+		"semiMajorAxis": 0.0027501559352074386,
+		"orbitalEccentricity": 6.1e-5,
+		"orbitalInclination": 0.004401,
+		"argOfPeriapsis": 313.046295,
+		"rotationalPeriod": 1.3812499095833333,
+		"rotationalPeriodTidallyLocked": true,
+		"axialTilt": -0.108483,
+		"updateTime": "2018-10-19 04:07:24"
+	},
+	{
+		"id": 8138632,
+		"id64": 1224983030922253018,
+		"bodyId": 34,
+		"name": "Shinrarta Dezhra AB 2 c",
+		"discovery": {
+			"commander": "Redfoxxx",
+			"date": "2017-09-26 20:14:16"
+		},
+		"type": "Planet",
+		"subType": "Icy body",
+		"offset": 3,
+		"parents": [{
+			"Planet": 30
+		},
+		{
+			"Null": 0
+		}],
+		"distanceToArrival": 3767.986084,
+		"isLandable": false,
+		"gravity": 0.03646685472546639,
+		"earthMasses": 0.000344,
+		"radius": 619.461875,
+		"surfaceTemperature": 155,
+		"surfacePressure": 6.33539970392302,
+		"volcanismType": "Major Water Geysers",
+		"atmosphereType": "Thick Methane",
+		"atmosphereComposition": {
+			"Methane": 100
+		},
+		"solidComposition": {
+			"Ice": 82.3725,
+			"Rock": 16.0324,
+			"Metal": 1.5951
+		},
+		"terraformingState": null,
+		"orbitalPeriod": 1.7658582899305555,
+		"semiMajorAxis": 0.0032405040909449256,
+		"orbitalEccentricity": 0.00019,
+		"orbitalInclination": 0.073881,
+		"argOfPeriapsis": 276.066376,
+		"rotationalPeriod": 1.7666688368055556,
+		"rotationalPeriodTidallyLocked": true,
+		"axialTilt": 0.141553,
+		"updateTime": "2018-10-19 04:07:24"
+	},
+	{
+		"id": 8138618,
+		"id64": 1261011827941216986,
+		"bodyId": 35,
+		"name": "Shinrarta Dezhra AB 2 d",
+		"discovery": {
+			"commander": "Redfoxxx",
+			"date": "2017-09-26 20:14:16"
+		},
+		"type": "Planet",
+		"subType": "Icy body",
+		"offset": 3,
+		"parents": [{
+			"Planet": 30
+		},
+		{
+			"Null": 0
+		}],
+		"distanceToArrival": 3766.174316,
+		"isLandable": false,
+		"gravity": 0.06009400726052978,
+		"earthMasses": 0.001512,
+		"radius": 1011.683875,
+		"surfaceTemperature": 171,
+		"surfacePressure": 17.183629410313348,
+		"volcanismType": "Water Geysers",
+		"atmosphereType": "Thick Methane",
+		"atmosphereComposition": {
+			"Methane": 100
+		},
+		"solidComposition": {
+			"Ice": 82.3725,
+			"Rock": 16.0324,
+			"Metal": 1.5951
+		},
+		"terraformingState": null,
+		"orbitalPeriod": 2.460436921296296,
+		"semiMajorAxis": 0.004042502030077357,
+		"orbitalEccentricity": 0.000205,
+		"orbitalInclination": -0.071745,
+		"argOfPeriapsis": 358.374634,
+		"rotationalPeriod": 2.461566116898148,
+		"rotationalPeriodTidallyLocked": true,
+		"axialTilt": 0.475598,
+		"updateTime": "2018-10-19 04:07:24"
+	},
+	{
+		"id": 8138636,
+		"id64": 1297040624960180954,
+		"bodyId": 36,
+		"name": "Shinrarta Dezhra AB 2 e",
+		"discovery": {
+			"commander": "Redfoxxx",
+			"date": "2017-09-26 20:14:16"
+		},
+		"type": "Planet",
+		"subType": "Icy body",
+		"offset": 3,
+		"parents": [{
+			"Planet": 30
+		},
+		{
+			"Null": 0
+		}],
+		"distanceToArrival": 3765.939697,
+		"isLandable": false,
+		"gravity": 0.08333518918926819,
+		"earthMasses": 0.00394,
+		"radius": 1386.814625,
+		"surfaceTemperature": 142,
+		"surfacePressure": 4.560238712065137,
+		"volcanismType": "Major Water Magma",
+		"atmosphereType": "Methane",
+		"atmosphereComposition": {
+			"Methane": 100
+		},
+		"solidComposition": {
+			"Ice": 81.9501,
+			"Rock": 16.3996,
+			"Metal": 1.6503
+		},
+		"terraformingState": null,
+		"orbitalPeriod": 3.7631684027777776,
+		"semiMajorAxis": 0.005366335631941585,
+		"orbitalEccentricity": 0.00038,
+		"orbitalInclination": 0.017725,
+		"argOfPeriapsis": 346.775574,
+		"rotationalPeriod": -3.7648958333333336,
+		"rotationalPeriodTidallyLocked": false,
+		"axialTilt": 3.075285,
+		"updateTime": "2018-10-19 04:07:24"
+	},
+	{
+		"id": 8138637,
+		"id64": 1333069421979144922,
+		"bodyId": 37,
+		"name": "Shinrarta Dezhra AB 2 f",
+		"discovery": {
+			"commander": "Redfoxxx",
+			"date": "2017-09-26 20:14:16"
+		},
+		"type": "Planet",
+		"subType": "Icy body",
+		"offset": 3,
+		"parents": [{
+			"Planet": 30
+		},
+		{
+			"Null": 0
+		}],
+		"distanceToArrival": 3771.774902,
+		"isLandable": false,
+		"gravity": 0.11698688154428256,
+		"earthMasses": 0.010652,
+		"radius": 1924.56025,
+		"surfaceTemperature": 57,
+		"surfacePressure": 0.006501101613619541,
+		"volcanismType": "No volcanism",
+		"atmosphereType": "Thin Argon",
+		"atmosphereComposition": {
+			"Argon": 100
+		},
+		"solidComposition": {
+			"Ice": 82.1973,
+			"Rock": 16.1847,
+			"Metal": 1.6179999999999999
+		},
+		"terraformingState": null,
+		"orbitalPeriod": 20.668359375,
+		"semiMajorAxis": 0.016704982151861603,
+		"orbitalEccentricity": 0.00011,
+		"orbitalInclination": -0.539478,
+		"argOfPeriapsis": 72.67556,
+		"rotationalPeriod": -20.677845775462963,
+		"rotationalPeriodTidallyLocked": false,
+		"axialTilt": -1.81199,
+		"updateTime": "2018-10-19 04:07:24"
+	},
+	{
+		"id": 8138657,
+		"id64": 1369098218998108890,
+		"bodyId": 38,
+		"name": "Shinrarta Dezhra AB 2 f a",
+		"discovery": {
+			"commander": "Redfoxxx",
+			"date": "2017-09-26 20:14:16"
+		},
+		"type": "Planet",
+		"subType": "Icy body",
+		"offset": 4,
+		"parents": [{
+			"Planet": 37
+		},
+		{
+			"Planet": 30
+		},
+		{
+			"Null": 0
+		}],
+		"distanceToArrival": 3771.779297,
+		"isLandable": true,
+		"gravity": 0.027893616886655134,
+		"earthMasses": 0.000179,
+		"radius": 510.92671875,
+		"surfaceTemperature": 56,
+		"surfacePressure": null,
+		"volcanismType": "Water Geysers",
+		"atmosphereType": "No atmosphere",
+		"atmosphereComposition": null,
+		"solidComposition": {
+			"Ice": 92.8231,
+			"Rock": 6.948600000000001,
+			"Metal": 0.22829999999999998
+		},
+		"terraformingState": null,
+		"orbitalPeriod": 0.6084720413773148,
+		"semiMajorAxis": 4.4859074321035774e-5,
+		"orbitalEccentricity": null,
+		"orbitalInclination": -83.591553,
+		"argOfPeriapsis": 249.303741,
+		"rotationalPeriod": 0.6135517487731482,
+		"rotationalPeriodTidallyLocked": true,
+		"axialTilt": 0.264644,
+		"materials": {
+			"Sulphur": 29.5225,
+			"Carbon": 24.8254,
+			"Phosphorus": 15.8936,
+			"Iron": 9.15553,
+			"Nickel": 6.92486,
+			"Selenium": 4.62052,
+			"Chromium": 4.11755,
+			"Germanium": 3.04152,
+			"Tellurium": 0.787759,
+			"Cadmium": 0.710969,
+			"Mercury": 0.399807
+		},
+		"updateTime": "2018-10-19 04:07:24"
+	},
+	{
+		"id": 8138665,
+		"id64": 1405127016017072858,
+		"bodyId": 39,
+		"name": "Shinrarta Dezhra AB 2 g",
+		"discovery": {
+			"commander": "Redfoxxx",
+			"date": "2017-09-26 20:14:16"
+		},
+		"type": "Planet",
+		"subType": "Icy body",
+		"offset": 3,
+		"parents": [{
+			"Planet": 30
+		},
+		{
+			"Null": 0
+		}],
+		"distanceToArrival": 3774.597168,
+		"isLandable": false,
+		"gravity": 0.1208601544900282,
+		"earthMasses": 0.011738,
+		"radius": 1987.650375,
+		"surfaceTemperature": 55,
+		"surfacePressure": 0.006953318963730569,
+		"volcanismType": "No volcanism",
+		"atmosphereType": "Thin Argon",
+		"atmosphereComposition": {
+			"Argon": 100
+		},
+		"solidComposition": {
+			"Ice": 82.3725,
+			"Rock": 16.0324,
+			"Metal": 1.5951
+		},
+		"terraformingState": null,
+		"orbitalPeriod": 43.02785590277778,
+		"semiMajorAxis": 0.027235905945284286,
+		"orbitalEccentricity": 0.000335,
+		"orbitalInclination": -0.010288,
+		"argOfPeriapsis": 62.139706,
+		"rotationalPeriod": 43.047601273148146,
+		"rotationalPeriodTidallyLocked": true,
+		"axialTilt": 0.377034,
+		"updateTime": "2018-10-19 04:07:24"
+	},
+	{
+		"id": 8138635,
+		"id64": 1441155813036036826,
+		"bodyId": 40,
+		"name": "Shinrarta Dezhra AB 2 h",
+		"discovery": {
+			"commander": "Redfoxxx",
+			"date": "2017-09-26 20:14:16"
+		},
+		"type": "Planet",
+		"subType": "Icy body",
+		"offset": 3,
+		"parents": [{
+			"Planet": 30
+		},
+		{
+			"Null": 0
+		}],
+		"distanceToArrival": 3754.466309,
+		"isLandable": true,
+		"gravity": 0.11764532495692755,
+		"earthMasses": 0.010854,
+		"radius": 1937.278625,
+		"surfaceTemperature": 54,
+		"surfacePressure": null,
+		"volcanismType": "No volcanism",
+		"atmosphereType": "No atmosphere",
+		"atmosphereComposition": null,
+		"solidComposition": {
+			"Ice": 82.3725,
+			"Rock": 16.0324,
+			"Metal": 1.5951
+		},
+		"terraformingState": null,
+		"orbitalPeriod": 68.51959490740741,
+		"semiMajorAxis": 0.03714085462581387,
+		"orbitalEccentricity": 0.000421,
+		"orbitalInclination": -0.004175,
+		"argOfPeriapsis": 223.339218,
+		"rotationalPeriod": 68.5510474537037,
+		"rotationalPeriodTidallyLocked": true,
+		"axialTilt": 0.371127,
+		"materials": {
+			"Sulphur": 26.5602,
+			"Carbon": 22.3344,
+			"Phosphorus": 14.2988,
+			"Iron": 12.0102,
+			"Nickel": 9.08401,
+			"Chromium": 5.40138,
+			"Manganese": 4.96009,
+			"Zinc": 3.26392,
+			"Niobium": 0.820833,
+			"Ruthenium": 0.741706,
+			"Mercury": 0.524465
+		},
+		"updateTime": "2018-10-19 04:07:24"
+	},
+	{
+		"id": 8138649,
+		"id64": 1477184610055000794,
+		"bodyId": 41,
+		"name": "Shinrarta Dezhra AB 2 i",
+		"discovery": {
+			"commander": "Redfoxxx",
+			"date": "2017-09-26 20:14:16"
+		},
+		"type": "Planet",
+		"subType": "Icy body",
+		"offset": 3,
+		"parents": [{
+			"Planet": 30
+		},
+		{
+			"Null": 0
+		}],
+		"distanceToArrival": 3749.090088,
+		"isLandable": true,
+		"gravity": 0.17643359150067014,
+		"earthMasses": 0.034888,
+		"radius": 2836.16775,
+		"surfaceTemperature": 53,
+		"surfacePressure": null,
+		"volcanismType": "No volcanism",
+		"atmosphereType": "No atmosphere",
+		"atmosphereComposition": null,
+		"solidComposition": {
+			"Ice": 82.3725,
+			"Rock": 16.0324,
+			"Metal": 1.5951
+		},
+		"terraformingState": null,
+		"orbitalPeriod": 157.46284722222222,
+		"semiMajorAxis": 0.06467861556267458,
+		"orbitalEccentricity": 0.001125,
+		"orbitalInclination": -2.917885,
+		"argOfPeriapsis": 210.08107,
+		"rotationalPeriod": 157.53511574074074,
+		"rotationalPeriodTidallyLocked": true,
+		"axialTilt": 0.281619,
+		"materials": {
+			"Sulphur": 27.5503,
+			"Carbon": 23.167,
+			"Phosphorus": 14.8319,
+			"Iron": 12.4579,
+			"Nickel": 9.42266,
+			"Manganese": 5.145,
+			"Zinc": 3.3856,
+			"Zirconium": 1.44662,
+			"Tellurium": 0.928064,
+			"Niobium": 0.851433,
+			"Molybdenum": 0.813496
+		},
+		"updateTime": "2018-10-19 04:07:24"
+	},
+	{
+		"id": 2078,
+		"id64": 1513213407073964762,
+		"bodyId": 42,
+		"name": "Shinrarta Dezhra AB 2 J",
+		"discovery": {
+			"commander": "Redfoxxx",
+			"date": "2017-09-26 20:14:16"
+		},
+		"type": "Planet",
+		"subType": "Icy body",
+		"offset": 3,
+		"parents": [{
+			"Planet": 30
+		},
+		{
+			"Null": 0
+		}],
+		"distanceToArrival": 3821.659424,
+		"isLandable": true,
+		"gravity": 0.3927722655000086,
+		"earthMasses": 0.343425,
+		"radius": 5963.896,
+		"surfaceTemperature": 52,
+		"surfacePressure": 0.0006573759684184555,
+		"volcanismType": "No volcanism",
+		"atmosphereType": "No atmosphere",
+		"atmosphereComposition": null,
+		"solidComposition": {
+			"Ice": 87.7692,
+			"Rock": 10.453999999999999,
+			"Metal": 1.7132
+		},
+		"terraformingState": "Not terraformable",
+		"orbitalPeriod": 557.1510648148148,
+		"semiMajorAxis": 0.15018411322882552,
+		"orbitalEccentricity": 0,
+		"orbitalInclination": -6.284122,
+		"argOfPeriapsis": 319.132568,
+		"rotationalPeriod": 0.9162694408333334,
+		"rotationalPeriodTidallyLocked": false,
+		"axialTilt": -0.176015,
+		"materials": {
+			"Sulphur": 27.0554,
+			"Carbon": 22.7508,
+			"Phosphorus": 14.5655,
+			"Iron": 11.8622,
+			"Nickel": 8.97207,
+			"Chromium": 5.33483,
+			"Selenium": 4.2344,
+			"Zinc": 3.2237,
+			"Molybdenum": 0.774595,
+			"Yttrium": 0.708515,
+			"Mercury": 0.518003
+		},
+		"rings": [{
+			"name": "Shinrarta Dezhra AB 2 j A Ring",
+			"type": "Icy",
+			"mass": 240670000,
+			"innerRadius": 9416.4,
+			"outerRadius": 24379
+		}],
+		"reserveLevel": "Common",
+		"updateTime": "2018-10-19 04:07:24"
+	},
+	{
+		"id": 8138647,
+		"id64": 2017616565339460314,
+		"bodyId": 56,
+		"name": "Shinrarta Dezhra AB 3",
+		"discovery": {
+			"commander": "Redfoxxx",
+			"date": "2017-09-26 20:14:16"
+		},
+		"type": "Planet",
+		"subType": "Class I gas giant",
+		"offset": 2,
+		"parents": [{
+			"Null": 0
+		}],
+		"distanceToArrival": 5496.639648,
+		"isLandable": false,
+		"gravity": 2.966022202683872,
+		"earthMasses": 72.080849,
+		"radius": 31441.79,
+		"surfaceTemperature": 54,
+		"surfacePressure": null,
+		"volcanismType": "No volcanism",
+		"atmosphereType": "No atmosphere",
+		"atmosphereComposition": {
+			"Hydrogen": 72.8469,
+			"Helium": 27.1531
+		},
+		"solidComposition": null,
+		"terraformingState": null,
+		"orbitalPeriod": 11680.838518518518,
+		"semiMajorAxis": 10.271369543390165,
+		"orbitalEccentricity": 0.000216,
+		"orbitalInclination": -0.874216,
+		"argOfPeriapsis": 236.558929,
+		"rotationalPeriod": 1.294808033136574,
+		"rotationalPeriodTidallyLocked": false,
+		"axialTilt": 0.189473,
+		"rings": [{
+			"name": "Shinrarta Dezhra AB 3 A Ring",
+			"type": "Icy",
+			"mass": 564570000000,
+			"innerRadius": 54955,
+			"outerRadius": 144880
+		}],
+		"reserveLevel": "Common",
+		"updateTime": "2018-10-19 04:07:24"
+	},
+	{
+		"id": 8138622,
+		"id64": 2089674159377388250,
+		"bodyId": 58,
+		"name": "Shinrarta Dezhra AB 3 a",
+		"discovery": {
+			"commander": "Redfoxxx",
+			"date": "2017-09-26 20:14:16"
+		},
+		"type": "Planet",
+		"subType": "Icy body",
+		"offset": 3,
+		"parents": [{
+			"Planet": 56
+		},
+		{
+			"Null": 0
+		}],
+		"distanceToArrival": 5493.789551,
+		"isLandable": true,
+		"gravity": 0.05530917005202263,
+		"earthMasses": 0.001172,
+		"radius": 928.43125,
+		"surfaceTemperature": 43,
+		"surfacePressure": null,
+		"volcanismType": "No volcanism",
+		"atmosphereType": "No atmosphere",
+		"atmosphereComposition": null,
+		"solidComposition": {
+			"Ice": 81.7427,
+			"Rock": 16.5801,
+			"Metal": 1.6773
+		},
+		"terraformingState": null,
+		"orbitalPeriod": 15.343778935185185,
+		"semiMajorAxis": 0.00725660895385993,
+		"orbitalEccentricity": 0.00155,
+		"orbitalInclination": -0.000648,
+		"argOfPeriapsis": 15.78763,
+		"rotationalPeriod": -15.345659722222223,
+		"rotationalPeriodTidallyLocked": false,
+		"axialTilt": -2.382057,
+		"materials": {
+			"Sulphur": 27.2184,
+			"Carbon": 22.8879,
+			"Phosphorus": 14.6532,
+			"Iron": 12.4646,
+			"Nickel": 9.42767,
+			"Selenium": 4.25992,
+			"Zinc": 3.3874,
+			"Vanadium": 3.06086,
+			"Cadmium": 0.96793,
+			"Tellurium": 0.926026,
+			"Tin": 0.746081
+		},
+		"updateTime": "2018-10-19 04:07:24"
+	},
+	{
+		"id": 8138640,
+		"id64": 2161731753415316186,
+		"bodyId": 60,
+		"name": "Shinrarta Dezhra AB 3 b",
+		"discovery": {
+			"commander": "Redfoxxx",
+			"date": "2017-09-26 20:14:16"
+		},
+		"type": "Planet",
+		"subType": "Icy body",
+		"offset": 3,
+		"parents": [{
+			"Null": 59
+		},
+		{
+			"Planet": 56
+		},
+		{
+			"Null": 0
+		}],
+		"distanceToArrival": 5493.291504,
+		"isLandable": true,
+		"gravity": 0.04911911447459123,
+		"earthMasses": 0.000834,
+		"radius": 831.0789375,
+		"surfaceTemperature": 43,
+		"surfacePressure": null,
+		"volcanismType": "Major Water Magma",
+		"atmosphereType": "No atmosphere",
+		"atmosphereComposition": null,
+		"solidComposition": {
+			"Ice": 82.4565,
+			"Rock": 15.959400000000002,
+			"Metal": 1.5841
+		},
+		"terraformingState": null,
+		"orbitalPeriod": 2.664696361400463,
+		"semiMajorAxis": 2.3503038402537906e-5,
+		"orbitalEccentricity": 0.155586,
+		"orbitalInclination": -8.664972,
+		"argOfPeriapsis": 87.751503,
+		"rotationalPeriod": 4.266221064814815,
+		"rotationalPeriodTidallyLocked": true,
+		"axialTilt": 0.059536,
+		"materials": {
+			"Sulphur": 27.7492,
+			"Carbon": 23.3342,
+			"Phosphorus": 14.939,
+			"Iron": 12.5262,
+			"Nickel": 9.47433,
+			"Chromium": 5.63347,
+			"Vanadium": 3.07601,
+			"Zirconium": 1.45456,
+			"Molybdenum": 0.817957,
+			"Mercury": 0.547001,
+			"Technetium": 0.448013
+		},
+		"updateTime": "2018-10-19 04:07:24"
+	},
+	{
+		"id": 7565,
+		"id64": 2197760550434280154,
+		"bodyId": 61,
+		"name": "Shinrarta Dezhra AB 3 C",
+		"discovery": {
+			"commander": "Redfoxxx",
+			"date": "2017-09-26 20:14:16"
+		},
+		"type": "Planet",
+		"subType": "Icy body",
+		"offset": 3,
+		"parents": [{
+			"Null": 59
+		},
+		{
+			"Planet": 56
+		},
+		{
+			"Null": 0
+		}],
+		"distanceToArrival": 5493.263672,
+		"isLandable": true,
+		"gravity": 0.042293901054202825,
+		"earthMasses": 0.000534,
+		"radius": 716.665125,
+		"surfaceTemperature": 43,
+		"surfacePressure": 0,
+		"volcanismType": "Minor Carbon Dioxide Geysers",
+		"atmosphereType": "No atmosphere",
+		"atmosphereComposition": null,
+		"solidComposition": {
+			"Ice": 82.4565,
+			"Rock": 15.959400000000002,
+			"Metal": 1.5841
+		},
+		"terraformingState": "Not terraformable",
+		"orbitalPeriod": 2.664696361400463,
+		"semiMajorAxis": 3.6741178028010525e-5,
+		"orbitalEccentricity": 0.155586,
+		"orbitalInclination": -8.664972,
+		"argOfPeriapsis": 267.751495,
+		"rotationalPeriod": 4.549541015625,
+		"rotationalPeriodTidallyLocked": false,
+		"axialTilt": 0.11793,
+		"materials": {
+			"Sulphur": 26.767,
+			"Carbon": 22.5083,
+			"Phosphorus": 14.4102,
+			"Iron": 12.0829,
+			"Nickel": 9.13897,
+			"Chromium": 5.43407,
+			"Selenium": 4.18926,
+			"Vanadium": 2.96713,
+			"Cadmium": 0.938289,
+			"Tellurium": 0.900466,
+			"Tungsten": 0.663471
+		},
+		"updateTime": "2018-10-19 04:07:24"
+	},
+	{
+		"id": 8138659,
+		"id64": 2233789347453244122,
+		"bodyId": 62,
+		"name": "Shinrarta Dezhra AB 3 d",
+		"discovery": {
+			"commander": "Redfoxxx",
+			"date": "2017-09-26 20:14:16"
+		},
+		"type": "Planet",
+		"subType": "Icy body",
+		"offset": 3,
+		"parents": [{
+			"Planet": 56
+		},
+		{
+			"Null": 0
+		}],
+		"distanceToArrival": 5504.336914,
+		"isLandable": true,
+		"gravity": 0.08056068416644104,
+		"earthMasses": 0.003515,
+		"radius": 1332.249625,
+		"surfaceTemperature": 43,
+		"surfacePressure": null,
+		"volcanismType": "No volcanism",
+		"atmosphereType": "No atmosphere",
+		"atmosphereComposition": null,
+		"solidComposition": {
+			"Ice": 80.9337,
+			"Rock": 17.3215,
+			"Metal": 1.7448000000000001
+		},
+		"terraformingState": null,
+		"orbitalPeriod": 47.93271990740741,
+		"semiMajorAxis": 0.015507205103554994,
+		"orbitalEccentricity": 5.7e-5,
+		"orbitalInclination": -0.271907,
+		"argOfPeriapsis": 227.252213,
+		"rotationalPeriod": -47.93859375,
+		"rotationalPeriodTidallyLocked": false,
+		"axialTilt": 2.678059,
+		"materials": {
+			"Sulphur": 27.9306,
+			"Carbon": 23.4867,
+			"Phosphorus": 15.0366,
+			"Iron": 12.9475,
+			"Nickel": 9.79291,
+			"Zinc": 3.51863,
+			"Vanadium": 3.17944,
+			"Arsenic": 1.66207,
+			"Niobium": 0.884889,
+			"Antimony": 0.785943,
+			"Tin": 0.774701
+		},
+		"updateTime": "2018-10-19 04:07:24"
+	},
+	{
+		"id": 8138654,
+		"id64": 2269818144472208090,
+		"bodyId": 63,
+		"name": "Shinrarta Dezhra AB 3 e",
+		"discovery": {
+			"commander": "Redfoxxx",
+			"date": "2017-09-26 20:14:16"
+		},
+		"type": "Planet",
+		"subType": "Icy body",
+		"offset": 3,
+		"parents": [{
+			"Planet": 56
+		},
+		{
+			"Null": 0
+		}],
+		"distanceToArrival": 5507.523438,
+		"isLandable": true,
+		"gravity": 0.05502497272535884,
+		"earthMasses": 0.001166,
+		"radius": 928.4400625,
+		"surfaceTemperature": 43,
+		"surfacePressure": null,
+		"volcanismType": "No volcanism",
+		"atmosphereType": "No atmosphere",
+		"atmosphereComposition": null,
+		"solidComposition": {
+			"Ice": 82.4565,
+			"Rock": 15.959400000000002,
+			"Metal": 1.5841
+		},
+		"terraformingState": null,
+		"orbitalPeriod": 81.08119212962963,
+		"semiMajorAxis": 0.022015346505864404,
+		"orbitalEccentricity": 0.000118,
+		"orbitalInclination": 0.00046,
+		"argOfPeriapsis": 263.460907,
+		"rotationalPeriod": 81.09113425925926,
+		"rotationalPeriodTidallyLocked": true,
+		"axialTilt": -0.300933,
+		"materials": {
+			"Sulphur": 26.6722,
+			"Carbon": 22.4286,
+			"Phosphorus": 14.3592,
+			"Iron": 12.0401,
+			"Nickel": 9.10662,
+			"Chromium": 5.41483,
+			"Selenium": 4.17443,
+			"Germanium": 3.46437,
+			"Cadmium": 0.934968,
+			"Ruthenium": 0.743552,
+			"Tungsten": 0.661122
+		},
+		"updateTime": "2018-10-19 04:07:24"
+	},
+	{
+		"id": 8138658,
+		"id64": 2305846941491172058,
+		"bodyId": 64,
+		"name": "Shinrarta Dezhra AB 3 f",
+		"discovery": {
+			"commander": "Redfoxxx",
+			"date": "2017-09-26 20:14:16"
+		},
+		"type": "Planet",
+		"subType": "Icy body",
+		"offset": 3,
+		"parents": [{
+			"Planet": 56
+		},
+		{
+			"Null": 0
+		}],
+		"distanceToArrival": 5488.561035,
+		"isLandable": true,
+		"gravity": 0.0823680350385674,
+		"earthMasses": 0.003834,
+		"radius": 1376.0405,
+		"surfaceTemperature": 43,
+		"surfacePressure": null,
+		"volcanismType": "No volcanism",
+		"atmosphereType": "No atmosphere",
+		"atmosphereComposition": null,
+		"solidComposition": {
+			"Ice": 82.4565,
+			"Rock": 15.959400000000002,
+			"Metal": 1.5841
+		},
+		"terraformingState": null,
+		"orbitalPeriod": 120.53862268518519,
+		"semiMajorAxis": 0.028676727308525787,
+		"orbitalEccentricity": 0.000111,
+		"orbitalInclination": -0.007474,
+		"argOfPeriapsis": 358.458984,
+		"rotationalPeriod": 120.5533912037037,
+		"rotationalPeriodTidallyLocked": true,
+		"axialTilt": 0.204285,
+		"materials": {
+			"Sulphur": 27.3028,
+			"Carbon": 22.9589,
+			"Phosphorus": 14.6987,
+			"Iron": 12.3247,
+			"Nickel": 9.32192,
+			"Chromium": 5.54285,
+			"Germanium": 3.54627,
+			"Arsenic": 1.58594,
+			"Cadmium": 0.957073,
+			"Tellurium": 0.918492,
+			"Niobium": 0.842331
+		},
+		"updateTime": "2018-10-19 04:07:24"
+	},
+	{
+		"id": 8138634,
+		"id64": 2341875738510136026,
+		"bodyId": 65,
+		"name": "Shinrarta Dezhra AB 3 g",
+		"discovery": {
+			"commander": "Redfoxxx",
+			"date": "2017-09-26 20:14:16"
+		},
+		"type": "Planet",
+		"subType": "Icy body",
+		"offset": 3,
+		"parents": [{
+			"Planet": 56
+		},
+		{
+			"Null": 0
+		}],
+		"distanceToArrival": 5491.050293,
+		"isLandable": true,
+		"gravity": 0.07286612242160348,
+		"earthMasses": 0.002674,
+		"radius": 1221.806375,
+		"surfaceTemperature": 43,
+		"surfacePressure": null,
+		"volcanismType": "No volcanism",
+		"atmosphereType": "No atmosphere",
+		"atmosphereComposition": null,
+		"solidComposition": {
+			"Ice": 82.4565,
+			"Rock": 15.959400000000002,
+			"Metal": 1.5841
+		},
+		"terraformingState": null,
+		"orbitalPeriod": 190.29600694444446,
+		"semiMajorAxis": 0.03888050548302356,
+		"orbitalEccentricity": 1.8e-5,
+		"orbitalInclination": 0.745065,
+		"argOfPeriapsis": 317.980499,
+		"rotationalPeriod": 0.8872782841435185,
+		"rotationalPeriodTidallyLocked": false,
+		"axialTilt": 0.176105,
+		"materials": {
+			"Sulphur": 26.8338,
+			"Carbon": 22.5645,
+			"Phosphorus": 14.4462,
+			"Iron": 12.113,
+			"Nickel": 9.16179,
+			"Manganese": 5.00256,
+			"Selenium": 4.19972,
+			"Germanium": 3.48535,
+			"Cadmium": 0.940632,
+			"Yttrium": 0.723497,
+			"Mercury": 0.528956
+		},
+		"updateTime": "2018-10-19 04:07:24"
+	},
+	{
+		"id": 8138663,
+		"id64": 2377904535529099994,
+		"bodyId": 66,
+		"name": "Shinrarta Dezhra AB 3 h",
+		"discovery": {
+			"commander": "Redfoxxx",
+			"date": "2017-09-26 20:14:16"
+		},
+		"type": "Planet",
+		"subType": "Icy body",
+		"offset": 3,
+		"parents": [{
+			"Planet": 56
+		},
+		{
+			"Null": 0
+		}],
+		"distanceToArrival": 5472.359863,
+		"isLandable": true,
+		"gravity": 0.05919467864477474,
+		"earthMasses": 0.001448,
+		"radius": 997.5334375,
+		"surfaceTemperature": 43,
+		"surfacePressure": null,
+		"volcanismType": "No volcanism",
+		"atmosphereType": "No atmosphere",
+		"atmosphereComposition": null,
+		"solidComposition": {
+			"Ice": 82.4565,
+			"Rock": 15.959400000000002,
+			"Metal": 1.5841
+		},
+		"terraformingState": null,
+		"orbitalPeriod": 288.3894212962963,
+		"semiMajorAxis": 0.051297753451246146,
+		"orbitalEccentricity": 5.0e-5,
+		"orbitalInclination": 2.077992,
+		"argOfPeriapsis": 241.666794,
+		"rotationalPeriod": 0.47283275462962965,
+		"rotationalPeriodTidallyLocked": false,
+		"axialTilt": 0.08793,
+		"materials": {
+			"Sulphur": 26.5262,
+			"Carbon": 22.3058,
+			"Phosphorus": 14.2806,
+			"Iron": 11.9742,
+			"Nickel": 9.05676,
+			"Chromium": 5.38518,
+			"Manganese": 4.94521,
+			"Germanium": 3.4454,
+			"Niobium": 0.81837,
+			"Ruthenium": 0.739481,
+			"Mercury": 0.522892
+		},
+		"updateTime": "2018-10-19 04:07:24"
+	},
+	{
+		"id": 8138620,
+		"id64": 2413933332548063962,
+		"bodyId": 67,
+		"name": "Shinrarta Dezhra AB 3 i",
+		"discovery": {
+			"commander": "Redfoxxx",
+			"date": "2017-09-26 20:14:16"
+		},
+		"type": "Planet",
+		"subType": "Icy body",
+		"offset": 3,
+		"parents": [{
+			"Planet": 56
+		},
+		{
+			"Null": 0
+		}],
+		"distanceToArrival": 5529.091309,
+		"isLandable": true,
+		"gravity": 0.06809480712382406,
+		"earthMasses": 0.002191,
+		"radius": 1144.05975,
+		"surfaceTemperature": 43,
+		"surfacePressure": null,
+		"volcanismType": "No volcanism",
+		"atmosphereType": "No atmosphere",
+		"atmosphereComposition": null,
+		"solidComposition": {
+			"Ice": 82.4565,
+			"Rock": 15.959400000000002,
+			"Metal": 1.5841
+		},
+		"terraformingState": null,
+		"orbitalPeriod": 449.39935185185186,
+		"semiMajorAxis": 0.06894991999374761,
+		"orbitalEccentricity": 0.028675,
+		"orbitalInclination": 0.365808,
+		"argOfPeriapsis": 44.641113,
+		"rotationalPeriod": 1.4424265769675926,
+		"rotationalPeriodTidallyLocked": false,
+		"axialTilt": -0.178196,
+		"materials": {
+			"Sulphur": 27.5704,
+			"Carbon": 23.1839,
+			"Phosphorus": 14.8427,
+			"Iron": 12.4455,
+			"Nickel": 9.41328,
+			"Manganese": 5.13988,
+			"Zinc": 3.38223,
+			"Arsenic": 1.60148,
+			"Niobium": 0.850586,
+			"Molybdenum": 0.812686,
+			"Antimony": 0.757295
+		},
+		"updateTime": "2018-10-19 04:07:24"
+	},
+	{
+		"id": 8138655,
+		"id64": 72061526315406042,
+		"bodyId": 2,
+		"name": "LTT 4550",
+		"discovery": {
+			"commander": "Redfoxxx",
+			"date": "2017-09-26 20:14:16"
+		},
+		"type": "Star",
+		"subType": "M (Red dwarf) Star",
+		"offset": 1,
+		"parents": [{
+			"Null": 0
+		}],
+		"distanceToArrival": 1505.697632,
+		"isMainStar": false,
+		"isScoopable": true,
+		"age": 4570,
+		"spectralClass": "M2",
+		"luminosity": "V",
+		"absoluteMagnitude": 8.509857,
+		"solarMasses": 0.40625,
+		"solarRadius": 0.5644530841121496,
+		"surfaceTemperature": 3295,
+		"orbitalPeriod": 1847.1559259259259,
+		"semiMajorAxis": 1.843041803027481,
+		"orbitalEccentricity": 0.018651,
+		"orbitalInclination": 21.11883,
+		"argOfPeriapsis": 21.271873,
+		"rotationalPeriod": 1.8613248697916667,
+		"rotationalPeriodTidallyLocked": false,
+		"axialTilt": 0.229071,
+		"updateTime": "2018-10-19 04:07:24"
+	},
+	{
+		"id": 8138646,
+		"id64": 540435887561937626,
+		"bodyId": 15,
+		"name": "Shinrarta Dezhra B 1",
+		"discovery": {
+			"commander": "Redfoxxx",
+			"date": "2017-09-26 20:14:16"
+		},
+		"type": "Planet",
+		"subType": "High metal content world",
+		"offset": 2,
+		"parents": [{
+			"Star": 2
+		},
+		{
+			"Null": 0
+		}],
+		"distanceToArrival": 1511.882568,
+		"isLandable": true,
+		"gravity": 0.24515361877612724,
+		"earthMasses": 0.016934,
+		"radius": 1676.2745,
+		"surfaceTemperature": 618,
+		"surfacePressure": null,
+		"volcanismType": "No volcanism",
+		"atmosphereType": "No atmosphere",
+		"atmosphereComposition": null,
+		"solidComposition": {
+			"Rock": 66.8315,
+			"Metal": 33.1685,
+			"Ice": 0
+		},
+		"terraformingState": null,
+		"orbitalPeriod": 4.643104021990741,
+		"semiMajorAxis": 0.040369844328272245,
+		"orbitalEccentricity": 0.001068,
+		"orbitalInclination": -0.003237,
+		"argOfPeriapsis": 253.920593,
+		"rotationalPeriod": 4.647742332175926,
+		"rotationalPeriodTidallyLocked": true,
+		"axialTilt": -0.253364,
+		"materials": {
+			"Iron": 22.7306,
+			"Nickel": 17.1925,
+			"Sulphur": 16.0463,
+			"Carbon": 13.4933,
+			"Manganese": 9.3875,
+			"Phosphorus": 8.63864,
+			"Zinc": 6.17732,
+			"Zirconium": 2.63949,
+			"Tin": 1.47318,
+			"Tellurium": 1.2286,
+			"Mercury": 0.992607
+		},
+		"updateTime": "2018-10-19 04:07:24"
+	},
+	{
+		"id": 8138638,
+		"id64": 576464684580901594,
+		"bodyId": 16,
+		"name": "Shinrarta Dezhra B 2",
+		"discovery": {
+			"commander": "Redfoxxx",
+			"date": "2017-09-26 20:14:16"
+		},
+		"type": "Planet",
+		"subType": "High metal content world",
+		"offset": 2,
+		"parents": [{
+			"Star": 2
+		},
+		{
+			"Null": 0
+		}],
+		"distanceToArrival": 1510.001709,
+		"isLandable": true,
+		"gravity": 0.2602441998159929,
+		"earthMasses": 0.020105,
+		"radius": 1772.744,
+		"surfaceTemperature": 548,
+		"surfacePressure": null,
+		"volcanismType": "No volcanism",
+		"atmosphereType": "No atmosphere",
+		"atmosphereComposition": null,
+		"solidComposition": {
+			"Rock": 66.8315,
+			"Metal": 33.1685,
+			"Ice": 0
+		},
+		"terraformingState": null,
+		"orbitalPeriod": 7.094401765046296,
+		"semiMajorAxis": 0.05355441872609488,
+		"orbitalEccentricity": 0.00012,
+		"orbitalInclination": -0.542483,
+		"argOfPeriapsis": 258.840759,
+		"rotationalPeriod": 7.101489438657407,
+		"rotationalPeriodTidallyLocked": true,
+		"axialTilt": -0.414623,
+		"materials": {
+			"Iron": 21.8898,
+			"Nickel": 16.5565,
+			"Sulphur": 15.4528,
+			"Carbon": 12.9942,
+			"Chromium": 9.84457,
+			"Phosphorus": 8.31911,
+			"Zinc": 5.94883,
+			"Germanium": 4.56814,
+			"Cadmium": 1.69984,
+			"Tin": 1.41869,
+			"Yttrium": 1.30745
+		},
+		"updateTime": "2018-10-19 04:07:24"
+	},
+	{
+		"id": 8138644,
+		"id64": 612493481599865562,
+		"bodyId": 17,
+		"name": "Shinrarta Dezhra B 3",
+		"discovery": {
+			"commander": "Redfoxxx",
+			"date": "2017-09-26 20:14:16"
+		},
+		"type": "Planet",
+		"subType": "Class III gas giant",
+		"offset": 2,
+		"parents": [{
+			"Star": 2
+		},
+		{
+			"Null": 0
+		}],
+		"distanceToArrival": 1538.553223,
+		"isLandable": false,
+		"gravity": 2.51128066562524,
+		"earthMasses": 270.341034,
+		"radius": 66174.836,
+		"surfaceTemperature": 329,
+		"surfacePressure": null,
+		"volcanismType": "No volcanism",
+		"atmosphereType": "No atmosphere",
+		"atmosphereComposition": {
+			"Hydrogen": 72.8469,
+			"Helium": 27.1531
+		},
+		"solidComposition": null,
+		"terraformingState": null,
+		"orbitalPeriod": 68.38419560185186,
+		"semiMajorAxis": 0.24256153587084445,
+		"orbitalEccentricity": 0.528527,
+		"orbitalInclination": 78.687218,
+		"argOfPeriapsis": 48.726105,
+		"rotationalPeriod": 45.63500578703704,
+		"rotationalPeriodTidallyLocked": false,
+		"axialTilt": -0.217413,
+		"updateTime": "2018-10-19 04:07:24"
+	}]
+}

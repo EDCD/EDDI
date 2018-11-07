@@ -9,22 +9,11 @@ namespace EddiDataDefinitions
     /// <summary>Details for a star system</summary>
     public class StarSystem
     {
-        // The ID in EDDB
-        public long EDDBID { get; set; }
-        public string name { get; set; }
-        public long? population { get; set; }
-        public string allegiance { get; set; }
-        public string government { get; set; }
-        public string faction { get; set; }
-        public string primaryeconomy => (economies[0] ?? Economy.None).localizedName;
-        public List<Economy> economies { get; set; } = new List<Economy>() { null, null };
-        public SystemState systemState { get; set; } = SystemState.None;
-        public string security { get; set; }
-        public string power { get; set; }
-        public string powerstate { get; set; }
+        // General information
 
-        [Obsolete("Please use systemState instead")]
-        public string state => (systemState ?? SystemState.None).localizedName;
+        public string name { get; set; }
+        public long? EDDBID { get; set; } // The ID in EDDB
+        public long? EDSMID { get; set; } // The ID in EDSM
 
         /// <summary>X co-ordinate for this system</summary>
         public decimal? x { get; set; }
@@ -32,9 +21,46 @@ namespace EddiDataDefinitions
         public decimal? y { get; set; }
         /// <summary>Z co-ordinate for this system</summary>
         public decimal? z { get; set; }
-
         /// <summary>Unique 64 bit id value for system</summary>
         public long? systemAddress { get; set; }
+
+        /// <summary>Details of bodies (stars/planets)</summary>
+        public List<Body> bodies { get; set; }
+
+        /// <summary>The reserve level applicable to the system's rings</summary>
+        public ReserveLevel Reserve { get; set; } = ReserveLevel.None;
+        [JsonIgnore]
+        public string reserve => (Reserve ?? ReserveLevel.None).localizedName;
+
+        // Populated system data
+
+        public long? population { get; set; } = 0;
+        [JsonIgnore]
+        public string primaryeconomy => (Economies[0] ?? Economy.None).localizedName;
+        public List<Economy> Economies { get; set; } = new List<Economy>() { Economy.None, Economy.None };
+
+        /// <summary>The system's security level</summary>
+        public SecurityLevel securityLevel { get; set; } = SecurityLevel.None;
+        /// <summary>The system's security level (localized name)</summary>
+        [JsonIgnore]
+        public string security => (securityLevel ?? SecurityLevel.None).localizedName;
+
+        public string power { get; set; }
+        public string powerstate { get; set; }
+
+        [JsonIgnore, Obsolete("Please use Faction.FactionState instead")]
+        public string state => (Faction?.FactionState ?? FactionState.None).localizedName;
+
+        // Faction details
+        public Faction Faction { get; set; } = new Faction();
+        public List<Faction> factions { get; set; }
+
+        [JsonIgnore, Obsolete("Please use Faction instead")]
+        public string faction => Faction.name;
+        [JsonIgnore, Obsolete("Please use Faction.Allegiance instead")]
+        public string allegiance => Faction.allegiance;
+        [JsonIgnore, Obsolete("Please use Faction.Government instead")]
+        public string government => Faction.government;
 
         /// <summary>Details of stations</summary>
         public List<Station> stations { get; set; }
@@ -46,8 +72,13 @@ namespace EddiDataDefinitions
         [JsonIgnore]
         public List<Station> orbitalstations => stations.FindAll(s => !s.IsPlanetary());
 
-        /// <summary>Details of bodies (stars/planets)</summary>
-        public List<Body> bodies { get; set; }
+        /// <summary> Whether this system requires a permit for visiting </summary>
+        public bool requirespermit { get; set; }
+
+        /// <summary> The name of the permit required for visiting this system, if any </summary>
+        public string permitname { get; set; }
+
+        // Other data
 
         /// <summary>Number of visits</summary>
         public int visits;
@@ -56,6 +87,7 @@ namespace EddiDataDefinitions
         public DateTime? lastvisit;
 
         /// <summary>Time of last visit, expressed as a Unix timestamp in seconds</summary>
+        [JsonIgnore]
         public long? lastVisitSeconds => (visits > 1 && lastvisit != null) ? (long?)((DateTime)lastvisit).Subtract(new DateTime(1970, 1, 1)).TotalSeconds : null;
 
         /// <summary>comment on this starsystem</summary>
@@ -76,26 +108,28 @@ namespace EddiDataDefinitions
         [OnDeserialized]
         private void OnDeserialized(StreamingContext context)
         {
-            if (systemState == null)
+            if (Faction == null) { Faction = new Faction(); }
+            if (Faction.FactionState == null)
             {
+                // Convert legacy data
                 string name = (string)additionalJsonData?["state"];
                 if (name != null)
                 {
-                    systemState = SystemState.FromEDName(name) ?? SystemState.FromName(name);
+                    Faction.FactionState = FactionState.FromEDName(name ?? "None");
                 }
             }
             else
             {
-                // get the canonical SystemState object for the given EDName
-                systemState = SystemState.FromEDName(systemState.edname) ?? SystemState.None;
+                // get the canonical FactionState object for the given EDName
+                Faction.FactionState = FactionState.FromEDName(Faction.FactionState.edname ?? "None");
             }
             additionalJsonData = null;
         }
 
         public StarSystem()
         {
-            stations = new List<Station>();
             bodies = new List<Body>();
+            stations = new List<Station>();
         }
     }
 }

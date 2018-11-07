@@ -60,45 +60,45 @@
             : and then encoded with base64 encoding.
     -->
   <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
           <xsd:element name="metadata">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0"/>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
               </xsd:sequence>
-              <xsd:attribute name="name" use="required" type="xsd:string"/>
-              <xsd:attribute name="type" type="xsd:string"/>
-              <xsd:attribute name="mimetype" type="xsd:string"/>
-              <xsd:attribute ref="xml:space"/>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="assembly">
             <xsd:complexType>
-              <xsd:attribute name="alias" type="xsd:string"/>
-              <xsd:attribute name="name" type="xsd:string"/>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="data">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"/>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"/>
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"/>
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"/>
-              <xsd:attribute ref="xml:space"/>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="resheader">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required"/>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
             </xsd:complexType>
           </xsd:element>
         </xsd:choice>
@@ -161,7 +161,7 @@
     <value>Aluminio</value>
     <comment>Commodity Aluminium</comment>
   </data>
-  <data name="AlyaBodySoap" xml:space="preserve">
+  <data name="AlyaBodilySoap" xml:space="preserve">
     <value>Jabón corporal de Alya</value>
     <comment>Commodity AlyaBodySoap</comment>
   </data>
@@ -646,7 +646,7 @@
     <value>Organofosfatos de HIP 80364</value>
     <comment>Commodity HIPOrganophosphates</comment>
   </data>
-  <data name="HIPProto_Squid" xml:space="preserve">
+  <data name="HIP41181Squid" xml:space="preserve">
     <value>Protocalamar de HIP 41181</value>
     <comment>Commodity HIPProto_Squid</comment>
   </data>
@@ -882,7 +882,7 @@
     <value>Gelatina de la Experiencia de Motrona</value>
     <comment>Commodity MotronaExperienceJelly</comment>
   </data>
-  <data name="MukusubiiChitin_Os" xml:space="preserve">
+  <data name="MukusubiiChitinOs" xml:space="preserve">
     <value>Quitiaros de Mukusubil</value>
     <comment>Commodity MukusubiiChitin_Os</comment>
   </data>
@@ -950,15 +950,15 @@
     <value>Cebollazo</value>
     <comment>Commodity OnionHead</comment>
   </data>
-  <data name="OnionheadAlphaStrain" xml:space="preserve">
+  <data name="OnionHeadA" xml:space="preserve">
     <value>Cepa alfa del Cebollazo</value>
     <comment>Commodity OnionheadAlphaStrain</comment>
   </data>
-  <data name="OnionheadBetaStrain" xml:space="preserve">
+  <data name="OnionHeadB" xml:space="preserve">
     <value>Cepa beta del Cebollazo</value>
     <comment>Commodity OnionheadBetaStrain</comment>
   </data>
-  <data name="OphiuchExinoArtefacts" xml:space="preserve">
+  <data name="OphiuchiExinoArtefacts" xml:space="preserve">
     <value>Artefactos de Ophiuch Exino</value>
     <comment>Commodity OphiuchExinoArtefacts</comment>
   </data>
@@ -1358,7 +1358,7 @@
     <value>Cordón vidavantino</value>
     <comment>Commodity VidavantianLace</comment>
   </data>
-  <data name="VoidExtractCoffee" xml:space="preserve">
+  <data name="LFTVoidExtractCoffee" xml:space="preserve">
     <value>Extracto de café al vacío</value>
     <comment>Commodity VoidExtractCoffee</comment>
   </data>
@@ -1601,6 +1601,12 @@
   <data name="UtopianPublicity" xml:space="preserve">
     <value>Publicidad de Utopian</value>
     <comment>Commodity UtopianPublicity</comment>
+  </data>
+  <data name="PersonalGifts" xml:space="preserve">
+    <value>Regalos personales</value>
+  </data>
+  <data name="ShansCharisOrchid" xml:space="preserve">
+    <value>Orquídea Charis de Shan</value>
   </data>
   <data name="ancientkey" xml:space="preserve">
     <value>Llave antigua</value>

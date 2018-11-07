@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using EddiDataDefinitions;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 
@@ -25,21 +26,21 @@ namespace EddiEvents
         [JsonProperty("system")]
         public string system { get; private set; }
 
-        [JsonProperty("bodytype")]
-        public string bodytype { get; private set; }
+        public string bodytype => (bodyType ?? BodyType.None).localizedName;
 
         [JsonProperty("body")]
         public string body { get; private set; }
 
         // Variables below are not intended to be user facing
         public long? systemAddress { get; private set; }
+        public BodyType bodyType { get; private set; } = BodyType.None;
 
-        public GlideEvent(DateTime timestamp, bool gliding, string system, long? systemAddress, string body, string bodytype) : base(timestamp, NAME)
+        public GlideEvent(DateTime timestamp, bool gliding, string system, long? systemAddress, string body, BodyType bodyType) : base(timestamp, NAME)
         {
             this.gliding = gliding;
             this.system = system;
             this.systemAddress = systemAddress;
-            this.bodytype = bodytype;
+            this.bodyType = bodyType;
             this.body = body;
         }
     }

@@ -1,0 +1,179 @@
+{
+	"id": 4345,
+	"id64": 3932277478106,
+	"name": "Shinrarta Dezhra",
+	"url": "https:\/\/www.edsm.net\/en\/system\/stations\/id\/4345\/name\/Shinrarta+Dezhra",
+	"stations": [{
+		"id": 285,
+		"marketId": 128679815,
+		"type": "Planetary Outpost",
+		"name": "Jameson Base",
+		"body": {
+			"id": 7058,
+			"name": "Shinrarta Dezhra A 1"
+		},
+		"distanceToArrival": 40.333652,
+		"allegiance": "Independent",
+		"government": "Workshop (Engineer)",
+		"economy": "Colony",
+		"secondEconomy": null,
+		"haveMarket": false,
+		"haveShipyard": false,
+		"haveOutfitting": true,
+		"otherServices": ["Restock",
+		"Refuel",
+		"Repair",
+		"Contacts",
+		"Universal Cartographics",
+		"Tuning"],
+		"controllingFaction": {
+			"id": null,
+			"name": "Lori Jameson"
+		},
+		"updateTime": {
+			"information": "2018-10-22 03:45:36",
+			"market": null,
+			"shipyard": null,
+			"outfitting": "2018-10-22 03:45:43"
+		}
+	},
+	{
+		"id": 65,
+		"marketId": 128666762,
+		"type": "Orbis Starport",
+		"name": "Jameson Memorial",
+		"distanceToArrival": 324.925354,
+		"allegiance": "Pilots Federation",
+		"government": "Democracy",
+		"economy": "High Tech",
+		"secondEconomy": "Industrial",
+		"haveMarket": true,
+		"haveShipyard": true,
+		"haveOutfitting": true,
+		"otherServices": ["Restock",
+		"Refuel",
+		"Repair",
+		"Contacts",
+		"Universal Cartographics",
+		"Missions",
+		"Crew Lounge",
+		"Tuning",
+		"Search and Rescue",
+		"Technology Broker"],
+		"controllingFaction": {
+			"id": 80576,
+			"name": "Pilots Federation Local Branch"
+		},
+		"updateTime": {
+			"information": "2018-10-22 06:32:54",
+			"market": "2018-10-22 06:33:00",
+			"shipyard": "2018-10-22 06:33:00",
+			"outfitting": "2018-10-22 06:33:00"
+		}
+	},
+	{
+		"id": 630,
+		"marketId": 3534247424,
+		"type": "Planetary Outpost",
+		"name": "Gallun's Inheritance",
+		"body": {
+			"id": 8138638,
+			"name": "Shinrarta Dezhra B 2"
+		},
+		"distanceToArrival": 1520.435913,
+		"allegiance": "Pilots Federation",
+		"government": "Democracy",
+		"economy": "Refinery",
+		"secondEconomy": null,
+		"haveMarket": true,
+		"haveShipyard": false,
+		"haveOutfitting": true,
+		"otherServices": ["Restock",
+		"Refuel",
+		"Contacts",
+		"Universal Cartographics",
+		"Missions",
+		"Crew Lounge",
+		"Search and Rescue"],
+		"controllingFaction": {
+			"id": 80576,
+			"name": "Pilots Federation Local Branch"
+		},
+		"updateTime": {
+			"information": "2018-10-21 15:24:18",
+			"market": "2018-10-21 10:52:24",
+			"shipyard": null,
+			"outfitting": "2018-10-21 10:52:24"
+		}
+	},
+	{
+		"id": 876,
+		"marketId": 3534248448,
+		"type": "Planetary Outpost",
+		"name": "Neumann Camp",
+		"body": {
+			"id": 8138635,
+			"name": "Shinrarta Dezhra AB 2 h"
+		},
+		"distanceToArrival": 3751.474121,
+		"allegiance": "Independent",
+		"government": "Democracy",
+		"economy": "Colony",
+		"secondEconomy": "Colony",
+		"haveMarket": true,
+		"haveShipyard": false,
+		"haveOutfitting": true,
+		"otherServices": ["Black Market",
+		"Restock",
+		"Refuel",
+		"Contacts",
+		"Universal Cartographics",
+		"Missions",
+		"Crew Lounge",
+		"Search and Rescue"],
+		"controllingFaction": {
+			"id": 702,
+			"name": "The Dark Wheel"
+		},
+		"updateTime": {
+			"information": "2018-10-22 02:21:27",
+			"market": "2018-10-22 02:21:33",
+			"shipyard": null,
+			"outfitting": "2018-10-22 02:21:33"
+		}
+	},
+	{
+		"id": 1955,
+		"marketId": 3534247936,
+		"type": "Planetary Outpost",
+		"name": "Puleston Arsenal",
+		"distanceToArrival": 3817.747803,
+		"allegiance": "Independent",
+		"government": "Democracy",
+		"economy": "Military",
+		"secondEconomy": null,
+		"haveMarket": true,
+		"haveShipyard": false,
+		"haveOutfitting": true,
+		"otherServices": ["Black Market",
+		"Restock",
+		"Refuel",
+		"Repair",
+		"Contacts",
+		"Universal Cartographics",
+		"Missions",
+		"Crew Lounge",
+		"Tuning",
+		"Search and Rescue"],
+		"controllingFaction": {
+			"id": 702,
+			"name": "The Dark Wheel"
+		},
+    "updateTime": {
+      "information": "2018-10-22 03:05:28",
+      "market": "2018-10-22 03:05:35",
+      "shipyard": null,
+      "outfitting": "2018-10-22 03:05:35"
+    }
+	}]
+}

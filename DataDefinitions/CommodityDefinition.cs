@@ -179,7 +179,7 @@ namespace EddiDataDefinitions
                 new CommodityDefinition(128667050, 161, "EsusekuCaviar", Foods, 9625, true),
                 new CommodityDefinition(128667051, 162, "LiveHecateSeaWorms", Foods, 8737, true),
                 new CommodityDefinition(128667052, 163, "HelvetitjPearls", Foods, 10450, true),
-                new CommodityDefinition(128667053, 164, "HIPProto-Squid", Foods, 8497, true),
+                new CommodityDefinition(128667053, 164, "HIP41181Squid", Foods, 8497, true),
                 new CommodityDefinition(128667054, 165, "CoquimSpongiformVictuals", Foods, 8077, true),
                 new CommodityDefinition(128667055, 166, "EdenApplesOfAerial", Foods, 8331, true),
                 new CommodityDefinition(128667056, 167, "NeritusBerries", Foods, 8497, true),
@@ -209,7 +209,7 @@ namespace EddiDataDefinitions
                 new CommodityDefinition(128667083, 191, "YasoKondiLeaf", Narcotics, 12171, true),
                 new CommodityDefinition(128667084, 192, "ChateauDeAegaeon", Narcotics, 8791, true),
                 new CommodityDefinition(128667085, 193, "WatersOfShintara", Medicines, 13711, true),
-                new CommodityDefinition(128667668, 194, "OphiuchExinoArtefacts", ConsumerItems, 10969, true),
+                new CommodityDefinition(128667668, 194, "OphiuchiExinoArtefacts", ConsumerItems, 10969, true),
                 new CommodityDefinition(128667670, 195, "CetiAepyornisEgg", Foods, 9769, true),
                 new CommodityDefinition(128667671, 196, "SaxonWine", Narcotics, 8983, true),
                 new CommodityDefinition(128667672, 197, "CentauriMegaGin", Narcotics, 10217, true),
@@ -224,14 +224,14 @@ namespace EddiDataDefinitions
                 new CommodityDefinition(128667682, 206, "HIPOrganophosphates", Chemicals, 8169, true),
                 new CommodityDefinition(128667683, 207, "JaradharrePuzzleBox", ConsumerItems, 16816, true),
                 new CommodityDefinition(128667684, 208, "KoroKungPellets", Chemicals, 8067, true),
-                new CommodityDefinition(128667685, 209, "VoidExtractCoffee", Foods, 9554, true),
+                new CommodityDefinition(128667685, 209, "LFTVoidExtractCoffee", Foods, 9554, true),
                 new CommodityDefinition(128667686, 210, "HonestyPills", Medicines, 8860, true),
                 new CommodityDefinition(128667687, 211, "NonEuclidianExotanks", Machinery, 8526, true),
                 new CommodityDefinition(128667688, 212, "LTTHypersweet", Foods, 8054, true),
                 new CommodityDefinition(128667689, 213, "MechucosHighTea", Foods, 8846, true),
                 new CommodityDefinition(128667690, 214, "MedbStarlube", IndustrialMaterials, 8191, true),
                 new CommodityDefinition(128667691, 215, "MokojingBeastFeast", Foods, 9788, true),
-                new CommodityDefinition(128667692, 216, "MukusubiiChitin-Os", Foods, 8359, true),
+                new CommodityDefinition(128667692, 216, "MukusubiiChitinOs", Foods, 8359, true),
                 new CommodityDefinition(128667693, 217, "MulachiGiantFungus", Foods, 7957, true),
                 new CommodityDefinition(128667694, 218, "NgadandariFireOpals", Minerals, 19112, true),
                 new CommodityDefinition(128667695, 219, "TiegfriesSynthSilk", Textiles, 8478, true),
@@ -257,7 +257,7 @@ namespace EddiDataDefinitions
                 new CommodityDefinition(128667715, 239, "LeestianEvilJuice", Narcotics, 8220, true),
                 new CommodityDefinition(128667716, 240, "BlueMilk", Narcotics, 10805, true),
                 new CommodityDefinition(128667717, 241, "alieneggs", ConsumerItems, 25067, true),
-                new CommodityDefinition(128667718, 242, "AlyaBodySoap", Medicines, 8218, true),
+                new CommodityDefinition(128667718, 242, "AlyaBodilySoap", Medicines, 8218, true),
                 new CommodityDefinition(128667719, 243, "VidavantianLace", ConsumerItems, 12615, true),
                 new CommodityDefinition(128668017, 244, "JaquesQuinentianStill", ConsumerItems, 2108, true),
                 new CommodityDefinition(128668018, 245, "SoontillRelics", ConsumerItems, 19885, true),
@@ -280,14 +280,15 @@ namespace EddiDataDefinitions
                 new CommodityDefinition(128672135, 262, "Hostage", Salvage, 2427, false),
                 new CommodityDefinition(128672315, 263, "GeologicalSamples", Salvage, 446, false),
                 new CommodityDefinition(128672316, 264, "MasterChefs", Slaves, 20590, true),
+                new CommodityDefinition(128672431, null, "PersonalGifts", ConsumerItems, 0, false),
                 new CommodityDefinition(128672432, 265, "CrystallineSpheres", ConsumerItems, 12216, true),
                 new CommodityDefinition(128672775, 266, "Taaffeite", Minerals, 20696, false),
                 new CommodityDefinition(128672776, 267, "Jadeite", Minerals, 13474, false),
                 new CommodityDefinition(128672810, 268, "UnstableDataCore", Salvage, 2427, false),
-                new CommodityDefinition(128672812, 269, "OnionheadAlphaStrain", Narcotics, 8437, true),
+                new CommodityDefinition(128672812, 269, "OnionHeadA", Narcotics, 8437, true),
                 new CommodityDefinition(128672125, 270, "OccupiedCryoPod", Salvage, 4474, false),
                 new CommodityDefinition(128049166, 271, "Water", Chemicals, 120, false),
-                new CommodityDefinition(128673069, 272, "OnionheadBetaStrain", Narcotics, 8437, true),
+                new CommodityDefinition(128673069, 272, "OnionHeadB", Narcotics, 8437, true),
                 new CommodityDefinition(128673845, 273, "Praseodymium", Metals, 7156, false),
                 new CommodityDefinition(128673846, 274, "Bromellite", Minerals, 7062, false),
                 new CommodityDefinition(128673847, 275, "Samarium", Metals, 6330, false),
@@ -356,6 +357,7 @@ namespace EddiDataDefinitions
                 new CommodityDefinition(128672811, 329, "DamagedEscapePod", Salvage, 11912, false),
                 new CommodityDefinition(128672161, 330, "EarthRelics", Salvage, 0, false),
                 new CommodityDefinition(128824468, 331, "ThargoidScoutTissueSample", Salvage, 15215, false),
+                new CommodityDefinition(128732551, null, "ShansCharisOrchid", ConsumerItems, 0, true),
                 new CommodityDefinition(128748428, null, "BuckyballBeerMats", ConsumerItems, 0, false),
                 new CommodityDefinition(128793113, null, "HarmaSilverSeaRum", Narcotics, 0, false),
                 new CommodityDefinition(128793114, null, "PlatinumAloy", Metals, 0, false),
@@ -449,7 +451,7 @@ namespace EddiDataDefinitions
                 ?.Replace(" name;", "");
         }
         
-        new public static CommodityDefinition FromName(string name)
+        public static CommodityDefinition FromNameOrEDName(string name)
         {
             if (name == null)
             {
@@ -467,7 +469,7 @@ namespace EddiDataDefinitions
             CommodityDefinition result = null;
             if (normalizedName != null)
             {
-                result = ResourceBasedLocalizedEDName<CommodityDefinition>.FromName(normalizedName);
+                result = FromName(normalizedName);
             }
             if (result == null)
             {

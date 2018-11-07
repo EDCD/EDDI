@@ -15,14 +15,15 @@ namespace EddiDataDefinitions
         static Volcanism()
         {
             resourceManager = Properties.Volcanism.ResourceManager;
-            resourceManager.IgnoreCase = false;
+            resourceManager.IgnoreCase = true;
 
             COMPOSITIONS.Add("ammonia", "Ammonia");
             COMPOSITIONS.Add("carbon dioxide", "Carbon dioxide");
             COMPOSITIONS.Add("metallic", "Iron");
             COMPOSITIONS.Add("methane", "Methane");
             COMPOSITIONS.Add("nitrogen", "Nitrogen");
-            COMPOSITIONS.Add("rocky", "Silicate");
+            COMPOSITIONS.Add("rocky", "Silicate"); // "Rocky" isn't listed by the player journal manual but is reported by the player journal
+            COMPOSITIONS.Add("silicate", "Silicate");
             COMPOSITIONS.Add("silicate vapour", "Silicate vapour");
             COMPOSITIONS.Add("water", "Water");
         }
@@ -67,11 +68,11 @@ namespace EddiDataDefinitions
             return resourceManager.GetString(name);
         }
 
-        public Volcanism(string type, string composition, string amountEDNAme)
+        public Volcanism(string type, string composition, string amountEDName)
         {
             this.edType = type;
             this.edComposition = composition;
-            this.edAmount = amountEDNAme;
+            this.edAmount = amountEDName;
         }
 
         /// <summary>
@@ -79,12 +80,12 @@ namespace EddiDataDefinitions
         /// </summary>
         public static Volcanism FromName(string from)
         {
-            if (from == null || from == "" || from == "No volcanism")
+            from = from?.ToLowerInvariant();
+
+            if (from == null || from == "" || from == "no volcanism")
             {
                 return null;
             }
-
-            from = from.ToLowerInvariant();
 
             // Volcanism commonly has ' volcanism' attached to the end of it; remove it here
             if (from.EndsWith(" volcanism"))

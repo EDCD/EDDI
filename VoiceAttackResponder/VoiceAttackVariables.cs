@@ -510,10 +510,10 @@ namespace EddiVoiceAttackResponder
             {
                 vaProxy.SetText(prefix + " name", station.name);
                 vaProxy.SetDecimal(prefix + " distance from star", station.distancefromstar);
-                vaProxy.SetText(prefix + " government", station.government);
-                vaProxy.SetText(prefix + " allegiance", station.allegiance);
-                vaProxy.SetText(prefix + " faction", station.faction);
-                vaProxy.SetText(prefix + " state", station.state);
+                vaProxy.SetText(prefix + " government", (station.Faction?.Government ?? Government.None).localizedName);
+                vaProxy.SetText(prefix + " allegiance", (station.Faction?.Allegiance ?? Superpower.None).localizedName);
+                vaProxy.SetText(prefix + " faction", station.Faction?.name);
+                vaProxy.SetText(prefix + " state", station.Faction?.FactionState ?? FactionState.None);
                 vaProxy.SetText(prefix + " primary economy", station.primaryeconomy);
                 // Services
                 vaProxy.SetBoolean(prefix + " has refuel", station.hasrefuel);
@@ -763,15 +763,17 @@ namespace EddiVoiceAttackResponder
                 vaProxy.SetText(prefix + " name (spoken)", Translations.StarSystem(system?.name));
                 vaProxy.SetDecimal(prefix + " population", system?.population);
                 vaProxy.SetText(prefix + " population (spoken)", Translations.Humanize(system?.population));
-                vaProxy.SetText(prefix + " allegiance", system?.allegiance);
-                vaProxy.SetText(prefix + " government", system?.government);
-                vaProxy.SetText(prefix + " faction", system?.faction);
+                vaProxy.SetText(prefix + " allegiance", (system?.Faction?.Allegiance ?? Superpower.None).localizedName);
+                vaProxy.SetText(prefix + " government", (system?.Faction?.Government ?? Government.None).localizedName);
+                vaProxy.SetText(prefix + " faction", system?.Faction?.name);
                 vaProxy.SetText(prefix + " primary economy", system?.primaryeconomy);
-                vaProxy.SetText(prefix + " state", (system?.systemState ?? SystemState.None).localizedName);
+                vaProxy.SetText(prefix + " state", (system?.Faction?.FactionState ?? FactionState.None).localizedName);
                 vaProxy.SetText(prefix + " security", system?.security);
                 vaProxy.SetText(prefix + " power", system?.power);
                 vaProxy.SetText(prefix + " power (spoken)", Translations.Power(EDDI.Instance.CurrentStarSystem?.power));
                 vaProxy.SetText(prefix + " power state", system?.powerstate);
+                vaProxy.SetBoolean(prefix + " requires permit", system?.requirespermit);
+                vaProxy.SetText(prefix + " permit name", system?.permitname);
                 vaProxy.SetDecimal(prefix + " X", system?.x);
                 vaProxy.SetDecimal(prefix + " Y", system?.y);
                 vaProxy.SetDecimal(prefix + " Z", system?.z);
@@ -792,8 +794,7 @@ namespace EddiVoiceAttackResponder
                     vaProxy.SetInt(prefix + " starports", system.stations.Count(s => s.IsStarport()));
                     vaProxy.SetInt(prefix + " outposts", system.stations.Count(s => s.IsOutpost()));
                     vaProxy.SetInt(prefix + " planetary stations", system.stations.Count(s => s.IsPlanetary()));
-                    vaProxy.SetInt(prefix + " planetary outposts", system.stations.Count(s => s.IsPlanetaryOutpost()));
-                    vaProxy.SetInt(prefix + " planetary ports", system.stations.Count(s => s.IsPlanetaryPort()));
+                    vaProxy.SetInt(prefix + " planetary settlements", system.stations.Count(s => s.IsPlanetarySettlement()));
 
                     Body primaryBody = null;
                     if (system.bodies != null && system.bodies.Count > 0)
@@ -830,7 +831,7 @@ namespace EddiVoiceAttackResponder
         {
             Logging.Debug("Setting current stellar body information");
             vaProxy.SetDecimal(prefix + " EDDB id", body?.EDDBID);
-            vaProxy.SetText(prefix + " type", body?.type);
+            vaProxy.SetText(prefix + " type", (body?.Type ?? BodyType.None).localizedName);
             vaProxy.SetText(prefix + " name", body?.name);
             vaProxy.SetText(prefix + " system name", body?.systemname);
             if (body?.age == null)
@@ -858,7 +859,7 @@ namespace EddiVoiceAttackResponder
             vaProxy.SetDecimal(prefix + " age probability", body?.ageprobability);
             // Body specific items 
             vaProxy.SetDecimal(prefix + " periapsis", body?.periapsis);
-            vaProxy.SetText(prefix + " atmosphere", body?.atmosphere);
+            vaProxy.SetText(prefix + " atmosphere", (body?.atmosphereclass ?? AtmosphereClass.None).localizedName);
             vaProxy.SetDecimal(prefix + " tilt", body?.tilt);
             vaProxy.SetDecimal(prefix + " earth mass", body?.earthmass);
             vaProxy.SetDecimal(prefix + " gravity", body?.gravity);
@@ -869,9 +870,9 @@ namespace EddiVoiceAttackResponder
             vaProxy.SetDecimal(prefix + " rotational period", body?.rotationalperiod);
             vaProxy.SetDecimal(prefix + " semi major axis", body?.semimajoraxis);
             vaProxy.SetDecimal(prefix + " pressure", body?.pressure);
-            vaProxy.SetText(prefix + " terraform state", body?.terraformstate);
-            vaProxy.SetText(prefix + " planet type", body?.planettype);
-            vaProxy.SetText(prefix + " reserves", body?.reserves);
+            vaProxy.SetText(prefix + " terraform state", (body?.terraformState ?? TerraformState.NotTerraformable).localizedName);
+            vaProxy.SetText(prefix + " planet type", (body?.planetClass ?? PlanetClass.None).localizedName);
+            vaProxy.SetText(prefix + " reserves", (body?.reserveLevel ?? ReserveLevel.None).localizedName);
 
             Logging.Debug("Set body information (" + prefix + ")");
         }

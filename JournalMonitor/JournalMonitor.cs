@@ -94,19 +94,38 @@ namespace EddiJournalMonitor
                                 long marketId = JsonParsing.getLong(data, "MarketID");
                                 string stationName = JsonParsing.getString(data, "StationName");
                                 string stationState = JsonParsing.getString(data, "StationState") ?? string.Empty;
-                                string stationModel = JsonParsing.getString(data, "StationType");
-                                Superpower allegiance = getAllegiance(data, "StationAllegiance");
+                                StationModel stationModel = StationModel.FromEDName(JsonParsing.getString(data, "StationType") ?? "None");
+                                Superpower allegiance = getAllegiance(data, "StationAllegiance") ?? Superpower.FromEDName("None");
                                 string faction = getFaction(data, "StationFaction");
-                                SystemState factionState = SystemState.FromEDName(JsonParsing.getString(data, "FactionState"));
-                                Economy economy = Economy.FromEDName(JsonParsing.getString(data, "StationEconomy"));
-                                Government government = Government.FromEDName(JsonParsing.getString(data, "StationGovernment"));
+                                FactionState factionState = FactionState.FromEDName(JsonParsing.getString(data, "FactionState") ?? "None");
+                                Government government = Government.FromEDName(JsonParsing.getString(data, "StationGovernment" ?? "None"));
                                 decimal? distancefromstar = JsonParsing.getOptionalDecimal(data, "DistFromStarLS");
 
                                 // Get station services data
                                 data.TryGetValue("StationServices", out object val);
                                 List<string> stationservices = (val as List<object>)?.Cast<string>()?.ToList();
+                                List<StationService> stationServices = new List<StationService>();
+                                foreach (string service in stationservices)
+                                {
+                                    stationServices.Add(StationService.FromEDName(service));
+                                }
 
-                                events.Add(new DockedEvent(timestamp, systemName, systemAddress, marketId, stationName, stationState, stationModel, allegiance, faction, factionState, economy, government, distancefromstar, stationservices) { raw = line });
+                                // Get station economies and their shares
+                                data.TryGetValue("StationEconomies", out object val2);
+                                List<object> economies = val2 as List<object>;
+                                List<EconomyShare> Economies = new List<EconomyShare>();
+                                foreach (Dictionary<string, object> economyshare in economies)
+                                {
+                                    Economy economy = Economy.FromEDName(JsonParsing.getString(economyshare, "Name"));
+                                    economy.fallbackLocalizedName = JsonParsing.getString(economyshare, "Name_Localised");
+                                    decimal share = JsonParsing.getDecimal(economyshare, "Proportion");
+                                    if (economy != Economy.None && share > 0)
+                                    {
+                                        Economies.Add(new EconomyShare(economy, share)); 
+                                    }
+                                }
+
+                                events.Add(new DockedEvent(timestamp, systemName, systemAddress, marketId, stationName, stationState, stationModel, allegiance, faction, factionState, Economies, government, distancefromstar, stationServices) { raw = line });
                             }
                             handled = true;
                             break;
@@ -148,7 +167,7 @@ namespace EddiJournalMonitor
                                 string system = JsonParsing.getString(data, "StarSystem");
                                 long systemAddress = JsonParsing.getLong(data, "SystemAddress");
                                 string body = JsonParsing.getString(data, "Body");
-                                string bodyType = JsonParsing.getString(data, "BodyType");
+                                BodyType bodyType = BodyType.FromEDName(JsonParsing.getString(data, "BodyType") ?? "None");
                                 events.Add(new EnteredNormalSpaceEvent(timestamp, system, systemAddress, body, bodyType) { raw = line });
                             }
                             handled = true;
@@ -168,7 +187,7 @@ namespace EddiJournalMonitor
                                 decimal distance = JsonParsing.getDecimal(data, "JumpDist");
                                 Superpower allegiance = getAllegiance(data, "SystemAllegiance");
                                 string faction = getFaction(data, "SystemFaction");
-                                SystemState factionState = SystemState.FromEDName(JsonParsing.getString(data, "FactionState") ?? "None");
+                                FactionState factionState = FactionState.FromEDName(JsonParsing.getString(data, "FactionState") ?? "None");
                                 Economy economy = Economy.FromEDName(JsonParsing.getString(data, "SystemEconomy"));
                                 Economy economy2 = Economy.FromEDName(JsonParsing.getString(data, "SystemSecondEconomy"));
                                 Government government = Government.FromEDName(JsonParsing.getString(data, "SystemGovernment"));
@@ -200,7 +219,7 @@ namespace EddiJournalMonitor
                                 long systemAddress = JsonParsing.getLong(data, "SystemAddress");
 
                                 string body = JsonParsing.getString(data, "Body");
-                                string bodyType = JsonParsing.getString(data, "BodyType");
+                                BodyType bodyType = BodyType.FromEDName(JsonParsing.getString(data, "BodyType"));
                                 bool docked = JsonParsing.getBool(data, "Docked");
                                 Superpower allegiance = getAllegiance(data, "SystemAllegiance");
                                 string faction = getFaction(data, "SystemFaction");
@@ -212,7 +231,7 @@ namespace EddiJournalMonitor
 
                                 // If docked
                                 string station = JsonParsing.getString(data, "StationName");
-                                string stationtype = JsonParsing.getString(data, "StationType");
+                                StationModel stationtype = StationModel.FromEDName(JsonParsing.getString(data, "StationType"));
                                 long? marketId = JsonParsing.getOptionalLong(data, "MarketID");
 
                                 // If landed
@@ -377,7 +396,7 @@ namespace EddiJournalMonitor
                         case "CollectCargo":
                             {
                                 string commodityName = JsonParsing.getString(data, "Type");
-                                CommodityDefinition commodity = CommodityDefinition.FromName(commodityName);
+                                CommodityDefinition commodity = CommodityDefinition.FromEDName(commodityName);
                                 if (commodity == null)
                                 {
                                     Logging.Error("Failed to map cargo type " + commodityName + " to commodity definition", line);
@@ -391,7 +410,7 @@ namespace EddiJournalMonitor
                         case "EjectCargo":
                             {
                                 string commodityName = JsonParsing.getString(data, "Type");
-                                CommodityDefinition commodity = CommodityDefinition.FromName(commodityName);
+                                CommodityDefinition commodity = CommodityDefinition.FromEDName(commodityName);
                                 if (commodity == null)
                                 {
                                     Logging.Error("Failed to map cargo type " + commodityName + " to commodity definition", line);
@@ -630,13 +649,18 @@ namespace EddiJournalMonitor
                                 }
 
                                 // Common items
-                                decimal radius = JsonParsing.getDecimal(data, "Radius");
-                                decimal? orbitalperiod = JsonParsing.getOptionalDecimal(data, "OrbitalPeriod");
-                                decimal rotationperiod = JsonParsing.getDecimal(data, "RotationPeriod");
-                                decimal? semimajoraxis = JsonParsing.getOptionalDecimal(data, "SemiMajorAxis");
+                                // Need to convert radius from meters (per journal) to kilometers
+                                decimal radiusKm = JsonParsing.getDecimal(data, "Radius") / 1000;
+                                // Need to convert orbital period from seconds (per journal) to days
+                                decimal? orbitalPeriodDays = ConstantConverters.seconds2days(JsonParsing.getOptionalDecimal(data, "OrbitalPeriod"));
+                                // Need to convert rotation period from seconds (per journal) to days
+                                decimal rotationPeriodDays = (decimal)ConstantConverters.seconds2days(JsonParsing.getDecimal(data, "RotationPeriod"));
+                                // Need to convert meters to light seconds
+                                decimal? semimajoraxisLs = ConstantConverters.meters2ls(JsonParsing.getOptionalDecimal(data, "SemiMajorAxis"));
                                 decimal? eccentricity = JsonParsing.getOptionalDecimal(data, "Eccentricity");
-                                decimal? orbitalinclination = JsonParsing.getOptionalDecimal(data, "OrbitalInclination");
-                                decimal? periapsis = JsonParsing.getOptionalDecimal(data, "Periapsis");
+                                decimal? orbitalinclinationDegrees = JsonParsing.getOptionalDecimal(data, "OrbitalInclination");
+                                decimal? periapsisDegrees = JsonParsing.getOptionalDecimal(data, "Periapsis");
+                                decimal? axialTiltDegrees = JsonParsing.getOptionalDecimal(data, "AxialTilt");
 
                                 // Check whether we have a detailed discovery scanner on board the current ship
                                 bool dssEquipped = false;
@@ -661,12 +685,12 @@ namespace EddiJournalMonitor
                                     foreach (Dictionary<string, object> ringData in ringsData)
                                     {
                                         string ringName = JsonParsing.getString(ringData, "Name");
-                                        string ringComposition = Composition.FromEDName(JsonParsing.getString(ringData, "RingClass")).localizedName;
-                                        decimal ringMass = JsonParsing.getDecimal(ringData, "MassMT");
-                                        decimal ringInnerRadius = JsonParsing.getDecimal(ringData, "InnerRad");
-                                        decimal ringOuterRadius = JsonParsing.getDecimal(ringData, "OuterRad");
+                                        RingComposition ringComposition = RingComposition.FromEDName(JsonParsing.getString(ringData, "RingClass"));
+                                        decimal ringMassMegaTons = JsonParsing.getDecimal(ringData, "MassMT");
+                                        decimal ringInnerRadiusKm = JsonParsing.getDecimal(ringData, "InnerRad") / 1000;
+                                        decimal ringOuterRadiusKm = JsonParsing.getDecimal(ringData, "OuterRad") / 1000;
 
-                                        rings.Add(new Ring(ringName, ringComposition, ringMass, ringInnerRadius, ringOuterRadius));
+                                        rings.Add(new Ring(ringName, ringComposition, ringMassMegaTons, ringInnerRadiusKm, ringOuterRadiusKm));
                                     }
                                 }
 
@@ -679,33 +703,83 @@ namespace EddiJournalMonitor
                                     string luminosityClass = JsonParsing.getString(data, "Luminosity");
                                     data.TryGetValue("Age_MY", out val);
                                     long ageMegaYears = (long)val;
-                                    decimal temperature = JsonParsing.getDecimal(data, "SurfaceTemperature");
+                                    decimal temperatureKelvin = JsonParsing.getDecimal(data, "SurfaceTemperature");
 
-                                    events.Add(new StarScannedEvent(timestamp, name, starType, stellarMass, radius, absoluteMagnitude, luminosityClass, ageMegaYears, temperature, distancefromarrival, orbitalperiod, rotationperiod, semimajoraxis, eccentricity, orbitalinclination, periapsis, rings, dssEquipped) { raw = line });
+                                    events.Add(new StarScannedEvent(timestamp, name, starType, stellarMass, radiusKm, absoluteMagnitude, luminosityClass, ageMegaYears, temperatureKelvin, distancefromarrival, orbitalPeriodDays, rotationPeriodDays, semimajoraxisLs, eccentricity, orbitalinclinationDegrees, periapsisDegrees, rings, dssEquipped) { raw = line });
                                     handled = true;
                                 }
                                 else
                                 {
                                     // Body
-                                    bool? tidallyLocked = JsonParsing.getOptionalBool(data, "TidalLock");
+                                    bool? tidallyLocked = JsonParsing.getOptionalBool(data, "TidalLock") ?? false;
 
-                                    string bodyClass = JsonParsing.getString(data, "PlanetClass");
+                                    PlanetClass planetClass = PlanetClass.FromEDName(JsonParsing.getString(data, "PlanetClass")) ?? PlanetClass.None;
                                     decimal? earthMass = JsonParsing.getOptionalDecimal(data, "MassEM");
 
                                     // MKW: Gravity in the Journal is in m/s; must convert it to G
-                                    decimal gravity = Body.ms2g(JsonParsing.getDecimal(data, "SurfaceGravity"));
+                                    decimal gravity = ConstantConverters.ms2g(JsonParsing.getDecimal(data, "SurfaceGravity"));
 
-                                    decimal? temperature = JsonParsing.getOptionalDecimal(data, "SurfaceTemperature");
+                                    decimal? temperatureKelvin = JsonParsing.getOptionalDecimal(data, "SurfaceTemperature");
 
-                                    decimal? pressure = JsonParsing.getOptionalDecimal(data, "SurfacePressure");
+                                    decimal? pressure = ConstantConverters.pascals2atm(JsonParsing.getOptionalDecimal(data, "SurfacePressure"));
 
-                                    bool? landable = JsonParsing.getOptionalBool(data, "Landable");
+                                    bool? landable = JsonParsing.getOptionalBool(data, "Landable") ?? false;
 
                                     string reserves = JsonParsing.getString(data, "ReserveLevel");
 
-                                    decimal? axialTilt = JsonParsing.getOptionalDecimal(data, "AxialTilt");
+                                    // The "Atmosphere" is most accurately described through the "AtmosphereType" and "AtmosphereComposition" 
+                                    // properties, so we use them in preference to "Atmosphere"
 
-                                    // TODO atmosphere composition
+                                    // Gas giants may receive an empty string in place of an atmosphere class string. Fix it, since gas giants definitely have atmospheres. 
+                                    AtmosphereClass atmosphereClass = planetClass.invariantName.Contains("gas giant") && JsonParsing.getString(data, "AtmosphereType") == string.Empty
+                                        ? AtmosphereClass.FromEDName("GasGiant") 
+                                        : AtmosphereClass.FromEDName(JsonParsing.getString(data, "AtmosphereType")) ?? AtmosphereClass.None;
+
+                                    data.TryGetValue("AtmosphereComposition", out val);
+                                    List<AtmosphereComposition> atmosphereCompositions = new List<AtmosphereComposition>();
+                                    if (val != null)
+                                    {
+                                        if (val is List<object> atmosJson)
+                                        {
+                                            foreach (Dictionary<string, object> atmoJson in atmosJson)
+                                            {
+                                                string edComposition = JsonParsing.getString(atmoJson, "Name");
+                                                decimal? percent = JsonParsing.getOptionalDecimal(atmoJson, "Percent");
+                                                if (edComposition != null && percent != null)
+                                                {
+                                                    atmosphereCompositions.Add(new AtmosphereComposition(edComposition, (decimal)percent));
+                                                }
+                                            }
+                                            if (atmosphereCompositions.Count > 0)
+                                            {
+                                                atmosphereCompositions = atmosphereCompositions.OrderByDescending(x => x.percent).ToList();
+                                            }
+                                        }
+                                    }
+
+                                    data.TryGetValue("Composition", out val);
+                                    List<SolidComposition> solidCompositions = new List<SolidComposition>();
+                                    if (val != null)
+                                    {
+                                        if (val is Dictionary<string, object> bodyCompsJson)
+                                        {
+                                            IDictionary<string, object> compositionData = (IDictionary<string, object>)val;
+                                            foreach (KeyValuePair<string, object> kv in compositionData)
+                                            {
+                                                string edComposition = kv.Key;
+                                                // The journal gives solid composition as a fraction of 1. Multiply by 100 to convert to a true percentage.
+                                                decimal percent = ((decimal)(double)kv.Value) * 100;
+                                                if (edComposition != null)
+                                                {
+                                                    solidCompositions.Add(new SolidComposition(edComposition, percent));
+                                                }
+                                            }
+                                            if (solidCompositions.Count > 0)
+                                            {
+                                                solidCompositions = solidCompositions.OrderByDescending(x => x.percent).ToList();
+                                            }
+                                        }
+                                    }
 
                                     data.TryGetValue("Materials", out val);
                                     List<MaterialPresence> materials = new List<MaterialPresence>();
@@ -734,11 +808,10 @@ namespace EddiJournalMonitor
                                         }
                                     }
 
-                                    string terraformState = JsonParsing.getString(data, "TerraformState");
-                                    string atmosphere = JsonParsing.getString(data, "Atmosphere");
+                                    TerraformState terraformState = TerraformState.FromEDName(JsonParsing.getString(data, "TerraformState")) ?? TerraformState.NotTerraformable;
                                     Volcanism volcanism = Volcanism.FromName(JsonParsing.getString(data, "Volcanism"));
 
-                                    events.Add(new BodyScannedEvent(timestamp, name, bodyClass, earthMass, radius, gravity, temperature, pressure, tidallyLocked, landable, atmosphere, volcanism, distancefromarrival, (decimal)orbitalperiod, rotationperiod, semimajoraxis, eccentricity, orbitalinclination, periapsis, rings, reserves, materials, terraformState, axialTilt, dssEquipped) { raw = line });
+                                    events.Add(new BodyScannedEvent(timestamp, name, planetClass, earthMass, radiusKm, gravity, temperatureKelvin, pressure, tidallyLocked, landable, atmosphereClass, atmosphereCompositions, solidCompositions, volcanism, distancefromarrival, (decimal)orbitalPeriodDays, rotationPeriodDays, semimajoraxisLs, eccentricity, orbitalinclinationDegrees, periapsisDegrees, rings, reserves, materials, terraformState, axialTiltDegrees, dssEquipped) { raw = line });
                                     handled = true;
                                 }
                             }
@@ -884,7 +957,7 @@ namespace EddiJournalMonitor
                                 foreach (Dictionary<string, object> _commodity in commodities)
                                 {
                                     string commodityEdName = JsonParsing.getString(_commodity, "Name");
-                                    CommodityDefinition commodity = CommodityDefinition.FromName(commodityEdName);
+                                    CommodityDefinition commodity = CommodityDefinition.FromEDName(commodityEdName);
                                     int count = JsonParsing.getInt(_commodity, "Count");
                                     if (commodity == null)
                                     {
@@ -1524,7 +1597,7 @@ namespace EddiJournalMonitor
                             {
                                 string commodityName = JsonParsing.getString(data, "Type");
 
-                                CommodityDefinition commodity = CommodityDefinition.FromName(commodityName);
+                                CommodityDefinition commodity = CommodityDefinition.FromEDName(commodityName);
                                 if (commodity == null)
                                 {
                                     Logging.Error("Failed to map cargo type " + commodityName + " to commodity definition", line);
@@ -1718,7 +1791,7 @@ namespace EddiJournalMonitor
                             {
                                 long marketId = JsonParsing.getLong(data, "MarketID");
                                 string commodityName = JsonParsing.getString(data, "Type");
-                                CommodityDefinition commodity = CommodityDefinition.FromName(commodityName);
+                                CommodityDefinition commodity = CommodityDefinition.FromEDName(commodityName);
                                 if (commodity == null)
                                 {
                                     Logging.Error("Failed to map cargo type " + commodityName + " to commodity definition", line);
@@ -1733,7 +1806,7 @@ namespace EddiJournalMonitor
                             {
                                 long marketId = JsonParsing.getLong(data, "MarketID");
                                 string commodityName = JsonParsing.getString(data, "Type");
-                                CommodityDefinition commodity = CommodityDefinition.FromName(commodityName);
+                                CommodityDefinition commodity = CommodityDefinition.FromEDName(commodityName);
                                 if (commodity == null)
                                 {
                                     Logging.Error("Failed to map cargo type " + commodityName + " to commodity definition", line);
@@ -1770,7 +1843,7 @@ namespace EddiJournalMonitor
                                         foreach (KeyValuePair<string, object> used in usedData)
                                         {
                                             // Used could be a material or a commodity
-                                            CommodityDefinition commodity = CommodityDefinition.FromName(used.Key);
+                                            CommodityDefinition commodity = CommodityDefinition.FromEDName(used.Key);
                                             if (commodity.category != null)
                                             {
                                                 // This is a real commodity
@@ -2436,7 +2509,7 @@ namespace EddiJournalMonitor
                                 string destinationstation = JsonParsing.getString(data, "DestinationStation");
 
                                 // Missions with commodities
-                                CommodityDefinition commodity = CommodityDefinition.FromName(JsonParsing.getString(data, "Commodity"));
+                                CommodityDefinition commodity = CommodityDefinition.FromEDName(JsonParsing.getString(data, "Commodity"));
                                 data.TryGetValue("Count", out val);
                                 int? amount = (int?)(long?)val;
 
@@ -2481,7 +2554,7 @@ namespace EddiJournalMonitor
                                 string faction = getFaction(data, "Faction");
 
                                 // Missions with commodities
-                                CommodityDefinition commodity = CommodityDefinition.FromName(JsonParsing.getString(data, "Commodity"));
+                                CommodityDefinition commodity = CommodityDefinition.FromEDName(JsonParsing.getString(data, "Commodity"));
                                 data.TryGetValue("Count", out val);
                                 int? amount = (int?)(long?)val;
 
@@ -2504,7 +2577,7 @@ namespace EddiJournalMonitor
                                 {
                                     foreach (Dictionary<string, object> commodityRewardData in commodityRewardsData)
                                     {
-                                        CommodityDefinition rewardCommodity = CommodityDefinition.FromName(JsonParsing.getString(commodityRewardData, "Name"));
+                                        CommodityDefinition rewardCommodity = CommodityDefinition.FromEDName(JsonParsing.getString(commodityRewardData, "Name"));
                                         commodityRewardData.TryGetValue("Count", out val);
                                         int count = (int)(long)val;
                                         commodityrewards.Add(new CommodityAmount(rewardCommodity, count));
@@ -2564,7 +2637,7 @@ namespace EddiJournalMonitor
                             {
                                 long marketId = JsonParsing.getLong(data, "MarketID");
                                 string commodityName = JsonParsing.getString(data, "Name");
-                                CommodityDefinition commodity = CommodityDefinition.FromName(JsonParsing.getString(data, "Name"));
+                                CommodityDefinition commodity = CommodityDefinition.FromEDName(JsonParsing.getString(data, "Name"));
                                 if (commodity == null)
                                 {
                                     Logging.Error("Failed to map cargo type " + commodityName + " to commodity definition", line);
@@ -2840,7 +2913,7 @@ namespace EddiJournalMonitor
                         case "PowerplayCollect":
                             {
                                 string power = JsonParsing.getString(data, "Power");
-                                CommodityDefinition commodity = CommodityDefinition.FromName(JsonParsing.getString(data, "Type"));
+                                CommodityDefinition commodity = CommodityDefinition.FromEDName(JsonParsing.getString(data, "Type"));
                                 commodity.fallbackLocalizedName = JsonParsing.getString(data, "Type_Localised");
                                 data.TryGetValue("Count", out object val);
                                 int amount = (int)(long)val;
@@ -2852,7 +2925,7 @@ namespace EddiJournalMonitor
                         case "PowerplayDeliver":
                             {
                                 string power = JsonParsing.getString(data, "Power");
-                                CommodityDefinition commodity = CommodityDefinition.FromName(JsonParsing.getString(data, "Type"));
+                                CommodityDefinition commodity = CommodityDefinition.FromEDName(JsonParsing.getString(data, "Type"));
                                 commodity.fallbackLocalizedName = JsonParsing.getString(data, "Type_Localised");
                                 data.TryGetValue("Count", out object val);
                                 int amount = (int)(long)val;
@@ -3139,14 +3212,14 @@ namespace EddiJournalMonitor
             data.TryGetValue(key, out object val);
             // FD sends "" rather than null; fix that here
             if (((string)val) == "") { val = null; }
-            return Superpower.From((string)val);
+            return Superpower.FromNameOrEdName((string)val);
         }
 
         private static string getFaction(IDictionary<string, object> data, string key)
         {
             string faction = JsonParsing.getString(data, key);
             // Might be a superpower...
-            Superpower superpowerFaction = Superpower.From(faction);
+            Superpower superpowerFaction = Superpower.FromNameOrEdName(faction);
             return superpowerFaction?.invariantName ?? faction;
         }
 

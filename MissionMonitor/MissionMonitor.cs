@@ -581,7 +581,7 @@ namespace EddiMissionMonitor
 
                     // Get the minor faction stuff
                     faction = @event.faction,
-                    factionstate = SystemState.FromEDName("None").localizedName,
+                    factionstate = FactionState.FromEDName("None").localizedName,
 
                     // Set mission origin to to the current system & station
                     originsystem = @event.communal ? @event.destinationsystem : EDDI.Instance?.CurrentStarSystem?.name,
@@ -611,7 +611,7 @@ namespace EddiMissionMonitor
                         .ToLowerInvariant();
 
                     // Might be a faction state
-                    SystemState factionState = SystemState
+                    FactionState factionState = FactionState
                         .AllOfThem
                         .Find(s => s.edname.ToLowerInvariant() == element);
                     if (factionState != null)

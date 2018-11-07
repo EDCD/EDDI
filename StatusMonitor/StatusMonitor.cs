@@ -349,7 +349,7 @@ namespace EddiStatusMonitor
                 if (gliding && thisStatus.fsd_status == "cooldown")
                 {
                     gliding = false;
-                    EDDI.Instance.eventHandler(new GlideEvent(currentStatus.timestamp, gliding, EDDI.Instance.CurrentStellarBody.systemname, EDDI.Instance.CurrentStellarBody.systemAddress, EDDI.Instance.CurrentStellarBody.name, EDDI.Instance.CurrentStellarBody.type));
+                    EDDI.Instance.eventHandler(new GlideEvent(currentStatus.timestamp, gliding, EDDI.Instance.CurrentStellarBody.systemname, EDDI.Instance.CurrentStellarBody.systemAddress, EDDI.Instance.CurrentStellarBody.name, EDDI.Instance.CurrentStellarBody.Type));
                 }
             }
         }
@@ -394,7 +394,7 @@ namespace EddiStatusMonitor
             {
                 gliding = true;
                 EnteredNormalSpaceEvent theEvent = (EnteredNormalSpaceEvent)@event;
-                EDDI.Instance.eventHandler(new GlideEvent(DateTime.UtcNow, gliding, theEvent.system, theEvent.systemAddress, theEvent.body, theEvent.bodytype));
+                EDDI.Instance.eventHandler(new GlideEvent(DateTime.UtcNow, gliding, theEvent.system, theEvent.systemAddress, theEvent.body, theEvent.bodyType));
             }
         }
 

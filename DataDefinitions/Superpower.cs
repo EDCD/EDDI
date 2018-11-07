@@ -10,8 +10,8 @@ namespace EddiDataDefinitions
         {
             resourceManager = Properties.Superpowers.ResourceManager;
             resourceManager.IgnoreCase = true;
+            missingEDNameHandler = (edname) => new Superpower(edname);
 
-            None = new Superpower("$faction_none;");
             var Federation = new Superpower("$faction_Federation;");
             var Alliance = new Superpower("$faction_Alliance;");
             var Empire = new Superpower("$faction_Empire;");
@@ -22,16 +22,16 @@ namespace EddiDataDefinitions
             var Thargoid = new Superpower("$faction_Thargoid;");
         }
 
-        public static readonly Superpower None;
+        public static readonly Superpower None = new Superpower("None");
 
         // dummy used to ensure that the static constructor has run
         public Superpower() : this("")
         { }
 
-        private Superpower(string edname) : base(edname, edname.Replace("$faction_", "").Replace(";", ""))
+        private Superpower(string edname) : base(edname, edname.Replace("$faction_", "").Replace(";", "").Replace(" ", ""))
         { }
 
-        public static Superpower From(string from)
+        public static Superpower FromNameOrEdName(string from)
         {
             if (from == null)
             {
