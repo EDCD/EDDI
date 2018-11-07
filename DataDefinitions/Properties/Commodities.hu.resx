@@ -576,10 +576,7 @@
     <value>HIPi organikus foszfát</value>
     <comment>Commodity HIPOrganophosphates</comment>
   </data>
-  <data name="HIPProto_Squid" xml:space="preserve">
-    <value>HIPi proto-tintahal</value>
-    <comment>Commodity HIPProto_Squid</comment>
-  </data>
+  
   <data name="HNShockMount" xml:space="preserve">
     <value>Lengéscsillapító</value>
     <comment>Commodity HNShockMount</comment>
@@ -699,10 +696,7 @@
     <comment>Commodity MetaAlloys</comment>
   </data>
   
-  <data name="MethanolMonohydrateCrystals" xml:space="preserve">
-    <value>Metanol monohidrát kristályok</value>
-    <comment>Commodity MethanolMonohydrateCrystals</comment>
-  </data>
+  
   <data name="MicroControllers" xml:space="preserve">
     <value>Mikrokontrollerek</value>
     <comment>Commodity MicroControllers</comment>
@@ -1090,6 +1084,8 @@
     <value>Kinagoi hegedűk</value>
     <comment>Commodity KinagoInstruments</comment>
   </data>
+  
+  
   
   
   
