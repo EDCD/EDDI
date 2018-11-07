@@ -161,10 +161,7 @@
     <value>Alluminio</value>
     <comment>Commodity Aluminium</comment>
   </data>
-  <data name="AlyaBodySoap" xml:space="preserve">
-    <value>Sapone Alya per il Corpo</value>
-    <comment>Commodity AlyaBodySoap</comment>
-  </data>
+  
   <data name="AncientCasket" xml:space="preserve">
     <value>Scrigno Antico</value>
     <comment>Commodity AncientCasket</comment>
@@ -645,10 +642,7 @@
     <value>Organofosfati di H I P</value>
     <comment>Commodity HIPOrganophosphates</comment>
   </data>
-  <data name="HIPProto_Squid" xml:space="preserve">
-    <value>Proto Calamaro di H I P</value>
-    <comment>Commodity HIPProto_Squid</comment>
-  </data>
+  
   <data name="HNShockMount" xml:space="preserve">
     <value>Stabilizzatore ammortizzante</value>
     <comment>Commodity HNShockMount</comment>
@@ -705,6 +699,8 @@
     <value>Giadeite</value>
     <comment>Commodity Jadeite</comment>
   </data>
+  
+  
   
   
   
