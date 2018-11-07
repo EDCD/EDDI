@@ -161,10 +161,7 @@
     <value>Aluminium</value>
     <comment>Commodity Aluminium</comment>
   </data>
-  <data name="AlyaBodySoap" xml:space="preserve">
-    <value>Alya Körperseife</value>
-    <comment>Commodity AlyaBodySoap</comment>
-  </data>
+  
   <data name="AncientCasket" xml:space="preserve">
     <value>Uralte Schatulle</value>
     <comment>Commodity AncientCasket</comment>
@@ -645,10 +642,7 @@
     <value>Hip Organophosphat</value>
     <comment>Commodity HIPOrganophosphates</comment>
   </data>
-  <data name="HIPProto_Squid" xml:space="preserve">
-    <value>Hip Proto-Tintenfisch</value>
-    <comment>Commodity HIPProto_Squid</comment>
-  </data>
+  
   <data name="HNShockMount" xml:space="preserve">
     <value>HN-Dämpferaufhängung</value>
     <comment>Commodity HNShockMount</comment>
@@ -837,10 +831,7 @@
     <value>Methanklathrat</value>
     <comment>Commodity MethaneClathrate</comment>
   </data>
-  <data name="MethanolMonohydrateCrystals" xml:space="preserve">
-    <value>Methanol-Monohydrat-Kristalle</value>
-    <comment>Commodity MethanolMonohydrateCrystals</comment>
-  </data>
+  
   <data name="MicroControllers" xml:space="preserve">
     <value>Mikrocontroller</value>
     <comment>Commodity MicroControllers</comment>
@@ -881,10 +872,7 @@
     <value>Motrona Erlebnisgelee</value>
     <comment>Commodity MotronaExperienceJelly</comment>
   </data>
-  <data name="MukusubiiChitin_Os" xml:space="preserve">
-    <value>Mukusubii Chitin-Os</value>
-    <comment>Commodity MukusubiiChitin_Os</comment>
-  </data>
+  
   <data name="MulachiGiantFungus" xml:space="preserve">
     <value>Mulachi Riesenpilz</value>
     <comment>Commodity MulachiGiantFungus</comment>
@@ -949,18 +937,9 @@
     <value>Zwiebelkopf</value>
     <comment>Commodity OnionHead</comment>
   </data>
-  <data name="OnionheadAlphaStrain" xml:space="preserve">
-    <value>Zwiebelkopf Alpha-Stamm</value>
-    <comment>Commodity OnionheadAlphaStrain</comment>
-  </data>
-  <data name="OnionheadBetaStrain" xml:space="preserve">
-    <value>Zwiebelkopf Beta-Stamm</value>
-    <comment>Commodity OnionheadBetaStrain</comment>
-  </data>
-  <data name="OphiuchExinoArtefacts" xml:space="preserve">
-    <value>Ophiuch Exino Artefakte</value>
-    <comment>Commodity OphiuchExinoArtefacts</comment>
-  </data>
+  
+  
+  
   <data name="OrrerianViciousBrew" xml:space="preserve">
     <value>Schädliches Orrerian Gebräu</value>
     <comment>Commodity OrrerianViciousBrew</comment>
@@ -1357,10 +1336,7 @@
     <value>Vidavantianische Spitze</value>
     <comment>Commodity VidavantianLace</comment>
   </data>
-  <data name="VoidExtractCoffee" xml:space="preserve">
-    <value>Void Kaffeekonzentrat</value>
-    <comment>Commodity VoidExtractCoffee</comment>
-  </data>
+  
   <data name="VolkhabBeeDrones" xml:space="preserve">
     <value>Volkhab Bienendrohnen</value>
     <comment>Commodity VolkhabBeeDrones</comment>
@@ -1601,6 +1577,8 @@
     <value>Utopia-PR-Dokumente</value>
     <comment>Commodity UtopianPublicity</comment>
   </data>
+  
+  
   <data name="ancientkey" xml:space="preserve">
     <value>Uralter Schlüssel</value>
     <comment>Commodity Ancient Key</comment>
