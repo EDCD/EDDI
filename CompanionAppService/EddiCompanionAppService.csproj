@@ -126,6 +126,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\CapiResources.hu.resx" />
     <EmbeddedResource Include="Properties\CapiResources.it.resx" />
+    <EmbeddedResource Include="Properties\CapiResources.ja.resx" />
     <EmbeddedResource Include="Properties\CapiResources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>CapiResources.Designer.cs</LastGenOutput>

@@ -135,6 +135,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\EDSMResources.hu.resx" />
     <EmbeddedResource Include="Properties\EDSMResources.it.resx" />
+    <EmbeddedResource Include="Properties\EDSMResources.ja.resx" />
     <EmbeddedResource Include="Properties\EDSMResources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>EDSMResources.Designer.cs</LastGenOutput>

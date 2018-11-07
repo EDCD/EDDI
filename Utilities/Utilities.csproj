@@ -127,6 +127,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Utilities.hu.resx" />
     <EmbeddedResource Include="Properties\Utilities.it.resx" />
+    <EmbeddedResource Include="Properties\Utilities.ja.resx" />
     <EmbeddedResource Include="Properties\Utilities.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Utilities.Designer.cs</LastGenOutput>

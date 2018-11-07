@@ -226,6 +226,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\SpeechResponder.hu.resx" />
     <EmbeddedResource Include="Properties\SpeechResponder.it.resx" />
+    <EmbeddedResource Include="Properties\SpeechResponder.ja.resx" />
     <EmbeddedResource Include="Properties\SpeechResponder.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>SpeechResponder.Designer.cs</LastGenOutput>

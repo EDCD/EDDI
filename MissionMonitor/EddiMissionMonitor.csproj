@@ -101,6 +101,7 @@
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
+    <EmbeddedResource Include="Properties\MissionMonitor.ja.resx" />
     <EmbeddedResource Include="Properties\MissionMonitor.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>MissionMonitor.Designer.cs</LastGenOutput>
