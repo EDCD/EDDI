@@ -161,10 +161,7 @@
     <value>Aluminium</value>
     <comment>Commodity Aluminium</comment>
   </data>
-  <data name="AlyaBodySoap" xml:space="preserve">
-    <value>Savon corporel d'Alya</value>
-    <comment>Commodity AlyaBodySoap</comment>
-  </data>
+  
   <data name="AncientCasket" xml:space="preserve">
     <value>Coffret Antique</value>
     <comment>Commodity AncientCasket</comment>
@@ -645,10 +642,7 @@
     <value>Organophosphates de Hip</value>
     <comment>Commodity HIPOrganophosphates</comment>
   </data>
-  <data name="HIPProto_Squid" xml:space="preserve">
-    <value>Proto-calamar de HIP</value>
-    <comment>Commodity HIPProto_Squid</comment>
-  </data>
+  
   <data name="HNShockMount" xml:space="preserve">
     <value>Protection antichocs HP</value>
     <comment>Commodity HNShockMount</comment>
@@ -837,10 +831,7 @@
     <value>Hydrate de Méthane</value>
     <comment>Commodity MethaneClathrate</comment>
   </data>
-  <data name="MethanolMonohydrateCrystals" xml:space="preserve">
-    <value>Cristaux de Méthanol Monohydraté</value>
-    <comment>Commodity MethanolMonohydrateCrystals</comment>
-  </data>
+  
   <data name="MicroControllers" xml:space="preserve">
     <value>Microcontrôleurs</value>
     <comment>Commodity MicroControllers</comment>
@@ -881,10 +872,7 @@
     <value>Gelée d'expérience de Motrona</value>
     <comment>Commodity MotronaExperienceJelly</comment>
   </data>
-  <data name="MukusubiiChitin_Os" xml:space="preserve">
-    <value>Os chitineux de Mukusubii</value>
-    <comment>Commodity MukusubiiChitin_Os</comment>
-  </data>
+  
   <data name="MulachiGiantFungus" xml:space="preserve">
     <value>Champignons géants de Mulachi</value>
     <comment>Commodity MulachiGiantFungus</comment>
@@ -949,18 +937,9 @@
     <value>Tête d'oignon</value>
     <comment>Commodity OnionHead</comment>
   </data>
-  <data name="OnionheadAlphaStrain" xml:space="preserve">
-    <value>Variété alpha de tête d'oignon</value>
-    <comment>Commodity OnionheadAlphaStrain</comment>
-  </data>
-  <data name="OnionheadBetaStrain" xml:space="preserve">
-    <value>Variété bêta de tête d'oignon</value>
-    <comment>Commodity OnionheadBetaStrain</comment>
-  </data>
-  <data name="OphiuchExinoArtefacts" xml:space="preserve">
-    <value>Artefacts Ophiuch Exino</value>
-    <comment>Commodity OphiuchExinoArtefacts</comment>
-  </data>
+  
+  
+  
   <data name="OrrerianViciousBrew" xml:space="preserve">
     <value>Vicieuse d'Orrere</value>
     <comment>Commodity OrrerianViciousBrew</comment>
@@ -1357,10 +1336,7 @@
     <value>Dentelle Vidavantienne</value>
     <comment>Commodity VidavantianLace</comment>
   </data>
-  <data name="VoidExtractCoffee" xml:space="preserve">
-    <value>Café du néant</value>
-    <comment>Commodity VoidExtractCoffee</comment>
-  </data>
+  
   <data name="VolkhabBeeDrones" xml:space="preserve">
     <value>Drones butineurs Volkhab</value>
     <comment>Commodity VolkhabBeeDrones</comment>
@@ -1601,6 +1577,8 @@
     <value>Pamphlets d'Utopia</value>
     <comment>Commodity UtopianPublicity</comment>
   </data>
+  
+  
   <data name="ancientkey" xml:space="preserve">
     <value>Clé Antique</value>
     <comment>Commodity Ancient Key</comment>
