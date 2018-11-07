@@ -407,6 +407,7 @@ An orbital or planetary station.
     - `allegiance` the superpower allegiance of the faction that controls this station (Federation, Empire etc)
     - `state` the state of the station (Boom, War, etc)
     - `primaryeconomy` the primary economy in this station (High Technology, Agriculture, etc)
+    - `secondaryeconomy` the secondary economy in this station (if any)
     - `distancefromstar` the distance from the main star to this station (in light years)
     - `hasrefuel` true if this station has refuelling
     - `hasrearm` true if this station has rearming
