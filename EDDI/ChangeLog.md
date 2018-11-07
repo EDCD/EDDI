@@ -2,6 +2,8 @@
 
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
+### Development
+
 ### 3.1.0-b5
   * Core
     * EDDI now uses EDSM as the primary backend for server data (rather than the no longer maintained server set up by EDDI's original creator)
