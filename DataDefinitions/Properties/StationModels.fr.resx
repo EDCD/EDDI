@@ -145,5 +145,8 @@
     <value>Port planétaire</value>
     <comment>A Surface Station</comment>
   </data>
-  
+  <data name="None" xml:space="preserve">
+    <value>Station inconnue</value>
+    <comment>Unknown Station</comment>
+  </data>
 </root>
