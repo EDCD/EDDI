@@ -117,24 +117,64 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="AmmoniaWorld" xml:space="preserve">
+    <value>Monde d'ammoniac</value>
+  </data>
+  <data name="EarthLikeBody" xml:space="preserve">
+    <value>Monde semblable à la Terre</value>
+  </data>
+  <data name="GasGiantWithAmmoniaBasedLife" xml:space="preserve">
+    <value>Géante gazeuse avec de la vie à base d'ammoniac</value>
+  </data>
+  <data name="GasGiantWithWaterBasedLife" xml:space="preserve">
+    <value>Géante gazeuse avec de la vie aquatique</value>
+  </data>
+  <data name="HeliumGasGiant" xml:space="preserve">
+    <value>Géante gazeuse d'hélium</value>
+  </data>
+  <data name="HeliumRichGasGiant" xml:space="preserve">
+    <value>Géante gazeuse riche en hélium</value>
+  </data>
+  <data name="HighMetalContentBody" xml:space="preserve">
+    <value>Monde riche en métaux</value>
+  </data>
+  <data name="IcyBody" xml:space="preserve">
+    <value>Corps glacé</value>
+  </data>
+  <data name="MetalRich" xml:space="preserve">
+    <value>Corps riche en métaux</value>
+  </data>
+  <data name="RockyBody" xml:space="preserve">
+    <value>Corps rocheux</value>
+  </data>
+  <data name="RockyIceBody" xml:space="preserve">
+    <value>Monde rocheux glacé</value>
+  </data>
+  <data name="SudarskyClassIGasGiant" xml:space="preserve">
+    <value>Classe I géante gazeuse</value>
+  </data>
+  <data name="SudarskyClassIIGasGiant" xml:space="preserve">
+    <value>Classe II géante gazeuse</value>
+  </data>
+  <data name="SudarskyClassIIIGasGiant" xml:space="preserve">
+    <value>Classe III géante gazeuse</value>
+  </data>
+  <data name="SudarskyClassIVGasGiant" xml:space="preserve">
+    <value>Classe IV géante gazeuse</value>
+  </data>
+  <data name="SudarskyClassVGasGiant" xml:space="preserve">
+    <value>Classe V géante gazeuse</value>
+  </data>
+  <data name="WaterGiant" xml:space="preserve">
+    <value>Géante océanique</value>
+  </data>
+  <data name="WaterGiantWithLife" xml:space="preserve">
+    <value>Géante océanique avec de la vie</value>
+  </data>
+  <data name="WaterWorld" xml:space="preserve">
+    <value>Monde océanique</value>
+  </data>
+  <data name="None" xml:space="preserve">
+    <value>Aucun</value>
+  </data>
 </root>
