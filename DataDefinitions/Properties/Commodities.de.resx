@@ -161,7 +161,10 @@
     <value>Aluminium</value>
     <comment>Commodity Aluminium</comment>
   </data>
-  
+  <data name="AlyaBodilySoap" xml:space="preserve">
+    <value>Alya Körperseife</value>
+    <comment>Commodity AlyaBodySoap</comment>
+  </data>
   <data name="AncientCasket" xml:space="preserve">
     <value>Uralte Schatulle</value>
     <comment>Commodity AncientCasket</comment>
@@ -642,7 +645,10 @@
     <value>Hip Organophosphat</value>
     <comment>Commodity HIPOrganophosphates</comment>
   </data>
-  
+  <data name="HIP41181Squid" xml:space="preserve">
+    <value>Hip Proto-Tintenfisch</value>
+    <comment>Commodity HIPProto_Squid</comment>
+  </data>
   <data name="HNShockMount" xml:space="preserve">
     <value>HN-Dämpferaufhängung</value>
     <comment>Commodity HNShockMount</comment>
@@ -831,7 +837,10 @@
     <value>Methanklathrat</value>
     <comment>Commodity MethaneClathrate</comment>
   </data>
-  
+  <data name="MethanolMonohydrateCrystals" xml:space="preserve">
+    <value>Methanol-Monohydrat-Kristalle</value>
+    <comment>Commodity MethanolMonohydrateCrystals</comment>
+  </data>
   <data name="MicroControllers" xml:space="preserve">
     <value>Mikrocontroller</value>
     <comment>Commodity MicroControllers</comment>
@@ -939,7 +948,10 @@
   </data>
   
   
-  
+  <data name="OphiuchiExinoArtefacts" xml:space="preserve">
+    <value>Ophiuch Exino Artefakte</value>
+    <comment>Commodity OphiuchExinoArtefacts</comment>
+  </data>
   <data name="OrrerianViciousBrew" xml:space="preserve">
     <value>Schädliches Orrerian Gebräu</value>
     <comment>Commodity OrrerianViciousBrew</comment>
@@ -1336,7 +1348,10 @@
     <value>Vidavantianische Spitze</value>
     <comment>Commodity VidavantianLace</comment>
   </data>
-  
+  <data name="LFTVoidExtractCoffee" xml:space="preserve">
+    <value>Void Kaffeekonzentrat</value>
+    <comment>Commodity VoidExtractCoffee</comment>
+  </data>
   <data name="VolkhabBeeDrones" xml:space="preserve">
     <value>Volkhab Bienendrohnen</value>
     <comment>Commodity VolkhabBeeDrones</comment>
@@ -1577,8 +1592,14 @@
     <value>Utopia-PR-Dokumente</value>
     <comment>Commodity UtopianPublicity</comment>
   </data>
-  
-  
+  <data name="PersonalGifts" xml:space="preserve">
+    <value>Persönliche Geschenke</value>
+    <comment>Commodity.PersonalGifts</comment>
+  </data>
+  <data name="ShansCharisOrchid" xml:space="preserve">
+    <value>Shans Charis-Orchidee</value>
+    <comment>Commodity ShansCharisOrchid</comment>
+  </data>
   <data name="ancientkey" xml:space="preserve">
     <value>Uralter Schlüssel</value>
     <comment>Commodity Ancient Key</comment>
