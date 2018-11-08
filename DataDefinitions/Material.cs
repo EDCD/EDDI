@@ -209,8 +209,8 @@ namespace EddiDataDefinitions
         // Blueprints for the material; 
         public List<Blueprint> blueprints { get; set; }
 
-        // Location of the material
-        public string location { get; set; }
+        // Location of the material (localized)
+        public string location => Properties.MaterialLocations.ResourceManager.GetString(edname);
 
         // dummy used to ensure that the static constructor has run
         public Material() : this("", MaterialCategory.Unknown, VeryCommon)
