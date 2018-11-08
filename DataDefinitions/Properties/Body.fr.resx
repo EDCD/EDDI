@@ -117,13 +117,40 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="Ice" xml:space="preserve">
+    <value>Glace</value>
+    <comment>Body Composition "Ice"</comment>
+  </data>
+  <data name="Metal" xml:space="preserve">
+    <value>Métal</value>
+    <comment>Body Composition "Metal"</comment>
+  </data>
+  <data name="Planet" xml:space="preserve">
+    <value>Planète</value>
+    <comment>Body Type "Planet"</comment>
+  </data>
+  <data name="Rock" xml:space="preserve">
+    <value>Roche</value>
+    <comment>Body Composition "Rock"</comment>
+  </data>
+  <data name="Star" xml:space="preserve">
+    <value>Étoile</value>
+    <comment>Body Type "Star"</comment>
+  </data>
+  <data name="Belt" xml:space="preserve">
+    <value>Ceinture</value>
+    <comment>Body Type "Belt"</comment>
+  </data>
+  <data name="None" xml:space="preserve">
+    <value>Aucun</value>
+    <comment>None</comment>
+  </data>
+  <data name="Station" xml:space="preserve">
+    <value>Station</value>
+    <comment>BodyType "Station"</comment>
+  </data>
+  <data name="Null" xml:space="preserve">
+    <value>Aucun</value>
+    <comment>BodyType "Null"</comment>
+  </data>
 </root>
