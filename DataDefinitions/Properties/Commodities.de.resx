@@ -881,10 +881,7 @@
     <value>Motrona Erlebnisgelee</value>
     <comment>Commodity MotronaExperienceJelly</comment>
   </data>
-  <data name="MukusubiiChitinOs" xml:space="preserve">
-    <value>Mukusubii Chitin-Os</value>
-    <comment>Commodity MukusubiiChitin_Os</comment>
-  </data>
+  
   <data name="MulachiGiantFungus" xml:space="preserve">
     <value>Mulachi Riesenpilz</value>
     <comment>Commodity MulachiGiantFungus</comment>
@@ -949,14 +946,8 @@
     <value>Zwiebelkopf</value>
     <comment>Commodity OnionHead</comment>
   </data>
-  <data name="OnionHeadA" xml:space="preserve">
-    <value>Zwiebelkopf Alpha-Stamm</value>
-    <comment>Commodity OnionheadAlphaStrain</comment>
-  </data>
-  <data name="OnionHeadB" xml:space="preserve">
-    <value>Zwiebelkopf Beta-Stamm</value>
-    <comment>Commodity OnionheadBetaStrain</comment>
-  </data>
+  
+  
   <data name="OphiuchiExinoArtefacts" xml:space="preserve">
     <value>Ophiuch Exino Artefakte</value>
     <comment>Commodity OphiuchExinoArtefacts</comment>
@@ -1603,9 +1594,11 @@
   </data>
   <data name="PersonalGifts" xml:space="preserve">
     <value>Persönliche Geschenke</value>
+    <comment>Commodity.PersonalGifts</comment>
   </data>
   <data name="ShansCharisOrchid" xml:space="preserve">
     <value>Shans Charis-Orchidee</value>
+    <comment>Commodity ShansCharisOrchid</comment>
   </data>
   <data name="ancientkey" xml:space="preserve">
     <value>Uralter Schlüssel</value>

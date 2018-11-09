@@ -132,7 +132,9 @@
   <data name="paragraph_2" xml:space="preserve">
     <value>Le second groupe récupère les informations liées aux événements. Ce sont les onglets commençant par 'Moniteur'. Ils récupèrent les événements depuis différentes source et nécessitent une configuration minimale pour fonctionner.</value>
   </data>
-  
+  <data name="paragraph_3" xml:space="preserve">
+    <value>Le troisième groupe répond aux événements. Ce sont les onglets commençant par 'Répondeur'. Ces derniers ont des degrés de configuration différents mais peuvent fonctionner directement.</value>
+  </data>
   <data name="paragraph_4" xml:space="preserve">
     <value>Vous pouvez en savoir plus sur la façon dont fonctionne EDDI sur le</value>
   </data>

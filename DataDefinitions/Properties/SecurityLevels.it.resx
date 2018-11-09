@@ -65,20 +65,20 @@
           <xsd:element name="data">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"/>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" msdata:Ordinal="1" />
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute name="name" type="xsd:string" msdata:Ordinal="1"/>
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"/>
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="resheader">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" />
+              <xsd:attribute name="name" type="xsd:string" use="required"/>
             </xsd:complexType>
           </xsd:element>
         </xsd:choice>
@@ -97,14 +97,8 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="GALAXY_MAP_INFO_state_anarchy" xml:space="preserve">
-    <value></value>
-    <comment>Security level GALAXY_MAP_INFO_state_anarchy</comment>
-  </data>
-  <data name="GALAXY_MAP_INFO_state_lawless" xml:space="preserve">
-    <value></value>
-    <comment>Security level GALAXY_MAP_INFO_state_lawless</comment>
-  </data>
+  
+  
   <data name="SYSTEM_SECURITY_high" xml:space="preserve">
     <value>Alto</value>
     <comment>Security level SYSTEM_SECURITY_high</comment>
@@ -121,8 +115,5 @@
     <value>Medio</value>
     <comment>Security level SYSTEM_SECURITY_medium</comment>
   </data>
-  <data name="None" xml:space="preserve">
-    <value>Nessuno</value>
-    <comment>Security level SYSTEM_SECURITY_none</comment>
-  </data>
+  
 </root>

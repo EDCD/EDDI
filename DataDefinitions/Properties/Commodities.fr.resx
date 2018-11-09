@@ -1603,9 +1603,11 @@
   </data>
   <data name="PersonalGifts" xml:space="preserve">
     <value>Cadeaux personnels</value>
+    <comment>Commodity.PersonalGifts</comment>
   </data>
   <data name="ShansCharisOrchid" xml:space="preserve">
     <value>Orchidée Shan Charis</value>
+    <comment>Commodity ShansCharisOrchid</comment>
   </data>
   <data name="ancientkey" xml:space="preserve">
     <value>Clé Antique</value>

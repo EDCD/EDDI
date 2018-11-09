@@ -1,0 +1,212 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0"/>
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string"/>
+              <xsd:attribute name="type" type="xsd:string"/>
+              <xsd:attribute name="mimetype" type="xsd:string"/>
+              <xsd:attribute ref="xml:space"/>
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string"/>
+              <xsd:attribute name="name" type="xsd:string"/>
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"/>
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"/>
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"/>
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"/>
+              <xsd:attribute ref="xml:space"/>
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required"/>
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Ammonia" xml:space="preserve">
+    <value>Ammoniac</value>
+    <comment>Atmosphere class "Ammonia"</comment>
+  </data>
+  <data name="AmmoniaAndOxygen" xml:space="preserve">
+    <value>Ammoniac et oxygène</value>
+    <comment>Atmosphere class "Ammonia and oxygen"</comment>
+  </data>
+  <data name="AmmoniaRich" xml:space="preserve">
+    <value>Riche en ammoniac</value>
+    <comment>Atmosphere class "Ammonia-rich"</comment>
+  </data>
+  <data name="Argon" xml:space="preserve">
+    <value>Argon</value>
+    <comment>Atmosphere class "Argon"</comment>
+  </data>
+  <data name="ArgonRich" xml:space="preserve">
+    <value>Riche en argon</value>
+    <comment>Atmosphere class "Argon-rich"</comment>
+  </data>
+  <data name="CarbonDioxide" xml:space="preserve">
+    <value>Dioxyde de carbone</value>
+    <comment>Atmosphere class "Carbon dioxide"</comment>
+  </data>
+  <data name="CarbonDioxideRich" xml:space="preserve">
+    <value>Riche en dioxyde de carbone</value>
+    <comment>Atmosphere class "Carbon dioxide-rich"</comment>
+  </data>
+  <data name="Helium" xml:space="preserve">
+    <value>Hélium</value>
+    <comment>Atmosphere class "Helium"</comment>
+  </data>
+  <data name="MetallicVapour" xml:space="preserve">
+    <value>Vapeur métallique</value>
+    <comment>Atmosphere class "Metallic vapour"</comment>
+  </data>
+  <data name="Methane" xml:space="preserve">
+    <value>Méthane</value>
+    <comment>Atmosphere class "Methane"</comment>
+  </data>
+  <data name="MethaneRich" xml:space="preserve">
+    <value>Riche en méthane</value>
+    <comment>Atmosphere class "Methane-rich"</comment>
+  </data>
+  <data name="Neon" xml:space="preserve">
+    <value>Néon</value>
+    <comment>Atmosphere class "Neon"</comment>
+  </data>
+  <data name="NeonRich" xml:space="preserve">
+    <value>Riche en néon</value>
+    <comment>Atmosphere class "Neon-rich"</comment>
+  </data>
+  <data name="Nitrogen" xml:space="preserve">
+    <value>Azote</value>
+    <comment>Atmosphere class "Nitrogen"</comment>
+  </data>
+  <data name="None" xml:space="preserve">
+    <value>Aucune atmosphère</value>
+    <comment>Atmosphere class "None"</comment>
+  </data>
+  <data name="Oxygen" xml:space="preserve">
+    <value>Oxygène</value>
+    <comment>Atmosphere class "Oxygen"</comment>
+  </data>
+  <data name="SilicateVapour" xml:space="preserve">
+    <value>Vapeur de silicate</value>
+    <comment>Atmosphere class "Silicate vapour"</comment>
+  </data>
+  <data name="SuitableForWaterBasedLife" xml:space="preserve">
+    <value>Adapté pour la vie aquatique</value>
+    <comment>Atmosphere class "Suitable for water-based life"</comment>
+  </data>
+  <data name="SulphurDioxide" xml:space="preserve">
+    <value>Dioxyde de soufre</value>
+    <comment>Atmosphere class "Sulphur dioxide"</comment>
+  </data>
+  <data name="Water" xml:space="preserve">
+    <value>Eau</value>
+    <comment>Atmosphere class "Water"</comment>
+  </data>
+  <data name="WaterRich" xml:space="preserve">
+    <value>Riche en eau</value>
+    <comment>Atmosphere class "Water-rich"</comment>
+  </data>
+  <data name="EarthLike" xml:space="preserve">
+    <value>Adapté pour la vie aquatique</value>
+    <comment>Atmosphere class "EarthLike"</comment>
+  </data>
+  <data name="GasGiant" xml:space="preserve">
+    <value>Géante gazeuse</value>
+    <comment>Atmosphere class "Gas giant"</comment>
+  </data>
+</root>
