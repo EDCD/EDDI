@@ -486,44 +486,22 @@ namespace EddiVoiceAttackResponder
         {
             Logging.Debug("Setting station information");
 
-            if (station == null)
-            {
-                // We don't have any data so remove any info that we might have in history
-                vaProxy.SetText(prefix + " name", null);
-                vaProxy.SetDecimal(prefix + " distance from star", null);
-                vaProxy.SetText(prefix + " government", null);
-                vaProxy.SetText(prefix + " allegiance", null);
-                vaProxy.SetText(prefix + " faction", null);
-                vaProxy.SetText(prefix + " state", null);
-                vaProxy.SetText(prefix + " primary economy", null);
-                vaProxy.SetText(prefix + " secondary economy", null);
-                vaProxy.SetText(prefix + " tertiary economy", null);
-                vaProxy.SetBoolean(prefix + " has refuel", null);
-                vaProxy.SetBoolean(prefix + " has repair", null);
-                vaProxy.SetBoolean(prefix + " has rearm", null);
-                vaProxy.SetBoolean(prefix + " has market", null);
-                vaProxy.SetBoolean(prefix + " has black market", null);
-                vaProxy.SetBoolean(prefix + " has outfitting", null);
-                vaProxy.SetBoolean(prefix + " has shipyard", null);
-            }
-            else
-            {
-                vaProxy.SetText(prefix + " name", station.name);
-                vaProxy.SetDecimal(prefix + " distance from star", station.distancefromstar);
-                vaProxy.SetText(prefix + " government", (station.Faction?.Government ?? Government.None).localizedName);
-                vaProxy.SetText(prefix + " allegiance", (station.Faction?.Allegiance ?? Superpower.None).localizedName);
-                vaProxy.SetText(prefix + " faction", station.Faction?.name);
-                vaProxy.SetText(prefix + " state", station.Faction?.FactionState ?? FactionState.None);
-                vaProxy.SetText(prefix + " primary economy", station.primaryeconomy);
-                // Services
-                vaProxy.SetBoolean(prefix + " has refuel", station.hasrefuel);
-                vaProxy.SetBoolean(prefix + " has repair", station.hasrepair);
-                vaProxy.SetBoolean(prefix + " has rearm", station.hasrearm);
-                vaProxy.SetBoolean(prefix + " has market", station.hasmarket);
-                vaProxy.SetBoolean(prefix + " has black market", station.hasblackmarket);
-                vaProxy.SetBoolean(prefix + " has outfitting", station.hasoutfitting);
-                vaProxy.SetBoolean(prefix + " has shipyard", station.hasshipyard);
-            }
+            vaProxy.SetText(prefix + " name", station?.name);
+            vaProxy.SetDecimal(prefix + " distance from star", station?.distancefromstar);
+            vaProxy.SetText(prefix + " government", (station?.Faction?.Government ?? Government.None).localizedName);
+            vaProxy.SetText(prefix + " allegiance", (station?.Faction?.Allegiance ?? Superpower.None).localizedName);
+            vaProxy.SetText(prefix + " faction", station?.Faction?.name);
+            vaProxy.SetText(prefix + " state", (station?.Faction?.FactionState ?? FactionState.None).localizedName);
+            vaProxy.SetText(prefix + " primary economy", station?.primaryeconomy);
+            vaProxy.SetText(prefix + " secondary economy", station?.secondaryeconomy);
+            // Services
+            vaProxy.SetBoolean(prefix + " has refuel", station?.hasrefuel);
+            vaProxy.SetBoolean(prefix + " has repair", station?.hasrepair);
+            vaProxy.SetBoolean(prefix + " has rearm", station?.hasrearm);
+            vaProxy.SetBoolean(prefix + " has market", station?.hasmarket);
+            vaProxy.SetBoolean(prefix + " has black market", station?.hasblackmarket);
+            vaProxy.SetBoolean(prefix + " has outfitting", station?.hasoutfitting);
+            vaProxy.SetBoolean(prefix + " has shipyard", station?.hasshipyard);
 
             Logging.Debug("Set station information");
         }
