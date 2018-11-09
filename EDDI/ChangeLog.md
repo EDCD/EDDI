@@ -2,9 +2,9 @@
 
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
-### Development
+### 3.1-rc1
   * Localization
-    * Added resource files for Japanese.
+    * Added resource files for Japanese (no translations yet).
 
 ### 3.1.0-b5
   * Core
