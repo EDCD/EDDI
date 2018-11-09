@@ -117,24 +117,62 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="AmmoniaWorld" xml:space="preserve">
+    <value>Ammoniakwelt</value>
+  </data>
+  <data name="EarthLikeBody" xml:space="preserve">
+    <value>Erdähnliche Welt</value>
+  </data>
+  <data name="GasGiantWithAmmoniaBasedLife" xml:space="preserve">
+    <value>Gasriese mit ammoniakbasiertem Leben</value>
+  </data>
+  <data name="GasGiantWithWaterBasedLife" xml:space="preserve">
+    <value>Gasriese mit wasserbasiertem Leben</value>
+  </data>
+  <data name="HeliumGasGiant" xml:space="preserve">
+    <value>Heliumgasriese</value>
+  </data>
+  <data name="HeliumRichGasGiant" xml:space="preserve">
+    <value>Heliumreicher Gasriese</value>
+  </data>
+  <data name="HighMetalContentBody" xml:space="preserve">
+    <value>Welt mit hohem Metallgehalt</value>
+  </data>
+  <data name="IcyBody" xml:space="preserve">
+    <value>Eisiger Körper</value>
+  </data>
+  <data name="MetalRich" xml:space="preserve">
+    <value>Metallreicher Körper</value>
+  </data>
+  <data name="RockyBody" xml:space="preserve">
+    <value>Felsiger Körper</value>
+  </data>
+  <data name="RockyIceBody" xml:space="preserve">
+    <value>Felsige Eiswelt</value>
+  </data>
+  <data name="SudarskyClassIGasGiant" xml:space="preserve">
+    <value>Klasse I Gasriese</value>
+  </data>
+  <data name="SudarskyClassIIGasGiant" xml:space="preserve">
+    <value>Klasse II Gasriese</value>
+  </data>
+  <data name="SudarskyClassIIIGasGiant" xml:space="preserve">
+    <value>Klasse III Gasriese</value>
+  </data>
+  <data name="SudarskyClassIVGasGiant" xml:space="preserve">
+    <value>Klasse IV Gasriese</value>
+  </data>
+  <data name="SudarskyClassVGasGiant" xml:space="preserve">
+    <value>Klasse V Gasriese</value>
+  </data>
+  <data name="WaterGiant" xml:space="preserve">
+    <value>Wasserriese</value>
+  </data>
+  <data name="WaterGiantWithLife" xml:space="preserve">
+    <value>Wasserriese mit Leben</value>
+  </data>
+  <data name="WaterWorld" xml:space="preserve">
+    <value>Wasserwelt</value>
+  </data>
   
 </root>
