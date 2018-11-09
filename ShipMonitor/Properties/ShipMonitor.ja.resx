@@ -124,7 +124,9 @@
   
   
   
-  
+  <data name="header_spoken_name" xml:space="preserve">
+    <value>名称（読み）</value>
+  </data>
   
   
   
