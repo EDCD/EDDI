@@ -2,6 +2,10 @@
 
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
+### 3.1-rc2
+  * Localization
+    * Added translation files for Mission Monitor.
+
 ### 3.1-rc1
   * Localization
     * Added resource files for Japanese (no translations yet).
