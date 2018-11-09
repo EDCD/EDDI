@@ -370,8 +370,10 @@ namespace EddiMaterialMonitor
             lock(inventoryLock)
             {
                 // Write material configuration with current inventory
-                MaterialMonitorConfiguration configuration = new MaterialMonitorConfiguration();
-                configuration.materials = inventory;
+                MaterialMonitorConfiguration configuration = new MaterialMonitorConfiguration
+                {
+                    materials = inventory
+                };
                 configuration.ToFile();
             }
             // Make sure the UI is up to date
