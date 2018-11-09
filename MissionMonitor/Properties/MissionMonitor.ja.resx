@@ -127,5 +127,7 @@
   
   
   
-  
+  <data name="tab_mission_warning" xml:space="preserve">
+    <value>ミッション時間切れ警告時間（分）</value>
+  </data>
 </root>
