@@ -132,15 +132,49 @@
   <data name="p2" xml:space="preserve">
     <value>Leer artículos de la Galnet cuando se desconecte</value>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="titleFilterPowerplay" xml:space="preserve">
+    <value>PowerPlay: actualización entrante</value>
+    <comment>Title filter for determining whether an item is a Powerplay item</comment>
+  </data>
+  <data name="titleFilterCg" xml:space="preserve">
+    <value>Objetivos de la comunidad: </value>
+    <comment>Title filter for determining whether an item is a Community Goal related item</comment>
+  </data>
+  <data name="titleFilterStarportStatus" xml:space="preserve">
+    <value>Actualización de estado de Puerto Espacial</value>
+    <comment>Title filter for determining whether an item is a Starport Status Update</comment>
+  </data>
+  <data name="titleFilterWeekInReview" xml:space="preserve">
+    <value>Semana en Revisión</value>
+    <comment>Title filter for determining whether an item is a "Week in Review</comment>
+  </data>
+  <data name="sourceURL" xml:space="preserve">
+    <value>https://community.elitedangerous.com/en/galnet-rss/es</value>
+    
+    <comment>The URL the Galnet monitor should access for obtaining new news feed items. Though adding new languages to the Galnet monitor is not yet supported, this helps lay the groundwork for Galnet in more languages in the future.</comment>
+  </data>
+  <data name="contentFilterCgRegex" xml:space="preserve">
+    <value>&gt;@"(ha prometido recompensar a los pilotos)|(La campaña.+durará una semana)|(Las dos organizaciones han establecido operaciones de una semana de duración)|(Los pilotos.+ahora pueden cobrar sus recompensas)|(Si el objetivo final se cumple antes de lo planeado, la campaña finalizará inmediatamente)"</value>
+    <comment>Regex filter for determining whether an item's contents match a Community Goal related item.</comment>
+  </data>
+  <data name="categoryArticle" xml:space="preserve">
+    <value>Artículo</value>
+    <comment>Category (as seen by the user): Article</comment>
+  </data>
+  <data name="categoryPowerplay" xml:space="preserve">
+    <value>Powerplay</value>
+    <comment>Category (as seen by the user): Powerplay</comment>
+  </data>
+  <data name="categoryCG" xml:space="preserve">
+    <value>Objetivos de la comunidad</value>
+    <comment>Category (as seen by the user): Community Goal</comment>
+  </data>
+  <data name="categoryStarportStatus" xml:space="preserve">
+    <value>Actualización de estado de Puerto Espacial</value>
+    <comment>Category (as seen by the user): Starport Status Update</comment>
+  </data>
+  <data name="categoryWeekInReview" xml:space="preserve">
+    <value>Semana en Revisión</value>
+    <comment>Category (as seen by the user): Week in Review</comment>
+  </data>
 </root>

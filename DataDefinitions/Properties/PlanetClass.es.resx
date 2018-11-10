@@ -117,24 +117,64 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="AmmoniaWorld" xml:space="preserve">
+    <value>Mundo de amoníaco</value>
+  </data>
+  <data name="EarthLikeBody" xml:space="preserve">
+    <value>Mundo similar a la Tierra</value>
+  </data>
+  <data name="GasGiantWithAmmoniaBasedLife" xml:space="preserve">
+    <value>Gigante gaseoso con vida basada en el amoníaco</value>
+  </data>
+  <data name="GasGiantWithWaterBasedLife" xml:space="preserve">
+    <value>Gigante gaseoso con vida basada en el agua</value>
+  </data>
+  <data name="HeliumGasGiant" xml:space="preserve">
+    <value>Gigante gaseoso de Helio</value>
+  </data>
+  <data name="HeliumRichGasGiant" xml:space="preserve">
+    <value>Gigante gaseoso rico en Helio</value>
+  </data>
+  <data name="HighMetalContentBody" xml:space="preserve">
+    <value>Mundo de alto contenido metálico</value>
+  </data>
+  <data name="IcyBody" xml:space="preserve">
+    <value>Cuerpo helado</value>
+  </data>
+  <data name="MetalRich" xml:space="preserve">
+    <value>Cuerpo con alto contenido metálico</value>
+  </data>
+  <data name="RockyBody" xml:space="preserve">
+    <value>Cuerpo rocoso</value>
+  </data>
+  <data name="RockyIceBody" xml:space="preserve">
+    <value>Mundo helado rocoso</value>
+  </data>
+  <data name="SudarskyClassIGasGiant" xml:space="preserve">
+    <value>Gigante gaseoso de Clase 1</value>
+  </data>
+  <data name="SudarskyClassIIGasGiant" xml:space="preserve">
+    <value>Gigante gaseoso de Clase 2</value>
+  </data>
+  <data name="SudarskyClassIIIGasGiant" xml:space="preserve">
+    <value>Gigante gaseoso de Clase 3</value>
+  </data>
+  <data name="SudarskyClassIVGasGiant" xml:space="preserve">
+    <value>Gigante gaseoso de Clase 4</value>
+  </data>
+  <data name="SudarskyClassVGasGiant" xml:space="preserve">
+    <value>Gigante gaseoso de Clase 5</value>
+  </data>
+  <data name="WaterGiant" xml:space="preserve">
+    <value>Gigante acuático</value>
+  </data>
+  <data name="WaterGiantWithLife" xml:space="preserve">
+    <value>Gigante acuático con vida</value>
+  </data>
+  <data name="WaterWorld" xml:space="preserve">
+    <value>Mundo acuático</value>
+  </data>
+  <data name="None" xml:space="preserve">
+    <value>Ninguno</value>
+  </data>
 </root>

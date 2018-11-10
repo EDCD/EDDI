@@ -158,6 +158,12 @@
   
   
   
-  
-  
+  <data name="MaterialTrader" xml:space="preserve">
+    <value>Materialhändler</value>
+    <comment>Station Service: Material Trader</comment>
+  </data>
+  <data name="StationMenu" xml:space="preserve">
+    <value>Stationsmenü</value>
+    <comment>Station Service: Station Menu</comment>
+  </data>
 </root>
