@@ -117,8 +117,20 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
-  
-  
+  <data name="Icy" xml:space="preserve">
+    <value>Helado</value>
+    <comment>Composition type Icy</comment>
+  </data>
+  <data name="Metallic" xml:space="preserve">
+    <value>Metálico</value>
+    <comment>Composition type Metallic</comment>
+  </data>
+  <data name="MetalRich" xml:space="preserve">
+    <value>Rico en metales</value>
+    <comment>Composition type MetalRich</comment>
+  </data>
+  <data name="Rocky" xml:space="preserve">
+    <value>Rocoso</value>
+    <comment>Composition type Rocky</comment>
+  </data>
 </root>
