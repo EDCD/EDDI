@@ -123,15 +123,33 @@
   <data name="EarthLikeBody" xml:space="preserve">
     <value>Mundo similar a la Tierra</value>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="GasGiantWithAmmoniaBasedLife" xml:space="preserve">
+    <value>Gigante gaseoso con vida basada en el amoníaco</value>
+  </data>
+  <data name="GasGiantWithWaterBasedLife" xml:space="preserve">
+    <value>Gigante gaseoso con vida basada en el agua</value>
+  </data>
+  <data name="HeliumGasGiant" xml:space="preserve">
+    <value>Gigante gaseoso de Helio</value>
+  </data>
+  <data name="HeliumRichGasGiant" xml:space="preserve">
+    <value>Gigante gaseoso rico en Helio</value>
+  </data>
+  <data name="HighMetalContentBody" xml:space="preserve">
+    <value>Mundo de alto contenido metálico</value>
+  </data>
+  <data name="IcyBody" xml:space="preserve">
+    <value>Cuerpo helado</value>
+  </data>
+  <data name="MetalRich" xml:space="preserve">
+    <value>Cuerpo con alto contenido metálico</value>
+  </data>
+  <data name="RockyBody" xml:space="preserve">
+    <value>Cuerpo rocoso</value>
+  </data>
+  <data name="RockyIceBody" xml:space="preserve">
+    <value>Mundo helado rocoso</value>
+  </data>
   
   
   
