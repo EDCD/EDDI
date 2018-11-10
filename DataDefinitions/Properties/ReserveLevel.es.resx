@@ -120,7 +120,13 @@
   
   
   
+  <data name="Major" xml:space="preserve">
+    <value>Mayor</value>
+    <comment>Major reserves</comment>
+  </data>
   
-  
-  
+  <data name="Depleted" xml:space="preserve">
+    <value>Agotado</value>
+    <comment>Depleted Reserves</comment>
+  </data>
 </root>
