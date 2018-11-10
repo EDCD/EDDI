@@ -201,6 +201,12 @@
     <value>Rico en agua</value>
     <comment>Atmosphere class "Water-rich"</comment>
   </data>
-  
-  
+  <data name="EarthLike" xml:space="preserve">
+    <value>Adecuado para la vida marina</value>
+    <comment>Atmosphere class "EarthLike"</comment>
+  </data>
+  <data name="GasGiant" xml:space="preserve">
+    <value>Gigante gaseoso</value>
+    <comment>Atmosphere class "Gas giant"</comment>
+  </data>
 </root>
