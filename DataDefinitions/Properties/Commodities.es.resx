@@ -950,9 +950,18 @@
     <value>Cebollazo</value>
     <comment>Commodity OnionHead</comment>
   </data>
-  
-  
-  
+  <data name="OnionHeadA" xml:space="preserve">
+    <value>Cepa alfa de Cebollazo</value>
+    <comment>Commodity OnionheadAlphaStrain</comment>
+  </data>
+  <data name="OnionHeadB" xml:space="preserve">
+    <value>Cepa beta de Cebollazo</value>
+    <comment>Commodity OnionheadBetaStrain</comment>
+  </data>
+  <data name="OphiuchiExinoArtefacts" xml:space="preserve">
+    <value>Artefactos de Ophiuch Exino</value>
+    <comment>Commodity OphiuchExinoArtefacts</comment>
+  </data>
   <data name="OrrerianViciousBrew" xml:space="preserve">
     <value>Fermento vicioso Orreriano</value>
     <comment>Commodity OrrerianViciousBrew</comment>
@@ -1349,7 +1358,10 @@
     <value>Cordón vidavantino</value>
     <comment>Commodity VidavantianLace</comment>
   </data>
-  
+  <data name="LFTVoidExtractCoffee" xml:space="preserve">
+    <value>Extracto de café al vacío</value>
+    <comment>Commodity VoidExtractCoffee</comment>
+  </data>
   <data name="VolkhabBeeDrones" xml:space="preserve">
     <value>Abejas mecánicas de Volkhab</value>
     <comment>Commodity VolkhabBeeDrones</comment>
@@ -1590,7 +1602,10 @@
     <value>Publicidad de Utopian</value>
     <comment>Commodity UtopianPublicity</comment>
   </data>
-  
+  <data name="PersonalGifts" xml:space="preserve">
+    <value>Regalos personales</value>
+    <comment>Commodity.PersonalGifts</comment>
+  </data>
   
   <data name="ancientkey" xml:space="preserve">
     <value>Llave antigua</value>
