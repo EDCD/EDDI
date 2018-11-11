@@ -106,7 +106,7 @@ namespace EddiEvents
 
         public string scantype { get; private set; } // One of Basic, Detailed, NavBeacon, NavBeaconDetail
 
-        public StarScannedEvent(DateTime timestamp, string scantype, string name, string stellarclass, decimal solarmass, decimal radius, decimal absolutemagnitude, string luminosityclass, long age, decimal temperature, decimal distancefromarrival, decimal? orbitalperiod, decimal rotationperiod, decimal? semimajoraxis, decimal? eccentricity, decimal? orbitalinclination, decimal? periapsis, List<Ring> rings, bool dssEquipped) : base(timestamp, NAME)
+        public StarScannedEvent(DateTime timestamp, string scantype, string name, string stellarclass, decimal solarmass, decimal radius, decimal absolutemagnitude, string luminosityclass, long age, decimal temperature, decimal distancefromarrival, decimal? orbitalperiod, decimal rotationperiod, decimal? semimajoraxis, decimal? eccentricity, decimal? orbitalinclination, decimal? periapsis, List<Ring> rings) : base(timestamp, NAME)
         {
             this.scantype = scantype;
             this.name = name;
@@ -146,10 +146,10 @@ namespace EddiEvents
                     this.estimatedhabzoneouter = estimatedhabzoneouter;
                 }
             }
-            this.estimatedvalue = estimateValue(dssEquipped);
+            this.estimatedvalue = estimateValue(scantype == "Detailed" || scantype == "NavBeaconDetail");
         }
 
-        private long? estimateValue(bool dssEquipped)
+        private long? estimateValue(bool detailedScan)
         {
             // Credit to MattG's thread at https://forums.frontier.co.uk/showthread.php/232000-Exploration-value-formulae for scan value formulas
             // 'bodyDataConstant' is a derived constant from MattG's thread for calculating scan values.
@@ -171,7 +171,7 @@ namespace EddiEvents
             // Calculate exploration scan values
             value = baseValue + ((double)solarmass * baseValue / scanDivider);
 
-            if (dssEquipped == false)
+            if (detailedScan == false)
             {
                 value = value / dssDivider;
             }

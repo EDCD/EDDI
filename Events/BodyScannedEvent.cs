@@ -117,7 +117,7 @@ namespace EddiEvents
 
         public string scantype { get; private set; } // One of Basic, Detailed, NavBeacon, NavBeaconDetail
 
-        public BodyScannedEvent(DateTime timestamp, string scantype, string name, PlanetClass planetClass, decimal? earthmass, decimal? radiusKm, decimal gravity, decimal? temperatureKelvin, decimal? pressureAtm, bool? tidallylocked, bool? landable, AtmosphereClass atmosphereClass, List<AtmosphereComposition> atmosphereComposition, List<SolidComposition> solidCompositions, Volcanism volcanism, decimal distancefromarrival_Ls, decimal orbitalperiodDays, decimal rotationperiodDays, decimal? semimajoraxisAU, decimal? eccentricity, decimal? orbitalinclinationDegrees, decimal? periapsisDegrees, List<Ring> rings, string reserves, List<MaterialPresence> materials, TerraformState terraformstate, decimal? axialtiltDegrees, bool dssEquipped) : base(timestamp, NAME)
+        public BodyScannedEvent(DateTime timestamp, string scantype, string name, PlanetClass planetClass, decimal? earthmass, decimal? radiusKm, decimal gravity, decimal? temperatureKelvin, decimal? pressureAtm, bool? tidallylocked, bool? landable, AtmosphereClass atmosphereClass, List<AtmosphereComposition> atmosphereComposition, List<SolidComposition> solidCompositions, Volcanism volcanism, decimal distancefromarrival_Ls, decimal orbitalperiodDays, decimal rotationperiodDays, decimal? semimajoraxisAU, decimal? eccentricity, decimal? orbitalinclinationDegrees, decimal? periapsisDegrees, List<Ring> rings, string reserves, List<MaterialPresence> materials, TerraformState terraformstate, decimal? axialtiltDegrees) : base(timestamp, NAME)
         {
             this.scantype = scantype;
             this.name = name;
@@ -145,7 +145,7 @@ namespace EddiEvents
             this.materials = materials;
             this.terraformState = terraformstate;
             this.axialtilt = axialtiltDegrees;
-            this.estimatedvalue = estimateValue(dssEquipped);
+            this.estimatedvalue = estimateValue(scantype == "Detailed" || scantype == "NavBeaconDetail");
         }
 
         private decimal sanitiseCP(decimal cp)
@@ -169,7 +169,7 @@ namespace EddiEvents
             }
         }
 
-        private long? estimateValue(bool dssEquipped)
+        private long? estimateValue(bool detailedScan)
         {
             // Credit to MattG's thread at https://forums.frontier.co.uk/showthread.php/232000-Exploration-value-formulae for scan value formulas
             int baseTypeValue = 720;
@@ -239,7 +239,7 @@ namespace EddiEvents
             double terraBonusValue = terraValue + (scanMultiplier * terraValue * Math.Pow((double)earthmass, scanPower) / scanDivider);
             double value = baseValue + terraBonusValue;
 
-            if (dssEquipped == false)
+            if (detailedScan == false)
             {
                 value = value / dssDivider;
             }

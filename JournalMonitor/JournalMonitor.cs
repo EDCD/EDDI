@@ -663,20 +663,6 @@ namespace EddiJournalMonitor
                                 decimal? periapsisDegrees = JsonParsing.getOptionalDecimal(data, "Periapsis");
                                 decimal? axialTiltDegrees = JsonParsing.getOptionalDecimal(data, "AxialTilt");
 
-                                // Check whether we have a detailed discovery scanner on board the current ship
-                                bool dssEquipped = false;
-                                Ship ship = EDDI.Instance.CurrentShip;
-                                if (ship != null)
-                                {
-                                    foreach (Compartment compartment in ship.compartments)
-                                    {
-                                        if ((compartment.module.basename == "DetailedSurfaceScanner") && (compartment.module.enabled))
-                                        {
-                                            dssEquipped = true;
-                                        }
-                                    }
-                                }
-
                                 // Rings
                                 data.TryGetValue("Rings", out object val);
                                 List<object> ringsData = (List<object>)val;
@@ -706,7 +692,7 @@ namespace EddiJournalMonitor
                                     long ageMegaYears = (long)val;
                                     decimal temperatureKelvin = JsonParsing.getDecimal(data, "SurfaceTemperature");
 
-                                    events.Add(new StarScannedEvent(timestamp, scantype, name, starType, stellarMass, radiusKm, absoluteMagnitude, luminosityClass, ageMegaYears, temperatureKelvin, distancefromarrival, orbitalPeriodDays, rotationPeriodDays, semimajoraxisLs, eccentricity, orbitalinclinationDegrees, periapsisDegrees, rings, dssEquipped) { raw = line });
+                                    events.Add(new StarScannedEvent(timestamp, scantype, name, starType, stellarMass, radiusKm, absoluteMagnitude, luminosityClass, ageMegaYears, temperatureKelvin, distancefromarrival, orbitalPeriodDays, rotationPeriodDays, semimajoraxisLs, eccentricity, orbitalinclinationDegrees, periapsisDegrees, rings) { raw = line });
                                     handled = true;
                                 }
                                 else
@@ -812,7 +798,7 @@ namespace EddiJournalMonitor
                                     TerraformState terraformState = TerraformState.FromEDName(JsonParsing.getString(data, "TerraformState")) ?? TerraformState.NotTerraformable;
                                     Volcanism volcanism = Volcanism.FromName(JsonParsing.getString(data, "Volcanism"));
 
-                                    events.Add(new BodyScannedEvent(timestamp, scantype, name, planetClass, earthMass, radiusKm, gravity, temperatureKelvin, pressure, tidallyLocked, landable, atmosphereClass, atmosphereCompositions, solidCompositions, volcanism, distancefromarrival, (decimal)orbitalPeriodDays, rotationPeriodDays, semimajoraxisLs, eccentricity, orbitalinclinationDegrees, periapsisDegrees, rings, reserves, materials, terraformState, axialTiltDegrees, dssEquipped) { raw = line });
+                                    events.Add(new BodyScannedEvent(timestamp, scantype, name, planetClass, earthMass, radiusKm, gravity, temperatureKelvin, pressure, tidallyLocked, landable, atmosphereClass, atmosphereCompositions, solidCompositions, volcanism, distancefromarrival, (decimal)orbitalPeriodDays, rotationPeriodDays, semimajoraxisLs, eccentricity, orbitalinclinationDegrees, periapsisDegrees, rings, reserves, materials, terraformState, axialTiltDegrees) { raw = line });
                                     handled = true;
                                 }
                             }
