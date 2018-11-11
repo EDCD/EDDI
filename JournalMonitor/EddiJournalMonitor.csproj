@@ -66,16 +66,6 @@
     <Compile Include="JournalMonitor.cs" />
     <Compile Include="LogMonitor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Properties\JournalMonitor.es.Designer.cs">
-      <DependentUpon>JournalMonitor.es.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Properties\JournalMonitor.fr.Designer.cs">
-      <DependentUpon>JournalMonitor.fr.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <Compile Include="Properties\JournalMonitor.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -122,14 +112,8 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\JournalMonitor.de.resx" />
-    <EmbeddedResource Include="Properties\JournalMonitor.es.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>JournalMonitor.es.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Properties\JournalMonitor.fr.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>JournalMonitor.fr.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\JournalMonitor.es.resx" />
+    <EmbeddedResource Include="Properties\JournalMonitor.fr.resx" />
     <EmbeddedResource Include="Properties\JournalMonitor.hu.resx" />
     <EmbeddedResource Include="Properties\JournalMonitor.it.resx" />
     <EmbeddedResource Include="Properties\JournalMonitor.ja.resx" />

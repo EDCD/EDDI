@@ -171,28 +171,8 @@
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Properties\MainWindow.es.Designer.cs">
-      <DependentUpon>MainWindow.es.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Properties\MainWindow.fr.Designer.cs">
-      <DependentUpon>MainWindow.fr.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <Compile Include="Properties\MainWindow.Designer.cs">
       <DependentUpon>MainWindow.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Properties\EddiResources.es.Designer.cs">
-      <DependentUpon>EddiResources.es.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Properties\EddiResources.fr.Designer.cs">
-      <DependentUpon>EddiResources.fr.resx</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
@@ -211,14 +191,8 @@
     <EmbeddedResource Include="Properties\EddiResources.it.resx" />
     <EmbeddedResource Include="Properties\EddiResources.ja.resx" />
     <EmbeddedResource Include="Properties\MainWindow.de.resx" />
-    <EmbeddedResource Include="Properties\MainWindow.es.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>MainWindow.es.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Properties\MainWindow.fr.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>MainWindow.fr.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\MainWindow.es.resx" />
+    <EmbeddedResource Include="Properties\MainWindow.fr.resx" />
     <EmbeddedResource Include="Properties\MainWindow.hu.resx" />
     <EmbeddedResource Include="Properties\MainWindow.it.resx" />
     <EmbeddedResource Include="Properties\MainWindow.ja.resx" />
@@ -226,14 +200,8 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>MainWindow.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Properties\EddiResources.es.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>EddiResources.es.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Properties\EddiResources.fr.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>EddiResources.fr.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\EddiResources.es.resx" />
+    <EmbeddedResource Include="Properties\EddiResources.fr.resx" />
     <EmbeddedResource Include="Properties\EddiResources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>EddiResources.Designer.cs</LastGenOutput>

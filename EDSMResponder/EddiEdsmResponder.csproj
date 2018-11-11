@@ -71,16 +71,6 @@
     </Compile>
     <Compile Include="EDSMResponder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Properties\EDSMResources.es.Designer.cs">
-      <DependentUpon>EDSMResources.es.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Properties\EDSMResources.fr.Designer.cs">
-      <DependentUpon>EDSMResources.fr.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <Compile Include="Properties\EDSMResources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -125,14 +115,8 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\EDSMResources.de.resx" />
-    <EmbeddedResource Include="Properties\EDSMResources.es.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>EDSMResources.es.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Properties\EDSMResources.fr.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>EDSMResources.fr.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\EDSMResources.es.resx" />
+    <EmbeddedResource Include="Properties\EDSMResources.fr.resx" />
     <EmbeddedResource Include="Properties\EDSMResources.hu.resx" />
     <EmbeddedResource Include="Properties\EDSMResources.it.resx" />
     <EmbeddedResource Include="Properties\EDSMResources.ja.resx" />

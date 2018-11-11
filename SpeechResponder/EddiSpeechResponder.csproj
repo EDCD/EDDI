@@ -77,16 +77,6 @@
     <Compile Include="CopyPersonalityWindow.xaml.cs">
       <DependentUpon>CopyPersonalityWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Properties\SpeechResponder.es.Designer.cs">
-      <DependentUpon>SpeechResponder.es.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Properties\SpeechResponder.fr.Designer.cs">
-      <DependentUpon>SpeechResponder.fr.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <Compile Include="Properties\SpeechResponder.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -216,14 +206,8 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\SpeechResponder.de.resx" />
-    <EmbeddedResource Include="Properties\SpeechResponder.es.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>SpeechResponder.es.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Properties\SpeechResponder.fr.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>SpeechResponder.fr.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\SpeechResponder.es.resx" />
+    <EmbeddedResource Include="Properties\SpeechResponder.fr.resx" />
     <EmbeddedResource Include="Properties\SpeechResponder.hu.resx" />
     <EmbeddedResource Include="Properties\SpeechResponder.it.resx" />
     <EmbeddedResource Include="Properties\SpeechResponder.ja.resx" />

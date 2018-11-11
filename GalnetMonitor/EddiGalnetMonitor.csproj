@@ -99,16 +99,6 @@
     <Compile Include="News.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="GalnetSqLiteRepository.cs" />
-    <Compile Include="Properties\GalnetMonitor.es.Designer.cs">
-      <DependentUpon>GalnetMonitor.es.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Properties\GalnetMonitor.fr.Designer.cs">
-      <DependentUpon>GalnetMonitor.fr.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <Compile Include="Properties\GalnetMonitor.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -150,14 +140,8 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\GalnetMonitor.de.resx" />
-    <EmbeddedResource Include="Properties\GalnetMonitor.es.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>GalnetMonitor.es.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Properties\GalnetMonitor.fr.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>GalnetMonitor.fr.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\GalnetMonitor.es.resx" />
+    <EmbeddedResource Include="Properties\GalnetMonitor.fr.resx" />
     <EmbeddedResource Include="Properties\GalnetMonitor.hu.resx" />
     <EmbeddedResource Include="Properties\GalnetMonitor.it.resx" />
     <EmbeddedResource Include="Properties\GalnetMonitor.ja.resx" />

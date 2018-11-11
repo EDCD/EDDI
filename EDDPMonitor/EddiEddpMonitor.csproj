@@ -78,16 +78,6 @@
     </Compile>
     <Compile Include="DataGridNumericColumn.cs" />
     <Compile Include="EddpConfiguration.cs" />
-    <Compile Include="Properties\EddpResources.es.Designer.cs">
-      <DependentUpon>EddpResources.es.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Properties\EddpResources.fr.Designer.cs">
-      <DependentUpon>EddpResources.fr.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <Compile Include="Properties\EddpResources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -142,14 +132,8 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\EddpResources.de.resx" />
-    <EmbeddedResource Include="Properties\EddpResources.es.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>EddpResources.es.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Properties\EddpResources.fr.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>EddpResources.fr.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\EddpResources.es.resx" />
+    <EmbeddedResource Include="Properties\EddpResources.fr.resx" />
     <EmbeddedResource Include="Properties\EddpResources.hu.resx" />
     <EmbeddedResource Include="Properties\EddpResources.it.resx" />
     <EmbeddedResource Include="Properties\EddpResources.ja.resx" />

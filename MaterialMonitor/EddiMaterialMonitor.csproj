@@ -86,16 +86,6 @@
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Properties\MaterialMonitor.es.Designer.cs">
-      <DependentUpon>MaterialMonitor.es.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Properties\MaterialMonitor.fr.Designer.cs">
-      <DependentUpon>MaterialMonitor.fr.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <Compile Include="Properties\MaterialMonitor.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -107,14 +97,8 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <EmbeddedResource Include="Properties\MaterialMonitor.de.resx" />
-    <EmbeddedResource Include="Properties\MaterialMonitor.es.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>MaterialMonitor.es.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Properties\MaterialMonitor.fr.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>MaterialMonitor.fr.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\MaterialMonitor.es.resx" />
+    <EmbeddedResource Include="Properties\MaterialMonitor.fr.resx" />
     <EmbeddedResource Include="Properties\MaterialMonitor.hu.resx" />
     <EmbeddedResource Include="Properties\MaterialMonitor.it.resx" />
     <EmbeddedResource Include="Properties\MaterialMonitor.ja.resx" />

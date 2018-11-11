@@ -93,16 +93,6 @@
     <Compile Include="ObservableConcurrentDictionary.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="InstanceInfo.cs" />
-    <Compile Include="Properties\Utilities.es.Designer.cs">
-      <DependentUpon>Utilities.es.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Properties\Utilities.fr.Designer.cs">
-      <DependentUpon>Utilities.fr.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <Compile Include="Properties\Utilities.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -117,14 +107,8 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Utilities.de.resx" />
-    <EmbeddedResource Include="Properties\Utilities.es.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Utilities.es.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Properties\Utilities.fr.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Utilities.fr.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Utilities.es.resx" />
+    <EmbeddedResource Include="Properties\Utilities.fr.resx" />
     <EmbeddedResource Include="Properties\Utilities.hu.resx" />
     <EmbeddedResource Include="Properties\Utilities.it.resx" />
     <EmbeddedResource Include="Properties\Utilities.ja.resx" />

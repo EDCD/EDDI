@@ -77,16 +77,6 @@
     <Compile Include="EDDNHeader.cs" />
     <Compile Include="EDDNResponder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Properties\EddnResources.es.Designer.cs">
-      <DependentUpon>EddnResources.es.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Properties\EddnResources.fr.Designer.cs">
-      <DependentUpon>EddnResources.fr.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <Compile Include="Properties\EddnResources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -125,14 +115,8 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\EddnResources.de.resx" />
-    <EmbeddedResource Include="Properties\EddnResources.es.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>EddnResources.es.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Properties\EddnResources.fr.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>EddnResources.fr.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\EddnResources.es.resx" />
+    <EmbeddedResource Include="Properties\EddnResources.fr.resx" />
     <EmbeddedResource Include="Properties\EddnResources.hu.resx" />
     <EmbeddedResource Include="Properties\EddnResources.it.resx" />
     <EmbeddedResource Include="Properties\EddnResources.ja.resx" />

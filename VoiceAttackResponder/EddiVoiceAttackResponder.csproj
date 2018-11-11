@@ -72,16 +72,6 @@
     <Compile Include="ConfigurationWindow.xaml.cs">
       <DependentUpon>ConfigurationWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Properties\VoiceAttack.es.Designer.cs">
-      <DependentUpon>VoiceAttack.es.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Properties\VoiceAttack.fr.Designer.cs">
-      <DependentUpon>VoiceAttack.fr.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <Compile Include="Properties\VoiceAttack.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -161,14 +151,8 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\VoiceAttack.de.resx" />
-    <EmbeddedResource Include="Properties\VoiceAttack.es.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>VoiceAttack.es.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Properties\VoiceAttack.fr.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>VoiceAttack.fr.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\VoiceAttack.es.resx" />
+    <EmbeddedResource Include="Properties\VoiceAttack.fr.resx" />
     <EmbeddedResource Include="Properties\VoiceAttack.hu.resx" />
     <EmbeddedResource Include="Properties\VoiceAttack.it.resx" />
     <EmbeddedResource Include="Properties\VoiceAttack.ja.resx" />
