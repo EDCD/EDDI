@@ -119,12 +119,20 @@
   </resheader>
   
   
+  <data name="p1" xml:space="preserve">
+    <value>EDDIとVoiceAttackを統合するためには、EDDIをVoiceAttackの 'Apps'ディレクトリにインストールする必要があります。 デフォルトのパスは「C：¥Program Files（x86）¥VoiceAttack¥Apps」で、デフォルトでEDDIがインストールされます。</value>
+  </data>
   
+  <data name="p3" xml:space="preserve">
+    <value>VoiceAttackをインストールした後、プラグインのサポートを有効にする必要があります。そのためには、VoiceAttackの右上隅にある設定アイコン（スパナ）をクリックして、'Enable plugin support'オプションをチェックし、VoiceAttackを再起動する必要があります。 VoiceAttackウインドウの「Plugin EDDI 2.0.0 initialized」の行に沿ってメッセージが表示されます。</value>
+  </data>
+  <data name="p4" xml:space="preserve">
+    <value>この時点で、EDDIの変数を、VoiceAttackスクリプトと統合することができます。 例えば、コマンダーの名前は 'Name'テキスト変数に格納されてるので、あなた自身のコマンドで '{TXT：Name}'を使うだけです。コマンダー名、船、現在の星系とステーションなどのための変数があります。 変数の完全なリストは、 </value>
+  </data>
   
-  
-  
-  
-  
+  <data name="p5" xml:space="preserve">
+    <value>音声やキーボードの操作でトリガされるスクリプトを作成するだけでなく、Elite: Dangerous内で発生するイベントに対してトリガされるスクリプトを作成することもできます。 たとえば、 'Docked'イベントが発生するたびにスクリプトをトリガしたい場合は、'((EDDI docked))'というスクリプトを作成します。誤って呼び出されないように、名前の前後には、二重に括弧を付けてください。 イベントの完全なリストは、 </value>
+  </data>
   
   
 </root>
