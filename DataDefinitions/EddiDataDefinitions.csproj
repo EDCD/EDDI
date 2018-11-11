@@ -656,6 +656,11 @@
     <EmbeddedResource Include="Properties\PassengerType.ja.resx" />
     <EmbeddedResource Include="Properties\PlanetClass.ja.resx" />
     <EmbeddedResource Include="Properties\Rarities.ja.resx" />
+    <EmbeddedResource Include="Properties\ReserveLevel.de.resx" />
+    <EmbeddedResource Include="Properties\ReserveLevel.es.resx" />
+    <EmbeddedResource Include="Properties\ReserveLevel.fr.resx" />
+    <EmbeddedResource Include="Properties\ReserveLevel.hu.resx" />
+    <EmbeddedResource Include="Properties\ReserveLevel.it.resx" />
     <EmbeddedResource Include="Properties\ReserveLevel.ja.resx" />
     <EmbeddedResource Include="Properties\RingCompositions.de.resx" />
     <EmbeddedResource Include="Properties\RingCompositions.es.resx">
