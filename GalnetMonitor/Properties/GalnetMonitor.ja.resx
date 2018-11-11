@@ -117,11 +117,19 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="desc" xml:space="preserve">
+    <value>Galnet を監視し、新しいニュースが追加されたとき、"Galnet news published"のイベントを生成します。</value>
+  </data>
+  <data name="language_label" xml:space="preserve">
+    <value>Galnetの言語</value>
+  </data>
   
-  
-  
-  
-  
+  <data name="p1" xml:space="preserve">
+    <value>Galnetの言語設定を変更した場合、新しい記事の取得のためには2分ほどかかります。</value>
+  </data>
+  <data name="p2" xml:space="preserve">
+    <value>ログアウト中もGalnetの記事を取得する</value>
+  </data>
   
   
   
