@@ -134,14 +134,20 @@
   
   
   
+  <data name="p3" xml:space="preserve">
+    <value>を使って、船名の読みを設定できます。例えば、'Pride of Achenar' という船のIPA表記は'praɪdɒvˈakɜːnɑ'です。（注意：IPA表記にスペースはありません。）</value>
+  </data>
+  
+  <data name="p5" xml:space="preserve">
+    <value>EDDIは、船の設計を出力し、CoriolisやEDShipyard（外部ツール）に送ることができます。ツールを選択してください。</value>
+  </data>
   
   
   
   
-  
-  
-  
-  
+  <data name="ipa_page_p1" xml:space="preserve">
+    <value> </value>
+  </data>
   
   
   
