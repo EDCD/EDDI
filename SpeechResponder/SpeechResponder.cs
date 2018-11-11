@@ -146,14 +146,16 @@ namespace EddiSpeechResponder
             }
             else if (theEvent is BodyScannedEvent)
             {
-                if (((BodyScannedEvent)theEvent).scantype == "NavBeaconDetail")
+                string scantype = ((BodyScannedEvent)theEvent).scantype;
+                if (scantype == "NavBeacon" || scantype == "NavBeaconDetail")
                 {
                     return;
                 }
             }
             else if (theEvent is StarScannedEvent)
             {
-                if (((StarScannedEvent)theEvent).scantype == "NavBeaconDetail")
+                string scantype = ((StarScannedEvent)theEvent).scantype;
+                if (scantype == "NavBeacon" || scantype == "NavBeaconDetail")
                 {
                     return;
                 }
