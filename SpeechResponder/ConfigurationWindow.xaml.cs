@@ -52,14 +52,13 @@ namespace EddiSpeechResponder
                 // Add our default personality
                 Personality.Default()
             };
+            // Add local personalities
             foreach (Personality personality in Personality.AllFromDirectory())
             {
-                personalities.Add(personality);
-            }
-            // Add local personalities
-            foreach (Personality personality in personalities)
-            {
-                Logging.Debug("Found personality " + personality.Name);
+                if (personality != null)
+                {
+                    personalities.Add(personality);
+                }
             }
             Personalities = personalities;
 
