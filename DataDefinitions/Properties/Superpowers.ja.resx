@@ -97,37 +97,13 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Alliance" xml:space="preserve">
-    <value>同盟</value>
-    <comment>Superpower type Alliance</comment>
-  </data>
-  <data name="Empire" xml:space="preserve">
-    <value>帝国</value>
-    <comment>Superpower type Empire</comment>
-  </data>
-  <data name="Federation" xml:space="preserve">
-    <value>連邦</value>
-    <comment>Superpower type Federation</comment>
-  </data>
-  <data name="Independent" xml:space="preserve">
-    <value>独立</value>
-    <comment>Superpower type Independent</comment>
-  </data>
-  <data name="None" xml:space="preserve">
-    <value>無し</value>
-    <comment>Superpower type None</comment>
-  </data>
-  <data name="Pirate" xml:space="preserve">
-    <value>海賊</value>
-    <comment>Superpower type Pirate</comment>
-  </data>
-  <data name="Guardian" xml:space="preserve">
-    <value>ガーディアン</value>
-    <comment>Superpower type Guardian</comment>
-  </data>
-  <data name="Thargoid" xml:space="preserve">
-    <value>サーゴイド</value>
-    <comment>Superpower type Thargoid</comment>
-  </data>
+  
+  
+  
+  
+  
+  
+  
+  
   
 </root>

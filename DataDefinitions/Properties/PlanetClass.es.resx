@@ -141,9 +141,7 @@
   <data name="IcyBody" xml:space="preserve">
     <value>Cuerpo helado</value>
   </data>
-  <data name="MetalRich" xml:space="preserve">
-    <value>Cuerpo con alto contenido metálico</value>
-  </data>
+  
   <data name="RockyBody" xml:space="preserve">
     <value>Cuerpo rocoso</value>
   </data>

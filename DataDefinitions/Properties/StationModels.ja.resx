@@ -117,24 +117,12 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AsteroidBase" xml:space="preserve">
-    <value>アステロイドベース</value>
-    <comment>An Asteroid Base</comment>
-  </data>
   
   
-  <data name="Megaship" xml:space="preserve">
-    <value>メガシップ</value>
-    <comment>A Megaship</comment>
-  </data>
   
-  <data name="Outpost" xml:space="preserve">
-    <value>アウトポスト</value>
-    <comment>An Outpost</comment>
-  </data>
-  <data name="SurfaceStation" xml:space="preserve">
-    <value>地上基地</value>
-    <comment>A Surface Station</comment>
-  </data>
+  
+  
+  
+  
   
 </root>
