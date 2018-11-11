@@ -14,11 +14,11 @@ namespace EddiDataDefinitions
             resourceManager.IgnoreCase = true;
             missingEDNameHandler = (edname) => new ReserveLevel(edname);
 
-            var Depleted = new ReserveLevel("DepletedResources");
-            var Minor = new ReserveLevel("LowResources");
-            var Common = new ReserveLevel("CommonResources");
-            var Major = new ReserveLevel("MajorResources");
-            var Pristine = new ReserveLevel("PristineResources");
+            var DepletedResources = new ReserveLevel("DepletedResources");
+            var LowResources = new ReserveLevel("LowResources");
+            var CommonResources = new ReserveLevel("CommonResources");
+            var MajorResources = new ReserveLevel("MajorResources");
+            var PristineResources = new ReserveLevel("PristineResources");
         }
 
         public static readonly ReserveLevel None = new ReserveLevel("None");
