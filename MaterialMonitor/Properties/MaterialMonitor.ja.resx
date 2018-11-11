@@ -114,14 +114,32 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="desc" xml:space="preserve">
+    <value>マテリアルの量を監視し、保有上限に達したとき通知します。</value>
+  </data>
+  <data name="desired_header" xml:space="preserve">
+    <value>要求数</value>
+  </data>
+  <data name="inventory_header" xml:space="preserve">
+    <value>保有数</value>
+  </data>
+  <data name="max_header" xml:space="preserve">
+    <value>最大数</value>
+  </data>
+  <data name="min_header" xml:space="preserve">
+    <value>最低数</value>
+  </data>
   
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="name_header" xml:space="preserve">
+    <value>名称</value>
+  </data>
+  <data name="p1" xml:space="preserve">
+    <value>既知のマテリアルの一覧です。最小数・要求数・最大数が設定可能で、設定値に達したときイベントを生成します。</value>
+  </data>
+  <data name="p2" xml:space="preserve">
+    <value>実際の内容と一致しない場合、情報の更新のため、ゲーム本体を起動または再起動する必要があります。</value>
+  </data>
+  <data name="type_header" xml:space="preserve">
+    <value>種類</value>
+  </data>
 </root>
