@@ -117,41 +117,121 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="change_affect_va" xml:space="preserve">
+    <value>変更は、自動的にVoiceAttackに適用されます。設定を変更した後、このウィンドウを閉じてください。</value>
+  </data>
+  <data name="complete" xml:space="preserve">
+    <value>完了</value>
+    <comment>This is the adjective not the verb</comment>
+  </data>
+  <data name="done" xml:space="preserve">
+    <value>完了</value>
+  </data>
+  <data name="failed" xml:space="preserve">
+    <value>失敗しました</value>
+  </data>
+  <data name="frontier_api_nok" xml:space="preserve">
+    <value>Frontier API 接続が使用不能です。</value>
+  </data>
+  <data name="frontier_api_no_logins" xml:space="preserve">
+    <value>現在、Frontier APIに接続されていません。以下にElite Dangerousのメールアドレスとパスワードを入力してください。</value>
+  </data>
+  <data name="frontier_api_ok" xml:space="preserve">
+    <value>Frontier APIに接続されています。ようこそ CMDR {0}。</value>
+  </data>
+  <data name="frontier_api_temp_nok" xml:space="preserve">
+    <value>Frontier APIへの接続は有効ですが、一時的に問題が発生しています。</value>
+  </data>
+  <data name="frontier_api_verification_code" xml:space="preserve">
+    <value>あなたのメールアドレス宛に送られた認証コードを入力してください。</value>
+  </data>
+  <data name="if_using_va" xml:space="preserve">
+    <value>VoiceAttackと併用する場合は、設定の反映のため、VoiceAttackを起動する前にこのウィンドウを閉じてください。VoiceAttackからは、'Configure EDDI'コマンドにより、このウィンドウを開くことができます。</value>
+  </data>
+  <data name="invalid_station" xml:space="preserve">
+    <value>無効なステーション</value>
+  </data>
+  <data name="invalid_system" xml:space="preserve">
+    <value>無効な星系</value>
+  </data>
+  <data name="login_nok_frontier_service" xml:space="preserve">
+    <value>ログインに失敗しました。これは、普通はFrontierのサーバに問題があります。後ほど、もう一度お試しください。</value>
+  </data>
+  <data name="logout" xml:space="preserve">
+    <value>ログアウト</value>
+  </data>
+  <data name="next" xml:space="preserve">
+    <value>次へ</value>
+  </data>
+  <data name="operational" xml:space="preserve">
+    <value>稼働中</value>
+  </data>
+  <data name="preparing_log" xml:space="preserve">
+    <value>ログを準備中... </value>
+  </data>
+  <data name="update_message" xml:space="preserve">
+    <value>バージョン {0} が利用可能です。</value>
+  </data>
+  <data name="voice_test_damage" xml:space="preserve">
+    <value>{0} が重大なダメージを受けています。</value>
+  </data>
+  <data name="voice_test_ship" xml:space="preserve">
+    <value>{0} をこのように読み上げます。</value>
+  </data>
+  <data name="plugin_enabled" xml:space="preserve">
+    <value>プラグイン有効化</value>
+  </data>
+  <data name="download_failed" xml:space="preserve">
+    <value>ダウンロードに失敗しました。後でもう一度お試しください。</value>
+  </data>
+  <data name="downloading_upgrade" xml:space="preserve">
+    <value>更新をダウンロードしています。</value>
+  </data>
+  <data name="mandatory_upgrade" xml:space="preserve">
+    <value>EDDI {0} への更新は必須です。</value>
+  </data>
+  <data name="msg_from_eddi" xml:space="preserve">
+    <value>EDDIからのメッセージ：{0}</value>
+  </data>
+  <data name="point" xml:space="preserve">
+    <value>てん</value>
+    <comment>spoken decimal point for reading out version numbers like "2.4.1"</comment>
+  </data>
+  <data name="update_available" xml:space="preserve">
+    <value>EDDIに新しいバージョン {0} があります</value>
+  </data>
+  <data name="upgrade_failed" xml:space="preserve">
+    <value>更新に失敗しました。後でもう一度お試しください</value>
+  </data>
+  <data name="starting_upgrade" xml:space="preserve">
+    <value>更新を開始しています。</value>
+  </data>
+  <data name="update_server_unreachable" xml:space="preserve">
+    <value>アップデートサーバに接続できません。繰り返し発生する場合、フォーラムを確認してみてください。</value>
+  </data>
+  <data name="already_running_alert_body_text" xml:space="preserve">
+    <value>EDDIの複数実行は不可能です。</value>
+  </data>
+  <data name="already_running_alert_title" xml:space="preserve">
+    <value>EDDIは既に実行中です</value>
+  </data>
+  <data name="problem_load_monitor" xml:space="preserve">
+    <value>モニターの読み込みに失敗しました: {0}</value>
+    <comment>Weapon mount type problem_load_monitor</comment>
+  </data>
+  <data name="problem_load_monitor_file" xml:space="preserve">
+    <value>モニターの読み込みに失敗しました: {0} がネットワークで共有されていないか確認してください。</value>
+    <comment>Weapon mount type problem_load_monitor_file</comment>
+  </data>
+  <data name="Commander" xml:space="preserve">
+    <value>コマンダー</value>
+    <comment>Vocative form of "Commander"</comment>
+  </data>
+  <data name="system_language" xml:space="preserve">
+    <value>自動</value>
+    <comment>The user's system language</comment>
+  </data>
+  <data name="safe_mode" xml:space="preserve">
+    <value>セーフモード - 更新が必要です。</value>
+  </data>
 </root>
