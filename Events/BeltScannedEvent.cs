@@ -20,8 +20,11 @@ namespace EddiEvents
 
         public decimal distancefromarrival { get; private set; }
 
-        public BeltScannedEvent(DateTime timestamp, string name, decimal distancefromarrival) : base(timestamp, NAME)
+        public string scantype { get; private set; } // One of Basic, Detailed, NavBeacon, NavBeaconDetail
+
+        public BeltScannedEvent(DateTime timestamp, string scantype, string name, decimal distancefromarrival) : base(timestamp, NAME)
         {
+            this.scantype = scantype;
             this.name = name;
             this.distancefromarrival = distancefromarrival;
         }

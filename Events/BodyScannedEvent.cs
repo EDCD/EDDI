@@ -114,9 +114,12 @@ namespace EddiEvents
         public long? estimatedvalue { get; private set; }
 
         public PlanetClass planetClass { get; private set; }
-        
-        public BodyScannedEvent(DateTime timestamp, string name, PlanetClass planetClass, decimal? earthmass, decimal? radiusKm, decimal gravity, decimal? temperatureKelvin, decimal? pressureAtm, bool? tidallylocked, bool? landable, AtmosphereClass atmosphereClass, List<AtmosphereComposition> atmosphereComposition, List<SolidComposition> solidCompositions, Volcanism volcanism, decimal distancefromarrival_Ls, decimal orbitalperiodDays, decimal rotationperiodDays, decimal? semimajoraxisAU, decimal? eccentricity, decimal? orbitalinclinationDegrees, decimal? periapsisDegrees, List<Ring> rings, string reserves, List<MaterialPresence> materials, TerraformState terraformstate, decimal? axialtiltDegrees, bool dssEquipped) : base(timestamp, NAME)
+
+        public string scantype { get; private set; } // One of Basic, Detailed, NavBeacon, NavBeaconDetail
+
+        public BodyScannedEvent(DateTime timestamp, string scantype, string name, PlanetClass planetClass, decimal? earthmass, decimal? radiusKm, decimal gravity, decimal? temperatureKelvin, decimal? pressureAtm, bool? tidallylocked, bool? landable, AtmosphereClass atmosphereClass, List<AtmosphereComposition> atmosphereComposition, List<SolidComposition> solidCompositions, Volcanism volcanism, decimal distancefromarrival_Ls, decimal orbitalperiodDays, decimal rotationperiodDays, decimal? semimajoraxisAU, decimal? eccentricity, decimal? orbitalinclinationDegrees, decimal? periapsisDegrees, List<Ring> rings, string reserves, List<MaterialPresence> materials, TerraformState terraformstate, decimal? axialtiltDegrees, bool dssEquipped) : base(timestamp, NAME)
         {
+            this.scantype = scantype;
             this.name = name;
             this.distancefromarrival = distancefromarrival_Ls;
             this.planetClass = planetClass;

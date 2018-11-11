@@ -29,8 +29,6 @@ namespace EddiSpeechResponder
 
         private bool subtitlesOnly;
 
-        private int beaconScanCount = 0;
-
         public string ResponderName()
         {
             return "Speech responder";
@@ -141,22 +139,22 @@ namespace EddiSpeechResponder
                 }
             }
 
-            if (theEvent is NavBeaconScanEvent)
+            if (theEvent is BeltScannedEvent)
             {
-                beaconScanCount = ((NavBeaconScanEvent)theEvent).numbodies;
-                Logging.Debug($"beaconScanCount = {beaconScanCount}");
+                // We ignore belt clusters
+                return;
             }
-            else if (theEvent is StarScannedEvent || theEvent is BodyScannedEvent || theEvent is BeltScannedEvent)
+            else if (theEvent is BodyScannedEvent)
             {
-                if (beaconScanCount > 0)
+                if (((BodyScannedEvent)theEvent).scantype == "NavBeaconDetail")
                 {
-                    beaconScanCount--;
-                    Logging.Debug("beaconScanCount = " + beaconScanCount.ToString());
                     return;
                 }
-                if (theEvent is BeltScannedEvent)
+            }
+            else if (theEvent is StarScannedEvent)
+            {
+                if (((StarScannedEvent)theEvent).scantype == "NavBeaconDetail")
                 {
-                    // We ignore belt clusters
                     return;
                 }
             }

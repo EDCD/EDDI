@@ -104,8 +104,11 @@ namespace EddiEvents
 
         public long? estimatedvalue { get; private set; }
 
-        public StarScannedEvent(DateTime timestamp, string name, string stellarclass, decimal solarmass, decimal radius, decimal absolutemagnitude, string luminosityclass, long age, decimal temperature, decimal distancefromarrival, decimal? orbitalperiod, decimal rotationperiod, decimal? semimajoraxis, decimal? eccentricity, decimal? orbitalinclination, decimal? periapsis, List<Ring> rings, bool dssEquipped) : base(timestamp, NAME)
+        public string scantype { get; private set; } // One of Basic, Detailed, NavBeacon, NavBeaconDetail
+
+        public StarScannedEvent(DateTime timestamp, string scantype, string name, string stellarclass, decimal solarmass, decimal radius, decimal absolutemagnitude, string luminosityclass, long age, decimal temperature, decimal distancefromarrival, decimal? orbitalperiod, decimal rotationperiod, decimal? semimajoraxis, decimal? eccentricity, decimal? orbitalinclination, decimal? periapsis, List<Ring> rings, bool dssEquipped) : base(timestamp, NAME)
         {
+            this.scantype = scantype;
             this.name = name;
             this.stellarclass = stellarclass;
             this.solarmass = solarmass;
