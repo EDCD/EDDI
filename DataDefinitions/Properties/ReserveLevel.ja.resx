@@ -117,10 +117,28 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
-  
-  
-  
-  
+  <data name="Minor" xml:space="preserve">
+    <value>少量の埋蔵量</value>
+    <comment>Minor reserves</comment>
+  </data>
+  <data name="None" xml:space="preserve">
+    <value>該当なし</value>
+    <comment>No reserves (no rings present)</comment>
+  </data>
+  <data name="Common" xml:space="preserve">
+    <value>標準的な埋蔵量</value>
+    <comment>Common reserves</comment>
+  </data>
+  <data name="Major" xml:space="preserve">
+    <value>多めの埋蔵量</value>
+    <comment>Major reserves</comment>
+  </data>
+  <data name="Pristine" xml:space="preserve">
+    <value>手付かずの埋蔵量</value>
+    <comment>Pristine reserves</comment>
+  </data>
+  <data name="Depleted" xml:space="preserve">
+    <value>枯渇</value>
+    <comment>Depleted Reserves</comment>
+  </data>
 </root>
