@@ -63,36 +63,36 @@ namespace EddiDataDefinitions.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Common.
         /// </summary>
-        public static string Common {
+        public static string CommonResources {
             get {
-                return ResourceManager.GetString("Common", resourceCulture);
+                return ResourceManager.GetString("CommonResources", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Depleted.
         /// </summary>
-        public static string Depleted {
+        public static string DepletedResources {
             get {
-                return ResourceManager.GetString("Depleted", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Major.
-        /// </summary>
-        public static string Major {
-            get {
-                return ResourceManager.GetString("Major", resourceCulture);
+                return ResourceManager.GetString("DepletedResources", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Minor.
         /// </summary>
-        public static string Minor {
+        public static string LowResources {
             get {
-                return ResourceManager.GetString("Minor", resourceCulture);
+                return ResourceManager.GetString("LowResources", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Major.
+        /// </summary>
+        public static string MajorResources {
+            get {
+                return ResourceManager.GetString("MajorResources", resourceCulture);
             }
         }
         
@@ -108,9 +108,9 @@ namespace EddiDataDefinitions.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Pristine.
         /// </summary>
-        public static string Pristine {
+        public static string PristineResources {
             get {
-                return ResourceManager.GetString("Pristine", resourceCulture);
+                return ResourceManager.GetString("PristineResources", resourceCulture);
             }
         }
     }
