@@ -117,16 +117,38 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="anything" xml:space="preserve">
+    <value>(選択)</value>
+  </data>
+  <data name="delete_btn" xml:space="preserve">
+    <value>削除</value>
+  </data>
+  <data name="desc" xml:space="preserve">
+    <value>EDDNからの情報により、星系のコントロールやステートを監視し、リストの条件に合ったイベントを生成します。</value>
+  </data>
+  <data name="faction_header" xml:space="preserve">
+    <value>ファクション</value>
+  </data>
+  <data name="max_dist_home_header" xml:space="preserve">
+    <value>ホーム星系からの距離</value>
+  </data>
+  <data name="max_dist_ship_header" xml:space="preserve">
+    <value>船からの距離</value>
+  </data>
   
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="name_header" xml:space="preserve">
+    <value>名称</value>
+  </data>
+  <data name="new_watch" xml:space="preserve">
+    <value>リストに追加</value>
+  </data>
+  <data name="p1" xml:space="preserve">
+    <value>監視する星系は、以下で作成、編集、削除できます。EDDIが銀河のどこかで起こった出来事の情報を取得すると、以下のリストと比較されます。リストに合致した場合、イベントが生成されます。星系の情報はEDDNに依存しています。EDDIなどのプログラムを使用しているプレイヤーからの情報に基づいているため、ネットワークが認識している出来事のみが報告されます。</value>
+  </data>
+  <data name="state_header" xml:space="preserve">
+    <value>ステート</value>
+  </data>
+  <data name="system_header" xml:space="preserve">
+    <value>星系</value>
+  </data>
 </root>
