@@ -1681,19 +1681,44 @@ namespace EddiJournalMonitor
                                     string option = JsonParsing.getString(data, "Option");
                                     long price = JsonParsing.getLong(data, "Cost");
 
-                                    if (option == "rebuy")
-                                    {
-                                        events.Add(new ShipRepurchasedEvent(timestamp, price) { raw = line });
-                                        handled = true;
-                                    }
-                                }
-                                break;
-                            case "NavBeaconScan":
+                                if (option == "rebuy")
                                 {
-                                    data.TryGetValue("NumBodies", out object val);
-                                    int numbodies = (int)(long)val;
-                                    events.Add(new NavBeaconScanEvent(timestamp, numbodies) { raw = line });
+                                    events.Add(new ShipRepurchasedEvent(timestamp, price) { raw = line });
+                                    handled = true;
                                 }
+                            }
+                            break;
+                        case "NavBeaconScan":
+                            {
+                                long systemAddress = JsonParsing.getLong(data, "SystemAddress");
+                                data.TryGetValue("NumBodies", out object val);
+                                int numbodies = (int)(long)val;
+                                events.Add(new NavBeaconScanEvent(timestamp, systemAddress, numbodies) { raw = line });
+                                handled = true;
+                            }
+                            break;
+                        case "FSSDiscoveryScan":
+                            {
+                                decimal progress = JsonParsing.getDecimal(data, "Progress"); // value from 0-1
+                                int bodyCount = JsonParsing.getInt(data, "BodyCount"); // number of stellar bodies in system
+                                int nonBodyCount = JsonParsing.getInt(data, "NonBodyCount"); // Number of non-body signals found
+                                events.Add(new FSSDiscoveryScanEvent(timestamp, progress, bodyCount, nonBodyCount) { raw = line });
+                                handled = true;
+                            }
+                            break;
+                        case "FSSSignalDiscovered":
+                            {
+                                FssSignal source = FssSignal.FromEDName(JsonParsing.getString(data, "SignalName")) ?? new FssSignal();
+                                source.fallbackLocalizedName = JsonParsing.getString(data, "SignalName_Localised");
+                                string spawningFaction = getFaction(data, "SpawningFaction") ?? Superpower.None.localizedName; // the minor faction, if relevant
+                                decimal? secondsRemaining = JsonParsing.getOptionalDecimal(data, "TimeRemaining"); // remaining lifetime in seconds, if relevant
+
+                                string spawningstate = JsonParsing.getString(data, "SpawningState");
+                                string normalizedSpawningState = spawningstate?.Replace("$FactionState_", "")?.Replace("_desc;", "");
+                                FactionState spawningState = FactionState.FromEDName(normalizedSpawningState) ?? new FactionState();
+                                spawningState.fallbackLocalizedName = JsonParsing.getString(data, "SpawningState_Localised");
+
+                                events.Add(new FSSSignalDiscoveredEvent(timestamp, source, spawningState, spawningFaction, secondsRemaining) { raw = line });
                                 handled = true;
                                 break;
                             case "BuyExplorationData":
@@ -1823,7 +1848,7 @@ namespace EddiJournalMonitor
 	                                Compartment compartment = parseShipCompartment(ship, JsonParsing.getString(data, "Slot")); //
 	                                compartment.module = Module.FromEDName(JsonParsing.getString(data, "Module"));
 
-                                List<CommodityAmount> commodities = new List<CommodityAmount>();
+                                    List<CommodityAmount> commodities = new List<CommodityAmount>();
                                     List<MaterialAmount> materials = new List<MaterialAmount>();
                                     if (data.TryGetValue("Ingredients", out val))
                                     {

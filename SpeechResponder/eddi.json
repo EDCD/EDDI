@@ -677,6 +677,24 @@
       "name": "FSD engaged",
       "description": "Triggered when your FSD has engaged"
     },
+    "FSS discovery scan": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "default": true,
+      "name": "FSS discovery scan",
+      "description": "Triggered when performing a full system scan (honk)"
+    },
+    "FSS signal": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "default": true,
+      "name": "FSS signal",
+      "description": "Triggered when zooming in on a signal using the FSS scanner"
+    },
     "Fuel check": {
       "enabled": true,
       "priority": 3,
