@@ -117,24 +117,64 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="AmmoniaWorld" xml:space="preserve">
+    <value>アンモニアワールド</value>
+  </data>
+  <data name="EarthLikeBody" xml:space="preserve">
+    <value>アースライクワールド</value>
+  </data>
+  <data name="GasGiantWithAmmoniaBasedLife" xml:space="preserve">
+    <value>ガスジャイアントウィズアンモニアベースドライフ</value>
+  </data>
+  <data name="GasGiantWithWaterBasedLife" xml:space="preserve">
+    <value>ガスジャイアントウィズウォーターベースドライフ</value>
+  </data>
+  <data name="HeliumGasGiant" xml:space="preserve">
+    <value>ヘリウムガスジャイアント</value>
+  </data>
+  <data name="HeliumRichGasGiant" xml:space="preserve">
+    <value>ヘリウムリッチガスジャイアント</value>
+  </data>
+  <data name="HighMetalContentBody" xml:space="preserve">
+    <value>ハイメタルコンテントワールド</value>
+  </data>
+  <data name="IcyBody" xml:space="preserve">
+    <value>アイスボディー</value>
+  </data>
+  <data name="MetalRich" xml:space="preserve">
+    <value>メタルリッチボディー</value>
+  </data>
+  <data name="RockyBody" xml:space="preserve">
+    <value>ロッキーボディー</value>
+  </data>
+  <data name="RockyIceBody" xml:space="preserve">
+    <value>ロッキーアイスワールド</value>
+  </data>
+  <data name="SudarskyClassIGasGiant" xml:space="preserve">
+    <value>クラス１ガスジャイアント</value>
+  </data>
+  <data name="SudarskyClassIIGasGiant" xml:space="preserve">
+    <value>クラス２ガスジャイアント</value>
+  </data>
+  <data name="SudarskyClassIIIGasGiant" xml:space="preserve">
+    <value>クラス３ジャイアント</value>
+  </data>
+  <data name="SudarskyClassIVGasGiant" xml:space="preserve">
+    <value>クラス４ガスジャイアント</value>
+  </data>
+  <data name="SudarskyClassVGasGiant" xml:space="preserve">
+    <value>クラス５ジャイアント</value>
+  </data>
+  <data name="WaterGiant" xml:space="preserve">
+    <value>ウォータージャイアント</value>
+  </data>
+  <data name="WaterGiantWithLife" xml:space="preserve">
+    <value>ウォータージャイアントウィズライフ</value>
+  </data>
+  <data name="WaterWorld" xml:space="preserve">
+    <value>ウォーターワールド</value>
+  </data>
+  <data name="None" xml:space="preserve">
+    <value>該当なし</value>
+  </data>
 </root>

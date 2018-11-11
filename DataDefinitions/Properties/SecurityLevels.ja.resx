@@ -97,11 +97,29 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="GALAXY_MAP_INFO_state_anarchy" xml:space="preserve">
+    <value>無政府</value>
+    <comment>Security level GALAXY_MAP_INFO_state_anarchy</comment>
+  </data>
+  <data name="GALAXY_MAP_INFO_state_lawless" xml:space="preserve">
+    <value>無法</value>
+    <comment>Security level GALAXY_MAP_INFO_state_lawless</comment>
+  </data>
+  <data name="SYSTEM_SECURITY_high" xml:space="preserve">
+    <value>高い</value>
+    <comment>Security level SYSTEM_SECURITY_high</comment>
+  </data>
   
-  
-  
-  
-  
-  
-  
+  <data name="SYSTEM_SECURITY_low" xml:space="preserve">
+    <value>低い</value>
+    <comment>Security level SYSTEM_SECURITY_low</comment>
+  </data>
+  <data name="SYSTEM_SECURITY_medium" xml:space="preserve">
+    <value>標準</value>
+    <comment>Security level SYSTEM_SECURITY_medium</comment>
+  </data>
+  <data name="None" xml:space="preserve">
+    <value>該当なし</value>
+    <comment>Security level SYSTEM_SECURITY_none</comment>
+  </data>
 </root>

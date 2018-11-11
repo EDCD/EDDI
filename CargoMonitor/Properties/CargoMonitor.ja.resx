@@ -117,16 +117,44 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="cargo_monitor_desc" xml:space="preserve">
+    <value>カーゴの情報を表示します。</value>
+  </data>
   
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="header_haulage" xml:space="preserve">
+    <value>保持数</value>
+    <comment>Tons of haulage (mission cargo) carried</comment>
+  </data>
+  <data name="header_name" xml:space="preserve">
+    <value>名称</value>
+    <comment>Name of cargo, such as "Gold"</comment>
+  </data>
+  <data name="header_need" xml:space="preserve">
+    <value>必要</value>
+    <comment>Tons needed for missions</comment>
+  </data>
+  <data name="para2" xml:space="preserve">
+    <value>実際の内容と一致しない場合、情報の更新のため、ゲーム本体を起動または再起動する必要があります。</value>
+  </data>
+  <data name="para1" xml:space="preserve">
+    <value>以下がカーゴのリストです。</value>
+  </data>
+  <data name="header_type" xml:space="preserve">
+    <value>種類</value>
+    <comment>Type of cargo, such as "Metals"</comment>
+  </data>
+  <data name="header_stolen" xml:space="preserve">
+    <value>盗品</value>
+    <comment>Tons of stolen cargo carried</comment>
+  </data>
+  <data name="header_price" xml:space="preserve">
+    <value>1トン当たりの価格</value>
+  </data>
+  <data name="header_owned" xml:space="preserve">
+    <value>所有</value>
+    <comment>Tons of owned cargo carried</comment>
+  </data>
+  <data name="para3" xml:space="preserve">
+    <value>注意：Wingミッションでまだ積み込み・輸送を行っていない場合、コモディティは"Unknown"と表示されます。積み込み・輸送した時に、表示は更新されます。</value>
+  </data>
 </root>

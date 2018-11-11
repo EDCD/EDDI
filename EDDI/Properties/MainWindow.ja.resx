@@ -117,50 +117,143 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="access_beta" xml:space="preserve">
+    <value>EDDIのベータ版を使用</value>
+  </data>
+  <data name="EDDI_status_label" xml:space="preserve">
+    <value>EDDIの状態: </value>
+  </data>
+  <data name="paragraph_0" xml:space="preserve">
+    <value>は、いくつもの機能があり、それぞれ設定可能です。大きく分けて、3種類の機能があります。</value>
+  </data>
+  <data name="paragraph_1" xml:space="preserve">
+    <value>1つ目は、EDDIが利用する基本的情報の設定と管理機能です。それらは、'Commander Details'、'Frontier API'、'Text-to-Speech'タブから設定できます。EDDIがElite: Dangerousの全ての情報にアクセスするために、これら3つのタブから設定を行ってください。</value>
+  </data>
+  <data name="paragraph_2" xml:space="preserve">
+    <value>2つ目は、イベント機能です。これらは、名称に'Monitor'が付くタブから設定できます。様々なイベントを取得するためには、最小限の設定が必要です。</value>
+  </data>
+  <data name="paragraph_3" xml:space="preserve">
+    <value>3つ目は、イベントに反応する機能です。これらは、名称に'Responder'が付くタブから設定できます。これら機能には様々な設定がありますが、簡単に設定して使用できます。</value>
+  </data>
+  <data name="paragraph_4" xml:space="preserve">
+    <value>EDDIの機能についてもっと知るには、右記を参照してください: </value>
+  </data>
+  <data name="report_issue" xml:space="preserve">
+    <value>問題を報告</value>
+  </data>
+  <data name="troubleshoot_common_issues" xml:space="preserve">
+    <value>よくある問題の解決法</value>
+    <comment>A hyperlink to the troubleshooting URL (in english)</comment>
+  </data>
+  <data name="verbose_logging_checkbox" xml:space="preserve">
+    <value>詳細なログを有効化（EDDI開発者に指示された場合のみ）</value>
+  </data>
+  <data name="verbose_logging_desc" xml:space="preserve">
+    <value>詳細なログを有効化すると、EDDIはログを取得し、デスクトップに保存します。GitHubのIssueに添付してください。詳細なログに個人情報は含まれません。</value>
+  </data>
+  <data name="version_hyperlink" xml:space="preserve">
+    <value>バージョン：</value>
+  </data>
+  <data name="wiki_hyperlink" xml:space="preserve">
+    <value>Project Wiki（英語）</value>
+  </data>
+  <data name="choose_lang_label" xml:space="preserve">
+    <value>EDDIの言語（EDDIの再起動が必要です）</value>
+  </data>
+  <data name="label_code" xml:space="preserve">
+    <value>認証コード:</value>
+  </data>
+  <data name="label_email" xml:space="preserve">
+    <value>メールアドレス:</value>
+  </data>
+  <data name="label_password" xml:space="preserve">
+    <value>パスワード:</value>
+  </data>
+  <data name="tab_frontier_desc" xml:space="preserve">
+    <value>Frontier社は、あなたの艦船、ステーションのマーケットや、その他の情報が取得可能なAPIを提供しています。EDDIでFrontier APIを利用するには、Frontierアカウントでの認証が必要です。以下に、メールアドレスとパスワードを入力してください。</value>
+  </data>
+  <data name="tab_frontier_header" xml:space="preserve">
+    <value>Frontier API</value>
+  </data>
+  <data name="tab_frontier_reset_desc" xml:space="preserve">
+    <value>接続に問題がある場合、設定をリセットして再度ログインすると、問題が解決する可能性があります。</value>
+  </data>
+  <data name="tab_tts_desc" xml:space="preserve">
+    <value>EDDIは、船の損傷やコックピットの大きさによって音声を処理する、独自のテキスト読み上げエンジンを使用しています。ここで、声のパラメータを設定できます。</value>
+  </data>
+  <data name="tab_tts_distort_label" xml:space="preserve">
+    <value>船が損傷したとき、音声を歪ませる:</value>
+  </data>
+  <data name="tab_tts_header" xml:space="preserve">
+    <value>テキスト読み上げ</value>
+  </data>
+  <data name="tab_tts_level_label" xml:space="preserve">
+    <value>音声処理のレベル:</value>
+  </data>
+  <data name="tab_tts_phonetic_speech_desc" xml:space="preserve">
+    <value>EDDIは、読みにくい単語をフォネティック・コードで読み上げます。いくつかの読み上げエンジンは、フォネティック・コードの読み上げに問題があり、EDDIの予期せぬ停止やクラッシュを引き起こします。その場合は、以下の設定を試してください。</value>
+  </data>
+  <data name="tab_tts_rate_label" xml:space="preserve">
+    <value>読み上げ速度:</value>
+  </data>
+  <data name="tab_tts_test_button" xml:space="preserve">
+    <value>音声をテスト</value>
+  </data>
+  <data name="tab_tts_test_damaged_button" xml:space="preserve">
+    <value>音声をテスト（損傷を受けた場合）</value>
+  </data>
+  <data name="tab_tts_test_ship_label" xml:space="preserve">
+    <value>音声のテストに使用する船:</value>
+  </data>
+  <data name="tab_tts_voice_label" xml:space="preserve">
+    <value>読み上げエンジン:</value>
+  </data>
+  <data name="tab_tts_volume_label" xml:space="preserve">
+    <value>音声のボリューム:</value>
+  </data>
+  <data name="upgrade_button" xml:space="preserve">
+    <value>EDDIを更新</value>
+  </data>
+  <data name="reset_button" xml:space="preserve">
+    <value>リセット</value>
+  </data>
+  <data name="tab_tts_test_desc" xml:space="preserve">
+    <value>以下で音声をテストできます。読み上げエンジンに互換性がない場合、デフォルトの音声が使用されます。</value>
+  </data>
+  <data name="tab_tts_disable_phonetic_speech_label" xml:space="preserve">
+    <value>フォネティック・コードによる読み上げを無効化:</value>
+  </data>
+  <data name="tab_tts_disable_phonetic_speech_note" xml:space="preserve">
+    <value>(Speech Responderのヘルプに記載された、音声合成マークアップ言語(SSML)による機能を全て無効化します。)</value>
+  </data>
+  <data name="tab_tts_icao_desc" xml:space="preserve">
+    <value>EDDIは、星系名や惑星名の読み上げに、ICAO発音(例:「A」を「アルファ」と発音)を使用可能です。これにより、星系名を理解しやすくなりますが、読み上げには時間が必要です。ICAO発音を使用するには、下記にチェックしてください。フォネティック・コードによる読み上げを無効化している場合、この設定は機能しません。</value>
+  </data>
+  <data name="tab_tts_icao_label" xml:space="preserve">
+    <value>ICAO発音を有効化:</value>
+  </data>
+  <data name="tab_commander_details_header" xml:space="preserve">
+    <value>コマンダーの情報</value>
+  </data>
+  <data name="tab_commander_gender" xml:space="preserve">
+    <value>代名詞と称号で使用する性別:</value>
+  </data>
+  <data name="tab_commander_gender_f" xml:space="preserve">
+    <value>女性</value>
+  </data>
+  <data name="tab_commander_gender_m" xml:space="preserve">
+    <value>男性</value>
+  </data>
+  <data name="tab_commander_gender_n" xml:space="preserve">
+    <value>その他</value>
+  </data>
+  <data name="tab_commander_home_station" xml:space="preserve">
+    <value>ホームステーション:</value>
+  </data>
+  <data name="tab_commander_home_system" xml:space="preserve">
+    <value>ホーム星系:</value>
+  </data>
+  <data name="tab_commander_par1" xml:space="preserve">
+    <value>拠点とする星系と、そこに存在するステーションの名称を設定することで、EDDIのResponderが、その星系の情報を利用できるようになります。</value>
+  </data>
 </root>

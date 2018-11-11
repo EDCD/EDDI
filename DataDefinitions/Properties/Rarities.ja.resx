@@ -98,9 +98,24 @@
 	<resheader name="writer">
 		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
 	</resheader>
-  
-  
-  
-  
-  
+  <data name="unknown" xml:space="preserve">
+    <value>不明</value>
+    <comment>Rarity unknown</comment>
+  </data>
+  <data name="verycommon" xml:space="preserve">
+    <value>ごく普通</value>
+    <comment>Rarity verycommon</comment>
+  </data>
+  <data name="common" xml:space="preserve">
+    <value>一般的</value>
+    <comment>Rarity common</comment>
+  </data>
+  <data name="rare" xml:space="preserve">
+    <value>レア</value>
+    <comment>Rarity rare</comment>
+  </data>
+  <data name="veryrare" xml:space="preserve">
+    <value>非常にレア</value>
+    <comment>Rarity veryrare</comment>
+  </data>
 </root>
