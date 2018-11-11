@@ -654,6 +654,11 @@
     <EmbeddedResource Include="Properties\MissionType.ja.resx" />
     <EmbeddedResource Include="Properties\Modules.ja.resx" />
     <EmbeddedResource Include="Properties\PassengerType.ja.resx" />
+    <EmbeddedResource Include="Properties\PlanetClass.de.resx" />
+    <EmbeddedResource Include="Properties\PlanetClass.es.resx" />
+    <EmbeddedResource Include="Properties\PlanetClass.fr.resx" />
+    <EmbeddedResource Include="Properties\PlanetClass.hu.resx" />
+    <EmbeddedResource Include="Properties\PlanetClass.it.resx" />
     <EmbeddedResource Include="Properties\PlanetClass.ja.resx" />
     <EmbeddedResource Include="Properties\Rarities.ja.resx" />
     <EmbeddedResource Include="Properties\ReserveLevel.ja.resx" />
