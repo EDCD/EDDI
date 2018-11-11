@@ -19,7 +19,7 @@ namespace EddiDataDefinitions
             var HeliumRichGasGiant = new PlanetClass("HeliumRichGasGiant");
             var HighMetalContentBody = new PlanetClass("HighMetalContentBody");
             var IcyBody = new PlanetClass("IcyBody");
-            var MetalRich = new PlanetClass("MetalRich");
+            var MetalRichBody = new PlanetClass("MetalRichBody");
             var RockBody = new PlanetClass("RockyBody");
             var RockyIceBody = new PlanetClass("RockyIceBody");
             var SudarskyClassIGasGiant = new PlanetClass("SudarskyClassIGasGiant");

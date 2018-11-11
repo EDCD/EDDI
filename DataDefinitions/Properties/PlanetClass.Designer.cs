@@ -135,9 +135,9 @@ namespace EddiDataDefinitions.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Metal-rich body.
         /// </summary>
-        public static string MetalRich {
+        public static string MetalRichBody {
             get {
-                return ResourceManager.GetString("MetalRich", resourceCulture);
+                return ResourceManager.GetString("MetalRichBody", resourceCulture);
             }
         }
         

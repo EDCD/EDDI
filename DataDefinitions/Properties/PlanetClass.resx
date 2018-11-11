@@ -141,7 +141,7 @@
   <data name="IcyBody" xml:space="preserve">
     <value>Icy body</value>
   </data>
-  <data name="MetalRich" xml:space="preserve">
+  <data name="MetalRichBody" xml:space="preserve">
     <value>Metal-rich body</value>
   </data>
   <data name="RockyBody" xml:space="preserve">
