@@ -97,6 +97,8 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
+  <data name="desc" xml:space="preserve">
+    <value>様々なイベントが記載された、Elite: Dangerousのjournal.logを監視します。これは、通常は無効化するべきではなく、無効化した場合、EDDIの多くの機能が使用できなくなります。</value>
+  </data>
   
 </root>
