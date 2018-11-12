@@ -120,5 +120,7 @@
   <data name="desc" xml:space="preserve">
     <value>ステーション、ジャンプ、スキャンの情報をEDDNに送信します。EDDNは、サードパーティのツールで、星系とマーケットの情報を収集し、EDDBなどの外部ツールに情報を提供しています。</value>
   </data>
-  
+  <data name="name" xml:space="preserve">
+    <value>EDDN Responder</value>
+  </data>
 </root>
