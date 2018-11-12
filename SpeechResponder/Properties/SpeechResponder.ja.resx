@@ -164,7 +164,7 @@
     <value>スクリプト "{0}" を削除しますか？</value>
   </data>
   <data name="desc" xml:space="preserve">
-    <value>イベントの情報に基づき、スクリプトによる音声でイベントに応答します。 すべてのイベントが設定された応答を返すわけではありません。 スクリプト応答が空の場合、 'Test'と 'View'ボタンは無効になります。</value>
+    <value>イベントの情報に基づき、スクリプトによる音声でイベントに応答します。 すべてのイベントが設定された応答を返すわけではありません。 スクリプト応答が空の場合、「テスト」と 「閲覧」ボタンは無効になります。</value>
   </data>
   <data name="edit_script" xml:space="preserve">
     <value>編集</value>
