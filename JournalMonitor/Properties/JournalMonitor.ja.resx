@@ -100,5 +100,7 @@
   <data name="desc" xml:space="preserve">
     <value>様々なイベントが記載された、Elite: Dangerousのjournal.logを監視します。これは、通常は無効化するべきではなく、無効化した場合、EDDIの多くの機能が使用できなくなります。</value>
   </data>
-  
+  <data name="name" xml:space="preserve">
+    <value>Journal Monitor</value>
+  </data>
 </root>
