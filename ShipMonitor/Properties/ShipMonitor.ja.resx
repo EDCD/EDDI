@@ -153,7 +153,9 @@
   <data name="link_ipa" xml:space="preserve">
     <value>国際音声記号（International Phonetic Alphabet, IPA）</value>
   </data>
-  
+  <data name="name" xml:space="preserve">
+    <value>Ship Monitor</value>
+  </data>
   <data name="p1" xml:space="preserve">
     <value>船の情報を一覧し、個々の船に異なる用途を設定できます。情報はレスポンダでも利用され、動作を設定するスクリプトで使われます。</value>
   </data>
