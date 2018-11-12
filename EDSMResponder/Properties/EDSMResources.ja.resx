@@ -147,7 +147,9 @@
   <data name="log_button_fetching_progress" xml:space="preserve">
     <value>ログを取得中 </value>
   </data>
-  
+  <data name="name" xml:space="preserve">
+    <value>EDSM Responder</value>
+  </data>
   <data name="p1" xml:space="preserve">
     <value>EDSMに接続するには、EDSMのアカウントとAPIキーが必要です。EDSMに登録した後、画面右上の角にあるポートレートから、メニュー内の'APIキー'を選択すると、APIキーを取得できます。</value>
   </data>

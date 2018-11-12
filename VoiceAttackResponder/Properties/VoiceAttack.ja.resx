@@ -120,7 +120,9 @@
   <data name="desc" xml:space="preserve">
     <value>VoiceAttack内に多数の変数を生成し、ユーザー定義の動作をトリガします。</value>
   </data>
-  
+  <data name="name" xml:space="preserve">
+    <value>VoiceAttack Responder</value>
+  </data>
   <data name="p1" xml:space="preserve">
     <value>EDDIとVoiceAttackを統合するためには、EDDIをVoiceAttackの 'Apps'ディレクトリにインストールする必要があります。 デフォルトのパスは「C：¥Program Files（x86）¥VoiceAttack¥Apps」で、デフォルトでEDDIがインストールされます。</value>
   </data>

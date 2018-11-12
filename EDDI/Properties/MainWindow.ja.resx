@@ -130,7 +130,7 @@
     <value>1つ目は、EDDIが利用する基本的情報の設定と管理機能です。それらは、'Commander Details'、'Frontier API'、'Text-to-Speech'タブから設定できます。EDDIがElite: Dangerousの全ての情報にアクセスするために、これら3つのタブから設定を行ってください。</value>
   </data>
   <data name="paragraph_2" xml:space="preserve">
-    <value>2つ目は、イベント機能です。これらは、名称に'Monitor'が付くタブから設定できます。様々なイベントを取得するためには、最小限の設定が必要です。</value>
+    <value>2つ目は、イベントを取得する機能です。これらは、名称に'Monitor'が付くタブから設定できます。様々なイベントを取得するためには、最小限の設定が必要です。</value>
   </data>
   <data name="paragraph_3" xml:space="preserve">
     <value>3つ目は、イベントに反応する機能です。これらは、名称に'Responder'が付くタブから設定できます。これら機能には様々な設定がありますが、簡単に設定して使用できます。</value>
@@ -184,7 +184,9 @@
   <data name="tab_tts_distort_label" xml:space="preserve">
     <value>船が損傷したとき、音声を歪ませる:</value>
   </data>
-  
+  <data name="tab_tts_header" xml:space="preserve">
+    <value>Text-to-Speech</value>
+  </data>
   <data name="tab_tts_level_label" xml:space="preserve">
     <value>音声処理のレベル:</value>
   </data>
@@ -230,7 +232,9 @@
   <data name="tab_tts_icao_label" xml:space="preserve">
     <value>ICAO発音を有効化:</value>
   </data>
-  
+  <data name="tab_commander_details_header" xml:space="preserve">
+    <value>Commander Details</value>
+  </data>
   <data name="tab_commander_gender" xml:space="preserve">
     <value>代名詞と称号で使用する性別:</value>
   </data>

@@ -129,7 +129,9 @@
   <data name="min_header" xml:space="preserve">
     <value>最低数</value>
   </data>
-  
+  <data name="name" xml:space="preserve">
+    <value>Material Monitor</value>
+  </data>
   <data name="name_header" xml:space="preserve">
     <value>名称</value>
   </data>
