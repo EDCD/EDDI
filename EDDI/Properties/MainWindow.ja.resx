@@ -184,7 +184,9 @@
   <data name="tab_tts_distort_label" xml:space="preserve">
     <value>船が損傷したとき、音声を歪ませる:</value>
   </data>
-  
+  <data name="tab_tts_header" xml:space="preserve">
+    <value>Text-to-Speech</value>
+  </data>
   <data name="tab_tts_level_label" xml:space="preserve">
     <value>音声処理のレベル:</value>
   </data>
@@ -230,7 +232,9 @@
   <data name="tab_tts_icao_label" xml:space="preserve">
     <value>ICAO発音を有効化:</value>
   </data>
-  
+  <data name="tab_commander_details_header" xml:space="preserve">
+    <value>Commander Details</value>
+  </data>
   <data name="tab_commander_gender" xml:space="preserve">
     <value>代名詞と称号で使用する性別:</value>
   </data>
