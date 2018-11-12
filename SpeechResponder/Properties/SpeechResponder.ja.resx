@@ -184,7 +184,9 @@
   <data name="help_button" xml:space="preserve">
     <value>ヘルプ</value>
   </data>
-  
+  <data name="name" xml:space="preserve">
+    <value>Speech Responder</value>
+  </data>
   <data name="reset_script_button" xml:space="preserve">
     <value>デフォルトに戻す</value>
   </data>
