@@ -145,7 +145,10 @@
     <value>Cartographie universelle</value>
     <comment>Station Service: Exploration</comment>
   </data>
-  
+  <data name="Initiatives" xml:space="preserve">
+    <value>Initiatives</value>
+    <comment>Station Service: Initiatives</comment>
+  </data>
   <data name="Missions" xml:space="preserve">
     <value>Missions</value>
     <comment>Station Service: Missions</comment>
@@ -174,13 +177,22 @@
     <value>Chantier naval</value>
     <comment>Station Service: Shipyard</comment>
   </data>
-  
+  <data name="Tuning" xml:space="preserve">
+    <value>Modifications</value>
+    <comment>Station Service: Tuning</comment>
+  </data>
   <data name="Workshop" xml:space="preserve">
     <value>Atelier</value>
     <comment>Station Service: Workshop</comment>
   </data>
-  
-  
+  <data name="MissionsGenerated" xml:space="preserve">
+    <value>Missions générées</value>
+    <comment>Station Service: MissionsGenerated</comment>
+  </data>
+  <data name="Facilitator" xml:space="preserve">
+    <value>Facilitateur</value>
+    <comment>Station Service: Facilitator</comment>
+  </data>
   <data name="Research" xml:space="preserve">
     <value>Recherche</value>
     <comment>Station Service: Research</comment>
@@ -189,8 +201,14 @@
     <value>Contrôleur de vol</value>
     <comment>Station Service: FlightController</comment>
   </data>
-  
-  
+  <data name="StationOperations" xml:space="preserve">
+    <value>Opérations de la Station</value>
+    <comment>Station Service: StationOperations</comment>
+  </data>
+  <data name="OnDockMission" xml:space="preserve">
+    <value>Mission au poste d'appontage</value>
+    <comment>Station Service: OnDockMission</comment>
+  </data>
   <data name="Powerplay" xml:space="preserve">
     <value>Powerplay</value>
     <comment>Station Service: Powerplay</comment>
@@ -199,8 +217,14 @@
     <value>Recherche et secours</value>
     <comment>Station Service: SearchAndRescue</comment>
   </data>
-  
-  
+  <data name="TechBroker" xml:space="preserve">
+    <value>Technologie Broker</value>
+    <comment>Station Service: TechBroker</comment>
+  </data>
+  <data name="MaterialTrader" xml:space="preserve">
+    <value>Commerçant de matériel</value>
+    <comment>Station Service: Material Trader</comment>
+  </data>
   <data name="StationMenu" xml:space="preserve">
     <value>Menu de la station</value>
     <comment>Station Service: Station Menu</comment>
