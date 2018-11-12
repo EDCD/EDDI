@@ -141,7 +141,9 @@
   <data name="IcyBody" xml:space="preserve">
     <value>Corps glacé</value>
   </data>
-  
+  <data name="MetalRichBody" xml:space="preserve">
+    <value>Corps riche en métaux</value>
+  </data>
   <data name="RockyBody" xml:space="preserve">
     <value>Corps rocheux</value>
   </data>
