@@ -2,9 +2,7 @@
 
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
-### Development
-
-### 3.1-rc2
+### 3.1
   * Core
     * Fixed scan message spam upon scanning a Nav Beacon.
   * Localization
