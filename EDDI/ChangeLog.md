@@ -4,9 +4,11 @@ Full details of the variables available for each noted event, and VoiceAttack in
 
 ### 3.1-rc2
   * Core
-    * Fixed message spam upon scanning a Nav Beacon.
+    * Fixed scan message spam upon scanning a Nav Beacon.
   * Localization
     * Added translation files for Mission Monitor.
+  * VoiceAttack responder
+    * Fixed a bug that prevented the `shutup` command from firing correctly.
 
 ### 3.1-rc1
   * Localization
