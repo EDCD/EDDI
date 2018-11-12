@@ -145,7 +145,7 @@
     <value>デフォルトのパーソナリティは編集できません。編集するには、コピーを作成する必要があります。</value>
   </data>
   <data name="default_personality_script_filename" xml:space="preserve">
-    <value>eddi.jp.json</value>
+    <value>eddi.ja.json</value>
     <comment>Suggest "eddi.&lt;culture-code&gt;.json" e.g. "eddi.fr.json"</comment>
   </data>
   <data name="delete_personality_caption" xml:space="preserve">
