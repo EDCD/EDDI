@@ -130,7 +130,7 @@
     <value>1つ目は、EDDIが利用する基本的情報の設定と管理機能です。それらは、'Commander Details'、'Frontier API'、'Text-to-Speech'タブから設定できます。EDDIがElite: Dangerousの全ての情報にアクセスするために、これら3つのタブから設定を行ってください。</value>
   </data>
   <data name="paragraph_2" xml:space="preserve">
-    <value>2つ目は、イベント機能です。これらは、名称に'Monitor'が付くタブから設定できます。様々なイベントを取得するためには、最小限の設定が必要です。</value>
+    <value>2つ目は、イベントを取得する機能です。これらは、名称に'Monitor'が付くタブから設定できます。様々なイベントを取得するためには、最小限の設定が必要です。</value>
   </data>
   <data name="paragraph_3" xml:space="preserve">
     <value>3つ目は、イベントに反応する機能です。これらは、名称に'Responder'が付くタブから設定できます。これら機能には様々な設定がありますが、簡単に設定して使用できます。</value>
