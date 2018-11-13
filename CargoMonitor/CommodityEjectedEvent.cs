@@ -18,6 +18,8 @@ namespace EddiCargoMonitor
             VARIABLES.Add("commodity", "The name of the commodity ejected");
             VARIABLES.Add("amount", "The amount of cargo ejected");
             VARIABLES.Add("abandoned", "If the cargo has been abandoned");
+            VARIABLES.Add("missionid", "ID of the mission-related commodity, if applicable");
+
         }
 
         [JsonProperty("commodity")]
@@ -26,16 +28,20 @@ namespace EddiCargoMonitor
         [JsonProperty("amount")]
         public int amount { get; }
 
+        [JsonProperty("missionid")]
+        public long? missionid { get; }
+
         [JsonProperty("abandoned")]
         public bool abandoned { get; }
 
         public CommodityDefinition commodityDefinition { get; }
 
-        public CommodityEjectedEvent(DateTime timestamp, CommodityDefinition commodity , int amount, bool abandoned) : base(timestamp, NAME)
+        public CommodityEjectedEvent(DateTime timestamp, CommodityDefinition commodity, int amount, long? missionid, bool abandoned) : base(timestamp, NAME)
         {
-            this.amount = amount;
-            this.abandoned = abandoned;
             this.commodityDefinition = commodity;
+            this.amount = amount;
+            this.missionid = missionid;
+            this.abandoned = abandoned;
         }
     }
 }

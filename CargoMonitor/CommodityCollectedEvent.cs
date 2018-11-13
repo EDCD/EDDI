@@ -17,19 +17,25 @@ namespace EddiCargoMonitor
         {
             VARIABLES.Add("commodity", "The name of the commodity collected");
             VARIABLES.Add("stolen", "If the cargo is stolen");
+            VARIABLES.Add("missionid", "ID of the mission-related commodity, if applicable");
         }
 
         [JsonProperty("commodity")]
         public string commodity => commodityDefinition?.localizedName ?? "unknown commodity";
+
+        [JsonProperty("missionid")]
+        public long? missionid { get; }
+
         [JsonProperty("stolen")]
         public bool stolen { get; }
 
         public CommodityDefinition commodityDefinition { get; }
 
-        public CommodityCollectedEvent(DateTime timestamp, CommodityDefinition commodity, bool stolen) : base(timestamp, NAME)
+        public CommodityCollectedEvent(DateTime timestamp, CommodityDefinition commodity, long? missionid, bool stolen) : base(timestamp, NAME)
         {
-            this.stolen = stolen;
             this.commodityDefinition = commodity;
+            this.missionid = missionid;
+            this.stolen = stolen;
         }
     }
 }

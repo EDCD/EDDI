@@ -639,6 +639,7 @@ namespace EddiMissionMonitor
                     case "massacrewing":
                     case "mining":
                     case "piracy":
+                    case "rescue":
                     case "salvage":
                     case "scan":
                     case "sightseeing":

@@ -110,15 +110,6 @@
       "name": "Cargo depot",
       "description": "Triggered when engaging with a mission depot"
     },
-    "Cargo inventory": {
-      "enabled": true,
-      "priority": 3,
-      "responder": true,
-      "script": null,
-      "default": true,
-      "name": "Cargo inventory",
-      "description": "Triggered when you obtain an inventory of your cargo"
-    },
     "Cargo report": {
       "enabled": true,
       "priority": 3,
@@ -136,15 +127,6 @@
       "default": true,
       "name": "Cargo scoop",
       "description": "Triggered when you deploy or retract your cargo scoop"
-    },
-    "Cargo updated": {
-      "enabled": true,
-      "priority": 3,
-      "responder": true,
-      "script": "{_ Cargo updated }\r\n{_ Triggered when the cargo inventory is updated }\r\n\r\n\r\n{_ Context }\r\n{SetState('eddi_context_last_subject', 'cargo')}\r\n{SetState('eddi_context_last_action', 'updated')}\r\n{SetState('eddi_context_cargo_carried', event.cargocarried)}\r\n",
-      "default": true,
-      "name": "Cargo updated",
-      "description": "Triggered when the cargo inventory is updated"
     },
     "Cargo wingupdate": {
       "enabled": true,
@@ -1198,15 +1180,6 @@
       "default": true,
       "name": "Mission warning",
       "description": "Triggered when a mission is about to expire, based on a set threshold"
-    },
-    "Missions": {
-      "enabled": true,
-      "priority": 3,
-      "responder": true,
-      "script": "{_ Missions }\r\n{_ Triggered at session start from Missions event }",
-      "default": true,
-      "name": "Missions",
-      "description": "Triggered at session start from Missions event"
     },
     "Missions route": {
       "enabled": true,

@@ -401,8 +401,9 @@ namespace EddiJournalMonitor
                                 {
                                     Logging.Error("Failed to map cargo type " + commodityName + " to commodity definition", line);
                                 }
+                                long? missionid = JsonParsing.getOptionalLong(data, "MissionID");
                                 bool stolen = JsonParsing.getBool(data, "Stolen");
-                                events.Add(new CommodityCollectedEvent(timestamp, commodity, stolen) { raw = line });
+                                events.Add(new CommodityCollectedEvent(timestamp, commodity, missionid, stolen) { raw = line });
                                 handled = true;
                             }
                             handled = true;
@@ -415,16 +416,16 @@ namespace EddiJournalMonitor
                                 {
                                     Logging.Error("Failed to map cargo type " + commodityName + " to commodity definition", line);
                                 }
+                                long? missionid = JsonParsing.getOptionalLong(data, "MissionID");
                                 data.TryGetValue("Count", out object val);
                                 int amount = (int)(long)val;
                                 bool abandoned = JsonParsing.getBool(data, "Abandoned");
-                                events.Add(new CommodityEjectedEvent(timestamp, commodity, amount, abandoned) { raw = line });
+                                events.Add(new CommodityEjectedEvent(timestamp, commodity, amount, missionid, abandoned) { raw = line });
                             }
                             handled = true;
                             break;
                         case "Loadout":
                             {
-
                                 data.TryGetValue("ShipID", out object val);
                                 int shipId = (int)(long)val;
                                 string ship = JsonParsing.getString(data, "Ship");
@@ -2824,9 +2825,11 @@ namespace EddiJournalMonitor
                             break;
                         case "Cargo":
                             {
-                                int cargocarried = 0;
-                                List<Cargo> inventory = new List<Cargo>();
+                                bool update = false;
+                                List<CargoInfo> inventory = new List<CargoInfo>();
 
+                                string vehicle = EDDI.Instance?.Vehicle;
+                                int cargocarried = JsonParsing.getInt(data, "Count");
                                 data.TryGetValue("Inventory", out object val);
                                 if (val != null)
                                 {
@@ -2834,23 +2837,22 @@ namespace EddiJournalMonitor
                                     foreach (Dictionary<string, object> cargoJson in inventoryJson)
                                     {
                                         string name = JsonParsing.getString(cargoJson, "Name");
-                                        int amount = JsonParsing.getInt(cargoJson, "Count");
-                                        cargocarried += amount;
-                                        Cargo cargo = new Cargo(name, amount)
-                                        {
-                                            haulage = 0,
-                                            stolen = JsonParsing.getInt(cargoJson, "Stolen")
-                                        };
-                                        cargo.owned = amount - cargo.stolen;
-                                        inventory.Add(cargo);
+                                        long? missionid = JsonParsing.getOptionalLong(cargoJson, "MissionID");
+                                        int count = JsonParsing.getInt(cargoJson, "Count");
+                                        int stolen = JsonParsing.getInt(cargoJson, "Stolen");
+                                        CargoInfo info = new CargoInfo(name, missionid, count, stolen);
+                                        inventory.Add(info);
                                     }
                                 }
-
-                                events.Add(new CargoInventoryEvent(DateTime.UtcNow, inventory, cargocarried) { raw = line });
+                                else
+                                {
+                                    inventory = CargoInfoReader.FromFile().Inventory;
+                                    update = true;
+                                }
+                                events.Add(new CargoEvent(timestamp, update, vehicle, inventory, cargocarried) { raw = line });
                             }
                             handled = true;
                             break;
-
                         case "PowerplayJoin":
                             {
                                 string power = JsonParsing.getString(data, "Power");
