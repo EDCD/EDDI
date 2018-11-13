@@ -142,7 +142,7 @@ namespace UnitTests
             Assert.AreEqual(30, cargo.haulage);
             haulage = cargo.haulageData.First();
             Assert.AreEqual(426282789, haulage.missionid);
-            Assert.AreEqual("Unknown", haulage.name);
+            Assert.AreEqual("Mission_None", haulage.name);
             Assert.AreEqual(30, haulage.amount);
             Assert.AreEqual("Active", haulage.status);
 

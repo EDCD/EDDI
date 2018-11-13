@@ -235,6 +235,7 @@ namespace EddiCargoMonitor
                             {
                                 // Strip out the stray from the manifest
                                 _RemoveCargoWithEDName(inventoryCargo.edname);
+                                if (@event.update) { return true; }
                             }
                             else
                             {
@@ -257,9 +258,11 @@ namespace EddiCargoMonitor
                         if (cargo != null)
                         {
                             int total = cargoInfo.Sum(i => i.count);
-                            if (total != cargo.total)
+                            int stolen = infoList.Where(i => i.missionid == null).Sum(i => i.stolen);
+                            if (total != cargo.total || stolen != cargo.stolen)
                             {
                                 UpdateCargoFromInfo(cargo, cargoInfo);
+                                if (@event.update) { return true; }
                                 cargoUpdated = true;
                             }
                         }
@@ -396,8 +399,7 @@ namespace EddiCargoMonitor
         private bool _handleCommodityPurchasedEvent(CommodityPurchasedEvent @event)
         {
             bool update = false;
-            Cargo cargo = new Cargo();
-            cargo = GetCargoWithEDName(@event.commodityDefinition?.edname);
+            Cargo cargo = GetCargoWithEDName(@event.commodityDefinition?.edname);
             if (cargo != null)
             {
                 Haulage haulage = cargo.haulageData.FirstOrDefault(h => h.typeEDName
@@ -422,8 +424,7 @@ namespace EddiCargoMonitor
         private bool _handleCommodityRefinedEvent(CommodityRefinedEvent @event)
         {
             bool update = false;
-            Cargo cargo = new Cargo();
-            cargo = GetCargoWithEDName(@event.commodityDefinition?.edname);
+            Cargo cargo = GetCargoWithEDName(@event.commodityDefinition?.edname);
             if (cargo != null)
             {
                 Haulage haulage = cargo.haulageData.FirstOrDefault(h => h.typeEDName
@@ -453,7 +454,7 @@ namespace EddiCargoMonitor
             Cargo cargo = GetCargoWithEDName(@event.commodityDefinition?.edname);
             if (cargo != null)
             {
-                // Flag event to check for a failed mission 
+                // Flag event to check for a failed mission in following 'Cargo' event
                 checkHaulage = true;
             }
             return update;
@@ -478,7 +479,6 @@ namespace EddiCargoMonitor
                 case "Collect":
                     {
                         cargo = GetCargoWithMissionId(@event.missionid ?? 0);
-
                         if (cargo != null)
                         {
                             // Cargo instantiated by either 'Mission accepted' event or previous 'WingUpdate' update
@@ -748,8 +748,7 @@ namespace EddiCargoMonitor
 
         private void _handleMissionCompletedEvent(MissionCompletedEvent @event)
         {
-            Cargo cargo = new Cargo();
-            cargo = GetCargoWithEDName(@event.commodityDefinition?.edname);
+            Cargo cargo = GetCargoWithEDName(@event.commodityDefinition?.edname);
             if (cargo != null)
             {
                 Haulage haulage = cargo.haulageData.FirstOrDefault(ha => ha.missionid == @event.missionid);
@@ -923,7 +922,7 @@ namespace EddiCargoMonitor
         {
             foreach (Cargo cargo in inventory.ToList())
             {
-                if (cargo.haulageData.FirstOrDefault(ha => ha.missionid == missionid) != null)
+                if (cargo.haulageData.FirstOrDefault(h => h.missionid == missionid) != null)
                 {
                     return cargo;
                 }
@@ -935,7 +934,7 @@ namespace EddiCargoMonitor
         {
             foreach (Cargo cargo in inventory.ToList())
             {
-                Haulage haulage = cargo.haulageData.FirstOrDefault(ha => ha.missionid == missionid);
+                Haulage haulage = cargo.haulageData.FirstOrDefault(h => h.missionid == missionid);
                 if (haulage != null)
                 {
                     return haulage;
