@@ -143,26 +143,33 @@ namespace EddiSpeechResponder
                 // We ignore belt clusters
                 return;
             }
-            else if (theEvent is BodyScannedEvent)
+            else if (theEvent is BodyScannedEvent bodyScannedEvent)
             {
-                string scantype = ((BodyScannedEvent)theEvent).scantype;
-                if (scantype == "NavBeacon" || scantype == "NavBeaconDetail")
+                string scantype = bodyScannedEvent.scantype;
+                if (scantype == "NavBeacon" || scantype == "NavBeaconDetail" || scantype == "AutoScan")
                 {
+                    // Suppress scan details from nav beacons and auto scans
                     return;
                 }
             }
-            else if (theEvent is StarScannedEvent)
+            else if (theEvent is StarScannedEvent starScannedEvent)
             {
                 string scantype = ((StarScannedEvent)theEvent).scantype;
-                if (scantype == "NavBeacon" || scantype == "NavBeaconDetail")
+                if (scantype == "NavBeacon" || scantype == "NavBeaconDetail" || scantype == "AutoScan")
                 {
+                    // Suppress scan details from nav beacons and auto scans
                     return;
                 }
             }
+            else if (theEvent is FSSSignalDiscoveredEvent &&
+                (StatusMonitor.currentStatus.gui_focus != "fss mode" || StatusMonitor.currentStatus.gui_focus != "saa mode"))
+            {
+                return;
+            }
 
-            // Disable speech from the community goal event for the time being.
             if (theEvent is CommunityGoalEvent)
             {
+                // Disable speech from the community goal event for the time being.
                 return;
             }
 
