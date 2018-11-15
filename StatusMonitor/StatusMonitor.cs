@@ -19,8 +19,8 @@ namespace EddiStatusMonitor
     public class StatusMonitor : EDDIMonitor
     {
         // What we are monitoring and what to do with it
-        private static Regex Filter = new Regex(@"^Status\.json$");
-        private static Regex JsonRegex = new Regex(@"^{.*}$");
+        private static readonly Regex Filter = new Regex(@"^Status\.json$");
+        private static readonly Regex JsonRegex = new Regex(@"^{.*}$");
         private string Directory = GetSavedGamesDir();
         public static Status currentStatus { get; set; } = new Status();
         public static Status lastStatus { get; set; } = new Status();
@@ -133,8 +133,10 @@ namespace EddiStatusMonitor
                                     Status status = ParseStatusEntry(thisStatus);
 
                                     // Spin off a thread to pass status entry updates in the background
-                                    Thread updateThread = new Thread(() => handleStatus(status));
-                                    updateThread.IsBackground = true;
+                                    Thread updateThread = new Thread(() => handleStatus(status))
+                                    {
+                                        IsBackground = true
+                                    };
                                     updateThread.Start();
                                 }
                                 lastStatus = thisStatus;
@@ -198,8 +200,7 @@ namespace EddiStatusMonitor
                         return status;
                     }
 
-                    object val;
-                    data.TryGetValue("Pips", out val);
+                    data.TryGetValue("Pips", out object val);
                     List<long> pips = ((List<object>)val)?.Cast<long>()?.ToList(); // The 'TryGetValue' function returns these values as type 'object<long>'
                     status.pips_sys = pips != null ? ((decimal?)pips[0] / 2) : null; // Set system pips (converting from half pips)
                     status.pips_eng = pips != null ? ((decimal?)pips[1] / 2) : null; // Set engine pips (converting from half pips)
@@ -247,6 +248,26 @@ namespace EddiStatusMonitor
                         case 7: // SystemMap
                             {
                                 status.gui_focus = "system map";
+                                break;
+                            }
+                        case 8: // Orrery
+                            {
+                                status.gui_focus = "orrery";
+                                break;
+                            }
+                        case 9: // FSS mode
+                            {
+                                status.gui_focus = "fss mode";
+                                break;
+                            }
+                        case 10: // SAA mode
+                            {
+                                status.gui_focus = "saa mode";
+                                break;
+                            }
+                        case 11: // Codex
+                            {
+                                status.gui_focus = "codex";
                                 break;
                             }
                     }
@@ -356,8 +377,7 @@ namespace EddiStatusMonitor
 
         private static string GetSavedGamesDir()
         {
-            IntPtr path;
-            int result = NativeMethods.SHGetKnownFolderPath(new Guid("4C5C32FF-BB9D-43B0-B5B4-2D72E54EAAA4"), 0, new IntPtr(0), out path);
+            int result = NativeMethods.SHGetKnownFolderPath(new Guid("4C5C32FF-BB9D-43B0-B5B4-2D72E54EAAA4"), 0, new IntPtr(0), out IntPtr path);
             if (result >= 0)
             {
                 return Marshal.PtrToStringUni(path) + @"\Frontier Developments\Elite Dangerous";

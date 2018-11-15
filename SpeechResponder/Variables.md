@@ -476,11 +476,25 @@ Any values might be missing, depending on EDDI's configuration.
     - `pips_eng` a decimal value indicating the power distributor allocation to engines
     - `pips_wea` a decimal value indicating the power distributor allocation to weapons
     - `firegroup` an integer value indicating the ship's currently selected firegroup
-    - `gui_focus` the commander's current focus. Can be one of "none", "internal panel" (right panel), "external panel" (left panel), "communications panel" (top panel), "role panel" (bottom panel), "station services", "galaxy map", or "system map"
+    - `gui_focus` the commander's current focus. Can be one of 
+      - "none", 
+      - "internal panel" (right panel), 
+      - "external panel" (left panel), 
+      - "communications panel" (top panel), 
+      - "role panel" (bottom panel), 
+      - "station services", 
+      - "galaxy map", 
+      - "system map",
+      - "orrery",
+      - "fss mode",
+      - "saa mode", or
+      - "codex"
     - `latitude` a decimal value indicating the ship's current latitude (if near a surface)
     - `longitude` a decimal value indicating the ship's current longitude (if near a surface)
     - `altitude` a decimal value indicating the ship's current altitude (if in flight near a surface)
     - `heading` a decimal value indicating the ship's current heading (if near a surface)
+    - `analysis_mode` a boolean value indicating whether the ship's HUD is currently in Analysis Mode
+    - `night_vision` a boolean value indicating whether night vision is currently active
 
 ---
 ## VoiceDetail

@@ -39,6 +39,8 @@ namespace EddiDataDefinitions
             InMainShip = 0x01000000,
             InFighter = 0x02000000,
             InSRV = 0x04000000,
+            HudAnalysisMode = 0x08000000,
+            NightVision = 0x10000000,
         }
 
         // Variables set from status flags (when not signed in, this is set to '0')
@@ -72,6 +74,8 @@ namespace EddiDataDefinitions
         public bool landing_gear_down => (flags & Flags.LandingGearDown) != 0;
         public bool landed => (flags & Flags.Landed) != 0;
         public bool docked => (flags & Flags.Docked) != 0;
+        public bool analysis_mode => (flags & Flags.HudAnalysisMode) != 0;
+        public bool night_vision => (flags & Flags.NightVision) != 0;
 
         // FDev changes hardpoints status when the discovery scanner is used in supercruise. 
         // We want to keep hardpoints_deployed false if we are in supercruise.
