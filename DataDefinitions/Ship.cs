@@ -277,6 +277,9 @@ namespace EddiDataDefinitions
         public List<LaunchBay> launchbays { get; set; }
 
         public string paintjob { get; set; }
+
+        public decimal? fuelremaining { get; set; } // Current fuel level
+        public decimal? fuelpercent => percentFuel();
         public decimal? fueltankcapacity { get; set; } // Core capacity
         public decimal? fueltanktotalcapacity { get; set; } // Capacity including additional tanks
         public decimal maxfuel { get; set; }
@@ -454,6 +457,15 @@ namespace EddiDataDefinitions
         public void NotifyPropertyChanged(string propName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
+        }
+
+        private decimal? percentFuel()
+        {
+            if (fueltanktotalcapacity != null && fuelremaining != null && fueltanktotalcapacity > 0)
+            {
+                return Math.Round((decimal)(fuelremaining / fueltanktotalcapacity * 100), 1);
+            }
+            return null;
         }
     }
 }

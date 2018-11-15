@@ -275,6 +275,8 @@ namespace EddiStatusMonitor
                     status.longitude = JsonParsing.getOptionalDecimal(data, "Longitude");
                     status.altitude = JsonParsing.getOptionalDecimal(data, "Altitude");
                     status.heading = JsonParsing.getOptionalDecimal(data, "Heading");
+                    status.current_fuel = JsonParsing.getOptionalDecimal(data, "Fuel");
+                    status.cargo_carried = (int?)JsonParsing.getOptionalDecimal(data, "Cargo");
 
                     return status;
                 }

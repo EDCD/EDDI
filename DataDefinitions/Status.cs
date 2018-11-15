@@ -93,6 +93,8 @@ namespace EddiDataDefinitions
         public decimal? longitude;
         public decimal? altitude;
         public decimal? heading;
+        public decimal? current_fuel;
+        public int? cargo_carried;
 
         // Admin values
         public Flags flags;
