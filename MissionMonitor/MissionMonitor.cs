@@ -1127,6 +1127,7 @@ namespace EddiMissionMonitor
             decimal nextDistance = 0;
             List<long> missionids = new List<long>();       // List of mission IDs for the next system
 
+            List<StarSystem> starsystems = new List<StarSystem>();
             StarSystem curr = new StarSystem();             // Current star system
             StarSystem dest = new StarSystem();             // Destination star system
             List<string> route = new List<string>();        // Proposed missions route
@@ -1204,6 +1205,9 @@ namespace EddiMissionMonitor
                     missionsRouteList = String.Empty;
                     missionsRouteDistance = 0;
 
+                    // Get all the systems coordinates from EDSM in one request
+                    starsystems = DataProviderService.GetSystemsData(systems.ToArray(), true, false, false, false, false);
+
                     // Pre-load all system distances
                     decimal[][] distMatrix = new decimal[numSystems][];
                     for (int i = 0; i < numSystems; i++)
@@ -1212,10 +1216,10 @@ namespace EddiMissionMonitor
                     }
                     for (int i = 0; i < numSystems - 1; i++)
                     {
-                        curr = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(systems[i], true);
+                        curr = starsystems.Find(s => s.name == systems[i]);
                         for (int j = i + 1; j < numSystems; j++)
                         {
-                            dest = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(systems[j], true);
+                            dest = starsystems.Find(s => s.name == systems[j]);
                             distance = CalculateDistance(curr, dest);
                             distMatrix[i][j] = distance;
                             distMatrix[j][i] = distance;
@@ -1391,19 +1395,30 @@ namespace EddiMissionMonitor
                 int index = route.IndexOf(updateSystem);
                 if (index > -1)
                 {
-                    StarSystem curr = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(route[index], true);
-                    StarSystem dest = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(route[index + 1], true);
-                    missionsRouteDistance -= CalculateDistance(curr, dest);
-
                     route.RemoveAt(index);
                     if (route.Count > 0)
                     {
                         nextSystem = route[0];
-                        curr = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(currentSystem, true);
-                        dest = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(nextSystem, true);
-                        nextDistance = CalculateDistance(curr, dest);
                         missionsRouteList = string.Join("_", route);
 
+                        // Get all the route coordinates from EDSM in one request
+                        List<StarSystem> starsystems = DataProviderService.GetSystemsData(route.ToArray(), true, false, false, false, false);
+
+                        // Get distance to the next system
+                        StarSystem curr = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(currentSystem, true);
+                        StarSystem dest = starsystems.Find(s => s.name == route[0]);
+                        nextDistance = CalculateDistance(curr, dest);
+
+                        // Calculate remaining route distance
+                        missionsRouteDistance = nextDistance;
+                        for (int i = 0; i < route.Count() - 1; i++)
+                        {
+                            curr = starsystems.Find(s => s.name == route[i]);
+                            dest = starsystems.Find(s => s.name == route[i + 1]);
+                            missionsRouteDistance += CalculateDistance(curr, dest);
+                        }
+
+                        // Get the mission IDs for the next system
                         foreach (Mission mission in missions.Where(m => m.destinationsystem == nextSystem
                             || (m.originreturn && m.originsystem == nextSystem)).ToList())
                         {
@@ -1415,6 +1430,7 @@ namespace EddiMissionMonitor
                     else
                     {
                         missionsRouteList = string.Empty;
+                        missionsRouteDistance = 0;
                     }
                 }
             }
