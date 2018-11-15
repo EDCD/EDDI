@@ -149,5 +149,8 @@
     <value>Station</value>
     <comment>BodyType "Station"</comment>
   </data>
-  
+  <data name="Null" xml:space="preserve">
+    <value>Keiner</value>
+    <comment>BodyType "Null"</comment>
+  </data>
 </root>
