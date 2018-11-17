@@ -141,7 +141,9 @@
   <data name="IcyBody" xml:space="preserve">
     <value>Eisiger Körper</value>
   </data>
-  
+  <data name="MetalRichBody" xml:space="preserve">
+    <value>Metallreicher Körper</value>
+  </data>
   <data name="RockyBody" xml:space="preserve">
     <value>Felsiger Körper</value>
   </data>
@@ -172,5 +174,7 @@
   <data name="WaterWorld" xml:space="preserve">
     <value>Wasserwelt</value>
   </data>
-  
+  <data name="None" xml:space="preserve">
+    <value>Keiner</value>
+  </data>
 </root>
