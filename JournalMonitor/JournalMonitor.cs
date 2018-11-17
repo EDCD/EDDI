@@ -1354,7 +1354,7 @@ namespace EddiJournalMonitor
                             {
                                 string victim = JsonParsing.getString(data, "Victim");
                                 data.TryGetValue("CombatRank", out object val);
-                                CombatRating rating = (val == null ? null : CombatRating.FromRank((int)val));
+                                CombatRating rating = (val == null ? null : CombatRating.FromRank((int)(long)val));
 
                                 events.Add(new KilledEvent(timestamp, victim, rating) { raw = line });
                                 handled = true;
