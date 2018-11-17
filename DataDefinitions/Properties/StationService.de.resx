@@ -121,29 +121,62 @@
     <value>Kein</value>
     <comment>Station Service: None</comment>
   </data>
-  
-  
+  <data name="Dock" xml:space="preserve">
+    <value>Andocken</value>
+    <comment>Station Service: Dock</comment>
+  </data>
+  <data name="AutoDock" xml:space="preserve">
+    <value>Auto-Landen</value>
+    <comment>Station Service: AutoDock</comment>
+  </data>
   <data name="BlackMarket" xml:space="preserve">
     <value>Schwarzmarkt</value>
     <comment>Station Service: BlackMarket</comment>
   </data>
-  
+  <data name="Commodities" xml:space="preserve">
+    <value>Waren</value>
+    <comment>Station Service: Commodities</comment>
+  </data>
   <data name="Contacts" xml:space="preserve">
     <value>Kontakte</value>
     <comment>Station Service: Contacts</comment>
   </data>
-  
-  
+  <data name="Exploration" xml:space="preserve">
+    <value>Kartografie</value>
+    <comment>Station Service: Exploration</comment>
+  </data>
+  <data name="Initiatives" xml:space="preserve">
+    <value>Initiativen</value>
+    <comment>Station Service: Initiatives</comment>
+  </data>
   <data name="Missions" xml:space="preserve">
     <value>Missionen</value>
     <comment>Station Service: Missions</comment>
   </data>
-  
-  
-  
-  
-  
-  
+  <data name="Outfitting" xml:space="preserve">
+    <value>Ausstattung</value>
+    <comment>Station Service: Outfitting</comment>
+  </data>
+  <data name="CrewLounge" xml:space="preserve">
+    <value>Mannschaftsraum</value>
+    <comment>Station Service: CrewLounge</comment>
+  </data>
+  <data name="Rearm" xml:space="preserve">
+    <value>Auffüllen</value>
+    <comment>Station Service: Rearm</comment>
+  </data>
+  <data name="Refuel" xml:space="preserve">
+    <value>Auftanken</value>
+    <comment>Station Service: Refuel</comment>
+  </data>
+  <data name="Repair" xml:space="preserve">
+    <value>Reparatur</value>
+    <comment>Station Service: Repair</comment>
+  </data>
+  <data name="Shipyard" xml:space="preserve">
+    <value>Werft</value>
+    <comment>Station Service: Shipyard</comment>
+  </data>
   <data name="Tuning" xml:space="preserve">
     <value>Tuning</value>
     <comment>Station Service: Tuning</comment>
@@ -156,7 +189,10 @@
     <value>Aufträge erstellen</value>
     <comment>Station Service: MissionsGenerated</comment>
   </data>
-  
+  <data name="Facilitator" xml:space="preserve">
+    <value>Moderator</value>
+    <comment>Station Service: Facilitator</comment>
+  </data>
   <data name="Research" xml:space="preserve">
     <value>Forschung</value>
     <comment>Station Service: Research</comment>
@@ -170,9 +206,18 @@
     <comment>Station Service: StationOperations</comment>
   </data>
   
-  
-  
-  
+  <data name="Powerplay" xml:space="preserve">
+    <value>Powerplay</value>
+    <comment>Station Service: Powerplay</comment>
+  </data>
+  <data name="SearchAndRescue" xml:space="preserve">
+    <value>Search and Rescue</value>
+    <comment>Station Service: SearchAndRescue</comment>
+  </data>
+  <data name="TechBroker" xml:space="preserve">
+    <value>Technologiemakler</value>
+    <comment>Station Service: TechBroker</comment>
+  </data>
   <data name="MaterialTrader" xml:space="preserve">
     <value>Materialhändler</value>
     <comment>Station Service: Material Trader</comment>
