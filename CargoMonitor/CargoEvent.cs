@@ -18,14 +18,14 @@ namespace EddiCargoMonitor
         }
         
         public bool update { get; private set; }
-        public string vehicle { get; private set; }
+        public string vessel { get; private set; }
         public List<CargoInfo> inventory { get; private set; }
         public int cargocarried { get; private set; }
 
-        public CargoEvent(DateTime timestamp, bool update, string vehicle, List<CargoInfo> inventory, int cargocarried) : base(timestamp, NAME)
+        public CargoEvent(DateTime timestamp, bool update, string vessel, List<CargoInfo> inventory, int cargocarried) : base(timestamp, NAME)
         {
             this.update = update;
-            this.vehicle = vehicle;
+            this.vessel = vessel;
             this.inventory = inventory;
             this.cargocarried = cargocarried;
         }

@@ -2828,7 +2828,7 @@ namespace EddiJournalMonitor
                                 bool update = false;
                                 List<CargoInfo> inventory = new List<CargoInfo>();
 
-                                string vehicle = EDDI.Instance?.Vehicle;
+                                string vessel = JsonParsing.getString(data, "Vessel") ?? EDDI.Instance?.Vehicle;
                                 int cargocarried = JsonParsing.getInt(data, "Count");
                                 data.TryGetValue("Inventory", out object val);
                                 if (val != null)
@@ -2849,7 +2849,7 @@ namespace EddiJournalMonitor
                                     inventory = CargoInfoReader.FromFile().Inventory;
                                     update = true;
                                 }
-                                events.Add(new CargoEvent(timestamp, update, vehicle, inventory, cargocarried) { raw = line });
+                                events.Add(new CargoEvent(timestamp, update, vessel, inventory, cargocarried) { raw = line });
                             }
                             handled = true;
                             break;

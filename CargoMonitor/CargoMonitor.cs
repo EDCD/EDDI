@@ -218,7 +218,7 @@ namespace EddiCargoMonitor
         private bool _handleCargoEvent(CargoEvent @event)
         {
             bool cargoUpdated = false;
-            if (@event.vehicle == Constants.VEHICLE_SHIP)
+            if (@event.vessel == Constants.VEHICLE_SHIP)
             {
                 cargoCarried = @event.cargocarried;
                 if (@event.inventory != null)
@@ -665,6 +665,9 @@ namespace EddiCargoMonitor
             if (haulage != null)
             {
                 Cargo cargo = GetCargoWithMissionId(@event.missionid ?? 0);
+                int onboard = haulage.amount - haulage.need;
+                cargo.haulage -= onboard;
+                cargo.stolen += onboard;
                 cargo.haulageData.Remove(haulage);
                 RemoveCargo(cargo);
             }
@@ -787,6 +790,9 @@ namespace EddiCargoMonitor
             if (haulage != null)
             {
                 Cargo cargo = GetCargoWithMissionId(@event.missionid ?? 0);
+                int onboard = haulage.amount - haulage.need;
+                cargo.haulage -= onboard;
+                cargo.stolen += onboard;
                 cargo.haulageData.Remove(haulage);
                 RemoveCargo(cargo);
             }
