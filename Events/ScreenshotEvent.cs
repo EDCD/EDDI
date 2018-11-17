@@ -8,7 +8,7 @@ namespace EddiEvents
     {
         public const string NAME = "Screenshot";
         public const string DESCRIPTION = "Triggered when you take a screenshot";
-        public const string SAMPLE = "{ \"timestamp\":\"2018-02-03T23:46:07Z\", \"event\":\"Screenshot\", \"Filename\":\"\\ED_Pictures\\Screenshot_0003.bmp\", \"Width\":3440, \"Height\":1440, \"System\":\"Wyrd\", \"Body\":\"Wyrd A 2\", \"Latitude\":-63.855904, \"Longitude\":-81.981064, \"Heading\":50 }";
+        public const string SAMPLE = @"{ ""timestamp"":""2018-02-03T23:46:07Z"", ""event"":""Screenshot"", ""Filename"":""\\ED_Pictures\\Screenshot_0003.bmp"", ""Width"":3440, ""Height"":1440, ""System"":""Wyrd"", ""Body"":""Wyrd A 2"", ""Latitude"":-63.855904, ""Longitude"":-81.981064, ""Heading"":50 }";
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
         static ScreenshotEvent()
