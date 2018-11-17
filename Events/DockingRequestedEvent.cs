@@ -9,7 +9,7 @@ namespace EddiEvents
     {
         public const string NAME = "Docking requested";
         public const string DESCRIPTION = "Triggered when your ship requests docking at a station or outpost";
-        public const string SAMPLE = "{\"timestamp\":\"2016-06-10T14:32:03Z\",\"event\":\"DockingRequested\",\"StationName\":\"Jameson Memorial\"}";
+        public const string SAMPLE = "{\"timestamp\":\"2016-06-10T14:32:03Z\",\"event\":\"DockingRequested\",\"StationName\":\"Jameson Memorial\", \"MarketID\": 128666762}";
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
         static DockingRequestedEvent()
