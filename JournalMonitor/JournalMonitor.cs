@@ -202,7 +202,6 @@ namespace EddiJournalMonitor
                             break;
                         case "Location":
                             {
-
                                 string systemName = JsonParsing.getString(data, "StarSystem");
 
                                 if (systemName == "Training")
