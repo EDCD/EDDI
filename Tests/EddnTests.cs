@@ -127,8 +127,8 @@ namespace UnitTests
             bool matched = responder.eventConfirmCoordinates("Artemis", 3107509474002);
 
             Assert.IsFalse(matched);
-            Assert.AreEqual("Artemis", responder.systemName);
-            Assert.AreEqual(3107509474002, responder.systemAddress);
+            Assert.IsNull(responder.systemName);
+            Assert.IsNull(responder.systemAddress);
             Assert.IsNull(responder.systemX);
             Assert.IsNull(responder.systemY);
             Assert.IsNull(responder.systemZ);

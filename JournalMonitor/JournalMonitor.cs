@@ -2973,6 +2973,7 @@ namespace EddiJournalMonitor
                     }
                     catch (Exception ex)
                     {
+                        // Something went wrong, but an unhandled event will still be passed to the responders.
                         Logging.Warn("Failed to parse line details: " + ex.ToString());
                         Logging.Error("Exception whilst parsing journal line details", "Raw event: " + line + ". Exception: " + ex.Message + ". " + ex.StackTrace);
                     }
