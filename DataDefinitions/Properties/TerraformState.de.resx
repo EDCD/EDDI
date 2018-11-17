@@ -121,7 +121,16 @@
     <value>Nicht terraformierbar</value>
     <comment>Terraform state "Null"</comment>
   </data>
-  
-  
-  
+  <data name="Terraformable" xml:space="preserve">
+    <value>Kandidat zur Terraformierung</value>
+    <comment>Terraform state "Terraformable"</comment>
+  </data>
+  <data name="Terraformed" xml:space="preserve">
+    <value>Terraformiert</value>
+    <comment>Terraform state "Terraformed"</comment>
+  </data>
+  <data name="Terraforming" xml:space="preserve">
+    <value>Terraformierung</value>
+    <comment>Terraform state "Terraforming"</comment>
+  </data>
 </root>
