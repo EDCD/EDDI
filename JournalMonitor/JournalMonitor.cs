@@ -880,22 +880,6 @@ namespace EddiJournalMonitor
                             }
                             handled = true;
                             break;
-                        case "ShipyardArrived":
-                            {
-                                data.TryGetValue("ShipID", out object val);
-                                int shipId = (int)(long)val;
-                                string ship = JsonParsing.getString(data, "ShipType");
-                                string system = JsonParsing.getString(data, "System");
-                                decimal distance = JsonParsing.getDecimal(data, "Distance");
-                                long? price = JsonParsing.getOptionalLong(data, "TransferPrice");
-                                long? time = JsonParsing.getOptionalLong(data, "TransferTime");
-                                string station = JsonParsing.getString(data, "Station");
-                                long toMarketId = JsonParsing.getLong(data, "MarketID");
-                                long fromMarketId = JsonParsing.getLong(data, "ShipMarketID");
-                                events.Add(new ShipArrivedEvent(timestamp, ship, shipId, system, distance, price, time, station, fromMarketId, toMarketId) { raw = line });
-                            }
-                            handled = true;
-                            break;
                         case "ShipyardSwap":
                             {
                                 long marketId = JsonParsing.getLong(data, "MarketID");
@@ -1066,31 +1050,6 @@ namespace EddiJournalMonitor
                                 }
 
                                 events.Add(new ModulesStoredEvent(timestamp, ship, shipId, slots, modules, marketId) { raw = line });
-                            }
-                            handled = true;
-                            break;
-                        case "ModuleArrived":
-                            {
-
-                                data.TryGetValue("ShipID", out object val);
-                                int shipId = (int)(long)val;
-                                string ship = JsonParsing.getString(data, "Ship");
-
-                                Module module = Module.FromEDName(JsonParsing.getString(data, "StoredItem"));
-                                data.TryGetValue("TransferCost", out val);
-                                long transferCost = (long)val;
-                                long? transferTime = JsonParsing.getOptionalLong(data, "TransferTime");
-
-                                // Probably not useful. We'll get these but we won't tell the end user about them
-                                data.TryGetValue("StorageSlot", out val);
-                                int storageSlot = (int)(long)val;
-                                data.TryGetValue("ServerId", out val);
-                                long serverId = (long)val;
-
-                                string system = JsonParsing.getString(data, "System");
-                                string station = JsonParsing.getString(data, "Station");
-
-                                events.Add(new ModuleArrivedEvent(timestamp, ship, shipId, storageSlot, serverId, module, transferCost, transferTime, system, station) { raw = line });
                             }
                             handled = true;
                             break;
