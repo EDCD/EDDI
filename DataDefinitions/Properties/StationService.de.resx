@@ -117,7 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
+  <data name="None" xml:space="preserve">
+    <value>Kein</value>
+    <comment>Station Service: None</comment>
+  </data>
   
   
   <data name="BlackMarket" xml:space="preserve">
@@ -149,11 +152,23 @@
     <value>Werkstatt</value>
     <comment>Station Service: Workshop</comment>
   </data>
+  <data name="MissionsGenerated" xml:space="preserve">
+    <value>Aufträge erstellen</value>
+    <comment>Station Service: MissionsGenerated</comment>
+  </data>
   
-  
-  
-  
-  
+  <data name="Research" xml:space="preserve">
+    <value>Forschung</value>
+    <comment>Station Service: Research</comment>
+  </data>
+  <data name="FlightController" xml:space="preserve">
+    <value>Fluglotse</value>
+    <comment>Station Service: FlightController</comment>
+  </data>
+  <data name="StationOperations" xml:space="preserve">
+    <value>Stationsbetrieb</value>
+    <comment>Station Service: StationOperations</comment>
+  </data>
   
   
   
