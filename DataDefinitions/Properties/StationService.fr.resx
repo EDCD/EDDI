@@ -218,7 +218,7 @@
     <comment>Station Service: SearchAndRescue</comment>
   </data>
   <data name="TechBroker" xml:space="preserve">
-    <value>Technologie Broker</value>
+    <value>Courtier en Technologie</value>
     <comment>Station Service: TechBroker</comment>
   </data>
   <data name="MaterialTrader" xml:space="preserve">
