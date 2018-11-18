@@ -946,8 +946,14 @@
     <value>Zwiebelkopf</value>
     <comment>Commodity OnionHead</comment>
   </data>
-  
-  
+  <data name="OnionHeadA" xml:space="preserve">
+    <value>Alpha-Stamm Onionhead</value>
+    <comment>Commodity OnionheadAlphaStrain</comment>
+  </data>
+  <data name="OnionHeadB" xml:space="preserve">
+    <value>Beta-Stamm Onionhead</value>
+    <comment>Commodity OnionheadBetaStrain</comment>
+  </data>
   <data name="OphiuchiExinoArtefacts" xml:space="preserve">
     <value>Ophiuch Exino Artefakte</value>
     <comment>Commodity OphiuchExinoArtefacts</comment>
