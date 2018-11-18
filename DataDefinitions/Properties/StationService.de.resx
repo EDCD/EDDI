@@ -205,7 +205,10 @@
     <value>Stationsbetrieb</value>
     <comment>Station Service: StationOperations</comment>
   </data>
-  
+  <data name="OnDockMission" xml:space="preserve">
+    <value>Hafenaufträge</value>
+    <comment>Station Service: OnDockMission</comment>
+  </data>
   <data name="Powerplay" xml:space="preserve">
     <value>Powerplay</value>
     <comment>Station Service: Powerplay</comment>
