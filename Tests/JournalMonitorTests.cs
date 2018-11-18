@@ -790,12 +790,14 @@ namespace UnitTests
         [TestMethod]
         public void TestSettlementApproachedEvent()
         {
-            string line = @"{ ""timestamp"":""2018 - 08 - 12T08: 00:25Z"", ""event"":""ApproachSettlement"", ""Name"":""Bulmer Enterprise"", ""MarketID"":3510380288 }";
+            string line = @"{ ""timestamp"":""2018-11-04T03:11:56Z"", ""event"":""ApproachSettlement"", ""Name"":""Bulmer Enterprise"", ""MarketID"":3510380288, ""Latitude"":-23.121552, ""Longitude"":-98.177559 }";
             List<Event> events = JournalMonitor.ParseJournalEntry(line);
             SettlementApproachedEvent @event = (SettlementApproachedEvent)events[0];
 
             Assert.AreEqual(3510380288, @event.marketId);
             Assert.AreEqual("Bulmer Enterprise", @event.name);
+            Assert.AreEqual(-23.121552M, @event.latitude);
+            Assert.AreEqual(-98.177559M, @event.longitude);
         }
 
         [TestMethod]

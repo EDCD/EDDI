@@ -3,7 +3,9 @@
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
 ### Development
-
+  * Speech responder
+    * `Settlement approached`: Added `latitude` and `longitude`.
+     
 ### 3.1
   * Core
     * Fixed scan message spam upon scanning a Nav Beacon.
