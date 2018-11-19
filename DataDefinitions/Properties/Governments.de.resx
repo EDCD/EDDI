@@ -119,7 +119,7 @@
     <comment>Government type Cooperative</comment>
   </data>
   <data name="Corporate" xml:space="preserve">
-    <value>Unternehmen</value>
+    <value>Konzernpolitik</value>
     <comment>Government type Corporate</comment>
   </data>
   <data name="Democracy" xml:space="preserve">
