@@ -8,7 +8,7 @@ namespace EddiEvents
     {
         public const string NAME = "Docked";
         public const string DESCRIPTION = "Triggered when your ship docks at a station or outpost";
-        public const string SAMPLE = @"{ ""timestamp"":""2017-08-18T10:52:26Z"", ""event"":""Docked"", ""StationName"":""Goddard Hub"", ""StationType"":""Coriolis"", ""StarSystem"":""HR 3499"", ""StationFaction"":""Labour of HR 3499"", ""StationGovernment"":""$government_Democracy;"", ""StationGovernment_Localised"":""Democracy"", ""StationAllegiance"":""Federation"", ""StationServices"":[ ""Dock"", ""Autodock"", ""BlackMarket"", ""Commodities"", ""Contacts"", ""Exploration"", ""Missions"", ""Outfitting"", ""CrewLounge"", ""Rearm"", ""Refuel"", ""Repair"", ""Shipyard"", ""Tuning"", ""MissionsGenerated"", ""FlightController"", ""StationOperations"", ""Powerplay"", ""SearchAndRescue"" ], ""StationEconomy"":""$economy_Industrial;"", ""StationEconomy_Localised"":""Industrial"", ""DistFromStarLS"":129.454132 }";
+        public const string SAMPLE = @"{ ""timestamp"":""2018-11-19T01:14:18Z"", ""event"":""Docked"", ""StationName"":""Linnaeus Enterprise"", ""StationType"":""Coriolis"", ""StarSystem"":""BD+48 738"", ""SystemAddress"":908352033466, ""MarketID"":3226360576, ""StationFaction"":""Laniakea"", ""StationGovernment"":""$government_Cooperative;"", ""StationGovernment_Localised"":""Cooperative"", ""StationServices"":[ ""Dock"", ""Autodock"", ""BlackMarket"", ""Commodities"", ""Contacts"", ""Exploration"", ""Missions"", ""Outfitting"", ""CrewLounge"", ""Rearm"", ""Refuel"", ""Repair"", ""Shipyard"", ""Tuning"", ""Workshop"", ""MissionsGenerated"", ""FlightController"", ""StationOperations"", ""Powerplay"", ""SearchAndRescue"", ""MaterialTrader"", ""StationMenu"" ], ""StationEconomy"":""$economy_Extraction;"", ""StationEconomy_Localised"":""Extraction"", ""StationEconomies"":[ { ""Name"":""$economy_Extraction;"", ""Name_Localised"":""Extraction"", ""Proportion"":1.000000 } ], ""DistFromStarLS"":59.295441, ""ActiveFine"":true }";
 
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
@@ -28,6 +28,9 @@ namespace EddiEvents
             VARIABLES.Add("security", "The security of the station at which the commander has docked");
             VARIABLES.Add("distancefromstar", "The distance of this station from the star (light seconds)");
             VARIABLES.Add("stationservices", "A list of possible station services: Dock, Autodock, BlackMarket, Commodities, Contacts, Exploration, Initiatives, Missions, Outfitting, CrewLounge, Rearm, Refuel, Repair, Shipyard, Tuning, Workshop, MissionsGenerated, Facilitator, Research, FlightController, StationOperations, OnDockMission, Powerplay, SearchAndRescue, TechBroker, MaterialTrader");
+            VARIABLES.Add("cockpitbreach", "True if landing with a breached cockpit");
+            VARIABLES.Add("wanted", "True if landing at a station where you are wanted");
+            VARIABLES.Add("activefine", "True if landing at a station where you have active fines");
         }
 
         public string system { get; private set; }
@@ -67,6 +70,10 @@ namespace EddiEvents
             }
         }
 
+        public bool? cockpitbreach { get; private set; }
+        public bool? wanted { get; private set; }
+        public bool? activefine { get; private set; }
+
         // These properties are not intended to be user facing
         public long systemAddress { get; private set; }
         public StationModel stationModel { get; private set; } = StationModel.None;
@@ -76,7 +83,7 @@ namespace EddiEvents
         public Government Government { get; private set; } = Government.None;
         public List<EconomyShare> economyShares { get; private set; } = new List<EconomyShare>() { new EconomyShare(Economy.None, 0M), new EconomyShare(Economy.None, 0M) };
 
-        public DockedEvent(DateTime timestamp, string system, long systemAddress, long marketId, string station, string state, StationModel stationModel, Superpower Allegiance, string faction, FactionState factionState, List<EconomyShare> Economies, Government Government, decimal? distancefromstar, List<StationService> stationServices) : base(timestamp, NAME)
+        public DockedEvent(DateTime timestamp, string system, long systemAddress, long marketId, string station, string state, StationModel stationModel, Superpower Allegiance, string faction, FactionState factionState, List<EconomyShare> Economies, Government Government, decimal? distancefromstar, List<StationService> stationServices, bool? cockpitBreach, bool? wanted, bool? activeFine) : base(timestamp, NAME)
         {
             this.system = system;
             this.systemAddress = systemAddress;
@@ -91,6 +98,9 @@ namespace EddiEvents
             this.Government = Government ?? Government.None;
             this.distancefromstar = distancefromstar;
             this.stationServices = stationServices;
+            this.cockpitbreach = cockpitBreach;
+            this.wanted = wanted;
+            this.activefine = activeFine;
         }
     }
 }

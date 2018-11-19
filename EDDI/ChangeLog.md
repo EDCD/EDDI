@@ -3,6 +3,8 @@
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
 ### Development
+  * Speech responder
+    * `Docked event`: Added `wanted`, `activefine`, and `cockpitbreach`.
 
 ### 3.1
   * Core
