@@ -177,12 +177,23 @@ namespace EDDNResponder
         private IDictionary<string, object> StripPersonalData(IDictionary<string, object> data)
         {
             // Need to strip a number of entries
+            data.Remove("ActiveFine");
             data.Remove("CockpitBreach");
             data.Remove("BoostUsed");
             data.Remove("FuelLevel");
             data.Remove("FuelUsed");
             data.Remove("JumpDist");
             data.Remove("Wanted");
+
+            data.TryGetValue("Factions", out object factionsVal);
+            if (factionsVal != null)
+            {
+                var factions = (List<object>)factionsVal;
+                foreach (object faction in factions)
+                {
+                    ((IDictionary<string, object>)faction).Remove("MyReputation");
+                }
+            }
 
             // Need to remove any keys ending with _Localised
             data = data.Where(x => !x.Key.EndsWith("_Localised")).ToDictionary(x => x.Key, x => x.Value);

@@ -333,6 +333,117 @@ namespace UnitTests
             Assert.AreEqual(-62.15625M, responder.systemY);
             Assert.AreEqual(-103.25000M, responder.systemZ);
         }
+
+        [TestMethod()]
+        public void TestMyReputationDataStripping()
+        {
+            string line = @"{
+	""timestamp"": ""2018-11-19T01: 06: 17Z"",
+	""event"": ""Location"",
+	""Docked"": false,
+	""StarSystem"": ""BD+48738"",
+	""SystemAddress"": 908352033466,
+	""StarPos"": [-93.53125,
+	-24.46875,
+	-114.71875],
+	""SystemAllegiance"": ""Independent"",
+	""SystemEconomy"": ""$economy_Extraction;"",
+	""SystemEconomy_Localised"": ""Extraction"",
+	""SystemSecondEconomy"": ""$economy_Industrial;"",
+	""SystemSecondEconomy_Localised"": ""Industrial"",
+	""SystemGovernment"": ""$government_Cooperative;"",
+	""SystemGovernment_Localised"": ""Cooperative"",
+	""SystemSecurity"": ""$SYSTEM_SECURITY_medium;"",
+	""SystemSecurity_Localised"": ""MediumSecurity"",
+	""Population"": 2530147,
+	""Body"": ""LinnaeusEnterprise"",
+	""BodyID"": 28,
+	""BodyType"": ""Station"",
+	""Factions"": [{
+		""Name"": ""IndependentBD+48738Liberals"",
+		""FactionState"": ""None"",
+		""Government"": ""Democracy"",
+		""Influence"": 0.037000,
+		""Allegiance"": ""Federation"",
+		""Happiness"": ""$Faction_HappinessBand2;"",
+		""Happiness_Localised"": ""Happy"",
+		""MyReputation"": 0.000000
+	},
+	{
+		""Name"": ""PilotsFederationLocalBranch"",
+		""FactionState"": ""None"",
+		""Government"": ""Democracy"",
+		""Influence"": 0.000000,
+		""Allegiance"": ""PilotsFederation"",
+		""Happiness"": """",
+		""MyReputation"": 100.000000
+	},
+	{
+		""Name"": ""NewBD+48738Focus"",
+		""FactionState"": ""None"",
+		""Government"": ""Dictatorship"",
+		""Influence"": 0.046000,
+		""Allegiance"": ""Independent"",
+		""Happiness"": ""$Faction_HappinessBand2;"",
+		""Happiness_Localised"": ""Happy"",
+		""MyReputation"": 0.000000
+	},
+	{
+		""Name"": ""BD+48738CrimsonTravelCo"",
+		""FactionState"": ""None"",
+		""Government"": ""Corporate"",
+		""Influence"": 0.032000,
+		""Allegiance"": ""Independent"",
+		""Happiness"": ""$Faction_HappinessBand2;"",
+		""Happiness_Localised"": ""Happy"",
+		""MyReputation"": 0.000000
+	},
+	{
+		""Name"": ""BD+48738CrimsonPosse"",
+		""FactionState"": ""None"",
+		""Government"": ""Anarchy"",
+		""Influence"": 0.010000,
+		""Allegiance"": ""Independent"",
+		""Happiness"": ""$Faction_HappinessBand2;"",
+		""Happiness_Localised"": ""Happy"",
+		""MyReputation"": 0.000000
+	},
+	{
+		""Name"": ""Laniakea"",
+		""FactionState"": ""None"",
+		""Government"": ""Cooperative"",
+		""Influence"": 0.875000,
+		""Allegiance"": ""Independent"",
+		""Happiness"": ""$Faction_HappinessBand2;"",
+		""Happiness_Localised"": ""Happy"",
+		""MyReputation"": 0.000000,
+		""PendingStates"": [{
+			""State"": ""Expansion"",
+			""Trend"": 0
+		}]
+	}],
+	""SystemFaction"": ""Laniakea""
+}";
+            IDictionary<string, object> data = Utilities.Deserializtion.DeserializeData(line);
+
+            EDDNResponder.EDDNResponder responder = makeTestEDDNResponder();
+            var privateObject = new PrivateObject(responder);
+            data = (IDictionary<string, object>)privateObject.Invoke("StripPersonalData", new object[] { data });
+
+            data.TryGetValue("Factions", out object factionsVal);
+            if (factionsVal != null)
+            {
+                var factions = (List<object>)factionsVal;
+                foreach (object faction in factions)
+                {
+                    Assert.IsFalse(((IDictionary<string, object>)faction).ContainsKey("MyReputation"));
+                }
+            }
+            else
+            {
+                Assert.Fail();
+            }
+        }
     }
 }
 
