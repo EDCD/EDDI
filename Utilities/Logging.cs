@@ -108,32 +108,35 @@ namespace Utilities
         {
             // Obtain files, sorting by last write time to ensure that older files are incremented prior to newer files
             DirectoryInfo directoryInfo = new DirectoryInfo(Constants.DATA_DIR);
-            foreach (FileInfo file in directoryInfo.GetFiles().OrderBy(f => f.LastWriteTimeUtc).ToList())
+            if (directoryInfo.Exists)
             {
-                string filePath = file.FullName;
-                if (filePath.EndsWith(".log"))
+                foreach (FileInfo file in directoryInfo.GetFiles().OrderBy(f => f.LastWriteTimeUtc).ToList())
                 {
-                    try
+                    string filePath = file.FullName;
+                    if (filePath.EndsWith(".log"))
                     {
-                        bool parsed = int.TryParse(filePath.Replace(Constants.DATA_DIR + @"\eddi", "").Replace(".log", ""), out int i);
-                        ++i; // Increment our index number
+                        try
+                        {
+                            bool parsed = int.TryParse(filePath.Replace(Constants.DATA_DIR + @"\eddi", "").Replace(".log", ""), out int i);
+                            ++i; // Increment our index number
 
-                        if (i >= 10)
-                        {
-                            File.Delete(filePath);
-                        }
-                        else
-                        {
-                            // This might be our primary log file, so we lock it prior to doing anything with it
-                            lock (logLock)
+                            if (i >= 10)
                             {
-                                File.Move(filePath, Constants.DATA_DIR + @"\eddi" + i + ".log");
+                                File.Delete(filePath);
+                            }
+                            else
+                            {
+                                // This might be our primary log file, so we lock it prior to doing anything with it
+                                lock (logLock)
+                                {
+                                    File.Move(filePath, Constants.DATA_DIR + @"\eddi" + i + ".log");
+                                }
                             }
                         }
-                    }
-                    catch (Exception)
-                    {
-                        // Someone may have had a log file open when this code executed? Nothing to do, we'll try again on the next run
+                        catch (Exception)
+                        {
+                            // Someone may have had a log file open when this code executed? Nothing to do, we'll try again on the next run
+                        }
                     }
                 }
             }
