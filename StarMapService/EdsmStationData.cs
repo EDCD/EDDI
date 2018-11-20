@@ -67,11 +67,11 @@ namespace EddiStarMapService
                 distancefromstar = (decimal?)station["distanceToArrival"], // Light seconds
             };
 
-            var faction = station["controllingFaction"]?.ToObject<Dictionary<string, object>>();
-            Station.Faction = new Faction() 
+            var faction = station["controllingFaction"]?.ToObject<IDictionary<string, object>>();
+            Station.Faction = new Faction()
             {
-                name = (string)faction["name"],
-                EDSMID = (long?)faction["id"],
+                name = faction != null ? (string)faction["name"] : string.Empty,
+                EDSMID = faction != null ? (long?)faction["id"] : null,
                 Allegiance = Superpower.FromName((string)station["allegiance"]) ?? Superpower.None,
                 Government = Government.FromName((string)station["government"]) ?? Government.None,
             };
