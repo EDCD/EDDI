@@ -1870,16 +1870,34 @@ namespace EddiJournalMonitor
                             }
                         case "EngineerProgress":
                             {
-                                string engineer = JsonParsing.getString(data, "Engineer");
-                                data.TryGetValue("Rank", out object val);
-                                if (val == null)
+                                data.TryGetValue("Engineers", out object val);
+                                if (val != null)
                                 {
-                                    // There are other non-rank events for engineers but we don't pay attention to them
-                                    break;
+                                    // This is a startup entry. 
+                                    // Update engineer progress / status data but do not generate events.
+                                    List<object> engineers = (List<object>)val;
+                                    foreach (IDictionary<string, object> engineerData in engineers)
+                                    {
+                                        Engineer engineer = parseEngineer(engineerData);
+                                        Engineer.AddOrUpdate(engineer);
+                                    }
                                 }
-                                int rank = (int)(long)val;
+                                else
+                                {
+                                    // This is a progress entry.
+                                    Engineer engineer = parseEngineer(data);
+                                    Engineer lastEngineer = Engineer.FromNameOrId(engineer.name, engineer.id);
 
-                                events.Add(new EngineerProgressedEvent(timestamp, engineer, rank) { raw = line });
+                                    if (engineer.rank != null && engineer.rank != lastEngineer?.rank)
+                                    {
+                                        events.Add(new EngineerProgressedEvent(timestamp, engineer, "Rank") { raw = line });
+                                    }
+                                    else if (engineer.stage != null && engineer.stage != lastEngineer?.stage)
+                                    {
+                                        events.Add(new EngineerProgressedEvent(timestamp, engineer, "Stage") { raw = line });
+                                    }
+                                    Engineer.AddOrUpdate(engineer);
+                                }
                                 handled = true;
                                 break;
                             }
@@ -3222,6 +3240,18 @@ namespace EddiJournalMonitor
                 role = "Fighter";
             }
             return role;
+        }
+
+        private static Engineer parseEngineer(IDictionary<string, object> data)
+        {
+            string engineer = JsonParsing.getString(data, "Engineer");
+            long engineerId = JsonParsing.getLong(data, "EngineerID");
+            data.TryGetValue("Rank", out object rankVal);
+            int? rank = (int?)(long?)rankVal;
+            data.TryGetValue("RankProgress", out object rankProgressVal);
+            int? rankProgress = (int?)(long?)rankProgressVal;
+            string stage = JsonParsing.getString(data, "Progress");
+            return new Engineer(engineer, engineerId, stage, rankProgress, rank);
         }
     }
 }

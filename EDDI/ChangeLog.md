@@ -3,6 +3,12 @@
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
 ### Development
+  * Core
+    * The `cmdr` object now includes `engineers`.
+  * Speech responder
+    * `Engineer progressed` event: Added `stage`, `rankprogress`, and `progresstype`.
+    * Added new function `EngineerDetails()` for accessing information about relations with engineers.
+    * Updated documentation to describe `Engineer` object and `EngineerDetails` function.
 
 ### 3.1
   * Core
