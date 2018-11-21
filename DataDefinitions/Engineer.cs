@@ -44,7 +44,7 @@ namespace EddiDataDefinitions
         public static readonly Engineer MarshaHicks = new Engineer(300150, "Marsha Hicks");
         public static readonly Engineer ElviraMartuuk = new Engineer(300160, "Elvira Martuuk");
         public static readonly Engineer TheDweller = new Engineer(300180, "The Dweller");
-        public static readonly Engineer MarcoQuent = new Engineer(300200, "Marco Quent");
+        public static readonly Engineer MarcoQwent = new Engineer(300200, "Marco Qwent");
         public static readonly Engineer SeleneJean = new Engineer(300210, "Selene Jean");
         public static readonly Engineer ProfessorPalin = new Engineer(300220, "Professor Palin");
         public static readonly Engineer LoriJameson = new Engineer(300230, "Lori Jameson");
