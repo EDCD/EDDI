@@ -1217,15 +1217,6 @@
       "name": "Missions route",
       "description": "Get the missions route for various mission details"
     },
-    "Modification applied": {
-      "enabled": true,
-      "priority": 3,
-      "responder": true,
-      "script": null,
-      "default": true,
-      "name": "Modification applied",
-      "description": "Triggered when you apply a modification to a module"
-    },
     "Modification crafted": {
       "enabled": true,
       "priority": 3,

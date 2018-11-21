@@ -1857,17 +1857,6 @@ namespace EddiJournalMonitor
                                 handled = true;
                                 break;
                             }
-                        case "EngineerApply":
-                            {
-                                string engineer = JsonParsing.getString(data, "Engineer");
-                                string blueprint = JsonParsing.getString(data, "Blueprint");
-                                data.TryGetValue("Level", out object val);
-                                int level = (int)(long)val;
-
-                                events.Add(new ModificationAppliedEvent(timestamp, engineer, blueprint, level) { raw = line });
-                                handled = true;
-                                break;
-                            }
                         case "EngineerProgress":
                             {
                                 data.TryGetValue("Engineers", out object val);

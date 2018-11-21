@@ -122,7 +122,6 @@
     <Compile Include="BondAwardedEvent.cs" />
     <Compile Include="FinePaidEvent.cs" />
     <Compile Include="EngineerProgressedEvent.cs" />
-    <Compile Include="ModificationAppliedEvent.cs" />
     <Compile Include="ModificationCraftedEvent.cs" />
     <Compile Include="MaterialDonatedEvent.cs" />
     <Compile Include="SynthesisedEvent.cs" />

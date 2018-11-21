@@ -1091,15 +1091,6 @@
       "name": "Mission redirected",
       "description": "Se activa cuando una misión es redirigida"
     },
-    "Modification applied": {
-      "enabled": true,
-      "priority": 3,
-      "responder": true,
-      "script": null,
-      "default": true,
-      "name": "Modification applied",
-      "description": "Se activa cuando aplicas una modificación a un módulo"
-    },
     "Modification crafted": {
       "enabled": true,
       "priority": 3,
