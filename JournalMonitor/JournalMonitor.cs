@@ -555,21 +555,7 @@ namespace EddiJournalMonitor
                                         else
                                         {
                                             // This is a compartment
-                                            Compartment compartment = new Compartment() { name = slot };
-
-                                            // Compartment slots are in the form of "Slotnn_Sizen" or "Militarynn"
-                                            if (slot.Contains("Slot"))
-                                            {
-                                                Match matches = Regex.Match(compartment.name, @"Size([0-9]+)");
-                                                if (matches.Success)
-                                                {
-                                                    compartment.size = Int32.Parse(matches.Groups[1].Value);
-                                                }
-                                            }
-                                            else if (slot.Contains("Military"))
-                                            {
-                                                compartment.size = (int)ShipDefinitions.FromEDModel(ship)?.militarysize;
-                                            }
+                                            Compartment compartment = parseShipCompartment(ship, slot);
 
                                             Module module = new Module(Module.FromEDName(item));
                                             if (module == null)
@@ -1816,11 +1802,21 @@ namespace EddiJournalMonitor
                         case "EngineerCraft":
                             {
                                 string engineer = JsonParsing.getString(data, "Engineer");
-                                string blueprint = JsonParsing.getString(data, "Blueprint");
+                                long engineerId = JsonParsing.getLong(data, "EngineerID");
+                                string blueprintpEdName = JsonParsing.getString(data, "Blueprint");
+                                long blueprintId = JsonParsing.getLong(data, "BlueprintID");
+
                                 data.TryGetValue("Level", out object val);
                                 int level = (int)(long)val;
 
-                                List<CommodityAmount> commodities = new List<CommodityAmount>();
+                                decimal? quality = JsonParsing.getOptionalDecimal(data, "Quality"); //
+                                string experimentalEffect = JsonParsing.getString(data, "ApplyExperimentalEffect"); //
+
+                                string ship = ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship Monitor")).GetCurrentShip().model;
+                                Compartment compartment = parseShipCompartment(ship, JsonParsing.getString(data, "Slot")); //
+                                compartment.module = Module.FromEDName(JsonParsing.getString(data, "Module"));
+
+                                List <CommodityAmount> commodities = new List<CommodityAmount>();
                                 List<MaterialAmount> materials = new List<MaterialAmount>();
                                 if (data.TryGetValue("Ingredients", out val))
                                 {
@@ -1853,7 +1849,7 @@ namespace EddiJournalMonitor
                                         }
                                     }
                                 }
-                                events.Add(new ModificationCraftedEvent(timestamp, engineer, blueprint, level, materials, commodities) { raw = line });
+                                events.Add(new ModificationCraftedEvent(timestamp, engineer, engineerId, blueprintpEdName, blueprintId, level, quality, experimentalEffect, materials, commodities, compartment) { raw = line });
                                 handled = true;
                                 break;
                             }
@@ -3241,6 +3237,27 @@ namespace EddiJournalMonitor
             int? rankProgress = (int?)(long?)rankProgressVal;
             string stage = JsonParsing.getString(data, "Progress");
             return new Engineer(engineer, engineerId, stage, rankProgress, rank);
+        }
+
+        private static Compartment parseShipCompartment(string ship, string slot)
+        {
+            Compartment compartment = new Compartment() { name = slot };
+
+            // Compartment slots are in the form of "Slotnn_Sizen" or "Militarynn"
+            if (slot.Contains("Slot"))
+            {
+                Match matches = Regex.Match(compartment.name, @"Size([0-9]+)");
+                if (matches.Success)
+                {
+                    compartment.size = Int32.Parse(matches.Groups[1].Value);
+                }
+            }
+            else if (slot.Contains("Military"))
+            {
+                compartment.size = (int)ShipDefinitions.FromEDModel(ship)?.militarysize;
+            }
+
+            return compartment;
         }
     }
 }
