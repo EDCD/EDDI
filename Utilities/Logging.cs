@@ -140,6 +140,10 @@ namespace Utilities
                     }
                 }
             }
+            else
+            {
+                Directory.CreateDirectory(Constants.DATA_DIR);
+            }
         }
 
         internal static void Report(ErrorLevel errorLevel, string message, object data = null, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "")
