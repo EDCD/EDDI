@@ -686,15 +686,6 @@
       "name": "FSS discovery scan",
       "description": "Triggered when performing a full system scan (honk)"
     },
-    "FSS signal": {
-      "enabled": true,
-      "priority": 3,
-      "responder": true,
-      "script": null,
-      "default": true,
-      "name": "FSS signal",
-      "description": "Triggered when zooming in on a signal using the FSS scanner"
-    },
     "Fuel check": {
       "enabled": true,
       "priority": 3,
@@ -1738,6 +1729,15 @@
       "default": true,
       "name": "Shutdown",
       "description": "Triggered on a clean shutdown of the game"
+    },
+    "Signal detected": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "default": true,
+      "name": "Signal detected",
+      "description": "Triggered when a signal source is detected"
     },
     "Silent running": {
       "enabled": true,

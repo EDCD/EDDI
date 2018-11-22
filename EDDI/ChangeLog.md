@@ -29,8 +29,21 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * `Modification applied` event: Removed. This event was redundant with `Modification crafted` and is no longer written by the game as of Elite Dangerous version 3.0.
     * `Modification crafted` event: Added `module`, `quality`, and `experimentaleffect`.
     * `Settlement approached`: Added `latitude` and `longitude`.
+    * Added new event `Discovery scan`, triggered when performing a full system scan (honk) with the FSS
+    * Added new event `Signal detected`, triggered when a signal source is detected
     * The `Voice()` function now tolerates incomplete voice names (EDDI will return the first matching voice) and casing no longer matters.
     * Added new function `VoiceDetails()` for accessing details of installed voices while scripting.
+  * Status monitor 
+    * The status object has new values for: 
+      * HUD analysis mode, 
+      * night vision mode,
+      * new gui modes
+        * orrery view, 
+        * fss mode, 
+        * saa mode, and 
+        * the codex
+      * current fuel
+      * cargo carried (qty)
 
 ### 3.1.2
   * Localization

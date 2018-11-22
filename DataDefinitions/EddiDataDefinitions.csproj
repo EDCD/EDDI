@@ -76,11 +76,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="FssSignal.cs" />
-    <Compile Include="Properties\FssSignal.Designer.cs">
+    <Compile Include="SignalSource.cs" />
+    <Compile Include="Properties\SignalSource.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>FssSignal.resx</DependentUpon>
+      <DependentUpon>SignalSource.resx</DependentUpon>
     </Compile>
     <Compile Include="ReserveLevel.cs" />
     <Compile Include="PlanetClass.cs" />
@@ -429,10 +429,10 @@
     <EmbeddedResource Include="Properties\ExplorationRatings.ja.resx" />
     <EmbeddedResource Include="Properties\FactionStates.ja.resx" />
     <EmbeddedResource Include="Properties\FederationRatings.ja.resx" />
-    <EmbeddedResource Include="Properties\FssSignal.resx">
+    <EmbeddedResource Include="Properties\SignalSource.resx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>FssSignal.Designer.cs</LastGenOutput>
+      <LastGenOutput>SignalSource.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\GameModes.ja.resx" />
     <EmbeddedResource Include="Properties\Governments.ja.resx" />

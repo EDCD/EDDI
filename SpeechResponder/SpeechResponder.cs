@@ -161,7 +161,7 @@ namespace EddiSpeechResponder
                     return;
                 }
             }
-            else if (theEvent is FSSSignalDiscoveredEvent &&
+            else if (theEvent is SignalDetectedEvent &&
                 (StatusMonitor.currentStatus.gui_focus != "fss mode" || StatusMonitor.currentStatus.gui_focus != "saa mode"))
             {
                 return;

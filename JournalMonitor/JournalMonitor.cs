@@ -1708,8 +1708,19 @@ namespace EddiJournalMonitor
                             break;
                         case "FSSSignalDiscovered":
                             {
-                                FssSignal source = FssSignal.FromEDName(JsonParsing.getString(data, "SignalName")) ?? new FssSignal();
-                                source.fallbackLocalizedName = JsonParsing.getString(data, "SignalName_Localised");
+                                // The source may be a direct source or a USS. If a USS, we want the USS type.
+                                SignalSource source;
+                                if (JsonParsing.getString(data, "USSType") != null)
+                                {
+                                    source = SignalSource.FromEDName(JsonParsing.getString(data, "USSType"));
+                                    source.fallbackLocalizedName = JsonParsing.getString(data, "USSType_Localised");
+                                }
+                                else
+                                {
+                                    source = SignalSource.FromEDName(JsonParsing.getString(data, "SignalName"));
+                                    source.fallbackLocalizedName = JsonParsing.getString(data, "SignalName_Localised");
+                                }
+
                                 string spawningFaction = getFaction(data, "SpawningFaction") ?? Superpower.None.localizedName; // the minor faction, if relevant
                                 decimal? secondsRemaining = JsonParsing.getOptionalDecimal(data, "TimeRemaining"); // remaining lifetime in seconds, if relevant
 
@@ -1718,7 +1729,10 @@ namespace EddiJournalMonitor
                                 FactionState spawningState = FactionState.FromEDName(normalizedSpawningState) ?? new FactionState();
                                 spawningState.fallbackLocalizedName = JsonParsing.getString(data, "SpawningState_Localised");
 
-                                events.Add(new FSSSignalDiscoveredEvent(timestamp, source, spawningState, spawningFaction, secondsRemaining) { raw = line });
+                                int? threatLevel = JsonParsing.getOptionalInt(data, "ThreatLevel") ?? 0;
+                                bool? isStation = JsonParsing.getOptionalBool(data, "IsStation") ?? false;
+
+                                events.Add(new SignalDetectedEvent(timestamp, source, spawningState, spawningFaction, secondsRemaining, threatLevel, isStation) { raw = line });
                                 handled = true;
                                 break;
                             case "BuyExplorationData":

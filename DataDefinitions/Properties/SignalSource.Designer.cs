@@ -22,14 +22,14 @@ namespace EddiDataDefinitions.Properties {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class FssSignal {
+    public class SignalSource {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal FssSignal() {
+        internal SignalSource() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace EddiDataDefinitions.Properties {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("EddiDataDefinitions.Properties.FssSignal", typeof(FssSignal).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("EddiDataDefinitions.Properties.SignalSource", typeof(SignalSource).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -84,6 +84,114 @@ namespace EddiDataDefinitions.Properties {
         public static string USS {
             get {
                 return ResourceManager.GetString("USS", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Combat aftermath detected.
+        /// </summary>
+        public static string USS_Type_Aftermath {
+            get {
+                return ResourceManager.GetString("USS_Type_Aftermath", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Anomaly detected.
+        /// </summary>
+        public static string USS_Type_Anomaly {
+            get {
+                return ResourceManager.GetString("USS_Type_Anomaly", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ceremonial comms detected.
+        /// </summary>
+        public static string USS_Type_Ceremonial {
+            get {
+                return ResourceManager.GetString("USS_Type_Ceremonial", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Convoy dispersal pattern detected.
+        /// </summary>
+        public static string USS_Type_Convoy {
+            get {
+                return ResourceManager.GetString("USS_Type_Convoy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Distress call.
+        /// </summary>
+        public static string USS_Type_DistressSignal {
+            get {
+                return ResourceManager.GetString("USS_Type_DistressSignal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mission target.
+        /// </summary>
+        public static string USS_Type_MissionTarget {
+            get {
+                return ResourceManager.GetString("USS_Type_MissionTarget", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Non-Human signal source.
+        /// </summary>
+        public static string USS_Type_NonHuman {
+            get {
+                return ResourceManager.GetString("USS_Type_NonHuman", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Degraded emissions detected.
+        /// </summary>
+        public static string USS_Type_Salvage {
+            get {
+                return ResourceManager.GetString("USS_Type_Salvage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Trading beacon.
+        /// </summary>
+        public static string USS_Type_TradingBeacon {
+            get {
+                return ResourceManager.GetString("USS_Type_TradingBeacon", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Encoded emissions detected.
+        /// </summary>
+        public static string USS_Type_ValuableSalvage {
+            get {
+                return ResourceManager.GetString("USS_Type_ValuableSalvage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to High grade emissions detected.
+        /// </summary>
+        public static string USS_Type_VeryValuableSalvage {
+            get {
+                return ResourceManager.GetString("USS_Type_VeryValuableSalvage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Weapons fire detected.
+        /// </summary>
+        public static string USS_Type_WeaponsFire {
+            get {
+                return ResourceManager.GetString("USS_Type_WeaponsFire", resourceCulture);
             }
         }
         
