@@ -70,6 +70,24 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Low intensity resource extraction site.
+        /// </summary>
+        public static string MULTIPLAYER_SCENARIO77_TITLE {
+            get {
+                return ResourceManager.GetString("MULTIPLAYER_SCENARIO77_TITLE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to High intensity resource extraction site.
+        /// </summary>
+        public static string MULTIPLAYER_SCENARIO78_TITLE {
+            get {
+                return ResourceManager.GetString("MULTIPLAYER_SCENARIO78_TITLE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Compromised Nav Beacon.
         /// </summary>
         public static string MULTIPLAYER_SCENARIO80_TITLE {

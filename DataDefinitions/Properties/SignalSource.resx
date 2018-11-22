@@ -189,4 +189,12 @@
     <value>Trading beacon</value>
     <comment>TradingBeacon signal</comment>
   </data>
+  <data name="MULTIPLAYER_SCENARIO78_TITLE" xml:space="preserve">
+    <value>High intensity resource extraction site</value>
+    <comment>ResourceExtraction Site (High Intensity)</comment>
+  </data>
+  <data name="MULTIPLAYER_SCENARIO77_TITLE" xml:space="preserve">
+    <value>Low intensity resource extraction site</value>
+    <comment>Resource Extraction site (Low)</comment>
+  </data>
 </root>
