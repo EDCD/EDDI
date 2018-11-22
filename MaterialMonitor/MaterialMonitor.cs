@@ -156,6 +156,10 @@ namespace EddiMaterialMonitor
             {
                 handleMissionCompletedEvent((MissionCompletedEvent)@event);
             }
+            else if (@event is EngineerContributedEvent)
+            {
+                handleEngineerContributedEvent((EngineerContributedEvent)@event);
+            }
 
         }
 
@@ -249,6 +253,14 @@ namespace EddiMaterialMonitor
             }
         }
 
+        private void handleEngineerContributedEvent(EngineerContributedEvent @event)
+        {
+            if (@event.materialAmount != null)
+            {
+                decMaterial(@event.materialAmount.edname, @event.materialAmount.amount);
+            }
+        }
+
         public void HandleProfile(JObject profile)
         {
         }
@@ -311,7 +323,7 @@ namespace EddiMaterialMonitor
                 }
 
                 int previous = ma.amount;
-                ma.amount -= amount;
+                ma.amount -= Math.Min(amount, previous); // Never subtract more than we started with
                 Logging.Debug(ma.edname + ": " + previous + "->" + ma.amount);
 
                 // We have limits for this material; carry out relevant checks

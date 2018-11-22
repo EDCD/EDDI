@@ -1799,6 +1799,42 @@ namespace EddiJournalMonitor
                                 handled = true;
                                 break;
                             }
+                        case "EngineerContribution":
+                            {
+                                string name = JsonParsing.getString(data, "Engineer");
+                                long engineerId = JsonParsing.getLong(data, "EngineerID");
+                                Engineer engineer = Engineer.FromNameOrId(name, engineerId);
+
+                                string contributionType = JsonParsing.getString(data, "Type"); // (Commodity, materials, Credits, Bond, Bounty)
+                                switch (contributionType)
+                                {
+                                    case "Commodity":
+                                        {
+                                            string edname = JsonParsing.getString(data, "Commodity");
+                                            int amount = JsonParsing.getInt(data, "Quantity");
+                                            int total = JsonParsing.getInt(data, "TotalQuantity");
+                                            CommodityAmount commodity = new CommodityAmount(CommodityDefinition.FromEDName(edname), amount);
+                                            events.Add(new EngineerContributedEvent(timestamp, engineer, commodity, null, contributionType, amount, total) { raw = line });
+                                        }
+                                        break;
+                                    case "Materials":
+                                        {
+                                            string edname = JsonParsing.getString(data, "Material");
+                                            int amount = JsonParsing.getInt(data, "Quantity");
+                                            int total = JsonParsing.getInt(data, "TotalQuantity");
+                                            MaterialAmount material = new MaterialAmount(Material.FromEDName(edname), amount);
+                                            events.Add(new EngineerContributedEvent(timestamp, engineer, null, material, contributionType, amount, total) { raw = line });
+                                        }
+                                        break;
+                                    case "Credits":
+                                    case "Bond":
+                                    case "Bounty":
+                                        { } // We don't currently handle credit changes from these types.
+                                        break;
+                                }
+                                handled = true;
+                                break;
+                            }
                         case "EngineerCraft":
                             {
                                 string engineer = JsonParsing.getString(data, "Engineer");

@@ -9,6 +9,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * `Engineer progressed` event: Added `stage`, `rankprogress`, and `progresstype`.
     * `Modification applied` event: Removed. This event was redundant with `Modification crafted` and is no longer written by the game as of Elite Dangerous version 3.0.
     * `Modification crafted` event: Added `module`, `quality`, and `experimentaleffect`.
+    * Added new event `EngineerContributed`, triggered when contributing resources to an engineer in exchange for access.
     * Added new function `EngineerDetails()` for accessing information about relations with engineers.
     * Updated documentation to describe `Engineer` object and `EngineerDetails` function.
 

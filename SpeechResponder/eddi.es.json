@@ -515,6 +515,15 @@
       "name": "Empire promotion",
       "description": "Se activa cuando asciende de rango en el Imperio"
     },
+    "Engineer contributed": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{event.engineer} \r\nthanks you for contributing\r\n{if event.contributiontype = \"Commodity\":\r\n   {event.amount} tonne{if event.amount != 1:s} \r\n|elif event.contributiontype = \"Material\":\r\n   {if material.category = 'Data':\r\n       {event.amount} {OneOf(\"unit\", \"sample\", \"record\")}{if event.amount != 1:s}\r\n   |else:\r\n       {event.amount} {OneOf(\"unit\", \"sample\", \"fragment\")}{if event.amount != 1:s}\r\n   }\r\n}\r\nof {event.contribution}.",
+      "default": true,
+      "name": "Engineer contributed",
+      "description": "Triggered when contributing resources to an engineer in exchange for access"
+    },
     "Engineer progressed": {
       "enabled": true,
       "priority": 3,
