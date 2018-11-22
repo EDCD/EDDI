@@ -161,10 +161,12 @@ namespace EddiSpeechResponder
                     return;
                 }
             }
-            else if (theEvent is SignalDetectedEvent &&
-                (StatusMonitor.currentStatus.gui_focus != "fss mode" || StatusMonitor.currentStatus.gui_focus != "saa mode"))
+            else if (theEvent is SignalDetectedEvent)
             {
-                return;
+                if (!(StatusMonitor.currentStatus.gui_focus == "fss mode" || StatusMonitor.currentStatus.gui_focus == "saa mode"))
+                {
+                    return;
+                }
             }
 
             if (theEvent is CommunityGoalEvent)
