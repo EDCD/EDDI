@@ -115,7 +115,7 @@
     <comment>Government type Confederacy</comment>
   </data>
   <data name="Cooperative" xml:space="preserve">
-    <value>Genossenschaft</value>
+    <value>Kooperative</value>
     <comment>Government type Cooperative</comment>
   </data>
   <data name="Corporate" xml:space="preserve">
