@@ -222,7 +222,7 @@
     <comment>Station Service: TechBroker</comment>
   </data>
   <data name="MaterialTrader" xml:space="preserve">
-    <value>Materialhändler</value>
+    <value>Materialienhändler</value>
     <comment>Station Service: Material Trader</comment>
   </data>
   <data name="StationMenu" xml:space="preserve">
