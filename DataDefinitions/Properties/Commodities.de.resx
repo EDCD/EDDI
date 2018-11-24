@@ -881,7 +881,10 @@
     <value>Motrona Erlebnisgelee</value>
     <comment>Commodity MotronaExperienceJelly</comment>
   </data>
-  
+  <data name="MukusubiiChitinOs" xml:space="preserve">
+    <value>Mukusubii Chitin-Os</value>
+    <comment>Commodity MukusubiiChitin_Os</comment>
+  </data>
   <data name="MulachiGiantFungus" xml:space="preserve">
     <value>Mulachi Riesenpilz</value>
     <comment>Commodity MulachiGiantFungus</comment>
