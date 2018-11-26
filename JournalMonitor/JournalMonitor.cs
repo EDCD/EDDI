@@ -2373,7 +2373,7 @@ namespace EddiJournalMonitor
                             {
                                 long cgid = JsonParsing.getLong(data, "CGID");
 
-                                events.Add(new MissionAbandonedEvent(timestamp, cgid, "MISSION_CommunityGoal"));
+                                events.Add(new MissionAbandonedEvent(timestamp, cgid, "MISSION_CommunityGoal", 0));
                                 handled = true;
                                 break;
                             }
@@ -2595,7 +2595,9 @@ namespace EddiJournalMonitor
                                 data.TryGetValue("MissionID", out object val);
                                 long missionid = (long)val;
                                 string name = JsonParsing.getString(data, "Name");
-                                events.Add(new MissionAbandonedEvent(timestamp, missionid, name) { raw = line });
+                                data.TryGetValue("Fine", out val);
+                                long fine = val == null ? 0 : (long)val;
+                                events.Add(new MissionAbandonedEvent(timestamp, missionid, name, fine) { raw = line });
                                 handled = true;
                                 break;
                             }

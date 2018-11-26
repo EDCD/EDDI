@@ -115,43 +115,46 @@ namespace EddiMissionMonitor
 
             while (running)
             {
-                foreach (Mission mission in missions.ToList())
+                lock (missionsLock)
                 {
-                    if (mission.expiry != null && mission.statusEDName != "Failed")
+                    foreach (Mission mission in missions.ToList())
                     {
-                        TimeSpan span = (DateTime)mission.expiry?.ToLocalTime() - DateTime.Now;
-                        if (span.Days > 6)
+                        if (mission.expiry != null && mission.statusEDName != "Failed")
                         {
-                            int weeks = Decimal.ToInt32(span.Days / 7);
-                            int days = span.Days - weeks * 7;
-                            mission.timeremaining = weeks.ToString() + "W " + days.ToString() + "D ";
+                            TimeSpan span = (DateTime)mission.expiry?.ToLocalTime() - DateTime.Now;
+                            if (span.Days > 6)
+                            {
+                                int weeks = Decimal.ToInt32(span.Days / 7);
+                                int days = span.Days - weeks * 7;
+                                mission.timeremaining = weeks.ToString() + "W " + days.ToString() + "D ";
+                            }
+                            else
+                            {
+                                mission.timeremaining = span.Days.ToString() + "D ";
+                            }
+                            mission.timeremaining += span.Hours.ToString() + "H " + span.Minutes.ToString() + "MIN";
+
+                            if (mission.expiry?.ToLocalTime() < DateTime.Now)
+                            {
+                                EDDI.Instance.eventHandler(new MissionExpiredEvent(DateTime.Now, mission.missionid, mission.name));
+                            }
+                            else if (mission.expiry?.ToLocalTime() < DateTime.Now.AddMinutes(missionWarning ?? 60))
+                            {
+                                if (!mission.expiring)
+                                {
+                                    mission.expiring = true;
+                                    EDDI.Instance.eventHandler(new MissionWarningEvent(DateTime.Now, mission.missionid, mission.name, (int)span.TotalMinutes));
+                                }
+                            }
+                            else if (mission.expiring)
+                            {
+                                mission.expiring = false;
+                            }
                         }
                         else
                         {
-                            mission.timeremaining = span.Days.ToString() + "D ";
+                            mission.timeremaining = String.Empty;
                         }
-                        mission.timeremaining += span.Hours.ToString() + "H " + span.Minutes.ToString() + "MIN";
-
-                        if (mission.expiry?.ToLocalTime() < DateTime.Now)
-                        {
-                            EDDI.Instance.eventHandler(new MissionExpiredEvent(DateTime.Now, mission.missionid, mission.name));
-                        }
-                        else if (mission.expiry?.ToLocalTime() < DateTime.Now.AddMinutes(missionWarning ?? 60))
-                        {
-                            if (!mission.expiring)
-                            {
-                                mission.expiring = true;
-                                EDDI.Instance.eventHandler(new MissionWarningEvent(DateTime.Now, mission.missionid, mission.name, (int)span.TotalMinutes));
-                            }
-                        }
-                        else if (mission.expiring)
-                        {
-                            mission.expiring = false;
-                        }
-                    }
-                    else
-                    {
-                        mission.timeremaining = String.Empty;
                     }
                 }
                 Thread.Sleep(5000);

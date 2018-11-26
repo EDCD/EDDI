@@ -44,9 +44,16 @@ namespace EddiShipMonitor
 
             if (fileInfo != null)
             {
+                int maxTries = 6;
                 while (IsFileLocked(fileInfo))
                 {
                     Thread.Sleep(100);
+                    maxTries--;
+                    if (maxTries == 0)
+                    {
+                        Logging.Info("Unable to open Elite Dangerous ModulesInfo.json file");
+                        return null;
+                    }
                 }
 
                 using (FileStream fs = new FileStream(fileInfo.FullName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))

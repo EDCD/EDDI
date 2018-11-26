@@ -665,7 +665,7 @@ namespace EddiCargoMonitor
             if (haulage != null)
             {
                 Cargo cargo = GetCargoWithMissionId(@event.missionid ?? 0);
-                int onboard = haulage.amount - haulage.need;
+                int onboard = haulage.remaining - haulage.need;
                 cargo.haulage -= onboard;
                 cargo.stolen += onboard;
                 cargo.haulageData.Remove(haulage);
@@ -790,7 +790,7 @@ namespace EddiCargoMonitor
             if (haulage != null)
             {
                 Cargo cargo = GetCargoWithMissionId(@event.missionid ?? 0);
-                int onboard = haulage.amount - haulage.need;
+                int onboard = haulage.remaining - haulage.need;
                 cargo.haulage -= onboard;
                 cargo.stolen += onboard;
                 cargo.haulageData.Remove(haulage);
