@@ -1391,7 +1391,6 @@ namespace Eddi
                 star.distance = (long?)theEvent.distancefromarrival;
                 star.luminosityclass = theEvent.luminosityclass;
                 star.temperature = (long?)theEvent.temperature;
-                star.mainstar = theEvent.distancefromarrival == 0 ? true : false;
                 star.stellarclass = theEvent.stellarclass;
                 star.solarmass = theEvent.solarmass;
                 star.solarradius = theEvent.solarradius;

@@ -172,16 +172,17 @@ namespace EddiDataDefinitions
                 if (temperature != null) tempprobability = StarClass.sanitiseCP(starClass.tempCP((decimal)temperature));
                 if (age != null) ageprobability = StarClass.sanitiseCP(starClass.ageCP((decimal)age));
                 chromaticity = starClass.chromaticity.localizedName;
-                // `estimatedvalue` is only set during scan events.
-                if (radius != 0 && temperature != 0)
-                {
-                    // Minimum estimated single-star habitable zone (target black body temperature of 315°K / 42°C / 107°F or less, radius in km)
-                    estimatedhabzoneinner = StarClass.DistanceFromStarForTemperature(StarClass.maxHabitableTempKelvin, Convert.ToDouble(radius), Convert.ToDouble(temperature));
-
-                    // Maximum estimated single-star habitable zone (target black body temperature of 223.15°K / -50°C / -58°F or more, radius in km)
-                    estimatedhabzoneouter = StarClass.DistanceFromStarForTemperature(StarClass.minHabitableTempKelvin, Convert.ToDouble(radius), Convert.ToDouble(temperature));
-                }
             }
+            // `estimatedvalue` is only set during scan events.
+            if (radius != 0 && radius != null && temperature != 0 && temperature != null)
+            {
+                // Minimum estimated single-star habitable zone (target black body temperature of 315°K / 42°C / 107°F or less, radius in km)
+                estimatedhabzoneinner = StarClass.DistanceFromStarForTemperature(StarClass.maxHabitableTempKelvin, Convert.ToDouble(radius), Convert.ToDouble(temperature));
+
+                // Maximum estimated single-star habitable zone (target black body temperature of 223.15°K / -50°C / -58°F or more, radius in km)
+                estimatedhabzoneouter = StarClass.DistanceFromStarForTemperature(StarClass.minHabitableTempKelvin, Convert.ToDouble(radius), Convert.ToDouble(temperature));
+            }
+            if (distance != null) { mainstar = distance == 0 ? true : false; }
         }
     }
 }

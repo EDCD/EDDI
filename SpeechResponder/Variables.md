@@ -345,7 +345,7 @@ All bodies have the following data:
 
 In addition, stars have the following data:
 
-    - `mainstar` true if this is the main star of the syste
+    - `mainstar` true if this is the main star of the system
     - `stellarclass` the stellar class of the star (M, G, etc)
     - `solarmass` the solar mass of the star
     - `solarradius` the solar radius of the star, compared to Sol
