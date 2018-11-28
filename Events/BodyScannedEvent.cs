@@ -145,7 +145,7 @@ namespace EddiEvents
             this.materials = materials;
             this.terraformState = terraformstate;
             this.axialtilt = axialtiltDegrees;
-            this.estimatedvalue = estimateValue(scantype == "Detailed" || scantype == "NavBeaconDetail");
+            this.estimatedvalue = estimateValue(scantype.Contains("Detail"));
         }
 
         private decimal sanitiseCP(decimal cp)

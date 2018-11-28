@@ -78,6 +78,8 @@ namespace EddiDataDefinitions
         public decimal? massprobability { get; set; }
         public decimal? tempprobability { get; set; }
         public decimal? ageprobability { get; set; }
+        public decimal? estimatedhabzoneinner { get; set; }
+        public decimal? estimatedhabzoneouter { get; set; }
 
         // Body-specific items
 
@@ -170,6 +172,15 @@ namespace EddiDataDefinitions
                 if (temperature != null) tempprobability = StarClass.sanitiseCP(starClass.tempCP((decimal)temperature));
                 if (age != null) ageprobability = StarClass.sanitiseCP(starClass.ageCP((decimal)age));
                 chromaticity = starClass.chromaticity.localizedName;
+                // `estimatedvalue` is only set during scan events.
+                if (radius != 0 && temperature != 0)
+                {
+                    // Minimum estimated single-star habitable zone (target black body temperature of 315°K / 42°C / 107°F or less, radius in km)
+                    estimatedhabzoneinner = StarClass.DistanceFromStarForTemperature(StarClass.maxHabitableTempKelvin, Convert.ToDouble(radius), Convert.ToDouble(temperature));
+
+                    // Maximum estimated single-star habitable zone (target black body temperature of 223.15°K / -50°C / -58°F or more, radius in km)
+                    estimatedhabzoneouter = StarClass.DistanceFromStarForTemperature(StarClass.minHabitableTempKelvin, Convert.ToDouble(radius), Convert.ToDouble(temperature));
+                }
             }
         }
     }

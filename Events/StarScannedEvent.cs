@@ -14,10 +14,6 @@ namespace EddiEvents
         public const double dssDivider = 2.4;
         public const double scanDivider = 66.25;
 
-        // Scan habitable zone constants
-        public const double maxHabitableTempKelvin = 315;
-        public const double minHabitableTempKelvin = 223.15;
-
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
         static StarScannedEvent()
@@ -106,13 +102,13 @@ namespace EddiEvents
 
         public string scantype { get; private set; } // One of Basic, Detailed, NavBeacon, NavBeaconDetail
 
-        public StarScannedEvent(DateTime timestamp, string scantype, string name, string stellarclass, decimal solarmass, decimal radius, decimal absolutemagnitude, string luminosityclass, long age, decimal temperature, decimal distancefromarrival, decimal? orbitalperiod, decimal rotationperiod, decimal? semimajoraxis, decimal? eccentricity, decimal? orbitalinclination, decimal? periapsis, List<Ring> rings) : base(timestamp, NAME)
+        public StarScannedEvent(DateTime timestamp, string scantype, string name, string stellarclass, decimal solarmass, decimal radiusKm, decimal absolutemagnitude, string luminosityclass, long age, decimal temperature, decimal distancefromarrival, decimal? orbitalperiod, decimal rotationperiod, decimal? semimajoraxis, decimal? eccentricity, decimal? orbitalinclination, decimal? periapsis, List<Ring> rings) : base(timestamp, NAME)
         {
             this.scantype = scantype;
             this.name = name;
             this.stellarclass = stellarclass;
             this.solarmass = solarmass;
-            this.radius = radius;
+            this.radius = radiusKm;
             this.absolutemagnitude = absolutemagnitude;
             this.luminosityclass = luminosityclass;         
             this.age = age;
@@ -125,8 +121,8 @@ namespace EddiEvents
             this.orbitalinclination = orbitalinclination;
             this.periapsis = periapsis;
             this.rings = rings;
-            solarradius = StarClass.solarradius(radius);
-            luminosity = StarClass.luminosity(absolutemagnitude);        
+            solarradius = StarClass.solarradius(radiusKm);
+            luminosity = StarClass.luminosity(absolutemagnitude);  
             StarClass starClass = StarClass.FromName(this.stellarclass);
             if (starClass != null)
             {
@@ -135,18 +131,16 @@ namespace EddiEvents
                 tempprobability = StarClass.sanitiseCP(starClass.tempCP(this.temperature));
                 ageprobability = StarClass.sanitiseCP(starClass.ageCP(this.age));
                 chromaticity = starClass.chromaticity.localizedName;
-                if (radius != 0 && temperature != 0)
+                if (radiusKm != 0 && temperature != 0)
                 {
                     // Minimum estimated single-star habitable zone (target black body temperature of 315°K / 42°C / 107°F or less)
-                    estimatedhabzoneinner = StarClass.DistanceFromStarForTemperature(maxHabitableTempKelvin, Convert.ToDouble(radius), Convert.ToDouble(temperature));
-                    this.estimatedhabzoneinner = estimatedhabzoneinner;
+                    estimatedhabzoneinner = StarClass.DistanceFromStarForTemperature(StarClass.maxHabitableTempKelvin, Convert.ToDouble(radiusKm), Convert.ToDouble(temperature));
 
                     // Maximum estimated single-star habitable zone (target black body temperature of 223.15°K / -50°C / -58°F or more)
-                    estimatedhabzoneouter = StarClass.DistanceFromStarForTemperature(minHabitableTempKelvin, Convert.ToDouble(radius), Convert.ToDouble(temperature));
-                    this.estimatedhabzoneouter = estimatedhabzoneouter;
+                    estimatedhabzoneouter = StarClass.DistanceFromStarForTemperature(StarClass.minHabitableTempKelvin, Convert.ToDouble(radiusKm), Convert.ToDouble(temperature));
                 }
             }
-            this.estimatedvalue = estimateValue(scantype == "Detailed" || scantype == "NavBeaconDetail");
+            estimatedvalue = estimateValue(scantype != null ? scantype.Contains("Detail") : false);
         }
 
         private long? estimateValue(bool detailedScan)
@@ -175,7 +169,7 @@ namespace EddiEvents
             {
                 value = value / dssDivider;
             }
-            
+
             return (long?)Math.Round(value, 0);
         }
     }

@@ -147,6 +147,8 @@ namespace UnitTests
             Assert.AreEqual(51, theEvent.radiusprobability);
             Assert.AreEqual(58, theEvent.tempprobability);
             Assert.AreEqual(7, theEvent.ageprobability);
+            Assert.AreEqual(303.548, (double)theEvent.estimatedhabzoneinner, .01);
+            Assert.AreEqual(604.861, (double)theEvent.estimatedhabzoneouter, .01);
         }
 
         [TestMethod]

@@ -350,6 +350,8 @@ In addition, stars have the following data:
     - `solarmass` the solar mass of the star
     - `solarradius` the solar radius of the star, compared to Sol
     - `age` the age of the star in millions of years
+    - `estimatedhabzoneinner` The estimated inner radius of the habitable zone of the star, in light seconds, not considering other stars in the system
+    - `estimatedhabzoneouter` The estimated outer radius of the habitable zone of the star, in light seconds, not considering other stars in the system
 
 Planets have the following data:
 

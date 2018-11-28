@@ -10,6 +10,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
 ### 3.3-b1
   * Core
     * Fixed a bug that could reset system comments, visits, and the date last visited while refreshing star system data. 
+    * The `body` object now includes `estimatedhabzoneinner` and `estimatedhabzoneouter` for stars.
   * Material monitor
     * Revised material rarities and default material maxima (material maxima are recalulated to the following values if not set): 
       * (Thargoid) Propulsion Elements (Very Rare - 100 MAX)
@@ -33,6 +34,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Added new event `Signal detected`, triggered when a signal source is detected
     * The `Voice()` function now tolerates incomplete voice names (EDDI will return the first matching voice) and casing no longer matters.
     * Added new function `VoiceDetails()` for accessing details of installed voices while scripting.
+    * Fixed very low hab zone values in `Star scanned` events
   * Status monitor 
     * The status object has new values for: 
       * HUD analysis mode, 

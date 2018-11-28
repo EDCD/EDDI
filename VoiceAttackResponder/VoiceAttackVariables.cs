@@ -837,6 +837,8 @@ namespace EddiVoiceAttackResponder
             vaProxy.SetDecimal(prefix + " mass probability", body?.massprobability);
             vaProxy.SetDecimal(prefix + " temp probability", body?.tempprobability);
             vaProxy.SetDecimal(prefix + " age probability", body?.ageprobability);
+            vaProxy.SetDecimal(prefix + " estimated inner hab zone", body?.estimatedhabzoneinner);
+            vaProxy.SetDecimal(prefix + " estimated outer hab zone", body?.estimatedhabzoneouter);
             // Body specific items 
             vaProxy.SetDecimal(prefix + " periapsis", body?.periapsis);
             vaProxy.SetText(prefix + " atmosphere", (body?.atmosphereclass ?? AtmosphereClass.None).localizedName);
