@@ -106,43 +106,42 @@ namespace Utilities
 
         public static void incrementLogs()
         {
-            // Obtain files, sorting by last write time to ensure that older files are incremented prior to newer files
+            // Ensure dir exists
             DirectoryInfo directoryInfo = new DirectoryInfo(Constants.DATA_DIR);
-            if (directoryInfo.Exists)
-            {
-                foreach (FileInfo file in directoryInfo.GetFiles().OrderBy(f => f.LastWriteTimeUtc).ToList())
-                {
-                    string filePath = file.FullName;
-                    if (filePath.EndsWith(".log"))
-                    {
-                        try
-                        {
-                            bool parsed = int.TryParse(filePath.Replace(Constants.DATA_DIR + @"\eddi", "").Replace(".log", ""), out int i);
-                            ++i; // Increment our index number
-
-                            if (i >= 10)
-                            {
-                                File.Delete(filePath);
-                            }
-                            else
-                            {
-                                // This might be our primary log file, so we lock it prior to doing anything with it
-                                lock (logLock)
-                                {
-                                    File.Move(filePath, Constants.DATA_DIR + @"\eddi" + i + ".log");
-                                }
-                            }
-                        }
-                        catch (Exception)
-                        {
-                            // Someone may have had a log file open when this code executed? Nothing to do, we'll try again on the next run
-                        }
-                    }
-                }
-            }
-            else
+            if (!directoryInfo.Exists)
             {
                 Directory.CreateDirectory(Constants.DATA_DIR);
+            }
+
+            // Obtain files, sorting by last write time to ensure that older files are incremented prior to newer files
+            foreach (FileInfo file in directoryInfo.GetFiles().OrderBy(f => f.LastWriteTimeUtc).ToList())
+            {
+                string filePath = file.FullName;
+                if (filePath.EndsWith(".log"))
+                {
+                    try
+                    {
+                        bool parsed = int.TryParse(filePath.Replace(Constants.DATA_DIR + @"\eddi", "").Replace(".log", ""), out int i);
+                        ++i; // Increment our index number
+
+                        if (i >= 10)
+                        {
+                            File.Delete(filePath);
+                        }
+                        else
+                        {
+                            // This might be our primary log file, so we lock it prior to doing anything with it
+                            lock (logLock)
+                            {
+                                File.Move(filePath, Constants.DATA_DIR + @"\eddi" + i + ".log");
+                            }
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        // Someone may have had a log file open when this code executed? Nothing to do, we'll try again on the next run
+                    }
+                }
             }
         }
 
