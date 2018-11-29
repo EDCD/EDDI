@@ -292,6 +292,7 @@ EDDI makes a large number of values available to augment your existing scripts. 
   * {TXT:Environment}: the environment the ship is in ("Normal space", "Supercruise" or "Witch space")
   * {TXT:Vehicle}: the vehicle the commander is currently controlling ("Ship", "SRV" or "Fighter")
   * {TXT:EDDI uri}: uri's for EDDB, EDShipyard, and EDSM are written here when the appropriate plugin command is invoked.
+  * {BOOL:EDDI speaking}: true if EDDI is currently speaking
 
 # Running Commands on EDDI Events
 
