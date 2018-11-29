@@ -211,6 +211,7 @@ Any values might be missing, depending on EDDI's configuration.
     - `cargocapacity` the total tonnage cargo capacity
     - `cargocarried` the current tonnage cargo carried
     - `name` the name of the ship
+    - `ident` the identifier of the ship
     - `role` the role of the ship 
     - `health` the current health of the hull, from 0 to 100
     - `bulkheads` details of the ship's bulkheads (this is a Module object)

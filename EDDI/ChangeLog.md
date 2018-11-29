@@ -20,6 +20,8 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * Pattern Gamma Obelisk Data (Rare - 150 MAX)
       * Polonium (Rare - 150 MAX)
       * Antimony (Rare - 150 MAX)
+  * Ship monitor
+    * Add new value to the current ship: `ident`
   * Speech responder
     * Added new event `EngineerContributed`, triggered when contributing resources to an engineer in exchange for access.
     * Added new function `EngineerDetails()` for accessing information about relations with engineers.
