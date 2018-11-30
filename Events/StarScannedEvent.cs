@@ -105,7 +105,7 @@ namespace EddiEvents
 
         public bool mainstar { get; private set; }
 
-        public StarScannedEvent(DateTime timestamp, string scantype, string name, string stellarclass, decimal solarmass, decimal radiusKm, decimal absolutemagnitude, string luminosityclass, long age, decimal temperature, decimal distancefromarrival, decimal? orbitalperiod, decimal rotationperiod, decimal? semimajoraxis, decimal? eccentricity, decimal? orbitalinclination, decimal? periapsis, List<Ring> rings) : base(timestamp, NAME)
+        public StarScannedEvent(DateTime timestamp, string scantype, string name, string stellarclass, decimal solarmass, decimal radiusKm, decimal absolutemagnitude, string luminosityclass, long age, decimal temperature, decimal distancefromarrival, decimal? orbitalperiod, decimal rotationperiod, decimal? semimajoraxis, decimal? eccentricity, decimal? orbitalinclination, decimal? periapsis, List<Ring> rings, bool mainstar) : base(timestamp, NAME)
         {
             this.scantype = scantype;
             this.name = name;
@@ -144,7 +144,7 @@ namespace EddiEvents
                 }
             }
             estimatedvalue = estimateValue(scantype != null ? scantype.Contains("Detail") : false);
-            mainstar = distancefromarrival == 0 ? true : false;
+            this.mainstar = mainstar;
         }
 
         private long? estimateValue(bool detailedScan)

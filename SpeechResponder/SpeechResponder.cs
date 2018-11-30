@@ -128,16 +128,6 @@ namespace EddiSpeechResponder
         {
             Logging.Debug("Received event " + JsonConvert.SerializeObject(theEvent));
 
-            // By default we say things unless we've been told not to
-            bool sayOutLoud = true;
-            if (EDDI.Instance.State.TryGetValue("speechresponder_quiet", out object tmp))
-            {
-                if (tmp is bool)
-                {
-                    sayOutLoud = !(bool)tmp;
-                }
-            }
-
             if (theEvent is BeltScannedEvent)
             {
                 // We ignore belt clusters
@@ -145,8 +135,7 @@ namespace EddiSpeechResponder
             }
             else if (theEvent is BodyScannedEvent bodyScannedEvent)
             {
-                string scantype = bodyScannedEvent.scantype;
-                if (scantype == "NavBeacon" || scantype == "NavBeaconDetail" || scantype == "AutoScan")
+                if (bodyScannedEvent.scantype.Contains("NavBeacon") || bodyScannedEvent.scantype == "AutoScan")
                 {
                     // Suppress scan details from nav beacons and auto scans
                     return;
@@ -154,8 +143,7 @@ namespace EddiSpeechResponder
             }
             else if (theEvent is StarScannedEvent starScannedEvent)
             {
-                string scantype = ((StarScannedEvent)theEvent).scantype;
-                if (scantype == "NavBeacon" || scantype == "NavBeaconDetail" || scantype == "AutoScan")
+                if (starScannedEvent.scantype.Contains("NavBeacon") || starScannedEvent.scantype == "AutoScan")
                 {
                     // Suppress scan details from nav beacons and auto scans
                     return;
@@ -175,7 +163,21 @@ namespace EddiSpeechResponder
                 return;
             }
 
-            Say(scriptResolver, ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip(), theEvent.type, theEvent, null, null, null, sayOutLoud);
+            Say(scriptResolver, ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip(), theEvent.type, theEvent, null, null, null, SayOutLoud());
+        }
+
+        private static bool SayOutLoud()
+        {
+            // By default we say things unless we've been told not to
+            bool sayOutLoud = true;
+            if (EDDI.Instance.State.TryGetValue("speechresponder_quiet", out object tmp))
+            {
+                if (tmp is bool)
+                {
+                    sayOutLoud = !(bool)tmp;
+                }
+            }
+            return sayOutLoud;
         }
 
         // Say something with the default resolver
