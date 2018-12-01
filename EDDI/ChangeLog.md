@@ -7,6 +7,8 @@ Full details of the variables available for each noted event, and VoiceAttack in
 ### 3.1.1
   * Core
     * Fixed crash to desktop when the folder `%APPDATA%\EDDI` does not exist.
+  * Localization
+    * Imported latest translation files.
   * Speech responder
     * Tweaked pronunciations of "Megaship" and "Orbis" in English.
     * Amended "Entered normal space" script for cases when dropping near a non-station settlement.
