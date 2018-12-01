@@ -6,7 +6,7 @@ namespace EddiDataDefinitions
     {
         static StationModel()
         {
-            resourceManager = Properties.StationModel.ResourceManager;
+            resourceManager = Properties.StationModels.ResourceManager;
             resourceManager.IgnoreCase = true;
             missingEDNameHandler = (edname) => new StationModel(edname);
 

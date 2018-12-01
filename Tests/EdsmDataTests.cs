@@ -224,7 +224,7 @@ namespace UnitTests
             Station station = stations.Find(s => s.name == "Jameson Memorial");
             Assert.AreEqual(65, station.EDSMID);
             Assert.AreEqual(128666762, station.marketId);
-            Assert.AreEqual("Orbis Starport", station.Model.invariantName);
+            Assert.AreEqual("Or-bis Starport", station.Model.invariantName);
             Assert.AreEqual(324.925354M, station.distancefromstar);
             Assert.AreEqual("Pilots Federation", station.Faction.Allegiance.invariantName);
             Assert.AreEqual("Democracy", station.Faction.Government.invariantName);

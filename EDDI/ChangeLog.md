@@ -6,7 +6,9 @@ Full details of the variables available for each noted event, and VoiceAttack in
 
 ### 3.1.1
   * Core
-    * Fix crash to desktop when the folder `%APPDATA%\EDDI` does not exist.
+    * Fixed crash to desktop when the folder `%APPDATA%\EDDI` does not exist.
+  * Speech responder
+    * Tweaked pronunciations of "Megaship" and "Orbis" in English.
 
 ### 3.1
   * Core
