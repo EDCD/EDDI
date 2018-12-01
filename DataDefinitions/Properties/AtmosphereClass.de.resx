@@ -201,7 +201,10 @@
     <value>Wasserreich</value>
     <comment>Atmosphere class "Water-rich"</comment>
   </data>
-  
+  <data name="EarthLike" xml:space="preserve">
+    <value>Geeignet für wasserbasiertes Leben</value>
+    <comment>Atmosphere class "EarthLike"</comment>
+  </data>
   <data name="GasGiant" xml:space="preserve">
     <value>Gasriese</value>
     <comment>Atmosphere class "Gas giant"</comment>

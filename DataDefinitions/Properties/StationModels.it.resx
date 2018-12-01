@@ -129,14 +129,8 @@
     <value>Stazione spaziale Coriolis</value>
     <comment>A Coriolis Starport</comment>
   </data>
-  <data name="Megaship" xml:space="preserve">
-    <value>Mega nave</value>
-    <comment>A Megaship</comment>
-  </data>
-  <data name="Orbis" xml:space="preserve">
-    <value>Stazione spaziale orbis</value>
-    <comment>An Orbis Starport</comment>
-  </data>
+  
+  
   <data name="Outpost" xml:space="preserve">
     <value>Avamposto</value>
     <comment>An Outpost</comment>
