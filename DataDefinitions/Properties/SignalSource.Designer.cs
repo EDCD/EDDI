@@ -97,6 +97,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Hazardous Resource Extraction Site.
+        /// </summary>
+        public static string MULTIPLAYER_SCENARIO79_TITLE {
+            get {
+                return ResourceManager.GetString("MULTIPLAYER_SCENARIO79_TITLE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Compromised Nav Beacon.
         /// </summary>
         public static string MULTIPLAYER_SCENARIO80_TITLE {

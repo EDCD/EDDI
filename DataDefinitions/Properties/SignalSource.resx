@@ -201,4 +201,8 @@
     <value>Resource Extraction Site</value>
     <comment>Resource Extraction Site</comment>
   </data>
+  <data name="MULTIPLAYER_SCENARIO79_TITLE" xml:space="preserve">
+    <value>Hazardous Resource Extraction Site</value>
+    <comment>Resource Extraction Site [Hazardous]</comment>
+  </data>
 </root>
