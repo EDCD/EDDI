@@ -4,6 +4,10 @@ Full details of the variables available for each noted event, and VoiceAttack in
 
 ### Development
 
+### 3.1.1
+  * Core
+    * Fix crash to desktop when the folder `%APPDATA%\EDDI` does not exist.
+
 ### 3.1
   * Core
     * Fixed scan message spam upon scanning a Nav Beacon.
