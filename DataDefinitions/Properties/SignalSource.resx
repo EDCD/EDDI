@@ -197,4 +197,8 @@
     <value>Low intensity resource extraction site</value>
     <comment>Resource Extraction site (Low)</comment>
   </data>
+  <data name="MULTIPLAYER_SCENARIO14_TITLE" xml:space="preserve">
+    <value>Resource Extraction Site</value>
+    <comment>Resource Extraction Site</comment>
+  </data>
 </root>

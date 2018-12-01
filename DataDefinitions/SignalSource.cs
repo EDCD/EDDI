@@ -9,6 +9,7 @@
             missingEDNameHandler = edname => new SignalSource(edname);
 
             var NavBeacon = new SignalSource("MULTIPLAYER_SCENARIO42_TITLE");
+            var ResourceExtraction = new SignalSource("MULTIPLAYER_SCENARIO14_TITLE");
             var ResourceExtractionLow = new SignalSource("MULTIPLAYER_SCENARIO77_TITLE");
             var ResourceExtractionHigh = new SignalSource("MULTIPLAYER_SCENARIO78_TITLE");
             var CompromisedNavBeacon = new SignalSource("MULTIPLAYER_SCENARIO80_TITLE");

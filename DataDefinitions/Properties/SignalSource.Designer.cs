@@ -61,6 +61,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Resource Extraction Site.
+        /// </summary>
+        public static string MULTIPLAYER_SCENARIO14_TITLE {
+            get {
+                return ResourceManager.GetString("MULTIPLAYER_SCENARIO14_TITLE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Nav Beacon.
         /// </summary>
         public static string MULTIPLAYER_SCENARIO42_TITLE {
