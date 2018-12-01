@@ -21,10 +21,6 @@ namespace EddiJournalMonitor
     {
         private static Regex JsonRegex = new Regex(@"^{.*}$", RegexOptions.Singleline);
 
-        private static List<Event> eventQueue = new List<Event>();
-
-        private static bool enqueueEvents;
-
         public JournalMonitor() : base(GetSavedGamesDir(), @"^Journal.*\.[0-9\.]+\.log$", result =>
         ForwardJournalEntry(result, EDDI.Instance.eventHandler)) { }
 
@@ -634,65 +630,66 @@ namespace EddiJournalMonitor
                                 }
                                 handled = true;
                                 break;
-                            case "Scan":
+                        case "Scan":
+                            {
+                                string name = JsonParsing.getString(data, "BodyName");
+                                string scantype = JsonParsing.getString(data, "ScanType");
+                                decimal distancefromarrival = JsonParsing.getDecimal(data, "DistanceFromArrivalLS");
+
+                                // Belt
+                                if (name.Contains("Belt Cluster"))
                                 {
-                                    string name = JsonParsing.getString(data, "BodyName");
-                                    string scantype = JsonParsing.getString(data, "ScanType");
-                                    decimal distancefromarrival = JsonParsing.getDecimal(data, "DistanceFromArrivalLS");
 
-                                    // Belt
-                                    if (name.Contains("Belt Cluster"))
+                                    events.Add(new BeltScannedEvent(timestamp, scantype, name, distancefromarrival) { raw = line });
+                                    handled = true;
+                                    break;
+                                }
+
+                                // Common items
+                                // Need to convert radius from meters (per journal) to kilometers
+                                decimal radiusKm = JsonParsing.getDecimal(data, "Radius") / 1000;
+                                // Need to convert orbital period from seconds (per journal) to days
+                                decimal? orbitalPeriodDays = ConstantConverters.seconds2days(JsonParsing.getOptionalDecimal(data, "OrbitalPeriod"));
+                                // Need to convert rotation period from seconds (per journal) to days
+                                decimal rotationPeriodDays = (decimal)ConstantConverters.seconds2days(JsonParsing.getDecimal(data, "RotationPeriod"));
+                                // Need to convert meters to light seconds
+                                decimal? semimajoraxisLs = ConstantConverters.meters2ls(JsonParsing.getOptionalDecimal(data, "SemiMajorAxis"));
+                                decimal? eccentricity = JsonParsing.getOptionalDecimal(data, "Eccentricity");
+                                decimal? orbitalinclinationDegrees = JsonParsing.getOptionalDecimal(data, "OrbitalInclination");
+                                decimal? periapsisDegrees = JsonParsing.getOptionalDecimal(data, "Periapsis");
+                                decimal? axialTiltDegrees = JsonParsing.getOptionalDecimal(data, "AxialTilt");
+
+                                // Rings
+                                data.TryGetValue("Rings", out object val);
+                                List<object> ringsData = (List<object>)val;
+                                List<Ring> rings = new List<Ring>();
+                                if (ringsData != null)
+                                {
+                                    foreach (Dictionary<string, object> ringData in ringsData)
                                     {
+                                        string ringName = JsonParsing.getString(ringData, "Name");
+                                        RingComposition ringComposition = RingComposition.FromEDName(JsonParsing.getString(ringData, "RingClass"));
+                                        decimal ringMassMegaTons = JsonParsing.getDecimal(ringData, "MassMT");
+                                        decimal ringInnerRadiusKm = JsonParsing.getDecimal(ringData, "InnerRad") / 1000;
+                                        decimal ringOuterRadiusKm = JsonParsing.getDecimal(ringData, "OuterRad") / 1000;
 
-                                        events.Add(new BeltScannedEvent(timestamp, scantype, name, distancefromarrival) { raw = line });
-                                        handled = true;
-                                        break;
+                                        rings.Add(new Ring(ringName, ringComposition, ringMassMegaTons, ringInnerRadiusKm, ringOuterRadiusKm));
                                     }
+                                }
 
-                                    // Common items
-                                    // Need to convert radius from meters (per journal) to kilometers
-                                    decimal radiusKm = JsonParsing.getDecimal(data, "Radius") / 1000;
-                                    // Need to convert orbital period from seconds (per journal) to days
-                                    decimal? orbitalPeriodDays = ConstantConverters.seconds2days(JsonParsing.getOptionalDecimal(data, "OrbitalPeriod"));
-                                    // Need to convert rotation period from seconds (per journal) to days
-                                    decimal rotationPeriodDays = (decimal)ConstantConverters.seconds2days(JsonParsing.getDecimal(data, "RotationPeriod"));
-                                    // Need to convert meters to light seconds
-                                    decimal? semimajoraxisLs = ConstantConverters.meters2ls(JsonParsing.getOptionalDecimal(data, "SemiMajorAxis"));
-                                    decimal? eccentricity = JsonParsing.getOptionalDecimal(data, "Eccentricity");
-                                    decimal? orbitalinclinationDegrees = JsonParsing.getOptionalDecimal(data, "OrbitalInclination");
-                                    decimal? periapsisDegrees = JsonParsing.getOptionalDecimal(data, "Periapsis");
-                                    decimal? axialTiltDegrees = JsonParsing.getOptionalDecimal(data, "AxialTilt");
+                                if (data.ContainsKey("StarType"))
+                                {
+                                    // Star
+                                    string starType = JsonParsing.getString(data, "StarType");
+                                    decimal stellarMass = JsonParsing.getDecimal(data, "StellarMass");
+                                    decimal absoluteMagnitude = JsonParsing.getDecimal(data, "AbsoluteMagnitude");
+                                    string luminosityClass = JsonParsing.getString(data, "Luminosity");
+                                    data.TryGetValue("Age_MY", out val);
+                                    long ageMegaYears = (long)val;
+                                    decimal temperatureKelvin = JsonParsing.getDecimal(data, "SurfaceTemperature");
+                                    bool mainstar = distancefromarrival == 0 ? true : false;
 
-                                    // Rings
-                                    data.TryGetValue("Rings", out object val);
-                                    List<object> ringsData = (List<object>)val;
-                                    List<Ring> rings = new List<Ring>();
-                                    if (ringsData != null)
-                                    {
-                                        foreach (Dictionary<string, object> ringData in ringsData)
-                                        {
-                                            string ringName = JsonParsing.getString(ringData, "Name");
-                                            RingComposition ringComposition = RingComposition.FromEDName(JsonParsing.getString(ringData, "RingClass"));
-                                            decimal ringMassMegaTons = JsonParsing.getDecimal(ringData, "MassMT");
-                                            decimal ringInnerRadiusKm = JsonParsing.getDecimal(ringData, "InnerRad") / 1000;
-                                            decimal ringOuterRadiusKm = JsonParsing.getDecimal(ringData, "OuterRad") / 1000;
-
-                                            rings.Add(new Ring(ringName, ringComposition, ringMassMegaTons, ringInnerRadiusKm, ringOuterRadiusKm));
-                                        }
-                                    }
-
-                                    if (data.ContainsKey("StarType"))
-                                    {
-                                        // Star
-                                        string starType = JsonParsing.getString(data, "StarType");
-                                        decimal stellarMass = JsonParsing.getDecimal(data, "StellarMass");
-                                        decimal absoluteMagnitude = JsonParsing.getDecimal(data, "AbsoluteMagnitude");
-                                        string luminosityClass = JsonParsing.getString(data, "Luminosity");
-                                        data.TryGetValue("Age_MY", out val);
-                                        long ageMegaYears = (long)val;
-                                        decimal temperatureKelvin = JsonParsing.getDecimal(data, "SurfaceTemperature");
-
-                                        events.Add(new StarScannedEvent(timestamp, scantype, name, starType, stellarMass, radiusKm, absoluteMagnitude, luminosityClass, ageMegaYears, temperatureKelvin, distancefromarrival, orbitalPeriodDays, rotationPeriodDays, semimajoraxisLs, eccentricity, orbitalinclinationDegrees, periapsisDegrees, rings) { raw = line });
+                                    events.Add(new StarScannedEvent(timestamp, scantype, name, starType, stellarMass, radiusKm, absoluteMagnitude, luminosityClass, ageMegaYears, temperatureKelvin, distancefromarrival, orbitalPeriodDays, rotationPeriodDays, semimajoraxisLs, eccentricity, orbitalinclinationDegrees, periapsisDegrees, rings, mainstar) { raw = line });
                                         handled = true;
                                     }
                                     else

@@ -12,6 +12,7 @@ using System.IO;
 using EddiDataDefinitions;
 using EddiShipMonitor;
 using EddiStatusMonitor;
+using System.Linq;
 
 namespace EddiSpeechResponder
 {
@@ -28,6 +29,11 @@ namespace EddiSpeechResponder
         private bool subtitles;
 
         private bool subtitlesOnly;
+
+        private static List<Event> eventQueue = new List<Event>();
+
+        private static bool enqueueEvents;
+
 
         public string ResponderName()
         {
@@ -124,46 +130,78 @@ namespace EddiSpeechResponder
             Logging.Debug("Reloaded " + ResponderName() + " " + ResponderVersion());
         }
 
-        public void Handle(Event theEvent)
+        public void Handle(Event @event)
         {
-            Logging.Debug("Received event " + JsonConvert.SerializeObject(theEvent));
+            Logging.Debug("Received event " + JsonConvert.SerializeObject(@event));
 
-            if (theEvent is BeltScannedEvent)
+            if (@event is BeltScannedEvent)
             {
                 // We ignore belt clusters
                 return;
             }
-            else if (theEvent is BodyScannedEvent bodyScannedEvent)
+            else if (@event is BodyScannedEvent bodyScannedEvent)
             {
-                if (bodyScannedEvent.scantype.Contains("NavBeacon") || bodyScannedEvent.scantype == "AutoScan")
+                if (bodyScannedEvent.scantype.Contains("NavBeacon"))
                 {
-                    // Suppress scan details from nav beacons and auto scans
+                    // Suppress scan details from nav beacons
                     return;
                 }
             }
-            else if (theEvent is StarScannedEvent starScannedEvent)
+            // Beginning with Elite Dangerous v. 3.3, the primary star scan is delivered via a Scan with scantype `Autoscan` 
+            // when you jump into the system. Secondary stars are delivered in a burst following an FSSDiscoveryScan.
+            // Since each source has a different trigger, we need to re-order events and ensure the main star scan 
+            // completes after the the FSSDicoveryScan and before secondary star scans, 
+            // regardless of the timing of the `Autoscan` Scan and FSSDiscoveryScan events
+            else if (@event is FSSDiscoveryScanEvent)
             {
-                if (starScannedEvent.scantype.Contains("NavBeacon") || starScannedEvent.scantype == "AutoScan")
+                enqueueEvents = true;
+            }
+            else if (@event is StarScannedEvent starScannedEvent)
+            {
+                if (starScannedEvent.scantype.Contains("NavBeacon"))
                 {
-                    // Suppress scan details from nav beacons and auto scans
+                    // Suppress scan details from nav beacons
                     return;
                 }
+                else if (enqueueEvents)
+                {
+                    if (starScannedEvent.mainstar)
+                    {
+                        enqueueEvents = false;
+                        Say(@event);
+                        foreach (Event theEvent in eventQueue.OfType<StarScannedEvent>())
+                        {
+                            Say(theEvent);
+                        }
+                        eventQueue = (List<Event>)eventQueue.SkipWhile(s => (StarScannedEvent)s != null);
+                        return;
+                    }
+                    else
+                    {
+                        eventQueue.Add(@event);
+                        eventQueue.OrderBy(s => ((StarScannedEvent)s)?.distance);
+                        return;
+                    }
+                }
             }
-            else if (theEvent is SignalDetectedEvent)
+            else if (@event is SignalDetectedEvent)
             {
                 if (!(StatusMonitor.currentStatus.gui_focus == "fss mode" || StatusMonitor.currentStatus.gui_focus == "saa mode"))
                 {
                     return;
                 }
             }
-
-            if (theEvent is CommunityGoalEvent)
+            else if (@event is CommunityGoalEvent)
             {
                 // Disable speech from the community goal event for the time being.
                 return;
             }
+            Say(@event);
+        }
 
-            Say(scriptResolver, ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip(), theEvent.type, theEvent, null, null, null, SayOutLoud());
+        private void Say(Event @event)
+        {
+            Say(scriptResolver, ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip(), @event.type, @event, null, null, null, SayOutLoud());
         }
 
         private static bool SayOutLoud()
