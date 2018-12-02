@@ -5,7 +5,16 @@ Full details of the variables available for each noted event, and VoiceAttack in
 ### Development
   * Core
     * Fixed a bug that could reset system comments, visits, and the date last visited while refreshing star system data. 
-
+  * Material monitor
+    * Revised material rarities and default material maxima (material maxima are recalulated to the following values if not set): 
+      * (Thargoid) Propulsion Elements (Very Rare - 100 MAX)
+      * (Thargoid) Weapon Parts (Rare - 150 MAX)
+      * Pattern Alpha Obelisk Data (Rare - 150 MAX)
+      * Pattern Beta Obelisk Data (Rare - 150 MAX)
+      * Pattern Gamma Obelisk Data (Rare - 150 MAX)
+      * Polonium (Rare - 150 MAX)
+      * Antimony (Rare - 150 MAX)
+     
 ### 3.1
   * Core
     * Fixed scan message spam upon scanning a Nav Beacon.
