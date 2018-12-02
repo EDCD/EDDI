@@ -115,6 +115,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Unregistered Comms Beacon.
+        /// </summary>
+        public static string NumberStation {
+            get {
+                return ResourceManager.GetString("NumberStation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Unidentified Signal Source.
         /// </summary>
         public static string USS {

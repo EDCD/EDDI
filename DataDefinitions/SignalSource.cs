@@ -30,6 +30,8 @@
             var NonHuman = new SignalSource("USS_Type_NonHuman");
             var TradingBeacon = new SignalSource("USS_Type_TradingBeacon");
             var WeaponsFire = new SignalSource("USS_Type_WeaponsFire");
+
+            var UnregisteredCommsBeacon = new SignalSource("NumberStation");
         }
 
         public static readonly SignalSource UnidentifiedSignalSource = new SignalSource("USS");

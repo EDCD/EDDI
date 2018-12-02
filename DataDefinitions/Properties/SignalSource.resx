@@ -205,4 +205,8 @@
     <value>Hazardous Resource Extraction Site</value>
     <comment>Resource Extraction Site [Hazardous]</comment>
   </data>
+  <data name="NumberStation" xml:space="preserve">
+    <value>Unregistered Comms Beacon</value>
+    <comment>source $NumberStation</comment>
+  </data>
 </root>
