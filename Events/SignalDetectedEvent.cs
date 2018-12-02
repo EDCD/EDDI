@@ -21,8 +21,8 @@ namespace EddiEvents
             VARIABLES.Add("threatlevel", "The risk posed by the signal source. Higher numbers are more dangerous.");
         }
 
-        public string source => signalSource.localizedName ?? signalSource.fallbackLocalizedName;
-        public string factionstate => factionState.localizedName ?? factionState.fallbackLocalizedName;
+        public string source => signalSource.localizedName ?? signalSource.fallbackLocalizedName ?? signalSource.edname;
+        public string factionstate => factionState.localizedName ?? factionState.fallbackLocalizedName ?? factionState.edname;
         public string faction { get; private set; }
         public decimal? secondsremaining { get; private set; }
 

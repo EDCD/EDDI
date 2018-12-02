@@ -32,6 +32,8 @@ namespace EddiSpeechResponder
 
         private static List<Event> eventQueue = new List<Event>();
 
+        private static bool ignoreBodyScan;
+
         public string ResponderName()
         {
             return "Speech responder";
@@ -136,11 +138,21 @@ namespace EddiSpeechResponder
                 // We ignore belt clusters
                 return;
             }
+            else if (@event is BodyMappedEvent)
+            {
+                ignoreBodyScan = true;
+            }
             else if (@event is BodyScannedEvent bodyScannedEvent)
             {
                 if (bodyScannedEvent.scantype.Contains("NavBeacon"))
                 {
                     // Suppress scan details from nav beacons
+                    return;
+                }
+                else if (ignoreBodyScan)
+                {
+                    // Suppress surface mapping probes from generating redundant body scan events.
+                    ignoreBodyScan = false;
                     return;
                 }
             }

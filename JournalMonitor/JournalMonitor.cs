@@ -1746,6 +1746,15 @@ namespace EddiJournalMonitor
                                     handled = true;
                                     break;
                                 }
+                            case "SAAScanComplete":
+                                {
+                                    string body = JsonParsing.getString(data, "BodyName");
+                                    int probesUsed = JsonParsing.getInt(data, "ProbesUsed");
+                                    int efficiencyTarget = JsonParsing.getInt(data, "EfficiencyTarget");
+                                    events.Add(new BodyMappedEvent(timestamp, body, probesUsed, efficiencyTarget) { raw = line });
+                                    handled = true;
+                                    break;
+                                }
                             case "SellExplorationData":
                                 {
                                     data.TryGetValue("Systems", out object val);

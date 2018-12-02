@@ -29,6 +29,15 @@
       "name": "Blueprint material report",
       "description": "Report on the material requirements for a blueprint"
     },
+    "Body mapped": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{OneOf(\"Mapping\", \"{Occasionally(2, \\\"Surface\\\")} Map\")}\r\n{Occasionally(2, \"of body {P(event.name)}\")}\r\n{OneOf(\"is\", \"is now\")}\r\n{OneOf(\"complete\", \"finished\")}.\r\n\r\n{if event.probesused <= event.efficiencytarget:\r\n    Efficiency bonus {OneOf(\"awarded\", \"granted\")}.\r\n}",
+      "default": true,
+      "name": "Body mapped",
+      "description": "Triggered after mapping a body with the Surface Area Analysis scanner"
+    },
     "Body report": {
       "enabled": true,
       "priority": 3,
