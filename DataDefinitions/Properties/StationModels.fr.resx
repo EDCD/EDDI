@@ -130,7 +130,10 @@
     <comment>A Coriolis Starport</comment>
   </data>
   
-  
+  <data name="Orbis" xml:space="preserve">
+    <value>Spatioport Orbis</value>
+    <comment>An Orbis Starport</comment>
+  </data>
   <data name="Outpost" xml:space="preserve">
     <value>Avant-poste</value>
     <comment>An Outpost</comment>
