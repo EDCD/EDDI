@@ -115,6 +115,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Planetary Ring.
+        /// </summary>
+        public static string PlanetaryRing {
+            get {
+                return ResourceManager.GetString("PlanetaryRing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Rock.
         /// </summary>
         public static string Rock {
