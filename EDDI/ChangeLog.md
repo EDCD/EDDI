@@ -3,6 +3,8 @@
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
 ### Development
+  * Localization
+    * Material locations have been moved from the update server to the app and are now a translatable resource.
 
 ### 3.1.1
   * Core

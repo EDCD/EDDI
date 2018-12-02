@@ -1,0 +1,668 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="carbon" xml:space="preserve">
+    <value>Obtained from surface prospecting, asteroid mining, and ice ring mining.</value>
+    <comment>Material location Carbon</comment>
+  </data>
+  <data name="iron" xml:space="preserve">
+    <value>Obtained from surface prospecting, asteroid mining, or ice ring mining.</value>
+    <comment>Material location Iron</comment>
+  </data>
+  <data name="nickel" xml:space="preserve">
+    <value>Obtained from surface prospecting, asteroid mining, or ice ring mining.</value>
+    <comment>Material location Nickel</comment>
+  </data>
+  <data name="phosphorus" xml:space="preserve">
+    <value>Obtained from surface prospecting, asteroid mining, or ice mining.</value>
+    <comment>Material location Phosphorus</comment>
+  </data>
+  <data name="sulphur" xml:space="preserve">
+    <value>Obtained from surface prospecting, asteroid mining, or ice ring mining.</value>
+    <comment>Material location Sulphur</comment>
+  </data>
+  <data name="arsenic" xml:space="preserve">
+    <value>Obtained from surface prospecting, asteroid mining, or as a mission reward.</value>
+    <comment>Material location Arsenic</comment>
+  </data>
+  <data name="chromium" xml:space="preserve">
+    <value>Obtained from surface prospecting, asteroid mining in pristine rocky rings, or by mining ice rings.</value>
+    <comment>Material location Chromium</comment>
+  </data>
+  <data name="germanium" xml:space="preserve">
+    <value>Obtained from surface prospecting or as a mission reward, especially in systems suffering from disease.</value>
+    <comment>Material location Germanium</comment>
+  </data>
+  <data name="manganese" xml:space="preserve">
+    <value>Obtained from surface prospecting or as a mission reward.</value>
+    <comment>Material location Manganese</comment>
+  </data>
+  <data name="vanadium" xml:space="preserve">
+    <value>Obtained from surface prospecting, mining pristine metallic rings, or mining icy rings.</value>
+    <comment>Material location Vanadium</comment>
+  </data>
+  <data name="zinc" xml:space="preserve">
+    <value>Obtained from surface prospecting.</value>
+    <comment>Material location Zinc</comment>
+  </data>
+  <data name="cadmium" xml:space="preserve">
+    <value>Obtained from surface prospecting or asteroid mining.</value>
+    <comment>Material location Cadmium</comment>
+  </data>
+  <data name="mercury" xml:space="preserve">
+    <value>Obtained from surface prospecting.</value>
+    <comment>Material location Mercury</comment>
+  </data>
+  <data name="molybdenum" xml:space="preserve">
+    <value>Obtained from surface prospecting or asteroid mining.</value>
+    <comment>Material location Molybdenum</comment>
+  </data>
+  <data name="niobium" xml:space="preserve">
+    <value>Obtained from surface prospecting or asteroid mining.</value>
+    <comment>Material location Niobium</comment>
+  </data>
+  <data name="tin" xml:space="preserve">
+    <value>Obtained from surface prospecting or asteroid mining in areas with pristine reserves.</value>
+    <comment>Material location Tin</comment>
+  </data>
+  <data name="tungsten" xml:space="preserve">
+    <value>Obtained from surface prospecting.</value>
+    <comment>Material location Tungsten</comment>
+  </data>
+  <data name="ruthenium" xml:space="preserve">
+    <value>Obtained from surface prospecting.</value>
+    <comment>Material location Ruthenium</comment>
+  </data>
+  <data name="selenium" xml:space="preserve">
+    <value>Obtained from surface prospecting or as a mission reward.</value>
+    <comment>Material location Selenium</comment>
+  </data>
+  <data name="technetium" xml:space="preserve">
+    <value>Obtained from surface prospecting.</value>
+    <comment>Material location Technetium</comment>
+  </data>
+  <data name="tellurium" xml:space="preserve">
+    <value>Obtained from surface prospecting.</value>
+    <comment>Material location Tellurium</comment>
+  </data>
+  <data name="yttrium" xml:space="preserve">
+    <value>Obtained from surface prospecting.</value>
+    <comment>Material location Yttrium</comment>
+  </data>
+  <data name="zirconium" xml:space="preserve">
+    <value>Obtained from surface prospecting or asteroid mining.</value>
+    <comment>Material location Zirconium</comment>
+  </data>
+  <data name="antimony" xml:space="preserve">
+    <value>Obtained from surface prospecting.</value>
+    <comment>Material location Antimony</comment>
+  </data>
+  <data name="polonium" xml:space="preserve">
+    <value>Obtained from surface prospecting or as a mission reward.</value>
+    <comment>Material location Polonium</comment>
+  </data>
+  <data name="bulkscandata" xml:space="preserve">
+    <value>Obtained by scanning haulage vessels or as a mission reward.</value>
+    <comment>Material location Anomalous Bulk Scan Data</comment>
+  </data>
+  <data name="disruptedwakeechoes" xml:space="preserve">
+    <value>Obtained by scanning frame shift high wakes of vessels or as a mission reward, especially in systems with booming economies.</value>
+    <comment>Material location Atypical Disrupted Wake Echoes</comment>
+  </data>
+  <data name="shieldcyclerecordings" xml:space="preserve">
+    <value>Obtained by scanning haulage vessels or as a mission reward.</value>
+    <comment>Material location Distorted Shield Cycle Recordings</comment>
+  </data>
+  <data name="scrambledemissiondata" xml:space="preserve">
+    <value>Obtained from scanning vessels, signal sources, or as a mission reward.</value>
+    <comment>Material location Exceptional Scrambled Emission Data</comment>
+  </data>
+  <data name="legacyfirmware" xml:space="preserve">
+    <value>Obtained by scanning surface data points, satellites orbiting installations and populated Earth-like worlds, or as a mission reward.</value>
+    <comment>Material location Specialised Legacy Firmware</comment>
+  </data>
+  <data name="encryptedfiles" xml:space="preserve">
+    <value>Obtained from signal sources, including surface signal sources, or as a mission reward. These tend to be more common in systems with booming economies.</value>
+    <comment>Material location Unusual Encrypted Files</comment>
+  </data>
+  <data name="ancienthistoricaldata" xml:space="preserve">
+    <value>Obtained from the ancient ruins of the alien species known as the Guardians.</value>
+    <comment>Material location Pattern Gamma Obelisk Data</comment>
+  </data>
+  <data name="fsdtelemetry" xml:space="preserve">
+    <value>Obtained by scanning frame shift high wakes of vessels or as a mission reward.</value>
+    <comment>Material location Anomalous FSD Telemetry</comment>
+  </data>
+  <data name="shieldsoakanalysis" xml:space="preserve">
+    <value>Obtained by scanning haulage vessels or as a mission reward, especially in system swith booming economies.</value>
+    <comment>Material location Inconsistent Shield Soak Analysis</comment>
+  </data>
+  <data name="archivedemissiondata" xml:space="preserve">
+    <value>Obtained from signal sources or as a mission reward, especially in systems with booming economies.</value>
+    <comment>Material location Irregular Emission Data</comment>
+  </data>
+  <data name="consumerfirmware" xml:space="preserve">
+    <value>Obtained as a mission reward or by scanning datalinks in ground bases or scanning private data beacons in encoded signal sources while systems are in elections or civil wars.</value>
+    <comment>Material location Modified Consumer Firmware</comment>
+  </data>
+  <data name="encryptioncodes" xml:space="preserve">
+    <value>Obtained by scanning surface data points, satellites orbiting installations and populated Earth-like worlds, or as a mission reward, especially in systems with booming economies.</value>
+    <comment>Material location Tagged Encryption Codes</comment>
+  </data>
+  <data name="scanarchives" xml:space="preserve">
+    <value>Obtained from scanning haulage vessels, especially in systems with booming economies.</value>
+    <comment>Material location Unidentified Scan Archives</comment>
+  </data>
+  <data name="ancientculturaldata" xml:space="preserve">
+    <value>Obtained from the ancient ruins of the alien species known as the Guardians.</value>
+    <comment>Material location Pattern Beta Obelisk Data</comment>
+  </data>
+  <data name="tg_structuraldata" xml:space="preserve">
+    <value>Obtained from the mysterious surface sites of the alien species known as the Thargoids.</value>
+    <comment>Material location Thargoid Structural Data</comment>
+  </data>
+  <data name="scandatabanks" xml:space="preserve">
+    <value>Obtained by scanning large haulage vessels, commonly Type-7s and Type-9s, and by scanning datalinks in ground bases.</value>
+    <comment>Material location Classified Scan Databanks</comment>
+  </data>
+  <data name="industrialfirmware" xml:space="preserve">
+    <value>Obtained by scanning datalinks in ground bases or as a mission reward.</value>
+    <comment>Material location Cracked Industrial Firmware</comment>
+  </data>
+  <data name="symmetrickeys" xml:space="preserve">
+    <value>Obtained by scanning datalinks in ground bases, or in signal sources or as a mission reward.</value>
+    <comment>Material location Open Symmetric Keys</comment>
+  </data>
+  <data name="wakesolutions" xml:space="preserve">
+    <value>Obtained by scanning frame shift high wakes of vessels or as a mission reward, especially in systems with booming economies.</value>
+    <comment>Material location Strange Wake Solutions</comment>
+  </data>
+  <data name="emissiondata" xml:space="preserve">
+    <value>Obtained from scanning combat vessels or in signal sources, especially in systems with booming economies or undergoing an election.</value>
+    <comment>Material location Unexpected Emission Data</comment>
+  </data>
+  <data name="shielddensityreports" xml:space="preserve">
+    <value>Obtained by scanning combat vessels.</value>
+    <comment>Material location Untypical Shield Scans</comment>
+  </data>
+  <data name="ancientbiologicaldata" xml:space="preserve">
+    <value>Obtained from the ancient ruins of the alien species known as the Guardians.</value>
+    <comment>Material location Pattern Alpha Obelisk Data</comment>
+  </data>
+  <data name="tg_compositiondata" xml:space="preserve">
+    <value>Obtained from the mysterious surface sites of the alien species known as the Thargoids.</value>
+    <comment>Material location Thargoid Material Composition Data</comment>
+  </data>
+  <data name="unknownshipsignature" xml:space="preserve">
+    <value>Obtained from the mysterious surface sites of the alien species known as the Thargoids or scanning a Thargoid vessel.</value>
+    <comment>Material location Thargoid Ship Signature</comment>
+  </data>
+  <data name="shieldpatternanalysis" xml:space="preserve">
+    <value>Obtained by scanning system authority and combat vessels, or as a mission reward, especially in systems with booming economies.</value>
+    <comment>Material location Aberrant Shield Pattern Analysis</comment>
+  </data>
+  <data name="encryptionarchives" xml:space="preserve">
+    <value>Obtained by scanning datalinks in ground bases.</value>
+    <comment>Material location Atypical Encryption Archives</comment>
+  </data>
+  <data name="decodedemissiondata" xml:space="preserve">
+    <value>Obtained by scanning system authority vessels or as a mission reward.</value>
+    <comment>Material location Decoded Emission Data</comment>
+  </data>
+  <data name="encodedscandata" xml:space="preserve">
+    <value>Obtained by scanning datalinks in ground bases or as a mission reward.</value>
+    <comment>Material location Divergent Scan Data</comment>
+  </data>
+  <data name="hyperspacetrajectories" xml:space="preserve">
+    <value>Obtained by scanning frame shift high wakes of vessels.</value>
+    <comment>Material location Eccentric Hyperspace Trajectories</comment>
+  </data>
+  <data name="securityfirmware" xml:space="preserve">
+    <value>Obtained by scanning datalinks in ground bases or as a mission reward.</value>
+    <comment>Material location Security Firmware Patch</comment>
+  </data>
+  <data name="ancientlanguagedata" xml:space="preserve">
+    <value>Obtained from the ancient ruins of the alien species known as the Guardians.</value>
+    <comment>Material location Pattern Delta Obelisk Data</comment>
+  </data>
+  <data name="ancienttechnologicaldata" xml:space="preserve">
+    <value>Obtained from the ancient ruins of the alien species known as the Guardians.</value>
+    <comment>Material location Pattern Epsilon Obelisk Data</comment>
+  </data>
+  <data name="tg_residuedata" xml:space="preserve">
+    <value>Obtained from the mysterious surface sites of the alien species known as the Thargoids.</value>
+    <comment>Material location Thargoid Residue Data</comment>
+  </data>
+  <data name="unknownwakedata" xml:space="preserve">
+    <value>Obtained by scanning the wake left behind by a Thargoid vessel.</value>
+    <comment>Material location Thargoid Wake Data</comment>
+  </data>
+  <data name="compactemissionsdata" xml:space="preserve">
+    <value>Obtained by scanning combat vessels, scanning deep space data beacons and encoded emissions sources, or as a mission reward.</value>
+    <comment>Material location Abnormal Compact Emissions Data</comment>
+  </data>
+  <data name="adaptiveencryptors" xml:space="preserve">
+    <value>Obtained by scanning satellites orbiting installations and populated Earth-like worlds, or as a mission reward... especially for planetary scan missions.</value>
+    <comment>Material location Adaptive Encryptors Capture</comment>
+  </data>
+  <data name="classifiedscandata" xml:space="preserve">
+    <value>Obtained by scanning datalinks in ground bases, by scanning military and authority ships, or as a mission reward, espcially in systems with booming economies.</value>
+    <comment>Material location Classified Scan Fragment</comment>
+  </data>
+  <data name="dataminedwake" xml:space="preserve">
+    <value>Obtained by scanning frame shift high wakes of vessels, scanning encoded data beacons, or as a mission reward.</value>
+    <comment>Material location Datamined Wake Exceptions</comment>
+  </data>
+  <data name="embeddedfirmware" xml:space="preserve">
+    <value>Obtained by scanning datalinks in ground bases or as a mission reward.</value>
+    <comment>Material location Modified Embedded Firmware</comment>
+  </data>
+  <data name="shieldfrequencydata" xml:space="preserve">
+    <value>Obtained from scanning vessels or as a mission reward.</value>
+    <comment>Material location Peculiar Shield Frequency Data</comment>
+  </data>
+  <data name="basicconductors" xml:space="preserve">
+    <value>Obtained from the wreckage of haulage vessels.</value>
+    <comment>Material location Basic Conductors</comment>
+  </data>
+  <data name="chemicalstorageunits" xml:space="preserve">
+    <value>Obtained from the wreckage of haulage vessels.</value>
+    <comment>Material location Chemical Storage Units</comment>
+  </data>
+  <data name="compactcomposites" xml:space="preserve">
+    <value>Obtained from degraded signal sources, including surface signals.</value>
+    <comment>Material location Compact Composites</comment>
+  </data>
+  <data name="crystalshards" xml:space="preserve">
+    <value>Obtained from the wreckage of combat ships, and from surface signal sources.</value>
+    <comment>Material location Crystal Shards</comment>
+  </data>
+  <data name="gridresistors" xml:space="preserve">
+    <value>Obtained from the wreckage of small combat vessels or as a mission reward.</value>
+    <comment>Material location Grid Resistors</comment>
+  </data>
+  <data name="heatconductionwiring" xml:space="preserve">
+    <value>Obtained from the wreckage of haulage vessels, in signal sources or as a mission reward.</value>
+    <comment>Material location Heat Conduction Wiring</comment>
+  </data>
+  <data name="mechanicalscrap" xml:space="preserve">
+    <value>Obtained from the wreckage of haulage vessels or as mission reward.</value>
+    <comment>Material location Mechanical Scrap</comment>
+  </data>
+  <data name="salvagedalloys" xml:space="preserve">
+    <value>Obtained from the wreckage of combat vessels.</value>
+    <comment>Material location Salvaged Alloys</comment>
+  </data>
+  <data name="temperedalloys" xml:space="preserve">
+    <value>Obtained from the wreckage of combat ships.</value>
+    <comment>Material location temperedalloys</comment>
+  </data>
+  <data name="wornshieldemitters" xml:space="preserve">
+    <value>Obtained from the wreckage of combat vessels.</value>
+    <comment>Material location Worn Shield Emitters</comment>
+  </data>
+  <data name="chemicalprocessors" xml:space="preserve">
+    <value>Obtained from the wreckage of haulage vessels or as a mission reward.</value>
+    <comment>Material location Chemical Processors</comment>
+  </data>
+  <data name="conductivecomponents" xml:space="preserve">
+    <value>Obtained from the wreckage of haulage vessels, especially in anarchy systems near population systems. </value>
+    <comment>Material location Conductive Components</comment>
+  </data>
+  <data name="filamentcomposites" xml:space="preserve">
+    <value>Obtained from the wreckage of military and authority ships.</value>
+    <comment>Material location Filament Composites</comment>
+  </data>
+  <data name="uncutfocuscrystals" xml:space="preserve">
+    <value>Obtained from the wreckage of combat vessels or in combat aftermath signal sources.</value>
+    <comment>Material location Flawed Focus Crystals</comment>
+  </data>
+  <data name="galvanisingalloys" xml:space="preserve">
+    <value>Obtained from the wreckage of combat vessels or as a mission reward, especially in systems holding elections.</value>
+    <comment>Material location Galvanising Alloys</comment>
+  </data>
+  <data name="heatdispersionplate" xml:space="preserve">
+    <value>Obtained from the wreckage of haulage vessels in signal sources, especially in systems with boming economies, or as a mission reward.</value>
+    <comment>Material location Heat Dispersion Plate</comment>
+  </data>
+  <data name="heatresistantceramics" xml:space="preserve">
+    <value>Obtained from the wreckage of military and authority ships.</value>
+    <comment>Material location heatresistantceramics</comment>
+  </data>
+  <data name="hybridcapacitors" xml:space="preserve">
+    <value>Obtained from the wreckage of large combat vessels, commonly Anacondas and Federal Corvettes, or as a mission reward.</value>
+    <comment>Material location Hybrid Capacitors</comment>
+  </data>
+  <data name="mechanicalequipment" xml:space="preserve">
+    <value>Obtained from the wreckage of haulage vessels, especially in systems with booming economies.</value>
+    <comment>Material location Mechanical Equipment</comment>
+  </data>
+  <data name="shieldemitters" xml:space="preserve">
+    <value>Obtained from the wreckage of combat vessels or in signal sources, especially in systems with booming economies.</value>
+    <comment>Material location Shield Emitters</comment>
+  </data>
+  <data name="unknowncarapace" xml:space="preserve">
+    <value>Obtained from the mysterious surface sites of the alien species known as the Thargoids.</value>
+    <comment>Material location Thargoid Carapace</comment>
+  </data>
+  <data name="chemicaldistillery" xml:space="preserve">
+    <value>Obtained from the wreckage of haulage vessels.</value>
+    <comment>Material location Chemical Distillery</comment>
+  </data>
+  <data name="conductiveceramics" xml:space="preserve">
+    <value>Obtained from the wreckage of haulage vessels, especially in anarchy systems near population systems.  These are also available at Dav's Hope.</value>
+    <comment>Material location Conductive Ceramics</comment>
+  </data>
+  <data name="electrochemicalarrays" xml:space="preserve">
+    <value>Obtained from the wreckage of combat and system authority vessels, or from degraded emissions sources in anarchy systems near other populated systems.</value>
+    <comment>Material location Electrochemical Arrays</comment>
+  </data>
+  <data name="focuscrystals" xml:space="preserve">
+    <value>Obtained from the wreckage of combat vessels, especially in high security systems.</value>
+    <comment>Material location Focus Crystals</comment>
+  </data>
+  <data name="heatexchangers" xml:space="preserve">
+    <value>Obtained from the wreckage of haulage vessels, especially in anarchy systems near other popualted systems.</value>
+    <comment>Material location Heat Exchangers</comment>
+  </data>
+  <data name="highdensitycomposites" xml:space="preserve">
+    <value>Obtained from the wreckage of large combat vessels, commonly Anacondas and Federal Corvettes.  These are also available at Dav's Hope.</value>
+    <comment>Material location High Density Composites</comment>
+  </data>
+  <data name="mechanicalcomponents" xml:space="preserve">
+    <value>Obtained from the wreckage of small haulage vessels, especially in low security systems.  These are also available at Dav's Hope.</value>
+    <comment>Material location Mechanical Components</comment>
+  </data>
+  <data name="phasealloys" xml:space="preserve">
+    <value>Obtained from the wreckage of combat vessels or in signal sources in systems with booming economies.</value>
+    <comment>Material location Phase Alloys</comment>
+  </data>
+  <data name="precipitatedalloys" xml:space="preserve">
+    <value>Obtained from the wreckage of combat and system authority vessels or as mission reward.</value>
+    <comment>Material location Precipitated Alloys</comment>
+  </data>
+  <data name="shieldingsensors" xml:space="preserve">
+    <value>Obtained from the wreckage of combat vessels or as a mission reward.</value>
+    <comment>Material location Shielding Sensors</comment>
+  </data>
+  <data name="unknownenergycell" xml:space="preserve">
+    <value>Obtained from the mysterious surface sites of the alien species known as the Thargoids.</value>
+    <comment>Material location Thargoid Energy Cell</comment>
+  </data>
+  <data name="chemicalmanipulators" xml:space="preserve">
+    <value>Obtained from the wreckage of large haulage vessels, commonly Type-7s and Type 9s, especially in systems in anarchy or suffering from disease.  These are also available at Dav's Hope."</value>
+    <comment>Material location Chemical Manipulators</comment>
+  </data>
+  <data name="compoundshielding" xml:space="preserve">
+    <value>Obtained from the wreckage of combat vessels or as a mission reward and encoded emissions sources, especially in high security systems, systems with booming economies, and systems seeking to retreat and consolidate power.  These are also available at Dav's Hope.</value>
+    <comment>Material location Compound Shielding</comment>
+  </data>
+  <data name="conductivepolymers" xml:space="preserve">
+    <value>Obtained from the wreckage of large haulage and passenger vessels such as Type-9s and Beluga liners, from surface signal sources, and as a mission reward.  These are also available at Dav's Hope.</value>
+    <comment>Material location Conductive Polymers</comment>
+  </data>
+  <data name="configurablecomponents" xml:space="preserve">
+    <value>Obtained from the wreckage of haulage vessels, especially in low security systems. These are also available at Dav's Hope.</value>
+    <comment>Material location Configurable Components</comment>
+  </data>
+  <data name="heatvanes" xml:space="preserve">
+    <value>Obtained from the wreckage of haulage vessels or as a mission reward.  These are also available at Dav's Hope.</value>
+    <comment>Material location Heat Vanes</comment>
+  </data>
+  <data name="polymercapacitors" xml:space="preserve">
+    <value>Obtained  from the wreckage of combat and system authority vessels, signal sources with convoy dispersal patterns or as a mission reward.</value>
+    <comment>Material location Polymer Capacitors</comment>
+  </data>
+  <data name="fedproprietarycomposites" xml:space="preserve">
+    <value>Obtained in high-grade signal sources Federal control or as a mission reward in Federal systems during elections.</value>
+    <comment>Material location Proprietary Composites</comment>
+  </data>
+  <data name="protolightalloys" xml:space="preserve">
+    <value>Obtained in high-grade signal sources in systems with booming economies or as a mission reward.</value>
+    <comment>Material location Proto Light Alloys</comment>
+  </data>
+  <data name="refinedfocuscrystals" xml:space="preserve">
+    <value>Obtained in active combat signal sources or as mission reward.</value>
+    <comment>Material location Refined Focus Crystals</comment>
+  </data>
+  <data name="thermicalloys" xml:space="preserve">
+    <value>Obtained from the wreckage of combat vessels or as a mission reward.</value>
+    <comment>Material location Thermic Alloys</comment>
+  </data>
+  <data name="unknowntechnologycomponents" xml:space="preserve">
+    <value>Obtained from the mysterious surface sites of the alien species known as the Thargoids.</value>
+    <comment>Material location Thargoid Technological Components</comment>
+  </data>
+  <data name="biotechconductors" xml:space="preserve">
+    <value>Obtained as a mission reward.</value>
+    <comment>Material location Biotech conductors</comment>
+  </data>
+  <data name="fedcorecomposites" xml:space="preserve">
+    <value>Obtained in high-grade signal sources in systems under Federal control or from the wreckage of Federal combat vessels.</value>
+    <comment>Material location Core Dynamics Composites</comment>
+  </data>
+  <data name="exquisitefocuscrystals" xml:space="preserve">
+    <value>Obtained from the wreckage of combat vessels or as a mission reward, especially in systems with booming economies.</value>
+    <comment>Material location Exquisite Focus Crystals</comment>
+  </data>
+  <data name="imperialshielding" xml:space="preserve">
+    <value>Obtained in high-grade signal sources in systems under Imperial control or as a mission reward.</value>
+    <comment>Material location Imperial Shielding</comment>
+  </data>
+  <data name="improvisedcomponents" xml:space="preserve">
+    <value>Obtained in high-grade signal sources in systems in independent space, systems with booming economies, systems suffering from civil unrest, war, civil war, or disease, or as a mission reward.</value>
+    <comment>Material location Improvised Components</comment>
+  </data>
+  <data name="militarygradealloys" xml:space="preserve">
+    <value>Obtained in high-grade signal sources in war or civil war systems or as a mission reward.</value>
+    <comment>Material location Military Grade Alloys</comment>
+  </data>
+  <data name="militarysupercapacitors" xml:space="preserve">
+    <value>Obtained in high-grade signal sources in war or civil war systems or as a mission reward.</value>
+    <comment>Material location Military Supercapacitors</comment>
+  </data>
+  <data name="pharmaceuticalisolators" xml:space="preserve">
+    <value>Obtained in high-grade signal sources, especially in outbreak systems, or as a mission reward.</value>
+    <comment>Material location Pharmaceutical Isolators</comment>
+  </data>
+  <data name="protoheatradiators" xml:space="preserve">
+    <value>Obtained in high-grade signal sources in systems with booming economies or as a mission reward.</value>
+    <comment>Material location Proto Heat Radiators</comment>
+  </data>
+  <data name="protoradiolicalloys" xml:space="preserve">
+    <value>Obtained in high-grade signal sources in systems with booming economies.</value>
+    <comment>Material location Proto Radiolic Alloys</comment>
+  </data>
+  <data name="unknownenergysource" xml:space="preserve">
+    <value>Obtained from the mysterious surface sites of the alien species known as the Thargoids.</value>
+    <comment>Material location unknownenergysource</comment>
+  </data>
+  <data name="unknownorganiccircuitry" xml:space="preserve">
+    <value>Obtained from the mysterious surface sites of the alien species known as the Thargoids.</value>
+    <comment>Material location Thargoid Organic Circuitry</comment>
+  </data>
+  <data name="boron" xml:space="preserve">
+    <value>Obtained by asteroid mining.</value>
+    <comment>Material location Boron</comment>
+  </data>
+  <data name="guardian_powercell" xml:space="preserve">
+    <value>Obtained from the ancient ruins of the alien species known as the Guardians.</value>
+    <comment>Material location guardian_powercell</comment>
+  </data>
+  <data name="guardian_weaponblueprint" xml:space="preserve">
+    <value>Obtained from the ancient ruins of the alien species known as the Guardians.</value>
+    <comment>Material location guardian_weaponblueprint</comment>
+  </data>
+  <data name="guardian_vesselblueprint" xml:space="preserve">
+    <value>Obtained from the ancient ruins of the alien species known as the Guardians.</value>
+    <comment>Material location guardian_vesselblueprint</comment>
+  </data>
+  <data name="guardian_techcomponent" xml:space="preserve">
+    <value>Obtained from the ancient ruins of the alien species known as the Guardians.</value>
+    <comment>Material location guardian_techcomponent</comment>
+  </data>
+  <data name="guardian_powerconduit" xml:space="preserve">
+    <value>Obtained from the ancient ruins of the alien species known as the Guardians.</value>
+    <comment>Material location guardian_powerconduit</comment>
+  </data>
+  <data name="guardian_moduleblueprint" xml:space="preserve">
+    <value>Obtained from the ancient ruins of the alien species known as the Guardians.</value>
+    <comment>Material location guardian_moduleblueprint</comment>
+  </data>
+  <data name="guardian_sentinel_weaponparts" xml:space="preserve">
+    <value>Obtained from the ancient ruins of the alien species known as the Guardians.</value>
+    <comment>Material location guardian_sentinel_weaponparts</comment>
+  </data>
+  <data name="guardian_sentinel_wreckagecomponents" xml:space="preserve">
+    <value>Obtained from the ancient ruins of the alien species known as the Guardians.</value>
+    <comment>Material location guardian_sentinel_wreckagecomponents</comment>
+  </data>
+  <data name="lead" xml:space="preserve">
+    <value>Obtained from asteroid mining.</value>
+    <comment>Material location Lead</comment>
+  </data>
+  <data name="rhenium" xml:space="preserve">
+    <value>Obtained from asteroid mining.</value>
+    <comment>Material location Rhenium</comment>
+  </data>
+  <data name="tg_propulsionelement" xml:space="preserve">
+    <value>Obtained from the wreckage of Thargoid vessels.</value>
+    <comment>Material location tg_propulsionelement</comment>
+  </data>
+  <data name="tg_biomechanicalconduits" xml:space="preserve">
+    <value>Obtained from the wreckage of Thargoid vessels.</value>
+    <comment>Material location tg_biomechanicalconduits</comment>
+  </data>
+  <data name="tg_weaponparts" xml:space="preserve">
+    <value>Obtained from the wreckage of Thargoid vessels.</value>
+    <comment>Material location tg_weaponparts</comment>
+  </data>
+  <data name="tg_wreckagecomponents" xml:space="preserve">
+    <value>Obtained from the wreckage of Thargoid vessels.</value>
+    <comment>Material location tg_wreckagecomponents</comment>
+  </data>
+  <data name="tg_shipflightdata" xml:space="preserve">
+    <value>Obtained from scanning Thargoid vessels.</value>
+    <comment>Material location tg_shipflightdata</comment>
+  </data>
+  <data name="tg_shipsystemsdata" xml:space="preserve">
+    <value>Obtained from scanning Thargoid vessels.</value>
+    <comment>Material location tg_shipsystemsdata</comment>
+  </data>
+</root>
