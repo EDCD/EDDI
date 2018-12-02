@@ -61,6 +61,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Listening Post.
+        /// </summary>
+        public static string ListeningPost {
+            get {
+                return ResourceManager.GetString("ListeningPost", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Resource Extraction Site.
         /// </summary>
         public static string MULTIPLAYER_SCENARIO14_TITLE {
@@ -264,6 +273,15 @@ namespace EddiDataDefinitions.Properties {
         public static string Warzone_PointRace_Med {
             get {
                 return ResourceManager.GetString("Warzone_PointRace_Med", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to AX Conflict Zone.
+        /// </summary>
+        public static string Warzone_TG {
+            get {
+                return ResourceManager.GetString("Warzone_TG", resourceCulture);
             }
         }
     }

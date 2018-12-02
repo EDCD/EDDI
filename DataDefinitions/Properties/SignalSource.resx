@@ -207,6 +207,14 @@
   </data>
   <data name="NumberStation" xml:space="preserve">
     <value>Unregistered Comms Beacon</value>
-    <comment>source $NumberStation</comment>
+    <comment>NumberStation</comment>
+  </data>
+  <data name="Warzone_TG" xml:space="preserve">
+    <value>AX Conflict Zone</value>
+    <comment>Thargoid conflict zone</comment>
+  </data>
+  <data name="ListeningPost" xml:space="preserve">
+    <value>Listening Post</value>
+    <comment>ListeningPost</comment>
   </data>
 </root>

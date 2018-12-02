@@ -17,6 +17,7 @@
             var CombatZoneHigh = new SignalSource("Warzone_PointRace_High");
             var CombatZoneMedium = new SignalSource("Warzone_PointRace_Med");
             var CombatZoneLow = new SignalSource("Warzone_PointRace_Low");
+            var CombatZoneThargoid = new SignalSource("Warzone_TG");
 
             var Aftermath = new SignalSource("USS_Type_Aftermath");
             var Anomaly = new SignalSource("USS_Type_Anomaly");
@@ -32,6 +33,7 @@
             var WeaponsFire = new SignalSource("USS_Type_WeaponsFire");
 
             var UnregisteredCommsBeacon = new SignalSource("NumberStation");
+            var ListeningPost = new SignalSource("ListeningPost");
         }
 
         public static readonly SignalSource UnidentifiedSignalSource = new SignalSource("USS");
