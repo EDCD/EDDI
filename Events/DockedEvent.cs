@@ -70,9 +70,9 @@ namespace EddiEvents
             }
         }
 
-        public bool? cockpitbreach { get; private set; }
-        public bool? wanted { get; private set; }
-        public bool? activefine { get; private set; }
+        public bool cockpitbreach { get; private set; }
+        public bool wanted { get; private set; }
+        public bool activefine { get; private set; }
 
         // These properties are not intended to be user facing
         public long systemAddress { get; private set; }
@@ -83,7 +83,7 @@ namespace EddiEvents
         public Government Government { get; private set; } = Government.None;
         public List<EconomyShare> economyShares { get; private set; } = new List<EconomyShare>() { new EconomyShare(Economy.None, 0M), new EconomyShare(Economy.None, 0M) };
 
-        public DockedEvent(DateTime timestamp, string system, long systemAddress, long marketId, string station, string state, StationModel stationModel, Superpower Allegiance, string faction, FactionState factionState, List<EconomyShare> Economies, Government Government, decimal? distancefromstar, List<StationService> stationServices, bool? cockpitBreach, bool? wanted, bool? activeFine) : base(timestamp, NAME)
+        public DockedEvent(DateTime timestamp, string system, long systemAddress, long marketId, string station, string state, StationModel stationModel, Superpower Allegiance, string faction, FactionState factionState, List<EconomyShare> Economies, Government Government, decimal? distancefromstar, List<StationService> stationServices, bool cockpitBreach, bool wanted, bool activeFine) : base(timestamp, NAME)
         {
             this.system = system;
             this.systemAddress = systemAddress;

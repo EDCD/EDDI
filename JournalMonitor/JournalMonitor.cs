@@ -125,9 +125,9 @@ namespace EddiJournalMonitor
                                     }
                                 }
 
-                                bool? cockpitBreach = JsonParsing.getOptionalBool(data, "CockpitBreach") ?? false;
-                                bool? wanted = JsonParsing.getOptionalBool(data, "Wanted") ?? false;
-                                bool? activeFine = JsonParsing.getOptionalBool(data, "ActiveFine") ?? false;
+                                bool cockpitBreach = JsonParsing.getOptionalBool(data, "CockpitBreach") ?? false;
+                                bool wanted = JsonParsing.getOptionalBool(data, "Wanted") ?? false;
+                                bool activeFine = JsonParsing.getOptionalBool(data, "ActiveFine") ?? false;
 
                                 events.Add(new DockedEvent(timestamp, systemName, systemAddress, marketId, stationName, stationState, stationModel, allegiance, faction, factionState, Economies, government, distancefromstar, stationServices, cockpitBreach, wanted, activeFine) { raw = line });
                             }
