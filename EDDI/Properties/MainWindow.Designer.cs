@@ -448,7 +448,7 @@ namespace Eddi.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to If verbose logging is enabled when you click &quot;Report an Issue&quot;, EDDI will package your log and place a copy on your desktop. You may paste this copy into the Github Issue report. No private information is sent in the log..
+        ///   Looks up a localized string similar to If verbose logging is enabled, this will create a zip archive of your log on your desktop, ready to be pasted into the issue report on GitHub. No personally-identifying information is included in the log..
         /// </summary>
         public static string verbose_logging_desc {
             get {
