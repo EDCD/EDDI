@@ -847,5 +847,17 @@ namespace UnitTests
             List<Event> events = JournalMonitor.ParseJournalEntry(line);
             Assert.AreEqual(0, events.Count);
         }
+
+        [TestMethod]
+        public void TestUnhandledEvent()
+        {
+            string line = @"{ ""timestamp"":""2018 - 10 - 30T20: 45:07Z"", ""event"":""AnyUnhandledEvent""}";
+            List<Event> events = JournalMonitor.ParseJournalEntry(line);
+            Assert.AreEqual(1, events.Count);
+            UnhandledEvent @event = (UnhandledEvent)events[0];
+
+            Assert.AreEqual("AnyUnhandledEvent", @event.edType);
+            Assert.IsNotNull(@event.raw);
+        }
     }
 }
