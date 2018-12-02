@@ -631,7 +631,10 @@ namespace EddiJournalMonitor
                                     {
                                         name = (string)val;
                                     }
-                                    events.Add(new SettlementApproachedEvent(timestamp, name, marketId) { raw = line });
+                                    decimal? latitude = JsonParsing.getOptionalDecimal(data, "Latitude");
+                                    decimal? longitude = JsonParsing.getOptionalDecimal(data, "Longitude");
+
+                                    events.Add(new SettlementApproachedEvent(timestamp, name, marketId, latitude, longitude) { raw = line });
                                 }
                                 handled = true;
                                 break;

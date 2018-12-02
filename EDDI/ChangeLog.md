@@ -14,6 +14,8 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * Pattern Gamma Obelisk Data (Rare - 150 MAX)
       * Polonium (Rare - 150 MAX)
       * Antimony (Rare - 150 MAX)
+  * Speech responder
+    * `Settlement approached`: Added `latitude` and `longitude`.
      
 ### 3.1
   * Core

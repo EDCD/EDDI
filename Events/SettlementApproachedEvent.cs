@@ -15,18 +15,25 @@ namespace EddiEvents
         static SettlementApproachedEvent()
         {
             VARIABLES.Add("name", "The name of the settlement");
+            VARIABLES.Add("longitude", "The longitude coordinate of the settlement (if given)");
+            VARIABLES.Add("latitude", "The latitude coordinate of the settlement (if given)");
         }
 
         [JsonProperty("name")]
         public string name { get; private set; }
 
+        public decimal? latitude { get; private set; }
+        public decimal? longitude { get; private set; }
+
         // Admin
         public long marketId { get; private set; }
 
-        public SettlementApproachedEvent(DateTime timestamp, string name, long marketId) : base(timestamp, NAME)
+        public SettlementApproachedEvent(DateTime timestamp, string name, long marketId, decimal? latitude, decimal? longitude) : base(timestamp, NAME)
         {
             this.name = name;
             this.marketId = marketId;
+            this.latitude = latitude;
+            this.longitude = longitude;
         }
     }
 }
