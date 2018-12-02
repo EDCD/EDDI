@@ -240,6 +240,10 @@ namespace EddiCargoMonitor
             {
                 handleDiedEvent((DiedEvent)@event);
             }
+            else if (@event is EngineerContributedEvent)
+            {
+                handleEngineerContributedEvent((EngineerContributedEvent)@event);
+            }
         }
 
         private void handleCargoInventoryEvent(CargoInventoryEvent @event)
@@ -1205,6 +1209,19 @@ namespace EddiCargoMonitor
         {
             inventory.Clear();
             writeInventory();
+        }
+
+        private void handleEngineerContributedEvent(EngineerContributedEvent @event)
+        {
+            if (@event.commodityAmount != null)
+            {
+                Cargo cargo = GetCargoWithEDName(@event.commodityAmount.edname);
+                if (cargo != null)
+                {
+                    cargo.owned -= Math.Min(cargo.owned, @event.commodityAmount.amount);
+                    RemoveCargo(cargo);
+                }
+            }
         }
 
         public IDictionary<string, object> GetVariables()

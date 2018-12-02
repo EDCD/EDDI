@@ -560,21 +560,8 @@ namespace EddiJournalMonitor
                                             else
                                             {
                                                 // This is a compartment
-                                                Compartment compartment = new Compartment() { name = slot };
-
-                                                // Compartment slots are in the form of "Slotnn_Sizen" or "Militarynn"
-                                                if (slot.Contains("Slot"))
-                                                {
-                                                    Match matches = Regex.Match(compartment.name, @"Size([0-9]+)");
-                                                    if (matches.Success)
-                                                    {
-                                                        compartment.size = Int32.Parse(matches.Groups[1].Value);
-                                                    }
-                                                }
-                                                else if (slot.Contains("Military"))
-                                                {
-                                                    compartment.size = (int)ShipDefinitions.FromEDModel(ship)?.militarysize;
-                                                }
+                                            Compartment compartment = parseShipCompartment(ship, slot);
+                                            // Compartment slots are in the form of "Slotnn_Sizen" or "Militarynn"
 
                                                 Module module = new Module(Module.FromEDName(item));
                                                 if (module == null)
@@ -1780,14 +1767,60 @@ namespace EddiJournalMonitor
                                     handled = true;
                                     break;
                                 }
+                        case "EngineerContribution":
+                            {
+                                string name = JsonParsing.getString(data, "Engineer");
+                                long engineerId = JsonParsing.getLong(data, "EngineerID");
+                                Engineer engineer = Engineer.FromNameOrId(name, engineerId);
+
+                                string contributionType = JsonParsing.getString(data, "Type"); // (Commodity, materials, Credits, Bond, Bounty)
+                                switch (contributionType)
+                                {
+                                    case "Commodity":
+                                        {
+                                            string edname = JsonParsing.getString(data, "Commodity");
+                                            int amount = JsonParsing.getInt(data, "Quantity");
+                                            int total = JsonParsing.getInt(data, "TotalQuantity");
+                                            CommodityAmount commodity = new CommodityAmount(CommodityDefinition.FromEDName(edname), amount);
+                                            events.Add(new EngineerContributedEvent(timestamp, engineer, commodity, null, contributionType, amount, total) { raw = line });
+                                        }
+                                        break;
+                                    case "Materials":
+                                        {
+                                            string edname = JsonParsing.getString(data, "Material");
+                                            int amount = JsonParsing.getInt(data, "Quantity");
+                                            int total = JsonParsing.getInt(data, "TotalQuantity");
+                                            MaterialAmount material = new MaterialAmount(Material.FromEDName(edname), amount);
+                                            events.Add(new EngineerContributedEvent(timestamp, engineer, null, material, contributionType, amount, total) { raw = line });
+                                        }
+                                        break;
+                                    case "Credits":
+                                    case "Bond":
+                                    case "Bounty":
+                                        { } // We don't currently handle credit changes from these types.
+                                        break;
+                                }
+                                handled = true;
+                                break;
+                            }
                             case "EngineerCraft":
                                 {
                                     string engineer = JsonParsing.getString(data, "Engineer");
-                                    string blueprint = JsonParsing.getString(data, "Blueprint");
+                                long engineerId = JsonParsing.getLong(data, "EngineerID");
+                                string blueprintpEdName = JsonParsing.getString(data, "Blueprint");
+                                long blueprintId = JsonParsing.getLong(data, "BlueprintID");
+
                                     data.TryGetValue("Level", out object val);
                                     int level = (int)(long)val;
 
-                                    List<CommodityAmount> commodities = new List<CommodityAmount>();
+                                decimal? quality = JsonParsing.getOptionalDecimal(data, "Quality"); //
+                                string experimentalEffect = JsonParsing.getString(data, "ApplyExperimentalEffect"); //
+
+                                string ship = ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship Monitor")).GetCurrentShip().model;
+                                Compartment compartment = parseShipCompartment(ship, JsonParsing.getString(data, "Slot")); //
+                                compartment.module = Module.FromEDName(JsonParsing.getString(data, "Module"));
+
+                                List<CommodityAmount> commodities = new List<CommodityAmount>();
                                     List<MaterialAmount> materials = new List<MaterialAmount>();
                                     if (data.TryGetValue("Ingredients", out val))
                                     {
@@ -1820,33 +1853,40 @@ namespace EddiJournalMonitor
                                             }
                                         }
                                     }
-                                    events.Add(new ModificationCraftedEvent(timestamp, engineer, blueprint, level, materials, commodities) { raw = line });
+                                events.Add(new ModificationCraftedEvent(timestamp, engineer, engineerId, blueprintpEdName, blueprintId, level, quality, experimentalEffect, materials, commodities, compartment) { raw = line });
                                     handled = true;
                                     break;
                                 }
-                            case "EngineerApply":
+                        case "EngineerProgress":
                                 {
-                                    string engineer = JsonParsing.getString(data, "Engineer");
-                                    string blueprint = JsonParsing.getString(data, "Blueprint");
-                                    data.TryGetValue("Level", out object val);
-                                    int level = (int)(long)val;
-
-                                    events.Add(new ModificationAppliedEvent(timestamp, engineer, blueprint, level) { raw = line });
-                                    handled = true;
-                                    break;
-                                }
-                            case "EngineerProgress":
+                                data.TryGetValue("Engineers", out object val);
+                                if (val != null)
                                 {
-                                    string engineer = JsonParsing.getString(data, "Engineer");
-                                    data.TryGetValue("Rank", out object val);
-                                    if (val == null)
+                                    // This is a startup entry. 
+                                    // Update engineer progress / status data but do not generate events.
+                                    List<object> engineers = (List<object>)val;
+                                    foreach (IDictionary<string, object> engineerData in engineers)
                                     {
-                                        // There are other non-rank events for engineers but we don't pay attention to them
-                                        break;
-                                    }
-                                    int rank = (int)(long)val;
+                                        Engineer engineer = parseEngineer(engineerData);
+                                        Engineer.AddOrUpdate(engineer);
+                            }
+                                }
+                                else
+                                {
+                                    // This is a progress entry.
+                                    Engineer engineer = parseEngineer(data);
+                                    Engineer lastEngineer = Engineer.FromNameOrId(engineer.name, engineer.id);
 
-                                    events.Add(new EngineerProgressedEvent(timestamp, engineer, rank) { raw = line });
+                                    if (engineer.rank != null && engineer.rank != lastEngineer?.rank)
+                                    {
+                                        events.Add(new EngineerProgressedEvent(timestamp, engineer, "Rank") { raw = line });
+                                    }
+                                    else if (engineer.stage != null && engineer.stage != lastEngineer?.stage)
+                                    {
+                                        events.Add(new EngineerProgressedEvent(timestamp, engineer, "Stage") { raw = line });
+                                    }
+                                    Engineer.AddOrUpdate(engineer);
+                                }
                                     handled = true;
                                     break;
                                 }
@@ -3200,6 +3240,39 @@ namespace EddiJournalMonitor
                 role = "Fighter";
             }
             return role;
+        }
+
+        private static Engineer parseEngineer(IDictionary<string, object> data)
+        {
+            string engineer = JsonParsing.getString(data, "Engineer");
+            long engineerId = JsonParsing.getLong(data, "EngineerID");
+            data.TryGetValue("Rank", out object rankVal);
+            int? rank = (int?)(long?)rankVal;
+            data.TryGetValue("RankProgress", out object rankProgressVal);
+            int? rankProgress = (int?)(long?)rankProgressVal;
+            string stage = JsonParsing.getString(data, "Progress");
+            return new Engineer(engineer, engineerId, stage, rankProgress, rank);
+        }
+
+        private static Compartment parseShipCompartment(string ship, string slot)
+        {
+            Compartment compartment = new Compartment() { name = slot };
+
+            // Compartment slots are in the form of "Slotnn_Sizen" or "Militarynn"
+            if (slot.Contains("Slot"))
+            {
+                Match matches = Regex.Match(compartment.name, @"Size([0-9]+)");
+                if (matches.Success)
+                {
+                    compartment.size = Int32.Parse(matches.Groups[1].Value);
+                }
+            }
+            else if (slot.Contains("Military"))
+            {
+                compartment.size = (int)ShipDefinitions.FromEDModel(ship)?.militarysize;
+            }
+
+            return compartment;
         }
     }
 }

@@ -246,6 +246,10 @@ namespace EddiSpeechResponder
                     {
                         scriptHolder.Add(kv.Key);
                     }
+                    else if (kv.Value.Name == "Modification applied") // Event deprecated by FDev, no longer written. 
+                    {
+                        scriptHolder.Add(kv.Key);
+                    }
                 }
                 foreach (string script in scriptHolder)
                 {
@@ -266,10 +270,10 @@ namespace EddiSpeechResponder
 
             // Report missing scripts, except those we have specifically named
             /// `Belt scanned` is a useless event, only exists so that the count on nav beacon scans comes out right
-            /// `Jumping` is a deprecated event
+            /// `Jumping` and `Modification applied` are deprecated events
             /// `Status` and `Unhandled event` are events which shares updates with monitors / responders but are not intended to be user facing
-            string[] ignoredEventKeys = { "Belt scanned", "Jumping", "Status", "Unhandled event" };
-            missingScripts.RemoveAll(t => t == "Belt scanned" || t == "Jumping" || t == "Status" || t == "Unhandled event" );
+            string[] ignoredEventKeys = { "Belt scanned", "Jumping", "Status", "Unhandled event", "Modification applied" };
+            missingScripts.RemoveAll(t => t == "Belt scanned" || t == "Jumping" || t == "Status" || t == "Unhandled event" || t == "Modification applied");
             if (missingScripts.Count > 0)
             {
                 Logging.Info("Failed to find scripts" + string.Join(";", missingScripts));

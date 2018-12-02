@@ -15,7 +15,14 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * Polonium (Rare - 150 MAX)
       * Antimony (Rare - 150 MAX)
   * Speech responder
+    * Added new event `EngineerContributed`, triggered when contributing resources to an engineer in exchange for access.
+    * Added new function `EngineerDetails()` for accessing information about relations with engineers.
+    * The `cmdr` object now includes `engineers`.
+    * Updated documentation to describe `Engineer` object and `EngineerDetails` function.
     * `Docked event`: Added `wanted`, `activefine`, and `cockpitbreach`.
+    * `Engineer progressed` event: Added `stage`, `rankprogress`, and `progresstype`.
+    * `Modification applied` event: Removed. This event was redundant with `Modification crafted` and is no longer written by the game as of Elite Dangerous version 3.0.
+    * `Modification crafted` event: Added `module`, `quality`, and `experimentaleffect`.
     * `Settlement approached`: Added `latitude` and `longitude`.
 
 ### 3.1
