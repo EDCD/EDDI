@@ -1433,7 +1433,7 @@ namespace Eddi
                 body.tidallylocked = theEvent.tidallylocked;
                 body.temperature = (long?)theEvent.temperature;
                 body.periapsis = theEvent.periapsis;
-                body.atmosphereclass = theEvent.atmosphereclass ?? AtmosphereClass.None;
+                body.atmosphereclass = theEvent.atmosphereclass;
                 body.atmospherecompositions = theEvent.atmospherecomposition;
                 body.solidcompositions = theEvent.solidcomposition;
                 body.gravity = theEvent.gravity;
@@ -1443,8 +1443,8 @@ namespace Eddi
                 body.rotationalperiod = Math.Round(theEvent.rotationperiod / 86400, 2);
                 body.semimajoraxis = theEvent.semimajoraxis;
                 body.pressure = theEvent.pressure;
-                body.terraformState = TerraformState.FromEDName(theEvent.terraformstate) ?? TerraformState.NotTerraformable;
-                body.planetClass = PlanetClass.FromName(theEvent.bodyclass) ?? PlanetClass.None;
+                body.terraformState = theEvent.terraformState;
+                body.planetClass = theEvent.planetClass;
                 body.volcanism = theEvent.volcanism;
                 body.materials = new List<MaterialPresence>();
                 foreach (MaterialPresence presence in theEvent.materials)

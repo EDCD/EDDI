@@ -24,10 +24,6 @@ namespace EddiVoiceAttackResponder
             }
         }
 
-        private static List<Event> eventQueue = new List<Event>();
-
-        private static bool enqueueEvents;
-
         public string ResponderName()
         {
             return "VoiceAttack responder";
@@ -54,45 +50,6 @@ namespace EddiVoiceAttackResponder
         }
 
         public void Handle(Event @event)
-        {
-            // Beginning with Elite Dangerous v. 3.3, the primary star scan is delivered via a Scan with scantype `Autoscan` 
-            // when you jump into the system. Secondary stars are delivered in a burst following an FSSDiscoveryScan.
-            // Since each source has a different trigger, we need to re-order events and ensure the main star scan 
-            // completes after the the FSSDicoveryScan and before secondary star scans, 
-            // regardless of the timing of the `Autoscan` Scan and FSSDiscoveryScan events
-            if (@event is FSSDiscoveryScanEvent)
-            {
-                enqueueEvents = true;
-            }
-            if (@event is StarScannedEvent starScannedEvent)
-            {
-                if (enqueueEvents)
-                {
-                    if (starScannedEvent.mainstar)
-                    {
-                        enqueueEvents = false;
-                        SendtoPlugin(@event);
-                        foreach (Event theEvent in eventQueue.OfType<StarScannedEvent>())
-                        {
-                            SendtoPlugin(theEvent);
-                        }
-                        eventQueue = (List<Event>)eventQueue.SkipWhile(s => (StarScannedEvent)s != null);
-                    }
-                    else
-                    {
-                        eventQueue.Add(@event);
-                        eventQueue.OrderBy(s => ((StarScannedEvent)s)?.distance);
-                    }
-                }
-                else
-                {
-                    SendtoPlugin(@event);
-                }
-            }
-            SendtoPlugin(@event);
-        }
-
-        private void SendtoPlugin(Event @event)
         {
             Logging.Debug("Received event " + JsonConvert.SerializeObject(@event));
             VoiceAttackPlugin.EventQueue.Add(@event);

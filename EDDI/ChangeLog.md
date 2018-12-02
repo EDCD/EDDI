@@ -37,6 +37,9 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * The `Voice()` function now tolerates incomplete voice names (EDDI will return the first matching voice) and casing no longer matters.
     * Added new function `VoiceDetails()` for accessing details of installed voices while scripting.
     * Fixed very low hab zone values in `Star scanned` events
+    * Revised `Star scanned` event script
+    * Revised `Star report` event script
+    * Added `Star habitable zone` non-event script.
   * Status monitor 
     * The status object has new values for: 
       * HUD analysis mode, 

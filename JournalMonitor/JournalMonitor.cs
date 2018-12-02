@@ -22,7 +22,8 @@ namespace EddiJournalMonitor
         private static Regex JsonRegex = new Regex(@"^{.*}$", RegexOptions.Singleline);
 
         public JournalMonitor() : base(GetSavedGamesDir(), @"^Journal.*\.[0-9\.]+\.log$", result =>
-        ForwardJournalEntry(result, EDDI.Instance.eventHandler)) { }
+        ForwardJournalEntry(result, EDDI.Instance.eventHandler))
+        { }
 
         public static void ForwardJournalEntry(string line, Action<Event> callback)
         {
@@ -97,7 +98,7 @@ namespace EddiJournalMonitor
                                     string stationName = JsonParsing.getString(data, "StationName");
                                     string stationState = JsonParsing.getString(data, "StationState") ?? string.Empty;
                                     StationModel stationModel = StationModel.FromEDName(JsonParsing.getString(data, "StationType") ?? "None");
-                                    Superpower allegiance = getAllegiance(data, "StationAllegiance") ?? Superpower.FromEDName("None");
+                                    Superpower allegiance = getAllegiance(data, "StationAllegiance") ?? Superpower.None;
                                     string faction = getFaction(data, "StationFaction");
                                     FactionState factionState = FactionState.FromEDName(JsonParsing.getString(data, "FactionState") ?? "None");
                                     Government government = Government.FromEDName(JsonParsing.getString(data, "StationGovernment" ?? "None"));
@@ -127,11 +128,11 @@ namespace EddiJournalMonitor
                                         }
                                     }
 
-	                                bool cockpitBreach = JsonParsing.getOptionalBool(data, "CockpitBreach") ?? false;
-	                                bool wanted = JsonParsing.getOptionalBool(data, "Wanted") ?? false;
-	                                bool activeFine = JsonParsing.getOptionalBool(data, "ActiveFine") ?? false;
+                                    bool cockpitBreach = JsonParsing.getOptionalBool(data, "CockpitBreach") ?? false;
+                                    bool wanted = JsonParsing.getOptionalBool(data, "Wanted") ?? false;
+                                    bool activeFine = JsonParsing.getOptionalBool(data, "ActiveFine") ?? false;
 
-	                                events.Add(new DockedEvent(timestamp, systemName, systemAddress, marketId, stationName, stationState, stationModel, allegiance, faction, factionState, Economies, government, distancefromstar, stationServices, cockpitBreach, wanted, activeFine) { raw = line });
+                                    events.Add(new DockedEvent(timestamp, systemName, systemAddress, marketId, stationName, stationState, stationModel, allegiance, faction, factionState, Economies, government, distancefromstar, stationServices, cockpitBreach, wanted, activeFine) { raw = line });
                                 }
                                 handled = true;
                                 break;
@@ -561,8 +562,8 @@ namespace EddiJournalMonitor
                                             else
                                             {
                                                 // This is a compartment
-                                            Compartment compartment = parseShipCompartment(ship, slot);
-                                            // Compartment slots are in the form of "Slotnn_Sizen" or "Militarynn"
+                                                Compartment compartment = parseShipCompartment(ship, slot);
+                                                // Compartment slots are in the form of "Slotnn_Sizen" or "Militarynn"
 
                                                 Module module = new Module(Module.FromEDName(item));
                                                 if (module == null)
@@ -630,66 +631,66 @@ namespace EddiJournalMonitor
                                 }
                                 handled = true;
                                 break;
-                        case "Scan":
-                            {
-                                string name = JsonParsing.getString(data, "BodyName");
-                                string scantype = JsonParsing.getString(data, "ScanType");
-                                decimal distancefromarrival = JsonParsing.getDecimal(data, "DistanceFromArrivalLS");
-
-                                // Belt
-                                if (name.Contains("Belt Cluster"))
+                            case "Scan":
                                 {
+                                    string name = JsonParsing.getString(data, "BodyName");
+                                    string scantype = JsonParsing.getString(data, "ScanType");
+                                    decimal distancefromarrival = JsonParsing.getDecimal(data, "DistanceFromArrivalLS");
 
-                                    events.Add(new BeltScannedEvent(timestamp, scantype, name, distancefromarrival) { raw = line });
-                                    handled = true;
-                                    break;
-                                }
-
-                                // Common items
-                                // Need to convert radius from meters (per journal) to kilometers
-                                decimal radiusKm = JsonParsing.getDecimal(data, "Radius") / 1000;
-                                // Need to convert orbital period from seconds (per journal) to days
-                                decimal? orbitalPeriodDays = ConstantConverters.seconds2days(JsonParsing.getOptionalDecimal(data, "OrbitalPeriod"));
-                                // Need to convert rotation period from seconds (per journal) to days
-                                decimal rotationPeriodDays = (decimal)ConstantConverters.seconds2days(JsonParsing.getDecimal(data, "RotationPeriod"));
-                                // Need to convert meters to light seconds
-                                decimal? semimajoraxisLs = ConstantConverters.meters2ls(JsonParsing.getOptionalDecimal(data, "SemiMajorAxis"));
-                                decimal? eccentricity = JsonParsing.getOptionalDecimal(data, "Eccentricity");
-                                decimal? orbitalinclinationDegrees = JsonParsing.getOptionalDecimal(data, "OrbitalInclination");
-                                decimal? periapsisDegrees = JsonParsing.getOptionalDecimal(data, "Periapsis");
-                                decimal? axialTiltDegrees = JsonParsing.getOptionalDecimal(data, "AxialTilt");
-
-                                // Rings
-                                data.TryGetValue("Rings", out object val);
-                                List<object> ringsData = (List<object>)val;
-                                List<Ring> rings = new List<Ring>();
-                                if (ringsData != null)
-                                {
-                                    foreach (Dictionary<string, object> ringData in ringsData)
+                                    // Belt
+                                    if (name.Contains("Belt Cluster"))
                                     {
-                                        string ringName = JsonParsing.getString(ringData, "Name");
-                                        RingComposition ringComposition = RingComposition.FromEDName(JsonParsing.getString(ringData, "RingClass"));
-                                        decimal ringMassMegaTons = JsonParsing.getDecimal(ringData, "MassMT");
-                                        decimal ringInnerRadiusKm = JsonParsing.getDecimal(ringData, "InnerRad") / 1000;
-                                        decimal ringOuterRadiusKm = JsonParsing.getDecimal(ringData, "OuterRad") / 1000;
 
-                                        rings.Add(new Ring(ringName, ringComposition, ringMassMegaTons, ringInnerRadiusKm, ringOuterRadiusKm));
+                                        events.Add(new BeltScannedEvent(timestamp, scantype, name, distancefromarrival) { raw = line });
+                                        handled = true;
+                                        break;
                                     }
-                                }
 
-                                if (data.ContainsKey("StarType"))
-                                {
-                                    // Star
-                                    string starType = JsonParsing.getString(data, "StarType");
-                                    decimal stellarMass = JsonParsing.getDecimal(data, "StellarMass");
-                                    decimal absoluteMagnitude = JsonParsing.getDecimal(data, "AbsoluteMagnitude");
-                                    string luminosityClass = JsonParsing.getString(data, "Luminosity");
-                                    data.TryGetValue("Age_MY", out val);
-                                    long ageMegaYears = (long)val;
-                                    decimal temperatureKelvin = JsonParsing.getDecimal(data, "SurfaceTemperature");
-                                    bool mainstar = distancefromarrival == 0 ? true : false;
+                                    // Common items
+                                    // Need to convert radius from meters (per journal) to kilometers
+                                    decimal radiusKm = JsonParsing.getDecimal(data, "Radius") / 1000;
+                                    // Need to convert orbital period from seconds (per journal) to days
+                                    decimal? orbitalPeriodDays = ConstantConverters.seconds2days(JsonParsing.getOptionalDecimal(data, "OrbitalPeriod"));
+                                    // Need to convert rotation period from seconds (per journal) to days
+                                    decimal rotationPeriodDays = (decimal)ConstantConverters.seconds2days(JsonParsing.getDecimal(data, "RotationPeriod"));
+                                    // Need to convert meters to light seconds
+                                    decimal? semimajoraxisLs = ConstantConverters.meters2ls(JsonParsing.getOptionalDecimal(data, "SemiMajorAxis"));
+                                    decimal? eccentricity = JsonParsing.getOptionalDecimal(data, "Eccentricity");
+                                    decimal? orbitalinclinationDegrees = JsonParsing.getOptionalDecimal(data, "OrbitalInclination");
+                                    decimal? periapsisDegrees = JsonParsing.getOptionalDecimal(data, "Periapsis");
+                                    decimal? axialTiltDegrees = JsonParsing.getOptionalDecimal(data, "AxialTilt");
 
-                                    events.Add(new StarScannedEvent(timestamp, scantype, name, starType, stellarMass, radiusKm, absoluteMagnitude, luminosityClass, ageMegaYears, temperatureKelvin, distancefromarrival, orbitalPeriodDays, rotationPeriodDays, semimajoraxisLs, eccentricity, orbitalinclinationDegrees, periapsisDegrees, rings, mainstar) { raw = line });
+                                    // Rings
+                                    data.TryGetValue("Rings", out object val);
+                                    List<object> ringsData = (List<object>)val;
+                                    List<Ring> rings = new List<Ring>();
+                                    if (ringsData != null)
+                                    {
+                                        foreach (Dictionary<string, object> ringData in ringsData)
+                                        {
+                                            string ringName = JsonParsing.getString(ringData, "Name");
+                                            RingComposition ringComposition = RingComposition.FromEDName(JsonParsing.getString(ringData, "RingClass"));
+                                            decimal ringMassMegaTons = JsonParsing.getDecimal(ringData, "MassMT");
+                                            decimal ringInnerRadiusKm = JsonParsing.getDecimal(ringData, "InnerRad") / 1000;
+                                            decimal ringOuterRadiusKm = JsonParsing.getDecimal(ringData, "OuterRad") / 1000;
+
+                                            rings.Add(new Ring(ringName, ringComposition, ringMassMegaTons, ringInnerRadiusKm, ringOuterRadiusKm));
+                                        }
+                                    }
+
+                                    if (data.ContainsKey("StarType"))
+                                    {
+                                        // Star
+                                        string starType = JsonParsing.getString(data, "StarType");
+                                        decimal stellarMass = JsonParsing.getDecimal(data, "StellarMass");
+                                        decimal absoluteMagnitude = JsonParsing.getDecimal(data, "AbsoluteMagnitude");
+                                        string luminosityClass = JsonParsing.getString(data, "Luminosity");
+                                        data.TryGetValue("Age_MY", out val);
+                                        long ageMegaYears = (long)val;
+                                        decimal temperatureKelvin = JsonParsing.getDecimal(data, "SurfaceTemperature");
+                                        bool mainstar = distancefromarrival == 0 ? true : false;
+
+                                        events.Add(new StarScannedEvent(timestamp, scantype, name, starType, stellarMass, radiusKm, absoluteMagnitude, luminosityClass, ageMegaYears, temperatureKelvin, distancefromarrival, orbitalPeriodDays, rotationPeriodDays, semimajoraxisLs, eccentricity, orbitalinclinationDegrees, periapsisDegrees, rings, mainstar) { raw = line });
                                         handled = true;
                                     }
                                     else
@@ -1116,7 +1117,7 @@ namespace EddiJournalMonitor
                                     data.TryGetValue("SellPrice", out val);
                                     long price = (long)val;
 
-                                    events.Add(new ModuleSoldEvent(timestamp, ship, shipId, slot, module, price, marketId ) { raw = line });
+                                    events.Add(new ModuleSoldEvent(timestamp, ship, shipId, slot, module, price, marketId) { raw = line });
                                 }
                                 handled = true;
                                 break;
@@ -1682,59 +1683,60 @@ namespace EddiJournalMonitor
                                     string option = JsonParsing.getString(data, "Option");
                                     long price = JsonParsing.getLong(data, "Cost");
 
-                                if (option == "rebuy")
+                                    if (option == "rebuy")
+                                    {
+                                        events.Add(new ShipRepurchasedEvent(timestamp, price) { raw = line });
+                                        handled = true;
+                                    }
+                                }
+                                break;
+                            case "NavBeaconScan":
                                 {
-                                    events.Add(new ShipRepurchasedEvent(timestamp, price) { raw = line });
+                                    long systemAddress = JsonParsing.getLong(data, "SystemAddress");
+                                    data.TryGetValue("NumBodies", out object val);
+                                    int numbodies = (int)(long)val;
+                                    events.Add(new NavBeaconScanEvent(timestamp, systemAddress, numbodies) { raw = line });
                                     handled = true;
                                 }
-                            }
-                            break;
-                        case "NavBeaconScan":
-                            {
-                                long systemAddress = JsonParsing.getLong(data, "SystemAddress");
-                                data.TryGetValue("NumBodies", out object val);
-                                int numbodies = (int)(long)val;
-                                events.Add(new NavBeaconScanEvent(timestamp, systemAddress, numbodies) { raw = line });
-                                handled = true;
-                            }
-                            break;
-                        case "FSSDiscoveryScan":
-                            {
-                                decimal progress = JsonParsing.getDecimal(data, "Progress"); // value from 0-1
-                                int bodyCount = JsonParsing.getInt(data, "BodyCount"); // number of stellar bodies in system
-                                int nonBodyCount = JsonParsing.getInt(data, "NonBodyCount"); // Number of non-body signals found
-                                events.Add(new FSSDiscoveryScanEvent(timestamp, progress, bodyCount, nonBodyCount) { raw = line });
-                                handled = true;
-                            }
-                            break;
-                        case "FSSSignalDiscovered":
-                            {
-                                // The source may be a direct source or a USS. If a USS, we want the USS type.
-                                SignalSource source;
-                                if (JsonParsing.getString(data, "USSType") != null)
+                                break;
+                            case "FSSDiscoveryScan":
                                 {
-                                    source = SignalSource.FromEDName(JsonParsing.getString(data, "USSType"));
-                                    source.fallbackLocalizedName = JsonParsing.getString(data, "USSType_Localised");
+                                    decimal progress = JsonParsing.getDecimal(data, "Progress"); // value from 0-1
+                                    int bodyCount = JsonParsing.getInt(data, "BodyCount"); // number of stellar bodies in system
+                                    int nonBodyCount = JsonParsing.getInt(data, "NonBodyCount"); // Number of non-body signals found
+                                    events.Add(new DiscoveryScanEvent(timestamp, progress, bodyCount, nonBodyCount) { raw = line });
+                                    handled = true;
                                 }
-                                else
+                                break;
+                            case "FSSSignalDiscovered":
                                 {
-                                    source = SignalSource.FromEDName(JsonParsing.getString(data, "SignalName"));
-                                    source.fallbackLocalizedName = JsonParsing.getString(data, "SignalName_Localised");
+                                    // The source may be a direct source or a USS. If a USS, we want the USS type.
+                                    SignalSource source;
+                                    if (JsonParsing.getString(data, "USSType") != null)
+                                    {
+                                        source = SignalSource.FromEDName(JsonParsing.getString(data, "USSType"));
+                                        source.fallbackLocalizedName = JsonParsing.getString(data, "USSType_Localised");
+                                    }
+                                    else
+                                    {
+                                        source = SignalSource.FromEDName(JsonParsing.getString(data, "SignalName"));
+                                        source.fallbackLocalizedName = JsonParsing.getString(data, "SignalName_Localised");
+                                    }
+
+                                    string spawningFaction = getFaction(data, "SpawningFaction") ?? Superpower.None.localizedName; // the minor faction, if relevant
+                                    decimal? secondsRemaining = JsonParsing.getOptionalDecimal(data, "TimeRemaining"); // remaining lifetime in seconds, if relevant
+
+                                    string spawningstate = JsonParsing.getString(data, "SpawningState");
+                                    string normalizedSpawningState = spawningstate?.Replace("$FactionState_", "")?.Replace("_desc;", "");
+                                    FactionState spawningState = FactionState.FromEDName(normalizedSpawningState) ?? new FactionState();
+                                    spawningState.fallbackLocalizedName = JsonParsing.getString(data, "SpawningState_Localised");
+
+                                    int? threatLevel = JsonParsing.getOptionalInt(data, "ThreatLevel") ?? 0;
+                                    bool? isStation = JsonParsing.getOptionalBool(data, "IsStation") ?? false;
+
+                                    events.Add(new SignalDetectedEvent(timestamp, source, spawningState, spawningFaction, secondsRemaining, threatLevel, isStation) { raw = line });
+                                    handled = true;
                                 }
-
-                                string spawningFaction = getFaction(data, "SpawningFaction") ?? Superpower.None.localizedName; // the minor faction, if relevant
-                                decimal? secondsRemaining = JsonParsing.getOptionalDecimal(data, "TimeRemaining"); // remaining lifetime in seconds, if relevant
-
-                                string spawningstate = JsonParsing.getString(data, "SpawningState");
-                                string normalizedSpawningState = spawningstate?.Replace("$FactionState_", "")?.Replace("_desc;", "");
-                                FactionState spawningState = FactionState.FromEDName(normalizedSpawningState) ?? new FactionState();
-                                spawningState.fallbackLocalizedName = JsonParsing.getString(data, "SpawningState_Localised");
-
-                                int? threatLevel = JsonParsing.getOptionalInt(data, "ThreatLevel") ?? 0;
-                                bool? isStation = JsonParsing.getOptionalBool(data, "IsStation") ?? false;
-
-                                events.Add(new SignalDetectedEvent(timestamp, source, spawningState, spawningFaction, secondsRemaining, threatLevel, isStation) { raw = line });
-                                handled = true;
                                 break;
                             case "BuyExplorationData":
                                 {
@@ -1810,58 +1812,58 @@ namespace EddiJournalMonitor
                                     handled = true;
                                     break;
                                 }
-	                        case "EngineerContribution":
-	                            {
-	                                string name = JsonParsing.getString(data, "Engineer");
-	                                long engineerId = JsonParsing.getLong(data, "EngineerID");
-	                                Engineer engineer = Engineer.FromNameOrId(name, engineerId);
+                            case "EngineerContribution":
+                                {
+                                    string name = JsonParsing.getString(data, "Engineer");
+                                    long engineerId = JsonParsing.getLong(data, "EngineerID");
+                                    Engineer engineer = Engineer.FromNameOrId(name, engineerId);
 
-	                                string contributionType = JsonParsing.getString(data, "Type"); // (Commodity, materials, Credits, Bond, Bounty)
-	                                switch (contributionType)
-	                                {
-	                                    case "Commodity":
-	                                        {
-	                                            string edname = JsonParsing.getString(data, "Commodity");
-	                                            int amount = JsonParsing.getInt(data, "Quantity");
-	                                            int total = JsonParsing.getInt(data, "TotalQuantity");
-	                                            CommodityAmount commodity = new CommodityAmount(CommodityDefinition.FromEDName(edname), amount);
-	                                            events.Add(new EngineerContributedEvent(timestamp, engineer, commodity, null, contributionType, amount, total) { raw = line });
-	                                        }
-	                                        break;
-	                                    case "Materials":
-	                                        {
-	                                            string edname = JsonParsing.getString(data, "Material");
-	                                            int amount = JsonParsing.getInt(data, "Quantity");
-	                                            int total = JsonParsing.getInt(data, "TotalQuantity");
-	                                            MaterialAmount material = new MaterialAmount(Material.FromEDName(edname), amount);
-	                                            events.Add(new EngineerContributedEvent(timestamp, engineer, null, material, contributionType, amount, total) { raw = line });
-	                                        }
-	                                        break;
-	                                    case "Credits":
-	                                    case "Bond":
-	                                    case "Bounty":
-	                                        { } // We don't currently handle credit changes from these types.
-	                                        break;
-	                                }
-	                                handled = true;
-	                                break;
-	                            }
+                                    string contributionType = JsonParsing.getString(data, "Type"); // (Commodity, materials, Credits, Bond, Bounty)
+                                    switch (contributionType)
+                                    {
+                                        case "Commodity":
+                                            {
+                                                string edname = JsonParsing.getString(data, "Commodity");
+                                                int amount = JsonParsing.getInt(data, "Quantity");
+                                                int total = JsonParsing.getInt(data, "TotalQuantity");
+                                                CommodityAmount commodity = new CommodityAmount(CommodityDefinition.FromEDName(edname), amount);
+                                                events.Add(new EngineerContributedEvent(timestamp, engineer, commodity, null, contributionType, amount, total) { raw = line });
+                                            }
+                                            break;
+                                        case "Materials":
+                                            {
+                                                string edname = JsonParsing.getString(data, "Material");
+                                                int amount = JsonParsing.getInt(data, "Quantity");
+                                                int total = JsonParsing.getInt(data, "TotalQuantity");
+                                                MaterialAmount material = new MaterialAmount(Material.FromEDName(edname), amount);
+                                                events.Add(new EngineerContributedEvent(timestamp, engineer, null, material, contributionType, amount, total) { raw = line });
+                                            }
+                                            break;
+                                        case "Credits":
+                                        case "Bond":
+                                        case "Bounty":
+                                            { } // We don't currently handle credit changes from these types.
+                                            break;
+                                    }
+                                    handled = true;
+                                    break;
+                                }
                             case "EngineerCraft":
                                 {
                                     string engineer = JsonParsing.getString(data, "Engineer");
-	                                long engineerId = JsonParsing.getLong(data, "EngineerID");
-	                                string blueprintpEdName = JsonParsing.getString(data, "BlueprintName");
-	                                long blueprintId = JsonParsing.getLong(data, "BlueprintID");
+                                    long engineerId = JsonParsing.getLong(data, "EngineerID");
+                                    string blueprintpEdName = JsonParsing.getString(data, "Blueprint");
+                                    long blueprintId = JsonParsing.getLong(data, "BlueprintID");
 
                                     data.TryGetValue("Level", out object val);
                                     int level = (int)(long)val;
 
-	                                decimal? quality = JsonParsing.getOptionalDecimal(data, "Quality"); //
-	                                string experimentalEffect = JsonParsing.getString(data, "ApplyExperimentalEffect"); //
+                                    decimal? quality = JsonParsing.getOptionalDecimal(data, "Quality"); //
+                                    string experimentalEffect = JsonParsing.getString(data, "ApplyExperimentalEffect"); //
 
-	                                string ship = ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship Monitor")).GetCurrentShip().model;
-	                                Compartment compartment = parseShipCompartment(ship, JsonParsing.getString(data, "Slot")); //
-	                                compartment.module = Module.FromEDName(JsonParsing.getString(data, "Module"));
+                                    string ship = ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship Monitor")).GetCurrentShip().model;
+                                    Compartment compartment = parseShipCompartment(ship, JsonParsing.getString(data, "Slot")); //
+                                    compartment.module = Module.FromEDName(JsonParsing.getString(data, "Module"));
 
                                     List<CommodityAmount> commodities = new List<CommodityAmount>();
                                     List<MaterialAmount> materials = new List<MaterialAmount>();
@@ -1896,40 +1898,40 @@ namespace EddiJournalMonitor
                                             }
                                         }
                                     }
-	                                events.Add(new ModificationCraftedEvent(timestamp, engineer, engineerId, blueprintpEdName, blueprintId, level, quality, experimentalEffect, materials, commodities, compartment) { raw = line });
+                                    events.Add(new ModificationCraftedEvent(timestamp, engineer, engineerId, blueprintpEdName, blueprintId, level, quality, experimentalEffect, materials, commodities, compartment) { raw = line });
                                     handled = true;
                                     break;
                                 }
-	                        case "EngineerProgress":
+                            case "EngineerProgress":
                                 {
-	                                data.TryGetValue("Engineers", out object val);
-	                                if (val != null)
-	                                {
-	                                    // This is a startup entry. 
-	                                    // Update engineer progress / status data but do not generate events.
-	                                    List<object> engineers = (List<object>)val;
-	                                    foreach (IDictionary<string, object> engineerData in engineers)
-	                                    {
-	                                        Engineer engineer = parseEngineer(engineerData);
-	                                        Engineer.AddOrUpdate(engineer);
-			                            }
-	                                }
-	                                else
-	                                {
-	                                    // This is a progress entry.
-	                                    Engineer engineer = parseEngineer(data);
-	                                    Engineer lastEngineer = Engineer.FromNameOrId(engineer.name, engineer.id);
+                                    data.TryGetValue("Engineers", out object val);
+                                    if (val != null)
+                                    {
+                                        // This is a startup entry. 
+                                        // Update engineer progress / status data but do not generate events.
+                                        List<object> engineers = (List<object>)val;
+                                        foreach (IDictionary<string, object> engineerData in engineers)
+                                        {
+                                            Engineer engineer = parseEngineer(engineerData);
+                                            Engineer.AddOrUpdate(engineer);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        // This is a progress entry.
+                                        Engineer engineer = parseEngineer(data);
+                                        Engineer lastEngineer = Engineer.FromNameOrId(engineer.name, engineer.id);
 
-	                                    if (engineer.rank != null && engineer.rank != lastEngineer?.rank)
-	                                    {
-	                                        events.Add(new EngineerProgressedEvent(timestamp, engineer, "Rank") { raw = line });
-	                                    }
-	                                    else if (engineer.stage != null && engineer.stage != lastEngineer?.stage)
-	                                    {
-	                                        events.Add(new EngineerProgressedEvent(timestamp, engineer, "Stage") { raw = line });
-	                                    }
-	                                    Engineer.AddOrUpdate(engineer);
-	                                }
+                                        if (engineer.rank != null && engineer.rank != lastEngineer?.rank)
+                                        {
+                                            events.Add(new EngineerProgressedEvent(timestamp, engineer, "Rank") { raw = line });
+                                        }
+                                        else if (engineer.stage != null && engineer.stage != lastEngineer?.stage)
+                                        {
+                                            events.Add(new EngineerProgressedEvent(timestamp, engineer, "Stage") { raw = line });
+                                        }
+                                        Engineer.AddOrUpdate(engineer);
+                                    }
                                     handled = true;
                                     break;
                                 }

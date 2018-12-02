@@ -8,7 +8,7 @@ namespace EddiEvents
     {
         public const string NAME = "Star scanned";
         public const string DESCRIPTION = "Triggered when you complete a scan of a stellar body";
-        public static string SAMPLE = "{ \"timestamp\":\"2018-11-14T07:56:37Z\", \"event\":\"Scan\", \"ScanType\":\"Detailed\", \"BodyName\":\"ICZ BQ-Y d111 A\", \"BodyID\":1, \"Parents\":[ {\"Null\":0} ], \"DistanceFromArrivalLS\":0.000000, \"StarType\":\"F\", \"StellarMass\":1.171875, \"Radius\":707025152.000000, \"AbsoluteMagnitude\":4.461533, \"Age_MY\":1122, \"SurfaceTemperature\":6238.000000, \"Luminosity\":\"Vb\", \"SemiMajorAxis\":213460533248.000000, \"Eccentricity\":0.122636, \"OrbitalInclination\":-5.833790, \"Periapsis\":262.542572, \"OrbitalPeriod\":210790352.000000, \"RotationPeriod\":315406.375000, \"AxialTilt\":0.000000 }";
+        public static string SAMPLE = "{ \"timestamp\":\"2018-12-01T08:04:24Z\", \"event\":\"Scan\", \"ScanType\":\"AutoScan\", \"BodyName\":\"Arietis Sector UJ-Q b5-2\", \"BodyID\":0, \"DistanceFromArrivalLS\":0.000000, \"StarType\":\"L\", \"StellarMass\":0.218750, \"Radius\":249075072.000000, \"AbsoluteMagnitude\":11.808075, \"Age_MY\":10020, \"SurfaceTemperature\":1937.000000, \"Luminosity\":\"V\", \"RotationPeriod\":119097.164063, \"AxialTilt\":0.000000 }";
 
         // Scan value calculation constants
         public const double dssDivider = 2.4;
@@ -134,14 +134,14 @@ namespace EddiEvents
                 tempprobability = StarClass.sanitiseCP(starClass.tempCP(this.temperature));
                 ageprobability = StarClass.sanitiseCP(starClass.ageCP(this.age));
                 chromaticity = starClass.chromaticity.localizedName;
-                if (radiusKm != 0 && temperature != 0)
-                {
-                    // Minimum estimated single-star habitable zone (target black body temperature of 315°K / 42°C / 107°F or less)
-                    estimatedhabzoneinner = StarClass.DistanceFromStarForTemperature(StarClass.maxHabitableTempKelvin, Convert.ToDouble(radiusKm), Convert.ToDouble(temperature));
+            }
+            if (radiusKm != 0 && temperature != 0)
+            {
+                // Minimum estimated single-star habitable zone (target black body temperature of 315°K / 42°C / 107°F or less)
+                estimatedhabzoneinner = StarClass.DistanceFromStarForTemperature(StarClass.maxHabitableTempKelvin, Convert.ToDouble(radiusKm), Convert.ToDouble(temperature));
 
-                    // Maximum estimated single-star habitable zone (target black body temperature of 223.15°K / -50°C / -58°F or more)
-                    estimatedhabzoneouter = StarClass.DistanceFromStarForTemperature(StarClass.minHabitableTempKelvin, Convert.ToDouble(radiusKm), Convert.ToDouble(temperature));
-                }
+                // Maximum estimated single-star habitable zone (target black body temperature of 223.15°K / -50°C / -58°F or more)
+                estimatedhabzoneouter = StarClass.DistanceFromStarForTemperature(StarClass.minHabitableTempKelvin, Convert.ToDouble(radiusKm), Convert.ToDouble(temperature));
             }
             estimatedvalue = estimateValue(scantype != null ? scantype.Contains("Detail") : false);
             this.mainstar = mainstar;

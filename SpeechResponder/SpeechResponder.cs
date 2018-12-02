@@ -32,9 +32,6 @@ namespace EddiSpeechResponder
 
         private static List<Event> eventQueue = new List<Event>();
 
-        private static bool enqueueEvents;
-
-
         public string ResponderName()
         {
             return "Speech responder";
@@ -147,14 +144,20 @@ namespace EddiSpeechResponder
                     return;
                 }
             }
-            // Beginning with Elite Dangerous v. 3.3, the primary star scan is delivered via a Scan with scantype `Autoscan` 
-            // when you jump into the system. Secondary stars are delivered in a burst following an FSSDiscoveryScan.
-            // Since each source has a different trigger, we need to re-order events and ensure the main star scan 
-            // completes after the the FSSDicoveryScan and before secondary star scans, 
-            // regardless of the timing of the `Autoscan` Scan and FSSDiscoveryScan events
-            else if (@event is FSSDiscoveryScanEvent)
+            else if (@event is DiscoveryScanEvent)
             {
-                enqueueEvents = true;
+                // Beginning with Elite Dangerous v. 3.3, the primary star scan is delivered via a Scan with 
+                // scantype `AutoScan` when you jump into the system. Secondary stars are delivered in a burst 
+                // following an FSSDiscoveryScan. Since each source has a different trigger, we re-order events 
+                // and ensure the main star scan completes after the the FSSDicoveryScan and before secondary 
+                // star scans, regardless of the timing of the `AutoScan` Scan and FSSDiscoveryScan events
+                Say(@event);
+                foreach (Event theEvent in eventQueue.OfType<StarScannedEvent>())
+                {
+                    Say(theEvent);
+                }
+                eventQueue.RemoveAll(s => s.GetType() == typeof(StarScannedEvent));
+                return;
             }
             else if (@event is StarScannedEvent starScannedEvent)
             {
@@ -163,25 +166,12 @@ namespace EddiSpeechResponder
                     // Suppress scan details from nav beacons
                     return;
                 }
-                else if (enqueueEvents)
+                else if (starScannedEvent.scantype == "AutoScan")
                 {
-                    if (starScannedEvent.mainstar)
-                    {
-                        enqueueEvents = false;
-                        Say(@event);
-                        foreach (Event theEvent in eventQueue.OfType<StarScannedEvent>())
-                        {
-                            Say(theEvent);
-                        }
-                        eventQueue = (List<Event>)eventQueue.SkipWhile(s => (StarScannedEvent)s != null);
-                        return;
-                    }
-                    else
-                    {
-                        eventQueue.Add(@event);
-                        eventQueue.OrderBy(s => ((StarScannedEvent)s)?.distance);
-                        return;
-                    }
+                    // Capture `Autoscan` events so that we can fire them after a discovery honk.
+                    eventQueue.Add(@event);
+                    eventQueue.OrderBy(s => ((StarScannedEvent)s)?.distance);
+                    return;
                 }
             }
             else if (@event is SignalDetectedEvent)
