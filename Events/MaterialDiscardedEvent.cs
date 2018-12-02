@@ -9,7 +9,7 @@ namespace EddiEvents
     {
         public const string NAME = "Material discarded";
         public const string DESCRIPTION = "Triggered when you discard a material";
-        public const string SAMPLE = "{\"timestamp\":\"2016-06-10T14:32:03Z\",\"event\":\"MaterialDiscarded\",\"Category\":\"Encoded\",\"Name\":\"shieldcyclerecordings\"}";
+        public const string SAMPLE = "{\"timestamp\":\"2016-06-10T14:32:03Z\",\"event\":\"MaterialDiscarded\",\"Category\":\"Encoded\",\"Name\":\"shieldcyclerecordings\", \"Count\":3}";
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
         static MaterialDiscardedEvent()

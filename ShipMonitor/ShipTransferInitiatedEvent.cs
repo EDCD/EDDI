@@ -10,8 +10,7 @@ namespace EddiShipMonitor
     {
         public const string NAME = "Ship transfer initiated";
         public const string DESCRIPTION = "Triggered when you initiate a ship transfer";
-        public const string SAMPLE = "{\"timestamp\":\"2016-06-10T14:32:03Z\",\"event\":\"ShipyardTransfer\",\"ShipType\":\"Adder\",\"ShipID\":1,\"System\":\"Eranin\",\"Distance\":85.639145,\"TransferPrice\":580,\"TransferTime\":120}";
-        //public const string SAMPLE = "{ \"timestamp\":\"2017-09-24T12:31:38Z\", \"event\":\"ShipyardTransfer\", \"ShipType\":\"Asp\", \"ShipID\":2, \"System\":\"CD-34 9020\", \"Distance\":145.314835, \"TransferPrice\":127713 }";
+        public const string SAMPLE = "{ \"timestamp\":\"2018-07-30T04:56:57Z\", \"event\":\"ShipyardTransfer\", \"ShipType\":\"Krait_MkII\", \"ShipType_Localised\":\"Krait MkII\", \"ShipID\":81, \"System\":\"Balante\", \"ShipMarketID\":3223259392, \"Distance\":8.017741, \"TransferPrice\":134457, \"TransferTime\":380, \"MarketID\":3223343616 }";
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
         static ShipTransferInitiatedEvent()

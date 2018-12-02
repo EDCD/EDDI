@@ -10,7 +10,7 @@ namespace EddiShipMonitor
     {
         public const string NAME = "Module sold";
         public const string DESCRIPTION = "Triggered when selling a module to outfitting";
-        public const string SAMPLE = "{ \"timestamp\":\"2016-06-10T14:32:03Z\", \"event\":\"ModuleSell\", \"Slot\":\"Slot06_Size2\", \"SellItem\":\"int_cargorack_size1_class1\", \"SellPrice\":877, \"Ship\":\"asp\", \"ShipID\":1 }";
+        public const string SAMPLE = "{ \"timestamp\":\"2016-06-10T14:32:03Z\", \"event\":\"ModuleSell\", \"MarketID\": 128666762, \"Slot\":\"Slot06_Size2\", \"SellItem\":\"int_cargorack_size1_class1\", \"SellPrice\":877, \"Ship\":\"asp\", \"ShipID\":1 }";
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
         static ModuleSoldEvent()

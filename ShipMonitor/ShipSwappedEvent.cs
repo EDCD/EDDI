@@ -10,7 +10,7 @@ namespace EddiShipMonitor
     {
         public const string NAME = "Ship swapped";
         public const string DESCRIPTION = "Triggered when you swap a ship";
-        public const string SAMPLE = "{\"timestamp\":\"2016-06-10T14:32:03Z\",\"event\":\"ShipyardSwap\",\"ShipType\":\"Adder\",\"ShipID\":1,\"StoreOldShip\":\"Anaconda\",\"StoreShipID\":2}";
+        public const string SAMPLE = "{\"timestamp\":\"2016-06-10T14:32:03Z\",\"event\":\"ShipyardSwap\",\"ShipType\":\"Adder\",\"ShipID\":1,\"StoreOldShip\":\"Anaconda\",\"StoreShipID\":2, \"MarketID\": 128666762}";
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
         static ShipSwappedEvent()

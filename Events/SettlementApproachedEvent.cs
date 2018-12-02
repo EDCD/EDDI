@@ -8,7 +8,7 @@ namespace EddiEvents
     {
         public const string NAME = "Settlement approached";
         public const string DESCRIPTION = "Triggered when you approach a settlement";
-        public const string SAMPLE = @"{ ""timestamp"":""2016-09-22T15:24:14Z"", ""event"":""ApproachSettlement"", ""Name"":""Freud's Inheritance"" }";
+        public const string SAMPLE = @"{ ""timestamp"":""2018-11-04T03:11:56Z"", ""event"":""ApproachSettlement"", ""Name"":""Bulmer Enterprise"", ""MarketID"":3510380288, ""Latitude"":-23.121552, ""Longitude"":-98.177559 }";
 
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
