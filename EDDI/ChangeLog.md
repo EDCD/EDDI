@@ -15,8 +15,9 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * Polonium (Rare - 150 MAX)
       * Antimony (Rare - 150 MAX)
   * Speech responder
+    * `Docked event`: Added `wanted`, `activefine`, and `cockpitbreach`.
     * `Settlement approached`: Added `latitude` and `longitude`.
-     
+
 ### 3.1
   * Core
     * Fixed scan message spam upon scanning a Nav Beacon.
