@@ -161,9 +161,9 @@ namespace EDDNResponder
                 if (starpos != null)
                 {
                     List<object> starPos = (List<object>)starpos;
-                    systemX = Math.Round(JsonParsing.getDecimal("X", starPos[0]) * 32) / (decimal)32.0;
-                    systemY = Math.Round(JsonParsing.getDecimal("Y", starPos[1]) * 32) / (decimal)32.0;
-                    systemZ = Math.Round(JsonParsing.getDecimal("Z", starPos[2]) * 32) / (decimal)32.0;
+                    systemX = Math.Round(JsonParsing.getDecimal("X", starPos[0]) * 32M) / 32M;
+                    systemY = Math.Round(JsonParsing.getDecimal("Y", starPos[1]) * 32M) / 32M;
+                    systemZ = Math.Round(JsonParsing.getDecimal("Z", starPos[2]) * 32M) / 32M;
                 }
                 marketId = JsonParsing.getOptionalLong(data, "MarketID");
                 stationName = JsonParsing.getString(data, "StationName");
