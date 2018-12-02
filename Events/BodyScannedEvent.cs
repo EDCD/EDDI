@@ -115,7 +115,8 @@ namespace EddiEvents
 
         public PlanetClass planetClass { get; private set; }
 
-        public string scantype { get; private set; } // One of Basic, Detailed, NavBeacon, NavBeaconDetail
+        public string scantype { get; private set; } // One of AutoScan, Basic, Detailed, NavBeacon, NavBeaconDetail
+        // AutoScan events are detailed scans triggered via proximity. 
 
         public BodyScannedEvent(DateTime timestamp, string scantype, string name, PlanetClass planetClass, decimal? earthmass, decimal? radiusKm, decimal gravity, decimal? temperatureKelvin, decimal? pressureAtm, bool? tidallylocked, bool? landable, AtmosphereClass atmosphereClass, List<AtmosphereComposition> atmosphereComposition, List<SolidComposition> solidCompositions, Volcanism volcanism, decimal distancefromarrival_Ls, decimal orbitalperiodDays, decimal rotationperiodDays, decimal? semimajoraxisAU, decimal? eccentricity, decimal? orbitalinclinationDegrees, decimal? periapsisDegrees, List<Ring> rings, string reserves, List<MaterialPresence> materials, TerraformState terraformstate, decimal? axialtiltDegrees) : base(timestamp, NAME)
         {

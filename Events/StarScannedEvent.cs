@@ -101,7 +101,8 @@ namespace EddiEvents
 
         public long? estimatedvalue { get; private set; }
 
-        public string scantype { get; private set; } // One of Basic, Detailed, NavBeacon, NavBeaconDetail
+        public string scantype { get; private set; } // One of AutoScan, Basic, Detailed, NavBeacon, NavBeaconDetail
+        // AutoScan events are detailed scans triggered via proximity. 
 
         public bool mainstar { get; private set; }
 
