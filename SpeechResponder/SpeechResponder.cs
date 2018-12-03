@@ -144,9 +144,9 @@ namespace EddiSpeechResponder
             }
             else if (@event is BodyScannedEvent bodyScannedEvent)
             {
-                if (bodyScannedEvent.scantype.Contains("NavBeacon"))
+                if (bodyScannedEvent.scantype.Contains("NavBeacon") || bodyScannedEvent.scantype == "AutoScan")
                 {
-                    // Suppress scan details from nav beacons
+                    // Suppress scan details from nav beacons and `AutoScan` events.
                     return;
                 }
                 else if (ignoreBodyScan)
