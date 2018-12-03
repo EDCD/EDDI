@@ -211,7 +211,7 @@ namespace UnitTests
             Assert.AreEqual(true, status.night_vision);
             Assert.AreEqual(true, status.lights_on);
             Assert.AreEqual("none", status.gui_focus);
-            Assert.AreEqual(29.564209M, status.current_fuel);
+            Assert.AreEqual(29.564209M, status.fuel);
             Assert.AreEqual(39, status.cargo_carried);
         }
     }

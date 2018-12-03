@@ -230,9 +230,9 @@ namespace EddiShipMonitor
             {
                 handleJumpedEvent((JumpedEvent)@event);
             }
-            else if (@event is StatusEvent)
+            else if (@event is SynthesisedEvent)
             {
-                handleStatusEvent((StatusEvent)@event);
+                handleSynthesisedEvent((SynthesisedEvent)@event);
             }
         }
 
@@ -838,22 +838,25 @@ namespace EddiShipMonitor
 
         private void handleJumpedEvent(JumpedEvent @event)
         {
-            Ship ship = GetCurrentShip();
-            if (@event.fuelused > ship.maxfuel)
-            {
-                ship.maxfuel = @event.fuelused;
-                ship.maxjump = @event.distance;
-                writeShips();
-            }
-        }
-
-        private void handleStatusEvent(StatusEvent @event)
-        {
-            if (@event.status.current_fuel != null)
+            if (!synthesisedFsd)
             {
                 Ship ship = GetCurrentShip();
-                ship.fuelremaining = @event.status.current_fuel;
-                writeShips();
+                if (@event.fuelused > ship.maxfuel)
+                {
+                    ship.maxfuel = @event.fuelused;
+                    ship.maxjump = @event.distance;
+                    writeShips();
+                }
+            }
+            synthesisedFsd = false;
+        }
+
+        private bool synthesisedFsd = false;
+        private void handleSynthesisedEvent(SynthesisedEvent @event)
+        {
+            if (@event.synthesis.Contains("FSD"))
+            {
+                synthesisedFsd = true;
             }
         }
 

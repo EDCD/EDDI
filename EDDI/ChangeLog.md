@@ -49,7 +49,9 @@ Full details of the variables available for each noted event, and VoiceAttack in
         * fss mode, 
         * saa mode, and 
         * the codex
-      * current fuel
+      * fuel (for ship or srv)
+      * fuel percent
+      * fuel time remaining (in seconds)
       * cargo carried (qty)
 
 ### 3.1.2

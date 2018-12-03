@@ -24,6 +24,7 @@ namespace EddiStatusMonitor
         private string Directory = GetSavedGamesDir();
         public static Status currentStatus { get; set; } = new Status();
         public static Status lastStatus { get; set; } = new Status();
+
         private static bool gliding;
         private static bool jumping;
 
@@ -275,8 +276,11 @@ namespace EddiStatusMonitor
                     status.longitude = JsonParsing.getOptionalDecimal(data, "Longitude");
                     status.altitude = JsonParsing.getOptionalDecimal(data, "Altitude");
                     status.heading = JsonParsing.getOptionalDecimal(data, "Heading");
-                    status.current_fuel = JsonParsing.getOptionalDecimal(data, "Fuel");
+                    status.fuel = JsonParsing.getOptionalDecimal(data, "Fuel");
                     status.cargo_carried = (int?)JsonParsing.getOptionalDecimal(data, "Cargo");
+
+                    // Calculated data
+                    SetFuelExtras(status);
 
                     return status;
                 }
@@ -373,6 +377,12 @@ namespace EddiStatusMonitor
                 {
                     gliding = false;
                     EDDI.Instance.eventHandler(new GlideEvent(currentStatus.timestamp, gliding, EDDI.Instance.CurrentStellarBody.systemname, EDDI.Instance.CurrentStellarBody.systemAddress, EDDI.Instance.CurrentStellarBody.name, EDDI.Instance.CurrentStellarBody.Type));
+                }
+
+                // Reset our fuel log if we change vehicles or refuel
+                if (thisStatus.vehicle != lastStatus.vehicle || thisStatus.fuel > lastStatus.fuel)
+                {
+                    fuelLog = null;
                 }
             }
         }
@@ -472,6 +482,69 @@ namespace EddiStatusMonitor
                 catch { }
             }
             return null;
+        }
+
+        private static void SetFuelExtras(Status status)
+        {
+            decimal? fuel_rate = FuelConsumptionPerSecond(status.timestamp, status.fuel);
+            FuelPercentAndTime(status.fuel, fuel_rate, out decimal? fuel_percent, out int? fuel_seconds);
+            status.fuel_percent = fuel_percent;
+            status.fuel_seconds = fuel_seconds;
+        }
+
+        private static List<KeyValuePair<DateTime, decimal?>> fuelLog;
+        private static decimal? FuelConsumptionPerSecond(DateTime timestamp, decimal? fuel, int trackingMinutes = 5)
+        {
+            if (fuel is null)
+            {
+                return null;
+            }
+
+            if (fuelLog is null)
+            {
+                fuelLog = new List<KeyValuePair<DateTime, decimal?>>();
+            }
+            else
+            {
+                fuelLog?.RemoveAll(log => (DateTime.UtcNow - log.Key).TotalMinutes > trackingMinutes);
+            }
+            fuelLog.Add(new KeyValuePair<DateTime, decimal?>(timestamp, fuel));
+
+            decimal? fuelConsumed = fuelLog.First().Value - fuelLog.Last().Value;
+            TimeSpan timespan = fuelLog.Last().Key - fuelLog.First().Key;
+
+            return timespan.Seconds == 0 ? null : fuelConsumed / timespan.Seconds; // Return tons of fuel consumed per second
+        }
+
+        private static void FuelPercentAndTime(decimal? fuelRemaining, decimal? fuelPerSecond, out decimal? fuel_percent, out int? fuel_seconds)
+        {
+            fuel_percent = null;
+            fuel_seconds = null;
+
+            if (fuelRemaining is null)
+            {
+                return;
+            }
+
+            if (currentStatus.vehicle == Constants.VEHICLE_SHIP)
+            {
+                Ship ship = ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip();
+                if (ship.fueltanktotalcapacity != null && fuelRemaining != null)
+                {
+                    // Fuel recorded in Status.json includes the fuel carried in the Active Fuel Reservoir
+                    decimal percent = (decimal)(fuelRemaining / (ship.fueltanktotalcapacity + ship.activeFuelReservoirCapacity) * 100);
+                    fuel_percent = percent > 10 ? Math.Round(percent, 0) : Math.Round(percent, 1);
+                    fuel_seconds = (fuelPerSecond is null || fuelPerSecond == 0) ? null : (int?)((ship.fueltanktotalcapacity + ship.activeFuelReservoirCapacity) / fuelPerSecond);
+                }
+            }
+            else if (currentStatus.vehicle == Constants.VEHICLE_SRV)
+            {
+                const decimal srvFuelTankCapacity = 0.45M;
+                decimal percent = (decimal)(fuelRemaining / srvFuelTankCapacity * 100);
+                fuel_percent = percent > 10 ? Math.Round(percent, 0) : Math.Round(percent, 1);
+                fuel_seconds = (fuelPerSecond is null || fuelPerSecond == 0) ? null : (int?)(srvFuelTankCapacity / fuelPerSecond);
+            }
+            return; // At present, fighters do not appear to consume fuel.
         }
     }
 }

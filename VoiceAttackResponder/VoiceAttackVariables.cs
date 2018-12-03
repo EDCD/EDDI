@@ -589,10 +589,8 @@ namespace EddiVoiceAttackResponder
                 setShipModuleOutfittingValues(ship?.fueltank, EDDI.Instance.CurrentStation?.outfitting, prefix + " fuel tank", ref vaProxy);
 
                 // Special for fuel tank - capacity and total capacity
-                vaProxy.SetDecimal(prefix + " fuel remaining", ship?.fuelremaining);
                 vaProxy.SetDecimal(prefix + " fuel tank capacity", ship?.fueltankcapacity);
                 vaProxy.SetDecimal(prefix + " total fuel tank capacity", ship?.fueltanktotalcapacity);
-                vaProxy.SetDecimal(prefix + " fuel percent", ship?.fuelpercent);
 
                 // Hardpoints
                 if (ship != null)
@@ -926,6 +924,9 @@ namespace EddiVoiceAttackResponder
                 vaProxy.SetDecimal(prefix + " longitude", status?.longitude);
                 vaProxy.SetDecimal(prefix + " altitude", status?.altitude);
                 vaProxy.SetDecimal(prefix + " heading", status?.heading);
+                vaProxy.SetDecimal(prefix + " fuel", status?.fuel);
+                vaProxy.SetDecimal(prefix + " fuel percent", status?.fuel_percent);
+                vaProxy.SetDecimal(prefix + " fuel rate", status?.fuel_seconds);
             }
             catch (Exception e)
             {

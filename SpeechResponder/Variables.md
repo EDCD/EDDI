@@ -225,7 +225,7 @@ Any values might be missing, depending on EDDI's configuration.
     - `fueltankcapacity` the capacity of the main fuel tank
     - `fueltanktotalcapacity` the capacity of the main fuel tank plus all secondary fuel tanks
     - `maxjump` maximum distance ship has jumped
-    - `maxfuel` fuel used for `max jump`
+    - `maxfuel` fuel used for `max jump` (excluding synthesis)
     - `hardpoints` the ship's hardpoints (this is an array of HardPoint objects)
     - `compartments` the ship's internal compartments (this is an array of Compartment objects)
     - `launchbays` the ship's internal hangars, containing SRV or Fighter 'vehicles' (this is an array of launchbay objects) 
@@ -498,7 +498,10 @@ Any values might be missing, depending on EDDI's configuration.
     - `heading` a decimal value indicating the ship's current heading (if near a surface)
     - `analysis_mode` a boolean value indicating whether the ship's HUD is currently in Analysis Mode
     - `night_vision` a boolean value indicating whether night vision is currently active
-
+    - `fuel` a decimal value indicating the ship's current fuel (including fuel in the active fuel reservoir)
+    - `fuel_percent` a decimal percent value calculated from your current total fuel capacity
+    - `fuel_seconds` an integer value projecting the time remaining before you run out of fuel, in seconds
+    - `cargo_carried` an integer value of the current cargo you are carrying
 ---
 ## VoiceDetail
 

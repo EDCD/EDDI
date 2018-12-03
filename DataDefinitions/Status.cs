@@ -93,8 +93,12 @@ namespace EddiDataDefinitions
         public decimal? longitude;
         public decimal? altitude;
         public decimal? heading;
-        public decimal? current_fuel;
+        public decimal? fuel;
         public int? cargo_carried;
+
+        // Variables calculated from event data
+        public decimal? fuel_percent { get; set; }
+        public int? fuel_seconds { get; set; }
 
         // Admin values
         public Flags flags;
