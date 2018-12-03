@@ -34,6 +34,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * `Settlement approached`: Added `latitude` and `longitude`.
     * Added new event `Discovery scan`, triggered when performing a full system scan (honk) with the FSS
     * Added new event `Signal detected`, triggered when a signal source is detected
+    * Added new event `Body mapped`, triggered after mapping a body with the Surface Area Analysis scanner
     * The `Voice()` function now tolerates incomplete voice names (EDDI will return the first matching voice) and casing no longer matters.
     * Added new function `VoiceDetails()` for accessing details of installed voices while scripting.
     * Fixed very low hab zone values in `Star scanned` events
