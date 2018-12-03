@@ -29,6 +29,15 @@
       "name": "Blueprint material report",
       "description": "Donne les matières nécessaires pour une recette"
     },
+    "Body mapped": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{OneOf(\"Mapping\", \"{Occasionally(2, \\\"Surface\\\")} Map\")}\r\n{Occasionally(2, \"of body {P(event.name)}\")}\r\n{OneOf(\"is\", \"is now\")}\r\n{OneOf(\"complete\", \"finished\")}.\r\n\r\n{if event.probesused <= event.efficiencytarget:\r\n    Efficiency bonus {OneOf(\"awarded\", \"granted\")}.\r\n}",
+      "default": true,
+      "name": "Body mapped",
+      "description": "Triggered after mapping a body with the Surface Area Analysis scanner"
+    },
     "Body report": {
       "enabled": true,
       "priority": 3,
@@ -451,6 +460,15 @@
       "default": true,
       "name": "Died",
       "description": "Triggered when you have died"
+    },
+    "Discovery scan": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{Occasionally(2, \"System\")} Scan complete.\r\n\r\n{if event.bodies > 1 || event.nonbodies > 0:\r\n    {Occasionally(2, \"\r\n        {OneOf(\\\"Signal\\\", \\\"Signature\\\")}{if event.nonbodies > 0:s}\r\n        {OneOf(\\\"from\\\", \\\"of\\\")}\r\n    \")}\r\n}\r\n\r\n{if event.bodies > 1:\r\n   {event.bodies} {if event.bodies > 0: bodies |else: body}\r\n}\r\n\r\n{if event.bodies > 0 && event.nonbodies > 0: and}\r\n\r\n{if event.nonbodies > 0:\r\n   {event.nonbodies} {if event.bodies > 0: non-bodies |else: non-body}\r\n}\r\n\r\n{if event.bodies > 1 || event.nonbodies > 0: detected }",
+      "default": true,
+      "name": "Discovery scan",
+      "description": "Triggered when performing a full system scan (honk)"
     },
     "Docked": {
       "enabled": true,
@@ -1774,6 +1792,15 @@
       "default": true,
       "name": "SRV turret deployable",
       "description": "Triggered when your SRV enters or leaves the restriction zone around a ship."
+    },
+    "Star habitable zone": {
+      "enabled": true,
+      "priority": 3,
+      "responder": false,
+      "script": "{_ Fetch from context }\r\n{if event: {set reportbody to event} }\r\n{if !event: {set reportbody to BodyDetails(state.eddi_context_star_star, state.eddi_context_star_system)}}\r\n\r\n{if !reportbody.name || reportbody.name = \"\":\r\n    I'm not sure which star you are asking about.\r\n|else:\r\n    {if (reportbody.estimatedhabzoneinner && reportbody.estimatedhabzoneouter) && \r\n     (reportbody.estimatedhabzoneinner > 0 && reportbody.estimatedhabzoneouter> 0):\r\n       Habitable zone\r\n       {Occasionally(2, OneOf(\"calculated at\", \"calculated to fall from\"))}: \r\n       {Humanise(reportbody.estimatedhabzoneinner)} \r\n       to {Humanise(reportbody.estimatedhabzoneouter)} \r\n       lightseconds.\r\n    |elif reportbody.estimatedhabzoneouter && reportbody.estimatedhabzoneouter > 0:\r\n       Habitable zone\r\n       {Occasionally(2, OneOf(\"calculated at\", \"calculated to fall from\"))}: \r\n       {Humanise(reportbody.estimatedhabzoneouter)} \r\n       lightseconds maximum.\r\n    }\r\n}",
+      "default": true,
+      "name": "Star habitable zone",
+      "description": "Report on the habitable zone around a star"
     },
     "Star report": {
       "enabled": true,

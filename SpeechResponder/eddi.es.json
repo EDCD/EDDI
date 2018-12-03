@@ -29,6 +29,15 @@
       "name": "Blueprint material report",
       "description": "Informa de los materiales requeridos de un plano"
     },
+    "Body mapped": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{OneOf(\"Mapping\", \"{Occasionally(2, \\\"Surface\\\")} Map\")}\r\n{Occasionally(2, \"of body {P(event.name)}\")}\r\n{OneOf(\"is\", \"is now\")}\r\n{OneOf(\"complete\", \"finished\")}.\r\n\r\n{if event.probesused <= event.efficiencytarget:\r\n    Efficiency bonus {OneOf(\"awarded\", \"granted\")}.\r\n}",
+      "default": true,
+      "name": "Body mapped",
+      "description": "Triggered after mapping a body with the Surface Area Analysis scanner"
+    },
     "Body report": {
       "enabled": true,
       "priority": 3,
@@ -442,6 +451,15 @@
       "default": true,
       "name": "Died",
       "description": "Se activa cuando mueres"
+    },
+    "Discovery scan": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{Occasionally(2, \"System\")} Scan complete.\r\n\r\n{if event.bodies > 1 || event.nonbodies > 0:\r\n    {Occasionally(2, \"\r\n        {OneOf(\\\"Signal\\\", \\\"Signature\\\")}{if event.nonbodies > 0:s}\r\n        {OneOf(\\\"from\\\", \\\"of\\\")}\r\n    \")}\r\n}\r\n\r\n{if event.bodies > 1:\r\n   {event.bodies} {if event.bodies > 0: bodies |else: body}\r\n}\r\n\r\n{if event.bodies > 0 && event.nonbodies > 0: and}\r\n\r\n{if event.nonbodies > 0:\r\n   {event.nonbodies} {if event.bodies > 0: non-bodies |else: non-body}\r\n}\r\n\r\n{if event.bodies > 1 || event.nonbodies > 0: detected }",
+      "default": true,
+      "name": "Discovery scan",
+      "description": "Triggered when performing a full system scan (honk)"
     },
     "Docked": {
       "enabled": true,
