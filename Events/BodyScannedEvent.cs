@@ -20,6 +20,8 @@ namespace EddiEvents
         static BodyScannedEvent()
         {
             VARIABLES.Add("name", "The name of the body that has been scanned");
+            VARIABLES.Add("systemname", "The name of the system containing the scanned body");
+            VARIABLES.Add("shortname", "The short name of the body, less the system name");
             VARIABLES.Add("bodyclass", "The class of the body that has been scanned (High metal content body etc)");
             VARIABLES.Add("gravity", "The surface gravity of the body that has been scanned, relative to Earth's gravity");
             VARIABLES.Add("earthmass", "The mass of the body that has been scanned, relative to Earth's mass");
@@ -48,6 +50,10 @@ namespace EddiEvents
         }
 
         public string name { get; private set; }
+
+        public string systemname { get; private set; }
+
+        public string shortname => name == systemname ? name : name.Replace(systemname, "").Trim();
 
         public string planettype => planetClass.localizedName;  // This is the object property reported from the BodyDetails() function
 
@@ -118,10 +124,11 @@ namespace EddiEvents
         public string scantype { get; private set; } // One of AutoScan, Basic, Detailed, NavBeacon, NavBeaconDetail
         // AutoScan events are detailed scans triggered via proximity. 
 
-        public BodyScannedEvent(DateTime timestamp, string scantype, string name, PlanetClass planetClass, decimal? earthmass, decimal? radiusKm, decimal gravity, decimal? temperatureKelvin, decimal? pressureAtm, bool? tidallylocked, bool? landable, AtmosphereClass atmosphereClass, List<AtmosphereComposition> atmosphereComposition, List<SolidComposition> solidCompositions, Volcanism volcanism, decimal distancefromarrival_Ls, decimal orbitalperiodDays, decimal rotationperiodDays, decimal? semimajoraxisAU, decimal? eccentricity, decimal? orbitalinclinationDegrees, decimal? periapsisDegrees, List<Ring> rings, string reserves, List<MaterialPresence> materials, TerraformState terraformstate, decimal? axialtiltDegrees) : base(timestamp, NAME)
+        public BodyScannedEvent(DateTime timestamp, string scantype, string name, string systemName, PlanetClass planetClass, decimal? earthmass, decimal? radiusKm, decimal gravity, decimal? temperatureKelvin, decimal? pressureAtm, bool? tidallylocked, bool? landable, AtmosphereClass atmosphereClass, List<AtmosphereComposition> atmosphereComposition, List<SolidComposition> solidCompositions, Volcanism volcanism, decimal distancefromarrival_Ls, decimal orbitalperiodDays, decimal rotationperiodDays, decimal? semimajoraxisAU, decimal? eccentricity, decimal? orbitalinclinationDegrees, decimal? periapsisDegrees, List<Ring> rings, string reserves, List<MaterialPresence> materials, TerraformState terraformstate, decimal? axialtiltDegrees) : base(timestamp, NAME)
         {
             this.scantype = scantype;
             this.name = name;
+            this.systemname = systemName;
             this.distancefromarrival = distancefromarrival_Ls;
             this.planetClass = planetClass;
             this.earthmass = earthmass;

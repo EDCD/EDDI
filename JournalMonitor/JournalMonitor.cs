@@ -634,6 +634,7 @@ namespace EddiJournalMonitor
                             case "Scan":
                                 {
                                     string name = JsonParsing.getString(data, "BodyName");
+                                    string systemName = EDDI.Instance.CurrentStarSystem.name;
                                     string scantype = JsonParsing.getString(data, "ScanType");
                                     decimal distancefromarrival = JsonParsing.getDecimal(data, "DistanceFromArrivalLS");
 
@@ -796,7 +797,7 @@ namespace EddiJournalMonitor
                                         TerraformState terraformState = TerraformState.FromEDName(JsonParsing.getString(data, "TerraformState")) ?? TerraformState.NotTerraformable;
                                         Volcanism volcanism = Volcanism.FromName(JsonParsing.getString(data, "Volcanism"));
 
-                                        events.Add(new BodyScannedEvent(timestamp, scantype, name, planetClass, earthMass, radiusKm, gravity, temperatureKelvin, pressure, tidallyLocked, landable, atmosphereClass, atmosphereCompositions, solidCompositions, volcanism, distancefromarrival, (decimal)orbitalPeriodDays, rotationPeriodDays, semimajoraxisLs, eccentricity, orbitalinclinationDegrees, periapsisDegrees, rings, reserves, materials, terraformState, axialTiltDegrees) { raw = line });
+                                        events.Add(new BodyScannedEvent(timestamp, scantype, name, systemName, planetClass, earthMass, radiusKm, gravity, temperatureKelvin, pressure, tidallyLocked, landable, atmosphereClass, atmosphereCompositions, solidCompositions, volcanism, distancefromarrival, (decimal)orbitalPeriodDays, rotationPeriodDays, semimajoraxisLs, eccentricity, orbitalinclinationDegrees, periapsisDegrees, rings, reserves, materials, terraformState, axialTiltDegrees) { raw = line });
                                         handled = true;
                                     }
                                 }

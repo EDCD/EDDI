@@ -42,6 +42,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Revised `Star scanned` event script
     * Revised `Star report` event script
     * Added `Star habitable zone` non-event script.
+    * The `Body scanned` event now includes new `shortname` and `systemname` properties
   * Status monitor 
     * The status object has new values for: 
       * HUD analysis mode, 
