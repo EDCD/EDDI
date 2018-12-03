@@ -811,6 +811,7 @@ namespace EddiVoiceAttackResponder
             vaProxy.SetDecimal(prefix + " EDDB id", body?.EDDBID);
             vaProxy.SetText(prefix + " type", (body?.Type ?? BodyType.None).localizedName);
             vaProxy.SetText(prefix + " name", body?.name);
+            vaProxy.SetText(prefix + " short name", body?.shortname);
             vaProxy.SetText(prefix + " system name", body?.systemname);
             if (body?.age == null)
             {

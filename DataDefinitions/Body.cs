@@ -25,6 +25,9 @@ namespace EddiDataDefinitions
         /// <summary>The name of the body</summary>
         public string name { get; set; }
 
+        /// <summary>The short name of the body</summary>
+        public string shortname => name == systemname ? name : name.Replace(systemname, "").Trim();
+
         /// <summary>The name of the system in which the body resides</summary>
         public string systemname { get; set; }
 

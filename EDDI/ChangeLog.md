@@ -10,6 +10,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
 ### 3.3-b1
   * Core
     * Fixed a bug that could reset system comments, visits, and the date last visited while refreshing star system data. 
+    * The `body` object now includes a new `shortname` property (removing the system name if it is part of the body name)
     * The `body` object now includes `estimatedhabzoneinner` and `estimatedhabzoneouter` for stars.
   * Material monitor
     * Revised material rarities and default material maxima (material maxima are recalulated to the following values if not set): 
