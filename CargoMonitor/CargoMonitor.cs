@@ -26,6 +26,7 @@ namespace EddiCargoMonitor
         // Observable collection for us to handle changes
         public ObservableCollection<Cargo> inventory { get; private set; }
         public int cargoCarried;
+        private bool checkHaulage = false;
 
         private static readonly object inventoryLock = new object();
         public event EventHandler InventoryUpdatedEvent;
@@ -139,10 +140,6 @@ namespace EddiCargoMonitor
                 // Check to see if this is a cargo mission and update our inventory accordingly
                 handleMissionExpiredEvent((MissionExpiredEvent)@event);
             }
-            else if (@event is MissionRedirectedEvent)
-            {
-                handleMissionRedirectedEvent((MissionRedirectedEvent)@event);
-            }
         }
 
         public void PreHandle(Event @event)
@@ -150,9 +147,9 @@ namespace EddiCargoMonitor
             Logging.Debug("Received event " + JsonConvert.SerializeObject(@event));
 
             // Handle the events that we care about
-            if (@event is CargoInventoryEvent)
+            if (@event is CargoEvent)
             {
-                handleCargoInventoryEvent((CargoInventoryEvent)@event);
+                handleCargoEvent((CargoEvent)@event);
             }
             else if (@event is CommodityCollectedEvent)
             {
@@ -173,26 +170,6 @@ namespace EddiCargoMonitor
             else if (@event is CommoditySoldEvent)
             {
                 handleCommoditySoldEvent((CommoditySoldEvent)@event);
-            }
-            else if (@event is PowerCommodityObtainedEvent)
-            {
-                handlePowerCommodityObtainedEvent((PowerCommodityObtainedEvent)@event);
-            }
-            else if (@event is PowerCommodityDeliveredEvent)
-            {
-                handlePowerCommodityDeliveredEvent((PowerCommodityDeliveredEvent)@event);
-            }
-            else if (@event is LimpetPurchasedEvent)
-            {
-                handleLimpetPurchasedEvent((LimpetPurchasedEvent)@event);
-            }
-            else if (@event is LimpetSoldEvent)
-            {
-                handleLimpetSoldEvent((LimpetSoldEvent)@event);
-            }
-            else if (@event is LimpetLaunchedEvent)
-            {
-                handleLimpetLaunchedEvent((LimpetLaunchedEvent)@event);
             }
             else if (@event is CargoDepotEvent)
             {
@@ -224,18 +201,6 @@ namespace EddiCargoMonitor
                 // If we fail a mission with cargo it becomes stolen
                 handleMissionFailedEvent((MissionFailedEvent)@event);
             }
-            else if (@event is SearchAndRescueEvent)
-            {
-                handleSearchAndRescueEvent((SearchAndRescueEvent)@event);
-            }
-            else if (@event is SynthesisedEvent)
-            {
-                handleSynthesisedEvent((SynthesisedEvent)@event);
-            }
-            else if (@event is TechnologyBrokerEvent)
-            {
-                handleTechnologyBrokerEvent((TechnologyBrokerEvent)@event);
-            }
             else if (@event is DiedEvent)
             {
                 handleDiedEvent((DiedEvent)@event);
@@ -246,243 +211,212 @@ namespace EddiCargoMonitor
             }
         }
 
-        private void handleCargoInventoryEvent(CargoInventoryEvent @event)
+        private void handleCargoEvent(CargoEvent @event)
         {
-            _handleCargoInventoryEvent(@event);
-            writeInventory();
+            if(_handleCargoEvent(@event))
+            {
+                writeInventory();
+            }
         }
 
-        private void _handleCargoInventoryEvent(CargoInventoryEvent @event)
+        private bool _handleCargoEvent(CargoEvent @event)
         {
-            // CargoInventoryEvent does not contain missionid or cost information so fill in gaps here
-            foreach (Cargo cargo in @event.inventory)
+            bool cargoUpdated = false;
+            if (@event.vessel == Constants.VEHICLE_SHIP)
             {
-                Cargo inventoryCargo = inventory.FirstOrDefault(c => c.edname.ToLowerInvariant() == cargo.edname.ToLowerInvariant());
-                if (inventoryCargo != null)
+                cargoCarried = @event.cargocarried;
+                if (@event.inventory != null)
                 {
-                    // Found match of commodity
-                    inventoryCargo.total = cargo.total;
-                    inventoryCargo.stolen = cargo.stolen;
-                    if (inventoryCargo.haulageData == null || !inventoryCargo.haulageData.Any())
+                    List<CargoInfo> infoList = @event.inventory.ToList();
+
+                    // Remove strays from the manifest
+                    foreach (Cargo inventoryCargo in inventory.ToList())
                     {
-                        inventoryCargo.haulage = 0;
-                        inventoryCargo.need = 0;
+                        CargoInfo info = @event.inventory.FirstOrDefault(i => i.name == inventoryCargo.edname.ToLowerInvariant());
+                        if (info == null)
+                        {
+                            if (inventoryCargo.haulageData == null || !inventoryCargo.haulageData.Any())
+                            {
+                                // Strip out the stray from the manifest
+                                _RemoveCargoWithEDName(inventoryCargo.edname);
+                                if (@event.update) { return true; }
+                            }
+                            else
+                            {
+                                // Keep cargo entry in manifest with zeroed amounts, if missions are pending
+                                inventoryCargo.total = 0;
+                                inventoryCargo.haulage = 0;
+                                inventoryCargo.owned = 0;
+                                inventoryCargo.stolen = 0;
+                                inventoryCargo.CalculateNeed();
+                            }
+                            cargoUpdated = true;
+                        }
                     }
-                    else
+
+                    while (infoList.Count() > 0)
                     {
-                        inventoryCargo.CalculateNeed();
+                        string name = infoList.ToList().First().name;
+                        List<CargoInfo> cargoInfo = infoList.Where(i => i.name == name).ToList();
+                        Cargo cargo = inventory.FirstOrDefault(c => c.edname.ToLowerInvariant() == name);
+                        if (cargo != null)
+                        {
+                            int total = cargoInfo.Sum(i => i.count);
+                            int stolen = infoList.Where(i => i.missionid == null).Sum(i => i.stolen);
+                            if (total != cargo.total || stolen != cargo.stolen)
+                            {
+                                UpdateCargoFromInfo(cargo, cargoInfo);
+                                if (@event.update) { return true; }
+                                cargoUpdated = true;
+                            }
+                        }
+                        else
+                        {
+                            // Add cargo entries for those missing
+                            cargo = new Cargo(name, 0);
+                            UpdateCargoFromInfo(cargo, cargoInfo);
+                            AddCargo(cargo);
+                            cargoUpdated = true;
+                        }
+
+                        infoList.RemoveAll(i => i.name == name);
                     }
-                    inventoryCargo.owned = cargo.total - cargo.stolen - inventoryCargo.haulage;
-                    inventoryCargo.ejected = 0;
-                }
-                else
-                {
-                    AddCargo(cargo);
                 }
             }
-            // Remove strays from the manifest
-            foreach (Cargo inventoryCargo in inventory.ToList())
-            {
-                Cargo cargo = @event.inventory.FirstOrDefault(c => c.edname.ToLowerInvariant() == inventoryCargo.edname.ToLowerInvariant());
-                if (cargo == null)
-                {
-                    if (inventoryCargo.haulageData == null || !inventoryCargo.haulageData.Any())
-                    {
-                        // Strip out the stray from the manifest
-                        _RemoveCargoWithEDName(inventoryCargo.edname);
-                    }
-                    else
-                    {
-                        // Keep cargo entry in manifest with zeroed amounts, if missions are pending
-                        inventoryCargo.haulage = 0;
-                        inventoryCargo.owned = 0;
-                        inventoryCargo.stolen = 0;
-                        inventoryCargo.ejected = 0;
-                    }
-                }
-            }
+            return cargoUpdated;
         }
 
         private void handleCommodityCollectedEvent(CommodityCollectedEvent @event)
         {
-            _handleCommodityCollectedEvent(@event);
-            writeInventory();
+            if (_handleCommodityCollectedEvent(@event))
+            {
+                writeInventory();
+            }
         }
 
-        private void _handleCommodityCollectedEvent(CommodityCollectedEvent @event)
+        private bool _handleCommodityCollectedEvent(CommodityCollectedEvent @event)
         {
-            Cargo cargo = new Cargo();
-            cargo = GetCargoWithEDName(@event.commodityDefinition?.edname);
+            bool update = false;
+            Cargo cargo = GetCargoWithEDName(@event.commodityDefinition?.edname);
             if (cargo != null)
             {
-                bool handled = false;
-                if (@event.stolen)
+                if (EDDI.Instance?.Vehicle != Constants.VEHICLE_SHIP)
                 {
-                    cargo.stolen++;
-                }
-                else if (cargo.haulageData.Any())
-                {
-                    foreach (Haulage haulage in cargo.haulageData)
+                    if (@event.missionid != null)
                     {
-                        int total = cargo.haulageData.Where(ha => ha.name.ToLowerInvariant().Contains(haulage.typeEDName)).Sum(ha => ha.amount);
-                        switch (haulage.typeEDName)
-                        {
-                            case "altruism":
-                            case "collect":
-                            case "collectwing":
-                            case "mining":
-                            case "piracy":
-                                {
-                                    if (cargo.owned < total)
-                                    {
-                                        cargo.owned++;
-                                        handled = true;
-                                    }
-                                }
-                                break;
-                            case "rescue":
-                            case "salvage":
-                                {
-                                    if (cargo.haulage < total)
-                                    {
-                                        cargo.haulage++;
-                                        handled = true;
-                                    }
-                                }
-                                break;
-                        }
-                        haulage.sourcesystem = EDDI.Instance?.CurrentStarSystem?.name;
-                        haulage.sourcebody = EDDI.Instance?.CurrentStellarBody?.name;
+                        cargo.haulage++;
+                    }
+                    else if (@event.stolen)
+                    {
+                        cargo.stolen++;
+                    }
+                    else
+                    {
+                        cargo.owned++;
+                    }
+                    cargo.CalculateNeed();
+                    update = true;
+                }
 
-                        if (handled)
-                        {
+                Haulage haulage = cargo.haulageData.FirstOrDefault(h => h.missionid == @event.missionid);
+                if (haulage != null)
+                {
+                    switch (haulage.typeEDName)
+                    {
+                        case "mining":
+                        case "piracy":
+                        case "rescue":
+                        case "salvage":
+                            {
+                                haulage.sourcesystem = EDDI.Instance?.CurrentStarSystem?.name;
+                                haulage.sourcebody = EDDI.Instance?.CurrentStellarBody?.name;
+                                update = true;
+                            }
                             break;
-                        }
                     }
                 }
-                else if (!handled)
-                {
-                    cargo.owned++;
-                }
-                cargo.CalculateNeed();
             }
-            else
-            {
-                cargo = new Cargo(@event.commodityDefinition?.edname, 1);
-                if (@event.stolen)
-                {
-                    cargo.stolen = 1;
-                }
-                else
-                {
-                    cargo.owned = 1;
-                }
-                AddCargo(cargo);
-            }
+            return update;
         }
 
         private void handleCommodityEjectedEvent(CommodityEjectedEvent @event)
         {
-            _handleCommodityEjectedEvent(@event);
-            writeInventory();
+            if(_handleCommodityEjectedEvent(@event))
+            {
+                writeInventory();
+            }
         }
 
-        private void _handleCommodityEjectedEvent(CommodityEjectedEvent @event)
+        private bool _handleCommodityEjectedEvent(CommodityEjectedEvent @event)
         {
+            bool update = false;
             Cargo cargo = GetCargoWithEDName(@event.commodityDefinition?.edname);
             if (cargo != null)
             {
-                bool handled = false;
-
-                // Check for related missions
-                if (cargo.haulageData.Any())
+                if (EDDI.Instance?.Vehicle != Constants.VEHICLE_SHIP)
                 {
-                    cargo.ejected += @event.amount;
-                    foreach (Haulage haulage in cargo.haulageData)
+                    if (@event.missionid != null)
                     {
-                        switch (haulage.typeEDName)
-                        {
-                            case "altruism":
-                            case "collect":
-                            case "collectwing":
-                            case "mining":
-                            case "piracy":
-                                {
-                                    if (cargo.owned >= @event.amount)
-                                    {
-                                        cargo.owned -= @event.amount;
-                                        handled = true;
-                                    }
-                                }
-                                break;
-                            case "delivery":
-                            case "deliverywing":
-                            case "rescue":
-                            case "salvage":
-                            case "smuggle":
-                                {
-                                    if (cargo.haulage >= @event.amount)
-                                    {
-                                        cargo.haulage -= @event.amount;
-                                        handled = true;
-                                    }
-                                }
-                                break;
-                        }
-                        if (handled)
-                        {
-                            break;
-                        }
+                        cargo.haulage -= @event.amount;
                     }
-                }
-
-                // Otherwise, order of preference is owned -> stolen
-                if (!handled)
-                {
-                    if (cargo.owned >= @event.amount)
+                    else
                     {
                         cargo.owned -= @event.amount;
                     }
-                    else if (cargo.stolen >= @event.amount)
+                    cargo.CalculateNeed();
+                    update = true;
+                }
+
+                Haulage haulage = cargo.haulageData.FirstOrDefault(h => h.missionid == @event.missionid);
+                if (haulage != null)
+                {
+                    switch (haulage.typeEDName)
                     {
-                        cargo.stolen -= @event.amount;
+                        case "delivery":
+                        case "deliverywing":
+                        case "smuggle":
+                            {
+                                haulage.status = "Failed";
+                                Mission mission = ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor"))
+                                    .GetMissionWithMissionId(@event.missionid ?? 0);
+                                if (mission != null)
+                                {
+                                    mission.statusDef = MissionStatus.FromEDName("Failed");
+                                }
+                                update = true;
+                            }
+                            break;
                     }
                 }
-                RemoveCargo(cargo);
             }
+            return update;
         }
 
         private void handleCommodityPurchasedEvent(CommodityPurchasedEvent @event)
         {
-            _handleCommodityPurchasedEvent(@event);
-            writeInventory();
+            if(_handleCommodityPurchasedEvent(@event))
+            {
+                writeInventory();
+            }
         }
 
-        private void _handleCommodityPurchasedEvent(CommodityPurchasedEvent @event)
+        private bool _handleCommodityPurchasedEvent(CommodityPurchasedEvent @event)
         {
-            Cargo cargo = new Cargo();
-            cargo = GetCargoWithEDName(@event.commodityDefinition?.edname);
+            bool update = false;
+            Cargo cargo = GetCargoWithEDName(@event.commodityDefinition?.edname);
             if (cargo != null)
             {
-                cargo.owned += @event.amount;
-                cargo.CalculateNeed();
-                Haulage haulage = cargo.haulageData.FirstOrDefault(h => h.typeEDName == "collect");
+                Haulage haulage = cargo.haulageData.FirstOrDefault(h => h.typeEDName
+                    .ToLowerInvariant()
+                    .Contains("collect"));
                 if (haulage != null)
                 {
                     haulage.sourcesystem = EDDI.Instance?.CurrentStarSystem?.name;
                     haulage.sourcebody = EDDI.Instance?.CurrentStation?.name;
+                    update = true;
                 }
             }
-            else
-            {
-                cargo = new Cargo(@event.commodityDefinition?.edname, @event.amount, @event.price)
-                {
-                    stolen = 0,
-                    owned = @event.amount
-                };
-
-                AddCargo(cargo);
-            }
+            return update;
         }
 
         private void handleCommodityRefinedEvent(CommodityRefinedEvent @event)
@@ -491,158 +425,43 @@ namespace EddiCargoMonitor
             writeInventory();
         }
 
-        private void _handleCommodityRefinedEvent(CommodityRefinedEvent @event)
+        private bool _handleCommodityRefinedEvent(CommodityRefinedEvent @event)
         {
-            Cargo cargo = new Cargo();
-            cargo = GetCargoWithEDName(@event.commodityDefinition?.edname);
+            bool update = false;
+            Cargo cargo = GetCargoWithEDName(@event.commodityDefinition?.edname);
             if (cargo != null)
             {
-                cargo.owned++;
-                cargo.CalculateNeed();
-            }
-            else
-            {
-                cargo = new Cargo(@event.commodityDefinition?.edname, 1)
+                Haulage haulage = cargo.haulageData.FirstOrDefault(h => h.typeEDName
+                    .ToLowerInvariant()
+                    .Contains("mining"));
+                if (haulage != null)
                 {
-                    stolen = 0,
-                    owned = 1
-                };
-
-                AddCargo(cargo);
+                    haulage.sourcesystem = EDDI.Instance?.CurrentStarSystem?.name;
+                    haulage.sourcebody = EDDI.Instance?.CurrentStation?.name;
+                    update = true;
+                }
             }
+            return update;
         }
 
         private void handleCommoditySoldEvent(CommoditySoldEvent @event)
         {
-            _handleCommoditySoldEvent(@event);
-            writeInventory();
+            if(_handleCommoditySoldEvent(@event))
+            {
+                writeInventory();
+            }
         }
 
-        private void _handleCommoditySoldEvent(CommoditySoldEvent @event)
+        private bool _handleCommoditySoldEvent(CommoditySoldEvent @event)
         {
+            bool update = false;
             Cargo cargo = GetCargoWithEDName(@event.commodityDefinition?.edname);
             if (cargo != null)
             {
-                if (@event.stolen)
-                {
-                    // Cargo is stolen
-                    cargo.stolen -= Math.Min(cargo.stolen, @event.amount);
-                }
-                else if (@event.blackmarket && !@event.illegal)
-                {
-                    // Assume cargo is mission-related
-                    int amount = Math.Min(cargo.haulage, @event.amount);
-                    cargo.haulage -= amount;
-                    cargo.ejected += amount;
-                }
-                else
-                {
-                    // Cargo is owned by the commander
-                    cargo.owned -= Math.Min(cargo.owned, @event.amount);
-                }
-                RemoveCargo(cargo);
+                // Flag event to check for a failed mission in following 'Cargo' event
+                checkHaulage = true;
             }
-        }
-
-        private void handlePowerCommodityObtainedEvent(PowerCommodityObtainedEvent @event)
-        {
-            _handlePowerCommodityObtainedEvent(@event);
-            writeInventory();
-        }
-
-        private void _handlePowerCommodityObtainedEvent(PowerCommodityObtainedEvent @event)
-        {
-            Cargo cargo = new Cargo();
-            cargo = GetCargoWithEDName(@event.commodityDefinition?.edname);
-            if (cargo != null)
-            {
-                cargo.owned += @event.amount;
-                cargo.CalculateNeed();
-            }
-            else
-            {
-                cargo = new Cargo(@event.commodityDefinition?.edname, @event.amount)
-                {
-                    stolen = 0,
-                    owned = @event.amount
-                };
-
-                AddCargo(cargo);
-            }
-        }
-
-        private void handlePowerCommodityDeliveredEvent(PowerCommodityDeliveredEvent @event)
-        {
-            _handlePowerCommodityDeliveredEvent(@event);
-            writeInventory();
-        }
-
-        private void _handlePowerCommodityDeliveredEvent(PowerCommodityDeliveredEvent @event)
-        {
-            Cargo cargo = GetCargoWithEDName(@event.commodityDefinition?.edname);
-            if (cargo != null)
-            {
-                cargo.owned -= @event.amount;
-                RemoveCargo(cargo);
-            }
-        }
-
-        private void handleLimpetPurchasedEvent(LimpetPurchasedEvent @event)
-        {
-            _handleLimpetPurchasedEvent(@event);
-            writeInventory();
-        }
-
-        private void _handleLimpetPurchasedEvent(LimpetPurchasedEvent @event)
-        {
-            Cargo cargo = new Cargo();
-            cargo = GetCargoWithEDName("Drones");
-            if (cargo != null)
-            {
-                cargo.owned += @event.amount;
-            }
-            else
-            {
-                cargo = new Cargo("Drones", @event.amount, @event.price)
-                {
-                    stolen = 0,
-                    owned = @event.amount
-                };
-
-                AddCargo(cargo);
-            }
-        }
-
-        private void handleLimpetSoldEvent(LimpetSoldEvent @event)
-        {
-            _handleLimpetSoldEvent(@event);
-            writeInventory();
-        }
-
-        private void _handleLimpetSoldEvent(LimpetSoldEvent @event)
-        {
-            Cargo cargo = GetCargoWithEDName("Drones");
-            if (cargo != null)
-            {
-                cargo.owned -= @event.amount;
-                RemoveCargo(cargo);
-            }
-        }
-
-        private void handleLimpetLaunchedEvent(LimpetLaunchedEvent @event)
-        {
-            _handleLimpetLaunchedEvent();
-            writeInventory();
-        }
-
-        private void _handleLimpetLaunchedEvent()
-        {
-            Cargo cargo = GetCargoWithEDName("Drones");
-            if (cargo != null)
-            {
-                cargo.owned--;
-                RemoveCargo(cargo);
-            }
+            return update;
         }
 
         private void handleCargoDepotEvent(CargoDepotEvent @event)
@@ -653,6 +472,8 @@ namespace EddiCargoMonitor
 
         private void _handleCargoDepotEvent(CargoDepotEvent @event)
         {
+            Mission mission = ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor"))
+                .GetMissionWithMissionId(@event.missionid ?? 0);
             Cargo cargo = new Cargo();
             Haulage haulage = new Haulage();
             int amountRemaining = @event.totaltodeliver - @event.delivered;
@@ -668,7 +489,7 @@ namespace EddiCargoMonitor
                             haulage = cargo.haulageData.FirstOrDefault(ha => ha.missionid == @event.missionid);
                             haulage.remaining = amountRemaining;
 
-                            // Update commodity definition if instantiated by previous 'WingUpdate' update
+                            // Update commodity definition if instantiated other than 'Mission accepted'
                             if (cargo.commodityDef.edname == "Unknown")
                             {
                                 cargo.commodityDef = @event.commodityDefinition;
@@ -682,11 +503,10 @@ namespace EddiCargoMonitor
                             AddCargo(cargo);
 
                             string originSystem = EDDI.Instance?.CurrentStarSystem?.name;
-                            haulage = new Haulage(@event.missionid ?? 0, "MISSION_DeliveryWing", originSystem, amountRemaining, null, true);
+                            string name = mission?.name ?? "MISSION_DeliveryWing";
+                            haulage = new Haulage(@event.missionid ?? 0, name, originSystem, amountRemaining, null, true);
                             cargo.haulageData.Add(haulage);
                         }
-                        cargo.haulage += @event.amount ?? 0;
-                        cargo.CalculateNeed();
                         haulage.collected = @event.collected;
                         haulage.delivered = @event.delivered;
                         haulage.startmarketid = @event.startmarketid;
@@ -704,9 +524,10 @@ namespace EddiCargoMonitor
                             {
                                 haulage.remaining = amountRemaining;
 
-                                //Update commodity definition if intantiated by previous 'WingUpdate' update
+                                //Update commodity definition
                                 if (cargo.commodityDef.edname == "Unknown")
                                 {
+                                    haulage.amount = @event.totaltodeliver;
                                     cargo.commodityDef = @event.commodityDefinition;
                                     haulage.originsystem = (@event.startmarketid == 0) ? EDDI.Instance?.CurrentStarSystem?.name : null;
                                 }
@@ -714,10 +535,11 @@ namespace EddiCargoMonitor
                             else
                             {
                                 string originSystem = (@event.startmarketid == 0) ? EDDI.Instance?.CurrentStarSystem?.name : null;
-                                string type = (@event.startmarketid == 0) ? "MISSION_CollectWing" : "MISSION_DeliveryWing";
-                                haulage = new Haulage(@event.missionid ?? 0, type, originSystem, amountRemaining, null);
+                                string name = mission?.name ?? (@event.startmarketid == 0 ? "MISSION_CollectWing" : "MISSION_DeliveryWing");
+                                haulage = new Haulage(@event.missionid ?? 0, name, originSystem, amountRemaining, null);
                                 cargo.haulageData.Add(haulage);
                             }
+                            cargo.CalculateNeed();
                         }
                         else
                         {
@@ -729,20 +551,11 @@ namespace EddiCargoMonitor
                                 AddCargo(cargo);
                             }
                             string originSystem = (@event.startmarketid == 0) ? EDDI.Instance?.CurrentStarSystem?.name : null;
-                            string type = (@event.startmarketid == 0) ? "MISSION_CollectWing" : "MISSION_DeliveryWing";
-                            haulage = new Haulage(@event.missionid ?? 0, type, originSystem, amountRemaining, null, true);
+                            string name = mission?.name ?? (@event.startmarketid == 0 ? "MISSION_CollectWing" : "MISSION_DeliveryWing");
+                            haulage = new Haulage(@event.missionid ?? 0, name, originSystem, amountRemaining, null, true);
                             cargo.haulageData.Add(haulage);
+                            cargo.CalculateNeed();
                         }
-
-                        if (haulage.typeEDName.Contains("delivery"))
-                        {
-                            cargo.haulage -= Math.Min(@event.amount ?? 0, cargo.haulage);
-                        }
-                        else
-                        {
-                            cargo.owned -= Math.Min(@event.amount ?? 0, cargo.owned);
-                        }
-                        cargo.CalculateNeed();
                         haulage.collected = @event.collected;
                         haulage.delivered = @event.delivered;
                         haulage.endmarketid = (haulage.endmarketid == 0) ? @event.endmarketid : haulage.endmarketid;
@@ -776,17 +589,17 @@ namespace EddiCargoMonitor
                             // First exposure to new cargo, use 'Unknown' as placeholder
                             cargo = new Cargo("Unknown", 0);
                             AddCargo(cargo);
-                            string type = (@event.startmarketid == 0) ? "MISSION_CollectWing" : "MISSION_DeliveryWing";
-                            haulage = new Haulage(@event.missionid ?? 0, type, null, amountRemaining, null, true);
+                            string name = mission?.name ?? (@event.startmarketid == 0 ? "MISSION_CollectWing" : "MISSION_DeliveryWing");
+                            haulage = new Haulage(@event.missionid ?? 0, name, null, amountRemaining, null, true);
                             cargo.haulageData.Add(haulage);
                         }
+                        cargo.CalculateNeed();
 
                         int amount = Math.Max(@event.collected - haulage.collected, @event.delivered - haulage.delivered);
                         if (amount > 0)
                         {
                             string updatetype = @event.collected > haulage.collected ? "Collect" : "Deliver";
                             EDDI.Instance.eventHandler(new CargoWingUpdateEvent(DateTime.Now, haulage.missionid, updatetype, cargo.commodityDef, amount, @event.collected, @event.delivered, @event.totaltodeliver));
-                            cargo.CalculateNeed();
                             haulage.collected = @event.collected;
                             haulage.delivered = @event.delivered;
                             if (updatetype == "Collect" && haulage.startmarketid == 0)
@@ -820,12 +633,15 @@ namespace EddiCargoMonitor
 
         private void handleMissionsEvent(MissionsEvent @event)
         {
-            _handleMissionsEvent(@event);
-            writeInventory();
+            if (_handleMissionsEvent(@event))
+            {
+                writeInventory();
+            }
         }
 
-        private void _handleMissionsEvent(MissionsEvent @event)
+        private bool _handleMissionsEvent(MissionsEvent @event)
         {
+            bool update = false;
             foreach (Cargo cargo in inventory.ToList())
             {
                 foreach (Haulage haulage in cargo.haulageData.ToList())
@@ -834,9 +650,11 @@ namespace EddiCargoMonitor
                     if (mission == null)
                     {
                         cargo.haulageData.Remove(haulage);
+                        update = true;
                     }
                 }
             }
+            return update;
         }
 
         private void handleMissionAbandonedEvent(MissionAbandonedEvent @event)
@@ -851,30 +669,9 @@ namespace EddiCargoMonitor
             if (haulage != null)
             {
                 Cargo cargo = GetCargoWithMissionId(@event.missionid ?? 0);
-                switch (haulage.typeEDName)
-                {
-                    case "delivery":
-                    case "deliverywing":
-                    case "rescue":
-                    case "salvage":
-                    case "smuggle":
-                        {
-                            // Calculate the amount of mission-related cargo still in inventory
-                            int obtained = haulage.remaining - cargo.ejected;
-                            obtained = Math.Min(cargo.haulage, obtained);
-
-                            // Convert that amount of cargo from `haulage` to `stolen`
-                            cargo.haulage -= obtained;
-                            cargo.stolen += obtained;
-
-                            // Reduce our `need` counter by the amount of mission related cargo which had not yet been obtained.
-                            cargo.need -= (haulage.remaining - obtained);
-
-                            // We didn't fail for ejecting cargo so we set this counter to zero
-                            cargo.ejected = 0;
-                        }
-                        break;
-                }
+                int onboard = haulage.remaining - haulage.need;
+                cargo.haulage -= onboard;
+                cargo.stolen += onboard;
                 cargo.haulageData.Remove(haulage);
                 RemoveCargo(cargo);
             }
@@ -917,13 +714,13 @@ namespace EddiCargoMonitor
                 case "salvage":
                 case "smuggle":
                     {
-                        int amount = (type == "delivery" && naval || type == "smuggle") ? @event.amount ?? 0 : 0;
                         string originSystem = EDDI.Instance?.CurrentStarSystem?.name;
                         Haulage haulage = new Haulage(@event.missionid ?? 0, @event.name, originSystem, @event.amount ?? 0, @event.expiry)
                         {
                             startmarketid = (type.Contains("delivery") && !naval) ? EDDI.Instance?.CurrentStation?.marketId ?? 0 : 0,
                             endmarketid = (type.Contains("collect")) ? EDDI.Instance?.CurrentStation?.marketId ?? 0 : 0,
                         };
+
                         if (type.Contains("delivery") || type == "smuggle")
                         {
                             haulage.sourcesystem = EDDI.Instance?.CurrentStarSystem?.name;
@@ -935,22 +732,13 @@ namespace EddiCargoMonitor
                         }
 
                         cargo = GetCargoWithEDName(@event.commodityDefinition?.edname);
-                        if (cargo != null)
+                        if (cargo == null)
                         {
-                            cargo.haulage += amount;
-                            cargo.haulageData.Add(haulage);
-                            cargo.CalculateNeed();
-                        }
-                        else
-                        {
-                            cargo = new Cargo(@event.commodityDefinition?.edname, 0)
-                            {
-                                haulage = amount
-                            };
-                            cargo.haulageData.Add(haulage);
-                            cargo.CalculateNeed();
+                            cargo = new Cargo(@event.commodityDefinition?.edname, 0);
                             AddCargo(cargo);
                         }
+                        cargo.haulageData.Add(haulage);
+                        cargo.CalculateNeed();
                     }
                     break;
             }
@@ -967,86 +755,15 @@ namespace EddiCargoMonitor
 
         private void _handleMissionCompletedEvent(MissionCompletedEvent @event)
         {
-            Cargo cargo = new Cargo();
-            cargo = GetCargoWithEDName(@event.commodityDefinition?.edname);
+            Cargo cargo = GetCargoWithEDName(@event.commodityDefinition?.edname);
             if (cargo != null)
             {
                 Haulage haulage = cargo.haulageData.FirstOrDefault(ha => ha.missionid == @event.missionid);
                 if (haulage != null)
                 {
-                    int amount = Math.Min(haulage.remaining, @event.amount ?? 0);
-                    switch (haulage.typeEDName)
-                    {
-                        case "altruism":
-                        case "collect":
-                        case "mining":
-                            {
-                                cargo.owned -= amount;
-                            }
-                            break;
-                        case "delivery":
-                        case "rescue":
-                        case "smuggle":
-                            {
-                                cargo.haulage -= amount;
-                            }
-                            break;
-                        case "piracy":
-                            {
-                                if (cargo.stolen < amount)
-                                {
-                                    cargo.owned -= amount;
-                                }
-                                else
-                                {
-                                    cargo.stolen -= amount;
-                                }
-                            }
-                            break;
-                        case "salvage":
-                            {
-                                if (haulage.legal)
-                                {
-                                    cargo.haulage -= amount;
-                                }
-                                else
-                                {
-                                    cargo.stolen -= amount;
-                                }
-                            }
-                            break;
-                    }
                     cargo.haulageData.Remove(haulage);
                 }
-                else if (cargo.haulage >= @event.amount)
-                {
-                    cargo.haulage -= @event.amount ?? 0;
-                }
-                else if (cargo.owned >= @event.amount)
-                {
-                    cargo.owned -= @event.amount ?? 0;
-                }
                 RemoveCargo(cargo);
-            }
-
-            foreach (CommodityAmount commodityReward in @event.commodityrewards)
-            {
-                cargo = GetCargoWithEDName(commodityReward.edname);
-                if (cargo != null)
-                {
-                    cargo.owned += commodityReward.amount;
-                    cargo.CalculateNeed();
-                }
-                else
-                {
-                    cargo = new Cargo(commodityReward.edname, commodityReward.amount)
-                    {
-                        stolen = 0,
-                        owned = commodityReward.amount
-                    };
-
-                    AddCargo(cargo);
-                }
             }
         }
 
@@ -1077,131 +794,11 @@ namespace EddiCargoMonitor
             if (haulage != null)
             {
                 Cargo cargo = GetCargoWithMissionId(@event.missionid ?? 0);
-                switch (haulage.typeEDName)
-                {
-                    case "delivery":
-                    case "deliverywing":
-                    case "rescue":
-                    case "salvage":
-                    case "smuggle":
-                        {
-                            // Calculate the amount of mission-related cargo still in inventory
-                            int obtained = haulage.remaining;
-
-                            // If not expired, then failure may have been due to jettisoning cargo
-                            if (haulage.expiry < DateTime.Now)
-                            {
-                                obtained -= cargo.ejected;
-                                cargo.ejected = 0;
-                            }
-                            obtained = Math.Min(cargo.haulage, obtained);
-
-                            // Convert that amount of cargo from `haulage` to `stolen`
-                            cargo.haulage -= obtained;
-                            cargo.stolen += obtained;
-
-                            // Reduce our `need` counter by the amount of mission related cargo which had not yet been obtained.
-                            cargo.need -= (haulage.remaining - obtained);
-                        }
-                        break;
-                }
+                int onboard = haulage.remaining - haulage.need;
+                cargo.haulage -= onboard;
+                cargo.stolen += onboard;
                 cargo.haulageData.Remove(haulage);
                 RemoveCargo(cargo);
-            }
-        }
-
-        private void handleMissionRedirectedEvent(MissionRedirectedEvent @event)
-        {
-            _handleMissionRedirectedEvent(@event);
-            writeInventory();
-        }
-
-        private void _handleMissionRedirectedEvent(MissionRedirectedEvent @event)
-        {
-            // Adjust cargo haulage & stolen amounts to account for completed missions
-            Haulage haulage = GetHaulageWithMissionId(@event.missionid ?? 0);
-            if (haulage != null)
-            {
-                if (@event.newdestinationsystem == haulage.originsystem)
-                {
-                    Cargo cargo = GetCargoWithMissionId(@event.missionid ?? 0);
-                    haulage.status = "Complete";
-                    int haulageAmount = cargo.haulageData
-                        .Where(ha => ha.status == "Complete" && ha.legal)
-                        .Sum(ha => ha.amount);
-                    int stolenAmount = cargo.haulageData
-                        .Where(ha => ha.status == "Complete" && !ha.legal)
-                        .Sum(ha => ha.amount);
-
-                    int total = cargo.total;
-                    cargo.haulage = Math.Max(cargo.haulage, haulageAmount);
-                    cargo.stolen = Math.Max(cargo.stolen, stolenAmount);
-                    cargo.owned = total - cargo.haulage - cargo.stolen;
-                }
-            }
-        }
-
-        private void handleSearchAndRescueEvent(SearchAndRescueEvent @event)
-        {
-            _handleSearchAndRescueEvent(@event);
-            writeInventory();
-        }
-
-        private void _handleSearchAndRescueEvent(SearchAndRescueEvent @event)
-        {
-            Cargo cargo = GetCargoWithEDName(@event.commodity?.edname);
-            if (cargo != null)
-            {
-                cargo.owned -= Math.Min(cargo.owned, @event.amount ?? 0);
-                RemoveCargo(cargo);
-            }
-        }
-
-        private void handleSynthesisedEvent(SynthesisedEvent @event)
-        {
-            if (@event.synthesis.Contains("Limpet")) // At present, only a basic recipe exists. Basic recipe name: "Limpet Basic"
-            {
-                _handleSynthesisedEvent();
-                writeInventory();
-            }
-        }
-
-        private void _handleSynthesisedEvent()
-        {
-            Cargo cargo = new Cargo();
-            cargo = GetCargoWithEDName("Drones");
-            if (cargo != null)
-            {
-                cargo.owned += 4;
-            }
-            else
-            {
-                cargo = new Cargo("Drones", 4)
-                {
-                    stolen = 0,
-                    owned = 4
-                };
-
-                AddCargo(cargo);
-            }
-        }
-
-        private void handleTechnologyBrokerEvent(TechnologyBrokerEvent @event)
-        {
-            _handleTechnologyBrokerEvent(@event);
-            writeInventory();
-        }
-
-        private void _handleTechnologyBrokerEvent(TechnologyBrokerEvent @event)
-        {
-            foreach (CommodityAmount commodityAmount in @event.commodities)
-            {
-                Cargo cargo = GetCargoWithEDName(commodityAmount.edname);
-                if (cargo != null)
-                {
-                    cargo.owned -= Math.Min(cargo.owned, commodityAmount.amount);
-                    RemoveCargo(cargo);
-                }
             }
         }
 
@@ -1241,12 +838,6 @@ namespace EddiCargoMonitor
                 // Write cargo configuration with current inventory
                 CargoMonitorConfiguration configuration = new CargoMonitorConfiguration();
 
-                int sum = inventory.Sum(c => c.total);
-                if (cargoCarried != sum)
-                {
-                    cargoCarried = sum;
-                    EDDI.Instance.eventHandler(new CargoUpdatedEvent(DateTime.UtcNow, cargoCarried));
-                }
                 configuration.cargo = inventory;
                 configuration.cargocarried = cargoCarried;
                 configuration.ToFile();
@@ -1354,7 +945,7 @@ namespace EddiCargoMonitor
         {
             foreach (Cargo cargo in inventory.ToList())
             {
-                if (cargo.haulageData.FirstOrDefault(ha => ha.missionid == missionid) != null)
+                if (cargo.haulageData.FirstOrDefault(h => h.missionid == missionid) != null)
                 {
                     return cargo;
                 }
@@ -1366,13 +957,68 @@ namespace EddiCargoMonitor
         {
             foreach (Cargo cargo in inventory.ToList())
             {
-                Haulage haulage = cargo.haulageData.FirstOrDefault(ha => ha.missionid == missionid);
+                Haulage haulage = cargo.haulageData.FirstOrDefault(h => h.missionid == missionid);
                 if (haulage != null)
                 {
                     return haulage;
                 }
             }
             return null;
+        }
+
+        private void UpdateCargoFromInfo(Cargo cargo, List<CargoInfo> infoList)
+        {
+            cargo.total = infoList.Sum(i => i.count);
+            cargo.haulage = infoList.Where(i => i.missionid != null).Sum(i => i.count);
+            cargo.stolen = infoList.Where(i => i.missionid == null).Sum(i => i.stolen);
+            cargo.owned = cargo.total - cargo.haulage - cargo.stolen;
+
+            foreach (CargoInfo info in infoList.Where(i => i.missionid != null).ToList())
+            {
+                Mission mission = ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor"))
+                    .GetMissionWithMissionId(info.missionid ?? 0);
+
+                Haulage cargoHaulage = cargo.haulageData.FirstOrDefault(h => h.missionid == info.missionid);
+                if (cargoHaulage != null)
+                {
+                    int need = cargoHaulage.remaining - info.count;
+
+                    // Check for sold haulage
+                    if (need != cargoHaulage.need)
+                    {
+                        if (checkHaulage && need > cargoHaulage.need)
+                        {
+                            // We lost haulage
+                            switch (cargoHaulage.typeEDName)
+                            {
+                                case "delivery":
+                                case "deliverywing":
+                                case "smuggle":
+                                    {
+                                        cargoHaulage.status = "Failed";
+                                        if (mission != null)
+                                        {
+                                            mission.statusDef = MissionStatus.FromEDName("Failed");
+                                        }
+                                    }
+                                    break;
+                            }
+                        }
+                        cargoHaulage.need = need;
+                    }
+                }
+                else
+                {
+                    string name = mission?.name ?? "Mission_None";
+                    int amount = mission?.amount ?? info.count;
+                    DateTime? expiry = mission?.expiry;
+
+                    cargoHaulage = new Haulage(info.missionid ?? 0, name, mission?.originsystem, amount, expiry);
+                    cargo.haulageData.Add(cargoHaulage);
+                }
+            }
+            cargo.CalculateNeed();
+            checkHaulage = false;
         }
 
         public string GetSourceRoute(string system = null)

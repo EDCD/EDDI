@@ -70,6 +70,7 @@
     <Compile Include="AtmosphereComposition.cs" />
     <Compile Include="BlueprintMaterials.cs" />
     <Compile Include="BodyType.cs" />
+    <Compile Include="CargoInfo.cs" />
     <Compile Include="ReserveLevel.cs" />
     <Compile Include="PlanetClass.cs" />
     <Compile Include="BodySolidComposition.cs" />

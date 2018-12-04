@@ -406,8 +406,9 @@ namespace EddiJournalMonitor
                                     {
                                         Logging.Error("Failed to map cargo type " + commodityName + " to commodity definition", line);
                                     }
+                                    long? missionid = JsonParsing.getOptionalLong(data, "MissionID");
                                     bool stolen = JsonParsing.getBool(data, "Stolen");
-                                    events.Add(new CommodityCollectedEvent(timestamp, commodity, stolen) { raw = line });
+                                    events.Add(new CommodityCollectedEvent(timestamp, commodity, missionid, stolen) { raw = line });
                                     handled = true;
                                 }
                                 handled = true;
@@ -420,16 +421,16 @@ namespace EddiJournalMonitor
                                     {
                                         Logging.Error("Failed to map cargo type " + commodityName + " to commodity definition", line);
                                     }
+                                long? missionid = JsonParsing.getOptionalLong(data, "MissionID");
                                     data.TryGetValue("Count", out object val);
                                     int amount = (int)(long)val;
                                     bool abandoned = JsonParsing.getBool(data, "Abandoned");
-                                    events.Add(new CommodityEjectedEvent(timestamp, commodity, amount, abandoned) { raw = line });
+                                events.Add(new CommodityEjectedEvent(timestamp, commodity, amount, missionid, abandoned) { raw = line });
                                 }
                                 handled = true;
                                 break;
                             case "Loadout":
                                 {
-
                                     data.TryGetValue("ShipID", out object val);
                                     int shipId = (int)(long)val;
                                     string ship = JsonParsing.getString(data, "Ship");
@@ -1767,58 +1768,58 @@ namespace EddiJournalMonitor
                                     handled = true;
                                     break;
                                 }
-                        case "EngineerContribution":
-                            {
-                                string name = JsonParsing.getString(data, "Engineer");
-                                long engineerId = JsonParsing.getLong(data, "EngineerID");
-                                Engineer engineer = Engineer.FromNameOrId(name, engineerId);
+	                        case "EngineerContribution":
+	                            {
+	                                string name = JsonParsing.getString(data, "Engineer");
+	                                long engineerId = JsonParsing.getLong(data, "EngineerID");
+	                                Engineer engineer = Engineer.FromNameOrId(name, engineerId);
 
-                                string contributionType = JsonParsing.getString(data, "Type"); // (Commodity, materials, Credits, Bond, Bounty)
-                                switch (contributionType)
-                                {
-                                    case "Commodity":
-                                        {
-                                            string edname = JsonParsing.getString(data, "Commodity");
-                                            int amount = JsonParsing.getInt(data, "Quantity");
-                                            int total = JsonParsing.getInt(data, "TotalQuantity");
-                                            CommodityAmount commodity = new CommodityAmount(CommodityDefinition.FromEDName(edname), amount);
-                                            events.Add(new EngineerContributedEvent(timestamp, engineer, commodity, null, contributionType, amount, total) { raw = line });
-                                        }
-                                        break;
-                                    case "Materials":
-                                        {
-                                            string edname = JsonParsing.getString(data, "Material");
-                                            int amount = JsonParsing.getInt(data, "Quantity");
-                                            int total = JsonParsing.getInt(data, "TotalQuantity");
-                                            MaterialAmount material = new MaterialAmount(Material.FromEDName(edname), amount);
-                                            events.Add(new EngineerContributedEvent(timestamp, engineer, null, material, contributionType, amount, total) { raw = line });
-                                        }
-                                        break;
-                                    case "Credits":
-                                    case "Bond":
-                                    case "Bounty":
-                                        { } // We don't currently handle credit changes from these types.
-                                        break;
-                                }
-                                handled = true;
-                                break;
-                            }
+	                                string contributionType = JsonParsing.getString(data, "Type"); // (Commodity, materials, Credits, Bond, Bounty)
+	                                switch (contributionType)
+	                                {
+	                                    case "Commodity":
+	                                        {
+	                                            string edname = JsonParsing.getString(data, "Commodity");
+	                                            int amount = JsonParsing.getInt(data, "Quantity");
+	                                            int total = JsonParsing.getInt(data, "TotalQuantity");
+	                                            CommodityAmount commodity = new CommodityAmount(CommodityDefinition.FromEDName(edname), amount);
+	                                            events.Add(new EngineerContributedEvent(timestamp, engineer, commodity, null, contributionType, amount, total) { raw = line });
+	                                        }
+	                                        break;
+	                                    case "Materials":
+	                                        {
+	                                            string edname = JsonParsing.getString(data, "Material");
+	                                            int amount = JsonParsing.getInt(data, "Quantity");
+	                                            int total = JsonParsing.getInt(data, "TotalQuantity");
+	                                            MaterialAmount material = new MaterialAmount(Material.FromEDName(edname), amount);
+	                                            events.Add(new EngineerContributedEvent(timestamp, engineer, null, material, contributionType, amount, total) { raw = line });
+	                                        }
+	                                        break;
+	                                    case "Credits":
+	                                    case "Bond":
+	                                    case "Bounty":
+	                                        { } // We don't currently handle credit changes from these types.
+	                                        break;
+	                                }
+	                                handled = true;
+	                                break;
+	                            }
                             case "EngineerCraft":
                                 {
                                     string engineer = JsonParsing.getString(data, "Engineer");
-                                long engineerId = JsonParsing.getLong(data, "EngineerID");
-                                string blueprintpEdName = JsonParsing.getString(data, "Blueprint");
-                                long blueprintId = JsonParsing.getLong(data, "BlueprintID");
+	                                long engineerId = JsonParsing.getLong(data, "EngineerID");
+	                                string blueprintpEdName = JsonParsing.getString(data, "Blueprint");
+	                                long blueprintId = JsonParsing.getLong(data, "BlueprintID");
 
                                     data.TryGetValue("Level", out object val);
                                     int level = (int)(long)val;
 
-                                decimal? quality = JsonParsing.getOptionalDecimal(data, "Quality"); //
-                                string experimentalEffect = JsonParsing.getString(data, "ApplyExperimentalEffect"); //
+	                                decimal? quality = JsonParsing.getOptionalDecimal(data, "Quality"); //
+	                                string experimentalEffect = JsonParsing.getString(data, "ApplyExperimentalEffect"); //
 
-                                string ship = ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship Monitor")).GetCurrentShip().model;
-                                Compartment compartment = parseShipCompartment(ship, JsonParsing.getString(data, "Slot")); //
-                                compartment.module = Module.FromEDName(JsonParsing.getString(data, "Module"));
+	                                string ship = ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship Monitor")).GetCurrentShip().model;
+	                                Compartment compartment = parseShipCompartment(ship, JsonParsing.getString(data, "Slot")); //
+	                                compartment.module = Module.FromEDName(JsonParsing.getString(data, "Module"));
 
                                 List<CommodityAmount> commodities = new List<CommodityAmount>();
                                     List<MaterialAmount> materials = new List<MaterialAmount>();
@@ -1853,40 +1854,40 @@ namespace EddiJournalMonitor
                                             }
                                         }
                                     }
-                                events.Add(new ModificationCraftedEvent(timestamp, engineer, engineerId, blueprintpEdName, blueprintId, level, quality, experimentalEffect, materials, commodities, compartment) { raw = line });
+	                                events.Add(new ModificationCraftedEvent(timestamp, engineer, engineerId, blueprintpEdName, blueprintId, level, quality, experimentalEffect, materials, commodities, compartment) { raw = line });
                                     handled = true;
                                     break;
                                 }
-                        case "EngineerProgress":
+	                        case "EngineerProgress":
                                 {
-                                data.TryGetValue("Engineers", out object val);
-                                if (val != null)
-                                {
-                                    // This is a startup entry. 
-                                    // Update engineer progress / status data but do not generate events.
-                                    List<object> engineers = (List<object>)val;
-                                    foreach (IDictionary<string, object> engineerData in engineers)
-                                    {
-                                        Engineer engineer = parseEngineer(engineerData);
-                                        Engineer.AddOrUpdate(engineer);
-                            }
-                                }
-                                else
-                                {
-                                    // This is a progress entry.
-                                    Engineer engineer = parseEngineer(data);
-                                    Engineer lastEngineer = Engineer.FromNameOrId(engineer.name, engineer.id);
+	                                data.TryGetValue("Engineers", out object val);
+	                                if (val != null)
+	                                {
+	                                    // This is a startup entry. 
+	                                    // Update engineer progress / status data but do not generate events.
+	                                    List<object> engineers = (List<object>)val;
+	                                    foreach (IDictionary<string, object> engineerData in engineers)
+	                                    {
+	                                        Engineer engineer = parseEngineer(engineerData);
+	                                        Engineer.AddOrUpdate(engineer);
+			                            }
+	                                }
+	                                else
+	                                {
+	                                    // This is a progress entry.
+	                                    Engineer engineer = parseEngineer(data);
+	                                    Engineer lastEngineer = Engineer.FromNameOrId(engineer.name, engineer.id);
 
-                                    if (engineer.rank != null && engineer.rank != lastEngineer?.rank)
-                                    {
-                                        events.Add(new EngineerProgressedEvent(timestamp, engineer, "Rank") { raw = line });
-                                    }
-                                    else if (engineer.stage != null && engineer.stage != lastEngineer?.stage)
-                                    {
-                                        events.Add(new EngineerProgressedEvent(timestamp, engineer, "Stage") { raw = line });
-                                    }
-                                    Engineer.AddOrUpdate(engineer);
-                                }
+	                                    if (engineer.rank != null && engineer.rank != lastEngineer?.rank)
+	                                    {
+	                                        events.Add(new EngineerProgressedEvent(timestamp, engineer, "Rank") { raw = line });
+	                                    }
+	                                    else if (engineer.stage != null && engineer.stage != lastEngineer?.stage)
+	                                    {
+	                                        events.Add(new EngineerProgressedEvent(timestamp, engineer, "Stage") { raw = line });
+	                                    }
+	                                    Engineer.AddOrUpdate(engineer);
+	                                }
                                     handled = true;
                                     break;
                                 }
@@ -2379,7 +2380,7 @@ namespace EddiJournalMonitor
                                 {
                                     long cgid = JsonParsing.getLong(data, "CGID");
 
-                                    events.Add(new MissionAbandonedEvent(timestamp, cgid, "MISSION_CommunityGoal"));
+	                                events.Add(new MissionAbandonedEvent(timestamp, cgid, "MISSION_CommunityGoal", 0));
                                     handled = true;
                                     break;
                                 }
@@ -2601,7 +2602,9 @@ namespace EddiJournalMonitor
                                     data.TryGetValue("MissionID", out object val);
                                     long missionid = (long)val;
                                     string name = JsonParsing.getString(data, "Name");
-                                    events.Add(new MissionAbandonedEvent(timestamp, missionid, name) { raw = line });
+	                                data.TryGetValue("Fine", out val);
+	                                long fine = val == null ? 0 : (long)val;
+	                                events.Add(new MissionAbandonedEvent(timestamp, missionid, name, fine) { raw = line });
                                     handled = true;
                                     break;
                                 }
@@ -2831,9 +2834,11 @@ namespace EddiJournalMonitor
                                 break;
                             case "Cargo":
                                 {
-                                    int cargocarried = 0;
-                                    List<Cargo> inventory = new List<Cargo>();
+	                                bool update = false;
+	                                List<CargoInfo> inventory = new List<CargoInfo>();
 
+	                                string vessel = JsonParsing.getString(data, "Vessel") ?? EDDI.Instance?.Vehicle;
+	                                int cargocarried = JsonParsing.getInt(data, "Count");
                                     data.TryGetValue("Inventory", out object val);
                                     if (val != null)
                                     {
@@ -2841,23 +2846,22 @@ namespace EddiJournalMonitor
                                         foreach (Dictionary<string, object> cargoJson in inventoryJson)
                                         {
                                             string name = JsonParsing.getString(cargoJson, "Name");
-                                            int amount = JsonParsing.getInt(cargoJson, "Count");
-                                            cargocarried += amount;
-                                            Cargo cargo = new Cargo(name, amount)
-                                            {
-                                                haulage = 0,
-                                                stolen = JsonParsing.getInt(cargoJson, "Stolen")
-                                            };
-                                            cargo.owned = amount - cargo.stolen;
-                                            inventory.Add(cargo);
+	                                        long? missionid = JsonParsing.getOptionalLong(cargoJson, "MissionID");
+	                                        int count = JsonParsing.getInt(cargoJson, "Count");
+	                                        int stolen = JsonParsing.getInt(cargoJson, "Stolen");
+	                                        CargoInfo info = new CargoInfo(name, missionid, count, stolen);
+	                                        inventory.Add(info);
                                         }
                                     }
-
-                                    events.Add(new CargoInventoryEvent(DateTime.UtcNow, inventory, cargocarried) { raw = line });
+	                                else
+	                                {
+	                                    inventory = CargoInfoReader.FromFile().Inventory;
+	                                    update = true;
+	                                }
+	                                events.Add(new CargoEvent(timestamp, update, vessel, inventory, cargocarried) { raw = line });
                                 }
                                 handled = true;
                                 break;
-
                             case "PowerplayJoin":
                                 {
                                     string power = JsonParsing.getString(data, "Power");

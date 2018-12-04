@@ -12,30 +12,32 @@ using Utilities;
 
 
 
-namespace EddiShipMonitor
+namespace EddiCargoMonitor
 {
-    public class ModuleInfoReader
+    public class CargoInfoReader
     {
-        public List<ModuleInfo> Modules { get; set; }
+        public int Count { get; set; }
+        public List<CargoInfo> Inventory { get; set; }
 
-        public ModuleInfoReader()
+        public CargoInfoReader()
         {
-            Modules = new List<ModuleInfo>();
+            Inventory = new List<CargoInfo>();
         }
 
-        public static ModuleInfoReader FromFile(string filename = null)
+        public static CargoInfoReader FromFile(string filename = null)
         {
-            ModuleInfoReader info = new ModuleInfoReader();
-            Regex Filter = new Regex(@"^ModulesInfo\.json$");
+            CargoInfoReader info = new CargoInfoReader();
+            Regex Filter = new Regex(@"^Cargo\.json$");
             string directory = GetSavedGamesDir();
             if (directory == null || directory.Trim() == "")
             {
                 return null;
             }
+
             FileInfo fileInfo = null;
             try
             {
-                fileInfo = FindModuleInfoFile(directory, Filter);
+                fileInfo = FindCargoInfoFile(directory, Filter);
             }
             catch (NotSupportedException nsex)
             {
@@ -51,7 +53,7 @@ namespace EddiShipMonitor
                     maxTries--;
                     if (maxTries == 0)
                     {
-                        Logging.Info("Unable to open Elite Dangerous ModulesInfo.json file");
+                        Logging.Info("Unable to open Elite Dangerous Cargo.json file");
                         return null;
                     }
                 }
@@ -62,7 +64,7 @@ namespace EddiShipMonitor
                     string data = string.Empty;
                     fs.Seek(0, SeekOrigin.Begin);
                     data = reader.ReadToEnd() ?? string.Empty;
-                    info = JsonConvert.DeserializeObject<ModuleInfoReader>(data);
+                    info = JsonConvert.DeserializeObject<CargoInfoReader>(data);
                 }
             }
             return info;
@@ -89,7 +91,7 @@ namespace EddiShipMonitor
         }
 
         /// <summary>Find the latest file in a given directory matching a given expression, or null if no such file exists</summary>
-        private static FileInfo FindModuleInfoFile(string path, Regex filter = null)
+        private static FileInfo FindCargoInfoFile(string path, Regex filter = null)
         {
             if (path == null)
             {

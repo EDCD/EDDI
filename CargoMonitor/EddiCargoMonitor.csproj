@@ -66,10 +66,10 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CargoInventoryEvent.cs" />
+    <Compile Include="CargoEvent.cs" />
+    <Compile Include="CargoInfoReader.cs" />
     <Compile Include="CargoMonitor.cs" />
     <Compile Include="CargoMonitorConfiguration.cs" />
-    <Compile Include="CargoUpdatedEvent.cs" />
     <Compile Include="CommodityCollectedEvent.cs" />
     <Compile Include="CommodityEjectedEvent.cs" />
     <Compile Include="CommodityPurchasedEvent.cs" />
