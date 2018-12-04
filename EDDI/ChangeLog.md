@@ -2,10 +2,11 @@
 
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
-### Development
+### 3.1.2
   * Localization
     * Material locations have been moved from the update server to the app and are now a translatable resource.
-  * Tweaked pronunciations of "Megaship" and "Orbis" in English. Tweaked pronuncations are available via the `P()` function.
+  * Speech responder
+    * Tweaked pronunciations of "Megaship" and "Orbis" in English. Tweaked pronuncations are available via the `P()` function.
   
 ### 3.1.1
   * Core
