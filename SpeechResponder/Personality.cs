@@ -273,7 +273,9 @@ namespace EddiSpeechResponder
             /// `Jumping` and `Modification applied` are deprecated events
             /// `Status`, `Cargo` and `Unhandled event` are events which shares updates with monitors / responders but are not intended to be user facing
             string[] ignoredEventKeys = { "Belt scanned", "Cargo", "Jumping", "Missions", "Status", "Unhandled event", "Modification applied" };
-            missingScripts.RemoveAll(t => t == "Belt scanned" || t == "Jumping" || t == "Status" || t == "Unhandled event" ); // TODO fixme
+            Array.Sort(ignoredEventKeys);
+            bool isIgnoredEvent(string t) => Array.BinarySearch(ignoredEventKeys, t) >= 0;
+            missingScripts.RemoveAll(isIgnoredEvent);
             if (missingScripts.Count > 0)
             {
                 Logging.Info("Failed to find scripts" + string.Join(";", missingScripts));
