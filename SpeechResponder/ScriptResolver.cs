@@ -176,6 +176,10 @@ namespace EddiSpeechResponder
                 }
                 if (translation == val)
                 {
+                    translation = Translations.Station(val);
+                }
+                if (translation == val)
+                {
                     translation = Translations.Faction(val);
                 }
                 if (translation == val)

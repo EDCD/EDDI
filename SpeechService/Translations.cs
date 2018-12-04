@@ -52,6 +52,13 @@ namespace EddiSpeechService
             { "VESPER-M4", "Vesper M 4" } // Stop Vesper being treated as a sector
         };
 
+        // Fixes to avoid issues with pronunciation of station model names
+        private static Dictionary<string, string> STATION_MODEL_FIXES = new Dictionary<string, string>()
+        {
+            { "Orbis Starport", "Or-bis Starport" }, // Stop "Or-bis" from sometimes being pronounced as "Or-bise"
+            { "Megaship", "Mega-ship" } // Stop "Mega-Ship" from sometimes being pronounced as "Meg-AH-ship"
+        };
+
         // Fixes to avoid issues with some of the more strangely-named factions
         private static Dictionary<string, string> FACTION_FIXES = new Dictionary<string, string>()
         {
@@ -420,6 +427,17 @@ namespace EddiSpeechService
             starSystem = UPPERCASE.Replace(starSystem, match => useICAO ? ICAO(match.Value, true) : string.Join<char>(" ", match.Value));
 
             return Regex.Replace(starSystem, @"\s+", " ");
+        }
+
+        /// <summary>Fix up station related pronunciations </summary>
+        public static string Station(string station)
+        {
+            // Specific fixing of station model pronunciations
+            if (STATION_MODEL_FIXES.ContainsKey(station))
+            {
+                station = STATION_MODEL_FIXES[station];
+            }
+            return station;
         }
 
         private static string replaceWithPronunciation(string sourcePhrase, string[] pronunciation)

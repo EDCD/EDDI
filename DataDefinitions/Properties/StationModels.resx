@@ -130,11 +130,11 @@
     <comment>A Coriolis Starport</comment>
   </data>
   <data name="Megaship" xml:space="preserve">
-    <value>Mega-ship</value>
+    <value>Megaship</value>
     <comment>A Megaship</comment>
   </data>
   <data name="Orbis" xml:space="preserve">
-    <value>Or-bis Starport</value>
+    <value>Orbis Starport</value>
     <comment>An Orbis Starport</comment>
   </data>
   <data name="Outpost" xml:space="preserve">
