@@ -23,6 +23,7 @@ namespace EddiShipMonitor
             Modules = new List<ModuleInfo>();
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times")] // this usage is perfectly correct    
         public static ModuleInfoReader FromFile(string filename = null)
         {
             ModuleInfoReader info = new ModuleInfoReader();
@@ -70,8 +71,7 @@ namespace EddiShipMonitor
 
         private static string GetSavedGamesDir()
         {
-            IntPtr path;
-            int result = NativeMethods.SHGetKnownFolderPath(new Guid("4C5C32FF-BB9D-43B0-B5B4-2D72E54EAAA4"), 0, new IntPtr(0), out path);
+            int result = NativeMethods.SHGetKnownFolderPath(new Guid("4C5C32FF-BB9D-43B0-B5B4-2D72E54EAAA4"), 0, new IntPtr(0), out IntPtr path);
             if (result >= 0)
             {
                 return Marshal.PtrToStringUni(path) + @"\Frontier Developments\Elite Dangerous";
@@ -134,7 +134,9 @@ namespace EddiShipMonitor
             finally
             {
                 if (stream != null)
+                {
                     stream.Close();
+                }
             }
 
             //file is not locked

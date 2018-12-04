@@ -24,6 +24,7 @@ namespace EddiCargoMonitor
             Inventory = new List<CargoInfo>();
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times")] // this usage is perfectly correct    
         public static CargoInfoReader FromFile(string filename = null)
         {
             CargoInfoReader info = new CargoInfoReader();
@@ -72,8 +73,7 @@ namespace EddiCargoMonitor
 
         private static string GetSavedGamesDir()
         {
-            IntPtr path;
-            int result = NativeMethods.SHGetKnownFolderPath(new Guid("4C5C32FF-BB9D-43B0-B5B4-2D72E54EAAA4"), 0, new IntPtr(0), out path);
+            int result = NativeMethods.SHGetKnownFolderPath(new Guid("4C5C32FF-BB9D-43B0-B5B4-2D72E54EAAA4"), 0, new IntPtr(0), out IntPtr path);
             if (result >= 0)
             {
                 return Marshal.PtrToStringUni(path) + @"\Frontier Developments\Elite Dangerous";
@@ -136,7 +136,9 @@ namespace EddiCargoMonitor
             finally
             {
                 if (stream != null)
+                {
                     stream.Close();
+                }
             }
 
             //file is not locked
