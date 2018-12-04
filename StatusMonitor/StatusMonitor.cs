@@ -19,7 +19,6 @@ namespace EddiStatusMonitor
     public class StatusMonitor : EDDIMonitor
     {
         // What we are monitoring and what to do with it
-        private static readonly Regex Filter = new Regex(@"^Status\.json$");
         private static readonly Regex JsonRegex = new Regex(@"^{.*}$");
         private string Directory = GetSavedGamesDir();
         public static Status currentStatus { get; set; } = new Status();
@@ -87,13 +86,13 @@ namespace EddiStatusMonitor
             FileInfo fileInfo = null;
             try
             {
-                fileInfo = FindStatusFile(Directory, Filter);
+                fileInfo = Files.FileInfo(Directory, "Status.json");
             }
             catch (NotSupportedException nsex)
             {
                 Logging.Error("Directory " + Directory + " not supported: ", nsex);
             }
-            if (fileInfo != null)
+            if (fileInfo.Exists)
             {
                 try
                 {
@@ -112,7 +111,7 @@ namespace EddiStatusMonitor
                                 while (fileInfo == null)
                                 {
                                     Thread.Sleep(5000);
-                                    fileInfo = FindStatusFile(Directory, Filter);
+                                    fileInfo = Files.FileInfo(Directory, "Status.json");
                                 }
                                 Logging.Info("Elite Dangerous Status.json found. Status monitor activated.");
                                 return;
@@ -455,33 +454,6 @@ namespace EddiStatusMonitor
         public Status GetStatus()
         {
             return currentStatus;
-        }
-
-        /// <summary>Find the latest file in a given directory matching a given expression, or null if no such file exists</summary>
-        private static FileInfo FindStatusFile(string path, Regex filter = null)
-        {
-            if (path == null)
-            {
-                // Configuration can be changed underneath us so we do have to check each time...
-                return null;
-            }
-
-            var directory = new DirectoryInfo(path);
-            if (directory != null)
-            {
-                try
-                {
-                    FileInfo info = directory.GetFiles().Where(f => filter == null || filter.IsMatch(f.Name)).FirstOrDefault();
-                    if (info != null)
-                    {
-                        // This info can be cached so force a refresh
-                        info.Refresh();
-                    }
-                    return info;
-                }
-                catch { }
-            }
-            return null;
         }
 
         private static void SetFuelExtras(Status status)
