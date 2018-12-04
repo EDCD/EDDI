@@ -361,6 +361,12 @@
     <EmbeddedResource Include="Properties\AtmosphereClass.hu.resx" />
     <EmbeddedResource Include="Properties\AtmosphereClass.it.resx" />
     <EmbeddedResource Include="Properties\AtmosphereClass.ja.resx" />
+    <EmbeddedResource Include="Properties\MaterialLocations.de.resx" />
+    <EmbeddedResource Include="Properties\MaterialLocations.es.resx" />
+    <EmbeddedResource Include="Properties\MaterialLocations.fr.resx" />
+    <EmbeddedResource Include="Properties\MaterialLocations.hu.resx" />
+    <EmbeddedResource Include="Properties\MaterialLocations.it.resx" />
+    <EmbeddedResource Include="Properties\MaterialLocations.ja.resx" />
     <EmbeddedResource Include="Properties\MaterialLocations.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>MaterialLocations.Designer.cs</LastGenOutput>
