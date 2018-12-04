@@ -5,7 +5,8 @@ Full details of the variables available for each noted event, and VoiceAttack in
 ### Development
   * Localization
     * Material locations have been moved from the update server to the app and are now a translatable resource.
-
+  * Tweaked pronunciations of "Megaship" and "Orbis" in English. Tweaked pronuncations are available via the `P()` function.
+  
 ### 3.1.1
   * Core
     * Fixed crash to desktop when the folder `%APPDATA%\EDDI` does not exist.

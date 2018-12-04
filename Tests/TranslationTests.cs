@@ -171,5 +171,12 @@ namespace UnitTests
             Assert.AreEqual(@"B D plus 18 7 1 1", Translations.StarSystem("BD+18 711", false));
             Assert.AreEqual(@"<phoneme alphabet=""ipa"" ph=""ˈbrɑːˈvo"">bravo</phoneme> <phoneme alphabet=""ipa"" ph=""ˈdɛltə"">delta</phoneme> plus 18 <phoneme alphabet=""ipa"" ph=""ˈsɛvɛn"">seven</phoneme> <phoneme alphabet=""ipa"" ph=""ˈwʌn"">one</phoneme> <phoneme alphabet=""ipa"" ph=""ˈwʌn"">one</phoneme>", Translations.StarSystem("BD+18 711", true));
         }
+
+        [TestMethod]
+        public void TestTranslateStation()
+        {
+            Assert.AreEqual("Or-bis Starport", Translations.Station("Orbis Starport"));
+            Assert.AreEqual("Mega-ship", Translations.Station("Megaship"));
+        }
     }
 }

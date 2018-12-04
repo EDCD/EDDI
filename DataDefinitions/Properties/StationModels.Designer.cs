@@ -88,7 +88,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Mega-ship.
+        ///   Looks up a localized string similar to Megaship.
         /// </summary>
         public static string Megaship {
             get {
@@ -106,7 +106,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Or-bis Starport.
+        ///   Looks up a localized string similar to Orbis Starport.
         /// </summary>
         public static string Orbis {
             get {
