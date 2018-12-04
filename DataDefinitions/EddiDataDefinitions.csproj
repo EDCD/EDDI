@@ -70,6 +70,7 @@
     <Compile Include="AtmosphereComposition.cs" />
     <Compile Include="BlueprintMaterials.cs" />
     <Compile Include="BodyType.cs" />
+    <Compile Include="CargoInfo.cs" />
     <Compile Include="Properties\MaterialLocations.Designer.cs">
       <DependentUpon>MaterialLocations.resx</DependentUpon>
       <AutoGen>True</AutoGen>

@@ -719,6 +719,12 @@ namespace EddiSpeechResponder
                 return (result == null ? new ReflectionValue(new object()) : new ReflectionValue(result));
             }, 1);
 
+            store["EngineerDetails"] = new NativeFunction((values) =>
+            {
+                Engineer result = Engineer.FromName(values[0].AsString);
+                return (result == null ? new ReflectionValue(new object()) : new ReflectionValue(result));
+            }, 1);
+
             store["GovernmentDetails"] = new NativeFunction((values) =>
             {
                 Government result = Government.FromName(values[0].AsString);

@@ -2,6 +2,29 @@
 
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
+### Development
+  * Core
+    * Fixed a bug that could reset system comments, visits, and the date last visited while refreshing star system data. 
+  * Material monitor
+    * Revised material rarities and default material maxima (material maxima are recalulated to the following values if not set): 
+      * (Thargoid) Propulsion Elements (Very Rare - 100 MAX)
+      * (Thargoid) Weapon Parts (Rare - 150 MAX)
+      * Pattern Alpha Obelisk Data (Rare - 150 MAX)
+      * Pattern Beta Obelisk Data (Rare - 150 MAX)
+      * Pattern Gamma Obelisk Data (Rare - 150 MAX)
+      * Polonium (Rare - 150 MAX)
+      * Antimony (Rare - 150 MAX)
+  * Speech responder
+    * Added new event `EngineerContributed`, triggered when contributing resources to an engineer in exchange for access.
+    * Added new function `EngineerDetails()` for accessing information about relations with engineers.
+    * The `cmdr` object now includes `engineers`.
+    * Updated documentation to describe `Engineer` object and `EngineerDetails` function.
+    * `Docked event`: Added `wanted`, `activefine`, and `cockpitbreach`.
+    * `Engineer progressed` event: Added `stage`, `rankprogress`, and `progresstype`.
+    * `Modification applied` event: Removed. This event was redundant with `Modification crafted` and is no longer written by the game as of Elite Dangerous version 3.0.
+    * `Modification crafted` event: Added `module`, `quality`, and `experimentaleffect`.
+    * `Settlement approached`: Added `latitude` and `longitude`.
+
 ### 3.1.2
   * Localization
     * Material locations have been moved from the update server to the app and are now a translatable resource.

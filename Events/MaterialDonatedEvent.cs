@@ -9,7 +9,7 @@ namespace EddiEvents
     {
         public const string NAME = "Material donated";
         public const string DESCRIPTION = "Triggered when you donate a material";
-        public const string SAMPLE = "{ \"timestamp\":\"2016-10-05T11:32:57Z\", \"event\":\"ScientificResearch\", \"Name\":\"nickel\", \"Category\":\"Raw\", \"Count\":5 }";
+        public const string SAMPLE = "{ \"timestamp\":\"2016-10-05T11:32:57Z\", \"event\":\"ScientificResearch\", \"Name\":\"nickel\", \"Category\":\"Raw\", \"Count\":5, \"MarketID\": 128666762 }";
 
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 

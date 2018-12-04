@@ -48,10 +48,8 @@ namespace EddiDataDefinitions
             var Technetium = new Material("technetium", Element, Rare, "Tc", 1.3M, 1.5M);
             var Tellurium = new Material("tellurium", Element, Rare, "Te", 1.3M, 1.5M);
             var Yttrium = new Material("yttrium", Element, Rare, "Y", 2.1M, 2.5M);
-
-            // Grade 5, Very Rare
-            var Antimony = new Material("antimony", Element, VeryRare, "Sb", 1.4M, 1.6M);
-            var Polonium = new Material("polonium", Element, VeryRare, "Po", 1.1M, 1.3M);
+            var Antimony = new Material("antimony", Element, Rare, "Sb", 1.4M, 1.6M); // Rare per Material Trader UI and FDev spreadsheet but very rare per in-game right panel description.
+            var Polonium = new Material("polonium", Element, Rare, "Po", 1.1M, 1.3M); // Rare per Material Trader UI and FDev spreadsheet but very rare per in-game right panel description.
 
             ///<summary>Data</summary>
 
@@ -62,8 +60,6 @@ namespace EddiDataDefinitions
             var ExceptionalScrambledEmissionData = new Material("scrambledemissiondata", Data, VeryCommon);
             var SpecialisedLegacyFirmware = new Material("legacyfirmware", Data, VeryCommon);
             var UnusualEncryptedFiles = new Material("encryptedfiles", Data, VeryCommon);
-            // Grade 1 Xeno
-            var AncientHistoricalData = new Material("ancienthistoricaldata", Data, VeryCommon);
 
             // Grade 2, Common
             var AnomalousFSDTelemetry = new Material("fsdtelemetry", Data, Common);
@@ -73,7 +69,6 @@ namespace EddiDataDefinitions
             var TaggedEncryptionCodes = new Material("encryptioncodes", Data, Common);
             var UnidentifiedScanArchives = new Material("scanarchives", Data, Common);
             // Grade 2 Xeno
-            var AncientCulturalData = new Material("ancientculturaldata", Data, Common);
             var Tg_StructuralData = new Material("tg_structuraldata", Data, Common);
 
             // Grade 3, Standard
@@ -84,7 +79,6 @@ namespace EddiDataDefinitions
             var UnexpectedEmissionData = new Material("emissiondata", Data, Standard);
             var UntypicalShieldScans = new Material("shielddensityreports", Data, Standard);
             // Grade 3 Xeno
-            var AncientBiologicalData = new Material("ancientbiologicaldata", Data, Standard);
             var Tg_CompositionData = new Material("tg_compositiondata", Data, Standard);
             var UnknownShipSignature = new Material("unknownshipsignature", Data, Standard);
 
@@ -96,6 +90,9 @@ namespace EddiDataDefinitions
             var EccentricHyperspaceTrajectories = new Material("hyperspacetrajectories", Data, Rare);
             var SecurityFirmwarePatch = new Material("securityfirmware", Data, Rare);
             // Grade 4 Xeno
+            var AncientHistoricalData = new Material("ancienthistoricaldata", Data, Rare); // Rare per FDev spreadsheet but very common per in-game right panel description.
+            var AncientCulturalData = new Material("ancientculturaldata", Data, Common); // Rare per FDev spreadsheet but common per in-game right panel description.
+            var AncientBiologicalData = new Material("ancientbiologicaldata", Data, Standard); // Rare per FDev spreadsheet but standard per in-game right panel description.
             var AncientLanguageData = new Material("ancientlanguagedata", Data, Rare);
             var AncientTechnologicalData = new Material("ancienttechnologicaldata", Data, Rare);
             var Tg_ShipFlightData = new Material("tg_shipflightdata", Data, Rare);
@@ -162,9 +159,7 @@ namespace EddiDataDefinitions
             var Tg_BiomechanicalConduits = new Material("tg_biomechanicalconduits", Manufactured, Standard);
             var Guardian_Sentinel_WeaponParts = new Material("guardian_sentinel_weaponparts", Manufactured, Standard);
             var Guardian_TechComponent = new Material("guardian_techcomponent", Manufactured, Standard);
-            var Tg_PropulsionElement = new Material("tg_propulsionelement", Manufactured, Standard);
             var UnknownEnergyCell = new Material("unknownenergycell", Manufactured, Standard);
-            var Tg_WeaponParts = new Material("tg_weaponparts", Manufactured, Standard);
             var Tg_WreckageComponents = new Material("tg_wreckagecomponents", Manufactured, Standard);
 
             // Grade 4, Rare
@@ -180,6 +175,7 @@ namespace EddiDataDefinitions
             var ThermicAlloys = new Material("thermicalloys", Manufactured, Rare);
             // Grade 4 Xeno
             var UnknownTechnologyComponents = new Material("unknowntechnologycomponents", Manufactured, Rare);
+            var Tg_WeaponParts = new Material("tg_weaponparts", Manufactured, Rare);
 
             // Grade 5, Very Rare
             var BiotechConductors = new Material("biotechconductors", Manufactured, VeryRare);
@@ -195,6 +191,7 @@ namespace EddiDataDefinitions
             // Grade 5 Xeno
             var UnknownEnergySource = new Material("unknownenergysource", Manufactured, VeryRare);
             var UnknownOrganicCircuitry = new Material("unknownorganiccircuitry", Manufactured, VeryRare);
+            var Tg_PropulsionElement = new Material("tg_propulsionelement", Manufactured, VeryRare);
         }
 
         public MaterialCategory category { get; }

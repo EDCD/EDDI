@@ -102,9 +102,6 @@ namespace EddiDataDefinitions
         // Total amount of the commodity
         public int total { get; set; }
 
-        // How much cargo has been ejected during a game session
-        public int ejected { get; set; }
-
         // How much we actually paid for it (per unit)
         public int price { get; set; }
 
@@ -131,7 +128,7 @@ namespace EddiDataDefinitions
             }
         }
 
-        [Obsolete, JsonIgnore]
+        [JsonIgnore, Obsolete]
         public CommodityDefinition commodity => commodityDef;
 
         public List<Haulage> haulageData { get; set; }
@@ -145,7 +142,7 @@ namespace EddiDataDefinitions
             if (commodityDef == null)
             {
                 // legacy JSON with no edname in the top level
-                string edname = (string)_additionalJsonData["commodity"]["EDName"];
+                string edname = (string)_additionalJsonData["commodity"]["edname"];
                 commodityDef = CommodityDefinition.FromEDName(edname);
                 owned = (int)_additionalJsonData["other"];
             }
@@ -177,47 +174,7 @@ namespace EddiDataDefinitions
         {
             if (this != null && this.haulageData != null && this.haulageData.Any())
             {
-                int haulageNeeded = 0;
-                int ownedNeeded = 0;
-                int stolenNeeded = 0;
-                foreach (Haulage haulage in this.haulageData)
-                {
-                    switch (haulage.typeEDName)
-                    {
-                        case "altruism":
-                        case "collect":
-                        case "collectwing":
-                        case "mining":
-                        case "piracy":
-                            {
-                                ownedNeeded += haulage.remaining;
-                            }
-                            break;
-                        case "delivery":
-                        case "deliverywing":
-                        case "rescue":
-                        case "smuggle":
-                            {
-                                haulageNeeded += haulage.remaining;
-                            }
-                            break;
-                        case "salvage":
-                            {
-                                if (haulage.legal)
-                                {
-                                    haulageNeeded += haulage.remaining;
-                                }
-                                else
-                                {
-                                    stolenNeeded += haulage.remaining;
-                                }
-                            }
-                            break;
-                    }
-                }
-                this.need = (haulageNeeded > this.haulage) ? haulageNeeded - this.haulage : 0;
-                this.need += (ownedNeeded > this.owned) ? ownedNeeded - this.owned : 0;
-                this.need += (stolenNeeded > this.stolen) ? stolenNeeded - this.stolen : 0;
+                this.need = this.haulageData.Sum(h => h.need);
             }
         }
     }

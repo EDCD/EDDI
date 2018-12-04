@@ -10,7 +10,7 @@ namespace EddiShipMonitor
     {
         public const string NAME = "Ship purchased";
         public const string DESCRIPTION = "Triggered when you purchase a ship";
-        public const string SAMPLE = "{ \"timestamp\":\"2016-09-20T18:14:26Z\", \"event\":\"ShipyardBuy\", \"ShipType\":\"federation_corvette\", \"ShipPrice\":18796945, \"SellOldShip\":\"CobraMkIII\", \"SellShipID\":42, \"SellPrice\":950787 }";
+        public const string SAMPLE = "{ \"timestamp\":\"2016-09-20T18:14:26Z\", \"event\":\"ShipyardBuy\", \"ShipType\":\"federation_corvette\", \"ShipPrice\":18796945, \"SellOldShip\":\"CobraMkIII\", \"SellShipID\":42, \"SellPrice\":950787, \"MarketID\": 128666762 }";
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
         static ShipPurchasedEvent()

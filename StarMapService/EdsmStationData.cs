@@ -68,10 +68,10 @@ namespace EddiStarMapService
             };
 
             var faction = station["controllingFaction"]?.ToObject<Dictionary<string, object>>();
-            Station.Faction = new Faction() 
+            Station.Faction = new Faction()
             {
-                name = (string)faction["name"],
-                EDSMID = (long?)faction["id"],
+                name = (string)faction?["name"] ?? string.Empty,
+                EDSMID = (long?)faction?["id"],
                 Allegiance = Superpower.FromName((string)station["allegiance"]) ?? Superpower.None,
                 Government = Government.FromName((string)station["government"]) ?? Government.None,
             };
