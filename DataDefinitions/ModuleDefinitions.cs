@@ -943,7 +943,7 @@ namespace EddiDataDefinitions
                 new Module(999999902, "VoicePack_Victor", -1, "Victor", 1, "I", 0),
                 new Module(999999904, "VoicePack_Celeste", -1, "Celeste", 1, "I", 0),
 
-                // The FDL has its own cargo bay door.  The FDL is like that
+                // The FDL has its own cargo bay door.  The FDL is like that (now the Mamba uses it too!)
                 new Module(999999907, "ModularCargoBayDoorFDL", -1, "CargoHatch", 1, "H", 0, 128049351),
                 new Module(999999908, "ModularCargoBayDoor", -1, "CargoHatch", 1, "H", 0, -1),
                 new Module(999999909, "Empire_Courier_Cockpit", -1, "Cockpit", 1, "I", 0, 128671223),
@@ -1138,8 +1138,24 @@ namespace EddiDataDefinitions
                 new Module(128891608, "Hpt_Guardian_ShardCannon_Turret_Small", -1, "ShardCannon", 1, "F", 0, ModuleMount.Turreted),
                 new Module(128891609, "Hpt_Guardian_ShardCannon_Fixed_Small", -1, "ShardCannon", 1, "D", 0, ModuleMount.Fixed),
                 new Module(128891610, "Hpt_Guardian_GaussCannon_Fixed_Small", -1, "GuardianGaussCannon", 1, "D", 0, ModuleMount.Fixed),
+
+                // Needs EDID, EDDB ID and pricing
+                new Module(999999801, "Hpt_Mining_AbrBlstr_Fixed_Small", -1, "AbrasionBlaster", 1, "D", 0, ModuleMount.Fixed),
+                new Module(999999802, "Hpt_Mining_AbrBlstr_Turret_Small", -1, "AbrasionBlaster", 1, "D", 0, ModuleMount.Turreted),
+                new Module(999999803, "Hpt_Mining_SeismChrgWarhd_Fixed_Medium", -1, "SeismicCharge", 2, "B", 0, ModuleMount.Fixed),
+                new Module(999999804, "Hpt_Mining_SeismChrgWarhd_Turret_Medium", -1, "SeismicCharge", 2, "B", 0, ModuleMount.Turreted),
+                new Module(999999805, "Hpt_Mining_SubSurfDispMisle_Fixed_Small", -1, "DisplacementMissile", 1, "B", 0, ModuleMount.Fixed),
+                new Module(999999806, "Hpt_Mining_SubSurfDispMisle_Turret_Small", -1, "DisplacementMissile", 1, "B", 0, ModuleMount.Turreted),
+                new Module(999999807, "Hpt_Mining_SubSurfDispMisle_Fixed_Medium", -1, "DisplacementMissile", 2, "B", 0, ModuleMount.Fixed),
+                new Module(999999808, "Hpt_Mining_SubSurfDispMisle_Turret_Medium", -1, "DisplacementMissile", 2, "A", 0, ModuleMount.Turreted),
+                new Module(999999809, "Hpt_mrascanner_Size0_Class1", -1, "PulseWave", 0, "E", 0),
+                new Module(999999810, "Hpt_mrascanner_Size0_Class2", -1, "PulseWave", 0, "D", 0),
+                new Module(999999811, "Hpt_mrascanner_Size0_Class3", -1, "PulseWave", 0, "C", 0),
+                new Module(999999812, "Hpt_mrascanner_Size0_Class4", -1, "PulseWave", 0, "B", 0),
+                new Module(999999813, "Hpt_mrascanner_Size0_Class5", -1, "PulseWave", 0, "A", 0),
             };
         }
+
         private static Dictionary<long, Module> ModulesByEliteID;
 
         private static HashSet<string> PowerPlayModules = new HashSet<string>()

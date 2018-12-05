@@ -61,6 +61,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Abrasion Blaster.
+        /// </summary>
+        public static string AbrasionBlaster {
+            get {
+                return ResourceManager.GetString("AbrasionBlaster", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Advanced Discovery Scanner.
         /// </summary>
         public static string AdvancedDiscoveryScanner {
@@ -273,6 +282,15 @@ namespace EddiDataDefinitions.Properties {
         public static string DetailedSurfaceScanner {
             get {
                 return ResourceManager.GetString("DetailedSurfaceScanner", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sub-surface Displacement Missile.
+        /// </summary>
+        public static string DisplacementMissile {
+            get {
+                return ResourceManager.GetString("DisplacementMissile", resourceCulture);
             }
         }
         
@@ -808,6 +826,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Pulse Wave Analyser.
+        /// </summary>
+        public static string PulseWave {
+            get {
+                return ResourceManager.GetString("PulseWave", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Rail Gun.
         /// </summary>
         public static string RailGun {
@@ -885,6 +912,15 @@ namespace EddiDataDefinitions.Properties {
         public static string RocketPropelledFSDDisruptor {
             get {
                 return ResourceManager.GetString("RocketPropelledFSDDisruptor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Seismic Charge Launcher.
+        /// </summary>
+        public static string SeismicCharge {
+            get {
+                return ResourceManager.GetString("SeismicCharge", resourceCulture);
             }
         }
         
