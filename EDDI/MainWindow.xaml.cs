@@ -186,7 +186,6 @@ namespace Eddi
             }
 
             EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
-            eddiHomeSystemText.Text = eddiConfiguration.validSystem == true ? eddiConfiguration.HomeSystem : string.Empty;
             if (eddiConfiguration.validSystem)
             {
                 ConfigureHomeStationOptions(eddiConfiguration.HomeSystem);
@@ -196,7 +195,7 @@ namespace Eddi
             {
                 eddiHomeSystemText.Text = string.Empty;
             }
-            eddiHomeStationText.Text = eddiConfiguration.validStation == true ? eddiConfiguration.HomeStation : string.Empty;
+            homeStationDropDown.SelectedValue = eddiConfiguration.validStation == true ? eddiConfiguration.HomeStation : "None";
             eddiVerboseLogging.IsChecked = eddiConfiguration.Debug;
             eddiBetaProgramme.IsChecked = eddiConfiguration.Beta;
             if (eddiConfiguration.Gender == "Female")
@@ -479,6 +478,7 @@ namespace Eddi
             {
                 eddiConfiguration.HomeSystem = string.IsNullOrWhiteSpace(eddiHomeSystemText.Text) ? null : eddiHomeSystemText.Text.Trim();
                 eddiConfiguration = EDDI.Instance.updateHomeSystem(eddiConfiguration);
+                homeStationDropDown.SelectedValue = "None";
                 eddiConfiguration.ToFile();
 
                 // Update the UI for invalid results
@@ -490,7 +490,7 @@ namespace Eddi
         {
             List<string> HomeStationOptions = new List<string>
                 {
-                    string.Empty
+                    "None"
                 };
 
             StarSystem HomeSystem = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(system, true);
@@ -498,20 +498,18 @@ namespace Eddi
             {
                 HomeStationOptions.Add(station.name);
             }
-            HomeStationDropDown.ItemsSource = HomeStationOptions;
+            homeStationDropDown.ItemsSource = HomeStationOptions;
         }
 
-        private void homeStationChanged(object sender, TextChangedEventArgs e)
+        private void homeStationDropDownUpdated(object sender, SelectionChangedEventArgs e)
         {
             EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
-            if (eddiConfiguration.HomeStation != eddiHomeStationText.Text)
+            string homeStationName = homeStationDropDown.SelectedValue.ToString();
+            if (eddiConfiguration.HomeStation != homeStationName)
             {
-                eddiConfiguration.HomeStation = string.IsNullOrWhiteSpace(eddiHomeStationText.Text) ? null : eddiHomeStationText.Text.Trim();
+                eddiConfiguration.HomeStation = homeStationName == "None" ? null : homeStationName;
                 eddiConfiguration = EDDI.Instance.updateHomeStation(eddiConfiguration);
                 eddiConfiguration.ToFile();
-
-                // Update the UI for invalid results
-                runValidation(eddiHomeStationText);
             }
         }
 
@@ -1024,22 +1022,14 @@ namespace Eddi
         {
             // Discard invalid results
             EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
-            if (!eddiConfiguration.validSystem)
+            if (eddiConfiguration.validSystem)
+            {
+                ConfigureHomeStationOptions(eddiConfiguration.HomeSystem);
+            }
+            else
             {
                 eddiConfiguration.HomeSystem = null;
                 eddiHomeSystemText.Text = string.Empty;
-                eddiConfiguration.ToFile();
-            }
-        }
-
-        private void eddiHomeStationText_LostFocus(object sender, RoutedEventArgs e)
-        {
-            // Discard invalid results
-            EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
-            if (!eddiConfiguration.validStation)
-            {
-                eddiConfiguration.HomeStation = null;
-                eddiHomeStationText.Text = string.Empty;
                 eddiConfiguration.ToFile();
             }
         }

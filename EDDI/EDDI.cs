@@ -1866,6 +1866,7 @@ namespace Eddi
         public EDDIConfiguration updateHomeSystem(EDDIConfiguration configuration)
         {
             Logging.Verbose = configuration.Debug;
+            configuration.validSystem = false;
             if (configuration.HomeSystem != null && configuration.HomeSystem.Trim().Length > 0)
             {
                 HomeStarSystem = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(configuration.HomeSystem.Trim());
@@ -1882,19 +1883,11 @@ namespace Eddi
         {
             Logging.Verbose = configuration.Debug;
             configuration.validStation = false;
-            if (configuration.HomeStation != null && configuration.HomeStation.Trim().Length > 0)
+            if (configuration.HomeStation != null)
             {
-                string homeStationName = configuration.HomeStation.Trim();
-                foreach (Station station in HomeStarSystem.stations)
-                {
-                    if (station.name == homeStationName)
-                    {
-                        HomeStation = station;
-                        Logging.Debug("Home station is " + HomeStation.name);
-                        configuration.validStation = true;
-                        break;
-                    }
-                }
+                HomeStation = HomeStarSystem.stations.FirstOrDefault(s => s.name == configuration.HomeStation);
+                Logging.Debug("Home station is " + HomeStation.name);
+                configuration.validStation = true;
             }
             return configuration;
         }

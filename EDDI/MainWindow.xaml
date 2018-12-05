@@ -127,14 +127,7 @@
                             </Binding>
                         </TextBox>
                         <Label x:Name ="eddiHomeStationLabel" Grid.Row="2" Grid.Column="0" VerticalContentAlignment="Center" Content="{x:Static resx:MainWindow.tab_commander_home_station}"/>
-                        <ComboBox x:Name="HomeStationDropDown" Grid.Column="1" Grid.Row="0" Margin="5" VerticalContentAlignment="Center" SelectionChanged="ttsVoiceDropDownUpdated"/>
-                        <TextBox x:Name ="eddiHomeStationText" TextChanged="homeStationChanged" VerticalContentAlignment="Center" Margin="0,5" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan ="6" Height="25" LostFocus="eddiHomeStationText_LostFocus">
-                            <Binding UpdateSourceTrigger="PropertyChanged" ElementName="eddiConfiguration" Path="HomeStation">
-                                <Binding.ValidationRules>
-                                    <local:ValidStationRule/>
-                                </Binding.ValidationRules>
-                            </Binding>
-                        </TextBox>
+                        <ComboBox x:Name="homeStationDropDown" Grid.Row="2" Grid.Column="1" Margin="5" VerticalContentAlignment="Center" SelectionChanged="homeStationDropDownUpdated"/>
                         <Label x:Name ="eddiGenderLabel" Grid.Row="5" Grid.RowSpan="3" Grid.Column="0" Grid.ColumnSpan ="2" Margin="0, 5" Content="{x:Static resx:MainWindow.tab_commander_gender}"/>
                         <RadioButton x:Name ="eddiGenderMale" Content="{x:Static resx:MainWindow.tab_commander_gender_m}" HorizontalAlignment="Left" VerticalAlignment="Center"  Height="Auto" Grid.Row="5" Checked="isMale_Checked" Margin="0, 12.5, 0, 5" Grid.Column="2"/>
                         <RadioButton x:Name ="eddiGenderFemale" Content="{x:Static resx:MainWindow.tab_commander_gender_f}" HorizontalAlignment="Left" VerticalAlignment="Center"  Height="Auto" Grid.Row="6" Checked="isFemale_Checked" Margin="0, 5" Grid.Column="2"/>
