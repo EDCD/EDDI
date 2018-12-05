@@ -76,6 +76,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="Properties\SquadronRanks.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SquadronRanks.resx</DependentUpon>
+    </Compile>
     <Compile Include="ReserveLevel.cs" />
     <Compile Include="PlanetClass.cs" />
     <Compile Include="BodySolidComposition.cs" />
@@ -111,6 +116,7 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="SquadronRank.cs" />
     <Compile Include="StationLargestPad.cs" />
     <Compile Include="StationService.cs" />
     <Compile Include="TerraformState.cs" />
@@ -626,6 +632,10 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\SecurityLevels.ja.resx" />
     <EmbeddedResource Include="Properties\ShipRoles.ja.resx" />
+    <EmbeddedResource Include="Properties\SquadronRanks.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>SquadronRanks.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\StarColors.ja.resx" />
     <EmbeddedResource Include="Properties\StationLargestPad.de.resx" />
     <EmbeddedResource Include="Properties\StationLargestPad.es.resx" />

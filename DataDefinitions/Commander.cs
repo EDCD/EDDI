@@ -37,6 +37,21 @@ namespace EddiDataDefinitions
         /// <summary>The commander's federation rating</summary>
         public FederationRating federationrating { get; set; }
 
+        /// <summary>The commander's squadron name</summary>
+        public string squadronname { get; set; }
+
+        /// <summary>The commander's squadron rank</summary>
+        public string squadronrank { get; set; }
+
+        /// <summary>The commander's squadron power</summary>
+        public string squadronpower { get; set; }
+
+        /// <summary>The commander's squadron faction</summary>
+        public string squadronfaction { get; set; }
+
+        /// <summary>The commander's squadron system</summary>
+        public string squadronsystem { get; set; }
+
         /// <summary>The number of credits the commander holds</summary>
         public long credits { get; set; }
 
@@ -48,9 +63,6 @@ namespace EddiDataDefinitions
 
         /// <summary>The Commander's friends</summary>
         public List<Friend> friends = new List<Friend>();
-
-        /// <summary>The Commander's status and progress with the various engineers</summary>
-        public List<Engineer> engineers => Engineer.ENGINEERS;
 
         public event PropertyChangedEventHandler PropertyChanged;
 

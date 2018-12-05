@@ -1,5 +1,6 @@
 ﻿using EddiCompanionAppService;
 using EddiDataDefinitions;
+using EddiDataProviderService;
 using EddiSpeechService;
 using System;
 using System.Collections.Generic;
@@ -186,6 +187,15 @@ namespace Eddi
 
             EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
             eddiHomeSystemText.Text = eddiConfiguration.validSystem == true ? eddiConfiguration.HomeSystem : string.Empty;
+            if (eddiConfiguration.validSystem)
+            {
+                ConfigureHomeStationOptions(eddiConfiguration.HomeSystem);
+                eddiHomeSystemText.Text = eddiConfiguration.HomeSystem;
+            }
+            else
+            {
+                eddiHomeSystemText.Text = string.Empty;
+            }
             eddiHomeStationText.Text = eddiConfiguration.validStation == true ? eddiConfiguration.HomeStation : string.Empty;
             eddiVerboseLogging.IsChecked = eddiConfiguration.Debug;
             eddiBetaProgramme.IsChecked = eddiConfiguration.Beta;
@@ -474,6 +484,21 @@ namespace Eddi
                 // Update the UI for invalid results
                 runValidation(eddiHomeSystemText);
             }
+        }
+
+        private void ConfigureHomeStationOptions(string system)
+        {
+            List<string> HomeStationOptions = new List<string>
+                {
+                    string.Empty
+                };
+
+            StarSystem HomeSystem = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(system, true);
+            foreach (Station station in HomeSystem.stations)
+            {
+                HomeStationOptions.Add(station.name);
+            }
+            HomeStationDropDown.ItemsSource = HomeStationOptions;
         }
 
         private void homeStationChanged(object sender, TextChangedEventArgs e)
