@@ -1808,7 +1808,7 @@ namespace EddiJournalMonitor
                                 {
                                     string engineer = JsonParsing.getString(data, "Engineer");
 	                                long engineerId = JsonParsing.getLong(data, "EngineerID");
-	                                string blueprintpEdName = JsonParsing.getString(data, "Blueprint");
+	                                string blueprintpEdName = JsonParsing.getString(data, "BlueprintName");
 	                                long blueprintId = JsonParsing.getLong(data, "BlueprintID");
 
                                     data.TryGetValue("Level", out object val);
