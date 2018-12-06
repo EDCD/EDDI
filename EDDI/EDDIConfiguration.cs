@@ -10,24 +10,42 @@ namespace Eddi
     /// <summary>Configuration for EDDI</summary>
     public class EDDIConfiguration : INotifyPropertyChanged
     {
+        [JsonIgnore]
+        private string _HomeSystem;
         [JsonProperty("homeSystem")]
         public string HomeSystem
         {
             get { return _HomeSystem; }
             set { _HomeSystem = value; }
         }
+
+        [JsonIgnore]
+        private string _HomeStation;
         [JsonProperty("homeStation")]
         public string HomeStation
         {
             get { return _HomeStation; }
             set { _HomeStation = value; }
         }
+
+        [JsonIgnore]
+        private string _SquadronName;
+        [JsonProperty("squadronname")]
+        public string SquadronName
+        {
+            get { return _SquadronName; }
+            set { _SquadronName = value; }
+        }
+
         [JsonProperty("debug")]
         public bool Debug { get; set; }
+
         [JsonProperty("beta")]
         public bool Beta { get; set; }
+
         [JsonProperty("plugins")]
         public IDictionary<string, bool> Plugins { get; set; }
+
         [JsonProperty("Gender")]
         public string Gender { get; set; } = "Male";
 
@@ -37,9 +55,6 @@ namespace Eddi
 
         /// <summary> Administrative values </summary>
         public bool validSystem { get; set; }
-
-        private string _HomeSystem;
-        private string _HomeStation;
 
         [JsonIgnore]
         private string dataPath;

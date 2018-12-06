@@ -210,6 +210,7 @@ namespace Eddi
             {
                 eddiGenderNeither.IsChecked = true;
             }
+            eddiSquadronNameText.Text = eddiConfiguration.SquadronName == null ? string.Empty : eddiConfiguration.SquadronName;
 
             List<LanguageDef> langs = GetAvailableLangs();
             chooseLanguageDropDown.ItemsSource = langs;
@@ -543,6 +544,17 @@ namespace Eddi
             eddiConfiguration.Gender = "Neither";
             eddiConfiguration.ToFile();
             EDDI.Instance.Cmdr.gender = "Neither";
+        }
+
+        private void squadronNameChanged(object sender, TextChangedEventArgs e)
+        {
+            EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
+            if (eddiConfiguration.SquadronName != eddiSquadronNameText.Text)
+            {
+                eddiConfiguration.SquadronName = string.IsNullOrWhiteSpace(eddiSquadronNameText.Text) ? null : eddiSquadronNameText.Text.Trim();
+                EDDI.Instance.Cmdr.squadronname = eddiConfiguration.SquadronName;
+                eddiConfiguration.ToFile();
+            }
         }
 
         private void verboseLoggingEnabled(object sender, RoutedEventArgs e)
@@ -1039,6 +1051,18 @@ namespace Eddi
                 eddiConfiguration.HomeSystem = null;
                 eddiHomeSystemText.Text = string.Empty;
                 eddiConfiguration.ToFile();
+            }
+        }
+
+        private void eddiSquadronNameText_LostFocus(object sender, RoutedEventArgs e)
+        {
+            // Discard invalid results
+            if (eddiSquadronNameText.Text == string.Empty)
+            {
+                EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
+                eddiConfiguration.SquadronName = null;
+                eddiConfiguration.ToFile();
+                EDDI.Instance.Cmdr.squadronname = string.Empty;
             }
         }
     }

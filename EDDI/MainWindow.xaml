@@ -116,10 +116,13 @@
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
                         <TextBlock x:Name ="eddi2Text" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="6" TextWrapping="Wrap" Text="{x:Static resx:MainWindow.tab_commander_par1}" VerticalAlignment="Top"/>
                         <Label x:Name ="eddiHomeSystemLabel" Grid.Row="1" Grid.Column="0" VerticalContentAlignment="Center" Content="{x:Static resx:MainWindow.tab_commander_home_system}" />
-                        <TextBox x:Name ="eddiHomeSystemText" VerticalContentAlignment="Center" TextChanged="homeSystemChanged" Margin="0,5" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan ="6" Height="25" LostFocus="eddiHomeSystemText_LostFocus">
+                        <TextBox x:Name ="eddiHomeSystemText" VerticalContentAlignment="Center" TextChanged="homeSystemChanged" Margin="0,5" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan ="3" Height="25" LostFocus="eddiHomeSystemText_LostFocus">
                             <Binding UpdateSourceTrigger="PropertyChanged" ElementName="eddiConfiguration" Path="HomeSystem">
                                 <Binding.ValidationRules>
                                     <local:ValidSystemRule/>
@@ -132,6 +135,10 @@
                         <RadioButton x:Name ="eddiGenderMale" Content="{x:Static resx:MainWindow.tab_commander_gender_m}" HorizontalAlignment="Left" VerticalAlignment="Center"  Height="Auto" Grid.Row="5" Checked="isMale_Checked" Margin="0, 12.5, 0, 5" Grid.Column="2"/>
                         <RadioButton x:Name ="eddiGenderFemale" Content="{x:Static resx:MainWindow.tab_commander_gender_f}" HorizontalAlignment="Left" VerticalAlignment="Center"  Height="Auto" Grid.Row="6" Checked="isFemale_Checked" Margin="0, 5" Grid.Column="2"/>
                         <RadioButton x:Name ="eddiGenderNeither" Content="{x:Static resx:MainWindow.tab_commander_gender_n}" HorizontalAlignment="Left" VerticalAlignment="Center"  Height="Auto" Grid.Row="7" Checked="isNeitherGender_Checked" Margin="0, 5" Grid.Column="2"/>
+                        <Label x:Name ="eddiSquadronNameLabel" Grid.Row="8" Grid.Column="0" VerticalContentAlignment="Center" Content="{x:Static resx:MainWindow.tab_commander_squadron_name}" />
+                        <TextBox x:Name ="eddiSquadronNameText" VerticalContentAlignment="Center" TextChanged="squadronNameChanged" Margin="0,5" Grid.Row="8" Grid.Column="1" Grid.ColumnSpan ="3" Height="25" LostFocus="eddiSquadronNameText_LostFocus">
+                            <Binding UpdateSourceTrigger="PropertyChanged" ElementName="eddiConfiguration" Path="SquadronName" />
+                        </TextBox>
                     </Grid>
                 </DockPanel>
             </TabItem>

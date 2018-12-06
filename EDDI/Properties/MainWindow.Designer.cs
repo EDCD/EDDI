@@ -250,6 +250,24 @@ namespace Eddi.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Squadron name:.
+        /// </summary>
+        public static string tab_commander_squadron_name {
+            get {
+                return ResourceManager.GetString("tab_commander_squadron_name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Squadron system:.
+        /// </summary>
+        public static string tab_commander_squadron_system {
+            get {
+                return ResourceManager.GetString("tab_commander_squadron_system", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Frontier has an API that allows EDDI to obtain information about your ships, the current station&apos;s market, and various other items. This data is not available elsewhere. If you want EDDI to obtain and use this information you need to enter your Frontier in-game email address and password below..
         /// </summary>
         public static string tab_frontier_desc {

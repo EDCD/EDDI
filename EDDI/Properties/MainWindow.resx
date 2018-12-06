@@ -256,4 +256,10 @@
   <data name="tab_commander_par1" xml:space="preserve">
     <value>You can provide the name of a particular system you consider home, and also a station inside that system. If you do then the information about this system and station will be made available to EDDI's responders.</value>
   </data>
+  <data name="tab_commander_squadron_name" xml:space="preserve">
+    <value>Squadron name:</value>
+  </data>
+  <data name="tab_commander_squadron_system" xml:space="preserve">
+    <value>Squadron system:</value>
+  </data>
 </root>
