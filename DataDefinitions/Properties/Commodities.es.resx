@@ -1606,7 +1606,10 @@
     <value>Regalos personales</value>
     <comment>Commodity.PersonalGifts</comment>
   </data>
-  
+  <data name="ShansCharisOrchid" xml:space="preserve">
+    <value>Orquídea Charis de Shan</value>
+    <comment>Commodity ShansCharisOrchid</comment>
+  </data>
   <data name="ancientkey" xml:space="preserve">
     <value>Llave antigua</value>
     <comment>Commodity Ancient Key</comment>
