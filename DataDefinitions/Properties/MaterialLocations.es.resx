@@ -478,7 +478,10 @@
     <value>Se obtiene a partir de los restos de naves de transporte, especialmente en sistemas anárquicos cercanos a sistemas con población.</value>
     <comment>Material location Heat Exchangers</comment>
   </data>
-  
+  <data name="highdensitycomposites" xml:space="preserve">
+    <value>Se obtiene de los restos de naves grandes de combate, comúnmente Anacondas y Corvetas Federales. También pueden estar disponibles en Dav's Hope.</value>
+    <comment>Material location High Density Composites</comment>
+  </data>
   
   <data name="phasealloys" xml:space="preserve">
     <value>Se obtiene a partir de los restos de naves de combate o en fuentes de señales en sistemas con la economía en auge.</value>
@@ -496,12 +499,18 @@
     <value>Se obtiene en la superficie de misteriosos lugares de la especie alienígena conocida como Zargoides.</value>
     <comment>Material location Thargoid Energy Cell</comment>
   </data>
-  
+  <data name="chemicalmanipulators" xml:space="preserve">
+    <value>Se obtiene a partir de los restos de grandes naves de transporte, comúnmente en las Taip 7 y las Taip 9, especialmente si están en sistemas anárquicos o sufriendo una epidemia. También pueden encontrarse en Dav's Hope."</value>
+    <comment>Material location Chemical Manipulators</comment>
+  </data>
   <data name="compoundshielding" xml:space="preserve">
     <value>Se obtiene de restos de naves de combate, como recompensa de misión, o también interceptando transmisiones codificadas, especialmente en sistemas de alta seguridad, sistemas en auge económico, o sistemas en retirada y consolidación del poder. También se pueden encontrar en Dav's Hope.</value>
     <comment>Material location Compound Shielding</comment>
   </data>
-  
+  <data name="conductivepolymers" xml:space="preserve">
+    <value>Se obtiene de los restos de grandes naves de transporte y de pasajeros, como las Taip-9 o las Beeluga liners, de fuentes de señales de superficie, o como recompensa de misión. También están disponibles en Dav's Hope.</value>
+    <comment>Material location Conductive Polymers</comment>
+  </data>
   <data name="configurablecomponents" xml:space="preserve">
     <value>Se obtiene a partir de los restos de naves de transporte, especialmente en sistemas de baja seguridad. También pueden estar disponibles en Dav's Hope.</value>
     <comment>Material location Configurable Components</comment>
