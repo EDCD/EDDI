@@ -41,10 +41,10 @@ namespace EddiDataDefinitions
         public string squadronname { get; set; }
 
         /// <summary>The commander's squadron rank</summary>
-        public string squadronrank { get; set; }
+        public SquadronRank squadronrank { get; set; }
 
         /// <summary>The commander's squadron power</summary>
-        public string squadronpower { get; set; }
+        public Superpower squadronallegiance { get; set; }
 
         /// <summary>The commander's squadron faction</summary>
         public string squadronfaction { get; set; }

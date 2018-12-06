@@ -23,6 +23,11 @@ namespace EddiDataDefinitions
         }
 
         public static readonly Superpower None = new Superpower("None");
+        public static readonly Superpower Alliance = new Superpower("Alliance");
+        public static readonly Superpower Empire = new Superpower("Empire");
+        public static readonly Superpower Federation = new Superpower("Federation");
+        public static readonly Superpower Independent = new Superpower("Independent");
+        public static readonly Superpower Pirate = new Superpower("Pirate");
 
         // dummy used to ensure that the static constructor has run
         public Superpower() : this("")

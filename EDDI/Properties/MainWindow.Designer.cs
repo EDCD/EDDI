@@ -250,11 +250,38 @@ namespace Eddi.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Squadron allegiance:.
+        /// </summary>
+        public static string tab_commander_squadron_allegiance {
+            get {
+                return ResourceManager.GetString("tab_commander_squadron_allegiance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Squadron faction:.
+        /// </summary>
+        public static string tab_commander_squadron_faction {
+            get {
+                return ResourceManager.GetString("tab_commander_squadron_faction", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Squadron name:.
         /// </summary>
         public static string tab_commander_squadron_name {
             get {
                 return ResourceManager.GetString("tab_commander_squadron_name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Squadron rank:.
+        /// </summary>
+        public static string tab_commander_squadron_rank {
+            get {
+                return ResourceManager.GetString("tab_commander_squadron_rank", resourceCulture);
             }
         }
         

@@ -13,13 +13,15 @@ namespace EddiDataDefinitions
             resourceManager = Properties.SquadronRanks.ResourceManager;
             resourceManager.IgnoreCase = false;
 
-            var Leader = new SquadronRank("Leader", 0);
-            var SeniorOfficer = new SquadronRank("SeniorOfficer", 1);
-            var Officer = new SquadronRank("Officer", 2);
-            var Agent = new SquadronRank("Agent", 3);
-            var Rookie = new SquadronRank("Rookie", 4);
-
+            var None = new SquadronRank("None", 0);
+            var Leader = new SquadronRank("Leader", 1);
+            var SeniorOfficer = new SquadronRank("SeniorOfficer", 2);
+            var Officer = new SquadronRank("Officer", 3);
+            var Agent = new SquadronRank("Agent", 4);
+            var Rookie = new SquadronRank("Rookie", 5);
         }
+
+        public static readonly SquadronRank None = new SquadronRank("None", 0);
 
         public int rank { get; private set; }
 

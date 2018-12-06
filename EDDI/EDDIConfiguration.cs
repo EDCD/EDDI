@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using EddiDataDefinitions;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -30,11 +31,69 @@ namespace Eddi
 
         [JsonIgnore]
         private string _SquadronName;
-        [JsonProperty("squadronname")]
+        [JsonProperty("squadronName")]
         public string SquadronName
         {
             get { return _SquadronName; }
             set { _SquadronName = value; }
+        }
+
+        [JsonProperty("squadronRank")]
+        public string squadronRank
+        {
+
+            get => SquadronRank?.edname ?? "None";
+            set
+            {
+                SquadronRank srDef = SquadronRank.FromEDName(value);
+                this.SquadronRank = srDef;
+            }
+        }
+        [JsonIgnore]
+        private SquadronRank _SquadronRank;
+        [JsonIgnore]
+        public SquadronRank SquadronRank
+        {
+            get { return _SquadronRank; }
+            set { _SquadronRank = value; }
+        }
+
+        [JsonProperty("squadronAllegiance")]
+        public string squadronAllegiance
+        {
+
+            get => SquadronAllegiance?.edname ?? "None";
+            set
+            {
+                Superpower spDef = Superpower.FromEDName(value);
+                this.SquadronAllegiance = spDef;
+            }
+        }
+        [JsonIgnore]
+        private Superpower _SquadronAllegiance;
+        [JsonIgnore]
+        public Superpower SquadronAllegiance
+        {
+            get { return _SquadronAllegiance; }
+            set { _SquadronAllegiance = value; }
+        }
+
+        [JsonIgnore]
+        private string _SquadronSystem;
+        [JsonProperty("squadronSystem")]
+        public string SquadronSystem
+        {
+            get { return _SquadronSystem; }
+            set { _SquadronSystem = value; }
+        }
+
+        [JsonIgnore]
+        private string _SquadronFaction;
+        [JsonProperty("squadronFaction")]
+        public string SquadronFaction
+        {
+            get { return _SquadronFaction; }
+            set { _SquadronFaction = value; }
         }
 
         [JsonProperty("debug")]
@@ -54,7 +113,8 @@ namespace Eddi
         public string exporttarget { get; set; } = "Coriolis";
 
         /// <summary> Administrative values </summary>
-        public bool validSystem { get; set; }
+        public bool validHomeSystem { get; set; }
+        public bool validSquadronSystem { get; set; }
 
         [JsonIgnore]
         private string dataPath;

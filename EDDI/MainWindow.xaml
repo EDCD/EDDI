@@ -119,13 +119,15 @@
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
                         <TextBlock x:Name ="eddi2Text" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="6" TextWrapping="Wrap" Text="{x:Static resx:MainWindow.tab_commander_par1}" VerticalAlignment="Top"/>
                         <Label x:Name ="eddiHomeSystemLabel" Grid.Row="1" Grid.Column="0" VerticalContentAlignment="Center" Content="{x:Static resx:MainWindow.tab_commander_home_system}" />
                         <TextBox x:Name ="eddiHomeSystemText" VerticalContentAlignment="Center" TextChanged="homeSystemChanged" Margin="0,5" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan ="3" Height="25" LostFocus="eddiHomeSystemText_LostFocus">
                             <Binding UpdateSourceTrigger="PropertyChanged" ElementName="eddiConfiguration" Path="HomeSystem">
                                 <Binding.ValidationRules>
-                                    <local:ValidSystemRule/>
+                                    <local:ValidHomeSystemRule/>
                                 </Binding.ValidationRules>
                             </Binding>
                         </TextBox>
@@ -139,6 +141,20 @@
                         <TextBox x:Name ="eddiSquadronNameText" VerticalContentAlignment="Center" TextChanged="squadronNameChanged" Margin="0,5" Grid.Row="8" Grid.Column="1" Grid.ColumnSpan ="3" Height="25" LostFocus="eddiSquadronNameText_LostFocus">
                             <Binding UpdateSourceTrigger="PropertyChanged" ElementName="eddiConfiguration" Path="SquadronName" />
                         </TextBox>
+                        <Label x:Name ="eddiSquadronRankLabel" Grid.Row="9" Grid.Column="0" VerticalContentAlignment="Center" Content="{x:Static resx:MainWindow.tab_commander_squadron_rank}" />
+                        <ComboBox x:Name="squadronRankDropDown" Grid.Row="9" Grid.Column="1" Margin="5" VerticalContentAlignment="Center" SelectionChanged="squadronRankDropDownUpdated" />
+                        <Label x:Name ="eddiSquadronAllegianceLabel" Grid.Row="10" Grid.Column="0" VerticalContentAlignment="Center" Content="{x:Static resx:MainWindow.tab_commander_squadron_allegiance}" />
+                        <ComboBox x:Name="squadronAllegianceDropDown" Grid.Row="10" Grid.Column="1" Margin="5" VerticalContentAlignment="Center" SelectionChanged="squadronAllegianceDropDownUpdated" />
+                        <Label x:Name ="eddiSquadronSystemLabel" Grid.Row="11" Grid.Column="0" VerticalContentAlignment="Center" Content="{x:Static resx:MainWindow.tab_commander_squadron_system}" />
+                        <TextBox x:Name ="eddiSquadronSystemText" VerticalContentAlignment="Center" TextChanged="squadronSystemChanged" Margin="0,5" Grid.Row="11" Grid.Column="1" Grid.ColumnSpan ="3" Height="25" LostFocus="eddiSquadronSystemText_LostFocus">
+                            <Binding UpdateSourceTrigger="PropertyChanged" ElementName="eddiConfiguration" Path="SquadronSystem">
+                                <Binding.ValidationRules>
+                                    <local:ValidSquadronSystemRule/>
+                                </Binding.ValidationRules>
+                            </Binding>
+                        </TextBox>
+                        <Label x:Name ="eddiSquadronFactionLabel" Grid.Row="12" Grid.Column="0" VerticalContentAlignment="Center" Content="{x:Static resx:MainWindow.tab_commander_squadron_faction}" />
+                        <ComboBox x:Name="squadronFactionDropDown" Grid.Row="12" Grid.Column="1" Grid.ColumnSpan ="2" Margin="5" VerticalContentAlignment="Center" SelectionChanged="squadronFactionDropDownUpdated" />
                     </Grid>
                 </DockPanel>
             </TabItem>

@@ -98,6 +98,7 @@ namespace Eddi
         // Information obtained from the configuration
         public StarSystem HomeStarSystem { get; private set; }
         public Station HomeStation { get; private set; }
+        public StarSystem SquadronStarSystem { get; private set; }
 
         // Information obtained from the log watcher
         public string Environment { get; private set; }
@@ -143,6 +144,7 @@ namespace Eddi
                 // Set up the EDDI configuration
                 EDDIConfiguration configuration = EDDIConfiguration.FromFile();
                 updateHomeSystemStation(configuration);
+                updateSquadronSystem(configuration);
 
                 if (running)
                 {
@@ -165,6 +167,10 @@ namespace Eddi
                     }
 
                     Cmdr.gender = configuration.Gender;
+                    Cmdr.squadronname = configuration.SquadronName;
+                    Cmdr.squadronrank = configuration.SquadronRank;
+                    Cmdr.squadronallegiance = configuration.SquadronAllegiance;
+                    Cmdr.squadronfaction = configuration.SquadronFaction;
                     if (Cmdr.name != null)
                     {
                         Logging.Info("EDDI access to the companion app is enabled");
@@ -1866,14 +1872,14 @@ namespace Eddi
         public EDDIConfiguration updateHomeSystem(EDDIConfiguration configuration)
         {
             Logging.Verbose = configuration.Debug;
-            configuration.validSystem = false;
+            configuration.validHomeSystem = false;
             if (configuration.HomeSystem != null && configuration.HomeSystem.Trim().Length > 0)
             {
                 HomeStarSystem = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(configuration.HomeSystem.Trim());
                 if (HomeStarSystem != null)
                 {
                     Logging.Debug("Home star system is " + HomeStarSystem.name);
-                    configuration.validSystem = HomeStarSystem.bodies.Count > 0 || HomeStarSystem.stations.Count > 0 || HomeStarSystem.population > 0;
+                    configuration.validHomeSystem = HomeStarSystem.bodies.Count > 0 || HomeStarSystem.stations.Count > 0 || HomeStarSystem.population > 0;
                 }
             }
             return configuration;
@@ -1886,6 +1892,22 @@ namespace Eddi
             {
                 HomeStation = HomeStarSystem.stations.FirstOrDefault(s => s.name == configuration.HomeStation);
                 Logging.Debug("Home station is " + HomeStation.name);
+            }
+            return configuration;
+        }
+
+        public EDDIConfiguration updateSquadronSystem(EDDIConfiguration configuration)
+        {
+            Logging.Verbose = configuration.Debug;
+            configuration.validSquadronSystem = false;
+            if (configuration.SquadronSystem != null && configuration.HomeSystem.Trim().Length > 0)
+            {
+                SquadronStarSystem = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(configuration.SquadronSystem.Trim());
+                if (SquadronStarSystem != null)
+                {
+                    Logging.Debug("Squadron star system is " + SquadronStarSystem.name);
+                    configuration.validSquadronSystem = SquadronStarSystem.bodies.Count > 0 || SquadronStarSystem.stations.Count > 0 || SquadronStarSystem.population > 0;
+                }
             }
             return configuration;
         }
