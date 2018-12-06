@@ -167,23 +167,74 @@
   
   
   
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="encryptionarchives" xml:space="preserve">
+    <value>Se obtiene escaneando enlaces de datos en bases terrestres.</value>
+    <comment>Material location Atypical Encryption Archives</comment>
+  </data>
+  <data name="decodedemissiondata" xml:space="preserve">
+    <value>Se obtiene escaneando naves de la autoridad local o como recompensa de misiones.</value>
+    <comment>Material location Decoded Emission Data</comment>
+  </data>
+  <data name="encodedscandata" xml:space="preserve">
+    <value>Se obtiene escaneando enlaces de datos en superficie o como recompensa de misión.</value>
+    <comment>Material location Divergent Scan Data</comment>
+  </data>
+  <data name="hyperspacetrajectories" xml:space="preserve">
+    <value>Se obtiene escaneando estelas de alta energía de naves.</value>
+    <comment>Material location Eccentric Hyperspace Trajectories</comment>
+  </data>
+  <data name="securityfirmware" xml:space="preserve">
+    <value>Se obtiene escaneando enlaces de datos en superficie o como recompensa de misión.</value>
+    <comment>Material location Security Firmware Patch</comment>
+  </data>
+  <data name="ancientlanguagedata" xml:space="preserve">
+    <value>Se obtiene de ruinas ancestrales de la especie extraterrestre conocida como Guardianes.</value>
+    <comment>Material location Pattern Delta Obelisk Data</comment>
+  </data>
+  <data name="ancienttechnologicaldata" xml:space="preserve">
+    <value>Se obtiene de antiguas ruinas de la especie alienígena conocida como Guardianes.</value>
+    <comment>Material location Pattern Epsilon Obelisk Data</comment>
+  </data>
+  <data name="tg_residuedata" xml:space="preserve">
+    <value>Se obtiene en la superficie de misteriosos lugares de la especie alienígena conocida como Zargoides.</value>
+    <comment>Material location Thargoid Residue Data</comment>
+  </data>
+  <data name="unknownwakedata" xml:space="preserve">
+    <value>Se obtiene escaneando estelas de energía dejadas por naves Zargoides.</value>
+    <comment>Material location Thargoid Wake Data</comment>
+  </data>
+  <data name="compactemissionsdata" xml:space="preserve">
+    <value>Se obtiene escaneando naves de combate, como recompensa de misión, o también en balizas de datos y transmisiones codificadas siempre y cuando estén ubicadas en espacio profundo.</value>
+    <comment>Material location Abnormal Compact Emissions Data</comment>
+  </data>
+  <data name="adaptiveencryptors" xml:space="preserve">
+    <value>Se obtiene escaneando satélites orbitando en instalaciones o cerca de planetas poblados parecidos a la Tierra, o también se puede obtener como recompensa en misiones, especialmente si son misiones de escaneo planetario.</value>
+    <comment>Material location Adaptive Encryptors Capture</comment>
+  </data>
+  <data name="classifiedscandata" xml:space="preserve">
+    <value>Se obtiene escaneando enlaces de datos de bases terrestres, escaneando naves militares o de la autoridad local, o como recompensa de misiones, especialmente de sistemas en auge económico.</value>
+    <comment>Material location Classified Scan Fragment</comment>
+  </data>
+  <data name="dataminedwake" xml:space="preserve">
+    <value>Se obtiene escaneando estelas de alta energía, balizas de datos codificados, o como recompensa de misión.</value>
+    <comment>Material location Datamined Wake Exceptions</comment>
+  </data>
+  <data name="embeddedfirmware" xml:space="preserve">
+    <value>Se obtiene escaneando enlaces de datos en bases en superficie, como recompensa de misión.</value>
+    <comment>Material location Modified Embedded Firmware</comment>
+  </data>
+  <data name="shieldfrequencydata" xml:space="preserve">
+    <value>Se obtiene escaneando naves o como recompensa de misión.</value>
+    <comment>Material location Peculiar Shield Frequency Data</comment>
+  </data>
+  <data name="basicconductors" xml:space="preserve">
+    <value>Se puede encontrar en los restos de naves de transporte.</value>
+    <comment>Material location Basic Conductors</comment>
+  </data>
+  <data name="chemicalstorageunits" xml:space="preserve">
+    <value>Se puede obtener en los restos de naves de transporte.</value>
+    <comment>Material location Chemical Storage Units</comment>
+  </data>
   
   
   
