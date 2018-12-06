@@ -44,8 +44,8 @@ namespace EddiDataDefinitions
             { 128816581, new Ship(128816581, "TypeX_2", "Lakon Spaceways", new List<Translation> {new Translation("Lakon", "leɪkɒn") }, "Alliance Crusader", null, "Medium", 4) },
             { 128816588, new Ship(128816588, "TypeX_3", "Lakon Spaceways", new List<Translation> {new Translation("Lakon", "leɪkɒn") }, "Alliance Challenger", null, "Medium", 4) },
             { 128816567, new Ship(128816567, "Krait_MkII", "Faulcon DeLacy", null, "Krait Mk. II", new List<Translation>{new Translation("Krait", "ˈkreɪt"), new Translation("Mk.", "mɑːk"), new Translation("II", "ˈtuː") }, "Medium", null) },
-            { 999999904, new Ship(999999904, "Mamba", "Zorgon Peterson", null, "Mamba", null, "Medium", null) },
-            { 999999905, new Ship(999999905, "krait_light", "Faulcon DeLacy", null, "Krait Phantom", new List<Translation>{new Translation("Krait", "ˈkreɪt")}, "Medium", null) },
+            { 128839281, new Ship(128839281, "krait_light", "Faulcon DeLacy", null, "Krait Phantom", new List<Translation>{new Translation("Krait", "ˈkreɪt")}, "Medium", null) },
+            { 128915979, new Ship(128915979, "Mamba", "Zorgon Peterson", null, "Mamba", null, "Medium", null) },
 
             // Speculative future ships (replace '9999999xx' with Frontier ID once known)
             { 999999902, new Ship(999999902, "Panther", "Zorgon Peterson", null, "Panther Clipper", null, "Large", null) },
