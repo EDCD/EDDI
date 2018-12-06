@@ -218,15 +218,15 @@
     <comment>Material location Polonium</comment>
   </data>
   <data name="bulkscandata" xml:space="preserve">
-    <value>Se obtiene escaneando naves de transporte o como recompensa de misión.</value>
+    <value>escaneando naves de transporte o como recompensa de misión.</value>
     <comment>Material location Anomalous Bulk Scan Data</comment>
   </data>
   <data name="disruptedwakeechoes" xml:space="preserve">
-    <value>Se obtiene mediante el escaneo de estelas de salto de alta intensidad de naves, o como recompensa de misión, especialmente en sistemas en auge económico.</value>
+    <value>mediante el escaneo de estelas de salto de alta intensidad de naves, o como recompensa de misión, especialmente en sistemas en auge económico.</value>
     <comment>Material location Atypical Disrupted Wake Echoes</comment>
   </data>
   <data name="shieldcyclerecordings" xml:space="preserve">
-    <value>Se obtiene escaneando naves de transporte o como recompensa de misión.</value>
+    <value>escaneando naves de transporte o como recompensa de misión.</value>
     <comment>Material location Distorted Shield Cycle Recordings</comment>
   </data>
   <data name="scrambledemissiondata" xml:space="preserve">
@@ -234,7 +234,7 @@
     <comment>Material location Exceptional Scrambled Emission Data</comment>
   </data>
   <data name="legacyfirmware" xml:space="preserve">
-    <value>Se obtiene escaneando puntos de datos de superficie, satélites que orbitan instalaciones y mundos poblados similares a la Tierra, o también como recompensa de misión.</value>
+    <value>escaneando puntos de datos de superficie, satélites que orbitan instalaciones y mundos poblados similares a la Tierra, o también como recompensa de misión.</value>
     <comment>Material location Specialised Legacy Firmware</comment>
   </data>
   <data name="encryptedfiles" xml:space="preserve">
@@ -246,11 +246,11 @@
     <comment>Material location Pattern Gamma Obelisk Data</comment>
   </data>
   <data name="fsdtelemetry" xml:space="preserve">
-    <value>Se obtiene escaneando estelas de alta energía de naves o como recompensa de misión.</value>
+    <value>escaneando estelas de alta energía de naves o como recompensa de misión.</value>
     <comment>Material location Anomalous FSD Telemetry</comment>
   </data>
   <data name="shieldsoakanalysis" xml:space="preserve">
-    <value>Se obtiene escaneando naves de transporte o como recompensa de misión, especialmente en sistemas en auge económico.</value>
+    <value>escaneando naves de transporte o como recompensa de misión, especialmente en sistemas en auge económico.</value>
     <comment>Material location Inconsistent Shield Soak Analysis</comment>
   </data>
   <data name="archivedemissiondata" xml:space="preserve">
@@ -258,11 +258,11 @@
     <comment>Material location Irregular Emission Data</comment>
   </data>
   <data name="consumerfirmware" xml:space="preserve">
-    <value>Se obtiene como recompensa de misión, o escaneando enlaces de datos de bases terrestres o balizas privadas en transmisiones codificadas, siempre y cuando el sistema esté en elecciones o en guerra civil.</value>
+    <value>como recompensa de misión, o escaneando enlaces de datos de bases terrestres o balizas privadas en transmisiones codificadas, siempre y cuando el sistema esté en elecciones o en guerra civil.</value>
     <comment>Material location Modified Consumer Firmware</comment>
   </data>
   <data name="encryptioncodes" xml:space="preserve">
-    <value>Se obtiene escaneando puntos de datos de superficie, satélites que orbitan instalaciones o cerca de mundos poblados similares a la tierra, o también como recompensa de misión, especialmente en sistemas con un auge económico.</value>
+    <value>escaneando puntos de datos de superficie, satélites que orbitan instalaciones o cerca de mundos poblados similares a la tierra, o también como recompensa de misión, especialmente en sistemas con un auge económico.</value>
     <comment>Material location Tagged Encryption Codes</comment>
   </data>
   <data name="scanarchives" xml:space="preserve">
@@ -278,19 +278,19 @@
     <comment>Material location Thargoid Structural Data</comment>
   </data>
   <data name="scandatabanks" xml:space="preserve">
-    <value>Se obtiene escaneando naves grandes de transporte, como las Taip-7, o las Taip-9, y también mediante el escaneo de enlaces de datos en superficie.</value>
+    <value>escaneando naves grandes de transporte, como las Taip-7, o las Taip-9, y también mediante el escaneo de enlaces de datos en superficie.</value>
     <comment>Material location Classified Scan Databanks</comment>
   </data>
   <data name="industrialfirmware" xml:space="preserve">
-    <value>Se obtiene escaneando enlaces de datos en superficie o como recompensa de misión.</value>
+    <value>escaneando enlaces de datos en superficie o como recompensa de misión.</value>
     <comment>Material location Cracked Industrial Firmware</comment>
   </data>
   <data name="symmetrickeys" xml:space="preserve">
-    <value>Se obtiene escaneando enlaces de datos en bases terrestres, interceptando transmisiones, o como recompensa de misión.</value>
+    <value>escaneando enlaces de datos en bases terrestres, interceptando transmisiones, o como recompensa de misión.</value>
     <comment>Material location Open Symmetric Keys</comment>
   </data>
   <data name="wakesolutions" xml:space="preserve">
-    <value>Se obtiene escaneando estelas de alta energía o como recompensa en misiones, especialmente en sistemas en auge económico.</value>
+    <value>escaneando estelas de alta energía o como recompensa en misiones, especialmente en sistemas en auge económico.</value>
     <comment>Material location Strange Wake Solutions</comment>
   </data>
   <data name="emissiondata" xml:space="preserve">
@@ -298,7 +298,7 @@
     <comment>Material location Unexpected Emission Data</comment>
   </data>
   <data name="shielddensityreports" xml:space="preserve">
-    <value>Se obtiene escaneando naves de combate.</value>
+    <value>escaneando naves de combate.</value>
     <comment>Material location Untypical Shield Scans</comment>
   </data>
   <data name="ancientbiologicaldata" xml:space="preserve">
@@ -314,27 +314,27 @@
     <comment>Material location Thargoid Ship Signature</comment>
   </data>
   <data name="shieldpatternanalysis" xml:space="preserve">
-    <value>Se obtiene escaneando naves de la autoridad local y naves de combate, o también como recompensa de misiones, especialmente en sistemas con auge económico.</value>
+    <value>escaneando naves de la autoridad local y naves de combate, o también como recompensa de misiones, especialmente en sistemas con auge económico.</value>
     <comment>Material location Aberrant Shield Pattern Analysis</comment>
   </data>
   <data name="encryptionarchives" xml:space="preserve">
-    <value>Se obtiene escaneando enlaces de datos en bases terrestres.</value>
+    <value>escaneando enlaces de datos en bases terrestres.</value>
     <comment>Material location Atypical Encryption Archives</comment>
   </data>
   <data name="decodedemissiondata" xml:space="preserve">
-    <value>Se obtiene escaneando naves de la autoridad local o como recompensa de misiones.</value>
+    <value>escaneando naves de la autoridad local o como recompensa de misiones.</value>
     <comment>Material location Decoded Emission Data</comment>
   </data>
   <data name="encodedscandata" xml:space="preserve">
-    <value>Se obtiene escaneando enlaces de datos en superficie o como recompensa de misión.</value>
+    <value>escaneando enlaces de datos en superficie o como recompensa de misión.</value>
     <comment>Material location Divergent Scan Data</comment>
   </data>
   <data name="hyperspacetrajectories" xml:space="preserve">
-    <value>Se obtiene escaneando estelas de alta energía de naves.</value>
+    <value>escaneando estelas de alta energía de naves.</value>
     <comment>Material location Eccentric Hyperspace Trajectories</comment>
   </data>
   <data name="securityfirmware" xml:space="preserve">
-    <value>Se obtiene escaneando enlaces de datos en superficie o como recompensa de misión.</value>
+    <value>escaneando enlaces de datos en superficie o como recompensa de misión.</value>
     <comment>Material location Security Firmware Patch</comment>
   </data>
   <data name="ancientlanguagedata" xml:space="preserve">
@@ -350,27 +350,27 @@
     <comment>Material location Thargoid Residue Data</comment>
   </data>
   <data name="unknownwakedata" xml:space="preserve">
-    <value>Se obtiene escaneando estelas de energía dejadas por naves Zargoides.</value>
+    <value>escaneando estelas de energía dejadas por naves Zargoides.</value>
     <comment>Material location Thargoid Wake Data</comment>
   </data>
   <data name="compactemissionsdata" xml:space="preserve">
-    <value>Se obtiene escaneando naves de combate, como recompensa de misión, o también en balizas de datos y transmisiones codificadas siempre y cuando estén ubicadas en espacio profundo.</value>
+    <value>escaneando naves de combate, como recompensa de misión, o también en balizas de datos y transmisiones codificadas siempre y cuando estén ubicadas en espacio profundo.</value>
     <comment>Material location Abnormal Compact Emissions Data</comment>
   </data>
   <data name="adaptiveencryptors" xml:space="preserve">
-    <value>Se obtiene escaneando satélites orbitando en instalaciones o cerca de planetas poblados parecidos a la Tierra, o también se puede obtener como recompensa en misiones, especialmente si son misiones de escaneo planetario.</value>
+    <value>escaneando satélites orbitando en instalaciones o cerca de planetas poblados parecidos a la Tierra, o también se puede obtener como recompensa en misiones, especialmente si son misiones de escaneo planetario.</value>
     <comment>Material location Adaptive Encryptors Capture</comment>
   </data>
   <data name="classifiedscandata" xml:space="preserve">
-    <value>Se obtiene escaneando enlaces de datos de bases terrestres, escaneando naves militares o de la autoridad local, o como recompensa de misiones, especialmente de sistemas en auge económico.</value>
+    <value>escaneando enlaces de datos de bases terrestres, escaneando naves militares o de la autoridad local, o como recompensa de misiones, especialmente de sistemas en auge económico.</value>
     <comment>Material location Classified Scan Fragment</comment>
   </data>
   <data name="dataminedwake" xml:space="preserve">
-    <value>Se obtiene escaneando estelas de alta energía, balizas de datos codificados, o como recompensa de misión.</value>
+    <value>escaneando estelas de alta energía, balizas de datos codificados, o como recompensa de misión.</value>
     <comment>Material location Datamined Wake Exceptions</comment>
   </data>
   <data name="embeddedfirmware" xml:space="preserve">
-    <value>Se obtiene escaneando enlaces de datos en bases en superficie, como recompensa de misión.</value>
+    <value>escaneando enlaces de datos en bases en superficie, como recompensa de misión.</value>
     <comment>Material location Modified Embedded Firmware</comment>
   </data>
   <data name="shieldfrequencydata" xml:space="preserve">
@@ -386,7 +386,7 @@
     <comment>Material location Chemical Storage Units</comment>
   </data>
   <data name="compactcomposites" xml:space="preserve">
-    <value>Se pueden obtener de transmisiones deterioradas, incluyendo las encontradas en superficie.</value>
+    <value>de transmisiones deterioradas, incluyendo las encontradas en superficie.</value>
     <comment>Material location Compact Composites</comment>
   </data>
   <data name="crystalshards" xml:space="preserve">
@@ -523,7 +523,7 @@
     <comment>Material location Heat Vanes</comment>
   </data>
   <data name="polymercapacitors" xml:space="preserve">
-    <value>Se obtiene de los restos de naves de combate y de la autoridad local, de transmisiones de patrones de convoy, o como recompensa de misión.</value>
+    <value>de los restos de naves de combate y de la autoridad local, de transmisiones de patrones de convoy, o como recompensa de misión.</value>
     <comment>Material location Polymer Capacitors</comment>
   </data>
   
@@ -538,7 +538,7 @@
     <comment>Material location Thargoid Technological Components</comment>
   </data>
   <data name="biotechconductors" xml:space="preserve">
-    <value>Se obtiene como recompensa de misión.</value>
+    <value>como recompensa de misión.</value>
     <comment>Material location Biotech conductors</comment>
   </data>
   
@@ -562,7 +562,7 @@
     <comment>Material location Thargoid Organic Circuitry</comment>
   </data>
   <data name="boron" xml:space="preserve">
-    <value>Se obtiene minando asteroides.</value>
+    <value>minando asteroides.</value>
     <comment>Material location Boron</comment>
   </data>
   <data name="guardian_powercell" xml:space="preserve">
@@ -598,11 +598,11 @@
     <comment>Material location guardian_sentinel_wreckagecomponents</comment>
   </data>
   <data name="lead" xml:space="preserve">
-    <value>Se obtiene minando asteroides.</value>
+    <value>minando asteroides.</value>
     <comment>Material location Lead</comment>
   </data>
   <data name="rhenium" xml:space="preserve">
-    <value>Se obtiene minando asteroides.</value>
+    <value>minando asteroides.</value>
     <comment>Material location Rhenium</comment>
   </data>
   
