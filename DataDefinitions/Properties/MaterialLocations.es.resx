@@ -117,42 +117,150 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="carbon" xml:space="preserve">
+    <value>Se obtiene de la prospección en superficie, minando asteroides o también anillos de hielo.</value>
+    <comment>Material location Carbon</comment>
+  </data>
+  <data name="iron" xml:space="preserve">
+    <value>Se obtiene de la prospección en superficie, minando asteroides o también anillos de hielo.</value>
+    <comment>Material location Iron</comment>
+  </data>
+  <data name="nickel" xml:space="preserve">
+    <value>Se obtiene de la prospección en superficie, minando asteroides o también anillos de hielo.</value>
+    <comment>Material location Nickel</comment>
+  </data>
+  <data name="phosphorus" xml:space="preserve">
+    <value>Se obtiene de la prospección en superficie, minando asteroides o también anillos de hielo.</value>
+    <comment>Material location Phosphorus</comment>
+  </data>
+  <data name="sulphur" xml:space="preserve">
+    <value>Se obtiene de la prospección en superficie, minando asteroides o también anillos de hielo.</value>
+    <comment>Material location Sulphur</comment>
+  </data>
+  <data name="arsenic" xml:space="preserve">
+    <value>Se obtiene de la prospección en superficie, minando asteroides o como recompensa de misión.</value>
+    <comment>Material location Arsenic</comment>
+  </data>
+  <data name="chromium" xml:space="preserve">
+    <value>Se obtiene de la prospección en superficie, minando asteroides en anillos rocosos prístinos, o también en anillos de hielo.</value>
+    <comment>Material location Chromium</comment>
+  </data>
+  <data name="germanium" xml:space="preserve">
+    <value>Se obtiene de la prospección en superficie o como recompensa de misión, especialmente en sistemas que sufren epidemias.</value>
+    <comment>Material location Germanium</comment>
+  </data>
+  <data name="manganese" xml:space="preserve">
+    <value>Se obtiene de la prospección en superficie, minando asteroides, o como recompensa de misión.</value>
+    <comment>Material location Manganese</comment>
+  </data>
+  <data name="vanadium" xml:space="preserve">
+    <value>Se obtiene de la prospección en superficie, minando asteroides en anillos rocosos prístinos, o también en anillos de hielo.</value>
+    <comment>Material location Vanadium</comment>
+  </data>
+  <data name="zinc" xml:space="preserve">
+    <value>Se obtiene de la prospección en superficie.</value>
+    <comment>Material location Zinc</comment>
+  </data>
+  <data name="cadmium" xml:space="preserve">
+    <value>Se obtiene de la prospección en superficie, o minando asteroides.</value>
+    <comment>Material location Cadmium</comment>
+  </data>
+  <data name="mercury" xml:space="preserve">
+    <value>Se obtiene de la prospección en superficie.</value>
+    <comment>Material location Mercury</comment>
+  </data>
+  <data name="molybdenum" xml:space="preserve">
+    <value>Se obtiene de la prospección en superficie, o minando asteroides.</value>
+    <comment>Material location Molybdenum</comment>
+  </data>
+  <data name="niobium" xml:space="preserve">
+    <value>Se obtiene de la prospección en superficie, o minando asteroides.</value>
+    <comment>Material location Niobium</comment>
+  </data>
+  <data name="tin" xml:space="preserve">
+    <value>Se obtiene de la prospección en superficie, o minando asteroides en áreas con reservas prístinas.</value>
+    <comment>Material location Tin</comment>
+  </data>
+  <data name="tungsten" xml:space="preserve">
+    <value>Se obtiene de la prospección en superficie.</value>
+    <comment>Material location Tungsten</comment>
+  </data>
+  <data name="ruthenium" xml:space="preserve">
+    <value>Se obtiene de la prospección en superficie.</value>
+    <comment>Material location Ruthenium</comment>
+  </data>
+  <data name="selenium" xml:space="preserve">
+    <value>Se obtiene de la prospección en superficie, o como recompensa de misión.</value>
+    <comment>Material location Selenium</comment>
+  </data>
+  <data name="technetium" xml:space="preserve">
+    <value>Se obtiene de la prospección en superficie.</value>
+    <comment>Material location Technetium</comment>
+  </data>
+  <data name="tellurium" xml:space="preserve">
+    <value>Se obtiene de la prospección en superficie.</value>
+    <comment>Material location Tellurium</comment>
+  </data>
+  <data name="yttrium" xml:space="preserve">
+    <value>Se obtiene de la prospección en superficie.</value>
+    <comment>Material location Yttrium</comment>
+  </data>
+  <data name="zirconium" xml:space="preserve">
+    <value>Se obtiene de la prospección en superficie, o minando asteroides.</value>
+    <comment>Material location Zirconium</comment>
+  </data>
+  <data name="antimony" xml:space="preserve">
+    <value>Se obtiene de la prospección en superficie.</value>
+    <comment>Material location Antimony</comment>
+  </data>
+  <data name="polonium" xml:space="preserve">
+    <value>Se obtiene de la prospección en superficie, o como recompensa de misión.</value>
+    <comment>Material location Polonium</comment>
+  </data>
+  <data name="bulkscandata" xml:space="preserve">
+    <value>Se obtiene escaneando naves de transporte o como recompensa de misión.</value>
+    <comment>Material location Anomalous Bulk Scan Data</comment>
+  </data>
+  <data name="disruptedwakeechoes" xml:space="preserve">
+    <value>Se obtiene mediante el escaneo de estelas de salto de alta intensidad de naves, o como recompensa de misión, especialmente en sistemas en auge económico.</value>
+    <comment>Material location Atypical Disrupted Wake Echoes</comment>
+  </data>
+  <data name="shieldcyclerecordings" xml:space="preserve">
+    <value>Se obtiene escaneando naves de transporte o como recompensa de misión.</value>
+    <comment>Material location Distorted Shield Cycle Recordings</comment>
+  </data>
+  <data name="scrambledemissiondata" xml:space="preserve">
+    <value>Se obtiene escaneando naves, transmisiones, o como recompensa de misión.</value>
+    <comment>Material location Exceptional Scrambled Emission Data</comment>
+  </data>
+  <data name="legacyfirmware" xml:space="preserve">
+    <value>Se obtiene escaneando puntos de datos de superficie, satélites que orbitan instalaciones y mundos poblados similares a la Tierra, o también como recompensa de misión.</value>
+    <comment>Material location Specialised Legacy Firmware</comment>
+  </data>
+  <data name="encryptedfiles" xml:space="preserve">
+    <value>Se obtiene en fuentes de señales, incluyendo señales de superficie, o como recompensa de misión. Tienden a ser más comunes en sistemas en auge económico.</value>
+    <comment>Material location Unusual Encrypted Files</comment>
+  </data>
+  <data name="ancienthistoricaldata" xml:space="preserve">
+    <value>Se obtiene de ruinas ancestrales de la especie alienígena conocida como Guardianes.</value>
+    <comment>Material location Pattern Gamma Obelisk Data</comment>
+  </data>
+  <data name="fsdtelemetry" xml:space="preserve">
+    <value>Se obtiene escaneando estelas de alta energía de naves o como recompensa de misión.</value>
+    <comment>Material location Anomalous FSD Telemetry</comment>
+  </data>
+  <data name="shieldsoakanalysis" xml:space="preserve">
+    <value>Se obtiene escaneando naves de transporte o como recompensa de misión, especialmente en sistemas en auge económico.</value>
+    <comment>Material location Inconsistent Shield Soak Analysis</comment>
+  </data>
+  <data name="archivedemissiondata" xml:space="preserve">
+    <value>Se obtiene interceptando transmisiones o como recompensa de misión, especialmente en sistemas con auge económico.</value>
+    <comment>Material location Irregular Emission Data</comment>
+  </data>
+  <data name="consumerfirmware" xml:space="preserve">
+    <value>Se obtiene como recompensa de misión, o escaneando enlaces de datos de bases terrestres o balizas privadas en transmisiones codificadas, siempre y cuando el sistema esté en elecciones o en guerra civil.</value>
+    <comment>Material location Modified Consumer Firmware</comment>
+  </data>
   
   
   
