@@ -442,8 +442,14 @@
     <comment>Material location Heat Dispersion Plate</comment>
   </data>
   
-  
-  
+  <data name="hybridcapacitors" xml:space="preserve">
+    <value>Se obtiene de los restos de naves grandes de combate, comúnmente Anacondas y Corvetas Federales, o también como recompensa de misión.</value>
+    <comment>Material location Hybrid Capacitors</comment>
+  </data>
+  <data name="mechanicalequipment" xml:space="preserve">
+    <value>Se obtiene a partir de los restos de naves de transporte, especialmente en sistemas en auge económico.</value>
+    <comment>Material location Mechanical Equipment</comment>
+  </data>
   <data name="shieldemitters" xml:space="preserve">
     <value>Se obtiene a partir de los restos de naves de combate o en fuentes de señal, especialmente en sistemas con auge económico.</value>
     <comment>Material location Shield Emitters</comment>
@@ -452,8 +458,14 @@
     <value>Se obtiene en la superficie de misteriosos lugares de la especie alienígena conocida como Zargoides.</value>
     <comment>Material location Thargoid Carapace</comment>
   </data>
-  
-  
+  <data name="chemicaldistillery" xml:space="preserve">
+    <value>Se puede encontrar en los restos de naves de transporte.</value>
+    <comment>Material location Chemical Distillery</comment>
+  </data>
+  <data name="conductiveceramics" xml:space="preserve">
+    <value>Se obtiene a partir de los restos de naves de transporte, especialmente en sistemas anárquicos cercanos a sistemas con población. También se pueden encontrar en Dav's Hope.</value>
+    <comment>Material location Conductive Ceramics</comment>
+  </data>
   <data name="electrochemicalarrays" xml:space="preserve">
     <value>Se obtiene de los restos de naves de combate y de las autoridades del sistema, o de transmisiones deterioradas en sistemas anárquicos cerca de otros sistemas poblados.</value>
     <comment>Material location Electrochemical Arrays</comment>
@@ -462,7 +474,10 @@
     <value>Se obtiene de los restos de naves de combate, especialmente en sistemas de alta seguridad.</value>
     <comment>Material location Focus Crystals</comment>
   </data>
-  
+  <data name="heatexchangers" xml:space="preserve">
+    <value>Se obtiene a partir de los restos de naves de transporte, especialmente en sistemas anárquicos cercanos a sistemas con población.</value>
+    <comment>Material location Heat Exchangers</comment>
+  </data>
   
   
   <data name="phasealloys" xml:space="preserve">
@@ -487,8 +502,14 @@
     <comment>Material location Compound Shielding</comment>
   </data>
   
-  
-  
+  <data name="configurablecomponents" xml:space="preserve">
+    <value>Se obtiene a partir de los restos de naves de transporte, especialmente en sistemas de baja seguridad. También pueden estar disponibles en Dav's Hope.</value>
+    <comment>Material location Configurable Components</comment>
+  </data>
+  <data name="heatvanes" xml:space="preserve">
+    <value>Se obtiene a partir de los restos de naves de transporte o como recompensa de misión. También pueden estar disponibles en Dav's Hope.</value>
+    <comment>Material location Heat Vanes</comment>
+  </data>
   <data name="polymercapacitors" xml:space="preserve">
     <value>Se obtiene de los restos de naves de combate y de la autoridad local, de transmisiones de patrones de convoy, o como recompensa de misión.</value>
     <comment>Material location Polymer Capacitors</comment>
