@@ -37,7 +37,6 @@ namespace Eddi
 
         /// <summary> Administrative values </summary>
         public bool validSystem { get; set; }
-        public bool validStation { get; set; }
 
         private string _HomeSystem;
         private string _HomeStation;

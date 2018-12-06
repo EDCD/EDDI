@@ -1882,12 +1882,10 @@ namespace Eddi
         public EDDIConfiguration updateHomeStation(EDDIConfiguration configuration)
         {
             Logging.Verbose = configuration.Debug;
-            configuration.validStation = false;
             if (configuration.HomeStation != null)
             {
                 HomeStation = HomeStarSystem.stations.FirstOrDefault(s => s.name == configuration.HomeStation);
                 Logging.Debug("Home station is " + HomeStation.name);
-                configuration.validStation = true;
             }
             return configuration;
         }

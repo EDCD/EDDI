@@ -195,7 +195,7 @@ namespace Eddi
             {
                 eddiHomeSystemText.Text = string.Empty;
             }
-            homeStationDropDown.SelectedValue = eddiConfiguration.validStation == true ? eddiConfiguration.HomeStation : "None";
+            homeStationDropDown.SelectedValue = eddiConfiguration.HomeStation == null ? "None" : eddiConfiguration.HomeStation;
             eddiVerboseLogging.IsChecked = eddiConfiguration.Debug;
             eddiBetaProgramme.IsChecked = eddiConfiguration.Beta;
             if (eddiConfiguration.Gender == "Female")
@@ -478,7 +478,12 @@ namespace Eddi
             {
                 eddiConfiguration.HomeSystem = string.IsNullOrWhiteSpace(eddiHomeSystemText.Text) ? null : eddiHomeSystemText.Text.Trim();
                 eddiConfiguration = EDDI.Instance.updateHomeSystem(eddiConfiguration);
-                homeStationDropDown.SelectedValue = "None";
+                if (eddiConfiguration.HomeStation != null)
+                {
+                    eddiConfiguration.HomeStation = null;
+                    homeStationDropDown.SelectedValue = "None";
+                    ConfigureHomeStationOptions(null);
+                }
                 eddiConfiguration.ToFile();
 
                 // Update the UI for invalid results
@@ -493,10 +498,13 @@ namespace Eddi
                     "None"
                 };
 
-            StarSystem HomeSystem = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(system, true);
-            foreach (Station station in HomeSystem.stations)
+            if (system != null)
             {
-                HomeStationOptions.Add(station.name);
+                StarSystem HomeSystem = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(system, true);
+                foreach (Station station in HomeSystem.stations)
+                {
+                    HomeStationOptions.Add(station.name);
+                }
             }
             homeStationDropDown.ItemsSource = HomeStationOptions;
         }
@@ -1052,27 +1060,6 @@ namespace Eddi
             else
             {
                 return new ValidationResult(false, Properties.EddiResources.invalid_system);
-            }
-        }
-    }
-
-    public class ValidStationRule : ValidationRule
-    {
-        public override ValidationResult Validate(object value, CultureInfo cultureInfo)
-        {
-            EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
-
-            if (value == null)
-            {
-                return ValidationResult.ValidResult;
-            }
-            if (eddiConfiguration.validStation)
-            {
-                return ValidationResult.ValidResult;
-            }
-            else
-            {
-                return new ValidationResult(false, Properties.EddiResources.invalid_station);
             }
         }
     }
