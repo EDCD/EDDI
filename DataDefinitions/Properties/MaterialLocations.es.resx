@@ -430,18 +430,24 @@
     <comment>Material location Filament Composites</comment>
   </data>
   <data name="uncutfocuscrystals" xml:space="preserve">
-    <value>Se obtiene de los restos de naves de combate, o interceptando transmisiones procedentes del resultado de un combate.</value>
+    <value>Se obtiene de los restos de naves de combate, o en señales procedentes del resultado de un combate.</value>
     <comment>Material location Flawed Focus Crystals</comment>
   </data>
   <data name="galvanisingalloys" xml:space="preserve">
     <value>Se obtiene de los restos de naves de combate, o como recompensa de misiones, especialmente si están en sistemas con periodo electoral.</value>
     <comment>Material location Galvanising Alloys</comment>
   </data>
+  <data name="heatdispersionplate" xml:space="preserve">
+    <value>Se obtiene de los restos de naves de transporte que aún transmiten datos, especialmente en sistemas con auge económico, o como recompensa de misión.</value>
+    <comment>Material location Heat Dispersion Plate</comment>
+  </data>
   
   
   
-  
-  
+  <data name="shieldemitters" xml:space="preserve">
+    <value>Se obtiene a partir de los restos de naves de combate o en fuentes de señal, especialmente en sistemas con auge económico.</value>
+    <comment>Material location Shield Emitters</comment>
+  </data>
   <data name="unknowncarapace" xml:space="preserve">
     <value>Se obtiene en la superficie de misteriosos lugares de la especie alienígena conocida como Zargoides.</value>
     <comment>Material location Thargoid Carapace</comment>
@@ -452,22 +458,34 @@
     <value>Se obtiene de los restos de naves de combate y de las autoridades del sistema, o de transmisiones deterioradas en sistemas anárquicos cerca de otros sistemas poblados.</value>
     <comment>Material location Electrochemical Arrays</comment>
   </data>
+  <data name="focuscrystals" xml:space="preserve">
+    <value>Se obtiene de los restos de naves de combate, especialmente en sistemas de alta seguridad.</value>
+    <comment>Material location Focus Crystals</comment>
+  </data>
   
   
   
-  
-  
+  <data name="phasealloys" xml:space="preserve">
+    <value>Se obtiene a partir de los restos de naves de combate o en fuentes de señales en sistemas con la economía en auge.</value>
+    <comment>Material location Phase Alloys</comment>
+  </data>
   <data name="precipitatedalloys" xml:space="preserve">
     <value>Se obtiene de los restos de naves de combate y de la autoridad local, o también como recompensa de misión.</value>
     <comment>Material location Precipitated Alloys</comment>
   </data>
-  
+  <data name="shieldingsensors" xml:space="preserve">
+    <value>Se obtiene de los restos de naves de combate pequeñas, o como recompensa de misión.</value>
+    <comment>Material location Shielding Sensors</comment>
+  </data>
   <data name="unknownenergycell" xml:space="preserve">
     <value>Se obtiene en la superficie de misteriosos lugares de la especie alienígena conocida como Zargoides.</value>
     <comment>Material location Thargoid Energy Cell</comment>
   </data>
   
-  
+  <data name="compoundshielding" xml:space="preserve">
+    <value>Se obtiene de restos de naves de combate, como recompensa de misión, o también interceptando transmisiones codificadas, especialmente en sistemas de alta seguridad, sistemas en auge económico, o sistemas en retirada y consolidación del poder. También se pueden encontrar en Dav's Hope.</value>
+    <comment>Material location Compound Shielding</comment>
+  </data>
   
   
   
@@ -478,7 +496,10 @@
   
   
   
-  
+  <data name="thermicalloys" xml:space="preserve">
+    <value>Se obtiene de los restos de naves de combate pequeñas, o como recompensa de misión.</value>
+    <comment>Material location Thermic Alloys</comment>
+  </data>
   <data name="unknowntechnologycomponents" xml:space="preserve">
     <value>Se obtiene en la superficie de misteriosos lugares de la especie alienígena conocida como Zargoides.</value>
     <comment>Material location Thargoid Technological Components</comment>
@@ -488,7 +509,10 @@
     <comment>Material location Biotech conductors</comment>
   </data>
   
-  
+  <data name="exquisitefocuscrystals" xml:space="preserve">
+    <value>Se obtiene de los restos de naves de combate o como recompensa de misión, especialmente en sistemas con economías en auge.</value>
+    <comment>Material location Exquisite Focus Crystals</comment>
+  </data>
   
   
   
