@@ -261,20 +261,62 @@
     <value>Se obtiene como recompensa de misión, o escaneando enlaces de datos de bases terrestres o balizas privadas en transmisiones codificadas, siempre y cuando el sistema esté en elecciones o en guerra civil.</value>
     <comment>Material location Modified Consumer Firmware</comment>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="encryptioncodes" xml:space="preserve">
+    <value>Se obtiene escaneando puntos de datos de superficie, satélites que orbitan instalaciones o cerca de mundos poblados similares a la tierra, o también como recompensa de misión, especialmente en sistemas con un auge económico.</value>
+    <comment>Material location Tagged Encryption Codes</comment>
+  </data>
+  <data name="scanarchives" xml:space="preserve">
+    <value>Se obtiene escaneando naves de transporte, especialmente en sistemas en auge económico.</value>
+    <comment>Material location Unidentified Scan Archives</comment>
+  </data>
+  <data name="ancientculturaldata" xml:space="preserve">
+    <value>Se obtiene en antiguas ruinas de la especie alienígena conocida como Guardianes.</value>
+    <comment>Material location Pattern Beta Obelisk Data</comment>
+  </data>
+  <data name="tg_structuraldata" xml:space="preserve">
+    <value>Se obtiene en la superficie de misteriosos lugares de la especie alienígena conocida como Zargoides.</value>
+    <comment>Material location Thargoid Structural Data</comment>
+  </data>
+  <data name="scandatabanks" xml:space="preserve">
+    <value>Se obtiene escaneando naves grandes de transporte, como las Taip-7, o las Taip-9, y también mediante el escaneo de enlaces de datos en superficie.</value>
+    <comment>Material location Classified Scan Databanks</comment>
+  </data>
+  <data name="industrialfirmware" xml:space="preserve">
+    <value>Se obtiene escaneando enlaces de datos en superficie o como recompensa de misión.</value>
+    <comment>Material location Cracked Industrial Firmware</comment>
+  </data>
+  <data name="symmetrickeys" xml:space="preserve">
+    <value>Se obtiene escaneando enlaces de datos en bases terrestres, interceptando transmisiones, o como recompensa de misión.</value>
+    <comment>Material location Open Symmetric Keys</comment>
+  </data>
+  <data name="wakesolutions" xml:space="preserve">
+    <value>Se obtiene escaneando estelas de alta energía o como recompensa en misiones, especialmente en sistemas en auge económico.</value>
+    <comment>Material location Strange Wake Solutions</comment>
+  </data>
+  <data name="emissiondata" xml:space="preserve">
+    <value>Se obtiene escaneando naves de combate o interceptando transmisiones, especialmente en sistemas en auge económico o en periodo electoral.</value>
+    <comment>Material location Unexpected Emission Data</comment>
+  </data>
+  <data name="shielddensityreports" xml:space="preserve">
+    <value>Se obtiene escaneando naves de combate.</value>
+    <comment>Material location Untypical Shield Scans</comment>
+  </data>
+  <data name="ancientbiologicaldata" xml:space="preserve">
+    <value>Se obtiene de antiguas ruinas de la especie alienígena conocida como Guardianes.</value>
+    <comment>Material location Pattern Alpha Obelisk Data</comment>
+  </data>
+  <data name="tg_compositiondata" xml:space="preserve">
+    <value>Se obtiene en la superficie de misteriosos lugares de la especie alienígena conocida como Zargoides.</value>
+    <comment>Material location Thargoid Material Composition Data</comment>
+  </data>
+  <data name="unknownshipsignature" xml:space="preserve">
+    <value>Se obtiene en la superficie de misteriosos lugares de la especie alienígena conocida como Zargoides, o también escaneando sus naves.</value>
+    <comment>Material location Thargoid Ship Signature</comment>
+  </data>
+  <data name="shieldpatternanalysis" xml:space="preserve">
+    <value>Se obtiene escaneando naves de la autoridad local y naves de combate, o también como recompensa de misiones, especialmente en sistemas con auge económico.</value>
+    <comment>Material location Aberrant Shield Pattern Analysis</comment>
+  </data>
   <data name="encryptionarchives" xml:space="preserve">
     <value>Se obtiene escaneando enlaces de datos en bases terrestres.</value>
     <comment>Material location Atypical Encryption Archives</comment>
@@ -400,6 +442,51 @@
   
   
   
+  <data name="unknowncarapace" xml:space="preserve">
+    <value>Se obtiene en la superficie de misteriosos lugares de la especie alienígena conocida como Zargoides.</value>
+    <comment>Material location Thargoid Carapace</comment>
+  </data>
+  
+  
+  <data name="electrochemicalarrays" xml:space="preserve">
+    <value>Se obtiene de los restos de naves de combate y de las autoridades del sistema, o de transmisiones deterioradas en sistemas anárquicos cerca de otros sistemas poblados.</value>
+    <comment>Material location Electrochemical Arrays</comment>
+  </data>
+  
+  
+  
+  
+  
+  <data name="precipitatedalloys" xml:space="preserve">
+    <value>Se obtiene de los restos de naves de combate y de la autoridad local, o también como recompensa de misión.</value>
+    <comment>Material location Precipitated Alloys</comment>
+  </data>
+  
+  <data name="unknownenergycell" xml:space="preserve">
+    <value>Se obtiene en la superficie de misteriosos lugares de la especie alienígena conocida como Zargoides.</value>
+    <comment>Material location Thargoid Energy Cell</comment>
+  </data>
+  
+  
+  
+  
+  
+  <data name="polymercapacitors" xml:space="preserve">
+    <value>Se obtiene de los restos de naves de combate y de la autoridad local, de transmisiones de patrones de convoy, o como recompensa de misión.</value>
+    <comment>Material location Polymer Capacitors</comment>
+  </data>
+  
+  
+  
+  
+  <data name="unknowntechnologycomponents" xml:space="preserve">
+    <value>Se obtiene en la superficie de misteriosos lugares de la especie alienígena conocida como Zargoides.</value>
+    <comment>Material location Thargoid Technological Components</comment>
+  </data>
+  <data name="biotechconductors" xml:space="preserve">
+    <value>Se obtiene como recompensa de misión.</value>
+    <comment>Material location Biotech conductors</comment>
+  </data>
   
   
   
@@ -409,47 +496,68 @@
   
   
   
+  <data name="unknownenergysource" xml:space="preserve">
+    <value>Se obtiene en la superficie de misteriosos lugares de la especie alienígena conocida como Zargoides.</value>
+    <comment>Material location unknownenergysource</comment>
+  </data>
+  <data name="unknownorganiccircuitry" xml:space="preserve">
+    <value>Se obtiene en la superficie de misteriosos lugares de la especie alienígena conocida como Zargoides.</value>
+    <comment>Material location Thargoid Organic Circuitry</comment>
+  </data>
+  <data name="boron" xml:space="preserve">
+    <value>Se obtiene minando asteroides.</value>
+    <comment>Material location Boron</comment>
+  </data>
+  <data name="guardian_powercell" xml:space="preserve">
+    <value>Se obtiene de ruinas ancestrales de la especie extraterrestre conocida como Guardianes.</value>
+    <comment>Material location guardian_powercell</comment>
+  </data>
+  <data name="guardian_weaponblueprint" xml:space="preserve">
+    <value>Se obtiene de ruinas ancestrales de la especie extraterrestre conocida como Guardianes.</value>
+    <comment>Material location guardian_weaponblueprint</comment>
+  </data>
+  <data name="guardian_vesselblueprint" xml:space="preserve">
+    <value>Se obtiene en antiguas ruinas de la especie alienígena conocida como Guardianes.</value>
+    <comment>Material location guardian_vesselblueprint</comment>
+  </data>
+  <data name="guardian_techcomponent" xml:space="preserve">
+    <value>Se obtiene en antiguas ruinas de la especie alienígena conocida como Guardianes.</value>
+    <comment>Material location guardian_techcomponent</comment>
+  </data>
+  <data name="guardian_powerconduit" xml:space="preserve">
+    <value>Se obtiene en antiguas ruinas de la especie alienígena conocida como Guardianes.</value>
+    <comment>Material location guardian_powerconduit</comment>
+  </data>
+  <data name="guardian_moduleblueprint" xml:space="preserve">
+    <value>Se obtiene en antiguas ruinas de la especie alienígena conocida como Guardianes.</value>
+    <comment>Material location guardian_moduleblueprint</comment>
+  </data>
+  <data name="guardian_sentinel_weaponparts" xml:space="preserve">
+    <value>Se obtiene de ruinas ancestrales de la especie extraterrestre conocida como Guardianes.</value>
+    <comment>Material location guardian_sentinel_weaponparts</comment>
+  </data>
+  <data name="guardian_sentinel_wreckagecomponents" xml:space="preserve">
+    <value>Se obtiene de ruinas ancestrales de la especie extraterrestre conocida como Guardianes.</value>
+    <comment>Material location guardian_sentinel_wreckagecomponents</comment>
+  </data>
+  <data name="lead" xml:space="preserve">
+    <value>Se obtiene minando asteroides.</value>
+    <comment>Material location Lead</comment>
+  </data>
+  <data name="rhenium" xml:space="preserve">
+    <value>Se obtiene minando asteroides.</value>
+    <comment>Material location Rhenium</comment>
+  </data>
   
   
   
   
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="tg_shipflightdata" xml:space="preserve">
+    <value>Se obtiene escaneando naves Zargoides.</value>
+    <comment>Material location tg_shipflightdata</comment>
+  </data>
+  <data name="tg_shipsystemsdata" xml:space="preserve">
+    <value>Se obtiene escaneando naves Zargoides.</value>
+    <comment>Material location tg_shipsystemsdata</comment>
+  </data>
 </root>
