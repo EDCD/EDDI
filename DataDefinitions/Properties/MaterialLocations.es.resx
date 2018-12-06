@@ -235,19 +235,58 @@
     <value>Se puede obtener en los restos de naves de transporte.</value>
     <comment>Material location Chemical Storage Units</comment>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="compactcomposites" xml:space="preserve">
+    <value>Se pueden obtener de transmisiones deterioradas, incluyendo las encontradas en superficie.</value>
+    <comment>Material location Compact Composites</comment>
+  </data>
+  <data name="crystalshards" xml:space="preserve">
+    <value>Se obtiene de los restos de naves de combate, y de fuentes de señales en superficie.</value>
+    <comment>Material location Crystal Shards</comment>
+  </data>
+  <data name="gridresistors" xml:space="preserve">
+    <value>Se obtiene de los restos de naves de combate pequeñas, o como recompensa de misión.</value>
+    <comment>Material location Grid Resistors</comment>
+  </data>
+  <data name="heatconductionwiring" xml:space="preserve">
+    <value>Se obtiene a partir de los restos de naves de transporte, interceptando transmisiones, o también como recompensa de misión.</value>
+    <comment>Material location Heat Conduction Wiring</comment>
+  </data>
+  <data name="mechanicalscrap" xml:space="preserve">
+    <value>Se obtiene de restos de naves de transporte, o como recompensa de misión.</value>
+    <comment>Material location Mechanical Scrap</comment>
+  </data>
+  <data name="salvagedalloys" xml:space="preserve">
+    <value>Se obtiene de los restos de naves de combate.</value>
+    <comment>Material location Salvaged Alloys</comment>
+  </data>
+  <data name="temperedalloys" xml:space="preserve">
+    <value>Se obtiene de los restos de naves de combate.</value>
+    <comment>Material location temperedalloys</comment>
+  </data>
+  <data name="wornshieldemitters" xml:space="preserve">
+    <value>Se obtiene de los restos de naves de combate.</value>
+    <comment>Material location Worn Shield Emitters</comment>
+  </data>
+  <data name="chemicalprocessors" xml:space="preserve">
+    <value>Se obtiene de los restos de naves de transporte, o como recompensa de misión.</value>
+    <comment>Material location Chemical Processors</comment>
+  </data>
+  <data name="conductivecomponents" xml:space="preserve">
+    <value>Se obtiene a partir de los restos de naves de transporte, especialmente en sistemas anárquicos cercanos a sistemas con población. </value>
+    <comment>Material location Conductive Components</comment>
+  </data>
+  <data name="filamentcomposites" xml:space="preserve">
+    <value>Se obtiene de los restos de naves militares y de la autoridad.</value>
+    <comment>Material location Filament Composites</comment>
+  </data>
+  <data name="uncutfocuscrystals" xml:space="preserve">
+    <value>Se obtiene de los restos de naves de combate, o interceptando transmisiones procedentes del resultado de un combate.</value>
+    <comment>Material location Flawed Focus Crystals</comment>
+  </data>
+  <data name="galvanisingalloys" xml:space="preserve">
+    <value>Se obtiene de los restos de naves de combate, o como recompensa de misiones, especialmente si están en sistemas con periodo electoral.</value>
+    <comment>Material location Galvanising Alloys</comment>
+  </data>
   
   
   
