@@ -441,7 +441,10 @@
     <value>Se obtiene de los restos de naves de transporte que aún transmiten datos, especialmente en sistemas con auge económico, o como recompensa de misión.</value>
     <comment>Material location Heat Dispersion Plate</comment>
   </data>
-  
+  <data name="heatresistantceramics" xml:space="preserve">
+    <value>Se obtiene de los restos de naves militares y de la autoridad.</value>
+    <comment>Material location heatresistantceramics</comment>
+  </data>
   <data name="hybridcapacitors" xml:space="preserve">
     <value>Se obtiene de los restos de naves grandes de combate, comúnmente Anacondas y Corvetas Federales, o también como recompensa de misión.</value>
     <comment>Material location Hybrid Capacitors</comment>
