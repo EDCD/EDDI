@@ -71,10 +71,16 @@
     <Compile Include="BlueprintMaterials.cs" />
     <Compile Include="BodyType.cs" />
     <Compile Include="CargoInfo.cs" />
+    <Compile Include="Power.cs" />
     <Compile Include="Properties\MaterialLocations.Designer.cs">
       <DependentUpon>MaterialLocations.resx</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Properties\Powers.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Powers.resx</DependentUpon>
     </Compile>
     <Compile Include="Properties\SquadronRanks.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -459,6 +465,10 @@
     <EmbeddedResource Include="Properties\PlanetClass.hu.resx" />
     <EmbeddedResource Include="Properties\PlanetClass.it.resx" />
     <EmbeddedResource Include="Properties\PlanetClass.ja.resx" />
+    <EmbeddedResource Include="Properties\Powers.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Powers.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Rarities.ja.resx" />
     <EmbeddedResource Include="Properties\ReserveLevel.de.resx" />
     <EmbeddedResource Include="Properties\ReserveLevel.es.resx" />

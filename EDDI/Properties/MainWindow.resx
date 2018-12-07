@@ -268,6 +268,9 @@
   <data name="tab_commander_squadron_faction" xml:space="preserve">
     <value>Squadron faction:</value>
   </data>
+  <data name="tab_commander_squadron_power" xml:space="preserve">
+    <value>Squadron power:</value>
+  </data>
   <data name="tab_commander_squadron_rank" xml:space="preserve">
     <value>Squadron rank:</value>
   </data>

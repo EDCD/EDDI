@@ -217,6 +217,9 @@ namespace Eddi
             squadronAllegianceDropDown.SelectedValue = eddiConfiguration.SquadronAllegiance == null
                 ? Superpower.FromEDName("None").localizedName : eddiConfiguration.SquadronAllegiance.localizedName;
             ConfigureSquadronAllegianceOptions(eddiConfiguration.SquadronName);
+            squadronPowerDropDown.SelectedValue = eddiConfiguration.SquadronPower == null
+                ? Power.FromEDName("None").localizedName : eddiConfiguration.SquadronPower.localizedName;
+            ConfigureSquadronPowerOptions(eddiConfiguration.SquadronAllegiance);
             if (eddiConfiguration.validSquadronSystem)
             {
                 ConfigureSquadronFactionOptions(eddiConfiguration.SquadronSystem);
@@ -574,12 +577,16 @@ namespace Eddi
                     squadronRankDropDown.SelectedValue = eddiConfiguration.SquadronRank.localizedName;
                     eddiConfiguration.SquadronAllegiance = Superpower.None;
                     squadronAllegianceDropDown.SelectedValue = eddiConfiguration.SquadronAllegiance.localizedName;
+                    eddiConfiguration.SquadronPower = Power.None;
+                    squadronPowerDropDown.SelectedValue = eddiConfiguration.SquadronPower.localizedName;
                     eddiConfiguration.SquadronSystem = null;
                     eddiSquadronSystemText.Text = string.Empty;
                     eddiConfiguration.SquadronFaction = null;
+                    squadronFactionDropDown.SelectedValue = "None";
                 }
                 ConfigureSquadronRankOptions(eddiConfiguration.SquadronName);
                 ConfigureSquadronAllegianceOptions(eddiConfiguration.SquadronName);
+                ConfigureSquadronPowerOptions(eddiConfiguration.SquadronAllegiance);
                 ConfigureSquadronFactionOptions(eddiConfiguration.SquadronSystem);
                 EDDI.Instance.Cmdr.squadronname = eddiConfiguration.SquadronName;
                 eddiConfiguration.ToFile();
@@ -625,7 +632,6 @@ namespace Eddi
                 SquadronAllegianceOptions.Add(Superpower.Empire.localizedName);
                 SquadronAllegianceOptions.Add(Superpower.Federation.localizedName);
                 SquadronAllegianceOptions.Add(Superpower.Independent.localizedName);
-                SquadronAllegianceOptions.Add(Superpower.Pirate.localizedName);
             }
             squadronAllegianceDropDown.ItemsSource = SquadronAllegianceOptions;
         }
@@ -635,10 +641,61 @@ namespace Eddi
             EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
             string squadronAllegiance = squadronAllegianceDropDown.SelectedValue.ToString();
 
-            if (eddiConfiguration.SquadronAllegiance.edname != squadronAllegiance)
+            if (eddiConfiguration.SquadronAllegiance.localizedName != squadronAllegiance)
             {
                 eddiConfiguration.SquadronAllegiance = Superpower.FromName(squadronAllegiance);
                 EDDI.Instance.Cmdr.squadronallegiance = eddiConfiguration.SquadronAllegiance;
+                if (eddiConfiguration.SquadronAllegiance == Superpower.None)
+                {
+                    eddiConfiguration.SquadronPower = Power.None;
+                    squadronPowerDropDown.SelectedValue = eddiConfiguration.SquadronPower.localizedName;
+                    eddiConfiguration.SquadronSystem = null;
+                    eddiSquadronSystemText.Text = string.Empty;
+                    eddiConfiguration.SquadronFaction = null;
+                    squadronFactionDropDown.SelectedValue = "None";
+                }
+                ConfigureSquadronPowerOptions(eddiConfiguration.SquadronAllegiance);
+                ConfigureSquadronFactionOptions(eddiConfiguration.SquadronSystem);
+                eddiConfiguration.ToFile();
+            }
+        }
+
+        private void ConfigureSquadronPowerOptions(Superpower allegiance)
+        {
+            List<string> SquadronPowerOptions = new List<string>();
+
+            SquadronPowerOptions.Add(Power.None.localizedName);
+            if (allegiance != Superpower.None)
+            {
+                foreach (Power power in Power.AllOfThem)
+                {
+                    if (allegiance == power.allegiance)
+                    {
+                        SquadronPowerOptions.Add(power.localizedName);
+                    }
+                }
+            }
+            squadronPowerDropDown.ItemsSource = SquadronPowerOptions;
+        }
+
+        private void squadronPowerDropDownUpdated(object sender, SelectionChangedEventArgs e)
+        {
+            EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
+            string squadronPower = squadronPowerDropDown.SelectedValue.ToString();
+
+            if (eddiConfiguration.SquadronPower.localizedName != squadronPower)
+            {
+                eddiConfiguration.SquadronPower = Power.FromName(squadronPower);
+                EDDI.Instance.Cmdr.squadronpower = eddiConfiguration.SquadronPower;
+                if (eddiConfiguration.SquadronPower == Power.None)
+                {
+                    eddiConfiguration.SquadronSystem = null;
+                    eddiSquadronSystemText.Text = string.Empty;
+                    eddiConfiguration.SquadronFaction = null;
+                    squadronFactionDropDown.SelectedValue = "None";
+                }
+                ConfigureSquadronFactionOptions(eddiConfiguration.SquadronSystem);
+
                 eddiConfiguration.ToFile();
             }
         }

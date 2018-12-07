@@ -65,8 +65,8 @@ namespace Eddi
             get => SquadronAllegiance?.edname ?? "None";
             set
             {
-                Superpower spDef = Superpower.FromEDName(value);
-                this.SquadronAllegiance = spDef;
+                Superpower saDef = Superpower.FromEDName(value);
+                this.SquadronAllegiance = saDef;
             }
         }
         [JsonIgnore]
@@ -76,6 +76,26 @@ namespace Eddi
         {
             get { return _SquadronAllegiance; }
             set { _SquadronAllegiance = value; }
+        }
+
+        [JsonProperty("squadronPower")]
+        public string squadronPower
+        {
+
+            get => SquadronPower?.edname ?? "None";
+            set
+            {
+                Power spDef = Power.FromEDName(value);
+                this.SquadronPower = spDef;
+            }
+        }
+        [JsonIgnore]
+        private Power _SquadronPower;
+        [JsonIgnore]
+        public Power SquadronPower
+        {
+            get { return _SquadronPower; }
+            set { _SquadronPower = value; }
         }
 
         [JsonIgnore]

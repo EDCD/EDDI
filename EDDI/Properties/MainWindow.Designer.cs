@@ -277,6 +277,15 @@ namespace Eddi.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Squadron power:.
+        /// </summary>
+        public static string tab_commander_squadron_power {
+            get {
+                return ResourceManager.GetString("tab_commander_squadron_power", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Squadron rank:.
         /// </summary>
         public static string tab_commander_squadron_rank {

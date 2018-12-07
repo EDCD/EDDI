@@ -13,7 +13,6 @@ namespace EddiDataDefinitions
             resourceManager = Properties.SquadronRanks.ResourceManager;
             resourceManager.IgnoreCase = false;
 
-            var None = new SquadronRank("None", 0);
             var Leader = new SquadronRank("Leader", 1);
             var SeniorOfficer = new SquadronRank("SeniorOfficer", 2);
             var Officer = new SquadronRank("Officer", 3);

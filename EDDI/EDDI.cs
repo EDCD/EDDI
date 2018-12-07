@@ -170,6 +170,7 @@ namespace Eddi
                     Cmdr.squadronname = configuration.SquadronName;
                     Cmdr.squadronrank = configuration.SquadronRank;
                     Cmdr.squadronallegiance = configuration.SquadronAllegiance;
+                    Cmdr.squadronpower = configuration.SquadronPower;
                     Cmdr.squadronfaction = configuration.SquadronFaction;
                     if (Cmdr.name != null)
                     {
@@ -1875,7 +1876,7 @@ namespace Eddi
             configuration.validHomeSystem = false;
             if (configuration.HomeSystem != null && configuration.HomeSystem.Trim().Length > 0)
             {
-                HomeStarSystem = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(configuration.HomeSystem.Trim());
+                HomeStarSystem = StarSystemSqLiteRepository.Instance.GetStarSystem(configuration.HomeSystem.Trim());
                 if (HomeStarSystem != null)
                 {
                     Logging.Debug("Home star system is " + HomeStarSystem.name);
@@ -1902,11 +1903,17 @@ namespace Eddi
             configuration.validSquadronSystem = false;
             if (configuration.SquadronSystem != null && configuration.HomeSystem.Trim().Length > 0)
             {
-                SquadronStarSystem = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(configuration.SquadronSystem.Trim());
+                SquadronStarSystem = StarSystemSqLiteRepository.Instance.GetStarSystem(configuration.SquadronSystem.Trim());
                 if (SquadronStarSystem != null)
                 {
                     Logging.Debug("Squadron star system is " + SquadronStarSystem.name);
-                    configuration.validSquadronSystem = SquadronStarSystem.bodies.Count > 0 || SquadronStarSystem.stations.Count > 0 || SquadronStarSystem.population > 0;
+                    configuration.validSquadronSystem = SquadronStarSystem.bodies.Count > 0 || SquadronStarSystem.stations.Count > 0
+                        || SquadronStarSystem.population > 0;
+                    Power power = Power.AllOfThem.FirstOrDefault(p => p.localizedName == SquadronStarSystem.power);
+                    if (power != null)
+                    {
+                        configuration.validSquadronSystem = configuration.validSquadronSystem && power == configuration.SquadronPower;
+                    }
                 }
             }
             return configuration;
