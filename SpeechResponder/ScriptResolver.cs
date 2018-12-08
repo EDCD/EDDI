@@ -255,7 +255,7 @@ namespace EddiSpeechResponder
                         }
                         else
                         {
-                            output = $"{output}, {localisedAnd} {valueString}";
+                            output = $"{output}{(values.Count() > 2 ? "," : "")} {localisedAnd} {valueString}";
                         }
                     }
                 }
