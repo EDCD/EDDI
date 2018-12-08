@@ -20,6 +20,8 @@ namespace EddiSpeechService
     /// <summary>Provide speech services with a varying amount of alterations to the voice</summary>
     public partial class SpeechService : INotifyPropertyChanged, IDisposable
     {
+        private delegate void SpeakFn(string message);
+
         private const float ActiveSpeechFadeOutMilliseconds = 250;
         private SpeechServiceConfiguration configuration;
 
@@ -364,12 +366,19 @@ namespace EddiSpeechService
                     // Keep XML version at 1.0. Version 1.1 is not recommended for general use. https://en.wikipedia.org/wiki/XML#Versions
                     if (speech.Contains("<"))
                     {
+                        SpeakFn speakSsml = synth.SpeakSsml;
+                        if (voice.StartsWith("CereVoice "))
+                        {
+                            Logging.Debug("Working around CereVoice SSML support");
+                            speakSsml = synth.Speak;
+                        }
+
                         Logging.Debug("Obtaining best guess culture");
                         string culture = @" xml:lang=""" + bestGuessCulture() + @"""";
                         Logging.Debug("Best guess culture is " + culture);
                         speech = @"<?xml version=""1.0"" encoding=""UTF-8""?><speak version=""1.0"" xmlns=""http://www.w3.org/2001/10/synthesis""" + culture + ">" + escapeSsml(speech) + @"</speak>";
                         Logging.Debug("Feeding SSML to synthesizer: " + escapeSsml(speech));
-                        synth.SpeakSsml(speech);
+                        speakSsml(speech);
                     }
                     else
                     {
