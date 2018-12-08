@@ -314,7 +314,7 @@
     <comment>Material location Thargoid Ship Signature</comment>
   </data>
   <data name="shieldpatternanalysis" xml:space="preserve">
-    <value>Obtenu en scannant des vaisseaux de sécurité et de combat, ou en tant que récompense de mission, en particulier dans les systèmes aux économies en plein essor.</value>
+    <value>Obtenu en scannant des vaisseaux des autorités et de combat, ou en tant que récompense de mission, en particulier dans les systèmes aux économies en plein essor.</value>
     <comment>Material location Aberrant Shield Pattern Analysis</comment>
   </data>
   <data name="encryptionarchives" xml:space="preserve">
@@ -322,7 +322,7 @@
     <comment>Material location Atypical Encryption Archives</comment>
   </data>
   <data name="decodedemissiondata" xml:space="preserve">
-    <value>Obtenu en scannant des vaisseaux de sécurité ou en tant que récompense de mission.</value>
+    <value>Obtenu en scannant des vaisseaux des autorités ou en tant que récompense de mission.</value>
     <comment>Material location Decoded Emission Data</comment>
   </data>
   <data name="encodedscandata" xml:space="preserve">
@@ -362,7 +362,7 @@
     <comment>Material location Adaptive Encryptors Capture</comment>
   </data>
   <data name="classifiedscandata" xml:space="preserve">
-    <value>Obtenu en scannant des liaisons de données dans les bases au sol, en scannant les vaisseaux militaires et de sécurité, ou en tant que récompense de mission, en particulier dans les systèmes aux économies en plein essor.</value>
+    <value>Obtenu en scannant des liaisons de données dans les bases au sol, en scannant les vaisseaux militaires et des autorités, ou en tant que récompense de mission, en particulier dans les systèmes aux économies en plein essor.</value>
     <comment>Material location Classified Scan Fragment</comment>
   </data>
   <data name="dataminedwake" xml:space="preserve">
@@ -426,7 +426,7 @@
     <comment>Material location Conductive Components</comment>
   </data>
   <data name="filamentcomposites" xml:space="preserve">
-    <value>Obtenu à partir d'épaves de vaisseaux militaires et de sécurité.</value>
+    <value>Obtenu à partir d'épaves de vaisseaux militaires et des autorités.</value>
     <comment>Material location Filament Composites</comment>
   </data>
   <data name="uncutfocuscrystals" xml:space="preserve">
@@ -442,7 +442,7 @@
     <comment>Material location Heat Dispersion Plate</comment>
   </data>
   <data name="heatresistantceramics" xml:space="preserve">
-    <value>Obtenu à partir d'épaves de vaisseaux militaires ou de sécurité.</value>
+    <value>Obtenu à partir d'épaves de vaisseaux militaires ou des autorités.</value>
     <comment>Material location heatresistantceramics</comment>
   </data>
   <data name="hybridcapacitors" xml:space="preserve">
@@ -470,7 +470,7 @@
     <comment>Material location Conductive Ceramics</comment>
   </data>
   <data name="electrochemicalarrays" xml:space="preserve">
-    <value>Obtenu à partir d'épaves de vaisseaux de combat et de sécurité, ou dans des sources d'émissions dégradées de systèmes anarchiques à proximité de systèmes peuplés.</value>
+    <value>Obtenu à partir d'épaves de vaisseaux de combat et des autorités, ou dans des sources d'émissions dégradées de systèmes anarchiques à proximité de systèmes peuplés.</value>
     <comment>Material location Electrochemical Arrays</comment>
   </data>
   <data name="focuscrystals" xml:space="preserve">
@@ -494,7 +494,7 @@
     <comment>Material location Phase Alloys</comment>
   </data>
   <data name="precipitatedalloys" xml:space="preserve">
-    <value>Obtenu à partir d'épaves de vaisseaux de sécurité et de combat, ou en tant que récompense de mission.</value>
+    <value>Obtenu à partir d'épaves de vaisseaux des autorités et de combat, ou en tant que récompense de mission.</value>
     <comment>Material location Precipitated Alloys</comment>
   </data>
   <data name="shieldingsensors" xml:space="preserve">
@@ -526,7 +526,7 @@
     <comment>Material location Heat Vanes</comment>
   </data>
   <data name="polymercapacitors" xml:space="preserve">
-    <value>Obtenu à partir d'épaves de vaisseaux de sécurité  et de combat, de sources de signaux avec dispersion de convoi, ou en tant que récompense de mission.</value>
+    <value>Obtenu à partir d'épaves de vaisseaux des autorités et de combat, de sources de signaux avec dispersion de convoi, ou en tant que récompense de mission.</value>
     <comment>Material location Polymer Capacitors</comment>
   </data>
   <data name="fedproprietarycomposites" xml:space="preserve">
