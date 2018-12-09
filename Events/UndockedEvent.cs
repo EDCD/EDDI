@@ -8,7 +8,7 @@ namespace EddiEvents
     {
         public const string NAME = "Undocked";
         public const string DESCRIPTION = "Triggered when your ship undocks from a station or outpost";
-        public const string SAMPLE = "{\"timestamp\":\"2016-06-10T14:32:03Z\",\"event\":\"Undocked\",\"StationName\":\"Long Sight Base\"}";
+        public const string SAMPLE = "{\"timestamp\":\"2016-06-10T14:32:03Z\",\"event\":\"Undocked\",\"StationName\":\"Long Sight Base\", \"MarketID\": 128678023}";
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
         static UndockedEvent()

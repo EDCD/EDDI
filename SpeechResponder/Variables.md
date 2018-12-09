@@ -33,7 +33,17 @@ Any values might be missing, depending on EDDI's configuration.
     - `credits` the number of credits the commander owns
     - `debt` the amount of debt the commander owes
     - `gender` the gender of the commander, as selected in EDDI's configuration (string, either 'Male', 'Female' or 'Neither')
-    - `friends` the commander's friends observed during the play session (this is a Friend object)
+    - `friends` the commander's friends observed during the play session (this is a list of Friend objects)
+    - `engineers` the commander's relations with engineers, including any ranks or progression recorded during the play session (this is a list of Engineer objects)
+
+### Engineer
+
+An engineer object
+
+    - `name` the name of the engineer
+    - `rank` the rank of your relationship with the engineer
+    - `stage` the current stage of your relations with the engineer (e.g. Invited/Known/Unlocked/Barred)
+    - `rankprogress` the percentage towards your next rank with the engineer
 
 ### Friend
 
@@ -472,4 +482,16 @@ Any values might be missing, depending on EDDI's configuration.
     - `altitude` a decimal value indicating the ship's current altitude (if in flight near a surface)
     - `heading` a decimal value indicating the ship's current heading (if near a surface)
 
+---
+## VoiceDetail
+
+An object returned from the `VoiceDetails` function.
+
+Any values might be missing, depending on the information available about the voice.
+
+- `name` the name of the voice
+- `culturename` the local / native name of the voice culture (as recognized by a native speaker)
+- `cultureinvariantname` the invariant name of the voice culture (English)
+- `culturecode` the two letter language code and two letter region code of the voice culture
+- `gender` the gender of the voice
 ---

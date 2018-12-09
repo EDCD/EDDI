@@ -728,101 +728,107 @@ namespace EddiShipMonitor
         private void handleModuleInfoEvent(ModuleInfoEvent @event)
         {
             Ship ship = GetCurrentShip();
-
-            ModuleInfoReader info = ModuleInfoReader.FromFile();
-            if (info != null)
+            if (ship != null)
             {
-                for (int i = 0; i < info.Modules.Count(); i++)
+                ModuleInfoReader info = ModuleInfoReader.FromFile();
+                if (info != null)
                 {
-                    int position = i + 1;
-                    int priority = info.Modules[i].priority + 1;
-                    decimal power = info.Modules[i].power;
-
-                    string slot = info.Modules[i].slot;
-                    switch (slot)
+                    for (int i = 0; i < info.Modules.Count(); i++)
                     {
-                        case "CargoHatch":
-                            {
-                                ship.cargohatch.position = position;
-                                ship.cargohatch.priority = priority;
-                                ship.cargohatch.power = power;
+                        int position = i + 1;
+                        int priority = info.Modules[i].priority + 1;
+                        decimal power = info.Modules[i].power;
 
-                            }
-                            break;
-                        case "FrameShiftDrive":
-                            {
-                                ship.frameshiftdrive.position = position;
-                                ship.frameshiftdrive.priority = priority;
-                                ship.frameshiftdrive.power = power;
-                            }
-                            break;
-                        case "LifeSupport":
-                            {
-                                ship.lifesupport.position = position;
-                                ship.lifesupport.priority = priority;
-                                ship.lifesupport.power = power;
-                            }
-                            break;
-                        case "MainEngines":
-                            {
-                                ship.thrusters.position = position;
-                                ship.thrusters.priority = priority;
-                                ship.thrusters.power = power;
-                            }
-                            break;
-                        case "PowerDistributor":
-                            {
-                                ship.powerdistributor.position = position;
-                                ship.powerdistributor.priority = priority;
-                                ship.powerdistributor.power = power;
-                            }
-                            break;
-                        case "PowerPlant":
-                            {
-                                ship.powerplant.position = position;
-                                ship.powerplant.priority = priority;
-                                ship.powerplant.power = power;
-
-                            }
-                            break;
-                        case "Radar":
-                            {
-                                ship.sensors.position = position;
-                                ship.sensors.priority = priority;
-                                ship.sensors.power = power;
-                            }
-                            break;
-                        case "ShipCockpit":
-                            {
-                                ship.canopy.position = position;
-                                ship.canopy.priority = priority;
-                                ship.canopy.power = power;
-                            }
-                            break;
-                    }
-
-                    if (slot.Contains("Slot"))
-                    {
-                        Compartment compartment = ship.compartments.FirstOrDefault(c => c.name == slot);
-                        if (compartment != null)
+                        string slot = info.Modules[i].slot;
+                        if (!String.IsNullOrEmpty(slot))
                         {
-                            compartment.module.position = position;
-                            compartment.module.priority = priority;
-                            compartment.module.power = power;
+                            switch (slot)
+                            {
+                                case "CargoHatch":
+                                    {
+                                        ship.cargohatch.position = position;
+                                        ship.cargohatch.priority = priority;
+                                        ship.cargohatch.power = power;
+
+                                    }
+                                    break;
+                                case "FrameShiftDrive":
+                                    {
+                                        ship.frameshiftdrive.position = position;
+                                        ship.frameshiftdrive.priority = priority;
+                                        ship.frameshiftdrive.power = power;
+                                    }
+                                    break;
+                                case "LifeSupport":
+                                    {
+                                        ship.lifesupport.position = position;
+                                        ship.lifesupport.priority = priority;
+                                        ship.lifesupport.power = power;
+                                    }
+                                    break;
+                                case "MainEngines":
+                                    {
+                                        ship.thrusters.position = position;
+                                        ship.thrusters.priority = priority;
+                                        ship.thrusters.power = power;
+                                    }
+                                    break;
+                                case "PowerDistributor":
+                                    {
+                                        ship.powerdistributor.position = position;
+                                        ship.powerdistributor.priority = priority;
+                                        ship.powerdistributor.power = power;
+                                    }
+                                    break;
+                                case "PowerPlant":
+                                    {
+                                        ship.powerplant.position = position;
+                                        ship.powerplant.priority = priority;
+                                        ship.powerplant.power = power;
+
+                                    }
+                                    break;
+                                case "Radar":
+                                    {
+                                        ship.sensors.position = position;
+                                        ship.sensors.priority = priority;
+                                        ship.sensors.power = power;
+                                    }
+                                    break;
+                                case "ShipCockpit":
+                                    {
+                                        ship.canopy.position = position;
+                                        ship.canopy.priority = priority;
+                                        ship.canopy.power = power;
+                                    }
+                                    break;
+
+                            }
+
+                            if (slot.Contains("Slot"))
+                            {
+                                Compartment compartment = ship.compartments.FirstOrDefault(c => c.name == slot);
+                                if (compartment != null)
+                                {
+                                    compartment.module.position = position;
+                                    compartment.module.priority = priority;
+                                    compartment.module.power = power;
+                                }
+                            }
+                            else if (slot.Contains("Hardpoint"))
+                            {
+                                Hardpoint hardpoint = ship.hardpoints.FirstOrDefault(h => h.name == slot);
+                                if (hardpoint != null)
+                                {
+                                    hardpoint.module.position = position;
+                                    hardpoint.module.priority = priority;
+                                    hardpoint.module.power = power;
+                                }
+                            }
                         }
                     }
-                    else if (slot.Contains("Hardpoint"))
-                    {
-                        Hardpoint hardpoint = ship.hardpoints.FirstOrDefault(h => h.name == slot);
-                        if (hardpoint != null)
-                        {
-                            hardpoint.module.position = position;
-                            hardpoint.module.priority = priority;
-                            hardpoint.module.power = power;
-                        }
-                    }
+                    writeShips();
                 }
-                writeShips();
             }
         }
 

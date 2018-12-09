@@ -149,7 +149,7 @@
     <value>Enable verbose logging (only if you have been requested to do so by EDDI developers)</value>
   </data>
   <data name="verbose_logging_desc" xml:space="preserve">
-    <value>If verbose logging is enabled, EDDI will prepare a version of your log (truncated if lengthy) and place it on your desktop. You may paste this log file into the Github Issue report. No private information is sent in the log.</value>
+    <value>If verbose logging is enabled, this will create a zip archive of your log on your desktop, ready to be pasted into the issue report on GitHub. No personally-identifying information is included in the log.</value>
   </data>
   <data name="version_hyperlink" xml:space="preserve">
     <value>Version:</value>

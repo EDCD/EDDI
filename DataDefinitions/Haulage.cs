@@ -42,6 +42,8 @@ namespace EddiDataDefinitions
 
         public int remaining { get; set; }
 
+        public int need { get; set; }
+
         public long startmarketid { get; set; }
 
         public long endmarketid { get; set; }
@@ -69,6 +71,7 @@ namespace EddiDataDefinitions
             startmarketid = haulage.startmarketid;
             endmarketid = haulage.endmarketid;
             remaining = haulage.remaining;
+            need = haulage.need;
             collected = haulage.collected;
             delivered = haulage.delivered;
             expiry = haulage.expiry;
@@ -83,6 +86,7 @@ namespace EddiDataDefinitions
             status = "Active";
             amount = Amount;
             remaining = Amount;
+            need = Amount;
             expiry = Expiry;
             shared = Shared;
 

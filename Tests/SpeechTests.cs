@@ -491,11 +491,15 @@ namespace SpeechTests
         [TestMethod, TestCategory("Speech")]
         public void TestSpeechServiceQueue()
         {
-            Thread thread1 = new Thread(() => SpeechService.Instance.Say(null, "Hello.", true));
-            thread1.IsBackground = true;
+            Thread thread1 = new Thread(() => SpeechService.Instance.Say(null, "Hello.", true))
+            {
+                IsBackground = true
+            };
 
-            Thread thread2 = new Thread(() => SpeechService.Instance.Say(null, "Goodbye.", true));
-            thread2.IsBackground = true;
+            Thread thread2 = new Thread(() => SpeechService.Instance.Say(null, "Goodbye.", true))
+            {
+                IsBackground = true
+            };
 
             thread1.Start();
             thread2.Start();

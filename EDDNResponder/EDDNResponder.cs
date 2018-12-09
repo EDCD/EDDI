@@ -75,26 +75,11 @@ namespace EDDNResponder
 
             Logging.Debug("Received event " + JsonConvert.SerializeObject(theEvent));
 
-            if (theEvent is LocationEvent)
-            {
-                handleLocationEvent((LocationEvent)theEvent);
-            }
-            if (theEvent is JumpedEvent)
-            {
-                handleJumpedEvent((JumpedEvent)theEvent);
-            }
-
-            if (theEvent is DockedEvent)
-            {
-                handleDockedEvent((DockedEvent)theEvent);
-            }
-
             if (theEvent is MarketInformationUpdatedEvent)
             {
                 handleMarketInformationUpdatedEvent((MarketInformationUpdatedEvent)theEvent);
             }
-
-            if (theEvent is JumpedEvent || theEvent is DockedEvent || theEvent is BodyScannedEvent || theEvent is StarScannedEvent)
+            else
             {
                 handleRawEvent(theEvent);
             }
@@ -113,34 +98,86 @@ namespace EDDNResponder
         {
         }
 
-        private void handleLocationEvent(LocationEvent @event)
+        private void handleRawEvent(Event theEvent)
         {
-            // Set all of the information available from the event
-            systemName = @event.system;
-            systemAddress = @event.systemAddress;
-            systemX = @event.x;
-            systemY = @event.y;
-            systemZ = @event.z;
-            stationName = @event.station;
-            marketId = @event.marketId;
+            IDictionary<string, object> data = Deserializtion.DeserializeData(theEvent.raw);
+            string edType = JsonParsing.getString(data, "event");
+
+            // Always attempt to obtain available location data from events. 
+            if (edType == "Location" || edType == "FSDJump")
+            {
+                ClearLocation();
+            }
+            GetLocationData(data); 
+
+            if (edType == "Docked")
+            {
+                if (eventConfirmCoordinates(systemName, systemAddress) || data.ContainsKey("StarPos"))
+                {
+                    // When we dock we have access to commodity and outfitting information
+                    sendCommodityInformation();
+                    sendOutfittingInformation();
+                    sendShipyardInformation();
+                }
+            }
+
+            if (edType == "Location" || edType == "FSDJump" || edType == "Docked" || edType == "Scan")
+            {
+                // Can only proceed if we know our current system
+                if (systemName == null || systemAddress == null || systemX == null || systemY == null || systemZ == null)
+                {
+                    Logging.Debug("Missing current starsystem information, cannot send message to EDDN");
+                    return;
+                }
+
+                StripPersonalData(data);
+                EnrichLocationData(edType, data);
+
+                if (data != null)
+                {
+                    SendToEDDN(data);
+                }
+            }
         }
 
-        private void handleJumpedEvent(JumpedEvent @event)
+        private void ClearLocation()
         {
-            // Set all of the information available from the event
-            systemName = @event.system;
-            systemAddress = @event.systemAddress;
-            systemX = @event.x;
-            systemY = @event.y;
-            systemZ = @event.z;
+            systemName = null;
+            systemAddress = null;
+            systemX = null;
+            systemY = null;
+            systemZ = null;
             stationName = null;
             marketId = null;
         }
 
-        private void handleRawEvent(Event theEvent)
+        private void GetLocationData(IDictionary<string, object> data)
         {
-            IDictionary<string, object> data = Deserializtion.DeserializeData(theEvent.raw);
+            try
+            {
+                systemName = JsonParsing.getString(data, "StarSystem");
+                systemAddress = JsonParsing.getOptionalLong(data, "SystemAddress");
+                data.TryGetValue("StarPos", out object starpos);
+                if (starpos != null)
+                {
+                    List<object> starPos = (List<object>)starpos;
+                    systemX = Math.Round(JsonParsing.getDecimal("X", starPos[0]) * 32M) / 32M;
+                    systemY = Math.Round(JsonParsing.getDecimal("Y", starPos[1]) * 32M) / 32M;
+                    systemZ = Math.Round(JsonParsing.getDecimal("Z", starPos[2]) * 32M) / 32M;
+                }
+                marketId = JsonParsing.getOptionalLong(data, "MarketID");
+                stationName = JsonParsing.getString(data, "StationName");
+            }
+            catch (Exception ex)
+            {
+                Logging.Error("Failed to parse EDDN location data from journal entry line: " + data.ToString(), ". Exception: " + ex.Message + ". " + ex.StackTrace);
+            }
+        }
+
+        private IDictionary<string, object> StripPersonalData(IDictionary<string, object> data)
+        {
             // Need to strip a number of entries
+            data.Remove("ActiveFine");
             data.Remove("CockpitBreach");
             data.Remove("BoostUsed");
             data.Remove("FuelLevel");
@@ -148,30 +185,33 @@ namespace EDDNResponder
             data.Remove("JumpDist");
             data.Remove("Wanted");
 
-            // Need to remove any keys ending with _Localised
-            data = data.Where(x => !x.Key.EndsWith("_Localised")).ToDictionary(x => x.Key, x => x.Value);
-
-            // Can only proceed if we know our current system
-
-            // Need to add StarSystem to scan events - can only do so if we have the data
-            if (theEvent is BeltScannedEvent || theEvent is StarScannedEvent || theEvent is BodyScannedEvent)
+            data.TryGetValue("Factions", out object factionsVal);
+            if (factionsVal != null)
             {
-                if (systemName == null || systemAddress == null || systemX == null || systemY == null || systemZ == null)
+                var factions = (List<object>)factionsVal;
+                foreach (object faction in factions)
                 {
-                    Logging.Debug("Missing current starsystem information, cannot send message to EDDN");
-                    return;
+                    ((IDictionary<string, object>)faction).Remove("MyReputation");
                 }
-                data.Add("StarSystem", systemName);
             }
 
-            // Need to add StarPos to all events that don't already have them
+            // Need to remove any keys ending with _Localised
+            data = data.Where(x => !x.Key.EndsWith("_Localised")).ToDictionary(x => x.Key, x => x.Value);
+            return data;
+        }
+
+        private IDictionary<string, object> EnrichLocationData(string edType, IDictionary<string, object> data)
+        {
+            if (!data.ContainsKey("StarSystem"))
+            {
+                data.Add("StarSystem", systemName);
+            }
+            if (!data.ContainsKey("SystemAddress"))
+            {
+                data.Add("SystemAddress", systemAddress);
+            }
             if (!data.ContainsKey("StarPos"))
             {
-                if (systemName == null || systemAddress == null || systemX == null || systemY == null || systemZ == null)
-                {
-                    Logging.Debug("Missing current starsystem information, cannot send message to EDDN");
-                    return;
-                }
                 IList<decimal> starpos = new List<decimal>
                 {
                     systemX.Value,
@@ -180,7 +220,11 @@ namespace EDDNResponder
                 };
                 data.Add("StarPos", starpos);
             }
+            return data;
+        }
 
+        private static void SendToEDDN(IDictionary<string, object> data)
+        {
             EDDNBody body = new EDDNBody
             {
                 header = generateHeader(),
@@ -189,23 +233,6 @@ namespace EDDNResponder
             };
 
             sendMessage(body);
-        }
-
-        private void handleDockedEvent(DockedEvent theEvent)
-        {
-            // Set all of the information available from the event
-            systemName = theEvent.system;
-            systemAddress = theEvent.systemAddress;
-            stationName = theEvent.station;
-            marketId = theEvent.marketId;
-
-            if (eventConfirmCoordinates(theEvent.system, theEvent.systemAddress))
-            {
-                // When we dock we have access to commodity and outfitting information
-                sendCommodityInformation();
-                sendOutfittingInformation();
-                sendShipyardInformation();
-            }
         }
 
         private void handleMarketInformationUpdatedEvent(MarketInformationUpdatedEvent theEvent)
@@ -461,6 +488,8 @@ namespace EDDNResponder
             }
 
             // Set values to null if data isn't available. If system coordinates are null, data shall not be sent to EDDN.
+            systemName = null;
+            systemAddress = null;
             systemX = null;
             systemY = null;
             systemZ = null;

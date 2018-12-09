@@ -118,6 +118,12 @@ Common usage of this is to provide further information about your rating, for ex
 
     You have been promoted {EmpireRatingDetails("Lord").rank} times.
 
+### EngineerDetails()
+
+This function will provide full information for an Engineer given its name (including current progress information if you are in game).
+
+EngineerDetails() takes a single argument of the engineer for which you want more information and returns an Engineer object.
+
 ### ExplorationRatingDetails()
 
 This function will provide full information for an exploration rating given its name.
@@ -476,7 +482,22 @@ Transmit() takes one argument: the text to speak. For example:
 
 This function allows you to include a different voice in your script than then one currently selected. This function uses SSML tags.
 
-Voice() takes two mandatory arguments: the text to speak and the voice to speak it (legal values for the voice shall match one of the voices listed by EDDI's `Text-to-Speech` tab. This is case-sensitive."). For Example:
+Voice() takes two mandatory arguments: the text to speak and the voice to speak it (legal values for the voice should match one of the voices listed by EDDI's `Text-to-Speech` tab."). For Example:
 
 {Voice("Now I can speak", "Microsoft Zira Desktop")}
 {Voice("And I can listen", "Microsoft David Desktop")}
+
+### VoiceDetails()
+
+This function allows you to discover details about the voices installed on your system. It is intended for use with `Voice()` to allow for more dynamic voice selection.
+
+VoiceDetails takes either zero or one arguments.
+
+With zero arguments, the function returns a list of `VoiceDetail` objects. For example:
+
+{for voice in VoiceDetails(): \{voice.name\} speaks \{voice.culturename\},}
+
+With one argument, the function returns a single `VoiceDetail` object. For example:
+
+{VoiceDetails("Microsoft Zira Desktop").culturename}
+{VoiceDetails("Microsoft Zira Desktop").gender}

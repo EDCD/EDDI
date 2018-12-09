@@ -10,7 +10,7 @@ namespace EddiEvents
         public const string NAME = "Entered normal space";
         public const string DESCRIPTION = "Triggered when your ship enters normal space";
         //public const string SAMPLE = "{\"timestamp\":\"2016-06-10T14:32:03Z\",\"event\":\"SupercruiseExit\",\"StarSystem\":\"Yuetu\",\"Body\":\"Yuetu B\",\"BodyType\":\"Star\"}";
-        public const string SAMPLE = "{\"timestamp\":\"2016-06-10T14:32:03Z\",\"event\":\"SupercruiseExit\",\"StarSystem\":\"Shinrarta Dezhra\",\"Body\":\"Jameson Memorial\",\"BodyType\":\"Station\"}";
+        public const string SAMPLE = "{\"timestamp\":\"2016-06-10T14:32:03Z\",\"event\":\"SupercruiseExit\",\"StarSystem\":\"Shinrarta Dezhra\",\"SystemAddress\": 3932277478106,\"Body\":\"Jameson Memorial\",\"BodyType\":\"Station\"}";
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
         static EnteredNormalSpaceEvent()

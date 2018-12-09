@@ -557,4 +557,13 @@
     <value>Schiffsintegrität</value>
     <comment>This is the "Ship Integrity" field in the Advanced Repair screen</comment>
   </data>
+  <data name="SeismicCharge" xml:space="preserve">
+    <value>Seismischer Lader</value>
+  </data>
+  <data name="DisplacementMissile" xml:space="preserve">
+    <value>Verdr.-Rakete</value>
+  </data>
+  <data name="AbrasionBlaster" xml:space="preserve">
+    <value>Abrasionsblaster</value>
+  </data>
 </root>

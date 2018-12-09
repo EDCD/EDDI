@@ -9,7 +9,7 @@ namespace EddiDataDefinitions
     public class Commander : INotifyPropertyChanged
     {
         /// <summary>The commander's name</summary>
-        public string name { get; set;  }
+        public string name { get; set; }
         /// <summary>The commander's name as spoken</summary>
         public string phoneticname { get; set; }
 
@@ -24,7 +24,7 @@ namespace EddiDataDefinitions
 
         /// <summary>The commander's trade rating</summary>
         public TradeRating traderating { get; set; }
-        
+
         /// <summary>The commander's exploration rating</summary>
         public ExplorationRating explorationrating { get; set; }
 
@@ -49,11 +49,14 @@ namespace EddiDataDefinitions
         /// <summary>The Commander's friends</summary>
         public List<Friend> friends = new List<Friend>();
 
+        /// <summary>The Commander's status and progress with the various engineers</summary>
+        public List<Engineer> engineers => Engineer.ENGINEERS;
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         public void NotifyPropertyChanged(string propName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
         }
-}
+    }
 }

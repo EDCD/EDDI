@@ -144,29 +144,33 @@ namespace EddiDataProviderService
                                 string data = rdr.GetString(2);
                                 // Old versions of the data could have a string "No volcanism" for volcanism.  If so we remove it
                                 data = data.Replace(@"""No volcanism""", "null");
-                                result = JsonConvert.DeserializeObject<StarSystem>(data);
-                                if (result == null)
+
+                                try
                                 {
-                                    Logging.Info("Failed to obtain system for " + name);
-                                }
-                                if (result != null)
-                                {
-                                    if (result.visits < 1)
+                                    result = JsonConvert.DeserializeObject<StarSystem>(data);
+                                    if (result == null)
                                     {
-                                        // Old-style system; need to update
-                                        result.visits = rdr.GetInt32(0);
-                                        result.lastvisit = rdr.GetDateTime(1);
-                                        needToUpdate = true;
+                                        Logging.Info("Failed to obtain system for " + name);
                                     }
-                                    if (result.lastupdated == null)
+                                    if (result != null)
                                     {
-                                        result.lastupdated = rdr.GetDateTime(4);
-                                    }
-                                    if (result.comment == null)
-                                    {
-                                        if (!rdr.IsDBNull(4))
+                                        if (result.visits < 1)
                                         {
-                                            result.comment = rdr.GetString(4);
+                                            // Old-style system; need to update
+                                            result.visits = rdr.GetInt32(0);
+                                            result.lastvisit = rdr.GetDateTime(1);
+                                            needToUpdate = true;
+                                        }
+                                        if (result.lastupdated == null)
+                                        {
+                                            result.lastupdated = rdr.GetDateTime(4);
+                                        }
+                                        if (result.comment == null)
+                                        {
+                                            if (!rdr.IsDBNull(4))
+                                            {
+                                                result.comment = rdr.GetString(4);
+                                            }
                                         }
                                     }
                                     if (refreshIfOutdated && result.lastupdated < DateTime.UtcNow.AddHours(-1))
@@ -178,6 +182,29 @@ namespace EddiDataProviderService
                                         updatedResult.lastupdated = DateTime.UtcNow;
                                         result = updatedResult;
                                         needToUpdate = true;
+                                    }
+                                }
+                                catch (Exception)
+                                {
+                                    Logging.Warn("Problem reading data for star system '" + name + "' from database, re-obtaining from source. ");
+                                    try
+                                    {
+                                        result = DataProviderService.GetSystemData(name);
+                                        // Recover data unique to the local user and database
+                                        IDictionary<string, object> system = Deserializtion.DeserializeData(data);
+                                        system.TryGetValue("visits", out object visitVal);
+                                        result.visits = (int)(long)visitVal;
+                                        system.TryGetValue("comment", out object commentVal);
+                                        result.comment = (string)commentVal;
+                                        system.TryGetValue("lastvisit", out object lastVisitVal);
+                                        result.lastvisit = (DateTime?)lastVisitVal;
+                                        result.lastupdated = DateTime.UtcNow;
+                                        needToUpdate = true;
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        Logging.Warn("Problem obtaining data from source: " + ex);
+                                        result = null;
                                     }
                                 }
                             }
@@ -194,20 +221,6 @@ namespace EddiDataProviderService
                 Logging.Warn("Problem reading data for star system '" + name + "' from database, refreshing database and re-obtaining from source.");
                 RecoverStarSystemDB();
                 GetStarSystem(name);
-            }
-            catch (Exception)
-            {
-                Logging.Warn("Problem reading data for star system '" + name + "' from database, re-obtaining from source.");
-                try
-                {
-                    result = DataProviderService.GetSystemData(name);
-                    updateStarSystem(result);
-                }
-                catch (Exception ex)
-                {
-                    Logging.Warn("Problem obtaining data from source: " + ex);
-                    result = null;
-                }
             }
 
             return result;
