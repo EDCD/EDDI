@@ -117,9 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="access_beta" xml:space="preserve">
-    <value>Zugriff auf die Beta-Versionen von EDDI</value>
-  </data>
+  
   <data name="EDDI_status_label" xml:space="preserve">
     <value>EDDI Status: </value>
   </data>
@@ -148,7 +146,9 @@
   <data name="verbose_logging_checkbox" xml:space="preserve">
     <value>Ausführliche Protokollierung aktivieren (nur wenn Sie von den EDDI-Entwicklern dazu aufgefordert wurden)</value>
   </data>
-  
+  <data name="verbose_logging_desc" xml:space="preserve">
+    <value>Wenn die ausführliche Protokollierung aktiviert ist, erstellt EDDI eine gekürzte Version Ihres Protokolls der letzten Stunde und legt es auf Ihrem Desktop ab. Sie können diese Protokolldatei in den Github-Problembericht einfügen. Im Protokoll werden keine persönlichen Informationen versendet.</value>
+  </data>
   <data name="version_hyperlink" xml:space="preserve">
     <value>Version:</value>
   </data>
