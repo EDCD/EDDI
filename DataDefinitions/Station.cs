@@ -170,7 +170,7 @@ namespace EddiDataDefinitions
         }
         private StationLargestPad _LargestPad;
 
-        /// <summary>What are the economies at the station, with proportions for each (this is only set from Frontier API data)</summary>
+        /// <summary>What are the economies at the station, with proportions for each</summary>
         public List<EconomyShare> economyShares { get; set; } = new List<EconomyShare>();
 
         /// <summary>What are the localized economies at the stations</summary>
