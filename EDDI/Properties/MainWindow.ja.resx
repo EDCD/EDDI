@@ -148,7 +148,9 @@
   <data name="verbose_logging_checkbox" xml:space="preserve">
     <value>詳細なログを有効化（EDDI開発者に指示された場合のみ）</value>
   </data>
-  
+  <data name="verbose_logging_desc" xml:space="preserve">
+    <value>詳細なログを有効化すると、EDDIはログを取得し、デスクトップに保存します。GitHubのIssueに添付してください。詳細なログに個人情報は含まれません。</value>
+  </data>
   <data name="version_hyperlink" xml:space="preserve">
     <value>バージョン：</value>
   </data>
