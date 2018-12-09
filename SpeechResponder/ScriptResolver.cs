@@ -641,7 +641,7 @@ namespace EddiSpeechResponder
                 List<Mission> missions = new List<Mission>();
                 missions = ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor")).missions.ToList();
 
-                Mission result = missions != null ? missions.FirstOrDefault(v => v.missionid == values[0].AsNumber) : null;
+                Mission result = missions?.FirstOrDefault(v => v.missionid == values[0].AsNumber);
                 return (result == null ? new ReflectionValue(new object()) : new ReflectionValue(result));
             }, 1);
 

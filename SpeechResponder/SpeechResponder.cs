@@ -130,8 +130,7 @@ namespace EddiSpeechResponder
 
             // By default we say things unless we've been told not to
             bool sayOutLoud = true;
-            object tmp;
-            if (EDDI.Instance.State.TryGetValue("speechresponder_quiet", out tmp))
+            if (EDDI.Instance.State.TryGetValue("speechresponder_quiet", out object tmp))
             {
                 if (tmp is bool)
                 {
@@ -198,11 +197,12 @@ namespace EddiSpeechResponder
         // Create Cottle variables from the EDDI information
         private Dictionary<string, Cottle.Value> createVariables(Event theEvent = null)
         {
-            Dictionary<string, Cottle.Value> dict = new Dictionary<string, Cottle.Value>();
-
-            dict["va_active"] = EDDI.FromVA;
-            dict["vehicle"] = EDDI.Instance.Vehicle;
-            dict["environment"] = EDDI.Instance.Environment;
+            Dictionary<string, Cottle.Value> dict = new Dictionary<string, Cottle.Value>
+            {
+                ["va_active"] = EDDI.FromVA,
+                ["vehicle"] = EDDI.Instance.Vehicle,
+                ["environment"] = EDDI.Instance.Environment
+            };
 
             if (EDDI.Instance.Cmdr != null)
             {
