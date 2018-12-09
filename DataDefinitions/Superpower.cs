@@ -34,7 +34,7 @@
         {
             if (from == null)
             {
-                return null;
+                return None;
             }
 
             Superpower result = FromName(from);
