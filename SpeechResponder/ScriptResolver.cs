@@ -392,6 +392,15 @@ namespace EddiSpeechResponder
             {
                 string text = values[0].AsString;
                 string voice = values[1].AsString;
+                foreach (System.Speech.Synthesis.InstalledVoice vc in SpeechService.synth?.GetInstalledVoices())
+                {
+                    if (vc.VoiceInfo.Name.ToLowerInvariant().Contains(voice?.ToLowerInvariant()) 
+                    && !vc.VoiceInfo.Name.Contains("Microsoft Server Speech Text to Speech Voice"))
+                    {
+                        voice = vc.VoiceInfo.Name;
+                        continue;
+                    }
+                }
                 if (values.Count == 2)
                 {
                     return @"<voice name=""" + voice + @""">" + text + "</voice>";
@@ -401,6 +410,52 @@ namespace EddiSpeechResponder
                     return "The Voice function is used improperly. Please review the documentation for correct usage.";
                 }
             }, 1, 2);
+
+            store["VoiceDetails"] = new NativeFunction((values) =>
+            {
+                var result = new object();
+                if (values.Count == 0)
+                {
+                    List<VoiceDetail> voices = new List<VoiceDetail>();
+                    foreach (System.Speech.Synthesis.InstalledVoice vc in SpeechService.synth?.GetInstalledVoices())
+                    {
+                        if (!vc.VoiceInfo.Name.Contains("Microsoft Server Speech Text to Speech Voice"))
+                        {
+                            voices.Add(new VoiceDetail(
+                                vc.VoiceInfo.Name,
+                                vc.VoiceInfo.Culture.Parent?.EnglishName ?? vc.VoiceInfo.Culture.EnglishName,
+                                vc.VoiceInfo.Culture.Parent?.NativeName ?? vc.VoiceInfo.Culture.NativeName,
+                                vc.VoiceInfo.Culture.Name,
+                                vc.VoiceInfo.Gender.ToString(),
+                                vc.Enabled
+                                ));
+                        }
+                    }
+                    result = voices;
+                    return (result == null ? new ReflectionValue(new object()) : new ReflectionValue(result));
+                }
+                else if (values.Count == 1)
+                {
+                    foreach (System.Speech.Synthesis.InstalledVoice vc in SpeechService.synth?.GetInstalledVoices())
+                    {
+                        if (vc.VoiceInfo.Name.ToLowerInvariant().Contains(values[0].AsString?.ToLowerInvariant()) 
+                        && !vc.VoiceInfo.Name.Contains("Microsoft Server Speech Text to Speech Voice"))
+                        {
+                            result = new VoiceDetail(
+                                vc.VoiceInfo.Name,
+                                vc.VoiceInfo.Culture.Parent?.EnglishName ?? vc.VoiceInfo.Culture.EnglishName,
+                                vc.VoiceInfo.Culture.Parent?.NativeName ?? vc.VoiceInfo.Culture.NativeName,
+                                vc.VoiceInfo.Culture.Name,
+                                vc.VoiceInfo.Gender.ToString(),
+                                vc.Enabled
+                                );
+                            continue;
+                        }
+                    }
+                    return (result == null ? new ReflectionValue(new object()) : new ReflectionValue(result));
+                }
+                return "The VoiceDetails function is used improperly. Please review the documentation for correct usage.";
+            }, 0, 1);
 
             //
             // Commander-specific functions
@@ -1014,6 +1069,26 @@ namespace EddiSpeechResponder
                                                                       + Math.Pow((double)(system.z - EDDI.Instance.HomeStarSystem.z), 2)), 2);
                 Logging.Debug("Distance from home is " + system.distancefromhome);
             }
+        }
+    }
+
+    class VoiceDetail
+    {
+        private string name { get; set; }
+        private string cultureinvariantname { get; set; }
+        private string culturename { get; set; }
+        private string culturecode { get; set; }
+        private string gender { get; set; }
+        public bool enabled { get; set; }
+
+        public VoiceDetail(string name, string cultureinvariantname, string culturename, string culturecode, string gender, bool enabled)
+        {
+            this.name = name;
+            this.cultureinvariantname = cultureinvariantname;
+            this.culturename = culturename;
+            this.culturecode = culturecode;
+            this.gender = gender;
+            this.enabled = enabled;
         }
     }
 }
