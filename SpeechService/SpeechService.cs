@@ -29,7 +29,7 @@ namespace EddiSpeechService
         private int activeSpeechPriority;
 
         private static readonly object synthLock = new object();
-        private static SpeechSynthesizer synth;
+        public static SpeechSynthesizer synth { get; private set; }
 
         private static bool _eddiSpeaking;
         public static bool eddiSpeaking

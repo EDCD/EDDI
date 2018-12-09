@@ -24,6 +24,8 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * `Modification applied` event: Removed. This event was redundant with `Modification crafted` and is no longer written by the game as of Elite Dangerous version 3.0.
     * `Modification crafted` event: Added `module`, `quality`, and `experimentaleffect`.
     * `Settlement approached`: Added `latitude` and `longitude`.
+    * The `Voice()` function now tolerates incomplete voice names (EDDI will return the first matching voice) and casing no longer matters.
+    * Added new function `VoiceDetails()` for accessing details of installed voices while scripting.
 
 ### 3.1.2
   * Localization
