@@ -148,9 +148,7 @@
   <data name="verbose_logging_checkbox" xml:space="preserve">
     <value>Habilite el registro detallado (solo si los desarrolladores de EDDI se lo han solicitado)</value>
   </data>
-  <data name="verbose_logging_desc" xml:space="preserve">
-    <value>Si el registro detallado está habilitado, EDDI preparará una versión truncada de su registro de la última hora y la colocará en el escritorio. Debería pegar este archivo de registro en 'Github Issue Reporter'. No se recopilará ninguna información personal.</value>
-  </data>
+  
   <data name="version_hyperlink" xml:space="preserve">
     <value>Versión:</value>
   </data>
