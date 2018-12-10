@@ -153,7 +153,7 @@ namespace EddiEvents
             this.materials = materials;
             this.terraformState = terraformstate;
             this.axialtilt = axialtiltDegrees;
-            this.estimatedvalue = estimateValue(scantype.Contains("Detail"));
+            this.estimatedvalue = estimateValue(scantype == null ? false : scantype.Contains("Detail"));
         }
 
         private decimal sanitiseCP(decimal cp)
