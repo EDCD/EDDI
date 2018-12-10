@@ -24,9 +24,12 @@ namespace EddiDataProviderService
         public static StarSystem SetLegacyData(StarSystem system, bool setPowerplayData = true, bool setBodyData = true, bool setStationData = true)
         {
             JObject response = GetData(system.name);
-            SetStarSystemLegacyData(system, response, setPowerplayData);
-            if (setBodyData) { SetBodyLegacyData(system, response); }
-            if (setStationData) { SetStationLegacyData(system, response); }
+            if (response != null)
+            {
+                SetStarSystemLegacyData(system, response, setPowerplayData);
+                if (setBodyData) { SetBodyLegacyData(system, response); }
+                if (setStationData) { SetStationLegacyData(system, response); }
+            }
             return system;
         }
 
@@ -37,7 +40,7 @@ namespace EddiDataProviderService
                 string response = Net.DownloadString(BASE + "systems/" + Uri.EscapeDataString(system));
                 return JsonConvert.DeserializeObject<JObject>(response);
             }
-            catch (WebException)
+            catch (Exception)
             {
                 Logging.Debug("Failed to obtain data from " + BASE + "systems/" + Uri.EscapeDataString(system));
                 return null;
