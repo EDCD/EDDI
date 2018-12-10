@@ -22,7 +22,7 @@ namespace EddiDataDefinitions
             var LiYongRui = new Power("LiYongRui", Superpower.Independent, "Lembava");
             var PranavAntal = new Power("PranavAntal", Superpower.Independent, "Eotienses");
             var YuriGrom = new Power("YuriGrom", Superpower.Alliance, "Clayakarma");
-            var ZacharyHudson = new Power("ZacharyHudson", Superpower.Independent, "Nanomam");
+            var ZacharyHudson = new Power("ZacharyHudson", Superpower.Federation, "Nanomam");
             var ZeminaTorval = new Power("ZeminaTorval", Superpower.Empire, "Synteini");
         }
 

@@ -268,6 +268,15 @@ namespace Eddi.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Squadron ID:.
+        /// </summary>
+        public static string tab_commander_squadron_id {
+            get {
+                return ResourceManager.GetString("tab_commander_squadron_id", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Squadron name:.
         /// </summary>
         public static string tab_commander_squadron_name {

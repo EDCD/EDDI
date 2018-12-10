@@ -40,6 +40,9 @@ namespace EddiDataDefinitions
         /// <summary>The commander's squadron name</summary>
         public string squadronname { get; set; }
 
+        /// <summary>The commander's squadron ID</summary>
+        public string squadronid { get; set; }
+
         /// <summary>The commander's squadron rank</summary>
         public SquadronRank squadronrank { get; set; }
 

@@ -274,4 +274,7 @@
   <data name="tab_commander_squadron_rank" xml:space="preserve">
     <value>Squadron rank:</value>
   </data>
+  <data name="tab_commander_squadron_id" xml:space="preserve">
+    <value>Squadron ID:</value>
+  </data>
 </root>

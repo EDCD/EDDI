@@ -168,6 +168,7 @@ namespace Eddi
 
                     Cmdr.gender = configuration.Gender;
                     Cmdr.squadronname = configuration.SquadronName;
+                    Cmdr.squadronid = configuration.SquadronID;
                     Cmdr.squadronrank = configuration.SquadronRank;
                     Cmdr.squadronallegiance = configuration.SquadronAllegiance;
                     Cmdr.squadronpower = configuration.SquadronPower;
@@ -1883,6 +1884,10 @@ namespace Eddi
                     configuration.validHomeSystem = HomeStarSystem.bodies.Count > 0 || HomeStarSystem.stations.Count > 0 || HomeStarSystem.population > 0;
                 }
             }
+            else
+            {
+                HomeStarSystem = null;
+            }
             return configuration;
         }
 
@@ -1901,7 +1906,7 @@ namespace Eddi
         {
             Logging.Verbose = configuration.Debug;
             configuration.validSquadronSystem = false;
-            if (configuration.SquadronSystem != null && configuration.HomeSystem.Trim().Length > 0)
+            if (configuration.SquadronSystem != null && configuration.SquadronSystem.Trim().Length > 0)
             {
                 SquadronStarSystem = StarSystemSqLiteRepository.Instance.GetStarSystem(configuration.SquadronSystem.Trim());
                 if (SquadronStarSystem != null)
@@ -1915,6 +1920,10 @@ namespace Eddi
                         configuration.validSquadronSystem = configuration.validSquadronSystem && power == configuration.SquadronPower;
                     }
                 }
+            }
+            else
+            {
+                SquadronStarSystem = null;
             }
             return configuration;
         }

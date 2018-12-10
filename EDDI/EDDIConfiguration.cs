@@ -38,6 +38,15 @@ namespace Eddi
             set { _SquadronName = value; }
         }
 
+        [JsonIgnore]
+        private string _SquadronID;
+        [JsonProperty("squadronID")]
+        public string SquadronID
+        {
+            get { return _SquadronID; }
+            set { _SquadronID = value; }
+        }
+
         [JsonProperty("squadronRank")]
         public string squadronRank
         {

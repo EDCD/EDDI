@@ -2952,6 +2952,35 @@ namespace EddiJournalMonitor
                                     handled = true;
                                     break;
                                 }
+                            case "AppliedToSquadron":
+                            case "DisbandedSquadron":
+                            case "InvitedToSquadron":
+                            case "JoinedSquadron":
+                            case "KickedFromSquadron":
+                            case "LeftSquadron":
+                            case "SquadronCreated":
+                                {
+                                    string name = JsonParsing.getString(data, "SquadronName");
+                                    string status = edType.Replace("Squadron", "")
+                                        .Replace("To", "")
+                                        .Replace("From", "")
+                                        .ToLowerInvariant();
+
+                                    events.Add(new SquadronStatusEvent(timestamp, name, status) { raw = line });
+                                    handled = true;
+                                    break;
+                                }
+                            case "SquadronDemotion":
+                            case "SquadronPromotion":
+                                {
+                                    string name = JsonParsing.getString(data, "SquadronName");
+                                    int oldrank = JsonParsing.getInt(data, "OldRank");
+                                    int newrank = JsonParsing.getInt(data, "NewRank");
+
+                                    events.Add(new SquadronRankEvent(timestamp, name, oldrank, newrank) { raw = line });
+                                    handled = true;
+                                    break;
+                                }
                             case "SystemsShutdown":
                                 {
                                     events.Add(new ShipShutdownEvent(timestamp) { raw = line });
