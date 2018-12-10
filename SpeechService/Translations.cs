@@ -1,6 +1,7 @@
 ﻿using EddiDataDefinitions;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -719,18 +720,26 @@ namespace EddiSpeechService
             return sb.ToString();
         }
 
-        public static string Humanize(decimal? value)
+        private static (int number, int nextDigit) Normalize(decimal? value, decimal order)
+        {
+            return (
+                number: (int)(value / order),
+                nextDigit: (int)((value % order) / (order / 10))
+            );
+        }
+
+        public static string Humanize(decimal? value, bool recursed = false)
         {
             if (value == null)
             {
                 return null;
             }
 
-            string minus = "";
+            string maybeMinus = "";
             if (value < 0)
             {
-                minus = Properties.Phrases.minus + " ";
-                value *= -1;
+                maybeMinus = Properties.Phrases.minus + " ";
+                value = -value;
             }
 
             if (value == 0)
@@ -748,109 +757,159 @@ namespace EddiSpeechService
                     numzeros++;
                 }
                 // Now round it to 2sf
-                return minus + (Math.Round((double)value * 10) / (Math.Pow(10, numzeros + 2))).ToString();
+                return maybeMinus + (Math.Round((double)value * 10) / (Math.Pow(10, numzeros + 2))).ToString();
             }
 
             int number;
             int nextDigit;
             string order;
-            int digits = (int)Math.Log10((double)value);
-            if (digits < 3)
+            int digits = (int)Math.Truncate(Math.Log10((double)value));
+            if (digits < 2)
             {
                 // Units
                 number = (int)value;
                 order = "";
                 nextDigit = (int)((value - number) * 10);
             }
+            else if (digits < 3)
+            {
+                // Hundreds
+                (number, nextDigit) = Normalize(value, 100);
+                order = Properties.Phrases.hundred;
+            }
             else if (digits < 6)
             {
                 // Thousands
-                number = (int)(value / 1E3M);
-                order = " " + Properties.Phrases.thousand;
-                nextDigit = (int)((value - (number * 1E3M)) / 1E2M);
+                (number, nextDigit) = Normalize(value, 1E3M);
+                order = Properties.Phrases.thousand;
             }
             else if (digits < 9)
             {
                 // Millions
-                number = (int)(value / 1E6M);
-                order = " " + Properties.Phrases.million;
-                nextDigit = (int)((value - (number * 1E6M)) / 1E5M);
+                (number, nextDigit) = Normalize(value, 1E6M);
+                order = Properties.Phrases.million;
             }
             else if (digits < 12)
             {
                 // Billions
-                number = (int)(value / 1E9M);
-                order = " " + Properties.Phrases.billion;
-                nextDigit = (int)((value - (number * 1E9M)) / 1E8M);
+                (number, nextDigit) = Normalize(value, 1E9M);
+                order = Properties.Phrases.billion;
             }
             else if (digits < 15)
             {
                 // Trillions
-                number = (int)(value / 1E12M);
-                order = " " + Properties.Phrases.trillion;
-                nextDigit = (int)((value - (number * 1E12M)) / 1E11M);
+                (number, nextDigit) = Normalize(value, 1E12M);
+                order = Properties.Phrases.trillion;
             }
             else
             {
                 // Quadrillions
-                number = (int)(value / 1E15M);
-                order = " " + Properties.Phrases.quadrillion;
-                nextDigit = (int)((value - (number * 1E15M)) / 1E14M);
+                (number, nextDigit) = Normalize(value, 1E15M);
+                order = Properties.Phrases.quadrillion;
             }
 
-            // See if we have an exact match
-            if (((long)(((decimal)value) / (decimal)Math.Pow(10, digits - 1))) * (decimal)(Math.Pow(10, digits - 1)) == value)
+            // emit exact value
+            if (order == "")
             {
-                return minus + number + order;
+                // we recurse only if we know that there _is_ a nested order (i. e. stuff like "51 hundred thousand")
+                // otherwise we won't be able to round correctly
+                Debug.Assert(recursed == false);
+                return maybeMinus + number;
             }
 
-            // Describe decimal values
-            if (number < 100)
+            // recurse to handle nested orders (i. e. "50 hundred thousand")
+            else if (number >= 100)
             {
-                string andahalf = " " + Properties.Phrases.andahalf;
-                switch (nextDigit)
-                {
-                    case 0:
-                        return Properties.Phrases.justover + " " + minus + number + order;
-                    case 1:
-                    case 2:
-                        return Properties.Phrases.over + " " + minus + number + order;
-                    case 3:
-                        return Properties.Phrases.wellover + " " + minus + number + order;
-                    case 4:
-                        return Properties.Phrases.nearly + " " + minus + number + andahalf + order;
-                    case 5:
-                        return Properties.Phrases.around + " " + minus + number + andahalf + order;
-                    case 6:
-                    case 7:
-                        return Properties.Phrases.over + " " + minus + number + andahalf + order;
-                    case 8:
-                        return Properties.Phrases.wellover + " " + minus + number + andahalf + order;
-                    case 9:
-                        return Properties.Phrases.nearly + " " + minus + (number + 1) + order;
-                }
+                return maybeMinus + Humanize(number, true) + " " + order;
             }
-            // Describe (less precisely) decimal values for more complex numbers    
+
+            // shorten (round) the normalized value to 1 or 2 significant digits so that it can be pronounced with a single word
+            // (i. e. say 1..19 as is, but round 21 to "twenty")
             else
             {
-                if (nextDigit < 2)
+                if (recursed)
                 {
-                    return Properties.Phrases.justover + " " + minus + number + order;
+                    Debug.Assert(number > 0 && number < 10);
                 }
-                else if (nextDigit < 6)
+                else
                 {
-                    return Properties.Phrases.over + " " + minus + number + order;
+                    Debug.Assert(number > 0 && number < 100);
                 }
-                else if (nextDigit < 8)
+
+                if (number <= 20)
                 {
-                    return Properties.Phrases.wellover + " " + minus + number + order;
+                    // we can say @number precisely with a single word.
+                    // round to .5
+                    if (nextDigit == 0)
+                    {
+                        // the figure we are saying is round enough already
+                        return maybeMinus + number + " " + order;
+                    }
+                    else if (nextDigit < 3)
+                    {
+                        // round @number down
+                        return Properties.Phrases.over + " " + maybeMinus + number + " " + order;
+                    }
+                    else if (nextDigit < 5)
+                    {
+                        // round @number up to .5
+                        return Properties.Phrases.under + " " + maybeMinus + number + " " + Properties.Phrases.andahalf + " " + order;
+                    }
+                    else if (nextDigit == 5)
+                    {
+                        // the figure we are saying is round enough already
+                        return maybeMinus + number + " " + Properties.Phrases.andahalf + " " + order;
+                    }
+                    else if (nextDigit < 8)
+                    {
+                        // round @number down to .5
+                        return Properties.Phrases.over + " " + maybeMinus + number + " " + Properties.Phrases.andahalf + " " + order;
+                    }
+                    else
+                    {
+                        // round @number up
+                        return Properties.Phrases.under + " " + maybeMinus + (number + 1) + " " + order;
+                    }
                 }
-                else if (nextDigit < 10)
+                else
                 {
-                    return Properties.Phrases.nearly + " " + minus + (number + 1) + order;
+                    // otherwise round @number even more so that it can be pronounced with a single word.
+                    // that is, round to 5 -- same plan as above
+                    nextDigit = number % 10;
+                    number -= nextDigit;
+
+                    if (nextDigit == 0)
+                    {
+                        // the figure we are saying is round enough already
+                        return maybeMinus + number + " " + order;
+                    }
+                    else if (nextDigit < 3)
+                    {
+                        // round @number down
+                        return Properties.Phrases.over + " " + maybeMinus + number + " " + order;
+                    }
+                    else if (nextDigit < 5)
+                    {
+                        // round @number up 5
+                        return Properties.Phrases.under + " " + maybeMinus + (number + 5) + " " + order;
+                    }
+                    else if (nextDigit == 5)
+                    {
+                        // the figure we are saying is round enough already
+                        return maybeMinus + (number + 5) + " " + order;
+                    }
+                    else if (nextDigit < 8)
+                    {
+                        // round @number down to 5
+                        return Properties.Phrases.over + " " + maybeMinus + (number + 5) + " " + order;
+                    }
+                    else
+                    {
+                        // round @number up
+                        return Properties.Phrases.under + " " + maybeMinus + (number + 10) + " " + order;
+                    }
                 }
             }
-            return Properties.Phrases.around + " " + minus + number + order;
         }
     }
 }

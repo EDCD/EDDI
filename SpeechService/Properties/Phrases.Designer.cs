@@ -97,6 +97,15 @@ namespace EddiSpeechService.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to hundred.
+        /// </summary>
+        public static string hundred {
+            get {
+                return ResourceManager.GetString("hundred", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to just over.
         /// </summary>
         public static string justover {
@@ -183,6 +192,15 @@ namespace EddiSpeechService.Properties {
         public static string trillion {
             get {
                 return ResourceManager.GetString("trillion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to under.
+        /// </summary>
+        public static string under {
+            get {
+                return ResourceManager.GetString("under", resourceCulture);
             }
         }
         

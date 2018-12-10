@@ -113,6 +113,10 @@
     <value>dash</value>
     <comment></comment>
   </data>
+  <data name="hundred" xml:space="preserve">
+    <value>hundred</value>
+    <comment></comment>
+  </data>
   <data name="justover" xml:space="preserve">
     <value>just over</value>
     <comment></comment>
@@ -151,6 +155,10 @@
   </data>
   <data name="trillion" xml:space="preserve">
     <value>trillion</value>
+    <comment></comment>
+  </data>
+  <data name="under" xml:space="preserve">
+    <value>under</value>
     <comment></comment>
   </data>
   <data name="wellover" xml:space="preserve">
