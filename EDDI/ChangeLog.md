@@ -3,6 +3,8 @@
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
 ### Development
+
+### 3.3-b1
   * Core
     * Fixed a bug that could reset system comments, visits, and the date last visited while refreshing star system data. 
   * Material monitor
