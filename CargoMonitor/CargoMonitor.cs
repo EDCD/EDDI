@@ -263,7 +263,8 @@ namespace EddiCargoMonitor
                         {
                             int total = cargoInfo.Sum(i => i.count);
                             int stolen = infoList.Where(i => i.missionid == null).Sum(i => i.stolen);
-                            if (total != cargo.total || stolen != cargo.stolen)
+                            int missionCount = infoList.Where(i => i.missionid == null).Count();
+                            if (total != cargo.total || stolen != cargo.stolen || missionCount != cargo.haulageData.Count())
                             {
                                 UpdateCargoFromInfo(cargo, cargoInfo);
                                 if (@event.update) { return true; }
