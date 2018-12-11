@@ -750,82 +750,58 @@ namespace EddiShipMonitor
                             {
                                 case "CargoHatch":
                                     {
-                                        if (ship.cargohatch != null)
-                                        {
-                                            ship.cargohatch.position = position;
-                                            ship.cargohatch.priority = priority;
-                                            ship.cargohatch.power = power;
-                                        }
+                                        ship.cargohatch.position = position;
+                                        ship.cargohatch.priority = priority;
+                                        ship.cargohatch.power = power;
                                     }
                                     break;
                                 case "FrameShiftDrive":
                                     {
-                                        if (ship.frameshiftdrive != null)
-                                        {
-                                            ship.frameshiftdrive.position = position;
-                                            ship.frameshiftdrive.priority = priority;
-                                            ship.frameshiftdrive.power = power;
-                                        }
+                                        ship.frameshiftdrive.position = position;
+                                        ship.frameshiftdrive.priority = priority;
+                                        ship.frameshiftdrive.power = power;
                                     }
                                     break;
                                 case "LifeSupport":
                                     {
-                                        if (ship.lifesupport != null)
-                                        {
-                                            ship.lifesupport.position = position;
-                                            ship.lifesupport.priority = priority;
-                                            ship.lifesupport.power = power;
-                                        }
+                                        ship.lifesupport.position = position;
+                                        ship.lifesupport.priority = priority;
+                                        ship.lifesupport.power = power;
                                     }
                                     break;
                                 case "MainEngines":
                                     {
-                                        if (ship.thrusters != null)
-                                        {
-                                            ship.thrusters.position = position;
-                                            ship.thrusters.priority = priority;
-                                            ship.thrusters.power = power;
-                                        }
+                                        ship.thrusters.position = position;
+                                        ship.thrusters.priority = priority;
+                                        ship.thrusters.power = power;
                                     }
                                     break;
                                 case "PowerDistributor":
                                     {
-                                        if (ship.powerdistributor != null)
-                                        {
-                                            ship.powerdistributor.position = position;
-                                            ship.powerdistributor.priority = priority;
-                                            ship.powerdistributor.power = power;
-                                        }
+                                        ship.powerdistributor.position = position;
+                                        ship.powerdistributor.priority = priority;
+                                        ship.powerdistributor.power = power;
                                     }
                                     break;
                                 case "PowerPlant":
                                     {
-                                        if (ship.powerplant != null)
-                                        {
-                                            ship.powerplant.position = position;
-                                            ship.powerplant.priority = priority;
-                                            ship.powerplant.power = power;
-                                        }
+                                        ship.powerplant.position = position;
+                                        ship.powerplant.priority = priority;
+                                        ship.powerplant.power = power;
                                     }
                                     break;
                                 case "Radar":
                                     {
-                                        if (ship.sensors != null)
-                                        {
-                                            ship.sensors.position = position;
-                                            ship.sensors.priority = priority;
-                                            ship.sensors.power = power;
-                                        }
+                                        ship.sensors.position = position;
+                                        ship.sensors.priority = priority;
+                                        ship.sensors.power = power;
                                     }
                                     break;
                                 case "ShipCockpit":
                                     {
-                                        if (ship.canopy != null)
-                                        {
-                                            ship.canopy.position = position;
-                                            ship.canopy.priority = priority;
-                                            ship.canopy.power = power;
-                                        }
+                                        ship.canopy.position = position;
+                                        ship.canopy.priority = priority;
+                                        ship.canopy.power = power;
                                     }
                                     break;
                             }
