@@ -538,6 +538,10 @@ namespace EddiJournalMonitor
                                             {
                                                 // Ignore decals
                                             }
+                                            else if (slot.Contains("String_Lights"))
+                                            {
+                                                // Ignore string lights
+                                            }
                                             else if (slot == "WeaponColour")
                                             {
                                                 // Ignore weapon colour
