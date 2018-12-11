@@ -192,6 +192,9 @@ namespace EDDNResponder
                 foreach (object faction in factions)
                 {
                     ((IDictionary<string, object>)faction).Remove("MyReputation");
+                    ((IDictionary<string, object>)faction).Remove("SquadronFaction");
+                    ((IDictionary<string, object>)faction).Remove("HappiestSystem");
+                    ((IDictionary<string, object>)faction).Remove("HomeSystem");
                 }
             }
 
