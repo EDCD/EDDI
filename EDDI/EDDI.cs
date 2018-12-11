@@ -16,6 +16,7 @@ using System.Runtime.InteropServices;
 using System.Security.Permissions;
 using System.Text;
 using System.Threading;
+using System.Windows;
 using Utilities;
 
 namespace Eddi
@@ -685,6 +686,10 @@ namespace Eddi
                     {
                         passEvent = eventNearSurface((NearSurfaceEvent)@event);
                     }
+                    else if (@event is SquadronRankEvent)
+                    {
+                        passEvent = eventSquadronRank((SquadronRankEvent)@event);
+                    }
                     // Additional processing is over, send to the event responders if required
                     if (passEvent)
                     {
@@ -1238,6 +1243,59 @@ namespace Eddi
             if (Cmdr != null)
             {
                 Cmdr.empirerating = EmpireRating.FromName(theEvent.rank);
+            }
+            return true;
+        }
+
+        private bool eventSquadronStatus(SquadronStatusEvent theEvent)
+        {
+            // Update the configuration file
+            EDDIConfiguration configuration = EDDIConfiguration.FromFile();
+
+            switch (theEvent.status)
+            {
+                case "created":
+                case "joined":
+                    {
+                        configuration.SquadronName = theEvent.name;
+                        ((MainWindow)Application.Current.MainWindow).eddiSquadronNameText.Text = theEvent.name;
+                        if (Cmdr != null)
+                        {
+                            Cmdr.squadronname = theEvent.name;
+                        }
+                        break;
+                    }
+                case "kicked":
+                case "left":
+                    {
+                        configuration.SquadronName = null;
+                        ((MainWindow)Application.Current.MainWindow).eddiSquadronNameText.Text = string.Empty;
+                        if (Cmdr != null)
+                        {
+                            Cmdr.squadronname = null;
+                        }
+                        break;
+                    }
+            }
+            configuration.ToFile();
+            return true;
+        }
+
+        private bool eventSquadronRank(SquadronRankEvent theEvent)
+        {
+            // Update the configuration file
+            EDDIConfiguration configuration = EDDIConfiguration.FromFile();
+            SquadronRank rank = SquadronRank.FromRank(theEvent.newrank + 1);
+            configuration.SquadronRank = rank;
+            configuration.ToFile();
+
+            // Update the UI squadron rank combo box
+            ((MainWindow)Application.Current.MainWindow).squadronRankDropDown.SelectedValue= rank.localizedName;
+
+            // Update the commander object, if it exists
+            if (Cmdr != null)
+            {
+                Cmdr.squadronrank = rank;
             }
             return true;
         }

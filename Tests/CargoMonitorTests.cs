@@ -140,7 +140,8 @@ namespace UnitTests
             cargo = cargoMonitor.inventory.ToList().FirstOrDefault(c => c.edname == "Biowaste");
             Assert.AreEqual(30, cargo.total);
             Assert.AreEqual(30, cargo.haulage);
-            haulage = cargo.haulageData.First();
+            haulage = cargo.haulageData.FirstOrDefault();
+            Assert.IsNotNull(haulage);
             Assert.AreEqual(426282789, haulage.missionid);
             Assert.AreEqual("Mission_None", haulage.name);
             Assert.AreEqual(30, haulage.amount);

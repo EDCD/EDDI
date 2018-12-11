@@ -70,6 +70,9 @@ namespace EddiDataDefinitions
         /// <summary>The Commander's friends</summary>
         public List<Friend> friends = new List<Friend>();
 
+        /// <summary>The Commander's status and progress with the various engineers</summary>
+        public List<Engineer> engineers => Engineer.ENGINEERS;
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         public void NotifyPropertyChanged(string propName)
