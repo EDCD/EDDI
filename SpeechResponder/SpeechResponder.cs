@@ -34,6 +34,8 @@ namespace EddiSpeechResponder
 
         private static bool ignoreBodyScan;
 
+        private bool enqueueStarScan;
+
         public string ResponderName()
         {
             return "Speech responder";
@@ -161,14 +163,14 @@ namespace EddiSpeechResponder
                 // Beginning with Elite Dangerous v. 3.3, the primary star scan is delivered via a Scan with 
                 // scantype `AutoScan` when you jump into the system. Secondary stars are delivered in a burst 
                 // following an FSSDiscoveryScan. Since each source has a different trigger, we re-order events 
-                // and ensure the main star scan completes after the the FSSDicoveryScan and before secondary 
-                // star scans, regardless of the timing of the `AutoScan` Scan and FSSDiscoveryScan events
+                // and and report queued star scans immediately after the the FSSDicoveryScan event
                 Say(@event);
                 foreach (Event theEvent in eventQueue.OfType<StarScannedEvent>())
                 {
                     Say(theEvent);
                 }
                 eventQueue.RemoveAll(s => s.GetType() == typeof(StarScannedEvent));
+                enqueueStarScan = false;
                 return;
             }
             else if (@event is StarScannedEvent starScannedEvent)
@@ -178,13 +180,16 @@ namespace EddiSpeechResponder
                     // Suppress scan details from nav beacons
                     return;
                 }
-                else if (starScannedEvent.scantype == "AutoScan")
+                else if (enqueueStarScan)
                 {
-                    // Capture `Autoscan` events so that we can fire them after a discovery honk.
                     eventQueue.Add(@event);
                     eventQueue.OrderBy(s => ((StarScannedEvent)s)?.distance);
                     return;
                 }
+            }
+            else if (@event is JumpedEvent)
+            {
+                enqueueStarScan = true;
             }
             else if (@event is SignalDetectedEvent)
             {
