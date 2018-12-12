@@ -154,7 +154,7 @@
     <value>l'Alphabet Phonétique International</value>
   </data>
   <data name="name" xml:space="preserve">
-    <value>Moniteur de vaisseau</value>
+    <value>Moniteur de vaisseaux</value>
   </data>
   <data name="p1" xml:space="preserve">
     <value>Cette option vous permet de consulter vos vaisseaux et leur assigner un rôle. Ces informations sont mises à la disposition des répondeurs et sont utilisés par les scripts pour adapter les actions.</value>
