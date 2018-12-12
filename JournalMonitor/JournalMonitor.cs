@@ -1400,9 +1400,9 @@ namespace EddiJournalMonitor
                                     string message = JsonParsing.getString(data, "Message");
                                     string source = "";
 
-                                    if (from == string.Empty && channel == "npc" && message.StartsWith("Entered Channel: "))
+                                    if (from == string.Empty && channel == "npc" && (message.StartsWith("$COMMS_entered") || message.StartsWith("$CHAT_Intro")))
                                     {
-                                        // We can safely ignore messages that simply announce that we entered a channel - no event is needed. 
+                                        // We can safely ignore system messages that initialize the chat system or announce that we entered a channel - no event is needed. 
                                         handled = true;
                                         break;
                                     }
@@ -1413,11 +1413,13 @@ namespace EddiJournalMonitor
                                         channel == "friend" ||
                                         channel == "voicechat" ||
                                         channel == "local" ||
+                                        channel == "squadron" ||
+                                        channel == "starsystem" ||
                                         channel == null
                                     )
                                     {
                                         // Give priority to player messages
-                                        source = channel == "wing" ? "Wing mate" : (channel == null ? "Crew mate" : "Commander");
+                                        source = channel == "squadron" ? "Squadron mate" : channel == "wing" ? "Wing mate" : channel == null ? "Crew mate" : "Commander";
                                         channel = channel ?? "multicrew";
                                         events.Add(new MessageReceivedEvent(timestamp, from, source, true, channel, message) { raw = line });
                                     }

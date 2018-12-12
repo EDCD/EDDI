@@ -325,6 +325,14 @@ namespace UnitTests
         }
 
         [TestMethod]
+        public void TestJournalCommsSystemMessage()
+        {
+            string line = @"{ ""timestamp"":""2018-11-15T06:16:23Z"", ""event"":""ReceiveText"", ""From"":"""", ""Message"":""$COMMS_entered:#name=ICZ JH-V c2-7;"", ""Message_Localised"":""Entered Channel: ICZ JH-V c2-7"", ""Channel"":""npc"" }";
+            List<Event> events = JournalMonitor.ParseJournalEntry(line);
+            Assert.IsTrue(events.Count == 0);
+        }
+
+        [TestMethod]
         public void TestJournalPlayerDirectMessage()
         {
             string line = "{ \"timestamp\":\"2017-10-12T19:58:46Z\", \"event\":\"ReceiveText\", \"From\":\"SlowIce\", \"Message\":\"good luck\", \"Channel\":\"player\" }";
@@ -840,14 +848,6 @@ namespace UnitTests
 
             Assert.AreEqual("Pilots Federation", @event.awardingfaction);
             Assert.AreEqual("Thargoid", @event.victimfaction);
-        }
-
-        [TestMethod]
-        public void TestMessageReceivedEnteredChannel()
-        {
-            string line = @"{ ""timestamp"":""2018 - 10 - 30T20: 45:07Z"", ""event"":""ReceiveText"", ""From"":"""", ""Message"":""Entered Channel: Shinrarta Dezhra"", ""Channel"":""npc"" }";
-            List<Event> events = JournalMonitor.ParseJournalEntry(line);
-            Assert.AreEqual(0, events.Count);
         }
 
         [TestMethod]
