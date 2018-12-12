@@ -851,14 +851,6 @@ namespace UnitTests
         }
 
         [TestMethod]
-        public void TestMessageReceivedEnteredChannel()
-        {
-            string line = @"{ ""timestamp"":""2018 - 10 - 30T20: 45:07Z"", ""event"":""ReceiveText"", ""From"":"""", ""Message"":""Entered Channel: Shinrarta Dezhra"", ""Channel"":""npc"" }";
-            List<Event> events = JournalMonitor.ParseJournalEntry(line);
-            Assert.AreEqual(0, events.Count);
-        }
-
-        [TestMethod]
         public void TestUnhandledEvent()
         {
             string line = @"{ ""timestamp"":""2018 - 10 - 30T20: 45:07Z"", ""event"":""AnyUnhandledEvent""}";
