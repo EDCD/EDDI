@@ -3,6 +3,9 @@
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
 ### Development
+  * Speech responder
+    * Fixed system messages triggering the `Message received` event.
+    * Added new channels to the `Message received` event: "squadron" and "starsystem"
 
 ### 3.3-b1
   * Core

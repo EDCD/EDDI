@@ -16,7 +16,7 @@ namespace EddiEvents
             VARIABLES.Add("from", "The name of the source who sent the message");
             VARIABLES.Add("player", "True if the sender is a player");
             VARIABLES.Add("source", "The source of the transmission");
-            VARIABLES.Add("channel", "The channel in which the message came (e.g. direct, local, multicrew, wing, npc)");
+            VARIABLES.Add("channel", "The channel in which the message came (e.g. direct, local, multicrew, wing, squadron, starsystem, npc)");
             VARIABLES.Add("message", "The message");
         }
 
