@@ -1060,6 +1060,7 @@ namespace Eddi
             CurrentStarSystem.x = theEvent.x;
             CurrentStarSystem.y = theEvent.y;
             CurrentStarSystem.z = theEvent.z;
+            CurrentStellarBody = CurrentStarSystem.bodies.FirstOrDefault(b => b.name == theEvent.star);
 
             Faction controllingFaction = new Faction
             {

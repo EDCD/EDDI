@@ -445,6 +445,24 @@ Any values might be missing, depending on EDDI's configuration and the informati
 
 Values are as described in the 'Station' object.
 
+### Faction
+
+A faction object
+
+    - `name` the name of the faction
+    - `allegiance` the allegiance of the faction
+    - `government` the government of the faction
+    - `state` the faction's current dominant state
+    - `ActiveStates` a list of FactionState objects
+    - `PendingStates` a list of FactionState objects and trend values
+    - `RecoveringStates` a list of FactionState objects and trend values
+    - `influence` the faction's influence level within the system
+    - `happiness` the current happiness level within the faction
+    - `myreputation` your reputation with the faction, out of 100%.
+    - `squadronfaction` true if the faction is the pilot's current squadron faction
+    - `squadronhappiestsystem` true if the system is the happiest system in your squadron's faction's control
+    - `squadronhomesystem` true for the squadron's home faction in their home system
+
 ---
 
 ## Status

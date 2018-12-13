@@ -187,22 +187,29 @@ namespace EddiJournalMonitor
                                     decimal x = Math.Round(JsonParsing.getDecimal("X", starPos[0]) * 32) / (decimal)32.0;
                                     decimal y = Math.Round(JsonParsing.getDecimal("Y", starPos[1]) * 32) / (decimal)32.0;
                                     decimal z = Math.Round(JsonParsing.getDecimal("Z", starPos[2]) * 32) / (decimal)32.0;
-
+                                    string starName = JsonParsing.getString(data, "Body");
                                     decimal fuelUsed = JsonParsing.getDecimal(data, "FuelUsed");
                                     decimal fuelRemaining = JsonParsing.getDecimal(data, "FuelLevel");
+                                    int? boostUsed = JsonParsing.getOptionalInt(data, "BoostUsed"); // 1-3 are synthesis, 4 is any supercharge (white dwarf or neutron star)
                                     decimal distance = JsonParsing.getDecimal(data, "JumpDist");
                                     Superpower allegiance = getAllegiance(data, "SystemAllegiance");
                                     string faction = getFaction(data, "SystemFaction");
                                     FactionState factionState = FactionState.FromEDName(JsonParsing.getString(data, "FactionState") ?? "None");
-                                    Economy economy = Economy.FromEDName(JsonParsing.getString(data, "SystemEconomy"));
-                                    Economy economy2 = Economy.FromEDName(JsonParsing.getString(data, "SystemSecondEconomy"));
-                                    Government government = Government.FromEDName(JsonParsing.getString(data, "SystemGovernment"));
-                                    SecurityLevel security = SecurityLevel.FromEDName(JsonParsing.getString(data, "SystemSecurity"));
+                                    Economy economy = Economy.FromEDName(JsonParsing.getString(data, "SystemEconomy") ?? "$economy_None");
+                                    Economy economy2 = Economy.FromEDName(JsonParsing.getString(data, "SystemSecondEconomy") ?? "$economy_None");
+                                    Government government = Government.FromEDName(JsonParsing.getString(data, "SystemGovernment") ?? "$government_None;");
+                                    SecurityLevel security = SecurityLevel.FromEDName(JsonParsing.getString(data, "SystemSecurity") ?? "None");
                                     long? population = JsonParsing.getOptionalLong(data, "Population");
 
-                                    // Placeholder for factions array data
+                                    // Parse factions array data
+                                    List<Faction> factions = new List<Faction>();
+                                    data.TryGetValue("Factions", out object factionsVal);
+                                    if (factionsVal != null)
+                                    {
+                                        factions = getFactions(factionsVal);
+                                    }
 
-                                    events.Add(new JumpedEvent(timestamp, systemName, systemAddress, x, y, z, distance, fuelUsed, fuelRemaining, allegiance, faction, factionState, economy, economy2, government, security, population) { raw = line });
+                                    events.Add(new JumpedEvent(timestamp, systemName, systemAddress, x, y, z, starName, distance, fuelUsed, fuelRemaining, boostUsed, allegiance, faction, factionState, economy, economy2, government, security, population, factions) { raw = line });
                                 }
                                 handled = true;
                                 break;
@@ -243,9 +250,15 @@ namespace EddiJournalMonitor
                                     decimal? latitude = JsonParsing.getOptionalDecimal(data, "Latitude");
                                     decimal? longitude = JsonParsing.getOptionalDecimal(data, "Longitude");
 
-                                    // Placeholder for factions array data
+                                    // Parse factions array data
+                                    List<Faction> factions = new List<Faction>();
+                                    data.TryGetValue("Factions", out object factionsVal);
+                                    if (factionsVal != null)
+                                    {
+                                        factions = getFactions(factionsVal);
+                                    }
 
-                                    events.Add(new LocationEvent(timestamp, systemName, x, y, z, systemAddress, body, bodyType, docked, station, stationtype, marketId, allegiance, faction, economy, economy2, government, security, population, longitude, latitude) { raw = line });
+                                    events.Add(new LocationEvent(timestamp, systemName, x, y, z, systemAddress, body, bodyType, docked, station, stationtype, marketId, allegiance, faction, economy, economy2, government, security, population, longitude, latitude, factions) { raw = line });
                                 }
                                 handled = true;
                                 break;
@@ -3060,6 +3073,87 @@ namespace EddiJournalMonitor
                 Logging.Error("Exception whilst parsing journal line", "Raw event: " + line + ". Exception: " + ex.Message + ". " + ex.StackTrace);
             }
             return events;
+        }
+
+        private static List<Faction> getFactions(object factionsVal)
+        {
+            List<Faction> factions = new List<Faction>();
+            var factionsList = (List<object>)factionsVal;
+            foreach (IDictionary<string, object> factionDetail in factionsList)
+            {
+                // Core data
+                string fName = JsonParsing.getString(factionDetail, "Name");
+                FactionState fState = FactionState.FromEDName(JsonParsing.getString(factionDetail, "FactionState") ?? "None");
+                Government fGov = Government.FromEDName(JsonParsing.getString(factionDetail, "SystemGovernment") ?? "$government_None;");
+                decimal influence = JsonParsing.getDecimal(factionDetail, "Influence");
+                Happiness happiness = Happiness.FromEDName(JsonParsing.getString(factionDetail, "Happiness") ?? string.Empty);
+                decimal myReputation = JsonParsing.getDecimal(factionDetail, "MyReputation");
+                Faction fFaction = new Faction()
+                {
+                    name = fName,
+                    FactionState = fState,
+                    Government = fGov,
+                    influence = influence,
+                    Happiness = happiness,
+                    myreputation = myReputation
+                };
+
+                // Active states
+                fFaction.ActiveStates = new List<FactionState>();
+                factionDetail.TryGetValue("ActiveStates", out object activeStatesVal);
+                if (activeStatesVal != null)
+                {
+                    var activeStatesList = (List<object>)activeStatesVal;
+                    foreach (IDictionary<string, object> activeState in activeStatesList)
+                    {
+                        fFaction.ActiveStates.Add(FactionState.FromEDName(JsonParsing.getString(activeState, "State") ?? "None"));
+                    }
+                }
+
+                // Pending states
+                fFaction.PendingStates = new List<FactionTrendingState>();
+                factionDetail.TryGetValue("PendingStates", out object pendingStatesVal);
+                if (pendingStatesVal != null)
+                {
+                    var pendingStatesList = (List<object>)pendingStatesVal;
+                    foreach (IDictionary<string, object> pendingState in pendingStatesList)
+                    {
+                        FactionTrendingState pTrendingState = new FactionTrendingState(
+                            FactionState.FromEDName(JsonParsing.getString(pendingState, "State") ?? "None"),
+                            JsonParsing.getInt(pendingState, "Trend")
+                        );
+                        fFaction.PendingStates.Add(pTrendingState);
+                    }
+                }
+
+                // Recovering states
+                fFaction.RecoveringStates = new List<FactionTrendingState>();
+                factionDetail.TryGetValue("RecoveringStates", out object recoveringStatesVal);
+                if (recoveringStatesVal != null)
+                {
+                    var recoveringStatesList = (List<object>)recoveringStatesVal;
+                    foreach (IDictionary<string, object> recoveringState in recoveringStatesList)
+                    {
+                        FactionTrendingState rTrendingState = new FactionTrendingState(
+                            FactionState.FromEDName(JsonParsing.getString(recoveringState, "State") ?? "None"),
+                            JsonParsing.getInt(recoveringState, "Trend")
+                        );
+                        fFaction.RecoveringStates.Add(rTrendingState);
+                    }
+                }
+
+                // Squadron data
+                fFaction.squadronfaction = JsonParsing.getOptionalBool(factionDetail, "SquadronFaction") ?? false;
+                fFaction.squadronhappiestsystem = JsonParsing.getOptionalBool(factionDetail, "HappiestSystem") ?? false;
+                fFaction.squadronhomesystem = JsonParsing.getOptionalBool(factionDetail, "HomeSystem") ?? false;
+
+                if (fFaction != null)
+                {
+                    factions.Add(fFaction);
+                }
+            }
+
+            return factions;
         }
 
         private static string npcSpeechBy(string from, string message)

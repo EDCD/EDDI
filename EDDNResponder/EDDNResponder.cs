@@ -182,6 +182,7 @@ namespace EDDNResponder
             data.Remove("BoostUsed");
             data.Remove("FuelLevel");
             data.Remove("FuelUsed");
+            data.Remove("BoostUsed");
             data.Remove("JumpDist");
             data.Remove("Wanted");
 

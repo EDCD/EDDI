@@ -71,6 +71,12 @@
     <Compile Include="BlueprintMaterials.cs" />
     <Compile Include="BodyType.cs" />
     <Compile Include="CargoInfo.cs" />
+    <Compile Include="Happiness.cs" />
+    <Compile Include="Properties\Happiness.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Happiness.resx</DependentUpon>
+    </Compile>
     <Compile Include="Properties\MaterialLocations.Designer.cs">
       <DependentUpon>MaterialLocations.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -368,6 +374,7 @@
     <EmbeddedResource Include="Properties\AtmosphereClass.hu.resx" />
     <EmbeddedResource Include="Properties\AtmosphereClass.it.resx" />
     <EmbeddedResource Include="Properties\AtmosphereClass.ja.resx" />
+    <EmbeddedResource Include="Properties\Happiness.resx" />
     <EmbeddedResource Include="Properties\MaterialLocations.de.resx" />
     <EmbeddedResource Include="Properties\MaterialLocations.es.resx" />
     <EmbeddedResource Include="Properties\MaterialLocations.fr.resx" />

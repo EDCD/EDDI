@@ -12,6 +12,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Fixed a bug that could reset system comments, visits, and the date last visited while refreshing star system data. 
     * The `body` object now includes a new `shortname` property (removing the system name if it is part of the body name)
     * The `body` object now includes `estimatedhabzoneinner` and `estimatedhabzoneouter` for stars.
+    * Added `faction` object. Check the `Variables` window for details.
   * Material monitor
     * Revised material rarities and default material maxima (material maxima are recalulated to the following values if not set): 
       * (Thargoid) Propulsion Elements (Very Rare - 100 MAX)
@@ -43,6 +44,8 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Revised `Star report` event script
     * Added `Star habitable zone` non-event script.
     * The `Body scanned` event now includes new `shortname` and `systemname` properties
+    * The `Jumped` event now contains the name of the star at which you've arrived
+    * The `Jumped` and `Location` events now contain now contain details about the status of factions.
   * Status monitor 
     * The status object has new values for: 
       * HUD analysis mode, 

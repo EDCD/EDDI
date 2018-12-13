@@ -230,10 +230,6 @@ namespace EddiShipMonitor
             {
                 handleJumpedEvent((JumpedEvent)@event);
             }
-            else if (@event is SynthesisedEvent)
-            {
-                handleSynthesisedEvent((SynthesisedEvent)@event);
-            }
         }
 
         // Set the ship name conditionally, avoiding filtered names
@@ -835,7 +831,7 @@ namespace EddiShipMonitor
 
         private void handleJumpedEvent(JumpedEvent @event)
         {
-            if (!synthesisedFsd)
+            if (@event.boostused is null)
             {
                 Ship ship = GetCurrentShip();
                 if (@event.fuelused > ship.maxfuel)
@@ -844,16 +840,6 @@ namespace EddiShipMonitor
                     ship.maxjump = @event.distance;
                     writeShips();
                 }
-            }
-            synthesisedFsd = false;
-        }
-
-        private bool synthesisedFsd = false;
-        private void handleSynthesisedEvent(SynthesisedEvent @event)
-        {
-            if (@event.synthesis.Contains("FSD"))
-            {
-                synthesisedFsd = true;
             }
         }
 
