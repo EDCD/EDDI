@@ -130,6 +130,8 @@ namespace UnitTests
                 ""missionsCount"": 3,
                 ""missionWarning"": 60
             }";
+            // Save original data
+            MissionMonitorConfiguration data = MissionMonitorConfiguration.FromFile();
 
             MissionMonitorConfiguration config = MissionMonitorConfiguration.FromJsonString(missionConfigJson);
             Assert.AreEqual(config.missionsCount, config.missions.Count);
@@ -152,11 +154,17 @@ namespace UnitTests
             Assert.AreEqual("Active", mission.statusEDName);
             Assert.AreEqual(4, mission.amount);
             Assert.IsTrue(mission.originreturn);
+
+            // Restore original data
+            data.ToFile();
         }
 
         [TestMethod]
         public void TestMissionEventsScenario()
         {
+            // Save original data
+            MissionMonitorConfiguration data = MissionMonitorConfiguration.FromFile();
+
             missionMonitor.initializeMissionMonitor(new MissionMonitorConfiguration());
 
             //MissionsEvent
@@ -253,6 +261,9 @@ namespace UnitTests
             Assert.IsTrue(events.Count == 1);
             missionMonitor._handleMissionFailedEvent((MissionFailedEvent)events[0]);
             Assert.AreEqual(4, missionMonitor.missions.Count);
+
+            // Restore original data
+            data.ToFile();
         }
 
         [TestCleanup]

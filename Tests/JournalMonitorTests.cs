@@ -851,6 +851,31 @@ namespace UnitTests
         }
 
         [TestMethod]
+        public void TestSquadronStatusEvent()
+        {
+            string line = @"{ ""timestamp"":""2018-10-17T16:17:55Z"", ""event"":""SquadronCreated"", ""SquadronName"":""TestSquadron"" }";
+            List<Event> events = JournalMonitor.ParseJournalEntry(line);
+            Assert.IsTrue(events.Count == 1);
+
+            SquadronStatusEvent event1 = (SquadronStatusEvent)events[0];
+            Assert.AreEqual("TestSquadron", event1.name);
+            Assert.AreEqual("created", event1.status);
+        }
+
+        [TestMethod]
+        public void TestSquadronRankEvent()
+        {
+            string line = @"{ ""timestamp"":""2018-10-17T16:17:55Z"", ""event"":""SquadronDemotion"", ""SquadronName"":""TestSquadron"", ""OldRank"":3, ""NewRank"":2 }";
+            List<Event> events = JournalMonitor.ParseJournalEntry(line);
+            Assert.IsTrue(events.Count == 1);
+
+            SquadronRankEvent event1 = (SquadronRankEvent)events[0];
+            Assert.AreEqual("TestSquadron", event1.name);
+            Assert.AreEqual(3, event1.oldrank);
+            Assert.AreEqual(2, event1.newrank);
+        }
+
+        [TestMethod]
         public void TestUnhandledEvent()
         {
             string line = @"{ ""timestamp"":""2018 - 10 - 30T20: 45:07Z"", ""event"":""AnyUnhandledEvent""}";

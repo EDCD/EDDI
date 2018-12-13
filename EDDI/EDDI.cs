@@ -1998,10 +1998,20 @@ namespace Eddi
         public EDDIConfiguration updateHomeStation(EDDIConfiguration configuration)
         {
             Logging.Verbose = configuration.Debug;
+            configuration.validHomeStation = false;
             if (configuration.HomeStation != null)
             {
-                HomeStation = HomeStarSystem.stations.FirstOrDefault(s => s.name == configuration.HomeStation);
-                Logging.Debug("Home station is " + HomeStation.name);
+                string homeStationName = configuration.HomeStation.Trim();
+                foreach (Station station in HomeStarSystem.stations)
+                {
+                    if (station.name == homeStationName)
+                    {
+                        HomeStation = station;
+                        Logging.Debug("Home station is " + HomeStation.name);
+                        configuration.validHomeStation = true;
+                        break;
+                    }
+                }
             }
             return configuration;
         }

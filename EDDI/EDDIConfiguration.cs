@@ -143,6 +143,7 @@ namespace Eddi
 
         /// <summary> Administrative values </summary>
         public bool validHomeSystem { get; set; }
+        public bool validHomeStation { get; set; }
         public bool validSquadronSystem { get; set; }
 
         [JsonIgnore]

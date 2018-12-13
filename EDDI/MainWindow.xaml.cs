@@ -512,6 +512,22 @@ namespace Eddi
             }
         }
 
+        private void eddiHomeSystemText_LostFocus(object sender, RoutedEventArgs e)
+        {
+            // Discard invalid results
+            EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
+            if (eddiConfiguration.validHomeSystem)
+            {
+                ConfigureHomeStationOptions(eddiConfiguration.HomeSystem);
+            }
+            else
+            {
+                eddiConfiguration.HomeSystem = null;
+                eddiHomeSystemText.Text = string.Empty;
+                eddiConfiguration.ToFile();
+            }
+        }
+
         private void ConfigureHomeStationOptions(string system)
         {
             List<string> HomeStationOptions = new List<string>
@@ -587,6 +603,18 @@ namespace Eddi
             }
         }
 
+        private void eddiSquadronNameText_LostFocus(object sender, RoutedEventArgs e)
+        {
+            // Discard invalid results
+            if (eddiSquadronNameText.Text == string.Empty)
+            {
+                EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
+                eddiConfiguration.SquadronName = null;
+                eddiConfiguration.ToFile();
+                EDDI.Instance.Cmdr.squadronname = string.Empty;
+            }
+        }
+
         private void squadronIDChanged(object sender, TextChangedEventArgs e)
         {
             EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
@@ -597,6 +625,21 @@ namespace Eddi
                 eddiConfiguration.ToFile();
 
                 EDDI.Instance.Cmdr.squadronid = eddiConfiguration.SquadronID;
+            }
+        }
+
+        private void eddiSquadronIDText_LostFocus(object sender, RoutedEventArgs e)
+        {
+            // Discard invalid results
+            EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
+            if (eddiConfiguration.SquadronID != null)
+            {
+                if (eddiConfiguration.SquadronID.Contains(" ") || eddiConfiguration.SquadronID.Length > 4)
+                {
+                    eddiConfiguration.SquadronID = null;
+                    eddiSquadronSystemText.Text = string.Empty;
+                    eddiConfiguration.ToFile();
+                }
             }
         }
 
@@ -664,6 +707,22 @@ namespace Eddi
 
                 // Update the UI for invalid results
                 runValidation(eddiSquadronSystemText);
+            }
+        }
+
+        private void eddiSquadronSystemText_LostFocus(object sender, RoutedEventArgs e)
+        {
+            // Discard invalid results
+            EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
+            if (eddiConfiguration.validSquadronSystem)
+            {
+                ConfigureSquadronFactionOptions(eddiConfiguration);
+            }
+            else
+            {
+                eddiConfiguration.SquadronSystem = null;
+                eddiSquadronSystemText.Text = string.Empty;
+                eddiConfiguration.ToFile();
             }
         }
 
@@ -1283,65 +1342,6 @@ namespace Eddi
                 b.ValidateWithoutUpdate();
             }
             catch { }
-        }
-
-        private void eddiHomeSystemText_LostFocus(object sender, RoutedEventArgs e)
-        {
-            // Discard invalid results
-            EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
-            if (eddiConfiguration.validHomeSystem)
-            {
-                ConfigureHomeStationOptions(eddiConfiguration.HomeSystem);
-            }
-            else
-            {
-                eddiConfiguration.HomeSystem = null;
-                eddiHomeSystemText.Text = string.Empty;
-                eddiConfiguration.ToFile();
-            }
-        }
-
-        private void eddiSquadronNameText_LostFocus(object sender, RoutedEventArgs e)
-        {
-            // Discard invalid results
-            if (eddiSquadronNameText.Text == string.Empty)
-            {
-                EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
-                eddiConfiguration.SquadronName = null;
-                eddiConfiguration.ToFile();
-                EDDI.Instance.Cmdr.squadronname = string.Empty;
-            }
-        }
-
-        private void eddiSquadronIDText_LostFocus(object sender, RoutedEventArgs e)
-        {
-            // Discard invalid results
-            EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
-            if (eddiConfiguration.SquadronID != null)
-            {
-                if (eddiConfiguration.SquadronID.Contains(" ") || eddiConfiguration.SquadronID.Length > 4)
-                {
-                    eddiConfiguration.SquadronID = null;
-                    eddiSquadronSystemText.Text = string.Empty;
-                    eddiConfiguration.ToFile();
-                }
-            }
-        }
-
-        private void eddiSquadronSystemText_LostFocus(object sender, RoutedEventArgs e)
-        {
-            // Discard invalid results
-            EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
-            if (eddiConfiguration.validSquadronSystem)
-            {
-                ConfigureSquadronFactionOptions(eddiConfiguration);
-            }
-            else
-            {
-                eddiConfiguration.SquadronSystem = null;
-                eddiSquadronSystemText.Text = string.Empty;
-                eddiConfiguration.ToFile();
-            }
         }
     }
 
