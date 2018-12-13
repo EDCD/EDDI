@@ -865,10 +865,10 @@ namespace UnitTests
 
             events.AddRange((List<Event>)journalMonitor.InvokeStatic("ParseJournalEntry", new object[] { honk }));
             Assert.AreEqual(1, events.Count);
-            Assert.IsInstanceOfType(events[0], typeof(FSSDiscoveryScanEvent));
-            Assert.AreEqual(100M, ((FSSDiscoveryScanEvent)events[0])?.progress);
-            Assert.AreEqual(12, ((FSSDiscoveryScanEvent)events[0])?.bodies);
-            Assert.AreEqual(27, ((FSSDiscoveryScanEvent)events[0])?.nonbodies);
+            Assert.IsInstanceOfType(events[0], typeof(DiscoveryScanEvent));
+            Assert.AreEqual(100M, ((DiscoveryScanEvent)events[0])?.progress);
+            Assert.AreEqual(12, ((DiscoveryScanEvent)events[0])?.bodies);
+            Assert.AreEqual(27, ((DiscoveryScanEvent)events[0])?.nonbodies);
 
             // Beginning with Elite Dangerous v. 3.3, star scans are delivered in a burst and in random order.
             events.AddRange((List<Event>)journalMonitor.InvokeStatic("ParseJournalEntry", new object[] { scan1 })); // "DistanceFromArrivalLS":186.103638
