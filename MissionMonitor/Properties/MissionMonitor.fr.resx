@@ -139,7 +139,7 @@
     <value>Surveille les informations de vos missions.</value>
   </data>
   <data name="mission_monitor_name" xml:space="preserve">
-    <value>Moniteur de mission</value>
+    <value>Moniteur de missions</value>
   </data>
   <data name="para1" xml:space="preserve">
     <value>Voici la liste de toutes vos missions.</value>
