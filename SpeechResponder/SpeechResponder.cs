@@ -219,6 +219,11 @@ namespace EddiSpeechResponder
                 dict["homestation"] = new ReflectionValue(EDDI.Instance.HomeStation);
             }
 
+            if (EDDI.Instance.SquadronStarSystem != null)
+            {
+                dict["squadronsystem"] = new ReflectionValue(EDDI.Instance.SquadronStarSystem);
+            }
+
             if (EDDI.Instance.CurrentStarSystem != null)
             {
                 dict["system"] = new ReflectionValue(EDDI.Instance.CurrentStarSystem);

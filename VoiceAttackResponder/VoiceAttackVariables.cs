@@ -527,6 +527,14 @@ namespace EddiVoiceAttackResponder
                 vaProxy.SetText("Debt (spoken)", Translations.Humanize(cmdr?.debt));
                 vaProxy.SetText("Title", cmdr?.title ?? Eddi.Properties.EddiResources.Commander);
                 vaProxy.SetText("Gender", cmdr?.gender ?? Eddi.Properties.MainWindow.tab_commander_gender_n);
+                vaProxy.SetText("Squadron name", cmdr?.squadronname);
+                vaProxy.SetText("Squadron id", cmdr?.squadronid);
+                vaProxy.SetInt("Squadron rating", cmdr?.squadronrank?.rank);
+                vaProxy.SetText("Squadron rank", cmdr?.squadronrank?.localizedName);
+                vaProxy.SetText("Squadron allegiance", cmdr?.squadronallegiance?.localizedName);
+                vaProxy.SetText("Squadron power", cmdr?.squadronpower?.localizedName);
+                vaProxy.SetText("Squadron system", cmdr?.squadronsystem);
+                vaProxy.SetText("Squadron faction", cmdr?.squadronfaction);
 
                 // Backwards-compatibility with 1.x
                 vaProxy.SetText("System rank", cmdr?.title);
