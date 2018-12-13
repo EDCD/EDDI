@@ -686,6 +686,10 @@ namespace Eddi
                     {
                         passEvent = eventNearSurface((NearSurfaceEvent)@event);
                     }
+                    else if (@event is SquadronStatusEvent)
+                    {
+                        passEvent = eventSquadronStatus((SquadronStatusEvent)@event);
+                    }
                     else if (@event is SquadronRankEvent)
                     {
                         passEvent = eventSquadronRank((SquadronRankEvent)@event);
@@ -1249,27 +1253,63 @@ namespace Eddi
 
         private bool eventSquadronStatus(SquadronStatusEvent theEvent)
         {
+            MainWindow mw = new MainWindow();
+
             // Update the configuration file
             EDDIConfiguration configuration = EDDIConfiguration.FromFile();
 
             switch (theEvent.status)
             {
                 case "created":
+                    {
+                        SquadronRank rank = SquadronRank.FromRank(1);
+
+                        // Update the configuration file
+                        configuration.SquadronName = theEvent.name;
+                        configuration.SquadronRank = rank;
+
+                        // Update the squadron UI data
+                        mw.eddiSquadronNameText.Text = theEvent.name;
+                        mw.squadronRankDropDown.SelectedValue = rank.localizedName;
+                        configuration = mw.resetSquadronRank(configuration);
+
+                        // Update the commander object, if it exists
+                        if (Cmdr != null)
+                        {
+                            Cmdr.squadronname = theEvent.name;
+                            Cmdr.squadronrank = rank;
+                        }
+                        break;
+                    }
                 case "joined":
                     {
+                        // Update the configuration file
                         configuration.SquadronName = theEvent.name;
-                        ((MainWindow)Application.Current.MainWindow).eddiSquadronNameText.Text = theEvent.name;
+
+                        // Update the squadron UI data
+                        mw.eddiSquadronNameText.Text = theEvent.name;
+
+                        // Update the commander object, if it exists
                         if (Cmdr != null)
                         {
                             Cmdr.squadronname = theEvent.name;
                         }
                         break;
                     }
+                case "disbanded":
                 case "kicked":
                 case "left":
                     {
+                        // Update the configuration file
                         configuration.SquadronName = null;
-                        ((MainWindow)Application.Current.MainWindow).eddiSquadronNameText.Text = string.Empty;
+                        configuration.SquadronID = null;
+
+                        // Update the squadron UI data
+                        mw.eddiSquadronNameText.Text = string.Empty;
+                        mw.eddiSquadronIDText.Text = string.Empty;
+                        configuration = mw.resetSquadronRank(configuration);
+
+                        // Update the commander object, if it exists
                         if (Cmdr != null)
                         {
                             Cmdr.squadronname = null;
@@ -1283,22 +1323,28 @@ namespace Eddi
 
         private bool eventSquadronRank(SquadronRankEvent theEvent)
         {
+            MainWindow mw = new MainWindow();
+            SquadronRank rank = SquadronRank.FromRank(theEvent.newrank + 1);
+
             // Update the configuration file
             EDDIConfiguration configuration = EDDIConfiguration.FromFile();
-            SquadronRank rank = SquadronRank.FromRank(theEvent.newrank + 1);
+            configuration.SquadronName = theEvent.name;
             configuration.SquadronRank = rank;
             configuration.ToFile();
 
-            // Update the UI squadron rank combo box
-            ((MainWindow)Application.Current.MainWindow).squadronRankDropDown.SelectedValue= rank.localizedName;
+            // Update the squadron UI data
+            mw.eddiSquadronNameText.Text = theEvent.name;
+            mw.squadronRankDropDown.SelectedValue = rank.localizedName;
 
             // Update the commander object, if it exists
             if (Cmdr != null)
             {
+                Cmdr.squadronname = theEvent.name;
                 Cmdr.squadronrank = rank;
             }
             return true;
         }
+
 
         private bool eventEnteredCQC(EnteredCQCEvent theEvent)
         {
