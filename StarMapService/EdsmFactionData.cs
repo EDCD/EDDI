@@ -64,6 +64,53 @@ namespace EddiStarMapService
                 FactionState = FactionState.FromName((string)faction["state"]),
                 updatedAt = (DateTime)Dates.fromTimestamp((long?)faction["lastUpdate"])
             };
+
+            IDictionary<string, object> factionDetail = (IDictionary<string, object>)faction;
+            
+            // Active states
+            Faction.ActiveStates = new List<FactionState>();
+            factionDetail.TryGetValue("ActiveStates", out object activeStatesVal);
+            if (activeStatesVal != null)
+            {
+                var activeStatesList = (List<object>)activeStatesVal;
+                foreach (IDictionary<string, object> activeState in activeStatesList)
+                {
+                    Faction.ActiveStates.Add(FactionState.FromEDName(JsonParsing.getString(activeState, "State") ?? "None"));
+                }
+            }
+
+            // Pending states
+            Faction.PendingStates = new List<FactionTrendingState>();
+            factionDetail.TryGetValue("PendingStates", out object pendingStatesVal);
+            if (pendingStatesVal != null)
+            {
+                var pendingStatesList = (List<object>)pendingStatesVal;
+                foreach (IDictionary<string, object> pendingState in pendingStatesList)
+                {
+                    FactionTrendingState pTrendingState = new FactionTrendingState(
+                        FactionState.FromEDName(JsonParsing.getString(pendingState, "State") ?? "None"),
+                        JsonParsing.getInt(pendingState, "Trend")
+                    );
+                    Faction.PendingStates.Add(pTrendingState);
+                }
+            }
+
+            // Recovering states
+            Faction.RecoveringStates = new List<FactionTrendingState>();
+            factionDetail.TryGetValue("RecoveringStates", out object recoveringStatesVal);
+            if (recoveringStatesVal != null)
+            {
+                var recoveringStatesList = (List<object>)recoveringStatesVal;
+                foreach (IDictionary<string, object> recoveringState in recoveringStatesList)
+                {
+                    FactionTrendingState rTrendingState = new FactionTrendingState(
+                        FactionState.FromEDName(JsonParsing.getString(recoveringState, "State") ?? "None"),
+                        JsonParsing.getInt(recoveringState, "Trend")
+                    );
+                    Faction.RecoveringStates.Add(rTrendingState);
+                }
+            }
+
             return Faction;
         }
     }

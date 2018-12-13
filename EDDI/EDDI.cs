@@ -797,7 +797,8 @@ namespace Eddi
                 {
                     name = theEvent.faction,
                     Government = theEvent.Government,
-                    Allegiance = theEvent.Allegiance
+                    Allegiance = theEvent.Allegiance,
+                    FactionState = theEvent.factions?.FirstOrDefault(f => f.name == theEvent.faction)?.FactionState,
                 };
                 CurrentStarSystem.Faction = controllingFaction;
             }
@@ -1066,7 +1067,8 @@ namespace Eddi
             {
                 name = theEvent.faction,
                 Allegiance = theEvent.Allegiance,
-                Government = theEvent.Government
+                Government = theEvent.Government,
+                FactionState = theEvent.factionState,
             };
             CurrentStarSystem.Faction = controllingFaction;
 
