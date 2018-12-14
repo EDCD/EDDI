@@ -192,6 +192,7 @@ namespace EddiSpeechResponder
             }
             else if (@event is JumpedEvent)
             {
+                eventQueue?.RemoveAll(s => s.GetType() == typeof(StarScannedEvent));
                 enqueueStarScan = true;
             }
             else if (@event is SignalDetectedEvent)
