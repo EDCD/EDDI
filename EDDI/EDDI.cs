@@ -1324,7 +1324,7 @@ namespace Eddi
         private bool eventSquadronRank(SquadronRankEvent theEvent)
         {
             MainWindow mw = new MainWindow();
-            SquadronRank rank = SquadronRank.FromRank(theEvent.newrank + 1);
+            SquadronRank rank = SquadronRank.FromRank(theEvent.newrank);
 
             // Update the configuration file
             EDDIConfiguration configuration = EDDIConfiguration.FromFile();

@@ -2974,8 +2974,8 @@ namespace EddiJournalMonitor
                             case "SquadronPromotion":
                                 {
                                     string name = JsonParsing.getString(data, "SquadronName");
-                                    int oldrank = JsonParsing.getInt(data, "OldRank");
-                                    int newrank = JsonParsing.getInt(data, "NewRank");
+                                    int oldrank = JsonParsing.getInt(data, "OldRank" + 1);
+                                    int newrank = JsonParsing.getInt(data, "NewRank" + 1);
 
                                     events.Add(new SquadronRankEvent(timestamp, name, oldrank, newrank) { raw = line });
                                     handled = true;

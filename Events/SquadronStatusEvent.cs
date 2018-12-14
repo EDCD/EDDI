@@ -7,7 +7,7 @@ namespace EddiEvents
     public class SquadronStatusEvent : Event
     {
         public const string NAME = "Squadron status";
-        public const string DESCRIPTION = "Triggered when your status with a squadron changes";
+        public const string DESCRIPTION = "Triggered when your status with a squadron has changed";
         public const string SAMPLE = null;
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 

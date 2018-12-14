@@ -621,7 +621,6 @@ namespace Eddi
             if (eddiConfiguration.SquadronID != eddiSquadronIDText.Text)
             {
                 eddiConfiguration.SquadronID = string.IsNullOrWhiteSpace(eddiSquadronIDText.Text) ? null : eddiSquadronIDText.Text.Trim();
-                eddiConfiguration = resetSquadronRank(eddiConfiguration);
                 eddiConfiguration.ToFile();
 
                 EDDI.Instance.Cmdr.squadronid = eddiConfiguration.SquadronID;
@@ -745,7 +744,7 @@ namespace Eddi
 
             foreach (SquadronRank squadronrank in SquadronRank.AllOfThem)
             {
-                if ((configuration.SquadronName == null || configuration.SquadronID == null) && squadronrank != SquadronRank.None)
+                if (configuration.SquadronName == null && squadronrank != SquadronRank.None)
                 {
                     break;
                 }
@@ -813,7 +812,7 @@ namespace Eddi
 
         public EDDIConfiguration resetSquadronRank(EDDIConfiguration configuration)
         {
-            if (configuration.SquadronName == null || configuration.SquadronID == null)
+            if (configuration.SquadronName == null)
             {
                 configuration.SquadronRank = SquadronRank.None;
                 squadronRankDropDown.SelectedItem = configuration.SquadronRank.localizedName;
@@ -826,7 +825,7 @@ namespace Eddi
 
         private EDDIConfiguration resetSquadronAllegiance(EDDIConfiguration configuration)
         {
-            if (configuration.SquadronName == null || configuration.SquadronID == null)
+            if (configuration.SquadronName == null)
             {
                 configuration.SquadronAllegiance = Superpower.None;
                 squadronAllegianceDropDown.SelectedItem = configuration.SquadronAllegiance.localizedName;

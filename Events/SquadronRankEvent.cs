@@ -7,7 +7,7 @@ namespace EddiEvents
     public class SquadronRankEvent : Event
     {
         public const string NAME = "Squadron rank";
-        public const string DESCRIPTION = "Triggered when your rank with a squadron changes";
+        public const string DESCRIPTION = "Triggered when your rank with a squadron has changed";
         public const string SAMPLE = null;
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
