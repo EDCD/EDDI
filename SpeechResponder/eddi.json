@@ -1734,7 +1734,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{_ Squadron rank }\r\n{_ Triggered when your rank with a squadron has changed }\r\n\r\n\r\nYou have been\r\n{if event.newrank > event.oldrank:\r\n    promoted \r\n|else:\r\n    demoted\r\n}\r\nto {cmdr.squadronrank.name} in the {event.name} squadron.\r\n\r\n.",
+      "script": "{_ Squadron rank }\r\n{_ Triggered when your rank with a squadron has changed }\r\n\r\n\r\nYou have been\r\n{if event.newrank > event.oldrank:\r\n    promoted \r\n|else:\r\n    demoted\r\n}\r\nto {cmdr.squadronrank.name} in the {event.name} squadron.\r\n",
       "default": true,
       "name": "Squadron rank",
       "description": "Triggered when your rank with a squadron has changed"
