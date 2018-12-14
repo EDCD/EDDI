@@ -45,5 +45,14 @@
 
         private SignalSource (string edname) : base(edname, edname)
         { }
+
+        new public static SignalSource FromEDName(string from)
+        {
+            if (from.Contains("$"))
+            {
+                return ResourceBasedLocalizedEDName<SignalSource>.FromEDName(from);
+            }
+            return new SignalSource(from);
+        }
     }
 }
