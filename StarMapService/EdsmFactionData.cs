@@ -65,7 +65,7 @@ namespace EddiStarMapService
                 updatedAt = (DateTime)Dates.fromTimestamp((long?)faction["lastUpdate"])
             };
 
-            IDictionary<string, object> factionDetail = (IDictionary<string, object>)faction;
+            IDictionary<string, object> factionDetail = faction.ToObject<IDictionary<string, object>>();
             
             // Active states
             Faction.ActiveStates = new List<FactionState>();
