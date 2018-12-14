@@ -36,14 +36,19 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * `Settlement approached`: Added `latitude` and `longitude`.
     * Added new event `Discovery scan`, triggered when performing a full system scan (honk) with the FSS
     * Added new event `Signal detected`, triggered when a signal source is detected
-    * Added new event `Body mapped`, triggered after mapping a body with the Surface Area Analysis scanner
     * The `Voice()` function now tolerates incomplete voice names (EDDI will return the first matching voice) and casing no longer matters.
     * Added new function `VoiceDetails()` for accessing details of installed voices while scripting.
     * Fixed very low hab zone values in `Star scanned` events
     * Revised `Star scanned` event script
-    * Revised `Star report` event script
-    * Added `Star habitable zone` non-event script.
-    * The `Body scanned` event now includes new `shortname` and `systemname` properties
+    * Revised `Star report` script
+    * Added `Star habitable zone` script.
+    * The `Body scanned` event has been revised to include new data. 
+    * Revised `Body report` event script.
+    * Revised `Body scanned` script.
+    * Added `Body atmosphere report` script.
+    * Added `Body materials report` script.
+    * Added `Body volcanism report` script. 
+    * Added new event `Body mapped`, triggered after mapping a body with the Surface Area Analysis scanner
     * The `Jumped` event now contains the name of the star at which you've arrived
     * The `Jumped` and `Location` events now contain now contain details about the status of factions.
     * Update `Entered signal source` event by adding new variable `localizedsource`
