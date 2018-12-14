@@ -55,9 +55,6 @@ namespace EddiDataDefinitions
         /// <summary>The commander's squadron faction</summary>
         public string squadronfaction { get; set; }
 
-        /// <summary>The commander's squadron system</summary>
-        public string squadronsystem { get; set; }
-
         /// <summary>The number of credits the commander holds</summary>
         public long credits { get; set; }
 

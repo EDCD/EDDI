@@ -134,7 +134,7 @@
                             </Binding>
                         </TextBox>
                         <Label x:Name ="eddiHomeStationLabel" Grid.Row="2" Grid.Column="0" VerticalContentAlignment="Center" Content="{x:Static resx:MainWindow.tab_commander_home_station}"/>
-                        <ComboBox x:Name="homeStationDropDown" Grid.Row="2" Grid.Column="1" Margin="5" VerticalContentAlignment="Center" SelectionChanged="homeStationDropDownUpdated"/>
+                        <ComboBox x:Name="homeStationDropDown" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan ="2" Margin="5" VerticalContentAlignment="Center" SelectionChanged="homeStationDropDownUpdated"/>
                         <Label x:Name ="eddiGenderLabel" Grid.Row="5" Grid.RowSpan="3" Grid.Column="0" Grid.ColumnSpan ="2" Margin="0, 5" Content="{x:Static resx:MainWindow.tab_commander_gender}"/>
                         <RadioButton x:Name ="eddiGenderMale" Content="{x:Static resx:MainWindow.tab_commander_gender_m}" HorizontalAlignment="Left" VerticalAlignment="Center"  Height="Auto" Grid.Row="5" Checked="isMale_Checked" Margin="0, 12.5, 0, 5" Grid.Column="2"/>
                         <RadioButton x:Name ="eddiGenderFemale" Content="{x:Static resx:MainWindow.tab_commander_gender_f}" HorizontalAlignment="Left" VerticalAlignment="Center"  Height="Auto" Grid.Row="6" Checked="isFemale_Checked" Margin="0, 5" Grid.Column="2"/>

@@ -1270,7 +1270,7 @@ namespace Eddi
 
                         // Update the squadron UI data
                         mw.eddiSquadronNameText.Text = theEvent.name;
-                        mw.squadronRankDropDown.SelectedValue = rank.localizedName;
+                        mw.squadronRankDropDown.SelectedItem = rank.localizedName;
                         configuration = mw.resetSquadronRank(configuration);
 
                         // Update the commander object, if it exists
@@ -1334,7 +1334,7 @@ namespace Eddi
 
             // Update the squadron UI data
             mw.eddiSquadronNameText.Text = theEvent.name;
-            mw.squadronRankDropDown.SelectedValue = rank.localizedName;
+            mw.squadronRankDropDown.SelectedItem = rank.localizedName;
 
             // Update the commander object, if it exists
             if (Cmdr != null)

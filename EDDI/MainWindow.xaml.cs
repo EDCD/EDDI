@@ -195,7 +195,7 @@ namespace Eddi
             {
                 eddiHomeSystemText.Text = string.Empty;
             }
-            homeStationDropDown.SelectedValue = eddiConfiguration.HomeStation == null ? "None" : eddiConfiguration.HomeStation;
+            homeStationDropDown.SelectedItem = eddiConfiguration.HomeStation == null ? "None" : eddiConfiguration.HomeStation;
             eddiVerboseLogging.IsChecked = eddiConfiguration.Debug;
             eddiBetaProgramme.IsChecked = eddiConfiguration.Beta;
             if (eddiConfiguration.Gender == "Female")
@@ -212,13 +212,13 @@ namespace Eddi
             }
             eddiSquadronNameText.Text = eddiConfiguration.SquadronName == null ? string.Empty : eddiConfiguration.SquadronName;
             eddiSquadronIDText.Text = eddiConfiguration.SquadronID == null ? string.Empty : eddiConfiguration.SquadronID;
-            squadronRankDropDown.SelectedValue = eddiConfiguration.SquadronRank == null
+            squadronRankDropDown.SelectedItem = eddiConfiguration.SquadronRank == null
                 ? SquadronRank.FromEDName("None").localizedName : eddiConfiguration.SquadronRank.localizedName;
             ConfigureSquadronRankOptions(eddiConfiguration);
-            squadronAllegianceDropDown.SelectedValue = eddiConfiguration.SquadronAllegiance == null
+            squadronAllegianceDropDown.SelectedItem = eddiConfiguration.SquadronAllegiance == null
                 ? Superpower.FromEDName("None").localizedName : eddiConfiguration.SquadronAllegiance.localizedName;
             ConfigureSquadronAllegianceOptions(eddiConfiguration);
-            squadronPowerDropDown.SelectedValue = eddiConfiguration.SquadronPower == null
+            squadronPowerDropDown.SelectedItem = eddiConfiguration.SquadronPower == null
                 ? Power.FromEDName("None").localizedName : eddiConfiguration.SquadronPower.localizedName;
             ConfigureSquadronPowerOptions(eddiConfiguration);
             if (eddiConfiguration.validSquadronSystem)
@@ -230,7 +230,7 @@ namespace Eddi
             {
                 eddiSquadronSystemText.Text = string.Empty;
             }
-            squadronFactionDropDown.SelectedValue = eddiConfiguration.SquadronFaction == null ? "None" : eddiConfiguration.SquadronFaction;
+            squadronFactionDropDown.SelectedItem = eddiConfiguration.SquadronFaction == null ? "None" : eddiConfiguration.SquadronFaction;
 
             List<LanguageDef> langs = GetAvailableLangs();
             chooseLanguageDropDown.ItemsSource = langs;
@@ -238,7 +238,7 @@ namespace Eddi
             chooseLanguageDropDown.SelectedItem = langs.Find(l => l.ci.Name == Eddi.Properties.Settings.Default.OverrideCulture);
             chooseLanguageDropDown.SelectionChanged += (sender, e) =>
             {
-                LanguageDef cultureDef = (LanguageDef)chooseLanguageDropDown.SelectedValue;
+                LanguageDef cultureDef = (LanguageDef)chooseLanguageDropDown.SelectedItem;
                 Eddi.Properties.Settings.Default.OverrideCulture = cultureDef.ci.Name;
             };
 
@@ -502,7 +502,7 @@ namespace Eddi
                 if (eddiConfiguration.HomeStation != null)
                 {
                     eddiConfiguration.HomeStation = null;
-                    homeStationDropDown.SelectedValue = "None";
+                    homeStationDropDown.SelectedItem = "None";
                     ConfigureHomeStationOptions(null);
                 }
                 eddiConfiguration.ToFile();
@@ -552,7 +552,7 @@ namespace Eddi
         private void homeStationDropDownUpdated(object sender, SelectionChangedEventArgs e)
         {
             EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
-            string homeStationName = homeStationDropDown.SelectedValue.ToString();
+            string homeStationName = homeStationDropDown.SelectedItem.ToString();
             if (eddiConfiguration.HomeStation != homeStationName)
             {
                 eddiConfiguration.HomeStation = homeStationName == "None" ? null : homeStationName;
@@ -646,7 +646,7 @@ namespace Eddi
         private void squadronRankDropDownUpdated(object sender, SelectionChangedEventArgs e)
         {
             EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
-            string squadronRank = squadronRankDropDown.SelectedValue.ToString();
+            string squadronRank = squadronRankDropDown.SelectedItem.ToString();
 
             if (eddiConfiguration.SquadronRank.edname != squadronRank)
             {
@@ -660,7 +660,7 @@ namespace Eddi
         private void squadronAllegianceDropDownUpdated(object sender, SelectionChangedEventArgs e)
         {
             EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
-            string squadronAllegiance = squadronAllegianceDropDown.SelectedValue?.ToString();
+            string squadronAllegiance = squadronAllegianceDropDown.SelectedItem?.ToString();
 
             if (eddiConfiguration.SquadronAllegiance.localizedName != squadronAllegiance)
             {
@@ -678,7 +678,7 @@ namespace Eddi
         private void squadronPowerDropDownUpdated(object sender, SelectionChangedEventArgs e)
         {
             EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
-            string squadronPower = squadronPowerDropDown.SelectedValue?.ToString();
+            string squadronPower = squadronPowerDropDown.SelectedItem?.ToString();
 
             if (eddiConfiguration.SquadronPower.localizedName != squadronPower)
             {
@@ -700,7 +700,7 @@ namespace Eddi
                 if (eddiConfiguration.SquadronFaction != null)
                 {
                     eddiConfiguration.SquadronFaction = null;
-                    squadronFactionDropDown.SelectedValue = "None";
+                    squadronFactionDropDown.SelectedItem = "None";
                     ConfigureSquadronFactionOptions(eddiConfiguration);
                 }
                 eddiConfiguration.ToFile();
@@ -729,7 +729,7 @@ namespace Eddi
         private void squadronFactionDropDownUpdated(object sender, SelectionChangedEventArgs e)
         {
             EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
-            string squadronFaction = squadronFactionDropDown.SelectedValue?.ToString();
+            string squadronFaction = squadronFactionDropDown.SelectedItem?.ToString();
 
             if (eddiConfiguration.SquadronFaction != squadronFaction)
             {
@@ -816,7 +816,7 @@ namespace Eddi
             if (configuration.SquadronName == null || configuration.SquadronID == null)
             {
                 configuration.SquadronRank = SquadronRank.None;
-                squadronRankDropDown.SelectedValue = configuration.SquadronRank.localizedName;
+                squadronRankDropDown.SelectedItem = configuration.SquadronRank.localizedName;
                 configuration = resetSquadronAllegiance(configuration);
             }
             ConfigureSquadronRankOptions(configuration);
@@ -829,7 +829,7 @@ namespace Eddi
             if (configuration.SquadronName == null || configuration.SquadronID == null)
             {
                 configuration.SquadronAllegiance = Superpower.None;
-                squadronAllegianceDropDown.SelectedValue = configuration.SquadronAllegiance.localizedName;
+                squadronAllegianceDropDown.SelectedItem = configuration.SquadronAllegiance.localizedName;
                 configuration = resetSquadronPower(configuration);
             }
             ConfigureSquadronAllegianceOptions(configuration);
@@ -841,7 +841,7 @@ namespace Eddi
             if (configuration.SquadronAllegiance == Superpower.None)
             {
                 configuration.SquadronPower = Power.None;
-                squadronPowerDropDown.SelectedValue = configuration.SquadronPower.localizedName;
+                squadronPowerDropDown.SelectedItem = configuration.SquadronPower.localizedName;
                 configuration.SquadronSystem = null;
                 eddiSquadronSystemText.Text = string.Empty;
                 configuration = resetSquadronFaction(configuration);
@@ -856,7 +856,7 @@ namespace Eddi
             if (configuration.SquadronSystem == null)
             {
                 configuration.SquadronFaction = null;
-                squadronFactionDropDown.SelectedValue = "None";
+                squadronFactionDropDown.SelectedItem = "None";
             }
             ConfigureSquadronFactionOptions(configuration);
 
@@ -1124,17 +1124,17 @@ namespace Eddi
 
         private void ttsTestVoiceButtonClicked(object sender, RoutedEventArgs e)
         {
-            Ship testShip = ShipDefinitions.FromModel((string)ttsTestShipDropDown.SelectedValue);
+            Ship testShip = ShipDefinitions.FromModel((string)ttsTestShipDropDown.SelectedItem);
             testShip.health = 100;
-            string message = String.Format(Properties.EddiResources.voice_test_ship, ShipDefinitions.FromModel((string)ttsTestShipDropDown.SelectedValue).SpokenModel());
+            string message = String.Format(Properties.EddiResources.voice_test_ship, ShipDefinitions.FromModel((string)ttsTestShipDropDown.SelectedItem).SpokenModel());
             SpeechService.Instance.Say(testShip, message, false);
         }
 
         private void ttsTestDamagedVoiceButtonClicked(object sender, RoutedEventArgs e)
         {
-            Ship testShip = ShipDefinitions.FromModel((string)ttsTestShipDropDown.SelectedValue);
+            Ship testShip = ShipDefinitions.FromModel((string)ttsTestShipDropDown.SelectedItem);
             testShip.health = 20;
-            string message = String.Format(Properties.EddiResources.voice_test_damage, ShipDefinitions.FromModel((string)ttsTestShipDropDown.SelectedValue).SpokenModel());
+            string message = String.Format(Properties.EddiResources.voice_test_damage, ShipDefinitions.FromModel((string)ttsTestShipDropDown.SelectedItem).SpokenModel());
             SpeechService.Instance.Say(testShip, message, false);
         }
 
@@ -1155,7 +1155,7 @@ namespace Eddi
         {
             SpeechServiceConfiguration speechConfiguration = new SpeechServiceConfiguration
             {
-                StandardVoice = ttsVoiceDropDown.SelectedValue == null || ttsVoiceDropDown.SelectedValue.ToString() == "Windows TTS default" ? null : ttsVoiceDropDown.SelectedValue.ToString(),
+                StandardVoice = ttsVoiceDropDown.SelectedItem == null || ttsVoiceDropDown.SelectedItem.ToString() == "Windows TTS default" ? null : ttsVoiceDropDown.SelectedItem.ToString(),
                 Volume = (int)ttsVolumeSlider.Value,
                 Rate = (int)ttsRateSlider.Value,
                 EffectsLevel = (int)ttsEffectsLevelSlider.Value,
