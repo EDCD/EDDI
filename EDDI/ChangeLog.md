@@ -46,6 +46,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * The `Body scanned` event now includes new `shortname` and `systemname` properties
     * The `Jumped` event now contains the name of the star at which you've arrived
     * The `Jumped` and `Location` events now contain now contain details about the status of factions.
+    * Update `Entered signal source` event by adding new variable `localizedsource`
   * Status monitor 
     * The status object has new values for: 
       * HUD analysis mode, 

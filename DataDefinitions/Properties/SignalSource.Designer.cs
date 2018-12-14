@@ -88,7 +88,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Low intensity resource extraction site.
+        ///   Looks up a localized string similar to Low Intensity Resource Extraction Site.
         /// </summary>
         public static string MULTIPLAYER_SCENARIO77_TITLE {
             get {
@@ -97,7 +97,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to High intensity resource extraction site.
+        ///   Looks up a localized string similar to High Intensity Resource Extraction Site.
         /// </summary>
         public static string MULTIPLAYER_SCENARIO78_TITLE {
             get {
@@ -142,7 +142,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Combat aftermath detected.
+        ///   Looks up a localized string similar to Combat Aftermath.
         /// </summary>
         public static string USS_Type_Aftermath {
             get {
@@ -151,7 +151,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Anomaly detected.
+        ///   Looks up a localized string similar to Anomaly.
         /// </summary>
         public static string USS_Type_Anomaly {
             get {
@@ -160,7 +160,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Ceremonial comms detected.
+        ///   Looks up a localized string similar to Ceremonial Comms.
         /// </summary>
         public static string USS_Type_Ceremonial {
             get {
@@ -169,7 +169,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Convoy dispersal pattern detected.
+        ///   Looks up a localized string similar to Convoy Dispersal Pattern Detected.
         /// </summary>
         public static string USS_Type_Convoy {
             get {
@@ -178,7 +178,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Distress call.
+        ///   Looks up a localized string similar to Distress Call.
         /// </summary>
         public static string USS_Type_DistressSignal {
             get {
@@ -187,7 +187,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Mission target.
+        ///   Looks up a localized string similar to Mission Target.
         /// </summary>
         public static string USS_Type_MissionTarget {
             get {
@@ -196,7 +196,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Non-Human signal source.
+        ///   Looks up a localized string similar to Non-Human Signal Source.
         /// </summary>
         public static string USS_Type_NonHuman {
             get {
@@ -205,7 +205,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Degraded emissions detected.
+        ///   Looks up a localized string similar to Degraded Emissions.
         /// </summary>
         public static string USS_Type_Salvage {
             get {
@@ -214,7 +214,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Trading beacon.
+        ///   Looks up a localized string similar to Trading Beacon.
         /// </summary>
         public static string USS_Type_TradingBeacon {
             get {
@@ -223,7 +223,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Encoded emissions detected.
+        ///   Looks up a localized string similar to Encoded Emissions.
         /// </summary>
         public static string USS_Type_ValuableSalvage {
             get {
@@ -232,7 +232,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to High grade emissions detected.
+        ///   Looks up a localized string similar to High Grade Emissions.
         /// </summary>
         public static string USS_Type_VeryValuableSalvage {
             get {
@@ -241,7 +241,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Weapons fire detected.
+        ///   Looks up a localized string similar to Weapons Fire.
         /// </summary>
         public static string USS_Type_WeaponsFire {
             get {

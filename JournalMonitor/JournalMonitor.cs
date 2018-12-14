@@ -1727,19 +1727,7 @@ namespace EddiJournalMonitor
                                 break;
                             case "FSSSignalDiscovered":
                                 {
-                                    // The source may be a direct source or a USS. If a USS, we want the USS type.
-                                    SignalSource source;
-                                    if (JsonParsing.getString(data, "USSType") != null)
-                                    {
-                                        source = SignalSource.FromEDName(JsonParsing.getString(data, "USSType"));
-                                        source.fallbackLocalizedName = JsonParsing.getString(data, "USSType_Localised");
-                                    }
-                                    else
-                                    {
-                                        source = SignalSource.FromEDName(JsonParsing.getString(data, "SignalName"));
-                                        source.fallbackLocalizedName = JsonParsing.getString(data, "SignalName_Localised");
-                                    }
-
+                                    SignalSource source = GetSignalSource(data);
                                     string spawningFaction = getFaction(data, "SpawningFaction") ?? Superpower.None.localizedName; // the minor faction, if relevant
                                     decimal? secondsRemaining = JsonParsing.getOptionalDecimal(data, "TimeRemaining"); // remaining lifetime in seconds, if relevant
 
@@ -1788,7 +1776,7 @@ namespace EddiJournalMonitor
                                 }
                             case "USSDrop":
                                 {
-                                    string source = JsonParsing.getString(data, "USSType");
+                                    SignalSource source = GetSignalSource(data);
                                     data.TryGetValue("USSThreat", out object val);
                                     int threat = (int)(long)val;
                                     events.Add(new EnteredSignalSourceEvent(timestamp, source, threat) { raw = line });
@@ -3073,6 +3061,24 @@ namespace EddiJournalMonitor
                 Logging.Error("Exception whilst parsing journal line", "Raw event: " + line + ". Exception: " + ex.Message + ". " + ex.StackTrace);
             }
             return events;
+        }
+
+        private static SignalSource GetSignalSource(IDictionary<string, object> data)
+        {
+            // The source may be a direct source or a USS. If a USS, we want the USS type.
+            SignalSource source;
+            if (JsonParsing.getString(data, "USSType") != null)
+            {
+                source = SignalSource.FromEDName(JsonParsing.getString(data, "USSType"));
+                source.fallbackLocalizedName = JsonParsing.getString(data, "USSType_Localised");
+            }
+            else
+            {
+                source = SignalSource.FromEDName(JsonParsing.getString(data, "SignalName"));
+                source.fallbackLocalizedName = JsonParsing.getString(data, "SignalName_Localised");
+            }
+
+            return source;
         }
 
         private static List<Faction> getFactions(object factionsVal)

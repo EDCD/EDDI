@@ -142,59 +142,59 @@
     <comment>Combat Zone (Low Intensity)</comment>
   </data>
   <data name="USS_Type_Salvage" xml:space="preserve">
-    <value>Degraded emissions detected</value>
+    <value>Degraded Emissions</value>
     <comment>Salvage signal</comment>
   </data>
   <data name="USS_Type_Aftermath" xml:space="preserve">
-    <value>Combat aftermath detected</value>
+    <value>Combat Aftermath</value>
     <comment>Aftermatch signal</comment>
   </data>
   <data name="USS_Type_Anomaly" xml:space="preserve">
-    <value>Anomaly detected</value>
+    <value>Anomaly</value>
     <comment>Anomaly signal</comment>
   </data>
   <data name="USS_Type_Ceremonial" xml:space="preserve">
-    <value>Ceremonial comms detected</value>
+    <value>Ceremonial Comms</value>
     <comment>Ceremonial signal</comment>
   </data>
   <data name="USS_Type_VeryValuableSalvage" xml:space="preserve">
-    <value>High grade emissions detected</value>
+    <value>High Grade Emissions</value>
     <comment>VeryValuable signal</comment>
   </data>
   <data name="USS_Type_ValuableSalvage" xml:space="preserve">
-    <value>Encoded emissions detected</value>
+    <value>Encoded Emissions</value>
     <comment>Valuable signal</comment>
   </data>
   <data name="USS_Type_NonHuman" xml:space="preserve">
-    <value>Non-Human signal source</value>
+    <value>Non-Human Signal Source</value>
     <comment>NonHuman signal</comment>
   </data>
   <data name="USS_Type_WeaponsFire" xml:space="preserve">
-    <value>Weapons fire detected</value>
+    <value>Weapons Fire</value>
     <comment>WeaponsFire signal</comment>
   </data>
   <data name="USS_Type_MissionTarget" xml:space="preserve">
-    <value>Mission target</value>
+    <value>Mission Target</value>
     <comment>MissionTarget signal</comment>
   </data>
   <data name="USS_Type_Convoy" xml:space="preserve">
-    <value>Convoy dispersal pattern detected</value>
+    <value>Convoy Dispersal Pattern Detected</value>
     <comment>Convoy signal</comment>
   </data>
   <data name="USS_Type_DistressSignal" xml:space="preserve">
-    <value>Distress call</value>
+    <value>Distress Call</value>
     <comment>Distress signal</comment>
   </data>
   <data name="USS_Type_TradingBeacon" xml:space="preserve">
-    <value>Trading beacon</value>
+    <value>Trading Beacon</value>
     <comment>TradingBeacon signal</comment>
   </data>
   <data name="MULTIPLAYER_SCENARIO78_TITLE" xml:space="preserve">
-    <value>High intensity resource extraction site</value>
+    <value>High Intensity Resource Extraction Site</value>
     <comment>ResourceExtraction Site (High Intensity)</comment>
   </data>
   <data name="MULTIPLAYER_SCENARIO77_TITLE" xml:space="preserve">
-    <value>Low intensity resource extraction site</value>
+    <value>Low Intensity Resource Extraction Site</value>
     <comment>Resource Extraction site (Low)</comment>
   </data>
   <data name="MULTIPLAYER_SCENARIO14_TITLE" xml:space="preserve">
