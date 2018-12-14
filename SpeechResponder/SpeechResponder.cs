@@ -153,25 +153,28 @@ namespace EddiSpeechResponder
                 }
                 else if (ignoreBodyScan)
                 {
-                    // Suppress surface mapping probes from generating redundant body scan events.
+                    // Suppress surface mapping probes from voicing redundant body scan events.
                     ignoreBodyScan = false;
                     return;
                 }
             }
-            else if (@event is DiscoveryScanEvent)
+            else if (@event is StatusEvent statusEvent)
             {
-                // Beginning with Elite Dangerous v. 3.3, the primary star scan is delivered via a Scan with 
-                // scantype `AutoScan` when you jump into the system. Secondary stars are delivered in a burst 
-                // following an FSSDiscoveryScan. Since each source has a different trigger, we re-order events 
-                // and and report queued star scans immediately after the the FSSDicoveryScan event
-                Say(@event);
-                foreach (Event theEvent in eventQueue.OfType<StarScannedEvent>())
+                if (StatusMonitor.currentStatus.gui_focus == "fss mode")
                 {
-                    Say(theEvent);
+                    // Beginning with Elite Dangerous v. 3.3, the primary star scan is delivered via a Scan with 
+                    // scantype `AutoScan` when you jump into the system. Secondary stars may be delivered in a burst 
+                    // following an FSSDiscoveryScan. Since each source has a different trigger, we re-order events 
+                    // and and report queued star scans when the pilot enters fss mode
+                    Say(@event);
+                    foreach (Event theEvent in eventQueue.OfType<StarScannedEvent>())
+                    {
+                        Say(theEvent);
+                    }
+                    eventQueue.RemoveAll(s => s.GetType() == typeof(StarScannedEvent));
+                    enqueueStarScan = false;
+                    return;
                 }
-                eventQueue.RemoveAll(s => s.GetType() == typeof(StarScannedEvent));
-                enqueueStarScan = false;
-                return;
             }
             else if (@event is StarScannedEvent starScannedEvent)
             {
