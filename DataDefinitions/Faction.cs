@@ -13,9 +13,6 @@ namespace EddiDataDefinitions
         /// <summary> The faction's name </summary>
         public string name { get; set; }
 
-        /// <summary> The faction's EDDB ID </summary>
-        public long? EDDBID { get; set; }
-
         /// <summary> The faction's EDSM ID </summary>
         public long? EDSMID { get; set; }
 
@@ -69,9 +66,6 @@ namespace EddiDataDefinitions
 
         /// <summary> True for the squadron's home faction in their home system </summary>
         public bool squadronhomesystem { get; set; }
-
-        /// <summary> The faction's home system EDDBID </summary>
-        public long? homeSystemEddbId { get; set; }
 
         /// <summary> Whether the faction is a player faction </summary>
         public bool isplayer { get; set; }

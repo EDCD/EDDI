@@ -54,12 +54,6 @@ namespace EddiDataDefinitions
         /// <summary>Unique 64 bit id value for system</summary>
         public long? systemAddress { get; set; }
 
-        /// <summary>The ID of this station's system in EDDB</summary>
-        public long? systemEDDBID { get; set; }
-
-        /// <summary>The ID of this station's body in EDDB</summary>
-        public long? bodyEDDBID { get; set; }
-
         /// <summary>Unique 64 bit id value for station</summary>
         public long? marketId { get; set; }
 
