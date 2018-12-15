@@ -3041,8 +3041,7 @@ namespace EddiJournalMonitor
                     catch (Exception ex)
                     {
                         // Something went wrong, but an unhandled event will still be passed to the responders.
-                        Logging.Warn("Failed to parse line details: " + ex.ToString());
-                        Logging.Error("Exception whilst parsing journal line details", "Raw event: " + line + ". Exception: " + ex.Message + ". " + ex.StackTrace);
+                        Logging.Error("Exception parsing journal line. Raw event: " + edType + ". Exception: " + ex.Message + ". Stacktrace: " + ex.StackTrace, line);
                     }
 
                     if (!handled)
@@ -3057,7 +3056,6 @@ namespace EddiJournalMonitor
             }
             catch (Exception ex)
             {
-                Logging.Warn("Failed to parse line: " + ex.ToString());
                 Logging.Error("Exception whilst parsing journal line", "Raw event: " + line + ". Exception: " + ex.Message + ". " + ex.StackTrace);
             }
             return events;
