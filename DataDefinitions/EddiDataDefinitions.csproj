@@ -77,6 +77,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Happiness.resx</DependentUpon>
     </Compile>
+    <Compile Include="Power.cs" />
     <Compile Include="Properties\MaterialLocations.Designer.cs">
       <DependentUpon>MaterialLocations.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -87,6 +88,16 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>SignalSource.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Powers.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Powers.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\SquadronRanks.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SquadronRanks.resx</DependentUpon>
     </Compile>
     <Compile Include="ReserveLevel.cs" />
     <Compile Include="PlanetClass.cs" />
@@ -123,6 +134,7 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="SquadronRank.cs" />
     <Compile Include="StationLargestPad.cs" />
     <Compile Include="StationService.cs" />
     <Compile Include="TerraformState.cs" />
@@ -471,6 +483,10 @@
     <EmbeddedResource Include="Properties\PlanetClass.hu.resx" />
     <EmbeddedResource Include="Properties\PlanetClass.it.resx" />
     <EmbeddedResource Include="Properties\PlanetClass.ja.resx" />
+    <EmbeddedResource Include="Properties\Powers.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Powers.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Rarities.ja.resx" />
     <EmbeddedResource Include="Properties\ReserveLevel.de.resx" />
     <EmbeddedResource Include="Properties\ReserveLevel.es.resx" />
@@ -644,6 +660,10 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\SecurityLevels.ja.resx" />
     <EmbeddedResource Include="Properties\ShipRoles.ja.resx" />
+    <EmbeddedResource Include="Properties\SquadronRanks.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>SquadronRanks.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\StarColors.ja.resx" />
     <EmbeddedResource Include="Properties\StationLargestPad.de.resx" />
     <EmbeddedResource Include="Properties\StationLargestPad.es.resx" />

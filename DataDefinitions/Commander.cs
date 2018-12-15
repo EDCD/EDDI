@@ -37,6 +37,24 @@ namespace EddiDataDefinitions
         /// <summary>The commander's federation rating</summary>
         public FederationRating federationrating { get; set; }
 
+        /// <summary>The commander's squadron name</summary>
+        public string squadronname { get; set; }
+
+        /// <summary>The commander's squadron ID</summary>
+        public string squadronid { get; set; }
+
+        /// <summary>The commander's squadron rank</summary>
+        public SquadronRank squadronrank { get; set; }
+
+        /// <summary>The commander's squadron superpower</summary>
+        public Superpower squadronallegiance { get; set; }
+
+        /// <summary>The commander's squadron power</summary>
+        public Power squadronpower { get; set; }
+
+        /// <summary>The commander's squadron faction</summary>
+        public string squadronfaction { get; set; }
+
         /// <summary>The number of credits the commander holds</summary>
         public long credits { get; set; }
 

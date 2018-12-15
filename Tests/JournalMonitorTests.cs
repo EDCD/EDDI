@@ -865,6 +865,30 @@ namespace UnitTests
         }
 
         [TestMethod]
+        public void TestSquadronStatusEvent()
+        {
+            string line = @"{ ""timestamp"":""2018-10-17T16:17:55Z"", ""event"":""SquadronCreated"", ""SquadronName"":""TestSquadron"" }";
+            List<Event> events = JournalMonitor.ParseJournalEntry(line);
+            Assert.IsTrue(events.Count == 1);
+
+            SquadronStatusEvent event1 = (SquadronStatusEvent)events[0];
+            Assert.AreEqual("TestSquadron", event1.name);
+            Assert.AreEqual("created", event1.status);
+        }
+
+        [TestMethod]
+        public void TestSquadronRankEvent()
+        {
+            string line = @"{ ""timestamp"":""2018-10-17T16:17:55Z"", ""event"":""SquadronDemotion"", ""SquadronName"":""TestSquadron"", ""OldRank"":3, ""NewRank"":2 }";
+            List<Event> events = JournalMonitor.ParseJournalEntry(line);
+            Assert.IsTrue(events.Count == 1);
+
+            SquadronRankEvent event1 = (SquadronRankEvent)events[0];
+            Assert.AreEqual("TestSquadron", event1.name);
+            Assert.AreEqual(3, event1.oldrank);
+            Assert.AreEqual(2, event1.newrank);
+        }
+
         public void TestLocationAllegiance()
         {
             string line = @"{ ""timestamp"":""2018-12-09T18:39:32Z"", ""event"":""Location"", ""Docked"":false, ""StarSystem"":""Col 285 Sector SP-K b23-7"", ""SystemAddress"":16065459463649, ""StarPos"":[112.31250,13.46875,153.06250], ""SystemAllegiance"":"""", ""SystemEconomy"":""$economy_None;"", ""SystemEconomy_Localised"":""None"", ""SystemSecondEconomy"":""$economy_None;"", ""SystemSecondEconomy_Localised"":""None"", ""SystemGovernment"":""$government_None;"", ""SystemGovernment_Localised"":""None"", ""SystemSecurity"":""$GAlAXY_MAP_INFO_state_anarchy;"", ""SystemSecurity_Localised"":""Anarchy"", ""Population"":0, ""Body"":""Col 285 Sector SP-K b23-7 A"", ""BodyID"":1, ""BodyType"":""Star"" }";

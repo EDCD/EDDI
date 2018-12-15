@@ -93,6 +93,9 @@ namespace UnitTests
 	            }],
 	            ""cargocarried"": 29
             }";
+            // Save original data
+            CargoMonitorConfiguration data = CargoMonitorConfiguration.FromFile();
+
             CargoMonitorConfiguration config = CargoMonitorConfiguration.FromJsonString(cargoConfigJson);
 
             Assert.AreEqual(3, config.cargo.Count);
@@ -113,11 +116,17 @@ namespace UnitTests
             Assert.AreEqual(4, haulage.amount);
             Assert.AreEqual(4, haulage.remaining);
             Assert.IsFalse(haulage.shared);
+
+            // Restore original data
+            data.ToFile();
         }
 
         [TestMethod]
         public void TestCargoEventsScenario()
         {
+            // Save original data
+            CargoMonitorConfiguration data = CargoMonitorConfiguration.FromFile();
+
             var privateObject = new PrivateObject(cargoMonitor);
             Haulage haulage = new Haulage();
 
@@ -140,7 +149,8 @@ namespace UnitTests
             cargo = cargoMonitor.inventory.ToList().FirstOrDefault(c => c.edname == "Biowaste");
             Assert.AreEqual(30, cargo.total);
             Assert.AreEqual(30, cargo.haulage);
-            haulage = cargo.haulageData.First();
+            haulage = cargo.haulageData.FirstOrDefault();
+            Assert.IsNotNull(haulage);
             Assert.AreEqual(426282789, haulage.missionid);
             Assert.AreEqual("Mission_None", haulage.name);
             Assert.AreEqual(30, haulage.amount);
@@ -155,11 +165,17 @@ namespace UnitTests
             cargo = cargoMonitor.inventory.ToList().FirstOrDefault(c => c.edname == "Biowaste");
             haulage = cargo.haulageData.FirstOrDefault(h => h.missionid == 426282789);
             Assert.AreEqual("Failed", haulage.status);
+
+            // Restore original data
+            data.ToFile();
         }
 
         [TestMethod]
         public void TestCargoMissionScenario()
         {
+            // Save original data
+            CargoMonitorConfiguration data = CargoMonitorConfiguration.FromFile();
+
             var privateObject = new PrivateObject(cargoMonitor);
             Haulage haulage = new Haulage();
 
@@ -291,6 +307,9 @@ namespace UnitTests
             events = JournalMonitor.ParseJournalEntry(line);
             privateObject.Invoke("_handleCargoDepotEvent", new object[] { events[0] });
             Assert.AreEqual(0, haulage.remaining);
+
+            // Restore original data
+            data.ToFile();
         }
 
         [TestCleanup]

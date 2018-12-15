@@ -11,17 +11,24 @@
             resourceManager.IgnoreCase = true;
             missingEDNameHandler = (edname) => new Superpower(edname);
 
-            var Federation = new Superpower("$faction_Federation;");
-            var Alliance = new Superpower("$faction_Alliance;");
-            var Empire = new Superpower("$faction_Empire;");
-            var Independent = new Superpower("$faction_Independent;");
-            var PilotsFederation = new Superpower("$faction_PilotsFederation;");
-            var Pirate = new Superpower("$faction_Pirate;");
-            var Guardian = new Superpower("$faction_Guardian;");
-            var Thargoid = new Superpower("$faction_Thargoid;");
+            Federation = new Superpower("$faction_Federation;");
+            Alliance = new Superpower("$faction_Alliance;");
+            Empire = new Superpower("$faction_Empire;");
+            Independent = new Superpower("$faction_Independent;");
+            PilotsFederation = new Superpower("$faction_PilotsFederation;");
+            Pirate = new Superpower("$faction_Pirate;");
+            Guardian = new Superpower("$faction_Guardian;");
+            Thargoid = new Superpower("$faction_Thargoid;");
         }
 
-        public static readonly Superpower None = new Superpower("$faction_None");
+        public static readonly Superpower Federation;
+        public static readonly Superpower Alliance;
+        public static readonly Superpower Empire;
+        public static readonly Superpower Independent;
+        public static readonly Superpower PilotsFederation;
+        public static readonly Superpower Pirate;
+        public static readonly Superpower Guardian;
+        public static readonly Superpower Thargoid;
 
         // dummy used to ensure that the static constructor has run
         public Superpower() : this("")

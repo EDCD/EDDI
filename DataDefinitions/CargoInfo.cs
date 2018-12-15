@@ -33,7 +33,6 @@ namespace EddiDataDefinitions
             this.missionid = MissionID;
             this.count = Count;
             this.stolen = Stolen;
-
         }
     }
 }

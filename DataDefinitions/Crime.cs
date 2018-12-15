@@ -35,7 +35,7 @@ namespace EddiDataDefinitions
             var CollidedWithDamage = new Crime("collidedAtSpeedInNoFireZone_hulldamage");
             var RecklessWeaponsDischarge = new Crime("recklessWeaponsDischarge");
             var PassengerWanted = new Crime("passengerWanted");
-    }
+        }
 
         // dummy used to ensure that the static constructor has run
         public Crime() : this("")

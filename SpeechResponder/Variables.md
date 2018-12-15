@@ -33,6 +33,12 @@ Any values might be missing, depending on EDDI's configuration.
     - `credits` the number of credits the commander owns
     - `debt` the amount of debt the commander owes
     - `gender` the gender of the commander, as selected in EDDI's configuration (string, either 'Male', 'Female' or 'Neither')
+    - `squadronname` the name of the commander's squadron
+    - `squadronid` the ID of the commander's squadron
+    - `squadronrank` the current squadron rank of the commander (this is a Rating object)
+    - `squadronallegiance` the superpower allegiance of the commander's squadron (use squadronallegiance.name)
+    - `squadronpower` the power (e.g. Aisling Duval) to which the commander's squadron pledges fealty (use squadronpower.name)
+    - `squadronfaction` the faction within the squadron system to which the commander's squadron is aligned
     - `friends` the commander's friends observed during the play session (this is a list of Friend objects)
     - `engineers` the commander's relations with engineers, including any ranks or progression recorded during the play session (this is a list of Engineer objects)
 
@@ -101,6 +107,7 @@ Mission related details of haulage under the 'haulageData' object, within the Ca
     - `sourcebody` station for 'source and return' missions, body for 'salvage' missions
     - `type` type (altruism, delivery, massacre, etc) of the mission
     - `legal` true if the mission is legal
+    - `need` amount of the commodity needed to satisfy mission requirements
     - `shared` true if the mission was shared by a wing-mate
     - `amount` amount of the commodity involved in the mission
     - `collected` amount of the commodity collected in a wing mission
@@ -325,6 +332,14 @@ Values are the same as for the current starsystem.
 #### Home starsystem
 
 Information about your home starsystem is available under the `homesystem` object.
+
+Any values might be missing, depending on EDDI's configuration and the information available about the system.
+
+Values are the same as for the current starsystem.
+
+#### Squadron starsystem
+
+Information about your squadron starsystem is available under the `squadronsystem` object.
 
 Any values might be missing, depending on EDDI's configuration and the information available about the system.
 

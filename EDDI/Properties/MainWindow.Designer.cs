@@ -250,6 +250,69 @@ namespace Eddi.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Squadron allegiance:.
+        /// </summary>
+        public static string tab_commander_squadron_allegiance {
+            get {
+                return ResourceManager.GetString("tab_commander_squadron_allegiance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Squadron faction:.
+        /// </summary>
+        public static string tab_commander_squadron_faction {
+            get {
+                return ResourceManager.GetString("tab_commander_squadron_faction", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Squadron ID:.
+        /// </summary>
+        public static string tab_commander_squadron_id {
+            get {
+                return ResourceManager.GetString("tab_commander_squadron_id", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Squadron name:.
+        /// </summary>
+        public static string tab_commander_squadron_name {
+            get {
+                return ResourceManager.GetString("tab_commander_squadron_name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Squadron power:.
+        /// </summary>
+        public static string tab_commander_squadron_power {
+            get {
+                return ResourceManager.GetString("tab_commander_squadron_power", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Squadron rank:.
+        /// </summary>
+        public static string tab_commander_squadron_rank {
+            get {
+                return ResourceManager.GetString("tab_commander_squadron_rank", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Squadron system:.
+        /// </summary>
+        public static string tab_commander_squadron_system {
+            get {
+                return ResourceManager.GetString("tab_commander_squadron_system", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Frontier has an API that allows EDDI to obtain information about your ships, the current station&apos;s market, and various other items. This data is not available elsewhere. If you want EDDI to obtain and use this information you need to enter your Frontier in-game email address and password below..
         /// </summary>
         public static string tab_frontier_desc {

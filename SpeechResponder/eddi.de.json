@@ -1775,6 +1775,24 @@
       "name": "Silent running",
       "description": "Triggered when you activate or deactivate silent running"
     },
+    "Squadron rank": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{_ Squadron rank }\r\n{_ Triggered when your rank with a squadron has changed }\r\n\r\n\r\nYou have been\r\n{if event.newrank > event.oldrank:\r\n    promoted \r\n|else:\r\n    demoted\r\n}\r\nto {cmdr.squadronrank.name} in the {event.name} squadron.\r\n",
+      "default": true,
+      "name": "Squadron rank",
+      "description": "Triggered when your rank with a squadron has changed"
+    },
+    "Squadron status": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{_ Squadron status }\r\n{_ Triggered when your status with a squadron changes }\r\n\r\n\r\n{if event.status = \"applied\":\r\n    You have applied for admission into the {event.name} squadron.\r\n|elif event.status = \"created\":\r\n    You have created the {event.name} squadron.\r\n|elif event.status = \"disbanded\":\r\n    The {event.name} squadron has been disbanded.\r\n|elif event.status = \"invited\":\r\n    You have been invited into the {event.name} squadron.\r\n|elif event.status = \"joined\":\r\n    You have joined the {event.name} squadron.\r\n|elif event.status = \"kicked\":\r\n    You have been kicked from the {event.name} squadron.\r\n|elif event.status = \"left\":\r\n    You have left the {event.name} squadron.\r\n}\r\n",
+      "default": true,
+      "name": "Squadron status",
+      "description": "Triggered when your status with a squadron has changed"
+    },
     "SRV docked": {
       "enabled": true,
       "priority": 3,

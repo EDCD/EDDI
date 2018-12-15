@@ -24,6 +24,7 @@ namespace EddiVoiceAttackResponder
         private static StarSystem CurrentStarSystem { get; set; } = new StarSystem();
         private static StarSystem HomeStarSystem { get; set; } = new StarSystem();
         private static StarSystem LastStarSystem { get; set; } = new StarSystem();
+        private static StarSystem SquadronStarSystem { get; set; } = new StarSystem();
         private static Body CurrentStellarBody { get; set; } = new Body();
         private static Station CurrentStation { get; set; } = new Station();
         private static Ship Ship { get; set; } = new Ship();
@@ -256,6 +257,19 @@ namespace EddiVoiceAttackResponder
                 {
                     setStarSystemValues(EDDI.Instance.LastStarSystem, "Last system", ref vaProxy);
                     LastStarSystem = EDDI.Instance.LastStarSystem;
+                }
+            }
+            catch (Exception ex)
+            {
+                Logging.Error("Failed to set last system", ex);
+            }
+
+            try
+            {
+                if (EDDI.Instance.SquadronStarSystem != SquadronStarSystem)
+                {
+                    setStarSystemValues(EDDI.Instance.SquadronStarSystem, "Squadron system", ref vaProxy);
+                    SquadronStarSystem = EDDI.Instance.SquadronStarSystem;
                 }
             }
             catch (Exception ex)
@@ -527,6 +541,13 @@ namespace EddiVoiceAttackResponder
                 vaProxy.SetText("Debt (spoken)", Translations.Humanize(cmdr?.debt));
                 vaProxy.SetText("Title", cmdr?.title ?? Eddi.Properties.EddiResources.Commander);
                 vaProxy.SetText("Gender", cmdr?.gender ?? Eddi.Properties.MainWindow.tab_commander_gender_n);
+                vaProxy.SetText("Squadron name", cmdr?.squadronname);
+                vaProxy.SetText("Squadron id", cmdr?.squadronid);
+                vaProxy.SetInt("Squadron rating", cmdr?.squadronrank?.rank);
+                vaProxy.SetText("Squadron rank", cmdr?.squadronrank?.localizedName);
+                vaProxy.SetText("Squadron allegiance", cmdr?.squadronallegiance?.localizedName);
+                vaProxy.SetText("Squadron power", cmdr?.squadronpower?.localizedName);
+                vaProxy.SetText("Squadron faction", cmdr?.squadronfaction);
 
                 // Backwards-compatibility with 1.x
                 vaProxy.SetText("System rank", cmdr?.title);

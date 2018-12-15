@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using EddiDataDefinitions;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -10,24 +11,129 @@ namespace Eddi
     /// <summary>Configuration for EDDI</summary>
     public class EDDIConfiguration : INotifyPropertyChanged
     {
+        [JsonIgnore]
+        private string _HomeSystem;
         [JsonProperty("homeSystem")]
         public string HomeSystem
         {
             get { return _HomeSystem; }
             set { _HomeSystem = value; }
         }
+
+        [JsonIgnore]
+        private string _HomeStation;
         [JsonProperty("homeStation")]
         public string HomeStation
         {
             get { return _HomeStation; }
             set { _HomeStation = value; }
         }
+
+        [JsonIgnore]
+        private string _SquadronName;
+        [JsonProperty("squadronName")]
+        public string SquadronName
+        {
+            get { return _SquadronName; }
+            set { _SquadronName = value; }
+        }
+
+        [JsonIgnore]
+        private string _SquadronID;
+        [JsonProperty("squadronID")]
+        public string SquadronID
+        {
+            get { return _SquadronID; }
+            set { _SquadronID = value; }
+        }
+
+        [JsonProperty("squadronRank")]
+        public string squadronRank
+        {
+
+            get => SquadronRank?.edname ?? "None";
+            set
+            {
+                SquadronRank srDef = SquadronRank.FromEDName(value);
+                this.SquadronRank = srDef;
+            }
+        }
+        [JsonIgnore]
+        private SquadronRank _SquadronRank;
+        [JsonIgnore]
+        public SquadronRank SquadronRank
+        {
+            get { return _SquadronRank; }
+            set { _SquadronRank = value; }
+        }
+
+        [JsonProperty("squadronAllegiance")]
+        public string squadronAllegiance
+        {
+
+            get => SquadronAllegiance?.edname ?? "None";
+            set
+            {
+                Superpower saDef = Superpower.FromEDName(value);
+                this.SquadronAllegiance = saDef;
+            }
+        }
+        [JsonIgnore]
+        private Superpower _SquadronAllegiance;
+        [JsonIgnore]
+        public Superpower SquadronAllegiance
+        {
+            get { return _SquadronAllegiance; }
+            set { _SquadronAllegiance = value; }
+        }
+
+        [JsonProperty("squadronPower")]
+        public string squadronPower
+        {
+
+            get => SquadronPower?.edname ?? "None";
+            set
+            {
+                Power spDef = Power.FromEDName(value);
+                this.SquadronPower = spDef;
+            }
+        }
+        [JsonIgnore]
+        private Power _SquadronPower;
+        [JsonIgnore]
+        public Power SquadronPower
+        {
+            get { return _SquadronPower; }
+            set { _SquadronPower = value; }
+        }
+
+        [JsonIgnore]
+        private string _SquadronSystem;
+        [JsonProperty("squadronSystem")]
+        public string SquadronSystem
+        {
+            get { return _SquadronSystem; }
+            set { _SquadronSystem = value; }
+        }
+
+        [JsonIgnore]
+        private string _SquadronFaction;
+        [JsonProperty("squadronFaction")]
+        public string SquadronFaction
+        {
+            get { return _SquadronFaction; }
+            set { _SquadronFaction = value; }
+        }
+
         [JsonProperty("debug")]
         public bool Debug { get; set; }
+
         [JsonProperty("beta")]
         public bool Beta { get; set; }
+
         [JsonProperty("plugins")]
         public IDictionary<string, bool> Plugins { get; set; }
+
         [JsonProperty("Gender")]
         public string Gender { get; set; } = "Male";
 
@@ -36,11 +142,9 @@ namespace Eddi
         public string exporttarget { get; set; } = "Coriolis";
 
         /// <summary> Administrative values </summary>
-        public bool validSystem { get; set; }
-        public bool validStation { get; set; }
-
-        private string _HomeSystem;
-        private string _HomeStation;
+        public bool validHomeSystem { get; set; }
+        public bool validHomeStation { get; set; }
+        public bool validSquadronSystem { get; set; }
 
         [JsonIgnore]
         private string dataPath;
