@@ -3093,7 +3093,7 @@ namespace EddiJournalMonitor
                 Government fGov = Government.FromEDName(JsonParsing.getString(factionDetail, "SystemGovernment") ?? "$government_None;");
                 decimal influence = JsonParsing.getDecimal(factionDetail, "Influence");
                 Happiness happiness = Happiness.FromEDName(JsonParsing.getString(factionDetail, "Happiness") ?? string.Empty);
-                decimal myReputation = JsonParsing.getDecimal(factionDetail, "MyReputation");
+                decimal myReputation = JsonParsing.getOptionalDecimal(factionDetail, "MyReputation") ?? 0;
                 Faction fFaction = new Faction()
                 {
                     name = fName,
