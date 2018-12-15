@@ -11,6 +11,7 @@
             resourceManager.IgnoreCase = true;
             missingEDNameHandler = (edname) => new Superpower(edname);
 
+            None = new Superpower("$faction_None"); // no semicolon in EDName
             Federation = new Superpower("$faction_Federation;");
             Alliance = new Superpower("$faction_Alliance;");
             Empire = new Superpower("$faction_Empire;");
@@ -21,6 +22,7 @@
             Thargoid = new Superpower("$faction_Thargoid;");
         }
 
+        public static readonly Superpower None;
         public static readonly Superpower Federation;
         public static readonly Superpower Alliance;
         public static readonly Superpower Empire;
