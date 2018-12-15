@@ -3,56 +3,32 @@
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
 ### Development
-  * Speech responder
-    * Fixed system messages triggering the `Message received` event.
-    * Added new channels to the `Message received` event: "squadron" and "starsystem"
-
-### 3.3-b1
   * Core
-    * Fixed a bug that could reset system comments, visits, and the date last visited while refreshing star system data. 
     * Fixed a bug that could result in rotational and orbital periods being reported as much faster than they really were.
+    * Fixed very low hab zone values in `Star scanned` events
     * The `body` object now includes a new `shortname` property (removing the system name if it is part of the body name)
     * The `body` object now includes `estimatedhabzoneinner` and `estimatedhabzoneouter` for stars.
+    * The `Body scanned` event has been revised to include new data. 
     * Added `faction` object. Check the `Variables` window for details.
-  * Material monitor
-    * Revised material rarities and default material maxima (material maxima are recalulated to the following values if not set): 
-      * (Thargoid) Propulsion Elements (Very Rare - 100 MAX)
-      * (Thargoid) Weapon Parts (Rare - 150 MAX)
-      * Pattern Alpha Obelisk Data (Rare - 150 MAX)
-      * Pattern Beta Obelisk Data (Rare - 150 MAX)
-      * Pattern Gamma Obelisk Data (Rare - 150 MAX)
-      * Polonium (Rare - 150 MAX)
-      * Antimony (Rare - 150 MAX)
   * Ship monitor
     * Add new value to the current ship: `ident`
   * Speech responder
-    * Added new event `EngineerContributed`, triggered when contributing resources to an engineer in exchange for access.
-    * Added new function `EngineerDetails()` for accessing information about relations with engineers.
-    * The `cmdr` object now includes `engineers`.
-    * Updated documentation to describe `Engineer` object and `EngineerDetails` function.
-    * `Docked event`: Added `wanted`, `activefine`, and `cockpitbreach`.
-    * `Engineer progressed` event: Added `stage`, `rankprogress`, and `progresstype`.
-    * `Modification applied` event: Removed. This event was redundant with `Modification crafted` and is no longer written by the game as of Elite Dangerous version 3.0.
-    * `Modification crafted` event: Added `module`, `quality`, and `experimentaleffect`.
-    * `Settlement approached`: Added `latitude` and `longitude`.
+    * Fixed system messages triggering the `Message received` event.
+    * Added new channels to the `Message received` event: "squadron" and "starsystem"
+    * Added new event `Body mapped`, triggered after mapping a body with the Surface Area Analysis scanner
     * Added new event `Discovery scan`, triggered when performing a full system scan (honk) with the FSS
     * Added new event `Signal detected`, triggered when a signal source is detected
-    * The `Voice()` function now tolerates incomplete voice names (EDDI will return the first matching voice) and casing no longer matters.
-    * Added new function `VoiceDetails()` for accessing details of installed voices while scripting.
-    * Fixed very low hab zone values in `Star scanned` events
-    * Revised `Star scanned` event script
-    * Revised `Star report` script
-    * Added `Star habitable zone` script.
-    * The `Body scanned` event has been revised to include new data. 
-    * Revised `Body report` event script.
+    * Updated `Jumped` event to contains the name of the star at which you've arrived
+    * Updated `Jumped` and `Location` events to contain details about the status of factions.
+    * Updated `Entered signal source` event by adding new variable `localizedsource`
+    * Revised `Body report` event script.* **
     * Revised `Body scanned` script.
-    * Added `Body atmosphere report` script.
-    * Added `Body materials report` script.
+    * Revised `Star scanned` event script
+    * Revised `Star report` script * **
+    * Added `Body atmosphere report` script. **
+    * Added `Body materials report` script. **
     * Added `Body volcanism report` script. 
-    * Added new event `Body mapped`, triggered after mapping a body with the Surface Area Analysis scanner
-    * The `Jumped` event now contains the name of the star at which you've arrived
-    * The `Jumped` and `Location` events now contain now contain details about the status of factions.
-    * Update `Entered signal source` event by adding new variable `localizedsource`
+    * Added `Star habitable zone` script.
   * Status monitor 
     * The status object has new values for: 
       * HUD analysis mode, 
@@ -66,6 +42,34 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * fuel percent
       * fuel time remaining (in seconds)
       * cargo carried (qty)
+
+    *In the interest of brevity, the default `Body report` and `Star report` scripts now will only be used if your ship's role is set to either `Multipurpose` or `Exploration`. 
+    **Script contains a `Preferences` section for setting user preferences about the details reported.
+
+### 3.3-b1
+  * Core
+    * Fixed a bug that could reset system comments, visits, and the date last visited while refreshing star system data. 
+  * Material monitor
+    * Revised material rarities and default material maxima (material maxima are recalulated to the following values if not set): 
+      * (Thargoid) Propulsion Elements (Very Rare - 100 MAX)
+      * (Thargoid) Weapon Parts (Rare - 150 MAX)
+      * Pattern Alpha Obelisk Data (Rare - 150 MAX)
+      * Pattern Beta Obelisk Data (Rare - 150 MAX)
+      * Pattern Gamma Obelisk Data (Rare - 150 MAX)
+      * Polonium (Rare - 150 MAX)
+      * Antimony (Rare - 150 MAX)
+  * Speech responder
+    * Added new event `EngineerContributed`, triggered when contributing resources to an engineer in exchange for access.
+    * Added new function `EngineerDetails()` for accessing information about relations with engineers.
+    * The `cmdr` object now includes `engineers`.
+    * Updated documentation to describe `Engineer` object and `EngineerDetails` function.
+    * `Docked event`: Added `wanted`, `activefine`, and `cockpitbreach`.
+    * `Engineer progressed` event: Added `stage`, `rankprogress`, and `progresstype`.
+    * `Modification applied` event: Removed. This event was redundant with `Modification crafted` and is no longer written by the game as of Elite Dangerous version 3.0.
+    * `Modification crafted` event: Added `module`, `quality`, and `experimentaleffect`.
+    * `Settlement approached`: Added `latitude` and `longitude`.
+    * The `Voice()` function now tolerates incomplete voice names (EDDI will return the first matching voice) and casing no longer matters.
+    * Added new function `VoiceDetails()` for accessing details of installed voices while scripting.
 
 ### 3.1.2
   * Localization
