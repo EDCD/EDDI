@@ -650,7 +650,7 @@ namespace EddiJournalMonitor
                             case "Scan":
                                 {
                                     string name = JsonParsing.getString(data, "BodyName");
-                                    string systemName = EDDI.Instance.CurrentStarSystem.name;
+                                    string systemName = EDDI.Instance?.CurrentStarSystem?.name;
                                     string scantype = JsonParsing.getString(data, "ScanType");
                                     decimal distancefromarrival = JsonParsing.getDecimal(data, "DistanceFromArrivalLS");
 
