@@ -10,6 +10,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
 ### 3.3-b1
   * Core
     * Fixed a bug that could reset system comments, visits, and the date last visited while refreshing star system data. 
+    * Fixed a bug that could result in rotational and orbital periods being reported as much faster than they really were.
     * The `body` object now includes a new `shortname` property (removing the system name if it is part of the body name)
     * The `body` object now includes `estimatedhabzoneinner` and `estimatedhabzoneouter` for stars.
     * Added `faction` object. Check the `Variables` window for details.
