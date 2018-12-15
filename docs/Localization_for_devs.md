@@ -179,6 +179,7 @@ In this example only the `None` value is needed by client code, so that is the o
 ```csharp
         public static readonly Government None;
 ```
+**NB** Any variables we want to expose this way should be declared in the top level class but initialised in the static class constructor. This ensures that `AllOfThem` is fully populated from the get-go.
 
 The base class needs a public no-argument constructor, which it calls if `AllOfThem` is empty to cause the static constructor to run and populate it. As long as its `basename` is null or empty, the object returned by this constructor will be discarded and not added to `AllOfThem`.
 ```csharp
