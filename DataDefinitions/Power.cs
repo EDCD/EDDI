@@ -17,10 +17,10 @@ namespace EddiDataDefinitions
             var AislingDuval = new Power("AislingDuval", Superpower.Empire, "Cubeo");
             var ArchonDelaine = new Power("ArchonDelaine", Superpower.Independent, "Harma");
             var DentonPatreus = new Power("DentonPatreus", Superpower.Empire, "Eotienses");
-            var EdmundMahon = new Power("EdmundMahon", Superpower.Alliance, "Eotienses");
+            var EdmundMahon = new Power("EdmundMahon", Superpower.Alliance, "Gateway");
             var FeliciaWinters = new Power("FeliciaWinters", Superpower.Federation, "Rhea");
             var LiYongRui = new Power("LiYongRui", Superpower.Independent, "Lembava");
-            var PranavAntal = new Power("PranavAntal", Superpower.Independent, "Eotienses");
+            var PranavAntal = new Power("PranavAntal", Superpower.Independent, "Polevnic");
             var YuriGrom = new Power("YuriGrom", Superpower.Alliance, "Clayakarma");
             var ZacharyHudson = new Power("ZacharyHudson", Superpower.Federation, "Nanomam");
             var ZeminaTorval = new Power("ZeminaTorval", Superpower.Empire, "Synteini");
