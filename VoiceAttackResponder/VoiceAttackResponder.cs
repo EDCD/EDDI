@@ -4,8 +4,6 @@ using EddiEvents;
 using Newtonsoft.Json;
 using System;
 using System.Windows.Controls;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace EddiVoiceAttackResponder
 {
@@ -49,11 +47,11 @@ namespace EddiVoiceAttackResponder
             Logging.Info("Started VoiceAttack responder");
         }
 
-        public void Handle(Event @event)
+        public void Handle(Event theEvent)
         {
-            Logging.Debug("Received event " + JsonConvert.SerializeObject(@event));
-            VoiceAttackPlugin.EventQueue.Add(@event);
-            OnEvent(new EventArgs(), @event);
+            Logging.Debug("Received event " + JsonConvert.SerializeObject(theEvent));
+            VoiceAttackPlugin.EventQueue.Add(theEvent);
+            OnEvent(new EventArgs(), theEvent);
         }
 
         public bool Start()
