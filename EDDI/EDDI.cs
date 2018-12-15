@@ -1442,8 +1442,8 @@ namespace Eddi
                 body.gravity = theEvent.gravity;
                 body.eccentricity = theEvent.eccentricity;
                 body.inclination = theEvent.orbitalinclination;
-                body.orbitalperiod = Math.Round(theEvent.orbitalperiod / 86400, 2);
-                body.rotationalperiod = Math.Round(theEvent.rotationperiod / 86400, 2);
+                body.orbitalperiod = theEvent.orbitalperiod;
+                body.rotationalperiod = theEvent.rotationperiod;
                 body.semimajoraxis = theEvent.semimajoraxis;
                 body.pressure = theEvent.pressure;
                 body.terraformState = theEvent.terraformState;
