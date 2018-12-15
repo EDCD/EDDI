@@ -853,36 +853,6 @@ namespace UnitTests
         }
 
         [TestMethod]
-        public void TestFSSDiscoveryScanEvent()
-        {
-            string honk = @"{ ""timestamp"":""2018-11-04T03:10:35Z"", ""event"":""FSSDiscoveryScan"", ""Progress"":1.000000, ""BodyCount"":12, ""NonBodyCount"":27 }";
-            string scan1 = @"{ ""timestamp"":""2018-11-04T03:10:36Z"", ""event"":""Scan"", ""ScanType"":""Detailed"", ""BodyName"":""Diaguandri B"", ""BodyID"":3, ""Parents"":[ {""Null"":1}, {""Null"":0} ], ""DistanceFromArrivalLS"":186.103638, ""StarType"":""M"", ""StellarMass"":0.359375, ""Radius"":399666272.000000, ""AbsoluteMagnitude"":8.794571, ""Age_MY"":10028, ""SurfaceTemperature"":3060.000000, ""Luminosity"":""Va"", ""SemiMajorAxis"":25363693568.000000, ""Eccentricity"":0.198428, ""OrbitalInclination"":-13.164415, ""Periapsis"":93.941284, ""OrbitalPeriod"":6171345.500000, ""RotationPeriod"":379526.468750, ""AxialTilt"":0.000000, ""Rings"":[ { ""Name"":""Diaguandri B A Belt"", ""RingClass"":""eRingClass_Rocky"", ""MassMT"":5.0604e+11, ""InnerRad"":7.5844e+08, ""OuterRad"":1.7156e+09 } ] }";
-            string scan2 = @"{ ""timestamp"":""2018-11-04T03:10:36Z"", ""event"":""Scan"", ""ScanType"":""Detailed"", ""BodyName"":""Diaguandri A"", ""BodyID"":2, ""Parents"":[ {""Null"":1}, {""Null"":0} ], ""DistanceFromArrivalLS"":0.000000, ""StarType"":""M"", ""StellarMass"":0.429688, ""Radius"":386910048.000000, ""AbsoluteMagnitude"":8.290100, ""Age_MY"":10028, ""SurfaceTemperature"":3493.000000, ""Luminosity"":""Va"", ""SemiMajorAxis"":21213272064.000000, ""Eccentricity"":0.198428, ""OrbitalInclination"":-13.164415, ""Periapsis"":273.941284, ""OrbitalPeriod"":6171345.500000, ""RotationPeriod"":169744.828125, ""AxialTilt"":0.000000, ""Rings"":[ { ""Name"":""Diaguandri A A Belt"", ""RingClass"":""eRingClass_MetalRich"", ""MassMT"":7.9129e+10, ""InnerRad"":6.6684e+08, ""OuterRad"":1.8209e+09 } ] }";
-            string scan3 = @"{ ""timestamp"":""2018-11-04T03:10:36Z"", ""event"":""Scan"", ""ScanType"":""Detailed"", ""BodyName"":""Diaguandri C"", ""BodyID"":4, ""Parents"":[ {""Null"":0} ], ""DistanceFromArrivalLS"":13505.447266, ""StarType"":""L"", ""StellarMass"":0.148438, ""Radius"":220867088.000000, ""AbsoluteMagnitude"":12.872360, ""Age_MY"":10028, ""SurfaceTemperature"":1610.000000, ""Luminosity"":""V"", ""SemiMajorAxis"":3181790887936.000000, ""Eccentricity"":0.092003, ""OrbitalInclination"":53.780201, ""Periapsis"":33.084736, ""OrbitalPeriod"":4139904512.000000, ""RotationPeriod"":95346.351563, ""AxialTilt"":0.000000, ""Rings"":[ { ""Name"":""Diaguandri C A Belt"", ""RingClass"":""eRingClass_Rocky"", ""MassMT"":2.6232e+12, ""InnerRad"":3.9144e+08, ""OuterRad"":1.2777e+09 } ] }";
-
-            List<Event> events = new List<Event>();
-            PrivateType journalMonitor = new PrivateType(typeof(JournalMonitor));
-
-            events.AddRange((List<Event>)journalMonitor.InvokeStatic("ParseJournalEntry", new object[] { honk }));
-            Assert.AreEqual(1, events.Count);
-            Assert.IsInstanceOfType(events[0], typeof(DiscoveryScanEvent));
-            Assert.AreEqual(100M, ((DiscoveryScanEvent)events[0])?.progress);
-            Assert.AreEqual(12, ((DiscoveryScanEvent)events[0])?.bodies);
-            Assert.AreEqual(27, ((DiscoveryScanEvent)events[0])?.nonbodies);
-
-            // Beginning with Elite Dangerous v. 3.3, star scans are delivered in a burst and in random order.
-            events.AddRange((List<Event>)journalMonitor.InvokeStatic("ParseJournalEntry", new object[] { scan1 })); // "DistanceFromArrivalLS":186.103638
-            events.AddRange((List<Event>)journalMonitor.InvokeStatic("ParseJournalEntry", new object[] { scan2 })); // "DistanceFromArrivalLS":0.000000
-            events.AddRange((List<Event>)journalMonitor.InvokeStatic("ParseJournalEntry", new object[] { scan3 })); // "DistanceFromArrivalLS":13505.447266
-
-            // Star scans should be queued in revised order, with the main star scan (distance zero) being first. 
-            Assert.AreEqual(4, events.Count);
-            Assert.AreEqual(0M, ((StarScannedEvent)events[1])?.distancefromarrival);
-            Assert.AreEqual(186.103638M, ((StarScannedEvent)events[2])?.distancefromarrival);
-            Assert.AreEqual(13505.447266M, ((StarScannedEvent)events[3])?.distancefromarrival);
-        }
-
-        [TestMethod]
         public void TestUnhandledEvent()
         {
             string line = @"{ ""timestamp"":""2018 - 10 - 30T20: 45:07Z"", ""event"":""AnyUnhandledEvent""}";
