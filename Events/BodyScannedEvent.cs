@@ -53,7 +53,7 @@ namespace EddiEvents
 
         public string systemname { get; private set; }
 
-        public string shortname => name == systemname ? name : name.Replace(systemname, "").Trim();
+        public string shortname => name == null ? name : name == systemname ? name : name.Replace(systemname, "").Trim();
 
         public string planettype => planetClass.localizedName;  // This is the object property reported from the BodyDetails() function
 
