@@ -19,8 +19,11 @@ namespace EddiEvents
         [JsonProperty("numbodies")]
         public int numbodies { get; private set; }
 
-        public NavBeaconScanEvent(DateTime timestamp, int numbodies) : base(timestamp, NAME)
+        public long systemAddress { get; private set; }
+
+        public NavBeaconScanEvent(DateTime timestamp, long systemAddress, int numbodies) : base(timestamp, NAME)
         {
+            this.systemAddress = systemAddress;
             this.numbodies = numbodies;
         }
     }

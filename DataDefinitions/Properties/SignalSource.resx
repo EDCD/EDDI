@@ -117,44 +117,104 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Ice" xml:space="preserve">
-    <value>Ice</value>
-    <comment>Body Composition "Ice"</comment>
+  <data name="MULTIPLAYER_SCENARIO42_TITLE" xml:space="preserve">
+    <value>Nav Beacon</value>
+    <comment>Nav beacon</comment>
   </data>
-  <data name="Metal" xml:space="preserve">
-    <value>Metal</value>
-    <comment>Body Composition "Metal"</comment>
+  <data name="MULTIPLAYER_SCENARIO80_TITLE" xml:space="preserve">
+    <value>Compromised Nav Beacon</value>
+    <comment>Compromised nav beacon</comment>
   </data>
-  <data name="Planet" xml:space="preserve">
-    <value>Planet</value>
-    <comment>Body Type "Planet"</comment>
+  <data name="USS" xml:space="preserve">
+    <value>Unidentified Signal Source</value>
+    <comment>Unidentified Signal Source</comment>
   </data>
-  <data name="Rock" xml:space="preserve">
-    <value>Rock</value>
-    <comment>Body Composition "Rock"</comment>
+  <data name="Warzone_PointRace_High" xml:space="preserve">
+    <value>High Intensity Combat Zone</value>
+    <comment>Combat Zone (High Intensity)</comment>
   </data>
-  <data name="Star" xml:space="preserve">
-    <value>Star</value>
-    <comment>Body Type "Star"</comment>
+  <data name="Warzone_PointRace_Med" xml:space="preserve">
+    <value>Medium Intensity Combat Zone</value>
+    <comment>Combat Zone (Medium Intensity)</comment>
   </data>
-  <data name="Belt" xml:space="preserve">
-    <value>Belt</value>
-    <comment>Body Type "Belt"</comment>
+  <data name="Warzone_PointRace_Low" xml:space="preserve">
+    <value>Low Intensity Combat Zone</value>
+    <comment>Combat Zone (Low Intensity)</comment>
   </data>
-  <data name="None" xml:space="preserve">
-    <value>None</value>
-    <comment>None</comment>
+  <data name="USS_Type_Salvage" xml:space="preserve">
+    <value>Degraded Emissions</value>
+    <comment>Salvage signal</comment>
   </data>
-  <data name="Station" xml:space="preserve">
-    <value>Station</value>
-    <comment>BodyType "Station"</comment>
+  <data name="USS_Type_Aftermath" xml:space="preserve">
+    <value>Combat Aftermath</value>
+    <comment>Aftermatch signal</comment>
   </data>
-  <data name="Null" xml:space="preserve">
-    <value>None</value>
-    <comment>BodyType "Null"</comment>
+  <data name="USS_Type_Anomaly" xml:space="preserve">
+    <value>Anomaly</value>
+    <comment>Anomaly signal</comment>
   </data>
-  <data name="PlanetaryRing" xml:space="preserve">
-    <value>Planetary Ring</value>
-    <comment>Body Type PlanetaryRing</comment>
+  <data name="USS_Type_Ceremonial" xml:space="preserve">
+    <value>Ceremonial Comms</value>
+    <comment>Ceremonial signal</comment>
+  </data>
+  <data name="USS_Type_VeryValuableSalvage" xml:space="preserve">
+    <value>High Grade Emissions</value>
+    <comment>VeryValuable signal</comment>
+  </data>
+  <data name="USS_Type_ValuableSalvage" xml:space="preserve">
+    <value>Encoded Emissions</value>
+    <comment>Valuable signal</comment>
+  </data>
+  <data name="USS_Type_NonHuman" xml:space="preserve">
+    <value>Non-Human Signal Source</value>
+    <comment>NonHuman signal</comment>
+  </data>
+  <data name="USS_Type_WeaponsFire" xml:space="preserve">
+    <value>Weapons Fire</value>
+    <comment>WeaponsFire signal</comment>
+  </data>
+  <data name="USS_Type_MissionTarget" xml:space="preserve">
+    <value>Mission Target</value>
+    <comment>MissionTarget signal</comment>
+  </data>
+  <data name="USS_Type_Convoy" xml:space="preserve">
+    <value>Convoy Dispersal Pattern Detected</value>
+    <comment>Convoy signal</comment>
+  </data>
+  <data name="USS_Type_DistressSignal" xml:space="preserve">
+    <value>Distress Call</value>
+    <comment>Distress signal</comment>
+  </data>
+  <data name="USS_Type_TradingBeacon" xml:space="preserve">
+    <value>Trading Beacon</value>
+    <comment>TradingBeacon signal</comment>
+  </data>
+  <data name="MULTIPLAYER_SCENARIO78_TITLE" xml:space="preserve">
+    <value>High Intensity Resource Extraction Site</value>
+    <comment>ResourceExtraction Site (High Intensity)</comment>
+  </data>
+  <data name="MULTIPLAYER_SCENARIO77_TITLE" xml:space="preserve">
+    <value>Low Intensity Resource Extraction Site</value>
+    <comment>Resource Extraction site (Low)</comment>
+  </data>
+  <data name="MULTIPLAYER_SCENARIO14_TITLE" xml:space="preserve">
+    <value>Resource Extraction Site</value>
+    <comment>Resource Extraction Site</comment>
+  </data>
+  <data name="MULTIPLAYER_SCENARIO79_TITLE" xml:space="preserve">
+    <value>Hazardous Resource Extraction Site</value>
+    <comment>Resource Extraction Site [Hazardous]</comment>
+  </data>
+  <data name="NumberStation" xml:space="preserve">
+    <value>Unregistered Comms Beacon</value>
+    <comment>NumberStation</comment>
+  </data>
+  <data name="Warzone_TG" xml:space="preserve">
+    <value>AX Conflict Zone</value>
+    <comment>Thargoid conflict zone</comment>
+  </data>
+  <data name="ListeningPost" xml:space="preserve">
+    <value>Listening Post</value>
+    <comment>ListeningPost</comment>
   </data>
 </root>

@@ -654,7 +654,7 @@ namespace EddiCompanionAppService
                 foreach (dynamic economyJson in json["lastStarport"]["economies"])
                 {
                     dynamic economy = economyJson.Value;
-                    string name = (string)economy["name"];
+                    string name = (string)economy["name"].Replace("Agri", "Agriculture");
                     decimal proportion = (decimal)economy["proportion"];
                     EconomyShare Economy = new EconomyShare(name, proportion);
                     Economies.Add(Economy);

@@ -3,9 +3,48 @@
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
 ### Development
+  * Core
+    * Fixed a bug that could result in rotational and orbital periods being reported as much faster than they really were.
+    * Fixed very low hab zone values in `Star scanned` events
+    * The `body` object now includes a new `shortname` property (removing the system name if it is part of the body name)
+    * The `body` object now includes `estimatedhabzoneinner` and `estimatedhabzoneouter` for stars.
+    * The `Body scanned` event has been revised to include new data. 
+    * Added `faction` object. Check the `Variables` window for details.
+  * Ship monitor
+    * Add new value to the current ship: `ident`
   * Speech responder
     * Fixed system messages triggering the `Message received` event.
     * Added new channels to the `Message received` event: "squadron" and "starsystem"
+    * Added new event `Body mapped`, triggered after mapping a body with the Surface Area Analysis scanner
+    * Added new event `Discovery scan`, triggered when performing a full system scan (honk) with the FSS
+    * Added new event `Signal detected`, triggered when a signal source is detected
+    * Updated `Jumped` event to contains the name of the star at which you've arrived
+    * Updated `Jumped` and `Location` events to contain details about the status of factions.
+    * Updated `Entered signal source` event by adding new variable `localizedsource`
+    * Revised `Body report` event script.* **
+    * Revised `Body scanned` script.
+    * Revised `Star scanned` event script
+    * Revised `Star report` script * **
+    * Added `Body atmosphere report` script. **
+    * Added `Body materials report` script. **
+    * Added `Body volcanism report` script. 
+    * Added `Star habitable zone` script.
+  * Status monitor 
+    * The status object has new values for: 
+      * HUD analysis mode, 
+      * night vision mode,
+      * new gui modes
+        * orrery view, 
+        * fss mode, 
+        * saa mode, and 
+        * the codex
+      * fuel (for ship or srv)
+      * fuel percent
+      * fuel time remaining (in seconds)
+      * cargo carried (qty)
+
+    *In the interest of brevity, the default `Body report` and `Star report` scripts now will only be used if your ship's role is set to either `Multipurpose` or `Exploration`. 
+    **Script contains a `Preferences` section for setting user preferences about the details reported.
 
 ### 3.3-b1
   * Core

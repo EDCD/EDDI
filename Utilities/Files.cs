@@ -110,5 +110,27 @@ namespace Utilities
                 }
             }
         }
+
+        // Obtain file info for a file name and path, or null if the file is not available
+        public static FileInfo FileInfo(string path, string file)
+        {
+            if (path == null)
+            {
+                // Configuration can be changed underneath us so we do have to check each time...
+                return null;
+            }
+
+            try
+            {
+                FileInfo info = new FileInfo(path + @"\" + file);
+                if (info.Exists)
+                {
+                    // This info can be cached so force a refresh
+                    info.Refresh();
+                }
+                return info;
+            }
+            catch { return null; }
+        }
     }
 }

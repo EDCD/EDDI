@@ -22,14 +22,14 @@ namespace EddiDataDefinitions.Properties {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class Body {
+    public class Happiness {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Body() {
+        internal Happiness() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace EddiDataDefinitions.Properties {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("EddiDataDefinitions.Properties.Body", typeof(Body).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("EddiDataDefinitions.Properties.Happiness", typeof(Happiness).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,92 +61,47 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Belt.
+        ///   Looks up a localized string similar to Elated.
         /// </summary>
-        public static string Belt {
+        public static string HappinessBand1 {
             get {
-                return ResourceManager.GetString("Belt", resourceCulture);
+                return ResourceManager.GetString("HappinessBand1", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Ice.
+        ///   Looks up a localized string similar to Happy.
         /// </summary>
-        public static string Ice {
+        public static string HappinessBand2 {
             get {
-                return ResourceManager.GetString("Ice", resourceCulture);
+                return ResourceManager.GetString("HappinessBand2", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Metal.
+        ///   Looks up a localized string similar to Discontented.
         /// </summary>
-        public static string Metal {
+        public static string HappinessBand3 {
             get {
-                return ResourceManager.GetString("Metal", resourceCulture);
+                return ResourceManager.GetString("HappinessBand3", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to None.
+        ///   Looks up a localized string similar to Unhappy.
         /// </summary>
-        public static string None {
+        public static string HappinessBand4 {
             get {
-                return ResourceManager.GetString("None", resourceCulture);
+                return ResourceManager.GetString("HappinessBand4", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to None.
+        ///   Looks up a localized string similar to Despondent.
         /// </summary>
-        public static string Null {
+        public static string HappinessBand5 {
             get {
-                return ResourceManager.GetString("Null", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Planet.
-        /// </summary>
-        public static string Planet {
-            get {
-                return ResourceManager.GetString("Planet", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Planetary Ring.
-        /// </summary>
-        public static string PlanetaryRing {
-            get {
-                return ResourceManager.GetString("PlanetaryRing", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Rock.
-        /// </summary>
-        public static string Rock {
-            get {
-                return ResourceManager.GetString("Rock", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Star.
-        /// </summary>
-        public static string Star {
-            get {
-                return ResourceManager.GetString("Star", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Station.
-        /// </summary>
-        public static string Station {
-            get {
-                return ResourceManager.GetString("Station", resourceCulture);
+                return ResourceManager.GetString("HappinessBand5", resourceCulture);
             }
         }
     }

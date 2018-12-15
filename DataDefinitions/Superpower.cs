@@ -1,5 +1,4 @@
-﻿
-namespace EddiDataDefinitions
+﻿namespace EddiDataDefinitions
 {
     /// <summary>
     /// Superpowers
@@ -22,7 +21,7 @@ namespace EddiDataDefinitions
             var Thargoid = new Superpower("$faction_Thargoid;");
         }
 
-        public static readonly Superpower None = new Superpower("None");
+        public static readonly Superpower None = new Superpower("$faction_None");
 
         // dummy used to ensure that the static constructor has run
         public Superpower() : this("")
@@ -35,7 +34,7 @@ namespace EddiDataDefinitions
         {
             if (from == null)
             {
-                return null;
+                return None;
             }
 
             Superpower result = FromName(from);

@@ -35,6 +35,7 @@ namespace UnitTests
 
             // Test our main star and belt
             Body star = bodies.Find(s => s.name == "Shinrarta Dezhra");
+            Assert.AreEqual("Shinrarta Dezhra", star.shortname);
             Assert.AreEqual(14923, star.EDSMID);
             Assert.AreEqual("Star", star.Type.invariantName);
             Assert.AreEqual("K", star.stellarclass);
@@ -61,6 +62,7 @@ namespace UnitTests
 
             // Test landable high metal content world
             Body body = bodies.Find(s => s.name == "Shinrarta Dezhra A 1");
+            Assert.AreEqual("A 1", body.shortname);
             Assert.AreEqual(7058, body.EDSMID);
             Assert.AreEqual("Planet", body.Type.invariantName);
             Assert.AreEqual("High metal content world", body.planetClass.invariantName);
@@ -96,6 +98,7 @@ namespace UnitTests
 
             // Test terraformed body
             body = bodies.Find(s => s.name == "Founders World");
+            Assert.AreEqual("Founders World", body.shortname);
             Assert.AreEqual(12765, body.EDSMID);
             Assert.AreEqual("Planet", body.Type.invariantName);
             Assert.AreEqual("Earth-like world", body.planetClass.invariantName);
@@ -131,6 +134,7 @@ namespace UnitTests
 
             // Test volcanic icy body
             body = bodies.Find(s => s.name == "Shinrarta Dezhra AB 1 b");
+            Assert.AreEqual("AB 1 b", body.shortname);
             Assert.AreEqual(8138660, body.EDSMID);
             Assert.AreEqual("Planet", body.Type.invariantName);
             Assert.AreEqual("Icy body", body.planetClass.invariantName);
@@ -167,6 +171,7 @@ namespace UnitTests
 
             // Test ringed gas giant
             body = bodies.Find(s => s.name == "Shinrarta Dezhra AB 2");
+            Assert.AreEqual("AB 2", body.shortname);
             Assert.AreEqual(8138626, body.EDSMID);
             Assert.AreEqual("Planet", body.Type.invariantName);
             Assert.AreEqual("Class I gas giant", body.planetClass.invariantName);
@@ -205,7 +210,6 @@ namespace UnitTests
             Assert.AreEqual("Common", body.reserveLevel.invariantName);
             Assert.AreEqual(1539922044, body.updatedat);
         }
-
 
         [TestMethod]
         [DeploymentItem("edsmStations.json")]

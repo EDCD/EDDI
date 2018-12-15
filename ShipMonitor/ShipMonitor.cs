@@ -749,7 +749,6 @@ namespace EddiShipMonitor
                                         ship.cargohatch.position = position;
                                         ship.cargohatch.priority = priority;
                                         ship.cargohatch.power = power;
-
                                     }
                                     break;
                                 case "FrameShiftDrive":
@@ -785,7 +784,6 @@ namespace EddiShipMonitor
                                         ship.powerplant.position = position;
                                         ship.powerplant.priority = priority;
                                         ship.powerplant.power = power;
-
                                     }
                                     break;
                                 case "Radar":
@@ -802,7 +800,6 @@ namespace EddiShipMonitor
                                         ship.canopy.power = power;
                                     }
                                     break;
-
                             }
 
                             if (slot.Contains("Slot"))
@@ -834,16 +831,19 @@ namespace EddiShipMonitor
 
         private void handleJumpedEvent(JumpedEvent @event)
         {
-            Ship ship = GetCurrentShip();
-            if (@event.fuelused > ship.maxfuel)
+            if (@event.boostused is null)
             {
-                ship.maxfuel = @event.fuelused;
-                ship.maxjump = @event.distance;
-                writeShips();
+                Ship ship = GetCurrentShip();
+                if (@event.fuelused > ship.maxfuel)
+                {
+                    ship.maxfuel = @event.fuelused;
+                    ship.maxjump = @event.distance;
+                    writeShips();
+                }
             }
         }
 
-            public void PostHandle(Event @event)
+        public void PostHandle(Event @event)
         {
             if (@event is ShipLoadoutEvent)
             {

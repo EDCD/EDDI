@@ -211,6 +211,7 @@ Any values might be missing, depending on EDDI's configuration.
     - `cargocapacity` the total tonnage cargo capacity
     - `cargocarried` the current tonnage cargo carried
     - `name` the name of the ship
+    - `ident` the identifier of the ship
     - `role` the role of the ship 
     - `health` the current health of the hull, from 0 to 100
     - `bulkheads` details of the ship's bulkheads (this is a Module object)
@@ -224,7 +225,7 @@ Any values might be missing, depending on EDDI's configuration.
     - `fueltankcapacity` the capacity of the main fuel tank
     - `fueltanktotalcapacity` the capacity of the main fuel tank plus all secondary fuel tanks
     - `maxjump` maximum distance ship has jumped
-    - `maxfuel` fuel used for `max jump`
+    - `maxfuel` fuel used for `max jump` (excluding synthesis)
     - `hardpoints` the ship's hardpoints (this is an array of HardPoint objects)
     - `compartments` the ship's internal compartments (this is an array of Compartment objects)
     - `launchbays` the ship's internal hangars, containing SRV or Fighter 'vehicles' (this is an array of launchbay objects) 
@@ -338,6 +339,7 @@ All bodies have the following data:
     - `type` the type of the body (Star or Planet)
     - `systemname` the name of the system in which this body resides
     - `name` the name of the body
+    - `shortname` the shortened name of the body
     - `distance` the distance from the arrival point in the system, in light seconds
     - `tidallylocked` true if the body is tidally locked to its parent
     - `temperature` the surface temperature of the body, in Kelvin
@@ -345,11 +347,13 @@ All bodies have the following data:
 
 In addition, stars have the following data:
 
-    - `mainstar` true if this is the main star of the syste
+    - `mainstar` true if this is the main star of the system
     - `stellarclass` the stellar class of the star (M, G, etc)
     - `solarmass` the solar mass of the star
     - `solarradius` the solar radius of the star, compared to Sol
     - `age` the age of the star in millions of years
+    - `estimatedhabzoneinner` The estimated inner radius of the habitable zone of the star, in light seconds, not considering other stars in the system
+    - `estimatedhabzoneouter` The estimated outer radius of the habitable zone of the star, in light seconds, not considering other stars in the system
 
 Planets have the following data:
 
@@ -441,6 +445,24 @@ Any values might be missing, depending on EDDI's configuration and the informati
 
 Values are as described in the 'Station' object.
 
+### Faction
+
+A faction object
+
+    - `name` the name of the faction
+    - `allegiance` the allegiance of the faction
+    - `government` the government of the faction
+    - `state` the faction's current dominant state
+    - `ActiveStates` a list of FactionState objects
+    - `PendingStates` a list of FactionState objects and trend values
+    - `RecoveringStates` a list of FactionState objects and trend values
+    - `influence` the faction's influence level within the system
+    - `happiness` the current happiness level within the faction
+    - `myreputation` your reputation with the faction, out of 100%.
+    - `squadronfaction` true if the faction is the pilot's current squadron faction
+    - `squadronhappiestsystem` true if the system is the happiest system in your squadron's faction's control
+    - `squadronhomesystem` true for the squadron's home faction in their home system
+
 ---
 
 ## Status
@@ -476,12 +498,29 @@ Any values might be missing, depending on EDDI's configuration.
     - `pips_eng` a decimal value indicating the power distributor allocation to engines
     - `pips_wea` a decimal value indicating the power distributor allocation to weapons
     - `firegroup` an integer value indicating the ship's currently selected firegroup
-    - `gui_focus` the commander's current focus. Can be one of "none", "internal panel" (right panel), "external panel" (left panel), "communications panel" (top panel), "role panel" (bottom panel), "station services", "galaxy map", or "system map"
+    - `gui_focus` the commander's current focus. Can be one of 
+      - "none", 
+      - "internal panel" (right panel), 
+      - "external panel" (left panel), 
+      - "communications panel" (top panel), 
+      - "role panel" (bottom panel), 
+      - "station services", 
+      - "galaxy map", 
+      - "system map",
+      - "orrery",
+      - "fss mode",
+      - "saa mode", or
+      - "codex"
     - `latitude` a decimal value indicating the ship's current latitude (if near a surface)
     - `longitude` a decimal value indicating the ship's current longitude (if near a surface)
     - `altitude` a decimal value indicating the ship's current altitude (if in flight near a surface)
     - `heading` a decimal value indicating the ship's current heading (if near a surface)
-
+    - `analysis_mode` a boolean value indicating whether the ship's HUD is currently in Analysis Mode
+    - `night_vision` a boolean value indicating whether night vision is currently active
+    - `fuel` a decimal value indicating the ship's current fuel (including fuel in the active fuel reservoir)
+    - `fuel_percent` a decimal percent value calculated from your current total fuel capacity
+    - `fuel_seconds` an integer value projecting the time remaining before you run out of fuel, in seconds
+    - `cargo_carried` an integer value of the current cargo you are carrying
 ---
 ## VoiceDetail
 

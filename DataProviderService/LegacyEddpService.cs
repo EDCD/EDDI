@@ -38,7 +38,7 @@ namespace EddiDataProviderService
             try
             {
                 string response = Net.DownloadString(BASE + "systems/" + Uri.EscapeDataString(system));
-                return JsonConvert.DeserializeObject<JObject>(response);
+                return response == null ? null : JsonConvert.DeserializeObject<JObject>(response);
             }
             catch (Exception)
             {

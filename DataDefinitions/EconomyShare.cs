@@ -1,4 +1,6 @@
-﻿namespace EddiDataDefinitions
+﻿using Newtonsoft.Json;
+
+namespace EddiDataDefinitions
 {
     public class EconomyShare
     {
@@ -13,6 +15,7 @@
             this.proportion = proportion;
         }
 
+        [JsonConstructor]
         public EconomyShare(Economy economy, decimal proportion)
         {
             this.economy = economy;

@@ -797,7 +797,8 @@ namespace Eddi
                 {
                     name = theEvent.faction,
                     Government = theEvent.Government,
-                    Allegiance = theEvent.Allegiance
+                    Allegiance = theEvent.Allegiance,
+                    FactionState = theEvent.factions?.FirstOrDefault(f => f.name == theEvent.faction)?.FactionState,
                 };
                 CurrentStarSystem.Faction = controllingFaction;
             }
@@ -1060,12 +1061,14 @@ namespace Eddi
             CurrentStarSystem.x = theEvent.x;
             CurrentStarSystem.y = theEvent.y;
             CurrentStarSystem.z = theEvent.z;
+            CurrentStellarBody = CurrentStarSystem.bodies.FirstOrDefault(b => b.name == theEvent.star);
 
             Faction controllingFaction = new Faction
             {
                 name = theEvent.faction,
                 Allegiance = theEvent.Allegiance,
-                Government = theEvent.Government
+                Government = theEvent.Government,
+                FactionState = theEvent.factionState,
             };
             CurrentStarSystem.Faction = controllingFaction;
 
@@ -1391,7 +1394,6 @@ namespace Eddi
                 star.distance = (long?)theEvent.distancefromarrival;
                 star.luminosityclass = theEvent.luminosityclass;
                 star.temperature = (long?)theEvent.temperature;
-                star.mainstar = theEvent.distancefromarrival == 0 ? true : false;
                 star.stellarclass = theEvent.stellarclass;
                 star.solarmass = theEvent.solarmass;
                 star.solarradius = theEvent.solarradius;
@@ -1434,18 +1436,18 @@ namespace Eddi
                 body.tidallylocked = theEvent.tidallylocked;
                 body.temperature = (long?)theEvent.temperature;
                 body.periapsis = theEvent.periapsis;
-                body.atmosphereclass = theEvent.atmosphereclass ?? AtmosphereClass.None;
+                body.atmosphereclass = theEvent.atmosphereclass;
                 body.atmospherecompositions = theEvent.atmospherecomposition;
                 body.solidcompositions = theEvent.solidcomposition;
                 body.gravity = theEvent.gravity;
                 body.eccentricity = theEvent.eccentricity;
                 body.inclination = theEvent.orbitalinclination;
-                body.orbitalperiod = Math.Round(theEvent.orbitalperiod / 86400, 2);
-                body.rotationalperiod = Math.Round(theEvent.rotationperiod / 86400, 2);
+                body.orbitalperiod = theEvent.orbitalperiod;
+                body.rotationalperiod = theEvent.rotationperiod;
                 body.semimajoraxis = theEvent.semimajoraxis;
                 body.pressure = theEvent.pressure;
-                body.terraformState = TerraformState.FromEDName(theEvent.terraformstate) ?? TerraformState.NotTerraformable;
-                body.planetClass = PlanetClass.FromName(theEvent.bodyclass) ?? PlanetClass.None;
+                body.terraformState = theEvent.terraformState;
+                body.planetClass = theEvent.planetClass;
                 body.volcanism = theEvent.volcanism;
                 body.materials = new List<MaterialPresence>();
                 foreach (MaterialPresence presence in theEvent.materials)

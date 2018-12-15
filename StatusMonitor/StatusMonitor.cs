@@ -19,11 +19,11 @@ namespace EddiStatusMonitor
     public class StatusMonitor : EDDIMonitor
     {
         // What we are monitoring and what to do with it
-        private static Regex Filter = new Regex(@"^Status\.json$");
-        private static Regex JsonRegex = new Regex(@"^{.*}$");
+        private static readonly Regex JsonRegex = new Regex(@"^{.*}$");
         private string Directory = GetSavedGamesDir();
         public static Status currentStatus { get; set; } = new Status();
         public static Status lastStatus { get; set; } = new Status();
+
         private static bool gliding;
         private static bool jumping;
 
@@ -86,13 +86,13 @@ namespace EddiStatusMonitor
             FileInfo fileInfo = null;
             try
             {
-                fileInfo = FindStatusFile(Directory, Filter);
+                fileInfo = Files.FileInfo(Directory, "Status.json");
             }
             catch (NotSupportedException nsex)
             {
                 Logging.Error("Directory " + Directory + " not supported: ", nsex);
             }
-            if (fileInfo != null)
+            if (fileInfo.Exists)
             {
                 try
                 {
@@ -111,7 +111,7 @@ namespace EddiStatusMonitor
                                 while (fileInfo == null)
                                 {
                                     Thread.Sleep(5000);
-                                    fileInfo = FindStatusFile(Directory, Filter);
+                                    fileInfo = Files.FileInfo(Directory, "Status.json");
                                 }
                                 Logging.Info("Elite Dangerous Status.json found. Status monitor activated.");
                                 return;
@@ -133,8 +133,10 @@ namespace EddiStatusMonitor
                                     Status status = ParseStatusEntry(thisStatus);
 
                                     // Spin off a thread to pass status entry updates in the background
-                                    Thread updateThread = new Thread(() => handleStatus(status));
-                                    updateThread.IsBackground = true;
+                                    Thread updateThread = new Thread(() => handleStatus(status))
+                                    {
+                                        IsBackground = true
+                                    };
                                     updateThread.Start();
                                 }
                                 lastStatus = thisStatus;
@@ -198,8 +200,7 @@ namespace EddiStatusMonitor
                         return status;
                     }
 
-                    object val;
-                    data.TryGetValue("Pips", out val);
+                    data.TryGetValue("Pips", out object val);
                     List<long> pips = ((List<object>)val)?.Cast<long>()?.ToList(); // The 'TryGetValue' function returns these values as type 'object<long>'
                     status.pips_sys = pips != null ? ((decimal?)pips[0] / 2) : null; // Set system pips (converting from half pips)
                     status.pips_eng = pips != null ? ((decimal?)pips[1] / 2) : null; // Set engine pips (converting from half pips)
@@ -249,11 +250,36 @@ namespace EddiStatusMonitor
                                 status.gui_focus = "system map";
                                 break;
                             }
+                        case 8: // Orrery
+                            {
+                                status.gui_focus = "orrery";
+                                break;
+                            }
+                        case 9: // FSS mode
+                            {
+                                status.gui_focus = "fss mode";
+                                break;
+                            }
+                        case 10: // SAA mode
+                            {
+                                status.gui_focus = "saa mode";
+                                break;
+                            }
+                        case 11: // Codex
+                            {
+                                status.gui_focus = "codex";
+                                break;
+                            }
                     }
                     status.latitude = JsonParsing.getOptionalDecimal(data, "Latitude");
                     status.longitude = JsonParsing.getOptionalDecimal(data, "Longitude");
                     status.altitude = JsonParsing.getOptionalDecimal(data, "Altitude");
                     status.heading = JsonParsing.getOptionalDecimal(data, "Heading");
+                    status.fuel = JsonParsing.getOptionalDecimal(data, "Fuel");
+                    status.cargo_carried = (int?)JsonParsing.getOptionalDecimal(data, "Cargo");
+
+                    // Calculated data
+                    SetFuelExtras(status);
 
                     return status;
                 }
@@ -351,13 +377,18 @@ namespace EddiStatusMonitor
                     gliding = false;
                     EDDI.Instance.eventHandler(new GlideEvent(currentStatus.timestamp, gliding, EDDI.Instance.CurrentStellarBody.systemname, EDDI.Instance.CurrentStellarBody.systemAddress, EDDI.Instance.CurrentStellarBody.name, EDDI.Instance.CurrentStellarBody.Type));
                 }
+
+                // Reset our fuel log if we change vehicles or refuel
+                if (thisStatus.vehicle != lastStatus.vehicle || thisStatus.fuel > lastStatus.fuel)
+                {
+                    fuelLog = null;
+                }
             }
         }
 
         private static string GetSavedGamesDir()
         {
-            IntPtr path;
-            int result = NativeMethods.SHGetKnownFolderPath(new Guid("4C5C32FF-BB9D-43B0-B5B4-2D72E54EAAA4"), 0, new IntPtr(0), out path);
+            int result = NativeMethods.SHGetKnownFolderPath(new Guid("4C5C32FF-BB9D-43B0-B5B4-2D72E54EAAA4"), 0, new IntPtr(0), out IntPtr path);
             if (result >= 0)
             {
                 return Marshal.PtrToStringUni(path) + @"\Frontier Developments\Elite Dangerous";
@@ -425,31 +456,67 @@ namespace EddiStatusMonitor
             return currentStatus;
         }
 
-        /// <summary>Find the latest file in a given directory matching a given expression, or null if no such file exists</summary>
-        private static FileInfo FindStatusFile(string path, Regex filter = null)
+        private static void SetFuelExtras(Status status)
         {
-            if (path == null)
+            decimal? fuel_rate = FuelConsumptionPerSecond(status.timestamp, status.fuel);
+            FuelPercentAndTime(status.fuel, fuel_rate, out decimal? fuel_percent, out int? fuel_seconds);
+            status.fuel_percent = fuel_percent;
+            status.fuel_seconds = fuel_seconds;
+        }
+
+        private static List<KeyValuePair<DateTime, decimal?>> fuelLog;
+        private static decimal? FuelConsumptionPerSecond(DateTime timestamp, decimal? fuel, int trackingMinutes = 5)
+        {
+            if (fuel is null)
             {
-                // Configuration can be changed underneath us so we do have to check each time...
                 return null;
             }
 
-            var directory = new DirectoryInfo(path);
-            if (directory != null)
+            if (fuelLog is null)
             {
-                try
-                {
-                    FileInfo info = directory.GetFiles().Where(f => filter == null || filter.IsMatch(f.Name)).FirstOrDefault();
-                    if (info != null)
-                    {
-                        // This info can be cached so force a refresh
-                        info.Refresh();
-                    }
-                    return info;
-                }
-                catch { }
+                fuelLog = new List<KeyValuePair<DateTime, decimal?>>();
             }
-            return null;
+            else
+            {
+                fuelLog?.RemoveAll(log => (DateTime.UtcNow - log.Key).TotalMinutes > trackingMinutes);
+            }
+            fuelLog.Add(new KeyValuePair<DateTime, decimal?>(timestamp, fuel));
+
+            decimal? fuelConsumed = fuelLog.First().Value - fuelLog.Last().Value;
+            TimeSpan timespan = fuelLog.Last().Key - fuelLog.First().Key;
+
+            return timespan.Seconds == 0 ? null : fuelConsumed / timespan.Seconds; // Return tons of fuel consumed per second
+        }
+
+        private static void FuelPercentAndTime(decimal? fuelRemaining, decimal? fuelPerSecond, out decimal? fuel_percent, out int? fuel_seconds)
+        {
+            fuel_percent = null;
+            fuel_seconds = null;
+
+            if (fuelRemaining is null)
+            {
+                return;
+            }
+
+            if (currentStatus.vehicle == Constants.VEHICLE_SHIP)
+            {
+                Ship ship = ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip();
+                if (ship.fueltanktotalcapacity != null && fuelRemaining != null)
+                {
+                    // Fuel recorded in Status.json includes the fuel carried in the Active Fuel Reservoir
+                    decimal percent = (decimal)(fuelRemaining / (ship.fueltanktotalcapacity + ship.activeFuelReservoirCapacity) * 100);
+                    fuel_percent = percent > 10 ? Math.Round(percent, 0) : Math.Round(percent, 1);
+                    fuel_seconds = (fuelPerSecond is null || fuelPerSecond == 0) ? null : (int?)((ship.fueltanktotalcapacity + ship.activeFuelReservoirCapacity) / fuelPerSecond);
+                }
+            }
+            else if (currentStatus.vehicle == Constants.VEHICLE_SRV)
+            {
+                const decimal srvFuelTankCapacity = 0.45M;
+                decimal percent = (decimal)(fuelRemaining / srvFuelTankCapacity * 100);
+                fuel_percent = percent > 10 ? Math.Round(percent, 0) : Math.Round(percent, 1);
+                fuel_seconds = (fuelPerSecond is null || fuelPerSecond == 0) ? null : (int?)(srvFuelTankCapacity / fuelPerSecond);
+            }
+            return; // At present, fighters do not appear to consume fuel.
         }
     }
 }

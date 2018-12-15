@@ -147,6 +147,8 @@ namespace UnitTests
             Assert.AreEqual(51, theEvent.radiusprobability);
             Assert.AreEqual(58, theEvent.tempprobability);
             Assert.AreEqual(7, theEvent.ageprobability);
+            Assert.AreEqual(303.548, (double)theEvent.estimatedhabzoneinner, .01);
+            Assert.AreEqual(604.861, (double)theEvent.estimatedhabzoneouter, .01);
         }
 
         [TestMethod]
@@ -860,6 +862,19 @@ namespace UnitTests
 
             Assert.AreEqual("AnyUnhandledEvent", @event.edType);
             Assert.IsNotNull(@event.raw);
+        }
+
+        [TestMethod]
+        public void TestLocationAllegiance()
+        {
+            string line = @"{ ""timestamp"":""2018-12-09T18:39:32Z"", ""event"":""Location"", ""Docked"":false, ""StarSystem"":""Col 285 Sector SP-K b23-7"", ""SystemAddress"":16065459463649, ""StarPos"":[112.31250,13.46875,153.06250], ""SystemAllegiance"":"""", ""SystemEconomy"":""$economy_None;"", ""SystemEconomy_Localised"":""None"", ""SystemSecondEconomy"":""$economy_None;"", ""SystemSecondEconomy_Localised"":""None"", ""SystemGovernment"":""$government_None;"", ""SystemGovernment_Localised"":""None"", ""SystemSecurity"":""$GAlAXY_MAP_INFO_state_anarchy;"", ""SystemSecurity_Localised"":""Anarchy"", ""Population"":0, ""Body"":""Col 285 Sector SP-K b23-7 A"", ""BodyID"":1, ""BodyType"":""Star"" }";
+            List<Event> events = JournalMonitor.ParseJournalEntry(line);
+            Assert.AreEqual(1, events.Count);
+            LocationEvent @event = (LocationEvent)events[0];
+
+            Assert.IsNotNull(@event.raw);
+            Assert.AreEqual("None", @event.Allegiance?.invariantName);
+            Assert.AreEqual("$faction_None", @event.Allegiance?.edname);
         }
     }
 }

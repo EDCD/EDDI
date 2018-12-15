@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Speech.Synthesis;
 using System.IO;
 using System.Threading;
+using EddiSpeechResponder;
 using EddiSpeechService;
 using CSCore;
 using CSCore.Codecs.WAV;
@@ -11,6 +12,7 @@ using CSCore.SoundOut;
 using CSCore.Streams.Effects;
 using EddiDataDefinitions;
 using Utilities;
+using Eddi;
 
 namespace SpeechTests
 {
@@ -547,6 +549,25 @@ namespace SpeechTests
             SpeechService.Instance.Say(null, "Testing null voice", true, 3, null, false);
             // Test invalid voice
             SpeechService.Instance.Say(null, "Testing invalid voice", true, 3, "No such voice", false);
+        }
+
+        [TestMethod, TestCategory("Speech")]
+        public void TestFSSDiscoveryScan()
+        {
+            SpeechResponder speechresponder = (SpeechResponder)EDDI.Instance.ObtainResponder("Speech responder");
+
+            string autoscan = @"{ ""timestamp"":""2018-12-01T23:28:42Z"", ""event"":""Scan"", ""ScanType"":""AutoScan"", ""BodyName"":""Arietis Sector JW-W b1-0 A"", ""BodyID"":1, ""Parents"":[ {""Null"":0} ], ""DistanceFromArrivalLS"":0.000000, ""StarType"":""M"", ""StellarMass"":0.417969, ""Radius"":412910656.000000, ""AbsoluteMagnitude"":7.994888, ""Age_MY"":10408, ""SurfaceTemperature"":3619.000000, ""Luminosity"":""Va"", ""SemiMajorAxis"":467311984640.000000, ""Eccentricity"":0.152115, ""OrbitalInclination"":114.004372, ""Periapsis"":110.939232, ""OrbitalPeriod"":2140419584.000000, ""RotationPeriod"":194180.593750, ""AxialTilt"":0.000000 }";
+            string honk = @"{ ""timestamp"":""2018-12-01T23:28:43Z"", ""event"":""FSSDiscoveryScan"", ""Progress"":0.513263, ""BodyCount"":2, ""NonBodyCount"":0 }";
+            string secondstar = @"{ ""timestamp"":""2018-12-01T23:28:44Z"", ""event"":""Scan"", ""ScanType"":""Detailed"", ""BodyName"":""Arietis Sector JW-W b1-0 B"", ""BodyID"":2, ""Parents"":[ {""Null"":0} ], ""DistanceFromArrivalLS"":7698.737305, ""StarType"":""L"", ""StellarMass"":0.125000, ""Radius"":196415920.000000, ""AbsoluteMagnitude"":13.267014, ""Age_MY"":10408, ""SurfaceTemperature"":1559.000000, ""Luminosity"":""V"", ""SemiMajorAxis"":1562574585856.000000, ""Eccentricity"":0.152115, ""OrbitalInclination"":114.004372, ""Periapsis"":290.939240, ""OrbitalPeriod"":2140419584.000000, ""RotationPeriod"":98755.742188, ""AxialTilt"":0.000000 }";
+
+            List<EddiEvents.Event> events = new List<EddiEvents.Event>();
+            events.AddRange(EddiJournalMonitor.JournalMonitor.ParseJournalEntry(autoscan));
+            events.AddRange(EddiJournalMonitor.JournalMonitor.ParseJournalEntry(honk));
+            events.AddRange(EddiJournalMonitor.JournalMonitor.ParseJournalEntry(secondstar));
+            foreach (EddiEvents.Event @event in events)
+            {
+                speechresponder.Handle(@event);
+            }
         }
     }
 }

@@ -181,5 +181,38 @@ namespace UnitTests
             Assert.AreEqual(status.altitude, (decimal)0);
             Assert.AreEqual(status.heading, (decimal)249);
         }
+
+        [TestMethod]
+        public void TestParseStatusFlagsAnalysisFssMode()
+        {
+            string line = "{ \"timestamp\":\"2018 - 11 - 15T04: 41:06Z\", \"event\":\"Status\", \"Flags\":151519320, \"Pips\":[4,4,4], \"FireGroup\":2, \"GuiFocus\":9, \"Fuel\":30.404743, \"Cargo\":39.000000 }";
+            Status status = StatusMonitor.ParseStatusEntry(line);
+
+            Assert.AreEqual(true, status.analysis_mode);
+            Assert.AreEqual("fss mode", status.gui_focus);
+        }
+
+        [TestMethod]
+        public void TestParseStatusFlagsAnalysisSaaMode()
+        {
+            string line = "{ \"timestamp\":\"2018 - 11 - 15T04: 47:51Z\", \"event\":\"Status\", \"Flags\":150995032, \"Pips\":[4,4,4], \"FireGroup\":2, \"GuiFocus\":10, \"Fuel\":30.074390, \"Cargo\":39.000000 }";
+            Status status = StatusMonitor.ParseStatusEntry(line);
+
+            Assert.AreEqual(true, status.analysis_mode);
+            Assert.AreEqual("saa mode", status.gui_focus);
+        }
+        
+        [TestMethod]
+        public void TestParseStatusFlagsNightMode()
+        {
+            string line = "{ \"timestamp\":\"2018 - 11 - 15T04: 58:37Z\", \"event\":\"Status\", \"Flags\":422117640, \"Pips\":[4,4,4], \"FireGroup\":2, \"GuiFocus\":0, \"Fuel\":29.564209, \"Cargo\":39.000000, \"Latitude\":88.365417, \"Longitude\":99.356514, \"Heading\":29, \"Altitude\":36 }";
+            Status status = StatusMonitor.ParseStatusEntry(line);
+
+            Assert.AreEqual(true, status.night_vision);
+            Assert.AreEqual(true, status.lights_on);
+            Assert.AreEqual("none", status.gui_focus);
+            Assert.AreEqual(29.564209M, status.fuel);
+            Assert.AreEqual(39, status.cargo_carried);
+        }
     }
 }

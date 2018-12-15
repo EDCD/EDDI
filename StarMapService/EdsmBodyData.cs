@@ -90,6 +90,7 @@ namespace EddiStarMapService
                 Body.solarmass = (decimal?)body["solarMasses"];
                 Body.solarradius = (decimal?)body["solarRadius"];
                 Body.landable = false;
+                Body.setStellarExtras();
             }
 
             if ((string)body["type"] == "Planet")

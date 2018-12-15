@@ -130,5 +130,13 @@ namespace UnitTests
             StarSystem starSystem = DataProviderService.GetSystemData("Sol");
             Assert.IsTrue((System.DateTime.UtcNow - startTime).Milliseconds < 1000);
         }
+
+        [TestMethod]
+        public void TestNullLegacy()
+        {
+            StarSystem starSystem = LegacyEddpService.SetLegacyData(new StarSystem() { name = "No such system"});
+            Assert.IsNotNull(starSystem);
+            Assert.AreEqual("No such system", starSystem.name);
+        }
     }
 }

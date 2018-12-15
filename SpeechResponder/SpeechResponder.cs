@@ -12,6 +12,7 @@ using System.IO;
 using EddiDataDefinitions;
 using EddiShipMonitor;
 using EddiStatusMonitor;
+using System.Linq;
 
 namespace EddiSpeechResponder
 {
@@ -28,6 +29,12 @@ namespace EddiSpeechResponder
         private bool subtitles;
 
         private bool subtitlesOnly;
+
+        private static List<Event> eventQueue = new List<Event>();
+
+        private static bool ignoreBodyScan;
+
+        private bool enqueueStarScan;
 
         public string ResponderName()
         {
@@ -124,10 +131,92 @@ namespace EddiSpeechResponder
             Logging.Debug("Reloaded " + ResponderName() + " " + ResponderVersion());
         }
 
-        public void Handle(Event theEvent)
+        public void Handle(Event @event)
         {
-            Logging.Debug("Received event " + JsonConvert.SerializeObject(theEvent));
+            Logging.Debug("Received event " + JsonConvert.SerializeObject(@event));
 
+            if (@event is BeltScannedEvent)
+            {
+                // We ignore belt clusters
+                return;
+            }
+            else if (@event is BodyMappedEvent)
+            {
+                ignoreBodyScan = true;
+            }
+            else if (@event is BodyScannedEvent bodyScannedEvent)
+            {
+                if (bodyScannedEvent.scantype.Contains("NavBeacon") || bodyScannedEvent.scantype == "AutoScan")
+                {
+                    // Suppress scan details from nav beacons and `AutoScan` events.
+                    return;
+                }
+                else if (ignoreBodyScan)
+                {
+                    // Suppress surface mapping probes from voicing redundant body scan events.
+                    ignoreBodyScan = false;
+                    return;
+                }
+            }
+            else if (@event is StatusEvent statusEvent)
+            {
+                if (StatusMonitor.currentStatus.gui_focus == "fss mode")
+                {
+                    // Beginning with Elite Dangerous v. 3.3, the primary star scan is delivered via a Scan with 
+                    // scantype `AutoScan` when you jump into the system. Secondary stars may be delivered in a burst 
+                    // following an FSSDiscoveryScan. Since each source has a different trigger, we re-order events 
+                    // and and report queued star scans when the pilot enters fss mode
+                    Say(@event);
+                    foreach (Event theEvent in eventQueue.OfType<StarScannedEvent>())
+                    {
+                        Say(theEvent);
+                    }
+                    eventQueue.RemoveAll(s => s.GetType() == typeof(StarScannedEvent));
+                    enqueueStarScan = false;
+                    return;
+                }
+            }
+            else if (@event is StarScannedEvent starScannedEvent)
+            {
+                if (starScannedEvent.scantype.Contains("NavBeacon"))
+                {
+                    // Suppress scan details from nav beacons
+                    return;
+                }
+                else if (enqueueStarScan)
+                {
+                    eventQueue.Add(@event);
+                    eventQueue.OrderBy(s => ((StarScannedEvent)s)?.distance);
+                    return;
+                }
+            }
+            else if (@event is JumpedEvent)
+            {
+                eventQueue?.RemoveAll(s => s.GetType() == typeof(StarScannedEvent));
+                enqueueStarScan = true;
+            }
+            else if (@event is SignalDetectedEvent)
+            {
+                if (!(StatusMonitor.currentStatus.gui_focus == "fss mode" || StatusMonitor.currentStatus.gui_focus == "saa mode"))
+                {
+                    return;
+                }
+            }
+            else if (@event is CommunityGoalEvent)
+            {
+                // Disable speech from the community goal event for the time being.
+                return;
+            }
+            Say(@event);
+        }
+
+        private void Say(Event @event)
+        {
+            Say(scriptResolver, ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip(), @event.type, @event, null, null, null, SayOutLoud());
+        }
+
+        private static bool SayOutLoud()
+        {
             // By default we say things unless we've been told not to
             bool sayOutLoud = true;
             if (EDDI.Instance.State.TryGetValue("speechresponder_quiet", out object tmp))
@@ -137,36 +226,7 @@ namespace EddiSpeechResponder
                     sayOutLoud = !(bool)tmp;
                 }
             }
-
-            if (theEvent is BeltScannedEvent)
-            {
-                // We ignore belt clusters
-                return;
-            }
-            else if (theEvent is BodyScannedEvent)
-            {
-                string scantype = ((BodyScannedEvent)theEvent).scantype;
-                if (scantype == "NavBeacon" || scantype == "NavBeaconDetail")
-                {
-                    return;
-                }
-            }
-            else if (theEvent is StarScannedEvent)
-            {
-                string scantype = ((StarScannedEvent)theEvent).scantype;
-                if (scantype == "NavBeacon" || scantype == "NavBeaconDetail")
-                {
-                    return;
-                }
-            }
-
-            // Disable speech from the community goal event for the time being.
-            if (theEvent is CommunityGoalEvent)
-            {
-                return;
-            }
-
-            Say(scriptResolver, ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip(), theEvent.type, theEvent, null, null, null, sayOutLoud);
+            return sayOutLoud;
         }
 
         // Say something with the default resolver

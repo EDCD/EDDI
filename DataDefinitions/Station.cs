@@ -54,12 +54,6 @@ namespace EddiDataDefinitions
         /// <summary>Unique 64 bit id value for system</summary>
         public long? systemAddress { get; set; }
 
-        /// <summary>The ID of this station's system in EDDB</summary>
-        public long? systemEDDBID { get; set; }
-
-        /// <summary>The ID of this station's body in EDDB</summary>
-        public long? bodyEDDBID { get; set; }
-
         /// <summary>Unique 64 bit id value for station</summary>
         public long? marketId { get; set; }
 
@@ -170,7 +164,7 @@ namespace EddiDataDefinitions
         }
         private StationLargestPad _LargestPad;
 
-        /// <summary>What are the economies at the station, with proportions for each (this is only set from Frontier API data)</summary>
+        /// <summary>What are the economies at the station, with proportions for each</summary>
         public List<EconomyShare> economyShares { get; set; } = new List<EconomyShare>();
 
         /// <summary>What are the localized economies at the stations</summary>

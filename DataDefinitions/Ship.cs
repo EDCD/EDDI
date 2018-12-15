@@ -275,8 +275,9 @@ namespace EddiDataDefinitions
         public List<Hardpoint> hardpoints { get; set; }
         public List<Compartment> compartments { get; set; }
         public List<LaunchBay> launchbays { get; set; }
-
+        public decimal activeFuelReservoirCapacity { get; set; }
         public string paintjob { get; set; }
+
         public decimal? fueltankcapacity { get; set; } // Core capacity
         public decimal? fueltanktotalcapacity { get; set; } // Capacity including additional tanks
         public decimal maxfuel { get; set; }
@@ -298,7 +299,7 @@ namespace EddiDataDefinitions
             launchbays = new List<LaunchBay>();
         }
 
-        public Ship(long EDID, string EDName, string Manufacturer, List<Translation> PhoneticManufacturer, string Model, List<Translation> PhoneticModel, string Size, int? MilitarySize)
+        public Ship(long EDID, string EDName, string Manufacturer, List<Translation> PhoneticManufacturer, string Model, List<Translation> PhoneticModel, string Size, int? MilitarySize, decimal reservoirFuelTankSize)
         {
             this.EDID = EDID;
             this.EDName = EDName;
@@ -312,6 +313,7 @@ namespace EddiDataDefinitions
             hardpoints = new List<Hardpoint>();
             compartments = new List<Compartment>();
             launchbays = new List<LaunchBay>();
+            this.activeFuelReservoirCapacity = reservoirFuelTankSize;
         }
 
         public override string ToString()
@@ -442,6 +444,7 @@ namespace EddiDataDefinitions
                 phoneticmodel = template.phoneticmodel;
                 size = template.size;
                 militarysize = template.militarysize;
+                activeFuelReservoirCapacity = template.activeFuelReservoirCapacity;
                 if (Role == null)
                 {
                     Role = EddiDataDefinitions.Role.MultiPurpose;

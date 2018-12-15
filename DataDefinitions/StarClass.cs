@@ -25,7 +25,11 @@ namespace EddiDataDefinitions
             var M = new StarClass("M", "M", new Chromaticity("orange_red"), 22.935M, new Normal(0.66, 33.23), new Normal(1.58, 47.11), new Normal(2835, 481), new Normal(6609, 8645));
         }
 
-       public class Chromaticity : ResourceBasedLocalizedEDName<StarClass.Chromaticity>
+        // Scan habitable zone constants
+        public const double maxHabitableTempKelvin = 315;
+        public const double minHabitableTempKelvin = 223.15;
+
+        public class Chromaticity : ResourceBasedLocalizedEDName<StarClass.Chromaticity>
         {
             static Chromaticity()
             {
@@ -141,10 +145,10 @@ namespace EddiDataDefinitions
                 (4 * Math.PI * Math.Pow((double)radius, 2) * Constants.stefanBoltzmann), 0.25);
         }
 
-        public static decimal DistanceFromStarForTemperature(double targetTempKelvin, double stellarRadiusMeters, double stellarTemperatureKelvin)
+        public static decimal DistanceFromStarForTemperature(double targetTempKelvin, double stellarRadiusKilometers, double stellarTemperatureKelvin)
         {
             // Derived from Jackie Silver's Habitable Zone Calculator (https://forums.frontier.co.uk/showthread.php?t=127522&highlight=), used with permission
-            double top = Math.Pow(stellarRadiusMeters, 2.0) * Math.Pow(stellarTemperatureKelvin, 4.0);
+            double top = Math.Pow(stellarRadiusKilometers*1000, 2.0) * Math.Pow(stellarTemperatureKelvin, 4.0);
             double bottom = 4.0 * Math.Pow(targetTempKelvin, 4.0);
             double distanceMeters = Math.Pow(top / bottom, 0.5);
             double distancels = ( distanceMeters ) / Constants.lightSpeedMetersPerSecond; 
