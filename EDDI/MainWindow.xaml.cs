@@ -212,14 +212,11 @@ namespace Eddi
             }
             eddiSquadronNameText.Text = eddiConfiguration.SquadronName == null ? string.Empty : eddiConfiguration.SquadronName;
             eddiSquadronIDText.Text = eddiConfiguration.SquadronID == null ? string.Empty : eddiConfiguration.SquadronID;
-            squadronRankDropDown.SelectedItem = eddiConfiguration.SquadronRank == null
-                ? SquadronRank.FromEDName("None").localizedName : eddiConfiguration.SquadronRank.localizedName;
+            squadronRankDropDown.SelectedItem = (eddiConfiguration.SquadronRank ?? SquadronRank.None).localizedName;
             ConfigureSquadronRankOptions(eddiConfiguration);
-            squadronAllegianceDropDown.SelectedItem = eddiConfiguration.SquadronAllegiance == null
-                ? Superpower.FromEDName("None").localizedName : eddiConfiguration.SquadronAllegiance.localizedName;
+            squadronAllegianceDropDown.SelectedItem = (eddiConfiguration.SquadronAllegiance ?? Superpower.None).localizedName;
             ConfigureSquadronAllegianceOptions(eddiConfiguration);
-            squadronPowerDropDown.SelectedItem = eddiConfiguration.SquadronPower == null
-                ? Power.FromEDName("None").localizedName : eddiConfiguration.SquadronPower.localizedName;
+            squadronPowerDropDown.SelectedItem = (eddiConfiguration.SquadronPower ?? Power.None).localizedName;
             ConfigureSquadronPowerOptions(eddiConfiguration);
             if (eddiConfiguration.validSquadronSystem)
             {
@@ -801,7 +798,7 @@ namespace Eddi
                 {
                     foreach (Faction faction in FactionSystem.factions)
                     {
-                        if (faction.Allegiance == configuration.SquadronAllegiance)
+                        if (configuration.SquadronAllegiance == Superpower.None || faction.Allegiance == configuration.SquadronAllegiance)
                         {
                             SquadronFactionOptions.Add(faction.name);
                         }

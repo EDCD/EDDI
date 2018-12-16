@@ -167,17 +167,17 @@ namespace EddiStarMapService
                     Faction controllingFaction = new Faction
                     {
                         name = (string)information["faction"],
-                        Allegiance = Superpower.FromNameOrEdName((string)information["allegiance"]),
-                        Government = Government.FromName((string)information["government"]),
-                        FactionState = FactionState.FromName((string)information["factionState"])
+                        Allegiance = Superpower.FromName((string)information["allegiance"]) ?? Superpower.None,
+                        Government = Government.FromName((string)information["government"]) ?? Government.None,
+                        FactionState = FactionState.FromName((string)information["factionState"]) ?? FactionState.None
                     };
                     starSystem.Faction = controllingFaction;
 
-                    starSystem.securityLevel = SecurityLevel.FromName((string)information["security"]);
+                    starSystem.securityLevel = SecurityLevel.FromName((string)information["security"]) ?? SecurityLevel.None;
                     starSystem.Economies = new List<Economy>()
                     {
-                        Economy.FromName((string)information["economy"]),
-                        Economy.FromName((string)information["secondEconomy"])
+                        Economy.FromName((string)information["economy"]) ?? Economy.None,
+                        Economy.FromName((string)information["secondEconomy"]) ?? Economy.None
                     };
                 }
             }

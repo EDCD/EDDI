@@ -58,7 +58,7 @@ namespace EddiStarMapService
                 EDSMID = (long?)body["id"],
                 name = (string)body["name"],
                 systemname = system,
-                Type = BodyType.FromName((string)body["type"]),
+                Type = BodyType.FromName((string)body["type"]) ?? BodyType.None,
                 distance = (decimal?)body["distanceToArrival"], // Light Seconds
                 temperature = (long?)body["surfaceTemperature"], // Kelvin
 
@@ -96,7 +96,7 @@ namespace EddiStarMapService
             if ((string)body["type"] == "Planet")
             {
                 // Planet-specific items 
-                Body.planetClass = PlanetClass.FromName((string)body["subType"]);
+                Body.planetClass = PlanetClass.FromName((string)body["subType"]) ?? PlanetClass.None;
                 Body.landable = (bool?)body["isLandable"];
                 Body.gravity = (decimal?)body["gravity"]; // G's
                 Body.earthmass = (decimal?)body["earthMasses"];
@@ -200,7 +200,7 @@ namespace EddiStarMapService
                     Body.rings = Rings;
                 }
             }
-            Body.reserveLevel = ReserveLevel.FromName((string)body["reserveLevel"] ?? "None");
+            Body.reserveLevel = ReserveLevel.FromName((string)body["reserveLevel"]) ?? ReserveLevel.None;
 
             DateTime updatedAt = DateTime.SpecifyKind(DateTime.Parse((string)body["updateTime"]), DateTimeKind.Utc);
             Body.updatedat = updatedAt == null ? null : (long?)(updatedAt.Subtract(new DateTime(1970, 1, 1, 0, 0, 0))).TotalSeconds;

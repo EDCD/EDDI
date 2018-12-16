@@ -71,7 +71,7 @@ namespace Eddi
         public string squadronAllegiance
         {
 
-            get => SquadronAllegiance?.edname ?? "None";
+            get => SquadronAllegiance?.edname ?? Superpower.None.edname;
             set
             {
                 Superpower saDef = Superpower.FromEDName(value);
@@ -91,7 +91,7 @@ namespace Eddi
         public string squadronPower
         {
 
-            get => SquadronPower?.edname ?? "None";
+            get => SquadronPower?.edname ?? Superpower.None.edname;
             set
             {
                 Power spDef = Power.FromEDName(value);

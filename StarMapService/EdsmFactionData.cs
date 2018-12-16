@@ -57,11 +57,11 @@ namespace EddiStarMapService
             {
                 name = (string)faction["name"],
                 EDSMID = (long?)faction["id"],
-                Allegiance = Superpower.FromName((string)faction["allegiance"]),
-                Government = Government.FromName((string)faction["government"]),
+                Allegiance = Superpower.FromName((string)faction["allegiance"]) ?? Superpower.None,
+                Government = Government.FromName((string)faction["government"]) ?? Government.None,
                 isplayer = (bool)faction["isPlayer"],
                 influence = (decimal?)faction["influence"] * 100, // Convert from a 0-1 range to a percentage
-                FactionState = FactionState.FromName((string)faction["state"]),
+                FactionState = FactionState.FromName((string)faction["state"]) ?? FactionState.None,
                 updatedAt = (DateTime)Dates.fromTimestamp((long?)faction["lastUpdate"])
             };
 
