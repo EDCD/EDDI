@@ -49,7 +49,8 @@ namespace EddiSpeechService
         // Fixes to avoid issues with some of the more strangely-named systems
         private static Dictionary<string, string> STAR_SYSTEM_FIXES = new Dictionary<string, string>()
         {
-            { "VESPER-M4", "Vesper M 4" } // Stop Vesper being treated as a sector
+            { "VESPER-M4", "Vesper M 4" }, // Stop Vesper being treated as a sector
+            { "Sagittarius A*", "Sagittarius A- Star" }, // Allow the * to be parsed out
         };
 
         // Fixes to avoid issues with pronunciation of station model names
@@ -118,6 +119,7 @@ namespace EddiSpeechService
             { "Procyon", new string[] { Properties.Phonetics.procyon } },
             { "Potriti", new string[] { Properties.Phonetics.potriti } },
             { "Reorte", new string[] { Properties.Phonetics.reorte } },
+            { "Sagittarius A Star", new string[] {Properties.Phonetics.Sagittarius, Properties.Phonetics.Sagittarius_A, Properties.Phonetics.Sagittarius_A_star} },
             { "Sakti", new string[] { Properties.Phonetics.sakti } },
             { "Shinrarta Dezhra", new string[] { Properties.Phonetics.shinrartadezhra_shinrarta, Properties.Phonetics.shinrartadezhra_dezhra } },
             { "Surya", new string[] { Properties.Phonetics.surya } },
@@ -580,7 +582,11 @@ namespace EddiSpeechService
                         elements.Add("<phoneme alphabet=\"ipa\" ph=\"ˈnaɪnər\">niner</phoneme>");
                         break;
                     case '-':
-                        if (passDash) elements.Add("-");
+                        if (passDash)
+                        {
+                            elements.Add("-");
+                        }
+
                         break;
                 }
             }

@@ -54,6 +54,14 @@ namespace SpeechTests
         }
 
         [TestMethod, TestCategory("Speech")]
+        public void TestSagAStar()
+        {
+            string SagI = "Sagittarius A*";
+            string translated = Translations.StarSystem(SagI);
+            SpeechService.Instance.Say(ShipDefinitions.FromEliteID(128049309), translated, true);
+        }
+
+        [TestMethod, TestCategory("Speech")]
         public void TestSsml1()
         {
             SpeechService.Instance.Say(ShipDefinitions.FromEliteID(128049309), @"<break time=""100ms""/>Fred's ship.", true);

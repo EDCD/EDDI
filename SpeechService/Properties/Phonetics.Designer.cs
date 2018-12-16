@@ -1213,6 +1213,24 @@ namespace EddiSpeechService.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to eɪ.
+        /// </summary>
+        public static string Sagittarius_A {
+            get {
+                return ResourceManager.GetString("Sagittarius_A", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to stɑː.
+        /// </summary>
+        public static string Sagittarius_A_star {
+            get {
+                return ResourceManager.GetString("Sagittarius_A_star", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ˈsæk.tiː.
         /// </summary>
         public static string sakti {
