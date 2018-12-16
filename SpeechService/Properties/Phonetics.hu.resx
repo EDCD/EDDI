@@ -1,119 +1,154 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
-	<!-- 
-		Microsoft ResX Schema
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
 
-		Version 1.3
-
-		The primary goals of this format is to allow a simple XML format 
-		that is mostly human readable. The generation and parsing of the 
-		various data types are done through the TypeConverter classes 
-		associated with the data types.
-
-		Example:
-
-		... ado.net/XML headers & schema ...
-		<resheader name="resmimetype">text/microsoft-resx</resheader>
-		<resheader name="version">1.3</resheader>
-		<resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
-		<resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
-		<data name="Name1">this is my long string</data>
-		<data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
-		<data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
-			[base64 mime encoded serialized .NET Framework object]
-		</data>
-		<data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-			[base64 mime encoded string representing a byte array form of the .NET Framework object]
-		</data>
-
-		There are any number of "resheader" rows that contain simple 
-		name/value pairs.
-
-		Each data row contains a name, and value. The row also contains a 
-		type or mimetype. Type corresponds to a .NET class that support 
-		text/value conversion through the TypeConverter architecture. 
-		Classes that don't support this are serialized and stored with the 
-		mimetype set.
-
-		The mimetype is used for serialized objects, and tells the 
-		ResXResourceReader how to depersist the object. This is currently not 
-		extensible. For a given mimetype the value must be set accordingly:
-
-		Note - application/x-microsoft.net.object.binary.base64 is the format 
-		that the ResXResourceWriter will generate, however the reader can 
-		read any of the formats listed below.
-
-		mimetype: application/x-microsoft.net.object.binary.base64
-		value   : The object must be serialized with 
-			: System.Serialization.Formatters.Binary.BinaryFormatter
-			: and then encoded with base64 encoding.
-
-		mimetype: application/x-microsoft.net.object.soap.base64
-		value   : The object must be serialized with 
-			: System.Runtime.Serialization.Formatters.Soap.SoapFormatter
-			: and then encoded with base64 encoding.
-
-		mimetype: application/x-microsoft.net.object.bytearray.base64
-		value   : The object must be serialized into a byte array 
-			: using a System.ComponentModel.TypeConverter
-			: and then encoded with base64 encoding.
-	-->
-	
-	<xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
-		<xsd:element name="root" msdata:IsDataSet="true">
-			<xsd:complexType>
-				<xsd:choice maxOccurs="unbounded">
-					<xsd:element name="data">
-						<xsd:complexType>
-							<xsd:sequence>
-								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
-								<xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"/>
-							</xsd:sequence>
-							<xsd:attribute name="name" type="xsd:string" msdata:Ordinal="1"/>
-							<xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"/>
-							<xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"/>
-						</xsd:complexType>
-					</xsd:element>
-					<xsd:element name="resheader">
-						<xsd:complexType>
-							<xsd:sequence>
-								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
-							</xsd:sequence>
-							<xsd:attribute name="name" type="xsd:string" use="required"/>
-						</xsd:complexType>
-					</xsd:element>
-				</xsd:choice>
-			</xsd:complexType>
-		</xsd:element>
-	</xsd:schema>
-	<resheader name="resmimetype">
-		<value>text/microsoft-resx</value>
-	</resheader>
-	<resheader name="version">
-		<value>1.3</value>
-	</resheader>
-	<resheader name="reader">
-		<value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-	</resheader>
-	<resheader name="writer">
-		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-	</resheader>
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0"/>
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string"/>
+              <xsd:attribute name="type" type="xsd:string"/>
+              <xsd:attribute name="mimetype" type="xsd:string"/>
+              <xsd:attribute ref="xml:space"/>
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string"/>
+              <xsd:attribute name="name" type="xsd:string"/>
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"/>
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"/>
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"/>
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"/>
+              <xsd:attribute ref="xml:space"/>
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required"/>
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  
+  
+  
+  
+  
+  
   <data name="Alrai" xml:space="preserve">
     <value>Alrai</value>
     <comment>Optional phonetic pronunciation for Alrai</comment>
   </data>
+  
+  
   <data name="Antliae" xml:space="preserve">
     <value>Antili</value>
     <comment>Optional phonetic pronunciation for Antliae</comment>
   </data>
+  
   <data name="Aquarii" xml:space="preserve">
     <value>akvari</value>
     <comment>Optional phonetic pronunciation for Aquarii</comment>
   </data>
+  
   <data name="Arietis" xml:space="preserve">
     <value>árietisz</value>
     <comment>Optional phonetic pronunciation for Arietis</comment>
   </data>
+  
+  
+  
+  
+  
+  
   <data name="Bei" xml:space="preserve">
     <value>bei</value>
     <comment>Optional phonetic pronunciation for Bei</comment>
@@ -137,6 +172,8 @@
     <comment>Optional phonetic pronunciation for BleaeThaa_Thaa</comment>
   </data>
   
+  
+  
   <data name="Capricorni" xml:space="preserve">
     <value>Kapikorni</value>
     <comment>Optional phonetic pronunciation for Capricorni</comment>
@@ -145,6 +182,9 @@
     <value>karina</value>
     <comment>Optional phonetic pronunciation for Carina</comment>
   </data>
+  
+  
+  
   <data name="Cephei" xml:space="preserve">
     <value>Cefi</value>
     <comment>Optional phonetic pronunciation for Cephei</comment>
@@ -174,141 +214,17 @@
     <value>cigni</value>
     <comment>Optional phonetic pronunciation for Cygni</comment>
   </data>
+  
+  
+  
+  
+  
+  
+  
   <data name="Dou" xml:space="preserve">
     <value>Dú</value>
     <comment>Optional phonetic pronunciation for Dou</comment>
   </data>
-  <data name="Eta" xml:space="preserve">
-    <value>eta</value>
-    <comment>Optional phonetic pronunciation for Eta</comment>
-  </data>
-  
-  
-  
-  <data name="Fornacis" xml:space="preserve">
-    <value>fornaszisz</value>
-    <comment>Optional phonetic pronunciation for Fornacis</comment>
-  </data>
-  <data name="Herculis" xml:space="preserve">
-    <value>herkulisz</value>
-    <comment>Optional phonetic pronunciation for Herculis</comment>
-  </data>
-  <data name="Hyades" xml:space="preserve">
-    <value>Hájádesz</value>
-    <comment>Optional phonetic pronunciation for Hyades</comment>
-  </data>
-  <data name="Hydrae" xml:space="preserve">
-    <value>Hájdrí</value>
-    <comment>Optional phonetic pronunciation for Hydrae</comment>
-  </data>
-  <data name="Lupus" xml:space="preserve">
-    <value>Lupusz</value>
-    <comment>Optional phonetic pronunciation for Lupus</comment>
-  </data>
-  <data name="Lyncis" xml:space="preserve">
-    <value>Linsziz</value>
-    <comment>Optional phonetic pronunciation for Lyncis</comment>
-  </data>
-  <data name="Omega" xml:space="preserve">
-    <value>Omega</value>
-    <comment>Optional phonetic pronunciation for Omega</comment>
-  </data>
-  <data name="Ophiuchi" xml:space="preserve">
-    <value>opfhijucsi</value>
-    <comment>Optional phonetic pronunciation for Ophiuchi</comment>
-  </data>
-  <data name="Ophiuchus" xml:space="preserve">
-    <value>opfhijucsiusz</value>
-    <comment>Optional phonetic pronunciation for Ophiuchus</comment>
-  </data>
-  <data name="Pegasi" xml:space="preserve">
-    <value>Pegazi</value>
-    <comment>Optional phonetic pronunciation for Pegasi</comment>
-  </data>
-  <data name="Persei" xml:space="preserve">
-    <value>Perszej</value>
-    <comment>Optional phonetic pronunciation for Persei</comment>
-  </data>
-  <data name="Piscium" xml:space="preserve">
-    <value>Pisszijum</value>
-    <comment>Optional phonetic pronunciation for Piscium</comment>
-  </data>
-  <data name="Pleiades" xml:space="preserve">
-    <value>Plejádesz</value>
-    <comment>Optional phonetic pronunciation for Pleiades</comment>
-  </data>
-  <data name="Pru" xml:space="preserve">
-    <value>pru</value>
-    <comment>Optional phonetic pronunciation for Pru</comment>
-  </data>
-  
-  
-  <data name="Puppis" xml:space="preserve">
-    <value>Puppisz</value>
-    <comment>Optional phonetic pronunciation for Puppis</comment>
-  </data>
-  <data name="Rho" xml:space="preserve">
-    <value>rho</value>
-    <comment>Optional phonetic pronunciation for Rho</comment>
-  </data>
-  
-  
-  <data name="Sagittarius" xml:space="preserve">
-    <value>Szaggitáriusz</value>
-    <comment>Optional phonetic pronunciation for Sagittarius</comment>
-  </data>
-  <data name="Scorpii" xml:space="preserve">
-    <value>Szkórpí</value>
-    <comment>Optional phonetic pronunciation for Scorpii</comment>
-  </data>
-  
-  
-  
-  <data name="Tascheter" xml:space="preserve">
-    <value>Tasihiter</value>
-    <comment>Optional phonetic pronunciation for Tascheter</comment>
-  </data>
-  <data name="Tau" xml:space="preserve">
-    <value>tau</value>
-    <comment>Optional phonetic pronunciation for Tau</comment>
-  </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
   
   
   
@@ -324,6 +240,13 @@
     <value>eravate</value>
     <comment>Optional phonetic pronunciation for eravate</comment>
   </data>
+  <data name="Eta" xml:space="preserve">
+    <value>eta</value>
+    <comment>Optional phonetic pronunciation for Eta</comment>
+  </data>
+  
+  
+  
   <data name="fei" xml:space="preserve">
     <value>fei</value>
     <comment>Optional phonetic pronunciation for fei</comment>
@@ -331,6 +254,10 @@
   <data name="felicia" xml:space="preserve">
     <value>feliszia</value>
     <comment>Optional phonetic pronunciation for felicia</comment>
+  </data>
+  <data name="Fornacis" xml:space="preserve">
+    <value>fornaszisz</value>
+    <comment>Optional phonetic pronunciation for Fornacis</comment>
   </data>
   <data name="frigaha" xml:space="preserve">
     <value>frigáhá</value>
@@ -345,6 +272,10 @@
     <comment>Optional phonetic pronunciation for grom</comment>
   </data>
   
+  <data name="Herculis" xml:space="preserve">
+    <value>herkulisz</value>
+    <comment>Optional phonetic pronunciation for Herculis</comment>
+  </data>
   <data name="hotas" xml:space="preserve">
     <value>hotasz</value>
     <comment>Optional phonetic pronunciation for hotas</comment>
@@ -352,6 +283,14 @@
   <data name="hudson" xml:space="preserve">
     <value>Hádzon</value>
     <comment>Optional phonetic pronunciation for hudson</comment>
+  </data>
+  <data name="Hyades" xml:space="preserve">
+    <value>Hájádesz</value>
+    <comment>Optional phonetic pronunciation for Hyades</comment>
+  </data>
+  <data name="Hydrae" xml:space="preserve">
+    <value>Hájdrí</value>
+    <comment>Optional phonetic pronunciation for Hydrae</comment>
   </data>
   
   <data name="ibootis_bootis" xml:space="preserve">
@@ -385,6 +324,15 @@
   
   
   
+  <data name="Lupus" xml:space="preserve">
+    <value>Lupusz</value>
+    <comment>Optional phonetic pronunciation for Lupus</comment>
+  </data>
+  
+  <data name="Lyncis" xml:space="preserve">
+    <value>Linsziz</value>
+    <comment>Optional phonetic pronunciation for Lyncis</comment>
+  </data>
   
   
   
@@ -394,6 +342,72 @@
   
   
   
+  <data name="Omega" xml:space="preserve">
+    <value>Omega</value>
+    <comment>Optional phonetic pronunciation for Omega</comment>
+  </data>
+  <data name="Ophiuchi" xml:space="preserve">
+    <value>opfhijucsi</value>
+    <comment>Optional phonetic pronunciation for Ophiuchi</comment>
+  </data>
+  <data name="Ophiuchus" xml:space="preserve">
+    <value>opfhijucsiusz</value>
+    <comment>Optional phonetic pronunciation for Ophiuchus</comment>
+  </data>
+  
+  
+  
+  
+  
+  <data name="Pegasi" xml:space="preserve">
+    <value>Pegazi</value>
+    <comment>Optional phonetic pronunciation for Pegasi</comment>
+  </data>
+  <data name="Persei" xml:space="preserve">
+    <value>Perszej</value>
+    <comment>Optional phonetic pronunciation for Persei</comment>
+  </data>
+  <data name="Piscium" xml:space="preserve">
+    <value>Pisszijum</value>
+    <comment>Optional phonetic pronunciation for Piscium</comment>
+  </data>
+  <data name="Pleiades" xml:space="preserve">
+    <value>Plejádesz</value>
+    <comment>Optional phonetic pronunciation for Pleiades</comment>
+  </data>
+  
+  
+  
+  
+  <data name="Pru" xml:space="preserve">
+    <value>pru</value>
+    <comment>Optional phonetic pronunciation for Pru</comment>
+  </data>
+  
+  
+  <data name="Puppis" xml:space="preserve">
+    <value>Puppisz</value>
+    <comment>Optional phonetic pronunciation for Puppis</comment>
+  </data>
+  
+  <data name="Rho" xml:space="preserve">
+    <value>rho</value>
+    <comment>Optional phonetic pronunciation for Rho</comment>
+  </data>
+  
+  
+  
+  <data name="Sagittarius" xml:space="preserve">
+    <value>Szaggitáriusz</value>
+    <comment>Optional phonetic pronunciation for Sagittarius</comment>
+  </data>
+  
+  
+  
+  <data name="Scorpii" xml:space="preserve">
+    <value>Szkórpí</value>
+    <comment>Optional phonetic pronunciation for Scorpii</comment>
+  </data>
   
   
   
@@ -403,7 +417,14 @@
   
   
   
-  
+  <data name="Tascheter" xml:space="preserve">
+    <value>Tasihiter</value>
+    <comment>Optional phonetic pronunciation for Tascheter</comment>
+  </data>
+  <data name="Tau" xml:space="preserve">
+    <value>tau</value>
+    <comment>Optional phonetic pronunciation for Tau</comment>
+  </data>
   
   
   
