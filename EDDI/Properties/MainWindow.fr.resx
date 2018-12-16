@@ -256,4 +256,25 @@
   <data name="tab_commander_par1" xml:space="preserve">
     <value>Vous pouvez indiquer ici le nom d'un système en particulier que vous considérez comme votre domicile ainsi qu'une station dans ce système. Si vous le faites, l'information sera utilisée par les répondeurs EDDI.</value>
   </data>
+  <data name="tab_commander_squadron_name" xml:space="preserve">
+    <value>Nom de l'escadron:</value>
+  </data>
+  <data name="tab_commander_squadron_system" xml:space="preserve">
+    <value>Système de l'escadron:</value>
+  </data>
+  <data name="tab_commander_squadron_allegiance" xml:space="preserve">
+    <value>Allégeance de l'escadron:</value>
+  </data>
+  <data name="tab_commander_squadron_faction" xml:space="preserve">
+    <value>Faction de l'escadron:</value>
+  </data>
+  <data name="tab_commander_squadron_power" xml:space="preserve">
+    <value>Puissance de l'escadron:</value>
+  </data>
+  <data name="tab_commander_squadron_rank" xml:space="preserve">
+    <value>Rang de l'escadron:</value>
+  </data>
+  <data name="tab_commander_squadron_id" xml:space="preserve">
+    <value>ID de l'escadron:</value>
+  </data>
 </root>

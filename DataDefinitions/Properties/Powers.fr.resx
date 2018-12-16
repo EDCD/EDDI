@@ -117,41 +117,40 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Ice" xml:space="preserve">
-    <value>Eis</value>
-    <comment>Body Composition "Ice"</comment>
+  <data name="AislingDuval" xml:space="preserve">
+    <value>Aisling Duval</value>
   </data>
-  <data name="Metal" xml:space="preserve">
-    <value>Metall</value>
-    <comment>Body Composition "Metal"</comment>
+  <data name="ALavignyDuval" xml:space="preserve">
+    <value>Arissa Lavigny-Duval</value>
   </data>
-  <data name="Planet" xml:space="preserve">
-    <value>Planet</value>
-    <comment>Body Type "Planet"</comment>
+  <data name="ArchonDelaine" xml:space="preserve">
+    <value>Archon Delaine</value>
   </data>
-  <data name="Rock" xml:space="preserve">
-    <value>Fels</value>
-    <comment>Body Composition "Rock"</comment>
+  <data name="DentonPatreus" xml:space="preserve">
+    <value>Denton Patreus</value>
   </data>
-  <data name="Star" xml:space="preserve">
-    <value>Stern</value>
-    <comment>Body Type "Star"</comment>
+  <data name="EdmundMahon" xml:space="preserve">
+    <value>Edmund Mahon</value>
   </data>
-  <data name="Belt" xml:space="preserve">
-    <value>Gürtel</value>
-    <comment>Body Type "Belt"</comment>
+  <data name="FeliciaWinters" xml:space="preserve">
+    <value>Felicia Winters</value>
+  </data>
+  <data name="LiYongRui" xml:space="preserve">
+    <value>Li Yong-Rui</value>
+  </data>
+  <data name="PranavAntal" xml:space="preserve">
+    <value>Pranav Antal</value>
+  </data>
+  <data name="YuriGrom" xml:space="preserve">
+    <value>Yuri Grom</value>
+  </data>
+  <data name="ZacharyHudson" xml:space="preserve">
+    <value>Zachary Hudson</value>
+  </data>
+  <data name="ZeminaTorval" xml:space="preserve">
+    <value>Zemina Torval</value>
   </data>
   <data name="None" xml:space="preserve">
-    <value>Kein</value>
-    <comment>None</comment>
+    <value>Aucun</value>
   </data>
-  <data name="Station" xml:space="preserve">
-    <value>Station</value>
-    <comment>BodyType "Station"</comment>
-  </data>
-  <data name="Null" xml:space="preserve">
-    <value>Keiner</value>
-    <comment>BodyType "Null"</comment>
-  </data>
-  
 </root>

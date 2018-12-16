@@ -117,41 +117,20 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Ice" xml:space="preserve">
-    <value>Eis</value>
-    <comment>Body Composition "Ice"</comment>
+  <data name="Agent" xml:space="preserve">
+    <value>Agent</value>
+    <comment>SquadronRanks Agent</comment>
   </data>
-  <data name="Metal" xml:space="preserve">
-    <value>Metall</value>
-    <comment>Body Composition "Metal"</comment>
+  <data name="Leader" xml:space="preserve">
+    <value>Chef</value>
+    <comment>SquadronRanks Leader</comment>
   </data>
-  <data name="Planet" xml:space="preserve">
-    <value>Planet</value>
-    <comment>Body Type "Planet"</comment>
+  <data name="Rookie" xml:space="preserve">
+    <value>Recrue</value>
+    <comment>SquadronRanks Rookie</comment>
   </data>
-  <data name="Rock" xml:space="preserve">
-    <value>Fels</value>
-    <comment>Body Composition "Rock"</comment>
+  <data name="SeniorOfficer" xml:space="preserve">
+    <value>Officier supérieur</value>
+    <comment>SquadronRanks SeniorOfficer</comment>
   </data>
-  <data name="Star" xml:space="preserve">
-    <value>Stern</value>
-    <comment>Body Type "Star"</comment>
-  </data>
-  <data name="Belt" xml:space="preserve">
-    <value>Gürtel</value>
-    <comment>Body Type "Belt"</comment>
-  </data>
-  <data name="None" xml:space="preserve">
-    <value>Kein</value>
-    <comment>None</comment>
-  </data>
-  <data name="Station" xml:space="preserve">
-    <value>Station</value>
-    <comment>BodyType "Station"</comment>
-  </data>
-  <data name="Null" xml:space="preserve">
-    <value>Keiner</value>
-    <comment>BodyType "Null"</comment>
-  </data>
-  
 </root>
