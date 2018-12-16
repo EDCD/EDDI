@@ -51,7 +51,7 @@
             {
                 result = FromEDName(from);
             }
-            return result;
+            return result ?? None);
         }
     }
 }
