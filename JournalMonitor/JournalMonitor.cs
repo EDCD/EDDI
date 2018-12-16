@@ -396,7 +396,6 @@ namespace EddiJournalMonitor
                                     }
                                     else if (data.ContainsKey("Federation"))
                                     {
-                                        Superpower superpower = Superpower.FromName("Federation");
                                         data.TryGetValue("Federation", out val);
                                         FederationRating rating = FederationRating.FromRank(Convert.ToInt32(val));
                                         events.Add(new FederationPromotionEvent(timestamp, rating) { raw = line });
