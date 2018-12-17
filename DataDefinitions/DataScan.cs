@@ -33,7 +33,7 @@ namespace EddiDataDefinitions
         public DataScan() : this("")
         {}
 
-        private DataScan(string edname) : base(edname, edname)
+        private DataScan(string edname) : base(edname, edname.Replace("$Datascan_", "").Replace(";", ""))
         {}
     }
 }
