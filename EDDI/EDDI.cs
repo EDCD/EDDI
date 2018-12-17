@@ -1580,7 +1580,7 @@ namespace Eddi
         public bool refreshProfile(bool refreshStation = false)
         {
             return true;
-
+#if false
             bool success = true;
             if (CompanionAppService.Instance?.CurrentState == CompanionAppService.State.READY)
             {
@@ -1687,6 +1687,7 @@ namespace Eddi
                 }
             }
             return success;
+#endif
         }
 
         private void setSystemDistanceFromHome(StarSystem system)
