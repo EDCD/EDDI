@@ -2037,10 +2037,10 @@ namespace Eddi
             if (configuration.SquadronSystem != null && configuration.SquadronSystem.Trim().Length > 0)
             {
                 SquadronStarSystem = StarSystemSqLiteRepository.Instance.GetStarSystem(configuration.SquadronSystem.Trim());
-                if (SquadronStarSystem != null)
+                if (SquadronStarSystem?.factions != null)
                 {
                     Logging.Debug("Squadron star system is " + SquadronStarSystem.name);
-                    configuration.validSquadronSystem = configuration.SquadronAllegiance == SquadronStarSystem.Faction.Allegiance;
+                    configuration.validSquadronSystem = SquadronStarSystem.factions.Count() > 0;
                 }
             }
             else
@@ -2063,32 +2063,28 @@ namespace Eddi
                     string system = CurrentStarSystem.name;
                     Superpower allegiance = CurrentStarSystem.Faction.Allegiance;
 
-                    // Update the squadron system
-                    if (configuration.SquadronSystem == null || configuration.SquadronSystem != system)
-                    {
-                        configuration.SquadronSystem = system;
-                        mw.eddiSquadronNameText.Text = system;
-                        configuration = updateSquadronSystem(configuration);
-                    }
+                    // Update the squadron system data
+                    configuration.SquadronSystem = system;
+                    mw.eddiSquadronNameText.Text = system;
+                    configuration = updateSquadronSystem(configuration);
 
-                    //Update the squadron allegiance
+                    //Update the squadron allegiance, if changed
                     if (configuration.SquadronAllegiance == Superpower.None || configuration.SquadronAllegiance != allegiance)
                     {
                         configuration.SquadronAllegiance = allegiance;
-                        mw.squadronAllegianceDropDown.SelectedItem = allegiance.localizedName;
-                        mw.ConfigureSquadronFactionOptions(configuration);
-
                         Cmdr.squadronallegiance = allegiance;
                     }
                 }
 
-                //Update the squadron faction
+                //Update the squadron faction, if changed
                 if (configuration.SquadronFaction == null || configuration.SquadronFaction != faction.name)
                 {
                     configuration.SquadronFaction = faction.name;
                     mw.squadronFactionDropDown.SelectedItem = faction.name;
-
                     Cmdr.squadronfaction = faction.name;
+
+                    configuration.SquadronAllegiance = faction.Allegiance;
+                    Cmdr.squadronallegiance = faction.Allegiance;
                 }
 
                 configuration.ToFile();

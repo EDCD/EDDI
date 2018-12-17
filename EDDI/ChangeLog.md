@@ -10,6 +10,8 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * The `body` object now includes `estimatedhabzoneinner` and `estimatedhabzoneouter` for stars.
     * The `Body scanned` event has been revised to include new data. 
     * Added `faction` object. Check the `Variables` window for details.
+    * Added squadron data to Commander details UI & the `cmdr` object. Details in Variables.md
+    * Squadron data updated in `Location` and `FSDJump` events, when in squadron home system.
   * Ship monitor
     * Add new value to the current ship: `ident`
   * Speech responder
@@ -18,6 +20,8 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Added new event `Body mapped`, triggered after mapping a body with the Surface Area Analysis scanner
     * Added new event `Discovery scan`, triggered when performing a full system scan (honk) with the FSS
     * Added new event `Signal detected`, triggered when a signal source is detected
+    * Added new event `Squadron status`, triggered status of squadron has changed (`applied`, `created`, `disbanded`, `invited`, `joined`, `kicked`, `left`).
+    * Added new event `Squadron rank`, triggered when squadron rank has changed.
     * Updated `Jumped` event to contains the name of the star at which you've arrived
     * Updated `Jumped` and `Location` events to contain details about the status of factions.
     * Updated `Entered signal source` event by adding new variable `localizedsource`
