@@ -256,11 +256,25 @@
   <data name="tab_commander_par1" xml:space="preserve">
     <value>Puede especificar el nombre de un sistema y una estación en particular del mismo,  que considere como su hogar. Si lo hace, su información estará disponible para los Contestadores de EDDI.</value>
   </data>
-  
-  
-  
-  
-  
-  
-  
+  <data name="tab_commander_squadron_name" xml:space="preserve">
+    <value>Nombre del escuadrón:</value>
+  </data>
+  <data name="tab_commander_squadron_system" xml:space="preserve">
+    <value>Sistema del escuadrón:</value>
+  </data>
+  <data name="tab_commander_squadron_allegiance" xml:space="preserve">
+    <value>Alianza del escuadrón:</value>
+  </data>
+  <data name="tab_commander_squadron_faction" xml:space="preserve">
+    <value>Facción del escuadrón:</value>
+  </data>
+  <data name="tab_commander_squadron_power" xml:space="preserve">
+    <value>Potencia del escuadrón:</value>
+  </data>
+  <data name="tab_commander_squadron_rank" xml:space="preserve">
+    <value>Rango del escuadrón:</value>
+  </data>
+  <data name="tab_commander_squadron_id" xml:space="preserve">
+    <value>ID del escuadrón:</value>
+  </data>
 </root>
