@@ -88,6 +88,24 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Surface Outpost.
+        /// </summary>
+        public static string CraterOutpost {
+            get {
+                return ResourceManager.GetString("CraterOutpost", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Surface Port.
+        /// </summary>
+        public static string CraterPort {
+            get {
+                return ResourceManager.GetString("CraterPort", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Megaship.
         /// </summary>
         public static string Megaship {
