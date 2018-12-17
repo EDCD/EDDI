@@ -153,5 +153,8 @@
     <value>Ninguno</value>
     <comment>BodyType "Null"</comment>
   </data>
-  
+  <data name="PlanetaryRing" xml:space="preserve">
+    <value>Anillo planetario</value>
+    <comment>Body Type PlanetaryRing</comment>
+  </data>
 </root>
