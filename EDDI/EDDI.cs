@@ -820,6 +820,12 @@ namespace Eddi
                 CurrentStarSystem.Faction = controllingFaction;
             }
 
+            // Update squadron data, if available
+            if (theEvent.factions != null)
+            {
+                updateSquadronData(theEvent.factions);
+            }
+
             if (theEvent.docked == true || theEvent.bodytype.ToLowerInvariant() == "station")
             {
                 // In this case body === station and our body information is invalid
@@ -1088,6 +1094,12 @@ namespace Eddi
                 FactionState = theEvent.factionState,
             };
             CurrentStarSystem.Faction = controllingFaction;
+
+            // Update squadron data, if available
+            if (theEvent.factions != null)
+            {
+                updateSquadronData(theEvent.factions);
+            }
 
             CurrentStarSystem.Economies = new List<Economy> { theEvent.Economy, theEvent.Economy2 };
             CurrentStarSystem.securityLevel = theEvent.securityLevel;
@@ -2028,13 +2040,7 @@ namespace Eddi
                 if (SquadronStarSystem != null)
                 {
                     Logging.Debug("Squadron star system is " + SquadronStarSystem.name);
-                    configuration.validSquadronSystem = SquadronStarSystem.bodies.Count > 0 || SquadronStarSystem.stations.Count > 0
-                        || SquadronStarSystem.population > 0;
-                    Power power = Power.AllOfThem.FirstOrDefault(p => p.localizedName == SquadronStarSystem.power);
-                    if (power != null)
-                    {
-                        configuration.validSquadronSystem = configuration.validSquadronSystem && power == configuration.SquadronPower;
-                    }
+                    configuration.validSquadronSystem = configuration.SquadronAllegiance == SquadronStarSystem.Faction.Allegiance;
                 }
             }
             else
@@ -2042,6 +2048,51 @@ namespace Eddi
                 SquadronStarSystem = null;
             }
             return configuration;
+        }
+
+        public void updateSquadronData(List<Faction> factions)
+        {
+            Faction faction = factions.FirstOrDefault(f => f.squadronhomesystem || f.squadronfaction);
+            if (faction != null)
+            {
+                EDDIConfiguration configuration = EDDIConfiguration.FromFile();
+                MainWindow mw = new MainWindow();
+
+                if (faction.squadronhomesystem)
+                {
+                    string system = CurrentStarSystem.name;
+                    Superpower allegiance = CurrentStarSystem.Faction.Allegiance;
+
+                    // Update the squadron system
+                    if (configuration.SquadronSystem == null || configuration.SquadronSystem != system)
+                    {
+                        configuration.SquadronSystem = system;
+                        mw.eddiSquadronNameText.Text = system;
+                        configuration = updateSquadronSystem(configuration);
+                    }
+
+                    //Update the squadron allegiance
+                    if (configuration.SquadronAllegiance == Superpower.None || configuration.SquadronAllegiance != allegiance)
+                    {
+                        configuration.SquadronAllegiance = allegiance;
+                        mw.squadronAllegianceDropDown.SelectedItem = allegiance.localizedName;
+                        mw.ConfigureSquadronFactionOptions(configuration);
+
+                        Cmdr.squadronallegiance = allegiance;
+                    }
+                }
+
+                //Update the squadron faction
+                if (configuration.SquadronFaction == null || configuration.SquadronFaction != faction.name)
+                {
+                    configuration.SquadronFaction = faction.name;
+                    mw.squadronFactionDropDown.SelectedItem = faction.name;
+
+                    Cmdr.squadronfaction = faction.name;
+                }
+
+                configuration.ToFile();
+            }
         }
     }
 }

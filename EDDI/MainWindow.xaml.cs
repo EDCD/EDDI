@@ -664,29 +664,16 @@ namespace Eddi
             if (eddiConfiguration.SquadronAllegiance.localizedName != squadronAllegiance)
             {
                 eddiConfiguration.SquadronAllegiance = Superpower.FromName(squadronAllegiance);
-                eddiConfiguration.SquadronPower = Power.None;
-                eddiConfiguration = resetSquadronPower(eddiConfiguration);
+                eddiConfiguration = resetSquadronAllegiance(eddiConfiguration);
+
+                eddiConfiguration.SquadronSystem = null;
+                eddiSquadronSystemText.Text = string.Empty;
                 eddiConfiguration = EDDI.Instance.updateSquadronSystem(eddiConfiguration);
                 eddiConfiguration.ToFile();
 
                 EDDI.Instance.Cmdr.squadronallegiance = eddiConfiguration.SquadronAllegiance;
                 EDDI.Instance.Cmdr.squadronpower = eddiConfiguration.SquadronPower;
                 EDDI.Instance.Cmdr.squadronfaction = eddiConfiguration.SquadronFaction;
-            }
-        }
-
-        private void squadronPowerDropDownUpdated(object sender, SelectionChangedEventArgs e)
-        {
-            EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
-            string squadronPower = squadronPowerDropDown.SelectedItem?.ToString();
-
-            if (eddiConfiguration.SquadronPower.localizedName != squadronPower)
-            {
-                eddiConfiguration.SquadronPower = Power.FromName(squadronPower);
-                eddiConfiguration = resetSquadronPower(eddiConfiguration);
-                eddiConfiguration.ToFile();
-
-                EDDI.Instance.Cmdr.squadronpower = eddiConfiguration.SquadronPower;
             }
         }
 
@@ -739,6 +726,21 @@ namespace Eddi
             }
         }
 
+        private void squadronPowerDropDownUpdated(object sender, SelectionChangedEventArgs e)
+        {
+            EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
+            string squadronPower = squadronPowerDropDown.SelectedItem?.ToString();
+
+            if (eddiConfiguration.SquadronPower.localizedName != squadronPower)
+            {
+                eddiConfiguration.SquadronPower = Power.FromName(squadronPower);
+                eddiConfiguration = resetSquadronPower(eddiConfiguration);
+                eddiConfiguration.ToFile();
+
+                EDDI.Instance.Cmdr.squadronpower = eddiConfiguration.SquadronPower;
+            }
+        }
+
         private void ConfigureSquadronRankOptions(EDDIConfiguration configuration)
         {
             List<string> SquadronRankOptions = new List<string>();
@@ -787,7 +789,7 @@ namespace Eddi
             squadronPowerDropDown.ItemsSource = SquadronPowerOptions;
         }
 
-        private void ConfigureSquadronFactionOptions(EDDIConfiguration configuration)
+        public void ConfigureSquadronFactionOptions(EDDIConfiguration configuration)
         {
             List<string> SquadronFactionOptions = new List<string>
                 {
@@ -832,22 +834,10 @@ namespace Eddi
                 squadronAllegianceDropDown.SelectedItem = configuration.SquadronAllegiance.localizedName;
             }
             ConfigureSquadronAllegianceOptions(configuration);
+            configuration.SquadronFaction = null;
+            configuration = resetSquadronFaction(configuration);
             configuration.SquadronPower = Power.None;
             configuration = resetSquadronPower(configuration);
-
-            return configuration;
-        }
-
-        private EDDIConfiguration resetSquadronPower(EDDIConfiguration configuration)
-        {
-            squadronPowerDropDown.SelectedItem = configuration.SquadronPower.localizedName;
-            configuration.SquadronSystem = null;
-            eddiSquadronSystemText.Text = string.Empty;
-            configuration = EDDI.Instance.updateSquadronSystem(configuration);
-            runValidation(eddiSquadronSystemText);
-
-            ConfigureSquadronPowerOptions(configuration);
-            configuration = resetSquadronFaction(configuration);
 
             return configuration;
         }
@@ -860,6 +850,14 @@ namespace Eddi
                 squadronFactionDropDown.SelectedItem = "None";
             }
             ConfigureSquadronFactionOptions(configuration);
+
+            return configuration;
+        }
+
+        private EDDIConfiguration resetSquadronPower(EDDIConfiguration configuration)
+        {
+            squadronPowerDropDown.SelectedItem = configuration.SquadronPower.localizedName;
+            ConfigureSquadronPowerOptions(configuration);
 
             return configuration;
         }
