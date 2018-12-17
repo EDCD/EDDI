@@ -1658,6 +1658,15 @@
       "name": "Shutdown",
       "description": "Se activa cuando se hace un cierre limpio del juego"
     },
+    "Signal detected": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "default": true,
+      "name": "Signal detected",
+      "description": "Triggered when a signal source is detected"
+    },
     "Silent running": {
       "enabled": true,
       "priority": 3,
