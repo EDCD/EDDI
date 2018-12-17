@@ -574,6 +574,14 @@ namespace EddiJournalMonitor
                                             {
                                                 // Ignore the chosen voice
                                             }
+                                            else if (slot == "DataLinkScanner")
+                                            {
+                                                // Ignore the data link scanner
+                                            }
+                                            else if (slot == "CodexScanner")
+                                            {
+                                                // Ignore the codex scanner
+                                            }
                                             else
                                             {
                                                 // This is a compartment

@@ -241,6 +241,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Composition Scanner.
+        /// </summary>
+        public static string CompositionScanner {
+            get {
+                return ResourceManager.GetString("CompositionScanner", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Corrosion Resistant Cargo Rack.
         /// </summary>
         public static string CorrosionResistantCargoRack {
