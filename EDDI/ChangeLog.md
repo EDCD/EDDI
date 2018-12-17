@@ -2,7 +2,7 @@
 
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
-### Development
+### 3.3-b2
   * Core
     * Fixed a bug that could result in rotational and orbital periods being reported as much faster than they really were.
     * Fixed very low hab zone values in `Star scanned` events
@@ -11,6 +11,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * The `Body scanned` event has been revised to include new data. 
     * Added `faction` object. Check the `Variables` window for details.
   * Ship monitor
+
     * Add new value to the current ship: `ident`
   * Speech responder
     * Fixed system messages triggering the `Message received` event.
@@ -21,19 +22,19 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Updated `Jumped` event to contains the name of the star at which you've arrived
     * Updated `Jumped` and `Location` events to contain details about the status of factions.
     * Updated `Entered signal source` event by adding new variable `localizedsource`
-    * Revised `Body report` event script.* **
+    * Revised `Body report` event script. (1) (2)
     * Revised `Body scanned` script.
     * Revised `Star scanned` event script
-    * Revised `Star report` script * **
-    * Added `Body atmosphere report` script. **
-    * Added `Body materials report` script. **
+    * Revised `Star report` script (1) (2)
+    * Added `Body atmosphere report` script. (2)
+    * Added `Body materials report` script. (2)
     * Added `Body volcanism report` script. 
     * Added `Star habitable zone` script.
   * Status monitor 
     * The status object has new values for: 
       * HUD analysis mode, 
       * night vision mode,
-      * new gui modes
+      * new GUI modes
         * orrery view, 
         * fss mode, 
         * saa mode, and 
@@ -43,8 +44,8 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * fuel time remaining (in seconds)
       * cargo carried (qty)
 
-    *In the interest of brevity, the default `Body report` and `Star report` scripts now will only be used if your ship's role is set to either `Multipurpose` or `Exploration`. 
-    **Script contains a `Preferences` section for setting user preferences about the details reported.
+    (1) In the interest of brevity, the default `Body report` and `Star report` scripts now will only be used if your ship's role is set to either `Multipurpose` or `Exploration`. 
+    (2) Script contains a `Preferences` section for setting user preferences about the details reported.
 
 ### 3.3-b1
   * Core
@@ -76,7 +77,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Material locations have been moved from the update server to the app and are now a translatable resource.
   * Speech responder
     * Tweaked pronunciations of "Megaship" and "Orbis" in English. Tweaked pronuncations are available via the `P()` function.
-  
+
 ### 3.1.1
   * Core
     * Fixed crash to desktop when the folder `%APPDATA%\EDDI` does not exist.
