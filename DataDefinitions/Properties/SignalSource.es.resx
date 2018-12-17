@@ -117,29 +117,104 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="MULTIPLAYER_SCENARIO42_TITLE" xml:space="preserve">
+    <value>Baliza de navegación</value>
+    <comment>Nav beacon</comment>
+  </data>
+  <data name="MULTIPLAYER_SCENARIO80_TITLE" xml:space="preserve">
+    <value>Baliza de navegación comprometida</value>
+    <comment>Compromised nav beacon</comment>
+  </data>
+  <data name="USS" xml:space="preserve">
+    <value>Señal no identificada</value>
+    <comment>Unidentified Signal Source</comment>
+  </data>
+  <data name="Warzone_PointRace_High" xml:space="preserve">
+    <value>Zona de combate de alta intensidad</value>
+    <comment>Combat Zone (High Intensity)</comment>
+  </data>
+  <data name="Warzone_PointRace_Med" xml:space="preserve">
+    <value>Zona de combate de intensidad media</value>
+    <comment>Combat Zone (Medium Intensity)</comment>
+  </data>
+  <data name="Warzone_PointRace_Low" xml:space="preserve">
+    <value>Zona de combate de baja intensidad</value>
+    <comment>Combat Zone (Low Intensity)</comment>
+  </data>
+  <data name="USS_Type_Salvage" xml:space="preserve">
+    <value>Emisiones degradadas</value>
+    <comment>Salvage signal</comment>
+  </data>
+  <data name="USS_Type_Aftermath" xml:space="preserve">
+    <value>Resultado de combate</value>
+    <comment>Aftermatch signal</comment>
+  </data>
+  <data name="USS_Type_Anomaly" xml:space="preserve">
+    <value>Anomalía</value>
+    <comment>Anomaly signal</comment>
+  </data>
+  <data name="USS_Type_Ceremonial" xml:space="preserve">
+    <value>Comunicaciones ceremoniales</value>
+    <comment>Ceremonial signal</comment>
+  </data>
+  <data name="USS_Type_VeryValuableSalvage" xml:space="preserve">
+    <value>Emisiones de alta calidad</value>
+    <comment>VeryValuable signal</comment>
+  </data>
+  <data name="USS_Type_ValuableSalvage" xml:space="preserve">
+    <value>Emisiones codificadas</value>
+    <comment>Valuable signal</comment>
+  </data>
+  <data name="USS_Type_NonHuman" xml:space="preserve">
+    <value>Señal no humana</value>
+    <comment>NonHuman signal</comment>
+  </data>
+  <data name="USS_Type_WeaponsFire" xml:space="preserve">
+    <value>Uso de armas detectado</value>
+    <comment>WeaponsFire signal</comment>
+  </data>
+  <data name="USS_Type_MissionTarget" xml:space="preserve">
+    <value>Objetivo de la misión</value>
+    <comment>MissionTarget signal</comment>
+  </data>
+  <data name="USS_Type_Convoy" xml:space="preserve">
+    <value>Patrón de convoy</value>
+    <comment>Convoy signal</comment>
+  </data>
+  <data name="USS_Type_DistressSignal" xml:space="preserve">
+    <value>Llamada de auxilio</value>
+    <comment>Distress signal</comment>
+  </data>
+  <data name="USS_Type_TradingBeacon" xml:space="preserve">
+    <value>Baliza comercial</value>
+    <comment>TradingBeacon signal</comment>
+  </data>
+  <data name="MULTIPLAYER_SCENARIO78_TITLE" xml:space="preserve">
+    <value>Lugar de extracción de alta densidad</value>
+    <comment>ResourceExtraction Site (High Intensity)</comment>
+  </data>
+  <data name="MULTIPLAYER_SCENARIO77_TITLE" xml:space="preserve">
+    <value>Lugar de extracción de baja densidad</value>
+    <comment>Resource Extraction site (Low)</comment>
+  </data>
+  <data name="MULTIPLAYER_SCENARIO14_TITLE" xml:space="preserve">
+    <value>Lugar de extracción</value>
+    <comment>Resource Extraction Site</comment>
+  </data>
+  <data name="MULTIPLAYER_SCENARIO79_TITLE" xml:space="preserve">
+    <value>Lugar de extracción peligroso</value>
+    <comment>Resource Extraction Site [Hazardous]</comment>
+  </data>
+  <data name="NumberStation" xml:space="preserve">
+    <value>Baliza de comunicaciones no registrada</value>
+    <comment>NumberStation</comment>
+  </data>
+  <data name="Warzone_TG" xml:space="preserve">
+    <value>Zona de conflicto AX</value>
+    <comment>Thargoid conflict zone</comment>
+  </data>
+  <data name="ListeningPost" xml:space="preserve">
+    <value>Puesto de escucha</value>
+    <comment>ListeningPost</comment>
+  </data>
 </root>
