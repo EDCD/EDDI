@@ -1629,4 +1629,40 @@
     <value>Thargoid Hydra Tissue Sample</value>
     <comment>Commodity ThargoidTissueSampleType4</comment>
   </data>
+  <data name="Nanomedicines" xml:space="preserve">
+    <value>Nanomedicines</value>
+    <comment>Commodity Nanomedicines</comment>
+  </data>
+  <data name="Rhodplumsite" xml:space="preserve">
+    <value>Rhodplumsite</value>
+    <comment>Commodity Rhodplumsite</comment>
+  </data>
+  <data name="Serendibite" xml:space="preserve">
+    <value>Serendibite</value>
+    <comment>Commodity Serendibite</comment>
+  </data>
+  <data name="Monazite" xml:space="preserve">
+    <value>Monazite</value>
+    <comment>Commodity Monazite</comment>
+  </data>
+  <data name="Musgravite" xml:space="preserve">
+    <value>Musgravite</value>
+    <comment>Commodity Musgravite</comment>
+  </data>
+  <data name="Benitoite" xml:space="preserve">
+    <value>Benitoite</value>
+    <comment>Commodity Benitoite</comment>
+  </data>
+  <data name="Grandidierite" xml:space="preserve">
+    <value>Grandidierite</value>
+    <comment>Commodity Grandidierite</comment>
+  </data>
+  <data name="Alexandrite" xml:space="preserve">
+    <value>Alexandrite</value>
+    <comment>Commodity Alexandrite</comment>
+  </data>
+  <data name="Opal" xml:space="preserve">
+    <value>Opal</value>
+    <comment>Commodity Opal</comment>
+  </data>
 </root>
