@@ -557,8 +557,20 @@
     <value>Integridad</value>
     <comment>This is the "Ship Integrity" field in the Advanced Repair screen</comment>
   </data>
-  
-  
-  
-  
+  <data name="PulseWave" xml:space="preserve">
+    <value>Analizador de onda de pulso</value>
+    <comment>Module Pulse Wave Scanner</comment>
+  </data>
+  <data name="SeismicCharge" xml:space="preserve">
+    <value>Lanzador de carga sísmica</value>
+    <comment>Module Seismic Charge</comment>
+  </data>
+  <data name="DisplacementMissile" xml:space="preserve">
+    <value>Misil de desplazamiento sub-superficial</value>
+    <comment>Module Displacement Missile</comment>
+  </data>
+  <data name="AbrasionBlaster" xml:space="preserve">
+    <value>Destructor de abrasión</value>
+    <comment>Module Abrasion Blaster</comment>
+  </data>
 </root>
