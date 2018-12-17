@@ -847,6 +847,10 @@ namespace Eddi
             if (configuration.SquadronSystem == null)
             {
                 configuration.SquadronFaction = null;
+            }
+
+            if (configuration.SquadronFaction == null)
+            {
                 squadronFactionDropDown.SelectedItem = "None";
             }
             ConfigureSquadronFactionOptions(configuration);
