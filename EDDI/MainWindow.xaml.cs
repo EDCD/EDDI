@@ -195,7 +195,7 @@ namespace Eddi
             {
                 eddiHomeSystemText.Text = string.Empty;
             }
-            homeStationDropDown.SelectedItem = eddiConfiguration.HomeStation == null ? "None" : eddiConfiguration.HomeStation;
+            homeStationDropDown.SelectedItem = eddiConfiguration.HomeStation ?? "";
             eddiVerboseLogging.IsChecked = eddiConfiguration.Debug;
             eddiBetaProgramme.IsChecked = eddiConfiguration.Beta;
             if (eddiConfiguration.Gender == "Female")
@@ -498,7 +498,7 @@ namespace Eddi
                 if (eddiConfiguration.HomeStation != null)
                 {
                     eddiConfiguration.HomeStation = null;
-                    homeStationDropDown.SelectedItem = "None";
+                    homeStationDropDown.SelectedItem = "";
                     ConfigureHomeStationOptions(null);
                 }
                 eddiConfiguration.ToFile();
@@ -553,7 +553,7 @@ namespace Eddi
             string homeStationName = homeStationDropDown.SelectedItem.ToString();
             if (eddiConfiguration.HomeStation != homeStationName)
             {
-                eddiConfiguration.HomeStation = homeStationName == "None" ? null : homeStationName;
+                eddiConfiguration.HomeStation = String.IsNullOrEmpty(homeStationName) ? null : homeStationName;
                 eddiConfiguration = EDDI.Instance.updateHomeStation(eddiConfiguration);
                 eddiConfiguration.ToFile();
             }
