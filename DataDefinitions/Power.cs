@@ -13,6 +13,7 @@ namespace EddiDataDefinitions
             resourceManager = Properties.Powers.ResourceManager;
             resourceManager.IgnoreCase = false;
 
+            None = new Power("None", Superpower.None, "None");
             var ALavignyDuval = new Power("ALavignyDuval", Superpower.Empire, "Kamadhenu");
             var AislingDuval = new Power("AislingDuval", Superpower.Empire, "Cubeo");
             var ArchonDelaine = new Power("ArchonDelaine", Superpower.Independent, "Harma");
@@ -26,7 +27,7 @@ namespace EddiDataDefinitions
             var ZeminaTorval = new Power("ZeminaTorval", Superpower.Empire, "Synteini");
         }
 
-        public static readonly Power None = new Power("None", Superpower.None, "None");
+        public static readonly Power None;
 
         public Superpower allegiance { get; private set; }
         public string headquarters { get; private set; }
