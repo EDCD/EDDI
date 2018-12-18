@@ -528,7 +528,7 @@ namespace Eddi
         {
             List<string> HomeStationOptions = new List<string>
                 {
-                    "None"
+                    string.Empty
                 };
 
             if (system != null)
@@ -551,7 +551,7 @@ namespace Eddi
             string homeStationName = homeStationDropDown.SelectedItem.ToString();
             if (eddiConfiguration.HomeStation != homeStationName)
             {
-                eddiConfiguration.HomeStation = homeStationName == "None" ? null : homeStationName;
+                eddiConfiguration.HomeStation = homeStationName == string.Empty ? null : homeStationName;
                 eddiConfiguration = EDDI.Instance.updateHomeStation(eddiConfiguration);
                 eddiConfiguration.ToFile();
             }
