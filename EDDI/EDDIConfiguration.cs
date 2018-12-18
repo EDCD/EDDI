@@ -12,7 +12,7 @@ namespace Eddi
     public class EDDIConfiguration : INotifyPropertyChanged
     {
         [JsonIgnore]
-        private string _HomeSystem;
+        private string _HomeSystem = null;
         [JsonProperty("homeSystem")]
         public string HomeSystem
         {
@@ -21,7 +21,7 @@ namespace Eddi
         }
 
         [JsonIgnore]
-        private string _HomeStation;
+        private string _HomeStation = null;
         [JsonProperty("homeStation")]
         public string HomeStation
         {
@@ -30,7 +30,7 @@ namespace Eddi
         }
 
         [JsonIgnore]
-        private string _SquadronName;
+        private string _SquadronName = null;
         [JsonProperty("squadronName")]
         public string SquadronName
         {
@@ -39,7 +39,7 @@ namespace Eddi
         }
 
         [JsonIgnore]
-        private string _SquadronID;
+        private string _SquadronID = null;
         [JsonProperty("squadronID")]
         public string SquadronID
         {
@@ -59,7 +59,7 @@ namespace Eddi
             }
         }
         [JsonIgnore]
-        private SquadronRank _SquadronRank;
+        private SquadronRank _SquadronRank = SquadronRank.None;
         [JsonIgnore]
         public SquadronRank SquadronRank
         {
@@ -79,7 +79,7 @@ namespace Eddi
             }
         }
         [JsonIgnore]
-        private Superpower _SquadronAllegiance;
+        private Superpower _SquadronAllegiance = Superpower.None;
         [JsonIgnore]
         public Superpower SquadronAllegiance
         {
@@ -99,7 +99,7 @@ namespace Eddi
             }
         }
         [JsonIgnore]
-        private Power _SquadronPower;
+        private Power _SquadronPower = Power.None;
         [JsonIgnore]
         public Power SquadronPower
         {
@@ -108,7 +108,7 @@ namespace Eddi
         }
 
         [JsonIgnore]
-        private string _SquadronSystem;
+        private string _SquadronSystem = null;
         [JsonProperty("squadronSystem")]
         public string SquadronSystem
         {
@@ -117,7 +117,7 @@ namespace Eddi
         }
 
         [JsonIgnore]
-        private string _SquadronFaction;
+        private string _SquadronFaction = null;
         [JsonProperty("squadronFaction")]
         public string SquadronFaction
         {
