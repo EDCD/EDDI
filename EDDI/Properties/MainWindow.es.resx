@@ -155,7 +155,7 @@
     <value>Versión:</value>
   </data>
   <data name="wiki_hyperlink" xml:space="preserve">
-    <value>proyecto de la Wiki</value>
+    <value>la Wiki del proyecto</value>
   </data>
   <data name="choose_lang_label" xml:space="preserve">
     <value>Seleccione el idioma de EDDI (Requiere reinicio de EDDI):</value>
