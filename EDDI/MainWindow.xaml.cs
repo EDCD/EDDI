@@ -223,9 +223,9 @@ namespace Eddi
             {
                 eddiSquadronSystemText.Text = string.Empty;
             }
-            squadronFactionDropDown.SelectedItem = eddiConfiguration.SquadronFaction == null ? "None" : eddiConfiguration.SquadronFaction;
+            squadronFactionDropDown.SelectedItem = eddiConfiguration.SquadronFaction ?? Power.None.localizedName;
             squadronPowerDropDown.SelectedItem = eddiConfiguration.SquadronPower == null
-                ? Power.FromEDName("None").localizedName : eddiConfiguration.SquadronPower.localizedName;
+                ? Power.None.localizedName : eddiConfiguration.SquadronPower.localizedName;
             ConfigureSquadronPowerOptions(eddiConfiguration);
 
             List<LanguageDef> langs = GetAvailableLangs(); // already correctly sorted
@@ -669,7 +669,7 @@ namespace Eddi
                     eddiConfiguration.SquadronPower = Power.None;
                     eddiConfiguration.ToFile();
 
-                    squadronFactionDropDown.SelectedItem = "None";
+                    squadronFactionDropDown.SelectedItem = Power.None.localizedName;
                     ConfigureSquadronFactionOptions(eddiConfiguration);
                     squadronPowerDropDown.SelectedItem = eddiConfiguration.SquadronPower.localizedName;
                     ConfigureSquadronPowerOptions(eddiConfiguration);
