@@ -2,7 +2,7 @@
 
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
-### 3.3-b2
+### 3.3-rc1
   * Core
     * Fixed a bug that could result in rotational and orbital periods being reported as much faster than they really were.
     * Fixed very low hab zone values in `Star scanned` events
@@ -13,7 +13,6 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Added squadron data to Commander details UI & the `cmdr` object. Details in Variables.md
     * Squadron data updated in `Location` and `FSDJump` events, when in squadron home system.
   * Ship monitor
-
     * Add new value to the current ship: `ident`
   * Speech responder
     * Fixed system messages triggering the `Message received` event.
@@ -34,22 +33,23 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Added `Body materials report` script. (2)
     * Added `Body volcanism report` script. 
     * Added `Star habitable zone` script.
-  * Status monitor 
-    * The status object has new values for: 
-      * HUD analysis mode, 
-      * night vision mode,
-      * new GUI modes
-        * orrery view, 
-        * fss mode, 
-        * saa mode, and 
-        * the codex
-      * fuel (for ship or srv)
-      * fuel percent
-      * fuel time remaining (in seconds)
-      * cargo carried (qty)
 
     (1) In the interest of brevity, the default `Body report` and `Star report` scripts now will only be used if your ship's role is set to either `Multipurpose` or `Exploration`. 
     (2) Script contains a `Preferences` section for setting user preferences about the details reported.
+
+  * Status monitor 
+    * The status object has new values for: 
+      * HUD analysis mode
+      * Night Vision mode
+      * New GUI modes
+        * Orrery view
+        * FSS mode 
+        * SAA mode
+        * Codex
+      * Fuel (for ship or SRV)
+      * Fuel percentage
+      * Fuel time remaining (in seconds)
+      * Cargo carried (in tons)
 
 ### 3.3-b1
   * Core
