@@ -210,8 +210,8 @@ namespace Eddi
             {
                 eddiGenderNeither.IsChecked = true;
             }
-            eddiSquadronNameText.Text = eddiConfiguration.SquadronName == null ? string.Empty : eddiConfiguration.SquadronName;
-            eddiSquadronIDText.Text = eddiConfiguration.SquadronID == null ? string.Empty : eddiConfiguration.SquadronID;
+            eddiSquadronNameText.Text = eddiConfiguration.SquadronName ?? string.Empty;
+            eddiSquadronIDText.Text = eddiConfiguration.SquadronID ?? string.Empty;
             squadronRankDropDown.SelectedItem = (eddiConfiguration.SquadronRank ?? SquadronRank.None).localizedName;
             ConfigureSquadronRankOptions(eddiConfiguration);
             if (eddiConfiguration.validSquadronSystem)
@@ -789,9 +789,10 @@ namespace Eddi
 
         private void ConfigureSquadronPowerOptions(EDDIConfiguration configuration)
         {
-            List<string> SquadronPowerOptions = new List<string>();
-
-            SquadronPowerOptions.Add(Power.None.localizedName);
+            List<string> SquadronPowerOptions = new List<string>
+            {
+                Power.None.localizedName
+            };
             if (configuration.SquadronAllegiance != Superpower.None)
             {
                 foreach (Power power in Power.AllOfThem)
