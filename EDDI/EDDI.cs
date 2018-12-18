@@ -820,6 +820,12 @@ namespace Eddi
                 CurrentStarSystem.Faction = controllingFaction;
             }
 
+            // Update squadron data, if available
+            if (theEvent.factions != null)
+            {
+                updateSquadronData(theEvent.factions);
+            }
+
             if (theEvent.docked == true || theEvent.bodytype.ToLowerInvariant() == "station")
             {
                 // In this case body === station and our body information is invalid
@@ -1088,6 +1094,12 @@ namespace Eddi
                 FactionState = theEvent.factionState,
             };
             CurrentStarSystem.Faction = controllingFaction;
+
+            // Update squadron data, if available
+            if (theEvent.factions != null)
+            {
+                updateSquadronData(theEvent.factions);
+            }
 
             CurrentStarSystem.Economies = new List<Economy> { theEvent.Economy, theEvent.Economy2 };
             CurrentStarSystem.securityLevel = theEvent.securityLevel;
@@ -1580,6 +1592,7 @@ namespace Eddi
         public bool refreshProfile(bool refreshStation = false)
         {
             return true;
+
             bool success = true;
             if (CompanionAppService.Instance?.CurrentState == CompanionAppService.State.READY)
             {
@@ -1686,6 +1699,7 @@ namespace Eddi
                 }
             }
             return success;
+#endif
         }
 
         private void setSystemDistanceFromHome(StarSystem system)
@@ -2026,16 +2040,10 @@ namespace Eddi
             if (configuration.SquadronSystem != null && configuration.SquadronSystem.Trim().Length > 0)
             {
                 SquadronStarSystem = StarSystemSqLiteRepository.Instance.GetStarSystem(configuration.SquadronSystem.Trim());
-                if (SquadronStarSystem != null)
+                if (SquadronStarSystem?.factions != null)
                 {
                     Logging.Debug("Squadron star system is " + SquadronStarSystem.name);
-                    configuration.validSquadronSystem = SquadronStarSystem.bodies.Count > 0 || SquadronStarSystem.stations.Count > 0
-                        || SquadronStarSystem.population > 0;
-                    Power power = Power.AllOfThem.FirstOrDefault(p => p.localizedName == SquadronStarSystem.power);
-                    if (power != null)
-                    {
-                        configuration.validSquadronSystem = configuration.validSquadronSystem && power == configuration.SquadronPower;
-                    }
+                    configuration.validSquadronSystem = SquadronStarSystem.factions.Count() > 0;
                 }
             }
             else
@@ -2043,6 +2051,47 @@ namespace Eddi
                 SquadronStarSystem = null;
             }
             return configuration;
+        }
+
+        public void updateSquadronData(List<Faction> factions)
+        {
+            Faction faction = factions.FirstOrDefault(f => f.squadronhomesystem || f.squadronfaction);
+            if (faction != null)
+            {
+                EDDIConfiguration configuration = EDDIConfiguration.FromFile();
+                MainWindow mw = new MainWindow();
+
+                if (faction.squadronhomesystem)
+                {
+                    string system = CurrentStarSystem.name;
+                    Superpower allegiance = CurrentStarSystem.Faction.Allegiance;
+
+                    // Update the squadron system data
+                    configuration.SquadronSystem = system;
+                    mw.eddiSquadronNameText.Text = system;
+                    configuration = updateSquadronSystem(configuration);
+
+                    //Update the squadron allegiance, if changed
+                    if (configuration.SquadronAllegiance == Superpower.None || configuration.SquadronAllegiance != allegiance)
+                    {
+                        configuration.SquadronAllegiance = allegiance;
+                        Cmdr.squadronallegiance = allegiance;
+                    }
+                }
+
+                //Update the squadron faction, if changed
+                if (configuration.SquadronFaction == null || configuration.SquadronFaction != faction.name)
+                {
+                    configuration.SquadronFaction = faction.name;
+                    mw.squadronFactionDropDown.SelectedItem = faction.name;
+                    Cmdr.squadronfaction = faction.name;
+
+                    configuration.SquadronAllegiance = faction.Allegiance;
+                    Cmdr.squadronallegiance = faction.Allegiance;
+                }
+
+                configuration.ToFile();
+            }
         }
     }
 }

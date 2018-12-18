@@ -573,4 +573,8 @@
     <value>Abrasion Blaster</value>
     <comment>Module Abrasion Blaster</comment>
   </data>
+  <data name="CompositionScanner" xml:space="preserve">
+    <value>Composition Scanner</value>
+    <comment>Module Composition Scanner</comment>
+  </data>
 </root>

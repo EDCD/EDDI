@@ -128,5 +128,7 @@
   
   
   
-  
+  <data name="None" xml:space="preserve">
+    <value>Ninguna</value>
+  </data>
 </root>

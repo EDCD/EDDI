@@ -1518,7 +1518,7 @@
       "enabled": true,
       "priority": 3,
       "responder": false,
-      "script": "{_ Context }\r\n{set scanValue to state.eddi_context_last_scan_estimated_value}\r\n\r\n{if scanValue:\r\n   {OneOf(\"This\", \"This data\", \"This scan\")} \r\n   {OneOf(\"could\", \"might\", \"can\", \"should\") } \r\n   {OneOf(\"fetch\", \"be worth\", \"get you\", \"sell for\")}\r\n   {Humanise(scanValue)} credits.\r\n}\r\n",
+      "script": "{_ Preferences }\r\n{set minScanValue to 5000} {_ Set the minimum credit value that should be voiced _}\r\n\r\n{_ Context }\r\n{set scanValue to state.eddi_context_last_scan_estimated_value}\r\n\r\n{if scanValue > minScanValue:\r\n   {OneOf(\"This\", \"This data\", \"This scan\")} \r\n   {OneOf(\"could\", \"might\", \"can\", \"should\") } \r\n   {OneOf(\"fetch\", \"be worth\", \"get you\", \"sell for\")}\r\n   {Humanise(scanValue)} credits.\r\n}\r\n",
       "default": true,
       "name": "Report last scan value",
       "description": "Report the estimated value of the last body scanned"
@@ -1770,7 +1770,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{if status.gui_focus = \"fss mode\" || status.gui_focus = \"saa mode\":\r\n\r\n    {if event.threatlevel:\r\n        {Occasionally(2, \"Threat\")}\r\n        {OneOf(\"level\", \"grade\")}\r\n        {event.threatlevel}\r\n     }\r\n\r\n    {event.source}\r\n\r\n    {if event.faction != \"None\":\r\n        from {event.faction}\r\n    }.\r\n\r\n}",
+      "script": null,
       "default": true,
       "name": "Signal detected",
       "description": "Triggered when a signal source is detected"

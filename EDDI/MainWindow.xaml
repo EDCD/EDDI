@@ -122,7 +122,6 @@
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
                         <TextBlock x:Name ="eddi2Text" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="6" Margin="5,10" TextWrapping="Wrap" Text="{x:Static resx:MainWindow.tab_commander_par1}" VerticalAlignment="Top"/>
                         <Label x:Name ="eddiHomeSystemLabel" Grid.Row="1" Grid.Column="0" VerticalContentAlignment="Bottom" Content="{x:Static resx:MainWindow.tab_commander_home_system}" />
@@ -149,20 +148,18 @@
                         </TextBox>
                         <Label x:Name ="eddiSquadronRankLabel" Grid.Row="10" Grid.Column="0" VerticalContentAlignment="Center" Content="{x:Static resx:MainWindow.tab_commander_squadron_rank}" />
                         <ComboBox x:Name="squadronRankDropDown" Grid.Row="10" Grid.Column="1" Margin="5" VerticalContentAlignment="Center" SelectionChanged="squadronRankDropDownUpdated" />
-                        <Label x:Name ="eddiSquadronAllegianceLabel" Grid.Row="11" Grid.Column="0" VerticalContentAlignment="Center" Content="{x:Static resx:MainWindow.tab_commander_squadron_allegiance}" />
-                        <ComboBox x:Name="squadronAllegianceDropDown" Grid.Row="11" Grid.Column="1" Margin="5" VerticalContentAlignment="Center" SelectionChanged="squadronAllegianceDropDownUpdated" />
-                        <Label x:Name ="eddiSquadronPowerLabel" Grid.Row="12" Grid.Column="0" VerticalContentAlignment="Center" Content="{x:Static resx:MainWindow.tab_commander_squadron_power}" />
-                        <ComboBox x:Name="squadronPowerDropDown" Grid.Row="12" Grid.Column="1" Grid.ColumnSpan ="2" Margin="5" VerticalContentAlignment="Center" SelectionChanged="squadronPowerDropDownUpdated" />
-                        <Label x:Name ="eddiSquadronSystemLabel" Grid.Row="13" Grid.Column="0" VerticalContentAlignment="Center" Content="{x:Static resx:MainWindow.tab_commander_squadron_system}" />
-                        <TextBox x:Name ="eddiSquadronSystemText" VerticalContentAlignment="Center" TextChanged="squadronSystemChanged" Margin="0,5" Grid.Row="13" Grid.Column="1" Grid.ColumnSpan ="3" Height="25" LostFocus="eddiSquadronSystemText_LostFocus">
+                        <Label x:Name ="eddiSquadronSystemLabel" Grid.Row="11" Grid.Column="0" VerticalContentAlignment="Center" Content="{x:Static resx:MainWindow.tab_commander_squadron_system}" />
+                        <TextBox x:Name ="eddiSquadronSystemText" VerticalContentAlignment="Center" TextChanged="squadronSystemChanged" Margin="0,5" Grid.Row="11" Grid.Column="1" Grid.ColumnSpan ="3" Height="25" LostFocus="eddiSquadronSystemText_LostFocus">
                             <Binding UpdateSourceTrigger="PropertyChanged" ElementName="eddiConfiguration" Path="SquadronSystem">
                                 <Binding.ValidationRules>
                                     <local:ValidSquadronSystemRule/>
                                 </Binding.ValidationRules>
                             </Binding>
                         </TextBox>
-                        <Label x:Name ="eddiSquadronFactionLabel" Grid.Row="14" Grid.Column="0" VerticalContentAlignment="Center" Content="{x:Static resx:MainWindow.tab_commander_squadron_faction}" />
-                        <ComboBox x:Name="squadronFactionDropDown" Grid.Row="14" Grid.Column="1" Grid.ColumnSpan ="2" Margin="5" VerticalContentAlignment="Center" SelectionChanged="squadronFactionDropDownUpdated" />
+                        <Label x:Name ="eddiSquadronFactionLabel" Grid.Row="12" Grid.Column="0" VerticalContentAlignment="Center" Content="{x:Static resx:MainWindow.tab_commander_squadron_faction}" />
+                        <ComboBox x:Name="squadronFactionDropDown" Grid.Row="12" Grid.Column="1" Grid.ColumnSpan ="2" Margin="5" VerticalContentAlignment="Center" SelectionChanged="squadronFactionDropDownUpdated" />
+                        <Label x:Name ="eddiSquadronPowerLabel" Grid.Row="13" Grid.Column="0" VerticalContentAlignment="Center" Content="{x:Static resx:MainWindow.tab_commander_squadron_power}" />
+                        <ComboBox x:Name="squadronPowerDropDown" Grid.Row="13" Grid.Column="1" Grid.ColumnSpan ="2" Margin="5" VerticalContentAlignment="Center" SelectionChanged="squadronPowerDropDownUpdated" />
                     </Grid>
                 </DockPanel>
             </TabItem>

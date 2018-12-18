@@ -174,11 +174,19 @@ namespace EddiDataProviderService
 
         private static List<Module> ModulesFromEDDP(JObject Station)
         {
-            List<string> sellingModules = (Station["selling_modules"]).ToObject<List<string>>();
+            List<object> sellingModules = (Station["selling_modules"]).ToObject<List<object>>();
             List<Module> modules = new List<Module>();
-            foreach (string sellingModule in sellingModules)
+            foreach (object sellingModule in sellingModules)
             {
-                Module module = Module.FromEDName(sellingModule);
+                Module module = new Module();
+                if (sellingModule is long)
+                {
+                    module = Module.FromEddbID((long)sellingModule);
+                }
+                else if (sellingModule is string)
+                {
+                    module = Module.FromEDName((string)sellingModule);
+                }
                 if (module != null) { modules.Add(module); }
             }
             return modules;

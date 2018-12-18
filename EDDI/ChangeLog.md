@@ -2,7 +2,7 @@
 
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
-### Development
+### 3.3-rc1
   * Core
     * Fixed a bug that could result in rotational and orbital periods being reported as much faster than they really were.
     * Fixed very low hab zone values in `Star scanned` events
@@ -10,6 +10,8 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * The `body` object now includes `estimatedhabzoneinner` and `estimatedhabzoneouter` for stars.
     * The `Body scanned` event has been revised to include new data. 
     * Added `faction` object. Check the `Variables` window for details.
+    * Added squadron data to Commander details UI & the `cmdr` object. Details in Variables.md
+    * Squadron data updated in `Location` and `FSDJump` events, when in squadron home system.
   * Ship monitor
     * Add new value to the current ship: `ident`
   * Speech responder
@@ -18,33 +20,36 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Added new event `Body mapped`, triggered after mapping a body with the Surface Area Analysis scanner
     * Added new event `Discovery scan`, triggered when performing a full system scan (honk) with the FSS
     * Added new event `Signal detected`, triggered when a signal source is detected
+    * Added new event `Squadron status`, triggered status of squadron has changed (`applied`, `created`, `disbanded`, `invited`, `joined`, `kicked`, `left`).
+    * Added new event `Squadron rank`, triggered when squadron rank has changed.
     * Updated `Jumped` event to contains the name of the star at which you've arrived
     * Updated `Jumped` and `Location` events to contain details about the status of factions.
     * Updated `Entered signal source` event by adding new variable `localizedsource`
-    * Revised `Body report` event script.* **
+    * Revised `Body report` event script. (1) (2)
     * Revised `Body scanned` script.
     * Revised `Star scanned` event script
-    * Revised `Star report` script * **
-    * Added `Body atmosphere report` script. **
-    * Added `Body materials report` script. **
+    * Revised `Star report` script (1) (2)
+    * Added `Body atmosphere report` script. (2)
+    * Added `Body materials report` script. (2)
     * Added `Body volcanism report` script. 
     * Added `Star habitable zone` script.
+
+    (1) In the interest of brevity, the default `Body report` and `Star report` scripts now will only be used if your ship's role is set to either `Multipurpose` or `Exploration`. 
+    (2) Script contains a `Preferences` section for setting user preferences about the details reported.
+
   * Status monitor 
     * The status object has new values for: 
-      * HUD analysis mode, 
-      * night vision mode,
-      * new gui modes
-        * orrery view, 
-        * fss mode, 
-        * saa mode, and 
-        * the codex
-      * fuel (for ship or srv)
-      * fuel percent
-      * fuel time remaining (in seconds)
-      * cargo carried (qty)
-
-    *In the interest of brevity, the default `Body report` and `Star report` scripts now will only be used if your ship's role is set to either `Multipurpose` or `Exploration`. 
-    **Script contains a `Preferences` section for setting user preferences about the details reported.
+      * HUD analysis mode
+      * Night Vision mode
+      * New GUI modes
+        * Orrery view
+        * FSS mode 
+        * SAA mode
+        * Codex
+      * Fuel (for ship or SRV)
+      * Fuel percentage
+      * Fuel time remaining (in seconds)
+      * Cargo carried (in tons)
 
 ### 3.3-b1
   * Core
@@ -76,7 +81,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Material locations have been moved from the update server to the app and are now a translatable resource.
   * Speech responder
     * Tweaked pronunciations of "Megaship" and "Orbis" in English. Tweaked pronuncations are available via the `P()` function.
-  
+
 ### 3.1.1
   * Core
     * Fixed crash to desktop when the folder `%APPDATA%\EDDI` does not exist.

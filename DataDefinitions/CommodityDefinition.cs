@@ -361,7 +361,16 @@ namespace EddiDataDefinitions
                 new CommodityDefinition(128748428, null, "BuckyballBeerMats", ConsumerItems, 0, false),
                 new CommodityDefinition(128793113, null, "HarmaSilverSeaRum", Narcotics, 0, false),
                 new CommodityDefinition(128793114, null, "PlatinumAloy", Metals, 0, false),
-
+                new CommodityDefinition(128913661, null, "Nanomedicines", Medicines, 0, false),
+                new CommodityDefinition(128922524, null, "Duradrives", ConsumerItems, 0, false),
+                new CommodityDefinition(128924325, null, "Rhodplumsite", Minerals, 0, false),
+                new CommodityDefinition(128924326, null, "Serendibite", Minerals, 0, false),
+                new CommodityDefinition(128924327, null, "Monazite", Minerals, 0, false),
+                new CommodityDefinition(128924328, null, "Musgravite", Minerals, 0, false),
+                new CommodityDefinition(128924329, null, "Benitoite", Minerals, 0, false),
+                new CommodityDefinition(128924330, null, "Grandidierite", Minerals, 0, false),
+                new CommodityDefinition(128924331, null, "Alexandrite", Minerals, 0, false),
+                new CommodityDefinition(128924332, null, "Opal", Minerals, 0, false),
                 // PowerPlay
                 new CommodityDefinition(128671289, null, "AislingMediaMaterials", Powerplay, 0, false),
                 new CommodityDefinition(128671290, null, "AislingMediaResources", Powerplay, 0, false),

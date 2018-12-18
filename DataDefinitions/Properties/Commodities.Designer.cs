@@ -151,6 +151,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Alexandrite.
+        /// </summary>
+        public static string Alexandrite {
+            get {
+                return ResourceManager.GetString("Alexandrite", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Algae.
         /// </summary>
         public static string Algae {
@@ -489,6 +498,15 @@ namespace EddiDataDefinitions.Properties {
         public static string BelalansRayLeather {
             get {
                 return ResourceManager.GetString("BelalansRayLeather", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Benitoite.
+        /// </summary>
+        public static string Benitoite {
+            get {
+                return ResourceManager.GetString("Benitoite", resourceCulture);
             }
         }
         
@@ -1258,6 +1276,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Grandidierite.
+        /// </summary>
+        public static string Grandidierite {
+            get {
+                return ResourceManager.GetString("Grandidierite", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Grom Counter Intelligence.
         /// </summary>
         public static string GromCounterIntelligence {
@@ -1996,6 +2023,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Monazite.
+        /// </summary>
+        public static string Monazite {
+            get {
+                return ResourceManager.GetString("Monazite", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Motrona Experience Jelly.
         /// </summary>
         public static string MotronaExperienceJelly {
@@ -2023,6 +2059,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Musgravite.
+        /// </summary>
+        public static string Musgravite {
+            get {
+                return ResourceManager.GetString("Musgravite", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Muon Imager.
         /// </summary>
         public static string MuTomImager {
@@ -2046,6 +2091,15 @@ namespace EddiDataDefinitions.Properties {
         public static string Nanobreakers {
             get {
                 return ResourceManager.GetString("Nanobreakers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Nanomedicines.
+        /// </summary>
+        public static string Nanomedicines {
+            get {
+                return ResourceManager.GetString("Nanomedicines", resourceCulture);
             }
         }
         
@@ -2190,6 +2244,15 @@ namespace EddiDataDefinitions.Properties {
         public static string OnionheadSamples {
             get {
                 return ResourceManager.GetString("OnionheadSamples", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Opal.
+        /// </summary>
+        public static string Opal {
+            get {
+                return ResourceManager.GetString("Opal", resourceCulture);
             }
         }
         
@@ -2536,6 +2599,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Rhodplumsite.
+        /// </summary>
+        public static string Rhodplumsite {
+            get {
+                return ResourceManager.GetString("Rhodplumsite", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Robotics.
         /// </summary>
         public static string Robotics {
@@ -2631,6 +2703,15 @@ namespace EddiDataDefinitions.Properties {
         public static string Semiconductors {
             get {
                 return ResourceManager.GetString("Semiconductors", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Serendibite.
+        /// </summary>
+        public static string Serendibite {
+            get {
+                return ResourceManager.GetString("Serendibite", resourceCulture);
             }
         }
         
