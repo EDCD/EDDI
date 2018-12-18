@@ -12,8 +12,11 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Added `faction` object. Check the `Variables` window for details.
     * Added squadron data to Commander details UI & the `cmdr` object. Details in Variables.md
     * Squadron data updated in `Location` and `FSDJump` events, when in squadron home system.
+  * Frontier API
+    * This has been disabled for the time being, due to changes that Frontier made to the authentication protocol without any transition period.
+      * Unfortunately this means that EDDI is temporarily blind to market, outfitting and shipyard data. We will rectify this in EDDI 3.3.1 by reading the local journal files, but that will require visiting the screens in question in-game.
   * Ship monitor
-    * Add new value to the current ship: `ident`
+    * Added new value to the current ship: `ident`
   * Speech responder
     * Fixed system messages triggering the `Message received` event.
     * Added new channels to the `Message received` event: "squadron" and "starsystem"
