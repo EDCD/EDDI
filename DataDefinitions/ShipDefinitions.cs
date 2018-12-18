@@ -48,7 +48,7 @@ namespace EddiDataDefinitions
             { 128915979, new Ship(128915979, "Mamba", "Zorgon Peterson", null, "Mamba", null, "Medium", null, 0.5M) },
         };
 
-        public static List<string> ShipModels = ShipsByEliteID.Select(kp => kp.Value.model).ToList();
+        public static readonly SortedSet<string> ShipModels = new SortedSet<string>(ShipsByEliteID.Select(kp => kp.Value.model));
 
         private static Dictionary<string, Ship> ShipsByModel = ShipsByEliteID.ToDictionary(kp => kp.Value.model.ToLowerInvariant(), kp => kp.Value);
         private static Dictionary<string, Ship> ShipsByEDModel = ShipsByEliteID.ToDictionary(kp => kp.Value.EDName.ToLowerInvariant().Replace(" ", "").Replace(".", "").Replace("_", ""), kp => kp.Value);

@@ -448,7 +448,7 @@ namespace Eddi
                         }
                     }
                 }
-
+                speechOptions.Sort();
                 ttsVoiceDropDown.ItemsSource = speechOptions;
                 ttsVoiceDropDown.Text = speechServiceConfiguration.StandardVoice ?? "Windows TTS default";
             }
@@ -542,6 +542,7 @@ namespace Eddi
                     }
                 }
             }
+            HomeStationOptions.Sort(1, HomeStationOptions.Count - 1, null);
             homeStationDropDown.ItemsSource = HomeStationOptions;
         }
 
@@ -779,6 +780,7 @@ namespace Eddi
                     }
                 }
             }
+            SquadronFactionOptions.Sort();
             squadronFactionDropDown.ItemsSource = SquadronFactionOptions;
         }
 
@@ -797,6 +799,7 @@ namespace Eddi
                     }
                 }
             }
+            SquadronPowerOptions.Sort();
             squadronPowerDropDown.ItemsSource = SquadronPowerOptions;
         }
 
