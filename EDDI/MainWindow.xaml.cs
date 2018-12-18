@@ -719,15 +719,21 @@ namespace Eddi
                         eddiConfiguration.ToFile();
 
                         EDDI.Instance.Cmdr.squadronallegiance = faction.Allegiance;
+
+                        squadronPowerDropDown.SelectedItem = Power.None.localizedName;
+                        ConfigureSquadronPowerOptions(eddiConfiguration);
                     }
                 }
                 else
                 {
-                    EDDI.Instance.Cmdr.squadronallegiance = Superpower.None;
-                }
-                squadronPowerDropDown.SelectedItem = Power.None.localizedName;
-                ConfigureSquadronPowerOptions(eddiConfiguration);
+                    eddiConfiguration.SquadronAllegiance = Superpower.None;
+                    eddiConfiguration.ToFile();
 
+                    EDDI.Instance.Cmdr.squadronallegiance = Superpower.None;
+
+                    squadronPowerDropDown.SelectedItem = Power.None.localizedName;
+                    ConfigureSquadronPowerOptions(eddiConfiguration);
+                }
                 eddiConfiguration.ToFile();
             }
         }
