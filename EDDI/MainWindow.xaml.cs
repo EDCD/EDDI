@@ -228,7 +228,7 @@ namespace Eddi
                 ? Power.FromEDName("None").localizedName : eddiConfiguration.SquadronPower.localizedName;
             ConfigureSquadronPowerOptions(eddiConfiguration);
 
-            List<LanguageDef> langs = GetAvailableLangs();
+            List<LanguageDef> langs = GetAvailableLangs(); // already correctly sorted
             chooseLanguageDropDown.ItemsSource = langs;
             chooseLanguageDropDown.DisplayMemberPath = "displayName";
             chooseLanguageDropDown.SelectedItem = langs.Find(l => l.ci.Name == Eddi.Properties.Settings.Default.OverrideCulture);
@@ -463,7 +463,7 @@ namespace Eddi
             disableSsmlCheckbox.IsChecked = speechServiceConfiguration.DisableSsml;
             enableIcaoCheckbox.IsChecked = speechServiceConfiguration.EnableIcao;
 
-            ttsTestShipDropDown.ItemsSource = ShipDefinitions.ShipModels;
+            ttsTestShipDropDown.ItemsSource = ShipDefinitions.ShipModels; // already sorted
             ttsTestShipDropDown.Text = "Adder";
         }
 
@@ -528,7 +528,7 @@ namespace Eddi
         {
             List<string> HomeStationOptions = new List<string>
                 {
-                    "None"
+                    "" // use empty string rather than "None" -- more accurate and doesnt need translating
                 };
 
             if (system != null)
@@ -542,6 +542,7 @@ namespace Eddi
                     }
                 }
             }
+            // sort but leave "" at the top
             HomeStationOptions.Sort(1, HomeStationOptions.Count - 1, null);
             homeStationDropDown.ItemsSource = HomeStationOptions;
         }
@@ -759,6 +760,7 @@ namespace Eddi
                 }
                 SquadronRankOptions.Add(squadronrank.localizedName);
             }
+            // don't sort
             squadronRankDropDown.ItemsSource = SquadronRankOptions;
         }
 
@@ -780,7 +782,8 @@ namespace Eddi
                     }
                 }
             }
-            SquadronFactionOptions.Sort();
+            // sort but leave "None" at the top
+            SquadronFactionOptions.Sort(1, SquadronFactionOptions.Count - 1, null);
             squadronFactionDropDown.ItemsSource = SquadronFactionOptions;
         }
 
@@ -799,7 +802,8 @@ namespace Eddi
                     }
                 }
             }
-            SquadronPowerOptions.Sort();
+            // sort but leave "None" at the top
+            SquadronPowerOptions.Sort(1, SquadronPowerOptions.Count - 1, null);
             squadronPowerDropDown.ItemsSource = SquadronPowerOptions;
         }
 
