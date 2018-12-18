@@ -737,7 +737,7 @@ namespace Eddi
             EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
             string squadronPower = squadronPowerDropDown.SelectedItem?.ToString();
 
-            if (eddiConfiguration.SquadronPower.localizedName != squadronPower)
+            if ((eddiConfiguration.SquadronPower?.localizedName ?? "") != squadronPower)
             {
                 eddiConfiguration.SquadronPower = Power.FromName(squadronPower);
                 eddiConfiguration.ToFile();
