@@ -210,7 +210,7 @@ namespace Eddi
             {
                 eddiGenderNeither.IsChecked = true;
             }
-            eddiSquadronNameText.Text = eddiConfiguration.SquadronName == null ? string.Empty : eddiConfiguration.SquadronName;
+            eddiSquadronNameText.Text = eddiConfiguration.SquadronName ?? string.Empty;
             eddiSquadronIDText.Text = eddiConfiguration.SquadronID ?? string.Empty;
             squadronRankDropDown.SelectedItem = (eddiConfiguration.SquadronRank ?? SquadronRank.None).localizedName;
             ConfigureSquadronRankOptions(eddiConfiguration);
@@ -447,7 +447,6 @@ namespace Eddi
                         }
                     }
                 }
-
                 speechOptions.Sort();
                 ttsVoiceDropDown.ItemsSource = speechOptions;
                 ttsVoiceDropDown.Text = speechServiceConfiguration.StandardVoice ?? "Windows TTS default";
@@ -766,7 +765,6 @@ namespace Eddi
                 }
                 SquadronRankOptions.Add(squadronrank.localizedName);
             }
-
             // Don't sort
             squadronRankDropDown.ItemsSource = SquadronRankOptions;
         }
@@ -789,7 +787,6 @@ namespace Eddi
                     }
                 }
             }
-
             // sort but leave "None" at the top
             SquadronFactionOptions.Sort(1, SquadronFactionOptions.Count - 1, null);
             squadronFactionDropDown.ItemsSource = SquadronFactionOptions;
@@ -797,11 +794,10 @@ namespace Eddi
 
         private void ConfigureSquadronPowerOptions(EDDIConfiguration configuration)
         {
-            List<string> SquadronPowerOptions = new List<string>()
+            List<string> SquadronPowerOptions = new List<string>
             {
                 Power.None.localizedName
             };
-
             if (configuration.SquadronAllegiance != Superpower.None)
             {
                 foreach (Power power in Power.AllOfThem)
@@ -812,7 +808,6 @@ namespace Eddi
                     }
                 }
             }
-
             // sort but leave "None" at the top
             SquadronPowerOptions.Sort(1, SquadronPowerOptions.Count - 1, null);
             squadronPowerDropDown.ItemsSource = SquadronPowerOptions;
