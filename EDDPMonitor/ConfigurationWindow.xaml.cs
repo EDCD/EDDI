@@ -40,7 +40,7 @@ namespace EddiEddpMonitor
             // Make a list of states plus a (anything) state that maps to NULL
             StatesPlusNone = new List<KeyValuePair<string, FactionState>>();
             StatesPlusNone.Add(new KeyValuePair<string, FactionState>(Properties.EddpResources.anything, null));
-            StatesPlusNone.AddRange(FactionState.AllOfThem.Select(x => new KeyValuePair<string, FactionState>(x.localizedName, x)));
+            StatesPlusNone.AddRange(FactionState.AllOfThem.OrderBy(x => x.localizedName).Select(x => new KeyValuePair<string, FactionState>(x.localizedName, x)));
 
             configurationFromFile();
 
