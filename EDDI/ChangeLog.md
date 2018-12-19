@@ -2,6 +2,10 @@
 
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
+### Development
+  * EDDN responder
+    * Corrected an issue that was preventing certain event types from being sent to EDDN.
+
 ### 3.3-rc1
   * Core
     * Fixed a bug that could result in rotational and orbital periods being reported as much faster than they really were.
