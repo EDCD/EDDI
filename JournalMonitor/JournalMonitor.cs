@@ -3068,6 +3068,13 @@ namespace EddiJournalMonitor
                                     handled = true;
                                     break;
                                 }
+                            case "Commander":
+                            case "Reputation":
+                            case "Statistics":
+                            case "CodexEntry":
+                            case "FSDTarget":
+                                // we silently ignore these, but forward them to the responders
+                                break;
                             default:
                                 {
                                     throw new NotImplementedException();
