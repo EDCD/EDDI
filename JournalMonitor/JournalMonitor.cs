@@ -3076,16 +3076,13 @@ namespace EddiJournalMonitor
                                 // we silently ignore these, but forward them to the responders
                                 break;
                             default:
-                                {
-                                    throw new NotImplementedException();
-                                }
+                                throw new NotImplementedException($"EDDI has no handler for event type '{edType}'.");
                         }
                     }
                     catch (Exception ex)
                     {
                         // Something went wrong, but an unhandled event will still be passed to the responders.
-                        Logging.Warn("Failed to parse line details: " + ex.ToString());
-                        Logging.Error("Exception whilst parsing journal line details", "Raw event: " + line + ". Exception: " + ex.Message + ". " + ex.StackTrace);
+                        Logging.Warn($"{ex.Message}/r/nRaw event:/r/n{line}");
                     }
 
                     if (!handled)
