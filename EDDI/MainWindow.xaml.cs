@@ -195,7 +195,7 @@ namespace Eddi
             {
                 eddiHomeSystemText.Text = string.Empty;
             }
-            homeStationDropDown.SelectedItem = eddiConfiguration.HomeStation == null ? "None" : eddiConfiguration.HomeStation;
+            homeStationDropDown.SelectedItem = eddiConfiguration.HomeStation ?? Properties.MainWindow.no_station;
             eddiVerboseLogging.IsChecked = eddiConfiguration.Debug;
             eddiBetaProgramme.IsChecked = eddiConfiguration.Beta;
             if (eddiConfiguration.Gender == "Female")
@@ -211,7 +211,7 @@ namespace Eddi
                 eddiGenderNeither.IsChecked = true;
             }
             eddiSquadronNameText.Text = eddiConfiguration.SquadronName == null ? string.Empty : eddiConfiguration.SquadronName;
-            eddiSquadronIDText.Text = eddiConfiguration.SquadronID == null ? string.Empty : eddiConfiguration.SquadronID;
+            eddiSquadronIDText.Text = eddiConfiguration.SquadronID ?? string.Empty;
             squadronRankDropDown.SelectedItem = (eddiConfiguration.SquadronRank ?? SquadronRank.None).localizedName;
             ConfigureSquadronRankOptions(eddiConfiguration);
             if (eddiConfiguration.validSquadronSystem)
@@ -223,12 +223,11 @@ namespace Eddi
             {
                 eddiSquadronSystemText.Text = string.Empty;
             }
-            squadronFactionDropDown.SelectedItem = eddiConfiguration.SquadronFaction == null ? "None" : eddiConfiguration.SquadronFaction;
-            squadronPowerDropDown.SelectedItem = eddiConfiguration.SquadronPower == null
-                ? Power.FromEDName("None").localizedName : eddiConfiguration.SquadronPower.localizedName;
+            squadronFactionDropDown.SelectedItem = eddiConfiguration.SquadronFaction ?? Power.None.localizedName;
+            squadronPowerDropDown.SelectedItem = (eddiConfiguration.SquadronPower ?? Power.None).localizedName;
             ConfigureSquadronPowerOptions(eddiConfiguration);
 
-            List<LanguageDef> langs = GetAvailableLangs();
+            List<LanguageDef> langs = GetAvailableLangs(); // already correctly sorted
             chooseLanguageDropDown.ItemsSource = langs;
             chooseLanguageDropDown.DisplayMemberPath = "displayName";
             chooseLanguageDropDown.SelectedItem = langs.Find(l => l.ci.Name == Eddi.Properties.Settings.Default.OverrideCulture);
@@ -449,6 +448,7 @@ namespace Eddi
                     }
                 }
 
+                speechOptions.Sort();
                 ttsVoiceDropDown.ItemsSource = speechOptions;
                 ttsVoiceDropDown.Text = speechServiceConfiguration.StandardVoice ?? "Windows TTS default";
             }
@@ -463,7 +463,7 @@ namespace Eddi
             disableSsmlCheckbox.IsChecked = speechServiceConfiguration.DisableSsml;
             enableIcaoCheckbox.IsChecked = speechServiceConfiguration.EnableIcao;
 
-            ttsTestShipDropDown.ItemsSource = ShipDefinitions.ShipModels;
+            ttsTestShipDropDown.ItemsSource = ShipDefinitions.ShipModels; // already sorted
             ttsTestShipDropDown.Text = "Adder";
         }
 
@@ -498,7 +498,7 @@ namespace Eddi
                 if (eddiConfiguration.HomeStation != null)
                 {
                     eddiConfiguration.HomeStation = null;
-                    homeStationDropDown.SelectedItem = "None";
+                    homeStationDropDown.SelectedItem = Properties.MainWindow.no_station;
                     ConfigureHomeStationOptions(null);
                 }
                 eddiConfiguration.ToFile();
@@ -528,7 +528,7 @@ namespace Eddi
         {
             List<string> HomeStationOptions = new List<string>
                 {
-                    "None"
+                    Properties.MainWindow.no_station
                 };
 
             if (system != null)
@@ -542,6 +542,8 @@ namespace Eddi
                     }
                 }
             }
+            // sort but leave "No Station" at the top
+            HomeStationOptions.Sort(1, HomeStationOptions.Count - 1, null);
             homeStationDropDown.ItemsSource = HomeStationOptions;
         }
 
@@ -551,7 +553,7 @@ namespace Eddi
             string homeStationName = homeStationDropDown.SelectedItem.ToString();
             if (eddiConfiguration.HomeStation != homeStationName)
             {
-                eddiConfiguration.HomeStation = homeStationName == "None" ? null : homeStationName;
+                eddiConfiguration.HomeStation = homeStationName == Properties.MainWindow.no_station ? null : homeStationName;
                 eddiConfiguration = EDDI.Instance.updateHomeStation(eddiConfiguration);
                 eddiConfiguration.ToFile();
             }
@@ -667,7 +669,7 @@ namespace Eddi
                     eddiConfiguration.SquadronPower = Power.None;
                     eddiConfiguration.ToFile();
 
-                    squadronFactionDropDown.SelectedItem = "None";
+                    squadronFactionDropDown.SelectedItem = Power.None.localizedName;
                     ConfigureSquadronFactionOptions(eddiConfiguration);
                     squadronPowerDropDown.SelectedItem = eddiConfiguration.SquadronPower.localizedName;
                     ConfigureSquadronPowerOptions(eddiConfiguration);
@@ -719,15 +721,21 @@ namespace Eddi
                         eddiConfiguration.ToFile();
 
                         EDDI.Instance.Cmdr.squadronallegiance = faction.Allegiance;
+
+                        squadronPowerDropDown.SelectedItem = Power.None.localizedName;
+                        ConfigureSquadronPowerOptions(eddiConfiguration);
                     }
                 }
                 else
                 {
-                    EDDI.Instance.Cmdr.squadronallegiance = Superpower.None;
-                }
-                squadronPowerDropDown.SelectedItem = Power.None.localizedName;
-                ConfigureSquadronPowerOptions(eddiConfiguration);
+                    eddiConfiguration.SquadronAllegiance = Superpower.None;
+                    eddiConfiguration.ToFile();
 
+                    EDDI.Instance.Cmdr.squadronallegiance = Superpower.None;
+
+                    squadronPowerDropDown.SelectedItem = Power.None.localizedName;
+                    ConfigureSquadronPowerOptions(eddiConfiguration);
+                }
                 eddiConfiguration.ToFile();
             }
         }
@@ -758,19 +766,21 @@ namespace Eddi
                 }
                 SquadronRankOptions.Add(squadronrank.localizedName);
             }
+
+            // Don't sort
             squadronRankDropDown.ItemsSource = SquadronRankOptions;
         }
 
         public void ConfigureSquadronFactionOptions(EDDIConfiguration configuration)
         {
             List<string> SquadronFactionOptions = new List<string>
-                {
-                    "None"
-                };
+            {
+                Power.None.localizedName
+            };
 
             if (configuration.SquadronSystem != null)
             {
-                StarSystem system = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(configuration.SquadronSystem, true);
+                StarSystem system = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(configuration.SquadronSystem, false);
                 if (system?.factions != null)
                 {
                     foreach (Faction faction in system.factions)
@@ -779,14 +789,19 @@ namespace Eddi
                     }
                 }
             }
+
+            // sort but leave "None" at the top
+            SquadronFactionOptions.Sort(1, SquadronFactionOptions.Count - 1, null);
             squadronFactionDropDown.ItemsSource = SquadronFactionOptions;
         }
 
         private void ConfigureSquadronPowerOptions(EDDIConfiguration configuration)
         {
-            List<string> SquadronPowerOptions = new List<string>();
+            List<string> SquadronPowerOptions = new List<string>()
+            {
+                Power.None.localizedName
+            };
 
-            SquadronPowerOptions.Add(Power.None.localizedName);
             if (configuration.SquadronAllegiance != Superpower.None)
             {
                 foreach (Power power in Power.AllOfThem)
@@ -797,6 +812,9 @@ namespace Eddi
                     }
                 }
             }
+
+            // sort but leave "None" at the top
+            SquadronPowerOptions.Sort(1, SquadronPowerOptions.Count - 1, null);
             squadronPowerDropDown.ItemsSource = SquadronPowerOptions;
         }
 
