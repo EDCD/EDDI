@@ -2,7 +2,10 @@
 
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
-### Development
+### 3.3-rc2
+  * Core
+    * All drop-down menus are now sorted appropriately.
+    * Internal fixes and efficiency improvements.
   * EDDN responder
     * Corrected an issue that was preventing certain event types from being sent to EDDN.
 
