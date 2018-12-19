@@ -150,7 +150,7 @@ namespace EddiDataProviderService
                                     result = JsonConvert.DeserializeObject<StarSystem>(data);
                                     if (result == null)
                                     {
-                                        Logging.Info("Failed to obtain system for " + name);
+                                        Logging.Info("Failed to obtain system for " + name + " from the SQLiteRepository");
                                     }
                                     if (result != null)
                                     {
@@ -177,11 +177,20 @@ namespace EddiDataProviderService
                                     {
                                         // Data is stale
                                         StarSystem updatedResult = DataProviderService.GetSystemData(name);
-                                        updatedResult.visits = result.visits;
-                                        updatedResult.lastvisit = result.lastvisit;
-                                        updatedResult.lastupdated = DateTime.UtcNow;
-                                        result = updatedResult;
-                                        needToUpdate = true;
+                                        if (updatedResult.systemAddress == null && result.systemAddress != null)
+                                        {
+                                            // The "updated" data might be a basic system, empty except for the name. 
+                                            // If so, return the old result.
+                                            return result;
+                                        }
+                                        else
+                                        {
+                                            updatedResult.visits = result.visits;
+                                            updatedResult.lastvisit = result.lastvisit;
+                                            updatedResult.lastupdated = DateTime.UtcNow;
+                                            result = updatedResult;
+                                            needToUpdate = true;
+                                        }
                                     }
                                 }
                                 catch (Exception)
