@@ -153,5 +153,8 @@
     <value>Keiner</value>
     <comment>BodyType "Null"</comment>
   </data>
-  
+  <data name="PlanetaryRing" xml:space="preserve">
+    <value>Planetenring</value>
+    <comment>Body Type PlanetaryRing</comment>
+  </data>
 </root>
