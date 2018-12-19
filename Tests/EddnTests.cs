@@ -71,7 +71,16 @@ namespace UnitTests
                             result.z = 0.0M;
                             return result;
                         }
-
+                    case "Pleiades Sector HR-W d1-79":
+                        {
+                            StarSystem result = new StarSystem();
+                            result.name = "Pleiades Sector HR-W d1-79";
+                            result.systemAddress = 2724879894859;
+                            result.x = -80.62500M;
+                            result.y = -146.65625M;
+                            result.z = -343.25000M;
+                            return result;
+                        }
                     default:
                         break;
                 }
@@ -443,6 +452,64 @@ namespace UnitTests
             {
                 Assert.Fail();
             }
+        }
+
+        [TestMethod]
+        public void TestUnhandledEvents()
+        {
+            string location = @"{ ""timestamp"":""2018-12-16T20:08:31Z"", ""event"":""Location"", ""Docked"":false, ""StarSystem"":""Pleiades Sector GW-W c1-4"", ""SystemAddress"":1183229809290, ""StarPos"":[-81.62500,-151.31250,-383.53125], ""SystemAllegiance"":"""", ""SystemEconomy"":""$economy_None;"", ""SystemEconomy_Localised"":""None"", ""SystemSecondEconomy"":""$economy_None;"", ""SystemSecondEconomy_Localised"":""None"", ""SystemGovernment"":""$government_None;"", ""SystemGovernment_Localised"":""None"", ""SystemSecurity"":""$GAlAXY_MAP_INFO_state_anarchy;"", ""SystemSecurity_Localised"":""Anarchy"", ""Population"":0, ""Body"":""Pleiades Sector GW-W c1-4"", ""BodyID"":0, ""BodyType"":""Star"" }";
+            string jump = @"{ ""timestamp"":""2018-12-16T20:10:15Z"", ""event"":""FSDJump"", ""StarSystem"":""Pleiades Sector HR-W d1-79"", ""SystemAddress"":2724879894859, ""StarPos"":[-80.62500,-146.65625,-343.25000], ""SystemAllegiance"":""Independent"", ""SystemEconomy"":""$economy_Extraction;"", ""SystemEconomy_Localised"":""Extraction"", ""SystemSecondEconomy"":""$economy_None;"", ""SystemSecondEconomy_Localised"":""None"", ""SystemGovernment"":""$government_Prison;"", ""SystemGovernment_Localised"":""Detention Centre"", ""SystemSecurity"":""$SYSTEM_SECURITY_high;"", ""SystemSecurity_Localised"":""High Security"", ""Population"":0, ""JumpDist"":40.562, ""FuelUsed"":2.827265, ""FuelLevel"":11.702736, ""Factions"":[ { ""Name"":""Independent Detention Foundation"", ""FactionState"":""None"", ""Government"":""Prison"", ""Influence"":0.000000, ""Allegiance"":""Independent"", ""Happiness"":""$Faction_HappinessBand2;"", ""Happiness_Localised"":""Happy"", ""MyReputation"":0.000000 }, { ""Name"":""Pilots Federation Local Branch"", ""FactionState"":""None"", ""Government"":""Democracy"", ""Influence"":0.000000, ""Allegiance"":""PilotsFederation"", ""Happiness"":"""", ""MyReputation"":100.000000 } ], ""SystemFaction"":""Independent Detention Foundation"" }";
+            string scan = @"{ ""timestamp"":""2018-12-16T20:10:21Z"", ""event"":""Scan"", ""ScanType"":""AutoScan"", ""BodyName"":""Pleiades Sector HR-W d1-79"", ""BodyID"":0, ""DistanceFromArrivalLS"":0.000000, ""StarType"":""F"", ""StellarMass"":1.437500, ""Radius"":855515008.000000, ""AbsoluteMagnitude"":3.808395, ""Age_MY"":1216, ""SurfaceTemperature"":6591.000000, ""Luminosity"":""Vab"", ""RotationPeriod"":261918.156250, ""AxialTilt"":0.000000 }";
+            string scan2 = @"{ ""timestamp"":""2018-12-16T20:28:02Z"", ""event"":""Scan"", ""ScanType"":""Detailed"", ""BodyName"":""Hyades Sector DL-X b1-2"", ""BodyID"":0, ""DistanceFromArrivalLS"":0.000000, ""StarType"":""M"", ""StellarMass"":0.367188, ""Radius"":370672928.000000, ""AbsoluteMagnitude"":9.054306, ""Age_MY"":586, ""SurfaceTemperature"":2993.000000, ""Luminosity"":""Va"", ""RotationPeriod"":167608.859375, ""AxialTilt"":0.000000, ""Rings"":[ { ""Name"":""Hyades Sector DL-X b1-2 A Belt"", ""RingClass"":""eRingClass_MetalRich"", ""MassMT"":5.4671e+13, ""InnerRad"":7.1727e+08, ""OuterRad"":1.728e+09 }, { ""Name"":""Hyades Sector DL-X b1-2 B Belt"", ""RingClass"":""eRingClass_Icy"", ""MassMT"":8.7822e+14, ""InnerRad"":6.3166e+10, ""OuterRad"":1.5917e+11 } ] }";
+
+            EDDNResponder.EDDNResponder responder = makeTestEDDNResponder();
+            var privateObject = new PrivateObject(responder);
+            object[] arguments;
+
+            UnhandledEvent unhandledLocation = new UnhandledEvent(DateTime.UtcNow, "Location") { raw = location };
+            arguments = new object[] { unhandledLocation, false };
+            privateObject.Invoke("handleRawEvent", arguments);
+            Assert.AreEqual("Pleiades Sector GW-W c1-4", responder.systemName);
+            Assert.AreEqual(1183229809290, responder.systemAddress);
+            Assert.AreEqual(-81.62500M, responder.systemX);
+            Assert.AreEqual(-151.31250M, responder.systemY);
+            Assert.AreEqual(-383.53125M, responder.systemZ);
+            Assert.IsNull(responder.stationName);
+            Assert.IsNull(responder.marketId);
+
+            UnhandledEvent unhandledJump = new UnhandledEvent(DateTime.UtcNow, "FSDJump") { raw = jump };
+            arguments = new object[] { unhandledJump, false };
+            privateObject.Invoke("handleRawEvent", arguments);
+            Assert.AreEqual("Pleiades Sector HR-W d1-79", responder.systemName);
+            Assert.AreEqual(2724879894859, responder.systemAddress);
+            Assert.AreEqual(-80.62500M, responder.systemX);
+            Assert.AreEqual(-146.65625M, responder.systemY);
+            Assert.AreEqual(-343.25000M, responder.systemZ);
+            Assert.IsNull(responder.stationName);
+            Assert.IsNull(responder.marketId);
+
+            UnhandledEvent unhandledScan = new UnhandledEvent(DateTime.UtcNow, "Scan") { raw = scan };
+            arguments = new object[] { unhandledScan, false };
+            privateObject.Invoke("handleRawEvent", arguments);
+            Assert.AreEqual("Pleiades Sector HR-W d1-79", responder.systemName);
+            Assert.AreEqual(2724879894859, responder.systemAddress);
+            Assert.AreEqual(-80.62500M, responder.systemX);
+            Assert.AreEqual(-146.65625M, responder.systemY);
+            Assert.AreEqual(-343.25000M, responder.systemZ);
+            Assert.IsNull(responder.stationName);
+            Assert.IsNull(responder.marketId);
+
+            // Deliberately scan a procedurally generated body that doesn't match our last known location & verify heuristics catch it
+            UnhandledEvent unhandledScan2 = new UnhandledEvent(DateTime.UtcNow, "Scan") { raw = scan2 };
+            arguments = new object[] { unhandledScan2, false };
+            privateObject.Invoke("handleRawEvent", arguments);
+            Assert.IsNull(responder.systemName);
+            Assert.IsNull(responder.systemAddress);
+            Assert.IsNull(responder.systemX);
+            Assert.IsNull(responder.systemY);
+            Assert.IsNull(responder.systemZ);
+            Assert.IsNull(responder.stationName);
+            Assert.IsNull(responder.marketId);
         }
     }
 }
