@@ -46,13 +46,9 @@ namespace EddiDataDefinitions
             { 128816567, new Ship(128816567, "Krait_MkII", "Faulcon DeLacy", null, "Krait Mk. II", new List<Translation>{new Translation("Krait", "ˈkreɪt"), new Translation("Mk.", "mɑːk"), new Translation("II", "ˈtuː") }, "Medium", null, 0.63M) },
             { 128839281, new Ship(128839281, "krait_light", "Faulcon DeLacy", null, "Krait Phantom", new List<Translation>{new Translation("Krait", "ˈkreɪt")}, "Medium", null, 0.63M) },
             { 128915979, new Ship(128915979, "Mamba", "Zorgon Peterson", null, "Mamba", null, "Medium", null, 0.5M) },
-
-            // Speculative future ships (replace '9999999xx' with Frontier ID once known)
-            { 999999902, new Ship(999999902, "Panther", "Zorgon Peterson", null, "Panther Clipper", null, "Large", null, 0M) },
-            { 999999903, new Ship(999999903, "AspMkII", "Lakon Spaceways", new List<Translation> {new Translation("Lakon", "leɪkɒn") }, "Asp Mk. II", null, "Medium", null, 0M) },
         };
 
-        public static List<string> ShipModels = ShipsByEliteID.Select(kp => kp.Value.model).ToList();
+        public static readonly SortedSet<string> ShipModels = new SortedSet<string>(ShipsByEliteID.Select(kp => kp.Value.model));
 
         private static Dictionary<string, Ship> ShipsByModel = ShipsByEliteID.ToDictionary(kp => kp.Value.model.ToLowerInvariant(), kp => kp.Value);
         private static Dictionary<string, Ship> ShipsByEDModel = ShipsByEliteID.ToDictionary(kp => kp.Value.EDName.ToLowerInvariant().Replace(" ", "").Replace(".", "").Replace("_", ""), kp => kp.Value);

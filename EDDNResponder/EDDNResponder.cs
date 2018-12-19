@@ -8,6 +8,7 @@ using RestSharp;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows.Controls;
 using Utilities;
@@ -98,32 +99,48 @@ namespace EDDNResponder
         {
         }
 
-        private void handleRawEvent(Event theEvent)
+        private void handleRawEvent(Event theEvent, bool sendToEddn = true)
         {
             IDictionary<string, object> data = Deserializtion.DeserializeData(theEvent.raw);
             string edType = JsonParsing.getString(data, "event");
 
-            // Always attempt to obtain available location data from events. 
-            if (edType == "Location" || edType == "FSDJump")
+            // Always attempt to obtain available location data from events describing our current location. 
+            if (edType == "FSDTarget")
+            {
+                // FSDTarget events describing the system we are targetting rather than the system we are in. 
+                // These must be ignored.
+                return;
+            }
+            else if (edType == "Location" || edType == "FSDJump")
             {
                 ClearLocation();
             }
-            GetLocationData(data); 
+            GetLocationData(data);
 
+            // Confirm the data that we've acquired is as accurate as possible
             if (edType == "Docked")
             {
-                if (eventConfirmCoordinates(systemName, systemAddress) || data.ContainsKey("StarPos"))
+                // Confirm coordinates before sending data to EDDN if data does not have coordinates
+                if (data.ContainsKey("StarPos") || eventConfirmCoordinates(systemName, systemAddress))
                 {
-                    // When we dock we have access to commodity and outfitting information
-                    sendCommodityInformation();
-                    sendOutfittingInformation();
-                    sendShipyardInformation();
+                    if (sendToEddn)
+                    {
+                        // When we dock we have access to commodity and outfitting information
+                        sendCommodityInformation();
+                        sendOutfittingInformation();
+                        sendShipyardInformation();
+                    }
                 }
+            }
+            else if (edType == "Scan")
+            {
+                // Apply heuristics to weed out mismatched systems and bodies
+                eventConfirmScan(JsonParsing.getString(data, "BodyName"));
             }
 
             if (edType == "Location" || edType == "FSDJump" || edType == "Docked" || edType == "Scan")
-            {
-                // Can only proceed if we know our current system
+            {              
+                // Can only proceed if we know our current location data is correct
                 if (systemName == null || systemAddress == null || systemX == null || systemY == null || systemZ == null)
                 {
                     Logging.Debug("Missing current starsystem information, cannot send message to EDDN");
@@ -133,7 +150,7 @@ namespace EDDNResponder
                 StripPersonalData(data);
                 EnrichLocationData(edType, data);
 
-                if (data != null)
+                if (data != null && sendToEddn)
                 {
                     SendToEDDN(data);
                 }
@@ -155,8 +172,8 @@ namespace EDDNResponder
         {
             try
             {
-                systemName = JsonParsing.getString(data, "StarSystem");
-                systemAddress = JsonParsing.getOptionalLong(data, "SystemAddress");
+                systemName = JsonParsing.getString(data, "StarSystem") ?? systemName;
+                systemAddress = JsonParsing.getOptionalLong(data, "SystemAddress") ?? systemAddress;
                 data.TryGetValue("StarPos", out object starpos);
                 if (starpos != null)
                 {
@@ -165,8 +182,8 @@ namespace EDDNResponder
                     systemY = Math.Round(JsonParsing.getDecimal("Y", starPos[1]) * 32M) / 32M;
                     systemZ = Math.Round(JsonParsing.getDecimal("Z", starPos[2]) * 32M) / 32M;
                 }
-                marketId = JsonParsing.getOptionalLong(data, "MarketID");
-                stationName = JsonParsing.getString(data, "StationName");
+                marketId = JsonParsing.getOptionalLong(data, "MarketID") ?? marketId;
+                stationName = JsonParsing.getString(data, "StationName") ?? stationName;
             }
             catch (Exception ex)
             {
@@ -492,6 +509,34 @@ namespace EDDNResponder
             }
 
             // Set values to null if data isn't available. If system coordinates are null, data shall not be sent to EDDN.
+            systemName = null;
+            systemAddress = null;
+            systemX = null;
+            systemY = null;
+            systemZ = null;
+            return false;
+        }
+
+        public bool eventConfirmScan(string eventBody)
+        {
+            if (eventBody != null && systemName != null)
+            {
+                if (eventBody.StartsWith(systemName))
+                {
+                    return true;
+                }
+                else
+                {
+                    // If the body doesn't start with the system name, it should also 
+                    // not match a naming pattern for a procedurally generated name.
+                    // If it does, it's in the wrong place.
+                    Regex procGen = new Regex(@"[A-Z][A-Z]-[A-Z] [a-h][0-9]");
+                    if (!procGen.IsMatch(eventBody))
+                    {
+                        return true;
+                    }
+                }
+            }
             systemName = null;
             systemAddress = null;
             systemX = null;
