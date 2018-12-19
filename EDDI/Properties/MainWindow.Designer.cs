@@ -115,6 +115,15 @@ namespace Eddi.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No Station.
+        /// </summary>
+        public static string no_station {
+            get {
+                return ResourceManager.GetString("no_station", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to has a number of features that can be configured separately. There are three different types of items..
         /// </summary>
         public static string paragraph_0 {

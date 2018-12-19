@@ -277,4 +277,7 @@
   <data name="tab_commander_squadron_id" xml:space="preserve">
     <value>Squadron ID:</value>
   </data>
+  <data name="no_station" xml:space="preserve">
+    <value>No Station</value>
+  </data>
 </root>

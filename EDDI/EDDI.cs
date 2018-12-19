@@ -145,7 +145,7 @@ namespace Eddi
                 // Set up the EDDI configuration
                 EDDIConfiguration configuration = EDDIConfiguration.FromFile();
                 updateHomeSystemStation(configuration);
-                updateSquadronSystem(configuration);
+                updateSquadronSystem(configuration, true);
 
                 if (running)
                 {
@@ -1987,21 +1987,25 @@ namespace Eddi
 
         public void updateHomeSystemStation(EDDIConfiguration configuration)
         {
-            updateHomeSystem(configuration);
+            updateHomeSystem(configuration, true);
             updateHomeStation(configuration);
             configuration.ToFile();
         }
 
-        public EDDIConfiguration updateHomeSystem(EDDIConfiguration configuration)
+        public EDDIConfiguration updateHomeSystem(EDDIConfiguration configuration, bool refresh = false)
         {
             Logging.Verbose = configuration.Debug;
             configuration.validHomeSystem = false;
             if (configuration.HomeSystem != null && configuration.HomeSystem.Trim().Length > 0)
             {
-                HomeStarSystem = StarSystemSqLiteRepository.Instance.GetStarSystem(configuration.HomeSystem.Trim());
-                if (HomeStarSystem != null)
+                StarSystem system = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(configuration.HomeSystem.Trim(), refresh);
+                if (system != null)
                 {
-                    Logging.Debug("Home star system is " + HomeStarSystem.name);
+                    if (refresh || system.name != HomeStarSystem?.name)
+                    {
+                        HomeStarSystem = system;
+                        Logging.Debug("Home star system is " + HomeStarSystem.name);
+                    }
                     configuration.validHomeSystem = HomeStarSystem.bodies.Count > 0 || HomeStarSystem.stations.Count > 0 || HomeStarSystem.population > 0;
                 }
             }
@@ -2033,17 +2037,24 @@ namespace Eddi
             return configuration;
         }
 
-        public EDDIConfiguration updateSquadronSystem(EDDIConfiguration configuration)
+        public EDDIConfiguration updateSquadronSystem(EDDIConfiguration configuration, bool refresh = false)
         {
             Logging.Verbose = configuration.Debug;
             configuration.validSquadronSystem = false;
             if (configuration.SquadronSystem != null && configuration.SquadronSystem.Trim().Length > 0)
             {
-                SquadronStarSystem = StarSystemSqLiteRepository.Instance.GetStarSystem(configuration.SquadronSystem.Trim());
-                if (SquadronStarSystem?.factions != null)
+                StarSystem system = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(configuration.SquadronSystem.Trim(), refresh);
+                if (system != null)
                 {
-                    Logging.Debug("Squadron star system is " + SquadronStarSystem.name);
-                    configuration.validSquadronSystem = SquadronStarSystem.factions.Count() > 0;
+                    if (refresh || system.name != SquadronStarSystem?.name)
+                    {
+                        SquadronStarSystem = system;
+                        if (SquadronStarSystem?.factions != null)
+                        {
+                            Logging.Debug("Squadron star system is " + SquadronStarSystem.name);
+                            configuration.validSquadronSystem = SquadronStarSystem.factions.Count() > 0;
+                        }
+                    }
                 }
             }
             else
@@ -2069,7 +2080,7 @@ namespace Eddi
                     // Update the squadron system data
                     configuration.SquadronSystem = system;
                     mw.eddiSquadronNameText.Text = system;
-                    configuration = updateSquadronSystem(configuration);
+                    configuration = updateSquadronSystem(configuration, true);
 
                     //Update the squadron allegiance, if changed
                     if (configuration.SquadronAllegiance == Superpower.None || configuration.SquadronAllegiance != allegiance)
