@@ -573,5 +573,8 @@
     <value>Destructor de abrasión</value>
     <comment>Module Abrasion Blaster</comment>
   </data>
-  
+  <data name="CompositionScanner" xml:space="preserve">
+    <value>Escáner de composición</value>
+    <comment>Module Composition Scanner</comment>
+  </data>
 </root>

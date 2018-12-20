@@ -204,7 +204,7 @@
     <value>Error al actualizar. Por favor inténtelo de nuevo más tarde.</value>
   </data>
   <data name="starting_upgrade" xml:space="preserve">
-    <value>Empezando actualización.</value>
+    <value>Iniciando actualización.</value>
   </data>
   <data name="update_server_unreachable" xml:space="preserve">
     <value>No pude conectarme a mi servidor de actualización. Si esto es recurrente, verifique en el foro para ver si es un problema ya conocido.</value>

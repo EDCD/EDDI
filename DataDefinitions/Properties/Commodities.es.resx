@@ -1630,6 +1630,10 @@
     <value>Muestra de tejido de Thargoide Hidra</value>
     <comment>Commodity ThargoidTissueSampleType4</comment>
   </data>
+  <data name="Nanomedicines" xml:space="preserve">
+    <value>Nano-medicinas</value>
+    <comment>Commodity Nanomedicines</comment>
+  </data>
   
   
   
@@ -1637,6 +1641,8 @@
   
   
   
-  
-  
+  <data name="Opal" xml:space="preserve">
+    <value>Ópalo</value>
+    <comment>Commodity Opal</comment>
+  </data>
 </root>

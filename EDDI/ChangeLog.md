@@ -2,6 +2,10 @@
 
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
+### 3.3
+  * Speech responder
+    * Fixed a bug in the way that the status of friends is tracked, and fixed the broken `Test` button for the `Friends status` event.
+
 ### 3.3-rc2
   * Core
     * All drop-down menus are now sorted appropriately.

@@ -2259,38 +2259,13 @@ namespace EddiJournalMonitor
                                     string status = JsonParsing.getString(data, "Status");
                                     string name = JsonParsing.getString(data, "Name");
                                     name = name.Replace("$cmdr_decorate:#name=", "Commander ").Replace(";", "").Replace("&", "Commander ");
-
-                                    Friend cmdr = new Friend
-                                    {
-                                        name = name,
-                                        status = status
-                                    };
-
-                                    /// Does this friend exist in our friends list?
-                                    List<Friend> friends = EDDI.Instance.Cmdr.friends;
-                                    int index = friends.FindIndex(friend => friend.name == name);
-                                    if (index >= 0)
-                                    {
-                                        if (friends[index].status != cmdr.status)
-                                        {
-                                            /// This is a known friend with a revised status: replace in situ (this is more efficient than removing and re-adding).
-                                            friends[index] = cmdr;
-                                            events.Add(new FriendsEvent(timestamp, name, status) { raw = line });
-                                        }
-                                    }
-                                    else
-                                    {
-                                        /// This is a new friend, add them to the list
-                                        friends.Add(cmdr);
-                                    }
-
+                                    events.Add(new FriendsEvent(timestamp, name, status) { raw = line });
                                     handled = true;
                                     break;
                                 }
                             case "JetConeBoost":
                                 {
                                     decimal boost = JsonParsing.getDecimal(data, "BoostValue");
-
                                     events.Add(new JetConeBoostEvent(timestamp, boost) { raw = line });
                                     handled = true;
                                     break;

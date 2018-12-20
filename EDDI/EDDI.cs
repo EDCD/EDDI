@@ -694,6 +694,10 @@ namespace Eddi
                     {
                         passEvent = eventSquadronRank((SquadronRankEvent)@event);
                     }
+                    else if (@event is FriendsEvent)
+                    {
+                        passEvent = eventFriends((FriendsEvent)@event);
+                    }
                     // Additional processing is over, send to the event responders if required
                     if (passEvent)
                     {
@@ -705,6 +709,34 @@ namespace Eddi
                     Logging.Error("Failed to handle event " + JsonConvert.SerializeObject(@event), ex);
                 }
             }
+        }
+
+        private bool eventFriends(FriendsEvent @event)
+        {
+            bool passEvent = false;
+            Friend cmdr = new Friend
+            {
+                name = @event.name,
+                status = @event.status
+            };
+
+            /// Does this friend exist in our friends list?
+            int index = Cmdr.friends.FindIndex(friend => friend.name == @event.name);
+            if (index >= 0)
+            {
+                if (Cmdr.friends[index].status != @event.status)
+                {
+                    /// This is a known friend with a revised status: replace in situ (this is more efficient than removing and re-adding).
+                    Cmdr.friends[index] = cmdr;
+                    passEvent = true;
+                }
+            }
+            else
+            {
+                /// This is a new friend, add them to the list
+                Cmdr.friends.Add(cmdr);
+            }
+            return passEvent;
         }
 
         private void OnEvent(Event @event)
@@ -1998,13 +2030,16 @@ namespace Eddi
             configuration.validHomeSystem = false;
             if (configuration.HomeSystem != null && configuration.HomeSystem.Trim().Length > 0)
             {
-                StarSystem system = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(configuration.HomeSystem.Trim(), refresh);
-                if (system != null)
+                StarSystem system = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystem(configuration.HomeSystem.Trim(), refresh);
+
+                //Ignore null & empty systems
+                if (system != null && system.bodies.Count > 0)
                 {
                     if (refresh || system.name != HomeStarSystem?.name)
                     {
                         HomeStarSystem = system;
                         Logging.Debug("Home star system is " + HomeStarSystem.name);
+                        configuration.HomeSystem = system.name;
                     }
                     configuration.validHomeSystem = HomeStarSystem.bodies.Count > 0 || HomeStarSystem.stations.Count > 0 || HomeStarSystem.population > 0;
                 }
@@ -2043,8 +2078,10 @@ namespace Eddi
             configuration.validSquadronSystem = false;
             if (configuration.SquadronSystem != null && configuration.SquadronSystem.Trim().Length > 0)
             {
-                StarSystem system = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(configuration.SquadronSystem.Trim(), refresh);
-                if (system != null)
+                StarSystem system = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystem(configuration.SquadronSystem.Trim(), refresh);
+
+                //Ignore null & empty systems
+                if (system != null && system.bodies.Count > 0)
                 {
                     if (refresh || system.name != SquadronStarSystem?.name)
                     {
@@ -2052,6 +2089,7 @@ namespace Eddi
                         if (SquadronStarSystem?.factions != null)
                         {
                             Logging.Debug("Squadron star system is " + SquadronStarSystem.name);
+                            configuration.SquadronSystem = system.name;
                             configuration.validSquadronSystem = SquadronStarSystem.factions.Count() > 0;
                         }
                     }
