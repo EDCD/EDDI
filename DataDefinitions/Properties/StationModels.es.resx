@@ -149,6 +149,12 @@
     <value>Estación desconocida</value>
     <comment>Unknown Station</comment>
   </data>
-  
-  
+  <data name="CraterPort" xml:space="preserve">
+    <value>Puerto de superficie</value>
+    <comment>A Surface Port</comment>
+  </data>
+  <data name="CraterOutpost" xml:space="preserve">
+    <value>Puesto avanzado de superficie</value>
+    <comment>A Surface Outpost</comment>
+  </data>
 </root>
