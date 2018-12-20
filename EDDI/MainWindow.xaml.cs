@@ -665,6 +665,8 @@ namespace Eddi
                 eddiConfiguration = EDDI.Instance.updateSquadronSystem(eddiConfiguration);
                 if (eddiConfiguration.SquadronFaction != null)
                 {
+                    eddiConfiguration.SquadronFaction = null;
+
                     eddiConfiguration.SquadronAllegiance = Superpower.None;
                     eddiConfiguration.SquadronPower = Power.None;
                     eddiConfiguration.ToFile();
