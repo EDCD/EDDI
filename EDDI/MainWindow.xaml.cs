@@ -513,6 +513,7 @@ namespace Eddi
             EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
             if (eddiConfiguration.validHomeSystem)
             {
+                eddiHomeSystemText.Text = eddiConfiguration.HomeSystem;
                 ConfigureHomeStationOptions(eddiConfiguration.HomeSystem);
             }
             else
@@ -689,6 +690,7 @@ namespace Eddi
             EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
             if (eddiConfiguration.validSquadronSystem)
             {
+                eddiSquadronSystemText.Text = eddiConfiguration.SquadronSystem;
                 ConfigureSquadronFactionOptions(eddiConfiguration);
             }
             else
