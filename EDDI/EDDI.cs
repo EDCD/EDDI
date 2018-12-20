@@ -694,6 +694,10 @@ namespace Eddi
                     {
                         passEvent = eventSquadronRank((SquadronRankEvent)@event);
                     }
+                    else if (@event is FriendsEvent)
+                    {
+                        passEvent = eventFriends((FriendsEvent)@event);
+                    }
                     // Additional processing is over, send to the event responders if required
                     if (passEvent)
                     {
@@ -705,6 +709,34 @@ namespace Eddi
                     Logging.Error("Failed to handle event " + JsonConvert.SerializeObject(@event), ex);
                 }
             }
+        }
+
+        private bool eventFriends(FriendsEvent @event)
+        {
+            bool passEvent = false;
+            Friend cmdr = new Friend
+            {
+                name = @event.name,
+                status = @event.status
+            };
+
+            /// Does this friend exist in our friends list?
+            int index = Cmdr.friends.FindIndex(friend => friend.name == @event.name);
+            if (index >= 0)
+            {
+                if (Cmdr.friends[index].status != @event.status)
+                {
+                    /// This is a known friend with a revised status: replace in situ (this is more efficient than removing and re-adding).
+                    Cmdr.friends[index] = cmdr;
+                    passEvent = true;
+                }
+            }
+            else
+            {
+                /// This is a new friend, add them to the list
+                Cmdr.friends.Add(cmdr);
+            }
+            return passEvent;
         }
 
         private void OnEvent(Event @event)
