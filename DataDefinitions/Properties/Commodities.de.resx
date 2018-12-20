@@ -1629,6 +1629,10 @@
     <value>Thargoid Hydra Gewebeprobe</value>
     <comment>Commodity ThargoidTissueSampleType4</comment>
   </data>
+  <data name="Nanomedicines" xml:space="preserve">
+    <value>Nanomedizin</value>
+    <comment>Commodity Nanomedicines</comment>
+  </data>
   
   
   
@@ -1636,6 +1640,8 @@
   
   
   
-  
-  
+  <data name="Opal" xml:space="preserve">
+    <value>Opal</value>
+    <comment>Commodity Opal</comment>
+  </data>
 </root>
