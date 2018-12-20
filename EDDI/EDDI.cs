@@ -2030,13 +2030,16 @@ namespace Eddi
             configuration.validHomeSystem = false;
             if (configuration.HomeSystem != null && configuration.HomeSystem.Trim().Length > 0)
             {
-                StarSystem system = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(configuration.HomeSystem.Trim(), refresh);
-                if (system != null)
+                StarSystem system = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystem(configuration.HomeSystem.Trim(), refresh);
+
+                //Ignore null & empty systems
+                if (system != null && system.bodies.Count > 0)
                 {
                     if (refresh || system.name != HomeStarSystem?.name)
                     {
                         HomeStarSystem = system;
                         Logging.Debug("Home star system is " + HomeStarSystem.name);
+                        configuration.HomeSystem = system.name;
                     }
                     configuration.validHomeSystem = HomeStarSystem.bodies.Count > 0 || HomeStarSystem.stations.Count > 0 || HomeStarSystem.population > 0;
                 }
@@ -2075,8 +2078,10 @@ namespace Eddi
             configuration.validSquadronSystem = false;
             if (configuration.SquadronSystem != null && configuration.SquadronSystem.Trim().Length > 0)
             {
-                StarSystem system = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(configuration.SquadronSystem.Trim(), refresh);
-                if (system != null)
+                StarSystem system = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystem(configuration.SquadronSystem.Trim(), refresh);
+
+                //Ignore null & empty systems
+                if (system != null && system.bodies.Count > 0)
                 {
                     if (refresh || system.name != SquadronStarSystem?.name)
                     {
@@ -2084,6 +2089,7 @@ namespace Eddi
                         if (SquadronStarSystem?.factions != null)
                         {
                             Logging.Debug("Squadron star system is " + SquadronStarSystem.name);
+                            configuration.SquadronSystem = system.name;
                             configuration.validSquadronSystem = SquadronStarSystem.factions.Count() > 0;
                         }
                     }
