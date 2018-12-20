@@ -1998,7 +1998,7 @@ namespace Eddi
             configuration.validHomeSystem = false;
             if (configuration.HomeSystem != null && configuration.HomeSystem.Trim().Length > 0)
             {
-                StarSystem system = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(configuration.HomeSystem.Trim(), refresh);
+                StarSystem system = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystem(configuration.HomeSystem.Trim(), refresh);
                 if (system != null)
                 {
                     if (refresh || system.name != HomeStarSystem?.name)

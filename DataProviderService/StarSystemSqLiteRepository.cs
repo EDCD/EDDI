@@ -35,10 +35,10 @@ namespace EddiDataProviderService
                        ,lastvisit = @lastvisit
                        ,starsystem = @starsystem
                        ,starsystemlastupdated = @starsystemlastupdated
-                    WHERE name = @name";
+                    WHERE LOWER(name) = LOWER(@name)";
         private const string DELETE_SQL = @"
                     DELETE FROM starsystems
-                    WHERE name = @name";
+                    WHERE LOWER(name) = LOWER(@name)";
         private const string SELECT_BY_NAME_SQL = @"
                     SELECT totalvisits,
                            lastvisit,
@@ -46,7 +46,7 @@ namespace EddiDataProviderService
                            starsystemlastupdated,
                            comment
                     FROM starsystems
-                    WHERE name = @name";
+                    WHERE LOWER(name) = LOWER(@name)";
         private const string TABLE_SQL = @"PRAGMA table_info(starsystems)";
         private const string ALTER_ADD_COMMENT_SQL = @"ALTER TABLE starsystems ADD COLUMN comment TEXT";
 
