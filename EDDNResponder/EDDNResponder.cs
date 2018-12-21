@@ -105,9 +105,10 @@ namespace EDDNResponder
             string edType = JsonParsing.getString(data, "event");
 
             // Always attempt to obtain available location data from events describing our current location. 
-            if (edType == "FSDTarget")
+            if (edType == "FSDTarget" || edType == "CodexEntry")
             {
                 // FSDTarget events describing the system we are targetting rather than the system we are in. 
+                // CodexEntry events are bugged and return "SystemAddress":1 regardless of the system we are in.
                 // These must be ignored.
                 return;
             }
