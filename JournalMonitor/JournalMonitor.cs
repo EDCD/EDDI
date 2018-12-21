@@ -2584,8 +2584,7 @@ namespace EddiJournalMonitor
                                     string name = JsonParsing.getString(data, "Name");
                                     data.TryGetValue("Reward", out val);
                                     long reward = (val == null ? 0 : (long)val);
-                                    data.TryGetValue("Donation", out val);
-                                    long donation = (val == null ? 0 : (long)val);
+                                    long donation = JsonParsing.getOptionalLong(data, "Donated") ?? 0;
                                     string faction = getFaction(data, "Faction");
 
                                     // Missions with commodities

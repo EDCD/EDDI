@@ -262,6 +262,13 @@ namespace UnitTests
             missionMonitor._handleMissionFailedEvent((MissionFailedEvent)events[0]);
             Assert.AreEqual(4, missionMonitor.missions.Count);
 
+            //MissionCompletedEvent - Donation
+            line = @"{ ""timestamp"":""2018-12-18T19:14:32Z"", ""event"":""MissionCompleted"", ""Faction"":""Movement for Rabakshany Democrats"", ""Name"":""Mission_AltruismCredits_name"", ""MissionID"":442085549, ""Donation"":""1000000"", ""Donated"":1000000, ""FactionEffects"":[ { ""Faction"":""Movement for Rabakshany Democrats"", ""Effects"":[ { ""Effect"":""$MISSIONUTIL_Interaction_Summary_EP_up;"", ""Effect_Localised"":""The economic status of $#MinorFaction; has improved in the $#System; system."", ""Trend"":""UpGood"" } ], ""Influence"":[ { ""SystemAddress"":8605201797850, ""Trend"":""UpGood"", ""Influence"":""+++++"" } ], ""ReputationTrend"":""UpGood"", ""Reputation"":""++"" } ] }";
+            events = JournalMonitor.ParseJournalEntry(line);
+            Assert.IsTrue(events.Count == 1);
+            MissionCompletedEvent mcEvent = (MissionCompletedEvent)events[0];
+            Assert.AreEqual(1000000, mcEvent.donation);
+
             // Restore original data
             data.ToFile();
         }
