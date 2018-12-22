@@ -2,6 +2,10 @@
 
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
+### 3.3.1
+  * EDDN responder
+    * `CodexEntry` events are bugged and always return a SystemAddress of 1. These must be ignored by the EDDN responder to prevent sending bad data.
+
 ### 3.3
   * Speech responder
     * Fixed a bug in the way that the status of friends is tracked, and fixed the broken `Test` button for the `Friends status` event.
