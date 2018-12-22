@@ -119,20 +119,41 @@
   </resheader>
   
   
+  <data name="USS" xml:space="preserve">
+    <value>Unbekannte Signalquelle</value>
+    <comment>Unidentified Signal Source</comment>
+  </data>
   
   
   
+  <data name="USS_Type_Salvage" xml:space="preserve">
+    <value>Degradierte Emissionen</value>
+    <comment>Salvage signal</comment>
+  </data>
   
   
   
+  <data name="USS_Type_VeryValuableSalvage" xml:space="preserve">
+    <value>Hochgradige Emissionen</value>
+    <comment>VeryValuable signal</comment>
+  </data>
+  <data name="USS_Type_ValuableSalvage" xml:space="preserve">
+    <value>Verschlüsselte Emissionen</value>
+    <comment>Valuable signal</comment>
+  </data>
   
-  
-  
-  
-  
-  
-  
-  
+  <data name="USS_Type_WeaponsFire" xml:space="preserve">
+    <value>Waffenfeuer</value>
+    <comment>WeaponsFire signal</comment>
+  </data>
+  <data name="USS_Type_MissionTarget" xml:space="preserve">
+    <value>Missionsziel</value>
+    <comment>MissionTarget signal</comment>
+  </data>
+  <data name="USS_Type_Convoy" xml:space="preserve">
+    <value>Konvoi-Auflösungsmuster</value>
+    <comment>Convoy signal</comment>
+  </data>
   
   
   
