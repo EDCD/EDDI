@@ -123,4 +123,7 @@
   <data name="name" xml:space="preserve">
     <value>EDDN Responder</value>
   </data>
+  <data name="errPosition" xml:space="preserve">
+    <value>Invalid state in current star system information, unable to send messages to EDDN. Please validate your position by either jumping out of the system and back in or by logging out and logging back in.</value>
+  </data>
 </root>

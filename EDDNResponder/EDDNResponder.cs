@@ -3,6 +3,7 @@ using EddiCompanionAppService;
 using EddiDataDefinitions;
 using EddiDataProviderService;
 using EddiEvents;
+using EddiSpeechService;
 using Newtonsoft.Json;
 using RestSharp;
 using System;
@@ -28,6 +29,8 @@ namespace EDDNResponder
         public decimal? systemZ { get; private set; } = null;
         public string stationName { get; private set; } = null;
         public long? marketId { get; private set; } = null;
+
+        public bool invalidState { get; private set; }
 
         private StarSystemRepository starSystemRepository;
 
@@ -104,56 +107,48 @@ namespace EDDNResponder
             IDictionary<string, object> data = Deserializtion.DeserializeData(theEvent.raw);
             string edType = JsonParsing.getString(data, "event");
 
-            // Always attempt to obtain available location data from events describing our current location. 
-            if (edType == "FSDTarget" || edType == "CodexEntry")
+            if (edType == "FSDTarget" || edType == "StartJump")
             {
-                // FSDTarget events describing the system we are targetting rather than the system we are in. 
-                // CodexEntry events are bugged and return "SystemAddress":1 regardless of the system we are in.
+                // FSDTarget events describing the system we are targetting rather than the system we are in.
+                // Scan events can register after StartJump and before we actually leave the originating system.
                 // These must be ignored.
                 return;
             }
             else if (edType == "Location" || edType == "FSDJump")
             {
+                // We always start fresh from Location and FSDJump events
+                invalidState = false;
                 ClearLocation();
             }
+
+            // Except as noted above, always attempt to obtain available location data from the active event 
             GetLocationData(data);
 
-            // Confirm the data that we've acquired is as accurate as possible
-            if (edType == "Docked")
+            // Confirm the data in memory is as accurate as possible
+            if (edType == "Docked" || edType == "Scan")
             {
-                // Confirm coordinates before sending data to EDDN if data does not have coordinates
-                if (data.ContainsKey("StarPos") || eventConfirmCoordinates(systemName, systemAddress))
+                CheckLocationData(data, sendToEddn);
+            }
+
+            if (sendToEddn && !invalidState)
+            {
+                if (edType == "Docked" && systemName != null && stationName != null && marketId != null)
                 {
-                    if (sendToEddn)
+                    // Send station data from the CAPI servers
+                    sendCommodityInformation();
+                    sendOutfittingInformation();
+                    sendShipyardInformation();
+                }
+
+                if (edType == "Location" || edType == "FSDJump" || edType == "Docked" || edType == "Scan")
+                {
+                    StripPersonalData(data);
+                    EnrichLocationData(edType, data);
+
+                    if (data != null)
                     {
-                        // When we dock we have access to commodity and outfitting information
-                        sendCommodityInformation();
-                        sendOutfittingInformation();
-                        sendShipyardInformation();
+                        SendToEDDN(data);
                     }
-                }
-            }
-            else if (edType == "Scan")
-            {
-                // Apply heuristics to weed out mismatched systems and bodies
-                eventConfirmScan(JsonParsing.getString(data, "BodyName"));
-            }
-
-            if (edType == "Location" || edType == "FSDJump" || edType == "Docked" || edType == "Scan")
-            {              
-                // Can only proceed if we know our current location data is correct
-                if (systemName == null || systemAddress == null || systemX == null || systemY == null || systemZ == null)
-                {
-                    Logging.Debug("Missing current starsystem information, cannot send message to EDDN");
-                    return;
-                }
-
-                StripPersonalData(data);
-                EnrichLocationData(edType, data);
-
-                if (data != null && sendToEddn)
-                {
-                    SendToEDDN(data);
                 }
             }
         }
@@ -174,7 +169,12 @@ namespace EDDNResponder
             try
             {
                 systemName = JsonParsing.getString(data, "StarSystem") ?? systemName;
-                systemAddress = JsonParsing.getOptionalLong(data, "SystemAddress") ?? systemAddress;
+
+                // Some events are bugged and return a SystemAddress of 1, regardles of the system we are in.
+                // We need to ignore data that matches this pattern.
+                long? SystemAddress = JsonParsing.getOptionalLong(data, "SystemAddress");
+                systemAddress = (SystemAddress > 1 ? SystemAddress : systemAddress);
+
                 data.TryGetValue("StarPos", out object starpos);
                 if (starpos != null)
                 {
@@ -183,12 +183,46 @@ namespace EDDNResponder
                     systemY = Math.Round(JsonParsing.getDecimal("Y", starPos[1]) * 32M) / 32M;
                     systemZ = Math.Round(JsonParsing.getDecimal("Z", starPos[2]) * 32M) / 32M;
                 }
+
                 marketId = JsonParsing.getOptionalLong(data, "MarketID") ?? marketId;
                 stationName = JsonParsing.getString(data, "StationName") ?? stationName;
             }
             catch (Exception ex)
             {
-                Logging.Error("Failed to parse EDDN location data from journal entry line: " + data.ToString(), ". Exception: " + ex.Message + ". " + ex.StackTrace);
+                Logging.Error("Failed to parse EDDN location data from journal entry line: " + JsonConvert.SerializeObject(data), ". Exception: " + ex.Message + ". " + ex.StackTrace);
+            }
+        }
+
+        private void CheckLocationData(IDictionary<string, object> data, bool sendToEddn)
+        {
+            // The `Docked` event doesn't provide system coordinates, and the `Scan`event doesn't provide any system location data.
+            // The EDDN journal schema requires that we enrich the journal event data with coordinates and system name (and system address if possible).
+            if (data.ContainsKey("BodyName") && !data.ContainsKey("SystemName"))
+            {
+                // Apply heuristics to weed out mismatched systems and bodies
+                ConfirmScan(JsonParsing.getString(data, "BodyName"));
+            }
+            if (!data.ContainsKey("SystemAddress") || !data.ContainsKey("StarPos"))
+            {
+                // Out of an overabundance of caution, we do not use data from our saved star systems to enrich the data we send to EDDN, 
+                // but we do use it as an independent check to make sure our system address and coordinates are accurate
+                ConfirmAddressAndCoordinates(systemName);
+            }
+
+            // Can only send journal data if we know our current location data is correct
+            // If any location data is null, data shall not be sent to EDDN.
+            if (systemName == null || systemAddress == null || systemX == null || systemY == null || systemZ == null)
+            {
+                invalidState = true;
+                if (sendToEddn)
+                {
+                    Logging.Warn("Invalid state in current star system information, unable to send messages to EDDN.", JsonConvert.SerializeObject(data));
+                    SpeechService.Instance.Say(null, EddiEddnResponder.Properties.EddnResources.errPosition, true);
+                }
+            }
+            else
+            {
+                invalidState = false;
             }
         }
 
@@ -493,36 +527,37 @@ namespace EDDNResponder
             return null;
         }
 
-        public bool eventConfirmCoordinates(string eventSystem, long? eventSystemAddress = null)
+        private bool ConfirmAddressAndCoordinates(string systemName)
         {
-            StarSystem system = starSystemRepository.GetStarSystem(eventSystem);
-            if (system != null)
+            if (systemName != null)
             {
-                if ((eventSystemAddress != null && system.systemAddress != null) ? eventSystemAddress == system.systemAddress : true)
+                StarSystem system = starSystemRepository.GetOrFetchStarSystem(systemName);
+                if (system != null)
                 {
-                    // The `Docked` event doesn't provide system coordinates, so we use coordinates from our saved star systems
-                    // to confirm the coordinates in memory. If the saved star system has a system address, we use that to confirm our lookup too.
-                    if (systemX == system.x && systemY == system.y && systemZ == system.z)
+                    if (systemAddress != system.systemAddress)
                     {
-                        return true;
+                        systemAddress = null;
+                    }
+                    if (systemX != system.x || systemY != system.y || systemZ != system.z)
+                    {
+                        systemX = null;
+                        systemY = null;
+                        systemZ = null;
                     }
                 }
+                else
+                {
+                    ClearLocation();
+                }
             }
-
-            // Set values to null if data isn't available. If system coordinates are null, data shall not be sent to EDDN.
-            systemName = null;
-            systemAddress = null;
-            systemX = null;
-            systemY = null;
-            systemZ = null;
-            return false;
+            return systemAddress != null && systemX != null && systemY != null && systemZ != null;
         }
 
-        public bool eventConfirmScan(string eventBody)
+        private bool ConfirmScan(string bodyName)
         {
-            if (eventBody != null && systemName != null)
+            if (bodyName != null && systemName != null)
             {
-                if (eventBody.StartsWith(systemName))
+                if (bodyName.StartsWith(systemName))
                 {
                     return true;
                 }
@@ -530,23 +565,20 @@ namespace EDDNResponder
                 {
                     // If the body doesn't start with the system name, it should also 
                     // not match a naming pattern for a procedurally generated name.
-                    // If it does, it's in the wrong place.
-                    Regex procGen = new Regex(@"[A-Z][A-Z]-[A-Z] [a-h][0-9]");
-                    if (!procGen.IsMatch(eventBody))
+                    // If it does, it's (probably) in the wrong place.
+                    Regex isProcGenName = new Regex(@"[A-Z][A-Z]-[A-Z] [a-h][0-9]");
+                    if (!isProcGenName.IsMatch(bodyName))
                     {
                         return true;
                     }
                 }
             }
-            systemName = null;
-            systemAddress = null;
-            systemX = null;
-            systemY = null;
-            systemZ = null;
+            // Set values to null if data can't be confirmed. 
+            ClearLocation();
             return false;
         }
 
-        public bool eventStationMatches(long? eventMarketId)
+        private bool eventStationMatches(long? eventMarketId)
         {
             Profile profile = CompanionAppService.Instance.Profile();
             if (profile != null)

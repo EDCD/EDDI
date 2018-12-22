@@ -23,12 +23,12 @@ namespace UnitTests
         {
             public StarSystem GetOrCreateStarSystem(string name, bool refreshIfOutdated = true)
             {
-                throw new NotImplementedException();
+                return GetStarSystem(name, refreshIfOutdated);
             }
 
             public StarSystem GetOrFetchStarSystem(string name, bool fetchIfMissing = true)
             {
-                throw new NotImplementedException();
+                return GetStarSystem(name, fetchIfMissing);
             }
 
             public StarSystem GetStarSystem(string name, bool refreshIfOutdated = true)
@@ -115,36 +115,41 @@ namespace UnitTests
             privateObject.SetFieldOrProperty("systemY", 0.0M);
             privateObject.SetFieldOrProperty("systemZ", 0.0M);
 
-            bool matched = responder.eventConfirmCoordinates("Sol", 10477373803);
+            bool confirmed = (bool)privateObject.Invoke("ConfirmAddressAndCoordinates", new object[] { "Sol" });
 
-            Assert.IsTrue(matched);
+            Assert.IsTrue(confirmed);
+            Assert.AreEqual("Sol", responder.systemName);
+            Assert.AreEqual(10477373803, responder.systemAddress);
+            Assert.AreEqual(0.0M, responder.systemX);
+            Assert.AreEqual(0.0M, responder.systemY);
+            Assert.AreEqual(0.0M, responder.systemZ);
         }
 
         [TestMethod()]
-        public void TestEDDNResponderBadInitialBadFinal()
+        public void TestEDDNResponderBadMatchIsNull()
         {
             EDDNResponder.EDDNResponder responder = makeTestEDDNResponder();
             var privateObject = new PrivateObject(responder);
-            // Intentionally place our EDDN responder in a state with no coordinates available.
+            // Intentionally place our EDDN responder in a state with incorrect coordinates (from Sol).
             // The 'Docked' event does include systemName and systemAddress, so we set those here.
             privateObject.SetFieldOrProperty("systemName", "Artemis");
             privateObject.SetFieldOrProperty("systemAddress", 3107509474002);
-            privateObject.SetFieldOrProperty("systemX", null);
-            privateObject.SetFieldOrProperty("systemY", null);
-            privateObject.SetFieldOrProperty("systemZ", null);
+            privateObject.SetFieldOrProperty("systemX", 0.0M);
+            privateObject.SetFieldOrProperty("systemY", 0.0M);
+            privateObject.SetFieldOrProperty("systemZ", 0.0M);
 
-            bool matched = responder.eventConfirmCoordinates("Artemis", 3107509474002);
+            bool confirmed = (bool)privateObject.Invoke("ConfirmAddressAndCoordinates", new object[] { "Artemis" });
 
-            Assert.IsFalse(matched);
-            Assert.IsNull(responder.systemName);
-            Assert.IsNull(responder.systemAddress);
+            Assert.IsFalse(confirmed);
+            Assert.AreEqual("Artemis", responder.systemName);
+            Assert.AreEqual(3107509474002, responder.systemAddress);
             Assert.IsNull(responder.systemX);
             Assert.IsNull(responder.systemY);
             Assert.IsNull(responder.systemZ);
         }
 
         [TestMethod()]
-        public void TestEDDNResponderGoodInitialBadFinal()
+        public void TestEDDNResponderUnverifiableData()
         {
             EDDNResponder.EDDNResponder responder = makeTestEDDNResponder();
             var privateObject = new PrivateObject(responder);
@@ -154,9 +159,11 @@ namespace UnitTests
             privateObject.SetFieldOrProperty("systemY", 0.0M);
             privateObject.SetFieldOrProperty("systemZ", 0.0M);
 
-            bool matched = responder.eventConfirmCoordinates("Not in this galaxy", null);
+            bool confirmed = (bool)privateObject.Invoke("ConfirmAddressAndCoordinates", new object[] { "Not in this galaxy" });
 
-            Assert.IsFalse(matched);
+            Assert.IsFalse(confirmed);
+            Assert.IsNull(responder.systemName);
+            Assert.IsNull(responder.systemAddress);
             Assert.IsNull(responder.systemX);
             Assert.IsNull(responder.systemY);
             Assert.IsNull(responder.systemZ);
@@ -510,6 +517,36 @@ namespace UnitTests
             Assert.IsNull(responder.systemZ);
             Assert.IsNull(responder.stationName);
             Assert.IsNull(responder.marketId);
+
+            // Reset our position by re-stating the `FSDJump` event
+            arguments = new object[] { unhandledJump, false };
+            privateObject.Invoke("handleRawEvent", arguments);
+
+            // Deliberately create a mismatch between the system and coordinates, 
+            // using the coordinates from our Location event and other data from our FSDJump event
+            privateObject.SetFieldOrProperty("systemX", -81.62500M);
+            privateObject.SetFieldOrProperty("systemY", -151.31250M);
+            privateObject.SetFieldOrProperty("systemZ", -383.53125M);
+
+            // Deliberately scan a body while our coordinates are in a bad state
+            arguments = new object[] { unhandledScan, false };
+            privateObject.Invoke("handleRawEvent", arguments);
+            Assert.IsNull(responder.systemX);
+            Assert.IsNull(responder.systemY);
+            Assert.IsNull(responder.systemZ);
+
+            // Reset our position by re-stating the `FSDJump` event
+            arguments = new object[] { unhandledJump, false };
+            privateObject.Invoke("handleRawEvent", arguments);
+
+            // Deliberately create a mismatch between the system name and address, 
+            // using the address from our Location event and other data from our FSDJump event
+            privateObject.SetFieldOrProperty("systemAddress", 1183229809290);
+
+            // Deliberately scan a body while our system address is in a bad state
+            arguments = new object[] { unhandledScan, false };
+            privateObject.Invoke("handleRawEvent", arguments);
+            Assert.IsNull(responder.systemAddress);
         }
     }
 }
