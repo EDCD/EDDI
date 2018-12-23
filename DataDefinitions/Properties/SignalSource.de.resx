@@ -136,7 +136,10 @@
     <value>Degradierte Emissionen</value>
     <comment>Salvage signal</comment>
   </data>
-  
+  <data name="USS_Type_Aftermath" xml:space="preserve">
+    <value>Kampffolgen</value>
+    <comment>Aftermatch signal</comment>
+  </data>
   
   
   <data name="USS_Type_VeryValuableSalvage" xml:space="preserve">
@@ -170,7 +173,10 @@
   </data>
   
   
-  
+  <data name="MULTIPLAYER_SCENARIO14_TITLE" xml:space="preserve">
+    <value>Rohstoffabbaugebiet</value>
+    <comment>Resource Extraction Site</comment>
+  </data>
   
   
   <data name="Warzone_TG" xml:space="preserve">
