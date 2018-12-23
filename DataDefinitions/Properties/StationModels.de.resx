@@ -129,7 +129,10 @@
     <value>Coriolis Sternenhafen</value>
     <comment>A Coriolis Starport</comment>
   </data>
-  
+  <data name="Megaship" xml:space="preserve">
+    <value>Megaschiff</value>
+    <comment>A Megaship</comment>
+  </data>
   <data name="Orbis" xml:space="preserve">
     <value>Orbis Sternenhafen</value>
     <comment>An Orbis Starport</comment>
@@ -147,5 +150,8 @@
     <comment>Unknown Station</comment>
   </data>
   
-  
+  <data name="CraterOutpost" xml:space="preserve">
+    <value>Planetarer Außenposten</value>
+    <comment>A Surface Outpost</comment>
+  </data>
 </root>

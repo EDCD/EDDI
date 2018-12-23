@@ -117,29 +117,68 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="MULTIPLAYER_SCENARIO42_TITLE" xml:space="preserve">
+    <value>Navigationsboje</value>
+    <comment>Nav beacon</comment>
+  </data>
+  <data name="MULTIPLAYER_SCENARIO80_TITLE" xml:space="preserve">
+    <value>Bekannte Navigationsboje</value>
+    <comment>Compromised nav beacon</comment>
+  </data>
+  <data name="USS" xml:space="preserve">
+    <value>Unbekannte Signalquelle</value>
+    <comment>Unidentified Signal Source</comment>
+  </data>
+  
+  
+  
+  <data name="USS_Type_Salvage" xml:space="preserve">
+    <value>Degradierte Emissionen</value>
+    <comment>Salvage signal</comment>
+  </data>
+  
+  
+  
+  <data name="USS_Type_VeryValuableSalvage" xml:space="preserve">
+    <value>Hochgradige Emissionen</value>
+    <comment>VeryValuable signal</comment>
+  </data>
+  <data name="USS_Type_ValuableSalvage" xml:space="preserve">
+    <value>Verschlüsselte Emissionen</value>
+    <comment>Valuable signal</comment>
+  </data>
+  
+  <data name="USS_Type_WeaponsFire" xml:space="preserve">
+    <value>Waffenfeuer</value>
+    <comment>WeaponsFire signal</comment>
+  </data>
+  <data name="USS_Type_MissionTarget" xml:space="preserve">
+    <value>Missionsziel</value>
+    <comment>MissionTarget signal</comment>
+  </data>
+  <data name="USS_Type_Convoy" xml:space="preserve">
+    <value>Konvoi-Auflösungsmuster</value>
+    <comment>Convoy signal</comment>
+  </data>
+  <data name="USS_Type_DistressSignal" xml:space="preserve">
+    <value>Notruf</value>
+    <comment>Distress signal</comment>
+  </data>
+  <data name="USS_Type_TradingBeacon" xml:space="preserve">
+    <value>Handelsboje</value>
+    <comment>TradingBeacon signal</comment>
+  </data>
   
   
   
   
   
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="Warzone_TG" xml:space="preserve">
+    <value>AX Konfliktzone</value>
+    <comment>Thargoid conflict zone</comment>
+  </data>
+  <data name="ListeningPost" xml:space="preserve">
+    <value>Horchposten</value>
+    <comment>ListeningPost</comment>
+  </data>
 </root>
