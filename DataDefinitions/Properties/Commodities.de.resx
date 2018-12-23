@@ -1661,8 +1661,5 @@
     <value>Alexandrit</value>
     <comment>Commodity Alexandrite</comment>
   </data>
-  <data name="Opal" xml:space="preserve">
-    <value>Opal</value>
-    <comment>Commodity Opal</comment>
-  </data>
+  
 </root>
