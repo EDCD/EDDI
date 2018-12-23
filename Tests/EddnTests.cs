@@ -126,7 +126,7 @@ namespace UnitTests
         }
 
         [TestMethod()]
-        public void TestEDDNResponderBadMatchIsNull()
+        public void TestEDDNResponderBadStarPos()
         {
             EDDNResponder.EDDNResponder responder = makeTestEDDNResponder();
             var privateObject = new PrivateObject(responder);
@@ -149,6 +149,28 @@ namespace UnitTests
         }
 
         [TestMethod()]
+        public void TestEDDNResponderBadSystemAddress()
+        {
+            EDDNResponder.EDDNResponder responder = makeTestEDDNResponder();
+            var privateObject = new PrivateObject(responder);
+            // Intentionally place our EDDN responder in a state with incorrect SystemAddress (from Artemis).
+            privateObject.SetFieldOrProperty("systemName", "Sol");
+            privateObject.SetFieldOrProperty("systemAddress", 3107509474002);
+            privateObject.SetFieldOrProperty("systemX", 0.0M);
+            privateObject.SetFieldOrProperty("systemY", 0.0M);
+            privateObject.SetFieldOrProperty("systemZ", 0.0M);
+
+            bool confirmed = (bool)privateObject.Invoke("ConfirmAddressAndCoordinates", new object[] { "Sol" });
+
+            Assert.IsFalse(confirmed);
+            Assert.AreEqual("Sol", responder.systemName);
+            Assert.IsNull(responder.systemAddress);
+            Assert.AreEqual(0.0M, responder.systemX);
+            Assert.AreEqual(0.0M, responder.systemY);
+            Assert.AreEqual(0.0M, responder.systemZ);
+        }
+
+        [TestMethod()]
         public void TestEDDNResponderUnverifiableData()
         {
             EDDNResponder.EDDNResponder responder = makeTestEDDNResponder();
@@ -160,6 +182,28 @@ namespace UnitTests
             privateObject.SetFieldOrProperty("systemZ", 0.0M);
 
             bool confirmed = (bool)privateObject.Invoke("ConfirmAddressAndCoordinates", new object[] { "Not in this galaxy" });
+
+            Assert.IsFalse(confirmed);
+            Assert.IsNull(responder.systemName);
+            Assert.IsNull(responder.systemAddress);
+            Assert.IsNull(responder.systemX);
+            Assert.IsNull(responder.systemY);
+            Assert.IsNull(responder.systemZ);
+        }
+
+        [TestMethod()]
+        public void TestEDDNResponderBadName()
+        {
+            // Tests that procedurally generated body names match the procedurally generated system name
+            EDDNResponder.EDDNResponder responder = makeTestEDDNResponder();
+            var privateObject = new PrivateObject(responder);
+            privateObject.SetFieldOrProperty("systemName", "Pleiades Sector HR-W d1-79");
+            privateObject.SetFieldOrProperty("systemAddress", 2724879894859);
+            privateObject.SetFieldOrProperty("systemX", -80.62500M);
+            privateObject.SetFieldOrProperty("systemY", -146.65625M);
+            privateObject.SetFieldOrProperty("systemZ", -343.25000M);
+
+            bool confirmed = (bool)privateObject.Invoke("ConfirmScan", new object[] { "Hyades Sector DL-X b1-2" });
 
             Assert.IsFalse(confirmed);
             Assert.IsNull(responder.systemName);
