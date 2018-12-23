@@ -151,8 +151,6 @@ EDDI makes a large number of values available to augment your existing scripts. 
   * {DEC:Ship sensors cost}: the purchase cost of the sensors
   * {DEC:Ship sensors value}: the undiscounted cost of the sensors
   * {DEC:Ship sensors discount}: the percentage discount of the purchased sensors against the undiscounted cost
-  * {DEC:Ship fuel remaining}: the total quantity of fuel remaining in all tanks
-  * {DEC:Ship fuel percent}: the percentage of the ship's total fuel tank capacity that is still available
   * {TXT:Ship fuel tank}: the name of the main fuel tank fitted to the ship
   * {INT:Ship fuel tank class}: the class of the main fuel tank fitted to the ship (e.g. 3)
   * {TXT:Ship fuel tank drive grade}: the grade of the main fuel tank fitted to the ship (e.g. "A")
