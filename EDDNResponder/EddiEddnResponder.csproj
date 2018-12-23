@@ -104,6 +104,10 @@
       <Project>{2BB41C51-9BE0-49C9-91FD-C4E444994ECE}</Project>
       <Name>EddiEvents</Name>
     </ProjectReference>
+    <ProjectReference Include="..\SpeechService\EddiSpeechService.csproj">
+      <Project>{19572a69-c13a-459d-ab72-2b0f034ac27f}</Project>
+      <Name>EddiSpeechService</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Utilities\Utilities.csproj">
       <Project>{CD71DD2A-86AC-44A8-959B-E1C3069966BD}</Project>
       <Name>Utilities</Name>

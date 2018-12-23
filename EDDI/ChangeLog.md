@@ -2,6 +2,10 @@
 
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
+### 3.3.2
+  * Made revisions to prevent inaccurate star position data being reported to EDDN and refactored.
+  * The EDDN responder will now provide an audible warning if it detects that location data is in an invalid state.
+
 ### 3.3.1
   * EDDN responder
     * `CodexEntry` events are bugged and always return a SystemAddress of 1. These must be ignored by the EDDN responder to prevent sending bad data.
