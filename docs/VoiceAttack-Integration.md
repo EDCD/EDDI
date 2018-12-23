@@ -74,11 +74,15 @@ EDDI makes a large number of values available to augment your existing scripts. 
   * {DEC:Status engine pips} a decimal value indicating the power distributor allocation to engines
   * {DEC:Status weapon pips} a decimal value indicating the power distributor allocation to weapons
   * {INT:Status firegroup} an integer value indicating the ship's currently selected firegroup (this is a zero based count, so your first firegroup will be '0')
-  * {TXT:Status gui focus} the commander's current focus. Can be one of "none", "internal panel" (right panel), "external panel" (left panel), "communications panel" (top panel), "role panel" (bottom panel), "station services", "galaxy map", or "system map"
+  * {TXT:Status gui focus} the commander's current focus. Can be one of "none", "internal panel" (right panel), "external panel" (left panel), "communications panel" (top panel), "role panel" (bottom panel), "station services", "galaxy map", "system map", "orrery", "fss mode", "saa mode", or "codex"
   * {DEC:Status latitude} a decimal value indicating the ship's current latitude (if near a surface)
   * {DEC:Status longitude} a decimal value indicating the ship's current longitude (if near a surface)
   * {DEC:Status altitude} a decimal value indicating the ship's current altitude (if in flight near a surface)
   * {DEC:Status heading} a decimal value indicating the ship's current heading (if near a surface)
+  * {DEC:Status fuel} a decimal value indicating the tons of fuel currently carried by your ship, if known
+  * {DEC:Status fuel percent} a decimal value indicating the current percentage of your total fuel capacity remaining, if known
+  * {INT:Status fuel rate} an integer value indicating the projected number of seconds of fuel remaining, if known
+  * {INT:Status cargo carried} an integer value indicating the number of tons of cargo currently carried, if known
 
 ## Ship Variables
 
