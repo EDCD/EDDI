@@ -313,8 +313,10 @@
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>xcopy /y "$(SolutionDir)\SpeechResponder\EDDI.json" "$(ProjectDir)$(OutDir)"
-</PostBuildEvent>
+    <PostBuildEvent>xcopy /y "$(SolutionDir)SpeechResponder\EDDI.json" "$(ProjectDir)$(OutDir)"
+xcopy /y "$(SolutionDir)SpeechResponder\Help.md" "$(ProjectDir)$(OutDir)\Wiki\"
+xcopy /y "$(SolutionDir)SpeechResponder\Variables.md" "$(ProjectDir)$(OutDir)\Wiki\"
+xcopy /y "$(SolutionDir)docs\VoiceAttack-Integration.md" "$(ProjectDir)$(OutDir)\Wiki\"</PostBuildEvent>
   </PropertyGroup>
   <Import Project="..\packages\NETStandard.Library.2.0.1\build\netstandard2.0\NETStandard.Library.targets" Condition="Exists('..\packages\NETStandard.Library.2.0.1\build\netstandard2.0\NETStandard.Library.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
