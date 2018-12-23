@@ -162,7 +162,10 @@
   
   
   
-  
+  <data name="shielddensityreports" xml:space="preserve">
+    <value>Erhalten durch scannen von Kampfschiffen.</value>
+    <comment>Material location Untypical Shield Scans</comment>
+  </data>
   
   
   
