@@ -216,7 +216,7 @@ namespace EDDNResponder
                 invalidState = true;
                 if (sendToEddn)
                 {
-                    Logging.Warn("Invalid state in current star system information, unable to send messages to EDDN.", JsonConvert.SerializeObject(data));
+                    Logging.Warn("The EDDN responder is in an invalid state and is unable to send messages.", JsonConvert.SerializeObject(this) + " Event: " + JsonConvert.SerializeObject(data));
                     SpeechService.Instance.Say(null, EddiEddnResponder.Properties.EddnResources.errPosition, true);
                 }
             }
