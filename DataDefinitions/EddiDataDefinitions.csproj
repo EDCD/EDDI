@@ -449,7 +449,6 @@
     <EmbeddedResource Include="Properties\FactionStates.ja.resx" />
     <EmbeddedResource Include="Properties\FederationRatings.ja.resx" />
     <EmbeddedResource Include="Properties\SignalSource.resx">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>SignalSource.Designer.cs</LastGenOutput>
     </EmbeddedResource>
