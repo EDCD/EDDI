@@ -948,7 +948,8 @@ namespace EddiVoiceAttackResponder
                 vaProxy.SetDecimal(prefix + " heading", status?.heading);
                 vaProxy.SetDecimal(prefix + " fuel", status?.fuel);
                 vaProxy.SetDecimal(prefix + " fuel percent", status?.fuel_percent);
-                vaProxy.SetDecimal(prefix + " fuel rate", status?.fuel_seconds);
+                vaProxy.SetInt(prefix + " fuel rate", status?.fuel_seconds);
+                vaProxy.SetInt(prefix + " cargo carried", status?.cargo_carried);
             }
             catch (Exception e)
             {
