@@ -160,6 +160,26 @@
   
   
   
+  <data name="wakesolutions" xml:space="preserve">
+    <value>Erhalten durch das Analysieren von FSA-Wellenechos von Schiffen oder als Auftragsbelohnung, speziell in Systemen mit ökonomischem Aufschwung.</value>
+    <comment>Material location Strange Wake Solutions</comment>
+  </data>
+  <data name="emissiondata" xml:space="preserve">
+    <value>Erhalten durch das Analysieren von FSA-Wellenechos von Kampfschiffen oder in Signalquellen, speziell in Systemen mit ökonomischem Aufschwung oder in Systemen, die derzeit Wahlen durchführen.</value>
+    <comment>Material location Unexpected Emission Data</comment>
+  </data>
+  <data name="shielddensityreports" xml:space="preserve">
+    <value>Erhalten durch scannen von Kampfschiffen.</value>
+    <comment>Material location Untypical Shield Scans</comment>
+  </data>
+  
+  
+  
+  
+  <data name="encryptionarchives" xml:space="preserve">
+    <value>Erhalten durch das Scannen von Datenverbindungen an Bodenstationen.</value>
+    <comment>Material location Atypical Encryption Archives</comment>
+  </data>
   
   
   
@@ -174,16 +194,14 @@
   
   
   
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="basicconductors" xml:space="preserve">
+    <value>Gewonnen aus den Trümmern von Transportschiffen.</value>
+    <comment>Material location Basic Conductors</comment>
+  </data>
+  <data name="chemicalstorageunits" xml:space="preserve">
+    <value>Gewonnen aus den Trümmern von Transportschiffen.</value>
+    <comment>Material location Chemical Storage Units</comment>
+  </data>
   
   
   
