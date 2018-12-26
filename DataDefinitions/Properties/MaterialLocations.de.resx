@@ -316,6 +316,14 @@
   
   
   
+  <data name="guardian_powercell" xml:space="preserve">
+    <value>Entdeckt in den alten Ruinen einer außerirdischen Spezies, bekannt als die Wächter.</value>
+    <comment>Material location guardian_powercell</comment>
+  </data>
+  <data name="guardian_weaponblueprint" xml:space="preserve">
+    <value>Entdeckt in den alten Ruinen einer außerirdischen Spezies, bekannt als die Wächter.</value>
+    <comment>Material location guardian_weaponblueprint</comment>
+  </data>
   
   
   
@@ -324,12 +332,28 @@
   
   
   
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="tg_propulsionelement" xml:space="preserve">
+    <value>Gewonnen aus Trümmern von Thargoidenschiffen.</value>
+    <comment>Material location tg_propulsionelement</comment>
+  </data>
+  <data name="tg_biomechanicalconduits" xml:space="preserve">
+    <value>Gewonnen aus Trümmern von Thargoidenschiffen.</value>
+    <comment>Material location tg_biomechanicalconduits</comment>
+  </data>
+  <data name="tg_weaponparts" xml:space="preserve">
+    <value>Gewonnen aus Trümmern von Thargoidenschiffen.</value>
+    <comment>Material location tg_weaponparts</comment>
+  </data>
+  <data name="tg_wreckagecomponents" xml:space="preserve">
+    <value>Gewonnen aus Trümmern von Thargoidenschiffen.</value>
+    <comment>Material location tg_wreckagecomponents</comment>
+  </data>
+  <data name="tg_shipflightdata" xml:space="preserve">
+    <value>Erhalten durch das Scannen von Thargoidenschiffen.</value>
+    <comment>Material location tg_shipflightdata</comment>
+  </data>
+  <data name="tg_shipsystemsdata" xml:space="preserve">
+    <value>Erhalten durch das Scannen von Thargoidenschiffen.</value>
+    <comment>Material location tg_shipsystemsdata</comment>
+  </data>
 </root>
