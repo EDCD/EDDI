@@ -215,8 +215,14 @@
   
   
   
-  
-  
+  <data name="ancientculturaldata" xml:space="preserve">
+    <value>Entdeckt in den alten Ruinen einer außerirdischen Spezies, bekannt als die Wächter.</value>
+    <comment>Material location Pattern Beta Obelisk Data</comment>
+  </data>
+  <data name="tg_structuraldata" xml:space="preserve">
+    <value>Entdeckt an geheimnisvollen Oberflächenstandorten einer außerirdischen Spezies, bekannt als die Thargoiden.</value>
+    <comment>Material location Thargoid Structural Data</comment>
+  </data>
   
   
   
@@ -232,7 +238,10 @@
     <value>Erhalten durch scannen von Kampfschiffen.</value>
     <comment>Material location Untypical Shield Scans</comment>
   </data>
-  
+  <data name="ancientbiologicaldata" xml:space="preserve">
+    <value>Entdeckt in den alten Ruinen einer außerirdischen Spezies, bekannt als die Wächter.</value>
+    <comment>Material location Pattern Alpha Obelisk Data</comment>
+  </data>
   
   
   
