@@ -225,7 +225,7 @@
     <comment>Material location Strange Wake Solutions</comment>
   </data>
   <data name="emissiondata" xml:space="preserve">
-    <value>Erhalten durch das Analysieren von FSA-Wellenechos von Kampfschiffen oder in Signalquellen, speziell in Systemen mit ökonomischem Aufschwung oder in Systemen, die derzeit Wahlen durchführen.</value>
+    <value>Erhalten durch das Analysieren von FSA-Wellenechos von Großkampfschiffen oder in Signalquellen, speziell in Systemen mit ökonomischem Aufschwung oder in Systemen, die derzeit Wahlen durchführen.</value>
     <comment>Material location Unexpected Emission Data</comment>
   </data>
   <data name="shielddensityreports" xml:space="preserve">
@@ -267,6 +267,33 @@
   
   
   
+  <data name="salvagedalloys" xml:space="preserve">
+    <value>Gewonnen aus den Trümmern von Großkampfschiffen.</value>
+    <comment>Material location Salvaged Alloys</comment>
+  </data>
+  <data name="temperedalloys" xml:space="preserve">
+    <value>Gewonnen aus den Trümmern von Kampfschiffen.</value>
+    <comment>Material location temperedalloys</comment>
+  </data>
+  <data name="wornshieldemitters" xml:space="preserve">
+    <value>Gewonnen aus den Trümmern von Großkampfschiffen.</value>
+    <comment>Material location Worn Shield Emitters</comment>
+  </data>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <data name="chemicaldistillery" xml:space="preserve">
+    <value>Gewonnen aus den Trümmern von Transportschiffen.</value>
+    <comment>Material location Chemical Distillery</comment>
+  </data>
   
   
   
@@ -300,22 +327,10 @@
   
   
   
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="boron" xml:space="preserve">
+    <value>Gewonnen durch Asteroidenbergbau.</value>
+    <comment>Material location Boron</comment>
+  </data>
   <data name="guardian_powercell" xml:space="preserve">
     <value>Entdeckt in den alten Ruinen einer außerirdischen Spezies, bekannt als die Wächter.</value>
     <comment>Material location guardian_powercell</comment>
@@ -324,14 +339,38 @@
     <value>Entdeckt in den alten Ruinen einer außerirdischen Spezies, bekannt als die Wächter.</value>
     <comment>Material location guardian_weaponblueprint</comment>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="guardian_vesselblueprint" xml:space="preserve">
+    <value>Entdeckt in den alten Ruinen einer außerirdischen Spezies, bekannt als die Wächter.</value>
+    <comment>Material location guardian_vesselblueprint</comment>
+  </data>
+  <data name="guardian_techcomponent" xml:space="preserve">
+    <value>Entdeckt in den alten Ruinen einer außerirdischen Spezies, bekannt als die Wächter.</value>
+    <comment>Material location guardian_techcomponent</comment>
+  </data>
+  <data name="guardian_powerconduit" xml:space="preserve">
+    <value>Entdeckt in den alten Ruinen einer außerirdischen Spezies, bekannt als die Wächter.</value>
+    <comment>Material location guardian_powerconduit</comment>
+  </data>
+  <data name="guardian_moduleblueprint" xml:space="preserve">
+    <value>Entdeckt in den alten Ruinen einer außerirdischen Spezies, bekannt als die Wächter.</value>
+    <comment>Material location guardian_moduleblueprint</comment>
+  </data>
+  <data name="guardian_sentinel_weaponparts" xml:space="preserve">
+    <value>Entdeckt in den alten Ruinen einer außerirdischen Spezies, bekannt als die Wächter.</value>
+    <comment>Material location guardian_sentinel_weaponparts</comment>
+  </data>
+  <data name="guardian_sentinel_wreckagecomponents" xml:space="preserve">
+    <value>Entdeckt in den alten Ruinen einer außerirdischen Spezies, bekannt als die Wächter.</value>
+    <comment>Material location guardian_sentinel_wreckagecomponents</comment>
+  </data>
+  <data name="lead" xml:space="preserve">
+    <value>Gewonnen durch Asteroidenbergbau.</value>
+    <comment>Material location Lead</comment>
+  </data>
+  <data name="rhenium" xml:space="preserve">
+    <value>Gewonnen durch Asteoridenbergbau.</value>
+    <comment>Material location Rhenium</comment>
+  </data>
   <data name="tg_propulsionelement" xml:space="preserve">
     <value>Gewonnen aus Trümmern von Thargoidenschiffen.</value>
     <comment>Material location tg_propulsionelement</comment>
