@@ -242,8 +242,14 @@
     <value>Entdeckt in den alten Ruinen einer außerirdischen Spezies, bekannt als die Wächter.</value>
     <comment>Material location Pattern Alpha Obelisk Data</comment>
   </data>
-  
-  
+  <data name="tg_compositiondata" xml:space="preserve">
+    <value>Entdeckt an geheimnisvollen Oberflächenstandorten einer außerirdischen Spezies, bekannt als die Thargoiden.</value>
+    <comment>Material location Thargoid Material Composition Data</comment>
+  </data>
+  <data name="unknownshipsignature" xml:space="preserve">
+    <value>Entdeckt an geheimnisvollen Oberflächenstandorten einer außerirdischen Spezies, bekannt als die Thargoiden oder durch das Scannen von Thargoiden-Schiffen</value>
+    <comment>Material location Thargoid Ship Signature</comment>
+  </data>
   
   <data name="encryptionarchives" xml:space="preserve">
     <value>Erhalten durch das Scannen von Datenverbindungen an Bodenstationen.</value>
@@ -253,9 +259,18 @@
   
   
   
-  
-  
-  
+  <data name="ancientlanguagedata" xml:space="preserve">
+    <value>Entdeckt in den alten Ruinen einer außerirdischen Spezies, bekannt als die Wächter.</value>
+    <comment>Material location Pattern Delta Obelisk Data</comment>
+  </data>
+  <data name="ancienttechnologicaldata" xml:space="preserve">
+    <value>Entdeckt in den alten Ruinen einer außerirdischen Spezies, bekannt als die Wächter.</value>
+    <comment>Material location Pattern Epsilon Obelisk Data</comment>
+  </data>
+  <data name="tg_residuedata" xml:space="preserve">
+    <value>Entdeckt an geheimnisvollen Oberflächenstandorten einer außerirdischen Spezies, bekannt als die Thargoiden.</value>
+    <comment>Material location Thargoid Residue Data</comment>
+  </data>
   
   
   
@@ -298,7 +313,10 @@
   
   
   
-  
+  <data name="unknowncarapace" xml:space="preserve">
+    <value>Entdeckt an geheimnisvollen Oberflächenstandorten einer außerirdischen Spezies, bekannt als die Thargoiden.</value>
+    <comment>Material location Thargoid Carapace</comment>
+  </data>
   <data name="chemicaldistillery" xml:space="preserve">
     <value>Gewonnen aus den Trümmern von Transportschiffen.</value>
     <comment>Material location Chemical Distillery</comment>
@@ -312,6 +330,10 @@
   
   
   
+  <data name="unknownenergycell" xml:space="preserve">
+    <value>Entdeckt an geheimnisvollen Oberflächenstandorten einer außerirdischen Spezies, bekannt als die Thargoiden.</value>
+    <comment>Material location Thargoid Energy Cell</comment>
+  </data>
   
   
   
@@ -322,6 +344,10 @@
   
   
   
+  <data name="unknowntechnologycomponents" xml:space="preserve">
+    <value>Entdeckt an geheimnisvollen Oberflächenstandorten einer außerirdischen Spezies, bekannt als die Thargoiden.</value>
+    <comment>Material location Thargoid Technological Components</comment>
+  </data>
   
   
   
@@ -332,10 +358,14 @@
   
   
   
-  
-  
-  
-  
+  <data name="unknownenergysource" xml:space="preserve">
+    <value>Entdeckt an geheimnisvollen Oberflächenstandorten einer außerirdischen Spezies, bekannt als die Thargoiden.</value>
+    <comment>Material location unknownenergysource</comment>
+  </data>
+  <data name="unknownorganiccircuitry" xml:space="preserve">
+    <value>Entdeckt an geheimnisvollen Oberflächenstandorten einer außerirdischen Spezies, bekannt als die Thargoiden.</value>
+    <comment>Material location Thargoid Organic Circuitry</comment>
+  </data>
   <data name="boron" xml:space="preserve">
     <value>Gewonnen durch Asteroidenbergbau.</value>
     <comment>Material location Boron</comment>
