@@ -205,7 +205,10 @@
   
   
   
-  
+  <data name="ancienthistoricaldata" xml:space="preserve">
+    <value>Entdeckt in den alten Ruinen der außerirdischen Spezies, bekannt als die Wächter.</value>
+    <comment>Material location Pattern Gamma Obelisk Data</comment>
+  </data>
   
   
   
