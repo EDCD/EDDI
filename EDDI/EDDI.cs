@@ -2117,12 +2117,13 @@ namespace Eddi
 
         public void updateSquadronData(List<Faction> factions)
         {
+            // Check if current system is inhabited by or HQ for squadron faction
             Faction faction = factions.FirstOrDefault(f => f.squadronhomesystem || f.squadronfaction);
             if (faction != null)
             {
                 EDDIConfiguration configuration = EDDIConfiguration.FromFile();
 
-                //Update the squadron faction
+                //Update the squadron faction, if changed
                 if (configuration.SquadronFaction == null || configuration.SquadronFaction != faction.name)
                 {
                     configuration.SquadronFaction = faction.name;
@@ -2136,9 +2137,10 @@ namespace Eddi
                     Cmdr.squadronfaction = faction.name;
                 }
 
+                // Update system, allegiance, & power when in squadron home system
                 if (faction.squadronhomesystem)
                 {
-                    // Update the squadron system data
+                    // Update the squadron system data, if changed
                     string system = CurrentStarSystem.name;
                     if (configuration.SquadronSystem == null || configuration.SquadronSystem != system)
                     {
@@ -2154,8 +2156,10 @@ namespace Eddi
                         configuration = updateSquadronSystem(configuration, true);
                     }
 
-                    //Update the squadron allegiance
+                    //Update the squadron allegiance, if changed
                     Superpower allegiance = CurrentStarSystem?.Faction?.Allegiance ?? Superpower.None;
+
+                    //Prioritize UI entry if squadron system allegiance not specified
                     if (allegiance != Superpower.None)
                     {
                         if (configuration.SquadronAllegiance == Superpower.None || configuration.SquadronAllegiance != allegiance)
@@ -2165,7 +2169,10 @@ namespace Eddi
                         }
                     }
 
+                    // Update the squadron power, if changed
                     Power power = Power.FromName(CurrentStarSystem?.power) ?? Power.None;
+
+                    //Prioritize UI entry if squadron system power not specified
                     if (power != Power.None)
                     {
                         if (configuration.SquadronPower == Power.None && configuration.SquadronPower != power)
