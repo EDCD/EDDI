@@ -222,7 +222,7 @@
     <comment>Material location Anomalous Bulk Scan Data</comment>
   </data>
   <data name="disruptedwakeechoes" xml:space="preserve">
-    <value>Erhalten durch das Analysieren von FSA-Hypersprungechos oder als Missionsbelohnung, speziell in Systemen mit ökonomischem Aufschwung.</value>
+    <value>Erhalten durch das Analysieren von FSA-Hypersprungechos von Schiffen oder als Missionsbelohnung, speziell in Systemen mit ökonomischem Aufschwung.</value>
     <comment>Material location Atypical Disrupted Wake Echoes</comment>
   </data>
   <data name="shieldcyclerecordings" xml:space="preserve">
@@ -249,11 +249,17 @@
     <value>Erhalten durch das Scannen der FSA-Hypersprungechos von Schiffen oder als Missionsbelohnung.</value>
     <comment>Material location Anomalous FSD Telemetry</comment>
   </data>
+  <data name="shieldsoakanalysis" xml:space="preserve">
+    <value>Erhalten durch das Scannen von Transportschiffen oder als Missionsbelohnung, speziell in Systemen mit ökonomischem Aufschwung.</value>
+    <comment>Material location Inconsistent Shield Soak Analysis</comment>
+  </data>
   
   
   
-  
-  
+  <data name="scanarchives" xml:space="preserve">
+    <value>Erhalten durch das Scannen von Transportschiffen, speziell in Systemen mit ökonomischem Aufschwung.</value>
+    <comment>Material location Unidentified Scan Archives</comment>
+  </data>
   <data name="ancientculturaldata" xml:space="preserve">
     <value>Entdeckt in den alten Ruinen einer außerirdischen Spezies, bekannt als die Wächter.</value>
     <comment>Material location Pattern Beta Obelisk Data</comment>
@@ -302,7 +308,10 @@
   </data>
   
   
-  
+  <data name="hyperspacetrajectories" xml:space="preserve">
+    <value>Erhalten durch das Scannen der FSA-Hypersprungechos von Schiffen.</value>
+    <comment>Material location Eccentric Hyperspace Trajectories</comment>
+  </data>
   
   <data name="ancientlanguagedata" xml:space="preserve">
     <value>Entdeckt in den alten Ruinen einer außerirdischen Spezies, bekannt als die Wächter.</value>
