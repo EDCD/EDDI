@@ -316,11 +316,17 @@
     <value>Entdeckt an geheimnisvollen Oberflächenstandorten einer außerirdischen Spezies, bekannt als die Thargoiden.</value>
     <comment>Material location Thargoid Residue Data</comment>
   </data>
+  <data name="unknownwakedata" xml:space="preserve">
+    <value>Gewonnen durch das Abtasten der von einem Thargoiden-Schiff hinterlassenen Spur.</value>
+    <comment>Material location Thargoid Wake Data</comment>
+  </data>
   
   
   
-  
-  
+  <data name="dataminedwake" xml:space="preserve">
+    <value>Erhalten durch das Scannen der FSA-Hypersprungechos von Schiffen, verschlüsselten Datenbojen oder als Missionsbelohnung.</value>
+    <comment>Material location Datamined Wake Exceptions</comment>
+  </data>
   <data name="embeddedfirmware" xml:space="preserve">
     <value>Erhalten durch das Scannen von Datenverbindungen an Bodenstationen oder als Missionsbelohnung.</value>
     <comment>Material location Modified Embedded Firmware</comment>
