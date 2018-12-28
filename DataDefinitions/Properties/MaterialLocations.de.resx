@@ -356,7 +356,10 @@
     <comment>Material location Chemical Storage Units</comment>
   </data>
   
-  
+  <data name="crystalshards" xml:space="preserve">
+    <value>Gewonnen aus den Trümmern von (Groß-)Kampfschiffen und von Oberflächensignalquellen.</value>
+    <comment>Material location Crystal Shards</comment>
+  </data>
   <data name="gridresistors" xml:space="preserve">
     <value>Gewonnen aus den Trümmern von kleinen Kampfschiffen oder als Missionsbelohnung.</value>
     <comment>Material location Grid Resistors</comment>
@@ -365,9 +368,12 @@
     <value>Gewonnen aus den Trümmern von Transportschiffen in Signalquellen oder als Missionsbelohnung.</value>
     <comment>Material location Heat Conduction Wiring</comment>
   </data>
-  
+  <data name="mechanicalscrap" xml:space="preserve">
+    <value>Gewonnen aus den Trümmern von Transportschiffen oder als Missionsbelohnung.</value>
+    <comment>Material location Mechanical Scrap</comment>
+  </data>
   <data name="salvagedalloys" xml:space="preserve">
-    <value>Gewonnen aus den Trümmern von Großkampfschiffen.</value>
+    <value>Gewonnen aus den Trümmern von (Groß-)Kampfschiffen.</value>
     <comment>Material location Salvaged Alloys</comment>
   </data>
   <data name="temperedalloys" xml:space="preserve">
@@ -375,10 +381,13 @@
     <comment>Material location temperedalloys</comment>
   </data>
   <data name="wornshieldemitters" xml:space="preserve">
-    <value>Gewonnen aus den Trümmern von Großkampfschiffen.</value>
+    <value>Gewonnen aus den Trümmern von (Groß-)Kampfschiffen.</value>
     <comment>Material location Worn Shield Emitters</comment>
   </data>
-  
+  <data name="chemicalprocessors" xml:space="preserve">
+    <value>Gewonnen aus den Trümmern von Transportschiffen oder als Missionsbelohnung.</value>
+    <comment>Material location Chemical Processors</comment>
+  </data>
   
   
   
@@ -404,7 +413,10 @@
   
   
   
-  
+  <data name="shieldingsensors" xml:space="preserve">
+    <value>Gewonnen aus den Trümmern von (Groß-)Kampfschiffen oder als Missionsbelohnung.</value>
+    <comment>Material location Shielding Sensors</comment>
+  </data>
   <data name="unknownenergycell" xml:space="preserve">
     <value>Entdeckt an geheimnisvollen Oberflächenstandorten einer außerirdischen Spezies, bekannt als die Thargoiden.</value>
     <comment>Material location Thargoid Energy Cell</comment>
@@ -418,14 +430,23 @@
   
   
   
-  
+  <data name="thermicalloys" xml:space="preserve">
+    <value>Gewonnen aus den Trümmern von (Groß-)Kampfschiffen oder als Missionsbelohnung.</value>
+    <comment>Material location Thermic Alloys</comment>
+  </data>
   <data name="unknowntechnologycomponents" xml:space="preserve">
     <value>Entdeckt an geheimnisvollen Oberflächenstandorten einer außerirdischen Spezies, bekannt als die Thargoiden.</value>
     <comment>Material location Thargoid Technological Components</comment>
   </data>
+  <data name="biotechconductors" xml:space="preserve">
+    <value>Erhalten als Missionsbelohnung.</value>
+    <comment>Material location Biotech conductors</comment>
+  </data>
   
-  
-  
+  <data name="exquisitefocuscrystals" xml:space="preserve">
+    <value>Gewonnen aus den Trümmern von (Groß-)Kampfschiffen oder als Missionsbelohnung, speziell in Systemen mit ökonomischem Aufschwung.</value>
+    <comment>Material location Exquisite Focus Crystals</comment>
+  </data>
   
   
   
