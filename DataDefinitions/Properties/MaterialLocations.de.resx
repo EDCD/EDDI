@@ -268,7 +268,10 @@
     <value>Entdeckt an geheimnisvollen Oberflächenstandorten einer außerirdischen Spezies, bekannt als die Thargoiden.</value>
     <comment>Material location Thargoid Structural Data</comment>
   </data>
-  
+  <data name="scandatabanks" xml:space="preserve">
+    <value>Erhalten durch das Scannen von großen Transportschiffen, üblicherweise Type-7 und Type-9, und durch das Scannen von Datenverbindungen an Bodenstationen.</value>
+    <comment>Material location Classified Scan Databanks</comment>
+  </data>
   <data name="industrialfirmware" xml:space="preserve">
     <value>Erhalten durch das Scannen von Datenverbindungen an Bodenstationen oder als Missionsbelohnung.</value>
     <comment>Material location Cracked Industrial Firmware</comment>
@@ -282,11 +285,11 @@
     <comment>Material location Strange Wake Solutions</comment>
   </data>
   <data name="emissiondata" xml:space="preserve">
-    <value>Erhalten durch das Analysieren von FSA-Wellenechos von Großkampfschiffen oder in Signalquellen, speziell in Systemen mit ökonomischem Aufschwung oder in Systemen, die derzeit Wahlen durchführen.</value>
+    <value>Erhalten durch das Scannen von (Groß-)Kampfschiffen oder in Signalquellen, speziell in Systemen mit ökonomischem Aufschwung oder in Systemen, die derzeit Wahlen durchführen.</value>
     <comment>Material location Unexpected Emission Data</comment>
   </data>
   <data name="shielddensityreports" xml:space="preserve">
-    <value>Erhalten durch scannen von Kampfschiffen.</value>
+    <value>Erhalten durch das Scannen von (Groß-)Kampfschiffen.</value>
     <comment>Material location Untypical Shield Scans</comment>
   </data>
   <data name="ancientbiologicaldata" xml:space="preserve">
@@ -326,7 +329,7 @@
     <comment>Material location Thargoid Residue Data</comment>
   </data>
   <data name="unknownwakedata" xml:space="preserve">
-    <value>Gewonnen durch das Abtasten der von einem Thargoiden-Schiff hinterlassenen Spur.</value>
+    <value>Erhalten durch das Abtasten der von einem Thargoiden-Schiff hinterlassenen Spur.</value>
     <comment>Material location Thargoid Wake Data</comment>
   </data>
   
@@ -340,7 +343,10 @@
     <value>Erhalten durch das Scannen von Datenverbindungen an Bodenstationen oder als Missionsbelohnung.</value>
     <comment>Material location Modified Embedded Firmware</comment>
   </data>
-  
+  <data name="shieldfrequencydata" xml:space="preserve">
+    <value>Erhalten durch das Scannen von Schiffen oder als Missionsbelohnung.</value>
+    <comment>Material location Peculiar Shield Frequency Data</comment>
+  </data>
   <data name="basicconductors" xml:space="preserve">
     <value>Gewonnen aus den Trümmern von Transportschiffen.</value>
     <comment>Material location Basic Conductors</comment>
@@ -351,8 +357,14 @@
   </data>
   
   
-  
-  
+  <data name="gridresistors" xml:space="preserve">
+    <value>Gewonnen aus den Trümmern von kleinen Kampfschiffen oder als Missionsbelohnung.</value>
+    <comment>Material location Grid Resistors</comment>
+  </data>
+  <data name="heatconductionwiring" xml:space="preserve">
+    <value>Gewonnen aus den Trümmern von Transportschiffen in Signalquellen oder als Missionsbelohnung.</value>
+    <comment>Material location Heat Conduction Wiring</comment>
+  </data>
   
   <data name="salvagedalloys" xml:space="preserve">
     <value>Gewonnen aus den Trümmern von Großkampfschiffen.</value>
