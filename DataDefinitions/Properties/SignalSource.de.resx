@@ -193,13 +193,22 @@
     <value>Rohstoffabbaugebiet hoher Intensität</value>
     <comment>ResourceExtraction Site (High Intensity)</comment>
   </data>
-  
+  <data name="MULTIPLAYER_SCENARIO77_TITLE" xml:space="preserve">
+    <value>Rohstoffabbaugebiet geringer Intensität</value>
+    <comment>Resource Extraction site (Low)</comment>
+  </data>
   <data name="MULTIPLAYER_SCENARIO14_TITLE" xml:space="preserve">
     <value>Rohstoffabbaugebiet</value>
     <comment>Resource Extraction Site</comment>
   </data>
-  
-  
+  <data name="MULTIPLAYER_SCENARIO79_TITLE" xml:space="preserve">
+    <value>Gefährliches Rohstoffabbaugebiet</value>
+    <comment>Resource Extraction Site [Hazardous]</comment>
+  </data>
+  <data name="NumberStation" xml:space="preserve">
+    <value>Unbekannte Kommunikationsboje</value>
+    <comment>NumberStation</comment>
+  </data>
   <data name="Warzone_TG" xml:space="preserve">
     <value>AX Konfliktzone</value>
     <comment>Thargoid conflict zone</comment>
