@@ -72,6 +72,7 @@
     <Compile Include="BodyType.cs" />
     <Compile Include="CargoInfo.cs" />
     <Compile Include="Happiness.cs" />
+    <Compile Include="MarketInfo.cs" />
     <Compile Include="Properties\Happiness.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

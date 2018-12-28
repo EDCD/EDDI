@@ -1790,8 +1790,16 @@ namespace EddiJournalMonitor
                                 }
                                 handled = true;
                                 break;
-                            case "Market": // Written when accessing the commodities market at a station, after market.json has been updated.
-                                { } // Do nothing with this event for now - we prefer the data from the Frontier Companion API.
+                            case "Market":
+                                {
+                                    List<MarketInfo> items = new List<MarketInfo>();
+
+                                    long marketId = JsonParsing.getLong(data, "MarketID");
+                                    string station = JsonParsing.getString(data, "StationName") ?? EDDI.Instance?.Vehicle;
+                                    string system = JsonParsing.getString(data, "StarSystem") ?? EDDI.Instance?.Vehicle;
+                                    items = MarketInfoReader.FromFile().Items;
+                                    events.Add(new MarketEvent(timestamp, marketId, station, system, items) { raw = line });
+                                }
                                 handled = true;
                                 break;
                             case "MarketBuy":
