@@ -137,13 +137,22 @@
     <value>Gewonnen durch Oberflächenerkundung, Asteroidenbergbau oder Eisringbergbau.</value>
     <comment>Material location Sulphur</comment>
   </data>
-  
+  <data name="arsenic" xml:space="preserve">
+    <value>Gewonnen durch Oberflächenerkundung, Asteroidenbergbau oder als Missionsbelohnung.</value>
+    <comment>Material location Arsenic</comment>
+  </data>
   <data name="chromium" xml:space="preserve">
     <value>Gewonnen durch Oberflächenerkundung, Asteroidenbergbau in reinen Felsringen oder durch den Abbau in Eisringen.</value>
     <comment>Material location Chromium</comment>
   </data>
-  
-  
+  <data name="germanium" xml:space="preserve">
+    <value>Gewonnen durch Oberflächenerkundung oder erhalten als Missionsbelohnung, besonders in Systemen, die an Krankheiten leiden.</value>
+    <comment>Material location Germanium</comment>
+  </data>
+  <data name="manganese" xml:space="preserve">
+    <value>Gewonnen durch Oberflächenerkundung oder erhalten als Missionsbelohnung.</value>
+    <comment>Material location Manganese</comment>
+  </data>
   <data name="vanadium" xml:space="preserve">
     <value>Gewonnen durch Oberflächenerkundung, durch Abbau in reinen Metallringen oder durch Abbau in Eisringen.</value>
     <comment>Material location Vanadium</comment>
@@ -200,7 +209,10 @@
   </data>
   
   
-  
+  <data name="disruptedwakeechoes" xml:space="preserve">
+    <value>Erhalten durch das Analysieren von FSA-Wellen-Echos oder als Missionsbelohnung, speziell in Systemen mit ökonomischem Aufschwung.</value>
+    <comment>Material location Atypical Disrupted Wake Echoes</comment>
+  </data>
   
   
   
