@@ -590,6 +590,10 @@ namespace Eddi
                     {
                         passEvent = eventUndocked((UndockedEvent)@event);
                     }
+                    else if (@event is MarketEvent)
+                    {
+                        passEvent = eventMarket((MarketEvent)@event);
+                    }
                     else if (@event is LocationEvent)
                     {
                         passEvent = eventLocation((LocationEvent)@event);
@@ -1033,6 +1037,42 @@ namespace Eddi
             return true;
         }
 
+        private bool eventMarket(MarketEvent theEvent)
+        {
+            if (CurrentStation != null && CurrentStation.name == theEvent.station)
+            {
+                if (theEvent.items != null)
+                {
+                    List<CommodityMarketQuote> quotes = new List<CommodityMarketQuote>();
+                    foreach (MarketInfo item in theEvent.items)
+                    {
+                        CommodityMarketQuote quote = CommodityMarketQuote.FromMarketInfo(item);
+                        if (quote != null)
+                        {
+                            quotes.Add(quote);
+                        }
+                    }
+
+                    if (quotes != null && theEvent.items.Count == quotes.Count)
+                    {
+                        // Update the current station commodities
+                        CurrentStation.commodities = quotes;
+                        CurrentStation.commoditiesupdatedat = (long)DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
+
+                        // Update the current station information in our backend DB
+                        Logging.Debug("Star system information updated from remote server; updating local copy");
+                        StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
+
+                        // Post an update event
+                        Event @event = new MarketInformationUpdatedEvent(DateTime.UtcNow, "market");
+                        eventHandler(@event);
+                    }
+                    return true;
+                }
+            }
+            return false;
+        }
+
         private void updateCurrentSystem(string name)
         {
             if (name == null)
@@ -1300,8 +1340,6 @@ namespace Eddi
 
         private bool eventSquadronStatus(SquadronStatusEvent theEvent)
         {
-            MainWindow mw = new MainWindow();
-
             // Update the configuration file
             EDDIConfiguration configuration = EDDIConfiguration.FromFile();
 
@@ -1316,9 +1354,13 @@ namespace Eddi
                         configuration.SquadronRank = rank;
 
                         // Update the squadron UI data
-                        mw.eddiSquadronNameText.Text = theEvent.name;
-                        mw.squadronRankDropDown.SelectedItem = rank.localizedName;
-                        configuration = mw.resetSquadronRank(configuration);
+                        Application.Current.Dispatcher.Invoke(new Action(() =>
+                        {
+                            MainWindow mw = Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
+                            mw.eddiSquadronNameText.Text = theEvent.name;
+                            mw.squadronRankDropDown.SelectedItem = rank.localizedName;
+                            configuration = mw.resetSquadronRank(configuration);
+                        }));
 
                         // Update the commander object, if it exists
                         if (Cmdr != null)
@@ -1334,7 +1376,11 @@ namespace Eddi
                         configuration.SquadronName = theEvent.name;
 
                         // Update the squadron UI data
-                        mw.eddiSquadronNameText.Text = theEvent.name;
+                        Application.Current.Dispatcher.Invoke(new Action(() =>
+                        {
+                            MainWindow mw = Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
+                            mw.eddiSquadronNameText.Text = theEvent.name;
+                        }));
 
                         // Update the commander object, if it exists
                         if (Cmdr != null)
@@ -1352,9 +1398,13 @@ namespace Eddi
                         configuration.SquadronID = null;
 
                         // Update the squadron UI data
-                        mw.eddiSquadronNameText.Text = string.Empty;
-                        mw.eddiSquadronIDText.Text = string.Empty;
-                        configuration = mw.resetSquadronRank(configuration);
+                        Application.Current.Dispatcher.Invoke(new Action(() =>
+                        {
+                            MainWindow mw = Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
+                            mw.eddiSquadronNameText.Text = string.Empty;
+                            mw.eddiSquadronIDText.Text = string.Empty;
+                            configuration = mw.resetSquadronRank(configuration);
+                        }));
 
                         // Update the commander object, if it exists
                         if (Cmdr != null)
@@ -1370,7 +1420,6 @@ namespace Eddi
 
         private bool eventSquadronRank(SquadronRankEvent theEvent)
         {
-            MainWindow mw = new MainWindow();
             SquadronRank rank = SquadronRank.FromRank(theEvent.newrank + 1);
 
             // Update the configuration file
@@ -1380,8 +1429,12 @@ namespace Eddi
             configuration.ToFile();
 
             // Update the squadron UI data
-            mw.eddiSquadronNameText.Text = theEvent.name;
-            mw.squadronRankDropDown.SelectedItem = rank.localizedName;
+            Application.Current.Dispatcher.Invoke(new Action(() =>
+            {
+                MainWindow mw = Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
+                mw.eddiSquadronNameText.Text = theEvent.name;
+                mw.squadronRankDropDown.SelectedItem = rank.localizedName;
+            }));
 
             // Update the commander object, if it exists
             if (Cmdr != null)
@@ -1391,7 +1444,6 @@ namespace Eddi
             }
             return true;
         }
-
 
         private bool eventEnteredCQC(EnteredCQCEvent theEvent)
         {
@@ -1957,7 +2009,7 @@ namespace Eddi
                             StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
 
                             // Post an update event
-                            Event @event = new MarketInformationUpdatedEvent(DateTime.UtcNow);
+                            Event @event = new MarketInformationUpdatedEvent(DateTime.UtcNow, "profile");
                             eventHandler(@event);
 
                             profileUpdateNeeded = false;
@@ -1992,7 +2044,7 @@ namespace Eddi
         private void dummyRefreshMarketData()
         {
             Thread.Sleep(2000);
-            Event @event = new MarketInformationUpdatedEvent(DateTime.UtcNow);
+            Event @event = new MarketInformationUpdatedEvent(DateTime.UtcNow, "profile");
             eventHandler(@event);
         }
 
@@ -2104,39 +2156,76 @@ namespace Eddi
 
         public void updateSquadronData(List<Faction> factions)
         {
+            // Check if current system is inhabited by or HQ for squadron faction
             Faction faction = factions.FirstOrDefault(f => f.squadronhomesystem || f.squadronfaction);
             if (faction != null)
             {
                 EDDIConfiguration configuration = EDDIConfiguration.FromFile();
-                MainWindow mw = new MainWindow();
-
-                if (faction.squadronhomesystem)
-                {
-                    string system = CurrentStarSystem.name;
-                    Superpower allegiance = CurrentStarSystem.Faction.Allegiance;
-
-                    // Update the squadron system data
-                    configuration.SquadronSystem = system;
-                    mw.eddiSquadronNameText.Text = system;
-                    configuration = updateSquadronSystem(configuration, true);
-
-                    //Update the squadron allegiance, if changed
-                    if (configuration.SquadronAllegiance == Superpower.None || configuration.SquadronAllegiance != allegiance)
-                    {
-                        configuration.SquadronAllegiance = allegiance;
-                        Cmdr.squadronallegiance = allegiance;
-                    }
-                }
 
                 //Update the squadron faction, if changed
                 if (configuration.SquadronFaction == null || configuration.SquadronFaction != faction.name)
                 {
                     configuration.SquadronFaction = faction.name;
-                    mw.squadronFactionDropDown.SelectedItem = faction.name;
-                    Cmdr.squadronfaction = faction.name;
 
-                    configuration.SquadronAllegiance = faction.Allegiance;
-                    Cmdr.squadronallegiance = faction.Allegiance;
+                    Application.Current.Dispatcher.Invoke(new Action(() =>
+                    {
+                        MainWindow mw = Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
+                        mw.squadronFactionDropDown.SelectedItem = faction.name;
+                    }));
+
+                    Cmdr.squadronfaction = faction.name;
+                }
+
+                // Update system, allegiance, & power when in squadron home system
+                if (faction.squadronhomesystem)
+                {
+                    // Update the squadron system data, if changed
+                    string system = CurrentStarSystem.name;
+                    if (configuration.SquadronSystem == null || configuration.SquadronSystem != system)
+                    {
+                        configuration.SquadronSystem = system;
+
+                        Application.Current.Dispatcher.Invoke(new Action(() =>
+                        {
+                            MainWindow mw = Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
+                            mw.eddiSquadronSystemText.Text = system;
+                            mw.ConfigureSquadronFactionOptions(configuration);
+                        }));
+
+                        configuration = updateSquadronSystem(configuration, true);
+                    }
+
+                    //Update the squadron allegiance, if changed
+                    Superpower allegiance = CurrentStarSystem?.Faction?.Allegiance ?? Superpower.None;
+
+                    //Prioritize UI entry if squadron system allegiance not specified
+                    if (allegiance != Superpower.None)
+                    {
+                        if (configuration.SquadronAllegiance == Superpower.None || configuration.SquadronAllegiance != allegiance)
+                        {
+                            configuration.SquadronAllegiance = allegiance;
+                            Cmdr.squadronallegiance = allegiance;
+                        }
+                    }
+
+                    // Update the squadron power, if changed
+                    Power power = Power.FromName(CurrentStarSystem?.power) ?? Power.None;
+
+                    //Prioritize UI entry if squadron system power not specified
+                    if (power != Power.None)
+                    {
+                        if (configuration.SquadronPower == Power.None && configuration.SquadronPower != power)
+                        {
+                            configuration.SquadronPower = power;
+
+                            Application.Current.Dispatcher.Invoke(new Action(() =>
+                            {
+                                MainWindow mw = Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
+                                mw.squadronPowerDropDown.SelectedItem = power.localizedName;
+                                mw.ConfigureSquadronPowerOptions(configuration);
+                            }));
+                        }
+                    }
                 }
 
                 configuration.ToFile();

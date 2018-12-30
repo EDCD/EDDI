@@ -15,7 +15,7 @@ namespace EddiDataDefinitions
         [JsonProperty]
         public int buyprice { get; set; }
         [JsonProperty]
-        public int avgprice { get; set; }
+        public int meanprice { get; set; }
         [JsonProperty]
         public int sellprice { get; set; }
 
@@ -47,7 +47,7 @@ namespace EddiDataDefinitions
             this.name = MarketInfo.name;
             this.category = MarketInfo.category;
             this.buyprice = MarketInfo.buyprice;
-            this.avgprice = MarketInfo.avgprice;
+            this.meanprice = MarketInfo.meanprice;
             this.sellprice = MarketInfo.sellprice;
             this.stock = MarketInfo.stock;
             this.stockbracket = MarketInfo.stockbracket;
@@ -65,7 +65,7 @@ namespace EddiDataDefinitions
             this.category = Category;
             this.buyprice = BuyPrice;
             this.sellprice = SellPrice;
-            this.avgprice = MeanPrice;
+            this.meanprice = MeanPrice;
             this.stockbracket = StockBracket;
             this.demandbracket = DemandBracket;
             this.stock = Stock;

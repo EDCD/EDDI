@@ -295,12 +295,29 @@ namespace EDDNResponder
         {
             // This event is triggered by an update to the profile via the Frontier API
             // Check to make sure the marketId from the acquired profile matches our current station's marketId before continuing
-            if (eventStationMatches(marketId))
+            if (eventStationMatches(marketId, theEvent.update))
             {
                 // When we dock we have access to commodity and outfitting information
-                sendCommodityInformation();
-                sendOutfittingInformation();
-                sendShipyardInformation();
+                switch (theEvent.update)
+                {
+                    case "market":
+                        {
+                            sendCommodityInformation();
+                        }
+                        break;
+                    case "outfitting":
+                        {
+                            sendOutfittingInformation();
+                        }
+                        break;
+                    case "profile":
+                        {
+                            sendCommodityInformation();
+                            sendOutfittingInformation();
+                            sendShipyardInformation();
+                        }
+                        break;
+                }
             }
         }
 
@@ -578,15 +595,22 @@ namespace EDDNResponder
             return false;
         }
 
-        private bool eventStationMatches(long? eventMarketId)
+        private bool eventStationMatches(long? eventMarketId, string update)
         {
-            Profile profile = CompanionAppService.Instance.Profile();
-            if (profile != null)
+            if (update == "profile")
             {
-                if (profile.LastStation?.marketId == eventMarketId && (bool?)profile.json["commander"]["docked"] == true)
+                Profile profile = CompanionAppService.Instance?.Profile();
+                if (profile != null)
                 {
-                    return true;
+                    if (profile.LastStation?.marketId == eventMarketId && (bool?)profile.json["commander"]["docked"] == true)
+                    {
+                        return true;
+                    }
                 }
+            }
+            else if (EDDI.Instance?.CurrentStation?.marketId == marketId)
+            {
+                return true;
             }
             return false;
         }

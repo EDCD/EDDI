@@ -796,7 +796,7 @@ namespace Eddi
             squadronFactionDropDown.ItemsSource = SquadronFactionOptions;
         }
 
-        private void ConfigureSquadronPowerOptions(EDDIConfiguration configuration)
+        public void ConfigureSquadronPowerOptions(EDDIConfiguration configuration)
         {
             List<string> SquadronPowerOptions = new List<string>
             {
