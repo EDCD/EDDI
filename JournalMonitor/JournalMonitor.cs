@@ -842,11 +842,9 @@ namespace EddiJournalMonitor
                             case "Shipyard":
                                 {
                                     long marketId = JsonParsing.getLong(data, "MarketID");
-                                    string station = JsonParsing.getString(data, "StationName") ?? EDDI.Instance?.Vehicle;
-                                    string system = JsonParsing.getString(data, "StarSystem") ?? EDDI.Instance?.Vehicle;
-
-                                    ShipyardInfoReader info = ShipyardInfoReader.FromFile();
-                                    events.Add(new ShipyardEvent(timestamp, marketId, station, system, info.Horizons, info.AllowCobraMkIV, info.PriceList) { raw = line });
+                                    string station = JsonParsing.getString(data, "StationName");
+                                    string system = JsonParsing.getString(data, "StarSystem");
+                                    events.Add(new ShipyardEvent(timestamp, marketId, station, system) { raw = line });
                                 }
                                 handled = true;
                                 break;
@@ -1220,11 +1218,9 @@ namespace EddiJournalMonitor
                             case "Outfitting":
                                 {
                                     long marketId = JsonParsing.getLong(data, "MarketID");
-                                    string station = JsonParsing.getString(data, "StationName") ?? EDDI.Instance?.Vehicle;
-                                    string system = JsonParsing.getString(data, "StarSystem") ?? EDDI.Instance?.Vehicle;
-
-                                    OutfittingInfoReader info = OutfittingInfoReader.FromFile();
-                                    events.Add(new OutfittingEvent(timestamp, marketId, station, system, info.Horizons, info.Items) { raw = line });
+                                    string station = JsonParsing.getString(data, "StationName");
+                                    string system = JsonParsing.getString(data, "StarSystem");
+                                    events.Add(new OutfittingEvent(timestamp, marketId, station, system) { raw = line });
                                 }
                                 handled = true;
                                 break;
@@ -1807,11 +1803,9 @@ namespace EddiJournalMonitor
                             case "Market":
                                 {
                                     long marketId = JsonParsing.getLong(data, "MarketID");
-                                    string station = JsonParsing.getString(data, "StationName") ?? EDDI.Instance?.Vehicle;
-                                    string system = JsonParsing.getString(data, "StarSystem") ?? EDDI.Instance?.Vehicle;
-
-                                    MarketInfoReader info = MarketInfoReader.FromFile();
-                                    events.Add(new MarketEvent(timestamp, marketId, station, system, info.Items) { raw = line });
+                                    string station = JsonParsing.getString(data, "StationName");
+                                    string system = JsonParsing.getString(data, "StarSystem");
+                                    events.Add(new MarketEvent(timestamp, marketId, station, system) { raw = line });
                                 }
                                 handled = true;
                                 break;

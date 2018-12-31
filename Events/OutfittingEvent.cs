@@ -20,16 +20,12 @@ namespace EddiEvents
         public long marketId { get; private set; }
         public string station { get; private set; }
         public string system { get; private set; }
-        public bool horizons { get; private set; }
-        public List<OutfittingInfo> items { get; private set; }
 
-        public OutfittingEvent(DateTime timestamp, long marketId, string station, string system, bool horizons, List<OutfittingInfo> items) : base(timestamp, NAME)
+        public OutfittingEvent(DateTime timestamp, long marketId, string station, string system) : base(timestamp, NAME)
         {
             this.marketId = marketId;
             this.station = station;
             this.system = system;
-            this.horizons = horizons;
-            this.items = items;
         }
     }
 }

@@ -20,14 +20,12 @@ namespace EddiEvents
         public long marketId { get; private set; }
         public string station { get; private set; }
         public string system { get; private set; }
-        public List<MarketInfo> items { get; private set; }
 
-        public MarketEvent(DateTime timestamp, long marketId, string station, string system, List<MarketInfo> items) : base(timestamp, NAME)
+        public MarketEvent(DateTime timestamp, long marketId, string station, string system) : base(timestamp, NAME)
         {
             this.marketId = marketId;
             this.station = station;
             this.system = system;
-            this.items = items;
         }
     }
 }

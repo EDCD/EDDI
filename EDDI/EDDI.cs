@@ -35,13 +35,14 @@ namespace Eddi
         public bool SpeechResponderModalWait { get; set; } = false;
 
         private static bool started;
-
         internal static bool running = true;
 
+        private static bool allowMarketUpdate = false;
+        private static bool allowOutfittingUpdate = false;
+        private static bool allowShipyardUpdate = false;
+
         public bool inCQC { get; private set; } = false;
-
         public bool inCrew { get; private set; } = false;
-
         public bool inBeta { get; private set; } = false;
 
         static EDDI()
@@ -1012,6 +1013,11 @@ namespace Eddi
             CurrentStation = station;
             CurrentStellarBody = null;
 
+            // Allow manual station updates once
+            allowMarketUpdate = true;
+            allowOutfittingUpdate = true;
+            allowShipyardUpdate = true;
+
             // Kick off the profile refresh if the companion API is available
             if (CompanionAppService.Instance.CurrentState == CompanionAppService.State.READY)
             {
@@ -1047,12 +1053,13 @@ namespace Eddi
 
         private bool eventMarket(MarketEvent theEvent)
         {
-            if (CurrentStation != null && CurrentStation.name == theEvent.station)
+            if (allowMarketUpdate && CurrentStation != null && CurrentStation.marketId == theEvent.marketId)
             {
-                if (theEvent.items != null)
+                MarketInfoReader info = MarketInfoReader.FromFile();
+                if (info != null)
                 {
                     List<CommodityMarketQuote> quotes = new List<CommodityMarketQuote>();
-                    foreach (MarketInfo item in theEvent.items)
+                    foreach (MarketInfo item in info.Items)
                     {
                         CommodityMarketQuote quote = CommodityMarketQuote.FromMarketInfo(item);
                         if (quote != null)
@@ -1061,12 +1068,10 @@ namespace Eddi
                         }
                     }
 
-                    if (quotes != null && theEvent.items.Count == quotes.Count)
+                    if (quotes != null && info.Items.Count == quotes.Count)
                     {
-                        // Get the last market update time
-                        long lastUpdate = CurrentStation.shipyardupdatedat ?? 0;
-
                         // Update the current station commodities
+                        allowMarketUpdate = false;
                         CurrentStation.commodities = quotes;
                         CurrentStation.commoditiesupdatedat = (long)DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
 
@@ -1074,12 +1079,9 @@ namespace Eddi
                         Logging.Debug("Star system information updated from remote server; updating local copy");
                         StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
 
-                        // Post an update event, if greater than 10 min since last update
-                        if (CurrentStation.shipyardupdatedat - lastUpdate > 600)
-                        {
-                            Event @event = new MarketInformationUpdatedEvent(DateTime.UtcNow, "market");
-                            eventHandler(@event);
-                        }
+                        // Post an update event for new market data
+                        Event @event = new MarketInformationUpdatedEvent(DateTime.UtcNow, "market");
+                        eventHandler(@event);
                     }
                     return true;
                 }
@@ -1089,13 +1091,13 @@ namespace Eddi
 
         private bool eventOutfitting(OutfittingEvent theEvent)
         {
-            if (CurrentStation != null && CurrentStation.name == theEvent.station)
+            if (allowOutfittingUpdate && CurrentStation != null && CurrentStation.marketId == theEvent.marketId)
             {
-                if (theEvent.items != null)
+                OutfittingInfoReader info = OutfittingInfoReader.FromFile();
+                if (info.Items != null)
                 {
                     List<EddiDataDefinitions.Module> modules = new List<EddiDataDefinitions.Module>();
-
-                    foreach (OutfittingInfo item in theEvent.items)
+                    foreach (OutfittingInfo item in info.Items)
                     {
                         EddiDataDefinitions.Module module = EddiDataDefinitions.Module.FromOutfittingInfo(item);
                         if (module != null)
@@ -1104,12 +1106,10 @@ namespace Eddi
                         }
                     }
 
-                    if (modules != null && theEvent.items.Count == modules.Count)
+                    if (modules != null && info.Items.Count == modules.Count)
                     {
-                        // Get the last outfitting update time
-                        long lastUpdate = CurrentStation.shipyardupdatedat ?? 0;
-
-                        // Update the current station commodities
+                        // Update the current station outfitting
+                        allowOutfittingUpdate = false;
                         CurrentStation.outfitting = modules;
                         CurrentStation.outfittingupdatedat = (long)DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
 
@@ -1117,12 +1117,9 @@ namespace Eddi
                         Logging.Debug("Star system information updated from remote server; updating local copy");
                         StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
 
-                        // Post an update event, if greater than 10 min since last update
-                        if (CurrentStation.shipyardupdatedat - lastUpdate > 600)
-                        {
-                            Event @event = new MarketInformationUpdatedEvent(DateTime.UtcNow, "outfitting");
-                            eventHandler(@event);
-                        }
+                        // Post an update event for new outfitting data
+                        Event @event = new MarketInformationUpdatedEvent(DateTime.UtcNow, "outfitting");
+                        eventHandler(@event);
                     }
                     return true;
                 }
@@ -1132,13 +1129,13 @@ namespace Eddi
 
         private bool eventShipyard(ShipyardEvent theEvent)
         {
-            if (CurrentStation != null && CurrentStation.name == theEvent.station)
+            if (allowShipyardUpdate && CurrentStation != null && CurrentStation.marketId == theEvent.marketId)
             {
-                if (theEvent.priceList != null)
+                ShipyardInfoReader info = ShipyardInfoReader.FromFile();
+                if (info.PriceList != null)
                 {
                     List<Ship> ships = new List<Ship>();
-
-                    foreach (ShipyardInfo item in theEvent.priceList)
+                    foreach (ShipyardInfo item in info.PriceList)
                     {
                         Ship ship = Ship.FromShipyardInfo(item);
                         if (ship != null)
@@ -1147,12 +1144,10 @@ namespace Eddi
                         }
                     }
 
-                    if (ships != null && theEvent.priceList.Count == ships.Count)
+                    if (ships != null && info.PriceList.Count == ships.Count)
                     {
-                        // Get the last shipyard update time
-                        long lastUpdate = CurrentStation.shipyardupdatedat ?? 0;
-
-                        // Update the current station commodities
+                        // Update the current station shipyard
+                        allowShipyardUpdate = false;
                         CurrentStation.shipyard = ships;
                         CurrentStation.shipyardupdatedat = (long)DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
 
@@ -1160,12 +1155,9 @@ namespace Eddi
                         Logging.Debug("Star system information updated from remote server; updating local copy");
                         StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
 
-                        // Post an update event, if greater than 10 min since last update
-                        if (CurrentStation.shipyardupdatedat - lastUpdate > 600)
-                        {
-                            Event @event = new MarketInformationUpdatedEvent(DateTime.UtcNow, "shipyard");
-                            eventHandler(@event);
-                        }
+                        // Post an update event for new shipyard data
+                        Event @event = new MarketInformationUpdatedEvent(DateTime.UtcNow, "shipyard");
+                        eventHandler(@event);
                     }
                     return true;
                 }
@@ -2113,6 +2105,10 @@ namespace Eddi
                             eventHandler(@event);
 
                             profileUpdateNeeded = false;
+                            allowMarketUpdate = false;
+                            allowOutfittingUpdate = false;
+                            allowShipyardUpdate = false;
+
                             break;
                         }
 

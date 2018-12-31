@@ -3,33 +3,31 @@ using Newtonsoft.Json;
 using System.Collections.Generic;
 using Utilities;
 
-namespace EddiJournalMonitor
+namespace Eddi
 {
-    public class OutfittingInfoReader
+    public class MarketInfoReader
     {
         public long MarketID { get; set; }
         public string StationName { get; set; }
         public string StarSystem { get; set; }
-        public bool Horizons { get; set; }
-        public List<OutfittingInfo> Items { get; set; }
+        public List<MarketInfo> Items { get; set; }
 
-        public OutfittingInfoReader()
+        public MarketInfoReader()
         {
-            Items = new List<OutfittingInfo>();
+            Items = new List<MarketInfo>();
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times")] // this usage is perfectly correct    
-        public static OutfittingInfoReader FromFile(string filename = null)
+        public static MarketInfoReader FromFile(string filename = null)
         {
-            OutfittingInfoReader info = new OutfittingInfoReader();
+            MarketInfoReader info = new MarketInfoReader();
 
-            string data = Files.FromSavedGames("Outfitting.json");
+            string data = Files.FromSavedGames("Market.json");
             if (data != null)
             {
-                info = JsonConvert.DeserializeObject<OutfittingInfoReader>(data);
+                info = JsonConvert.DeserializeObject<MarketInfoReader>(data);
             }
             return info;
         }
     }
 }
-

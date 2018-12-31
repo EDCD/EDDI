@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 using System.Collections.Generic;
 using Utilities;
 
-namespace EddiJournalMonitor
+namespace Eddi
 {
     public class ShipyardInfoReader
     {
