@@ -139,7 +139,7 @@
     <value>en la página principal de EDDI</value>
   </data>
   <data name="p5" xml:space="preserve">
-    <value>Además de escribir scripts que puede activar con acciones de voz o teclado, también puede escribir scripts que activan eventos que ocurren dentro de Elite. Por ejemplo, si quisiera activar un script cada vez que ocurra el evento 'Docked', entonces debería escribir un script llamado '((EDDI docked))' (tenga en cuenta los doble-paréntesis alrededor del nombre para evitar que se active accidentalmente, y la "d" de 'docked' en minúscula). Todas las variables cada evento tambíen las podrás encontrar </value>
+    <value>Además de escribir scripts que puede activar con acciones de voz o teclado, también puede escribir scripts que activan eventos que ocurren dentro de Elite. Por ejemplo, si quisiera activar un script cada vez que ocurra el evento 'Docked', entonces debería escribir un script llamado '((EDDI docked))' (tenga en cuenta los doble-paréntesis alrededor del nombre para evitar que se active accidentalmente, y la "d" de 'docked' en minúscula). Todas las variables cada evento también las podrás encontrar </value>
   </data>
   <data name="p5_link" xml:space="preserve">
     <value>en la página principal de EDDI</value>
