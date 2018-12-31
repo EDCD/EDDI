@@ -970,6 +970,11 @@ namespace Eddi
         {
             updateCurrentSystem(theEvent.system);
 
+            // Upon docking, allow manual station updates once
+            allowMarketUpdate = true;
+            allowOutfittingUpdate = true;
+            allowShipyardUpdate = true;
+
             if (CurrentStation != null && CurrentStation.name == theEvent.station)
             {
                 // We are already at this station; nothing to do
@@ -1012,11 +1017,6 @@ namespace Eddi
 
             CurrentStation = station;
             CurrentStellarBody = null;
-
-            // Allow manual station updates once
-            allowMarketUpdate = true;
-            allowOutfittingUpdate = true;
-            allowShipyardUpdate = true;
 
             // Kick off the profile refresh if the companion API is available
             if (CompanionAppService.Instance.CurrentState == CompanionAppService.State.READY)
