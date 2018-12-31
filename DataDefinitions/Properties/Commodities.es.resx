@@ -1641,5 +1641,8 @@
   
   
   
-  
+  <data name="Opal" xml:space="preserve">
+    <value>Ópalos de vacío</value>
+    <comment>Commodity Opal</comment>
+  </data>
 </root>

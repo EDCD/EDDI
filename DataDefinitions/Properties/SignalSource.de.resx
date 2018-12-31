@@ -129,9 +129,18 @@
     <value>Unbekannte Signalquelle</value>
     <comment>Unidentified Signal Source</comment>
   </data>
-  
-  
-  
+  <data name="Warzone_PointRace_High" xml:space="preserve">
+    <value>Kampfbereich hoher Intensität</value>
+    <comment>Combat Zone (High Intensity)</comment>
+  </data>
+  <data name="Warzone_PointRace_Med" xml:space="preserve">
+    <value>Kampfbereich mittlerer Intensität</value>
+    <comment>Combat Zone (Medium Intensity)</comment>
+  </data>
+  <data name="Warzone_PointRace_Low" xml:space="preserve">
+    <value>Kampfbereich geringer Intensität</value>
+    <comment>Combat Zone (Low Intensity)</comment>
+  </data>
   <data name="USS_Type_Salvage" xml:space="preserve">
     <value>Degradierte Emissionen</value>
     <comment>Salvage signal</comment>
@@ -140,8 +149,14 @@
     <value>Kampffolgen</value>
     <comment>Aftermatch signal</comment>
   </data>
-  
-  
+  <data name="USS_Type_Anomaly" xml:space="preserve">
+    <value>Anomalie</value>
+    <comment>Anomaly signal</comment>
+  </data>
+  <data name="USS_Type_Ceremonial" xml:space="preserve">
+    <value>Zeremonielle Kommunikation</value>
+    <comment>Ceremonial signal</comment>
+  </data>
   <data name="USS_Type_VeryValuableSalvage" xml:space="preserve">
     <value>Hochgradige Emissionen</value>
     <comment>VeryValuable signal</comment>
@@ -150,7 +165,10 @@
     <value>Verschlüsselte Emissionen</value>
     <comment>Valuable signal</comment>
   </data>
-  
+  <data name="USS_Type_NonHuman" xml:space="preserve">
+    <value>Nichtmenschliche Signalquelle</value>
+    <comment>NonHuman signal</comment>
+  </data>
   <data name="USS_Type_WeaponsFire" xml:space="preserve">
     <value>Waffenfeuer</value>
     <comment>WeaponsFire signal</comment>
@@ -171,14 +189,26 @@
     <value>Handelsboje</value>
     <comment>TradingBeacon signal</comment>
   </data>
-  
-  
+  <data name="MULTIPLAYER_SCENARIO78_TITLE" xml:space="preserve">
+    <value>Rohstoffabbaugebiet hoher Intensität</value>
+    <comment>ResourceExtraction Site (High Intensity)</comment>
+  </data>
+  <data name="MULTIPLAYER_SCENARIO77_TITLE" xml:space="preserve">
+    <value>Rohstoffabbaugebiet geringer Intensität</value>
+    <comment>Resource Extraction site (Low)</comment>
+  </data>
   <data name="MULTIPLAYER_SCENARIO14_TITLE" xml:space="preserve">
     <value>Rohstoffabbaugebiet</value>
     <comment>Resource Extraction Site</comment>
   </data>
-  
-  
+  <data name="MULTIPLAYER_SCENARIO79_TITLE" xml:space="preserve">
+    <value>Gefährliches Rohstoffabbaugebiet</value>
+    <comment>Resource Extraction Site [Hazardous]</comment>
+  </data>
+  <data name="NumberStation" xml:space="preserve">
+    <value>Unbekannte Kommunikationsboje</value>
+    <comment>NumberStation</comment>
+  </data>
   <data name="Warzone_TG" xml:space="preserve">
     <value>AX Konfliktzone</value>
     <comment>Thargoid conflict zone</comment>

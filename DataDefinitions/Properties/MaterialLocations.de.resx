@@ -137,13 +137,22 @@
     <value>Gewonnen durch Oberflächenerkundung, Asteroidenbergbau oder Eisringbergbau.</value>
     <comment>Material location Sulphur</comment>
   </data>
-  
+  <data name="arsenic" xml:space="preserve">
+    <value>Gewonnen durch Oberflächenerkundung, Asteroidenbergbau oder als Missionsbelohnung.</value>
+    <comment>Material location Arsenic</comment>
+  </data>
   <data name="chromium" xml:space="preserve">
     <value>Gewonnen durch Oberflächenerkundung, Asteroidenbergbau in reinen Felsringen oder durch den Abbau in Eisringen.</value>
     <comment>Material location Chromium</comment>
   </data>
-  
-  
+  <data name="germanium" xml:space="preserve">
+    <value>Gewonnen durch Oberflächenerkundung oder erhalten als Missionsbelohnung, besonders in Systemen, die an Krankheiten leiden.</value>
+    <comment>Material location Germanium</comment>
+  </data>
+  <data name="manganese" xml:space="preserve">
+    <value>Gewonnen durch Oberflächenerkundung oder erhalten als Missionsbelohnung.</value>
+    <comment>Material location Manganese</comment>
+  </data>
   <data name="vanadium" xml:space="preserve">
     <value>Gewonnen durch Oberflächenerkundung, durch Abbau in reinen Metallringen oder durch Abbau in Eisringen.</value>
     <comment>Material location Vanadium</comment>
@@ -168,7 +177,10 @@
     <value>Gewonnen durch Oberflächenerkundung oder Asteroidenbergbau.</value>
     <comment>Material location Niobium</comment>
   </data>
-  
+  <data name="tin" xml:space="preserve">
+    <value>Gewonnen durch Oberflächenerkundung oder Asteroidenbergbau in Gebieten mit unberührten Reserven.</value>
+    <comment>Material location Tin</comment>
+  </data>
   <data name="tungsten" xml:space="preserve">
     <value>Gewonnen durch Oberflächenerkundung.</value>
     <comment>Material location Tungsten</comment>
@@ -177,7 +189,10 @@
     <value>Gewonnen durch Oberflächenerkundung.</value>
     <comment>Material location Ruthenium</comment>
   </data>
-  
+  <data name="selenium" xml:space="preserve">
+    <value>Gewonnen durch Oberflächenerkundung oder als Missionsbelohnung.</value>
+    <comment>Material location Selenium</comment>
+  </data>
   <data name="technetium" xml:space="preserve">
     <value>Gewonnen durch Oberflächenerkundung.</value>
     <comment>Material location Technetium</comment>
@@ -198,23 +213,53 @@
     <value>Gewonnen durch Oberflächenerkundung.</value>
     <comment>Material location Antimony</comment>
   </data>
-  
-  
-  
-  
-  
-  
-  
+  <data name="polonium" xml:space="preserve">
+    <value>Gewonnen durch Oberflächenerkundung oder als Missionsbelohnung.</value>
+    <comment>Material location Polonium</comment>
+  </data>
+  <data name="bulkscandata" xml:space="preserve">
+    <value>Erhalten durch das Scannen von Transportschiffen oder als Missionsbelohnung.</value>
+    <comment>Material location Anomalous Bulk Scan Data</comment>
+  </data>
+  <data name="disruptedwakeechoes" xml:space="preserve">
+    <value>Erhalten durch das Analysieren von FSA-Hypersprungechos von Schiffen oder als Missionsbelohnung, speziell in Systemen mit ökonomischem Aufschwung.</value>
+    <comment>Material location Atypical Disrupted Wake Echoes</comment>
+  </data>
+  <data name="shieldcyclerecordings" xml:space="preserve">
+    <value>Erhalten durch das Scannen von Transportschiffen oder als Missionsbelohnung.</value>
+    <comment>Material location Distorted Shield Cycle Recordings</comment>
+  </data>
+  <data name="scrambledemissiondata" xml:space="preserve">
+    <value>Erhalten durch das Scannen von Schiffen, Signalquellen oder als Missionsbelohnung.</value>
+    <comment>Material location Exceptional Scrambled Emission Data</comment>
+  </data>
+  <data name="legacyfirmware" xml:space="preserve">
+    <value>Erhalten durch das Analysieren von Oberflächen-Daten-Punkten, durch Satelliten die Anlagen und bevölkerte erdähnliche Welten umkreisen, oder als Missionsbelohnung.</value>
+    <comment>Material location Specialised Legacy Firmware</comment>
+  </data>
+  <data name="encryptedfiles" xml:space="preserve">
+    <value>Erhalten aus Signalquellen, einschließlich Oberflächensignalquellen, oder als Missionsbelohnung. Diese sind in Systemen mit boomenden Volkswirtschaften eher verbreitet.</value>
+    <comment>Material location Unusual Encrypted Files</comment>
+  </data>
   <data name="ancienthistoricaldata" xml:space="preserve">
     <value>Entdeckt in den alten Ruinen der außerirdischen Spezies, bekannt als die Wächter.</value>
     <comment>Material location Pattern Gamma Obelisk Data</comment>
   </data>
+  <data name="fsdtelemetry" xml:space="preserve">
+    <value>Erhalten durch das Scannen der FSA-Hypersprungechos von Schiffen oder als Missionsbelohnung.</value>
+    <comment>Material location Anomalous FSD Telemetry</comment>
+  </data>
+  <data name="shieldsoakanalysis" xml:space="preserve">
+    <value>Erhalten durch das Scannen von Transportschiffen oder als Missionsbelohnung, speziell in Systemen mit ökonomischem Aufschwung.</value>
+    <comment>Material location Inconsistent Shield Soak Analysis</comment>
+  </data>
   
   
   
-  
-  
-  
+  <data name="scanarchives" xml:space="preserve">
+    <value>Erhalten durch das Scannen von Transportschiffen, speziell in Systemen mit ökonomischem Aufschwung.</value>
+    <comment>Material location Unidentified Scan Archives</comment>
+  </data>
   <data name="ancientculturaldata" xml:space="preserve">
     <value>Entdeckt in den alten Ruinen einer außerirdischen Spezies, bekannt als die Wächter.</value>
     <comment>Material location Pattern Beta Obelisk Data</comment>
@@ -223,19 +268,28 @@
     <value>Entdeckt an geheimnisvollen Oberflächenstandorten einer außerirdischen Spezies, bekannt als die Thargoiden.</value>
     <comment>Material location Thargoid Structural Data</comment>
   </data>
-  
-  
-  
+  <data name="scandatabanks" xml:space="preserve">
+    <value>Erhalten durch das Scannen von großen Transportschiffen, üblicherweise Type-7 und Type-9, und durch das Scannen von Datenverbindungen an Bodenstationen.</value>
+    <comment>Material location Classified Scan Databanks</comment>
+  </data>
+  <data name="industrialfirmware" xml:space="preserve">
+    <value>Erhalten durch das Scannen von Datenverbindungen an Bodenstationen oder als Missionsbelohnung.</value>
+    <comment>Material location Cracked Industrial Firmware</comment>
+  </data>
+  <data name="symmetrickeys" xml:space="preserve">
+    <value>Erhalten durch das Scannen von Datenverbindungen an Bodenstationen oder in Signalquellen oder als Missionsbelohnung.</value>
+    <comment>Material location Open Symmetric Keys</comment>
+  </data>
   <data name="wakesolutions" xml:space="preserve">
-    <value>Erhalten durch das Analysieren von FSA-Wellenechos von Schiffen oder als Auftragsbelohnung, speziell in Systemen mit ökonomischem Aufschwung.</value>
+    <value>Erhalten durch das Analysieren von FSA-Hypersprungechos von Schiffen oder als Auftragsbelohnung, speziell in Systemen mit ökonomischem Aufschwung.</value>
     <comment>Material location Strange Wake Solutions</comment>
   </data>
   <data name="emissiondata" xml:space="preserve">
-    <value>Erhalten durch das Analysieren von FSA-Wellenechos von Großkampfschiffen oder in Signalquellen, speziell in Systemen mit ökonomischem Aufschwung oder in Systemen, die derzeit Wahlen durchführen.</value>
+    <value>Erhalten durch das Scannen von (Groß-)Kampfschiffen oder in Signalquellen, speziell in Systemen mit ökonomischem Aufschwung oder in Systemen, die derzeit Wahlen durchführen.</value>
     <comment>Material location Unexpected Emission Data</comment>
   </data>
   <data name="shielddensityreports" xml:space="preserve">
-    <value>Erhalten durch scannen von Kampfschiffen.</value>
+    <value>Erhalten durch das Scannen von (Groß-)Kampfschiffen.</value>
     <comment>Material location Untypical Shield Scans</comment>
   </data>
   <data name="ancientbiologicaldata" xml:space="preserve">
@@ -257,7 +311,10 @@
   </data>
   
   
-  
+  <data name="hyperspacetrajectories" xml:space="preserve">
+    <value>Erhalten durch das Scannen der FSA-Hypersprungechos von Schiffen.</value>
+    <comment>Material location Eccentric Hyperspace Trajectories</comment>
+  </data>
   
   <data name="ancientlanguagedata" xml:space="preserve">
     <value>Entdeckt in den alten Ruinen einer außerirdischen Spezies, bekannt als die Wächter.</value>
@@ -271,13 +328,25 @@
     <value>Entdeckt an geheimnisvollen Oberflächenstandorten einer außerirdischen Spezies, bekannt als die Thargoiden.</value>
     <comment>Material location Thargoid Residue Data</comment>
   </data>
+  <data name="unknownwakedata" xml:space="preserve">
+    <value>Erhalten durch das Abtasten der von einem Thargoiden-Schiff hinterlassenen Spur.</value>
+    <comment>Material location Thargoid Wake Data</comment>
+  </data>
   
   
   
-  
-  
-  
-  
+  <data name="dataminedwake" xml:space="preserve">
+    <value>Erhalten durch das Scannen der FSA-Hypersprungechos von Schiffen, verschlüsselten Datenbojen oder als Missionsbelohnung.</value>
+    <comment>Material location Datamined Wake Exceptions</comment>
+  </data>
+  <data name="embeddedfirmware" xml:space="preserve">
+    <value>Erhalten durch das Scannen von Datenverbindungen an Bodenstationen oder als Missionsbelohnung.</value>
+    <comment>Material location Modified Embedded Firmware</comment>
+  </data>
+  <data name="shieldfrequencydata" xml:space="preserve">
+    <value>Erhalten durch das Scannen von Schiffen oder als Missionsbelohnung.</value>
+    <comment>Material location Peculiar Shield Frequency Data</comment>
+  </data>
   <data name="basicconductors" xml:space="preserve">
     <value>Gewonnen aus den Trümmern von Transportschiffen.</value>
     <comment>Material location Basic Conductors</comment>
@@ -287,12 +356,24 @@
     <comment>Material location Chemical Storage Units</comment>
   </data>
   
-  
-  
-  
-  
+  <data name="crystalshards" xml:space="preserve">
+    <value>Gewonnen aus den Trümmern von (Groß-)Kampfschiffen und von Oberflächensignalquellen.</value>
+    <comment>Material location Crystal Shards</comment>
+  </data>
+  <data name="gridresistors" xml:space="preserve">
+    <value>Gewonnen aus den Trümmern von kleinen Kampfschiffen oder als Missionsbelohnung.</value>
+    <comment>Material location Grid Resistors</comment>
+  </data>
+  <data name="heatconductionwiring" xml:space="preserve">
+    <value>Gewonnen aus den Trümmern von Transportschiffen in Signalquellen oder als Missionsbelohnung.</value>
+    <comment>Material location Heat Conduction Wiring</comment>
+  </data>
+  <data name="mechanicalscrap" xml:space="preserve">
+    <value>Gewonnen aus den Trümmern von Transportschiffen oder als Missionsbelohnung.</value>
+    <comment>Material location Mechanical Scrap</comment>
+  </data>
   <data name="salvagedalloys" xml:space="preserve">
-    <value>Gewonnen aus den Trümmern von Großkampfschiffen.</value>
+    <value>Gewonnen aus den Trümmern von (Groß-)Kampfschiffen.</value>
     <comment>Material location Salvaged Alloys</comment>
   </data>
   <data name="temperedalloys" xml:space="preserve">
@@ -300,10 +381,13 @@
     <comment>Material location temperedalloys</comment>
   </data>
   <data name="wornshieldemitters" xml:space="preserve">
-    <value>Gewonnen aus den Trümmern von Großkampfschiffen.</value>
+    <value>Gewonnen aus den Trümmern von (Groß-)Kampfschiffen.</value>
     <comment>Material location Worn Shield Emitters</comment>
   </data>
-  
+  <data name="chemicalprocessors" xml:space="preserve">
+    <value>Gewonnen aus den Trümmern von Transportschiffen oder als Missionsbelohnung.</value>
+    <comment>Material location Chemical Processors</comment>
+  </data>
   
   
   
@@ -329,7 +413,10 @@
   
   
   
-  
+  <data name="shieldingsensors" xml:space="preserve">
+    <value>Gewonnen aus den Trümmern von (Groß-)Kampfschiffen oder als Missionsbelohnung.</value>
+    <comment>Material location Shielding Sensors</comment>
+  </data>
   <data name="unknownenergycell" xml:space="preserve">
     <value>Entdeckt an geheimnisvollen Oberflächenstandorten einer außerirdischen Spezies, bekannt als die Thargoiden.</value>
     <comment>Material location Thargoid Energy Cell</comment>
@@ -343,14 +430,23 @@
   
   
   
-  
+  <data name="thermicalloys" xml:space="preserve">
+    <value>Gewonnen aus den Trümmern von (Groß-)Kampfschiffen oder als Missionsbelohnung.</value>
+    <comment>Material location Thermic Alloys</comment>
+  </data>
   <data name="unknowntechnologycomponents" xml:space="preserve">
     <value>Entdeckt an geheimnisvollen Oberflächenstandorten einer außerirdischen Spezies, bekannt als die Thargoiden.</value>
     <comment>Material location Thargoid Technological Components</comment>
   </data>
+  <data name="biotechconductors" xml:space="preserve">
+    <value>Erhalten als Missionsbelohnung.</value>
+    <comment>Material location Biotech conductors</comment>
+  </data>
   
-  
-  
+  <data name="exquisitefocuscrystals" xml:space="preserve">
+    <value>Gewonnen aus den Trümmern von (Groß-)Kampfschiffen oder als Missionsbelohnung, speziell in Systemen mit ökonomischem Aufschwung.</value>
+    <comment>Material location Exquisite Focus Crystals</comment>
+  </data>
   
   
   
