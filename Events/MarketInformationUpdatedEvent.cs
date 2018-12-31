@@ -15,7 +15,7 @@ namespace EddiEvents
         {
         }
 
-        // Update type - `market`, `outfitting`, or `profile`
+        // Update type - `market`, `outfitting`, `profile`, or `shipyard`
         public string update { get; private set; }
 
         public MarketInformationUpdatedEvent(DateTime timestamp, string update) : base(timestamp, NAME)

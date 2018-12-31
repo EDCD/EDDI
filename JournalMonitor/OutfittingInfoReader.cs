@@ -5,29 +5,31 @@ using Utilities;
 
 namespace EddiJournalMonitor
 {
-    public class MarketInfoReader
+    public class OutfittingInfoReader
     {
         public long MarketID { get; set; }
         public string StationName { get; set; }
         public string StarSystem { get; set; }
-        public List<MarketInfo> Items { get; set; }
+        public bool Horizons { get; set; }
+        public List<OutfittingInfo> Items { get; set; }
 
-        public MarketInfoReader()
+        public OutfittingInfoReader()
         {
-            Items = new List<MarketInfo>();
+            Items = new List<OutfittingInfo>();
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times")] // this usage is perfectly correct    
-        public static MarketInfoReader FromFile(string filename = null)
+        public static OutfittingInfoReader FromFile(string filename = null)
         {
-            MarketInfoReader info = new MarketInfoReader();
+            OutfittingInfoReader info = new OutfittingInfoReader();
 
-            string data = Files.FromSavedGames("Market.json");
+            string data = Files.FromSavedGames("Outfitting.json");
             if (data != null)
             {
-                info = JsonConvert.DeserializeObject<MarketInfoReader>(data);
+                info = JsonConvert.DeserializeObject<OutfittingInfoReader>(data);
             }
             return info;
         }
     }
 }
+

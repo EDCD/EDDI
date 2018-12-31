@@ -8,7 +8,6 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -590,10 +589,6 @@ namespace Eddi
                     {
                         passEvent = eventUndocked((UndockedEvent)@event);
                     }
-                    else if (@event is MarketEvent)
-                    {
-                        passEvent = eventMarket((MarketEvent)@event);
-                    }
                     else if (@event is LocationEvent)
                     {
                         passEvent = eventLocation((LocationEvent)@event);
@@ -702,6 +697,19 @@ namespace Eddi
                     {
                         passEvent = eventFriends((FriendsEvent)@event);
                     }
+                    else if (@event is MarketEvent)
+                    {
+                        passEvent = eventMarket((MarketEvent)@event);
+                    }
+                    else if (@event is OutfittingEvent)
+                    {
+                        passEvent = eventOutfitting((OutfittingEvent)@event);
+                    }
+                    else if (@event is ShipyardEvent)
+                    {
+                        passEvent = eventShipyard((ShipyardEvent)@event);
+                    }
+
                     // Additional processing is over, send to the event responders if required
                     if (passEvent)
                     {
@@ -1055,6 +1063,9 @@ namespace Eddi
 
                     if (quotes != null && theEvent.items.Count == quotes.Count)
                     {
+                        // Get the last market update time
+                        long lastUpdate = CurrentStation.shipyardupdatedat ?? 0;
+
                         // Update the current station commodities
                         CurrentStation.commodities = quotes;
                         CurrentStation.commoditiesupdatedat = (long)DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
@@ -1063,9 +1074,98 @@ namespace Eddi
                         Logging.Debug("Star system information updated from remote server; updating local copy");
                         StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
 
-                        // Post an update event
-                        Event @event = new MarketInformationUpdatedEvent(DateTime.UtcNow, "market");
-                        eventHandler(@event);
+                        // Post an update event, if greater than 10 min since last update
+                        if (CurrentStation.shipyardupdatedat - lastUpdate > 600)
+                        {
+                            Event @event = new MarketInformationUpdatedEvent(DateTime.UtcNow, "market");
+                            eventHandler(@event);
+                        }
+                    }
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        private bool eventOutfitting(OutfittingEvent theEvent)
+        {
+            if (CurrentStation != null && CurrentStation.name == theEvent.station)
+            {
+                if (theEvent.items != null)
+                {
+                    List<EddiDataDefinitions.Module> modules = new List<EddiDataDefinitions.Module>();
+
+                    foreach (OutfittingInfo item in theEvent.items)
+                    {
+                        EddiDataDefinitions.Module module = EddiDataDefinitions.Module.FromOutfittingInfo(item);
+                        if (module != null)
+                        {
+                            modules.Add(module);
+                        }
+                    }
+
+                    if (modules != null && theEvent.items.Count == modules.Count)
+                    {
+                        // Get the last outfitting update time
+                        long lastUpdate = CurrentStation.shipyardupdatedat ?? 0;
+
+                        // Update the current station commodities
+                        CurrentStation.outfitting = modules;
+                        CurrentStation.outfittingupdatedat = (long)DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
+
+                        // Update the current station information in our backend DB
+                        Logging.Debug("Star system information updated from remote server; updating local copy");
+                        StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
+
+                        // Post an update event, if greater than 10 min since last update
+                        if (CurrentStation.shipyardupdatedat - lastUpdate > 600)
+                        {
+                            Event @event = new MarketInformationUpdatedEvent(DateTime.UtcNow, "outfitting");
+                            eventHandler(@event);
+                        }
+                    }
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        private bool eventShipyard(ShipyardEvent theEvent)
+        {
+            if (CurrentStation != null && CurrentStation.name == theEvent.station)
+            {
+                if (theEvent.priceList != null)
+                {
+                    List<Ship> ships = new List<Ship>();
+
+                    foreach (ShipyardInfo item in theEvent.priceList)
+                    {
+                        Ship ship = Ship.FromShipyardInfo(item);
+                        if (ship != null)
+                        {
+                            ships.Add(ship);
+                        }
+                    }
+
+                    if (ships != null && theEvent.priceList.Count == ships.Count)
+                    {
+                        // Get the last shipyard update time
+                        long lastUpdate = CurrentStation.shipyardupdatedat ?? 0;
+
+                        // Update the current station commodities
+                        CurrentStation.shipyard = ships;
+                        CurrentStation.shipyardupdatedat = (long)DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
+
+                        // Update the current station information in our backend DB
+                        Logging.Debug("Star system information updated from remote server; updating local copy");
+                        StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
+
+                        // Post an update event, if greater than 10 min since last update
+                        if (CurrentStation.shipyardupdatedat - lastUpdate > 600)
+                        {
+                            Event @event = new MarketInformationUpdatedEvent(DateTime.UtcNow, "shipyard");
+                            eventHandler(@event);
+                        }
                     }
                     return true;
                 }

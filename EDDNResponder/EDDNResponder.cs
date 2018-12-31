@@ -317,6 +317,11 @@ namespace EDDNResponder
                             sendShipyardInformation();
                         }
                         break;
+                    case "shipyard":
+                        {
+                            sendShipyardInformation();
+                        }
+                        break;
                 }
             }
         }

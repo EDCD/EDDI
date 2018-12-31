@@ -458,5 +458,22 @@ namespace EddiDataDefinitions
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
         }
+
+        public static Ship FromShipyardInfo(ShipyardInfo item)
+        {
+            Ship ship = ShipDefinitions.FromEliteID(item.id) ?? ShipDefinitions.FromEDModel(item.shiptype);
+            if (ship == null)
+            {
+                // Unknown ship; report the full object so that we can update the definitions 
+                Logging.Info("Ship definition error: " + item.shiptype);
+
+                // Create a basic ship definition & supplement from the info available 
+                ship = new Ship();
+                ship.EDName = item.shiptype;
+            }
+            ship.value = item.shipprice;
+
+            return ship;
+        }
     }
 }
