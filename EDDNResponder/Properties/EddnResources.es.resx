@@ -123,7 +123,5 @@
   <data name="name" xml:space="preserve">
     <value>Contestador EDDN</value>
   </data>
-  <data name="errPosition" xml:space="preserve">
-    <value>El contestador de E D D N está en un estado inválido. Por favor, valida de nuevo tu posición saltando a otro sistema y volviendo al actual, o desconecta e inicia sesión de nuevo.</value>
-  </data>
+  
 </root>

@@ -123,7 +123,5 @@
   <data name="name" xml:space="preserve">
     <value>Info an EDDN</value>
   </data>
-  <data name="errPosition" xml:space="preserve">
-    <value>Die E D D N-Verbindung befindet sich in einem ungültigen Zustand und kann keine Nachrichten senden. Bitte überprüfen Sie Ihre Position, indem Sie entweder aus dem System springen und wieder zurückspringen oder sich abmelden und wieder anmelden.</value>
-  </data>
+  
 </root>
