@@ -72,6 +72,8 @@
     <Compile Include="BodyType.cs" />
     <Compile Include="CargoInfo.cs" />
     <Compile Include="Happiness.cs" />
+    <Compile Include="MarketInfo.cs" />
+    <Compile Include="OutfittingInfo.cs" />
     <Compile Include="Properties\Happiness.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -83,6 +85,7 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="ShipyardInfo.cs" />
     <Compile Include="SignalSource.cs" />
     <Compile Include="Properties\SignalSource.Designer.cs">
       <AutoGen>True</AutoGen>

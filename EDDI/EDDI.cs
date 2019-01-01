@@ -8,7 +8,6 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -36,13 +35,14 @@ namespace Eddi
         public bool SpeechResponderModalWait { get; set; } = false;
 
         private static bool started;
-
         internal static bool running = true;
 
+        private static bool allowMarketUpdate = false;
+        private static bool allowOutfittingUpdate = false;
+        private static bool allowShipyardUpdate = false;
+
         public bool inCQC { get; private set; } = false;
-
         public bool inCrew { get; private set; } = false;
-
         public bool inBeta { get; private set; } = false;
 
         static EDDI()
@@ -698,6 +698,19 @@ namespace Eddi
                     {
                         passEvent = eventFriends((FriendsEvent)@event);
                     }
+                    else if (@event is MarketEvent)
+                    {
+                        passEvent = eventMarket((MarketEvent)@event);
+                    }
+                    else if (@event is OutfittingEvent)
+                    {
+                        passEvent = eventOutfitting((OutfittingEvent)@event);
+                    }
+                    else if (@event is ShipyardEvent)
+                    {
+                        passEvent = eventShipyard((ShipyardEvent)@event);
+                    }
+
                     // Additional processing is over, send to the event responders if required
                     if (passEvent)
                     {
@@ -957,6 +970,11 @@ namespace Eddi
         {
             updateCurrentSystem(theEvent.system);
 
+            // Upon docking, allow manual station updates once
+            allowMarketUpdate = true;
+            allowOutfittingUpdate = true;
+            allowShipyardUpdate = true;
+
             if (CurrentStation != null && CurrentStation.name == theEvent.station)
             {
                 // We are already at this station; nothing to do
@@ -1031,6 +1049,120 @@ namespace Eddi
             refreshProfile();
 
             return true;
+        }
+
+        private bool eventMarket(MarketEvent theEvent)
+        {
+            if (allowMarketUpdate && CurrentStation != null && CurrentStation.marketId == theEvent.marketId)
+            {
+                MarketInfoReader info = MarketInfoReader.FromFile();
+                if (info != null)
+                {
+                    List<CommodityMarketQuote> quotes = new List<CommodityMarketQuote>();
+                    foreach (MarketInfo item in info.Items)
+                    {
+                        CommodityMarketQuote quote = CommodityMarketQuote.FromMarketInfo(item);
+                        if (quote != null)
+                        {
+                            quotes.Add(quote);
+                        }
+                    }
+
+                    if (quotes != null && info.Items.Count == quotes.Count)
+                    {
+                        // Update the current station commodities
+                        allowMarketUpdate = false;
+                        CurrentStation.commodities = quotes;
+                        CurrentStation.commoditiesupdatedat = (long)DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
+
+                        // Update the current station information in our backend DB
+                        Logging.Debug("Star system information updated from remote server; updating local copy");
+                        StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
+
+                        // Post an update event for new market data
+                        Event @event = new MarketInformationUpdatedEvent(DateTime.UtcNow, "market");
+                        eventHandler(@event);
+                    }
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        private bool eventOutfitting(OutfittingEvent theEvent)
+        {
+            if (allowOutfittingUpdate && CurrentStation != null && CurrentStation.marketId == theEvent.marketId)
+            {
+                OutfittingInfoReader info = OutfittingInfoReader.FromFile();
+                if (info.Items != null)
+                {
+                    List<EddiDataDefinitions.Module> modules = new List<EddiDataDefinitions.Module>();
+                    foreach (OutfittingInfo item in info.Items)
+                    {
+                        EddiDataDefinitions.Module module = EddiDataDefinitions.Module.FromOutfittingInfo(item);
+                        if (module != null)
+                        {
+                            modules.Add(module);
+                        }
+                    }
+
+                    if (modules != null && info.Items.Count == modules.Count)
+                    {
+                        // Update the current station outfitting
+                        allowOutfittingUpdate = false;
+                        CurrentStation.outfitting = modules;
+                        CurrentStation.outfittingupdatedat = (long)DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
+
+                        // Update the current station information in our backend DB
+                        Logging.Debug("Star system information updated from remote server; updating local copy");
+                        StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
+
+                        // Post an update event for new outfitting data
+                        Event @event = new MarketInformationUpdatedEvent(DateTime.UtcNow, "outfitting");
+                        eventHandler(@event);
+                    }
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        private bool eventShipyard(ShipyardEvent theEvent)
+        {
+            if (allowShipyardUpdate && CurrentStation != null && CurrentStation.marketId == theEvent.marketId)
+            {
+                ShipyardInfoReader info = ShipyardInfoReader.FromFile();
+                if (info.PriceList != null)
+                {
+                    List<Ship> ships = new List<Ship>();
+                    foreach (ShipyardInfo item in info.PriceList)
+                    {
+                        Ship ship = Ship.FromShipyardInfo(item);
+                        if (ship != null)
+                        {
+                            ships.Add(ship);
+                        }
+                    }
+
+                    if (ships != null && info.PriceList.Count == ships.Count)
+                    {
+                        // Update the current station shipyard
+                        allowShipyardUpdate = false;
+                        CurrentStation.shipyard = ships;
+                        CurrentStation.shipyardupdatedat = (long)DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
+
+                        // Update the current station information in our backend DB
+                        Logging.Debug("Star system information updated from remote server; updating local copy");
+                        StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
+
+                        // Post an update event for new shipyard data
+                        Event @event = new MarketInformationUpdatedEvent(DateTime.UtcNow, "shipyard");
+                        eventHandler(@event);
+                    }
+                    return true;
+                }
+            }
+            return false;
         }
 
         private void updateCurrentSystem(string name)
@@ -1404,7 +1536,6 @@ namespace Eddi
             }
             return true;
         }
-
 
         private bool eventEnteredCQC(EnteredCQCEvent theEvent)
         {
@@ -1970,10 +2101,14 @@ namespace Eddi
                             StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
 
                             // Post an update event
-                            Event @event = new MarketInformationUpdatedEvent(DateTime.UtcNow);
+                            Event @event = new MarketInformationUpdatedEvent(DateTime.UtcNow, "profile");
                             eventHandler(@event);
 
                             profileUpdateNeeded = false;
+                            allowMarketUpdate = false;
+                            allowOutfittingUpdate = false;
+                            allowShipyardUpdate = false;
+
                             break;
                         }
 
@@ -2005,7 +2140,7 @@ namespace Eddi
         private void dummyRefreshMarketData()
         {
             Thread.Sleep(2000);
-            Event @event = new MarketInformationUpdatedEvent(DateTime.UtcNow);
+            Event @event = new MarketInformationUpdatedEvent(DateTime.UtcNow, "profile");
             eventHandler(@event);
         }
 

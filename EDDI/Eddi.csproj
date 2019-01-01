@@ -130,7 +130,10 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MarketInfoReader.cs" />
+    <Compile Include="OutfittingInfoReader.cs" />
     <Compile Include="Settings.cs" />
+    <Compile Include="ShipyardInfoReader.cs" />
     <Page Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

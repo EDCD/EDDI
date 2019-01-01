@@ -173,5 +173,54 @@ namespace EddiDataDefinitions
             quote.StatusFlags = StatusFlags;
             return quote;
         }
+
+        public static CommodityMarketQuote FromMarketInfo(MarketInfo item)
+        {
+            long eliteId = item.id;
+            string edName = item.name?.ToLowerInvariant()
+                ?.Replace("$", "")
+                ?.Replace("_name;", "");
+            string category = item.category.ToLowerInvariant()
+                ?.Replace("$market_category", "")
+                ?.Replace("_", "")
+                ?.Replace(";", "");
+
+            CommodityDefinition commodityDef = CommodityDefinition.CommodityDefinitionFromEliteID(eliteId) ?? CommodityDefinition.FromEDName(edName);
+            if (commodityDef == null || edName != commodityDef.edname.ToLowerInvariant())
+            {
+                if (commodityDef.edname != "Drones")
+                {
+                    // Unknown commodity; report the full object so that we can update the definitions 
+                    Logging.Info("Commodity definition error: " + edName);
+
+                    // Create a basic commodity definition from the info available 
+                    commodityDef = new CommodityDefinition(eliteId, -1, edName, CommodityCategory.FromEDName(category), item.meanprice, false);
+                }
+            }
+
+            CommodityMarketQuote quote = new CommodityMarketQuote(commodityDef)
+            {
+                fromFDev = true,
+                buyprice = item.buyprice,
+                avgprice = item.meanprice,
+                stock = item.stock,
+                stockbracket = item.stockbracket,
+                sellprice = item.sellprice,
+                demand = item.demand,
+                demandbracket = item.demandbracket
+            };
+
+            List<string> StatusFlags = new List<string>();
+            if (item.producer)
+            {
+                StatusFlags.Add("Producer");
+            }
+            if (item.consumer)
+            {
+                StatusFlags.Add("Consumer");
+            }
+            quote.StatusFlags = StatusFlags;
+            return quote;
+        }
     }
 }

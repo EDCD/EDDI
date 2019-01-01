@@ -839,8 +839,13 @@ namespace EddiJournalMonitor
                                 }
                                 handled = true;
                                 break;
-                            case "Shipyard": // Written when accessing the shipyard at a station, after shipyard.json has been updated.
-                                { } // Do nothing with this event for now - we prefer the data from the Frontier Companion API.
+                            case "Shipyard":
+                                {
+                                    long marketId = JsonParsing.getLong(data, "MarketID");
+                                    string station = JsonParsing.getString(data, "StationName");
+                                    string system = JsonParsing.getString(data, "StarSystem");
+                                    events.Add(new ShipyardEvent(timestamp, marketId, station, system) { raw = line });
+                                }
                                 handled = true;
                                 break;
                             case "ShipyardBuy":
@@ -1210,8 +1215,13 @@ namespace EddiJournalMonitor
                                 }
                                 handled = true;
                                 break;
-                            case "Outfitting": // Written when accessing outfitting at a station, after outfitting.json has been updated.
-                                { } // Do nothing with this event for now - we prefer the data from the Frontier Companion API.
+                            case "Outfitting":
+                                {
+                                    long marketId = JsonParsing.getLong(data, "MarketID");
+                                    string station = JsonParsing.getString(data, "StationName");
+                                    string system = JsonParsing.getString(data, "StarSystem");
+                                    events.Add(new OutfittingEvent(timestamp, marketId, station, system) { raw = line });
+                                }
                                 handled = true;
                                 break;
                             case "SetUserShipName":
@@ -1790,8 +1800,13 @@ namespace EddiJournalMonitor
                                 }
                                 handled = true;
                                 break;
-                            case "Market": // Written when accessing the commodities market at a station, after market.json has been updated.
-                                { } // Do nothing with this event for now - we prefer the data from the Frontier Companion API.
+                            case "Market":
+                                {
+                                    long marketId = JsonParsing.getLong(data, "MarketID");
+                                    string station = JsonParsing.getString(data, "StationName");
+                                    string system = JsonParsing.getString(data, "StarSystem");
+                                    events.Add(new MarketEvent(timestamp, marketId, station, system) { raw = line });
+                                }
                                 handled = true;
                                 break;
                             case "MarketBuy":

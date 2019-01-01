@@ -68,6 +68,9 @@
     <Compile Include="CargoWingUpdateEvent.cs" />
     <Compile Include="BountyPaidEvent.cs" />
     <Compile Include="EngineerContributionEvent.cs" />
+    <Compile Include="MarketEvent.cs" />
+    <Compile Include="OutfittingEvent.cs" />
+    <Compile Include="ShipyardEvent.cs" />
     <Compile Include="SignalDetectedEvent.cs" />
     <Compile Include="FSSDiscoveryScanEvent.cs" />
     <Compile Include="SquadronRankEvent.cs" />
