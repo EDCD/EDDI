@@ -2248,7 +2248,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Opal.
+        ///   Looks up a localized string similar to Void Opals.
         /// </summary>
         public static string Opal {
             get {
@@ -3198,6 +3198,15 @@ namespace EddiDataDefinitions.Properties {
         public static string UnknownArtifact3 {
             get {
                 return ResourceManager.GetString("UnknownArtifact3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Thargoid Biological Matter.
+        /// </summary>
+        public static string UnknownBiologicalMatter {
+            get {
+                return ResourceManager.GetString("UnknownBiologicalMatter", resourceCulture);
             }
         }
         

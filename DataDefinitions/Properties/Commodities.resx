@@ -1665,4 +1665,8 @@
     <value>Void Opals</value>
     <comment>Commodity Opal</comment>
   </data>
+  <data name="UnknownBiologicalMatter" xml:space="preserve">
+    <value>Thargoid Biological Matter</value>
+    <comment>Commodity UnknownBiologicalMatter</comment>
+  </data>
 </root>
