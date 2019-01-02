@@ -118,9 +118,9 @@ namespace UnitTests
             BodyScannedEvent ev = events[0] as BodyScannedEvent;
             Assert.IsNotNull(ev);
             Assert.AreEqual("Carbon dioxide", ev.atmosphereclass.invariantName);
-            Assert.AreEqual(96.5M, ev.atmospherecomposition[0].percent);
-            Assert.AreEqual("Rock", ev.solidcomposition[0].invariantName);
-            Assert.AreEqual(70M, ev.solidcomposition[0].percent);
+            Assert.AreEqual(96.5M, ev.atmospherecompositions[0].percent);
+            Assert.AreEqual("Rock", ev.solidcompositions[0].invariantName);
+            Assert.AreEqual(70M, ev.solidcompositions[0].percent);
         }
 
         [TestMethod]

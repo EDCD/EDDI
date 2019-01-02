@@ -2,6 +2,12 @@
 
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
+### Development
+  * Speech responder
+    * Revised `Body scanned` event variables for better interchangeability with with the `BodyDetails` function
+      * WAS: `atmospherecomposition`, IS: `atmospherecompositions`
+      * WAS: `solidcomposition`, IS: `solidcompositions`
+
 ### 3.3.2
   * EDDN responder
     * Made revisions to guard against reporting inaccurate star position data to EDDN.
