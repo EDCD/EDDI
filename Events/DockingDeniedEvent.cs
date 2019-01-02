@@ -9,7 +9,7 @@ namespace EddiEvents
     {
         public const string NAME = "Docking denied";
         public const string DESCRIPTION = "Triggered when your ship is denied docking at a station or outpost";
-        public const string SAMPLE = "{\"timestamp\":\"2016-06-10T14:32:03Z\",\"event\":\"DockingDenied\",\"StationName\":\"Jameson Memorial\", \"MarketID\": 128666762,\"Reason\":\"Distance\"}";
+        public const string SAMPLE = "{\"timestamp\":\"2016-06-10T14:32:03Z\",\"event\":\"DockingDenied\",\"StationName\":\"Jameson Memorial\", \"MarketID\": 128666762,\"Reason\":\"Distance\", \"StationType\":\"Orbis\"}";
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
         static DockingDeniedEvent()
@@ -26,7 +26,7 @@ namespace EddiEvents
         [JsonProperty("stationType")]
         public StationModel stationDefinition { get; private set; }
 
-        public string stationtype => stationDefinition.localizedName;
+        public string stationtype => stationDefinition?.localizedName;
 
         [JsonProperty("reason")]
         public string reason { get; private set; }
