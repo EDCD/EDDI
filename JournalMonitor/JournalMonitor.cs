@@ -451,7 +451,9 @@ namespace EddiJournalMonitor
 
                                     long? hullValue = JsonParsing.getOptionalLong(data, "HullValue");
                                     long? modulesValue = JsonParsing.getOptionalLong(data, "ModulesValue");
+                                    decimal hullHealth = sensibleHealth(JsonParsing.getDecimal(data, "HullHealth") * 100);
                                     long rebuy = JsonParsing.getLong(data, "Rebuy");
+                                    bool? hot = JsonParsing.getOptionalBool(data, "Hot");
 
                                     data.TryGetValue("Modules", out val);
                                     List<object> modulesData = (List<object>)val;
@@ -608,7 +610,7 @@ namespace EddiJournalMonitor
                                             }
                                         }
                                     }
-                                    events.Add(new ShipLoadoutEvent(timestamp, ship, shipId, shipName, shipIdent, hullValue, modulesValue, rebuy, compartments, hardpoints, paintjob) { raw = line });
+                                    events.Add(new ShipLoadoutEvent(timestamp, ship, shipId, shipName, shipIdent, hullValue, modulesValue, hullHealth, rebuy, hot, compartments, hardpoints, paintjob) { raw = line });
                                 }
                                 handled = true;
                                 break;

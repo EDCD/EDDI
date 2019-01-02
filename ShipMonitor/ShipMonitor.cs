@@ -230,6 +230,14 @@ namespace EddiShipMonitor
             {
                 handleJumpedEvent((JumpedEvent)@event);
             }
+            else if (@event is BountyIncurredEvent)
+            {
+                handleBountyIncurredEvent((BountyIncurredEvent)@event);
+            }
+            else if (@event is BountyPaidEvent)
+            {
+                handleBountyPaidEvent((BountyPaidEvent)@event);
+            }
         }
 
         // Set the ship name conditionally, avoiding filtered names
@@ -394,6 +402,7 @@ namespace EddiShipMonitor
             setShipName(ship, @event.shipname);
             setShipIdent(ship, @event.shipident);
             ship.paintjob = @event.paintjob;
+            ship.hot = @event.hot ?? false;
 
             // Write ship value, if given by the loadout event
             if (@event.value != null)
@@ -840,6 +849,26 @@ namespace EddiShipMonitor
                     ship.maxjump = @event.distance;
                     writeShips();
                 }
+            }
+        }
+
+        private void handleBountyIncurredEvent(BountyIncurredEvent @event)
+        {
+            Ship ship = GetCurrentShip();
+            if (ship != null)
+            {
+                ship.hot = true;
+                writeShips();
+            }
+        }
+
+        private void handleBountyPaidEvent(BountyPaidEvent @event)
+        {
+            Ship ship = GetShip(@event.shipid);
+            if (ship != null)
+            {
+                ship.hot = false;
+                writeShips();
             }
         }
 

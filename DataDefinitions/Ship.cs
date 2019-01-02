@@ -223,6 +223,26 @@ namespace EddiDataDefinitions
             get { return !string.IsNullOrEmpty(_raw); }
         }
 
+        /// <summary>
+        /// The wanted/hot status of this ship
+        /// </summary>
+        private bool _hot = false;
+        [JsonIgnore]
+        public bool hot
+        {
+            get
+            {
+                return _hot;
+            }
+            set
+            {
+                if (_hot != value)
+                {
+                    _hot = value;
+                    NotifyPropertyChanged("hot");
+                }
+            }
+        }
 
         /// <summary>the name of the system in which this ship is stored; null if the commander is in this ship</summary>
         private string _starsystem;
