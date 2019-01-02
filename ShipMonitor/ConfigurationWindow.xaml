@@ -50,9 +50,11 @@
                         <Style TargetType="{x:Type TextBlock}">
                             <Setter Property="TextAlignment" Value="Right" />
                             <Setter Property="Margin" Value="5, 0" />
+                            <Setter Property="TextBox.Foreground" Value="Black"></Setter>
                             <Setter Property="Text" Value="{x:Static resx:ShipMonitor.ship_clean}" />
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding hot}" Value="True">
+                                    <Setter Property="TextBox.Foreground" Value="Crimson"></Setter>
                                     <Setter Property="Text" Value="{x:Static resx:ShipMonitor.ship_hot}" />
                                 </DataTrigger>
                             </Style.Triggers>
