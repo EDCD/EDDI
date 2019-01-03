@@ -81,6 +81,10 @@
       <Project>{462ED721-1C9C-43FA-8A3F-4C1644363A5A}</Project>
       <Name>EddiCompanionAppService</Name>
     </ProjectReference>
+    <ProjectReference Include="..\DataProviderService\EddiDataProviderService.csproj">
+      <Project>{c5f48807-921b-456d-a9e4-a0282e5e8cf1}</Project>
+      <Name>EddiDataProviderService</Name>
+    </ProjectReference>
     <ProjectReference Include="..\EDDI\Eddi.csproj">
       <Project>{ec7ba042-a370-447f-8c3e-241358cebcbb}</Project>
       <Name>Eddi</Name>

@@ -1,5 +1,6 @@
 ﻿using Eddi;
 using EddiDataDefinitions;
+using EddiDataProviderService;
 using EddiEvents;
 using EddiCargoMonitor;
 using EddiMissionMonitor;
@@ -986,11 +987,17 @@ namespace EddiJournalMonitor
                                             {
                                                 string starSystem = JsonParsing.getString(shipRemote, "StarSystem");
                                                 long shipMarketId = JsonParsing.getLong(shipRemote, "ShipMarketID");
+                                                StarSystem systemData = StarSystemSqLiteRepository.Instance.GetStarSystem(starSystem, true);
+                                                Station stationData = systemData?.stations?.FirstOrDefault(s => s.marketId == shipMarketId);
                                                 long transferPrice = JsonParsing.getLong(shipRemote, "TransferPrice");
                                                 long transferTime = JsonParsing.getLong(shipRemote, "TransferTime");
                                                 
                                                 ship.starsystem = starSystem;
                                                 ship.marketid = shipMarketId;
+                                                if (stationData != null)
+                                                {
+                                                    ship.station = stationData.name;
+                                                }
                                                 ship.transferprice = transferPrice;
                                                 ship.transferprice = transferTime;
                                             }

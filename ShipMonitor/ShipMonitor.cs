@@ -1,5 +1,4 @@
 ﻿using Eddi;
-using EddiCargoMonitor;
 using EddiDataDefinitions;
 using EddiEvents;
 using Newtonsoft.Json;
@@ -529,9 +528,10 @@ namespace EddiShipMonitor
                         }
                         ship.value = shipHere.value;
                         ship.hot = shipHere.hot;
-                        ship.marketid = shipHere.marketid;
                         ship.starsystem = shipHere.starsystem;
+                        ship.marketid = shipHere.marketid;
                         ship.station = shipHere.station;
+
                     }
                 } 
             }
@@ -561,8 +561,9 @@ namespace EddiShipMonitor
                         ship.intransit = shipRemote.intransit;
                         if (!shipRemote.intransit)
                         {
-                            ship.marketid = shipRemote.marketid;
                             ship.starsystem = shipRemote.starsystem;
+                            ship.station = shipRemote.station;
+                            ship.marketid = shipRemote.marketid;
                             ship.transferprice = shipRemote.transferprice;
                             ship.transfertime = shipRemote.transfertime;
                         }
