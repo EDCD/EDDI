@@ -453,7 +453,7 @@ namespace EddiJournalMonitor
                                     long? modulesValue = JsonParsing.getOptionalLong(data, "ModulesValue");
                                     decimal hullHealth = sensibleHealth(JsonParsing.getDecimal(data, "HullHealth") * 100);
                                     long rebuy = JsonParsing.getLong(data, "Rebuy");
-                                    bool? hot = JsonParsing.getOptionalBool(data, "Hot");
+                                    bool hot = JsonParsing.getOptionalBool(data, "Hot") ?? false;
 
                                     data.TryGetValue("Modules", out val);
                                     List<object> modulesData = (List<object>)val;
@@ -927,6 +927,77 @@ namespace EddiJournalMonitor
                                     string soldShip = JsonParsing.getString(data, "SellOldShip");
 
                                     events.Add(new ShipSwappedEvent(timestamp, ship, shipId, soldShip, soldShipId, storedShip, storedShipId, marketId) { raw = line });
+                                }
+                                handled = true;
+                                break;
+                            case "StoredShips":
+                                {
+                                    long marketId = JsonParsing.getLong(data, "MarketID");
+                                    string station = JsonParsing.getString(data, "StationName");
+                                    string system = JsonParsing.getString(data, "StarSystem");
+
+                                    List<Ship> shipsHere = new List<Ship>();
+                                    List<Ship> shipsRemote = new List<Ship>();
+
+                                    data.TryGetValue("ShipsHere", out object val);
+                                    List<object> shipsHereData = (List<object>)val;
+                                    if (shipsHereData != null)
+                                    {
+                                        foreach (Dictionary<string, object> shipHere in shipsHereData)
+                                        {
+                                            int shipId = JsonParsing.getInt(shipHere, "ShipID");
+                                            string shipType = JsonParsing.getString(shipHere, "ShipType");
+                                            string name = JsonParsing.getString(shipHere, "Name");
+                                            long value = JsonParsing.getLong(shipHere, "Value");
+                                            bool hot = JsonParsing.getOptionalBool(shipHere, "Hot") ?? false;
+
+                                            Ship ship = ShipDefinitions.FromEDModel(shipType);
+                                            ship.LocalId = shipId;
+                                            ship.name = name;
+                                            ship.value = value;
+                                            ship.hot = hot;
+                                            ship.starsystem = system;
+                                            ship.station = station;
+                                            ship.marketid = marketId;
+                                            shipsHere.Add(ship);
+                                        }
+                                    }
+
+                                    data.TryGetValue("ShipsRemote", out val);
+                                    List<object> shipsRemoteData = (List<object>)val;
+                                    if (shipsRemoteData != null)
+                                    {
+                                        foreach (Dictionary<string, object> shipRemote in shipsRemoteData)
+                                        {
+                                            int shipId = JsonParsing.getInt(shipRemote, "ShipID");
+                                            string shipType = JsonParsing.getString(shipRemote, "ShipType");
+                                            string name = JsonParsing.getString(shipRemote, "Name");
+                                            long value = JsonParsing.getLong(shipRemote, "Value");
+                                            bool hot = JsonParsing.getOptionalBool(shipRemote, "Hot") ?? false;
+                                            bool inTransit = JsonParsing.getOptionalBool(shipRemote, "InTransit") ?? false;
+
+                                            Ship ship = ShipDefinitions.FromEDModel(shipType);
+                                            ship.LocalId = shipId;
+                                            ship.name = name;
+                                            ship.value = value;
+                                            ship.hot = hot;
+                                            ship.intransit = inTransit;
+                                            if (!inTransit)
+                                            {
+                                                string starSystem = JsonParsing.getString(shipRemote, "StarSystem");
+                                                long shipMarketId = JsonParsing.getLong(shipRemote, "ShipMarketID");
+                                                long transferPrice = JsonParsing.getLong(shipRemote, "TransferPrice");
+                                                long transferTime = JsonParsing.getLong(shipRemote, "TransferTime");
+                                                
+                                                ship.starsystem = starSystem;
+                                                ship.marketid = shipMarketId;
+                                                ship.transferprice = transferPrice;
+                                                ship.transferprice = transferTime;
+                                            }
+                                            shipsRemote.Add(ship);
+                                        }
+                                    }
+                                    events.Add(new StoredShipsEvent(timestamp, marketId, station, system, shipsHere, shipsRemote) { raw = line });
                                 }
                                 handled = true;
                                 break;

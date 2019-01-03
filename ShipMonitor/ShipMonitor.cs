@@ -162,6 +162,10 @@ namespace EddiShipMonitor
             {
                 handleShipLoadoutEvent((ShipLoadoutEvent)@event);
             }
+            else if (@event is StoredShipsEvent)
+            {
+                handleStoredShipsEvent((StoredShipsEvent)@event);
+            }
             else if (@event is ShipRebootedEvent)
             {
                 handleShipRebootedEvent((ShipRebootedEvent)@event);
@@ -402,7 +406,7 @@ namespace EddiShipMonitor
             setShipName(ship, @event.shipname);
             setShipIdent(ship, @event.shipident);
             ship.paintjob = @event.paintjob;
-            ship.hot = @event.hot ?? false;
+            ship.hot = @event.hot;
 
             // Write ship value, if given by the loadout event
             if (@event.value != null)
@@ -499,6 +503,73 @@ namespace EddiShipMonitor
             // Cargo capacity
             ship.cargocapacity = (int)ship.compartments.Where(c => c.module != null && c.module.basename.Contains("CargoRack")).Sum(c => Math.Pow(2, c.module.@class));
             return ship;
+        }
+
+        private void handleStoredShipsEvent(StoredShipsEvent @event)
+        {
+            if (@event.shipsHere != null)
+            {
+                foreach (Ship shipHere in @event.shipsHere)
+                {
+                    Ship ship = GetShip(shipHere.LocalId);
+
+                    // Add ship stored at this station if not in shipyard
+                    if (ship == null)
+                    {
+                        shipHere.Role = Role.MultiPurpose;
+                        AddShip(shipHere);
+                    }
+
+                    // Update ship stored at this station to latest data
+                    else
+                    {
+                        if (shipHere.name != null || shipHere.name != string.Empty)
+                        {
+                            ship.name = shipHere.name;
+                        }
+                        ship.value = shipHere.value;
+                        ship.hot = shipHere.hot;
+                        ship.marketid = shipHere.marketid;
+                        ship.starsystem = shipHere.starsystem;
+                        ship.station = shipHere.station;
+                    }
+                } 
+            }
+
+            if (@event.shipsRemote != null)
+            {
+                foreach (Ship shipRemote in @event.shipsRemote)
+                {
+                    Ship ship = GetShip(shipRemote.LocalId);
+
+                    // Add ship stored at remote station if not in shipyard
+                    if (ship == null)
+                    {
+                        shipRemote.Role = Role.MultiPurpose;
+                        AddShip(shipRemote);
+                    }
+
+                    // Update ship stored at remote station to latest data
+                    else
+                    {
+                        if (shipRemote.name != null || shipRemote.name != string.Empty)
+                        {
+                            ship.name = shipRemote.name;
+                        }
+                        ship.value = shipRemote.value;
+                        ship.hot = shipRemote.hot;
+                        ship.intransit = shipRemote.intransit;
+                        if (!shipRemote.intransit)
+                        {
+                            ship.marketid = shipRemote.marketid;
+                            ship.starsystem = shipRemote.starsystem;
+                            ship.transferprice = shipRemote.transferprice;
+                            ship.transfertime = shipRemote.transfertime;
+                        }
+                    }
+                }
+            }
+            writeShips();
         }
 
         private void handleShipRebootedEvent(ShipRebootedEvent @event)

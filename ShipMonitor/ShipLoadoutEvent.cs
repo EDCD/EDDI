@@ -38,12 +38,12 @@ namespace EddiShipMonitor
         public long? modulesvalue { get; private set; }
         public long rebuy { get; private set; }
         public decimal hullhealth { get; private set; }
-        public bool? hot { get; private set; }
+        public bool hot { get; private set; }
         public string paintjob { get; private set; }
         public List<Hardpoint> hardpoints { get; private set;  }
         public List<Compartment> compartments { get; private set; }
 
-        public ShipLoadoutEvent(DateTime timestamp, string ship, int? shipId, string shipName, string shipIdent, long? hullValue, long? modulesValue, decimal hullHealth, long rebuy, bool? hot, List<Compartment> compartments, List<Hardpoint> hardpoints, string paintjob) : base(timestamp, NAME)
+        public ShipLoadoutEvent(DateTime timestamp, string ship, int? shipId, string shipName, string shipIdent, long? hullValue, long? modulesValue, decimal hullHealth, long rebuy, bool hot, List<Compartment> compartments, List<Hardpoint> hardpoints, string paintjob) : base(timestamp, NAME)
         {
             this.ship = ShipDefinitions.FromEDModel(ship).model;
             this.shipid = shipId;

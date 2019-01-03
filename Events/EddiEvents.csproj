@@ -75,6 +75,7 @@
     <Compile Include="FSSDiscoveryScanEvent.cs" />
     <Compile Include="SquadronRankEvent.cs" />
     <Compile Include="SquadronStatusEvent.cs" />
+    <Compile Include="StoredShipsEvent.cs" />
     <Compile Include="UnhandledEvent.cs" />
     <Compile Include="GlideEvent.cs" />
     <Compile Include="FighterRebuiltEvent.cs" />

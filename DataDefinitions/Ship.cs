@@ -263,22 +263,13 @@ namespace EddiDataDefinitions
         }
 
         /// <summary>the name of the station in which this ship is stored; null if the commander is in this ship</summary>
-        private string _station;
-        public string station
-        {
-            get
-            {
-                return _station;
-            }
-            set
-            {
-                if (_station != value)
-                {
-                    _station = value;
-                    NotifyPropertyChanged("station");
-                }
-            }
-        }
+        public string station { get; set; }
+        public long? marketid { get; set; }
+
+        // Other properties for when this ship is stored
+        public bool intransit { get; set; }
+        public long? transferprice { get; set; }
+        public long? transfertime { get; set; }
 
         public decimal health { get; set; }
         public Module cargohatch { get; set; }

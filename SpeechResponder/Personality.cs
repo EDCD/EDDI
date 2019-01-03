@@ -271,7 +271,7 @@ namespace EddiSpeechResponder
             // Report missing scripts, except those we have specifically named
             /// `Belt scanned` is a useless event, only exists so that the count on nav beacon scans comes out right
             /// `Jumping` and `Modification applied` are deprecated events
-            /// `Cargo`, `Market`, `Outfitting`, `Shipyard`, `Status`, and `Unhandled event` are events which shares updates with
+            /// `Cargo`, `Market`, `Outfitting`, `Shipyard`, `Status`, `Stored ships`, and `Unhandled event` are events which shares updates with
             /// monitors / responders but are not intended to be user facing
             string[] ignoredEventKeys = {
                 "Belt scanned",
@@ -283,6 +283,7 @@ namespace EddiSpeechResponder
                 "Outfitting",
                 "Shipyard",
                 "Status",
+                "Stored ships",
                 "Unhandled event"
             };
 
