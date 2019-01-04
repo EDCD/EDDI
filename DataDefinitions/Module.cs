@@ -48,7 +48,17 @@ namespace EddiDataDefinitions
         [JsonProperty]
         public decimal health { get; set; }
         [JsonProperty]
+        public bool hot { get; set; } // False = `clean', true = `hot`
+
+        // Engineering modification properties
+        [JsonProperty]
         public bool modified { get; set; } // If the module has been modified
+        [JsonProperty]
+        public string engineermodification { get; set; }
+        [JsonProperty]
+        public int  engineerlevel { get; set; }
+        [JsonProperty]
+        public decimal engineerquality { get; set; }
 
         // Admin
         // The ID in Elite: Dangerous' database
@@ -87,6 +97,9 @@ namespace EddiDataDefinitions
             this.EDID = Module.EDID;
             this.EDDBID = Module.EDDBID;
             this.modified = Module.modified;
+            this.engineermodification = Module.engineermodification;
+            this.engineerlevel = Module.engineerlevel;
+            this.engineerquality = Module.engineerquality;
         }
 
         public Module(long EDID, string edname, long EDDBID, string basename, int Class, string Grade, long Value) : base(edname, basename)

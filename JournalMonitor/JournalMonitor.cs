@@ -482,16 +482,20 @@ namespace EddiJournalMonitor
                                                 health = Math.Round(health);
                                             }
 
-                                            // Flag if module has engineering modifications
-                                            moduleData.TryGetValue("Engineering", out val);
-                                            bool modified = val != null ? true : false;
-
                                             // Some built-in modules don't give "Value" keys in the Loadout event. We'll set them to zero to match the Frontier API.
                                             long price = JsonParsing.getOptionalLong(moduleData, "Value") ?? 0;
 
                                             // Ammunition
                                             int? clip = JsonParsing.getOptionalInt(moduleData, "AmmoInClip");
                                             int? hopper = JsonParsing.getOptionalInt(moduleData, "AmmoInHopper");
+
+                                            // Engineering modifications
+                                            moduleData.TryGetValue("Engineering", out val);
+                                            bool modified = val != null ? true : false;
+                                            Dictionary<string, object> engineeringData = (Dictionary<string, object>)val;
+                                            string modification = modified ? JsonParsing.getString(engineeringData, "BlueprintName") : null;
+                                            int level = modified ? JsonParsing.getInt(engineeringData, "Level") : 0;
+                                            decimal quality = modified ? JsonParsing.getDecimal(engineeringData, "Quality") : 0;
 
                                             if (slot.Contains("Hardpoint"))
                                             {
@@ -528,10 +532,13 @@ namespace EddiJournalMonitor
                                                     module.enabled = enabled;
                                                     module.priority = priority;
                                                     module.health = health;
-                                                    module.modified = modified;
                                                     module.price = price;
                                                     module.ammoinclip = clip;
                                                     module.ammoinhopper = hopper;
+                                                    module.modified = modified;
+                                                    module.engineermodification = modification;
+                                                    module.engineerlevel = level;
+                                                    module.engineerquality = quality;
                                                     hardpoint.module = module;
                                                     hardpoints.Add(hardpoint);
                                                 }
@@ -601,10 +608,13 @@ namespace EddiJournalMonitor
                                                     module.enabled = enabled;
                                                     module.priority = priority;
                                                     module.health = health;
-                                                    module.modified = modified;
                                                     module.price = price;
                                                     module.ammoinclip = clip;
                                                     module.ammoinhopper = hopper;
+                                                    module.modified = modified;
+                                                    module.engineermodification = modification;
+                                                    module.engineerlevel = level;
+                                                    module.engineerquality = quality;
                                                     compartment.module = module;
                                                     compartments.Add(compartment);
                                                 }
