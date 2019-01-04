@@ -1162,7 +1162,12 @@ namespace EddiJournalMonitor
                                             slots.Add(slot);
 
                                             module = Module.FromEDName(JsonParsing.getString(item, "Name"));
-                                            module.modified = JsonParsing.getString(item, "EngineerModifications") != null;
+                                            module.hot = JsonParsing.getBool(data, "Hot");
+                                            string engineerModifications = JsonParsing.getString(data, "EngineerModifications");
+                                            module.modified = engineerModifications != null;
+                                            module.engineermodification = engineerModifications;
+                                            module.engineerlevel = JsonParsing.getOptionalInt(data, "Level") ?? 0;
+                                            module.engineerquality = JsonParsing.getOptionalDecimal(data, "Quality") ?? 0;
                                             modules.Add(module);
                                         }
                                     }
@@ -1207,16 +1212,22 @@ namespace EddiJournalMonitor
 
                                     string slot = JsonParsing.getString(data, "Slot");
                                     Module module = Module.FromEDName(JsonParsing.getString(data, "RetrievedItem"));
-                                    data.TryGetValue("Cost", out val);
-                                    long? cost = JsonParsing.getOptionalLong(data, "Cost");
+                                    module.hot = JsonParsing.getBool(data, "Hot");
                                     string engineerModifications = JsonParsing.getString(data, "EngineerModifications");
                                     module.modified = engineerModifications != null;
+                                    module.engineermodification = engineerModifications;
+                                    module.engineerlevel = JsonParsing.getOptionalInt(data, "Level") ?? 0;
+                                    module.engineerquality = JsonParsing.getOptionalDecimal(data, "Quality") ?? 0;
 
                                     // Set retrieved module defaults
                                     module.price = module.value;
                                     module.enabled = true;
                                     module.priority = 1;
                                     module.health = 100;
+
+                                    // Set module cost
+                                    data.TryGetValue("Cost", out val);
+                                    long? cost = JsonParsing.getOptionalLong(data, "Cost");
 
                                     Module swapoutModule = Module.FromEDName(JsonParsing.getString(data, "SwapOutItem"));
 
@@ -1269,8 +1280,13 @@ namespace EddiJournalMonitor
 
                                     string slot = JsonParsing.getString(data, "Slot");
                                     Module module = Module.FromEDName(JsonParsing.getString(data, "StoredItem"));
+                                    module.hot = JsonParsing.getBool(data, "Hot");
                                     string engineerModifications = JsonParsing.getString(data, "EngineerModifications");
                                     module.modified = engineerModifications != null;
+                                    module.engineermodification = engineerModifications;
+                                    module.engineerlevel = JsonParsing.getOptionalInt(data, "Level") ?? 0;
+                                    module.engineerquality = JsonParsing.getOptionalDecimal(data, "Quality") ?? 0;
+
                                     data.TryGetValue("Cost", out val);
                                     long? cost = JsonParsing.getOptionalLong(data, "Cost");
 
