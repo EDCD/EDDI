@@ -1682,7 +1682,8 @@ namespace Eddi
                         EDDBID = -1,
                         Type = BodyType.FromEDName("Star"),
                         name = theEvent.name,
-                        systemname = CurrentStarSystem?.name
+                        systemname = CurrentStarSystem?.name,
+                        systemAddress = CurrentStarSystem?.systemAddress
                     };
                     CurrentStarSystem.bodies?.Add(star);
                 }
@@ -1723,7 +1724,8 @@ namespace Eddi
                         EDDBID = -1,
                         Type = BodyType.FromEDName("Planet"),
                         name = theEvent.name,
-                        systemname = CurrentStarSystem.name
+                        systemname = CurrentStarSystem.name,
+                        systemAddress = CurrentStarSystem?.systemAddress
                     };
                     CurrentStarSystem.bodies.Add(body);
                 }

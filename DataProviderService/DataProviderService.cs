@@ -40,7 +40,13 @@ namespace EddiDataProviderService
                 if (showBodies)
                 {
                     List<Body> bodies = StarMapService.GetStarMapBodies(starSystem.name);
-                    starSystem.bodies = bodies;
+                    foreach (Body body in bodies)
+                    {
+                        body.systemname = starSystem.name;
+                        body.systemAddress = starSystem.systemAddress;
+                        body.systemEDDBID = starSystem.EDDBID;
+                        starSystem.bodies.Add(body);
+                    }
                 }
 
                 if (starSystem?.population > 0)
