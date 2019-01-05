@@ -58,6 +58,16 @@ Full details of the variables available for each noted event, and VoiceAttack in
   * Ship monitor
     * Dropped access for EDShipyard.com as it is no longer being maintained.
   * Speech responder
+    * The `P()` function now converts roman numerals in planet classes (e.g. Class II gas giant) into numbers (e.g. Class 2 gas giant) to ensure proper pronunciation.
+    * Revised `Body scanned` event variables for better interchangeability with with the `BodyDetails` function
+      * WAS: `atmospherecomposition`, IS: `atmospherecompositions`
+      * WAS: `solidcomposition`, IS: `solidcompositions`
+    * Revised `Star scanned` event variable for better interchangeability with with the `BodyDetails` function
+      * WAS: `distancefromarrival`, IS: `distance` (`distancefromarrival` property preserved for compatibility with legacy scripts)
+    * `Star scanned` script revised. Preference added for reporting stellar class. Corrected edit scars. Refactored to reduce redundancies. 
+    
+### Development
+  * Speech responder
     * Fixed a bug that would cause Test scripts to only be written to file and not voiced.
     * Amended layout of the 'Delete' button.
   * VoiceAttack responder
@@ -119,9 +129,6 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Fixed a bug that could prevent proper lookup of bodies using the `BodyDetails()` function.
     * Added new `Next jump` event
     * Added new top level object `nextsystem` - like `lastsystem` but for the next system you are visiting. e.g. "Our next waypoint is \{nextsystem.name\}".
-    * Revised `Body scanned` event variables for better interchangeability with with the `BodyDetails` function
-      * WAS: `atmospherecomposition`, IS: `atmospherecompositions`
-      * WAS: `solidcomposition`, IS: `solidcompositions`
   * VoiceAttack  
     * Added new `Next system` variables
     
