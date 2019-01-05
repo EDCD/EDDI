@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EddiDataDefinitions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -141,6 +142,31 @@ namespace EddiSpeechService
 
             // Some test to speech voices replace "TTS" with "text-to-speech". Fix that here.
             return val != "TTS" ? val : val.Replace("TTS", "T T S");
+        }
+
+        public static string PlanetClass(string val)
+        {
+            if (val == null)
+            {
+                return null;
+            }
+
+            // Properly handle roman numerals in planet classes
+            foreach (PlanetClass planetClass in EddiDataDefinitions.PlanetClass.AllOfThem)
+            {
+                if (val.Contains(planetClass.localizedName))
+                {
+                    string numeralToNumber = planetClass.localizedName
+                        .Replace(" I ", " 1 ")
+                        .Replace(" II ", " 2 ")
+                        .Replace(" III ", " 3 ")
+                        .Replace(" IV ", " 4 ")
+                        .Replace(" V ", " 5 ")
+                        .Replace(" VI ", " 6 ");
+                    val = val.Replace(planetClass.localizedName, numeralToNumber);
+                }
+            }
+            return val;
         }
 
         private static Dictionary<string, string[]> CONSTELLATION_PRONUNCIATIONS = new Dictionary<string, string[]>()
