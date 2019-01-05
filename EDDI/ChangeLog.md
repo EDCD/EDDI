@@ -93,6 +93,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Revised `Star scanned` event variable for better interchangeability with with the `BodyDetails` function
       * WAS: `distancefromarrival`, IS: `distance` (`distancefromarrival` property preserved for compatibility with legacy scripts)
     * `Star scanned` script revised. Preference added for reporting stellar class. Corrected edit scars. Refactored to reduce redundancies. 
+    * `Body volcanism script` revised. Corrected edit scars and added a little more variety to the script.
     
 ### Development
   * Speech responder
