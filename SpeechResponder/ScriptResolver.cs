@@ -206,6 +206,10 @@ namespace EddiSpeechResponder
                 {
                     translation = Translations.StellarClass(val);
                 }
+                if (translation == val)
+                {
+                    translation = Translations.PlanetClass(val);
+                }
                 return translation;
             }, 1);
 
