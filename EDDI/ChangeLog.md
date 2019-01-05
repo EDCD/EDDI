@@ -4,9 +4,13 @@ Full details of the variables available for each noted event, and VoiceAttack in
 
 ### Development
   * Speech responder
+    * The `P()` function now converts roman numerals in planet classes (e.g. Class II gas giant) into numbers (e.g. Class 2 gas giant) to ensure proper pronunciation.
     * Revised `Body scanned` event variables for better interchangeability with with the `BodyDetails` function
       * WAS: `atmospherecomposition`, IS: `atmospherecompositions`
       * WAS: `solidcomposition`, IS: `solidcompositions`
+    * Revised `Star scanned` event variable for better interchangeability with with the `BodyDetails` function
+      * WAS: `distancefromarrival`, IS: `distance` (`distancefromarrival` property preserved for compatibility with legacy scripts)
+    * `Star scanned` script revised. Preference added for reporting stellar class. Corrected edit scars. Refactored to reduce redundancies. 
 
 ### 3.3.2
   * EDDN responder
