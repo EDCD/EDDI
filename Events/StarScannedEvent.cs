@@ -33,7 +33,8 @@ namespace EddiEvents
             VARIABLES.Add("age", "The age of the star that has been scanned, in millions of years");
             VARIABLES.Add("ageprobability", "The probablility of finding a star of this class with this age");
             VARIABLES.Add("temperature", "The temperature of the star that has been scanned");
-            VARIABLES.Add("distancefromarrival", "The distance in LS from the main star");
+            VARIABLES.Add("distance", "The distance in LS from the main star");
+            VARIABLES.Add("distancefromarrival", "The distance in LS from the main star (old - do not use... preserved for compatibility)");
             VARIABLES.Add("orbitalperiod", "The number of seconds taken for a full orbit of the main star");
             VARIABLES.Add("rotationperiod", "The number of seconds taken for a full rotation");
             VARIABLES.Add("semimajoraxis", "");
@@ -77,9 +78,10 @@ namespace EddiEvents
 
         public string chromaticity { get; private set; }
 
-        public decimal distance => distancefromarrival;  // Object property as reported from the BodyDetails() function
+        public decimal distance { get; private set; }  // Object property matches the BodyDetails() function
 
-        public decimal distancefromarrival { get; private set; }
+        [Obsolete("Preserved for compatibility with older Cottle scripts only. Use `distance` instead.")]
+        public decimal distancefromarrival => distance;
 
         public decimal? orbitalperiod { get; private set; }
 
@@ -106,7 +108,7 @@ namespace EddiEvents
 
         public bool mainstar { get; private set; }
 
-        public StarScannedEvent(DateTime timestamp, string scantype, string name, string stellarclass, decimal solarmass, decimal radiusKm, decimal absolutemagnitude, string luminosityclass, long age, decimal temperature, decimal distancefromarrival, decimal? orbitalperiod, decimal rotationperiod, decimal? semimajoraxis, decimal? eccentricity, decimal? orbitalinclination, decimal? periapsis, List<Ring> rings, bool mainstar) : base(timestamp, NAME)
+        public StarScannedEvent(DateTime timestamp, string scantype, string name, string stellarclass, decimal solarmass, decimal radiusKm, decimal absolutemagnitude, string luminosityclass, long ageMegayears, decimal temperatureKelvin, decimal distanceLs, decimal? orbitalperiod, decimal rotationperiod, decimal? semimajoraxis, decimal? eccentricity, decimal? orbitalinclination, decimal? periapsis, List<Ring> rings, bool mainstar) : base(timestamp, NAME)
         {
             this.scantype = scantype;
             this.name = name;
@@ -115,9 +117,9 @@ namespace EddiEvents
             this.radius = radiusKm;
             this.absolutemagnitude = absolutemagnitude;
             this.luminosityclass = luminosityclass;         
-            this.age = age;
-            this.temperature = temperature;
-            this.distancefromarrival = distancefromarrival;
+            this.age = ageMegayears;
+            this.temperature = temperatureKelvin;
+            this.distance = distanceLs;
             this.orbitalperiod = orbitalperiod;
             this.rotationperiod = rotationperiod;
             this.semimajoraxis = semimajoraxis;
@@ -136,13 +138,13 @@ namespace EddiEvents
                 ageprobability = StarClass.sanitiseCP(starClass.ageCP(this.age));
                 chromaticity = starClass.chromaticity.localizedName;
             }
-            if (radiusKm != 0 && temperature != 0)
+            if (radiusKm != 0 && temperatureKelvin != 0)
             {
                 // Minimum estimated single-star habitable zone (target black body temperature of 315°K / 42°C / 107°F or less)
-                estimatedhabzoneinner = StarClass.DistanceFromStarForTemperature(StarClass.maxHabitableTempKelvin, Convert.ToDouble(radiusKm), Convert.ToDouble(temperature));
+                estimatedhabzoneinner = StarClass.DistanceFromStarForTemperature(StarClass.maxHabitableTempKelvin, Convert.ToDouble(radiusKm), Convert.ToDouble(temperatureKelvin));
 
                 // Maximum estimated single-star habitable zone (target black body temperature of 223.15°K / -50°C / -58°F or more)
-                estimatedhabzoneouter = StarClass.DistanceFromStarForTemperature(StarClass.minHabitableTempKelvin, Convert.ToDouble(radiusKm), Convert.ToDouble(temperature));
+                estimatedhabzoneouter = StarClass.DistanceFromStarForTemperature(StarClass.minHabitableTempKelvin, Convert.ToDouble(radiusKm), Convert.ToDouble(temperatureKelvin));
             }
             estimatedvalue = estimateValue(scantype != null ? scantype.Contains("Detail") : false);
             this.mainstar = mainstar;

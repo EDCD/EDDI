@@ -1691,7 +1691,7 @@ namespace Eddi
 
                 // Update with the information we have
                 star.age = theEvent.age;
-                star.distance = (long?)theEvent.distancefromarrival;
+                star.distance = (long?)theEvent.distance;
                 star.luminosityclass = theEvent.luminosityclass;
                 star.temperature = (long?)theEvent.temperature;
                 star.stellarclass = theEvent.stellarclass;
