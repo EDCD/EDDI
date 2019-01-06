@@ -56,8 +56,11 @@ namespace EddiDataDefinitions
             get => definition?.localizedName;
             set
             {
-                CommodityDefinition newDef = CommodityDefinition.FromNameOrEDName(value);
-                this.definition = newDef;
+                if (this.definition == null)
+                {
+                    CommodityDefinition newDef = CommodityDefinition.FromNameOrEDName(value);
+                    this.definition = newDef;
+                }
             }
         }
 

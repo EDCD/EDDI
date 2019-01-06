@@ -131,7 +131,7 @@ namespace EddiDataDefinitions
             }
 
             from = from.ToLowerInvariant();
-            T result = AllOfThem.FirstOrDefault(
+            T result = AllOfThem.ToList().FirstOrDefault(
                 v =>
                 v.localizedName.ToLowerInvariant() == from
                 || v.invariantName.ToLowerInvariant() == from);
@@ -147,7 +147,7 @@ namespace EddiDataDefinitions
             }
 
             string tidiedFrom = from?.Replace(";", "").Replace(" ", "").ToLowerInvariant();
-            T result = AllOfThem.FirstOrDefault(
+            T result = AllOfThem.ToList().FirstOrDefault(
                 v => v.edname
                 .ToLowerInvariant()
                 .Replace(";", "") == tidiedFrom);
