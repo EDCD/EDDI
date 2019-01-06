@@ -133,6 +133,11 @@ namespace EddiSpeechResponder
 
         public void Handle(Event @event)
         {
+            if (@event.fromLoad)
+            {
+                return;
+            }
+
             Logging.Debug("Received event " + JsonConvert.SerializeObject(@event));
 
             if (@event is BeltScannedEvent)

@@ -425,7 +425,7 @@ namespace EddiStatusMonitor
             {
                 gliding = true;
                 EnteredNormalSpaceEvent theEvent = (EnteredNormalSpaceEvent)@event;
-                EDDI.Instance.eventHandler(new GlideEvent(DateTime.UtcNow, gliding, theEvent.system, theEvent.systemAddress, theEvent.body, theEvent.bodyType));
+                EDDI.Instance.eventHandler(new GlideEvent(DateTime.UtcNow, gliding, theEvent.system, theEvent.systemAddress, theEvent.body, theEvent.bodyType) { raw = @event.raw, fromLoad = @event.fromLoad });
             }
         }
 
@@ -435,7 +435,7 @@ namespace EddiStatusMonitor
             {
                 jumping = true;
             }
-            EDDI.Instance.eventHandler(new ShipFsdEvent(DateTime.UtcNow, "charging complete"));
+            EDDI.Instance.eventHandler(new ShipFsdEvent(DateTime.UtcNow, "charging complete") { raw = @event.raw, fromLoad = @event.fromLoad });
         }
 
         public void PostHandle(Event @event)
