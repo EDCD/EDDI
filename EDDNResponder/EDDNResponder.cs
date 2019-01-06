@@ -102,7 +102,7 @@ namespace EDDNResponder
         {
         }
 
-        private void handleRawEvent(Event theEvent, bool sendToEddn = true)
+        private void handleRawEvent(Event theEvent)
         {
             IDictionary<string, object> data = Deserializtion.DeserializeData(theEvent.raw);
             string edType = JsonParsing.getString(data, "event");
@@ -127,10 +127,10 @@ namespace EDDNResponder
             // Confirm the data in memory is as accurate as possible
             if (edType == "Docked" || edType == "Scan")
             {
-                CheckLocationData(data, sendToEddn);
+                CheckLocationData(data);
             }
 
-            if (sendToEddn && !invalidState)
+            if (LocationIsSet())
             {
                 if (edType == "Docked" && systemName != null && stationName != null && marketId != null)
                 {
@@ -193,37 +193,44 @@ namespace EDDNResponder
             }
         }
 
-        private void CheckLocationData(IDictionary<string, object> data, bool sendToEddn)
+        private void CheckLocationData(IDictionary<string, object> data)
         {
-            // The `Docked` event doesn't provide system coordinates, and the `Scan`event doesn't provide any system location data.
-            // The EDDN journal schema requires that we enrich the journal event data with coordinates and system name (and system address if possible).
-            if (data.ContainsKey("BodyName") && !data.ContainsKey("SystemName"))
-            {
-                // Apply heuristics to weed out mismatched systems and bodies
-                ConfirmScan(JsonParsing.getString(data, "BodyName"));
-            }
-            if (!data.ContainsKey("SystemAddress") || !data.ContainsKey("StarPos"))
-            {
-                // Out of an overabundance of caution, we do not use data from our saved star systems to enrich the data we send to EDDN, 
-                // but we do use it as an independent check to make sure our system address and coordinates are accurate
-                ConfirmAddressAndCoordinates(systemName);
-            }
-
             // Can only send journal data if we know our current location data is correct
             // If any location data is null, data shall not be sent to EDDN.
-            if (systemName == null || systemAddress == null || systemX == null || systemY == null || systemZ == null)
+            if (LocationIsSet())
             {
-                invalidState = true;
-                if (sendToEddn)
+                // The `Docked` event doesn't provide system coordinates, and the `Scan`event doesn't provide any system location data.
+                // The EDDN journal schema requires that we enrich the journal event data with coordinates and system name (and system address if possible).
+                if (data.ContainsKey("BodyName") && !data.ContainsKey("SystemName"))
                 {
+                    // Apply heuristics to weed out mismatched systems and bodies
+                    ConfirmScan(JsonParsing.getString(data, "BodyName"));
+                }
+                if (!data.ContainsKey("SystemAddress") || !data.ContainsKey("StarPos"))
+                {
+                    // Out of an overabundance of caution, we do not use data from our saved star systems to enrich the data we send to EDDN, 
+                    // but we do use it as an independent check to make sure our system address and coordinates are accurate
+                    ConfirmAddressAndCoordinates(systemName);
+                }
+
+                // Logging.Warn("TimeStamp: " + ((DateTime)data["timestamp"]).ToUniversalTime().ToString() + ", " + "SystemName: " + systemName + ", " + "SystemAddress: " + systemAddress + ", " + "StarPos: " + systemX + ", " + systemY + ", " + systemZ + ", " + "Event: " + (string)data["event"]);
+
+                if (LocationIsSet())
+                {
+                    invalidState = false;
+                }
+                else if (!invalidState)
+                {
+                    invalidState = true;
                     Logging.Warn("The EDDN responder is in an invalid state and is unable to send messages.", JsonConvert.SerializeObject(this) + " Event: " + JsonConvert.SerializeObject(data));
                     SpeechService.Instance.Say(null, EddiEddnResponder.Properties.EddnResources.errPosition, true);
                 }
             }
-            else
-            {
-                invalidState = false;
-            }
+        }
+
+        private bool LocationIsSet()
+        {
+            return systemName != null && systemAddress != null && systemX != null && systemY != null && systemZ != null;
         }
 
         private IDictionary<string, object> StripPersonalData(IDictionary<string, object> data)
