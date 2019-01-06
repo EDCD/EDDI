@@ -538,7 +538,7 @@ namespace UnitTests
             object[] arguments;
 
             UnhandledEvent unhandledLocation = new UnhandledEvent(DateTime.UtcNow, "Location") { raw = location };
-            arguments = new object[] { unhandledLocation, false };
+            arguments = new object[] { unhandledLocation };
             privateObject.Invoke("handleRawEvent", arguments);
             Assert.AreEqual("Pleiades Sector GW-W c1-4", responder.systemName);
             Assert.AreEqual(1183229809290, responder.systemAddress);
