@@ -13,16 +13,15 @@ namespace EddiJournalMonitor
         // What we are monitoring and what to do with it
         public string Directory;
         public Regex Filter;
-        public Action<string> Callback;
+        public Action<string, bool> Callback;
         public static string journalFileName = null;
 
         // Keep track of status
         private bool running;
-        public static bool loading = true;
 
         public LogMonitor(string filter) { Filter = new Regex(filter); }
 
-        public LogMonitor(string directory, string filter, Action<string> callback)
+        public LogMonitor(string directory, string filter, Action<string, bool> callback)
         {
             Directory = directory;
             Filter = new Regex(filter);
@@ -67,13 +66,12 @@ namespace EddiJournalMonitor
                     // Read all info already recorded in the file
                     long seekPos = 0;
                     int readLen = (int)fileInfo.Length;
-                    Read(seekPos, readLen, fileInfo);
+                    Read(seekPos, readLen, fileInfo, true);
                 }
                 else
                 {
                     // The player journal file in memory is the correct file. Look for new journal events
                     journalFileName = fileInfo.Name;
-                    loading = false;
 
                     long thisSize = fileInfo.Length;
                     int readLen = 0;
@@ -93,7 +91,7 @@ namespace EddiJournalMonitor
                             seekPos = 0;
                             readLen = (int)thisSize;
                         }
-                        Read(seekPos, readLen, fileInfo);
+                        Read(seekPos, readLen, fileInfo, false);
                     }
                     lastSize = thisSize;
                 }
@@ -101,7 +99,7 @@ namespace EddiJournalMonitor
             }
         }
 
-        private void Read(long seekPos, int readLen, FileInfo fileInfo)
+        private void Read(long seekPos, int readLen, FileInfo fileInfo, bool isLoadEvent)
         {
             using (FileStream fs = fileInfo.Open(FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
             {
@@ -120,7 +118,7 @@ namespace EddiJournalMonitor
                 {
                     if (line != "")
                     {
-                        Callback(line);
+                        Callback(line, isLoadEvent);
                     }
                 }
             }
