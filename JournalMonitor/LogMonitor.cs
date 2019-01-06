@@ -18,6 +18,7 @@ namespace EddiJournalMonitor
 
         // Keep track of status
         private bool running;
+        public static bool loading = true;
 
         public LogMonitor(string filter) { Filter = new Regex(filter); }
 
@@ -38,70 +39,46 @@ namespace EddiJournalMonitor
             }
 
             running = true;
-
-            // Start off by moving to the end of the file
             long lastSize = 0;
-            string lastName = null;
             FileInfo fileInfo = null;
-            try
-            {
-                fileInfo = FindLatestFile(Directory, Filter);
-            }
-            catch (NotSupportedException nsex)
-            {
-                Logging.Error("Directory " + Directory + " not supported: ", nsex);
-            }
-            if (fileInfo != null)
-            {
-                lastSize = fileInfo.Length;
-                lastName = fileInfo.Name;
-                journalFileName = lastName;
-
-                // Elite-specific: start off by grabbing the first line so that we know if we're in beta or live
-                using (FileStream fs = new FileStream(fileInfo.FullName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
-                using (StreamReader reader = new StreamReader(fs, Encoding.UTF8))
-                {
-                    string firstLine = reader.ReadLine() ?? "";
-                    // First line should be a file header
-                    if (firstLine.Contains("Fileheader"))
-                    {
-                        // Pass this along as an event
-                        Callback(firstLine);
-                    }
-                }
-            }
 
             // Main loop
             while (running)
             {
                 fileInfo = FindLatestFile(Directory, Filter);
-                if (fileInfo == null || fileInfo.Name != lastName)
+                if (fileInfo == null)
                 {
-                    lastName = fileInfo?.Name;
-                    lastSize = 0;
-                    if (fileInfo != null)
+                    // A player journal file could not be found. Sleep until a player journal file is found.
+                    Logging.Info("Error locating Elite Dangerous player journal. Journal monitor is not active. Have you installed and run Elite Dangerous previously? ");
+                    while (fileInfo == null)
                     {
-                        journalFileName = fileInfo.Name;
+                        Thread.Sleep(500);
+                        fileInfo = FindLatestFile(Directory, Filter);
                     }
-                    else
-                    {
-                        // A player journal file could not be found. Sleep until a player journal file is found.
-                        Logging.Info("Error locating Elite Dangerous player journal. Journal monitor is not active. Have you installed and run Elite Dangerous previously? ");
-                        while (fileInfo == null)
-                        {
-                            Thread.Sleep(500);
-                            fileInfo = FindLatestFile(Directory, Filter);
-                        }
-                        Logging.Info("Elite Dangerous player journal found. Journal monitor activated.");
-                        return;
-                    }
+                    Logging.Info("Elite Dangerous player journal found. Journal monitor activated.");
+                    return;
+                }
+                else if (journalFileName != null && fileInfo?.Name != journalFileName)
+                {
+                    // We have found a player journal file that is fresher than the one we are using
+                    journalFileName = fileInfo.Name;
+                    lastSize = fileInfo.Length;
+
+                    // Read all info already recorded in the file
+                    long seekPos = 0;
+                    int readLen = (int)fileInfo.Length;
+                    Read(seekPos, readLen, fileInfo, true);
                 }
                 else
                 {
+                    // The player journal file in memory is the correct file. Look for new journal events
                     journalFileName = fileInfo.Name;
+                    loading = false;
+
                     long thisSize = fileInfo.Length;
-                    long seekPos = 0;
                     int readLen = 0;
+                    long seekPos = 0;
+
                     if (lastSize != thisSize)
                     {
                         if (thisSize > lastSize)
@@ -116,29 +93,36 @@ namespace EddiJournalMonitor
                             seekPos = 0;
                             readLen = (int)thisSize;
                         }
-
-                        using (FileStream fs = fileInfo.Open(FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
-                        {
-                            fs.Seek(seekPos, SeekOrigin.Begin);
-                            byte[] bytes = new byte[readLen];
-                            int haveRead = 0;
-                            while (haveRead < readLen)
-                            {
-                                haveRead += fs.Read(bytes, haveRead, readLen - haveRead);
-                                fs.Seek(seekPos + haveRead, SeekOrigin.Begin);
-                            }
-                            // Convert bytes to string
-                            string s = Encoding.UTF8.GetString(bytes);
-                            string[] lines = Regex.Split(s, "\r?\n");
-                            foreach (string line in lines)
-                            {
-                                Callback(line);
-                            }
-                        }
+                        Read(seekPos, readLen, fileInfo, false);
                     }
                     lastSize = thisSize;
                 }
                 Thread.Sleep(100);
+            }
+        }
+
+        private void Read(long seekPos, int readLen, FileInfo fileInfo, bool loading = false)
+        {
+            using (FileStream fs = fileInfo.Open(FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+            {
+                fs.Seek(seekPos, SeekOrigin.Begin);
+                byte[] bytes = new byte[readLen];
+                int haveRead = 0;
+                while (haveRead < readLen)
+                {
+                    haveRead += fs.Read(bytes, haveRead, readLen - haveRead);
+                    fs.Seek(seekPos + haveRead, SeekOrigin.Begin);
+                }
+                // Convert bytes to string
+                string s = Encoding.UTF8.GetString(bytes);
+                string[] lines = Regex.Split(s, "\r?\n");
+                foreach (string line in lines)
+                {
+                    if (line != "")
+                    {
+                        Callback(line);
+                    }
+                }
             }
         }
 
@@ -156,7 +140,16 @@ namespace EddiJournalMonitor
                 return null;
             }
 
-            var directory = new DirectoryInfo(path);
+            DirectoryInfo directory = null;
+            try
+            {
+                directory = new DirectoryInfo(path);
+            }
+            catch (NotSupportedException nsex)
+            {
+                Logging.Error("Directory path " + path + " not supported: ", nsex);
+            }
+
             if (directory != null)
             {
                 try
@@ -171,6 +164,7 @@ namespace EddiJournalMonitor
                 }
                 catch { }
             }
+
             return null;
         }
     }
