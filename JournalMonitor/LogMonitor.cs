@@ -58,7 +58,7 @@ namespace EddiJournalMonitor
                     Logging.Info("Elite Dangerous player journal found. Journal monitor activated.");
                     return;
                 }
-                else if (journalFileName != null && fileInfo?.Name != journalFileName)
+                else if (fileInfo?.Name != null && fileInfo?.Name != journalFileName)
                 {
                     // We have found a player journal file that is fresher than the one we are using
                     journalFileName = fileInfo.Name;
