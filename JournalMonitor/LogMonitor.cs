@@ -67,7 +67,7 @@ namespace EddiJournalMonitor
                     // Read all info already recorded in the file
                     long seekPos = 0;
                     int readLen = (int)fileInfo.Length;
-                    Read(seekPos, readLen, fileInfo, true);
+                    Read(seekPos, readLen, fileInfo);
                 }
                 else
                 {
@@ -93,7 +93,7 @@ namespace EddiJournalMonitor
                             seekPos = 0;
                             readLen = (int)thisSize;
                         }
-                        Read(seekPos, readLen, fileInfo, false);
+                        Read(seekPos, readLen, fileInfo);
                     }
                     lastSize = thisSize;
                 }
@@ -101,7 +101,7 @@ namespace EddiJournalMonitor
             }
         }
 
-        private void Read(long seekPos, int readLen, FileInfo fileInfo, bool loading = false)
+        private void Read(long seekPos, int readLen, FileInfo fileInfo)
         {
             using (FileStream fs = fileInfo.Open(FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
             {
