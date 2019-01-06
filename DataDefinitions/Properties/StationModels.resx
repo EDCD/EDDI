@@ -157,4 +157,8 @@
     <value>Surface Outpost</value>
     <comment>A Surface Outpost</comment>
   </data>
+  <data name="MegaShipCivilian" xml:space="preserve">
+    <value>Civilian Megaship</value>
+    <comment>A Civilian Megaship</comment>
+  </data>
 </root>

@@ -115,6 +115,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Civilian Megaship.
+        /// </summary>
+        public static string MegaShipCivilian {
+            get {
+                return ResourceManager.GetString("MegaShipCivilian", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Unknown Station.
         /// </summary>
         public static string None {

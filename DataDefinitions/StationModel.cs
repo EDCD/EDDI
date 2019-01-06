@@ -14,6 +14,7 @@ namespace EddiDataDefinitions
             var Bernal = new StationModel("Bernal");
             var Coriolis = new StationModel("Coriolis");
             var Megaship = new StationModel("Megaship");
+            var MegaShipCivilian = new StationModel("MegaShipCivilian");
             var Orbis = new StationModel("Orbis");
             var Outpost = new StationModel("Outpost");
             var SurfaceStation = new StationModel("SurfaceStation");
