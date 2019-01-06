@@ -73,11 +73,15 @@ namespace EddiDataDefinitions
     {
         static ResourceBasedLocalizedEDName()
         {
-            AllOfThem = new List<T>();
+            lock (resourceLock)
+            {
+                AllOfThem = new List<T>();
+            }
         }
         public static readonly List<T> AllOfThem;
         protected static ResourceManager resourceManager;
         protected static Func<string, T> missingEDNameHandler;
+        public static readonly object resourceLock = new object();
 
         [JsonProperty]
         public readonly string edname;
@@ -110,7 +114,10 @@ namespace EddiDataDefinitions
 
             if (!string.IsNullOrEmpty(edname))
             {
-                AllOfThem.Add(this as T);
+                lock (resourceLock)
+                {
+                    AllOfThem.Add(this as T);
+                }
             }
         }
 
@@ -131,10 +138,14 @@ namespace EddiDataDefinitions
             }
 
             from = from.ToLowerInvariant();
-            T result = AllOfThem.ToList().FirstOrDefault(
-                v =>
-                v.localizedName.ToLowerInvariant() == from
-                || v.invariantName.ToLowerInvariant() == from);
+            T result;
+            lock (resourceLock)
+            {
+                result = AllOfThem.FirstOrDefault(
+                    v =>
+                    v.localizedName.ToLowerInvariant() == from
+                    || v.invariantName.ToLowerInvariant() == from);
+            }
             return result;
         }
 
@@ -147,10 +158,14 @@ namespace EddiDataDefinitions
             }
 
             string tidiedFrom = from?.Replace(";", "").Replace(" ", "").ToLowerInvariant();
-            T result = AllOfThem.ToList().FirstOrDefault(
-                v => v.edname
-                .ToLowerInvariant()
-                .Replace(";", "") == tidiedFrom);
+            T result;
+            lock (resourceLock)
+            {
+                result = AllOfThem.FirstOrDefault(
+                    v => v.edname
+                    .ToLowerInvariant()
+                    .Replace(";", "") == tidiedFrom);
+            }
             if (result == null)
             {
                 Logging.Info($"Unknown ED name {from} in resource {resourceManager.BaseName}");

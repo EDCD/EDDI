@@ -1208,7 +1208,10 @@ namespace EddiDataDefinitions
 
         public static Module FromEddbID(long eddbId)
         {
-            return AllOfThem.Find(x => x.EDDBID == eddbId) ?? null;
+            lock (resourceLock)
+            {
+                return AllOfThem.Find(x => x.EDDBID == eddbId) ?? null;
+            }
         }
     }
 }
