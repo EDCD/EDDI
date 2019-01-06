@@ -1036,6 +1036,7 @@ namespace Eddi
             else
             {
                 // Kick off a dummy that triggers a market refresh after a couple of seconds
+                if (theEvent.fromLoad) { return true; } // Don't fire this event when loading pre-existing logs
                 Thread updateThread = new Thread(() => dummyRefreshMarketData())
                 {
                     IsBackground = true
@@ -1083,6 +1084,7 @@ namespace Eddi
                         StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
 
                         // Post an update event for new market data
+                        if (theEvent.fromLoad) { return true; } // Don't fire this event when loading pre-existing logs
                         Event @event = new MarketInformationUpdatedEvent(DateTime.UtcNow, "market");
                         eventHandler(@event);
                     }
@@ -1121,6 +1123,7 @@ namespace Eddi
                         StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
 
                         // Post an update event for new outfitting data
+                        if (theEvent.fromLoad) { return true; } // Don't fire this event when loading pre-existing logs
                         Event @event = new MarketInformationUpdatedEvent(DateTime.UtcNow, "outfitting");
                         eventHandler(@event);
                     }
@@ -1159,6 +1162,7 @@ namespace Eddi
                         StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
 
                         // Post an update event for new shipyard data
+                        if (theEvent.fromLoad) { return true; } // Don't fire this event when loading pre-existing logs
                         Event @event = new MarketInformationUpdatedEvent(DateTime.UtcNow, "shipyard");
                         eventHandler(@event);
                     }
