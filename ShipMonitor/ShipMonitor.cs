@@ -25,6 +25,7 @@ namespace EddiShipMonitor
 
         // Observable collection for us to handle changes
         public ObservableCollection<Ship> shipyard { get; private set; }
+        public List<StoredModule> storedmodules { get; private set; }
 
         // The ID of the current ship; can be null
         private int? currentShipId;
@@ -61,6 +62,8 @@ namespace EddiShipMonitor
         public ShipMonitor()
         {
             shipyard = new ObservableCollection<Ship>();
+            storedmodules = new List<StoredModule>();
+
             BindingOperations.CollectionRegistering += Shipyard_CollectionRegistering;
 
             readShips();
@@ -228,6 +231,10 @@ namespace EddiShipMonitor
             else if (@event is ModuleInfoEvent)
             {
                 handleModuleInfoEvent((ModuleInfoEvent)@event);
+            }
+            else if (@event is StoredModulesEvent)
+            {
+                handleStoredModulesEvent((StoredModulesEvent)@event);
             }
             else if (@event is JumpedEvent)
             {
@@ -506,71 +513,47 @@ namespace EddiShipMonitor
 
         private void handleStoredShipsEvent(StoredShipsEvent @event)
         {
-            if (@event.shipsHere != null)
+            if (@event.shipyard != null)
             {
-                foreach (Ship shipHere in @event.shipsHere)
+                foreach (Ship ship in @event.shipyard)
                 {
-                    Ship ship = GetShip(shipHere.LocalId);
+                    Ship shipData = GetShip(ship.LocalId);
 
                     // Add ship stored at this station if not in shipyard
-                    if (ship == null)
+                    if (shipData == null)
                     {
-                        shipHere.Role = Role.MultiPurpose;
-                        AddShip(shipHere);
+                        shipData.Role = Role.MultiPurpose;
+                        AddShip(shipData);
                     }
 
                     // Update ship stored at this station to latest data
                     else
                     {
-                        if (shipHere.name != null || shipHere.name != string.Empty)
+                        if (!string.IsNullOrEmpty(shipData.name))
                         {
-                            ship.name = shipHere.name;
+                            ship.name = shipData.name;
                         }
-                        ship.value = shipHere.value;
-                        ship.hot = shipHere.hot;
-                        ship.starsystem = shipHere.starsystem;
-                        ship.marketid = shipHere.marketid;
-                        ship.station = shipHere.station;
-
-                    }
-                } 
-            }
-
-            if (@event.shipsRemote != null)
-            {
-                foreach (Ship shipRemote in @event.shipsRemote)
-                {
-                    Ship ship = GetShip(shipRemote.LocalId);
-
-                    // Add ship stored at remote station if not in shipyard
-                    if (ship == null)
-                    {
-                        shipRemote.Role = Role.MultiPurpose;
-                        AddShip(shipRemote);
-                    }
-
-                    // Update ship stored at remote station to latest data
-                    else
-                    {
-                        if (shipRemote.name != null || shipRemote.name != string.Empty)
-                        {
-                            ship.name = shipRemote.name;
-                        }
-                        ship.value = shipRemote.value;
-                        ship.hot = shipRemote.hot;
-                        ship.intransit = shipRemote.intransit;
-                        if (!shipRemote.intransit)
-                        {
-                            ship.starsystem = shipRemote.starsystem;
-                            ship.station = shipRemote.station;
-                            ship.marketid = shipRemote.marketid;
-                            ship.transferprice = shipRemote.transferprice;
-                            ship.transfertime = shipRemote.transfertime;
-                        }
+                        ship.value = shipData.value;
+                        ship.hot = shipData.hot;
+                        ship.intransit = shipData.intransit;
+                        ship.starsystem = shipData.starsystem;
+                        ship.marketid = shipData.marketid;
+                        ship.station = shipData.station;
+                        ship.transferprice = shipData.transferprice;
+                        ship.transfertime = shipData.transfertime;
                     }
                 }
+                writeShips();
             }
-            writeShips();
+        }
+
+        private void handleStoredModulesEvent(StoredModulesEvent @event)
+        {
+            if (@event.storedmodules != null)
+            {
+                storedmodules = @event.storedmodules;
+                writeShips();
+            }
         }
 
         private void handleShipRebootedEvent(ShipRebootedEvent @event)
@@ -1034,6 +1017,7 @@ namespace EddiShipMonitor
             IDictionary<string, object> variables = new Dictionary<string, object>
             {
                 ["ship"] = GetCurrentShip(),
+                ["storedmodules"] = new List<StoredModule>(storedmodules),
                 ["shipyard"] = new List<Ship>(shipyard)
             };
             return variables;
@@ -1047,7 +1031,8 @@ namespace EddiShipMonitor
                 ShipMonitorConfiguration configuration = new ShipMonitorConfiguration()
                 {
                     currentshipid = currentShipId,
-                    shipyard = shipyard
+                    shipyard = shipyard,
+                    storedmodules = storedmodules
                 };
                 configuration.ToFile();
             }
@@ -1064,10 +1049,12 @@ namespace EddiShipMonitor
 
                 // Build a new shipyard
                 List<Ship> newShiplist = configuration.shipyard.OrderBy(s => s.model).ToList();
+                List<StoredModule> newModuleList = configuration.storedmodules.OrderBy(s => s.slot).ToList();
 
                 // Update the shipyard
                 shipyard = new ObservableCollection<Ship>(newShiplist);
                 currentShipId = configuration.currentshipid;
+                storedmodules = new List<StoredModule>(newModuleList);
             }
         }
 

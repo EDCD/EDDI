@@ -284,6 +284,7 @@ namespace EddiSpeechResponder
                 "Shipyard",
                 "Status",
                 "Stored ships",
+                "Stored modules",
                 "Unhandled event"
             };
 

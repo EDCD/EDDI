@@ -20,6 +20,7 @@ namespace EddiJournalMonitor
 {
     public class JournalMonitor : LogMonitor, EDDIMonitor
     {
+        private enum ShipyardType { ShipsHere, ShipsRemote }
         private static Regex JsonRegex = new Regex(@"^{.*}$", RegexOptions.Singleline);
 
         public JournalMonitor() : base(GetSavedGamesDir(), @"^Journal.*\.[0-9\.]+\.log$", result =>
@@ -454,6 +455,8 @@ namespace EddiJournalMonitor
                                     long? modulesValue = JsonParsing.getOptionalLong(data, "ModulesValue");
                                     decimal hullHealth = sensibleHealth(JsonParsing.getDecimal(data, "HullHealth") * 100);
                                     long rebuy = JsonParsing.getLong(data, "Rebuy");
+
+                                    // If ship is 'hot', then modules are also 'hot'
                                     bool hot = JsonParsing.getOptionalBool(data, "Hot") ?? false;
 
                                     data.TryGetValue("Modules", out val);
@@ -493,7 +496,8 @@ namespace EddiJournalMonitor
                                             moduleData.TryGetValue("Engineering", out val);
                                             bool modified = val != null ? true : false;
                                             Dictionary<string, object> engineeringData = (Dictionary<string, object>)val;
-                                            string modification = modified ? JsonParsing.getString(engineeringData, "BlueprintName") : null;
+                                            string blueprint = modified ? JsonParsing.getString(engineeringData, "BlueprintName") : null;
+                                            Modifications modification = Modifications.FromEDName(blueprint) ?? Modifications.None;
                                             int level = modified ? JsonParsing.getInt(engineeringData, "Level") : 0;
                                             decimal quality = modified ? JsonParsing.getDecimal(engineeringData, "Quality") : 0;
 
@@ -529,6 +533,7 @@ namespace EddiJournalMonitor
                                                 }
                                                 else
                                                 {
+                                                    module.hot = hot;
                                                     module.enabled = enabled;
                                                     module.priority = priority;
                                                     module.health = health;
@@ -605,6 +610,7 @@ namespace EddiJournalMonitor
                                                 }
                                                 else
                                                 {
+                                                    module.hot = hot;
                                                     module.enabled = enabled;
                                                     module.priority = priority;
                                                     module.health = health;
@@ -944,77 +950,102 @@ namespace EddiJournalMonitor
                             case "StoredShips":
                                 {
                                     long marketId = JsonParsing.getLong(data, "MarketID");
-                                    string station = JsonParsing.getString(data, "StationName");
                                     string system = JsonParsing.getString(data, "StarSystem");
-
-                                    List<Ship> shipsHere = new List<Ship>();
-                                    List<Ship> shipsRemote = new List<Ship>();
-
-                                    data.TryGetValue("ShipsHere", out object val);
-                                    List<object> shipsHereData = (List<object>)val;
-                                    if (shipsHereData != null)
+                                    string station = JsonParsing.getString(data, "StationName");
+                                    
+                                    List<Ship> shipyard = new List<Ship>();
+                                    foreach (var type in Enum.GetNames(typeof(ShipyardType)))
                                     {
-                                        foreach (Dictionary<string, object> shipHere in shipsHereData)
+                                        data.TryGetValue(type, out object val);
+                                        List<object> shipsData = (List<object>)val;
+                                        if (shipsData != null)
                                         {
-                                            int shipId = JsonParsing.getInt(shipHere, "ShipID");
-                                            string shipType = JsonParsing.getString(shipHere, "ShipType");
-                                            string name = JsonParsing.getString(shipHere, "Name");
-                                            long value = JsonParsing.getLong(shipHere, "Value");
-                                            bool hot = JsonParsing.getOptionalBool(shipHere, "Hot") ?? false;
-
-                                            Ship ship = ShipDefinitions.FromEDModel(shipType);
-                                            ship.LocalId = shipId;
-                                            ship.name = name;
-                                            ship.value = value;
-                                            ship.hot = hot;
-                                            ship.starsystem = system;
-                                            ship.station = station;
-                                            ship.marketid = marketId;
-                                            shipsHere.Add(ship);
-                                        }
-                                    }
-
-                                    data.TryGetValue("ShipsRemote", out val);
-                                    List<object> shipsRemoteData = (List<object>)val;
-                                    if (shipsRemoteData != null)
-                                    {
-                                        foreach (Dictionary<string, object> shipRemote in shipsRemoteData)
-                                        {
-                                            int shipId = JsonParsing.getInt(shipRemote, "ShipID");
-                                            string shipType = JsonParsing.getString(shipRemote, "ShipType");
-                                            string name = JsonParsing.getString(shipRemote, "Name");
-                                            long value = JsonParsing.getLong(shipRemote, "Value");
-                                            bool hot = JsonParsing.getOptionalBool(shipRemote, "Hot") ?? false;
-                                            bool inTransit = JsonParsing.getOptionalBool(shipRemote, "InTransit") ?? false;
-
-                                            Ship ship = ShipDefinitions.FromEDModel(shipType);
-                                            ship.LocalId = shipId;
-                                            ship.name = name;
-                                            ship.value = value;
-                                            ship.hot = hot;
-                                            ship.intransit = inTransit;
-                                            if (!inTransit)
+                                            foreach (Dictionary<string, object> shipData in shipsData)
                                             {
-                                                string starSystem = JsonParsing.getString(shipRemote, "StarSystem");
-                                                long shipMarketId = JsonParsing.getLong(shipRemote, "ShipMarketID");
-                                                StarSystem systemData = StarSystemSqLiteRepository.Instance.GetStarSystem(starSystem, true);
-                                                Station stationData = systemData?.stations?.FirstOrDefault(s => s.marketId == shipMarketId);
-                                                long transferPrice = JsonParsing.getLong(shipRemote, "TransferPrice");
-                                                long transferTime = JsonParsing.getLong(shipRemote, "TransferTime");
-                                                
-                                                ship.starsystem = starSystem;
-                                                ship.marketid = shipMarketId;
-                                                if (stationData != null)
+                                                string shipType = JsonParsing.getString(shipData, "ShipType");
+                                                Ship ship = ShipDefinitions.FromEDModel(shipType);
+                                                if (ship != null)
                                                 {
-                                                    ship.station = stationData.name;
+                                                    ship.LocalId = JsonParsing.getInt(shipData, "ShipID");
+                                                    ship.name = JsonParsing.getString(shipData, "Name");
+                                                    ship.value = JsonParsing.getLong(shipData, "Value");
+                                                    ship.hot = JsonParsing.getOptionalBool(shipData, "Hot") ?? false;
+                                                    ship.intransit = JsonParsing.getOptionalBool(shipData, "InTransit") ?? false;
+                                                    ship.marketid = JsonParsing.getOptionalLong(shipData, "ShipMarketID") ?? marketId;
+                                                    ship.transferprice = JsonParsing.getOptionalLong(shipData, "TransferPrice");
+                                                    ship.transfertime = JsonParsing.getOptionalLong(shipData, "TransferTime");
+
+                                                    string starSystem = JsonParsing.getString(shipData, "StarSystem");
+                                                    ship.starsystem = starSystem ?? system;
+                                                    if (starSystem != null)
+                                                    {
+                                                        StarSystem systemData = StarSystemSqLiteRepository.Instance.GetStarSystem(starSystem, true);
+                                                        ship.station = systemData?.stations?.FirstOrDefault(s => s.marketId == ship.marketid).name;
+                                                    }
+                                                    else
+                                                    {
+                                                        ship.station = station;
+                                                    }
+                                                    shipyard.Add(ship);
                                                 }
-                                                ship.transferprice = transferPrice;
-                                                ship.transferprice = transferTime;
                                             }
-                                            shipsRemote.Add(ship);
                                         }
                                     }
-                                    events.Add(new StoredShipsEvent(timestamp, marketId, station, system, shipsHere, shipsRemote) { raw = line });
+                                    events.Add(new StoredShipsEvent(timestamp, marketId, station, system, shipyard) { raw = line });
+                                }
+                                handled = true;
+                                break;
+                            case "StoredModules":
+                                {
+                                    List<StoredModule> storedModules = new List<StoredModule>();
+
+                                    long marketId = JsonParsing.getLong(data, "MarketID");
+                                    string system = JsonParsing.getString(data, "StarSystem");
+                                    string station = JsonParsing.getString(data, "StationName");
+
+                                    data.TryGetValue("Items", out object val);
+                                    List<object> items = (List<object>)val;
+                                    if (items != null)
+                                    {
+                                        string starSystem = string.Empty;
+                                        StarSystem systemData = new StarSystem();
+                                        foreach (Dictionary<string, object> item in items)
+                                        {
+                                            string name = JsonParsing.getString(item, "Name");
+                                            Module module = new Module(Module.FromEDName(name));
+                                            module.hot = JsonParsing.getOptionalBool(item, "Hot") ?? false;
+                                            item.TryGetValue("EngineerModifications", out val);
+                                            bool modified = val != null ? true : false;
+                                            module.modified = modified;
+                                            module.engineermodification = Modifications.FromEDName((string)val) ?? Modifications.None;
+                                            module.engineerlevel = modified ? JsonParsing.getInt(item, "Level") : 0;
+                                            module.engineerquality = modified? JsonParsing.getDecimal(item, "Quality") : 0;
+
+                                            StoredModule storedModule = new StoredModule();
+                                            storedModule.module = module;
+                                            storedModule.slot = JsonParsing.getInt(item, "StorageSlot");
+                                            storedModule.intransit = JsonParsing.getOptionalBool(item, "InTransit") ?? false;
+                                            storedModule.system = JsonParsing.getString(item, "StarSystem");
+                                            storedModule.marketid = JsonParsing.getOptionalLong(item, "MarketID");
+                                            storedModule.transfercost = JsonParsing.getOptionalLong(item, "TransferCost");
+                                            storedModule.transfertime = JsonParsing.getOptionalLong(item, "TransferTime");
+
+                                            if (!storedModule.intransit)
+                                            {
+                                                // Minimize calling EDDP for system data
+                                                if (starSystem != storedModule.system)
+                                                {
+                                                    systemData = StarSystemSqLiteRepository.Instance.GetStarSystem(storedModule.system, true);
+                                                    starSystem = storedModule.system;
+                                                }
+                                                
+                                                Station stationData = systemData?.stations?.FirstOrDefault(s => s.marketId == storedModule.marketid);
+                                                storedModule.station = stationData.name;
+                                            }
+                                            storedModules.Add(storedModule);
+                                        }
+                                    }
+                                    events.Add(new StoredModulesEvent(timestamp, marketId, station, system, storedModules) { raw = line });
                                 }
                                 handled = true;
                                 break;
@@ -1067,8 +1098,8 @@ namespace EddiJournalMonitor
                                     }
 
                                     events.Add(new TechnologyBrokerEvent(timestamp, brokerType, marketId, items, Commodities, Materials) { raw = line });
-                                    handled = true;
                                 }
+                                handled = true;
                                 break;
                             case "ShipyardTransfer":
                                 {
@@ -1165,7 +1196,7 @@ namespace EddiJournalMonitor
                                             module.hot = JsonParsing.getBool(data, "Hot");
                                             string engineerModifications = JsonParsing.getString(data, "EngineerModifications");
                                             module.modified = engineerModifications != null;
-                                            module.engineermodification = engineerModifications;
+                                            module.engineermodification = Modifications.FromEDName(engineerModifications) ?? Modifications.None;
                                             module.engineerlevel = JsonParsing.getOptionalInt(data, "Level") ?? 0;
                                             module.engineerquality = JsonParsing.getOptionalDecimal(data, "Quality") ?? 0;
                                             modules.Add(module);
@@ -1215,7 +1246,7 @@ namespace EddiJournalMonitor
                                     module.hot = JsonParsing.getBool(data, "Hot");
                                     string engineerModifications = JsonParsing.getString(data, "EngineerModifications");
                                     module.modified = engineerModifications != null;
-                                    module.engineermodification = engineerModifications;
+                                    module.engineermodification = Modifications.FromEDName(engineerModifications) ?? Modifications.None;
                                     module.engineerlevel = JsonParsing.getOptionalInt(data, "Level") ?? 0;
                                     module.engineerquality = JsonParsing.getOptionalDecimal(data, "Quality") ?? 0;
 
@@ -1283,7 +1314,7 @@ namespace EddiJournalMonitor
                                     module.hot = JsonParsing.getBool(data, "Hot");
                                     string engineerModifications = JsonParsing.getString(data, "EngineerModifications");
                                     module.modified = engineerModifications != null;
-                                    module.engineermodification = engineerModifications;
+                                    module.engineermodification = Modifications.FromEDName(engineerModifications) ?? Modifications.None;
                                     module.engineerlevel = JsonParsing.getOptionalInt(data, "Level") ?? 0;
                                     module.engineerquality = JsonParsing.getOptionalDecimal(data, "Quality") ?? 0;
 

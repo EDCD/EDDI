@@ -12,8 +12,9 @@ namespace EddiShipMonitor
     /// <summary>Storage for ship and shipyard information</summary>
     public class ShipMonitorConfiguration
     {
-        public int? currentshipid{ get; set; }
-        public ObservableCollection<Ship> shipyard{ get; set; }
+        public int? currentshipid { get; set; }
+        public ObservableCollection<Ship> shipyard { get; set; }
+        public List<StoredModule> storedmodules { get; set; }
 
         [JsonIgnore]
         private string dataPath;
@@ -88,6 +89,12 @@ namespace EddiShipMonitor
             foreach (Ship ship in configuration.shipyard)
             {
                 ship.Augment();
+            }
+
+            // Check if stored modules not yet populated
+            if (configuration.storedmodules == null)
+            {
+                configuration.storedmodules = new List<StoredModule>();
             }
 
             configuration.dataPath = filename;

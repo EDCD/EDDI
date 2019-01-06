@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System;
 using Utilities;
 
 namespace EddiDataDefinitions
@@ -54,11 +55,27 @@ namespace EddiDataDefinitions
         [JsonProperty]
         public bool modified { get; set; } // If the module has been modified
         [JsonProperty]
-        public string engineermodification { get; set; }
+        public string modificationEDName
+        {
+            get => engineermodification?.edname ?? Modifications.None.edname;
+            set
+            {
+                Modifications mDef = Modifications.FromEDName(value);
+                this.engineermodification = mDef;
+            }
+        }
+        [JsonIgnore]
+        public Modifications engineermodification { get; set; }
         [JsonProperty]
-        public int  engineerlevel { get; set; }
+        public int engineerlevel { get; set; }
         [JsonProperty]
         public decimal engineerquality { get; set; }
+        [JsonIgnore]
+        public string localizedModification => engineermodification?.localizedName ?? null;
+
+        // deprecated commodity category (exposed to Cottle and VA)
+        [JsonIgnore, Obsolete("Please use localizedModification instead")]
+        public string modification => localizedModification;
 
         // Admin
         // The ID in Elite: Dangerous' database
