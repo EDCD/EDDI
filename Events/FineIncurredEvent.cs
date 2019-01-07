@@ -18,7 +18,7 @@ namespace EddiEvents
             VARIABLES.Add("crime", "The decription of the crime committed");
             VARIABLES.Add("victim", "The name of the victim of the crime");
             VARIABLES.Add("faction", "The name of the faction issuing the fine");
-            VARIABLES.Add("bounty", "The number of credits issued as the fine");
+            VARIABLES.Add("fine", "The number of credits issued as the fine");
         }
 
         [JsonProperty("crimetype")]

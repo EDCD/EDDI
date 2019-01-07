@@ -2,6 +2,17 @@
 
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
+### 3.3.3-b1
+  * Core
+    * Added manual market, outfitting and shipyard updates, upon docking. Associated EDDN message is sent.
+  * Ship monitor
+    * Added new values to the current ship: `hullheath` & `hot`
+	* Added `Hot` property to the Ship monitor UI
+    * Added new values to modules: `hot`, `modification`, `engineerlevel`, and `engineerquality`
+	* Updated module-related events to handle engineering modification data
+	* Added `Stored ships` event handling, triggered when the `Shipyard` screen is selected in-game.
+	* Added `Stored modules` event handling, triggered when the `Outfitting` screen is selected in-game. New `storedmodule` object properties are available in Variables.md
+
 ### 3.3.2
   * EDDN responder
     * Made revisions to guard against reporting inaccurate star position data to EDDN.

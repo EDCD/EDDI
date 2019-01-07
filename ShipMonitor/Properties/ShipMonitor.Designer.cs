@@ -79,6 +79,15 @@ namespace EddiShipMonitor.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Status.
+        /// </summary>
+        public static string header_hot {
+            get {
+                return ResourceManager.GetString("header_hot", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Location.
         /// </summary>
         public static string header_location {
@@ -300,6 +309,24 @@ namespace EddiShipMonitor.Properties {
         public static string p5 {
             get {
                 return ResourceManager.GetString("p5", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Clean.
+        /// </summary>
+        public static string ship_clean {
+            get {
+                return ResourceManager.GetString("ship_clean", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hot.
+        /// </summary>
+        public static string ship_hot {
+            get {
+                return ResourceManager.GetString("ship_hot", resourceCulture);
             }
         }
         

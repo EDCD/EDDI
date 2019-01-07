@@ -7,6 +7,7 @@
   "ShipIdent": "VT-E23",
   "HullValue": 13943105,
   "ModulesValue": 111211684,
+  "HullHealth": 1,
   "Rebuy": 6257742,
   "Modules": [
     {

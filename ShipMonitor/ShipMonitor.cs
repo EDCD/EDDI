@@ -1,5 +1,4 @@
 ﻿using Eddi;
-using EddiCargoMonitor;
 using EddiDataDefinitions;
 using EddiEvents;
 using Newtonsoft.Json;
@@ -26,6 +25,7 @@ namespace EddiShipMonitor
 
         // Observable collection for us to handle changes
         public ObservableCollection<Ship> shipyard { get; private set; }
+        public List<StoredModule> storedmodules { get; private set; }
 
         // The ID of the current ship; can be null
         private int? currentShipId;
@@ -62,6 +62,8 @@ namespace EddiShipMonitor
         public ShipMonitor()
         {
             shipyard = new ObservableCollection<Ship>();
+            storedmodules = new List<StoredModule>();
+
             BindingOperations.CollectionRegistering += Shipyard_CollectionRegistering;
 
             readShips();
@@ -162,6 +164,10 @@ namespace EddiShipMonitor
             {
                 handleShipLoadoutEvent((ShipLoadoutEvent)@event);
             }
+            else if (@event is StoredShipsEvent)
+            {
+                handleStoredShipsEvent((StoredShipsEvent)@event);
+            }
             else if (@event is ShipRebootedEvent)
             {
                 handleShipRebootedEvent((ShipRebootedEvent)@event);
@@ -226,9 +232,21 @@ namespace EddiShipMonitor
             {
                 handleModuleInfoEvent((ModuleInfoEvent)@event);
             }
+            else if (@event is StoredModulesEvent)
+            {
+                handleStoredModulesEvent((StoredModulesEvent)@event);
+            }
             else if (@event is JumpedEvent)
             {
                 handleJumpedEvent((JumpedEvent)@event);
+            }
+            else if (@event is BountyIncurredEvent)
+            {
+                handleBountyIncurredEvent((BountyIncurredEvent)@event);
+            }
+            else if (@event is BountyPaidEvent)
+            {
+                handleBountyPaidEvent((BountyPaidEvent)@event);
             }
         }
 
@@ -394,6 +412,7 @@ namespace EddiShipMonitor
             setShipName(ship, @event.shipname);
             setShipIdent(ship, @event.shipident);
             ship.paintjob = @event.paintjob;
+            ship.hot = @event.hot;
 
             // Write ship value, if given by the loadout event
             if (@event.value != null)
@@ -490,6 +509,51 @@ namespace EddiShipMonitor
             // Cargo capacity
             ship.cargocapacity = (int)ship.compartments.Where(c => c.module != null && c.module.basename.Contains("CargoRack")).Sum(c => Math.Pow(2, c.module.@class));
             return ship;
+        }
+
+        private void handleStoredShipsEvent(StoredShipsEvent @event)
+        {
+            if (@event.shipyard != null)
+            {
+                foreach (Ship ship in @event.shipyard)
+                {
+                    Ship shipData = GetShip(ship.LocalId);
+
+                    // Add ship stored at this station if not in shipyard
+                    if (shipData == null)
+                    {
+                        shipData.Role = Role.MultiPurpose;
+                        AddShip(shipData);
+                    }
+
+                    // Update ship stored at this station to latest data
+                    else
+                    {
+                        if (!string.IsNullOrEmpty(shipData.name))
+                        {
+                            ship.name = shipData.name;
+                        }
+                        ship.value = shipData.value;
+                        ship.hot = shipData.hot;
+                        ship.intransit = shipData.intransit;
+                        ship.starsystem = shipData.starsystem;
+                        ship.marketid = shipData.marketid;
+                        ship.station = shipData.station;
+                        ship.transferprice = shipData.transferprice;
+                        ship.transfertime = shipData.transfertime;
+                    }
+                }
+                writeShips();
+            }
+        }
+
+        private void handleStoredModulesEvent(StoredModulesEvent @event)
+        {
+            if (@event.storedmodules != null)
+            {
+                storedmodules = @event.storedmodules;
+                writeShips();
+            }
         }
 
         private void handleShipRebootedEvent(ShipRebootedEvent @event)
@@ -843,6 +907,26 @@ namespace EddiShipMonitor
             }
         }
 
+        private void handleBountyIncurredEvent(BountyIncurredEvent @event)
+        {
+            Ship ship = GetCurrentShip();
+            if (ship != null)
+            {
+                ship.hot = true;
+                writeShips();
+            }
+        }
+
+        private void handleBountyPaidEvent(BountyPaidEvent @event)
+        {
+            Ship ship = GetShip(@event.shipid);
+            if (ship != null)
+            {
+                ship.hot = false;
+                writeShips();
+            }
+        }
+
         public void PostHandle(Event @event)
         {
             if (@event is ShipLoadoutEvent)
@@ -933,6 +1017,7 @@ namespace EddiShipMonitor
             IDictionary<string, object> variables = new Dictionary<string, object>
             {
                 ["ship"] = GetCurrentShip(),
+                ["storedmodules"] = new List<StoredModule>(storedmodules),
                 ["shipyard"] = new List<Ship>(shipyard)
             };
             return variables;
@@ -946,7 +1031,8 @@ namespace EddiShipMonitor
                 ShipMonitorConfiguration configuration = new ShipMonitorConfiguration()
                 {
                     currentshipid = currentShipId,
-                    shipyard = shipyard
+                    shipyard = shipyard,
+                    storedmodules = storedmodules
                 };
                 configuration.ToFile();
             }
@@ -963,10 +1049,12 @@ namespace EddiShipMonitor
 
                 // Build a new shipyard
                 List<Ship> newShiplist = configuration.shipyard.OrderBy(s => s.model).ToList();
+                List<StoredModule> newModuleList = configuration.storedmodules.OrderBy(s => s.slot).ToList();
 
                 // Update the shipyard
                 shipyard = new ObservableCollection<Ship>(newShiplist);
                 currentShipId = configuration.currentshipid;
+                storedmodules = new List<StoredModule>(newModuleList);
             }
         }
 

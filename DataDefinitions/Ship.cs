@@ -223,6 +223,26 @@ namespace EddiDataDefinitions
             get { return !string.IsNullOrEmpty(_raw); }
         }
 
+        /// <summary>
+        /// The wanted/hot status of this ship
+        /// </summary>
+        private bool _hot = false;
+        [JsonIgnore]
+        public bool hot
+        {
+            get
+            {
+                return _hot;
+            }
+            set
+            {
+                if (_hot != value)
+                {
+                    _hot = value;
+                    NotifyPropertyChanged("hot");
+                }
+            }
+        }
 
         /// <summary>the name of the system in which this ship is stored; null if the commander is in this ship</summary>
         private string _starsystem;
@@ -243,22 +263,13 @@ namespace EddiDataDefinitions
         }
 
         /// <summary>the name of the station in which this ship is stored; null if the commander is in this ship</summary>
-        private string _station;
-        public string station
-        {
-            get
-            {
-                return _station;
-            }
-            set
-            {
-                if (_station != value)
-                {
-                    _station = value;
-                    NotifyPropertyChanged("station");
-                }
-            }
-        }
+        public string station { get; set; }
+        public long? marketid { get; set; }
+
+        // Other properties for when this ship is stored
+        public bool intransit { get; set; }
+        public long? transferprice { get; set; }
+        public long? transfertime { get; set; }
 
         public decimal health { get; set; }
         public Module cargohatch { get; set; }

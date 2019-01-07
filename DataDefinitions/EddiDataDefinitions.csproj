@@ -73,6 +73,7 @@
     <Compile Include="CargoInfo.cs" />
     <Compile Include="Happiness.cs" />
     <Compile Include="MarketInfo.cs" />
+    <Compile Include="Modifications.cs" />
     <Compile Include="OutfittingInfo.cs" />
     <Compile Include="Properties\Happiness.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -84,6 +85,11 @@
       <DependentUpon>MaterialLocations.resx</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Properties\Modifications.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Modifications.resx</DependentUpon>
     </Compile>
     <Compile Include="ShipyardInfo.cs" />
     <Compile Include="SignalSource.cs" />
@@ -140,6 +146,7 @@
     <Compile Include="SquadronRank.cs" />
     <Compile Include="StationLargestPad.cs" />
     <Compile Include="StationService.cs" />
+    <Compile Include="StoredModule.cs" />
     <Compile Include="TerraformState.cs" />
     <Compile Include="CommodityAmount.cs" />
     <Compile Include="Properties\AtmosphereClass.Designer.cs">
@@ -451,6 +458,10 @@
     <EmbeddedResource Include="Properties\ExplorationRatings.ja.resx" />
     <EmbeddedResource Include="Properties\FactionStates.ja.resx" />
     <EmbeddedResource Include="Properties\FederationRatings.ja.resx" />
+    <EmbeddedResource Include="Properties\Modifications.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Modifications.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\SignalSource.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>SignalSource.Designer.cs</LastGenOutput>

@@ -45,6 +45,22 @@
                     </DataGridTextColumn.ElementStyle>
                 </utility:DataGridNumericColumn>
                 <DataGridTextColumn Header="{x:Static resx:ShipMonitor.header_location}" IsReadOnly="True" Binding="{Binding Path=starsystem}"></DataGridTextColumn>
+                <DataGridTextColumn Header="{x:Static resx:ShipMonitor.header_hot}" IsReadOnly="True">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="{x:Type TextBlock}">
+                            <Setter Property="TextAlignment" Value="Right" />
+                            <Setter Property="Margin" Value="5, 0" />
+                            <Setter Property="TextBox.Foreground" Value="Black"></Setter>
+                            <Setter Property="Text" Value="{x:Static resx:ShipMonitor.ship_clean}" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding hot}" Value="True">
+                                    <Setter Property="TextBox.Foreground" Value="Crimson"></Setter>
+                                    <Setter Property="Text" Value="{x:Static resx:ShipMonitor.ship_hot}" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
                 <DataGridComboBoxColumn Header="{x:Static resx:ShipMonitor.header_role}" SelectedItemBinding="{Binding Path=Role, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ItemsSource="{Binding Source={x:Static eddi:Role.Sorted}}">
                     <DataGridComboBoxColumn.EditingElementStyle>
                         <Style TargetType="{x:Type ComboBox}">
