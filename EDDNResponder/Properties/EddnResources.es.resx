@@ -123,5 +123,7 @@
   <data name="name" xml:space="preserve">
     <value>Contestador EDDN</value>
   </data>
-  
+  <data name="errPosition" xml:space="preserve">
+    <value>Lo siento comandante. He perdido el rastreo de objetos, y necesito que restablezca su posición mediante un salto estelar o reiniciando sesión, para poder restablecer la subida de datos de exploración.</value>
+  </data>
 </root>
