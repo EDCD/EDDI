@@ -128,6 +128,7 @@ namespace EddiDataProviderService
             try
             {
                 bool needToUpdate = false;
+                string data = null; ;
                 using (var con = SimpleDbConnection())
                 {
                     con.Open();
@@ -140,90 +141,53 @@ namespace EddiDataProviderService
                         {
                             if (rdr.Read())
                             {
-                                string data = rdr.GetString(2);
-                                // Old versions of the data could have a string "No volcanism" for volcanism.  If so we remove it
-                                data = data.Replace(@"""No volcanism""", "null");
-
-                                // Determine whether our data is stale (We won't deserialize the the entire system if it's stale) 
-                                IDictionary<string, object> system = Deserializtion.DeserializeData(data);
-                                system.TryGetValue("visits", out object visitVal);
-                                system.TryGetValue("comment", out object commentVal);
-                                system.TryGetValue("lastvisit", out object lastVisitVal);
-
-                                int visits = (int)(long)visitVal;
-                                string comment = (string)commentVal;
-                                DateTime? lastvisit = (DateTime?)lastVisitVal;
-
-                                if (refreshIfOutdated && result.lastupdated < DateTime.UtcNow.AddHours(-1))
-                                {
-                                    // Data is stale
-                                    StarSystem updatedResult = DataProviderService.GetSystemData(name);
-                                    if (updatedResult.systemAddress == null && result.systemAddress != null)
-                                    {
-                                        // The "updated" data might be a basic system, empty except for the name. 
-                                        // If so, return the old result.
-                                        return result;
-                                    }
-                                    else
-                                    {
-                                        updatedResult.visits = visits;
-                                        updatedResult.lastvisit = lastvisit;
-                                        updatedResult.lastupdated = DateTime.UtcNow;
-                                        result = updatedResult;
-                                        needToUpdate = true;
-                                    }
-                                }
-                                else
-                                {
-                                    try
-                                    {
-                                        result = JsonConvert.DeserializeObject<StarSystem>(data);
-                                        if (result == null)
-                                        {
-                                            Logging.Info("Failed to obtain system for " + name + " from the SQLiteRepository");
-                                        }
-                                        if (result != null)
-                                        {
-                                            if (result.visits < 1)
-                                            {
-                                                // Old-style system; need to update
-                                                result.visits = rdr.GetInt32(0);
-                                                result.lastvisit = rdr.GetDateTime(1);
-                                                needToUpdate = true;
-                                            }
-                                            if (result.lastupdated == null)
-                                            {
-                                                result.lastupdated = rdr.GetDateTime(4);
-                                            }
-                                            if (result.comment == null)
-                                            {
-                                                if (!rdr.IsDBNull(4))
-                                                {
-                                                    result.comment = rdr.GetString(4);
-                                                }
-                                            }
-                                        }
-                                    }
-                                    catch (Exception)
-                                    {
-                                        Logging.Warn("Problem reading data for star system '" + name + "' from database, re-obtaining from source. ");
-                                        try
-                                        {
-                                            result = DataProviderService.GetSystemData(name);
-                                            result.visits = visits;
-                                            result.comment = comment;
-                                            result.lastvisit = lastvisit;
-                                            result.lastupdated = DateTime.UtcNow;
-                                            needToUpdate = true;
-                                        }
-                                        catch (Exception ex)
-                                        {
-                                            Logging.Warn("Problem obtaining data from source: " + ex);
-                                            result = null;
-                                        }
-                                    }
-                                }
+                                data = rdr.GetString(2);
                             }
+                        }
+                    }
+                    if (data != null)
+                    {
+                        // Old versions of the data could have a string "No volcanism" for volcanism.  If so we remove it
+                        data = data.Replace(@"""No volcanism""", "null");
+
+                        // Determine whether our data is stale (We won't deserialize the the entire system if it's stale) 
+                        IDictionary<string, object> system = Deserializtion.DeserializeData(data);
+                        system.TryGetValue("visits", out object visitVal);
+                        system.TryGetValue("comment", out object commentVal);
+                        system.TryGetValue("lastvisit", out object lastVisitVal);
+                        system.TryGetValue("lastupdated", out object lastUpdatedVal);
+                        system.TryGetValue("systemAddress", out object systemAddressVal);
+
+                        int visits = (int)(long)visitVal;
+                        string comment = (string)commentVal;
+                        DateTime? lastvisit = (DateTime?)lastVisitVal;
+                        DateTime? lastupdated = (DateTime?)lastUpdatedVal;
+                        long? systemAddress = (long?)systemAddressVal;
+
+                        if (refreshIfOutdated && lastupdated < DateTime.UtcNow.AddHours(-1))
+                        {
+                            // Data is stale
+                            StarSystem updatedResult = DataProviderService.GetSystemData(name);
+                            if (updatedResult.systemAddress == null && systemAddress != null)
+                            {
+                                // The "updated" data might be a basic system, empty except for the name. 
+                                // If so, return the old result.
+                                StarSystem starSystem = new StarSystem() { name = name, visits = visits, comment = comment, lastvisit = lastvisit };
+                                result = DeserializeStarSystem(starSystem, ref needToUpdate, data);
+                            }
+                            else
+                            {
+                                updatedResult.visits = visits;
+                                updatedResult.lastvisit = lastvisit;
+                                updatedResult.lastupdated = DateTime.UtcNow;
+                                result = updatedResult;
+                                needToUpdate = true;
+                            }
+                        }
+                        else
+                        {
+                            StarSystem starSystem = new StarSystem() { name = name, visits = visits, comment = comment, lastvisit = lastvisit };
+                            result = DeserializeStarSystem(starSystem, ref needToUpdate, data);
                         }
                     }
                 }
@@ -237,6 +201,76 @@ namespace EddiDataProviderService
                 Logging.Warn("Problem reading data for star system '" + name + "' from database, refreshing database and re-obtaining from source.");
                 RecoverStarSystemDB();
                 Instance.GetStarSystem(name);
+            }
+
+            return result;
+        }
+
+        private static StarSystem DeserializeStarSystem(StarSystem oldSystem, ref bool needToUpdate, string data)
+        {
+            StarSystem result = null; ;
+            try
+            {
+                result = JsonConvert.DeserializeObject<StarSystem>(data);
+                if (result == null)
+                {
+                    Logging.Info("Failed to obtain system for " + oldSystem.name + " from the SQLiteRepository");
+                }
+                if (result != null)
+                {
+                    using (var con = SimpleDbConnection())
+                    {
+                        con.Open();
+                        using (var cmd = new SQLiteCommand(con))
+                        {
+                            cmd.CommandText = SELECT_BY_NAME_SQL;
+                            cmd.Prepare();
+                            cmd.Parameters.AddWithValue("@name", oldSystem.name);
+                            using (SQLiteDataReader rdr = cmd.ExecuteReader())
+                            {
+                                if (rdr.Read())
+                                {
+                                    if (result.visits < 1)
+                                    {
+                                        // Old-style system; need to update
+                                        result.visits = rdr.GetInt32(0);
+                                        result.lastvisit = rdr.GetDateTime(1);
+                                        needToUpdate = true;
+                                    }
+                                    if (result.lastupdated == null)
+                                    {
+                                        result.lastupdated = rdr.GetDateTime(4);
+                                    }
+                                    if (result.comment == null)
+                                    {
+                                        if (!rdr.IsDBNull(4))
+                                        {
+                                            result.comment = rdr.GetString(4);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                Logging.Warn("Problem reading data for star system '" + oldSystem.name + "' from database, re-obtaining from source. ");
+                try
+                {
+                    result = DataProviderService.GetSystemData(oldSystem.name);
+                    result.visits = oldSystem.visits;
+                    result.comment = oldSystem.comment;
+                    result.lastvisit = oldSystem.lastvisit;
+                    result.lastupdated = DateTime.UtcNow;
+                    needToUpdate = true;
+                }
+                catch (Exception ex)
+                {
+                    Logging.Warn("Problem obtaining data from source: " + ex);
+                    result = null;
+                }
             }
 
             return result;
