@@ -683,7 +683,6 @@ namespace EddiJournalMonitor
                                     // Belt
                                     if (name.Contains("Belt Cluster"))
                                     {
-
                                         events.Add(new BeltScannedEvent(timestamp, scantype, name, distancefromarrival) { raw = line, fromLoad = fromLogLoad });
                                         handled = true;
                                         break;
@@ -2495,8 +2494,7 @@ namespace EddiJournalMonitor
                                     }
                                     else
                                     {
-                                        Logging.Warn("Unhandled voucher type " + type);
-                                        Logging.Info("Unhandled voucher type " + type);
+                                        Logging.Warn("Unhandled voucher type " + type, line);
                                     }
                                     handled = true;
                                     break;
