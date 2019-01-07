@@ -2248,7 +2248,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Opal.
+        ///   Looks up a localized string similar to Void Opals.
         /// </summary>
         public static string Opal {
             get {
@@ -2455,7 +2455,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Power Transfer Conduits.
+        ///   Looks up a localized string similar to Power Transfer Bus.
         /// </summary>
         public static string PowerTransferConduits {
             get {
