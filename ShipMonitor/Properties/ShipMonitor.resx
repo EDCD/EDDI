@@ -203,11 +203,14 @@
   </data>
   <data name="header_hot" xml:space="preserve">
     <value>Status</value>
+    <comment>Header for column showing whether ship is Hot or Clean</comment>
   </data>
   <data name="ship_clean" xml:space="preserve">
     <value>Clean</value>
+    <comment>Ship is Clean</comment>
   </data>
   <data name="ship_hot" xml:space="preserve">
     <value>Hot</value>
+    <comment>Ship is Hot</comment>
   </data>
 </root>
