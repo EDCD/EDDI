@@ -95,7 +95,7 @@ namespace EddiDataProviderService
                         name = name
                     };
                 }
-                Instance.insertStarSystem(system);
+                Instance.insertStarSystems(new List<StarSystem>() { system });
             }
             return system;
         }
@@ -111,7 +111,7 @@ namespace EddiDataProviderService
                 }
                 if (system != null)
                 {
-                    Instance.insertStarSystem(system);
+                    Instance.insertStarSystems(new List<StarSystem>() { system });
                 }
             }
             return system;
@@ -175,7 +175,7 @@ namespace EddiDataProviderService
             }
             if (needToUpdate)
             {
-                Instance.updateStarSystem(result);
+                Instance.updateStarSystems(new List<StarSystem>() { result });
             }
             return result;
         }
@@ -284,34 +284,37 @@ namespace EddiDataProviderService
 
         public void SaveStarSystem(StarSystem starSystem)
         {
-            if (Instance.ReadStarSystem(starSystem.name) == null)
-            {
-                Instance.deleteStarSystem(starSystem);
-                Instance.insertStarSystem(starSystem);
-            }
-            else
-            {
-                Instance.updateStarSystem(starSystem);
-            }
+            SaveStarSystems(new List<StarSystem>() { starSystem });
         }
 
         public void SaveStarSystems(List<StarSystem> starSystems)
         {
+            List<StarSystem> deleteAndReInsert = new List<StarSystem>();
+            List<StarSystem> update = new List<StarSystem>();
+
             foreach (StarSystem system in starSystems)
             {
                 if (Instance.ReadStarSystem(system.name) == null)
                 {
-                    // Delete the system
-                    Instance.deleteStarSystem(system);
-
-                    // Re-insert the system
-                    Instance.insertStarSystem(system);
+                    deleteAndReInsert.Add(system);
                 }
                 else
                 {
-                    // Update the system
-                    Instance.updateStarSystem(system);
+                    update.Add(system);
                 }
+            }
+
+            // Delete and re-insert applicable systems
+            if (deleteAndReInsert.Count > 0)
+            {
+                Instance.deleteStarSystems(deleteAndReInsert);
+                Instance.insertStarSystems(deleteAndReInsert);
+            }
+
+            // Update applicable systems
+            if (update.Count > 0)
+            {
+                Instance.updateStarSystems(update);
             }
         }
 
@@ -322,50 +325,66 @@ namespace EddiDataProviderService
             SaveStarSystem(system);
         }
 
-        private void insertStarSystem(StarSystem system)
+        private void insertStarSystems(List<StarSystem> systems)
         {
-            // Before we insert we attempt to fetch to ensure that we don't have it present
-            StarSystem existingStarSystem = Instance.GetStarSystem(system.name, false);
-            if (existingStarSystem != null)
-            {
-                Logging.Debug("Attempt to insert existing star system - updating instead");
-                Instance.updateStarSystem(system);
-            }
-            else
-            {
-                Logging.Debug("Creating new starsystem " + system.name);
-                if (system.lastvisit == null)
-                {
-                    // DB constraints don't allow this to be null
-                    system.lastvisit = DateTime.UtcNow;
-                }
+            List<StarSystem> updateStarSystems = new List<StarSystem>();
 
-                using (var con = SimpleDbConnection())
+            using (var con = SimpleDbConnection())
+            {
+                try
                 {
-                    try
+                    con.Open();
+                    using (var cmd = new SQLiteCommand(con))
                     {
-                        con.Open();
-                        using (var cmd = new SQLiteCommand(con))
+                        using (var transaction = con.BeginTransaction())
                         {
-                            cmd.CommandText = INSERT_SQL;
-                            cmd.Prepare();
-                            cmd.Parameters.AddWithValue("@name", system.name);
-                            cmd.Parameters.AddWithValue("@totalvisits", system.visits);
-                            cmd.Parameters.AddWithValue("@lastvisit", system.lastvisit ?? DateTime.UtcNow);
-                            cmd.Parameters.AddWithValue("@starsystem", JsonConvert.SerializeObject(system));
-                            cmd.Parameters.AddWithValue("@starsystemlastupdated", system.lastupdated);
-                            cmd.ExecuteNonQuery();
+                            foreach (StarSystem system in systems)
+                            {
+                                // Before we insert we attempt to fetch to ensure that we don't have it present
+                                StarSystem existingStarSystem = Instance.GetStarSystem(system.name, false);
+                                if (existingStarSystem != null)
+                                {
+                                    Logging.Debug("Attempt to insert existing star system - updating instead");
+                                    updateStarSystems.Add(system);
+                                    continue;
+                                }
+                                else
+                                {
+                                    Logging.Debug("Inserting new starsystem " + system.name);
+                                    if (system.lastvisit == null)
+                                    {
+                                        // DB constraints don't allow this to be null
+                                        system.lastvisit = DateTime.UtcNow;
+                                    }
+
+                                    cmd.CommandText = INSERT_SQL;
+                                    cmd.Prepare();
+                                    cmd.Parameters.AddWithValue("@name", system.name);
+                                    cmd.Parameters.AddWithValue("@totalvisits", system.visits);
+                                    cmd.Parameters.AddWithValue("@lastvisit", system.lastvisit ?? DateTime.UtcNow);
+                                    cmd.Parameters.AddWithValue("@starsystem", JsonConvert.SerializeObject(system));
+                                    cmd.Parameters.AddWithValue("@starsystemlastupdated", system.lastupdated);
+                                    cmd.ExecuteNonQuery();
+                                }
+                            }
+                            transaction.Commit();
                         }
                     }
-                    catch (SQLiteException ex)
-                    {
-                        handleSqlLiteException(con, ex);
-                    }
                 }
+                catch (SQLiteException ex)
+                {
+                    handleSqlLiteException(con, ex);
+                }
+            }
+
+            // Update applicable systems
+            if (updateStarSystems.Count > 0)
+            {
+                Instance.updateStarSystems(updateStarSystems);
             }
         }
 
-        private void updateStarSystem(StarSystem system)
+        private void updateStarSystems(List<StarSystem> systems)
         {
             using (var con = SimpleDbConnection())
             {
@@ -374,14 +393,21 @@ namespace EddiDataProviderService
                     con.Open();
                     using (var cmd = new SQLiteCommand(con))
                     {
-                        cmd.CommandText = UPDATE_SQL;
-                        cmd.Prepare();
-                        cmd.Parameters.AddWithValue("@totalvisits", system.visits);
-                        cmd.Parameters.AddWithValue("@lastvisit", system.lastvisit ?? DateTime.UtcNow);
-                        cmd.Parameters.AddWithValue("@starsystem", JsonConvert.SerializeObject(system));
-                        cmd.Parameters.AddWithValue("@starsystemlastupdated", system.lastupdated);
-                        cmd.Parameters.AddWithValue("@name", system.name);
-                        cmd.ExecuteNonQuery();
+                        using (var transaction = con.BeginTransaction())
+                        {
+                            foreach (StarSystem system in systems)
+                            {
+                                cmd.CommandText = UPDATE_SQL;
+                                cmd.Prepare();
+                                cmd.Parameters.AddWithValue("@totalvisits", system.visits);
+                                cmd.Parameters.AddWithValue("@lastvisit", system.lastvisit ?? DateTime.UtcNow);
+                                cmd.Parameters.AddWithValue("@starsystem", JsonConvert.SerializeObject(system));
+                                cmd.Parameters.AddWithValue("@starsystemlastupdated", system.lastupdated);
+                                cmd.Parameters.AddWithValue("@name", system.name);
+                                cmd.ExecuteNonQuery();
+                            }
+                            transaction.Commit();
+                        }
                     }
                 }
                 catch (SQLiteException ex)
@@ -391,7 +417,7 @@ namespace EddiDataProviderService
             }
         }
 
-        private void deleteStarSystem(StarSystem system)
+        private void deleteStarSystems(List<StarSystem> systems)
         {
             using (var con = SimpleDbConnection())
             {
@@ -400,10 +426,17 @@ namespace EddiDataProviderService
                     con.Open();
                     using (var cmd = new SQLiteCommand(con))
                     {
-                        cmd.CommandText = DELETE_SQL;
-                        cmd.Prepare();
-                        cmd.Parameters.AddWithValue("@name", system.name);
-                        cmd.ExecuteNonQuery();
+                        using (var transaction = con.BeginTransaction())
+                        {
+                            foreach (StarSystem system in systems)
+                            {
+                                cmd.CommandText = DELETE_SQL;
+                                cmd.Prepare();
+                                cmd.Parameters.AddWithValue("@name", system.name);
+                                cmd.ExecuteNonQuery();
+                            }
+                            transaction.Commit();
+                        }
                     }
                 }
                 catch (SQLiteException ex)
