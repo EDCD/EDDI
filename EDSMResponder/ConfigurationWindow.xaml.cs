@@ -4,6 +4,7 @@ using EddiDataProviderService;
 using EddiStarMapService;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -109,32 +110,30 @@ namespace EddiEdsmResponder
                 Dictionary<string, string> comments = starMapService.getStarMapComments();
                 int total = systems.Count;
                 int i = 0;
-                List<StarSystem> syncSystems = new List<StarSystem>();
 
-                foreach (string system in systems.Keys)
+                string[] systemNames = systems.Keys.ToArray();
+                while (i < total)
                 {
-                    ++i;
+                    int batchSize = Math.Min(total, StarMapService.syncBatchSize);
+                    string[] batchNames = systemNames.Skip(i).Take(batchSize).ToArray();
+                    List<StarSystem> batchSystems = new List<StarSystem>();
+
+                    List<StarSystem> starSystems = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystems(batchNames, false);
+                    foreach (string system in batchNames)
+                    {
+                        StarSystem CurrentStarSystem = starSystems.FirstOrDefault(s => s.name == system);
+                        CurrentStarSystem.visits = systems[system].visits;
+                        CurrentStarSystem.lastvisit = systems[system].lastVisit;
+                        if (comments.ContainsKey(system))
+                        {
+                            CurrentStarSystem.comment = comments[system];
+                        }
+                        batchSystems.Add(CurrentStarSystem);
+                    }
+                    DataProviderService.saveFromStarMapService(batchSystems);
+                    i = i + batchSize;
                     progress.Report($"{Properties.EDSMResources.log_button_fetching_progress} {i}/{total}");
-                    StarSystem CurrentStarSystem = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(system, false);
-                    CurrentStarSystem.visits = systems[system].visits;
-                    CurrentStarSystem.lastvisit = systems[system].lastVisit;
-                    if (comments.ContainsKey(system))
-                    {
-                        CurrentStarSystem.comment = comments[system];
-                    }
-                    syncSystems.Add(CurrentStarSystem);
-
-                    if (syncSystems.Count == StarMapService.syncBatchSize)
-                    {
-                        DataProviderService.saveFromStarMapService(syncSystems);
-                        syncSystems.Clear();
-                    }
                 }
-                if (syncSystems.Count > 0)
-                {
-                    DataProviderService.saveFromStarMapService(syncSystems);
-                }
-
                 progress.Report(Properties.EDSMResources.log_button_fetched);
             }
             catch (EDSMException edsme)
