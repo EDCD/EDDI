@@ -26,9 +26,19 @@ namespace UnitTests
                 return GetStarSystem(name, refreshIfOutdated);
             }
 
+            public List<StarSystem> GetOrCreateStarSystems(string[] names, bool refreshIfOutdated = true)
+            {
+                throw new NotImplementedException();
+            }
+
             public StarSystem GetOrFetchStarSystem(string name, bool fetchIfMissing = true)
             {
                 return GetStarSystem(name, fetchIfMissing);
+            }
+
+            public List<StarSystem> GetOrFetchStarSystems(string[] names, bool fetchIfMissing = true)
+            {
+                throw new NotImplementedException();
             }
 
             public StarSystem GetStarSystem(string name, bool refreshIfOutdated = true)
@@ -87,12 +97,22 @@ namespace UnitTests
                 return null;
             }
 
+            public List<StarSystem> GetStarSystems(string[] names, bool refreshIfOutdated = true)
+            {
+                throw new NotImplementedException();
+            }
+
             public void LeaveStarSystem(StarSystem starSystem)
             {
                 throw new NotImplementedException();
             }
 
             public void SaveStarSystem(StarSystem starSystem)
+            {
+                throw new NotImplementedException();
+            }
+
+            public void SaveStarSystems(List<StarSystem> starSystems)
             {
                 throw new NotImplementedException();
             }

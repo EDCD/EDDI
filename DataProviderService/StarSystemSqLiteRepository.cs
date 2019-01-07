@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using Utilities;
 
@@ -81,135 +82,184 @@ namespace EddiDataProviderService
 
         public StarSystem GetOrCreateStarSystem(string name, bool fetchIfMissing = true)
         {
-            StarSystem system = Instance.GetStarSystem(name, fetchIfMissing);
-            if (system == null)
+            return GetOrCreateStarSystems(new string[] { name }).FirstOrDefault();
+        }
+
+        public List<StarSystem> GetOrCreateStarSystems(string[] names, bool fetchIfMissing = true)
+        {
+            List<StarSystem> systems = Instance.GetStarSystems(names, fetchIfMissing);
+            List<string> fetchSystems = new List<string>();
+
+            foreach (string name in names)
             {
-                if (fetchIfMissing)
+                if (fetchIfMissing && systems.Find(s => s.name == name) == null)
                 {
-                    system = DataProviderService.GetSystemData(name);
+                    fetchSystems.Add(name);
                 }
-                if (system == null)
-                {
-                    system = new StarSystem
-                    {
-                        name = name
-                    };
-                }
-                Instance.insertStarSystems(new List<StarSystem>() { system });
             }
-            return system;
+
+            List<StarSystem> fetchedSystems = DataProviderService.GetSystemsData(fetchSystems.ToArray());
+            if (fetchedSystems?.Count > 0)
+            {
+                Instance.insertStarSystems(fetchedSystems);
+                systems.AddRange(fetchedSystems);
+            }
+
+            foreach (string name in fetchSystems)
+            {
+                if (fetchedSystems.Find(s => s.name == name) == null)
+                {
+                    systems.Add(new StarSystem() { name = name });
+                }
+            }
+
+            return systems;
         }
 
         public StarSystem GetOrFetchStarSystem(string name, bool fetchIfMissing = true)
         {
-            StarSystem system = Instance.GetStarSystem(name, fetchIfMissing);
-            if (system == null)
+            return GetOrFetchStarSystems(new string[] { name }).FirstOrDefault();
+        }
+
+        public List<StarSystem> GetOrFetchStarSystems(string[] names, bool fetchIfMissing = true)
+        {
+            List<StarSystem> systems = Instance.GetStarSystems(names, fetchIfMissing);
+            List<string> fetchSystems = new List<string>();
+
+            foreach (string name in names)
             {
-                if (fetchIfMissing)
+                if (fetchIfMissing && systems.Find(s => s.name == name) == null)
                 {
-                    system = DataProviderService.GetSystemData(name);
-                }
-                if (system != null)
-                {
-                    Instance.insertStarSystems(new List<StarSystem>() { system });
+                    fetchSystems.Add(name);
                 }
             }
-            return system;
+
+            List<StarSystem> fetchedSystems = DataProviderService.GetSystemsData(fetchSystems.ToArray());
+            if (fetchedSystems?.Count > 0)
+            {
+                Instance.insertStarSystems(fetchedSystems);
+                systems.AddRange(fetchedSystems);
+            }
+
+            return systems;
         }
 
         public StarSystem GetStarSystem(string name, bool refreshIfOutdated = true)
+        {
+            return GetStarSystems(new string[] { name }).FirstOrDefault();
+        }
+
+        public List<StarSystem> GetStarSystems(string[] names, bool refreshIfOutdated = true)
         {
             if (!File.Exists(DbFile))
             {
                 return null;
             }
 
-            StarSystem result = null;
-            bool needToUpdate = false;
-            string data = Instance.ReadStarSystem(name);
-            if (data != null)
+            List<StarSystem> results = new List<StarSystem>();
+            List<KeyValuePair<string, string>> dataSets = Instance.ReadStarSystems(names);
+
+            foreach (KeyValuePair<string, string> kv in dataSets)
             {
-                // Old versions of the data could have a string "No volcanism" for volcanism.  If so we remove it
-                data = data.Replace(@"""No volcanism""", "null");
-
-                // Determine whether our data is stale (We won't deserialize the the entire system if it's stale) 
-                IDictionary<string, object> system = Deserializtion.DeserializeData(data);
-                system.TryGetValue("visits", out object visitVal);
-                system.TryGetValue("comment", out object commentVal);
-                system.TryGetValue("lastvisit", out object lastVisitVal);
-                system.TryGetValue("lastupdated", out object lastUpdatedVal);
-                system.TryGetValue("systemAddress", out object systemAddressVal);
-
-                int visits = (int)(long)visitVal;
-                string comment = (string)commentVal;
-                DateTime? lastvisit = (DateTime?)lastVisitVal;
-                DateTime? lastupdated = (DateTime?)lastUpdatedVal;
-                long? systemAddress = (long?)systemAddressVal;
-
-                if (refreshIfOutdated && lastupdated < DateTime.UtcNow.AddHours(-1))
+                bool needToUpdate = false;
+                StarSystem result = null;
+                if (kv.Value != null && kv.Value != "")
                 {
-                    // Data is stale
-                    StarSystem updatedResult = DataProviderService.GetSystemData(name);
-                    if (updatedResult.systemAddress == null && systemAddress != null)
+                    // Old versions of the data could have a string "No volcanism" for volcanism.  If so we remove it
+                    string data = ((string)kv.Value)?.Replace(@"""No volcanism""", "null");
+
+                    // Determine whether our data is stale (We won't deserialize the the entire system if it's stale) 
+                    IDictionary<string, object> system = Deserializtion.DeserializeData(data);
+                    system.TryGetValue("visits", out object visitVal);
+                    system.TryGetValue("comment", out object commentVal);
+                    system.TryGetValue("lastvisit", out object lastVisitVal);
+                    system.TryGetValue("lastupdated", out object lastUpdatedVal);
+                    system.TryGetValue("systemAddress", out object systemAddressVal);
+
+                    string name = kv.Key;
+                    int visits = (int)(long)visitVal;
+                    string comment = (string)commentVal;
+                    DateTime? lastvisit = (DateTime?)lastVisitVal;
+                    DateTime? lastupdated = (DateTime?)lastUpdatedVal;
+                    long? systemAddress = (long?)systemAddressVal;
+
+                    if (refreshIfOutdated && lastupdated < DateTime.UtcNow.AddHours(-1))
                     {
-                        // The "updated" data might be a basic system, empty except for the name. 
-                        // If so, return the old result.
-                        StarSystem starSystem = new StarSystem() { name = name, visits = visits, comment = comment, lastvisit = lastvisit };
-                        result = DeserializeStarSystem(starSystem, ref needToUpdate, data);
+                        // Data is stale
+                        StarSystem updatedResult = DataProviderService.GetSystemData(name);
+                        if (updatedResult.systemAddress == null && systemAddress != null)
+                        {
+                            // The "updated" data might be a basic system, empty except for the name. 
+                            // If so, return the old result.
+                            StarSystem starSystem = new StarSystem() { name = name, visits = visits, comment = comment, lastvisit = lastvisit };
+                            result = DeserializeStarSystem(starSystem, ref needToUpdate, data);
+                        }
+                        else
+                        {
+                            updatedResult.visits = visits;
+                            updatedResult.comment = comment;
+                            updatedResult.lastvisit = lastvisit;
+                            updatedResult.lastupdated = DateTime.UtcNow;
+                            result = updatedResult;
+                            needToUpdate = true;
+                        }
                     }
                     else
                     {
-                        updatedResult.visits = visits;
-                        updatedResult.comment = comment;
-                        updatedResult.lastvisit = lastvisit;
-                        updatedResult.lastupdated = DateTime.UtcNow;
-                        result = updatedResult;
-                        needToUpdate = true;
+                        StarSystem starSystem = new StarSystem() { name = name, visits = visits, comment = comment, lastvisit = lastvisit };
+                        result = DeserializeStarSystem(starSystem, ref needToUpdate, data);
                     }
                 }
-                else
+                if (needToUpdate)
                 {
-                    StarSystem starSystem = new StarSystem() { name = name, visits = visits, comment = comment, lastvisit = lastvisit };
-                    result = DeserializeStarSystem(starSystem, ref needToUpdate, data);
+                    Instance.updateStarSystems(new List<StarSystem>() { result });
                 }
+                results.Add(result);
             }
-            if (needToUpdate)
-            {
-                Instance.updateStarSystems(new List<StarSystem>() { result });
-            }
-            return result;
+            return results;
         }
 
         private string ReadStarSystem(string name)
         {
-            string data = null;
-            try
+            return (string)Instance.ReadStarSystems(new string[] { name }).FirstOrDefault().Value;
+        }
+
+        private List<KeyValuePair<string, string>> ReadStarSystems(string[] names)
+        {
+            List<KeyValuePair<string, string>> results = new List<KeyValuePair<string, string>>();
+            using (var con = SimpleDbConnection())
             {
-                using (var con = SimpleDbConnection())
+                con.Open();
+                using (var cmd = new SQLiteCommand(con))
                 {
-                    con.Open();
-                    using (var cmd = new SQLiteCommand(con))
+                    using (var transaction = con.BeginTransaction())
                     {
-                        cmd.CommandText = SELECT_BY_NAME_SQL;
-                        cmd.Prepare();
-                        cmd.Parameters.AddWithValue("@name", name);
-                        using (SQLiteDataReader rdr = cmd.ExecuteReader())
+                        foreach (string name in names)
                         {
-                            if (rdr.Read())
+                            try
                             {
-                                data = rdr.GetString(2);
+                                cmd.CommandText = SELECT_BY_NAME_SQL;
+                                cmd.Prepare();
+                                cmd.Parameters.AddWithValue("@name", name);
+                                using (SQLiteDataReader rdr = cmd.ExecuteReader())
+                                {
+                                    if (rdr.Read())
+                                    {
+                                        results.Add(new KeyValuePair<string, string>(name, rdr.GetString(2)));
+                                    }
+                                }
+                            }
+                            catch (SQLiteException)
+                            {
+                                Logging.Warn("Problem reading data for star system '" + name + "' from database, refreshing database and re-obtaining from source.");
+                                RecoverStarSystemDB();
+                                Instance.GetStarSystem(name);
                             }
                         }
                     }
                 }
             }
-            catch (SQLiteException)
-            {
-                Logging.Warn("Problem reading data for star system '" + name + "' from database, refreshing database and re-obtaining from source.");
-                RecoverStarSystemDB();
-                Instance.GetStarSystem(name);
-            }
-            return data;
+            return results;
         }
 
         private static StarSystem DeserializeStarSystem(StarSystem oldSystem, ref bool needToUpdate, string data)
@@ -292,27 +342,33 @@ namespace EddiDataProviderService
             List<StarSystem> deleteAndReInsert = new List<StarSystem>();
             List<StarSystem> update = new List<StarSystem>();
 
-            foreach (StarSystem system in starSystems)
+            foreach (KeyValuePair<string, string> dbSystem in Instance.ReadStarSystems(starSystems.Select(s => s.name).ToArray()))
             {
-                if (Instance.ReadStarSystem(system.name) == null)
+                foreach (StarSystem system in starSystems)
                 {
-                    deleteAndReInsert.Add(system);
-                }
-                else
-                {
-                    update.Add(system);
+                    if (system.name == dbSystem.Key)
+                    {
+                        if (dbSystem.Value == null)
+                        {
+                            deleteAndReInsert.Add(system);
+                        }
+                        else
+                        {
+                            update.Add(system);
+                        }
+                    }
                 }
             }
 
             // Delete and re-insert applicable systems
-            if (deleteAndReInsert.Count > 0)
+            if (deleteAndReInsert?.Count > 0)
             {
                 Instance.deleteStarSystems(deleteAndReInsert);
                 Instance.insertStarSystems(deleteAndReInsert);
             }
 
             // Update applicable systems
-            if (update.Count > 0)
+            if (update?.Count > 0)
             {
                 Instance.updateStarSystems(update);
             }
@@ -378,7 +434,7 @@ namespace EddiDataProviderService
             }
 
             // Update applicable systems
-            if (updateStarSystems.Count > 0)
+            if (updateStarSystems?.Count > 0)
             {
                 Instance.updateStarSystems(updateStarSystems);
             }
