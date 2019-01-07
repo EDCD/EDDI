@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using Utilities;
 
@@ -28,7 +29,8 @@ namespace EddiDataProviderService
                      , lastvisit
                      , starsystem
                      , starsystemlastupdated)
-                    VALUES(@name, @totalvisits, @lastvisit, @starsystem, @starsystemlastupdated)";
+                    VALUES(@name, @totalvisits, @lastvisit, @starsystem, @starsystemlastupdated);
+                    PRAGMA optimize; ";
         private const string UPDATE_SQL = @"
                     UPDATE starsystems
                     SET totalvisits = @totalvisits
@@ -38,7 +40,8 @@ namespace EddiDataProviderService
                     WHERE LOWER(name) = LOWER(@name)";
         private const string DELETE_SQL = @"
                     DELETE FROM starsystems
-                    WHERE LOWER(name) = LOWER(@name)";
+                    WHERE LOWER(name) = LOWER(@name);
+                    PRAGMA optimize;";
         private const string SELECT_BY_NAME_SQL = @"
                     SELECT totalvisits,
                            lastvisit,
@@ -77,159 +80,253 @@ namespace EddiDataProviderService
             }
         }
 
-        private static readonly object editLock = new object();
-
         public StarSystem GetOrCreateStarSystem(string name, bool fetchIfMissing = true)
         {
-            StarSystem system = GetStarSystem(name, fetchIfMissing);
-            if (system == null)
-            {
-                if (fetchIfMissing)
-                {
-                    system = DataProviderService.GetSystemData(name);
-                }
-                if (system == null)
-                {
-                    system = new StarSystem
-                    {
-                        name = name
-                    };
-                }
+            return GetOrCreateStarSystems(new string[] { name }).FirstOrDefault();
+        }
 
-                insertStarSystem(system);
+        public List<StarSystem> GetOrCreateStarSystems(string[] names, bool fetchIfMissing = true)
+        {
+            List<StarSystem> systems = Instance.GetStarSystems(names, fetchIfMissing);
+            List<string> fetchSystems = new List<string>();
+
+            foreach (string name in names)
+            {
+                if (fetchIfMissing && systems.Find(s => s.name == name) == null)
+                {
+                    fetchSystems.Add(name);
+                }
             }
-            return system;
+
+            List<StarSystem> fetchedSystems = DataProviderService.GetSystemsData(fetchSystems.ToArray());
+            if (fetchedSystems?.Count > 0)
+            {
+                Instance.insertStarSystems(fetchedSystems);
+                systems.AddRange(fetchedSystems);
+            }
+
+            foreach (string name in fetchSystems)
+            {
+                if (fetchedSystems.Find(s => s.name == name) == null)
+                {
+                    systems.Add(new StarSystem() { name = name });
+                }
+            }
+
+            return systems;
         }
 
         public StarSystem GetOrFetchStarSystem(string name, bool fetchIfMissing = true)
         {
-            StarSystem system = GetStarSystem(name, fetchIfMissing);
-            if (system == null)
+            return GetOrFetchStarSystems(new string[] { name }).FirstOrDefault();
+        }
+
+        public List<StarSystem> GetOrFetchStarSystems(string[] names, bool fetchIfMissing = true)
+        {
+            List<StarSystem> systems = Instance.GetStarSystems(names, fetchIfMissing);
+            List<string> fetchSystems = new List<string>();
+
+            foreach (string name in names)
             {
-                if (fetchIfMissing)
+                if (fetchIfMissing && systems.Find(s => s.name == name) == null)
                 {
-                    system = DataProviderService.GetSystemData(name);
-                }
-                if (system != null)
-                {
-                    insertStarSystem(system);
+                    fetchSystems.Add(name);
                 }
             }
-            return system;
+
+            List<StarSystem> fetchedSystems = DataProviderService.GetSystemsData(fetchSystems.ToArray());
+            if (fetchedSystems?.Count > 0)
+            {
+                Instance.insertStarSystems(fetchedSystems);
+                systems.AddRange(fetchedSystems);
+            }
+
+            return systems;
         }
 
         public StarSystem GetStarSystem(string name, bool refreshIfOutdated = true)
+        {
+            return GetStarSystems(new string[] { name }).FirstOrDefault();
+        }
+
+        public List<StarSystem> GetStarSystems(string[] names, bool refreshIfOutdated = true)
         {
             if (!File.Exists(DbFile))
             {
                 return null;
             }
 
-            StarSystem result = null;
-            try
+            List<StarSystem> results = new List<StarSystem>();
+            List<KeyValuePair<string, string>> dataSets = Instance.ReadStarSystems(names);
+
+            foreach (KeyValuePair<string, string> kv in dataSets)
             {
                 bool needToUpdate = false;
-                using (var con = SimpleDbConnection())
+                StarSystem result = null;
+                if (kv.Value != null && kv.Value != "")
                 {
-                    con.Open();
-                    using (var cmd = new SQLiteCommand(con))
-                    {
-                        cmd.CommandText = SELECT_BY_NAME_SQL;
-                        cmd.Prepare();
-                        cmd.Parameters.AddWithValue("@name", name);
-                        using (SQLiteDataReader rdr = cmd.ExecuteReader())
-                        {
-                            if (rdr.Read())
-                            {
-                                string data = rdr.GetString(2);
-                                // Old versions of the data could have a string "No volcanism" for volcanism.  If so we remove it
-                                data = data.Replace(@"""No volcanism""", "null");
+                    // Old versions of the data could have a string "No volcanism" for volcanism.  If so we remove it
+                    string data = ((string)kv.Value)?.Replace(@"""No volcanism""", "null");
 
-                                try
+                    // Determine whether our data is stale (We won't deserialize the the entire system if it's stale) 
+                    IDictionary<string, object> system = Deserializtion.DeserializeData(data);
+                    system.TryGetValue("visits", out object visitVal);
+                    system.TryGetValue("comment", out object commentVal);
+                    system.TryGetValue("lastvisit", out object lastVisitVal);
+                    system.TryGetValue("lastupdated", out object lastUpdatedVal);
+                    system.TryGetValue("systemAddress", out object systemAddressVal);
+
+                    string name = kv.Key;
+                    int visits = (int)(long)visitVal;
+                    string comment = (string)commentVal;
+                    DateTime? lastvisit = (DateTime?)lastVisitVal;
+                    DateTime? lastupdated = (DateTime?)lastUpdatedVal;
+                    long? systemAddress = (long?)systemAddressVal;
+
+                    if (refreshIfOutdated && lastupdated < DateTime.UtcNow.AddHours(-1))
+                    {
+                        // Data is stale
+                        StarSystem updatedResult = DataProviderService.GetSystemData(name);
+                        if (updatedResult.systemAddress == null && systemAddress != null)
+                        {
+                            // The "updated" data might be a basic system, empty except for the name. 
+                            // If so, return the old result.
+                            StarSystem starSystem = new StarSystem() { name = name, visits = visits, comment = comment, lastvisit = lastvisit };
+                            result = DeserializeStarSystem(starSystem, ref needToUpdate, data);
+                        }
+                        else
+                        {
+                            updatedResult.visits = visits;
+                            updatedResult.comment = comment;
+                            updatedResult.lastvisit = lastvisit;
+                            updatedResult.lastupdated = DateTime.UtcNow;
+                            result = updatedResult;
+                            needToUpdate = true;
+                        }
+                    }
+                    else
+                    {
+                        StarSystem starSystem = new StarSystem() { name = name, visits = visits, comment = comment, lastvisit = lastvisit };
+                        result = DeserializeStarSystem(starSystem, ref needToUpdate, data);
+                    }
+                }
+                if (needToUpdate)
+                {
+                    Instance.updateStarSystems(new List<StarSystem>() { result });
+                }
+                results.Add(result);
+            }
+            return results;
+        }
+
+        private string ReadStarSystem(string name)
+        {
+            return (string)Instance.ReadStarSystems(new string[] { name }).FirstOrDefault().Value;
+        }
+
+        private List<KeyValuePair<string, string>> ReadStarSystems(string[] names)
+        {
+            List<KeyValuePair<string, string>> results = new List<KeyValuePair<string, string>>();
+            using (var con = SimpleDbConnection())
+            {
+                con.Open();
+                using (var cmd = new SQLiteCommand(con))
+                {
+                    using (var transaction = con.BeginTransaction())
+                    {
+                        foreach (string name in names)
+                        {
+                            try
+                            {
+                                cmd.CommandText = SELECT_BY_NAME_SQL;
+                                cmd.Prepare();
+                                cmd.Parameters.AddWithValue("@name", name);
+                                using (SQLiteDataReader rdr = cmd.ExecuteReader())
                                 {
-                                    result = JsonConvert.DeserializeObject<StarSystem>(data);
-                                    if (result == null)
+                                    if (rdr.Read())
                                     {
-                                        Logging.Info("Failed to obtain system for " + name + " from the SQLiteRepository");
-                                    }
-                                    if (result != null)
-                                    {
-                                        if (result.visits < 1)
-                                        {
-                                            // Old-style system; need to update
-                                            result.visits = rdr.GetInt32(0);
-                                            result.lastvisit = rdr.GetDateTime(1);
-                                            needToUpdate = true;
-                                        }
-                                        if (result.lastupdated == null)
-                                        {
-                                            result.lastupdated = rdr.GetDateTime(4);
-                                        }
-                                        if (result.comment == null)
-                                        {
-                                            if (!rdr.IsDBNull(4))
-                                            {
-                                                result.comment = rdr.GetString(4);
-                                            }
-                                        }
-                                    }
-                                    if (refreshIfOutdated && result.lastupdated < DateTime.UtcNow.AddHours(-1))
-                                    {
-                                        // Data is stale
-                                        StarSystem updatedResult = DataProviderService.GetSystemData(name);
-                                        if (updatedResult.systemAddress == null && result.systemAddress != null)
-                                        {
-                                            // The "updated" data might be a basic system, empty except for the name. 
-                                            // If so, return the old result.
-                                            return result;
-                                        }
-                                        else
-                                        {
-                                            updatedResult.visits = result.visits;
-                                            updatedResult.lastvisit = result.lastvisit;
-                                            updatedResult.lastupdated = DateTime.UtcNow;
-                                            result = updatedResult;
-                                            needToUpdate = true;
-                                        }
+                                        results.Add(new KeyValuePair<string, string>(name, rdr.GetString(2)));
                                     }
                                 }
-                                catch (Exception)
+                            }
+                            catch (SQLiteException)
+                            {
+                                Logging.Warn("Problem reading data for star system '" + name + "' from database, refreshing database and re-obtaining from source.");
+                                RecoverStarSystemDB();
+                                Instance.GetStarSystem(name);
+                            }
+                        }
+                    }
+                }
+            }
+            return results;
+        }
+
+        private static StarSystem DeserializeStarSystem(StarSystem oldSystem, ref bool needToUpdate, string data)
+        {
+            StarSystem result = null; ;
+            try
+            {
+                result = JsonConvert.DeserializeObject<StarSystem>(data);
+                if (result == null)
+                {
+                    Logging.Info("Failed to obtain system for " + oldSystem.name + " from the SQLiteRepository");
+                }
+                if (result != null)
+                {
+                    using (var con = SimpleDbConnection())
+                    {
+                        con.Open();
+                        using (var cmd = new SQLiteCommand(con))
+                        {
+                            cmd.CommandText = SELECT_BY_NAME_SQL;
+                            cmd.Prepare();
+                            cmd.Parameters.AddWithValue("@name", oldSystem.name);
+                            using (SQLiteDataReader rdr = cmd.ExecuteReader())
+                            {
+                                if (rdr.Read())
                                 {
-                                    Logging.Warn("Problem reading data for star system '" + name + "' from database, re-obtaining from source. ");
-                                    try
+                                    if (result.visits < 1)
                                     {
-                                        result = DataProviderService.GetSystemData(name);
-                                        // Recover data unique to the local user and database
-                                        IDictionary<string, object> system = Deserializtion.DeserializeData(data);
-                                        system.TryGetValue("visits", out object visitVal);
-                                        result.visits = (int)(long)visitVal;
-                                        system.TryGetValue("comment", out object commentVal);
-                                        result.comment = (string)commentVal;
-                                        system.TryGetValue("lastvisit", out object lastVisitVal);
-                                        result.lastvisit = (DateTime?)lastVisitVal;
-                                        result.lastupdated = DateTime.UtcNow;
+                                        // Old-style system; need to update
+                                        result.visits = rdr.GetInt32(0);
+                                        result.lastvisit = rdr.GetDateTime(1);
                                         needToUpdate = true;
                                     }
-                                    catch (Exception ex)
+                                    if (result.lastupdated == null)
                                     {
-                                        Logging.Warn("Problem obtaining data from source: " + ex);
-                                        result = null;
+                                        result.lastupdated = rdr.GetDateTime(4);
+                                    }
+                                    if (result.comment == null)
+                                    {
+                                        if (!rdr.IsDBNull(4))
+                                        {
+                                            result.comment = rdr.GetString(4);
+                                        }
                                     }
                                 }
                             }
                         }
                     }
                 }
-                if (needToUpdate)
-                {
-                    updateStarSystem(result);
-                }
             }
-            catch (SQLiteException)
+            catch (Exception)
             {
-                Logging.Warn("Problem reading data for star system '" + name + "' from database, refreshing database and re-obtaining from source.");
-                RecoverStarSystemDB();
-                GetStarSystem(name);
+                Logging.Warn("Problem reading data for star system '" + oldSystem.name + "' from database, re-obtaining from source. ");
+                try
+                {
+                    result = DataProviderService.GetSystemData(oldSystem.name);
+                    result.visits = oldSystem.visits;
+                    result.comment = oldSystem.comment;
+                    result.lastvisit = oldSystem.lastvisit;
+                    result.lastupdated = DateTime.UtcNow;
+                    needToUpdate = true;
+                }
+                catch (Exception ex)
+                {
+                    Logging.Warn("Problem obtaining data from source: " + ex);
+                    result = null;
+                }
             }
 
             return result;
@@ -237,71 +334,43 @@ namespace EddiDataProviderService
 
         public void SaveStarSystem(StarSystem starSystem)
         {
-            if (GetStarSystem(starSystem.name, false) == null)
-            {
-                deleteStarSystem(starSystem);
-                insertStarSystem(starSystem);
-            }
-            else
-            {
-                updateStarSystem(starSystem);
-            }
+            SaveStarSystems(new List<StarSystem>() { starSystem });
         }
 
         public void SaveStarSystems(List<StarSystem> starSystems)
         {
-            using (var con = SimpleDbConnection())
+            List<StarSystem> deleteAndReInsert = new List<StarSystem>();
+            List<StarSystem> update = new List<StarSystem>();
+
+            foreach (KeyValuePair<string, string> dbSystem in Instance.ReadStarSystems(starSystems.Select(s => s.name).ToArray()))
             {
-                con.Open();
-                using (var cmd = new SQLiteCommand(con))
+                foreach (StarSystem system in starSystems)
                 {
-                    foreach (StarSystem system in starSystems)
+                    if (system.name == dbSystem.Key)
                     {
-                        if (GetStarSystem(system.name, false) == null)
+                        if (dbSystem.Value == null)
                         {
-                            lock (editLock)
-                            {
-                                // Delete the system
-                                cmd.CommandText = DELETE_SQL;
-                                cmd.Prepare();
-                                cmd.Parameters.AddWithValue("@name", system.name);
-                                cmd.ExecuteNonQuery();
-
-                                // Re-insert the system
-                                Logging.Debug("Creating new starsystem " + system.name);
-                                if (system.lastvisit == null)
-                                {
-                                    // DB constraints don't allow this to be null
-                                    system.lastvisit = DateTime.UtcNow;
-                                }
-
-                                cmd.CommandText = INSERT_SQL;
-                                cmd.Prepare();
-                                cmd.Parameters.AddWithValue("@name", system.name);
-                                cmd.Parameters.AddWithValue("@totalvisits", system.visits);
-                                cmd.Parameters.AddWithValue("@lastvisit", system.lastvisit ?? DateTime.UtcNow);
-                                cmd.Parameters.AddWithValue("@starsystem", JsonConvert.SerializeObject(system));
-                                cmd.Parameters.AddWithValue("@starsystemlastupdated", system.lastupdated);
-                                cmd.ExecuteNonQuery();
-                            }
+                            deleteAndReInsert.Add(system);
                         }
                         else
                         {
-                            lock (editLock)
-                            {
-                                // Update the system
-                                cmd.CommandText = UPDATE_SQL;
-                                cmd.Prepare();
-                                cmd.Parameters.AddWithValue("@totalvisits", system.visits);
-                                cmd.Parameters.AddWithValue("@lastvisit", system.lastvisit ?? DateTime.UtcNow);
-                                cmd.Parameters.AddWithValue("@starsystem", JsonConvert.SerializeObject(system));
-                                cmd.Parameters.AddWithValue("@starsystemlastupdated", system.lastupdated);
-                                cmd.Parameters.AddWithValue("@name", system.name);
-                                cmd.ExecuteNonQuery();
-                            }
+                            update.Add(system);
                         }
                     }
                 }
+            }
+
+            // Delete and re-insert applicable systems
+            if (deleteAndReInsert?.Count > 0)
+            {
+                Instance.deleteStarSystems(deleteAndReInsert);
+                Instance.insertStarSystems(deleteAndReInsert);
+            }
+
+            // Update applicable systems
+            if (update?.Count > 0)
+            {
+                Instance.updateStarSystems(update);
             }
         }
 
@@ -312,78 +381,123 @@ namespace EddiDataProviderService
             SaveStarSystem(system);
         }
 
-        private void insertStarSystem(StarSystem system)
+        private void insertStarSystems(List<StarSystem> systems)
         {
-            // Before we insert we attempt to fetch to ensure that we don't have it present
-            StarSystem existingStarSystem = GetStarSystem(system.name, false);
-            if (existingStarSystem != null)
-            {
-                Logging.Debug("Attempt to insert existing star system - updating instead");
-                updateStarSystem(system);
-            }
-            else
-            {
-                Logging.Debug("Creating new starsystem " + system.name);
-                if (system.lastvisit == null)
-                {
-                    // DB constraints don't allow this to be null
-                    system.lastvisit = DateTime.UtcNow;
-                }
+            List<StarSystem> updateStarSystems = new List<StarSystem>();
 
-                lock (editLock)
-                {
-                    using (var con = SimpleDbConnection())
-                    {
-                        con.Open();
-                        using (var cmd = new SQLiteCommand(con))
-                        {
-                            cmd.CommandText = INSERT_SQL;
-                            cmd.Prepare();
-                            cmd.Parameters.AddWithValue("@name", system.name);
-                            cmd.Parameters.AddWithValue("@totalvisits", system.visits);
-                            cmd.Parameters.AddWithValue("@lastvisit", system.lastvisit ?? DateTime.UtcNow);
-                            cmd.Parameters.AddWithValue("@starsystem", JsonConvert.SerializeObject(system));
-                            cmd.Parameters.AddWithValue("@starsystemlastupdated", system.lastupdated);
-                            cmd.ExecuteNonQuery();
-                        }
-                    }
-                }
-            }
-        }
-
-        private void updateStarSystem(StarSystem system)
-        {
-            lock (editLock)
+            using (var con = SimpleDbConnection())
             {
-                using (var con = SimpleDbConnection())
+                try
                 {
                     con.Open();
                     using (var cmd = new SQLiteCommand(con))
                     {
-                        cmd.CommandText = UPDATE_SQL;
-                        cmd.Prepare();
-                        cmd.Parameters.AddWithValue("@totalvisits", system.visits);
-                        cmd.Parameters.AddWithValue("@lastvisit", system.lastvisit ?? DateTime.UtcNow);
-                        cmd.Parameters.AddWithValue("@starsystem", JsonConvert.SerializeObject(system));
-                        cmd.Parameters.AddWithValue("@starsystemlastupdated", system.lastupdated);
-                        cmd.Parameters.AddWithValue("@name", system.name);
-                        cmd.ExecuteNonQuery();
+                        using (var transaction = con.BeginTransaction())
+                        {
+                            foreach (StarSystem system in systems)
+                            {
+                                // Before we insert we attempt to fetch to ensure that we don't have it present
+                                StarSystem existingStarSystem = Instance.GetStarSystem(system.name, false);
+                                if (existingStarSystem != null)
+                                {
+                                    Logging.Debug("Attempt to insert existing star system - updating instead");
+                                    updateStarSystems.Add(system);
+                                    continue;
+                                }
+                                else
+                                {
+                                    Logging.Debug("Inserting new starsystem " + system.name);
+                                    if (system.lastvisit == null)
+                                    {
+                                        // DB constraints don't allow this to be null
+                                        system.lastvisit = DateTime.UtcNow;
+                                    }
+
+                                    cmd.CommandText = INSERT_SQL;
+                                    cmd.Prepare();
+                                    cmd.Parameters.AddWithValue("@name", system.name);
+                                    cmd.Parameters.AddWithValue("@totalvisits", system.visits);
+                                    cmd.Parameters.AddWithValue("@lastvisit", system.lastvisit ?? DateTime.UtcNow);
+                                    cmd.Parameters.AddWithValue("@starsystem", JsonConvert.SerializeObject(system));
+                                    cmd.Parameters.AddWithValue("@starsystemlastupdated", system.lastupdated);
+                                    cmd.ExecuteNonQuery();
+                                }
+                            }
+                            transaction.Commit();
+                        }
                     }
+                }
+                catch (SQLiteException ex)
+                {
+                    handleSqlLiteException(con, ex);
+                }
+            }
+
+            // Update applicable systems
+            if (updateStarSystems?.Count > 0)
+            {
+                Instance.updateStarSystems(updateStarSystems);
+            }
+        }
+
+        private void updateStarSystems(List<StarSystem> systems)
+        {
+            using (var con = SimpleDbConnection())
+            {
+                try
+                {
+                    con.Open();
+                    using (var cmd = new SQLiteCommand(con))
+                    {
+                        using (var transaction = con.BeginTransaction())
+                        {
+                            foreach (StarSystem system in systems)
+                            {
+                                cmd.CommandText = UPDATE_SQL;
+                                cmd.Prepare();
+                                cmd.Parameters.AddWithValue("@totalvisits", system.visits);
+                                cmd.Parameters.AddWithValue("@lastvisit", system.lastvisit ?? DateTime.UtcNow);
+                                cmd.Parameters.AddWithValue("@starsystem", JsonConvert.SerializeObject(system));
+                                cmd.Parameters.AddWithValue("@starsystemlastupdated", system.lastupdated);
+                                cmd.Parameters.AddWithValue("@name", system.name);
+                                cmd.ExecuteNonQuery();
+                            }
+                            transaction.Commit();
+                        }
+                    }
+                }
+                catch (SQLiteException ex)
+                {
+                    handleSqlLiteException(con, ex);
                 }
             }
         }
 
-        private void deleteStarSystem(StarSystem system)
+        private void deleteStarSystems(List<StarSystem> systems)
         {
             using (var con = SimpleDbConnection())
             {
-                con.Open();
-                using (var cmd = new SQLiteCommand(con))
+                try
                 {
-                    cmd.CommandText = DELETE_SQL;
-                    cmd.Prepare();
-                    cmd.Parameters.AddWithValue("@name", system.name);
-                    cmd.ExecuteNonQuery();
+                    con.Open();
+                    using (var cmd = new SQLiteCommand(con))
+                    {
+                        using (var transaction = con.BeginTransaction())
+                        {
+                            foreach (StarSystem system in systems)
+                            {
+                                cmd.CommandText = DELETE_SQL;
+                                cmd.Prepare();
+                                cmd.Parameters.AddWithValue("@name", system.name);
+                                cmd.ExecuteNonQuery();
+                            }
+                            transaction.Commit();
+                        }
+                    }
+                }
+                catch (SQLiteException ex)
+                {
+                    handleSqlLiteException(con, ex);
                 }
             }
         }
@@ -392,43 +506,50 @@ namespace EddiDataProviderService
         {
             using (var con = SimpleDbConnection())
             {
-                con.Open();
-                using (var cmd = new SQLiteCommand(CREATE_SQL, con))
+                try
                 {
-                    Logging.Debug("Creating starsystem repository");
-                    cmd.ExecuteNonQuery();
-                }
-
-                // Add an index
-                using (var cmd = new SQLiteCommand(CREATE_INDEX_SQL, con))
-                {
-                    Logging.Debug("Creating starsystem index");
-                    cmd.ExecuteNonQuery();
-                }
-
-                // Also need to update if an older version
-                bool hasComment = false;
-                using (var cmd = new SQLiteCommand(TABLE_SQL, con))
-                {
-                    using (SQLiteDataReader rdr = cmd.ExecuteReader())
+                    con.Open();
+                    using (var cmd = new SQLiteCommand(CREATE_SQL, con))
                     {
-                        while (rdr.Read())
+                        Logging.Debug("Creating starsystem repository");
+                        cmd.ExecuteNonQuery();
+                    }
+
+                    // Add an index
+                    using (var cmd = new SQLiteCommand(CREATE_INDEX_SQL, con))
+                    {
+                        Logging.Debug("Creating starsystem index");
+                        cmd.ExecuteNonQuery();
+                    }
+
+                    // Also need to update if an older version
+                    bool hasComment = false;
+                    using (var cmd = new SQLiteCommand(TABLE_SQL, con))
+                    {
+                        using (SQLiteDataReader rdr = cmd.ExecuteReader())
                         {
-                            if ("comment" == rdr.GetString(1))
+                            while (rdr.Read())
                             {
-                                hasComment = true;
-                                break;
+                                if ("comment" == rdr.GetString(1))
+                                {
+                                    hasComment = true;
+                                    break;
+                                }
                             }
                         }
                     }
-                }
-                if (!hasComment)
-                {
-                    Logging.Info("Updating starsystem repository (1)");
-                    using (var cmd = new SQLiteCommand(ALTER_ADD_COMMENT_SQL, con))
+                    if (!hasComment)
                     {
-                        cmd.ExecuteNonQuery();
+                        Logging.Info("Updating starsystem repository (1)");
+                        using (var cmd = new SQLiteCommand(ALTER_ADD_COMMENT_SQL, con))
+                        {
+                            cmd.ExecuteNonQuery();
+                        }
                     }
+                }
+                catch (SQLiteException ex)
+                {
+                    handleSqlLiteException(con, ex);
                 }
             }
             Logging.Debug("Created starsystem repository");
@@ -436,12 +557,42 @@ namespace EddiDataProviderService
 
         public static void RecoverStarSystemDB()
         {
-            lock (editLock)
+            using (var con = SimpleDbConnection())
             {
-                File.Delete(Constants.DATA_DIR + @"\EDDI.sqlite");
-                CreateDatabase();
+                try
+                {
+                    con.Close();
+                    SQLiteConnection.ClearAllPools();
+                    File.Delete(Constants.DATA_DIR + @"\EDDI.sqlite");
+                }
+                catch (SQLiteException ex)
+                {
+                    handleSqlLiteException(con, ex);
+                }
             }
+            CreateDatabase();
             var updateLogs = Task.Run(() => DataProviderService.syncFromStarMapService(true));
+        }
+
+        private static void handleSqlLiteException(SQLiteConnection con, SQLiteException ex)
+        {
+            Logging.Warn("SQLite error: {0}", ex.ToString());
+
+            try
+            {
+                con.BeginTransaction()?.Rollback();
+            }
+            catch (SQLiteException ex2)
+            {
+
+                Logging.Warn("SQLite transaction rollback failed.");
+                Logging.Warn("SQLite error: {0}", ex2.ToString());
+
+            }
+            finally
+            {
+                con.BeginTransaction()?.Dispose();
+            }
         }
     }
 }

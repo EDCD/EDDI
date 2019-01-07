@@ -139,6 +139,7 @@ namespace EddiStarMapService
             StarSystem starSystem = new StarSystem
             {
                 name = (string)response["name"],
+                systemAddress = (long?)response["id64"],
                 EDSMID = (long?)response["id"]
             };
 

@@ -2,6 +2,7 @@
 using EddiStarMapService;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using Utilities;
 
@@ -92,27 +93,31 @@ namespace EddiDataProviderService
                 StarMapConfiguration starMapCredentials = StarMapConfiguration.FromFile();
                 Dictionary<string, StarMapLogInfo> systems = StarMapService.Instance.getStarMapLog(forceSyncAll ? null : (DateTime?)starMapCredentials.lastSync);
                 Dictionary<string, string> comments = StarMapService.Instance.getStarMapComments();
-                List<StarSystem> syncSystems = new List<StarSystem>();
-                foreach (string system in systems.Keys)
-                {
-                    StarSystem CurrentStarSystem = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(system, false);
-                    CurrentStarSystem.visits = systems[system].visits;
-                    CurrentStarSystem.lastvisit = systems[system].lastVisit;
-                    if (comments.ContainsKey(system))
-                    {
-                        CurrentStarSystem.comment = comments[system];
-                    }
-                    syncSystems.Add(CurrentStarSystem);
 
-                    if (syncSystems.Count == StarMapService.syncBatchSize)
-                    {
-                        saveFromStarMapService(syncSystems);
-                        syncSystems.Clear();
-                    }
-                }
-                if (syncSystems.Count > 0)
+                int total = systems.Count;
+                int i = 0;
+
+                string[] systemNames = systems.Keys.ToArray();
+                while (i < total)
                 {
-                    saveFromStarMapService(syncSystems);
+                    int batchSize = Math.Min(total, StarMapService.syncBatchSize);
+                    string[] batchNames = systemNames.Skip(i).Take(batchSize).ToArray();
+                    List<StarSystem> batchSystems = new List<StarSystem>();
+
+                    List<StarSystem> starSystems = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystems(batchNames, false);
+                    foreach (string system in batchNames)
+                    {
+                        StarSystem CurrentStarSystem = starSystems.FirstOrDefault(s => s.name == system);
+                        CurrentStarSystem.visits = systems[system].visits;
+                        CurrentStarSystem.lastvisit = systems[system].lastVisit;
+                        if (comments.ContainsKey(system))
+                        {
+                            CurrentStarSystem.comment = comments[system];
+                        }
+                        batchSystems.Add(CurrentStarSystem);
+                    }
+                    saveFromStarMapService(batchSystems);
+                    i = i + batchSize;
                 }
                 Logging.Info("EDSM sync completed");
             }
