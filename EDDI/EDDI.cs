@@ -1685,8 +1685,6 @@ namespace Eddi
                 belt.distance = (long?)theEvent.distancefromarrival;
 
                 CurrentStarSystem.bodies?.Add(belt);
-                Logging.Debug("Saving data for scanned belt " + theEvent.name);
-                StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
             }
             return CurrentStarSystem != null;
         }
