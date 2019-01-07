@@ -1025,10 +1025,7 @@
     <value>Energienetz-Gruppe</value>
     <comment>Commodity PowerGridAssembly</comment>
   </data>
-  <data name="PowerTransferConduits" xml:space="preserve">
-    <value>Energietransferbus</value>
-    <comment>Commodity PowerTransferConduits</comment>
-  </data>
+  
   <data name="Praseodymium" xml:space="preserve">
     <value>Praseodymium</value>
     <comment>Commodity Praseodymium</comment>
