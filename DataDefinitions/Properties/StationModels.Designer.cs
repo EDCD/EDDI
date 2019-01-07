@@ -151,6 +151,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Scientific Outpost.
+        /// </summary>
+        public static string OutpostScientific {
+            get {
+                return ResourceManager.GetString("OutpostScientific", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Surface Station.
         /// </summary>
         public static string SurfaceStation {

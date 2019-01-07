@@ -20,6 +20,7 @@ namespace EddiDataDefinitions
             var SurfaceStation = new StationModel("SurfaceStation");
             var CraterOutpost = new StationModel("CraterOutpost");
             var CraterPort = new StationModel("CraterPort");
+            var OutpostScientific = new StationModel("OutpostScientific");
         }
 
         public static readonly StationModel None = new StationModel("None");

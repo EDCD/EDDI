@@ -161,4 +161,8 @@
     <value>Civilian Megaship</value>
     <comment>A Civilian Megaship</comment>
   </data>
+  <data name="OutpostScientific" xml:space="preserve">
+    <value>Scientific Outpost</value>
+    <comment>A Scientific Outpost (currently, Talos 1 &amp; Talos 2 in Peregrina)</comment>
+  </data>
 </root>
