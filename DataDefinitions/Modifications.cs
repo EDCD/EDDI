@@ -10,6 +10,7 @@
             resourceManager = Properties.Modifications.ResourceManager;
             resourceManager.IgnoreCase = true;
 
+            None = new Modifications("None");
             var ArmourAdvanced = new Modifications("Armour_Advanced");
             var ArmourExplosive = new Modifications("Armour_Explosive");
             var ArmourHeavyDuty = new Modifications("Armour_HeavyDuty");
@@ -77,7 +78,7 @@
             var WeaponSturdy = new Modifications("Weapon_Sturdy");
         }
 
-        public static readonly Modifications None = new Modifications("None");
+        public static readonly Modifications None;
 
         // dummy used to ensure that the static constructor has run
         public Modifications() : this("")
