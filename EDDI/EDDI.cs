@@ -113,6 +113,9 @@ namespace Eddi
         public string Vehicle { get; private set; } = Constants.VEHICLE_SHIP;
         public Ship CurrentShip { get; set; }
 
+        // Information from the last jump we initiated (for reference)
+        public FSDEngagedEvent LastFSDEngagedEvent { get; private set; }
+
         public ObservableConcurrentDictionary<string, object> State = new ObservableConcurrentDictionary<string, object>();
 
         /// <summary>
@@ -1206,6 +1209,9 @@ namespace Eddi
             // Set the destination system as the current star system
             updateCurrentSystem(@event.system);
 
+            // Save a copy of this event for reference
+            LastFSDEngagedEvent = @event;
+
             return true;
         }
 
@@ -1282,6 +1288,20 @@ namespace Eddi
 
             // After jump has completed we are always in supercruise
             Environment = Constants.ENVIRONMENT_SUPERCRUISE;
+
+            // If we don't have any information about bodies in the system yet, create a basic main star from current and saved event data
+            if (CurrentStellarBody == null)
+            {
+                CurrentStellarBody = new Body()
+                {
+                    name = theEvent.star,
+                    Type = BodyType.FromEDName("Star"),
+                    stellarclass = LastFSDEngagedEvent?.stellarclass,
+                    mainstar = true,
+                    distance = 0, 
+                };
+                CurrentStarSystem.bodies.Add(CurrentStellarBody);
+            }
 
             return passEvent;
         }
