@@ -144,75 +144,83 @@ namespace EddiDataProviderService
                                 // Old versions of the data could have a string "No volcanism" for volcanism.  If so we remove it
                                 data = data.Replace(@"""No volcanism""", "null");
 
-                                try
+                                // Determine whether our data is stale (We won't deserialize the the entire system if it's stale) 
+                                IDictionary<string, object> system = Deserializtion.DeserializeData(data);
+                                system.TryGetValue("visits", out object visitVal);
+                                system.TryGetValue("comment", out object commentVal);
+                                system.TryGetValue("lastvisit", out object lastVisitVal);
+
+                                int visits = (int)(long)visitVal;
+                                string comment = (string)commentVal;
+                                DateTime? lastvisit = (DateTime?)lastVisitVal;
+
+                                if (refreshIfOutdated && result.lastupdated < DateTime.UtcNow.AddHours(-1))
                                 {
-                                    result = JsonConvert.DeserializeObject<StarSystem>(data);
-                                    if (result == null)
+                                    // Data is stale
+                                    StarSystem updatedResult = DataProviderService.GetSystemData(name);
+                                    if (updatedResult.systemAddress == null && result.systemAddress != null)
                                     {
-                                        Logging.Info("Failed to obtain system for " + name + " from the SQLiteRepository");
+                                        // The "updated" data might be a basic system, empty except for the name. 
+                                        // If so, return the old result.
+                                        return result;
                                     }
-                                    if (result != null)
+                                    else
                                     {
-                                        if (result.visits < 1)
+                                        updatedResult.visits = visits;
+                                        updatedResult.lastvisit = lastvisit;
+                                        updatedResult.lastupdated = DateTime.UtcNow;
+                                        result = updatedResult;
+                                        needToUpdate = true;
+                                    }
+                                }
+                                else
+                                {
+                                    try
+                                    {
+                                        result = JsonConvert.DeserializeObject<StarSystem>(data);
+                                        if (result == null)
                                         {
-                                            // Old-style system; need to update
-                                            result.visits = rdr.GetInt32(0);
-                                            result.lastvisit = rdr.GetDateTime(1);
-                                            needToUpdate = true;
+                                            Logging.Info("Failed to obtain system for " + name + " from the SQLiteRepository");
                                         }
-                                        if (result.lastupdated == null)
+                                        if (result != null)
                                         {
-                                            result.lastupdated = rdr.GetDateTime(4);
-                                        }
-                                        if (result.comment == null)
-                                        {
-                                            if (!rdr.IsDBNull(4))
+                                            if (result.visits < 1)
                                             {
-                                                result.comment = rdr.GetString(4);
+                                                // Old-style system; need to update
+                                                result.visits = rdr.GetInt32(0);
+                                                result.lastvisit = rdr.GetDateTime(1);
+                                                needToUpdate = true;
+                                            }
+                                            if (result.lastupdated == null)
+                                            {
+                                                result.lastupdated = rdr.GetDateTime(4);
+                                            }
+                                            if (result.comment == null)
+                                            {
+                                                if (!rdr.IsDBNull(4))
+                                                {
+                                                    result.comment = rdr.GetString(4);
+                                                }
                                             }
                                         }
                                     }
-                                    if (refreshIfOutdated && result.lastupdated < DateTime.UtcNow.AddHours(-1))
+                                    catch (Exception)
                                     {
-                                        // Data is stale
-                                        StarSystem updatedResult = DataProviderService.GetSystemData(name);
-                                        if (updatedResult.systemAddress == null && result.systemAddress != null)
+                                        Logging.Warn("Problem reading data for star system '" + name + "' from database, re-obtaining from source. ");
+                                        try
                                         {
-                                            // The "updated" data might be a basic system, empty except for the name. 
-                                            // If so, return the old result.
-                                            return result;
-                                        }
-                                        else
-                                        {
-                                            updatedResult.visits = result.visits;
-                                            updatedResult.lastvisit = result.lastvisit;
-                                            updatedResult.lastupdated = DateTime.UtcNow;
-                                            result = updatedResult;
+                                            result = DataProviderService.GetSystemData(name);
+                                            result.visits = visits;
+                                            result.comment = comment;
+                                            result.lastvisit = lastvisit;
+                                            result.lastupdated = DateTime.UtcNow;
                                             needToUpdate = true;
                                         }
-                                    }
-                                }
-                                catch (Exception)
-                                {
-                                    Logging.Warn("Problem reading data for star system '" + name + "' from database, re-obtaining from source. ");
-                                    try
-                                    {
-                                        result = DataProviderService.GetSystemData(name);
-                                        // Recover data unique to the local user and database
-                                        IDictionary<string, object> system = Deserializtion.DeserializeData(data);
-                                        system.TryGetValue("visits", out object visitVal);
-                                        result.visits = (int)(long)visitVal;
-                                        system.TryGetValue("comment", out object commentVal);
-                                        result.comment = (string)commentVal;
-                                        system.TryGetValue("lastvisit", out object lastVisitVal);
-                                        result.lastvisit = (DateTime?)lastVisitVal;
-                                        result.lastupdated = DateTime.UtcNow;
-                                        needToUpdate = true;
-                                    }
-                                    catch (Exception ex)
-                                    {
-                                        Logging.Warn("Problem obtaining data from source: " + ex);
-                                        result = null;
+                                        catch (Exception ex)
+                                        {
+                                            Logging.Warn("Problem obtaining data from source: " + ex);
+                                            result = null;
+                                        }
                                     }
                                 }
                             }
