@@ -125,10 +125,66 @@ namespace EddiDataProviderService
             }
 
             StarSystem result = null;
+            bool needToUpdate = false;
+            string data = Instance.ReadStarSystem(name);
+            if (data != null)
+            {
+                // Old versions of the data could have a string "No volcanism" for volcanism.  If so we remove it
+                data = data.Replace(@"""No volcanism""", "null");
+
+                // Determine whether our data is stale (We won't deserialize the the entire system if it's stale) 
+                IDictionary<string, object> system = Deserializtion.DeserializeData(data);
+                system.TryGetValue("visits", out object visitVal);
+                system.TryGetValue("comment", out object commentVal);
+                system.TryGetValue("lastvisit", out object lastVisitVal);
+                system.TryGetValue("lastupdated", out object lastUpdatedVal);
+                system.TryGetValue("systemAddress", out object systemAddressVal);
+
+                int visits = (int)(long)visitVal;
+                string comment = (string)commentVal;
+                DateTime? lastvisit = (DateTime?)lastVisitVal;
+                DateTime? lastupdated = (DateTime?)lastUpdatedVal;
+                long? systemAddress = (long?)systemAddressVal;
+
+                if (refreshIfOutdated && lastupdated < DateTime.UtcNow.AddHours(-1))
+                {
+                    // Data is stale
+                    StarSystem updatedResult = DataProviderService.GetSystemData(name);
+                    if (updatedResult.systemAddress == null && systemAddress != null)
+                    {
+                        // The "updated" data might be a basic system, empty except for the name. 
+                        // If so, return the old result.
+                        StarSystem starSystem = new StarSystem() { name = name, visits = visits, comment = comment, lastvisit = lastvisit };
+                        result = DeserializeStarSystem(starSystem, ref needToUpdate, data);
+                    }
+                    else
+                    {
+                        updatedResult.visits = visits;
+                        updatedResult.comment = comment;
+                        updatedResult.lastvisit = lastvisit;
+                        updatedResult.lastupdated = DateTime.UtcNow;
+                        result = updatedResult;
+                        needToUpdate = true;
+                    }
+                }
+                else
+                {
+                    StarSystem starSystem = new StarSystem() { name = name, visits = visits, comment = comment, lastvisit = lastvisit };
+                    result = DeserializeStarSystem(starSystem, ref needToUpdate, data);
+                }
+            }
+            if (needToUpdate)
+            {
+                Instance.updateStarSystem(result);
+            }
+            return result;
+        }
+
+        private string ReadStarSystem(string name)
+        {
+            string data = null;
             try
             {
-                bool needToUpdate = false;
-                string data = null; ;
                 using (var con = SimpleDbConnection())
                 {
                     con.Open();
@@ -145,55 +201,6 @@ namespace EddiDataProviderService
                             }
                         }
                     }
-                    if (data != null)
-                    {
-                        // Old versions of the data could have a string "No volcanism" for volcanism.  If so we remove it
-                        data = data.Replace(@"""No volcanism""", "null");
-
-                        // Determine whether our data is stale (We won't deserialize the the entire system if it's stale) 
-                        IDictionary<string, object> system = Deserializtion.DeserializeData(data);
-                        system.TryGetValue("visits", out object visitVal);
-                        system.TryGetValue("comment", out object commentVal);
-                        system.TryGetValue("lastvisit", out object lastVisitVal);
-                        system.TryGetValue("lastupdated", out object lastUpdatedVal);
-                        system.TryGetValue("systemAddress", out object systemAddressVal);
-
-                        int visits = (int)(long)visitVal;
-                        string comment = (string)commentVal;
-                        DateTime? lastvisit = (DateTime?)lastVisitVal;
-                        DateTime? lastupdated = (DateTime?)lastUpdatedVal;
-                        long? systemAddress = (long?)systemAddressVal;
-
-                        if (refreshIfOutdated && lastupdated < DateTime.UtcNow.AddHours(-1))
-                        {
-                            // Data is stale
-                            StarSystem updatedResult = DataProviderService.GetSystemData(name);
-                            if (updatedResult.systemAddress == null && systemAddress != null)
-                            {
-                                // The "updated" data might be a basic system, empty except for the name. 
-                                // If so, return the old result.
-                                StarSystem starSystem = new StarSystem() { name = name, visits = visits, comment = comment, lastvisit = lastvisit };
-                                result = DeserializeStarSystem(starSystem, ref needToUpdate, data);
-                            }
-                            else
-                            {
-                                updatedResult.visits = visits;
-                                updatedResult.lastvisit = lastvisit;
-                                updatedResult.lastupdated = DateTime.UtcNow;
-                                result = updatedResult;
-                                needToUpdate = true;
-                            }
-                        }
-                        else
-                        {
-                            StarSystem starSystem = new StarSystem() { name = name, visits = visits, comment = comment, lastvisit = lastvisit };
-                            result = DeserializeStarSystem(starSystem, ref needToUpdate, data);
-                        }
-                    }
-                }
-                if (needToUpdate)
-                {
-                    Instance.updateStarSystem(result);
                 }
             }
             catch (SQLiteException)
@@ -202,8 +209,7 @@ namespace EddiDataProviderService
                 RecoverStarSystemDB();
                 Instance.GetStarSystem(name);
             }
-
-            return result;
+            return data;
         }
 
         private static StarSystem DeserializeStarSystem(StarSystem oldSystem, ref bool needToUpdate, string data)
@@ -278,7 +284,7 @@ namespace EddiDataProviderService
 
         public void SaveStarSystem(StarSystem starSystem)
         {
-            if (Instance.GetStarSystem(starSystem.name, false) == null)
+            if (Instance.ReadStarSystem(starSystem.name) == null)
             {
                 Instance.deleteStarSystem(starSystem);
                 Instance.insertStarSystem(starSystem);
@@ -293,7 +299,7 @@ namespace EddiDataProviderService
         {
             foreach (StarSystem system in starSystems)
             {
-                if (Instance.GetStarSystem(system.name, false) == null)
+                if (Instance.ReadStarSystem(system.name) == null)
                 {
                     // Delete the system
                     Instance.deleteStarSystem(system);
