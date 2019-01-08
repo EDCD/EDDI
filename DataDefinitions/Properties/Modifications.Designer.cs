@@ -61,6 +61,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Shielded Maintenance Unit.
+        /// </summary>
+        internal static string AFMShielded {
+            get {
+                return ResourceManager.GetString("AFMShielded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Lightweight Armour .
         /// </summary>
         internal static string ArmourAdvanced {
@@ -102,6 +111,132 @@ namespace EddiDataDefinitions.Properties {
         internal static string ArmourThermic {
             get {
                 return ResourceManager.GetString("ArmourThermic", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fast Cargo Scanner.
+        /// </summary>
+        internal static string CargoScannerFastScan {
+            get {
+                return ResourceManager.GetString("CargoScannerFastScan", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Light Weight Cargo Scanner.
+        /// </summary>
+        internal static string CargoScannerLightWeight {
+            get {
+                return ResourceManager.GetString("CargoScannerLightWeight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Long-Range Cargo Scanner.
+        /// </summary>
+        internal static string CargoScannerLongRange {
+            get {
+                return ResourceManager.GetString("CargoScannerLongRange", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reinforced Cargo Scanner.
+        /// </summary>
+        internal static string CargoScannerReinforced {
+            get {
+                return ResourceManager.GetString("CargoScannerReinforced", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Shielded Cargo Scanner.
+        /// </summary>
+        internal static string CargoScannerShielded {
+            get {
+                return ResourceManager.GetString("CargoScannerShielded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Wide Angle Cargo Scanner.
+        /// </summary>
+        internal static string CargoScannerWideAngle {
+            get {
+                return ResourceManager.GetString("CargoScannerWideAngle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Chaff Ammo Capacity.
+        /// </summary>
+        internal static string ChaffLauncherCapacity {
+            get {
+                return ResourceManager.GetString("ChaffLauncherCapacity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Light Weight Chaff Launcher.
+        /// </summary>
+        internal static string ChaffLauncherLightWeight {
+            get {
+                return ResourceManager.GetString("ChaffLauncherLightWeight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reinforced Chaff Launcher.
+        /// </summary>
+        internal static string ChaffLauncherReinforced {
+            get {
+                return ResourceManager.GetString("ChaffLauncherReinforced", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Shielded Chaff Launcher.
+        /// </summary>
+        internal static string ChaffLauncherShielded {
+            get {
+                return ResourceManager.GetString("ChaffLauncherShielded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Light Weight Collector Limpet.
+        /// </summary>
+        internal static string CollectionLimpetLightWeight {
+            get {
+                return ResourceManager.GetString("CollectionLimpetLightWeight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reinforced Collector Limpet.
+        /// </summary>
+        internal static string CollectionLimpetReinforced {
+            get {
+                return ResourceManager.GetString("CollectionLimpetReinforced", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Shielded Collector Limpet.
+        /// </summary>
+        internal static string CollectionLimpetShielded {
+            get {
+                return ResourceManager.GetString("CollectionLimpetShielded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Shielded Counter Measures.
+        /// </summary>
+        internal static string ECMShielded {
+            get {
+                return ResourceManager.GetString("ECMShielded", resourceCulture);
             }
         }
         
@@ -178,6 +313,105 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Shielded Fuel Scoop.
+        /// </summary>
+        internal static string FuelScoopShielded {
+            get {
+                return ResourceManager.GetString("FuelScoopShielded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Light Weight Fuel Transfer Limpet.
+        /// </summary>
+        internal static string FuelTransferLimpetLightWeight {
+            get {
+                return ResourceManager.GetString("FuelTransferLimpetLightWeight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reinforced Fuel Transfer Limpet.
+        /// </summary>
+        internal static string FuelTransferLimpetReinforced {
+            get {
+                return ResourceManager.GetString("FuelTransferLimpetReinforced", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Shielded Fuel Transfer Limpet.
+        /// </summary>
+        internal static string FuelTransferLimpetShielded {
+            get {
+                return ResourceManager.GetString("FuelTransferLimpetShielded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Light Weight Hatch Breaker Limpet.
+        /// </summary>
+        internal static string HatchBreakerLimpetLightWeight {
+            get {
+                return ResourceManager.GetString("HatchBreakerLimpetLightWeight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reinforced Hatch Breaker Limpet.
+        /// </summary>
+        internal static string HatchBreakerLimpetReinforced {
+            get {
+                return ResourceManager.GetString("HatchBreakerLimpetReinforced", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Shielded Hatch Breaker Limpet.
+        /// </summary>
+        internal static string HatchBreakerLimpetShielded {
+            get {
+                return ResourceManager.GetString("HatchBreakerLimpetShielded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Heatsink Ammo Capacity.
+        /// </summary>
+        internal static string HeatSinkLauncherCapacity {
+            get {
+                return ResourceManager.GetString("HeatSinkLauncherCapacity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Light Weight Heatsink Launcher.
+        /// </summary>
+        internal static string HeatSinkLauncherLightWeight {
+            get {
+                return ResourceManager.GetString("HeatSinkLauncherLightWeight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reinforced Heatsink Launcher.
+        /// </summary>
+        internal static string HeatSinkLauncherReinforced {
+            get {
+                return ResourceManager.GetString("HeatSinkLauncherReinforced", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Shielded Heatsink Launcher.
+        /// </summary>
+        internal static string HeatSinkLauncherShielded {
+            get {
+                return ResourceManager.GetString("HeatSinkLauncherShielded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Lightweight Hull Reinforcement.
         /// </summary>
         internal static string HullReinforcementAdvanced {
@@ -223,20 +457,83 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Chaff Ammo Capacity.
+        ///   Looks up a localized string similar to Fast Cargo Scanner.
         /// </summary>
-        internal static string MiscChaffCapacity {
+        internal static string KillWarrantScannerFastScan {
             get {
-                return ResourceManager.GetString("MiscChaffCapacity", resourceCulture);
+                return ResourceManager.GetString("KillWarrantScannerFastScan", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Heatsink Ammo Capacity.
+        ///   Looks up a localized string similar to Light Weight Kill Warrant Scanner.
         /// </summary>
-        internal static string MiscHeatSinkCapacity {
+        internal static string KillWarrantScannerLightWeight {
             get {
-                return ResourceManager.GetString("MiscHeatSinkCapacity", resourceCulture);
+                return ResourceManager.GetString("KillWarrantScannerLightWeight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Long-Range Kill Warrant Scanner.
+        /// </summary>
+        internal static string KillWarrantScannerLongRange {
+            get {
+                return ResourceManager.GetString("KillWarrantScannerLongRange", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reinforced Kill Warrant Scanner.
+        /// </summary>
+        internal static string KillWarrantScannerReinforced {
+            get {
+                return ResourceManager.GetString("KillWarrantScannerReinforced", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Shielded Kill Warrant Scanner.
+        /// </summary>
+        internal static string KillWarrantScannerShielded {
+            get {
+                return ResourceManager.GetString("KillWarrantScannerShielded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Wide Angle Kill Warrant Scanner.
+        /// </summary>
+        internal static string KillWarrantScannerWideAngle {
+            get {
+                return ResourceManager.GetString("KillWarrantScannerWideAngle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Light Weight Life Support.
+        /// </summary>
+        internal static string LifeSupportLightWeight {
+            get {
+                return ResourceManager.GetString("LifeSupportLightWeight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reinforced Life Support.
+        /// </summary>
+        internal static string LifeSupportReinforced {
+            get {
+                return ResourceManager.GetString("LifeSupportReinforced", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Shielded Life Support.
+        /// </summary>
+        internal static string LifeSupportShielded {
+            get {
+                return ResourceManager.GetString("LifeSupportShielded", resourceCulture);
             }
         }
         
@@ -246,15 +543,6 @@ namespace EddiDataDefinitions.Properties {
         internal static string MiscLightWeight {
             get {
                 return ResourceManager.GetString("MiscLightWeight", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Point Defence Ammo Capacity.
-        /// </summary>
-        internal static string MiscPointDefenseCapacity {
-            get {
-                return ResourceManager.GetString("MiscPointDefenseCapacity", resourceCulture);
             }
         }
         
@@ -282,6 +570,42 @@ namespace EddiDataDefinitions.Properties {
         internal static string None {
             get {
                 return ResourceManager.GetString("None", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Point Defence Ammo Capacity.
+        /// </summary>
+        internal static string PointDefenceCapacity {
+            get {
+                return ResourceManager.GetString("PointDefenceCapacity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Light Weight Point Defence.
+        /// </summary>
+        internal static string PointDefenceLightWeight {
+            get {
+                return ResourceManager.GetString("PointDefenceLightWeight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reinforced Point Defence.
+        /// </summary>
+        internal static string PointDefenceReinforced {
+            get {
+                return ResourceManager.GetString("PointDefenceReinforced", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Shielded Point Defence.
+        /// </summary>
+        internal static string PointDefenceShielded {
+            get {
+                return ResourceManager.GetString("PointDefenceShielded", resourceCulture);
             }
         }
         
@@ -367,25 +691,16 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Expanded Probe Scanning Radius.
+        ///   Looks up a localized string similar to Shielded Refinery.
         /// </summary>
-        internal static string SensorExpanded {
+        internal static string RefineriesShielded {
             get {
-                return ResourceManager.GetString("SensorExpanded", resourceCulture);
+                return ResourceManager.GetString("RefineriesShielded", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Fast Scanner.
-        /// </summary>
-        internal static string SensorFastScan {
-            get {
-                return ResourceManager.GetString("SensorFastScan", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Light Weight Scanner.
+        ///   Looks up a localized string similar to Light Weight Sensor.
         /// </summary>
         internal static string SensorLightWeight {
             get {
@@ -394,7 +709,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Long-Range Scanner.
+        ///   Looks up a localized string similar to Long-Range Sensor.
         /// </summary>
         internal static string SensorLongRange {
             get {
@@ -403,7 +718,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Wide Angle Scanner.
+        ///   Looks up a localized string similar to Wide Angle Sensor.
         /// </summary>
         internal static string SensorWideAngle {
             get {
@@ -507,6 +822,15 @@ namespace EddiDataDefinitions.Properties {
         internal static string ShieldGeneratorThermic {
             get {
                 return ResourceManager.GetString("ShieldGeneratorThermic", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Expanded Probe Scanning Radius.
+        /// </summary>
+        internal static string SurfaceScannerExpanded {
+            get {
+                return ResourceManager.GetString("SurfaceScannerExpanded", resourceCulture);
             }
         }
         

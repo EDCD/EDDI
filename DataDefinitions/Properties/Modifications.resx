@@ -171,17 +171,8 @@
   <data name="HullReinforcementThermic" xml:space="preserve">
     <value>Thermal Resistant Hull Reinforcement</value>
   </data>
-  <data name="MiscChaffCapacity" xml:space="preserve">
-    <value>Chaff Ammo Capacity</value>
-  </data>
-  <data name="MiscHeatSinkCapacity" xml:space="preserve">
-    <value>Heatsink Ammo Capacity</value>
-  </data>
   <data name="MiscLightWeight" xml:space="preserve">
     <value>Misc Lightweight</value>
-  </data>
-  <data name="MiscPointDefenseCapacity" xml:space="preserve">
-    <value>Point Defence Ammo Capacity</value>
   </data>
   <data name="MiscReinforced" xml:space="preserve">
     <value>Misc Reinforced </value>
@@ -216,20 +207,11 @@
   <data name="PowerPlantStealth" xml:space="preserve">
     <value>Low Emissions Power Plant</value>
   </data>
-  <data name="SensorExpanded" xml:space="preserve">
-    <value>Expanded Probe Scanning Radius</value>
-  </data>
-  <data name="SensorFastScan" xml:space="preserve">
-    <value>Fast Scanner</value>
-  </data>
-  <data name="SensorLightWeight" xml:space="preserve">
-    <value>Light Weight Scanner</value>
-  </data>
   <data name="SensorLongRange" xml:space="preserve">
-    <value>Long-Range Scanner</value>
+    <value>Long-Range Sensor</value>
   </data>
   <data name="SensorWideAngle" xml:space="preserve">
-    <value>Wide Angle Scanner</value>
+    <value>Wide Angle Sensor</value>
   </data>
   <data name="ShieldBoosterExplosive" xml:space="preserve">
     <value>Blast Resistant Shield Booster</value>
@@ -314,5 +296,131 @@
   </data>
   <data name="WakeScannerWideAngle" xml:space="preserve">
     <value>Wide Angle Wake Scanner</value>
+  </data>
+  <data name="AFMShielded" xml:space="preserve">
+    <value>Shielded Maintenance Unit</value>
+  </data>
+  <data name="CargoScannerFastScan" xml:space="preserve">
+    <value>Fast Cargo Scanner</value>
+  </data>
+  <data name="CargoScannerLightWeight" xml:space="preserve">
+    <value>Light Weight Cargo Scanner</value>
+  </data>
+  <data name="CargoScannerLongRange" xml:space="preserve">
+    <value>Long-Range Cargo Scanner</value>
+  </data>
+  <data name="CargoScannerReinforced" xml:space="preserve">
+    <value>Reinforced Cargo Scanner</value>
+  </data>
+  <data name="CargoScannerShielded" xml:space="preserve">
+    <value>Shielded Cargo Scanner</value>
+  </data>
+  <data name="CargoScannerWideAngle" xml:space="preserve">
+    <value>Wide Angle Cargo Scanner</value>
+  </data>
+  <data name="ChaffLauncherCapacity" xml:space="preserve">
+    <value>Chaff Ammo Capacity</value>
+  </data>
+  <data name="ChaffLauncherLightWeight" xml:space="preserve">
+    <value>Light Weight Chaff Launcher</value>
+  </data>
+  <data name="ChaffLauncherReinforced" xml:space="preserve">
+    <value>Reinforced Chaff Launcher</value>
+  </data>
+  <data name="ChaffLauncherShielded" xml:space="preserve">
+    <value>Shielded Chaff Launcher</value>
+  </data>
+  <data name="CollectionLimpetLightWeight" xml:space="preserve">
+    <value>Light Weight Collector Limpet</value>
+  </data>
+  <data name="CollectionLimpetReinforced" xml:space="preserve">
+    <value>Reinforced Collector Limpet</value>
+  </data>
+  <data name="CollectionLimpetShielded" xml:space="preserve">
+    <value>Shielded Collector Limpet</value>
+  </data>
+  <data name="ECMShielded" xml:space="preserve">
+    <value>Shielded Counter Measures</value>
+  </data>
+  <data name="FuelScoopShielded" xml:space="preserve">
+    <value>Shielded Fuel Scoop</value>
+  </data>
+  <data name="FuelTransferLimpetLightWeight" xml:space="preserve">
+    <value>Light Weight Fuel Transfer Limpet</value>
+  </data>
+  <data name="FuelTransferLimpetReinforced" xml:space="preserve">
+    <value>Reinforced Fuel Transfer Limpet</value>
+  </data>
+  <data name="FuelTransferLimpetShielded" xml:space="preserve">
+    <value>Shielded Fuel Transfer Limpet</value>
+  </data>
+  <data name="HatchBreakerLimpetLightWeight" xml:space="preserve">
+    <value>Light Weight Hatch Breaker Limpet</value>
+  </data>
+  <data name="HatchBreakerLimpetReinforced" xml:space="preserve">
+    <value>Reinforced Hatch Breaker Limpet</value>
+  </data>
+  <data name="HatchBreakerLimpetShielded" xml:space="preserve">
+    <value>Shielded Hatch Breaker Limpet</value>
+  </data>
+  <data name="HeatSinkLauncherCapacity" xml:space="preserve">
+    <value>Heatsink Ammo Capacity</value>
+  </data>
+  <data name="HeatSinkLauncherLightWeight" xml:space="preserve">
+    <value>Light Weight Heatsink Launcher</value>
+  </data>
+  <data name="HeatSinkLauncherReinforced" xml:space="preserve">
+    <value>Reinforced Heatsink Launcher</value>
+  </data>
+  <data name="HeatSinkLauncherShielded" xml:space="preserve">
+    <value>Shielded Heatsink Launcher</value>
+  </data>
+  <data name="KillWarrantScannerFastScan" xml:space="preserve">
+    <value>Fast Cargo Scanner</value>
+  </data>
+  <data name="KillWarrantScannerLightWeight" xml:space="preserve">
+    <value>Light Weight Kill Warrant Scanner</value>
+  </data>
+  <data name="KillWarrantScannerLongRange" xml:space="preserve">
+    <value>Long-Range Kill Warrant Scanner</value>
+  </data>
+  <data name="KillWarrantScannerReinforced" xml:space="preserve">
+    <value>Reinforced Kill Warrant Scanner</value>
+  </data>
+  <data name="KillWarrantScannerShielded" xml:space="preserve">
+    <value>Shielded Kill Warrant Scanner</value>
+  </data>
+  <data name="KillWarrantScannerWideAngle" xml:space="preserve">
+    <value>Wide Angle Kill Warrant Scanner</value>
+  </data>
+  <data name="LifeSupportLightWeight" xml:space="preserve">
+    <value>Light Weight Life Support</value>
+  </data>
+  <data name="LifeSupportReinforced" xml:space="preserve">
+    <value>Reinforced Life Support</value>
+  </data>
+  <data name="LifeSupportShielded" xml:space="preserve">
+    <value>Shielded Life Support</value>
+  </data>
+  <data name="PointDefenceCapacity" xml:space="preserve">
+    <value>Point Defence Ammo Capacity</value>
+  </data>
+  <data name="PointDefenceLightWeight" xml:space="preserve">
+    <value>Light Weight Point Defence</value>
+  </data>
+  <data name="PointDefenceReinforced" xml:space="preserve">
+    <value>Reinforced Point Defence</value>
+  </data>
+  <data name="PointDefenceShielded" xml:space="preserve">
+    <value>Shielded Point Defence</value>
+  </data>
+  <data name="RefineriesShielded" xml:space="preserve">
+    <value>Shielded Refinery</value>
+  </data>
+  <data name="SensorLightWeight" xml:space="preserve">
+    <value>Light Weight Sensor</value>
+  </data>
+  <data name="SurfaceScannerExpanded" xml:space="preserve">
+    <value>Expanded Probe Scanning Radius</value>
   </data>
 </root>
