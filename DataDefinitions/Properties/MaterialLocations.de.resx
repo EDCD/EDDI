@@ -222,7 +222,7 @@
     <comment>Material location Anomalous Bulk Scan Data</comment>
   </data>
   <data name="disruptedwakeechoes" xml:space="preserve">
-    <value>Erhalten durch das Analysieren von FSA-Hypersprungechos von Schiffen oder als Missionsbelohnung, speziell in Systemen mit ökonomischem Aufschwung.</value>
+    <value>Erhalten durch das Analysieren von FSA-Sogwolken von Schiffen oder als Missionsbelohnung, speziell in Systemen mit ökonomischem Aufschwung.</value>
     <comment>Material location Atypical Disrupted Wake Echoes</comment>
   </data>
   <data name="shieldcyclerecordings" xml:space="preserve">
@@ -246,7 +246,7 @@
     <comment>Material location Pattern Gamma Obelisk Data</comment>
   </data>
   <data name="fsdtelemetry" xml:space="preserve">
-    <value>Erhalten durch das Scannen der FSA-Hypersprungechos von Schiffen oder als Missionsbelohnung.</value>
+    <value>Erhalten durch das Scannen der FSA-Sogwolken von Schiffen oder als Missionsbelohnung.</value>
     <comment>Material location Anomalous FSD Telemetry</comment>
   </data>
   <data name="shieldsoakanalysis" xml:space="preserve">
@@ -281,7 +281,7 @@
     <comment>Material location Open Symmetric Keys</comment>
   </data>
   <data name="wakesolutions" xml:space="preserve">
-    <value>Erhalten durch das Analysieren von FSA-Hypersprungechos von Schiffen oder als Auftragsbelohnung, speziell in Systemen mit ökonomischem Aufschwung.</value>
+    <value>Erhalten durch das Analysieren von FSA-Sogwolken von Schiffen oder als Auftragsbelohnung, speziell in Systemen mit ökonomischem Aufschwung.</value>
     <comment>Material location Strange Wake Solutions</comment>
   </data>
   <data name="emissiondata" xml:space="preserve">
@@ -312,7 +312,7 @@
   
   
   <data name="hyperspacetrajectories" xml:space="preserve">
-    <value>Erhalten durch das Scannen der FSA-Hypersprungechos von Schiffen.</value>
+    <value>Erhalten durch das Scannen der FSA-Sogwolken von Schiffen.</value>
     <comment>Material location Eccentric Hyperspace Trajectories</comment>
   </data>
   
@@ -336,7 +336,7 @@
   
   
   <data name="dataminedwake" xml:space="preserve">
-    <value>Erhalten durch das Scannen der FSA-Hypersprungechos von Schiffen, verschlüsselten Datenbojen oder als Missionsbelohnung.</value>
+    <value>Erhalten durch das Scannen der FSA-Sogwolken von Schiffen, verschlüsselten Datenbojen oder als Missionsbelohnung.</value>
     <comment>Material location Datamined Wake Exceptions</comment>
   </data>
   <data name="embeddedfirmware" xml:space="preserve">

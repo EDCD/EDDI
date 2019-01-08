@@ -177,10 +177,22 @@
   
   
   
-  
-  
-  
-  
-  
-  
+  <data name="WakeScannerFastScan" xml:space="preserve">
+    <value>Schneller Sogwolken-Scanner</value>
+  </data>
+  <data name="WakeScannerLightWeight" xml:space="preserve">
+    <value>Leichter Sogwolken-Scanner</value>
+  </data>
+  <data name="WakeScannerLongRange" xml:space="preserve">
+    <value>Langstrecken-Sogwolken-Scanner</value>
+  </data>
+  <data name="WakeScannerReinforced" xml:space="preserve">
+    <value>Verstärkter Sogwolken-Scanner</value>
+  </data>
+  <data name="WakeScannerShielded" xml:space="preserve">
+    <value>Abgeschirmter Sogwolken-Scanner</value>
+  </data>
+  <data name="WakeScannerWideAngle" xml:space="preserve">
+    <value>Weitwinkel-Sogwolken-Scanner</value>
+  </data>
 </root>
