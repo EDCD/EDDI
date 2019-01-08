@@ -20,11 +20,12 @@ namespace EddiJournalMonitor
 {
     public class JournalMonitor : LogMonitor, EDDIMonitor
     {
-        private enum ShipyardType { ShipsHere, ShipsRemote }
         private static Regex JsonRegex = new Regex(@"^{.*}$", RegexOptions.Singleline);
-
         public JournalMonitor() : base(GetSavedGamesDir(), @"^Journal.*\.[0-9\.]+\.log$", (result, isLogLoadEvent) =>
-        ForwardJournalEntry(result, EDDI.Instance.eventHandler, isLogLoadEvent)) { }
+        ForwardJournalEntry(result, EDDI.Instance.eventHandler, isLogLoadEvent))
+        { }
+
+        private enum ShipyardType { ShipsHere, ShipsRemote }
 
         public static void ForwardJournalEntry(string line, Action<Event> callback, bool isLogLoadEvent)
         {
@@ -49,6 +50,11 @@ namespace EddiJournalMonitor
                 if (match.Success)
                 {
                     IDictionary<string, object> data = Deserializtion.DeserializeData(line);
+
+                    if (fromLogLoad && ignoredLogLoadEvents.Contains(JsonParsing.getString(data, "event")))
+                    {
+                        return events;
+                    }
 
                     // Every event has a timestamp field
                     DateTime timestamp = DateTime.UtcNow;
@@ -862,7 +868,7 @@ namespace EddiJournalMonitor
                                     long marketId = JsonParsing.getLong(data, "MarketID");
                                     string station = JsonParsing.getString(data, "StationName");
                                     string system = JsonParsing.getString(data, "StarSystem");
-                                    events.Add(new ShipyardEvent(timestamp, marketId, station, system) { raw = line });
+                                    events.Add(new ShipyardEvent(timestamp, marketId, station, system) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
@@ -990,7 +996,7 @@ namespace EddiJournalMonitor
                                             }
                                         }
                                     }
-                                    events.Add(new StoredShipsEvent(timestamp, marketId, station, system, shipyard) { raw = line });
+                                    events.Add(new StoredShipsEvent(timestamp, marketId, station, system, shipyard) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
@@ -1044,7 +1050,7 @@ namespace EddiJournalMonitor
                                             storedModules.Add(storedModule);
                                         }
                                     }
-                                    events.Add(new StoredModulesEvent(timestamp, marketId, station, system, storedModules) { raw = line });
+                                    events.Add(new StoredModulesEvent(timestamp, marketId, station, system, storedModules) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
@@ -1356,7 +1362,7 @@ namespace EddiJournalMonitor
                                     long marketId = JsonParsing.getLong(data, "MarketID");
                                     string station = JsonParsing.getString(data, "StationName");
                                     string system = JsonParsing.getString(data, "StarSystem");
-                                    events.Add(new OutfittingEvent(timestamp, marketId, station, system) { raw = line });
+                                    events.Add(new OutfittingEvent(timestamp, marketId, station, system) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
@@ -1941,7 +1947,7 @@ namespace EddiJournalMonitor
                                     long marketId = JsonParsing.getLong(data, "MarketID");
                                     string station = JsonParsing.getString(data, "StationName");
                                     string system = JsonParsing.getString(data, "StarSystem");
-                                    events.Add(new MarketEvent(timestamp, marketId, station, system) { raw = line });
+                                    events.Add(new MarketEvent(timestamp, marketId, station, system) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
@@ -3599,5 +3605,51 @@ namespace EddiJournalMonitor
 
             return compartment;
         }
+
+        private static string[] ignoredLogLoadEvents = new string[]
+        {
+            // We ignore these events when parsing / loading a log for a game session already in process.
+            "AfmuRepairs",
+            "ChangeCrewRole",
+            "ClearSavedGame",
+            "CockpitBreached",
+            "Continued",
+            "CrewFire",
+            "CrewLaunchFighter",
+            "CrewMemberJoins",
+            "CrewMemberQuits",
+            "CrewMemberRoleChange",
+            "DataScanned",
+            "DatalinkScan",
+            "DockingCancelled",
+            "DockingDenied",
+            "DockingGranted",
+            "DockingRequested",
+            "DockingTimeout",
+            "EndCrewSession",
+            "EscapeInterdiction",
+            "FSDTarget",
+            "FuelScoop",
+            "HeatDamage",
+            "HeatWarning",
+            "JetConeBoost",
+            "JetConeDamage",
+            "KickCrewMember",
+            "MaterialDiscovered",
+            "Music",
+            "NpcCrewRank",
+            "ReceiveText",
+            "Scanned",
+            "SendText",
+            "ShieldState",
+            "ShipTargeted",
+            "Shutdown",
+            "SystemsShutdown",
+            "UnderAttack",
+            "WingAdd",
+            "WingInvite",
+            "WingJoin",
+            "WingLeave"
+        };
     }
 }
