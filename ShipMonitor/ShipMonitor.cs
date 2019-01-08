@@ -515,32 +515,43 @@ namespace EddiShipMonitor
         {
             if (@event.shipyard != null)
             {
-                foreach (Ship ship in @event.shipyard)
+                //Check for ships missing from the shipyard
+                foreach (Ship shipInEvent in @event.shipyard)
                 {
-                    Ship shipData = GetShip(ship.LocalId);
+                    Ship shipInYard = GetShip(shipInEvent.LocalId);
 
-                    // Add ship stored at this station if not in shipyard
-                    if (shipData == null)
+                    // Add ship from the event if not in shipyard
+                    if (shipInYard == null)
                     {
-                        shipData.Role = Role.MultiPurpose;
-                        AddShip(shipData);
+                        shipInEvent.Role = Role.MultiPurpose;
+                        AddShip(shipInEvent);
                     }
 
-                    // Update ship stored at this station to latest data
+                    // Update ship in the shipyard to latest data
                     else
                     {
-                        if (!string.IsNullOrEmpty(shipData.name))
+                        if (!string.IsNullOrEmpty(shipInEvent.name))
                         {
-                            ship.name = shipData.name;
+                            shipInYard.name = shipInEvent.name;
                         }
-                        ship.value = shipData.value;
-                        ship.hot = shipData.hot;
-                        ship.intransit = shipData.intransit;
-                        ship.starsystem = shipData.starsystem;
-                        ship.marketid = shipData.marketid;
-                        ship.station = shipData.station;
-                        ship.transferprice = shipData.transferprice;
-                        ship.transfertime = shipData.transfertime;
+                        shipInYard.value = shipInEvent.value;
+                        shipInYard.hot = shipInEvent.hot;
+                        shipInYard.intransit = shipInEvent.intransit;
+                        shipInYard.starsystem = shipInEvent.starsystem;
+                        shipInYard.marketid = shipInEvent.marketid;
+                        shipInYard.station = shipInEvent.station;
+                        shipInYard.transferprice = shipInEvent.transferprice;
+                        shipInYard.transfertime = shipInEvent.transfertime;
+                    }
+                }
+
+                // Prune ships no longer in the shipyard
+                foreach (Ship shipInYard in shipyard)
+                {
+                    Ship shipInEvent = @event.shipyard.FirstOrDefault(s => s.LocalId == shipInYard.LocalId);
+                    if (shipInEvent == null)
+                    {
+                        RemoveShip(shipInYard.LocalId);
                     }
                 }
                 writeShips();
