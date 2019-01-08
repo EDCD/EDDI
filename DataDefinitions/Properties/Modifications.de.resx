@@ -171,12 +171,6 @@
   
   
   
-  
-  
-  
-  
-  
-  
   <data name="WakeScannerFastScan" xml:space="preserve">
     <value>Schneller Sogwolken-Scanner</value>
   </data>
@@ -195,4 +189,46 @@
   <data name="WakeScannerWideAngle" xml:space="preserve">
     <value>Weitwinkel-Sogwolken-Scanner</value>
   </data>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
 </root>
