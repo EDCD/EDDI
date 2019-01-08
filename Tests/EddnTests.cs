@@ -549,7 +549,7 @@ namespace UnitTests
             Assert.IsNull(responder.marketId);
 
             UnhandledEvent unhandledJump = new UnhandledEvent(DateTime.UtcNow, "FSDJump") { raw = jump };
-            arguments = new object[] { unhandledJump, false };
+            arguments = new object[] { unhandledJump };
             privateObject.Invoke("handleRawEvent", arguments);
             Assert.AreEqual("Pleiades Sector HR-W d1-79", responder.systemName);
             Assert.AreEqual(2724879894859, responder.systemAddress);
@@ -560,7 +560,7 @@ namespace UnitTests
             Assert.IsNull(responder.marketId);
 
             UnhandledEvent unhandledScan = new UnhandledEvent(DateTime.UtcNow, "Scan") { raw = scan };
-            arguments = new object[] { unhandledScan, false };
+            arguments = new object[] { unhandledScan };
             privateObject.Invoke("handleRawEvent", arguments);
             Assert.AreEqual("Pleiades Sector HR-W d1-79", responder.systemName);
             Assert.AreEqual(2724879894859, responder.systemAddress);
@@ -572,7 +572,7 @@ namespace UnitTests
 
             // Deliberately scan a procedurally generated body that doesn't match our last known location & verify heuristics catch it
             UnhandledEvent unhandledScan2 = new UnhandledEvent(DateTime.UtcNow, "Scan") { raw = scan2 };
-            arguments = new object[] { unhandledScan2, false };
+            arguments = new object[] { unhandledScan2 };
             privateObject.Invoke("handleRawEvent", arguments);
             Assert.IsNull(responder.systemName);
             Assert.IsNull(responder.systemAddress);
@@ -583,7 +583,7 @@ namespace UnitTests
             Assert.IsNull(responder.marketId);
 
             // Reset our position by re-stating the `FSDJump` event
-            arguments = new object[] { unhandledJump, false };
+            arguments = new object[] { unhandledJump };
             privateObject.Invoke("handleRawEvent", arguments);
 
             // Deliberately create a mismatch between the system and coordinates, 
@@ -593,14 +593,14 @@ namespace UnitTests
             privateObject.SetFieldOrProperty("systemZ", -383.53125M);
 
             // Deliberately scan a body while our coordinates are in a bad state
-            arguments = new object[] { unhandledScan, false };
+            arguments = new object[] { unhandledScan };
             privateObject.Invoke("handleRawEvent", arguments);
             Assert.IsNull(responder.systemX);
             Assert.IsNull(responder.systemY);
             Assert.IsNull(responder.systemZ);
 
             // Reset our position by re-stating the `FSDJump` event
-            arguments = new object[] { unhandledJump, false };
+            arguments = new object[] { unhandledJump };
             privateObject.Invoke("handleRawEvent", arguments);
 
             // Deliberately create a mismatch between the system name and address, 
@@ -608,7 +608,7 @@ namespace UnitTests
             privateObject.SetFieldOrProperty("systemAddress", 1183229809290);
 
             // Deliberately scan a body while our system address is in a bad state
-            arguments = new object[] { unhandledScan, false };
+            arguments = new object[] { unhandledScan };
             privateObject.Invoke("handleRawEvent", arguments);
             Assert.IsNull(responder.systemAddress);
         }
