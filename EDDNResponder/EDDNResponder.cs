@@ -222,8 +222,11 @@ namespace EDDNResponder
                 else if (!invalidState)
                 {
                     invalidState = true;
+#if Debug
+#else
                     Logging.Warn("The EDDN responder is in an invalid state and is unable to send messages.", JsonConvert.SerializeObject(this) + " Event: " + JsonConvert.SerializeObject(data));
                     SpeechService.Instance.Say(null, EddiEddnResponder.Properties.EddnResources.errPosition, true);
+#endif
                 }
             }
         }
