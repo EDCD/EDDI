@@ -722,7 +722,11 @@ namespace Eddi
                 }
                 catch (Exception ex)
                 {
-                    Logging.Error("Failed to handle event " + JsonConvert.SerializeObject(@event), ex);
+                    Logging.Error("EDDI core failed to handle event " + JsonConvert.SerializeObject(@event), ex);
+
+                    // Even if an error occurs, we still need to pass the raw data 
+                    // to the EDDN responder to maintain it's integrity.
+                    Instance.ObtainResponder("Eddn responder").Handle(@event);
                 }
             }
         }

@@ -3,7 +3,7 @@ using EddiCompanionAppService;
 using EddiDataDefinitions;
 using EddiDataProviderService;
 using EddiEvents;
-using EddiSpeechService;
+using EddiSpeechService; // Used in release but not in debug.
 using Newtonsoft.Json;
 using RestSharp;
 using System;
@@ -563,7 +563,7 @@ namespace EDDNResponder
         {
             if (systemName != null)
             {
-                StarSystem system = starSystemRepository.GetOrFetchStarSystem(systemName);
+                StarSystem system = starSystemRepository.GetOrCreateStarSystem(systemName);
                 if (system != null)
                 {
                     if (systemAddress != system.systemAddress)
@@ -591,6 +591,7 @@ namespace EDDNResponder
             {
                 if (bodyName.StartsWith(systemName))
                 {
+                    // If the system name is a subset of the body name, we're probably in the right place.
                     return true;
                 }
                 else
