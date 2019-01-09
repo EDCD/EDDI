@@ -4,7 +4,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
 
 ### Development
   * Core
-    * EDDI will now sync to the most current journal on startup (data will be much more accurate in circumstances where EDDI is started after a game session has already started)
+    * EDDI will now sync to the most current journal on startup (dramatically improving the accuracy of data available after startup)
 
 ### 3.3.3-b1
   * Core
