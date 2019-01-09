@@ -30,7 +30,7 @@ namespace EddiJournalMonitor
 
         /// <summary>Monitor the netlog for changes, running a callback when the file changes</summary>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times")] // this usage is perfectly correct
-        public void start()
+        public void start(bool readAllOnLoad = false)
         {
             if (Directory == null || Directory.Trim() == "")
             {
@@ -63,10 +63,18 @@ namespace EddiJournalMonitor
                     journalFileName = fileInfo.Name;
                     lastSize = fileInfo.Length;
 
-                    // Read all info already recorded in the file
-                    long seekPos = 0;
-                    int readLen = (int)fileInfo.Length;
-                    Read(seekPos, readLen, fileInfo, true);
+                    if (readAllOnLoad)
+                    {
+                        // Read everything in the file into the journal monitor
+                        long seekPos = 0;
+                        int readLen = (int)fileInfo.Length;
+                        Read(seekPos, readLen, fileInfo, true);
+                    }
+                    else
+                    {
+                        // Read the header and latest loaded game into the journal monitor
+                        ReadLastCommanderLoad(fileInfo, true);
+                    }
                 }
                 else
                 {
@@ -119,6 +127,49 @@ namespace EddiJournalMonitor
                     if (line != "")
                     {
                         Callback(line, isLoadEvent);
+                    }
+                }
+            }
+        }
+
+        private void ReadLastCommanderLoad(FileInfo fileInfo, bool isLoadEvent)
+        {
+            long seekPos = 0;
+
+            using (FileStream fs = fileInfo.Open(FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+            {
+                fs.Seek(seekPos, SeekOrigin.Begin);
+                byte[] bytes = new byte[fileInfo.Length];
+                int haveRead = 0;
+                while (haveRead < fileInfo.Length)
+                {
+                    haveRead += fs.Read(bytes, haveRead, (int)fileInfo.Length - haveRead);
+                    fs.Seek(seekPos + haveRead, SeekOrigin.Begin);
+                }
+                // Convert bytes to strings
+                string s = Encoding.UTF8.GetString(bytes);
+                string[] lines = Regex.Split(s, "\r?\n");
+
+                // First line should be a file header
+                string firstLine = lines.FirstOrDefault();
+                if (firstLine.Contains("Fileheader"))
+                {
+                    // Pass this along as an event
+                    Callback(firstLine, isLoadEvent);
+                }
+
+                // Find the latest "Commander" event, written at the start of the Load Game process
+                // (whenever loading from the main menu) 
+                var commanderLoadLines = lines
+                    .Select((text, index) => new { line = text, lineNumber = index })
+                    .Where(x => x.line.Contains(@"""event"":""Commander"""));
+                var lastLoadLine = commanderLoadLines.LastOrDefault();
+
+                for (int i = lastLoadLine.lineNumber; i < lines.Count(); i++)
+                {
+                    if (lines[i] != "")
+                    {
+                        Callback(lines[i], isLoadEvent);
                     }
                 }
             }
