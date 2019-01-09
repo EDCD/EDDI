@@ -49,6 +49,11 @@ namespace EddiVoiceAttackResponder
 
         public void Handle(Event theEvent)
         {
+            if (theEvent.fromLoad)
+            {
+                return;
+            }
+
             Logging.Debug("Received event " + JsonConvert.SerializeObject(theEvent));
             VoiceAttackPlugin.EventQueue.Add(theEvent);
             OnEvent(new EventArgs(), theEvent);

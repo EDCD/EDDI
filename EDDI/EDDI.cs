@@ -722,7 +722,11 @@ namespace Eddi
                 }
                 catch (Exception ex)
                 {
-                    Logging.Error("Failed to handle event " + JsonConvert.SerializeObject(@event), ex);
+                    Logging.Error("EDDI core failed to handle event " + JsonConvert.SerializeObject(@event), ex);
+
+                    // Even if an error occurs, we still need to pass the raw data 
+                    // to the EDDN responder to maintain it's integrity.
+                    Instance.ObtainResponder("EDDN responder").Handle(@event);
                 }
             }
         }
@@ -1036,6 +1040,7 @@ namespace Eddi
             else
             {
                 // Kick off a dummy that triggers a market refresh after a couple of seconds
+                if (theEvent.fromLoad) { return true; } // Don't fire this event when loading pre-existing logs
                 Thread updateThread = new Thread(() => dummyRefreshMarketData())
                 {
                     IsBackground = true
@@ -1083,6 +1088,7 @@ namespace Eddi
                         StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
 
                         // Post an update event for new market data
+                        if (theEvent.fromLoad) { return true; } // Don't fire this event when loading pre-existing logs
                         Event @event = new MarketInformationUpdatedEvent(DateTime.UtcNow, "market");
                         eventHandler(@event);
                     }
@@ -1121,6 +1127,7 @@ namespace Eddi
                         StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
 
                         // Post an update event for new outfitting data
+                        if (theEvent.fromLoad) { return true; } // Don't fire this event when loading pre-existing logs
                         Event @event = new MarketInformationUpdatedEvent(DateTime.UtcNow, "outfitting");
                         eventHandler(@event);
                     }
@@ -1159,6 +1166,7 @@ namespace Eddi
                         StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
 
                         // Post an update event for new shipyard data
+                        if (theEvent.fromLoad) { return true; } // Don't fire this event when loading pre-existing logs
                         Event @event = new MarketInformationUpdatedEvent(DateTime.UtcNow, "shipyard");
                         eventHandler(@event);
                     }
@@ -1466,13 +1474,16 @@ namespace Eddi
                         configuration.SquadronRank = rank;
 
                         // Update the squadron UI data
-                        Application.Current.Dispatcher.Invoke(new Action(() =>
+                        if (Application.Current != null) // We need to make sure our WPF and UI are initialized
                         {
-                            MainWindow mw = Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
-                            mw.eddiSquadronNameText.Text = theEvent.name;
-                            mw.squadronRankDropDown.SelectedItem = rank.localizedName;
-                            configuration = mw.resetSquadronRank(configuration);
-                        }));
+                            Application.Current.Dispatcher.Invoke(new Action(() =>
+                            {
+                                MainWindow mw = Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
+                                mw.eddiSquadronNameText.Text = theEvent.name;
+                                mw.squadronRankDropDown.SelectedItem = rank.localizedName;
+                                configuration = mw.resetSquadronRank(configuration);
+                            }));
+                        }
 
                         // Update the commander object, if it exists
                         if (Cmdr != null)
@@ -1488,11 +1499,14 @@ namespace Eddi
                         configuration.SquadronName = theEvent.name;
 
                         // Update the squadron UI data
-                        Application.Current.Dispatcher.Invoke(new Action(() =>
+                        if (Application.Current != null) // We need to make sure our WPF and UI are initialized
                         {
-                            MainWindow mw = Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
-                            mw.eddiSquadronNameText.Text = theEvent.name;
-                        }));
+                            Application.Current.Dispatcher.Invoke(new Action(() =>
+                            {
+                                MainWindow mw = Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
+                                mw.eddiSquadronNameText.Text = theEvent.name;
+                            }));
+                        }
 
                         // Update the commander object, if it exists
                         if (Cmdr != null)
@@ -1510,13 +1524,16 @@ namespace Eddi
                         configuration.SquadronID = null;
 
                         // Update the squadron UI data
-                        Application.Current.Dispatcher.Invoke(new Action(() =>
+                        if (Application.Current != null) // We need to make sure our WPF and UI are initialized
                         {
-                            MainWindow mw = Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
-                            mw.eddiSquadronNameText.Text = string.Empty;
-                            mw.eddiSquadronIDText.Text = string.Empty;
-                            configuration = mw.resetSquadronRank(configuration);
-                        }));
+                            Application.Current.Dispatcher.Invoke(new Action(() =>
+                            {
+                                MainWindow mw = Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
+                                mw.eddiSquadronNameText.Text = string.Empty;
+                                mw.eddiSquadronIDText.Text = string.Empty;
+                                configuration = mw.resetSquadronRank(configuration);
+                            }));
+                        }
 
                         // Update the commander object, if it exists
                         if (Cmdr != null)
@@ -1541,12 +1558,15 @@ namespace Eddi
             configuration.ToFile();
 
             // Update the squadron UI data
-            Application.Current.Dispatcher.Invoke(new Action(() =>
+            if (Application.Current != null) // We need to make sure our WPF and UI are initialized
             {
-                MainWindow mw = Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
-                mw.eddiSquadronNameText.Text = theEvent.name;
-                mw.squadronRankDropDown.SelectedItem = rank.localizedName;
-            }));
+                Application.Current.Dispatcher.Invoke(new Action(() =>
+                {
+                    MainWindow mw = Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
+                    mw.eddiSquadronNameText.Text = theEvent.name;
+                    mw.squadronRankDropDown.SelectedItem = rank.localizedName;
+                }));
+            }
 
             // Update the commander object, if it exists
             if (Cmdr != null)
@@ -1681,8 +1701,6 @@ namespace Eddi
                 belt.distance = (long?)theEvent.distancefromarrival;
 
                 CurrentStarSystem.bodies?.Add(belt);
-                Logging.Debug("Saving data for scanned belt " + theEvent.name);
-                StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
             }
             return CurrentStarSystem != null;
         }
@@ -2285,11 +2303,14 @@ namespace Eddi
                 {
                     configuration.SquadronFaction = faction.name;
 
-                    Application.Current.Dispatcher.Invoke(new Action(() =>
+                    if (Application.Current != null) // We need to make sure our WPF and UI are initialized
                     {
-                        MainWindow mw = Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
-                        mw.squadronFactionDropDown.SelectedItem = faction.name;
-                    }));
+                        Application.Current.Dispatcher.Invoke(new Action(() =>
+                        {
+                            MainWindow mw = Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
+                            mw.squadronFactionDropDown.SelectedItem = faction.name;
+                        }));
+                    }
 
                     Cmdr.squadronfaction = faction.name;
                 }
@@ -2303,12 +2324,15 @@ namespace Eddi
                     {
                         configuration.SquadronSystem = system;
 
-                        Application.Current.Dispatcher.Invoke(new Action(() =>
+                        if (Application.Current != null) // We need to make sure our WPF and UI are initialized
                         {
-                            MainWindow mw = Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
-                            mw.eddiSquadronSystemText.Text = system;
-                            mw.ConfigureSquadronFactionOptions(configuration);
-                        }));
+                            Application.Current.Dispatcher.Invoke(new Action(() =>
+                            {
+                                MainWindow mw = Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
+                                mw.eddiSquadronSystemText.Text = system;
+                                mw.ConfigureSquadronFactionOptions(configuration);
+                            }));
+                        }
 
                         configuration = updateSquadronSystem(configuration, true);
                     }
@@ -2336,12 +2360,15 @@ namespace Eddi
                         {
                             configuration.SquadronPower = power;
 
-                            Application.Current.Dispatcher.Invoke(new Action(() =>
+                            if (Application.Current != null) // We need to make sure our WPF and UI are initialized
                             {
-                                MainWindow mw = Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
-                                mw.squadronPowerDropDown.SelectedItem = power.localizedName;
-                                mw.ConfigureSquadronPowerOptions(configuration);
-                            }));
+                                Application.Current.Dispatcher.Invoke(new Action(() =>
+                                {
+                                    MainWindow mw = Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
+                                    mw.squadronPowerDropDown.SelectedItem = power.localizedName;
+                                    mw.ConfigureSquadronPowerOptions(configuration);
+                                }));
+                            }
                         }
                     }
                 }

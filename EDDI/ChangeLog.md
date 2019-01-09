@@ -2,11 +2,15 @@
 
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
+### Development
+  * Core
+    * EDDI will now sync to the most current journal on startup (dramatically improving the accuracy of data available after startup)
+
 ### 3.3.3-b1
   * Core
     * Added manual market, outfitting and shipyard updates, upon docking. Associated EDDN message is sent.
   * Ship monitor
-    * Added new values to the current ship: `hullheath` & `hot`
+    * Added new values to the current ship: `hullhealth` & `hot`
 	* Added `Hot` property to the Ship monitor UI
     * Added new values to modules: `hot`, `modification`, `engineerlevel`, and `engineerquality`
 	* Updated module-related events to handle engineering modification data

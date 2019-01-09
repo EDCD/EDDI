@@ -17,6 +17,9 @@ namespace EddiEvents
         [JsonProperty("type")]
         public string type { get; private set; }
 
+        [JsonProperty("fromLoad")]
+        public bool fromLoad { get; set; }
+
         public Event(DateTime timestamp, string type)
         {
             this.timestamp = timestamp;

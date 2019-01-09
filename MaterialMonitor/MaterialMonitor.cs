@@ -428,7 +428,7 @@ namespace EddiMaterialMonitor
                 }
 
                 // Add in any new materials
-                foreach (Material material in Material.AllOfThem)
+                foreach (Material material in Material.AllOfThem.ToList())
                 {
                     MaterialAmount ma = newInventory.Where(inv => inv.edname == material.edname).FirstOrDefault();
                     if (ma == null)
