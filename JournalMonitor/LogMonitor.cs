@@ -48,7 +48,7 @@ namespace EddiJournalMonitor
                 if (fileInfo == null)
                 {
                     // A player journal file could not be found. Sleep until a player journal file is found.
-                    Logging.Info("Error locating Elite Dangerous player journal. Journal monitor is not active. Have you installed and run Elite Dangerous previously? ");
+                    Logging.Error("Error locating Elite Dangerous player journal. Journal monitor is not active. Have you installed and run Elite Dangerous previously? ");
                     while (fileInfo == null)
                     {
                         Thread.Sleep(500);
