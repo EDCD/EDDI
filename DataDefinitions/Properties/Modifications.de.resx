@@ -228,19 +228,45 @@
   <data name="ShieldGeneratorOptimised" xml:space="preserve">
     <value>Verbesserte Gering-Energie-Schilde</value>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="ShieldGeneratorReinforced" xml:space="preserve">
+    <value>Verstärkte Schilde</value>
+  </data>
+  <data name="ShieldGeneratorThermic" xml:space="preserve">
+    <value>Hitzebeständige Schilde</value>
+  </data>
+  <data name="WeaponDoubleShot" xml:space="preserve">
+    <value>Doppelschuss</value>
+  </data>
+  <data name="WeaponEfficient" xml:space="preserve">
+    <value>Effiziente Waffe</value>
+  </data>
+  <data name="WeaponFocused" xml:space="preserve">
+    <value>Fokussierte Waffe</value>
+  </data>
+  <data name="WeaponHighCapacity" xml:space="preserve">
+    <value>Magazin mit hoher Kapazität</value>
+  </data>
+  <data name="WeaponLightWeight" xml:space="preserve">
+    <value>Leichtmontage</value>
+  </data>
+  <data name="WeaponLongRange" xml:space="preserve">
+    <value>Langstreckenwaffe</value>
+  </data>
+  <data name="WeaponOvercharged" xml:space="preserve">
+    <value>Überladungswaffe</value>
+  </data>
+  <data name="WeaponRapidFire" xml:space="preserve">
+    <value>Schnellfeuermodifikation</value>
+  </data>
+  <data name="WeaponShortRange" xml:space="preserve">
+    <value>Kurzstrecken-Zerstörer</value>
+  </data>
+  <data name="WeaponSturdy" xml:space="preserve">
+    <value>Stabile Montage</value>
+  </data>
+  <data name="None" xml:space="preserve">
+    <value>Nichts</value>
+  </data>
   <data name="WakeScannerFastScan" xml:space="preserve">
     <value>Schneller Sogwolken-Scanner</value>
   </data>
