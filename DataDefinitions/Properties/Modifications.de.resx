@@ -117,47 +117,117 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="ArmourAdvanced" xml:space="preserve">
+    <value>Leichte Panzerung </value>
+  </data>
+  <data name="ArmourExplosive" xml:space="preserve">
+    <value>Explosionsresistente Panzerung</value>
+  </data>
+  <data name="ArmourHeavyDuty" xml:space="preserve">
+    <value>Schwere Panzerung</value>
+  </data>
+  <data name="ArmourKinetic" xml:space="preserve">
+    <value>Geschossresistente Panzerung</value>
+  </data>
+  <data name="ArmourThermic" xml:space="preserve">
+    <value>Hitzebeständige Panzerung</value>
+  </data>
+  <data name="EngineDirty" xml:space="preserve">
+    <value>Dreckiges Antriebs-Tuning</value>
+  </data>
+  <data name="EngineReinforced" xml:space="preserve">
+    <value>Anstriebsstärkung</value>
+  </data>
+  <data name="EngineTuned" xml:space="preserve">
+    <value>Sauberes Antriebs-Tuning</value>
+  </data>
+  <data name="FSDFastBoot" xml:space="preserve">
+    <value>Schnellere FSA-Start-Sequenz</value>
+  </data>
+  <data name="FSDinterdictorExpanded" xml:space="preserve">
+    <value>Erweiterter Bereich für den FSA-Abfänger</value>
+  </data>
+  
+  <data name="FSDLongRange" xml:space="preserve">
+    <value>Erhöhte FSA-Reichweite</value>
+  </data>
+  <data name="FSDShielded" xml:space="preserve">
+    <value>Geschirmter FSA</value>
+  </data>
+  <data name="HullReinforcementAdvanced" xml:space="preserve">
+    <value>Leichte Rumpfhüllenverstärkung</value>
+  </data>
+  <data name="HullReinforcementExplosive" xml:space="preserve">
+    <value>Explosionsfeste Rumpfhüllenverstärkung</value>
+  </data>
+  <data name="HullReinforcementHeavyDuty" xml:space="preserve">
+    <value>Schwere Rumpfhüllenverstärkung</value>
+  </data>
+  <data name="HullReinforcementKinetic" xml:space="preserve">
+    <value>Geschossresistente Rumpfhüllenverstärkung</value>
+  </data>
+  <data name="HullReinforcementThermic" xml:space="preserve">
+    <value>Hitzebeständige Rumpfhüllenverstärkung</value>
+  </data>
   
   
   
+  <data name="PowerDistributorHighCapacity" xml:space="preserve">
+    <value>Energieverteiler mit hoher Ladekapazität</value>
+  </data>
+  <data name="PowerDistributorHighFrequency" xml:space="preserve">
+    <value>Energieverteiler mit erhöhter Laderate</value>
+  </data>
+  <data name="PowerDistributorPriorityEngine" xml:space="preserve">
+    <value>Antriebsfokussierter Energieverteiler</value>
+  </data>
+  <data name="PowerDistributorPrioritySystem" xml:space="preserve">
+    <value>Systemfokussierter Energieverteiler</value>
+  </data>
+  <data name="PowerDistributorPriorityWeapon" xml:space="preserve">
+    <value>Waffenfokussierter Energieverteiler</value>
+  </data>
+  <data name="PowerDistributorShielded" xml:space="preserve">
+    <value>Abgeschirmter Energieverteiler</value>
+  </data>
+  <data name="PowerPlantArmoured" xml:space="preserve">
+    <value>Gepanzertes Kraftwerk</value>
+  </data>
+  <data name="PowerPlantBoosted" xml:space="preserve">
+    <value>Überladungskraftwerk</value>
+  </data>
+  <data name="PowerPlantStealth" xml:space="preserve">
+    <value>Strahlungsarmes Kraftwerk</value>
+  </data>
   
   
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="ShieldBoosterExplosive" xml:space="preserve">
+    <value>Explosionsresistente Schildverstärker</value>
+  </data>
+  <data name="ShieldBoosterHeavyDuty" xml:space="preserve">
+    <value>Schwere Schildverstärker</value>
+  </data>
+  <data name="ShieldBoosterKinetic" xml:space="preserve">
+    <value>Geschossresistente Schildverstärker</value>
+  </data>
+  <data name="ShieldBoosterResistive" xml:space="preserve">
+    <value>Widerstandsverstärkter Schildverstärker</value>
+  </data>
+  <data name="ShieldBoosterThermic" xml:space="preserve">
+    <value>Hitzebeständige Schildverstärker</value>
+  </data>
+  <data name="ShieldCellBankRapid" xml:space="preserve">
+    <value>Schnelllade-Schildzellenbank</value>
+  </data>
+  <data name="ShieldCellBankSpecialised" xml:space="preserve">
+    <value>Spezialisierte Schildzellenbank</value>
+  </data>
+  <data name="ShieldGeneratorKinetic" xml:space="preserve">
+    <value>Geschossresistente Schilde</value>
+  </data>
+  <data name="ShieldGeneratorOptimised" xml:space="preserve">
+    <value>Verbesserte Gering-Energie-Schilde</value>
+  </data>
   
   
   
