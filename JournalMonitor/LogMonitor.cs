@@ -165,11 +165,14 @@ namespace EddiJournalMonitor
                     .Where(x => x.line.Contains(@"""event"":""Commander"""));
                 var lastLoadLine = commanderLoadLines.LastOrDefault();
 
-                for (int i = lastLoadLine.lineNumber; i < lines.Count(); i++)
+                if (lastLoadLine != null)
                 {
-                    if (lines[i] != "")
+                    for (int i = lastLoadLine.lineNumber; i < lines.Count(); i++)
                     {
-                        Callback(lines[i], isLoadEvent);
+                        if (lines[i] != "")
+                        {
+                            Callback(lines[i], isLoadEvent);
+                        }
                     }
                 }
             }
