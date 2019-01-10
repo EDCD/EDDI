@@ -253,9 +253,15 @@
     <value>Erhalten durch das Scannen von Transportschiffen oder als Missionsbelohnung, speziell in Systemen mit ökonomischem Aufschwung.</value>
     <comment>Material location Inconsistent Shield Soak Analysis</comment>
   </data>
+  <data name="archivedemissiondata" xml:space="preserve">
+    <value>Erhalten durch das Scannen von Signalquellen oder als Missionsbelohnung, speziell in Systemen mit ökonomischem Aufschwung.</value>
+    <comment>Material location Irregular Emission Data</comment>
+  </data>
   
-  
-  
+  <data name="encryptioncodes" xml:space="preserve">
+    <value>Erhalten durch das Scannen von Oberflächen-Daten-Punkten, durch Satelliten die Anlagen und bevölkerte erdähnliche Welten umkreisen, oder als Missionsbelohnung speziell in Systemen mit florierenden Volkswirtschaften.</value>
+    <comment>Material location Tagged Encryption Codes</comment>
+  </data>
   <data name="scanarchives" xml:space="preserve">
     <value>Erhalten durch das Scannen von Transportschiffen, speziell in Systemen mit ökonomischem Aufschwung.</value>
     <comment>Material location Unidentified Scan Archives</comment>
@@ -304,18 +310,30 @@
     <value>Entdeckt an geheimnisvollen Oberflächenstandorten einer außerirdischen Spezies, bekannt als die Thargoiden oder durch das Scannen von Thargoiden-Schiffen</value>
     <comment>Material location Thargoid Ship Signature</comment>
   </data>
-  
+  <data name="shieldpatternanalysis" xml:space="preserve">
+    <value>Erhalten durch das Scannen von Schiffen der Systembehörde und von Kampfschiffen oder als Missionsbelohnung, speziell in Systemen mit ökonomischem Aufschwung.</value>
+    <comment>Material location Aberrant Shield Pattern Analysis</comment>
+  </data>
   <data name="encryptionarchives" xml:space="preserve">
     <value>Erhalten durch das Scannen von Datenverbindungen an Bodenstationen.</value>
     <comment>Material location Atypical Encryption Archives</comment>
   </data>
-  
-  
+  <data name="decodedemissiondata" xml:space="preserve">
+    <value>Erhalten durch das Scannen von Schiffen der Systembehörde oder als Missionsbelohnung.</value>
+    <comment>Material location Decoded Emission Data</comment>
+  </data>
+  <data name="encodedscandata" xml:space="preserve">
+    <value>Erhalten durch das Scannen von Datenverbindungen an Bodenstationen oder als Missionsbelohnung.</value>
+    <comment>Material location Divergent Scan Data</comment>
+  </data>
   <data name="hyperspacetrajectories" xml:space="preserve">
     <value>Erhalten durch das Scannen der FSA-Sogwolken von Schiffen.</value>
     <comment>Material location Eccentric Hyperspace Trajectories</comment>
   </data>
-  
+  <data name="securityfirmware" xml:space="preserve">
+    <value>Erhalten durch das Scannen von Datenverbindungen an Bodenstationen oder als Missionsbelohnung.</value>
+    <comment>Material location Security Firmware Patch</comment>
+  </data>
   <data name="ancientlanguagedata" xml:space="preserve">
     <value>Entdeckt in den alten Ruinen einer außerirdischen Spezies, bekannt als die Wächter.</value>
     <comment>Material location Pattern Delta Obelisk Data</comment>
@@ -355,7 +373,10 @@
     <value>Gewonnen aus den Trümmern von Transportschiffen.</value>
     <comment>Material location Chemical Storage Units</comment>
   </data>
-  
+  <data name="compactcomposites" xml:space="preserve">
+    <value>Erhalten in herabgestuften (degraded) Signalquellen, einschließlich Oberflächensignale.</value>
+    <comment>Material location Compact Composites</comment>
+  </data>
   <data name="crystalshards" xml:space="preserve">
     <value>Gewonnen aus den Trümmern von (Groß-)Kampfschiffen und von Oberflächensignalquellen.</value>
     <comment>Material location Crystal Shards</comment>
@@ -389,14 +410,35 @@
     <comment>Material location Chemical Processors</comment>
   </data>
   
+  <data name="filamentcomposites" xml:space="preserve">
+    <value>Gewonnen aus den Trümmern von Militärschiffen und Schiffen der Systembehörde.</value>
+    <comment>Material location Filament Composites</comment>
+  </data>
+  <data name="uncutfocuscrystals" xml:space="preserve">
+    <value>Gewonnen aus den Trümmern von (Groß-)Kampfschiffen oder gefunden in Kampffolge-Signalquellen.</value>
+    <comment>Material location Flawed Focus Crystals</comment>
+  </data>
   
-  
-  
-  
-  
-  
-  
-  
+  <data name="heatdispersionplate" xml:space="preserve">
+    <value>Gewonnen aus den Trümmern von Transportschiffen in Signalquellen, speziell in Systemen mit florierender Volkswirtschaft oder als Missionsbelohnung.</value>
+    <comment>Material location Heat Dispersion Plate</comment>
+  </data>
+  <data name="heatresistantceramics" xml:space="preserve">
+    <value>Gewonnen aus den Trümmern von Militärschiffen und Schiffen der Systembehörde.</value>
+    <comment>Material location heatresistantceramics</comment>
+  </data>
+  <data name="hybridcapacitors" xml:space="preserve">
+    <value>Gewonnen aus den Trümmern von (Groß-)Kampfschiffen, gewöhnlich Anacondas und Föderale Korvetten oder als Missionsbelohnung.</value>
+    <comment>Material location Hybrid Capacitors</comment>
+  </data>
+  <data name="mechanicalequipment" xml:space="preserve">
+    <value>Erhalten durch das Scannen von Transportschiffen, speziell in Systemen mit ökonomischem Aufschwung.</value>
+    <comment>Material location Mechanical Equipment</comment>
+  </data>
+  <data name="shieldemitters" xml:space="preserve">
+    <value>Gewonnen aus den Trümmern von (Groß-)Kampfschiffen in Signalquellen, speziell in Systemen mit ökonomischem Aufschwung.</value>
+    <comment>Material location Shield Emitters</comment>
+  </data>
   <data name="unknowncarapace" xml:space="preserve">
     <value>Entdeckt an geheimnisvollen Oberflächenstandorten einer außerirdischen Spezies, bekannt als die Thargoiden.</value>
     <comment>Material location Thargoid Carapace</comment>
