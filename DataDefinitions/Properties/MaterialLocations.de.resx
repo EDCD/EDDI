@@ -202,59 +202,59 @@
     <comment>Material location Tellurium</comment>
   </data>
   <data name="yttrium" xml:space="preserve">
-    <value>Gewonnen durch Oberflächenerkundung.</value>
+    <value>Erhält man durch Oberflächenerkundung.</value>
     <comment>Material location Yttrium</comment>
   </data>
   <data name="zirconium" xml:space="preserve">
-    <value>Gewonnen durch Oberflächenerkundung oder Asteroidenbergbau.</value>
+    <value>Erhält man durch Oberflächenerkundung oder Asteroidenbergbau.</value>
     <comment>Material location Zirconium</comment>
   </data>
   <data name="antimony" xml:space="preserve">
-    <value>Gewonnen durch Oberflächenerkundung.</value>
+    <value>Erhält man durch Oberflächenerkundung.</value>
     <comment>Material location Antimony</comment>
   </data>
   <data name="polonium" xml:space="preserve">
-    <value>Gewonnen durch Oberflächenerkundung oder als Missionsbelohnung.</value>
+    <value>Erhält man durch Oberflächenerkundung oder als Missionsbelohnung.</value>
     <comment>Material location Polonium</comment>
   </data>
   <data name="bulkscandata" xml:space="preserve">
-    <value>Erhalten durch das Scannen von Transportschiffen oder als Missionsbelohnung.</value>
+    <value>Erhält man durch das Scannen von Transportschiffen oder als Missionsbelohnung.</value>
     <comment>Material location Anomalous Bulk Scan Data</comment>
   </data>
   <data name="disruptedwakeechoes" xml:space="preserve">
-    <value>Erhalten durch das Analysieren von FSA-Sogwolken von Schiffen oder als Missionsbelohnung, speziell in Systemen mit ökonomischem Aufschwung.</value>
+    <value>Erhält man durch das Analysieren von FSA-Sogwolken von Schiffen oder als Missionsbelohnung, speziell in Systemen mit ökonomischem Aufschwung.</value>
     <comment>Material location Atypical Disrupted Wake Echoes</comment>
   </data>
   <data name="shieldcyclerecordings" xml:space="preserve">
-    <value>Erhalten durch das Scannen von Transportschiffen oder als Missionsbelohnung.</value>
+    <value>Erhält man durch das Scannen von Transportschiffen oder als Missionsbelohnung.</value>
     <comment>Material location Distorted Shield Cycle Recordings</comment>
   </data>
   <data name="scrambledemissiondata" xml:space="preserve">
-    <value>Erhalten durch das Scannen von Schiffen, Signalquellen oder als Missionsbelohnung.</value>
+    <value>Erhält man durch das Scannen von Schiffen, Signalquellen oder als Missionsbelohnung.</value>
     <comment>Material location Exceptional Scrambled Emission Data</comment>
   </data>
   <data name="legacyfirmware" xml:space="preserve">
-    <value>Erhalten durch das Analysieren von Oberflächen-Daten-Punkten, durch Satelliten die Anlagen und bevölkerte erdähnliche Welten umkreisen, oder als Missionsbelohnung.</value>
+    <value>Erhält man durch das Analysieren von Oberflächen-Daten-Punkten, durch Satelliten die Anlagen und bevölkerte erdähnliche Welten umkreisen, oder als Missionsbelohnung.</value>
     <comment>Material location Specialised Legacy Firmware</comment>
   </data>
   <data name="encryptedfiles" xml:space="preserve">
-    <value>Erhalten aus Signalquellen, einschließlich Oberflächensignalquellen, oder als Missionsbelohnung. Diese sind in Systemen mit boomenden Volkswirtschaften eher verbreitet.</value>
+    <value>Erhält man aus Signalquellen, einschließlich Oberflächensignalquellen, oder als Missionsbelohnung. Diese sind in Systemen mit boomenden Volkswirtschaften eher verbreitet.</value>
     <comment>Material location Unusual Encrypted Files</comment>
   </data>
   <data name="ancienthistoricaldata" xml:space="preserve">
-    <value>Entdeckt in den alten Ruinen der außerirdischen Spezies, bekannt als die Wächter.</value>
+    <value>Entdeckt man in den alten Ruinen der außerirdischen Spezies, bekannt als die Wächter.</value>
     <comment>Material location Pattern Gamma Obelisk Data</comment>
   </data>
   <data name="fsdtelemetry" xml:space="preserve">
-    <value>Erhalten durch das Scannen der FSA-Sogwolken von Schiffen oder als Missionsbelohnung.</value>
+    <value>Erhält man durch das Scannen der FSA-Sogwolken von Schiffen oder als Missionsbelohnung.</value>
     <comment>Material location Anomalous FSD Telemetry</comment>
   </data>
   <data name="shieldsoakanalysis" xml:space="preserve">
-    <value>Erhalten durch das Scannen von Transportschiffen oder als Missionsbelohnung, speziell in Systemen mit ökonomischem Aufschwung.</value>
+    <value>Erhält man durch das Scannen von Transportschiffen oder als Missionsbelohnung, speziell in Systemen mit ökonomischem Aufschwung.</value>
     <comment>Material location Inconsistent Shield Soak Analysis</comment>
   </data>
   <data name="archivedemissiondata" xml:space="preserve">
-    <value>Erhalten durch das Scannen von Signalquellen oder als Missionsbelohnung, speziell in Systemen mit ökonomischem Aufschwung.</value>
+    <value>Erhält man durch das Scannen von Signalquellen oder als Missionsbelohnung, speziell in Systemen mit ökonomischem Aufschwung.</value>
     <comment>Material location Irregular Emission Data</comment>
   </data>
   
