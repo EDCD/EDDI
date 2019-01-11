@@ -118,75 +118,75 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="carbon" xml:space="preserve">
-    <value>Gewonnen durch Oberflächenerkundung, Asteroidenbergbau und Eisringbergbau.</value>
+    <value>Erhält man durch Oberflächenerkundung, Asteroidenbergbau und Eisringbergbau.</value>
     <comment>Material location Carbon</comment>
   </data>
   <data name="iron" xml:space="preserve">
-    <value>Gewonnen durch Oberflächenerkundung, Asteroidenbergbau oder Eisringbergbau.</value>
+    <value>Erhält man durch Oberflächenerkundung, Asteroidenbergbau oder Eisringbergbau.</value>
     <comment>Material location Iron</comment>
   </data>
   <data name="nickel" xml:space="preserve">
-    <value>Gewonnen durch Oberflächenerkundung, Asteroidenbergbau oder Eisringbergbau.</value>
+    <value>Erhält man durch Oberflächenerkundung, Asteroidenbergbau oder Eisringbergbau.</value>
     <comment>Material location Nickel</comment>
   </data>
   <data name="phosphorus" xml:space="preserve">
-    <value>Gewonnen durch Oberflächenerkundung, Asteroidenbergbau oder Eisbergbau.</value>
+    <value>Erhält man durch Oberflächenerkundung, Asteroidenbergbau oder Eisbergbau.</value>
     <comment>Material location Phosphorus</comment>
   </data>
   <data name="sulphur" xml:space="preserve">
-    <value>Gewonnen durch Oberflächenerkundung, Asteroidenbergbau oder Eisringbergbau.</value>
+    <value>Erhält man durch Oberflächenerkundung, Asteroidenbergbau oder Eisringbergbau.</value>
     <comment>Material location Sulphur</comment>
   </data>
   <data name="arsenic" xml:space="preserve">
-    <value>Gewonnen durch Oberflächenerkundung, Asteroidenbergbau oder als Missionsbelohnung.</value>
+    <value>Erhält man durch Oberflächenerkundung, Asteroidenbergbau oder als Missionsbelohnung.</value>
     <comment>Material location Arsenic</comment>
   </data>
   <data name="chromium" xml:space="preserve">
-    <value>Gewonnen durch Oberflächenerkundung, Asteroidenbergbau in reinen Felsringen oder durch den Abbau in Eisringen.</value>
+    <value>Erhält man durch Oberflächenerkundung, Asteroidenbergbau in reinen Felsringen oder durch den Abbau in Eisringen.</value>
     <comment>Material location Chromium</comment>
   </data>
   <data name="germanium" xml:space="preserve">
-    <value>Gewonnen durch Oberflächenerkundung oder erhalten als Missionsbelohnung, besonders in Systemen, die an Krankheiten leiden.</value>
+    <value>Erhält man durch Oberflächenerkundung oder als Missionsbelohnung, besonders in Systemen, die an Krankheiten leiden.</value>
     <comment>Material location Germanium</comment>
   </data>
   <data name="manganese" xml:space="preserve">
-    <value>Gewonnen durch Oberflächenerkundung oder erhalten als Missionsbelohnung.</value>
+    <value>Erhält man durch Oberflächenerkundung oder als Missionsbelohnung.</value>
     <comment>Material location Manganese</comment>
   </data>
   <data name="vanadium" xml:space="preserve">
-    <value>Gewonnen durch Oberflächenerkundung, durch Abbau in reinen Metallringen oder durch Abbau in Eisringen.</value>
+    <value>Erhält man durch Oberflächenerkundung, durch Abbau in reinen Metallringen oder durch Abbau in Eisringen.</value>
     <comment>Material location Vanadium</comment>
   </data>
   <data name="zinc" xml:space="preserve">
-    <value>Gewonnen durch Oberflächenerkundung.</value>
+    <value>Erhält man durch Oberflächenerkundung.</value>
     <comment>Material location Zinc</comment>
   </data>
   <data name="cadmium" xml:space="preserve">
-    <value>Gewonnen durch Oberflächenerkundung oder Asteroidenbergbau.</value>
+    <value>Erhält man durch Oberflächenerkundung oder Asteroidenbergbau.</value>
     <comment>Material location Cadmium</comment>
   </data>
   <data name="mercury" xml:space="preserve">
-    <value>Gewonnen durch Oberflächenerkundung.</value>
+    <value>Erhält man durch Oberflächenerkundung.</value>
     <comment>Material location Mercury</comment>
   </data>
   <data name="molybdenum" xml:space="preserve">
-    <value>Gewonnen durch Oberflächenerkundung oder Asteroidenbergbau.</value>
+    <value>Erhält man durch Oberflächenerkundung oder Asteroidenbergbau.</value>
     <comment>Material location Molybdenum</comment>
   </data>
   <data name="niobium" xml:space="preserve">
-    <value>Gewonnen durch Oberflächenerkundung oder Asteroidenbergbau.</value>
+    <value>Erhält man durch Oberflächenerkundung oder Asteroidenbergbau.</value>
     <comment>Material location Niobium</comment>
   </data>
   <data name="tin" xml:space="preserve">
-    <value>Gewonnen durch Oberflächenerkundung oder Asteroidenbergbau in Gebieten mit unberührten Reserven.</value>
+    <value>Erhält man durch Oberflächenerkundung oder Asteroidenbergbau in Gebieten mit unberührten Reserven.</value>
     <comment>Material location Tin</comment>
   </data>
   <data name="tungsten" xml:space="preserve">
-    <value>Gewonnen durch Oberflächenerkundung.</value>
+    <value>Erhält man durch Oberflächenerkundung.</value>
     <comment>Material location Tungsten</comment>
   </data>
   <data name="ruthenium" xml:space="preserve">
-    <value>Gewonnen durch Oberflächenerkundung.</value>
+    <value>Erhält man durch Oberflächenerkundung.</value>
     <comment>Material location Ruthenium</comment>
   </data>
   <data name="selenium" xml:space="preserve">
