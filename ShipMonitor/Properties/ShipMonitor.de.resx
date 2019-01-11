@@ -201,7 +201,16 @@
   <data name="ipa_page_p2" xml:space="preserve">
     <value>ist ein alphabetisches System phonetischer Notation, das hauptsächlich auf dem lateinischen Alphabet basiert. Es wurde von der International Phonetic Association im späten 19. Jahrhundert als eine standardisierte Darstellung der Laute der gesprochenen Sprache entwickelt.</value>
   </data>
-  
-  
-  
+  <data name="header_hot" xml:space="preserve">
+    <value>Status</value>
+    <comment>Header for column showing whether ship is Hot or Clean</comment>
+  </data>
+  <data name="ship_clean" xml:space="preserve">
+    <value>Sauber</value>
+    <comment>Ship is Clean</comment>
+  </data>
+  <data name="ship_hot" xml:space="preserve">
+    <value>Heiß</value>
+    <comment>Ship is Hot</comment>
+  </data>
 </root>
