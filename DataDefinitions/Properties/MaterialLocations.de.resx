@@ -469,37 +469,40 @@
     <value>Gewinnt man aus den Trümmern von Transportschiffen, speziell in Anarchie-Systemen in der Nähe von bewohnten Systemen. Auch auffindbar bei Dave's Hope.</value>
     <comment>Material location Conductive Ceramics</comment>
   </data>
-  
+  <data name="electrochemicalarrays" xml:space="preserve">
+    <value>Gewinnt man aus den Trümmern von Kampfschiffen und Schiffen der Systembehörde oder erhält man in herabgestuften (degraded) Signalquellen in Anarchie-Systemen in der Nähe von bewohnten Systemen.</value>
+    <comment>Material location Electrochemical Arrays</comment>
+  </data>
   <data name="focuscrystals" xml:space="preserve">
-    <value>Wird gewonnen aus den Trümmern von Kampfschiffen, speziell in Systemen mit hoher Sicherheit.</value>
+    <value>Gewinnt man aus den Trümmern von Kampfschiffen, speziell in Systemen mit hoher Sicherheit.</value>
     <comment>Material location Focus Crystals</comment>
   </data>
   <data name="heatexchangers" xml:space="preserve">
-    <value>Wird gewonnen aus den Trümmern von Transportschiffen, speziell in Anarchie-Systemen in der Nähe von bewohnten Systemen.</value>
+    <value>Gewinnt man aus den Trümmern von Transportschiffen, speziell in Anarchie-Systemen in der Nähe von bewohnten Systemen.</value>
     <comment>Material location Heat Exchangers</comment>
   </data>
   <data name="highdensitycomposites" xml:space="preserve">
-    <value>Wird gewonnen aus den Trümmern von Großkampfschiffen, gewöhnlich Anacondas und Föderale Korvetten. Auch auffindbar bei Dave's Hope.</value>
+    <value>Gewinnt man aus den Trümmern von Großkampfschiffen, gewöhnlich Anacondas und Föderale Korvetten. Auch auffindbar bei Dave's Hope.</value>
     <comment>Material location High Density Composites</comment>
   </data>
   <data name="mechanicalcomponents" xml:space="preserve">
-    <value>Wird gewonnen aus den Trümmern von kleinen Transportschiffen, speziell in Systemen mit geringer Sicherheit. Auch auffindbar bei Dave's Hope.</value>
+    <value>Gewinnt man aus den Trümmern von kleinen Transportschiffen, speziell in Systemen mit geringer Sicherheit. Auch auffindbar bei Dave's Hope.</value>
     <comment>Material location Mechanical Components</comment>
   </data>
   <data name="phasealloys" xml:space="preserve">
-    <value>Wird gewonnen aus den Trümmern von Kampfschiffen oder erhalten in Signalquellen in Systemen mit ökonomischem Aufschwung.</value>
+    <value>Gewinnt man aus den Trümmern von Kampfschiffen oder erhält man in Signalquellen in Systemen mit ökonomischem Aufschwung.</value>
     <comment>Material location Phase Alloys</comment>
   </data>
   <data name="precipitatedalloys" xml:space="preserve">
-    <value>Wird gewonnen aus den Trümmern von Kampfschiffen und Schiffen der Systembehörde oder als Missionsbelohnung.</value>
+    <value>Gewinnt man aus den Trümmern von Kampfschiffen und Schiffen der Systembehörde oder als Missionsbelohnung.</value>
     <comment>Material location Precipitated Alloys</comment>
   </data>
   <data name="shieldingsensors" xml:space="preserve">
-    <value>Gewonnen aus den Trümmern von (Groß-)Kampfschiffen oder als Missionsbelohnung.</value>
+    <value>Gewinnt man aus den Trümmern von (Groß-)Kampfschiffen oder als Missionsbelohnung.</value>
     <comment>Material location Shielding Sensors</comment>
   </data>
   <data name="unknownenergycell" xml:space="preserve">
-    <value>Entdeckt an geheimnisvollen Oberflächenstandorten einer außerirdischen Spezies, bekannt als die Thargoiden.</value>
+    <value>Entdeckt man an geheimnisvollen Oberflächenstandorten einer außerirdischen Spezies, bekannt als die Thargoiden.</value>
     <comment>Material location Thargoid Energy Cell</comment>
   </data>
   
