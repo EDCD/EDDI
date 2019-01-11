@@ -194,7 +194,7 @@
     <comment>Material location Selenium</comment>
   </data>
   <data name="technetium" xml:space="preserve">
-    <value>Gewonnen durch Oberflächenerkundung.</value>
+    <value>Erhält man durch Oberflächenerkundung.</value>
     <comment>Material location Technetium</comment>
   </data>
   <data name="tellurium" xml:space="preserve">
