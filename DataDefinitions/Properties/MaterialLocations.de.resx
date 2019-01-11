@@ -351,7 +351,10 @@
     <comment>Material location Thargoid Wake Data</comment>
   </data>
   
-  
+  <data name="adaptiveencryptors" xml:space="preserve">
+    <value>Erhält man durch das Scannen von Satelliten, die Anlagen und bevölkerte erdähnliche Welten umkreisen, oder als Missionsbelohnung, speziell für planetare Scann-Missionen.</value>
+    <comment>Material location Adaptive Encryptors Capture</comment>
+  </data>
   
   <data name="dataminedwake" xml:space="preserve">
     <value>Erhalten durch das Scannen der FSA-Sogwolken von Schiffen, verschlüsselten Datenbojen oder als Missionsbelohnung.</value>
@@ -409,7 +412,10 @@
     <value>Gewonnen aus den Trümmern von Transportschiffen oder als Missionsbelohnung.</value>
     <comment>Material location Chemical Processors</comment>
   </data>
-  
+  <data name="conductivecomponents" xml:space="preserve">
+    <value>Wird gewonnen aus den Trümmern von Transportschiffen, speziell in Anarchie-Systemen in der Nähe von bewohnten Systemen. </value>
+    <comment>Material location Conductive Components</comment>
+  </data>
   <data name="filamentcomposites" xml:space="preserve">
     <value>Gewonnen aus den Trümmern von Militärschiffen und Schiffen der Systembehörde.</value>
     <comment>Material location Filament Composites</comment>
@@ -418,7 +424,10 @@
     <value>Gewonnen aus den Trümmern von (Groß-)Kampfschiffen oder gefunden in Kampffolge-Signalquellen.</value>
     <comment>Material location Flawed Focus Crystals</comment>
   </data>
-  
+  <data name="galvanisingalloys" xml:space="preserve">
+    <value>Wird gewonnen aus den Trümmern von (Groß-)Kampfschiffen oder als Missionsbelohnung, speziell in Systemen, die gerade Wahlen durchführen.</value>
+    <comment>Material location Galvanising Alloys</comment>
+  </data>
   <data name="heatdispersionplate" xml:space="preserve">
     <value>Gewonnen aus den Trümmern von Transportschiffen in Signalquellen, speziell in Systemen mit florierender Volkswirtschaft oder als Missionsbelohnung.</value>
     <comment>Material location Heat Dispersion Plate</comment>
@@ -447,14 +456,35 @@
     <value>Gewonnen aus den Trümmern von Transportschiffen.</value>
     <comment>Material location Chemical Distillery</comment>
   </data>
+  <data name="conductiveceramics" xml:space="preserve">
+    <value>Wird gewonnen aus den Trümmern von Transportschiffen, speziell in Anarchie-Systemen in der Nähe von bewohnten Systemen. Auch auffindbar bei Dave's Hope.</value>
+    <comment>Material location Conductive Ceramics</comment>
+  </data>
   
-  
-  
-  
-  
-  
-  
-  
+  <data name="focuscrystals" xml:space="preserve">
+    <value>Wird gewonnen aus den Trümmern von Kampfschiffen, speziell in Systemen mit hoher Sicherheit.</value>
+    <comment>Material location Focus Crystals</comment>
+  </data>
+  <data name="heatexchangers" xml:space="preserve">
+    <value>Wird gewonnen aus den Trümmern von Transportschiffen, speziell in Anarchie-Systemen in der Nähe von bewohnten Systemen.</value>
+    <comment>Material location Heat Exchangers</comment>
+  </data>
+  <data name="highdensitycomposites" xml:space="preserve">
+    <value>Wird gewonnen aus den Trümmern von Großkampfschiffen, gewöhnlich Anacondas und Föderale Korvetten. Auch auffindbar bei Dave's Hope.</value>
+    <comment>Material location High Density Composites</comment>
+  </data>
+  <data name="mechanicalcomponents" xml:space="preserve">
+    <value>Wird gewonnen aus den Trümmern von kleinen Transportschiffen, speziell in Systemen mit geringer Sicherheit. Auch auffindbar bei Dave's Hope.</value>
+    <comment>Material location Mechanical Components</comment>
+  </data>
+  <data name="phasealloys" xml:space="preserve">
+    <value>Wird gewonnen aus den Trümmern von Kampfschiffen oder erhalten in Signalquellen in Systemen mit ökonomischem Aufschwung.</value>
+    <comment>Material location Phase Alloys</comment>
+  </data>
+  <data name="precipitatedalloys" xml:space="preserve">
+    <value>Wird gewonnen aus den Trümmern von Kampfschiffen und Schiffen der Systembehörde oder als Missionsbelohnung.</value>
+    <comment>Material location Precipitated Alloys</comment>
+  </data>
   <data name="shieldingsensors" xml:space="preserve">
     <value>Gewonnen aus den Trümmern von (Groß-)Kampfschiffen oder als Missionsbelohnung.</value>
     <comment>Material location Shielding Sensors</comment>
@@ -466,12 +496,24 @@
   
   
   
+  <data name="configurablecomponents" xml:space="preserve">
+    <value>Wird gewonnen aus den Trümmern von Transportschiffen, speziell in Systemen mit geringer Sicherheit. Auch auffindbar bei Dave's Hope.</value>
+    <comment>Material location Configurable Components</comment>
+  </data>
+  <data name="heatvanes" xml:space="preserve">
+    <value>Wird gewonnen aus den Trümmern von Transportschiffen oder als Missionsbelohnung. Auch auffindbar bei Dave's Hope.</value>
+    <comment>Material location Heat Vanes</comment>
+  </data>
   
   
-  
-  
-  
-  
+  <data name="protolightalloys" xml:space="preserve">
+    <value>Findet man in hochgradigen Signalquellen in Systemen mit ökonomischen Aufschwung oder als Missionsbelohnung.</value>
+    <comment>Material location Proto Light Alloys</comment>
+  </data>
+  <data name="refinedfocuscrystals" xml:space="preserve">
+    <value>Findet man in aktiven Kampfsignalquellen oder als Missionsbelohnung.</value>
+    <comment>Material location Refined Focus Crystals</comment>
+  </data>
   <data name="thermicalloys" xml:space="preserve">
     <value>Gewonnen aus den Trümmern von (Groß-)Kampfschiffen oder als Missionsbelohnung.</value>
     <comment>Material location Thermic Alloys</comment>
@@ -484,18 +526,36 @@
     <value>Erhalten als Missionsbelohnung.</value>
     <comment>Material location Biotech conductors</comment>
   </data>
-  
+  <data name="fedcorecomposites" xml:space="preserve">
+    <value>Findet man in hochgradigen Signalquellen in Systemen unter föderaler Kontrolle oder gewinnt man aus den Trümmern föderaler Kampfschiffe.</value>
+    <comment>Material location Core Dynamics Composites</comment>
+  </data>
   <data name="exquisitefocuscrystals" xml:space="preserve">
     <value>Gewonnen aus den Trümmern von (Groß-)Kampfschiffen oder als Missionsbelohnung, speziell in Systemen mit ökonomischem Aufschwung.</value>
     <comment>Material location Exquisite Focus Crystals</comment>
   </data>
+  <data name="imperialshielding" xml:space="preserve">
+    <value>Findet man in hochgradigen Signalquellen in Systemen unter imperialer Kontrolle oder als Missionsbelohnung.</value>
+    <comment>Material location Imperial Shielding</comment>
+  </data>
   
+  <data name="militarygradealloys" xml:space="preserve">
+    <value>Findet man in hochgradigen Signalquellen in Systemen mit Krieg oder Bürgerkrieg oder als Missionsbelohnung.</value>
+    <comment>Material location Military Grade Alloys</comment>
+  </data>
+  <data name="militarysupercapacitors" xml:space="preserve">
+    <value>Findet man in hochgradigen Signalquellen in Systemen mit Krieg oder Bürgerkrieg oder als Missionsbelohnung.</value>
+    <comment>Material location Military Supercapacitors</comment>
+  </data>
   
-  
-  
-  
-  
-  
+  <data name="protoheatradiators" xml:space="preserve">
+    <value>Findet man in hochgradigen Signalquellen in Systemen mit ökonomischen Aufschwung oder als Missionsbelohnung.</value>
+    <comment>Material location Proto Heat Radiators</comment>
+  </data>
+  <data name="protoradiolicalloys" xml:space="preserve">
+    <value>Findet man in hochgradigen Signalquellen in Systemen mit ökonomischen Aufschwung.</value>
+    <comment>Material location Proto Radiolic Alloys</comment>
+  </data>
   <data name="unknownenergysource" xml:space="preserve">
     <value>Entdeckt an geheimnisvollen Oberflächenstandorten einer außerirdischen Spezies, bekannt als die Thargoiden.</value>
     <comment>Material location unknownenergysource</comment>
