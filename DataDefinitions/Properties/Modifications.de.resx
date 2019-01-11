@@ -147,7 +147,9 @@
   <data name="FSDinterdictorExpanded" xml:space="preserve">
     <value>Erweiterter Bereich für den FSA-Abfänger</value>
   </data>
-  
+  <data name="FSDinterdictorLongRange" xml:space="preserve">
+    <value>Verlängerter Bereich für den FSA-Abfänger</value>
+  </data>
   <data name="FSDLongRange" xml:space="preserve">
     <value>Erhöhte FSA-Reichweite</value>
   </data>
@@ -169,9 +171,15 @@
   <data name="HullReinforcementThermic" xml:space="preserve">
     <value>Hitzebeständige Rumpfhüllenverstärkung</value>
   </data>
-  
-  
-  
+  <data name="MiscLightWeight" xml:space="preserve">
+    <value>Verschiedenster Leichtbau</value>
+  </data>
+  <data name="MiscReinforced" xml:space="preserve">
+    <value>Verschiedenste Verstärkungen </value>
+  </data>
+  <data name="MiscShielded" xml:space="preserve">
+    <value>Verschiedenste Abschirmungen</value>
+  </data>
   <data name="PowerDistributorHighCapacity" xml:space="preserve">
     <value>Energieverteiler mit hoher Ladekapazität</value>
   </data>
@@ -199,8 +207,12 @@
   <data name="PowerPlantStealth" xml:space="preserve">
     <value>Strahlungsarmes Kraftwerk</value>
   </data>
-  
-  
+  <data name="SensorLongRange" xml:space="preserve">
+    <value>Langstreckensensor</value>
+  </data>
+  <data name="SensorWideAngle" xml:space="preserve">
+    <value>Weitwinkelsensor</value>
+  </data>
   <data name="ShieldBoosterExplosive" xml:space="preserve">
     <value>Explosionsresistente Schildverstärker</value>
   </data>
@@ -285,46 +297,128 @@
   <data name="WakeScannerWideAngle" xml:space="preserve">
     <value>Weitwinkel-Sogwolken-Scanner</value>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="AFMShielded" xml:space="preserve">
+    <value>Abgeschirmte Wartungseinheit</value>
+  </data>
+  <data name="CargoScannerFastScan" xml:space="preserve">
+    <value>Schneller Fracht-Scanner</value>
+  </data>
+  <data name="CargoScannerLightWeight" xml:space="preserve">
+    <value>Leichter Fracht-Scanner</value>
+  </data>
+  <data name="CargoScannerLongRange" xml:space="preserve">
+    <value>Langstrecken-Fracht-Scanner</value>
+  </data>
+  <data name="CargoScannerReinforced" xml:space="preserve">
+    <value>Verstärkter Fracht-Scanner</value>
+  </data>
+  <data name="CargoScannerShielded" xml:space="preserve">
+    <value>Abgeschirmter Fracht-Scanner</value>
+  </data>
+  <data name="CargoScannerWideAngle" xml:space="preserve">
+    <value>Weitwinkel-Fracht-Scanner</value>
+  </data>
+  <data name="ChaffLauncherCapacity" xml:space="preserve">
+    <value>Chaff-Kapazität</value>
+  </data>
+  <data name="ChaffLauncherLightWeight" xml:space="preserve">
+    <value>Leichter Chaff-Werfer</value>
+  </data>
+  <data name="ChaffLauncherReinforced" xml:space="preserve">
+    <value>Verstärkter Chaff-Werfer</value>
+  </data>
+  <data name="ChaffLauncherShielded" xml:space="preserve">
+    <value>Abgeschirmter Chaff-Werfer</value>
+  </data>
+  <data name="CollectionLimpetLightWeight" xml:space="preserve">
+    <value>Leichte Sammeldrohnen-Steuerung</value>
+  </data>
+  <data name="CollectionLimpetReinforced" xml:space="preserve">
+    <value>Verstärkte Sammeldrohnen-Steuerung</value>
+  </data>
+  <data name="CollectionLimpetShielded" xml:space="preserve">
+    <value>Abgeschirmte Sammeldrohnen-Steuerung</value>
+  </data>
+  <data name="ECMShielded" xml:space="preserve">
+    <value>Abgeschirmte Gegenmaßnahmen</value>
+  </data>
+  <data name="FuelScoopShielded" xml:space="preserve">
+    <value>Abgeschirmter Treibstoffsammler</value>
+  </data>
+  <data name="FuelTransferLimpetLightWeight" xml:space="preserve">
+    <value>Leichte Treibstoffübertragungsdrohnen-Steuerung</value>
+  </data>
+  <data name="FuelTransferLimpetReinforced" xml:space="preserve">
+    <value>Verstärkte Treibstoffübertragungsdrohnen-Steuerung</value>
+  </data>
+  <data name="FuelTransferLimpetShielded" xml:space="preserve">
+    <value>Abgeschirmte Treibstoffübertragungsdrohnen-Steuerung</value>
+  </data>
+  <data name="HatchBreakerLimpetLightWeight" xml:space="preserve">
+    <value>Leichte Frachtlukenbrecherdrohnen-Steuerung</value>
+  </data>
+  <data name="HatchBreakerLimpetReinforced" xml:space="preserve">
+    <value>Verstärkte Frachtlukenbrecherdrohnen-Steuerung</value>
+  </data>
+  <data name="HatchBreakerLimpetShielded" xml:space="preserve">
+    <value>Abgeschirmte Frachtlukenbrecherdrohnen-Steuerung</value>
+  </data>
+  <data name="HeatSinkLauncherCapacity" xml:space="preserve">
+    <value>Kühlkörperkapazität</value>
+  </data>
+  <data name="HeatSinkLauncherLightWeight" xml:space="preserve">
+    <value>Leichter Kühlkörperwerfer</value>
+  </data>
+  <data name="HeatSinkLauncherReinforced" xml:space="preserve">
+    <value>Verstärkter Kühlkörperwerfer</value>
+  </data>
+  <data name="HeatSinkLauncherShielded" xml:space="preserve">
+    <value>Abgeschirmter Kühlkörperwerfer</value>
+  </data>
+  <data name="KillWarrantScannerFastScan" xml:space="preserve">
+    <value>Schneller Fracht-Scanner</value>
+  </data>
+  <data name="KillWarrantScannerLightWeight" xml:space="preserve">
+    <value>Leichter Tötungsbefehl-Scanner</value>
+  </data>
+  <data name="KillWarrantScannerLongRange" xml:space="preserve">
+    <value>Langstrecken-Tötungsbefehl-Scanner</value>
+  </data>
+  <data name="KillWarrantScannerReinforced" xml:space="preserve">
+    <value>Verstärkter Tötungsbefehl-Scanner</value>
+  </data>
+  <data name="KillWarrantScannerShielded" xml:space="preserve">
+    <value>Abgeschirmter Tötungsbefehl-Scanner</value>
+  </data>
+  <data name="KillWarrantScannerWideAngle" xml:space="preserve">
+    <value>Weitwinkel-Tötungsbefehl-Scanner</value>
+  </data>
+  <data name="LifeSupportLightWeight" xml:space="preserve">
+    <value>Leichte Lebenserhaltung</value>
+  </data>
+  <data name="LifeSupportReinforced" xml:space="preserve">
+    <value>Verstärkte Lebenserhaltung</value>
+  </data>
+  <data name="LifeSupportShielded" xml:space="preserve">
+    <value>Abgeschirmte Lebenserhaltung</value>
+  </data>
+  <data name="PointDefenceCapacity" xml:space="preserve">
+    <value>Punktverteidigung Kapazität</value>
+  </data>
+  <data name="PointDefenceLightWeight" xml:space="preserve">
+    <value>Leichte Punktverteidigung</value>
+  </data>
+  <data name="PointDefenceReinforced" xml:space="preserve">
+    <value>Verstärkte Punktverteidigung</value>
+  </data>
+  <data name="PointDefenceShielded" xml:space="preserve">
+    <value>Abgeschirmte Punktverteidigung</value>
+  </data>
+  <data name="RefineriesShielded" xml:space="preserve">
+    <value>Abgeschirmte Raffinerie</value>
+  </data>
+  <data name="SensorLightWeight" xml:space="preserve">
+    <value>Leichgewichtsensor</value>
+  </data>
   
 </root>
