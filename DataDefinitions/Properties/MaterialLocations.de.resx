@@ -257,207 +257,216 @@
     <value>Erhält man durch das Scannen von Signalquellen oder als Missionsbelohnung, speziell in Systemen mit ökonomischem Aufschwung.</value>
     <comment>Material location Irregular Emission Data</comment>
   </data>
-  
+  <data name="consumerfirmware" xml:space="preserve">
+    <value>Erhält man als Missionsbelohnung oder durch das Scannen von Datenverbindungen in Bodenstationen oder durch Scannen von privaten Datenbojen in verschlüsselten Signalquellen während in den Systemen Wahlen durchgeführt werden oder ein Bürgerkrieg herrscht.</value>
+    <comment>Material location Modified Consumer Firmware</comment>
+  </data>
   <data name="encryptioncodes" xml:space="preserve">
-    <value>Erhalten durch das Scannen von Oberflächen-Daten-Punkten, durch Satelliten die Anlagen und bevölkerte erdähnliche Welten umkreisen, oder als Missionsbelohnung speziell in Systemen mit florierenden Volkswirtschaften.</value>
+    <value>Erhält man durch das Scannen von Oberflächen-Daten-Punkten, durch Satelliten die Anlagen und bevölkerte erdähnliche Welten umkreisen, oder als Missionsbelohnung speziell in Systemen mit florierenden Volkswirtschaften.</value>
     <comment>Material location Tagged Encryption Codes</comment>
   </data>
   <data name="scanarchives" xml:space="preserve">
-    <value>Erhalten durch das Scannen von Transportschiffen, speziell in Systemen mit ökonomischem Aufschwung.</value>
+    <value>Erhält man durch das Scannen von Transportschiffen, speziell in Systemen mit ökonomischem Aufschwung.</value>
     <comment>Material location Unidentified Scan Archives</comment>
   </data>
   <data name="ancientculturaldata" xml:space="preserve">
-    <value>Entdeckt in den alten Ruinen einer außerirdischen Spezies, bekannt als die Wächter.</value>
+    <value>Entdeckt man in den alten Ruinen einer außerirdischen Spezies, bekannt als die Wächter.</value>
     <comment>Material location Pattern Beta Obelisk Data</comment>
   </data>
   <data name="tg_structuraldata" xml:space="preserve">
-    <value>Entdeckt an geheimnisvollen Oberflächenstandorten einer außerirdischen Spezies, bekannt als die Thargoiden.</value>
+    <value>Entdeckt man an geheimnisvollen Oberflächenstandorten einer außerirdischen Spezies, bekannt als die Thargoiden.</value>
     <comment>Material location Thargoid Structural Data</comment>
   </data>
   <data name="scandatabanks" xml:space="preserve">
-    <value>Erhalten durch das Scannen von großen Transportschiffen, üblicherweise Type-7 und Type-9, und durch das Scannen von Datenverbindungen an Bodenstationen.</value>
+    <value>Erhält man durch das Scannen von großen Transportschiffen, üblicherweise Type-7 und Type-9, und durch das Scannen von Datenverbindungen an Bodenstationen.</value>
     <comment>Material location Classified Scan Databanks</comment>
   </data>
   <data name="industrialfirmware" xml:space="preserve">
-    <value>Erhalten durch das Scannen von Datenverbindungen an Bodenstationen oder als Missionsbelohnung.</value>
+    <value>Erhält man durch das Scannen von Datenverbindungen an Bodenstationen oder als Missionsbelohnung.</value>
     <comment>Material location Cracked Industrial Firmware</comment>
   </data>
   <data name="symmetrickeys" xml:space="preserve">
-    <value>Erhalten durch das Scannen von Datenverbindungen an Bodenstationen oder in Signalquellen oder als Missionsbelohnung.</value>
+    <value>Erhält man durch das Scannen von Datenverbindungen an Bodenstationen oder in Signalquellen oder als Missionsbelohnung.</value>
     <comment>Material location Open Symmetric Keys</comment>
   </data>
   <data name="wakesolutions" xml:space="preserve">
-    <value>Erhalten durch das Analysieren von FSA-Sogwolken von Schiffen oder als Auftragsbelohnung, speziell in Systemen mit ökonomischem Aufschwung.</value>
+    <value>Erhält man durch das Analysieren von FSA-Sogwolken von Schiffen oder als Auftragsbelohnung, speziell in Systemen mit ökonomischem Aufschwung.</value>
     <comment>Material location Strange Wake Solutions</comment>
   </data>
   <data name="emissiondata" xml:space="preserve">
-    <value>Erhalten durch das Scannen von (Groß-)Kampfschiffen oder in Signalquellen, speziell in Systemen mit ökonomischem Aufschwung oder in Systemen, die derzeit Wahlen durchführen.</value>
+    <value>Erhält man durch das Scannen von (Groß-)Kampfschiffen oder in Signalquellen, speziell in Systemen mit ökonomischem Aufschwung oder in Systemen, die derzeit Wahlen durchführen.</value>
     <comment>Material location Unexpected Emission Data</comment>
   </data>
   <data name="shielddensityreports" xml:space="preserve">
-    <value>Erhalten durch das Scannen von (Groß-)Kampfschiffen.</value>
+    <value>Erhält man durch das Scannen von (Groß-)Kampfschiffen.</value>
     <comment>Material location Untypical Shield Scans</comment>
   </data>
   <data name="ancientbiologicaldata" xml:space="preserve">
-    <value>Entdeckt in den alten Ruinen einer außerirdischen Spezies, bekannt als die Wächter.</value>
+    <value>Entdeckt man in den alten Ruinen einer außerirdischen Spezies, bekannt als die Wächter.</value>
     <comment>Material location Pattern Alpha Obelisk Data</comment>
   </data>
   <data name="tg_compositiondata" xml:space="preserve">
-    <value>Entdeckt an geheimnisvollen Oberflächenstandorten einer außerirdischen Spezies, bekannt als die Thargoiden.</value>
+    <value>Entdeckt man an geheimnisvollen Oberflächenstandorten einer außerirdischen Spezies, bekannt als die Thargoiden.</value>
     <comment>Material location Thargoid Material Composition Data</comment>
   </data>
   <data name="unknownshipsignature" xml:space="preserve">
-    <value>Entdeckt an geheimnisvollen Oberflächenstandorten einer außerirdischen Spezies, bekannt als die Thargoiden oder durch das Scannen von Thargoiden-Schiffen</value>
+    <value>Entdeckt man an geheimnisvollen Oberflächenstandorten einer außerirdischen Spezies, bekannt als die Thargoiden oder durch das Scannen von Thargoiden-Schiffen.</value>
     <comment>Material location Thargoid Ship Signature</comment>
   </data>
   <data name="shieldpatternanalysis" xml:space="preserve">
-    <value>Erhalten durch das Scannen von Schiffen der Systembehörde und von Kampfschiffen oder als Missionsbelohnung, speziell in Systemen mit ökonomischem Aufschwung.</value>
+    <value>Erhält man durch das Scannen von Schiffen der Systembehörde und von Kampfschiffen oder als Missionsbelohnung, speziell in Systemen mit ökonomischem Aufschwung.</value>
     <comment>Material location Aberrant Shield Pattern Analysis</comment>
   </data>
   <data name="encryptionarchives" xml:space="preserve">
-    <value>Erhalten durch das Scannen von Datenverbindungen an Bodenstationen.</value>
+    <value>Erhält man durch das Scannen von Datenverbindungen an Bodenstationen.</value>
     <comment>Material location Atypical Encryption Archives</comment>
   </data>
   <data name="decodedemissiondata" xml:space="preserve">
-    <value>Erhalten durch das Scannen von Schiffen der Systembehörde oder als Missionsbelohnung.</value>
+    <value>Erhält man durch das Scannen von Schiffen der Systembehörde oder als Missionsbelohnung.</value>
     <comment>Material location Decoded Emission Data</comment>
   </data>
   <data name="encodedscandata" xml:space="preserve">
-    <value>Erhalten durch das Scannen von Datenverbindungen an Bodenstationen oder als Missionsbelohnung.</value>
+    <value>Erhält man durch das Scannen von Datenverbindungen an Bodenstationen oder als Missionsbelohnung.</value>
     <comment>Material location Divergent Scan Data</comment>
   </data>
   <data name="hyperspacetrajectories" xml:space="preserve">
-    <value>Erhalten durch das Scannen der FSA-Sogwolken von Schiffen.</value>
+    <value>Erhält man durch das Scannen der FSA-Sogwolken von Schiffen.</value>
     <comment>Material location Eccentric Hyperspace Trajectories</comment>
   </data>
   <data name="securityfirmware" xml:space="preserve">
-    <value>Erhalten durch das Scannen von Datenverbindungen an Bodenstationen oder als Missionsbelohnung.</value>
+    <value>Erhält man durch das Scannen von Datenverbindungen an Bodenstationen oder als Missionsbelohnung.</value>
     <comment>Material location Security Firmware Patch</comment>
   </data>
   <data name="ancientlanguagedata" xml:space="preserve">
-    <value>Entdeckt in den alten Ruinen einer außerirdischen Spezies, bekannt als die Wächter.</value>
+    <value>Entdeckt man in den alten Ruinen einer außerirdischen Spezies, bekannt als die Wächter.</value>
     <comment>Material location Pattern Delta Obelisk Data</comment>
   </data>
   <data name="ancienttechnologicaldata" xml:space="preserve">
-    <value>Entdeckt in den alten Ruinen einer außerirdischen Spezies, bekannt als die Wächter.</value>
+    <value>Entdeckt man in den alten Ruinen einer außerirdischen Spezies, bekannt als die Wächter.</value>
     <comment>Material location Pattern Epsilon Obelisk Data</comment>
   </data>
   <data name="tg_residuedata" xml:space="preserve">
-    <value>Entdeckt an geheimnisvollen Oberflächenstandorten einer außerirdischen Spezies, bekannt als die Thargoiden.</value>
+    <value>Entdeckt man an geheimnisvollen Oberflächenstandorten einer außerirdischen Spezies, bekannt als die Thargoiden.</value>
     <comment>Material location Thargoid Residue Data</comment>
   </data>
   <data name="unknownwakedata" xml:space="preserve">
-    <value>Erhalten durch das Abtasten der von einem Thargoiden-Schiff hinterlassenen Spur.</value>
+    <value>Erhält man durch das Abtasten der von einem Thargoiden-Schiff hinterlassenen Spur.</value>
     <comment>Material location Thargoid Wake Data</comment>
   </data>
-  
+  <data name="compactemissionsdata" xml:space="preserve">
+    <value>Erhält man durch das Scannen von Kampfschiffen, von Weltraum-Datenbojen und verschlüsselten Signalquellen oder als Missionsbelohnung.</value>
+    <comment>Material location Abnormal Compact Emissions Data</comment>
+  </data>
   <data name="adaptiveencryptors" xml:space="preserve">
     <value>Erhält man durch das Scannen von Satelliten, die Anlagen und bevölkerte erdähnliche Welten umkreisen, oder als Missionsbelohnung, speziell für planetare Scann-Missionen.</value>
     <comment>Material location Adaptive Encryptors Capture</comment>
   </data>
-  
+  <data name="classifiedscandata" xml:space="preserve">
+    <value>Erhält man durch das Scannen von Datenverbindungen an Bodenstationen, von Militärschiffen und Schiffen der Systembehörde oder als Missionsbelohnung in Systemen mit ökonomischen Aufschwung.</value>
+    <comment>Material location Classified Scan Fragment</comment>
+  </data>
   <data name="dataminedwake" xml:space="preserve">
-    <value>Erhalten durch das Scannen der FSA-Sogwolken von Schiffen, verschlüsselten Datenbojen oder als Missionsbelohnung.</value>
+    <value>Erhält man durch das Scannen von FSA-Sogwolken, verschlüsselten Datenbojen oder als Missionsbelohnung.</value>
     <comment>Material location Datamined Wake Exceptions</comment>
   </data>
   <data name="embeddedfirmware" xml:space="preserve">
-    <value>Erhalten durch das Scannen von Datenverbindungen an Bodenstationen oder als Missionsbelohnung.</value>
+    <value>Erhält man durch das Scannen von Datenverbindungen an Bodenstationen oder als Missionsbelohnung.</value>
     <comment>Material location Modified Embedded Firmware</comment>
   </data>
   <data name="shieldfrequencydata" xml:space="preserve">
-    <value>Erhalten durch das Scannen von Schiffen oder als Missionsbelohnung.</value>
+    <value>Erhält man durch das Scannen von Schiffen oder als Missionsbelohnung.</value>
     <comment>Material location Peculiar Shield Frequency Data</comment>
   </data>
   <data name="basicconductors" xml:space="preserve">
-    <value>Gewonnen aus den Trümmern von Transportschiffen.</value>
+    <value>Gewinnt man aus den Trümmern von Transportschiffen.</value>
     <comment>Material location Basic Conductors</comment>
   </data>
   <data name="chemicalstorageunits" xml:space="preserve">
-    <value>Gewonnen aus den Trümmern von Transportschiffen.</value>
+    <value>Gewinnt man aus den Trümmern von Transportschiffen.</value>
     <comment>Material location Chemical Storage Units</comment>
   </data>
   <data name="compactcomposites" xml:space="preserve">
-    <value>Erhalten in herabgestuften (degraded) Signalquellen, einschließlich Oberflächensignale.</value>
+    <value>Erhält man in herabgestuften (degraded) Signalquellen, einschließlich Oberflächensignale.</value>
     <comment>Material location Compact Composites</comment>
   </data>
   <data name="crystalshards" xml:space="preserve">
-    <value>Gewonnen aus den Trümmern von (Groß-)Kampfschiffen und von Oberflächensignalquellen.</value>
+    <value>Gewinnt man aus den Trümmern von (Groß-)Kampfschiffen und von Oberflächensignalquellen.</value>
     <comment>Material location Crystal Shards</comment>
   </data>
   <data name="gridresistors" xml:space="preserve">
-    <value>Gewonnen aus den Trümmern von kleinen Kampfschiffen oder als Missionsbelohnung.</value>
+    <value>Gewinnt man aus den Trümmern von kleinen Kampfschiffen oder als Missionsbelohnung.</value>
     <comment>Material location Grid Resistors</comment>
   </data>
   <data name="heatconductionwiring" xml:space="preserve">
-    <value>Gewonnen aus den Trümmern von Transportschiffen in Signalquellen oder als Missionsbelohnung.</value>
+    <value>Gewinnt man aus den Trümmern von Transportschiffen in Signalquellen oder als Missionsbelohnung.</value>
     <comment>Material location Heat Conduction Wiring</comment>
   </data>
   <data name="mechanicalscrap" xml:space="preserve">
-    <value>Gewonnen aus den Trümmern von Transportschiffen oder als Missionsbelohnung.</value>
+    <value>Gewinnt man aus den Trümmern von Transportschiffen oder als Missionsbelohnung.</value>
     <comment>Material location Mechanical Scrap</comment>
   </data>
   <data name="salvagedalloys" xml:space="preserve">
-    <value>Gewonnen aus den Trümmern von (Groß-)Kampfschiffen.</value>
+    <value>Gewinnt man aus den Trümmern von (Groß-)Kampfschiffen.</value>
     <comment>Material location Salvaged Alloys</comment>
   </data>
   <data name="temperedalloys" xml:space="preserve">
-    <value>Gewonnen aus den Trümmern von Kampfschiffen.</value>
+    <value>Gewinnt man aus den Trümmern von Kampfschiffen.</value>
     <comment>Material location temperedalloys</comment>
   </data>
   <data name="wornshieldemitters" xml:space="preserve">
-    <value>Gewonnen aus den Trümmern von (Groß-)Kampfschiffen.</value>
+    <value>Gewinnt man aus den Trümmern von (Groß-)Kampfschiffen.</value>
     <comment>Material location Worn Shield Emitters</comment>
   </data>
   <data name="chemicalprocessors" xml:space="preserve">
-    <value>Gewonnen aus den Trümmern von Transportschiffen oder als Missionsbelohnung.</value>
+    <value>Gewinnt man aus den Trümmern von Transportschiffen oder als Missionsbelohnung.</value>
     <comment>Material location Chemical Processors</comment>
   </data>
   <data name="conductivecomponents" xml:space="preserve">
-    <value>Wird gewonnen aus den Trümmern von Transportschiffen, speziell in Anarchie-Systemen in der Nähe von bewohnten Systemen. </value>
+    <value>Gewinnt man aus den Trümmern von Transportschiffen, speziell in Anarchie-Systemen in der Nähe von bewohnten Systemen. </value>
     <comment>Material location Conductive Components</comment>
   </data>
   <data name="filamentcomposites" xml:space="preserve">
-    <value>Gewonnen aus den Trümmern von Militärschiffen und Schiffen der Systembehörde.</value>
+    <value>Gewinnt man aus den Trümmern von Militärschiffen und Schiffen der Systembehörde.</value>
     <comment>Material location Filament Composites</comment>
   </data>
   <data name="uncutfocuscrystals" xml:space="preserve">
-    <value>Gewonnen aus den Trümmern von (Groß-)Kampfschiffen oder gefunden in Kampffolge-Signalquellen.</value>
+    <value>Gewinnt man aus den Trümmern von (Groß-)Kampfschiffen oder gefunden in Kampffolge-Signalquellen.</value>
     <comment>Material location Flawed Focus Crystals</comment>
   </data>
   <data name="galvanisingalloys" xml:space="preserve">
-    <value>Wird gewonnen aus den Trümmern von (Groß-)Kampfschiffen oder als Missionsbelohnung, speziell in Systemen, die gerade Wahlen durchführen.</value>
+    <value>Gewinnt man aus den Trümmern von (Groß-)Kampfschiffen oder als Missionsbelohnung, speziell in Systemen, die gerade Wahlen durchführen.</value>
     <comment>Material location Galvanising Alloys</comment>
   </data>
   <data name="heatdispersionplate" xml:space="preserve">
-    <value>Gewonnen aus den Trümmern von Transportschiffen in Signalquellen, speziell in Systemen mit florierender Volkswirtschaft oder als Missionsbelohnung.</value>
+    <value>Gewinnt man aus den Trümmern von Transportschiffen in Signalquellen, speziell in Systemen mit florierender Volkswirtschaft oder als Missionsbelohnung.</value>
     <comment>Material location Heat Dispersion Plate</comment>
   </data>
   <data name="heatresistantceramics" xml:space="preserve">
-    <value>Gewonnen aus den Trümmern von Militärschiffen und Schiffen der Systembehörde.</value>
+    <value>Gewinnt man aus den Trümmern von Militärschiffen und Schiffen der Systembehörde.</value>
     <comment>Material location heatresistantceramics</comment>
   </data>
   <data name="hybridcapacitors" xml:space="preserve">
-    <value>Gewonnen aus den Trümmern von (Groß-)Kampfschiffen, gewöhnlich Anacondas und Föderale Korvetten oder als Missionsbelohnung.</value>
+    <value>Gewinnt man aus den Trümmern von (Groß-)Kampfschiffen, gewöhnlich Anacondas und Föderale Korvetten oder als Missionsbelohnung.</value>
     <comment>Material location Hybrid Capacitors</comment>
   </data>
   <data name="mechanicalequipment" xml:space="preserve">
-    <value>Erhalten durch das Scannen von Transportschiffen, speziell in Systemen mit ökonomischem Aufschwung.</value>
+    <value>Erhält man durch das Scannen von Transportschiffen, speziell in Systemen mit ökonomischem Aufschwung.</value>
     <comment>Material location Mechanical Equipment</comment>
   </data>
   <data name="shieldemitters" xml:space="preserve">
-    <value>Gewonnen aus den Trümmern von (Groß-)Kampfschiffen in Signalquellen, speziell in Systemen mit ökonomischem Aufschwung.</value>
+    <value>Gewinnt man aus den Trümmern von (Groß-)Kampfschiffen in Signalquellen, speziell in Systemen mit ökonomischem Aufschwung.</value>
     <comment>Material location Shield Emitters</comment>
   </data>
   <data name="unknowncarapace" xml:space="preserve">
-    <value>Entdeckt an geheimnisvollen Oberflächenstandorten einer außerirdischen Spezies, bekannt als die Thargoiden.</value>
+    <value>Entdeckt man an geheimnisvollen Oberflächenstandorten einer außerirdischen Spezies, bekannt als die Thargoiden.</value>
     <comment>Material location Thargoid Carapace</comment>
   </data>
   <data name="chemicaldistillery" xml:space="preserve">
-    <value>Gewonnen aus den Trümmern von Transportschiffen.</value>
+    <value>Gewinnt man aus den Trümmern von Transportschiffen.</value>
     <comment>Material location Chemical Distillery</comment>
   </data>
   <data name="conductiveceramics" xml:space="preserve">
-    <value>Wird gewonnen aus den Trümmern von Transportschiffen, speziell in Anarchie-Systemen in der Nähe von bewohnten Systemen. Auch auffindbar bei Dave's Hope.</value>
+    <value>Gewinnt man aus den Trümmern von Transportschiffen, speziell in Anarchie-Systemen in der Nähe von bewohnten Systemen. Auch auffindbar bei Dave's Hope.</value>
     <comment>Material location Conductive Ceramics</comment>
   </data>
   
