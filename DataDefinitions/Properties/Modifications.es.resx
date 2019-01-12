@@ -402,10 +402,18 @@
   <data name="LifeSupportShielded" xml:space="preserve">
     <value>Soporte vital blindado</value>
   </data>
-  
-  
-  
-  
+  <data name="PointDefenceCapacity" xml:space="preserve">
+    <value>Defensa de punto capacidad de munición</value>
+  </data>
+  <data name="PointDefenceLightWeight" xml:space="preserve">
+    <value>Defensa de punto ligera</value>
+  </data>
+  <data name="PointDefenceReinforced" xml:space="preserve">
+    <value>Defensa de punto reforzada</value>
+  </data>
+  <data name="PointDefenceShielded" xml:space="preserve">
+    <value>Defensa de punto blindada</value>
+  </data>
   <data name="RefineriesShielded" xml:space="preserve">
     <value>Refinería blindada</value>
   </data>
