@@ -118,24 +118,38 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AislingDuval" xml:space="preserve">
-    <value>Áisling Duval</value>
+    <value>Éisling Duvál</value>
   </data>
   <data name="ALavignyDuval" xml:space="preserve">
-    <value>Arissa Láviñy-Duval</value>
+    <value>Arissa Lavíñy-Duval</value>
   </data>
   <data name="ArchonDelaine" xml:space="preserve">
-    <value>Arkon Deláin</value>
+    <value>Árkon Deláin</value>
   </data>
   <data name="DentonPatreus" xml:space="preserve">
     <value>Dénton Pátrius</value>
   </data>
-  
-  
-  
-  
-  
-  
-  
+  <data name="EdmundMahon" xml:space="preserve">
+    <value>Édmund Mahon</value>
+  </data>
+  <data name="FeliciaWinters" xml:space="preserve">
+    <value>Felisia Uintars</value>
+  </data>
+  <data name="LiYongRui" xml:space="preserve">
+    <value>Liyong Rui</value>
+  </data>
+  <data name="PranavAntal" xml:space="preserve">
+    <value>Pránaf Ántal</value>
+  </data>
+  <data name="YuriGrom" xml:space="preserve">
+    <value>Yuri-Gram</value>
+  </data>
+  <data name="ZacharyHudson" xml:space="preserve">
+    <value>Zácary Jadsan</value>
+  </data>
+  <data name="ZeminaTorval" xml:space="preserve">
+    <value>Zemina Tórval</value>
+  </data>
   <data name="None" xml:space="preserve">
     <value>Ninguna</value>
   </data>
