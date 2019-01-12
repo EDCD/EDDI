@@ -201,7 +201,16 @@
   <data name="ipa_page_p2" xml:space="preserve">
     <value>es un sistema alfabético de notación fonética basado principalmente en el alfabeto latino. Fue ideado por la Asociación Internacional de Fonética a finales del siglo XIX como una representación estandarizada de los sonidos del lenguaje hablado.</value>
   </data>
-  
-  
-  
+  <data name="header_hot" xml:space="preserve">
+    <value>Estado</value>
+    <comment>Header for column showing whether ship is Hot or Clean</comment>
+  </data>
+  <data name="ship_clean" xml:space="preserve">
+    <value>Limpia</value>
+    <comment>Ship is Clean</comment>
+  </data>
+  <data name="ship_hot" xml:space="preserve">
+    <value>Recalentada</value>
+    <comment>Ship is Hot</comment>
+  </data>
 </root>
