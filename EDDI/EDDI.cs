@@ -116,6 +116,9 @@ namespace Eddi
         // Information from the last jump we initiated (for reference)
         public FSDEngagedEvent LastFSDEngagedEvent { get; private set; }
 
+        // Our main window, made accessible via the applicable EDDI Instance
+        public MainWindow MainWindow { get; internal set; }
+
         public ObservableConcurrentDictionary<string, object> State = new ObservableConcurrentDictionary<string, object>();
 
         /// <summary>
@@ -1474,16 +1477,12 @@ namespace Eddi
                         configuration.SquadronRank = rank;
 
                         // Update the squadron UI data
-                        if (Application.Current != null) // We need to make sure our WPF and UI are initialized
+                        Instance.MainWindow?.Dispatcher?.Invoke(new Action(() =>
                         {
-                            Application.Current.Dispatcher.Invoke(new Action(() =>
-                            {
-                                MainWindow mw = Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
-                                mw.eddiSquadronNameText.Text = theEvent.name;
-                                mw.squadronRankDropDown.SelectedItem = rank.localizedName;
-                                configuration = mw.resetSquadronRank(configuration);
-                            }));
-                        }
+                            Instance.MainWindow.eddiSquadronNameText.Text = theEvent.name;
+                            Instance.MainWindow.squadronRankDropDown.SelectedItem = rank.localizedName;
+                            configuration = Instance.MainWindow.resetSquadronRank(configuration);
+                        }));
 
                         // Update the commander object, if it exists
                         if (Cmdr != null)
@@ -1499,14 +1498,10 @@ namespace Eddi
                         configuration.SquadronName = theEvent.name;
 
                         // Update the squadron UI data
-                        if (Application.Current != null) // We need to make sure our WPF and UI are initialized
+                        Instance.MainWindow?.Dispatcher?.Invoke(new Action(() =>
                         {
-                            Application.Current.Dispatcher.Invoke(new Action(() =>
-                            {
-                                MainWindow mw = Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
-                                mw.eddiSquadronNameText.Text = theEvent.name;
-                            }));
-                        }
+                            Instance.MainWindow.eddiSquadronNameText.Text = theEvent.name;
+                        }));
 
                         // Update the commander object, if it exists
                         if (Cmdr != null)
@@ -1524,16 +1519,12 @@ namespace Eddi
                         configuration.SquadronID = null;
 
                         // Update the squadron UI data
-                        if (Application.Current != null) // We need to make sure our WPF and UI are initialized
+                        Instance.MainWindow?.Dispatcher?.Invoke(new Action(() =>
                         {
-                            Application.Current.Dispatcher.Invoke(new Action(() =>
-                            {
-                                MainWindow mw = Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
-                                mw.eddiSquadronNameText.Text = string.Empty;
-                                mw.eddiSquadronIDText.Text = string.Empty;
-                                configuration = mw.resetSquadronRank(configuration);
-                            }));
-                        }
+                            Instance.MainWindow.eddiSquadronNameText.Text = string.Empty;
+                            Instance.MainWindow.eddiSquadronIDText.Text = string.Empty;
+                            configuration = Instance.MainWindow.resetSquadronRank(configuration);
+                        }));
 
                         // Update the commander object, if it exists
                         if (Cmdr != null)
@@ -1558,15 +1549,11 @@ namespace Eddi
             configuration.ToFile();
 
             // Update the squadron UI data
-            if (Application.Current != null) // We need to make sure our WPF and UI are initialized
+            Instance.MainWindow?.Dispatcher?.Invoke(new Action(() =>
             {
-                Application.Current.Dispatcher.Invoke(new Action(() =>
-                {
-                    MainWindow mw = Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
-                    mw.eddiSquadronNameText.Text = theEvent.name;
-                    mw.squadronRankDropDown.SelectedItem = rank.localizedName;
-                }));
-            }
+                Instance.MainWindow.eddiSquadronNameText.Text = theEvent.name;
+                Instance.MainWindow.squadronRankDropDown.SelectedItem = rank.localizedName;
+            }));
 
             // Update the commander object, if it exists
             if (Cmdr != null)
@@ -2303,14 +2290,10 @@ namespace Eddi
                 {
                     configuration.SquadronFaction = faction.name;
 
-                    if (Application.Current != null) // We need to make sure our WPF and UI are initialized
+                    Instance.MainWindow?.Dispatcher?.Invoke(new Action(() =>
                     {
-                        Application.Current.Dispatcher.Invoke(new Action(() =>
-                        {
-                            MainWindow mw = Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
-                            mw.squadronFactionDropDown.SelectedItem = faction.name;
-                        }));
-                    }
+                        Instance.MainWindow.squadronFactionDropDown.SelectedItem = faction.name;
+                    }));
 
                     Cmdr.squadronfaction = faction.name;
                 }
@@ -2324,15 +2307,11 @@ namespace Eddi
                     {
                         configuration.SquadronSystem = system;
 
-                        if (Application.Current != null) // We need to make sure our WPF and UI are initialized
+                        Instance.MainWindow?.Dispatcher?.Invoke(new Action(() =>
                         {
-                            Application.Current.Dispatcher.Invoke(new Action(() =>
-                            {
-                                MainWindow mw = Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
-                                mw.eddiSquadronSystemText.Text = system;
-                                mw.ConfigureSquadronFactionOptions(configuration);
-                            }));
-                        }
+                            Instance.MainWindow.eddiSquadronSystemText.Text = system;
+                            Instance.MainWindow.ConfigureSquadronFactionOptions(configuration);
+                        }));
 
                         configuration = updateSquadronSystem(configuration, true);
                     }
@@ -2360,15 +2339,11 @@ namespace Eddi
                         {
                             configuration.SquadronPower = power;
 
-                            if (Application.Current != null) // We need to make sure our WPF and UI are initialized
+                            Instance.MainWindow?.Dispatcher?.Invoke(new Action(() =>
                             {
-                                Application.Current.Dispatcher.Invoke(new Action(() =>
-                                {
-                                    MainWindow mw = Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
-                                    mw.squadronPowerDropDown.SelectedItem = power.localizedName;
-                                    mw.ConfigureSquadronPowerOptions(configuration);
-                                }));
-                            }
+                                Instance.MainWindow.squadronPowerDropDown.SelectedItem = power.localizedName;
+                                Instance.MainWindow.ConfigureSquadronPowerOptions(configuration);
+                            }));
                         }
                     }
                 }
