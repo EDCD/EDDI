@@ -117,10 +117,18 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
-  
-  
+  <data name="AislingDuval" xml:space="preserve">
+    <value>Áisling Duval</value>
+  </data>
+  <data name="ALavignyDuval" xml:space="preserve">
+    <value>Arissa Láviñy-Duval</value>
+  </data>
+  <data name="ArchonDelaine" xml:space="preserve">
+    <value>Arkon Deláin</value>
+  </data>
+  <data name="DentonPatreus" xml:space="preserve">
+    <value>Dénton Pátrius</value>
+  </data>
   
   
   
