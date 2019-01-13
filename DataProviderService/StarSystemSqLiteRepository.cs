@@ -384,6 +384,22 @@ namespace EddiDataProviderService
         private void insertStarSystems(List<StarSystem> systems)
         {
             List<StarSystem> updateStarSystems = new List<StarSystem>();
+            List<StarSystem> insertStarSystems = new List<StarSystem>();
+
+            foreach (StarSystem systemToInsertOrUpdate in systems)
+            {
+                // Before we insert we attempt to fetch to ensure that we don't have it present
+                StarSystem existingStarSystem = Instance.GetStarSystem(systemToInsertOrUpdate.name, false);
+                if (existingStarSystem != null)
+                {
+                    Logging.Debug("Attempt to insert existing star system - updating instead");
+                    updateStarSystems.Add(systemToInsertOrUpdate);
+                }
+                else
+                {
+                    insertStarSystems.Add(systemToInsertOrUpdate);
+                }
+            }
 
             using (var con = SimpleDbConnection())
             {
@@ -394,34 +410,23 @@ namespace EddiDataProviderService
                     {
                         using (var transaction = con.BeginTransaction())
                         {
-                            foreach (StarSystem system in systems)
+                            foreach (StarSystem system in insertStarSystems)
                             {
-                                // Before we insert we attempt to fetch to ensure that we don't have it present
-                                StarSystem existingStarSystem = Instance.GetStarSystem(system.name, false);
-                                if (existingStarSystem != null)
+                                Logging.Debug("Inserting new starsystem " + system.name);
+                                if (system.lastvisit == null)
                                 {
-                                    Logging.Debug("Attempt to insert existing star system - updating instead");
-                                    updateStarSystems.Add(system);
-                                    continue;
+                                    // DB constraints don't allow this to be null
+                                    system.lastvisit = DateTime.UtcNow;
                                 }
-                                else
-                                {
-                                    Logging.Debug("Inserting new starsystem " + system.name);
-                                    if (system.lastvisit == null)
-                                    {
-                                        // DB constraints don't allow this to be null
-                                        system.lastvisit = DateTime.UtcNow;
-                                    }
 
-                                    cmd.CommandText = INSERT_SQL;
-                                    cmd.Prepare();
-                                    cmd.Parameters.AddWithValue("@name", system.name);
-                                    cmd.Parameters.AddWithValue("@totalvisits", system.visits);
-                                    cmd.Parameters.AddWithValue("@lastvisit", system.lastvisit ?? DateTime.UtcNow);
-                                    cmd.Parameters.AddWithValue("@starsystem", JsonConvert.SerializeObject(system));
-                                    cmd.Parameters.AddWithValue("@starsystemlastupdated", system.lastupdated);
-                                    cmd.ExecuteNonQuery();
-                                }
+                                cmd.CommandText = INSERT_SQL;
+                                cmd.Prepare();
+                                cmd.Parameters.AddWithValue("@name", system.name);
+                                cmd.Parameters.AddWithValue("@totalvisits", system.visits);
+                                cmd.Parameters.AddWithValue("@lastvisit", system.lastvisit ?? DateTime.UtcNow);
+                                cmd.Parameters.AddWithValue("@starsystem", JsonConvert.SerializeObject(system));
+                                cmd.Parameters.AddWithValue("@starsystemlastupdated", system.lastupdated);
+                                cmd.ExecuteNonQuery();
                             }
                             transaction.Commit();
                         }
