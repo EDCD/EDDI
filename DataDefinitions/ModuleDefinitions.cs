@@ -985,6 +985,8 @@ namespace EddiDataDefinitions
                 new Module(999999945, "TypeX_3_Cockpit", -1, "CockpitCanopy", 1, "I", 0, 128816588),
                 new Module(999999946, "Krait_MkII_Cockpit", -1, "CockpitCanopy", 1, "I", 0, 128816567),
                 new Module(999999947, "Int_CodexScanner", -1, "CompositionScanner", 0, "I", -1),
+                new Module(999999948, "Krait_Light_Cockpit", -1, "CockpitCanopy", 1, "I", 0, 128839281),
+                new Module(999999949, "Mamba_Cockpit", -1, "CockpitCanopy", 1, "I", 0, 128915979),
 
                 // Fighter modules
                 new Module(899990000, "Empire_Fighter_Cockpit", -1, "CockpitCanopy", 1, "I", 0, -1),
