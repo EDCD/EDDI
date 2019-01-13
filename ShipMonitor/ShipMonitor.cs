@@ -546,14 +546,17 @@ namespace EddiShipMonitor
                 }
 
                 // Prune ships no longer in the shipyard
+                List<int> idsToRemove = new List<int>(shipyard.Count);
                 foreach (Ship shipInYard in shipyard)
                 {
                     Ship shipInEvent = @event.shipyard.FirstOrDefault(s => s.LocalId == shipInYard.LocalId);
                     if (shipInEvent == null)
                     {
-                        RemoveShip(shipInYard.LocalId);
+                        idsToRemove.Add(shipInYard.LocalId);
                     }
                 }
+                _RemoveShips(idsToRemove);
+
                 writeShips();
             }
         }
