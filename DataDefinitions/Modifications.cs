@@ -9,6 +9,8 @@
         {
             resourceManager = Properties.Modifications.ResourceManager;
             resourceManager.IgnoreCase = true;
+            missingEDNameHandler = (edname) => new Modifications(edname);
+
 
             None = new Modifications("None");
             var AFMShielded = new Modifications("AFM_Shielded");
