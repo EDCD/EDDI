@@ -821,6 +821,7 @@ namespace EddiShipMonitor
                             {
                                 case "CargoHatch":
                                     {
+                                        ship.cargohatch = ship.cargohatch ?? new Module();
                                         ship.cargohatch.position = position;
                                         ship.cargohatch.priority = priority;
                                         ship.cargohatch.power = power;
@@ -828,6 +829,7 @@ namespace EddiShipMonitor
                                     break;
                                 case "FrameShiftDrive":
                                     {
+                                        ship.frameshiftdrive = ship.frameshiftdrive ?? new Module();
                                         ship.frameshiftdrive.position = position;
                                         ship.frameshiftdrive.priority = priority;
                                         ship.frameshiftdrive.power = power;
@@ -835,6 +837,7 @@ namespace EddiShipMonitor
                                     break;
                                 case "LifeSupport":
                                     {
+                                        ship.lifesupport = ship.lifesupport ?? new Module();
                                         ship.lifesupport.position = position;
                                         ship.lifesupport.priority = priority;
                                         ship.lifesupport.power = power;
@@ -842,6 +845,7 @@ namespace EddiShipMonitor
                                     break;
                                 case "MainEngines":
                                     {
+                                        ship.thrusters = ship.thrusters ?? new Module();
                                         ship.thrusters.position = position;
                                         ship.thrusters.priority = priority;
                                         ship.thrusters.power = power;
@@ -849,6 +853,7 @@ namespace EddiShipMonitor
                                     break;
                                 case "PowerDistributor":
                                     {
+                                        ship.powerdistributor = ship.powerdistributor ?? new Module();
                                         ship.powerdistributor.position = position;
                                         ship.powerdistributor.priority = priority;
                                         ship.powerdistributor.power = power;
@@ -856,6 +861,7 @@ namespace EddiShipMonitor
                                     break;
                                 case "PowerPlant":
                                     {
+                                        ship.powerplant = ship.powerplant ?? new Module();
                                         ship.powerplant.position = position;
                                         ship.powerplant.priority = priority;
                                         ship.powerplant.power = power;
@@ -863,6 +869,7 @@ namespace EddiShipMonitor
                                     break;
                                 case "Radar":
                                     {
+                                        ship.sensors = ship.sensors ?? new Module();
                                         ship.sensors.position = position;
                                         ship.sensors.priority = priority;
                                         ship.sensors.power = power;
@@ -870,6 +877,7 @@ namespace EddiShipMonitor
                                     break;
                                 case "ShipCockpit":
                                     {
+                                        ship.canopy = ship.canopy ?? new Module();
                                         ship.canopy.position = position;
                                         ship.canopy.priority = priority;
                                         ship.canopy.power = power;
@@ -882,6 +890,7 @@ namespace EddiShipMonitor
                                 Compartment compartment = ship.compartments.FirstOrDefault(c => c.name == slot);
                                 if (compartment != null)
                                 {
+                                    compartment.module = compartment.module ?? new Module();
                                     compartment.module.position = position;
                                     compartment.module.priority = priority;
                                     compartment.module.power = power;
@@ -892,6 +901,7 @@ namespace EddiShipMonitor
                                 Hardpoint hardpoint = ship.hardpoints.FirstOrDefault(h => h.name == slot);
                                 if (hardpoint != null)
                                 {
+                                    hardpoint.module = hardpoint.module ?? new Module();
                                     hardpoint.module.position = position;
                                     hardpoint.module.priority = priority;
                                     hardpoint.module.power = power;
