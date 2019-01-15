@@ -171,15 +171,6 @@
   <data name="HullReinforcementThermic" xml:space="preserve">
     <value>Refuerzo estructural resistencia térmica</value>
   </data>
-  <data name="MiscLightWeight" xml:space="preserve">
-    <value>Misceláneo Ligero</value>
-  </data>
-  <data name="MiscReinforced" xml:space="preserve">
-    <value>Misceláneo reforzado </value>
-  </data>
-  <data name="MiscShielded" xml:space="preserve">
-    <value>Misceláneo blindado</value>
-  </data>
   <data name="PowerDistributorHighCapacity" xml:space="preserve">
     <value>Distribuidor de energía alta capacidad de carga</value>
   </data>
@@ -300,14 +291,8 @@
   <data name="AFMShielded" xml:space="preserve">
     <value>Unidad de automantenimiento blindada</value>
   </data>
-  <data name="CargoScannerFastScan" xml:space="preserve">
-    <value>Escáner de manifiesto rápido</value>
-  </data>
   <data name="CargoScannerLightWeight" xml:space="preserve">
     <value>Escáner de manifiesto ligero</value>
-  </data>
-  <data name="CargoScannerLongRange" xml:space="preserve">
-    <value>Escáner de manifiesto de largo alcance</value>
   </data>
   <data name="CargoScannerReinforced" xml:space="preserve">
     <value>Escáner de manifiesto reforzado</value>
@@ -315,12 +300,7 @@
   <data name="CargoScannerShielded" xml:space="preserve">
     <value>Escáner de manifiesto blindado</value>
   </data>
-  <data name="CargoScannerWideAngle" xml:space="preserve">
-    <value>Escáner de manifiesto de angulo amplio</value>
-  </data>
-  <data name="ChaffLauncherCapacity" xml:space="preserve">
-    <value>Lanzador de señuelos capacidad de munición</value>
-  </data>
+  
   <data name="ChaffLauncherLightWeight" xml:space="preserve">
     <value>Lanzador de señuelos ligero</value>
   </data>
@@ -339,9 +319,7 @@
   <data name="CollectionLimpetShielded" xml:space="preserve">
     <value>Controlador de drones de recogida blindado</value>
   </data>
-  <data name="ECMShielded" xml:space="preserve">
-    <value>Contramedida electrónica blindado</value>
-  </data>
+  
   <data name="FuelScoopShielded" xml:space="preserve">
     <value>Colector de combustible blindado</value>
   </data>
@@ -363,9 +341,7 @@
   <data name="HatchBreakerLimpetShielded" xml:space="preserve">
     <value>Controladora de drónes de extracción blindada</value>
   </data>
-  <data name="HeatSinkLauncherCapacity" xml:space="preserve">
-    <value>Lanzador de eyector térmico capacidad de munición</value>
-  </data>
+  
   <data name="HeatSinkLauncherLightWeight" xml:space="preserve">
     <value>Lanzador de eyector térmico ligero</value>
   </data>
@@ -374,9 +350,6 @@
   </data>
   <data name="HeatSinkLauncherShielded" xml:space="preserve">
     <value>Lanzador de eyector térmico blindado</value>
-  </data>
-  <data name="KillWarrantScannerFastScan" xml:space="preserve">
-    <value>Escáner de manifiesto rápido</value>
   </data>
   <data name="KillWarrantScannerLightWeight" xml:space="preserve">
     <value>Escáner de registro criminal ligero</value>
@@ -390,9 +363,6 @@
   <data name="KillWarrantScannerShielded" xml:space="preserve">
     <value>Escáner de registro criminal blindado</value>
   </data>
-  <data name="KillWarrantScannerWideAngle" xml:space="preserve">
-    <value>Escáner de registro criminal ángulo amplio</value>
-  </data>
   <data name="LifeSupportLightWeight" xml:space="preserve">
     <value>Soporte vital ligero</value>
   </data>
@@ -402,9 +372,7 @@
   <data name="LifeSupportShielded" xml:space="preserve">
     <value>Soporte vital blindado</value>
   </data>
-  <data name="PointDefenceCapacity" xml:space="preserve">
-    <value>Defensa de punto capacidad de munición</value>
-  </data>
+  
   <data name="PointDefenceLightWeight" xml:space="preserve">
     <value>Defensa de punto ligera</value>
   </data>
@@ -423,4 +391,21 @@
   <data name="SurfaceScannerExpanded" xml:space="preserve">
     <value>Radio de escaneo de sonda ampliado</value>
   </data>
+  <data name="CargoScannerFastScan" xml:space="preserve">
+    <value>Escáner de manifiesto rápido</value>
+  </data>
+  
+  <data name="CargoScannerWideAngle" xml:space="preserve">
+    <value>Escáner de manifiesto de angulo amplio</value>
+  </data>
+  
+  
+  
+  <data name="KillWarrantScannerWideAngle" xml:space="preserve">
+    <value>Escáner de registro criminal ángulo amplio</value>
+  </data>
+  
+  
+  
+  
 </root>
