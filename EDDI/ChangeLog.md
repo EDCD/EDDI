@@ -5,6 +5,8 @@ Full details of the variables available for each noted event, and VoiceAttack in
 ### Development
   * Core
     * EDDI will now sync to the most current journal on startup (dramatically improving the accuracy of data available after startup)
+  * VoiceAttack plugin
+    * EDDI will no longer lose track of position data when you pass through a system where your squadron minor faction has influence.
 
 ### 3.3.3-b1
   * Core

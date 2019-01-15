@@ -210,21 +210,24 @@ namespace Utilities
         {
             if (RollbarLocator.RollbarInstance.Config.Enabled != false)
             {
-                string personID = RollbarLocator.RollbarInstance.Config.Person.Id;
-                switch (errorLevel)
+                string personID = RollbarLocator.RollbarInstance.Config.Person?.Id;
+                if (personID.Length > 0)
                 {
-                    case ErrorLevel.Error:
-                        RollbarLocator.RollbarInstance.Error(message, thisData);
-                        log(errorLevel, $"{message} {data}", memberName, $"Reporting error, anonymous ID {personID}: {filePath}");
-                        break;
-                    default:
-                        // If this is an Info Report, report only unique messages and data
-                        if (isUniqueMessage(message, thisData))
-                        {
-                            RollbarLocator.RollbarInstance.Log(errorLevel, message, thisData);
-                            log(errorLevel, $"{message} {data}", memberName, $"Reporting unique data, anonymous ID {personID}: {filePath}");
-                        }
-                        break;
+                    switch (errorLevel)
+                    {
+                        case ErrorLevel.Error:
+                            RollbarLocator.RollbarInstance.Error(message, thisData);
+                            log(errorLevel, $"{message} {data}", memberName, $"Reporting error, anonymous ID {personID}: {filePath}");
+                            break;
+                        default:
+                            // If this is an Info Report, report only unique messages and data
+                            if (isUniqueMessage(message, thisData))
+                            {
+                                RollbarLocator.RollbarInstance.Log(errorLevel, message, thisData);
+                                log(errorLevel, $"{message} {data}", memberName, $"Reporting unique data, anonymous ID {personID}: {filePath}");
+                            }
+                            break;
+                    }
                 }
             }
         }
