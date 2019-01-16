@@ -1,27 +1,31 @@
-﻿using CredentialManagement;
-using EddiDataDefinitions;
+﻿using EddiDataDefinitions;
 using EddiDataProviderService;
 using EddiSpeechService;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Security.Cryptography;
 using System.Text;
-using System.Text.RegularExpressions;
 using System.Threading;
 using Utilities;
 
 namespace EddiCompanionAppService
 {
-    public class CompanionAppService
+    public class CompanionAppService : IDisposable
     {
-        private static string BASE_URL = "https://companion.orerve.net";
-        private static string ROOT_URL = "/";
-        private static string LOGIN_URL = "/user/login";
-        private static string CONFIRM_URL = "/user/confirm";
+        private static string LIVE_SERVER = "https://companion.orerve.net";
+        private static string BETA_SERVER = "https://pts-companion.orerve.net";
+        private static string AUTH_SERVER = "https://auth.frontierstore.net";
+        private static string CALLBACK_URL = $"{Constants.EDDI_URL_PROTOCOL}://auth/";
+        private static string AUTH_URL = "/auth";
+        private static string TOKEN_URL = "/token";
+        private static string AUDIENCE = "audience=steam,frontier";
+        private static string SCOPE = "scope=auth capi";
         private static string PROFILE_URL = "/profile";
         private static string MARKET_URL = "/market";
         private static string SHIPYARD_URL = "/shipyard";
@@ -30,17 +34,36 @@ namespace EddiCompanionAppService
         private Profile cachedProfile;
         private DateTime cachedProfileExpires;
 
+        private CustomURLResponder URLResponder;
+        private string verifier;
+        private string authSessionID;
+
         public enum State
         {
-            NEEDS_LOGIN,
-            NEEDS_CONFIRMATION,
-            READY
+            LoggedOut,
+            AwaitingCallback,
+            Authorized
         };
-        public State CurrentState;
+        private State _currentState;
+        public State CurrentState
+        {
+            get =>_currentState;
+            private set
+            {
+                if (_currentState == value) return;
+                State oldState = _currentState;
+                _currentState = value;
+                StateChanged?.Invoke(oldState, _currentState);
+            }
+        }
+        public delegate void StateChangeHandler(State oldState, State newState);
+        public event StateChangeHandler StateChanged;
 
         public CompanionAppCredentials Credentials;
+        public bool inBeta { get; set; } = false;
 
         private static CompanionAppService instance;
+        private string clientID; // we are not allowed to check the client ID into version control or publish it to 3rd parties
 
         private static readonly object instanceLock = new object();
         public static CompanionAppService Instance
@@ -61,53 +84,197 @@ namespace EddiCompanionAppService
                 return instance;
             }
         }
+
         private CompanionAppService()
         {
-            Credentials = CompanionAppCredentials.FromFile();
+            Credentials = CompanionAppCredentials.Load();
+            string appPath = System.Reflection.Assembly.GetEntryAssembly()?.Location;
+            void logger(string message) => Logging.Error(message);
+            URLResponder = new CustomURLResponder(Constants.EDDI_URL_PROTOCOL, handleCallbackUrl, logger, appPath);
+            clientID = ClientId.ID;
 
-            // Need to work out our current state.
-
-            //If we're missing username and password then we need to log in again
-            if (string.IsNullOrEmpty(Credentials.email) || string.IsNullOrEmpty(getPassword()))
+            try
             {
-                CurrentState = State.NEEDS_LOGIN;
+                RefreshToken();
             }
-            else if (string.IsNullOrEmpty(Credentials.machineId) || string.IsNullOrEmpty(Credentials.machineToken))
+            catch (Exception)
             {
-                CurrentState = State.NEEDS_LOGIN;
-            }
-            else
-            {
-                // Looks like we're ready but test it to find out
-                CurrentState = State.READY;
-                try
-                {
-                    Profile();
-                }
-                catch (EliteDangerousCompanionAppException ex)
-                {
-                    Logging.Warn("Failed to obtain profile: " + ex.ToString());
-                }
+                CurrentState = State.LoggedOut;
             }
         }
 
-        ///<summary>Log in.  Throws an exception if it fails</summary>
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                // dispose managed resources
+                URLResponder.Dispose();
+            }
+            // dispose unmanaged resources
+        }
+
+        private string ServerURL()
+        {
+            return inBeta ? LIVE_SERVER : BETA_SERVER;
+        }
+
+        ///<summary>Log in. Throws an exception if it fails</summary>
         public void Login()
         {
-            if (CurrentState != State.NEEDS_LOGIN)
+            if (CurrentState != State.LoggedOut)
             {
                 // Shouldn't be here
                 throw new EliteDangerousCompanionAppIllegalStateException("Service in incorrect state to login (" + CurrentState + ")");
             }
 
-            HttpWebRequest request = GetRequest(BASE_URL + LOGIN_URL);
+            if (clientID == null)
+            {
+                throw new EliteDangerousCompanionAppAuthenticationException("Client ID is not configured");
+            }
 
-            // Send the request
+            CurrentState = State.AwaitingCallback;
+            string codeChallenge = createAndRememberChallenge();
+            string webURL = $"{AUTH_SERVER}{AUTH_URL}" + $"?response_type=code&{AUDIENCE}&{SCOPE}&client_id={clientID}&code_challenge={codeChallenge}&code_challenge_method=S256&state={authSessionID}&redirect_uri={Uri.EscapeDataString(CALLBACK_URL)}";
+            Process.Start(webURL);
+        }
+
+        private string createAndRememberChallenge()
+        {
+            RNGCryptoServiceProvider rng = new RNGCryptoServiceProvider();
+            byte[] rawVerifier = new byte[32];
+            rng.GetBytes(rawVerifier);
+            verifier = base64UrlEncode(rawVerifier);
+
+            byte[] rawAuthSessionID = new byte[8];
+            rng.GetBytes(rawAuthSessionID);
+            authSessionID = base64UrlEncode(rawAuthSessionID);
+
+            byte[] hash = SHA256.Create().ComputeHash(rawVerifier);
+            string codeChallenge = base64UrlEncode(hash);
+            return codeChallenge;
+        }
+
+        private string base64UrlEncode(byte[] blob)
+        {
+            string base64 = Convert.ToBase64String(blob, Base64FormattingOptions.None);
+            return base64.Replace('+', '-').Replace('/', '_').Replace("=", "");
+        }
+
+        private void handleCallbackUrl(string url)
+        {
+            // NB any user can send an arbitrary URL from the Windows Run dialog, so it must be treated as untrusted
+            try
+            {
+                string code = codeFromCallback(url);
+
+                HttpWebRequest request = GetRequest(AUTH_SERVER + TOKEN_URL);
+                request.ContentType = "application/x-www-form-urlencoded";
+                request.Method = "POST";
+                request.KeepAlive = false;
+                request.AllowAutoRedirect = true;
+                byte[] data = Encoding.UTF8.GetBytes($"grant_type=authorization_code&client_id={clientID}&code_verifier={verifier}&code={code}&redirect_uri={Uri.EscapeDataString(CALLBACK_URL)}");
+                request.ContentLength = data.Length;
+                using (Stream dataStream = request.GetRequestStream())
+                {
+                    dataStream.Write(data, 0, data.Length);
+                }
+
+                using (HttpWebResponse response = GetResponse(request))
+                {
+                    if (response?.StatusCode == null)
+                    {
+                        throw new EliteDangerousCompanionAppAuthenticationException("Failed to contact authorization server");
+                    }
+                    if (response.StatusCode == HttpStatusCode.OK)
+                    {
+                        string responseData = getResponseData(response);
+                        JObject json = JObject.Parse(responseData);
+                        Credentials.refreshToken = (string)json["refresh_token"];
+                        Credentials.accessToken = (string)json["access_token"];
+                        Credentials.Save();
+                        if (Credentials.accessToken == null)
+                        {
+                            throw new EliteDangerousCompanionAppAuthenticationException("Access token not found");
+                        }
+                        CurrentState = State.Authorized;
+                    }
+                    else
+                    {
+                        throw new EliteDangerousCompanionAppAuthenticationException("Invalid refresh token from authorization server");
+                    }
+                }
+
+            }
+            catch (Exception)
+            {
+                CurrentState = State.LoggedOut;
+            }
+        }
+
+        private string codeFromCallback(string url)
+        {
+            if (!(url.StartsWith(CALLBACK_URL) && url.Contains("?")))
+            {
+                throw new EliteDangerousCompanionAppAuthenticationException("Malformed callback URL from Frontier");
+            }
+
+            Dictionary<string, string> paramsDict = ParseQueryString(url);
+            if (authSessionID == null || !paramsDict.ContainsKey("state") || paramsDict["state"] != authSessionID)
+            {
+                throw new EliteDangerousCompanionAppAuthenticationException("Unexpected callback URL from Frontier");
+            }
+
+            if (!paramsDict.ContainsKey("code"))
+            {
+                if (!paramsDict.TryGetValue("error_description", out string desc))
+                {
+                    paramsDict.TryGetValue("error", out desc);
+                }
+                desc = desc ?? "no error description";
+                throw new EliteDangerousCompanionAppAuthenticationException($"Negative response from Frontier: {desc}");
+            }
+            return paramsDict["code"];
+        }
+
+        private Dictionary<string, string> ParseQueryString(string url)
+        {
+            // Sadly System.Web.HttpUtility.ParseQueryString() is not available to us
+            // https://stackoverflow.com/questions/659887/get-url-parameters-from-a-string-in-net
+            Uri myUri = new Uri(url);
+            string query = myUri.Query.TrimStart('?');
+            string[] queryParams = query.Split(new[] { '&' }, StringSplitOptions.RemoveEmptyEntries);
+            var paramValuePairs = queryParams.Select(parameter => parameter.Split(new[] { '=' }, StringSplitOptions.RemoveEmptyEntries));
+            var sanitizedValuePairs = paramValuePairs.GroupBy(
+                parts => parts[0],
+                parts => parts.Length > 2 ? string.Join("=", parts, 1, parts.Length - 1) : (parts.Length > 1 ? parts[1] : ""));
+            Dictionary<string, string> paramsDict = sanitizedValuePairs.ToDictionary(
+                grouping => grouping.Key,
+                grouping => string.Join(",", grouping));
+            return paramsDict;
+        }
+
+        private void RefreshToken()
+        {
+            if (clientID == null)
+            {
+                throw new EliteDangerousCompanionAppAuthenticationException("Client ID is not configured");
+            }
+            if (Credentials.refreshToken == null)
+            {
+                throw new EliteDangerousCompanionAppAuthenticationException("Refresh token not found, need full login");
+            }
+
+            CurrentState = State.AwaitingCallback;
+            HttpWebRequest request = GetRequest(AUTH_SERVER + TOKEN_URL);
             request.ContentType = "application/x-www-form-urlencoded";
             request.Method = "POST";
-            string encodedUsername = WebUtility.UrlEncode(Credentials.email);
-            string encodedPassword = WebUtility.UrlEncode(getPassword());
-            byte[] data = Encoding.UTF8.GetBytes("email=" + encodedUsername + "&password=" + encodedPassword);
+            byte[] data = Encoding.UTF8.GetBytes(Uri.EscapeDataString($"grant_type=refresh_token&client_id={clientID}&refresh_token={Credentials.refreshToken}"));
             request.ContentLength = data.Length;
             using (Stream dataStream = request.GetRequestStream())
             {
@@ -120,101 +287,58 @@ namespace EddiCompanionAppService
                 {
                     throw new EliteDangerousCompanionAppException("Failed to contact API server");
                 }
-                if (response.StatusCode == HttpStatusCode.Found && response.Headers["Location"] == CONFIRM_URL)
+                if (response.StatusCode == HttpStatusCode.OK)
                 {
-                    CurrentState = State.NEEDS_CONFIRMATION;
-                }
-                else if (response.StatusCode == HttpStatusCode.Found && response.Headers["Location"] == ROOT_URL)
-                {
-                    CurrentState = State.READY;
+                    string responseData = getResponseData(response);
+                    JObject json = JObject.Parse(responseData);
+                    Credentials.refreshToken = (string)json["refresh_token"];
+                    Credentials.accessToken = (string)json["access_token"];
+                    Credentials.Save();
+                    if (Credentials.accessToken == null)
+                    {
+                        throw new EliteDangerousCompanionAppAuthenticationException("Access token not found");
+                    }
+                    CurrentState = State.Authorized;
                 }
                 else
                 {
-                    throw new EliteDangerousCompanionAppAuthenticationException("Username or password incorrect");
+                    throw new EliteDangerousCompanionAppAuthenticationException("Invalid refresh token");
                 }
             }
         }
 
-        ///<summary>Confirm a login.  Throws an exception if it fails</summary>
-        public void Confirm(string code)
-        {
-            if (CurrentState != State.NEEDS_CONFIRMATION)
-            {
-                // Shouldn't be here
-                throw new EliteDangerousCompanionAppIllegalStateException("Service in incorrect state to confirm login (" + CurrentState + ")");
-            }
-
-            HttpWebRequest request = GetRequest(BASE_URL + CONFIRM_URL);
-
-            request.ContentType = "application/x-www-form-urlencoded";
-            request.Method = "POST";
-            string encodedCode = WebUtility.UrlEncode(code);
-            byte[] data = Encoding.UTF8.GetBytes("code=" + encodedCode);
-            request.ContentLength = data.Length;
-            using (Stream dataStream = request.GetRequestStream())
-            {
-                dataStream.Write(data, 0, data.Length);
-            }
-
-            using (HttpWebResponse response = GetResponse(request))
-            {
-                if (response == null)
-                {
-                    throw new EliteDangerousCompanionAppException("Failed to contact API server");
-                }
-
-                if (response.StatusCode == HttpStatusCode.Found && response.Headers["Location"] == ROOT_URL)
-                {
-                    CurrentState = State.READY;
-                }
-                else if (response.StatusCode == HttpStatusCode.Found && response.Headers["Location"] == LOGIN_URL)
-                {
-                    CurrentState = State.NEEDS_LOGIN;
-                    throw new EliteDangerousCompanionAppAuthenticationException("Confirmation code incorrect or expired");
-                }
-            }
-        }
-
-        /// <summary>
-        /// Log out of the companion API and remove local credentials
-        /// </summary>
+        /// <summary>Log out of the companion API and remove local credentials</summary>
         public void Logout()
         {
             // Remove everything other than the local email address
-            Credentials = CompanionAppCredentials.FromFile();
-            Credentials.machineToken = null;
-            Credentials.machineId = null;
-            Credentials.appId = null;
-            setPassword(null);
-            Credentials.ToFile();
-            CurrentState = State.NEEDS_LOGIN;
+            Credentials = CompanionAppCredentials.Load();
+            Credentials.Clear();
+            Credentials.Save();
+            CurrentState = State.LoggedOut;
         }
 
         public Profile Profile(bool forceRefresh = false)
         {
-            Logging.Debug("Entered");
-            if (CurrentState != State.READY)
+            if (CurrentState != State.Authorized)
             {
                 // Shouldn't be here
                 Logging.Debug("Service in incorrect state to provide profile (" + CurrentState + ")");
-                Logging.Debug("Leaving");
                 throw new EliteDangerousCompanionAppIllegalStateException("Service in incorrect state to provide profile (" + CurrentState + ")");
             }
             if ((!forceRefresh) && cachedProfileExpires > DateTime.UtcNow)
             {
                 // return the cached version
                 Logging.Debug("Returning cached profile");
-                Logging.Debug("Leaving");
                 return cachedProfile;
             }
 
-            string data = obtainProfile(BASE_URL + PROFILE_URL);
+            string data = obtainProfile(ServerURL() + PROFILE_URL);
 
             if (data == null || data == "Profile unavailable")
             {
                 // Happens if there is a problem with the API.  Logging in again might clear this...
                 relogin();
-                if (CurrentState != State.READY)
+                if (CurrentState != State.Authorized)
                 {
                     // No luck; give up
                     SpeechService.Instance.Say(null, Properties.CapiResources.frontier_api_lost, false);
@@ -223,7 +347,7 @@ namespace EddiCompanionAppService
                 else
                 {
                     // Looks like login worked; try again
-                    data = obtainProfile(BASE_URL + PROFILE_URL);
+                    data = obtainProfile(ServerURL() + PROFILE_URL);
 
                     if (data == null || data == "Profile unavailable")
 
@@ -240,7 +364,6 @@ namespace EddiCompanionAppService
             {
                 JObject json = JObject.Parse(data);
                 cachedProfile = ProfileFromJson(data);
-				
             }
             catch (JsonException ex)
             {
@@ -254,25 +377,22 @@ namespace EddiCompanionAppService
                 Logging.Debug("Profile is " + JsonConvert.SerializeObject(cachedProfile));
             }
 
-            Logging.Debug("Leaving");
             return cachedProfile;
         }
 
         public Profile Station(string systemName)
         {
-            Logging.Debug("Entered");
-            if (CurrentState != State.READY)
+            if (CurrentState != State.Authorized)
             {
                 // Shouldn't be here
                 Logging.Debug("Service in incorrect state to provide station data (" + CurrentState + ")");
-                Logging.Debug("Leaving");
                 throw new EliteDangerousCompanionAppIllegalStateException("Service in incorrect state to provide station data (" + CurrentState + ")");
             }
 
             try
             {
                 Logging.Debug("Getting station market data");
-                string market = obtainProfile(BASE_URL + MARKET_URL);
+                string market = obtainProfile(ServerURL() + MARKET_URL);
                 market = "{\"lastStarport\":" + market + "}";
                 JObject marketJson = JObject.Parse(market);
                 string lastStarport = (string)marketJson["lastStarport"]["name"];
@@ -282,8 +402,10 @@ namespace EddiCompanionAppService
                 if (cachedProfile.LastStation == null)
                 {
                     // Don't have a station so make one up
-                    cachedProfile.LastStation = new Station();
-                    cachedProfile.LastStation.name = lastStarport;
+                    cachedProfile.LastStation = new Station
+                    {
+                        name = lastStarport
+                    };
                 }
                 cachedProfile.LastStation.systemname = systemName;
 
@@ -297,7 +419,7 @@ namespace EddiCompanionAppService
                 if (cachedProfile.LastStation.hasoutfitting ?? false)
                 {
                     Logging.Debug("Getting station outfitting data");
-                    string outfitting = obtainProfile(BASE_URL + SHIPYARD_URL);
+                    string outfitting = obtainProfile(ServerURL() + SHIPYARD_URL);
                     outfitting = "{\"lastStarport\":" + outfitting + "}";
                     JObject outfittingJson = JObject.Parse(outfitting);
                     cachedProfile.LastStation.outfitting = OutfittingFromProfile(outfittingJson);
@@ -307,7 +429,7 @@ namespace EddiCompanionAppService
                 {
                     Logging.Debug("Getting station shipyard data");
                     Thread.Sleep(5000);
-                    string shipyard = obtainProfile(BASE_URL + SHIPYARD_URL);
+                    string shipyard = obtainProfile(ServerURL() + SHIPYARD_URL);
                     shipyard = "{\"lastStarport\":" + shipyard + "}";
                     JObject shipyardJson = JObject.Parse(shipyard);
                     cachedProfile.LastStation.shipyard = ShipyardFromProfile(shipyardJson);
@@ -319,7 +441,6 @@ namespace EddiCompanionAppService
             }
 
             Logging.Debug("Station is " + JsonConvert.SerializeObject(cachedProfile));
-            Logging.Debug("Leaving");
             return cachedProfile;
         }
 
@@ -332,11 +453,10 @@ namespace EddiCompanionAppService
                 if (response == null)
                 {
                     Logging.Debug("Failed to contact API server");
-                    Logging.Debug("Leaving");
                     throw new EliteDangerousCompanionAppException("Failed to contact API server");
                 }
 
-                if (response.StatusCode == HttpStatusCode.Found && response.Headers["Location"] == LOGIN_URL)
+                if (response.StatusCode == HttpStatusCode.Found)
                 {
                     return null;
                 }
@@ -352,12 +472,11 @@ namespace EddiCompanionAppService
         private void relogin()
         {
             // Need to log in again.
-            CurrentState = State.NEEDS_LOGIN;
+            Logout();
             Login();
-            if (CurrentState != State.READY)
+            if (CurrentState != State.Authorized)
             {
                 Logging.Debug("Service in incorrect state to provide profile (" + CurrentState + ")");
-                Logging.Debug("Leaving");
                 throw new EliteDangerousCompanionAppIllegalStateException("Service in incorrect state to provide profile (" + CurrentState + ")");
             }
         }
@@ -390,29 +509,22 @@ namespace EddiCompanionAppService
         // Set up a request with the correct parameters for talking to the companion app
         private HttpWebRequest GetRequest(string url)
         {
-            Logging.Debug("Entered");
-
             HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(url);
-            CookieContainer cookieContainer = new CookieContainer();
-            AddCompanionAppCookie(cookieContainer, Credentials);
-            AddMachineIdCookie(cookieContainer, Credentials);
-            AddMachineTokenCookie(cookieContainer, Credentials);
-            request.CookieContainer = cookieContainer;
-            request.AllowAutoRedirect = false;
+            request.AllowAutoRedirect = true;
             request.Timeout = 10000;
             request.ReadWriteTimeout = 10000;
             request.UserAgent = $"EDCD-{Constants.EDDI_NAME}-{Constants.EDDI_VERSION.ShortString}";
+            if (CurrentState == State.Authorized)
+            {
+                request.Headers["Authorization"] = $"Bearer {Credentials.accessToken}";
+            }
 
-            Logging.Debug("Leaving");
             return request;
         }
 
         // Obtain a response, ensuring that we obtain the response's cookies
         private HttpWebResponse GetResponse(HttpWebRequest request)
         {
-            Logging.Debug("Entered");
-            Logging.Debug("Requesting " + request.RequestUri);
-
             HttpWebResponse response;
             try
             {
@@ -424,157 +536,44 @@ namespace EddiCompanionAppService
                 return null;
             }
             Logging.Debug("Response is " + JsonConvert.SerializeObject(response));
-            UpdateCredentials(response);
-            Credentials.ToFile();
-
-            Logging.Debug("Leaving");
             return response;
-        }
-
-        private void UpdateCredentials(HttpWebResponse response)
-        {
-            Logging.Debug("Entered");
-
-            // Obtain the cookies from the raw information available to us
-            string cookieHeader = response.Headers[HttpResponseHeader.SetCookie];
-            if (cookieHeader != null)
-            {
-                Match companionAppMatch = Regex.Match(cookieHeader, @"CompanionApp=([^;]+)");
-                if (companionAppMatch.Success)
-                {
-                    Credentials.appId = companionAppMatch.Groups[1].Value;
-                }
-                Match machineIdMatch = Regex.Match(cookieHeader, @"mid=([^;]+)");
-                if (machineIdMatch.Success)
-                {
-                    Credentials.machineId = machineIdMatch.Groups[1].Value;
-                }
-                Match machineTokenMatch = Regex.Match(cookieHeader, @"mtk=([^;]+)");
-                if (machineTokenMatch.Success)
-                {
-                    Credentials.machineToken = machineTokenMatch.Groups[1].Value;
-                }
-            }
-
-            Logging.Debug("Leaving");
-        }
-
-        private static void AddCompanionAppCookie(CookieContainer cookies, CompanionAppCredentials credentials)
-        {
-            if (cookies != null && credentials.appId != null)
-            {
-                var appCookie = new Cookie();
-                appCookie.Domain = "companion.orerve.net";
-                appCookie.Path = "/";
-                appCookie.Name = "CompanionApp";
-                appCookie.Value = credentials.appId;
-                appCookie.Secure = false;
-                cookies.Add(appCookie);
-            }
-        }
-
-        private static void AddMachineIdCookie(CookieContainer cookies, CompanionAppCredentials credentials)
-        {
-            if (cookies != null && credentials.machineId != null)
-            {
-                var machineIdCookie = new Cookie();
-                machineIdCookie.Domain = "companion.orerve.net";
-                machineIdCookie.Path = "/";
-                machineIdCookie.Name = "mid";
-                machineIdCookie.Value = credentials.machineId;
-                machineIdCookie.Secure = true;
-                // The expiry is embedded in the cookie value
-                if (credentials.machineId.IndexOf("%7C") == -1)
-                {
-                    machineIdCookie.Expires = DateTime.UtcNow.AddDays(7);
-                }
-                else
-                {
-                    string expiryseconds = credentials.machineId.Substring(0, credentials.machineId.IndexOf("%7C"));
-                    DateTime expiryDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
-                    try
-                    {
-                        expiryDateTime = expiryDateTime.AddSeconds(Convert.ToInt64(expiryseconds));
-                        machineIdCookie.Expires = expiryDateTime;
-                    }
-                    catch (Exception)
-                    {
-                        Logging.Warn("Failed to handle machine id expiry seconds " + expiryseconds);
-                        machineIdCookie.Expires = DateTime.UtcNow.AddDays(7);
-                    }
-                }
-                cookies.Add(machineIdCookie);
-            }
-        }
-
-        private static void AddMachineTokenCookie(CookieContainer cookies, CompanionAppCredentials credentials)
-        {
-            if (cookies != null && credentials.machineToken != null)
-            {
-                var machineTokenCookie = new Cookie();
-                machineTokenCookie.Domain = "companion.orerve.net";
-                machineTokenCookie.Path = "/";
-                machineTokenCookie.Name = "mtk";
-                machineTokenCookie.Value = credentials.machineToken;
-                machineTokenCookie.Secure = true;
-                // The expiry is embedded in the cookie value
-                if (credentials.machineToken.IndexOf("%7C") == -1)
-                {
-                    machineTokenCookie.Expires = DateTime.UtcNow.AddDays(7);
-                }
-                else
-                {
-                    string expiryseconds = credentials.machineToken.Substring(0, credentials.machineToken.IndexOf("%7C"));
-                    DateTime expiryDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
-                    try
-                    {
-                        expiryDateTime = expiryDateTime.AddSeconds(Convert.ToInt64(expiryseconds));
-                        machineTokenCookie.Expires = expiryDateTime;
-                    }
-                    catch (Exception)
-                    {
-                        Logging.Warn("Failed to handle machine token expiry seconds " + expiryseconds);
-                        machineTokenCookie.Expires = DateTime.UtcNow.AddDays(7);
-                    }
-                }
-                cookies.Add(machineTokenCookie);
-            }
         }
 
         /// <summary>Create a  profile given the results from a /profile call</summary>
         public static Profile ProfileFromJson(string data)
         {
-            Logging.Debug("Entered");
             Profile profile = null;
             if (data != null && data != "")
             {
                 profile = ProfileFromJson(JObject.Parse(data));
             }
-            Logging.Debug("Leaving");
             return profile;
         }
 
         /// <summary>Create a profile given the results from a /profile call</summary>
         public static Profile ProfileFromJson(JObject json)
         {
-            Logging.Debug("Entered");
-            Profile Profile = new Profile();
-            Profile.json = json;
+            Profile Profile = new Profile
+            {
+                json = json
+            };
 
             if (json["commander"] != null)
             {
-                Commander Commander = new Commander();
-                Commander.name = (string)json["commander"]["name"];
+                Commander Commander = new Commander
+                {
+                    name = (string)json["commander"]["name"],
 
-                Commander.combatrating = CombatRating.FromRank((int)json["commander"]["rank"]["combat"]);
-                Commander.traderating = TradeRating.FromRank((int)json["commander"]["rank"]["trade"]);
-                Commander.explorationrating = ExplorationRating.FromRank((int)json["commander"]["rank"]["explore"]);
-                Commander.cqcrating = CQCRating.FromRank((int)json["commander"]["rank"]["cqc"]);
-                Commander.empirerating = EmpireRating.FromRank((int)json["commander"]["rank"]["empire"]);
-                Commander.federationrating = FederationRating.FromRank((int)json["commander"]["rank"]["federation"]);
+                    combatrating = CombatRating.FromRank((int)json["commander"]["rank"]["combat"]),
+                    traderating = TradeRating.FromRank((int)json["commander"]["rank"]["trade"]),
+                    explorationrating = ExplorationRating.FromRank((int)json["commander"]["rank"]["explore"]),
+                    cqcrating = CQCRating.FromRank((int)json["commander"]["rank"]["cqc"]),
+                    empirerating = EmpireRating.FromRank((int)json["commander"]["rank"]["empire"]),
+                    federationrating = FederationRating.FromRank((int)json["commander"]["rank"]["federation"]),
 
-                Commander.credits = (long)json["commander"]["credits"];
-                Commander.debt = (long)json["commander"]["debt"];
+                    credits = (long)json["commander"]["credits"],
+                    debt = (long)json["commander"]["debt"]
+                };
                 Profile.Cmdr = Commander;
 
                 string systemName = json["lastSystem"] == null ? null : (string)json["lastSystem"]["name"];
@@ -589,8 +588,10 @@ namespace EddiCompanionAppService
                     if (Profile.LastStation == null)
                     {
                         // Don't have a station so make one up
-                        Profile.LastStation = new Station();
-                        Profile.LastStation.name = (string)json["lastStarport"]["name"];
+                        Profile.LastStation = new Station
+                        {
+                            name = (string)json["lastStarport"]["name"]
+                        };
                     }
 
                     Profile.LastStation.systemname = Profile.CurrentStarSystem.name;
@@ -600,7 +601,6 @@ namespace EddiCompanionAppService
                 }
             }
 
-            Logging.Debug("Leaving");
             return Profile;
         }
 
@@ -742,33 +742,13 @@ namespace EddiCompanionAppService
                 Logging.Info("Ship definition error: " + edName, JsonConvert.SerializeObject(shipJson));
 
                 // Create a basic ship definition & supplement from the info available 
-                Ship = new Ship();
-                Ship.EDName = edName;
+                Ship = new Ship
+                {
+                    EDName = edName
+                };
             }
             Ship.value = (long)shipJson["basevalue"];
             return Ship;
-        }
-
-        public void setPassword(string password)
-        {
-            using (var credential = new Credential())
-            {
-                credential.Password = password;
-                credential.Target = @"EDDIFDevApi";
-                credential.Type = CredentialType.Generic;
-                credential.PersistanceType = PersistanceType.Enterprise;
-                credential.Save();
-            }
-        }
-
-        private string getPassword()
-        {
-            using (var credential = new Credential())
-            {
-                credential.Target = @"EDDIFDevApi";
-                credential.Load();
-                return credential.Password;
-            }
         }
     }
 }

@@ -43,7 +43,17 @@ namespace Eddi
 
         public bool inCQC { get; private set; } = false;
         public bool inCrew { get; private set; } = false;
-        public bool inBeta { get; private set; } = false;
+
+        private bool _inBeta = false;
+        public bool inBeta
+        {
+            get => _inBeta;
+            private set
+            {
+                _inBeta = value;
+                CompanionAppService.Instance.inBeta = value;
+            }
+        }
 
         static EDDI()
         {
@@ -160,7 +170,7 @@ namespace Eddi
                     responders = findResponders();
 
                     // Set up the app service
-                    if (CompanionAppService.Instance.CurrentState == CompanionAppService.State.READY)
+                    if (CompanionAppService.Instance.CurrentState == CompanionAppService.State.Authorized)
                     {
                         // Carry out initial population of profile
                         try
@@ -924,7 +934,7 @@ namespace Eddi
                 CurrentStation = station;
 
                 // Kick off the profile refresh if the companion API is available
-                if (CompanionAppService.Instance.CurrentState == CompanionAppService.State.READY)
+                if (CompanionAppService.Instance.CurrentState == CompanionAppService.State.Authorized)
                 {
                     // Refresh station data
                     profileUpdateNeeded = true;
@@ -1029,7 +1039,7 @@ namespace Eddi
             CurrentStellarBody = null;
 
             // Kick off the profile refresh if the companion API is available
-            if (CompanionAppService.Instance.CurrentState == CompanionAppService.State.READY)
+            if (CompanionAppService.Instance.CurrentState == CompanionAppService.State.Authorized)
             {
                 // Refresh station data
                 profileUpdateNeeded = true;
@@ -2078,7 +2088,7 @@ namespace Eddi
         {
             int maxTries = 6;
 
-            while (running && maxTries > 0 && CompanionAppService.Instance.CurrentState == CompanionAppService.State.READY)
+            while (running && maxTries > 0 && CompanionAppService.Instance.CurrentState == CompanionAppService.State.Authorized)
             {
                 try
                 {

@@ -60,45 +60,45 @@
             : and then encoded with base64 encoding.
     -->
   <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
           <xsd:element name="metadata">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0"/>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
               </xsd:sequence>
-              <xsd:attribute name="name" use="required" type="xsd:string"/>
-              <xsd:attribute name="type" type="xsd:string"/>
-              <xsd:attribute name="mimetype" type="xsd:string"/>
-              <xsd:attribute ref="xml:space"/>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="assembly">
             <xsd:complexType>
-              <xsd:attribute name="alias" type="xsd:string"/>
-              <xsd:attribute name="name" type="xsd:string"/>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="data">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"/>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"/>
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"/>
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"/>
-              <xsd:attribute ref="xml:space"/>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="resheader">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required"/>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
             </xsd:complexType>
           </xsd:element>
         </xsd:choice>
@@ -133,17 +133,8 @@
   <data name="frontier_api_nok" xml:space="preserve">
     <value>Connexion à l'API Frontier non opérationnelle</value>
   </data>
-  <data name="frontier_api_no_logins" xml:space="preserve">
-    <value>Vous n'êtes pas connecté à l'API Frontier actuellement. Veuillez entrer votre adresse mail et votre mot de passe Elite Dangerous ci-dessous.</value>
-  </data>
   <data name="frontier_api_ok" xml:space="preserve">
     <value>Votre connexion à l'API Frontier est opérationnelle, Commandant {0}.</value>
-  </data>
-  <data name="frontier_api_temp_nok" xml:space="preserve">
-    <value>Votre connexion à l'API Frontier est correcte mais rencontre des problèmes temporaires. Vos informations seront bientôt disponibles.</value>
-  </data>
-  <data name="frontier_api_verification_code" xml:space="preserve">
-    <value>Veuillez entrer le code de vérification qui a été envoyé dans votre boite mail.</value>
   </data>
   <data name="if_using_va" xml:space="preserve">
     <value>Si vous utilisez VoiceAttack, veuillez fermer cette fenêtre avant de démarrer VoiceAttack afin que vos changements prennent effet. Vous pouvez accéder à cette fenêtre depuis VoiceAttack avec la commande 'Configurer les paramètres EDDI'.</value>
@@ -159,9 +150,6 @@
   </data>
   <data name="logout" xml:space="preserve">
     <value>Déconnexion</value>
-  </data>
-  <data name="next" xml:space="preserve">
-    <value>Suivant</value>
   </data>
   <data name="operational" xml:space="preserve">
     <value>Opérationnel</value>

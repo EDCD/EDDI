@@ -88,33 +88,6 @@ namespace Eddi.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Code:.
-        /// </summary>
-        public static string label_code {
-            get {
-                return ResourceManager.GetString("label_code", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Email:.
-        /// </summary>
-        public static string label_email {
-            get {
-                return ResourceManager.GetString("label_email", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Password:.
-        /// </summary>
-        public static string label_password {
-            get {
-                return ResourceManager.GetString("label_password", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to No Station.
         /// </summary>
         public static string no_station {
@@ -322,7 +295,7 @@ namespace Eddi.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Frontier has an API that allows EDDI to obtain information about your ships, the current station&apos;s market, and various other items. This data is not available elsewhere. If you want EDDI to obtain and use this information you need to enter your Frontier in-game email address and password below..
+        ///   Looks up a localized string similar to Frontier has an API that allows EDDI to obtain information about your ships, the current station&apos;s market, and various other items. This data is not available elsewhere. If you want EDDI to obtain and use this information you need to click the Login button and authorize EDDI for this data on Frontier&apos;s server..
         /// </summary>
         public static string tab_frontier_desc {
             get {

@@ -166,17 +166,6 @@
             <TabItem Header="{x:Static resx:MainWindow.tab_frontier_header}">
                 <DockPanel LastChildFill="True" Background="#FFE5E5E5">
                     <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Margin="5" Text="{x:Static resx:MainWindow.tab_frontier_desc}" VerticalAlignment="Top"/>
-                    <Grid DockPanel.Dock="Bottom">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                        </Grid.RowDefinitions>
-                        <TextBlock x:Name ="companionAppResetText" Visibility="Visible" Grid.Row="0" Grid.Column="0" Margin="5" Grid.ColumnSpan="2" Text="{x:Static resx:MainWindow.tab_frontier_reset_desc}"/>
-                        <Button x:Name="companionAppResetButton" Grid.Row="1" Grid.Column="0" Content="{x:Static resx:MainWindow.reset_button}" Margin="0,5,5,5" Click="companionAppResetClicked" HorizontalAlignment="Right" MinWidth="80"/>
-                    </Grid>
                     <Grid DockPanel.Dock="Top">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
@@ -187,15 +176,15 @@
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
-                        <TextBlock x:Name ="companionAppText" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" TextWrapping="Wrap" Margin="5"  Text="{x:Static resx:EddiResources.frontier_api_no_logins}" VerticalAlignment="Top"/>
-                        <Label x:Name ="companionAppEmailLabel" Grid.Row="1" Grid.Column="0" Margin="5" Content="{x:Static resx:MainWindow.label_email}"/>
-                        <TextBox x:Name ="companionAppEmailText" Grid.Row="1" Grid.Column="1" Margin="5" />
-                        <Label x:Name ="companionAppPasswordLabel" Grid.Row="2" Grid.Column="0" Margin="5" Content="{x:Static resx:MainWindow.label_password}"/>
-                        <PasswordBox x:Name ="companionAppPasswordText" Grid.Row="2" Grid.Column="1" Margin="5" />
-                        <Button  x:Name="companionAppNextButton" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Content="{x:Static resx:EddiResources.next}" Margin="5" Click="companionAppNextClicked" HorizontalAlignment="Right" MinWidth="80" />
-                        <Label x:Name ="companionAppCodeLabel" Visibility="Hidden" Grid.Row="1" Grid.Column="0" Margin="5" Content="{x:Static resx:MainWindow.label_code}"/>
-                        <TextBox x:Name ="companionAppCodeText" Visibility="Hidden" Grid.Row="1" Grid.Column="1" Margin="5" />
+                        <TextBlock x:Name="companionAppCantLoginFromVA" Grid.Row="3" Grid.Column="0" Margin="5"  Text="{x:Static resx:EddiResources.frontier_api_cant_login_from_va}" />
+                        <Button  x:Name="companionAppNextButton" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Content="{x:Static resx:EddiResources.login}" Margin="5" Click="companionAppNextClicked" HorizontalAlignment="Right" MinWidth="80" />
+                        <TextBlock x:Name ="companionAppResetText" Visibility="Visible" Grid.Row="4" Grid.Column="0" Margin="5" Text="{x:Static resx:MainWindow.tab_frontier_reset_desc}"/>
+                        <Button x:Name="companionAppResetButton" Grid.Row="4" Grid.Column="1" Content="{x:Static resx:MainWindow.reset_button}" Margin="0,5,5,5" Click="companionAppResetClicked" HorizontalAlignment="Right" MinWidth="80"/>
+                        <TextBlock x:Name ="companionAppStatusLabel" Grid.Row="5" Grid.Column="0" Margin="5" Text="{x:Static resx:EddiResources.frontierApiStatusLabel}"  HorizontalAlignment="Right"/>
+                        <TextBlock x:Name ="companionAppStatusValue" Grid.Row="5" Grid.Column="1" Margin="5" Text="{x:Static resx:EddiResources.frontierApiNotConnected}"  HorizontalAlignment="Right" MinWidth="80"/>
                     </Grid>
                 </DockPanel>
             </TabItem>
