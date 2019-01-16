@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="desc" xml:space="preserve">
-    <value>Suit la quantité de matériaux que vous possédez et génère des événements lorsque des limites sont atteintes.</value>
+    <value>Envoie la station, saut, et informations de scan vers EDDN. EDDN est un outil tiers qui recueille des informations sur les systèmes et les marchés, et fournit des données pour la plupart des outils de commerce ainsi que des informations de système d'étoile pour les outils tels que EDDB.</value>
   </data>
   <data name="name" xml:space="preserve">
     <value>Répondeur EDDN</value>
