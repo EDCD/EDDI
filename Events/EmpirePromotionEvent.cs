@@ -16,16 +16,19 @@ namespace EddiEvents
         {
             VARIABLES.Add("rank", "The commander's new Empire rank");
             VARIABLES.Add("femininerank", "The feminine form of the commander's new Empire rank");
+            VARIABLES.Add("rating", "The commander's new Federation rank level / rating (as an integer)");
         }
 
-        [JsonProperty("rating")]
         public string rank { get; private set; }
         public string femininerank { get; private set; }
+
+        public int rating { get; private set; }
 
         public EmpirePromotionEvent(DateTime timestamp, EmpireRating rating) : base(timestamp, NAME)
         {
             this.rank = rating.maleRank.localizedName;
             this.femininerank = rating.femaleRank.localizedName;
+            this.rating = rating.rank;
         }
     }
 }
