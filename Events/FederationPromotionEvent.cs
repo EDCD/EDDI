@@ -15,14 +15,17 @@ namespace EddiEvents
         static FederationPromotionEvent()
         {
             VARIABLES.Add("rank", "The commander's new Federation rank");
+            VARIABLES.Add("rating", "The commander's new Federation rank level / rating (as an integer)");
         }
 
-        [JsonProperty("rating")]
         public string rank { get; private set; }
+
+        public int rating { get; private set; }
 
         public FederationPromotionEvent(DateTime timestamp, FederationRating rating) : base(timestamp, NAME)
         {
             this.rank = rating.localizedName;
+            this.rating = rating.rank;
         }
     }
 }
