@@ -123,5 +123,7 @@
   <data name="name" xml:space="preserve">
     <value>Répondeur EDDN</value>
   </data>
-  
+  <data name="errPosition" xml:space="preserve">
+    <value>Désolé, Commandant: J'ai perdu le fil des choses et j'ai besoin que vous rétablissiez votre position avec une sillage élevé ou une nouvelle connexion avant de pouvoir reprendre le téléchargement des données d'exploration.</value>
+  </data>
 </root>
