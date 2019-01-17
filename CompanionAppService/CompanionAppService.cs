@@ -121,7 +121,7 @@ namespace EddiCompanionAppService
 
         private string ServerURL()
         {
-            return inBeta ? LIVE_SERVER : BETA_SERVER;
+            return inBeta ? BETA_SERVER : LIVE_SERVER;
         }
 
         ///<summary>Log in. Throws an exception if it fails</summary>
@@ -155,7 +155,8 @@ namespace EddiCompanionAppService
             rng.GetBytes(rawAuthSessionID);
             authSessionID = base64UrlEncode(rawAuthSessionID);
 
-            byte[] hash = SHA256.Create().ComputeHash(rawVerifier);
+            byte[] byteVerifier = Encoding.ASCII.GetBytes(verifier);
+            byte[] hash = SHA256.Create().ComputeHash(byteVerifier);
             string codeChallenge = base64UrlEncode(hash);
             return codeChallenge;
         }
