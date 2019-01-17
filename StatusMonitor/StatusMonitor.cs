@@ -275,12 +275,14 @@ namespace EddiStatusMonitor
                     status.longitude = JsonParsing.getOptionalDecimal(data, "Longitude");
                     status.altitude = JsonParsing.getOptionalDecimal(data, "Altitude");
                     status.heading = JsonParsing.getOptionalDecimal(data, "Heading");
-                    IDictionary<string, object> fuelInfo = data["Fuel"] as IDictionary<string, object>;
-                    if (fuelInfo != null)
+                    if (data.TryGetValue("Fuel", out object fuelData))
                     {
-                        decimal? mainFuel = JsonParsing.getOptionalDecimal(fuelInfo, "FuelMain");
-                        decimal? reserveFuel = JsonParsing.getOptionalDecimal(fuelInfo, "FuelReservoir");
-                        status.fuel = mainFuel + reserveFuel;
+                        if (fuelData is IDictionary<string, object> fuelInfo)
+                        {
+                            decimal? mainFuel = JsonParsing.getOptionalDecimal(fuelInfo, "FuelMain");
+                            decimal? reserveFuel = JsonParsing.getOptionalDecimal(fuelInfo, "FuelReservoir");
+                            status.fuel = mainFuel + reserveFuel;
+                        }
                     }
                     status.cargo_carried = (int?)JsonParsing.getOptionalDecimal(data, "Cargo");
 
