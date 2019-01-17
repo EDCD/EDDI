@@ -15,7 +15,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
   * VoiceAttack plugin
     * EDDI will no longer lose track of position data when you pass through a system where your squadron minor faction has influence.
 
-### 3.3.3-b1
+### 3.3.4-b1
   * Core
     * Added manual market, outfitting and shipyard updates, upon docking. Associated EDDN message is sent.
   * Ship monitor
@@ -25,6 +25,10 @@ Full details of the variables available for each noted event, and VoiceAttack in
 	* Updated module-related events to handle engineering modification data
 	* Added `Stored ships` event handling, triggered when the `Shipyard` screen is selected in-game.
 	* Added `Stored modules` event handling, triggered when the `Outfitting` screen is selected in-game. New `storedmodule` object properties are available in Variables.md
+
+### 3.3.3
+  * Emergency hotfix for a breaking change in the way fuel levels are reported.
+
 
 ### 3.3.2
   * EDDN responder
