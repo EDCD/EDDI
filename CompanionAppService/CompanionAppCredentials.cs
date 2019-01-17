@@ -15,6 +15,9 @@ namespace EddiCompanionAppService
         [JsonProperty]
         public string refreshToken { get; set; }
 
+        [JsonProperty]
+        public DateTime tokenExpiry { get; set; }
+
         static string defaultPath => $"{Constants.DATA_DIR}\\{fileName}";
 
         [JsonIgnore]

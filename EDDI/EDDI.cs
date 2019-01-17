@@ -1824,6 +1824,12 @@ namespace Eddi
                         if (configuration != null)
                         {
                             Cmdr.gender = configuration.Gender;
+                            Cmdr.squadronname = configuration.SquadronName;
+                            Cmdr.squadronid = configuration.SquadronID;
+                            Cmdr.squadronrank = configuration.SquadronRank;
+                            Cmdr.squadronallegiance = configuration.SquadronAllegiance;
+                            Cmdr.squadronpower = configuration.SquadronPower;
+                            Cmdr.squadronfaction = configuration.SquadronFaction;
                         }
 
                         bool updatedCurrentStarSystem = false;

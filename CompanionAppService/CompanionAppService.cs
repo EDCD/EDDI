@@ -23,6 +23,7 @@ namespace EddiCompanionAppService
         private static string AUTH_SERVER = "https://auth.frontierstore.net";
         private static string CALLBACK_URL = $"{Constants.EDDI_URL_PROTOCOL}://auth/";
         private static string AUTH_URL = "/auth";
+        private static string DECODE_URL = "/decode";
         private static string TOKEN_URL = "/token";
         private static string AUDIENCE = "audience=steam,frontier";
         private static string SCOPE = "scope=auth capi";
@@ -260,6 +261,32 @@ namespace EddiCompanionAppService
             return paramsDict;
         }
 
+        private JObject DecodeToken()
+        {
+            if (Credentials.accessToken == null) { return null; }
+
+            HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(AUTH_SERVER + DECODE_URL);
+            request.AllowAutoRedirect = true;
+            request.Timeout = 10000;
+            request.ReadWriteTimeout = 10000;
+            request.Headers["Authorization"] = $"Bearer {Credentials.accessToken}";
+
+            using (HttpWebResponse response = GetResponse(request))
+            {
+                if (response == null)
+                {
+                    Logging.Debug("Failed to contact API server");
+                    throw new EliteDangerousCompanionAppException("Failed to contact API server");
+                }
+
+                if (response.StatusCode == HttpStatusCode.Found)
+                {
+                    return null;
+                }
+                return JObject.Parse(getResponseData(response));
+            }
+        }
+
         private void RefreshToken()
         {
             if (clientID == null)
@@ -271,11 +298,13 @@ namespace EddiCompanionAppService
                 throw new EliteDangerousCompanionAppAuthenticationException("Refresh token not found, need full login");
             }
 
+            JObject decode = DecodeToken();
+
             CurrentState = State.AwaitingCallback;
             HttpWebRequest request = GetRequest(AUTH_SERVER + TOKEN_URL);
             request.ContentType = "application/x-www-form-urlencoded";
             request.Method = "POST";
-            byte[] data = Encoding.UTF8.GetBytes(Uri.EscapeDataString($"grant_type=refresh_token&client_id={clientID}&refresh_token={Credentials.refreshToken}"));
+            byte[] data = Encoding.UTF8.GetBytes($"grant_type=refresh_token&client_id={clientID}&refresh_token={Credentials.refreshToken}");
             request.ContentLength = data.Length;
             using (Stream dataStream = request.GetRequestStream())
             {
@@ -294,6 +323,7 @@ namespace EddiCompanionAppService
                     JObject json = JObject.Parse(responseData);
                     Credentials.refreshToken = (string)json["refresh_token"];
                     Credentials.accessToken = (string)json["access_token"];
+                    Credentials.tokenExpiry = DateTime.Now.AddSeconds((double)json["expires_in"]);
                     Credentials.Save();
                     if (Credentials.accessToken == null)
                     {
