@@ -2,6 +2,9 @@
 
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
+### 3.3.3
+  * Emergency hotfix for a breaking change in the way fuel levels are reported.
+
 ### 3.3.2
   * EDDN responder
     * Made revisions to guard against reporting inaccurate star position data to EDDN.
