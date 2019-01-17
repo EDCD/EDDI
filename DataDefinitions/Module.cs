@@ -1,4 +1,6 @@
 ﻿using Newtonsoft.Json;
+using System;
+using Utilities;
 
 namespace EddiDataDefinitions
 {
@@ -47,7 +49,33 @@ namespace EddiDataDefinitions
         [JsonProperty]
         public decimal health { get; set; }
         [JsonProperty]
+        public bool hot { get; set; } // False = `clean', true = `hot`
+
+        // Engineering modification properties
+        [JsonProperty]
         public bool modified { get; set; } // If the module has been modified
+        [JsonProperty]
+        public string modificationEDName
+        {
+            get => engineermodification?.edname ?? Modifications.None.edname;
+            set
+            {
+                Modifications mDef = Modifications.FromEDName(value);
+                this.engineermodification = mDef;
+            }
+        }
+        [JsonIgnore]
+        public Modifications engineermodification { get; set; }
+        [JsonProperty]
+        public int engineerlevel { get; set; }
+        [JsonProperty]
+        public decimal engineerquality { get; set; }
+        [JsonIgnore]
+        public string localizedModification => engineermodification?.localizedName ?? null;
+
+        // deprecated commodity category (exposed to Cottle and VA)
+        [JsonIgnore, Obsolete("Please use localizedModification instead")]
+        public string modification => localizedModification;
 
         // Admin
         // The ID in Elite: Dangerous' database
@@ -86,6 +114,9 @@ namespace EddiDataDefinitions
             this.EDID = Module.EDID;
             this.EDDBID = Module.EDDBID;
             this.modified = Module.modified;
+            this.engineermodification = Module.engineermodification;
+            this.engineerlevel = Module.engineerlevel;
+            this.engineerquality = Module.engineerquality;
         }
 
         public Module(long EDID, string edname, long EDDBID, string basename, int Class, string Grade, long Value) : base(edname, basename)
@@ -132,5 +163,20 @@ namespace EddiDataDefinitions
             return PowerPlayModules.Contains(this.edname);
         }
 
+        public static Module FromOutfittingInfo(OutfittingInfo item)
+        {
+            Module module = new Module(FromEliteID(item.id) ?? FromEDName(item.name) ?? new Module());
+            if (module.invariantName == null)
+            {
+                // Unknown module; report the full object so that we can update the definitions
+                Logging.Info("Module definition error: " + item.name);
+
+                // Create a basic module & supplement from the info available
+                module = new Module(item.id, item.name, -1, item.name, -1, "", item.buyprice);
+            }
+            module.price = item.buyprice;
+
+            return module;
+        }
     }
 }

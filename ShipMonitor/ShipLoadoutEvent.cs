@@ -21,7 +21,9 @@ namespace EddiShipMonitor
             VARIABLES.Add("hullvalue", "The value of the ship's hull (less modules)");
             VARIABLES.Add("modulesvalue", "The value of the ship's modules (less hull)");
             VARIABLES.Add("value", "The total value of the ship (hull + modules)");
+            VARIABLES.Add("hullhealth", "The health of the ship's hull");
             VARIABLES.Add("rebuy", "The rebuy value of the ship");
+            VARIABLES.Add("hot", "True if the ship is `hot`");
             VARIABLES.Add("paintjob", "The paintjob of the ship");
             VARIABLES.Add("compartments", "The compartments of the ship");
             VARIABLES.Add("hardpoints", "The hardpoints of the ship");
@@ -35,11 +37,13 @@ namespace EddiShipMonitor
         public long? hullvalue { get; private set; }
         public long? modulesvalue { get; private set; }
         public long rebuy { get; private set; }
+        public decimal hullhealth { get; private set; }
+        public bool hot { get; private set; }
         public string paintjob { get; private set; }
         public List<Hardpoint> hardpoints { get; private set;  }
         public List<Compartment> compartments { get; private set; }
 
-        public ShipLoadoutEvent(DateTime timestamp, string ship, int? shipId, string shipName, string shipIdent, long? hullValue, long? modulesValue, long rebuy, List<Compartment> compartments, List<Hardpoint> hardpoints, string paintjob) : base(timestamp, NAME)
+        public ShipLoadoutEvent(DateTime timestamp, string ship, int? shipId, string shipName, string shipIdent, long? hullValue, long? modulesValue, decimal hullHealth, long rebuy, bool hot, List<Compartment> compartments, List<Hardpoint> hardpoints, string paintjob) : base(timestamp, NAME)
         {
             this.ship = ShipDefinitions.FromEDModel(ship).model;
             this.shipid = shipId;
@@ -47,7 +51,9 @@ namespace EddiShipMonitor
             this.shipident = shipIdent;
             this.hullvalue = hullValue;
             this.modulesvalue = modulesValue;
+            this.hullhealth = hullHealth;
             this.rebuy = rebuy;
+            this.hot = hot;
             this.paintjob = paintjob;
             this.hardpoints = hardpoints;
             this.compartments = compartments;

@@ -117,6 +117,8 @@
     <Compile Include="IpaResources.xaml.cs">
       <DependentUpon>IpaResources.xaml</DependentUpon>
     </Compile>
+    <Compile Include="StoredModulesEvent.cs" />
+    <Compile Include="StoredShipsEvent.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CargoMonitor\EddiCargoMonitor.csproj">

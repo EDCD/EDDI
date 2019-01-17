@@ -201,30 +201,30 @@ namespace EddiMaterialMonitor
 
         private void handleMaterialCollectedEvent(MaterialCollectedEvent @event)
         {
-            incMaterial(@event.edname, @event.amount);
+            incMaterial(@event.edname, @event.amount, @event.fromLoad);
         }
 
         private void handleMaterialDiscardedEvent(MaterialDiscardedEvent @event)
         {
-            decMaterial(@event.edname, @event.amount);
+            decMaterial(@event.edname, @event.amount, @event.fromLoad);
         }
 
         private void handleMaterialDonatedEvent(MaterialDonatedEvent @event)
         {
-            decMaterial(@event.edname, @event.amount);
+            decMaterial(@event.edname, @event.amount, @event.fromLoad);
         }
 
         private void handleMaterialTradedEvent(MaterialTradedEvent @event)
         {
-            decMaterial(@event.paid_edname, @event.paid_quantity);
-            incMaterial(@event.received_edname, @event.received_quantity);
+            decMaterial(@event.paid_edname, @event.paid_quantity, @event.fromLoad);
+            incMaterial(@event.received_edname, @event.received_quantity, @event.fromLoad);
         }
 
         private void handleSynthesisedEvent(SynthesisedEvent @event)
         {
             foreach (MaterialAmount component in @event.materials)
             {
-                decMaterial(component.edname, component.amount);
+                decMaterial(component.edname, component.amount, @event.fromLoad);
             }
         }
 
@@ -232,7 +232,7 @@ namespace EddiMaterialMonitor
         {
             foreach (MaterialAmount component in @event.materials)
             {
-                decMaterial(component.edname, component.amount);
+                decMaterial(component.edname, component.amount, @event.fromLoad);
             }
         }
 
@@ -240,7 +240,7 @@ namespace EddiMaterialMonitor
         {
             foreach (MaterialAmount material in @event.materials)
             {
-                decMaterial(material.edname, material.amount);
+                decMaterial(material.edname, material.amount, @event.fromLoad);
             }
         }
 
@@ -248,7 +248,7 @@ namespace EddiMaterialMonitor
         {
             foreach (MaterialAmount material in @event.materialsrewards)
             {
-                incMaterial(material.edname, material.amount);
+                incMaterial(material.edname, material.amount, @event.fromLoad);
             }
         }
 
@@ -256,7 +256,7 @@ namespace EddiMaterialMonitor
         {
             if (@event.materialAmount != null)
             {
-                decMaterial(@event.materialAmount.edname, @event.materialAmount.amount);
+                decMaterial(@event.materialAmount.edname, @event.materialAmount.amount, @event.fromLoad);
             }
         }
 
@@ -267,7 +267,7 @@ namespace EddiMaterialMonitor
         /// <summary>
         /// Increment the current amount of a material, potentially triggering events as a result
         /// </summary>
-        private void incMaterial(string edname, int amount)
+        private void incMaterial(string edname, int amount, bool fromLogLoad = false)
         {
             lock(inventoryLock)
             {
@@ -289,7 +289,7 @@ namespace EddiMaterialMonitor
                     if (previous <= ma.maximum && ma.amount > ma.maximum)
                     {
                         // We have crossed the high water threshold for this material
-                        pendingEvents.Enqueue(new MaterialThresholdEvent(DateTime.UtcNow, Material.FromEDName(edname), "Maximum", (int)ma.maximum, ma.amount, "Increase"));
+                        pendingEvents.Enqueue(new MaterialThresholdEvent(DateTime.UtcNow, Material.FromEDName(edname), "Maximum", (int)ma.maximum, ma.amount, "Increase") { fromLoad = fromLogLoad });
                     }
                 }
                 if (ma.desired.HasValue)
@@ -297,7 +297,7 @@ namespace EddiMaterialMonitor
                     if (previous < ma.desired && ma.amount >= ma.desired)
                     {
                         // We have crossed the desired threshold for this material
-                        pendingEvents.Enqueue(new MaterialThresholdEvent(DateTime.UtcNow, Material.FromEDName(edname), "Desired", (int)ma.desired, ma.amount, "Increase"));
+                        pendingEvents.Enqueue(new MaterialThresholdEvent(DateTime.UtcNow, Material.FromEDName(edname), "Desired", (int)ma.desired, ma.amount, "Increase") { fromLoad = fromLogLoad });
                     }
                 }
 
@@ -308,7 +308,7 @@ namespace EddiMaterialMonitor
         /// <summary>
         /// Decrement the current amount of a material, potentially triggering events as a result
         /// </summary>
-        private void decMaterial(string edname, int amount)
+        private void decMaterial(string edname, int amount, bool fromLogLoad = false)
         {
             lock(inventoryLock)
             {
@@ -331,7 +331,7 @@ namespace EddiMaterialMonitor
                     if (previous >= ma.minimum && ma.amount < ma.minimum)
                     {
                         // We have crossed the low water threshold for this material
-                        pendingEvents.Enqueue(new MaterialThresholdEvent(DateTime.UtcNow, Material.FromEDName(edname), "Minimum", (int)ma.minimum, ma.amount, "Decrease"));
+                        pendingEvents.Enqueue(new MaterialThresholdEvent(DateTime.UtcNow, Material.FromEDName(edname), "Minimum", (int)ma.minimum, ma.amount, "Decrease") { fromLoad = fromLogLoad });
                     }
                 }
                 if (ma.desired.HasValue)
@@ -339,7 +339,7 @@ namespace EddiMaterialMonitor
                     if (previous >= ma.desired && ma.amount < ma.desired)
                     {
                         // We have crossed the desired threshold for this material
-                        pendingEvents.Enqueue(new MaterialThresholdEvent(DateTime.UtcNow, Material.FromEDName(edname), "Desired", (int)ma.desired, ma.amount, "Decrease"));
+                        pendingEvents.Enqueue(new MaterialThresholdEvent(DateTime.UtcNow, Material.FromEDName(edname), "Desired", (int)ma.desired, ma.amount, "Decrease") { fromLoad = fromLogLoad });
                     }
                 }
 
@@ -428,7 +428,7 @@ namespace EddiMaterialMonitor
                 }
 
                 // Add in any new materials
-                foreach (Material material in Material.AllOfThem)
+                foreach (Material material in Material.AllOfThem.ToList())
                 {
                     MaterialAmount ma = newInventory.Where(inv => inv.edname == material.edname).FirstOrDefault();
                     if (ma == null)

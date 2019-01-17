@@ -271,8 +271,23 @@ namespace EddiSpeechResponder
             // Report missing scripts, except those we have specifically named
             /// `Belt scanned` is a useless event, only exists so that the count on nav beacon scans comes out right
             /// `Jumping` and `Modification applied` are deprecated events
-            /// `Status`, `Cargo` and `Unhandled event` are events which shares updates with monitors / responders but are not intended to be user facing
-            string[] ignoredEventKeys = { "Belt scanned", "Cargo", "Jumping", "Missions", "Status", "Unhandled event", "Modification applied" };
+            /// `Cargo`, `Market`, `Outfitting`, `Shipyard`, `Status`, `Stored ships`, and `Unhandled event` are events which shares updates with
+            /// monitors / responders but are not intended to be user facing
+            string[] ignoredEventKeys = {
+                "Belt scanned",
+                "Cargo",
+                "Jumping",
+                "Market",
+                "Missions",
+                "Modification applied",
+                "Outfitting",
+                "Shipyard",
+                "Status",
+                "Stored ships",
+                "Stored modules",
+                "Unhandled event"
+            };
+
             Array.Sort(ignoredEventKeys);
             bool isIgnoredEvent(string t) => Array.BinarySearch(ignoredEventKeys, t) >= 0;
             missingScripts.RemoveAll(isIgnoredEvent);

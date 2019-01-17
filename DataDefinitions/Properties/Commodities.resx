@@ -1026,7 +1026,7 @@
     <comment>Commodity PowerGridAssembly</comment>
   </data>
   <data name="PowerTransferConduits" xml:space="preserve">
-    <value>Power Transfer Conduits</value>
+    <value>Power Transfer Bus</value>
     <comment>Commodity PowerTransferConduits</comment>
   </data>
   <data name="Praseodymium" xml:space="preserve">
@@ -1664,5 +1664,9 @@
   <data name="Opal" xml:space="preserve">
     <value>Void Opals</value>
     <comment>Commodity Opal</comment>
+  </data>
+  <data name="UnknownBiologicalMatter" xml:space="preserve">
+    <value>Thargoid Biological Matter</value>
+    <comment>Commodity UnknownBiologicalMatter</comment>
   </data>
 </root>

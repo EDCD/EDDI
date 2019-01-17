@@ -6,6 +6,7 @@
 	"ShipName": "",
 	"ShipIdent": "TK-21F",
 	"HullValue": 6093,
+	"HullHealth": 1,
 	"ModulesValue": 7650,
 	"Rebuy": 688,
 	"Modules": [{

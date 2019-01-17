@@ -2,6 +2,30 @@
 
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
+### Development
+  * Core
+    * EDDI will now sync to the most current journal on startup (dramatically improving the accuracy of data available after startup)
+  * Event responder
+    * `Empire promotion` Added the integer rank rating associated with the current promotion.
+    * `Federation promotion` Added the integer rank rating associated with the current promotion.
+  * Speech responder
+    * Revised `Empire promotion` script to include rank specific rewards.
+    * Revised `Federation promotion` script to include rank specific rewards.
+    * Revised `Mission completed` script to remove rank rewards.
+  * VoiceAttack plugin
+    * EDDI will no longer lose track of position data when you pass through a system where your squadron minor faction has influence.
+
+### 3.3.3-b1
+  * Core
+    * Added manual market, outfitting and shipyard updates, upon docking. Associated EDDN message is sent.
+  * Ship monitor
+    * Added new values to the current ship: `hullhealth` & `hot`
+	* Added `Hot` property to the Ship monitor UI
+    * Added new values to modules: `hot`, `modification`, `engineerlevel`, and `engineerquality`
+	* Updated module-related events to handle engineering modification data
+	* Added `Stored ships` event handling, triggered when the `Shipyard` screen is selected in-game.
+	* Added `Stored modules` event handling, triggered when the `Outfitting` screen is selected in-game. New `storedmodule` object properties are available in Variables.md
+
 ### 3.3.2
   * EDDN responder
     * Made revisions to guard against reporting inaccurate star position data to EDDN.

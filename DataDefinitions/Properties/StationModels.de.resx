@@ -149,9 +149,20 @@
     <value>Unbekannte Station</value>
     <comment>Unknown Station</comment>
   </data>
-  
+  <data name="CraterPort" xml:space="preserve">
+    <value>Raumhafen</value>
+    <comment>A Surface Port</comment>
+  </data>
   <data name="CraterOutpost" xml:space="preserve">
     <value>Planetarer Außenposten</value>
     <comment>A Surface Outpost</comment>
+  </data>
+  <data name="MegaShipCivilian" xml:space="preserve">
+    <value>Ziviles Megaschiff</value>
+    <comment>A Civilian Megaship</comment>
+  </data>
+  <data name="OutpostScientific" xml:space="preserve">
+    <value>Wissenschaftlicher Außenposten</value>
+    <comment>A Scientific Outpost (currently, Talos 1 &amp; Talos 2 in Peregrina)</comment>
   </data>
 </root>

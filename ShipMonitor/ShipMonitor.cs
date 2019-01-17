@@ -1,5 +1,4 @@
 ﻿using Eddi;
-using EddiCargoMonitor;
 using EddiDataDefinitions;
 using EddiEvents;
 using Newtonsoft.Json;
@@ -26,6 +25,7 @@ namespace EddiShipMonitor
 
         // Observable collection for us to handle changes
         public ObservableCollection<Ship> shipyard { get; private set; }
+        public List<StoredModule> storedmodules { get; private set; }
 
         // The ID of the current ship; can be null
         private int? currentShipId;
@@ -62,6 +62,8 @@ namespace EddiShipMonitor
         public ShipMonitor()
         {
             shipyard = new ObservableCollection<Ship>();
+            storedmodules = new List<StoredModule>();
+
             BindingOperations.CollectionRegistering += Shipyard_CollectionRegistering;
 
             readShips();
@@ -162,6 +164,10 @@ namespace EddiShipMonitor
             {
                 handleShipLoadoutEvent((ShipLoadoutEvent)@event);
             }
+            else if (@event is StoredShipsEvent)
+            {
+                handleStoredShipsEvent((StoredShipsEvent)@event);
+            }
             else if (@event is ShipRebootedEvent)
             {
                 handleShipRebootedEvent((ShipRebootedEvent)@event);
@@ -226,9 +232,21 @@ namespace EddiShipMonitor
             {
                 handleModuleInfoEvent((ModuleInfoEvent)@event);
             }
+            else if (@event is StoredModulesEvent)
+            {
+                handleStoredModulesEvent((StoredModulesEvent)@event);
+            }
             else if (@event is JumpedEvent)
             {
                 handleJumpedEvent((JumpedEvent)@event);
+            }
+            else if (@event is BountyIncurredEvent)
+            {
+                handleBountyIncurredEvent((BountyIncurredEvent)@event);
+            }
+            else if (@event is BountyPaidEvent)
+            {
+                handleBountyPaidEvent((BountyPaidEvent)@event);
             }
         }
 
@@ -394,6 +412,7 @@ namespace EddiShipMonitor
             setShipName(ship, @event.shipname);
             setShipIdent(ship, @event.shipident);
             ship.paintjob = @event.paintjob;
+            ship.hot = @event.hot;
 
             // Write ship value, if given by the loadout event
             if (@event.value != null)
@@ -490,6 +509,65 @@ namespace EddiShipMonitor
             // Cargo capacity
             ship.cargocapacity = (int)ship.compartments.Where(c => c.module != null && c.module.basename.Contains("CargoRack")).Sum(c => Math.Pow(2, c.module.@class));
             return ship;
+        }
+
+        private void handleStoredShipsEvent(StoredShipsEvent @event)
+        {
+            if (@event.shipyard != null)
+            {
+                //Check for ships missing from the shipyard
+                foreach (Ship shipInEvent in @event.shipyard)
+                {
+                    Ship shipInYard = GetShip(shipInEvent.LocalId);
+
+                    // Add ship from the event if not in shipyard
+                    if (shipInYard == null)
+                    {
+                        shipInEvent.Role = Role.MultiPurpose;
+                        AddShip(shipInEvent);
+                    }
+
+                    // Update ship in the shipyard to latest data
+                    else
+                    {
+                        if (!string.IsNullOrEmpty(shipInEvent.name))
+                        {
+                            shipInYard.name = shipInEvent.name;
+                        }
+                        shipInYard.value = shipInEvent.value;
+                        shipInYard.hot = shipInEvent.hot;
+                        shipInYard.intransit = shipInEvent.intransit;
+                        shipInYard.starsystem = shipInEvent.starsystem;
+                        shipInYard.marketid = shipInEvent.marketid;
+                        shipInYard.station = shipInEvent.station;
+                        shipInYard.transferprice = shipInEvent.transferprice;
+                        shipInYard.transfertime = shipInEvent.transfertime;
+                    }
+                }
+
+                // Prune ships no longer in the shipyard
+                List<int> idsToRemove = new List<int>(shipyard.Count);
+                foreach (Ship shipInYard in shipyard)
+                {
+                    Ship shipInEvent = @event.shipyard.FirstOrDefault(s => s.LocalId == shipInYard.LocalId);
+                    if (shipInEvent == null)
+                    {
+                        idsToRemove.Add(shipInYard.LocalId);
+                    }
+                }
+                _RemoveShips(idsToRemove);
+
+                writeShips();
+            }
+        }
+
+        private void handleStoredModulesEvent(StoredModulesEvent @event)
+        {
+            if (@event.storedmodules != null)
+            {
+                storedmodules = @event.storedmodules;
+                writeShips();
+            }
         }
 
         private void handleShipRebootedEvent(ShipRebootedEvent @event)
@@ -746,6 +824,7 @@ namespace EddiShipMonitor
                             {
                                 case "CargoHatch":
                                     {
+                                        ship.cargohatch = ship.cargohatch ?? new Module();
                                         ship.cargohatch.position = position;
                                         ship.cargohatch.priority = priority;
                                         ship.cargohatch.power = power;
@@ -753,6 +832,7 @@ namespace EddiShipMonitor
                                     break;
                                 case "FrameShiftDrive":
                                     {
+                                        ship.frameshiftdrive = ship.frameshiftdrive ?? new Module();
                                         ship.frameshiftdrive.position = position;
                                         ship.frameshiftdrive.priority = priority;
                                         ship.frameshiftdrive.power = power;
@@ -760,6 +840,7 @@ namespace EddiShipMonitor
                                     break;
                                 case "LifeSupport":
                                     {
+                                        ship.lifesupport = ship.lifesupport ?? new Module();
                                         ship.lifesupport.position = position;
                                         ship.lifesupport.priority = priority;
                                         ship.lifesupport.power = power;
@@ -767,6 +848,7 @@ namespace EddiShipMonitor
                                     break;
                                 case "MainEngines":
                                     {
+                                        ship.thrusters = ship.thrusters ?? new Module();
                                         ship.thrusters.position = position;
                                         ship.thrusters.priority = priority;
                                         ship.thrusters.power = power;
@@ -774,6 +856,7 @@ namespace EddiShipMonitor
                                     break;
                                 case "PowerDistributor":
                                     {
+                                        ship.powerdistributor = ship.powerdistributor ?? new Module();
                                         ship.powerdistributor.position = position;
                                         ship.powerdistributor.priority = priority;
                                         ship.powerdistributor.power = power;
@@ -781,6 +864,7 @@ namespace EddiShipMonitor
                                     break;
                                 case "PowerPlant":
                                     {
+                                        ship.powerplant = ship.powerplant ?? new Module();
                                         ship.powerplant.position = position;
                                         ship.powerplant.priority = priority;
                                         ship.powerplant.power = power;
@@ -788,6 +872,7 @@ namespace EddiShipMonitor
                                     break;
                                 case "Radar":
                                     {
+                                        ship.sensors = ship.sensors ?? new Module();
                                         ship.sensors.position = position;
                                         ship.sensors.priority = priority;
                                         ship.sensors.power = power;
@@ -795,6 +880,7 @@ namespace EddiShipMonitor
                                     break;
                                 case "ShipCockpit":
                                     {
+                                        ship.canopy = ship.canopy ?? new Module();
                                         ship.canopy.position = position;
                                         ship.canopy.priority = priority;
                                         ship.canopy.power = power;
@@ -807,6 +893,7 @@ namespace EddiShipMonitor
                                 Compartment compartment = ship.compartments.FirstOrDefault(c => c.name == slot);
                                 if (compartment != null)
                                 {
+                                    compartment.module = compartment.module ?? new Module();
                                     compartment.module.position = position;
                                     compartment.module.priority = priority;
                                     compartment.module.power = power;
@@ -817,6 +904,7 @@ namespace EddiShipMonitor
                                 Hardpoint hardpoint = ship.hardpoints.FirstOrDefault(h => h.name == slot);
                                 if (hardpoint != null)
                                 {
+                                    hardpoint.module = hardpoint.module ?? new Module();
                                     hardpoint.module.position = position;
                                     hardpoint.module.priority = priority;
                                     hardpoint.module.power = power;
@@ -840,6 +928,26 @@ namespace EddiShipMonitor
                     ship.maxjump = @event.distance;
                     writeShips();
                 }
+            }
+        }
+
+        private void handleBountyIncurredEvent(BountyIncurredEvent @event)
+        {
+            Ship ship = GetCurrentShip();
+            if (ship != null)
+            {
+                ship.hot = true;
+                writeShips();
+            }
+        }
+
+        private void handleBountyPaidEvent(BountyPaidEvent @event)
+        {
+            Ship ship = GetShip(@event.shipid);
+            if (ship != null)
+            {
+                ship.hot = false;
+                writeShips();
             }
         }
 
@@ -933,6 +1041,7 @@ namespace EddiShipMonitor
             IDictionary<string, object> variables = new Dictionary<string, object>
             {
                 ["ship"] = GetCurrentShip(),
+                ["storedmodules"] = new List<StoredModule>(storedmodules),
                 ["shipyard"] = new List<Ship>(shipyard)
             };
             return variables;
@@ -946,7 +1055,8 @@ namespace EddiShipMonitor
                 ShipMonitorConfiguration configuration = new ShipMonitorConfiguration()
                 {
                     currentshipid = currentShipId,
-                    shipyard = shipyard
+                    shipyard = shipyard,
+                    storedmodules = storedmodules
                 };
                 configuration.ToFile();
             }
@@ -963,10 +1073,12 @@ namespace EddiShipMonitor
 
                 // Build a new shipyard
                 List<Ship> newShiplist = configuration.shipyard.OrderBy(s => s.model).ToList();
+                List<StoredModule> newModuleList = configuration.storedmodules.OrderBy(s => s.slot).ToList();
 
                 // Update the shipyard
                 shipyard = new ObservableCollection<Ship>(newShiplist);
                 currentShipId = configuration.currentshipid;
+                storedmodules = new List<StoredModule>(newModuleList);
             }
         }
 

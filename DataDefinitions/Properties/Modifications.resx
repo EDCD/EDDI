@@ -1,0 +1,435 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ArmourAdvanced" xml:space="preserve">
+    <value>Lightweight Armour </value>
+  </data>
+  <data name="ArmourExplosive" xml:space="preserve">
+    <value>Blast Resistant Armour</value>
+  </data>
+  <data name="ArmourHeavyDuty" xml:space="preserve">
+    <value>Heavy Duty Armour</value>
+  </data>
+  <data name="ArmourKinetic" xml:space="preserve">
+    <value>Kinetic Resistant Armour</value>
+  </data>
+  <data name="ArmourThermic" xml:space="preserve">
+    <value>Thermal Resistant Armour</value>
+  </data>
+  <data name="EngineDirty" xml:space="preserve">
+    <value>Dirty Drive Tuning</value>
+  </data>
+  <data name="EngineReinforced" xml:space="preserve">
+    <value>Drive Strengthening</value>
+  </data>
+  <data name="EngineTuned" xml:space="preserve">
+    <value>Clean Drive Tuning</value>
+  </data>
+  <data name="FSDFastBoot" xml:space="preserve">
+    <value>Faster FSD Boot Sequence</value>
+  </data>
+  <data name="FSDinterdictorExpanded" xml:space="preserve">
+    <value>Expanded FSD Interdictor Capture Arc</value>
+  </data>
+  <data name="FSDinterdictorLongRange" xml:space="preserve">
+    <value>Longer Range FSD Interdictor</value>
+  </data>
+  <data name="FSDLongRange" xml:space="preserve">
+    <value>Increased FSD Range</value>
+  </data>
+  <data name="FSDShielded" xml:space="preserve">
+    <value>Shielded FSD</value>
+  </data>
+  <data name="HullReinforcementAdvanced" xml:space="preserve">
+    <value>Lightweight Hull Reinforcement</value>
+  </data>
+  <data name="HullReinforcementExplosive" xml:space="preserve">
+    <value>Blast Resistant Hull Reinforcement</value>
+  </data>
+  <data name="HullReinforcementHeavyDuty" xml:space="preserve">
+    <value>Heavy Duty Hull Reinforcement</value>
+  </data>
+  <data name="HullReinforcementKinetic" xml:space="preserve">
+    <value>Kinetic Resistant Hull Reinforcement</value>
+  </data>
+  <data name="HullReinforcementThermic" xml:space="preserve">
+    <value>Thermal Resistant Hull Reinforcement</value>
+  </data>
+  <data name="PowerDistributorHighCapacity" xml:space="preserve">
+    <value>High Charge Capacity Power Distributor</value>
+  </data>
+  <data name="PowerDistributorHighFrequency" xml:space="preserve">
+    <value>Charge Enhanced Power Distributor</value>
+  </data>
+  <data name="PowerDistributorPriorityEngine" xml:space="preserve">
+    <value>Engine Focused Power Distributor</value>
+  </data>
+  <data name="PowerDistributorPrioritySystem" xml:space="preserve">
+    <value>System Focused Power Distributor</value>
+  </data>
+  <data name="PowerDistributorPriorityWeapon" xml:space="preserve">
+    <value>Weapon Focused Power Distributor</value>
+  </data>
+  <data name="PowerDistributorShielded" xml:space="preserve">
+    <value>Shielded Power Distributor</value>
+  </data>
+  <data name="PowerPlantArmoured" xml:space="preserve">
+    <value>Armoured Power Plant</value>
+  </data>
+  <data name="PowerPlantBoosted" xml:space="preserve">
+    <value>Overcharged Power Plant</value>
+  </data>
+  <data name="PowerPlantStealth" xml:space="preserve">
+    <value>Low Emissions Power Plant</value>
+  </data>
+  <data name="SensorLongRange" xml:space="preserve">
+    <value>Long-Range Sensor</value>
+  </data>
+  <data name="SensorWideAngle" xml:space="preserve">
+    <value>Wide Angle Sensor</value>
+  </data>
+  <data name="ShieldBoosterExplosive" xml:space="preserve">
+    <value>Blast Resistant Shield Booster</value>
+  </data>
+  <data name="ShieldBoosterHeavyDuty" xml:space="preserve">
+    <value>Heavy Duty Shield Booster</value>
+  </data>
+  <data name="ShieldBoosterKinetic" xml:space="preserve">
+    <value>Kinetic Resistant Shield Booster</value>
+  </data>
+  <data name="ShieldBoosterResistive" xml:space="preserve">
+    <value>Resistance Augmented Shield Booster</value>
+  </data>
+  <data name="ShieldBoosterThermic" xml:space="preserve">
+    <value>Thermal Resistant Shield Booster</value>
+  </data>
+  <data name="ShieldCellBankRapid" xml:space="preserve">
+    <value>Rapid Charge Shield Cell Bank</value>
+  </data>
+  <data name="ShieldCellBankSpecialised" xml:space="preserve">
+    <value>Specialised Shield Cell Bank</value>
+  </data>
+  <data name="ShieldGeneratorKinetic" xml:space="preserve">
+    <value>Kinetic Resistant Shields</value>
+  </data>
+  <data name="ShieldGeneratorOptimised" xml:space="preserve">
+    <value>Enhanced, Low Power Shields</value>
+  </data>
+  <data name="ShieldGeneratorReinforced" xml:space="preserve">
+    <value>Reinforced Shields</value>
+  </data>
+  <data name="ShieldGeneratorThermic" xml:space="preserve">
+    <value>Thermal Resistant Shields</value>
+  </data>
+  <data name="WeaponDoubleShot" xml:space="preserve">
+    <value>Double Shot</value>
+  </data>
+  <data name="WeaponEfficient" xml:space="preserve">
+    <value>Efficient Weapon</value>
+  </data>
+  <data name="WeaponFocused" xml:space="preserve">
+    <value>Focused Weapon</value>
+  </data>
+  <data name="WeaponHighCapacity" xml:space="preserve">
+    <value>High Capacity Magazine</value>
+  </data>
+  <data name="WeaponLightWeight" xml:space="preserve">
+    <value>Light Weight Mount</value>
+  </data>
+  <data name="WeaponLongRange" xml:space="preserve">
+    <value>Long-Range Weapon</value>
+  </data>
+  <data name="WeaponOvercharged" xml:space="preserve">
+    <value>Overcharged Weapon</value>
+  </data>
+  <data name="WeaponRapidFire" xml:space="preserve">
+    <value>Rapid Fire Modification</value>
+  </data>
+  <data name="WeaponShortRange" xml:space="preserve">
+    <value>Short-Range Blaster</value>
+  </data>
+  <data name="WeaponSturdy" xml:space="preserve">
+    <value>Sturdy Mount</value>
+  </data>
+  <data name="None" xml:space="preserve">
+    <value>None</value>
+  </data>
+  <data name="WakeScannerFastScan" xml:space="preserve">
+    <value>Fast Wake Scanner</value>
+  </data>
+  <data name="WakeScannerLightWeight" xml:space="preserve">
+    <value>Light Weight Wake Scanner</value>
+  </data>
+  <data name="WakeScannerLongRange" xml:space="preserve">
+    <value>Long-Range Wake Scanner</value>
+  </data>
+  <data name="WakeScannerReinforced" xml:space="preserve">
+    <value>Reinforced Wake Scanner</value>
+  </data>
+  <data name="WakeScannerShielded" xml:space="preserve">
+    <value>Shielded Wake Scanner</value>
+  </data>
+  <data name="WakeScannerWideAngle" xml:space="preserve">
+    <value>Wide Angle Wake Scanner</value>
+  </data>
+  <data name="AFMShielded" xml:space="preserve">
+    <value>Shielded Maintenance Unit</value>
+  </data>
+  <data name="CargoScannerLightWeight" xml:space="preserve">
+    <value>Light Weight Cargo Scanner</value>
+  </data>
+  <data name="CargoScannerReinforced" xml:space="preserve">
+    <value>Reinforced Cargo Scanner</value>
+  </data>
+  <data name="CargoScannerShielded" xml:space="preserve">
+    <value>Shielded Cargo Scanner</value>
+  </data>
+  <data name="ChaffLauncherChaffCapacity" xml:space="preserve">
+    <value>Chaff Ammo Capacity</value>
+  </data>
+  <data name="ChaffLauncherLightWeight" xml:space="preserve">
+    <value>Light Weight Chaff Launcher</value>
+  </data>
+  <data name="ChaffLauncherReinforced" xml:space="preserve">
+    <value>Reinforced Chaff Launcher</value>
+  </data>
+  <data name="ChaffLauncherShielded" xml:space="preserve">
+    <value>Shielded Chaff Launcher</value>
+  </data>
+  <data name="CollectionLimpetLightWeight" xml:space="preserve">
+    <value>Light Weight Collector Limpet</value>
+  </data>
+  <data name="CollectionLimpetReinforced" xml:space="preserve">
+    <value>Reinforced Collector Limpet</value>
+  </data>
+  <data name="CollectionLimpetShielded" xml:space="preserve">
+    <value>Shielded Collector Limpet</value>
+  </data>
+  <data name="ECMShielded" xml:space="preserve">
+    <value>Shielded Electronic Counter Measures</value>
+  </data>
+  <data name="FuelScoopShielded" xml:space="preserve">
+    <value>Shielded Fuel Scoop</value>
+  </data>
+  <data name="FuelTransferLimpetLightWeight" xml:space="preserve">
+    <value>Light Weight Fuel Transfer Limpet</value>
+  </data>
+  <data name="FuelTransferLimpetReinforced" xml:space="preserve">
+    <value>Reinforced Fuel Transfer Limpet</value>
+  </data>
+  <data name="FuelTransferLimpetShielded" xml:space="preserve">
+    <value>Shielded Fuel Transfer Limpet</value>
+  </data>
+  <data name="HatchBreakerLimpetLightWeight" xml:space="preserve">
+    <value>Light Weight Hatch Breaker Limpet</value>
+  </data>
+  <data name="HatchBreakerLimpetReinforced" xml:space="preserve">
+    <value>Reinforced Hatch Breaker Limpet</value>
+  </data>
+  <data name="HatchBreakerLimpetShielded" xml:space="preserve">
+    <value>Shielded Hatch Breaker Limpet</value>
+  </data>
+  <data name="HeatSinkLauncherHeatSinkCapacity" xml:space="preserve">
+    <value>Heatsink Ammo Capacity</value>
+  </data>
+  <data name="HeatSinkLauncherLightWeight" xml:space="preserve">
+    <value>Light Weight Heatsink Launcher</value>
+  </data>
+  <data name="HeatSinkLauncherReinforced" xml:space="preserve">
+    <value>Reinforced Heatsink Launcher</value>
+  </data>
+  <data name="HeatSinkLauncherShielded" xml:space="preserve">
+    <value>Shielded Heatsink Launcher</value>
+  </data>
+  <data name="KillWarrantScannerLightWeight" xml:space="preserve">
+    <value>Light Weight Kill Warrant Scanner</value>
+  </data>
+  <data name="KillWarrantScannerLongRange" xml:space="preserve">
+    <value>Long-Range Kill Warrant Scanner</value>
+  </data>
+  <data name="KillWarrantScannerReinforced" xml:space="preserve">
+    <value>Reinforced Kill Warrant Scanner</value>
+  </data>
+  <data name="KillWarrantScannerShielded" xml:space="preserve">
+    <value>Shielded Kill Warrant Scanner</value>
+  </data>
+  <data name="LifeSupportLightWeight" xml:space="preserve">
+    <value>Light Weight Life Support</value>
+  </data>
+  <data name="LifeSupportReinforced" xml:space="preserve">
+    <value>Reinforced Life Support</value>
+  </data>
+  <data name="LifeSupportShielded" xml:space="preserve">
+    <value>Shielded Life Support</value>
+  </data>
+  <data name="PointDefencePointDefenceCapacity" xml:space="preserve">
+    <value>Point Defence Ammo Capacity</value>
+  </data>
+  <data name="PointDefenceLightWeight" xml:space="preserve">
+    <value>Light Weight Point Defence</value>
+  </data>
+  <data name="PointDefenceReinforced" xml:space="preserve">
+    <value>Reinforced Point Defence</value>
+  </data>
+  <data name="PointDefenceShielded" xml:space="preserve">
+    <value>Shielded Point Defence</value>
+  </data>
+  <data name="RefineriesShielded" xml:space="preserve">
+    <value>Shielded Refinery</value>
+  </data>
+  <data name="SensorLightWeight" xml:space="preserve">
+    <value>Light Weight Sensor</value>
+  </data>
+  <data name="SurfaceScannerExpanded" xml:space="preserve">
+    <value>Expanded Probe Scanning Radius</value>
+  </data>
+  <data name="CargoScannerFastScan" xml:space="preserve">
+    <value>Fast Cargo Scanner</value>
+  </data>
+  <data name="CargoScannerLongRange" xml:space="preserve">
+    <value>Long Range Cargp Scanner</value>
+  </data>
+  <data name="CargoScannerWideAngle" xml:space="preserve">
+    <value>Wide Angle Cargo Scanner</value>
+  </data>
+  <data name="ECMLightWeight" xml:space="preserve">
+    <value>Light Weight Electronic Counter Measures</value>
+  </data>
+  <data name="ECMReinforced" xml:space="preserve">
+    <value>Reinforced Electronic Counter Measures</value>
+  </data>
+  <data name="KillWarrantScannerFastScan" xml:space="preserve">
+    <value>Fast Kill Warrant Scanner</value>
+  </data>
+  <data name="KillWarrantScannerWideAngle" xml:space="preserve">
+    <value>Wide Angle Kill Warrant Scanner</value>
+  </data>
+  <data name="PAOvercharged" xml:space="preserve">
+    <value>Overcharged Plasma Accelerator</value>
+  </data>
+  <data name="ProspectingLimpetLightWeight" xml:space="preserve">
+    <value>Light Weight Prospecting Limpet</value>
+  </data>
+  <data name="ProspectingLimpetReinforced" xml:space="preserve">
+    <value>Reinforced Prospecting Limpet</value>
+  </data>
+  <data name="ProspectingLimpetShielded" xml:space="preserve">
+    <value>Shielded Prospecting Limpet</value>
+  </data>
+</root>

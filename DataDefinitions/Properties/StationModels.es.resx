@@ -157,4 +157,12 @@
     <value>Puesto avanzado de superficie</value>
     <comment>A Surface Outpost</comment>
   </data>
+  <data name="MegaShipCivilian" xml:space="preserve">
+    <value>Meganave civil</value>
+    <comment>A Civilian Megaship</comment>
+  </data>
+  <data name="OutpostScientific" xml:space="preserve">
+    <value>Puerto espacial científico</value>
+    <comment>A Scientific Outpost (currently, Talos 1 &amp; Talos 2 in Peregrina)</comment>
+  </data>
 </root>

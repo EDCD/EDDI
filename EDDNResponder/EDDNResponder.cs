@@ -3,7 +3,7 @@ using EddiCompanionAppService;
 using EddiDataDefinitions;
 using EddiDataProviderService;
 using EddiEvents;
-using EddiSpeechService;
+using EddiSpeechService; // Used in release but not in debug.
 using Newtonsoft.Json;
 using RestSharp;
 using System;
@@ -102,7 +102,7 @@ namespace EDDNResponder
         {
         }
 
-        private void handleRawEvent(Event theEvent, bool sendToEddn = true)
+        private void handleRawEvent(Event theEvent)
         {
             IDictionary<string, object> data = Deserializtion.DeserializeData(theEvent.raw);
             string edType = JsonParsing.getString(data, "event");
@@ -127,10 +127,10 @@ namespace EDDNResponder
             // Confirm the data in memory is as accurate as possible
             if (edType == "Docked" || edType == "Scan")
             {
-                CheckLocationData(data, sendToEddn);
+                CheckLocationData(data);
             }
 
-            if (sendToEddn && !invalidState)
+            if (LocationIsSet())
             {
                 if (edType == "Docked" && systemName != null && stationName != null && marketId != null)
                 {
@@ -193,37 +193,47 @@ namespace EDDNResponder
             }
         }
 
-        private void CheckLocationData(IDictionary<string, object> data, bool sendToEddn)
+        private void CheckLocationData(IDictionary<string, object> data)
         {
-            // The `Docked` event doesn't provide system coordinates, and the `Scan`event doesn't provide any system location data.
-            // The EDDN journal schema requires that we enrich the journal event data with coordinates and system name (and system address if possible).
-            if (data.ContainsKey("BodyName") && !data.ContainsKey("SystemName"))
-            {
-                // Apply heuristics to weed out mismatched systems and bodies
-                ConfirmScan(JsonParsing.getString(data, "BodyName"));
-            }
-            if (!data.ContainsKey("SystemAddress") || !data.ContainsKey("StarPos"))
-            {
-                // Out of an overabundance of caution, we do not use data from our saved star systems to enrich the data we send to EDDN, 
-                // but we do use it as an independent check to make sure our system address and coordinates are accurate
-                ConfirmAddressAndCoordinates(systemName);
-            }
-
             // Can only send journal data if we know our current location data is correct
             // If any location data is null, data shall not be sent to EDDN.
-            if (systemName == null || systemAddress == null || systemX == null || systemY == null || systemZ == null)
+            if (LocationIsSet())
             {
-                invalidState = true;
-                if (sendToEddn)
+                // The `Docked` event doesn't provide system coordinates, and the `Scan`event doesn't provide any system location data.
+                // The EDDN journal schema requires that we enrich the journal event data with coordinates and system name (and system address if possible).
+                if (data.ContainsKey("BodyName") && !data.ContainsKey("SystemName"))
                 {
+                    // Apply heuristics to weed out mismatched systems and bodies
+                    ConfirmScan(JsonParsing.getString(data, "BodyName"));
+                }
+                if (!data.ContainsKey("SystemAddress") || !data.ContainsKey("StarPos"))
+                {
+                    // Out of an overabundance of caution, we do not use data from our saved star systems to enrich the data we send to EDDN, 
+                    // but we do use it as an independent check to make sure our system address and coordinates are accurate
+                    ConfirmAddressAndCoordinates(systemName);
+                }
+
+                // Logging.Warn("TimeStamp: " + ((DateTime)data["timestamp"]).ToUniversalTime().ToString() + ", " + "SystemName: " + systemName + ", " + "SystemAddress: " + systemAddress + ", " + "StarPos: " + systemX + ", " + systemY + ", " + systemZ + ", " + "Event: " + (string)data["event"]);
+
+                if (LocationIsSet())
+                {
+                    invalidState = false;
+                }
+                else if (!invalidState)
+                {
+                    invalidState = true;
+#if DEBUG
+#else
                     Logging.Warn("The EDDN responder is in an invalid state and is unable to send messages.", JsonConvert.SerializeObject(this) + " Event: " + JsonConvert.SerializeObject(data));
                     SpeechService.Instance.Say(null, EddiEddnResponder.Properties.EddnResources.errPosition, true);
+#endif
                 }
             }
-            else
-            {
-                invalidState = false;
-            }
+        }
+
+        private bool LocationIsSet()
+        {
+            return systemName != null && systemAddress != null && systemX != null && systemY != null && systemZ != null;
         }
 
         private IDictionary<string, object> StripPersonalData(IDictionary<string, object> data)
@@ -295,12 +305,34 @@ namespace EDDNResponder
         {
             // This event is triggered by an update to the profile via the Frontier API
             // Check to make sure the marketId from the acquired profile matches our current station's marketId before continuing
-            if (eventStationMatches(marketId))
+            if (eventStationMatches(marketId, theEvent.update))
             {
                 // When we dock we have access to commodity and outfitting information
-                sendCommodityInformation();
-                sendOutfittingInformation();
-                sendShipyardInformation();
+                switch (theEvent.update)
+                {
+                    case "market":
+                        {
+                            sendCommodityInformation();
+                        }
+                        break;
+                    case "outfitting":
+                        {
+                            sendOutfittingInformation();
+                        }
+                        break;
+                    case "profile":
+                        {
+                            sendCommodityInformation();
+                            sendOutfittingInformation();
+                            sendShipyardInformation();
+                        }
+                        break;
+                    case "shipyard":
+                        {
+                            sendShipyardInformation();
+                        }
+                        break;
+                }
             }
         }
 
@@ -531,7 +563,7 @@ namespace EDDNResponder
         {
             if (systemName != null)
             {
-                StarSystem system = starSystemRepository.GetOrFetchStarSystem(systemName);
+                StarSystem system = starSystemRepository.GetOrCreateStarSystem(systemName);
                 if (system != null)
                 {
                     if (systemAddress != system.systemAddress)
@@ -559,6 +591,7 @@ namespace EDDNResponder
             {
                 if (bodyName.StartsWith(systemName))
                 {
+                    // If the system name is a subset of the body name, we're probably in the right place.
                     return true;
                 }
                 else
@@ -578,15 +611,22 @@ namespace EDDNResponder
             return false;
         }
 
-        private bool eventStationMatches(long? eventMarketId)
+        private bool eventStationMatches(long? eventMarketId, string update)
         {
-            Profile profile = CompanionAppService.Instance.Profile();
-            if (profile != null)
+            if (update == "profile")
             {
-                if (profile.LastStation?.marketId == eventMarketId && (bool?)profile.json["commander"]["docked"] == true)
+                Profile profile = CompanionAppService.Instance?.Profile();
+                if (profile != null)
                 {
-                    return true;
+                    if (profile.LastStation?.marketId == eventMarketId && (bool?)profile.json["commander"]["docked"] == true)
+                    {
+                        return true;
+                    }
                 }
+            }
+            else if (EDDI.Instance?.CurrentStation?.marketId == marketId)
+            {
+                return true;
             }
             return false;
         }

@@ -74,8 +74,11 @@ namespace EddiDataDefinitions
         {
             get
             {
-                AllOfThem.Sort();
-                return AllOfThem;
+                lock (resourceLock)
+                {
+                    AllOfThem.Sort();
+                    return AllOfThem;
+                }
             }
         }
     }

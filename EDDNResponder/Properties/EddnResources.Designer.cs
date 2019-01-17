@@ -70,7 +70,7 @@ namespace EddiEddnResponder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The E D D N responder is in an invalid state and is unable to send messages. Please validate your position by either jumping out of the system and back in or by logging out and logging back in..
+        ///   Looks up a localized string similar to Sorry, Commander: I&apos;ve lost track of things and need you to re-establish your position with a high wake or re-log before I can resume uploading exploration data..
         /// </summary>
         public static string errPosition {
             get {

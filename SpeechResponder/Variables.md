@@ -201,7 +201,6 @@ Details of an individual mission in the commander's mission log.
     - `expiryseconds` amount of seconds remaining before mission expiration
 
 ---
-
 ## Ship
 
 Information about your current ship is available under the `ship` object.
@@ -214,6 +213,7 @@ Any values might be missing, depending on EDDI's configuration.
     - `value` the value of the ship without cargo, in credits
     - `hullvalue` The value of the ship's hull (less modules), in credits
     - `modulesvalue` The value of the ship's modules (less hull), in credits
+    - `hot` true if the ship is wanted
     - `rebuy` The rebuy value of the ship, in credits
     - `cargocapacity` the total tonnage cargo capacity
     - `cargocarried` the current tonnage cargo carried
@@ -235,27 +235,66 @@ Any values might be missing, depending on EDDI's configuration.
     - `maxfuel` fuel used for `max jump` (excluding synthesis)
     - `hardpoints` the ship's hardpoints (this is an array of HardPoint objects)
     - `compartments` the ship's internal compartments (this is an array of Compartment objects)
-    - `launchbays` the ship's internal hangars, containing SRV or Fighter 'vehicles' (this is an array of launchbay objects) 
+    - `launchbays` the ship's internal hangars, containing SRV or Fighter 'vehicles' (this is an array of launchbay objects)
+
+Stored ship information
+
+    - `system` system in which the ship is stored
+    - `station` station in which the ship is stored
+    - `marketid` market ID of the station in which the ship is stored
+    - `intransit` true if the ship is in transit
+    - `transferprice` price to transfer ship to current location (0 if in transit)
+    - `transfertime` time to transfer ship to current location (0 if in transit)
+
+### Shipyard
+
+The inventory of ships mothballed and available under the `shipyard` object.
+
+    - `shipyard` a list of ships available using the `ship` object.
 
 ### Module
 
 An internal module.
 
-    - `name` the name of the module
-    - `class` the numeric class of the module
-    - `grade` the character grade of the module
-    - `value` the base value of the module
-    - `cost` the amount of credits paid for the module
-    - `enabled` if the module is currently enabled
-    - `priority` the current power priority of the module
+    - `name` localized name of the module
+    - `class` numeric class of the module
+    - `grade` character grade of the module
+    - `value` base value of the module
+    - `cost` amount of credits paid for the module
+    - `hot` true if the module is/was installed in a `hot` ship
+    - `modified` true if has been engineering modified
+    - `modification` localized name of the engineering modification
+    - `engineerlevel` (int) level of engineer modification applied (1-5)
+    - `engineerquality` (decimal) quality of the engineer modification at the present level (0-1)
+    - `enabled` true if the module is currently enabled
+    - `priority` current power priority of the module
     - `position` position of module in 'Modules' panel, according to power usage (highest = 1)
     - `power` power usage, measured in MegaWatts (MW)
-    - `health` the current health of the module
+    - `health` current health of the module
     - `mount` only for weapons, this defines the type of mount (fixed, gimballed, turreted)
     - `clipcapacity` only for weapons with ammunition, this defines the clip capacity of the loaded weapon
     - `hoppercapacity` only for weapons with ammunition, this defines the hopper capacity of the loaded weapon
     - `ammoinclip` amount of ammo loaded in the clip at time of 'Loadout' event
     - `ammoinhopper` amount of ammo loaded in the hopper at time of 'Loadout' event
+
+### StoredModules
+
+The inventory of modules stored at various stations and available under the `storedmodules` object.
+
+    - `storedmodules` a list of stored modules available using the `storedmodule` object.
+
+### StoredModule
+
+A module stored at a station.
+
+    - `name` localized name of the module
+    - `module` module definition (this is a Module object)
+    - `system` system in which the module is stored
+    - `station` station in which the module is stored
+    - `marketid` market ID of the station in which the module is stored
+    - `intransit` true if the module is in transit
+    - `transfercost` cost to transfer ship to current location (0 if in transit)
+    - `transfertime` time to transfer ship to current location (0 if in transit)
 
 ### Hardpoint
 

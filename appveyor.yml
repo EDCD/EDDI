@@ -1,4 +1,7 @@
 version: 3.3-{build}
+branches:
+  except:
+  - l10n_develop
 skip_tags: true
 image: Visual Studio 2017
 configuration: Release
@@ -7,6 +10,7 @@ nuget:
 before_build:
 - cmd: nuget restore
 build:
+  parallel: true
   verbosity: minimal
 test:
   categories:
