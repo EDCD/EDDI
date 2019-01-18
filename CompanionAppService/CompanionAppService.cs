@@ -199,7 +199,7 @@ namespace EddiCompanionAppService
                         JObject json = JObject.Parse(responseData);
                         Credentials.refreshToken = (string)json["refresh_token"];
                         Credentials.accessToken = (string)json["access_token"];
-                        Credentials.tokenExpiry = DateTime.Now.ToUniversalTime().AddSeconds((double)json["expires_in"]);
+                        Credentials.tokenExpiry = DateTime.UtcNow.AddSeconds((double)json["expires_in"]);
                         Credentials.Save();
                         if (Credentials.accessToken == null)
                         {
@@ -322,7 +322,7 @@ namespace EddiCompanionAppService
                     JObject json = JObject.Parse(responseData);
                     Credentials.refreshToken = (string)json["refresh_token"];
                     Credentials.accessToken = (string)json["access_token"];
-                    Credentials.tokenExpiry = DateTime.Now.ToUniversalTime().AddSeconds((double)json["expires_in"]);
+                    Credentials.tokenExpiry = DateTime.UtcNow.AddSeconds((double)json["expires_in"]);
                     Credentials.Save();
                     if (Credentials.accessToken == null)
                     {
@@ -467,7 +467,7 @@ namespace EddiCompanionAppService
         private string obtainProfile(string url)
         {
             DateTime expiry = Credentials?.tokenExpiry ?? DateTime.MinValue;
-            if (DateTime.Now.ToUniversalTime() > expiry)
+            if (DateTime.UtcNow > expiry)
             {
                 RefreshToken();
             }
