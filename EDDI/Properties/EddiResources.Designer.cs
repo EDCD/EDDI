@@ -153,6 +153,15 @@ namespace Eddi.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to You may close your browser window and return to EDDI..
+        /// </summary>
+        public static string frontier_api_close_browser {
+            get {
+                return ResourceManager.GetString("frontier_api_close_browser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Frontier API connection not operational.
         /// </summary>
         public static string frontier_api_nok {
@@ -167,6 +176,24 @@ namespace Eddi.Properties {
         public static string frontier_api_ok {
             get {
                 return ResourceManager.GetString("frontier_api_ok", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please authenticate EDDI&apos;s connection to the Frontier API..
+        /// </summary>
+        public static string frontier_api_please_authenticate {
+            get {
+                return ResourceManager.GetString("frontier_api_please_authenticate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Connection reset..
+        /// </summary>
+        public static string frontier_api_reset {
+            get {
+                return ResourceManager.GetString("frontier_api_reset", resourceCulture);
             }
         }
         

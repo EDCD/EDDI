@@ -242,4 +242,13 @@ Please close the other instance and try again.</value>
   <data name="frontierApiConnecting" xml:space="preserve">
     <value>Connecting</value>
   </data>
+  <data name="frontier_api_close_browser" xml:space="preserve">
+    <value>You may close your browser window and return to EDDI.</value>
+  </data>
+  <data name="frontier_api_reset" xml:space="preserve">
+    <value>Connection reset.</value>
+  </data>
+  <data name="frontier_api_please_authenticate" xml:space="preserve">
+    <value>Please authenticate EDDI's connection to the Frontier API.</value>
+  </data>
 </root>

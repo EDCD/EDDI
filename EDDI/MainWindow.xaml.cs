@@ -858,6 +858,18 @@ namespace Eddi
         private void companionApiStatusChanged(CompanionAppService.State oldState, CompanionAppService.State newState)
         {
             setStatusInfo();
+
+            if (oldState == CompanionAppService.State.AwaitingCallback && 
+                newState == CompanionAppService.State.Authorized)
+            {
+                SpeechService.Instance.Say(null, string.Format(Properties.EddiResources.frontier_api_ok, EDDI.Instance.Cmdr.name), false);
+                SpeechService.Instance.Say(null, Properties.EddiResources.frontier_api_close_browser, false);
+            }
+            else if (oldState == CompanionAppService.State.LoggedOut &&
+                newState == CompanionAppService.State.AwaitingCallback)
+            {
+                SpeechService.Instance.Say(null, Properties.EddiResources.frontier_api_please_authenticate, false);
+            }
         }
 
         // Set the fields relating to status information
@@ -913,6 +925,7 @@ namespace Eddi
         {
             // Logout from the companion app and start again
             CompanionAppService.Instance.Logout();
+            SpeechService.Instance.Say(null, Properties.EddiResources.frontier_api_reset, false);
         }
 
         // Handle changes to the Frontier API tab
