@@ -319,7 +319,9 @@
   <data name="CollectionLimpetShielded" xml:space="preserve">
     <value>Abgeschirmte Sammeldrohnen-Steuerung</value>
   </data>
-  
+  <data name="ECMShielded" xml:space="preserve">
+    <value>Abgeschirmte elektronische Gegenmaßnahmen</value>
+  </data>
   <data name="FuelScoopShielded" xml:space="preserve">
     <value>Abgeschirmter Treibstoffsammler</value>
   </data>
@@ -388,22 +390,38 @@
   <data name="SensorLightWeight" xml:space="preserve">
     <value>Leichgewichtsensor</value>
   </data>
-  
+  <data name="SurfaceScannerExpanded" xml:space="preserve">
+    <value>Erweiterter Scannradius</value>
+  </data>
   <data name="CargoScannerFastScan" xml:space="preserve">
     <value>Schneller Fracht-Scanner</value>
   </data>
-  
+  <data name="CargoScannerLongRange" xml:space="preserve">
+    <value>Langstrecken-Fracht-Scanner</value>
+  </data>
   <data name="CargoScannerWideAngle" xml:space="preserve">
     <value>Weitwinkel-Fracht-Scanner</value>
   </data>
-  
-  
-  
+  <data name="ECMLightWeight" xml:space="preserve">
+    <value>Leichte elektronische Gegenmaße</value>
+  </data>
+  <data name="ECMReinforced" xml:space="preserve">
+    <value>Verstärkte elektronische Gegenmaßnahmen</value>
+  </data>
+  <data name="KillWarrantScannerFastScan" xml:space="preserve">
+    <value>Beschleunigter Tötungsbefehlscanner</value>
+  </data>
   <data name="KillWarrantScannerWideAngle" xml:space="preserve">
     <value>Weitwinkel-Tötungsbefehl-Scanner</value>
   </data>
   
-  
-  
-  
+  <data name="ProspectingLimpetLightWeight" xml:space="preserve">
+    <value>Leichte Sammeldrohne</value>
+  </data>
+  <data name="ProspectingLimpetReinforced" xml:space="preserve">
+    <value>Verstärkte Sammeldrohne</value>
+  </data>
+  <data name="ProspectingLimpetShielded" xml:space="preserve">
+    <value>Abgeschirmte Sammeldrohne</value>
+  </data>
 </root>
