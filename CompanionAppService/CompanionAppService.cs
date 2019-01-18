@@ -26,7 +26,7 @@ namespace EddiCompanionAppService
         private static string DECODE_URL = "/decode";
         private static string TOKEN_URL = "/token";
         private static string AUDIENCE = "audience=steam,frontier";
-        private static string SCOPE = "scope=auth capi";
+        private static string SCOPE = "scope=capi";
         private static string PROFILE_URL = "/profile";
         private static string MARKET_URL = "/market";
         private static string SHIPYARD_URL = "/shipyard";
@@ -199,6 +199,7 @@ namespace EddiCompanionAppService
                         JObject json = JObject.Parse(responseData);
                         Credentials.refreshToken = (string)json["refresh_token"];
                         Credentials.accessToken = (string)json["access_token"];
+                        Credentials.tokenExpiry = DateTime.Now.AddSeconds((double)json["expires_in"]);
                         Credentials.Save();
                         if (Credentials.accessToken == null)
                         {
@@ -298,8 +299,6 @@ namespace EddiCompanionAppService
                 throw new EliteDangerousCompanionAppAuthenticationException("Refresh token not found, need full login");
             }
 
-            JObject decode = DecodeToken();
-
             CurrentState = State.AwaitingCallback;
             HttpWebRequest request = GetRequest(AUTH_SERVER + TOKEN_URL);
             request.ContentType = "application/x-www-form-urlencoded";
@@ -327,12 +326,14 @@ namespace EddiCompanionAppService
                     Credentials.Save();
                     if (Credentials.accessToken == null)
                     {
+                        CurrentState = State.LoggedOut;
                         throw new EliteDangerousCompanionAppAuthenticationException("Access token not found");
                     }
                     CurrentState = State.Authorized;
                 }
                 else
                 {
+                    CurrentState = State.LoggedOut;
                     throw new EliteDangerousCompanionAppAuthenticationException("Invalid refresh token");
                 }
             }
@@ -350,12 +351,6 @@ namespace EddiCompanionAppService
 
         public Profile Profile(bool forceRefresh = false)
         {
-            if (CurrentState != State.Authorized)
-            {
-                // Shouldn't be here
-                Logging.Debug("Service in incorrect state to provide profile (" + CurrentState + ")");
-                throw new EliteDangerousCompanionAppIllegalStateException("Service in incorrect state to provide profile (" + CurrentState + ")");
-            }
             if ((!forceRefresh) && cachedProfileExpires > DateTime.UtcNow)
             {
                 // return the cached version
@@ -413,13 +408,6 @@ namespace EddiCompanionAppService
 
         public Profile Station(string systemName)
         {
-            if (CurrentState != State.Authorized)
-            {
-                // Shouldn't be here
-                Logging.Debug("Service in incorrect state to provide station data (" + CurrentState + ")");
-                throw new EliteDangerousCompanionAppIllegalStateException("Service in incorrect state to provide station data (" + CurrentState + ")");
-            }
-
             try
             {
                 Logging.Debug("Getting station market data");
@@ -478,21 +466,35 @@ namespace EddiCompanionAppService
 
         private string obtainProfile(string url)
         {
-            HttpWebRequest request = GetRequest(url);
-            using (HttpWebResponse response = GetResponse(request))
+            DateTime expiry = Credentials?.tokenExpiry ?? DateTime.MinValue;
+            if (DateTime.Now.ToLocalTime() > expiry)
             {
-                if (response == null)
-                {
-                    Logging.Debug("Failed to contact API server");
-                    throw new EliteDangerousCompanionAppException("Failed to contact API server");
-                }
+                RefreshToken();
+            }
 
-                if (response.StatusCode == HttpStatusCode.Found)
+            if (CurrentState == State.Authorized)
+            {
+                HttpWebRequest request = GetRequest(url);
+                using (HttpWebResponse response = GetResponse(request))
                 {
-                    return null;
-                }
+                    if (response == null)
+                    {
+                        Logging.Debug("Failed to contact API server");
+                        throw new EliteDangerousCompanionAppException("Failed to contact API server");
+                    }
 
-                return getResponseData(response);
+                    if (response.StatusCode == HttpStatusCode.Found)
+                    {
+                        return null;
+                    }
+
+                    return getResponseData(response);
+                }
+            }
+            else
+            {
+                Logging.Debug("Service in incorrect state to provide profile (" + CurrentState + ")");
+                return null;
             }
         }
 
