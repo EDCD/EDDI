@@ -60,45 +60,45 @@
             : and then encoded with base64 encoding.
     -->
   <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
           <xsd:element name="metadata">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0"/>
               </xsd:sequence>
-              <xsd:attribute name="name" use="required" type="xsd:string" />
-              <xsd:attribute name="type" type="xsd:string" />
-              <xsd:attribute name="mimetype" type="xsd:string" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" use="required" type="xsd:string"/>
+              <xsd:attribute name="type" type="xsd:string"/>
+              <xsd:attribute name="mimetype" type="xsd:string"/>
+              <xsd:attribute ref="xml:space"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="assembly">
             <xsd:complexType>
-              <xsd:attribute name="alias" type="xsd:string" />
-              <xsd:attribute name="name" type="xsd:string" />
+              <xsd:attribute name="alias" type="xsd:string"/>
+              <xsd:attribute name="name" type="xsd:string"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="data">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"/>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"/>
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"/>
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"/>
+              <xsd:attribute ref="xml:space"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="resheader">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" />
+              <xsd:attribute name="name" type="xsd:string" use="required"/>
             </xsd:complexType>
           </xsd:element>
         </xsd:choice>
@@ -123,9 +123,12 @@
   <data name="EDDI_status_label" xml:space="preserve">
     <value>EDDI státusz: </value>
   </data>
+  
+  
   <data name="paragraph_2" xml:space="preserve">
     <value>A második csoport megszerzi az események információit. Ezek a fülek a amelyek Monitorral végződnek. Ezek megszerzik az eseményeket különböző helyekről és némi konfigurációt igényelnek mielőtt használhatóak lesznek.</value>
   </data>
+  
   <data name="paragraph_4" xml:space="preserve">
     <value>További információkat olvashat az EDDI funkcióriól a</value>
   </data>
@@ -136,6 +139,8 @@
     <value>Általános problémák megoldása</value>
     <comment>A hyperlink to the troubleshooting URL (in english)</comment>
   </data>
+  
+  
   <data name="version_hyperlink" xml:space="preserve">
     <value>Verzió:</value>
   </data>
@@ -145,9 +150,11 @@
   <data name="choose_lang_label" xml:space="preserve">
     <value>EDDI felület nyelve (EDDI újraindítása szükséges):</value>
   </data>
+  
   <data name="tab_frontier_header" xml:space="preserve">
     <value>Frontier API</value>
   </data>
+  
   <data name="tab_tts_desc" xml:space="preserve">
     <value>Az EDDI egy szöveg felovasó motort használ, ami feldolgozza a hangot a hajó sérülési állapotának és pilótafülkéjének méretéhez megfelelően. Ennek paramétereit itt állíthatja be.</value>
   </data>
@@ -160,6 +167,7 @@
   <data name="tab_tts_level_label" xml:space="preserve">
     <value>Hangfeldolgozás szintje:</value>
   </data>
+  
   <data name="tab_tts_rate_label" xml:space="preserve">
     <value>Beszéd sebessége:</value>
   </data>
@@ -181,15 +189,20 @@
   <data name="upgrade_button" xml:space="preserve">
     <value>EDDI frissítése</value>
   </data>
+  
+  
   <data name="tab_tts_disable_phonetic_speech_label" xml:space="preserve">
     <value>Fonetikus beszéd kikapcsolása:</value>
   </data>
   <data name="tab_tts_disable_phonetic_speech_note" xml:space="preserve">
     <value>(ez kikapcsolja az összes SSML beszéd címkét használó funkciót, ahogy az a Speech Responder segítség fájljában is megtalálható)</value>
   </data>
+  
   <data name="tab_tts_icao_label" xml:space="preserve">
     <value>ICAO engedélyezése:</value>
   </data>
+  
+  
   <data name="tab_commander_gender_f" xml:space="preserve">
     <value>Nő</value>
   </data>
@@ -199,4 +212,15 @@
   <data name="tab_commander_gender_n" xml:space="preserve">
     <value>Egyik sem</value>
   </data>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
 </root>

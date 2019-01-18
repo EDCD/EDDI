@@ -117,7 +117,5 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="frontier_api_lost" xml:space="preserve">
-    <value>Der Zugriff auf die Frontier-Programmierschnittstelle (API) ist verloren gegangen. Bitte aktualisieren Sie Ihre Informationen in EDDIs Frontier-API Registerkarte, um die Verbindung wiederherzustellen.</value>
-  </data>
+  
 </root>
