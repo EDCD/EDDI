@@ -893,12 +893,18 @@ namespace Eddi
             {
                 case CompanionAppService.State.LoggedOut:
                     companionAppStatusValue.Text = Properties.EddiResources.frontierApiNotConnected;
+                    companionAppNextButton.Visibility = Visibility.Visible;
+                    companionAppResetButton.Visibility = Visibility.Hidden;
                     break;
                 case CompanionAppService.State.AwaitingCallback:
                     companionAppStatusValue.Text = Properties.EddiResources.frontierApiConnecting;
+                    companionAppNextButton.Visibility = Visibility.Visible;
+                    companionAppResetButton.Visibility = Visibility.Hidden;
                     break;
                 case CompanionAppService.State.Authorized:
                     companionAppStatusValue.Text = Properties.EddiResources.frontierApiConnected;
+                    companionAppNextButton.Visibility = Visibility.Hidden;
+                    companionAppResetButton.Visibility = Visibility.Visible;
                     break;
             }
         }
