@@ -239,7 +239,6 @@ namespace Eddi
             // Configure the Frontier API tab
             CompanionAppCredentials companionAppCredentials = CompanionAppCredentials.Load();
             CompanionAppService.Instance.StateChanged += companionApiStatusChanged;
-            companionAppNextButton.IsEnabled = !fromVA;
 
             // Configure the Text-to-speech tab
             ConfigureTTS();
@@ -904,42 +903,41 @@ namespace Eddi
             {
                 case CompanionAppService.State.LoggedOut:
                     companionAppStatusValue.Text = Properties.EddiResources.frontierApiNotConnected;
+                    companionAppButton.Content = Properties.EddiResources.login;
+                    companionAppButton.IsEnabled = !fromVA;
+                    companionAppText.Text = !fromVA ? "" : Properties.EddiResources.frontier_api_cant_login_from_va;
                     break;
                 case CompanionAppService.State.AwaitingCallback:
                     companionAppStatusValue.Text = Properties.EddiResources.frontierApiConnecting;
-                    companionAppNextButton.Visibility = Visibility.Visible;
+                    companionAppButton.Content = Properties.MainWindow.reset_button;
+                    companionAppButton.IsEnabled = true;
+                    companionAppText.Text = Properties.EddiResources.frontier_api_please_authenticate;
                     break;
                 case CompanionAppService.State.Authorized:
                     companionAppStatusValue.Text = Properties.EddiResources.frontierApiConnected;
+                    companionAppButton.Content = Properties.MainWindow.reset_button;
+                    companionAppButton.IsEnabled = true;
+                    companionAppText.Text = Properties.MainWindow.tab_frontier_reset_desc;
                     break;
-            }
-            companionAppNextButton.Visibility = CompanionAppService.Instance.CurrentState !=
-                CompanionAppService.State.Authorized ? Visibility.Visible : Visibility.Hidden;
-            companionAppCantLoginFromVA.Visibility = fromVA && CompanionAppService.Instance.CurrentState == 
-                CompanionAppService.State.LoggedOut ? Visibility.Visible : Visibility.Hidden;
-            companionAppResetText.Visibility = CompanionAppService.Instance.CurrentState != 
-                CompanionAppService.State.LoggedOut ? Visibility.Visible : Visibility.Hidden;
-            companionAppResetButton.Visibility = CompanionAppService.Instance.CurrentState ==
-                CompanionAppService.State.Authorized ? Visibility.Visible : Visibility.Hidden;
-        }
-
-        private void companionAppResetClicked(object sender, RoutedEventArgs e)
-        {
-            // Logout from the companion app and start again
-            CompanionAppService.Instance.Logout();
-            SpeechService.Instance.Say(null, Properties.EddiResources.frontier_api_reset, false);
-            if (fromVA)
-            {
-                SpeechService.Instance.Say(null, Properties.EddiResources.frontier_api_cant_login_from_va, false);
             }
         }
 
         // Handle changes to the Frontier API tab
-        private void companionAppNextClicked(object sender, RoutedEventArgs e)
+        private void companionAppClicked(object sender, RoutedEventArgs e)
         {
             if (CompanionAppService.Instance.CurrentState == CompanionAppService.State.LoggedOut)
             {
                 CompanionAppService.Instance.Login();
+            }
+            else
+            {
+                // Logout from the companion app and start again
+                CompanionAppService.Instance.Logout();
+                SpeechService.Instance.Say(null, Properties.EddiResources.frontier_api_reset, false);
+                if (fromVA)
+                {
+                    SpeechService.Instance.Say(null, Properties.EddiResources.frontier_api_cant_login_from_va, false);
+                }
             }
         }
 
