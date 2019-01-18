@@ -23,7 +23,7 @@ Privacy Policy
 
 While this app is running it collects the following information (Elite Commander details) about you:
 
-- Your in-game ‚ÄúCmdr‚Äù name.
+- Your in-game ìCmdrî name.
 - Your in-game location.
 - Your in-game ship(s), ship loadouts, and inventories.
 - Various actions that you perform in-game.
@@ -38,10 +38,10 @@ We review telemetry data to identify ways to improve the app. An anonymous id ra
 
 At your choice, this app transmits some of your Commander details to third-party services as follows:
 
-EDDN - By default this app transmits in-game location data to the Elite Dangerous Data Network ("EDDN") (https://github.com/EDSM-NET/EDDN/wiki). This network allows third party services to build databases with details about the locations you can visit in the game. Your in-game ‚ÄúCmdr‚Äù name and identifying details are not shared.
+EDDN - By default this app transmits in-game location data to the Elite Dangerous Data Network ("EDDN") (https://github.com/EDSM-NET/EDDN/wiki). This network allows third party services to build databases with details about the locations you can visit in the game. Your in-game ìCmdrî name and identifying details are not shared.
 
-EDSM - If you have registered with the Elite Dangerous Star Map (‚ÄúEDSM‚Äù) (https://www.edsm.net/) website and provide this app with appropriate credentials from this service, this app can transmit your Commander details to EDSM. You can control how much of this information is visible to other people via your EDSM website settings (https://www.edsm.net/settings/public-profile).
+EDSM - If you have registered with the Elite Dangerous Star Map (ìEDSMî) (https://www.edsm.net/) website and provide this app with appropriate credentials from this service, this app can transmit your Commander details to EDSM. You can control how much of this information is visible to other people via your EDSM website settings (https://www.edsm.net/settings/public-profile).
 
-Coriolis / EDShipyard - If you choose to export your ship loadout data to a third party service like Coriolis or EDShipyard, the app will transmit ship loadout and livery data. Personally identifiable information like your in-game ‚ÄúCmdr‚Äù name, in-game location, etc. will not be transferred.
+Coriolis / EDShipyard - If you choose to export your ship loadout data to a third party service like Coriolis or EDShipyard, the app will transmit ship loadout and livery data. Personally identifiable information like your in-game ìCmdrî name, in-game location, etc. will not be transferred.
 
 VoiceAttack - If you are running the app as a plugin for VoiceAttack, this app will register appropriate variables in the VoiceAttack app which may include your Commander details. These variables are not persistent / stored between sessions of the VoiceAttack app.
