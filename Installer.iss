@@ -11,28 +11,28 @@
 ; NOTE: The value of AppId uniquely identifies this application.
 ; Do not use the same AppId value in installers for other applications.
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
+AllowUNCPath=no
 AppId={{830C0324-30D8-423C-B5B4-D7EE8D007A79}
 AppName={#MyAppName}
-AppVersion={#MyAppVersion}
-AppVerName={#MyAppName} {#MyAppVersion}
 AppPublisher={#MyAppPublisher}
 AppPublisherURL={#MyAppURL}
 AppSupportURL={#MyAppURL}
 AppUpdatesURL={#MyAppURL}
+AppVerName={#MyAppName} {#MyAppVersion}
+AppVersion={#MyAppVersion}
 DefaultDirName={reg:HKCU\Software\VoiceAttack.com\VoiceAttack,InstallPath|{pf32}\VoiceAttack}\Apps\{#MyAppName}
 DefaultGroupName={#MyAppName}
-SourceDir="{#SourcePath}\bin\Release"
-OutputDir="{#SourcePath}\bin\Installer"
+DisableDirPage=no
+DisableWelcomePage=no
+LicenseFile="{#SourcePath}\LicenseFile.txt"
 OutputBaseFilename={#MyAppName}-{#MyAppVersion}
-Compression=lzma
+OutputDir="{#SourcePath}\bin\Installer"
 SolidCompression=yes
+SourceDir="{#SourcePath}\bin\Release"
+UninstallDisplayIcon={app}\{#MyAppExeName}
+UsePreviousTasks=no
 WizardImageFile={#SourcePath}\graphics\logo.bmp
 WizardSmallImageFile={#SourcePath}\graphics\logo.bmp
-UninstallDisplayIcon={app}\EDDI\EDDI.ico
-UsePreviousTasks=False
-DisableWelcomePage=False
-DisableDirPage=no
-AllowUNCPath=False
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
@@ -81,10 +81,11 @@ Type: files; Name: "{app}\CSCore.xml"
 Type: files; Name: "{app}\RestSharp.xml"
 Type: files; Name: "{app}\EntityFramework.SqlServer.xml"
 Type: files; Name: "{app}\EntityFramework.xml"
+Type: files; Name: "{userappdata}\EDDI\credentials.json"
 
 ; Remove sensitive data on uninstall
 [UninstallDelete]
-Type: files; Name: "{userappdata}\EDDI\credentials.json"
+Type: files; Name: "{userappdata}\EDDI\CompanionAPI.json"
 
 [Icons]
 Name: "{group}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"
@@ -100,3 +101,15 @@ UseRelativePaths=True
 
 [Messages]
 SelectDirBrowseLabel=To continue, click Next. If this is not your VoiceAttack installation location, or you would like to put the EDDI files in a different location, click Browse.
+
+[Registry]
+Root: "HKLM"; Subkey: "Software\Classes\eddi"; ValueType: string; ValueData: "EDDI URL Protocol"; Flags: uninsdeletekey
+Root: "HKLM"; Subkey: "Software\Classes\eddi"; ValueType: string; ValueName: "URL Protocol"; Flags: uninsdeletekey
+Root: "HKLM"; Subkey: "Software\Classes\eddi\Default Icon"; ValueType: string; ValueData: "{app}\{#MyAppExeName},0"; Flags: uninsdeletekey
+Root: "HKLM"; Subkey: "Software\Classes\eddi\shell\open\command"; ValueType: string; ValueData: """{app}\{#MyAppExeName}"" ""%1"""; Flags: uninsdeletekey
+Root: "HKLM"; Subkey: "Software\Classes\eddi\shell\open\ddeexec"; ValueType: string; ValueData: "%1"; Flags: uninsdeletekey
+Root: "HKCU"; Subkey: "Software\Classes\eddi"; ValueType: string; ValueData: "EDDI URL Protocol"; Flags: uninsdeletekey
+Root: "HKCU"; Subkey: "Software\Classes\eddi"; ValueType: string; ValueName: "URL Protocol"; Flags: uninsdeletekey
+Root: "HKCU"; Subkey: "Software\Classes\eddi\Default Icon"; ValueType: string; ValueData: "{app}\{#MyAppExeName},0"; Flags: uninsdeletekey
+Root: "HKCU"; Subkey: "Software\Classes\eddi\shell\open\command"; ValueType: string; ValueData: """{app}\{#MyAppExeName}"" ""%1"""; Flags: uninsdeletekey
+Root: "HKCU"; Subkey: "Software\Classes\eddi\shell\open\ddeexec"; ValueType: string; ValueData: "%1"; Flags: uninsdeletekey

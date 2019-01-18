@@ -60,45 +60,45 @@
             : and then encoded with base64 encoding.
     -->
   <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
           <xsd:element name="metadata">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0"/>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
               </xsd:sequence>
-              <xsd:attribute name="name" use="required" type="xsd:string"/>
-              <xsd:attribute name="type" type="xsd:string"/>
-              <xsd:attribute name="mimetype" type="xsd:string"/>
-              <xsd:attribute ref="xml:space"/>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="assembly">
             <xsd:complexType>
-              <xsd:attribute name="alias" type="xsd:string"/>
-              <xsd:attribute name="name" type="xsd:string"/>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="data">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"/>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"/>
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"/>
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"/>
-              <xsd:attribute ref="xml:space"/>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="resheader">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required"/>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
             </xsd:complexType>
           </xsd:element>
         </xsd:choice>
@@ -133,17 +133,8 @@
   <data name="frontier_api_nok" xml:space="preserve">
     <value>Frontier API kapcsolat nem működik</value>
   </data>
-  <data name="frontier_api_no_logins" xml:space="preserve">
-    <value>Nincs kapcsolatod a Frontier API-hoz jelenleg. Kérlek írd be az Elite Dangerous e-mail címed és jelszavad.</value>
-  </data>
   <data name="frontier_api_ok" xml:space="preserve">
     <value>A kapcsolat a Froniter API-hoz müködik, parancsnok {0}.</value>
-  </data>
-  <data name="frontier_api_temp_nok" xml:space="preserve">
-    <value>A kapcsolatod a Frontier API-hoz jó de néhány időszakos hiba előfordulhat. Az információid hamarosan elérhetővé válnak</value>
-  </data>
-  <data name="frontier_api_verification_code" xml:space="preserve">
-    <value>Kérlek írd be a megerősítő kódot ami el lett küldve az e-mail címedre</value>
   </data>
   <data name="if_using_va" xml:space="preserve">
     <value>Ha Voice Attackot használsz kérlek zárd be ezt az ablakot mielőtt elindítod a Voice Attack alkalmazást hogy a változtatások életbe lépjenek.</value>
@@ -159,9 +150,6 @@
   </data>
   <data name="logout" xml:space="preserve">
     <value>Kijelentkezés</value>
-  </data>
-  <data name="next" xml:space="preserve">
-    <value>Következő</value>
   </data>
   <data name="operational" xml:space="preserve">
     <value>Működik</value>
@@ -206,7 +194,6 @@
   <data name="starting_upgrade" xml:space="preserve">
     <value>Frissítés letöltésének kezdése.</value>
   </data>
-  
   <data name="already_running_alert_body_text" xml:space="preserve">
     <value>Csak egy EDDI futhatható egyszerre.
 
@@ -215,8 +202,6 @@ Kérlek zárd be a másikat és próbálkozz újra.</value>
   <data name="already_running_alert_title" xml:space="preserve">
     <value>EDDI már fut</value>
   </data>
-  
-  
   <data name="Commander" xml:space="preserve">
     <value>Parancsnok</value>
     <comment>Vocative form of "Commander"</comment>

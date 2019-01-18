@@ -27,7 +27,6 @@ namespace Eddi
     /// </summary>
     public partial class MainWindow : Window
     {
-        private Profile profile;
         private bool fromVA;
 
         struct LanguageDef : IComparable<LanguageDef>
@@ -238,34 +237,8 @@ namespace Eddi
             };
 
             // Configure the Frontier API tab
-            CompanionAppCredentials companionAppCredentials = CompanionAppCredentials.FromFile();
-            companionAppEmailText.Text = companionAppCredentials.email;
-            // See if the credentials work
-            try
-            {
-                profile = CompanionAppService.Instance.Profile();
-                if (profile == null)
-                {
-                    setUpCompanionAppComplete(Properties.EddiResources.frontier_api_temp_nok);
-                }
-                else
-                {
-                    setUpCompanionAppComplete(String.Format(Properties.EddiResources.frontier_api_ok, profile.Cmdr.name));
-                }
-            }
-            catch (Exception)
-            {
-                if (CompanionAppService.Instance.CurrentState == CompanionAppService.State.NEEDS_LOGIN)
-                {
-                    // Fall back to stage 1
-                    setUpCompanionAppStage1();
-                }
-                else if (CompanionAppService.Instance.CurrentState == CompanionAppService.State.NEEDS_CONFIRMATION)
-                {
-                    // Fall back to stage 2
-                    setUpCompanionAppStage2();
-                }
-            }
+            CompanionAppCredentials companionAppCredentials = CompanionAppCredentials.Load();
+            CompanionAppService.Instance.StateChanged += companionApiStatusChanged;
 
             // Configure the Text-to-speech tab
             ConfigureTTS();
@@ -880,6 +853,23 @@ namespace Eddi
             }
         }
 
+        private void companionApiStatusChanged(CompanionAppService.State oldState, CompanionAppService.State newState)
+        {
+            setStatusInfo();
+
+            if (oldState == CompanionAppService.State.AwaitingCallback && 
+                newState == CompanionAppService.State.Authorized)
+            {
+                SpeechService.Instance.Say(null, string.Format(Properties.EddiResources.frontier_api_ok, EDDI.Instance.Cmdr.name), false);
+                SpeechService.Instance.Say(null, Properties.EddiResources.frontier_api_close_browser, false);
+            }
+            else if (oldState == CompanionAppService.State.LoggedOut &&
+                newState == CompanionAppService.State.AwaitingCallback)
+            {
+                SpeechService.Instance.Say(null, Properties.EddiResources.frontier_api_please_authenticate, false);
+            }
+        }
+
         // Set the fields relating to status information
         private void setStatusInfo()
         {
@@ -895,7 +885,7 @@ namespace Eddi
             else
             {
                 upgradeButton.Visibility = Visibility.Collapsed;
-                if (CompanionAppService.Instance.CurrentState != CompanionAppService.State.READY)
+                if (CompanionAppService.Instance.CurrentState != CompanionAppService.State.Authorized)
                 {
                     statusText.Text = Properties.EddiResources.frontier_api_nok;
                 }
@@ -908,158 +898,47 @@ namespace Eddi
                     statusText.Text = Properties.EddiResources.operational;
                 }
             }
-        }
 
-        private void companionAppResetClicked(object sender, RoutedEventArgs e)
-        {
-            // Logout from the companion app and start again
-            CompanionAppService.Instance.Logout();
-            setUpCompanionAppStage1();
+            switch (CompanionAppService.Instance.CurrentState)
+            {
+                case CompanionAppService.State.LoggedOut:
+                    companionAppStatusValue.Text = Properties.EddiResources.frontierApiNotConnected;
+                    companionAppButton.Content = Properties.EddiResources.login;
+                    companionAppButton.IsEnabled = !fromVA;
+                    companionAppText.Text = !fromVA ? "" : Properties.EddiResources.frontier_api_cant_login_from_va;
+                    break;
+                case CompanionAppService.State.AwaitingCallback:
+                    companionAppStatusValue.Text = Properties.EddiResources.frontierApiConnecting;
+                    companionAppButton.Content = Properties.MainWindow.reset_button;
+                    companionAppButton.IsEnabled = true;
+                    companionAppText.Text = Properties.EddiResources.frontier_api_please_authenticate;
+                    break;
+                case CompanionAppService.State.Authorized:
+                    companionAppStatusValue.Text = Properties.EddiResources.frontierApiConnected;
+                    companionAppButton.Content = Properties.MainWindow.reset_button;
+                    companionAppButton.IsEnabled = true;
+                    companionAppText.Text = Properties.MainWindow.tab_frontier_reset_desc;
+                    break;
+            }
         }
 
         // Handle changes to the Frontier API tab
-        private void companionAppNextClicked(object sender, RoutedEventArgs e)
+        private void companionAppClicked(object sender, RoutedEventArgs e)
         {
-            // See if the user is entering their email address and password
-            if (companionAppEmailText.Visibility == Visibility.Visible)
+            if (CompanionAppService.Instance.CurrentState == CompanionAppService.State.LoggedOut)
             {
-                // Stage 1 of authentication - login
-                CompanionAppService.Instance.Credentials.email = companionAppEmailText.Text.Trim();
-                CompanionAppService.Instance.setPassword(companionAppPasswordText.Password.Trim());
-                try
-                {
-                    // It is possible that we have valid cookies at this point so don't log in, but we did
-                    // need the credentials
-                    if (CompanionAppService.Instance.CurrentState == CompanionAppService.State.NEEDS_LOGIN)
-                    {
-                        CompanionAppService.Instance.Login();
-                    }
-                    if (CompanionAppService.Instance.CurrentState == CompanionAppService.State.NEEDS_CONFIRMATION)
-                    {
-                        setUpCompanionAppStage2();
-                    }
-                    else if (CompanionAppService.Instance.CurrentState == CompanionAppService.State.READY)
-                    {
-                        if (profile == null)
-                        {
-                            profile = CompanionAppService.Instance.Profile();
-                        }
-                        if (profile == null)
-                        {
-                            setUpCompanionAppComplete(Properties.EddiResources.frontier_api_temp_nok);
-                        }
-                        else
-                        {
-                            setUpCompanionAppComplete(String.Format(Properties.EddiResources.frontier_api_ok, profile.Cmdr.name));
-                        }
-                    }
-                }
-                catch (EliteDangerousCompanionAppAuthenticationException ex)
-                {
-                    companionAppText.Text = ex.Message;
-                }
-                catch (EliteDangerousCompanionAppErrorException ex)
-                {
-                    companionAppText.Text = ex.Message;
-                }
-                catch (Exception)
-                {
-                    companionAppText.Text = Properties.EddiResources.login_nok_frontier_service;
-                }
-            }
-            else if (companionAppCodeText.Visibility == Visibility.Visible)
-            {
-                // Stage 2 of authentication - confirmation
-                string code = companionAppCodeText.Text.Trim();
-                try
-                {
-                    CompanionAppService.Instance.Confirm(code);
-                    // All done - see if it works
-                    profile = CompanionAppService.Instance.Profile();
-                    if (profile != null)
-                    {
-                        setUpCompanionAppComplete(String.Format(Properties.EddiResources.frontier_api_ok, profile.Cmdr.name));
-                    }
-                }
-                catch (EliteDangerousCompanionAppAuthenticationException ex)
-                {
-                    setUpCompanionAppStage1(ex.Message);
-                }
-                catch (EliteDangerousCompanionAppErrorException ex)
-                {
-                    setUpCompanionAppStage1(ex.Message);
-                }
-                catch (Exception)
-                {
-                    setUpCompanionAppStage1(Properties.EddiResources.login_nok_frontier_service);
-                }
-            }
-        }
-
-        private void setUpCompanionAppStage1(string message = null)
-        {
-            if (message == null)
-            {
-                companionAppText.Text = Properties.EddiResources.frontier_api_no_logins;
+                CompanionAppService.Instance.Login();
             }
             else
             {
-                companionAppText.Text = message;
+                // Logout from the companion app and start again
+                CompanionAppService.Instance.Logout();
+                SpeechService.Instance.Say(null, Properties.EddiResources.frontier_api_reset, false);
+                if (fromVA)
+                {
+                    SpeechService.Instance.Say(null, Properties.EddiResources.frontier_api_cant_login_from_va, false);
+                }
             }
-
-            companionAppEmailLabel.Visibility = Visibility.Visible;
-            companionAppEmailText.Visibility = Visibility.Visible;
-            companionAppEmailText.Text = CompanionAppService.Instance.Credentials.email;
-            companionAppPasswordLabel.Visibility = Visibility.Visible;
-            companionAppPasswordText.Visibility = Visibility.Visible;
-            companionAppPasswordText.Password = null;
-            companionAppCodeText.Text = "";
-            companionAppCodeLabel.Visibility = Visibility.Hidden;
-            companionAppCodeText.Visibility = Visibility.Hidden;
-            companionAppNextButton.Content = Properties.EddiResources.next;
-        }
-
-        private void setUpCompanionAppStage2(string message = null)
-        {
-            if (message == null)
-            {
-                companionAppText.Text = Properties.EddiResources.frontier_api_verification_code;
-            }
-            else
-            {
-                companionAppText.Text = message;
-            }
-
-            companionAppEmailLabel.Visibility = Visibility.Hidden;
-            companionAppEmailText.Visibility = Visibility.Hidden;
-            companionAppPasswordText.Password = "";
-            companionAppPasswordLabel.Visibility = Visibility.Hidden;
-            companionAppPasswordText.Visibility = Visibility.Hidden;
-            companionAppCodeLabel.Visibility = Visibility.Visible;
-            companionAppCodeText.Visibility = Visibility.Visible;
-            companionAppNextButton.Content = Properties.EddiResources.next;
-        }
-
-        private void setUpCompanionAppComplete(string message = null)
-        {
-            if (message == null)
-            {
-                companionAppText.Text = Properties.EddiResources.complete;
-            }
-            else
-            {
-                companionAppText.Text = message;
-            }
-
-            companionAppEmailLabel.Visibility = Visibility.Hidden;
-            companionAppEmailText.Visibility = Visibility.Hidden;
-            companionAppPasswordText.Password = "";
-            companionAppPasswordLabel.Visibility = Visibility.Hidden;
-            companionAppPasswordText.Visibility = Visibility.Hidden;
-            companionAppCodeText.Text = "";
-            companionAppCodeLabel.Visibility = Visibility.Hidden;
-            companionAppCodeText.Visibility = Visibility.Hidden;
-            companionAppNextButton.Content = Properties.EddiResources.logout;
         }
 
         // Handle Text-to-speech tab
