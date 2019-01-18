@@ -466,7 +466,7 @@ namespace EddiCompanionAppService
 
         private string obtainProfile(string url)
         {
-            DateTime expiry = Credentials?.tokenExpiry ?? DateTime.MinValue;
+            DateTime expiry = Credentials?.tokenExpiry.AddSeconds(-60) ?? DateTime.MinValue;
             if (DateTime.UtcNow > expiry)
             {
                 RefreshToken();
