@@ -133,17 +133,8 @@
   <data name="frontier_api_nok" xml:space="preserve">
     <value>Frontier API connection not operational</value>
   </data>
-  <data name="frontier_api_no_logins" xml:space="preserve">
-    <value>You do not have a connection to the Frontier API at this time. Please enter your Elite Dangerous email address and password below.</value>
-  </data>
   <data name="frontier_api_ok" xml:space="preserve">
     <value>Your connection to the Frontier API is operational, Commander {0}.</value>
-  </data>
-  <data name="frontier_api_temp_nok" xml:space="preserve">
-    <value>Your connection to the Frontier API is good but experiencing temporary issues. Your information should be available soon</value>
-  </data>
-  <data name="frontier_api_verification_code" xml:space="preserve">
-    <value>Please enter the verification code that should have been sent to your email address</value>
   </data>
   <data name="if_using_va" xml:space="preserve">
     <value>If you are using VoiceAttack then please close this window before you start VoiceAttack for your changes to take effect. You can access this window from VoiceAttack with the 'Configure EDDI' command.</value>
@@ -159,9 +150,6 @@
   </data>
   <data name="logout" xml:space="preserve">
     <value>Log out</value>
-  </data>
-  <data name="next" xml:space="preserve">
-    <value>Next</value>
   </data>
   <data name="operational" xml:space="preserve">
     <value>Operational</value>
@@ -235,5 +223,32 @@ Please close the other instance and try again.</value>
   </data>
   <data name="safe_mode" xml:space="preserve">
     <value>Safe mode - upgrade required.</value>
+  </data>
+  <data name="login" xml:space="preserve">
+    <value>Log in</value>
+  </data>
+  <data name="frontier_api_cant_login_from_va" xml:space="preserve">
+    <value>In order to log in, please quit Voice Attack and launch E-D-D-I as a standalone app.</value>
+  </data>
+  <data name="frontierApiStatusLabel" xml:space="preserve">
+    <value>Frontier API status:</value>
+  </data>
+  <data name="frontierApiConnected" xml:space="preserve">
+    <value>Connected</value>
+  </data>
+  <data name="frontierApiNotConnected" xml:space="preserve">
+    <value>Not Connected</value>
+  </data>
+  <data name="frontierApiConnecting" xml:space="preserve">
+    <value>Connecting</value>
+  </data>
+  <data name="frontier_api_close_browser" xml:space="preserve">
+    <value>You may close your browser window and return to E-D-D-I.</value>
+  </data>
+  <data name="frontier_api_reset" xml:space="preserve">
+    <value>Connection reset.</value>
+  </data>
+  <data name="frontier_api_please_authenticate" xml:space="preserve">
+    <value>Please authenticate E-D-D-I's connection to the Frontier API.</value>
   </data>
 </root>

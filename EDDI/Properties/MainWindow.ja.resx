@@ -160,24 +160,11 @@
   <data name="choose_lang_label" xml:space="preserve">
     <value>EDDIの言語（EDDIの再起動が必要です）</value>
   </data>
-  <data name="label_code" xml:space="preserve">
-    <value>認証コード:</value>
-  </data>
-  <data name="label_email" xml:space="preserve">
-    <value>メールアドレス:</value>
-  </data>
-  <data name="label_password" xml:space="preserve">
-    <value>パスワード:</value>
-  </data>
-  <data name="tab_frontier_desc" xml:space="preserve">
-    <value>Frontier社は、あなたの艦船、ステーションのマーケットや、その他の情報が取得可能なAPIを提供しています。EDDIでFrontier APIを利用するには、Frontierアカウントでの認証が必要です。以下に、メールアドレスとパスワードを入力してください。</value>
-  </data>
+  
   <data name="tab_frontier_header" xml:space="preserve">
     <value>Frontier API</value>
   </data>
-  <data name="tab_frontier_reset_desc" xml:space="preserve">
-    <value>接続に問題がある場合、設定をリセットして再度ログインすると、問題が解決する可能性があります。</value>
-  </data>
+  
   <data name="tab_tts_desc" xml:space="preserve">
     <value>EDDIは、船の損傷やコックピットの大きさによって音声を処理する、独自のテキスト読み上げエンジンを使用しています。ここで、声のパラメータを設定できます。</value>
   </data>

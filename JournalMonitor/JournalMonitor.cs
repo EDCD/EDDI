@@ -1017,8 +1017,10 @@ namespace EddiJournalMonitor
                                         foreach (Dictionary<string, object> item in items)
                                         {
                                             string name = JsonParsing.getString(item, "Name");
-                                            Module module = new Module(Module.FromEDName(name));
-                                            module.hot = JsonParsing.getOptionalBool(item, "Hot") ?? false;
+                                            Module module = new Module(Module.FromEDName(name))
+                                            {
+                                                hot = JsonParsing.getOptionalBool(item, "Hot") ?? false
+                                            };
                                             item.TryGetValue("EngineerModifications", out val);
                                             bool modified = val != null ? true : false;
                                             module.modified = modified;
@@ -1026,14 +1028,16 @@ namespace EddiJournalMonitor
                                             module.engineerlevel = modified ? JsonParsing.getInt(item, "Level") : 0;
                                             module.engineerquality = modified? JsonParsing.getDecimal(item, "Quality") : 0;
 
-                                            StoredModule storedModule = new StoredModule();
-                                            storedModule.module = module;
-                                            storedModule.slot = JsonParsing.getInt(item, "StorageSlot");
-                                            storedModule.intransit = JsonParsing.getOptionalBool(item, "InTransit") ?? false;
-                                            storedModule.system = JsonParsing.getString(item, "StarSystem");
-                                            storedModule.marketid = JsonParsing.getOptionalLong(item, "MarketID");
-                                            storedModule.transfercost = JsonParsing.getOptionalLong(item, "TransferCost");
-                                            storedModule.transfertime = JsonParsing.getOptionalLong(item, "TransferTime");
+                                            StoredModule storedModule = new StoredModule
+                                            {
+                                                module = module,
+                                                slot = JsonParsing.getInt(item, "StorageSlot"),
+                                                intransit = JsonParsing.getOptionalBool(item, "InTransit") ?? false,
+                                                system = JsonParsing.getString(item, "StarSystem"),
+                                                marketid = JsonParsing.getOptionalLong(item, "MarketID"),
+                                                transfercost = JsonParsing.getOptionalLong(item, "TransferCost"),
+                                                transfertime = JsonParsing.getOptionalLong(item, "TransferTime")
+                                            };
 
                                             if (!storedModule.intransit)
                                             {

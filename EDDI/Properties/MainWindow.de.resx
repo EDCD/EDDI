@@ -160,24 +160,11 @@
   <data name="choose_lang_label" xml:space="preserve">
     <value>Wählen Sie die Sprache von EDDI (erfordert einen Neustart von EDDI):</value>
   </data>
-  <data name="label_code" xml:space="preserve">
-    <value>Code:</value>
-  </data>
-  <data name="label_email" xml:space="preserve">
-    <value>E-Mail:</value>
-  </data>
-  <data name="label_password" xml:space="preserve">
-    <value>Passwort:</value>
-  </data>
-  <data name="tab_frontier_desc" xml:space="preserve">
-    <value>Frontier hat eine API, die es EDDI ermöglicht, Informationen über Ihre Schiffe, den Markt der aktuellen Station und verschiedene andere Elemente zu erhalten. Diese Daten sind anderweitig nicht verfügbar. Wenn Sie möchten, dass EDDI diese Informationen erhält und nutzt, müssen Sie unten Ihre Frontier-E-Mail-Adresse und Ihr Passwort eingeben.</value>
-  </data>
+  
   <data name="tab_frontier_header" xml:space="preserve">
     <value>Frontier API</value>
   </data>
-  <data name="tab_frontier_reset_desc" xml:space="preserve">
-    <value>Wenn Sie Probleme mit Ihrer Verbindung haben, können Sie diese zurücksetzen und sich erneut anmelden, wodurch das Problem behoben werden könnte</value>
-  </data>
+  
   <data name="tab_tts_desc" xml:space="preserve">
     <value>EDDI verwendet eine eigene Text-to-Speech-Engine, die die Stimme abhängig von Merkmalen wie Schiffsbeschädigung und Größe des Cockpits verarbeitet. Hier können Sie die Parameter der Stimme einstellen.</value>
   </data>

@@ -133,17 +133,8 @@
   <data name="frontier_api_nok" xml:space="preserve">
     <value>La conexión de la API no funciona</value>
   </data>
-  <data name="frontier_api_no_logins" xml:space="preserve">
-    <value>Ahora mismo no tiene conexión con la API de Frontier. por favor, a continuación ingrese su dirección de email y contraseña de Elite Dangerous</value>
-  </data>
   <data name="frontier_api_ok" xml:space="preserve">
     <value>Su conexión a la API de Frontier está operativa, Comandante {0}.</value>
-  </data>
-  <data name="frontier_api_temp_nok" xml:space="preserve">
-    <value>Su conexión a la API de Frontier es buena pero experimenta problemas temporales. Su información debería estar pronto disponible. </value>
-  </data>
-  <data name="frontier_api_verification_code" xml:space="preserve">
-    <value>Ingrese el código de verificación que se ha enviado a su email</value>
   </data>
   <data name="if_using_va" xml:space="preserve">
     <value>Si usa VoiceAttack, cierre esta ventana antes de iniciarlo para que los cambios surtan efecto. Puede acceder a esta ventana desde VoiceAttack con el comando 'Configurar EDDI'.</value>
@@ -159,9 +150,6 @@
   </data>
   <data name="logout" xml:space="preserve">
     <value>Cerrar sesión</value>
-  </data>
-  <data name="next" xml:space="preserve">
-    <value>Siguiente</value>
   </data>
   <data name="operational" xml:space="preserve">
     <value>Operativo</value>
@@ -236,4 +224,13 @@ Por favor, cierre la otra instancia y pruebe de nuevo.</value>
   <data name="safe_mode" xml:space="preserve">
     <value>Modo seguro - requiere actualización.</value>
   </data>
+  
+  
+  
+  
+  
+  
+  
+  
+  
 </root>

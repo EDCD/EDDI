@@ -114,6 +114,7 @@ namespace EddiDataProviderService
                     foreach (string system in batchNames)
                     {
                         StarSystem CurrentStarSystem = starSystems.FirstOrDefault(s => s.name == system);
+                        if (CurrentStarSystem == null) { continue; }
                         CurrentStarSystem.visits = systems[system].visits;
                         CurrentStarSystem.lastvisit = systems[system].lastVisit;
                         if (comments.ContainsKey(system))

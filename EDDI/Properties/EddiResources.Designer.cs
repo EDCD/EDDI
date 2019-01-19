@@ -142,13 +142,22 @@ namespace Eddi.Properties {
                 return ResourceManager.GetString("failed", resourceCulture);
             }
         }
-
+        
         /// <summary>
-        ///   Looks up a localized string similar to You do not have a connection to the Frontier API at this time. Please enter your Elite Dangerous email address and password below..
+        ///   Looks up a localized string similar to In order to log in, please quit Voice Attack and launch E-D-D-I as a standalone app..
         /// </summary>
-        public static string frontier_api_no_logins {
+        public static string frontier_api_cant_login_from_va {
             get {
-                return ResourceManager.GetString("frontier_api_no_logins", resourceCulture);
+                return ResourceManager.GetString("frontier_api_cant_login_from_va", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You may close your browser window and return to E-D-D-I..
+        /// </summary>
+        public static string frontier_api_close_browser {
+            get {
+                return ResourceManager.GetString("frontier_api_close_browser", resourceCulture);
             }
         }
         
@@ -171,20 +180,56 @@ namespace Eddi.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Your connection to the Frontier API is good but experiencing temporary issues. Your information should be available soon.
+        ///   Looks up a localized string similar to Please authenticate E-D-D-I&apos;s connection to the Frontier API..
         /// </summary>
-        public static string frontier_api_temp_nok {
+        public static string frontier_api_please_authenticate {
             get {
-                return ResourceManager.GetString("frontier_api_temp_nok", resourceCulture);
+                return ResourceManager.GetString("frontier_api_please_authenticate", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Please enter the verification code that should have been sent to your email address.
+        ///   Looks up a localized string similar to Connection reset..
         /// </summary>
-        public static string frontier_api_verification_code {
+        public static string frontier_api_reset {
             get {
-                return ResourceManager.GetString("frontier_api_verification_code", resourceCulture);
+                return ResourceManager.GetString("frontier_api_reset", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Connected.
+        /// </summary>
+        public static string frontierApiConnected {
+            get {
+                return ResourceManager.GetString("frontierApiConnected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Connecting.
+        /// </summary>
+        public static string frontierApiConnecting {
+            get {
+                return ResourceManager.GetString("frontierApiConnecting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Not Connected.
+        /// </summary>
+        public static string frontierApiNotConnected {
+            get {
+                return ResourceManager.GetString("frontierApiNotConnected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Frontier API status:.
+        /// </summary>
+        public static string frontierApiStatusLabel {
+            get {
+                return ResourceManager.GetString("frontierApiStatusLabel", resourceCulture);
             }
         }
         
@@ -212,6 +257,15 @@ namespace Eddi.Properties {
         public static string invalid_system {
             get {
                 return ResourceManager.GetString("invalid_system", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Log in.
+        /// </summary>
+        public static string login {
+            get {
+                return ResourceManager.GetString("login", resourceCulture);
             }
         }
         
@@ -248,15 +302,6 @@ namespace Eddi.Properties {
         public static string msg_from_eddi {
             get {
                 return ResourceManager.GetString("msg_from_eddi", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Next.
-        /// </summary>
-        public static string next {
-            get {
-                return ResourceManager.GetString("next", resourceCulture);
             }
         }
         

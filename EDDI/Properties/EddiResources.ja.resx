@@ -133,17 +133,8 @@
   <data name="frontier_api_nok" xml:space="preserve">
     <value>Frontier API 接続が使用不能です。</value>
   </data>
-  <data name="frontier_api_no_logins" xml:space="preserve">
-    <value>現在、Frontier APIに接続されていません。以下にElite Dangerousのメールアドレスとパスワードを入力してください。</value>
-  </data>
   <data name="frontier_api_ok" xml:space="preserve">
     <value>Frontier APIに接続されています。ようこそ CMDR {0}。</value>
-  </data>
-  <data name="frontier_api_temp_nok" xml:space="preserve">
-    <value>Frontier APIへの接続は有効ですが、一時的に問題が発生しています。</value>
-  </data>
-  <data name="frontier_api_verification_code" xml:space="preserve">
-    <value>あなたのメールアドレス宛に送られた認証コードを入力してください。</value>
   </data>
   <data name="if_using_va" xml:space="preserve">
     <value>VoiceAttackと併用する場合は、設定の反映のため、VoiceAttackを起動する前にこのウィンドウを閉じてください。VoiceAttackからは、'Configure EDDI'コマンドにより、このウィンドウを開くことができます。</value>
@@ -159,9 +150,6 @@
   </data>
   <data name="logout" xml:space="preserve">
     <value>ログアウト</value>
-  </data>
-  <data name="next" xml:space="preserve">
-    <value>次へ</value>
   </data>
   <data name="operational" xml:space="preserve">
     <value>稼働中</value>
@@ -234,4 +222,13 @@
   <data name="safe_mode" xml:space="preserve">
     <value>セーフモード - 更新が必要です。</value>
   </data>
+  
+  
+  
+  
+  
+  
+  
+  
+  
 </root>

@@ -560,6 +560,7 @@ namespace EddiDataProviderService
             Logging.Debug("Created starsystem repository");
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times")]
         public static void RecoverStarSystemDB()
         {
             using (var con = SimpleDbConnection())

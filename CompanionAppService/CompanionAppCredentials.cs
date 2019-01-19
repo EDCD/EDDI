@@ -7,52 +7,51 @@ namespace EddiCompanionAppService
     /// <summary>Storage of credentials for a single Elite: Dangerous user to access the Companion App</summary>
     public class CompanionAppCredentials
     {
-        [JsonProperty("email")]
-        public string email { get; set; }
+        const string fileName = "CompanionAPI.json";
 
-        [JsonProperty("CompanionApp")]
-        public string appId { get; set; }
-        [JsonProperty("mid")]
-        public string machineId { get; set; }
-        [JsonProperty("mtk")]
-        public string machineToken { get; set; }
+        [JsonProperty]
+        public string accessToken { get; set; }
+
+        [JsonProperty]
+        public string refreshToken { get; set; }
+
+        [JsonProperty]
+        public DateTime tokenExpiry { get; set; }
+
+        static string defaultPath => $"{Constants.DATA_DIR}\\{fileName}";
 
         [JsonIgnore]
-        private string dataPath;
+        private string dataPath = defaultPath;
 
-        [JsonIgnore]
         static readonly object fileLock = new object();
 
         /// <summary>
-        /// Obtain credentials from a file.  If the file name is not supplied the the default
-        /// path of Constants.Data_DIR\credentials.json is used
+        /// Obtain credentials from a file.  If filepath is not supplied then defaultPath is used
         /// </summary>
-        public static CompanionAppCredentials FromFile(string filename=null)
+        public static CompanionAppCredentials Load(string filepath=null)
         {
-            if (filename == null)
-            {
-                filename = Constants.DATA_DIR + @"\credentials.json";
-            }
+            CompanionAppCredentials credentials = null;
+            filepath = filepath ?? defaultPath;
 
-            CompanionAppCredentials credentials =null;
-            string data = Files.Read(filename);
+            string data = Files.Read(filepath);
             if (data != null)
             {
-            try
-            {
-                credentials = JsonConvert.DeserializeObject<CompanionAppCredentials>(data);
-            }
-            catch (Exception ex)
-            {
-                Logging.Debug("Failed to read companion app credentials", ex);
-            }
+                try
+                {
+                    credentials = JsonConvert.DeserializeObject<CompanionAppCredentials>(data);
+                }
+                catch (Exception ex)
+                {
+                    Logging.Debug("Failed to read companion app credentials", ex);
+                }
             }
             if (credentials == null)
             {
-                credentials = new CompanionAppCredentials();
+                credentials = new CompanionAppCredentials() {dataPath = filepath};
+                credentials.Save();
             }
 
-            credentials.dataPath = filename;
+            credentials.dataPath = filepath;
             return credentials;
         }
 
@@ -61,26 +60,17 @@ namespace EddiCompanionAppService
         /// </summary>
         public void Clear()
         {
-            appId = null;
-            machineId = null;
-            machineToken = null;
+            accessToken = null;
+            refreshToken = null;
         }
 
         /// <summary>
-        /// Obtain credentials to a file.  If the filename is not supplied then the path used
-        /// when reading in the credentials will be used, or the default path of 
-        /// Constants.Data_DIR\credentials.json will be used
+        /// Write credentials to a file. If the filename is not supplied then the object's
+        /// dataPath will be used, failing that, the class's defaultPath.
         /// </summary>
-        public void ToFile(string filename=null)
+        public void Save(string filename=null)
         {
-            if (filename == null)
-            {
-                filename = dataPath;
-            }
-            if (filename == null)
-            {
-                filename = Constants.DATA_DIR + @"\credentials.json";
-            }
+            filename = filename ?? dataPath ?? defaultPath;
 
             string json = JsonConvert.SerializeObject(this, Formatting.Indented);
             lock (fileLock)

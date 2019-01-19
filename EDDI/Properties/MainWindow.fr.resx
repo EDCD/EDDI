@@ -160,24 +160,11 @@
   <data name="choose_lang_label" xml:space="preserve">
     <value>Sélectionnez la langue d'EDDI (nécessite de relancer EDDI):</value>
   </data>
-  <data name="label_code" xml:space="preserve">
-    <value>Code:</value>
-  </data>
-  <data name="label_email" xml:space="preserve">
-    <value>E-mail:</value>
-  </data>
-  <data name="label_password" xml:space="preserve">
-    <value>Mot de Passe:</value>
-  </data>
-  <data name="tab_frontier_desc" xml:space="preserve">
-    <value>Frontier dispose d'une API permettant à EDDI d'obtenir des informations sur votre vaisseau, le marché de la station actuelle et divers autres infos. Ces données ne sont pas disponibles ailleurs. Pour qu'EDDI puisse obtenir et exploiter ces informations, vous devez entrer votre adresse mail et mot de passe Frontier ci-dessous.</value>
-  </data>
+  
   <data name="tab_frontier_header" xml:space="preserve">
     <value>API Frontier</value>
   </data>
-  <data name="tab_frontier_reset_desc" xml:space="preserve">
-    <value>Si vous rencontrez des problèmes avec votre connexion, vous pouvez la réinitialiser et vous reconnecter, ce qui peut résoudre le problème.</value>
-  </data>
+  
   <data name="tab_tts_desc" xml:space="preserve">
     <value>EDDI utilise son propre moteur de synthèse vocale qui traite la voix en prenant en compte des fonctionnalités tel que les dommages du vaisseau et la taille du cockpit. Vous pouvez ajuster les paramètres de voix ici.</value>
   </data>

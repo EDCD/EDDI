@@ -133,17 +133,8 @@
   <data name="frontier_api_nok" xml:space="preserve">
     <value>Die Frontier-API-Verbindung ist nicht betriebsbereit</value>
   </data>
-  <data name="frontier_api_no_logins" xml:space="preserve">
-    <value>Sie haben zur Zeit keine Verbindung zur Frontier-API. Bitte geben Sie unten Ihre Elite Dangerous E-Mail-Adresse und Ihr Passwort ein.</value>
-  </data>
   <data name="frontier_api_ok" xml:space="preserve">
     <value>Ihre Verbindung zur Frontier-API ist betriebsbereit, Commander {0}.</value>
-  </data>
-  <data name="frontier_api_temp_nok" xml:space="preserve">
-    <value>Ihre Verbindung zur Frontier-API ist gut, hat aber temporär Probleme. Ihre Informationen sollten in Kürze verfügbar sein</value>
-  </data>
-  <data name="frontier_api_verification_code" xml:space="preserve">
-    <value>Bitte geben Sie den Bestätigungscode ein, der an Ihre E-Mail-Adresse gesendet wurde</value>
   </data>
   <data name="if_using_va" xml:space="preserve">
     <value>Wenn Sie VoiceAttack verwenden, schließen Sie bitte dieses Fenster, bevor Sie VoiceAttack starten, damit Ihre Änderungen wirksam werden. Sie können auf dieses Fenster von VoiceAttack mit dem Befehl 'EDDI konfigurieren' zugreifen.</value>
@@ -159,9 +150,6 @@
   </data>
   <data name="logout" xml:space="preserve">
     <value>Abmelden</value>
-  </data>
-  <data name="next" xml:space="preserve">
-    <value>Weiter</value>
   </data>
   <data name="operational" xml:space="preserve">
     <value>Betriebsbereit</value>
@@ -236,4 +224,13 @@ Bitte schließe die andere Instanz und versuche es noch einmal.</value>
   <data name="safe_mode" xml:space="preserve">
     <value>Abgesicherter Modus - Upgrade erforderlich.</value>
   </data>
+  
+  
+  
+  
+  
+  
+  
+  
+  
 </root>
