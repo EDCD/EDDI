@@ -190,7 +190,7 @@
     <comment>Material location Ruthenium</comment>
   </data>
   <data name="selenium" xml:space="preserve">
-    <value>Gewonnen durch Oberflächenerkundung oder als Missionsbelohnung.</value>
+    <value>Findet man durch Oberflächenerkundung oder erhält man als Missionsbelohnung.</value>
     <comment>Material location Selenium</comment>
   </data>
   <data name="technetium" xml:space="preserve">
@@ -230,7 +230,7 @@
     <comment>Material location Distorted Shield Cycle Recordings</comment>
   </data>
   <data name="scrambledemissiondata" xml:space="preserve">
-    <value>Erhält man durch das Scannen von Schiffen, Signalquellen oder erhält man als Missionsbelohnung.</value>
+    <value>Erhält man durch das Scannen von Schiffen, Signalquellen oder als Missionsbelohnung.</value>
     <comment>Material location Exceptional Scrambled Emission Data</comment>
   </data>
   <data name="legacyfirmware" xml:space="preserve">
@@ -254,7 +254,7 @@
     <comment>Material location Inconsistent Shield Soak Analysis</comment>
   </data>
   <data name="archivedemissiondata" xml:space="preserve">
-    <value>Erhält man durch das Scannen von Signalquellen oder erhält man als Missionsbelohnung, speziell in Systemen mit ökonomischem Aufschwung.</value>
+    <value>Erhält man durch das Scannen von Signalquellen oder als Missionsbelohnung, speziell in Systemen mit ökonomischem Aufschwung.</value>
     <comment>Material location Irregular Emission Data</comment>
   </data>
   <data name="consumerfirmware" xml:space="preserve">
@@ -394,7 +394,7 @@
     <comment>Material location Crystal Shards</comment>
   </data>
   <data name="gridresistors" xml:space="preserve">
-    <value>Findet man in den Trümmern von kleinen Kampfschiffen oder als Missionsbelohnung.</value>
+    <value>Findet man in den Trümmern von kleinen Kampfschiffen oder erhält man als Missionsbelohnung.</value>
     <comment>Material location Grid Resistors</comment>
   </data>
   <data name="heatconductionwiring" xml:space="preserve">
