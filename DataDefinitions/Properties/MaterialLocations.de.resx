@@ -238,7 +238,7 @@
     <comment>Material location Specialised Legacy Firmware</comment>
   </data>
   <data name="encryptedfiles" xml:space="preserve">
-    <value>Erhält man aus Signalquellen, einschließlich Oberflächensignalquellen, oder als Missionsbelohnung. Diese sind in Systemen mit boomenden Volkswirtschaften eher verbreitet.</value>
+    <value>Findet man in Signalquellen, einschließlich Oberflächensignalquellen, oder erhält man als Missionsbelohnung. Diese sind in Systemen mit boomenden Volkswirtschaften eher verbreitet.</value>
     <comment>Material location Unusual Encrypted Files</comment>
   </data>
   <data name="ancienthistoricaldata" xml:space="preserve">
@@ -470,7 +470,7 @@
     <comment>Material location Conductive Ceramics</comment>
   </data>
   <data name="electrochemicalarrays" xml:space="preserve">
-    <value>Gewinnt man aus den Trümmern von Kampfschiffen und Schiffen der Systembehörde oder erhält man in herabgestuften (degraded) Signalquellen in Anarchie-Systemen in der Nähe von bewohnten Systemen.</value>
+    <value>Findet man in den Trümmern von Kampfschiffen und Schiffen der Systembehörde oder in herabgestuften (degraded) Signalquellen in Anarchie-Systemen in der Nähe von bewohnten Systemen.</value>
     <comment>Material location Electrochemical Arrays</comment>
   </data>
   <data name="focuscrystals" xml:space="preserve">
@@ -494,7 +494,7 @@
     <comment>Material location Phase Alloys</comment>
   </data>
   <data name="precipitatedalloys" xml:space="preserve">
-    <value>Gewinnt man aus den Trümmern von Kampfschiffen und Schiffen der Systembehörde oder als Missionsbelohnung.</value>
+    <value>Findet man in den Trümmern von Kampfschiffen und Schiffen der Systembehörde oder erhält man als Missionsbelohnung.</value>
     <comment>Material location Precipitated Alloys</comment>
   </data>
   <data name="shieldingsensors" xml:space="preserve">
@@ -522,7 +522,10 @@
     <value>Wird gewonnen aus den Trümmern von Transportschiffen oder als Missionsbelohnung. Auch auffindbar bei Dave's Hope.</value>
     <comment>Material location Heat Vanes</comment>
   </data>
-  
+  <data name="polymercapacitors" xml:space="preserve">
+    <value>Findet man in den Trümmern von Kampfschiffen und Schiffen der Systembehörde oder in Signalquellen von Konvoiauflösungen oder erhält man als Missionsbelohnung.</value>
+    <comment>Material location Polymer Capacitors</comment>
+  </data>
   
   <data name="protolightalloys" xml:space="preserve">
     <value>Findet man in hochgradigen Signalquellen in Systemen mit ökonomischen Aufschwung oder als Missionsbelohnung.</value>
