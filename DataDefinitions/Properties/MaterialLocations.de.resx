@@ -474,23 +474,23 @@
     <comment>Material location Electrochemical Arrays</comment>
   </data>
   <data name="focuscrystals" xml:space="preserve">
-    <value>Gewinnt man aus den Trümmern von Kampfschiffen, speziell in Systemen mit hoher Sicherheit.</value>
+    <value>Findet man in den Trümmern von Kampfschiffen, speziell in Systemen mit hoher Sicherheit.</value>
     <comment>Material location Focus Crystals</comment>
   </data>
   <data name="heatexchangers" xml:space="preserve">
-    <value>Gewinnt man aus den Trümmern von Transportschiffen, speziell in Anarchie-Systemen in der Nähe von bewohnten Systemen.</value>
+    <value>Findet man in den Trümmern von Transportschiffen, speziell in Anarchie-Systemen in der Nähe von bewohnten Systemen.</value>
     <comment>Material location Heat Exchangers</comment>
   </data>
   <data name="highdensitycomposites" xml:space="preserve">
-    <value>Gewinnt man aus den Trümmern von Großkampfschiffen, gewöhnlich Anacondas und Föderale Korvetten. Auch auffindbar bei Dave's Hope.</value>
+    <value>Findet man in den Trümmern von Großkampfschiffen, gewöhnlich Anacondas und Föderale Korvetten. Auch auffindbar bei Dave's Hope.</value>
     <comment>Material location High Density Composites</comment>
   </data>
   <data name="mechanicalcomponents" xml:space="preserve">
-    <value>Gewinnt man aus den Trümmern von kleinen Transportschiffen, speziell in Systemen mit geringer Sicherheit. Auch auffindbar bei Dave's Hope.</value>
+    <value>Findet man in den Trümmern von kleinen Transportschiffen, speziell in Systemen mit geringer Sicherheit. Auch auffindbar bei Dave's Hope.</value>
     <comment>Material location Mechanical Components</comment>
   </data>
   <data name="phasealloys" xml:space="preserve">
-    <value>Gewinnt man aus den Trümmern von Kampfschiffen oder erhält man in Signalquellen in Systemen mit ökonomischem Aufschwung.</value>
+    <value>Findet man in den Trümmern von Kampfschiffen oder in Signalquellen in Systemen mit ökonomischem Aufschwung.</value>
     <comment>Material location Phase Alloys</comment>
   </data>
   <data name="precipitatedalloys" xml:space="preserve">
@@ -498,7 +498,7 @@
     <comment>Material location Precipitated Alloys</comment>
   </data>
   <data name="shieldingsensors" xml:space="preserve">
-    <value>Gewinnt man aus den Trümmern von (Groß-)Kampfschiffen oder als Missionsbelohnung.</value>
+    <value>Findet man in den Trümmern von (Groß-)Kampfschiffen oder erhält man als Missionsbelohnung.</value>
     <comment>Material location Shielding Sensors</comment>
   </data>
   <data name="unknownenergycell" xml:space="preserve">
@@ -506,10 +506,13 @@
     <comment>Material location Thargoid Energy Cell</comment>
   </data>
   <data name="chemicalmanipulators" xml:space="preserve">
-    <value>Gewinnt man aus den Trümmern großer Transportschiffe, üblicherweise Type-7 und Type-9, speziell in Anarchie-Systemen oder Systemen die an einer Seuche leiden. Auch zu finden bei "Dave's Hope"</value>
+    <value>Findet man in den Trümmern großer Transportschiffe, üblicherweise Type-7 und Type-9, speziell in Anarchie-Systemen oder Systemen die an einer Seuche leiden. Auch zu finden bei "Dave's Hope"</value>
     <comment>Material location Chemical Manipulators</comment>
   </data>
-  
+  <data name="compoundshielding" xml:space="preserve">
+    <value>Findet man in den Trümmern von Kampfschiffen, verschlüsselten Signalquellen speziell in Hochsicherheitssystemen, Systemen mit ökonomischen Aufschwung und Systemen in Rückzug und Machtfestigung oder erhält man als Missionsbelohnung. Auch zu finden bei "Dave's Hope".</value>
+    <comment>Material location Compound Shielding</comment>
+  </data>
   <data name="conductivepolymers" xml:space="preserve">
     <value>Gewinnt man aus den Trümmern großer Transport- und Passagierschiffe wie z. B. Type-9 und Beluga Liners, erhält man an Oberflächensignalquellen und als Missionsbelohnung. Auch zu finden bei "Dave's Hope".</value>
     <comment>Material location Conductive Polymers</comment>
