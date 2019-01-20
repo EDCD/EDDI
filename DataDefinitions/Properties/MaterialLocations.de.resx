@@ -378,83 +378,83 @@
     <comment>Material location Peculiar Shield Frequency Data</comment>
   </data>
   <data name="basicconductors" xml:space="preserve">
-    <value>Gewinnt man aus den Trümmern von Transportschiffen.</value>
+    <value>Findet man in den Trümmern von Transportschiffen.</value>
     <comment>Material location Basic Conductors</comment>
   </data>
   <data name="chemicalstorageunits" xml:space="preserve">
-    <value>Gewinnt man aus den Trümmern von Transportschiffen.</value>
+    <value>Findet man in den Trümmern von Transportschiffen.</value>
     <comment>Material location Chemical Storage Units</comment>
   </data>
   <data name="compactcomposites" xml:space="preserve">
-    <value>Erhält man in herabgestuften (degraded) Signalquellen, einschließlich Oberflächensignale.</value>
+    <value>Findet man in herabgestuften (degraded) Signalquellen, einschließlich Oberflächensignale.</value>
     <comment>Material location Compact Composites</comment>
   </data>
   <data name="crystalshards" xml:space="preserve">
-    <value>Gewinnt man aus den Trümmern von (Groß-)Kampfschiffen und von Oberflächensignalquellen.</value>
+    <value>Findet man in den Trümmern von (Groß-)Kampfschiffen und an Oberflächensignalquellen.</value>
     <comment>Material location Crystal Shards</comment>
   </data>
   <data name="gridresistors" xml:space="preserve">
-    <value>Gewinnt man aus den Trümmern von kleinen Kampfschiffen oder als Missionsbelohnung.</value>
+    <value>Findet man in den Trümmern von kleinen Kampfschiffen oder als Missionsbelohnung.</value>
     <comment>Material location Grid Resistors</comment>
   </data>
   <data name="heatconductionwiring" xml:space="preserve">
-    <value>Gewinnt man aus den Trümmern von Transportschiffen in Signalquellen oder als Missionsbelohnung.</value>
+    <value>Findet man in den Trümmern von Transportschiffen, in Signalquellen oder erhält man als Missionsbelohnung.</value>
     <comment>Material location Heat Conduction Wiring</comment>
   </data>
   <data name="mechanicalscrap" xml:space="preserve">
-    <value>Gewinnt man aus den Trümmern von Transportschiffen oder als Missionsbelohnung.</value>
+    <value>Findet man in den Trümmern von Transportschiffen oder erhält man als Missionsbelohnung.</value>
     <comment>Material location Mechanical Scrap</comment>
   </data>
   <data name="salvagedalloys" xml:space="preserve">
-    <value>Gewinnt man aus den Trümmern von (Groß-)Kampfschiffen.</value>
+    <value>Findet man in den Trümmern von (Groß-)Kampfschiffen.</value>
     <comment>Material location Salvaged Alloys</comment>
   </data>
   <data name="temperedalloys" xml:space="preserve">
-    <value>Gewinnt man aus den Trümmern von Kampfschiffen.</value>
+    <value>Findet man in den Trümmern von Kampfschiffen.</value>
     <comment>Material location temperedalloys</comment>
   </data>
   <data name="wornshieldemitters" xml:space="preserve">
-    <value>Gewinnt man aus den Trümmern von (Groß-)Kampfschiffen.</value>
+    <value>Findet man in den Trümmern von (Groß-)Kampfschiffen.</value>
     <comment>Material location Worn Shield Emitters</comment>
   </data>
   <data name="chemicalprocessors" xml:space="preserve">
-    <value>Gewinnt man aus den Trümmern von Transportschiffen oder als Missionsbelohnung.</value>
+    <value>Findet man in den Trümmern von Transportschiffen oder erhält man als Missionsbelohnung.</value>
     <comment>Material location Chemical Processors</comment>
   </data>
   <data name="conductivecomponents" xml:space="preserve">
-    <value>Gewinnt man aus den Trümmern von Transportschiffen, speziell in Anarchie-Systemen in der Nähe von bewohnten Systemen. </value>
+    <value>Findet man in den Trümmern von Transportschiffen, speziell in Anarchie-Systemen in der Nähe von bewohnten Systemen. </value>
     <comment>Material location Conductive Components</comment>
   </data>
   <data name="filamentcomposites" xml:space="preserve">
-    <value>Gewinnt man aus den Trümmern von Militärschiffen und Schiffen der Systembehörde.</value>
+    <value>Findet man in den Trümmern von Militärschiffen und Schiffen der Systembehörde.</value>
     <comment>Material location Filament Composites</comment>
   </data>
   <data name="uncutfocuscrystals" xml:space="preserve">
-    <value>Gewinnt man aus den Trümmern von (Groß-)Kampfschiffen oder gefunden in Kampffolge-Signalquellen.</value>
+    <value>Findet man in den Trümmern von (Groß-)Kampfschiffen oder in Kampffolge-Signalquellen.</value>
     <comment>Material location Flawed Focus Crystals</comment>
   </data>
   <data name="galvanisingalloys" xml:space="preserve">
-    <value>Gewinnt man aus den Trümmern von (Groß-)Kampfschiffen oder als Missionsbelohnung, speziell in Systemen, die gerade Wahlen durchführen.</value>
+    <value>Findet man in den Trümmern von (Groß-)Kampfschiffen oder erhält man als Missionsbelohnung, speziell in Systemen, die gerade Wahlen durchführen.</value>
     <comment>Material location Galvanising Alloys</comment>
   </data>
   <data name="heatdispersionplate" xml:space="preserve">
-    <value>Gewinnt man aus den Trümmern von Transportschiffen in Signalquellen, speziell in Systemen mit florierender Volkswirtschaft oder als Missionsbelohnung.</value>
+    <value>Findet man in den Trümmern von Transportschiffen in Signalquellen, speziell in Systemen mit florierender Volkswirtschaft oder erhält man als Missionsbelohnung.</value>
     <comment>Material location Heat Dispersion Plate</comment>
   </data>
   <data name="heatresistantceramics" xml:space="preserve">
-    <value>Gewinnt man aus den Trümmern von Militärschiffen und Schiffen der Systembehörde.</value>
+    <value>Findet man in den Trümmern von Militärschiffen und Schiffen der Systembehörde.</value>
     <comment>Material location heatresistantceramics</comment>
   </data>
   <data name="hybridcapacitors" xml:space="preserve">
-    <value>Gewinnt man aus den Trümmern von (Groß-)Kampfschiffen, gewöhnlich Anacondas und Föderale Korvetten oder als Missionsbelohnung.</value>
+    <value>Findet man in den Trümmern von (Groß-)Kampfschiffen, gewöhnlich Anacondas und Föderale Korvetten oder erhält man als Missionsbelohnung.</value>
     <comment>Material location Hybrid Capacitors</comment>
   </data>
   <data name="mechanicalequipment" xml:space="preserve">
-    <value>Erhält man durch das Scannen von Transportschiffen, speziell in Systemen mit ökonomischem Aufschwung.</value>
+    <value>Findet man in den Trümmern von Transportschiffen, speziell in Systemen mit ökonomischem Aufschwung.</value>
     <comment>Material location Mechanical Equipment</comment>
   </data>
   <data name="shieldemitters" xml:space="preserve">
-    <value>Gewinnt man aus den Trümmern von (Groß-)Kampfschiffen in Signalquellen, speziell in Systemen mit ökonomischem Aufschwung.</value>
+    <value>Findet man in den Trümmern von (Groß-)Kampfschiffen oder in Signalquellen, speziell in Systemen mit ökonomischem Aufschwung.</value>
     <comment>Material location Shield Emitters</comment>
   </data>
   <data name="unknowncarapace" xml:space="preserve">
@@ -462,11 +462,11 @@
     <comment>Material location Thargoid Carapace</comment>
   </data>
   <data name="chemicaldistillery" xml:space="preserve">
-    <value>Gewinnt man aus den Trümmern von Transportschiffen.</value>
+    <value>Findet man in den Trümmern von Transportschiffen.</value>
     <comment>Material location Chemical Distillery</comment>
   </data>
   <data name="conductiveceramics" xml:space="preserve">
-    <value>Gewinnt man aus den Trümmern von Transportschiffen, speziell in Anarchie-Systemen in der Nähe von bewohnten Systemen. Auch auffindbar bei Dave's Hope.</value>
+    <value>Findet man in den Trümmern von Transportschiffen, speziell in Anarchie-Systemen in der Nähe von bewohnten Systemen. Auch auffindbar bei Dave's Hope.</value>
     <comment>Material location Conductive Ceramics</comment>
   </data>
   <data name="electrochemicalarrays" xml:space="preserve">
