@@ -514,15 +514,15 @@
     <comment>Material location Compound Shielding</comment>
   </data>
   <data name="conductivepolymers" xml:space="preserve">
-    <value>Gewinnt man aus den Trümmern großer Transport- und Passagierschiffe wie z. B. Type-9 und Beluga Liners, erhält man an Oberflächensignalquellen und als Missionsbelohnung. Auch zu finden bei "Dave's Hope".</value>
+    <value>Findet man in den Trümmern großer Transport- und Passagierschiffe wie z. B. Type-9 und Beluga Liners, erhält man an Oberflächensignalquellen und als Missionsbelohnung. Auch zu finden bei "Dave's Hope".</value>
     <comment>Material location Conductive Polymers</comment>
   </data>
   <data name="configurablecomponents" xml:space="preserve">
-    <value>Wird gewonnen aus den Trümmern von Transportschiffen, speziell in Systemen mit geringer Sicherheit. Auch auffindbar bei Dave's Hope.</value>
+    <value>Findet man in den Trümmern von Transportschiffen, speziell in Systemen mit geringer Sicherheit. Auch auffindbar bei Dave's Hope.</value>
     <comment>Material location Configurable Components</comment>
   </data>
   <data name="heatvanes" xml:space="preserve">
-    <value>Wird gewonnen aus den Trümmern von Transportschiffen oder als Missionsbelohnung. Auch auffindbar bei Dave's Hope.</value>
+    <value>Findet man in den Trümmern von Transportschiffen oder erhält man als Missionsbelohnung. Auch auffindbar bei Dave's Hope.</value>
     <comment>Material location Heat Vanes</comment>
   </data>
   <data name="polymercapacitors" xml:space="preserve">
@@ -564,16 +564,19 @@
   </data>
   
   <data name="militarygradealloys" xml:space="preserve">
-    <value>Findet man in hochgradigen Signalquellen in Systemen mit Krieg oder Bürgerkrieg oder als Missionsbelohnung.</value>
+    <value>Findet man in hochgradigen Signalquellen in Systemen mit Krieg oder Bürgerkrieg oder erhält man als Missionsbelohnung.</value>
     <comment>Material location Military Grade Alloys</comment>
   </data>
   <data name="militarysupercapacitors" xml:space="preserve">
-    <value>Findet man in hochgradigen Signalquellen in Systemen mit Krieg oder Bürgerkrieg oder als Missionsbelohnung.</value>
+    <value>Findet man in hochgradigen Signalquellen in Systemen mit Krieg oder Bürgerkrieg oder erhält man als Missionsbelohnung.</value>
     <comment>Material location Military Supercapacitors</comment>
   </data>
-  
+  <data name="pharmaceuticalisolators" xml:space="preserve">
+    <value>Findet man in hochgradigen Signalquellen, speziell in Systemen mit Ausbruch oder erhält man als Missionsbelohnung.</value>
+    <comment>Material location Pharmaceutical Isolators</comment>
+  </data>
   <data name="protoheatradiators" xml:space="preserve">
-    <value>Findet man in hochgradigen Signalquellen in Systemen mit ökonomischen Aufschwung oder als Missionsbelohnung.</value>
+    <value>Findet man in hochgradigen Signalquellen in Systemen mit ökonomischen Aufschwung oder erhält man als Missionsbelohnung.</value>
     <comment>Material location Proto Heat Radiators</comment>
   </data>
   <data name="protoradiolicalloys" xml:space="preserve">
@@ -581,79 +584,79 @@
     <comment>Material location Proto Radiolic Alloys</comment>
   </data>
   <data name="unknownenergysource" xml:space="preserve">
-    <value>Entdeckt an geheimnisvollen Oberflächenstandorten einer außerirdischen Spezies, bekannt als die Thargoiden.</value>
+    <value>Entdeckt man an den geheimnisvollen Oberflächenstandorten einer außerirdischen Spezies, bekannt als die Thargoiden.</value>
     <comment>Material location unknownenergysource</comment>
   </data>
   <data name="unknownorganiccircuitry" xml:space="preserve">
-    <value>Entdeckt an geheimnisvollen Oberflächenstandorten einer außerirdischen Spezies, bekannt als die Thargoiden.</value>
+    <value>Entdeckt man an den geheimnisvollen Oberflächenstandorten einer außerirdischen Spezies, bekannt als die Thargoiden.</value>
     <comment>Material location Thargoid Organic Circuitry</comment>
   </data>
   <data name="boron" xml:space="preserve">
-    <value>Gewonnen durch Asteroidenbergbau.</value>
+    <value>Gewinnt man durch Asteroidenbergbau.</value>
     <comment>Material location Boron</comment>
   </data>
   <data name="guardian_powercell" xml:space="preserve">
-    <value>Entdeckt in den alten Ruinen einer außerirdischen Spezies, bekannt als die Wächter.</value>
+    <value>Entdeckt man in den alten Ruinen einer außerirdischen Spezies, bekannt als die Wächter.</value>
     <comment>Material location guardian_powercell</comment>
   </data>
   <data name="guardian_weaponblueprint" xml:space="preserve">
-    <value>Entdeckt in den alten Ruinen einer außerirdischen Spezies, bekannt als die Wächter.</value>
+    <value>Entdeckt man in den alten Ruinen einer außerirdischen Spezies, bekannt als die Wächter.</value>
     <comment>Material location guardian_weaponblueprint</comment>
   </data>
   <data name="guardian_vesselblueprint" xml:space="preserve">
-    <value>Entdeckt in den alten Ruinen einer außerirdischen Spezies, bekannt als die Wächter.</value>
+    <value>Entdeckt man in den alten Ruinen einer außerirdischen Spezies, bekannt als die Wächter.</value>
     <comment>Material location guardian_vesselblueprint</comment>
   </data>
   <data name="guardian_techcomponent" xml:space="preserve">
-    <value>Entdeckt in den alten Ruinen einer außerirdischen Spezies, bekannt als die Wächter.</value>
+    <value>Entdeckt man in den alten Ruinen einer außerirdischen Spezies, bekannt als die Wächter.</value>
     <comment>Material location guardian_techcomponent</comment>
   </data>
   <data name="guardian_powerconduit" xml:space="preserve">
-    <value>Entdeckt in den alten Ruinen einer außerirdischen Spezies, bekannt als die Wächter.</value>
+    <value>Entdeckt man in den alten Ruinen einer außerirdischen Spezies, bekannt als die Wächter.</value>
     <comment>Material location guardian_powerconduit</comment>
   </data>
   <data name="guardian_moduleblueprint" xml:space="preserve">
-    <value>Entdeckt in den alten Ruinen einer außerirdischen Spezies, bekannt als die Wächter.</value>
+    <value>Entdeckt man in den alten Ruinen einer außerirdischen Spezies, bekannt als die Wächter.</value>
     <comment>Material location guardian_moduleblueprint</comment>
   </data>
   <data name="guardian_sentinel_weaponparts" xml:space="preserve">
-    <value>Entdeckt in den alten Ruinen einer außerirdischen Spezies, bekannt als die Wächter.</value>
+    <value>Entdeckt man in den alten Ruinen einer außerirdischen Spezies, bekannt als die Wächter.</value>
     <comment>Material location guardian_sentinel_weaponparts</comment>
   </data>
   <data name="guardian_sentinel_wreckagecomponents" xml:space="preserve">
-    <value>Entdeckt in den alten Ruinen einer außerirdischen Spezies, bekannt als die Wächter.</value>
+    <value>Entdeckt man in den alten Ruinen einer außerirdischen Spezies, bekannt als die Wächter.</value>
     <comment>Material location guardian_sentinel_wreckagecomponents</comment>
   </data>
   <data name="lead" xml:space="preserve">
-    <value>Gewonnen durch Asteroidenbergbau.</value>
+    <value>Gewinnt man durch Asteroidenbergbau.</value>
     <comment>Material location Lead</comment>
   </data>
   <data name="rhenium" xml:space="preserve">
-    <value>Gewonnen durch Asteoridenbergbau.</value>
+    <value>Gewinnt man durch Asteoridenbergbau.</value>
     <comment>Material location Rhenium</comment>
   </data>
   <data name="tg_propulsionelement" xml:space="preserve">
-    <value>Gewonnen aus Trümmern von Thargoidenschiffen.</value>
+    <value>Findet man in den Trümmern von Thargoidenschiffen.</value>
     <comment>Material location tg_propulsionelement</comment>
   </data>
   <data name="tg_biomechanicalconduits" xml:space="preserve">
-    <value>Gewonnen aus Trümmern von Thargoidenschiffen.</value>
+    <value>Findet man in den Trümmern von Thargoidenschiffen.</value>
     <comment>Material location tg_biomechanicalconduits</comment>
   </data>
   <data name="tg_weaponparts" xml:space="preserve">
-    <value>Gewonnen aus Trümmern von Thargoidenschiffen.</value>
+    <value>Findet man in den Trümmern von Thargoidenschiffen.</value>
     <comment>Material location tg_weaponparts</comment>
   </data>
   <data name="tg_wreckagecomponents" xml:space="preserve">
-    <value>Gewonnen aus Trümmern von Thargoidenschiffen.</value>
+    <value>Findet man in den Trümmern von Thargoidenschiffen.</value>
     <comment>Material location tg_wreckagecomponents</comment>
   </data>
   <data name="tg_shipflightdata" xml:space="preserve">
-    <value>Erhalten durch das Scannen von Thargoidenschiffen.</value>
+    <value>Erhält man durch das Scannen von Thargoidenschiffen.</value>
     <comment>Material location tg_shipflightdata</comment>
   </data>
   <data name="tg_shipsystemsdata" xml:space="preserve">
-    <value>Erhalten durch das Scannen von Thargoidenschiffen.</value>
+    <value>Erhält man durch das Scannen von Thargoidenschiffen.</value>
     <comment>Material location tg_shipsystemsdata</comment>
   </data>
 </root>
