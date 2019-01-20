@@ -1661,7 +1661,10 @@
     <value>Alexandrit</value>
     <comment>Commodity Alexandrite</comment>
   </data>
-  
+  <data name="Opal" xml:space="preserve">
+    <value>Leere Opale</value>
+    <comment>Commodity Opal</comment>
+  </data>
   <data name="UnknownBiologicalMatter" xml:space="preserve">
     <value>Thargoidenmaterie</value>
     <comment>Commodity UnknownBiologicalMatter</comment>
