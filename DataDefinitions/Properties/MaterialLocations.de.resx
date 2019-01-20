@@ -505,9 +505,15 @@
     <value>Entdeckt man an geheimnisvollen Oberflächenstandorten einer außerirdischen Spezies, bekannt als die Thargoiden.</value>
     <comment>Material location Thargoid Energy Cell</comment>
   </data>
+  <data name="chemicalmanipulators" xml:space="preserve">
+    <value>Gewinnt man aus den Trümmern großer Transportschiffe, üblicherweise Type-7 und Type-9, speziell in Anarchie-Systemen oder Systemen die an einer Seuche leiden. Auch zu finden bei "Dave's Hope"</value>
+    <comment>Material location Chemical Manipulators</comment>
+  </data>
   
-  
-  
+  <data name="conductivepolymers" xml:space="preserve">
+    <value>Gewinnt man aus den Trümmern großer Transport- und Passagierschiffe wie z. B. Type-9 und Beluga Liners, erhält man an Oberflächensignalquellen und als Missionsbelohnung. Auch zu finden bei "Dave's Hope".</value>
+    <comment>Material location Conductive Polymers</comment>
+  </data>
   <data name="configurablecomponents" xml:space="preserve">
     <value>Wird gewonnen aus den Trümmern von Transportschiffen, speziell in Systemen mit geringer Sicherheit. Auch auffindbar bei Dave's Hope.</value>
     <comment>Material location Configurable Components</comment>
