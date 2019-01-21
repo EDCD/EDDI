@@ -922,7 +922,7 @@ namespace EddiShipMonitor
             if (@event.boostused is null)
             {
                 Ship ship = GetCurrentShip();
-                if (@event.fuelused > ship.maxfuel)
+                if (@event.fuelused > ship?.maxfuel)
                 {
                     ship.maxfuel = @event.fuelused;
                     ship.maxjump = @event.distance;
