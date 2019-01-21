@@ -464,7 +464,7 @@ namespace Eddi
         private void homeSystemChanged(object sender, TextChangedEventArgs e)
         {
             EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
-            if (eddiConfiguration.HomeSystem != eddiHomeSystemText.Text)
+            if (eddiHomeSystemText.Text.Length >= 3 && eddiConfiguration.HomeSystem != eddiHomeSystemText.Text)
             {
                 eddiConfiguration.HomeSystem = string.IsNullOrWhiteSpace(eddiHomeSystemText.Text) ? null : eddiHomeSystemText.Text.Trim();
                 eddiConfiguration = EDDI.Instance.updateHomeSystem(eddiConfiguration);
