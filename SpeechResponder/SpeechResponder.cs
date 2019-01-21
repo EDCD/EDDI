@@ -107,11 +107,13 @@ namespace EddiSpeechResponder
 
         public bool Start()
         {
+            EDDI.Instance.State["speechresponder_quiet"] = false;
             return true;
         }
 
         public void Stop()
         {
+            EDDI.Instance.State["speechresponder_quiet"] = true;
         }
 
         public void Reload()
