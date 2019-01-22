@@ -378,7 +378,9 @@
   <data name="LifeSupportShielded" xml:space="preserve">
     <value>Abgeschirmte Lebenserhaltung</value>
   </data>
-  
+  <data name="PointDefencePointDefenceCapacity" xml:space="preserve">
+    <value>Punkt Verteidigung Munitionskapazität</value>
+  </data>
   <data name="PointDefenceLightWeight" xml:space="preserve">
     <value>Leichte Punktverteidigung</value>
   </data>
