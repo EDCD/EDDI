@@ -224,13 +224,31 @@ Bitte schließe die andere Instanz und versuche es noch einmal.</value>
   <data name="safe_mode" xml:space="preserve">
     <value>Abgesicherter Modus - Upgrade erforderlich.</value>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="login" xml:space="preserve">
+    <value>Log in</value>
+  </data>
+  <data name="frontier_api_cant_login_from_va" xml:space="preserve">
+    <value>Um sich anzumelden, beenden Sie bitte Voice Attack und starten Sie EDDI eigenständig.</value>
+  </data>
+  <data name="frontierApiStatusLabel" xml:space="preserve">
+    <value>Frontier API Status:</value>
+  </data>
+  <data name="frontierApiConnected" xml:space="preserve">
+    <value>Verbunden</value>
+  </data>
+  <data name="frontierApiNotConnected" xml:space="preserve">
+    <value>Nicht verbunden</value>
+  </data>
+  <data name="frontierApiConnecting" xml:space="preserve">
+    <value>Verbinde</value>
+  </data>
+  <data name="frontier_api_close_browser" xml:space="preserve">
+    <value>Sie können Ihr Browserfenster jetzt schließen und zu EDDI zurückkehren.</value>
+  </data>
+  <data name="frontier_api_reset" xml:space="preserve">
+    <value>Zurücksetzen der Verbindung.</value>
+  </data>
+  <data name="frontier_api_please_authenticate" xml:space="preserve">
+    <value>Bitte authentifizieren Sie EDDI's Verbindung zur Frontier API.</value>
+  </data>
 </root>
