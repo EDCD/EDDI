@@ -59,6 +59,8 @@ namespace EddiEvents
 
         public string faction { get; private set; }
 
+        public string factionstate => (factionState ?? FactionState.None).localizedName;
+
         public string economy => (Economy ?? Economy.None).localizedName;
 
         public string economy2 => (Economy2 ?? Economy.None).localizedName;
@@ -83,10 +85,11 @@ namespace EddiEvents
         public Superpower Allegiance { get; private set; } = Superpower.None;
         public Government Government { get; private set; } = Government.None;
         public SecurityLevel securityLevel { get; private set; } = SecurityLevel.None;
+        public FactionState factionState { get; private set; } = FactionState.None;
         public StationModel stationModel { get; private set; } = StationModel.None;
         public BodyType bodyType { get; private set; } = BodyType.None;
 
-        public LocationEvent(DateTime timestamp, string system, decimal x, decimal y, decimal z, long systemAddress, string body, BodyType bodytype, bool docked, string station, StationModel stationtype, long? marketId, Superpower allegiance, string faction, Economy economy, Economy economy2, Government government, SecurityLevel security, long? population, decimal? longitude, decimal? latitude, List<Faction> factions) : base(timestamp, NAME)
+        public LocationEvent(DateTime timestamp, string system, decimal x, decimal y, decimal z, long systemAddress, string body, BodyType bodytype, bool docked, string station, StationModel stationtype, long? marketId, Superpower allegiance, string faction, FactionState factionstate, Economy economy, Economy economy2, Government government, SecurityLevel security, long? population, decimal? longitude, decimal? latitude, List<Faction> factions) : base(timestamp, NAME)
         {
             this.system = system;
             this.x = x;

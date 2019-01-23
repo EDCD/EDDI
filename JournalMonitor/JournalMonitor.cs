@@ -106,8 +106,7 @@ namespace EddiJournalMonitor
                                     string stationState = JsonParsing.getString(data, "StationState") ?? string.Empty;
                                     StationModel stationModel = StationModel.FromEDName(JsonParsing.getString(data, "StationType") ?? "None");
                                     Superpower allegiance = getAllegiance(data, "StationAllegiance") ?? Superpower.None;
-                                    string faction = getFaction(data, "StationFaction");
-                                    FactionState factionState = FactionState.FromEDName(JsonParsing.getString(data, "FactionState") ?? "None");
+                                    Faction faction = getFactionData(data, "StationFaction");
                                     Government government = Government.FromEDName(JsonParsing.getString(data, "StationGovernment" ?? "None"));
                                     decimal? distancefromstar = JsonParsing.getOptionalDecimal(data, "DistFromStarLS");
 
@@ -139,7 +138,7 @@ namespace EddiJournalMonitor
                                     bool wanted = JsonParsing.getOptionalBool(data, "Wanted") ?? false;
                                     bool activeFine = JsonParsing.getOptionalBool(data, "ActiveFine") ?? false;
 
-                                    events.Add(new DockedEvent(timestamp, systemName, systemAddress, marketId, stationName, stationState, stationModel, allegiance, faction, factionState, Economies, government, distancefromstar, stationServices, cockpitBreach, wanted, activeFine) { raw = line, fromLoad = fromLogLoad });
+                                    events.Add(new DockedEvent(timestamp, systemName, systemAddress, marketId, stationName, stationState, stationModel, allegiance, faction.name, faction.FactionState, Economies, government, distancefromstar, stationServices, cockpitBreach, wanted, activeFine) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
@@ -201,8 +200,7 @@ namespace EddiJournalMonitor
                                     int? boostUsed = JsonParsing.getOptionalInt(data, "BoostUsed"); // 1-3 are synthesis, 4 is any supercharge (white dwarf or neutron star)
                                     decimal distance = JsonParsing.getDecimal(data, "JumpDist");
                                     Superpower allegiance = getAllegiance(data, "SystemAllegiance");
-                                    string faction = getFaction(data, "SystemFaction");
-                                    FactionState factionState = FactionState.FromEDName(JsonParsing.getString(data, "FactionState") ?? "None");
+                                    Faction faction = getFactionData(data, "SystemFaction");
                                     Economy economy = Economy.FromEDName(JsonParsing.getString(data, "SystemEconomy") ?? "$economy_None");
                                     Economy economy2 = Economy.FromEDName(JsonParsing.getString(data, "SystemSecondEconomy") ?? "$economy_None");
                                     Government government = Government.FromEDName(JsonParsing.getString(data, "SystemGovernment") ?? "$government_None;");
@@ -217,7 +215,7 @@ namespace EddiJournalMonitor
                                         factions = getFactions(factionsVal);
                                     }
 
-                                    events.Add(new JumpedEvent(timestamp, systemName, systemAddress, x, y, z, starName, distance, fuelUsed, fuelRemaining, boostUsed, allegiance, faction, factionState, economy, economy2, government, security, population, factions) { raw = line, fromLoad = fromLogLoad });
+                                    events.Add(new JumpedEvent(timestamp, systemName, systemAddress, x, y, z, starName, distance, fuelUsed, fuelRemaining, boostUsed, allegiance, faction.name, faction.FactionState, economy, economy2, government, security, population, factions) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
@@ -242,7 +240,7 @@ namespace EddiJournalMonitor
                                     BodyType bodyType = BodyType.FromEDName(JsonParsing.getString(data, "BodyType"));
                                     bool docked = JsonParsing.getBool(data, "Docked");
                                     Superpower allegiance = getAllegiance(data, "SystemAllegiance");
-                                    string faction = getFaction(data, "SystemFaction");
+                                    Faction faction = getFactionData(data, "SystemFaction");
                                     Economy economy = Economy.FromEDName(JsonParsing.getString(data, "SystemEconomy"));
                                     Economy economy2 = Economy.FromEDName(JsonParsing.getString(data, "SystemSecondEconomy"));
                                     Government government = Government.FromEDName(JsonParsing.getString(data, "SystemGovernment"));
@@ -266,7 +264,7 @@ namespace EddiJournalMonitor
                                         factions = getFactions(factionsVal);
                                     }
 
-                                    events.Add(new LocationEvent(timestamp, systemName, x, y, z, systemAddress, body, bodyType, docked, station, stationtype, marketId, allegiance, faction, economy, economy2, government, security, population, longitude, latitude, factions) { raw = line, fromLoad = fromLogLoad });
+                                    events.Add(new LocationEvent(timestamp, systemName, x, y, z, systemAddress, body, bodyType, docked, station, stationtype, marketId, allegiance, faction.name, faction.FactionState, economy, economy2, government, security, population, longitude, latitude, factions) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
@@ -3561,6 +3559,25 @@ namespace EddiJournalMonitor
             // Might be a superpower...
             Superpower superpowerFaction = Superpower.FromNameOrEdName(faction);
             return superpowerFaction?.invariantName ?? faction;
+        }
+
+        private static Faction getFactionData(IDictionary<string, object> data, string key)
+        {
+            string name = null;
+            FactionState factionstate = FactionState.None;
+            Faction faction = new Faction();
+
+            if (data.TryGetValue(key, out object val))
+            {
+                List<object> factionVal = (List<object>)val;
+                Dictionary<string, object> factionData = (Dictionary<string, object>)factionVal.First();
+                name = JsonParsing.getString(factionData, "Name");
+                factionstate = FactionState.FromEDName(JsonParsing.getString(factionData, "FactionState") ?? "None");
+            }
+            faction.name = name;
+            faction.FactionState = factionstate;
+
+            return faction;
         }
 
         private static string getRole(IDictionary<string, object> data, string key)
