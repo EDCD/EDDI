@@ -3569,8 +3569,7 @@ namespace EddiJournalMonitor
 
             if (data.TryGetValue(key, out object val))
             {
-                List<object> factionVal = (List<object>)val;
-                Dictionary<string, object> factionData = (Dictionary<string, object>)factionVal.First();
+                Dictionary<string, object> factionData = (Dictionary<string, object>)val;
                 name = JsonParsing.getString(factionData, "Name");
                 factionstate = FactionState.FromEDName(JsonParsing.getString(factionData, "FactionState") ?? "None");
             }

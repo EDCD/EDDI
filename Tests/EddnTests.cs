@@ -335,10 +335,10 @@ namespace UnitTests
 			            ""Trend"": 0
 		            }]
 	            }],
-	            ""SystemFaction"": [{
+	            ""SystemFaction"": {
 		            ""Name"": ""EXO"",
 		            ""FactionState"": ""Boom""
-	            }]
+	            }
             }";
 
             string line2 = @"{
@@ -349,10 +349,10 @@ namespace UnitTests
 	            ""StarSystem"": ""Diaguandri"",
 	            ""SystemAddress"": 670417429889,
 	            ""MarketID"": 3223343616,
-	            ""StationFaction"": [{
+	            ""StationFaction"": {
 		            ""Name"": ""EXO"",
 		            ""FactionState"": ""Boom""
-	            }],
+	            },
 	            ""StationGovernment"": ""$government_Democracy;"",
 	            ""StationGovernment_Localised"": ""Democracy"",
 	            ""StationServices"": [""Dock"",
@@ -502,10 +502,10 @@ namespace UnitTests
 			            ""Trend"": 0
 		            }]
 	            }],
-	            ""SystemFaction"": [{
+	            ""SystemFaction"": {
 		            ""Name"": ""Laniakea"",
 		            ""FactionState"": ""None""
-	            }]
+	            }
             }";
             IDictionary<string, object> data = Utilities.Deserializtion.DeserializeData(line);
 
