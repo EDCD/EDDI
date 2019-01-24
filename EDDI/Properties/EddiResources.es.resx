@@ -224,13 +224,31 @@ Por favor, cierre la otra instancia y pruebe de nuevo.</value>
   <data name="safe_mode" xml:space="preserve">
     <value>Modo seguro - requiere actualización.</value>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="login" xml:space="preserve">
+    <value>Iniciar sesión</value>
+  </data>
+  <data name="frontier_api_cant_login_from_va" xml:space="preserve">
+    <value>Para iniciar sesión, por favor salga de Voice Attack y ejecute E-D-D-I como una aplicación normal.</value>
+  </data>
+  <data name="frontierApiStatusLabel" xml:space="preserve">
+    <value>Estado de la API de Frontier:</value>
+  </data>
+  <data name="frontierApiConnected" xml:space="preserve">
+    <value>Conectado</value>
+  </data>
+  <data name="frontierApiNotConnected" xml:space="preserve">
+    <value>Desconectado</value>
+  </data>
+  <data name="frontierApiConnecting" xml:space="preserve">
+    <value>Estableciendo conexión</value>
+  </data>
+  <data name="frontier_api_close_browser" xml:space="preserve">
+    <value>Debe cerrar su navegador y volver a Edi.</value>
+  </data>
+  <data name="frontier_api_reset" xml:space="preserve">
+    <value>Conexión restablecida.</value>
+  </data>
+  <data name="frontier_api_please_authenticate" xml:space="preserve">
+    <value>Por favor, autentique la conexión de EDDI, a la API de Frontier.</value>
+  </data>
 </root>

@@ -2216,12 +2216,12 @@ namespace Eddi
         {
             Logging.Verbose = configuration.Debug;
             configuration.validHomeSystem = false;
-            if (configuration.HomeSystem != null && configuration.HomeSystem.Trim().Length > 0)
+            if (configuration.HomeSystem != null && configuration.HomeSystem.Trim().Length > 2)
             {
                 StarSystem system = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystem(configuration.HomeSystem.Trim(), refresh);
 
                 //Ignore null & empty systems
-                if (system != null && system.bodies.Count > 0)
+                if (system != null && system.bodies?.Count > 0)
                 {
                     if (refresh || system.name != HomeStarSystem?.name)
                     {
@@ -2243,7 +2243,7 @@ namespace Eddi
         {
             Logging.Verbose = configuration.Debug;
             configuration.validHomeStation = false;
-            if (configuration.HomeStation != null)
+            if (HomeStarSystem?.stations != null && configuration.HomeStation != null)
             {
                 string homeStationName = configuration.HomeStation.Trim();
                 foreach (Station station in HomeStarSystem.stations)
@@ -2264,9 +2264,9 @@ namespace Eddi
         {
             Logging.Verbose = configuration.Debug;
             configuration.validSquadronSystem = false;
-            if (configuration.SquadronSystem != null && configuration.SquadronSystem.Trim().Length > 0)
+            if (configuration.SquadronSystem != null && configuration.SquadronSystem.Trim().Length > 2)
             {
-                StarSystem system = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystem(configuration.SquadronSystem.Trim(), refresh);
+                StarSystem system = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystem(configuration.SquadronSystem.Trim(), true);
 
                 //Ignore null & empty systems
                 if (system != null && system.bodies.Count > 0)

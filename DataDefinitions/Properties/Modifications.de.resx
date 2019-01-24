@@ -300,7 +300,9 @@
   <data name="CargoScannerShielded" xml:space="preserve">
     <value>Abgeschirmter Fracht-Scanner</value>
   </data>
-  
+  <data name="ChaffLauncherChaffCapacity" xml:space="preserve">
+    <value>Kapazität der Düppel Munition</value>
+  </data>
   <data name="ChaffLauncherLightWeight" xml:space="preserve">
     <value>Leichter Chaff-Werfer</value>
   </data>
@@ -343,7 +345,9 @@
   <data name="HatchBreakerLimpetShielded" xml:space="preserve">
     <value>Abgeschirmte Frachtlukenbrecherdrohnen-Steuerung</value>
   </data>
-  
+  <data name="HeatSinkLauncherHeatSinkCapacity" xml:space="preserve">
+    <value>Kapazität der Kühlkörper-Munition</value>
+  </data>
   <data name="HeatSinkLauncherLightWeight" xml:space="preserve">
     <value>Leichter Kühlkörperwerfer</value>
   </data>
@@ -374,7 +378,9 @@
   <data name="LifeSupportShielded" xml:space="preserve">
     <value>Abgeschirmte Lebenserhaltung</value>
   </data>
-  
+  <data name="PointDefencePointDefenceCapacity" xml:space="preserve">
+    <value>Punkt Verteidigung Munitionskapazität</value>
+  </data>
   <data name="PointDefenceLightWeight" xml:space="preserve">
     <value>Leichte Punktverteidigung</value>
   </data>
@@ -414,7 +420,9 @@
   <data name="KillWarrantScannerWideAngle" xml:space="preserve">
     <value>Weitwinkel-Tötungsbefehl-Scanner</value>
   </data>
-  
+  <data name="PAOvercharged" xml:space="preserve">
+    <value>Optimierter Plasmabeschleuniger</value>
+  </data>
   <data name="ProspectingLimpetLightWeight" xml:space="preserve">
     <value>Leichte Sammeldrohne</value>
   </data>

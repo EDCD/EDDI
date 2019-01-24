@@ -300,7 +300,9 @@
   <data name="CargoScannerShielded" xml:space="preserve">
     <value>Escáner de manifiesto blindado</value>
   </data>
-  
+  <data name="ChaffLauncherChaffCapacity" xml:space="preserve">
+    <value>Lanzador de señuelos capacidad de munición</value>
+  </data>
   <data name="ChaffLauncherLightWeight" xml:space="preserve">
     <value>Lanzador de señuelos ligero</value>
   </data>
@@ -319,7 +321,9 @@
   <data name="CollectionLimpetShielded" xml:space="preserve">
     <value>Controlador de drones de recogida blindado</value>
   </data>
-  
+  <data name="ECMShielded" xml:space="preserve">
+    <value>Contramedidas electrónicas blindadas</value>
+  </data>
   <data name="FuelScoopShielded" xml:space="preserve">
     <value>Colector de combustible blindado</value>
   </data>
@@ -341,7 +345,9 @@
   <data name="HatchBreakerLimpetShielded" xml:space="preserve">
     <value>Controladora de drónes de extracción blindada</value>
   </data>
-  
+  <data name="HeatSinkLauncherHeatSinkCapacity" xml:space="preserve">
+    <value>Lanzador de eyector térmico capacidad de munición</value>
+  </data>
   <data name="HeatSinkLauncherLightWeight" xml:space="preserve">
     <value>Lanzador de eyector térmico ligero</value>
   </data>
@@ -372,7 +378,9 @@
   <data name="LifeSupportShielded" xml:space="preserve">
     <value>Soporte vital blindado</value>
   </data>
-  
+  <data name="PointDefencePointDefenceCapacity" xml:space="preserve">
+    <value>Defensa de punto capacidad de munición</value>
+  </data>
   <data name="PointDefenceLightWeight" xml:space="preserve">
     <value>Defensa de punto ligera</value>
   </data>
@@ -394,18 +402,34 @@
   <data name="CargoScannerFastScan" xml:space="preserve">
     <value>Escáner de manifiesto rápido</value>
   </data>
-  
+  <data name="CargoScannerLongRange" xml:space="preserve">
+    <value>Escáner de manifiesto de largo alcance</value>
+  </data>
   <data name="CargoScannerWideAngle" xml:space="preserve">
     <value>Escáner de manifiesto de angulo amplio</value>
   </data>
-  
-  
-  
+  <data name="ECMLightWeight" xml:space="preserve">
+    <value>Contramedidas electronicas Ligero</value>
+  </data>
+  <data name="ECMReinforced" xml:space="preserve">
+    <value>Contramedidas electronicas Reforzado</value>
+  </data>
+  <data name="KillWarrantScannerFastScan" xml:space="preserve">
+    <value>Escáner Detector de Recompensas</value>
+  </data>
   <data name="KillWarrantScannerWideAngle" xml:space="preserve">
     <value>Escáner de registro criminal ángulo amplio</value>
   </data>
-  
-  
-  
-  
+  <data name="PAOvercharged" xml:space="preserve">
+    <value>Acelerador de Plasma sobrecargado</value>
+  </data>
+  <data name="ProspectingLimpetLightWeight" xml:space="preserve">
+    <value>Controlador de drones de recogida ligero</value>
+  </data>
+  <data name="ProspectingLimpetReinforced" xml:space="preserve">
+    <value>Controlador de drones de recogida reforzado</value>
+  </data>
+  <data name="ProspectingLimpetShielded" xml:space="preserve">
+    <value>Controlador de drones de recogida blindado</value>
+  </data>
 </root>
