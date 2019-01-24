@@ -673,19 +673,25 @@ namespace EddiShipMonitor
 
         private void handleModulePurchasedEvent(ModulePurchasedEvent @event)
         {
-            AddModule((int)@event.shipid, @event.slot, @event.buymodule);
+            Ship ship = GetShip(@event.shipid) ?? @event.shipDefinition;
+            ship.LocalId = ship.LocalId == 0 ? (int)@event.shipid : ship.LocalId;
+            AddModule(ship, @event.slot, @event.buymodule);
             writeShips();
         }
 
         private void handleModuleRetrievedEvent(ModuleRetrievedEvent @event)
         {
-            AddModule((int)@event.shipid, @event.slot, @event.module);
+            Ship ship = GetShip(@event.shipid) ?? @event.shipDefinition;
+            ship.LocalId = ship.LocalId == 0 ? (int)@event.shipid : ship.LocalId;
+            AddModule(ship, @event.slot, @event.module);
             writeShips();
         }
 
         private void handleModuleSoldEvent(ModuleSoldEvent @event)
         {
-            RemoveModule((int)@event.shipid, @event.slot);
+            Ship ship = GetShip(@event.shipid) ?? @event.shipDefinition;
+            ship.LocalId = ship.LocalId == 0 ? (int)@event.shipid : ship.LocalId;
+            RemoveModule(ship, @event.slot);
             writeShips();
         }
 
@@ -696,15 +702,19 @@ namespace EddiShipMonitor
 
         private void handleModuleStoredEvent(ModuleStoredEvent @event)
         {
-            RemoveModule((int)@event.shipid, @event.slot, @event.replacementmodule);
+            Ship ship = GetShip(@event.shipid) ?? @event.shipDefinition;
+            ship.LocalId = ship.LocalId == 0 ? (int)@event.shipid : ship.LocalId;
+            RemoveModule(ship, @event.slot, @event.replacementmodule);
             writeShips();
         }
 
         private void handleModulesStoredEvent(ModulesStoredEvent @event)
         {
+            Ship ship = GetShip(@event.shipid) ?? @event.shipDefinition;
+            ship.LocalId = ship.LocalId == 0 ? (int)@event.shipid : ship.LocalId;
             foreach (string slot in @event.slots)
             {
-                RemoveModule((int)@event.shipid, slot);
+                RemoveModule(ship, slot);
             }
             writeShips();
         }
@@ -1238,243 +1248,259 @@ namespace EddiShipMonitor
             }
         }
 
-        private void AddModule(int shipid, string slot, Module module)
+        private void AddModule(Ship ship, string slot, Module module)
         {
-            Ship ship = GetShip(shipid);
-
             if (ship != null && slot != null)
             {
-                switch (slot)
-                {
-                    case "Armour":
-                        ship.bulkheads = module;
-                        break;
-                    case "PowerPlant":
-                        ship.powerplant = module;
-                        break;
-                    case "MainEngines":
-                        ship.thrusters = module;
-                        break;
-                    case "PowerDistributor":
-                        ship.powerdistributor = module;
-                        break;
-                    case "FrameShiftDrive":
-                        ship.frameshiftdrive = module;
-                        break;
-                    case "LifeSupport":
-                        ship.lifesupport = module;
-                        break;
-                    case "Radar":
-                        ship.sensors = module;
-                        break;
-                    case "FuelTank":
-                        {
-                            ship.fueltank = module;
-                            ship.fueltankcapacity = (decimal)Math.Pow(2, ship.fueltank.@class);
-                        }
-                        break;
-                    case "CargoHatch":
-                        ship.cargohatch = module;
-                        break;
-                }
-
-                if (slot.Contains("PaintJob"))
-                {
-                    ship.paintjob = module.EDName;
-                }
-                else if (slot.Contains("Hardpoint"))
-                {
-                    // This is a hardpoint
-                    Hardpoint hardpoint = new Hardpoint() { name = slot };
-                    hardpoint.module = module;
-
-                    if (hardpoint.name.StartsWith("Tiny"))
-                    {
-                        hardpoint.size = 0;
-                    }
-                    else if (hardpoint.name.StartsWith("Small"))
-                    {
-                        hardpoint.size = 1;
-                    }
-                    else if (hardpoint.name.StartsWith("Medium"))
-                    {
-                        hardpoint.size = 2;
-                    }
-                    else if (hardpoint.name.StartsWith("Large"))
-                    {
-                        hardpoint.size = 3;
-                    }
-                    else if (hardpoint.name.StartsWith("Huge"))
-                    {
-                        hardpoint.size = 4;
-                    }
-
-                    // Build new dictionary of ship hardpoints, excepting sold/stored hardpoint
-                    Dictionary<string, Hardpoint> hardpoints = new Dictionary<string, Hardpoint>();
-                    foreach (Hardpoint hp in ship.hardpoints)
-                    {
-                        if (hp.name != slot)
-                        {
-                            hardpoints.Add(hp.name, hp);
-                        }
-                    }
-                    hardpoints.Add(hardpoint.name, hardpoint);
-
-                    // Clear ship hardpoints and repopulate in correct order
-                    ship.hardpoints.Clear();
-                    foreach (string size in HARDPOINT_SIZES)
-                    {
-                        for (int i = 1; i <= 12; i++)
-                        {
-                            hardpoints.TryGetValue(size + "Hardpoint" + i, out Hardpoint hp);
-                            if (hp != null)
-                            {
-                                ship.hardpoints.Add(hp);
-                            }
-                        }
-                    }
-                }
-                else if (slot.Contains("Slot") || slot.Contains("Military"))
-                {
-                    // This is a compartment
-                    Compartment compartment = new Compartment() { name = slot };
-                    compartment.module = module;
-
-                    // Compartment slots are in the form of "Slotnn_Sizen" or "Militarynn"
-                    if (slot.Contains("Slot"))
-                    {
-                        Match matches = Regex.Match(compartment.name, @"Size([0-9]+)");
-                        if (matches.Success)
-                        {
-                            compartment.size = Int32.Parse(matches.Groups[1].Value);
-                        }
-                    }
-                    else if (slot.Contains("Military"))
-                    {
-                        compartment.size = (int)ship.militarysize;
-                    }
-
-                    // Build new dictionary of ship compartments, excepting sold/stored compartment
-                    Dictionary<string, Compartment> compartments = new Dictionary<string, Compartment>();
-                    foreach (Compartment cpt in ship.compartments)
-                    {
-                        if (cpt.name != slot)
-                        {
-                            compartments.Add(cpt.name, cpt);
-                        }
-                    }
-                    compartments.Add(compartment.name, compartment);
-
-                    // Clear ship compartments and repopulate in correct order
-                    ship.compartments.Clear();
-                    for (int i = 1; i <= 12; i++)
-                    {
-                        for (int j = 1; j <= 8; j++)
-                        {
-                            compartments.TryGetValue("Slot" + i.ToString("00") + "_Size" + j, out Compartment cpt);
-                            if (cpt != null)
-                            {
-                                ship.compartments.Add(cpt);
-                            }
-                        }
-                    }
-
-                    for (int i = 1; i <= 3; i++)
-                    {
-                        compartments.TryGetValue("Military" + i.ToString("00"), out Compartment cpt);
-                        if (cpt != null)
-                        {
-                            ship.compartments.Add(cpt);
-                        }
-                    }
-                }
-            }
-            else
-            {
-                Logging.Warn("Cannot add the module. Ship ID " + shipid + " or ship slot " + slot + " was not found.");
-            }
-        }
-
-            private void RemoveModule(int shipid, string slot, Module replacement = null)
-        {
-            Ship ship = GetShip(shipid);
-
-            if (ship != null && slot != null)
-            {
-                if (replacement != null)
+                Ship updatedShip = ship;
+                try
                 {
                     switch (slot)
                     {
                         case "Armour":
-                            ship.bulkheads = replacement;
+                            updatedShip.bulkheads = module;
                             break;
                         case "PowerPlant":
-                            ship.powerplant = replacement;
+                            updatedShip.powerplant = module;
                             break;
                         case "MainEngines":
-                            ship.thrusters = replacement;
+                            updatedShip.thrusters = module;
                             break;
                         case "PowerDistributor":
-                            ship.powerdistributor = replacement;
+                            updatedShip.powerdistributor = module;
                             break;
                         case "FrameShiftDrive":
-                            ship.frameshiftdrive = replacement;
+                            updatedShip.frameshiftdrive = module;
                             break;
                         case "LifeSupport":
-                            ship.lifesupport = replacement;
+                            updatedShip.lifesupport = module;
                             break;
                         case "Radar":
-                            ship.sensors = replacement;
+                            updatedShip.sensors = module;
                             break;
                         case "FuelTank":
                             {
-                                ship.fueltank = replacement;
-                                ship.fueltankcapacity = (decimal)Math.Pow(2, ship.fueltank.@class);
+                                updatedShip.fueltank = module;
+                                updatedShip.fueltankcapacity = (decimal)Math.Pow(2, updatedShip.fueltank.@class);
                             }
                             break;
                         case "CargoHatch":
-                            ship.cargohatch = replacement;
+                            updatedShip.cargohatch = module;
                             break;
                     }
 
-                }
-                else
-                {
                     if (slot.Contains("PaintJob"))
                     {
-                        ship.paintjob = null;
+                        updatedShip.paintjob = module.EDName;
                     }
                     else if (slot.Contains("Hardpoint"))
                     {
-                        // Build new list of ship hardpoints, excepting sold/stored hardpoint
-                        List<Hardpoint> hardpoints = new List<Hardpoint>();
-                        foreach (Hardpoint hpt in ship.hardpoints)
+                        // This is a hardpoint
+                        Hardpoint hardpoint = new Hardpoint() { name = slot };
+                        hardpoint.module = module;
+
+                        if (hardpoint.name.StartsWith("Tiny"))
                         {
-                            if (hpt.name != slot)
+                            hardpoint.size = 0;
+                        }
+                        else if (hardpoint.name.StartsWith("Small"))
+                        {
+                            hardpoint.size = 1;
+                        }
+                        else if (hardpoint.name.StartsWith("Medium"))
+                        {
+                            hardpoint.size = 2;
+                        }
+                        else if (hardpoint.name.StartsWith("Large"))
+                        {
+                            hardpoint.size = 3;
+                        }
+                        else if (hardpoint.name.StartsWith("Huge"))
+                        {
+                            hardpoint.size = 4;
+                        }
+
+                        // Build new dictionary of ship hardpoints, excepting sold/stored hardpoint
+                        Dictionary<string, Hardpoint> hardpoints = new Dictionary<string, Hardpoint>();
+                        foreach (Hardpoint hp in updatedShip.hardpoints)
+                        {
+                            if (hp.name != slot)
                             {
-                                hardpoints.Add(hpt);
+                                hardpoints.Add(hp.name, hp);
                             }
                         }
-                        ship.hardpoints = hardpoints;
+                        hardpoints.Add(hardpoint.name, hardpoint);
+
+                        // Clear ship hardpoints and repopulate in correct order
+                        updatedShip.hardpoints.Clear();
+                        foreach (string size in HARDPOINT_SIZES)
+                        {
+                            for (int i = 1; i <= 12; i++)
+                            {
+                                hardpoints.TryGetValue(size + "Hardpoint" + i, out Hardpoint hp);
+                                if (hp != null)
+                                {
+                                    updatedShip.hardpoints.Add(hp);
+                                }
+                            }
+                        }
                     }
                     else if (slot.Contains("Slot") || slot.Contains("Military"))
                     {
-                        // Build new list of ship compartments, excepting sold/stored compartment
-                        List<Compartment> compartments = new List<Compartment>();
-                        foreach (Compartment cpt in ship.compartments)
+                        // This is a compartment
+                        Compartment compartment = new Compartment() { name = slot };
+                        compartment.module = module;
+
+                        // Compartment slots are in the form of "Slotnn_Sizen" or "Militarynn"
+                        if (slot.Contains("Slot"))
+                        {
+                            Match matches = Regex.Match(compartment.name, @"Size([0-9]+)");
+                            if (matches.Success)
+                            {
+                                compartment.size = Int32.Parse(matches.Groups[1].Value);
+                            }
+                        }
+                        else if (slot.Contains("Military"))
+                        {
+                            compartment.size = updatedShip.militarysize ?? 0;
+                        }
+
+                        // Build new dictionary of ship compartments, excepting sold/stored compartment
+                        Dictionary<string, Compartment> compartments = new Dictionary<string, Compartment>();
+                        foreach (Compartment cpt in updatedShip.compartments)
                         {
                             if (cpt.name != slot)
                             {
-                                compartments.Add(cpt);
+                                compartments.Add(cpt.name, cpt);
                             }
                         }
-                        ship.compartments = compartments;
+                        compartments.Add(compartment.name, compartment);
+
+                        // Clear ship compartments and repopulate in correct order
+                        updatedShip.compartments.Clear();
+                        for (int i = 1; i <= 12; i++)
+                        {
+                            for (int j = 1; j <= 8; j++)
+                            {
+                                compartments.TryGetValue("Slot" + i.ToString("00") + "_Size" + j, out Compartment cpt);
+                                if (cpt != null)
+                                {
+                                    updatedShip.compartments.Add(cpt);
+                                }
+                            }
+                        }
+
+                        for (int i = 1; i <= 3; i++)
+                        {
+                            compartments.TryGetValue("Military" + i.ToString("00"), out Compartment cpt);
+                            if (cpt != null)
+                            {
+                                updatedShip.compartments.Add(cpt);
+                            }
+                        }
                     }
                 }
+                catch (Exception ex)
+                {
+                    Logging.Error("Failed to add module to ship." + JsonConvert.SerializeObject(new object[] { slot, module }), ex);
+                }
+                ship = updatedShip ?? ship;
             }
             else
             {
-                Logging.Warn("Cannot remove the module. Ship ID " + shipid + " or ship slot " + slot + " was not found.");
+                Logging.Warn("Cannot add the module. Ship ID " + ship?.LocalId + " or ship slot " + slot + " was not found.");
+            }
+        }
+
+        private void RemoveModule(Ship ship, string slot, Module replacement = null)
+        {
+            if (ship != null && slot != null)
+            {
+                Ship updatedShip = ship;
+                try
+                {
+                    if (replacement != null)
+                    {
+                        switch (slot)
+                        {
+                            case "Armour":
+                                ship.bulkheads = replacement;
+                                break;
+                            case "PowerPlant":
+                                ship.powerplant = replacement;
+                                break;
+                            case "MainEngines":
+                                ship.thrusters = replacement;
+                                break;
+                            case "PowerDistributor":
+                                ship.powerdistributor = replacement;
+                                break;
+                            case "FrameShiftDrive":
+                                ship.frameshiftdrive = replacement;
+                                break;
+                            case "LifeSupport":
+                                ship.lifesupport = replacement;
+                                break;
+                            case "Radar":
+                                ship.sensors = replacement;
+                                break;
+                            case "FuelTank":
+                                {
+                                    ship.fueltank = replacement;
+                                    ship.fueltankcapacity = (decimal)Math.Pow(2, ship.fueltank.@class);
+                                }
+                                break;
+                            case "CargoHatch":
+                                ship.cargohatch = replacement;
+                                break;
+                        }
+
+                    }
+                    else
+                    {
+                        if (slot.Contains("PaintJob"))
+                        {
+                            ship.paintjob = null;
+                        }
+                        else if (slot.Contains("Hardpoint"))
+                        {
+                            // Build new list of ship hardpoints, excepting sold/stored hardpoint
+                            List<Hardpoint> hardpoints = new List<Hardpoint>();
+                            foreach (Hardpoint hpt in ship.hardpoints)
+                            {
+                                if (hpt.name != slot)
+                                {
+                                    hardpoints.Add(hpt);
+                                }
+                            }
+                            ship.hardpoints = hardpoints;
+                        }
+                        else if (slot.Contains("Slot") || slot.Contains("Military"))
+                        {
+                            // Build new list of ship compartments, excepting sold/stored compartment
+                            List<Compartment> compartments = new List<Compartment>();
+                            foreach (Compartment cpt in ship.compartments)
+                            {
+                                if (cpt.name != slot)
+                                {
+                                    compartments.Add(cpt);
+                                }
+                            }
+                            ship.compartments = compartments;
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Logging.Error("Failed to remove module from ship." + JsonConvert.SerializeObject(new object[] { slot, replacement }), ex);
+
+                    throw;
+                }
+                ship = updatedShip ?? ship;
+            }
+            else
+            {
+                Logging.Warn("Cannot remove the module. Ship ID " + ship?.LocalId + " or ship slot " + slot + " was not found.");
             }
         }
 
