@@ -3205,6 +3205,8 @@ namespace EddiJournalMonitor
                             case "Statistics":
                             case "CodexEntry":
                             case "FSDTarget":
+                            case "NpcCrewPaidWage":
+                            case "SquadronStartup":
                                 // we silently ignore these, but forward them to the responders
                                 break;
                             default:
