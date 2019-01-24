@@ -133,27 +133,16 @@ namespace EddiEdsmResponder
                         eventObject.Add("_stationName", null);
                         break;
                     }
-                case "SetUserShipName":
-                    {
-                        ShipRenamedEvent shipRenamedEvent = (ShipRenamedEvent)theEvent;
-                        eventObject.Add("_shipId", shipRenamedEvent.shipid);
-                        break;
-                    }
                 case "ShipyardBuy":
                     {
                         eventObject.Add("_shipId", null);
                         break;
                     }
+                case "SetUserShipName":
                 case "ShipyardSwap":
-                    {
-                        ShipSwappedEvent shipSwappedEvent = (ShipSwappedEvent)theEvent;
-                        eventObject.Add("_shipId", shipSwappedEvent.shipid);
-                        break;
-                    }
                 case "Loadout":
                     {
-                        ShipLoadoutEvent shipLoadoutEvent = (ShipLoadoutEvent)theEvent;
-                        eventObject.Add("_shipId", shipLoadoutEvent.shipid);
+                        eventObject.Add("_shipId", JsonParsing.getInt("ShipId", eventObject));
                         break;
                     }
                 case "Undocked":
@@ -163,43 +152,41 @@ namespace EddiEdsmResponder
                         break;
                     }
                 case "Location":
-                    {
-                        LocationEvent locationEvent = (LocationEvent)theEvent;
-                        eventObject.Add("_systemAddress", locationEvent.systemAddress);
-                        eventObject.Add("_systemName", locationEvent.system);
-                        List<decimal?> _systemCoordinates = new List<decimal?>
-                        {
-                            locationEvent.x,
-                            locationEvent.y,
-                            locationEvent.z
-                        };
-                        eventObject.Add("_systemCoordinates", _systemCoordinates);
-                        eventObject.Add("_marketId", locationEvent.marketId);
-                        eventObject.Add("_stationName", locationEvent.station);
-                        break;
-                    }
                 case "FSDJump":
-                    {
-                        JumpedEvent jumpedEvent = (JumpedEvent)theEvent;
-                        eventObject.Add("_systemAddress", jumpedEvent.systemAddress);
-                        eventObject.Add("_systemName", jumpedEvent.system);
-                        List<decimal?> _systemCoordinates = new List<decimal?>
-                        {
-                            jumpedEvent.x,
-                            jumpedEvent.y,
-                            jumpedEvent.z
-                        };
-                        eventObject.Add("_systemCoordinates", _systemCoordinates);
-                        break;
-                    }
                 case "Docked":
                     {
-                        DockedEvent dockedEvent = (DockedEvent)theEvent;
-                        eventObject.Add("_systemAddress", dockedEvent.systemAddress);
-                        eventObject.Add("_systemName", dockedEvent.system);
-                        eventObject.Add("_systemCoordinates", null);
-                        eventObject.Add("_marketId", dockedEvent.marketId);
-                        eventObject.Add("_stationName", dockedEvent.station);
+                        if (eventObject.ContainsKey("StarSystem"))
+                        {
+                            eventObject.Add("_systemName", JsonParsing.getString(eventObject, "StarSystem"));
+                        }
+                        if (eventObject.ContainsKey("SystemAddress"))
+                        {
+                            long? systemAddress = JsonParsing.getOptionalLong(eventObject, "SystemAddress");
+                            // Some events are bugged and return a SystemAddress of 1, regardles of the system we are in.
+                            // We need to ignore data that matches this pattern.
+                            systemAddress = (systemAddress > 1 ? systemAddress : null);
+                            if (systemAddress != null)
+                            {
+                                eventObject.Add("_systemAddress", systemAddress);
+                            }
+                        }
+                        if (eventObject.ContainsKey("StarPos"))
+                        {
+                            eventObject.TryGetValue("StarPos", out object starpos);
+                            if (starpos != null)
+                            {
+                                eventObject.Add("_systemCoordinates", starpos);
+                            }
+                            eventObject.Add("_systemName", JsonParsing.getString(eventObject, "StarSystem"));
+                        }
+                        if (eventObject.ContainsKey("MarketID"))
+                        {
+                            eventObject.Add("_marketId", JsonParsing.getOptionalLong(eventObject, "MarketID"));
+                        }
+                        if (eventObject.ContainsKey("StationName"))
+                        {
+                            eventObject.Add("_stationName", JsonParsing.getString(eventObject, "StationName"));
+                        }
                         break;
                     }
             }
