@@ -58,6 +58,9 @@ namespace EddiCompanionAppService
             }
         }
         public delegate void StateChangeHandler(State oldState, State newState);
+
+        // This is not a UI event handler so I consider that CA1009 is just unnecessary ceremony for no benfit.
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1009:DeclareEventHandlersCorrectly")]
         public event StateChangeHandler StateChanged;
 
         public CompanionAppCredentials Credentials;
