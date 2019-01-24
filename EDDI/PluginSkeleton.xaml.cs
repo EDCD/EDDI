@@ -21,14 +21,6 @@ namespace Eddi
             EDDIConfiguration configuration = EDDIConfiguration.FromFile();
             configuration.Plugins[pluginName] = true;
             configuration.ToFile();
-
-            var responder = EDDI.Instance.ObtainResponder(pluginName);
-            responder?.Start();
-            responder?.Reload();
-
-            var monitor = EDDI.Instance.ObtainMonitor(pluginName);
-            monitor?.Start();
-            monitor?.Reload();
         }
 
         private void pluginenabled_Unchecked(object sender, RoutedEventArgs e)
