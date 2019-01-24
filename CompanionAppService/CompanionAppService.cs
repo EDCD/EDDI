@@ -51,7 +51,7 @@ namespace EddiCompanionAppService
             get =>_currentState;
             private set
             {
-                if (_currentState == value) return;
+                if (_currentState == value) { return; }
                 State oldState = _currentState;
                 _currentState = value;
                 StateChanged?.Invoke(oldState, _currentState);
