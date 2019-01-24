@@ -101,7 +101,15 @@ namespace EddiEdsmResponder
             {
                 /// Retrieve applicable transient game state info (metadata) 
                 /// for the event and send the event with transient info to EDSM
-                string eventData = prepareEventData(theEvent);
+                string eventData = null;
+                try
+                {
+                    eventData = prepareEventData(theEvent);
+                }
+                catch (System.Exception ex)
+                {
+                    Logging.Error("Failed to prepare event meta-data for submittal to EDSM", ex);
+                }
                 if (eventData != null && !EDDI.Instance.ShouldUseTestEndpoints())
                 {
                     starMapService.sendEvent(eventData);
@@ -142,7 +150,11 @@ namespace EddiEdsmResponder
                 case "ShipyardSwap":
                 case "Loadout":
                     {
-                        eventObject.Add("_shipId", JsonParsing.getInt("ShipId", eventObject));
+                        eventObject.TryGetValue("ShipID", out object shipIdVal);
+                        if (shipIdVal != null)
+                        {
+                            eventObject.Add("_shipId", (int)(long)shipIdVal);
+                        }
                         break;
                     }
                 case "Undocked":
@@ -177,7 +189,6 @@ namespace EddiEdsmResponder
                             {
                                 eventObject.Add("_systemCoordinates", starpos);
                             }
-                            eventObject.Add("_systemName", JsonParsing.getString(eventObject, "StarSystem"));
                         }
                         if (eventObject.ContainsKey("MarketID"))
                         {
@@ -194,15 +205,15 @@ namespace EddiEdsmResponder
             // Supplement with metadata from the tracked game state, as applicable
             if (EDDI.Instance.CurrentStarSystem != null)
             {
-                if (!eventObject.ContainsKey("_systemAddress") && !eventObject.ContainsKey("SystemAddress"))
+                if (!eventObject.ContainsKey("_systemAddress"))
                 {
                     eventObject.Add("_systemAddress", EDDI.Instance.CurrentStarSystem.systemAddress);
                 } 
-                if (!eventObject.ContainsKey("_systemName") && !eventObject.ContainsKey("SystemName"))
+                if (!eventObject.ContainsKey("_systemName"))
                 {
                     eventObject.Add("_systemName", EDDI.Instance.CurrentStarSystem.name);
                 }
-                if (!eventObject.ContainsKey("_systemCoordinates") && !eventObject.ContainsKey("StarPos"))
+                if (!eventObject.ContainsKey("_systemCoordinates"))
                 {
                     List<decimal?> _coordinates = new List<decimal?>
                     {
@@ -216,16 +227,16 @@ namespace EddiEdsmResponder
             }
             if (EDDI.Instance.CurrentStation != null)
             {
-                if (!eventObject.ContainsKey("_marketId") && !eventObject.ContainsKey("MarketID"))
+                if (!eventObject.ContainsKey("_marketId"))
                 {
                     eventObject.Add("_marketId", EDDI.Instance.CurrentStation.marketId);
                 } 
-                if (!eventObject.ContainsKey("_stationName") && !eventObject.ContainsKey("StationName"))
+                if (!eventObject.ContainsKey("_stationName"))
                 {
                     eventObject.Add("_stationName", EDDI.Instance.CurrentStation.name);
                 }
             }
-            if (EDDI.Instance.CurrentShip != null && !eventObject.ContainsKey("ShipId") && !eventObject.ContainsKey("_shipId"))
+            if (EDDI.Instance.CurrentShip != null && !eventObject.ContainsKey("_shipId"))
             {
                 eventObject.Add("_shipId", EDDI.Instance.CurrentShip.LocalId);
             }
