@@ -3580,6 +3580,7 @@ namespace EddiJournalMonitor
                 else // pre-3.3.03 journal
                 {
                     name = val as string;
+                    factionstate = FactionState.FromEDName(JsonParsing.getString(data, "FactionState") ?? "None");
                 }
             }
             faction.name = name;
