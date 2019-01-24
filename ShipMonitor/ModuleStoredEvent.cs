@@ -19,11 +19,11 @@ namespace EddiShipMonitor
             VARIABLES.Add("slot", "The outfitting slot");
             VARIABLES.Add("module", "The module (object) being stored");
             VARIABLES.Add("cost", "The cost of storage (if any)");
-            VARIABLES.Add("engineermodificaiotns", "The name of the modification blueprint");
+            VARIABLES.Add("engineermodifications", "The name of the modification blueprint");
             VARIABLES.Add("replacementmodule", "The module (object) replacement (if a core module)");
         }
 
-        public string ship { get; private set; }
+        public string ship => shipDefinition?.model;
         public int? shipid { get; private set; }
         public string slot { get; private set; }
         public Module module { get; private set; }
@@ -33,10 +33,11 @@ namespace EddiShipMonitor
 
         // Admin
         public long marketId { get; private set; }
+        public Ship shipDefinition { get; private set; }
 
         public ModuleStoredEvent(DateTime timestamp, string ship, int? shipid, string slot, Module module, long? cost, string engineermodifications, Module replacementmodule, long marketId) : base(timestamp, NAME)
         {
-            this.ship = ShipDefinitions.FromEDModel(ship).model;
+            this.shipDefinition = ShipDefinitions.FromEDModel(ship);
             this.shipid = shipid;
             this.slot = slot;
             this.module = module;

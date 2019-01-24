@@ -408,5 +408,36 @@ namespace UnitTests
             Assert.AreEqual(loadoutEvent.shipid, EDDI.Instance.CurrentShip.LocalId);
             Assert.AreNotEqual(fighterLoadoutEvent.shipid, EDDI.Instance.CurrentShip.LocalId);
         }
+
+
+        [TestMethod]
+        public void TestJournalModulePurchasedHandlingMinimalShip()
+        {
+            string line = "{ \"timestamp\":\"2018-12-25T22:55:11Z\", \"event\":\"ModuleBuy\", \"Slot\":\"Military01\", \"BuyItem\":\"$int_guardianshieldreinforcement_size5_class2_name;\", \"BuyItem_Localised\":\"Guardian Shield Reinforcement\", \"MarketID\":128666762, \"BuyPrice\":873402, \"Ship\":\"federation_corvette\", \"ShipID\":119 }";
+            List<Event> events = JournalMonitor.ParseJournalEntry(line);
+            Assert.AreEqual(1, events.Count);
+            ModulePurchasedEvent @event = (ModulePurchasedEvent)events[0];
+            Assert.IsNotNull(@event);
+            Assert.IsInstanceOfType(@event, typeof(ModulePurchasedEvent));
+
+            Assert.AreEqual(119, (int)@event.shipid);
+            Assert.IsNotNull(@event.slot);
+            Assert.IsNotNull(@event.buymodule);
+
+            PrivateObject privateObject = new PrivateObject(new ShipMonitor());
+
+            Ship ship = ShipDefinitions.FromModel(@event.ship);
+            ship.LocalId = (int)@event.shipid;
+            object[] moduleArgs = new object[] { ship, @event.slot, @event.buymodule };
+            privateObject.Invoke("AddModule", moduleArgs);
+
+            foreach (Compartment  compartment in ship.compartments)
+            {
+                if (compartment?.name == "Military01" )
+                {
+                    Assert.AreEqual("Guardian Shield Reinforcement", compartment.module?.invariantName);
+                }
+            }
+        }
     }
 }
