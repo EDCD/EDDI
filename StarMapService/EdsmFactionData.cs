@@ -43,8 +43,15 @@ namespace EddiStarMapService
                 {
                     foreach (JObject faction in factions)
                     {
-                        Faction Faction = ParseStarMapFaction(faction);
-                        Factions.Add(Faction);
+                        try
+                        {
+                            Faction Faction = ParseStarMapFaction(faction);
+                            Factions.Add(Faction);
+                        }
+                        catch (Exception ex)
+                        {
+                            Logging.Error("Error parsing EDSM faction result " + faction.ToString(), ex);
+                        }
                     }
                 }
             }

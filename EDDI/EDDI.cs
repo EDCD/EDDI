@@ -1336,7 +1336,12 @@ namespace Eddi
             {
                 CurrentStarSystem.population = theEvent.population;
             }
-            CurrentStarSystem.visits++;
+
+            if (CurrentStarSystem.lastvisit < theEvent.timestamp)
+            {
+                CurrentStarSystem.lastvisit = theEvent.timestamp;
+                CurrentStarSystem.visits++;
+            }
 
             // Update to most recent information
             CurrentStarSystem.updatedat = (long)theEvent.timestamp.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
@@ -2307,7 +2312,7 @@ namespace Eddi
                 StarSystem system = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystem(configuration.SquadronSystem.Trim(), true);
 
                 //Ignore null & empty systems
-                if (system != null && system.bodies.Count > 0)
+                if (system != null && system?.bodies.Count > 0)
                 {
                     if (refresh || system.name != SquadronStarSystem?.name)
                     {

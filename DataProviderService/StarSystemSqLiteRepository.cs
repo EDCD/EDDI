@@ -90,9 +90,10 @@ namespace EddiDataProviderService
             List<StarSystem> systems = Instance.GetStarSystems(names, fetchIfMissing);
             List<string> fetchSystems = new List<string>();
 
+            // If a system isn't found after we've read our local database, we need to fetch it.
             foreach (string name in names)
             {
-                if (fetchIfMissing && systems.Find(s => s.name == name) == null)
+                if (fetchIfMissing && systems.FirstOrDefault(s => s.name == name) == null)
                 {
                     fetchSystems.Add(name);
                 }
@@ -126,9 +127,10 @@ namespace EddiDataProviderService
             List<StarSystem> systems = Instance.GetStarSystems(names, fetchIfMissing);
             List<string> fetchSystems = new List<string>();
 
+            // If a system isn't found after we've read our local database, we need to fetch it.
             foreach (string name in names)
             {
-                if (fetchIfMissing && systems.Find(s => s.name == name) == null)
+                if (fetchIfMissing && systems.FirstOrDefault(s => s.name == name) == null)
                 {
                     fetchSystems.Add(name);
                 }
@@ -157,14 +159,18 @@ namespace EddiDataProviderService
             }
 
             List<StarSystem> results = new List<StarSystem>();
+            List<StarSystem> systemsToUpdate = new List<StarSystem>();
             List<KeyValuePair<string, string>> dataSets = Instance.ReadStarSystems(names);
 
             foreach (KeyValuePair<string, string> kv in dataSets)
             {
                 bool needToUpdate = false;
                 StarSystem result = null;
+
                 if (kv.Value != null && kv.Value != "")
                 {
+                    string name = kv.Key;
+
                     // Old versions of the data could have a string "No volcanism" for volcanism.  If so we remove it
                     string data = ((string)kv.Value)?.Replace(@"""No volcanism""", "null");
 
@@ -176,12 +182,19 @@ namespace EddiDataProviderService
                     system.TryGetValue("lastupdated", out object lastUpdatedVal);
                     system.TryGetValue("systemAddress", out object systemAddressVal);
 
-                    string name = kv.Key;
                     int visits = (int)(long)visitVal;
-                    string comment = (string)commentVal;
+                    string comment = (string)commentVal ?? "";
                     DateTime? lastvisit = (DateTime?)lastVisitVal;
                     DateTime? lastupdated = (DateTime?)lastUpdatedVal;
                     long? systemAddress = (long?)systemAddressVal;
+
+                    if (lastvisit == null || lastupdated == null || comment == "")
+                    {
+                        if (Instance.OldDataFormat(name, ref visits, comment, ref lastupdated, ref lastvisit))
+                        {
+                            needToUpdate = true;
+                        }
+                    }
 
                     if (refreshIfOutdated && lastupdated < DateTime.UtcNow.AddHours(-1))
                     {
@@ -189,34 +202,77 @@ namespace EddiDataProviderService
                         StarSystem updatedResult = DataProviderService.GetSystemData(name);
                         if (updatedResult.systemAddress == null && systemAddress != null)
                         {
-                            // The "updated" data might be a basic system, empty except for the name. 
-                            // If so, return the old result.
-                            StarSystem starSystem = new StarSystem() { name = name, visits = visits, comment = comment, lastvisit = lastvisit };
-                            result = DeserializeStarSystem(starSystem, ref needToUpdate, data);
+                            // The "updated" data might be a basic system, empty except for the name. If so, return the old result.
+                            updatedResult = DeserializeStarSystem(name, data, ref needToUpdate);
                         }
                         else
                         {
-                            updatedResult.visits = visits;
-                            updatedResult.comment = comment;
-                            updatedResult.lastvisit = lastvisit;
-                            updatedResult.lastupdated = DateTime.UtcNow;
-                            result = updatedResult;
                             needToUpdate = true;
                         }
+                        result = updatedResult;
                     }
                     else
                     {
-                        StarSystem starSystem = new StarSystem() { name = name, visits = visits, comment = comment, lastvisit = lastvisit };
-                        result = DeserializeStarSystem(starSystem, ref needToUpdate, data);
+                        // Data is fresh
+                        result = DeserializeStarSystem(name, data, ref needToUpdate);
                     }
-                }
-                if (needToUpdate)
-                {
-                    Instance.updateStarSystems(new List<StarSystem>() { result });
+
+                    result.visits = visits;
+                    result.comment = comment;
+                    result.lastvisit = lastvisit;
+                    result.lastupdated = DateTime.UtcNow;
+
+                    if (needToUpdate)
+                    {
+                        systemsToUpdate.Add(result);
+                    }
                 }
                 results.Add(result);
             }
+            Instance.updateStarSystems(systemsToUpdate);
             return results;
+        }
+
+        private bool OldDataFormat(string name, ref int visits, string comment, ref DateTime? lastupdated, ref DateTime? lastvisit)
+        {
+            bool result = false;
+            using (var con = SimpleDbConnection())
+            {
+                con.Open();
+                using (var cmd = new SQLiteCommand(con))
+                {
+                    cmd.CommandText = SELECT_BY_NAME_SQL;
+                    cmd.Prepare();
+                    cmd.Parameters.AddWithValue("@name", name);
+                    using (SQLiteDataReader rdr = cmd.ExecuteReader())
+                    {
+                        if (rdr.Read())
+                        {
+                            if (lastvisit == null)
+                            {
+                                // Old-style system; need to update
+                                visits = rdr.GetInt32(0);
+                                lastvisit = rdr.GetDateTime(1);
+                                result = true;
+                            }
+                            if (lastupdated == null)
+                            {
+                                lastupdated = rdr.GetDateTime(4);
+                                result = true;
+                            }
+                            if (comment == "")
+                            {
+                                if (!rdr.IsDBNull(4))
+                                {
+                                    comment = rdr.GetString(4);
+                                    result = true;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            return result;
         }
 
         private string ReadStarSystem(string name)
@@ -262,64 +318,23 @@ namespace EddiDataProviderService
             return results;
         }
 
-        private static StarSystem DeserializeStarSystem(StarSystem oldSystem, ref bool needToUpdate, string data)
+        private static StarSystem DeserializeStarSystem(string systemName, string data, ref bool needToUpdate)
         {
-            StarSystem result = null; ;
+            StarSystem result = null;
             try
             {
                 result = JsonConvert.DeserializeObject<StarSystem>(data);
                 if (result == null)
                 {
-                    Logging.Info("Failed to obtain system for " + oldSystem.name + " from the SQLiteRepository");
-                }
-                if (result != null)
-                {
-                    using (var con = SimpleDbConnection())
-                    {
-                        con.Open();
-                        using (var cmd = new SQLiteCommand(con))
-                        {
-                            cmd.CommandText = SELECT_BY_NAME_SQL;
-                            cmd.Prepare();
-                            cmd.Parameters.AddWithValue("@name", oldSystem.name);
-                            using (SQLiteDataReader rdr = cmd.ExecuteReader())
-                            {
-                                if (rdr.Read())
-                                {
-                                    if (result.visits < 1)
-                                    {
-                                        // Old-style system; need to update
-                                        result.visits = rdr.GetInt32(0);
-                                        result.lastvisit = rdr.GetDateTime(1);
-                                        needToUpdate = true;
-                                    }
-                                    if (result.lastupdated == null)
-                                    {
-                                        result.lastupdated = rdr.GetDateTime(4);
-                                    }
-                                    if (result.comment == null)
-                                    {
-                                        if (!rdr.IsDBNull(4))
-                                        {
-                                            result.comment = rdr.GetString(4);
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
+                    Logging.Info("Failed to obtain system for " + systemName + " from the SQLiteRepository");
                 }
             }
             catch (Exception)
             {
-                Logging.Warn("Problem reading data for star system '" + oldSystem.name + "' from database, re-obtaining from source. ");
+                Logging.Warn("Problem reading data for star system '" + systemName + "' from database, re-obtaining from source.");
                 try
                 {
-                    result = DataProviderService.GetSystemData(oldSystem.name);
-                    result.visits = oldSystem.visits;
-                    result.comment = oldSystem.comment;
-                    result.lastvisit = oldSystem.lastvisit;
-                    result.lastupdated = DateTime.UtcNow;
+                    result = DataProviderService.GetSystemData(systemName);
                     needToUpdate = true;
                 }
                 catch (Exception ex)
@@ -328,7 +343,6 @@ namespace EddiDataProviderService
                     result = null;
                 }
             }
-
             return result;
         }
 
@@ -383,6 +397,11 @@ namespace EddiDataProviderService
 
         private void insertStarSystems(List<StarSystem> systems)
         {
+            if (systems.Count == 0)
+            {
+                return;
+            }
+
             List<StarSystem> updateStarSystems = new List<StarSystem>();
             List<StarSystem> insertStarSystems = new List<StarSystem>();
 
@@ -447,6 +466,11 @@ namespace EddiDataProviderService
 
         private void updateStarSystems(List<StarSystem> systems)
         {
+            if (systems.Count == 0)
+            {
+                return;
+            }
+
             using (var con = SimpleDbConnection())
             {
                 try
@@ -480,6 +504,11 @@ namespace EddiDataProviderService
 
         private void deleteStarSystems(List<StarSystem> systems)
         {
+            if (systems.Count == 0)
+            {
+                return;
+            }
+
             using (var con = SimpleDbConnection())
             {
                 try

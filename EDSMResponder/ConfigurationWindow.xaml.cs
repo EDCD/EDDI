@@ -118,7 +118,7 @@ namespace EddiEdsmResponder
                     string[] batchNames = systemNames.Skip(i).Take(batchSize).ToArray();
                     List<StarSystem> batchSystems = new List<StarSystem>();
 
-                    List<StarSystem> starSystems = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystems(batchNames, false);
+                    List<StarSystem> starSystems = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystems(batchNames, true);
                     foreach (string system in batchNames)
                     {
                         StarSystem CurrentStarSystem = starSystems.FirstOrDefault(s => s.name == system);
