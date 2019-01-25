@@ -90,8 +90,7 @@ namespace Eddi
         public List<string> ProductionBuilds = new List<string>() { "r131487/r0" };
 
         public List<EDDIMonitor> monitors = new List<EDDIMonitor>();
-        // Each monitor runs in its own thread
-        private List<Thread> monitorThreads = new List<Thread>();
+        private List<EDDIMonitor> activeMonitors = new List<EDDIMonitor>();
 
         public List<EDDIResponder> responders = new List<EDDIResponder>();
         private List<EDDIResponder> activeResponders = new List<EDDIResponder>();
@@ -99,9 +98,6 @@ namespace Eddi
         // Information obtained from the companion app service
         public Commander Cmdr { get; private set; }
         public DateTime ApiTimeStamp { get; private set; }
-        //public ObservableCollection<Ship> Shipyard { get; private set; } = new ObservableCollection<Ship>();
-        public Station CurrentStation { get; private set; }
-        public Body CurrentStellarBody { get; private set; }
 
         // Services made available from EDDI
         public StarMapService starMapService { get; private set; }
@@ -111,12 +107,12 @@ namespace Eddi
         public Station HomeStation { get; private set; }
         public StarSystem SquadronStarSystem { get; private set; }
 
-        // Information obtained from the log watcher
+        // Information obtained from the player journal
         public string Environment { get; private set; }
         public StarSystem CurrentStarSystem { get; private set; }
         public StarSystem LastStarSystem { get; private set; }
-
-        // Information obtained from the player journal
+        public Station CurrentStation { get; private set; }
+        public Body CurrentStellarBody { get; private set; }
         public DateTime JournalTimeStamp { get; set; } = DateTime.MinValue;
 
         // Current vehicle of player
@@ -365,6 +361,7 @@ namespace Eddi
                             Logging.Info("Starting keepalive for " + monitor.MonitorName());
                             monitorThread.Start();
                         }
+                        activeMonitors.Add(monitor);
                     }
                 }
 
@@ -420,6 +417,7 @@ namespace Eddi
                 foreach (EDDIMonitor monitor in monitors)
                 {
                     monitor.Stop();
+                    activeMonitors.Remove(monitor);
                 }
             }
 
@@ -505,6 +503,46 @@ namespace Eddi
         }
 
         /// <summary>
+        /// Disable a named monitor for this session.  This does not update the on-disk status of the responder
+        /// </summary>
+        public void DisableMonitor(string name)
+        {
+            EDDIMonitor monitor = ObtainMonitor(name);
+            if (monitor != null)
+            {
+                if (activeMonitors.Contains(monitor))
+                {
+                    monitor.Stop();
+                    activeMonitors.Remove(monitor);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Enable a named monitor for this session.  This does not update the on-disk status of the responder
+        /// </summary>
+        public void EnableMonitor(string name)
+        {
+            EDDIMonitor monitor = monitors.FirstOrDefault(m => m.MonitorName() == name);
+            if (monitor != null)
+            {
+                if (!activeMonitors.Contains(monitor))
+                {
+                    if (monitor.NeedsStart())
+                    {
+                        Thread monitorThread = new Thread(() => keepAlive(monitor.MonitorName(), monitor.Start))
+                        {
+                            IsBackground = true
+                        };
+                        Logging.Info("Starting keepalive for " + monitor.MonitorName());
+                        monitorThread.Start();
+                    }
+                    activeMonitors.Add(monitor);
+                }
+            }
+        }
+
+        /// <summary>
         /// Reload a specific monitor or responder
         /// </summary>
         public void Reload(string name)
@@ -528,15 +566,13 @@ namespace Eddi
             Logging.Info($"{Constants.EDDI_NAME} {Constants.EDDI_VERSION} module {name} reloaded");
         }
 
-        /// <summary>
-        /// Keep a thread alive, restarting it as required
-        /// </summary>
+        /// <summary> Keep a monitor thread alive, restarting it as required </summary>
         private void keepAlive(string name, Action start)
         {
             try
             {
                 int failureCount = 0;
-                while (running && failureCount < 5)
+                while (running && failureCount < 5 && activeMonitors.FirstOrDefault(m => m.MonitorName() == name) != null)
                 {
                     try
                     {
@@ -776,7 +812,7 @@ namespace Eddi
         {
             // We send the event to all monitors to ensure that their info is up-to-date
             // This is synchronous
-            foreach (EDDIMonitor monitor in monitors)
+            foreach (EDDIMonitor monitor in activeMonitors)
             {
                 try
                 {
@@ -785,7 +821,7 @@ namespace Eddi
                 }
                 catch (Exception ex)
                 {
-                    Logging.Error(JsonConvert.SerializeObject(@event), ex);
+                    Logging.Error("Monitor failed to handle event " + JsonConvert.SerializeObject(@event), ex);
                 }
             }
 
@@ -803,7 +839,7 @@ namespace Eddi
                         }
                         catch (Exception ex)
                         {
-                            Logging.Warn("Responder failed", ex);
+                            Logging.Error("Responder failed to handle event " + JsonConvert.SerializeObject(@event), ex);
                         }
                     })
                     {
@@ -823,8 +859,8 @@ namespace Eddi
                 }
             }
 
-            // We also pass the event to all monitors in case they have follow-on work
-            foreach (EDDIMonitor monitor in monitors)
+            // We also pass the event to all active monitors in case they have follow-on work
+            foreach (EDDIMonitor monitor in activeMonitors)
             {
                 try
                 {
@@ -858,6 +894,8 @@ namespace Eddi
 
         private bool eventLocation(LocationEvent theEvent)
         {
+            Logging.Info("Location StarSystem: " + theEvent.system);
+
             updateCurrentSystem(theEvent.system);
             // Our data source may not include the system address
             CurrentStarSystem.systemAddress = theEvent.systemAddress;
@@ -1263,7 +1301,7 @@ namespace Eddi
         private bool eventJumped(JumpedEvent theEvent)
         {
             bool passEvent;
-            Logging.Debug("Jumped to " + theEvent.system);
+            Logging.Info("Jumped to " + theEvent.system);
             if (CurrentStarSystem == null || CurrentStarSystem.name != theEvent.system)
             {
                 // The 'StartJump' event must have been missed
@@ -1874,7 +1912,7 @@ namespace Eddi
                             StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
                         }
 
-                        foreach (EDDIMonitor monitor in monitors)
+                        foreach (EDDIMonitor monitor in activeMonitors)
                         {
                             try
                             {
