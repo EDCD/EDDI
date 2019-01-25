@@ -72,7 +72,7 @@
     <Compile Include="ModuleInfoEvent.cs" />
     <Compile Include="ModuleInfoReader.cs" />
     <Compile Include="ModuleSoldFromStorageEvent.cs" />
-    <Compile Include="ModulesStored.cs" />
+    <Compile Include="ModulesStoredEvent.cs" />
     <Compile Include="ModulePurchasedEvent.cs" />
     <Compile Include="ModuleRetrievedEvent.cs" />
     <Compile Include="ModuleSoldEvent.cs" />
