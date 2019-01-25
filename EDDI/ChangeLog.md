@@ -2,6 +2,14 @@
 
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
+### Development
+  * Speech responder
+    * Easier control for the `Message received` script:
+      * Up-front setting `allowNPCComms` can easily be set to false.
+      * Up-front settings for `spokenChannels` and `spokenSources`: each item can be set `true` or `false`.
+        * these now default to false for "Cruise liner", "Passenger liner", "Station" and "Wedding convoy" -- and there was great rejoicing.
+        * also now easy to mute the `starsystem` channel should you find it full of toxic people.
+
 ### 3.3.4-b1
   * Core
     * Added manual market, outfitting and shipyard updates, upon docking. Associated EDDN message is sent.
