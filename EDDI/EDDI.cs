@@ -1298,7 +1298,12 @@ namespace Eddi
             {
                 CurrentStarSystem.population = theEvent.population;
             }
-            CurrentStarSystem.visits++;
+
+            if (CurrentStarSystem.lastvisit < theEvent.timestamp)
+            {
+                CurrentStarSystem.lastvisit = theEvent.timestamp;
+                CurrentStarSystem.visits++;
+            }
 
             // Update to most recent information
             CurrentStarSystem.updatedat = (long)theEvent.timestamp.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
