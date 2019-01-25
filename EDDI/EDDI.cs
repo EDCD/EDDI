@@ -2269,7 +2269,7 @@ namespace Eddi
                 StarSystem system = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystem(configuration.SquadronSystem.Trim(), true);
 
                 //Ignore null & empty systems
-                if (system != null && system.bodies.Count > 0)
+                if (system != null && system?.bodies.Count > 0)
                 {
                     if (refresh || system.name != SquadronStarSystem?.name)
                     {
