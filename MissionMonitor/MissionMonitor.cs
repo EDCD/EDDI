@@ -798,14 +798,15 @@ namespace EddiMissionMonitor
             lock (missionsLock)
             {
                 // Write cargo configuration with current inventory
-                MissionMonitorConfiguration configuration = new MissionMonitorConfiguration();
-
-                configuration.missions = missions;
                 missionsCount = missions.Where(m => !m.shared && !m.communal).Count();
-                configuration.missionsCount = missionsCount;
-                configuration.missionWarning = missionWarning;
-                configuration.missionsRouteList = missionsRouteList;
-                configuration.missionsRouteDistance = missionsRouteDistance;
+                MissionMonitorConfiguration configuration = new MissionMonitorConfiguration
+                {
+                    missions = missions,
+                    missionsCount = missionsCount,
+                    missionWarning = missionWarning,
+                    missionsRouteList = missionsRouteList,
+                    missionsRouteDistance = missionsRouteDistance
+                };
                 configuration.ToFile();
             }
             // Make sure the UI is up to date

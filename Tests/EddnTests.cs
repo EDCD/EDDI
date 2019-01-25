@@ -237,158 +237,160 @@ namespace UnitTests
         public void TestEDDNResponderDockedEvent()
         {
             string line = @"{
-	""timestamp"": ""2018-07-30T04:50:32Z"",
-	""event"": ""FSDJump"",
-	""StarSystem"": ""Diaguandri"",
-	""SystemAddress"": 670417429889,
-	""StarPos"": [-41.06250,
-	-62.15625,
-	-103.25000],
-	""SystemAllegiance"": ""Independent"",
-	""SystemEconomy"": ""$economy_HighTech;"",
-	""SystemEconomy_Localised"": ""High Tech"",
-	""SystemSecondEconomy"": ""$economy_Refinery;"",
-	""SystemSecondEconomy_Localised"": ""Refinery"",
-	""SystemGovernment"": ""$government_Democracy;"",
-	""SystemGovernment_Localised"": ""Democracy"",
-	""SystemSecurity"": ""$SYSTEM_SECURITY_medium;"",
-	""SystemSecurity_Localised"": ""Medium Security"",
-	""Population"": 10303479,
-	""JumpDist"": 8.018,
-	""FuelUsed"": 0.917520,
-	""FuelLevel"": 29.021893,
-	""Factions"": [{
-		""Name"": ""Diaguandri Interstellar"",
-		""FactionState"": ""Election"",
-		""Government"": ""Corporate"",
-		""Influence"": 0.072565,
-		""Allegiance"": ""Independent"",
-		""RecoveringStates"": [{
-			""State"": ""Boom"",
-			""Trend"": 0
-		}]
-	},
-	{
-		""Name"": ""People's MET 20 Liberals"",
-		""FactionState"": ""Boom"",
-		""Government"": ""Democracy"",
-		""Influence"": 0.092445,
-		""Allegiance"": ""Federation""
-	},
-	{
-		""Name"": ""Pilots Federation Local Branch"",
-		""FactionState"": ""None"",
-		""Government"": ""Democracy"",
-		""Influence"": 0.000000,
-		""Allegiance"": ""PilotsFederation""
-	},
-	{
-		""Name"": ""Natural Diaguandri Regulatory State"",
-		""FactionState"": ""CivilWar"",
-		""Government"": ""Dictatorship"",
-		""Influence"": 0.009940,
-		""Allegiance"": ""Independent""
-	},
-	{
-		""Name"": ""Cartel of Diaguandri"",
-		""FactionState"": ""CivilWar"",
-		""Government"": ""Anarchy"",
-		""Influence"": 0.009940,
-		""Allegiance"": ""Independent"",
-		""PendingStates"": [{
-			""State"": ""Bust"",
-			""Trend"": 0
-		}]
-	},
-	{
-		""Name"": ""Revolutionary Party of Diaguandri"",
-		""FactionState"": ""None"",
-		""Government"": ""Democracy"",
-		""Influence"": 0.050696,
-		""Allegiance"": ""Federation"",
-		""PendingStates"": [{
-			""State"": ""Bust"",
-			""Trend"": 1
-		}]
-	},
-	{
-		""Name"": ""The Brotherhood of the Dark Circle"",
-		""FactionState"": ""Election"",
-		""Government"": ""Corporate"",
-		""Influence"": 0.078529,
-		""Allegiance"": ""Independent"",
-		""PendingStates"": [{
-			""State"": ""CivilUnrest"",
-			""Trend"": 0
-		}],
-		""RecoveringStates"": [{
-			""State"": ""Boom"",
-			""Trend"": 0
-		}]
-	},
-	{
-		""Name"": ""EXO"",
-		""FactionState"": ""Boom"",
-		""Government"": ""Democracy"",
-		""Influence"": 0.685885,
-		""Allegiance"": ""Independent"",
-		""PendingStates"": [{
-			""State"": ""Expansion"",
-			""Trend"": 0
-		}]
-	}],
-	""SystemFaction"": ""EXO"",
-	""FactionState"": ""Boom""
-}";
+	            ""timestamp"": ""2018-07-30T04:50:32Z"",
+	            ""event"": ""FSDJump"",
+	            ""StarSystem"": ""Diaguandri"",
+	            ""SystemAddress"": 670417429889,
+	            ""StarPos"": [-41.06250, -62.15625, -103.25000],
+	            ""SystemAllegiance"": ""Independent"",
+	            ""SystemEconomy"": ""$economy_HighTech;"",
+	            ""SystemEconomy_Localised"": ""High Tech"",
+	            ""SystemSecondEconomy"": ""$economy_Refinery;"",
+	            ""SystemSecondEconomy_Localised"": ""Refinery"",
+	            ""SystemGovernment"": ""$government_Democracy;"",
+	            ""SystemGovernment_Localised"": ""Democracy"",
+	            ""SystemSecurity"": ""$SYSTEM_SECURITY_medium;"",
+	            ""SystemSecurity_Localised"": ""Medium Security"",
+	            ""Population"": 10303479,
+	            ""JumpDist"": 8.018,
+	            ""FuelUsed"": 0.917520,
+	            ""FuelLevel"": 29.021893,
+	            ""Factions"": [{
+		            ""Name"": ""Diaguandri Interstellar"",
+		            ""FactionState"": ""Election"",
+		            ""Government"": ""Corporate"",
+		            ""Influence"": 0.072565,
+		            ""Allegiance"": ""Independent"",
+		            ""RecoveringStates"": [{
+			            ""State"": ""Boom"",
+			            ""Trend"": 0
+		            }]
+	            },
+	            {
+		            ""Name"": ""People's MET 20 Liberals"",
+		            ""FactionState"": ""Boom"",
+		            ""Government"": ""Democracy"",
+		            ""Influence"": 0.092445,
+		            ""Allegiance"": ""Federation""
+	            },
+	            {
+		            ""Name"": ""Pilots Federation Local Branch"",
+		            ""FactionState"": ""None"",
+		            ""Government"": ""Democracy"",
+		            ""Influence"": 0.000000,
+		            ""Allegiance"": ""PilotsFederation""
+	            },
+	            {
+		            ""Name"": ""Natural Diaguandri Regulatory State"",
+		            ""FactionState"": ""CivilWar"",
+		            ""Government"": ""Dictatorship"",
+		            ""Influence"": 0.009940,
+		            ""Allegiance"": ""Independent""
+	            },
+	            {
+		            ""Name"": ""Cartel of Diaguandri"",
+		            ""FactionState"": ""CivilWar"",
+		            ""Government"": ""Anarchy"",
+		            ""Influence"": 0.009940,
+		            ""Allegiance"": ""Independent"",
+		            ""PendingStates"": [{
+			            ""State"": ""Bust"",
+			            ""Trend"": 0
+		            }]
+	            },
+	            {
+		            ""Name"": ""Revolutionary Party of Diaguandri"",
+		            ""FactionState"": ""None"",
+		            ""Government"": ""Democracy"",
+		            ""Influence"": 0.050696,
+		            ""Allegiance"": ""Federation"",
+		            ""PendingStates"": [{
+			            ""State"": ""Bust"",
+			            ""Trend"": 1
+		            }]
+	            },
+	            {
+		            ""Name"": ""The Brotherhood of the Dark Circle"",
+		            ""FactionState"": ""Election"",
+		            ""Government"": ""Corporate"",
+		            ""Influence"": 0.078529,
+		            ""Allegiance"": ""Independent"",
+		            ""PendingStates"": [{
+			            ""State"": ""CivilUnrest"",
+			            ""Trend"": 0
+		            }],
+		            ""RecoveringStates"": [{
+			            ""State"": ""Boom"",
+			            ""Trend"": 0
+		            }]
+	            },
+	            {
+		            ""Name"": ""EXO"",
+		            ""FactionState"": ""Boom"",
+		            ""Government"": ""Democracy"",
+		            ""Influence"": 0.685885,
+		            ""Allegiance"": ""Independent"",
+		            ""PendingStates"": [{
+			            ""State"": ""Expansion"",
+			            ""Trend"": 0
+		            }]
+	            }],
+	            ""SystemFaction"": {
+		            ""Name"": ""EXO"",
+		            ""FactionState"": ""Boom""
+	            }
+            }";
 
             string line2 = @"{
-	""timestamp"": ""2018-07-30T06: 07: 47Z"",
-	""event"": ""Docked"",
-	""StationName"": ""Ray Gateway"",
-	""StationType"": ""Coriolis"",
-	""StarSystem"": ""Diaguandri"",
-	""SystemAddress"": 670417429889,
-	""MarketID"": 3223343616,
-	""StationFaction"": ""EXO"",
-	""FactionState"": ""Boom"",
-	""StationGovernment"": ""$government_Democracy;"",
-	""StationGovernment_Localised"": ""Democracy"",
-	""StationServices"": [""Dock"",
-	""Autodock"",
-	""BlackMarket"",
-	""Commodities"",
-	""Contacts"",
-	""Exploration"",
-	""Missions"",
-	""Outfitting"",
-	""CrewLounge"",
-	""Rearm"",
-	""Refuel"",
-	""Repair"",
-	""Shipyard"",
-	""Tuning"",
-	""Workshop"",
-	""MissionsGenerated"",
-	""FlightController"",
-	""StationOperations"",
-	""Powerplay"",
-	""SearchAndRescue"",
-	""MaterialTrader"",
-	""TechBroker""],
-	""StationEconomy"": ""$economy_HighTech;"",
-	""StationEconomy_Localised"": ""HighTech"",
-	""StationEconomies"": [{
-		""Name"": ""$economy_HighTech;"",
-		""Name_Localised"": ""HighTech"",
-		""Proportion"": 0.800000
-	},
-	{
-		""Name"": ""$economy_Refinery;"",
-		""Name_Localised"": ""Refinery"",
-		""Proportion"": 0.200000
-	}],
-	""DistFromStarLS"": 566.487976
-}";
+	            ""timestamp"": ""2018-07-30T06: 07: 47Z"",
+	            ""event"": ""Docked"",
+	            ""StationName"": ""Ray Gateway"",
+	            ""StationType"": ""Coriolis"",
+	            ""StarSystem"": ""Diaguandri"",
+	            ""SystemAddress"": 670417429889,
+	            ""MarketID"": 3223343616,
+	            ""StationFaction"": {
+		            ""Name"": ""EXO"",
+		            ""FactionState"": ""Boom""
+	            },
+	            ""StationGovernment"": ""$government_Democracy;"",
+	            ""StationGovernment_Localised"": ""Democracy"",
+	            ""StationServices"": [""Dock"",
+	            ""Autodock"",
+	            ""BlackMarket"",
+	            ""Commodities"",
+	            ""Contacts"",
+	            ""Exploration"",
+	            ""Missions"",
+	            ""Outfitting"",
+	            ""CrewLounge"",
+	            ""Rearm"",
+	            ""Refuel"",
+	            ""Repair"",
+	            ""Shipyard"",
+	            ""Tuning"",
+	            ""Workshop"",
+	            ""MissionsGenerated"",
+	            ""FlightController"",
+	            ""StationOperations"",
+	            ""Powerplay"",
+	            ""SearchAndRescue"",
+	            ""MaterialTrader"",
+	            ""TechBroker""],
+	            ""StationEconomy"": ""$economy_HighTech;"",
+	            ""StationEconomy_Localised"": ""HighTech"",
+	            ""StationEconomies"": [{
+		            ""Name"": ""$economy_HighTech;"",
+		            ""Name_Localised"": ""HighTech"",
+		            ""Proportion"": 0.800000
+	            },
+	            {
+		            ""Name"": ""$economy_Refinery;"",
+		            ""Name_Localised"": ""Refinery"",
+		            ""Proportion"": 0.200000
+	            }],
+	            ""DistFromStarLS"": 566.487976
+            }";
 
             List<Event> events = JournalMonitor.ParseJournalEntry(line);
             Assert.IsTrue(events.Count == 1);
@@ -418,92 +420,93 @@ namespace UnitTests
         public void TestMyReputationDataStripping()
         {
             string line = @"{
-	""timestamp"": ""2018-11-19T01: 06: 17Z"",
-	""event"": ""Location"",
-	""Docked"": false,
-	""StarSystem"": ""BD+48738"",
-	""SystemAddress"": 908352033466,
-	""StarPos"": [-93.53125,
-	-24.46875,
-	-114.71875],
-	""SystemAllegiance"": ""Independent"",
-	""SystemEconomy"": ""$economy_Extraction;"",
-	""SystemEconomy_Localised"": ""Extraction"",
-	""SystemSecondEconomy"": ""$economy_Industrial;"",
-	""SystemSecondEconomy_Localised"": ""Industrial"",
-	""SystemGovernment"": ""$government_Cooperative;"",
-	""SystemGovernment_Localised"": ""Cooperative"",
-	""SystemSecurity"": ""$SYSTEM_SECURITY_medium;"",
-	""SystemSecurity_Localised"": ""MediumSecurity"",
-	""Population"": 2530147,
-	""Body"": ""LinnaeusEnterprise"",
-	""BodyID"": 28,
-	""BodyType"": ""Station"",
-	""Factions"": [{
-		""Name"": ""IndependentBD+48738Liberals"",
-		""FactionState"": ""None"",
-		""Government"": ""Democracy"",
-		""Influence"": 0.037000,
-		""Allegiance"": ""Federation"",
-		""Happiness"": ""$Faction_HappinessBand2;"",
-		""Happiness_Localised"": ""Happy"",
-		""MyReputation"": 0.000000
-	},
-	{
-		""Name"": ""PilotsFederationLocalBranch"",
-		""FactionState"": ""None"",
-		""Government"": ""Democracy"",
-		""Influence"": 0.000000,
-		""Allegiance"": ""PilotsFederation"",
-		""Happiness"": """",
-		""MyReputation"": 100.000000
-	},
-	{
-		""Name"": ""NewBD+48738Focus"",
-		""FactionState"": ""None"",
-		""Government"": ""Dictatorship"",
-		""Influence"": 0.046000,
-		""Allegiance"": ""Independent"",
-		""Happiness"": ""$Faction_HappinessBand2;"",
-		""Happiness_Localised"": ""Happy"",
-		""MyReputation"": 0.000000
-	},
-	{
-		""Name"": ""BD+48738CrimsonTravelCo"",
-		""FactionState"": ""None"",
-		""Government"": ""Corporate"",
-		""Influence"": 0.032000,
-		""Allegiance"": ""Independent"",
-		""Happiness"": ""$Faction_HappinessBand2;"",
-		""Happiness_Localised"": ""Happy"",
-		""MyReputation"": 0.000000
-	},
-	{
-		""Name"": ""BD+48738CrimsonPosse"",
-		""FactionState"": ""None"",
-		""Government"": ""Anarchy"",
-		""Influence"": 0.010000,
-		""Allegiance"": ""Independent"",
-		""Happiness"": ""$Faction_HappinessBand2;"",
-		""Happiness_Localised"": ""Happy"",
-		""MyReputation"": 0.000000
-	},
-	{
-		""Name"": ""Laniakea"",
-		""FactionState"": ""None"",
-		""Government"": ""Cooperative"",
-		""Influence"": 0.875000,
-		""Allegiance"": ""Independent"",
-		""Happiness"": ""$Faction_HappinessBand2;"",
-		""Happiness_Localised"": ""Happy"",
-		""MyReputation"": 0.000000,
-		""PendingStates"": [{
-			""State"": ""Expansion"",
-			""Trend"": 0
-		}]
-	}],
-	""SystemFaction"": ""Laniakea""
-}";
+	            ""timestamp"": ""2018-11-19T01: 06: 17Z"",
+	            ""event"": ""Location"",
+	            ""Docked"": false,
+	            ""StarSystem"": ""BD+48738"",
+	            ""SystemAddress"": 908352033466,
+	            ""StarPos"": [-93.53125, -24.46875, -114.71875],
+	            ""SystemAllegiance"": ""Independent"",
+	            ""SystemEconomy"": ""$economy_Extraction;"",
+	            ""SystemEconomy_Localised"": ""Extraction"",
+	            ""SystemSecondEconomy"": ""$economy_Industrial;"",
+	            ""SystemSecondEconomy_Localised"": ""Industrial"",
+	            ""SystemGovernment"": ""$government_Cooperative;"",
+	            ""SystemGovernment_Localised"": ""Cooperative"",
+	            ""SystemSecurity"": ""$SYSTEM_SECURITY_medium;"",
+	            ""SystemSecurity_Localised"": ""MediumSecurity"",
+	            ""Population"": 2530147,
+	            ""Body"": ""LinnaeusEnterprise"",
+	            ""BodyID"": 28,
+	            ""BodyType"": ""Station"",
+	            ""Factions"": [{
+		            ""Name"": ""IndependentBD+48738Liberals"",
+		            ""FactionState"": ""None"",
+		            ""Government"": ""Democracy"",
+		            ""Influence"": 0.037000,
+		            ""Allegiance"": ""Federation"",
+		            ""Happiness"": ""$Faction_HappinessBand2;"",
+		            ""Happiness_Localised"": ""Happy"",
+		            ""MyReputation"": 0.000000
+	            },
+	            {
+		            ""Name"": ""PilotsFederationLocalBranch"",
+		            ""FactionState"": ""None"",
+		            ""Government"": ""Democracy"",
+		            ""Influence"": 0.000000,
+		            ""Allegiance"": ""PilotsFederation"",
+		            ""Happiness"": """",
+		            ""MyReputation"": 100.000000
+	            },
+	            {
+		            ""Name"": ""NewBD+48738Focus"",
+		            ""FactionState"": ""None"",
+		            ""Government"": ""Dictatorship"",
+		            ""Influence"": 0.046000,
+		            ""Allegiance"": ""Independent"",
+		            ""Happiness"": ""$Faction_HappinessBand2;"",
+		            ""Happiness_Localised"": ""Happy"",
+		            ""MyReputation"": 0.000000
+	            },
+	            {
+		            ""Name"": ""BD+48738CrimsonTravelCo"",
+		            ""FactionState"": ""None"",
+		            ""Government"": ""Corporate"",
+		            ""Influence"": 0.032000,
+		            ""Allegiance"": ""Independent"",
+		            ""Happiness"": ""$Faction_HappinessBand2;"",
+		            ""Happiness_Localised"": ""Happy"",
+		            ""MyReputation"": 0.000000
+	            },
+	            {
+		            ""Name"": ""BD+48738CrimsonPosse"",
+		            ""FactionState"": ""None"",
+		            ""Government"": ""Anarchy"",
+		            ""Influence"": 0.010000,
+		            ""Allegiance"": ""Independent"",
+		            ""Happiness"": ""$Faction_HappinessBand2;"",
+		            ""Happiness_Localised"": ""Happy"",
+		            ""MyReputation"": 0.000000
+	            },
+	            {
+		            ""Name"": ""Laniakea"",
+		            ""FactionState"": ""None"",
+		            ""Government"": ""Cooperative"",
+		            ""Influence"": 0.875000,
+		            ""Allegiance"": ""Independent"",
+		            ""Happiness"": ""$Faction_HappinessBand2;"",
+		            ""Happiness_Localised"": ""Happy"",
+		            ""MyReputation"": 0.000000,
+		            ""PendingStates"": [{
+			            ""State"": ""Expansion"",
+			            ""Trend"": 0
+		            }]
+	            }],
+	            ""SystemFaction"": {
+		            ""Name"": ""Laniakea"",
+		            ""FactionState"": ""None""
+	            }
+            }";
             IDictionary<string, object> data = Utilities.Deserializtion.DeserializeData(line);
 
             EDDNResponder.EDDNResponder responder = makeTestEDDNResponder();
