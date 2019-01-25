@@ -45,8 +45,16 @@ namespace EddiStarMapService
                 {
                     foreach (JObject station in stations)
                     {
-                        Station Station = ParseStarMapStation(station, system);
-                        Stations.Add(Station);
+                        try
+                        {
+                            Station Station = ParseStarMapStation(station, system);
+                            Stations.Add(Station);
+                        }
+                        catch (Exception ex)
+                        {
+                            Logging.Error("Error parsing EDSM station result " + station.ToString(), ex);
+                        }
+
                     }
                 }
                 // Sort stations by distance 

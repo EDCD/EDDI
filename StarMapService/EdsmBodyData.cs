@@ -42,8 +42,16 @@ namespace EddiStarMapService
                 {
                     foreach (JObject body in bodies)
                     {
-                        Body Body = ParseStarMapBody(body, system);
-                        Bodies.Add(Body);
+                        try
+                        {
+                            Body Body = ParseStarMapBody(body, system);
+                            Bodies.Add(Body);
+                        }
+                        catch (Exception ex)
+                        {
+                            Logging.Error("Error parsing EDSM body result " + body.ToString(), ex);
+                            throw;
+                        }
                     }
                 }
             }

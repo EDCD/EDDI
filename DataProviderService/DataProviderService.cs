@@ -40,7 +40,7 @@ namespace EddiDataProviderService
             {
                 if (showBodies)
                 {
-                    List<Body> bodies = StarMapService.GetStarMapBodies(starSystem.name);
+                    List<Body> bodies = StarMapService.GetStarMapBodies(starSystem.name) ?? new List<Body>();
                     foreach (Body body in bodies)
                     {
                         body.systemname = starSystem.name;
@@ -110,7 +110,7 @@ namespace EddiDataProviderService
                     string[] batchNames = systemNames.Skip(i).Take(batchSize).ToArray();
                     List<StarSystem> batchSystems = new List<StarSystem>();
 
-                    List<StarSystem> starSystems = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystems(batchNames, false);
+                    List<StarSystem> starSystems = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystems(batchNames, true);
                     foreach (string system in batchNames)
                     {
                         StarSystem CurrentStarSystem = starSystems.FirstOrDefault(s => s.name == system);

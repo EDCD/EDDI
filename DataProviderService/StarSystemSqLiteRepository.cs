@@ -397,6 +397,11 @@ namespace EddiDataProviderService
 
         private void insertStarSystems(List<StarSystem> systems)
         {
+            if (systems.Count == 0)
+            {
+                return;
+            }
+
             List<StarSystem> updateStarSystems = new List<StarSystem>();
             List<StarSystem> insertStarSystems = new List<StarSystem>();
 
@@ -461,6 +466,11 @@ namespace EddiDataProviderService
 
         private void updateStarSystems(List<StarSystem> systems)
         {
+            if (systems.Count == 0)
+            {
+                return;
+            }
+
             using (var con = SimpleDbConnection())
             {
                 try
@@ -494,6 +504,11 @@ namespace EddiDataProviderService
 
         private void deleteStarSystems(List<StarSystem> systems)
         {
+            if (systems.Count == 0)
+            {
+                return;
+            }
+
             using (var con = SimpleDbConnection())
             {
                 try
