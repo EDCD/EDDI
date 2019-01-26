@@ -201,7 +201,16 @@
   <data name="ipa_page_p2" xml:space="preserve">
     <value>は、主にラテン文字に基づいた、発音表記の体系です。19世紀後半に国際音声学会（International Phonetic Association）によって考案されたもので、音声言語の標準化された表現です。</value>
   </data>
-  
-  
-  
+  <data name="header_hot" xml:space="preserve">
+    <value>犯罪歴</value>
+    <comment>Header for column showing whether ship is Hot or Clean</comment>
+  </data>
+  <data name="ship_clean" xml:space="preserve">
+    <value>なし</value>
+    <comment>Ship is Clean</comment>
+  </data>
+  <data name="ship_hot" xml:space="preserve">
+    <value>あり</value>
+    <comment>Ship is Hot</comment>
+  </data>
 </root>
