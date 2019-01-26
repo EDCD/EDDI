@@ -215,7 +215,7 @@
     <value>フォネティック・コードによる読み上げを無効化:</value>
   </data>
   <data name="tab_tts_disable_phonetic_speech_note" xml:space="preserve">
-    <value>(Speech Responderのヘルプに記載された、音声合成マークアップ言語(SSML)による機能を全て無効化します。)</value>
+    <value>(Speech Responderのヘルプに記載された、音声合成マークアップ言語(SSML)機能を全て無効化します。)</value>
   </data>
   <data name="tab_tts_icao_desc" xml:space="preserve">
     <value>EDDIは、星系名や惑星名の読み上げに、ICAO発音(例:「A」を「アルファ」と発音)を使用可能です。これにより、星系名を理解しやすくなりますが、読み上げには時間が必要です。ICAO発音を使用するには、下記にチェックしてください。フォネティック・コードによる読み上げを無効化している場合、この設定は機能しません。</value>
