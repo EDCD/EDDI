@@ -225,12 +225,28 @@
   <data name="login" xml:space="preserve">
     <value>ログイン</value>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="frontier_api_cant_login_from_va" xml:space="preserve">
+    <value>ログインするために、Voice Attackを終了してから、EDDIを起動してください。</value>
+  </data>
+  <data name="frontierApiStatusLabel" xml:space="preserve">
+    <value>Frontier APIの状態:</value>
+  </data>
+  <data name="frontierApiConnected" xml:space="preserve">
+    <value>接続完了</value>
+  </data>
+  <data name="frontierApiNotConnected" xml:space="preserve">
+    <value>未接続</value>
+  </data>
+  <data name="frontierApiConnecting" xml:space="preserve">
+    <value>接続中</value>
+  </data>
+  <data name="frontier_api_close_browser" xml:space="preserve">
+    <value>ブラウザの画面を閉じ、EDDIに戻ってください。</value>
+  </data>
+  <data name="frontier_api_reset" xml:space="preserve">
+    <value>接続をリセット</value>
+  </data>
+  <data name="frontier_api_please_authenticate" xml:space="preserve">
+    <value>Frontier APIで、EDDIの接続を認証してください。</value>
+  </data>
 </root>
