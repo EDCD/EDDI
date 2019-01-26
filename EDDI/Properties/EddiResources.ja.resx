@@ -222,7 +222,9 @@
   <data name="safe_mode" xml:space="preserve">
     <value>セーフモード - 更新が必要です。</value>
   </data>
-  
+  <data name="login" xml:space="preserve">
+    <value>ログイン</value>
+  </data>
   
   
   
