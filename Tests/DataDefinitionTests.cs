@@ -104,5 +104,13 @@ namespace UnitTests
             Assert.AreEqual("TrinketsOfFortune", trinket.edname);
             Assert.AreEqual("Trinkets Of Hidden Fortune", trinket.invariantName);
         }
+
+        [TestMethod]
+        public void TestOcellusStationModel()
+        {
+            StationModel model = StationModel.FromEDName("Ocellus");
+            Assert.AreEqual("Bernal", model.basename);
+            Assert.AreEqual("Ocellus", model.edname);
+        }
     }
 }
