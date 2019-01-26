@@ -106,9 +106,9 @@ namespace EddiDataProviderService
                 systems.AddRange(fetchedSystems);
             }
 
-            foreach (string name in fetchSystems)
+            foreach (string name in names)
             {
-                if (fetchedSystems.Find(s => s.name == name) == null)
+                if (fetchedSystems?.Find(s => s?.name == name) == null)
                 {
                     systems.Add(new StarSystem() { name = name });
                 }
@@ -353,39 +353,40 @@ namespace EddiDataProviderService
 
         public void SaveStarSystems(List<StarSystem> starSystems)
         {
-            List<StarSystem> deleteAndReInsert = new List<StarSystem>();
-            List<StarSystem> update = new List<StarSystem>();
+            var delete = new List<StarSystem>();
+            var update = new List<StarSystem>();
+            var insert = new List<StarSystem>();
 
-            foreach (KeyValuePair<string, string> dbSystem in Instance.ReadStarSystems(starSystems.Select(s => s.name).ToArray()))
+            var dbSystems = Instance.ReadStarSystems(starSystems.Select(s => s.name).ToArray());
+            foreach (StarSystem system in starSystems)
             {
-                foreach (StarSystem system in starSystems)
+                KeyValuePair<string, string> dbSystem = dbSystems.FirstOrDefault(s => s.Key == system.name);
+                if (dbSystem.Key == null)
                 {
-                    if (system.name == dbSystem.Key)
+                    insert.Add(system);
+                }
+                else
+                {
+                    if (dbSystem.Value == null)
                     {
-                        if (dbSystem.Value == null)
-                        {
-                            deleteAndReInsert.Add(system);
-                        }
-                        else
-                        {
-                            update.Add(system);
-                        }
+                        delete.Add(system);
+                        insert.Add(system);
+                    }
+                    else
+                    {
+                        update.Add(system);
                     }
                 }
             }
 
-            // Delete and re-insert applicable systems
-            if (deleteAndReInsert?.Count > 0)
-            {
-                Instance.deleteStarSystems(deleteAndReInsert);
-                Instance.insertStarSystems(deleteAndReInsert);
-            }
+            // Delete applicable systems
+            Instance.deleteStarSystems(delete);
+
+            // Insert applicable systems
+            Instance.insertStarSystems(insert);
 
             // Update applicable systems
-            if (update?.Count > 0)
-            {
-                Instance.updateStarSystems(update);
-            }
+            Instance.updateStarSystems(update);
         }
 
         // Triggered when leaving a starsystem - just update lastvisit
@@ -606,7 +607,7 @@ namespace EddiDataProviderService
                 }
             }
             CreateDatabase();
-            var updateLogs = Task.Run(() => DataProviderService.syncFromStarMapService(true));
+            var updateLogs = Task.Run(() => DataProviderService.syncFromStarMapService());
         }
 
         private static void handleSqlLiteException(SQLiteConnection con, SQLiteException ex)
