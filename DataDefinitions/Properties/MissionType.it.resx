@@ -117,16 +117,36 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="Altruism" xml:space="preserve">
+    <value>Donazione</value>
+  </data>
+  <data name="AltruismCredits" xml:space="preserve">
+    <value>Donazione</value>
+  </data>
+  <data name="Assassinate" xml:space="preserve">
+    <value>Assassinio</value>
+  </data>
+  <data name="AssassinateWing" xml:space="preserve">
+    <value>Assassinio di gruppo</value>
+  </data>
+  <data name="Collect" xml:space="preserve">
+    <value>Raccolta</value>
+  </data>
+  <data name="CollectWing" xml:space="preserve">
+    <value>Raccolta di gruppo</value>
+  </data>
+  <data name="CommunityGoal" xml:space="preserve">
+    <value>Obiettivo comunitario</value>
+  </data>
+  <data name="Courier" xml:space="preserve">
+    <value>Trasporto dati</value>
+  </data>
+  <data name="Delivery" xml:space="preserve">
+    <value>Consegna</value>
+  </data>
+  <data name="DeliveryWing" xml:space="preserve">
+    <value>Consegna di gruppo</value>
+  </data>
   
   
   
