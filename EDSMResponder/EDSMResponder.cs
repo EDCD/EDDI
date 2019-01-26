@@ -68,7 +68,7 @@ namespace EddiEdsmResponder
             if (starMapService != null && updateThread == null)
             {
                 // Spin off a thread to download & sync flight logs & system comments from EDSM in the background 
-                updateThread = new Thread(() => DataProviderService.syncFromStarMapService())
+                updateThread = new Thread(() => DataProviderService.syncFromStarMapService(StarMapConfiguration.FromFile()?.lastSync))
                 {
                     IsBackground = true,
                     Name = "EDSM updater"
