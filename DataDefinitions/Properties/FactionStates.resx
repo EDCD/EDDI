@@ -153,4 +153,8 @@
     <value>Civil Liberty</value>
     <comment>Faction state CivilLiberty</comment>
   </data>
+  <data name="PirateAttack" xml:space="preserve">
+    <value>Pirate Attack</value>
+    <comment>Faction state PirateAttack</comment>
+  </data>
 </root>

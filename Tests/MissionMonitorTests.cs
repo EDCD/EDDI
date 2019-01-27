@@ -273,6 +273,16 @@ namespace UnitTests
             data.ToFile();
         }
 
+        [TestMethod]
+        public void TestCommunityGoalRewardEvent()
+        {
+            string line = @"{ ""timestamp"":""2019-01-27T06:14:02Z"", ""event"":""CommunityGoalReward"", ""CGID"":568, ""Name"":""Distant Worlds Mining Initiative"", ""System"":""Omega Sector VE-Q b5-15"", ""Reward"":23000000 }";
+            events = JournalMonitor.ParseJournalEntry(line);
+            Assert.IsTrue(events.Count == 1);
+            MissionCompletedEvent mcEvent = (MissionCompletedEvent)events[0];
+            Assert.IsInstanceOfType(mcEvent, typeof(MissionCompletedEvent));
+        }
+
         [TestCleanup]
         private void StopTestMissionMonitor()
         {

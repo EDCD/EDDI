@@ -23,6 +23,7 @@
             var Famine = new FactionState("Famine");
             var Election = new FactionState("Election");
             var Investment = new FactionState("Investment");
+            var PirateAttack = new FactionState("PirateAttack");
         }
 
         public static readonly FactionState None = new FactionState("None");

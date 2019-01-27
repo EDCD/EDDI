@@ -118,11 +118,15 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   
+  <data name="button_cancel" xml:space="preserve">
+    <value>Annulla</value>
+  </data>
   
   
   
-  
-  
+  <data name="button_ok" xml:space="preserve">
+    <value>OK</value>
+  </data>
   
   
   
@@ -132,24 +136,61 @@
   </data>
   
   
+  <data name="delete_script" xml:space="preserve">
+    <value>Cancella</value>
+  </data>
+  <data name="delete_script_caption" xml:space="preserve">
+    <value>Cancella script</value>
+  </data>
+  <data name="delete_script_message" xml:space="preserve">
+    <value>Sei sicuro di voler cancellare questi "{0}" script?</value>
+  </data>
+  <data name="desc" xml:space="preserve">
+    <value>Risponde agli eventi con delle frasi basate sulle informazioni relative agli eventi stessi. Non tutti gli eventi hanno delle risposte. Se uno script è vuoto, i pulsati "Test" e "Visualizza" sono disabilitati.</value>
+  </data>
+  <data name="edit_script" xml:space="preserve">
+    <value>Modifica</value>
+  </data>
+  <data name="edit_script_caption" xml:space="preserve">
+    <value>Modifica Script</value>
+  </data>
+  <data name="header_description" xml:space="preserve">
+    <value>Descrizione</value>
+  </data>
+  <data name="header_enabled" xml:space="preserve">
+    <value>Abilitato</value>
+  </data>
+  <data name="header_name" xml:space="preserve">
+    <value>Nome</value>
+  </data>
+  <data name="help_button" xml:space="preserve">
+    <value>Aiuto</value>
+  </data>
+  <data name="name" xml:space="preserve">
+    <value>Assistente vocale</value>
+  </data>
+  <data name="reset_script_button" xml:space="preserve">
+    <value>Ripristina impostazioni predefinite</value>
+  </data>
+  <data name="script_variables_button" xml:space="preserve">
+    <value>Variabili</value>
+    <comment>button that shows help for script variables</comment>
+  </data>
+  <data name="subs" xml:space="preserve">
+    <value>Produce una copia scritta delle stringhe lette dall'assistente vocale nel file %APPDATA%\EDDI\speechresponder.out</value>
+  </data>
   
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="test_script" xml:space="preserve">
+    <value>Test</value>
+  </data>
+  <data name="test_script_button" xml:space="preserve">
+    <value>Testa lo script</value>
+  </data>
+  <data name="view_script" xml:space="preserve">
+    <value>Visualizza</value>
+  </data>
+  <data name="view_script_title" xml:space="preserve">
+    <value>Visualizza Script</value>
+  </data>
   
 </root>

@@ -35,6 +35,8 @@
 
             var UnregisteredCommsBeacon = new SignalSource("$NumberStation;");
             var ListeningPost = new SignalSource("$ListeningPost;");
+
+            var NotableStellarPhenomena = new SignalSource("$Fixed_Event_Life_Cloud;");
         }
 
         public static readonly SignalSource UnidentifiedSignalSource = new SignalSource("$USS;");

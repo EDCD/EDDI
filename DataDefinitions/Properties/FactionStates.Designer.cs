@@ -169,6 +169,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Pirate Attack.
+        /// </summary>
+        public static string PirateAttack {
+            get {
+                return ResourceManager.GetString("PirateAttack", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Retreat.
         /// </summary>
         public static string Retreat {

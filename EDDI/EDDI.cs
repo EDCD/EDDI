@@ -905,6 +905,13 @@ namespace Eddi
             CurrentStarSystem.z = theEvent.z;
             setSystemDistanceFromHome(CurrentStarSystem);
 
+            // Increment system visits if this event is newer than the last visit we were already aware of
+            if (CurrentStarSystem.lastvisit < theEvent.timestamp)
+            {
+                CurrentStarSystem.lastvisit = theEvent.timestamp;
+                CurrentStarSystem.visits++;
+            }
+
             // Update the mutable system data from the journal
             if (theEvent.population != null)
             {
@@ -975,6 +982,7 @@ namespace Eddi
                 if (CompanionAppService.Instance.CurrentState == CompanionAppService.State.Authorized)
                 {
                     // Refresh station data
+                    if (theEvent.fromLoad) { return true; } // Don't fire this event when loading pre-existing logs
                     profileUpdateNeeded = true;
                     profileStationRequired = CurrentStation.name;
                     Thread updateThread = new Thread(() => conditionallyRefreshProfile())
@@ -1080,6 +1088,7 @@ namespace Eddi
             if (CompanionAppService.Instance.CurrentState == CompanionAppService.State.Authorized)
             {
                 // Refresh station data
+                if (theEvent.fromLoad) { return true; } // Don't fire this event when loading pre-existing logs
                 profileUpdateNeeded = true;
                 profileStationRequired = CurrentStation.name;
                 Thread updateThread = new Thread(() => conditionallyRefreshProfile())

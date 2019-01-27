@@ -217,4 +217,8 @@
     <value>Listening Post</value>
     <comment>ListeningPost</comment>
   </data>
+  <data name="NotableStellarPhenomena" xml:space="preserve">
+    <value>Notable Stellar Phenomena</value>
+    <comment>Notable Stellar Phenomena</comment>
+  </data>
 </root>

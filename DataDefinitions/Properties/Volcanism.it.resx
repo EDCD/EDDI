@@ -126,7 +126,7 @@
     <comment>Volcanism Carbon_dioxide</comment>
   </data>
   <data name="Iron" xml:space="preserve">
-    <value>Ferro</value>
+    <value>Ferro liquido</value>
     <comment>Volcanism Iron</comment>
   </data>
   <data name="Methane" xml:space="preserve">
