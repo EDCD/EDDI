@@ -119,7 +119,9 @@
   </resheader>
   
   
-  
+  <data name="name" xml:space="preserve">
+    <value>Galnet</value>
+  </data>
   
   
   
