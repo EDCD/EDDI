@@ -10,6 +10,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
         * The entire "npc" channel can easily be set to false.
         * the npc sources "Cruise liner", "Passenger liner", "Station" and "Wedding convoy" default to false -- and there was great rejoicing.
         * the "starsystem" channel defaults to false to prevent overwhelming EDDI with messages in systems with high player counts (and which may be full of toxic people).
+    * Revised the `System report` script so that it won't report a "None" government type.
 
 ### 3.3.4-b1
   * Core
