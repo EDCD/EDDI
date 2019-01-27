@@ -131,7 +131,7 @@
   
   
   <data name="default_personality_script_filename" xml:space="preserve">
-    <value>eddi.it.jsonb</value>
+    <value>eddi.it.json</value>
     <comment>Suggest "eddi.&lt;culture-code&gt;.json" e.g. "eddi.fr.json"</comment>
   </data>
   
