@@ -115,22 +115,7 @@ namespace EddiEdsmResponder
                 while (i < total)
                 {
                     int batchSize = Math.Min(total, StarMapService.syncBatchSize);
-                    string[] batchNames = systemNames.Skip(i).Take(batchSize).ToArray();
-                    List<StarSystem> batchSystems = new List<StarSystem>();
-
-                    List<StarSystem> starSystems = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystems(batchNames, false);
-                    foreach (string system in batchNames)
-                    {
-                        StarSystem CurrentStarSystem = starSystems.FirstOrDefault(s => s.name == system);
-                        CurrentStarSystem.visits = systems[system].visits;
-                        CurrentStarSystem.lastvisit = systems[system].lastVisit;
-                        if (comments.ContainsKey(system))
-                        {
-                            CurrentStarSystem.comment = comments[system];
-                        }
-                        batchSystems.Add(CurrentStarSystem);
-                    }
-                    DataProviderService.saveFromStarMapService(batchSystems);
+                    DataProviderService.syncEdsmLogBatch(systems.Skip(i).Take(batchSize).ToDictionary(x => x.Key, x => x.Value), comments);
                     i = i + batchSize;
                     progress.Report($"{Properties.EDSMResources.log_button_fetching_progress} {i}/{total}");
                 }

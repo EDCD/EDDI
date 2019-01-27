@@ -21,6 +21,8 @@ namespace Eddi
             EDDIConfiguration configuration = EDDIConfiguration.FromFile();
             configuration.Plugins[pluginName] = true;
             configuration.ToFile();
+            EDDI.Instance.EnableResponder(pluginName);
+            EDDI.Instance.EnableMonitor(pluginName);
         }
 
         private void pluginenabled_Unchecked(object sender, RoutedEventArgs e)
@@ -28,9 +30,8 @@ namespace Eddi
             EDDIConfiguration configuration = EDDIConfiguration.FromFile();
             configuration.Plugins[pluginName] = false;
             configuration.ToFile();
-
-            EDDI.Instance.ObtainResponder(pluginName)?.Stop();
-            EDDI.Instance.ObtainMonitor(pluginName)?.Stop();
+            EDDI.Instance.DisableResponder(pluginName);
+            EDDI.Instance.DisableMonitor(pluginName);
         }
     }
 }

@@ -40,7 +40,7 @@ namespace EddiDataProviderService
             {
                 if (showBodies)
                 {
-                    List<Body> bodies = StarMapService.GetStarMapBodies(starSystem.name);
+                    List<Body> bodies = StarMapService.GetStarMapBodies(starSystem.name) ?? new List<Body>();
                     foreach (Body body in bodies)
                     {
                         body.systemname = starSystem.name;
@@ -90,40 +90,22 @@ namespace EddiDataProviderService
         }
 
         // EDSM flight log synchronization
-        public static void syncFromStarMapService (bool forceSyncAll = false)
+        public static void syncFromStarMapService (DateTime? lastSync = null, IProgress<string> progress = null)
         {
             Logging.Info("Syncing from EDSM");
 
             try
             {
-                StarMapConfiguration starMapCredentials = StarMapConfiguration.FromFile();
-                Dictionary<string, StarMapLogInfo> systems = StarMapService.Instance.getStarMapLog(forceSyncAll ? null : (DateTime?)starMapCredentials.lastSync);
+                Dictionary<string, StarMapLogInfo> systems = StarMapService.Instance.getStarMapLog(lastSync);
                 Dictionary<string, string> comments = StarMapService.Instance.getStarMapComments();
 
                 int total = systems.Count;
                 int i = 0;
 
-                string[] systemNames = systems.Keys.ToArray();
                 while (i < total)
                 {
                     int batchSize = Math.Min(total, StarMapService.syncBatchSize);
-                    string[] batchNames = systemNames.Skip(i).Take(batchSize).ToArray();
-                    List<StarSystem> batchSystems = new List<StarSystem>();
-
-                    List<StarSystem> starSystems = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystems(batchNames, false);
-                    foreach (string system in batchNames)
-                    {
-                        StarSystem CurrentStarSystem = starSystems.FirstOrDefault(s => s.name == system);
-                        if (CurrentStarSystem == null) { continue; }
-                        CurrentStarSystem.visits = systems[system].visits;
-                        CurrentStarSystem.lastvisit = systems[system].lastVisit;
-                        if (comments.ContainsKey(system))
-                        {
-                            CurrentStarSystem.comment = comments[system];
-                        }
-                        batchSystems.Add(CurrentStarSystem);
-                    }
-                    saveFromStarMapService(batchSystems);
+                    syncEdsmLogBatch(systems.Skip(i).Take(batchSize).ToDictionary(x => x.Key, x => x.Value), comments);
                     i = i + batchSize;
                 }
                 Logging.Info("EDSM sync completed");
@@ -136,6 +118,26 @@ namespace EddiDataProviderService
             {
                 Logging.Debug("EDSM update stopped by user: " + e.Message);
             }
+        }
+
+        public static void syncEdsmLogBatch(Dictionary<string, StarMapLogInfo> systems, Dictionary<string, string> comments)
+        {
+            List<StarSystem> batchSystems = new List<StarSystem>();
+            string[] batchNames = systems.Select(x => x.Key).ToArray();
+            List<StarSystem> starSystems = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystems(batchNames, false);
+            foreach (string name in batchNames)
+            {
+                StarSystem CurrentStarSystem = starSystems.FirstOrDefault(s => s.name == name);
+                if (CurrentStarSystem == null) { continue; }
+                CurrentStarSystem.visits = systems[name].visits;
+                CurrentStarSystem.lastvisit = systems[name].lastVisit;
+                if (comments.ContainsKey(name))
+                {
+                    CurrentStarSystem.comment = comments[name];
+                }
+                batchSystems.Add(CurrentStarSystem);
+            }
+            saveFromStarMapService(batchSystems);
         }
 
         public static void saveFromStarMapService (List<StarSystem> syncSystems)

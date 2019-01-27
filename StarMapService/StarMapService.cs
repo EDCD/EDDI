@@ -15,7 +15,7 @@ namespace EddiStarMapService
     public partial class StarMapService
     {
         // Set the maximum batch size we will use for syncing before we write systems to our sql database
-        public const int syncBatchSize = 100;
+        public const int syncBatchSize = 50;
 
         public static string commanderName { get; set; }
         private static string apiKey { get; set; }

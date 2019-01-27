@@ -1042,12 +1042,12 @@ namespace EddiJournalMonitor
                                                 // Minimize calling EDDP for system data
                                                 if (starSystem != storedModule.system)
                                                 {
-                                                    systemData = StarSystemSqLiteRepository.Instance.GetStarSystem(storedModule.system, true);
+                                                    systemData = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystem(storedModule.system);
                                                     starSystem = storedModule.system;
                                                 }
-                                                
+
                                                 Station stationData = systemData?.stations?.FirstOrDefault(s => s.marketId == storedModule.marketid);
-                                                storedModule.station = stationData.name;
+                                                storedModule.station = stationData?.name;
                                             }
                                             storedModules.Add(storedModule);
                                         }

@@ -149,5 +149,8 @@
     <value>Investimento</value>
     <comment>Faction state Investment</comment>
   </data>
-  
+  <data name="CivilLiberty" xml:space="preserve">
+    <value>Pace civile</value>
+    <comment>Faction state CivilLiberty</comment>
+  </data>
 </root>

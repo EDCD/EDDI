@@ -1062,6 +1062,7 @@ namespace EddiSpeechResponder
 
         private void setSystemDistanceFromHome(StarSystem system)
         {
+            if (system == null) { return; }
             if (EDDI.Instance.HomeStarSystem != null && EDDI.Instance.HomeStarSystem.x != null && system.x != null)
             {
                 system.distancefromhome = (decimal)Math.Round(Math.Sqrt(Math.Pow((double)(system.x - EDDI.Instance.HomeStarSystem.x), 2)

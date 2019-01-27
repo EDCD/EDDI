@@ -29,7 +29,8 @@ namespace EddiDataDefinitions
         public StationModel() : this("")
         {}
 
-        private StationModel(string edname) : base(edname, edname.Replace(" Starport", ""))
+        // The same station may use the model "Ocellus" for one event and "Bernal" for another. 
+        private StationModel(string edname) : base(edname, edname.Replace(" Starport", "").Replace("Ocellus", "Bernal"))
         {}
 
         new public static StationModel FromName(string from)
