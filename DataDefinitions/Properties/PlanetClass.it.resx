@@ -117,24 +117,64 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="AmmoniaWorld" xml:space="preserve">
+    <value>Pianeta coperto da oceani di ammoniaca</value>
+  </data>
+  <data name="EarthLikeBody" xml:space="preserve">
+    <value>Pianeta simile alla Terra</value>
+  </data>
+  <data name="GasGiantWithAmmoniaBasedLife" xml:space="preserve">
+    <value>Gigante gassoso con forme di vita a base di ammoniaca</value>
+  </data>
+  <data name="GasGiantWithWaterBasedLife" xml:space="preserve">
+    <value>Gigante gassoso con forme di vita a base di acqua</value>
+  </data>
+  <data name="HeliumGasGiant" xml:space="preserve">
+    <value>Gigante gassoso composto di Elio</value>
+  </data>
+  <data name="HeliumRichGasGiant" xml:space="preserve">
+    <value>Gigante gassoso ricco di Elio</value>
+  </data>
+  <data name="HighMetalContentBody" xml:space="preserve">
+    <value>Pianeta ad alto contenuto di metalli</value>
+  </data>
+  <data name="IcyBody" xml:space="preserve">
+    <value>Corpo celeste ghiacciato</value>
+  </data>
+  <data name="MetalRichBody" xml:space="preserve">
+    <value>Corpo celeste ricco di metalli</value>
+  </data>
+  <data name="RockyBody" xml:space="preserve">
+    <value>Corpo celeste roccioso</value>
+  </data>
+  <data name="RockyIceBody" xml:space="preserve">
+    <value>Corpo celeste roccioso ghiacciato</value>
+  </data>
+  <data name="SudarskyClassIGasGiant" xml:space="preserve">
+    <value>Gigante gassoso di prima classe</value>
+  </data>
+  <data name="SudarskyClassIIGasGiant" xml:space="preserve">
+    <value>Gigante gassoso di seconda classe</value>
+  </data>
+  <data name="SudarskyClassIIIGasGiant" xml:space="preserve">
+    <value>Gigante gassoso di terza classe</value>
+  </data>
+  <data name="SudarskyClassIVGasGiant" xml:space="preserve">
+    <value>Gigante gassoso di quarta classe</value>
+  </data>
+  <data name="SudarskyClassVGasGiant" xml:space="preserve">
+    <value>Gigante gassoso di quinta classe</value>
+  </data>
+  <data name="WaterGiant" xml:space="preserve">
+    <value>Gigante d'acqua</value>
+  </data>
+  <data name="WaterGiantWithLife" xml:space="preserve">
+    <value>Gigante d'acqua con forme di vita</value>
+  </data>
+  <data name="WaterWorld" xml:space="preserve">
+    <value>Pianeta coperto da oceani di acqua</value>
+  </data>
+  <data name="None" xml:space="preserve">
+    <value>Nessuno</value>
+  </data>
 </root>
