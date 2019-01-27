@@ -982,6 +982,7 @@ namespace Eddi
                 if (CompanionAppService.Instance.CurrentState == CompanionAppService.State.Authorized)
                 {
                     // Refresh station data
+                    if (theEvent.fromLoad) { return true; } // Don't fire this event when loading pre-existing logs
                     profileUpdateNeeded = true;
                     profileStationRequired = CurrentStation.name;
                     Thread updateThread = new Thread(() => conditionallyRefreshProfile())
@@ -1087,6 +1088,7 @@ namespace Eddi
             if (CompanionAppService.Instance.CurrentState == CompanionAppService.State.Authorized)
             {
                 // Refresh station data
+                if (theEvent.fromLoad) { return true; } // Don't fire this event when loading pre-existing logs
                 profileUpdateNeeded = true;
                 profileStationRequired = CurrentStation.name;
                 Thread updateThread = new Thread(() => conditionallyRefreshProfile())
