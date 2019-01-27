@@ -118,15 +118,25 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   
+  <data name="delete_btn" xml:space="preserve">
+    <value>Cancella</value>
+  </data>
+  
+  <data name="faction_header" xml:space="preserve">
+    <value>Fazione</value>
+  </data>
   
   
   
+  <data name="name_header" xml:space="preserve">
+    <value>Nome</value>
+  </data>
   
   
-  
-  
-  
-  
-  
-  
+  <data name="state_header" xml:space="preserve">
+    <value>Stato</value>
+  </data>
+  <data name="system_header" xml:space="preserve">
+    <value>Sistema</value>
+  </data>
 </root>
