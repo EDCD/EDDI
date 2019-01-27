@@ -121,8 +121,12 @@
   
   
   
-  
-  
+  <data name="Pirate" xml:space="preserve">
+    <value>Pirata</value>
+  </data>
+  <data name="PirateLord" xml:space="preserve">
+    <value>Lord pirata</value>
+  </data>
   
   
   
