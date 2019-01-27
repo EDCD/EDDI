@@ -905,6 +905,13 @@ namespace Eddi
             CurrentStarSystem.z = theEvent.z;
             setSystemDistanceFromHome(CurrentStarSystem);
 
+            // Increment system visits if this event is newer than the last visit we were already aware of
+            if (CurrentStarSystem.lastvisit < theEvent.timestamp)
+            {
+                CurrentStarSystem.lastvisit = theEvent.timestamp;
+                CurrentStarSystem.visits++;
+            }
+
             // Update the mutable system data from the journal
             if (theEvent.population != null)
             {
