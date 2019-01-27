@@ -124,6 +124,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Notable Stellar Phenomena.
+        /// </summary>
+        public static string NotableStellarPhenomena {
+            get {
+                return ResourceManager.GetString("NotableStellarPhenomena", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Unregistered Comms Beacon.
         /// </summary>
         public static string NumberStation {
