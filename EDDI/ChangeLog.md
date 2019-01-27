@@ -3,7 +3,10 @@
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
 ### Development
+
+### 3.3.4-rc1
   * Bug fixes for database transactions
+  * Bug fixes for changes to journal events in Elite Dangerous patch 3.3.03
   * Speech responder
     * Easier control for the `Message received` script:
       * Up-front settings for `spokenChannels` and `spokenNpcSources`: each item can be set `true` (spoken) or `false` (not spoken).
