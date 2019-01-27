@@ -3,6 +3,7 @@
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
 ### Development
+  * Bug fixes for database transactions
   * Speech responder
     * Easier control for the `Message received` script:
       * Up-front settings for `spokenChannels` and `spokenNpcSources`: each item can be set `true` (spoken) or `false` (not spoken).
