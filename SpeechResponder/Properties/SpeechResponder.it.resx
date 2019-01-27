@@ -145,7 +145,9 @@
   <data name="delete_script_message" xml:space="preserve">
     <value>Sei sicuro di voler cancellare questi "{0}" script?</value>
   </data>
-  
+  <data name="desc" xml:space="preserve">
+    <value>Risponde agli eventi con delle frasi basate sulle informazioni relative agli eventi stessi. Non tutti gli eventi hanno delle risposte. Se uno script è vuoto, i pulsati "Test" e "Visualizza" sono disabilitati.</value>
+  </data>
   <data name="edit_script" xml:space="preserve">
     <value>Modifica</value>
   </data>
