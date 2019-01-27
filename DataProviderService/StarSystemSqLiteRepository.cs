@@ -82,11 +82,14 @@ namespace EddiDataProviderService
 
         public StarSystem GetOrCreateStarSystem(string name, bool fetchIfMissing = true)
         {
+            if (name == string.Empty) { return null; }
             return GetOrCreateStarSystems(new string[] { name }).FirstOrDefault();
         }
 
         public List<StarSystem> GetOrCreateStarSystems(string[] names, bool fetchIfMissing = true)
         {
+            if (names.Count() == 0) { return null; }
+
             List<StarSystem> systems = Instance.GetStarSystems(names, fetchIfMissing);
             List<string> fetchSystems = new List<string>();
 
@@ -119,11 +122,14 @@ namespace EddiDataProviderService
 
         public StarSystem GetOrFetchStarSystem(string name, bool fetchIfMissing = true)
         {
+            if (name == string.Empty) { return null; }
             return GetOrFetchStarSystems(new string[] { name }).FirstOrDefault();
         }
 
         public List<StarSystem> GetOrFetchStarSystems(string[] names, bool fetchIfMissing = true)
         {
+            if (names.Count() == 0) { return null; }
+
             List<StarSystem> systems = Instance.GetStarSystems(names, fetchIfMissing);
             List<string> fetchSystems = new List<string>();
 
@@ -148,6 +154,7 @@ namespace EddiDataProviderService
 
         public StarSystem GetStarSystem(string name, bool refreshIfOutdated = true)
         {
+            if (name == string.Empty) { return null; }
             return GetStarSystems(new string[] { name }).FirstOrDefault();
         }
 
@@ -157,6 +164,7 @@ namespace EddiDataProviderService
             {
                 return null;
             }
+            if (names.Count() == 0) { return null; }
 
             List<StarSystem> results = new List<StarSystem>();
             List<StarSystem> systemsToUpdate = new List<StarSystem>();
@@ -277,11 +285,14 @@ namespace EddiDataProviderService
 
         private string ReadStarSystem(string name)
         {
+            if (name == string.Empty) { return null; }
             return (string)Instance.ReadStarSystems(new string[] { name }).FirstOrDefault().Value;
         }
 
         private List<KeyValuePair<string, string>> ReadStarSystems(string[] names)
         {
+            if (names.Count() == 0) { return null; }
+
             List<KeyValuePair<string, string>> results = new List<KeyValuePair<string, string>>();
             using (var con = SimpleDbConnection())
             {
@@ -320,6 +331,8 @@ namespace EddiDataProviderService
 
         private static StarSystem DeserializeStarSystem(string systemName, string data, ref bool needToUpdate)
         {
+            if (systemName == string.Empty || data == string.Empty) { return null; }
+
             StarSystem result = null;
             try
             {
@@ -348,11 +361,14 @@ namespace EddiDataProviderService
 
         public void SaveStarSystem(StarSystem starSystem)
         {
+            if (starSystem == null) { return; }
             SaveStarSystems(new List<StarSystem>() { starSystem });
         }
 
         public void SaveStarSystems(List<StarSystem> starSystems)
         {
+            if (starSystems.Count() == 0) { return; }
+
             var delete = new List<StarSystem>();
             var update = new List<StarSystem>();
             var insert = new List<StarSystem>();
@@ -392,6 +408,8 @@ namespace EddiDataProviderService
         // Triggered when leaving a starsystem - just update lastvisit
         public void LeaveStarSystem(StarSystem system)
         {
+            if (system == null) { return; }
+
             system.lastvisit = DateTime.UtcNow;
             SaveStarSystem(system);
         }
@@ -406,11 +424,11 @@ namespace EddiDataProviderService
             List<StarSystem> updateStarSystems = new List<StarSystem>();
             List<StarSystem> insertStarSystems = new List<StarSystem>();
 
+            var existingStarSystems = Instance.ReadStarSystems(systems.Select(s => s.name).ToArray());
             foreach (StarSystem systemToInsertOrUpdate in systems)
             {
                 // Before we insert we attempt to fetch to ensure that we don't have it present
-                StarSystem existingStarSystem = Instance.GetStarSystem(systemToInsertOrUpdate.name, false);
-                if (existingStarSystem != null)
+                if (existingStarSystems.FirstOrDefault(s => s.Key == systemToInsertOrUpdate.name).Value != null)
                 {
                     Logging.Debug("Attempt to insert existing star system - updating instead");
                     updateStarSystems.Add(systemToInsertOrUpdate);
