@@ -115,7 +115,7 @@
     <comment/>
   </data>
   <data name="justover" xml:space="preserve">
-    <value>appena sopra </value>
+    <value>poco più di </value>
     <comment/>
   </data>
   <data name="million" xml:space="preserve">
@@ -131,15 +131,15 @@
     <comment/>
   </data>
   <data name="onthewayto" xml:space="preserve">
-    <value>prossimo a</value>
+    <value>circa </value>
     <comment/>
   </data>
   <data name="over" xml:space="preserve">
-    <value>oltre </value>
+    <value>più di </value>
     <comment/>
   </data>
   <data name="plus" xml:space="preserve">
-    <value> più </value>
+    <value> più di </value>
     <comment/>
   </data>
   <data name="point" xml:space="preserve">
@@ -159,7 +159,7 @@
     <comment/>
   </data>
   <data name="wellover" xml:space="preserve">
-    <value>ben oltre </value>
+    <value>ben più di </value>
     <comment/>
   </data>
   <data name="zero" xml:space="preserve">

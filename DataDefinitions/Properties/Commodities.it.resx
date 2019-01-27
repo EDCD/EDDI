@@ -715,11 +715,27 @@
   
   
   
+  <data name="Landmines" xml:space="preserve">
+    <value>Mine</value>
+    <comment>Commodity Landmines</comment>
+  </data>
   
   
   
+  <data name="Leather" xml:space="preserve">
+    <value>Cuoio</value>
+    <comment>Commodity Leather</comment>
+  </data>
   
   
+  <data name="LiquidOxygen" xml:space="preserve">
+    <value>Ossigeno liquido</value>
+    <comment>Commodity LiquidOxygen</comment>
+  </data>
+  <data name="Liquor" xml:space="preserve">
+    <value>Liquore</value>
+    <comment>Commodity Liquor</comment>
+  </data>
   
   
   
@@ -774,11 +790,31 @@
   
   
   
+  <data name="Pesticides" xml:space="preserve">
+    <value>Pesticidi</value>
+    <comment>Commodity Pesticides</comment>
+  </data>
+  <data name="Platinum" xml:space="preserve">
+    <value>Platino</value>
+    <comment>Commodity Platinum</comment>
+  </data>
   
+  <data name="Polymers" xml:space="preserve">
+    <value>Polimeri</value>
+    <comment>Commodity Polymers</comment>
+  </data>
   
+  <data name="PowerGenerators" xml:space="preserve">
+    <value>Generatori Elettrici</value>
+    <comment>Commodity PowerGenerators</comment>
+  </data>
   
   
   
+  <data name="PreciousGems" xml:space="preserve">
+    <value>Gemme preziose</value>
+    <comment>Commodity PreciousGems</comment>
+  </data>
   
   
   
@@ -787,6 +823,10 @@
   
   
   
+  <data name="Robotics" xml:space="preserve">
+    <value>Robotica</value>
+    <comment>Commodity Robotics</comment>
+  </data>
   
   
   
@@ -794,8 +834,24 @@
   
   
   
+  <data name="ScientificSamples" xml:space="preserve">
+    <value>Campioni Scientifici</value>
+    <comment>Commodity ScientificSamples</comment>
+  </data>
+  <data name="Scrap" xml:space="preserve">
+    <value>Rottame</value>
+    <comment>Commodity Scrap</comment>
+  </data>
   
+  <data name="Silver" xml:space="preserve">
+    <value>Argento</value>
+    <comment>Commodity Silver</comment>
+  </data>
   
+  <data name="Slaves" xml:space="preserve">
+    <value>Schiavi</value>
+    <comment>Commodity Slaves</comment>
+  </data>
   
   
   
@@ -804,6 +860,10 @@
   
   
   
+  <data name="SyntheticFabrics" xml:space="preserve">
+    <value>Tessuti sintetici</value>
+    <comment>Commodity SyntheticFabrics</comment>
+  </data>
   
   
   
@@ -812,6 +872,10 @@
   
   
   
+  <data name="Tea" xml:space="preserve">
+    <value>Te'</value>
+    <comment>Commodity Tea</comment>
+  </data>
   
   
   
@@ -824,7 +888,15 @@
   
   
   
+  <data name="Tobacco" xml:space="preserve">
+    <value>Tabacco</value>
+    <comment>Commodity Tobacco</comment>
+  </data>
   
+  <data name="ToxicWaste" xml:space="preserve">
+    <value>Rifiuti tossici</value>
+    <comment>Commodity ToxicWaste</comment>
+  </data>
   
   
   
@@ -834,6 +906,14 @@
   
   
   
+  <data name="Uranium" xml:space="preserve">
+    <value>Uranio</value>
+    <comment>Commodity Uranium</comment>
+  </data>
+  <data name="USSCargoAncientArtefact" xml:space="preserve">
+    <value>Artefatto antico</value>
+    <comment>Commodity USSCargoAncientArtefact</comment>
+  </data>
   
   
   
@@ -850,8 +930,20 @@
   
   
   
+  <data name="Water" xml:space="preserve">
+    <value>Acqua</value>
+    <comment>Commodity Water</comment>
+  </data>
+  <data name="WaterPurifiers" xml:space="preserve">
+    <value>Depuratori d'acqua</value>
+    <comment>Commodity WaterPurifiers</comment>
+  </data>
   
   
+  <data name="Wine" xml:space="preserve">
+    <value>Vino</value>
+    <comment>Commodity Wine</comment>
+  </data>
   
   
   
@@ -908,30 +1000,10 @@
   
   
   
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="ancientkey" xml:space="preserve">
+    <value>Chiavi Antiche</value>
+    <comment>Commodity Ancient Key</comment>
+  </data>
   
   
   

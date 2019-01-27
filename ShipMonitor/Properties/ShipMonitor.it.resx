@@ -153,7 +153,9 @@
   <data name="link_ipa" xml:space="preserve">
     <value>Alfabeto Fonetico Internazionale</value>
   </data>
-  
+  <data name="name" xml:space="preserve">
+    <value>Navi</value>
+  </data>
   <data name="p1" xml:space="preserve">
     <value>Ti permette di vedere le tue navi ed assegnargli specifici ruoli. L'informazione è usata negli script per gestire le azioni.</value>
   </data>
@@ -171,13 +173,24 @@
   
   
   
+  <data name="ipa_page_p1" xml:space="preserve">
+    <value>Il</value>
+  </data>
   
   
   
   
   
-  
-  
-  
-  
+  <data name="header_hot" xml:space="preserve">
+    <value>Stato</value>
+    <comment>Header for column showing whether ship is Hot or Clean</comment>
+  </data>
+  <data name="ship_clean" xml:space="preserve">
+    <value>Pulito</value>
+    <comment>Ship is Clean</comment>
+  </data>
+  <data name="ship_hot" xml:space="preserve">
+    <value>Ricercato</value>
+    <comment>Ship is Hot</comment>
+  </data>
 </root>
