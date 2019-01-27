@@ -3207,6 +3207,10 @@ namespace EddiJournalMonitor
                             case "FSDTarget":
                             case "NpcCrewPaidWage":
                             case "SquadronStartup":
+                            case "ReservoirReplenished":
+                            case "FSSAllBodiesFound":
+                            case "ProspectedAsteroid":
+                            case "CrimeVictim":
                                 // we silently ignore these, but forward them to the responders
                                 break;
                             default:
