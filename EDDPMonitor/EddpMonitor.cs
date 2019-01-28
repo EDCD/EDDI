@@ -207,7 +207,7 @@ namespace EddiEddpMonitor
                 }
                 if (@event != null)
                 {
-                    EDDI.Instance.eventHandler(@event);
+                    EDDI.Instance.enqueueEvent(@event);
                 }
             }
         }

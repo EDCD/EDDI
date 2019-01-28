@@ -600,7 +600,7 @@ namespace EddiCargoMonitor
                         if (amount > 0)
                         {
                             string updatetype = @event.collected > haulage.collected ? "Collect" : "Deliver";
-                            EDDI.Instance.eventHandler(new CargoWingUpdateEvent(DateTime.Now, haulage.missionid, updatetype, cargo.commodityDef, amount, @event.collected, @event.delivered, @event.totaltodeliver));
+                            EDDI.Instance.enqueueEvent(new CargoWingUpdateEvent(DateTime.Now, haulage.missionid, updatetype, cargo.commodityDef, amount, @event.collected, @event.delivered, @event.totaltodeliver));
                             haulage.collected = @event.collected;
                             haulage.delivered = @event.delivered;
                             if (updatetype == "Collect" && haulage.startmarketid == 0)
@@ -1068,7 +1068,7 @@ namespace EddiCargoMonitor
                     sourceSystems = string.Join("_", sourceList);
                 }
             }
-            EDDI.Instance.eventHandler(new MissionsRouteEvent(DateTime.Now, "source", sourceSystem, sourceSystems, sourceList.Count(), sourceDistance, 0, missionids));
+            EDDI.Instance.enqueueEvent(new MissionsRouteEvent(DateTime.Now, "source", sourceSystem, sourceSystems, sourceList.Count(), sourceDistance, 0, missionids));
             return sourceSystem;
         }
 

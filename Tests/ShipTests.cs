@@ -24,7 +24,7 @@ namespace UnitTests
             RollbarLocator.RollbarInstance.Config.Enabled = false;
 
             // Set ourselves as in beta to stop sending data to remote systems
-            EDDI.Instance.eventHandler(new FileHeaderEvent(DateTime.UtcNow, "JournalBeta.txt", "beta", "beta"));
+            EDDI.Instance.enqueueEvent(new FileHeaderEvent(DateTime.UtcNow, "JournalBeta.txt", "beta", "beta"));
             Logging.Verbose = true;
         }
 

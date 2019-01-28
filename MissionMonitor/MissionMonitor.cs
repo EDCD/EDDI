@@ -136,14 +136,14 @@ namespace EddiMissionMonitor
 
                             if (mission.expiry?.ToLocalTime() < DateTime.Now)
                             {
-                                EDDI.Instance.eventHandler(new MissionExpiredEvent(DateTime.Now, mission.missionid, mission.name));
+                                EDDI.Instance.enqueueEvent(new MissionExpiredEvent(DateTime.Now, mission.missionid, mission.name));
                             }
                             else if (mission.expiry?.ToLocalTime() < DateTime.Now.AddMinutes(missionWarning ?? 60))
                             {
                                 if (!mission.expiring)
                                 {
                                     mission.expiring = true;
-                                    EDDI.Instance.eventHandler(new MissionWarningEvent(DateTime.Now, mission.missionid, mission.name, (int)span.TotalMinutes));
+                                    EDDI.Instance.enqueueEvent(new MissionWarningEvent(DateTime.Now, mission.missionid, mission.name, (int)span.TotalMinutes));
                                 }
                             }
                             else if (mission.expiring)
@@ -278,7 +278,7 @@ namespace EddiMissionMonitor
                                         // Set destination system to next in chain & trigger a 'Mission redirected' event
                                         string destinationsystem = mission.destinationsystems?
                                             .FirstOrDefault(s => s.visited == false).name;
-                                        EDDI.Instance.eventHandler(new MissionRedirectedEvent(DateTime.Now, mission.missionid, mission.name, null, null, destinationsystem, EDDI.Instance?.CurrentStarSystem?.name));
+                                        EDDI.Instance.enqueueEvent(new MissionRedirectedEvent(DateTime.Now, mission.missionid, mission.name, null, null, destinationsystem, EDDI.Instance?.CurrentStarSystem?.name));
                                     }
                                     handled = true;
                                 }
@@ -916,7 +916,7 @@ namespace EddiMissionMonitor
 
                 }
             }
-            EDDI.Instance.eventHandler(new MissionsRouteEvent(DateTime.Now, "expiring", expiringSystem, null, expiringSeconds, expiringDistance, 0, missionids));
+            EDDI.Instance.enqueueEvent(new MissionsRouteEvent(DateTime.Now, "expiring", expiringSystem, null, expiringSeconds, expiringDistance, 0, missionids));
             return expiringSystem;
         }
 
@@ -977,7 +977,7 @@ namespace EddiMissionMonitor
                     }
                 }
             }
-            EDDI.Instance.eventHandler(new MissionsRouteEvent(DateTime.Now, "farthest", farthestSystem, null, missionids.Count(), farthestDistance, 0, missionids));
+            EDDI.Instance.enqueueEvent(new MissionsRouteEvent(DateTime.Now, "farthest", farthestSystem, null, missionids.Count(), farthestDistance, 0, missionids));
             return farthestSystem;
         }
 
@@ -1059,7 +1059,7 @@ namespace EddiMissionMonitor
                 }
                 mostSystems = string.Join("_", mostList);
             }
-            EDDI.Instance.eventHandler(new MissionsRouteEvent(DateTime.Now, "most", mostSystem, mostSystems, mostCount, mostDistance, 0, missionids));
+            EDDI.Instance.enqueueEvent(new MissionsRouteEvent(DateTime.Now, "most", mostSystem, mostSystems, mostCount, mostDistance, 0, missionids));
             return mostSystem;
         }
 
@@ -1120,7 +1120,7 @@ namespace EddiMissionMonitor
                     }
                 }
             }
-            EDDI.Instance.eventHandler(new MissionsRouteEvent(DateTime.Now, "nearest", nearestSystem, null, missionids.Count(), nearestDistance, 0, missionids));
+            EDDI.Instance.enqueueEvent(new MissionsRouteEvent(DateTime.Now, "nearest", nearestSystem, null, missionids.Count(), nearestDistance, 0, missionids));
             return nearestSystem;
         }
 
@@ -1324,7 +1324,7 @@ namespace EddiMissionMonitor
                     }
                 }
             }
-            EDDI.Instance.eventHandler(new MissionsRouteEvent(DateTime.Now, "route", nextSystem, missionsRouteList, bestRoute.Count(), nextDistance, missionsRouteDistance, missionids));
+            EDDI.Instance.enqueueEvent(new MissionsRouteEvent(DateTime.Now, "route", nextSystem, missionsRouteList, bestRoute.Count(), nextDistance, missionsRouteDistance, missionids));
             return nextSystem;
         }
 
@@ -1438,7 +1438,7 @@ namespace EddiMissionMonitor
                     }
                 }
             }
-            EDDI.Instance.eventHandler(new MissionsRouteEvent(DateTime.Now, "update", nextSystem, missionsRouteList, route.Count(), nextDistance, missionsRouteDistance, missionids));
+            EDDI.Instance.enqueueEvent(new MissionsRouteEvent(DateTime.Now, "update", nextSystem, missionsRouteList, route.Count(), nextDistance, missionsRouteDistance, missionids));
             return nextSystem;
         }
 

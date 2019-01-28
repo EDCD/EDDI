@@ -6,6 +6,7 @@ using EddiSpeechService;
 using EddiStarMapService;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -90,10 +91,10 @@ namespace Eddi
         public List<string> ProductionBuilds = new List<string>() { "r131487/r0" };
 
         public List<EDDIMonitor> monitors = new List<EDDIMonitor>();
-        private List<EDDIMonitor> activeMonitors = new List<EDDIMonitor>();
+        private ConcurrentBag<EDDIMonitor> activeMonitors = new ConcurrentBag<EDDIMonitor>();
 
         public List<EDDIResponder> responders = new List<EDDIResponder>();
-        private List<EDDIResponder> activeResponders = new List<EDDIResponder>();
+        private ConcurrentBag<EDDIResponder> activeResponders = new ConcurrentBag<EDDIResponder>();
 
         // Information obtained from the companion app service
         public Commander Cmdr { get; private set; }
@@ -126,6 +127,9 @@ namespace Eddi
         public MainWindow MainWindow { get; internal set; }
 
         public ObservableConcurrentDictionary<string, object> State = new ObservableConcurrentDictionary<string, object>();
+
+        // The event queue
+        public ConcurrentQueue<Event> eventQueue { get; private set; } = new ConcurrentQueue<Event>();
 
         /// <summary>
         ///  Special case - trigger our first location event regardless of if it matches our current location
@@ -412,12 +416,12 @@ namespace Eddi
                 foreach (EDDIResponder responder in responders)
                 {
                     responder.Stop();
-                    activeResponders.Remove(responder);
+                    activeResponders.TakeWhile(r => r.ResponderName() == responder.ResponderName());
                 }
                 foreach (EDDIMonitor monitor in monitors)
                 {
                     monitor.Stop();
-                    activeMonitors.Remove(monitor);
+                    activeMonitors.TakeWhile(m => m.MonitorName() == monitor.MonitorName());
                 }
             }
 
@@ -482,7 +486,7 @@ namespace Eddi
             if (responder != null)
             {
                 responder.Stop();
-                activeResponders.Remove(responder);
+                activeResponders.TakeWhile(r => r.ResponderName() == responder.ResponderName());
             }
         }
 
@@ -510,11 +514,8 @@ namespace Eddi
             EDDIMonitor monitor = ObtainMonitor(name);
             if (monitor != null)
             {
-                if (activeMonitors.Contains(monitor))
-                {
-                    monitor.Stop();
-                    activeMonitors.Remove(monitor);
-                }
+                monitor?.Stop();
+                activeMonitors.TakeWhile(m => m.MonitorName() == monitor.MonitorName());
             }
         }
 
@@ -617,7 +618,30 @@ namespace Eddi
             }
         }
 
-        public void eventHandler(Event @event)
+        public void enqueueEvent(Event @event)
+        {
+            eventQueue.Enqueue(@event);
+
+            Thread eventHandler = new Thread(() => dequeueEvent())
+            {
+                Name = "EventHandler",
+                IsBackground = true
+            };
+            eventHandler.Start();
+            eventHandler.Join();
+        }
+
+        public void dequeueEvent()
+        {
+            if (eventQueue.TryDequeue(out Event @event))
+            {
+                // DateTime startTime = DateTime.UtcNow;
+                eventHandler(@event);
+                // Logging.Debug("Handled event " + @event.type + " in " + (DateTime.UtcNow - startTime).Milliseconds + " milliseconds");
+            }
+        }
+
+        private void eventHandler(Event @event)
         {
             if (@event != null)
             {
@@ -817,7 +841,6 @@ namespace Eddi
                 try
                 {
                     monitor.PreHandle(@event);
-
                 }
                 catch (Exception ex)
                 {
@@ -1737,7 +1760,7 @@ namespace Eddi
                     belt = new Body
                     {
                         EDDBID = -1,
-                        Type = BodyType.FromEDName("Star"),
+                        Type = BodyType.FromEDName("Belt"),
                         name = theEvent.name,
                         systemname = CurrentStarSystem?.name,
                         systemAddress = CurrentStarSystem?.systemAddress
