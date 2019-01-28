@@ -622,13 +622,25 @@ namespace Eddi
         {
             eventQueue.Enqueue(@event);
 
-            Thread eventHandler = new Thread(() => dequeueEvent())
+            try
             {
-                Name = "EventHandler",
-                IsBackground = true
-            };
-            eventHandler.Start();
-            eventHandler.Join();
+                Thread eventHandler = new Thread(() => dequeueEvent())
+                {
+                    Name = "EventHandler",
+                    IsBackground = true
+                };
+                eventHandler.Start();
+                eventHandler.Join();
+            }
+            catch (ThreadAbortException tax)
+            {
+                Thread.ResetAbort();
+                Logging.Error(JsonConvert.SerializeObject(@event), tax);
+            }
+            catch (Exception ex)
+            {
+                Logging.Error(JsonConvert.SerializeObject(@event), ex);
+            }
         }
 
         private void dequeueEvent()
@@ -833,7 +845,6 @@ namespace Eddi
         private void OnEvent(Event @event)
         {
             // We send the event to all monitors to ensure that their info is up-to-date
-            // This is synchronous
             foreach (EDDIMonitor monitor in activeMonitors)
             {
                 try
@@ -847,40 +858,19 @@ namespace Eddi
             }
 
             // Now we pass the data to the responders
-            // This is asynchronous
             foreach (EDDIResponder responder in activeResponders)
             {
                 try
                 {
-                    Thread responderThread = new Thread(() =>
-                    {
-                        try
-                        {
-                            responder.Handle(@event);
-                        }
-                        catch (Exception ex)
-                        {
-                            Logging.Error("Responder failed to handle event " + JsonConvert.SerializeObject(@event), ex);
-                        }
-                    })
-                    {
-                        Name = responder.ResponderName(),
-                        IsBackground = true
-                    };
-                    responderThread.Start();
-                }
-                catch (ThreadAbortException tax)
-                {
-                    Thread.ResetAbort();
-                    Logging.Error(JsonConvert.SerializeObject(@event), tax);
+                    responder.Handle(@event);
                 }
                 catch (Exception ex)
                 {
-                    Logging.Error(JsonConvert.SerializeObject(@event), ex);
+                    Logging.Error("Responder failed to handle event " + JsonConvert.SerializeObject(@event), ex);
                 }
             }
 
-            // We also pass the event to all active monitors in case they have follow-on work
+            // We also pass the event to all active monitors in case they have asynchronous follow-on work
             foreach (EDDIMonitor monitor in activeMonitors)
             {
                 try
