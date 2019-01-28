@@ -130,6 +130,8 @@ namespace EDDNResponder
                 CheckLocationData(data);
             }
 
+            // Logging.Warn("TimeStamp: " + ((DateTime)data["timestamp"]).ToUniversalTime().ToString() + ", " + "SystemName: " + systemName + ", " + "SystemAddress: " + systemAddress + ", " + "StarPos: " + systemX + ", " + systemY + ", " + systemZ + ", " + "Event: " + (string)data["event"]);
+
             if (LocationIsSet())
             {
                 if (edType == "Docked" && systemName != null && stationName != null && marketId != null)
@@ -212,8 +214,6 @@ namespace EDDNResponder
                     // but we do use it as an independent check to make sure our system address and coordinates are accurate
                     ConfirmAddressAndCoordinates(systemName);
                 }
-
-                // Logging.Warn("TimeStamp: " + ((DateTime)data["timestamp"]).ToUniversalTime().ToString() + ", " + "SystemName: " + systemName + ", " + "SystemAddress: " + systemAddress + ", " + "StarPos: " + systemX + ", " + systemY + ", " + systemZ + ", " + "Event: " + (string)data["event"]);
 
                 if (LocationIsSet())
                 {
@@ -563,7 +563,15 @@ namespace EDDNResponder
         {
             if (systemName != null)
             {
-                StarSystem system = starSystemRepository.GetOrCreateStarSystem(systemName);
+                StarSystem system;
+                if (systemName == EDDI.Instance.CurrentStarSystem.name)
+                {
+                    system = EDDI.Instance.CurrentStarSystem;
+                }
+                else
+                {
+                    system = starSystemRepository.GetOrCreateStarSystem(systemName);
+                }
                 if (system != null)
                 {
                     if (systemAddress != system.systemAddress)
