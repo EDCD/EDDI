@@ -133,6 +133,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Incursion.
+        /// </summary>
+        public static string Incursion {
+            get {
+                return ResourceManager.GetString("Incursion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Investment.
         /// </summary>
         public static string Investment {
@@ -165,6 +174,15 @@ namespace EddiDataDefinitions.Properties {
         public static string Outbreak {
             get {
                 return ResourceManager.GetString("Outbreak", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pirate Attack.
+        /// </summary>
+        public static string PirateAttack {
+            get {
+                return ResourceManager.GetString("PirateAttack", resourceCulture);
             }
         }
         
