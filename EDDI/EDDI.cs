@@ -631,13 +631,11 @@ namespace Eddi
             eventHandler.Join();
         }
 
-        public void dequeueEvent()
+        private void dequeueEvent()
         {
             if (eventQueue.TryDequeue(out Event @event))
             {
-                // DateTime startTime = DateTime.UtcNow;
                 eventHandler(@event);
-                // Logging.Debug("Handled event " + @event.type + " in " + (DateTime.UtcNow - startTime).Milliseconds + " milliseconds");
             }
         }
 
