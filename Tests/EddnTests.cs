@@ -237,7 +237,7 @@ namespace UnitTests
         public void TestEDDNResponderDockedEvent()
         {
             string line = @"{
-	            ""timestamp"": ""2018-07-30T04:50:32Z"",
+                ""timestamp"": ""2018-07-30T04:50:32Z"",
 	            ""event"": ""FSDJump"",
 	            ""StarSystem"": ""Diaguandri"",
 	            ""SystemAddress"": 670417429889,
@@ -342,7 +342,7 @@ namespace UnitTests
             }";
 
             string line2 = @"{
-	            ""timestamp"": ""2018-07-30T06: 07: 47Z"",
+                ""timestamp"": ""2018-07-30T06: 07: 47Z"",
 	            ""event"": ""Docked"",
 	            ""StationName"": ""Ray Gateway"",
 	            ""StationType"": ""Coriolis"",
@@ -420,7 +420,7 @@ namespace UnitTests
         public void TestMyReputationDataStripping()
         {
             string line = @"{
-	            ""timestamp"": ""2018-11-19T01: 06: 17Z"",
+                ""timestamp"": ""2018-11-19T01: 06: 17Z"",
 	            ""event"": ""Location"",
 	            ""Docked"": false,
 	            ""StarSystem"": ""BD+48738"",
@@ -507,6 +507,7 @@ namespace UnitTests
 		            ""FactionState"": ""None""
 	            }
             }";
+
             IDictionary<string, object> data = Utilities.Deserializtion.DeserializeData(line);
 
             EDDNResponder.EDDNResponder responder = makeTestEDDNResponder();

@@ -29,7 +29,8 @@ namespace EddiEvents
             VARIABLES.Add("government", "The government of the system to which the commander has jumped");
             VARIABLES.Add("security", "The security of the system to which the commander has jumped");
             VARIABLES.Add("population", "The population of the system to which the commander has jumped");
-            VARIABLES.Add("factions", "The factions in the system (this is a list of faction objects)");
+            VARIABLES.Add("destination", "The route destination system, if any");
+            VARIABLES.Add("destdistance", "The distance to the destination system)");
         }
 
         public string system { get; private set; }
@@ -50,17 +51,9 @@ namespace EddiEvents
 
         public int? boostused { get; private set; }
 
-        public string allegiance => (Allegiance ?? Superpower.None).localizedName;
-
-        public string faction { get; private set; }
-
-        public string factionstate => (factionState ?? FactionState.None).localizedName;
-
         public string economy => (Economy ?? Economy.None).localizedName;
 
         public string economy2 => (Economy2 ?? Economy.None).localizedName;
-
-        public string government => (Government ?? Government.None).localizedName;
 
         public string security => (securityLevel ?? SecurityLevel.None).localizedName;
 
@@ -68,16 +61,21 @@ namespace EddiEvents
 
         public List<Faction> factions { get; private set; }
 
+        // Faction properties
+        public string faction => controllingfaction?.name;
+        public string factionstate => (controllingfaction?.FactionState ?? FactionState.None).localizedName;
+        public string allegiance => (controllingfaction?.Allegiance ?? Superpower.None).localizedName;
+        public string government => (controllingfaction?.Government ?? Government.None).localizedName;
+
         // These properties are not intended to be user facing
         public long systemAddress { get; private set; }
         public Economy Economy { get; private set; } = Economy.None;
         public Economy Economy2 { get; private set; } = Economy.None;
-        public Superpower Allegiance { get; private set; } = Superpower.None;
-        public Government Government { get; private set; } = Government.None;
+        public Faction controllingfaction { get; private set; }
         public SecurityLevel securityLevel { get; private set; } = SecurityLevel.None;
         public FactionState factionState { get; private set; } = FactionState.None;
 
-        public JumpedEvent(DateTime timestamp, string system, long systemAddress, decimal x, decimal y, decimal z, string star, decimal distance, decimal fuelused, decimal fuelremaining, int? boostUsed, Superpower allegiance, string faction, FactionState factionstate, Economy economy, Economy economy2, Government government, SecurityLevel security, long? population, List<Faction> factions) : base(timestamp, NAME)
+        public JumpedEvent(DateTime timestamp, string system, long systemAddress, decimal x, decimal y, decimal z, string star, decimal distance, decimal fuelused, decimal fuelremaining, int? boostUsed, Faction controllingfaction, Economy economy, Economy economy2, SecurityLevel security, long? population, List<Faction> factions) : base(timestamp, NAME)
         {
             this.system = system;
             this.systemAddress = systemAddress;
@@ -89,12 +87,9 @@ namespace EddiEvents
             this.fuelused = fuelused;
             this.fuelremaining = fuelremaining;
             this.boostused = boostUsed;
-            this.Allegiance = (allegiance ?? Superpower.None);
-            this.faction = faction;
-            this.factionState = (factionstate ?? FactionState.None);
+            this.controllingfaction = controllingfaction;
             this.Economy = (economy ?? Economy.None);
             this.Economy2 = (economy2 ?? Economy.None);
-            this.Government = (government ?? Government.None);
             this.securityLevel = (security ?? SecurityLevel.None);
             this.population = population;
             this.factions = factions;

@@ -911,22 +911,30 @@ namespace Eddi
                 CurrentStarSystem.population = theEvent.population;
                 CurrentStarSystem.Economies = new List<Economy> { theEvent.Economy, theEvent.Economy2 };
                 CurrentStarSystem.securityLevel = theEvent.securityLevel;
-
-                // Faction data
-                Faction controllingFaction = new Faction
-                {
-                    name = theEvent.faction,
-                    Government = theEvent.Government,
-                    Allegiance = theEvent.Allegiance,
-                    FactionState = theEvent.factions?.FirstOrDefault(f => f.name == theEvent.faction)?.FactionState,
-                };
-                CurrentStarSystem.Faction = controllingFaction;
+                CurrentStarSystem.Faction = theEvent.controllingsystemfaction;
             }
 
-            // Update squadron data, if available
+            // Update system faction data if available
             if (theEvent.factions != null)
             {
-                updateSquadronData(theEvent.factions);
+                CurrentStarSystem.factions = theEvent.factions;
+
+                // Update station controlling faction data
+                foreach (Station station in CurrentStarSystem.stations)
+                {
+                    Faction stationFaction = theEvent.factions.FirstOrDefault(f => f.name == station.Faction.name);
+                    if (stationFaction != null)
+                    {
+                        station.Faction = stationFaction;
+                    }
+                }
+
+                // Check if current system is inhabited by or HQ for squadron faction
+                Faction squadronFaction = theEvent.factions.FirstOrDefault(f => f.squadronhomesystem || f.squadronfaction);
+                if (squadronFaction != null)
+                {
+                    updateSquadronData(squadronFaction);
+                }
             }
 
             if (theEvent.docked == true || theEvent.bodytype.ToLowerInvariant() == "station")
@@ -959,15 +967,7 @@ namespace Eddi
                 // Our data source may not include the market id or system address
                 station.marketId = theEvent.marketId;
                 station.systemAddress = theEvent.systemAddress;
-
-                // Information from the event might be more current than that from our data source so use it in preference
-                Faction controllingFaction = new Faction
-                {
-                    name = theEvent.faction,
-                    Government = theEvent.Government,
-                    Allegiance = theEvent.Allegiance
-                };
-                station.Faction = controllingFaction;
+                station.Faction = theEvent.controllingstationfaction;
 
                 CurrentStation = station;
 
@@ -1061,15 +1061,7 @@ namespace Eddi
             station.marketId = theEvent.marketId;
 
             // Information from the event might be more current than our data source so use it in preference
-
-            Faction controllingFaction = new Faction
-            {
-                name = theEvent.faction,
-                Allegiance = theEvent.Allegiance,
-                FactionState = theEvent.factionState,
-                Government = theEvent.Government
-            };
-            station.Faction = controllingFaction;
+            station.Faction = theEvent.controllingfaction;
             station.stationServices = theEvent.stationServices;
             station.economyShares = theEvent.economyShares;
 
@@ -1313,21 +1305,30 @@ namespace Eddi
             CurrentStarSystem.x = theEvent.x;
             CurrentStarSystem.y = theEvent.y;
             CurrentStarSystem.z = theEvent.z;
+            CurrentStarSystem.Faction = theEvent.controllingfaction;
             CurrentStellarBody = CurrentStarSystem.bodies.FirstOrDefault(b => b.name == theEvent.star);
 
-            Faction controllingFaction = new Faction
-            {
-                name = theEvent.faction,
-                Allegiance = theEvent.Allegiance,
-                Government = theEvent.Government,
-                FactionState = theEvent.factionState,
-            };
-            CurrentStarSystem.Faction = controllingFaction;
-
-            // Update squadron data, if available
+            // Update system faction data if available
             if (theEvent.factions != null)
             {
-                updateSquadronData(theEvent.factions);
+                CurrentStarSystem.factions = theEvent.factions;
+
+                // Update station controlling faction data
+                foreach (Station station in CurrentStarSystem.stations)
+                {
+                    Faction stationFaction = theEvent.factions.FirstOrDefault(f => f.name == station.Faction.name);
+                    if (stationFaction != null)
+                    {
+                        station.Faction = stationFaction;
+                    }
+                }
+
+                // Check if current system is inhabited by or HQ for squadron faction
+                Faction squadronFaction = theEvent.factions.FirstOrDefault(f => f.squadronhomesystem || f.squadronfaction);
+                if (squadronFaction != null)
+                {
+                    updateSquadronData(squadronFaction);
+                }
             }
 
             CurrentStarSystem.Economies = new List<Economy> { theEvent.Economy, theEvent.Economy2 };
@@ -2333,10 +2334,8 @@ namespace Eddi
             return configuration;
         }
 
-        public void updateSquadronData(List<Faction> factions)
+        public void updateSquadronData(Faction faction)
         {
-            // Check if current system is inhabited by or HQ for squadron faction
-            Faction faction = factions.FirstOrDefault(f => f.squadronhomesystem || f.squadronfaction);
             if (faction != null)
             {
                 EDDIConfiguration configuration = EDDIConfiguration.FromFile();
@@ -2403,7 +2402,6 @@ namespace Eddi
                         }
                     }
                 }
-
                 configuration.ToFile();
             }
         }
