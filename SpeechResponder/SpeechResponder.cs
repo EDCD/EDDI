@@ -13,6 +13,7 @@ using EddiDataDefinitions;
 using EddiShipMonitor;
 using EddiStatusMonitor;
 using System.Linq;
+using System.Collections.Concurrent;
 
 namespace EddiSpeechResponder
 {
@@ -30,7 +31,7 @@ namespace EddiSpeechResponder
 
         private bool subtitlesOnly;
 
-        private static List<Event> eventQueue = new List<Event>();
+        private static ConcurrentQueue<Event> eventQueue = new ConcurrentQueue<Event>();
 
         private static bool ignoreBodyScan;
 
@@ -178,7 +179,7 @@ namespace EddiSpeechResponder
                     {
                         Say(theEvent);
                     }
-                    eventQueue.RemoveAll(s => s.GetType() == typeof(StarScannedEvent));
+                    eventQueue.TakeWhile(s => s.GetType() == typeof(StarScannedEvent));
                     enqueueStarScan = false;
                     return;
                 }
@@ -192,14 +193,14 @@ namespace EddiSpeechResponder
                 }
                 else if (enqueueStarScan)
                 {
-                    eventQueue.Add(@event);
+                    eventQueue.Enqueue(@event);
                     eventQueue.OrderBy(s => ((StarScannedEvent)s)?.distance);
                     return;
                 }
             }
             else if (@event is JumpedEvent)
             {
-                eventQueue?.RemoveAll(s => s.GetType() == typeof(StarScannedEvent));
+                eventQueue?.TakeWhile(s => s.GetType() == typeof(StarScannedEvent));
                 enqueueStarScan = true;
             }
             else if (@event is SignalDetectedEvent)
