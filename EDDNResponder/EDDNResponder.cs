@@ -569,7 +569,7 @@ namespace EDDNResponder
             if (systemName != null)
             {
                 StarSystem system;
-                if (systemName == EDDI.Instance.CurrentStarSystem.name)
+                if (systemName == EDDI.Instance?.CurrentStarSystem?.name)
                 {
                     system = EDDI.Instance.CurrentStarSystem;
                 }
