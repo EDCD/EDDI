@@ -22,7 +22,7 @@ namespace EddiJournalMonitor
     {
         private static Regex JsonRegex = new Regex(@"^{.*}$", RegexOptions.Singleline);
         public JournalMonitor() : base(GetSavedGamesDir(), @"^Journal.*\.[0-9\.]+\.log$", (result, isLogLoadEvent) =>
-        ForwardJournalEntry(result, EDDI.Instance.eventHandler, isLogLoadEvent))
+        ForwardJournalEntry(result, EDDI.Instance.enqueueEvent, isLogLoadEvent))
         { }
 
         private enum ShipyardType { ShipsHere, ShipsRemote }
@@ -1129,7 +1129,7 @@ namespace EddiJournalMonitor
                                             string arrivalStation = EDDI.Instance.CurrentStation?.name ?? string.Empty;
                                             string arrivalSystem = EDDI.Instance.CurrentStarSystem?.name ?? string.Empty;
                                             await Task.Delay((int)time * 1000);
-                                            EDDI.Instance.eventHandler(new ShipArrivedEvent(DateTime.UtcNow, ship, shipId, arrivalSystem, distance, price, time, arrivalStation, fromMarketId, toMarketId));
+                                            EDDI.Instance.enqueueEvent(new ShipArrivedEvent(DateTime.UtcNow, ship, shipId, arrivalSystem, distance, price, time, arrivalStation, fromMarketId, toMarketId));
                                         }
                                     }
                                 }
@@ -1166,7 +1166,7 @@ namespace EddiJournalMonitor
                                             string arrivalStation = EDDI.Instance.CurrentStation?.name ?? string.Empty;
                                             string arrivalSystem = EDDI.Instance.CurrentStarSystem?.name ?? string.Empty;
                                             await Task.Delay((int)transferTime * 1000);
-                                            EDDI.Instance.eventHandler(new ModuleArrivedEvent(DateTime.UtcNow, ship, shipId, storageSlot, serverId, module, transferCost, transferTime, arrivalSystem, arrivalStation));
+                                            EDDI.Instance.enqueueEvent(new ModuleArrivedEvent(DateTime.UtcNow, ship, shipId, storageSlot, serverId, module, transferCost, transferTime, arrivalSystem, arrivalStation));
                                         }
                                     }
                                 }

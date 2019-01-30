@@ -97,7 +97,7 @@ namespace EddiVoiceAttackResponder
 
                 if (initEventEnabled(@event.type))
                 {
-                    EDDI.Instance.eventHandler(@event);
+                    EDDI.Instance.enqueueEvent(@event);
                 }
 
                 // Set a variable indicating whether EDDI is speaking

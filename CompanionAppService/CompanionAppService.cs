@@ -18,6 +18,7 @@ namespace EddiCompanionAppService
 {
     public class CompanionAppService : IDisposable
     {
+        // Implementation instructions from Frontier: http://hosting.zaonce.net/docs/oauth2/instructions.html
         private static string LIVE_SERVER = "https://companion.orerve.net";
         private static string BETA_SERVER = "https://pts-companion.orerve.net";
         private static string AUTH_SERVER = "https://auth.frontierstore.net";
