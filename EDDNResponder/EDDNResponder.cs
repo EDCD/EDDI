@@ -130,7 +130,12 @@ namespace EDDNResponder
                 CheckLocationData(data);
             }
 
-            // Logging.Warn("TimeStamp: " + ((DateTime)data["timestamp"]).ToUniversalTime().ToString() + ", " + "SystemName: " + systemName + ", " + "SystemAddress: " + systemAddress + ", " + "StarPos: " + systemX + ", " + systemY + ", " + systemZ + ", " + "Event: " + (string)data["event"]);
+            /*
+             Logging.Warn("TimeStamp: " + ((DateTime)data["timestamp"]).ToUniversalTime().ToString("o") + ", " + 
+                "SystemName: " + systemName + ", " + "SystemAddress: " + systemAddress + ", " + 
+                "StarPos: " + systemX + ", " + systemY + ", " + systemZ + ", " + 
+                "Event: " + JsonParsing.getString(data, "event") ?? JsonParsing.getString(data, "type"));
+            */
 
             if (LocationIsSet())
             {
