@@ -111,6 +111,7 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>MissionMonitor.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Properties\MissionMonitor.ru.resx" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

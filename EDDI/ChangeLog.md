@@ -7,6 +7,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Added `SquadronStartup` event handler.
   * Localization
     * Fixed crashing bug in the Italian localization.
+    * Added Russian localization (no translations yet).
 
 ### 3.3.4-rc1
   * Bug fixes for database transactions

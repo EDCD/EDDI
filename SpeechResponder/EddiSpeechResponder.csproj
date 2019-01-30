@@ -167,6 +167,7 @@
     <None Include="eddi.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="eddi.ru.json" />
     <None Include="packages.config" />
     <None Include="Variables.md">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -216,6 +217,7 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>SpeechResponder.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Properties\SpeechResponder.ru.resx" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

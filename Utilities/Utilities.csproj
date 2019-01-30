@@ -116,6 +116,7 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Utilities.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Utilities.ru.resx" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\GitInfo.2.0.10\build\GitInfo.targets" Condition="Exists('..\packages\GitInfo.2.0.10\build\GitInfo.targets')" />

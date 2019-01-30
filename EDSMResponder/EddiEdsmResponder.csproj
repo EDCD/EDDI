@@ -124,6 +124,7 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>EDSMResources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Properties\EDSMResources.ru.resx" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

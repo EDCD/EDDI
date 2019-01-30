@@ -396,7 +396,27 @@
     <EmbeddedResource Include="Properties\AtmosphereClass.hu.resx" />
     <EmbeddedResource Include="Properties\AtmosphereClass.it.resx" />
     <EmbeddedResource Include="Properties\AtmosphereClass.ja.resx" />
+    <EmbeddedResource Include="Properties\AtmosphereClass.ru.resx" />
+    <EmbeddedResource Include="Properties\AtmosphereComposition.ru.resx" />
+    <EmbeddedResource Include="Properties\Body.ru.resx" />
+    <EmbeddedResource Include="Properties\CombatRatings.ru.resx" />
+    <EmbeddedResource Include="Properties\Commodities.ru.resx" />
+    <EmbeddedResource Include="Properties\CommodityCategories.ru.resx" />
+    <EmbeddedResource Include="Properties\CQCRatings.ru.resx" />
+    <EmbeddedResource Include="Properties\Crimes.ru.resx" />
+    <EmbeddedResource Include="Properties\DataScans.ru.resx" />
+    <EmbeddedResource Include="Properties\Economies.ru.resx" />
+    <EmbeddedResource Include="Properties\EmpireRatingsFemale.ru.resx" />
+    <EmbeddedResource Include="Properties\EmpireRatingsMale.ru.resx" />
+    <EmbeddedResource Include="Properties\ExplorationRatings.ru.resx" />
+    <EmbeddedResource Include="Properties\FactionStates.ru.resx" />
+    <EmbeddedResource Include="Properties\FederationRatings.ru.resx" />
+    <EmbeddedResource Include="Properties\GameModes.ru.resx" />
+    <EmbeddedResource Include="Properties\Governments.ru.resx" />
     <EmbeddedResource Include="Properties\Happiness.resx" />
+    <EmbeddedResource Include="Properties\Happiness.ru.resx" />
+    <EmbeddedResource Include="Properties\LegalStatus.ru.resx" />
+    <EmbeddedResource Include="Properties\MaterialCategories.ru.resx" />
     <EmbeddedResource Include="Properties\MaterialLocations.de.resx" />
     <EmbeddedResource Include="Properties\MaterialLocations.es.resx" />
     <EmbeddedResource Include="Properties\MaterialLocations.fr.resx" />
@@ -458,10 +478,24 @@
     <EmbeddedResource Include="Properties\ExplorationRatings.ja.resx" />
     <EmbeddedResource Include="Properties\FactionStates.ja.resx" />
     <EmbeddedResource Include="Properties\FederationRatings.ja.resx" />
+    <EmbeddedResource Include="Properties\MaterialLocations.ru.resx" />
+    <EmbeddedResource Include="Properties\Materials.ru.resx" />
+    <EmbeddedResource Include="Properties\MissionStatus.ru.resx" />
+    <EmbeddedResource Include="Properties\MissionType.ru.resx" />
     <EmbeddedResource Include="Properties\Modifications.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Modifications.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Modifications.ru.resx" />
+    <EmbeddedResource Include="Properties\Modules.ru.resx" />
+    <EmbeddedResource Include="Properties\PassengerType.ru.resx" />
+    <EmbeddedResource Include="Properties\PlanetClass.ru.resx" />
+    <EmbeddedResource Include="Properties\Powers.ru.resx" />
+    <EmbeddedResource Include="Properties\Rarities.ru.resx" />
+    <EmbeddedResource Include="Properties\ReserveLevel.ru.resx" />
+    <EmbeddedResource Include="Properties\RingCompositions.ru.resx" />
+    <EmbeddedResource Include="Properties\SecurityLevels.ru.resx" />
+    <EmbeddedResource Include="Properties\ShipRoles.ru.resx" />
     <EmbeddedResource Include="Properties\SignalSource.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>SignalSource.Designer.cs</LastGenOutput>
@@ -673,11 +707,14 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\SecurityLevels.ja.resx" />
     <EmbeddedResource Include="Properties\ShipRoles.ja.resx" />
+    <EmbeddedResource Include="Properties\SignalSource.ru.resx" />
     <EmbeddedResource Include="Properties\SquadronRanks.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>SquadronRanks.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Properties\SquadronRanks.ru.resx" />
     <EmbeddedResource Include="Properties\StarColors.ja.resx" />
+    <EmbeddedResource Include="Properties\StarColors.ru.resx" />
     <EmbeddedResource Include="Properties\StationLargestPad.de.resx" />
     <EmbeddedResource Include="Properties\StationLargestPad.es.resx" />
     <EmbeddedResource Include="Properties\StationLargestPad.fr.resx" />
@@ -688,6 +725,7 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>StationLargestPad.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Properties\StationLargestPad.ru.resx" />
     <EmbeddedResource Include="Properties\StationModels.de.resx" />
     <EmbeddedResource Include="Properties\StationModels.es.resx" />
     <EmbeddedResource Include="Properties\StationModels.fr.resx" />
@@ -727,12 +765,14 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>StarColors.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Properties\StationModels.ru.resx" />
     <EmbeddedResource Include="Properties\StationService.de.resx" />
     <EmbeddedResource Include="Properties\StationService.es.resx" />
     <EmbeddedResource Include="Properties\StationService.fr.resx" />
     <EmbeddedResource Include="Properties\StationService.hu.resx" />
     <EmbeddedResource Include="Properties\StationService.it.resx" />
     <EmbeddedResource Include="Properties\StationService.ja.resx" />
+    <EmbeddedResource Include="Properties\StationService.ru.resx" />
     <EmbeddedResource Include="Properties\Superpowers.de.resx" />
     <EmbeddedResource Include="Properties\Superpowers.hu.resx" />
     <EmbeddedResource Include="Properties\Superpowers.it.resx" />
@@ -750,6 +790,7 @@
       <LastGenOutput>ReserveLevel.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Superpowers.ja.resx" />
+    <EmbeddedResource Include="Properties\Superpowers.ru.resx" />
     <EmbeddedResource Include="Properties\TargetType.de.resx" />
     <EmbeddedResource Include="Properties\TargetType.es.resx" />
     <EmbeddedResource Include="Properties\TargetType.fr.resx" />
@@ -760,6 +801,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>TargetType.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Properties\TargetType.ru.resx" />
     <EmbeddedResource Include="Properties\TerraformState.de.resx" />
     <EmbeddedResource Include="Properties\TerraformState.es.resx" />
     <EmbeddedResource Include="Properties\TerraformState.fr.resx" />
@@ -770,6 +812,7 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>TerraformState.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Properties\TerraformState.ru.resx" />
     <EmbeddedResource Include="Properties\TradeRatings.de.resx" />
     <EmbeddedResource Include="Properties\TradeRatings.es.resx" />
     <EmbeddedResource Include="Properties\TradeRatings.fr.resx" />
@@ -780,6 +823,7 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>TradeRatings.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Properties\TradeRatings.ru.resx" />
     <EmbeddedResource Include="Properties\Volcanism.de.resx" />
     <EmbeddedResource Include="Properties\Volcanism.es.resx" />
     <EmbeddedResource Include="Properties\Volcanism.fr.resx" />
@@ -790,6 +834,7 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Volcanism.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Volcanism.ru.resx" />
     <EmbeddedResource Include="Properties\Vouchers.de.resx" />
     <EmbeddedResource Include="Properties\Vouchers.hu.resx" />
     <EmbeddedResource Include="Properties\Vouchers.it.resx" />
@@ -822,6 +867,7 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>StationService.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Vouchers.ru.resx" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
