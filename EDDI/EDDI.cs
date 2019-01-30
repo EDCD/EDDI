@@ -1524,9 +1524,34 @@ namespace Eddi
             return true;
         }
 
+        private bool eventSquadronStartup(SquadronStartupEvent theEvent)
+        {
+            SquadronRank rank = SquadronRank.FromRank(theEvent.rank + 1);
+
+            // Update the configuration file
+            EDDIConfiguration configuration = EDDIConfiguration.FromFile();
+            configuration.SquadronName = theEvent.name;
+            configuration.SquadronRank = rank;
+            configuration.ToFile();
+
+            // Update the squadron UI data
+            Instance.MainWindow?.Dispatcher?.Invoke(new Action(() =>
+            {
+                Instance.MainWindow.eddiSquadronNameText.Text = theEvent.name;
+                Instance.MainWindow.squadronRankDropDown.SelectedItem = rank.localizedName;
+            }));
+
+            // Update the commander object, if it exists
+            if (Cmdr != null)
+            {
+                Cmdr.squadronname = theEvent.name;
+                Cmdr.squadronrank = rank;
+            }
+            return true;
+        }
+
         private bool eventSquadronStatus(SquadronStatusEvent theEvent)
         {
-            // Update the configuration file
             EDDIConfiguration configuration = EDDIConfiguration.FromFile();
 
             switch (theEvent.status)

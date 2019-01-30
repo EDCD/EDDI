@@ -3144,6 +3144,15 @@ namespace EddiJournalMonitor
                                     handled = true;
                                     break;
                                 }
+                            case "SquadronStartup":
+                                {
+                                    string name = JsonParsing.getString(data, "SquadronName");
+                                    int rank = JsonParsing.getInt(data, "CurrentRank");
+
+                                    events.Add(new SquadronStartupEvent(timestamp, name, rank) { raw = line, fromLoad = fromLogLoad });
+                                    handled = true;
+                                    break;
+                                }
                             case "AppliedToSquadron":
                             case "DisbandedSquadron":
                             case "InvitedToSquadron":
@@ -3201,7 +3210,6 @@ namespace EddiJournalMonitor
                             case "CodexEntry":
                             case "FSDTarget":
                             case "NpcCrewPaidWage":
-                            case "SquadronStartup":
                             case "ReservoirReplenished":
                             case "FSSAllBodiesFound":
                             case "ProspectedAsteroid":
