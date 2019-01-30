@@ -130,13 +130,6 @@ namespace EDDNResponder
                 CheckLocationData(data);
             }
 
-            /*
-             Logging.Warn("TimeStamp: " + ((DateTime)data["timestamp"]).ToUniversalTime().ToString("o") + ", " + 
-                "SystemName: " + systemName + ", " + "SystemAddress: " + systemAddress + ", " + 
-                "StarPos: " + systemX + ", " + systemY + ", " + systemZ + ", " + 
-                "Event: " + JsonParsing.getString(data, "event") ?? JsonParsing.getString(data, "type"));
-            */
-
             if (LocationIsSet())
             {
                 if (edType == "Docked" && systemName != null && stationName != null && marketId != null)
