@@ -5,6 +5,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
 ### 3.3.4-rc2
   * Core
     * Added `SquadronStartup` event handler.
+    * `Docked`, `FSDJump`, and `Location` events now pass Faction objects. Localized state, government & allegiance properties are still derived for use in Cottle & VA.
   * Localization
     * Fixed crashing bug in the Italian localization.
     * Added Russian localization (no translations yet).
