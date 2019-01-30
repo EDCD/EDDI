@@ -2,7 +2,9 @@
 
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
-### Development
+### 3.3.4-rc1
+  * Core
+    * Added `SquadronStartup` event handler.
 
 ### 3.3.4-rc1
   * Bug fixes for database transactions
