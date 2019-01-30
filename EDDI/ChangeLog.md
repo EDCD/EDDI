@@ -2,9 +2,11 @@
 
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
-### 3.3.4-rc1
+### 3.3.4-rc2
   * Core
     * Added `SquadronStartup` event handler.
+  * Localization
+    * Fixed crashing bug in the Italian localization.
 
 ### 3.3.4-rc1
   * Bug fixes for database transactions
