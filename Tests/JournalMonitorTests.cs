@@ -65,53 +65,53 @@ namespace UnitTests
         public void TestJournalPlanetScan3()
         {
             string line = @"{
-        ""Atmosphere"": ""hot thick carbon dioxide atmosphere"",
-         ""AtmosphereComposition"": [
-            {
-                ""Name"": ""CarbonDioxide"",
-                 ""Percent"": 96.5
-            },
-             {
-                ""Name"": ""Nitrogen"",
-                 ""Percent"": 3.499999
-            }
-        ],
-         ""AtmosphereType"": ""CarbonDioxide"",
-         ""AxialTilt"": 3.094469,
-         ""BodyID"": 2,
-         ""BodyName"": ""Venus"",
-         ""Composition"": {
-            ""Ice"": 0.0,
-             ""Metal"": 0.3,
-             ""Rock"": 0.7
-        },
-         ""DistanceFromArrivalLS"": 360.959534,
-         ""Eccentricity"": 0.0067,
-         ""Landable"": false,
-         ""MassEM"": 0.815,
-         ""OrbitalInclination"": 3.395,
-         ""OrbitalPeriod"": 19414166.0,
-         ""Parents"": [
-            {
-                ""Star"": 0
-            }
-        ],
-         ""Periapsis"": 55.186001,
-         ""PlanetClass"": ""High metal content body"",
-         ""Radius"": 6051800.0,
-         ""RotationPeriod"": 20996798.0,
-         ""ScanType"": ""NavBeaconDetail"",
-         ""SemiMajorAxis"": 108207980544.0,
-         ""SurfaceGravity"": 8.869474,
-         ""SurfacePressure"": 9442427.0,
-         ""SurfaceTemperature"": 735.0,
-         ""SystemAddress"": 10477373803,
-         ""TerraformState"": """",
-         ""TidalLock"": true,
-         ""Volcanism"": ""minor rocky magma volcanism"",
-         ""event"": ""Scan"",
-         ""timestamp"": ""2018-09-03T19:07:54Z""
-    }";
+                ""Atmosphere"": ""hot thick carbon dioxide atmosphere"",
+                ""AtmosphereComposition"": [
+                    {
+                        ""Name"": ""CarbonDioxide"",
+                        ""Percent"": 96.5
+                    },
+                    {
+                        ""Name"": ""Nitrogen"",
+                        ""Percent"": 3.499999
+                    }
+                ],
+                ""AtmosphereType"": ""CarbonDioxide"",
+                ""AxialTilt"": 3.094469,
+                ""BodyID"": 2,
+                ""BodyName"": ""Venus"",
+                ""Composition"": {
+                    ""Ice"": 0.0,
+                    ""Metal"": 0.3,
+                    ""Rock"": 0.7
+                },
+                ""DistanceFromArrivalLS"": 360.959534,
+                ""Eccentricity"": 0.0067,
+                ""Landable"": false,
+                ""MassEM"": 0.815,
+                ""OrbitalInclination"": 3.395,
+                 ""OrbitalPeriod"": 19414166.0,
+                ""Parents"": [
+                    {
+                        ""Star"": 0
+                    }
+                ],
+                ""Periapsis"": 55.186001,
+                ""PlanetClass"": ""High metal content body"",
+                ""Radius"": 6051800.0,
+                ""RotationPeriod"": 20996798.0,
+                ""ScanType"": ""NavBeaconDetail"",
+                ""SemiMajorAxis"": 108207980544.0,
+                ""SurfaceGravity"": 8.869474,
+                ""SurfacePressure"": 9442427.0,
+                ""SurfaceTemperature"": 735.0,
+                ""SystemAddress"": 10477373803,
+                ""TerraformState"": """",
+                ""TidalLock"": true,
+                ""Volcanism"": ""minor rocky magma volcanism"",
+                ""event"": ""Scan"",
+                ""timestamp"": ""2018-09-03T19:07:54Z""
+            }";
 
             List<Event> events = JournalMonitor.ParseJournalEntry(line);
             Assert.IsTrue(events.Count == 1);
@@ -227,9 +227,9 @@ namespace UnitTests
             Assert.AreEqual("Orbis", theEvent.stationModel.edname);
             Assert.AreEqual("Donaldson", theEvent.station);
             Assert.AreEqual("Alioth", theEvent.system);
-            Assert.AreEqual("Boom", theEvent.factionState.invariantName);
-            Assert.AreEqual("Democracy", theEvent.Government.invariantName);
-            Assert.AreEqual("Alliance", theEvent.Allegiance.invariantName);
+            Assert.AreEqual("Boom", theEvent.controllingfaction.FactionState.invariantName);
+            Assert.AreEqual("Democracy", theEvent.controllingfaction.Government.invariantName);
+            Assert.AreEqual("Alliance", theEvent.controllingfaction.Allegiance.invariantName);
             Assert.AreEqual(20, theEvent.stationservices.Count);
             Assert.AreEqual(1, theEvent.economyShares.Count);
             Assert.AreEqual("Service", theEvent.economyShares[0].economy.invariantName);
@@ -465,90 +465,90 @@ namespace UnitTests
         public void TestJournalJumpedEvent()
         {
             string line = @"{
-	        ""timestamp"": ""2018-08-08T06: 56: 20Z"",
-	        ""event"": ""FSDJump"",
-	        ""StarSystem"": ""Diaguandri"",
-        	""SystemAddress"": 670417429889,
-	        ""StarPos"": [-41.06250, -62.15625, -103.25000],
-	        ""SystemAllegiance"": ""Independent"",
-	        ""SystemEconomy"": ""$economy_HighTech;"",
-	        ""SystemEconomy_Localised"": ""HighTech"",
-	        ""SystemSecondEconomy"": ""$economy_Refinery;"",
-	        ""SystemSecondEconomy_Localised"": ""Refinery"",
-	        ""SystemGovernment"": ""$government_Democracy;"",
-	        ""SystemGovernment_Localised"": ""Democracy"",
-	        ""SystemSecurity"": ""$SYSTEM_SECURITY_medium;"",
-	        ""SystemSecurity_Localised"": ""MediumSecurity"",
-	        ""Population"": 10303479,
-	        ""JumpDist"": 19.340,
-	        ""FuelUsed"": 2.218082,
-	        ""FuelLevel"": 23.899260,
-	        ""Factions"": [{
-		        ""Name"": ""DiaguandriInterstellar"",
-		        ""FactionState"": ""Boom"",
-		        ""Government"": ""Corporate"",
-		        ""Influence"": 0.100398,
-		        ""Allegiance"": ""Independent""
-	        },
-	        {
-		        ""Name"": ""People'sMET20Liberals"",
-		        ""FactionState"": ""Boom"",
-		        ""Government"": ""Democracy"",
-		        ""Influence"": 0.123260,
-		        ""Allegiance"": ""Federation""
-	        },
-	        {
-		        ""Name"": ""PilotsFederationLocalBranch"",
-		        ""FactionState"": ""None"",
-		        ""Government"": ""Democracy"",
-		        ""Influence"": 0.000000,
-		        ""Allegiance"": ""PilotsFederation""
-	        },
-	        {
-		        ""Name"": ""NaturalDiaguandriRegulatoryState"",
-		        ""FactionState"": ""None"",
-		        ""Government"": ""Dictatorship"",
-		        ""Influence"": 0.020875,
-		        ""Allegiance"": ""Independent"",
-		        ""RecoveringStates"": [{""State"": ""CivilWar"", ""Trend"": 0}]
-	        },
-	        {
-		        ""Name"": ""CartelofDiaguandri"",
-		        ""FactionState"": ""None"",
-		        ""Government"": ""Anarchy"",
-		        ""Influence"": 0.009940,
-		        ""Allegiance"": ""Independent"",
-		        ""PendingStates"": [{""State"": ""Bust"", ""Trend"": 0}, {""State"": ""CivilUnrest"", ""Trend"": 1}],
-		        ""RecoveringStates"": [{""State"": ""CivilWar"", ""Trend"": 0}]
-	        },
-	        {
-		        ""Name"": ""RevolutionaryPartyofDiaguandri"",
-		        ""FactionState"": ""None"",
-		        ""Government"": ""Democracy"",
-		        ""Influence"": 0.124254,
-		        ""Allegiance"": ""Federation"",
-		        ""PendingStates"": [{""State"": ""Boom"", ""Trend"": 1}, {""State"": ""Bust"", ""Trend"": 1}]
-	        },
-	        {
-		        ""Name"": ""TheBrotherhoodoftheDarkCircle"",
-		        ""FactionState"": ""None"",
-		        ""Government"": ""Corporate"",
-		        ""Influence"": 0.093439,
-		        ""Allegiance"": ""Independent"",
-		        ""RecoveringStates"": [{""State"": ""CivilUnrest"", ""Trend"": 1}]
-            },
-            {
-		        ""Name"": ""EXO"",
-		        ""FactionState"": ""Expansion"",
-		        ""Government"": ""Democracy"",
-		        ""Influence"": 0.527833,
-		        ""Allegiance"": ""Independent"",
-		        ""PendingStates"": [{""State"": ""Boom"", ""Trend"": 1}]
-	        }],
-	        ""SystemFaction"": {
-		        ""Name"": ""EXO"",
-		        ""FactionState"": ""Expansion""
-	        }
+            ""timestamp"": ""2018-08-08T06: 56: 20Z"",
+	            ""event"": ""FSDJump"",
+	            ""StarSystem"": ""Diaguandri"",
+        	    ""SystemAddress"": 670417429889,
+	            ""StarPos"": [-41.06250, -62.15625, -103.25000],
+	            ""SystemAllegiance"": ""Independent"",
+	            ""SystemEconomy"": ""$economy_HighTech;"",
+	            ""SystemEconomy_Localised"": ""HighTech"",
+	            ""SystemSecondEconomy"": ""$economy_Refinery;"",
+	            ""SystemSecondEconomy_Localised"": ""Refinery"",
+	            ""SystemGovernment"": ""$government_Democracy;"",
+	            ""SystemGovernment_Localised"": ""Democracy"",
+	            ""SystemSecurity"": ""$SYSTEM_SECURITY_medium;"",
+	            ""SystemSecurity_Localised"": ""MediumSecurity"",
+	            ""Population"": 10303479,
+	            ""JumpDist"": 19.340,
+	            ""FuelUsed"": 2.218082,
+	            ""FuelLevel"": 23.899260,
+	            ""Factions"": [{
+		            ""Name"": ""DiaguandriInterstellar"",
+		            ""FactionState"": ""Boom"",
+		            ""Government"": ""Corporate"",
+		            ""Influence"": 0.100398,
+		            ""Allegiance"": ""Independent""
+	            },
+	            {
+		            ""Name"": ""People'sMET20Liberals"",
+		            ""FactionState"": ""Boom"",
+		            ""Government"": ""Democracy"",
+		            ""Influence"": 0.123260,
+		            ""Allegiance"": ""Federation""
+	            },
+	            {
+		            ""Name"": ""PilotsFederationLocalBranch"",
+		            ""FactionState"": ""None"",
+		            ""Government"": ""Democracy"",
+		            ""Influence"": 0.000000,
+		            ""Allegiance"": ""PilotsFederation""
+	            },
+	            {
+		            ""Name"": ""NaturalDiaguandriRegulatoryState"",
+		            ""FactionState"": ""None"",
+		            ""Government"": ""Dictatorship"",
+		            ""Influence"": 0.020875,
+		            ""Allegiance"": ""Independent"",
+		            ""RecoveringStates"": [{""State"": ""CivilWar"", ""Trend"": 0}]
+	            },
+	            {
+		            ""Name"": ""CartelofDiaguandri"",
+		            ""FactionState"": ""None"",
+		            ""Government"": ""Anarchy"",
+		            ""Influence"": 0.009940,
+		            ""Allegiance"": ""Independent"",
+		            ""PendingStates"": [{""State"": ""Bust"", ""Trend"": 0}, {""State"": ""CivilUnrest"", ""Trend"": 1}],
+		            ""RecoveringStates"": [{""State"": ""CivilWar"", ""Trend"": 0}]
+	            },
+	            {
+		            ""Name"": ""RevolutionaryPartyofDiaguandri"",
+		            ""FactionState"": ""None"",
+		            ""Government"": ""Democracy"",
+		            ""Influence"": 0.124254,
+		            ""Allegiance"": ""Federation"",
+		            ""PendingStates"": [{""State"": ""Boom"", ""Trend"": 1}, {""State"": ""Bust"", ""Trend"": 1}]
+	            },
+	            {
+		            ""Name"": ""TheBrotherhoodoftheDarkCircle"",
+		            ""FactionState"": ""None"",
+		            ""Government"": ""Corporate"",
+		            ""Influence"": 0.093439,
+		            ""Allegiance"": ""Independent"",
+		            ""RecoveringStates"": [{""State"": ""CivilUnrest"", ""Trend"": 1}]
+                },
+                {
+		            ""Name"": ""EXO"",
+		            ""FactionState"": ""Expansion"",
+		            ""Government"": ""Democracy"",
+		            ""Influence"": 0.527833,
+		            ""Allegiance"": ""Independent"",
+		            ""PendingStates"": [{""State"": ""Boom"", ""Trend"": 1}]
+	            }],
+                ""SystemFaction"": {
+		            ""Name"": ""EXO"",
+		            ""FactionState"": ""Expansion""
+	            }
             }";
 
             List<Event> events = JournalMonitor.ParseJournalEntry(line);
@@ -559,7 +559,7 @@ namespace UnitTests
             Assert.AreEqual(-41.06250M, jumpedEvent.x);
             Assert.AreEqual(-62.15625M, jumpedEvent.y);
             Assert.AreEqual(-103.25000M, jumpedEvent.z);
-            Assert.AreEqual("Independent", jumpedEvent.Allegiance.invariantName);
+            Assert.AreEqual("Independent", jumpedEvent.controllingfaction.Allegiance.invariantName);
             Assert.AreEqual("High Tech", jumpedEvent.economy);
             Assert.AreEqual("Refinery", jumpedEvent.economy2);
             Assert.AreEqual("Democracy", jumpedEvent.government);
@@ -638,9 +638,9 @@ namespace UnitTests
         public void TestJournalLocationEvent()
         {
             string line = @"{
-	            ""timestamp"": ""2018-08-12T02: 52: 13Z"",
-	                ""event"": ""Location"",
-	        ""Docked"": true,
+                ""timestamp"": ""2018-08-12T02: 52: 13Z"",
+	            ""event"": ""Location"",
+	            ""Docked"": true,
 	            ""MarketID"": 3223343616,
 	            ""StationName"": ""RayGateway"",
 	            ""StationType"": ""Coriolis"",
@@ -656,6 +656,8 @@ namespace UnitTests
 	            ""SystemSecondEconomy_Localised"": ""Refinery"",
 	            ""SystemGovernment"": ""$government_Democracy;"",
 	            ""SystemGovernment_Localised"": ""Democracy"",
+	            ""StationGovernment"": ""$government_Democracy;"",
+	            ""StationGovernment_Localised"": ""Democracy"",
 	            ""SystemSecurity"": ""$SYSTEM_SECURITY_medium;"",
 	            ""SystemSecurity_Localised"": ""MediumSecurity"",
 	            ""Population"": 10303479,
@@ -741,6 +743,10 @@ namespace UnitTests
 	            ""SystemFaction"": {
 		            ""Name"": ""EXO"",
 		            ""FactionState"": ""None""
+	            },
+	            ""StationFaction"": {
+		            ""Name"": ""EXO"",
+		            ""FactionState"": ""None""
 	            }
             }";
 
@@ -748,14 +754,20 @@ namespace UnitTests
             Assert.IsTrue(events.Count == 1);
             LocationEvent @event = (LocationEvent)events[0];
 
-            Assert.AreEqual("Independent", @event.Allegiance.invariantName);
             Assert.AreEqual("RayGateway", @event.body);
             Assert.AreEqual("Station", @event.bodyType.invariantName);
             Assert.AreEqual(true, @event.docked);
             Assert.AreEqual("High Tech", @event.Economy.invariantName);
             Assert.AreEqual("Refinery", @event.Economy2.invariantName);
+
             Assert.AreEqual("EXO", @event.faction);
-            Assert.AreEqual("Democracy", @event.Government.invariantName);
+            Assert.AreEqual("EXO", @event.systemfaction);
+            Assert.AreEqual("Independent", @event.controllingsystemfaction.Allegiance.invariantName);
+            Assert.AreEqual("Democracy", @event.controllingsystemfaction.Government.invariantName);
+            Assert.AreEqual("EXO", @event.stationfaction);
+            Assert.AreEqual("Independent", @event.controllingstationfaction.Allegiance.invariantName);
+            Assert.AreEqual("Democracy", @event.controllingstationfaction.Government.invariantName);
+
             Assert.IsNull(@event.latitude);
             Assert.IsNull(@event.longitude);
             Assert.AreEqual(3223343616, @event.marketId);
@@ -834,7 +846,7 @@ namespace UnitTests
             List<Event> events = JournalMonitor.ParseJournalEntry(line);
             JumpedEvent @event = (JumpedEvent)events[0];
 
-            Assert.AreEqual("Thargoid", @event.Allegiance.invariantName);
+            Assert.AreEqual("Thargoid", @event.controllingfaction.Allegiance.invariantName);
         }
 
         [TestMethod]
@@ -844,7 +856,7 @@ namespace UnitTests
             List<Event> events = JournalMonitor.ParseJournalEntry(line);
             JumpedEvent @event = (JumpedEvent)events[0];
 
-            Assert.AreEqual("Guardian", @event.Allegiance.invariantName);
+            Assert.AreEqual("Guardian", @event.controllingfaction.Allegiance.invariantName);
         }
 
         [TestMethod]
@@ -904,8 +916,8 @@ namespace UnitTests
             LocationEvent @event = (LocationEvent)events[0];
 
             Assert.IsNotNull(@event.raw);
-            Assert.AreEqual("None", @event.Allegiance?.invariantName);
-            Assert.AreEqual("$faction_None", @event.Allegiance?.edname);
+            Assert.AreEqual("None", @event.controllingsystemfaction.Allegiance?.invariantName);
+            Assert.AreEqual("$faction_None", @event.controllingsystemfaction.Allegiance?.edname);
         }
 
         [TestMethod]

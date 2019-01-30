@@ -24,6 +24,7 @@
             var Election = new FactionState("Election");
             var Investment = new FactionState("Investment");
             var PirateAttack = new FactionState("PirateAttack");
+            var Incursion = new FactionState("Incursion");
         }
 
         public static readonly FactionState None = new FactionState("None");
