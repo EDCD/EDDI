@@ -6,6 +6,7 @@ using EddiSpeechService;
 using EddiStarMapService;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -90,10 +91,10 @@ namespace Eddi
         public List<string> ProductionBuilds = new List<string>() { "r131487/r0" };
 
         public List<EDDIMonitor> monitors = new List<EDDIMonitor>();
-        private List<EDDIMonitor> activeMonitors = new List<EDDIMonitor>();
+        private ConcurrentBag<EDDIMonitor> activeMonitors = new ConcurrentBag<EDDIMonitor>();
 
         public List<EDDIResponder> responders = new List<EDDIResponder>();
-        private List<EDDIResponder> activeResponders = new List<EDDIResponder>();
+        private ConcurrentBag<EDDIResponder> activeResponders = new ConcurrentBag<EDDIResponder>();
 
         // Information obtained from the companion app service
         public Commander Cmdr { get; private set; }
@@ -126,6 +127,9 @@ namespace Eddi
         public MainWindow MainWindow { get; internal set; }
 
         public ObservableConcurrentDictionary<string, object> State = new ObservableConcurrentDictionary<string, object>();
+
+        // The event queue
+        public ConcurrentQueue<Event> eventQueue { get; private set; } = new ConcurrentQueue<Event>();
 
         /// <summary>
         ///  Special case - trigger our first location event regardless of if it matches our current location
@@ -412,12 +416,12 @@ namespace Eddi
                 foreach (EDDIResponder responder in responders)
                 {
                     responder.Stop();
-                    activeResponders.Remove(responder);
+                    activeResponders.TakeWhile(r => r.ResponderName() == responder.ResponderName());
                 }
                 foreach (EDDIMonitor monitor in monitors)
                 {
                     monitor.Stop();
-                    activeMonitors.Remove(monitor);
+                    activeMonitors.TakeWhile(m => m.MonitorName() == monitor.MonitorName());
                 }
             }
 
@@ -482,7 +486,7 @@ namespace Eddi
             if (responder != null)
             {
                 responder.Stop();
-                activeResponders.Remove(responder);
+                activeResponders.TakeWhile(r => r.ResponderName() == responder.ResponderName());
             }
         }
 
@@ -510,11 +514,8 @@ namespace Eddi
             EDDIMonitor monitor = ObtainMonitor(name);
             if (monitor != null)
             {
-                if (activeMonitors.Contains(monitor))
-                {
-                    monitor.Stop();
-                    activeMonitors.Remove(monitor);
-                }
+                monitor?.Stop();
+                activeMonitors.TakeWhile(m => m.MonitorName() == monitor.MonitorName());
             }
         }
 
@@ -617,7 +618,40 @@ namespace Eddi
             }
         }
 
-        public void eventHandler(Event @event)
+        public void enqueueEvent(Event @event)
+        {
+            eventQueue.Enqueue(@event);
+
+            try
+            {
+                Thread eventHandler = new Thread(() => dequeueEvent())
+                {
+                    Name = "EventHandler",
+                    IsBackground = true
+                };
+                eventHandler.Start();
+                eventHandler.Join();
+            }
+            catch (ThreadAbortException tax)
+            {
+                Thread.ResetAbort();
+                Logging.Error(JsonConvert.SerializeObject(@event), tax);
+            }
+            catch (Exception ex)
+            {
+                Logging.Error(JsonConvert.SerializeObject(@event), ex);
+            }
+        }
+
+        private void dequeueEvent()
+        {
+            if (eventQueue.TryDequeue(out Event @event))
+            {
+                eventHandler(@event);
+            }
+        }
+
+        private void eventHandler(Event @event)
         {
             if (@event != null)
             {
@@ -811,13 +845,11 @@ namespace Eddi
         private void OnEvent(Event @event)
         {
             // We send the event to all monitors to ensure that their info is up-to-date
-            // This is synchronous
             foreach (EDDIMonitor monitor in activeMonitors)
             {
                 try
                 {
                     monitor.PreHandle(@event);
-
                 }
                 catch (Exception ex)
                 {
@@ -826,40 +858,19 @@ namespace Eddi
             }
 
             // Now we pass the data to the responders
-            // This is asynchronous
             foreach (EDDIResponder responder in activeResponders)
             {
                 try
                 {
-                    Thread responderThread = new Thread(() =>
-                    {
-                        try
-                        {
-                            responder.Handle(@event);
-                        }
-                        catch (Exception ex)
-                        {
-                            Logging.Error("Responder failed to handle event " + JsonConvert.SerializeObject(@event), ex);
-                        }
-                    })
-                    {
-                        Name = responder.ResponderName(),
-                        IsBackground = true
-                    };
-                    responderThread.Start();
-                }
-                catch (ThreadAbortException tax)
-                {
-                    Thread.ResetAbort();
-                    Logging.Error(JsonConvert.SerializeObject(@event), tax);
+                    responder.Handle(@event);
                 }
                 catch (Exception ex)
                 {
-                    Logging.Error(JsonConvert.SerializeObject(@event), ex);
+                    Logging.Error("Responder failed to handle event " + JsonConvert.SerializeObject(@event), ex);
                 }
             }
 
-            // We also pass the event to all active monitors in case they have follow-on work
+            // We also pass the event to all active monitors in case they have asynchronous follow-on work
             foreach (EDDIMonitor monitor in activeMonitors)
             {
                 try
@@ -918,22 +929,30 @@ namespace Eddi
                 CurrentStarSystem.population = theEvent.population;
                 CurrentStarSystem.Economies = new List<Economy> { theEvent.Economy, theEvent.Economy2 };
                 CurrentStarSystem.securityLevel = theEvent.securityLevel;
-
-                // Faction data
-                Faction controllingFaction = new Faction
-                {
-                    name = theEvent.faction,
-                    Government = theEvent.Government,
-                    Allegiance = theEvent.Allegiance,
-                    FactionState = theEvent.factions?.FirstOrDefault(f => f.name == theEvent.faction)?.FactionState,
-                };
-                CurrentStarSystem.Faction = controllingFaction;
+                CurrentStarSystem.Faction = theEvent.controllingsystemfaction;
             }
 
-            // Update squadron data, if available
+            // Update system faction data if available
             if (theEvent.factions != null)
             {
-                updateSquadronData(theEvent.factions);
+                CurrentStarSystem.factions = theEvent.factions;
+
+                // Update station controlling faction data
+                foreach (Station station in CurrentStarSystem.stations)
+                {
+                    Faction stationFaction = theEvent.factions.FirstOrDefault(f => f.name == station.Faction.name);
+                    if (stationFaction != null)
+                    {
+                        station.Faction = stationFaction;
+                    }
+                }
+
+                // Check if current system is inhabited by or HQ for squadron faction
+                Faction squadronFaction = theEvent.factions.FirstOrDefault(f => f.squadronhomesystem || f.squadronfaction);
+                if (squadronFaction != null)
+                {
+                    updateSquadronData(squadronFaction);
+                }
             }
 
             if (theEvent.docked == true || theEvent.bodytype.ToLowerInvariant() == "station")
@@ -966,15 +985,7 @@ namespace Eddi
                 // Our data source may not include the market id or system address
                 station.marketId = theEvent.marketId;
                 station.systemAddress = theEvent.systemAddress;
-
-                // Information from the event might be more current than that from our data source so use it in preference
-                Faction controllingFaction = new Faction
-                {
-                    name = theEvent.faction,
-                    Government = theEvent.Government,
-                    Allegiance = theEvent.Allegiance
-                };
-                station.Faction = controllingFaction;
+                station.Faction = theEvent.controllingstationfaction;
 
                 CurrentStation = station;
 
@@ -1069,15 +1080,7 @@ namespace Eddi
             station.marketId = theEvent.marketId;
 
             // Information from the event might be more current than our data source so use it in preference
-
-            Faction controllingFaction = new Faction
-            {
-                name = theEvent.faction,
-                Allegiance = theEvent.Allegiance,
-                FactionState = theEvent.factionState,
-                Government = theEvent.Government
-            };
-            station.Faction = controllingFaction;
+            station.Faction = theEvent.controllingfaction;
             station.stationServices = theEvent.stationServices;
             station.economyShares = theEvent.economyShares;
 
@@ -1322,21 +1325,30 @@ namespace Eddi
             CurrentStarSystem.x = theEvent.x;
             CurrentStarSystem.y = theEvent.y;
             CurrentStarSystem.z = theEvent.z;
+            CurrentStarSystem.Faction = theEvent.controllingfaction;
             CurrentStellarBody = CurrentStarSystem.bodies.FirstOrDefault(b => b.name == theEvent.star);
 
-            Faction controllingFaction = new Faction
-            {
-                name = theEvent.faction,
-                Allegiance = theEvent.Allegiance,
-                Government = theEvent.Government,
-                FactionState = theEvent.factionState,
-            };
-            CurrentStarSystem.Faction = controllingFaction;
-
-            // Update squadron data, if available
+            // Update system faction data if available
             if (theEvent.factions != null)
             {
-                updateSquadronData(theEvent.factions);
+                CurrentStarSystem.factions = theEvent.factions;
+
+                // Update station controlling faction data
+                foreach (Station station in CurrentStarSystem.stations)
+                {
+                    Faction stationFaction = theEvent.factions.FirstOrDefault(f => f.name == station.Faction.name);
+                    if (stationFaction != null)
+                    {
+                        station.Faction = stationFaction;
+                    }
+                }
+
+                // Check if current system is inhabited by or HQ for squadron faction
+                Faction squadronFaction = theEvent.factions.FirstOrDefault(f => f.squadronhomesystem || f.squadronfaction);
+                if (squadronFaction != null)
+                {
+                    updateSquadronData(squadronFaction);
+                }
             }
 
             CurrentStarSystem.Economies = new List<Economy> { theEvent.Economy, theEvent.Economy2 };
@@ -1523,9 +1535,34 @@ namespace Eddi
             return true;
         }
 
+        private bool eventSquadronStartup(SquadronStartupEvent theEvent)
+        {
+            SquadronRank rank = SquadronRank.FromRank(theEvent.rank + 1);
+
+            // Update the configuration file
+            EDDIConfiguration configuration = EDDIConfiguration.FromFile();
+            configuration.SquadronName = theEvent.name;
+            configuration.SquadronRank = rank;
+            configuration.ToFile();
+
+            // Update the squadron UI data
+            Instance.MainWindow?.Dispatcher?.Invoke(new Action(() =>
+            {
+                Instance.MainWindow.eddiSquadronNameText.Text = theEvent.name;
+                Instance.MainWindow.squadronRankDropDown.SelectedItem = rank.localizedName;
+            }));
+
+            // Update the commander object, if it exists
+            if (Cmdr != null)
+            {
+                Cmdr.squadronname = theEvent.name;
+                Cmdr.squadronrank = rank;
+            }
+            return true;
+        }
+
         private bool eventSquadronStatus(SquadronStatusEvent theEvent)
         {
-            // Update the configuration file
             EDDIConfiguration configuration = EDDIConfiguration.FromFile();
 
             switch (theEvent.status)
@@ -1737,7 +1774,7 @@ namespace Eddi
                     belt = new Body
                     {
                         EDDBID = -1,
-                        Type = BodyType.FromEDName("Star"),
+                        Type = BodyType.FromEDName("Belt"),
                         name = theEvent.name,
                         systemname = CurrentStarSystem?.name,
                         systemAddress = CurrentStarSystem?.systemAddress
@@ -2342,10 +2379,8 @@ namespace Eddi
             return configuration;
         }
 
-        public void updateSquadronData(List<Faction> factions)
+        public void updateSquadronData(Faction faction)
         {
-            // Check if current system is inhabited by or HQ for squadron faction
-            Faction faction = factions.FirstOrDefault(f => f.squadronhomesystem || f.squadronfaction);
             if (faction != null)
             {
                 EDDIConfiguration configuration = EDDIConfiguration.FromFile();
@@ -2412,7 +2447,6 @@ namespace Eddi
                         }
                     }
                 }
-
                 configuration.ToFile();
             }
         }

@@ -237,7 +237,7 @@ namespace UnitTests
         public void TestEDDNResponderDockedEvent()
         {
             string line = @"{
-	            ""timestamp"": ""2018-07-30T04:50:32Z"",
+                ""timestamp"": ""2018-07-30T04:50:32Z"",
 	            ""event"": ""FSDJump"",
 	            ""StarSystem"": ""Diaguandri"",
 	            ""SystemAddress"": 670417429889,
@@ -342,7 +342,7 @@ namespace UnitTests
             }";
 
             string line2 = @"{
-	            ""timestamp"": ""2018-07-30T06: 07: 47Z"",
+                ""timestamp"": ""2018-07-30T06: 07: 47Z"",
 	            ""event"": ""Docked"",
 	            ""StationName"": ""Ray Gateway"",
 	            ""StationType"": ""Coriolis"",
@@ -420,7 +420,7 @@ namespace UnitTests
         public void TestMyReputationDataStripping()
         {
             string line = @"{
-	            ""timestamp"": ""2018-11-19T01: 06: 17Z"",
+                ""timestamp"": ""2018-11-19T01: 06: 17Z"",
 	            ""event"": ""Location"",
 	            ""Docked"": false,
 	            ""StarSystem"": ""BD+48738"",
@@ -507,6 +507,7 @@ namespace UnitTests
 		            ""FactionState"": ""None""
 	            }
             }";
+
             IDictionary<string, object> data = Utilities.Deserializtion.DeserializeData(line);
 
             EDDNResponder.EDDNResponder responder = makeTestEDDNResponder();
@@ -535,6 +536,8 @@ namespace UnitTests
             string jump = @"{ ""timestamp"":""2018-12-16T20:10:15Z"", ""event"":""FSDJump"", ""StarSystem"":""Pleiades Sector HR-W d1-79"", ""SystemAddress"":2724879894859, ""StarPos"":[-80.62500,-146.65625,-343.25000], ""SystemAllegiance"":""Independent"", ""SystemEconomy"":""$economy_Extraction;"", ""SystemEconomy_Localised"":""Extraction"", ""SystemSecondEconomy"":""$economy_None;"", ""SystemSecondEconomy_Localised"":""None"", ""SystemGovernment"":""$government_Prison;"", ""SystemGovernment_Localised"":""Detention Centre"", ""SystemSecurity"":""$SYSTEM_SECURITY_high;"", ""SystemSecurity_Localised"":""High Security"", ""Population"":0, ""JumpDist"":40.562, ""FuelUsed"":2.827265, ""FuelLevel"":11.702736, ""Factions"":[ { ""Name"":""Independent Detention Foundation"", ""FactionState"":""None"", ""Government"":""Prison"", ""Influence"":0.000000, ""Allegiance"":""Independent"", ""Happiness"":""$Faction_HappinessBand2;"", ""Happiness_Localised"":""Happy"", ""MyReputation"":0.000000 }, { ""Name"":""Pilots Federation Local Branch"", ""FactionState"":""None"", ""Government"":""Democracy"", ""Influence"":0.000000, ""Allegiance"":""PilotsFederation"", ""Happiness"":"""", ""MyReputation"":100.000000 } ], ""SystemFaction"":""Independent Detention Foundation"" }";
             string scan = @"{ ""timestamp"":""2018-12-16T20:10:21Z"", ""event"":""Scan"", ""ScanType"":""AutoScan"", ""BodyName"":""Pleiades Sector HR-W d1-79"", ""BodyID"":0, ""DistanceFromArrivalLS"":0.000000, ""StarType"":""F"", ""StellarMass"":1.437500, ""Radius"":855515008.000000, ""AbsoluteMagnitude"":3.808395, ""Age_MY"":1216, ""SurfaceTemperature"":6591.000000, ""Luminosity"":""Vab"", ""RotationPeriod"":261918.156250, ""AxialTilt"":0.000000 }";
             string scan2 = @"{ ""timestamp"":""2018-12-16T20:28:02Z"", ""event"":""Scan"", ""ScanType"":""Detailed"", ""BodyName"":""Hyades Sector DL-X b1-2"", ""BodyID"":0, ""DistanceFromArrivalLS"":0.000000, ""StarType"":""M"", ""StellarMass"":0.367188, ""Radius"":370672928.000000, ""AbsoluteMagnitude"":9.054306, ""Age_MY"":586, ""SurfaceTemperature"":2993.000000, ""Luminosity"":""Va"", ""RotationPeriod"":167608.859375, ""AxialTilt"":0.000000, ""Rings"":[ { ""Name"":""Hyades Sector DL-X b1-2 A Belt"", ""RingClass"":""eRingClass_MetalRich"", ""MassMT"":5.4671e+13, ""InnerRad"":7.1727e+08, ""OuterRad"":1.728e+09 }, { ""Name"":""Hyades Sector DL-X b1-2 B Belt"", ""RingClass"":""eRingClass_Icy"", ""MassMT"":8.7822e+14, ""InnerRad"":6.3166e+10, ""OuterRad"":1.5917e+11 } ] }";
+            string jump2 = @"{ ""timestamp"":""2019-01-27T07:23:38Z"", ""event"":""FSDJump"", ""StarSystem"":""Omega Sector OO-G a11-0"", ""SystemAddress"":5213552532472, ""StarPos"":[-1433.53125,-94.15625,5326.34375], ""SystemAllegiance"":"""", ""SystemEconomy"":""$economy_None;"", ""SystemEconomy_Localised"":""None"", ""SystemSecondEconomy"":""$economy_None;"", ""SystemSecondEconomy_Localised"":""None"", ""SystemGovernment"":""$government_None;"", ""SystemGovernment_Localised"":""None"", ""SystemSecurity"":""$GAlAXY_MAP_INFO_state_anarchy;"", ""SystemSecurity_Localised"":""Anarchy"", ""Population"":0, ""JumpDist"":56.848, ""FuelUsed"":4.741170, ""FuelLevel"":21.947533 }";
+            string scan3 = @"{""timestamp"":""2019-01-27T07:07:46Z"",""event"":""Scan"",""ScanType"":""AutoScan"",""BodyName"":""Omega Sector DM-M b7-16 A B Belt Cluster 8"",""BodyID"":23,""Parents"":[{""Ring"":15},{""Star"":1},{""Null"":0}],""DistanceFromArrivalLS"":646.57074}";
 
             EDDNResponder.EDDNResponder responder = makeTestEDDNResponder();
             var privateObject = new PrivateObject(responder);
@@ -614,6 +617,21 @@ namespace UnitTests
             arguments = new object[] { unhandledScan };
             privateObject.Invoke("handleRawEvent", arguments);
             Assert.IsNull(responder.systemAddress);
+
+            // Reset our position by stating another `FSDJump` event
+            UnhandledEvent unhandledJump2 = new UnhandledEvent(DateTime.UtcNow, "FSDJump") { raw = jump2 };
+            arguments = new object[] { unhandledJump2 };
+            privateObject.Invoke("handleRawEvent", arguments);
+
+            // Scan a belt cluster from a different star system
+            UnhandledEvent unhandledScan3 = new UnhandledEvent(DateTime.UtcNow, "Scan") { raw = scan3 };
+            arguments = new object[] { unhandledScan3 };
+            privateObject.Invoke("handleRawEvent", arguments);
+            Assert.IsNull(responder.systemName);
+            Assert.IsNull(responder.systemAddress);
+            Assert.IsNull(responder.systemX);
+            Assert.IsNull(responder.systemY);
+            Assert.IsNull(responder.systemZ);
         }
     }
 }

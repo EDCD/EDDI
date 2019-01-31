@@ -314,22 +314,22 @@ namespace EddiStatusMonitor
                 currentStatus = thisStatus;
 
                 // Post a status event to share the new status with other monitors and responders 
-                EDDI.Instance.eventHandler(new StatusEvent(thisStatus.timestamp, thisStatus));
+                EDDI.Instance.enqueueEvent(new StatusEvent(thisStatus.timestamp, thisStatus));
 
                 // Trigger events for changed status, as applicable
                 if (thisStatus.srv_turret_deployed != lastStatus.srv_turret_deployed)
                 {
-                    EDDI.Instance.eventHandler(new SRVTurretEvent(thisStatus.timestamp, thisStatus.srv_turret_deployed));
+                    EDDI.Instance.enqueueEvent(new SRVTurretEvent(thisStatus.timestamp, thisStatus.srv_turret_deployed));
                 }
                 if (thisStatus.silent_running != lastStatus.silent_running)
                 {
-                    EDDI.Instance.eventHandler(new SilentRunningEvent(thisStatus.timestamp, thisStatus.silent_running));
+                    EDDI.Instance.enqueueEvent(new SilentRunningEvent(thisStatus.timestamp, thisStatus.silent_running));
                 }
                 if (thisStatus.srv_under_ship != lastStatus.srv_under_ship)
                 {
                     // If the turret is deployable then we are not under our ship. And vice versa. 
                     bool deployable = !thisStatus.srv_under_ship;
-                    EDDI.Instance.eventHandler(new SRVTurretDeployableEvent(thisStatus.timestamp, deployable));
+                    EDDI.Instance.enqueueEvent(new SRVTurretDeployableEvent(thisStatus.timestamp, deployable));
                 }
                 if (thisStatus.fsd_status != lastStatus.fsd_status 
                     && thisStatus.vehicle == Constants.VEHICLE_SHIP 
@@ -342,21 +342,21 @@ namespace EddiStatusMonitor
                             case "charging":
                                 if (!jumping && thisStatus.supercruise == lastStatus.supercruise)
                                 {
-                                    EDDI.Instance.eventHandler(new ShipFsdEvent(thisStatus.timestamp, "charging cancelled"));
+                                    EDDI.Instance.enqueueEvent(new ShipFsdEvent(thisStatus.timestamp, "charging cancelled"));
                                 }
                                 jumping = false;
                                 break;
                             case "cooldown":
-                                EDDI.Instance.eventHandler(new ShipFsdEvent(thisStatus.timestamp, "cooldown complete"));
+                                EDDI.Instance.enqueueEvent(new ShipFsdEvent(thisStatus.timestamp, "cooldown complete"));
                                 break;
                             case "masslock":
-                                EDDI.Instance.eventHandler(new ShipFsdEvent(thisStatus.timestamp, "masslock cleared"));
+                                EDDI.Instance.enqueueEvent(new ShipFsdEvent(thisStatus.timestamp, "masslock cleared"));
                                 break;
                         }
                     }
                     else
                     {
-                        EDDI.Instance.eventHandler(new ShipFsdEvent(thisStatus.timestamp, thisStatus.fsd_status));
+                        EDDI.Instance.enqueueEvent(new ShipFsdEvent(thisStatus.timestamp, thisStatus.fsd_status));
                     }
                 }
                 if (thisStatus.low_fuel != lastStatus.low_fuel)
@@ -365,25 +365,25 @@ namespace EddiStatusMonitor
                     if (thisStatus.low_fuel 
                         && thisStatus.vehicle == Constants.VEHICLE_SHIP) 
                     {
-                        EDDI.Instance.eventHandler(new ShipLowFuelEvent(thisStatus.timestamp));
+                        EDDI.Instance.enqueueEvent(new ShipLowFuelEvent(thisStatus.timestamp));
                     }
                 }
                 if (thisStatus.landing_gear_down != lastStatus.landing_gear_down)
                 {
-                    EDDI.Instance.eventHandler(new ShipLandingGearEvent(thisStatus.timestamp, thisStatus.landing_gear_down));
+                    EDDI.Instance.enqueueEvent(new ShipLandingGearEvent(thisStatus.timestamp, thisStatus.landing_gear_down));
                 }
                 if (thisStatus.cargo_scoop_deployed != lastStatus.cargo_scoop_deployed)
                 {
-                    EDDI.Instance.eventHandler(new ShipCargoScoopEvent(thisStatus.timestamp, thisStatus.cargo_scoop_deployed));
+                    EDDI.Instance.enqueueEvent(new ShipCargoScoopEvent(thisStatus.timestamp, thisStatus.cargo_scoop_deployed));
                 }
                 if (thisStatus.lights_on != lastStatus.lights_on)
                 {
-                    EDDI.Instance.eventHandler(new ShipLightsEvent(thisStatus.timestamp, thisStatus.lights_on));
+                    EDDI.Instance.enqueueEvent(new ShipLightsEvent(thisStatus.timestamp, thisStatus.lights_on));
                 }
                 if (gliding && thisStatus.fsd_status == "cooldown")
                 {
                     gliding = false;
-                    EDDI.Instance.eventHandler(new GlideEvent(currentStatus.timestamp, gliding, EDDI.Instance.CurrentStellarBody.systemname, EDDI.Instance.CurrentStellarBody.systemAddress, EDDI.Instance.CurrentStellarBody.name, EDDI.Instance.CurrentStellarBody.Type));
+                    EDDI.Instance.enqueueEvent(new GlideEvent(currentStatus.timestamp, gliding, EDDI.Instance.CurrentStellarBody.systemname, EDDI.Instance.CurrentStellarBody.systemAddress, EDDI.Instance.CurrentStellarBody.name, EDDI.Instance.CurrentStellarBody.Type));
                 }
 
                 // Reset our fuel log if we change vehicles or refuel
@@ -433,7 +433,7 @@ namespace EddiStatusMonitor
             {
                 gliding = true;
                 EnteredNormalSpaceEvent theEvent = (EnteredNormalSpaceEvent)@event;
-                EDDI.Instance.eventHandler(new GlideEvent(DateTime.UtcNow, gliding, theEvent.system, theEvent.systemAddress, theEvent.body, theEvent.bodyType) { raw = @event.raw, fromLoad = @event.fromLoad });
+                EDDI.Instance.enqueueEvent(new GlideEvent(DateTime.UtcNow, gliding, theEvent.system, theEvent.systemAddress, theEvent.body, theEvent.bodyType) { raw = @event.raw, fromLoad = @event.fromLoad });
             }
         }
 
@@ -443,7 +443,7 @@ namespace EddiStatusMonitor
             {
                 jumping = true;
             }
-            EDDI.Instance.eventHandler(new ShipFsdEvent(DateTime.UtcNow, "charging complete") { raw = @event.raw, fromLoad = @event.fromLoad });
+            EDDI.Instance.enqueueEvent(new ShipFsdEvent(DateTime.UtcNow, "charging complete") { raw = @event.raw, fromLoad = @event.fromLoad });
         }
 
         public void PostHandle(Event @event)

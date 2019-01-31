@@ -172,7 +172,7 @@ namespace EddiMaterialMonitor
                 {
                     while (pendingEvents.TryDequeue(out Event pendingEvent))
                     {
-                        EDDI.Instance.eventHandler(pendingEvent);
+                        EDDI.Instance.enqueueEvent(pendingEvent);
                     }
                 }
                 catch (ThreadAbortException)

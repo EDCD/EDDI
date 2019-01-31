@@ -213,8 +213,6 @@ namespace EDDNResponder
                     ConfirmAddressAndCoordinates(systemName);
                 }
 
-                // Logging.Warn("TimeStamp: " + ((DateTime)data["timestamp"]).ToUniversalTime().ToString() + ", " + "SystemName: " + systemName + ", " + "SystemAddress: " + systemAddress + ", " + "StarPos: " + systemX + ", " + systemY + ", " + systemZ + ", " + "Event: " + (string)data["event"]);
-
                 if (LocationIsSet())
                 {
                     invalidState = false;
@@ -563,7 +561,15 @@ namespace EDDNResponder
         {
             if (systemName != null)
             {
-                StarSystem system = starSystemRepository.GetOrCreateStarSystem(systemName);
+                StarSystem system;
+                if (systemName == EDDI.Instance?.CurrentStarSystem?.name)
+                {
+                    system = EDDI.Instance.CurrentStarSystem;
+                }
+                else
+                {
+                    system = starSystemRepository.GetOrCreateStarSystem(systemName);
+                }
                 if (system != null)
                 {
                     if (systemAddress != system.systemAddress)

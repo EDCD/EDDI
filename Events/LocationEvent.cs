@@ -24,17 +24,27 @@ namespace EddiEvents
             VARIABLES.Add("station", "The name of the station at which the commander is docked");
             VARIABLES.Add("marketId", "The market ID of the station at which the commander is docked");
             VARIABLES.Add("stationtype", "The type of the station at which the commander is docked");
-            VARIABLES.Add("allegiance", "The allegiance of the system in which the commander resides");
+
+            // Pre-3.3.03 faction variables
             VARIABLES.Add("faction", "The faction controlling the system in which the commander resides");
             VARIABLES.Add("factionstate", "The state of the faction controlling the system in which the commander resides");
+            VARIABLES.Add("government", "The government of the system in which the commander resides");
+            VARIABLES.Add("allegiance", "The allegiance of the system in which the commander resides");
+
+            // Post-3.3.03 faction variables
+            VARIABLES.Add("systemfaction", "The faction controlling the system in which the commander resides");
+            VARIABLES.Add("systemstate", "The state of the faction controlling the system in which the commander resides");
+            VARIABLES.Add("systemgovernment", "The government of the system in which the commander resides");
+            VARIABLES.Add("stationfaction", "The faction controlling the station, if the commander is docked");
+            VARIABLES.Add("stationstate", "The state of the faction controlling the station, if the commander is docked");
+            VARIABLES.Add("stationgovernment", "The government of the station, if the commander is docked");
+
             VARIABLES.Add("economy", "The economy of the system in which the commander resides");
             VARIABLES.Add("economy2", "The secondary economy of the system in which the commander resides, if any");
-            VARIABLES.Add("government", "The government of the system in which the commander resides");
             VARIABLES.Add("security", "The security of the system in which the commander resides");
             VARIABLES.Add("longitude", "The longitude of the commander (if on the ground)");
             VARIABLES.Add("latitude", "The latitude of the commander (if on the ground)");
             VARIABLES.Add("population", "The population of the system to which the commander has jumped");
-            VARIABLES.Add("factions", "The factions in the system (this is a list of faction objects)");
         }
 
         public string system { get; private set; }
@@ -55,17 +65,10 @@ namespace EddiEvents
 
         public string stationtype => (stationModel ?? StationModel.None).localizedName;
 
-        public string allegiance => (Allegiance ?? Superpower.None).localizedName;
-
-        public string faction { get; private set; }
-
-        public string factionstate => (factionState ?? FactionState.None).localizedName;
-
         public string economy => (Economy ?? Economy.None).localizedName;
 
         public string economy2 => (Economy2 ?? Economy.None).localizedName;
 
-        public string government => (Government ?? Government.None).localizedName;
 
         public string security => (securityLevel ?? SecurityLevel.None).localizedName;
 
@@ -75,21 +78,35 @@ namespace EddiEvents
 
         public decimal? latitude { get; private set; }
 
-        public List<Faction> factions { get; private set; }
+        // Pre-3.3.03 faction properties to maintain script/profile backwards compatability
+        public string faction => controllingsystemfaction?.name;
+        public string factionstate => (controllingsystemfaction?.FactionState ?? FactionState.None).localizedName;
+        public string government => (controllingsystemfaction?.Government ?? Government.None).localizedName;
+        public string allegiance => (controllingsystemfaction?.Allegiance ?? Superpower.None).localizedName;
+
+        // Post-3.3.03 faction properties
+        public string systemfaction => controllingsystemfaction?.name;
+        public string systemstate => (controllingsystemfaction?.FactionState ?? FactionState.None).localizedName;
+        public string systemgovernment => (controllingsystemfaction?.Government ?? Government.None).localizedName;
+        public string systemallegiance => (controllingsystemfaction?.Allegiance ?? Superpower.None).localizedName;
+        public string stationfaction => controllingstationfaction?.name;
+        public string stationstate => (controllingstationfaction?.FactionState ?? FactionState.None).localizedName;
+        public string stationgovernment => (controllingstationfaction?.Government ?? Government.None).localizedName;
+        public string stationallegiancet => (controllingstationfaction?.Allegiance ?? Superpower.None).localizedName;
 
         // These properties are not intended to be user facing
         public long? systemAddress { get; private set; }
         public long? marketId { get; private set; }
         public Economy Economy { get; private set; } = Economy.None;
         public Economy Economy2 { get; private set; } = Economy.None;
-        public Superpower Allegiance { get; private set; } = Superpower.None;
-        public Government Government { get; private set; } = Government.None;
+        public Faction controllingsystemfaction { get; private set; }
+        public Faction controllingstationfaction { get; private set; }
+        public List<Faction> factions { get; private set; }
         public SecurityLevel securityLevel { get; private set; } = SecurityLevel.None;
-        public FactionState factionState { get; private set; } = FactionState.None;
         public StationModel stationModel { get; private set; } = StationModel.None;
         public BodyType bodyType { get; private set; } = BodyType.None;
 
-        public LocationEvent(DateTime timestamp, string system, decimal x, decimal y, decimal z, long systemAddress, string body, BodyType bodytype, bool docked, string station, StationModel stationtype, long? marketId, Superpower allegiance, string faction, FactionState factionstate, Economy economy, Economy economy2, Government government, SecurityLevel security, long? population, decimal? longitude, decimal? latitude, List<Faction> factions) : base(timestamp, NAME)
+        public LocationEvent(DateTime timestamp, string system, decimal x, decimal y, decimal z, long systemAddress, string body, BodyType bodytype, bool docked, string station, StationModel stationtype, long? marketId, Faction systemFaction, Faction stationFaction, Economy economy, Economy economy2, SecurityLevel security, long? population, decimal? longitude, decimal? latitude, List<Faction> factions) : base(timestamp, NAME)
         {
             this.system = system;
             this.x = x;
@@ -102,11 +119,10 @@ namespace EddiEvents
             this.station = station;
             this.stationModel = stationtype;
             this.marketId = marketId;
-            this.Allegiance = allegiance;
-            this.faction = faction;
+            this.controllingsystemfaction = systemFaction;
+            this.controllingstationfaction = stationFaction;
             this.Economy = (economy ?? Economy.None);
             this.Economy2 = (economy2 ?? Economy.None);
-            this.Government = government;
             this.securityLevel = security;
             this.population = population;
             this.longitude = longitude;

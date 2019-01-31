@@ -106,6 +106,7 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>MaterialMonitor.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Properties\MaterialMonitor.ru.resx" />
     <None Include="app.config" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">

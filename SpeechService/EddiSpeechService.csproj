@@ -106,6 +106,7 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Phonetics.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Phonetics.ru.resx" />
     <EmbeddedResource Include="Properties\Phrases.de.resx" />
     <EmbeddedResource Include="Properties\Phrases.es.resx" />
     <EmbeddedResource Include="Properties\Phrases.fr.resx" />
@@ -116,6 +117,7 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Phrases.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Phrases.ru.resx" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

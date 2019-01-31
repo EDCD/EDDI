@@ -133,7 +133,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Long Range Cargp Scanner.
+        ///   Looks up a localized string similar to Long Range Cargo Scanner.
         /// </summary>
         internal static string CargoScannerLongRange {
             get {

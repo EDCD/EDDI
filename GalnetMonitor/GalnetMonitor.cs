@@ -200,7 +200,7 @@ namespace GalnetMonitor
                         {
                             try
                             {
-                                EDDI.Instance.eventHandler(new GalnetNewsPublishedEvent(DateTime.UtcNow, newsItems));
+                                EDDI.Instance.enqueueEvent(new GalnetNewsPublishedEvent(DateTime.UtcNow, newsItems));
                             }
                             catch (ThreadAbortException)
                             {

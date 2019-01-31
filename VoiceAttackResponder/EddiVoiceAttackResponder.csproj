@@ -163,6 +163,7 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>VoiceAttack.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Properties\VoiceAttack.ru.resx" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

@@ -403,7 +403,7 @@
     <value>Fast Cargo Scanner</value>
   </data>
   <data name="CargoScannerLongRange" xml:space="preserve">
-    <value>Long Range Cargp Scanner</value>
+    <value>Long Range Cargo Scanner</value>
   </data>
   <data name="CargoScannerWideAngle" xml:space="preserve">
     <value>Wide Angle Cargo Scanner</value>

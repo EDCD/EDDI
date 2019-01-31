@@ -193,6 +193,7 @@
     <EmbeddedResource Include="Properties\EddiResources.hu.resx" />
     <EmbeddedResource Include="Properties\EddiResources.it.resx" />
     <EmbeddedResource Include="Properties\EddiResources.ja.resx" />
+    <EmbeddedResource Include="Properties\EddiResources.ru.resx" />
     <EmbeddedResource Include="Properties\MainWindow.de.resx" />
     <EmbeddedResource Include="Properties\MainWindow.es.resx" />
     <EmbeddedResource Include="Properties\MainWindow.fr.resx" />
@@ -209,6 +210,7 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>EddiResources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Properties\MainWindow.ru.resx" />
     <None Include="ChangeLog.md">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
