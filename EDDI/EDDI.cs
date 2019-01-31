@@ -205,7 +205,7 @@ namespace Eddi
                     {
                         StarMapService.commanderName = Cmdr.name;
                     }
-                    starMapService = new StarMapService();
+                    starMapService = StarMapService.Instance;
                 }
                 else
                 {
