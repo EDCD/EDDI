@@ -778,6 +778,10 @@ namespace Eddi
                     {
                         passEvent = eventBodyScanned((BodyScannedEvent)@event);
                     }
+                    else if (@event is BodyMappedEvent)
+                    {
+                        passEvent = eventBodyMapped((BodyMappedEvent)@event);
+                    }
                     else if (@event is VehicleDestroyedEvent)
                     {
                         passEvent = eventVehicleDestroyed((VehicleDestroyedEvent)@event);
@@ -1969,6 +1973,12 @@ namespace Eddi
             }
 
             return CurrentStarSystem != null;
+        }
+
+        private bool eventBodyMapped(BodyMappedEvent theEvent)
+        {
+            CurrentStellarBody = CurrentStarSystem?.bodies?.FirstOrDefault(b => b?.name == theEvent.name);
+            return true;
         }
 
         /// <summary>Obtain information from the companion API and use it to refresh our own data</summary>
