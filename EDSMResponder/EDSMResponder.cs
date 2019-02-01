@@ -59,7 +59,7 @@ namespace EddiEdsmResponder
         public void Reload()
         {
             // Set up the star map service
-            starMapService = new StarMapService();
+            starMapService = StarMapService.Instance;
             if (ignoredEvents == null)
             {
                 ignoredEvents = starMapService?.getIgnoredEvents();
