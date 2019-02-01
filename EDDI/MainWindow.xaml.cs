@@ -37,7 +37,7 @@ namespace Eddi
             public LanguageDef(CultureInfo ci)
             {
                 this.ci = ci;
-                this.displayName = ci.NativeName;
+                this.displayName = $"{ci.NativeName} ({ci.DisplayName})";
             }
 
             public LanguageDef(CultureInfo ci, string displayName)
