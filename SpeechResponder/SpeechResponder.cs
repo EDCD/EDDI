@@ -13,7 +13,6 @@ using EddiDataDefinitions;
 using EddiShipMonitor;
 using EddiStatusMonitor;
 using System.Linq;
-using System.Collections.Concurrent;
 
 namespace EddiSpeechResponder
 {
@@ -31,7 +30,8 @@ namespace EddiSpeechResponder
 
         private bool subtitlesOnly;
 
-        private static ConcurrentQueue<Event> eventQueue = new ConcurrentQueue<Event>();
+        protected static List<Event> eventQueue = new List<Event>();
+        private static readonly object queueLock = new object();
 
         private static bool ignoreBodyScan;
 
@@ -168,19 +168,18 @@ namespace EddiSpeechResponder
             }
             else if (@event is StatusEvent statusEvent)
             {
-                if (StatusMonitor.currentStatus.gui_focus == "fss mode")
+                if (StatusMonitor.currentStatus.gui_focus == "fss mode" && StatusMonitor.lastStatus.gui_focus != "fss mode")
                 {
                     // Beginning with Elite Dangerous v. 3.3, the primary star scan is delivered via a Scan with 
                     // scantype `AutoScan` when you jump into the system. Secondary stars may be delivered in a burst 
                     // following an FSSDiscoveryScan. Since each source has a different trigger, we re-order events 
                     // and and report queued star scans when the pilot enters fss mode
                     Say(@event);
-                    foreach (Event theEvent in eventQueue.OfType<StarScannedEvent>())
+                    enqueueStarScan = false;
+                    foreach (Event theEvent in TakeTypeFromEventQueue<StarScannedEvent>()?.OrderBy(s => ((StarScannedEvent)s)?.distance))
                     {
                         Say(theEvent);
                     }
-                    eventQueue.TakeWhile(s => s.GetType() == typeof(StarScannedEvent));
-                    enqueueStarScan = false;
                     return;
                 }
             }
@@ -193,14 +192,13 @@ namespace EddiSpeechResponder
                 }
                 else if (enqueueStarScan)
                 {
-                    eventQueue.Enqueue(@event);
-                    eventQueue.OrderBy(s => ((StarScannedEvent)s)?.distance);
+                    AddToEventQueue(@event);
                     return;
                 }
             }
             else if (@event is JumpedEvent)
             {
-                eventQueue?.TakeWhile(s => s.GetType() == typeof(StarScannedEvent));
+                TakeTypeFromEventQueue<StarScannedEvent>();
                 enqueueStarScan = true;
             }
             else if (@event is SignalDetectedEvent)
@@ -372,6 +370,25 @@ namespace EddiSpeechResponder
                 {
                     Logging.Warn("Failed to write speech", ex);
                 }
+            }
+        }
+
+        private List<Event> TakeTypeFromEventQueue<T>()
+        {
+            List<Event> events = new List<Event>();
+            lock (queueLock)
+            {
+                events = eventQueue.Where(e => e is T).ToList();
+                eventQueue.RemoveAll(e => e is T);
+                return events;
+            }
+        }
+
+        private void AddToEventQueue(Event @event)
+        {
+            lock (queueLock)
+            {
+                eventQueue.Add(@event);
             }
         }
     }
