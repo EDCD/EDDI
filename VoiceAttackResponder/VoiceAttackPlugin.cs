@@ -316,6 +316,7 @@ namespace EddiVoiceAttackResponder
                         InvokeTransmit(ref vaProxy);
                         break;
                     case "missionsroute":
+                    case "route":
                         InvokeMissionsRoute(ref vaProxy);
                         break;
                 }
@@ -880,6 +881,11 @@ namespace EddiVoiceAttackResponder
                 string system = vaProxy.GetText("System variable");
                 switch (type)
                 {
+                    case "cancel":
+                        {
+                            ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor")).CancelRoute();
+                        }
+                        break;
                     case "expiring":
                         {
                             ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor")).GetExpiringRoute();
@@ -910,6 +916,11 @@ namespace EddiVoiceAttackResponder
                             {
                                 ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor")).GetMissionsRoute(system);
                             }
+                        }
+                        break;
+                    case "set":
+                        {
+                            ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor")).SetRoute(system);
                         }
                         break;
                     case "source":

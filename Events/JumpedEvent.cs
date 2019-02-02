@@ -59,6 +59,10 @@ namespace EddiEvents
 
         public long? population { get; private set; }
 
+        public string destination { get; private set; }
+
+        public decimal destdistance { get; private set; }
+
         public List<Faction> factions { get; private set; }
 
         // Faction properties
@@ -75,7 +79,7 @@ namespace EddiEvents
         public SecurityLevel securityLevel { get; private set; } = SecurityLevel.None;
         public FactionState factionState { get; private set; } = FactionState.None;
 
-        public JumpedEvent(DateTime timestamp, string system, long systemAddress, decimal x, decimal y, decimal z, string star, decimal distance, decimal fuelused, decimal fuelremaining, int? boostUsed, Faction controllingfaction, Economy economy, Economy economy2, SecurityLevel security, long? population, List<Faction> factions) : base(timestamp, NAME)
+        public JumpedEvent(DateTime timestamp, string system, long systemAddress, decimal x, decimal y, decimal z, string star, decimal distance, decimal fuelused, decimal fuelremaining, int? boostUsed, Faction controllingfaction, List<Faction> factions, Economy economy, Economy economy2, SecurityLevel security, long? population, string destination, decimal destdistance) : base(timestamp, NAME)
         {
             this.system = system;
             this.systemAddress = systemAddress;
@@ -88,11 +92,13 @@ namespace EddiEvents
             this.fuelremaining = fuelremaining;
             this.boostused = boostUsed;
             this.controllingfaction = controllingfaction;
+            this.factions = factions;
             this.Economy = (economy ?? Economy.None);
             this.Economy2 = (economy2 ?? Economy.None);
             this.securityLevel = (security ?? SecurityLevel.None);
             this.population = population;
-            this.factions = factions;
+            this.destination = destination;
+            this.destdistance = destdistance;
         }
     }
 }
