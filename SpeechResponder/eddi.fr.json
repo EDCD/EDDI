@@ -1379,6 +1379,15 @@
       "name": "Near surface",
       "description": "Triggered when you enter or depart orbit around a surface"
     },
+    "Next jump": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "default": true,
+      "name": "Next jump",
+      "description": "Triggered when selecting a star system to jump to"
+    },
     "NPC attack commenced": {
       "enabled": true,
       "priority": 1,

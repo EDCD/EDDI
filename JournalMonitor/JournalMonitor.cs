@@ -192,7 +192,7 @@ namespace EddiJournalMonitor
                                     decimal x = Math.Round(JsonParsing.getDecimal("X", starPos[0]) * 32) / (decimal)32.0;
                                     decimal y = Math.Round(JsonParsing.getDecimal("Y", starPos[1]) * 32) / (decimal)32.0;
                                     decimal z = Math.Round(JsonParsing.getDecimal("Z", starPos[2]) * 32) / (decimal)32.0;
-                                    string starName = JsonParsing.getString(data, "Body");
+                                    string starName = JsonParsing.getString(data, "Body"); // Documented by the journal, but apparently never written. We can't rely on this being set.
                                     decimal fuelUsed = JsonParsing.getDecimal(data, "FuelUsed");
                                     decimal fuelRemaining = JsonParsing.getDecimal(data, "FuelLevel");
                                     int? boostUsed = JsonParsing.getOptionalInt(data, "BoostUsed"); // 1-3 are synthesis, 4 is any supercharge (white dwarf or neutron star)
@@ -3209,6 +3209,13 @@ namespace EddiJournalMonitor
                             case "Statistics":
                             case "CodexEntry":
                             case "FSDTarget":
+                                {
+                                    string systemName = JsonParsing.getString(data, "Name");
+                                    long systemAddress = JsonParsing.getLong(data, "SystemAddress");
+                                    events.Add(new FSDTargetEvent(timestamp, systemName, systemAddress) { raw = line, fromLoad = fromLogLoad });
+                                    handled = true;
+                                    break;
+                                }
                             case "NpcCrewPaidWage":
                             case "ReservoirReplenished":
                             case "FSSAllBodiesFound":

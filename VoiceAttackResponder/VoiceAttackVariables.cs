@@ -24,6 +24,7 @@ namespace EddiVoiceAttackResponder
         private static StarSystem CurrentStarSystem { get; set; } = new StarSystem();
         private static StarSystem HomeStarSystem { get; set; } = new StarSystem();
         private static StarSystem LastStarSystem { get; set; } = new StarSystem();
+        private static StarSystem NextStarSystem { get; set; } = new StarSystem();
         private static StarSystem SquadronStarSystem { get; set; } = new StarSystem();
         private static Body CurrentStellarBody { get; set; } = new Body();
         private static Station CurrentStation { get; set; } = new Station();
@@ -257,6 +258,19 @@ namespace EddiVoiceAttackResponder
                 {
                     setStarSystemValues(EDDI.Instance.LastStarSystem, "Last system", ref vaProxy);
                     LastStarSystem = EDDI.Instance.LastStarSystem;
+                }
+            }
+            catch (Exception ex)
+            {
+                Logging.Error("Failed to set last system", ex);
+            }
+
+            try
+            {
+                if (EDDI.Instance.NextStarSystem != NextStarSystem)
+                {
+                    setStarSystemValues(EDDI.Instance.NextStarSystem, "Next system", ref vaProxy);
+                    NextStarSystem = EDDI.Instance.NextStarSystem;
                 }
             }
             catch (Exception ex)

@@ -233,6 +233,28 @@ EDDI makes a large number of values available to augment your existing scripts. 
   * {DEC:Last system Y} the Y co-ordinate of the last system
   * {DEC:Last system Z} the Z co-ordinate of the last system
 
+### Next System Variables
+
+  * {TXT:Next system name}: the name of the next system
+  * {TXT:Next system name (spoken)}: the name of the next system as would be spoken
+  * {INT:Next system visits}: the number of times the commander has visited the next system (whilst the plugin has been active)
+  * {DATE:Next system previous visit}: the next time the commander visited the next system (empty if this is their first visit)
+  * {DEC:Next system population}: the population of the next system
+  * {TXT:Next system population}: the population of the next system as would be spoken (e.g. "nearly 12 and a half billion")
+  * {TXT:Next system allegiance}: the allegiance of the next system ("Federation", "Empire", "Alliance", "Independant" or empty)
+  * {TXT:Next system government}: the government of the next system (e.g. "Democracy")
+  * {TXT:Next system faction}: the primary faction of the next system (e.g. "The Pilots' Federation")
+  * {TXT:Next system primary economy}: the primary economy of the next system (e.g. "Industrial")
+  * {TXT:Next system state}: the overall state of the next system (e.g. "Boom")
+  * {TXT:Next system security}: the security level in the next system ("High", "Medium", "Low", "None" or empty)
+  * {TXT:Next system power}: the name of the power that controls the next system (e.g. "Felicia Winters")
+  * {TXT:Next system power (spoken)}: the name of the power that controls the next system as would be spoken
+  * {TXT:Next system power state}: the state of the power in the next system (e.g. "Expansion")
+  * {TXT:Next system rank}: the rank of the Commander in the next system (e.g. "Duke" if an Empire system, "Admiral" if a Federation system)
+  * {DEC:Next system X} the X co-ordinate of the next system
+  * {DEC:Next system Y} the Y co-ordinate of the next system
+  * {DEC:Next system Z} the Z co-ordinate of the next system
+
 ## Current Station Variables
 
   * {DEC:Ship bulkheads station cost}: the purchase cost of the bulkheads at the station (not set if not for sale at the station)

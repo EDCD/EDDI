@@ -145,7 +145,7 @@
     <Compile Include="BodyScanTests.cs" />
     <Compile Include="ShipTests.cs" />
     <Compile Include="PromotionTests.cs" />
-    <Compile Include="BuildTests.cs" />
+    <Compile Include="EddiCoreTests.cs" />
     <Compile Include="CargoMonitorTests.cs" />
     <Compile Include="MaterialMonitorTests.cs" />
     <Compile Include="VersioningTests.cs" />
