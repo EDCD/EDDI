@@ -130,15 +130,39 @@ namespace UnitTests
             var privateObject = new PrivateObject(cargoMonitor);
             Haulage haulage = new Haulage();
 
-            // CargoEvent
+            // 'Startup' CargoEvent
             line = "{ \"timestamp\":\"2018-10-31T01:54:40Z\", \"event\":\"Missions\", \"Active\":[  ], \"Failed\":[  ], \"Complete\":[  ] }";
             events = JournalMonitor.ParseJournalEntry(line);
             privateObject.Invoke("_handleMissionsEvent", new object[] { events[0] });
+            line = "{ \"timestamp\":\"2018-10-31T03:39:10Z\", \"event\":\"Cargo\", \"Count\":52, \"Inventory\":[ { \"Name\":\"hydrogenfuel\", \"Name_Localised\":\"Hydrogen Fuel\", \"Count\":1, \"Stolen\":0 }, { \"Name\":\"biowaste\", \"MissionID\":426282789, \"Count\":30, \"Stolen\":0 }, { \"Name\":\"animalmeat\", \"Name_Localised\":\"Animal Meat\", \"Count\":1, \"Stolen\":0 }, { \"Name\":\"drones\", \"Name_Localised\":\"Limpet\", \"Count\":20, \"Stolen\":0 } ] }";
+            events = JournalMonitor.ParseJournalEntry(line);
+            privateObject.Invoke("_handleCargoEvent", new object[] { events[0] });
+            Assert.AreEqual(4, cargoMonitor.inventory.Count);
+            Assert.AreEqual(52, cargoMonitor.cargoCarried);
+
+            cargo = cargoMonitor.inventory.ToList().FirstOrDefault(c => c.edname == "Drones");
+            Assert.AreEqual("Limpet", cargo.localizedName);
+            Assert.AreEqual(20, cargo.total);
+            Assert.AreEqual(20, cargo.owned);
+            Assert.AreEqual(0, cargo.need + cargo.stolen + cargo.haulage);
+
+            // Drone count reduced with subsequent startup CargoEvent
+            line = "{ \"timestamp\":\"2018-10-31T03:39:10Z\", \"event\":\"Cargo\", \"Count\":42, \"Inventory\":[ { \"Name\":\"hydrogenfuel\", \"Name_Localised\":\"Hydrogen Fuel\", \"Count\":1, \"Stolen\":0 }, { \"Name\":\"biowaste\", \"MissionID\":426282789, \"Count\":30, \"Stolen\":0 }, { \"Name\":\"animalmeat\", \"Name_Localised\":\"Animal Meat\", \"Count\":1, \"Stolen\":0 }, { \"Name\":\"drones\", \"Name_Localised\":\"Limpet\", \"Count\":10, \"Stolen\":0 } ] }";
+            events = JournalMonitor.ParseJournalEntry(line);
+            privateObject.Invoke("_handleCargoEvent", new object[] { events[0] });
+            Assert.AreEqual(4, cargoMonitor.inventory.Count);
+            Assert.AreEqual(42, cargoMonitor.cargoCarried);
+            cargo = cargoMonitor.inventory.ToList().FirstOrDefault(c => c.edname == "Drones");
+            Assert.AreEqual(10, cargo.total);
+
+            // Drones removed from inventory with subsequent startup CargoEvent
             line = "{ \"timestamp\":\"2018-10-31T03:39:10Z\", \"event\":\"Cargo\", \"Count\":32, \"Inventory\":[ { \"Name\":\"hydrogenfuel\", \"Name_Localised\":\"Hydrogen Fuel\", \"Count\":1, \"Stolen\":0 }, { \"Name\":\"biowaste\", \"MissionID\":426282789, \"Count\":30, \"Stolen\":0 }, { \"Name\":\"animalmeat\", \"Name_Localised\":\"Animal Meat\", \"Count\":1, \"Stolen\":0 } ] }";
             events = JournalMonitor.ParseJournalEntry(line);
             privateObject.Invoke("_handleCargoEvent", new object[] { events[0] });
             Assert.AreEqual(3, cargoMonitor.inventory.Count);
             Assert.AreEqual(32, cargoMonitor.cargoCarried);
+            cargo = cargoMonitor.inventory.ToList().FirstOrDefault(c => c.edname == "Drones");
+            Assert.IsNull(cargo);
 
             cargo = cargoMonitor.inventory.ToList().FirstOrDefault(c => c.edname == "HydrogenFuel");
             Assert.AreEqual("Hydrogen Fuel", cargo.localizedName);
