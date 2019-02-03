@@ -161,7 +161,10 @@
     <value>Cannone</value>
     <comment>Module Cannon</comment>
   </data>
-  
+  <data name="CargoHatch" xml:space="preserve">
+    <value>Portellone di carico</value>
+    <comment>Module CargoHatch</comment>
+  </data>
   
   
   
