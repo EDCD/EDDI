@@ -5,7 +5,11 @@ Full details of the variables available for each noted event, and VoiceAttack in
 ### Development
   * Speech responder
     * Fixed a bug that could prevent proper lookup of bodies using the `BodyDetails()` function.
-
+    * Added new `Next jump` event
+    * Added new top level object `nextsystem` - like `lastsystem` but for the next system you are visiting. e.g. "Our next waypoint is \{nextsystem.name\}".
+  * VoiceAttack  
+    * Added new `Next system` variables
+    
 ### 3.3.4-rc3
   * Frontier API
     * Fixed missing client ID in 3.3.4-rc2.

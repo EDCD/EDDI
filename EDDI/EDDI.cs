@@ -92,9 +92,11 @@ namespace Eddi
 
         public List<EDDIMonitor> monitors = new List<EDDIMonitor>();
         private ConcurrentBag<EDDIMonitor> activeMonitors = new ConcurrentBag<EDDIMonitor>();
+        private static readonly object monitorLock = new object();
 
         public List<EDDIResponder> responders = new List<EDDIResponder>();
         private ConcurrentBag<EDDIResponder> activeResponders = new ConcurrentBag<EDDIResponder>();
+        private static readonly object responderLock = new object();
 
         // Information obtained from the companion app service
         public Commander Cmdr { get; private set; }
@@ -112,6 +114,7 @@ namespace Eddi
         public string Environment { get; private set; }
         public StarSystem CurrentStarSystem { get; private set; }
         public StarSystem LastStarSystem { get; private set; }
+        public StarSystem NextStarSystem { get; private set; }
         public Station CurrentStation { get; private set; }
         public Body CurrentStellarBody { get; private set; }
         public DateTime JournalTimeStamp { get; set; } = DateTime.MinValue;
@@ -412,13 +415,11 @@ namespace Eddi
             {
                 foreach (EDDIResponder responder in responders)
                 {
-                    responder.Stop();
-                    activeResponders.TakeWhile(r => r.ResponderName() == responder.ResponderName());
+                    DisableResponder(responder.ResponderName());
                 }
                 foreach (EDDIMonitor monitor in monitors)
                 {
-                    monitor.Stop();
-                    activeMonitors.TakeWhile(m => m.MonitorName() == monitor.MonitorName());
+                    DisableMonitor(monitor.MonitorName());
                 }
             }
 
@@ -459,9 +460,7 @@ namespace Eddi
             return null;
         }
 
-        /// <summary>
-        /// Obtain a named responder
-        /// </summary>
+        /// <summary> Obtain a named responder </summary>
         public EDDIResponder ObtainResponder(string invariantName)
         {
             foreach (EDDIResponder responder in responders)
@@ -474,25 +473,29 @@ namespace Eddi
             return null;
         }
 
-        /// <summary>
-        /// Disable a named responder for this session.  This does not update the on-disk status of the responder
-        /// </summary>
-        public void DisableResponder(string name)
+        /// <summary> Disable a named responder for this session.  This does not update the on-disk status of the responder </summary>
+        public void DisableResponder(string invariantName)
         {
-            EDDIResponder responder = ObtainResponder(name);
+            EDDIResponder responder = ObtainResponder(invariantName);
             if (responder != null)
             {
-                responder.Stop();
-                activeResponders.TakeWhile(r => r.ResponderName() == responder.ResponderName());
+                lock (responderLock)
+                {
+                    responder.Stop();
+                    ConcurrentBag<EDDIResponder> newResponders = new ConcurrentBag<EDDIResponder>();
+                    while (activeResponders.TryTake(out EDDIResponder item))
+                    {
+                        if (item != responder) { newResponders.Add(item); }
+                    }
+                    activeResponders = newResponders;
+                }
             }
         }
 
-        /// <summary>
-        /// Enable a named responder for this session.  This does not update the on-disk status of the responder
-        /// </summary>
-        public void EnableResponder(string name)
+        /// <summary> Enable a named responder for this session.  This does not update the on-disk status of the responder </summary>
+        public void EnableResponder(string invariantName)
         {
-            EDDIResponder responder = ObtainResponder(name);
+            EDDIResponder responder = ObtainResponder(invariantName);
             if (responder != null)
             {
                 if (!activeResponders.Contains(responder))
@@ -503,25 +506,29 @@ namespace Eddi
             }
         }
 
-        /// <summary>
-        /// Disable a named monitor for this session.  This does not update the on-disk status of the responder
-        /// </summary>
-        public void DisableMonitor(string name)
+        /// <summary> Disable a named monitor for this session.  This does not update the on-disk status of the responder </summary>
+        public void DisableMonitor(string invariantName)
         {
-            EDDIMonitor monitor = ObtainMonitor(name);
+            EDDIMonitor monitor = ObtainMonitor(invariantName);
             if (monitor != null)
             {
-                monitor?.Stop();
-                activeMonitors.TakeWhile(m => m.MonitorName() == monitor.MonitorName());
+                lock (monitorLock)
+                {
+                    monitor.Stop();
+                    ConcurrentBag<EDDIMonitor> newMonitors = new ConcurrentBag<EDDIMonitor>();
+                    while (activeMonitors.TryTake(out EDDIMonitor item))
+                    {
+                        if (item != monitor) { newMonitors.Add(item); }
+                    }
+                    activeMonitors = newMonitors;
+                }
             }
         }
 
-        /// <summary>
-        /// Enable a named monitor for this session.  This does not update the on-disk status of the responder
-        /// </summary>
-        public void EnableMonitor(string name)
+        /// <summary> Enable a named monitor for this session.  This does not update the on-disk status of the responder </summary>
+        public void EnableMonitor(string invariantName)
         {
-            EDDIMonitor monitor = monitors.FirstOrDefault(m => m.MonitorName() == name);
+            EDDIMonitor monitor = ObtainMonitor(invariantName);
             if (monitor != null)
             {
                 if (!activeMonitors.Contains(monitor))
@@ -540,9 +547,7 @@ namespace Eddi
             }
         }
 
-        /// <summary>
-        /// Reload a specific monitor or responder
-        /// </summary>
+        /// <summary> Reload a specific monitor or responder </summary>
         public void Reload(string name)
         {
             foreach (EDDIResponder responder in responders)
@@ -602,6 +607,7 @@ namespace Eddi
                 }
                 if (running)
                 {
+                    DisableMonitor(name);
                     Logging.Warn(name + " stopping after too many failures");
                 }
             }
@@ -611,7 +617,7 @@ namespace Eddi
             }
             catch (Exception ex)
             {
-                Logging.Warn("keepAlive failed", ex);
+                Logging.Warn("keepAlive for " + name + " failed", ex);
             }
         }
 
@@ -680,6 +686,10 @@ namespace Eddi
                     else if (@event is FSDEngagedEvent)
                     {
                         passEvent = eventFSDEngaged((FSDEngagedEvent)@event);
+                    }
+                    else if (@event is FSDTargetEvent)
+                    {
+                        passEvent = eventFSDTarget((FSDTargetEvent)@event);
                     }
                     else if (@event is EnteredSupercruiseEvent)
                     {
@@ -1250,7 +1260,15 @@ namespace Eddi
                     StarSystemSqLiteRepository.Instance.LeaveStarSystem(CurrentStarSystem);
                 }
                 LastStarSystem = CurrentStarSystem;
-                CurrentStarSystem = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(name);
+                if (NextStarSystem?.name == name)
+                {
+                    CurrentStarSystem = NextStarSystem;
+                    NextStarSystem = null;
+                }
+                else
+                {
+                    CurrentStarSystem = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(name);
+                }
                 setSystemDistanceFromHome(CurrentStarSystem);
             }
         }
@@ -1277,6 +1295,13 @@ namespace Eddi
             // Set the destination system as the current star system
             updateCurrentSystem(@event.system);
 
+            return true;
+        }
+
+        private bool eventFSDTarget(FSDTargetEvent @event)
+        {
+            // Set and prepare data about the next star system
+            NextStarSystem = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(@event.system);
             return true;
         }
 
@@ -1352,13 +1377,12 @@ namespace Eddi
                 CurrentStarSystem.population = theEvent.population;
             }
 
+            // Update to most recent information
             if (CurrentStarSystem.lastvisit < theEvent.timestamp)
             {
                 CurrentStarSystem.lastvisit = theEvent.timestamp;
                 CurrentStarSystem.visits++;
             }
-
-            // Update to most recent information
             CurrentStarSystem.updatedat = (long)theEvent.timestamp.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
             StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
 

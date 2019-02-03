@@ -90,10 +90,11 @@ namespace EddiDataProviderService
         {
             if (names.Count() == 0) { return null; }
 
+            // Get (and update if required) systems already in our database
             List<StarSystem> systems = Instance.GetStarSystems(names, fetchIfMissing);
-            List<string> fetchSystems = new List<string>();
 
             // If a system isn't found after we've read our local database, we need to fetch it.
+            List<string> fetchSystems = new List<string>();
             foreach (string name in names)
             {
                 if (fetchIfMissing && systems.FirstOrDefault(s => s.name == name) == null)
@@ -101,7 +102,6 @@ namespace EddiDataProviderService
                     fetchSystems.Add(name);
                 }
             }
-
             List<StarSystem> fetchedSystems = DataProviderService.GetSystemsData(fetchSystems.ToArray());
             if (fetchedSystems?.Count > 0)
             {
@@ -109,9 +109,10 @@ namespace EddiDataProviderService
                 systems.AddRange(fetchedSystems);
             }
 
+            // Create a new system object for each name that isn't in the database and couldn't be fetched from a server
             foreach (string name in names)
             {
-                if (fetchedSystems?.Find(s => s?.name == name) == null)
+                if (systems?.Find(s => s?.name == name) == null)
                 {
                     systems.Add(new StarSystem() { name = name });
                 }

@@ -3209,6 +3209,13 @@ namespace EddiJournalMonitor
                             case "Statistics":
                             case "CodexEntry":
                             case "FSDTarget":
+                                {
+                                    string systemName = JsonParsing.getString(data, "Name");
+                                    long systemAddress = JsonParsing.getLong(data, "SystemAddress");
+                                    events.Add(new FSDTargetEvent(timestamp, systemName, systemAddress) { raw = line, fromLoad = fromLogLoad });
+                                    handled = true;
+                                    break;
+                                }
                             case "NpcCrewPaidWage":
                             case "ReservoirReplenished":
                             case "FSSAllBodiesFound":
