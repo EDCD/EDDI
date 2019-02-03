@@ -2,6 +2,10 @@
 
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
+### Development
+  * Speech responder
+    * Fixed a bug that could prevent proper lookup of bodies using the `BodyDetails()` function.
+
 ### 3.3.4-rc3
   * Frontier API
     * Fixed missing client ID in 3.3.4-rc2.
