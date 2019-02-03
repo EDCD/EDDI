@@ -17,7 +17,6 @@ namespace EddiEvents
             VARIABLES.Add("x", "The X co-ordinate of the system to which the commander has jumped");
             VARIABLES.Add("y", "The Y co-ordinate of the system to which the commander has jumped");
             VARIABLES.Add("z", "The Z co-ordinate of the system to which the commander has jumped");
-            VARIABLES.Add("star", "The name of the star at which you've arrived");
             VARIABLES.Add("distance", "The distance the commander has jumped, in light years");
             VARIABLES.Add("fuelused", "The amount of fuel used in this jump");
             VARIABLES.Add("fuelremaining", "The amount of fuel remaining after this jump");
@@ -41,6 +40,7 @@ namespace EddiEvents
 
         public decimal z { get; private set; }
 
+        /// <summary> Documented by the journal, but apparently never written. We can't rely on this being set. </summary>
         public string star { get; private set; }
 
         public decimal distance { get; private set; }

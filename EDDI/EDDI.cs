@@ -120,9 +120,6 @@ namespace Eddi
         public string Vehicle { get; private set; } = Constants.VEHICLE_SHIP;
         public Ship CurrentShip { get; set; }
 
-        // Information from the last jump we initiated (for reference)
-        public FSDEngagedEvent LastFSDEngagedEvent { get; private set; }
-
         // Our main window, made accessible via the applicable EDDI Instance
         public MainWindow MainWindow { get; internal set; }
 
@@ -1280,9 +1277,6 @@ namespace Eddi
             // Set the destination system as the current star system
             updateCurrentSystem(@event.system);
 
-            // Save a copy of this event for reference
-            LastFSDEngagedEvent = @event;
-
             return true;
         }
 
@@ -1326,7 +1320,7 @@ namespace Eddi
             CurrentStarSystem.y = theEvent.y;
             CurrentStarSystem.z = theEvent.z;
             CurrentStarSystem.Faction = theEvent.controllingfaction;
-            CurrentStellarBody = CurrentStarSystem.bodies.FirstOrDefault(b => b.name == theEvent.star);
+            CurrentStellarBody = CurrentStarSystem.bodies.FirstOrDefault(b => b.distance == 0);
 
             // Update system faction data if available
             if (theEvent.factions != null)
@@ -1373,20 +1367,6 @@ namespace Eddi
 
             // After jump has completed we are always in supercruise
             Environment = Constants.ENVIRONMENT_SUPERCRUISE;
-
-            // If we don't have any information about bodies in the system yet, create a basic main star from current and saved event data
-            if (CurrentStellarBody == null)
-            {
-                CurrentStellarBody = new Body()
-                {
-                    name = theEvent.star,
-                    Type = BodyType.FromEDName("Star"),
-                    stellarclass = LastFSDEngagedEvent?.stellarclass,
-                    mainstar = true,
-                    distance = 0, 
-                };
-                CurrentStarSystem.bodies.Add(CurrentStellarBody);
-            }
 
             return passEvent;
         }
@@ -1779,7 +1759,6 @@ namespace Eddi
                         systemname = CurrentStarSystem?.name,
                         systemAddress = CurrentStarSystem?.systemAddress
                     };
-                    CurrentStarSystem.bodies?.Add(belt);
                 }
 
                 // Update with the information we have
