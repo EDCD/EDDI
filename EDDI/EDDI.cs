@@ -1378,13 +1378,12 @@ namespace Eddi
                 CurrentStarSystem.population = theEvent.population;
             }
 
+            // Update to most recent information
             if (CurrentStarSystem.lastvisit < theEvent.timestamp)
             {
                 CurrentStarSystem.lastvisit = theEvent.timestamp;
                 CurrentStarSystem.visits++;
             }
-
-            // Update to most recent information
             CurrentStarSystem.updatedat = (long)theEvent.timestamp.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
             StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
 
