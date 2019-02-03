@@ -362,7 +362,15 @@ Any values might be missing, depending on EDDI's configuration and the informati
 
 #### Last starsystem
 
-Information about your current starsystem is avaialble under the `lastsystem` object.
+Information about your last starsystem is available under the `lastsystem` object.
+
+Any values might be missing, depending on EDDI's configuration and the information avaialable about the system.
+
+Values are the same as for the current starsystem.
+
+#### Next starsystem
+
+Information about your next targeted starsystem is available under the `nextsystem` object.
 
 Any values might be missing, depending on EDDI's configuration and the information avaialable about the system.
 

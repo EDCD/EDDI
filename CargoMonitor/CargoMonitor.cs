@@ -239,7 +239,7 @@ namespace EddiCargoMonitor
                             {
                                 // Strip out the stray from the manifest
                                 _RemoveCargoWithEDName(inventoryCargo.edname);
-                                if (@event.update) { return true; }
+                                cargoUpdated = true;
                             }
                             else
                             {
@@ -262,8 +262,8 @@ namespace EddiCargoMonitor
                         if (cargo != null)
                         {
                             int total = cargoInfo.Sum(i => i.count);
-                            int stolen = infoList.Where(i => i.missionid == null).Sum(i => i.stolen);
-                            int missionCount = infoList.Where(i => i.missionid != null).Count();
+                            int stolen = cargoInfo.Where(i => i.missionid == null).Sum(i => i.stolen);
+                            int missionCount = cargoInfo.Where(i => i.missionid != null).Count();
                             if (total != cargo.total || stolen != cargo.stolen || missionCount != cargo.haulageData.Count())
                             {
                                 UpdateCargoFromInfo(cargo, cargoInfo);
