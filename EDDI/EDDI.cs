@@ -609,6 +609,7 @@ namespace Eddi
                 }
                 if (running)
                 {
+                    DisableMonitor(name);
                     Logging.Warn(name + " stopping after too many failures");
                 }
             }
