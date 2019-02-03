@@ -367,7 +367,7 @@ namespace Eddi
                             Logging.Info("Starting keepalive for " + monitor.MonitorName());
                             monitorThread.Start();
                         }
-                            activeMonitors.Add(monitor);
+                        activeMonitors.Add(monitor);
                     }
                 }
 
