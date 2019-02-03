@@ -302,6 +302,11 @@ namespace EddiSpeechResponder
                 dict["lastsystem"] = new ReflectionValue(EDDI.Instance.LastStarSystem);
             }
 
+            if (EDDI.Instance.NextStarSystem != null)
+            {
+                dict["nextsystem"] = new ReflectionValue(EDDI.Instance.NextStarSystem);
+            }
+
             if (EDDI.Instance.CurrentStation != null)
             {
                 dict["station"] = new ReflectionValue(EDDI.Instance.CurrentStation);

@@ -112,6 +112,7 @@ namespace Eddi
         public string Environment { get; private set; }
         public StarSystem CurrentStarSystem { get; private set; }
         public StarSystem LastStarSystem { get; private set; }
+        public StarSystem NextStarSystem { get; private set; }
         public Station CurrentStation { get; private set; }
         public Body CurrentStellarBody { get; private set; }
         public DateTime JournalTimeStamp { get; set; } = DateTime.MinValue;
@@ -684,6 +685,10 @@ namespace Eddi
                     {
                         passEvent = eventFSDEngaged((FSDEngagedEvent)@event);
                     }
+                    else if (@event is FSDTargetEvent)
+                    {
+                        passEvent = eventFSDTarget((FSDTargetEvent)@event);
+                    }
                     else if (@event is EnteredSupercruiseEvent)
                     {
                         passEvent = eventEnteredSupercruise((EnteredSupercruiseEvent)@event);
@@ -1253,7 +1258,15 @@ namespace Eddi
                     StarSystemSqLiteRepository.Instance.LeaveStarSystem(CurrentStarSystem);
                 }
                 LastStarSystem = CurrentStarSystem;
-                CurrentStarSystem = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(name);
+                if (NextStarSystem?.name == name)
+                {
+                    CurrentStarSystem = NextStarSystem;
+                    NextStarSystem = null;
+                }
+                else
+                {
+                    CurrentStarSystem = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(name);
+                }
                 setSystemDistanceFromHome(CurrentStarSystem);
             }
         }
@@ -1283,6 +1296,13 @@ namespace Eddi
             // Save a copy of this event for reference
             LastFSDEngagedEvent = @event;
 
+            return true;
+        }
+
+        private bool eventFSDTarget(FSDTargetEvent @event)
+        {
+            // Set and prepare data about the next star system
+            NextStarSystem = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(@event.system);
             return true;
         }
 

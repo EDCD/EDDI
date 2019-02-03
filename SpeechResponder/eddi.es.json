@@ -1262,6 +1262,15 @@
       "name": "Near surface",
       "description": "Se activa cuando se entra o se sale de la órbita de la superficie de un planeta"
     },
+    "Next jump": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "default": true,
+      "name": "Next jump",
+      "description": "Triggered when selecting a star system to jump to"
+    },
     "NPC attack commenced": {
       "enabled": true,
       "priority": 3,
