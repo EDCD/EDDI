@@ -295,7 +295,7 @@ namespace EddiMissionMonitor
 
         private void handleMissionsEvent(MissionsEvent @event)
         {
-            if(_handleMissionsEvent(@event))
+            if(_handleMissionsEvent(@event) && !@event.fromLoad)
             {
                 writeMissions();
             }
@@ -391,7 +391,10 @@ namespace EddiMissionMonitor
         private void handlePassengersEvent(PassengersEvent @event)
         {
             _handlePassengersEvent(@event);
-            writeMissions();
+            if (!@event.fromLoad)
+            {
+                writeMissions();
+            }
         }
 
         public void _handlePassengersEvent(PassengersEvent @event)
@@ -427,7 +430,10 @@ namespace EddiMissionMonitor
         private void handleCommunityGoalEvent(CommunityGoalEvent @event)
         {
             _handleCommunityGoalEvent(@event);
-            writeMissions();
+            if(!@event.fromLoad)
+            {
+                writeMissions();
+            }
         }
 
         public void _handleCommunityGoalEvent(CommunityGoalEvent @event)
@@ -460,7 +466,10 @@ namespace EddiMissionMonitor
         private void handleCargoDepotEvent(CargoDepotEvent @event)
         {
             _handleCargoDepotEvent(@event);
-            writeMissions();
+            if (!@event.fromLoad)
+            {
+                writeMissions();
+            }
         }
 
         public void _handleCargoDepotEvent(CargoDepotEvent @event)
@@ -556,7 +565,7 @@ namespace EddiMissionMonitor
 
         private void handleMissionAbandonedEvent(MissionAbandonedEvent @event)
         {
-            if(_handleMissionAbandonedEvent(@event))
+            if(_handleMissionAbandonedEvent(@event) && !@event.fromLoad)
             {
                 writeMissions();
             }
@@ -579,20 +588,19 @@ namespace EddiMissionMonitor
 
         private void handleMissionAcceptedEvent(MissionAcceptedEvent @event)
         {
-            // Protect against duplicates
-            if (!missions.Any(m => m.missionid == @event.missionid))
+            if (_handleMissionAcceptedEvent(@event) && !@event.fromLoad)
             {
-                if (_handleMissionAcceptedEvent(@event))
-                {
-                    writeMissions();
-                }
+                writeMissions();
             }
         }
 
         public bool _handleMissionAcceptedEvent(MissionAcceptedEvent @event)
         {
             bool update = false;
-            if (!string.IsNullOrEmpty(@event.name))
+
+            // Protect against duplicates and empty strings
+            bool exists = missions.Any(m => m.missionid == @event.missionid);
+            if (!exists && !string.IsNullOrEmpty(@event.name))
             {
                 MissionStatus status = MissionStatus.FromEDName("Active");
                 Mission mission = new Mission(@event.missionid ?? 0, @event.name, @event.expiry, status)
@@ -727,7 +735,7 @@ namespace EddiMissionMonitor
         private void handleMissionCompletedEvent(MissionCompletedEvent @event)
         {
 
-            if(_handleMissionCompletedEvent(@event))
+            if(_handleMissionCompletedEvent(@event) && !@event.fromLoad)
             {
                 writeMissions();
             }
@@ -750,7 +758,7 @@ namespace EddiMissionMonitor
 
         private void handleMissionExpiredEvent(MissionExpiredEvent @event)
         {
-            if(_handleMissionExpiredEvent(@event))
+            if(_handleMissionExpiredEvent(@event) && !@event.fromLoad)
             {
                 writeMissions();
             }
@@ -773,7 +781,7 @@ namespace EddiMissionMonitor
 
         private void handleMissionFailedEvent(MissionFailedEvent @event)
         {
-            if(_handleMissionFailedEvent(@event))
+            if(_handleMissionFailedEvent(@event) && !@event.fromLoad)
             {
                 writeMissions();
             }
@@ -796,7 +804,7 @@ namespace EddiMissionMonitor
 
         private void handleMissionRedirectedEvent(MissionRedirectedEvent @event)
         {
-            if(_handleMissionRedirectedEvent(@event))
+            if(_handleMissionRedirectedEvent(@event) && !@event.fromLoad)
             {
                 writeMissions();
             }

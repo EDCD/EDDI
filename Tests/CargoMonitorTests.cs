@@ -215,15 +215,27 @@ namespace UnitTests
             line = @"{ ""timestamp"": ""2018-05-05T19:42:20Z"", ""event"": ""MissionAccepted"", ""Faction"": ""Merope Expeditionary Fleet"", ""Name"": ""Mission_Salvage_Planet"", ""LocalisedName"": ""Salvage 4 Structural Regulators"", ""Commodity"": ""$StructuralRegulators_Name;"", ""Commodity_Localised"": ""Structural Regulators"", ""Count"": 4, ""DestinationSystem"": ""HIP 17692"", ""Expiry"": ""2018-05-12T15:20:27Z"", ""Wing"": false, ""Influence"": ""Med"", ""Reputation"": ""Med"", ""Reward"": 557296, ""MissionID"": 375660729 }";
             events = JournalMonitor.ParseJournalEntry(line);
             privateObject.Invoke("_handleMissionAcceptedEvent", new object[] { events[0] });
+
+            // Verify cargo populated properly
             cargo = cargoMonitor.inventory.ToList().FirstOrDefault(c => c.edname == "StructuralRegulators");
             Assert.AreEqual("Structural Regulators", cargo.invariantName);
             Assert.AreEqual(0, cargo.total);
             Assert.AreEqual(0, cargo.haulage + cargo.stolen + cargo.owned);
             Assert.AreEqual(7, cargo.need);
+            Assert.AreEqual(2, cargo.haulageData.Count);
+
+            // Verify haulage populated properly
             haulage = cargo.haulageData.FirstOrDefault(h => h.missionid == 375682327);
             Assert.AreEqual(3, haulage.amount);
             Assert.AreEqual("Mission_Salvage_Planet", haulage.name);
             Assert.AreEqual(DateTime.Parse("2018-05-12T15:20:27Z").ToUniversalTime(), haulage.expiry);
+
+            // Verify duplication protection
+            events = JournalMonitor.ParseJournalEntry(line);
+            privateObject.Invoke("_handleMissionAcceptedEvent", new object[] { events[0] });
+            cargo = cargoMonitor.inventory.ToList().FirstOrDefault(c => c.edname == "StructuralRegulators");
+            Assert.AreEqual(7, cargo.need);
+            Assert.AreEqual(2, cargo.haulageData.Count);
 
             // CargoEvent - Collected 2 Structural Regulators for mission ID 375682327. Verify haulage & need changed
             line = "{ \"timestamp\":\"2018-10-31T03:39:10Z\", \"event\":\"Cargo\", \"Count\":32, \"Inventory\":[ { \"Name\":\"hydrogenfuel\", \"Name_Localised\":\"Hydrogen Fuel\", \"Count\":1, \"Stolen\":0 }, { \"Name\":\"biowaste\", \"MissionID\":426282789, \"Count\":30, \"Stolen\":0 }, { \"Name\":\"animalmeat\", \"Name_Localised\":\"Animal Meat\", \"Count\":1, \"Stolen\":0 }, { \"Name\":\"structuralregulators\", \"MissionID\":375682327, \"Count\":2, \"Stolen\":0 } ] }";
