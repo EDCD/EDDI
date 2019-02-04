@@ -645,6 +645,7 @@ namespace EddiCargoMonitor
             bool update = false;
             foreach (Cargo cargo in inventory.ToList())
             {
+                // Strip out haulage strays
                 foreach (Haulage haulage in cargo.haulageData.ToList())
                 {
                     Mission mission = @event.missions.FirstOrDefault(m => m.missionid == haulage.missionid);
@@ -660,12 +661,15 @@ namespace EddiCargoMonitor
 
         private void handleMissionAbandonedEvent(MissionAbandonedEvent @event)
         {
-            _handleMissionAbandonedEvent(@event);
-            writeInventory();
+            if(_handleMissionAbandonedEvent(@event))
+            {
+                writeInventory();
+            }
         }
 
-        private void _handleMissionAbandonedEvent(MissionAbandonedEvent @event)
+        private bool _handleMissionAbandonedEvent(MissionAbandonedEvent @event)
         {
+            bool update = false;
             Haulage haulage = GetHaulageWithMissionId(@event.missionid ?? 0);
             if (haulage != null)
             {
@@ -675,15 +679,22 @@ namespace EddiCargoMonitor
                 cargo.stolen += onboard;
                 cargo.haulageData.Remove(haulage);
                 RemoveCargo(cargo);
+                update = true;
             }
+            return update;
         }
 
         private void handleMissionAcceptedEvent(MissionAcceptedEvent @event)
         {
             if (@event.commodityDefinition != null)
             {
-                _handleMissionAcceptedEvent(@event);
-                writeInventory();
+                // Protect against duplicates
+                Haulage haulage = GetHaulageWithMissionId(@event.missionid ?? 0);
+                if (haulage == null)
+                {
+                    _handleMissionAcceptedEvent(@event);
+                    writeInventory();
+                }
             }
         }
 
@@ -749,13 +760,16 @@ namespace EddiCargoMonitor
         {
             if (@event.commodityDefinition != null || @event.commodityrewards != null)
             {
-                _handleMissionCompletedEvent(@event);
-                writeInventory();
+                if(_handleMissionCompletedEvent(@event))
+                {
+                    writeInventory();
+                }
             }
         }
 
-        private void _handleMissionCompletedEvent(MissionCompletedEvent @event)
+        private bool _handleMissionCompletedEvent(MissionCompletedEvent @event)
         {
+            bool update = false;
             Cargo cargo = GetCargoWithEDName(@event.commodityDefinition?.edname);
             if (cargo != null)
             {
@@ -765,22 +779,29 @@ namespace EddiCargoMonitor
                     cargo.haulageData.Remove(haulage);
                 }
                 RemoveCargo(cargo);
+                update = true;
             }
+            return update;
         }
 
         private void handleMissionExpiredEvent(MissionExpiredEvent @event)
         {
-            _handleMissionExpiredEvent(@event);
-            writeInventory();
+            if(_handleMissionExpiredEvent(@event))
+            {
+                writeInventory();
+            }
         }
 
-        private void _handleMissionExpiredEvent(MissionExpiredEvent @event)
+        private bool _handleMissionExpiredEvent(MissionExpiredEvent @event)
         {
+            bool update = false;
             Haulage haulage = GetHaulageWithMissionId(@event.missionid ?? 0);
             if (haulage != null)
             {
                 haulage.status = "Failed";
+                update = true;
             }
+            return update;
         }
 
         private void handleMissionFailedEvent(MissionFailedEvent @event)
@@ -789,8 +810,9 @@ namespace EddiCargoMonitor
             writeInventory();
         }
 
-        private void _handleMissionFailedEvent(MissionFailedEvent @event)
+        private bool _handleMissionFailedEvent(MissionFailedEvent @event)
         {
+            bool update = false;
             Haulage haulage = GetHaulageWithMissionId(@event.missionid ?? 0);
             if (haulage != null)
             {
@@ -800,7 +822,9 @@ namespace EddiCargoMonitor
                 cargo.stolen += onboard;
                 cargo.haulageData.Remove(haulage);
                 RemoveCargo(cargo);
+                return true;
             }
+            return update;
         }
 
         private void handleDiedEvent(DiedEvent @event)

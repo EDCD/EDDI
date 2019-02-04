@@ -295,16 +295,20 @@ namespace EddiMissionMonitor
 
         private void handleMissionsEvent(MissionsEvent @event)
         {
-            _handleMissionsEvent(@event);
-            writeMissions();
+            if(_handleMissionsEvent(@event))
+            {
+                writeMissions();
+            }
         }
 
-        public void _handleMissionsEvent(MissionsEvent @event)
+        public bool _handleMissionsEvent(MissionsEvent @event)
         {
+            bool update = false;
             foreach (Mission mission in @event.missions)
             {
-                // Add missions to mission log
                 Mission missionEntry = missions.FirstOrDefault(m => m.missionid == mission.missionid);
+
+                // If the mission exists in the log, update status
                 if (missionEntry != null)
                 {
                     switch (mission.statusEDName)
@@ -315,6 +319,7 @@ namespace EddiMissionMonitor
                                 {
                                     missionEntry.expiry = mission.expiry;
                                     missionEntry.statusDef = MissionStatus.FromEDName("Active");
+                                    update = true;
                                 }
 
                                 if (missionEntry.statusEDName == "Active" && missionEntry.destinationsystem == missionEntry.originsystem)
@@ -333,6 +338,7 @@ namespace EddiMissionMonitor
                                         case "sightseeing":
                                             {
                                                 missionEntry.statusDef = MissionStatus.FromEDName("Complete");
+                                                update = true;
                                             }
                                             break;
                                     }
@@ -341,7 +347,11 @@ namespace EddiMissionMonitor
                             break;
                         case "Failed":
                             {
-                                missionEntry.statusDef = MissionStatus.FromEDName("Failed");
+                                if (missionEntry.statusDef.edname != "Failed")
+                                {
+                                    missionEntry.statusDef = MissionStatus.FromEDName("Failed");
+                                    update = true;
+                                }
                             }
                             break;
                     }
@@ -352,11 +362,15 @@ namespace EddiMissionMonitor
                         missionEntry.name = mission.name;
                         missionEntry.typeDef = MissionType.FromEDName(mission.name.Split('_').ElementAt(1));
                         missionEntry.expiry = mission.expiry;
+                        update = true;
                     }
                 }
+
+                // Add missions to mission log
                 else
                 {
                     AddMission(mission);
+                    update = true;
                 }
             }
 
@@ -368,8 +382,10 @@ namespace EddiMissionMonitor
                 {
                     // Strip out the stray from the mission log
                     _RemoveMissionWithMissionId(missionEntry.missionid);
+                    update = true;
                 }
             }
+            return update;
         }
 
         private void handlePassengersEvent(PassengersEvent @event)
@@ -405,7 +421,6 @@ namespace EddiMissionMonitor
                     };
                     AddMission(mission);
                 }
-
             }
         }
 
@@ -541,34 +556,43 @@ namespace EddiMissionMonitor
 
         private void handleMissionAbandonedEvent(MissionAbandonedEvent @event)
         {
-            _handleMissionAbandonedEvent(@event);
-            writeMissions();
+            if(_handleMissionAbandonedEvent(@event))
+            {
+                writeMissions();
+            }
         }
 
-        public void _handleMissionAbandonedEvent(MissionAbandonedEvent @event)
+        public bool _handleMissionAbandonedEvent(MissionAbandonedEvent @event)
         {
+            bool update = false;
             if (@event.missionid != null)
             {
                 Mission mission = missions.FirstOrDefault(m => m.missionid == @event.missionid);
                 if (mission != null)
                 {
                     _RemoveMissionWithMissionId(@event.missionid ?? 0);
+                    update = true;
                 }
             }
+            return update;
         }
 
         private void handleMissionAcceptedEvent(MissionAcceptedEvent @event)
         {
-            if (@event.name != null)
+            // Protect against duplicates
+            if (!missions.Any(m => m.missionid == @event.missionid))
             {
-                _handleMissionAcceptedEvent(@event);
-                writeMissions();
+                if (_handleMissionAcceptedEvent(@event))
+                {
+                    writeMissions();
+                }
             }
         }
 
-        public void _handleMissionAcceptedEvent(MissionAcceptedEvent @event)
+        public bool _handleMissionAcceptedEvent(MissionAcceptedEvent @event)
         {
-            if (@event.missionid != null)
+            bool update = false;
+            if (!string.IsNullOrEmpty(@event.name))
             {
                 MissionStatus status = MissionStatus.FromEDName("Active");
                 Mission mission = new Mission(@event.missionid ?? 0, @event.name, @event.expiry, status)
@@ -695,73 +719,92 @@ namespace EddiMissionMonitor
                     }
                 }
                 AddMission(mission);
+                update = true;
             }
+            return update;
         }
 
         private void handleMissionCompletedEvent(MissionCompletedEvent @event)
         {
 
-            _handleMissionCompletedEvent(@event);
-            writeMissions();
-
+            if(_handleMissionCompletedEvent(@event))
+            {
+                writeMissions();
+            }
         }
 
-        public void _handleMissionCompletedEvent(MissionCompletedEvent @event)
+        public bool _handleMissionCompletedEvent(MissionCompletedEvent @event)
         {
+            bool update = false;
             if (@event.missionid != null)
             {
                 Mission mission = missions.FirstOrDefault(m => m.missionid == @event.missionid);
                 if (mission != null)
                 {
                     _RemoveMissionWithMissionId(@event.missionid ?? 0);
+                    update = true;
                 }
             }
+            return update;
         }
 
         private void handleMissionExpiredEvent(MissionExpiredEvent @event)
         {
-            _handleMissionExpiredEvent(@event);
-            writeMissions();
+            if(_handleMissionExpiredEvent(@event))
+            {
+                writeMissions();
+            }
         }
 
-        public void _handleMissionExpiredEvent(MissionExpiredEvent @event)
+        public bool _handleMissionExpiredEvent(MissionExpiredEvent @event)
         {
+            bool update = false;
             if (@event.missionid != null)
             {
                 Mission mission = missions.FirstOrDefault(m => m.missionid == @event.missionid);
                 if (mission != null)
                 {
                     mission.statusDef = MissionStatus.FromEDName("Failed");
+                    update = true;
                 }
             }
+            return update;
         }
 
         private void handleMissionFailedEvent(MissionFailedEvent @event)
         {
-            _handleMissionFailedEvent(@event);
-            writeMissions();
+            if(_handleMissionFailedEvent(@event))
+            {
+                writeMissions();
+            }
         }
 
-        public void _handleMissionFailedEvent(MissionFailedEvent @event)
+        public bool _handleMissionFailedEvent(MissionFailedEvent @event)
         {
+            bool update = false;
             if (@event.missionid != null)
             {
                 Mission mission = missions.FirstOrDefault(m => m.missionid == @event.missionid);
                 if (mission != null)
                 {
                     _RemoveMissionWithMissionId(@event.missionid ?? 0);
+                    update = true;
                 }
             }
+            return update;
         }
 
         private void handleMissionRedirectedEvent(MissionRedirectedEvent @event)
         {
-            _handleMissionRedirectedEvent(@event);
-            writeMissions();
+            if(_handleMissionRedirectedEvent(@event))
+            {
+                writeMissions();
+            }
         }
 
-        public void _handleMissionRedirectedEvent(MissionRedirectedEvent @event)
+        public bool _handleMissionRedirectedEvent(MissionRedirectedEvent @event)
         {
+            bool update = false;
             if (@event.missionid != null)
             {
                 Mission mission = missions.FirstOrDefault(m => m.missionid == @event.missionid);
@@ -775,8 +818,10 @@ namespace EddiMissionMonitor
                     {
                         mission.statusDef = MissionStatus.FromEDName("Complete");
                     }
+                    update = true;
                 }
             }
+            return update;
         }
 
         public IDictionary<string, object> GetVariables()
@@ -843,6 +888,11 @@ namespace EddiMissionMonitor
                     missions.Add(mission);
                 }
             }
+        }
+
+        public Mission GetMissionWithMissionId(long missionid)
+        {
+            return missions.FirstOrDefault(m => m.missionid == missionid);
         }
 
         private void AddMission(Mission mission)
@@ -1470,11 +1520,6 @@ namespace EddiMissionMonitor
                 }
             }
             return false;
-        }
-
-        public Mission GetMissionWithMissionId(long missionid)
-        {
-            return missions.FirstOrDefault(m => m.missionid == missionid);
         }
 
         static void RaiseOnUIThread(EventHandler handler, object sender)
