@@ -50,9 +50,6 @@ namespace UnitTests
             Assert.AreEqual(0, ((ConcurrentBag<EDDIMonitor>)privateObject.GetFieldOrProperty("activeMonitors")).Count());
 
             privateObject.Invoke("EnableMonitor", new object[] { monitor.MonitorName() });
-            Thread.Sleep(2000);
-            Assert.AreEqual(1, ((ConcurrentBag<EDDIMonitor>)privateObject.GetFieldOrProperty("activeMonitors")).Count());
-
             monitor.Stop();
 
             Thread.Sleep(3000);
