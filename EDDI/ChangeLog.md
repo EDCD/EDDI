@@ -4,6 +4,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
 
 ### Development
   * Speech responder
+    * Fixed a bug that would cause star scans to accumulate until the FSS scanner was opened.
     * Fixed a bug that could prevent proper lookup of bodies using the `BodyDetails()` function.
     * Added new `Next jump` event
     * Added new top level object `nextsystem` - like `lastsystem` but for the next system you are visiting. e.g. "Our next waypoint is \{nextsystem.name\}".
