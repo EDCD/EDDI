@@ -27,6 +27,7 @@ namespace EddiCargoMonitor
         public ObservableCollection<Cargo> inventory { get; private set; }
         public int cargoCarried;
         private bool checkHaulage = false;
+        private DateTime updateDat;
 
         private static readonly object inventoryLock = new object();
         public event EventHandler InventoryUpdatedEvent;
@@ -213,9 +214,13 @@ namespace EddiCargoMonitor
 
         private void handleCargoEvent(CargoEvent @event)
         {
-            if(_handleCargoEvent(@event))
+            if (@event.timestamp > updateDat)
             {
-                writeInventory();
+                if (_handleCargoEvent(@event))
+                {
+                    updateDat = @event.timestamp;
+                    writeInventory();
+                }
             }
         }
 
@@ -289,9 +294,13 @@ namespace EddiCargoMonitor
 
         private void handleCommodityCollectedEvent(CommodityCollectedEvent @event)
         {
-            if (_handleCommodityCollectedEvent(@event) && !@event.fromLoad)
+            if (@event.timestamp > updateDat)
             {
-                writeInventory();
+                if (_handleCommodityCollectedEvent(@event))
+                {
+                    updateDat = @event.timestamp;
+                    writeInventory();
+                }
             }
         }
 
@@ -342,9 +351,13 @@ namespace EddiCargoMonitor
 
         private void handleCommodityEjectedEvent(CommodityEjectedEvent @event)
         {
-            if(_handleCommodityEjectedEvent(@event) && !@event.fromLoad)
+            if (@event.timestamp > updateDat)
             {
-                writeInventory();
+                if (_handleCommodityEjectedEvent(@event))
+                {
+                    updateDat = @event.timestamp;
+                    writeInventory();
+                }
             }
         }
 
@@ -395,9 +408,13 @@ namespace EddiCargoMonitor
 
         private void handleCommodityPurchasedEvent(CommodityPurchasedEvent @event)
         {
-            if(_handleCommodityPurchasedEvent(@event) && !@event.fromLoad)
+            if (@event.timestamp > updateDat)
             {
-                writeInventory();
+                if (_handleCommodityPurchasedEvent(@event))
+                {
+                    updateDat = @event.timestamp;
+                    writeInventory();
+                }
             }
         }
 
@@ -422,9 +439,13 @@ namespace EddiCargoMonitor
 
         private void handleCommodityRefinedEvent(CommodityRefinedEvent @event)
         {
-            if(_handleCommodityRefinedEvent(@event) && !@event.fromLoad)
+            if (@event.timestamp > updateDat)
             {
-                writeInventory();
+                if (_handleCommodityRefinedEvent(@event))
+                {
+                    updateDat = @event.timestamp;
+                    writeInventory();
+                }
             }
         }
 
@@ -449,9 +470,13 @@ namespace EddiCargoMonitor
 
         private void handleCommoditySoldEvent(CommoditySoldEvent @event)
         {
-            if(_handleCommoditySoldEvent(@event) && !@event.fromLoad)
+            if (@event.timestamp > updateDat)
             {
-                writeInventory();
+                if (_handleCommoditySoldEvent(@event))
+                {
+                    updateDat = @event.timestamp;
+                    writeInventory();
+                }
             }
         }
 
@@ -469,9 +494,10 @@ namespace EddiCargoMonitor
 
         private void handleCargoDepotEvent(CargoDepotEvent @event)
         {
-            _handleCargoDepotEvent(@event);
-            if(!@event.fromLoad)
+            if(@event.timestamp > updateDat)
             {
+                _handleCargoDepotEvent(@event);
+                updateDat = @event.timestamp;
                 writeInventory();
             }
         }
@@ -639,9 +665,13 @@ namespace EddiCargoMonitor
 
         private void handleMissionsEvent(MissionsEvent @event)
         {
-            if (_handleMissionsEvent(@event) && !@event.fromLoad)
+            if (@event.timestamp > updateDat)
             {
-                writeInventory();
+                if (_handleMissionsEvent(@event))
+                {
+                    updateDat = @event.timestamp;
+                    writeInventory();
+                }
             }
         }
 
@@ -666,9 +696,13 @@ namespace EddiCargoMonitor
 
         private void handleMissionAbandonedEvent(MissionAbandonedEvent @event)
         {
-            if(_handleMissionAbandonedEvent(@event) && !@event.fromLoad)
+            if (@event.timestamp > updateDat)
             {
-                writeInventory();
+                if (_handleMissionAbandonedEvent(@event))
+                {
+                    updateDat = @event.timestamp;
+                    writeInventory();
+                }
             }
         }
 
@@ -691,10 +725,11 @@ namespace EddiCargoMonitor
 
         private void handleMissionAcceptedEvent(MissionAcceptedEvent @event)
         {
-            if (@event.commodityDefinition != null)
+            if (@event.timestamp > updateDat && @event.commodityDefinition != null)
             {
-                if (_handleMissionAcceptedEvent(@event) && !@event.fromLoad)
+                if (_handleMissionAcceptedEvent(@event))
                 {
+                    updateDat = @event.timestamp;
                     writeInventory();
                 }
             }
@@ -772,9 +807,13 @@ namespace EddiCargoMonitor
         {
             if (@event.commodityDefinition != null || @event.commodityrewards != null)
             {
-                if(_handleMissionCompletedEvent(@event) && !@event.fromLoad)
+                if (@event.timestamp > updateDat)
                 {
-                    writeInventory();
+                    if (_handleMissionCompletedEvent(@event))
+                    {
+                        updateDat = @event.timestamp;
+                        writeInventory();
+                    }
                 }
             }
         }
@@ -798,9 +837,13 @@ namespace EddiCargoMonitor
 
         private void handleMissionExpiredEvent(MissionExpiredEvent @event)
         {
-            if(_handleMissionExpiredEvent(@event) && !@event.fromLoad)
+            if (@event.timestamp > updateDat)
             {
-                writeInventory();
+                if (_handleMissionExpiredEvent(@event))
+                {
+                    updateDat = @event.timestamp;
+                    writeInventory();
+                }
             }
         }
 
@@ -818,9 +861,13 @@ namespace EddiCargoMonitor
 
         private void handleMissionFailedEvent(MissionFailedEvent @event)
         {
-            if(_handleMissionFailedEvent(@event) && !@event.fromLoad)
+            if (@event.timestamp > updateDat)
             {
-                writeInventory();
+                if (_handleMissionFailedEvent(@event))
+                {
+                    updateDat = @event.timestamp;
+                    writeInventory();
+                }
             }
         }
 
@@ -849,6 +896,19 @@ namespace EddiCargoMonitor
 
         private void handleEngineerContributedEvent(EngineerContributedEvent @event)
         {
+            if (@event.timestamp > updateDat)
+            {
+                if (_handleEngineerContributedEvent(@event))
+                {
+                    updateDat = @event.timestamp;
+                    writeInventory();
+                }
+            }
+        }
+
+        private bool _handleEngineerContributedEvent(EngineerContributedEvent @event)
+        {
+            bool update = false;
             if (@event.commodityAmount != null)
             {
                 Cargo cargo = GetCargoWithEDName(@event.commodityAmount.edname);
@@ -856,8 +916,10 @@ namespace EddiCargoMonitor
                 {
                     cargo.owned -= Math.Min(cargo.owned, @event.commodityAmount.amount);
                     RemoveCargo(cargo);
+                    update = true;
                 }
             }
+            return update;
         }
 
         public IDictionary<string, object> GetVariables()
@@ -875,10 +937,12 @@ namespace EddiCargoMonitor
             lock (inventoryLock)
             {
                 // Write cargo configuration with current inventory
-                CargoMonitorConfiguration configuration = new CargoMonitorConfiguration();
-
-                configuration.cargo = inventory;
-                configuration.cargocarried = cargoCarried;
+                CargoMonitorConfiguration configuration = new CargoMonitorConfiguration()
+                {
+                    updatedat = updateDat,
+                    cargo = inventory,
+                    cargocarried = cargoCarried
+                };
                 configuration.ToFile();
             }
             // Make sure the UI is up to date
@@ -892,6 +956,7 @@ namespace EddiCargoMonitor
                 // Obtain current cargo inventory from configuration
                 configuration = configuration ?? CargoMonitorConfiguration.FromFile();
                 cargoCarried = configuration.cargocarried;
+                updateDat = configuration.updatedat;
 
                 // Build a new inventory
                 List<Cargo> newInventory = new List<Cargo>();

@@ -28,6 +28,7 @@ namespace EddiMissionMonitor
         // Observable collection for us to handle changes
         public ObservableCollection<Mission> missions { get; private set; }
 
+        private DateTime updateDat;
         public int missionsCount;
         public int? missionWarning;
         public string missionsRouteList;
@@ -251,16 +252,22 @@ namespace EddiMissionMonitor
 
         private void handleDataScannedEvent(DataScannedEvent @event)
         {
-            _handleDataScannedEvent(@event);
-            writeMissions();
+            if (@event.timestamp > updateDat)
+            {
+                if (_handleDataScannedEvent(@event))
+                {
+                    updateDat = @event.timestamp;
+                    writeMissions();
+                }
+            }
         }
 
-        public void _handleDataScannedEvent(DataScannedEvent @event)
+        public bool _handleDataScannedEvent(DataScannedEvent @event)
         {
+            bool update = false;
             string datalinktypeEDName = DataScan.FromName(@event.datalinktype).edname;
             if (datalinktypeEDName == "TouristBeacon")
             {
-                bool handled = false;
                 foreach (Mission mission in missions.ToList())
                 {
                     string type = mission.typeEDName.ToLowerInvariant();
@@ -280,24 +287,29 @@ namespace EddiMissionMonitor
                                             .FirstOrDefault(s => s.visited == false).name;
                                         EDDI.Instance.enqueueEvent(new MissionRedirectedEvent(DateTime.Now, mission.missionid, mission.name, null, null, destinationsystem, EDDI.Instance?.CurrentStarSystem?.name));
                                     }
-                                    handled = true;
+                                    update = true;
                                 }
                             }
                             break;
                     }
-                    if (handled)
+                    if (update)
                     {
                         break;
                     }
                 }
             }
+            return update;
         }
 
         private void handleMissionsEvent(MissionsEvent @event)
         {
-            if(_handleMissionsEvent(@event) && !@event.fromLoad)
+            if (@event.timestamp > updateDat)
             {
-                writeMissions();
+                if (_handleMissionsEvent(@event))
+                {
+                    updateDat = @event.timestamp;
+                    writeMissions();
+                }
             }
         }
 
@@ -381,7 +393,7 @@ namespace EddiMissionMonitor
                 if (mission == null)
                 {
                     // Strip out the stray from the mission log
-                    _RemoveMissionWithMissionId(missionEntry.missionid);
+                    RemoveMissionWithMissionId(missionEntry.missionid);
                     update = true;
                 }
             }
@@ -390,9 +402,10 @@ namespace EddiMissionMonitor
 
         private void handlePassengersEvent(PassengersEvent @event)
         {
-            _handlePassengersEvent(@event);
-            if (!@event.fromLoad)
+            if (@event.timestamp > updateDat)
             {
+                _handlePassengersEvent(@event);
+                updateDat = @event.timestamp;
                 writeMissions();
             }
         }
@@ -429,9 +442,10 @@ namespace EddiMissionMonitor
 
         private void handleCommunityGoalEvent(CommunityGoalEvent @event)
         {
-            _handleCommunityGoalEvent(@event);
-            if(!@event.fromLoad)
+            if (@event.timestamp > updateDat)
             {
+                _handleCommunityGoalEvent(@event);
+                updateDat = @event.timestamp;
                 writeMissions();
             }
         }
@@ -465,9 +479,10 @@ namespace EddiMissionMonitor
 
         private void handleCargoDepotEvent(CargoDepotEvent @event)
         {
-            _handleCargoDepotEvent(@event);
-            if (!@event.fromLoad)
+            if (@event.timestamp > updateDat)
             {
+                _handleCargoDepotEvent(@event);
+                updateDat = @event.timestamp;
                 writeMissions();
             }
         }
@@ -565,9 +580,13 @@ namespace EddiMissionMonitor
 
         private void handleMissionAbandonedEvent(MissionAbandonedEvent @event)
         {
-            if(_handleMissionAbandonedEvent(@event) && !@event.fromLoad)
+            if (@event.timestamp > updateDat)
             {
-                writeMissions();
+                if (_handleMissionAbandonedEvent(@event))
+                {
+                    updateDat = @event.timestamp;
+                    writeMissions();
+                }
             }
         }
 
@@ -579,7 +598,7 @@ namespace EddiMissionMonitor
                 Mission mission = missions.FirstOrDefault(m => m.missionid == @event.missionid);
                 if (mission != null)
                 {
-                    _RemoveMissionWithMissionId(@event.missionid ?? 0);
+                    RemoveMissionWithMissionId(@event.missionid ?? 0);
                     update = true;
                 }
             }
@@ -588,9 +607,13 @@ namespace EddiMissionMonitor
 
         private void handleMissionAcceptedEvent(MissionAcceptedEvent @event)
         {
-            if (_handleMissionAcceptedEvent(@event) && !@event.fromLoad)
+            if (@event.timestamp > updateDat)
             {
-                writeMissions();
+                if (_handleMissionAcceptedEvent(@event))
+                {
+                    updateDat = @event.timestamp;
+                    writeMissions();
+                }
             }
         }
 
@@ -734,10 +757,13 @@ namespace EddiMissionMonitor
 
         private void handleMissionCompletedEvent(MissionCompletedEvent @event)
         {
-
-            if(_handleMissionCompletedEvent(@event) && !@event.fromLoad)
+            if (@event.timestamp > updateDat)
             {
-                writeMissions();
+                if (_handleMissionCompletedEvent(@event))
+                {
+                    updateDat = @event.timestamp;
+                    writeMissions();
+                }
             }
         }
 
@@ -749,7 +775,7 @@ namespace EddiMissionMonitor
                 Mission mission = missions.FirstOrDefault(m => m.missionid == @event.missionid);
                 if (mission != null)
                 {
-                    _RemoveMissionWithMissionId(@event.missionid ?? 0);
+                    RemoveMissionWithMissionId(@event.missionid ?? 0);
                     update = true;
                 }
             }
@@ -758,9 +784,13 @@ namespace EddiMissionMonitor
 
         private void handleMissionExpiredEvent(MissionExpiredEvent @event)
         {
-            if(_handleMissionExpiredEvent(@event) && !@event.fromLoad)
+            if (@event.timestamp > updateDat)
             {
-                writeMissions();
+                if (_handleMissionExpiredEvent(@event))
+                {
+                    updateDat = @event.timestamp;
+                    writeMissions();
+                }
             }
         }
 
@@ -781,9 +811,13 @@ namespace EddiMissionMonitor
 
         private void handleMissionFailedEvent(MissionFailedEvent @event)
         {
-            if(_handleMissionFailedEvent(@event) && !@event.fromLoad)
+            if (@event.timestamp > updateDat)
             {
-                writeMissions();
+                if (_handleMissionFailedEvent(@event))
+                {
+                    updateDat = @event.timestamp;
+                    writeMissions();
+                }
             }
         }
 
@@ -795,7 +829,7 @@ namespace EddiMissionMonitor
                 Mission mission = missions.FirstOrDefault(m => m.missionid == @event.missionid);
                 if (mission != null)
                 {
-                    _RemoveMissionWithMissionId(@event.missionid ?? 0);
+                    RemoveMissionWithMissionId(@event.missionid ?? 0);
                     update = true;
                 }
             }
@@ -804,9 +838,13 @@ namespace EddiMissionMonitor
 
         private void handleMissionRedirectedEvent(MissionRedirectedEvent @event)
         {
-            if(_handleMissionRedirectedEvent(@event) && !@event.fromLoad)
+            if (@event.timestamp > updateDat)
             {
-                writeMissions();
+                if (_handleMissionRedirectedEvent(@event))
+                {
+                    updateDat = @event.timestamp;
+                    writeMissions();
+                }
             }
         }
 
@@ -854,6 +892,7 @@ namespace EddiMissionMonitor
                 missionsCount = missions.Where(m => !m.shared && !m.communal).Count();
                 MissionMonitorConfiguration configuration = new MissionMonitorConfiguration
                 {
+                    updatedat = updateDat,
                     missions = missions,
                     missionsCount = missionsCount,
                     missionWarning = missionWarning,
@@ -876,6 +915,7 @@ namespace EddiMissionMonitor
                 missionWarning = configuration.missionWarning ?? 60;
                 missionsRouteList =configuration.missionsRouteList;
                 missionsRouteDistance = configuration.missionsRouteDistance;
+                updateDat = configuration.updatedat;
 
                 // Build a new missions log
                 List<Mission> newMissions = new List<Mission>();
@@ -914,15 +954,14 @@ namespace EddiMissionMonitor
             {
                 missions.Add(mission);
             }
-            writeMissions();
         }
 
         private void RemoveMission(Mission mission)
         {
-            _RemoveMissionWithMissionId(mission.missionid);
+            RemoveMissionWithMissionId(mission.missionid);
         }
 
-        private void _RemoveMissionWithMissionId(long missionid)
+        private void RemoveMissionWithMissionId(long missionid)
         {
             lock (missionsLock)
             {
@@ -935,7 +974,6 @@ namespace EddiMissionMonitor
                     }
                 }
             }
-            writeMissions();
         }
 
         public string GetExpiringRoute()
