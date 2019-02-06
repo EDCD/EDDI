@@ -3204,10 +3204,6 @@ namespace EddiJournalMonitor
                                     handled = true;
                                     break;
                                 }
-                            case "Commander":
-                            case "Reputation":
-                            case "Statistics":
-                            case "CodexEntry":
                             case "FSDTarget":
                                 {
                                     string systemName = JsonParsing.getString(data, "Name");
@@ -3216,6 +3212,10 @@ namespace EddiJournalMonitor
                                     handled = true;
                                     break;
                                 }
+                            case "Commander":
+                            case "Reputation":
+                            case "Statistics":
+                            case "CodexEntry":
                             case "NpcCrewPaidWage":
                             case "ReservoirReplenished":
                             case "FSSAllBodiesFound":
