@@ -2,6 +2,8 @@
 
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
+### 3.3.5
+
 ### 3.3.4
   * Speech responder
     * Fixed a bug that would cause star scans to accumulate until the FSS scanner was opened.
