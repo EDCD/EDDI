@@ -211,7 +211,15 @@ namespace EddiJournalMonitor
                                         factions = getFactions(factionsVal);
                                     }
 
-                                    events.Add(new JumpedEvent(timestamp, systemName, systemAddress, x, y, z, starName, distance, fuelUsed, fuelRemaining, boostUsed, controllingfaction, economy, economy2, security, population, factions) { raw = line, fromLoad = fromLogLoad });
+                                    // Calculate remaining distance to route destination (if it exists)
+                                    decimal destDistance = 0;
+                                    string destination = ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor")).GetNextSystem();
+                                    if (!string.IsNullOrEmpty(destination))
+                                    {
+                                        destDistance = ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor")).CalculateDistance(systemName, destination);
+                                    }
+
+                                    events.Add(new JumpedEvent(timestamp, systemName, systemAddress, x, y, z, starName, distance, fuelUsed, fuelRemaining, boostUsed, controllingfaction, factions, economy, economy2, security, population, destination, destDistance) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
@@ -3204,10 +3212,6 @@ namespace EddiJournalMonitor
                                     handled = true;
                                     break;
                                 }
-                            case "Commander":
-                            case "Reputation":
-                            case "Statistics":
-                            case "CodexEntry":
                             case "FSDTarget":
                                 {
                                     string systemName = JsonParsing.getString(data, "Name");
@@ -3216,6 +3220,10 @@ namespace EddiJournalMonitor
                                     handled = true;
                                     break;
                                 }
+                            case "Commander":
+                            case "Reputation":
+                            case "Statistics":
+                            case "CodexEntry":
                             case "NpcCrewPaidWage":
                             case "ReservoirReplenished":
                             case "FSSAllBodiesFound":

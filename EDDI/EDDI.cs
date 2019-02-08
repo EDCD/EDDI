@@ -356,6 +356,7 @@ namespace Eddi
                     }
                     else
                     {
+                        activeMonitors.Add(monitor);
                         if (monitor.NeedsStart())
                         {
                             Thread monitorThread = new Thread(() => keepAlive(monitor.MonitorName(), monitor.Start))
@@ -365,7 +366,6 @@ namespace Eddi
                             Logging.Info("Starting keepalive for " + monitor.MonitorName());
                             monitorThread.Start();
                         }
-                        activeMonitors.Add(monitor);
                     }
                 }
 
@@ -535,6 +535,7 @@ namespace Eddi
                 {
                     if (monitor.NeedsStart())
                     {
+                        activeMonitors.Add(monitor);
                         Thread monitorThread = new Thread(() => keepAlive(monitor.MonitorName(), monitor.Start))
                         {
                             IsBackground = true
@@ -542,7 +543,6 @@ namespace Eddi
                         Logging.Info("Starting keepalive for " + monitor.MonitorName());
                         monitorThread.Start();
                     }
-                    activeMonitors.Add(monitor);
                 }
             }
         }
