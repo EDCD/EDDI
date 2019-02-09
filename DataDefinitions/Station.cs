@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace EddiDataDefinitions
 {
@@ -244,5 +245,12 @@ namespace EddiDataDefinitions
 
         /// <summary>Is this station an (undockable) settlement?</summary>
         public bool IsPlanetarySettlement() { return Model?.basename == "SurfaceStation" && hasdocking != true; }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public void NotifyPropertyChanged(string propName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
+        }
     }
 }
