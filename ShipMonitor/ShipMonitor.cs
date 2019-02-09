@@ -549,6 +549,9 @@ namespace EddiShipMonitor
                 List<int> idsToRemove = new List<int>(shipyard.Count);
                 foreach (Ship shipInYard in shipyard)
                 {
+                    // Ignore current ship, since (obviously) it's not stored
+                    if (shipInYard.LocalId == currentShipId) { continue; }
+
                     Ship shipInEvent = @event.shipyard.FirstOrDefault(s => s.LocalId == shipInYard.LocalId);
                     if (shipInEvent == null)
                     {
