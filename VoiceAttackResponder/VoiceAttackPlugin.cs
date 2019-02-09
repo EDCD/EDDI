@@ -64,7 +64,7 @@ namespace EddiVoiceAttackResponder
 
                 // Add notifiers for events we want to react to 
                 VoiceAttackResponder.RaiseEvent += (s, theEvent) => updateValuesOnEvent(theEvent, ref vaProxy);
-                EDDI.Instance.CurrentStarSystem.PropertyChanged += (s, e) => setStarSystemValues(EDDI.Instance.CurrentStarSystem, "System", ref vaProxy); ;
+                EDDI.Instance.CurrentStarSystem.PropertyChanged += (s, e) => setStarSystemValues(EDDI.Instance.CurrentStarSystem, "System", ref vaProxy);
                 EDDI.Instance.LastStarSystem.PropertyChanged += (s, e) => setStarSystemValues(EDDI.Instance.LastStarSystem, "Last system", ref vaProxy);
                 EDDI.Instance.NextStarSystem.PropertyChanged += (s, e) => setStarSystemValues(EDDI.Instance.NextStarSystem, "Next system", ref vaProxy);
                 EDDI.Instance.HomeStarSystem.PropertyChanged += (s, e) => setStarSystemValues(EDDI.Instance.HomeStarSystem, "Home system", ref vaProxy);
