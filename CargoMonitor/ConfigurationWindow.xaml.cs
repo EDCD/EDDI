@@ -1,5 +1,4 @@
-﻿using Eddi;
-using System.Windows.Controls;
+﻿using System.Windows.Controls;
 using System.Windows.Data;
 
 namespace EddiCargoMonitor
@@ -9,20 +8,16 @@ namespace EddiCargoMonitor
     /// </summary>
     public partial class ConfigurationWindow : UserControl
     {
-        CargoMonitor monitor;
-
         public ConfigurationWindow()
         {
             InitializeComponent();
-
-            monitor = ((CargoMonitor)EDDI.Instance.ObtainMonitor("Cargo monitor"));
-            cargoData.ItemsSource = monitor.inventory;
+            cargoData.ItemsSource = CargoMonitor.Instance.inventory;
         }
 
         private void cargoUpdated(object sender, DataTransferEventArgs e)
         {
             // Update the cargo monitor's information
-            monitor.writeInventory();
+            CargoMonitor.Instance.writeInventory();
         }
     }
 }

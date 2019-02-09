@@ -168,7 +168,7 @@ namespace EddiSpeechResponder
             }
             else if (@event is StatusEvent statusEvent)
             {
-                if (StatusMonitor.currentStatus.gui_focus == "fss mode" && StatusMonitor.lastStatus.gui_focus != "fss mode")
+                if (StatusMonitor.Instance.currentStatus.gui_focus == "fss mode" && StatusMonitor.Instance.lastStatus.gui_focus != "fss mode")
                 {
                     // Beginning with Elite Dangerous v. 3.3, the primary star scan is delivered via a Scan with 
                     // scantype `AutoScan` when you jump into the system. Secondary stars may be delivered in a burst 
@@ -203,7 +203,7 @@ namespace EddiSpeechResponder
             }
             else if (@event is SignalDetectedEvent)
             {
-                if (!(StatusMonitor.currentStatus.gui_focus == "fss mode" || StatusMonitor.currentStatus.gui_focus == "saa mode"))
+                if (!(StatusMonitor.Instance.currentStatus.gui_focus == "fss mode" || StatusMonitor.Instance.currentStatus.gui_focus == "saa mode"))
                 {
                     return;
                 }
@@ -218,7 +218,7 @@ namespace EddiSpeechResponder
 
         private void Say(Event @event)
         {
-            Say(scriptResolver, ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip(), @event.type, @event, null, null, null, SayOutLoud());
+            Say(scriptResolver, ShipMonitor.Instance.GetCurrentShip(), @event.type, @event, null, null, null, SayOutLoud());
         }
 
         private static bool SayOutLoud()
@@ -315,9 +315,9 @@ namespace EddiSpeechResponder
                 dict["body"] = new ReflectionValue(EDDI.Instance.CurrentStellarBody);
             }
 
-            if (StatusMonitor.currentStatus != null)
+            if (StatusMonitor.Instance.currentStatus != null)
             {
-                dict["status"] = new ReflectionValue(StatusMonitor.currentStatus);
+                dict["status"] = new ReflectionValue(StatusMonitor.Instance.currentStatus);
             }
 
             if (theEvent != null)
