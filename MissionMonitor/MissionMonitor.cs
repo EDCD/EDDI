@@ -37,6 +37,28 @@ namespace EddiMissionMonitor
         private static readonly object missionsLock = new object();
         public event EventHandler MissionUpdatedEvent;
 
+        private static MissionMonitor instance;
+
+        private static readonly object instanceLock = new object();
+        public static MissionMonitor Instance
+        {
+            get
+            {
+                if (instance == null)
+                {
+                    lock (instanceLock)
+                    {
+                        if (instance == null)
+                        {
+                            Logging.Debug("No mission monitor instance: creating one");
+                            instance = new MissionMonitor();
+                        }
+                    }
+                }
+                return instance;
+            }
+        }
+
         public string MonitorName()
         {
             return "Mission monitor";

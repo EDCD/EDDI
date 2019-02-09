@@ -1,5 +1,4 @@
-﻿using Eddi;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -10,16 +9,12 @@ namespace GalnetMonitor
     /// </summary>
     public partial class ConfigurationWindow : UserControl
     {
-        GalnetMonitor monitor;
-
         public ConfigurationWindow()
         {
             InitializeComponent();
 
-            monitor = (GalnetMonitor)EDDI.Instance.ObtainMonitor("Galnet monitor");
-
             GalnetConfiguration configuration = GalnetConfiguration.FromFile();
-            Dictionary<string, string> langs = monitor.GetGalnetLocales();
+            Dictionary<string, string> langs = GalnetMonitor.Instance.GetGalnetLocales();
             languageComboBox.ItemsSource = langs.Keys;
             languageComboBox.SelectedValue = configuration.language;
             galnetAlwaysOn.IsChecked = configuration.galnetAlwaysOn;
@@ -36,7 +31,7 @@ namespace GalnetMonitor
                 configuration.lastuuid = null;
                 configuration.language = language;
                 configuration.ToFile();
-                monitor?.Reload();
+                GalnetMonitor.Instance?.Reload();
             }
         }
 
@@ -45,7 +40,7 @@ namespace GalnetMonitor
             GalnetConfiguration configuration = GalnetConfiguration.FromFile();
             configuration.galnetAlwaysOn = galnetAlwaysOn.IsChecked.Value;
             configuration.ToFile();
-            monitor.Reload();
+            GalnetMonitor.Instance.Reload();
         }
 
         private void galnetAlwaysOnUnchecked(object sender, RoutedEventArgs e)
@@ -53,7 +48,7 @@ namespace GalnetMonitor
             GalnetConfiguration configuration = GalnetConfiguration.FromFile();
             configuration.galnetAlwaysOn = galnetAlwaysOn.IsChecked.Value;
             configuration.ToFile();
-            monitor.Reload();
+            GalnetMonitor.Instance.Reload();
         }
     }
 }

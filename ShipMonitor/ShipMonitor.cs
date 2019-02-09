@@ -34,6 +34,28 @@ namespace EddiShipMonitor
         private static readonly object shipyardLock = new object();
         public event EventHandler ShipyardUpdatedEvent;
 
+        private static ShipMonitor instance;
+
+        private static readonly object instanceLock = new object();
+        public static ShipMonitor Instance
+        {
+            get
+            {
+                if (instance == null)
+                {
+                    lock (instanceLock)
+                    {
+                        if (instance == null)
+                        {
+                            Logging.Debug("No ship monitor instance: creating one");
+                            instance = new ShipMonitor();
+                        }
+                    }
+                }
+                return instance;
+            }
+        }
+
         public string MonitorName()
         {
             return Properties.ShipMonitor.ResourceManager.GetString("name", CultureInfo.InvariantCulture);
