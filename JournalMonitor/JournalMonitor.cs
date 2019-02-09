@@ -3336,7 +3336,7 @@ namespace EddiJournalMonitor
             }
 
             // Get the controlling faction (system or station) government
-            faction.Government = Government.FromEDName(JsonParsing.getString(data, type + "Government") ?? "None");
+            faction.Government = Government.FromEDName(JsonParsing.getString(data, type + "Government")) ?? Government.None;
 
             return faction;
         }
