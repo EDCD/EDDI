@@ -94,7 +94,7 @@ namespace UnitTests
 
             ShipMonitor shipMonitor = new ShipMonitor();
             var privateObject = new PrivateObject(shipMonitor);
-            object[] args = new object[]{loadoutEvent, false};
+            object[] args = new object[]{loadoutEvent};
             Ship ship = privateObject.Invoke("ParseShipLoadoutEvent", args) as Ship;
             Assert.AreEqual("Peppermint", ship.name);
             Assert.AreEqual("Int_FuelScoop_Size7_Class5", ship.compartments[0].module.edname);
