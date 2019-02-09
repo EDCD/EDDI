@@ -85,7 +85,6 @@
     <Compile Include="ShipTargetedEvent.cs" />
     <Compile Include="ShutdownEvent.cs" />
     <Compile Include="SilentRunningEvent.cs" />
-    <Compile Include="StatusEvent.cs" />
     <Compile Include="TechnologyBrokerEvent.cs" />
     <Compile Include="VAInitialized.cs" />
     <Compile Include="SRVTurretEvent.cs" />

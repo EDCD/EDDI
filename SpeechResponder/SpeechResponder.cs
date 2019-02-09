@@ -166,23 +166,6 @@ namespace EddiSpeechResponder
                     return;
                 }
             }
-            else if (@event is StatusEvent statusEvent)
-            {
-                if (StatusMonitor.Instance.currentStatus.gui_focus == "fss mode" && StatusMonitor.Instance.lastStatus.gui_focus != "fss mode")
-                {
-                    // Beginning with Elite Dangerous v. 3.3, the primary star scan is delivered via a Scan with 
-                    // scantype `AutoScan` when you jump into the system. Secondary stars may be delivered in a burst 
-                    // following an FSSDiscoveryScan. Since each source has a different trigger, we re-order events 
-                    // and and report queued star scans when the pilot enters fss mode
-                    Say(@event);
-                    enqueueStarScan = false;
-                    foreach (Event theEvent in TakeTypeFromEventQueue<StarScannedEvent>()?.OrderBy(s => ((StarScannedEvent)s)?.distance))
-                    {
-                        Say(theEvent);
-                    }
-                    return;
-                }
-            }
             else if (@event is StarScannedEvent starScannedEvent)
             {
                 if (starScannedEvent.scantype.Contains("NavBeacon"))
@@ -213,6 +196,22 @@ namespace EddiSpeechResponder
                 // Disable speech from the community goal event for the time being.
                 return;
             }
+
+            if (StatusMonitor.Instance.currentStatus.gui_focus == "fss mode" && StatusMonitor.Instance.lastStatus.gui_focus != "fss mode")
+            {
+                // Beginning with Elite Dangerous v. 3.3, the primary star scan is delivered via a Scan with 
+                // scantype `AutoScan` when you jump into the system. Secondary stars may be delivered in a burst 
+                // following an FSSDiscoveryScan. Since each source has a different trigger, we re-order events 
+                // and and report queued star scans when the pilot enters fss mode
+                Say(@event);
+                enqueueStarScan = false;
+                foreach (Event theEvent in TakeTypeFromEventQueue<StarScannedEvent>()?.OrderBy(s => ((StarScannedEvent)s)?.distance))
+                {
+                    Say(theEvent);
+                }
+                return;
+            }
+
             Say(@event);
         }
 
