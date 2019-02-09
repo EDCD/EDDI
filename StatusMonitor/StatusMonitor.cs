@@ -336,8 +336,19 @@ namespace EddiStatusMonitor
                 lastStatus = currentStatus;
                 currentStatus = thisStatus;
 
-                // Post a status event to share the new status with other monitors and responders 
-                EDDI.Instance.enqueueEvent(new StatusEvent(thisStatus.timestamp, thisStatus));
+                // Update environment and vehicle information
+                if (EDDI.Instance.Environment != Constants.ENVIRONMENT_WITCH_SPACE)
+                {
+                    if (thisStatus.supercruise)
+                    {
+                        EDDI.Instance.Environment = Constants.ENVIRONMENT_SUPERCRUISE;
+                    }
+                    else
+                    {
+                        EDDI.Instance.Environment = Constants.ENVIRONMENT_NORMAL_SPACE;
+                    }
+                }
+                EDDI.Instance.Vehicle = thisStatus.vehicle;
 
                 // Trigger events for changed status, as applicable
                 if (thisStatus.srv_turret_deployed != lastStatus.srv_turret_deployed)

@@ -277,6 +277,7 @@ namespace EddiSpeechResponder
                 // Deprecated events
                 "Jumping",
                 "Modification applied",
+                "Status",
 
                 // Shares updates with monitors / responders but are not intended to be user facing
                 "Cargo",
@@ -285,7 +286,6 @@ namespace EddiSpeechResponder
                 "Outfitting",
                 "Shipyard",
                 "Squadron startup",
-                "Status",
                 "Stored ships",
                 "Stored modules",
                 "Unhandled event"
