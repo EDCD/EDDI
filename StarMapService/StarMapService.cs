@@ -50,10 +50,10 @@ namespace EddiStarMapService
                             StarMapConfiguration starMapCredentials = StarMapConfiguration.FromFile();
                             if (!string.IsNullOrEmpty(starMapCredentials?.apiKey))
                             {
+                                // Commander name might come from EDSM credentials or from the game and companion app
                                 string commanderName = starMapCredentials?.commanderName ?? commanderEliteName;
                                 if (!string.IsNullOrEmpty(commanderName))
                                 {
-                                    // Commander name might come from EDSM credentials or from the game and companion app
                                     instance = new StarMapService(starMapCredentials.apiKey, commanderName);
                                     Logging.Info("Configuring EDDI access to EDSM profile data");
                                 }
