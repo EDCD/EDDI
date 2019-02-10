@@ -20,6 +20,7 @@ using System.ComponentModel;
 using System.Text;
 using System.Text.RegularExpressions;
 using Utilities;
+using EddiStarMapService;
 
 namespace EddiVoiceAttackResponder
 {
@@ -853,18 +854,15 @@ namespace EddiVoiceAttackResponder
                     return;
                 }
 
-                if (EDDI.Instance.Cmdr != null && EDDI.Instance.CurrentStarSystem != null && EDDI.Instance.starMapService != null)
+                if (EDDI.Instance.CurrentStarSystem != null)
                 {
                     // Store locally
                     StarSystem here = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(EDDI.Instance.CurrentStarSystem.name);
                     here.comment = comment == "" ? null : comment;
                     StarSystemSqLiteRepository.Instance.SaveStarSystem(here);
 
-                    if (EDDI.Instance.starMapService != null)
-                    {
-                        // Store in EDSM
-                        EDDI.Instance.starMapService.sendStarMapComment(EDDI.Instance.CurrentStarSystem.name, comment);
-                    }
+                    // Store in EDSM
+                    StarMapService.Instance?.sendStarMapComment(EDDI.Instance.CurrentStarSystem.name, comment);
                 }
             }
             catch (Exception e)
