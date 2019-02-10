@@ -116,13 +116,18 @@ namespace EddiMissionMonitor
 
             while (running)
             {
+                List<Mission> missionsList;
                 lock (missionsLock)
                 {
-                    foreach (Mission mission in missions.ToList())
+                    missionsList = missions.ToList();
+                }
+                if (missionsList != null)
+                {
+                    foreach (Mission mission in missionsList)
                     {
                         if (mission.expiry != null && mission.statusEDName != "Failed")
                         {
-                            TimeSpan span = (DateTime)mission.expiry?.ToLocalTime() - DateTime.Now;
+                            TimeSpan span = (DateTime)mission.expiry - DateTime.UtcNow;
                             if (span.Days > 6)
                             {
                                 int weeks = Decimal.ToInt32(span.Days / 7);
@@ -135,16 +140,16 @@ namespace EddiMissionMonitor
                             }
                             mission.timeremaining += span.Hours.ToString() + "H " + span.Minutes.ToString() + "MIN";
 
-                            if (mission.expiry?.ToLocalTime() < DateTime.Now)
+                            if (mission.expiry < DateTime.UtcNow)
                             {
-                                EDDI.Instance.enqueueEvent(new MissionExpiredEvent(DateTime.Now, mission.missionid, mission.name));
+                                EDDI.Instance.enqueueEvent(new MissionExpiredEvent(DateTime.UtcNow, mission.missionid, mission.name));
                             }
-                            else if (mission.expiry?.ToLocalTime() < DateTime.Now.AddMinutes(missionWarning ?? 60))
+                            else if (mission.expiry < DateTime.UtcNow.AddMinutes(missionWarning ?? 60))
                             {
                                 if (!mission.expiring)
                                 {
                                     mission.expiring = true;
-                                    EDDI.Instance.enqueueEvent(new MissionWarningEvent(DateTime.Now, mission.missionid, mission.name, (int)span.TotalMinutes));
+                                    EDDI.Instance.enqueueEvent(new MissionWarningEvent(DateTime.UtcNow, mission.missionid, mission.name, (int)span.TotalMinutes));
                                 }
                             }
                             else if (mission.expiring)
@@ -784,13 +789,11 @@ namespace EddiMissionMonitor
 
         private void handleMissionExpiredEvent(MissionExpiredEvent @event)
         {
-            if (@event.timestamp > updateDat)
+            // 'Expired' is a non-journal event and not subject to 'LogLoad'
+            if (_handleMissionExpiredEvent(@event))
             {
-                if (_handleMissionExpiredEvent(@event))
-                {
-                    updateDat = @event.timestamp;
-                    writeMissions();
-                }
+                updateDat = @event.timestamp;
+                writeMissions();
             }
         }
 
