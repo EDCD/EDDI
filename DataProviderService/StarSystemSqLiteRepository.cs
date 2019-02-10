@@ -409,7 +409,7 @@ namespace EddiDataProviderService
         // Triggered when leaving a starsystem - just update lastvisit
         public void LeaveStarSystem(StarSystem system)
         {
-            if (system == null) { return; }
+            if (system?.name == null) { return; }
 
             system.lastvisit = DateTime.UtcNow;
             SaveStarSystem(system);

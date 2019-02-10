@@ -44,6 +44,28 @@ namespace GalnetMonitor
             configuration = GalnetConfiguration.FromFile();
         }
 
+        private static GalnetMonitor instance;
+
+        private static readonly object instanceLock = new object();
+        public static GalnetMonitor Instance
+        {
+            get
+            {
+                if (instance == null)
+                {
+                    lock (instanceLock)
+                    {
+                        if (instance == null)
+                        {
+                            Logging.Debug("No Galnet monitor instance: creating one");
+                            instance = new GalnetMonitor();
+                        }
+                    }
+                }
+                return instance;
+            }
+        }
+
         /// <summary>
         /// The name of the monitor; shows up in EDDI's configuration window
         /// </summary>

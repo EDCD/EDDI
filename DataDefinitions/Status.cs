@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using Utilities;
 
 namespace EddiDataDefinitions
@@ -107,6 +108,13 @@ namespace EddiDataDefinitions
         public Status(Flags flags = Flags.None)
         {
             this.flags = flags;
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public void NotifyPropertyChanged(string propName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
         }
     }
 }

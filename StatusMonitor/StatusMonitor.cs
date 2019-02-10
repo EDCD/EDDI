@@ -21,14 +21,37 @@ namespace EddiStatusMonitor
         // What we are monitoring and what to do with it
         private static readonly Regex JsonRegex = new Regex(@"^{.*}$");
         private string Directory = GetSavedGamesDir();
-        public static Status currentStatus { get; set; } = new Status();
-        public static Status lastStatus { get; set; } = new Status();
+        public Status currentStatus { get; set; } = new Status();
+        public Status lastStatus { get; set; } = new Status();
 
-        private static bool gliding;
-        private static bool jumping;
+        // Miscellaneous tracking
+        private bool gliding;
+        private bool jumping;
 
-        // Keep track of status
+        // Keep track of status monitor 
         private bool running;
+
+        private static StatusMonitor instance;
+
+        private static readonly object instanceLock = new object();
+        public static StatusMonitor Instance
+        {
+            get
+            {
+                if (instance == null)
+                {
+                    lock (instanceLock)
+                    {
+                        if (instance == null)
+                        {
+                            Logging.Debug("No status monitor instance: creating one");
+                            instance = new StatusMonitor();
+                        }
+                    }
+                }
+                return instance;
+            }
+        }
 
         public StatusMonitor()
         {
@@ -166,7 +189,7 @@ namespace EddiStatusMonitor
             return null;
         }
 
-        public static Status ParseStatusEntry(string line)
+        public Status ParseStatusEntry(string line)
         {
             Status status = new Status();
             try
@@ -300,7 +323,7 @@ namespace EddiStatusMonitor
             return status = null;
         }
 
-        public static void handleStatus(Status thisStatus)
+        public void handleStatus(Status thisStatus)
         {
             if (thisStatus == null)
             {
@@ -313,8 +336,19 @@ namespace EddiStatusMonitor
                 lastStatus = currentStatus;
                 currentStatus = thisStatus;
 
-                // Post a status event to share the new status with other monitors and responders 
-                EDDI.Instance.enqueueEvent(new StatusEvent(thisStatus.timestamp, thisStatus));
+                // Update environment and vehicle information
+                if (EDDI.Instance.Environment != Constants.ENVIRONMENT_WITCH_SPACE)
+                {
+                    if (thisStatus.supercruise)
+                    {
+                        EDDI.Instance.Environment = Constants.ENVIRONMENT_SUPERCRUISE;
+                    }
+                    else
+                    {
+                        EDDI.Instance.Environment = Constants.ENVIRONMENT_NORMAL_SPACE;
+                    }
+                }
+                EDDI.Instance.Vehicle = thisStatus.vehicle;
 
                 // Trigger events for changed status, as applicable
                 if (thisStatus.srv_turret_deployed != lastStatus.srv_turret_deployed)
@@ -464,7 +498,7 @@ namespace EddiStatusMonitor
             return currentStatus;
         }
 
-        private static void SetFuelExtras(Status status)
+        private void SetFuelExtras(Status status)
         {
             decimal? fuel_rate = FuelConsumptionPerSecond(status.timestamp, status.fuel);
             FuelPercentAndTime(status.fuel, fuel_rate, out decimal? fuel_percent, out int? fuel_seconds);
@@ -472,8 +506,8 @@ namespace EddiStatusMonitor
             status.fuel_seconds = fuel_seconds;
         }
 
-        private static List<KeyValuePair<DateTime, decimal?>> fuelLog;
-        private static decimal? FuelConsumptionPerSecond(DateTime timestamp, decimal? fuel, int trackingMinutes = 5)
+        private List<KeyValuePair<DateTime, decimal?>> fuelLog;
+        private decimal? FuelConsumptionPerSecond(DateTime timestamp, decimal? fuel, int trackingMinutes = 5)
         {
             if (fuel is null)
             {
@@ -496,7 +530,7 @@ namespace EddiStatusMonitor
             return timespan.Seconds == 0 ? null : fuelConsumed / timespan.Seconds; // Return tons of fuel consumed per second
         }
 
-        private static void FuelPercentAndTime(decimal? fuelRemaining, decimal? fuelPerSecond, out decimal? fuel_percent, out int? fuel_seconds)
+        private void FuelPercentAndTime(decimal? fuelRemaining, decimal? fuelPerSecond, out decimal? fuel_percent, out int? fuel_seconds)
         {
             fuel_percent = null;
             fuel_seconds = null;
@@ -508,7 +542,7 @@ namespace EddiStatusMonitor
 
             if (currentStatus.vehicle == Constants.VEHICLE_SHIP)
             {
-                Ship ship = ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip();
+                Ship ship = ShipMonitor.Instance.GetCurrentShip();
                 if (ship?.fueltanktotalcapacity != null && fuelRemaining != null)
                 {
                     // Fuel recorded in Status.json includes the fuel carried in the Active Fuel Reservoir

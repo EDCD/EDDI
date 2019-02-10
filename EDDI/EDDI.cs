@@ -16,7 +16,6 @@ using System.Runtime.InteropServices;
 using System.Security.Permissions;
 using System.Text;
 using System.Threading;
-using System.Windows;
 using Utilities;
 
 namespace Eddi
@@ -102,22 +101,22 @@ namespace Eddi
         public DateTime ApiTimeStamp { get; private set; }
 
         // Information obtained from the configuration
-        public StarSystem HomeStarSystem { get; private set; }
+        public StarSystem HomeStarSystem { get; private set; } = new StarSystem();
         public Station HomeStation { get; private set; }
-        public StarSystem SquadronStarSystem { get; private set; }
+        public StarSystem SquadronStarSystem { get; private set; } = new StarSystem();
 
         // Information obtained from the player journal
         public Commander Cmdr { get; private set; } // Also includes information from the configuration and companion app service
-        public string Environment { get; private set; }
-        public StarSystem CurrentStarSystem { get; private set; }
-        public StarSystem LastStarSystem { get; private set; }
-        public StarSystem NextStarSystem { get; private set; }
-        public Station CurrentStation { get; private set; }
-        public Body CurrentStellarBody { get; private set; }
+        public string Environment { get; set; }
+        public StarSystem CurrentStarSystem { get; private set; } = new StarSystem();
+        public StarSystem LastStarSystem { get; private set; } = new StarSystem();
+        public StarSystem NextStarSystem { get; private set; } = new StarSystem();
+        public Station CurrentStation { get; private set; } = new Station();
+        public Body CurrentStellarBody { get; private set; } = new Body();
         public DateTime JournalTimeStamp { get; set; } = DateTime.MinValue;
 
         // Current vehicle of player
-        public string Vehicle { get; private set; } = Constants.VEHICLE_SHIP;
+        public string Vehicle { get; set; } = Constants.VEHICLE_SHIP;
         public Ship CurrentShip { get; set; }
 
         // Our main window, made accessible via the applicable EDDI Instance
@@ -766,10 +765,6 @@ namespace Eddi
                     else if (@event is VehicleDestroyedEvent)
                     {
                         passEvent = eventVehicleDestroyed((VehicleDestroyedEvent)@event);
-                    }
-                    else if (@event is StatusEvent)
-                    {
-                        passEvent = eventStatus((StatusEvent)@event);
                     }
                     else if (@event is NearSurfaceEvent)
                     {
@@ -1710,23 +1705,6 @@ namespace Eddi
         {
             // We are back in the ship
             Vehicle = Constants.VEHICLE_SHIP;
-            return true;
-        }
-
-        private bool eventStatus(StatusEvent theEvent)
-        {
-            if (Environment != Constants.ENVIRONMENT_WITCH_SPACE)
-            {
-                if (theEvent.status.supercruise)
-                {
-                    Environment = Constants.ENVIRONMENT_SUPERCRUISE;
-                }
-                else
-                {
-                    Environment = Constants.ENVIRONMENT_NORMAL_SPACE;
-                }
-            }
-            Vehicle = theEvent.status.vehicle;
             return true;
         }
 

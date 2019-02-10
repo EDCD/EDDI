@@ -17,13 +17,10 @@ namespace EddiShipMonitor
     /// </summary>
     public partial class ConfigurationWindow : UserControl
     {
-        ShipMonitor monitor;
-
         public ConfigurationWindow()
         {
             InitializeComponent();
-            monitor = ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor"));
-            shipData.ItemsSource = monitor.shipyard;
+            shipData.ItemsSource = ShipMonitor.Instance.shipyard;
 
             EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
             string exporttarget = eddiConfiguration.exporttarget;
@@ -109,13 +106,13 @@ namespace EddiShipMonitor
         private void shipsUpdated(object sender, DataTransferEventArgs e)
         {
             // Update the ship monitor's information
-            monitor.Save();
+            ShipMonitor.Instance.Save();
         }
 
         private void shipsUpdated(object sender, SelectionChangedEventArgs e)
         {
             // Update the ship monitor's information
-            monitor.Save();
+            ShipMonitor.Instance.Save();
         }
     }
 

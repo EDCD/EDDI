@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace EddiDataDefinitions
 {
@@ -186,6 +187,13 @@ namespace EddiDataDefinitions
                 estimatedhabzoneouter = StarClass.DistanceFromStarForTemperature(StarClass.minHabitableTempKelvin, Convert.ToDouble(radius), Convert.ToDouble(temperature));
             }
             if (distance != null) { mainstar = distance == 0 ? true : false; }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public void NotifyPropertyChanged(string propName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
         }
     }
 }

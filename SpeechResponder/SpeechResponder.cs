@@ -166,23 +166,6 @@ namespace EddiSpeechResponder
                     return;
                 }
             }
-            else if (@event is StatusEvent statusEvent)
-            {
-                if (StatusMonitor.currentStatus.gui_focus == "fss mode" && StatusMonitor.lastStatus.gui_focus != "fss mode")
-                {
-                    // Beginning with Elite Dangerous v. 3.3, the primary star scan is delivered via a Scan with 
-                    // scantype `AutoScan` when you jump into the system. Secondary stars may be delivered in a burst 
-                    // following an FSSDiscoveryScan. Since each source has a different trigger, we re-order events 
-                    // and and report queued star scans when the pilot enters fss mode
-                    Say(@event);
-                    enqueueStarScan = false;
-                    foreach (Event theEvent in TakeTypeFromEventQueue<StarScannedEvent>()?.OrderBy(s => ((StarScannedEvent)s)?.distance))
-                    {
-                        Say(theEvent);
-                    }
-                    return;
-                }
-            }
             else if (@event is StarScannedEvent starScannedEvent)
             {
                 if (starScannedEvent.scantype.Contains("NavBeacon"))
@@ -203,7 +186,7 @@ namespace EddiSpeechResponder
             }
             else if (@event is SignalDetectedEvent)
             {
-                if (!(StatusMonitor.currentStatus.gui_focus == "fss mode" || StatusMonitor.currentStatus.gui_focus == "saa mode"))
+                if (!(StatusMonitor.Instance.currentStatus.gui_focus == "fss mode" || StatusMonitor.Instance.currentStatus.gui_focus == "saa mode"))
                 {
                     return;
                 }
@@ -213,12 +196,28 @@ namespace EddiSpeechResponder
                 // Disable speech from the community goal event for the time being.
                 return;
             }
+
+            if (StatusMonitor.Instance.currentStatus.gui_focus == "fss mode" && StatusMonitor.Instance.lastStatus.gui_focus != "fss mode")
+            {
+                // Beginning with Elite Dangerous v. 3.3, the primary star scan is delivered via a Scan with 
+                // scantype `AutoScan` when you jump into the system. Secondary stars may be delivered in a burst 
+                // following an FSSDiscoveryScan. Since each source has a different trigger, we re-order events 
+                // and and report queued star scans when the pilot enters fss mode
+                Say(@event);
+                enqueueStarScan = false;
+                foreach (Event theEvent in TakeTypeFromEventQueue<StarScannedEvent>()?.OrderBy(s => ((StarScannedEvent)s)?.distance))
+                {
+                    Say(theEvent);
+                }
+                return;
+            }
+
             Say(@event);
         }
 
         private void Say(Event @event)
         {
-            Say(scriptResolver, ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip(), @event.type, @event, null, null, null, SayOutLoud());
+            Say(scriptResolver, ShipMonitor.Instance.GetCurrentShip(), @event.type, @event, null, null, null, SayOutLoud());
         }
 
         private static bool SayOutLoud()
@@ -315,9 +314,9 @@ namespace EddiSpeechResponder
                 dict["body"] = new ReflectionValue(EDDI.Instance.CurrentStellarBody);
             }
 
-            if (StatusMonitor.currentStatus != null)
+            if (StatusMonitor.Instance.currentStatus != null)
             {
-                dict["status"] = new ReflectionValue(StatusMonitor.currentStatus);
+                dict["status"] = new ReflectionValue(StatusMonitor.Instance.currentStatus);
             }
 
             if (theEvent != null)

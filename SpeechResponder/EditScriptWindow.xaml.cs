@@ -1,5 +1,4 @@
-﻿using Eddi;
-using EddiEvents;
+﻿using EddiEvents;
 using EddiJournalMonitor;
 using EddiShipMonitor;
 using System.Collections.Generic;
@@ -174,7 +173,7 @@ namespace EddiSpeechResponder
             }
             foreach (Event sampleEvent in sampleEvents)
             {
-                responder.Say(scriptResolver, ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip(), ScriptName, sampleEvent, 3, null, false);
+                responder.Say(scriptResolver, ShipMonitor.Instance.GetCurrentShip(), ScriptName, sampleEvent, 3, null, false);
             }
         }
 
