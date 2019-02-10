@@ -99,11 +99,11 @@
 		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
 	</resheader>
   <data name="andahalf" xml:space="preserve">
-    <value> und die Hälfte </value>
+    <value> einhalb </value>
     <comment/>
   </data>
   <data name="around" xml:space="preserve">
-    <value>um / herum </value>
+    <value>ungefähr </value>
     <comment/>
   </data>
   <data name="billion" xml:space="preserve">
@@ -123,7 +123,7 @@
     <comment/>
   </data>
   <data name="minus" xml:space="preserve">
-    <value> weniger als </value>
+    <value> minus </value>
     <comment/>
   </data>
   <data name="nearly" xml:space="preserve">
@@ -139,7 +139,7 @@
     <comment/>
   </data>
   <data name="plus" xml:space="preserve">
-    <value> mehr als </value>
+    <value> plus </value>
     <comment/>
   </data>
   <data name="point" xml:space="preserve">
