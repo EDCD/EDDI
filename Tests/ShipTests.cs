@@ -410,13 +410,13 @@ namespace UnitTests
             string data = System.IO.File.ReadAllText("loadout.json");
             List<Event> events = JournalMonitor.ParseJournalEntry(data);
             ShipLoadoutEvent loadoutEvent = events[0] as ShipLoadoutEvent;
-            object[] loadoutArgs = new object[] { loadoutEvent };
+            object[] loadoutArgs = new object[] { loadoutEvent, false };
             privateObject.Invoke("handleShipLoadoutEvent", loadoutArgs);
 
             string data2 = System.IO.File.ReadAllText("fighterLoadout.json");
             events = JournalMonitor.ParseJournalEntry(data2);
             ShipLoadoutEvent fighterLoadoutEvent = events[0] as ShipLoadoutEvent;
-            object[] fighterLoadoutArgs = new object[] { fighterLoadoutEvent };
+            object[] fighterLoadoutArgs = new object[] { fighterLoadoutEvent, false };
             privateObject.Invoke("handleShipLoadoutEvent", fighterLoadoutArgs);
 
             // After a loadout event generated from a fighter, 

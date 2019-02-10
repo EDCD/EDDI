@@ -276,7 +276,7 @@ namespace EddiShipMonitor
             }
         }
 
-        private void handleCommanderContinuedEvent(CommanderContinuedEvent @event)
+        private void handleCommanderContinuedEvent(CommanderContinuedEvent @event, bool writeConfig = true)
         {
             if (!inFighter(@event.ship) && !inBuggy(@event.ship))
             {
@@ -288,7 +288,7 @@ namespace EddiShipMonitor
                     ship = ShipDefinitions.FromEDModel(@event.ship);
                     ship.LocalId = (int)@event.shipid;
                     ship.Role = Role.MultiPurpose;
-                    AddShip(ship);
+                    AddShip(ship, writeConfig);
                 }
                 setShipName(ship, @event.shipname);
                 setShipIdent(ship, @event.shipident);
@@ -296,11 +296,11 @@ namespace EddiShipMonitor
                 {
                     ship.fueltanktotalcapacity = (decimal?)@event.fuelcapacity;
                 }
-                writeShips();
+                if (writeConfig) { writeShips(); }                
             }
         }
 
-        private void handleShipPurchasedEvent(ShipPurchasedEvent @event)
+        private void handleShipPurchasedEvent(ShipPurchasedEvent @event, bool writeConfig = true)
         {
             // We don't have a ship ID for the new ship at this point so just handle what we did with our old ship
             if (@event.storedshipid != null)
@@ -312,25 +312,26 @@ namespace EddiShipMonitor
                     // Set location of stored ship to the current system
                     storedShip.starsystem = EDDI.Instance?.CurrentStarSystem?.name;
                     storedShip.station = EDDI.Instance?.CurrentStation?.name;
+                    if (writeConfig) { writeShips(); }
                 }
             }
             else if (@event.soldshipid != null)
             {
                 // We sold a ship - remove it
-                RemoveShip(@event.soldshipid);
+                RemoveShip(@event.soldshipid, writeConfig);
             }
         }
 
-        private void handleShipDeliveredEvent(ShipDeliveredEvent @event)
+        private void handleShipDeliveredEvent(ShipDeliveredEvent @event, bool writeConfig = true)
         {
             // Set this is our current ship
-            SetCurrentShip(@event.shipid, @event.ship);
+            SetCurrentShip(@event.shipid, @event.ship, writeConfig);
         }
 
-        private void handleShipSwappedEvent(ShipSwappedEvent @event)
+        private void handleShipSwappedEvent(ShipSwappedEvent @event, bool writeConfig = true)
         {
             // Update our current ship
-            SetCurrentShip(@event.shipid, @event.ship);
+            SetCurrentShip(@event.shipid, @event.ship, writeConfig);
 
             if (@event.storedshipid != null)
             {
@@ -341,18 +342,19 @@ namespace EddiShipMonitor
                     // Set location of stored ship to the current sstem
                     storedShip.starsystem = EDDI.Instance?.CurrentStarSystem?.name;
                     storedShip.station = EDDI.Instance?.CurrentStation?.name;
+                    if (writeConfig) { writeShips(); }
                 }
             }
             else if (@event.soldshipid != null)
             {
                 // We sold a ship - remove it
-                RemoveShip(@event.soldshipid);
+                RemoveShip(@event.soldshipid, writeConfig);
             }
 
-            writeShips();
+            if (writeConfig) { writeShips(); }
         }
 
-        private void handleShipRenamedEvent(ShipRenamedEvent @event)
+        private void handleShipRenamedEvent(ShipRenamedEvent @event, bool writeConfig = true)
         {
             Ship ship = GetShip(@event.shipid);
             if (ship != null)
@@ -360,22 +362,20 @@ namespace EddiShipMonitor
                 setShipName(ship, @event.name);
                 setShipIdent(ship, @event.ident);
             }
-            writeShips();
+            if (writeConfig) { writeShips(); }
         }
 
-        private void handleShipSoldEvent(ShipSoldEvent @event)
+        private void handleShipSoldEvent(ShipSoldEvent @event, bool writeConfig = true)
         {
-            RemoveShip(@event.shipid);
-            writeShips();
+            RemoveShip(@event.shipid, writeConfig);
         }
 
-        private void handleShipSoldOnRebuyEvent(ShipSoldOnRebuyEvent @event)
+        private void handleShipSoldOnRebuyEvent(ShipSoldOnRebuyEvent @event, bool writeConfig = true)
         {
-            RemoveShip(@event.shipid);
-            writeShips();
+            RemoveShip(@event.shipid, writeConfig);
         }
 
-        private void handleShipLoadoutEvent(ShipLoadoutEvent @event)
+        private void handleShipLoadoutEvent(ShipLoadoutEvent @event, bool writeConfig = true)
         {
             if (!inFighter(@event.ship) && !inBuggy(@event.ship))
             {
@@ -384,8 +384,7 @@ namespace EddiShipMonitor
                 // Update the global variable
                 EDDI.Instance.CurrentShip = ship;
 
-                AddShip(ship);
-                writeShips();
+                AddShip(ship, writeConfig);
             }
         }
 
@@ -511,7 +510,7 @@ namespace EddiShipMonitor
             return ship;
         }
 
-        private void handleStoredShipsEvent(StoredShipsEvent @event)
+        private void handleStoredShipsEvent(StoredShipsEvent @event, bool writeConfig = true)
         {
             if (@event.shipyard != null)
             {
@@ -524,7 +523,7 @@ namespace EddiShipMonitor
                     if (shipInYard == null)
                     {
                         shipInEvent.Role = Role.MultiPurpose;
-                        AddShip(shipInEvent);
+                        AddShip(shipInEvent, writeConfig);
                     }
 
                     // Update ship in the shipyard to latest data
@@ -560,20 +559,20 @@ namespace EddiShipMonitor
                 }
                 _RemoveShips(idsToRemove);
 
-                writeShips();
+                if (writeConfig) { writeShips(); }
             }
         }
 
-        private void handleStoredModulesEvent(StoredModulesEvent @event)
+        private void handleStoredModulesEvent(StoredModulesEvent @event, bool writeConfig = true)
         {
             if (@event.storedmodules != null)
             {
                 storedmodules = @event.storedmodules;
-                writeShips();
+                if (writeConfig) { writeShips(); }
             }
         }
 
-        private void handleShipRebootedEvent(ShipRebootedEvent @event)
+        private void handleShipRebootedEvent(ShipRebootedEvent @event, bool writeConfig = true)
         {
             Ship ship = GetCurrentShip();
             if (ship == null)
@@ -644,74 +643,74 @@ namespace EddiShipMonitor
             }
         }
 
-        private void handleShipAFMURepairedEvent(ShipAfmuRepairedEvent @event)
+        private void handleShipAFMURepairedEvent(ShipAfmuRepairedEvent @event, bool writeConfig = true)
         {
             // This doesn't give us enough information at present to do anything useful
         }
 
-        private void handleShipRepairedEvent(ShipRepairedEvent @event)
+        private void handleShipRepairedEvent(ShipRepairedEvent @event, bool writeConfig = true)
         {
             // This doesn't give us enough information at present to do anything useful
         }
 
-        private void handleShipRepairDroneEvent(ShipRepairDroneEvent @event)
+        private void handleShipRepairDroneEvent(ShipRepairDroneEvent @event, bool writeConfig = true)
         {
             // This doesn't give us enough information at present to do anything useful
         }
 
-        private void handleShipRefuelledEvent(ShipRefuelledEvent @event)
+        private void handleShipRefuelledEvent(ShipRefuelledEvent @event, bool writeConfig = true)
         {
             // We do not keep track of current fuel level so nothing to do here
         }
 
-        private void handleShipRestockedEvent(ShipRestockedEvent @event)
+        private void handleShipRestockedEvent(ShipRestockedEvent @event, bool writeConfig = true)
         {
             // TODO
         }
 
-        private void handleShipRepurchasedEvent(ShipRepurchasedEvent @event)
+        private void handleShipRepurchasedEvent(ShipRepurchasedEvent @event, bool writeConfig = true)
         {
             // We don't do anything here as this is followed by a full ship loadout event
         }
 
-        private void handleModulePurchasedEvent(ModulePurchasedEvent @event)
+        private void handleModulePurchasedEvent(ModulePurchasedEvent @event, bool writeConfig = true)
         {
             Ship ship = GetShip(@event.shipid) ?? @event.shipDefinition;
             ship.LocalId = ship.LocalId == 0 ? (int)@event.shipid : ship.LocalId;
             AddModule(ship, @event.slot, @event.buymodule);
-            writeShips();
+            if (writeConfig) { writeShips(); }
         }
 
-        private void handleModuleRetrievedEvent(ModuleRetrievedEvent @event)
+        private void handleModuleRetrievedEvent(ModuleRetrievedEvent @event, bool writeConfig = true)
         {
             Ship ship = GetShip(@event.shipid) ?? @event.shipDefinition;
             ship.LocalId = ship.LocalId == 0 ? (int)@event.shipid : ship.LocalId;
             AddModule(ship, @event.slot, @event.module);
-            writeShips();
+            if (writeConfig) { writeShips(); }
         }
 
-        private void handleModuleSoldEvent(ModuleSoldEvent @event)
+        private void handleModuleSoldEvent(ModuleSoldEvent @event, bool writeConfig = true)
         {
             Ship ship = GetShip(@event.shipid) ?? @event.shipDefinition;
             ship.LocalId = ship.LocalId == 0 ? (int)@event.shipid : ship.LocalId;
             RemoveModule(ship, @event.slot);
-            writeShips();
+            if (writeConfig) { writeShips(); }
         }
 
-        private void handleModuleSoldFromStorageEvent(ModuleSoldFromStorageEvent @event)
+        private void handleModuleSoldFromStorageEvent(ModuleSoldFromStorageEvent @event, bool writeConfig = true)
         {
             // We don't do anything here as the ship object is unaffected
         }
 
-        private void handleModuleStoredEvent(ModuleStoredEvent @event)
+        private void handleModuleStoredEvent(ModuleStoredEvent @event, bool writeConfig = true)
         {
             Ship ship = GetShip(@event.shipid) ?? @event.shipDefinition;
             ship.LocalId = ship.LocalId == 0 ? (int)@event.shipid : ship.LocalId;
             RemoveModule(ship, @event.slot, @event.replacementmodule);
-            writeShips();
+            if (writeConfig) { writeShips(); }
         }
 
-        private void handleModulesStoredEvent(ModulesStoredEvent @event)
+        private void handleModulesStoredEvent(ModulesStoredEvent @event, bool writeConfig = true)
         {
             Ship ship = GetShip(@event.shipid) ?? @event.shipDefinition;
             ship.LocalId = ship.LocalId == 0 ? (int)@event.shipid : ship.LocalId;
@@ -719,10 +718,10 @@ namespace EddiShipMonitor
             {
                 RemoveModule(ship, slot);
             }
-            writeShips();
+            if (writeConfig) { writeShips(); }
         }
 
-        private void handleModuleSwappedEvent(ModuleSwappedEvent @event)
+        private void handleModuleSwappedEvent(ModuleSwappedEvent @event, bool writeConfig = true)
         {
             Ship ship = GetShip(@event.shipid);
 
@@ -808,15 +807,15 @@ namespace EddiShipMonitor
                     }
                 }
             }
-            writeShips();
+            if (writeConfig) { writeShips(); }
         }
 
-        private void handleModuleTransferEvent(ModuleTransferEvent @event)
+        private void handleModuleTransferEvent(ModuleTransferEvent @event, bool writeConfig = true)
         {
             // We don't do anything here as the ship object is unaffected
         }
 
-        private void handleModuleInfoEvent(ModuleInfoEvent @event)
+        private void handleModuleInfoEvent(ModuleInfoEvent @event, bool writeConfig = true)
         {
             Ship ship = GetCurrentShip();
             if (ship != null)
@@ -925,12 +924,12 @@ namespace EddiShipMonitor
                             }
                         }
                     }
-                    writeShips();
+                    if (writeConfig) { writeShips(); }
                 }
             }
         }
 
-        private void handleJumpedEvent(JumpedEvent @event)
+        private void handleJumpedEvent(JumpedEvent @event, bool writeConfig = true)
         {
             if (@event.boostused is null)
             {
@@ -939,28 +938,28 @@ namespace EddiShipMonitor
                 {
                     ship.maxfuel = @event.fuelused;
                     ship.maxjump = @event.distance;
-                    writeShips();
+                    if (writeConfig) { writeShips(); }
                 }
             }
         }
 
-        private void handleBountyIncurredEvent(BountyIncurredEvent @event)
+        private void handleBountyIncurredEvent(BountyIncurredEvent @event, bool writeConfig = true)
         {
             Ship ship = GetCurrentShip();
             if (ship != null)
             {
                 ship.hot = true;
-                writeShips();
+                if (writeConfig) { writeShips(); }
             }
         }
 
-        private void handleBountyPaidEvent(BountyPaidEvent @event)
+        private void handleBountyPaidEvent(BountyPaidEvent @event, bool writeConfig = true)
         {
             Ship ship = GetShip(@event.shipid);
             if (ship != null)
             {
                 ship.hot = false;
-                writeShips();
+                if (writeConfig) { writeShips(); }
             }
         }
 
@@ -1095,7 +1094,7 @@ namespace EddiShipMonitor
             }
         }
 
-        private void AddShip(Ship ship)
+        private void AddShip(Ship ship, bool writeShip = true)
         {
             if (ship == null)
             {
@@ -1108,7 +1107,7 @@ namespace EddiShipMonitor
                 ship.Role = Role.MultiPurpose;
             }
             _ReplaceOrAddShip(ship);
-            writeShips();
+            if (writeShip) { writeShips(); }
         }
 
         private void _ReplaceOrAddShip(Ship ship)
@@ -1135,14 +1134,14 @@ namespace EddiShipMonitor
         /// <summary>
         /// Remove a ship from the shipyard
         /// </summary>
-        private void RemoveShip(int? localid)
+        private void RemoveShip(int? localid, bool writeShip = true)
         {
             if (localid == null)
             {
                 return;
             }
             _RemoveShip(localid);
-            writeShips();
+            if (writeShip) { writeShips(); }
         }
 
         /// <summary>
@@ -1212,7 +1211,7 @@ namespace EddiShipMonitor
             return ship;
         }
 
-        public void SetCurrentShip(int? localId, string model = null)
+        public void SetCurrentShip(int? localId, string model = null, bool writeConfig = true)
         {
             lock (shipyardLock)
             {
@@ -1228,7 +1227,7 @@ namespace EddiShipMonitor
                         ship = ShipDefinitions.FromEDModel(model);
                         ship.LocalId = (int)localId;
                         ship.Role = Role.MultiPurpose;
-                        AddShip(ship);
+                        AddShip(ship, writeConfig);
                         currentShipId = ship.LocalId;
                         Logging.Debug("Created ship ID " + localId + ";  " + JsonConvert.SerializeObject(ship));
                     }
@@ -1247,7 +1246,7 @@ namespace EddiShipMonitor
                     ship.station = null;
                     EDDI.Instance.CurrentShip = ship;
                 }
-                writeShips();
+                if (writeConfig) { writeShips(); }
             }
         }
 
