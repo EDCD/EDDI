@@ -98,13 +98,40 @@
 	<resheader name="writer">
 		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
 	</resheader>
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="Aimless" xml:space="preserve">
+    <value>Бесцельный</value>
+    <comment>Exploration rating Aimless</comment>
+  </data>
+  <data name="MostlyAimless" xml:space="preserve">
+    <value>Почти бесцельный</value>
+    <comment>Exploration rating MostlyAimless</comment>
+  </data>
+  <data name="Scout" xml:space="preserve">
+    <value>Разведчик</value>
+    <comment>Exploration rating Scout</comment>
+  </data>
+  <data name="Surveyor" xml:space="preserve">
+    <value>Изыскатель</value>
+    <comment>Exploration rating Surveyor</comment>
+  </data>
+  <data name="Trailblazer" xml:space="preserve">
+    <value>Путешественник</value>
+    <comment>Exploration rating Trailblazer</comment>
+  </data>
+  <data name="Pathfinder" xml:space="preserve">
+    <value>Следопыт</value>
+    <comment>Exploration rating Pathfinder</comment>
+  </data>
+  <data name="Ranger" xml:space="preserve">
+    <value>Скиталец</value>
+    <comment>Exploration rating Ranger</comment>
+  </data>
+  <data name="Pioneer" xml:space="preserve">
+    <value>Первооткрыватель</value>
+    <comment>Exploration rating Pioneer</comment>
+  </data>
+  <data name="Elite" xml:space="preserve">
+    <value>Элита</value>
+    <comment>Exploration rating Elite</comment>
+  </data>
 </root>

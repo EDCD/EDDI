@@ -117,46 +117,138 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="change_affect_va" xml:space="preserve">
+    <value>Любые изменения тут будут применены для VoiceAttack. Вы можете закрыть это окно, когда закончите.</value>
+  </data>
+  <data name="complete" xml:space="preserve">
+    <value>Готово</value>
+    <comment>This is the adjective not the verb</comment>
+  </data>
+  <data name="done" xml:space="preserve">
+    <value>готово</value>
+  </data>
+  <data name="failed" xml:space="preserve">
+    <value>ошибка</value>
+  </data>
+  <data name="frontier_api_nok" xml:space="preserve">
+    <value>Соединение с Frontier API не установлено</value>
+  </data>
+  <data name="frontier_api_ok" xml:space="preserve">
+    <value>Соединение с Frontier API установлено, командир {0}.</value>
+  </data>
+  <data name="if_using_va" xml:space="preserve">
+    <value>Если вы используете VoiceAttack, закройте это окно перед запуском VoiceAttack, для применения изменений. Вы можете получить доступ к этому окну из VoiceAttack используя команду 'Configure EDDI'.</value>
+  </data>
+  <data name="invalid_station" xml:space="preserve">
+    <value>Неверная станция</value>
+  </data>
+  <data name="invalid_system" xml:space="preserve">
+    <value>Неверная система</value>
+  </data>
+  <data name="login_nok_frontier_service" xml:space="preserve">
+    <value>Невозможно залогиниться. Возможно проблема с сервисами Frontier, пожулайста, попробуйте позже</value>
+  </data>
+  <data name="logout" xml:space="preserve">
+    <value>Отключиться</value>
+  </data>
+  <data name="operational" xml:space="preserve">
+    <value>Работает</value>
+  </data>
+  <data name="preparing_log" xml:space="preserve">
+    <value>Подготовка отчёта... </value>
+  </data>
+  <data name="update_message" xml:space="preserve">
+    <value>Доступна версия {0}</value>
+  </data>
+  <data name="voice_test_damage" xml:space="preserve">
+    <value>Сильный урон вашему {0}.</value>
+  </data>
+  <data name="voice_test_ship" xml:space="preserve">
+    <value>Вот так я буду звучать в вашем {0}.</value>
+  </data>
+  <data name="plugin_enabled" xml:space="preserve">
+    <value>Плагин включён</value>
+  </data>
+  <data name="download_failed" xml:space="preserve">
+    <value>Ошибка загрузки. Повторите позже.</value>
+  </data>
+  <data name="downloading_upgrade" xml:space="preserve">
+    <value>Загрузка обновления.</value>
+  </data>
+  <data name="mandatory_upgrade" xml:space="preserve">
+    <value>Необходимо обязательное обновление Eddi до версии {0}.</value>
+  </data>
+  <data name="msg_from_eddi" xml:space="preserve">
+    <value>Сообщение от Eddi: {0}</value>
+  </data>
+  <data name="point" xml:space="preserve">
+    <value>точка</value>
+    <comment>spoken decimal point for reading out version numbers like "2.4.1"</comment>
+  </data>
+  <data name="update_available" xml:space="preserve">
+    <value>Доступна новая версия Eddi {0}.</value>
+  </data>
+  <data name="upgrade_failed" xml:space="preserve">
+    <value>Не удалось выполнить обновление. Повторите попытку позже.</value>
+  </data>
+  <data name="starting_upgrade" xml:space="preserve">
+    <value>Начинается обновление.</value>
+  </data>
+  <data name="update_server_unreachable" xml:space="preserve">
+    <value>Я не смог подключиться к серверу обновлений. Пожалуйста, зайдите на форум и посмотрите известно-ли нам об этом.</value>
+  </data>
+  <data name="already_running_alert_body_text" xml:space="preserve">
+    <value>Одновременно может выполняться только одна копия программы.
+
+Пожалуйста, закройте предыдущую, что бы продолжить.</value>
+  </data>
+  <data name="already_running_alert_title" xml:space="preserve">
+    <value>EDDI уже запущена</value>
+  </data>
+  <data name="problem_load_monitor" xml:space="preserve">
+    <value>Ошибка загрузки данных: {0}</value>
+    <comment>Weapon mount type problem_load_monitor</comment>
+  </data>
+  <data name="problem_load_monitor_file" xml:space="preserve">
+    <value>Ошибка загрузки данных. Пожалуйста убедитесь, что {0} не используется, например в общем доступе.</value>
+    <comment>Weapon mount type problem_load_monitor_file</comment>
+  </data>
+  <data name="Commander" xml:space="preserve">
+    <value>Командир</value>
+    <comment>Vocative form of "Commander"</comment>
+  </data>
+  <data name="system_language" xml:space="preserve">
+    <value>Автоматический</value>
+    <comment>The user's system language</comment>
+  </data>
+  <data name="safe_mode" xml:space="preserve">
+    <value>Бозопасный режим - необходимо обновление.</value>
+  </data>
+  <data name="login" xml:space="preserve">
+    <value>Войти</value>
+  </data>
+  <data name="frontier_api_cant_login_from_va" xml:space="preserve">
+    <value>Для того, что бы Войти, пожалуйста, закройте Voice Attack и запустите E-D-D-I самостоятельно.</value>
+  </data>
+  <data name="frontierApiStatusLabel" xml:space="preserve">
+    <value>Статус Frontier API:</value>
+  </data>
+  <data name="frontierApiConnected" xml:space="preserve">
+    <value>Подключено</value>
+  </data>
+  <data name="frontierApiNotConnected" xml:space="preserve">
+    <value>Нет Соединения</value>
+  </data>
+  <data name="frontierApiConnecting" xml:space="preserve">
+    <value>Подключение</value>
+  </data>
+  <data name="frontier_api_close_browser" xml:space="preserve">
+    <value>Вы можете закрыть окно браузера и вернуться в E-D-D-I.</value>
+  </data>
+  <data name="frontier_api_reset" xml:space="preserve">
+    <value>Соединение сброшено.</value>
+  </data>
+  <data name="frontier_api_please_authenticate" xml:space="preserve">
+    <value>Пожалуйста, пройдите аутентификацию E-D-D-I подключившись к Frontier API.</value>
+  </data>
 </root>

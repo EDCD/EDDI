@@ -117,16 +117,46 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="cargo_monitor_desc" xml:space="preserve">
+    <value>Получение информации о вашем инвентаре.</value>
+  </data>
+  <data name="cargo_monitor_name" xml:space="preserve">
+    <value>Мониторинг инвентаря</value>
+  </data>
+  <data name="header_haulage" xml:space="preserve">
+    <value>Перевозка</value>
+    <comment>Tons of haulage (mission cargo) carried</comment>
+  </data>
+  <data name="header_name" xml:space="preserve">
+    <value>Название</value>
+    <comment>Name of cargo, such as "Gold"</comment>
+  </data>
+  <data name="header_need" xml:space="preserve">
+    <value>Необходимо</value>
+    <comment>Tons needed for missions</comment>
+  </data>
+  <data name="para2" xml:space="preserve">
+    <value>Если ваш инвентарь отображается неверно, перезапустите игру и информация обновится.</value>
+  </data>
+  <data name="para1" xml:space="preserve">
+    <value>Ниже список вашего инвентаря.</value>
+  </data>
+  <data name="header_type" xml:space="preserve">
+    <value>Тип</value>
+    <comment>Type of cargo, such as "Metals"</comment>
+  </data>
+  <data name="header_stolen" xml:space="preserve">
+    <value>Украдено</value>
+    <comment>Tons of stolen cargo carried</comment>
+  </data>
+  <data name="header_price" xml:space="preserve">
+    <value>Цена за тонну</value>
+  </data>
+  <data name="header_owned" xml:space="preserve">
+    <value>Получено</value>
+    <comment>Tons of owned cargo carried</comment>
+  </data>
+  <data name="para3" xml:space="preserve">
+    <value>Подсказка: Для заданий крыла по которым вы ещё не выполнили доставку или сбор, товар будет показан как "Неизвестный". Будет обновлено по выполнению.</value>
+  </data>
 </root>
