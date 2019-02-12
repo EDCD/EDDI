@@ -70,14 +70,24 @@ namespace EddiVoiceAttackResponder
                 // (we can only use event handlers with classes which are always constructed - nullable objects will be updated via responder events)
                 EDDI.Instance.State.CollectionChanged += (s, e) => setDictionaryValues(EDDI.Instance.State, "state", ref vaProxy);
                 SpeechService.Instance.PropertyChanged += (s, e) => setSpeaking(SpeechService.Instance.eddiSpeaking, ref vaProxy);
-                ((CargoMonitor)EDDI.Instance.ObtainMonitor("Cargo monitor")).InventoryUpdatedEvent += (s, e) =>
+
+                CargoMonitor cargoMonitor = (CargoMonitor)EDDI.Instance.ObtainMonitor("Cargo monitor");
+                cargoMonitor.InventoryUpdatedEvent += (s, e) =>
                 {
-                    setCargo((CargoMonitor)EDDI.Instance.ObtainMonitor("Cargo monitor"), ref vaProxy);
+                    setCargo(cargoMonitor, ref vaProxy);
                 };
-                ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).ShipyardUpdatedEvent += (s, e) =>
+
+                ShipMonitor shipMonitor = (ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor");
+                shipMonitor.ShipyardUpdatedEvent += (s, e) =>
                 {
-                    setShipValues(((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip(), "Ship", ref vaProxy);
-                    setShipyardValues(((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).shipyard?.ToList(), ref vaProxy);
+                    setShipValues(shipMonitor?.GetCurrentShip(), "Ship", ref vaProxy);
+                    setShipyardValues(shipMonitor?.shipyard?.ToList(), ref vaProxy);
+                };
+
+                StatusMonitor statusMonitor = (StatusMonitor)EDDI.Instance.ObtainMonitor("Status monitor");
+                statusMonitor.StatusUpdatedEvent += (s, e) =>
+                {
+                    setStatusValues(statusMonitor?.currentStatus, "Status", ref vaProxy);
                 };
 
                 // Display instance information if available

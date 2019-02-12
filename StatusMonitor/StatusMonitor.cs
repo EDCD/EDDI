@@ -31,6 +31,8 @@ namespace EddiStatusMonitor
         // Keep track of status monitor 
         private bool running;
 
+        public event EventHandler StatusUpdatedEvent;
+
         public StatusMonitor()
         {
             Logging.Info("Initialised " + MonitorName() + " " + MonitorVersion());
@@ -403,7 +405,15 @@ namespace EddiStatusMonitor
                 {
                     fuelLog = null;
                 }
+
+                // Pass the change in status to all subscribed processes
+                OnStatus(StatusUpdatedEvent, currentStatus);
             }
+        }
+
+        private void OnStatus(EventHandler statusUpdatedEvent, Status currentStatus)
+        {
+            statusUpdatedEvent?.Invoke(currentStatus, EventArgs.Empty);
         }
 
         private static string GetSavedGamesDir()

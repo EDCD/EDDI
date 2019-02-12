@@ -26,7 +26,6 @@ namespace EddiVoiceAttackResponder
         private static StarSystem SquadronStarSystem { get; set; } = new StarSystem();
         private static Body CurrentStellarBody { get; set; } = new Body();
         private static Station CurrentStation { get; set; } = new Station();
-        private static Status Status { get; set; } = new Status();
         private static Commander Commander { get; set; } = new Commander();
 
         public static void setEventValues(dynamic vaProxy, Event theEvent, List<string> setKeys)
@@ -311,19 +310,6 @@ namespace EddiVoiceAttackResponder
             catch (Exception ex)
             {
                 Logging.Error("Failed to set last station", ex);
-            }
-
-            try
-            {
-                if (((StatusMonitor)EDDI.Instance.ObtainMonitor("Status monitor")).currentStatus != Status)
-                {
-                    setStatusValues(((StatusMonitor)EDDI.Instance.ObtainMonitor("Status monitor")).currentStatus, "Status", ref vaProxy);
-                    Status = ((StatusMonitor)EDDI.Instance.ObtainMonitor("Status monitor")).currentStatus;
-                }
-            }
-            catch (Exception ex)
-            {
-                Logging.Error("Failed to set current status", ex);
             }
 
             try
@@ -820,7 +806,7 @@ namespace EddiVoiceAttackResponder
             }
         }
 
-        private static void setStatusValues(Status status, string prefix, ref dynamic vaProxy)
+        protected static void setStatusValues(Status status, string prefix, ref dynamic vaProxy)
         {
             if (status == null)
             {
