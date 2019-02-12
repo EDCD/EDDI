@@ -32,28 +32,6 @@ namespace EddiMaterialMonitor
         // they are fired at the correct time
         private ConcurrentQueue<Event> pendingEvents = new ConcurrentQueue<Event>();
 
-        private static MaterialMonitor instance;
-
-        private static readonly object instanceLock = new object();
-        public static MaterialMonitor Instance
-        {
-            get
-            {
-                if (instance == null)
-                {
-                    lock (instanceLock)
-                    {
-                        if (instance == null)
-                        {
-                            Logging.Debug("No material monitor instance: creating one");
-                            instance = new MaterialMonitor();
-                        }
-                    }
-                }
-                return instance;
-            }
-        }
-
         public string MonitorName()
         {
             return "Material monitor";

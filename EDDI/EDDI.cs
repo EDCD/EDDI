@@ -108,11 +108,11 @@ namespace Eddi
         // Information obtained from the player journal
         public Commander Cmdr { get; private set; } // Also includes information from the configuration and companion app service
         public string Environment { get; set; }
-        public StarSystem CurrentStarSystem { get; private set; } = new StarSystem();
-        public StarSystem LastStarSystem { get; private set; } = new StarSystem();
-        public StarSystem NextStarSystem { get; private set; } = new StarSystem();
-        public Station CurrentStation { get; private set; } = new Station();
-        public Body CurrentStellarBody { get; private set; } = new Body();
+        public StarSystem CurrentStarSystem { get; private set; }
+        public StarSystem LastStarSystem { get; private set; }
+        public StarSystem NextStarSystem { get; private set; }
+        public Station CurrentStation { get; private set; }
+        public Body CurrentStellarBody { get; private set; }
         public DateTime JournalTimeStamp { get; set; } = DateTime.MinValue;
 
         // Current vehicle of player

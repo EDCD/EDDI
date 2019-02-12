@@ -53,6 +53,7 @@ namespace EddiVoiceAttackResponder
         public static void VA_Init1(dynamic vaProxy)
         {
             Logging.Info("Initialising EDDI VoiceAttack plugin");
+            EDDI.FromVA = true;
 
             try
             {
@@ -62,42 +63,42 @@ namespace EddiVoiceAttackResponder
                 App.ApplyAnyOverrideCulture();
                 EDDI.Instance.Start();
 
-                // Add notifiers for events we want to react to 
+                // Set up our event responder
                 VoiceAttackResponder.RaiseEvent += (s, theEvent) => updateValuesOnEvent(theEvent, ref vaProxy);
-                EDDI.Instance.CurrentStarSystem.PropertyChanged += (s, e) => setStarSystemValues(EDDI.Instance.CurrentStarSystem, "System", ref vaProxy);
-                EDDI.Instance.LastStarSystem.PropertyChanged += (s, e) => setStarSystemValues(EDDI.Instance.LastStarSystem, "Last system", ref vaProxy);
-                EDDI.Instance.NextStarSystem.PropertyChanged += (s, e) => setStarSystemValues(EDDI.Instance.NextStarSystem, "Next system", ref vaProxy);
-                EDDI.Instance.HomeStarSystem.PropertyChanged += (s, e) => setStarSystemValues(EDDI.Instance.HomeStarSystem, "Home system", ref vaProxy);
-                EDDI.Instance.SquadronStarSystem.PropertyChanged += (s, e) => setStarSystemValues(EDDI.Instance.SquadronStarSystem, "Squadron system", ref vaProxy);
-                EDDI.Instance.CurrentStellarBody.PropertyChanged += (s, e) => setDetailedBodyValues(EDDI.Instance.CurrentStellarBody, "Body", ref vaProxy);
-                EDDI.Instance.CurrentStation.PropertyChanged += (s, e) => setStationValues(EDDI.Instance.CurrentStation, "Last station", ref vaProxy);
-                EDDI.Instance.Cmdr.PropertyChanged += (s, e) => setCommanderValues(EDDI.Instance.Cmdr, ref vaProxy);
+
+                // Add notifiers for changes in variables we want to react to 
+                // (we can only use event handlers with classes which are always constructed - nullable objects will be updated via responder events)
                 EDDI.Instance.State.CollectionChanged += (s, e) => setDictionaryValues(EDDI.Instance.State, "state", ref vaProxy);
-                SpeechService.Instance.PropertyChanged += (s, e) => setSpeaking(SpeechService.eddiSpeaking, ref vaProxy);
-                CargoMonitor.Instance.InventoryUpdatedEvent += (s, e) => setCargo(CargoMonitor.Instance, ref vaProxy);
-                StatusMonitor.Instance.currentStatus.PropertyChanged += (s, e) => setStatusValues(StatusMonitor.Instance.currentStatus, "Status", ref vaProxy);
-                ShipMonitor.Instance.ShipyardUpdatedEvent += (s, e) => setShipValues(ShipMonitor.Instance.GetCurrentShip(), "Ship", ref vaProxy);
-                                                                       setShipyardValues(ShipMonitor.Instance.shipyard?.ToList(), ref vaProxy);
+                SpeechService.Instance.PropertyChanged += (s, e) => setSpeaking(SpeechService.Instance.eddiSpeaking, ref vaProxy);
+                ((CargoMonitor)EDDI.Instance.ObtainMonitor("Cargo monitor")).InventoryUpdatedEvent += (s, e) =>
+                {
+                    setCargo((CargoMonitor)EDDI.Instance.ObtainMonitor("Cargo monitor"), ref vaProxy);
+                };
+                ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).ShipyardUpdatedEvent += (s, e) =>
+                {
+                    setShipValues(((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip(), "Ship", ref vaProxy);
+                    setShipyardValues(((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).shipyard?.ToList(), ref vaProxy);
+                };
 
                 // Display instance information if available
                 if (EDDI.Instance.UpgradeRequired)
                 {
                     vaProxy.WriteToLog("Please shut down VoiceAttack and run EDDI standalone to upgrade", "red");
                     string msg = Properties.VoiceAttack.run_eddi_standalone;
-                    SpeechService.Instance.Say(ShipMonitor.Instance.GetCurrentShip(), msg, false);
+                    SpeechService.Instance.Say(((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip(), msg, false);
                 }
                 else if (EDDI.Instance.UpgradeAvailable)
                 {
                     vaProxy.WriteToLog("Please shut down VoiceAttack and run EDDI standalone to upgrade", "orange");
                     string msg = Properties.VoiceAttack.run_eddi_standalone;
-                    SpeechService.Instance.Say(ShipMonitor.Instance.GetCurrentShip(), msg, false);
+                    SpeechService.Instance.Say(((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip(), msg, false);
                 }
 
                 if (EDDI.Instance.Motd != null)
                 {
                     vaProxy.WriteToLog("Message from EDDI: " + EDDI.Instance.Motd, "black");
                     string msg = String.Format(Eddi.Properties.EddiResources.msg_from_eddi, EDDI.Instance.Motd);
-                    SpeechService.Instance.Say(ShipMonitor.Instance.GetCurrentShip(), msg, false);
+                    SpeechService.Instance.Say(((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip(), msg, false);
                 }
 
                 // Set the initial values from the main EDDI objects
@@ -117,7 +118,7 @@ namespace EddiVoiceAttackResponder
                 // Set a variable indicating whether EDDI is speaking
                 try
                 {
-                    setSpeaking(SpeechService.eddiSpeaking, ref vaProxy);
+                    setSpeaking(SpeechService.Instance.eddiSpeaking, ref vaProxy);
                 }
                 catch (Exception ex)
                 {
@@ -368,10 +369,10 @@ namespace EddiVoiceAttackResponder
                                 configWindow.ShowDialog();
 
                                 // Bind Cargo monitor inventory, Material Monitor inventory, & Ship monitor shipyard collections to the EDDI config Window
-                                CargoMonitor.Instance.EnableConfigBinding(configWindow);
-                                MaterialMonitor.Instance.EnableConfigBinding(configWindow);
-                                MissionMonitor.Instance.EnableConfigBinding(configWindow);
-                                ShipMonitor.Instance.EnableConfigBinding(configWindow);
+                                ((CargoMonitor)EDDI.Instance.ObtainMonitor("Cargo monitor")).EnableConfigBinding(configWindow);
+                                ((MaterialMonitor)EDDI.Instance.ObtainMonitor("Material monitor")).EnableConfigBinding(configWindow);
+                                ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor")).EnableConfigBinding(configWindow);
+                                ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).EnableConfigBinding(configWindow);
 
                                 configWindow = null;
                             }
@@ -405,10 +406,10 @@ namespace EddiVoiceAttackResponder
                     break;
                 case "configurationclose":
                     // Unbind the Cargo Monitor inventory, Material Monitor inventory, & Ship Monitor shipyard collections from the EDDI config window
-                    CargoMonitor.Instance.DisableConfigBinding(configWindow);
-                    MaterialMonitor.Instance.DisableConfigBinding(configWindow);
-                    MissionMonitor.Instance.DisableConfigBinding(configWindow);
-                    ShipMonitor.Instance.DisableConfigBinding(configWindow);
+                    ((CargoMonitor)EDDI.Instance.ObtainMonitor("Cargo monitor")).DisableConfigBinding(configWindow);
+                    ((MaterialMonitor)EDDI.Instance.ObtainMonitor("Material monitor")).DisableConfigBinding(configWindow);
+                    ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor")).DisableConfigBinding(configWindow);
+                    ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).DisableConfigBinding(configWindow);
 
                     configWindow.Dispatcher.Invoke(configWindow.Close);
 
@@ -528,13 +529,13 @@ namespace EddiVoiceAttackResponder
             Logging.Debug("Entered");
             try
             {
-                if (ShipMonitor.Instance.GetCurrentShip() == null)
+                if (((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip() == null)
                 {
                     Logging.Debug("No information on ship");
                     return;
                 }
 
-                string shipUri = ShipMonitor.Instance.GetCurrentShip().CoriolisUri();
+                string shipUri = ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip().CoriolisUri();
                 OpenOrStoreURI(ref vaProxy, shipUri);
                 setStatus(ref vaProxy, "Operational");
             }
@@ -550,13 +551,13 @@ namespace EddiVoiceAttackResponder
             Logging.Debug("Entered");
             try
             {
-                if (ShipMonitor.Instance.GetCurrentShip() == null)
+                if (((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip() == null)
                 {
                     Logging.Debug("No information on ship");
                     return;
                 }
 
-                string shipUri = ShipMonitor.Instance.GetCurrentShip().EDShipyardUri();
+                string shipUri = ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip().EDShipyardUri();
                 OpenOrStoreURI(ref vaProxy, shipUri);
                 setStatus(ref vaProxy, "Operational");
             }
@@ -611,7 +612,7 @@ namespace EddiVoiceAttackResponder
 
                 string speech = SpeechFromScript(script);
 
-                SpeechService.Instance.Say(ShipMonitor.Instance.GetCurrentShip(), speech, true, (int)priority, voice);
+                SpeechService.Instance.Say(((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip(), speech, true, (int)priority, voice);
             }
             catch (Exception e)
             {
@@ -640,7 +641,7 @@ namespace EddiVoiceAttackResponder
 
                 string speech = SpeechFromScript(script);
 
-                SpeechService.Instance.Say(ShipMonitor.Instance.GetCurrentShip(), speech, true, (int)priority, voice, true);
+                SpeechService.Instance.Say(((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip(), speech, true, (int)priority, voice, true);
             }
             catch (Exception e)
             {
@@ -684,7 +685,7 @@ namespace EddiVoiceAttackResponder
 
                 string voice = vaProxy.GetText("Voice");
 
-                speechResponder.Say(ShipMonitor.Instance.GetCurrentShip(), script, null, priority, voice);
+                speechResponder.Say(((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip(), script, null, priority, voice);
             }
             catch (Exception e)
             {
@@ -789,7 +790,7 @@ namespace EddiVoiceAttackResponder
             if (script == null) { return null; }
 
             // Variable replacement
-            Ship ship = ShipMonitor.Instance.GetCurrentShip();
+            Ship ship = ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip();
             if (ship != null)
             {
                 if (ship != null && ship.phoneticname != null)
@@ -894,55 +895,55 @@ namespace EddiVoiceAttackResponder
                 {
                     case "cancel":
                         {
-                            MissionMonitor.Instance.CancelRoute();
+                            ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor")).CancelRoute();
                         }
                         break;
                     case "expiring":
                         {
-                            MissionMonitor.Instance.GetExpiringRoute();
+                            ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor")).GetExpiringRoute();
                         }
                         break;
                     case "farthest":
                         {
-                            MissionMonitor.Instance.GetFarthestRoute();
+                            ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor")).GetFarthestRoute();
                         }
                         break;
                     case "most":
                         {
-                            MissionMonitor.Instance.GetMostRoute();
+                            ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor")).GetMostRoute();
                         }
                         break;
                     case "nearest":
                         {
-                            MissionMonitor.Instance.GetNearestRoute();
+                            ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor")).GetNearestRoute();
                         }
                         break;
                     case "route":
                         {
                             if (system == null || system == string.Empty)
                             {
-                                MissionMonitor.Instance.GetMissionsRoute();
+                                ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor")).GetMissionsRoute();
                             }
                             else
                             {
-                                MissionMonitor.Instance.GetMissionsRoute(system);
+                                ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor")).GetMissionsRoute(system);
                             }
                         }
                         break;
                     case "set":
                         {
-                            MissionMonitor.Instance.SetRoute(system);
+                            ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor")).SetRoute(system);
                         }
                         break;
                     case "source":
                         {
                             if (system == null || system == string.Empty)
                             {
-                                CargoMonitor.Instance.GetSourceRoute();
+                                ((CargoMonitor)EDDI.Instance.ObtainMonitor("Cargo monitor")).GetSourceRoute();
                             }
                             else
                             {
-                                CargoMonitor.Instance.GetSourceRoute(system);
+                                ((CargoMonitor)EDDI.Instance.ObtainMonitor("Cargo monitor")).GetSourceRoute(system);
                             }
                         }
                         break;
@@ -950,11 +951,11 @@ namespace EddiVoiceAttackResponder
                         {
                             if (system == null || system == string.Empty)
                             {
-                                MissionMonitor.Instance.UpdateMissionsRoute();
+                                ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor")).UpdateMissionsRoute();
                             }
                             else
                             {
-                                MissionMonitor.Instance.UpdateMissionsRoute(system);
+                                ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor")).UpdateMissionsRoute(system);
                             }
                         }
                         break;

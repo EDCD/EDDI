@@ -23,28 +23,6 @@ namespace EddiEddpMonitor
 
         private EddpConfiguration configuration;
 
-        private static EddpMonitor instance;
-
-        private static readonly object instanceLock = new object();
-        public static EddpMonitor Instance
-        {
-            get
-            {
-                if (instance == null)
-                {
-                    lock (instanceLock)
-                    {
-                        if (instance == null)
-                        {
-                            Logging.Debug("No EDDP monitor instance: creating one");
-                            instance = new EddpMonitor();
-                        }
-                    }
-                }
-                return instance;
-            }
-        }
-
         /// <summary>
         /// The name of the monitor; shows up in EDDI's configuration window
         /// </summary>

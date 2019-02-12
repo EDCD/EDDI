@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Eddi;
+using System;
 using System.Globalization;
 using System.Text.RegularExpressions;
 using System.Windows.Controls;
@@ -12,11 +13,16 @@ namespace EddiMissionMonitor
     /// </summary>
     public partial class ConfigurationWindow : UserControl
     {
+        private MissionMonitor missionMonitor()
+        {
+            return (MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor");
+        }
+
         public ConfigurationWindow()
         {
             InitializeComponent();
 
-            missionsData.ItemsSource = MissionMonitor.Instance.missions;
+            missionsData.ItemsSource = missionMonitor()?.missions;
 
             MissionMonitorConfiguration configuration = MissionMonitorConfiguration.FromFile();
             missionWarningInt.Text = configuration.missionWarning?.ToString(CultureInfo.InvariantCulture);
@@ -25,7 +31,7 @@ namespace EddiMissionMonitor
         private void missionsUpdated(object sender, DataTransferEventArgs e)
         {
             // Update the mission monitor's information
-            MissionMonitor.Instance.writeMissions();
+            missionMonitor()?.writeMissions();
         }
 
         private void warningChanged(object sender, TextChangedEventArgs e)
@@ -34,7 +40,7 @@ namespace EddiMissionMonitor
             try
             {
                 int? warning = string.IsNullOrWhiteSpace(missionWarningInt.Text) ? 60 : Convert.ToInt32(missionWarningInt.Text, CultureInfo.InvariantCulture);
-                MissionMonitor.Instance.missionWarning = warning;
+                missionMonitor().missionWarning = warning;
                 configuration.missionWarning = warning;
                 configuration.ToFile();
             }

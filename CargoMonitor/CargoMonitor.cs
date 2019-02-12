@@ -40,28 +40,6 @@ namespace EddiCargoMonitor
             {"rescuethewares", "salvage"}
         };
 
-        private static CargoMonitor instance;
-
-        private static readonly object instanceLock = new object();
-        public static CargoMonitor Instance
-        {
-            get
-            {
-                if (instance == null)
-                {
-                    lock (instanceLock)
-                    {
-                        if (instance == null)
-                        {
-                            Logging.Debug("No cargo monitor instance: creating one");
-                            instance = new CargoMonitor();
-                        }
-                    }
-                }
-                return instance;
-            }
-        }
-
         public string MonitorName()
         {
             return "Cargo monitor";
@@ -413,7 +391,8 @@ namespace EddiCargoMonitor
                         case "smuggle":
                             {
                                 haulage.status = "Failed";
-                                Mission mission = MissionMonitor.Instance.GetMissionWithMissionId(@event.missionid ?? 0);
+                                Mission mission = ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor"))?
+                                    .GetMissionWithMissionId(@event.missionid ?? 0);
                                 if (mission != null)
                                 {
                                     mission.statusDef = MissionStatus.FromEDName("Failed");
@@ -525,7 +504,8 @@ namespace EddiCargoMonitor
 
         private void _handleCargoDepotEvent(CargoDepotEvent @event)
         {
-            Mission mission = MissionMonitor.Instance.GetMissionWithMissionId(@event.missionid ?? 0);
+            Mission mission = ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor"))?
+                .GetMissionWithMissionId(@event.missionid ?? 0);
             Cargo cargo = new Cargo();
             Haulage haulage = new Haulage();
             int amountRemaining = @event.totaltodeliver - @event.delivered;
@@ -1097,7 +1077,8 @@ namespace EddiCargoMonitor
 
             foreach (CargoInfo info in infoList.Where(i => i.missionid != null).ToList())
             {
-                Mission mission = MissionMonitor.Instance.GetMissionWithMissionId(info.missionid ?? 0);
+                Mission mission = ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor"))?
+                    .GetMissionWithMissionId(info.missionid ?? 0);
 
                 Haulage cargoHaulage = cargo.haulageData.FirstOrDefault(h => h.missionid == info.missionid);
                 if (cargoHaulage != null)

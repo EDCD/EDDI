@@ -1,4 +1,5 @@
-﻿using System.Windows.Controls;
+﻿using Eddi;
+using System.Windows.Controls;
 using System.Windows.Data;
 
 namespace EddiMaterialMonitor
@@ -8,16 +9,21 @@ namespace EddiMaterialMonitor
     /// </summary>
     public partial class ConfigurationWindow : UserControl
     {
+        private MaterialMonitor materialMonitor()
+        {
+            return (MaterialMonitor)EDDI.Instance.ObtainMonitor("Material monitor");
+        }
+
         public ConfigurationWindow()
         {
             InitializeComponent();
-            materialsData.ItemsSource = MaterialMonitor.Instance.inventory;
+            materialsData.ItemsSource = materialMonitor()?.inventory;
         }
 
         private void materialsUpdated(object sender, DataTransferEventArgs e)
         {
             // Update the material monitor's information
-            MaterialMonitor.Instance.writeMaterials();
+            materialMonitor()?.writeMaterials();
         }
     }
 }

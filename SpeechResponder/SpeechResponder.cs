@@ -142,6 +142,7 @@ namespace EddiSpeechResponder
             }
 
             Logging.Debug("Received event " + JsonConvert.SerializeObject(@event));
+            StatusMonitor statusMonitor = (StatusMonitor)EDDI.Instance.ObtainMonitor("Status monitor");
 
             if (@event is BeltScannedEvent)
             {
@@ -184,20 +185,21 @@ namespace EddiSpeechResponder
                 TakeTypeFromEventQueue<StarScannedEvent>();
                 enqueueStarScan = true;
             }
-            else if (@event is SignalDetectedEvent)
-            {
-                if (!(StatusMonitor.Instance.currentStatus.gui_focus == "fss mode" || StatusMonitor.Instance.currentStatus.gui_focus == "saa mode"))
-                {
-                    return;
-                }
-            }
             else if (@event is CommunityGoalEvent)
             {
                 // Disable speech from the community goal event for the time being.
                 return;
             }
+            else if (@event is SignalDetectedEvent)
+            {
+                if (!(statusMonitor?.currentStatus.gui_focus == "fss mode" || statusMonitor?.currentStatus.gui_focus == "saa mode"))
+                {
+                    return;
+                }
+            }
 
-            if (StatusMonitor.Instance.currentStatus.gui_focus == "fss mode" && StatusMonitor.Instance.lastStatus.gui_focus != "fss mode")
+
+            if (statusMonitor?.currentStatus.gui_focus == "fss mode" && statusMonitor?.lastStatus.gui_focus != "fss mode")
             {
                 // Beginning with Elite Dangerous v. 3.3, the primary star scan is delivered via a Scan with 
                 // scantype `AutoScan` when you jump into the system. Secondary stars may be delivered in a burst 
@@ -217,7 +219,7 @@ namespace EddiSpeechResponder
 
         private void Say(Event @event)
         {
-            Say(scriptResolver, ShipMonitor.Instance.GetCurrentShip(), @event.type, @event, null, null, null, SayOutLoud());
+            Say(scriptResolver, ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor"))?.GetCurrentShip(), @event.type, @event, null, null, null, SayOutLoud());
         }
 
         private static bool SayOutLoud()
@@ -314,9 +316,9 @@ namespace EddiSpeechResponder
                 dict["body"] = new ReflectionValue(EDDI.Instance.CurrentStellarBody);
             }
 
-            if (StatusMonitor.Instance.currentStatus != null)
+            if (((StatusMonitor)EDDI.Instance.ObtainMonitor("Status monitor"))?.currentStatus != null)
             {
-                dict["status"] = new ReflectionValue(StatusMonitor.Instance.currentStatus);
+                dict["status"] = new ReflectionValue(((StatusMonitor)EDDI.Instance.ObtainMonitor("Status monitor"))?.currentStatus);
             }
 
             if (theEvent != null)
