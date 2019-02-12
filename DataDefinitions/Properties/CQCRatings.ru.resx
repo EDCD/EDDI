@@ -98,13 +98,40 @@
 	<resheader name="writer">
 		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
 	</resheader>
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="Helpless" xml:space="preserve">
+    <value>Беспомощный</value>
+    <comment>CQC rating Helpless</comment>
+  </data>
+  <data name="MostlyHelpless" xml:space="preserve">
+    <value>Почти беспомощный</value>
+    <comment>CQC rating MostlyHelpless</comment>
+  </data>
+  <data name="Amateur" xml:space="preserve">
+    <value>Новичёк</value>
+    <comment>CQC rating Amateur</comment>
+  </data>
+  <data name="SemiProfessional" xml:space="preserve">
+    <value>Полупрофессионал</value>
+    <comment>CQC rating SemiProfessional</comment>
+  </data>
+  <data name="Professional" xml:space="preserve">
+    <value>Профессиона</value>
+    <comment>CQC rating Professional</comment>
+  </data>
+  <data name="Champion" xml:space="preserve">
+    <value>Чемпион</value>
+    <comment>CQC rating Champion</comment>
+  </data>
+  <data name="Hero" xml:space="preserve">
+    <value>Герой</value>
+    <comment>CQC rating Hero</comment>
+  </data>
+  <data name="Legend" xml:space="preserve">
+    <value>Легенда</value>
+    <comment>CQC rating Legend</comment>
+  </data>
+  <data name="Elite" xml:space="preserve">
+    <value>Элита</value>
+    <comment>CQC rating Elite</comment>
+  </data>
 </root>
