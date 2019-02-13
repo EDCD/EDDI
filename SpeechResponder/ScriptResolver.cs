@@ -638,7 +638,7 @@ namespace EddiSpeechResponder
             store["MissionDetails"] = new NativeFunction((values) =>
             {
                 List<Mission> missions = new List<Mission>();
-                missions = MissionMonitor.Instance.missions.ToList();
+                missions = ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor"))?.missions.ToList();
 
                 Mission result = missions?.FirstOrDefault(v => v.missionid == values[0].AsNumber);
                 return (result == null ? new ReflectionValue(new object()) : new ReflectionValue(result));
@@ -656,55 +656,55 @@ namespace EddiSpeechResponder
                 {
                     case "cancel":
                         {
-                            MissionMonitor.Instance.CancelRoute();
+                            ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor"))?.CancelRoute();
                         }
                         break;
                     case "expiring":
                         {
-                            result = MissionMonitor.Instance.GetExpiringRoute();
+                            result = ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor"))?.GetExpiringRoute();
                         }
                         break;
                     case "farthest":
                         {
-                            result = MissionMonitor.Instance.GetFarthestRoute();
+                            result = ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor"))?.GetFarthestRoute();
                         }
                         break;
                     case "most":
                         {
-                            result = MissionMonitor.Instance.GetMostRoute();
+                            result = ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor"))?.GetMostRoute();
                         }
                         break;
                     case "nearest":
                         {
-                            result = MissionMonitor.Instance.GetNearestRoute();
+                            result = ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor"))?.GetNearestRoute();
                         }
                         break;
                     case "route":
                         {
                             if (values.Count == 2)
                             {
-                                result = MissionMonitor.Instance.GetMissionsRoute(values[1].AsString);
+                                result = ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor"))?.GetMissionsRoute(values[1].AsString);
                             }
                             else
                             {
-                                result = MissionMonitor.Instance.GetMissionsRoute();
+                                result = ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor"))?.GetMissionsRoute();
                             }
                         }
                         break;
                     case "set":
                         {
-                            result = MissionMonitor.Instance.SetRoute(values[1].AsString);
+                            result = ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor"))?.SetRoute(values[1].AsString);
                         }
                         break;
                     case "source":
                         {
                             if (values.Count == 2)
                             {
-                                result = CargoMonitor.Instance.GetSourceRoute(values[1].AsString);
+                                result = ((CargoMonitor)EDDI.Instance.ObtainMonitor("Cargo monitor"))?.GetSourceRoute(values[1].AsString);
                             }
                             else
                             {
-                                result = CargoMonitor.Instance.GetSourceRoute();
+                                result = ((CargoMonitor)EDDI.Instance.ObtainMonitor("Cargo monitor"))?.GetSourceRoute();
                             }
                         }
                         break;
@@ -712,11 +712,11 @@ namespace EddiSpeechResponder
                         {
                             if (values.Count == 2)
                             {
-                                result = MissionMonitor.Instance.UpdateMissionsRoute(values[1].AsString);
+                                result = ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor"))?.UpdateMissionsRoute(values[1].AsString);
                             }
                             else
                             {
-                                result = MissionMonitor.Instance.UpdateMissionsRoute();
+                                result = ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor"))?.UpdateMissionsRoute();
                             }
                         }
                         break;
@@ -866,11 +866,11 @@ namespace EddiSpeechResponder
                 if (value.Type == Cottle.ValueContent.String)
                 {
                     edname = CommodityDefinition.FromNameOrEDName(value.AsString).edname;
-                    result = CargoMonitor.Instance.GetCargoWithEDName(edname);
+                    result = ((CargoMonitor)EDDI.Instance.ObtainMonitor("Cargo monitor"))?.GetCargoWithEDName(edname);
                 }
                 else if (value.Type == Cottle.ValueContent.Number)
                 {
-                    result = CargoMonitor.Instance.GetCargoWithMissionId((long)value.AsNumber);
+                    result = ((CargoMonitor)EDDI.Instance.ObtainMonitor("Cargo monitor"))?.GetCargoWithMissionId((long)value.AsNumber);
                 }
                 return (result == null ? new ReflectionValue(new object()) : new ReflectionValue(result));
             }, 1);
@@ -878,7 +878,7 @@ namespace EddiSpeechResponder
             store["HaulageDetails"] = new NativeFunction((values) =>
             {
                 Haulage result = null;
-                result = CargoMonitor.Instance.GetHaulageWithMissionId((long)values[0].AsNumber);
+                result = ((CargoMonitor)EDDI.Instance.ObtainMonitor("Cargo monitor"))?.GetHaulageWithMissionId((long)values[0].AsNumber);
                 return (result == null ? new ReflectionValue(new object()) : new ReflectionValue(result));
             }, 1);
 
@@ -1045,16 +1045,17 @@ namespace EddiSpeechResponder
 
         private static Ship findShip(int? localId, string model)
         {
+            ShipMonitor shipMonitor = (ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor");
             Ship ship = null;
             if (localId == null)
             {
                 // No local ID so take the current ship
-                ship = ShipMonitor.Instance.GetCurrentShip();
+                ship = shipMonitor?.GetCurrentShip();
             }
             else
             {
                 // Find the ship with the given local ID
-                ship = ShipMonitor.Instance.GetShip(localId);
+                ship = shipMonitor?.GetShip(localId);
             }
 
             if (ship == null)

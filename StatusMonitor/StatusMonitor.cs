@@ -21,8 +21,8 @@ namespace EddiStatusMonitor
         // What we are monitoring and what to do with it
         private static readonly Regex JsonRegex = new Regex(@"^{.*}$");
         private string Directory = GetSavedGamesDir();
-        public Status currentStatus { get; set; } = new Status();
-        public Status lastStatus { get; set; } = new Status();
+        public Status currentStatus { get; private set; } = new Status();
+        public Status lastStatus { get; private set; } = new Status();
 
         // Miscellaneous tracking
         private bool gliding;
@@ -31,27 +31,7 @@ namespace EddiStatusMonitor
         // Keep track of status monitor 
         private bool running;
 
-        private static StatusMonitor instance;
-
-        private static readonly object instanceLock = new object();
-        public static StatusMonitor Instance
-        {
-            get
-            {
-                if (instance == null)
-                {
-                    lock (instanceLock)
-                    {
-                        if (instance == null)
-                        {
-                            Logging.Debug("No status monitor instance: creating one");
-                            instance = new StatusMonitor();
-                        }
-                    }
-                }
-                return instance;
-            }
-        }
+        public event EventHandler StatusUpdatedEvent;
 
         public StatusMonitor()
         {
@@ -425,7 +405,15 @@ namespace EddiStatusMonitor
                 {
                     fuelLog = null;
                 }
+
+                // Pass the change in status to all subscribed processes
+                OnStatus(StatusUpdatedEvent, currentStatus);
             }
+        }
+
+        private void OnStatus(EventHandler statusUpdatedEvent, Status currentStatus)
+        {
+            statusUpdatedEvent?.Invoke(currentStatus, EventArgs.Empty);
         }
 
         private static string GetSavedGamesDir()
@@ -490,12 +478,10 @@ namespace EddiStatusMonitor
 
         public IDictionary<string, object> GetVariables()
         {
-            return null;
-        }
-
-        public Status GetStatus()
-        {
-            return currentStatus;
+            Dictionary<string, object> variables = new Dictionary<string, object>();
+            variables.Add("currentStatus", currentStatus);
+            variables.Add("lastStatus", lastStatus);
+            return variables;
         }
 
         private void SetFuelExtras(Status status)
@@ -542,7 +528,7 @@ namespace EddiStatusMonitor
 
             if (currentStatus.vehicle == Constants.VEHICLE_SHIP)
             {
-                Ship ship = ShipMonitor.Instance.GetCurrentShip();
+                Ship ship = ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor"))?.GetCurrentShip();
                 if (ship?.fueltanktotalcapacity != null && fuelRemaining != null)
                 {
                     // Fuel recorded in Status.json includes the fuel carried in the Active Fuel Reservoir
