@@ -1098,16 +1098,6 @@ namespace Eddi
                 };
                 updateThread.Start();
             }
-            else
-            {
-                // Kick off a dummy that triggers a market refresh after a couple of seconds
-                if (theEvent.fromLoad) { return true; } // Don't fire this event when loading pre-existing logs
-                Thread updateThread = new Thread(() => dummyRefreshMarketData())
-                {
-                    IsBackground = true
-                };
-                updateThread.Start();
-            }
 
             return true;
         }
@@ -2240,14 +2230,6 @@ namespace Eddi
             // Clear the update info
             profileUpdateNeeded = false;
             profileStationRequired = null;
-        }
-
-        // If we have no access to the companion API but need to trigger a market update then we can call this method
-        private void dummyRefreshMarketData()
-        {
-            Thread.Sleep(2000);
-            Event @event = new MarketInformationUpdatedEvent(DateTime.UtcNow, "profile");
-            eventHandler(@event);
         }
 
         internal static class NativeMethods
