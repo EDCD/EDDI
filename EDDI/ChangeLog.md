@@ -5,6 +5,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
 ### 3.3.5-rc1
   * Core
     * Miscellaneous minor bug fixes.
+    * Added Russian translations.
     * `MarketInformationUpdated` event no longer triggers when cAPI is down. As a result, this event will not consistently trigger following a `Docked` event. 
   * Mission monitor
     * Fixed a 'deadlock' vulnerability in the derived `Mission expired` event creator which would freeze EDDI.
