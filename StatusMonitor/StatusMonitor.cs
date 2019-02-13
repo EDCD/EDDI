@@ -478,9 +478,11 @@ namespace EddiStatusMonitor
 
         public IDictionary<string, object> GetVariables()
         {
-            Dictionary<string, object> variables = new Dictionary<string, object>();
-            variables.Add("currentStatus", currentStatus);
-            variables.Add("lastStatus", lastStatus);
+            Dictionary<string, object> variables = new Dictionary<string, object>
+            {
+                { "currentStatus", currentStatus },
+                { "lastStatus", lastStatus }
+            };
             return variables;
         }
 
