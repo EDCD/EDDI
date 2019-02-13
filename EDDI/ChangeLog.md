@@ -2,6 +2,8 @@
 
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
+### 3.3.5-rc2
+
 ### 3.3.5-rc1
   * Core
     * Miscellaneous minor bug fixes.
