@@ -3059,7 +3059,13 @@ namespace EddiJournalMonitor
 	                                    inventory = CargoInfoReader.FromFile().Inventory;
 	                                    update = true;
 	                                }
-	                                events.Add(new CargoEvent(timestamp, update, vessel, inventory, cargocarried) { raw = line, fromLoad = fromLogLoad });
+
+                                    // Protect against out of date Cargo.json files during 'LogLoad'
+                                    if (cargocarried == inventory.Sum(i => i.count))
+                                    {
+                                        events.Add(new CargoEvent(timestamp, update, vessel, inventory, cargocarried) { raw = line, fromLoad = fromLogLoad });
+
+                                    }
                                 }
                                 handled = true;
                                 break;
