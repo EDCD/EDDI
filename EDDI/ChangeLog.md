@@ -3,6 +3,18 @@
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
 ### 3.3.5
+  * Core
+    * Miscellaneous minor bug fixes.
+    * Added Russian translations.
+    * `MarketInformationUpdated` event no longer triggers when cAPI is down. As a result, this event will not consistently trigger following a `Docked` event. 
+  * Mission monitor
+    * Fixed a 'deadlock' vulnerability in the derived `Mission expired` event creator which would freeze EDDI.
+  * Speech responder
+    * Fixed "Engineer progressed" script to account for stages other than getting a new blueprint level.
+    * Fixed punctuation in the "Fuel check" script.
+  * VoiceAttack
+    * Improved variable setting efficiency by adding granularity via 'Update' event handling.
+    * Added information command to EDDI.vap to test status variables.
 
 ### 3.3.4
   * Speech responder

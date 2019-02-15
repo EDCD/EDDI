@@ -8,6 +8,7 @@ using EddiMissionMonitor;
 using EddiShipMonitor;
 using EddiSpeechResponder;
 using EddiSpeechService;
+using EddiStatusMonitor;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -20,6 +21,7 @@ using System.ComponentModel;
 using System.Text;
 using System.Text.RegularExpressions;
 using Utilities;
+using EddiStarMapService;
 
 namespace EddiVoiceAttackResponder
 {
@@ -51,6 +53,7 @@ namespace EddiVoiceAttackResponder
         public static void VA_Init1(dynamic vaProxy)
         {
             Logging.Info("Initialising EDDI VoiceAttack plugin");
+            EDDI.FromVA = true;
 
             try
             {
@@ -60,10 +63,32 @@ namespace EddiVoiceAttackResponder
                 App.ApplyAnyOverrideCulture();
                 EDDI.Instance.Start();
 
-                // Add notifiers for events we want to react to 
-                EDDI.Instance.State.CollectionChanged += (s, e) => setDictionaryValues(EDDI.Instance.State, "state", ref vaProxy);
-                SpeechService.Instance.PropertyChanged += (s, e) => setSpeaking(SpeechService.eddiSpeaking, ref vaProxy);
+                // Set up our event responder
                 VoiceAttackResponder.RaiseEvent += (s, theEvent) => updateValuesOnEvent(theEvent, ref vaProxy);
+
+                // Add notifiers for changes in variables we want to react to 
+                // (we can only use event handlers with classes which are always constructed - nullable objects will be updated via responder events)
+                EDDI.Instance.State.CollectionChanged += (s, e) => setDictionaryValues(EDDI.Instance.State, "state", ref vaProxy);
+                SpeechService.Instance.PropertyChanged += (s, e) => setSpeaking(SpeechService.Instance.eddiSpeaking, ref vaProxy);
+
+                CargoMonitor cargoMonitor = (CargoMonitor)EDDI.Instance.ObtainMonitor("Cargo monitor");
+                cargoMonitor.InventoryUpdatedEvent += (s, e) =>
+                {
+                    setCargo(cargoMonitor, ref vaProxy);
+                };
+
+                ShipMonitor shipMonitor = (ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor");
+                shipMonitor.ShipyardUpdatedEvent += (s, e) =>
+                {
+                    setShipValues(shipMonitor?.GetCurrentShip(), "Ship", ref vaProxy);
+                    setShipyardValues(shipMonitor?.shipyard?.ToList(), ref vaProxy);
+                };
+
+                StatusMonitor statusMonitor = (StatusMonitor)EDDI.Instance.ObtainMonitor("Status monitor");
+                statusMonitor.StatusUpdatedEvent += (s, e) =>
+                {
+                    setStatusValues(statusMonitor?.currentStatus, "Status", ref vaProxy);
+                };
 
                 // Display instance information if available
                 if (EDDI.Instance.UpgradeRequired)
@@ -103,7 +128,7 @@ namespace EddiVoiceAttackResponder
                 // Set a variable indicating whether EDDI is speaking
                 try
                 {
-                    setSpeaking(SpeechService.eddiSpeaking, ref vaProxy);
+                    setSpeaking(SpeechService.Instance.eddiSpeaking, ref vaProxy);
                 }
                 catch (Exception ex)
                 {
@@ -853,18 +878,15 @@ namespace EddiVoiceAttackResponder
                     return;
                 }
 
-                if (EDDI.Instance.Cmdr != null && EDDI.Instance.CurrentStarSystem != null && EDDI.Instance.starMapService != null)
+                if (EDDI.Instance.CurrentStarSystem != null)
                 {
                     // Store locally
                     StarSystem here = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(EDDI.Instance.CurrentStarSystem.name);
                     here.comment = comment == "" ? null : comment;
                     StarSystemSqLiteRepository.Instance.SaveStarSystem(here);
 
-                    if (EDDI.Instance.starMapService != null)
-                    {
-                        // Store in EDSM
-                        EDDI.Instance.starMapService.sendStarMapComment(EDDI.Instance.CurrentStarSystem.name, comment);
-                    }
+                    // Store in EDSM
+                    StarMapService.Instance?.sendStarMapComment(EDDI.Instance.CurrentStarSystem.name, comment);
                 }
             }
             catch (Exception e)

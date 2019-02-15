@@ -13,24 +13,25 @@ namespace EddiMissionMonitor
     /// </summary>
     public partial class ConfigurationWindow : UserControl
     {
-        MissionMonitor monitor;
+        private MissionMonitor missionMonitor()
+        {
+            return (MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor");
+        }
 
         public ConfigurationWindow()
         {
             InitializeComponent();
 
-            monitor = ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor"));
-            missionsData.ItemsSource = monitor.missions;
+            missionsData.ItemsSource = missionMonitor()?.missions;
 
             MissionMonitorConfiguration configuration = MissionMonitorConfiguration.FromFile();
             missionWarningInt.Text = configuration.missionWarning?.ToString(CultureInfo.InvariantCulture);
-
         }
 
         private void missionsUpdated(object sender, DataTransferEventArgs e)
         {
             // Update the mission monitor's information
-            monitor.writeMissions();
+            missionMonitor()?.writeMissions();
         }
 
         private void warningChanged(object sender, TextChangedEventArgs e)
@@ -39,7 +40,7 @@ namespace EddiMissionMonitor
             try
             {
                 int? warning = string.IsNullOrWhiteSpace(missionWarningInt.Text) ? 60 : Convert.ToInt32(missionWarningInt.Text, CultureInfo.InvariantCulture);
-                ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor")).missionWarning = warning;
+                missionMonitor().missionWarning = warning;
                 configuration.missionWarning = warning;
                 configuration.ToFile();
             }

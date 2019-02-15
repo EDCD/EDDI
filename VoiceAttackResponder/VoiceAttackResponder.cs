@@ -61,7 +61,14 @@ namespace EddiVoiceAttackResponder
 
         public bool Start()
         {
-            return true;
+            if (EDDI.FromVA) 
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         public void Stop()

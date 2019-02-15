@@ -213,10 +213,11 @@ namespace EddiJournalMonitor
 
                                     // Calculate remaining distance to route destination (if it exists)
                                     decimal destDistance = 0;
-                                    string destination = ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor")).GetNextSystem();
+                                    MissionMonitor missionMonitor = (MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor");
+                                    string destination = missionMonitor?.GetNextSystem();
                                     if (!string.IsNullOrEmpty(destination))
                                     {
-                                        destDistance = ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor")).CalculateDistance(systemName, destination);
+                                        destDistance = missionMonitor.CalculateDistance(systemName, destination);
                                     }
 
                                     events.Add(new JumpedEvent(timestamp, systemName, systemAddress, x, y, z, starName, distance, fuelUsed, fuelRemaining, boostUsed, controllingfaction, factions, economy, economy2, security, population, destination, destDistance) { raw = line, fromLoad = fromLogLoad });
@@ -2044,7 +2045,7 @@ namespace EddiJournalMonitor
                                     decimal? quality = JsonParsing.getOptionalDecimal(data, "Quality"); //
                                     string experimentalEffect = JsonParsing.getString(data, "ApplyExperimentalEffect"); //
 
-                                    string ship = ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship Monitor")).GetCurrentShip().model;
+                                    string ship = ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor"))?.GetCurrentShip().model;
                                     Compartment compartment = parseShipCompartment(ship, JsonParsing.getString(data, "Slot")); //
                                     compartment.module = Module.FromEDName(JsonParsing.getString(data, "Module"));
 
@@ -3336,7 +3337,7 @@ namespace EddiJournalMonitor
             }
 
             // Get the controlling faction (system or station) government
-            faction.Government = Government.FromEDName(JsonParsing.getString(data, type + "Government") ?? "None");
+            faction.Government = Government.FromEDName(JsonParsing.getString(data, type + "Government")) ?? Government.None;
 
             return faction;
         }

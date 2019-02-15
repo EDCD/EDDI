@@ -391,7 +391,7 @@ namespace EddiCargoMonitor
                         case "smuggle":
                             {
                                 haulage.status = "Failed";
-                                Mission mission = ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor"))
+                                Mission mission = ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor"))?
                                     .GetMissionWithMissionId(@event.missionid ?? 0);
                                 if (mission != null)
                                 {
@@ -504,7 +504,7 @@ namespace EddiCargoMonitor
 
         private void _handleCargoDepotEvent(CargoDepotEvent @event)
         {
-            Mission mission = ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor"))
+            Mission mission = ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor"))?
                 .GetMissionWithMissionId(@event.missionid ?? 0);
             Cargo cargo = new Cargo();
             Haulage haulage = new Haulage();
@@ -1077,7 +1077,7 @@ namespace EddiCargoMonitor
 
             foreach (CargoInfo info in infoList.Where(i => i.missionid != null).ToList())
             {
-                Mission mission = ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor"))
+                Mission mission = ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor"))?
                     .GetMissionWithMissionId(info.missionid ?? 0);
 
                 Haulage cargoHaulage = cargo.haulageData.FirstOrDefault(h => h.missionid == info.missionid);

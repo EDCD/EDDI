@@ -32,7 +32,7 @@ namespace EddiSpeechService
         public static SpeechSynthesizer synth { get; private set; }
 
         private static bool _eddiSpeaking;
-        public static bool eddiSpeaking
+        public bool eddiSpeaking
         {
             get
             {

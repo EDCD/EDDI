@@ -16,7 +16,6 @@ using System.Runtime.InteropServices;
 using System.Security.Permissions;
 using System.Text;
 using System.Threading;
-using System.Windows;
 using Utilities;
 
 namespace Eddi
@@ -99,19 +98,16 @@ namespace Eddi
         private static readonly object responderLock = new object();
 
         // Information obtained from the companion app service
-        public Commander Cmdr { get; private set; }
         public DateTime ApiTimeStamp { get; private set; }
 
-        // Services made available from EDDI
-        public StarMapService starMapService { get; private set; }
-
         // Information obtained from the configuration
-        public StarSystem HomeStarSystem { get; private set; }
+        public StarSystem HomeStarSystem { get; private set; } = new StarSystem();
         public Station HomeStation { get; private set; }
-        public StarSystem SquadronStarSystem { get; private set; }
+        public StarSystem SquadronStarSystem { get; private set; } = new StarSystem();
 
         // Information obtained from the player journal
-        public string Environment { get; private set; }
+        public Commander Cmdr { get; private set; } // Also includes information from the configuration and companion app service
+        public string Environment { get; set; }
         public StarSystem CurrentStarSystem { get; private set; }
         public StarSystem LastStarSystem { get; private set; }
         public StarSystem NextStarSystem { get; private set; }
@@ -120,7 +116,7 @@ namespace Eddi
         public DateTime JournalTimeStamp { get; set; } = DateTime.MinValue;
 
         // Current vehicle of player
-        public string Vehicle { get; private set; } = Constants.VEHICLE_SHIP;
+        public string Vehicle { get; set; } = Constants.VEHICLE_SHIP;
         public Ship CurrentShip { get; set; }
 
         // Our main window, made accessible via the applicable EDDI Instance
@@ -190,22 +186,21 @@ namespace Eddi
                     Cmdr.squadronallegiance = configuration.SquadronAllegiance;
                     Cmdr.squadronpower = configuration.SquadronPower;
                     Cmdr.squadronfaction = configuration.SquadronFaction;
-                    if (Cmdr.name != null)
+                    if (CompanionAppService.Instance.CurrentState == CompanionAppService.State.Authorized)
                     {
                         Logging.Info("EDDI access to the companion app is enabled");
                     }
                     else
                     {
-                        // If InvokeUpdatePlugin failed then it will have have left an error message, but this once we ignore it
                         Logging.Info("EDDI access to the companion app is disabled");
                     }
 
-                    // Pass our commander name to the StarMapService (if it has been set via the Frontier API) and initialize the StarMapService
-                    if (Cmdr != null && Cmdr.name != null)
+                    // Pass our commander's Elite name to the StarMapService (if it has been set via the Frontier API or an event) and initialize the StarMapService
+                    // (the Elite name may differ from the EDSM name)
+                    if (Cmdr?.name != null)
                     {
-                        StarMapService.commanderName = Cmdr.name;
+                        StarMapService.commanderEliteName = Cmdr.name;
                     }
-                    starMapService = StarMapService.Instance;
                 }
                 else
                 {
@@ -771,10 +766,6 @@ namespace Eddi
                     {
                         passEvent = eventVehicleDestroyed((VehicleDestroyedEvent)@event);
                     }
-                    else if (@event is StatusEvent)
-                    {
-                        passEvent = eventStatus((StatusEvent)@event);
-                    }
                     else if (@event is NearSurfaceEvent)
                     {
                         passEvent = eventNearSurface((NearSurfaceEvent)@event);
@@ -1102,16 +1093,6 @@ namespace Eddi
                 profileUpdateNeeded = true;
                 profileStationRequired = CurrentStation.name;
                 Thread updateThread = new Thread(() => conditionallyRefreshProfile())
-                {
-                    IsBackground = true
-                };
-                updateThread.Start();
-            }
-            else
-            {
-                // Kick off a dummy that triggers a market refresh after a couple of seconds
-                if (theEvent.fromLoad) { return true; } // Don't fire this event when loading pre-existing logs
-                Thread updateThread = new Thread(() => dummyRefreshMarketData())
                 {
                     IsBackground = true
                 };
@@ -1717,23 +1698,6 @@ namespace Eddi
             return true;
         }
 
-        private bool eventStatus(StatusEvent theEvent)
-        {
-            if (Environment != Constants.ENVIRONMENT_WITCH_SPACE)
-            {
-                if (theEvent.status.supercruise)
-                {
-                    Environment = Constants.ENVIRONMENT_SUPERCRUISE;
-                }
-                else
-                {
-                    Environment = Constants.ENVIRONMENT_NORMAL_SPACE;
-                }
-            }
-            Vehicle = theEvent.status.vehicle;
-            return true;
-        }
-
         private bool eventNearSurface(NearSurfaceEvent theEvent)
         {
             // We won't update CurrentStation with this event, as doing so triggers false / premature updates from the Frontier API
@@ -2266,14 +2230,6 @@ namespace Eddi
             // Clear the update info
             profileUpdateNeeded = false;
             profileStationRequired = null;
-        }
-
-        // If we have no access to the companion API but need to trigger a market update then we can call this method
-        private void dummyRefreshMarketData()
-        {
-            Thread.Sleep(2000);
-            Event @event = new MarketInformationUpdatedEvent(DateTime.UtcNow, "profile");
-            eventHandler(@event);
         }
 
         internal static class NativeMethods
