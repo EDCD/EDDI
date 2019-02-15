@@ -228,7 +228,7 @@ Por favor, cierre la otra instancia y pruebe de nuevo.</value>
     <value>Iniciar sesión</value>
   </data>
   <data name="frontier_api_cant_login_from_va" xml:space="preserve">
-    <value>Para iniciar sesión, por favor salga de Voice Attack y ejecute E-D-D-I como una aplicación normal.</value>
+    <value>Para iniciar sesión, por favor salga de VoiceAttack y ejecute EDDI como una aplicación normal.</value>
   </data>
   <data name="frontierApiStatusLabel" xml:space="preserve">
     <value>Estado de la API de Frontier:</value>
