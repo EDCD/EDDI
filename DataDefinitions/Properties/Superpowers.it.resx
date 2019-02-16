@@ -114,7 +114,7 @@
     <comment>Superpower type Independent</comment>
   </data>
   <data name="None" xml:space="preserve">
-    <value>Nessuno</value>
+    <value>Di Nessuno</value>
     <comment>Superpower type None</comment>
   </data>
   <data name="Pirate" xml:space="preserve">
