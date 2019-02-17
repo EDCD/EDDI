@@ -58,10 +58,6 @@ namespace EddiStarMapService
                                     Logging.Info("Configuring EDDI access to EDSM profile data");
                                 }
                             }
-                            if (instance == null)
-                            {
-                                Logging.Info("EDDI access to EDSM profile data could not be configured");
-                            }
                         }
                     }
                 }
