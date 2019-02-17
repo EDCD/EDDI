@@ -45,8 +45,7 @@ namespace EddiVoiceAttackResponder
 
         private static readonly Random random = new Random();
 
-        public static BlockingCollection<Event> EventQueue = new BlockingCollection<Event>();
-        public static Thread eventThread = null;
+        public static ConcurrentQueue<Event> eventQueue = new ConcurrentQueue<Event>();
         public static Thread updaterThread = null;
 
         private static readonly object vaProxyLock = new object();
@@ -65,7 +64,29 @@ namespace EddiVoiceAttackResponder
                 EDDI.Instance.Start();
 
                 // Set up our event responder
-                VoiceAttackResponder.RaiseEvent += (s, theEvent) => updateValuesOnEvent(theEvent, ref vaProxy);
+                VoiceAttackResponder.RaiseEvent += (s, theEvent) =>
+                {
+                    try
+                    {
+                        eventQueue.Enqueue(theEvent);
+                        Thread eventHandler = new Thread(() => dequeueEvent(ref vaProxy))
+                        {
+                            Name = "VoiceAttackEventHandler",
+                            IsBackground = true
+                        };
+                        eventHandler.Start();
+                        eventHandler.Join();
+                    }
+                    catch (ThreadAbortException tax)
+                    {
+                        Thread.ResetAbort();
+                        Logging.Error(JsonConvert.SerializeObject(theEvent), tax);
+                    }
+                    catch (Exception ex)
+                    {
+                        Logging.Error(JsonConvert.SerializeObject(theEvent), ex);
+                    }
+                };
 
                 // Add notifiers for changes in variables we want to react to 
                 // (we can only use event handlers with classes which are always constructed - nullable objects will be updated via responder events)
@@ -144,26 +165,58 @@ namespace EddiVoiceAttackResponder
             }
         }
 
-        public static void updateValuesOnEvent(Event theEvent, ref dynamic vaProxy)
+        private static void dequeueEvent(ref dynamic vaProxy)
+        {
+            if (eventQueue.TryDequeue(out Event @event))
+            {
+                try
+                {
+                    if (@event?.type != null)
+                    {
+                        updateValuesOnEvent(@event, ref vaProxy);
+                        triggerVACommands(@event, ref vaProxy);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Logging.Error("Failed to handle event in VoiceAttack", ex);
+                }
+            }
+        }
+
+        public static void updateValuesOnEvent(Event @event, ref dynamic vaProxy)
         {
             try
             {
                 lock (vaProxyLock)
                 {
-                    vaProxy.SetText("EDDI event", theEvent.type);
+                    vaProxy.SetText("EDDI event", @event.type);
 
                     // Event-specific values  
                     List<string> setKeys = new List<string>();
                     // We start off setting the keys which are official and known  
-                    setEventValues(vaProxy, theEvent, setKeys);
+                    setEventValues(vaProxy, @event, setKeys);
                     // Now we carry out a generic walk through the event object to create whatever we find  
-                    setEventExtendedValues(ref vaProxy, "EDDI " + theEvent.type.ToLowerInvariant(), JsonConvert.DeserializeObject(JsonConvert.SerializeObject(theEvent)), setKeys);
+                    setEventExtendedValues(ref vaProxy, "EDDI " + @event.type.ToLowerInvariant(), JsonConvert.DeserializeObject(JsonConvert.SerializeObject(@event)), setKeys);
 
                     // Update all standard values  
                     setStandardValues(ref vaProxy);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logging.Error("Failed to set variables in VoiceAttack", ex);
+            }
+        }
 
+        private static void triggerVACommands(Event @event, ref dynamic vaProxy)
+        {
+            string commandName = "((EDDI " + @event.type.ToLowerInvariant() + "))";
+            try
+            {
+                lock (vaProxyLock)
+                {
                     // Fire local command if present  
-                    string commandName = "((EDDI " + theEvent.type.ToLowerInvariant() + "))";
                     Logging.Debug("Searching for command " + commandName);
                     if (vaProxy.CommandExists(commandName))
                     {
@@ -175,7 +228,7 @@ namespace EddiVoiceAttackResponder
             }
             catch (Exception ex)
             {
-                Logging.Error("Failed to handle event in VoiceAttack", ex);
+                Logging.Error("Failed to trigger local VoiceAttack command " + commandName, ex);
             }
         }
 
