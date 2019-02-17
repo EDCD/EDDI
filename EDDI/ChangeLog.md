@@ -3,6 +3,8 @@
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
 ### Development
+  * Ship monitor
+    * Fixed a lock-up that could occur when opening the ship monitor from VoiceAttack
   * VoiceAttack responder
     * Improved event responsiveness
     * Reduced CPU utilization 
