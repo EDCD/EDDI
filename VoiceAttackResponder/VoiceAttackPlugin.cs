@@ -22,6 +22,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using Utilities;
 using EddiStarMapService;
+using System.Threading.Tasks;
 
 namespace EddiVoiceAttackResponder
 {
@@ -81,7 +82,7 @@ namespace EddiVoiceAttackResponder
                 shipMonitor.ShipyardUpdatedEvent += (s, e) =>
                 {
                     setShipValues(shipMonitor?.GetCurrentShip(), "Ship", ref vaProxy);
-                    setShipyardValues(shipMonitor?.shipyard?.ToList(), ref vaProxy);
+                    Task.Run(() => setShipyardValues(shipMonitor?.shipyard?.ToList(), ref vaProxy));
                 };
 
                 StatusMonitor statusMonitor = (StatusMonitor)EDDI.Instance.ObtainMonitor("Status monitor");
