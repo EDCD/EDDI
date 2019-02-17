@@ -5,7 +5,7 @@ using EddiDataProviderService;
 using EddiEvents;
 using EddiShipMonitor;
 using EddiSpeechService;
-using EddiStatusMonitor;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -27,6 +27,7 @@ namespace EddiVoiceAttackResponder
         private static Body CurrentStellarBody { get; set; } = new Body();
         private static Station CurrentStation { get; set; } = new Station();
         private static Commander Commander { get; set; } = new Commander();
+        private static List<Ship> vaShipyard { get; set; } = new List<Ship>();
 
         public static void setEventValues(dynamic vaProxy, Event theEvent, List<string> setKeys)
         {
@@ -650,8 +651,22 @@ namespace EddiVoiceAttackResponder
                 int currentStoredShip = 1;
                 foreach (Ship StoredShip in shipyard)
                 {
-                    setShipValues(StoredShip, "Stored ship " + currentStoredShip, ref vaProxy);
-                    currentStoredShip++;
+                    Ship vaShip = vaShipyard.FirstOrDefault(s => s.LocalId == StoredShip.LocalId);
+                    string vaShipString = vaShip == null ? null : JsonConvert.SerializeObject(vaShip);
+                    string storedShipString = JsonConvert.SerializeObject(StoredShip);
+                    if (vaShipString != storedShipString)
+                    {
+                        setShipValues(StoredShip, "Stored ship " + currentStoredShip, ref vaProxy);
+                        currentStoredShip++;
+                        if (vaShipString is null)
+                        {
+                            vaShipyard.Add(JsonConvert.DeserializeObject<Ship>(storedShipString));
+                        }
+                        else
+                        {
+                            vaShip = JsonConvert.DeserializeObject<Ship>(storedShipString);
+                        }
+                    }
                 }
                 vaProxy.SetInt("Stored ship entries", ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor"))?.shipyard.Count);
             }
