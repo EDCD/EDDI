@@ -484,10 +484,10 @@ namespace EddiMissionMonitor
 
         private void handleCargoDepotEvent(CargoDepotEvent @event)
         {
-            updateDat = @event.timestamp;
             if (@event.timestamp > updateDat)
             {
                 _handleCargoDepotEvent(@event);
+                updateDat = @event.timestamp;
                 writeMissions();
             }
         }
@@ -574,9 +574,9 @@ namespace EddiMissionMonitor
 
         private void handleMissionAbandonedEvent(MissionAbandonedEvent @event)
         {
-            updateDat = @event.timestamp;
             if (@event.timestamp > updateDat)
             {
+                updateDat = @event.timestamp;
                 if (_handleMissionAbandonedEvent(@event))
                 {
                     writeMissions();
@@ -601,9 +601,9 @@ namespace EddiMissionMonitor
 
         private void handleMissionAcceptedEvent(MissionAcceptedEvent @event)
         {
-            updateDat = @event.timestamp;
             if (@event.timestamp > updateDat)
             {
+                updateDat = @event.timestamp;
                 if (_handleMissionAcceptedEvent(@event))
                 {
                     writeMissions();
