@@ -107,7 +107,7 @@
     <comment/>
   </data>
   <data name="billion" xml:space="preserve">
-    <value>Miliardi</value>
+    <value>miliardi di</value>
     <comment/>
   </data>
   <data name="dash" xml:space="preserve">
@@ -147,7 +147,7 @@
     <comment/>
   </data>
   <data name="quadrillion" xml:space="preserve">
-    <value>quadrillioni</value>
+    <value>quadrillioni di</value>
     <comment/>
   </data>
   <data name="thousand" xml:space="preserve">
@@ -155,7 +155,7 @@
     <comment/>
   </data>
   <data name="trillion" xml:space="preserve">
-    <value>trilioni</value>
+    <value>trilioni di</value>
     <comment/>
   </data>
   <data name="wellover" xml:space="preserve">
