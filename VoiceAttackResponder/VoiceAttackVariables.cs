@@ -26,6 +26,7 @@ namespace EddiVoiceAttackResponder
         private static StarSystem SquadronStarSystem { get; set; } = new StarSystem();
         private static Body CurrentStellarBody { get; set; } = new Body();
         private static Station CurrentStation { get; set; } = new Station();
+        private static Station HomeStation { get; set; } = new Station();
         private static Commander Commander { get; set; } = new Commander();
         private static List<Ship> vaShipyard { get; set; } = new List<Ship>();
 
@@ -271,7 +272,7 @@ namespace EddiVoiceAttackResponder
             }
             catch (Exception ex)
             {
-                Logging.Error("Failed to set last system", ex);
+                Logging.Error("Failed to set next system", ex);
             }
 
             try
@@ -284,7 +285,20 @@ namespace EddiVoiceAttackResponder
             }
             catch (Exception ex)
             {
-                Logging.Error("Failed to set last system", ex);
+                Logging.Error("Failed to set squadron system", ex);
+            }
+
+            try
+            {
+                if (EDDI.Instance.HomeStarSystem != HomeStarSystem)
+                {
+                    setStarSystemValues(EDDI.Instance.HomeStarSystem, "Home system", ref vaProxy);
+                    HomeStarSystem = EDDI.Instance.HomeStarSystem;
+                }
+            }
+            catch (Exception ex)
+            {
+                Logging.Error("Failed to set home system", ex);
             }
 
             try
@@ -297,7 +311,7 @@ namespace EddiVoiceAttackResponder
             }
             catch (Exception ex)
             {
-                Logging.Error("Failed to set stellar body", ex);
+                Logging.Error("Failed to set current stellar body", ex);
             }
 
             try
@@ -312,6 +326,20 @@ namespace EddiVoiceAttackResponder
             {
                 Logging.Error("Failed to set last station", ex);
             }
+
+            try
+            {
+                if (EDDI.Instance.HomeStation != HomeStation)
+                {
+                    setStationValues(EDDI.Instance.HomeStation, "Home station", ref vaProxy);
+                    HomeStation = EDDI.Instance.HomeStation;
+                }
+            }
+            catch (Exception ex)
+            {
+                Logging.Error("Failed to set home station", ex);
+            }
+
 
             try
             {

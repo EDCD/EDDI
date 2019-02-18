@@ -25,9 +25,6 @@ EDDI makes a large number of values available to augment your existing scripts. 
 ## Commander Variables
 
   * {TXT:Name}: the name of the commander
-  * {TXT:Home system}: the name of the home system of the commander, set from EDDI configuration
-  * {TXT:Home system (spoken)}: the name of the home system of the commander, set from EDDI configuration as would be spoken
-  * {TXT:Home station}: the name of the home station of the commander in the home system, set from EDDI configuration
   * {INT:Combat rating}: the combat rating of the commander, with 0 being Harmless and 8 being Elite
   * {TXT:Combat rank}: the combat rank of the commander, from Harmless to Elite
   * {INT:Trade rating}: the trade rating of the commander, with 0 being Penniless and 8 being Elite
@@ -213,47 +210,19 @@ EDDI makes a large number of values available to augment your existing scripts. 
 
 ### Last System Variables
 
-  * {TXT:Last system name}: the name of the last system
-  * {TXT:Last system name (spoken)}: the name of the last system as would be spoken
-  * {INT:Last system visits}: the number of times the commander has visited the last system (whilst the plugin has been active)
-  * {DATE:Last system previous visit}: the last time the commander visited the last system (empty if this is their first visit)
-  * {DEC:Last system population}: the population of the last system
-  * {TXT:Last system population}: the population of the last system as would be spoken (e.g. "nearly 12 and a half billion")
-  * {TXT:Last system allegiance}: the allegiance of the last system ("Federation", "Empire", "Alliance", "Independant" or empty)
-  * {TXT:Last system government}: the government of the last system (e.g. "Democracy")
-  * {TXT:Last system faction}: the primary faction of the last system (e.g. "The Pilots' Federation")
-  * {TXT:Last system primary economy}: the primary economy of the last system (e.g. "Industrial")
-  * {TXT:Last system state}: the overall state of the last system (e.g. "Boom")
-  * {TXT:Last system security}: the security level in the last system ("High", "Medium", "Low", "None" or empty)
-  * {TXT:Last system power}: the name of the power that controls the last system (e.g. "Felicia Winters")
-  * {TXT:Last system power (spoken)}: the name of the power that controls the last system as would be spoken
-  * {TXT:Last system power state}: the state of the power in the last system (e.g. "Expansion")
-  * {TXT:Last system rank}: the rank of the Commander in the last system (e.g. "Duke" if an Empire system, "Admiral" if a Federation system)
-  * {DEC:Last system X} the X co-ordinate of the last system
-  * {DEC:Last system Y} the Y co-ordinate of the last system
-  * {DEC:Last system Z} the Z co-ordinate of the last system
+  * Like "Current System Variables", except prefixed with `Last system` rather than `System`
 
 ### Next System Variables
 
-  * {TXT:Next system name}: the name of the next system
-  * {TXT:Next system name (spoken)}: the name of the next system as would be spoken
-  * {INT:Next system visits}: the number of times the commander has visited the next system (whilst the plugin has been active)
-  * {DATE:Next system previous visit}: the next time the commander visited the next system (empty if this is their first visit)
-  * {DEC:Next system population}: the population of the next system
-  * {TXT:Next system population}: the population of the next system as would be spoken (e.g. "nearly 12 and a half billion")
-  * {TXT:Next system allegiance}: the allegiance of the next system ("Federation", "Empire", "Alliance", "Independant" or empty)
-  * {TXT:Next system government}: the government of the next system (e.g. "Democracy")
-  * {TXT:Next system faction}: the primary faction of the next system (e.g. "The Pilots' Federation")
-  * {TXT:Next system primary economy}: the primary economy of the next system (e.g. "Industrial")
-  * {TXT:Next system state}: the overall state of the next system (e.g. "Boom")
-  * {TXT:Next system security}: the security level in the next system ("High", "Medium", "Low", "None" or empty)
-  * {TXT:Next system power}: the name of the power that controls the next system (e.g. "Felicia Winters")
-  * {TXT:Next system power (spoken)}: the name of the power that controls the next system as would be spoken
-  * {TXT:Next system power state}: the state of the power in the next system (e.g. "Expansion")
-  * {TXT:Next system rank}: the rank of the Commander in the next system (e.g. "Duke" if an Empire system, "Admiral" if a Federation system)
-  * {DEC:Next system X} the X co-ordinate of the next system
-  * {DEC:Next system Y} the Y co-ordinate of the next system
-  * {DEC:Next system Z} the Z co-ordinate of the next system
+  * Like "Current System Variables", except prefixed with `Next system` rather than `System`
+
+### Home System Variables
+
+  * Like "Current System Variables", except prefixed with `Home system` rather than `System`
+
+### Squadron System Variables
+
+  * Like "Current System Variables", except prefixed with `Squadron system` rather than `System`
 
 ## Current Station Variables
 
@@ -298,6 +267,10 @@ EDDI makes a large number of values available to augment your existing scripts. 
   * {BOOL:Last station has black market}: true if this station has a black market
   * {BOOL:Last station has outfitting}: true if this station has outfitting
   * {BOOL:Last station has shipyard}: true if this station has a shipyard
+
+### Home Station Variables
+
+  * Like "Current Station Variables", except prefixed with `Home station` rather than `Last station`
 
 ## Shipyard Variables
 

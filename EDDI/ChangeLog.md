@@ -8,6 +8,8 @@ Full details of the variables available for each noted event, and VoiceAttack in
   * VoiceAttack responder
     * Improved event responsiveness
     * Reduced CPU utilization 
+    * Restored missing home system variables 
+    * Revised VoiceAttack integration documents with updated guidance on accessing home and squadron variables.
 
 ### 3.3.6
   * Frontier API
