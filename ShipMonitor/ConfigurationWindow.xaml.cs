@@ -110,14 +110,24 @@ namespace EddiShipMonitor
 
         private void shipsUpdated(object sender, DataTransferEventArgs e)
         {
-            // Update the ship monitor's information
-            shipMonitor()?.Save();
+            // Update the ship monitor's 'PhoneticName' information
+            if (e.OriginalSource is TextBlock)
+            {
+                var dg = (DataGrid)e.Source;
+                if (dg.SelectedItem is Ship)
+                {
+                    shipMonitor()?.Save();
+                }
+            }
         }
 
         private void shipsUpdated(object sender, SelectionChangedEventArgs e)
         {
-            // Update the ship monitor's information
-            shipMonitor()?.Save();
+            // Update the ship monitor's 'Role' information
+            if (e.RemovedItems.Count > 0)
+            {
+                shipMonitor()?.Save();
+            }
         }
     }
 

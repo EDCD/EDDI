@@ -2,6 +2,19 @@
 
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
+### Development
+  * Ship monitor
+    * Fixed a lock-up that could occur when opening the ship monitor from VoiceAttack
+  * VoiceAttack responder
+    * Improved event responsiveness
+    * Reduced CPU utilization 
+    * Restored missing home system variables 
+    * Revised VoiceAttack integration documents with updated guidance on accessing home and squadron variables.
+
+### 3.3.6
+  * Frontier API
+    * Fixed missing client ID in 3.3.5
+
 ### 3.3.5
   * Core
     * Miscellaneous minor bug fixes.
