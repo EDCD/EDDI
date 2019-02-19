@@ -1469,71 +1469,62 @@ namespace EddiMissionMonitor
 
         public string UpdateMissionsRoute(string updateSystem = null)
         {
-            // Misisons Route Event variables
+            bool update = true;
             string nextSystem = null;
             decimal nextDistance = 0;
             List<long> missionids = new List<long>();       // List of mission IDs for the next system
+            StarSystem curr = EDDI.Instance?.CurrentStarSystem;
 
-            bool update = true;
-            string currentSystem = EDDI.Instance?.CurrentStarSystem?.name;
             List<string> route = missionsRouteList?.Split('_').ToList();
+            if (route.Count == 0) { update = false; }
 
-            if (route.Count > 0)
+            if (updateSystem == null)
             {
-                // 'Next' system in the mission route list is the 'update' system
-                if (updateSystem == null)
+                updateSystem = route[0];
+
+                // Determine if the 'update' system in the missions route list is the current system & has no pending missions
+                if (curr?.name == updateSystem)
                 {
-                    updateSystem = route[0];
-
-                    // Determine if the 'update' system in the missions route list is the current system & has no pending missions
-                    if (currentSystem == updateSystem)
+                    foreach (Mission mission in missions.Where(m => m.statusEDName != "Fail").ToList())
                     {
-                        foreach (Mission mission in missions.Where(m => m.typeEDName != "Fail").ToList())
+                        // Check if 'next' system is origin system for 'Active' and 'Complete' missions
+                        if (mission.originsystem == updateSystem)
                         {
-                            // Check if 'next' system is origin system for 'Active' and 'Complete' missions
-                            if (mission.originsystem == updateSystem)
-                            {
-                                update = false;
-                            }
+                            update = false;
+                            break;
+                        }
 
-                            // Check if 'next' system is destination system for 'Active' missions
-                            if (mission.typeEDName == "Active")
+                        // Check if 'next' system is destination system for 'Active' missions
+                        if (mission.typeEDName == "Active")
+                        {
+                            if (mission.destinationsystems == null)
                             {
-                                if (mission.destinationsystems == null)
+                                if (mission.destinationsystem == updateSystem)
                                 {
-                                    if (mission.destinationsystem == updateSystem)
+                                    update = false;
+                                    break;
+                                }
+                            }
+                            else
+                            {
+                                foreach (DestinationSystem system in mission.destinationsystems)
+                                {
+                                    if (system.name == updateSystem)
                                     {
                                         update = false;
-                                    }
-                                }
-                                else
-                                {
-                                    foreach (DestinationSystem system in mission.destinationsystems)
-                                    {
-                                        if (system.name == updateSystem)
-                                        {
-                                            update = false;
-                                        }
+                                        break;
                                     }
                                 }
                             }
-                            if (!update) { break; }
                         }
-                    }
-                    else
-                    {
-                        update = false;
+                        if (!update) { break; }
                     }
                 }
             }
-            else
-            {
-                update = false;
-            }
 
+            // Remove 'update' system from the missions route list
             if (update)
             {
-                // Remove 'update' system from the missions route list
                 int index = route.IndexOf(updateSystem);
                 if (index > -1)
                 {
@@ -1547,8 +1538,7 @@ namespace EddiMissionMonitor
                         List<StarSystem> starsystems = DataProviderService.GetSystemsData(route.ToArray(), true, false, false, false, false);
 
                         // Get distance to the next system
-                        StarSystem curr = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(currentSystem, true);
-                        StarSystem dest = starsystems.Find(s => s.name == route[0]);
+                        StarSystem dest = starsystems.Find(s => s.name == nextSystem);
                         nextDistance = CalculateDistance(curr, dest);
 
                         // Calculate remaining route distance
@@ -1575,8 +1565,8 @@ namespace EddiMissionMonitor
                         missionsRouteDistance = 0;
                     }
                 }
-                EDDI.Instance.enqueueEvent(new MissionsRouteEvent(DateTime.Now, "update", nextSystem, missionsRouteList, route.Count(), nextDistance, missionsRouteDistance, missionids));
             }
+            EDDI.Instance.enqueueEvent(new MissionsRouteEvent(DateTime.Now, "update", nextSystem, missionsRouteList, route.Count, nextDistance, missionsRouteDistance, missionids));
             return nextSystem;
         }
 
