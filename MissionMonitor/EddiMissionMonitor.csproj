@@ -107,6 +107,7 @@
     <EmbeddedResource Include="Properties\MissionMonitor.hu.resx" />
     <EmbeddedResource Include="Properties\MissionMonitor.it.resx" />
     <EmbeddedResource Include="Properties\MissionMonitor.ja.resx" />
+    <EmbeddedResource Include="Properties\MissionMonitor.pt-BR.resx" />
     <EmbeddedResource Include="Properties\MissionMonitor.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>MissionMonitor.Designer.cs</LastGenOutput>

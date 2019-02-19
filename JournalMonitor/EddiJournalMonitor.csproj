@@ -121,6 +121,7 @@
     <EmbeddedResource Include="Properties\JournalMonitor.hu.resx" />
     <EmbeddedResource Include="Properties\JournalMonitor.it.resx" />
     <EmbeddedResource Include="Properties\JournalMonitor.ja.resx" />
+    <EmbeddedResource Include="Properties\JournalMonitor.pt-BR.resx" />
     <EmbeddedResource Include="Properties\JournalMonitor.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>JournalMonitor.Designer.cs</LastGenOutput>

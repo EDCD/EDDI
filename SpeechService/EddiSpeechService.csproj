@@ -102,6 +102,7 @@
     <EmbeddedResource Include="Properties\Phonetics.hu.resx" />
     <EmbeddedResource Include="Properties\Phonetics.it.resx" />
     <EmbeddedResource Include="Properties\Phonetics.ja.resx" />
+    <EmbeddedResource Include="Properties\Phonetics.pt-BR.resx" />
     <EmbeddedResource Include="Properties\Phonetics.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Phonetics.Designer.cs</LastGenOutput>
@@ -113,6 +114,7 @@
     <EmbeddedResource Include="Properties\Phrases.hu.resx" />
     <EmbeddedResource Include="Properties\Phrases.it.resx" />
     <EmbeddedResource Include="Properties\Phrases.ja.resx" />
+    <EmbeddedResource Include="Properties\Phrases.pt-BR.resx" />
     <EmbeddedResource Include="Properties\Phrases.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Phrases.Designer.cs</LastGenOutput>

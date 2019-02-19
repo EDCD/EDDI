@@ -396,26 +396,46 @@
     <EmbeddedResource Include="Properties\AtmosphereClass.hu.resx" />
     <EmbeddedResource Include="Properties\AtmosphereClass.it.resx" />
     <EmbeddedResource Include="Properties\AtmosphereClass.ja.resx" />
+    <EmbeddedResource Include="Properties\AtmosphereClass.pt-BR.resx" />
     <EmbeddedResource Include="Properties\AtmosphereClass.ru.resx" />
+    <EmbeddedResource Include="Properties\AtmosphereComposition.pt-BR.resx" />
     <EmbeddedResource Include="Properties\AtmosphereComposition.ru.resx" />
+    <EmbeddedResource Include="Properties\Body.pt-BR.resx" />
     <EmbeddedResource Include="Properties\Body.ru.resx" />
+    <EmbeddedResource Include="Properties\CombatRatings.pt-BR.resx" />
     <EmbeddedResource Include="Properties\CombatRatings.ru.resx" />
+    <EmbeddedResource Include="Properties\Commodities.pt-BR.resx" />
     <EmbeddedResource Include="Properties\Commodities.ru.resx" />
+    <EmbeddedResource Include="Properties\CommodityCategories.pt-BR.resx" />
     <EmbeddedResource Include="Properties\CommodityCategories.ru.resx" />
+    <EmbeddedResource Include="Properties\CQCRatings.pt-BR.resx" />
     <EmbeddedResource Include="Properties\CQCRatings.ru.resx" />
+    <EmbeddedResource Include="Properties\Crimes.pt-BR.resx" />
     <EmbeddedResource Include="Properties\Crimes.ru.resx" />
+    <EmbeddedResource Include="Properties\DataScans.pt-BR.resx" />
     <EmbeddedResource Include="Properties\DataScans.ru.resx" />
+    <EmbeddedResource Include="Properties\Economies.pt-BR.resx" />
     <EmbeddedResource Include="Properties\Economies.ru.resx" />
+    <EmbeddedResource Include="Properties\EmpireRatingsFemale.pt-BR.resx" />
     <EmbeddedResource Include="Properties\EmpireRatingsFemale.ru.resx" />
+    <EmbeddedResource Include="Properties\EmpireRatingsMale.pt-BR.resx" />
     <EmbeddedResource Include="Properties\EmpireRatingsMale.ru.resx" />
+    <EmbeddedResource Include="Properties\ExplorationRatings.pt-BR.resx" />
     <EmbeddedResource Include="Properties\ExplorationRatings.ru.resx" />
+    <EmbeddedResource Include="Properties\FactionStates.pt-BR.resx" />
     <EmbeddedResource Include="Properties\FactionStates.ru.resx" />
+    <EmbeddedResource Include="Properties\FederationRatings.pt-BR.resx" />
     <EmbeddedResource Include="Properties\FederationRatings.ru.resx" />
+    <EmbeddedResource Include="Properties\GameModes.pt-BR.resx" />
     <EmbeddedResource Include="Properties\GameModes.ru.resx" />
+    <EmbeddedResource Include="Properties\Governments.pt-BR.resx" />
     <EmbeddedResource Include="Properties\Governments.ru.resx" />
+    <EmbeddedResource Include="Properties\Happiness.pt-BR.resx" />
     <EmbeddedResource Include="Properties\Happiness.resx" />
     <EmbeddedResource Include="Properties\Happiness.ru.resx" />
+    <EmbeddedResource Include="Properties\LegalStatus.pt-BR.resx" />
     <EmbeddedResource Include="Properties\LegalStatus.ru.resx" />
+    <EmbeddedResource Include="Properties\MaterialCategories.pt-BR.resx" />
     <EmbeddedResource Include="Properties\MaterialCategories.ru.resx" />
     <EmbeddedResource Include="Properties\MaterialLocations.de.resx" />
     <EmbeddedResource Include="Properties\MaterialLocations.es.resx" />
@@ -423,6 +443,7 @@
     <EmbeddedResource Include="Properties\MaterialLocations.hu.resx" />
     <EmbeddedResource Include="Properties\MaterialLocations.it.resx" />
     <EmbeddedResource Include="Properties\MaterialLocations.ja.resx" />
+    <EmbeddedResource Include="Properties\MaterialLocations.pt-BR.resx" />
     <EmbeddedResource Include="Properties\MaterialLocations.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>MaterialLocations.Designer.cs</LastGenOutput>
@@ -479,23 +500,37 @@
     <EmbeddedResource Include="Properties\FactionStates.ja.resx" />
     <EmbeddedResource Include="Properties\FederationRatings.ja.resx" />
     <EmbeddedResource Include="Properties\MaterialLocations.ru.resx" />
+    <EmbeddedResource Include="Properties\Materials.pt-BR.resx" />
     <EmbeddedResource Include="Properties\Materials.ru.resx" />
+    <EmbeddedResource Include="Properties\MissionStatus.pt-BR.resx" />
     <EmbeddedResource Include="Properties\MissionStatus.ru.resx" />
+    <EmbeddedResource Include="Properties\MissionType.pt-BR.resx" />
     <EmbeddedResource Include="Properties\MissionType.ru.resx" />
+    <EmbeddedResource Include="Properties\Modifications.pt-BR.resx" />
     <EmbeddedResource Include="Properties\Modifications.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Modifications.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Modifications.ru.resx" />
+    <EmbeddedResource Include="Properties\Modules.pt-BR.resx" />
     <EmbeddedResource Include="Properties\Modules.ru.resx" />
+    <EmbeddedResource Include="Properties\PassengerType.pt-BR.resx" />
     <EmbeddedResource Include="Properties\PassengerType.ru.resx" />
+    <EmbeddedResource Include="Properties\PlanetClass.pt-BR.resx" />
     <EmbeddedResource Include="Properties\PlanetClass.ru.resx" />
+    <EmbeddedResource Include="Properties\Powers.pt-BR.resx" />
     <EmbeddedResource Include="Properties\Powers.ru.resx" />
+    <EmbeddedResource Include="Properties\Rarities.pt-BR.resx" />
     <EmbeddedResource Include="Properties\Rarities.ru.resx" />
+    <EmbeddedResource Include="Properties\ReserveLevel.pt-BR.resx" />
     <EmbeddedResource Include="Properties\ReserveLevel.ru.resx" />
+    <EmbeddedResource Include="Properties\RingCompositions.pt-BR.resx" />
     <EmbeddedResource Include="Properties\RingCompositions.ru.resx" />
+    <EmbeddedResource Include="Properties\SecurityLevels.pt-BR.resx" />
     <EmbeddedResource Include="Properties\SecurityLevels.ru.resx" />
+    <EmbeddedResource Include="Properties\ShipRoles.pt-BR.resx" />
     <EmbeddedResource Include="Properties\ShipRoles.ru.resx" />
+    <EmbeddedResource Include="Properties\SignalSource.pt-BR.resx" />
     <EmbeddedResource Include="Properties\SignalSource.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>SignalSource.Designer.cs</LastGenOutput>
@@ -708,12 +743,14 @@
     <EmbeddedResource Include="Properties\SecurityLevels.ja.resx" />
     <EmbeddedResource Include="Properties\ShipRoles.ja.resx" />
     <EmbeddedResource Include="Properties\SignalSource.ru.resx" />
+    <EmbeddedResource Include="Properties\SquadronRanks.pt-BR.resx" />
     <EmbeddedResource Include="Properties\SquadronRanks.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>SquadronRanks.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\SquadronRanks.ru.resx" />
     <EmbeddedResource Include="Properties\StarColors.ja.resx" />
+    <EmbeddedResource Include="Properties\StarColors.pt-BR.resx" />
     <EmbeddedResource Include="Properties\StarColors.ru.resx" />
     <EmbeddedResource Include="Properties\StationLargestPad.de.resx" />
     <EmbeddedResource Include="Properties\StationLargestPad.es.resx" />
@@ -721,6 +758,7 @@
     <EmbeddedResource Include="Properties\StationLargestPad.hu.resx" />
     <EmbeddedResource Include="Properties\StationLargestPad.it.resx" />
     <EmbeddedResource Include="Properties\StationLargestPad.ja.resx" />
+    <EmbeddedResource Include="Properties\StationLargestPad.pt-BR.resx" />
     <EmbeddedResource Include="Properties\StationLargestPad.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>StationLargestPad.Designer.cs</LastGenOutput>
@@ -732,6 +770,7 @@
     <EmbeddedResource Include="Properties\StationModels.hu.resx" />
     <EmbeddedResource Include="Properties\StationModels.it.resx" />
     <EmbeddedResource Include="Properties\StationModels.ja.resx" />
+    <EmbeddedResource Include="Properties\StationModels.pt-BR.resx" />
     <EmbeddedResource Include="Properties\StationModels.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>StationModels.Designer.cs</LastGenOutput>
@@ -772,6 +811,7 @@
     <EmbeddedResource Include="Properties\StationService.hu.resx" />
     <EmbeddedResource Include="Properties\StationService.it.resx" />
     <EmbeddedResource Include="Properties\StationService.ja.resx" />
+    <EmbeddedResource Include="Properties\StationService.pt-BR.resx" />
     <EmbeddedResource Include="Properties\StationService.ru.resx" />
     <EmbeddedResource Include="Properties\Superpowers.de.resx" />
     <EmbeddedResource Include="Properties\Superpowers.hu.resx" />
@@ -790,6 +830,7 @@
       <LastGenOutput>ReserveLevel.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Superpowers.ja.resx" />
+    <EmbeddedResource Include="Properties\Superpowers.pt-BR.resx" />
     <EmbeddedResource Include="Properties\Superpowers.ru.resx" />
     <EmbeddedResource Include="Properties\TargetType.de.resx" />
     <EmbeddedResource Include="Properties\TargetType.es.resx" />
@@ -797,6 +838,7 @@
     <EmbeddedResource Include="Properties\TargetType.hu.resx" />
     <EmbeddedResource Include="Properties\TargetType.it.resx" />
     <EmbeddedResource Include="Properties\TargetType.ja.resx" />
+    <EmbeddedResource Include="Properties\TargetType.pt-BR.resx" />
     <EmbeddedResource Include="Properties\TargetType.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>TargetType.Designer.cs</LastGenOutput>
@@ -808,6 +850,7 @@
     <EmbeddedResource Include="Properties\TerraformState.hu.resx" />
     <EmbeddedResource Include="Properties\TerraformState.it.resx" />
     <EmbeddedResource Include="Properties\TerraformState.ja.resx" />
+    <EmbeddedResource Include="Properties\TerraformState.pt-BR.resx" />
     <EmbeddedResource Include="Properties\TerraformState.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>TerraformState.Designer.cs</LastGenOutput>
@@ -819,6 +862,7 @@
     <EmbeddedResource Include="Properties\TradeRatings.hu.resx" />
     <EmbeddedResource Include="Properties\TradeRatings.it.resx" />
     <EmbeddedResource Include="Properties\TradeRatings.ja.resx" />
+    <EmbeddedResource Include="Properties\TradeRatings.pt-BR.resx" />
     <EmbeddedResource Include="Properties\TradeRatings.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>TradeRatings.Designer.cs</LastGenOutput>
@@ -830,6 +874,7 @@
     <EmbeddedResource Include="Properties\Volcanism.hu.resx" />
     <EmbeddedResource Include="Properties\Volcanism.it.resx" />
     <EmbeddedResource Include="Properties\Volcanism.ja.resx" />
+    <EmbeddedResource Include="Properties\Volcanism.pt-BR.resx" />
     <EmbeddedResource Include="Properties\Volcanism.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Volcanism.Designer.cs</LastGenOutput>
@@ -839,6 +884,7 @@
     <EmbeddedResource Include="Properties\Vouchers.hu.resx" />
     <EmbeddedResource Include="Properties\Vouchers.it.resx" />
     <EmbeddedResource Include="Properties\Vouchers.ja.resx" />
+    <EmbeddedResource Include="Properties\Vouchers.pt-BR.resx" />
     <EmbeddedResource Include="Properties\Vouchers.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Vouchers.Designer.cs</LastGenOutput>
