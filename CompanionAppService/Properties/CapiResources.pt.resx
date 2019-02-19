@@ -118,38 +118,4 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   
-  
-  
-  
-  
-  
-  
-  
-  
-  <data name="default_personality_script_filename" xml:space="preserve">
-    <value>eddi.ru.json</value>
-    <comment>Suggest "eddi.&lt;culture-code&gt;.json" e.g. "eddi.fr.json"</comment>
-  </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
 </root>
