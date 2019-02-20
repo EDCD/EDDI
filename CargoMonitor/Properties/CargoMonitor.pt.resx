@@ -117,16 +117,46 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="cargo_monitor_desc" xml:space="preserve">
+    <value>Rastreie informações sobre sua carga.</value>
+  </data>
+  <data name="cargo_monitor_name" xml:space="preserve">
+    <value>Monitor da Carga</value>
+  </data>
+  <data name="header_haulage" xml:space="preserve">
+    <value>Transporte</value>
+    <comment>Tons of haulage (mission cargo) carried</comment>
+  </data>
+  <data name="header_name" xml:space="preserve">
+    <value>Nome</value>
+    <comment>Name of cargo, such as "Gold"</comment>
+  </data>
+  <data name="header_need" xml:space="preserve">
+    <value>Necessário</value>
+    <comment>Tons needed for missions</comment>
+  </data>
+  <data name="para2" xml:space="preserve">
+    <value>Se o seu inventário estiver incorreto, você precisará iniciar ou reiniciar o Elite e essa informação será atualizada.</value>
+  </data>
+  <data name="para1" xml:space="preserve">
+    <value>Abaixo está uma lista de toda a sua carga.</value>
+  </data>
+  <data name="header_type" xml:space="preserve">
+    <value>Tipo</value>
+    <comment>Type of cargo, such as "Metals"</comment>
+  </data>
+  <data name="header_stolen" xml:space="preserve">
+    <value>Roubada</value>
+    <comment>Tons of stolen cargo carried</comment>
+  </data>
+  <data name="header_price" xml:space="preserve">
+    <value>Preço por Tonelada</value>
+  </data>
+  <data name="header_owned" xml:space="preserve">
+    <value>Possuída</value>
+    <comment>Tons of owned cargo carried</comment>
+  </data>
+  <data name="para3" xml:space="preserve">
+    <value>Nota: Para missões de esquadrão nas quais você ainda não fez uma coleta ou entrega, a mercadoria será exibida como "Desconhecida". A mercadoria será atualizada na coleta ou entrega.</value>
+  </data>
 </root>
