@@ -117,8 +117,20 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
-  
-  
+  <data name="NotTerraformable" xml:space="preserve">
+    <value>Nem terraformálható</value>
+    <comment>Terraform state "Null"</comment>
+  </data>
+  <data name="Terraformable" xml:space="preserve">
+    <value>Terraformálásra jelölve</value>
+    <comment>Terraform state "Terraformable"</comment>
+  </data>
+  <data name="Terraformed" xml:space="preserve">
+    <value>Terraformálva</value>
+    <comment>Terraform state "Terraformed"</comment>
+  </data>
+  <data name="Terraforming" xml:space="preserve">
+    <value>Terraformálás alatt</value>
+    <comment>Terraform state "Terraforming"</comment>
+  </data>
 </root>
