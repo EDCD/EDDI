@@ -117,20 +117,59 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Ammonia" xml:space="preserve">
+    <value>Amônia</value>
+    <comment>Atmosphere class "Ammonia"</comment>
+  </data>
+  <data name="AmmoniaAndOxygen" xml:space="preserve">
+    <value>Amônia e oxigênio</value>
+    <comment>Atmosphere class "Ammonia and oxygen"</comment>
+  </data>
+  <data name="AmmoniaRich" xml:space="preserve">
+    <value>Rico em amônia</value>
+    <comment>Atmosphere class "Ammonia-rich"</comment>
+  </data>
+  <data name="Argon" xml:space="preserve">
+    <value>Argônio</value>
+    <comment>Atmosphere class "Argon"</comment>
+  </data>
+  <data name="ArgonRich" xml:space="preserve">
+    <value>Rico em argônio</value>
+    <comment>Atmosphere class "Argon-rich"</comment>
+  </data>
+  <data name="CarbonDioxide" xml:space="preserve">
+    <value>Dióxido de carbono</value>
+    <comment>Atmosphere class "Carbon dioxide"</comment>
+  </data>
+  <data name="CarbonDioxideRich" xml:space="preserve">
+    <value>Rico em dióxido de carbono</value>
+    <comment>Atmosphere class "Carbon dioxide-rich"</comment>
+  </data>
+  <data name="Helium" xml:space="preserve">
+    <value>Hélio</value>
+    <comment>Atmosphere class "Helium"</comment>
+  </data>
+  <data name="MetallicVapour" xml:space="preserve">
+    <value>Vapor metálico</value>
+    <comment>Atmosphere class "Metallic vapour"</comment>
+  </data>
+  <data name="Methane" xml:space="preserve">
+    <value>Metano</value>
+    <comment>Atmosphere class "Methane"</comment>
+  </data>
+  <data name="MethaneRich" xml:space="preserve">
+    <value>Rico em metano</value>
+    <comment>Atmosphere class "Methane-rich"</comment>
+  </data>
   
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="NeonRich" xml:space="preserve">
+    <value>Rico em neônio</value>
+    <comment>Atmosphere class "Neon-rich"</comment>
+  </data>
+  <data name="Nitrogen" xml:space="preserve">
+    <value>Nitrogênio</value>
+    <comment>Atmosphere class "Nitrogen"</comment>
+  </data>
   
   
   
