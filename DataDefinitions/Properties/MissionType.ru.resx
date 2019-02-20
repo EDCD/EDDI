@@ -117,34 +117,94 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="Altruism" xml:space="preserve">
+    <value>Благотворительные</value>
+  </data>
+  <data name="AltruismCredits" xml:space="preserve">
+    <value>Благотворительные</value>
+  </data>
+  <data name="Assassinate" xml:space="preserve">
+    <value>Заказное убийство</value>
+  </data>
+  <data name="AssassinateWing" xml:space="preserve">
+    <value>Заказное убийство для крыла</value>
+  </data>
+  <data name="Collect" xml:space="preserve">
+    <value>Поиск товаров</value>
+  </data>
+  <data name="CollectWing" xml:space="preserve">
+    <value>Поиск товаров для крыла</value>
+  </data>
+  <data name="CommunityGoal" xml:space="preserve">
+    <value>Общественные Цели</value>
+  </data>
+  <data name="Courier" xml:space="preserve">
+    <value>Доставка данных</value>
+  </data>
+  <data name="Delivery" xml:space="preserve">
+    <value>Доставка товара</value>
+  </data>
+  <data name="DeliveryWing" xml:space="preserve">
+    <value>Доставка товара для крыла</value>
+  </data>
+  <data name="Disable" xml:space="preserve">
+    <value>Уничтожение беспилотников</value>
+  </data>
+  <data name="DisableWing" xml:space="preserve">
+    <value>Wing Disable</value>
+  </data>
+  <data name="GenericPermit1" xml:space="preserve">
+    <value>Разрешение на приобретение</value>
+  </data>
+  <data name="Hack" xml:space="preserve">
+    <value>Взлом базы</value>
+  </data>
+  <data name="LongDistanceExpedition" xml:space="preserve">
+    <value>Экспедиция</value>
+  </data>
+  <data name="Massacre" xml:space="preserve">
+    <value>Резня</value>
+  </data>
+  <data name="MassacreThargoid" xml:space="preserve">
+    <value>Уничтожение Таргоидов</value>
+  </data>
+  <data name="MassacreWing" xml:space="preserve">
+    <value>Уничтожение целей длля крыла</value>
+  </data>
+  <data name="Mining" xml:space="preserve">
+    <value>Шахтерские</value>
+  </data>
+  <data name="MiningWing" xml:space="preserve">
+    <value>Шахтерские для крыла</value>
+  </data>
+  <data name="None" xml:space="preserve">
+    <value>Ни один</value>
+  </data>
+  <data name="PassengerBulk" xml:space="preserve">
+    <value>Транспорт</value>
+  </data>
+  <data name="PassengerVIP" xml:space="preserve">
+    <value>Транспорт</value>
+  </data>
+  <data name="Piracy" xml:space="preserve">
+    <value>Пиратские</value>
+  </data>
+  <data name="Rescue" xml:space="preserve">
+    <value>Спасательные операции</value>
+  </data>
+  <data name="Salvage" xml:space="preserve">
+    <value>Разборка</value>
+  </data>
+  <data name="Scan" xml:space="preserve">
+    <value>Сканирование поверхности</value>
+  </data>
+  <data name="Sightseeing" xml:space="preserve">
+    <value>Экскурсии</value>
+  </data>
+  <data name="Smuggle" xml:space="preserve">
+    <value>Контрабанда</value>
+  </data>
+  <data name="Special" xml:space="preserve">
+    <value>Особые</value>
+  </data>
 </root>
