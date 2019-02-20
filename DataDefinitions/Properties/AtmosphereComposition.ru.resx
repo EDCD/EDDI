@@ -117,17 +117,53 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Ammonia" xml:space="preserve">
+    <value>Аммиак</value>
+    <comment>Atmosphere Composition Ammonia</comment>
+  </data>
+  <data name="CarbonDioxide" xml:space="preserve">
+    <value>Углерод</value>
+    <comment>Atmosphere Composition Carbon_dioxide</comment>
+  </data>
+  <data name="Iron" xml:space="preserve">
+    <value>Железо</value>
+    <comment>Atmosphere Composition Iron</comment>
+  </data>
+  <data name="Methane" xml:space="preserve">
+    <value>Метан</value>
+    <comment>Atmosphere Composition Methane</comment>
+  </data>
+  <data name="Nitrogen" xml:space="preserve">
+    <value>Азот</value>
+    <comment>Atmosphere Composition Nitrogen</comment>
+  </data>
+  <data name="Silicates" xml:space="preserve">
+    <value>Кремний</value>
+    <comment>Atmosphere Composition Silicates</comment>
+  </data>
   
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="Water" xml:space="preserve">
+    <value>Вода</value>
+    <comment>Atmosphere Composition Water</comment>
+  </data>
+  <data name="Oxygen" xml:space="preserve">
+    <value>Кислород</value>
+    <comment>Atmosphere Composition Oxygen</comment>
+  </data>
+  <data name="Hydrogen" xml:space="preserve">
+    <value>Водород</value>
+    <comment>Atmosphere Composition Hydrogen</comment>
+  </data>
+  <data name="Helium" xml:space="preserve">
+    <value>Гелий</value>
+    <comment>Atmosphere Composition Helium</comment>
+  </data>
+  <data name="Neon" xml:space="preserve">
+    <value>Неон</value>
+    <comment>Atmosphere Composition Neon</comment>
+  </data>
+  <data name="Argon" xml:space="preserve">
+    <value>Аргон</value>
+    <comment>Atmosphere Composition Argon</comment>
+  </data>
 </root>
