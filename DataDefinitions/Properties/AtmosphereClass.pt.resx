@@ -161,7 +161,10 @@
     <value>Rico em metano</value>
     <comment>Atmosphere class "Methane-rich"</comment>
   </data>
-  
+  <data name="Neon" xml:space="preserve">
+    <value>Neônio</value>
+    <comment>Atmosphere class "Neon"</comment>
+  </data>
   <data name="NeonRich" xml:space="preserve">
     <value>Rico em neônio</value>
     <comment>Atmosphere class "Neon-rich"</comment>
@@ -170,13 +173,40 @@
     <value>Nitrogênio</value>
     <comment>Atmosphere class "Nitrogen"</comment>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="None" xml:space="preserve">
+    <value>Sem atmosfera</value>
+    <comment>Atmosphere class "None"</comment>
+  </data>
+  <data name="Oxygen" xml:space="preserve">
+    <value>Oxigênio</value>
+    <comment>Atmosphere class "Oxygen"</comment>
+  </data>
+  <data name="SilicateVapour" xml:space="preserve">
+    <value>Vapor de silicato</value>
+    <comment>Atmosphere class "Silicate vapour"</comment>
+  </data>
+  <data name="SuitableForWaterBasedLife" xml:space="preserve">
+    <value>Adequado para a vida à base de água</value>
+    <comment>Atmosphere class "Suitable for water-based life"</comment>
+  </data>
+  <data name="SulphurDioxide" xml:space="preserve">
+    <value>Dióxido de enxofre</value>
+    <comment>Atmosphere class "Sulphur dioxide"</comment>
+  </data>
+  <data name="Water" xml:space="preserve">
+    <value>Água</value>
+    <comment>Atmosphere class "Water"</comment>
+  </data>
+  <data name="WaterRich" xml:space="preserve">
+    <value>Rico em água</value>
+    <comment>Atmosphere class "Water-rich"</comment>
+  </data>
+  <data name="EarthLike" xml:space="preserve">
+    <value>Adequado para a vida à base de água</value>
+    <comment>Atmosphere class "EarthLike"</comment>
+  </data>
+  <data name="GasGiant" xml:space="preserve">
+    <value>Gigante gasoso</value>
+    <comment>Atmosphere class "Gas giant"</comment>
+  </data>
 </root>
