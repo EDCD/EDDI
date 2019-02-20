@@ -3,3 +3,8 @@ files:
     ignore:
       - '*.*.resx'
     translation: /**/%file_name%.%two_letters_code%.resx
+    languages_mapping: {
+      "two_letters_code" : {
+        "pt-BR" : "pt-BR",
+      }
+    }
