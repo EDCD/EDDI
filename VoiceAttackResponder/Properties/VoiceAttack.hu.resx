@@ -125,9 +125,13 @@
   </data>
   
   
+  <data name="p4_link" xml:space="preserve">
+    <value>az EDDI főoldalán</value>
+  </data>
   
-  
-  
+  <data name="p5_link" xml:space="preserve">
+    <value>az EDDI főoldalán</value>
+  </data>
   <data name="run_eddi_standalone" xml:space="preserve">
     <value>Kérlek zárd be a Voice Attack-ot és futtasd Eddi-t önállóan hogy frissíteni lehessen.</value>
   </data>
