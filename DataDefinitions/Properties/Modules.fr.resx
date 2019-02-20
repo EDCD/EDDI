@@ -573,5 +573,8 @@
     <value>Surfaceur abrasif</value>
     <comment>Module Abrasion Blaster</comment>
   </data>
-  
+  <data name="CompositionScanner" xml:space="preserve">
+    <value>Scanner de composition</value>
+    <comment>Module Composition Scanner</comment>
+  </data>
 </root>
