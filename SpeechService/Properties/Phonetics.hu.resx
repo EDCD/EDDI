@@ -153,8 +153,14 @@
     <value>bei</value>
     <comment>Optional phonetic pronunciation for Bei</comment>
   </data>
-  
-  
+  <data name="BeiDou_Bei" xml:space="preserve">
+    <value>beidou bei</value>
+    <comment>Optional phonetic pronunciation for BeiDou_Bei</comment>
+  </data>
+  <data name="BeiDou_Dou" xml:space="preserve">
+    <value>Beidú dú</value>
+    <comment>Optional phonetic pronunciation for BeiDou_Dou</comment>
+  </data>
   <data name="Blanco" xml:space="preserve">
     <value>blankó</value>
     <comment>Optional phonetic pronunciation for Blanco</comment>
@@ -201,7 +207,10 @@
     <value>csi</value>
     <comment>Optional phonetic pronunciation for Chi</comment>
   </data>
-  
+  <data name="ChiPersei_Chi" xml:space="preserve">
+    <value>csiperszei csi</value>
+    <comment>Optional phonetic pronunciation for ChiPersei_Chi</comment>
+  </data>
   <data name="ChiPersei_Persei" xml:space="preserve">
     <value>Csiperszej perszej</value>
     <comment>Optional phonetic pronunciation for ChiPersei_Persei</comment>
@@ -244,8 +253,14 @@
     <value>eta</value>
     <comment>Optional phonetic pronunciation for Eta</comment>
   </data>
-  
-  
+  <data name="EtaCarina_Carina" xml:space="preserve">
+    <value>eta karina karina</value>
+    <comment>Optional phonetic pronunciation for EtaCarina_Carina</comment>
+  </data>
+  <data name="EtaCarina_Eta" xml:space="preserve">
+    <value>etakarina eta</value>
+    <comment>Optional phonetic pronunciation for EtaCarina_Eta</comment>
+  </data>
   
   <data name="fei" xml:space="preserve">
     <value>fei</value>
@@ -271,7 +286,10 @@
     <value>Grúm</value>
     <comment>Optional phonetic pronunciation for grom</comment>
   </data>
-  
+  <data name="hecate" xml:space="preserve">
+    <value>Hecset</value>
+    <comment>Optional phonetic pronunciation for hecate</comment>
+  </data>
   <data name="Herculis" xml:space="preserve">
     <value>herkulisz</value>
     <comment>Optional phonetic pronunciation for Herculis</comment>
@@ -292,7 +310,10 @@
     <value>Hájdrí</value>
     <comment>Optional phonetic pronunciation for Hydrae</comment>
   </data>
-  
+  <data name="i" xml:space="preserve">
+    <value>áj</value>
+    <comment>Optional phonetic pronunciation for i</comment>
+  </data>
   <data name="ibootis_bootis" xml:space="preserve">
     <value>í bútisz</value>
     <comment>Optional phonetic pronunciation for ibootis_bootis</comment>
@@ -413,7 +434,10 @@
   
   
   
-  
+  <data name="ShuiWei_Wei" xml:space="preserve">
+    <value>suivej vej</value>
+    <comment>Optional phonetic pronunciation for ShuiWei_Wei</comment>
+  </data>
   
   
   
@@ -425,7 +449,10 @@
     <value>tau</value>
     <comment>Optional phonetic pronunciation for Tau</comment>
   </data>
-  
+  <data name="TauCeti_Ceti" xml:space="preserve">
+    <value>Ceti</value>
+    <comment>Optional phonetic pronunciation for TauCeti_Ceti</comment>
+  </data>
   
   
   
