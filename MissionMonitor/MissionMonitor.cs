@@ -653,8 +653,6 @@ namespace EddiMissionMonitor
                     passengerwanted = @event.passengerwanted
                 };
 
-                string type = mission.typeEDName.ToLowerInvariant();
-
                 // Get the faction state (Boom, Bust, Civil War, etc), if available
                 for (int i = 2; i < mission.name.Split('_').Count(); i++)
                 {
@@ -671,39 +669,6 @@ namespace EddiMissionMonitor
                         mission.factionstate = factionState.localizedName;
                         break;
                     }
-                }
-
-                // Mission returns to origin
-                switch (type)
-                {
-                    case "altruism":
-                    case "altruismcredits":
-                    case "assassinate":
-                    case "assassinatewing":
-                    case "collect":
-                    case "collectwing":
-                    case "disable":
-                    case "genericpermit1":
-                    case "hack":
-                    case "longdistanceexpedition":
-                    case "massacre":
-                    case "massacrethargoid":
-                    case "massacrewing":
-                    case "mining":
-                    case "piracy":
-                    case "rescue":
-                    case "salvage":
-                    case "scan":
-                    case "sightseeing":
-                        {
-                            mission.originreturn = true;
-                        }
-                        break;
-                    default:
-                        {
-                            mission.originreturn = false;
-                        }
-                        break;
                 }
 
                 // Missions with multiple destinations
@@ -726,6 +691,7 @@ namespace EddiMissionMonitor
                 else
                 {
                     // Populate destination system and station, depending on mission type
+                    string type = mission.typeEDName.ToLowerInvariant();
                     switch (type)
                     {
                         case "altruism":
@@ -1478,7 +1444,7 @@ namespace EddiMissionMonitor
             List<string> route = missionsRouteList?.Split('_').ToList();
             if (route.Count == 0) { update = false; }
 
-            if (updateSystem == null)
+            else if (updateSystem == null)
             {
                 updateSystem = route[0];
 
@@ -1487,35 +1453,40 @@ namespace EddiMissionMonitor
                 {
                     foreach (Mission mission in missions.Where(m => m.statusEDName != "Fail").ToList())
                     {
-                        // Check if 'next' system is origin system for 'Active' and 'Complete' missions
-                        if (mission.originsystem == updateSystem)
+                        string type = mission.typeEDName.ToLowerInvariant();
+                        switch (type)
                         {
-                            update = false;
-                            break;
-                        }
+                            case "assassinate":
+                            case "courier":
+                            case "delivery":
+                            case "disable":
+                            case "hack":
+                            case "massacre":
+                            case "passengerbulk":
+                            case "passengervip":
+                            case "rescue":
+                            case "salvage":
+                            case "scan":
+                            case "sightseeing":
+                            case "smuggle":
+                                {
+                                    // Check if 'next' system is origin system for 'Active' and 'Complete' missions
+                                    if (mission.originsystem == updateSystem) { update = false; }
 
-                        // Check if 'next' system is destination system for 'Active' missions
-                        if (mission.typeEDName == "Active")
-                        {
-                            if (mission.destinationsystems == null)
-                            {
-                                if (mission.destinationsystem == updateSystem)
-                                {
-                                    update = false;
-                                    break;
-                                }
-                            }
-                            else
-                            {
-                                foreach (DestinationSystem system in mission.destinationsystems)
-                                {
-                                    if (system.name == updateSystem)
+                                    // Check if 'next' system is destination system for 'Active' missions
+                                    else if (mission.typeEDName == "Active")
                                     {
-                                        update = false;
-                                        break;
+                                        if (mission.destinationsystems == null)
+                                        {
+                                            if (mission.destinationsystem == updateSystem) { update = false; }
+                                        }
+                                        else
+                                        {
+                                            if (mission.destinationsystems.Where(d => d.name == updateSystem).Any()) { update = false; }
+                                        }
                                     }
                                 }
-                            }
+                                break;
                         }
                         if (!update) { break; }
                     }
