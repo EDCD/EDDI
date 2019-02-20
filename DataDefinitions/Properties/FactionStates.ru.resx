@@ -123,8 +123,14 @@
   
   
   
-  
-  
+  <data name="Boom" xml:space="preserve">
+    <value>Бум</value>
+    <comment>Faction state Boom</comment>
+  </data>
+  <data name="Expansion" xml:space="preserve">
+    <value>Экспансия</value>
+    <comment>Faction state Expansion</comment>
+  </data>
   
   
   
