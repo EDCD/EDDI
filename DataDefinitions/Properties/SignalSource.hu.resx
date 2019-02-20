@@ -117,30 +117,105 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="MULTIPLAYER_SCENARIO42_TITLE" xml:space="preserve">
+    <value>Navigációs kommunikációs irányadó</value>
+    <comment>Nav beacon</comment>
+  </data>
+  <data name="MULTIPLAYER_SCENARIO80_TITLE" xml:space="preserve">
+    <value>Átmeneti navigációs irányadó</value>
+    <comment>Compromised nav beacon</comment>
+  </data>
+  <data name="USS" xml:space="preserve">
+    <value>Azonosítatlan jelforrás</value>
+    <comment>Unidentified Signal Source</comment>
+  </data>
+  <data name="Warzone_PointRace_High" xml:space="preserve">
+    <value>Magas intenzitású csatatér</value>
+    <comment>Combat Zone (High Intensity)</comment>
+  </data>
+  <data name="Warzone_PointRace_Med" xml:space="preserve">
+    <value>Közepes intenzitású csatatér</value>
+    <comment>Combat Zone (Medium Intensity)</comment>
+  </data>
+  <data name="Warzone_PointRace_Low" xml:space="preserve">
+    <value>Alacsony intenzitású csatatér</value>
+    <comment>Combat Zone (Low Intensity)</comment>
+  </data>
+  <data name="USS_Type_Salvage" xml:space="preserve">
+    <value>Alacsony értékű kibocsátás</value>
+    <comment>Salvage signal</comment>
+  </data>
+  <data name="USS_Type_Aftermath" xml:space="preserve">
+    <value>Harci utóhatás</value>
+    <comment>Aftermatch signal</comment>
+  </data>
+  <data name="USS_Type_Anomaly" xml:space="preserve">
+    <value>Anomália</value>
+    <comment>Anomaly signal</comment>
+  </data>
+  <data name="USS_Type_Ceremonial" xml:space="preserve">
+    <value>Ceremoniális jelzés</value>
+    <comment>Ceremonial signal</comment>
+  </data>
+  <data name="USS_Type_VeryValuableSalvage" xml:space="preserve">
+    <value>Nagy értékű kibocsátás</value>
+    <comment>VeryValuable signal</comment>
+  </data>
+  <data name="USS_Type_ValuableSalvage" xml:space="preserve">
+    <value>Kódolt kibocsátás</value>
+    <comment>Valuable signal</comment>
+  </data>
+  <data name="USS_Type_NonHuman" xml:space="preserve">
+    <value>Nem emberi jelforrás</value>
+    <comment>NonHuman signal</comment>
+  </data>
+  <data name="USS_Type_WeaponsFire" xml:space="preserve">
+    <value>Fegyverhasználat</value>
+    <comment>WeaponsFire signal</comment>
+  </data>
+  <data name="USS_Type_MissionTarget" xml:space="preserve">
+    <value>Küldetési célpont</value>
+    <comment>MissionTarget signal</comment>
+  </data>
+  <data name="USS_Type_Convoy" xml:space="preserve">
+    <value>Konvoj diszperziós minta</value>
+    <comment>Convoy signal</comment>
+  </data>
+  <data name="USS_Type_DistressSignal" xml:space="preserve">
+    <value>Segélykérő hívás</value>
+    <comment>Distress signal</comment>
+  </data>
+  <data name="USS_Type_TradingBeacon" xml:space="preserve">
+    <value>Kereskedői irányadó</value>
+    <comment>TradingBeacon signal</comment>
+  </data>
+  <data name="MULTIPLAYER_SCENARIO78_TITLE" xml:space="preserve">
+    <value>Magas intenzitású bányászati kitermelő hely</value>
+    <comment>ResourceExtraction Site (High Intensity)</comment>
+  </data>
+  <data name="MULTIPLAYER_SCENARIO77_TITLE" xml:space="preserve">
+    <value>Alacsony intenzitású bányászati kitermelő hely</value>
+    <comment>Resource Extraction site (Low)</comment>
+  </data>
+  <data name="MULTIPLAYER_SCENARIO14_TITLE" xml:space="preserve">
+    <value>Bányászati kitermelő hely</value>
+    <comment>Resource Extraction Site</comment>
+  </data>
+  <data name="MULTIPLAYER_SCENARIO79_TITLE" xml:space="preserve">
+    <value>Kockázatos bányászati kitermelő hely</value>
+    <comment>Resource Extraction Site [Hazardous]</comment>
+  </data>
+  <data name="NumberStation" xml:space="preserve">
+    <value>Regisztrálatlan kommunikációs irányadó</value>
+    <comment>NumberStation</comment>
+  </data>
+  <data name="Warzone_TG" xml:space="preserve">
+    <value>AntiXeno konfliktus zóna</value>
+    <comment>Thargoid conflict zone</comment>
+  </data>
+  <data name="ListeningPost" xml:space="preserve">
+    <value>Megfigyelési pont</value>
+    <comment>ListeningPost</comment>
+  </data>
   
 </root>
