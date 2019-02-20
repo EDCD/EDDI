@@ -99,6 +99,17 @@
   </resheader>
   
   
+  <data name="Celebrity" xml:space="preserve">
+    <value>Celeb</value>
+  </data>
+  
+  
+  <data name="Doctor" xml:space="preserve">
+    <value>Orvos</value>
+  </data>
+  <data name="Explorer" xml:space="preserve">
+    <value>Felfedező</value>
+  </data>
   
   
   
@@ -111,10 +122,7 @@
   
   
   
-  
-  
-  
-  
-  
-  
+  <data name="Whistleblower" xml:space="preserve">
+    <value>Politikai fogoly</value>
+  </data>
 </root>
