@@ -167,6 +167,7 @@
     <None Include="eddi.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="eddi.pt-BR.json" />
     <None Include="eddi.ru.json" />
     <None Include="packages.config" />
     <None Include="Variables.md">
