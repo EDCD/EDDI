@@ -157,7 +157,9 @@
   <data name="p1" xml:space="preserve">
     <value>Itt láthatja a hajóit és megadhatja egyedi szerepkörüket. Az információt látják a reagálók valamint szükség van rá a kívánt akciókhoz rendelt szkriptekhez is.</value>
   </data>
-  
+  <data name="p2" xml:space="preserve">
+    <value>Ha a hajó neve nehezen kiejthető az EDDI számára, hozzárendelhet egy kiejthetőbb változatot</value>
+  </data>
   <data name="p3" xml:space="preserve">
     <value>. Például ha a hajó neve 'Pride of Achenar' akkor a beszélt neve 'praɪdɒvˈakɜːnɑ' lesz ( szóközök nélkül a fonetikus verzióban).</value>
   </data>

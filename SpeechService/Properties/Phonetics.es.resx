@@ -187,7 +187,10 @@
   
   
   
-  
+  <data name="hudson" xml:space="preserve">
+    <value>ˈhʌdsən</value>
+    <comment>Optional phonetic pronunciation for hudson</comment>
+  </data>
   
   
   
@@ -215,7 +218,10 @@
   
   
   
-  
+  <data name="mata" xml:space="preserve">
+    <value>ˈmaɪə</value>
+    <comment>Optional phonetic pronunciation for mata</comment>
+  </data>
   
   
   

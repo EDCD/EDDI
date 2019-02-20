@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -59,46 +59,46 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
           <xsd:element name="metadata">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0"/>
               </xsd:sequence>
-              <xsd:attribute name="name" use="required" type="xsd:string" />
-              <xsd:attribute name="type" type="xsd:string" />
-              <xsd:attribute name="mimetype" type="xsd:string" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" use="required" type="xsd:string"/>
+              <xsd:attribute name="type" type="xsd:string"/>
+              <xsd:attribute name="mimetype" type="xsd:string"/>
+              <xsd:attribute ref="xml:space"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="assembly">
             <xsd:complexType>
-              <xsd:attribute name="alias" type="xsd:string" />
-              <xsd:attribute name="name" type="xsd:string" />
+              <xsd:attribute name="alias" type="xsd:string"/>
+              <xsd:attribute name="name" type="xsd:string"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="data">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"/>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"/>
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"/>
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"/>
+              <xsd:attribute ref="xml:space"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="resheader">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" />
+              <xsd:attribute name="name" type="xsd:string" use="required"/>
             </xsd:complexType>
           </xsd:element>
         </xsd:choice>
@@ -117,4 +117,240 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="carbon" xml:space="preserve">
+    <value>Obtido a partir de prospecção de superfície, mineração de asteroides e mineração de anéis de gelo.</value>
+    <comment>Material location Carbon</comment>
+  </data>
+  <data name="iron" xml:space="preserve">
+    <value>Obtido a partir de prospecção de superfície, mineração de asteroides ou mineração de anéis de gelo.</value>
+    <comment>Material location Iron</comment>
+  </data>
+  <data name="nickel" xml:space="preserve">
+    <value>Obtido a partir de prospecção de superfície, mineração de asteroides ou mineração de anéis de gelo.</value>
+    <comment>Material location Nickel</comment>
+  </data>
+  <data name="phosphorus" xml:space="preserve">
+    <value>Obtido a partir de prospecção de superfície, mineração de asteroides ou mineração de gelo.</value>
+    <comment>Material location Phosphorus</comment>
+  </data>
+  <data name="sulphur" xml:space="preserve">
+    <value>Obtido a partir de prospecção de superfície, mineração de asteroides ou mineração de anéis de gelo.</value>
+    <comment>Material location Sulphur</comment>
+  </data>
+  <data name="arsenic" xml:space="preserve">
+    <value>Obtido a partir de prospecção de superfície, mineração de asteroides ou como recompensa de missão.</value>
+    <comment>Material location Arsenic</comment>
+  </data>
+  <data name="chromium" xml:space="preserve">
+    <value>Obtido a partir de prospecção de superfície, mineração de asteroides em anéis rochosos imaculados ou mineração de anéis de gelo.</value>
+    <comment>Material location Chromium</comment>
+  </data>
+  <data name="germanium" xml:space="preserve">
+    <value>Obtido a partir de prospecção de superfície ou como recompensa de missão, especialmente em sistemas que sofrem de doença.</value>
+    <comment>Material location Germanium</comment>
+  </data>
+  <data name="manganese" xml:space="preserve">
+    <value>Obtido de prospecção de superfície ou como recompensa de missão.</value>
+    <comment>Material location Manganese</comment>
+  </data>
+  <data name="vanadium" xml:space="preserve">
+    <value>Obtido a partir de prospecção de superfície, mineração de anéis metálicos imaculados ou de mineração de anéis de gelo.</value>
+    <comment>Material location Vanadium</comment>
+  </data>
+  <data name="zinc" xml:space="preserve">
+    <value>Obtido a partir de prospecção de superfície.</value>
+    <comment>Material location Zinc</comment>
+  </data>
+  <data name="cadmium" xml:space="preserve">
+    <value>Obtido a partir de prospecção de superfície ou mineração de asteroides.</value>
+    <comment>Material location Cadmium</comment>
+  </data>
+  <data name="mercury" xml:space="preserve">
+    <value>Obtido a partir de prospecção de superfície.</value>
+    <comment>Material location Mercury</comment>
+  </data>
+  <data name="molybdenum" xml:space="preserve">
+    <value>Obtido a partir de prospecção de superfície ou mineração de asteroides.</value>
+    <comment>Material location Molybdenum</comment>
+  </data>
+  <data name="niobium" xml:space="preserve">
+    <value>Obtido a partir de prospecção de superfície ou mineração de asteroides.</value>
+    <comment>Material location Niobium</comment>
+  </data>
+  <data name="tin" xml:space="preserve">
+    <value>Obtido a partir de prospecção de superfície ou mineração de asteroides em áreas com reservas imaculadas.</value>
+    <comment>Material location Tin</comment>
+  </data>
+  <data name="tungsten" xml:space="preserve">
+    <value>Obtido a partir de prospecção de superfície.</value>
+    <comment>Material location Tungsten</comment>
+  </data>
+  <data name="ruthenium" xml:space="preserve">
+    <value>Obtido a partir de prospecção de superfície.</value>
+    <comment>Material location Ruthenium</comment>
+  </data>
+  <data name="selenium" xml:space="preserve">
+    <value>Obtido de prospecção de superfície ou como recompensa de missão.</value>
+    <comment>Material location Selenium</comment>
+  </data>
+  <data name="technetium" xml:space="preserve">
+    <value>Obtido a partir de prospecção de superfície.</value>
+    <comment>Material location Technetium</comment>
+  </data>
+  <data name="tellurium" xml:space="preserve">
+    <value>Obtido a partir de prospecção de superfície.</value>
+    <comment>Material location Tellurium</comment>
+  </data>
+  <data name="yttrium" xml:space="preserve">
+    <value>Obtido a partir de prospecção de superfície.</value>
+    <comment>Material location Yttrium</comment>
+  </data>
+  <data name="zirconium" xml:space="preserve">
+    <value>Obtido a partir de prospecção de superfície ou mineração de asteroides.</value>
+    <comment>Material location Zirconium</comment>
+  </data>
+  <data name="antimony" xml:space="preserve">
+    <value>Obtido a partir de prospecção de superfície.</value>
+    <comment>Material location Antimony</comment>
+  </data>
+  <data name="polonium" xml:space="preserve">
+    <value>Obtido de prospecção de superfície ou como recompensa de missão.</value>
+    <comment>Material location Polonium</comment>
+  </data>
+  <data name="bulkscandata" xml:space="preserve">
+    <value>Obtido através de escaneamento de naves de transporte ou como recompensa de missão.</value>
+    <comment>Material location Anomalous Bulk Scan Data</comment>
+  </data>
+  <data name="disruptedwakeechoes" xml:space="preserve">
+    <value>Obtido através do escaneamento do rastro de distorção de fase de naves ou como recompensa da missão, especialmente em sistemas com economias em auge.</value>
+    <comment>Material location Atypical Disrupted Wake Echoes</comment>
+  </data>
+  <data name="shieldcyclerecordings" xml:space="preserve">
+    <value>Obtido através de escaneamento de naves de transporte ou como recompensa de missão.</value>
+    <comment>Material location Distorted Shield Cycle Recordings</comment>
+  </data>
+  <data name="scrambledemissiondata" xml:space="preserve">
+    <value>Obtido a partir do escaneamento de naves, fontes de sinal ou como recompensa de missão.</value>
+    <comment>Material location Exceptional Scrambled Emission Data</comment>
+  </data>
+  <data name="legacyfirmware" xml:space="preserve">
+    <value>Obtidos através do escaneamento de pontos de dados de superfície, satélites orbitando instalações e planetas parecidos com a Terra populosos, ou como recompensa de missão.</value>
+    <comment>Material location Specialised Legacy Firmware</comment>
+  </data>
+  <data name="encryptedfiles" xml:space="preserve">
+    <value>Obtido de fontes de sinal, incluindo fontes de sinal de superfície, ou como recompensa de missão. Estes tendem a ser mais comuns em sistemas com economias em auge.</value>
+    <comment>Material location Unusual Encrypted Files</comment>
+  </data>
+  <data name="ancienthistoricaldata" xml:space="preserve">
+    <value>Obtido das antigas ruínas da espécie alienígena conhecida como os Guardiões.</value>
+    <comment>Material location Pattern Gamma Obelisk Data</comment>
+  </data>
+  <data name="fsdtelemetry" xml:space="preserve">
+    <value>Obtido através do escaneamento do rastro de distorção de fase de naves ou como recompensa da missão.</value>
+    <comment>Material location Anomalous FSD Telemetry</comment>
+  </data>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
 </root>

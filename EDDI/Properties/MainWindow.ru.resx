@@ -117,51 +117,142 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="access_beta" xml:space="preserve">
+    <value>Доступ к бета версии EDDI</value>
+  </data>
+  <data name="EDDI_status_label" xml:space="preserve">
+    <value>Статус EDDI: </value>
+  </data>
+  <data name="paragraph_0" xml:space="preserve">
+    <value>обладает большим количеством функций, которые можно настраивать отдельно. Существует три разных группы.</value>
+  </data>
+  <data name="paragraph_1" xml:space="preserve">
+    <value>Первая группа получает и управляет основной информацией, используемой EDDI. Это вкладки «Commander Details», «Frontier API» и «Text-to-Speech». Вам необходимо настроить их для того, чтобы EDDI имел полный доступ к вашей информации Elite: Dangerous.</value>
+  </data>
+  <data name="paragraph_2" xml:space="preserve">
+    <value>Вторая группа получает информацию о событиях. Это вкладки, оканчивающиеся на «данные». Они получают различные игровые события и требуют минимальной настройки, но это необходимо сделать, что бы они смогли корректно работать.</value>
+  </data>
+  <data name="paragraph_3" xml:space="preserve">
+    <value>Третья группа реагирует на события. Это вкладки, оканчивающиеся на «респондент». Их можно настроить, но они будут работать "из коробки".</value>
+  </data>
+  <data name="paragraph_4" xml:space="preserve">
+    <value>Вы можете узнать больше информации о функционале EDDI на</value>
+  </data>
+  <data name="report_issue" xml:space="preserve">
+    <value>Сообщить о проблеме</value>
+  </data>
+  <data name="troubleshoot_common_issues" xml:space="preserve">
+    <value>Информация об устранении неполадок</value>
+    <comment>A hyperlink to the troubleshooting URL (in english)</comment>
+  </data>
+  <data name="verbose_logging_checkbox" xml:space="preserve">
+    <value>Активировать "verbose logging" (только если вас об этом попросили разработчики EDDI)</value>
+  </data>
+  <data name="verbose_logging_desc" xml:space="preserve">
+    <value>Если "verbose logging" активирован, на рабочем столе будет создан ZIP архив с логами, который уже готов для отправки на GitHub для решения проблемы. Никакой личной информации в логах не сохраняется.</value>
+  </data>
+  <data name="version_hyperlink" xml:space="preserve">
+    <value>Версия:</value>
+  </data>
+  <data name="wiki_hyperlink" xml:space="preserve">
+    <value>project wiki</value>
+  </data>
+  <data name="choose_lang_label" xml:space="preserve">
+    <value>Выберите язык EDDI (требуется перезапуск EDDI):</value>
+  </data>
+  <data name="tab_frontier_desc" xml:space="preserve">
+    <value>Frontier имеет API, который позволяет EDDI получать информацию о ваших кораблях, рынке на текущей станции и тому подобное. Эти данные не доступны где либо ещё. Если вы хотите, чтобы EDDI получал и использовал эту информацию, вам нужно нажать кнопку «Вход» и авторизовать EDDI на сервере Frontier для этой возможности.</value>
+  </data>
+  <data name="tab_frontier_header" xml:space="preserve">
+    <value>Frontier API</value>
+  </data>
+  <data name="tab_frontier_reset_desc" xml:space="preserve">
+    <value>Если у вас проблемы с подключением, вы можете его сбросить и попробовать ещё раз, обычно это помогает.</value>
+  </data>
+  <data name="tab_tts_desc" xml:space="preserve">
+    <value>EDDI использует свой собственный механизм наложения эффектов на text-to-speech, который обрабатывает голос в зависимости от повреждения корабля и размера кабины. Вы можете настроить параметры этого эффекта голоса здесь.</value>
+  </data>
+  <data name="tab_tts_distort_label" xml:space="preserve">
+    <value>Искажать голос при повреждении корабля:</value>
+  </data>
+  <data name="tab_tts_header" xml:space="preserve">
+    <value>Синтез речи</value>
+  </data>
+  <data name="tab_tts_level_label" xml:space="preserve">
+    <value>Уровень обработки голоса:</value>
+  </data>
+  <data name="tab_tts_phonetic_speech_desc" xml:space="preserve">
+    <value>EDDI использует фонетическую речь, чтобы произносить различные трудно произносимые слова и ставить паузы между речью. Некоторые голоса, часто Microsoft, имеют проблемы с фонетической речью, и это приводит к зависанию или падению EDDI. Если у вас это происхходит, попробуйте проверить опцию ниже</value>
+  </data>
+  <data name="tab_tts_rate_label" xml:space="preserve">
+    <value>Скорость речи:</value>
+  </data>
+  <data name="tab_tts_test_button" xml:space="preserve">
+    <value>Тест речи</value>
+  </data>
+  <data name="tab_tts_test_damaged_button" xml:space="preserve">
+    <value>Тест речи (при сильных повреждениях)</value>
+  </data>
+  <data name="tab_tts_test_ship_label" xml:space="preserve">
+    <value>Корабль для теста речи:</value>
+  </data>
+  <data name="tab_tts_voice_label" xml:space="preserve">
+    <value>Голос:</value>
+  </data>
+  <data name="tab_tts_volume_label" xml:space="preserve">
+    <value>Громкость речи:</value>
+  </data>
+  <data name="upgrade_button" xml:space="preserve">
+    <value>Обновление EDDI</value>
+  </data>
+  <data name="reset_button" xml:space="preserve">
+    <value>Сброс</value>
+  </data>
+  <data name="tab_tts_test_desc" xml:space="preserve">
+    <value>Вы можете проверить, как будет звучать речь. Обратите внимание, что если голос несовместим, будет использована речь по умолчанию.</value>
+  </data>
+  <data name="tab_tts_disable_phonetic_speech_label" xml:space="preserve">
+    <value>Отключить фонетическую речь:</value>
+  </data>
+  <data name="tab_tts_disable_phonetic_speech_note" xml:space="preserve">
+    <value>(это отключит все функции, использующие речевые теги SSML, как отмечено в файле справки речевого респондента)</value>
+  </data>
+  <data name="tab_tts_icao_desc" xml:space="preserve">
+    <value>EDDI может использовать ICAO, например, произносить «альфа», а не «А», когда произносит имена звезд и тел. Это может облегчить понимание сложных системных имен, но для произнесения требуется больше времени. Если вы хотите услышать произношение ICAO, включите опцию ниже. Обратите внимание, что функция не будет работать, если вы отключили фонетическую речь выше.</value>
+  </data>
+  <data name="tab_tts_icao_label" xml:space="preserve">
+    <value>Включить ICAO:</value>
+  </data>
+  <data name="tab_commander_details_header" xml:space="preserve">
+    <value>Данные Командира</value>
+  </data>
+  <data name="tab_commander_gender" xml:space="preserve">
+    <value>Предпочтительный пол для местоимений и названий:</value>
+  </data>
+  <data name="tab_commander_gender_f" xml:space="preserve">
+    <value>Женский</value>
+  </data>
+  <data name="tab_commander_gender_m" xml:space="preserve">
+    <value>Мужской</value>
+  </data>
+  <data name="tab_commander_gender_n" xml:space="preserve">
+    <value>Ни то, ни другое</value>
+  </data>
+  <data name="tab_commander_home_station" xml:space="preserve">
+    <value>Домашняя станция:</value>
+  </data>
+  <data name="tab_commander_home_system" xml:space="preserve">
+    <value>Домашняя система:</value>
+  </data>
+  <data name="tab_commander_par1" xml:space="preserve">
+    <value>Вы можете указать название конкретной системы, которую считаете домом, а также станцию внутри этой системы. Если вы это сделаете, то информация об этой системе и станции будет предоставлена "респондентам" EDDI.</value>
+  </data>
+  <data name="tab_commander_squadron_name" xml:space="preserve">
+    <value>Название эксадры:</value>
+  </data>
+  <data name="tab_commander_squadron_system" xml:space="preserve">
+    <value>Система эскадры:</value>
+  </data>
   
   
   

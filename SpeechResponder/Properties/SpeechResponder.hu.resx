@@ -163,7 +163,9 @@
   <data name="delete_script_message" xml:space="preserve">
     <value>Biztos benne, hogy törölni szeretné a "{0}" szkriptet?</value>
   </data>
-  
+  <data name="desc" xml:space="preserve">
+    <value>Szkriptelt beszélt szöveggel rendelkező eseményre való reagálás, az eseményre jellemző információ alapján történik. Alapértelmezetten nincs minden eseménynél szkriptelt reagálás. Ha a szkript üres, akkor a hozzá tartozó 'teszt' és 'megtekintés' gombok le vannak tiltva.</value>
+  </data>
   <data name="edit_script" xml:space="preserve">
     <value>Szerkesztés</value>
   </data>

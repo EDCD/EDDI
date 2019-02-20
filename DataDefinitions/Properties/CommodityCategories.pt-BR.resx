@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -59,46 +59,46 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
           <xsd:element name="metadata">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0"/>
               </xsd:sequence>
-              <xsd:attribute name="name" use="required" type="xsd:string" />
-              <xsd:attribute name="type" type="xsd:string" />
-              <xsd:attribute name="mimetype" type="xsd:string" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" use="required" type="xsd:string"/>
+              <xsd:attribute name="type" type="xsd:string"/>
+              <xsd:attribute name="mimetype" type="xsd:string"/>
+              <xsd:attribute ref="xml:space"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="assembly">
             <xsd:complexType>
-              <xsd:attribute name="alias" type="xsd:string" />
-              <xsd:attribute name="name" type="xsd:string" />
+              <xsd:attribute name="alias" type="xsd:string"/>
+              <xsd:attribute name="name" type="xsd:string"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="data">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"/>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"/>
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"/>
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"/>
+              <xsd:attribute ref="xml:space"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="resheader">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" />
+              <xsd:attribute name="name" type="xsd:string" use="required"/>
             </xsd:complexType>
           </xsd:element>
         </xsd:choice>
@@ -117,4 +117,72 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Chemicals" xml:space="preserve">
+    <value>Produtos Químicos</value>
+    <comment>Commodity category Chemicals</comment>
+  </data>
+  <data name="ConsumerItems" xml:space="preserve">
+    <value>Bens de Consumo</value>
+    <comment>Commodity category ConsumerItems</comment>
+  </data>
+  <data name="Foods" xml:space="preserve">
+    <value>Alimentos</value>
+    <comment>Commodity category Foods</comment>
+  </data>
+  <data name="IndustrialMaterials" xml:space="preserve">
+    <value>Materiais Industriais</value>
+    <comment>Commodity category IndustrialMaterials</comment>
+  </data>
+  <data name="Machinery" xml:space="preserve">
+    <value>Maquinaria</value>
+    <comment>Commodity category Machinery</comment>
+  </data>
+  <data name="Medicines" xml:space="preserve">
+    <value>Medicamentos</value>
+    <comment>Commodity category Medicines</comment>
+  </data>
+  <data name="Metals" xml:space="preserve">
+    <value>Metais</value>
+    <comment>Commodity category Metals</comment>
+  </data>
+  <data name="Minerals" xml:space="preserve">
+    <value>Minerais</value>
+    <comment>Commodity category Minerals</comment>
+  </data>
+  <data name="Narcotics" xml:space="preserve">
+    <value>Drogas Legais</value>
+    <comment>Commodity category Narcotics</comment>
+  </data>
+  <data name="NonMarketable" xml:space="preserve">
+    <value>Não-Comerciável</value>
+    <comment>Commodity category NonMarketable</comment>
+  </data>
+  <data name="Powerplay" xml:space="preserve">
+    <value>Powerplay</value>
+    <comment>Commodity category Powerplay</comment>
+  </data>
+  <data name="Salvage" xml:space="preserve">
+    <value>Resgate</value>
+    <comment>Commodity category Salvage</comment>
+  </data>
+  <data name="Technology" xml:space="preserve">
+    <value>Tecnologia</value>
+    <comment>Commodity category Technology</comment>
+  </data>
+  <data name="Textiles" xml:space="preserve">
+    <value>Têxteis</value>
+    <comment>Commodity category Textiles</comment>
+  </data>
+  <data name="Unknown" xml:space="preserve">
+    <value>Desconhecido</value>
+    <comment>Commodity category Unknown</comment>
+  </data>
+  <data name="Waste" xml:space="preserve">
+    <value>Resíduos</value>
+    <comment>Commodity category Waste</comment>
+  </data>
+  <data name="Weapons" xml:space="preserve">
+    <value>Armas</value>
+    <comment>Commodity category Weapons</comment>
+  </data>
 </root>

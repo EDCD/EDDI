@@ -117,24 +117,64 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="AmmoniaWorld" xml:space="preserve">
+    <value>Ammónia világ</value>
+  </data>
+  <data name="EarthLikeBody" xml:space="preserve">
+    <value>Földszerű bolygó</value>
+  </data>
+  <data name="GasGiantWithAmmoniaBasedLife" xml:space="preserve">
+    <value>Gázóriás ammónia alapú életformával</value>
+  </data>
+  <data name="GasGiantWithWaterBasedLife" xml:space="preserve">
+    <value>Gázóriás víz alapú életformával</value>
+  </data>
+  <data name="HeliumGasGiant" xml:space="preserve">
+    <value>Héliumalapú gázóriás</value>
+  </data>
+  <data name="HeliumRichGasGiant" xml:space="preserve">
+    <value>Héliumdús gázóriás</value>
+  </data>
+  <data name="HighMetalContentBody" xml:space="preserve">
+    <value>Magas fémtartalmú bolygó</value>
+  </data>
+  <data name="IcyBody" xml:space="preserve">
+    <value>Jégbolygó</value>
+  </data>
+  <data name="MetalRichBody" xml:space="preserve">
+    <value>Fémben gazdag bolygó</value>
+  </data>
+  <data name="RockyBody" xml:space="preserve">
+    <value>Szikla bolygó</value>
+  </data>
+  <data name="RockyIceBody" xml:space="preserve">
+    <value>Köves-jeges bolygó</value>
+  </data>
+  <data name="SudarskyClassIGasGiant" xml:space="preserve">
+    <value>I. osztályú gázóriás</value>
+  </data>
+  <data name="SudarskyClassIIGasGiant" xml:space="preserve">
+    <value>II. osztályú gázóriás</value>
+  </data>
+  <data name="SudarskyClassIIIGasGiant" xml:space="preserve">
+    <value>III. osztályú gázóriás</value>
+  </data>
+  <data name="SudarskyClassIVGasGiant" xml:space="preserve">
+    <value>IV. osztályú gázóriás</value>
+  </data>
+  <data name="SudarskyClassVGasGiant" xml:space="preserve">
+    <value>V. osztályú gázóriás</value>
+  </data>
+  <data name="WaterGiant" xml:space="preserve">
+    <value>Víz óriás</value>
+  </data>
+  <data name="WaterGiantWithLife" xml:space="preserve">
+    <value>Vízórás élettel</value>
+  </data>
+  <data name="WaterWorld" xml:space="preserve">
+    <value>Vízvilág</value>
+  </data>
+  <data name="None" xml:space="preserve">
+    <value>Semmi</value>
+  </data>
 </root>

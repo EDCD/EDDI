@@ -117,27 +117,96 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="Ammonia" xml:space="preserve">
+    <value>Ammónia</value>
+    <comment>Atmosphere class "Ammonia"</comment>
+  </data>
+  <data name="AmmoniaAndOxygen" xml:space="preserve">
+    <value>Ammónia és oxigén</value>
+    <comment>Atmosphere class "Ammonia and oxygen"</comment>
+  </data>
+  <data name="AmmoniaRich" xml:space="preserve">
+    <value>Ammóniadús</value>
+    <comment>Atmosphere class "Ammonia-rich"</comment>
+  </data>
+  <data name="Argon" xml:space="preserve">
+    <value>Argon</value>
+    <comment>Atmosphere class "Argon"</comment>
+  </data>
+  <data name="ArgonRich" xml:space="preserve">
+    <value>Argondús</value>
+    <comment>Atmosphere class "Argon-rich"</comment>
+  </data>
+  <data name="CarbonDioxide" xml:space="preserve">
+    <value>Szén dioxid</value>
+    <comment>Atmosphere class "Carbon dioxide"</comment>
+  </data>
+  <data name="CarbonDioxideRich" xml:space="preserve">
+    <value>Szén dioxidban dús</value>
+    <comment>Atmosphere class "Carbon dioxide-rich"</comment>
+  </data>
+  <data name="Helium" xml:space="preserve">
+    <value>Hélium</value>
+    <comment>Atmosphere class "Helium"</comment>
+  </data>
+  <data name="MetallicVapour" xml:space="preserve">
+    <value>Fémgőzös</value>
+    <comment>Atmosphere class "Metallic vapour"</comment>
+  </data>
+  <data name="Methane" xml:space="preserve">
+    <value>Metán</value>
+    <comment>Atmosphere class "Methane"</comment>
+  </data>
+  <data name="MethaneRich" xml:space="preserve">
+    <value>Metándús</value>
+    <comment>Atmosphere class "Methane-rich"</comment>
+  </data>
+  <data name="Neon" xml:space="preserve">
+    <value>Neon</value>
+    <comment>Atmosphere class "Neon"</comment>
+  </data>
+  <data name="NeonRich" xml:space="preserve">
+    <value>Neondús</value>
+    <comment>Atmosphere class "Neon-rich"</comment>
+  </data>
+  <data name="Nitrogen" xml:space="preserve">
+    <value>Nitrogén</value>
+    <comment>Atmosphere class "Nitrogen"</comment>
+  </data>
+  <data name="None" xml:space="preserve">
+    <value>Légkör nélküli</value>
+    <comment>Atmosphere class "None"</comment>
+  </data>
+  <data name="Oxygen" xml:space="preserve">
+    <value>Oxigén</value>
+    <comment>Atmosphere class "Oxygen"</comment>
+  </data>
+  <data name="SilicateVapour" xml:space="preserve">
+    <value>Szilikát gőzös</value>
+    <comment>Atmosphere class "Silicate vapour"</comment>
+  </data>
+  <data name="SuitableForWaterBasedLife" xml:space="preserve">
+    <value>Vízalapú életre alkalmas</value>
+    <comment>Atmosphere class "Suitable for water-based life"</comment>
+  </data>
+  <data name="SulphurDioxide" xml:space="preserve">
+    <value>Kén-dioxid</value>
+    <comment>Atmosphere class "Sulphur dioxide"</comment>
+  </data>
+  <data name="Water" xml:space="preserve">
+    <value>Víz</value>
+    <comment>Atmosphere class "Water"</comment>
+  </data>
+  <data name="WaterRich" xml:space="preserve">
+    <value>Vízgőzben dús</value>
+    <comment>Atmosphere class "Water-rich"</comment>
+  </data>
+  <data name="EarthLike" xml:space="preserve">
+    <value>Vízalapú életre alkalmas</value>
+    <comment>Atmosphere class "EarthLike"</comment>
+  </data>
+  <data name="GasGiant" xml:space="preserve">
+    <value>Gázóriás</value>
+    <comment>Atmosphere class "Gas giant"</comment>
+  </data>
 </root>

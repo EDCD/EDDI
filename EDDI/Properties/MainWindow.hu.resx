@@ -123,12 +123,18 @@
   <data name="EDDI_status_label" xml:space="preserve">
     <value>EDDI státusz: </value>
   </data>
-  
-  
+  <data name="paragraph_0" xml:space="preserve">
+    <value>külön beállítható szolgáltatásai vannak. Három különböző tétel van.</value>
+  </data>
+  <data name="paragraph_1" xml:space="preserve">
+    <value>Az első csoport megszerzi és kezeli az alap információkat amelyeket EDDI használ. Ezek a 'Commander Details', 'Frontier API' és 'Text-to Speech' fülek. Ezeken végig kéne menned és beállítani hogy EDDI-nek teljes hozzáférése legyen az Elite: Dangerous informácioidhoz.</value>
+  </data>
   <data name="paragraph_2" xml:space="preserve">
     <value>A második csoport megszerzi az események információit. Ezek a fülek a amelyek Monitorral végződnek. Ezek megszerzik az eseményeket különböző helyekről és némi konfigurációt igényelnek mielőtt használhatóak lesznek.</value>
   </data>
-  
+  <data name="paragraph_3" xml:space="preserve">
+    <value>A harmadik csoport eseményeire reagál. Vannak fülek amik 'reagálók'-ra végződnek. Ezek különböző beállítási lehetőségeket tartalmaznak de működni fognak az alap beállításokkal is.</value>
+  </data>
   <data name="paragraph_4" xml:space="preserve">
     <value>További információkat olvashat az EDDI funkcióriól a</value>
   </data>
@@ -139,7 +145,9 @@
     <value>Általános problémák megoldása</value>
     <comment>A hyperlink to the troubleshooting URL (in english)</comment>
   </data>
-  
+  <data name="verbose_logging_checkbox" xml:space="preserve">
+    <value>Széles körű naplózás engedélyezése (csak amennyiben erre felkérést kapott az EDDI fejlesztőitől)</value>
+  </data>
   
   <data name="version_hyperlink" xml:space="preserve">
     <value>Verzió:</value>
@@ -167,7 +175,9 @@
   <data name="tab_tts_level_label" xml:space="preserve">
     <value>Hangfeldolgozás szintje:</value>
   </data>
-  
+  <data name="tab_tts_phonetic_speech_desc" xml:space="preserve">
+    <value>Az EDDI fonetikus beszédet alkalmaz a különböző nehezen kimondható szavak felolvasásához és szünetet tesz minden felolvasás közé, Egyes hangoknak, többnyire a Microsoft-éinak, gondja akadhat a fonetikus beszéddel ami az EDDI lefagyásához vagy bezárásához vezethet. Ha ilyesmit tapasztal próbálja ki az alábbi opciót</value>
+  </data>
   <data name="tab_tts_rate_label" xml:space="preserve">
     <value>Beszéd sebessége:</value>
   </data>
@@ -189,20 +199,30 @@
   <data name="upgrade_button" xml:space="preserve">
     <value>EDDI frissítése</value>
   </data>
-  
-  
+  <data name="reset_button" xml:space="preserve">
+    <value>Visszaállítás</value>
+  </data>
+  <data name="tab_tts_test_desc" xml:space="preserve">
+    <value>Alul tesztelheti a hangzást. Ha a hang inkompatibilis, az alapként beállított hangot fogja használni.</value>
+  </data>
   <data name="tab_tts_disable_phonetic_speech_label" xml:space="preserve">
     <value>Fonetikus beszéd kikapcsolása:</value>
   </data>
   <data name="tab_tts_disable_phonetic_speech_note" xml:space="preserve">
     <value>(ez kikapcsolja az összes SSML beszéd címkét használó funkciót, ahogy az a Speech Responder segítség fájljában is megtalálható)</value>
   </data>
-  
+  <data name="tab_tts_icao_desc" xml:space="preserve">
+    <value>Az EDDI képes az ICAO használatára, például használhatja az 'alpha'-t az 'A' helyet amikor az égitestek nevét kimondja. Ez megkönnyítheti a rendszer nevek megértését de több ideig tart a felolvasása. Amennyiben szertné meghallgatni az ICAO kiejtését jelölje be az alábbi opciót. Ez az opció nem működik ha a fonetikus beszéd ki van kapcsolva.</value>
+  </data>
   <data name="tab_tts_icao_label" xml:space="preserve">
     <value>ICAO engedélyezése:</value>
   </data>
-  
-  
+  <data name="tab_commander_details_header" xml:space="preserve">
+    <value>Parancsnok adatok</value>
+  </data>
+  <data name="tab_commander_gender" xml:space="preserve">
+    <value>Előnyben részesített nem, megszólitáshoz és rangokhoz:</value>
+  </data>
   <data name="tab_commander_gender_f" xml:space="preserve">
     <value>Nő</value>
   </data>
@@ -212,9 +232,15 @@
   <data name="tab_commander_gender_n" xml:space="preserve">
     <value>Egyik sem</value>
   </data>
-  
-  
-  
+  <data name="tab_commander_home_station" xml:space="preserve">
+    <value>Honállomás:</value>
+  </data>
+  <data name="tab_commander_home_system" xml:space="preserve">
+    <value>Honos rendszer:</value>
+  </data>
+  <data name="tab_commander_par1" xml:space="preserve">
+    <value>Megadhatja a rendszer és állomás nevét amit leginkább az otthonának tekint. Ha megteszi, akkor ezen rendszer és állomás adatai elérhetőek lesznek az EDDI reagálóinak.</value>
+  </data>
   
   
   

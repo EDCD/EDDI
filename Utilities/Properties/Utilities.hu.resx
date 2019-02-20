@@ -121,12 +121,18 @@
     <value>Hajó</value>
     <comment>ship</comment>
   </data>
-  
+  <data name="srv" xml:space="preserve">
+    <value>Es r vé</value>
+    <comment>srv</comment>
+  </data>
   <data name="fighter" xml:space="preserve">
     <value>Vadászgép</value>
     <comment>fighter</comment>
   </data>
-  
+  <data name="witch_space" xml:space="preserve">
+    <value>Hipertér</value>
+    <comment>witch_space</comment>
+  </data>
   <data name="supercruise" xml:space="preserve">
     <value>Szupercirkálás</value>
     <comment>supercruise</comment>

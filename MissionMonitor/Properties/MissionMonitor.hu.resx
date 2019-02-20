@@ -117,15 +117,31 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="header_destinationstation" xml:space="preserve">
+    <value>Célállomás</value>
+  </data>
+  <data name="header_destinationsystem" xml:space="preserve">
+    <value>Célrendszer</value>
+  </data>
+  <data name="header_missionid" xml:space="preserve">
+    <value>Küldetés azonosító</value>
+  </data>
+  <data name="header_remaining" xml:space="preserve">
+    <value>Fennmaradó</value>
+  </data>
+  <data name="header_status" xml:space="preserve">
+    <value>Státusz</value>
+  </data>
+  <data name="header_type" xml:space="preserve">
+    <value>Típus</value>
+  </data>
   
   
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="para1" xml:space="preserve">
+    <value>Az alábbi lista tartalmazza az összes küldetésed.</value>
+  </data>
+  <data name="para2" xml:space="preserve">
+    <value>Megjegyzés: Ha a küldetéslista nem helyes vagy inkorrekt. Indítsd el vagy indítsd újra az Elitet, és ezek az információk frissítve lesznek.</value>
+  </data>
   
 </root>
