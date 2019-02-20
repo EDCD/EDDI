@@ -217,90 +217,231 @@
     <value>Polónium</value>
     <comment>Material polonium</comment>
   </data>
-  
-  
-  
-  
-  
-  
+  <data name="bulkscandata" xml:space="preserve">
+    <value>Rendhagyó tömeg szkennelési adat</value>
+    <comment>Material bulkscandata</comment>
+  </data>
+  <data name="disruptedwakeechoes" xml:space="preserve">
+    <value>Rendellenes feloszlott ugrásnyom visszhangok</value>
+    <comment>Material disruptedwakeechoes</comment>
+  </data>
+  <data name="shieldcyclerecordings" xml:space="preserve">
+    <value>Torzult pajzs folyamat adatok</value>
+    <comment>Material shieldcyclerecordings</comment>
+  </data>
+  <data name="scrambledemissiondata" xml:space="preserve">
+    <value>Kivételesen kevert kibocsátási adat</value>
+    <comment>Material scrambledemissiondata</comment>
+  </data>
+  <data name="legacyfirmware" xml:space="preserve">
+    <value>Specializált eredeti förmver</value>
+    <comment>Material legacyfirmware</comment>
+  </data>
+  <data name="encryptedfiles" xml:space="preserve">
+    <value>Szokatlanul titkosított fájlok</value>
+    <comment>Material encryptedfiles</comment>
+  </data>
   
   <data name="fsdtelemetry" xml:space="preserve">
     <value>Rendhagyó FSD telemetria</value>
     <comment>Material fsdtelemetry</comment>
   </data>
-  
-  
-  
+  <data name="shieldsoakanalysis" xml:space="preserve">
+    <value>Ellentmondó pajzs áthatolási elemzés</value>
+    <comment>Material shieldsoakanalysis</comment>
+  </data>
+  <data name="archivedemissiondata" xml:space="preserve">
+    <value>Rendellenes sugárzási adat</value>
+    <comment>Material archivedemissiondata</comment>
+  </data>
+  <data name="consumerfirmware" xml:space="preserve">
+    <value>Módosított fogyasztói förmver</value>
+    <comment>Material consumerfirmware</comment>
+  </data>
   <data name="encryptioncodes" xml:space="preserve">
     <value>Megjelölt titkosítási kódok</value>
     <comment>Material encryptioncodes</comment>
   </data>
-  
+  <data name="scanarchives" xml:space="preserve">
+    <value>Azonositatlan szkennelési arhívumok</value>
+    <comment>Material scanarchives</comment>
+  </data>
   
   <data name="tg_structuraldata" xml:space="preserve">
     <value>Thargoid szerkezeti adat</value>
     <comment>Material tg_structuraldata</comment>
   </data>
-  
-  
+  <data name="scandatabanks" xml:space="preserve">
+    <value>Titkositott szkennelési adatbankok</value>
+    <comment>Material scandatabanks</comment>
+  </data>
+  <data name="industrialfirmware" xml:space="preserve">
+    <value>Feltört ipari förmver</value>
+    <comment>Material industrialfirmware</comment>
+  </data>
   <data name="symmetrickeys" xml:space="preserve">
     <value>Nyitott szimmetrikus kulcsok</value>
     <comment>Material symmetrickeys</comment>
   </data>
+  <data name="wakesolutions" xml:space="preserve">
+    <value>Furcsa ugrásnyom megoldások</value>
+    <comment>Material wakesolutions</comment>
+  </data>
+  <data name="emissiondata" xml:space="preserve">
+    <value>Váratlan kibocsátási adat</value>
+    <comment>Material emissiondata</comment>
+  </data>
+  <data name="shielddensityreports" xml:space="preserve">
+    <value>Atipikus pajzs szkennelések</value>
+    <comment>Material shielddensityreports</comment>
+  </data>
+  
+  <data name="tg_compositiondata" xml:space="preserve">
+    <value>Thargoid anyag kompoziciós adat</value>
+    <comment>Material tg_compositiondata</comment>
+  </data>
+  <data name="unknownshipsignature" xml:space="preserve">
+    <value>Thargoid hajó jelforrás</value>
+    <comment>Material unknownshipsignature</comment>
+  </data>
+  <data name="shieldpatternanalysis" xml:space="preserve">
+    <value>Téves pajzs minta analízis</value>
+    <comment>Material shieldpatternanalysis</comment>
+  </data>
+  <data name="encryptionarchives" xml:space="preserve">
+    <value>Rendellenes kódolási arhívumok</value>
+    <comment>Material encryptionarchives</comment>
+  </data>
+  <data name="decodedemissiondata" xml:space="preserve">
+    <value>Dekódolt kibocsátási adat</value>
+    <comment>Material decodedemissiondata</comment>
+  </data>
+  <data name="encodedscandata" xml:space="preserve">
+    <value>Eltérő szkennelési adat</value>
+    <comment>Material encodedscandata</comment>
+  </data>
+  <data name="hyperspacetrajectories" xml:space="preserve">
+    <value>Excentrikus hiperűr röppáják</value>
+    <comment>Material hyperspacetrajectories</comment>
+  </data>
+  <data name="securityfirmware" xml:space="preserve">
+    <value>Biztonsági firmware patch</value>
+    <comment>Material securityfirmware</comment>
+  </data>
   
   
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="tg_residuedata" xml:space="preserve">
+    <value>Thargoid maradvány adat</value>
+    <comment>Material tg_residuedata</comment>
+  </data>
+  <data name="unknownwakedata" xml:space="preserve">
+    <value>Thargoid nyom adat</value>
+    <comment>Material unknownwakedata</comment>
+  </data>
+  <data name="compactemissionsdata" xml:space="preserve">
+    <value>Szabálytalan kompakt kibocsátási adat</value>
+    <comment>Material compactemissionsdata</comment>
+  </data>
+  <data name="adaptiveencryptors" xml:space="preserve">
+    <value>Adaptív kódolási zsákmány</value>
+    <comment>Material adaptiveencryptors</comment>
+  </data>
+  <data name="classifiedscandata" xml:space="preserve">
+    <value>Bizalamas skennelési töredék</value>
+    <comment>Material classifiedscandata</comment>
+  </data>
+  <data name="dataminedwake" xml:space="preserve">
+    <value>Adatbányászott udrásnyom kivételek</value>
+    <comment>Material dataminedwake</comment>
+  </data>
+  <data name="embeddedfirmware" xml:space="preserve">
+    <value>Módosított beágyazott firmware</value>
+    <comment>Material embeddedfirmware</comment>
+  </data>
   <data name="shieldfrequencydata" xml:space="preserve">
     <value>Különleges pajzs frekvencia adat</value>
     <comment>Material shieldfrequencydata</comment>
   </data>
-  
-  
-  
+  <data name="basicconductors" xml:space="preserve">
+    <value>Alap vezetők</value>
+    <comment>Material basicconductors</comment>
+  </data>
+  <data name="chemicalstorageunits" xml:space="preserve">
+    <value>Kémiai tároló egység</value>
+    <comment>Material chemicalstorageunits</comment>
+  </data>
+  <data name="compactcomposites" xml:space="preserve">
+    <value>Tömör kompozitok</value>
+    <comment>Material compactcomposites</comment>
+  </data>
   <data name="crystalshards" xml:space="preserve">
     <value>Kristály szilánkok</value>
     <comment>Material crystalshards</comment>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="gridresistors" xml:space="preserve">
+    <value>Áramhálózati ellenállások</value>
+    <comment>Material gridresistors</comment>
+  </data>
+  <data name="heatconductionwiring" xml:space="preserve">
+    <value>Hővezeték</value>
+    <comment>Material heatconductionwiring</comment>
+  </data>
+  <data name="mechanicalscrap" xml:space="preserve">
+    <value>Mechanikai szemét</value>
+    <comment>Material mechanicalscrap</comment>
+  </data>
+  <data name="salvagedalloys" xml:space="preserve">
+    <value>Zsákmányolt ötvözetek</value>
+    <comment>Material salvagedalloys</comment>
+  </data>
+  <data name="temperedalloys" xml:space="preserve">
+    <value>Kevert ötvözet</value>
+    <comment>Material temperedalloys</comment>
+  </data>
+  <data name="wornshieldemitters" xml:space="preserve">
+    <value>Ehasználódott pajzs sugárzók</value>
+    <comment>Material wornshieldemitters</comment>
+  </data>
+  <data name="chemicalprocessors" xml:space="preserve">
+    <value>Kémiai feldolgozók</value>
+    <comment>Material chemicalprocessors</comment>
+  </data>
+  <data name="conductivecomponents" xml:space="preserve">
+    <value>Vezető komponensek</value>
+    <comment>Material conductivecomponents</comment>
+  </data>
+  <data name="filamentcomposites" xml:space="preserve">
+    <value>Rostszálas kompozitok</value>
+    <comment>Material filamentcomposites</comment>
+  </data>
+  <data name="uncutfocuscrystals" xml:space="preserve">
+    <value>Repedezett fókusz kristályok</value>
+    <comment>Material uncutfocuscrystals</comment>
+  </data>
+  <data name="galvanisingalloys" xml:space="preserve">
+    <value>Galvanizáló ötvözetek</value>
+    <comment>Material galvanisingalloys</comment>
+  </data>
+  <data name="heatdispersionplate" xml:space="preserve">
+    <value>Hőelosztó lemez</value>
+    <comment>Material heatdispersionplate</comment>
+  </data>
   <data name="heatresistantceramics" xml:space="preserve">
     <value>Hőálló kerámiák</value>
     <comment>Material heatresistantceramics</comment>
   </data>
-  
+  <data name="hybridcapacitors" xml:space="preserve">
+    <value>Hibrid kondenzátorok</value>
+    <comment>Material hybridcapacitors</comment>
+  </data>
   <data name="mechanicalequipment" xml:space="preserve">
     <value>Mechanikai berendezés</value>
     <comment>Material mechanicalequipment</comment>
   </data>
-  
+  <data name="shieldemitters" xml:space="preserve">
+    <value>Pajzs sugárzók</value>
+    <comment>Material shieldemitters</comment>
+  </data>
   <data name="unknowncarapace" xml:space="preserve">
     <value>Thargoid páncél</value>
     <comment>Material unknowncarapace</comment>
@@ -309,8 +450,14 @@
     <value>Kémiai desztilláló</value>
     <comment>Material chemicaldistillery</comment>
   </data>
-  
-  
+  <data name="conductiveceramics" xml:space="preserve">
+    <value>Vezető kerámiák</value>
+    <comment>Material conductiveceramics</comment>
+  </data>
+  <data name="electrochemicalarrays" xml:space="preserve">
+    <value>Elektrokémiai rendszer</value>
+    <comment>Material electrochemicalarrays</comment>
+  </data>
   <data name="focuscrystals" xml:space="preserve">
     <value>Fókusz kristályok</value>
     <comment>Material focuscrystals</comment>
@@ -327,24 +474,54 @@
     <value>Mechanikus komponensek</value>
     <comment>Material mechanicalcomponents</comment>
   </data>
-  
-  
-  
+  <data name="phasealloys" xml:space="preserve">
+    <value>Fázisos ötvözetek</value>
+    <comment>Material phasealloys</comment>
+  </data>
+  <data name="precipitatedalloys" xml:space="preserve">
+    <value>Kicsapódott ötvözetek</value>
+    <comment>Material precipitatedalloys</comment>
+  </data>
+  <data name="shieldingsensors" xml:space="preserve">
+    <value>Árnyékoló szenzorok</value>
+    <comment>Material shieldingsensors</comment>
+  </data>
   <data name="unknownenergycell" xml:space="preserve">
     <value>Thargoid energia cella</value>
     <comment>Material unknownenergycell</comment>
   </data>
-  
-  
-  
+  <data name="chemicalmanipulators" xml:space="preserve">
+    <value>Kémiai manipulátorok</value>
+    <comment>Material chemicalmanipulators</comment>
+  </data>
+  <data name="compoundshielding" xml:space="preserve">
+    <value>Műanyag burkolatok</value>
+    <comment>Material compoundshielding</comment>
+  </data>
+  <data name="conductivepolymers" xml:space="preserve">
+    <value>Vezető polimerek</value>
+    <comment>Material conductivepolymers</comment>
+  </data>
   <data name="configurablecomponents" xml:space="preserve">
     <value>Konfigurálható komponensek</value>
     <comment>Material configurablecomponents</comment>
   </data>
-  
-  
-  
-  
+  <data name="heatvanes" xml:space="preserve">
+    <value>Hőszárnyak</value>
+    <comment>Material heatvanes</comment>
+  </data>
+  <data name="polymercapacitors" xml:space="preserve">
+    <value>Polimer kondenzátorok</value>
+    <comment>Material polymercapacitors</comment>
+  </data>
+  <data name="fedproprietarycomposites" xml:space="preserve">
+    <value>Szabadalmazott kompozitok</value>
+    <comment>Material fedproprietarycomposites</comment>
+  </data>
+  <data name="protolightalloys" xml:space="preserve">
+    <value>Proto könnyű ötvözetek</value>
+    <comment>Material protolightalloys</comment>
+  </data>
   <data name="refinedfocuscrystals" xml:space="preserve">
     <value>Finomított fókusz kristályok</value>
     <comment>Material refinedfocuscrystals</comment>
@@ -361,10 +538,22 @@
     <value>Biotechnológiai vezetők</value>
     <comment>Material biotechconductors</comment>
   </data>
-  
-  
-  
-  
+  <data name="fedcorecomposites" xml:space="preserve">
+    <value>Core Dynamics kompozitok</value>
+    <comment>Material fedcorecomposites</comment>
+  </data>
+  <data name="exquisitefocuscrystals" xml:space="preserve">
+    <value>Tökéletes fókusz kristályok</value>
+    <comment>Material exquisitefocuscrystals</comment>
+  </data>
+  <data name="imperialshielding" xml:space="preserve">
+    <value>Birodalmi burkolatok</value>
+    <comment>Material imperialshielding</comment>
+  </data>
+  <data name="improvisedcomponents" xml:space="preserve">
+    <value>Improvizált komponensek</value>
+    <comment>Material improvisedcomponents</comment>
+  </data>
   <data name="militarygradealloys" xml:space="preserve">
     <value>Katonai osztályú ötvözetek</value>
     <comment>Material militarygradealloys</comment>
@@ -373,11 +562,26 @@
     <value>Katonai szuperkondenzátorok</value>
     <comment>Material militarysupercapacitors</comment>
   </data>
-  
-  
-  
-  
-  
+  <data name="pharmaceuticalisolators" xml:space="preserve">
+    <value>Gyógyszerészeti szigetelők</value>
+    <comment>Material pharmaceuticalisolators</comment>
+  </data>
+  <data name="protoheatradiators" xml:space="preserve">
+    <value>Proto hősugárzók</value>
+    <comment>Material protoheatradiators</comment>
+  </data>
+  <data name="protoradiolicalloys" xml:space="preserve">
+    <value>Proto sugárzásos ötvözetek</value>
+    <comment>Material protoradiolicalloys</comment>
+  </data>
+  <data name="unknownenergysource" xml:space="preserve">
+    <value>Szenzor töredék</value>
+    <comment>Material unknownenergysource</comment>
+  </data>
+  <data name="unknownorganiccircuitry" xml:space="preserve">
+    <value>Thargoid organikus áramkör</value>
+    <comment>Material unknownorganiccircuitry</comment>
+  </data>
   <data name="boron" xml:space="preserve">
     <value>Bór</value>
     <comment>Material boron</comment>
@@ -394,20 +598,56 @@
     <value>Őrző jármű tervrajz</value>
     <comment>Material guardian_vesselblueprint</comment>
   </data>
-  
+  <data name="guardian_techcomponent" xml:space="preserve">
+    <value>Őrző technológiai komponens</value>
+    <comment>Material guardian_techcomponent</comment>
+  </data>
   <data name="guardian_powerconduit" xml:space="preserve">
     <value>Őrző energiavezeték</value>
     <comment>Material guardian_powerconduit</comment>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="guardian_moduleblueprint" xml:space="preserve">
+    <value>Őrző modul tervrajz</value>
+    <comment>Material guardian_moduleblueprint</comment>
+  </data>
+  <data name="guardian_sentinel_weaponparts" xml:space="preserve">
+    <value>Őrző Őrszem fegyverzet darab</value>
+    <comment>Material guardian_sentinel_weaponparts</comment>
+  </data>
+  <data name="guardian_sentinel_wreckagecomponents" xml:space="preserve">
+    <value>Őrző Őrszem-roncs alkotóelem</value>
+    <comment>Material guardian_sentinel_wreckagecomponents</comment>
+  </data>
+  <data name="lead" xml:space="preserve">
+    <value>Ólom</value>
+    <comment>Material lead</comment>
+  </data>
+  <data name="rhenium" xml:space="preserve">
+    <value>Rénium</value>
+    <comment>Material rhenium</comment>
+  </data>
+  <data name="tg_propulsionelement" xml:space="preserve">
+    <value>Thrgoid meghajtás elem</value>
+    <comment>Material tg_propulsionelement</comment>
+  </data>
+  <data name="tg_biomechanicalconduits" xml:space="preserve">
+    <value>Thargoid Bio-mechanikus komponensek</value>
+    <comment>Material tg_biomechanicalconduits</comment>
+  </data>
+  <data name="tg_weaponparts" xml:space="preserve">
+    <value>Thargoid fegyver darabok</value>
+    <comment>Material tg_weaponparts</comment>
+  </data>
+  <data name="tg_wreckagecomponents" xml:space="preserve">
+    <value>Thargoid roncs komponensek</value>
+    <comment>Material tg_wreckagecomponents</comment>
+  </data>
+  <data name="tg_shipflightdata" xml:space="preserve">
+    <value>Thargoid hajó repülési adatok</value>
+    <comment>Material tg_shipflightdata</comment>
+  </data>
+  <data name="tg_shipsystemsdata" xml:space="preserve">
+    <value>Thargoid hajó rendszer adatok</value>
+    <comment>Material tg_shipsystemsdata</comment>
+  </data>
 </root>
