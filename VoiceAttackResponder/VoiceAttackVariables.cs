@@ -294,6 +294,24 @@ namespace EddiVoiceAttackResponder
                 {
                     setStarSystemValues(EDDI.Instance.HomeStarSystem, "Home system", ref vaProxy);
                     HomeStarSystem = EDDI.Instance.HomeStarSystem;
+
+                    // Backwards-compatibility with 1.x documented variables
+                    try
+                    {
+                        if (EDDI.Instance.HomeStarSystem != null)
+                        {
+                            vaProxy.SetText("Home system", EDDI.Instance.HomeStarSystem.name);
+                            vaProxy.SetText("Home system (spoken)", Translations.StarSystem(EDDI.Instance.HomeStarSystem.name));
+                        }
+                        if (EDDI.Instance.HomeStation != null)
+                        {
+                            vaProxy.SetText("Home station", EDDI.Instance.HomeStation.name);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Logging.Error("Failed to set 1.x home system values", ex);
+                    }
                 }
             }
             catch (Exception ex)
