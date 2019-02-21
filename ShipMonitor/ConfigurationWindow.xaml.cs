@@ -58,7 +58,7 @@ namespace EddiShipMonitor
                 ? ship.name 
                 : $@"<phoneme alphabet=""ipa"" ph=""{ship.phoneticname}"">{ship.name}</phoneme>";
             string message = String.Format(Properties.ShipMonitor.ship_ready, nameToSpeak);
-            SpeechService.Instance.Say(ship, message, false);
+            SpeechService.Instance.Say(ship, message, false, 0);
         }
 
         private void exportShip(object sender, RoutedEventArgs e)
