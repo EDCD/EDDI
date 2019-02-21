@@ -762,6 +762,7 @@ namespace EddiVoiceAttackResponder
             try
             {
                 EDDI.Instance.State["speechresponder_quiet"] = true;
+                SpeechService.Instance.ClearAllPendingSpeech();
             }
             catch (Exception e)
             {

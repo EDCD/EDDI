@@ -761,6 +761,10 @@ namespace EddiSpeechService
             while (speechPriority3.TryDequeue(out EddiSpeech result)) { };
             while (speechPriority4.TryDequeue(out EddiSpeech result)) { };
             while (speechPriority5.TryDequeue(out EddiSpeech result)) { };
+            if (activeSpeechPriority > 0)
+            {
+                StopCurrentSpeech();
+            }
         }
     }
 }
