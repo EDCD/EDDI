@@ -140,6 +140,7 @@
     <Compile Include="DataDefinitionTests.cs" />
     <Compile Include="GeneratorTests.cs" />
     <Compile Include="MissionMonitorTests.cs" />
+    <Compile Include="SpeechUnitTests.cs" />
     <Compile Include="StatusMonitorTests.cs" />
     <Compile Include="JournalMonitorTests.cs" />
     <Compile Include="BodyScanTests.cs" />

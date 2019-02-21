@@ -6,6 +6,7 @@ using CSCore.Streams.Effects;
 using EddiDataDefinitions;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
@@ -27,6 +28,13 @@ namespace EddiSpeechService
         private static readonly object activeSpeechLock = new object();
         private ISoundOut activeSpeech;
         private int activeSpeechPriority;
+
+        protected static ConcurrentQueue<EddiSpeech> speechPriority0 = new ConcurrentQueue<EddiSpeech>(); // Priority 0: System messages (always top priority)
+        protected static ConcurrentQueue<EddiSpeech> speechPriority1 = new ConcurrentQueue<EddiSpeech>(); // Priority 1: Highest settable priority for scripts
+        protected static ConcurrentQueue<EddiSpeech> speechPriority2 = new ConcurrentQueue<EddiSpeech>(); // Priority 2: High priority scripts
+        protected static ConcurrentQueue<EddiSpeech> speechPriority3 = new ConcurrentQueue<EddiSpeech>(); // Priority 3: Standard priority scripts
+        protected static ConcurrentQueue<EddiSpeech> speechPriority4 = new ConcurrentQueue<EddiSpeech>(); // Priority 4: Low priority scripts
+        protected static ConcurrentQueue<EddiSpeech> speechPriority5 = new ConcurrentQueue<EddiSpeech>(); // Priority 5: Lowest priority scripts
 
         private static readonly object synthLock = new object();
         public static SpeechSynthesizer synth { get; private set; }
@@ -98,9 +106,9 @@ namespace EddiSpeechService
             configuration = SpeechServiceConfiguration.FromFile();
         }
 
-        public void Say(Ship ship, string speech, bool wait, int priority = 3, string voice = null, bool radio = false)
+        public void Say(Ship ship, string message, bool wait, int priority = 3, string voice = null, bool radio = false, string eventType = null)
         {
-            if (speech == null)
+            if (message == null)
             {
                 return;
             }
@@ -111,7 +119,15 @@ namespace EddiSpeechService
                 ship = ShipDefinitions.FromModel("Sidewinder");
             }
 
-            Speak(speech, voice, echoDelayForShip(ship), distortionLevelForShip(ship), chorusLevelForShip(ship), reverbLevelForShip(ship), 0, radio, wait, priority);
+            EddiSpeech queuingSpeech = new EddiSpeech(message, wait, ship, priority, voice, radio, eventType);
+            enqueueSpeech(queuingSpeech);
+            Thread speechQueueHandler = new Thread(() => handleSpeech(checkSpeechPriority(dequeueSpeech())))
+            {
+                Name = "SpeechQueueHandler",
+                IsBackground = true
+            };
+            speechQueueHandler.Start();
+            speechQueueHandler.Join();
         }
 
         public void ShutUp()
@@ -191,13 +207,6 @@ namespace EddiSpeechService
                             if (!isAudio)
                             {
                                 addEffectsToSource(ref source, chorusLevel, reverbLevel, echoDelay, distortionLevel, isRadio);
-                            }
-
-                            if (priority < activeSpeechPriority)
-                            {
-                                Logging.Debug("About to StopCurrentSpeech");
-                                StopCurrentSpeech();
-                                Logging.Debug("Finished StopCurrentSpeech");
                             }
 
                             play(ref source, priority);
@@ -692,6 +701,66 @@ namespace EddiSpeechService
 
                 return read;
             }
+        }
+
+        private void enqueueSpeech(EddiSpeech queuingSpeech)
+        {
+            if (queuingSpeech == null) { return; }
+
+            if (queuingSpeech.priority <= 0) { speechPriority0.Enqueue(queuingSpeech); }
+            else if (queuingSpeech.priority == 1) { speechPriority1.Enqueue(queuingSpeech); }
+            else if (queuingSpeech.priority == 2) { speechPriority2.Enqueue(queuingSpeech); }
+            else if (queuingSpeech.priority == 3) { speechPriority3.Enqueue(queuingSpeech); }
+            else if (queuingSpeech.priority == 4) { speechPriority4.Enqueue(queuingSpeech); }
+            else if (queuingSpeech.priority >= 5) { speechPriority5.Enqueue(queuingSpeech); }
+        }
+
+        private EddiSpeech dequeueSpeech()
+        {
+            if (speechPriority0.TryDequeue(out EddiSpeech speech)) { }
+            else if (speechPriority1.TryDequeue(out speech)) { }
+            else if (speechPriority2.TryDequeue(out speech)) { }
+            else if (speechPriority3.TryDequeue(out speech)) { }
+            else if (speechPriority4.TryDequeue(out speech)) { }
+            else if (speechPriority5.TryDequeue(out speech)) { }
+            return speech;
+        }
+
+        private EddiSpeech checkSpeechPriority (EddiSpeech speech)
+        {
+            // Lowest priority is spoken first
+            if (speech.priority < activeSpeechPriority)
+            {
+                Logging.Debug("About to StopCurrentSpeech");
+                StopCurrentSpeech();
+                Logging.Debug("Finished StopCurrentSpeech");
+            }
+            return speech;
+        }
+
+        private void handleSpeech(EddiSpeech speech)
+        {
+            if (speech != null)
+            {
+                try
+                {
+                    Speak(speech.message, speech.voice, echoDelayForShip(speech.ship), distortionLevelForShip(speech.ship), chorusLevelForShip(speech.ship), reverbLevelForShip(speech.ship), 0, speech.radio, speech.wait, speech.priority);
+                }
+                catch (Exception ex)
+                {
+                    Logging.Error("Failed to handle queued speech " + JsonConvert.SerializeObject(speech), ex);
+                }
+            }
+        }
+
+        public void ClearAllPendingSpeech()
+        {
+            // Don't clear system messages (priority 0)
+            while (speechPriority1.TryDequeue(out EddiSpeech result)) { };
+            while (speechPriority2.TryDequeue(out EddiSpeech result)) { };
+            while (speechPriority3.TryDequeue(out EddiSpeech result)) { };
+            while (speechPriority4.TryDequeue(out EddiSpeech result)) { };
+            while (speechPriority5.TryDequeue(out EddiSpeech result)) { };
         }
     }
 }
