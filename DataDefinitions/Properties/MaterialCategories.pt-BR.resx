@@ -122,7 +122,7 @@
     <comment>Material category Element</comment>
   </data>
   <data name="Manufactured" xml:space="preserve">
-    <value>Manufaturado</value>
+    <value>Fabricado</value>
     <comment>Material category Manufactured</comment>
   </data>
   <data name="Data" xml:space="preserve">
