@@ -728,8 +728,8 @@ namespace EddiSpeechService
 
         private EddiSpeech checkSpeechPriority (EddiSpeech speech)
         {
-            // Lowest priority is spoken first
-            if (speech.priority < activeSpeechPriority)
+            // Priority 0 speech (system messages) and priority 1 speech and will interrupt current speech
+            if (speech.priority <= 1)
             {
                 Logging.Debug("About to StopCurrentSpeech");
                 StopCurrentSpeech();
