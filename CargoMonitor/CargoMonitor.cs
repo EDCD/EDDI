@@ -133,14 +133,6 @@ namespace EddiCargoMonitor
 
         public void PostHandle(Event @event)
         {
-            Logging.Debug("Received event " + JsonConvert.SerializeObject(@event));
-
-            // Handle mission related events after the mission object has been created
-            if (@event is MissionExpiredEvent)
-            {
-                // Check to see if this is a cargo mission and update our inventory accordingly
-                handleMissionExpiredEvent((MissionExpiredEvent)@event);
-            }
         }
 
         public void PreHandle(Event @event)
@@ -196,6 +188,11 @@ namespace EddiCargoMonitor
             {
                 // Check to see if this is a cargo mission and update our inventory accordingly
                 handleMissionCompletedEvent((MissionCompletedEvent)@event);
+            }
+            else if (@event is MissionExpiredEvent)
+            {
+                // Check to see if this is a cargo mission and update our inventory accordingly
+                handleMissionExpiredEvent((MissionExpiredEvent)@event);
             }
             else if (@event is MissionFailedEvent)
             {
@@ -476,7 +473,7 @@ namespace EddiCargoMonitor
 
         private void handleCargoDepotEvent(CargoDepotEvent @event)
         {
-            if(@event.timestamp > updateDat)
+            if (@event.timestamp > updateDat)
             {
                 updateDat = @event.timestamp;
                 _handleCargoDepotEvent(@event);

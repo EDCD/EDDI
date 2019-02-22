@@ -188,24 +188,6 @@ namespace EddiMissionMonitor
 
         public void PostHandle(Event @event)
         {
-            Logging.Debug("Received post-event " + JsonConvert.SerializeObject(@event));
-
-            // 'Post' handle events which remove a mission from the log
-            if (@event is MissionAbandonedEvent)
-            {
-                //
-                handleMissionAbandonedEvent((MissionAbandonedEvent)@event);
-            }
-            else if (@event is MissionCompletedEvent)
-            {
-                //
-                handleMissionCompletedEvent((MissionCompletedEvent)@event);
-            }
-            else if (@event is MissionFailedEvent)
-            {
-                //
-                handleMissionFailedEvent((MissionFailedEvent)@event);
-            }
         }
 
         public void PreHandle(Event @event)
@@ -238,15 +220,30 @@ namespace EddiMissionMonitor
                 //
                 handleCargoDepotEvent((CargoDepotEvent)@event);
             }
+            else if (@event is MissionAbandonedEvent)
+            {
+                //
+                handleMissionAbandonedEvent((MissionAbandonedEvent)@event);
+            }
             else if (@event is MissionAcceptedEvent)
             {
                 //
                 handleMissionAcceptedEvent((MissionAcceptedEvent)@event);
             }
+            else if (@event is MissionCompletedEvent)
+            {
+                //
+                handleMissionCompletedEvent((MissionCompletedEvent)@event);
+            }
             else if (@event is MissionExpiredEvent)
             {
                 //
                 handleMissionExpiredEvent((MissionExpiredEvent)@event);
+            }
+            else if (@event is MissionFailedEvent)
+            {
+                //
+                handleMissionFailedEvent((MissionFailedEvent)@event);
             }
             else if (@event is MissionRedirectedEvent)
             {
@@ -1410,6 +1407,26 @@ namespace EddiMissionMonitor
             return missionsRouteList?.Split('_')[0];
         }
 
+        public string SetNextRoute()
+        {
+            string destination = missionsRouteList?.Split('_')[0];
+            int count = 0;
+            decimal distance = 0;
+            if (destination != null)
+            {
+                StarSystem curr = EDDI.Instance?.CurrentStarSystem;
+                StarSystem dest = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(destination, true);
+
+                if (dest != null && destination != curr.name)
+                {
+                    distance = CalculateDistance(curr, dest);
+                }
+                count = missionsRouteList.Split('_').Count();
+            }
+            EDDI.Instance.enqueueEvent(new MissionsRouteEvent(DateTime.Now, "next", destination, missionsRouteList, count, distance, missionsRouteDistance, null));
+            return destination;
+        }
+
         public string SetRoute(string system)
         {
             string destination = null;
@@ -1429,7 +1446,7 @@ namespace EddiMissionMonitor
             missionsRouteDistance = distance;
             writeMissions();
 
-            EDDI.Instance.enqueueEvent(new MissionsRouteEvent(DateTime.Now, "set", destination, missionsRouteList, 0, distance, missionsRouteDistance, null));
+            EDDI.Instance.enqueueEvent(new MissionsRouteEvent(DateTime.Now, "set", destination, missionsRouteList, 1, distance, missionsRouteDistance, null));
             return destination;
         }
 
@@ -1474,16 +1491,13 @@ namespace EddiMissionMonitor
                                     if (mission.originsystem == updateSystem) { update = false; }
 
                                     // Check if 'next' system is destination system for 'Active' missions
-                                    else if (mission.typeEDName == "Active")
+                                    else if (mission.statusEDName == "Active")
                                     {
-                                        if (mission.destinationsystems == null)
-                                        {
-                                            if (mission.destinationsystem == updateSystem) { update = false; }
-                                        }
-                                        else
+                                        if (mission.destinationsystems != null && mission.destinationsystems.Any())
                                         {
                                             if (mission.destinationsystems.Where(d => d.name == updateSystem).Any()) { update = false; }
                                         }
+                                        else if (mission.destinationsystem == updateSystem) { update = false; }
                                     }
                                 }
                                 break;
@@ -1491,6 +1505,7 @@ namespace EddiMissionMonitor
                         if (!update) { break; }
                     }
                 }
+                else { update = false; }
             }
 
             // Remove 'update' system from the missions route list

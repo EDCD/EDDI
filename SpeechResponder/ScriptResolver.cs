@@ -393,7 +393,7 @@ namespace EddiSpeechResponder
                 string voice = values[1].AsString;
                 foreach (System.Speech.Synthesis.InstalledVoice vc in SpeechService.synth?.GetInstalledVoices())
                 {
-                    if (vc.VoiceInfo.Name.ToLowerInvariant().Contains(voice?.ToLowerInvariant()) 
+                    if (vc.VoiceInfo.Name.ToLowerInvariant().Contains(voice?.ToLowerInvariant())
                     && !vc.VoiceInfo.Name.Contains("Microsoft Server Speech Text to Speech Voice"))
                     {
                         voice = vc.VoiceInfo.Name;
@@ -437,7 +437,7 @@ namespace EddiSpeechResponder
                 {
                     foreach (System.Speech.Synthesis.InstalledVoice vc in SpeechService.synth?.GetInstalledVoices())
                     {
-                        if (vc.VoiceInfo.Name.ToLowerInvariant().Contains(values[0].AsString?.ToLowerInvariant()) 
+                        if (vc.VoiceInfo.Name.ToLowerInvariant().Contains(values[0].AsString?.ToLowerInvariant())
                         && !vc.VoiceInfo.Name.Contains("Microsoft Server Speech Text to Speech Voice"))
                         {
                             result = new VoiceDetail(
@@ -677,6 +677,11 @@ namespace EddiSpeechResponder
                     case "nearest":
                         {
                             result = ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor"))?.GetNearestRoute();
+                        }
+                        break;
+                    case "next":
+                        {
+                            result = ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor"))?.SetNextRoute();
                         }
                         break;
                     case "route":
@@ -934,7 +939,7 @@ namespace EddiSpeechResponder
                 }
                 return "";
             }, 1);
-            
+
             store["GalnetNewsDelete"] = new NativeFunction((values) =>
             {
                 News result = GalnetSqLiteRepository.Instance.GetArticle(values[0].AsString);
@@ -944,7 +949,7 @@ namespace EddiSpeechResponder
                 }
                 return "";
             }, 1);
-            
+
             store["Distance"] = new NativeFunction((values) =>
             {
                 decimal result = 0;

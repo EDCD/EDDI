@@ -982,6 +982,11 @@ namespace EddiVoiceAttackResponder
                             ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor")).GetNearestRoute();
                         }
                         break;
+                    case "next":
+                        {
+                            ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor")).SetNextRoute();
+                        }
+                        break;
                     case "route":
                         {
                             if (system == null || system == string.Empty)
