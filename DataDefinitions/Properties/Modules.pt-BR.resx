@@ -126,15 +126,15 @@
     <comment>Module ATMulticannon</comment>
   </data>
   <data name="AutoField_MaintenanceUnit" xml:space="preserve">
-    <value>Unidade de Manutenção</value>
+    <value>Unidade AMC</value>
     <comment>Module AutoField_MaintenanceUnit</comment>
   </data>
   <data name="AXMissileRack" xml:space="preserve">
-    <value>Estante de Míssel AX</value>
+    <value>Estante de Mísseis AX</value>
     <comment>Module AXMissileRack</comment>
   </data>
   <data name="AXMulti_Cannon" xml:space="preserve">
-    <value>Canhã de Repetição AX</value>
+    <value>Canhão de Repetição AX</value>
     <comment>Module AXMulti_Cannon</comment>
   </data>
   <data name="BasicDiscoveryScanner" xml:space="preserve">
@@ -194,7 +194,7 @@
     <comment>Module Colouredstringlights</comment>
   </data>
   <data name="CorrosionResistantCargoRack" xml:space="preserve">
-    <value>Estante de Carga Resistente a Corrosão</value>
+    <value>Estante de Carga Anti-Corrosiva</value>
     <comment>Module CorrosionResistantCargoRack</comment>
   </data>
   <data name="Cytoscrambler" xml:space="preserve">
@@ -210,11 +210,11 @@
     <comment>Module DecontaminationLimpetController</comment>
   </data>
   <data name="DetailedSurfaceScanner" xml:space="preserve">
-    <value>Scanner Detalhado de Superfície</value>
+    <value>Scanner de Superfície</value>
     <comment>Module DetailedSurfaceScanner</comment>
   </data>
   <data name="Disruptor" xml:space="preserve">
-    <value>Desruptor</value>
+    <value>Disruptor</value>
     <comment>Module Disruptor</comment>
   </data>
   <data name="EconomyClassPassengerCabin" xml:space="preserve">
@@ -226,7 +226,7 @@
     <comment>Module ElectronicCountermeasure</comment>
   </data>
   <data name="EnhancedPerformanceThrusters" xml:space="preserve">
-    <value>Propulsores de Performance Melhorada</value>
+    <value>Propulsores</value>
     <comment>Module EnhancedPerformanceThrusters</comment>
   </data>
   <data name="FighterArmour" xml:space="preserve">
@@ -246,7 +246,7 @@
     <comment>Module FragmentCannon</comment>
   </data>
   <data name="FrameShiftDriveInterdictor" xml:space="preserve">
-    <value>Interditor de Motor de Distorção</value>
+    <value>Interditor MDD</value>
     <comment>Module FrameShiftDriveInterdictor</comment>
   </data>
   <data name="FrameShiftDrive" xml:space="preserve">
@@ -346,7 +346,7 @@
     <comment>Module MirroredSurfaceComposite</comment>
   </data>
   <data name="MissileRack" xml:space="preserve">
-    <value>Estante de Míssel</value>
+    <value>Estante de Mísseis</value>
     <comment>Module MissileRack</comment>
   </data>
   <data name="ModuleReinforcementPackage" xml:space="preserve">
@@ -426,7 +426,7 @@
     <comment>Module ReinforcedAlloy</comment>
   </data>
   <data name="RemoteReleaseFlakLauncher" xml:space="preserve">
-    <value>Lançador de Dardos de Liberação Remota</value>
+    <value>Lançador de Flak Remoto</value>
     <comment>Module RemoteReleaseFlakLauncher</comment>
   </data>
   <data name="RepairLimpetController" xml:space="preserve">
@@ -514,7 +514,7 @@
     <comment>Module AdvancedDiscoveryScanner</comment>
   </data>
   <data name="PlasmaRepeater" xml:space="preserve">
-    <value>Repetidor de Plasma</value>
+    <value>Metralhadora de Plasma</value>
     <comment>Module PlasmaRepeater (fighter module)</comment>
   </data>
   <data name="Enforcer" xml:space="preserve">
@@ -530,11 +530,11 @@
     <comment>Module GuardianPowerDistributor</comment>
   </data>
   <data name="ShardCannon" xml:space="preserve">
-    <value>Canhão de Fragmentação</value>
+    <value>Canhão de Fragmentos</value>
     <comment>Module ShardCannon</comment>
   </data>
   <data name="FlechetteLauncher" xml:space="preserve">
-    <value>Lançador de Flechete</value>
+    <value>Lançador de Dardo</value>
     <comment>Modile FlechetteLauncher</comment>
   </data>
   <data name="EnzymeMissileRack" xml:space="preserve">
