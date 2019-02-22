@@ -465,19 +465,58 @@
     <value>Lança Mina de Impacto</value>
     <comment>Module ShockMineLauncher</comment>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="ShutdownFieldNeutraliser" xml:space="preserve">
+    <value>Neutralizador de Campo de Desativação</value>
+    <comment>Module ShutdownFieldNeutraliser</comment>
+  </data>
+  <data name="StandardDockingComputer" xml:space="preserve">
+    <value>Computador de Docagem</value>
+    <comment>Module StandardDockingComputer</comment>
+  </data>
+  <data name="Thrusters" xml:space="preserve">
+    <value>Propulsores</value>
+    <comment>Module Thrusters</comment>
+  </data>
+  <data name="TorpedoPylon" xml:space="preserve">
+    <value>Pilone de Torpedo</value>
+    <comment>Module TorpedoPylon</comment>
+  </data>
+  <data name="VoicePack_Verity" xml:space="preserve">
+    <value>Verity</value>
+    <comment>Module Verity</comment>
+  </data>
+  <data name="VoicePack_Victor" xml:space="preserve">
+    <value>Victor</value>
+    <comment>Module Victor</comment>
+  </data>
+  <data name="Whitestringlights" xml:space="preserve">
+    <value>Faixa de Luzes Brancas</value>
+    <comment>Module Whitestringlights</comment>
+  </data>
+  <data name="XenoScanner" xml:space="preserve">
+    <value>Scanner Xeno</value>
+    <comment>Module XenoScanner</comment>
+  </data>
+  <data name="Fixed" xml:space="preserve">
+    <value>fixa</value>
+    <comment>Weapon mount type Fixed</comment>
+  </data>
+  <data name="Gimballed" xml:space="preserve">
+    <value>guiada</value>
+    <comment>Weapon mount type Gimballed</comment>
+  </data>
+  <data name="Turreted" xml:space="preserve">
+    <value>torreta</value>
+    <comment>Weapon mount type Turreted</comment>
+  </data>
+  <data name="AdvancedDiscoveryScanner" xml:space="preserve">
+    <value>Scanner de Descoberta Avançado</value>
+    <comment>Module AdvancedDiscoveryScanner</comment>
+  </data>
+  <data name="PlasmaRepeater" xml:space="preserve">
+    <value>Repetidor de Plasma</value>
+    <comment>Module PlasmaRepeater (fighter module)</comment>
+  </data>
   <data name="Enforcer" xml:space="preserve">
     <value>Canhão Executor</value>
     <comment>Module Hpt_MultiCannon_Fixed_Small_Strong</comment>
@@ -491,7 +530,7 @@
     <comment>Module GuardianPowerDistributor</comment>
   </data>
   <data name="ShardCannon" xml:space="preserve">
-    <value>Canhão de Estilhaço</value>
+    <value>Canhão de Fragmentação</value>
     <comment>Module ShardCannon</comment>
   </data>
   <data name="FlechetteLauncher" xml:space="preserve">
