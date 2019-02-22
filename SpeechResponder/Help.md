@@ -279,21 +279,28 @@ Common usage of this is to provide a pre-recorded custom audio file rather than 
 
 This function will produce a destination/route for valid mission destinations, dependent on the following 'routetype':
 
+  * 'cancel' Cancel the currently stored route.
   * 'expiring' Destination of your next expiring mission.
   * 'farthest' Mission destination farthest from your current location.
   * 'most' Nearest system with the most missions.
   * 'nearest' Mission destination nearest to your current location.
+  * 'next' Next destination in the currently stored route.
   * 'route' 'Traveling Salesman' (RNNA) route for all active missions.
+  * 'set' Set destination route to a single system.
   * 'source' Mission destination to nearest 'cargo source'.
-  * 'update' Next mission destination, once all missions in current system are completed.
+  * 'update' Update to the next mission destination, once all missions in current system are completed.
 
 Upon success of the query, a 'Missions route' event is triggered, providing a following event data:
 
   * 'routetype' Type of route query (see above).
   * 'destination' Destination system.
+  * 'distance' Destination distance
   * 'route' "_" Delimited missions systems list. Results dependent on route type.
+    * 'expiring' Single system meeting 'next expiring' search criteria
+    * 'farthest' Single system meeting 'farthest' search criteria
     * 'most' Other systems with most number of missions.
     * 'route' Missions route list
+    * 'set' Single specified system
     * 'source' list of source systems
   * 'count' Count of missions, systems, or expiry seconds, depending on route type.
     * 'expiring' Expiry seconds.

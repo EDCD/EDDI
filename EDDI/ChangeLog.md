@@ -3,8 +3,17 @@
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
 ### Development
+  * Cargo & Mission monitors
+    * Improved efficiency in 'LogLoad' handling of mission-related events
+    * Minimize cargo & mission monitor.json writes
   * Ship monitor
     * Fixed a lock-up that could occur when opening the ship monitor from VoiceAttack
+  * Speech responder
+    * Added new types to the `RouteDetails()` Cottle function
+      * 'cancel' - Cancel the currently stored route
+      * 'next' - The next destination in the currently stored route
+      * 'set' - Set the destination route to a single system
+    * All RouteDetails() types now update the `Missions route` event `route` and `distance` variables
   * VoiceAttack responder
     * Improved event responsiveness
     * Reduced CPU utilization 
