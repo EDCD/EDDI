@@ -215,4 +215,7 @@
   <data name="warning_triggered" xml:space="preserve">
     <value>Scripts which are triggered by an event can be disabled but not deleted.</value>
   </data>
+  <data name="header_priority" xml:space="preserve">
+    <value>Priority</value>
+  </data>
 </root>
