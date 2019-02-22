@@ -98,22 +98,76 @@
 	<resheader name="writer">
 		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
 	</resheader>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="Assassination" xml:space="preserve">
+    <value>Assassinato</value>
+    <comment>Ship role Assassination</comment>
+  </data>
+  <data name="Bountyhunting" xml:space="preserve">
+    <value>Caçador de Recompensas</value>
+    <comment>Ship role Bountyhunting</comment>
+  </data>
+  <data name="Combat" xml:space="preserve">
+    <value>Combate</value>
+    <comment>Ship role Combat</comment>
+  </data>
+  <data name="Combatsupport" xml:space="preserve">
+    <value>Suporte de combate</value>
+    <comment>Ship role Combatsupport</comment>
+  </data>
+  <data name="Exploration" xml:space="preserve">
+    <value>Exploração</value>
+    <comment>Ship role Exploration</comment>
+  </data>
+  <data name="Journalism" xml:space="preserve">
+    <value>Jornalismo</value>
+    <comment>Ship role Journalism</comment>
+  </data>
+  <data name="Mining" xml:space="preserve">
+    <value>Mineração</value>
+    <comment>Ship role Mining</comment>
+  </data>
+  <data name="MultiCrew" xml:space="preserve">
+    <value>Tripulação</value>
+    <comment>Ship role MultiCrew</comment>
+  </data>
+  <data name="Multipurpose" xml:space="preserve">
+    <value>Multipropósito</value>
+    <comment>Ship role Multipurpose</comment>
+  </data>
+  <data name="Piracy" xml:space="preserve">
+    <value>Pirataria</value>
+    <comment>Ship role Piracy</comment>
+  </data>
+  <data name="Racing" xml:space="preserve">
+    <value>Corrida</value>
+    <comment>Ship role Racing</comment>
+  </data>
+  <data name="Refueling" xml:space="preserve">
+    <value>Reabastecimento</value>
+    <comment>Ship role Refueling</comment>
+  </data>
+  <data name="Repair" xml:space="preserve">
+    <value>Reparo</value>
+    <comment>Ship role Repair</comment>
+  </data>
+  <data name="Science" xml:space="preserve">
+    <value>Ciência</value>
+    <comment>Ship role Science</comment>
+  </data>
+  <data name="Searchandrescue" xml:space="preserve">
+    <value>Busca e Resgate</value>
+    <comment>Ship role Searchandrescue</comment>
+  </data>
+  <data name="Smuggling" xml:space="preserve">
+    <value>Contrabando</value>
+    <comment>Ship role Smuggling</comment>
+  </data>
+  <data name="Taxi" xml:space="preserve">
+    <value>Táxi</value>
+    <comment>Ship role Taxi</comment>
+  </data>
+  <data name="Trading" xml:space="preserve">
+    <value>Comércio</value>
+    <comment>Ship role Trading</comment>
+  </data>
 </root>
