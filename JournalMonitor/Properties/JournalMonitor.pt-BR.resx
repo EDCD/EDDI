@@ -97,6 +97,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
+  <data name="desc" xml:space="preserve">
+    <value>Monitora o journal.log do Elite: Dangerous por muitos eventos comuns. Isso não deve ser desativado, a menos que você tenha certeza de que sabe o que está fazendo, pois isso resultará em muitas funções dentro do EDDI que não funcionarão mais</value>
+  </data>
+  <data name="name" xml:space="preserve">
+    <value>Monitor de Journal</value>
+  </data>
 </root>
