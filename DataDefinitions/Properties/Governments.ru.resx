@@ -98,20 +98,68 @@
 	<resheader name="writer">
 		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
 	</resheader>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="Anarchy" xml:space="preserve">
+    <value>Анархия</value>
+    <comment>Government type Anarchy</comment>
+  </data>
+  <data name="Colony" xml:space="preserve">
+    <value>Колония</value>
+    <comment>Government type Colony</comment>
+  </data>
+  <data name="Communism" xml:space="preserve">
+    <value>Коммунистическая</value>
+    <comment>Government type Communism</comment>
+  </data>
+  <data name="Confederacy" xml:space="preserve">
+    <value>Конфедерация</value>
+    <comment>Government type Confederacy</comment>
+  </data>
+  <data name="Cooperative" xml:space="preserve">
+    <value>Кооперация</value>
+    <comment>Government type Cooperative</comment>
+  </data>
+  <data name="Corporate" xml:space="preserve">
+    <value>Корпоративная</value>
+    <comment>Government type Corporate</comment>
+  </data>
+  <data name="Democracy" xml:space="preserve">
+    <value>Демократия</value>
+    <comment>Government type Democracy</comment>
+  </data>
+  <data name="Dictatorship" xml:space="preserve">
+    <value>Диктатура</value>
+    <comment>Government type Dictatorship</comment>
+  </data>
+  <data name="Feudal" xml:space="preserve">
+    <value>Феодальная</value>
+    <comment>Government type Feudal</comment>
+  </data>
+  <data name="Imperial" xml:space="preserve">
+    <value>Имперская</value>
+    <comment>Government type Imperial</comment>
+  </data>
+  <data name="None" xml:space="preserve">
+    <value>Нет</value>
+    <comment>Government type None</comment>
+  </data>
+  <data name="Patronage" xml:space="preserve">
+    <value>Попечительство</value>
+    <comment>Government type Patronage</comment>
+  </data>
+  <data name="PrisonColony" xml:space="preserve">
+    <value>Тюремная колония</value>
+    <comment>Government type PrisonColony</comment>
+  </data>
+  <data name="Theocracy" xml:space="preserve">
+    <value>Теократия</value>
+    <comment>Government type Theocracy</comment>
+  </data>
+  <data name="Workshop" xml:space="preserve">
+    <value>Мастерская</value>
+    <comment>Government type Workshop</comment>
+  </data>
+  <data name="engineer" xml:space="preserve">
+    <value>Инженерная</value>
+    <comment>Government type engineer</comment>
+  </data>
 </root>
