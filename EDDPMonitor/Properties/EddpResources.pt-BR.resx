@@ -117,16 +117,40 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="anything" xml:space="preserve">
+    <value>(qualquer coisa)</value>
+  </data>
+  <data name="delete_btn" xml:space="preserve">
+    <value>Excluir</value>
+  </data>
+  <data name="desc" xml:space="preserve">
+    <value>Monitora o EDDP por alterações no controle e estado do sistema e gera eventos que correspondam à lista de observação.</value>
+  </data>
+  <data name="faction_header" xml:space="preserve">
+    <value>Facção</value>
+  </data>
+  <data name="max_dist_home_header" xml:space="preserve">
+    <value>Distância máxima de casa</value>
+  </data>
+  <data name="max_dist_ship_header" xml:space="preserve">
+    <value>Distância máxima da nave</value>
+  </data>
+  <data name="name" xml:space="preserve">
+    <value>Monitor do EDDP</value>
+  </data>
+  <data name="name_header" xml:space="preserve">
+    <value>Nome</value>
+  </data>
+  <data name="new_watch" xml:space="preserve">
+    <value>Novo Monitoramento</value>
+  </data>
+  <data name="p1" xml:space="preserve">
+    <value>Você pode criar, editar e excluir monitores abaixo. Quando a EDDI recebe informações sobre uma mudança em algum lugar da galáxia, ela será comparada a cada um dos monitores. Se as informações corresponderem a todos os critérios selecionados para um determinado monitor, ele acionará um evento. Por favor, esteja ciente de que isso depende de informações provenientes de EDDN, que, por sua vez, vem de comandantes que executam programas como o EDDI, portanto, só informará as alterações de que a rede está ciente.</value>
+  </data>
+  <data name="state_header" xml:space="preserve">
+    <value>Estado</value>
+  </data>
+  <data name="system_header" xml:space="preserve">
+    <value>Sistema</value>
+  </data>
 </root>
