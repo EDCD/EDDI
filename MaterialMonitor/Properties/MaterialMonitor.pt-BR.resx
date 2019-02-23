@@ -114,14 +114,34 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="desc" xml:space="preserve">
+    <value>Acompanha a quantidade de materiais e gera eventos quando os limites são atingidos.</value>
+  </data>
+  <data name="desired_header" xml:space="preserve">
+    <value>Desejado</value>
+  </data>
+  <data name="inventory_header" xml:space="preserve">
+    <value>Inventário</value>
+  </data>
+  <data name="max_header" xml:space="preserve">
+    <value>Máximo</value>
+  </data>
+  <data name="min_header" xml:space="preserve">
+    <value>Mínimo</value>
+  </data>
+  <data name="name" xml:space="preserve">
+    <value>Monitor de Material</value>
+  </data>
+  <data name="name_header" xml:space="preserve">
+    <value>Nome</value>
+  </data>
+  <data name="p1" xml:space="preserve">
+    <value>Abaixo está uma lista de todos os materiais conhecidos. Você pode definir valores para os níveis mínimo, desejado e máximo de cada e o EDDI gerará eventos quando você ultrapassar os níveis.</value>
+  </data>
+  <data name="p2" xml:space="preserve">
+    <value>Note que, se seu inventário estiver incorreto, você precisará iniciar ou reiniciar o Elite e essas informações serão atualizadas.</value>
+  </data>
+  <data name="type_header" xml:space="preserve">
+    <value>Tipo</value>
+  </data>
 </root>
