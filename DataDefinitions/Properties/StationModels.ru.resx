@@ -117,12 +117,30 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
-  
-  
-  
-  
+  <data name="AsteroidBase" xml:space="preserve">
+    <value>База в астероиде</value>
+    <comment>An Asteroid Base</comment>
+  </data>
+  <data name="Bernal" xml:space="preserve">
+    <value>Сфера Бернала</value>
+    <comment>An Ocellus Starsport</comment>
+  </data>
+  <data name="Coriolis" xml:space="preserve">
+    <value>Кубооктаэдр</value>
+    <comment>A Coriolis Starport</comment>
+  </data>
+  <data name="Megaship" xml:space="preserve">
+    <value>Мега-корабль</value>
+    <comment>A Megaship</comment>
+  </data>
+  <data name="Orbis" xml:space="preserve">
+    <value>Стэнфордский тор</value>
+    <comment>An Orbis Starport</comment>
+  </data>
+  <data name="Outpost" xml:space="preserve">
+    <value>Аванпост</value>
+    <comment>An Outpost</comment>
+  </data>
   
   
   
