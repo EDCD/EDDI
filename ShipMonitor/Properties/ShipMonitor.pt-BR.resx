@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="desc" xml:space="preserve">
-    <value>Rastreia informações sobre suas naves.</value>
+    <value>Rastreia informações das suas naves.</value>
   </data>
   <data name="export_it_button" xml:space="preserve">
     <value>Exportar</value>
@@ -187,7 +187,7 @@
     <value>A</value>
   </data>
   <data name="ipa_resource1_title" xml:space="preserve">
-    <value>Gráfico IPA com sons</value>
+    <value>Gráfico AFI com sons</value>
   </data>
   <data name="ipa_resource2_title" xml:space="preserve">
     <value>Tradutor de Português para AFI - https://goo.gl/Ha3LPD</value>
