@@ -217,22 +217,58 @@
   <data name="tab_tts_disable_phonetic_speech_note" xml:space="preserve">
     <value>(isso desligará as funções usando tags de voz SSML, como visto no arquivo de Ajuda da Resposta de Fala)</value>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="tab_tts_icao_desc" xml:space="preserve">
+    <value>O EDDI pode usar ICAO, por exemplo, usando 'alfa' em vez de 'A', ao dizer nomes de estrela e corpos. Isso pode facilitar a compreensão dos nomes do sistema, mas demora mais para ser pronunciado. Se você quiser ouvir pronunciações ICAO, marque a opção abaixo. Note que isso não funcionará se você tiver desativado a fala fonética acima.</value>
+  </data>
+  <data name="tab_tts_icao_label" xml:space="preserve">
+    <value>Habilitar ICAO:</value>
+  </data>
+  <data name="tab_commander_details_header" xml:space="preserve">
+    <value>Detalhes do Comandante</value>
+  </data>
+  <data name="tab_commander_gender" xml:space="preserve">
+    <value>Gênero preferido para pronomes e títulos:</value>
+  </data>
+  <data name="tab_commander_gender_f" xml:space="preserve">
+    <value>Feminino</value>
+  </data>
+  <data name="tab_commander_gender_m" xml:space="preserve">
+    <value>Masculino</value>
+  </data>
+  <data name="tab_commander_gender_n" xml:space="preserve">
+    <value>Nenhum</value>
+  </data>
+  <data name="tab_commander_home_station" xml:space="preserve">
+    <value>Estação de origem:</value>
+  </data>
+  <data name="tab_commander_home_system" xml:space="preserve">
+    <value>Sistema de origem:</value>
+  </data>
+  <data name="tab_commander_par1" xml:space="preserve">
+    <value>Você pode fornecer o nome de um sistema específico que você considera sua casa e também uma estação dentro desse sistema. Se você fizer isso, as informações sobre este sistema e estação serão disponibilizadas para as respostas do EDDI.</value>
+  </data>
+  <data name="tab_commander_squadron_name" xml:space="preserve">
+    <value>Nome da esquadra:</value>
+  </data>
+  <data name="tab_commander_squadron_system" xml:space="preserve">
+    <value>Sistema da esquadra:</value>
+  </data>
+  <data name="tab_commander_squadron_allegiance" xml:space="preserve">
+    <value>Lealdade da esqudra:</value>
+  </data>
+  <data name="tab_commander_squadron_faction" xml:space="preserve">
+    <value>Facção da esquadra:</value>
+  </data>
+  <data name="tab_commander_squadron_power" xml:space="preserve">
+    <value>Poder da esqudra:</value>
+  </data>
+  <data name="tab_commander_squadron_rank" xml:space="preserve">
+    <value>Rank na esquadra:</value>
+  </data>
+  <data name="tab_commander_squadron_id" xml:space="preserve">
+    <value>ID da esquadra:</value>
+  </data>
+  <data name="no_station" xml:space="preserve">
+    <value>Sem Estação</value>
+  </data>
 </root>
