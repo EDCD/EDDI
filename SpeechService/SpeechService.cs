@@ -30,11 +30,11 @@ namespace EddiSpeechService
         private int activeSpeechPriority;
 
         protected static ConcurrentQueue<EddiSpeech> speechPriority0 = new ConcurrentQueue<EddiSpeech>(); // Priority 0: System messages (always top priority)
-        protected static ConcurrentQueue<EddiSpeech> speechPriority1 = new ConcurrentQueue<EddiSpeech>(); // Priority 1: Highest settable priority for scripts
-        protected static ConcurrentQueue<EddiSpeech> speechPriority2 = new ConcurrentQueue<EddiSpeech>(); // Priority 2: High priority scripts
-        protected static ConcurrentQueue<EddiSpeech> speechPriority3 = new ConcurrentQueue<EddiSpeech>(); // Priority 3: Standard priority scripts
-        protected static ConcurrentQueue<EddiSpeech> speechPriority4 = new ConcurrentQueue<EddiSpeech>(); // Priority 4: Low priority scripts
-        protected static ConcurrentQueue<EddiSpeech> speechPriority5 = new ConcurrentQueue<EddiSpeech>(); // Priority 5: Lowest priority scripts
+        protected static ConcurrentQueue<EddiSpeech> speechPriority1 = new ConcurrentQueue<EddiSpeech>(); // Priority 1: Highest user settable priority, interrupts lower priorities
+        protected static ConcurrentQueue<EddiSpeech> speechPriority2 = new ConcurrentQueue<EddiSpeech>(); // Priority 2: High priority
+        protected static ConcurrentQueue<EddiSpeech> speechPriority3 = new ConcurrentQueue<EddiSpeech>(); // Priority 3: Standard priority
+        protected static ConcurrentQueue<EddiSpeech> speechPriority4 = new ConcurrentQueue<EddiSpeech>(); // Priority 4: Low priority
+        protected static ConcurrentQueue<EddiSpeech> speechPriority5 = new ConcurrentQueue<EddiSpeech>(); // Priority 5: Lowest priority, interrupted by any higher priority
 
         private static readonly object synthLock = new object();
         public static SpeechSynthesizer synth { get; private set; }
@@ -121,7 +121,7 @@ namespace EddiSpeechService
 
             EddiSpeech queuingSpeech = new EddiSpeech(message, wait, ship, priority, voice, radio, eventType);
             enqueueSpeech(queuingSpeech);
-            Thread speechQueueHandler = new Thread(() => handleSpeech(checkSpeechPriority(dequeueSpeech())))
+            Thread speechQueueHandler = new Thread(() => handleSpeech(checkSpeechInterrupt(dequeueSpeech())))
             {
                 Name = "SpeechQueueHandler",
                 IsBackground = true
@@ -726,10 +726,11 @@ namespace EddiSpeechService
             return speech;
         }
 
-        private EddiSpeech checkSpeechPriority (EddiSpeech speech)
+        private EddiSpeech checkSpeechInterrupt (EddiSpeech speech)
         {
             // Priority 0 speech (system messages) and priority 1 speech and will interrupt current speech
-            if (speech.priority <= 1)
+            // Priority 5 speech in interruptable by any higher priority speech. 
+            if (speech.priority <= 1 || (activeSpeechPriority >= 5 && speech.priority < 5))
             {
                 Logging.Debug("About to StopCurrentSpeech");
                 StopCurrentSpeech();

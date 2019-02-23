@@ -60,15 +60,34 @@ namespace UnitTests
         [TestMethod]
         public void TestActiveSpeechPriority()
         {
-            EddiSpeech speech1 = new EddiSpeech("Priority 3", true, null, 3);
-            EddiSpeech speech2 = new EddiSpeech("Priority 1", true, null, 1);
+            EddiSpeech speech1 = new EddiSpeech("Priority 5", true, null, 5);
+            EddiSpeech speech2 = new EddiSpeech("Priority 4", true, null, 4);
+            EddiSpeech speech3 = new EddiSpeech("Priority 2", true, null, 2);
+            EddiSpeech speech4 = new EddiSpeech("Priority 1", true, null, 1);
+
+            // Set up priority 5 speech
             speechService.SetFieldOrProperty("activeSpeech", (ISoundOut)speechService.Invoke("GetSoundOut", new object[] { }));
             speechService.SetFieldOrProperty("activeSpeechPriority", speech1.priority);
-
             Assert.IsNotNull((ISoundOut)speechService.GetFieldOrProperty("activeSpeech"));
-            speechService.Invoke("checkSpeechPriority", new object[] { speech2 });
+            Assert.AreEqual(5, (int)speechService.GetFieldOrProperty("activeSpeechPriority"));
 
-            // If our new speech is more urgent, active speech should be purged to make room for the new speech
+            // Check that priority 5 speech IS interrupted by priority 4 speech.
+            speechService.Invoke("checkSpeechInterrupt", new object[] { speech2 });
+            Assert.IsNull((ISoundOut)speechService.GetFieldOrProperty("activeSpeech"));
+
+            // Set up priority 4 speech
+            speechService.SetFieldOrProperty("activeSpeech", (ISoundOut)speechService.Invoke("GetSoundOut", new object[] { }));
+            speechService.SetFieldOrProperty("activeSpeechPriority", speech2.priority);
+            Assert.IsNotNull((ISoundOut)speechService.GetFieldOrProperty("activeSpeech"));
+            Assert.AreEqual(4, (int)speechService.GetFieldOrProperty("activeSpeechPriority"));
+
+            // Check that priority 4 speech IS NOT interrupted by priority 2 speech.
+            speechService.Invoke("checkSpeechInterrupt", new object[] { speech3 });
+            Assert.IsNotNull((ISoundOut)speechService.GetFieldOrProperty("activeSpeech"));
+            Assert.AreEqual(4, (int)speechService.GetFieldOrProperty("activeSpeechPriority"));
+
+            // Check that priority 4 speech IS interrupted by priority 1 speech.
+            speechService.Invoke("checkSpeechInterrupt", new object[] { speech4 });
             Assert.IsNull((ISoundOut)speechService.GetFieldOrProperty("activeSpeech"));
         }
     }
