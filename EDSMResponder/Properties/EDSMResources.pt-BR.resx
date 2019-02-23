@@ -127,7 +127,7 @@
     <value>Envia detalhes de suas viagens para o EDSM. O EDSM é uma ferramenta de terceiros que fornece informações sobre a localização de sistemas estelares e mantém um registro dos sistemas estelares que você visitou. Ele usa os dados fornecidos para gerar um mapa da galáxia</value>
   </data>
   <data name="log_button" xml:space="preserve">
-    <value>Obtém log do EDSM</value>
+    <value>Obtém logs do EDSM</value>
   </data>
   <data name="log_button_companion_unconfigured" xml:space="preserve">
     <value>API do EDSM não está configurada, não posso obter os logs.</value>
@@ -148,7 +148,7 @@
     <value>Obtendo log </value>
   </data>
   <data name="name" xml:space="preserve">
-    <value>Resposta do EDSM</value>
+    <value>Relator do EDSM</value>
   </data>
   <data name="p1" xml:space="preserve">
     <value>Para se conectar ao EDSM, você precisa ter registrado uma conta com eles. Depois de fazer isso, você pode obter sua API key clicando na sua foto no canto superior direito da tela e selecionando "My API key"</value>
