@@ -2,6 +2,9 @@
 using EddiSpeechService;
 using CSCore.SoundOut;
 using Rollbar;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace UnitTests
 {
@@ -89,6 +92,49 @@ namespace UnitTests
             // Check that priority 4 speech IS interrupted by priority 1 speech.
             speechService.Invoke("checkSpeechInterrupt", new object[] { speech4 });
             Assert.IsNull((ISoundOut)speechService.GetFieldOrProperty("activeSpeech"));
+        }
+
+        [TestMethod]
+        public void TestClearSpeechQueue()
+        {
+            EddiSpeech speech = new EddiSpeech("Priority 3", true, null, 3);
+            List<ConcurrentQueue<EddiSpeech>> speechQueues = (List<ConcurrentQueue<EddiSpeech>>)speechService.GetFieldOrProperty("speechQueues", System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.NonPublic);
+            Assert.IsTrue(speechQueues.ElementAtOrDefault(speech.priority) != null);
+
+            speechQueues[speech.priority].Enqueue(speech);
+            Assert.AreEqual(1, speechQueues[speech.priority].Count);
+
+            speechService.Invoke("ClearSpeech", new object[] { });
+
+            Assert.AreEqual(0, speechQueues[speech.priority].Count);
+        }
+
+        [TestMethod]
+        public void TestFilterSpeechQueue()
+        {
+            EddiSpeech speech1 = new EddiSpeech("Jumped", true, null, 3, null, false, "FSDJump");
+            EddiSpeech speech2 = new EddiSpeech("Refueled", true, null, 3, null, false, "Ship refueled");
+            EddiSpeech speech3 = new EddiSpeech("Scanned", true, null, 3, null, false, "Scan");
+
+            List<ConcurrentQueue<EddiSpeech>> speechQueues = (List<ConcurrentQueue<EddiSpeech>>)speechService.GetFieldOrProperty("speechQueues", System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.NonPublic);
+            Assert.IsTrue(speechQueues.ElementAtOrDefault(3) != null);
+            speechQueues[speech1.priority].Enqueue(speech1);
+            speechQueues[speech2.priority].Enqueue(speech2);
+            speechQueues[speech3.priority].Enqueue(speech3);
+
+            Assert.AreEqual(3, speechQueues[3].Count);
+
+            speechService.Invoke("ClearSpeechOfType", new object[] { "Scan" });
+
+            Assert.AreEqual(2, speechQueues[3].Count);
+            if (speechQueues[3].TryDequeue(out EddiSpeech result1))
+            {
+                Assert.AreEqual("FSDJump", result1.eventType);
+            }
+            if (speechQueues[3].TryDequeue(out EddiSpeech result2))
+            {
+                Assert.AreEqual("Ship refueled", result2.eventType);
+            }
         }
     }
 }
