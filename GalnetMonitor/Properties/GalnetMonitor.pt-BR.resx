@@ -121,7 +121,7 @@
     <value>Monitora a Galnet por novas notícias e gera um evento "Galnet news published" quando novos itens são publicados.</value>
   </data>
   <data name="language_label" xml:space="preserve">
-    <value>Língua do artico da Galnet</value>
+    <value>Língua do artigo da Galnet</value>
   </data>
   <data name="name" xml:space="preserve">
     <value>Monitor da Galnet</value>
