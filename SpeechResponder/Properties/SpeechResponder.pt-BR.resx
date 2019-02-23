@@ -185,7 +185,7 @@
     <value>Ajuda</value>
   </data>
   <data name="name" xml:space="preserve">
-    <value>Resposta de Fala</value>
+    <value>Relator de Fala</value>
   </data>
   <data name="reset_script_button" xml:space="preserve">
     <value>Restabelecer padrão</value>
@@ -198,7 +198,7 @@
     <value>Escrever cópias de texto da fala no arquivo %APPDATA%\EDDI\speechresponder.out</value>
   </data>
   <data name="subs_only" xml:space="preserve">
-    <value>Não fale alto quando o texto é gravado no arquivo acima</value>
+    <value>Não falar quando o texto é gravado no arquivo acima</value>
   </data>
   <data name="test_script" xml:space="preserve">
     <value>Testar</value>
