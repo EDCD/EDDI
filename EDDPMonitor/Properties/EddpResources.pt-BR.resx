@@ -145,7 +145,7 @@
     <value>Novo Monitoramento</value>
   </data>
   <data name="p1" xml:space="preserve">
-    <value>Você pode criar, editar e excluir monitores abaixo. Quando a EDDI recebe informações sobre uma mudança em algum lugar da galáxia, ela será comparada a cada um dos monitores. Se as informações corresponderem a todos os critérios selecionados para um determinado monitor, ele acionará um evento. Por favor, esteja ciente de que isso depende de informações provenientes de EDDN, que, por sua vez, vem de comandantes que executam programas como o EDDI, portanto, só informará as alterações de que a rede está ciente.</value>
+    <value>Você pode criar, editar e excluir monitores abaixo. Quando a EDDI recebe informações sobre uma mudança em algum lugar da galáxia, ela será comparada a cada um dos monitores. Se as informações corresponderem a todos os critérios selecionados para um determinado monitor, ele acionará um evento. Por favor, esteja ciente de que isso depende de informações provenientes do EDDN, que, por sua vez, vem de comandantes que executam programas como o EDDI, portanto, só informará as alterações de que a rede está ciente.</value>
   </data>
   <data name="state_header" xml:space="preserve">
     <value>Estado</value>
