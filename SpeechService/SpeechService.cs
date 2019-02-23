@@ -722,6 +722,7 @@ namespace EddiSpeechService
             if (queuingSpeech == null) { return; }
             if (speechQueues.ElementAtOrDefault(queuingSpeech.priority) != null)
             {
+                removeStaleSpeech(queuingSpeech);
                 speechQueues[queuingSpeech.priority].Enqueue(queuingSpeech);
             }
         }
@@ -781,16 +782,37 @@ namespace EddiSpeechService
             for (int i = 1; i < speechQueues.Count; i++)
             {
                 ConcurrentQueue<EddiSpeech> priorityHolder = new ConcurrentQueue<EddiSpeech>();
-                while (speechQueues[i].TryDequeue(out EddiSpeech eddiSpeech)) { FilterSpeechQueue(type, ref priorityHolder, eddiSpeech); };
+                while (speechQueues[i].TryDequeue(out EddiSpeech eddiSpeech)) { filterSpeechQueue(type, ref priorityHolder, eddiSpeech); };
                 while (priorityHolder.TryDequeue(out EddiSpeech eddiSpeech)) { speechQueues[i].Enqueue(eddiSpeech); };
             }
         }
 
-        private static void FilterSpeechQueue(string type, ref ConcurrentQueue<EddiSpeech> speechQueue, EddiSpeech eddiSpeech)
+        private void filterSpeechQueue(string type, ref ConcurrentQueue<EddiSpeech> speechQueue, EddiSpeech eddiSpeech)
         {
             if (!(bool)eddiSpeech?.eventType?.Contains(type))
             {
                 speechQueue.Enqueue(eddiSpeech);
+            }
+        }
+
+        private void removeStaleSpeech(EddiSpeech eddiSpeech)
+        {
+            // List EDDI event types of where stale event data should be removed in favor of more recent data
+            string[] eventTypes = new string[]
+                {
+                    "Next jump",
+                    "Heat damage",
+                    "Heat warning",
+                    "Hull damaged",
+                    "Under attack"
+                };
+
+            foreach (string eventType in eventTypes)
+            {
+                if (eddiSpeech.eventType == eventType)
+                {
+                    ClearSpeechOfType(eventType);
+                }
             }
         }
     }

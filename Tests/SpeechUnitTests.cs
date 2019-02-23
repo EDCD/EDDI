@@ -112,9 +112,9 @@ namespace UnitTests
         [TestMethod]
         public void TestFilterSpeechQueue()
         {
-            EddiSpeech speech1 = new EddiSpeech("Jumped", true, null, 3, null, false, "FSDJump");
+            EddiSpeech speech1 = new EddiSpeech("Jumped", true, null, 3, null, false, "FSD engaged");
             EddiSpeech speech2 = new EddiSpeech("Refueled", true, null, 3, null, false, "Ship refueled");
-            EddiSpeech speech3 = new EddiSpeech("Scanned", true, null, 3, null, false, "Scan");
+            EddiSpeech speech3 = new EddiSpeech("Scanned", true, null, 3, null, false, "Body scan");
 
             List<ConcurrentQueue<EddiSpeech>> speechQueues = (List<ConcurrentQueue<EddiSpeech>>)speechService.GetFieldOrProperty("speechQueues", System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.NonPublic);
             Assert.IsTrue(speechQueues.ElementAtOrDefault(3) != null);
@@ -124,12 +124,12 @@ namespace UnitTests
 
             Assert.AreEqual(3, speechQueues[3].Count);
 
-            speechService.Invoke("ClearSpeechOfType", new object[] { "Scan" });
+            speechService.Invoke("ClearSpeechOfType", new object[] { "Body scan" });
 
             Assert.AreEqual(2, speechQueues[3].Count);
             if (speechQueues[3].TryDequeue(out EddiSpeech result1))
             {
-                Assert.AreEqual("FSDJump", result1.eventType);
+                Assert.AreEqual("FSD engaged", result1.eventType);
             }
             if (speechQueues[3].TryDequeue(out EddiSpeech result2))
             {
