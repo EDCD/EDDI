@@ -122,11 +122,11 @@
     <comment>An Asteroid Base</comment>
   </data>
   <data name="Bernal" xml:space="preserve">
-    <value>Сфера Бернала</value>
+    <value>Станция Ocellus</value>
     <comment>An Ocellus Starsport</comment>
   </data>
   <data name="Coriolis" xml:space="preserve">
-    <value>Кубооктаэдр</value>
+    <value>Станция Coriolis</value>
     <comment>A Coriolis Starport</comment>
   </data>
   <data name="Megaship" xml:space="preserve">
@@ -134,17 +134,35 @@
     <comment>A Megaship</comment>
   </data>
   <data name="Orbis" xml:space="preserve">
-    <value>Стэнфордский тор</value>
+    <value>Станция Orbis</value>
     <comment>An Orbis Starport</comment>
   </data>
   <data name="Outpost" xml:space="preserve">
     <value>Аванпост</value>
     <comment>An Outpost</comment>
   </data>
-  
-  
-  
-  
-  
-  
+  <data name="SurfaceStation" xml:space="preserve">
+    <value>Планетарная станция</value>
+    <comment>A Surface Station</comment>
+  </data>
+  <data name="None" xml:space="preserve">
+    <value>Неизвестная станция</value>
+    <comment>Unknown Station</comment>
+  </data>
+  <data name="CraterPort" xml:space="preserve">
+    <value>Планетарный Порт</value>
+    <comment>A Surface Port</comment>
+  </data>
+  <data name="CraterOutpost" xml:space="preserve">
+    <value>Планетраный аванпост</value>
+    <comment>A Surface Outpost</comment>
+  </data>
+  <data name="MegaShipCivilian" xml:space="preserve">
+    <value>Гражданский Мега-корабль</value>
+    <comment>A Civilian Megaship</comment>
+  </data>
+  <data name="OutpostScientific" xml:space="preserve">
+    <value>Научный аванпост</value>
+    <comment>A Scientific Outpost (currently, Talos 1 &amp; Talos 2 in Peregrina)</comment>
+  </data>
 </root>
