@@ -97,10 +97,28 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
-  
-  
-  
-  
+  <data name="blue" xml:space="preserve">
+    <value>синий</value>
+    <comment>Star color blue</comment>
+  </data>
+  <data name="blue_white" xml:space="preserve">
+    <value>сине-белый</value>
+    <comment>Star color blue_white</comment>
+  </data>
+  <data name="white" xml:space="preserve">
+    <value>белый</value>
+    <comment>Star color white</comment>
+  </data>
+  <data name="yellow_white" xml:space="preserve">
+    <value>жёлто-белый</value>
+    <comment>Star color yellow_white</comment>
+  </data>
+  <data name="yellow_orange" xml:space="preserve">
+    <value>желто-оранжевый</value>
+    <comment>Star color yellow_orange</comment>
+  </data>
+  <data name="orange_red" xml:space="preserve">
+    <value>оранжево-красный</value>
+    <comment>Star color orange_red</comment>
+  </data>
 </root>
