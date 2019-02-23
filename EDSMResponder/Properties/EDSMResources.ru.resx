@@ -117,18 +117,46 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="api_key_label" xml:space="preserve">
+    <value>EDSM API ключ:</value>
+  </data>
+  <data name="cmd_name_label" xml:space="preserve">
+    <value>Имя командира в EDSM:</value>
+  </data>
+  <data name="desc" xml:space="preserve">
+    <value>Отправbnm детали вашего путешествия в EDSM. EDSM - это сторонний инструмент, который предоставляет информацию о местонахождении звездных систем и ведет журнал посещений звездных систем, которые вы посетили. Он использует данные предоставляя их для построения карты галактики</value>
+  </data>
+  <data name="log_button" xml:space="preserve">
+    <value>Получить журнал EDSM</value>
+  </data>
+  <data name="log_button_companion_unconfigured" xml:space="preserve">
+    <value>EDSM API не настроен; не могу получить логи.</value>
+  </data>
+  <data name="log_button_empty_api_key" xml:space="preserve">
+    <value>Пожалуйста, введите ключ API EDSM, чтобы получить журнал</value>
+  </data>
+  <data name="log_button_error_received" xml:space="preserve">
+    <value>Получена ошибка EDSM: </value>
+  </data>
+  <data name="log_button_fetched" xml:space="preserve">
+    <value>Получен журнал</value>
+  </data>
+  <data name="log_button_fetching" xml:space="preserve">
+    <value>Получение журнала...</value>
+  </data>
+  <data name="log_button_fetching_progress" xml:space="preserve">
+    <value>Получение журнала </value>
+  </data>
+  <data name="name" xml:space="preserve">
+    <value>EDSM Ответчик</value>
+  </data>
+  <data name="p1" xml:space="preserve">
+    <value>Для подключения к EDSM вам необходимо зарегистрировать учетную запись у них. Сделав это, вы можете получить ключ API, нажав на свой портрет в правом верхнем углу экрана и выбрав 'My API Key'</value>
+  </data>
+  <data name="p2" xml:space="preserve">
+    <value>Если вы зарегистрировали имя командира, отличное от фактического, введите его ниже</value>
+  </data>
+  <data name="p3" xml:space="preserve">
+    <value>После того как вы ввели свои данные выше, вы можете извлечь существующие журналы из EDSM, чтобы EDDI знал, сколько раз вы были в каждой системе. Вам нужно сделать это только при первой настройке EDSM. Обратите внимание, что это может занять некоторое время для запуска</value>
+  </data>
 </root>
