@@ -117,10 +117,28 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
-  
-  
-  
-  
+  <data name="ship" xml:space="preserve">
+    <value>Nave</value>
+    <comment>ship</comment>
+  </data>
+  <data name="srv" xml:space="preserve">
+    <value>VRS</value>
+    <comment>srv</comment>
+  </data>
+  <data name="fighter" xml:space="preserve">
+    <value>Caça</value>
+    <comment>fighter</comment>
+  </data>
+  <data name="witch_space" xml:space="preserve">
+    <value>Espaço Profundo</value>
+    <comment>witch_space</comment>
+  </data>
+  <data name="supercruise" xml:space="preserve">
+    <value>Supervelocidade</value>
+    <comment>supercruise</comment>
+  </data>
+  <data name="normal_space" xml:space="preserve">
+    <value>Espaço Normal</value>
+    <comment>normal_space</comment>
+  </data>
 </root>
