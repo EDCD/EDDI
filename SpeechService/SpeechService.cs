@@ -30,7 +30,7 @@ namespace EddiSpeechService
         private ISoundOut activeSpeech;
         private int activeSpeechPriority;
 
-        protected static List<ConcurrentQueue<EddiSpeech>> speechQueues;
+        public List<ConcurrentQueue<EddiSpeech>> speechQueues { get; private set; }
 
         private static readonly object synthLock = new object();
         public static SpeechSynthesizer synth { get; private set; }
@@ -52,7 +52,7 @@ namespace EddiSpeechService
             }
         }
 
-        private static void PrepareSpeechQueues()
+        private void PrepareSpeechQueues()
         {
             speechQueues = new List<ConcurrentQueue<EddiSpeech>>();
 
@@ -84,7 +84,7 @@ namespace EddiSpeechService
                         {
                             Logging.Debug("No Speech service instance: creating one");
                             instance = new SpeechService();
-                            PrepareSpeechQueues();
+                            instance.PrepareSpeechQueues();
                         }
                     }
                 }

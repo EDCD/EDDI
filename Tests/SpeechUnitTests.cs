@@ -98,7 +98,7 @@ namespace UnitTests
         public void TestClearSpeechQueue()
         {
             EddiSpeech speech = new EddiSpeech("Priority 3", true, null, 3);
-            List<ConcurrentQueue<EddiSpeech>> speechQueues = (List<ConcurrentQueue<EddiSpeech>>)speechService.GetFieldOrProperty("speechQueues", System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.NonPublic);
+            List<ConcurrentQueue<EddiSpeech>> speechQueues = (List<ConcurrentQueue<EddiSpeech>>)speechService.GetFieldOrProperty("speechQueues");
             Assert.IsTrue(speechQueues.ElementAtOrDefault(speech.priority) != null);
 
             speechQueues[speech.priority].Enqueue(speech);
@@ -116,7 +116,7 @@ namespace UnitTests
             EddiSpeech speech2 = new EddiSpeech("Refueled", true, null, 3, null, false, "Ship refueled");
             EddiSpeech speech3 = new EddiSpeech("Scanned", true, null, 3, null, false, "Body scan");
 
-            List<ConcurrentQueue<EddiSpeech>> speechQueues = (List<ConcurrentQueue<EddiSpeech>>)speechService.GetFieldOrProperty("speechQueues", System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.NonPublic);
+            List<ConcurrentQueue<EddiSpeech>> speechQueues = (List<ConcurrentQueue<EddiSpeech>>)speechService.GetFieldOrProperty("speechQueues");
             Assert.IsTrue(speechQueues.ElementAtOrDefault(3) != null);
             speechQueues[speech1.priority].Enqueue(speech1);
             speechQueues[speech2.priority].Enqueue(speech2);
