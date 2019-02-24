@@ -119,102 +119,264 @@
   </resheader>
   
   
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="AutoField_MaintenanceUnit" xml:space="preserve">
+    <value>Блок Автом. Полевого Ремонта</value>
+    <comment>Module AutoField_MaintenanceUnit</comment>
+  </data>
+  
+  
+  <data name="BasicDiscoveryScanner" xml:space="preserve">
+    <value>Базовый исследовательский сканер</value>
+    <comment>Module BasicDiscoveryScanner</comment>
+  </data>
+  <data name="BeamLaser" xml:space="preserve">
+    <value>Пучковый Лазер</value>
+    <comment>Module BeamLaser</comment>
+  </data>
+  <data name="Bi_WeaveShieldGenerator" xml:space="preserve">
+    <value>Двухпоточный Щитогенератор</value>
+    <comment>Module Bi_WeaveShieldGenerator</comment>
+  </data>
+  <data name="BurstLaser" xml:space="preserve">
+    <value>Пульсирующие лазеры</value>
+    <comment>Module BurstLaser</comment>
+  </data>
+  <data name="BusinessClassPassengerCabin" xml:space="preserve">
+    <value>Каюта пассажира бизнес-класса</value>
+    <comment>Module BusinessClassPassengerCabin</comment>
+  </data>
+  <data name="Cannon" xml:space="preserve">
+    <value>Орудие</value>
+    <comment>Module Cannon</comment>
+  </data>
+  <data name="CargoHatch" xml:space="preserve">
+    <value>Грузовой люк</value>
+    <comment>Module CargoHatch</comment>
+  </data>
+  <data name="CargoRack" xml:space="preserve">
+    <value>Грузовой стеллаж</value>
+    <comment>Module CargoRack</comment>
+  </data>
+  
+  <data name="ChaffLauncher" xml:space="preserve">
+    <value>Разбрасыватель дипольных отражателей</value>
+    <comment>Module ChaffLauncher</comment>
+  </data>
+  <data name="CockpitCanopy" xml:space="preserve">
+    <value>Фонарь кабины</value>
+    <comment>Module CockpitCanopy</comment>
+  </data>
+  
+  <data name="CollectorLimpetController" xml:space="preserve">
+    <value>Контроллер дрона сборщика</value>
+    <comment>Module CollectorLimpetController</comment>
+  </data>
+  
+  
+  
+  
+  
+  
+  
+  <data name="EconomyClassPassengerCabin" xml:space="preserve">
+    <value>Каюта пассажира эконом-класса</value>
+    <comment>Module EconomyClassPassengerCabin</comment>
+  </data>
+  <data name="ElectronicCountermeasure" xml:space="preserve">
+    <value>Электр. противодействие</value>
+    <comment>Module ElectronicCountermeasure</comment>
+  </data>
+  
+  
+  <data name="FighterHangar" xml:space="preserve">
+    <value>Ангар для истребителя</value>
+    <comment>Module FighterHangar</comment>
+  </data>
+  <data name="FirstClassPassengerCabin" xml:space="preserve">
+    <value>Каюта пассажира первого класса</value>
+    <comment>Module FirstClassPassengerCabin</comment>
+  </data>
+  <data name="FragmentCannon" xml:space="preserve">
+    <value>Залповое орудие</value>
+    <comment>Module FragmentCannon</comment>
+  </data>
+  
+  <data name="FrameShiftDrive" xml:space="preserve">
+    <value>Рамочно Сместительный двигатель</value>
+    <comment>Module FrameShiftDrive</comment>
+  </data>
+  <data name="FrameShiftWakeScanner" xml:space="preserve">
+    <value>Сканер следа FSD</value>
+    <comment>Module FrameShiftWakeScanner</comment>
+  </data>
+  <data name="FuelScoop" xml:space="preserve">
+    <value>Топливозаборник</value>
+    <comment>Module FuelScoop</comment>
+  </data>
+  <data name="FuelTank" xml:space="preserve">
+    <value>Топливный бак</value>
+    <comment>Module FuelTank</comment>
+  </data>
+  <data name="FuelTransferLimpetController" xml:space="preserve">
+    <value>Контроллер дрона заправщика</value>
+    <comment>Module FuelTransferLimpetController</comment>
+  </data>
+  
+  
+  <data name="GuardianPowerPlant" xml:space="preserve">
+    <value>Энергоустановка Стражей</value>
+    <comment>Module GuardianPowerPlant</comment>
+  </data>
+  <data name="HatchBreakerLimpetController" xml:space="preserve">
+    <value>Контроллер дрона взлома трюма</value>
+    <comment>Module HatchBreakerLimpetController</comment>
+  </data>
+  <data name="HeatSinkLauncher" xml:space="preserve">
+    <value>Теплоотводная катапульта</value>
+    <comment>Module HeatSinkLauncher</comment>
+  </data>
+  <data name="HullReinforcementPackage" xml:space="preserve">
+    <value>Набор для усиления корпуса</value>
+    <comment>Module HullReinforcementPackage</comment>
+  </data>
+  
+  
+  <data name="KillWarrantScanner" xml:space="preserve">
+    <value>Сканер преступников</value>
+    <comment>Module KillWarrantScanner</comment>
+  </data>
+  <data name="LifeSupport" xml:space="preserve">
+    <value>Система жизнеобеспечения</value>
+    <comment>Module LifeSupport</comment>
+  </data>
+  
+  <data name="LuxuryClassPassengerCabin" xml:space="preserve">
+    <value>Каюта пассажира класса люкс</value>
+    <comment>Module LuxuryClassPassengerCabin</comment>
+  </data>
+  <data name="ManifestScanner" xml:space="preserve">
+    <value>Сканер содержимого</value>
+    <comment>Module ManifestScanner</comment>
+  </data>
+  
+  
+  
+  
+  <data name="MiningLaser" xml:space="preserve">
+    <value>Проходочный лазер</value>
+    <comment>Module MiningLaser</comment>
+  </data>
+  
+  <data name="MissileRack" xml:space="preserve">
+    <value>Ракетный лоток</value>
+    <comment>Module MissileRack</comment>
+  </data>
+  <data name="ModuleReinforcementPackage" xml:space="preserve">
+    <value>Набор для усиления модуля</value>
+    <comment>Module ModuleReinforcementPackage</comment>
+  </data>
+  <data name="Multicannon" xml:space="preserve">
+    <value>Многоствольное орудие</value>
+    <comment>Module Multicannon</comment>
+  </data>
+  <data name="Multi_Cannon" xml:space="preserve">
+    <value>Многоствольное орудие</value>
+    <comment>Module Multi_Cannon</comment>
+  </data>
+  
+  
+  <data name="PlanetaryApproachSuite" xml:space="preserve">
+    <value>Комплект для сближения с планетой</value>
+    <comment>Module PlanetaryApproachSuite</comment>
+  </data>
+  <data name="PlanetaryVehicleHangar" xml:space="preserve">
+    <value>Гараж для планетарного транспорта</value>
+    <comment>Module PlanetaryVehicleHangar</comment>
+  </data>
+  <data name="PlasmaAccelerator" xml:space="preserve">
+    <value>Ускоритель плазмы</value>
+    <comment>Module PlasmaAccelerator</comment>
+  </data>
+  <data name="PointDefence" xml:space="preserve">
+    <value>Точечная оборона</value>
+    <comment>Module PointDefence</comment>
+  </data>
+  <data name="PowerDistributor" xml:space="preserve">
+    <value>Распределитель питания</value>
+    <comment>Module PowerDistributor</comment>
+  </data>
+  <data name="PowerPlant" xml:space="preserve">
+    <value>Силовая установка</value>
+    <comment>Module PowerPlant</comment>
+  </data>
+  <data name="PrismaticShieldGenerator" xml:space="preserve">
+    <value>Призматический щитогенератор</value>
+    <comment>Module PrismaticShieldGenerator</comment>
+  </data>
+  <data name="ProspectorLimpetController" xml:space="preserve">
+    <value>Контроллер дрона-изыскателя</value>
+    <comment>Module ProspectorLimpetController</comment>
+  </data>
+  <data name="PulseLaser" xml:space="preserve">
+    <value>Ипмульсный лазер</value>
+    <comment>Module PulseLaser</comment>
+  </data>
+  <data name="RailGun" xml:space="preserve">
+    <value>Электромагнитная пушка</value>
+    <comment>Module RailGun</comment>
+  </data>
+  
+  
+  <data name="Refinery" xml:space="preserve">
+    <value>Устройство переработки</value>
+    <comment>Module Refinery</comment>
+  </data>
+  
+  
+  <data name="RepairLimpetController" xml:space="preserve">
+    <value>Контроллер дрона ремонта</value>
+    <comment>Module RepairLimpetController</comment>
+  </data>
+  <data name="ResearchLimpetController" xml:space="preserve">
+    <value>Контроллер дрона геологоразведки</value>
+    <comment>Module ResearchLimpetController</comment>
+  </data>
+  
+  <data name="Sensors" xml:space="preserve">
+    <value>Сенсоры</value>
+    <comment>Module Sensors</comment>
+  </data>
+  <data name="ShieldBooster" xml:space="preserve">
+    <value>Усилитель щита</value>
+    <comment>Module ShieldBooster</comment>
+  </data>
+  <data name="ShieldCellBank" xml:space="preserve">
+    <value>Щитонакопитель</value>
+    <comment>Module ShieldCellBank</comment>
+  </data>
+  <data name="ShieldGenerator" xml:space="preserve">
+    <value>Щитогенератор</value>
+    <comment>Module ShieldGenerator</comment>
+  </data>
+  
+  
+  
+  
+  <data name="Thrusters" xml:space="preserve">
+    <value>Двигатели</value>
+    <comment>Module Thrusters</comment>
+  </data>
+  
+  
+  
+  
+  
+  
+  
+  <data name="Turreted" xml:space="preserve">
+    <value>Турель</value>
+    <comment>Weapon mount type Turreted</comment>
+  </data>
   
   
   
