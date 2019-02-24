@@ -11,11 +11,19 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Updated the Spanish default speech personality.
   * Ship monitor
     * Fixed a lock-up that could occur when opening the ship monitor from VoiceAttack
+  * Speech responder
+    * Implemented speech priorities as follows:
+      * 1 - high priority, interrupts other speech
+      * 2 - high priority
+      * 3 - standard priority
+      * 4 - low priority
+      * 5 - low priority, interruptible by any higher priority speech
   * VoiceAttack responder
     * Improved event responsiveness
     * Reduced CPU utilization 
     * Restored missing home system variables 
     * Revised VoiceAttack integration documents with updated guidance on accessing home and squadron variables.
+    * Documented methods for using speech priorities with `say` and `speech` plugin functions. 
 
 ### 3.3.6
   * Frontier API
