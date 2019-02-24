@@ -14,7 +14,7 @@ namespace EddiDataDefinitions
         public string material { get; private set; }
         // ....but we prefer 'material' so ignore this for JSON
         [JsonIgnore]
-        public string name { get; private set; }
+        public string name => material;
 
         [JsonIgnore]
         public Rarity rarity { get; private set; }
@@ -24,24 +24,14 @@ namespace EddiDataDefinitions
         public MaterialPresence(Material definition, decimal percentage)
         {
             this.definition = definition;
-            this.name = definition.invariantName;
-            this.material = definition.invariantName;
-            this.rarity= definition.rarity;
+            this.material = definition?.localizedName;
+            this.rarity= definition?.rarity;
             this.percentage = percentage;
         }
 
         [JsonConstructor]
         public MaterialPresence(string material, decimal percentage)
-        {
-            Material definition = Material.FromName(material);
-            if (definition != null)
-            {
-                this.definition = definition;
-                this.name = definition.invariantName;
-                this.material = definition.invariantName;
-                this.rarity = definition.rarity;
-            }
-            this.percentage = percentage;
-        }
+            : this(Material.FromName(material), percentage)
+        {}
     }
 }
