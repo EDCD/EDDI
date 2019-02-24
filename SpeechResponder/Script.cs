@@ -1,4 +1,6 @@
-﻿using Newtonsoft.Json;
+﻿using EddiSpeechService;
+using Newtonsoft.Json;
+using System.Collections.Generic;
 using System.ComponentModel;
 
 namespace EddiSpeechResponder
@@ -12,7 +14,7 @@ namespace EddiSpeechResponder
         [JsonProperty("enabled")]
         private bool enabled;
         [JsonProperty("priority")]
-        private int priority = 3;
+        public int priority = 3;
         [JsonProperty("responder")]
         private bool responder;
         [JsonProperty("script")]
@@ -69,6 +71,15 @@ namespace EddiSpeechResponder
             get { return script != null; }
         }
 
+        [JsonIgnore]
+        public IList<int> Priorities {
+            get { return priorities; }
+            set { if (priorities != value) { priorities = value; OnPropertyChanged("Priorities"); }; }
+        }
+
+        [JsonIgnore]
+        private IList<int> priorities;
+
         public Script(string name, string description, bool responder, string script, int priority = 3, bool Default = false)
         {
             Name = name;
@@ -78,6 +89,12 @@ namespace EddiSpeechResponder
             Priority = priority;
             Enabled = true;
             this.Default = Default;
+
+            Priorities = new List<int>();
+            for (int i = 1; i <= SpeechService.Instance.speechQueues.Count - 1; i++)
+            {
+                if (i > 0) { Priorities.Add(i); }
+            }
         }
 
         protected void OnPropertyChanged(string name)

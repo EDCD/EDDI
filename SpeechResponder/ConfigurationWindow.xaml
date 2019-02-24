@@ -2,7 +2,7 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:EddiSpeechResponder"
              xmlns:resx="clr-namespace:EddiSpeechResponder.Properties"
              mc:Ignorable="d" 
@@ -44,6 +44,24 @@
                             <Border IsEnabled="{Binding Path=Value.Responder}">
                                 <CheckBox HorizontalAlignment="Center" VerticalAlignment="Center" IsChecked="{Binding Path=Value.Enabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=Personality.IsEditable}" Checked="eddiScriptsUpdated" Unchecked="eddiScriptsUpdated" />
                             </Border>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn x:Name="Priorities" Header="{x:Static resx:SpeechResponder.header_priority}">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <ComboBox IsEnabled="{Binding Path=Value.Responder}" SelectedValue="{Binding Path=Value.Priority, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ItemsSource="{Binding Path=Value.Priorities}" SelectionChanged="eddiScriptsUpdated">
+                                <ComboBox.Style>
+                                    <Style TargetType="{x:Type ComboBox}">
+                                        <Setter Property="Opacity"  Value="1" />
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Path=Value.Responder}" Value="False">
+                                                <Setter Property="Opacity"  Value="0" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </ComboBox.Style>
+                            </ComboBox>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
