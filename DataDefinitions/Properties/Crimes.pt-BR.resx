@@ -122,7 +122,7 @@
     <comment>Crime disobeyPolice</comment>
   </data>
   <data name="fireInNoFireZone" xml:space="preserve">
-    <value>Disparar em uma zona pacífica</value>
+    <value>Disparar em uma zona de restrição de disparo</value>
     <comment>Crime fireInNoFireZone</comment>
   </data>
   <data name="fireInStation" xml:space="preserve">
