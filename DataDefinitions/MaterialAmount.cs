@@ -137,26 +137,13 @@ namespace EddiDataDefinitions
             _additionalData = null;
         }
         
-        public MaterialAmount(Material material, int amount)
-        {
-            Material My_material = Material.FromEDName(material.edname);
-            this.material = My_material?.invariantName;
-            this.edname = My_material?.edname;
-            this.amount = amount;
-            this.Category = My_material?.category.localizedName;
-        }
+        public MaterialAmount(Material material, int amount) 
+            : this(material.edname, amount, null, null, null)
+        {}
 
         public MaterialAmount(Material material, int amount, int? minimum, int? desired, int? maximum)
-        {
-            Material My_material = Material.FromEDName(material.edname);
-            this.material = My_material?.localizedName;
-            this.edname = My_material?.edname;
-            this.amount = amount;
-            this.minimum = minimum;
-            this.desired = desired;
-            this.maximum = maximum;
-            this.Category = My_material.category.localizedName;
-        }
+            : this(material.edname, amount, minimum, desired, maximum)
+        {}
 
         [JsonConstructor]
         public MaterialAmount(string edname, int amount, int? minimum, int? desired, int? maximum)
