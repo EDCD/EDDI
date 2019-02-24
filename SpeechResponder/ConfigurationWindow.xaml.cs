@@ -89,19 +89,6 @@ namespace EddiSpeechResponder
 
         private void eddiScriptsUpdated(object sender, SelectionChangedEventArgs e)
         {
-            if (e.AddedItems.Count > 0)
-            {
-                if (e.Source is ComboBox comboBox)
-                {
-                    if (comboBox.DataContext is KeyValuePair<string, Script> kvScript)
-                    {
-                        if (kvScript.Value.Responder)
-                        {
-                            comboBox.Visibility = Visibility.Visible;
-                        }
-                    }
-                }
-            }
             if (e.RemovedItems.Count > 0)
             {
                 updateScriptsConfiguration();
