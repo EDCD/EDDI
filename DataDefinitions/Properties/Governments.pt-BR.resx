@@ -147,7 +147,7 @@
     <comment>Government type Patronage</comment>
   </data>
   <data name="PrisonColony" xml:space="preserve">
-    <value>Prisão Colônia</value>
+    <value>Colônia Prisional</value>
     <comment>Government type PrisonColony</comment>
   </data>
   <data name="Theocracy" xml:space="preserve">

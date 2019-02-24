@@ -117,14 +117,34 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="desc" xml:space="preserve">
+    <value>Um relator que gera um grande número de variáveis no VoiceAttack, além de disparar ações definidas pelo usuário.</value>
+  </data>
+  <data name="name" xml:space="preserve">
+    <value>Relator do VoiceAttack</value>
+  </data>
+  <data name="p1" xml:space="preserve">
+    <value>Para integrar o EDDI com o VoiceAttack, o EDDI precisa ser instalado no diretório 'Apps' do VoiceAttack. O caminho padrão para isso é 'C:\Arquivos de Programas (x86)\VoiceAttack\Apps', e é onde o EDDI será instalado por padrão.</value>
+  </data>
+  <data name="p2" xml:space="preserve">
+    <value>EDDI só funcionará com versões do VoiceAttack 1.5.12.22 e superiores. Note que esta é uma versão beta.</value>
+  </data>
+  <data name="p3" xml:space="preserve">
+    <value>Depois que o VoiceAttack for instalado, você precisa ativar o suporte ao plug-in. Para fazer isso, clique no ícone Options (uma chave de boca) no canto inferior direito do VoiceAttack, marque a opção "Enable plugin support" e reinicie o VoiceAttack. Você deve ver uma mensagem na janela do VoiceAttack dizendo 'Plugin EDDI 3.0.0 initialized'.</value>
+  </data>
+  <data name="p4" xml:space="preserve">
+    <value>Neste ponto, você pode integrar as variáveis do EDDI com seus próprios scripts do VoiceAttack. Por exemplo, o nome do seu comandante é armazenado na variável de texto 'Name', para acessá-lo basta usar '{TXT:Name}' em seus próprios comandos. Existem variáveis para o seu comandante, suas naves, o atual sistema estelar e estação em que você está, e mais. Uma lista completa de variáveis está disponível </value>
+  </data>
+  <data name="p4_link" xml:space="preserve">
+    <value>no site do EDDI</value>
+  </data>
+  <data name="p5" xml:space="preserve">
+    <value>Além de escrever scripts que você dispara com comandos de voz ou teclado, também é possível escrever scripts que são acionados em eventos que ocorrem no Elite. Por exemplo, se você quisesse disparar um script toda vez que o evento 'Docked' acontecer, você escreveria um script chamado '((EDDI docked))' (observe os parênteses duplos ao redor do nome para evitar que ele seja chamado acidentalmente e o 'd' minúsculo no docked). Uma lista completa de eventos também está disponível </value>
+  </data>
+  <data name="p5_link" xml:space="preserve">
+    <value>no site principal do EDDI</value>
+  </data>
+  <data name="run_eddi_standalone" xml:space="preserve">
+    <value>Por favor, feche o VoiceAttack e execute Eddi sozinho para atualizar.</value>
+  </data>
 </root>

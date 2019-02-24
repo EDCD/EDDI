@@ -117,15 +117,37 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="header_destinationstation" xml:space="preserve">
+    <value>Estação de Destino</value>
+  </data>
+  <data name="header_destinationsystem" xml:space="preserve">
+    <value>Sistema de Destino</value>
+  </data>
+  <data name="header_missionid" xml:space="preserve">
+    <value>ID da Missão</value>
+  </data>
+  <data name="header_remaining" xml:space="preserve">
+    <value>Restante</value>
+  </data>
+  <data name="header_status" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="header_type" xml:space="preserve">
+    <value>Tipo</value>
+  </data>
+  <data name="mission_monitor_desc" xml:space="preserve">
+    <value>Rastreia informações sobre suas missões.</value>
+  </data>
+  <data name="mission_monitor_name" xml:space="preserve">
+    <value>Monitor de Missões</value>
+  </data>
+  <data name="para1" xml:space="preserve">
+    <value>Abaixo está uma lista de todas as suas missões.</value>
+  </data>
+  <data name="para2" xml:space="preserve">
+    <value>Note que, se o seu log de missão estiver incorreto, você precisará iniciar ou reiniciar o Elite e essa informação será atualizada.</value>
+  </data>
+  <data name="tab_mission_warning" xml:space="preserve">
+    <value>Limite de aviso de expiração de missão (minutos):</value>
+  </data>
 </root>

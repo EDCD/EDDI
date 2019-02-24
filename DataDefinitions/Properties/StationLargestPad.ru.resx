@@ -117,8 +117,20 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
-  
-  
+  <data name="Large" xml:space="preserve">
+    <value>Большой</value>
+    <comment>Large Landing Pad</comment>
+  </data>
+  <data name="Medium" xml:space="preserve">
+    <value>Средний</value>
+    <comment>Medium Landing Pad</comment>
+  </data>
+  <data name="Small" xml:space="preserve">
+    <value>Малый</value>
+    <comment>Small Landing Pad</comment>
+  </data>
+  <data name="None" xml:space="preserve">
+    <value>Нет</value>
+    <comment>No Landing Pad</comment>
+  </data>
 </root>

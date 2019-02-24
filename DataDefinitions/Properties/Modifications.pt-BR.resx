@@ -117,109 +117,319 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="ArmourAdvanced" xml:space="preserve">
+    <value>Blindagem Leve </value>
+  </data>
+  <data name="ArmourExplosive" xml:space="preserve">
+    <value>Blindagem de Resistência a Explosões</value>
+  </data>
+  <data name="ArmourHeavyDuty" xml:space="preserve">
+    <value>Blindagem Pesada</value>
+  </data>
+  <data name="ArmourKinetic" xml:space="preserve">
+    <value>Blindagem de Resistência Cinética</value>
+  </data>
+  <data name="ArmourThermic" xml:space="preserve">
+    <value>Blindagem de Resistência Térmica</value>
+  </data>
+  <data name="EngineDirty" xml:space="preserve">
+    <value>Ajuste de Motor Sujo</value>
+  </data>
+  <data name="EngineReinforced" xml:space="preserve">
+    <value>Reforçamento do Motor</value>
+  </data>
+  <data name="EngineTuned" xml:space="preserve">
+    <value>Ajuste de Motor Limpo</value>
+  </data>
+  <data name="FSDFastBoot" xml:space="preserve">
+    <value>Sequência de Inicialização do MDD Mais Rápida</value>
+  </data>
+  <data name="FSDinterdictorExpanded" xml:space="preserve">
+    <value>Arco de Captura do Interditor de MDD Expandido</value>
+  </data>
+  <data name="FSDinterdictorLongRange" xml:space="preserve">
+    <value>Interditor de MDD de Longo Alcance</value>
+  </data>
+  <data name="FSDLongRange" xml:space="preserve">
+    <value>Alcance do MDD Aumentado</value>
+  </data>
+  <data name="FSDShielded" xml:space="preserve">
+    <value>MDD Protegido</value>
+  </data>
+  <data name="HullReinforcementAdvanced" xml:space="preserve">
+    <value>Reforço de Casco Leve</value>
+  </data>
+  <data name="HullReinforcementExplosive" xml:space="preserve">
+    <value>Reforço de Casco Resistente à Explosão</value>
+  </data>
+  <data name="HullReinforcementHeavyDuty" xml:space="preserve">
+    <value>Reforço de Casco Pesado</value>
+  </data>
+  <data name="HullReinforcementKinetic" xml:space="preserve">
+    <value>Reforço de Casco Resistência Cinética</value>
+  </data>
+  <data name="HullReinforcementThermic" xml:space="preserve">
+    <value>Reforço de Casco Resistência Térmica</value>
+  </data>
+  <data name="PowerDistributorHighCapacity" xml:space="preserve">
+    <value>Distribuidor de Energia de Alta Capacidade</value>
+  </data>
+  <data name="PowerDistributorHighFrequency" xml:space="preserve">
+    <value>Distribuidor de Energia de Recarga Melhorada</value>
+  </data>
+  <data name="PowerDistributorPriorityEngine" xml:space="preserve">
+    <value>Distribuidor de Energia com Foco nos Motores</value>
+  </data>
+  <data name="PowerDistributorPrioritySystem" xml:space="preserve">
+    <value>Distribuidor de Energia com Foco nos Sistemas</value>
+  </data>
+  <data name="PowerDistributorPriorityWeapon" xml:space="preserve">
+    <value>Distribuidor de Energia com Foco nas Armas</value>
+  </data>
+  <data name="PowerDistributorShielded" xml:space="preserve">
+    <value>Distribuidor de Energia Protegido</value>
+  </data>
+  <data name="PowerPlantArmoured" xml:space="preserve">
+    <value>Gerador de Energia Blindado</value>
+  </data>
+  <data name="PowerPlantBoosted" xml:space="preserve">
+    <value>Gerador de Energia Sobrecarregado</value>
+  </data>
+  <data name="PowerPlantStealth" xml:space="preserve">
+    <value>Gerador de Energia de Baixa Emissão</value>
+  </data>
+  <data name="SensorLongRange" xml:space="preserve">
+    <value>Scanner de Longo Alcance</value>
+  </data>
+  <data name="SensorWideAngle" xml:space="preserve">
+    <value>Sensor de Ângulo Amplo</value>
+  </data>
+  <data name="ShieldBoosterExplosive" xml:space="preserve">
+    <value>Potenciador de Escudo Resistência à Explosão</value>
+  </data>
+  <data name="ShieldBoosterHeavyDuty" xml:space="preserve">
+    <value>Potenciador de Escudo Pesado</value>
+  </data>
+  <data name="ShieldBoosterKinetic" xml:space="preserve">
+    <value>Potenciador de Escudo de Resistência Cinética</value>
+  </data>
+  <data name="ShieldBoosterResistive" xml:space="preserve">
+    <value>Potenciador de Escudo com Resistência Aumentada</value>
+  </data>
+  <data name="ShieldBoosterThermic" xml:space="preserve">
+    <value>Potenciador de Escudo de Resistência Térmica</value>
+  </data>
+  <data name="ShieldCellBankRapid" xml:space="preserve">
+    <value>Carga Rápida do Banco de Célula de Escudo</value>
+  </data>
+  <data name="ShieldCellBankSpecialised" xml:space="preserve">
+    <value>Banco de Célula de Escudo Especializado</value>
+  </data>
+  <data name="ShieldGeneratorKinetic" xml:space="preserve">
+    <value>Escudos com Resistência Cinética</value>
+  </data>
+  <data name="ShieldGeneratorOptimised" xml:space="preserve">
+    <value>Escudos de Baixo Consumo, Aprimorados</value>
+  </data>
+  <data name="ShieldGeneratorReinforced" xml:space="preserve">
+    <value>Escudos Reforçados</value>
+  </data>
+  <data name="ShieldGeneratorThermic" xml:space="preserve">
+    <value>Escudos Resistentes Térmica</value>
+  </data>
+  <data name="WeaponDoubleShot" xml:space="preserve">
+    <value>Tiro Duplo</value>
+  </data>
+  <data name="WeaponEfficient" xml:space="preserve">
+    <value>Arma Eficiente</value>
+  </data>
+  <data name="WeaponFocused" xml:space="preserve">
+    <value>Arma com Foco</value>
+  </data>
+  <data name="WeaponHighCapacity" xml:space="preserve">
+    <value>Cartucho de Alta Capacidade</value>
+  </data>
+  <data name="WeaponLightWeight" xml:space="preserve">
+    <value>Encaixe Leve</value>
+  </data>
+  <data name="WeaponLongRange" xml:space="preserve">
+    <value>Arma de Longa Distância</value>
+  </data>
+  <data name="WeaponOvercharged" xml:space="preserve">
+    <value>Arma Sobrecarregada</value>
+  </data>
+  <data name="WeaponRapidFire" xml:space="preserve">
+    <value>Modificação de Disparo Rápido</value>
+  </data>
+  <data name="WeaponShortRange" xml:space="preserve">
+    <value>Disparo de Curto Alcance</value>
+  </data>
+  <data name="WeaponSturdy" xml:space="preserve">
+    <value>Encaixe Robusto</value>
+  </data>
+  <data name="None" xml:space="preserve">
+    <value>Nenhuma</value>
+  </data>
+  <data name="WakeScannerFastScan" xml:space="preserve">
+    <value>Scanner Rápido</value>
+  </data>
+  <data name="WakeScannerLightWeight" xml:space="preserve">
+    <value>Scanner Leve</value>
+  </data>
+  <data name="WakeScannerLongRange" xml:space="preserve">
+    <value>Scanner de longa distância</value>
+  </data>
+  <data name="WakeScannerReinforced" xml:space="preserve">
+    <value>Scanner Reforçado</value>
+  </data>
+  <data name="WakeScannerShielded" xml:space="preserve">
+    <value>Scanner Protegido</value>
+  </data>
+  <data name="WakeScannerWideAngle" xml:space="preserve">
+    <value>Scanner de Ângulo Amplo</value>
+  </data>
+  <data name="AFMShielded" xml:space="preserve">
+    <value>Unidade de Manutenção Protegida</value>
+  </data>
+  <data name="CargoScannerLightWeight" xml:space="preserve">
+    <value>Scanner Leve</value>
+  </data>
+  <data name="CargoScannerReinforced" xml:space="preserve">
+    <value>Scanner Reforçado</value>
+  </data>
+  <data name="CargoScannerShielded" xml:space="preserve">
+    <value>Scanner Protegido</value>
+  </data>
+  <data name="ChaffLauncherChaffCapacity" xml:space="preserve">
+    <value>Capacidade de Munição de Chaff</value>
+  </data>
+  <data name="ChaffLauncherLightWeight" xml:space="preserve">
+    <value>Lançador de Chaff Leve</value>
+  </data>
+  <data name="ChaffLauncherReinforced" xml:space="preserve">
+    <value>Lançador de Chaff Reforçado</value>
+  </data>
+  <data name="ChaffLauncherShielded" xml:space="preserve">
+    <value>Lançador de Chaff Protegido</value>
+  </data>
+  <data name="CollectionLimpetLightWeight" xml:space="preserve">
+    <value>Drone de Coleta Leve</value>
+  </data>
+  <data name="CollectionLimpetReinforced" xml:space="preserve">
+    <value>Drone de Coleta Reforçado</value>
+  </data>
+  <data name="CollectionLimpetShielded" xml:space="preserve">
+    <value>Drone de Coleta Protegido</value>
+  </data>
+  <data name="ECMShielded" xml:space="preserve">
+    <value>Contramedida Eletrônica Protegida</value>
+  </data>
+  <data name="FuelScoopShielded" xml:space="preserve">
+    <value>Coletor de Combustível Protegido</value>
+  </data>
+  <data name="FuelTransferLimpetLightWeight" xml:space="preserve">
+    <value>Drone de Transferência de Combustível Leve</value>
+  </data>
+  <data name="FuelTransferLimpetReinforced" xml:space="preserve">
+    <value>Drone de Transferência de Combustível Reforçado</value>
+  </data>
+  <data name="FuelTransferLimpetShielded" xml:space="preserve">
+    <value>Drone de Transferência de Combustível Protegido</value>
+  </data>
+  <data name="HatchBreakerLimpetLightWeight" xml:space="preserve">
+    <value>Drone Quebra-Escotilha Leve</value>
+  </data>
+  <data name="HatchBreakerLimpetReinforced" xml:space="preserve">
+    <value>Drone Quebra-Escotilha Reforçado</value>
+  </data>
+  <data name="HatchBreakerLimpetShielded" xml:space="preserve">
+    <value>Drone Quebra-Escotilha Protegido</value>
+  </data>
+  <data name="HeatSinkLauncherHeatSinkCapacity" xml:space="preserve">
+    <value>Capacidade de Munição de Dissipador Térmico</value>
+  </data>
+  <data name="HeatSinkLauncherLightWeight" xml:space="preserve">
+    <value>Lançador de Dissipador Térmico Leve</value>
+  </data>
+  <data name="HeatSinkLauncherReinforced" xml:space="preserve">
+    <value>Lançador de Dissipador Térmico Reforçado</value>
+  </data>
+  <data name="HeatSinkLauncherShielded" xml:space="preserve">
+    <value>Lançador de Dissipador Térmico Protegido</value>
+  </data>
+  <data name="KillWarrantScannerLightWeight" xml:space="preserve">
+    <value>Scanner Leve</value>
+  </data>
+  <data name="KillWarrantScannerLongRange" xml:space="preserve">
+    <value>Scanner de longa distância</value>
+  </data>
+  <data name="KillWarrantScannerReinforced" xml:space="preserve">
+    <value>Scanner Reforçado</value>
+  </data>
+  <data name="KillWarrantScannerShielded" xml:space="preserve">
+    <value>Scanner Protegido</value>
+  </data>
+  <data name="LifeSupportLightWeight" xml:space="preserve">
+    <value>Suporte de Vida Leve</value>
+  </data>
+  <data name="LifeSupportReinforced" xml:space="preserve">
+    <value>Suporte de Vida Reforçado</value>
+  </data>
+  <data name="LifeSupportShielded" xml:space="preserve">
+    <value>Suporte de Vida Protegido</value>
+  </data>
+  <data name="PointDefencePointDefenceCapacity" xml:space="preserve">
+    <value>Capacidade de Munição de Defesa de Ponto</value>
+  </data>
+  <data name="PointDefenceLightWeight" xml:space="preserve">
+    <value>Defesa de Ponto Leve</value>
+  </data>
+  <data name="PointDefenceReinforced" xml:space="preserve">
+    <value>Defesa de Ponto Reforçada</value>
+  </data>
+  <data name="PointDefenceShielded" xml:space="preserve">
+    <value>Defesa de Ponto Protegida</value>
+  </data>
+  <data name="RefineriesShielded" xml:space="preserve">
+    <value>Refinaria Protegida</value>
+  </data>
+  <data name="SensorLightWeight" xml:space="preserve">
+    <value>Sensor Leve</value>
+  </data>
+  <data name="SurfaceScannerExpanded" xml:space="preserve">
+    <value>Expansão do raio de escaneamento da sonda</value>
+  </data>
+  <data name="CargoScannerFastScan" xml:space="preserve">
+    <value>Scanner Rápido</value>
+  </data>
+  <data name="CargoScannerLongRange" xml:space="preserve">
+    <value>Scanner de Longa Distância</value>
+  </data>
+  <data name="CargoScannerWideAngle" xml:space="preserve">
+    <value>Scanner de Ângulo Amplo</value>
+  </data>
+  <data name="ECMLightWeight" xml:space="preserve">
+    <value>Contramedida Eletrônica Leve</value>
+  </data>
+  <data name="ECMReinforced" xml:space="preserve">
+    <value>Contramedida Eletrônica Reforçada</value>
+  </data>
+  <data name="KillWarrantScannerFastScan" xml:space="preserve">
+    <value>Scanner Rápido</value>
+  </data>
+  <data name="KillWarrantScannerWideAngle" xml:space="preserve">
+    <value>Scanner de Ângulo Amplo</value>
+  </data>
+  <data name="PAOvercharged" xml:space="preserve">
+    <value>Arma Sobrecarregada</value>
+  </data>
+  <data name="ProspectingLimpetLightWeight" xml:space="preserve">
+    <value>Drone de Prospecção Leve</value>
+  </data>
+  <data name="ProspectingLimpetReinforced" xml:space="preserve">
+    <value>Drone de Prospecção Reforçado</value>
+  </data>
+  <data name="ProspectingLimpetShielded" xml:space="preserve">
+    <value>Drone de Prospecção Protegido</value>
+  </data>
 </root>

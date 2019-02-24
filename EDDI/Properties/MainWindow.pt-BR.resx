@@ -117,55 +117,158 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="access_beta" xml:space="preserve">
+    <value>Acesse as versões beta do EDDI</value>
+  </data>
+  <data name="EDDI_status_label" xml:space="preserve">
+    <value>Status do EDDI: </value>
+  </data>
+  <data name="paragraph_0" xml:space="preserve">
+    <value>possui vários recursos que podem ser configurados separadamente. Existem três tipos diferentes de itens.</value>
+  </data>
+  <data name="paragraph_1" xml:space="preserve">
+    <value>O primeiro grupo obtém e gerencia as informações básicas usadas pelo EDDI. Estas são as guias 'Detalhes do Comandante', 'Frontier API' e 'Text-to-Speech'. Você deve passar por cada um deles e configurá-los para que o EDDI tenha acesso total à sua informação do Elite: Dangerous.</value>
+  </data>
+  <data name="paragraph_2" xml:space="preserve">
+    <value>O segundo grupo obtém informações de eventos. Estas são as guias que começam com 'monitor'. Elas obtêm eventos de diferentes locais e exigem configuração mínima, mas precisam ser concluídas antes de funcionarem.</value>
+  </data>
+  <data name="paragraph_3" xml:space="preserve">
+    <value>O terceiro grupo responde aos eventos. Estas são as guias que começam com 'resposta'. Estas vêm com diferentes graus de configuração, mas funcionarão imediatamente.</value>
+  </data>
+  <data name="paragraph_4" xml:space="preserve">
+    <value>Você pode ler mais sobre como o EDDI funciona no</value>
+  </data>
+  <data name="report_issue" xml:space="preserve">
+    <value>Reportar um Problema</value>
+  </data>
+  <data name="troubleshoot_common_issues" xml:space="preserve">
+    <value>Solucionar problemas comuns</value>
+    <comment>A hyperlink to the troubleshooting URL (in english)</comment>
+  </data>
+  <data name="verbose_logging_checkbox" xml:space="preserve">
+    <value>Ativar o log detalhado (somente se você tiver sido solicitado pelos desenvolvedores do EDDI)</value>
+  </data>
+  <data name="verbose_logging_desc" xml:space="preserve">
+    <value>Se a criação de log detalhado estiver ativada, isso criará um arquivo zip do seu log na área de trabalho, pronto para ser colado no relatório de problemas no GitHub. Nenhuma informação de identificação pessoal está incluída no log.</value>
+  </data>
+  <data name="version_hyperlink" xml:space="preserve">
+    <value>Versão:</value>
+  </data>
+  <data name="wiki_hyperlink" xml:space="preserve">
+    <value>wiki do projeto</value>
+  </data>
+  <data name="choose_lang_label" xml:space="preserve">
+    <value>Selecione o idioma do EDDI (requer o reinício do EDDI):</value>
+  </data>
+  <data name="tab_frontier_desc" xml:space="preserve">
+    <value>A Frontier possui uma API que permite ao EDDI obter informações sobre suas naves, o mercado atualizado da estação e vários outros itens. Esses dados não estão disponíveis em outro lugar. Se você quiser que o EDDI obtenha e use essas informações, clique no botão Entrar e autorize o EDDI para esses dados no servidor do Frontier.</value>
+  </data>
+  <data name="tab_frontier_header" xml:space="preserve">
+    <value>Frontier API</value>
+  </data>
+  <data name="tab_frontier_reset_desc" xml:space="preserve">
+    <value>Se você está tendo problemas com sua conexão, você pode redefini-la e efetuar login novamente, o que pode resolver o problema.</value>
+  </data>
+  <data name="tab_tts_desc" xml:space="preserve">
+    <value>O EDDI usa seu próprio mecanismo de conversão de texto em fala que processa a voz, dependendo do recurso, como danos na nave e tamanho do cockpit. Você pode ajustar os parâmetros da voz aqui.</value>
+  </data>
+  <data name="tab_tts_distort_label" xml:space="preserve">
+    <value>Distorcer a voz quando a nave é danificada:</value>
+  </data>
+  <data name="tab_tts_header" xml:space="preserve">
+    <value>Texto-para-fala</value>
+  </data>
+  <data name="tab_tts_level_label" xml:space="preserve">
+    <value>Nível de processamento de voz:</value>
+  </data>
+  <data name="tab_tts_phonetic_speech_desc" xml:space="preserve">
+    <value>EDDI usa pronúncia fonética para pronunciar várias palavras difíceis de dizer, e para colocar pausas entre as falas. Algumas vozes, muitas vezes da Microsoft, têm um problema com a fala fonética e fazem o EDDI travar ou fechar. Se isso acontecer, tente marcar a opção abaixo</value>
+  </data>
+  <data name="tab_tts_rate_label" xml:space="preserve">
+    <value>Velocidade da fala:</value>
+  </data>
+  <data name="tab_tts_test_button" xml:space="preserve">
+    <value>Testar voz</value>
+  </data>
+  <data name="tab_tts_test_damaged_button" xml:space="preserve">
+    <value>Testar voz (dano severo)</value>
+  </data>
+  <data name="tab_tts_test_ship_label" xml:space="preserve">
+    <value>Nave para testar a voz:</value>
+  </data>
+  <data name="tab_tts_voice_label" xml:space="preserve">
+    <value>Voz:</value>
+  </data>
+  <data name="tab_tts_volume_label" xml:space="preserve">
+    <value>Volume da fala:</value>
+  </data>
+  <data name="upgrade_button" xml:space="preserve">
+    <value>Atualizar EDDI</value>
+  </data>
+  <data name="reset_button" xml:space="preserve">
+    <value>Reiniciar</value>
+  </data>
+  <data name="tab_tts_test_desc" xml:space="preserve">
+    <value>Você pode testar como a voz vai soar abaixo. Observe que, se a voz for incompatível, ela usará a voz padrão.</value>
+  </data>
+  <data name="tab_tts_disable_phonetic_speech_label" xml:space="preserve">
+    <value>Desabilitar pronúncia fonética:</value>
+  </data>
+  <data name="tab_tts_disable_phonetic_speech_note" xml:space="preserve">
+    <value>(isso desligará as funções usando tags de voz SSML, como visto no arquivo de Ajuda da Resposta de Fala)</value>
+  </data>
+  <data name="tab_tts_icao_desc" xml:space="preserve">
+    <value>O EDDI pode usar ICAO, por exemplo, usando 'alfa' em vez de 'A', ao dizer nomes de estrela e corpos. Isso pode facilitar a compreensão dos nomes do sistema, mas demora mais para ser pronunciado. Se você quiser ouvir pronunciações ICAO, marque a opção abaixo. Note que isso não funcionará se você tiver desativado a fala fonética acima.</value>
+  </data>
+  <data name="tab_tts_icao_label" xml:space="preserve">
+    <value>Habilitar ICAO:</value>
+  </data>
+  <data name="tab_commander_details_header" xml:space="preserve">
+    <value>Detalhes do Comandante</value>
+  </data>
+  <data name="tab_commander_gender" xml:space="preserve">
+    <value>Gênero preferido para pronomes e títulos:</value>
+  </data>
+  <data name="tab_commander_gender_f" xml:space="preserve">
+    <value>Feminino</value>
+  </data>
+  <data name="tab_commander_gender_m" xml:space="preserve">
+    <value>Masculino</value>
+  </data>
+  <data name="tab_commander_gender_n" xml:space="preserve">
+    <value>Nenhum</value>
+  </data>
+  <data name="tab_commander_home_station" xml:space="preserve">
+    <value>Estação de origem:</value>
+  </data>
+  <data name="tab_commander_home_system" xml:space="preserve">
+    <value>Sistema de origem:</value>
+  </data>
+  <data name="tab_commander_par1" xml:space="preserve">
+    <value>Você pode fornecer o nome de um sistema específico que você considera sua casa e também uma estação dentro desse sistema. Se você fizer isso, as informações sobre este sistema e estação serão disponibilizadas para as respostas do EDDI.</value>
+  </data>
+  <data name="tab_commander_squadron_name" xml:space="preserve">
+    <value>Nome da esquadra:</value>
+  </data>
+  <data name="tab_commander_squadron_system" xml:space="preserve">
+    <value>Sistema da esquadra:</value>
+  </data>
+  <data name="tab_commander_squadron_allegiance" xml:space="preserve">
+    <value>Lealdade da esqudra:</value>
+  </data>
+  <data name="tab_commander_squadron_faction" xml:space="preserve">
+    <value>Facção da esquadra:</value>
+  </data>
+  <data name="tab_commander_squadron_power" xml:space="preserve">
+    <value>Poder da esqudra:</value>
+  </data>
+  <data name="tab_commander_squadron_rank" xml:space="preserve">
+    <value>Rank na esquadra:</value>
+  </data>
+  <data name="tab_commander_squadron_id" xml:space="preserve">
+    <value>ID da esquadra:</value>
+  </data>
+  <data name="no_station" xml:space="preserve">
+    <value>Sem Estação</value>
+  </data>
 </root>

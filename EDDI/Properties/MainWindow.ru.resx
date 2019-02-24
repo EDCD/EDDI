@@ -253,10 +253,22 @@
   <data name="tab_commander_squadron_system" xml:space="preserve">
     <value>Система эскадры:</value>
   </data>
-  
-  
-  
-  
-  
-  
+  <data name="tab_commander_squadron_allegiance" xml:space="preserve">
+    <value>Сторона:</value>
+  </data>
+  <data name="tab_commander_squadron_faction" xml:space="preserve">
+    <value>Фракция:</value>
+  </data>
+  <data name="tab_commander_squadron_power" xml:space="preserve">
+    <value>Сила:</value>
+  </data>
+  <data name="tab_commander_squadron_rank" xml:space="preserve">
+    <value>Ранг экадрильи:</value>
+  </data>
+  <data name="tab_commander_squadron_id" xml:space="preserve">
+    <value>ID эскадрильи:</value>
+  </data>
+  <data name="no_station" xml:space="preserve">
+    <value>Станций нет</value>
+  </data>
 </root>

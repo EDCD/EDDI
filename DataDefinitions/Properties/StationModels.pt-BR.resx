@@ -117,16 +117,52 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="AsteroidBase" xml:space="preserve">
+    <value>Base em asteróide</value>
+    <comment>An Asteroid Base</comment>
+  </data>
+  <data name="Bernal" xml:space="preserve">
+    <value>Porto Estelar Ocellus</value>
+    <comment>An Ocellus Starsport</comment>
+  </data>
+  <data name="Coriolis" xml:space="preserve">
+    <value>Porto Estelar Coriolis</value>
+    <comment>A Coriolis Starport</comment>
+  </data>
+  <data name="Megaship" xml:space="preserve">
+    <value>Meganave</value>
+    <comment>A Megaship</comment>
+  </data>
+  <data name="Orbis" xml:space="preserve">
+    <value>Porto Estelar Orbis</value>
+    <comment>An Orbis Starport</comment>
+  </data>
+  <data name="Outpost" xml:space="preserve">
+    <value>Posto avançado</value>
+    <comment>An Outpost</comment>
+  </data>
+  <data name="SurfaceStation" xml:space="preserve">
+    <value>Estação de superfície</value>
+    <comment>A Surface Station</comment>
+  </data>
+  <data name="None" xml:space="preserve">
+    <value>Estação Desconhecida</value>
+    <comment>Unknown Station</comment>
+  </data>
+  <data name="CraterPort" xml:space="preserve">
+    <value>Porto de superfície</value>
+    <comment>A Surface Port</comment>
+  </data>
+  <data name="CraterOutpost" xml:space="preserve">
+    <value>Posto avançado de superfície</value>
+    <comment>A Surface Outpost</comment>
+  </data>
+  <data name="MegaShipCivilian" xml:space="preserve">
+    <value>Meganave Civil</value>
+    <comment>A Civilian Megaship</comment>
+  </data>
+  <data name="OutpostScientific" xml:space="preserve">
+    <value>Posto avançado cientifico</value>
+    <comment>A Scientific Outpost (currently, Talos 1 &amp; Talos 2 in Peregrina)</comment>
+  </data>
 </root>

@@ -218,23 +218,23 @@
     <comment>Material location Polonium</comment>
   </data>
   <data name="bulkscandata" xml:space="preserve">
-    <value>Obtido através de escaneamento de naves de transporte ou como recompensa de missão.</value>
+    <value>Encontrado ao escanear naves de transporte ou como recompensa de missão.</value>
     <comment>Material location Anomalous Bulk Scan Data</comment>
   </data>
   <data name="disruptedwakeechoes" xml:space="preserve">
-    <value>Obtido através do escaneamento do rastro de distorção de fase de naves ou como recompensa da missão, especialmente em sistemas com economias em auge.</value>
+    <value>Encontrado ao escanear rastros de alta energia de naves ou como recompensa da missão, especialmente em sistemas com economias em auge.</value>
     <comment>Material location Atypical Disrupted Wake Echoes</comment>
   </data>
   <data name="shieldcyclerecordings" xml:space="preserve">
-    <value>Obtido através de escaneamento de naves de transporte ou como recompensa de missão.</value>
+    <value>Encontrado ao escanear naves de transporte ou como recompensa de missão.</value>
     <comment>Material location Distorted Shield Cycle Recordings</comment>
   </data>
   <data name="scrambledemissiondata" xml:space="preserve">
-    <value>Obtido a partir do escaneamento de naves, fontes de sinal ou como recompensa de missão.</value>
+    <value>Encontrado ao escanear naves, fontes de sinal ou como recompensa de missão.</value>
     <comment>Material location Exceptional Scrambled Emission Data</comment>
   </data>
   <data name="legacyfirmware" xml:space="preserve">
-    <value>Obtidos através do escaneamento de pontos de dados de superfície, satélites orbitando instalações e planetas parecidos com a Terra populosos, ou como recompensa de missão.</value>
+    <value>Encontrado ao escanear pontos de dados de superfície, satélites orbitando instalações e planetas parecidos com a Terra povoados, ou como recompensa de missão.</value>
     <comment>Material location Specialised Legacy Firmware</comment>
   </data>
   <data name="encryptedfiles" xml:space="preserve">
@@ -246,111 +246,423 @@
     <comment>Material location Pattern Gamma Obelisk Data</comment>
   </data>
   <data name="fsdtelemetry" xml:space="preserve">
-    <value>Obtido através do escaneamento do rastro de distorção de fase de naves ou como recompensa da missão.</value>
+    <value>Encontrado ao escanear rastros de alta energia de naves ou como recompensa da missão.</value>
     <comment>Material location Anomalous FSD Telemetry</comment>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="shieldsoakanalysis" xml:space="preserve">
+    <value>Encontrado ao escanear naves de transporte ou como recompensa de missão, especialmente em sistemas com economia em auge.</value>
+    <comment>Material location Inconsistent Shield Soak Analysis</comment>
+  </data>
+  <data name="archivedemissiondata" xml:space="preserve">
+    <value>Obtido de fontes de sinal ou como uma recompensa de missão, especialmente em sistemas com economias em auge.</value>
+    <comment>Material location Irregular Emission Data</comment>
+  </data>
+  <data name="consumerfirmware" xml:space="preserve">
+    <value>Obtido como uma recompensa de missão ou por meio de escaneamento de links de dados em bases planetárias ou escaneamento de sinais de dados privados em fontes de sinais codificadas enquanto os sistemas estão em eleições ou guerras civis.</value>
+    <comment>Material location Modified Consumer Firmware</comment>
+  </data>
+  <data name="encryptioncodes" xml:space="preserve">
+    <value>Obtidos através do escaneamento de pontos de dados de superfície, satélites orbitando instalações e planetas parecidos com a Terra populosos, ou como recompensa de missão, especialmente em sistemas com economia em auge.</value>
+    <comment>Material location Tagged Encryption Codes</comment>
+  </data>
+  <data name="scanarchives" xml:space="preserve">
+    <value>Encontrado ao escanear naves de transporte, especialmente em sistemas com economia em auge.</value>
+    <comment>Material location Unidentified Scan Archives</comment>
+  </data>
+  <data name="ancientculturaldata" xml:space="preserve">
+    <value>Obtido das antigas ruínas da espécie alienígena conhecida como Guardiões.</value>
+    <comment>Material location Pattern Beta Obelisk Data</comment>
+  </data>
+  <data name="tg_structuraldata" xml:space="preserve">
+    <value>Obtido em locais de superfície misteriosos da espécie alienígena conhecida como Thargoids.</value>
+    <comment>Material location Thargoid Structural Data</comment>
+  </data>
+  <data name="scandatabanks" xml:space="preserve">
+    <value>Encontrado ao escanear grandes naves de transporte, geralmente Type-7s e Type-9s, e por escaneamento de link de dados em bases planetárias.</value>
+    <comment>Material location Classified Scan Databanks</comment>
+  </data>
+  <data name="industrialfirmware" xml:space="preserve">
+    <value>Obtido ao escanear links de dados em bases planetárias ou como recompensa de missão.</value>
+    <comment>Material location Cracked Industrial Firmware</comment>
+  </data>
+  <data name="symmetrickeys" xml:space="preserve">
+    <value>Obtido ao escanear links de dados em bases planetárias ou como recompensa de missão.</value>
+    <comment>Material location Open Symmetric Keys</comment>
+  </data>
+  <data name="wakesolutions" xml:space="preserve">
+    <value>Obtido através do escaneamento do rastro de distorção de fase de naves ou como recompensa da missão, especialmente em sistemas com economias em auge.</value>
+    <comment>Material location Strange Wake Solutions</comment>
+  </data>
+  <data name="emissiondata" xml:space="preserve">
+    <value>Encontrado ao escanear naves de combate ou em fontes de sinal, especialmente em sistemas com economias em auge ou passando por uma eleição.</value>
+    <comment>Material location Unexpected Emission Data</comment>
+  </data>
+  <data name="shielddensityreports" xml:space="preserve">
+    <value>Encontrado ao escanear naves de combate.</value>
+    <comment>Material location Untypical Shield Scans</comment>
+  </data>
+  <data name="ancientbiologicaldata" xml:space="preserve">
+    <value>Obtido das antigas ruínas da espécie alienígena conhecida como Guardiões.</value>
+    <comment>Material location Pattern Alpha Obelisk Data</comment>
+  </data>
+  <data name="tg_compositiondata" xml:space="preserve">
+    <value>Obtido em locais de superfície misteriosos da espécie alienígena conhecida como Thargoids.</value>
+    <comment>Material location Thargoid Material Composition Data</comment>
+  </data>
+  <data name="unknownshipsignature" xml:space="preserve">
+    <value>Obtido em locais de superfície misteriosos da espécie alienígena conhecida como Thargoids ou escaneando uma nave Thargoid.</value>
+    <comment>Material location Thargoid Ship Signature</comment>
+  </data>
+  <data name="shieldpatternanalysis" xml:space="preserve">
+    <value>Encontrado ao escanear naves de autoridade do sistema e de combate, ou como uma recompensa de missão, especialmente em sistemas com economias em auge.</value>
+    <comment>Material location Aberrant Shield Pattern Analysis</comment>
+  </data>
+  <data name="encryptionarchives" xml:space="preserve">
+    <value>Encontrado ao escanear pontos de dados em bases planetárias.</value>
+    <comment>Material location Atypical Encryption Archives</comment>
+  </data>
+  <data name="decodedemissiondata" xml:space="preserve">
+    <value>Encontrado ao escanear naves de autoridade do sistema ou como recompensa da missão.</value>
+    <comment>Material location Decoded Emission Data</comment>
+  </data>
+  <data name="encodedscandata" xml:space="preserve">
+    <value>Encontrado ao escanear pontos de dados em bases planetárias ou como recompensa de missão.</value>
+    <comment>Material location Divergent Scan Data</comment>
+  </data>
+  <data name="hyperspacetrajectories" xml:space="preserve">
+    <value>Encontrado ao escanear rastros de alta energia de naves.</value>
+    <comment>Material location Eccentric Hyperspace Trajectories</comment>
+  </data>
+  <data name="securityfirmware" xml:space="preserve">
+    <value>Encontrado ao escanear pontos de dados de assentamentos ou como recompensa de missão.</value>
+    <comment>Material location Security Firmware Patch</comment>
+  </data>
+  <data name="ancientlanguagedata" xml:space="preserve">
+    <value>Encontrado em antigas ruínas da espécie alienígena conhecida como Guardians.</value>
+    <comment>Material location Pattern Delta Obelisk Data</comment>
+  </data>
+  <data name="ancienttechnologicaldata" xml:space="preserve">
+    <value>Encontrado em antigas ruínas da espécie alienígena conhecida como Guardians.</value>
+    <comment>Material location Pattern Epsilon Obelisk Data</comment>
+  </data>
+  <data name="tg_residuedata" xml:space="preserve">
+    <value>Obtido em locais de superfície misteriosos da espécie alienígena conhecida como Thargoids.</value>
+    <comment>Material location Thargoid Residue Data</comment>
+  </data>
+  <data name="unknownwakedata" xml:space="preserve">
+    <value>Capturado do rastro deixada por uma nave Thargoid.</value>
+    <comment>Material location Thargoid Wake Data</comment>
+  </data>
+  <data name="compactemissionsdata" xml:space="preserve">
+    <value>Encontrado ao escanear naves de combate, sinalizadores de dados privados recolhidos do espaço profundo, fontes de transmissões codificadas, ou como recompensa de missão.</value>
+    <comment>Material location Abnormal Compact Emissions Data</comment>
+  </data>
+  <data name="adaptiveencryptors" xml:space="preserve">
+    <value>Descobertos ao escanear satélites em órbita de instalações e planetas populosos parecidos com a Terra, ou como recompensa de missão, especialmente missões de escaneamento planetário.</value>
+    <comment>Material location Adaptive Encryptors Capture</comment>
+  </data>
+  <data name="classifiedscandata" xml:space="preserve">
+    <value>Capturados a partir de redes de pontos de dados de assentamentos, ao escanear naves militares e de autoridade, ou como recompensa de missão, especialmente em sistemas com economia em auge.</value>
+    <comment>Material location Classified Scan Fragment</comment>
+  </data>
+  <data name="dataminedwake" xml:space="preserve">
+    <value>Encontrado ao escanear rastro de alta energia de naves, ao escanear sinalizadores de de dados codificados ou em recompensas de missões.</value>
+    <comment>Material location Datamined Wake Exceptions</comment>
+  </data>
+  <data name="embeddedfirmware" xml:space="preserve">
+    <value>Capturados a partir de redes de pontos de dados de assentamentos ou como recompensa de missões.</value>
+    <comment>Material location Modified Embedded Firmware</comment>
+  </data>
+  <data name="shieldfrequencydata" xml:space="preserve">
+    <value>Encontrado ao escanear naves ou como recompensas de missões.</value>
+    <comment>Material location Peculiar Shield Frequency Data</comment>
+  </data>
+  <data name="basicconductors" xml:space="preserve">
+    <value>Encontrado em destroços de naves de transporte.</value>
+    <comment>Material location Basic Conductors</comment>
+  </data>
+  <data name="chemicalstorageunits" xml:space="preserve">
+    <value>Encontrado em destroços de naves de transporte.</value>
+    <comment>Material location Chemical Storage Units</comment>
+  </data>
+  <data name="compactcomposites" xml:space="preserve">
+    <value>Encontrado em fontes de sinais degradados, incluindo sinais de assentamentos.</value>
+    <comment>Material location Compact Composites</comment>
+  </data>
+  <data name="crystalshards" xml:space="preserve">
+    <value>Encontrado em destroços de naves de combate e assentamentos.</value>
+    <comment>Material location Crystal Shards</comment>
+  </data>
+  <data name="gridresistors" xml:space="preserve">
+    <value>Encontrado em destroços de naves de combate pequenas ou como recompensas de missões.</value>
+    <comment>Material location Grid Resistors</comment>
+  </data>
+  <data name="heatconductionwiring" xml:space="preserve">
+    <value>Encontrado em destroços de naves de transporte, em fontes de sinal ou recompensas de missões.</value>
+    <comment>Material location Heat Conduction Wiring</comment>
+  </data>
+  <data name="mechanicalscrap" xml:space="preserve">
+    <value>Encontrado em destroços de naves de transporte ou recompensas de missões.</value>
+    <comment>Material location Mechanical Scrap</comment>
+  </data>
+  <data name="salvagedalloys" xml:space="preserve">
+    <value>Encontrado em destroços de naves de combate.</value>
+    <comment>Material location Salvaged Alloys</comment>
+  </data>
+  <data name="temperedalloys" xml:space="preserve">
+    <value>Encontrado em destroços de naves de combate.</value>
+    <comment>Material location temperedalloys</comment>
+  </data>
+  <data name="wornshieldemitters" xml:space="preserve">
+    <value>Encontrado em destroços de naves de combate.</value>
+    <comment>Material location Worn Shield Emitters</comment>
+  </data>
+  <data name="chemicalprocessors" xml:space="preserve">
+    <value>Encontrado em destroços de naves de transporte ou recompensas de missões.</value>
+    <comment>Material location Chemical Processors</comment>
+  </data>
+  <data name="conductivecomponents" xml:space="preserve">
+    <value>Encontrado em destroços de naves de transporte, especialmente em sistemas anárquicos. </value>
+    <comment>Material location Conductive Components</comment>
+  </data>
+  <data name="filamentcomposites" xml:space="preserve">
+    <value>Encontrado em destroços de naves de militares e de autoridades.</value>
+    <comment>Material location Filament Composites</comment>
+  </data>
+  <data name="uncutfocuscrystals" xml:space="preserve">
+    <value>Encontrado em destroços de naves de combate ou em fontes de sinal de rescaldo de combate.</value>
+    <comment>Material location Flawed Focus Crystals</comment>
+  </data>
+  <data name="galvanisingalloys" xml:space="preserve">
+    <value>Encontrado em destroços de naves de combate ou como recompensas de missões, especialmente em sistemas passando por eleições.</value>
+    <comment>Material location Galvanising Alloys</comment>
+  </data>
+  <data name="heatdispersionplate" xml:space="preserve">
+    <value>Encontrado em destroços de naves de transporte em fontes de sinais, especialmente em sistemas com economia em auge, ou como recompensas de missões.</value>
+    <comment>Material location Heat Dispersion Plate</comment>
+  </data>
+  <data name="heatresistantceramics" xml:space="preserve">
+    <value>Encontrado em destroços de naves de militares e de autoridades.</value>
+    <comment>Material location heatresistantceramics</comment>
+  </data>
+  <data name="hybridcapacitors" xml:space="preserve">
+    <value>Encontrado em destroços de grandes naves de combate, normalmente Anacondas e Federal Corvettes, ou como recompensas de missões.</value>
+    <comment>Material location Hybrid Capacitors</comment>
+  </data>
+  <data name="mechanicalequipment" xml:space="preserve">
+    <value>Encontrado em destroços de naves de transporte, especialmente em sistemas com economia em auge.</value>
+    <comment>Material location Mechanical Equipment</comment>
+  </data>
+  <data name="shieldemitters" xml:space="preserve">
+    <value>Encontrado em destroços de naves de combate ou fontes de sinais, especialmente em sistemas com economia em auge.</value>
+    <comment>Material location Shield Emitters</comment>
+  </data>
+  <data name="unknowncarapace" xml:space="preserve">
+    <value>Obtido em locais de superfície misteriosos da espécie alienígena conhecida como Thargoids.</value>
+    <comment>Material location Thargoid Carapace</comment>
+  </data>
+  <data name="chemicaldistillery" xml:space="preserve">
+    <value>Encontrado em destroços de naves de transporte.</value>
+    <comment>Material location Chemical Distillery</comment>
+  </data>
+  <data name="conductiveceramics" xml:space="preserve">
+    <value>Encontrado em destroços de naves de transporte, especialmente em sistemas anárquicos. Também disponíveis em Dav's Hope.</value>
+    <comment>Material location Conductive Ceramics</comment>
+  </data>
+  <data name="electrochemicalarrays" xml:space="preserve">
+    <value>Encontrado em destroços de naves de combate e autoridades de sistema, ou fontes de transmissões degradadas em sistemas anárquicos próximo de outros sistemas populados.</value>
+    <comment>Material location Electrochemical Arrays</comment>
+  </data>
+  <data name="focuscrystals" xml:space="preserve">
+    <value>Encontrado em destroços de naves de combate, especialmente em sistemas de alta segurança.</value>
+    <comment>Material location Focus Crystals</comment>
+  </data>
+  <data name="heatexchangers" xml:space="preserve">
+    <value>Encontrado em destroços de naves de transporte, especialmente em sistemas anárquicos próximos de outros sistemas populados.</value>
+    <comment>Material location Heat Exchangers</comment>
+  </data>
+  <data name="highdensitycomposites" xml:space="preserve">
+    <value>Encontrado em destroços de grandes naves de combate, normalmente Anacondas e Federal Corvettes. Também estão disponíveis em Dav's Hope.</value>
+    <comment>Material location High Density Composites</comment>
+  </data>
+  <data name="mechanicalcomponents" xml:space="preserve">
+    <value>Encontrado em destroços de pequenas naves de transporte, especialmente em sistemas de baixa segurança. Também disponíveis em Dav's Hope.</value>
+    <comment>Material location Mechanical Components</comment>
+  </data>
+  <data name="phasealloys" xml:space="preserve">
+    <value>Encontrado em destroços de naves de combate ou fontes de sinais em sistemas com economia em auge.</value>
+    <comment>Material location Phase Alloys</comment>
+  </data>
+  <data name="precipitatedalloys" xml:space="preserve">
+    <value>Encontrado em destroços de naves de combate e autoridades do sistema, ou como recompensas de missões.</value>
+    <comment>Material location Precipitated Alloys</comment>
+  </data>
+  <data name="shieldingsensors" xml:space="preserve">
+    <value>Encontrado em destroços de naves de combate ou como recompensas de missões.</value>
+    <comment>Material location Shielding Sensors</comment>
+  </data>
+  <data name="unknownenergycell" xml:space="preserve">
+    <value>Obtido em locais de superfície misteriosos da espécie alienígena conhecida como Thargoids.</value>
+    <comment>Material location Thargoid Energy Cell</comment>
+  </data>
+  <data name="chemicalmanipulators" xml:space="preserve">
+    <value>Encontrado em destroços de grandes naves de transporte, normalmente Type-7s e Type-9s, especialmente em sistemas anárquicos ou sofrendo com doenças. Também disponíveis em Dav's Hope.</value>
+    <comment>Material location Chemical Manipulators</comment>
+  </data>
+  <data name="compoundshielding" xml:space="preserve">
+    <value>Encontrado nos destroços de naves de combate, como recompensas de missões ou fontes de transmissões codificadas, especialmente em sistemas de alta segurança, sistemas com economia em auge e sistemas em retirada para consolidação de poder. Também disponível em Dav's Hope.</value>
+    <comment>Material location Compound Shielding</comment>
+  </data>
+  <data name="conductivepolymers" xml:space="preserve">
+    <value>Encontrado em destroços de grandes naves de transporte e naves de passageiros, como Type-9s e Belugas, em assentamentos e como recompensas de missões. Também disponíveis em Dav's Hope.</value>
+    <comment>Material location Conductive Polymers</comment>
+  </data>
+  <data name="configurablecomponents" xml:space="preserve">
+    <value>Encontrado em destroços de naves de transporte, especialmente em sistemas de segurança baixa. Também disponíveis em Dav's Hope.</value>
+    <comment>Material location Configurable Components</comment>
+  </data>
+  <data name="heatvanes" xml:space="preserve">
+    <value>Encontrado em destroços de naves de transporte ou como recompensas de missões. Também disponíveis em Dav's Hope.</value>
+    <comment>Material location Heat Vanes</comment>
+  </data>
+  <data name="polymercapacitors" xml:space="preserve">
+    <value>Encontrado em destroços de naves de combate e de segurança do sistema, fontes de sinais com padrões de dispersão de comboio ou como recompensas de missões.</value>
+    <comment>Material location Polymer Capacitors</comment>
+  </data>
+  <data name="fedproprietarycomposites" xml:space="preserve">
+    <value>Encontrado em fontes de sinais de alto grau de sistemas controlados pela Federação ou como recompensas de missões de sistemas Federais durante eleições.</value>
+    <comment>Material location Proprietary Composites</comment>
+  </data>
+  <data name="protolightalloys" xml:space="preserve">
+    <value>Encontrado em fontes de sinais de alto grau de sistemas com economia em auge ou como recompensas de missões.</value>
+    <comment>Material location Proto Light Alloys</comment>
+  </data>
+  <data name="refinedfocuscrystals" xml:space="preserve">
+    <value>Encontrado em fontes de sinais de combates ou como recompensas de missões.</value>
+    <comment>Material location Refined Focus Crystals</comment>
+  </data>
+  <data name="thermicalloys" xml:space="preserve">
+    <value>Encontrado em destroços de naves de combate ou como recompensas de missões.</value>
+    <comment>Material location Thermic Alloys</comment>
+  </data>
+  <data name="unknowntechnologycomponents" xml:space="preserve">
+    <value>Obtido em locais de superfície misteriosos da espécie alienígena conhecida como Thargoids.</value>
+    <comment>Material location Thargoid Technological Components</comment>
+  </data>
+  <data name="biotechconductors" xml:space="preserve">
+    <value>Obtido como recompensas de missões.</value>
+    <comment>Material location Biotech conductors</comment>
+  </data>
+  <data name="fedcorecomposites" xml:space="preserve">
+    <value>Encontrado em fontes de sinais de alto grau de sistemas controlados pela Federação ou em destroços de naves de combate Federais.</value>
+    <comment>Material location Core Dynamics Composites</comment>
+  </data>
+  <data name="exquisitefocuscrystals" xml:space="preserve">
+    <value>Encontrado em destroços de naves de combate ou como recompensas de missões, especialmente em sistemas com economia em auge.</value>
+    <comment>Material location Exquisite Focus Crystals</comment>
+  </data>
+  <data name="imperialshielding" xml:space="preserve">
+    <value>Encontrado em fontes de sinais de alto grau de sistemas controlados pelo Império ou como recompensas de missões.</value>
+    <comment>Material location Imperial Shielding</comment>
+  </data>
+  <data name="improvisedcomponents" xml:space="preserve">
+    <value>Encontrado em fontes de sinais de alto grau de sistemas Independentes, sistemas com economia em auge, sistemas passando por revolta civil, guerra, guerra civil ou doença, ou como recompensas de missões.</value>
+    <comment>Material location Improvised Components</comment>
+  </data>
+  <data name="militarygradealloys" xml:space="preserve">
+    <value>Encontrado em fontes de sinais de alto grau de sistemas em guerra ou guerra civil, ou como recompensas de missões.</value>
+    <comment>Material location Military Grade Alloys</comment>
+  </data>
+  <data name="militarysupercapacitors" xml:space="preserve">
+    <value>Encontrado em fontes de sinais de alto grau de sistemas em guerra ou como recompensas de missões.</value>
+    <comment>Material location Military Supercapacitors</comment>
+  </data>
+  <data name="pharmaceuticalisolators" xml:space="preserve">
+    <value>Encontrado em fontes de sinais de alto grau, especialmente em sistemas em epidemia, ou como recompensas de missões.</value>
+    <comment>Material location Pharmaceutical Isolators</comment>
+  </data>
+  <data name="protoheatradiators" xml:space="preserve">
+    <value>Encontrado em fontes de sinais de alto grau de sistemas com economia em auge ou como recompensas de missões.</value>
+    <comment>Material location Proto Heat Radiators</comment>
+  </data>
+  <data name="protoradiolicalloys" xml:space="preserve">
+    <value>Encontrado em fontes de sinais de alto grau de sistemas com economia em auge.</value>
+    <comment>Material location Proto Radiolic Alloys</comment>
+  </data>
+  <data name="unknownenergysource" xml:space="preserve">
+    <value>Obtido em locais de superfície misteriosos da espécie alienígena conhecida como Thargoids.</value>
+    <comment>Material location unknownenergysource</comment>
+  </data>
+  <data name="unknownorganiccircuitry" xml:space="preserve">
+    <value>Obtido em locais de superfície misteriosos da espécie alienígena conhecida como Thargoids.</value>
+    <comment>Material location Thargoid Organic Circuitry</comment>
+  </data>
+  <data name="boron" xml:space="preserve">
+    <value>Encontrado ao minerar asteroides.</value>
+    <comment>Material location Boron</comment>
+  </data>
+  <data name="guardian_powercell" xml:space="preserve">
+    <value>Encontrado em antigas ruínas da espécie alienígena conhecida como Guardians.</value>
+    <comment>Material location guardian_powercell</comment>
+  </data>
+  <data name="guardian_weaponblueprint" xml:space="preserve">
+    <value>Encontrado em antigas ruínas da espécie alienígena conhecida como Guardians.</value>
+    <comment>Material location guardian_weaponblueprint</comment>
+  </data>
+  <data name="guardian_vesselblueprint" xml:space="preserve">
+    <value>Encontrado em antigas ruínas da espécie alienígena conhecida como Guardians.</value>
+    <comment>Material location guardian_vesselblueprint</comment>
+  </data>
+  <data name="guardian_techcomponent" xml:space="preserve">
+    <value>Encontrado em antigas ruínas da espécie alienígena conhecida como Guardians.</value>
+    <comment>Material location guardian_techcomponent</comment>
+  </data>
+  <data name="guardian_powerconduit" xml:space="preserve">
+    <value>Encontrado em antigas ruínas da espécie alienígena conhecida como Guardians.</value>
+    <comment>Material location guardian_powerconduit</comment>
+  </data>
+  <data name="guardian_moduleblueprint" xml:space="preserve">
+    <value>Encontrado em antigas ruínas da espécie alienígena conhecida como Guardians.</value>
+    <comment>Material location guardian_moduleblueprint</comment>
+  </data>
+  <data name="guardian_sentinel_weaponparts" xml:space="preserve">
+    <value>Encontrado em antigas ruínas da espécie alienígena conhecida como Guardians.</value>
+    <comment>Material location guardian_sentinel_weaponparts</comment>
+  </data>
+  <data name="guardian_sentinel_wreckagecomponents" xml:space="preserve">
+    <value>Encontrado em antigas ruínas da espécie alienígena conhecida como Guardians.</value>
+    <comment>Material location guardian_sentinel_wreckagecomponents</comment>
+  </data>
+  <data name="lead" xml:space="preserve">
+    <value>Encontrado ao minerar asteroides.</value>
+    <comment>Material location Lead</comment>
+  </data>
+  <data name="rhenium" xml:space="preserve">
+    <value>Encontrado ao minerar asteroides.</value>
+    <comment>Material location Rhenium</comment>
+  </data>
+  <data name="tg_propulsionelement" xml:space="preserve">
+    <value>Encontrado em destroços de naves de Thargoid.</value>
+    <comment>Material location tg_propulsionelement</comment>
+  </data>
+  <data name="tg_biomechanicalconduits" xml:space="preserve">
+    <value>Encontrado em destroços de naves de Thargoid.</value>
+    <comment>Material location tg_biomechanicalconduits</comment>
+  </data>
+  <data name="tg_weaponparts" xml:space="preserve">
+    <value>Encontrado em destroços de naves de Thargoid.</value>
+    <comment>Material location tg_weaponparts</comment>
+  </data>
+  <data name="tg_wreckagecomponents" xml:space="preserve">
+    <value>Encontrado em destroços de naves de Thargoid.</value>
+    <comment>Material location tg_wreckagecomponents</comment>
+  </data>
+  <data name="tg_shipflightdata" xml:space="preserve">
+    <value>Encontrado ao escanear naves Thargoid.</value>
+    <comment>Material location tg_shipflightdata</comment>
+  </data>
+  <data name="tg_shipsystemsdata" xml:space="preserve">
+    <value>Encontrado ao escanear naves Thargoid.</value>
+    <comment>Material location tg_shipsystemsdata</comment>
+  </data>
 </root>

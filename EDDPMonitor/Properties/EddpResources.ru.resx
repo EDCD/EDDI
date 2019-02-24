@@ -117,16 +117,40 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="anything" xml:space="preserve">
+    <value>(что угодно)</value>
+  </data>
+  <data name="delete_btn" xml:space="preserve">
+    <value>Удалить</value>
+  </data>
+  <data name="desc" xml:space="preserve">
+    <value>Мониторинг EDDP на предмет изменений в состоянии системы и генерирует события, которые соответствуют списку наблюдения.</value>
+  </data>
+  <data name="faction_header" xml:space="preserve">
+    <value>Фракция</value>
+  </data>
+  <data name="max_dist_home_header" xml:space="preserve">
+    <value>Максимальное расстояние от дома</value>
+  </data>
+  <data name="max_dist_ship_header" xml:space="preserve">
+    <value>Максимальное расстояние от корабля</value>
+  </data>
+  <data name="name" xml:space="preserve">
+    <value>EDDP Монитор</value>
+  </data>
+  <data name="name_header" xml:space="preserve">
+    <value>Название</value>
+  </data>
+  <data name="new_watch" xml:space="preserve">
+    <value>Новое наблюдение</value>
+  </data>
+  <data name="p1" xml:space="preserve">
+    <value>Вы можете создавать, редактировать и удалять "Наблюдения" ниже. Когда EDDI получает информацию об изменении где-то в галактике, он сравнивает ее с каждым из "наблюдений" по очереди. Если информация соответствует всем выбранным критериям для определенных "Наблюдений", то это вызовет событие. Имейте в виду, что это зависит от информации, поступающей от EDDN, которая, в свою очередь, поступает от командиров, работающих с такими программами, как EDDI, поэтому будет сообщать только об изменениях, о которых знает сеть.</value>
+  </data>
+  <data name="state_header" xml:space="preserve">
+    <value>Состояние</value>
+  </data>
+  <data name="system_header" xml:space="preserve">
+    <value>Система</value>
+  </data>
 </root>

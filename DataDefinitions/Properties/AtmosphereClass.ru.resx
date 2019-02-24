@@ -149,7 +149,10 @@
     <value>Гелий</value>
     <comment>Atmosphere class "Helium"</comment>
   </data>
-  
+  <data name="MetallicVapour" xml:space="preserve">
+    <value>Пары металлов</value>
+    <comment>Atmosphere class "Metallic vapour"</comment>
+  </data>
   <data name="Methane" xml:space="preserve">
     <value>Метан</value>
     <comment>Atmosphere class "Methane"</comment>
@@ -158,8 +161,14 @@
     <value>Матано-насыщенный</value>
     <comment>Atmosphere class "Methane-rich"</comment>
   </data>
-  
-  
+  <data name="Neon" xml:space="preserve">
+    <value>Аргон</value>
+    <comment>Atmosphere class "Neon"</comment>
+  </data>
+  <data name="NeonRich" xml:space="preserve">
+    <value>Аргоно-насыщенный</value>
+    <comment>Atmosphere class "Neon-rich"</comment>
+  </data>
   <data name="Nitrogen" xml:space="preserve">
     <value>Азот</value>
     <comment>Atmosphere class "Nitrogen"</comment>
@@ -172,15 +181,30 @@
     <value>Кислород</value>
     <comment>Atmosphere class "Oxygen"</comment>
   </data>
-  
-  
-  
+  <data name="SilicateVapour" xml:space="preserve">
+    <value>Кремниевые пары</value>
+    <comment>Atmosphere class "Silicate vapour"</comment>
+  </data>
+  <data name="SuitableForWaterBasedLife" xml:space="preserve">
+    <value>Пригодно для жизни на водной основе</value>
+    <comment>Atmosphere class "Suitable for water-based life"</comment>
+  </data>
+  <data name="SulphurDioxide" xml:space="preserve">
+    <value>Диоксид серы</value>
+    <comment>Atmosphere class "Sulphur dioxide"</comment>
+  </data>
   <data name="Water" xml:space="preserve">
     <value>Вода</value>
     <comment>Atmosphere class "Water"</comment>
   </data>
-  
-  
+  <data name="WaterRich" xml:space="preserve">
+    <value>Водонасыщенный</value>
+    <comment>Atmosphere class "Water-rich"</comment>
+  </data>
+  <data name="EarthLike" xml:space="preserve">
+    <value>Землеподобный</value>
+    <comment>Atmosphere class "EarthLike"</comment>
+  </data>
   <data name="GasGiant" xml:space="preserve">
     <value>Газовый гигант</value>
     <comment>Atmosphere class "Gas giant"</comment>

@@ -326,7 +326,7 @@
     <comment>Commodity BurnhamBileDistillate</comment>
   </data>
   <data name="CD_75KittenBrandCoffee" xml:space="preserve">
-    <value>Café da Carca CD-75 Kitten</value>
+    <value>Café da Marca CD-75 Kitten</value>
     <comment>Commodity CD_75KittenBrandCoffee</comment>
   </data>
   <data name="CentauriMegaGin" xml:space="preserve">
@@ -650,11 +650,11 @@
     <comment>Commodity HIPProto_Squid</comment>
   </data>
   <data name="HNShockMount" xml:space="preserve">
-    <value>Montagem de choque HN</value>
+    <value>Montagem de Choque HN</value>
     <comment>Commodity HNShockMount</comment>
   </data>
   <data name="HolvaDuellingBlades" xml:space="preserve">
-    <value>Espadas de duelo de Holva</value>
+    <value>Espadas de Duelo de Holva</value>
     <comment>Commodity HolvaDuellingBlades</comment>
   </data>
   <data name="HonestyPills" xml:space="preserve">
@@ -978,7 +978,7 @@
     <comment>Commodity Palladium</comment>
   </data>
   <data name="PantaaPrayerSticks" xml:space="preserve">
-    <value>Incensos para Orações de Pantaa</value>
+    <value>Incensos Para Orações de Pantaa</value>
     <comment>Commodity PantaaPrayerSticks</comment>
   </data>
   <data name="PavonisEarGrubs" xml:space="preserve">
@@ -1090,7 +1090,7 @@
     <comment>Commodity SanumaDecorativeMeat</comment>
   </data>
   <data name="SAP8CoreContainer" xml:space="preserve">
-    <value>Recipiente de núcleo Sap 8</value>
+    <value>Recipiente de Núcleo Sap 8</value>
     <comment>Commodity SAP8CoreContainer</comment>
   </data>
   <data name="SaxonWine" xml:space="preserve">
@@ -1206,7 +1206,7 @@
     <comment>Commodity TerrainEnrichmentSystems</comment>
   </data>
   <data name="TerraMaterBloodBores" xml:space="preserve">
-    <value>Potenciadores sanguíneos de Terra Mater</value>
+    <value>Potenciadores Sanguíneos de Terra Mater</value>
     <comment>Commodity TerraMaterBloodBores</comment>
   </data>
   <data name="Thallium" xml:space="preserve">
@@ -1230,7 +1230,7 @@
     <comment>Commodity ThrutisCream</comment>
   </data>
   <data name="TiegfriesSynthSilk" xml:space="preserve">
-    <value>Seda sintética de Tiegfries</value>
+    <value>Seda Sintética de Tiegfries</value>
     <comment>Commodity TiegfriesSynthSilk</comment>
   </data>
   <data name="TimeCapsule" xml:space="preserve">
@@ -1350,7 +1350,7 @@
     <comment>Commodity VegaSlimweed</comment>
   </data>
   <data name="VHerculisBodyRub" xml:space="preserve">
-    <value>Esfoliante corporal de V Herculis</value>
+    <value>Esfoliante Corporal de V Herculis</value>
     <comment>Commodity VHerculisBodyRub</comment>
   </data>
   <data name="VidavantianLace" xml:space="preserve">
@@ -1426,7 +1426,7 @@
     <comment>Commodity VanayequiRhinoFur</comment>
   </data>
   <data name="ZeesszeAntGlue" xml:space="preserve">
-    <value>Cola de larva de formiga de Zeessze</value>
+    <value>Cola de Larva de Formiga de Zeessze</value>
     <comment>Commodity ZeesszeAntGlue</comment>
   </data>
   <data name="aislingpromotionalmaterials" xml:space="preserve">
@@ -1614,19 +1614,19 @@
     <comment>Commodity Ancient Key</comment>
   </data>
   <data name="ThargoidTissueSampleType1" xml:space="preserve">
-    <value>Amostra de tecido Thargoid Cyclops</value>
+    <value>Amostra de Tecido Thargoid Cyclops</value>
     <comment>Commodity ThargoidTissueSampleType1</comment>
   </data>
   <data name="ThargoidTissueSampleType2" xml:space="preserve">
-    <value>Amostra de tecido Thargoid Basilisk</value>
+    <value>Amostra de Tecido Thargoid Basilisk</value>
     <comment>Commodity ThargoidTissueSampleType2</comment>
   </data>
   <data name="ThargoidTissueSampleType3" xml:space="preserve">
-    <value>Amostra de tecido Thargoid Medusa</value>
+    <value>Amostra de Tecido Thargoid Medusa</value>
     <comment>Commodity ThargoidTissueSampleType3</comment>
   </data>
   <data name="ThargoidTissueSampleType4" xml:space="preserve">
-    <value>Amostra de tecido Thargoid Hydra</value>
+    <value>Amostra de Tecido Thargoid Hydra</value>
     <comment>Commodity ThargoidTissueSampleType4</comment>
   </data>
   <data name="Nanomedicines" xml:space="preserve">

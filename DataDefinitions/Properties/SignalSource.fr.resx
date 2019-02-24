@@ -121,29 +121,83 @@
     <value>Balise de navigation</value>
     <comment>Nav beacon</comment>
   </data>
+  <data name="MULTIPLAYER_SCENARIO80_TITLE" xml:space="preserve">
+    <value>Balise de navigation compromise</value>
+    <comment>Compromised nav beacon</comment>
+  </data>
+  <data name="USS" xml:space="preserve">
+    <value>Source de signal non identifié</value>
+    <comment>Unidentified Signal Source</comment>
+  </data>
+  <data name="Warzone_PointRace_High" xml:space="preserve">
+    <value>Zone de combat à haute intensité</value>
+    <comment>Combat Zone (High Intensity)</comment>
+  </data>
+  <data name="Warzone_PointRace_Med" xml:space="preserve">
+    <value>Zone de combat à intensité moyenne</value>
+    <comment>Combat Zone (Medium Intensity)</comment>
+  </data>
+  <data name="Warzone_PointRace_Low" xml:space="preserve">
+    <value>Zone de combat à faible intensité</value>
+    <comment>Combat Zone (Low Intensity)</comment>
+  </data>
+  
+  
+  <data name="USS_Type_Anomaly" xml:space="preserve">
+    <value>Anomalie</value>
+    <comment>Anomaly signal</comment>
+  </data>
+  <data name="USS_Type_Ceremonial" xml:space="preserve">
+    <value>Communication de cérémonie</value>
+    <comment>Ceremonial signal</comment>
+  </data>
   
   
   
   
+  <data name="USS_Type_MissionTarget" xml:space="preserve">
+    <value>Objectif de mission</value>
+    <comment>MissionTarget signal</comment>
+  </data>
   
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="USS_Type_DistressSignal" xml:space="preserve">
+    <value>Appel de détresse</value>
+    <comment>Distress signal</comment>
+  </data>
+  <data name="USS_Type_TradingBeacon" xml:space="preserve">
+    <value>Balise de commerce</value>
+    <comment>TradingBeacon signal</comment>
+  </data>
+  <data name="MULTIPLAYER_SCENARIO78_TITLE" xml:space="preserve">
+    <value>Site d'extraction de ressources à haute intensité</value>
+    <comment>ResourceExtraction Site (High Intensity)</comment>
+  </data>
+  <data name="MULTIPLAYER_SCENARIO77_TITLE" xml:space="preserve">
+    <value>Site d'extraction de ressources à faible intensité</value>
+    <comment>Resource Extraction site (Low)</comment>
+  </data>
+  <data name="MULTIPLAYER_SCENARIO14_TITLE" xml:space="preserve">
+    <value>Site d'extraction de ressources</value>
+    <comment>Resource Extraction Site</comment>
+  </data>
+  <data name="MULTIPLAYER_SCENARIO79_TITLE" xml:space="preserve">
+    <value>Site d'extraction de ressources instables</value>
+    <comment>Resource Extraction Site [Hazardous]</comment>
+  </data>
+  <data name="NumberStation" xml:space="preserve">
+    <value>Balise de communication non enregistrée</value>
+    <comment>NumberStation</comment>
+  </data>
+  <data name="Warzone_TG" xml:space="preserve">
+    <value>Zone de conflit AX</value>
+    <comment>Thargoid conflict zone</comment>
+  </data>
+  <data name="ListeningPost" xml:space="preserve">
+    <value>Poste d'écoute</value>
+    <comment>ListeningPost</comment>
+  </data>
+  <data name="NotableStellarPhenomena" xml:space="preserve">
+    <value>Phénomène Stellaire Remarquable</value>
+    <comment>Notable Stellar Phenomena</comment>
+  </data>
 </root>

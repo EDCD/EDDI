@@ -122,7 +122,7 @@
     <comment>Economy type Military</comment>
   </data>
   <data name="None" xml:space="preserve">
-    <value>Nenhum</value>
+    <value>Nenhuma</value>
     <comment>Economy type None</comment>
   </data>
   <data name="Refinery" xml:space="preserve">

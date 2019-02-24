@@ -117,16 +117,40 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="AislingDuval" xml:space="preserve">
+    <value>Айслинг Дюваль</value>
+  </data>
+  <data name="ALavignyDuval" xml:space="preserve">
+    <value>Арисса Лавиньи-Дюваль</value>
+  </data>
+  <data name="ArchonDelaine" xml:space="preserve">
+    <value>Архонт Делен</value>
+  </data>
+  <data name="DentonPatreus" xml:space="preserve">
+    <value>Дентон Патреус</value>
+  </data>
+  <data name="EdmundMahon" xml:space="preserve">
+    <value>Эдмунд Мэйхон</value>
+  </data>
+  <data name="FeliciaWinters" xml:space="preserve">
+    <value>Фелиция Винтерс</value>
+  </data>
+  <data name="LiYongRui" xml:space="preserve">
+    <value>Ли Йон-Руй</value>
+  </data>
+  <data name="PranavAntal" xml:space="preserve">
+    <value>Пранав Антал</value>
+  </data>
+  <data name="YuriGrom" xml:space="preserve">
+    <value>Юрий Гром</value>
+  </data>
+  <data name="ZacharyHudson" xml:space="preserve">
+    <value>Захари Хадсон</value>
+  </data>
+  <data name="ZeminaTorval" xml:space="preserve">
+    <value>Земина Торваль</value>
+  </data>
+  <data name="None" xml:space="preserve">
+    <value>Нет</value>
+  </data>
 </root>
