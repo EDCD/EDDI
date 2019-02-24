@@ -2,9 +2,13 @@
 
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
-### Development
+### 3.3.7-a1
   * Core
     * Fixed a bug whereby names of materials (Carbon, Iron, Conductive Components, etc) were not always localized.
+  * Localization
+    * Added Brazilian Portuguese localization.
+    * Increased coverage of the Russian localization.
+    * Updated the Spanish default speech personality.
   * Ship monitor
     * Fixed a lock-up that could occur when opening the ship monitor from VoiceAttack
   * VoiceAttack responder
