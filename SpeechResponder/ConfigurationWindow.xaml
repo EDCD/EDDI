@@ -50,13 +50,17 @@
                 <DataGridTemplateColumn x:Name="Priorities" Header="{x:Static resx:SpeechResponder.header_priority}">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <ComboBox IsEnabled="{Binding Path=Value.Responder}" SelectedValue="{Binding Path=Value.Priority, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ItemsSource="{Binding Path=Value.Priorities}" SelectionChanged="eddiScriptsUpdated">
+                            <ComboBox SelectedValue="{Binding Path=Value.Priority, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ItemsSource="{Binding Path=Value.Priorities}" SelectionChanged="eddiScriptsUpdated">
                                 <ComboBox.Style>
                                     <Style TargetType="{x:Type ComboBox}">
                                         <Setter Property="Opacity"  Value="1" />
+                                        <Setter Property="IsEnabled"  Value="{Binding Path=Value.Responder}" />
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding Path=Value.Responder}" Value="False">
                                                 <Setter Property="Opacity"  Value="0" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=Personality.IsEditable}" Value="False">
+                                                <Setter Property="IsEnabled"  Value="False" />
                                             </DataTrigger>
                                         </Style.Triggers>
                                     </Style>
