@@ -142,7 +142,10 @@
     <comment>Combat Zone (Low Intensity)</comment>
   </data>
   
-  
+  <data name="USS_Type_Aftermath" xml:space="preserve">
+    <value>Zone de conflit</value>
+    <comment>Aftermatch signal</comment>
+  </data>
   <data name="USS_Type_Anomaly" xml:space="preserve">
     <value>Anomalie</value>
     <comment>Anomaly signal</comment>
@@ -151,15 +154,30 @@
     <value>Communication de cérémonie</value>
     <comment>Ceremonial signal</comment>
   </data>
-  
-  
-  
-  
+  <data name="USS_Type_VeryValuableSalvage" xml:space="preserve">
+    <value>Émission de haute intensité</value>
+    <comment>VeryValuable signal</comment>
+  </data>
+  <data name="USS_Type_ValuableSalvage" xml:space="preserve">
+    <value>Émissions encodées</value>
+    <comment>Valuable signal</comment>
+  </data>
+  <data name="USS_Type_NonHuman" xml:space="preserve">
+    <value>Source de signal non humain</value>
+    <comment>NonHuman signal</comment>
+  </data>
+  <data name="USS_Type_WeaponsFire" xml:space="preserve">
+    <value>Tirs détectés</value>
+    <comment>WeaponsFire signal</comment>
+  </data>
   <data name="USS_Type_MissionTarget" xml:space="preserve">
     <value>Objectif de mission</value>
     <comment>MissionTarget signal</comment>
   </data>
-  
+  <data name="USS_Type_Convoy" xml:space="preserve">
+    <value>Dispersion de convoi détecté</value>
+    <comment>Convoy signal</comment>
+  </data>
   <data name="USS_Type_DistressSignal" xml:space="preserve">
     <value>Appel de détresse</value>
     <comment>Distress signal</comment>
