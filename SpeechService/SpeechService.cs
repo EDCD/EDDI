@@ -24,6 +24,7 @@ namespace EddiSpeechService
     /// <summary>Provide speech services with a varying amount of alterations to the voice</summary>
     public class SpeechService : INotifyPropertyChanged, IDisposable
     {
+        private const float ActiveSpeechFadeOutMilliseconds = 250;
         private SpeechServiceConfiguration configuration;
 
         private static readonly object activeSpeechLock = new object();
@@ -578,6 +579,7 @@ namespace EddiSpeechService
                 if (activeSpeech != null && activeSpeechPriority > 0)
                 {
                     Logging.Debug("Stopping active speech");
+                    FadeOutCurrentSpeech();
                     activeSpeech.Stop();
                     Logging.Debug("Disposing of active speech");
                     activeSpeech.Dispose();
@@ -585,6 +587,16 @@ namespace EddiSpeechService
                     Logging.Debug("Stopped current speech");
                     eddiSpeaking = false;
                 }
+            }
+        }
+
+        public void FadeOutCurrentSpeech()
+        {
+            float fadePer10Milliseconds = (activeSpeech.Volume / ActiveSpeechFadeOutMilliseconds) * 10;
+            while (activeSpeech.Volume > 0)
+            {
+                activeSpeech.Volume -= fadePer10Milliseconds;
+                Thread.Sleep(10);
             }
         }
 
