@@ -1043,7 +1043,7 @@ namespace EddiMissionMonitor
             return farthestSystem;
         }
 
-        public string GetMostRoute()
+        public string GetMostRoute(string homeSystem = null)
         {
             // Missions Route Event variables
             string mostSystem = null;
@@ -1113,11 +1113,16 @@ namespace EddiMissionMonitor
                 mostSystem = mostList.Values.FirstOrDefault();
                 mostDistance = mostList.Keys.FirstOrDefault();
 
-                // Add current system to the list and find the best route to 'most' systems
+                // Calculate the missions route using the 'Repetitive Nearest Neighbor' Algorithim (RNNA)
                 mostList.Add(0, currentSystem);
-                if (CalculateRNNA(mostList.Values.ToList()))
+                if (CalculateRNNA(mostList.Values.ToList(), homeSystem))
                 {
                     Logging.Debug("Calculated Route Selected = " + missionsRouteList + ", Total Distance = " + missionsRouteDistance);
+                    if (homeSystem != null)
+                    {
+                        mostSystem = GetNextSystem();
+                        mostDistance = mostList.Keys[mostList.Values.ToList().IndexOf(mostSystem)];
+                    }
                 }
                 else
                 {
@@ -1200,7 +1205,7 @@ namespace EddiMissionMonitor
             return nearestSystem;
         }
 
-        public string GetMissionsRoute(string homesystem = null)
+        public string GetMissionsRoute(string homeSystem = null)
         {
             // Missions Route Event variables
             string nextSystem = null;
@@ -1212,13 +1217,9 @@ namespace EddiMissionMonitor
 
             if (missionsCount > 0)
             {
-                // If 'home system' is null, default to the current star system
-                string currentsystem = EDDI.Instance?.CurrentStarSystem?.name;
-                if (homesystem == null)
-                {
-                    homesystem = currentsystem;
-                }
-                systems.Add(homesystem);
+                // Add current star system first
+                string currentSystem = EDDI.Instance?.CurrentStarSystem?.name;
+                systems.Add(currentSystem);
 
                 // Add origin systems for 'return to origin' missions to the 'systems' list
                 foreach (Mission mission in missions.Where(m => m.statusEDName != "Failed").ToList())
@@ -1272,10 +1273,10 @@ namespace EddiMissionMonitor
                 }
 
                 // Calculate the missions route using the 'Repetitive Nearest Neighbor' Algorithim (RNNA)
-                if (CalculateRNNA(systems))
+                if (CalculateRNNA(systems, homeSystem))
                 {
                     nextSystem = GetNextSystem();
-                    nextDistance = CalculateDistance(homesystem, nextSystem);
+                    nextDistance = CalculateDistance(currentSystem, nextSystem);
                     routeCount = missionsRouteList.Split('_').Count();
 
                     foreach (Mission mission in missions.Where(m => m.destinationsystem == nextSystem
@@ -1295,7 +1296,7 @@ namespace EddiMissionMonitor
             return nextSystem;
         }
 
-        private bool CalculateRNNA(List<string> systems)
+        private bool CalculateRNNA(List<string> systems, string homeSystem)
         {
             // Clear route list & distance
             missionsRouteList = null;
@@ -1309,16 +1310,20 @@ namespace EddiMissionMonitor
                 decimal bestDistance = 0;
 
                 // Pre-load all system distances
-                List<StarSystem> starsystems = DataProviderService.GetSystemsData(systems.ToArray(), true, false, false, false, false);
-                decimal[][] distMatrix = new decimal[numSystems][];
-                for (int i = 0; i < numSystems; i++)
+                if (homeSystem != null)
                 {
-                    distMatrix[i] = new decimal[numSystems];
+                    systems.Add(homeSystem);
                 }
-                for (int i = 0; i < numSystems - 1; i++)
+                List<StarSystem> starsystems = DataProviderService.GetSystemsData(systems.ToArray(), true, false, false, false, false);
+                decimal[][] distMatrix = new decimal[systems.Count][];
+                for (int i = 0; i < systems.Count; i++)
+                {
+                    distMatrix[i] = new decimal[systems.Count];
+                }
+                for (int i = 0; i < systems.Count - 1; i++)
                 {
                     StarSystem curr = starsystems.Find(s => s.name == systems[i]);
-                    for (int j = i + 1; j < numSystems; j++)
+                    for (int j = i + 1; j < systems.Count; j++)
                     {
                         StarSystem dest = starsystems.Find(s => s.name == systems[j]);
                         decimal distance = CalculateDistance(curr, dest);
@@ -1348,6 +1353,7 @@ namespace EddiMissionMonitor
                         {
                             // Wrap around the list
                             int destIndex = i + j < numSystems ? i + j : i + j - numSystems;
+                            if (homeSystem != null && destIndex == 0) { destIndex = numSystems; }
 
                             // Check if destination system previously added to the route
                             if (route.IndexOf(systems[destIndex]) == -1)
@@ -1364,15 +1370,17 @@ namespace EddiMissionMonitor
                     }
 
                     // Add 'starting system' to complete the route & add its distance to total distance traveled
-                    route.Add(systems[i]);
-                    totalDistance += distMatrix[i][currIndex];
+                    int startIndex = homeSystem != null && i == 0 ? numSystems : i;
+                    route.Add(systems[startIndex]);
+                    if (currIndex == numSystems) { currIndex = 0; }
+                    totalDistance += distMatrix[currIndex][startIndex];
                     Logging.Debug("Build Route Iteration #" + i + " - Route = " + string.Join("_", route) + ", Total Distance = " + totalDistance);
 
                     // Use this route if total distance traveled is less than previous iterations
                     if (bestDistance == 0 || totalDistance < bestDistance)
                     {
                         bestRoute.Clear();
-                        int homeIndex = route.IndexOf(systems[0]);
+                        int homeIndex = route.IndexOf(systems[homeSystem != null ? numSystems : 0]);
                         if (homeIndex < route.Count - 1)
                         {
                             // Rotate list to place homesystem at the end

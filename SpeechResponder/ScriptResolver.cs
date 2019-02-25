@@ -671,7 +671,14 @@ namespace EddiSpeechResponder
                         break;
                     case "most":
                         {
-                            result = ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor"))?.GetMostRoute();
+                            if (values.Count == 2)
+                            {
+                                result = ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor"))?.GetMostRoute(values[1].AsString);
+                            }
+                            else
+                            {
+                                result = ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor"))?.GetMostRoute();
+                            }
                         }
                         break;
                     case "nearest":
