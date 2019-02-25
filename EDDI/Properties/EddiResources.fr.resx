@@ -225,7 +225,7 @@ Veuillez fermer l'autre instance et réessayer.</value>
     <value>Mode sans échec - mise à jour requise.</value>
   </data>
   <data name="login" xml:space="preserve">
-    <value>Connexion</value>
+    <value>S'identifier</value>
   </data>
   <data name="frontier_api_cant_login_from_va" xml:space="preserve">
     <value>Pour vous connecter, veuillez quitter VoiceAttack et lancez EDDI en tant qu'application autonome.</value>
