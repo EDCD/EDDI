@@ -141,7 +141,10 @@
     <value>Кремний</value>
     <comment>Atmosphere Composition Silicates</comment>
   </data>
-  
+  <data name="SulphurDioxide" xml:space="preserve">
+    <value>Диоксид серы</value>
+    <comment>Atmosphere Composition Sulphur Dioxide</comment>
+  </data>
   <data name="Water" xml:space="preserve">
     <value>Вода</value>
     <comment>Atmosphere Composition Water</comment>

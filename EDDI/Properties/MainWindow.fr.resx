@@ -161,7 +161,7 @@
     <value>Sélectionnez la langue d'EDDI (nécessite de relancer EDDI):</value>
   </data>
   <data name="tab_frontier_desc" xml:space="preserve">
-    <value>Frontier met à disposition une API permettant à EDDI d'obtenir des informations sur votre vaisseau, le marché de la station actuelle et divers autres infos. Ces données ne sont pas disponibles ailleurs. Pour qu'EDDI puisse obtenir et exploiter ces informations, veillez cliquer sur le bouton Connexion et autoriser EDDI à accéder à ces données sur le serveur de Frontier.</value>
+    <value>Frontier met à disposition une API permettant à EDDI d'obtenir des informations sur vos vaisseaux, le marché de la station actuelle et divers autres infos. Ces données ne sont pas disponibles ailleurs. Si vous voulez qu'EDDI puisse obtenir et exploiter ces informations, veuillez cliquer sur le bouton d'identification et autoriser EDDI à accéder à ces données sur le serveur de Frontier.</value>
   </data>
   <data name="tab_frontier_header" xml:space="preserve">
     <value>API Frontier</value>

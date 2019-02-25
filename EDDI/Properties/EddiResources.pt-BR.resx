@@ -137,7 +137,7 @@
     <value>Sua conexão com a API da Frontier está operacional, Comandante {0}.</value>
   </data>
   <data name="if_using_va" xml:space="preserve">
-    <value>Se você estiver usando o VoiceAttack, feche esta janela antes de iniciar o VoiceAttack, para que suas alterações entrem em vigor. Você pode acessar esta janela a partir do VoiceAttack com o comando 'Configure EDDI'.</value>
+    <value>Se você estiver usando o VoiceAttack, feche esta janela antes de o iniciar, para que suas alterações entrem em vigor. Você pode acessar esta janela a partir do VoiceAttack com o comando 'Configure EDDI'.</value>
   </data>
   <data name="invalid_station" xml:space="preserve">
     <value>Estação Inválida</value>

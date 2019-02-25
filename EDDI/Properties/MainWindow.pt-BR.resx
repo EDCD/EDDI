@@ -127,13 +127,13 @@
     <value>possui vários recursos que podem ser configurados separadamente. Existem três tipos diferentes de itens.</value>
   </data>
   <data name="paragraph_1" xml:space="preserve">
-    <value>O primeiro grupo obtém e gerencia as informações básicas usadas pelo EDDI. Estas são as guias 'Detalhes do Comandante', 'Frontier API' e 'Text-to-Speech'. Você deve passar por cada um deles e configurá-los para que o EDDI tenha acesso total à sua informação do Elite: Dangerous.</value>
+    <value>O primeiro grupo obtém e gerencia as informações básicas usadas pelo EDDI. Estas são as guias 'Detalhes do Comandante', 'Frontier API' e 'Text-Para-Fala'. Você deve passar por cada um deles e configurá-los para que o EDDI tenha acesso total à sua informação do Elite: Dangerous.</value>
   </data>
   <data name="paragraph_2" xml:space="preserve">
     <value>O segundo grupo obtém informações de eventos. Estas são as guias que começam com 'monitor'. Elas obtêm eventos de diferentes locais e exigem configuração mínima, mas precisam ser concluídas antes de funcionarem.</value>
   </data>
   <data name="paragraph_3" xml:space="preserve">
-    <value>O terceiro grupo responde aos eventos. Estas são as guias que começam com 'resposta'. Estas vêm com diferentes graus de configuração, mas funcionarão imediatamente.</value>
+    <value>O terceiro grupo responde aos eventos. Estas são as guias que começam com 'Relator'. Estas vêm com diferentes graus de configuração, mas funcionarão imediatamente.</value>
   </data>
   <data name="paragraph_4" xml:space="preserve">
     <value>Você pode ler mais sobre como o EDDI funciona no</value>
@@ -215,7 +215,7 @@
     <value>Desabilitar pronúncia fonética:</value>
   </data>
   <data name="tab_tts_disable_phonetic_speech_note" xml:space="preserve">
-    <value>(isso desligará as funções usando tags de voz SSML, como visto no arquivo de Ajuda da Resposta de Fala)</value>
+    <value>(isso desligará as funções usando tags de voz SSML, como visto no arquivo de Ajuda do Relator de Fala)</value>
   </data>
   <data name="tab_tts_icao_desc" xml:space="preserve">
     <value>O EDDI pode usar ICAO, por exemplo, usando 'alfa' em vez de 'A', ao dizer nomes de estrela e corpos. Isso pode facilitar a compreensão dos nomes do sistema, mas demora mais para ser pronunciado. Se você quiser ouvir pronunciações ICAO, marque a opção abaixo. Note que isso não funcionará se você tiver desativado a fala fonética acima.</value>
