@@ -592,11 +592,14 @@ namespace EddiSpeechService
 
         public void FadeOutCurrentSpeech()
         {
-            float fadePer10Milliseconds = (activeSpeech.Volume / ActiveSpeechFadeOutMilliseconds) * 10;
-            while (activeSpeech.Volume > 0)
+            if (activeSpeech?.PlaybackState == PlaybackState.Playing)
             {
-                activeSpeech.Volume -= fadePer10Milliseconds;
-                Thread.Sleep(10);
+                float fadePer10Milliseconds = (activeSpeech.Volume / ActiveSpeechFadeOutMilliseconds) * 10;
+                while (activeSpeech.Volume > 0)
+                {
+                    activeSpeech.Volume -= fadePer10Milliseconds;
+                    Thread.Sleep(10);
+                }
             }
         }
 
