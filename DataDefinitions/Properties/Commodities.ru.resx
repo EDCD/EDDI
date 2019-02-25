@@ -801,7 +801,10 @@
     <value>Гиперсладости LTT</value>
     <comment>Commodity LTTHypersweet</comment>
   </data>
-  
+  <data name="LyraeWeed" xml:space="preserve">
+    <value>Трава лираи</value>
+    <comment>Commodity LyraeWeed</comment>
+  </data>
   <data name="MagneticEmitterCoil" xml:space="preserve">
     <value>Спираль магнитного излучателя</value>
     <comment>Commodity MagneticEmitterCoil</comment>
@@ -1254,7 +1257,10 @@
     <value>Токсичные отходы</value>
     <comment>Commodity ToxicWaste</comment>
   </data>
-  
+  <data name="TransgenicOnionHead" xml:space="preserve">
+    <value>Луканская луковая головка</value>
+    <comment>Commodity TransgenicOnionHead</comment>
+  </data>
   <data name="TrinketsOfFortune" xml:space="preserve">
     <value>Безделушки таинственной Фортуны</value>
     <comment>Commodity TrinketsOfFortune</comment>
@@ -1423,69 +1429,186 @@
     <value>Зесский муравьиный клей</value>
     <comment>Commodity ZeesszeAntGlue</comment>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="aislingpromotionalmaterials" xml:space="preserve">
+    <value>Политическая программа Айслинг</value>
+    <comment>Commodity aislingpromotionalmaterials</comment>
+  </data>
+  <data name="alliancelegaslativerecords" xml:space="preserve">
+    <value>Законодательные отчеты Альянса</value>
+    <comment>Commodity alliancelegaslativerecords</comment>
+  </data>
+  <data name="imperialprisoner" xml:space="preserve">
+    <value>Политические заключенные Торвал</value>
+    <comment>Commodity imperialprisoner</comment>
+  </data>
+  <data name="torvaldeeds" xml:space="preserve">
+    <value>Договора Торвал</value>
+    <comment>Commodity torvaldeeds</comment>
+  </data>
+  <data name="aislingmediamaterials" xml:space="preserve">
+    <value>Агитационные материалы Айслинг</value>
+    <comment>Commodity aislingmediamaterials</comment>
+  </data>
+  <data name="undergroundsupport" xml:space="preserve">
+    <value>Подпольная поддержка Грома</value>
+    <comment>Commodity undergroundsupport</comment>
+  </data>
+  <data name="torvalcommercialcontracts" xml:space="preserve">
+    <value>Торговые соглашения Торвал</value>
+    <comment>Commodity torvalcommercialcontracts</comment>
+  </data>
+  <data name="lavignygarisonsupplies" xml:space="preserve">
+    <value>Гарнизонные припасы Лавиньи</value>
+    <comment>Commodity lavignygarisonsupplies</comment>
+  </data>
+  <data name="lavignycorruptiondossiers" xml:space="preserve">
+    <value>Отчеты Лавиньи о коррупции</value>
+    <comment>Commodity lavignycorruptiondossiers</comment>
+  </data>
   <data name="Unknown" xml:space="preserve">
     <value>Неизвестное</value>
     <comment>Commodity Unknown</comment>
   </data>
-  
-  
-  
+  <data name="AislingMediaResources" xml:space="preserve">
+    <value>Запечатанные контракты Айслинг</value>
+    <comment>Commodity AislingMediaResources</comment>
+  </data>
+  <data name="AllianceLegaslativeContracts" xml:space="preserve">
+    <value>Законодательные договоры Альянса</value>
+    <comment>Commodity AllianceLegaslativeContracts</comment>
+  </data>
+  <data name="AllianceTradeAgreements" xml:space="preserve">
+    <value>Торговые соглашения Альянса</value>
+    <comment>Commodity AllianceTradeAgreements</comment>
+  </data>
   <data name="BuckyballBeerMats" xml:space="preserve">
     <value>Подставка под пиво Buckyball</value>
     <comment>Commodity BuckyballBeerMats</comment>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="CounterCultureSupport" xml:space="preserve">
+    <value>Припасы революционеров</value>
+    <comment>Commodity CounterCultureSupport</comment>
+  </data>
+  <data name="FederalAid" xml:space="preserve">
+    <value>Либеральные субсидии Федерации</value>
+    <comment>Commodity FederalAid</comment>
+  </data>
+  <data name="FederalTradeContracts" xml:space="preserve">
+    <value>Либеральный груз Федерации</value>
+    <comment>Commodity FederalTradeContracts</comment>
+  </data>
+  <data name="GromCounterIntelligence" xml:space="preserve">
+    <value>Разведданные Грома</value>
+    <comment>Commodity GromCounterIntelligence</comment>
+  </data>
+  <data name="GromWarTrophies" xml:space="preserve">
+    <value>Военные припасы Юрия Грома</value>
+    <comment>Commodity GromWarTrophies</comment>
+  </data>
+  <data name="HarmaSilverSeaRum" xml:space="preserve">
+    <value>Ром «Серебряное море Harma»</value>
+    <comment>Commodity HarmaSilverSeaRum</comment>
+  </data>
+  <data name="IllicitConsignment" xml:space="preserve">
+    <value>Контрабанда Kumo</value>
+    <comment>Commodity IllicitConsignment</comment>
+  </data>
+  <data name="LavignyFieldSupplies" xml:space="preserve">
+    <value>LavignyFieldSupplies</value>
+    <comment>Commodity LavignyFieldSupplies</comment>
+  </data>
+  <data name="LiberalCampaignMaterials" xml:space="preserve">
+    <value>Либеральная пропаганда</value>
+    <comment>Commodity LiberalCampaignMaterials</comment>
+  </data>
+  <data name="LoanedArms" xml:space="preserve">
+    <value>Помеченное оружие</value>
+    <comment>Commodity LoanedArms</comment>
+  </data>
+  <data name="MarkedSlaves" xml:space="preserve">
+    <value>Помеченные рабы</value>
+    <comment>Commodity MarkedSlaves</comment>
+  </data>
+  <data name="OnionheadDerivatives" xml:space="preserve">
+    <value>Компоненты луковых головок</value>
+    <comment>Commodity OnionheadDerivatives</comment>
+  </data>
+  <data name="OnionheadSamples" xml:space="preserve">
+    <value>Образцы луковых головок</value>
+    <comment>Commodity OnionheadSamples</comment>
+  </data>
   <data name="OutOfDateGoods" xml:space="preserve">
     <value>Просроченные товары</value>
     <comment>Commodity OutOfDateGoods</comment>
   </data>
-  
-  
+  <data name="PatreusFieldSupplies" xml:space="preserve">
+    <value>Полевые припасы Патреуса</value>
+    <comment>Commodity PatreusFieldSupplies</comment>
+  </data>
+  <data name="PatreusGarisonSupplies" xml:space="preserve">
+    <value>Гарнизонные припасы Патреуса</value>
+    <comment>Commodity PatreusGarisonSupplies</comment>
+  </data>
   <data name="PlatinumAloy" xml:space="preserve">
     <value>Платиновый сплав</value>
     <comment>Commodity PlatinumAloy</comment>
   </data>
-  
-  
-  
-  
-  
-  
-  
+  <data name="RepublicanFieldSupplies" xml:space="preserve">
+    <value>Полевые припасы Хадсона</value>
+    <comment>Commodity RepublicanFieldSupplies</comment>
+  </data>
+  <data name="RepublicanGarisonSupplies" xml:space="preserve">
+    <value>Гарнизонные припасы Хадсона</value>
+    <comment>Commodity RepublicanGarisonSupplies</comment>
+  </data>
+  <data name="RestrictedIntel" xml:space="preserve">
+    <value>Секретные разведданные Хадсона</value>
+    <comment>Commodity RestrictedIntel</comment>
+  </data>
+  <data name="RestrictedPackage" xml:space="preserve">
+    <value>Секретный груз Core</value>
+    <comment>Commodity RestrictedPackage</comment>
+  </data>
+  <data name="SiriusCommercialContracts" xml:space="preserve">
+    <value>Корпоративные контракты Sirius</value>
+    <comment>Commodity SiriusCommercialContracts</comment>
+  </data>
+  <data name="SiriusFranchisePackage" xml:space="preserve">
+    <value>Посылка с товаром Sirius</value>
+    <comment>Commodity SiriusFranchisePackage</comment>
+  </data>
+  <data name="SiriusIndustrialEquipment" xml:space="preserve">
+    <value>Промышленное оборудование Sirius</value>
+    <comment>Commodity SiriusIndustrialEquipment</comment>
+  </data>
   <data name="ThargoidScoutTissueSample" xml:space="preserve">
     <value>Образец тканей таргоида-разведчика </value>
     <comment>Commodity ThargoidScoutTissueSample</comment>
   </data>
-  
-  
-  
-  
+  <data name="UnmarkedWeapons" xml:space="preserve">
+    <value>Военные припасы без меток</value>
+    <comment>Commodity UnmarkedWeapons</comment>
+  </data>
+  <data name="UtopianDissident" xml:space="preserve">
+    <value>Диссиденты Утопии</value>
+    <comment>Commodity UtopianDissident</comment>
+  </data>
+  <data name="UtopianFieldSupplies" xml:space="preserve">
+    <value>Припасы Утопии</value>
+    <comment>Commodity UtopianFieldSupplies</comment>
+  </data>
+  <data name="UtopianPublicity" xml:space="preserve">
+    <value>Публикации Утопии</value>
+    <comment>Commodity UtopianPublicity</comment>
+  </data>
   <data name="PersonalGifts" xml:space="preserve">
     <value>Персональные подарки</value>
     <comment>Commodity.PersonalGifts</comment>
   </data>
-  
+  <data name="ShansCharisOrchid" xml:space="preserve">
+    <value>Орхидея Shan Charis</value>
+    <comment>Commodity ShansCharisOrchid</comment>
+  </data>
   <data name="ancientkey" xml:space="preserve">
     <value>Древний ключ</value>
     <comment>Commodity Ancient Key</comment>
