@@ -317,56 +317,206 @@
     <value>	Анализ аномального поведения щита</value>
     <comment>Material shieldpatternanalysis</comment>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="encryptionarchives" xml:space="preserve">
+    <value>Нетипичные архивы шифрования</value>
+    <comment>Material encryptionarchives</comment>
+  </data>
+  <data name="decodedemissiondata" xml:space="preserve">
+    <value>Расшифрованные данные об излучении</value>
+    <comment>Material decodedemissiondata</comment>
+  </data>
+  <data name="encodedscandata" xml:space="preserve">
+    <value>Неформатные данные сканирования</value>
+    <comment>Material encodedscandata</comment>
+  </data>
+  <data name="hyperspacetrajectories" xml:space="preserve">
+    <value>Аномальные траектории в гиперпространстве</value>
+    <comment>Material hyperspacetrajectories</comment>
+  </data>
+  <data name="securityfirmware" xml:space="preserve">
+    <value>Обновление для защитной микропрограммы</value>
+    <comment>Material securityfirmware</comment>
+  </data>
+  <data name="ancientlanguagedata" xml:space="preserve">
+    <value>Данные с обелиска «Дельта»</value>
+    <comment>Material ancientlanguagedata</comment>
+  </data>
+  <data name="ancienttechnologicaldata" xml:space="preserve">
+    <value>Данные с обелиска «Эпсилон»</value>
+    <comment>Material ancienttechnologicaldata</comment>
+  </data>
+  <data name="tg_residuedata" xml:space="preserve">
+    <value>Данных об осадке таргоидского происхождения</value>
+    <comment>Material tg_residuedata</comment>
+  </data>
+  <data name="unknownwakedata" xml:space="preserve">
+    <value>Данные следа таргоидского корабля</value>
+    <comment>Material unknownwakedata</comment>
+  </data>
+  <data name="compactemissionsdata" xml:space="preserve">
+    <value>Аномальные компактные данные об излучении</value>
+    <comment>Material compactemissionsdata</comment>
+  </data>
+  <data name="adaptiveencryptors" xml:space="preserve">
+    <value>Захват адаптивного шифровальщика</value>
+    <comment>Material adaptiveencryptors</comment>
+  </data>
+  <data name="classifiedscandata" xml:space="preserve">
+    <value>Засекреченные фрагменты данных сканирования</value>
+    <comment>Material classifiedscandata</comment>
+  </data>
+  <data name="dataminedwake" xml:space="preserve">
+    <value>Исключения из глубинного анализа данных следа</value>
+    <comment>Material dataminedwake</comment>
+  </data>
+  <data name="embeddedfirmware" xml:space="preserve">
+    <value>Измененные встроенные микропрограммы</value>
+    <comment>Material embeddedfirmware</comment>
+  </data>
+  <data name="shieldfrequencydata" xml:space="preserve">
+    <value>Специфические данные о частоте щитов</value>
+    <comment>Material shieldfrequencydata</comment>
+  </data>
+  <data name="basicconductors" xml:space="preserve">
+    <value>Простые проводники</value>
+    <comment>Material basicconductors</comment>
+  </data>
+  <data name="chemicalstorageunits" xml:space="preserve">
+    <value>Контейнеры для химикатов</value>
+    <comment>Material chemicalstorageunits</comment>
+  </data>
+  <data name="compactcomposites" xml:space="preserve">
+    <value>Спрессованные композиты</value>
+    <comment>Material compactcomposites</comment>
+  </data>
+  <data name="crystalshards" xml:space="preserve">
+    <value>Осколки кристаллов</value>
+    <comment>Material crystalshards</comment>
+  </data>
+  <data name="gridresistors" xml:space="preserve">
+    <value>Наборные резисторы</value>
+    <comment>Material gridresistors</comment>
+  </data>
+  <data name="heatconductionwiring" xml:space="preserve">
+    <value>Теплопроводящие провода</value>
+    <comment>Material heatconductionwiring</comment>
+  </data>
+  <data name="mechanicalscrap" xml:space="preserve">
+    <value>Механические отходы</value>
+    <comment>Material mechanicalscrap</comment>
+  </data>
+  <data name="salvagedalloys" xml:space="preserve">
+    <value>Захваченные сплавы</value>
+    <comment>Material salvagedalloys</comment>
+  </data>
+  <data name="temperedalloys" xml:space="preserve">
+    <value>Закаленные сплавы</value>
+    <comment>Material temperedalloys</comment>
+  </data>
+  <data name="wornshieldemitters" xml:space="preserve">
+    <value>Изношенные щитоизлучатели</value>
+    <comment>Material wornshieldemitters</comment>
+  </data>
+  <data name="chemicalprocessors" xml:space="preserve">
+    <value>Оборудование для химобработки</value>
+    <comment>Material chemicalprocessors</comment>
+  </data>
+  <data name="conductivecomponents" xml:space="preserve">
+    <value>Проводящие компоненты</value>
+    <comment>Material conductivecomponents</comment>
+  </data>
+  <data name="filamentcomposites" xml:space="preserve">
+    <value>Волокнистые композиты</value>
+    <comment>Material filamentcomposites</comment>
+  </data>
+  <data name="uncutfocuscrystals" xml:space="preserve">
+    <value>Поврежденные фокусировочные кристаллы</value>
+    <comment>Material uncutfocuscrystals</comment>
+  </data>
+  <data name="galvanisingalloys" xml:space="preserve">
+    <value>Сплавы для гальванизации</value>
+    <comment>Material galvanisingalloys</comment>
+  </data>
+  <data name="heatdispersionplate" xml:space="preserve">
+    <value>Теплорассеивающая пластина</value>
+    <comment>Material heatdispersionplate</comment>
+  </data>
+  <data name="heatresistantceramics" xml:space="preserve">
+    <value>Жаропрочная керамика</value>
+    <comment>Material heatresistantceramics</comment>
+  </data>
+  <data name="hybridcapacitors" xml:space="preserve">
+    <value>Гибридные конденсаторы</value>
+    <comment>Material hybridcapacitors</comment>
+  </data>
+  <data name="mechanicalequipment" xml:space="preserve">
+    <value>Механическое оборудование</value>
+    <comment>Material mechanicalequipment</comment>
+  </data>
+  <data name="shieldemitters" xml:space="preserve">
+    <value>Щитоизлучатели</value>
+    <comment>Material shieldemitters</comment>
+  </data>
+  <data name="unknowncarapace" xml:space="preserve">
+    <value>Таргоидский панцирь</value>
+    <comment>Material unknowncarapace</comment>
+  </data>
+  <data name="chemicaldistillery" xml:space="preserve">
+    <value>Оборудование для перегонки химикатов</value>
+    <comment>Material chemicaldistillery</comment>
+  </data>
+  <data name="conductiveceramics" xml:space="preserve">
+    <value>Проводящая керамика</value>
+    <comment>Material conductiveceramics</comment>
+  </data>
+  <data name="electrochemicalarrays" xml:space="preserve">
+    <value>Электрохимические массивы</value>
+    <comment>Material electrochemicalarrays</comment>
+  </data>
+  <data name="focuscrystals" xml:space="preserve">
+    <value>Фокусировочные кристаллы</value>
+    <comment>Material focuscrystals</comment>
+  </data>
+  <data name="heatexchangers" xml:space="preserve">
+    <value>Теплообменные агрегаты</value>
+    <comment>Material heatexchangers</comment>
+  </data>
+  <data name="highdensitycomposites" xml:space="preserve">
+    <value>Высокоплотностные композиты</value>
+    <comment>Material highdensitycomposites</comment>
+  </data>
+  <data name="mechanicalcomponents" xml:space="preserve">
+    <value>Механические компоненты</value>
+    <comment>Material mechanicalcomponents</comment>
+  </data>
+  <data name="phasealloys" xml:space="preserve">
+    <value>Фазовые сплавы</value>
+    <comment>Material phasealloys</comment>
+  </data>
+  <data name="precipitatedalloys" xml:space="preserve">
+    <value>Осажденные сплавы</value>
+    <comment>Material precipitatedalloys</comment>
+  </data>
+  <data name="shieldingsensors" xml:space="preserve">
+    <value>Сенсоры системы экранирования</value>
+    <comment>Material shieldingsensors</comment>
+  </data>
+  <data name="unknownenergycell" xml:space="preserve">
+    <value>Таргоидская энергоячейка</value>
+    <comment>Material unknownenergycell</comment>
+  </data>
+  <data name="chemicalmanipulators" xml:space="preserve">
+    <value>Манипуляторы для работы с химикатами</value>
+    <comment>Material chemicalmanipulators</comment>
+  </data>
+  <data name="compoundshielding" xml:space="preserve">
+    <value>Многоступенчатая защита</value>
+    <comment>Material compoundshielding</comment>
+  </data>
+  <data name="conductivepolymers" xml:space="preserve">
+    <value>Проводящие полимеры</value>
+    <comment>Material conductivepolymers</comment>
+  </data>
   <data name="configurablecomponents" xml:space="preserve">
     <value>Настраиваемые компоненты</value>
     <comment>Material configurablecomponents</comment>
@@ -491,10 +641,28 @@
     <value>Рений</value>
     <comment>Material rhenium</comment>
   </data>
-  
-  
-  
-  
-  
-  
+  <data name="tg_propulsionelement" xml:space="preserve">
+    <value>Реактивные элементы</value>
+    <comment>Material tg_propulsionelement</comment>
+  </data>
+  <data name="tg_biomechanicalconduits" xml:space="preserve">
+    <value>Биомеханические энергопроводники</value>
+    <comment>Material tg_biomechanicalconduits</comment>
+  </data>
+  <data name="tg_weaponparts" xml:space="preserve">
+    <value>Детали вооружения</value>
+    <comment>Material tg_weaponparts</comment>
+  </data>
+  <data name="tg_wreckagecomponents" xml:space="preserve">
+    <value>Обломки кораблекрушений</value>
+    <comment>Material tg_wreckagecomponents</comment>
+  </data>
+  <data name="tg_shipflightdata" xml:space="preserve">
+    <value>Полетные данные корабля</value>
+    <comment>Material tg_shipflightdata</comment>
+  </data>
+  <data name="tg_shipsystemsdata" xml:space="preserve">
+    <value>Данные бортовых систем корабля</value>
+    <comment>Material tg_shipsystemsdata</comment>
+  </data>
 </root>
