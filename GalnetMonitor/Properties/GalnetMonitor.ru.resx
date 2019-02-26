@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="desc" xml:space="preserve">
-    <value>Следите за новостями в Galnet и генерирует событие «Опубликованные новости Galnet» при публикации новых материалов.</value>
+    <value>Следит за новостями в Galnet и генерирует событие «Опубликованные новости Galnet» при публикации новых материалов.</value>
   </data>
   <data name="language_label" xml:space="preserve">
     <value>Язык статьи Galnet</value>
