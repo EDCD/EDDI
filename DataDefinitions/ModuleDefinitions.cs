@@ -763,7 +763,7 @@ namespace EddiDataDefinitions
                 new Module(128671344, "Hpt_DrunkMissileRack_Fixed_Medium", 1480, "Pack_Hound", 2, "B", 768600, ModuleMount.Fixed, 0, 120),
                 new Module(128671339, "Hpt_PlasmaAccelerator_Fixed_Large_Advanced", 1482, "AdvancedPlasmaAccelerator", 3, "B", 4119120, ModuleMount.Fixed, 0, 300),
                 new Module(128671341, "Hpt_Railgun_Fixed_Medium_Burst", 1484, "ImperialHammer", 2, "B", 619200, ModuleMount.Fixed, 0, 90),
-                new Module(128671342, "Hpt_PulseLaser_Fixed_Medium_Hpt_PulseLaser_Fixed_Medium_Disruptor", -1, "Disruptor", 2, "E", 26400, ModuleMount.Fixed),
+                new Module(128671342, "Hpt_PulseLaser_Fixed_Medium_Disruptor", -1, "Disruptor", 2, "E", 26400, ModuleMount.Fixed),
                 new Module(128671323, "Int_ShieldGenerator_Size1_Class5_Strong", 1485, "PrismaticShieldGenerator", 1, "A", 132200),
                 new Module(128671324, "Int_ShieldGenerator_Size2_Class5_Strong", 1486, "PrismaticShieldGenerator", 2, "A", 240340),
                 new Module(128671325, "Int_ShieldGenerator_Size3_Class5_Strong", 1487, "PrismaticShieldGenerator", 3, "A", 761870),
