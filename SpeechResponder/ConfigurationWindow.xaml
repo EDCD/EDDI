@@ -19,22 +19,72 @@
                     <CheckBox x:Name="subtitlesCheckbox" VerticalAlignment="Center" Margin="5, 0" Checked="subtitlesEnabled" Unchecked="subtitlesDisabled"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" >
-                    <TextBlock Margin="5" TextWrapping="Wrap" Text="{x:Static resx:SpeechResponder.subs_only}"></TextBlock>
+                    <TextBlock Margin="5" TextWrapping="Wrap" Text="{x:Static resx:SpeechResponder.subs_only}"/>
                     <CheckBox x:Name="subtitlesOnlyCheckbox" Margin="0" VerticalAlignment="Center" Checked="subtitlesOnlyEnabled" Unchecked="subtitlesOnlyDisabled"/>
                 </StackPanel>
             </StackPanel>
-            <TextBlock x:Name="defaultText" VerticalAlignment="Top" DockPanel.Dock="Left" Grid.Column="1" TextWrapping="Wrap" Width="Auto" Text="{x:Static resx:SpeechResponder.default_is_read_only}"/>
+            <RichTextBox x:Name="speechResponderHelp" DockPanel.Dock="Left" Grid.Column="1" Width="Auto" Margin="5"  IsReadOnly="True" IsDocumentEnabled="True" Background="#FFE5E5E5" BorderThickness="0">
+                <FlowDocument Background="#FFE5E5E5">
+                    <Paragraph>
+                        <TextBlock TextWrapping="Wrap">
+                            <Run Text="{x:Static resx:SpeechResponder.speechResponderHelp}"/>
+                            <Hyperlink Click="SpeechResponderHelp_Click">
+                                <Run Text="{x:Static resx:SpeechResponder.speechResponderHelpHere}"/>
+                            </Hyperlink>
+                        </TextBlock>
+                    </Paragraph>
+                </FlowDocument>
+            </RichTextBox>
         </Grid>
         <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" Margin="5, 0">
             <TextBlock VerticalAlignment="Center" Text="{x:Static resx:SpeechResponder.active_personality}" />
             <ComboBox Margin="5,0" ItemsSource="{Binding Personalities}" SelectedValue="{Binding Personality, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" DisplayMemberPath="Name" SelectionChanged="personalityChanged" />
             <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" VerticalAlignment="Center" Text="{Binding Personality.Description}"/>
         </StackPanel>
-        <UniformGrid DockPanel.Dock="Bottom" Rows="1" Margin="0">
-            <Button Margin="10" HorizontalAlignment="Center" Click="newScriptClicked" IsEnabled="{Binding Path=Personality.IsEditable}" Content="{x:Static resx:SpeechResponder.button_new}"></Button>
-            <Button Margin="10" HorizontalAlignment="Center" Click="copyPersonalityClicked" Content="{x:Static resx:SpeechResponder.button_copy}"></Button>
-            <Button Margin="10" HorizontalAlignment="Center" Click="deletePersonalityClicked" IsEnabled="{Binding Path=Personality.IsEditable}" Content="{x:Static resx:SpeechResponder.button_delete}"></Button>
-        </UniformGrid>
+        <Grid DockPanel.Dock="Bottom" Margin="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Button Margin="10" HorizontalAlignment="Center" Grid.Column="0" Click="copyPersonalityClicked" Content="{x:Static resx:SpeechResponder.button_copy}"></Button>
+            <Button Margin="10" HorizontalAlignment="Center" Grid.Column="1" Click="newScriptClicked" Content="{x:Static resx:SpeechResponder.button_new}">
+                <Button.Style>
+                    <Style TargetType="{x:Type Button}">
+                        <Setter Property="Visibility"  Value="Visible" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Path=Personality.IsEditable}" Value="False">
+                                <Setter Property="Visibility"  Value="Hidden" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
+            <Button Margin="10" HorizontalAlignment="Center" Grid.Column="2" Click="deletePersonalityClicked" IsEnabled="{Binding Path=Personality.IsEditable}" Content="{x:Static resx:SpeechResponder.button_delete}">
+                <Button.Style>
+                    <Style TargetType="{x:Type Button}">
+                        <Setter Property="Visibility"  Value="Visible" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Path=Personality.IsEditable}" Value="False">
+                                <Setter Property="Visibility"  Value="Hidden" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
+            <TextBlock x:Name="defaultText" VerticalAlignment="Top" HorizontalAlignment="Left" Grid.Column="1" Grid.ColumnSpan="2" TextWrapping="Wrap" Width="Auto" Margin="10, 0" Text="{x:Static resx:SpeechResponder.default_is_read_only}" FontWeight="Bold" FontStyle="Italic" FontSize="13">
+                <TextBlock.Style>
+                    <Style TargetType="{x:Type TextBlock}">
+                        <Setter Property="Visibility"  Value="Visible" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Path=Personality.IsEditable}" Value="True">
+                                <Setter Property="Visibility"  Value="Hidden" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBlock.Style>
+            </TextBlock>
+        </Grid>
         <DataGrid Margin="0,5" IsReadOnly="True" AutoGenerateColumns="False" x:Name="scriptsData" CanUserAddRows="false" ItemsSource="{Binding Personality.Scripts}">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="{x:Static resx:SpeechResponder.header_name}" Binding="{Binding Path=Value.Name}" SortDirection="Ascending" />

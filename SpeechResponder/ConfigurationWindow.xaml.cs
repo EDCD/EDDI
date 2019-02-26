@@ -71,7 +71,6 @@ namespace EddiSpeechResponder
                 if (personality.Name == configuration.Personality)
                 {
                     Personality = personality;
-                    personalityDefaultTxt(personality);
                     break;
                 }
             }
@@ -193,7 +192,6 @@ namespace EddiSpeechResponder
         {
             if (Personality != null)
             {
-                personalityDefaultTxt(Personality);
                 SpeechResponderConfiguration configuration = SpeechResponderConfiguration.FromFile();
                 configuration.Personality = Personality.Name;
                 configuration.ToFile();
@@ -295,22 +293,10 @@ namespace EddiSpeechResponder
             EDDI.Instance.Reload("Speech responder");
         }
 
-        private void personalityDefaultTxt(Personality personality)
+        private void SpeechResponderHelp_Click(object sender, RoutedEventArgs e)
         {
-            if (personality.IsDefault)
-            {
-                defaultText.Text = Properties.SpeechResponder.default_is_read_only;
-                defaultText.FontWeight = FontWeights.Bold;
-                defaultText.FontStyle = FontStyles.Italic;
-                defaultText.FontSize = 13;
-            }
-            else
-            {
-                defaultText.Text = Properties.SpeechResponder.warning_triggered;
-                defaultText.FontWeight = FontWeights.Normal;
-                defaultText.FontStyle = FontStyles.Italic;
-                defaultText.FontSize = 13;
-            }
+            MarkdownWindow speechResponderHelpWindow = new MarkdownWindow("speechResponderHelp.md");
+            speechResponderHelpWindow.Show();
         }
     }
 }

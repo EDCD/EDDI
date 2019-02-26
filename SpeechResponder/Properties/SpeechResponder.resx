@@ -164,7 +164,7 @@
     <value>Are you sure you want to delete the "{0}" script ?</value>
   </data>
   <data name="desc" xml:space="preserve">
-    <value>Respond to events with scripted speech based on the information in the event. Not all events have scripted responses. If a script response is empty, its 'Test' and 'View' buttons are disabled.</value>
+    <value>Respond to events with scripted speech based on the information in the event. Not all events have scripted responses. If a script response is empty, its 'Test' and 'View' buttons are disabled. Event-based scripts can be disabled or re-prioritized but not deleted.</value>
   </data>
   <data name="edit_script" xml:space="preserve">
     <value>Edit</value>
@@ -212,10 +212,13 @@
   <data name="view_script_title" xml:space="preserve">
     <value>View Script</value>
   </data>
-  <data name="warning_triggered" xml:space="preserve">
-    <value>Scripts which are triggered by an event can be disabled but not deleted.</value>
-  </data>
   <data name="header_priority" xml:space="preserve">
     <value>Priority</value>
+  </data>
+  <data name="speechResponderHelp" xml:space="preserve">
+    <value>Read about the speech responder's functions</value>
+  </data>
+  <data name="speechResponderHelpHere" xml:space="preserve">
+    <value>here.</value>
   </data>
 </root>

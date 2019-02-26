@@ -196,7 +196,7 @@ namespace EddiSpeechResponder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Respond to events with scripted speech based on the information in the event. Not all events have scripted responses. If a script response is empty, its &apos;Test&apos; and &apos;View&apos; buttons are disabled..
+        ///   Looks up a localized string similar to Respond to events with scripted speech based on the information in the event. Not all events have scripted responses. If a script response is empty, its &apos;Test&apos; and &apos;View&apos; buttons are disabled. Event-based scripts can be disabled or re-prioritized but not deleted..
         /// </summary>
         public static string desc {
             get {
@@ -295,6 +295,24 @@ namespace EddiSpeechResponder.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Read about the speech responder&apos;s functions.
+        /// </summary>
+        public static string speechResponderHelp {
+            get {
+                return ResourceManager.GetString("speechResponderHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to here..
+        /// </summary>
+        public static string speechResponderHelpHere {
+            get {
+                return ResourceManager.GetString("speechResponderHelpHere", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Write text copies of speech to the file %APPDATA%\EDDI\speechresponder.out.
         /// </summary>
         public static string subs {
@@ -345,15 +363,6 @@ namespace EddiSpeechResponder.Properties {
         public static string view_script_title {
             get {
                 return ResourceManager.GetString("view_script_title", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Scripts which are triggered by an event can be disabled but not deleted..
-        /// </summary>
-        public static string warning_triggered {
-            get {
-                return ResourceManager.GetString("warning_triggered", resourceCulture);
             }
         }
     }
