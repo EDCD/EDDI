@@ -195,10 +195,10 @@
     <comment>button that shows help for script variables</comment>
   </data>
   <data name="subs" xml:space="preserve">
-    <value>Записать текстовые копии речи в файл %APPDATA%\EDDI\speechresponder.out</value>
+    <value>Вести лог произносимого текста в файл %APPDATA%\EDDI\speechresponder.out</value>
   </data>
   <data name="subs_only" xml:space="preserve">
-    <value>Не говорите громко, когда текст записывается в файл, как указано выше</value>
+    <value>Не произносить вслух, когда текст записывается в файл, как указано выше</value>
   </data>
   <data name="test_script" xml:space="preserve">
     <value>Тест</value>
