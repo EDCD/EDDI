@@ -418,7 +418,7 @@ namespace UnitTests
             string data2 = System.IO.File.ReadAllText("fighterLoadout.json");
             events = JournalMonitor.ParseJournalEntry(data2);
             ShipLoadoutEvent fighterLoadoutEvent = events[0] as ShipLoadoutEvent;
-            object[] fighterLoadoutArgs = new object[] { fighterLoadoutEvent, false };
+            object[] fighterLoadoutArgs = new object[] { fighterLoadoutEvent };
             privateObject.Invoke("handleShipLoadoutEvent", fighterLoadoutArgs);
 
             // After a loadout event generated from a fighter, 
