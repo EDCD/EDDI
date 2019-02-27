@@ -976,12 +976,24 @@ namespace EddiVoiceAttackResponder
                         break;
                     case "most":
                         {
-                            ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor")).GetMostRoute();
+                            if (system == null || system == string.Empty)
+                            {
+                                ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor")).GetMostRoute();
+                            }
+                            else
+                            {
+                                ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor")).GetMostRoute(system);
+                            }
                         }
                         break;
                     case "nearest":
                         {
                             ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor")).GetNearestRoute();
+                        }
+                        break;
+                    case "next":
+                        {
+                            ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor")).SetNextRoute();
                         }
                         break;
                     case "route":
