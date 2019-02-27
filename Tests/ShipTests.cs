@@ -346,7 +346,7 @@ namespace UnitTests
             // Update the shipyard
             privateObject.SetFieldOrProperty("shipyard", new ObservableCollection<Ship>(newShiplist));
 
-            shipMonitor.SetCurrentShip(configuration.currentshipid);
+            shipMonitor.SetCurrentShip(configuration.currentshipid, null, false);
             Assert.AreEqual(81, shipMonitor.GetCurrentShip().LocalId);
 
             Ship ship1 = shipMonitor.GetShip(0);
