@@ -7,11 +7,11 @@ using Utilities;
 namespace EddiSpeechResponder
 {
     /// <summary>
-    /// Interaction logic for HelpWindow.xaml
+    /// Interaction logic for opening a generic SpeechResponder project markdown 
     /// </summary>
-    public partial class HelpWindow : Window
+    public partial class MarkdownWindow : Window
     {
-        public HelpWindow()
+        public MarkdownWindow(string fileName)
         {
             InitializeComponent();
 
@@ -20,11 +20,11 @@ namespace EddiSpeechResponder
             try
             {
                 DirectoryInfo dir = new DirectoryInfo(System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
-                markdown = Files.Read(dir.FullName + @"\Help.md");
+                markdown = Files.Read(dir.FullName + @"\" + fileName);
             }
             catch (Exception ex)
             {
-                Logging.Error("Failed to find variables.md", ex);
+                Logging.Error("Failed to find " + fileName, ex);
                 markdown = "";
             }
             string html = CommonMark.CommonMarkConverter.Convert(markdown);

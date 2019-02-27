@@ -114,7 +114,7 @@ namespace EddiSpeechResponder
 
         private void helpButtonClick(object sender, RoutedEventArgs e)
         {
-            HelpWindow helpWindow = new HelpWindow();
+            MarkdownWindow helpWindow = new MarkdownWindow("Help.md");
             helpWindow.Show();
         }
 

@@ -78,6 +78,9 @@
     <Compile Include="CopyPersonalityWindow.xaml.cs">
       <DependentUpon>CopyPersonalityWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="MarkdownWindow.xaml.cs">
+      <DependentUpon>MarkdownWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Properties\SpeechResponder.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -91,9 +94,6 @@
     </Compile>
     <Compile Include="EditScriptWindow.xaml.cs">
       <DependentUpon>EditScriptWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="HelpWindow.xaml.cs">
-      <DependentUpon>HelpWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Personality.cs" />
     <Compile Include="SpeechResponderConfiguration.cs" />
@@ -170,6 +170,9 @@
     <None Include="eddi.pt-BR.json" />
     <None Include="eddi.ru.json" />
     <None Include="packages.config" />
+    <None Include="SpeechResponderHelp.md">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Variables.md">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -179,6 +182,10 @@
   </ItemGroup>
   <ItemGroup>
     <Page Include="CopyPersonalityWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="MarkdownWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -195,10 +202,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="ConfigurationWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="HelpWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
