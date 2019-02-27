@@ -1,12 +1,28 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using EddiEvents;
 using System.Collections.Generic;
+using Rollbar;
+using System;
+using Eddi;
 
 namespace UnitTests
 {
     [TestClass]
     public class BodyScanTests
     {
+        [TestInitialize]
+        public void start()
+        {
+            // Prevent telemetry data from being reported based on test results
+            RollbarLocator.RollbarInstance.Config.Enabled = false;
+
+            // Set ourselves as in beta to stop sending data to remote systems
+            EDDI.Instance.enqueueEvent(new FileHeaderEvent(DateTime.Now, "JournalBeta.txt", "beta", "beta"));
+
+            // Don't write to permanent storage
+            Utilities.Files.unitTesting = true;
+        }
+
         [TestMethod]
         public void TestBodyScanDagutiiABC1b()
         {

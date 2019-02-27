@@ -1,9 +1,12 @@
 ﻿using Cottle.Documents;
 using Cottle.Functions;
 using Cottle.Stores;
+using Eddi;
+using EddiEvents;
 using EddiSpeechResponder;
 using EddiSpeechService;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Rollbar;
 using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
@@ -13,6 +16,19 @@ namespace UnitTests
     [TestClass]
     public class ScriptResolverTest
     {
+        [TestInitialize]
+        public void start()
+        {
+            // Prevent telemetry data from being reported based on test results
+            RollbarLocator.RollbarInstance.Config.Enabled = false;
+
+            // Set ourselves as in beta to stop sending data to remote systems
+            EDDI.Instance.enqueueEvent(new FileHeaderEvent(DateTime.Now, "JournalBeta.txt", "beta", "beta"));
+
+            // Don't write to permanent storage
+            Utilities.Files.unitTesting = true;
+        }
+
         [TestMethod]
         public void TestTemplateSimple()
         {

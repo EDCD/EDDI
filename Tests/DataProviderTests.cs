@@ -3,6 +3,9 @@ using EddiDataDefinitions;
 using EddiDataProviderService;
 using Rollbar;
 using Newtonsoft.Json;
+using Eddi;
+using EddiEvents;
+using System;
 
 namespace UnitTests
 {
@@ -14,6 +17,12 @@ namespace UnitTests
         {
             // Prevent telemetry data from being reported based on test results
             RollbarLocator.RollbarInstance.Config.Enabled = false;
+
+            // Set ourselves as in beta to stop sending data to remote systems
+            EDDI.Instance.enqueueEvent(new FileHeaderEvent(DateTime.Now, "JournalBeta.txt", "beta", "beta"));
+
+            // Don't write to permanent storage
+            Utilities.Files.unitTesting = true;
         }
 
         [TestMethod]

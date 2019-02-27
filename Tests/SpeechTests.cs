@@ -13,12 +13,20 @@ using CSCore.Streams.Effects;
 using EddiDataDefinitions;
 using Utilities;
 using Eddi;
+using Rollbar;
 
 namespace SpeechTests
 {
     [TestClass]
     public class SpeechTests
     {
+        [TestInitialize]
+        public void start()
+        {
+            // Prevent telemetry data from being reported based on test results
+            RollbarLocator.RollbarInstance.Config.Enabled = false;
+        }
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times")] // this usage is perfectly correct    
         [TestMethod, TestCategory("Speech")]
         public void TestPhonemes()

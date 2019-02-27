@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Rollbar;
 using Utilities;
 
 namespace UnitTests
@@ -6,6 +7,13 @@ namespace UnitTests
     [TestClass]
     public class VersioningTests
     {
+        [TestInitialize]
+        public void start()
+        {
+            // Prevent telemetry data from being reported based on test results
+            RollbarLocator.RollbarInstance.Config.Enabled = false;
+        }
+
         [TestMethod]
         public void TestBetaVersionToString()
         {
