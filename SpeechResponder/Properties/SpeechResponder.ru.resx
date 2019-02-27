@@ -163,9 +163,7 @@
   <data name="delete_script_message" xml:space="preserve">
     <value>Вы уверены, что вы хотите удалить Скрипт "{0}"?</value>
   </data>
-  <data name="desc" xml:space="preserve">
-    <value>Отвечает на события с помощью скриптовой речи на основе информации в событии. Не у всех событий есть скриптовые ответы. Если скрипт ответа пуст, то кнопки «Тест» и «Просмотр» отключены.</value>
-  </data>
+  
   <data name="edit_script" xml:space="preserve">
     <value>Редактировать</value>
   </data>
@@ -212,7 +210,7 @@
   <data name="view_script_title" xml:space="preserve">
     <value>Просмотр скрипта</value>
   </data>
-  <data name="warning_triggered" xml:space="preserve">
-    <value>Сценарии, которые запускаются событием, могут быть отключены, но не удалены.</value>
-  </data>
+  
+  
+  
 </root>
