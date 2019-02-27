@@ -117,12 +117,21 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="None" xml:space="preserve">
+    <value>Нет</value>
+    <comment>Faction state None</comment>
+  </data>
+  
+  <data name="War" xml:space="preserve">
+    <value>Война</value>
+    <comment>Faction state War</comment>
+  </data>
   
   
-  
-  
-  
-  
+  <data name="CivilWar" xml:space="preserve">
+    <value>Гражданская война</value>
+    <comment>Faction state CivilWar</comment>
+  </data>
   <data name="Boom" xml:space="preserve">
     <value>Бум</value>
     <comment>Faction state Boom</comment>
@@ -134,8 +143,14 @@
   
   
   
-  
-  
+  <data name="Election" xml:space="preserve">
+    <value>Выборы</value>
+    <comment>Faction state Election</comment>
+  </data>
+  <data name="Investment" xml:space="preserve">
+    <value>Инвестирование</value>
+    <comment>Faction state Investment</comment>
+  </data>
   
   
   

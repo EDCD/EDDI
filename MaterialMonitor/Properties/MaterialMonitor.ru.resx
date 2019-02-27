@@ -115,7 +115,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="desc" xml:space="preserve">
-    <value>Отслеживайте количество материалов и генерируйте события, когда будут достигнуты ограничения.</value>
+    <value>Отслеживает количество материалов и генерирует события, когда будут достигнуты ограничения.</value>
   </data>
   <data name="desired_header" xml:space="preserve">
     <value>Требуемое</value>
@@ -139,7 +139,7 @@
     <value>Ниже приведен список всех известных материалов. Вы можете установить значения для минимального, желаемого и максимального уровней каждого и EDDI будет генерировать события, когда вы выходите за пределы уровней.</value>
   </data>
   <data name="p2" xml:space="preserve">
-    <value>Обратите внимание, что если ваш инвентарь неправильный, вам нужно будет запустить или перезапустить Elite, и эта информация будет обновлена.</value>
+    <value>Обратите внимание, что если ваш инвентарь отображается неверно, то вам нужно запустить или перезапустить Elite, и эта информация будет обновлена.</value>
   </data>
   <data name="type_header" xml:space="preserve">
     <value>Тип</value>
