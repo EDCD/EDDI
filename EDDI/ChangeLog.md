@@ -11,9 +11,10 @@ Full details of the variables available for each noted event, and VoiceAttack in
   * Speech responder
     * Added new types to the `RouteDetails()` Cottle function
       * 'cancel' - Cancel the currently stored route
-      * 'next' - The next destination in the currently stored route
+      * 'next' - Get the next destination in the currently stored route
       * 'set' - Set the destination route to a single system
-    * All RouteDetails() types now update the `Missions route` event `route` and `distance` variables
+    * All `RouteDetails()` types now update the `Missions route` event `route` and `distance` variables
+    * `RouteDetails()` 'update' function re-calculates the route when other than the 'next' system is removed
   * VoiceAttack responder
     * Improved event responsiveness
     * Reduced CPU utilization 
