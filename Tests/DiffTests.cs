@@ -1,28 +1,17 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Collections.Generic;
 using Utilities;
 using static Utilities.Diff;
-using System.Collections.Generic;
-using Rollbar;
-using Eddi;
-using EddiEvents;
-using System;
 
 namespace UnitTests
 {
     [TestClass]
-    public class DiffTests
+    public class DiffTests : TestBase
     {
         [TestInitialize]
         public void start()
         {
-            // Prevent telemetry data from being reported based on test results
-            RollbarLocator.RollbarInstance.Config.Enabled = false;
-
-            // Set ourselves as in beta to stop sending data to remote systems
-            EDDI.Instance.enqueueEvent(new FileHeaderEvent(DateTime.Now, "JournalBeta.txt", "beta", "beta"));
-
-            // Don't write to permanent storage
-            Utilities.Files.unitTesting = true;
+            MakeSafe();
         }
 
         [TestMethod]

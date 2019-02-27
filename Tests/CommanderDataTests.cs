@@ -1,30 +1,19 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using EddiCompanionAppService;
+﻿using EddiCompanionAppService;
 using EddiDataDefinitions;
-using System.Collections.Generic;
-using Newtonsoft.Json.Linq;
 using EddiShipMonitor;
-using Rollbar;
-using Eddi;
-using EddiEvents;
-using System;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Newtonsoft.Json.Linq;
+using System.Collections.Generic;
 
 namespace UnitTests
 {
     [TestClass]
-    public class CommanderDataTests
+    public class CommanderDataTests : TestBase
     {
         [TestInitialize]
         public void start()
         {
-            // Prevent telemetry data from being reported based on test results
-            RollbarLocator.RollbarInstance.Config.Enabled = false;
-
-            // Set ourselves as in beta to stop sending data to remote systems
-            EDDI.Instance.enqueueEvent(new FileHeaderEvent(DateTime.Now, "JournalBeta.txt", "beta", "beta"));
-
-            // Don't write to permanent storage
-            Utilities.Files.unitTesting = true;
+            MakeSafe();
         }
 
         string data = @"{

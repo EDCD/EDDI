@@ -1,26 +1,15 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using EddiSpeechService;
-using Rollbar;
-using Eddi;
-using EddiEvents;
-using System;
+﻿using EddiSpeechService;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace UnitTests
 {
     [TestClass]
-    public class TranslationTests
+    public class TranslationTests : TestBase
     {
         [TestInitialize]
         public void start()
         {
-            // Prevent telemetry data from being reported based on test results
-            RollbarLocator.RollbarInstance.Config.Enabled = false;
-
-            // Set ourselves as in beta to stop sending data to remote systems
-            EDDI.Instance.enqueueEvent(new FileHeaderEvent(DateTime.Now, "JournalBeta.txt", "beta", "beta"));
-
-            // Don't write to permanent storage
-            Utilities.Files.unitTesting = true;
+            MakeSafe();
         }
 
         [TestMethod]

@@ -1,27 +1,18 @@
 ﻿using Eddi;
 using EddiDataDefinitions;
-using EddiEvents;
 using EddiStatusMonitor;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Rollbar;
 using System;
 
 namespace UnitTests
 {
     [TestClass]
-    public class StatusMonitorTests
+    public class StatusMonitorTests : TestBase
     {
         [TestInitialize]
         public void start()
         {
-            // Prevent telemetry data from being reported based on test results
-            RollbarLocator.RollbarInstance.Config.Enabled = false;
-
-            // Set ourselves as in beta to stop sending data to remote systems
-            EDDI.Instance.enqueueEvent(new FileHeaderEvent(DateTime.Now, "JournalBeta.txt", "beta", "beta"));
-
-            // Don't write to permanent storage
-            Utilities.Files.unitTesting = true;
+            MakeSafe();
         }
 
         [TestMethod]

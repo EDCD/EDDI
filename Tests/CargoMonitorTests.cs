@@ -1,19 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using Eddi;
-using EddiCargoMonitor;
-using EddiMissionMonitor;
+﻿using EddiCargoMonitor;
 using EddiDataDefinitions;
 using EddiEvents;
 using EddiJournalMonitor;
-using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Rollbar;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace UnitTests
 {
     [TestClass]
-    public class CargoMonitorTests
+    public class CargoMonitorTests : TestBase
     {
         CargoMonitor cargoMonitor = new CargoMonitor();
         Cargo cargo;
@@ -23,14 +20,7 @@ namespace UnitTests
         [TestInitialize]
         private void StartTestCargoMonitor()
         {
-            // Prevent telemetry data from being reported based on test results
-            RollbarLocator.RollbarInstance.Config.Enabled = false;
-            
-            // Set ourselves as in beta to stop sending data to remote systems
-            EDDI.Instance.enqueueEvent(new FileHeaderEvent(DateTime.UtcNow, "JournalBeta.txt", "beta", "beta"));
-
-            // Don't write to permanent storage
-            Utilities.Files.unitTesting = true;
+            MakeSafe();
         }
 
         [TestMethod]
