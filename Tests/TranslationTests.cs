@@ -1,11 +1,17 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using EddiSpeechService;
+﻿using EddiSpeechService;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace UnitTests
 {
     [TestClass]
-    public class TranslationTests
+    public class TranslationTests : TestBase
     {
+        [TestInitialize]
+        public void start()
+        {
+            MakeSafe();
+        }
+
         [TestMethod]
         public void TestICAOEmpty()
         {

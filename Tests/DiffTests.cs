@@ -1,13 +1,19 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Collections.Generic;
 using Utilities;
 using static Utilities.Diff;
-using System.Collections.Generic;
 
 namespace UnitTests
 {
     [TestClass]
-    public class DiffTests
+    public class DiffTests : TestBase
     {
+        [TestInitialize]
+        public void start()
+        {
+            MakeSafe();
+        }
+
         [TestMethod]
         public void TestDiff1()
         {

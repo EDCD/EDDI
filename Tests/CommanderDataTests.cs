@@ -1,21 +1,19 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using EddiCompanionAppService;
+﻿using EddiCompanionAppService;
 using EddiDataDefinitions;
-using System.Collections.Generic;
-using Newtonsoft.Json.Linq;
 using EddiShipMonitor;
-using Rollbar;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Newtonsoft.Json.Linq;
+using System.Collections.Generic;
 
 namespace UnitTests
 {
     [TestClass]
-    public class CommanderDataTests
+    public class CommanderDataTests : TestBase
     {
         [TestInitialize]
         public void start()
         {
-            // Prevent telemetry data from being reported based on test results
-            RollbarLocator.RollbarInstance.Config.Enabled = false;
+            MakeSafe();
         }
 
         string data = @"{

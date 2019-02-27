@@ -11,8 +11,14 @@ using System.Text.RegularExpressions;
 namespace UnitTests
 {
     [TestClass]
-    public class ScriptResolverTest
+    public class ScriptResolverTest : TestBase
     {
+        [TestInitialize]
+        public void start()
+        {
+            MakeSafe();
+        }
+
         [TestMethod]
         public void TestTemplateSimple()
         {

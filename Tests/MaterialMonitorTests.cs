@@ -2,19 +2,17 @@
 using EddiMaterialMonitor;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
-using Rollbar;
 using System.Collections.Generic;
 
 namespace UnitTests
 {
     [TestClass]
-    public class MaterialMonitorTests
+    public class MaterialMonitorTests : TestBase
     {
         [TestInitialize]
         public void start()
         {
-            // Prevent telemetry data from being reported based on test results
-            RollbarLocator.RollbarInstance.Config.Enabled = false;
+            MakeSafe();
         }
 
         string json = @"{

@@ -3,22 +3,19 @@ using EddiStarMapService;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using Rollbar;
 using System.Collections.Generic;
-using Utilities;
 
 namespace UnitTests
 {
     // Tests for the EDDB Service
 
     [TestClass]
-    public class EdsmDataTests
+    public class EdsmDataTests : TestBase
     {
         [TestInitialize]
         public void start()
         {
-            // Prevent telemetry data from being reported based on test results
-            RollbarLocator.RollbarInstance.Config.Enabled = false;
+            MakeSafe();
         }
 
         [TestMethod]

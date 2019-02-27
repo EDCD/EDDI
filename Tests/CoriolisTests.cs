@@ -1,12 +1,17 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using Eddi;
 
 namespace UnitTests
 {
     [TestClass]
-    public class CoriolisTests
+    public class CoriolisTests : TestBase
     {
+        [TestInitialize]
+        public void start()
+        {
+            MakeSafe();
+        }
+
         [TestMethod]
         public void TestUri()
         {

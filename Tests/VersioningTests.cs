@@ -4,8 +4,14 @@ using Utilities;
 namespace UnitTests
 {
     [TestClass]
-    public class VersioningTests
+    public class VersioningTests : TestBase
     {
+        [TestInitialize]
+        public void start()
+        {
+            MakeSafe();
+        }
+
         [TestMethod]
         public void TestBetaVersionToString()
         {

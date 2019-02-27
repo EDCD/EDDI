@@ -1,24 +1,30 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using EddiVoiceAttackResponder;
-using System.Collections.Generic;
-using System.Speech.Synthesis;
-using System.IO;
-using System.Threading;
-using EddiSpeechResponder;
-using EddiSpeechService;
-using CSCore;
+﻿using CSCore;
 using CSCore.Codecs.WAV;
 using CSCore.SoundOut;
 using CSCore.Streams.Effects;
-using EddiDataDefinitions;
-using Utilities;
 using Eddi;
+using EddiDataDefinitions;
+using EddiSpeechResponder;
+using EddiSpeechService;
+using EddiVoiceAttackResponder;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Collections.Generic;
+using System.IO;
+using System.Speech.Synthesis;
+using System.Threading;
+using Utilities;
 
 namespace SpeechTests
 {
     [TestClass]
-    public class SpeechTests
+    public class SpeechTests : UnitTests.TestBase
     {
+        [TestInitialize]
+        public void start()
+        {
+            MakeSafe();
+        }
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times")] // this usage is perfectly correct    
         [TestMethod, TestCategory("Speech")]
         public void TestPhonemes()
