@@ -122,11 +122,11 @@
     <comment>An Asteroid Base</comment>
   </data>
   <data name="Bernal" xml:space="preserve">
-    <value>Porto Estelar Ocellus</value>
+    <value>Porto Estelar Océllus</value>
     <comment>An Ocellus Starsport</comment>
   </data>
   <data name="Coriolis" xml:space="preserve">
-    <value>Porto Estelar Coriolis</value>
+    <value>Porto Estelar Coriólis</value>
     <comment>A Coriolis Starport</comment>
   </data>
   <data name="Megaship" xml:space="preserve">
@@ -134,7 +134,7 @@
     <comment>A Megaship</comment>
   </data>
   <data name="Orbis" xml:space="preserve">
-    <value>Porto Estelar Orbis</value>
+    <value>Porto Estelar Órbis</value>
     <comment>An Orbis Starport</comment>
   </data>
   <data name="Outpost" xml:space="preserve">
