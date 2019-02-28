@@ -164,7 +164,7 @@
     <value>¿Seguro que quiere eliminar el script "{0}"?</value>
   </data>
   <data name="desc" xml:space="preserve">
-    <value>Responde a los eventos con una respuesta scriptada basada en la información del evento. No todos los eventos tienen respuestas escritas. Si un script de respuesta está vacío, sus botones `Test' y `Ver' estarán desactivados. Los scripts basados en eventos pueden deshabilitarse o volver a priorizarse, pero no eliminarse.</value>
+    <value>Responde a los eventos con una respuesta scriptada basada en la información del evento. No todos los eventos tienen respuestas scriptada. Si un script de respuesta está vacío, sus botones `Test' y `Ver' estarán desactivados. Los scripts basados en eventos pueden deshabilitarse o volver a priorizarse, pero no eliminarse.</value>
   </data>
   <data name="edit_script" xml:space="preserve">
     <value>Editar</value>
