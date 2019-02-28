@@ -163,7 +163,9 @@
   <data name="delete_script_message" xml:space="preserve">
     <value>Tem certeza que deseja excluir o script "{0}"?</value>
   </data>
-  
+  <data name="desc" xml:space="preserve">
+    <value>Responde a eventos com fala programada com base nas informações do evento. Nem todos os eventos possuem respostas programadas. Se uma resposta de script estiver vazia, seus botões "Testar" e "Ver" estarão desativados. Scripts baseados em eventos podem ser desabilitados ou repriorizados, mas não apagados.</value>
+  </data>
   <data name="edit_script" xml:space="preserve">
     <value>Editar</value>
   </data>
@@ -210,7 +212,13 @@
   <data name="view_script_title" xml:space="preserve">
     <value>Ver script</value>
   </data>
-  
-  
-  
+  <data name="header_priority" xml:space="preserve">
+    <value>Prioridade</value>
+  </data>
+  <data name="speechResponderHelp" xml:space="preserve">
+    <value>Leia sobre as funções do Relator de Fala</value>
+  </data>
+  <data name="speechResponderHelpHere" xml:space="preserve">
+    <value>aqui.</value>
+  </data>
 </root>
