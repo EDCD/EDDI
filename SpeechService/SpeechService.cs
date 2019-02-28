@@ -142,7 +142,6 @@ namespace EddiSpeechService
                 IsBackground = true
             };
             speechQueueHandler.Start();
-            speechQueueHandler.Join();
         }
 
         public void ShutUp()
@@ -754,15 +753,18 @@ namespace EddiSpeechService
             return null;
         }
 
-        private EddiSpeech checkSpeechInterrupt (EddiSpeech speech)
+        private EddiSpeech checkSpeechInterrupt(EddiSpeech speech)
         {
             // Priority 0 speech (system messages) and priority 1 speech and will interrupt current speech
             // Priority 5 speech in interruptable by any higher priority speech. 
-            if (speech.priority <= 1 || (activeSpeechPriority >= 5 && speech.priority < 5))
+            if (speech != null)
             {
-                Logging.Debug("About to StopCurrentSpeech");
-                StopCurrentSpeech();
-                Logging.Debug("Finished StopCurrentSpeech");
+                if (speech.priority <= 1 || (activeSpeechPriority >= 5 && speech.priority < 5))
+                {
+                    Logging.Debug("About to StopCurrentSpeech");
+                    StopCurrentSpeech();
+                    Logging.Debug("Finished StopCurrentSpeech");
+                }
             }
             return speech;
         }
