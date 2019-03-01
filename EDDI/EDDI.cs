@@ -16,6 +16,7 @@ using System.Runtime.InteropServices;
 using System.Security.Permissions;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 using Utilities;
 
 namespace Eddi
@@ -840,9 +841,22 @@ namespace Eddi
             return passEvent;
         }
 
-        private void OnEvent(Event @event)
+        private async void OnEvent(Event @event)
         {
             // We send the event to all monitors to ensure that their info is up-to-date
+            // All changes to state must be handled here, so this must be synchronous
+            passToMonitorPreHandlers(@event);
+
+            // Now we pass the data to the responders to process asynchronously, waiting for all to complete
+            // Responders must not change global states.
+            await passToRespondersAsync(@event);
+
+            // We also pass the event to all active monitors in case they have asynchronous follow-on work, waiting for all to complete
+            await passToMonitorPostHandlersAsync(@event);
+        }
+
+        private void passToMonitorPreHandlers(Event @event)
+        {
             foreach (EDDIMonitor monitor in activeMonitors)
             {
                 try
@@ -854,40 +868,27 @@ namespace Eddi
                     Logging.Error("Monitor failed to handle event " + JsonConvert.SerializeObject(@event), ex);
                 }
             }
+        }
 
-            // Now we pass the data to the responders
+        private async Task passToRespondersAsync(Event @event)
+        {
+            List<Task> responderTasks = new List<Task>();
             foreach (EDDIResponder responder in activeResponders)
             {
                 try
                 {
-                    responder.Handle(@event);
-                }
-                catch (Exception ex)
-                {
-                    Logging.Error("Responder failed to handle event " + JsonConvert.SerializeObject(@event), ex);
-                }
-            }
-
-            // We also pass the event to all active monitors in case they have asynchronous follow-on work
-            foreach (EDDIMonitor monitor in activeMonitors)
-            {
-                try
-                {
-                    Thread monitorThread = new Thread(() =>
+                    var responderTask = Task.Run(() =>
                     {
                         try
                         {
-                            monitor.PostHandle(@event);
+                            responder.Handle(@event);
                         }
                         catch (Exception ex)
                         {
-                            Logging.Warn("Monitor failed", ex);
+                            Logging.Error("Responder failed to handle event " + JsonConvert.SerializeObject(@event), ex);
                         }
-                    })
-                    {
-                        IsBackground = true
-                    };
-                    monitorThread.Start();
+                    });
+                    responderTasks.Add(responderTask);
                 }
                 catch (ThreadAbortException tax)
                 {
@@ -898,6 +899,40 @@ namespace Eddi
                 {
                     Logging.Error(JsonConvert.SerializeObject(@event), ex);
                 }
+            }
+            await Task.WhenAll(responderTasks.ToArray());
+        }
+
+        private async Task passToMonitorPostHandlersAsync(Event @event)
+        {
+            List<Task> monitorTasks = new List<Task>();
+            foreach (EDDIMonitor monitor in activeMonitors)
+            {
+                try
+                {
+                    var monitorTask = Task.Run(() =>
+                    {
+                        try
+                        {
+                            monitor.PostHandle(@event);
+                        }
+                        catch (Exception ex)
+                        {
+                            Logging.Error("Monitor failed to post-handle event " + JsonConvert.SerializeObject(@event), ex);
+                        }
+                    });
+                    monitorTasks.Add(monitorTask);
+                }
+                catch (ThreadAbortException tax)
+                {
+                    Thread.ResetAbort();
+                    Logging.Error(JsonConvert.SerializeObject(@event), tax);
+                }
+                catch (Exception ex)
+                {
+                    Logging.Error(JsonConvert.SerializeObject(@event), ex);
+                }
+                await Task.WhenAll(monitorTasks.ToArray());
             }
         }
 
@@ -1141,7 +1176,7 @@ namespace Eddi
                         // Post an update event for new market data
                         if (theEvent.fromLoad) { return true; } // Don't fire this event when loading pre-existing logs
                         Event @event = new MarketInformationUpdatedEvent(DateTime.UtcNow, "market");
-                        eventHandler(@event);
+                        enqueueEvent(@event);
                     }
                     return true;
                 }
@@ -1180,7 +1215,7 @@ namespace Eddi
                         // Post an update event for new outfitting data
                         if (theEvent.fromLoad) { return true; } // Don't fire this event when loading pre-existing logs
                         Event @event = new MarketInformationUpdatedEvent(DateTime.UtcNow, "outfitting");
-                        eventHandler(@event);
+                        enqueueEvent(@event);
                     }
                     return true;
                 }
@@ -1219,7 +1254,7 @@ namespace Eddi
                         // Post an update event for new shipyard data
                         if (theEvent.fromLoad) { return true; } // Don't fire this event when loading pre-existing logs
                         Event @event = new MarketInformationUpdatedEvent(DateTime.UtcNow, "shipyard");
-                        eventHandler(@event);
+                        enqueueEvent(@event);
                     }
                     return true;
                 }
@@ -2198,7 +2233,7 @@ namespace Eddi
 
                             // Post an update event
                             Event @event = new MarketInformationUpdatedEvent(DateTime.UtcNow, "profile");
-                            eventHandler(@event);
+                            enqueueEvent(@event);
 
                             profileUpdateNeeded = false;
                             allowMarketUpdate = false;
