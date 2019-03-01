@@ -96,20 +96,29 @@ namespace EddiVoiceAttackResponder
                 CargoMonitor cargoMonitor = (CargoMonitor)EDDI.Instance.ObtainMonitor("Cargo monitor");
                 cargoMonitor.InventoryUpdatedEvent += (s, e) =>
                 {
-                    setCargo(cargoMonitor, ref vaProxy);
+                    lock (vaProxyLock)
+                    {
+                        setCargo(cargoMonitor, ref vaProxy);
+                    }
                 };
 
                 ShipMonitor shipMonitor = (ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor");
                 shipMonitor.ShipyardUpdatedEvent += (s, e) =>
                 {
-                    setShipValues(shipMonitor?.GetCurrentShip(), "Ship", ref vaProxy);
-                    Task.Run(() => setShipyardValues(shipMonitor?.shipyard?.ToList(), ref vaProxy));
+                    lock (vaProxyLock)
+                    {
+                        setShipValues(shipMonitor?.GetCurrentShip(), "Ship", ref vaProxy);
+                        Task.Run(() => setShipyardValues(shipMonitor?.shipyard?.ToList(), ref vaProxy));
+                    }
                 };
 
                 StatusMonitor statusMonitor = (StatusMonitor)EDDI.Instance.ObtainMonitor("Status monitor");
                 statusMonitor.StatusUpdatedEvent += (s, e) =>
                 {
-                    setStatusValues(statusMonitor?.currentStatus, "Status", ref vaProxy);
+                    lock (vaProxyLock)
+                    {
+                        setStatusValues(statusMonitor?.currentStatus, "Status", ref vaProxy);
+                    }
                 };
 
                 // Display instance information if available
