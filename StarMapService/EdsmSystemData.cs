@@ -160,7 +160,7 @@ namespace EddiStarMapService
             if (response["information"] is JObject information)
             {
                 starSystem.Reserve = ReserveLevel.FromName((string)information["reserve"]) ?? ReserveLevel.None;
-                starSystem.population = (long?)information["population"];
+                starSystem.population = (long?)information["population"] ?? 0;
 
                 // Populated system data
                 if (starSystem.population > 0)

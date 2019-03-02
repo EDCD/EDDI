@@ -158,7 +158,8 @@ namespace GalnetMonitor
                         string url = GetGalnetResource("sourceURL");
 
                         Logging.Debug("Fetching Galnet articles from " + url);
-                        IEnumerable<FeedItem> items = new FeedReader(new GalnetFeedItemNormalizer(), true).RetrieveFeed(url);
+                        FeedReader feedReader = new FeedReader(new GalnetFeedItemNormalizer(), true);
+                        IEnumerable<FeedItem> items = feedReader.RetrieveFeed(url);
                         if (items != null)
                         {
                             foreach (GalnetFeedItemNormalizer.ExtendedFeedItem item in items)
@@ -183,7 +184,11 @@ namespace GalnetMonitor
                     }
                     catch (WebException wex)
                     {
-                        Logging.Debug("Exception attempting to obtain galnet feed: ", wex);
+                        Logging.Warn("Exception attempting to obtain galnet feed: ", wex);
+                    }
+                    catch (System.Xml.XmlException xex)
+                    {
+                        Logging.Error("Exception attempting to obtain galnet feed: ", xex);
                     }
 
                     if (firstUid != configuration.lastuuid)
