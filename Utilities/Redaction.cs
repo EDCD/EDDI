@@ -9,9 +9,11 @@ namespace Utilities
         /// <summary>Removes potentially personally identifying data by replacing expanded environment variables with their percent-quoted names.</summary>
         public static string RedactEnvironmentVariables(string rawString)
         {
-            // The order here is important: we should redact the longest strings first
+            // The order here is important: we should redact the most specific strings first
             List<string> envVarsToRedact = new List<string>()
             {
+                "TEMP",
+                "TMP",
                 "APPDATA",
                 "LOCALAPPDATA",
                 "TEMP",
