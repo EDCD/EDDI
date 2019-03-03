@@ -6,19 +6,47 @@ namespace UnitTests
     [TestClass]
     public class RedactionTests : TestBase
     {
-        [TestInitialize]
-        public void start()
+        private void TestRoundTrip(string source)
         {
-            MakeSafe();
+            string rawPath = source != null ? Environment.ExpandEnvironmentVariables(source) : null;
+            string redacted = Utilities.Redaction.RedactEnvironmentVariables(rawPath);
+            string expected = source?.Replace("%TMP%", "%TEMP%"); // these are exact synonyms and we normalise on %TEMP%
+            Assert.AreEqual(expected, redacted);
+        }
+
+        [TestMethod]
+        public void TestNullRedaction()
+        {
+            string source = null;
+            TestRoundTrip(source);
+        }
+
+        [TestMethod]
+        public void TestEmptyRedaction()
+        {
+            string source = "";
+            TestRoundTrip(source);
         }
 
         [TestMethod]
         public void TestAppdataRedaction()
         {
             string source = @"%APPDATA%\EDDI\eddi.json";
-            string rawPath = Environment.ExpandEnvironmentVariables(source);
-            string redacted = Utilities.Redaction.RedactEnvironmentVariables(rawPath);
-            Assert.AreEqual(source, redacted);
+            TestRoundTrip(source);
+        }
+
+        [TestMethod]
+        public void TestLocalappdataRedaction()
+        {
+            string source = @"%LOCALAPPDATA%\EDDI\eddi.json";
+            TestRoundTrip(source);
+        }
+
+        [TestMethod]
+        public void TestMedleyRedaction()
+        {
+            string source = @"ice cream %USERNAME% foo %TMP% bar %TEMP% baz %APPDATA% quux %USERNAME% womble";
+            TestRoundTrip(source);
         }
     }
 }
