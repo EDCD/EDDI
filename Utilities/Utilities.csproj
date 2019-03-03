@@ -98,6 +98,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Utilities.resx</DependentUpon>
     </Compile>
+    <Compile Include="Redaction.cs" />
     <Compile Include="Translation.cs" />
     <Compile Include="ServerInfo.cs" />
     <Compile Include="Versioning.cs" />
