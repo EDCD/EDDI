@@ -1,9 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace UnitTests
 {
@@ -16,5 +12,13 @@ namespace UnitTests
             MakeSafe();
         }
 
+        [TestMethod]
+        public void TestAppdataRedaction()
+        {
+            string source = @"%APPDATA%\EDDI\eddi.json";
+            string rawPath = Environment.ExpandEnvironmentVariables(source);
+            string redacted = Utilities.Redaction.RedactEnvironmentVariables(rawPath);
+            Assert.AreEqual(source, redacted);
+        }
     }
 }
