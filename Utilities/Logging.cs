@@ -8,20 +8,25 @@ using System.Runtime.CompilerServices;
 
 namespace Utilities
 {
-    public class Logging: _Rollbar
+    public partial class Logging // convenience methods
+    {
+        public static void Error(string message, Exception ex, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "") => Error(message, ex.ToString(), memberName, filePath);
+        public static void Error(Exception ex, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "") => Error(ex.Message, ex.ToString(), memberName, filePath);
+
+        public static void Warn(string message, Exception ex, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "") => Warn(message, ex.ToString(), memberName, filePath);
+        public static void Warn(Exception ex, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "") => Warn(ex.Message, ex.ToString(), memberName, filePath);
+
+        public static void Info(string message, Exception ex, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "") => Info(message, ex.ToString(), memberName, filePath);
+        public static void Info(Exception ex, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "") => Info(ex.Message, ex.ToString(), memberName, filePath);
+
+        public static void Debug(string message, Exception ex, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "") => Debug(message, ex.ToString(), memberName, filePath);
+        public static void Debug(Exception ex, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "") => Debug(ex.ToString(), memberName, filePath);
+    }
+
+    public partial class Logging: _Rollbar
     {
         public static readonly string LogFile = Constants.DATA_DIR + @"\eddi.log";
         public static bool Verbose { get; set; } = false;
-
-        public static void Error(string message, Exception ex, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "")
-        {
-            Error(message, ex.ToString(), memberName, filePath);
-        }
-
-        public static void Error(Exception ex, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "")
-        {
-            Error(ex.Message, ex.ToString(), memberName, filePath);
-        }
 
         public static void Error(string message, string data = "", [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "")
         {
@@ -29,50 +34,14 @@ namespace Utilities
             Report(ErrorLevel.Error, message, data, memberName, filePath);
         }
 
-        public static void Warn(string message, Exception ex, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "")
-        {
-            Warn(message, ex.ToString(), memberName, filePath);
-        }
-
-        public static void Warn(Exception ex, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "")
-        {
-            Warn(ex.Message, ex.ToString(), memberName, filePath);
-        }
-
         public static void Warn(string message, string data = "", [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "")
         {
             log(ErrorLevel.Warning, message + " " + data, memberName, filePath);
         }
 
-        public static void Info(string message, Exception ex, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "")
-        {
-            Info(message, ex.ToString(), memberName, filePath);
-        }
-
-        public static void Info(Exception ex, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "")
-        {
-            Info(ex.Message, ex.ToString(), memberName, filePath);
-        }
-
         public static void Info(string message, string data = "", [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "")
         {
             log(ErrorLevel.Info, message + " " + data, memberName, filePath);
-        }
-
-        public static void Debug(string message, Exception ex, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "")
-        {
-            if (Verbose)
-            {
-                Debug(message, ex.ToString(), memberName, filePath);
-            }
-        }
-
-        public static void Debug(Exception ex, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "")
-        {
-            if (Verbose)
-            {
-                Debug(ex.ToString(), memberName, filePath);
-            }
         }
 
         public static void Debug(string message, string data = "", [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "")
