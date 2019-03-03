@@ -40,9 +40,7 @@ namespace EddiSpeechResponder
 
         private void acceptButtonClick(object sender, RoutedEventArgs e)
         {
-            Logging.Info("Name is " + PersonalityName);
             DialogResult = (PersonalityName != null && PersonalityName.Trim() != "");
-            Logging.Info("Dialog result is " + DialogResult);
             this.Close();
         }
 
