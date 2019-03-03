@@ -7,7 +7,11 @@
         xmlns:resx="clr-namespace:EddiSpeechResponder.Properties"
         mc:Ignorable="d"
         Title="{x:Static resx:SpeechResponder.button_copy}" 
-        Height="200" Width="300">
+        FocusManager.FocusedElement="{Binding ElementName=PersonalityNameField}"
+        WindowStartupLocation="CenterOwner"
+        WindowStyle="ToolWindow"
+        Height="200" Width="300"
+        >
     <DockPanel LastChildFill="True" Background="#FFE5E5E5">
         <Grid DockPanel.Dock="Top">
             <Grid.ColumnDefinitions>
@@ -21,7 +25,7 @@
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <TextBlock Margin="10" Grid.Row="0" Grid.Column="0" Text="{x:Static resx:SpeechResponder.header_name}"></TextBlock>
-            <TextBox Margin="10" Grid.Row="0" Grid.Column="1" Text="{Binding Path=PersonalityName, Mode=TwoWay}"/>
+            <TextBox Margin="10" Grid.Row="0" Grid.Column="1" Name="PersonalityNameField" Text="{Binding Path=PersonalityName, Mode=TwoWay}"/>
             <TextBlock Margin="10" Grid.Row="1" Grid.Column="0" Text="{x:Static resx:SpeechResponder.header_description}"></TextBlock>
             <TextBox Margin="10" Grid.Row="1" Grid.Column="1" Text="{Binding Path=PersonalityDescription, Mode=TwoWay}"/>
             <UniformGrid Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Margin="20" Rows="1" Columns="2" Width="260" HorizontalAlignment="Center">
