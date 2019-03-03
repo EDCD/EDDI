@@ -16,8 +16,6 @@ namespace Utilities
                 "TMP",
                 "APPDATA",
                 "LOCALAPPDATA",
-                "TEMP",
-                "TMP",
                 "USERPROFILE",
                 "HOMEPATH",
                 "USERNAME",
