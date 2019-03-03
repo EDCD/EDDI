@@ -11,16 +11,9 @@ namespace Utilities
     public partial class Logging // convenience methods
     {
         public static void Error(string message, Exception ex, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "") => Error(message, ex.ToString(), memberName, filePath);
-        public static void Error(Exception ex, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "") => Error(ex.Message, ex.ToString(), memberName, filePath);
-
         public static void Warn(string message, Exception ex, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "") => Warn(message, ex.ToString(), memberName, filePath);
-        public static void Warn(Exception ex, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "") => Warn(ex.Message, ex.ToString(), memberName, filePath);
-
         public static void Info(string message, Exception ex, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "") => Info(message, ex.ToString(), memberName, filePath);
-        public static void Info(Exception ex, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "") => Info(ex.Message, ex.ToString(), memberName, filePath);
-
         public static void Debug(string message, Exception ex, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "") => Debug(message, ex.ToString(), memberName, filePath);
-        public static void Debug(Exception ex, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "") => Debug(ex.ToString(), memberName, filePath);
     }
 
     public partial class Logging: _Rollbar
