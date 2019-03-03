@@ -210,7 +210,11 @@
   <data name="view_script_title" xml:space="preserve">
     <value>Просмотр скрипта</value>
   </data>
+  <data name="header_priority" xml:space="preserve">
+    <value>Приоритет</value>
+  </data>
   
-  
-  
+  <data name="speechResponderHelpHere" xml:space="preserve">
+    <value>здесь.</value>
+  </data>
 </root>
