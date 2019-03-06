@@ -66,6 +66,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="SpeechQueue.cs" />
+    <Compile Include="SpeechFX.cs" />
     <Compile Include="EddiSpeech.cs" />
     <Compile Include="ExtendedDurationWaveSource.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

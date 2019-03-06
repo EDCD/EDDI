@@ -91,7 +91,7 @@ namespace EddiSpeechResponder
             this.Default = Default;
 
             Priorities = new List<int>();
-            for (int i = 1; i <= SpeechService.Instance.speechQueues.Count - 1; i++)
+            for (int i = 1; i <= SpeechService.Instance.speechQueue.priorityQueues.Count - 1; i++)
             {
                 if (i > 0) { Priorities.Add(i); }
             }

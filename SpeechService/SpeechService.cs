@@ -1,16 +1,12 @@
 ﻿using CSCore;
 using CSCore.Codecs.WAV;
-using CSCore.DSP;
 using CSCore.SoundOut;
-using CSCore.Streams.Effects;
 using EddiDataDefinitions;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
-using System.Linq;
 using System.Security;
 using System.Speech.Synthesis;
 using System.Text;
@@ -22,7 +18,7 @@ using Utilities;
 namespace EddiSpeechService
 {
     /// <summary>Provide speech services with a varying amount of alterations to the voice</summary>
-    public class SpeechService : INotifyPropertyChanged, IDisposable
+    public partial class SpeechService : INotifyPropertyChanged, IDisposable
     {
         private const float ActiveSpeechFadeOutMilliseconds = 250;
         private SpeechServiceConfiguration configuration;
@@ -31,10 +27,10 @@ namespace EddiSpeechService
         private ISoundOut activeSpeech;
         private int activeSpeechPriority;
 
-        public List<ConcurrentQueue<EddiSpeech>> speechQueues { get; private set; }
-
         private static readonly object synthLock = new object();
-        public static SpeechSynthesizer synth { get; private set; }
+        public SpeechSynthesizer synth { get; private set; } = new SpeechSynthesizer();
+
+        public SpeechQueue speechQueue = new SpeechQueue();
 
         private static bool _eddiSpeaking;
         public bool eddiSpeaking
@@ -53,25 +49,7 @@ namespace EddiSpeechService
             }
         }
 
-        private void PrepareSpeechQueues()
-        {
-            speechQueues = new List<ConcurrentQueue<EddiSpeech>>();
-
-            // Priority 0: System messages (always top priority)
-            // Priority 1: Highest user settable priority, interrupts lower priorities
-            // Priority 2: High priority
-            // Priority 3: Standard priority
-            // Priority 4: Low priority
-            // Priority 5: Lowest priority, interrupted by any higher priority
-
-            for (int i = 0; i <= 5; i++)
-            {
-                speechQueues.Add(new ConcurrentQueue<EddiSpeech>());
-            }
-        }
-
         private static SpeechService instance;
-
         private static readonly object instanceLock = new object();
         public static SpeechService Instance
         {
@@ -85,7 +63,6 @@ namespace EddiSpeechService
                         {
                             Logging.Debug("No Speech service instance: creating one");
                             instance = new SpeechService();
-                            instance.PrepareSpeechQueues();
                         }
                     }
                 }
@@ -96,6 +73,19 @@ namespace EddiSpeechService
         private SpeechService()
         {
             configuration = SpeechServiceConfiguration.FromFile();
+
+            // Set up a responder to receive speech from the speech queue
+            speechQueue.SpeechReadyEvent += (speech, e) =>
+            {
+                try
+                {
+                    Instance.Speak((EddiSpeech)speech);
+                }
+                catch (Exception ex)
+                {
+                    Logging.Error("Failed to handle queued speech " + JsonConvert.SerializeObject(speech), ex);
+                }
+            };
         }
 
         public void Dispose()
@@ -134,9 +124,27 @@ namespace EddiSpeechService
                 ship = ShipDefinitions.FromModel("Sidewinder");
             }
 
-            EddiSpeech queuingSpeech = new EddiSpeech(message, wait, ship, priority, voice, radio, eventType);
-            enqueueSpeech(queuingSpeech);
-            Thread speechQueueHandler = new Thread(() => handleSpeech(checkSpeechInterrupt(dequeueSpeech())))
+            Thread speechQueueHandler = new Thread(() =>
+            {
+                // Queue the current speech
+                EddiSpeech queuingSpeech = new EddiSpeech(message, wait, ship, priority, voice, radio, eventType);
+                speechQueue.Enqueue(queuingSpeech);
+
+                // Check the first item in the speech queue
+                EddiSpeech speech = speechQueue.peekSpeech();
+                if (speech != null)
+                {
+                    // Interrupt current speech when appropriate
+                    if (checkSpeechInterrupt(speech.priority))
+                    {
+                        Logging.Debug("Interrupting current speech");
+                        StopCurrentSpeech();
+                        speechQueue.Stop();
+                    }
+                    // Start or continue speaking from the speech queue
+                    speechQueue.StartOrContinue();
+                }
+            })
             {
                 Name = "SpeechQueueHandler",
                 IsBackground = true
@@ -147,6 +155,11 @@ namespace EddiSpeechService
         public void ShutUp()
         {
             StopCurrentSpeech();
+        }
+
+        public void Speak(EddiSpeech speech)
+        {
+            Instance.Speak(speech.message, speech.voice, speech.echoDelay, speech.distortionLevel, speech.chorusLevel, speech.reverbLevel, speech.compressionLevel, speech.radio, speech.wait, speech.priority);
         }
 
         public void Speak(string speech, string voice, int echoDelay, int distortionLevel, int chorusLevel, int reverbLevel, int compressLevel, bool radio = false, bool wait = true, int priority = 3)
@@ -169,6 +182,11 @@ namespace EddiSpeechService
             // Put everything in a thread
             Thread speechThread = new Thread(() =>
             {
+                if (wait)
+                {
+                    WaitForCurrentSpeech();
+                }
+
                 try
                 {
                     // Identify any statements that need to be separated into their own speech streams (e.g. audio or special voice effects)
@@ -220,10 +238,10 @@ namespace EddiSpeechService
                             IWaveSource source = new WaveFileReader(stream);
                             if (!isAudio)
                             {
-                                addEffectsToSource(ref source, chorusLevel, reverbLevel, echoDelay, distortionLevel, isRadio);
+                                source = addEffectsToSource(source, chorusLevel, reverbLevel, echoDelay, distortionLevel, isRadio);
                             }
 
-                            play(ref source, priority);
+                            play(source, priority);
                         }
                     }
                 }
@@ -279,59 +297,8 @@ namespace EddiSpeechService
             return statements;
         }
 
-        private void addEffectsToSource(ref IWaveSource source, int chorusLevel, int reverbLevel, int echoDelay, int distortionLevel, bool radio)
-        {
-            // Effects level is increased by damage if distortion is enabled
-            int effectsLevel = fxLevel(distortionLevel);
-
-            // Add various effects...
-            Logging.Debug("Effects level is " + effectsLevel + ", chorus level is " + chorusLevel + ", reverb level is " + reverbLevel + ", echo delay is " + echoDelay);
-
-            // We need to extend the duration of the wave source if we have any effects going on
-            if (chorusLevel != 0 || reverbLevel != 0 || echoDelay != 0)
-            {
-                // Add a base of 500ms plus 10ms per effect level over 50
-                Logging.Debug("Extending duration by " + 500 + Math.Max(0, (effectsLevel - 50) * 10) + "ms");
-                source = source.AppendSource(x => new ExtendedDurationWaveSource(x, 500 + Math.Max(0, (effectsLevel - 50) * 10)));
-            }
-
-            // We always have chorus
-            if (chorusLevel != 0)
-            {
-                source = source.AppendSource(x => new DmoChorusEffect(x) { Depth = chorusLevel, WetDryMix = Math.Min(100, (int)(180 * (effectsLevel) / ((decimal)100))), Delay = 16, Frequency = (effectsLevel / 10), Feedback = 25 });
-            }
-
-            // We only have reverb and echo if we're not transmitting or receiving
-            if (!radio)
-            {
-                if (reverbLevel != 0)
-                {
-                    source = source.AppendSource(x => new DmoWavesReverbEffect(x) { ReverbTime = (int)(1 + 999 * (effectsLevel) / ((decimal)100)), ReverbMix = Math.Max(-96, -96 + (96 * reverbLevel / 100)) });
-                }
-
-                if (echoDelay != 0)
-                {
-                    source = source.AppendSource(x => new DmoEchoEffect(x) { LeftDelay = echoDelay, RightDelay = echoDelay, WetDryMix = Math.Max(5, (int)(10 * (effectsLevel) / ((decimal)100))), Feedback = 0 });
-                }
-            }
-            // Apply a high pass filter for a radio effect
-            else
-            {
-                var sampleSource = source.ToSampleSource().AppendSource(x => new BiQuadFilterSource(x));
-                sampleSource.Filter = new HighpassFilter(source.WaveFormat.SampleRate, 1015);
-                source = sampleSource.ToWaveSource();
-            }
-
-            // Adjust gain
-            if (effectsLevel != 0 && chorusLevel != 0)
-            {
-                int radioGain = radio ? 7 : 0;
-                source = source.AppendSource(x => new DmoCompressorEffect(x) { Gain = effectsLevel / 15 + radioGain });
-            }
-        }
-
         // Play a source
-        private void play(ref IWaveSource source, int priority)
+        private void play(IWaveSource source, int priority)
         {
             if (source == null)
             {
@@ -403,71 +370,71 @@ namespace EddiSpeechService
             {
                 if (synth == null) { synth = new SpeechSynthesizer(); };
                 var synthThread = new Thread(() =>
+            {
+                try
                 {
-                    try
+                    if (voice != null)
                     {
-                        if (voice != null)
+                        try
                         {
-                            try
+                            Logging.Debug("Selecting voice " + voice);
+                            var timeout = new CancellationTokenSource();
+                            Task t = Task.Run(() => selectVoice(voice), timeout.Token);
+                            if (!t.Wait(TimeSpan.FromSeconds(2)))
                             {
-                                Logging.Debug("Selecting voice " + voice);
-                                var timeout = new CancellationTokenSource();
-                                Task t = Task.Run(() => selectVoice(voice), timeout.Token);
-                                if (!t.Wait(TimeSpan.FromSeconds(2)))
-                                {
-                                    timeout.Cancel();
-                                    Logging.Warn("Failed to select voice " + voice + " (timed out)");
-                                }
-                            }
-                            catch (Exception ex)
-                            {
-                                Logging.Warn("Failed to select voice " + voice, ex);
+                                timeout.Cancel();
+                                Logging.Warn("Failed to select voice " + voice + " (timed out)");
                             }
                         }
-                        Logging.Debug("Configuration is " + configuration == null ? "<null>" : JsonConvert.SerializeObject(configuration));
-                        synth.Rate = configuration.Rate;
-                        synth.Volume = configuration.Volume;
-
-                        synth.SetOutputToWaveStream(stream);
-
-                        // Keep XML version at 1.0. Version 1.1 is not recommended for general use. https://en.wikipedia.org/wiki/XML#Versions
-                        if (speech.Contains("<"))
+                        catch (Exception ex)
                         {
-                            Logging.Debug("Obtaining best guess culture");
-                            string culture = @" xml:lang=""" + bestGuessCulture() + @"""";
-                            Logging.Debug("Best guess culture is " + culture);
-                            speech = @"<?xml version=""1.0"" encoding=""UTF-8""?><speak version=""1.0"" xmlns=""http://www.w3.org/2001/10/synthesis""" + culture + ">" + escapeSsml(speech) + @"</speak>";
-                            Logging.Debug("Feeding SSML to synthesizer: " + escapeSsml(speech));
-                            synth.SpeakSsml(speech);
+                            Logging.Warn("Failed to select voice " + voice, ex);
                         }
-                        else
-                        {
-                            Logging.Debug("Feeding normal text to synthesizer: " + speech);
-                            synth.Speak(speech);
-                        }
-                        stream.ToArray();
                     }
-                    catch (ThreadAbortException)
+                    Logging.Debug("Configuration is " + configuration == null ? "<null>" : JsonConvert.SerializeObject(configuration));
+                    synth.Rate = configuration.Rate;
+                    synth.Volume = configuration.Volume;
+
+                    synth.SetOutputToWaveStream(stream);
+
+                    // Keep XML version at 1.0. Version 1.1 is not recommended for general use. https://en.wikipedia.org/wiki/XML#Versions
+                    if (speech.Contains("<"))
                     {
-                        Logging.Debug("Thread aborted");
+                        Logging.Debug("Obtaining best guess culture");
+                        string culture = @" xml:lang=""" + bestGuessCulture() + @"""";
+                        Logging.Debug("Best guess culture is " + culture);
+                        speech = @"<?xml version=""1.0"" encoding=""UTF-8""?><speak version=""1.0"" xmlns=""http://www.w3.org/2001/10/synthesis""" + culture + ">" + escapeSsml(speech) + @"</speak>";
+                        Logging.Debug("Feeding SSML to synthesizer: " + escapeSsml(speech));
+                        synth.SpeakSsml(speech);
                     }
-                    catch (Exception ex)
+                    else
                     {
-                        Logging.Warn("Speech failed: ", ex);
-                        var badSpeech = new Dictionary<string, object>() {
+                        Logging.Debug("Feeding normal text to synthesizer: " + speech);
+                        synth.Speak(speech);
+                    }
+                    stream.ToArray();
+                }
+                catch (ThreadAbortException)
+                {
+                    Logging.Debug("Thread aborted");
+                }
+                catch (Exception ex)
+                {
+                    Logging.Warn("Speech failed: ", ex);
+                    var badSpeech = new Dictionary<string, object>() {
                             {"speech", speech},
-                        };
-                        string badSpeechJSON = JsonConvert.SerializeObject(badSpeech);
-                        Logging.Info("Speech failed", badSpeechJSON, "", "");
-                    }
-                });
+                    };
+                    string badSpeechJSON = JsonConvert.SerializeObject(badSpeech);
+                    Logging.Info("Speech failed", badSpeechJSON, "", "");
+                }
+            });
                 synthThread.Start();
                 synthThread.Join();
                 stream.Position = 0;
             }
         }
 
-        private static void selectVoice(string voice)
+    private void selectVoice(string voice)
         {
             if (synth.Voice.Name == voice)
             {
@@ -612,67 +579,6 @@ namespace EddiSpeechService
             Logging.Debug("Current speech ended");
         }
 
-        private int echoDelayForShip(Ship ship)
-        {
-            // this is affected by ship size
-            int echoDelay = 50; // Default
-            if (ship != null)
-            {
-                if (ship.size == "Small")
-                {
-                    echoDelay = 50;
-                }
-                else if (ship.size == "Medium")
-                {
-                    echoDelay = 100;
-                }
-                else if (ship.size == "Large")
-                {
-                    echoDelay = 200;
-                }
-                else if (ship.size == "Huge")
-                {
-                    echoDelay = 400;
-                }
-            }
-            return echoDelay;
-        }
-
-        private int chorusLevelForShip(Ship ship)
-        {
-            // This may be affected by ship parameters
-            return (int)(60 * (Math.Max(fxLevel(distortionLevelForShip(ship)), (decimal)configuration.EffectsLevel) / (decimal)100));
-        }
-
-        private int reverbLevelForShip(Ship ship)
-        {
-            // This is not affected by ship parameters
-            return (int)(80 * ((decimal)configuration.EffectsLevel) / ((decimal)100));
-        }
-
-        private int distortionLevelForShip(Ship ship)
-        {
-            // This is affected by ship health
-            int distortionLevel = 0;
-            if (ship != null && configuration.DistortOnDamage)
-            {
-                distortionLevel = (100 - (int)ship.health);
-            }
-            return distortionLevel;
-        }
-
-        private int fxLevel(decimal distortionLevel)
-        {
-            // Effects level is increased by damage if distortion is enabled
-            int distortionFX = 0;
-            if (distortionLevel > 0)
-            {
-                distortionFX = (int)Decimal.Round(((decimal)distortionLevel / 100) * (100 - configuration.EffectsLevel));
-                Logging.Debug("Calculating effect of distortion on speech effects: +" + distortionFX);
-            }
-            return configuration.EffectsLevel + distortionFX;
-        }
-
         private ISoundOut GetSoundOut()
         {
             if (WasapiOut.IsSupportedOnCurrentPlatform)
@@ -685,152 +591,22 @@ namespace EddiSpeechService
             }
         }
 
+        private bool checkSpeechInterrupt(int priority)
+        {
+            // Priority 0 speech (system messages) and priority 1 speech and will interrupt current speech
+            // Priority 5 speech in interruptable by any higher priority speech. 
+            if (priority <= 1 || (activeSpeechPriority >= 5 && priority < 5))
+            {
+                return true;
+            }
+            return false;
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         public void NotifyPropertyChanged(string propName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
-        }
-
-        public class BiQuadFilterSource : SampleAggregatorBase
-        {
-            private readonly object _lockObject = new object();
-            private BiQuad _biquad;
-
-            public BiQuad Filter
-            {
-                get { return _biquad; }
-                set
-                {
-                    lock (_lockObject)
-                    {
-                        _biquad = value;
-                    }
-                }
-            }
-
-            public BiQuadFilterSource(ISampleSource source) : base(source)
-            {
-            }
-
-            public override int Read(float[] buffer, int offset, int count)
-            {
-                int read = base.Read(buffer, offset, count);
-                lock (_lockObject)
-                {
-                    if (Filter != null)
-                    {
-                        for (int i = 0; i < read; i++)
-                        {
-                            buffer[i + offset] = Filter.Process(buffer[i + offset]);
-                        }
-                    }
-                }
-
-                return read;
-            }
-        }
-
-        private void enqueueSpeech(EddiSpeech queuingSpeech)
-        {
-            if (queuingSpeech == null) { return; }
-            if (speechQueues.ElementAtOrDefault(queuingSpeech.priority) != null)
-            {
-                removeStaleSpeech(queuingSpeech);
-                speechQueues[queuingSpeech.priority].Enqueue(queuingSpeech);
-            }
-        }
-
-        private EddiSpeech dequeueSpeech()
-        {
-            for (int i = 0; i < speechQueues.Count; i++)
-            {
-                if (speechQueues[i].TryDequeue(out EddiSpeech speech))
-                {
-                    return speech;
-                }
-            }
-            return null;
-        }
-
-        private EddiSpeech checkSpeechInterrupt(EddiSpeech speech)
-        {
-            // Priority 0 speech (system messages) and priority 1 speech and will interrupt current speech
-            // Priority 5 speech in interruptable by any higher priority speech. 
-            if (speech != null)
-            {
-                if (speech.priority <= 1 || (activeSpeechPriority >= 5 && speech.priority < 5))
-                {
-                    Logging.Debug("About to StopCurrentSpeech");
-                    StopCurrentSpeech();
-                    Logging.Debug("Finished StopCurrentSpeech");
-                }
-            }
-            return speech;
-        }
-
-        private void handleSpeech(EddiSpeech speech)
-        {
-            if (speech != null)
-            {
-                try
-                {
-                    Speak(speech.message, speech.voice, echoDelayForShip(speech.ship), distortionLevelForShip(speech.ship), chorusLevelForShip(speech.ship), reverbLevelForShip(speech.ship), 0, speech.radio, speech.wait, speech.priority);
-                }
-                catch (Exception ex)
-                {
-                    Logging.Error("Failed to handle queued speech " + JsonConvert.SerializeObject(speech), ex);
-                }
-            }
-        }
-
-        public void ClearSpeech()
-        {
-            // Don't clear system messages (priority 0)
-            for (int i = 1; i < speechQueues.Count; i++)
-            {
-                while (speechQueues[i].TryDequeue(out EddiSpeech speech)) { }
-            }
-        }
-
-        public void ClearSpeechOfType(string type)
-        {
-            // Don't clear system messages (priority 0)
-            for (int i = 1; i < speechQueues.Count; i++)
-            {
-                ConcurrentQueue<EddiSpeech> priorityHolder = new ConcurrentQueue<EddiSpeech>();
-                while (speechQueues[i].TryDequeue(out EddiSpeech eddiSpeech)) { filterSpeechQueue(type, ref priorityHolder, eddiSpeech); };
-                while (priorityHolder.TryDequeue(out EddiSpeech eddiSpeech)) { speechQueues[i].Enqueue(eddiSpeech); };
-            }
-        }
-
-        private void filterSpeechQueue(string type, ref ConcurrentQueue<EddiSpeech> speechQueue, EddiSpeech eddiSpeech)
-        {
-            if (!(bool)eddiSpeech?.eventType?.Contains(type))
-            {
-                speechQueue.Enqueue(eddiSpeech);
-            }
-        }
-
-        private void removeStaleSpeech(EddiSpeech eddiSpeech)
-        {
-            // List EDDI event types of where stale event data should be removed in favor of more recent data
-            string[] eventTypes = new string[]
-                {
-                    "Next jump",
-                    "Heat damage",
-                    "Heat warning",
-                    "Hull damaged",
-                    "Under attack"
-                };
-
-            foreach (string eventType in eventTypes)
-            {
-                if (eddiSpeech.eventType == eventType)
-                {
-                    ClearSpeechOfType(eventType);
-                }
-            }
         }
     }
 }
