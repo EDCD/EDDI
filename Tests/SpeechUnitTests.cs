@@ -1,9 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using EddiSpeechService;
-using CSCore.SoundOut;
-using Rollbar;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace UnitTests
@@ -22,7 +18,7 @@ namespace UnitTests
         [TestMethod]
         public void TestSpeechPriorityIfInOrder()
         {
-            SpeechQueue speechQueue = (SpeechQueue)speechService.GetFieldOrProperty("speechQueue");
+            SpeechQueue speechQueue = new SpeechQueue();
 
             EddiSpeech speech1 = new EddiSpeech("Priority 1", true, null, 1);
             EddiSpeech speech2 = new EddiSpeech("Priority 3", true, null, 3);
@@ -45,7 +41,7 @@ namespace UnitTests
         [TestMethod]
         public void TestSpeechPriorityIfOutOfOrder()
         {
-            SpeechQueue speechQueue = (SpeechQueue)speechService.GetFieldOrProperty("speechQueue");
+            SpeechQueue speechQueue = new SpeechQueue();
 
             EddiSpeech speech1 = new EddiSpeech("Priority 3", true, null, 3);
             EddiSpeech speech2 = new EddiSpeech("Priority 1", true, null, 1);
@@ -95,7 +91,7 @@ namespace UnitTests
         public void TestClearSpeechQueue()
         {
             EddiSpeech speech = new EddiSpeech("Priority 3", true, null, 3);
-            SpeechQueue speechQueue = (SpeechQueue)speechService.GetFieldOrProperty("speechQueue");
+            SpeechQueue speechQueue = new SpeechQueue();
             Assert.IsTrue(speechQueue.priorityQueues.ElementAtOrDefault(speech.priority) != null);
 
             speechQueue.priorityQueues[speech.priority].Enqueue(speech);
@@ -113,7 +109,7 @@ namespace UnitTests
             EddiSpeech speech2 = new EddiSpeech("Refueled", true, null, 3, null, false, "Ship refueled");
             EddiSpeech speech3 = new EddiSpeech("Scanned", true, null, 3, null, false, "Body scan");
 
-            SpeechQueue speechQueue = (SpeechQueue)speechService.GetFieldOrProperty("speechQueue");
+            SpeechQueue speechQueue = new SpeechQueue();
             Assert.IsTrue(speechQueue.priorityQueues.ElementAtOrDefault(3) != null);
             speechQueue.priorityQueues[speech1.priority].Enqueue(speech1);
             speechQueue.priorityQueues[speech2.priority].Enqueue(speech2);
