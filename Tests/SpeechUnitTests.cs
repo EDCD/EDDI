@@ -9,15 +9,14 @@ using System.Linq;
 namespace UnitTests
 {
     [TestClass]
-    public class SpeechUnitTests
+    public class SpeechUnitTests : TestBase
     {
         PrivateObject speechService = new PrivateObject(SpeechService.Instance);
 
         [TestInitialize]
         public void start()
         {
-            // Prevent telemetry data from being reported based on test results
-            RollbarLocator.RollbarInstance.Config.Enabled = false;
+            MakeSafe();
         }
 
         [TestMethod]
