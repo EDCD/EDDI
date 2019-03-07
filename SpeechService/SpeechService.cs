@@ -85,19 +85,6 @@ namespace EddiSpeechService
         private SpeechService()
         {
             configuration = SpeechServiceConfiguration.FromFile();
-
-            // Set up a responder to receive speech from the speech queue
-            speechQueue.SpeechReadyEvent += (speech, e) =>
-            {
-                try
-                {
-                    Instance.Speak((EddiSpeech)speech);
-                }
-                catch (Exception ex)
-                {
-                    Logging.Error("Failed to handle queued speech " + JsonConvert.SerializeObject(speech), ex);
-                }
-            };
         }
 
         public void Dispose()
@@ -141,21 +128,20 @@ namespace EddiSpeechService
                 // Queue the current speech
                 EddiSpeech queuingSpeech = new EddiSpeech(message, wait, ship, priority, voice, radio, eventType);
                 speechQueue.Enqueue(queuingSpeech);
-
+                 
                 // Check the first item in the speech queue
-                EddiSpeech speech = speechQueue.peekSpeech();
-                if (speech != null)
+                if (speechQueue.TryPeek(out EddiSpeech peekedSpeech))
                 {
                     // Interrupt current speech when appropriate
-                    if (checkSpeechInterrupt(speech.priority))
+                    if (checkSpeechInterrupt(peekedSpeech.priority))
                     {
                         Logging.Debug("Interrupting current speech");
                         StopCurrentSpeech();
-                        speechQueue.Stop();
                     }
-                    // Start or continue speaking from the speech queue
-                    speechQueue.StartOrContinue();
                 }
+
+                // Start or continue speaking from the speech queue
+                Instance.StartOrContinueSpeaking();
             })
             {
                 Name = "SpeechQueueHandler",
@@ -171,10 +157,10 @@ namespace EddiSpeechService
 
         public void Speak(EddiSpeech speech)
         {
-            Instance.Speak(speech.message, speech.voice, speech.echoDelay, speech.distortionLevel, speech.chorusLevel, speech.reverbLevel, speech.compressionLevel, speech.radio, speech.wait, speech.priority);
+            Instance.Speak(speech.message, speech.voice, speech.echoDelay, speech.distortionLevel, speech.chorusLevel, speech.reverbLevel, speech.compressionLevel, speech.radio, speech.priority);
         }
 
-        public void Speak(string speech, string voice, int echoDelay, int distortionLevel, int chorusLevel, int reverbLevel, int compressLevel, bool radio = false, bool wait = true, int priority = 3)
+        public void Speak(string speech, string voice, int echoDelay, int distortionLevel, int chorusLevel, int reverbLevel, int compressLevel, bool radio = false, int priority = 3)
         {
             if (speech == null || speech.Trim() == "") { return; }
 
@@ -191,97 +177,60 @@ namespace EddiSpeechService
                 voice = configuration.StandardVoice;
             }
 
-            // Put everything in a thread
-            Thread speechThread = new Thread(() =>
+            // Identify any statements that need to be separated into their own speech streams (e.g. audio or special voice effects)
+            string[] separators =
             {
-                if (wait)
-                {
-                    WaitForCurrentSpeech();
-                }
-
-                try
-                {
-                    // Identify any statements that need to be separated into their own speech streams (e.g. audio or special voice effects)
-                    string[] separators =
-                    {
                         @"(<audio.*?>)",
                         @"(<transmit.*?>.*<\/transmit>)",
                         @"(<voice.*?>.*<\/voice>)",
                     };
-                    List<string> statements = SeparateSpeechStatements(speech, string.Join("|", separators));
+            List<string> statements = SeparateSpeechStatements(speech, string.Join("|", separators));
 
-                    foreach (string Statement in statements)
+            foreach (string Statement in statements)
+            {
+                string statement = Statement;
+
+                bool isAudio = statement.Contains("<audio"); // This is an audio file, we will disable voice effects processing
+                bool isRadio = statement.Contains("<transmit") || radio; // This is a radio transmission, we will enable radio voice effects processing
+
+                if (isAudio)
+                {
+                    statement = Regex.Replace(statement, "^.*<audio", "<audio");
+                    statement = Regex.Replace(statement, ">.*$", ">");
+                }
+                else if (isRadio)
+                {
+                    statement = statement.Replace("<transmit>", "");
+                    statement = statement.Replace("</transmit>", "");
+                }
+
+                using (MemoryStream stream = getSpeechStream(voice, statement))
+                {
+                    if (stream == null)
                     {
-                        string statement = Statement;
-
-                        bool isAudio = statement.Contains("<audio"); // This is an audio file, we will disable voice effects processing
-                        bool isRadio = statement.Contains("<transmit") || radio; // This is a radio transmission, we will enable radio voice effects processing
-
-                        if (isAudio)
-                        {
-                            statement = Regex.Replace(statement, "^.*<audio", "<audio");
-                            statement = Regex.Replace(statement, ">.*$", ">");
-                        }
-                        else if (isRadio)
-                        {
-                            statement = statement.Replace("<transmit>", "");
-                            statement = statement.Replace("</transmit>", "");
-                        }
-
-                        using (MemoryStream stream = getSpeechStream(voice, statement))
-                        {
-                            if (stream == null)
-                            {
-                                Logging.Debug("getSpeechStream() returned null; nothing to say");
-                                return;
-                            }
-                            if (stream.Length < 50)
-                            {
-                                Logging.Debug("getSpeechStream() returned empty stream; nothing to say");
-                                return;
-                            }
-                            else
-                            {
-                                Logging.Debug("Stream length is " + stream.Length);
-                            }
-                            Logging.Debug("Seeking back to the beginning of the stream");
-                            stream.Seek(0, SeekOrigin.Begin);
-
-                            IWaveSource source = new WaveFileReader(stream);
-                            if (!isAudio)
-                            {
-                                source = addEffectsToSource(source, chorusLevel, reverbLevel, echoDelay, distortionLevel, isRadio);
-                            }
-
-                            play(source, priority);
-                        }
+                        Logging.Debug("getSpeechStream() returned null; nothing to say");
+                        return;
                     }
-                }
-                catch (ThreadAbortException)
-                {
-                    Logging.Debug("Thread aborted");
-                }
-                catch (Exception ex)
-                {
-                    Logging.Warn("play failed: ", ex);
-                }
-            })
-            {
-                IsBackground = true
-            };
+                    if (stream.Length < 50)
+                    {
+                        Logging.Debug("getSpeechStream() returned empty stream; nothing to say");
+                        return;
+                    }
+                    else
+                    {
+                        Logging.Debug("Stream length is " + stream.Length);
+                    }
+                    Logging.Debug("Seeking back to the beginning of the stream");
+                    stream.Seek(0, SeekOrigin.Begin);
 
-            try
-            {
-                speechThread.Start();
-                if (wait)
-                {
-                    speechThread.Join();
+                    IWaveSource source = new WaveFileReader(stream);
+                    if (!isAudio)
+                    {
+                        source = addEffectsToSource(source, chorusLevel, reverbLevel, echoDelay, distortionLevel, isRadio);
+                    }
+
+                    play(source, priority);
                 }
-            }
-            catch (ThreadAbortException tax)
-            {
-                Logging.Error(tax);
-                Thread.ResetAbort();
             }
         }
 
@@ -446,7 +395,7 @@ namespace EddiSpeechService
             }
         }
 
-    private void selectVoice(string voice)
+        private void selectVoice(string voice)
         {
             if (synth.Voice.Name == voice)
             {
@@ -515,9 +464,9 @@ namespace EddiSpeechService
             // Our input text might have SSML elements in it but the rest needs escaping
             string result = text;
 
-             // We need to make sure file names for the play function include a "/" (e.g. C:/)
+            // We need to make sure file names for the play function include a "/" (e.g. C:/)
             result = Regex.Replace(result, "(<.+?src=\")(.:)(.*?" + @"\/>)", "$1" + "$2SSSSS" + "$3");
-            
+
             // Our valid SSML elements are audio, break, emphasis, play, phoneme, & prosody so encode these differently for now
             // Also escape any double quotes inside the elements
             result = Regex.Replace(result, "(<[^>]*)\"", "$1ZZZZZ");
@@ -598,6 +547,46 @@ namespace EddiSpeechService
             else
             {
                 return new DirectSoundOut();
+            }
+        }
+
+        public void StartOrContinueSpeaking()
+        {
+            if (!eddiSpeaking)
+            {   
+                // Put everything in a thread
+                Thread speechThread = new Thread(() =>
+                {
+                    while (speechQueue.hasSpeech)
+                    {
+                        if (speechQueue.TryDequeue(out EddiSpeech speech))
+                        {
+                            try
+                            {
+                                Instance.Speak(speech);
+                            }
+                            catch (Exception ex)
+                            {
+                                Logging.Error("Failed to handle queued speech", ex);
+                                Logging.Warn("Failed to handle speech " + JsonConvert.SerializeObject(speech));
+                            }
+                        }
+                    }
+                })
+                {
+                    Name = "Speech thread",
+                    IsBackground = true
+                };
+                try
+                {
+                    speechThread.Start();
+                    speechThread.Join();
+                }
+                catch (ThreadAbortException tax)
+                {
+                    Logging.Error(tax);
+                    Thread.ResetAbort();
+                }
             }
         }
 

@@ -18,7 +18,8 @@ namespace UnitTests
         [TestMethod]
         public void TestSpeechPriorityIfInOrder()
         {
-            SpeechQueue speechQueue = new SpeechQueue();
+            speechService.SetFieldOrProperty("speechQueue", new SpeechQueue());
+            SpeechQueue speechQueue = (SpeechQueue)speechService.GetFieldOrProperty("speechQueue");
 
             EddiSpeech speech1 = new EddiSpeech("Priority 1", true, null, 1);
             EddiSpeech speech2 = new EddiSpeech("Priority 3", true, null, 3);
@@ -27,8 +28,8 @@ namespace UnitTests
             speechQueue.Enqueue(speech2);
 
             PrivateObject speechQueueObject = new PrivateObject(speechQueue);
-            EddiSpeech result1 = (EddiSpeech)speechQueueObject.Invoke("dequeueSpeech", new object[] { });
-            EddiSpeech result2 = (EddiSpeech)speechQueueObject.Invoke("dequeueSpeech", new object[] { });
+            speechQueue.TryDequeue(out EddiSpeech result1);
+            speechQueue.TryDequeue(out EddiSpeech result2);
 
             Assert.IsNotNull(result1);
             Assert.IsNotNull(result2);
@@ -41,7 +42,8 @@ namespace UnitTests
         [TestMethod]
         public void TestSpeechPriorityIfOutOfOrder()
         {
-            SpeechQueue speechQueue = new SpeechQueue();
+            speechService.SetFieldOrProperty("speechQueue", new SpeechQueue());
+            SpeechQueue speechQueue = (SpeechQueue)speechService.GetFieldOrProperty("speechQueue");
 
             EddiSpeech speech1 = new EddiSpeech("Priority 3", true, null, 3);
             EddiSpeech speech2 = new EddiSpeech("Priority 1", true, null, 1);
@@ -50,8 +52,8 @@ namespace UnitTests
             speechQueue.Enqueue(speech2);
 
             PrivateObject speechQueueObject = new PrivateObject(speechQueue);
-            EddiSpeech result1 = (EddiSpeech)speechQueueObject.Invoke("dequeueSpeech", new object[] { });
-            EddiSpeech result2 = (EddiSpeech)speechQueueObject.Invoke("dequeueSpeech", new object[] { });
+            speechQueue.TryDequeue(out EddiSpeech result1);
+            speechQueue.TryDequeue(out EddiSpeech result2);
 
             Assert.IsNotNull(result1);
             Assert.IsNotNull(result2);

@@ -11,17 +11,32 @@ namespace EddiSpeechService
     public class SpeechQueue
     {
         public List<ConcurrentQueue<EddiSpeech>> priorityQueues { get; private set; }
-        private bool speechQueueHandlerRunning;
-
-        public event EventHandler SpeechReadyEvent;
-        protected virtual void SendToSpeechServiceThread(EddiSpeech speech, EventArgs @eventArgs)
-        {
-            SpeechReadyEvent?.Invoke(speech, @eventArgs);
-        }
+        public bool hasSpeech => priorityQueues.Any(q => q.Count > 0);
 
         public SpeechQueue()
         {
             PrepareSpeechQueues();
+        }
+
+        private static SpeechQueue instance;
+        private static readonly object instanceLock = new object();
+        public static SpeechQueue Instance
+        {
+            get
+            {
+                if (instance == null)
+                {
+                    lock (instanceLock)
+                    {
+                        if (instance == null)
+                        {
+                            Logging.Debug("No Speech queue instance: creating one");
+                            instance = new SpeechQueue();
+                        }
+                    }
+                }
+                return instance;
+            }
         }
 
         private void PrepareSpeechQueues()
@@ -43,33 +58,6 @@ namespace EddiSpeechService
 
         public void Enqueue(EddiSpeech speech)
         {
-            enqueueSpeech(speech);
-        }
-
-        public void StartOrContinue()
-        {
-            if (!speechQueueHandlerRunning)
-            {
-                speechQueueHandlerRunning = true;
-                while (speechQueueHandlerRunning && priorityQueues.Any(q => q.Count > 0))
-                {
-                    EddiSpeech speech = dequeueSpeech();
-                    if (speech != null)
-                    {
-                        SendToSpeechServiceThread(speech, EventArgs.Empty);
-                    }
-                }
-                speechQueueHandlerRunning = false;
-            }
-        }
-
-        public void Stop()
-        {
-            speechQueueHandlerRunning = false;
-        }
-
-        private void enqueueSpeech(EddiSpeech speech)
-        {
             if (speech == null) { return; }
             if (priorityQueues.ElementAtOrDefault(speech.priority) != null)
             {
@@ -78,28 +66,32 @@ namespace EddiSpeechService
             }
         }
 
-        private EddiSpeech dequeueSpeech()
+        public bool TryDequeue(out EddiSpeech speech)
         {
+            speech = null;
             for (int i = 0; i < priorityQueues.Count; i++)
             {
-                if (priorityQueues[i].TryDequeue(out EddiSpeech speech))
+                if (priorityQueues[i].TryDequeue(out EddiSpeech selectedSpeech))
                 {
-                    return speech;
+                    speech = selectedSpeech;
+                    return true;
                 }
             }
-            return null;
+            return false;
         }
 
-        public EddiSpeech peekSpeech()
+        public bool TryPeek(out EddiSpeech speech)
         {
+            speech = null;
             for (int i = 0; i < priorityQueues.Count; i++)
             {
-                if (priorityQueues[i].TryPeek(out EddiSpeech speech))
+                if (priorityQueues[i].TryPeek(out EddiSpeech selectedSpeech))
                 {
-                    return speech;
+                    speech = selectedSpeech;
+                    return true;
                 }
             }
-            return null;
+            return false;
         }
 
         public void DequeueAllSpeech()
