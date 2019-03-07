@@ -362,43 +362,51 @@ namespace EddiCompanionAppService
                 return cachedProfile;
             }
 
-            string data = obtainProfile(ServerURL() + PROFILE_URL);
-
-            if (data == null || data == "Profile unavailable")
-            {
-                // Happens if there is a problem with the API.  Logging in again might clear this...
-                relogin();
-                if (CurrentState != State.Authorized)
-                {
-                    // No luck; give up
-                    SpeechService.Instance.Say(null, Properties.CapiResources.frontier_api_lost, 0);
-                    Logout();
-                }
-                else
-                {
-                    // Looks like login worked; try again
-                    data = obtainProfile(ServerURL() + PROFILE_URL);
-
-                    if (data == null || data == "Profile unavailable")
-
-                    {
-                        // No luck with a relogin; give up
-                        SpeechService.Instance.Say(null, Properties.CapiResources.frontier_api_lost, 0);
-                        Logout();
-                        throw new EliteDangerousCompanionAppException("Failed to obtain data from Frontier server (" + CurrentState + ")");
-                    }
-                }
-            }
-
             try
             {
-                JObject json = JObject.Parse(data);
-                cachedProfile = ProfileFromJson(data);
+                string data = obtainProfile(ServerURL() + PROFILE_URL);
+
+                if (data == null || data == "Profile unavailable")
+                {
+                    // Happens if there is a problem with the API.  Logging in again might clear this...
+                    relogin();
+                    if (CurrentState != State.Authorized)
+                    {
+                        // No luck; give up
+                        SpeechService.Instance.Say(null, Properties.CapiResources.frontier_api_lost, 0);
+                        Logout();
+                    }
+                    else
+                    {
+                        // Looks like login worked; try again
+                        data = obtainProfile(ServerURL() + PROFILE_URL);
+
+                        if (data == null || data == "Profile unavailable")
+
+                        {
+                            // No luck with a relogin; give up
+                            SpeechService.Instance.Say(null, Properties.CapiResources.frontier_api_lost, 0);
+                            Logout();
+                            throw new EliteDangerousCompanionAppException("Failed to obtain data from Frontier server (" + CurrentState + ")");
+                        }
+                    }
+                }
+
+                try
+                {
+                    JObject json = JObject.Parse(data);
+                    cachedProfile = ProfileFromJson(data);
+                }
+                catch (JsonException ex)
+                {
+                    Logging.Error("Failed to parse companion profile", ex);
+                    cachedProfile = null;
+                }
             }
-            catch (JsonException ex)
+            catch (EliteDangerousCompanionAppException ex)
             {
-                Logging.Error("Failed to parse companion profile", ex);
-                cachedProfile = null;
+                // not Logging.Error as Rollbar is getting spammed when the server is down
+                Logging.Info(ex.Message);
             }
 
             if (cachedProfile != null)
@@ -461,6 +469,11 @@ namespace EddiCompanionAppService
             catch (JsonException ex)
             {
                 Logging.Error("Failed to parse companion station data", ex);
+            }
+            catch (EliteDangerousCompanionAppException ex)
+            {
+                // not Logging.Error as Rollbar is getting spammed when the server is down
+                Logging.Info(ex.Message);
             }
 
             Logging.Debug("Station is " + JsonConvert.SerializeObject(cachedProfile));
