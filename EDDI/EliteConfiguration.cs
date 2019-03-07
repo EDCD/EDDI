@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System;
+using System.IO;
 using Utilities;
 
 namespace Eddi
@@ -33,23 +34,21 @@ namespace Eddi
             }
 
             EliteConfiguration configuration = new EliteConfiguration();
-            string data = Files.Read(filename);
-            if (data != null)
+            if (File.Exists(filename))
             {
-                try
+                string data = Files.Read(filename);
+                if (data != null)
                 {
-                    configuration = JsonConvert.DeserializeObject<EliteConfiguration>(data);
-                }
-                catch (Exception ex)
-                {
-                    Logging.Debug("Failed to read Elite configuration", ex);
+                    try
+                    {
+                        configuration = JsonConvert.DeserializeObject<EliteConfiguration>(data);
+                    }
+                    catch (Exception ex)
+                    {
+                        Logging.Debug("Failed to read Elite configuration", ex);
+                    }
                 }
             }
-            if (configuration == null)
-            {
-                configuration = new EliteConfiguration();
-            }
-
             configuration.dataPath = filename;
 
             return configuration;
