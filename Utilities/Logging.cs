@@ -110,8 +110,9 @@ namespace Utilities
             }
         }
 
-        internal static void Report(ErrorLevel errorLevel, string message, object data = null, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "")
+        private static void Report(ErrorLevel errorLevel, string message, object data = null, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "")
         {
+            message = Redaction.RedactEnvironmentVariables(message);
             Dictionary<string, object> thisData = PrepRollbarData(message, ref data);
             if (thisData != null)
             {
@@ -123,14 +124,19 @@ namespace Utilities
         {
             try
             {
-                // It's not possible to scrub filepaths from exception messages, so since we don't want  
-                // to collect this personal data these exceptions need to be handled locally only.
                 if (data is Exception ex)
                 {
-                    if (ex.Message.Contains(Constants.DATA_DIR))
+                    data = new Dictionary<string, object>()
                     {
-                        return null;
-                    }
+                        {"data", Redaction.RedactEnvironmentVariables(ex.Message)}
+                    };
+                }
+                else if (data is string)
+                {
+                    data = new Dictionary<string, object>()
+                    {
+                        {"data", Redaction.RedactEnvironmentVariables((string)data)}
+                    };
                 }
                 else if (!(data is Dictionary<string, object>))
                 {
