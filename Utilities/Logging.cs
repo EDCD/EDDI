@@ -110,22 +110,74 @@ namespace Utilities
             }
         }
 
-        private static void Report(ErrorLevel errorLevel, string message, string data, string memberName, string filePath)
+        internal static void Report(ErrorLevel errorLevel, string message, object data = null, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "")
         {
-            message = Redaction.RedactEnvironmentVariables(message);
-            data = Redaction.RedactEnvironmentVariables(data);
-            filePath = Redaction.RedactEnvironmentVariables(filePath);
-            var rollbarReport = System.Threading.Tasks.Task.Run(() => SendToRollbar(errorLevel, message, data, memberName, filePath));
+            Dictionary<string, object> thisData = PrepRollbarData(message, ref data);
+            if (thisData != null)
+            {
+                var rollbarReport = System.Threading.Tasks.Task.Run(() => SendToRollbar(errorLevel, message, data, thisData, memberName, filePath));
+            }
         }
 
-        private static void SendToRollbar(ErrorLevel errorLevel, string message, string data, string memberName, string filePath)
+        private static Dictionary<string, object> PrepRollbarData(string message, ref object data)
+        {
+            try
+            {
+                // It's not possible to scrub filepaths from exception messages, so since we don't want  
+                // to collect this personal data these exceptions need to be handled locally only.
+                if (data is Exception ex)
+                {
+                    if (ex.Message.Contains(Constants.DATA_DIR))
+                    {
+                        return null;
+                    }
+                }
+                else if (!(data is Dictionary<string, object>))
+                {
+                    var wrappedData = new Dictionary<string, object>()
+                    {
+                        {"data", data}
+                    };
+                    data = wrappedData;
+                }
+
+                // The Frontier API uses lowercase keys while the journal uses Titlecased keys. Establish case insensitivity before we proceed.
+                Dictionary<string, object> thisData = new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);
+                thisData = (Dictionary<string, object>)data;
+
+                // Repeated data should be matched even if timestamps differ, so remove journal event timestamps here.
+                thisData.Remove("timestamp");
+
+                // Strip module data that is not useful to report for more consistent matching
+                thisData.Remove("on");
+                thisData.Remove("priority");
+                thisData.Remove("health");
+
+                // Strip commodity data that is not useful to report for more consistent matching
+                thisData.Remove("buyprice");
+                thisData.Remove("stock");
+                thisData.Remove("stockbracket");
+                thisData.Remove("sellprice");
+                thisData.Remove("demand");
+                thisData.Remove("demandbracket");
+                thisData.Remove("StatusFlags");
+                return thisData;
+            }
+            catch (Exception)
+            {
+                // Return null and don't send data to Rollbar
+                return null;
+            }
+
+        }
+
+        private static void SendToRollbar(ErrorLevel errorLevel, string message, object data, Dictionary<string, object> thisData, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "")
         {
             if (RollbarLocator.RollbarInstance.Config.Enabled != false)
             {
                 string personID = RollbarLocator.RollbarInstance.Config.Person?.Id;
                 if (personID.Length > 0)
                 {
-                    var thisData = new Dictionary<string, object>(){ ["data"] = "data" };
                     switch (errorLevel)
                     {
                         case ErrorLevel.Error:
