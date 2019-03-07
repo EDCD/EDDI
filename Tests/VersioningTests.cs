@@ -4,14 +4,9 @@ using Utilities;
 namespace UnitTests
 {
     [TestClass]
-    public class VersioningTests : TestBase
+    // this class is pure and doesn't need TestBase.MakeSafe()
+    public class VersioningTests
     {
-        [TestInitialize]
-        public void start()
-        {
-            MakeSafe();
-        }
-
         [TestMethod]
         public void TestBetaVersionToString()
         {

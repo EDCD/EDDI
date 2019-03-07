@@ -6,14 +6,9 @@ using static Utilities.Diff;
 namespace UnitTests
 {
     [TestClass]
-    public class DiffTests : TestBase
+    // this class is pure and doesn't need TestBase.MakeSafe()
+    public class DiffTests
     {
-        [TestInitialize]
-        public void start()
-        {
-            MakeSafe();
-        }
-
         [TestMethod]
         public void TestDiff1()
         {

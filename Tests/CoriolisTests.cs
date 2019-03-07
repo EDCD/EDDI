@@ -4,14 +4,9 @@ using System;
 namespace UnitTests
 {
     [TestClass]
-    public class CoriolisTests : TestBase
+    // this class is pure and doesn't need TestBase.MakeSafe()
+    public class CoriolisTests
     {
-        [TestInitialize]
-        public void start()
-        {
-            MakeSafe();
-        }
-
         [TestMethod]
         public void TestUri()
         {

@@ -7,14 +7,9 @@ using Newtonsoft.Json.Linq;
 namespace UnitTests
 {
     [TestClass]
-    public class CommodityTests : TestBase
+    // this class is pure and doesn't need TestBase.MakeSafe()
+    public class CommodityTests
     {
-        [TestInitialize]
-        public void start()
-        {
-            MakeSafe();
-        }
-
         [TestMethod]
         public void TestMalformedCommodityName()
         {

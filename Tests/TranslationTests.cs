@@ -4,14 +4,9 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace UnitTests
 {
     [TestClass]
-    public class TranslationTests : TestBase
+    // this class is pure and doesn't need TestBase.MakeSafe()
+    public class TranslationTests
     {
-        [TestInitialize]
-        public void start()
-        {
-            MakeSafe();
-        }
-
         [TestMethod]
         public void TestICAOEmpty()
         {
