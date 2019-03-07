@@ -542,7 +542,7 @@ namespace EddiSpeechService
         {
             lock (activeSpeechLock)
             {
-                if (activeSpeech != null && activeSpeechPriority > 0)
+                if (activeSpeech != null)
                 {
                     Logging.Debug("Stopping active speech");
                     FadeOutCurrentSpeech();

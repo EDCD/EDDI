@@ -61,18 +61,6 @@ namespace EddiSpeechService
                 }
                 speechQueueHandlerRunning = false;
             }
-
-            /*
-            Thread speechQueueHandler = new Thread(() =>
-            {
-
-            })
-            {
-                Name = "SpeechQueueHandler",
-                IsBackground = true
-            };
-            speechQueueHandler.Start();
-            */
         }
 
         public void Stop()
