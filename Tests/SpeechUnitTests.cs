@@ -21,8 +21,8 @@ namespace UnitTests
             speechService.SetFieldOrProperty("speechQueue", new SpeechQueue());
             SpeechQueue speechQueue = (SpeechQueue)speechService.GetFieldOrProperty("speechQueue");
 
-            EddiSpeech speech1 = new EddiSpeech("Priority 1", true, null, 1);
-            EddiSpeech speech2 = new EddiSpeech("Priority 3", true, null, 3);
+            EddiSpeech speech1 = new EddiSpeech("Priority 1", null, 1);
+            EddiSpeech speech2 = new EddiSpeech("Priority 3", null, 3);
 
             speechQueue.Enqueue(speech1);
             speechQueue.Enqueue(speech2);
@@ -45,8 +45,8 @@ namespace UnitTests
             speechService.SetFieldOrProperty("speechQueue", new SpeechQueue());
             SpeechQueue speechQueue = (SpeechQueue)speechService.GetFieldOrProperty("speechQueue");
 
-            EddiSpeech speech1 = new EddiSpeech("Priority 3", true, null, 3);
-            EddiSpeech speech2 = new EddiSpeech("Priority 1", true, null, 1);
+            EddiSpeech speech1 = new EddiSpeech("Priority 3", null, 3);
+            EddiSpeech speech2 = new EddiSpeech("Priority 1", null, 1);
 
             speechQueue.Enqueue(speech1);
             speechQueue.Enqueue(speech2);
@@ -66,10 +66,10 @@ namespace UnitTests
         [TestMethod]
         public void TestActiveSpeechPriority()
         {
-            EddiSpeech priority5speech = new EddiSpeech("Priority 5", true, null, 5);
-            EddiSpeech priority4speech = new EddiSpeech("Priority 2", true, null, 4);
-            EddiSpeech priority2speech = new EddiSpeech("Priority 4", true, null, 2);
-            EddiSpeech priority1speech = new EddiSpeech("Priority 1", true, null, 1);
+            EddiSpeech priority5speech = new EddiSpeech("Priority 5", null, 5);
+            EddiSpeech priority4speech = new EddiSpeech("Priority 2", null, 4);
+            EddiSpeech priority2speech = new EddiSpeech("Priority 4", null, 2);
+            EddiSpeech priority1speech = new EddiSpeech("Priority 1", null, 1);
 
             // Set up priority 5 speech
             speechService.SetFieldOrProperty("activeSpeechPriority", priority5speech.priority);
@@ -92,7 +92,7 @@ namespace UnitTests
         [TestMethod]
         public void TestClearSpeechQueue()
         {
-            EddiSpeech speech = new EddiSpeech("Priority 3", true, null, 3);
+            EddiSpeech speech = new EddiSpeech("Priority 3", null, 3);
             SpeechQueue speechQueue = new SpeechQueue();
             Assert.IsTrue(speechQueue.priorityQueues.ElementAtOrDefault(speech.priority) != null);
 
@@ -107,9 +107,9 @@ namespace UnitTests
         [TestMethod]
         public void TestFilterSpeechQueue()
         {
-            EddiSpeech speech1 = new EddiSpeech("Jumped", true, null, 3, null, false, "FSD engaged");
-            EddiSpeech speech2 = new EddiSpeech("Refueled", true, null, 3, null, false, "Ship refueled");
-            EddiSpeech speech3 = new EddiSpeech("Scanned", true, null, 3, null, false, "Body scan");
+            EddiSpeech speech1 = new EddiSpeech("Jumped", null, 3, null, false, "FSD engaged");
+            EddiSpeech speech2 = new EddiSpeech("Refueled", null, 3, null, false, "Ship refueled");
+            EddiSpeech speech3 = new EddiSpeech("Scanned", null, 3, null, false, "Body scan");
 
             SpeechQueue speechQueue = new SpeechQueue();
             Assert.IsTrue(speechQueue.priorityQueues.ElementAtOrDefault(3) != null);

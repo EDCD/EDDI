@@ -110,7 +110,7 @@ namespace EddiSpeechService
             configuration = SpeechServiceConfiguration.FromFile();
         }
 
-        public void Say(Ship ship, string message, bool wait, int priority = 3, string voice = null, bool radio = false, string eventType = null)
+        public void Say(Ship ship, string message, int priority = 3, string voice = null, bool radio = false, string eventType = null)
         {
             if (message == null)
             {
@@ -126,7 +126,7 @@ namespace EddiSpeechService
             Thread speechQueueHandler = new Thread(() =>
             {
                 // Queue the current speech
-                EddiSpeech queuingSpeech = new EddiSpeech(message, wait, ship, priority, voice, radio, eventType);
+                EddiSpeech queuingSpeech = new EddiSpeech(message, ship, priority, voice, radio, eventType);
                 speechQueue.Enqueue(queuingSpeech);
                  
                 // Check the first item in the speech queue

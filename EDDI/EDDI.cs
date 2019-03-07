@@ -265,7 +265,7 @@ namespace Eddi
                         if (!FromVA)
                         {
                             string message = String.Format(Properties.EddiResources.mandatory_upgrade, spokenVersion);
-                            SpeechService.Instance.Say(null, message, false, 0);
+                            SpeechService.Instance.Say(null, message, 0);
                         }
                         UpgradeRequired = true;
                         UpgradeLocation = info.url;
@@ -280,7 +280,7 @@ namespace Eddi
                         if (!FromVA)
                         {
                             string message = String.Format(Properties.EddiResources.update_available, spokenVersion);
-                            SpeechService.Instance.Say(null, message, false, 0);
+                            SpeechService.Instance.Say(null, message, 0);
                         }
                         UpgradeAvailable = true;
                         UpgradeLocation = info.url;
@@ -290,7 +290,7 @@ namespace Eddi
             }
             catch (Exception ex)
             {
-                SpeechService.Instance.Say(null, Properties.EddiResources.update_server_unreachable, false, 0);
+                SpeechService.Instance.Say(null, Properties.EddiResources.update_server_unreachable, 0);
                 Logging.Warn("Failed to access " + Constants.EDDI_SERVER_URL, ex);
             }
         }
@@ -304,11 +304,11 @@ namespace Eddi
                 if (UpgradeLocation != null)
                 {
                     Logging.Info("Downloading upgrade from " + UpgradeLocation);
-                    SpeechService.Instance.Say(null, Properties.EddiResources.downloading_upgrade, true, 0);
+                    SpeechService.Instance.Say(null, Properties.EddiResources.downloading_upgrade, 0);
                     string updateFile = Net.DownloadFile(UpgradeLocation, @"EDDI-update.exe");
                     if (updateFile == null)
                     {
-                        SpeechService.Instance.Say(null, Properties.EddiResources.download_failed, true, 0);
+                        SpeechService.Instance.Say(null, Properties.EddiResources.download_failed, 0);
                     }
                     else
                     {
@@ -318,7 +318,7 @@ namespace Eddi
                         Logging.Info("Downloaded update to " + updateFile);
                         Logging.Info("Path is " + Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
                         File.SetAttributes(updateFile, FileAttributes.Normal);
-                        SpeechService.Instance.Say(null, Properties.EddiResources.starting_upgrade, true, 0);
+                        SpeechService.Instance.Say(null, Properties.EddiResources.starting_upgrade, 0);
                         Logging.Info("Starting upgrade.");
 
                         Process.Start(updateFile, @"/closeapplications /restartapplications /silent /log /nocancel /noicon /dir=""" + Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + @"""");
@@ -327,7 +327,7 @@ namespace Eddi
             }
             catch (Exception ex)
             {
-                SpeechService.Instance.Say(null, Properties.EddiResources.upgrade_failed, true, 0);
+                SpeechService.Instance.Say(null, Properties.EddiResources.upgrade_failed, 0);
                 Logging.Error("Upgrade failed", ex);
             }
         }
@@ -2101,13 +2101,13 @@ namespace Eddi
                 {
                     string msg = string.Format(Properties.EddiResources.problem_load_monitor_file, dir.FullName);
                     Logging.Error(msg, flex);
-                    SpeechService.Instance.Say(null, msg, false, 0);
+                    SpeechService.Instance.Say(null, msg, 0);
                 }
                 catch (Exception ex)
                 {
                     string msg = string.Format(Properties.EddiResources.problem_load_monitor, $"{file.Name}.\n{ex.Message} {ex.InnerException?.Message ?? ""}");
                     Logging.Error(msg, ex);
-                    SpeechService.Instance.Say(null, msg, false, 0);
+                    SpeechService.Instance.Say(null, msg, 0);
                 }
             }
             return monitors;
