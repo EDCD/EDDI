@@ -24,13 +24,25 @@ namespace EddiSpeechService
         private SpeechServiceConfiguration configuration;
 
         private static readonly object activeSpeechLock = new object();
-        private ISoundOut activeSpeech;
+        private ISoundOut _activeSpeech;
+        private ISoundOut activeSpeech
+        {
+            get
+            {
+                return _activeSpeech;
+            }
+            set
+            {
+                eddiSpeaking = value != null;
+                _activeSpeech = value;
+            }
+        }
         private int activeSpeechPriority;
 
         private static readonly object synthLock = new object();
         public SpeechSynthesizer synth { get; private set; } = new SpeechSynthesizer();
 
-        public SpeechQueue speechQueue = new SpeechQueue();
+        public SpeechQueue speechQueue = SpeechQueue.Instance;
 
         private static bool _eddiSpeaking;
         public bool eddiSpeaking
@@ -486,7 +498,6 @@ namespace EddiSpeechService
                         if (activeSpeech == null)
                         {
                             Logging.Debug("We can - setting active speech");
-                            eddiSpeaking = true;
                             activeSpeech = soundout;
                             activeSpeechPriority = priority;
                             started = true;
@@ -551,7 +562,6 @@ namespace EddiSpeechService
                     activeSpeech.Dispose();
                     activeSpeech = null;
                     Logging.Debug("Stopped current speech");
-                    eddiSpeaking = false;
                 }
             }
         }
