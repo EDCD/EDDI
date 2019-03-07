@@ -860,13 +860,13 @@ namespace Eddi
             if (oldState == CompanionAppService.State.AwaitingCallback && 
                 newState == CompanionAppService.State.Authorized)
             {
-                SpeechService.Instance.Say(null, string.Format(Properties.EddiResources.frontier_api_ok, EDDI.Instance.Cmdr.name), false, 0);
-                SpeechService.Instance.Say(null, Properties.EddiResources.frontier_api_close_browser, false, 0);
+                SpeechService.Instance.Say(null, string.Format(Properties.EddiResources.frontier_api_ok, EDDI.Instance.Cmdr.name), 0);
+                SpeechService.Instance.Say(null, Properties.EddiResources.frontier_api_close_browser, 0);
             }
             else if (oldState == CompanionAppService.State.LoggedOut &&
                 newState == CompanionAppService.State.AwaitingCallback)
             {
-                SpeechService.Instance.Say(null, Properties.EddiResources.frontier_api_please_authenticate, false, 0);
+                SpeechService.Instance.Say(null, Properties.EddiResources.frontier_api_please_authenticate, 0);
             }
         }
 
@@ -933,10 +933,10 @@ namespace Eddi
             {
                 // Logout from the companion app and start again
                 CompanionAppService.Instance.Logout();
-                SpeechService.Instance.Say(null, Properties.EddiResources.frontier_api_reset, false, 0);
+                SpeechService.Instance.Say(null, Properties.EddiResources.frontier_api_reset, 0);
                 if (fromVA)
                 {
-                    SpeechService.Instance.Say(null, Properties.EddiResources.frontier_api_cant_login_from_va, false, 0);
+                    SpeechService.Instance.Say(null, Properties.EddiResources.frontier_api_cant_login_from_va, 0);
                 }
             }
         }
@@ -973,7 +973,7 @@ namespace Eddi
             Ship testShip = ShipDefinitions.FromModel((string)ttsTestShipDropDown.SelectedItem);
             testShip.health = 100;
             string message = String.Format(Properties.EddiResources.voice_test_ship, ShipDefinitions.FromModel((string)ttsTestShipDropDown.SelectedItem).SpokenModel());
-            SpeechService.Instance.Say(testShip, message, false, 0);
+            SpeechService.Instance.Say(testShip, message, 0);
         }
 
         private void ttsTestDamagedVoiceButtonClicked(object sender, RoutedEventArgs e)
@@ -981,7 +981,7 @@ namespace Eddi
             Ship testShip = ShipDefinitions.FromModel((string)ttsTestShipDropDown.SelectedItem);
             testShip.health = 20;
             string message = String.Format(Properties.EddiResources.voice_test_damage, ShipDefinitions.FromModel((string)ttsTestShipDropDown.SelectedItem).SpokenModel());
-            SpeechService.Instance.Say(testShip, message, false, 0);
+            SpeechService.Instance.Say(testShip, message, 0);
         }
 
         private void disableSsmlUpdated(object sender, RoutedEventArgs e)

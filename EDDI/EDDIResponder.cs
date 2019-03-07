@@ -47,7 +47,7 @@ namespace Eddi
         void Reload();
 
         /// <summary>
-        /// Called when an event is found
+        /// Called when an event is found. Must not change global states.
         /// </summary>
         void Handle(Event theEvent);
 

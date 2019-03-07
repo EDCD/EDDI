@@ -391,7 +391,7 @@ namespace EddiSpeechResponder
             {
                 string text = values[0].AsString;
                 string voice = values[1].AsString;
-                foreach (System.Speech.Synthesis.InstalledVoice vc in SpeechService.synth?.GetInstalledVoices())
+                foreach (System.Speech.Synthesis.InstalledVoice vc in SpeechService.Instance.synth?.GetInstalledVoices())
                 {
                     if (vc.VoiceInfo.Name.ToLowerInvariant().Contains(voice?.ToLowerInvariant())
                     && !vc.VoiceInfo.Name.Contains("Microsoft Server Speech Text to Speech Voice"))
@@ -416,7 +416,7 @@ namespace EddiSpeechResponder
                 if (values.Count == 0)
                 {
                     List<VoiceDetail> voices = new List<VoiceDetail>();
-                    foreach (System.Speech.Synthesis.InstalledVoice vc in SpeechService.synth?.GetInstalledVoices())
+                    foreach (System.Speech.Synthesis.InstalledVoice vc in SpeechService.Instance.synth?.GetInstalledVoices())
                     {
                         if (!vc.VoiceInfo.Name.Contains("Microsoft Server Speech Text to Speech Voice"))
                         {
@@ -435,7 +435,7 @@ namespace EddiSpeechResponder
                 }
                 else if (values.Count == 1)
                 {
-                    foreach (System.Speech.Synthesis.InstalledVoice vc in SpeechService.synth?.GetInstalledVoices())
+                    foreach (System.Speech.Synthesis.InstalledVoice vc in SpeechService.Instance.synth?.GetInstalledVoices())
                     {
                         if (vc.VoiceInfo.Name.ToLowerInvariant().Contains(values[0].AsString?.ToLowerInvariant())
                         && !vc.VoiceInfo.Name.Contains("Microsoft Server Speech Text to Speech Voice"))

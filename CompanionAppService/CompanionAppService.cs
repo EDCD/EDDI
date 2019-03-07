@@ -371,7 +371,7 @@ namespace EddiCompanionAppService
                 if (CurrentState != State.Authorized)
                 {
                     // No luck; give up
-                    SpeechService.Instance.Say(null, Properties.CapiResources.frontier_api_lost, false, 0);
+                    SpeechService.Instance.Say(null, Properties.CapiResources.frontier_api_lost, 0);
                     Logout();
                 }
                 else
@@ -383,7 +383,7 @@ namespace EddiCompanionAppService
 
                     {
                         // No luck with a relogin; give up
-                        SpeechService.Instance.Say(null, Properties.CapiResources.frontier_api_lost, false, 0);
+                        SpeechService.Instance.Say(null, Properties.CapiResources.frontier_api_lost, 0);
                         Logout();
                         throw new EliteDangerousCompanionAppException("Failed to obtain data from Frontier server (" + CurrentState + ")");
                     }

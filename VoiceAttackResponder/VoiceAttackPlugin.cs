@@ -96,20 +96,29 @@ namespace EddiVoiceAttackResponder
                 CargoMonitor cargoMonitor = (CargoMonitor)EDDI.Instance.ObtainMonitor("Cargo monitor");
                 cargoMonitor.InventoryUpdatedEvent += (s, e) =>
                 {
-                    setCargo(cargoMonitor, ref vaProxy);
+                    lock (vaProxyLock)
+                    {
+                        setCargo(cargoMonitor, ref vaProxy);
+                    }
                 };
 
                 ShipMonitor shipMonitor = (ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor");
                 shipMonitor.ShipyardUpdatedEvent += (s, e) =>
                 {
-                    setShipValues(shipMonitor?.GetCurrentShip(), "Ship", ref vaProxy);
-                    Task.Run(() => setShipyardValues(shipMonitor?.shipyard?.ToList(), ref vaProxy));
+                    lock (vaProxyLock)
+                    {
+                        setShipValues(shipMonitor?.GetCurrentShip(), "Ship", ref vaProxy);
+                        Task.Run(() => setShipyardValues(shipMonitor?.shipyard?.ToList(), ref vaProxy));
+                    }
                 };
 
                 StatusMonitor statusMonitor = (StatusMonitor)EDDI.Instance.ObtainMonitor("Status monitor");
                 statusMonitor.StatusUpdatedEvent += (s, e) =>
                 {
-                    setStatusValues(statusMonitor?.currentStatus, "Status", ref vaProxy);
+                    lock (vaProxyLock)
+                    {
+                        setStatusValues(statusMonitor?.currentStatus, "Status", ref vaProxy);
+                    }
                 };
 
                 // Display instance information if available
@@ -117,20 +126,20 @@ namespace EddiVoiceAttackResponder
                 {
                     vaProxy.WriteToLog("Please shut down VoiceAttack and run EDDI standalone to upgrade", "red");
                     string msg = Properties.VoiceAttack.run_eddi_standalone;
-                    SpeechService.Instance.Say(((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip(), msg, false, 0);
+                    SpeechService.Instance.Say(((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip(), msg, 0);
                 }
                 else if (EDDI.Instance.UpgradeAvailable)
                 {
                     vaProxy.WriteToLog("Please shut down VoiceAttack and run EDDI standalone to upgrade", "orange");
                     string msg = Properties.VoiceAttack.run_eddi_standalone;
-                    SpeechService.Instance.Say(((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip(), msg, false, 0);
+                    SpeechService.Instance.Say(((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip(), msg, 0);
                 }
 
                 if (EDDI.Instance.Motd != null)
                 {
                     vaProxy.WriteToLog("Message from EDDI: " + EDDI.Instance.Motd, "black");
                     string msg = String.Format(Eddi.Properties.EddiResources.msg_from_eddi, EDDI.Instance.Motd);
-                    SpeechService.Instance.Say(((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip(), msg, false, 0);
+                    SpeechService.Instance.Say(((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip(), msg, 0);
                 }
 
                 // Set the initial values from the main EDDI objects
@@ -676,7 +685,7 @@ namespace EddiVoiceAttackResponder
 
                 string speech = SpeechFromScript(script);
 
-                SpeechService.Instance.Say(((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip(), speech, true, (int)priority, voice);
+                SpeechService.Instance.Say(((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip(), speech, (int)priority, voice);
             }
             catch (Exception e)
             {
@@ -705,7 +714,7 @@ namespace EddiVoiceAttackResponder
 
                 string speech = SpeechFromScript(script);
 
-                SpeechService.Instance.Say(((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip(), speech, true, (int)priority, voice, true);
+                SpeechService.Instance.Say(((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip(), speech, (int)priority, voice, true);
             }
             catch (Exception e)
             {
@@ -762,7 +771,7 @@ namespace EddiVoiceAttackResponder
             try
             {
                 EDDI.Instance.State["speechresponder_quiet"] = true;
-                SpeechService.Instance.ClearSpeech();
+                SpeechService.Instance.speechQueue.DequeueAllSpeech();
                 SpeechService.Instance.StopCurrentSpeech();
             }
             catch (Exception e)
