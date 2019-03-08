@@ -139,26 +139,27 @@ namespace Utilities
                 }
                 catch (Exception)
                 {
+                    // something went wrong with deserialization: we will need to redact manually
                     if (data is Exception ex)
                     {
                         data = new Dictionary<string, object>()
                         {
-                            {"message", ex.Message},
-                            {"stacktrace", ex.StackTrace }
+                            {"message", Redaction.RedactEnvironmentVariables(ex.Message)},
+                            {"stacktrace", Redaction.RedactEnvironmentVariables(ex.StackTrace) }
                         };
                     }
                     else if (data is string)
                     {
                         data = new Dictionary<string, object>()
                         {
-                            {"message", (string)data}
+                            {"message", Redaction.RedactEnvironmentVariables((string)data)}
                         };
                     }
                     else if (!(data is Dictionary<string, object>))
                     {
                         var wrappedData = new Dictionary<string, object>()
                         {
-                            {"data", data}
+                            {"data", Redaction.RedactEnvironmentVariables(data.ToString())}
                         };
                         data = wrappedData;
                     }
