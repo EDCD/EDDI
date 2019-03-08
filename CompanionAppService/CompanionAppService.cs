@@ -762,17 +762,20 @@ namespace EddiCompanionAppService
 
             if (json["lastStarport"] != null && json["lastStarport"]["ships"] != null)
             {
-                foreach (JProperty shipJsonProperty in json["lastStarport"]["ships"]["shipyard_list"])
+                // shipyard_list is a JObject containing JObjects but let's code defensively because FDev
+                var shipyardList = json["lastStarport"]["ships"]["shipyard_list"].Children();
+                foreach (JToken shipToken in shipyardList.Values())
                 {
-                    JObject shipJson = (JObject)shipJsonProperty.Value;
+                    JObject shipJson = shipToken as JObject;
                     Ship Ship = ShipyardShipFromProfile(shipJson);
                     Ships.Add(Ship);
                 }
 
-                foreach (JProperty shipProperty in json["lastStarport"]["ships"]["unavailable_list"])
+                // unavailable_list is a JArray containing JObjects
+                JArray unavailableList = json["lastStarport"]["ships"]["unavailable_list"] as JArray;
+                foreach (JObject shipJson in unavailableList)
                 {
-                    JObject ship = (JObject)shipProperty.Value;
-                    Ship Ship = ShipyardShipFromProfile(ship);
+                    Ship Ship = ShipyardShipFromProfile(shipJson);
                     Ships.Add(Ship);
                 }
             }
