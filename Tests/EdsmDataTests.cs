@@ -358,6 +358,22 @@ namespace UnitTests
         }
 
         [TestMethod]
+        public void TestSystemsSphere()
+        {
+            string systemName = "Sol";
+            List<Dictionary<string, object>> sphereSystems = StarMapService.GetStarMapSystemsSphere(systemName, 0, 10, false, false, false, false);
+            Assert.AreEqual(12, sphereSystems.Count);
+        }
+
+        [TestMethod]
+        public void TestSystemsCube()
+        {
+            string systemName = "Sol";
+            List<StarSystem> starSystems = StarMapService.GetStarMapSystemsCube(systemName, 15, false, false, false, false);
+            Assert.AreEqual(9, starSystems.Count);
+        }
+
+        [TestMethod]
         public void TestUnknown()
         {
             // Unknown systems shall return null from here. We create a synthetic system in DataProviderService.cs if this returns null;
