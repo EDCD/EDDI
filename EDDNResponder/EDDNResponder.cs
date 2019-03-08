@@ -189,7 +189,9 @@ namespace EDDNResponder
             }
             catch (Exception ex)
             {
-                Logging.Error("Failed to parse EDDN location data from journal entry line: " + JsonConvert.SerializeObject(data), ". Exception: " + ex.Message + ". " + ex.StackTrace);
+                data.Add("exception", ex.Message);
+                data.Add("stacktrace", ex.StackTrace);
+                Logging.Error("Failed to parse EDDN location data", data);
             }
         }
 
