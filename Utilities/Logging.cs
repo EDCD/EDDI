@@ -10,7 +10,7 @@ namespace Utilities
 {
     public partial class Logging // convenience methods
     {
-        public static void Error(string message, Exception ex, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "") => Error(message, ex.ToString(), memberName, filePath);
+        // For Logging.Error, do not convert data to strings until we've prepared it first.
         public static void Warn(string message, Exception ex, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "") => Warn(message, ex.ToString(), memberName, filePath);
         public static void Info(string message, Exception ex, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "") => Info(message, ex.ToString(), memberName, filePath);
         public static void Debug(string message, Exception ex, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "") => Debug(message, ex.ToString(), memberName, filePath);
@@ -21,9 +21,9 @@ namespace Utilities
         public static readonly string LogFile = Constants.DATA_DIR + @"\eddi.log";
         public static bool Verbose { get; set; } = false;
 
-        public static void Error(string message, string data = "", [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "")
+        public static void Error(string message, object data = null, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "")
         {
-            log(ErrorLevel.Error, message + " " + data, memberName, filePath);
+            log(ErrorLevel.Error, message + " " + data.ToString(), memberName, filePath);
             Report(ErrorLevel.Error, message, data, memberName, filePath);
         }
 
@@ -124,11 +124,12 @@ namespace Utilities
         {
             try
             {
+                // Normalize all data to Dictionary<string, object>, redacting environment variables
                 if (data is Exception ex)
                 {
                     data = new Dictionary<string, object>()
                     {
-                        {"data", Redaction.RedactEnvironmentVariables(ex.Message)},
+                        {"message", Redaction.RedactEnvironmentVariables(ex.Message)},
                         {"stacktrace", Redaction.RedactEnvironmentVariables(ex.StackTrace) }
                     };
                 }
@@ -136,14 +137,23 @@ namespace Utilities
                 {
                     data = new Dictionary<string, object>()
                     {
-                        {"data", Redaction.RedactEnvironmentVariables((string)data)}
+                        {"message", Redaction.RedactEnvironmentVariables((string)data)}
                     };
+                }
+                else if (data is Dictionary<string, object> dict)
+                {
+                    Dictionary<string, object> dictData = new Dictionary<string, object>();
+                    foreach (KeyValuePair<string, object> dictKV in dict)
+                    {
+                        dictData.Add(dictKV.Key, Redaction.RedactEnvironmentVariables((string)dictKV.Value));
+                    }
+                    data = dictData;
                 }
                 else if (!(data is Dictionary<string, object>))
                 {
                     var wrappedData = new Dictionary<string, object>()
                     {
-                        {"data", data}
+                        {"data", Redaction.RedactEnvironmentVariables(data.ToString())}
                     };
                     data = wrappedData;
                 }
