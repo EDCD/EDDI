@@ -133,6 +133,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="CapiShipyardTests.cs" />
     <Compile Include="TestBase.cs" />
     <Compile Include="EdsmDataTests.cs" />
     <Compile Include="CommodityTests.cs" />
@@ -243,6 +244,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Abasheli Barracks.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="App.config">
       <SubType>Designer</SubType>
     </None>
