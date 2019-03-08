@@ -1,4 +1,6 @@
-﻿using RestSharp;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using RestSharp;
 using Rollbar;
 using System;
 using System.Collections.Generic;
@@ -23,7 +25,7 @@ namespace Utilities
 
         public static void Error(string message, object data = null, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "")
         {
-            log(ErrorLevel.Error, message + " " + data.ToString(), memberName, filePath);
+            log(ErrorLevel.Error, message + " " + JsonConvert.SerializeObject(data), memberName, filePath);
             Report(ErrorLevel.Error, message, data, memberName, filePath);
         }
 
@@ -113,79 +115,106 @@ namespace Utilities
         private static void Report(ErrorLevel errorLevel, string message, object data = null, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "")
         {
             message = Redaction.RedactEnvironmentVariables(message);
-            Dictionary<string, object> thisData = PrepRollbarData(message, ref data);
+            Dictionary<string, object> thisData = PrepRollbarData(ref data);
             if (thisData != null)
             {
                 var rollbarReport = System.Threading.Tasks.Task.Run(() => SendToRollbar(errorLevel, message, data, thisData, memberName, filePath));
             }
         }
 
-        private static Dictionary<string, object> PrepRollbarData(string message, ref object data)
+        private static Dictionary<string, object> PrepRollbarData(ref object data)
         {
             try
             {
-                // Normalize all data to Dictionary<string, object>, redacting environment variables
-                if (data is Exception ex)
+                // Serialize the data to a string 
+                var serialized = JsonConvert.SerializeObject(data);
+                // Redact all environment variables we find
+                serialized = Redaction.RedactEnvironmentVariables(serialized);
+                // Remove undesirable properties
+                serialized = FilterProperties(serialized);
+
+                try
                 {
-                    data = new Dictionary<string, object>()
-                    {
-                        {"message", Redaction.RedactEnvironmentVariables(ex.Message)},
-                        {"stacktrace", Redaction.RedactEnvironmentVariables(ex.StackTrace) }
-                    };
+                    data = JsonConvert.DeserializeObject<Dictionary<string, object>>(serialized);
                 }
-                else if (data is string)
+                catch (Exception)
                 {
-                    data = new Dictionary<string, object>()
+                    if (data is Exception ex)
                     {
-                        {"message", Redaction.RedactEnvironmentVariables((string)data)}
-                    };
-                }
-                else if (data is Dictionary<string, object> dict)
-                {
-                    Dictionary<string, object> dictData = new Dictionary<string, object>();
-                    foreach (KeyValuePair<string, object> dictKV in dict)
-                    {
-                        dictData.Add(dictKV.Key, Redaction.RedactEnvironmentVariables((string)dictKV.Value));
+                        data = new Dictionary<string, object>()
+                        {
+                            {"message", ex.Message},
+                            {"stacktrace", ex.StackTrace }
+                        };
                     }
-                    data = dictData;
-                }
-                else if (!(data is Dictionary<string, object>))
-                {
-                    var wrappedData = new Dictionary<string, object>()
+                    else if (data is string)
                     {
-                        {"data", Redaction.RedactEnvironmentVariables(data.ToString())}
-                    };
-                    data = wrappedData;
+                        data = new Dictionary<string, object>()
+                        {
+                            {"message", (string)data}
+                        };
+                    }
+                    else if (!(data is Dictionary<string, object>))
+                    {
+                        var wrappedData = new Dictionary<string, object>()
+                        {
+                            {"data", data}
+                        };
+                        data = wrappedData;
+                    }
                 }
 
-                // The Frontier API uses lowercase keys while the journal uses Titlecased keys. Establish case insensitivity before we proceed.
-                Dictionary<string, object> thisData = new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);
-                thisData = (Dictionary<string, object>)data;
-
-                // Repeated data should be matched even if timestamps differ, so remove journal event timestamps here.
-                thisData.Remove("timestamp");
-
-                // Strip module data that is not useful to report for more consistent matching
-                thisData.Remove("on");
-                thisData.Remove("priority");
-                thisData.Remove("health");
-
-                // Strip commodity data that is not useful to report for more consistent matching
-                thisData.Remove("buyprice");
-                thisData.Remove("stock");
-                thisData.Remove("stockbracket");
-                thisData.Remove("sellprice");
-                thisData.Remove("demand");
-                thisData.Remove("demandbracket");
-                thisData.Remove("StatusFlags");
-                return thisData;
+                return (Dictionary<string, object>)data;
             }
             catch (Exception)
             {
                 // Return null and don't send data to Rollbar
                 return null;
             }
+        }
 
+        private static string FilterProperties(string json)
+        {
+            try
+            {
+                var data = JObject.Parse(json);
+
+                if (data != null)
+                {
+                    // Repeated data should be matched even if timestamps differ, so remove journal event timestamps here.
+                    // Strip module data that is not useful to report for more consistent matching
+                    // Strip commodity data that is not useful to report for more consistent matching
+                    string[] filterProperties = new string[]
+                    {
+                        "timestamp",
+                        "on",
+                        "priority",
+                        "health",
+                        "buyprice",
+                        "stock",
+                        "stockbracket",
+                        "sellprice",
+                        "demand",
+                        "demandbracket",
+                        "StatusFlags"
+                    };
+
+                    foreach (string property in filterProperties)
+                    {
+                        data.Descendants()
+                            .OfType<JProperty>()
+                            .Where(attr => attr.Name.StartsWith(property, StringComparison.OrdinalIgnoreCase))
+                            .ToList()
+                            .ForEach(attr => attr.Remove());
+                    }
+                    json = data.ToString();
+                }
+            }
+            catch (Exception)
+            {
+                // Not parseable.
+            }
+            return json;
         }
 
         private static void SendToRollbar(ErrorLevel errorLevel, string message, object data, Dictionary<string, object> thisData, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "")

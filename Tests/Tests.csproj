@@ -133,6 +133,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="TelemetryTests.cs" />
     <Compile Include="RedactionTests.cs" />
     <Compile Include="TestBase.cs" />
     <Compile Include="EdsmDataTests.cs" />
