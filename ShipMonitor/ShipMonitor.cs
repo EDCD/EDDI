@@ -1403,11 +1403,13 @@ namespace EddiShipMonitor
                 }
                 catch (Exception ex)
                 {
-                    Dictionary<string, object> data = new Dictionary<string, object>();
-                    data.Add("slot", slot);
-                    data.Add("module", module);
-                    data.Add("exception", ex.Message);
-                    data.Add("stacktrace", ex.StackTrace);
+                    Dictionary<string, object> data = new Dictionary<string, object>
+                    {
+                        { "slot", slot },
+                        { "module", module },
+                        { "exception", ex.Message },
+                        { "stacktrace", ex.StackTrace }
+                    };
                     Logging.Error("Failed to add module to ship.", data);
                 }
                 ship = updatedShip ?? ship;
@@ -1498,11 +1500,13 @@ namespace EddiShipMonitor
                 }
                 catch (Exception ex)
                 {
-                    Dictionary<string, object> data = new Dictionary<string, object>();
-                    data.Add("slot", slot);
-                    data.Add("replacement", replacement);
-                    data.Add("exception", ex.Message);
-                    data.Add("stacktrace", ex.StackTrace);
+                    Dictionary<string, object> data = new Dictionary<string, object>
+                    {
+                        { "slot", slot },
+                        { "replacement", replacement },
+                        { "exception", ex.Message },
+                        { "stacktrace", ex.StackTrace }
+                    };
                     Logging.Error("Failed to remove module from ship.", data);
                 }
                 ship = updatedShip ?? ship;
