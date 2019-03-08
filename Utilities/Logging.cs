@@ -1,4 +1,6 @@
-﻿using RestSharp;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using RestSharp;
 using Rollbar;
 using System;
 using System.Collections.Generic;
@@ -8,35 +10,23 @@ using System.Runtime.CompilerServices;
 
 namespace Utilities
 {
-    public class Logging: _Rollbar
+    public partial class Logging // convenience methods
+    {
+        // For Logging.Error, do not convert data to strings until we've prepared it first.
+        public static void Warn(string message, Exception ex, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "") => Warn(message, ex.ToString(), memberName, filePath);
+        public static void Info(string message, Exception ex, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "") => Info(message, ex.ToString(), memberName, filePath);
+        public static void Debug(string message, Exception ex, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "") => Debug(message, ex.ToString(), memberName, filePath);
+    }
+
+    public partial class Logging: _Rollbar
     {
         public static readonly string LogFile = Constants.DATA_DIR + @"\eddi.log";
         public static bool Verbose { get; set; } = false;
 
-        public static void Error(string message, Exception ex, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "")
+        public static void Error(string message, object data = null, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "")
         {
-            Error(message, ex.ToString(), memberName, filePath);
-        }
-
-        public static void Error(Exception ex, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "")
-        {
-            Error(ex.Message, ex.ToString(), memberName, filePath);
-        }
-
-        public static void Error(string message, string data = "", [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "")
-        {
-            log(ErrorLevel.Error, message + " " + data, memberName, filePath);
+            log(ErrorLevel.Error, message + " " + JsonConvert.SerializeObject(data), memberName, filePath);
             Report(ErrorLevel.Error, message, data, memberName, filePath);
-        }
-
-        public static void Warn(string message, Exception ex, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "")
-        {
-            Warn(message, ex.ToString(), memberName, filePath);
-        }
-
-        public static void Warn(Exception ex, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "")
-        {
-            Warn(ex.Message, ex.ToString(), memberName, filePath);
         }
 
         public static void Warn(string message, string data = "", [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "")
@@ -44,35 +34,9 @@ namespace Utilities
             log(ErrorLevel.Warning, message + " " + data, memberName, filePath);
         }
 
-        public static void Info(string message, Exception ex, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "")
-        {
-            Info(message, ex.ToString(), memberName, filePath);
-        }
-
-        public static void Info(Exception ex, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "")
-        {
-            Info(ex.Message, ex.ToString(), memberName, filePath);
-        }
-
         public static void Info(string message, string data = "", [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "")
         {
             log(ErrorLevel.Info, message + " " + data, memberName, filePath);
-        }
-
-        public static void Debug(string message, Exception ex, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "")
-        {
-            if (Verbose)
-            {
-                Debug(message, ex.ToString(), memberName, filePath);
-            }
-        }
-
-        public static void Debug(Exception ex, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "")
-        {
-            if (Verbose)
-            {
-                Debug(ex.ToString(), memberName, filePath);
-            }
         }
 
         public static void Debug(string message, string data = "", [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "")
@@ -86,6 +50,9 @@ namespace Utilities
         private static readonly object logLock = new object();
         private static void log(ErrorLevel errorlevel, string data, string method, string path)
         {
+            data = Redaction.RedactEnvironmentVariables(data);
+            method = Redaction.RedactEnvironmentVariables(method);
+            path = Redaction.RedactEnvironmentVariables(path);
             lock (logLock)
             {
                 try
@@ -145,65 +112,110 @@ namespace Utilities
             }
         }
 
-        internal static void Report(ErrorLevel errorLevel, string message, object data = null, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "")
+        private static void Report(ErrorLevel errorLevel, string message, object data = null, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "")
         {
-            Dictionary<string, object> thisData = PrepRollbarData(message, ref data);
+            message = Redaction.RedactEnvironmentVariables(message);
+            Dictionary<string, object> thisData = PrepRollbarData(ref data);
             if (thisData != null)
             {
                 var rollbarReport = System.Threading.Tasks.Task.Run(() => SendToRollbar(errorLevel, message, data, thisData, memberName, filePath));
             }
         }
 
-        private static Dictionary<string, object> PrepRollbarData(string message, ref object data)
+        private static Dictionary<string, object> PrepRollbarData(ref object data)
         {
             try
             {
-                // It's not possible to scrub filepaths from exception messages, so since we don't want  
-                // to collect this personal data these exceptions need to be handled locally only.
-                if (data is Exception ex)
+                // Serialize the data to a string 
+                var serialized = JsonConvert.SerializeObject(data);
+                // Redact all environment variables we find
+                serialized = Redaction.RedactEnvironmentVariables(serialized);
+                // Remove undesirable properties
+                serialized = FilterProperties(serialized);
+
+                try
                 {
-                    if (ex.Message.Contains(Constants.DATA_DIR))
+                    data = JsonConvert.DeserializeObject<Dictionary<string, object>>(serialized);
+                }
+                catch (Exception)
+                {
+                    // something went wrong with deserialization: we will need to redact manually
+                    if (data is Exception ex)
                     {
-                        return null;
+                        data = new Dictionary<string, object>()
+                        {
+                            {"message", Redaction.RedactEnvironmentVariables(ex.Message)},
+                            {"stacktrace", Redaction.RedactEnvironmentVariables(ex.StackTrace) }
+                        };
+                    }
+                    else if (data is string)
+                    {
+                        data = new Dictionary<string, object>()
+                        {
+                            {"message", Redaction.RedactEnvironmentVariables((string)data)}
+                        };
+                    }
+                    else if (!(data is Dictionary<string, object>))
+                    {
+                        var wrappedData = new Dictionary<string, object>()
+                        {
+                            {"data", Redaction.RedactEnvironmentVariables(data.ToString())}
+                        };
+                        data = wrappedData;
                     }
                 }
-                else if (!(data is Dictionary<string, object>))
-                {
-                    var wrappedData = new Dictionary<string, object>()
-                    {
-                        {"data", data}
-                    };
-                    data = wrappedData;
-                }
 
-                // The Frontier API uses lowercase keys while the journal uses Titlecased keys. Establish case insensitivity before we proceed.
-                Dictionary<string, object> thisData = new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);
-                thisData = (Dictionary<string, object>)data;
-
-                // Repeated data should be matched even if timestamps differ, so remove journal event timestamps here.
-                thisData.Remove("timestamp");
-
-                // Strip module data that is not useful to report for more consistent matching
-                thisData.Remove("on");
-                thisData.Remove("priority");
-                thisData.Remove("health");
-
-                // Strip commodity data that is not useful to report for more consistent matching
-                thisData.Remove("buyprice");
-                thisData.Remove("stock");
-                thisData.Remove("stockbracket");
-                thisData.Remove("sellprice");
-                thisData.Remove("demand");
-                thisData.Remove("demandbracket");
-                thisData.Remove("StatusFlags");
-                return thisData;
+                return (Dictionary<string, object>)data;
             }
             catch (Exception)
             {
                 // Return null and don't send data to Rollbar
                 return null;
             }
+        }
 
+        private static string FilterProperties(string json)
+        {
+            try
+            {
+                var data = JObject.Parse(json);
+
+                if (data != null)
+                {
+                    // Repeated data should be matched even if timestamps differ, so remove journal event timestamps here.
+                    // Strip module data that is not useful to report for more consistent matching
+                    // Strip commodity data that is not useful to report for more consistent matching
+                    string[] filterProperties = new string[]
+                    {
+                        "timestamp",
+                        "on",
+                        "priority",
+                        "health",
+                        "buyprice",
+                        "stock",
+                        "stockbracket",
+                        "sellprice",
+                        "demand",
+                        "demandbracket",
+                        "StatusFlags"
+                    };
+
+                    foreach (string property in filterProperties)
+                    {
+                        data.Descendants()
+                            .OfType<JProperty>()
+                            .Where(attr => attr.Name.StartsWith(property, StringComparison.OrdinalIgnoreCase))
+                            .ToList()
+                            .ForEach(attr => attr.Remove());
+                    }
+                    json = data.ToString();
+                }
+            }
+            catch (Exception)
+            {
+                // Not parseable.
+            }
+            return json;
         }
 
         private static void SendToRollbar(ErrorLevel errorLevel, string message, object data, Dictionary<string, object> thisData, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "")

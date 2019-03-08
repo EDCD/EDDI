@@ -634,11 +634,15 @@ namespace Eddi
             catch (ThreadAbortException tax)
             {
                 Thread.ResetAbort();
-                Logging.Error(JsonConvert.SerializeObject(@event), tax);
+                Logging.Debug("Thread aborted", tax);
             }
             catch (Exception ex)
             {
-                Logging.Error(JsonConvert.SerializeObject(@event), ex);
+                Dictionary<string, object> data = new Dictionary<string, object>();
+                data.Add("event", JsonConvert.SerializeObject(@event));
+                data.Add("exception", ex.Message);
+                data.Add("stacktrace", ex.StackTrace);
+                Logging.Error("Failed to enqueue event", data);
             }
         }
 
@@ -804,7 +808,12 @@ namespace Eddi
                 }
                 catch (Exception ex)
                 {
-                    Logging.Error("EDDI core failed to handle event " + JsonConvert.SerializeObject(@event), ex);
+                    Dictionary<string, object> data = new Dictionary<string, object>();
+                    data.Add("event", JsonConvert.SerializeObject(@event));
+                    data.Add("exception", ex.Message);
+                    data.Add("stacktrace", ex.StackTrace);
+
+                    Logging.Error("EDDI core failed to handle event " + @event.type, data);
 
                     // Even if an error occurs, we still need to pass the raw data 
                     // to the EDDN responder to maintain it's integrity.
@@ -865,7 +874,11 @@ namespace Eddi
                 }
                 catch (Exception ex)
                 {
-                    Logging.Error("Monitor failed to handle event " + JsonConvert.SerializeObject(@event), ex);
+                    Dictionary<string, object> data = new Dictionary<string, object>();
+                    data.Add("event", JsonConvert.SerializeObject(@event));
+                    data.Add("exception", ex.Message);
+                    data.Add("stacktrace", ex.StackTrace);
+                    Logging.Error("Monitor failed to handle event " + @event.type, data);
                 }
             }
         }
@@ -890,14 +903,13 @@ namespace Eddi
                     });
                     responderTasks.Add(responderTask);
                 }
-                catch (ThreadAbortException tax)
-                {
-                    Thread.ResetAbort();
-                    Logging.Error(JsonConvert.SerializeObject(@event), tax);
-                }
                 catch (Exception ex)
                 {
-                    Logging.Error(JsonConvert.SerializeObject(@event), ex);
+                    Dictionary<string, object> data = new Dictionary<string, object>();
+                    data.Add("event", JsonConvert.SerializeObject(@event));
+                    data.Add("exception", ex.Message);
+                    data.Add("stacktrace", ex.StackTrace);
+                    Logging.Error("Responder failed to handle event " + @event.type, data);
                 }
             }
             await Task.WhenAll(responderTasks.ToArray());
@@ -926,11 +938,15 @@ namespace Eddi
                 catch (ThreadAbortException tax)
                 {
                     Thread.ResetAbort();
-                    Logging.Error(JsonConvert.SerializeObject(@event), tax);
+                    Logging.Debug("Thread aborted", tax);
                 }
                 catch (Exception ex)
                 {
-                    Logging.Error(JsonConvert.SerializeObject(@event), ex);
+                    Dictionary<string, object> data = new Dictionary<string, object>();
+                    data.Add("event", JsonConvert.SerializeObject(@event));
+                    data.Add("exception", ex.Message);
+                    data.Add("stacktrace", ex.StackTrace);
+                    Logging.Error("Monitor failed to post-handle event " + @event.type, data);
                 }
                 await Task.WhenAll(monitorTasks.ToArray());
             }
@@ -1989,12 +2005,16 @@ namespace Eddi
                             catch (ThreadAbortException tax)
                             {
                                 Thread.ResetAbort();
-                                Logging.Error(JsonConvert.SerializeObject(profile), tax);
+                                Logging.Debug("Thread aborted", tax);
                                 success = false;
                             }
                             catch (Exception ex)
                             {
-                                Logging.Error(JsonConvert.SerializeObject(profile), ex);
+                                Dictionary<string, object> data = new Dictionary<string, object>();
+                                data.Add("message", ex.Message);
+                                data.Add("stacktrace", ex.StackTrace);
+                                data.Add("profile", JsonConvert.SerializeObject(profile));
+                                Logging.Error("Monitor " + monitor.MonitorName() + " failed to handle profile.", data);
                                 success = false;
                             }
                         }

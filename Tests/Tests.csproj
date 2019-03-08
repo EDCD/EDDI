@@ -134,6 +134,8 @@
   </Choose>
   <ItemGroup>
     <Compile Include="CapiShipyardTests.cs" />
+    <Compile Include="TelemetryTests.cs" />
+    <Compile Include="RedactionTests.cs" />
     <Compile Include="TestBase.cs" />
     <Compile Include="EdsmDataTests.cs" />
     <Compile Include="CommodityTests.cs" />

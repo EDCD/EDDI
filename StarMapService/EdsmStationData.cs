@@ -52,7 +52,11 @@ namespace EddiStarMapService
                         }
                         catch (Exception ex)
                         {
-                            Logging.Error("Error parsing EDSM station result " + station.ToString(), ex);
+                            Dictionary<string, object> data = new Dictionary<string, object>();
+                            data.Add("station", JsonConvert.SerializeObject(station));
+                            data.Add("exception", ex.Message);
+                            data.Add("stacktrace", ex.StackTrace);
+                            Logging.Error("Error parsing EDSM station result.", data);
                         }
 
                     }
