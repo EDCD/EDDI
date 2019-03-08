@@ -228,9 +228,11 @@ namespace EddiSpeechService
                         }
                     }
                 }
-                catch (ThreadAbortException)
+                catch (ThreadAbortException tax)
                 {
-                    Logging.Debug("Thread aborted");
+                    Logging.Error("", tax);
+                    Thread.ResetAbort();
+
                 }
                 catch (Exception ex)
                 {
