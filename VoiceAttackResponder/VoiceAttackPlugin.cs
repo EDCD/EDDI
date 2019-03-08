@@ -80,11 +80,15 @@ namespace EddiVoiceAttackResponder
                     catch (ThreadAbortException tax)
                     {
                         Thread.ResetAbort();
-                        Logging.Error(JsonConvert.SerializeObject(theEvent), tax);
+                        Logging.Debug("Thread aborted", tax);
                     }
                     catch (Exception ex)
                     {
-                        Logging.Error(JsonConvert.SerializeObject(theEvent), ex);
+                        Dictionary<string, object> data = new Dictionary<string, object>();
+                        data.Add("event", JsonConvert.SerializeObject(theEvent));
+                        data.Add("exception", ex.Message);
+                        data.Add("stacktrace", ex.StackTrace);
+                        Logging.Error("VoiceAttack failed to handle event.", data);
                     }
                 };
 

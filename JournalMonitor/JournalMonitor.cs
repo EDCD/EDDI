@@ -2647,7 +2647,7 @@ namespace EddiJournalMonitor
                                             if (newMission == null)
                                             {
                                                 // Mal-formed mission
-                                                Logging.Error("Bad mission entry", JsonConvert.SerializeObject(mission));
+                                                Logging.Error("Bad mission entry", mission);
                                             }
                                             else
                                             {
@@ -2678,7 +2678,7 @@ namespace EddiJournalMonitor
                                         if (newPassenger == null)
                                         {
                                             // Mal-formed mission
-                                            Logging.Error("Bad mission entry", JsonConvert.SerializeObject(passenger));
+                                            Logging.Error("Bad mission entry", passenger);
                                         }
                                         else
                                         {
@@ -3262,7 +3262,11 @@ namespace EddiJournalMonitor
             catch (Exception ex)
             {
                 Logging.Warn("Failed to parse line: " + ex.ToString());
-                Logging.Error("Exception whilst parsing journal line", "Raw event: " + line + ". Exception: " + ex.Message + ". " + ex.StackTrace);
+                Dictionary<string, object> data = new Dictionary<string, object>();
+                data.Add("event", line);
+                data.Add("exception", ex.Message);
+                data.Add("stacktrace", ex.StackTrace);
+                Logging.Error("Exception whilst parsing journal line", data);
             }
             return events;
         }

@@ -98,12 +98,12 @@ namespace EddiShipMonitor
                     }
                     else
                     {
-                        Logging.Error("Failed to find a way of opening URL \"" + uri + "\"");
+                        Logging.Info("Export failed: Target URL is too long.");
                     }
                 }
                 catch (Exception)
                 {
-                    // Nothing to do
+                    Logging.Error("Failed to find a way of opening URL \"" + uri + "\"");
                 }
             }
         }
