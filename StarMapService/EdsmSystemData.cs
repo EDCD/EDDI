@@ -82,18 +82,18 @@ namespace EddiStarMapService
             request.AddParameter("showCoordinates", showCoordinates ? 1 : 0);
             request.AddParameter("showInformation", showInformation ? 1 : 0);
             request.AddParameter("showPermit", showPermit ? 1 : 0);
-            var clientResponse = client.Execute<JObject>(request);
+            var clientResponse = client.Execute<List<JObject>>(request);
             if (clientResponse.IsSuccessful)
             {
-                JArray responses = JObject.Parse(clientResponse.Content).ToObject<JArray>();
+                JArray responses = JArray.Parse(clientResponse.Content);
                 List<Dictionary<string, object>> distantSystems = new List<Dictionary<string, object>>();
                 foreach (JObject response in responses)
                 {
                     Dictionary<string, object> distantSystem = new Dictionary<string, object>()
-                {
-                    { "distance", (decimal)response["distance"] },
-                    { "system", ParseStarMapSystem(response, (string)response["name"]) }
-                };
+                    {
+                        { "distance", (decimal)response["distance"] },
+                        { "system", ParseStarMapSystem(response, (string)response["name"]) }
+                    };
                     distantSystems.Add(distantSystem);
                 }
                 return distantSystems;
@@ -117,10 +117,10 @@ namespace EddiStarMapService
             request.AddParameter("showCoordinates", showCoordinates ? 1 : 0);
             request.AddParameter("showInformation", showInformation ? 1 : 0);
             request.AddParameter("showPermit", showPermit ? 1 : 0);
-            var clientResponse = client.Execute<JArray>(request);
+            var clientResponse = client.Execute<List<JObject>>(request);
             if (clientResponse.IsSuccessful)
             {
-                JArray responses = clientResponse.Data;
+                JArray responses = JArray.Parse(clientResponse.Content);
                 List<StarSystem> starSystems = new List<StarSystem>();
                 foreach (JObject response in responses)
                 {

@@ -80,18 +80,18 @@ namespace EddiDataProviderService
             }
         }
 
-        public StarSystem GetOrCreateStarSystem(string name, bool fetchIfMissing = true)
+        public StarSystem GetOrCreateStarSystem(string name, bool fetchIfMissing = true, bool refreshIfOutdated = true)
         {
             if (name == string.Empty) { return null; }
-            return GetOrCreateStarSystems(new string[] { name }).FirstOrDefault();
+            return GetOrCreateStarSystems(new string[] { name }, fetchIfMissing, refreshIfOutdated).FirstOrDefault();
         }
 
-        public List<StarSystem> GetOrCreateStarSystems(string[] names, bool fetchIfMissing = true)
+        public List<StarSystem> GetOrCreateStarSystems(string[] names, bool fetchIfMissing = true, bool refreshIfOutdated = true)
         {
             if (names.Count() == 0) { return null; }
 
             // Get (and update if required) systems already in our database
-            List<StarSystem> systems = Instance.GetStarSystems(names, fetchIfMissing);
+            List<StarSystem> systems = Instance.GetStarSystems(names, refreshIfOutdated);
 
             // If a system isn't found after we've read our local database, we need to fetch it.
             List<string> fetchSystems = new List<string>();
@@ -121,17 +121,17 @@ namespace EddiDataProviderService
             return systems;
         }
 
-        public StarSystem GetOrFetchStarSystem(string name, bool fetchIfMissing = true)
+        public StarSystem GetOrFetchStarSystem(string name, bool fetchIfMissing = true, bool refreshIfOutdated = true)
         {
             if (name == string.Empty) { return null; }
-            return GetOrFetchStarSystems(new string[] { name }).FirstOrDefault();
+            return GetOrFetchStarSystems(new string[] { name }, fetchIfMissing, refreshIfOutdated).FirstOrDefault();
         }
 
-        public List<StarSystem> GetOrFetchStarSystems(string[] names, bool fetchIfMissing = true)
+        public List<StarSystem> GetOrFetchStarSystems(string[] names, bool fetchIfMissing = true, bool refreshIfOutdated = true)
         {
             if (names.Count() == 0) { return null; }
 
-            List<StarSystem> systems = Instance.GetStarSystems(names, fetchIfMissing);
+            List<StarSystem> systems = Instance.GetStarSystems(names, refreshIfOutdated);
             List<string> fetchSystems = new List<string>();
 
             // If a system isn't found after we've read our local database, we need to fetch it.
@@ -156,7 +156,7 @@ namespace EddiDataProviderService
         public StarSystem GetStarSystem(string name, bool refreshIfOutdated = true)
         {
             if (name == string.Empty) { return null; }
-            return GetStarSystems(new string[] { name }).FirstOrDefault();
+            return GetStarSystems(new string[] { name }, refreshIfOutdated).FirstOrDefault();
         }
 
         public List<StarSystem> GetStarSystems(string[] names, bool refreshIfOutdated = true)
