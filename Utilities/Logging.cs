@@ -128,7 +128,8 @@ namespace Utilities
                 {
                     data = new Dictionary<string, object>()
                     {
-                        {"data", Redaction.RedactEnvironmentVariables(ex.Message)}
+                        {"data", Redaction.RedactEnvironmentVariables(ex.Message)},
+                        {"stacktrace", Redaction.RedactEnvironmentVariables(ex.StackTrace) }
                     };
                 }
                 else if (data is string)
