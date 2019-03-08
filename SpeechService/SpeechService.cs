@@ -584,7 +584,7 @@ namespace EddiSpeechService
                 }
                 catch (ThreadAbortException tax)
                 {
-                    Logging.Error(tax);
+                    Logging.Error("", tax);
                     Thread.ResetAbort();
                 }
             }
