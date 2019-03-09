@@ -15,11 +15,12 @@ namespace GeneratorTests
         {
             foreach (KeyValuePair<string, Type> entry in Events.TYPES.OrderBy(i => i.Key))
             {
-                List<string> output = new List<string>();
-                output.Add(Events.DESCRIPTIONS[entry.Key] + ".");
+                List<string> output = new List<string>
+                {
+                    Events.DESCRIPTIONS[entry.Key] + "."
+                };
 
-                IDictionary<string, string> variables;
-                if (Events.VARIABLES.TryGetValue(entry.Key, out variables))
+                if (Events.VARIABLES.TryGetValue(entry.Key, out IDictionary<string, string> variables))
                 {
                     if (variables.Count == 0)
                     {
@@ -81,13 +82,14 @@ namespace GeneratorTests
         public void TestGenerateWikiEventsList()
         {
 
-            List<string> output = new List<string>();
+            List<string> output = new List<string>
+            {
 
-            // This is the header row for the index of events
-            output.Add(
+                // This is the header row for the index of events
                 "EDDI generates a large number of events, triggered from changes in-game as well as from a number of external sources (e.g. Galnet RSS feed).  " +
-                "A brief description of all available events is below, along with a link to more detailed information about each event:");
-            output.Add("");
+                "A brief description of all available events is below, along with a link to more detailed information about each event:",
+                ""
+            };
 
             // This is the list of events in markdown format
             foreach (KeyValuePair<string, Type> entry in Events.TYPES.OrderBy(i => i.Key))
