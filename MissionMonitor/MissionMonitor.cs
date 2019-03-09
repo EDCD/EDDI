@@ -998,13 +998,22 @@ namespace EddiMissionMonitor
                         foreach (DestinationSystem system in mission.destinationsystems)
                         {
                             dest = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(system.name, true);
-                            farthestList.Add(CalculateDistance(curr, dest), system.name);
+                            decimal distance = CalculateDistance(curr, dest);
+                            if (!farthestList.ContainsKey(distance))
+                            {
+                                farthestList.Add(distance, system.name);
+
+                            }
                         }
                     }
                     else if (mission.destinationsystem != string.Empty)
                     {
                         dest = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(mission.destinationsystem, true);
-                        farthestList.Add(CalculateDistance(curr, dest), mission.destinationsystem);
+                        decimal distance = CalculateDistance(curr, dest);
+                        if (!farthestList.ContainsKey(distance))
+                        {
+                            farthestList.Add(distance, mission.destinationsystem);
+                        }
                     }
                 }
 
@@ -1142,13 +1151,22 @@ namespace EddiMissionMonitor
                         foreach (DestinationSystem system in mission.destinationsystems)
                         {
                             dest = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(system.name, true);
-                            nearestList.Add(CalculateDistance(curr, dest), system.name);
+                            decimal distance = CalculateDistance(curr, dest);
+                            if (!nearestList.ContainsKey(distance))
+                            {
+                                nearestList.Add(distance, system.name);
+
+                            }
                         }
                     }
                     else if (mission.destinationsystem != string.Empty)
                     {
                         dest = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(mission.destinationsystem, true);
-                        nearestList.Add(CalculateDistance(curr, dest), mission.destinationsystem);
+                        decimal distance = CalculateDistance(curr, dest);
+                        if (!nearestList.ContainsKey(distance))
+                        {
+                            nearestList.Add(distance, mission.destinationsystem);
+                        }
                     }
                 }
 
