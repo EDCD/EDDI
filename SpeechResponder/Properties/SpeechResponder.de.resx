@@ -164,7 +164,7 @@
     <value>Möchten Sie Skript "{0} wirklich löschen?</value>
   </data>
   <data name="desc" xml:space="preserve">
-    <value>Reaktion auf Ereignisse mit einer Skript-Sprache (Cottle, https://r3c.github.io/cottle/), die auf den Informationen im Ereignis basiert. Nicht alle Ereignisse haben Antwort-Skripte. Wenn ein Antwort-Skript leer ist, sind die Schaltflächen 'Test' und 'Ansicht' deaktiviert.</value>
+    <value>Reaktion auf Ereignisse mit einer Skript-Sprache (Cottle, https://r3c.github.io/cottle/), die auf den Informationen im Ereignis basiert. Nicht alle Ereignisse haben Antwort-Skripte. Wenn ein Antwort-Skript leer ist, sind die Schaltflächen 'Test' und 'Ansicht' deaktiviert. Ereignisbasierte Skripte können deaktiviert oder bearbeitet, jedoch nicht gelöscht werden.</value>
   </data>
   <data name="edit_script" xml:space="preserve">
     <value>Bearbeiten</value>
@@ -212,7 +212,13 @@
   <data name="view_script_title" xml:space="preserve">
     <value>Script ansehen</value>
   </data>
-  <data name="warning_triggered" xml:space="preserve">
-    <value>Scripte, die durch ein Ereignis angestoßen werden, können abgeschaltet aber nicht gelöscht werden.</value>
+  <data name="header_priority" xml:space="preserve">
+    <value>Priorität</value>
+  </data>
+  <data name="speechResponderHelp" xml:space="preserve">
+    <value>Informationen über Funktionen der Ereignisantworten lesen Sie</value>
+  </data>
+  <data name="speechResponderHelpHere" xml:space="preserve">
+    <value>hier.</value>
   </data>
 </root>

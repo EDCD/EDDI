@@ -1,9 +1,10 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using EddiSpeechService;
+﻿using EddiSpeechService;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace UnitTests
 {
     [TestClass]
+    // this class is pure and doesn't need TestBase.MakeSafe()
     public class TranslationTests
     {
         [TestMethod]

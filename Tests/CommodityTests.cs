@@ -3,20 +3,13 @@ using EDDNResponder;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using Rollbar;
 
 namespace UnitTests
 {
     [TestClass]
+    // this class is pure and doesn't need TestBase.MakeSafe()
     public class CommodityTests
     {
-        [TestInitialize]
-        public void start()
-        {
-            // Prevent telemetry data from being reported based on test results
-            RollbarLocator.RollbarInstance.Config.Enabled = false;
-        }
-
         [TestMethod]
         public void TestMalformedCommodityName()
         {

@@ -236,9 +236,11 @@
                             <Button x:Name="ttsTestDamagedButton" Margin="5,0,0,0" Content="{x:Static resx:MainWindow.tab_tts_test_damaged_button}" Click="ttsTestDamagedVoiceButtonClicked" />
                         </UniformGrid>
                         <TextBlock Grid.Column="0" Grid.Row="8" Grid.ColumnSpan="2" Margin="5" TextWrapping="Wrap" Text="{x:Static resx:MainWindow.tab_tts_phonetic_speech_desc}" />
-                        <Label x:Name="disableSsmltLabel" Grid.Column="0" Grid.Row="9" Margin="0, 5" Content="{x:Static resx:MainWindow.tab_tts_disable_phonetic_speech_label}" />
-                        <CheckBox x:Name="disableSsmlCheckbox" Grid.Column="1" Grid.Row="9" Margin="5" VerticalAlignment="Center" Checked="disableSsmlUpdated" Unchecked="disableSsmlUpdated"/>
-                        <Label x:Name="SSmlnote" Grid.Column="2" Grid.Row="9" Margin="5" HorizontalAlignment="Right"  Content="{x:Static resx:MainWindow.tab_tts_disable_phonetic_speech_note}" />
+                        <Label x:Name="disableSsmltLabel" VerticalAlignment="Top" Grid.Column="0" Grid.Row="9" Margin="0, 5" Content="{x:Static resx:MainWindow.tab_tts_disable_phonetic_speech_label}" />
+                        <DockPanel Grid.Column="1" Grid.Row="9" Margin="0, 5">
+                            <CheckBox Grid.Column="1" x:Name="disableSsmlCheckbox" Margin="5" VerticalAlignment="Top" Checked="disableSsmlUpdated" Unchecked="disableSsmlUpdated"/>
+                            <TextBlock Margin="5" HorizontalAlignment="Stretch" TextWrapping="Wrap" Text="{x:Static resx:MainWindow.tab_tts_disable_phonetic_speech_note}" />
+                        </DockPanel>
                         <TextBlock Grid.Column="0" Grid.Row="10" Grid.ColumnSpan="2" Margin="5" TextWrapping="Wrap" Text="{x:Static resx:MainWindow.tab_tts_icao_desc}" />
                         <Label x:Name="enableIcaoLabel" Grid.Column="0" Grid.Row="11" Margin="0, 5" Content="{x:Static resx:MainWindow.tab_tts_icao_label}" />
                         <CheckBox x:Name="enableIcaoCheckbox" Grid.Column="1" Grid.Row="11" Margin="5" VerticalAlignment="Center" Checked="enableICAOUpdated" Unchecked="enableICAOUpdated"/>

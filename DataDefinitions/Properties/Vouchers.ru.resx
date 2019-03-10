@@ -117,9 +117,21 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="bounty" xml:space="preserve">
+    <value>Награда</value>
+    <comment>bounty voucher</comment>
+  </data>
+  <data name="CombatBond" xml:space="preserve">
+    <value>Боевые бонды</value>
+    <comment>combat bond</comment>
+  </data>
+  <data name="scannable" xml:space="preserve">
+    <value>Сканирование</value>
+    <comment>scannable voucher</comment>
+  </data>
   
-  
-  
-  
-  
+  <data name="trade" xml:space="preserve">
+    <value>Торговля</value>
+    <comment>trade voucher</comment>
+  </data>
 </root>

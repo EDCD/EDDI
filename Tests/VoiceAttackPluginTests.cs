@@ -1,17 +1,23 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using EddiSpeechService;
-using System.Collections.Generic;
-using System;
-using EddiDataDefinitions;
+﻿using EddiDataDefinitions;
 using EddiDataProviderService;
+using EddiSpeechService;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
 
 namespace UnitTests
 {
     [TestClass]
     [DeploymentItem(@"x86\SQLite.Interop.dll", "x86")]
-    public class VoiceAttackPluginTests
+    public class VoiceAttackPluginTests : TestBase
     {
+        [TestInitialize]
+        public void start()
+        {
+            MakeSafe();
+        }
+
         [TestMethod]
         public void TestOutfittingCosts()
         {

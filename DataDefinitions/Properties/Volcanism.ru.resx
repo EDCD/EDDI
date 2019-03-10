@@ -117,16 +117,46 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Ammonia" xml:space="preserve">
+    <value>Аммиак</value>
+    <comment>Volcanism Ammonia</comment>
+  </data>
+  <data name="Carbon_dioxide" xml:space="preserve">
+    <value>Углерод</value>
+    <comment>Volcanism Carbon_dioxide</comment>
+  </data>
+  <data name="Iron" xml:space="preserve">
+    <value>Железо</value>
+    <comment>Volcanism Iron</comment>
+  </data>
+  <data name="Methane" xml:space="preserve">
+    <value>Метан</value>
+    <comment>Volcanism Methane</comment>
+  </data>
+  <data name="Nitrogen" xml:space="preserve">
+    <value>Азот</value>
+    <comment>Volcanism Nitrogen</comment>
+  </data>
+  <data name="Silicate" xml:space="preserve">
+    <value>Кремний</value>
+    <comment>Volcanism Silicate</comment>
+  </data>
+  <data name="Silicate_vapour" xml:space="preserve">
+    <value>Кремниевые пары</value>
+    <comment>Volcanism Silicate_vapour</comment>
+  </data>
+  <data name="Water" xml:space="preserve">
+    <value>Вода</value>
+    <comment>Volcanism Water</comment>
+  </data>
   
   
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="Geysers" xml:space="preserve">
+    <value>Гейзеры</value>
+    <comment>Volcanism Geysers</comment>
+  </data>
+  <data name="Magma" xml:space="preserve">
+    <value>Магма</value>
+    <comment>Volcanism Magma</comment>
+  </data>
 </root>

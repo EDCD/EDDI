@@ -294,6 +294,24 @@ namespace EddiVoiceAttackResponder
                 {
                     setStarSystemValues(EDDI.Instance.HomeStarSystem, "Home system", ref vaProxy);
                     HomeStarSystem = EDDI.Instance.HomeStarSystem;
+
+                    // Backwards-compatibility with 1.x documented variables
+                    try
+                    {
+                        if (EDDI.Instance.HomeStarSystem != null)
+                        {
+                            vaProxy.SetText("Home system", EDDI.Instance.HomeStarSystem.name);
+                            vaProxy.SetText("Home system (spoken)", Translations.StarSystem(EDDI.Instance.HomeStarSystem.name));
+                        }
+                        if (EDDI.Instance.HomeStation != null)
+                        {
+                            vaProxy.SetText("Home station", EDDI.Instance.HomeStation.name);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Logging.Error("Failed to set 1.x home system values", ex);
+                    }
                 }
             }
             catch (Exception ex)
@@ -487,142 +505,141 @@ namespace EddiVoiceAttackResponder
 
         protected static void setShipValues(Ship ship, string prefix, ref dynamic vaProxy)
         {
-            if (ship == null)
+            if (ship != null && ship != vaShipyard.FirstOrDefault(s => s.LocalId == ship.LocalId))
             {
-                return;
-            }
-            Logging.Debug("Setting ship information (" + prefix + ")");
-            try
-            {
-                vaProxy.SetText(prefix + " manufacturer", ship?.manufacturer);
-                vaProxy.SetText(prefix + " model", ship?.model);
-                vaProxy.SetText(prefix + " model (spoken)", ship?.SpokenModel());
-
-                if (((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip() != null && EDDI.Instance.Cmdr != null && EDDI.Instance.Cmdr.name != null)
+                Logging.Debug("Setting ship information (" + prefix + ")");
+                try
                 {
-                    vaProxy.SetText(prefix + " callsign", ship == null ? null : ship.manufacturer + " " + EDDI.Instance.Cmdr.name.Substring(0, 3).ToUpperInvariant());
-                    vaProxy.SetText(prefix + " callsign (spoken)", ship == null ? null : ship.SpokenManufacturer() + " " + Translations.ICAO(EDDI.Instance.Cmdr.name.Substring(0, 3).ToUpperInvariant()));
-                }
+                    vaProxy.SetText(prefix + " manufacturer", ship?.manufacturer);
+                    vaProxy.SetText(prefix + " model", ship?.model);
+                    vaProxy.SetText(prefix + " model (spoken)", ship?.SpokenModel());
 
-                vaProxy.SetText(prefix + " name", ship?.name);
-                vaProxy.SetText(prefix + " name (spoken)", ship?.phoneticname);
-                vaProxy.SetText(prefix + " ident", ship?.ident);
-                vaProxy.SetText(prefix + " ident (spoken)", Translations.ICAO(ship?.ident, false));
-                vaProxy.SetText(prefix + " role", ship?.Role?.localizedName);
-                vaProxy.SetText(prefix + " size", ship?.size?.ToString());
-                vaProxy.SetDecimal(prefix + " value", ship?.value);
-                vaProxy.SetText(prefix + " value (spoken)", Translations.Humanize(ship?.value));
-                vaProxy.SetDecimal(prefix + " health", ship?.health);
-                vaProxy.SetInt(prefix + " cargo capacity", ship?.cargocapacity);
-
-                setShipModuleValues(ship?.bulkheads, prefix + " bulkheads", ref vaProxy);
-                setShipModuleOutfittingValues(ship?.bulkheads, EDDI.Instance.CurrentStation?.outfitting, prefix + " bulkheads", ref vaProxy);
-                setShipModuleValues(ship?.powerplant, prefix + " power plant", ref vaProxy);
-                setShipModuleOutfittingValues(ship?.powerplant, EDDI.Instance.CurrentStation?.outfitting, prefix + " power plant", ref vaProxy);
-                setShipModuleValues(ship?.thrusters, prefix + " thrusters", ref vaProxy);
-                setShipModuleOutfittingValues(ship?.thrusters, EDDI.Instance.CurrentStation?.outfitting, prefix + " thrusters", ref vaProxy);
-                setShipModuleValues(ship?.frameshiftdrive, prefix + " frame shift drive", ref vaProxy);
-                setShipModuleOutfittingValues(ship?.frameshiftdrive, EDDI.Instance.CurrentStation?.outfitting, prefix + " frame shift drive", ref vaProxy);
-                setShipModuleValues(ship?.lifesupport, prefix + " life support", ref vaProxy);
-                setShipModuleOutfittingValues(ship?.lifesupport, EDDI.Instance.CurrentStation?.outfitting, prefix + " life support", ref vaProxy);
-                setShipModuleValues(ship?.powerdistributor, prefix + " power distributor", ref vaProxy);
-                setShipModuleOutfittingValues(ship?.powerdistributor, EDDI.Instance.CurrentStation?.outfitting, prefix + " power distributor", ref vaProxy);
-                setShipModuleValues(ship?.sensors, prefix + " sensors", ref vaProxy);
-                setShipModuleOutfittingValues(ship?.sensors, EDDI.Instance.CurrentStation?.outfitting, prefix + " sensors", ref vaProxy);
-                setShipModuleValues(ship?.fueltank, prefix + " fuel tank", ref vaProxy);
-                setShipModuleOutfittingValues(ship?.fueltank, EDDI.Instance.CurrentStation?.outfitting, prefix + " fuel tank", ref vaProxy);
-
-                // Special for fuel tank - capacity and total capacity
-                vaProxy.SetDecimal(prefix + " fuel tank capacity", ship?.fueltankcapacity);
-                vaProxy.SetDecimal(prefix + " total fuel tank capacity", ship?.fueltanktotalcapacity);
-
-                // Hardpoints
-                if (ship != null)
-                {
-                    int numTinyHardpoints = 0;
-                    int numSmallHardpoints = 0;
-                    int numMediumHardpoints = 0;
-                    int numLargeHardpoints = 0;
-                    int numHugeHardpoints = 0;
-                    foreach (Hardpoint Hardpoint in ship.hardpoints)
+                    if (((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip() != null && EDDI.Instance.Cmdr != null && EDDI.Instance.Cmdr.name != null)
                     {
-                        string baseHardpointName = prefix;
-                        switch (Hardpoint.size)
+                        vaProxy.SetText(prefix + " callsign", ship == null ? null : ship.manufacturer + " " + EDDI.Instance.Cmdr.name.Substring(0, 3).ToUpperInvariant());
+                        vaProxy.SetText(prefix + " callsign (spoken)", ship == null ? null : ship.SpokenManufacturer() + " " + Translations.ICAO(EDDI.Instance.Cmdr.name.Substring(0, 3).ToUpperInvariant()));
+                    }
+
+                    vaProxy.SetText(prefix + " name", ship?.name);
+                    vaProxy.SetText(prefix + " name (spoken)", ship?.phoneticname);
+                    vaProxy.SetText(prefix + " ident", ship?.ident);
+                    vaProxy.SetText(prefix + " ident (spoken)", Translations.ICAO(ship?.ident, false));
+                    vaProxy.SetText(prefix + " role", ship?.Role?.localizedName);
+                    vaProxy.SetText(prefix + " size", ship?.size?.ToString());
+                    vaProxy.SetDecimal(prefix + " value", ship?.value);
+                    vaProxy.SetText(prefix + " value (spoken)", Translations.Humanize(ship?.value));
+                    vaProxy.SetDecimal(prefix + " health", ship?.health);
+                    vaProxy.SetInt(prefix + " cargo capacity", ship?.cargocapacity);
+
+                    setShipModuleValues(ship?.bulkheads, prefix + " bulkheads", ref vaProxy);
+                    setShipModuleOutfittingValues(ship?.bulkheads, EDDI.Instance.CurrentStation?.outfitting, prefix + " bulkheads", ref vaProxy);
+                    setShipModuleValues(ship?.powerplant, prefix + " power plant", ref vaProxy);
+                    setShipModuleOutfittingValues(ship?.powerplant, EDDI.Instance.CurrentStation?.outfitting, prefix + " power plant", ref vaProxy);
+                    setShipModuleValues(ship?.thrusters, prefix + " thrusters", ref vaProxy);
+                    setShipModuleOutfittingValues(ship?.thrusters, EDDI.Instance.CurrentStation?.outfitting, prefix + " thrusters", ref vaProxy);
+                    setShipModuleValues(ship?.frameshiftdrive, prefix + " frame shift drive", ref vaProxy);
+                    setShipModuleOutfittingValues(ship?.frameshiftdrive, EDDI.Instance.CurrentStation?.outfitting, prefix + " frame shift drive", ref vaProxy);
+                    setShipModuleValues(ship?.lifesupport, prefix + " life support", ref vaProxy);
+                    setShipModuleOutfittingValues(ship?.lifesupport, EDDI.Instance.CurrentStation?.outfitting, prefix + " life support", ref vaProxy);
+                    setShipModuleValues(ship?.powerdistributor, prefix + " power distributor", ref vaProxy);
+                    setShipModuleOutfittingValues(ship?.powerdistributor, EDDI.Instance.CurrentStation?.outfitting, prefix + " power distributor", ref vaProxy);
+                    setShipModuleValues(ship?.sensors, prefix + " sensors", ref vaProxy);
+                    setShipModuleOutfittingValues(ship?.sensors, EDDI.Instance.CurrentStation?.outfitting, prefix + " sensors", ref vaProxy);
+                    setShipModuleValues(ship?.fueltank, prefix + " fuel tank", ref vaProxy);
+                    setShipModuleOutfittingValues(ship?.fueltank, EDDI.Instance.CurrentStation?.outfitting, prefix + " fuel tank", ref vaProxy);
+
+                    // Special for fuel tank - capacity and total capacity
+                    vaProxy.SetDecimal(prefix + " fuel tank capacity", ship?.fueltankcapacity);
+                    vaProxy.SetDecimal(prefix + " total fuel tank capacity", ship?.fueltanktotalcapacity);
+
+                    // Hardpoints
+                    if (ship != null)
+                    {
+                        int numTinyHardpoints = 0;
+                        int numSmallHardpoints = 0;
+                        int numMediumHardpoints = 0;
+                        int numLargeHardpoints = 0;
+                        int numHugeHardpoints = 0;
+                        foreach (Hardpoint Hardpoint in ship.hardpoints)
                         {
-                            case 0:
-                                baseHardpointName = prefix + " tiny hardpoint " + ++numTinyHardpoints;
-                                break;
-                            case 1:
-                                baseHardpointName = prefix + " small hardpoint " + ++numSmallHardpoints;
-                                break;
-                            case 2:
-                                baseHardpointName = prefix + " medium hardpoint " + ++numMediumHardpoints;
-                                break;
-                            case 3:
-                                baseHardpointName = prefix + " large hardpoint " + ++numLargeHardpoints;
-                                break;
-                            case 4:
-                                baseHardpointName = prefix + " huge hardpoint " + ++numHugeHardpoints;
-                                break;
+                            string baseHardpointName = prefix;
+                            switch (Hardpoint.size)
+                            {
+                                case 0:
+                                    baseHardpointName = prefix + " tiny hardpoint " + ++numTinyHardpoints;
+                                    break;
+                                case 1:
+                                    baseHardpointName = prefix + " small hardpoint " + ++numSmallHardpoints;
+                                    break;
+                                case 2:
+                                    baseHardpointName = prefix + " medium hardpoint " + ++numMediumHardpoints;
+                                    break;
+                                case 3:
+                                    baseHardpointName = prefix + " large hardpoint " + ++numLargeHardpoints;
+                                    break;
+                                case 4:
+                                    baseHardpointName = prefix + " huge hardpoint " + ++numHugeHardpoints;
+                                    break;
+                            }
+
+                            vaProxy.SetBoolean(baseHardpointName + " occupied", Hardpoint.module != null);
+                            setShipModuleValues(Hardpoint.module, baseHardpointName + " module", ref vaProxy);
+                            setShipModuleOutfittingValues(ship == null ? null : Hardpoint.module, EDDI.Instance.CurrentStation?.outfitting, baseHardpointName + " module", ref vaProxy);
                         }
 
-                        vaProxy.SetBoolean(baseHardpointName + " occupied", Hardpoint.module != null);
-                        setShipModuleValues(Hardpoint.module, baseHardpointName + " module", ref vaProxy);
-                        setShipModuleOutfittingValues(ship == null ? null : Hardpoint.module, EDDI.Instance.CurrentStation?.outfitting, baseHardpointName + " module", ref vaProxy);
-                    }
-
-                    vaProxy.SetInt(prefix + " hardpoints", numSmallHardpoints + numMediumHardpoints + numLargeHardpoints + numHugeHardpoints);
-                    vaProxy.SetInt(prefix + " utility slots", numTinyHardpoints);
-                    // Compartments
-                    int curCompartment = 0;
-                    foreach (Compartment Compartment in ship.compartments)
-                    {
-                        string baseCompartmentName = prefix + " compartment " + ++curCompartment;
-                        vaProxy.SetInt(baseCompartmentName + " size", Compartment.size);
-                        vaProxy.SetBoolean(baseCompartmentName + " occupied", Compartment.module != null);
-                        setShipModuleValues(Compartment.module, baseCompartmentName + " module", ref vaProxy);
-                        setShipModuleOutfittingValues(ship == null ? null : Compartment.module, EDDI.Instance.CurrentStation?.outfitting, baseCompartmentName + " module", ref vaProxy);
-                    }
-                    vaProxy.SetInt(prefix + " compartments", curCompartment);
-                }
-
-                // Fetch the star system in which the ship is stored
-                if (ship != null && ship.starsystem != null)
-                {
-                    vaProxy.SetText(prefix + " system", ship.starsystem);
-                    vaProxy.SetText(prefix + " station", ship.station);
-                    StarSystem StoredShipStarSystem = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(ship.starsystem);
-
-                    // Work out the distance to the system where the ship is stored if we can
-                    if (EDDI.Instance.CurrentStarSystem != null)
-                    {
-                        // CurrentStarSystem might not have been initialised yet so we check. If not, it may be set on the next pass of the setValues() method.
-                        StarSystem ThisStarSystem = StarSystemSqLiteRepository.Instance.GetStarSystem(EDDI.Instance.CurrentStarSystem.name);
-                        if (ThisStarSystem?.x != null & StoredShipStarSystem?.x != null)
+                        vaProxy.SetInt(prefix + " hardpoints", numSmallHardpoints + numMediumHardpoints + numLargeHardpoints + numHugeHardpoints);
+                        vaProxy.SetInt(prefix + " utility slots", numTinyHardpoints);
+                        // Compartments
+                        int curCompartment = 0;
+                        foreach (Compartment Compartment in ship.compartments)
                         {
-                            decimal dx = (ThisStarSystem.x - StoredShipStarSystem.x) ?? 0M;
-                            decimal dy = (ThisStarSystem.y - StoredShipStarSystem.y) ?? 0M;
-                            decimal dz = (ThisStarSystem.z - StoredShipStarSystem.z) ?? 0M;
-                            decimal distance = (decimal)(Math.Sqrt((double)(dx * dx + dy * dy + dz * dz)));
-                            vaProxy.SetDecimal(prefix + " distance", distance);
+                            string baseCompartmentName = prefix + " compartment " + ++curCompartment;
+                            vaProxy.SetInt(baseCompartmentName + " size", Compartment.size);
+                            vaProxy.SetBoolean(baseCompartmentName + " occupied", Compartment.module != null);
+                            setShipModuleValues(Compartment.module, baseCompartmentName + " module", ref vaProxy);
+                            setShipModuleOutfittingValues(ship == null ? null : Compartment.module, EDDI.Instance.CurrentStation?.outfitting, baseCompartmentName + " module", ref vaProxy);
+                        }
+                        vaProxy.SetInt(prefix + " compartments", curCompartment);
+                    }
+
+                    // Fetch the star system in which the ship is stored
+                    if (ship != null && ship.starsystem != null)
+                    {
+                        vaProxy.SetText(prefix + " system", ship.starsystem);
+                        vaProxy.SetText(prefix + " station", ship.station);
+                        StarSystem StoredShipStarSystem = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(ship.starsystem);
+
+                        // Work out the distance to the system where the ship is stored if we can
+                        if (EDDI.Instance.CurrentStarSystem != null)
+                        {
+                            // CurrentStarSystem might not have been initialised yet so we check. If not, it may be set on the next pass of the setValues() method.
+                            StarSystem ThisStarSystem = StarSystemSqLiteRepository.Instance.GetStarSystem(EDDI.Instance.CurrentStarSystem.name);
+                            if (ThisStarSystem?.x != null & StoredShipStarSystem?.x != null)
+                            {
+                                decimal dx = (ThisStarSystem.x - StoredShipStarSystem.x) ?? 0M;
+                                decimal dy = (ThisStarSystem.y - StoredShipStarSystem.y) ?? 0M;
+                                decimal dz = (ThisStarSystem.z - StoredShipStarSystem.z) ?? 0M;
+                                decimal distance = (decimal)(Math.Sqrt((double)(dx * dx + dy * dy + dz * dz)));
+                                vaProxy.SetDecimal(prefix + " distance", distance);
+                            }
+                        }
+                        else
+                        {
+                            // We don't know how far away the ship is
+                            vaProxy.SetDecimal(prefix + " distance", null);
                         }
                     }
-                    else
-                    {
-                        // We don't know how far away the ship is
-                        vaProxy.SetDecimal(prefix + " distance", null);
-                    }
+
+                    setStatus(ref vaProxy, "Operational");
+                }
+                catch (Exception e)
+                {
+                    Logging.Error("Failed to set VoiceAttack ship information", e);
+                    setStatus(ref vaProxy, "Failed to set ship information", e);
                 }
 
-                setStatus(ref vaProxy, "Operational");
+                Logging.Debug("Set ship information");
             }
-            catch (Exception e)
-            {
-                Logging.Error("Failed to set VoiceAttack ship information", e);
-                setStatus(ref vaProxy, "Failed to set ship information", e);
-            }
-
-            Logging.Debug("Set ship information");
         }
 
         /// <summary>Find a module in outfitting that matches our existing module and provide its price</summary>
@@ -674,7 +691,7 @@ namespace EddiVoiceAttackResponder
 
         protected static void setShipyardValues(List<Ship> shipyard, ref dynamic vaProxy)
         {
-            if (shipyard != null)
+            if (shipyard != null && shipyard != vaShipyard)
             {
                 int currentStoredShip = 1;
                 foreach (Ship StoredShip in shipyard)

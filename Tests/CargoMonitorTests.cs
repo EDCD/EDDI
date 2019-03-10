@@ -1,19 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using Eddi;
-using EddiCargoMonitor;
-using EddiMissionMonitor;
+﻿using EddiCargoMonitor;
 using EddiDataDefinitions;
 using EddiEvents;
 using EddiJournalMonitor;
-using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Rollbar;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace UnitTests
 {
     [TestClass]
-    public class CargoMonitorTests
+    public class CargoMonitorTests : TestBase
     {
         CargoMonitor cargoMonitor = new CargoMonitor();
         Cargo cargo;
@@ -23,11 +20,7 @@ namespace UnitTests
         [TestInitialize]
         private void StartTestCargoMonitor()
         {
-            // Prevent telemetry data from being reported based on test results
-            RollbarLocator.RollbarInstance.Config.Enabled = false;
-            
-            // Set ourselves as in beta to stop sending data to remote systems
-            EDDI.Instance.enqueueEvent(new FileHeaderEvent(DateTime.UtcNow, "JournalBeta.txt", "beta", "beta"));
+            MakeSafe();
         }
 
         [TestMethod]
@@ -238,7 +231,7 @@ namespace UnitTests
             Assert.AreEqual(2, cargo.haulageData.Count);
 
             // CargoEvent - Collected 2 Structural Regulators for mission ID 375682327. Verify haulage & need changed
-            line = "{ \"timestamp\":\"2018-10-31T03:39:10Z\", \"event\":\"Cargo\", \"Count\":32, \"Inventory\":[ { \"Name\":\"hydrogenfuel\", \"Name_Localised\":\"Hydrogen Fuel\", \"Count\":1, \"Stolen\":0 }, { \"Name\":\"biowaste\", \"MissionID\":426282789, \"Count\":30, \"Stolen\":0 }, { \"Name\":\"animalmeat\", \"Name_Localised\":\"Animal Meat\", \"Count\":1, \"Stolen\":0 }, { \"Name\":\"structuralregulators\", \"MissionID\":375682327, \"Count\":2, \"Stolen\":0 } ] }";
+            line = "{ \"timestamp\":\"2018-10-31T03:39:10Z\", \"event\":\"Cargo\", \"Count\":34, \"Inventory\":[ { \"Name\":\"hydrogenfuel\", \"Name_Localised\":\"Hydrogen Fuel\", \"Count\":1, \"Stolen\":0 }, { \"Name\":\"biowaste\", \"MissionID\":426282789, \"Count\":30, \"Stolen\":0 }, { \"Name\":\"animalmeat\", \"Name_Localised\":\"Animal Meat\", \"Count\":1, \"Stolen\":0 }, { \"Name\":\"structuralregulators\", \"MissionID\":375682327, \"Count\":2, \"Stolen\":0 } ] }";
             events = JournalMonitor.ParseJournalEntry(line);
             privateObject.Invoke("_handleCargoEvent", new object[] { events[0] });
 
@@ -256,7 +249,7 @@ namespace UnitTests
             Assert.IsNull(haulage);
 
             // CargoEvent - Verify 2 stolen Structural Regulators and 4 still needed for mission ID 37566072
-            line = "{ \"timestamp\":\"2018-10-31T03:39:10Z\", \"event\":\"Cargo\", \"Count\":32, \"Inventory\":[ { \"Name\":\"hydrogenfuel\", \"Name_Localised\":\"Hydrogen Fuel\", \"Count\":1, \"Stolen\":0 }, { \"Name\":\"biowaste\", \"MissionID\":426282789, \"Count\":30, \"Stolen\":0 }, { \"Name\":\"animalmeat\", \"Name_Localised\":\"Animal Meat\", \"Count\":1, \"Stolen\":0 }, { \"Name\":\"structuralregulators\", \"Count\":2, \"Stolen\":2 } ] }";
+            line = "{ \"timestamp\":\"2018-10-31T03:39:10Z\", \"event\":\"Cargo\", \"Count\":34, \"Inventory\":[ { \"Name\":\"hydrogenfuel\", \"Name_Localised\":\"Hydrogen Fuel\", \"Count\":1, \"Stolen\":0 }, { \"Name\":\"biowaste\", \"MissionID\":426282789, \"Count\":30, \"Stolen\":0 }, { \"Name\":\"animalmeat\", \"Name_Localised\":\"Animal Meat\", \"Count\":1, \"Stolen\":0 }, { \"Name\":\"structuralregulators\", \"Count\":2, \"Stolen\":2 } ] }";
             events = JournalMonitor.ParseJournalEntry(line);
             privateObject.Invoke("_handleCargoEvent", new object[] { events[0] });
             cargo = cargoMonitor.inventory.ToList().FirstOrDefault(c => c.edname == "StructuralRegulators");
@@ -329,7 +322,7 @@ namespace UnitTests
             events = JournalMonitor.ParseJournalEntry(line);
             privateObject.Invoke("_handleCargoDepotEvent", new object[] { events[0] });
 
-            line = "{ \"timestamp\":\"2018-10-31T03:39:10Z\", \"event\":\"Cargo\", \"Count\":32, \"Inventory\":[ { \"Name\":\"hydrogenfuel\", \"Name_Localised\":\"Hydrogen Fuel\", \"Count\":1, \"Stolen\":0 }, { \"Name\":\"biowaste\", \"MissionID\":426282789, \"Count\":30, \"Stolen\":0 }, { \"Name\":\"animalmeat\", \"Name_Localised\":\"Animal Meat\", \"Count\":1, \"Stolen\":0 }, { \"Name\":\"silver\", \"MissionID\":413748339, \"Count\":60, \"Stolen\":0 } ] }";
+            line = "{ \"timestamp\":\"2018-10-31T03:39:10Z\", \"event\":\"Cargo\", \"Count\":92, \"Inventory\":[ { \"Name\":\"hydrogenfuel\", \"Name_Localised\":\"Hydrogen Fuel\", \"Count\":1, \"Stolen\":0 }, { \"Name\":\"biowaste\", \"MissionID\":426282789, \"Count\":30, \"Stolen\":0 }, { \"Name\":\"animalmeat\", \"Name_Localised\":\"Animal Meat\", \"Count\":1, \"Stolen\":0 }, { \"Name\":\"silver\", \"MissionID\":413748339, \"Count\":60, \"Stolen\":0 } ] }";
             events = JournalMonitor.ParseJournalEntry(line);
             privateObject.Invoke("_handleCargoEvent", new object[] { events[0] });
             Assert.AreEqual(60, cargo.total);

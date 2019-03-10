@@ -1,22 +1,20 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using EddiDataDefinitions;
+﻿using EddiDataDefinitions;
 using EddiEvents;
 using EddiJournalMonitor;
 using EddiMissionMonitor;
 using EddiShipMonitor;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
-using Rollbar;
 
 namespace UnitTests
 {
     [TestClass]
-    public class JournalMonitorTests
+    public class JournalMonitorTests : TestBase
     {
         [TestInitialize]
         public void start()
         {
-            // Prevent telemetry data from being reported based on test results
-            RollbarLocator.RollbarInstance.Config.Enabled = false;
+            MakeSafe();
         }
 
         [TestMethod]

@@ -1,12 +1,18 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using EddiEvents;
+﻿using EddiEvents;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 
 namespace UnitTests
 {
     [TestClass]
-    public class BodyScanTests
+    public class BodyScanTests : TestBase
     {
+        [TestInitialize]
+        public void start()
+        {
+            MakeSafe();
+        }
+
         [TestMethod]
         public void TestBodyScanDagutiiABC1b()
         {

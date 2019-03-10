@@ -58,7 +58,7 @@ namespace EddiShipMonitor
                 ? ship.name 
                 : $@"<phoneme alphabet=""ipa"" ph=""{ship.phoneticname}"">{ship.name}</phoneme>";
             string message = String.Format(Properties.ShipMonitor.ship_ready, nameToSpeak);
-            SpeechService.Instance.Say(ship, message, false);
+            SpeechService.Instance.Say(ship, message, 0);
         }
 
         private void exportShip(object sender, RoutedEventArgs e)
@@ -98,12 +98,12 @@ namespace EddiShipMonitor
                     }
                     else
                     {
-                        Logging.Error("Failed to find a way of opening URL \"" + uri + "\"");
+                        Logging.Info("Export failed: Target URL is too long.");
                     }
                 }
                 catch (Exception)
                 {
-                    // Nothing to do
+                    Logging.Error("Failed to find a way of opening URL \"" + uri + "\"");
                 }
             }
         }

@@ -307,7 +307,9 @@ EDDI's VoiceAttack plugin allows you to access its features in your own profile.
 
 ## say
 
-This function uses EDDI's voice to read a script.  The script should be a text variable with the name 'Script'.
+This function uses EDDI's voice to read a script.  
+- The script should be a text variable with the name 'Script'. 
+- The script priority is an optional integer variable with the name 'Priority'.
 
 If you want to use a different voice to the standard one then you can set the name of the voice you want to use in a text variable with the name 'Voice'.  Note that when you set this variable it will continue to be used until you unset it, at which point EDDI will use the voice configured in its text-to-speech settings.
 
@@ -315,7 +317,9 @@ To use this function in your own commands use the 'Execute an external plugin fu
 
 ## speech
 
-This function uses EDDI's voice to read a Speech Responder script.  The name of the script should be a text variable with the name 'Script'.
+This function uses EDDI's voice to read a Speech Responder script.  
+- The name of the script should be a text variable with the name 'Script'.
+- The script priority is an optional integer variable with the name 'Priority'.
 
 If you want to use a different voice to the standard one then you can set the name of the voice you want to use in a text variable with the name 'Voice'.  Note that when you set this variable it will continue to be used until you unset it, at which point EDDI will use the voice configured in its text-to-speech settings.
 

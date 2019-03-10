@@ -118,6 +118,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Properties\CargoMonitor.pt-BR.resx" />
     <EmbeddedResource Include="Properties\CargoMonitor.ru.resx" />
     <Page Include="ConfigurationWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

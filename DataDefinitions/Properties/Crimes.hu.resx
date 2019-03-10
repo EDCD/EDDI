@@ -117,11 +117,26 @@
     <value>Illegális rakomány szállítás</value>
     <comment>Crime illegalCargo</comment>
   </data>
-  
-  
-  
-  
-  
+  <data name="disobeyPolice" xml:space="preserve">
+    <value>Engedetlenség</value>
+    <comment>Crime disobeyPolice</comment>
+  </data>
+  <data name="fireInNoFireZone" xml:space="preserve">
+    <value>Fegyverhasználat a tűzmentes zónában</value>
+    <comment>Crime fireInNoFireZone</comment>
+  </data>
+  <data name="fireInStation" xml:space="preserve">
+    <value>Fegyver használata az állomáson belül</value>
+    <comment>Crime fireInStation</comment>
+  </data>
+  <data name="dumpingDangerous" xml:space="preserve">
+    <value>Veszélyes rakomány kidobás</value>
+    <comment>Crime dumpingDangerous</comment>
+  </data>
+  <data name="dumpingNearStation" xml:space="preserve">
+    <value>Rakomány kidobása állomás közelébe</value>
+    <comment>Crime dumpingNearStation</comment>
+  </data>
   <data name="dockingMinorBlockingAirlock" xml:space="preserve">
     <value>Légzsilip blokkolás</value>
     <comment>Crime dockingMinorBlockingAirlock</comment>
@@ -154,7 +169,10 @@
     <value>Ütközéssel való sérülés okozása</value>
     <comment>Crime collidedAtSpeedInNoFireZone_hulldamage</comment>
   </data>
-  
+  <data name="recklessWeaponsDischarge" xml:space="preserve">
+    <value>meggondolatlan fegyverhasználat</value>
+    <comment>Crime recklessWeaponsDischarge</comment>
+  </data>
   <data name="passengerWanted" xml:space="preserve">
     <value>körözött személy szállítás</value>
     <comment>Crime passengerWanted</comment>

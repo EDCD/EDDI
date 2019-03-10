@@ -117,24 +117,64 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="AmmoniaWorld" xml:space="preserve">
+    <value>Аммиачный мир</value>
+  </data>
+  <data name="EarthLikeBody" xml:space="preserve">
+    <value>Землеподобная планета</value>
+  </data>
+  <data name="GasGiantWithAmmoniaBasedLife" xml:space="preserve">
+    <value>Газовый гигант с жизнью на основе аммиака</value>
+  </data>
+  <data name="GasGiantWithWaterBasedLife" xml:space="preserve">
+    <value>Газовый гигант с жизнью на основе воды</value>
+  </data>
+  <data name="HeliumGasGiant" xml:space="preserve">
+    <value>Гелиевый газовый гигант</value>
+  </data>
+  <data name="HeliumRichGasGiant" xml:space="preserve">
+    <value>Богатый гелием газовый гигант</value>
+  </data>
+  <data name="HighMetalContentBody" xml:space="preserve">
+    <value>Планета с высоким содержанием металлов</value>
+  </data>
+  <data name="IcyBody" xml:space="preserve">
+    <value>Ледяная планета</value>
+  </data>
+  <data name="MetalRichBody" xml:space="preserve">
+    <value>Планета богатая металлом</value>
+  </data>
+  <data name="RockyBody" xml:space="preserve">
+    <value>Каменистая планета</value>
+  </data>
+  <data name="RockyIceBody" xml:space="preserve">
+    <value>Каменисто-ледяная планета</value>
+  </data>
+  <data name="SudarskyClassIGasGiant" xml:space="preserve">
+    <value>Газовый гигант класса I</value>
+  </data>
+  <data name="SudarskyClassIIGasGiant" xml:space="preserve">
+    <value>Газовый гигант класса II</value>
+  </data>
+  <data name="SudarskyClassIIIGasGiant" xml:space="preserve">
+    <value>Газовый гигант класса III</value>
+  </data>
+  <data name="SudarskyClassIVGasGiant" xml:space="preserve">
+    <value>Газовый гигант класса IV</value>
+  </data>
+  <data name="SudarskyClassVGasGiant" xml:space="preserve">
+    <value>Газовый гигант класса V</value>
+  </data>
+  <data name="WaterGiant" xml:space="preserve">
+    <value>Водный гигант</value>
+  </data>
+  <data name="WaterGiantWithLife" xml:space="preserve">
+    <value>Водный гигант с жизнью</value>
+  </data>
+  <data name="WaterWorld" xml:space="preserve">
+    <value>Водная планета</value>
+  </data>
+  <data name="None" xml:space="preserve">
+    <value>Ни один</value>
+  </data>
 </root>

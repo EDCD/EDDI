@@ -117,7 +117,13 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
-  
+  <data name="desc" xml:space="preserve">
+    <value>Отправляет информацию о станциях, прыжках и сканах в EDDN. EDDN - это сторонний инструмент, который собирает информацию о системах и рынках и предоставляет данные для большинства торговых инструментов, а также для информационных инструментов звездных систем, таких как EDDB.</value>
+  </data>
+  <data name="name" xml:space="preserve">
+    <value>EDDN Ответчик</value>
+  </data>
+  <data name="errPosition" xml:space="preserve">
+    <value>Извините, коммандир: я потерял след, и мне нужно, чтобы вы восстановили свою позицию после пробуждения или перелогинились, прежде чем я смогу возобновить загрузку данных исследования.</value>
+  </data>
 </root>

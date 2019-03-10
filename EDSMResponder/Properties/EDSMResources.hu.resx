@@ -154,5 +154,7 @@
   <data name="p2" xml:space="preserve">
     <value>Amennyiben az aktuálistól eltérő kapitány nevet regisztrált, kérjük adja meg alul</value>
   </data>
-  
+  <data name="p3" xml:space="preserve">
+    <value>Amint megadta az adatai felül letöltheti a létező logjait az EDSM-ből annak érdekében, hogy EDDI tudja hányszor járt az egyes rendszerekben. Ezt csak az első alkalommal kell megtennie az EDSM beállításához. A művelet eltarthat egy ideig</value>
+  </data>
 </root>

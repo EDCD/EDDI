@@ -16,6 +16,7 @@ using System.Runtime.InteropServices;
 using System.Security.Permissions;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 using Utilities;
 
 namespace Eddi
@@ -264,7 +265,7 @@ namespace Eddi
                         if (!FromVA)
                         {
                             string message = String.Format(Properties.EddiResources.mandatory_upgrade, spokenVersion);
-                            SpeechService.Instance.Say(null, message, false);
+                            SpeechService.Instance.Say(null, message, 0);
                         }
                         UpgradeRequired = true;
                         UpgradeLocation = info.url;
@@ -279,7 +280,7 @@ namespace Eddi
                         if (!FromVA)
                         {
                             string message = String.Format(Properties.EddiResources.update_available, spokenVersion);
-                            SpeechService.Instance.Say(null, message, false);
+                            SpeechService.Instance.Say(null, message, 0);
                         }
                         UpgradeAvailable = true;
                         UpgradeLocation = info.url;
@@ -289,7 +290,7 @@ namespace Eddi
             }
             catch (Exception ex)
             {
-                SpeechService.Instance.Say(null, Properties.EddiResources.update_server_unreachable, false);
+                SpeechService.Instance.Say(null, Properties.EddiResources.update_server_unreachable, 0);
                 Logging.Warn("Failed to access " + Constants.EDDI_SERVER_URL, ex);
             }
         }
@@ -303,11 +304,11 @@ namespace Eddi
                 if (UpgradeLocation != null)
                 {
                     Logging.Info("Downloading upgrade from " + UpgradeLocation);
-                    SpeechService.Instance.Say(null, Properties.EddiResources.downloading_upgrade, true);
+                    SpeechService.Instance.Say(null, Properties.EddiResources.downloading_upgrade, 0);
                     string updateFile = Net.DownloadFile(UpgradeLocation, @"EDDI-update.exe");
                     if (updateFile == null)
                     {
-                        SpeechService.Instance.Say(null, Properties.EddiResources.download_failed, true);
+                        SpeechService.Instance.Say(null, Properties.EddiResources.download_failed, 0);
                     }
                     else
                     {
@@ -317,7 +318,7 @@ namespace Eddi
                         Logging.Info("Downloaded update to " + updateFile);
                         Logging.Info("Path is " + Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
                         File.SetAttributes(updateFile, FileAttributes.Normal);
-                        SpeechService.Instance.Say(null, Properties.EddiResources.starting_upgrade, true);
+                        SpeechService.Instance.Say(null, Properties.EddiResources.starting_upgrade, 0);
                         Logging.Info("Starting upgrade.");
 
                         Process.Start(updateFile, @"/closeapplications /restartapplications /silent /log /nocancel /noicon /dir=""" + Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + @"""");
@@ -326,7 +327,7 @@ namespace Eddi
             }
             catch (Exception ex)
             {
-                SpeechService.Instance.Say(null, Properties.EddiResources.upgrade_failed, true);
+                SpeechService.Instance.Say(null, Properties.EddiResources.upgrade_failed, 0);
                 Logging.Error("Upgrade failed", ex);
             }
         }
@@ -633,11 +634,15 @@ namespace Eddi
             catch (ThreadAbortException tax)
             {
                 Thread.ResetAbort();
-                Logging.Error(JsonConvert.SerializeObject(@event), tax);
+                Logging.Debug("Thread aborted", tax);
             }
             catch (Exception ex)
             {
-                Logging.Error(JsonConvert.SerializeObject(@event), ex);
+                Dictionary<string, object> data = new Dictionary<string, object>();
+                data.Add("event", JsonConvert.SerializeObject(@event));
+                data.Add("exception", ex.Message);
+                data.Add("stacktrace", ex.StackTrace);
+                Logging.Error("Failed to enqueue event", data);
             }
         }
 
@@ -803,7 +808,12 @@ namespace Eddi
                 }
                 catch (Exception ex)
                 {
-                    Logging.Error("EDDI core failed to handle event " + JsonConvert.SerializeObject(@event), ex);
+                    Dictionary<string, object> data = new Dictionary<string, object>();
+                    data.Add("event", JsonConvert.SerializeObject(@event));
+                    data.Add("exception", ex.Message);
+                    data.Add("stacktrace", ex.StackTrace);
+
+                    Logging.Error("EDDI core failed to handle event " + @event.type, data);
 
                     // Even if an error occurs, we still need to pass the raw data 
                     // to the EDDN responder to maintain it's integrity.
@@ -840,9 +850,22 @@ namespace Eddi
             return passEvent;
         }
 
-        private void OnEvent(Event @event)
+        private async void OnEvent(Event @event)
         {
             // We send the event to all monitors to ensure that their info is up-to-date
+            // All changes to state must be handled here, so this must be synchronous
+            passToMonitorPreHandlers(@event);
+
+            // Now we pass the data to the responders to process asynchronously, waiting for all to complete
+            // Responders must not change global states.
+            await passToRespondersAsync(@event);
+
+            // We also pass the event to all active monitors in case they have asynchronous follow-on work, waiting for all to complete
+            await passToMonitorPostHandlersAsync(@event);
+        }
+
+        private void passToMonitorPreHandlers(Event @event)
+        {
             foreach (EDDIMonitor monitor in activeMonitors)
             {
                 try
@@ -851,29 +874,55 @@ namespace Eddi
                 }
                 catch (Exception ex)
                 {
-                    Logging.Error("Monitor failed to handle event " + JsonConvert.SerializeObject(@event), ex);
+                    Dictionary<string, object> data = new Dictionary<string, object>();
+                    data.Add("event", JsonConvert.SerializeObject(@event));
+                    data.Add("exception", ex.Message);
+                    data.Add("stacktrace", ex.StackTrace);
+                    Logging.Error("Monitor failed to handle event " + @event.type, data);
                 }
             }
+        }
 
-            // Now we pass the data to the responders
+        private async Task passToRespondersAsync(Event @event)
+        {
+            List<Task> responderTasks = new List<Task>();
             foreach (EDDIResponder responder in activeResponders)
             {
                 try
                 {
-                    responder.Handle(@event);
+                    var responderTask = Task.Run(() =>
+                    {
+                        try
+                        {
+                            responder.Handle(@event);
+                        }
+                        catch (Exception ex)
+                        {
+                            Logging.Error("Responder failed to handle event " + JsonConvert.SerializeObject(@event), ex);
+                        }
+                    });
+                    responderTasks.Add(responderTask);
                 }
                 catch (Exception ex)
                 {
-                    Logging.Error("Responder failed to handle event " + JsonConvert.SerializeObject(@event), ex);
+                    Dictionary<string, object> data = new Dictionary<string, object>();
+                    data.Add("event", JsonConvert.SerializeObject(@event));
+                    data.Add("exception", ex.Message);
+                    data.Add("stacktrace", ex.StackTrace);
+                    Logging.Error("Responder failed to handle event " + @event.type, data);
                 }
             }
+            await Task.WhenAll(responderTasks.ToArray());
+        }
 
-            // We also pass the event to all active monitors in case they have asynchronous follow-on work
+        private async Task passToMonitorPostHandlersAsync(Event @event)
+        {
+            List<Task> monitorTasks = new List<Task>();
             foreach (EDDIMonitor monitor in activeMonitors)
             {
                 try
                 {
-                    Thread monitorThread = new Thread(() =>
+                    var monitorTask = Task.Run(() =>
                     {
                         try
                         {
@@ -881,23 +930,25 @@ namespace Eddi
                         }
                         catch (Exception ex)
                         {
-                            Logging.Warn("Monitor failed", ex);
+                            Logging.Error("Monitor failed to post-handle event " + JsonConvert.SerializeObject(@event), ex);
                         }
-                    })
-                    {
-                        IsBackground = true
-                    };
-                    monitorThread.Start();
+                    });
+                    monitorTasks.Add(monitorTask);
                 }
                 catch (ThreadAbortException tax)
                 {
                     Thread.ResetAbort();
-                    Logging.Error(JsonConvert.SerializeObject(@event), tax);
+                    Logging.Debug("Thread aborted", tax);
                 }
                 catch (Exception ex)
                 {
-                    Logging.Error(JsonConvert.SerializeObject(@event), ex);
+                    Dictionary<string, object> data = new Dictionary<string, object>();
+                    data.Add("event", JsonConvert.SerializeObject(@event));
+                    data.Add("exception", ex.Message);
+                    data.Add("stacktrace", ex.StackTrace);
+                    Logging.Error("Monitor failed to post-handle event " + @event.type, data);
                 }
+                await Task.WhenAll(monitorTasks.ToArray());
             }
         }
 
@@ -1141,7 +1192,7 @@ namespace Eddi
                         // Post an update event for new market data
                         if (theEvent.fromLoad) { return true; } // Don't fire this event when loading pre-existing logs
                         Event @event = new MarketInformationUpdatedEvent(DateTime.UtcNow, "market");
-                        eventHandler(@event);
+                        enqueueEvent(@event);
                     }
                     return true;
                 }
@@ -1180,7 +1231,7 @@ namespace Eddi
                         // Post an update event for new outfitting data
                         if (theEvent.fromLoad) { return true; } // Don't fire this event when loading pre-existing logs
                         Event @event = new MarketInformationUpdatedEvent(DateTime.UtcNow, "outfitting");
-                        eventHandler(@event);
+                        enqueueEvent(@event);
                     }
                     return true;
                 }
@@ -1219,7 +1270,7 @@ namespace Eddi
                         // Post an update event for new shipyard data
                         if (theEvent.fromLoad) { return true; } // Don't fire this event when loading pre-existing logs
                         Event @event = new MarketInformationUpdatedEvent(DateTime.UtcNow, "shipyard");
-                        eventHandler(@event);
+                        enqueueEvent(@event);
                     }
                     return true;
                 }
@@ -1954,12 +2005,16 @@ namespace Eddi
                             catch (ThreadAbortException tax)
                             {
                                 Thread.ResetAbort();
-                                Logging.Error(JsonConvert.SerializeObject(profile), tax);
+                                Logging.Debug("Thread aborted", tax);
                                 success = false;
                             }
                             catch (Exception ex)
                             {
-                                Logging.Error(JsonConvert.SerializeObject(profile), ex);
+                                Dictionary<string, object> data = new Dictionary<string, object>();
+                                data.Add("message", ex.Message);
+                                data.Add("stacktrace", ex.StackTrace);
+                                data.Add("profile", JsonConvert.SerializeObject(profile));
+                                Logging.Error("Monitor " + monitor.MonitorName() + " failed to handle profile.", data);
                                 success = false;
                             }
                         }
@@ -2066,13 +2121,13 @@ namespace Eddi
                 {
                     string msg = string.Format(Properties.EddiResources.problem_load_monitor_file, dir.FullName);
                     Logging.Error(msg, flex);
-                    SpeechService.Instance.Say(null, msg, false);
+                    SpeechService.Instance.Say(null, msg, 0);
                 }
                 catch (Exception ex)
                 {
                     string msg = string.Format(Properties.EddiResources.problem_load_monitor, $"{file.Name}.\n{ex.Message} {ex.InnerException?.Message ?? ""}");
                     Logging.Error(msg, ex);
-                    SpeechService.Instance.Say(null, msg, false);
+                    SpeechService.Instance.Say(null, msg, 0);
                 }
             }
             return monitors;
@@ -2198,7 +2253,7 @@ namespace Eddi
 
                             // Post an update event
                             Event @event = new MarketInformationUpdatedEvent(DateTime.UtcNow, "profile");
-                            eventHandler(@event);
+                            enqueueEvent(@event);
 
                             profileUpdateNeeded = false;
                             allowMarketUpdate = false;

@@ -117,13 +117,37 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="Clean" xml:space="preserve">
+    <value>Чист</value>
+    <comment>LegalStatus - Clean</comment>
+  </data>
+  <data name="Enemy" xml:space="preserve">
+    <value>Враг</value>
+    <comment>LegalStatus - Enemy</comment>
+  </data>
+  <data name="Hunter" xml:space="preserve">
+    <value>Охотник</value>
+    <comment>LegalStatus - Hunter</comment>
+  </data>
+  <data name="Lawless" xml:space="preserve">
+    <value>Вне закона</value>
+    <comment>LegalStatus - Lawless</comment>
+  </data>
+  <data name="None" xml:space="preserve">
+    <value>Нет</value>
+    <comment>LegalStatus - None</comment>
+  </data>
+  <data name="Unknown" xml:space="preserve">
+    <value>Неизвестно</value>
+    <comment>LegalStatus - Unknown</comment>
+  </data>
+  <data name="Wanted" xml:space="preserve">
+    <value>Разыскивается</value>
+    <comment>LegalStatus - Wanted</comment>
+  </data>
+  <data name="WantedEnemy" xml:space="preserve">
+    <value>Разыскиваемый враг</value>
+    <comment>LegalStatus - WantedEnemy</comment>
+  </data>
   
 </root>

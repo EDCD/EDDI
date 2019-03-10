@@ -106,8 +106,14 @@
     <value>Többnyire pénztelen</value>
     <comment>Trade rating MostlyPenniless</comment>
   </data>
-  
-  
+  <data name="Peddler" xml:space="preserve">
+    <value>Házaló</value>
+    <comment>Trade rating Peddler</comment>
+  </data>
+  <data name="Dealer" xml:space="preserve">
+    <value>Díler</value>
+    <comment>Trade rating Dealer</comment>
+  </data>
   <data name="Merchant" xml:space="preserve">
     <value>Kereskedő</value>
     <comment>Trade rating Merchant</comment>

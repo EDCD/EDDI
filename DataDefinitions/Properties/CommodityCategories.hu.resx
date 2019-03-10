@@ -117,7 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
+  <data name="Chemicals" xml:space="preserve">
+    <value>Vegyszerek</value>
+    <comment>Commodity category Chemicals</comment>
+  </data>
   <data name="ConsumerItems" xml:space="preserve">
     <value>Fogyasztói cikkek</value>
     <comment>Commodity category ConsumerItems</comment>
@@ -130,7 +133,10 @@
     <value>Ipari anyagok</value>
     <comment>Commodity category IndustrialMaterials</comment>
   </data>
-  
+  <data name="Machinery" xml:space="preserve">
+    <value>Szerkezet</value>
+    <comment>Commodity category Machinery</comment>
+  </data>
   <data name="Medicines" xml:space="preserve">
     <value>Gyógyszerek</value>
     <comment>Commodity category Medicines</comment>
@@ -139,7 +145,10 @@
     <value>Fémek</value>
     <comment>Commodity category Metals</comment>
   </data>
-  
+  <data name="Minerals" xml:space="preserve">
+    <value>Ásványok</value>
+    <comment>Commodity category Minerals</comment>
+  </data>
   <data name="Narcotics" xml:space="preserve">
     <value>Narkotikumok</value>
     <comment>Commodity category Narcotics</comment>
@@ -148,8 +157,14 @@
     <value>Nem értékesíthető</value>
     <comment>Commodity category NonMarketable</comment>
   </data>
-  
-  
+  <data name="Powerplay" xml:space="preserve">
+    <value>Erőjáték</value>
+    <comment>Commodity category Powerplay</comment>
+  </data>
+  <data name="Salvage" xml:space="preserve">
+    <value>Zsákmány</value>
+    <comment>Commodity category Salvage</comment>
+  </data>
   <data name="Technology" xml:space="preserve">
     <value>Technológia</value>
     <comment>Commodity category Technology</comment>
@@ -162,7 +177,10 @@
     <value>Ismeretlen</value>
     <comment>Commodity category Unknown</comment>
   </data>
-  
+  <data name="Waste" xml:space="preserve">
+    <value>Hulladék</value>
+    <comment>Commodity category Waste</comment>
+  </data>
   <data name="Weapons" xml:space="preserve">
     <value>Fegyverek</value>
     <comment>Commodity category Weapons</comment>

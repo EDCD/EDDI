@@ -3,22 +3,19 @@ using EddiStarMapService;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using Rollbar;
 using System.Collections.Generic;
-using Utilities;
 
 namespace UnitTests
 {
     // Tests for the EDDB Service
 
     [TestClass]
-    public class EdsmDataTests
+    public class EdsmDataTests : TestBase
     {
         [TestInitialize]
         public void start()
         {
-            // Prevent telemetry data from being reported based on test results
-            RollbarLocator.RollbarInstance.Config.Enabled = false;
+            MakeSafe();
         }
 
         [TestMethod]
@@ -358,6 +355,22 @@ namespace UnitTests
             string[] systemNames = new string[] { "Sol", "Achenar", "Alioth" };
             List<StarSystem> starSystems = StarMapService.GetStarMapSystems(systemNames, true, false);
             Assert.AreEqual(3, starSystems.Count);
+        }
+
+        [TestMethod]
+        public void TestSystemsSphere()
+        {
+            string systemName = "Sol";
+            List<Dictionary<string, object>> sphereSystems = StarMapService.GetStarMapSystemsSphere(systemName, 0, 10, false, false, false, false);
+            Assert.AreEqual(12, sphereSystems.Count);
+        }
+
+        [TestMethod]
+        public void TestSystemsCube()
+        {
+            string systemName = "Sol";
+            List<StarSystem> starSystems = StarMapService.GetStarMapSystemsCube(systemName, 15, false, false, false, false);
+            Assert.AreEqual(9, starSystems.Count);
         }
 
         [TestMethod]

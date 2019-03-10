@@ -1,0 +1,1370 @@
+{
+  "lastStarport": {
+    "id": 3544236032,
+    "name": "Abasheli Barracks",
+    "outpostType": "military",
+    "imported": {
+      "128049197": "Polymers",
+      "128049226": "HazardousEnvironmentSuits",
+      "128049176": "Aluminium",
+      "128672305": "SurfaceStabilisers",
+      "128672301": "Thorium",
+      "128049214": "Beer",
+      "128682045": "MilitaryGradeFabrics",
+      "128049174": "Titanium",
+      "128049225": "ComputerComponents",
+      "128049241": "Clothing",
+      "128049670": "CombatStabilisers",
+      "128682047": "MedicalDiagnosticEquipment",
+      "128672304": "NerveAgents",
+      "128672309": "BuildingFabricators",
+      "128672303": "SyntheticReagents",
+      "128673857": "CoolingHoses",
+      "128049215": "Wine",
+      "128672313": "SkimerComponents",
+      "128667728": "ImperialSlaves",
+      "128049238": "DomesticAppliances",
+      "128673871": "Nanobreakers",
+      "128672308": "ThermalCoolingUnits",
+      "128049218": "WaterPurifiers",
+      "128049234": "BattleWeapons",
+      "128673874": "IonDistributor",
+      "128673865": "RadiationBaffle",
+      "128673872": "TelemetrySuite",
+      "128673860": "HNShockMount",
+      "128682046": "AdvancedMedicines",
+      "128049243": "Slaves",
+      "128049210": "BasicMedicines",
+      "128673861": "EmergencyPowerCells",
+      "128049213": "Tobacco",
+      "128049177": "Algae",
+      "128049209": "PerformanceEnhancers",
+      "128673863": "PowerGridAssembly",
+      "128049185": "SyntheticMeat",
+      "128049217": "PowerGenerators",
+      "128673858": "NeofabricInsulation",
+      "128673873": "MicroControllers",
+      "128049166": "Water",
+      "128049216": "Liquor",
+      "128673856": "CMMComposite",
+      "128049180": "Grain",
+      "128671118": "Osmium",
+      "128049184": "FoodCartridges",
+      "128673875": "DiagnosticSensor",
+      "128672701": "MetaAlloys",
+      "128049240": "ConsumerTechnology",
+      "128673855": "InsulatingMembrane",
+      "128672314": "EvacuationShelter",
+      "128049183": "Fish",
+      "128049669": "ProgenitorCells",
+      "128672307": "GeologicalEquipment",
+      "128049178": "FruitAndVegetables",
+      "128049227": "Robotics",
+      "128672125": "OccupiedCryoPod",
+      "128672135": "Hostage",
+      "128666752": "USSCargoBlackBox",
+      "128672811": "DamagedEscapePod",
+      "128672126": "PersonalEffects",
+      "128672123": "WreckageComponents",
+      "128672311": "StructuralRegulators",
+      "128049228": "AutoFabricators",
+      "128049182": "Animalmeat",
+      "128049188": "Tea",
+      "128732188": "AncientTotem",
+      "128732187": "AncientUrn",
+      "128732185": "AncientCasket",
+      "128732184": "AncientOrb",
+      "128732183": "AncientRelic",
+      "128682055": "FossilRemnants",
+      "128682054": "SpacePioneerRelics",
+      "128682049": "DataCore",
+      "128682051": "MysteriousIdol",
+      "128732186": "AncientTablet",
+      "128672161": "EarthRelics",
+      "128666757": "USSCargoRareArtwork",
+      "128672134": "PoliticalPrisoner",
+      "128672128": "TacticalData",
+      "128672129": "AssaultPlans",
+      "128672130": "EncryptedCorrespondence",
+      "128672124": "EncriptedDataStorage",
+      "128672131": "DiplomaticBag",
+      "128672132": "ScientificResearch",
+      "128672133": "ScientificSamples",
+      "128672136": "LargeExplorationDataCash",
+      "128672127": "ComercialSamples",
+      "128672137": "SmallExplorationDataCash",
+      "128672159": "AntiqueJewellery",
+      "128672160": "PreciousGems",
+      "128672162": "GeneBank",
+      "128672163": "TimeCapsule",
+      "128672810": "UnstableDataCore",
+      "128672315": "GeologicalSamples",
+      "128682048": "SurvivalEquipment",
+      "128673848": "LowTemperatureDiamond",
+      "128049189": "Coffee",
+      "128924326": "Serendibite",
+      "128924325": "Rhodplumsite",
+      "128924329": "Benitoite",
+      "128924327": "Monazite",
+      "128924328": "Musgravite",
+      "128924330": "Grandidierite",
+      "128924331": "Alexandrite",
+      "128888499": "AncientKey",
+      "128924332": "Opal",
+      "128672306": "BootlegLiquor",
+      "128049212": "BasicNarcotics"
+    },
+    "exported": {
+      "128049202": "HydrogenFuel",
+      "128049248": "Scrap",
+      "128672312": "Landmines",
+      "128049236": "NonLethalWeapons",
+      "128049233": "PersonalWeapons",
+      "128049235": "ReactiveArmour"
+    },
+    "services": {
+      "dock": "ok",
+      "contacts": "ok",
+      "exploration": "ok",
+      "commodities": "ok",
+      "blackmarket": "unavailable",
+      "refuel": "ok",
+      "repair": "ok",
+      "rearm": "ok",
+      "outfitting": "ok",
+      "shipyard": "ok",
+      "crewlounge": "ok",
+      "powerplay": "ok",
+      "searchrescue": "ok",
+      "stationmenu": "ok",
+      "engineer": "ok",
+      "facilitator": "ok"
+    },
+    "economies": {
+      "117": {
+        "name": "Military",
+        "proportion": 1
+      }
+    },
+    "ships": {
+      "shipyard_list": {
+        "Eagle": {
+          "id": 128049255,
+          "name": "Eagle",
+          "basevalue": 44800,
+          "sku": ""
+        },
+        "Asp_Scout": {
+          "id": 128672276,
+          "name": "Asp_Scout",
+          "basevalue": 3961154,
+          "sku": ""
+        },
+        "SideWinder": {
+          "id": 128049249,
+          "name": "SideWinder",
+          "basevalue": 32000,
+          "sku": ""
+        },
+        "Vulture": {
+          "id": 128049309,
+          "name": "Vulture",
+          "basevalue": 4925615,
+          "sku": ""
+        },
+        "Anaconda": {
+          "id": 128049363,
+          "name": "Anaconda",
+          "basevalue": 146969451,
+          "sku": ""
+        }
+      },
+      "unavailable_list": [
+        {
+          "id": 128049321,
+          "name": "Federation_Dropship",
+          "basevalue": 14314205,
+          "sku": "",
+          "unavailableReason": "Insufficient Rank",
+          "factionId": "3",
+          "requiredRank": 3
+        },
+        {
+          "id": 128672152,
+          "name": "Federation_Gunship",
+          "basevalue": 35814205,
+          "sku": "",
+          "unavailableReason": "Insufficient Rank",
+          "factionId": "3",
+          "requiredRank": 7
+        },
+        {
+          "id": 128672145,
+          "name": "Federation_Dropship_MkII",
+          "basevalue": 19814205,
+          "sku": "",
+          "unavailableReason": "Insufficient Rank",
+          "factionId": "3",
+          "requiredRank": 5
+        }
+      ]
+    },
+    "modules": {
+      "128788700": {
+        "id": 128788700,
+        "category": "weapon",
+        "name": "Hpt_ATDumbfireMissile_Fixed_Large",
+        "cost": 1352250,
+        "sku": "ELITE_HORIZONS_V_PLANETARY_LANDINGS"
+      },
+      "128788702": {
+        "id": 128788702,
+        "category": "weapon",
+        "name": "Hpt_ATMultiCannon_Fixed_Large",
+        "cost": 1181500,
+        "sku": "ELITE_HORIZONS_V_PLANETARY_LANDINGS"
+      },
+      "128793060": {
+        "id": 128793060,
+        "category": "weapon",
+        "name": "Hpt_ATMultiCannon_Turret_Large",
+        "cost": 3821600,
+        "sku": "ELITE_HORIZONS_V_PLANETARY_LANDINGS"
+      },
+      "128785626": {
+        "id": 128785626,
+        "category": "weapon",
+        "name": "Hpt_FlakMortar_Fixed_Medium",
+        "cost": 261800,
+        "sku": "ELITE_HORIZONS_V_PLANETARY_LANDINGS"
+      },
+      "128788699": {
+        "id": 128788699,
+        "category": "weapon",
+        "name": "Hpt_ATDumbfireMissile_Fixed_Medium",
+        "cost": 540900,
+        "sku": "ELITE_HORIZONS_V_PLANETARY_LANDINGS"
+      },
+      "128788704": {
+        "id": 128788704,
+        "category": "weapon",
+        "name": "Hpt_ATDumbfireMissile_Turret_Medium",
+        "cost": 2022700,
+        "sku": "ELITE_HORIZONS_V_PLANETARY_LANDINGS"
+      },
+      "128788701": {
+        "id": 128788701,
+        "category": "weapon",
+        "name": "Hpt_ATMultiCannon_Fixed_Medium",
+        "cost": 379000,
+        "sku": "ELITE_HORIZONS_V_PLANETARY_LANDINGS"
+      },
+      "128793059": {
+        "id": 128793059,
+        "category": "weapon",
+        "name": "Hpt_ATMultiCannon_Turret_Medium",
+        "cost": 1826500,
+        "sku": "ELITE_HORIZONS_V_PLANETARY_LANDINGS"
+      },
+      "128671448": {
+        "id": 128671448,
+        "category": "weapon",
+        "name": "Hpt_MineLauncher_Fixed_Small_Impulse",
+        "cost": 36390,
+        "sku": null
+      },
+      "128049500": {
+        "id": 128049500,
+        "category": "weapon",
+        "name": "Hpt_MineLauncher_Fixed_Small",
+        "cost": 24260,
+        "sku": null
+      },
+      "128049430": {
+        "id": 128049430,
+        "category": "weapon",
+        "name": "Hpt_BeamLaser_Fixed_Large",
+        "cost": 1177600,
+        "sku": null
+      },
+      "128049434": {
+        "id": 128049434,
+        "category": "weapon",
+        "name": "Hpt_BeamLaser_Gimbal_Large",
+        "cost": 2396160,
+        "sku": null
+      },
+      "128049437": {
+        "id": 128049437,
+        "category": "weapon",
+        "name": "Hpt_BeamLaser_Turret_Large",
+        "cost": 19399600,
+        "sku": null
+      },
+      "128049493": {
+        "id": 128049493,
+        "category": "weapon",
+        "name": "Hpt_BasicMissileRack_Fixed_Medium",
+        "cost": 512400,
+        "sku": null
+      },
+      "128049492": {
+        "id": 128049492,
+        "category": "weapon",
+        "name": "Hpt_BasicMissileRack_Fixed_Small",
+        "cost": 72600,
+        "sku": null
+      },
+      "128049511": {
+        "id": 128049511,
+        "category": "weapon",
+        "name": "Hpt_AdvancedTorpPylon_Fixed_Large",
+        "cost": 157960,
+        "sku": "ELITE_HORIZONS_V_PLANETARY_LANDINGS"
+      },
+      "128049510": {
+        "id": 128049510,
+        "category": "weapon",
+        "name": "Hpt_AdvancedTorpPylon_Fixed_Medium",
+        "cost": 44800,
+        "sku": null
+      },
+      "128049406": {
+        "id": 128049406,
+        "category": "weapon",
+        "name": "Hpt_PulseLaserBurst_Gimbal_Large",
+        "cost": 281600,
+        "sku": null
+      },
+      "128771884": {
+        "id": 128771884,
+        "category": "utility",
+        "name": "Hpt_AntiUnknownShutdown_Tiny",
+        "cost": 63000,
+        "sku": "ELITE_HORIZONS_V_PLANETARY_LANDINGS"
+      },
+      "128049516": {
+        "id": 128049516,
+        "category": "utility",
+        "name": "Hpt_ElectronicCountermeasure_Tiny",
+        "cost": 12500,
+        "sku": null
+      },
+      "128049519": {
+        "id": 128049519,
+        "category": "utility",
+        "name": "Hpt_HeatSinkLauncher_Turret_Tiny",
+        "cost": 3500,
+        "sku": null
+      },
+      "128049513": {
+        "id": 128049513,
+        "category": "utility",
+        "name": "Hpt_ChaffLauncher_Tiny",
+        "cost": 8500,
+        "sku": null
+      },
+      "128049526": {
+        "id": 128049526,
+        "category": "utility",
+        "name": "Hpt_MiningLaser_Fixed_Medium",
+        "cost": 22576,
+        "sku": null
+      },
+      "128740820": {
+        "id": 128740820,
+        "category": "utility",
+        "name": "Hpt_MiningLaser_Turret_Medium",
+        "cost": 32576,
+        "sku": null
+      },
+      "128740819": {
+        "id": 128740819,
+        "category": "utility",
+        "name": "Hpt_MiningLaser_Turret_Small",
+        "cost": 9400,
+        "sku": null
+      },
+      "128915457": {
+        "id": 128915457,
+        "category": "utility",
+        "name": "Hpt_Mining_SubSurfDispMisle_Turret_Medium",
+        "cost": 381750,
+        "sku": null
+      },
+      "128915455": {
+        "id": 128915455,
+        "category": "utility",
+        "name": "Hpt_Mining_SubSurfDispMisle_Turret_Small",
+        "cost": 38750,
+        "sku": null
+      },
+      "128915461": {
+        "id": 128915461,
+        "category": "utility",
+        "name": "Hpt_Mining_SeismChrgWarhd_Turret_Medium",
+        "cost": 445570,
+        "sku": null
+      },
+      "128915458": {
+        "id": 128915458,
+        "category": "utility",
+        "name": "Hpt_Mining_AbrBlstr_Fixed_Small",
+        "cost": 9700,
+        "sku": null
+      },
+      "128049256": {
+        "id": 128049256,
+        "category": "module",
+        "name": "Eagle_Armour_Grade1",
+        "cost": 0,
+        "sku": null
+      },
+      "128049257": {
+        "id": 128049257,
+        "category": "module",
+        "name": "Eagle_Armour_Grade2",
+        "cost": 26880,
+        "sku": null
+      },
+      "128049258": {
+        "id": 128049258,
+        "category": "module",
+        "name": "Eagle_Armour_Grade3",
+        "cost": 90048,
+        "sku": null
+      },
+      "128049260": {
+        "id": 128049260,
+        "category": "module",
+        "name": "Eagle_Armour_Reactive",
+        "cost": 150393,
+        "sku": null
+      },
+      "128049259": {
+        "id": 128049259,
+        "category": "module",
+        "name": "Eagle_Armour_Mirrored",
+        "cost": 140089,
+        "sku": null
+      },
+      "128049322": {
+        "id": 128049322,
+        "category": "module",
+        "name": "Federation_Dropship_Armour_Grade1",
+        "cost": 0,
+        "sku": null
+      },
+      "128049323": {
+        "id": 128049323,
+        "category": "module",
+        "name": "Federation_Dropship_Armour_Grade2",
+        "cost": 5725682,
+        "sku": null
+      },
+      "128049324": {
+        "id": 128049324,
+        "category": "module",
+        "name": "Federation_Dropship_Armour_Grade3",
+        "cost": 12882784,
+        "sku": null
+      },
+      "128049326": {
+        "id": 128049326,
+        "category": "module",
+        "name": "Federation_Dropship_Armour_Reactive",
+        "cost": 33738581,
+        "sku": null
+      },
+      "128049325": {
+        "id": 128049325,
+        "category": "module",
+        "name": "Federation_Dropship_Armour_Mirrored",
+        "cost": 30446314,
+        "sku": null
+      },
+      "128672278": {
+        "id": 128672278,
+        "category": "module",
+        "name": "Asp_Scout_Armour_Grade1",
+        "cost": 0,
+        "sku": null
+      },
+      "128672279": {
+        "id": 128672279,
+        "category": "module",
+        "name": "Asp_Scout_Armour_Grade2",
+        "cost": 1584461,
+        "sku": null
+      },
+      "128672280": {
+        "id": 128672280,
+        "category": "module",
+        "name": "Asp_Scout_Armour_Grade3",
+        "cost": 3565038,
+        "sku": null
+      },
+      "128672282": {
+        "id": 128672282,
+        "category": "module",
+        "name": "Asp_Scout_Armour_Reactive",
+        "cost": 9336439,
+        "sku": null
+      },
+      "128672154": {
+        "id": 128672154,
+        "category": "module",
+        "name": "Federation_Gunship_Armour_Grade1",
+        "cost": 0,
+        "sku": null
+      },
+      "128672155": {
+        "id": 128672155,
+        "category": "module",
+        "name": "Federation_Gunship_Armour_Grade2",
+        "cost": 14325682,
+        "sku": null
+      },
+      "128672156": {
+        "id": 128672156,
+        "category": "module",
+        "name": "Federation_Gunship_Armour_Grade3",
+        "cost": 32232784,
+        "sku": null
+      },
+      "128672158": {
+        "id": 128672158,
+        "category": "module",
+        "name": "Federation_Gunship_Armour_Reactive",
+        "cost": 84414081,
+        "sku": null
+      },
+      "128672157": {
+        "id": 128672157,
+        "category": "module",
+        "name": "Federation_Gunship_Armour_Mirrored",
+        "cost": 76176814,
+        "sku": null
+      },
+      "128672147": {
+        "id": 128672147,
+        "category": "module",
+        "name": "Federation_Dropship_MkII_Armour_Grade1",
+        "cost": 0,
+        "sku": null
+      },
+      "128672148": {
+        "id": 128672148,
+        "category": "module",
+        "name": "Federation_Dropship_MkII_Armour_Grade2",
+        "cost": 7925682,
+        "sku": null
+      },
+      "128672149": {
+        "id": 128672149,
+        "category": "module",
+        "name": "Federation_Dropship_MkII_Armour_Grade3",
+        "cost": 17832784,
+        "sku": null
+      },
+      "128672151": {
+        "id": 128672151,
+        "category": "module",
+        "name": "Federation_Dropship_MkII_Armour_Reactive",
+        "cost": 46702081,
+        "sku": null
+      },
+      "128672150": {
+        "id": 128672150,
+        "category": "module",
+        "name": "Federation_Dropship_MkII_Armour_Mirrored",
+        "cost": 42144814,
+        "sku": null
+      },
+      "128049250": {
+        "id": 128049250,
+        "category": "module",
+        "name": "SideWinder_Armour_Grade1",
+        "cost": 0,
+        "sku": null
+      },
+      "128049251": {
+        "id": 128049251,
+        "category": "module",
+        "name": "SideWinder_Armour_Grade2",
+        "cost": 25600,
+        "sku": null
+      },
+      "128049252": {
+        "id": 128049252,
+        "category": "module",
+        "name": "SideWinder_Armour_Grade3",
+        "cost": 80320,
+        "sku": null
+      },
+      "128049254": {
+        "id": 128049254,
+        "category": "module",
+        "name": "SideWinder_Armour_Reactive",
+        "cost": 139424,
+        "sku": null
+      },
+      "128049253": {
+        "id": 128049253,
+        "category": "module",
+        "name": "SideWinder_Armour_Mirrored",
+        "cost": 132064,
+        "sku": null
+      },
+      "128049310": {
+        "id": 128049310,
+        "category": "module",
+        "name": "Vulture_Armour_Grade1",
+        "cost": 0,
+        "sku": null
+      },
+      "128049311": {
+        "id": 128049311,
+        "category": "module",
+        "name": "Vulture_Armour_Grade2",
+        "cost": 1970246,
+        "sku": null
+      },
+      "128049312": {
+        "id": 128049312,
+        "category": "module",
+        "name": "Vulture_Armour_Grade3",
+        "cost": 4433053,
+        "sku": null
+      },
+      "128049314": {
+        "id": 128049314,
+        "category": "module",
+        "name": "Vulture_Armour_Reactive",
+        "cost": 11609674,
+        "sku": null
+      },
+      "128049313": {
+        "id": 128049313,
+        "category": "module",
+        "name": "Vulture_Armour_Mirrored",
+        "cost": 10476783,
+        "sku": null
+      },
+      "128049364": {
+        "id": 128049364,
+        "category": "module",
+        "name": "Anaconda_Armour_Grade1",
+        "cost": 0,
+        "sku": null
+      },
+      "128049365": {
+        "id": 128049365,
+        "category": "module",
+        "name": "Anaconda_Armour_Grade2",
+        "cost": 58787780,
+        "sku": null
+      },
+      "128672293": {
+        "id": 128672293,
+        "category": "module",
+        "name": "Int_BuggyBay_Size6_Class2",
+        "cost": 691200,
+        "sku": "ELITE_HORIZONS_V_PLANETARY_LANDINGS"
+      },
+      "128672291": {
+        "id": 128672291,
+        "category": "module",
+        "name": "Int_BuggyBay_Size4_Class2",
+        "cost": 86400,
+        "sku": "ELITE_HORIZONS_V_PLANETARY_LANDINGS"
+      },
+      "128672292": {
+        "id": 128672292,
+        "category": "module",
+        "name": "Int_BuggyBay_Size6_Class1",
+        "cost": 576000,
+        "sku": "ELITE_HORIZONS_V_PLANETARY_LANDINGS"
+      },
+      "128672289": {
+        "id": 128672289,
+        "category": "module",
+        "name": "Int_BuggyBay_Size2_Class2",
+        "cost": 21600,
+        "sku": "ELITE_HORIZONS_V_PLANETARY_LANDINGS"
+      },
+      "128672290": {
+        "id": 128672290,
+        "category": "module",
+        "name": "Int_BuggyBay_Size4_Class1",
+        "cost": 72000,
+        "sku": "ELITE_HORIZONS_V_PLANETARY_LANDINGS"
+      },
+      "128672288": {
+        "id": 128672288,
+        "category": "module",
+        "name": "Int_BuggyBay_Size2_Class1",
+        "cost": 18000,
+        "sku": "ELITE_HORIZONS_V_PLANETARY_LANDINGS"
+      },
+      "128064338": {
+        "id": 128064338,
+        "category": "module",
+        "name": "Int_CargoRack_Size1_Class1",
+        "cost": 1000,
+        "sku": null
+      },
+      "128666684": {
+        "id": 128666684,
+        "category": "module",
+        "name": "Int_Refinery_Size1_Class1",
+        "cost": 6000,
+        "sku": null
+      },
+      "128666644": {
+        "id": 128666644,
+        "category": "module",
+        "name": "Int_FuelScoop_Size1_Class1",
+        "cost": 309,
+        "sku": null
+      },
+      "128672317": {
+        "id": 128672317,
+        "category": "module",
+        "name": "Int_PlanetApproachSuite",
+        "cost": 500,
+        "sku": "ELITE_HORIZONS_V_PLANETARY_LANDINGS"
+      },
+      "128793115": {
+        "id": 128793115,
+        "category": "module",
+        "name": "Hpt_XenoScanner_Basic_Tiny",
+        "cost": 365698,
+        "sku": "ELITE_HORIZONS_V_PLANETARY_LANDINGS"
+      },
+      "128793944": {
+        "id": 128793944,
+        "category": "module",
+        "name": "Int_DroneControl_Decontamination_Size7_Class1",
+        "cost": 1312200,
+        "sku": "ELITE_HORIZONS_V_PLANETARY_LANDINGS"
+      },
+      "128793943": {
+        "id": 128793943,
+        "category": "module",
+        "name": "Int_DroneControl_Decontamination_Size5_Class1",
+        "cost": 145800,
+        "sku": "ELITE_HORIZONS_V_PLANETARY_LANDINGS"
+      },
+      "128793942": {
+        "id": 128793942,
+        "category": "module",
+        "name": "Int_DroneControl_Decontamination_Size3_Class1",
+        "cost": 16200,
+        "sku": "ELITE_HORIZONS_V_PLANETARY_LANDINGS"
+      },
+      "128793941": {
+        "id": 128793941,
+        "category": "module",
+        "name": "Int_DroneControl_Decontamination_Size1_Class1",
+        "cost": 3600,
+        "sku": "ELITE_HORIZONS_V_PLANETARY_LANDINGS"
+      },
+      "128064041": {
+        "id": 128064041,
+        "category": "module",
+        "name": "Int_Powerplant_Size3_Class4",
+        "cost": 160137,
+        "sku": null
+      },
+      "128064036": {
+        "id": 128064036,
+        "category": "module",
+        "name": "Int_Powerplant_Size2_Class4",
+        "cost": 53379,
+        "sku": null
+      },
+      "128064040": {
+        "id": 128064040,
+        "category": "module",
+        "name": "Int_Powerplant_Size3_Class3",
+        "cost": 53379,
+        "sku": null
+      },
+      "128064035": {
+        "id": 128064035,
+        "category": "module",
+        "name": "Int_Powerplant_Size2_Class3",
+        "cost": 17793,
+        "sku": null
+      },
+      "128064039": {
+        "id": 128064039,
+        "category": "module",
+        "name": "Int_Powerplant_Size3_Class2",
+        "cost": 17793,
+        "sku": null
+      },
+      "128064034": {
+        "id": 128064034,
+        "category": "module",
+        "name": "Int_Powerplant_Size2_Class2",
+        "cost": 5931,
+        "sku": null
+      },
+      "128064038": {
+        "id": 128064038,
+        "category": "module",
+        "name": "Int_Powerplant_Size3_Class1",
+        "cost": 5931,
+        "sku": null
+      },
+      "128064033": {
+        "id": 128064033,
+        "category": "module",
+        "name": "Int_Powerplant_Size2_Class1",
+        "cost": 1977,
+        "sku": null
+      },
+      "128727932": {
+        "id": 128727932,
+        "category": "module",
+        "name": "Int_FighterBay_Size7_Class1",
+        "cost": 2369320,
+        "sku": "ELITE_HORIZONS_V_PLANETARY_LANDINGS"
+      },
+      "128727930": {
+        "id": 128727930,
+        "category": "module",
+        "name": "Int_FighterBay_Size5_Class1",
+        "cost": 575643,
+        "sku": "ELITE_HORIZONS_V_PLANETARY_LANDINGS"
+      },
+      "128666704": {
+        "id": 128666704,
+        "category": "module",
+        "name": "Int_FSDInterdictor_Size1_Class1",
+        "cost": 12000,
+        "sku": null
+      },
+      "128066532": {
+        "id": 128066532,
+        "category": "module",
+        "name": "Int_DroneControl_ResourceSiphon_Size1_Class1",
+        "cost": 600,
+        "sku": null
+      },
+      "128064263": {
+        "id": 128064263,
+        "category": "module",
+        "name": "Int_ShieldGenerator_Size2_Class1",
+        "cost": 1978,
+        "sku": null
+      },
+      "128064231": {
+        "id": 128064231,
+        "category": "module",
+        "name": "Int_Sensors_Size3_Class4",
+        "cost": 63333,
+        "sku": null
+      },
+      "128064226": {
+        "id": 128064226,
+        "category": "module",
+        "name": "Int_Sensors_Size2_Class4",
+        "cost": 22619,
+        "sku": null
+      },
+      "128064221": {
+        "id": 128064221,
+        "category": "module",
+        "name": "Int_Sensors_Size1_Class4",
+        "cost": 8078,
+        "sku": null
+      },
+      "128064230": {
+        "id": 128064230,
+        "category": "module",
+        "name": "Int_Sensors_Size3_Class3",
+        "cost": 25333,
+        "sku": null
+      },
+      "128064220": {
+        "id": 128064220,
+        "category": "module",
+        "name": "Int_Sensors_Size1_Class3",
+        "cost": 3231,
+        "sku": null
+      },
+      "128064225": {
+        "id": 128064225,
+        "category": "module",
+        "name": "Int_Sensors_Size2_Class3",
+        "cost": 9048,
+        "sku": null
+      },
+      "128064229": {
+        "id": 128064229,
+        "category": "module",
+        "name": "Int_Sensors_Size3_Class2",
+        "cost": 10133,
+        "sku": null
+      },
+      "128064219": {
+        "id": 128064219,
+        "category": "module",
+        "name": "Int_Sensors_Size1_Class2",
+        "cost": 1293,
+        "sku": null
+      },
+      "128064224": {
+        "id": 128064224,
+        "category": "module",
+        "name": "Int_Sensors_Size2_Class2",
+        "cost": 3619,
+        "sku": null
+      },
+      "128064191": {
+        "id": 128064191,
+        "category": "module",
+        "name": "Int_PowerDistributor_Size3_Class4",
+        "cost": 63333,
+        "sku": null
+      },
+      "128064186": {
+        "id": 128064186,
+        "category": "module",
+        "name": "Int_PowerDistributor_Size2_Class4",
+        "cost": 22619,
+        "sku": null
+      },
+      "128064190": {
+        "id": 128064190,
+        "category": "module",
+        "name": "Int_PowerDistributor_Size3_Class3",
+        "cost": 25333,
+        "sku": null
+      },
+      "128064180": {
+        "id": 128064180,
+        "category": "module",
+        "name": "Int_PowerDistributor_Size1_Class3",
+        "cost": 3231,
+        "sku": null
+      },
+      "128064185": {
+        "id": 128064185,
+        "category": "module",
+        "name": "Int_PowerDistributor_Size2_Class3",
+        "cost": 9048,
+        "sku": null
+      },
+      "128064189": {
+        "id": 128064189,
+        "category": "module",
+        "name": "Int_PowerDistributor_Size3_Class2",
+        "cost": 10133,
+        "sku": null
+      },
+      "128064179": {
+        "id": 128064179,
+        "category": "module",
+        "name": "Int_PowerDistributor_Size1_Class2",
+        "cost": 1293,
+        "sku": null
+      },
+      "128064184": {
+        "id": 128064184,
+        "category": "module",
+        "name": "Int_PowerDistributor_Size2_Class2",
+        "cost": 3619,
+        "sku": null
+      },
+      "128777330": {
+        "id": 128777330,
+        "category": "module",
+        "name": "Int_DroneControl_Repair_Size1_Class4",
+        "cost": 4800,
+        "sku": null
+      },
+      "128671252": {
+        "id": 128671252,
+        "category": "module",
+        "name": "Int_DroneControl_FuelTransfer_Size1_Class4",
+        "cost": 4800,
+        "sku": null
+      },
+      "128777342": {
+        "id": 128777342,
+        "category": "module",
+        "name": "Int_DroneControl_Repair_Size7_Class1",
+        "cost": 437400,
+        "sku": null
+      },
+      "128671264": {
+        "id": 128671264,
+        "category": "module",
+        "name": "Int_DroneControl_FuelTransfer_Size7_Class1",
+        "cost": 437400,
+        "sku": null
+      },
+      "128777338": {
+        "id": 128777338,
+        "category": "module",
+        "name": "Int_DroneControl_Repair_Size5_Class2",
+        "cost": 97200,
+        "sku": null
+      },
+      "128671260": {
+        "id": 128671260,
+        "category": "module",
+        "name": "Int_DroneControl_FuelTransfer_Size5_Class2",
+        "cost": 97200,
+        "sku": null
+      },
+      "128777334": {
+        "id": 128777334,
+        "category": "module",
+        "name": "Int_DroneControl_Repair_Size3_Class3",
+        "cost": 21600,
+        "sku": null
+      },
+      "128671256": {
+        "id": 128671256,
+        "category": "module",
+        "name": "Int_DroneControl_FuelTransfer_Size3_Class3",
+        "cost": 21600,
+        "sku": null
+      },
+      "128064345": {
+        "id": 128064345,
+        "category": "module",
+        "name": "Int_CargoRack_Size8_Class1",
+        "cost": 3829866,
+        "sku": null
+      },
+      "128064344": {
+        "id": 128064344,
+        "category": "module",
+        "name": "Int_CargoRack_Size7_Class1",
+        "cost": 1178420,
+        "sku": null
+      },
+      "128064343": {
+        "id": 128064343,
+        "category": "module",
+        "name": "Int_CargoRack_Size6_Class1",
+        "cost": 362591,
+        "sku": null
+      },
+      "128064342": {
+        "id": 128064342,
+        "category": "module",
+        "name": "Int_CargoRack_Size5_Class1",
+        "cost": 111566,
+        "sku": null
+      },
+      "128064341": {
+        "id": 128064341,
+        "category": "module",
+        "name": "Int_CargoRack_Size4_Class1",
+        "cost": 34328,
+        "sku": null
+      },
+      "128064340": {
+        "id": 128064340,
+        "category": "module",
+        "name": "Int_CargoRack_Size3_Class1",
+        "cost": 10563,
+        "sku": null
+      },
+      "128064339": {
+        "id": 128064339,
+        "category": "module",
+        "name": "Int_CargoRack_Size2_Class1",
+        "cost": 3250,
+        "sku": null
+      },
+      "128064206": {
+        "id": 128064206,
+        "category": "module",
+        "name": "Int_PowerDistributor_Size6_Class4",
+        "cost": 1390275,
+        "sku": null
+      },
+      "128064196": {
+        "id": 128064196,
+        "category": "module",
+        "name": "Int_PowerDistributor_Size4_Class4",
+        "cost": 177331,
+        "sku": null
+      },
+      "128064205": {
+        "id": 128064205,
+        "category": "module",
+        "name": "Int_PowerDistributor_Size6_Class3",
+        "cost": 556110,
+        "sku": null
+      },
+      "128064200": {
+        "id": 128064200,
+        "category": "module",
+        "name": "Int_PowerDistributor_Size5_Class3",
+        "cost": 198611,
+        "sku": null
+      },
+      "128064204": {
+        "id": 128064204,
+        "category": "module",
+        "name": "Int_PowerDistributor_Size6_Class2",
+        "cost": 222444,
+        "sku": null
+      },
+      "128064195": {
+        "id": 128064195,
+        "category": "module",
+        "name": "Int_PowerDistributor_Size4_Class3",
+        "cost": 70932,
+        "sku": null
+      },
+      "128064199": {
+        "id": 128064199,
+        "category": "module",
+        "name": "Int_PowerDistributor_Size5_Class2",
+        "cost": 79444,
+        "sku": null
+      },
+      "128064076": {
+        "id": 128064076,
+        "category": "module",
+        "name": "Int_Engine_Size3_Class4",
+        "cost": 169304,
+        "sku": null
+      },
+      "128064071": {
+        "id": 128064071,
+        "category": "module",
+        "name": "Int_Engine_Size2_Class4",
+        "cost": 53408,
+        "sku": null
+      },
+      "128064075": {
+        "id": 128064075,
+        "category": "module",
+        "name": "Int_Engine_Size3_Class3",
+        "cost": 56435,
+        "sku": null
+      },
+      "128064070": {
+        "id": 128064070,
+        "category": "module",
+        "name": "Int_Engine_Size2_Class3",
+        "cost": 17803,
+        "sku": null
+      },
+      "128064074": {
+        "id": 128064074,
+        "category": "module",
+        "name": "Int_Engine_Size3_Class2",
+        "cost": 18812,
+        "sku": null
+      },
+      "128064069": {
+        "id": 128064069,
+        "category": "module",
+        "name": "Int_Engine_Size2_Class2",
+        "cost": 5934,
+        "sku": null
+      },
+      "128841594": {
+        "id": 128841594,
+        "category": "module",
+        "name": "Int_DroneControl_Recon_Size7_Class1",
+        "cost": 612200,
+        "sku": null
+      },
+      "128671244": {
+        "id": 128671244,
+        "category": "module",
+        "name": "Int_DroneControl_Collection_Size7_Class1",
+        "cost": 437400,
+        "sku": null
+      },
+      "128841593": {
+        "id": 128841593,
+        "category": "module",
+        "name": "Int_DroneControl_Recon_Size5_Class1",
+        "cost": 75800,
+        "sku": null
+      },
+      "128671240": {
+        "id": 128671240,
+        "category": "module",
+        "name": "Int_DroneControl_Collection_Size5_Class2",
+        "cost": 97200,
+        "sku": null
+      },
+      "128671236": {
+        "id": 128671236,
+        "category": "module",
+        "name": "Int_DroneControl_Collection_Size3_Class3",
+        "cost": 21600,
+        "sku": null
+      },
+      "128837858": {
+        "id": 128837858,
+        "category": "module",
+        "name": "Int_DroneControl_Recon_Size1_Class1",
+        "cost": 2600,
+        "sku": null
+      },
+      "128668546": {
+        "id": 128668546,
+        "category": "module",
+        "name": "Int_HullReinforcement_Size5_Class2",
+        "cost": 450000,
+        "sku": null
+      },
+      "128737279": {
+        "id": 128737279,
+        "category": "module",
+        "name": "Int_ModuleReinforcement_Size5_Class2",
+        "cost": 450000,
+        "sku": null
+      },
+      "128668544": {
+        "id": 128668544,
+        "category": "module",
+        "name": "Int_HullReinforcement_Size4_Class2",
+        "cost": 195000,
+        "sku": null
+      },
+      "128737277": {
+        "id": 128737277,
+        "category": "module",
+        "name": "Int_ModuleReinforcement_Size4_Class2",
+        "cost": 195000,
+        "sku": null
+      },
+      "128668542": {
+        "id": 128668542,
+        "category": "module",
+        "name": "Int_HullReinforcement_Size3_Class2",
+        "cost": 84000,
+        "sku": null
+      },
+      "128064110": {
+        "id": 128064110,
+        "category": "module",
+        "name": "Int_Hyperdrive_Size3_Class3",
+        "cost": 56435,
+        "sku": null
+      },
+      "128064105": {
+        "id": 128064105,
+        "category": "module",
+        "name": "Int_Hyperdrive_Size2_Class3",
+        "cost": 17803,
+        "sku": null
+      },
+      "128064109": {
+        "id": 128064109,
+        "category": "module",
+        "name": "Int_Hyperdrive_Size3_Class2",
+        "cost": 18812,
+        "sku": null
+      },
+      "128064104": {
+        "id": 128064104,
+        "category": "module",
+        "name": "Int_Hyperdrive_Size2_Class2",
+        "cost": 5934,
+        "sku": null
+      },
+      "128064271": {
+        "id": 128064271,
+        "category": "module",
+        "name": "Int_ShieldGenerator_Size3_Class4",
+        "cost": 169304,
+        "sku": null
+      },
+      "128064266": {
+        "id": 128064266,
+        "category": "module",
+        "name": "Int_ShieldGenerator_Size2_Class4",
+        "cost": 53408,
+        "sku": null
+      },
+      "128671333": {
+        "id": 128671333,
+        "category": "module",
+        "name": "Int_ShieldGenerator_Size3_Class3_Fast",
+        "cost": 84653,
+        "sku": null
+      },
+      "128671332": {
+        "id": 128671332,
+        "category": "module",
+        "name": "Int_ShieldGenerator_Size2_Class3_Fast",
+        "cost": 26705,
+        "sku": null
+      },
+      "128666634": {
+        "id": 128666634,
+        "category": "module",
+        "name": "Int_DetailedSurfaceScanner_Tiny",
+        "cost": 250000,
+        "sku": null
+      },
+      "128777340": {
+        "id": 128777340,
+        "category": "module",
+        "name": "Int_DroneControl_Repair_Size5_Class4",
+        "cost": 388800,
+        "sku": null
+      },
+      "128671262": {
+        "id": 128671262,
+        "category": "module",
+        "name": "Int_DroneControl_FuelTransfer_Size5_Class4",
+        "cost": 388800,
+        "sku": null
+      },
+      "128777344": {
+        "id": 128777344,
+        "category": "module",
+        "name": "Int_DroneControl_Repair_Size7_Class3",
+        "cost": 1749600,
+        "sku": null
+      },
+      "128671242": {
+        "id": 128671242,
+        "category": "module",
+        "name": "Int_DroneControl_Collection_Size5_Class4",
+        "cost": 388800,
+        "sku": null
+      },
+      "128671246": {
+        "id": 128671246,
+        "category": "module",
+        "name": "Int_DroneControl_Collection_Size7_Class3",
+        "cost": 1749600,
+        "sku": null
+      },
+      "128064326": {
+        "id": 128064326,
+        "category": "module",
+        "name": "Int_ShieldCellBank_Size6_Class4",
+        "cost": 1390275,
+        "sku": null
+      },
+      "128064321": {
+        "id": 128064321,
+        "category": "module",
+        "name": "Int_ShieldCellBank_Size5_Class4",
+        "cost": 496527,
+        "sku": null
+      }
+    }
+  }
+}

@@ -145,6 +145,7 @@
     <EmbeddedResource Include="Properties\GalnetMonitor.hu.resx" />
     <EmbeddedResource Include="Properties\GalnetMonitor.it.resx" />
     <EmbeddedResource Include="Properties\GalnetMonitor.ja.resx" />
+    <EmbeddedResource Include="Properties\GalnetMonitor.pt-BR.resx" />
     <EmbeddedResource Include="Properties\GalnetMonitor.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>GalnetMonitor.Designer.cs</LastGenOutput>

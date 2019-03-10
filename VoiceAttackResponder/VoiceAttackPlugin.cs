@@ -80,11 +80,15 @@ namespace EddiVoiceAttackResponder
                     catch (ThreadAbortException tax)
                     {
                         Thread.ResetAbort();
-                        Logging.Error(JsonConvert.SerializeObject(theEvent), tax);
+                        Logging.Debug("Thread aborted", tax);
                     }
                     catch (Exception ex)
                     {
-                        Logging.Error(JsonConvert.SerializeObject(theEvent), ex);
+                        Dictionary<string, object> data = new Dictionary<string, object>();
+                        data.Add("event", JsonConvert.SerializeObject(theEvent));
+                        data.Add("exception", ex.Message);
+                        data.Add("stacktrace", ex.StackTrace);
+                        Logging.Error("VoiceAttack failed to handle event.", data);
                     }
                 };
 
@@ -96,20 +100,29 @@ namespace EddiVoiceAttackResponder
                 CargoMonitor cargoMonitor = (CargoMonitor)EDDI.Instance.ObtainMonitor("Cargo monitor");
                 cargoMonitor.InventoryUpdatedEvent += (s, e) =>
                 {
-                    setCargo(cargoMonitor, ref vaProxy);
+                    lock (vaProxyLock)
+                    {
+                        setCargo(cargoMonitor, ref vaProxy);
+                    }
                 };
 
                 ShipMonitor shipMonitor = (ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor");
                 shipMonitor.ShipyardUpdatedEvent += (s, e) =>
                 {
-                    setShipValues(shipMonitor?.GetCurrentShip(), "Ship", ref vaProxy);
-                    Task.Run(() => setShipyardValues(shipMonitor?.shipyard?.ToList(), ref vaProxy));
+                    lock (vaProxyLock)
+                    {
+                        setShipValues(shipMonitor?.GetCurrentShip(), "Ship", ref vaProxy);
+                        Task.Run(() => setShipyardValues(shipMonitor?.shipyard?.ToList(), ref vaProxy));
+                    }
                 };
 
                 StatusMonitor statusMonitor = (StatusMonitor)EDDI.Instance.ObtainMonitor("Status monitor");
                 statusMonitor.StatusUpdatedEvent += (s, e) =>
                 {
-                    setStatusValues(statusMonitor?.currentStatus, "Status", ref vaProxy);
+                    lock (vaProxyLock)
+                    {
+                        setStatusValues(statusMonitor?.currentStatus, "Status", ref vaProxy);
+                    }
                 };
 
                 // Display instance information if available
@@ -117,20 +130,20 @@ namespace EddiVoiceAttackResponder
                 {
                     vaProxy.WriteToLog("Please shut down VoiceAttack and run EDDI standalone to upgrade", "red");
                     string msg = Properties.VoiceAttack.run_eddi_standalone;
-                    SpeechService.Instance.Say(((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip(), msg, false);
+                    SpeechService.Instance.Say(((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip(), msg, 0);
                 }
                 else if (EDDI.Instance.UpgradeAvailable)
                 {
                     vaProxy.WriteToLog("Please shut down VoiceAttack and run EDDI standalone to upgrade", "orange");
                     string msg = Properties.VoiceAttack.run_eddi_standalone;
-                    SpeechService.Instance.Say(((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip(), msg, false);
+                    SpeechService.Instance.Say(((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip(), msg, 0);
                 }
 
                 if (EDDI.Instance.Motd != null)
                 {
                     vaProxy.WriteToLog("Message from EDDI: " + EDDI.Instance.Motd, "black");
                     string msg = String.Format(Eddi.Properties.EddiResources.msg_from_eddi, EDDI.Instance.Motd);
-                    SpeechService.Instance.Say(((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip(), msg, false);
+                    SpeechService.Instance.Say(((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip(), msg, 0);
                 }
 
                 // Set the initial values from the main EDDI objects
@@ -676,7 +689,7 @@ namespace EddiVoiceAttackResponder
 
                 string speech = SpeechFromScript(script);
 
-                SpeechService.Instance.Say(((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip(), speech, true, (int)priority, voice);
+                SpeechService.Instance.Say(((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip(), speech, (int)priority, voice);
             }
             catch (Exception e)
             {
@@ -705,7 +718,7 @@ namespace EddiVoiceAttackResponder
 
                 string speech = SpeechFromScript(script);
 
-                SpeechService.Instance.Say(((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip(), speech, true, (int)priority, voice, true);
+                SpeechService.Instance.Say(((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip(), speech, (int)priority, voice, true);
             }
             catch (Exception e)
             {
@@ -762,6 +775,8 @@ namespace EddiVoiceAttackResponder
             try
             {
                 EDDI.Instance.State["speechresponder_quiet"] = true;
+                SpeechService.Instance.speechQueue.DequeueAllSpeech();
+                SpeechService.Instance.StopCurrentSpeech();
             }
             catch (Exception e)
             {
@@ -974,12 +989,24 @@ namespace EddiVoiceAttackResponder
                         break;
                     case "most":
                         {
-                            ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor")).GetMostRoute();
+                            if (system == null || system == string.Empty)
+                            {
+                                ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor")).GetMostRoute();
+                            }
+                            else
+                            {
+                                ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor")).GetMostRoute(system);
+                            }
                         }
                         break;
                     case "nearest":
                         {
                             ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor")).GetNearestRoute();
+                        }
+                        break;
+                    case "next":
+                        {
+                            ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor")).SetNextRoute();
                         }
                         break;
                     case "route":

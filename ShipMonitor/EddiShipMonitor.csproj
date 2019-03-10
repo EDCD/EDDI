@@ -171,6 +171,7 @@
     <EmbeddedResource Include="Properties\ShipMonitor.hu.resx" />
     <EmbeddedResource Include="Properties\ShipMonitor.it.resx" />
     <EmbeddedResource Include="Properties\ShipMonitor.ja.resx" />
+    <EmbeddedResource Include="Properties\ShipMonitor.pt-BR.resx" />
     <EmbeddedResource Include="Properties\ShipMonitor.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>ShipMonitor.Designer.cs</LastGenOutput>

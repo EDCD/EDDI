@@ -117,21 +117,66 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Chemicals" xml:space="preserve">
+    <value>Химикаты</value>
+    <comment>Commodity category Chemicals</comment>
+  </data>
+  <data name="ConsumerItems" xml:space="preserve">
+    <value>Потребительские товары</value>
+    <comment>Commodity category ConsumerItems</comment>
+  </data>
+  <data name="Foods" xml:space="preserve">
+    <value>Продукты питания</value>
+    <comment>Commodity category Foods</comment>
+  </data>
+  <data name="IndustrialMaterials" xml:space="preserve">
+    <value>Промышленные материалы</value>
+    <comment>Commodity category IndustrialMaterials</comment>
+  </data>
+  <data name="Machinery" xml:space="preserve">
+    <value>Машинное оборудование</value>
+    <comment>Commodity category Machinery</comment>
+  </data>
+  <data name="Medicines" xml:space="preserve">
+    <value>Лекарства</value>
+    <comment>Commodity category Medicines</comment>
+  </data>
+  <data name="Metals" xml:space="preserve">
+    <value>Металлы</value>
+    <comment>Commodity category Metals</comment>
+  </data>
+  <data name="Minerals" xml:space="preserve">
+    <value>Минералы</value>
+    <comment>Commodity category Minerals</comment>
+  </data>
+  <data name="Narcotics" xml:space="preserve">
+    <value>Наркотики</value>
+    <comment>Commodity category Narcotics</comment>
+  </data>
   
   
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="Salvage" xml:space="preserve">
+    <value>Спасенное имущество</value>
+    <comment>Commodity category Salvage</comment>
+  </data>
+  <data name="Technology" xml:space="preserve">
+    <value>Технологии</value>
+    <comment>Commodity category Technology</comment>
+  </data>
+  <data name="Textiles" xml:space="preserve">
+    <value>Текстиль</value>
+    <comment>Commodity category Textiles</comment>
+  </data>
+  <data name="Unknown" xml:space="preserve">
+    <value>Неизвестное</value>
+    <comment>Commodity category Unknown</comment>
+  </data>
+  <data name="Waste" xml:space="preserve">
+    <value>Отходы</value>
+    <comment>Commodity category Waste</comment>
+  </data>
+  <data name="Weapons" xml:space="preserve">
+    <value>Оружие</value>
+    <comment>Commodity category Weapons</comment>
+  </data>
 </root>

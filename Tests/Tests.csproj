@@ -133,6 +133,10 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="CapiShipyardTests.cs" />
+    <Compile Include="TelemetryTests.cs" />
+    <Compile Include="RedactionTests.cs" />
+    <Compile Include="TestBase.cs" />
     <Compile Include="EdsmDataTests.cs" />
     <Compile Include="CommodityTests.cs" />
     <Compile Include="DiffTests.cs" />
@@ -140,6 +144,7 @@
     <Compile Include="DataDefinitionTests.cs" />
     <Compile Include="GeneratorTests.cs" />
     <Compile Include="MissionMonitorTests.cs" />
+    <Compile Include="SpeechUnitTests.cs" />
     <Compile Include="StatusMonitorTests.cs" />
     <Compile Include="JournalMonitorTests.cs" />
     <Compile Include="BodyScanTests.cs" />
@@ -241,6 +246,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Abasheli Barracks.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="App.config">
       <SubType>Designer</SubType>
     </None>

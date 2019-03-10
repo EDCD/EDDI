@@ -117,39 +117,106 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="active_personality" xml:space="preserve">
+    <value>Активная личность</value>
+  </data>
+  <data name="button_cancel" xml:space="preserve">
+    <value>Отмена</value>
+  </data>
+  <data name="button_copy" xml:space="preserve">
+    <value>Копировать персональность</value>
+  </data>
+  <data name="button_delete" xml:space="preserve">
+    <value>Удалить персональность</value>
+  </data>
+  <data name="button_new" xml:space="preserve">
+    <value>Создать новый скрипт</value>
+  </data>
+  <data name="button_ok" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="compare_script_button" xml:space="preserve">
+    <value>Сравнить со значением по умолчанию</value>
+  </data>
+  <data name="compare_script_title" xml:space="preserve">
+    <value>Сравнение со скриптом по умолчанию</value>
+  </data>
+  <data name="default_is_read_only" xml:space="preserve">
+    <value>Личность по умолчанию не может быть изменена. Если вы хотите внести изменения, создайте копию.</value>
+  </data>
   <data name="default_personality_script_filename" xml:space="preserve">
     <value>eddi.ru.json</value>
     <comment>Suggest "eddi.&lt;culture-code&gt;.json" e.g. "eddi.fr.json"</comment>
   </data>
+  <data name="delete_personality_caption" xml:space="preserve">
+    <value>Удалить персональность</value>
+  </data>
+  <data name="delete_personality_message" xml:space="preserve">
+    <value>Вы уверены, что вы хотите удалить персональность "{0}"?</value>
+  </data>
+  <data name="delete_script" xml:space="preserve">
+    <value>Удалить</value>
+  </data>
+  <data name="delete_script_caption" xml:space="preserve">
+    <value>Удалить скрипт</value>
+  </data>
+  <data name="delete_script_message" xml:space="preserve">
+    <value>Вы уверены, что вы хотите удалить Скрипт "{0}"?</value>
+  </data>
+  <data name="desc" xml:space="preserve">
+    <value>Отвечает на события с помощью скриптовой речи на основе информации в событии. Не у всех событий есть скриптовые ответы. Если скрипт ответа пуст, то кнопки «Тест» и «Просмотр» отключены. Скрипты могут быть отключены, или им можно поменять приоритет, но не удалить.</value>
+  </data>
+  <data name="edit_script" xml:space="preserve">
+    <value>Редактировать</value>
+  </data>
+  <data name="edit_script_caption" xml:space="preserve">
+    <value>Редактировать скрипт</value>
+  </data>
+  <data name="header_description" xml:space="preserve">
+    <value>Описание</value>
+  </data>
+  <data name="header_enabled" xml:space="preserve">
+    <value>Включён</value>
+  </data>
+  <data name="header_name" xml:space="preserve">
+    <value>Название</value>
+  </data>
+  <data name="help_button" xml:space="preserve">
+    <value>Помощь</value>
+  </data>
+  <data name="name" xml:space="preserve">
+    <value>Речевой ответчик</value>
+  </data>
+  <data name="reset_script_button" xml:space="preserve">
+    <value>Сброс по умолчанию</value>
+  </data>
+  <data name="script_variables_button" xml:space="preserve">
+    <value>Переменные</value>
+    <comment>button that shows help for script variables</comment>
+  </data>
+  <data name="subs" xml:space="preserve">
+    <value>Вести лог произносимого текста в файл %APPDATA%\EDDI\speechresponder.out</value>
+  </data>
+  <data name="subs_only" xml:space="preserve">
+    <value>Не произносить вслух, когда текст записывается в файл, как указано выше</value>
+  </data>
+  <data name="test_script" xml:space="preserve">
+    <value>Тест</value>
+  </data>
+  <data name="test_script_button" xml:space="preserve">
+    <value>Проверить скрипт</value>
+  </data>
+  <data name="view_script" xml:space="preserve">
+    <value>Просмотр</value>
+  </data>
+  <data name="view_script_title" xml:space="preserve">
+    <value>Просмотр скрипта</value>
+  </data>
+  <data name="header_priority" xml:space="preserve">
+    <value>Приоритет</value>
+  </data>
   
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="speechResponderHelpHere" xml:space="preserve">
+    <value>здесь.</value>
+  </data>
 </root>

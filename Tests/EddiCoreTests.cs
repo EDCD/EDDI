@@ -1,37 +1,22 @@
 ﻿using Eddi;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Rollbar;
-using EddiJournalMonitor;
 using EddiEvents;
+using EddiJournalMonitor;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
-using System.Collections.Concurrent;
+using UnitTests;
 
-namespace UnitTests
+namespace IntegrationTests
 {
     [TestClass]
-    public class EddiCoreTests
+    public class EddiCoreTests : TestBase
     {
         [TestInitialize]
         public void start()
         {
-            // Prevent telemetry data from being reported based on test results
-            RollbarLocator.RollbarInstance.Config.Enabled = false;
-        }
-
-        [TestMethod]
-        public void TestResponders()
-        {
-            int numResponders = EDDI.Instance.findResponders().Count;
-            Assert.IsTrue(numResponders > 0);
-        }
-
-        [TestMethod]
-        public void TestMonitors()
-        {
-            int numMonitors = EDDI.Instance.findMonitors().Count;
-            Assert.IsTrue(numMonitors > 0);
+            MakeSafe();
         }
 
         [TestMethod]
@@ -40,7 +25,7 @@ namespace UnitTests
             PrivateObject privateObject = new PrivateObject(EDDI.Instance);
             EDDIMonitor monitor = ((List<EDDIMonitor>)privateObject
                 .GetFieldOrProperty("monitors"))
-                .FirstOrDefault(m => m.MonitorName() =="Journal monitor");
+                .FirstOrDefault(m => m.MonitorName() == "Journal monitor");
 
             privateObject.Invoke("EnableMonitor", new object[] { monitor.MonitorName() });
             monitor.Stop();
@@ -66,6 +51,34 @@ namespace UnitTests
 
             ((ConcurrentBag<EDDIMonitor>)privateObject.GetFieldOrProperty("activeMonitors")).TryTake(out EDDIMonitor activeMonitor);
             Assert.AreEqual(monitor, activeMonitor);
+        }
+
+    }
+}
+
+    namespace UnitTests
+{
+    [TestClass]
+    public class EddiCoreTests : TestBase
+    {
+        [TestInitialize]
+        public void start()
+        {
+            MakeSafe();
+        }
+
+        [TestMethod]
+        public void TestResponders()
+        {
+            int numResponders = EDDI.Instance.findResponders().Count;
+            Assert.IsTrue(numResponders > 0);
+        }
+
+        [TestMethod]
+        public void TestMonitors()
+        {
+            int numMonitors = EDDI.Instance.findMonitors().Count;
+            Assert.IsTrue(numMonitors > 0);
         }
 
         [TestMethod]

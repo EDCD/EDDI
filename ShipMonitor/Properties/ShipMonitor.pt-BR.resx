@@ -1,0 +1,216 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0"/>
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string"/>
+              <xsd:attribute name="type" type="xsd:string"/>
+              <xsd:attribute name="mimetype" type="xsd:string"/>
+              <xsd:attribute ref="xml:space"/>
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string"/>
+              <xsd:attribute name="name" type="xsd:string"/>
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"/>
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"/>
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"/>
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"/>
+              <xsd:attribute ref="xml:space"/>
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required"/>
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="desc" xml:space="preserve">
+    <value>Rastreia informações das suas naves.</value>
+  </data>
+  <data name="export_it_button" xml:space="preserve">
+    <value>Exportar</value>
+  </data>
+  <data name="header_location" xml:space="preserve">
+    <value>Localização</value>
+  </data>
+  <data name="header_model" xml:space="preserve">
+    <value>Modelo</value>
+  </data>
+  <data name="header_name" xml:space="preserve">
+    <value>Nome</value>
+  </data>
+  <data name="header_role" xml:space="preserve">
+    <value>Função</value>
+  </data>
+  <data name="header_ship_ID" xml:space="preserve">
+    <value>ID da Nave</value>
+  </data>
+  <data name="header_spoken_name" xml:space="preserve">
+    <value>Nome (falado)</value>
+  </data>
+  <data name="header_value" xml:space="preserve">
+    <value>Valor</value>
+  </data>
+  <data name="hear_it_button" xml:space="preserve">
+    <value>Ouvir</value>
+  </data>
+  <data name="ipa_page" xml:space="preserve">
+    <value>https://pt.wikipedia.org/wiki/Alfabeto_fon%C3%A9tico_internacional</value>
+  </data>
+  <data name="link_ipa" xml:space="preserve">
+    <value>Alfabeto Fonético Internacional</value>
+  </data>
+  <data name="name" xml:space="preserve">
+    <value>Monitor de Nave</value>
+  </data>
+  <data name="p1" xml:space="preserve">
+    <value>Isso permite que você veja suas naves e lhes dê funções individuais. As informações são disponibilizadas para respospostas e são usadas em scripts para personalizar ações.</value>
+  </data>
+  <data name="p2" xml:space="preserve">
+    <value>Se o nome da sua nave for difícil para o EDDI pronunciar, você pode adicionar uma versão falada da nave usando o</value>
+  </data>
+  <data name="p3" xml:space="preserve">
+    <value>. Por exemplo, se sua nave é chamada de "Orgulho de Achenar", o seu nome falado seria "oxɡˈuʎudʒiakenˈax" (note que não há espaços na versão fonética).</value>
+  </data>
+  <data name="p4" xml:space="preserve">
+    <value>Observe que, se você não configurou o acesso à API da Frontier, alguns dos dados abaixo estarão imprecisos ou indisponíveis. Além disso, se você tinha várias naves antes de instalar o EDDI, será necessário trocá-las para seu primeiro envio e aguardar alguns instantes antes que as informações completas sobre elas estejam disponíveis.</value>
+  </data>
+  <data name="p5" xml:space="preserve">
+    <value>O EDDI pode enviar uma exportação dos dados da sua nave para Coriolis ou EDShipyard (ferramentas de terceiros). Selecione a ferramenta que você preferir.</value>
+  </data>
+  <data name="ship_ready" xml:space="preserve">
+    <value>{0} está pronta.</value>
+  </data>
+  <data name="ipa_resource1" xml:space="preserve">
+    <value>http://www.internationalphoneticalphabet.org/ipa-sounds/ipa-chart-with-sounds/</value>
+  </data>
+  <data name="ipa_resource2" xml:space="preserve">
+    <value>https://tophonetics.com/</value>
+  </data>
+  <data name="ipa_resource3" xml:space="preserve">
+    <value>https://easypronunciation.com/en/english-phonetic-transcription-converter</value>
+  </data>
+  <data name="ipa_page_p1" xml:space="preserve">
+    <value>A</value>
+  </data>
+  <data name="ipa_resource1_title" xml:space="preserve">
+    <value>Gráfico AFI com sons</value>
+  </data>
+  <data name="ipa_resource2_title" xml:space="preserve">
+    <value>Tradutor de Português para AFI - https://goo.gl/Ha3LPD</value>
+  </data>
+  <data name="ipa_resource3_title" xml:space="preserve">
+    <value>Tradutor de Português para AFI - https://goo.gl/Ha3LPD</value>
+  </data>
+  <data name="ipa_page_comments" xml:space="preserve">
+    <value>Os dicionários on-line podem incluir as pronúncias apropriadas do AFI para palavras comuns. Os recursos abaixo podem ser usados para gerar pronúncias personalizadas para palavras menos comuns.</value>
+  </data>
+  <data name="ipa_page_p2" xml:space="preserve">
+    <value>é um sistema alfabético de notação fonética baseado principalmente no alfabeto latino. Foi inventado pela Associação Internacional de Fonética no final do século 19 como uma representação padronizada dos sons da linguagem falada.</value>
+  </data>
+  <data name="header_hot" xml:space="preserve">
+    <value>Status</value>
+    <comment>Header for column showing whether ship is Hot or Clean</comment>
+  </data>
+  <data name="ship_clean" xml:space="preserve">
+    <value>Limpo</value>
+    <comment>Ship is Clean</comment>
+  </data>
+  <data name="ship_hot" xml:space="preserve">
+    <value>Quente</value>
+    <comment>Ship is Hot</comment>
+  </data>
+</root>

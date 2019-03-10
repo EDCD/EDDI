@@ -4,6 +4,7 @@ using Utilities;
 namespace UnitTests
 {
     [TestClass]
+    // this class is pure and doesn't need TestBase.MakeSafe()
     public class VersioningTests
     {
         [TestMethod]

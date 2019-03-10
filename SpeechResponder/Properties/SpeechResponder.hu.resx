@@ -210,7 +210,7 @@
   <data name="view_script_title" xml:space="preserve">
     <value>Szkript megtekintése</value>
   </data>
-  <data name="warning_triggered" xml:space="preserve">
-    <value>Szkriptek amik egy eseményre aktíválódnak. Csak letiltani lehet, törölni nem.</value>
-  </data>
+  
+  
+  
 </root>

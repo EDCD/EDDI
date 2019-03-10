@@ -29,6 +29,29 @@ namespace EddiDataDefinitions
             {"wrongtarget", "assassinate"},
         };
 
+        private static List<string> ORGRETURN = new List<string>()
+        {
+            "altruism",
+            "altruismcredits",
+            "assassinate",
+            "assassinatewing",
+            "collect",
+            "collectwing",
+            "disable",
+            "genericpermit1",
+            "hack",
+            "longdistanceexpedition",
+            "massacre",
+            "massacrethargoid",
+            "massacrewing",
+            "mining",
+            "piracy",
+            "rescue",
+            "salvage",
+            "scan",
+            "sightseeing"
+        };
+
         // The mission ID
         public long missionid { get; private set; }
 
@@ -224,6 +247,7 @@ namespace EddiDataDefinitions
                 type = Name.Split('_').ElementAt(2)?.ToLowerInvariant();
             }
             this.typeDef = MissionType.FromEDName(type);
+            this.originreturn = ORGRETURN.Contains(type);
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

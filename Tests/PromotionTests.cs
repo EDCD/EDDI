@@ -1,19 +1,17 @@
-﻿using System.Collections.Generic;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using EddiEvents;
+﻿using EddiEvents;
 using EddiJournalMonitor;
-using Rollbar;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Collections.Generic;
 
 namespace UnitTests
 {
     [TestClass]
-    public class PromotionTests
+    public class PromotionTests : TestBase
     {
         [TestInitialize]
         public void start()
         {
-            // Prevent telemetry data from being reported based on test results
-            RollbarLocator.RollbarInstance.Config.Enabled = false;
+            MakeSafe();
         }
 
         private void ParseSampleByName(string sampleName)

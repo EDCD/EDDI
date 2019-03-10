@@ -391,9 +391,9 @@ namespace EddiSpeechResponder
             {
                 string text = values[0].AsString;
                 string voice = values[1].AsString;
-                foreach (System.Speech.Synthesis.InstalledVoice vc in SpeechService.synth?.GetInstalledVoices())
+                foreach (System.Speech.Synthesis.InstalledVoice vc in SpeechService.Instance.synth?.GetInstalledVoices())
                 {
-                    if (vc.VoiceInfo.Name.ToLowerInvariant().Contains(voice?.ToLowerInvariant()) 
+                    if (vc.VoiceInfo.Name.ToLowerInvariant().Contains(voice?.ToLowerInvariant())
                     && !vc.VoiceInfo.Name.Contains("Microsoft Server Speech Text to Speech Voice"))
                     {
                         voice = vc.VoiceInfo.Name;
@@ -416,7 +416,7 @@ namespace EddiSpeechResponder
                 if (values.Count == 0)
                 {
                     List<VoiceDetail> voices = new List<VoiceDetail>();
-                    foreach (System.Speech.Synthesis.InstalledVoice vc in SpeechService.synth?.GetInstalledVoices())
+                    foreach (System.Speech.Synthesis.InstalledVoice vc in SpeechService.Instance.synth?.GetInstalledVoices())
                     {
                         if (!vc.VoiceInfo.Name.Contains("Microsoft Server Speech Text to Speech Voice"))
                         {
@@ -435,9 +435,9 @@ namespace EddiSpeechResponder
                 }
                 else if (values.Count == 1)
                 {
-                    foreach (System.Speech.Synthesis.InstalledVoice vc in SpeechService.synth?.GetInstalledVoices())
+                    foreach (System.Speech.Synthesis.InstalledVoice vc in SpeechService.Instance.synth?.GetInstalledVoices())
                     {
-                        if (vc.VoiceInfo.Name.ToLowerInvariant().Contains(values[0].AsString?.ToLowerInvariant()) 
+                        if (vc.VoiceInfo.Name.ToLowerInvariant().Contains(values[0].AsString?.ToLowerInvariant())
                         && !vc.VoiceInfo.Name.Contains("Microsoft Server Speech Text to Speech Voice"))
                         {
                             result = new VoiceDetail(
@@ -671,12 +671,24 @@ namespace EddiSpeechResponder
                         break;
                     case "most":
                         {
-                            result = ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor"))?.GetMostRoute();
+                            if (values.Count == 2)
+                            {
+                                result = ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor"))?.GetMostRoute(values[1].AsString);
+                            }
+                            else
+                            {
+                                result = ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor"))?.GetMostRoute();
+                            }
                         }
                         break;
                     case "nearest":
                         {
                             result = ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor"))?.GetNearestRoute();
+                        }
+                        break;
+                    case "next":
+                        {
+                            result = ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor"))?.SetNextRoute();
                         }
                         break;
                     case "route":
@@ -934,7 +946,7 @@ namespace EddiSpeechResponder
                 }
                 return "";
             }, 1);
-            
+
             store["GalnetNewsDelete"] = new NativeFunction((values) =>
             {
                 News result = GalnetSqLiteRepository.Instance.GetArticle(values[0].AsString);
@@ -944,7 +956,7 @@ namespace EddiSpeechResponder
                 }
                 return "";
             }, 1);
-            
+
             store["Distance"] = new NativeFunction((values) =>
             {
                 decimal result = 0;

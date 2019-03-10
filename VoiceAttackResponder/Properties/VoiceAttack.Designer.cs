@@ -97,7 +97,7 @@ namespace EddiVoiceAttackResponder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Once VoiceAttack is installed you will need to enable plugin support. To do so you must click on the Settings icon (a spanner) in the top-right corner of the VoiceAttack and check the &apos;Enable plugin support&apos; option and restart VoiceAttack. You should see a message in the VoiceAttack window along the lines of &apos;Plugin EDDI 2.0.0 initialized&apos;..
+        ///   Looks up a localized string similar to Once VoiceAttack is installed you will need to enable plugin support. To do so you must click on the Settings icon (a spanner) in the bottom-right corner of the VoiceAttack window and check the &apos;Enable plugin support&apos; option and restart VoiceAttack. You should see a message in the VoiceAttack window along the lines of &apos;Plugin EDDI 2.0.0 initialized&apos;..
         /// </summary>
         public static string p3 {
             get {

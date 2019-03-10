@@ -198,7 +198,6 @@ namespace EddiSpeechResponder
                 }
             }
 
-
             if (statusMonitor?.currentStatus.gui_focus == "fss mode" && statusMonitor?.lastStatus.gui_focus != "fss mode")
             {
                 // Beginning with Elite Dangerous v. 3.3, the primary star scan is delivered via a Scan with 
@@ -219,7 +218,7 @@ namespace EddiSpeechResponder
 
         private void Say(Event @event)
         {
-            Say(scriptResolver, ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor"))?.GetCurrentShip(), @event.type, @event, null, null, null, SayOutLoud());
+            Say(scriptResolver, ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor"))?.GetCurrentShip(), @event.type, @event, null, null, SayOutLoud());
         }
 
         private static bool SayOutLoud()
@@ -237,13 +236,13 @@ namespace EddiSpeechResponder
         }
 
         // Say something with the default resolver
-        public void Say(Ship ship, string scriptName, Event theEvent = null, int? priority = null, string voice = null, bool? wait = null, bool sayOutLoud = true)
+        public void Say(Ship ship, string scriptName, Event theEvent = null, int? priority = null, string voice = null, bool sayOutLoud = true)
         {
-            Say(scriptResolver, ship, scriptName, theEvent, priority, voice, null, sayOutLoud);
+            Say(scriptResolver, ship, scriptName, theEvent, priority, voice, sayOutLoud);
         }
 
         // Say something with a custom resolver
-        public void Say(ScriptResolver resolver, Ship ship, string scriptName, Event theEvent = null, int? priority = null, string voice = null, bool? wait = null, bool sayOutLoud = true)
+        public void Say(ScriptResolver resolver, Ship ship, string scriptName, Event theEvent = null, int? priority = null, string voice = null, bool sayOutLoud = true)
         {
             Dictionary<string, Cottle.Value> dict = createVariables(theEvent);
             string speech = resolver.resolve(scriptName, dict);
@@ -256,7 +255,7 @@ namespace EddiSpeechResponder
                 }
                 if (sayOutLoud && !(subtitles && subtitlesOnly))
                 {
-                    SpeechService.Instance.Say(ship, speech, (wait == null ? true : (bool)wait), (priority == null ? resolver.priority(scriptName) : (int)priority), voice);
+                    SpeechService.Instance.Say(ship, speech, (priority == null ? resolver.priority(scriptName) : (int)priority), voice, false, theEvent?.type);
                 }
             }
         }

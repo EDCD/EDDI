@@ -137,6 +137,7 @@
     <EmbeddedResource Include="Properties\EddpResources.hu.resx" />
     <EmbeddedResource Include="Properties\EddpResources.it.resx" />
     <EmbeddedResource Include="Properties\EddpResources.ja.resx" />
+    <EmbeddedResource Include="Properties\EddpResources.pt-BR.resx" />
     <EmbeddedResource Include="Properties\EddpResources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>EddpResources.Designer.cs</LastGenOutput>

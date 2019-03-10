@@ -98,6 +98,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Utilities.resx</DependentUpon>
     </Compile>
+    <Compile Include="Redaction.cs" />
     <Compile Include="Translation.cs" />
     <Compile Include="ServerInfo.cs" />
     <Compile Include="Versioning.cs" />
@@ -112,6 +113,7 @@
     <EmbeddedResource Include="Properties\Utilities.hu.resx" />
     <EmbeddedResource Include="Properties\Utilities.it.resx" />
     <EmbeddedResource Include="Properties\Utilities.ja.resx" />
+    <EmbeddedResource Include="Properties\Utilities.pt-BR.resx" />
     <EmbeddedResource Include="Properties\Utilities.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Utilities.Designer.cs</LastGenOutput>

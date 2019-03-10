@@ -3,40 +3,38 @@ using EddiDataProviderService;
 using EddiEvents;
 using EddiJournalMonitor;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Rollbar;
 using System;
 using System.Collections.Generic;
 
 namespace UnitTests
 {
     [TestClass]
-    public class EddnTests
+    public class EddnTests : TestBase
     {
         [TestInitialize]
         public void start()
         {
-            // Prevent telemetry data from being reported based on test results
-            RollbarLocator.RollbarInstance.Config.Enabled = false;
+            MakeSafe();
         }
 
         class MockStarService : StarSystemRepository
         {
-            public StarSystem GetOrCreateStarSystem(string name, bool refreshIfOutdated = true)
+            public StarSystem GetOrCreateStarSystem(string name, bool fetchIfMissing = true, bool refreshIfOutdated = true)
             {
                 return GetStarSystem(name, refreshIfOutdated);
             }
 
-            public List<StarSystem> GetOrCreateStarSystems(string[] names, bool refreshIfOutdated = true)
+            public List<StarSystem> GetOrCreateStarSystems(string[] names, bool fetchIfMissing = true, bool refreshIfOutdated = true)
             {
                 throw new NotImplementedException();
             }
 
-            public StarSystem GetOrFetchStarSystem(string name, bool fetchIfMissing = true)
+            public StarSystem GetOrFetchStarSystem(string name, bool fetchIfMissing = true, bool refreshIfOutdated = true)
             {
                 return GetStarSystem(name, fetchIfMissing);
             }
 
-            public List<StarSystem> GetOrFetchStarSystems(string[] names, bool fetchIfMissing = true)
+            public List<StarSystem> GetOrFetchStarSystems(string[] names, bool fetchIfMissing = true, bool refreshIfOutdated = true)
             {
                 throw new NotImplementedException();
             }
