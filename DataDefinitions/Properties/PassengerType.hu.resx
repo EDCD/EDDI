@@ -116,11 +116,19 @@
   
   
   
+  <data name="Rebel" xml:space="preserve">
+    <value>Felkelő utascsoport</value>
+  </data>
   
-  
-  
-  
-  
+  <data name="Scientist" xml:space="preserve">
+    <value>Tudományos kutatócsoport</value>
+  </data>
+  <data name="Security" xml:space="preserve">
+    <value>Örző-védő csoport</value>
+  </data>
+  <data name="Terrorist" xml:space="preserve">
+    <value>Felkelővezér</value>
+  </data>
   
   <data name="Whistleblower" xml:space="preserve">
     <value>Politikai fogoly</value>
