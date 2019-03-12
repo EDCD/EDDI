@@ -69,6 +69,38 @@ namespace EddiStarMapService
             return null;
         }
 
+        /// <summary> Partial of system name is required. </summary>
+        public static List<StarSystem> GetStarMapSystemsPartial(string system, bool showCoordinates = true, bool showSystemInformation = true)
+        {
+            if (system == null) { return null; }
+            var client = new RestClient(baseUrl);
+            var request = new RestRequest("api-v1/systems", Method.POST);
+            request.AddParameter("systemName", system);
+            request.AddParameter("showId", 1);
+            request.AddParameter("showCoordinates", showCoordinates ? 1 : 0);
+            request.AddParameter("showInformation", showSystemInformation ? 1 : 0);
+            request.AddParameter("showPermit", showSystemInformation ? 1 : 0);
+            var clientResponse = client.Execute<List<JObject>>(request);
+            if (clientResponse.IsSuccessful)
+            {
+                JArray responses = JArray.Parse(clientResponse.Content);
+                List<StarSystem> starSystems = new List<StarSystem>();
+                foreach (JObject response in responses)
+                {
+                    if (response != null)
+                    {
+                        starSystems.Add(ParseStarMapSystem(response, (string)response["name"]));
+                    }
+                }
+                return starSystems;
+            }
+            else
+            {
+                Logging.Debug("EDSM responded with " + clientResponse.ErrorMessage, clientResponse.ErrorException);
+            }
+            return null;
+        }
+
         /// <summary> Get star systems around a specified system in a sphere or shell, with a maximum radius of 200 light years. </summary>
         public static List<Dictionary<string, object>> GetStarMapSystemsSphere(string starSystem, int minRadiusLy = 0, int maxRadiusLy = 200, bool showEdsmId = true, bool showCoordinates = true, bool showInformation = true, bool showPermit = true)
         {

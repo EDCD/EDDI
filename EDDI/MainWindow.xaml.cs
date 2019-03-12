@@ -2,6 +2,7 @@
 using EddiDataDefinitions;
 using EddiDataProviderService;
 using EddiSpeechService;
+using EddiStarMapService;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -9,6 +10,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.IO.Compression;
+using System.Linq;
 using System.Speech.Synthesis;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -70,7 +72,7 @@ namespace Eddi
                     Properties.Settings.Default.Maximized = false;
 
                     // If opened from VoiceAttack, don't allow minimized state
-                    Properties.Settings.Default.Minimized = fromVA ? false: true;
+                    Properties.Settings.Default.Minimized = fromVA ? false : true;
 
                     break;
                 default:
@@ -185,16 +187,13 @@ namespace Eddi
             }
 
             EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
-            if (eddiConfiguration.validHomeSystem)
-            {
-                ConfigureHomeStationOptions(eddiConfiguration.HomeSystem);
-                eddiHomeSystemText.Text = eddiConfiguration.HomeSystem;
-            }
-            else
-            {
-                eddiHomeSystemText.Text = string.Empty;
-            }
+
+            // Setup home system & station to config file values
+            homeSystemDropDown.ItemsSource = new List<string> { eddiConfiguration.HomeSystem ?? string.Empty };
+            homeSystemDropDown.SelectedItem = eddiConfiguration.HomeSystem ?? string.Empty;
+            ConfigureHomeStationOptions(eddiConfiguration.HomeSystem);
             homeStationDropDown.SelectedItem = eddiConfiguration.HomeStation ?? Properties.MainWindow.no_station;
+
             eddiVerboseLogging.IsChecked = eddiConfiguration.Debug;
             eddiBetaProgramme.IsChecked = eddiConfiguration.Beta;
             if (eddiConfiguration.Gender == "Female")
@@ -319,7 +318,7 @@ namespace Eddi
                     satelliteCultures.Add(new LanguageDef(cInfo));
                 }
                 catch
-                {}
+                { }
             }
             satelliteCultures.Sort();
             cultures.AddRange(satelliteCultures);
@@ -460,14 +459,25 @@ namespace Eddi
             }
         }
 
-        // Handle changes to the eddi tab
-        private void homeSystemChanged(object sender, TextChangedEventArgs e)
+        // Handle changes to the editable home system combo box
+        private void HomeSystemText_TextChanged(object sender, TextChangedEventArgs e)
         {
             EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
-            if (eddiConfiguration.HomeSystem != eddiHomeSystemText.Text)
+            if (eddiConfiguration.HomeSystem != homeSystemDropDown.Text)
             {
-                eddiConfiguration.HomeSystem = string.IsNullOrWhiteSpace(eddiHomeSystemText.Text) ? null : eddiHomeSystemText.Text.Trim();
-                eddiConfiguration = EDDI.Instance.updateHomeSystem(eddiConfiguration);
+                string systemName = homeSystemDropDown.Text?.ToLowerInvariant();
+                if (systemName.Length > 1)
+                {
+                    List<string> partialList = StarMapService.GetStarMapSystemsPartial(systemName + "%")
+                        .Select(s => s.name).ToList();
+                    homeSystemDropDown.ItemsSource = partialList.Take(8);
+                }
+                else
+                {
+                    homeSystemDropDown.ItemsSource = null;
+                }
+
+                // Rest the home station
                 if (eddiConfiguration.HomeStation != null)
                 {
                     eddiConfiguration.HomeStation = null;
@@ -476,26 +486,16 @@ namespace Eddi
                 }
                 eddiConfiguration.ToFile();
 
-                // Update the UI for invalid results
-                runValidation(eddiHomeSystemText);
+                homeSystemDropDown.IsDropDownOpen = true;
             }
         }
 
-        private void eddiHomeSystemText_LostFocus(object sender, RoutedEventArgs e)
+        private void homeSystemDropDownUpdated(object sender, SelectionChangedEventArgs e)
         {
-            // Discard invalid results
             EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
-            if (eddiConfiguration.validHomeSystem)
-            {
-                eddiHomeSystemText.Text = eddiConfiguration.HomeSystem;
-                ConfigureHomeStationOptions(eddiConfiguration.HomeSystem);
-            }
-            else
-            {
-                eddiConfiguration.HomeSystem = null;
-                eddiHomeSystemText.Text = string.Empty;
-                eddiConfiguration.ToFile();
-            }
+            eddiConfiguration.HomeSystem = homeSystemDropDown.SelectedItem?.ToString();
+            eddiConfiguration.ToFile();
+            ConfigureHomeStationOptions(eddiConfiguration.HomeSystem);
         }
 
         private void ConfigureHomeStationOptions(string system)
@@ -507,8 +507,8 @@ namespace Eddi
 
             if (system != null)
             {
-                StarSystem HomeSystem = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(system, true);
-                if (HomeSystem.stations != null)
+                StarSystem HomeSystem = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystem(system, true);
+                if (HomeSystem?.stations != null)
                 {
                     foreach (Station station in HomeSystem.stations)
                     {
@@ -524,7 +524,7 @@ namespace Eddi
         private void homeStationDropDownUpdated(object sender, SelectionChangedEventArgs e)
         {
             EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
-            string homeStationName = homeStationDropDown.SelectedItem.ToString();
+            string homeStationName = homeStationDropDown.SelectedItem?.ToString();
             if (eddiConfiguration.HomeStation != homeStationName)
             {
                 eddiConfiguration.HomeStation = homeStationName == Properties.MainWindow.no_station ? null : homeStationName;
@@ -534,19 +534,19 @@ namespace Eddi
         }
 
         private void isMale_Checked(object sender, RoutedEventArgs e)
-         {
-             EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
-             eddiConfiguration.Gender = "Male";
-             eddiConfiguration.ToFile();
-             EDDI.Instance.Cmdr.gender = "Male";
-          }
+        {
+            EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
+            eddiConfiguration.Gender = "Male";
+            eddiConfiguration.ToFile();
+            EDDI.Instance.Cmdr.gender = "Male";
+        }
 
         private void isFemale_Checked(object sender, RoutedEventArgs e)
         {
-             EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
-             eddiConfiguration.Gender = "Female";
-             eddiConfiguration.ToFile();
-             EDDI.Instance.Cmdr.gender = "Female";
+            EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
+            eddiConfiguration.Gender = "Female";
+            eddiConfiguration.ToFile();
+            EDDI.Instance.Cmdr.gender = "Female";
         }
 
         private void isNeitherGender_Checked(object sender, RoutedEventArgs e)
@@ -857,7 +857,7 @@ namespace Eddi
         {
             setStatusInfo();
 
-            if (oldState == CompanionAppService.State.AwaitingCallback && 
+            if (oldState == CompanionAppService.State.AwaitingCallback &&
                 newState == CompanionAppService.State.Authorized)
             {
                 SpeechService.Instance.Say(null, string.Format(Properties.EddiResources.frontier_api_ok, EDDI.Instance.Cmdr.name), 0);
@@ -1083,7 +1083,7 @@ namespace Eddi
                 var progress = new Progress<string>(s => githubIssueButton.Content = Properties.EddiResources.preparing_log + s);
                 await Task.Factory.StartNew(() => prepareLog(progress), TaskCreationOptions.LongRunning);
             }
-            
+
             createGithubIssue();
         }
 
@@ -1111,7 +1111,7 @@ namespace Eddi
                 // Truncate log files more than the specified size MB in size
                 const long maxLogSizeBytes = 0x200000; // 2 MB
                 FileInfo logFile = new FileInfo(issueLogFile);
-                if (logFile.Length > maxLogSizeBytes) 
+                if (logFile.Length > maxLogSizeBytes)
                 {
                     using (MemoryStream ms = new MemoryStream((int)maxLogSizeBytes))
                     {
@@ -1120,7 +1120,7 @@ namespace Eddi
                             issueLog.Seek(-1 * maxLogSizeBytes, SeekOrigin.End);
                             // advance to after next line end
                             int c = 0;
-                            while ( (c = issueLog.ReadByte() ) != -1)
+                            while ((c = issueLog.ReadByte()) != -1)
                             {
                                 if (c == '\n')
                                 {

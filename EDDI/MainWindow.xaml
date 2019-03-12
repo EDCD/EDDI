@@ -109,7 +109,7 @@
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
-                            <RowDefinition Height="50" />
+                            <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="25" />
                             <RowDefinition Height="Auto" />
@@ -125,13 +125,20 @@
                         </Grid.RowDefinitions>
                         <TextBlock x:Name ="eddi2Text" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="6" Margin="5,10" TextWrapping="Wrap" Text="{x:Static resx:MainWindow.tab_commander_par1}" VerticalAlignment="Top"/>
                         <Label x:Name ="eddiHomeSystemLabel" Grid.Row="1" Grid.Column="0" VerticalContentAlignment="Bottom" Content="{x:Static resx:MainWindow.tab_commander_home_system}" />
-                        <TextBox x:Name ="eddiHomeSystemText" VerticalAlignment="Bottom" VerticalContentAlignment="Center" TextChanged="homeSystemChanged" Margin="0,5" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan ="3" Height="25" LostFocus="eddiHomeSystemText_LostFocus">
-                            <Binding UpdateSourceTrigger="PropertyChanged" ElementName="eddiConfiguration" Path="HomeSystem">
-                                <Binding.ValidationRules>
-                                    <local:ValidHomeSystemRule/>
-                                </Binding.ValidationRules>
-                            </Binding>
-                        </TextBox>
+
+                        <ComboBox x:Name="homeSystemDropDown"
+                                  IsEditable="True"
+                                  IsReadOnly="False"
+                                  IsTextSearchEnabled="False"
+                                  TextBoxBase.TextChanged="HomeSystemText_TextChanged"
+                                  Grid.Row="1"
+                                  Grid.Column="1"
+                                  Grid.ColumnSpan ="3"
+                                  Margin="0, 5"
+                                  VerticalContentAlignment="Center"
+                                  SelectionChanged="homeSystemDropDownUpdated"/>
+
+
                         <Label x:Name ="eddiHomeStationLabel" Grid.Row="2" Grid.Column="0" VerticalContentAlignment="Center" Content="{x:Static resx:MainWindow.tab_commander_home_station}"/>
                         <ComboBox x:Name="homeStationDropDown" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan ="2" Margin="0, 5" VerticalContentAlignment="Center" SelectionChanged="homeStationDropDownUpdated"/>
                         <Label x:Name ="eddiGenderLabel" Grid.Row="5" Grid.RowSpan="3" Grid.Column="0" Grid.ColumnSpan ="2" Margin="0, 5" Content="{x:Static resx:MainWindow.tab_commander_gender}"/>
