@@ -75,7 +75,7 @@ namespace EddiStarMapService
             if (system == null) { return null; }
             var client = new RestClient(baseUrl);
             var request = new RestRequest("api-v1/systems", Method.POST);
-            request.AddParameter("systemName", system);
+            request.AddParameter("systemName", system + "%");
             request.AddParameter("showId", 1);
             request.AddParameter("showCoordinates", showCoordinates ? 1 : 0);
             request.AddParameter("showInformation", showSystemInformation ? 1 : 0);

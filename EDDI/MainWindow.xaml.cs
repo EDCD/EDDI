@@ -30,6 +30,7 @@ namespace Eddi
     public partial class MainWindow : Window
     {
         private bool fromVA;
+        private List<string> systemList = new List<string>();
 
         struct LanguageDef : IComparable<LanguageDef>
         {
@@ -464,9 +465,13 @@ namespace Eddi
                 string systemName = homeSystemDropDown.Text?.ToLowerInvariant();
                 if (systemName.Length > 1)
                 {
-                    List<string> partialList = StarMapService.GetStarMapSystemsPartial(systemName + "%")
-                        .Select(s => s.name).ToList();
-                    homeSystemDropDown.ItemsSource = partialList.Take(8);
+                    systemList = systemList.Where(s => s.StartsWith(systemName, StringComparison.InvariantCultureIgnoreCase)).ToList();
+                    if (systemList.Count < 5)
+                    {
+                        systemList = StarMapService.GetStarMapSystemsPartial(systemName)
+                            .Select(s => s.name).ToList();
+                    }
+                    homeSystemDropDown.ItemsSource = systemList.Take(5);
                     if (homeSystemDropDown.IsDropDownOpen == false)
                     {
                         homeSystemDropDown.IsDropDownOpen = true;
@@ -484,14 +489,14 @@ namespace Eddi
                     }
                 }
 
-                // Rest the home station
+                // Reset the home station due to selecting new home system
                 if (eddiConfiguration.HomeStation != null)
                 {
                     eddiConfiguration.HomeStation = null;
                     homeStationDropDown.SelectedItem = Properties.MainWindow.no_station;
                     ConfigureHomeStationOptions(null);
+                    eddiConfiguration.ToFile();
                 }
-                eddiConfiguration.ToFile();
             }
         }
 
@@ -499,7 +504,7 @@ namespace Eddi
         {
             if (homeSystemDropDown.ItemsSource != null)
             {
-                // Update to new home system
+                // Update configuration to new home system
                 EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
                 eddiConfiguration.HomeSystem = homeSystemDropDown.SelectedItem?.ToString();
                 eddiConfiguration = EDDI.Instance.updateHomeSystem(eddiConfiguration);
@@ -507,6 +512,8 @@ namespace Eddi
 
                 // Update station options for new system
                 ConfigureHomeStationOptions(eddiConfiguration.HomeSystem);
+
+                systemList.Clear();
             }
         }
 
@@ -642,7 +649,7 @@ namespace Eddi
             }
         }
 
-        // Handle changes to the editable home system combo box
+        // Handle changes to the editable squadron system combo box
         private void SquadronSystemText_TextChanged(object sender, TextChangedEventArgs e)
         {
             EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
@@ -651,9 +658,13 @@ namespace Eddi
                 string systemName = squadronSystemDropDown.Text?.ToLowerInvariant();
                 if (systemName.Length > 1)
                 {
-                    List<string> partialList = StarMapService.GetStarMapSystemsPartial(systemName + "%")
-                        .Select(s => s.name).ToList();
-                    squadronSystemDropDown.ItemsSource = partialList.Take(8);
+                    systemList = systemList.Where(s => s.StartsWith(systemName, StringComparison.InvariantCultureIgnoreCase)).ToList();
+                    if (systemList.Count < 5)
+                    {
+                        systemList = StarMapService.GetStarMapSystemsPartial(systemName)
+                            .Select(s => s.name).ToList();
+                    }
+                    squadronSystemDropDown.ItemsSource = systemList.Take(5);
                     if (squadronSystemDropDown.IsDropDownOpen == false)
                     {
                         squadronSystemDropDown.IsDropDownOpen = true;
@@ -671,7 +682,7 @@ namespace Eddi
                     }
                 }
 
-                // Rest the squadron data
+                // Reset the squadron data due to selecting new squadron system
                 if (eddiConfiguration.SquadronFaction != null)
                 {
                     eddiConfiguration.SquadronFaction = null;
@@ -687,8 +698,8 @@ namespace Eddi
 
                     EDDI.Instance.Cmdr.squadronallegiance = Superpower.None;
                     EDDI.Instance.Cmdr.squadronpower = Power.None;
+                    eddiConfiguration.ToFile();
                 }
-                eddiConfiguration.ToFile();
             }
         }
 
@@ -696,6 +707,7 @@ namespace Eddi
         {
             if (squadronSystemDropDown.ItemsSource != null)
             {
+                // Update configuration to new squadron system
                 EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
                 eddiConfiguration.SquadronSystem = squadronSystemDropDown.SelectedItem?.ToString();
                 eddiConfiguration = EDDI.Instance.updateSquadronSystem(eddiConfiguration);
@@ -703,6 +715,8 @@ namespace Eddi
 
                 //Update squadron faction options for new system
                 ConfigureSquadronFactionOptions(eddiConfiguration);
+
+                systemList.Clear();
             }
         }
 
