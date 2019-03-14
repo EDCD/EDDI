@@ -2318,7 +2318,6 @@ namespace Eddi
         public EDDIConfiguration updateHomeSystem(EDDIConfiguration configuration)
         {
             Logging.Verbose = configuration.Debug;
-            configuration.validHomeSystem = false;
             if (configuration.HomeSystem != null)
             {
                 StarSystem system = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystem(configuration.HomeSystem);
@@ -2332,7 +2331,6 @@ namespace Eddi
                         Logging.Debug("Home star system is " + HomeStarSystem.name);
                         configuration.HomeSystem = system.name;
                     }
-                    configuration.validHomeSystem = HomeStarSystem.bodies.Count > 0 || HomeStarSystem.stations.Count > 0 || HomeStarSystem.population > 0;
                 }
             }
             else
@@ -2366,7 +2364,6 @@ namespace Eddi
         public EDDIConfiguration updateSquadronSystem(EDDIConfiguration configuration)
         {
             Logging.Verbose = configuration.Debug;
-            configuration.validSquadronSystem = false;
             if (configuration.SquadronSystem != null && configuration.SquadronSystem.Trim().Length > 2)
             {
                 StarSystem system = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystem(configuration.SquadronSystem.Trim());
@@ -2381,7 +2378,6 @@ namespace Eddi
                         {
                             Logging.Debug("Squadron star system is " + SquadronStarSystem.name);
                             configuration.SquadronSystem = system.name;
-                            configuration.validSquadronSystem = SquadronStarSystem.factions.Count() > 0;
                         }
                     }
                 }

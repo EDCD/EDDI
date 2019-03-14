@@ -512,9 +512,12 @@ namespace Eddi
 
                 // Update station options for new system
                 ConfigureHomeStationOptions(eddiConfiguration.HomeSystem);
-
-                systemList.Clear();
             }
+        }
+
+        private void HomeSystemDropDown_LostFocus(object sender, RoutedEventArgs e)
+        {
+            systemList.Clear();
         }
 
         private void ConfigureHomeStationOptions(string system)
@@ -715,9 +718,12 @@ namespace Eddi
 
                 //Update squadron faction options for new system
                 ConfigureSquadronFactionOptions(eddiConfiguration);
-
-                systemList.Clear();
             }
+        }
+
+        private void SquadronSystemDropDown_LostFocus(object sender, RoutedEventArgs e)
+        {
+            systemList.Clear();
         }
 
         private void squadronFactionDropDownUpdated(object sender, SelectionChangedEventArgs e)
@@ -1221,79 +1227,6 @@ namespace Eddi
         private void TroubleshootClicked(object sender, RoutedEventArgs e)
         {
             Process.Start("https://github.com/EDCD/EDDI/blob/master/TROUBLESHOOTING.md");
-        }
-
-        private void runValidation(System.Windows.Controls.TextBox textBox)
-        {
-            BindingExpression b = BindingOperations.GetBindingExpression(textBox, System.Windows.Controls.TextBox.TextProperty);
-            try
-            {
-                b.ValidateWithoutUpdate();
-            }
-            catch { }
-        }
-    }
-
-    public class ValidHomeSystemRule : ValidationRule
-    {
-        public override ValidationResult Validate(object value, CultureInfo cultureInfo)
-        {
-            EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
-
-            if (value == null)
-            {
-                return ValidationResult.ValidResult;
-            }
-            if (eddiConfiguration.validHomeSystem)
-            {
-                return ValidationResult.ValidResult;
-            }
-            else
-            {
-                return new ValidationResult(false, Properties.EddiResources.invalid_system);
-            }
-        }
-    }
-
-    public class ValidSquadronSystemRule : ValidationRule
-    {
-        public override ValidationResult Validate(object value, CultureInfo cultureInfo)
-        {
-            EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
-
-            if (value == null)
-            {
-                return ValidationResult.ValidResult;
-            }
-            if (eddiConfiguration.validSquadronSystem)
-            {
-                return ValidationResult.ValidResult;
-            }
-            else
-            {
-                return new ValidationResult(false, Properties.EddiResources.invalid_system);
-            }
-        }
-    }
-
-    public class ValidSquadronIDRule : ValidationRule
-    {
-        public override ValidationResult Validate(object value, CultureInfo cultureInfo)
-        {
-            EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
-
-            if (value == null)
-            {
-                return ValidationResult.ValidResult;
-            }
-            if (eddiConfiguration.validSquadronSystem)
-            {
-                return ValidationResult.ValidResult;
-            }
-            else
-            {
-                return new ValidationResult(false, Properties.EddiResources.invalid_system);
-            }
         }
     }
 }
