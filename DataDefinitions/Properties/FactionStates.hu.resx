@@ -173,6 +173,12 @@
     <value>Polgári szabadság</value>
     <comment>Faction state CivilLiberty</comment>
   </data>
-  
-  
+  <data name="Incursion" xml:space="preserve">
+    <value>Behatolás</value>
+    <comment>Faction state Incursion</comment>
+  </data>
+  <data name="PirateAttack" xml:space="preserve">
+    <value>Kalóz támadás</value>
+    <comment>Faction state PirateAttack</comment>
+  </data>
 </root>

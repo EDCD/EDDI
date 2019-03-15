@@ -153,5 +153,8 @@
     <value>Semmi</value>
     <comment>BodyType "Null"</comment>
   </data>
-  
+  <data name="PlanetaryRing" xml:space="preserve">
+    <value>Bolygó gyűrű</value>
+    <comment>Body Type PlanetaryRing</comment>
+  </data>
 </root>
