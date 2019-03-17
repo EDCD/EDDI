@@ -2,6 +2,10 @@
 
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
+### Development
+  * Speech responder
+    * Fixed a bug that would cause Test scripts to only be written to file and not voiced.
+
 ### 3.3.7-b1
   * Core
     * Fixed a bug whereby names of materials (Carbon, Iron, Conductive Components, etc) were not always localized.
