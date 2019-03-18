@@ -31,6 +31,8 @@ namespace EddiShipMonitor
         private int? currentShipId;
         private int? currentProfileId;
 
+        private const int profileRefreshDelaySeconds = 20;
+
         private static readonly object shipyardLock = new object();
         public event EventHandler ShipyardUpdatedEvent;
 
@@ -972,8 +974,8 @@ namespace EddiShipMonitor
 
         private void posthandleShipLoadoutEvent(ShipLoadoutEvent @event)
         {
-            /// The ship may have Frontier API specific data, request a profile refresh from the Frontier API a minute after switching
-            refreshProfileDelayed(@event.shipid, currentProfileId).GetAwaiter().GetResult();
+            /// The ship may have Frontier API specific data, request a profile refresh from the Frontier API shortly after switching
+            refreshProfileDelayed();
         }
 
         // Note: At a minimum, the API Profile data is required to update the current ship's launchbay status
@@ -1017,6 +1019,10 @@ namespace EddiShipMonitor
                         }
                     }
                     Logging.Debug("Ship is: " + JsonConvert.SerializeObject(ship));
+                }
+                else
+                {
+                    refreshProfileDelayed();
                 }
             }
 
@@ -1525,14 +1531,18 @@ namespace EddiShipMonitor
             return model.Contains("Buggy");
         }
 
-        static async Task refreshProfileDelayed(int? shipId, int? profileId)
+        private Task _refreshProfileDelayed;
+        private void refreshProfileDelayed()
         {
-            do
+            if (_refreshProfileDelayed == null || _refreshProfileDelayed.IsCompleted)
             {
-                await Task.Delay(TimeSpan.FromSeconds(20));
-                EDDI.Instance.refreshProfile();
-            } while (shipId != profileId);
-            Logging.Debug("Current Ship Id is: " + shipId + ", Profile Ship Id is " + profileId);
+                _refreshProfileDelayed = new Task(async () =>
+                {
+                    await Task.Delay(TimeSpan.FromSeconds(profileRefreshDelaySeconds));
+                    EDDI.Instance.refreshProfile();
+                });
+                _refreshProfileDelayed.Start();
+            }
         }
 
         static void RaiseOnUIThread(EventHandler handler, object sender)
