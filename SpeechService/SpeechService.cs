@@ -108,7 +108,7 @@ namespace EddiSpeechService
             configuration = SpeechServiceConfiguration.FromFile();
         }
 
-        public void Say(Ship ship, string message, int priority = 3, string voice = null, bool radio = false, string eventType = null)
+        public void Say(Ship ship, string message, int priority = 3, string voice = null, bool radio = false, string eventType = null, bool invokedFromVA = false)
         {
             if (message == null)
             {
@@ -146,6 +146,11 @@ namespace EddiSpeechService
                 IsBackground = true
             };
             speechQueueHandler.Start();
+            if (invokedFromVA)
+            {
+                // If invoked from VA, thread should terminate only after speech completes
+                speechQueueHandler.Join();
+            }
         }
 
         public void ShutUp()
