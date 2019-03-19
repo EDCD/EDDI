@@ -302,7 +302,7 @@ namespace EddiShipMonitor
                     {
                         ship.fueltanktotalcapacity = (decimal?)@event.fuelcapacity;
                     }
-                    writeShips();
+                    if (!@event.fromLoad) { writeShips(); }
                 }
             }
         }
@@ -329,7 +329,7 @@ namespace EddiShipMonitor
                     // We sold a ship - remove it
                     RemoveShip(@event.soldshipid);
                 }
-                writeShips();
+                if (!@event.fromLoad) { writeShips(); }
             }
         }
 
@@ -340,7 +340,7 @@ namespace EddiShipMonitor
                 updateDat = @event.timestamp;
                 // Set this as our current ship
                 SetCurrentShip(@event.shipid, @event.ship);
-                writeShips();
+                if (!@event.fromLoad) { writeShips(); }
             }
         }
 
@@ -368,7 +368,7 @@ namespace EddiShipMonitor
                     // We sold a ship - remove it
                     RemoveShip(@event.soldshipid);
                 }
-                writeShips();
+                if (!@event.fromLoad) { writeShips(); }
             }
         }
 
@@ -383,7 +383,7 @@ namespace EddiShipMonitor
                     setShipName(ship, @event.name);
                     setShipIdent(ship, @event.ident);
                 }
-                writeShips();
+                if (!@event.fromLoad) { writeShips(); }
             }
         }
 
@@ -393,7 +393,7 @@ namespace EddiShipMonitor
             {
                 updateDat = @event.timestamp;
                 RemoveShip(@event.shipid);
-                writeShips();
+                if (!@event.fromLoad) { writeShips(); }
             }
         }
 
@@ -403,7 +403,7 @@ namespace EddiShipMonitor
             {
                 updateDat = @event.timestamp;
                 RemoveShip(@event.shipid);
-                writeShips();
+                if (!@event.fromLoad) { writeShips(); }
             }
         }
 
@@ -598,7 +598,7 @@ namespace EddiShipMonitor
                     }
                     _RemoveShips(idsToRemove);
 
-                    writeShips();
+                    if (!@event.fromLoad) { writeShips(); }
                 }
             }
         }
@@ -611,7 +611,7 @@ namespace EddiShipMonitor
                 if (@event.storedmodules != null)
                 {
                     storedmodules = @event.storedmodules;
-                    writeShips();
+                    if (!@event.fromLoad) { writeShips(); }
                 }
             }
         }
@@ -729,7 +729,7 @@ namespace EddiShipMonitor
                 Ship ship = GetShip(@event.shipid) ?? @event.shipDefinition;
                 ship.LocalId = ship.LocalId == 0 ? (int)@event.shipid : ship.LocalId;
                 AddModule(ship, @event.slot, @event.buymodule);
-                writeShips();
+                if (!@event.fromLoad) { writeShips(); }
             }
         }
 
@@ -741,7 +741,7 @@ namespace EddiShipMonitor
                 Ship ship = GetShip(@event.shipid) ?? @event.shipDefinition;
                 ship.LocalId = ship.LocalId == 0 ? (int)@event.shipid : ship.LocalId;
                 AddModule(ship, @event.slot, @event.module);
-                writeShips();
+                if (!@event.fromLoad) { writeShips(); }
             }
         }
 
@@ -753,7 +753,7 @@ namespace EddiShipMonitor
                 Ship ship = GetShip(@event.shipid) ?? @event.shipDefinition;
                 ship.LocalId = ship.LocalId == 0 ? (int)@event.shipid : ship.LocalId;
                 RemoveModule(ship, @event.slot);
-                writeShips();
+                if (!@event.fromLoad) { writeShips(); }
             }
         }
 
@@ -770,7 +770,7 @@ namespace EddiShipMonitor
                 Ship ship = GetShip(@event.shipid) ?? @event.shipDefinition;
                 ship.LocalId = ship.LocalId == 0 ? (int)@event.shipid : ship.LocalId;
                 RemoveModule(ship, @event.slot, @event.replacementmodule);
-                writeShips();
+                if (!@event.fromLoad) { writeShips(); }
             }
         }
 
@@ -785,7 +785,7 @@ namespace EddiShipMonitor
                 {
                     RemoveModule(ship, slot);
                 }
-                writeShips();
+                if (!@event.fromLoad) { writeShips(); }
             }
         }
 
@@ -878,7 +878,7 @@ namespace EddiShipMonitor
                         }
                     }
                 }
-                writeShips();
+                if (!@event.fromLoad) { writeShips(); }
             }
         }
 
@@ -999,8 +999,8 @@ namespace EddiShipMonitor
                                 }
                             }
                         }
-                        writeShips();
                     }
+                    if (!@event.fromLoad) { writeShips(); }
                 }
             }
         }
@@ -1017,7 +1017,7 @@ namespace EddiShipMonitor
                     {
                         ship.maxfuel = @event.fuelused;
                         ship.maxjump = @event.distance;
-                        writeShips();
+                        if (!@event.fromLoad) { writeShips(); }
                     }
                 }
             }
@@ -1032,7 +1032,7 @@ namespace EddiShipMonitor
                 if (ship != null)
                 {
                     ship.hot = true;
-                    writeShips();
+                    if (!@event.fromLoad) { writeShips(); }
                 }
             }
         }
@@ -1046,7 +1046,7 @@ namespace EddiShipMonitor
                 if (ship != null)
                 {
                     ship.hot = false;
-                    writeShips();
+                    if (!@event.fromLoad) { writeShips(); }
                 }
             }
         }
