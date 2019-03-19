@@ -340,6 +340,7 @@ namespace UnitTests
 
             // Update the shipyard
             privateObject.SetFieldOrProperty("shipyard", new ObservableCollection<Ship>(newShiplist));
+            privateObject.SetFieldOrProperty("updateDat", DateTime.MinValue);
 
             shipMonitor.SetCurrentShip(configuration.currentshipid);
             Assert.AreEqual(81, shipMonitor.GetCurrentShip().LocalId);
@@ -401,6 +402,7 @@ namespace UnitTests
         {
             var privateObject = new PrivateObject(new ShipMonitor());
             privateObject.SetFieldOrProperty("shipyard", new ObservableCollection<Ship>());
+            privateObject.SetFieldOrProperty("updateDat", DateTime.MinValue);
 
             string data = System.IO.File.ReadAllText("loadout.json");
             List<Event> events = JournalMonitor.ParseJournalEntry(data);
