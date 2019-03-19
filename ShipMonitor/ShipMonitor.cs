@@ -420,6 +420,7 @@ namespace EddiShipMonitor
                     EDDI.Instance.CurrentShip = ship;
 
                     AddShip(ship);
+                    if (!@event.fromLoad) { writeShips(); }
                 }
             }
         }
@@ -1205,7 +1206,6 @@ namespace EddiShipMonitor
                 ship.Role = Role.MultiPurpose;
             }
             _ReplaceOrAddShip(ship);
-            writeShips();
         }
 
         private void _ReplaceOrAddShip(Ship ship)
