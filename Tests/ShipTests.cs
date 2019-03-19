@@ -107,6 +107,8 @@ namespace UnitTests
 
             // Start a ship monitor
             ShipMonitor shipMonitor = new ShipMonitor();
+            PrivateObject privateObject = new PrivateObject(shipMonitor);
+            privateObject.SetFieldOrProperty("updateDat", DateTime.MinValue);
 
             // Log in
             SendEvents(@"{ ""timestamp"":""2017-04-24T08:10:21Z"", ""event"":""LoadGame"", ""Commander"":""McDonald"", ""Ship"":""SideWinder"", ""ShipID"":901, ""ShipName"":"""", ""ShipIdent"":"""", ""FuelLevel"":2.000000, ""FuelCapacity"":2.000000, ""GameMode"":""Solo"", ""Credits"":1637243231, ""Loan"":0 }", shipMonitor);
