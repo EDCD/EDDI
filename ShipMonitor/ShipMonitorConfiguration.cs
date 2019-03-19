@@ -15,6 +15,7 @@ namespace EddiShipMonitor
         public int? currentshipid { get; set; }
         public ObservableCollection<Ship> shipyard { get; set; }
         public List<StoredModule> storedmodules { get; set; }
+        public DateTime updatedat { get; set; } = DateTime.MinValue;
 
         [JsonIgnore]
         private string dataPath;
