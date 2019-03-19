@@ -322,7 +322,6 @@ namespace EddiShipMonitor
                         // Set location of stored ship to the current system
                         storedShip.starsystem = EDDI.Instance?.CurrentStarSystem?.name;
                         storedShip.station = EDDI.Instance?.CurrentStation?.name;
-                        writeShips();
                     }
                 }
                 else if (@event.soldshipid != null)
@@ -330,6 +329,7 @@ namespace EddiShipMonitor
                     // We sold a ship - remove it
                     RemoveShip(@event.soldshipid);
                 }
+                writeShips();
             }
         }
 
@@ -361,7 +361,6 @@ namespace EddiShipMonitor
                         // Set location of stored ship to the current sstem
                         storedShip.starsystem = EDDI.Instance?.CurrentStarSystem?.name;
                         storedShip.station = EDDI.Instance?.CurrentStation?.name;
-                        writeShips();
                     }
                 }
                 else if (@event.soldshipid != null)
@@ -394,6 +393,7 @@ namespace EddiShipMonitor
             {
                 updateDat = @event.timestamp;
                 RemoveShip(@event.shipid);
+                writeShips();
             }
         }
 
@@ -403,6 +403,7 @@ namespace EddiShipMonitor
             {
                 updateDat = @event.timestamp;
                 RemoveShip(@event.shipid);
+                writeShips();
             }
         }
 
@@ -1238,7 +1239,6 @@ namespace EddiShipMonitor
                 return;
             }
             _RemoveShip(localid);
-            writeShips();
         }
 
         /// <summary>
