@@ -60,6 +60,7 @@ namespace EddiJournalMonitor
                 else if (fileInfo?.Name != null && fileInfo?.Name != journalFileName)
                 {
                     // We have found a player journal file that is fresher than the one we are using
+                    bool isFirstLoad = journalFileName == null;
                     journalFileName = fileInfo.Name;
                     lastSize = fileInfo.Length;
 
@@ -68,12 +69,12 @@ namespace EddiJournalMonitor
                         // Read everything in the file into the journal monitor
                         long seekPos = 0;
                         int readLen = (int)fileInfo.Length;
-                        Read(seekPos, readLen, fileInfo, true);
+                        Read(seekPos, readLen, fileInfo, isFirstLoad);
                     }
                     else
                     {
                         // Read the header and latest loaded game into the journal monitor
-                        ReadLastCommanderLoad(fileInfo, true);
+                        ReadLastCommanderLoad(fileInfo, isFirstLoad);
                     }
                 }
                 else
