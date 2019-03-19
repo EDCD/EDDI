@@ -338,8 +338,9 @@ namespace EddiShipMonitor
             if (@event.timestamp > updateDat)
             {
                 updateDat = @event.timestamp;
-                // Set this is our current ship
+                // Set this as our current ship
                 SetCurrentShip(@event.shipid, @event.ship);
+                writeShips();
             }
         }
 
@@ -1342,7 +1343,6 @@ namespace EddiShipMonitor
                     ship.station = null;
                     EDDI.Instance.CurrentShip = ship;
                 }
-                writeShips();
             }
         }
 
