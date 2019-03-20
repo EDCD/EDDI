@@ -2,6 +2,10 @@
 
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
+### Development
+  * VoiceAttack responder
+    * Reduced CPU utilization some more, particularly when interacting with the ship monitor and when loading the last journal file.
+
 ### 3.3.7-b1
   * Core
     * Fixed a bug whereby names of materials (Carbon, Iron, Conductive Components, etc) were not always localized.
