@@ -50,7 +50,11 @@ namespace EddiStarMapService
                         }
                         catch (Exception ex)
                         {
-                            Logging.Error("Error parsing EDSM faction result " + faction.ToString(), ex);
+                            Dictionary<string, object> data = new Dictionary<string, object>();
+                            data.Add("faction", JsonConvert.SerializeObject(faction));
+                            data.Add("exception", ex.Message);
+                            data.Add("stacktrace", ex.StackTrace);
+                            Logging.Error("Error parsing EDSM faction result.", data);
                         }
                     }
                 }

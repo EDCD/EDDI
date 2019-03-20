@@ -17,13 +17,15 @@ namespace EddiShipMonitor
     /// </summary>
     public partial class ConfigurationWindow : UserControl
     {
-        ShipMonitor monitor;
+        private ShipMonitor shipMonitor()
+        {
+            return (ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor");
+        }
 
         public ConfigurationWindow()
         {
             InitializeComponent();
-            monitor = ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor"));
-            shipData.ItemsSource = monitor.shipyard;
+            shipData.ItemsSource = shipMonitor().shipyard;
 
             EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
             string exporttarget = eddiConfiguration.exporttarget;
@@ -56,7 +58,7 @@ namespace EddiShipMonitor
                 ? ship.name 
                 : $@"<phoneme alphabet=""ipa"" ph=""{ship.phoneticname}"">{ship.name}</phoneme>";
             string message = String.Format(Properties.ShipMonitor.ship_ready, nameToSpeak);
-            SpeechService.Instance.Say(ship, message, false);
+            SpeechService.Instance.Say(ship, message, 0);
         }
 
         private void exportShip(object sender, RoutedEventArgs e)
@@ -96,26 +98,36 @@ namespace EddiShipMonitor
                     }
                     else
                     {
-                        Logging.Error("Failed to find a way of opening URL \"" + uri + "\"");
+                        Logging.Info("Export failed: Target URL is too long.");
                     }
                 }
                 catch (Exception)
                 {
-                    // Nothing to do
+                    Logging.Error("Failed to find a way of opening URL \"" + uri + "\"");
                 }
             }
         }
 
         private void shipsUpdated(object sender, DataTransferEventArgs e)
         {
-            // Update the ship monitor's information
-            monitor.Save();
+            // Update the ship monitor's 'PhoneticName' information
+            if (e.OriginalSource is TextBlock)
+            {
+                var dg = (DataGrid)e.Source;
+                if (dg.SelectedItem is Ship)
+                {
+                    shipMonitor()?.Save();
+                }
+            }
         }
 
         private void shipsUpdated(object sender, SelectionChangedEventArgs e)
         {
-            // Update the ship monitor's information
-            monitor.Save();
+            // Update the ship monitor's 'Role' information
+            if (e.RemovedItems.Count > 0)
+            {
+                shipMonitor()?.Save();
+            }
         }
     }
 

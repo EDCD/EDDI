@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:EddiSpeechResponder"
         xmlns:resx="clr-namespace:EddiSpeechResponder.Properties"
         mc:Ignorable="d"
+        ResizeMode="CanResizeWithGrip"
         Title="{x:Static resx:SpeechResponder.view_script_title}" Height="600" Width="800">
     <DockPanel LastChildFill="True" Background="#FFE5E5E5">
         <Grid DockPanel.Dock="Top">

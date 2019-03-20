@@ -2,9 +2,60 @@
 
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
-### Development
-  
+### 3.3.7-b1
+  * Core
+    * Fixed a bug whereby names of materials (Carbon, Iron, Conductive Components, etc) were not always localized.
+  * Cargo & Mission monitors
+    * Improved efficiency in 'LogLoad' handling of mission-related events.
+    * Minimize cargo & mission monitor.json writes.
+  * Localization
+    * Added Brazilian Portuguese localization.
+    * Increased coverage of the Russian localization.
+    * Updated the Spanish default speech personality.
+  * Ship monitor
+    * Fixed a lock-up that could occur when opening the ship monitor from VoiceAttack.
   * Speech responder
+    * Implemented speech priorities as follows:
+      * 1 - high priority, interrupts other speech.
+      * 2 - high priority.
+      * 3 - standard priority.
+      * 4 - low priority.
+      * 5 - low priority, interruptible by any higher priority speech.
+    * Added new types to the `RouteDetails()` Cottle function:
+      * 'cancel' - Cancel the currently stored route.
+      * 'next' - Get the next destination in the currently stored route.
+      * 'set' - Set the destination route to a single system.
+    * All `RouteDetails()` types now update the `Missions route` event `route` and `distance` variables.
+    * `RouteDetails()` 'update' function re-calculates the route when other than the 'next' system is removed.
+  * VoiceAttack responder
+    * Improved event responsiveness.
+    * Reduced CPU utilization.
+    * Restored missing home system variables.
+    * Revised VoiceAttack integration documents with updated guidance on accessing home and squadron variables.
+    * Documented methods for using speech priorities with `say` and `speech` plugin functions. 
+
+### 3.3.6
+  * Frontier API
+    * Fixed missing client ID in 3.3.5
+
+### 3.3.5
+  * Core
+    * Miscellaneous minor bug fixes.
+    * Added Russian translations.
+    * `MarketInformationUpdated` event no longer triggers when cAPI is down. As a result, this event will not consistently trigger following a `Docked` event. 
+  * Mission monitor
+    * Fixed a 'deadlock' vulnerability in the derived `Mission expired` event creator which would freeze EDDI.
+  * Speech responder
+    * Fixed "Engineer progressed" script to account for stages other than getting a new blueprint level.
+    * Fixed punctuation in the "Fuel check" script.
+  * VoiceAttack
+    * Improved variable setting efficiency by adding granularity via 'Update' event handling.
+    * Added information command to EDDI.vap to test status variables.
+
+### 3.3.4
+  * Speech responder
+    * Fixed a bug that would cause star scans to accumulate until the FSS scanner was opened.
+    * Fixed a bug that could prevent proper lookup of bodies using the `BodyDetails()` function.
     * Added new `Next jump` event
     * Added new top level object `nextsystem` - like `lastsystem` but for the next system you are visiting. e.g. "Our next waypoint is \{nextsystem.name\}".
   * VoiceAttack  

@@ -16,10 +16,7 @@ namespace EddiVoiceAttackResponder
 
         protected virtual void OnEvent(EventArgs @eventArgs, Event @event)
         {
-            if (RaiseEvent != null)
-            {
-                RaiseEvent(@eventArgs, @event);
-            }
+            RaiseEvent?.Invoke(@eventArgs, @event);
         }
 
         public string ResponderName()
@@ -47,21 +44,27 @@ namespace EddiVoiceAttackResponder
             Logging.Info("Started VoiceAttack responder");
         }
 
-        public void Handle(Event theEvent)
+        public void Handle(Event @event)
         {
-            if (theEvent.fromLoad)
+            if (@event.fromLoad)
             {
                 return;
             }
 
-            Logging.Debug("Received event " + JsonConvert.SerializeObject(theEvent));
-            VoiceAttackPlugin.EventQueue.Add(theEvent);
-            OnEvent(new EventArgs(), theEvent);
+            Logging.Debug("Received event " + JsonConvert.SerializeObject(@event));
+            OnEvent(EventArgs.Empty, @event);
         }
 
         public bool Start()
         {
-            return true;
+            if (EDDI.FromVA) 
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         public void Stop()

@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace EddiDataDefinitions
 {
@@ -170,10 +171,10 @@ namespace EddiDataDefinitions
             StarClass starClass = StarClass.FromName(stellarclass);
             if (starClass != null)
             {
-                if (solarmass != null) massprobability = StarClass.sanitiseCP(starClass.stellarMassCP((decimal)solarmass));
-                if (solarradius != null) radiusprobability = StarClass.sanitiseCP(starClass.stellarRadiusCP((decimal)solarradius));
-                if (temperature != null) tempprobability = StarClass.sanitiseCP(starClass.tempCP((decimal)temperature));
-                if (age != null) ageprobability = StarClass.sanitiseCP(starClass.ageCP((decimal)age));
+                if (solarmass != null) { massprobability = StarClass.sanitiseCP(starClass.stellarMassCP((decimal)solarmass)); }
+                if (solarradius != null) { radiusprobability = StarClass.sanitiseCP(starClass.stellarRadiusCP((decimal)solarradius)); }
+                if (temperature != null) { tempprobability = StarClass.sanitiseCP(starClass.tempCP((decimal)temperature)); }
+                if (age != null) { ageprobability = StarClass.sanitiseCP(starClass.ageCP((decimal)age)); }
                 chromaticity = starClass.chromaticity.localizedName;
             }
             // `estimatedvalue` is only set during scan events.
@@ -186,6 +187,13 @@ namespace EddiDataDefinitions
                 estimatedhabzoneouter = StarClass.DistanceFromStarForTemperature(StarClass.minHabitableTempKelvin, Convert.ToDouble(radius), Convert.ToDouble(temperature));
             }
             if (distance != null) { mainstar = distance == 0 ? true : false; }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public void NotifyPropertyChanged(string propName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
         }
     }
 }

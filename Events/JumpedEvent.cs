@@ -17,7 +17,6 @@ namespace EddiEvents
             VARIABLES.Add("x", "The X co-ordinate of the system to which the commander has jumped");
             VARIABLES.Add("y", "The Y co-ordinate of the system to which the commander has jumped");
             VARIABLES.Add("z", "The Z co-ordinate of the system to which the commander has jumped");
-            VARIABLES.Add("star", "The name of the star at which you've arrived");
             VARIABLES.Add("distance", "The distance the commander has jumped, in light years");
             VARIABLES.Add("fuelused", "The amount of fuel used in this jump");
             VARIABLES.Add("fuelremaining", "The amount of fuel remaining after this jump");
@@ -41,6 +40,7 @@ namespace EddiEvents
 
         public decimal z { get; private set; }
 
+        /// <summary> Documented by the journal, but apparently never written. We can't rely on this being set. </summary>
         public string star { get; private set; }
 
         public decimal distance { get; private set; }
@@ -59,6 +59,10 @@ namespace EddiEvents
 
         public long? population { get; private set; }
 
+        public string destination { get; private set; }
+
+        public decimal destdistance { get; private set; }
+
         public List<Faction> factions { get; private set; }
 
         // Faction properties
@@ -75,7 +79,7 @@ namespace EddiEvents
         public SecurityLevel securityLevel { get; private set; } = SecurityLevel.None;
         public FactionState factionState { get; private set; } = FactionState.None;
 
-        public JumpedEvent(DateTime timestamp, string system, long systemAddress, decimal x, decimal y, decimal z, string star, decimal distance, decimal fuelused, decimal fuelremaining, int? boostUsed, Faction controllingfaction, Economy economy, Economy economy2, SecurityLevel security, long? population, List<Faction> factions) : base(timestamp, NAME)
+        public JumpedEvent(DateTime timestamp, string system, long systemAddress, decimal x, decimal y, decimal z, string star, decimal distance, decimal fuelused, decimal fuelremaining, int? boostUsed, Faction controllingfaction, List<Faction> factions, Economy economy, Economy economy2, SecurityLevel security, long? population, string destination, decimal destdistance) : base(timestamp, NAME)
         {
             this.system = system;
             this.systemAddress = systemAddress;
@@ -88,11 +92,13 @@ namespace EddiEvents
             this.fuelremaining = fuelremaining;
             this.boostused = boostUsed;
             this.controllingfaction = controllingfaction;
+            this.factions = factions;
             this.Economy = (economy ?? Economy.None);
             this.Economy2 = (economy2 ?? Economy.None);
             this.securityLevel = (security ?? SecurityLevel.None);
             this.population = population;
-            this.factions = factions;
+            this.destination = destination;
+            this.destdistance = destdistance;
         }
     }
 }

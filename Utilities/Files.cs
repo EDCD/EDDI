@@ -9,7 +9,11 @@ namespace Utilities
 {
     public class Files
     {
+        /// <summary> Ignore missing config files on first launch? </summary>
         public static bool ignoreMissing { get; set; } = false;
+
+        /// <summary> If true, skips writing to permanent storage </summary>
+        public static bool unitTesting { get; set; } = false;
 
         /// <summary>
         /// Read a file, handling exceptions
@@ -77,6 +81,13 @@ namespace Utilities
         {
             if (name != null && content != null)
             {
+                // Skip writing to storage if we're unit testing
+                if (unitTesting)
+                {
+                    Logging.Debug("Skipping write to " + name + " during unit test");
+                    return;
+                }
+
                 // Attempt to write the file
                 try
                 {

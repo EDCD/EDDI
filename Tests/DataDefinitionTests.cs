@@ -1,19 +1,12 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using EddiDataDefinitions;
-using Rollbar;
+﻿using EddiDataDefinitions;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace UnitTests
 {
     [TestClass]
+    // this class is pure and doesn't need TestBase.MakeSafe()
     public class DataDefinitionTests
     {
-        [TestInitialize]
-        public void start()
-        {
-            // Prevent telemetry data from being reported based on test results
-            RollbarLocator.RollbarInstance.Config.Enabled = false;
-        }
-
         [TestMethod]
         public void TestDataDefinitionReactiveArmour()
         {

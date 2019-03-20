@@ -1,10 +1,10 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using Eddi;
 
 namespace UnitTests
 {
     [TestClass]
+    // this class is pure and doesn't need TestBase.MakeSafe()
     public class CoriolisTests
     {
         [TestMethod]

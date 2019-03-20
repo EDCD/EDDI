@@ -1,0 +1,224 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0"/>
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string"/>
+              <xsd:attribute name="type" type="xsd:string"/>
+              <xsd:attribute name="mimetype" type="xsd:string"/>
+              <xsd:attribute ref="xml:space"/>
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string"/>
+              <xsd:attribute name="name" type="xsd:string"/>
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"/>
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"/>
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"/>
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"/>
+              <xsd:attribute ref="xml:space"/>
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required"/>
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="active_personality" xml:space="preserve">
+    <value>Personalidade ativa</value>
+  </data>
+  <data name="button_cancel" xml:space="preserve">
+    <value>Cancelar</value>
+  </data>
+  <data name="button_copy" xml:space="preserve">
+    <value>Copiar personalidade</value>
+  </data>
+  <data name="button_delete" xml:space="preserve">
+    <value>Excluir personalidade</value>
+  </data>
+  <data name="button_new" xml:space="preserve">
+    <value>Criar novo script</value>
+  </data>
+  <data name="button_ok" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="compare_script_button" xml:space="preserve">
+    <value>Comparar com o padrão</value>
+  </data>
+  <data name="compare_script_title" xml:space="preserve">
+    <value>Comparação com o scrip padrão</value>
+  </data>
+  <data name="default_is_read_only" xml:space="preserve">
+    <value>A personalidade padrão não pode ser modificada. Se você deseja fazer alterações, crie uma cópia.</value>
+  </data>
+  <data name="default_personality_script_filename" xml:space="preserve">
+    <value>eddi.pt-BR.json</value>
+    <comment>Suggest "eddi.&lt;culture-code&gt;.json" e.g. "eddi.fr.json"</comment>
+  </data>
+  <data name="delete_personality_caption" xml:space="preserve">
+    <value>Remover Personalidade</value>
+  </data>
+  <data name="delete_personality_message" xml:space="preserve">
+    <value>Tem certeza que deseja excluir a personalidade "{0}"?</value>
+  </data>
+  <data name="delete_script" xml:space="preserve">
+    <value>Excluir</value>
+  </data>
+  <data name="delete_script_caption" xml:space="preserve">
+    <value>Excluir script</value>
+  </data>
+  <data name="delete_script_message" xml:space="preserve">
+    <value>Tem certeza que deseja excluir o script "{0}"?</value>
+  </data>
+  <data name="desc" xml:space="preserve">
+    <value>Responde a eventos com fala programada com base nas informações do evento. Nem todos os eventos possuem respostas programadas. Se uma resposta de script estiver vazia, seus botões "Testar" e "Ver" estarão desativados. Scripts baseados em eventos podem ser desabilitados ou repriorizados, mas não apagados.</value>
+  </data>
+  <data name="edit_script" xml:space="preserve">
+    <value>Editar</value>
+  </data>
+  <data name="edit_script_caption" xml:space="preserve">
+    <value>Editar Script</value>
+  </data>
+  <data name="header_description" xml:space="preserve">
+    <value>Descrição</value>
+  </data>
+  <data name="header_enabled" xml:space="preserve">
+    <value>Habilitado</value>
+  </data>
+  <data name="header_name" xml:space="preserve">
+    <value>Nome</value>
+  </data>
+  <data name="help_button" xml:space="preserve">
+    <value>Ajuda</value>
+  </data>
+  <data name="name" xml:space="preserve">
+    <value>Relator de Fala</value>
+  </data>
+  <data name="reset_script_button" xml:space="preserve">
+    <value>Restabelecer padrão</value>
+  </data>
+  <data name="script_variables_button" xml:space="preserve">
+    <value>Variáveis</value>
+    <comment>button that shows help for script variables</comment>
+  </data>
+  <data name="subs" xml:space="preserve">
+    <value>Escrever cópias de texto da fala no arquivo %APPDATA%\EDDI\speechresponder.out</value>
+  </data>
+  <data name="subs_only" xml:space="preserve">
+    <value>Não falar quando o texto é gravado no arquivo acima</value>
+  </data>
+  <data name="test_script" xml:space="preserve">
+    <value>Testar</value>
+  </data>
+  <data name="test_script_button" xml:space="preserve">
+    <value>Testar script</value>
+  </data>
+  <data name="view_script" xml:space="preserve">
+    <value>Ver</value>
+  </data>
+  <data name="view_script_title" xml:space="preserve">
+    <value>Ver script</value>
+  </data>
+  <data name="header_priority" xml:space="preserve">
+    <value>Prioridade</value>
+  </data>
+  <data name="speechResponderHelp" xml:space="preserve">
+    <value>Leia sobre as funções do Relator de Fala</value>
+  </data>
+  <data name="speechResponderHelpHere" xml:space="preserve">
+    <value>aqui.</value>
+  </data>
+</root>

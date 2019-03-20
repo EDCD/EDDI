@@ -71,7 +71,6 @@ namespace EddiSpeechResponder
                 if (personality.Name == configuration.Personality)
                 {
                     Personality = personality;
-                    personalityDefaultTxt(personality);
                     break;
                 }
             }
@@ -85,6 +84,14 @@ namespace EddiSpeechResponder
         private void eddiScriptsUpdated(object sender, DataTransferEventArgs e)
         {
             updateScriptsConfiguration();
+        }
+
+        private void eddiScriptsUpdated(object sender, SelectionChangedEventArgs e)
+        {
+            if (e.RemovedItems.Count > 0)
+            {
+                updateScriptsConfiguration();
+            }
         }
 
         private void editScript(object sender, RoutedEventArgs e)
@@ -139,7 +146,7 @@ namespace EddiSpeechResponder
             }
             foreach (Event sampleEvent in sampleEvents)
             {
-                responder.Say(scriptResolver, ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip(), script.Name, sampleEvent, null, null, false);
+                responder.Say(scriptResolver, ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor"))?.GetCurrentShip(), script.Name, sampleEvent, null, null, false);
             }
         }
 
@@ -185,7 +192,6 @@ namespace EddiSpeechResponder
         {
             if (Personality != null)
             {
-                personalityDefaultTxt(Personality);
                 SpeechResponderConfiguration configuration = SpeechResponderConfiguration.FromFile();
                 configuration.Personality = Personality.Name;
                 configuration.ToFile();
@@ -224,7 +230,10 @@ namespace EddiSpeechResponder
         private void copyPersonalityClicked(object sender, RoutedEventArgs e)
         {
             EDDI.Instance.SpeechResponderModalWait = true;
-            CopyPersonalityWindow window = new CopyPersonalityWindow(Personality);
+            CopyPersonalityWindow window = new CopyPersonalityWindow(Personality)
+            {
+                Owner = Window.GetWindow(this)
+            };
             if (window.ShowDialog() == true)
             {
                 string PersonalityName = window.PersonalityName?.Trim();
@@ -287,22 +296,10 @@ namespace EddiSpeechResponder
             EDDI.Instance.Reload("Speech responder");
         }
 
-        private void personalityDefaultTxt(Personality personality)
+        private void SpeechResponderHelp_Click(object sender, RoutedEventArgs e)
         {
-            if (personality.IsDefault)
-            {
-                defaultText.Text = Properties.SpeechResponder.default_is_read_only;
-                defaultText.FontWeight = FontWeights.Bold;
-                defaultText.FontStyle = FontStyles.Italic;
-                defaultText.FontSize = 13;
-            }
-            else
-            {
-                defaultText.Text = Properties.SpeechResponder.warning_triggered;
-                defaultText.FontWeight = FontWeights.Normal;
-                defaultText.FontStyle = FontStyles.Italic;
-                defaultText.FontSize = 13;
-            }
+            MarkdownWindow speechResponderHelpWindow = new MarkdownWindow("speechResponderHelp.md");
+            speechResponderHelpWindow.Show();
         }
     }
 }

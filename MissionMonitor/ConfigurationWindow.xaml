@@ -13,8 +13,8 @@
         <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Margin="5, 0" Text="{x:Static resx:MissionMonitor.para1}" />
         <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Margin="5" Text="{x:Static resx:MissionMonitor.para2}" />
         <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" VerticalAlignment="Top">
-            <Label x:Name ="missionWarningLabel" Grid.Row="4" Grid.Column="0" Margin="0,5" VerticalContentAlignment="Center" Content="{x:Static resx:MissionMonitor.tab_mission_warning}" Width="270"/>
-            <TextBox x:Name="missionWarningInt" Grid.Row="4" Grid.Column="1" Margin="0,5" PreviewTextInput="EnsureValidInteger" TextChanged="warningChanged" TextAlignment="Center" VerticalContentAlignment="Center" Height="25" Width="40"/>
+            <Label x:Name ="missionWarningLabel" Grid.Row="4" Grid.Column="0" Margin="0,5" VerticalContentAlignment="Center" Content="{x:Static resx:MissionMonitor.tab_mission_warning}"/>
+            <TextBox x:Name="missionWarningInt" Grid.Row="4" Grid.Column="0" Margin="0,5" PreviewTextInput="EnsureValidInteger" TextChanged="warningChanged" TextAlignment="Center" VerticalContentAlignment="Center" Height="25" Width="40"/>
         </StackPanel>
         <DataGrid Margin="0,5" AutoGenerateColumns="False" x:Name="missionsData" CanUserAddRows="false" CanUserDeleteRows="False" TargetUpdated="missionsUpdated">
             <DataGrid.Columns>

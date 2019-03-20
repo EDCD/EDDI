@@ -117,15 +117,37 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="header_destinationstation" xml:space="preserve">
+    <value>Станция назначения</value>
+  </data>
+  <data name="header_destinationsystem" xml:space="preserve">
+    <value>Система назначения</value>
+  </data>
+  <data name="header_missionid" xml:space="preserve">
+    <value>ID Миссии</value>
+  </data>
+  <data name="header_remaining" xml:space="preserve">
+    <value>Осталось</value>
+  </data>
+  <data name="header_status" xml:space="preserve">
+    <value>Статус</value>
+  </data>
+  <data name="header_type" xml:space="preserve">
+    <value>Тип</value>
+  </data>
+  <data name="mission_monitor_desc" xml:space="preserve">
+    <value>Получение информации о ваших миссиях.</value>
+  </data>
+  <data name="mission_monitor_name" xml:space="preserve">
+    <value>Монитор Миссий</value>
+  </data>
+  <data name="para1" xml:space="preserve">
+    <value>Ниже список ваших миссий.</value>
+  </data>
+  <data name="para2" xml:space="preserve">
+    <value>Обратите внимание, что если ваш журнал миссии неверен, вам нужно запустить или перезапустить Elite, и эта информация будет обновлена.</value>
+  </data>
+  <data name="tab_mission_warning" xml:space="preserve">
+    <value>Предупреждения об истечении срока действия миссии (в минутах):</value>
+  </data>
 </root>

@@ -8,6 +8,7 @@ using EddiMissionMonitor;
 using EddiShipMonitor;
 using EddiSpeechResponder;
 using EddiSpeechService;
+using EddiStatusMonitor;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -20,6 +21,8 @@ using System.ComponentModel;
 using System.Text;
 using System.Text.RegularExpressions;
 using Utilities;
+using EddiStarMapService;
+using System.Threading.Tasks;
 
 namespace EddiVoiceAttackResponder
 {
@@ -42,8 +45,7 @@ namespace EddiVoiceAttackResponder
 
         private static readonly Random random = new Random();
 
-        public static BlockingCollection<Event> EventQueue = new BlockingCollection<Event>();
-        public static Thread eventThread = null;
+        public static ConcurrentQueue<Event> eventQueue = new ConcurrentQueue<Event>();
         public static Thread updaterThread = null;
 
         private static readonly object vaProxyLock = new object();
@@ -51,6 +53,7 @@ namespace EddiVoiceAttackResponder
         public static void VA_Init1(dynamic vaProxy)
         {
             Logging.Info("Initialising EDDI VoiceAttack plugin");
+            EDDI.FromVA = true;
 
             try
             {
@@ -60,30 +63,87 @@ namespace EddiVoiceAttackResponder
                 App.ApplyAnyOverrideCulture();
                 EDDI.Instance.Start();
 
-                // Add notifiers for events we want to react to 
+                // Set up our event responder
+                VoiceAttackResponder.RaiseEvent += (s, theEvent) =>
+                {
+                    try
+                    {
+                        eventQueue.Enqueue(theEvent);
+                        Thread eventHandler = new Thread(() => dequeueEvent(ref vaProxy))
+                        {
+                            Name = "VoiceAttackEventHandler",
+                            IsBackground = true
+                        };
+                        eventHandler.Start();
+                        eventHandler.Join();
+                    }
+                    catch (ThreadAbortException tax)
+                    {
+                        Thread.ResetAbort();
+                        Logging.Debug("Thread aborted", tax);
+                    }
+                    catch (Exception ex)
+                    {
+                        Dictionary<string, object> data = new Dictionary<string, object>();
+                        data.Add("event", JsonConvert.SerializeObject(theEvent));
+                        data.Add("exception", ex.Message);
+                        data.Add("stacktrace", ex.StackTrace);
+                        Logging.Error("VoiceAttack failed to handle event.", data);
+                    }
+                };
+
+                // Add notifiers for changes in variables we want to react to 
+                // (we can only use event handlers with classes which are always constructed - nullable objects will be updated via responder events)
                 EDDI.Instance.State.CollectionChanged += (s, e) => setDictionaryValues(EDDI.Instance.State, "state", ref vaProxy);
-                SpeechService.Instance.PropertyChanged += (s, e) => setSpeaking(SpeechService.eddiSpeaking, ref vaProxy);
-                VoiceAttackResponder.RaiseEvent += (s, theEvent) => updateValuesOnEvent(theEvent, ref vaProxy);
+                SpeechService.Instance.PropertyChanged += (s, e) => setSpeaking(SpeechService.Instance.eddiSpeaking, ref vaProxy);
+
+                CargoMonitor cargoMonitor = (CargoMonitor)EDDI.Instance.ObtainMonitor("Cargo monitor");
+                cargoMonitor.InventoryUpdatedEvent += (s, e) =>
+                {
+                    lock (vaProxyLock)
+                    {
+                        setCargo(cargoMonitor, ref vaProxy);
+                    }
+                };
+
+                ShipMonitor shipMonitor = (ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor");
+                shipMonitor.ShipyardUpdatedEvent += (s, e) =>
+                {
+                    lock (vaProxyLock)
+                    {
+                        setShipValues(shipMonitor?.GetCurrentShip(), "Ship", ref vaProxy);
+                        Task.Run(() => setShipyardValues(shipMonitor?.shipyard?.ToList(), ref vaProxy));
+                    }
+                };
+
+                StatusMonitor statusMonitor = (StatusMonitor)EDDI.Instance.ObtainMonitor("Status monitor");
+                statusMonitor.StatusUpdatedEvent += (s, e) =>
+                {
+                    lock (vaProxyLock)
+                    {
+                        setStatusValues(statusMonitor?.currentStatus, "Status", ref vaProxy);
+                    }
+                };
 
                 // Display instance information if available
                 if (EDDI.Instance.UpgradeRequired)
                 {
                     vaProxy.WriteToLog("Please shut down VoiceAttack and run EDDI standalone to upgrade", "red");
                     string msg = Properties.VoiceAttack.run_eddi_standalone;
-                    SpeechService.Instance.Say(((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip(), msg, false);
+                    SpeechService.Instance.Say(((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip(), msg, 0);
                 }
                 else if (EDDI.Instance.UpgradeAvailable)
                 {
                     vaProxy.WriteToLog("Please shut down VoiceAttack and run EDDI standalone to upgrade", "orange");
                     string msg = Properties.VoiceAttack.run_eddi_standalone;
-                    SpeechService.Instance.Say(((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip(), msg, false);
+                    SpeechService.Instance.Say(((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip(), msg, 0);
                 }
 
                 if (EDDI.Instance.Motd != null)
                 {
                     vaProxy.WriteToLog("Message from EDDI: " + EDDI.Instance.Motd, "black");
                     string msg = String.Format(Eddi.Properties.EddiResources.msg_from_eddi, EDDI.Instance.Motd);
-                    SpeechService.Instance.Say(((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip(), msg, false);
+                    SpeechService.Instance.Say(((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip(), msg, 0);
                 }
 
                 // Set the initial values from the main EDDI objects
@@ -103,7 +163,7 @@ namespace EddiVoiceAttackResponder
                 // Set a variable indicating whether EDDI is speaking
                 try
                 {
-                    setSpeaking(SpeechService.eddiSpeaking, ref vaProxy);
+                    setSpeaking(SpeechService.Instance.eddiSpeaking, ref vaProxy);
                 }
                 catch (Exception ex)
                 {
@@ -118,26 +178,58 @@ namespace EddiVoiceAttackResponder
             }
         }
 
-        public static void updateValuesOnEvent(Event theEvent, ref dynamic vaProxy)
+        private static void dequeueEvent(ref dynamic vaProxy)
+        {
+            if (eventQueue.TryDequeue(out Event @event))
+            {
+                try
+                {
+                    if (@event?.type != null)
+                    {
+                        updateValuesOnEvent(@event, ref vaProxy);
+                        triggerVACommands(@event, ref vaProxy);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Logging.Error("Failed to handle event in VoiceAttack", ex);
+                }
+            }
+        }
+
+        public static void updateValuesOnEvent(Event @event, ref dynamic vaProxy)
         {
             try
             {
                 lock (vaProxyLock)
                 {
-                    vaProxy.SetText("EDDI event", theEvent.type);
+                    vaProxy.SetText("EDDI event", @event.type);
 
                     // Event-specific values  
                     List<string> setKeys = new List<string>();
                     // We start off setting the keys which are official and known  
-                    setEventValues(vaProxy, theEvent, setKeys);
+                    setEventValues(vaProxy, @event, setKeys);
                     // Now we carry out a generic walk through the event object to create whatever we find  
-                    setEventExtendedValues(ref vaProxy, "EDDI " + theEvent.type.ToLowerInvariant(), JsonConvert.DeserializeObject(JsonConvert.SerializeObject(theEvent)), setKeys);
+                    setEventExtendedValues(ref vaProxy, "EDDI " + @event.type.ToLowerInvariant(), JsonConvert.DeserializeObject(JsonConvert.SerializeObject(@event)), setKeys);
 
                     // Update all standard values  
                     setStandardValues(ref vaProxy);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logging.Error("Failed to set variables in VoiceAttack", ex);
+            }
+        }
 
+        private static void triggerVACommands(Event @event, ref dynamic vaProxy)
+        {
+            string commandName = "((EDDI " + @event.type.ToLowerInvariant() + "))";
+            try
+            {
+                lock (vaProxyLock)
+                {
                     // Fire local command if present  
-                    string commandName = "((EDDI " + theEvent.type.ToLowerInvariant() + "))";
                     Logging.Debug("Searching for command " + commandName);
                     if (vaProxy.CommandExists(commandName))
                     {
@@ -149,7 +241,7 @@ namespace EddiVoiceAttackResponder
             }
             catch (Exception ex)
             {
-                Logging.Error("Failed to handle event in VoiceAttack", ex);
+                Logging.Error("Failed to trigger local VoiceAttack command " + commandName, ex);
             }
         }
 
@@ -316,6 +408,7 @@ namespace EddiVoiceAttackResponder
                         InvokeTransmit(ref vaProxy);
                         break;
                     case "missionsroute":
+                    case "route":
                         InvokeMissionsRoute(ref vaProxy);
                         break;
                 }
@@ -596,7 +689,7 @@ namespace EddiVoiceAttackResponder
 
                 string speech = SpeechFromScript(script);
 
-                SpeechService.Instance.Say(((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip(), speech, true, (int)priority, voice);
+                SpeechService.Instance.Say(((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip(), speech, (int)priority, voice);
             }
             catch (Exception e)
             {
@@ -625,7 +718,7 @@ namespace EddiVoiceAttackResponder
 
                 string speech = SpeechFromScript(script);
 
-                SpeechService.Instance.Say(((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip(), speech, true, (int)priority, voice, true);
+                SpeechService.Instance.Say(((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip(), speech, (int)priority, voice, true);
             }
             catch (Exception e)
             {
@@ -682,6 +775,8 @@ namespace EddiVoiceAttackResponder
             try
             {
                 EDDI.Instance.State["speechresponder_quiet"] = true;
+                SpeechService.Instance.speechQueue.DequeueAllSpeech();
+                SpeechService.Instance.StopCurrentSpeech();
             }
             catch (Exception e)
             {
@@ -852,18 +947,15 @@ namespace EddiVoiceAttackResponder
                     return;
                 }
 
-                if (EDDI.Instance.Cmdr != null && EDDI.Instance.CurrentStarSystem != null && EDDI.Instance.starMapService != null)
+                if (EDDI.Instance.CurrentStarSystem != null)
                 {
                     // Store locally
                     StarSystem here = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(EDDI.Instance.CurrentStarSystem.name);
                     here.comment = comment == "" ? null : comment;
                     StarSystemSqLiteRepository.Instance.SaveStarSystem(here);
 
-                    if (EDDI.Instance.starMapService != null)
-                    {
-                        // Store in EDSM
-                        EDDI.Instance.starMapService.sendStarMapComment(EDDI.Instance.CurrentStarSystem.name, comment);
-                    }
+                    // Store in EDSM
+                    StarMapService.Instance?.sendStarMapComment(EDDI.Instance.CurrentStarSystem.name, comment);
                 }
             }
             catch (Exception e)
@@ -880,6 +972,11 @@ namespace EddiVoiceAttackResponder
                 string system = vaProxy.GetText("System variable");
                 switch (type)
                 {
+                    case "cancel":
+                        {
+                            ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor")).CancelRoute();
+                        }
+                        break;
                     case "expiring":
                         {
                             ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor")).GetExpiringRoute();
@@ -892,12 +989,24 @@ namespace EddiVoiceAttackResponder
                         break;
                     case "most":
                         {
-                            ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor")).GetMostRoute();
+                            if (system == null || system == string.Empty)
+                            {
+                                ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor")).GetMostRoute();
+                            }
+                            else
+                            {
+                                ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor")).GetMostRoute(system);
+                            }
                         }
                         break;
                     case "nearest":
                         {
                             ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor")).GetNearestRoute();
+                        }
+                        break;
+                    case "next":
+                        {
+                            ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor")).SetNextRoute();
                         }
                         break;
                     case "route":
@@ -910,6 +1019,11 @@ namespace EddiVoiceAttackResponder
                             {
                                 ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor")).GetMissionsRoute(system);
                             }
+                        }
+                        break;
+                    case "set":
+                        {
+                            ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor")).SetRoute(system);
                         }
                         break;
                     case "source":

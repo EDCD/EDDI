@@ -479,8 +479,10 @@ namespace EddiDataDefinitions
                 Logging.Info("Ship definition error: " + item.shiptype);
 
                 // Create a basic ship definition & supplement from the info available 
-                ship = new Ship();
-                ship.EDName = item.shiptype;
+                ship = new Ship
+                {
+                    EDName = item.shiptype
+                };
             }
             ship.value = item.shipprice;
 

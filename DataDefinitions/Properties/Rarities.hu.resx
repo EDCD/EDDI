@@ -106,7 +106,10 @@
     <value>nagyon gyakori</value>
     <comment>Rarity verycommon</comment>
   </data>
-  
+  <data name="common" xml:space="preserve">
+    <value>általános</value>
+    <comment>Rarity common</comment>
+  </data>
   <data name="rare" xml:space="preserve">
     <value>ritka</value>
     <comment>Rarity rare</comment>

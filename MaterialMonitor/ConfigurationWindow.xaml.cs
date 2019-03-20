@@ -9,20 +9,21 @@ namespace EddiMaterialMonitor
     /// </summary>
     public partial class ConfigurationWindow : UserControl
     {
-        MaterialMonitor monitor;
+        private MaterialMonitor materialMonitor()
+        {
+            return (MaterialMonitor)EDDI.Instance.ObtainMonitor("Material monitor");
+        }
 
         public ConfigurationWindow()
         {
             InitializeComponent();
-
-            monitor = ((MaterialMonitor)EDDI.Instance.ObtainMonitor("Material monitor"));
-            materialsData.ItemsSource = monitor.inventory;
+            materialsData.ItemsSource = materialMonitor()?.inventory;
         }
 
         private void materialsUpdated(object sender, DataTransferEventArgs e)
         {
             // Update the material monitor's information
-            monitor.writeMaterials();
+            materialMonitor()?.writeMaterials();
         }
     }
 }

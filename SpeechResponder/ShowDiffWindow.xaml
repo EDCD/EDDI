@@ -6,6 +6,7 @@
              xmlns:resx="clr-namespace:EddiSpeechResponder.Properties"
              mc:Ignorable="d"
              Title="{x:Static resx:SpeechResponder.compare_script_title}" 
+             ResizeMode="CanResizeWithGrip"
              Height="600" Width="800"
              Background="#FFE5E5E5" >
     <RichTextBox x:Name="scriptText" Background="Transparent" BorderThickness="0" Margin="5" IsReadOnly="True" FontFamily="Consolas">

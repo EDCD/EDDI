@@ -14,6 +14,8 @@ namespace EddiCargoMonitor
 
         public int cargocarried { get; set; }
 
+        public DateTime updatedat { get; set; }
+
         [JsonIgnore]
         private string dataPath;
 

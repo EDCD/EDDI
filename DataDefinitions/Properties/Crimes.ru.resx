@@ -97,16 +97,43 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="assault" xml:space="preserve">
+    <value>Атака</value>
+    <comment>Crime assault</comment>
+  </data>
+  <data name="murder" xml:space="preserve">
+    <value>Убийца</value>
+    <comment>Crime murder</comment>
+  </data>
+  <data name="piracy" xml:space="preserve">
+    <value>Пиратство</value>
+    <comment>Crime piracy</comment>
+  </data>
   
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="illegalCargo" xml:space="preserve">
+    <value>Перевозка незаконного груза</value>
+    <comment>Crime illegalCargo</comment>
+  </data>
+  <data name="disobeyPolice" xml:space="preserve">
+    <value>Непослушание полиции</value>
+    <comment>Crime disobeyPolice</comment>
+  </data>
+  <data name="fireInNoFireZone" xml:space="preserve">
+    <value>Стрелял в сейф-зоне</value>
+    <comment>Crime fireInNoFireZone</comment>
+  </data>
+  <data name="fireInStation" xml:space="preserve">
+    <value>Стрельба на станции</value>
+    <comment>Crime fireInStation</comment>
+  </data>
+  <data name="dumpingDangerous" xml:space="preserve">
+    <value>Сброс опасного груза</value>
+    <comment>Crime dumpingDangerous</comment>
+  </data>
+  <data name="dumpingNearStation" xml:space="preserve">
+    <value>Сброз груза рядом со станцией</value>
+    <comment>Crime dumpingNearStation</comment>
+  </data>
   
   
   

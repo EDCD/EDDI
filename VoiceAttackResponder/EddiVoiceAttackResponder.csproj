@@ -159,6 +159,7 @@
     <EmbeddedResource Include="Properties\VoiceAttack.hu.resx" />
     <EmbeddedResource Include="Properties\VoiceAttack.it.resx" />
     <EmbeddedResource Include="Properties\VoiceAttack.ja.resx" />
+    <EmbeddedResource Include="Properties\VoiceAttack.pt-BR.resx" />
     <EmbeddedResource Include="Properties\VoiceAttack.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>VoiceAttack.Designer.cs</LastGenOutput>

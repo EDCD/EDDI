@@ -117,35 +117,100 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="desc" xml:space="preserve">
+    <value>Получение информации о вашем корабле.</value>
+  </data>
+  <data name="export_it_button" xml:space="preserve">
+    <value>Экспорт</value>
+  </data>
+  <data name="header_location" xml:space="preserve">
+    <value>Местоположение</value>
+  </data>
+  <data name="header_model" xml:space="preserve">
+    <value>Модель</value>
+  </data>
+  <data name="header_name" xml:space="preserve">
+    <value>Название</value>
+  </data>
+  <data name="header_role" xml:space="preserve">
+    <value>Роль</value>
+  </data>
+  <data name="header_ship_ID" xml:space="preserve">
+    <value>ID Корабя</value>
+  </data>
+  <data name="header_spoken_name" xml:space="preserve">
+    <value>Название (произносимое)</value>
+  </data>
+  <data name="header_value" xml:space="preserve">
+    <value>Стоимость</value>
+  </data>
+  <data name="hear_it_button" xml:space="preserve">
+    <value>Прослушать</value>
+  </data>
+  <data name="ipa_page" xml:space="preserve">
+    <value>https://en.wikipedia.org/wiki/International_Phonetic_Alphabet</value>
+  </data>
+  <data name="link_ipa" xml:space="preserve">
+    <value>Международный фонетический алфавит</value>
+  </data>
+  <data name="name" xml:space="preserve">
+    <value>Монитор корабля</value>
+  </data>
+  <data name="p1" xml:space="preserve">
+    <value>Это позволяет вам видеть ваши корабли и назначать им индивидуальные роли. Эта информация доступна для других сервисов и позволяет использовать в скриптах.</value>
+  </data>
+  <data name="p2" xml:space="preserve">
+    <value>Если имя корабля произносится странно или не правильно, вы можете дать ему "произносимое имя" следуя</value>
+  </data>
+  <data name="p3" xml:space="preserve">
+    <value>. Например если имя вашего корабля 'Pride of Achenar' то произносимое имя должно быть 'praɪdɒvˈakɜːnɑ' (обратите внимание, что в фонетическом варианте пробелы отсутствуют).</value>
+  </data>
+  <data name="p4" xml:space="preserve">
+    <value>Обратите внимание, что если у вас нет настроенного доступа к Frontier API, некоторые из приведенных ниже данных будут неточными или недоступными. Кроме того, если у вас было несколько кораблей до установки EDDI, вам нужно будет заменить их в качестве основного корабля и подождать несколько минут, прежде чем будет доступна полная информация о них.</value>
+  </data>
+  <data name="p5" xml:space="preserve">
+    <value>EDDI может экспортировать данные вашего корабля на Coriolis или EDShipyard (сторонние инструменты). Выберите инструмент, который вы предпочитаете.</value>
+  </data>
+  <data name="ship_ready" xml:space="preserve">
+    <value>{0} готов.</value>
+  </data>
+  <data name="ipa_resource1" xml:space="preserve">
+    <value>http://www.internationalphoneticalphabet.org/ipa-sounds/ipa-chart-with-sounds/</value>
+  </data>
+  <data name="ipa_resource2" xml:space="preserve">
+    <value>https://tophonetics.com/ru/</value>
+  </data>
+  <data name="ipa_resource3" xml:space="preserve">
+    <value>https://easypronunciation.com/ru/english-phonetic-transcription-converter</value>
+  </data>
+  <data name="ipa_page_p1" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="ipa_resource1_title" xml:space="preserve">
+    <value>IPA диаграмма со звуками</value>
+  </data>
+  <data name="ipa_resource2_title" xml:space="preserve">
+    <value>Русская транскрипция ToPhonetics.com</value>
+  </data>
+  <data name="ipa_resource3_title" xml:space="preserve">
+    <value>Русская транскрипция EasyPronunciation.com/ru/</value>
+  </data>
+  <data name="ipa_page_comments" xml:space="preserve">
+    <value>Онлайн словари могут включать в себя соответствующие произношения IPA для общих слов. Приведенные ниже ресурсы могут быть использованы для создания пользовательских произношений для менее распространенных слов.</value>
+  </data>
+  <data name="ipa_page_p2" xml:space="preserve">
+    <value>это буквенная система фонетической записи, основанная преимущественно на латинском алфавите. Он был разработан Международной фонетической ассоциацией в конце 19-го века как стандартизированное представление звуков разговорной речи.</value>
+  </data>
+  <data name="header_hot" xml:space="preserve">
+    <value>Статус</value>
+    <comment>Header for column showing whether ship is Hot or Clean</comment>
+  </data>
+  <data name="ship_clean" xml:space="preserve">
+    <value>Чистый</value>
+    <comment>Ship is Clean</comment>
+  </data>
+  <data name="ship_hot" xml:space="preserve">
+    <value>Горячий</value>
+    <comment>Ship is Hot</comment>
+  </data>
 </root>

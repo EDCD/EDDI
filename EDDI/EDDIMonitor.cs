@@ -56,12 +56,12 @@ namespace Eddi
         void Reload();
 
         /// <summary>
-        /// Called prior to responders running.  This should be used to update state
+        /// Called prior to responders running.  This should be used to update global states.
         /// </summary>
         void PreHandle(Event @event);
 
         /// <summary>
-        /// Called after responders running.  This should be used to generate follow-on events
+        /// Called after responders running.  This should be used to generate follow-on events which do not change global states.
         /// </summary>
         void PostHandle(Event @event);
 

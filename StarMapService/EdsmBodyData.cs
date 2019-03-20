@@ -1,4 +1,5 @@
 ﻿using EddiDataDefinitions;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using RestSharp;
 using System;
@@ -49,7 +50,11 @@ namespace EddiStarMapService
                         }
                         catch (Exception ex)
                         {
-                            Logging.Error("Error parsing EDSM body result " + body.ToString(), ex);
+                            Dictionary<string, object> data = new Dictionary<string, object>();
+                            data.Add("body", JsonConvert.SerializeObject(body));
+                            data.Add("exception", ex.Message);
+                            data.Add("stacktrace", ex.StackTrace);
+                            Logging.Error("Error parsing EDSM body result.", data);
                             throw;
                         }
                     }

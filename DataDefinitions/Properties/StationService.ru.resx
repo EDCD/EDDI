@@ -117,32 +117,104 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="None" xml:space="preserve">
+    <value>Нет</value>
+    <comment>Station Service: None</comment>
+  </data>
+  <data name="Dock" xml:space="preserve">
+    <value>Стыковка</value>
+    <comment>Station Service: Dock</comment>
+  </data>
+  <data name="AutoDock" xml:space="preserve">
+    <value>Автостыковка</value>
+    <comment>Station Service: AutoDock</comment>
+  </data>
+  <data name="BlackMarket" xml:space="preserve">
+    <value>Чёрный рынок</value>
+    <comment>Station Service: BlackMarket</comment>
+  </data>
+  <data name="Commodities" xml:space="preserve">
+    <value>Сырьё</value>
+    <comment>Station Service: Commodities</comment>
+  </data>
+  <data name="Contacts" xml:space="preserve">
+    <value>Контакты</value>
+    <comment>Station Service: Contacts</comment>
+  </data>
+  <data name="Exploration" xml:space="preserve">
+    <value>Universal Cartographics</value>
+    <comment>Station Service: Exploration</comment>
+  </data>
+  <data name="Initiatives" xml:space="preserve">
+    <value>Инициативы</value>
+    <comment>Station Service: Initiatives</comment>
+  </data>
+  <data name="Missions" xml:space="preserve">
+    <value>Миссии</value>
+    <comment>Station Service: Missions</comment>
+  </data>
+  <data name="Outfitting" xml:space="preserve">
+    <value>Оборудование</value>
+    <comment>Station Service: Outfitting</comment>
+  </data>
+  <data name="CrewLounge" xml:space="preserve">
+    <value>Комната экипажа</value>
+    <comment>Station Service: CrewLounge</comment>
+  </data>
+  <data name="Rearm" xml:space="preserve">
+    <value>Перезарядка</value>
+    <comment>Station Service: Rearm</comment>
+  </data>
+  <data name="Refuel" xml:space="preserve">
+    <value>Заправка</value>
+    <comment>Station Service: Refuel</comment>
+  </data>
+  <data name="Repair" xml:space="preserve">
+    <value>Ремонт</value>
+    <comment>Station Service: Repair</comment>
+  </data>
+  <data name="Shipyard" xml:space="preserve">
+    <value>Верфь</value>
+    <comment>Station Service: Shipyard</comment>
+  </data>
+  <data name="Tuning" xml:space="preserve">
+    <value>Модификации</value>
+    <comment>Station Service: Tuning</comment>
+  </data>
+  <data name="Workshop" xml:space="preserve">
+    <value>Мастерская</value>
+    <comment>Station Service: Workshop</comment>
+  </data>
+  <data name="MissionsGenerated" xml:space="preserve">
+    <value>Миссии</value>
+    <comment>Station Service: MissionsGenerated</comment>
+  </data>
+  
+  <data name="Research" xml:space="preserve">
+    <value>Исследование</value>
+    <comment>Station Service: Research</comment>
+  </data>
   
   
   
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="Powerplay" xml:space="preserve">
+    <value>Powerplay</value>
+    <comment>Station Service: Powerplay</comment>
+  </data>
+  <data name="SearchAndRescue" xml:space="preserve">
+    <value>Поиск и спасение</value>
+    <comment>Station Service: SearchAndRescue</comment>
+  </data>
+  <data name="TechBroker" xml:space="preserve">
+    <value>Техноброкер</value>
+    <comment>Station Service: TechBroker</comment>
+  </data>
+  <data name="MaterialTrader" xml:space="preserve">
+    <value>Торговец материалами</value>
+    <comment>Station Service: Material Trader</comment>
+  </data>
+  <data name="StationMenu" xml:space="preserve">
+    <value>Службы космопорта</value>
+    <comment>Station Service: Station Menu</comment>
+  </data>
 </root>

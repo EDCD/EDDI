@@ -117,14 +117,44 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="Ice" xml:space="preserve">
+    <value>Лёд</value>
+    <comment>Body Composition "Ice"</comment>
+  </data>
+  <data name="Metal" xml:space="preserve">
+    <value>Метал</value>
+    <comment>Body Composition "Metal"</comment>
+  </data>
+  <data name="Planet" xml:space="preserve">
+    <value>Планета</value>
+    <comment>Body Type "Planet"</comment>
+  </data>
+  <data name="Rock" xml:space="preserve">
+    <value>Камень</value>
+    <comment>Body Composition "Rock"</comment>
+  </data>
+  <data name="Star" xml:space="preserve">
+    <value>Звезда</value>
+    <comment>Body Type "Star"</comment>
+  </data>
+  <data name="Belt" xml:space="preserve">
+    <value>Пояс</value>
+    <comment>Body Type "Belt"</comment>
+  </data>
+  <data name="None" xml:space="preserve">
+    <value>Нет</value>
+    <comment>None</comment>
+  </data>
+  <data name="Station" xml:space="preserve">
+    <value>Станция</value>
+    <comment>BodyType "Station"</comment>
+  </data>
+  <data name="Null" xml:space="preserve">
+    <value>Ни один</value>
+    <comment>BodyType "Null"</comment>
+  </data>
+  <data name="PlanetaryRing" xml:space="preserve">
+    <value>Кольцо планеты</value>
+    <comment>Body Type PlanetaryRing</comment>
+  </data>
 </root>

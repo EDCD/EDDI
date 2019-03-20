@@ -117,14 +117,34 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="desc" xml:space="preserve">
+    <value>Ответчик который генерирует больше количество переменных для VoiceAttack а также запускает определенные пользователем действия.</value>
+  </data>
+  <data name="name" xml:space="preserve">
+    <value>VoiceAttack Ответчик</value>
+  </data>
+  <data name="p1" xml:space="preserve">
+    <value>Для интеграции EDDI с VoiceAttack, EDDI должен быть установлен в каталоге «Apps» VoiceAttack. Путь по умолчанию «C:\Program Files(x86)\VoiceAttack\Apps», по умолчанию EDDI предлагает установится именно туда.</value>
+  </data>
+  <data name="p2" xml:space="preserve">
+    <value>EDDI будет работать только с версиями VoiceAttack 1.5.12.22 и выше. Обратите внимание, что это бета-версия.</value>
+  </data>
+  <data name="p3" xml:space="preserve">
+    <value>После установки VoiceAttack вам нужно будет включить поддержку плагинов. Для этого необходимо щелкнуть значок «Настройки» (гаечный ключ) в правом верхнем углу VoiceAttack, установить флажок «Включить поддержку плагинов» и перезапустить VoiceAttack. Вы должны увидеть сообщение в окне VoiceAttack вдоль строк 'Plugin EDDI 2.0.0 initialized'.</value>
+  </data>
+  <data name="p4" xml:space="preserve">
+    <value>На этом этапе вы можете интегрировать переменные EDDI с вашими собственными сценариями VoiceAttack. Например, имя вашего командира хранится в текстовой переменной «Имя», поэтому для доступа к нему просто используйте '{TXT:Name}' в своих собственных командах. Есть переменные для вашего командира, ваших кораблей, текущей звездной системы и станции, на которой вы находитесь, и многое другое. Полный список переменных доступен </value>
+  </data>
+  <data name="p4_link" xml:space="preserve">
+    <value>на главном сайте EDDI</value>
+  </data>
+  <data name="p5" xml:space="preserve">
+    <value>В дополнение к написанию сценариев, которые вы запускаете с помощью голосовых или клавиатурных действий, вы также можете написать сценарии, которые запускаются в событиях, происходящих в Elite. Например, если вы хотите запускать сценарий каждый раз, когда происходит событие «Docked», вы должны написать сценарий с именем '((EDDI docked))' (обратите внимание на двойные скобки вокруг имени, чтобы избежать его случайного вызова, и нижний регистр 'd' в docked). Полный список событий также доступен </value>
+  </data>
+  <data name="p5_link" xml:space="preserve">
+    <value>на главном сайте EDDI</value>
+  </data>
+  <data name="run_eddi_standalone" xml:space="preserve">
+    <value>Пожалуйста, закройте VoiceAttack и запустите EDDI самостоятельно для его обновления.</value>
+  </data>
 </root>

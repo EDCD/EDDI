@@ -224,13 +224,31 @@ Veuillez fermer l'autre instance et réessayer.</value>
   <data name="safe_mode" xml:space="preserve">
     <value>Mode sans échec - mise à jour requise.</value>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="login" xml:space="preserve">
+    <value>S'identifier</value>
+  </data>
+  <data name="frontier_api_cant_login_from_va" xml:space="preserve">
+    <value>Pour vous connecter, veuillez quitter VoiceAttack et lancez EDDI en tant qu'application autonome.</value>
+  </data>
+  <data name="frontierApiStatusLabel" xml:space="preserve">
+    <value>Statut de l'API Frontier :</value>
+  </data>
+  <data name="frontierApiConnected" xml:space="preserve">
+    <value>Connecté</value>
+  </data>
+  <data name="frontierApiNotConnected" xml:space="preserve">
+    <value>Déconnecté</value>
+  </data>
+  <data name="frontierApiConnecting" xml:space="preserve">
+    <value>Connexion</value>
+  </data>
+  <data name="frontier_api_close_browser" xml:space="preserve">
+    <value>Vous pouvez fermer la fenêtre de votre navigateur et retourner dans EDDI.</value>
+  </data>
+  <data name="frontier_api_reset" xml:space="preserve">
+    <value>Connexion réinitialisée.</value>
+  </data>
+  <data name="frontier_api_please_authenticate" xml:space="preserve">
+    <value>Veuillez authentifier la connexion d'EDDI à l'API Frontier.</value>
+  </data>
 </root>

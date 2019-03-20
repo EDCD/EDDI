@@ -98,19 +98,64 @@
 	<resheader name="writer">
 		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
 	</resheader>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="None" xml:space="preserve">
+    <value>Нет</value>
+    <comment>Federation rank None</comment>
+  </data>
+  <data name="Recruit" xml:space="preserve">
+    <value>Рекрут</value>
+    <comment>Federation rank Recruit</comment>
+  </data>
+  <data name="Cadet" xml:space="preserve">
+    <value>Кадет</value>
+    <comment>Federation rank Cadet</comment>
+  </data>
+  <data name="Midshipman" xml:space="preserve">
+    <value>Гардемарин</value>
+    <comment>Federation rank Midshipman</comment>
+  </data>
+  <data name="PettyOfficer" xml:space="preserve">
+    <value>Старшина</value>
+    <comment>Federation rank PettyOfficer</comment>
+  </data>
+  <data name="ChiefPettyOfficer" xml:space="preserve">
+    <value>Главный старшина</value>
+    <comment>Federation rank ChiefPettyOfficer</comment>
+  </data>
+  <data name="WarrantOfficer" xml:space="preserve">
+    <value>Уорент-офицер</value>
+    <comment>Federation rank WarrantOfficer</comment>
+  </data>
+  <data name="Ensign" xml:space="preserve">
+    <value>Энсин</value>
+    <comment>Federation rank Ensign</comment>
+  </data>
+  <data name="Lieutenant" xml:space="preserve">
+    <value>Лейтенант</value>
+    <comment>Federation rank Lieutenant</comment>
+  </data>
+  <data name="LieutenantCommander" xml:space="preserve">
+    <value>Капитан-лейтенант</value>
+    <comment>Federation rank LieutenantCommander</comment>
+  </data>
+  <data name="PostCommander" xml:space="preserve">
+    <value>Начальник гарнизона</value>
+    <comment>Federation rank PostCommander</comment>
+  </data>
+  <data name="PostCaptain" xml:space="preserve">
+    <value>Командир корабля</value>
+    <comment>Federation rank PostCaptain</comment>
+  </data>
+  <data name="RearAdmiral" xml:space="preserve">
+    <value>Контр-адмирал</value>
+    <comment>Federation rank RearAdmiral</comment>
+  </data>
+  <data name="ViceAdmiral" xml:space="preserve">
+    <value>Вице-адмирал</value>
+    <comment>Federation rank ViceAdmiral</comment>
+  </data>
+  <data name="Admiral" xml:space="preserve">
+    <value>Адмирал</value>
+    <comment>Federation rank Admiral</comment>
+  </data>
 </root>

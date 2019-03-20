@@ -34,8 +34,13 @@ namespace EddiSpeechResponder
         public string ScriptValue
         {
             get { return scriptValue; }
-            set { if (value == null || value.Trim() == "") scriptValue = null; else scriptValue = value; OnPropertyChanged("ScriptValue"); }
+            set
+            {
+                scriptValue = string.IsNullOrWhiteSpace(value) ? null : value;
+                OnPropertyChanged("ScriptValue");
+            }
         }
+
         private bool responder;
         public bool Responder
         {
@@ -77,8 +82,7 @@ namespace EddiSpeechResponder
 
             // See if there is a default for this script
             Personality defaultPersonality = Personality.Default();
-            Script defaultScript;
-            defaultPersonality.Scripts.TryGetValue(scriptName, out defaultScript);
+            defaultPersonality.Scripts.TryGetValue(scriptName, out Script defaultScript);
             if (defaultScript == null || defaultScript.Value == null)
             {
                 // No default; disable reset and show
@@ -114,7 +118,7 @@ namespace EddiSpeechResponder
 
         private void helpButtonClick(object sender, RoutedEventArgs e)
         {
-            HelpWindow helpWindow = new HelpWindow();
+            MarkdownWindow helpWindow = new MarkdownWindow("Help.md");
             helpWindow.Show();
         }
 
@@ -128,8 +132,7 @@ namespace EddiSpeechResponder
         {
             // Resetting the script resets it to its value in the default personality
             Personality defaultPersonality = Personality.Default();
-            Script defaultScript;
-            defaultPersonality.Scripts.TryGetValue(scriptName, out defaultScript);
+            defaultPersonality.Scripts.TryGetValue(scriptName, out Script defaultScript);
             ScriptValue = defaultScript.Value;
         }
 
@@ -174,7 +177,7 @@ namespace EddiSpeechResponder
             }
             foreach (Event sampleEvent in sampleEvents)
             {
-                responder.Say(scriptResolver, ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip(), ScriptName, sampleEvent, 3, null, false);
+                responder.Say(scriptResolver, ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor"))?.GetCurrentShip(), ScriptName, sampleEvent, 3, null, false);
             }
         }
 

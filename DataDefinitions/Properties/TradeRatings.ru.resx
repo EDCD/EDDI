@@ -98,13 +98,40 @@
 	<resheader name="writer">
 		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
 	</resheader>
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="Penniless" xml:space="preserve">
+    <value>Нищий</value>
+    <comment>Trade rating Penniless</comment>
+  </data>
+  <data name="MostlyPenniless" xml:space="preserve">
+    <value>Полунищий</value>
+    <comment>Trade rating MostlyPenniless</comment>
+  </data>
+  <data name="Peddler" xml:space="preserve">
+    <value>Мелкий торговец</value>
+    <comment>Trade rating Peddler</comment>
+  </data>
+  <data name="Dealer" xml:space="preserve">
+    <value>Агент</value>
+    <comment>Trade rating Dealer</comment>
+  </data>
+  <data name="Merchant" xml:space="preserve">
+    <value>Коммерсант</value>
+    <comment>Trade rating Merchant</comment>
+  </data>
+  <data name="Broker" xml:space="preserve">
+    <value>Брокер</value>
+    <comment>Trade rating Broker</comment>
+  </data>
+  <data name="Entrepreneur" xml:space="preserve">
+    <value>Предприниматель</value>
+    <comment>Trade rating Entrepreneur</comment>
+  </data>
+  <data name="Tycoon" xml:space="preserve">
+    <value>Магнат</value>
+    <comment>Trade rating Tycoon</comment>
+  </data>
+  <data name="Elite" xml:space="preserve">
+    <value>Элита</value>
+    <comment>Trade rating Elite</comment>
+  </data>
 </root>

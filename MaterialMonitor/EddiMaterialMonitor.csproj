@@ -102,6 +102,7 @@
     <EmbeddedResource Include="Properties\MaterialMonitor.hu.resx" />
     <EmbeddedResource Include="Properties\MaterialMonitor.it.resx" />
     <EmbeddedResource Include="Properties\MaterialMonitor.ja.resx" />
+    <EmbeddedResource Include="Properties\MaterialMonitor.pt-BR.resx" />
     <EmbeddedResource Include="Properties\MaterialMonitor.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>MaterialMonitor.Designer.cs</LastGenOutput>

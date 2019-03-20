@@ -362,43 +362,51 @@ namespace EddiCompanionAppService
                 return cachedProfile;
             }
 
-            string data = obtainProfile(ServerURL() + PROFILE_URL);
-
-            if (data == null || data == "Profile unavailable")
-            {
-                // Happens if there is a problem with the API.  Logging in again might clear this...
-                relogin();
-                if (CurrentState != State.Authorized)
-                {
-                    // No luck; give up
-                    SpeechService.Instance.Say(null, Properties.CapiResources.frontier_api_lost, false);
-                    Logout();
-                }
-                else
-                {
-                    // Looks like login worked; try again
-                    data = obtainProfile(ServerURL() + PROFILE_URL);
-
-                    if (data == null || data == "Profile unavailable")
-
-                    {
-                        // No luck with a relogin; give up
-                        SpeechService.Instance.Say(null, Properties.CapiResources.frontier_api_lost, false);
-                        Logout();
-                        throw new EliteDangerousCompanionAppException("Failed to obtain data from Frontier server (" + CurrentState + ")");
-                    }
-                }
-            }
-
             try
             {
-                JObject json = JObject.Parse(data);
-                cachedProfile = ProfileFromJson(data);
+                string data = obtainProfile(ServerURL() + PROFILE_URL);
+
+                if (data == null || data == "Profile unavailable")
+                {
+                    // Happens if there is a problem with the API.  Logging in again might clear this...
+                    relogin();
+                    if (CurrentState != State.Authorized)
+                    {
+                        // No luck; give up
+                        SpeechService.Instance.Say(null, Properties.CapiResources.frontier_api_lost, 0);
+                        Logout();
+                    }
+                    else
+                    {
+                        // Looks like login worked; try again
+                        data = obtainProfile(ServerURL() + PROFILE_URL);
+
+                        if (data == null || data == "Profile unavailable")
+
+                        {
+                            // No luck with a relogin; give up
+                            SpeechService.Instance.Say(null, Properties.CapiResources.frontier_api_lost, 0);
+                            Logout();
+                            throw new EliteDangerousCompanionAppException("Failed to obtain data from Frontier server (" + CurrentState + ")");
+                        }
+                    }
+                }
+
+                try
+                {
+                    JObject json = JObject.Parse(data);
+                    cachedProfile = ProfileFromJson(data);
+                }
+                catch (JsonException ex)
+                {
+                    Logging.Error("Failed to parse companion profile", ex);
+                    cachedProfile = null;
+                }
             }
-            catch (JsonException ex)
+            catch (EliteDangerousCompanionAppException ex)
             {
-                Logging.Error("Failed to parse companion profile", ex);
-                cachedProfile = null;
+                // not Logging.Error as Rollbar is getting spammed when the server is down
+                Logging.Info(ex.Message);
             }
 
             if (cachedProfile != null)
@@ -461,6 +469,11 @@ namespace EddiCompanionAppService
             catch (JsonException ex)
             {
                 Logging.Error("Failed to parse companion station data", ex);
+            }
+            catch (EliteDangerousCompanionAppException ex)
+            {
+                // not Logging.Error as Rollbar is getting spammed when the server is down
+                Logging.Info(ex.Message);
             }
 
             Logging.Debug("Station is " + JsonConvert.SerializeObject(cachedProfile));
@@ -749,17 +762,20 @@ namespace EddiCompanionAppService
 
             if (json["lastStarport"] != null && json["lastStarport"]["ships"] != null)
             {
-                foreach (JProperty shipJsonProperty in json["lastStarport"]["ships"]["shipyard_list"])
+                // shipyard_list is a JObject containing JObjects but let's code defensively because FDev
+                var shipyardList = json["lastStarport"]["ships"]["shipyard_list"].Children();
+                foreach (JToken shipToken in shipyardList.Values())
                 {
-                    JObject shipJson = (JObject)shipJsonProperty.Value;
+                    JObject shipJson = shipToken as JObject;
                     Ship Ship = ShipyardShipFromProfile(shipJson);
                     Ships.Add(Ship);
                 }
 
-                foreach (JProperty shipProperty in json["lastStarport"]["ships"]["unavailable_list"])
+                // unavailable_list is a JArray containing JObjects
+                JArray unavailableList = json["lastStarport"]["ships"]["unavailable_list"] as JArray;
+                foreach (JObject shipJson in unavailableList)
                 {
-                    JObject ship = (JObject)shipProperty.Value;
-                    Ship Ship = ShipyardShipFromProfile(ship);
+                    Ship Ship = ShipyardShipFromProfile(shipJson);
                     Ships.Add(Ship);
                 }
             }

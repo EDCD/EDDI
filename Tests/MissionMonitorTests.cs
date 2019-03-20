@@ -1,19 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using Eddi;
-using EddiCargoMonitor;
-using EddiMissionMonitor;
-using EddiDataDefinitions;
+﻿using EddiDataDefinitions;
 using EddiEvents;
 using EddiJournalMonitor;
-using System.Linq;
+using EddiMissionMonitor;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Rollbar;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace UnitTests
 {
     [TestClass]
-    public class MissionMonitorTests
+    public class MissionMonitorTests : TestBase
     {
         MissionMonitor missionMonitor = new MissionMonitor();
         Mission mission;
@@ -23,11 +19,7 @@ namespace UnitTests
         [TestInitialize]
         private void StartTestMissionMonitor()
         {
-            // Prevent telemetry data from being reported based on test results
-            RollbarLocator.RollbarInstance.Config.Enabled = false;
-
-            // Set ourselves as in beta to stop sending data to remote systems
-            EDDI.Instance.enqueueEvent(new FileHeaderEvent(DateTime.Now, "JournalBeta.txt", "beta", "beta"));
+            MakeSafe();
         }
 
         [TestMethod]
@@ -220,6 +212,13 @@ namespace UnitTests
             Assert.IsTrue(mission.originreturn);
             Assert.IsTrue(mission.legal);
             Assert.IsFalse(mission.wing);
+
+            // Verify duplication protection
+            events = JournalMonitor.ParseJournalEntry(line);
+            Assert.IsTrue(events.Count == 1);
+            missionMonitor._handleMissionAcceptedEvent((MissionAcceptedEvent)events[0]);
+            Assert.AreEqual(1, missionMonitor.missions.ToList().Where(m => m.missionid == 413748324).Count());
+            Assert.AreEqual(4, missionMonitor.missions.Count);
 
             //CargoDepotEvent - 'Collect'
             line = @"{ ""timestamp"":""2018-08-26T02:55:10Z"", ""event"":""CargoDepot"", ""MissionID"":413748324, ""UpdateType"":""Deliver"", ""CargoType"":""Tantalum"", ""Count"":54, ""StartMarketID"":0, ""EndMarketID"":3224777216, ""ItemsCollected"":0, ""ItemsDelivered"":54, ""TotalItemsToDeliver"":54, ""Progress"":0.000000 }";

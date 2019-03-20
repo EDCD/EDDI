@@ -149,7 +149,10 @@
     <value>Bi vév pajzsgenerátor</value>
     <comment>Module Bi_WeaveShieldGenerator</comment>
   </data>
-  
+  <data name="BurstLaser" xml:space="preserve">
+    <value>Lézersorozatvető</value>
+    <comment>Module BurstLaser</comment>
+  </data>
   <data name="BusinessClassPassengerCabin" xml:space="preserve">
     <value>Biznisz osztályú utaskabin</value>
     <comment>Module BusinessClassPassengerCabin</comment>
@@ -174,7 +177,10 @@
     <value>Infracsapda</value>
     <comment>Module ChaffLauncher</comment>
   </data>
-  
+  <data name="CockpitCanopy" xml:space="preserve">
+    <value>Pilótafülke</value>
+    <comment>Module CockpitCanopy</comment>
+  </data>
   <data name="Cockpit" xml:space="preserve">
     <value>Pilótafülke</value>
     <comment>Module Cockpit</comment>
@@ -195,7 +201,10 @@
     <value>Szitószkemböl</value>
     <comment>Module Cytoscrambler</comment>
   </data>
-  
+  <data name="DataLinkScanner" xml:space="preserve">
+    <value>Adatcsatoló szkenner</value>
+    <comment>Module DataLinkScanner</comment>
+  </data>
   <data name="DecontaminationLimpetController" xml:space="preserve">
     <value>Fertőtlenítő szonda vezérlő egység</value>
     <comment>Module DecontaminationLimpetController</comment>
@@ -212,7 +221,10 @@
     <value>Turista osztályú utaskabin</value>
     <comment>Module EconomyClassPassengerCabin</comment>
   </data>
-  
+  <data name="ElectronicCountermeasure" xml:space="preserve">
+    <value>Rakétaelhárító rendszer</value>
+    <comment>Module ElectronicCountermeasure</comment>
+  </data>
   <data name="EnhancedPerformanceThrusters" xml:space="preserve">
     <value>Fejlesztett teljesítményű hajtóművek</value>
     <comment>Module EnhancedPerformanceThrusters</comment>
@@ -241,7 +253,10 @@
     <value>Varp drájv</value>
     <comment>Module FrameShiftDrive</comment>
   </data>
-  
+  <data name="FrameShiftWakeScanner" xml:space="preserve">
+    <value>F eS Dé szkenner</value>
+    <comment>Module FrameShiftWakeScanner</comment>
+  </data>
   <data name="FuelScoop" xml:space="preserve">
     <value>Üzemanyag töltő egység</value>
     <comment>Module FuelScoop</comment>
@@ -250,12 +265,18 @@
     <value>Üzemanyag tank</value>
     <comment>Module FuelTank</comment>
   </data>
-  
+  <data name="FuelTransferLimpetController" xml:space="preserve">
+    <value>Üzemanyagszállító szonda vezérlő egység</value>
+    <comment>Module FuelTransferLimpetController</comment>
+  </data>
   <data name="GuardianGaussCannon" xml:space="preserve">
     <value>Őrző Gaussz ágyú</value>
     <comment>Module GuardianGaussCannon</comment>
   </data>
-  
+  <data name="GuardianPlasmaCharger" xml:space="preserve">
+    <value>Őrző plazmavető</value>
+    <comment>Module GuardianPlasmaCharger</comment>
+  </data>
   <data name="GuardianPowerPlant" xml:space="preserve">
     <value>Őrző reaktor</value>
     <comment>Module GuardianPowerPlant</comment>
@@ -276,8 +297,14 @@
     <value>Birodalmi pöröly</value>
     <comment>Module ImperialHammer</comment>
   </data>
-  
-  
+  <data name="IntermediateDiscoveryScanner" xml:space="preserve">
+    <value>Közepes felfedező szkenner</value>
+    <comment>Module IntermediateDiscoveryScanner</comment>
+  </data>
+  <data name="KillWarrantScanner" xml:space="preserve">
+    <value>Vérdíj szkenner</value>
+    <comment>Module KillWarrantScanner</comment>
+  </data>
   <data name="LifeSupport" xml:space="preserve">
     <value>Létfenntartó rendszer</value>
     <comment>Module LifeSupport</comment>
@@ -302,7 +329,10 @@
     <value>Katonai osztályú burkolat</value>
     <comment>Module MilitaryGradeComposite</comment>
   </data>
-  
+  <data name="MineLauncher" xml:space="preserve">
+    <value>Akna kilövő</value>
+    <comment>Module MineLauncher</comment>
+  </data>
   <data name="MiningLance" xml:space="preserve">
     <value>Bányász lándzsa</value>
     <comment>Module MiningLance</comment>
@@ -315,8 +345,14 @@
     <value>Tükrözött felületű burkolat</value>
     <comment>Module MirroredSurfaceComposite</comment>
   </data>
-  
-  
+  <data name="MissileRack" xml:space="preserve">
+    <value>Rakéta kilövő</value>
+    <comment>Module MissileRack</comment>
+  </data>
+  <data name="ModuleReinforcementPackage" xml:space="preserve">
+    <value>Modul erősítő csomag</value>
+    <comment>Module ModuleReinforcementPackage</comment>
+  </data>
   <data name="Multicannon" xml:space="preserve">
     <value>Gépágyú</value>
     <comment>Module Multicannon</comment>
@@ -345,7 +381,10 @@
     <value>Plazma gyorsító</value>
     <comment>Module PlasmaAccelerator</comment>
   </data>
-  
+  <data name="PointDefence" xml:space="preserve">
+    <value>Pontvédelmi ágyú</value>
+    <comment>Module PointDefence</comment>
+  </data>
   <data name="PowerDistributor" xml:space="preserve">
     <value>Energia elosztó</value>
     <comment>Module PowerDistributor</comment>
@@ -362,7 +401,10 @@
     <value>Talajelemzőszonda vezérlő egység</value>
     <comment>Module ProspectorLimpetController</comment>
   </data>
-  
+  <data name="PulseLaser" xml:space="preserve">
+    <value>Pulzus lézer</value>
+    <comment>Module PulseLaser</comment>
+  </data>
   <data name="RailGun" xml:space="preserve">
     <value>Sínágyú</value>
     <comment>Module RailGun</comment>
@@ -375,32 +417,62 @@
     <value>Felderítő szonda vezérlő egység</value>
     <comment>Module ReconLimpetController</comment>
   </data>
-  
+  <data name="Refinery" xml:space="preserve">
+    <value>Feldolgozó egység</value>
+    <comment>Module Refinery</comment>
+  </data>
   <data name="ReinforcedAlloy" xml:space="preserve">
     <value>Megerősített ötvözet</value>
     <comment>Module ReinforcedAlloy</comment>
   </data>
-  
+  <data name="RemoteReleaseFlakLauncher" xml:space="preserve">
+    <value>Távrobbantású légvédelmi kilövő</value>
+    <comment>Module RemoteReleaseFlakLauncher</comment>
+  </data>
   <data name="RepairLimpetController" xml:space="preserve">
     <value>Javító szonda vezérlő egység</value>
     <comment>Module RepairLimpetController</comment>
   </data>
-  
+  <data name="ResearchLimpetController" xml:space="preserve">
+    <value>Kutató szonda vezérlő egység</value>
+    <comment>Module ResearchLimpetController</comment>
+  </data>
   <data name="RocketPropelledFSDDisruptor" xml:space="preserve">
     <value>Rakéta meghajtású FTL disztruptor</value>
     <comment>Module RocketPropelledFSDDisruptor</comment>
   </data>
-  
-  
-  
+  <data name="Sensors" xml:space="preserve">
+    <value>Érzékelők</value>
+    <comment>Module Sensors</comment>
+  </data>
+  <data name="ShieldBooster" xml:space="preserve">
+    <value>Pajzs növelő</value>
+    <comment>Module ShieldBooster</comment>
+  </data>
+  <data name="ShieldCellBank" xml:space="preserve">
+    <value>Pajzsenergia cella tároló</value>
+    <comment>Module ShieldCellBank</comment>
+  </data>
   <data name="ShieldGenerator" xml:space="preserve">
     <value>Pajzsgenerátor</value>
     <comment>Module ShieldGenerator</comment>
   </data>
-  
-  
-  
-  
+  <data name="ShockCannon" xml:space="preserve">
+    <value>Roham ágyú</value>
+    <comment>Module ShockCannon</comment>
+  </data>
+  <data name="ShockMineLauncher" xml:space="preserve">
+    <value>Roham akna kilövő</value>
+    <comment>Module ShockMineLauncher</comment>
+  </data>
+  <data name="ShutdownFieldNeutraliser" xml:space="preserve">
+    <value>Tiltómező neutralizáló</value>
+    <comment>Module ShutdownFieldNeutraliser</comment>
+  </data>
+  <data name="StandardDockingComputer" xml:space="preserve">
+    <value>Sztenderd dokkoló kompjuter</value>
+    <comment>Module StandardDockingComputer</comment>
+  </data>
   <data name="Thrusters" xml:space="preserve">
     <value>Hajtóművek</value>
     <comment>Module Thrusters</comment>
@@ -409,10 +481,22 @@
     <value>Torpedó pilon</value>
     <comment>Module TorpedoPylon</comment>
   </data>
-  
-  
-  
-  
+  <data name="VoicePack_Verity" xml:space="preserve">
+    <value>Verity</value>
+    <comment>Module Verity</comment>
+  </data>
+  <data name="VoicePack_Victor" xml:space="preserve">
+    <value>Victor</value>
+    <comment>Module Victor</comment>
+  </data>
+  <data name="Whitestringlights" xml:space="preserve">
+    <value>Fehér zsinór fények</value>
+    <comment>Module Whitestringlights</comment>
+  </data>
+  <data name="XenoScanner" xml:space="preserve">
+    <value>Xeno szkenner</value>
+    <comment>Module XenoScanner</comment>
+  </data>
   <data name="Fixed" xml:space="preserve">
     <value>rögzített</value>
     <comment>Weapon mount type Fixed</comment>
@@ -425,16 +509,34 @@
     <value>toronyba épített</value>
     <comment>Weapon mount type Turreted</comment>
   </data>
-  
-  
-  
+  <data name="AdvancedDiscoveryScanner" xml:space="preserve">
+    <value>Fejlesztett felfedező szkenner</value>
+    <comment>Module AdvancedDiscoveryScanner</comment>
+  </data>
+  <data name="PlasmaRepeater" xml:space="preserve">
+    <value>Plazma gépágyú</value>
+    <comment>Module PlasmaRepeater (fighter module)</comment>
+  </data>
+  <data name="Enforcer" xml:space="preserve">
+    <value>Enforszer ágyú</value>
+    <comment>Module Hpt_MultiCannon_Fixed_Small_Strong</comment>
+  </data>
   <data name="GuardianFsdBooster" xml:space="preserve">
     <value>Őrző FSD teljesítmény növelő</value>
     <comment>Module GuardianFsdBooster</comment>
   </data>
-  
-  
-  
+  <data name="GuardianPowerDistributor" xml:space="preserve">
+    <value>Őrző energia elosztó rendszer</value>
+    <comment>Module GuardianPowerDistributor</comment>
+  </data>
+  <data name="ShardCannon" xml:space="preserve">
+    <value>Szilánk ágyú</value>
+    <comment>Module ShardCannon</comment>
+  </data>
+  <data name="FlechetteLauncher" xml:space="preserve">
+    <value>Flecsett kilövő</value>
+    <comment>Modile FlechetteLauncher</comment>
+  </data>
   <data name="EnzymeMissileRack" xml:space="preserve">
     <value>Enzim rakéta kilövő</value>
     <comment>Module EnzymeMissileRack</comment>

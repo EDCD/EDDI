@@ -80,20 +80,21 @@ namespace EddiDataProviderService
             }
         }
 
-        public StarSystem GetOrCreateStarSystem(string name, bool fetchIfMissing = true)
+        public StarSystem GetOrCreateStarSystem(string name, bool fetchIfMissing = true, bool refreshIfOutdated = true)
         {
             if (name == string.Empty) { return null; }
-            return GetOrCreateStarSystems(new string[] { name }).FirstOrDefault();
+            return GetOrCreateStarSystems(new string[] { name }, fetchIfMissing, refreshIfOutdated).FirstOrDefault();
         }
 
-        public List<StarSystem> GetOrCreateStarSystems(string[] names, bool fetchIfMissing = true)
+        public List<StarSystem> GetOrCreateStarSystems(string[] names, bool fetchIfMissing = true, bool refreshIfOutdated = true)
         {
             if (names.Count() == 0) { return null; }
 
-            List<StarSystem> systems = Instance.GetStarSystems(names, fetchIfMissing);
-            List<string> fetchSystems = new List<string>();
+            // Get (and update if required) systems already in our database
+            List<StarSystem> systems = Instance.GetStarSystems(names, refreshIfOutdated);
 
             // If a system isn't found after we've read our local database, we need to fetch it.
+            List<string> fetchSystems = new List<string>();
             foreach (string name in names)
             {
                 if (fetchIfMissing && systems.FirstOrDefault(s => s.name == name) == null)
@@ -101,7 +102,6 @@ namespace EddiDataProviderService
                     fetchSystems.Add(name);
                 }
             }
-
             List<StarSystem> fetchedSystems = DataProviderService.GetSystemsData(fetchSystems.ToArray());
             if (fetchedSystems?.Count > 0)
             {
@@ -109,9 +109,10 @@ namespace EddiDataProviderService
                 systems.AddRange(fetchedSystems);
             }
 
+            // Create a new system object for each name that isn't in the database and couldn't be fetched from a server
             foreach (string name in names)
             {
-                if (fetchedSystems?.Find(s => s?.name == name) == null)
+                if (systems?.Find(s => s?.name == name) == null)
                 {
                     systems.Add(new StarSystem() { name = name });
                 }
@@ -120,17 +121,17 @@ namespace EddiDataProviderService
             return systems;
         }
 
-        public StarSystem GetOrFetchStarSystem(string name, bool fetchIfMissing = true)
+        public StarSystem GetOrFetchStarSystem(string name, bool fetchIfMissing = true, bool refreshIfOutdated = true)
         {
             if (name == string.Empty) { return null; }
-            return GetOrFetchStarSystems(new string[] { name }).FirstOrDefault();
+            return GetOrFetchStarSystems(new string[] { name }, fetchIfMissing, refreshIfOutdated).FirstOrDefault();
         }
 
-        public List<StarSystem> GetOrFetchStarSystems(string[] names, bool fetchIfMissing = true)
+        public List<StarSystem> GetOrFetchStarSystems(string[] names, bool fetchIfMissing = true, bool refreshIfOutdated = true)
         {
             if (names.Count() == 0) { return null; }
 
-            List<StarSystem> systems = Instance.GetStarSystems(names, fetchIfMissing);
+            List<StarSystem> systems = Instance.GetStarSystems(names, refreshIfOutdated);
             List<string> fetchSystems = new List<string>();
 
             // If a system isn't found after we've read our local database, we need to fetch it.
@@ -155,7 +156,7 @@ namespace EddiDataProviderService
         public StarSystem GetStarSystem(string name, bool refreshIfOutdated = true)
         {
             if (name == string.Empty) { return null; }
-            return GetStarSystems(new string[] { name }).FirstOrDefault();
+            return GetStarSystems(new string[] { name }, refreshIfOutdated).FirstOrDefault();
         }
 
         public List<StarSystem> GetStarSystems(string[] names, bool refreshIfOutdated = true)
@@ -408,7 +409,7 @@ namespace EddiDataProviderService
         // Triggered when leaving a starsystem - just update lastvisit
         public void LeaveStarSystem(StarSystem system)
         {
-            if (system == null) { return; }
+            if (system?.name == null) { return; }
 
             system.lastvisit = DateTime.UtcNow;
             SaveStarSystem(system);

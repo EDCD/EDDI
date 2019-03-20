@@ -13,7 +13,6 @@ using EddiDataDefinitions;
 using EddiShipMonitor;
 using EddiStatusMonitor;
 using System.Linq;
-using System.Collections.Concurrent;
 
 namespace EddiSpeechResponder
 {
@@ -31,7 +30,8 @@ namespace EddiSpeechResponder
 
         private bool subtitlesOnly;
 
-        private static ConcurrentQueue<Event> eventQueue = new ConcurrentQueue<Event>();
+        protected static List<Event> eventQueue = new List<Event>();
+        private static readonly object queueLock = new object();
 
         private static bool ignoreBodyScan;
 
@@ -142,6 +142,7 @@ namespace EddiSpeechResponder
             }
 
             Logging.Debug("Received event " + JsonConvert.SerializeObject(@event));
+            StatusMonitor statusMonitor = (StatusMonitor)EDDI.Instance.ObtainMonitor("Status monitor");
 
             if (@event is BeltScannedEvent)
             {
@@ -166,24 +167,6 @@ namespace EddiSpeechResponder
                     return;
                 }
             }
-            else if (@event is StatusEvent statusEvent)
-            {
-                if (StatusMonitor.currentStatus.gui_focus == "fss mode")
-                {
-                    // Beginning with Elite Dangerous v. 3.3, the primary star scan is delivered via a Scan with 
-                    // scantype `AutoScan` when you jump into the system. Secondary stars may be delivered in a burst 
-                    // following an FSSDiscoveryScan. Since each source has a different trigger, we re-order events 
-                    // and and report queued star scans when the pilot enters fss mode
-                    Say(@event);
-                    foreach (Event theEvent in eventQueue.OfType<StarScannedEvent>())
-                    {
-                        Say(theEvent);
-                    }
-                    eventQueue.TakeWhile(s => s.GetType() == typeof(StarScannedEvent));
-                    enqueueStarScan = false;
-                    return;
-                }
-            }
             else if (@event is StarScannedEvent starScannedEvent)
             {
                 if (starScannedEvent.scantype.Contains("NavBeacon"))
@@ -193,34 +176,49 @@ namespace EddiSpeechResponder
                 }
                 else if (enqueueStarScan)
                 {
-                    eventQueue.Enqueue(@event);
-                    eventQueue.OrderBy(s => ((StarScannedEvent)s)?.distance);
+                    AddToEventQueue(@event);
                     return;
                 }
             }
             else if (@event is JumpedEvent)
             {
-                eventQueue?.TakeWhile(s => s.GetType() == typeof(StarScannedEvent));
+                TakeTypeFromEventQueue<StarScannedEvent>();
                 enqueueStarScan = true;
-            }
-            else if (@event is SignalDetectedEvent)
-            {
-                if (!(StatusMonitor.currentStatus.gui_focus == "fss mode" || StatusMonitor.currentStatus.gui_focus == "saa mode"))
-                {
-                    return;
-                }
             }
             else if (@event is CommunityGoalEvent)
             {
                 // Disable speech from the community goal event for the time being.
                 return;
             }
+            else if (@event is SignalDetectedEvent)
+            {
+                if (!(statusMonitor?.currentStatus.gui_focus == "fss mode" || statusMonitor?.currentStatus.gui_focus == "saa mode"))
+                {
+                    return;
+                }
+            }
+
+            if (statusMonitor?.currentStatus.gui_focus == "fss mode" && statusMonitor?.lastStatus.gui_focus != "fss mode")
+            {
+                // Beginning with Elite Dangerous v. 3.3, the primary star scan is delivered via a Scan with 
+                // scantype `AutoScan` when you jump into the system. Secondary stars may be delivered in a burst 
+                // following an FSSDiscoveryScan. Since each source has a different trigger, we re-order events 
+                // and and report queued star scans when the pilot enters fss mode
+                Say(@event);
+                enqueueStarScan = false;
+                foreach (Event theEvent in TakeTypeFromEventQueue<StarScannedEvent>()?.OrderBy(s => ((StarScannedEvent)s)?.distance))
+                {
+                    Say(theEvent);
+                }
+                return;
+            }
+
             Say(@event);
         }
 
         private void Say(Event @event)
         {
-            Say(scriptResolver, ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip(), @event.type, @event, null, null, null, SayOutLoud());
+            Say(scriptResolver, ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor"))?.GetCurrentShip(), @event.type, @event, null, null, SayOutLoud());
         }
 
         private static bool SayOutLoud()
@@ -238,13 +236,13 @@ namespace EddiSpeechResponder
         }
 
         // Say something with the default resolver
-        public void Say(Ship ship, string scriptName, Event theEvent = null, int? priority = null, string voice = null, bool? wait = null, bool sayOutLoud = true)
+        public void Say(Ship ship, string scriptName, Event theEvent = null, int? priority = null, string voice = null, bool sayOutLoud = true)
         {
-            Say(scriptResolver, ship, scriptName, theEvent, priority, voice, null, sayOutLoud);
+            Say(scriptResolver, ship, scriptName, theEvent, priority, voice, sayOutLoud);
         }
 
         // Say something with a custom resolver
-        public void Say(ScriptResolver resolver, Ship ship, string scriptName, Event theEvent = null, int? priority = null, string voice = null, bool? wait = null, bool sayOutLoud = true)
+        public void Say(ScriptResolver resolver, Ship ship, string scriptName, Event theEvent = null, int? priority = null, string voice = null, bool sayOutLoud = true)
         {
             Dictionary<string, Cottle.Value> dict = createVariables(theEvent);
             string speech = resolver.resolve(scriptName, dict);
@@ -257,7 +255,7 @@ namespace EddiSpeechResponder
                 }
                 if (sayOutLoud && !(subtitles && subtitlesOnly))
                 {
-                    SpeechService.Instance.Say(ship, speech, (wait == null ? true : (bool)wait), (priority == null ? resolver.priority(scriptName) : (int)priority), voice);
+                    SpeechService.Instance.Say(ship, speech, (priority == null ? resolver.priority(scriptName) : (int)priority), voice, false, theEvent?.type);
                 }
             }
         }
@@ -317,9 +315,9 @@ namespace EddiSpeechResponder
                 dict["body"] = new ReflectionValue(EDDI.Instance.CurrentStellarBody);
             }
 
-            if (StatusMonitor.currentStatus != null)
+            if (((StatusMonitor)EDDI.Instance.ObtainMonitor("Status monitor"))?.currentStatus != null)
             {
-                dict["status"] = new ReflectionValue(StatusMonitor.currentStatus);
+                dict["status"] = new ReflectionValue(((StatusMonitor)EDDI.Instance.ObtainMonitor("Status monitor"))?.currentStatus);
             }
 
             if (theEvent != null)
@@ -377,6 +375,25 @@ namespace EddiSpeechResponder
                 {
                     Logging.Warn("Failed to write speech", ex);
                 }
+            }
+        }
+
+        private List<Event> TakeTypeFromEventQueue<T>()
+        {
+            List<Event> events = new List<Event>();
+            lock (queueLock)
+            {
+                events = eventQueue.Where(e => e is T).ToList();
+                eventQueue.RemoveAll(e => e is T);
+                return events;
+            }
+        }
+
+        private void AddToEventQueue(Event @event)
+        {
+            lock (queueLock)
+            {
+                eventQueue.Add(@event);
             }
         }
     }

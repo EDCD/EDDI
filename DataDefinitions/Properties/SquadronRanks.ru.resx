@@ -117,8 +117,20 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
-  
-  
+  <data name="Agent" xml:space="preserve">
+    <value>Агент</value>
+    <comment>SquadronRanks Agent</comment>
+  </data>
+  <data name="Leader" xml:space="preserve">
+    <value>Лидер</value>
+    <comment>SquadronRanks Leader</comment>
+  </data>
+  <data name="Rookie" xml:space="preserve">
+    <value>Новобранец</value>
+    <comment>SquadronRanks Rookie</comment>
+  </data>
+  <data name="SeniorOfficer" xml:space="preserve">
+    <value>Старший офицер</value>
+    <comment>SquadronRanks SeniorOfficer</comment>
+  </data>
 </root>

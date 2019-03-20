@@ -194,7 +194,9 @@
   <data name="starting_upgrade" xml:space="preserve">
     <value>Frissítés letöltésének kezdése.</value>
   </data>
-  
+  <data name="update_server_unreachable" xml:space="preserve">
+    <value>Nem tudtam kapcsolódni a frissítési szerveremhez. Amennyiben a probléma továbbra is fennáll, kérlek látogasd meg a fórumot.</value>
+  </data>
   <data name="already_running_alert_body_text" xml:space="preserve">
     <value>Csak egy EDDI futhatható egyszerre.
 
@@ -203,8 +205,14 @@ Kérlek zárd be a másikat és próbálkozz újra.</value>
   <data name="already_running_alert_title" xml:space="preserve">
     <value>EDDI már fut</value>
   </data>
-  
-  
+  <data name="problem_load_monitor" xml:space="preserve">
+    <value>Monitor betöltése sikertelen:{0}</value>
+    <comment>Weapon mount type problem_load_monitor</comment>
+  </data>
+  <data name="problem_load_monitor_file" xml:space="preserve">
+    <value>Monitor betöltése sikertelen. Kérlek ellenőrizd le hogy {0} nincs megosztott hálozaton vagy megosztasz hálózatot.</value>
+    <comment>Weapon mount type problem_load_monitor_file</comment>
+  </data>
   <data name="Commander" xml:space="preserve">
     <value>Parancsnok</value>
     <comment>Vocative form of "Commander"</comment>

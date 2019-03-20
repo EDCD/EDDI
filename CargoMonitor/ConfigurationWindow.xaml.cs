@@ -9,20 +9,21 @@ namespace EddiCargoMonitor
     /// </summary>
     public partial class ConfigurationWindow : UserControl
     {
-        CargoMonitor monitor;
+        private CargoMonitor cargoMonitor()
+        {
+            return (CargoMonitor)EDDI.Instance.ObtainMonitor("Cargo monitor");
+        }
 
         public ConfigurationWindow()
         {
             InitializeComponent();
-
-            monitor = ((CargoMonitor)EDDI.Instance.ObtainMonitor("Cargo monitor"));
-            cargoData.ItemsSource = monitor.inventory;
+            cargoData.ItemsSource = cargoMonitor()?.inventory;
         }
 
         private void cargoUpdated(object sender, DataTransferEventArgs e)
         {
             // Update the cargo monitor's information
-            monitor.writeInventory();
+            cargoMonitor()?.writeInventory();
         }
     }
 }

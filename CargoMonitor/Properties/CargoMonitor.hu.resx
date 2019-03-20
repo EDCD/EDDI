@@ -120,7 +120,9 @@
   <data name="cargo_monitor_desc" xml:space="preserve">
     <value>Nyomonköveti a raktér tartalmát.</value>
   </data>
-  
+  <data name="cargo_monitor_name" xml:space="preserve">
+    <value>Raktér monitor</value>
+  </data>
   <data name="header_haulage" xml:space="preserve">
     <value>Rakomány</value>
     <comment>Tons of haulage (mission cargo) carried</comment>
@@ -133,7 +135,9 @@
     <value>Szükséges</value>
     <comment>Tons needed for missions</comment>
   </data>
-  
+  <data name="para2" xml:space="preserve">
+    <value>Megjegyzés: Ha a leltár nem helyes vagy inkorrekt. Indítsd el vagy indítsd újra az Elitet, és ezek az információk frissítve lesznek.</value>
+  </data>
   <data name="para1" xml:space="preserve">
     <value>Az alábbi lista tartalmazza az összes rakományod.</value>
   </data>

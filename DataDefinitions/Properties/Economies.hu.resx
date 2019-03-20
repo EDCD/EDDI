@@ -109,7 +109,10 @@
     <value>Kitermelés</value>
     <comment>Economy type Extraction</comment>
   </data>
-  
+  <data name="HighTech" xml:space="preserve">
+    <value>Csúcstechnika</value>
+    <comment>Economy type HighTech</comment>
+  </data>
   <data name="Industrial" xml:space="preserve">
     <value>Ipari</value>
     <comment>Economy type Industrial</comment>
@@ -130,7 +133,10 @@
     <value>Szolgáltatás</value>
     <comment>Economy type Service</comment>
   </data>
-  
+  <data name="Terraforming" xml:space="preserve">
+    <value>Terraformálás alatt</value>
+    <comment>Economy type Terraforming</comment>
+  </data>
   <data name="Tourism" xml:space="preserve">
     <value>Turizmus</value>
     <comment>Economy type Tourism</comment>

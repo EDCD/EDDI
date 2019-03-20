@@ -173,6 +173,12 @@
     <value>Liberté civile</value>
     <comment>Faction state CivilLiberty</comment>
   </data>
-  
-  
+  <data name="Incursion" xml:space="preserve">
+    <value>Incursion</value>
+    <comment>Faction state Incursion</comment>
+  </data>
+  <data name="PirateAttack" xml:space="preserve">
+    <value>Attaque pirate</value>
+    <comment>Faction state PirateAttack</comment>
+  </data>
 </root>

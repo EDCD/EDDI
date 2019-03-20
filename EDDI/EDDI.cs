@@ -16,7 +16,7 @@ using System.Runtime.InteropServices;
 using System.Security.Permissions;
 using System.Text;
 using System.Threading;
-using System.Windows;
+using System.Threading.Tasks;
 using Utilities;
 
 namespace Eddi
@@ -92,24 +92,23 @@ namespace Eddi
 
         public List<EDDIMonitor> monitors = new List<EDDIMonitor>();
         private ConcurrentBag<EDDIMonitor> activeMonitors = new ConcurrentBag<EDDIMonitor>();
+        private static readonly object monitorLock = new object();
 
         public List<EDDIResponder> responders = new List<EDDIResponder>();
         private ConcurrentBag<EDDIResponder> activeResponders = new ConcurrentBag<EDDIResponder>();
+        private static readonly object responderLock = new object();
 
         // Information obtained from the companion app service
-        public Commander Cmdr { get; private set; }
         public DateTime ApiTimeStamp { get; private set; }
 
-        // Services made available from EDDI
-        public StarMapService starMapService { get; private set; }
-
         // Information obtained from the configuration
-        public StarSystem HomeStarSystem { get; private set; }
+        public StarSystem HomeStarSystem { get; private set; } = new StarSystem();
         public Station HomeStation { get; private set; }
-        public StarSystem SquadronStarSystem { get; private set; }
+        public StarSystem SquadronStarSystem { get; private set; } = new StarSystem();
 
         // Information obtained from the player journal
-        public string Environment { get; private set; }
+        public Commander Cmdr { get; private set; } // Also includes information from the configuration and companion app service
+        public string Environment { get; set; }
         public StarSystem CurrentStarSystem { get; private set; }
         public StarSystem LastStarSystem { get; private set; }
         public StarSystem NextStarSystem { get; private set; }
@@ -118,11 +117,8 @@ namespace Eddi
         public DateTime JournalTimeStamp { get; set; } = DateTime.MinValue;
 
         // Current vehicle of player
-        public string Vehicle { get; private set; } = Constants.VEHICLE_SHIP;
+        public string Vehicle { get; set; } = Constants.VEHICLE_SHIP;
         public Ship CurrentShip { get; set; }
-
-        // Information from the last jump we initiated (for reference)
-        public FSDEngagedEvent LastFSDEngagedEvent { get; private set; }
 
         // Our main window, made accessible via the applicable EDDI Instance
         public MainWindow MainWindow { get; internal set; }
@@ -191,22 +187,21 @@ namespace Eddi
                     Cmdr.squadronallegiance = configuration.SquadronAllegiance;
                     Cmdr.squadronpower = configuration.SquadronPower;
                     Cmdr.squadronfaction = configuration.SquadronFaction;
-                    if (Cmdr.name != null)
+                    if (CompanionAppService.Instance.CurrentState == CompanionAppService.State.Authorized)
                     {
                         Logging.Info("EDDI access to the companion app is enabled");
                     }
                     else
                     {
-                        // If InvokeUpdatePlugin failed then it will have have left an error message, but this once we ignore it
                         Logging.Info("EDDI access to the companion app is disabled");
                     }
 
-                    // Pass our commander name to the StarMapService (if it has been set via the Frontier API) and initialize the StarMapService
-                    if (Cmdr != null && Cmdr.name != null)
+                    // Pass our commander's Elite name to the StarMapService (if it has been set via the Frontier API or an event) and initialize the StarMapService
+                    // (the Elite name may differ from the EDSM name)
+                    if (Cmdr?.name != null)
                     {
-                        StarMapService.commanderName = Cmdr.name;
+                        StarMapService.commanderEliteName = Cmdr.name;
                     }
-                    starMapService = new StarMapService();
                 }
                 else
                 {
@@ -270,7 +265,7 @@ namespace Eddi
                         if (!FromVA)
                         {
                             string message = String.Format(Properties.EddiResources.mandatory_upgrade, spokenVersion);
-                            SpeechService.Instance.Say(null, message, false);
+                            SpeechService.Instance.Say(null, message, 0);
                         }
                         UpgradeRequired = true;
                         UpgradeLocation = info.url;
@@ -285,7 +280,7 @@ namespace Eddi
                         if (!FromVA)
                         {
                             string message = String.Format(Properties.EddiResources.update_available, spokenVersion);
-                            SpeechService.Instance.Say(null, message, false);
+                            SpeechService.Instance.Say(null, message, 0);
                         }
                         UpgradeAvailable = true;
                         UpgradeLocation = info.url;
@@ -295,7 +290,7 @@ namespace Eddi
             }
             catch (Exception ex)
             {
-                SpeechService.Instance.Say(null, Properties.EddiResources.update_server_unreachable, false);
+                SpeechService.Instance.Say(null, Properties.EddiResources.update_server_unreachable, 0);
                 Logging.Warn("Failed to access " + Constants.EDDI_SERVER_URL, ex);
             }
         }
@@ -309,11 +304,11 @@ namespace Eddi
                 if (UpgradeLocation != null)
                 {
                     Logging.Info("Downloading upgrade from " + UpgradeLocation);
-                    SpeechService.Instance.Say(null, Properties.EddiResources.downloading_upgrade, true);
+                    SpeechService.Instance.Say(null, Properties.EddiResources.downloading_upgrade, 0);
                     string updateFile = Net.DownloadFile(UpgradeLocation, @"EDDI-update.exe");
                     if (updateFile == null)
                     {
-                        SpeechService.Instance.Say(null, Properties.EddiResources.download_failed, true);
+                        SpeechService.Instance.Say(null, Properties.EddiResources.download_failed, 0);
                     }
                     else
                     {
@@ -323,7 +318,7 @@ namespace Eddi
                         Logging.Info("Downloaded update to " + updateFile);
                         Logging.Info("Path is " + Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
                         File.SetAttributes(updateFile, FileAttributes.Normal);
-                        SpeechService.Instance.Say(null, Properties.EddiResources.starting_upgrade, true);
+                        SpeechService.Instance.Say(null, Properties.EddiResources.starting_upgrade, 0);
                         Logging.Info("Starting upgrade.");
 
                         Process.Start(updateFile, @"/closeapplications /restartapplications /silent /log /nocancel /noicon /dir=""" + Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + @"""");
@@ -332,7 +327,7 @@ namespace Eddi
             }
             catch (Exception ex)
             {
-                SpeechService.Instance.Say(null, Properties.EddiResources.upgrade_failed, true);
+                SpeechService.Instance.Say(null, Properties.EddiResources.upgrade_failed, 0);
                 Logging.Error("Upgrade failed", ex);
             }
         }
@@ -357,6 +352,7 @@ namespace Eddi
                     }
                     else
                     {
+                        activeMonitors.Add(monitor);
                         if (monitor.NeedsStart())
                         {
                             Thread monitorThread = new Thread(() => keepAlive(monitor.MonitorName(), monitor.Start))
@@ -366,7 +362,6 @@ namespace Eddi
                             Logging.Info("Starting keepalive for " + monitor.MonitorName());
                             monitorThread.Start();
                         }
-                        activeMonitors.Add(monitor);
                     }
                 }
 
@@ -416,13 +411,11 @@ namespace Eddi
             {
                 foreach (EDDIResponder responder in responders)
                 {
-                    responder.Stop();
-                    activeResponders.TakeWhile(r => r.ResponderName() == responder.ResponderName());
+                    DisableResponder(responder.ResponderName());
                 }
                 foreach (EDDIMonitor monitor in monitors)
                 {
-                    monitor.Stop();
-                    activeMonitors.TakeWhile(m => m.MonitorName() == monitor.MonitorName());
+                    DisableMonitor(monitor.MonitorName());
                 }
             }
 
@@ -463,9 +456,7 @@ namespace Eddi
             return null;
         }
 
-        /// <summary>
-        /// Obtain a named responder
-        /// </summary>
+        /// <summary> Obtain a named responder </summary>
         public EDDIResponder ObtainResponder(string invariantName)
         {
             foreach (EDDIResponder responder in responders)
@@ -478,25 +469,29 @@ namespace Eddi
             return null;
         }
 
-        /// <summary>
-        /// Disable a named responder for this session.  This does not update the on-disk status of the responder
-        /// </summary>
-        public void DisableResponder(string name)
+        /// <summary> Disable a named responder for this session.  This does not update the on-disk status of the responder </summary>
+        public void DisableResponder(string invariantName)
         {
-            EDDIResponder responder = ObtainResponder(name);
+            EDDIResponder responder = ObtainResponder(invariantName);
             if (responder != null)
             {
-                responder.Stop();
-                activeResponders.TakeWhile(r => r.ResponderName() == responder.ResponderName());
+                lock (responderLock)
+                {
+                    responder.Stop();
+                    ConcurrentBag<EDDIResponder> newResponders = new ConcurrentBag<EDDIResponder>();
+                    while (activeResponders.TryTake(out EDDIResponder item))
+                    {
+                        if (item != responder) { newResponders.Add(item); }
+                    }
+                    activeResponders = newResponders;
+                }
             }
         }
 
-        /// <summary>
-        /// Enable a named responder for this session.  This does not update the on-disk status of the responder
-        /// </summary>
-        public void EnableResponder(string name)
+        /// <summary> Enable a named responder for this session.  This does not update the on-disk status of the responder </summary>
+        public void EnableResponder(string invariantName)
         {
-            EDDIResponder responder = ObtainResponder(name);
+            EDDIResponder responder = ObtainResponder(invariantName);
             if (responder != null)
             {
                 if (!activeResponders.Contains(responder))
@@ -507,31 +502,36 @@ namespace Eddi
             }
         }
 
-        /// <summary>
-        /// Disable a named monitor for this session.  This does not update the on-disk status of the responder
-        /// </summary>
-        public void DisableMonitor(string name)
+        /// <summary> Disable a named monitor for this session.  This does not update the on-disk status of the responder </summary>
+        public void DisableMonitor(string invariantName)
         {
-            EDDIMonitor monitor = ObtainMonitor(name);
+            EDDIMonitor monitor = ObtainMonitor(invariantName);
             if (monitor != null)
             {
-                monitor?.Stop();
-                activeMonitors.TakeWhile(m => m.MonitorName() == monitor.MonitorName());
+                lock (monitorLock)
+                {
+                    monitor.Stop();
+                    ConcurrentBag<EDDIMonitor> newMonitors = new ConcurrentBag<EDDIMonitor>();
+                    while (activeMonitors.TryTake(out EDDIMonitor item))
+                    {
+                        if (item != monitor) { newMonitors.Add(item); }
+                    }
+                    activeMonitors = newMonitors;
+                }
             }
         }
 
-        /// <summary>
-        /// Enable a named monitor for this session.  This does not update the on-disk status of the responder
-        /// </summary>
-        public void EnableMonitor(string name)
+        /// <summary> Enable a named monitor for this session.  This does not update the on-disk status of the responder </summary>
+        public void EnableMonitor(string invariantName)
         {
-            EDDIMonitor monitor = monitors.FirstOrDefault(m => m.MonitorName() == name);
+            EDDIMonitor monitor = ObtainMonitor(invariantName);
             if (monitor != null)
             {
                 if (!activeMonitors.Contains(monitor))
                 {
                     if (monitor.NeedsStart())
                     {
+                        activeMonitors.Add(monitor);
                         Thread monitorThread = new Thread(() => keepAlive(monitor.MonitorName(), monitor.Start))
                         {
                             IsBackground = true
@@ -539,14 +539,11 @@ namespace Eddi
                         Logging.Info("Starting keepalive for " + monitor.MonitorName());
                         monitorThread.Start();
                     }
-                    activeMonitors.Add(monitor);
                 }
             }
         }
 
-        /// <summary>
-        /// Reload a specific monitor or responder
-        /// </summary>
+        /// <summary> Reload a specific monitor or responder </summary>
         public void Reload(string name)
         {
             foreach (EDDIResponder responder in responders)
@@ -606,6 +603,7 @@ namespace Eddi
                 }
                 if (running)
                 {
+                    DisableMonitor(name);
                     Logging.Warn(name + " stopping after too many failures");
                 }
             }
@@ -615,7 +613,7 @@ namespace Eddi
             }
             catch (Exception ex)
             {
-                Logging.Warn("keepAlive failed", ex);
+                Logging.Warn("keepAlive for " + name + " failed", ex);
             }
         }
 
@@ -636,11 +634,15 @@ namespace Eddi
             catch (ThreadAbortException tax)
             {
                 Thread.ResetAbort();
-                Logging.Error(JsonConvert.SerializeObject(@event), tax);
+                Logging.Debug("Thread aborted", tax);
             }
             catch (Exception ex)
             {
-                Logging.Error(JsonConvert.SerializeObject(@event), ex);
+                Dictionary<string, object> data = new Dictionary<string, object>();
+                data.Add("event", JsonConvert.SerializeObject(@event));
+                data.Add("exception", ex.Message);
+                data.Add("stacktrace", ex.StackTrace);
+                Logging.Error("Failed to enqueue event", data);
             }
         }
 
@@ -769,10 +771,6 @@ namespace Eddi
                     {
                         passEvent = eventVehicleDestroyed((VehicleDestroyedEvent)@event);
                     }
-                    else if (@event is StatusEvent)
-                    {
-                        passEvent = eventStatus((StatusEvent)@event);
-                    }
                     else if (@event is NearSurfaceEvent)
                     {
                         passEvent = eventNearSurface((NearSurfaceEvent)@event);
@@ -810,7 +808,12 @@ namespace Eddi
                 }
                 catch (Exception ex)
                 {
-                    Logging.Error("EDDI core failed to handle event " + JsonConvert.SerializeObject(@event), ex);
+                    Dictionary<string, object> data = new Dictionary<string, object>();
+                    data.Add("event", JsonConvert.SerializeObject(@event));
+                    data.Add("exception", ex.Message);
+                    data.Add("stacktrace", ex.StackTrace);
+
+                    Logging.Error("EDDI core failed to handle event " + @event.type, data);
 
                     // Even if an error occurs, we still need to pass the raw data 
                     // to the EDDN responder to maintain it's integrity.
@@ -847,9 +850,22 @@ namespace Eddi
             return passEvent;
         }
 
-        private void OnEvent(Event @event)
+        private async void OnEvent(Event @event)
         {
             // We send the event to all monitors to ensure that their info is up-to-date
+            // All changes to state must be handled here, so this must be synchronous
+            passToMonitorPreHandlers(@event);
+
+            // Now we pass the data to the responders to process asynchronously, waiting for all to complete
+            // Responders must not change global states.
+            await passToRespondersAsync(@event);
+
+            // We also pass the event to all active monitors in case they have asynchronous follow-on work, waiting for all to complete
+            await passToMonitorPostHandlersAsync(@event);
+        }
+
+        private void passToMonitorPreHandlers(Event @event)
+        {
             foreach (EDDIMonitor monitor in activeMonitors)
             {
                 try
@@ -858,29 +874,55 @@ namespace Eddi
                 }
                 catch (Exception ex)
                 {
-                    Logging.Error("Monitor failed to handle event " + JsonConvert.SerializeObject(@event), ex);
+                    Dictionary<string, object> data = new Dictionary<string, object>();
+                    data.Add("event", JsonConvert.SerializeObject(@event));
+                    data.Add("exception", ex.Message);
+                    data.Add("stacktrace", ex.StackTrace);
+                    Logging.Error("Monitor failed to handle event " + @event.type, data);
                 }
             }
+        }
 
-            // Now we pass the data to the responders
+        private async Task passToRespondersAsync(Event @event)
+        {
+            List<Task> responderTasks = new List<Task>();
             foreach (EDDIResponder responder in activeResponders)
             {
                 try
                 {
-                    responder.Handle(@event);
+                    var responderTask = Task.Run(() =>
+                    {
+                        try
+                        {
+                            responder.Handle(@event);
+                        }
+                        catch (Exception ex)
+                        {
+                            Logging.Error("Responder failed to handle event " + JsonConvert.SerializeObject(@event), ex);
+                        }
+                    });
+                    responderTasks.Add(responderTask);
                 }
                 catch (Exception ex)
                 {
-                    Logging.Error("Responder failed to handle event " + JsonConvert.SerializeObject(@event), ex);
+                    Dictionary<string, object> data = new Dictionary<string, object>();
+                    data.Add("event", JsonConvert.SerializeObject(@event));
+                    data.Add("exception", ex.Message);
+                    data.Add("stacktrace", ex.StackTrace);
+                    Logging.Error("Responder failed to handle event " + @event.type, data);
                 }
             }
+            await Task.WhenAll(responderTasks.ToArray());
+        }
 
-            // We also pass the event to all active monitors in case they have asynchronous follow-on work
+        private async Task passToMonitorPostHandlersAsync(Event @event)
+        {
+            List<Task> monitorTasks = new List<Task>();
             foreach (EDDIMonitor monitor in activeMonitors)
             {
                 try
                 {
-                    Thread monitorThread = new Thread(() =>
+                    var monitorTask = Task.Run(() =>
                     {
                         try
                         {
@@ -888,23 +930,25 @@ namespace Eddi
                         }
                         catch (Exception ex)
                         {
-                            Logging.Warn("Monitor failed", ex);
+                            Logging.Error("Monitor failed to post-handle event " + JsonConvert.SerializeObject(@event), ex);
                         }
-                    })
-                    {
-                        IsBackground = true
-                    };
-                    monitorThread.Start();
+                    });
+                    monitorTasks.Add(monitorTask);
                 }
                 catch (ThreadAbortException tax)
                 {
                     Thread.ResetAbort();
-                    Logging.Error(JsonConvert.SerializeObject(@event), tax);
+                    Logging.Debug("Thread aborted", tax);
                 }
                 catch (Exception ex)
                 {
-                    Logging.Error(JsonConvert.SerializeObject(@event), ex);
+                    Dictionary<string, object> data = new Dictionary<string, object>();
+                    data.Add("event", JsonConvert.SerializeObject(@event));
+                    data.Add("exception", ex.Message);
+                    data.Add("stacktrace", ex.StackTrace);
+                    Logging.Error("Monitor failed to post-handle event " + @event.type, data);
                 }
+                await Task.WhenAll(monitorTasks.ToArray());
             }
         }
 
@@ -1105,16 +1149,6 @@ namespace Eddi
                 };
                 updateThread.Start();
             }
-            else
-            {
-                // Kick off a dummy that triggers a market refresh after a couple of seconds
-                if (theEvent.fromLoad) { return true; } // Don't fire this event when loading pre-existing logs
-                Thread updateThread = new Thread(() => dummyRefreshMarketData())
-                {
-                    IsBackground = true
-                };
-                updateThread.Start();
-            }
 
             return true;
         }
@@ -1158,7 +1192,7 @@ namespace Eddi
                         // Post an update event for new market data
                         if (theEvent.fromLoad) { return true; } // Don't fire this event when loading pre-existing logs
                         Event @event = new MarketInformationUpdatedEvent(DateTime.UtcNow, "market");
-                        eventHandler(@event);
+                        enqueueEvent(@event);
                     }
                     return true;
                 }
@@ -1197,7 +1231,7 @@ namespace Eddi
                         // Post an update event for new outfitting data
                         if (theEvent.fromLoad) { return true; } // Don't fire this event when loading pre-existing logs
                         Event @event = new MarketInformationUpdatedEvent(DateTime.UtcNow, "outfitting");
-                        eventHandler(@event);
+                        enqueueEvent(@event);
                     }
                     return true;
                 }
@@ -1236,7 +1270,7 @@ namespace Eddi
                         // Post an update event for new shipyard data
                         if (theEvent.fromLoad) { return true; } // Don't fire this event when loading pre-existing logs
                         Event @event = new MarketInformationUpdatedEvent(DateTime.UtcNow, "shipyard");
-                        eventHandler(@event);
+                        enqueueEvent(@event);
                     }
                     return true;
                 }
@@ -1293,9 +1327,6 @@ namespace Eddi
             // Set the destination system as the current star system
             updateCurrentSystem(@event.system);
 
-            // Save a copy of this event for reference
-            LastFSDEngagedEvent = @event;
-
             return true;
         }
 
@@ -1346,7 +1377,7 @@ namespace Eddi
             CurrentStarSystem.y = theEvent.y;
             CurrentStarSystem.z = theEvent.z;
             CurrentStarSystem.Faction = theEvent.controllingfaction;
-            CurrentStellarBody = CurrentStarSystem.bodies.FirstOrDefault(b => b.name == theEvent.star);
+            CurrentStellarBody = CurrentStarSystem.bodies.FirstOrDefault(b => b.distance == 0);
 
             // Update system faction data if available
             if (theEvent.factions != null)
@@ -1378,13 +1409,12 @@ namespace Eddi
                 CurrentStarSystem.population = theEvent.population;
             }
 
+            // Update to most recent information
             if (CurrentStarSystem.lastvisit < theEvent.timestamp)
             {
                 CurrentStarSystem.lastvisit = theEvent.timestamp;
                 CurrentStarSystem.visits++;
             }
-
-            // Update to most recent information
             CurrentStarSystem.updatedat = (long)theEvent.timestamp.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
             StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
 
@@ -1393,20 +1423,6 @@ namespace Eddi
 
             // After jump has completed we are always in supercruise
             Environment = Constants.ENVIRONMENT_SUPERCRUISE;
-
-            // If we don't have any information about bodies in the system yet, create a basic main star from current and saved event data
-            if (CurrentStellarBody == null)
-            {
-                CurrentStellarBody = new Body()
-                {
-                    name = theEvent.star,
-                    Type = BodyType.FromEDName("Star"),
-                    stellarclass = LastFSDEngagedEvent?.stellarclass,
-                    mainstar = true,
-                    distance = 0, 
-                };
-                CurrentStarSystem.bodies.Add(CurrentStellarBody);
-            }
 
             return passEvent;
         }
@@ -1733,23 +1749,6 @@ namespace Eddi
             return true;
         }
 
-        private bool eventStatus(StatusEvent theEvent)
-        {
-            if (Environment != Constants.ENVIRONMENT_WITCH_SPACE)
-            {
-                if (theEvent.status.supercruise)
-                {
-                    Environment = Constants.ENVIRONMENT_SUPERCRUISE;
-                }
-                else
-                {
-                    Environment = Constants.ENVIRONMENT_NORMAL_SPACE;
-                }
-            }
-            Vehicle = theEvent.status.vehicle;
-            return true;
-        }
-
         private bool eventNearSurface(NearSurfaceEvent theEvent)
         {
             // We won't update CurrentStation with this event, as doing so triggers false / premature updates from the Frontier API
@@ -1799,7 +1798,6 @@ namespace Eddi
                         systemname = CurrentStarSystem?.name,
                         systemAddress = CurrentStarSystem?.systemAddress
                     };
-                    CurrentStarSystem.bodies?.Add(belt);
                 }
 
                 // Update with the information we have
@@ -2007,12 +2005,16 @@ namespace Eddi
                             catch (ThreadAbortException tax)
                             {
                                 Thread.ResetAbort();
-                                Logging.Error(JsonConvert.SerializeObject(profile), tax);
+                                Logging.Debug("Thread aborted", tax);
                                 success = false;
                             }
                             catch (Exception ex)
                             {
-                                Logging.Error(JsonConvert.SerializeObject(profile), ex);
+                                Dictionary<string, object> data = new Dictionary<string, object>();
+                                data.Add("message", ex.Message);
+                                data.Add("stacktrace", ex.StackTrace);
+                                data.Add("profile", JsonConvert.SerializeObject(profile));
+                                Logging.Error("Monitor " + monitor.MonitorName() + " failed to handle profile.", data);
                                 success = false;
                             }
                         }
@@ -2119,13 +2121,13 @@ namespace Eddi
                 {
                     string msg = string.Format(Properties.EddiResources.problem_load_monitor_file, dir.FullName);
                     Logging.Error(msg, flex);
-                    SpeechService.Instance.Say(null, msg, false);
+                    SpeechService.Instance.Say(null, msg, 0);
                 }
                 catch (Exception ex)
                 {
                     string msg = string.Format(Properties.EddiResources.problem_load_monitor, $"{file.Name}.\n{ex.Message} {ex.InnerException?.Message ?? ""}");
                     Logging.Error(msg, ex);
-                    SpeechService.Instance.Say(null, msg, false);
+                    SpeechService.Instance.Say(null, msg, 0);
                 }
             }
             return monitors;
@@ -2251,7 +2253,7 @@ namespace Eddi
 
                             // Post an update event
                             Event @event = new MarketInformationUpdatedEvent(DateTime.UtcNow, "profile");
-                            eventHandler(@event);
+                            enqueueEvent(@event);
 
                             profileUpdateNeeded = false;
                             allowMarketUpdate = false;
@@ -2283,14 +2285,6 @@ namespace Eddi
             // Clear the update info
             profileUpdateNeeded = false;
             profileStationRequired = null;
-        }
-
-        // If we have no access to the companion API but need to trigger a market update then we can call this method
-        private void dummyRefreshMarketData()
-        {
-            Thread.Sleep(2000);
-            Event @event = new MarketInformationUpdatedEvent(DateTime.UtcNow, "profile");
-            eventHandler(@event);
         }
 
         internal static class NativeMethods

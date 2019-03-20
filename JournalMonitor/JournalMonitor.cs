@@ -192,7 +192,7 @@ namespace EddiJournalMonitor
                                     decimal x = Math.Round(JsonParsing.getDecimal("X", starPos[0]) * 32) / (decimal)32.0;
                                     decimal y = Math.Round(JsonParsing.getDecimal("Y", starPos[1]) * 32) / (decimal)32.0;
                                     decimal z = Math.Round(JsonParsing.getDecimal("Z", starPos[2]) * 32) / (decimal)32.0;
-                                    string starName = JsonParsing.getString(data, "Body");
+                                    string starName = JsonParsing.getString(data, "Body"); // Documented by the journal, but apparently never written. We can't rely on this being set.
                                     decimal fuelUsed = JsonParsing.getDecimal(data, "FuelUsed");
                                     decimal fuelRemaining = JsonParsing.getDecimal(data, "FuelLevel");
                                     int? boostUsed = JsonParsing.getOptionalInt(data, "BoostUsed"); // 1-3 are synthesis, 4 is any supercharge (white dwarf or neutron star)
@@ -211,7 +211,16 @@ namespace EddiJournalMonitor
                                         factions = getFactions(factionsVal);
                                     }
 
-                                    events.Add(new JumpedEvent(timestamp, systemName, systemAddress, x, y, z, starName, distance, fuelUsed, fuelRemaining, boostUsed, controllingfaction, economy, economy2, security, population, factions) { raw = line, fromLoad = fromLogLoad });
+                                    // Calculate remaining distance to route destination (if it exists)
+                                    decimal destDistance = 0;
+                                    MissionMonitor missionMonitor = (MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor");
+                                    string destination = missionMonitor?.GetNextSystem();
+                                    if (!string.IsNullOrEmpty(destination))
+                                    {
+                                        destDistance = missionMonitor.CalculateDistance(systemName, destination);
+                                    }
+
+                                    events.Add(new JumpedEvent(timestamp, systemName, systemAddress, x, y, z, starName, distance, fuelUsed, fuelRemaining, boostUsed, controllingfaction, factions, economy, economy2, security, population, destination, destDistance) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
@@ -2036,7 +2045,7 @@ namespace EddiJournalMonitor
                                     decimal? quality = JsonParsing.getOptionalDecimal(data, "Quality"); //
                                     string experimentalEffect = JsonParsing.getString(data, "ApplyExperimentalEffect"); //
 
-                                    string ship = ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship Monitor")).GetCurrentShip().model;
+                                    string ship = ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor"))?.GetCurrentShip().model;
                                     Compartment compartment = parseShipCompartment(ship, JsonParsing.getString(data, "Slot")); //
                                     compartment.module = Module.FromEDName(JsonParsing.getString(data, "Module"));
 
@@ -2638,7 +2647,7 @@ namespace EddiJournalMonitor
                                             if (newMission == null)
                                             {
                                                 // Mal-formed mission
-                                                Logging.Error("Bad mission entry", JsonConvert.SerializeObject(mission));
+                                                Logging.Error("Bad mission entry", mission);
                                             }
                                             else
                                             {
@@ -2669,7 +2678,7 @@ namespace EddiJournalMonitor
                                         if (newPassenger == null)
                                         {
                                             // Mal-formed mission
-                                            Logging.Error("Bad mission entry", JsonConvert.SerializeObject(passenger));
+                                            Logging.Error("Bad mission entry", passenger);
                                         }
                                         else
                                         {
@@ -3050,7 +3059,13 @@ namespace EddiJournalMonitor
 	                                    inventory = CargoInfoReader.FromFile().Inventory;
 	                                    update = true;
 	                                }
-	                                events.Add(new CargoEvent(timestamp, update, vessel, inventory, cargocarried) { raw = line, fromLoad = fromLogLoad });
+
+                                    // Protect against out of date Cargo.json files during 'LogLoad'
+                                    if (cargocarried == inventory.Sum(i => i.count))
+                                    {
+                                        events.Add(new CargoEvent(timestamp, update, vessel, inventory, cargocarried) { raw = line, fromLoad = fromLogLoad });
+
+                                    }
                                 }
                                 handled = true;
                                 break;
@@ -3204,10 +3219,6 @@ namespace EddiJournalMonitor
                                     handled = true;
                                     break;
                                 }
-                            case "Commander":
-                            case "Reputation":
-                            case "Statistics":
-                            case "CodexEntry":
                             case "FSDTarget":
                                 {
                                     string systemName = JsonParsing.getString(data, "Name");
@@ -3216,6 +3227,10 @@ namespace EddiJournalMonitor
                                     handled = true;
                                     break;
                                 }
+                            case "Commander":
+                            case "Reputation":
+                            case "Statistics":
+                            case "CodexEntry":
                             case "NpcCrewPaidWage":
                             case "ReservoirReplenished":
                             case "FSSAllBodiesFound":
@@ -3247,7 +3262,11 @@ namespace EddiJournalMonitor
             catch (Exception ex)
             {
                 Logging.Warn("Failed to parse line: " + ex.ToString());
-                Logging.Error("Exception whilst parsing journal line", "Raw event: " + line + ". Exception: " + ex.Message + ". " + ex.StackTrace);
+                Dictionary<string, object> data = new Dictionary<string, object>();
+                data.Add("event", line);
+                data.Add("exception", ex.Message);
+                data.Add("stacktrace", ex.StackTrace);
+                Logging.Error("Exception whilst parsing journal line", data);
             }
             return events;
         }
@@ -3328,7 +3347,7 @@ namespace EddiJournalMonitor
             }
 
             // Get the controlling faction (system or station) government
-            faction.Government = Government.FromEDName(JsonParsing.getString(data, type + "Government") ?? "None");
+            faction.Government = Government.FromEDName(JsonParsing.getString(data, type + "Government")) ?? Government.None;
 
             return faction;
         }

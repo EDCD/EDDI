@@ -1,31 +1,24 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Collections.Generic;
-using System;
+﻿using Eddi;
 using EddiDataDefinitions;
 using EddiEvents;
 using EddiJournalMonitor;
 using EddiShipMonitor;
-using Utilities;
-using Eddi;
-using Rollbar;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
-using System.Linq;
+using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 
 namespace UnitTests
 {
     [TestClass]
-    public class ShipTests
+    public class ShipTests : TestBase
     {
         [TestInitialize]
         public void start()
         {
-            // Prevent telemetry data from being reported based on test results
-            RollbarLocator.RollbarInstance.Config.Enabled = false;
-
-            // Set ourselves as in beta to stop sending data to remote systems
-            EDDI.Instance.enqueueEvent(new FileHeaderEvent(DateTime.UtcNow, "JournalBeta.txt", "beta", "beta"));
-            Logging.Verbose = true;
+            MakeSafe();
         }
 
         [TestMethod]
@@ -452,6 +445,34 @@ namespace UnitTests
                 if (compartment?.name == "Military01" )
                 {
                     Assert.AreEqual("Guardian Shield Reinforcement", compartment.module?.invariantName);
+                }
+            }
+        }
+
+        [TestMethod]
+        public void TestJournalModuleSoldHandlingMinimalShip()
+        {
+            string line = "{ \"timestamp\":\"2018-12-25T22:55:11Z\", \"event\":\"ModuleBuy\", \"Slot\":\"Slot01_Size7\", \"BuyItem\":\"$int_guardianshieldreinforcement_size5_class2_name;\", \"BuyItem_Localised\":\"Guardian Shield Reinforcement\", \"MarketID\":128666762, \"BuyPrice\":873402, \"Ship\":\"federation_corvette\", \"ShipID\":119 }";
+            List<Event> events = JournalMonitor.ParseJournalEntry(line);
+            ModulePurchasedEvent @event = (ModulePurchasedEvent)events[0];
+
+            PrivateObject privateObject = new PrivateObject(new ShipMonitor());
+
+            Ship ship = ShipDefinitions.FromModel(@event.ship);
+            ship.LocalId = (int)@event.shipid;
+            string slot = @event.slot;
+            Module module = @event.buymodule;
+            object[] moduleArgs = new object[] { ship, slot, module };
+            privateObject.Invoke("AddModule", moduleArgs);
+
+            // now sell the module
+            moduleArgs = new object[] { ship, slot, null };
+            privateObject.Invoke("RemoveModule", moduleArgs);
+            foreach (Compartment compartment in ship.compartments)
+            {
+                if (compartment?.name == "Military01")
+                {
+                    Assert.IsNull(compartment.module);
                 }
             }
         }

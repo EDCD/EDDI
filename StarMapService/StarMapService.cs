@@ -17,40 +17,18 @@ namespace EddiStarMapService
         // Set the maximum batch size we will use for syncing before we write systems to our sql database
         public const int syncBatchSize = 50;
 
-        public static string commanderName { get; set; }
-        private static string apiKey { get; set; }
-        private static string baseUrl = "https://www.edsm.net/";
+        public static string commanderEliteName { get; set; }
 
-        public StarMapService()
-        {
-            // Set up the star map service
-            StarMapConfiguration starMapCredentials = StarMapConfiguration.FromFile();
-            if (starMapCredentials != null && starMapCredentials.apiKey != null)
-            {
-                // Commander name might come from star map credentials or the companion app's profile
-                string commanderName = null;
-                if (starMapCredentials.commanderName != null)
-                {
-                    commanderName = starMapCredentials.commanderName;
-                }
-                if (commanderName != null)
-                {
-                    instance = new StarMapService(starMapCredentials.apiKey, commanderName);
-                    Logging.Info("EDDI access to EDSM is enabled");
-                }
-            }
-            if (instance == null)
-            {
-                Logging.Info("EDDI access to EDSM is disabled");
-            }
-        }
+        private string commanderName { get; set; }
+        private string apiKey { get; set; }
+        private static string baseUrl = "https://www.edsm.net/";
 
         // For normal use, the EDSM API base URL is https://www.edsm.net/.
         // If you need to do some testing on EDSM's API, please use the https://beta.edsm.net/ endpoint for sending data.
         public StarMapService(string apikey, string commandername, string baseURL = "https://www.edsm.net/")
         {
-            apiKey = apikey;
-            commanderName = commandername;
+            apiKey = apikey?.Trim();
+            commanderName = commandername?.Trim();
             baseUrl = baseURL;
         }
 
@@ -67,7 +45,19 @@ namespace EddiStarMapService
                         if (instance == null)
                         {
                             Logging.Debug("No StarMapService instance: creating one");
-                            instance = new StarMapService();
+
+                            // Set up the star map service
+                            StarMapConfiguration starMapCredentials = StarMapConfiguration.FromFile();
+                            if (!string.IsNullOrEmpty(starMapCredentials?.apiKey))
+                            {
+                                // Commander name might come from EDSM credentials or from the game and companion app
+                                string commanderName = starMapCredentials?.commanderName ?? commanderEliteName;
+                                if (!string.IsNullOrEmpty(commanderName))
+                                {
+                                    instance = new StarMapService(starMapCredentials.apiKey, commanderName);
+                                    Logging.Info("Configuring EDDI access to EDSM profile data");
+                                }
+                            }
                         }
                     }
                 }

@@ -117,13 +117,22 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AsteroidBase" xml:space="preserve">
+    <value>Aszteroid Bázis</value>
+    <comment>An Asteroid Base</comment>
+  </data>
+  
+  <data name="Coriolis" xml:space="preserve">
+    <value>Coriolis állomás</value>
+    <comment>A Coriolis Starport</comment>
+  </data>
   
   
   
-  
-  
-  
-  
+  <data name="SurfaceStation" xml:space="preserve">
+    <value>Felszíni állomás</value>
+    <comment>A Surface Station</comment>
+  </data>
   
   
   

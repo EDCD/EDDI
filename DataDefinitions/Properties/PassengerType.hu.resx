@@ -98,23 +98,49 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   
+  <data name="Business" xml:space="preserve">
+    <value>Üzletemberek csoportja</value>
+  </data>
+  <data name="Celebrity" xml:space="preserve">
+    <value>Celeb</value>
+  </data>
   
   
+  <data name="Doctor" xml:space="preserve">
+    <value>Orvos</value>
+  </data>
+  <data name="Explorer" xml:space="preserve">
+    <value>Felfedező</value>
+  </data>
   
   
+  <data name="Medical" xml:space="preserve">
+    <value>Orvosi csoport</value>
+  </data>
   
+  <data name="PrisonerOfWar" xml:space="preserve">
+    <value>Háborús bűnös</value>
+  </data>
   
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="Rebel" xml:space="preserve">
+    <value>Felkelő utascsoport</value>
+  </data>
+  <data name="Refugee" xml:space="preserve">
+    <value>Menekült utascsoport</value>
+  </data>
+  <data name="Scientist" xml:space="preserve">
+    <value>Tudományos kutatócsoport</value>
+  </data>
+  <data name="Security" xml:space="preserve">
+    <value>Örző-védő csoport</value>
+  </data>
+  <data name="Terrorist" xml:space="preserve">
+    <value>Felkelővezér</value>
+  </data>
+  <data name="Tourist" xml:space="preserve">
+    <value>Gazdag turista</value>
+  </data>
+  <data name="Whistleblower" xml:space="preserve">
+    <value>Politikai fogoly</value>
+  </data>
 </root>

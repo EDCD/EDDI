@@ -13,7 +13,6 @@ namespace EddiEdsmResponder
 {
     public class EDSMResponder : EDDIResponder
     {
-        private StarMapService starMapService;
         private Thread updateThread;
         private List<string> ignoredEvents = new List<string>();
 
@@ -46,26 +45,24 @@ namespace EddiEdsmResponder
         {
             Reload();
 
-            return starMapService != null;
+            return StarMapService.Instance != null;
         }
 
         public void Stop()
         {
             updateThread?.Abort();
             updateThread = null;
-            starMapService = null;
         }
 
         public void Reload()
         {
             // Set up the star map service
-            starMapService = new StarMapService();
             if (ignoredEvents == null)
             {
-                ignoredEvents = starMapService?.getIgnoredEvents();
+                ignoredEvents = StarMapService.Instance?.getIgnoredEvents();
             }
 
-            if (starMapService != null && updateThread == null)
+            if (StarMapService.Instance != null && updateThread == null)
             {
                 // Spin off a thread to download & sync flight logs & system comments from EDSM in the background 
                 updateThread = new Thread(() => DataProviderService.syncFromStarMapService(StarMapConfiguration.FromFile()?.lastSync))
@@ -97,7 +94,7 @@ namespace EddiEdsmResponder
                 return;
             }
 
-            if (starMapService != null)
+            if (StarMapService.Instance != null)
             {
                 /// Retrieve applicable transient game state info (metadata) 
                 /// for the event and send the event with transient info to EDSM
@@ -112,7 +109,7 @@ namespace EddiEdsmResponder
                 }
                 if (eventData != null && !EDDI.Instance.ShouldUseTestEndpoints())
                 {
-                    starMapService.sendEvent(eventData);
+                    StarMapService.Instance.sendEvent(eventData);
                 }
             }
         }

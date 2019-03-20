@@ -189,7 +189,9 @@ namespace EDDNResponder
             }
             catch (Exception ex)
             {
-                Logging.Error("Failed to parse EDDN location data from journal entry line: " + JsonConvert.SerializeObject(data), ". Exception: " + ex.Message + ". " + ex.StackTrace);
+                data.Add("exception", ex.Message);
+                data.Add("stacktrace", ex.StackTrace);
+                Logging.Error("Failed to parse EDDN location data", data);
             }
         }
 
@@ -223,7 +225,7 @@ namespace EDDNResponder
 #if DEBUG
 #else
                     Logging.Warn("The EDDN responder is in an invalid state and is unable to send messages.", JsonConvert.SerializeObject(this) + " Event: " + JsonConvert.SerializeObject(data));
-                    SpeechService.Instance.Say(null, EddiEddnResponder.Properties.EddnResources.errPosition, true);
+                    SpeechService.Instance.Say(null, EddiEddnResponder.Properties.EddnResources.errPosition);
 #endif
                 }
             }
