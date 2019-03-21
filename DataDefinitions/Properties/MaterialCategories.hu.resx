@@ -133,5 +133,8 @@
     <value>Ismeretlen</value>
     <comment>Material category Unknown</comment>
   </data>
-  
+  <data name="Encoded" xml:space="preserve">
+    <value>Kódolt</value>
+    <comment>Material category Encoded</comment>
+  </data>
 </root>
