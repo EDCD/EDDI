@@ -1079,20 +1079,7 @@ namespace Eddi
 
                 // Update the body 
                 Logging.Debug("Now at body " + theEvent.body);
-                Body body = CurrentStarSystem.bodies.Find(s => s.name == theEvent.body);
-                if (body == null)
-                {
-                    // This body is unknown to us, might not be in our data source or we might not have connectivity.  Use a placeholder 
-                    body = new Body
-                    {
-                        name = theEvent.body,
-                        systemname = theEvent.system,
-                        systemAddress = theEvent.systemAddress
-                    };
-                    CurrentStarSystem.bodies.Add(body);
-                }
-
-                CurrentStellarBody = body;
+                updateCurrentStellarBody(theEvent.body, theEvent.system, theEvent.bodyType, theEvent.systemAddress);
             }
             else
             {
@@ -1351,6 +1338,49 @@ namespace Eddi
             }
         }
 
+        private void updateCurrentStellarBody(string bodyName, string systemName, BodyType bodyType, long? systemAddress)
+        {
+            // Make sure our system information is up to date
+            if (CurrentStarSystem == null || CurrentStarSystem.name != systemName)
+            {
+                updateCurrentSystem(systemName);
+            }
+            // Update the body 
+            if (CurrentStarSystem != null)
+            {
+                Body body = null;
+                if (bodyType == BodyType.FromEDName("PlanetaryRing"))
+                {
+                    // For rings, we want to select the parent body
+                    List<Body> ringedBodies = CurrentStarSystem.bodies?.Where(b => b?.rings?.Count > 0).ToList();
+                    foreach (Body ringedBody in ringedBodies)
+                    {
+                        Ring ring = ringedBody.rings.FirstOrDefault(r => r.name == bodyName);
+                        if (ring != null)
+                        {
+                            body = ringedBody;
+                            break;
+                        }
+                    }
+                }
+                else
+                {
+                    body = CurrentStarSystem.bodies?.Find(s => s.name == bodyName);
+                    if (body == null)
+                    {
+                        // This body is unknown to us, might not be in EDDB or we might not have connectivity.  Use a placeholder 
+                        body = new Body
+                        {
+                            name = bodyName,
+                            systemname = systemName,
+                            systemAddress = systemAddress,
+                        };
+                    }
+                }
+                CurrentStellarBody = body;
+            }
+        }
+
         private bool eventFSDEngaged(FSDEngagedEvent @event)
         {
             // Keep track of our environment
@@ -1496,7 +1526,7 @@ namespace Eddi
             Environment = Constants.ENVIRONMENT_NORMAL_SPACE;
             updateCurrentSystem(theEvent.system);
 
-            if (theEvent.bodytype.ToLowerInvariant() == "station")
+            if (theEvent.bodyType == BodyType.FromEDName("Station"))
             {
                 // In this case body == station
                 Station station = CurrentStarSystem.stations.Find(s => s.name == theEvent.body);
@@ -1513,18 +1543,7 @@ namespace Eddi
             }
             else if (theEvent.body != null)
             {
-                // Update the body 
-                Body body = CurrentStarSystem?.bodies?.Find(s => s.name == theEvent.body);
-                if (body == null)
-                {
-                    // This body is unknown to us, might not be in EDDB or we might not have connectivity.  Use a placeholder 
-                    body = new Body
-                    {
-                        name = theEvent.body,
-                        systemname = theEvent.system
-                    };
-                }
-                CurrentStellarBody = body;
+                updateCurrentStellarBody(theEvent.body, theEvent.system, theEvent.bodyType, theEvent.systemAddress);
             }
             return true;
         }
@@ -1980,12 +1999,19 @@ namespace Eddi
 
         private bool eventBodyMapped(BodyMappedEvent theEvent)
         {
-            Body body = CurrentStarSystem?.bodies?.FirstOrDefault(b => b?.name == theEvent.name);
-            if (body != null)
+            if (theEvent.name.Contains(" Ring"))
             {
-                body.mapped = true;
-                CurrentStellarBody = body;
-                StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
+                updateCurrentStellarBody(theEvent.name, CurrentStarSystem?.name, BodyType.FromEDName("PlanetaryRing"), CurrentStarSystem?.systemAddress);
+            }
+            else
+            {
+                Body body = CurrentStarSystem?.bodies?.FirstOrDefault(b => b?.name == theEvent.name);
+                if (body != null)
+                {
+                    body.mapped = true;
+                    StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
+                    updateCurrentStellarBody(theEvent.name, CurrentStarSystem?.name, BodyType.None, CurrentStarSystem?.systemAddress);
+                }
             }
             return true;
         }
