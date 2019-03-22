@@ -1863,7 +1863,8 @@ namespace Eddi
                         Type = BodyType.FromEDName("Belt"),
                         name = theEvent.name,
                         systemname = CurrentStarSystem?.name,
-                        systemAddress = CurrentStarSystem?.systemAddress
+                        systemAddress = CurrentStarSystem?.systemAddress,
+                        scanned = true
                     };
                 }
 
@@ -1908,6 +1909,7 @@ namespace Eddi
                 star.solarmass = theEvent.solarmass;
                 star.solarradius = theEvent.solarradius;
                 star.rings = theEvent.rings;
+                star.scanned = true;
 
                 star.setStellarExtras();
 
@@ -1967,6 +1969,7 @@ namespace Eddi
                 }
                 body.reserveLevel = ReserveLevel.FromEDName(theEvent.reserves);
                 body.rings = theEvent.rings;
+                body.scanned = true;
 
                 Logging.Debug("Saving data for scanned body " + theEvent.name);
                 StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
@@ -1977,7 +1980,13 @@ namespace Eddi
 
         private bool eventBodyMapped(BodyMappedEvent theEvent)
         {
-            CurrentStellarBody = CurrentStarSystem?.bodies?.FirstOrDefault(b => b?.name == theEvent.name);
+            Body body = CurrentStarSystem?.bodies?.FirstOrDefault(b => b?.name == theEvent.name);
+            if (body != null)
+            {
+                body.mapped = true;
+                CurrentStellarBody = body;
+                StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
+            }
             return true;
         }
 

@@ -157,8 +157,15 @@ namespace EddiDataDefinitions
         /// <summary>The reserve level (localized name)</summary>
         [JsonIgnore, Obsolete("Please use SystemReserveLevel instead")]
         public string reserves => (reserveLevel ?? ReserveLevel.None).localizedName;
+        
         /// <summary>The reserve level</summary>
         public ReserveLevel reserveLevel { get; set; } = ReserveLevel.None;
+
+        /// <summary>Whether we've scanned this body</summary>
+        public bool scanned { get; set; }
+
+        /// <summary>Whether we've mapped this body</summary>
+        public bool mapped { get; set; }
 
         /// <summary> the last time the information present changed (in the data source) </summary>
         public long? updatedat { get; set; }
