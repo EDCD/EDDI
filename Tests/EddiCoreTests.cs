@@ -132,5 +132,35 @@ namespace IntegrationTests
             Assert.IsTrue(body.scanned);
         }
 
+        [TestMethod]
+        public void TestRingCurrentBody()
+        {
+            string line = @"{ ""timestamp"":""2018-12-02T07:59:04Z"", ""event"":""SupercruiseExit"", ""StarSystem"":""HIP 17704"", ""SystemAddress"":246119654564, ""Body"":""HIP 17704 4 A Ring"", ""BodyID"":18, ""BodyType"":""PlanetaryRing"" }";
+            List<Event> events = JournalMonitor.ParseJournalEntry(line);
+            Assert.AreEqual(1, events.Count);
+            EnteredNormalSpaceEvent @event = (EnteredNormalSpaceEvent)events[0];
+            Assert.IsNotNull(@event);
+            Assert.IsInstanceOfType(@event, typeof(EnteredNormalSpaceEvent));
+
+            PrivateObject privateObject = new PrivateObject(Eddi.EDDI.Instance);
+            privateObject.Invoke("updateCurrentStellarBody", new object[] { @event.body, @event.system, @event.bodyType, @event.systemAddress });
+            Assert.AreEqual("HIP 17704 4", EDDI.Instance.CurrentStellarBody?.name);
+        }
+
+        [TestMethod]
+        public void TestRingMappedCurrentBody()
+        {
+            string line = @"{ ""timestamp"":""2018-12-16T23:04:38Z"", ""event"":""SAAScanComplete"", ""BodyName"":""BD-01 2784 10 A Ring"", ""BodyID"":42, ""ProbesUsed"":1, ""EfficiencyTarget"":0 }";
+            List<Event> events = JournalMonitor.ParseJournalEntry(line);
+            Assert.AreEqual(1, events.Count);
+            BodyMappedEvent @event = (BodyMappedEvent)events[0];
+            Assert.IsNotNull(@event);
+            Assert.IsInstanceOfType(@event, typeof(BodyMappedEvent));
+
+            PrivateObject privateObject = new PrivateObject(Eddi.EDDI.Instance);
+            privateObject.Invoke("updateCurrentSystem", new object[] { "BD-01 2784" });
+            privateObject.Invoke("eventBodyMapped", new object[] { @event });
+            Assert.AreEqual("BD-01 2784 10", EDDI.Instance.CurrentStellarBody?.name);
+        }
     }
 }
