@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 
 namespace EddiEvents
@@ -12,8 +13,10 @@ namespace EddiEvents
 
         static UnhandledEvent()
         {
-        }
-
+             VARIABLES.Add("type", "The type of the unhandled event");
+        }   
+        
+        [JsonProperty("type")]
         public string edType { get; private set; }
 
         public UnhandledEvent(DateTime timestamp, string type) : base(timestamp, NAME)

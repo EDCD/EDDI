@@ -197,6 +197,7 @@
     <Compile Include="DockedEvent.cs" />
     <Compile Include="JumpedEvent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="FSSAllBodiesFound.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DataDefinitions\EddiDataDefinitions.csproj">
