@@ -26,7 +26,7 @@ namespace EddiEvents
         [JsonProperty("count")]
         public int count { get; private set; }
                
-        public FSSAllBodiesFound(DateTime timestamp, string systemName, int count) : base(timestamp, NAME)
+        public FSSAllBodiesFound(DateTime timestamp, string systemName, long systemAddress, int count) : base(timestamp, NAME)
         {
             this.systemName = systemName;
             this.systemAddress = systemAddress;
