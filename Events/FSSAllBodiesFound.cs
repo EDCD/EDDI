@@ -30,6 +30,7 @@ namespace EddiEvents
         {
             this.systemName = systemName;
             this.count = count;
+
         }
     }
 }
