@@ -29,6 +29,7 @@ namespace EddiEvents
         public FSSAllBodiesFound(DateTime timestamp, string systemName, int count) : base(timestamp, NAME)
         {
             this.systemName = systemName;
+            this.systemAddress = systemAddress;
             this.count = count;
 
         }
