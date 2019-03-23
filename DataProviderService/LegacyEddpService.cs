@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using Utilities;
 
@@ -64,15 +65,15 @@ namespace EddiDataProviderService
             // Set data not currently available from EDSM: EDDBID
             if (response["bodies"] is JArray)
             {
-                foreach (JObject Body in response["bodies"])
+                foreach (Body body in system.bodies.ToList())
                 {
-                    foreach (Body body in system.bodies)
+                    JObject Body = response["bodies"].Children<JObject>()
+                        .FirstOrDefault(o => o["name"] != null && o["name"].ToString() == body.name);
+
+                    if (Body != null)
                     {
-                        if ((string)Body["name"] == body.name)
-                        {
-                            body.EDDBID = (long?)response["id"];
-                            body.systemEDDBID = system.EDDBID;
-                        }
+                        body.EDDBID = (long?)Body["id"];
+                        body.systemEDDBID = system.EDDBID;
                     }
                 }
             }
@@ -81,43 +82,34 @@ namespace EddiDataProviderService
         private static void SetStationLegacyData(StarSystem system, JObject response)
         {
             // Set data not currently available from EDSM
-            List<Station> stations = system.stations;
-            foreach (Station station in stations)
-            {
-                SetStationID(station, response); // Station EDDBID
-                SetCommoditiesData(station, response); // Commodities price listings
-                SetShipyardData(station, response); // Detailed shipyard data 
-                SetOutfittingData(station, response); // Detailed module data
-            }
-            SetPlanetarySettlementData(system, response); // Non-landable planetary settlement data
-        }
-
-        public static void SetStationID(Station station, JObject response)
-        {
             if (response["stations"] is JArray)
             {
-                foreach (JObject Station in response["stations"])
+                foreach (Station station in system.stations.ToList())
                 {
-                    if ((string)Station["name"] == station.name)
+                    JObject Station = response["stations"].Children<JObject>()
+                        .FirstOrDefault(o => o["name"] != null && o["name"].ToString() == station.name);
+
+                    if (Station != null)
                     {
+                        // Station EDDBID
                         station.EDDBID = (long?)Station["id"];
-                    }
-                }
-            }
-        }
 
-        public static void SetCommoditiesData(Station station, JObject response)
-        {
-            if (response["stations"] is JArray)
-            {
-                foreach (JObject Station in response["stations"])
-                {
-                    if ((string)Station["name"] == station.name)
-                    {
+                        // Commodities price listings
                         station.commodities = CommodityQuotesFromEDDP(Station);
                         station.commoditiesupdatedat = (long?)Station["market_updated_at"];
+
+                        // Detailed shipyard data 
+                        List<Ship> shipyard = ShipyardFromEDDP(Station);
+                        station.shipyard = shipyard;
+                        station.shipyardupdatedat = (long?)Station["shipyard_updated_at"];
+
+                        // Detailed module data
+                        List<Module> modules = ModulesFromEDDP(Station);
+                        station.outfitting = modules;
+                        station.outfittingupdatedat = (long?)Station["outfitting_updated_at"];
                     }
                 }
+                SetPlanetarySettlementData(system, response); // Non-landable planetary settlement data
             }
         }
 
@@ -142,22 +134,6 @@ namespace EddiDataProviderService
             return quotes;
         }
 
-        public static void SetShipyardData(Station station, JObject response)
-        {
-            if (response["stations"] is JArray)
-            {
-                foreach (JObject Station in response["stations"])
-                {
-                    if ((string)Station["name"] == station.name)
-                    {
-                        List<Ship> shipyard = ShipyardFromEDDP(Station);
-                        station.shipyard = shipyard;
-                        station.shipyardupdatedat = (long?)Station["shipyard_updated_at"];
-                    }
-                }
-            }
-        }
-
         private static List<Ship> ShipyardFromEDDP(JObject Station)
         {
             List<string> sellingShips = (Station["selling_ships"]).ToObject<List<string>>();
@@ -168,22 +144,6 @@ namespace EddiDataProviderService
                 if (ship != null) { shipyard.Add(ship); }
             }
             return shipyard;
-        }
-
-        public static void SetOutfittingData(Station station, JObject response)
-        {
-            if (response["stations"] is JArray)
-            {
-                foreach (JObject Station in response["stations"])
-                {
-                    if ((string)Station["name"] == station.name)
-                    {
-                        List<Module> modules = ModulesFromEDDP(Station);
-                        station.outfitting = modules;
-                        station.outfittingupdatedat = (long?)Station["outfitting_updated_at"];
-                    }
-                }
-            }
         }
 
         private static List<Module> ModulesFromEDDP(JObject Station)
