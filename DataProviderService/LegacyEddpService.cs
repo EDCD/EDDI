@@ -84,15 +84,29 @@ namespace EddiDataProviderService
             List<Station> stations = system.stations;
             foreach (Station station in stations)
             {
-                station.EDDBID = (long?)response["id"];
-                SetCommoditiesData(station, system, response); // Commodities price listings
-                SetShipyardData(station, system, response); // Detailed shipyard data 
-                SetOutfittingData(station, system, response); // Detailed module data
+                SetStationID(station, response); // Station EDDBID
+                SetCommoditiesData(station, response); // Commodities price listings
+                SetShipyardData(station, response); // Detailed shipyard data 
+                SetOutfittingData(station, response); // Detailed module data
             }
             SetPlanetarySettlementData(system, response); // Non-landable planetary settlement data
         }
 
-        public static void SetCommoditiesData(Station station, StarSystem system, JObject response)
+        public static void SetStationID(Station station, JObject response)
+        {
+            if (response["stations"] is JArray)
+            {
+                foreach (JObject Station in response["stations"])
+                {
+                    if ((string)Station["name"] == station.name)
+                    {
+                        station.EDDBID = (long?)Station["id"];
+                    }
+                }
+            }
+        }
+
+        public static void SetCommoditiesData(Station station, JObject response)
         {
             if (response["stations"] is JArray)
             {
@@ -128,7 +142,7 @@ namespace EddiDataProviderService
             return quotes;
         }
 
-        public static void SetShipyardData(Station station, StarSystem system, JObject response)
+        public static void SetShipyardData(Station station, JObject response)
         {
             if (response["stations"] is JArray)
             {
@@ -156,7 +170,7 @@ namespace EddiDataProviderService
             return shipyard;
         }
 
-        public static void SetOutfittingData(Station station, StarSystem system, JObject response)
+        public static void SetOutfittingData(Station station, JObject response)
         {
             if (response["stations"] is JArray)
             {
