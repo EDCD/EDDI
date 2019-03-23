@@ -13,21 +13,20 @@ namespace EddiEvents
 
         static FSSAllBodiesFound()
         {
-            VARIABLES.Add("system", "The name of the scanned system");
-            VARIABLES.Add("systemaddress", "The address of the scanned system");
-            VARIABLES.Add("bodies", "The count of bodies from the scanned system");
+            VARIABLES.Add("systemname", "The name of the scanned system");
+            VARIABLES.Add("count", "The count of bodies from the scanned system");
         }
 
-        [JsonProperty("system")]
-        public string System { get; private set; }
+        [JsonProperty("systemname")]
+        public string systemName { get; private set; }
 
         [JsonProperty("systemaddress")]
-        public long SystemAddress { get; private set; }
+        public long systemAddress { get; private set; }
 
-        [JsonProperty("bodies")]
-        public int Bodies { get; private set; }
+        [JsonProperty("count")]
+        public int count { get; private set; }
                
-        public FSSAllBodiesFound(DateTime timestamp, string system, long systemAddress, int bodies) : base(timestamp, NAME)
+        public FSSAllBodiesFound(DateTime timestamp, string systemName, int count) : base(timestamp, NAME)
         {
             this.System = system;
             this.SystemAddress = systemAddress;
