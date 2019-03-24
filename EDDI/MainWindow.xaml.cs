@@ -462,16 +462,25 @@ namespace Eddi
             EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
             if (eddiConfiguration.HomeSystem != homeSystemDropDown.Text)
             {
-                string systemName = homeSystemDropDown.Text?.ToLowerInvariant();
+                string systemName = homeSystemDropDown.Text;
                 if (systemName.Length > 1)
                 {
                     systemList = systemList.Where(s => s.StartsWith(systemName, StringComparison.InvariantCultureIgnoreCase)).ToList();
                     if (systemList.Count < 5)
                     {
-                        systemList = StarMapService.GetStarMapSystemsPartial(systemName)
+                        systemList = StarMapService.GetStarMapSystemsPartial(systemName, false, false)
                             .Select(s => s.name).ToList();
+
+                        if (systemList.Count == 1 && systemName.Equals(systemList[0], StringComparison.InvariantCultureIgnoreCase))
+                        {
+                            homeSystemDropDown.ItemsSource = systemList.Take(1);
+                            homeSystemDropDown.SelectedItem = systemList[0];
+                            homeSystemDropDown.IsDropDownOpen = false;
+                            return;
+                        }
                     }
                     homeSystemDropDown.ItemsSource = systemList.Take(5);
+
                     if (homeSystemDropDown.IsDropDownOpen == false)
                     {
                         homeSystemDropDown.IsDropDownOpen = true;
@@ -658,16 +667,25 @@ namespace Eddi
             EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
             if (eddiConfiguration.SquadronSystem != squadronSystemDropDown.Text)
             {
-                string systemName = squadronSystemDropDown.Text?.ToLowerInvariant();
+                string systemName = squadronSystemDropDown.Text;
                 if (systemName.Length > 1)
                 {
                     systemList = systemList.Where(s => s.StartsWith(systemName, StringComparison.InvariantCultureIgnoreCase)).ToList();
                     if (systemList.Count < 5)
                     {
-                        systemList = StarMapService.GetStarMapSystemsPartial(systemName)
+                        systemList = StarMapService.GetStarMapSystemsPartial(systemName, false, false)
                             .Select(s => s.name).ToList();
+
+                        if (systemList.Count == 1 && systemName.Equals(systemList[0], StringComparison.InvariantCultureIgnoreCase))
+                        {
+                            squadronSystemDropDown.ItemsSource = systemList.Take(1);
+                            squadronSystemDropDown.SelectedItem = systemList[0];
+                            squadronSystemDropDown.IsDropDownOpen = false;
+                            return;
+                        }
                     }
                     squadronSystemDropDown.ItemsSource = systemList.Take(5);
+
                     if (squadronSystemDropDown.IsDropDownOpen == false)
                     {
                         squadronSystemDropDown.IsDropDownOpen = true;
