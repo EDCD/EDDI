@@ -96,6 +96,25 @@ namespace UnitTests
         }
 
         [TestMethod]
+        [DeploymentItem("sqlStarSystem1.json")]
+        public void TestLegacyData()
+        {
+            /// Test legacy data from api.eddp.co 
+
+            string legagySystemSql = System.IO.File.ReadAllText("sqlStarSystem1.json");
+
+            StarSystem system = JsonConvert.DeserializeObject<StarSystem>(legagySystemSql);
+            Assert.AreEqual("Nijland Terminal", system.stations[0].name);
+            Assert.IsNull(system.stations[0].EDDBID);
+            Assert.AreEqual("Pinzon Hub", system.stations[1].name);
+            Assert.IsNull(system.stations[1].EDDBID);
+
+            system = LegacyEddpService.SetLegacyData(system);
+            Assert.AreEqual(32548, system.stations[0].EDDBID);
+            Assert.AreEqual(58341, system.stations[1].EDDBID);
+        }
+
+        [TestMethod]
         public void TestStarSystemData()
         {
             // Test system & body data in a complete star system
