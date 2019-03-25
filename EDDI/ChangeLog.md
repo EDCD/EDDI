@@ -47,6 +47,9 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * WAS: `solidcomposition`, IS: `solidcompositions`
     * Revised `Star scanned` event variable for better interchangeability with with the `BodyDetails` function.
       * WAS: `distancefromarrival`*, IS: `distance`
+      * WAS `name`*, IS: `bodyname` 
+      * WAS `orbitalinclination`*, IS `inclination`
+      * WAS `rotationperiod`*, IS: `rotationalperiod`
     * Revised `Entered normal space`, `Glide`, `Location`, and `Near surface` event variables for better interchangeability with the `BodyDetails` function.
       * WAS: `body`*, IS: `bodyname` 
       * WAS: `system`*, IS: `systemname`

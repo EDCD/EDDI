@@ -1863,16 +1863,16 @@ namespace Eddi
             // We just scanned a star.  We can only proceed if we know our current star system
             if (CurrentStarSystem != null)
             {
-                Body star = CurrentStarSystem.stars?.FirstOrDefault(b => b.bodyname == theEvent.name);
+                Body star = CurrentStarSystem.stars?.FirstOrDefault(b => b.bodyname == theEvent.bodyname);
                 if (star == null)
                 {
-                    Logging.Debug("Scanned star " + theEvent.name + " is new - creating");
+                    Logging.Debug("Scanned star " + theEvent.bodyname + " is new - creating");
                     // A new item - set it up
                     star = new Body
                     {
                         EDDBID = -1,
                         bodyType = BodyType.FromEDName("Star"),
-                        bodyname = theEvent.name,
+                        bodyname = theEvent.bodyname,
                         systemname = CurrentStarSystem?.name,
                         systemAddress = CurrentStarSystem?.systemAddress
                     };
@@ -1895,7 +1895,7 @@ namespace Eddi
                 star.setStellarExtras();
 
                 CurrentStarSystem.bodies?.Add(star);
-                Logging.Debug("Saving data for scanned star " + theEvent.name);
+                Logging.Debug("Saving data for scanned star " + theEvent.bodyname);
                 StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
             }
             return CurrentStarSystem != null;
