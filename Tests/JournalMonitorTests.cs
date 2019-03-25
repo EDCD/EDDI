@@ -135,7 +135,7 @@ namespace UnitTests
 
             Assert.AreEqual(230, theEvent.age);
             Assert.IsNull(theEvent.eccentricity);
-            Assert.AreEqual("Vela Dark Region FG-Y d3", theEvent.name);
+            Assert.AreEqual("Vela Dark Region FG-Y d3", theEvent.bodyname);
             Assert.IsNull(theEvent.orbitalperiod);
             Assert.AreEqual(692146.368000000M, theEvent.radius);
             Assert.IsNull(theEvent.semimajoraxis);
