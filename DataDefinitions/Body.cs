@@ -115,7 +115,6 @@ namespace EddiDataDefinitions
 
         // Body-specific items
 
-
         /// <summary>The atmosphere class</summary>
         public AtmosphereClass atmosphereclass { get; set; } = AtmosphereClass.None;
 

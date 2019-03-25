@@ -36,8 +36,8 @@ namespace UnitTests
             Assert.IsInstanceOfType(events[0], typeof(BodyScannedEvent));
             BodyScannedEvent ev = events[0] as BodyScannedEvent;
             Assert.IsNotNull(ev);
-            Assert.AreEqual("Grea Bloae HH-T d4-44 4", ev.name);
-            Assert.AreEqual((decimal)703.763611, ev.distancefromarrival);
+            Assert.AreEqual("Grea Bloae HH-T d4-44 4", ev.bodyname);
+            Assert.AreEqual((decimal)703.763611, ev.distance);
             Assert.IsNotNull(ev.tidallylocked);
             Assert.IsFalse((bool)ev.tidallylocked);
             Assert.AreEqual("Candidate for terraforming", ev.terraformState.invariantName);
@@ -55,10 +55,10 @@ namespace UnitTests
             Assert.IsFalse((bool)ev.landable);
             Assert.AreEqual(703.679898444943, (double)ev.semimajoraxis, 0.01);
             Assert.AreEqual((decimal)0.000248, ev.eccentricity);
-            Assert.AreEqual((decimal)0.015659, ev.orbitalinclination);
+            Assert.AreEqual((decimal)0.015659, ev.inclination);
             Assert.AreEqual((decimal)104.416656, ev.periapsis);
             Assert.AreEqual(564.827, (double)ev.orbitalperiod, 0.01);
-            Assert.AreEqual(0.91947, (double)ev.rotationperiod, 0.01);
+            Assert.AreEqual(0.91947, (double)ev.rotationalperiod, 0.01);
         }
 
         [TestMethod]
