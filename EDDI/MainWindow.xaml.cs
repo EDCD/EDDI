@@ -17,7 +17,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Forms;
 using System.Windows.Input;
 using Utilities;
@@ -26,7 +25,51 @@ namespace Eddi
 {
     public class StarSystemComboBox : System.Windows.Controls.ComboBox
     {
-        //
+        private List<string> systemList = new List<string>();
+
+        internal void OnTextChanged(object sender, TextChangedEventArgs e, string oldValue, Action changeHandler)
+        {
+            if (Text != oldValue)
+            {
+                string systemName = Text;
+                if (systemName.Length > 1)
+                {
+                    systemList = systemList.Where(s => s.StartsWith(systemName, StringComparison.InvariantCultureIgnoreCase)).ToList();
+                    if (systemList.Count < 5)
+                    {
+                        systemList = StarMapService.GetStarMapSystemsPartial(systemName, false, false)
+                            .Select(s => s.name).ToList();
+
+                        if (systemList.Count == 1 && systemName.Equals(systemList[0], StringComparison.InvariantCultureIgnoreCase))
+                        {
+                            ItemsSource = systemList.Take(1);
+                            SelectedItem = systemList[0];
+                            IsDropDownOpen = false;
+                            return;
+                        }
+                    }
+                    ItemsSource = systemList.Take(5);
+
+                    if (IsDropDownOpen == false)
+                    {
+                        IsDropDownOpen = true;
+                        var cmbTextBox = (System.Windows.Controls.TextBox)Template
+                            .FindName("PART_EditableTextBox", this);
+                        cmbTextBox.CaretIndex = Text.Length;
+                    }
+                }
+                else
+                {
+                    if (ItemsSource != null)
+                    {
+                        IsDropDownOpen = false;
+                        ItemsSource = null;
+                    }
+                }
+
+                changeHandler?.Invoke();
+            }
+        }
     }
 
     /// <summary>
@@ -35,7 +78,6 @@ namespace Eddi
     public partial class MainWindow : Window
     {
         private bool fromVA;
-        private List<string> systemList = new List<string>();
 
         struct LanguageDef : IComparable<LanguageDef>
         {
@@ -465,44 +507,8 @@ namespace Eddi
         private void HomeSystemText_TextChanged(object sender, TextChangedEventArgs e)
         {
             EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
-            if (eddiConfiguration.HomeSystem != homeSystemDropDown.Text)
+            void changeHandler()
             {
-                string systemName = homeSystemDropDown.Text;
-                if (systemName.Length > 1)
-                {
-                    systemList = systemList.Where(s => s.StartsWith(systemName, StringComparison.InvariantCultureIgnoreCase)).ToList();
-                    if (systemList.Count < 5)
-                    {
-                        systemList = StarMapService.GetStarMapSystemsPartial(systemName, false, false)
-                            .Select(s => s.name).ToList();
-
-                        if (systemList.Count == 1 && systemName.Equals(systemList[0], StringComparison.InvariantCultureIgnoreCase))
-                        {
-                            homeSystemDropDown.ItemsSource = systemList.Take(1);
-                            homeSystemDropDown.SelectedItem = systemList[0];
-                            homeSystemDropDown.IsDropDownOpen = false;
-                            return;
-                        }
-                    }
-                    homeSystemDropDown.ItemsSource = systemList.Take(5);
-
-                    if (homeSystemDropDown.IsDropDownOpen == false)
-                    {
-                        homeSystemDropDown.IsDropDownOpen = true;
-                        var cmbTextBox = (System.Windows.Controls.TextBox)homeSystemDropDown.Template
-                            .FindName("PART_EditableTextBox", homeSystemDropDown);
-                        cmbTextBox.CaretIndex = homeSystemDropDown.Text.Length;
-                    }
-                }
-                else
-                {
-                    if (homeSystemDropDown.ItemsSource != null)
-                    {
-                        homeSystemDropDown.IsDropDownOpen = false;
-                        homeSystemDropDown.ItemsSource = null;
-                    }
-                }
-
                 // Reset the home station due to selecting new home system
                 if (eddiConfiguration.HomeStation != null)
                 {
@@ -512,6 +518,7 @@ namespace Eddi
                     eddiConfiguration.ToFile();
                 }
             }
+            homeSystemDropDown.OnTextChanged(sender, e, eddiConfiguration.HomeSystem, changeHandler);
         }
 
         private void HomeSystemDropDown_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -677,44 +684,9 @@ namespace Eddi
         private void SquadronSystemText_TextChanged(object sender, TextChangedEventArgs e)
         {
             EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
-            if (eddiConfiguration.SquadronSystem != squadronSystemDropDown.Text)
+            string oldValue = eddiConfiguration.SquadronSystem;
+            void changeHandler()
             {
-                string systemName = squadronSystemDropDown.Text;
-                if (systemName.Length > 1)
-                {
-                    systemList = systemList.Where(s => s.StartsWith(systemName, StringComparison.InvariantCultureIgnoreCase)).ToList();
-                    if (systemList.Count < 5)
-                    {
-                        systemList = StarMapService.GetStarMapSystemsPartial(systemName, false, false)
-                            .Select(s => s.name).ToList();
-
-                        if (systemList.Count == 1 && systemName.Equals(systemList[0], StringComparison.InvariantCultureIgnoreCase))
-                        {
-                            squadronSystemDropDown.ItemsSource = systemList.Take(1);
-                            squadronSystemDropDown.SelectedItem = systemList[0];
-                            squadronSystemDropDown.IsDropDownOpen = false;
-                            return;
-                        }
-                    }
-                    squadronSystemDropDown.ItemsSource = systemList.Take(5);
-
-                    if (squadronSystemDropDown.IsDropDownOpen == false)
-                    {
-                        squadronSystemDropDown.IsDropDownOpen = true;
-                        var cmbTextBox = (System.Windows.Controls.TextBox)squadronSystemDropDown.Template
-                            .FindName("PART_EditableTextBox", squadronSystemDropDown);
-                        cmbTextBox.CaretIndex = squadronSystemDropDown.Text.Length;
-                    }
-                }
-                else
-                {
-                    if (squadronSystemDropDown.ItemsSource != null)
-                    {
-                        squadronSystemDropDown.IsDropDownOpen = false;
-                        squadronSystemDropDown.ItemsSource = null;
-                    }
-                }
-
                 // Reset the squadron data due to selecting new squadron system
                 if (eddiConfiguration.SquadronFaction != null)
                 {
@@ -734,6 +706,7 @@ namespace Eddi
                     eddiConfiguration.ToFile();
                 }
             }
+            squadronSystemDropDown.OnTextChanged(sender, e, oldValue, changeHandler);
         }
 
         private void SquadronSystemDropDown_SelectionChanged(object sender, SelectionChangedEventArgs e)
