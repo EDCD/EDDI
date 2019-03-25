@@ -691,7 +691,7 @@ namespace EddiJournalMonitor
                                     // Belt
                                     if (name.Contains("Belt Cluster"))
                                     {
-                                        events.Add(new BeltScannedEvent(timestamp, scantype, name, distancefromarrival) { raw = line, fromLoad = fromLogLoad });
+                                        // We don't do anything with belt cluster scans at this time.
                                         handled = true;
                                         break;
                                     }

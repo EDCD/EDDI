@@ -29,6 +29,16 @@ namespace EddiDataDefinitions
         /// <summary>Details of bodies (stars/planets)</summary>
         public List<Body> bodies { get; set; }
 
+        /// <summary>Details of planets</summary>
+        [JsonIgnore]
+        public List<Body> planets => bodies.Where(b => b.bodyType.invariantName == "Planet").ToList();
+        /// <summary>Details of stars</summary>
+        [JsonIgnore]
+        public List<Body> stars => bodies.Where(b => b.bodyType.invariantName == "Star").ToList();
+        /// <summary>Details of rings</summary>
+        [JsonIgnore]
+        public List<Ring> rings => bodies.Where(b => b.rings?.Count > 0).SelectMany(b => b.rings).ToList();
+
         /// <summary>The reserve level applicable to the system's rings</summary>
         public ReserveLevel Reserve { get; set; } = ReserveLevel.None;
         [JsonIgnore]

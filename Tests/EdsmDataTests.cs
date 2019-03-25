@@ -32,10 +32,10 @@ namespace UnitTests
             Assert.IsNotNull(bodies);
 
             // Test our main star and belt
-            Body star = bodies.Find(s => s.name == "Shinrarta Dezhra");
+            Body star = bodies.Find(s => s.bodyname == "Shinrarta Dezhra");
             Assert.AreEqual("Shinrarta Dezhra", star.shortname);
             Assert.AreEqual(14923, star.EDSMID);
-            Assert.AreEqual("Star", star.Type.invariantName);
+            Assert.AreEqual("Star", star.bodyType.invariantName);
             Assert.AreEqual("K", star.stellarclass);
             Assert.AreEqual("Shinrarta Dezhra", star.systemname);
             Assert.AreEqual(0, star.distance);
@@ -61,10 +61,10 @@ namespace UnitTests
             Assert.IsFalse(star.mapped);
 
             // Test landable high metal content world
-            Body body = bodies.Find(s => s.name == "Shinrarta Dezhra A 1");
+            Body body = bodies.Find(s => s.bodyname == "Shinrarta Dezhra A 1");
             Assert.AreEqual("A 1", body.shortname);
             Assert.AreEqual(7058, body.EDSMID);
-            Assert.AreEqual("Planet", body.Type.invariantName);
+            Assert.AreEqual("Planet", body.bodyType.invariantName);
             Assert.AreEqual("High metal content world", body.planetClass.invariantName);
             Assert.AreEqual(40.472694, (double)body.distance, 0.01);
             Assert.IsTrue((bool)body.landable);
@@ -99,10 +99,10 @@ namespace UnitTests
             Assert.IsFalse(body.mapped);
 
             // Test terraformed body
-            body = bodies.Find(s => s.name == "Founders World");
+            body = bodies.Find(s => s.bodyname == "Founders World");
             Assert.AreEqual("Founders World", body.shortname);
             Assert.AreEqual(12765, body.EDSMID);
-            Assert.AreEqual("Planet", body.Type.invariantName);
+            Assert.AreEqual("Planet", body.bodyType.invariantName);
             Assert.AreEqual("Earth-like world", body.planetClass.invariantName);
             Assert.AreEqual(324.465424, (double)body.distance, 0.01);
             Assert.AreEqual(false, body.landable);
@@ -137,10 +137,10 @@ namespace UnitTests
             Assert.IsFalse(body.mapped);
 
             // Test volcanic icy body
-            body = bodies.Find(s => s.name == "Shinrarta Dezhra AB 1 b");
+            body = bodies.Find(s => s.bodyname == "Shinrarta Dezhra AB 1 b");
             Assert.AreEqual("AB 1 b", body.shortname);
             Assert.AreEqual(8138660, body.EDSMID);
-            Assert.AreEqual("Planet", body.Type.invariantName);
+            Assert.AreEqual("Planet", body.bodyType.invariantName);
             Assert.AreEqual("Icy body", body.planetClass.invariantName);
             Assert.AreEqual(3250.803223, (double)body.distance, 0.01);
             Assert.AreEqual(false, body.landable);
@@ -176,10 +176,10 @@ namespace UnitTests
             Assert.IsFalse(body.mapped);
 
             // Test ringed gas giant
-            body = bodies.Find(s => s.name == "Shinrarta Dezhra AB 2");
+            body = bodies.Find(s => s.bodyname == "Shinrarta Dezhra AB 2");
             Assert.AreEqual("AB 2", body.shortname);
             Assert.AreEqual(8138626, body.EDSMID);
-            Assert.AreEqual("Planet", body.Type.invariantName);
+            Assert.AreEqual("Planet", body.bodyType.invariantName);
             Assert.AreEqual("Class I gas giant", body.planetClass.invariantName);
             Assert.AreEqual(3767.557861, (double)body.distance, 0.01);
             Assert.AreEqual(false, body.landable);

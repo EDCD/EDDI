@@ -444,9 +444,9 @@ A star or planet.  Any values might be missing, depending on EDDI's configuratio
 
 All bodies have the following data:
 
-    - `type` the type of the body (Star or Planet)
+    - `bodytype` the type of the body (Star or Planet)
     - `systemname` the name of the system in which this body resides
-    - `name` the name of the body
+    - `bodyname` the name of the body
     - `shortname` the shortened name of the body
     - `distance` the distance from the arrival point in the system, in light seconds
     - `tidallylocked` true if the body is tidally locked to its parent

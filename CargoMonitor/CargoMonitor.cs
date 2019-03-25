@@ -328,7 +328,7 @@ namespace EddiCargoMonitor
                         case "salvage":
                             {
                                 haulage.sourcesystem = EDDI.Instance?.CurrentStarSystem?.name;
-                                haulage.sourcebody = EDDI.Instance?.CurrentStellarBody?.name;
+                                haulage.sourcebody = EDDI.Instance?.CurrentStellarBody?.bodyname;
                                 update = true;
                             }
                             break;

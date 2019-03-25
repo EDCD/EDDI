@@ -144,12 +144,7 @@ namespace EddiSpeechResponder
             Logging.Debug("Received event " + JsonConvert.SerializeObject(@event));
             StatusMonitor statusMonitor = (StatusMonitor)EDDI.Instance.ObtainMonitor("Status monitor");
 
-            if (@event is BeltScannedEvent)
-            {
-                // We ignore belt clusters
-                return;
-            }
-            else if (@event is BodyMappedEvent)
+            if (@event is BodyMappedEvent)
             {
                 ignoreBodyScan = true;
             }

@@ -69,9 +69,9 @@ namespace EddiStarMapService
             {
                 // General items 
                 EDSMID = (long?)body["id"],
-                name = (string)body["name"],
+                bodyname = (string)body["name"],
                 systemname = system,
-                Type = BodyType.FromName((string)body["type"]) ?? BodyType.None,
+                bodyType = BodyType.FromName((string)body["type"]) ?? BodyType.None,
                 distance = (decimal?)body["distanceToArrival"], // Light Seconds
                 temperature = (long?)body["surfaceTemperature"], // Kelvin
 
@@ -110,6 +110,7 @@ namespace EddiStarMapService
             {
                 // Planet-specific items 
                 Body.planetClass = PlanetClass.FromName((string)body["subType"]) ?? PlanetClass.None;
+                Body.tidallylocked = (bool?)body["rotationalPeriodTidallyLocked"] ?? false;
                 Body.landable = (bool?)body["isLandable"];
                 Body.gravity = (decimal?)body["gravity"]; // G's
                 Body.earthmass = (decimal?)body["earthMasses"];
