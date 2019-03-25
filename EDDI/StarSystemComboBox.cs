@@ -10,6 +10,7 @@ namespace Eddi
     public class StarSystemComboBox : ComboBox
     {
         private List<string> systemList = new List<string>();
+        private int systemListSize = 5;
 
         internal void TextDidChange(object sender, TextChangedEventArgs e, string oldValue, Action changeHandler)
         {
@@ -19,7 +20,7 @@ namespace Eddi
             if (systemName.Length > 1)
             {
                 systemList = systemList.Where(s => s.StartsWith(systemName, StringComparison.InvariantCultureIgnoreCase)).ToList();
-                if (systemList.Count < 5)
+                if (systemList.Count < systemListSize)
                 {
                     systemList = StarMapService.GetStarMapSystemsPartial(systemName, false, false)
                         .Select(s => s.name).ToList();
@@ -32,7 +33,7 @@ namespace Eddi
                         return;
                     }
                 }
-                ItemsSource = systemList.Take(5);
+                ItemsSource = systemList.Take(systemListSize);
 
                 if (IsDropDownOpen == false)
                 {
