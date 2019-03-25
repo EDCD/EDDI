@@ -203,7 +203,7 @@ namespace EddiCrimeMonitor
         {
             if (@event.timestamp > updateDat)
             {
-                targetSystem = @event.system;
+                targetSystem = @event.systemname;
                 updateDat = @event.timestamp;
                 writeRecord();
             }

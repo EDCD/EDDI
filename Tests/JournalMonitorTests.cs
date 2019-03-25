@@ -643,7 +643,7 @@ namespace UnitTests
 	            ""event"": ""Location"",
 	            ""Docked"": true,
 	            ""MarketID"": 3223343616,
-	            ""StationName"": ""RayGateway"",
+	            ""StationName"": ""Ray Gateway"",
 	            ""StationType"": ""Coriolis"",
 	            ""StarSystem"": ""Diaguandri"",
 	            ""SystemAddress"": 670417429889,
@@ -755,7 +755,7 @@ namespace UnitTests
             Assert.IsTrue(events.Count == 1);
             LocationEvent @event = (LocationEvent)events[0];
 
-            Assert.AreEqual("RayGateway", @event.body);
+            Assert.AreEqual("Ray Gateway", @event.bodyname);
             Assert.AreEqual("Station", @event.bodyType.invariantName);
             Assert.AreEqual(true, @event.docked);
             Assert.AreEqual("High Tech", @event.Economy.invariantName);
@@ -776,7 +776,7 @@ namespace UnitTests
             Assert.AreEqual("Medium", @event.securityLevel.invariantName);
             Assert.AreEqual("RayGateway", @event.station);
             Assert.AreEqual("Coriolis Starport", @event.stationModel.invariantName);
-            Assert.AreEqual("Diaguandri", @event.system);
+            Assert.AreEqual("Diaguandri", @event.systemname);
             Assert.AreEqual(670417429889, @event.systemAddress);
             Assert.AreEqual(-41.06250M, @event.x);
             Assert.AreEqual(-62.15625M, @event.y);

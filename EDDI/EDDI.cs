@@ -965,9 +965,9 @@ namespace Eddi
 
         private bool eventLocation(LocationEvent theEvent)
         {
-            Logging.Info("Location StarSystem: " + theEvent.system);
+            Logging.Info("Location StarSystem: " + theEvent.systemname);
 
-            updateCurrentSystem(theEvent.system);
+            updateCurrentSystem(theEvent.systemname);
             // Our data source may not include the system address
             CurrentStarSystem.systemAddress = theEvent.systemAddress;
             // Always update the current system with the current co-ordinates, just in case things have changed
@@ -1022,7 +1022,7 @@ namespace Eddi
                 CurrentStellarBody = null;
 
                 // Update the station
-                string stationName = theEvent.docked ? theEvent.station : theEvent.body;
+                string stationName = theEvent.docked ? theEvent.station : theEvent.bodyname;
 
                 Logging.Debug("Now at station " + stationName);
                 Station station = CurrentStarSystem.stations.Find(s => s.name == stationName);
@@ -1032,7 +1032,7 @@ namespace Eddi
                     station = new Station
                     {
                         name = stationName,
-                        systemname = theEvent.system
+                        systemname = theEvent.systemname
                     };
                     CurrentStarSystem.stations.Add(station);
                 }
@@ -1066,7 +1066,7 @@ namespace Eddi
                     Environment = Constants.ENVIRONMENT_NORMAL_SPACE;
                 }
             }
-            else if (theEvent.body != null)
+            else if (theEvent.bodyname != null)
             {
                 Environment = Constants.ENVIRONMENT_NORMAL_SPACE;
 
@@ -1074,8 +1074,8 @@ namespace Eddi
                 CurrentStation = null;
 
                 // Update the body 
-                Logging.Debug("Now at body " + theEvent.body);
-                updateCurrentStellarBody(theEvent.body, theEvent.system, theEvent.systemAddress);
+                Logging.Debug("Now at body " + theEvent.bodyname);
+                updateCurrentStellarBody(theEvent.bodyname, theEvent.systemname, theEvent.systemAddress);
             }
             else
             {
