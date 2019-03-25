@@ -148,11 +148,7 @@
     <value>Revisão da Semana</value>
     <comment>Title filter for determining whether an item is a "Week in Review</comment>
   </data>
-  <data name="sourceURL" xml:space="preserve">
-    <value>https://community.elitedangerous.com/en/galnet-rss</value>
-    
-    <comment>The URL the Galnet monitor should access for obtaining new news feed items. Though adding new languages to the Galnet monitor is not yet supported, this helps lay the groundwork for Galnet in more languages in the future.</comment>
-  </data>
+  
   <data name="contentFilterCgRegex" xml:space="preserve">
     <value>&gt;@"(prometeu recompensar os pilotos)|(campanha.+ocorrerá por uma semana)|(organizações estabeleceram operações de uma semana)|(colete.+recompensas)|(Se.+a meta final for cumprida antes do planejado, a campanha terminará imediatamente)"</value>
     <comment>Regex filter for determining whether an item's contents match a Community Goal related item.</comment>
