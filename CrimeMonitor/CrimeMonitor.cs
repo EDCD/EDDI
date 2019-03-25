@@ -279,7 +279,7 @@ namespace EddiCrimeMonitor
             FactionReport report = new FactionReport(@event.timestamp, false, shipId, Crime.None, currentSystem, @event.reward)
             {
                 station = EDDI.Instance?.CurrentStation?.name,
-                body = EDDI.Instance?.CurrentStellarBody?.name,
+                body = EDDI.Instance?.CurrentStellarBody?.bodyname,
                 victim = @event.victimfaction,
                 victimAllegiance = (faction?.Allegiance ?? Superpower.None).invariantName
             };
@@ -395,7 +395,7 @@ namespace EddiCrimeMonitor
                 FactionReport report = new FactionReport(@event.timestamp, true, shipId, Crime.None, currentSystem?.name, amount)
                 {
                     station = EDDI.Instance?.CurrentStation?.name,
-                    body = EDDI.Instance?.CurrentStellarBody?.name,
+                    body = EDDI.Instance?.CurrentStellarBody?.bodyname,
                     victim = @event.faction,
                     victimAllegiance = (faction.Allegiance ?? Superpower.None).invariantName
                 };
@@ -501,7 +501,7 @@ namespace EddiCrimeMonitor
             FactionReport report = new FactionReport(@event.timestamp, true, shipId, crime, currentSystem, @event.bounty)
             {
                 station = EDDI.Instance?.CurrentStation?.name,
-                body = EDDI.Instance?.CurrentStellarBody?.name,
+                body = EDDI.Instance?.CurrentStellarBody?.bodyname,
                 victim = @event.victim,
                 victimAllegiance = (target?.Allegiance ?? Superpower.None).invariantName
             };
@@ -589,7 +589,7 @@ namespace EddiCrimeMonitor
             FactionReport report = new FactionReport(@event.timestamp, false, shipId, crime, currentSystem, @event.fine)
             {
                 station = EDDI.Instance?.CurrentStation?.name,
-                body = EDDI.Instance?.CurrentStellarBody?.name,
+                body = EDDI.Instance?.CurrentStellarBody?.bodyname,
                 victim = @event.victim
             };
 
@@ -926,7 +926,7 @@ namespace EddiCrimeMonitor
                 FactionReport report = new FactionReport(timestamp, false, shipId, crime, currentSystem, fine)
                 {
                     station = EDDI.Instance?.CurrentStation?.name,
-                    body = EDDI.Instance?.CurrentStellarBody?.name,
+                    body = EDDI.Instance?.CurrentStellarBody?.bodyname,
                 };
 
                 FactionRecord record = GetRecordWithFaction(mission.faction);

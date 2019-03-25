@@ -1835,14 +1835,14 @@ namespace Eddi
             if (theEvent.approaching_surface)
             {
                 // Update the body 
-                Body body = CurrentStarSystem?.planets?.Find(s => s.bodyname == theEvent.body);
+                Body body = CurrentStarSystem?.planets?.Find(s => s.bodyname == theEvent.bodyname);
                 if (body == null)
                 {
                     // This body is unknown to us, might not be in our data source or we might not have connectivity.  Use a placeholder 
                     body = new Body
                     {
-                        bodyname = theEvent.body,
-                        systemname = theEvent.system
+                        bodyname = theEvent.bodyname,
+                        systemname = theEvent.systemname
                     };
                 }
                 // System address may not be included in our data source, so we add it here. 
@@ -1854,7 +1854,7 @@ namespace Eddi
                 // Clear the body we are leaving 
                 CurrentStellarBody = null;
             }
-            updateCurrentSystem(theEvent.system);
+            updateCurrentSystem(theEvent.systemname);
             return true;
         }
 

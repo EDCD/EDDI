@@ -68,7 +68,7 @@ namespace EddiDataProviderService
                 foreach (Body body in system.bodies.ToList())
                 {
                     JObject Body = response["bodies"].Children<JObject>()
-                        .FirstOrDefault(o => o["name"] != null && o["name"].ToString() == body.name);
+                        .FirstOrDefault(o => o["name"] != null && o["name"].ToString() == body.bodyname);
 
                     if (Body != null)
                     {

@@ -790,17 +790,17 @@ namespace UnitTests
             List<Event> events = JournalMonitor.ParseJournalEntry(line);
             NearSurfaceEvent @event = (NearSurfaceEvent)events[0];
 
-            Assert.AreEqual("Ageno", @event.system);
+            Assert.AreEqual("Ageno", @event.systemname);
             Assert.AreEqual(18262335038849, @event.systemAddress);
-            Assert.AreEqual("Ageno B 2 a", @event.body);
+            Assert.AreEqual("Ageno B 2 a", @event.bodyname);
 
             string line2 = @"{ ""timestamp"":""2018 - 07 - 24T07: 08:58Z"", ""event"":""LeaveBody"", ""StarSystem"":""Ageno"", ""SystemAddress"":18262335038849, ""Body"":""Ageno B 2 a"", ""BodyID"":17 }";
             events = JournalMonitor.ParseJournalEntry(line2);
             NearSurfaceEvent @event2 = (NearSurfaceEvent)events[0];
 
-            Assert.AreEqual("Ageno", @event2.system);
+            Assert.AreEqual("Ageno", @event2.systemname);
             Assert.AreEqual(18262335038849, @event2.systemAddress);
-            Assert.AreEqual("Ageno B 2 a", @event2.body);
+            Assert.AreEqual("Ageno B 2 a", @event2.bodyname);
         }
 
         [TestMethod]

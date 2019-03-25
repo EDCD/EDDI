@@ -32,6 +32,16 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Added `destinationsystem`, `destinationdistance`, and `destinationstation` properties (similar to `system`)
     * Added `Crime check system` script to report wanted status and 'legal facilities', upon entering the system.
     * Added `Crime check station` script to report 'legal facilities', upon entering normal space, next to station.
+    * The `P()` function now converts roman numerals in planet classes (e.g. Class II gas giant) into numbers (e.g. Class 2 gas giant) to ensure proper pronunciation.
+    * Revised `Body scanned` event variables for better interchangeability with with the `BodyDetails` function
+      * WAS: `atmospherecomposition`, IS: `atmospherecompositions`
+      * WAS: `solidcomposition`, IS: `solidcompositions`
+    * Revised `Star scanned` event variable for better interchangeability with with the `BodyDetails` function
+      * WAS: `distancefromarrival`, IS: `distance` (`distancefromarrival` property preserved for compatibility with legacy scripts)
+    * `Star scanned` script revised. Preference added for reporting stellar class. Corrected edit scars. Refactored to reduce redundancies. 
+    * `Body volcanism script` revised. Corrected edit scars and added a little more variety to the script.
+    * Variables from the following scripts have been revised to add new variables and improve consistency between events.
+      * `Near surface` event (body => bodyname, system => systemname)
     * Revised `Jumped` script to provide a (reasonably) accurate jump range, based on total ship mass.
     * Revised `Ship targeted` script to utilize new `shiptargets` object to preclude reporting on previously scanned ships.
     * Added `JumpDetails()` Cottle function call to provide useful jump infomation based on ship loadout and fuel level. See `Help` & `Variables` windows for details.
@@ -85,17 +95,6 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Fixed a bug that would prevent new file header events from registering when Elite Dangerous was restarted with EDDI running.
   * Ship monitor
     * Dropped access for EDShipyard.com as it is no longer being maintained.
-  * Speech responder
-    * The `P()` function now converts roman numerals in planet classes (e.g. Class II gas giant) into numbers (e.g. Class 2 gas giant) to ensure proper pronunciation.
-    * Revised `Body scanned` event variables for better interchangeability with with the `BodyDetails` function
-      * WAS: `atmospherecomposition`, IS: `atmospherecompositions`
-      * WAS: `solidcomposition`, IS: `solidcompositions`
-    * Revised `Star scanned` event variable for better interchangeability with with the `BodyDetails` function
-      * WAS: `distancefromarrival`, IS: `distance` (`distancefromarrival` property preserved for compatibility with legacy scripts)
-    * `Star scanned` script revised. Preference added for reporting stellar class. Corrected edit scars. Refactored to reduce redundancies. 
-    * `Body volcanism script` revised. Corrected edit scars and added a little more variety to the script.
-    
-### Development
   * Speech responder
     * Fixed a bug that would cause Test scripts to only be written to file and not voiced.
     * Amended layout of the 'Delete' button.
