@@ -160,7 +160,7 @@ namespace EddiGalnetMonitor.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to https://community.elitedangerous.com/en/galnet-rss.
+        ///   Looks up a localized string similar to http://elitedangerous-website-backend-production.elitedangerous.com/galnet.rss.
         /// </summary>
         public static string sourceURL {
             get {
