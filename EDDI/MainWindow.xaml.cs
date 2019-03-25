@@ -23,6 +23,7 @@ using Utilities;
 
 namespace Eddi
 {
+    /// <summary>A subclass of ComboBox for selecting star systems</summary>
     public class StarSystemComboBox : System.Windows.Controls.ComboBox
     {
         private List<string> systemList = new List<string>();
@@ -69,6 +70,17 @@ namespace Eddi
 
                 changeHandler?.Invoke();
             }
+        }
+
+        internal void DidLoseFocus(string oldValue)
+        {
+            if (Text != oldValue)
+            {
+                Text = oldValue;
+                IsDropDownOpen = false;
+                ItemsSource = null;
+            }
+            systemList.Clear();
         }
     }
 
@@ -539,13 +551,7 @@ namespace Eddi
         private void HomeSystemDropDown_LostFocus(object sender, RoutedEventArgs e)
         {
             EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
-            if (homeSystemDropDown.Text != eddiConfiguration.HomeSystem)
-            {
-                homeSystemDropDown.Text = eddiConfiguration.HomeSystem;
-                homeSystemDropDown.IsDropDownOpen = false;
-                homeSystemDropDown.ItemsSource = null;
-            }
-            systemList.Clear();
+            homeSystemDropDown.DidLoseFocus(oldValue: eddiConfiguration.HomeSystem);
         }
 
         private void ConfigureHomeStationOptions(string system)
@@ -727,13 +733,7 @@ namespace Eddi
         private void SquadronSystemDropDown_LostFocus(object sender, RoutedEventArgs e)
         {
             EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
-            if (squadronSystemDropDown.Text != eddiConfiguration.SquadronSystem)
-            {
-                squadronSystemDropDown.Text = eddiConfiguration.SquadronSystem;
-                squadronSystemDropDown.IsDropDownOpen = false;
-                squadronSystemDropDown.ItemsSource = null;
-            }
-            systemList.Clear();
+            squadronSystemDropDown.DidLoseFocus(oldValue: eddiConfiguration.SquadronSystem);
         }
 
         private void squadronFactionDropDownUpdated(object sender, SelectionChangedEventArgs e)
