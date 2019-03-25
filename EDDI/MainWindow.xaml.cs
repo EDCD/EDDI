@@ -526,6 +526,13 @@ namespace Eddi
 
         private void HomeSystemDropDown_LostFocus(object sender, RoutedEventArgs e)
         {
+            EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
+            if (homeSystemDropDown.Text != eddiConfiguration.HomeSystem)
+            {
+                homeSystemDropDown.Text = eddiConfiguration.HomeSystem;
+                homeSystemDropDown.IsDropDownOpen = false;
+                homeSystemDropDown.ItemsSource = null;
+            }
             systemList.Clear();
         }
 
@@ -741,6 +748,13 @@ namespace Eddi
 
         private void SquadronSystemDropDown_LostFocus(object sender, RoutedEventArgs e)
         {
+            EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
+            if (squadronSystemDropDown.Text != eddiConfiguration.SquadronSystem)
+            {
+                squadronSystemDropDown.Text = eddiConfiguration.SquadronSystem;
+                squadronSystemDropDown.IsDropDownOpen = false;
+                squadronSystemDropDown.ItemsSource = null;
+            }
             systemList.Clear();
         }
 
