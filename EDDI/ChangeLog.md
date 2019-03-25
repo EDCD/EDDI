@@ -13,7 +13,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * 'Add Record' button allows manual addition of claims, fines & bounties.
     * 'Find Legal Facilities' button allows standalone users to locate the nearest 'Legal Facilities' contact. 
     * New `FactionRecord` and `FactionReport` properties, available via Cottle scripting. See the `Variables` window for details.
-  * Mission Monitor
+ * Mission Monitor
     * Added 'Find Route', 'Next Route', 'Update Route', and 'Clear Route' buttons to give standalone users access to missions routing functionality.
   * Navigation Service
     * Consolidated all `RouteDetails()` functionality.
@@ -24,6 +24,16 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Added `destinationsystem`, `destinationdistance`, and `destinationstation` properties (similar to `system`)
     * Added `Crime check system` script to report wanted status and 'legal facilities', upon entering the system.
     * Added `Crime check station` script to report 'legal facilities', upon entering normal space, next to station.
+    * The `P()` function now converts roman numerals in planet classes (e.g. Class II gas giant) into numbers (e.g. Class 2 gas giant) to ensure proper pronunciation.
+    * Revised `Body scanned` event variables for better interchangeability with with the `BodyDetails` function
+      * WAS: `atmospherecomposition`, IS: `atmospherecompositions`
+      * WAS: `solidcomposition`, IS: `solidcompositions`
+    * Revised `Star scanned` event variable for better interchangeability with with the `BodyDetails` function
+      * WAS: `distancefromarrival`, IS: `distance` (`distancefromarrival` property preserved for compatibility with legacy scripts)
+    * `Star scanned` script revised. Preference added for reporting stellar class. Corrected edit scars. Refactored to reduce redundancies. 
+    * `Body volcanism script` revised. Corrected edit scars and added a little more variety to the script.
+    * Variables from the following scripts have been revised to add new variables and improve consistency between events.
+      * `Near surface` event (body => bodyname, system => systemname)
   * Voice Attack
     * Added `Destination system`, `Destination system distance`, and `Destination station` properties.
 
@@ -33,7 +43,6 @@ Full details of the variables available for each noted event, and VoiceAttack in
   * Galnet monitor
     * Restored multi-lingual access.
     * No longer loses its place if a web request times out or fails.
-  * Speech responder
     * Added event `Discovery scan`, triggered when you "honk" the discovery scanner
     * Added new function `GetFaction()` to obtain details about a faction.
     * Revised faction object to allow reporting faction data spanning multiple star systems.
@@ -57,17 +66,6 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Fixed a bug that would prevent new file header events from registering when Elite Dangerous was restarted with EDDI running.
   * Ship monitor
     * Dropped access for EDShipyard.com as it is no longer being maintained.
-  * Speech responder
-    * The `P()` function now converts roman numerals in planet classes (e.g. Class II gas giant) into numbers (e.g. Class 2 gas giant) to ensure proper pronunciation.
-    * Revised `Body scanned` event variables for better interchangeability with with the `BodyDetails` function
-      * WAS: `atmospherecomposition`, IS: `atmospherecompositions`
-      * WAS: `solidcomposition`, IS: `solidcompositions`
-    * Revised `Star scanned` event variable for better interchangeability with with the `BodyDetails` function
-      * WAS: `distancefromarrival`, IS: `distance` (`distancefromarrival` property preserved for compatibility with legacy scripts)
-    * `Star scanned` script revised. Preference added for reporting stellar class. Corrected edit scars. Refactored to reduce redundancies. 
-    * `Body volcanism script` revised. Corrected edit scars and added a little more variety to the script.
-    
-### Development
   * Speech responder
     * Fixed a bug that would cause Test scripts to only be written to file and not voiced.
     * Amended layout of the 'Delete' button.
