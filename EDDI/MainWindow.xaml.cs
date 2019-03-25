@@ -24,6 +24,11 @@ using Utilities;
 
 namespace Eddi
 {
+    public class StarSystemComboBox : System.Windows.Controls.ComboBox
+    {
+        //
+    }
+
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
