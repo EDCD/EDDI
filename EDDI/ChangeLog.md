@@ -25,17 +25,19 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Added `Crime check system` script to report wanted status and 'legal facilities', upon entering the system.
     * Added `Crime check station` script to report 'legal facilities', upon entering normal space, next to station.
     * The `P()` function now converts roman numerals in planet classes (e.g. Class II gas giant) into numbers (e.g. Class 2 gas giant) to ensure proper pronunciation.
-    * Revised `Body scanned` event variables for better interchangeability with with the `BodyDetails` function
+    * Revised BodyDetails() function for better interchangeability with events.
+      * WAS: `name`*, IS: `bodyname` 
+      * WAS: `type`*, IS: `bodytype`
+    * Revised `Body scanned` event variables for better interchangeability with with the `BodyDetails` function.
       * WAS: `atmospherecomposition`, IS: `atmospherecompositions`
       * WAS: `solidcomposition`, IS: `solidcompositions`
-    * Revised `Star scanned` event variable for better interchangeability with with the `BodyDetails` function
-      * WAS: `distancefromarrival`, IS: `distance` (`distancefromarrival` property preserved for compatibility with legacy scripts)
+    * Revised `Star scanned` event variable for better interchangeability with with the `BodyDetails` function.
+      * WAS: `distancefromarrival`*, IS: `distance`
+    * Revised `Entered normal space`, `Glide`, `Location`, and `Near surface` event variables for better interchangeability with the `BodyDetails` function.
+      * WAS: `body`*, IS: `bodyname` 
+      * WAS: `system`*, IS: `systemname`
     * `Star scanned` script revised. Preference added for reporting stellar class. Corrected edit scars. Refactored to reduce redundancies. 
     * `Body volcanism script` revised. Corrected edit scars and added a little more variety to the script.
-    * Variables from the following scripts have been revised to add new variables and improve consistency between events.
-      * `Glide` event (body => bodyname, system => systemname)
-      * `Location` event (body => bodyname, system => systemname)
-      * `Near surface` event (body => bodyname, system => systemname)
   * Voice Attack
     * Added `Destination system`, `Destination system distance`, and `Destination station` properties.
 
@@ -51,6 +53,8 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Revised faction object to allow reporting faction data spanning multiple star systems.
   * Voice Attack
     * Fixed a bug that would incorrectly disable invoked speech while `disablespeechresponder` was set.
+
+    \* For noted properties, old property names are preserved for legacy script compatibility
 
 ### 3.3.7
   * Speech responder
