@@ -406,7 +406,7 @@ namespace EddiStatusMonitor
                 if (gliding && thisStatus.fsd_status == "cooldown")
                 {
                     gliding = false;
-                    EDDI.Instance.enqueueEvent(new GlideEvent(currentStatus.timestamp, gliding, EDDI.Instance.CurrentStellarBody.systemname, EDDI.Instance.CurrentStellarBody.systemAddress, EDDI.Instance.CurrentStellarBody.name, EDDI.Instance.CurrentStellarBody.Type));
+                    EDDI.Instance.enqueueEvent(new GlideEvent(currentStatus.timestamp, gliding, EDDI.Instance.CurrentStellarBody.systemname, EDDI.Instance.CurrentStellarBody.systemAddress, EDDI.Instance.CurrentStellarBody.bodyname, EDDI.Instance.CurrentStellarBody.bodyType));
                 }
 
                 // Reset our fuel log if we change vehicles or refuel

@@ -16,18 +16,18 @@ namespace EddiDataDefinitions
         /// <summary>The ID of this body in EDSM</summary>
         public long? EDSMID { get; set; }
 
-        /// <summary>The type of the body (Star or Planet)</summary>
+        /// <summary>The localized type of the body </summary>
         [JsonIgnore, Obsolete("Please use BodyType instead")]
-        public string type => (Type ?? BodyType.None).localizedName;
+        public string bodytype => (Type ?? BodyType.None).localizedName;
 
-        /// <summary>The type of the body (Star or Planet)</summary>
-        public BodyType Type { get; set; } = BodyType.None;
+        /// <summary>The body type of the body (e.g. Star or Planet)</summary>
+        public BodyType bodyType { get; set; } = BodyType.None;
 
         /// <summary>The name of the body</summary>
-        public string name { get; set; }
+        public string bodyname { get; set; }
 
         /// <summary>The short name of the body</summary>
-        public string shortname => (systemname == null || name == systemname) ? name : name.Replace(systemname, "").Trim();
+        public string shortname => (systemname == null || bodyname == systemname) ? bodyname : bodyname.Replace(systemname, "").Trim();
 
         /// <summary>The name of the system in which the body resides</summary>
         public string systemname { get; set; }
@@ -44,17 +44,45 @@ namespace EddiDataDefinitions
         /// <summary>The distance of the body from the arrival star, in light seconds </summary>
         public decimal? distance { get; set; }
 
-        /// <summary>If this body can be landed upon</summary>
-        public bool? landable { get; set; }
-
-        /// <summary>If this body is tidally locked</summary>
-        public bool? tidallylocked { get; set; }
-
         /// <summary>The surface temperature of the body, in Kelvin</summary>
         public decimal? temperature { get; set; }
 
+        /// <summary>The radius of the body, in km</summary>
+        public decimal? radius { get; set; }
+
         /// <summary>The body's rings</summary>
         public List<Ring> rings { get; set; }
+
+        // Scan data
+
+        /// <summary>Whether we've scanned this object</summary>
+        public bool scanned { get; set; }
+
+        /// <summary>Whether we've mapped this object</summary>
+        public bool mapped { get; set; }
+
+        // Orbital characteristics
+
+        /// <summary>The argument of periapsis, in degrees</summary>
+        public decimal? periapsis { get; set; }
+
+        /// <summary>The axial tilt, in degrees</summary>
+        public decimal? tilt { get; set; }
+
+        /// <summary>The orbital eccentricity of the planet</summary>
+        public decimal? eccentricity { get; set; }
+
+        /// <summary>The orbital inclination of the body, in degrees</summary>
+        public decimal? inclination { get; set; }
+
+        /// <summary>The orbital period of the body, in days</summary>
+        public decimal? orbitalperiod { get; set; }
+
+        /// <summary>The rotational period of the body, in days</summary>
+        public decimal? rotationalperiod { get; set; }
+
+        /// <summary>The semi-major axis of the body, in light seconds</summary>
+        public decimal? semimajoraxis { get; set; }
 
         // Star-specific items
 
@@ -87,8 +115,6 @@ namespace EddiDataDefinitions
 
         // Body-specific items
 
-        /// <summary>The argument of periapsis, in degrees</summary>
-        public decimal? periapsis { get; set; }
 
         /// <summary>The atmosphere class</summary>
         public AtmosphereClass atmosphereclass { get; set; } = AtmosphereClass.None;
@@ -100,32 +126,17 @@ namespace EddiDataDefinitions
         /// <summary>The atmosphere's composition</summary>
         public List<AtmosphereComposition> atmospherecompositions { get; set; } = new List<AtmosphereComposition>();
 
-        /// <summary>The axial tilt, in degrees</summary>
-        public decimal? tilt { get; set; }
+        /// <summary>If this body can be landed upon</summary>
+        public bool? landable { get; set; }
+
+        /// <summary>If this body is tidally locked</summary>
+        public bool? tidallylocked { get; set; }
 
         /// <summary>The earth mass of the planet</summary>
         public decimal? earthmass { get; set; }
 
         /// <summary>The gravity of the planet, in G's</summary>
         public decimal? gravity { get; set; }
-
-        /// <summary>The orbital eccentricity of the planet</summary>
-        public decimal? eccentricity { get; set; }
-
-        /// <summary>The orbital inclination of the planet, in degrees</summary>
-        public decimal? inclination { get; set; }
-
-        /// <summary>The orbital period of the planet, in days</summary>
-        public decimal? orbitalperiod { get; set; }
-
-        /// <summary>The radius of the planet, in km</summary>
-        public decimal? radius { get; set; }
-
-        /// <summary>The rotational period of the planet, in days</summary>
-        public decimal? rotationalperiod { get; set; }
-
-        /// <summary>The semi-major axis of the planet, in light seconds</summary>
-        public decimal? semimajoraxis { get; set; }
 
         /// <summary>The pressure at the surface of the planet, in Earth atmospheres</summary>
         public decimal? pressure { get; set; }
@@ -157,15 +168,9 @@ namespace EddiDataDefinitions
         /// <summary>The reserve level (localized name)</summary>
         [JsonIgnore, Obsolete("Please use SystemReserveLevel instead")]
         public string reserves => (reserveLevel ?? ReserveLevel.None).localizedName;
-        
+
         /// <summary>The reserve level</summary>
         public ReserveLevel reserveLevel { get; set; } = ReserveLevel.None;
-
-        /// <summary>Whether we've scanned this body</summary>
-        public bool scanned { get; set; }
-
-        /// <summary>Whether we've mapped this body</summary>
-        public bool mapped { get; set; }
 
         /// <summary> the last time the information present changed (in the data source) </summary>
         public long? updatedat { get; set; }
@@ -202,5 +207,15 @@ namespace EddiDataDefinitions
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
         }
+
+        // Deprecated properties (preserved for backwards compatibility with Cottle and database stored values)
+
+        /// <summary>The name of the body</summary>
+        [JsonIgnore, Obsolete("Please use bodyname instead")]
+        public string name { get { return bodyname; } set { bodyname = value; } }
+
+        /// <summary>The body type of the body (e.g. Star or Planet)</summary>
+        [JsonIgnore, Obsolete("Please use BodyType instead")]
+        public BodyType Type { get { return bodyType; } set { bodyType = value; } }
     }
 }
