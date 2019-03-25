@@ -143,7 +143,7 @@ namespace IntegrationTests
             Assert.IsInstanceOfType(@event, typeof(EnteredNormalSpaceEvent));
 
             PrivateObject privateObject = new PrivateObject(Eddi.EDDI.Instance);
-            privateObject.Invoke("updateCurrentStellarBody", new object[] { @event.body, @event.system, @event.systemAddress });
+            privateObject.Invoke("updateCurrentStellarBody", new object[] { @event.bodyname, @event.systemname, @event.systemAddress });
             Assert.AreEqual("HIP 17704 4", EDDI.Instance.CurrentStellarBody?.bodyname);
         }
 

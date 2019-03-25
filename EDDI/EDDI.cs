@@ -1516,27 +1516,27 @@ namespace Eddi
         private bool eventEnteredNormalSpace(EnteredNormalSpaceEvent theEvent)
         {
             Environment = Constants.ENVIRONMENT_NORMAL_SPACE;
-            updateCurrentSystem(theEvent.system);
 
             if (theEvent.bodyType == BodyType.FromEDName("Station"))
             {
                 // In this case body == station
-                Station station = CurrentStarSystem.stations.Find(s => s.name == theEvent.body);
+                Station station = CurrentStarSystem.stations.Find(s => s.name == theEvent.bodyname);
                 if (station == null)
                 {
                     // This station is unknown to us, might not be in our data source or we might not have connectivity.  Use a placeholder
                     station = new Station
                     {
-                        name = theEvent.body,
-                        systemname = theEvent.system
+                        name = theEvent.bodyname,
+                        systemname = theEvent.systemname
                     };
                 }
                 CurrentStation = station;
             }
-            else if (theEvent.body != null)
+            else if (theEvent.bodyname != null)
             {
-                updateCurrentStellarBody(theEvent.body, theEvent.system, theEvent.systemAddress);
+                updateCurrentStellarBody(theEvent.bodyname, theEvent.systemname, theEvent.systemAddress);
             }
+            updateCurrentSystem(theEvent.systemname);
             return true;
         }
 

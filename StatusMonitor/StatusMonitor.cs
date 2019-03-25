@@ -464,7 +464,7 @@ namespace EddiStatusMonitor
             {
                 gliding = true;
                 EnteredNormalSpaceEvent theEvent = (EnteredNormalSpaceEvent)@event;
-                EDDI.Instance.enqueueEvent(new GlideEvent(DateTime.UtcNow, gliding, theEvent.system, theEvent.systemAddress, theEvent.body, theEvent.bodyType) { raw = @event.raw, fromLoad = @event.fromLoad });
+                EDDI.Instance.enqueueEvent(new GlideEvent(DateTime.UtcNow, gliding, theEvent.systemname, theEvent.systemAddress, theEvent.bodyname, theEvent.bodyType) { raw = @event.raw, fromLoad = @event.fromLoad });
             }
         }
 

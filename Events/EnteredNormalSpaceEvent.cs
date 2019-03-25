@@ -15,29 +15,35 @@ namespace EddiEvents
 
         static EnteredNormalSpaceEvent()
         {
-            VARIABLES.Add("system", "The system at which the commander has entered normal space");
-            VARIABLES.Add("body", "The nearest body to the commander when entering normal space");
+            VARIABLES.Add("systemname", "The system at which the commander has entered normal space");
+            VARIABLES.Add("bodyname", "The nearest body to the commander when entering normal space");
             VARIABLES.Add("bodytype", "The type of the nearest body to the commander when entering normal space");
         }
 
         [JsonProperty("system")]
-        public string system { get; private set; }
+        public string systemname { get; private set; }
 
         public string bodytype => (bodyType ?? BodyType.None).localizedName;
 
         [JsonProperty("body")]
-        public string body{ get; private set; }
+        public string bodyname{ get; private set; }
+
+        // Deprecated, maintained for compatibility with user scripts
+        [Obsolete("Use systemname instead")]
+        public string system => systemname;
+        [Obsolete("Use bodyname instead")]
+        public string body => bodyname;
 
         // Admin
         public long systemAddress { get; private set; }
         public BodyType bodyType { get; private set; } = BodyType.None;
 
-        public EnteredNormalSpaceEvent(DateTime timestamp, string system, long systemAddress, string body, BodyType bodyType) : base(timestamp, NAME)
+        public EnteredNormalSpaceEvent(DateTime timestamp, string systemName, long systemAddress, string bodyName, BodyType bodyType) : base(timestamp, NAME)
         {
-            this.system = system;
+            this.systemname = systemName;
             this.systemAddress = systemAddress;
             this.bodyType = bodyType;
-            this.body = body;
+            this.bodyname = bodyName;
         }
     }
 }

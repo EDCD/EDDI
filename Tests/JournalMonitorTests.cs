@@ -455,9 +455,9 @@ namespace UnitTests
             List<Event> events = JournalMonitor.ParseJournalEntry(line);
             Assert.IsTrue(events.Count == 1);
             EnteredNormalSpaceEvent normalSpaceEvent = (EnteredNormalSpaceEvent)events[0];
-            Assert.AreEqual("Vonarburg Co-operative", normalSpaceEvent.body);
+            Assert.AreEqual("Vonarburg Co-operative", normalSpaceEvent.bodyname);
             Assert.AreEqual("Station", normalSpaceEvent.bodytype);
-            Assert.AreEqual("Wyrd", normalSpaceEvent.system);
+            Assert.AreEqual("Wyrd", normalSpaceEvent.systemname);
             Assert.AreEqual(5031654888146, normalSpaceEvent.systemAddress);
         }
 
