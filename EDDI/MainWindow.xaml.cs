@@ -28,7 +28,7 @@ namespace Eddi
     {
         private List<string> systemList = new List<string>();
 
-        internal void OnTextChanged(object sender, TextChangedEventArgs e, string oldValue, Action changeHandler)
+        internal void TextDidChange(object sender, TextChangedEventArgs e, string oldValue, Action changeHandler)
         {
             if (Text != oldValue)
             {
@@ -72,7 +72,7 @@ namespace Eddi
             }
         }
 
-        internal void HandleSelectionChange(Action<string> changeHandler)
+        internal void SelectionDidChange(Action<string> changeHandler)
         {
             if (ItemsSource != null)
             {
@@ -539,7 +539,7 @@ namespace Eddi
                     eddiConfiguration.ToFile();
                 }
             }
-            homeSystemDropDown.OnTextChanged(sender, e, eddiConfiguration.HomeSystem, changeHandler);
+            homeSystemDropDown.TextDidChange(sender, e, eddiConfiguration.HomeSystem, changeHandler);
         }
 
         private void HomeSystemDropDown_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -555,7 +555,7 @@ namespace Eddi
                 // Update station options for new system
                 ConfigureHomeStationOptions(eddiConfiguration.HomeSystem);
             }
-            homeSystemDropDown.HandleSelectionChange(changeHandler);
+            homeSystemDropDown.SelectionDidChange(changeHandler);
         }
 
         private void HomeSystemDropDown_LostFocus(object sender, RoutedEventArgs e)
@@ -722,7 +722,7 @@ namespace Eddi
                     eddiConfiguration.ToFile();
                 }
             }
-            squadronSystemDropDown.OnTextChanged(sender, e, oldValue, changeHandler);
+            squadronSystemDropDown.TextDidChange(sender, e, oldValue, changeHandler);
         }
 
         private void SquadronSystemDropDown_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -738,7 +738,7 @@ namespace Eddi
                 // Update squadron faction options for new system
                 ConfigureSquadronFactionOptions(eddiConfiguration);
             }
-            squadronSystemDropDown.HandleSelectionChange(changeHandler);
+            squadronSystemDropDown.SelectionDidChange(changeHandler);
         }
 
         private void SquadronSystemDropDown_LostFocus(object sender, RoutedEventArgs e)
