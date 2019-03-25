@@ -2,6 +2,7 @@
 using EddiDataDefinitions;
 using EddiDataProviderService;
 using EddiSpeechService;
+using EddiStarMapService;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -9,6 +10,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.IO.Compression;
+using System.Linq;
 using System.Speech.Synthesis;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -28,6 +30,7 @@ namespace Eddi
     public partial class MainWindow : Window
     {
         private bool fromVA;
+        private List<string> systemList = new List<string>();
 
         struct LanguageDef : IComparable<LanguageDef>
         {
@@ -70,7 +73,7 @@ namespace Eddi
                     Properties.Settings.Default.Maximized = false;
 
                     // If opened from VoiceAttack, don't allow minimized state
-                    Properties.Settings.Default.Minimized = fromVA ? false: true;
+                    Properties.Settings.Default.Minimized = fromVA ? false : true;
 
                     break;
                 default:
@@ -185,16 +188,13 @@ namespace Eddi
             }
 
             EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
-            if (eddiConfiguration.validHomeSystem)
-            {
-                ConfigureHomeStationOptions(eddiConfiguration.HomeSystem);
-                eddiHomeSystemText.Text = eddiConfiguration.HomeSystem;
-            }
-            else
-            {
-                eddiHomeSystemText.Text = string.Empty;
-            }
+
+            // Setup home system & station from config file
+            homeSystemDropDown.ItemsSource = new List<string> { eddiConfiguration.HomeSystem ?? string.Empty };
+            homeSystemDropDown.SelectedItem = eddiConfiguration.HomeSystem ?? string.Empty;
+            ConfigureHomeStationOptions(eddiConfiguration.HomeSystem);
             homeStationDropDown.SelectedItem = eddiConfiguration.HomeStation ?? Properties.MainWindow.no_station;
+
             eddiVerboseLogging.IsChecked = eddiConfiguration.Debug;
             eddiBetaProgramme.IsChecked = eddiConfiguration.Beta;
             if (eddiConfiguration.Gender == "Female")
@@ -213,15 +213,11 @@ namespace Eddi
             eddiSquadronIDText.Text = eddiConfiguration.SquadronID ?? string.Empty;
             squadronRankDropDown.SelectedItem = (eddiConfiguration.SquadronRank ?? SquadronRank.None).localizedName;
             ConfigureSquadronRankOptions(eddiConfiguration);
-            if (eddiConfiguration.validSquadronSystem)
-            {
-                ConfigureSquadronFactionOptions(eddiConfiguration);
-                eddiSquadronSystemText.Text = eddiConfiguration.SquadronSystem;
-            }
-            else
-            {
-                eddiSquadronSystemText.Text = string.Empty;
-            }
+
+            // Setup squadron home system from config file
+            squadronSystemDropDown.ItemsSource = new List<string> { eddiConfiguration.SquadronSystem ?? string.Empty };
+            squadronSystemDropDown.SelectedItem = eddiConfiguration.SquadronSystem ?? string.Empty;
+
             squadronFactionDropDown.SelectedItem = eddiConfiguration.SquadronFaction ?? Power.None.localizedName;
             squadronPowerDropDown.SelectedItem = (eddiConfiguration.SquadronPower ?? Power.None).localizedName;
             ConfigureSquadronPowerOptions(eddiConfiguration);
@@ -319,7 +315,7 @@ namespace Eddi
                     satelliteCultures.Add(new LanguageDef(cInfo));
                 }
                 catch
-                {}
+                { }
             }
             satelliteCultures.Sort();
             cultures.AddRange(satelliteCultures);
@@ -460,42 +456,84 @@ namespace Eddi
             }
         }
 
-        // Handle changes to the eddi tab
-        private void homeSystemChanged(object sender, TextChangedEventArgs e)
+        // Handle changes to the editable home system combo box
+        private void HomeSystemText_TextChanged(object sender, TextChangedEventArgs e)
         {
             EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
-            if (eddiConfiguration.HomeSystem != eddiHomeSystemText.Text)
+            if (eddiConfiguration.HomeSystem != homeSystemDropDown.Text)
             {
-                eddiConfiguration.HomeSystem = string.IsNullOrWhiteSpace(eddiHomeSystemText.Text) ? null : eddiHomeSystemText.Text.Trim();
-                eddiConfiguration = EDDI.Instance.updateHomeSystem(eddiConfiguration);
+                string systemName = homeSystemDropDown.Text;
+                if (systemName.Length > 1)
+                {
+                    systemList = systemList.Where(s => s.StartsWith(systemName, StringComparison.InvariantCultureIgnoreCase)).ToList();
+                    if (systemList.Count < 5)
+                    {
+                        systemList = StarMapService.GetStarMapSystemsPartial(systemName, false, false)
+                            .Select(s => s.name).ToList();
+
+                        if (systemList.Count == 1 && systemName.Equals(systemList[0], StringComparison.InvariantCultureIgnoreCase))
+                        {
+                            homeSystemDropDown.ItemsSource = systemList.Take(1);
+                            homeSystemDropDown.SelectedItem = systemList[0];
+                            homeSystemDropDown.IsDropDownOpen = false;
+                            return;
+                        }
+                    }
+                    homeSystemDropDown.ItemsSource = systemList.Take(5);
+
+                    if (homeSystemDropDown.IsDropDownOpen == false)
+                    {
+                        homeSystemDropDown.IsDropDownOpen = true;
+                        var cmbTextBox = (System.Windows.Controls.TextBox)homeSystemDropDown.Template
+                            .FindName("PART_EditableTextBox", homeSystemDropDown);
+                        cmbTextBox.CaretIndex = homeSystemDropDown.Text.Length;
+                    }
+                }
+                else
+                {
+                    if (homeSystemDropDown.ItemsSource != null)
+                    {
+                        homeSystemDropDown.IsDropDownOpen = false;
+                        homeSystemDropDown.ItemsSource = null;
+                    }
+                }
+
+                // Reset the home station due to selecting new home system
                 if (eddiConfiguration.HomeStation != null)
                 {
                     eddiConfiguration.HomeStation = null;
                     homeStationDropDown.SelectedItem = Properties.MainWindow.no_station;
                     ConfigureHomeStationOptions(null);
+                    eddiConfiguration.ToFile();
                 }
-                eddiConfiguration.ToFile();
-
-                // Update the UI for invalid results
-                runValidation(eddiHomeSystemText);
             }
         }
 
-        private void eddiHomeSystemText_LostFocus(object sender, RoutedEventArgs e)
+        private void HomeSystemDropDown_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            // Discard invalid results
-            EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
-            if (eddiConfiguration.validHomeSystem)
+            if (homeSystemDropDown.ItemsSource != null)
             {
-                eddiHomeSystemText.Text = eddiConfiguration.HomeSystem;
+                // Update configuration to new home system
+                EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
+                eddiConfiguration.HomeSystem = homeSystemDropDown.SelectedItem?.ToString();
+                eddiConfiguration = EDDI.Instance.updateHomeSystem(eddiConfiguration);
+                eddiConfiguration.ToFile();
+
+                // Update station options for new system
                 ConfigureHomeStationOptions(eddiConfiguration.HomeSystem);
             }
-            else
+        }
+
+        private void HomeSystemDropDown_LostFocus(object sender, RoutedEventArgs e)
+        {
+            EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
+            if (homeSystemDropDown.Text != eddiConfiguration.HomeSystem)
             {
-                eddiConfiguration.HomeSystem = null;
-                eddiHomeSystemText.Text = string.Empty;
-                eddiConfiguration.ToFile();
+                homeSystemDropDown.Text = eddiConfiguration.HomeSystem;
+                homeSystemDropDown.IsDropDownOpen = false;
+                homeSystemDropDown.ItemsSource = null;
             }
+            systemList.Clear();
         }
 
         private void ConfigureHomeStationOptions(string system)
@@ -507,8 +545,8 @@ namespace Eddi
 
             if (system != null)
             {
-                StarSystem HomeSystem = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(system, true);
-                if (HomeSystem.stations != null)
+                StarSystem HomeSystem = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystem(system, true);
+                if (HomeSystem?.stations != null)
                 {
                     foreach (Station station in HomeSystem.stations)
                     {
@@ -524,7 +562,7 @@ namespace Eddi
         private void homeStationDropDownUpdated(object sender, SelectionChangedEventArgs e)
         {
             EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
-            string homeStationName = homeStationDropDown.SelectedItem.ToString();
+            string homeStationName = homeStationDropDown.SelectedItem?.ToString();
             if (eddiConfiguration.HomeStation != homeStationName)
             {
                 eddiConfiguration.HomeStation = homeStationName == Properties.MainWindow.no_station ? null : homeStationName;
@@ -534,19 +572,19 @@ namespace Eddi
         }
 
         private void isMale_Checked(object sender, RoutedEventArgs e)
-         {
-             EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
-             eddiConfiguration.Gender = "Male";
-             eddiConfiguration.ToFile();
-             EDDI.Instance.Cmdr.gender = "Male";
-          }
+        {
+            EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
+            eddiConfiguration.Gender = "Male";
+            eddiConfiguration.ToFile();
+            EDDI.Instance.Cmdr.gender = "Male";
+        }
 
         private void isFemale_Checked(object sender, RoutedEventArgs e)
         {
-             EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
-             eddiConfiguration.Gender = "Female";
-             eddiConfiguration.ToFile();
-             EDDI.Instance.Cmdr.gender = "Female";
+            EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
+            eddiConfiguration.Gender = "Female";
+            eddiConfiguration.ToFile();
+            EDDI.Instance.Cmdr.gender = "Female";
         }
 
         private void isNeitherGender_Checked(object sender, RoutedEventArgs e)
@@ -568,7 +606,7 @@ namespace Eddi
                     eddiConfiguration.SquadronID = null;
                     eddiSquadronIDText.Text = string.Empty;
 
-                    eddiSquadronSystemText.Text = string.Empty;
+                    squadronSystemDropDown.Text = string.Empty;
                 }
                 eddiConfiguration = resetSquadronRank(eddiConfiguration);
                 eddiConfiguration.ToFile();
@@ -610,7 +648,7 @@ namespace Eddi
                 if (eddiConfiguration.SquadronID.Contains(" ") || eddiConfiguration.SquadronID.Length > 4)
                 {
                     eddiConfiguration.SquadronID = null;
-                    eddiSquadronSystemText.Text = string.Empty;
+                    squadronSystemDropDown.Text = string.Empty;
                     eddiConfiguration.ToFile();
                 }
             }
@@ -630,13 +668,49 @@ namespace Eddi
             }
         }
 
-        private void squadronSystemChanged(object sender, TextChangedEventArgs e)
+        // Handle changes to the editable squadron system combo box
+        private void SquadronSystemText_TextChanged(object sender, TextChangedEventArgs e)
         {
             EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
-            if (eddiConfiguration.SquadronSystem != eddiSquadronSystemText.Text)
+            if (eddiConfiguration.SquadronSystem != squadronSystemDropDown.Text)
             {
-                eddiConfiguration.SquadronSystem = string.IsNullOrWhiteSpace(eddiSquadronSystemText.Text) ? null : eddiSquadronSystemText.Text.Trim();
-                eddiConfiguration = EDDI.Instance.updateSquadronSystem(eddiConfiguration);
+                string systemName = squadronSystemDropDown.Text;
+                if (systemName.Length > 1)
+                {
+                    systemList = systemList.Where(s => s.StartsWith(systemName, StringComparison.InvariantCultureIgnoreCase)).ToList();
+                    if (systemList.Count < 5)
+                    {
+                        systemList = StarMapService.GetStarMapSystemsPartial(systemName, false, false)
+                            .Select(s => s.name).ToList();
+
+                        if (systemList.Count == 1 && systemName.Equals(systemList[0], StringComparison.InvariantCultureIgnoreCase))
+                        {
+                            squadronSystemDropDown.ItemsSource = systemList.Take(1);
+                            squadronSystemDropDown.SelectedItem = systemList[0];
+                            squadronSystemDropDown.IsDropDownOpen = false;
+                            return;
+                        }
+                    }
+                    squadronSystemDropDown.ItemsSource = systemList.Take(5);
+
+                    if (squadronSystemDropDown.IsDropDownOpen == false)
+                    {
+                        squadronSystemDropDown.IsDropDownOpen = true;
+                        var cmbTextBox = (System.Windows.Controls.TextBox)squadronSystemDropDown.Template
+                            .FindName("PART_EditableTextBox", squadronSystemDropDown);
+                        cmbTextBox.CaretIndex = squadronSystemDropDown.Text.Length;
+                    }
+                }
+                else
+                {
+                    if (squadronSystemDropDown.ItemsSource != null)
+                    {
+                        squadronSystemDropDown.IsDropDownOpen = false;
+                        squadronSystemDropDown.ItemsSource = null;
+                    }
+                }
+
+                // Reset the squadron data due to selecting new squadron system
                 if (eddiConfiguration.SquadronFaction != null)
                 {
                     eddiConfiguration.SquadronFaction = null;
@@ -652,29 +726,36 @@ namespace Eddi
 
                     EDDI.Instance.Cmdr.squadronallegiance = Superpower.None;
                     EDDI.Instance.Cmdr.squadronpower = Power.None;
+                    eddiConfiguration.ToFile();
                 }
-                eddiConfiguration.ToFile();
-
-                // Update the UI for invalid results
-                runValidation(eddiSquadronSystemText);
             }
         }
 
-        private void eddiSquadronSystemText_LostFocus(object sender, RoutedEventArgs e)
+        private void SquadronSystemDropDown_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            // Discard invalid results
-            EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
-            if (eddiConfiguration.validSquadronSystem)
+            if (squadronSystemDropDown.ItemsSource != null)
             {
-                eddiSquadronSystemText.Text = eddiConfiguration.SquadronSystem;
+                // Update configuration to new squadron system
+                EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
+                eddiConfiguration.SquadronSystem = squadronSystemDropDown.SelectedItem?.ToString();
+                eddiConfiguration = EDDI.Instance.updateSquadronSystem(eddiConfiguration);
+                eddiConfiguration.ToFile();
+
+                //Update squadron faction options for new system
                 ConfigureSquadronFactionOptions(eddiConfiguration);
             }
-            else
+        }
+
+        private void SquadronSystemDropDown_LostFocus(object sender, RoutedEventArgs e)
+        {
+            EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
+            if (squadronSystemDropDown.Text != eddiConfiguration.SquadronSystem)
             {
-                eddiConfiguration.SquadronSystem = null;
-                eddiSquadronSystemText.Text = string.Empty;
-                eddiConfiguration.ToFile();
+                squadronSystemDropDown.Text = eddiConfiguration.SquadronSystem;
+                squadronSystemDropDown.IsDropDownOpen = false;
+                squadronSystemDropDown.ItemsSource = null;
             }
+            systemList.Clear();
         }
 
         private void squadronFactionDropDownUpdated(object sender, SelectionChangedEventArgs e)
@@ -857,7 +938,7 @@ namespace Eddi
         {
             setStatusInfo();
 
-            if (oldState == CompanionAppService.State.AwaitingCallback && 
+            if (oldState == CompanionAppService.State.AwaitingCallback &&
                 newState == CompanionAppService.State.Authorized)
             {
                 SpeechService.Instance.Say(null, string.Format(Properties.EddiResources.frontier_api_ok, EDDI.Instance.Cmdr.name), 0);
@@ -1083,7 +1164,7 @@ namespace Eddi
                 var progress = new Progress<string>(s => githubIssueButton.Content = Properties.EddiResources.preparing_log + s);
                 await Task.Factory.StartNew(() => prepareLog(progress), TaskCreationOptions.LongRunning);
             }
-            
+
             createGithubIssue();
         }
 
@@ -1111,7 +1192,7 @@ namespace Eddi
                 // Truncate log files more than the specified size MB in size
                 const long maxLogSizeBytes = 0x200000; // 2 MB
                 FileInfo logFile = new FileInfo(issueLogFile);
-                if (logFile.Length > maxLogSizeBytes) 
+                if (logFile.Length > maxLogSizeBytes)
                 {
                     using (MemoryStream ms = new MemoryStream((int)maxLogSizeBytes))
                     {
@@ -1120,7 +1201,7 @@ namespace Eddi
                             issueLog.Seek(-1 * maxLogSizeBytes, SeekOrigin.End);
                             // advance to after next line end
                             int c = 0;
-                            while ( (c = issueLog.ReadByte() ) != -1)
+                            while ((c = issueLog.ReadByte()) != -1)
                             {
                                 if (c == '\n')
                                 {
@@ -1178,79 +1259,6 @@ namespace Eddi
         private void TroubleshootClicked(object sender, RoutedEventArgs e)
         {
             Process.Start("https://github.com/EDCD/EDDI/blob/master/TROUBLESHOOTING.md");
-        }
-
-        private void runValidation(System.Windows.Controls.TextBox textBox)
-        {
-            BindingExpression b = BindingOperations.GetBindingExpression(textBox, System.Windows.Controls.TextBox.TextProperty);
-            try
-            {
-                b.ValidateWithoutUpdate();
-            }
-            catch { }
-        }
-    }
-
-    public class ValidHomeSystemRule : ValidationRule
-    {
-        public override ValidationResult Validate(object value, CultureInfo cultureInfo)
-        {
-            EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
-
-            if (value == null)
-            {
-                return ValidationResult.ValidResult;
-            }
-            if (eddiConfiguration.validHomeSystem)
-            {
-                return ValidationResult.ValidResult;
-            }
-            else
-            {
-                return new ValidationResult(false, Properties.EddiResources.invalid_system);
-            }
-        }
-    }
-
-    public class ValidSquadronSystemRule : ValidationRule
-    {
-        public override ValidationResult Validate(object value, CultureInfo cultureInfo)
-        {
-            EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
-
-            if (value == null)
-            {
-                return ValidationResult.ValidResult;
-            }
-            if (eddiConfiguration.validSquadronSystem)
-            {
-                return ValidationResult.ValidResult;
-            }
-            else
-            {
-                return new ValidationResult(false, Properties.EddiResources.invalid_system);
-            }
-        }
-    }
-
-    public class ValidSquadronIDRule : ValidationRule
-    {
-        public override ValidationResult Validate(object value, CultureInfo cultureInfo)
-        {
-            EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
-
-            if (value == null)
-            {
-                return ValidationResult.ValidResult;
-            }
-            if (eddiConfiguration.validSquadronSystem)
-            {
-                return ValidationResult.ValidResult;
-            }
-            else
-            {
-                return new ValidationResult(false, Properties.EddiResources.invalid_system);
-            }
         }
     }
 }
