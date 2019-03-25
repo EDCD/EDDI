@@ -4,7 +4,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
 
 ### Development
   * Core
-    * All 'Location' events are now processed.
+    * All 'Location' events are now processed (repeats of this event are no longer suppressed).
     * Added `Docked` and `Landed` Environment states. Note that `Environment` follows the ship and `Vehicle` follows the commander.
   * Crime Monitor
     * New monitor tracks all bond & bounty awards and fines & bounties incurred.
@@ -33,6 +33,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * `Star scanned` script revised. Preference added for reporting stellar class. Corrected edit scars. Refactored to reduce redundancies. 
     * `Body volcanism script` revised. Corrected edit scars and added a little more variety to the script.
     * Variables from the following scripts have been revised to add new variables and improve consistency between events.
+      * `Location` event (body => bodyname, system => systemname)
       * `Near surface` event (body => bodyname, system => systemname)
   * Voice Attack
     * Added `Destination system`, `Destination system distance`, and `Destination station` properties.
@@ -43,7 +44,8 @@ Full details of the variables available for each noted event, and VoiceAttack in
   * Galnet monitor
     * Restored multi-lingual access.
     * No longer loses its place if a web request times out or fails.
-    * Added event `Discovery scan`, triggered when you "honk" the discovery scanner
+  * Speech responder
+    * Added event `System scan complete`, triggered when all bodies in the star system have been discovered.
     * Added new function `GetFaction()` to obtain details about a faction.
     * Revised faction object to allow reporting faction data spanning multiple star systems.
   * Voice Attack

@@ -15,11 +15,11 @@ namespace EddiEvents
 
         static LocationEvent()
         {
-            VARIABLES.Add("system", "The name of the system in which the commander resides");
+            VARIABLES.Add("systemname", "The name of the system in which the commander resides");
             VARIABLES.Add("x", "The X co-ordinate of the system in which the commander resides");
             VARIABLES.Add("y", "The Y co-ordinate of the system in which the commander resides");
             VARIABLES.Add("z", "The Z co-ordinate of the system in which the commander resides");
-            VARIABLES.Add("body", "The nearest body to the commander");
+            VARIABLES.Add("bodyname", "The nearest body to the commander");
             VARIABLES.Add("bodytype", "The type of the nearest body to the commander");
             VARIABLES.Add("docked", "True if the commander is docked");
             VARIABLES.Add("station", "The name of the station at which the commander is docked");
@@ -48,7 +48,7 @@ namespace EddiEvents
             VARIABLES.Add("population", "The population of the system to which the commander has jumped");
         }
 
-        public string system { get; private set; }
+        public string systemname { get; private set; }
 
         public decimal x { get; private set; }
 
@@ -56,7 +56,7 @@ namespace EddiEvents
 
         public decimal z { get; private set; }
 
-        public string body { get; private set; }
+        public string bodyname { get; private set; }
 
         public string bodytype => (bodyType ?? BodyType.None).localizedName;
 
@@ -81,19 +81,25 @@ namespace EddiEvents
 
         // Pre-3.3.03 faction properties to maintain script/profile backwards compatability
         public string faction => controllingsystemfaction?.name;
-        public string factionstate => (controllingsystemfaction?.presences.FirstOrDefault(p => p.systemName == system)?.FactionState ?? FactionState.None).localizedName;
+        public string factionstate => (controllingsystemfaction?.presences.FirstOrDefault(p => p.systemName == systemname)?.FactionState ?? FactionState.None).localizedName;
         public string government => (controllingsystemfaction?.Government ?? Government.None).localizedName;
         public string allegiance => (controllingsystemfaction?.Allegiance ?? Superpower.None).localizedName;
 
         // Post-3.3.03 faction properties
         public string systemfaction => controllingsystemfaction?.name;
-        public string systemstate => (controllingsystemfaction?.presences.FirstOrDefault(p => p.systemName == system)?.FactionState ?? FactionState.None).localizedName;
+        public string systemstate => (controllingsystemfaction?.presences.FirstOrDefault(p => p.systemName == systemname)?.FactionState ?? FactionState.None).localizedName;
         public string systemgovernment => (controllingsystemfaction?.Government ?? Government.None).localizedName;
         public string systemallegiance => (controllingsystemfaction?.Allegiance ?? Superpower.None).localizedName;
         public string stationfaction => controllingstationfaction?.name;
-        public string stationstate => (controllingstationfaction?.presences.FirstOrDefault(p => p.systemName == system)?.FactionState ?? FactionState.None).localizedName;
+        public string stationstate => (controllingstationfaction?.presences.FirstOrDefault(p => p.systemName == systemname)?.FactionState ?? FactionState.None).localizedName;
         public string stationgovernment => (controllingstationfaction?.Government ?? Government.None).localizedName;
         public string stationallegiancet => (controllingstationfaction?.Allegiance ?? Superpower.None).localizedName;
+
+        // Deprecated, maintained for compatibility with user scripts
+        [Obsolete("Use systemname instead")]
+        public string system => systemname;
+        [Obsolete("Use bodyname instead")]
+        public string body => bodyname;
 
         // These properties are not intended to be user facing
         public long? systemAddress { get; private set; }
@@ -107,14 +113,14 @@ namespace EddiEvents
         public StationModel stationModel { get; private set; } = StationModel.None;
         public BodyType bodyType { get; private set; } = BodyType.None;
 
-        public LocationEvent(DateTime timestamp, string system, decimal x, decimal y, decimal z, long systemAddress, string body, BodyType bodytype, bool docked, string station, StationModel stationtype, long? marketId, Faction systemFaction, Faction stationFaction, Economy economy, Economy economy2, SecurityLevel security, long? population, decimal? longitude, decimal? latitude, List<Faction> factions) : base(timestamp, NAME)
+        public LocationEvent(DateTime timestamp, string systemName, decimal x, decimal y, decimal z, long systemAddress, string bodyName, BodyType bodytype, bool docked, string station, StationModel stationtype, long? marketId, Faction systemFaction, Faction stationFaction, Economy economy, Economy economy2, SecurityLevel security, long? population, decimal? longitude, decimal? latitude, List<Faction> factions) : base(timestamp, NAME)
         {
-            this.system = system;
+            this.systemname = systemName;
             this.x = x;
             this.y = y;
             this.z = z;
             this.systemAddress = systemAddress;
-            this.body = body;
+            this.bodyname = bodyName;
             this.bodyType = bodytype;
             this.docked = docked;
             this.station = station;
