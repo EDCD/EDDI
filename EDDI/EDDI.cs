@@ -1906,16 +1906,16 @@ namespace Eddi
             // We just scanned a body.  We can only proceed if we know our current star system
             if (CurrentStarSystem != null)
             {
-                Body body = CurrentStarSystem.planets?.FirstOrDefault(b => b.bodyname == theEvent.name);
+                Body body = CurrentStarSystem.planets?.FirstOrDefault(b => b.bodyname == theEvent.bodyname);
                 if (body == null)
                 {
-                    Logging.Debug("Scanned body " + theEvent.name + " is new - creating");
+                    Logging.Debug("Scanned body " + theEvent.bodyname + " is new - creating");
                     // A new body - set it up
                     body = new Body
                     {
                         EDDBID = -1,
                         bodyType = BodyType.FromEDName("Planet"),
-                        bodyname = theEvent.name,
+                        bodyname = theEvent.bodyname,
                         systemname = CurrentStarSystem.name,
                         systemAddress = CurrentStarSystem?.systemAddress
                     };
@@ -1925,7 +1925,7 @@ namespace Eddi
                 body.systemAddress = CurrentStarSystem?.systemAddress;
 
                 // Update with the information we have
-                body.distance = (long?)theEvent.distancefromarrival;
+                body.distance = (long?)theEvent.distance;
                 body.landable = theEvent.landable;
                 body.tidallylocked = theEvent.tidallylocked;
                 body.temperature = (long?)theEvent.temperature;
@@ -1935,9 +1935,9 @@ namespace Eddi
                 body.solidcompositions = theEvent.solidcompositions;
                 body.gravity = theEvent.gravity;
                 body.eccentricity = theEvent.eccentricity;
-                body.inclination = theEvent.orbitalinclination;
+                body.inclination = theEvent.inclination;
                 body.orbitalperiod = theEvent.orbitalperiod;
-                body.rotationalperiod = theEvent.rotationperiod;
+                body.rotationalperiod = theEvent.rotationalperiod;
                 body.semimajoraxis = theEvent.semimajoraxis;
                 body.pressure = theEvent.pressure;
                 body.terraformState = theEvent.terraformState;
@@ -1952,7 +1952,7 @@ namespace Eddi
                 body.rings = theEvent.rings;
                 body.scanned = true;
 
-                Logging.Debug("Saving data for scanned body " + theEvent.name);
+                Logging.Debug("Saving data for scanned body " + theEvent.bodyname);
                 StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
             }
 

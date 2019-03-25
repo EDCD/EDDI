@@ -19,10 +19,10 @@ namespace EddiEvents
 
         static BodyScannedEvent()
         {
-            VARIABLES.Add("name", "The name of the body that has been scanned");
+            VARIABLES.Add("bodyname", "The name of the body that has been scanned");
             VARIABLES.Add("systemname", "The name of the system containing the scanned body");
             VARIABLES.Add("shortname", "The short name of the body, less the system name");
-            VARIABLES.Add("bodyclass", "The class of the body that has been scanned (High metal content body etc)");
+            VARIABLES.Add("planettype", "The type of body that has been scanned (High metal content body etc)");
             VARIABLES.Add("gravity", "The surface gravity of the body that has been scanned, relative to Earth's gravity");
             VARIABLES.Add("earthmass", "The mass of the body that has been scanned, relative to Earth's mass");
             VARIABLES.Add("radius", "The radius of the body that has been scanned, in kilometres");
@@ -34,30 +34,28 @@ namespace EddiEvents
             VARIABLES.Add("atmospherecompositions", "The composition of the atmosphere of the body that has been scanned (array of AtmosphereComposition objects) (only available if DSS equipped)");
             VARIABLES.Add("solidcompositions", "The composition of the body's solids that has been scanned (array of SolidComposition objects) (only available if DSS equipped)");
             VARIABLES.Add("volcanism", "The volcanism of the body that has been scanned (only available if DSS equipped)");
-            VARIABLES.Add("distancefromarrival", "The distance in LS from the main star");
+            VARIABLES.Add("distance", "The distance in LS from the main star");
             VARIABLES.Add("orbitalperiod", "The number of days taken for a full orbit of the main star");
-            VARIABLES.Add("rotationperiod", "The number of days taken for a full rotation");
+            VARIABLES.Add("rotationalperiod", "The number of days taken for a full rotation");
             VARIABLES.Add("semimajoraxis", "The semi major axis of the body's orbit, in light seconds");
             VARIABLES.Add("eccentricity", "The orbital eccentricity of the body");
-            VARIABLES.Add("orbitalinclination", "The orbital inclination of the body, in degrees");
+            VARIABLES.Add("inclination", "The orbital inclination of the body, in degrees");
             VARIABLES.Add("periapsis", "The argument of periapsis of the body, in degrees");
             VARIABLES.Add("rings", "A list of the body's rings (as ring objects)");
             VARIABLES.Add("reserves", "The level of reserves in the rings if applicable (Pristine/Major/Common/Low/Depleted)");
             VARIABLES.Add("materials", "A list of materials present on the body that has been scanned");
             VARIABLES.Add("terraformstate", "Whether the body can be, is in the process of, or has been terraformed (only available if DSS equipped)");
-            VARIABLES.Add("axialtilt", "Axial tilt for the body, in degrees (only available if DSS equipped)");
+            VARIABLES.Add("tilt", "Axial tilt for the body, in degrees (only available if DSS equipped)");
             VARIABLES.Add("estimatedvalue", "The estimated value of the current scan");
         }
 
-        public string name { get; private set; }
+        public string bodyname { get; private set; }
 
         public string systemname { get; private set; }
 
-        public string shortname => (systemname == null || name == systemname) ? name : name.Replace(systemname, "").Trim();
+        public string shortname => (systemname == null || bodyname == systemname) ? bodyname : bodyname.Replace(systemname, "").Trim();
 
         public string planettype => planetClass.localizedName;  // This is the object property reported from the BodyDetails() function
-
-        public string bodyclass => planetClass.localizedName;
 
         public decimal? earthmass { get; private set; }
 
@@ -75,31 +73,23 @@ namespace EddiEvents
 
         public string atmosphere => atmosphereclass?.localizedName;
 
-        public AtmosphereClass atmosphereclass { get; private set; }
-
         public List<AtmosphereComposition> atmospherecompositions { get; private set; }
 
         public List<SolidComposition> solidcompositions { get; private set; }
 
         public Volcanism volcanism { get; private set; }
 
-        public decimal distance => distancefromarrival;  // This is the object property reported from the BodyDetails() function
-
-        public decimal distancefromarrival { get; private set; }
+        public decimal distance { get; private set; }
 
         public decimal orbitalperiod { get; private set; }
 
-        public decimal rotationalperiod => rotationperiod;  // This is the object property reported from the BodyDetails() function
-
-        public decimal rotationperiod { get; private set; }
+        public decimal rotationalperiod { get; private set; }
 
         public decimal? semimajoraxis { get; private set; }
 
         public decimal? eccentricity { get; private set; }
 
-        public decimal? inclination => orbitalinclination;  // This is the object property reported from the BodyDetails() function
-
-        public decimal? orbitalinclination { get; private set; }
+        public decimal? inclination { get; private set; }
 
         public decimal? periapsis { get; private set; }
 
@@ -111,25 +101,37 @@ namespace EddiEvents
 
         public string terraformstate => terraformState.localizedName;
 
-        public TerraformState terraformState { get; private set; }
-
-        public decimal? tilt => axialtilt;  // This is the object property reported from the BodyDetails() function
-
-        public decimal? axialtilt { get; private set; }
+        public decimal? tilt { get; private set; }
 
         public long? estimatedvalue { get; private set; }
 
+        // Variables below are not intended to be user facing
+        public AtmosphereClass atmosphereclass { get; private set; }
         public PlanetClass planetClass { get; private set; }
-
+        public TerraformState terraformState { get; private set; }
         public string scantype { get; private set; } // One of AutoScan, Basic, Detailed, NavBeacon, NavBeaconDetail
-        // AutoScan events are detailed scans triggered via proximity. 
+                                                     // AutoScan events are detailed scans triggered via proximity. 
 
-        public BodyScannedEvent(DateTime timestamp, string scantype, string name, string systemName, PlanetClass planetClass, decimal? earthmass, decimal? radiusKm, decimal gravity, decimal? temperatureKelvin, decimal? pressureAtm, bool? tidallylocked, bool? landable, AtmosphereClass atmosphereClass, List<AtmosphereComposition> atmosphereComposition, List<SolidComposition> solidCompositions, Volcanism volcanism, decimal distancefromarrival_Ls, decimal orbitalperiodDays, decimal rotationperiodDays, decimal? semimajoraxisAU, decimal? eccentricity, decimal? orbitalinclinationDegrees, decimal? periapsisDegrees, List<Ring> rings, string reserves, List<MaterialPresence> materials, TerraformState terraformstate, decimal? axialtiltDegrees) : base(timestamp, NAME)
+        // Deprecated, maintained for compatibility with user scripts
+        [Obsolete("Use bodyname instead")]
+        public string name => bodyname;
+        [Obsolete("Use planetClass instead")]
+        public string bodyclass => planetClass.localizedName;
+        [Obsolete("Use distance instead")]
+        public decimal distancefromarrival => distance;  // This is the object property reported from the BodyDetails() function
+        [Obsolete("Use inclination instead")]
+        public decimal? orbitalinclination => inclination;  // This is the object property reported from the BodyDetails() function
+        [Obsolete("Use rotationalperiod instead")]
+        public decimal rotationperiod => rotationalperiod;  // This is the object property reported from the BodyDetails() function
+        [Obsolete("Use tilt instead")]
+        public decimal? axialtilt => tilt;  // This is the object property reported from the BodyDetails() function
+
+        public BodyScannedEvent(DateTime timestamp, string scantype, string bodyName, string systemName, PlanetClass planetClass, decimal? earthmass, decimal? radiusKm, decimal gravity, decimal? temperatureKelvin, decimal? pressureAtm, bool? tidallylocked, bool? landable, AtmosphereClass atmosphereClass, List<AtmosphereComposition> atmosphereComposition, List<SolidComposition> solidCompositions, Volcanism volcanism, decimal distancefromarrival_Ls, decimal orbitalperiodDays, decimal rotationperiodDays, decimal? semimajoraxisAU, decimal? eccentricity, decimal? orbitalinclinationDegrees, decimal? periapsisDegrees, List<Ring> rings, string reserves, List<MaterialPresence> materials, TerraformState terraformstate, decimal? axialtiltDegrees) : base(timestamp, NAME)
         {
             this.scantype = scantype;
-            this.name = name;
+            this.bodyname = bodyName;
             this.systemname = systemName;
-            this.distancefromarrival = distancefromarrival_Ls;
+            this.distance = distancefromarrival_Ls;
             this.planetClass = planetClass;
             this.earthmass = earthmass;
             this.radius = radiusKm;
@@ -143,16 +145,16 @@ namespace EddiEvents
             this.solidcompositions = solidCompositions;
             this.volcanism = volcanism;
             this.orbitalperiod = orbitalperiodDays;
-            this.rotationperiod = rotationperiodDays;
+            this.rotationalperiod = rotationperiodDays;
             this.semimajoraxis = semimajoraxisAU;
             this.eccentricity = eccentricity;
-            this.orbitalinclination = orbitalinclinationDegrees;
+            this.inclination = orbitalinclinationDegrees;
             this.periapsis = periapsisDegrees;
             this.rings = rings;
             this.reserves = reserves;
             this.materials = materials;
             this.terraformState = terraformstate;
-            this.axialtilt = axialtiltDegrees;
+            this.tilt = axialtiltDegrees;
             this.estimatedvalue = estimateValue(scantype == null ? false : scantype.Contains("Detail"));
         }
 

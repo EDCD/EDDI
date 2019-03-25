@@ -30,6 +30,12 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * WAS: `type`*, IS: `bodytype`
     * Revised `Body scanned` event variables for better interchangeability with with the `BodyDetails` function.
       * WAS: `atmospherecomposition`, IS: `atmospherecompositions`
+      * WAS: `axialtilt`*, IS: `tilt`
+      * WAS: `bodyclass`*, IS: `planettype`
+      * WAS: `distancefromarrival`*, IS: `distance`
+      * WAS `name`*, IS: `bodyname` 
+      * WAS `orbitalinclination`*, IS `inclination`
+      * WAS `rotationperiod`*, IS: `rotationalperiod`
       * WAS: `solidcomposition`, IS: `solidcompositions`
     * Revised `Star scanned` event variable for better interchangeability with with the `BodyDetails` function.
       * WAS: `distancefromarrival`*, IS: `distance`

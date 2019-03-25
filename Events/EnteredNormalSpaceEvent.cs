@@ -34,7 +34,7 @@ namespace EddiEvents
         [Obsolete("Use bodyname instead")]
         public string body => bodyname;
 
-        // Admin
+        // Variables below are not intended to be user facing
         public long systemAddress { get; private set; }
         public BodyType bodyType { get; private set; } = BodyType.None;
 

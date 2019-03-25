@@ -29,7 +29,7 @@ namespace EddiEvents
         [Obsolete("Use bodyname instead")]
         public string body => bodyname;
 
-        // Admin
+        // Variables below are not intended to be user facing
         public long systemAddress { get; private set; }
 
         public NearSurfaceEvent(DateTime timestamp, bool approachingSurface, string systemName, long systemAddress, string bodyName) : base(timestamp, NAME)
