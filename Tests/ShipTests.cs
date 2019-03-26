@@ -107,6 +107,8 @@ namespace UnitTests
 
             // Start a ship monitor
             ShipMonitor shipMonitor = new ShipMonitor();
+            PrivateObject privateObject = new PrivateObject(shipMonitor);
+            privateObject.SetFieldOrProperty("updateDat", DateTime.MinValue);
 
             // Log in
             SendEvents(@"{ ""timestamp"":""2017-04-24T08:10:21Z"", ""event"":""LoadGame"", ""Commander"":""McDonald"", ""Ship"":""SideWinder"", ""ShipID"":901, ""ShipName"":"""", ""ShipIdent"":"""", ""FuelLevel"":2.000000, ""FuelCapacity"":2.000000, ""GameMode"":""Solo"", ""Credits"":1637243231, ""Loan"":0 }", shipMonitor);
@@ -338,6 +340,7 @@ namespace UnitTests
 
             // Update the shipyard
             privateObject.SetFieldOrProperty("shipyard", new ObservableCollection<Ship>(newShiplist));
+            privateObject.SetFieldOrProperty("updateDat", DateTime.MinValue);
 
             shipMonitor.SetCurrentShip(configuration.currentshipid);
             Assert.AreEqual(81, shipMonitor.GetCurrentShip().LocalId);
@@ -399,6 +402,7 @@ namespace UnitTests
         {
             var privateObject = new PrivateObject(new ShipMonitor());
             privateObject.SetFieldOrProperty("shipyard", new ObservableCollection<Ship>());
+            privateObject.SetFieldOrProperty("updateDat", DateTime.MinValue);
 
             string data = System.IO.File.ReadAllText("loadout.json");
             List<Event> events = JournalMonitor.ParseJournalEntry(data);

@@ -610,15 +610,14 @@ namespace EddiVoiceAttackResponder
                         StarSystem StoredShipStarSystem = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(ship.starsystem);
 
                         // Work out the distance to the system where the ship is stored if we can
+                        // CurrentStarSystem might not have been initialised yet so we check. If not, it may be set on the next pass of the setValues() method.
                         if (EDDI.Instance.CurrentStarSystem != null)
                         {
-                            // CurrentStarSystem might not have been initialised yet so we check. If not, it may be set on the next pass of the setValues() method.
-                            StarSystem ThisStarSystem = StarSystemSqLiteRepository.Instance.GetStarSystem(EDDI.Instance.CurrentStarSystem.name);
-                            if (ThisStarSystem?.x != null & StoredShipStarSystem?.x != null)
+                            if (EDDI.Instance.CurrentStarSystem.x != null & StoredShipStarSystem?.x != null)
                             {
-                                decimal dx = (ThisStarSystem.x - StoredShipStarSystem.x) ?? 0M;
-                                decimal dy = (ThisStarSystem.y - StoredShipStarSystem.y) ?? 0M;
-                                decimal dz = (ThisStarSystem.z - StoredShipStarSystem.z) ?? 0M;
+                                decimal dx = (EDDI.Instance.CurrentStarSystem.x - StoredShipStarSystem.x) ?? 0M;
+                                decimal dy = (EDDI.Instance.CurrentStarSystem.y - StoredShipStarSystem.y) ?? 0M;
+                                decimal dz = (EDDI.Instance.CurrentStarSystem.z - StoredShipStarSystem.z) ?? 0M;
                                 decimal distance = (decimal)(Math.Sqrt((double)(dx * dx + dy * dy + dz * dz)));
                                 vaProxy.SetDecimal(prefix + " distance", distance);
                             }

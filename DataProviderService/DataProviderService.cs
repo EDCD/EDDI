@@ -14,7 +14,7 @@ namespace EddiDataProviderService
         // Uses the EDSM data service and legacy EDDP data
         public static StarSystem GetSystemData(string system, bool showCoordinates = true, bool showSystemInformation = true, bool showBodies = true, bool showStations = true, bool showFactions = true)
         {
-            if (system == null) { return null; }
+            if (system == null || string.IsNullOrEmpty(system)) { return null; }
 
             StarSystem starSystem = StarMapService.GetStarMapSystem(system, showCoordinates, showSystemInformation);
             starSystem = GetSystemExtras(starSystem, showSystemInformation, showBodies, showStations, showFactions) ?? new StarSystem() { name = system };
@@ -29,7 +29,10 @@ namespace EddiDataProviderService
             List<StarSystem> fullStarSystems = new List<StarSystem>();
             foreach (string systemName in systemNames)
             {
-                fullStarSystems.Add(GetSystemExtras(starSystems.Find(s => s.name == systemName), showSystemInformation, showBodies, showStations, showFactions) ?? new StarSystem() { name = systemName } );
+                if (!string.IsNullOrEmpty(systemName))
+                {
+                    fullStarSystems.Add(GetSystemExtras(starSystems.Find(s => s.name == systemName), showSystemInformation, showBodies, showStations, showFactions) ?? new StarSystem() { name = systemName });
+                }
             }
             return starSystems;
         }
