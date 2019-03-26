@@ -3,6 +3,8 @@
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
 ### Development
+  * Journal monitor
+    * Fixed a bug that would prevent new file header events from registering when Elite Dangerous was restarted with EDDI running.
   * Speech responder
     * Fixed a bug that would cause Test scripts to only be written to file and not voiced.
   * VoiceAttack responder
