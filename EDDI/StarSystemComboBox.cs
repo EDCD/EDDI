@@ -28,27 +28,21 @@ namespace Eddi
                 if (systemList.Count == 1 && systemName.Equals(systemList[0], StringComparison.InvariantCultureIgnoreCase))
                 {
                     ItemsSource = systemList.Take(1);
-                    SelectedItem = systemList[0];
+                    SelectedIndex = 0;
                     IsDropDownOpen = false;
-                    return;
                 }
-
-                ItemsSource = systemList.Take(systemListSize);
-                if (!IsDropDownOpen)
+                else
                 {
+                    ItemsSource = systemList.Take(systemListSize);
                     IsDropDownOpen = true;
                     var cmbTextBox = (TextBox)Template.FindName("PART_EditableTextBox", this);
-                    cmbTextBox.CaretIndex = Text.Length;
+                    cmbTextBox.CaretIndex = systemName.Length;
                 }
             }
             else
             {
-                if (ItemsSource != null)
-                {
-                    IsDropDownOpen = false;
-                    ItemsSource = null;
-                    SelectedIndex = -1;
-                }
+                IsDropDownOpen = false;
+                // don't change the ItemSource or SelectedIndex
             }
 
             changeHandler?.Invoke();
