@@ -24,22 +24,17 @@ namespace Eddi
             string systemName = Text;
             if (systemName.Length > 1)
             {
-                systemList = systemList.Where(s => s.StartsWith(systemName, StringComparison.InvariantCultureIgnoreCase)).ToList();
-                if (systemList.Count < systemListSize)
+                systemList = SystemsBeginningWith(systemName);
+                if (systemList.Count == 1 && systemName.Equals(systemList[0], StringComparison.InvariantCultureIgnoreCase))
                 {
-                    systemList = SystemsBeginningWith(systemName);
-
-                    if (systemList.Count == 1 && systemName.Equals(systemList[0], StringComparison.InvariantCultureIgnoreCase))
-                    {
-                        ItemsSource = systemList.Take(1);
-                        SelectedItem = systemList[0];
-                        IsDropDownOpen = false;
-                        return;
-                    }
+                    ItemsSource = systemList.Take(1);
+                    SelectedItem = systemList[0];
+                    IsDropDownOpen = false;
+                    return;
                 }
-                ItemsSource = systemList.Take(systemListSize);
 
-                if (IsDropDownOpen == false)
+                ItemsSource = systemList.Take(systemListSize);
+                if (!IsDropDownOpen)
                 {
                     IsDropDownOpen = true;
                     var cmbTextBox = (TextBox)Template.FindName("PART_EditableTextBox", this);
@@ -49,6 +44,9 @@ namespace Eddi
             else if (systemName.Length == 1)
             {
                 systemList = SystemsBeginningWith(systemName);
+                IsDropDownOpen = false;
+                ItemsSource = null;
+                SelectedIndex = -1;
                 return;
             }
             else
