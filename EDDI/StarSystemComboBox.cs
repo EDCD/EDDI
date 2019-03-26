@@ -12,6 +12,11 @@ namespace Eddi
         private List<string> systemList = new List<string>();
         private int systemListSize = 5;
 
+        private List<string> SystemsBeginningWith(string systemName)
+        {
+            return StarMapService.GetStarMapSystemsPartial(systemName, false, false).Select(s => s.name).ToList();
+        }
+
         internal void TextDidChange(object sender, TextChangedEventArgs e, string oldValue, Action changeHandler)
         {
             if (Text == oldValue) { return; }
@@ -22,7 +27,7 @@ namespace Eddi
                 systemList = systemList.Where(s => s.StartsWith(systemName, StringComparison.InvariantCultureIgnoreCase)).ToList();
                 if (systemList.Count < systemListSize)
                 {
-                    systemList = StarMapService.GetStarMapSystemsPartial(systemName, false, false).Select(s => s.name).ToList();
+                    systemList = SystemsBeginningWith(systemName);
 
                     if (systemList.Count == 1 && systemName.Equals(systemList[0], StringComparison.InvariantCultureIgnoreCase))
                     {
@@ -43,7 +48,7 @@ namespace Eddi
             }
             else if (systemName.Length == 1)
             {
-                systemList = StarMapService.GetStarMapSystemsPartial(systemName, false, false).Select(s => s.name).ToList();
+                systemList = SystemsBeginningWith(systemName);
                 return;
             }
             else
