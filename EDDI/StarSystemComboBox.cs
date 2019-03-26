@@ -41,20 +41,13 @@ namespace Eddi
                     cmbTextBox.CaretIndex = Text.Length;
                 }
             }
-            else if (systemName.Length == 1)
-            {
-                systemList = SystemsBeginningWith(systemName);
-                IsDropDownOpen = false;
-                ItemsSource = null;
-                SelectedIndex = -1;
-                return;
-            }
             else
             {
                 if (ItemsSource != null)
                 {
                     IsDropDownOpen = false;
                     ItemsSource = null;
+                    SelectedIndex = -1;
                 }
             }
 
