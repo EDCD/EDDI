@@ -10,7 +10,7 @@ namespace Eddi
     public class StarSystemComboBox : ComboBox
     {
         private List<string> systemList = new List<string>();
-        private int systemListSize = 5;
+        private int systemListSize = 10;
 
         private List<string> SystemsBeginningWith(string systemName)
         {
