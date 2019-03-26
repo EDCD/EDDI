@@ -22,8 +22,7 @@ namespace Eddi
                 systemList = systemList.Where(s => s.StartsWith(systemName, StringComparison.InvariantCultureIgnoreCase)).ToList();
                 if (systemList.Count < systemListSize)
                 {
-                    systemList = StarMapService.GetStarMapSystemsPartial(systemName, false, false)
-                        .Select(s => s.name).ToList();
+                    systemList = StarMapService.GetStarMapSystemsPartial(systemName, false, false).Select(s => s.name).ToList();
 
                     if (systemList.Count == 1 && systemName.Equals(systemList[0], StringComparison.InvariantCultureIgnoreCase))
                     {
@@ -41,6 +40,11 @@ namespace Eddi
                     var cmbTextBox = (TextBox)Template.FindName("PART_EditableTextBox", this);
                     cmbTextBox.CaretIndex = Text.Length;
                 }
+            }
+            else if (systemName.Length == 1)
+            {
+                systemList = StarMapService.GetStarMapSystemsPartial(systemName, false, false).Select(s => s.name).ToList();
+                return;
             }
             else
             {
