@@ -221,14 +221,28 @@ namespace EddiSpeechResponder
             Say(scriptResolver, ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor"))?.GetCurrentShip(), @event.type, @event, null, null, SayOutLoud());
         }
 
-        // Say something with the default resolver
-        public void Say(Ship ship, string scriptName, Event theEvent = null, int? priority = null, string voice = null, bool sayOutLoud = true)
+        public bool SayOutLoud()
         {
-            Say(scriptResolver, ship, scriptName, theEvent, priority, voice, sayOutLoud);
+            // By default we say things unless we've been told not to
+            bool sayOutLoud = true;
+            if (EDDI.Instance.State.TryGetValue("speechresponder_quiet", out object tmp))
+            {
+                if (tmp is bool)
+                {
+                    sayOutLoud = !(bool)tmp;
+                }
+            }
+            return sayOutLoud;
+        }
+
+        // Say something with the default resolver
+        public void Say(Ship ship, string scriptName, Event theEvent = null, int? priority = null, string voice = null, bool sayOutLoud = true, bool invokedFromVA = false)
+        {
+            Say(scriptResolver, ship, scriptName, theEvent, priority, voice, sayOutLoud, invokedFromVA);
         }
 
         // Say something with a custom resolver
-        public void Say(ScriptResolver resolver, Ship ship, string scriptName, Event theEvent = null, int? priority = null, string voice = null, bool sayOutLoud = true)
+        public void Say(ScriptResolver resolver, Ship ship, string scriptName, Event theEvent = null, int? priority = null, string voice = null, bool sayOutLoud = true, bool invokedFromVA = false)
         {
             Dictionary<string, Cottle.Value> dict = createVariables(theEvent);
             string speech = resolver.resolve(scriptName, dict);
@@ -241,23 +255,9 @@ namespace EddiSpeechResponder
                 }
                 if (sayOutLoud && !(subtitles && subtitlesOnly))
                 {
-                    SpeechService.Instance.Say(ship, speech, (priority == null ? resolver.priority(scriptName) : (int)priority), voice, false, theEvent?.type);
+                    SpeechService.Instance.Say(ship, speech, (priority == null ? resolver.priority(scriptName) : (int)priority), voice, false, theEvent?.type, invokedFromVA);
                 }
             }
-        }
-
-        private static bool SayOutLoud()
-        {
-            // By default we say things unless we've been told not to
-            bool sayOutLoud = true;
-            if (EDDI.Instance.State.TryGetValue("speechresponder_quiet", out object tmp))
-            {
-                if (tmp is bool)
-                {
-                    sayOutLoud = !(bool)tmp;
-                }
-            }
-            return sayOutLoud;
         }
 
         // Create Cottle variables from the EDDI information
