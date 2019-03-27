@@ -109,7 +109,7 @@
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
-                            <RowDefinition Height="50" />
+                            <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="25" />
                             <RowDefinition Height="Auto" />
@@ -125,19 +125,48 @@
                         </Grid.RowDefinitions>
                         <TextBlock x:Name ="eddi2Text" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="6" Margin="5,10" TextWrapping="Wrap" Text="{x:Static resx:MainWindow.tab_commander_par1}" VerticalAlignment="Top"/>
                         <Label x:Name ="eddiHomeSystemLabel" Grid.Row="1" Grid.Column="0" VerticalContentAlignment="Bottom" Content="{x:Static resx:MainWindow.tab_commander_home_system}" />
-                        <TextBox x:Name ="eddiHomeSystemText" VerticalAlignment="Bottom" VerticalContentAlignment="Center" TextChanged="homeSystemChanged" Margin="0,5" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan ="3" Height="25" LostFocus="eddiHomeSystemText_LostFocus">
-                            <Binding UpdateSourceTrigger="PropertyChanged" ElementName="eddiConfiguration" Path="HomeSystem">
-                                <Binding.ValidationRules>
-                                    <local:ValidHomeSystemRule/>
-                                </Binding.ValidationRules>
-                            </Binding>
-                        </TextBox>
+                        <local:StarSystemComboBox x:Name="homeSystemDropDown"
+                                  IsEditable="True"
+                                  IsReadOnly="False"
+                                  IsTextSearchEnabled="False"
+                                  TextBoxBase.TextChanged="HomeSystemText_TextChanged"
+                                  Grid.Row="1"
+                                  Grid.Column="1"
+                                  Grid.ColumnSpan ="3"
+                                  Margin="0, 5"
+                                  VerticalContentAlignment="Center"
+                                  LostFocus="HomeSystemDropDown_LostFocus"
+                                  SelectionChanged="HomeSystemDropDown_SelectionChanged"/>
                         <Label x:Name ="eddiHomeStationLabel" Grid.Row="2" Grid.Column="0" VerticalContentAlignment="Center" Content="{x:Static resx:MainWindow.tab_commander_home_station}"/>
                         <ComboBox x:Name="homeStationDropDown" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan ="2" Margin="0, 5" VerticalContentAlignment="Center" SelectionChanged="homeStationDropDownUpdated"/>
                         <Label x:Name ="eddiGenderLabel" Grid.Row="5" Grid.RowSpan="3" Grid.Column="0" Grid.ColumnSpan ="2" Margin="0, 5" Content="{x:Static resx:MainWindow.tab_commander_gender}"/>
-                        <RadioButton x:Name ="eddiGenderMale" Content="{x:Static resx:MainWindow.tab_commander_gender_m}" HorizontalAlignment="Left" VerticalAlignment="Center"  Height="Auto" Grid.Row="5" Checked="isMale_Checked" Margin="0, 12.5, 0, 5" Grid.Column="2"/>
-                        <RadioButton x:Name ="eddiGenderFemale" Content="{x:Static resx:MainWindow.tab_commander_gender_f}" HorizontalAlignment="Left" VerticalAlignment="Center"  Height="Auto" Grid.Row="6" Checked="isFemale_Checked" Margin="0, 5" Grid.Column="2"/>
-                        <RadioButton x:Name ="eddiGenderNeither" Content="{x:Static resx:MainWindow.tab_commander_gender_n}" HorizontalAlignment="Left" VerticalAlignment="Center"  Height="Auto" Grid.Row="7" Checked="isNeitherGender_Checked" Margin="0, 5" Grid.Column="2"/>
+                        <RadioButton x:Name ="eddiGenderMale"
+                                     Content="{x:Static resx:MainWindow.tab_commander_gender_m}"
+                                     HorizontalAlignment="Left"
+                                     VerticalAlignment="Center"
+                                     Height="Auto"
+                                     Grid.Row="5"
+                                     Checked="isMale_Checked"
+                                     Margin="0, 12.5, 0, 5"
+                                     Grid.Column="2"/>
+                        <RadioButton x:Name ="eddiGenderFemale"
+                                     Content="{x:Static resx:MainWindow.tab_commander_gender_f}"
+                                     HorizontalAlignment="Left"
+                                     VerticalAlignment="Center"
+                                     Height="Auto"
+                                     Grid.Row="6"
+                                     Checked="isFemale_Checked"
+                                     Margin="0, 5"
+                                     Grid.Column="2"/>
+                        <RadioButton x:Name ="eddiGenderNeither"
+                                     Content="{x:Static resx:MainWindow.tab_commander_gender_n}"
+                                     HorizontalAlignment="Left"
+                                     VerticalAlignment="Center"
+                                     Height="Auto"
+                                     Grid.Row="7"
+                                     Checked="isNeitherGender_Checked"
+                                     Margin="0, 5"
+                                     Grid.Column="2"/>
                         <Label x:Name ="eddiSquadronNameLabel" Grid.Row="8" Grid.Column="0" VerticalContentAlignment="Bottom" Content="{x:Static resx:MainWindow.tab_commander_squadron_name}" />
                         <TextBox x:Name ="eddiSquadronNameText" VerticalAlignment="Bottom" VerticalContentAlignment="Center" TextChanged="squadronNameChanged" Margin="0,5" Grid.Row="8" Grid.Column="1" Grid.ColumnSpan ="3" Height="25" LostFocus="eddiSquadronNameText_LostFocus">
                             <Binding UpdateSourceTrigger="PropertyChanged" ElementName="eddiConfiguration" Path="SquadronName" />
@@ -149,13 +178,18 @@
                         <Label x:Name ="eddiSquadronRankLabel" Grid.Row="10" Grid.Column="0" VerticalContentAlignment="Center" Content="{x:Static resx:MainWindow.tab_commander_squadron_rank}" />
                         <ComboBox x:Name="squadronRankDropDown" Grid.Row="10" Grid.Column="1" Margin="0, 5" VerticalContentAlignment="Center" SelectionChanged="squadronRankDropDownUpdated" />
                         <Label x:Name ="eddiSquadronSystemLabel" Grid.Row="11" Grid.Column="0" VerticalContentAlignment="Center" Content="{x:Static resx:MainWindow.tab_commander_squadron_system}" />
-                        <TextBox x:Name ="eddiSquadronSystemText" VerticalContentAlignment="Center" TextChanged="squadronSystemChanged" Margin="0, 5" Grid.Row="11" Grid.Column="1" Grid.ColumnSpan ="3" Height="25" LostFocus="eddiSquadronSystemText_LostFocus">
-                            <Binding UpdateSourceTrigger="PropertyChanged" ElementName="eddiConfiguration" Path="SquadronSystem">
-                                <Binding.ValidationRules>
-                                    <local:ValidSquadronSystemRule/>
-                                </Binding.ValidationRules>
-                            </Binding>
-                        </TextBox>
+                        <local:StarSystemComboBox x:Name="squadronSystemDropDown"
+                                  IsEditable="True"
+                                  IsReadOnly="False"
+                                  IsTextSearchEnabled="False"
+                                  TextBoxBase.TextChanged="SquadronSystemText_TextChanged"
+                                  Grid.Row="11"
+                                  Grid.Column="1"
+                                  Grid.ColumnSpan ="3"
+                                  Margin="0, 5"
+                                  VerticalContentAlignment="Center"
+                                  LostFocus="SquadronSystemDropDown_LostFocus"
+                                  SelectionChanged="SquadronSystemDropDown_SelectionChanged"/>                                                
                         <Label x:Name ="eddiSquadronFactionLabel" Grid.Row="12" Grid.Column="0" VerticalContentAlignment="Center" Content="{x:Static resx:MainWindow.tab_commander_squadron_faction}" />
                         <ComboBox x:Name="squadronFactionDropDown" Grid.Row="12" Grid.Column="1" Grid.ColumnSpan ="2" Margin="0, 5" VerticalContentAlignment="Center" SelectionChanged="squadronFactionDropDownUpdated" />
                         <Label x:Name ="eddiSquadronPowerLabel" Grid.Row="13" Grid.Column="0" VerticalContentAlignment="Center" Content="{x:Static resx:MainWindow.tab_commander_squadron_power}" />
@@ -180,7 +214,15 @@
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
-                        <Button  x:Name="companionAppButton" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Content="{x:Static resx:EddiResources.login}" Margin="5" Click="companionAppClicked" HorizontalAlignment="Right" MinWidth="80" />
+                        <Button  x:Name="companionAppButton"
+                                 Grid.Row="4"
+                                 Grid.Column="0"
+                                 Grid.ColumnSpan="2"
+                                 Content="{x:Static resx:EddiResources.login}"
+                                 Margin="5"
+                                 Click="companionAppClicked"
+                                 HorizontalAlignment="Right"
+                                 MinWidth="80" />
                         <TextBlock x:Name ="companionAppText" Grid.Row="4" Grid.Column="0" Margin="5" TextWrapping="Wrap" Text="{x:Static resx:MainWindow.tab_frontier_reset_desc}"/>
                         <TextBlock x:Name ="companionAppStatusLabel" Grid.Row="5" Grid.Column="0" Margin="5" Text="{x:Static resx:EddiResources.frontierApiStatusLabel}"  HorizontalAlignment="Right"/>
                         <TextBlock x:Name ="companionAppStatusValue" Grid.Row="5" Grid.Column="1" Margin="5" Text="{x:Static resx:EddiResources.frontierApiNotConnected}"  HorizontalAlignment="Right" MinWidth="80" TextAlignment="Center"/>

@@ -158,7 +158,7 @@ namespace Eddi
                 // Set up the EDDI configuration
                 EDDIConfiguration configuration = EDDIConfiguration.FromFile();
                 updateHomeSystemStation(configuration);
-                updateSquadronSystem(configuration, true);
+                updateSquadronSystem(configuration);
 
                 if (running)
                 {
@@ -2310,29 +2310,27 @@ namespace Eddi
 
         public void updateHomeSystemStation(EDDIConfiguration configuration)
         {
-            updateHomeSystem(configuration, true);
+            updateHomeSystem(configuration);
             updateHomeStation(configuration);
             configuration.ToFile();
         }
 
-        public EDDIConfiguration updateHomeSystem(EDDIConfiguration configuration, bool refresh = false)
+        public EDDIConfiguration updateHomeSystem(EDDIConfiguration configuration)
         {
             Logging.Verbose = configuration.Debug;
-            configuration.validHomeSystem = false;
-            if (configuration.HomeSystem != null && configuration.HomeSystem.Trim().Length > 2)
+            if (configuration.HomeSystem != null)
             {
-                StarSystem system = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystem(configuration.HomeSystem.Trim(), refresh);
+                StarSystem system = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystem(configuration.HomeSystem);
 
                 //Ignore null & empty systems
                 if (system != null && system.bodies?.Count > 0)
                 {
-                    if (refresh || system.name != HomeStarSystem?.name)
+                    if (system.name != HomeStarSystem?.name)
                     {
                         HomeStarSystem = system;
                         Logging.Debug("Home star system is " + HomeStarSystem.name);
                         configuration.HomeSystem = system.name;
                     }
-                    configuration.validHomeSystem = HomeStarSystem.bodies.Count > 0 || HomeStarSystem.stations.Count > 0 || HomeStarSystem.population > 0;
                 }
             }
             else
@@ -2363,25 +2361,23 @@ namespace Eddi
             return configuration;
         }
 
-        public EDDIConfiguration updateSquadronSystem(EDDIConfiguration configuration, bool refresh = false)
+        public EDDIConfiguration updateSquadronSystem(EDDIConfiguration configuration)
         {
             Logging.Verbose = configuration.Debug;
-            configuration.validSquadronSystem = false;
             if (configuration.SquadronSystem != null && configuration.SquadronSystem.Trim().Length > 2)
             {
-                StarSystem system = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystem(configuration.SquadronSystem.Trim(), true);
+                StarSystem system = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystem(configuration.SquadronSystem.Trim());
 
                 //Ignore null & empty systems
                 if (system != null && system?.bodies.Count > 0)
                 {
-                    if (refresh || system.name != SquadronStarSystem?.name)
+                    if (system.name != SquadronStarSystem?.name)
                     {
                         SquadronStarSystem = system;
                         if (SquadronStarSystem?.factions != null)
                         {
                             Logging.Debug("Squadron star system is " + SquadronStarSystem.name);
                             configuration.SquadronSystem = system.name;
-                            configuration.validSquadronSystem = SquadronStarSystem.factions.Count() > 0;
                         }
                     }
                 }
@@ -2423,11 +2419,11 @@ namespace Eddi
 
                         Instance.MainWindow?.Dispatcher?.Invoke(new Action(() =>
                         {
-                            Instance.MainWindow.eddiSquadronSystemText.Text = system;
+                            Instance.MainWindow.squadronSystemDropDown.Text = system;
                             Instance.MainWindow.ConfigureSquadronFactionOptions(configuration);
                         }));
 
-                        configuration = updateSquadronSystem(configuration, true);
+                        configuration = updateSquadronSystem(configuration);
                     }
 
                     //Update the squadron allegiance, if changed

@@ -136,11 +136,7 @@
   
   
   
-  <data name="sourceURL" xml:space="preserve">
-    <value>https://community.elitedangerous.com/en/galnet-rss</value>
-    
-    <comment>The URL the Galnet monitor should access for obtaining new news feed items. Though adding new languages to the Galnet monitor is not yet supported, this helps lay the groundwork for Galnet in more languages in the future.</comment>
-  </data>
+  
   
   <data name="categoryArticle" xml:space="preserve">
     <value>Статья</value>

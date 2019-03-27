@@ -144,9 +144,7 @@
                 <DataGridTemplateColumn>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <StackPanel IsEnabled="{Binding Path=Value.IsDeleteable}">
-                                <Button IsEnabled="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=Personality.IsEditable}" Click="deleteScript" Content="{x:Static resx:SpeechResponder.delete_script}" />
-                            </StackPanel>
+                            <Button IsEnabled="{Binding Path=Value.IsDeleteable}" Click="deleteScript" Content="{x:Static resx:SpeechResponder.delete_script}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>

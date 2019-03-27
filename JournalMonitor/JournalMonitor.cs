@@ -1014,8 +1014,6 @@ namespace EddiJournalMonitor
                                     List<object> items = (List<object>)val;
                                     if (items != null)
                                     {
-                                        string starSystem = string.Empty;
-                                        StarSystem systemData = new StarSystem();
                                         foreach (Dictionary<string, object> item in items)
                                         {
                                             string name = JsonParsing.getString(item, "Name");
@@ -1040,21 +1038,23 @@ namespace EddiJournalMonitor
                                                 transfercost = JsonParsing.getOptionalLong(item, "TransferCost"),
                                                 transfertime = JsonParsing.getOptionalLong(item, "TransferTime")
                                             };
+                                            storedModules.Add(storedModule);
+                                        }
 
+                                        string[] systemNames = storedModules.Where(s => !string.IsNullOrEmpty(s.system)).Select(s => s.system).Distinct().ToArray();
+                                        List<StarSystem> systemsData = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystems(systemNames);
+                                        List<StoredModule> storedModulesHolder = new List<StoredModule>();
+                                        foreach (StoredModule storedModule in storedModules)
+                                        {
                                             if (!storedModule.intransit)
                                             {
-                                                // Minimize calling EDDP for system data
-                                                if (starSystem != storedModule.system)
-                                                {
-                                                    systemData = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystem(storedModule.system);
-                                                    starSystem = storedModule.system;
-                                                }
-
+                                                StarSystem systemData = systemsData.FirstOrDefault(s => s.name == storedModule.system);
                                                 Station stationData = systemData?.stations?.FirstOrDefault(s => s.marketId == storedModule.marketid);
                                                 storedModule.station = stationData?.name;
                                             }
-                                            storedModules.Add(storedModule);
+                                            storedModulesHolder.Add(storedModule);
                                         }
+                                        storedModules = storedModulesHolder;
                                     }
                                     events.Add(new StoredModulesEvent(timestamp, marketId, station, system, storedModules) { raw = line, fromLoad = fromLogLoad });
                                 }

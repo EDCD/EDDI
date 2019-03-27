@@ -689,7 +689,7 @@ namespace EddiVoiceAttackResponder
 
                 string speech = SpeechFromScript(script);
 
-                SpeechService.Instance.Say(((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip(), speech, (int)priority, voice);
+                SpeechService.Instance.Say(((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip(), speech, (int)priority, voice, false, null, true);
             }
             catch (Exception e)
             {
@@ -718,7 +718,7 @@ namespace EddiVoiceAttackResponder
 
                 string speech = SpeechFromScript(script);
 
-                SpeechService.Instance.Say(((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip(), speech, (int)priority, voice, true);
+                SpeechService.Instance.Say(((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip(), speech, (int)priority, voice, true, null, true);
             }
             catch (Exception e)
             {
@@ -754,15 +754,15 @@ namespace EddiVoiceAttackResponder
 
                 int? priority = vaProxy.GetInt("Priority");
 
+                string voice = vaProxy.GetText("Voice");
+
                 SpeechResponder speechResponder = (SpeechResponder)EDDI.Instance.ObtainResponder("Speech responder");
                 if (speechResponder == null)
                 {
                     Logging.Warn("Unable to find speech responder");
                 }
 
-                string voice = vaProxy.GetText("Voice");
-
-                speechResponder.Say(((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip(), script, null, priority, voice);
+                speechResponder?.Say(((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip(), script, null, priority, voice, speechResponder.SayOutLoud(), true);
             }
             catch (Exception e)
             {
