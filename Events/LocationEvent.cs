@@ -1,4 +1,5 @@
 ﻿using EddiDataDefinitions;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -96,9 +97,9 @@ namespace EddiEvents
         public string stationallegiancet => (controllingstationfaction?.Allegiance ?? Superpower.None).localizedName;
 
         // Deprecated, maintained for compatibility with user scripts
-        [Obsolete("Use systemname instead")]
+        [JsonIgnore, Obsolete("Use systemname instead")]
         public string system => systemname;
-        [Obsolete("Use bodyname instead")]
+        [JsonIgnore, Obsolete("Use bodyname instead")]
         public string body => bodyname;
 
         // These properties are not intended to be user facing

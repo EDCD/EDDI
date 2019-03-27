@@ -29,9 +29,9 @@ namespace EddiEvents
         public string bodyname{ get; private set; }
 
         // Deprecated, maintained for compatibility with user scripts
-        [Obsolete("Use systemname instead")]
+        [JsonIgnore, Obsolete("Use systemname instead")]
         public string system => systemname;
-        [Obsolete("Use bodyname instead")]
+        [JsonIgnore, Obsolete("Use bodyname instead")]
         public string body => bodyname;
 
         // Variables below are not intended to be user facing

@@ -1,7 +1,9 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Runtime.Serialization;
 
 namespace EddiDataDefinitions
 {
@@ -211,10 +213,32 @@ namespace EddiDataDefinitions
 
         /// <summary>The name of the body</summary>
         [JsonIgnore, Obsolete("Please use bodyname instead")]
-        public string name { get { return bodyname; } set { bodyname = value; } }
+        public string name => bodyname;
 
         /// <summary>The body type of the body (e.g. Star or Planet)</summary>
-        [JsonIgnore, Obsolete("Please use BodyType instead")]
-        public BodyType Type { get { return bodyType; } set { bodyType = value; } }
+        [JsonIgnore, Obsolete("Please use BodyType instead - Type creates a collision with Event.Type")]
+        public BodyType Type => bodyType;
+
+        // Convert legacy data
+
+        [JsonExtensionData]
+        private IDictionary<string, JToken> _additionalData = new Dictionary<string, JToken>();
+
+        [OnDeserialized]
+        private void OnDeserialized(StreamingContext context)
+        {
+            if (bodyname == null)
+            {
+                string name = (string)_additionalData["name"];
+                bodyname = name;
+            }
+            if (bodyType == null)
+            {
+                _additionalData.TryGetValue("Type", out JToken var);
+                BodyType type = var.ToObject<BodyType>();
+                bodyType = type;
+            }
+            _additionalData = null;
+        }
     }
 }
