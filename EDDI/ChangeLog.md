@@ -2,9 +2,15 @@
 
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
-### Development
+### 3.3.7-b2
+  * Commander details
+    * Added auto-complete for the home system and squadron system and catered for two-character system names such as 'Ix'.
+  * GalNet monitor
+    * Restored access using the new RSS fed, but it's English-only for now unfortunately.
   * Journal monitor
     * Fixed a bug that would prevent new file header events from registering when Elite Dangerous was restarted with EDDI running.
+  * Ship monitor
+    * Dropped access for EDShipyard.com as it is no longer being maintained.
   * Speech responder
     * Fixed a bug that would cause Test scripts to only be written to file and not voiced.
   * VoiceAttack responder
