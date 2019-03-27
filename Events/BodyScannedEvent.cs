@@ -1,4 +1,5 @@
 ﻿using EddiDataDefinitions;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 
@@ -113,17 +114,17 @@ namespace EddiEvents
                                                      // AutoScan events are detailed scans triggered via proximity. 
 
         // Deprecated, maintained for compatibility with user scripts
-        [Obsolete("Use bodyname instead")]
+        [JsonIgnore, Obsolete("Use bodyname instead")]
         public string name => bodyname;
-        [Obsolete("Use planetClass instead")]
+        [JsonIgnore, Obsolete("Use planetClass instead")]
         public string bodyclass => planetClass.localizedName;
-        [Obsolete("Use distance instead")]
+        [JsonIgnore, Obsolete("Use distance instead")]
         public decimal distancefromarrival => distance;  // This is the object property reported from the BodyDetails() function
-        [Obsolete("Use inclination instead")]
+        [JsonIgnore, Obsolete("Use inclination instead")]
         public decimal? orbitalinclination => inclination;  // This is the object property reported from the BodyDetails() function
-        [Obsolete("Use rotationalperiod instead")]
+        [JsonIgnore, Obsolete("Use rotationalperiod instead")]
         public decimal rotationperiod => rotationalperiod;  // This is the object property reported from the BodyDetails() function
-        [Obsolete("Use tilt instead")]
+        [JsonIgnore, Obsolete("Use tilt instead")]
         public decimal? axialtilt => tilt;  // This is the object property reported from the BodyDetails() function
 
         public BodyScannedEvent(DateTime timestamp, string scantype, string bodyName, string systemName, PlanetClass planetClass, decimal? earthmass, decimal? radiusKm, decimal gravity, decimal? temperatureKelvin, decimal? pressureAtm, bool? tidallylocked, bool? landable, AtmosphereClass atmosphereClass, List<AtmosphereComposition> atmosphereComposition, List<SolidComposition> solidCompositions, Volcanism volcanism, decimal distancefromarrival_Ls, decimal orbitalperiodDays, decimal rotationperiodDays, decimal? semimajoraxisAU, decimal? eccentricity, decimal? orbitalinclinationDegrees, decimal? periapsisDegrees, List<Ring> rings, string reserves, List<MaterialPresence> materials, TerraformState terraformstate, decimal? axialtiltDegrees) : base(timestamp, NAME)

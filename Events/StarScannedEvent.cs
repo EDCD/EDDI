@@ -1,4 +1,5 @@
 ﻿using EddiDataDefinitions;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 
@@ -110,11 +111,11 @@ namespace EddiEvents
                                                      // AutoScan events are detailed scans triggered via proximity. 
 
         // Deprecated, maintained for compatibility with user scripts
-        [Obsolete("Use bodyname instead")]
+        [JsonIgnore, Obsolete("Use bodyname instead")]
         public string name => bodyname;
-        [Obsolete("Use inclination instead")]
+        [JsonIgnore, Obsolete("Use inclination instead")]
         public decimal? orbitalinclination => inclination;  // This is the object property reported from the BodyDetails() function
-        [Obsolete("Use rotationalperiod instead")]
+        [JsonIgnore, Obsolete("Use rotationalperiod instead")]
         public decimal rotationperiod => rotationalperiod;  // This is the object property reported from the BodyDetails() function
 
         public StarScannedEvent(DateTime timestamp, string scantype, string name, string stellarclass, decimal solarmass, decimal radiusKm, decimal absolutemagnitude, string luminosityclass, long ageMegayears, decimal temperatureKelvin, decimal distanceLs, decimal? orbitalperiod, decimal rotationperiod, decimal? semimajoraxis, decimal? eccentricity, decimal? orbitalinclination, decimal? periapsis, List<Ring> rings, bool mainstar) : base(timestamp, NAME)
