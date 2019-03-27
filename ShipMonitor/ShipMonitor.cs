@@ -19,6 +19,8 @@ using Utilities;
 
 namespace EddiShipMonitor
 {
+    // Microsoft does not recommend disposing of Task members: <https://devblogs.microsoft.com/pfxteam/do-i-need-to-dispose-of-tasks/>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1001:TypesThatOwnDisposableFieldsShouldBeDisposable")]
     public class ShipMonitor : EDDIMonitor
     {
         private static List<string> HARDPOINT_SIZES = new List<string>() { "Huge", "Large", "Medium", "Small", "Tiny" };
