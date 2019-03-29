@@ -2,6 +2,10 @@
 
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
+### 3.3.7-b3
+  * Speech responder
+    * Fixed some minor errors re plurals etc in the mission reports and fuel check scripts.
+
 ### 3.3.7-b2
   * Commander details
     * Added auto-complete for the home system and squadron system and catered for two-character system names such as 'Ix'.
