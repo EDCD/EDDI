@@ -168,9 +168,6 @@
   <data name="p4" xml:space="preserve">
     <value>Frontier APIへのアクセス設定を行っていない場合、以下のデータの一部が不正確、または利用できなくなることにご注意ください。また、EDDIをインストールする前に複数の船舶を保有していた場合は、それらの船に搭乗（Use This Ship）して、それらの完全な情報が利用可能になるまで数分待つ必要があります。</value>
   </data>
-  <data name="p5" xml:space="preserve">
-    <value>EDDIは、船の設計を出力し、CoriolisやEDShipyard（外部ツール）に送ることができます。ツールを選択してください。</value>
-  </data>
   <data name="ship_ready" xml:space="preserve">
     <value>{0} は利用できます。</value>
   </data>

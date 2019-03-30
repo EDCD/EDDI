@@ -168,9 +168,6 @@
   <data name="p4" xml:space="preserve">
     <value>A noter que si vous n'avez pas configuré d'accès à l'API Frontier, certaines données ci-dessous seront imprécises ou indisponible. Aussi, si vous aviez plusieurs vaisseaux avant d'installer EDDI vous devrez les passer en tant que vaisseaux principaux et attendre un peu pour que leurs informations complètes soient disponibles.</value>
   </data>
-  <data name="p5" xml:space="preserve">
-    <value>EDDI peut envoyer un export de données de vos vaisseaux à Coriolis ou EDShipyard (outils tierce). Veuillez sélectionner l'outil que vous préférez :</value>
-  </data>
   <data name="ship_ready" xml:space="preserve">
     <value>{0} est prêt.</value>
   </data>

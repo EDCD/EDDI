@@ -304,15 +304,6 @@ namespace EddiShipMonitor.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to EDDI can send an export of your ship&apos;s data to Coriolis or EDShipyard (3rd Party tools). Select the tool you prefer..
-        /// </summary>
-        public static string p5 {
-            get {
-                return ResourceManager.GetString("p5", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Clean.
         /// </summary>
         public static string ship_clean {

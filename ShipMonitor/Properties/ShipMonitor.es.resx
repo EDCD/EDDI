@@ -168,9 +168,6 @@
   <data name="p4" xml:space="preserve">
     <value>Tenga en cuenta que si no ha configurado el acceso a la API de Frontier, algunos de los datos siguientes serán inexactos o no estarán disponibles. Además, si tenía varias naves antes de instalar EDDI, tendrá que usarlas como nave principal y esperar un poco antes de que su información completa esté disponible.</value>
   </data>
-  <data name="p5" xml:space="preserve">
-    <value>EDDI puede exportar su nave a Coriolis o EDShipyard (herramientas de terceros). Seleccione la herramienta que prefiera.</value>
-  </data>
   <data name="ship_ready" xml:space="preserve">
     <value>{0} preparado.</value>
   </data>

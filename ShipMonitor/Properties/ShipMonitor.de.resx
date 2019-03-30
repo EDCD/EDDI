@@ -168,9 +168,6 @@
   <data name="p4" xml:space="preserve">
     <value>Bitte beachten Sie, wenn Sie den Zugriff auf die Frontier-API nicht konfiguriert haben, einige der folgenden Daten ungenau oder nicht verfügbar sind. Wenn Sie vor der Installation von EDDI mehrere Schiffe hatten, müssen Sie diese als primäres Schiff eintauschen und einige Augenblicke warten, bis die kompletten Informationen vollständig verfügbar sind.</value>
   </data>
-  <data name="p5" xml:space="preserve">
-    <value>EDDI kann einen Export Ihrer Schiffsdaten an Coriolis oder EDShipyard (Drittanbieter-Tools) senden. Wählen Sie das gewünschte Werkzeug aus.</value>
-  </data>
   <data name="ship_ready" xml:space="preserve">
     <value>{0} ist bereit.</value>
   </data>

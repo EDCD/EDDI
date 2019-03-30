@@ -24,13 +24,6 @@
             </FlowDocument>
         </RichTextBox>
         <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Margin="5"  Text="{x:Static resx:ShipMonitor.p4}" VerticalAlignment="Top"/>
-        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" VerticalAlignment="Top">
-            <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Margin="5"  Text="{x:Static resx:ShipMonitor.p5}" VerticalAlignment="Top"/>
-            <ComboBox x:Name="exportComboBox" Background="#FFE5E5E5" SelectionChanged="onExportTargetChanged" SelectedValuePath="Content" IsEditable="False" IsReadOnly="True" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" VerticalAlignment="Center">
-                <ComboBoxItem>Coriolis</ComboBoxItem>
-                <ComboBoxItem>EDShipyard</ComboBoxItem>
-            </ComboBox>
-        </StackPanel>
         <DataGrid Margin="0,5" AutoGenerateColumns="False" x:Name="shipData" CanUserAddRows="false" CanUserDeleteRows="False" TargetUpdated="shipsUpdated">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="{x:Static resx:ShipMonitor.header_name}" IsReadOnly="True" Binding="{Binding Path=name}"></DataGridTextColumn>

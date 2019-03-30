@@ -28,19 +28,7 @@ namespace EddiShipMonitor
             shipData.ItemsSource = shipMonitor().shipyard;
 
             EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
-            string exporttarget = eddiConfiguration.exporttarget;
-            Logging.Debug("Export target from configuration: " + exporttarget);
-            exportComboBox.Text = exporttarget ?? "Coriolis";
-        }
-
-        private void onExportTargetChanged(object sender, SelectionChangedEventArgs e)
-        {
-            string exporttarget = (string)((ComboBox)e.Source).SelectedValue;
-            Logging.Debug("Export target: " + exporttarget);
-
-            EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
-            eddiConfiguration.exporttarget = string.IsNullOrWhiteSpace(exporttarget) ? null : exporttarget.Trim();
-            eddiConfiguration.ToFile();
+            eddiConfiguration.exporttarget = "Coriolis";
         }
 
         private void ipaClicked(object sender, RoutedEventArgs e)
@@ -66,16 +54,8 @@ namespace EddiShipMonitor
             Ship ship = (Ship)((Button)e.Source).DataContext;
             EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
 
-            // Coriolis is the default export target
+            // Coriolis is the default (and currently only) export target
             string uri = ship.CoriolisUri();
-
-            // Support EDShipyard as well.
-            if (eddiConfiguration.exporttarget == "EDShipyard")
-            {
-                uri = ship.EDShipyardUri();
-            }
-
-            Logging.Debug("Export target is " + eddiConfiguration.exporttarget + ", URI is " + uri);
 
             // URI can be very long so we can't use a simple Process.Start(), as that fails
             try

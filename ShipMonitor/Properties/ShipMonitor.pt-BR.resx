@@ -168,9 +168,6 @@
   <data name="p4" xml:space="preserve">
     <value>Observe que, se você não configurou o acesso à API da Frontier, alguns dos dados abaixo estarão imprecisos ou indisponíveis. Além disso, se você tinha várias naves antes de instalar o EDDI, será necessário trocá-las para seu primeiro envio e aguardar alguns instantes antes que as informações completas sobre elas estejam disponíveis.</value>
   </data>
-  <data name="p5" xml:space="preserve">
-    <value>O EDDI pode enviar uma exportação dos dados da sua nave para Coriolis ou EDShipyard (ferramentas de terceiros). Selecione a ferramenta que você preferir.</value>
-  </data>
   <data name="ship_ready" xml:space="preserve">
     <value>{0} está pronta.</value>
   </data>
