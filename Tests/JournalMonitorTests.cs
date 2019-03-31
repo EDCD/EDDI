@@ -662,11 +662,11 @@ namespace UnitTests
 	            ""SystemSecurity"": ""$SYSTEM_SECURITY_medium;"",
 	            ""SystemSecurity_Localised"": ""MediumSecurity"",
 	            ""Population"": 10303479,
-	            ""Body"": ""RayGateway"",
+	            ""Body"": ""Ray Gateway"",
 	            ""BodyID"": 32,
 	            ""BodyType"": ""Station"",
 	            ""Factions"": [{
-		            ""Name"": ""DiaguandriInterstellar"",
+		            ""Name"": ""Diaguandri Interstellar"",
 		            ""FactionState"": ""None"",
 		            ""Government"": ""Corporate"",
 		            ""Influence"": 0.090000,
@@ -677,28 +677,28 @@ namespace UnitTests
 		            }]
 	            },
 	            {
-		            ""Name"": ""People'sMET20Liberals"",
+		            ""Name"": ""People's MET 20 Liberals"",
 		            ""FactionState"": ""Boom"",
 		            ""Government"": ""Democracy"",
 		            ""Influence"": 0.206000,
 		         ""Allegiance"": ""Federation""
 	            },
 	            {
-		            ""Name"": ""PilotsFederationLocalBranch"",
+		            ""Name"": ""Pilots Federation Local Branch"",
 		            ""FactionState"": ""None"",
 		            ""Government"": ""Democracy"",
 		            ""Influence"": 0.000000,
 		            ""Allegiance"": ""PilotsFederation""
 	            },
 	            {
-		            ""Name"": ""NaturalDiaguandriRegulatoryState"",
+		            ""Name"": ""Natural Diaguandri Regulatory State"",
 		            ""FactionState"": ""Boom"",
 		            ""Government"": ""Dictatorship"",
 		            ""Influence"": 0.072000,
 		            ""Allegiance"": ""Independent""
 	            },
 	            {
-		            ""Name"": ""CartelofDiaguandri"",
+		            ""Name"": ""Cartel of Diaguandri"",
 		            ""FactionState"": ""Bust"",
 		            ""Government"": ""Anarchy"",
 		            ""Influence"": 0.121000,
@@ -713,7 +713,7 @@ namespace UnitTests
 		            }]
 	            },
 	            {
-		            ""Name"": ""RevolutionaryPartyofDiaguandri"",
+		            ""Name"": ""Revolutionary Party of Diaguandri"",
 		            ""FactionState"": ""Boom"",
 		            ""Government"": ""Democracy"",
 		            ""Influence"": 0.181000,
@@ -724,7 +724,7 @@ namespace UnitTests
 		            }]
 	            },
 	            {
-		            ""Name"": ""TheBrotherhoodoftheDarkCircle"",
+		            ""Name"": ""The Brotherhood of the Dark Circle"",
 		            ""FactionState"": ""Boom"",
 		            ""Government"": ""Corporate"",
 		            ""Influence"": 0.086000,
@@ -774,7 +774,7 @@ namespace UnitTests
             Assert.AreEqual(3223343616, @event.marketId);
             Assert.AreEqual(10303479, @event.population);
             Assert.AreEqual("Medium", @event.securityLevel.invariantName);
-            Assert.AreEqual("RayGateway", @event.station);
+            Assert.AreEqual("Ray Gateway", @event.station);
             Assert.AreEqual("Coriolis Starport", @event.stationModel.invariantName);
             Assert.AreEqual("Diaguandri", @event.systemname);
             Assert.AreEqual(670417429889, @event.systemAddress);

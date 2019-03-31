@@ -1890,7 +1890,7 @@ namespace Eddi
                 star.solarmass = theEvent.solarmass;
                 star.solarradius = theEvent.solarradius;
                 star.rings = theEvent.rings;
-                star.scanned = true;
+                star.scanned = theEvent.timestamp;
 
                 star.setStellarExtras();
 
@@ -1950,7 +1950,7 @@ namespace Eddi
                 }
                 body.reserveLevel = ReserveLevel.FromEDName(theEvent.reserves);
                 body.rings = theEvent.rings;
-                body.scanned = true;
+                body.scanned = theEvent.timestamp;
 
                 Logging.Debug("Saving data for scanned body " + theEvent.bodyname);
                 StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
@@ -1970,7 +1970,7 @@ namespace Eddi
                 Body body = CurrentStarSystem?.planets?.FirstOrDefault(b => b?.bodyname == theEvent.name);
                 if (body != null)
                 {
-                    body.mapped = true;
+                    body.mapped = theEvent.timestamp;
                     StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
                     updateCurrentStellarBody(theEvent.name, CurrentStarSystem?.name, CurrentStarSystem?.systemAddress);
                 }

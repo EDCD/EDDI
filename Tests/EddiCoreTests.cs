@@ -129,7 +129,7 @@ namespace IntegrationTests
             Assert.IsTrue(result);
 
             EddiDataDefinitions.Body body = EDDI.Instance.CurrentStarSystem.bodies.FirstOrDefault(b => b.bodyname == "Grea Bloae HH-T d4-44 4");
-            Assert.IsTrue(body.scanned);
+            Assert.AreEqual(body.scanned, @event.timestamp);
         }
 
         [TestMethod]
