@@ -3232,7 +3232,7 @@ namespace EddiJournalMonitor
                                     string systemName = JsonParsing.getString(data, "SystemName");
                                     long systemAddress = JsonParsing.getLong(data, "SystemAddress");
                                     int count = JsonParsing.getInt(data, "Count");
-                                    events.Add(new FSSAllBodiesFound(timestamp, systemName, systemAddress, count) { raw = line, fromLoad = fromLogLoad });
+                                    events.Add(new SystemScanComplete(timestamp, systemName, systemAddress, count) { raw = line, fromLoad = fromLogLoad });
                                     handled = true;
                                     break;
                                 }
