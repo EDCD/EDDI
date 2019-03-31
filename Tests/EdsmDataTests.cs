@@ -57,8 +57,8 @@ namespace UnitTests
             Assert.AreEqual(1, star.rings?.Count);
             Assert.AreEqual("Rocky", star.rings[0].invariantComposition);
             Assert.AreEqual(1522275140, star.updatedat);
-            Assert.IsFalse(star.scanned);
-            Assert.IsFalse(star.mapped);
+            Assert.IsNull(star.scanned);
+            Assert.IsNull(star.mapped);
 
             // Test landable high metal content world
             Body body = bodies.Find(s => s.bodyname == "Shinrarta Dezhra A 1");
@@ -95,8 +95,8 @@ namespace UnitTests
             Assert.AreEqual("Arsenic", body.materials[7].name);
             Assert.AreEqual(2.16406, (double)body.materials[7].percentage, 0.01);
             Assert.AreEqual(1539922044, body.updatedat);
-            Assert.IsFalse(body.scanned);
-            Assert.IsFalse(body.mapped);
+            Assert.IsNull(body.scanned);
+            Assert.IsNull(body.mapped);
 
             // Test terraformed body
             body = bodies.Find(s => s.bodyname == "Founders World");
@@ -133,8 +133,8 @@ namespace UnitTests
             Assert.AreEqual(0.373026, (double)body.tilt, 0.01);
             Assert.AreEqual(0, body.materials.Count);
             Assert.AreEqual(1539922044, body.updatedat);
-            Assert.IsFalse(body.scanned);
-            Assert.IsFalse(body.mapped);
+            Assert.IsNull(body.scanned);
+            Assert.IsNull(body.mapped);
 
             // Test volcanic icy body
             body = bodies.Find(s => s.bodyname == "Shinrarta Dezhra AB 1 b");
@@ -172,8 +172,8 @@ namespace UnitTests
             Assert.AreEqual(-0.287234, (double)body.tilt, 0.01);
             Assert.AreEqual(0, body.materials.Count);
             Assert.AreEqual(1539922044, body.updatedat);
-            Assert.IsFalse(body.scanned);
-            Assert.IsFalse(body.mapped);
+            Assert.IsNull(body.scanned);
+            Assert.IsNull(body.mapped);
 
             // Test ringed gas giant
             body = bodies.Find(s => s.bodyname == "Shinrarta Dezhra AB 2");
@@ -215,8 +215,8 @@ namespace UnitTests
             Assert.AreEqual(273390, body.rings[0].outerradius);
             Assert.AreEqual("Common", body.reserveLevel.invariantName);
             Assert.AreEqual(1539922044, body.updatedat);
-            Assert.IsFalse(body.scanned);
-            Assert.IsFalse(body.mapped);
+            Assert.IsNull(body.scanned);
+            Assert.IsNull(body.mapped);
         }
 
         [TestMethod]

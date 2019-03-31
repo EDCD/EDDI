@@ -57,11 +57,11 @@ namespace EddiDataDefinitions
 
         // Scan data
 
-        /// <summary>Whether we've scanned this object</summary>
-        public bool scanned { get; set; }
+        /// <summary>When we scanned this object, if we have (DateTime)</summary>
+        public DateTime? scanned { get; set; }
 
-        /// <summary>Whether we've mapped this object</summary>
-        public bool mapped { get; set; }
+        /// <summary>When we mapped this object, if we have (DateTime)</summary>
+        public DateTime? mapped { get; set; }
 
         // Orbital characteristics
 
