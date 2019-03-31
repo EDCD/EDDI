@@ -26,7 +26,7 @@ namespace EddiEvents
         [JsonProperty("systemaddress")]
         public long systemAddress { get; private set; }
 
-        public SystemScanComplete(DateTime timestamp, string systename, long systemAddress, int count) : base(timestamp, NAME)
+        public SystemScanComplete(DateTime timestamp, string systemname, long systemAddress, int count) : base(timestamp, NAME)
         {
             this.systemname = systemname;
             this.systemAddress = systemAddress;
