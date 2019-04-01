@@ -774,7 +774,7 @@ namespace EddiJournalMonitor
                                         events.Add(new StarScannedEvent(timestamp, scantype, name, starType, stellarMass, radiusKm, absoluteMagnitude, luminosityClass, ageMegaYears, temperatureKelvin, distancefromarrival, orbitalPeriodDays, rotationPeriodDays, semimajoraxisLs, eccentricity, orbitalinclinationDegrees, periapsisDegrees, rings, mainstar) { raw = line, fromLoad = fromLogLoad });
                                         handled = true;
                                     }
-                                    else
+                                    else if (data.ContainsKey("PlanetClass"))
                                     {
                                         // Body
                                         bool? tidallyLocked = JsonParsing.getOptionalBool(data, "TidalLock") ?? false;
