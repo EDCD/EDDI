@@ -720,6 +720,13 @@ namespace EddiJournalMonitor
                                         break;
                                     }
 
+                                    if (name.Contains(" Ring"))
+                                    {
+                                        // We don't do anything with ring scans at this time.
+                                        handled = true;
+                                        break;
+                                    }
+
                                     // Common items
                                     // Need to convert radius from meters (per journal) to kilometers
                                     decimal radiusKm = JsonParsing.getDecimal(data, "Radius") / 1000;
