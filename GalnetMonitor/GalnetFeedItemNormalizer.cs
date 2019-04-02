@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.ServiceModel.Syndication;
 using System.Text.RegularExpressions;
+using System.Text;
 
 namespace GalnetMonitor
 {
@@ -43,10 +44,10 @@ namespace GalnetMonitor
             {
                 itemuri = alternatelink.GetAbsoluteUri();
             }
-
+            string galnetId = GalnetMonitor.altURL ? FetchId(item.Summary.Text) : item.Id;
             return new ExtendedFeedItem
             {
-                Id = string.IsNullOrEmpty(item.Id) ? null : item.Id.Split(' ')[0].Trim(),
+                Id = string.IsNullOrEmpty(galnetId) ? null : galnetId.Trim(),
                 Title = item.Title == null ? null : Normalize(item.Title.Text, false),
                 Content = item.Content == null ? null : Normalize(((TextSyndicationContent)item.Content).Text, false),
                 Summary = item.Summary == null ? null : Normalize(item.Summary.Text, true),
@@ -55,8 +56,7 @@ namespace GalnetMonitor
                 Uri = itemuri
             };
         }
-
-        private static string Normalize(string value, bool content)
+        private static string FetchId(string value)
         {
             if (!string.IsNullOrEmpty(value))
             {
@@ -67,7 +67,24 @@ namespace GalnetMonitor
                 value = StripHTML(value);
                 value = StripDoubleOrMoreWhiteSpace(RemoveControlChars(value));
                 value = value.Normalize().Trim();
-                if (content)
+                int start = value.IndexOf("GUID") + 5;
+                int end = value.IndexOf("en Image") - start;
+                value = value.Substring(start, end);
+            }
+            return value;
+        }
+        private static string Normalize(string value, Boolean content)
+        {
+            if (!string.IsNullOrEmpty(value))
+            {
+                value = HtmlDecode(value);
+                if (string.IsNullOrEmpty(value))
+                    return value;
+
+                value = StripHTML(value);
+                value = StripDoubleOrMoreWhiteSpace(RemoveControlChars(value));
+                value = value.Normalize().Trim();
+                if (content && GalnetMonitor.altURL)
                 {
                     int start = value.IndexOf("Body") + 5;
                     int end = value.LastIndexOf("Date") - start;
