@@ -37,6 +37,8 @@ namespace EddiDataDefinitions
             var PassengerWanted = new Crime("passengerWanted");
         }
 
+        public static readonly Crime None = new Crime("none");
+
         // dummy used to ensure that the static constructor has run
         public Crime() : this("")
         {}

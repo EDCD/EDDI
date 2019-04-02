@@ -151,6 +151,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Interstellar Factors Contact.
+        /// </summary>
+        public static string InterstellarFactorsContact {
+            get {
+                return ResourceManager.GetString("InterstellarFactorsContact", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Material Trader.
         /// </summary>
         public static string MaterialTrader {

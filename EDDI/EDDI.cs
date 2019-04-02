@@ -44,6 +44,7 @@ namespace Eddi
 
         public bool inCQC { get; private set; } = false;
         public bool inCrew { get; private set; } = false;
+        public bool inHorizons { get; private set; } = true;
 
         private bool _inBeta = false;
         public bool inBeta
@@ -154,6 +155,7 @@ namespace Eddi
                 EliteConfiguration eliteConfiguration = EliteConfiguration.FromFile();
                 inBeta = eliteConfiguration.Beta;
                 Logging.Info(inBeta ? "On beta" : "On live");
+                inHorizons = eliteConfiguration.Horizons;
 
                 // Set up the EDDI configuration
                 EDDIConfiguration configuration = EDDIConfiguration.FromFile();
@@ -1494,6 +1496,12 @@ namespace Eddi
             {
                 Cmdr.name = theEvent.commander;
             }
+
+            // Set game version
+            inHorizons = theEvent.horizons;
+            EliteConfiguration config = EliteConfiguration.FromFile();
+            config.Horizons = inHorizons;
+            config.ToFile();
 
             return true;
         }

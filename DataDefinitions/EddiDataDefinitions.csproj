@@ -71,6 +71,8 @@
     <Compile Include="BlueprintMaterials.cs" />
     <Compile Include="BodyType.cs" />
     <Compile Include="CargoInfo.cs" />
+    <Compile Include="FactionRecord.cs" />
+    <Compile Include="FactionReport.cs" />
     <Compile Include="Happiness.cs" />
     <Compile Include="MarketInfo.cs" />
     <Compile Include="Modifications.cs" />
