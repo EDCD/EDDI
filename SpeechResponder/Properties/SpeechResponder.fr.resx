@@ -163,7 +163,9 @@
   <data name="delete_script_message" xml:space="preserve">
     <value>Êtes vous sur de vouloir supprimer le script "{0}" ?</value>
   </data>
-  
+  <data name="desc" xml:space="preserve">
+    <value>Répond aux événements avec un dialogue scripté basé sur les informations de l'événement. Tous les événements n'ont pas de réponses scriptées. Si un script de réponse est vide, les boutons 'Tester' et 'Voir' sont désactivés. Les scripts basés sur des événements peuvent être désactivés ou redéfinis, mais pas supprimés.</value>
+  </data>
   <data name="edit_script" xml:space="preserve">
     <value>Modifier</value>
   </data>
@@ -210,7 +212,13 @@
   <data name="view_script_title" xml:space="preserve">
     <value>Voir Script</value>
   </data>
-  
-  
-  
+  <data name="header_priority" xml:space="preserve">
+    <value>Priorité</value>
+  </data>
+  <data name="speechResponderHelp" xml:space="preserve">
+    <value>Lire à propos des fonctions du répondeur vocale</value>
+  </data>
+  <data name="speechResponderHelpHere" xml:space="preserve">
+    <value>ici.</value>
+  </data>
 </root>
