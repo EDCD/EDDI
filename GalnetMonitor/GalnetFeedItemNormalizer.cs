@@ -4,7 +4,6 @@ using System.Linq;
 using System.Net;
 using System.ServiceModel.Syndication;
 using System.Text.RegularExpressions;
-using System.Text;
 
 namespace GalnetMonitor
 {

@@ -161,7 +161,6 @@ namespace GalnetMonitor
                     try {
                         WebRequest request = WebRequest.Create(url);
                         HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-                        Logging.Info(response.StatusCode.ToString() + " Galnet " + url);
                     }
                     catch (Exception ex)
                     {
