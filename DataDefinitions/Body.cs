@@ -12,6 +12,9 @@ namespace EddiDataDefinitions
     /// </summary>
     public class Body
     {
+        /// <summary>The ID of this body in the star system</summary>
+        public long? bodyId { get; set; }
+        
         /// <summary>The ID of this body in EDDB</summary>
         public long? EDDBID { get; set; }
 
@@ -85,6 +88,9 @@ namespace EddiDataDefinitions
 
         /// <summary>The semi-major axis of the body, in light seconds</summary>
         public decimal? semimajoraxis { get; set; }
+
+        /// <summary>The parent bodies to this body, if any</summary>
+        public List<IDictionary<string, object>> parents { get; set; }
 
         // Star-specific items
 

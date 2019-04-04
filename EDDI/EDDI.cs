@@ -1873,6 +1873,7 @@ namespace Eddi
                         EDDBID = -1,
                         bodyType = BodyType.FromEDName("Star"),
                         bodyname = theEvent.bodyname,
+                        bodyId = theEvent.bodyId,
                         systemname = CurrentStarSystem?.name,
                         systemAddress = CurrentStarSystem?.systemAddress
                     };
@@ -1914,8 +1915,10 @@ namespace Eddi
                     body = new Body
                     {
                         EDDBID = -1,
-                        bodyType = BodyType.FromEDName("Planet"),
+                        bodyType = (bool)theEvent.parents?.Exists(p => ((IDictionary<string, object>)p).ContainsKey("Planet")) 
+                            ? BodyType.FromEDName("Moon") : BodyType.FromEDName("Planet"),
                         bodyname = theEvent.bodyname,
+                        bodyId = theEvent.bodyId,
                         systemname = CurrentStarSystem.name,
                         systemAddress = CurrentStarSystem?.systemAddress
                     };

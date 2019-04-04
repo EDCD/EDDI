@@ -37,13 +37,15 @@ namespace EddiEvents
         // Variables below are not intended to be user facing
         public long systemAddress { get; private set; }
         public BodyType bodyType { get; private set; } = BodyType.None;
+        public long? bodyId { get; private set; }
 
-        public EnteredNormalSpaceEvent(DateTime timestamp, string systemName, long systemAddress, string bodyName, BodyType bodyType) : base(timestamp, NAME)
+        public EnteredNormalSpaceEvent(DateTime timestamp, string systemName, long systemAddress, string bodyName, long? bodyId, BodyType bodyType) : base(timestamp, NAME)
         {
             this.systemname = systemName;
             this.systemAddress = systemAddress;
             this.bodyType = bodyType;
             this.bodyname = bodyName;
+            this.bodyId = bodyId;
         }
     }
 }

@@ -444,7 +444,7 @@ A star or planet.  Any values might be missing, depending on EDDI's configuratio
 
 All bodies have the following data:
 
-    - `bodytype` the type of the body (Star or Planet)
+    - `bodytype` the type of the body (Star, Planet, or Moon)
     - `systemname` the name of the system in which this body resides
     - `bodyname` the name of the body
     - `shortname` the shortened name of the body
@@ -463,7 +463,7 @@ In addition, stars have the following data:
     - `estimatedhabzoneinner` The estimated inner radius of the habitable zone of the star, in light seconds, not considering other stars in the system
     - `estimatedhabzoneouter` The estimated outer radius of the habitable zone of the star, in light seconds, not considering other stars in the system
 
-Planets have the following data:
+Planets and moons have the following data:
 
     - `periapsis` the argument of periapsis of the planet, in degrees
     - `atmosphere` the atmosphere of the planet

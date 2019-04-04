@@ -179,8 +179,9 @@ namespace EddiJournalMonitor
                                     string system = JsonParsing.getString(data, "StarSystem");
                                     long systemAddress = JsonParsing.getLong(data, "SystemAddress");
                                     string body = JsonParsing.getString(data, "Body");
+                                    long? bodyId = JsonParsing.getOptionalLong(data, "BodyID");
                                     BodyType bodyType = BodyType.FromEDName(JsonParsing.getString(data, "BodyType") ?? "None");
-                                    events.Add(new EnteredNormalSpaceEvent(timestamp, system, systemAddress, body, bodyType) { raw = line, fromLoad = fromLogLoad });
+                                    events.Add(new EnteredNormalSpaceEvent(timestamp, system, systemAddress, body, bodyId, bodyType) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
@@ -242,6 +243,7 @@ namespace EddiJournalMonitor
                                     long systemAddress = JsonParsing.getLong(data, "SystemAddress");
 
                                     string body = JsonParsing.getString(data, "Body");
+                                    long? bodyId = JsonParsing.getOptionalLong(data, "BodyID");
                                     BodyType bodyType = BodyType.FromEDName(JsonParsing.getString(data, "BodyType"));
                                     bool docked = JsonParsing.getBool(data, "Docked");
                                     Faction systemfaction = getFaction(data, "System", systemName);
@@ -268,7 +270,7 @@ namespace EddiJournalMonitor
                                         factions = getFactions(factionsVal, systemName);
                                     }
 
-                                    events.Add(new LocationEvent(timestamp, systemName, x, y, z, systemAddress, body, bodyType, docked, station, stationtype, marketId, systemfaction, stationfaction, economy, economy2, security, population, longitude, latitude, factions) { raw = line, fromLoad = fromLogLoad });
+                                    events.Add(new LocationEvent(timestamp, systemName, x, y, z, systemAddress, body, bodyId, bodyType, docked, station, stationtype, marketId, systemfaction, stationfaction, economy, economy2, security, population, longitude, latitude, factions) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
@@ -652,7 +654,8 @@ namespace EddiJournalMonitor
                                     string system = JsonParsing.getString(data, "StarSystem");
                                     long systemAddress = JsonParsing.getLong(data, "SystemAddress");
                                     string body = JsonParsing.getString(data, "Body");
-                                    events.Add(new NearSurfaceEvent(timestamp, true, system, systemAddress, body) { raw = line, fromLoad = fromLogLoad });
+                                    long? bodyId = JsonParsing.getOptionalLong(data, "BodyID");
+                                    events.Add(new NearSurfaceEvent(timestamp, true, system, systemAddress, body, bodyId) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
@@ -661,7 +664,8 @@ namespace EddiJournalMonitor
                                     string system = JsonParsing.getString(data, "StarSystem");
                                     long systemAddress = JsonParsing.getLong(data, "SystemAddress");
                                     string body = JsonParsing.getString(data, "Body");
-                                    events.Add(new NearSurfaceEvent(timestamp, false, system, systemAddress, body) { raw = line, fromLoad = fromLogLoad });
+                                    long? bodyId = JsonParsing.getOptionalLong(data, "BodyID");
+                                    events.Add(new NearSurfaceEvent(timestamp, false, system, systemAddress, body, bodyId) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
@@ -716,6 +720,11 @@ namespace EddiJournalMonitor
                                     decimal? orbitalinclinationDegrees = JsonParsing.getOptionalDecimal(data, "OrbitalInclination");
                                     decimal? periapsisDegrees = JsonParsing.getOptionalDecimal(data, "Periapsis");
                                     decimal? axialTiltDegrees = JsonParsing.getOptionalDecimal(data, "AxialTilt");
+                                    long? bodyId = JsonParsing.getOptionalLong(data, "BodyID");
+
+                                    // Parent body types and IDs
+                                    data.TryGetValue("Parents", out object parentsVal);
+                                    List<object> parents = ((List<object>)parentsVal);
 
                                     // Rings
                                     data.TryGetValue("Rings", out object val);
@@ -747,7 +756,7 @@ namespace EddiJournalMonitor
                                         decimal temperatureKelvin = JsonParsing.getDecimal(data, "SurfaceTemperature");
                                         bool mainstar = distancefromarrival == 0 ? true : false;
 
-                                        events.Add(new StarScannedEvent(timestamp, scantype, name, starType, stellarMass, radiusKm, absoluteMagnitude, luminosityClass, ageMegaYears, temperatureKelvin, distancefromarrival, orbitalPeriodDays, rotationPeriodDays, semimajoraxisLs, eccentricity, orbitalinclinationDegrees, periapsisDegrees, rings, mainstar) { raw = line, fromLoad = fromLogLoad });
+                                        events.Add(new StarScannedEvent(timestamp, scantype, name, bodyId, starType, stellarMass, radiusKm, absoluteMagnitude, luminosityClass, ageMegaYears, temperatureKelvin, distancefromarrival, orbitalPeriodDays, rotationPeriodDays, semimajoraxisLs, eccentricity, orbitalinclinationDegrees, periapsisDegrees, rings, mainstar, parents) { raw = line, fromLoad = fromLogLoad });
                                         handled = true;
                                     }
                                     else if (data.ContainsKey("PlanetClass"))
@@ -853,7 +862,7 @@ namespace EddiJournalMonitor
                                         TerraformState terraformState = TerraformState.FromEDName(JsonParsing.getString(data, "TerraformState")) ?? TerraformState.NotTerraformable;
                                         Volcanism volcanism = Volcanism.FromName(JsonParsing.getString(data, "Volcanism"));
 
-                                        events.Add(new BodyScannedEvent(timestamp, scantype, name, systemName, planetClass, earthMass, radiusKm, gravity, temperatureKelvin, pressureAtm, tidallyLocked, landable, atmosphereClass, atmosphereCompositions, solidCompositions, volcanism, distancefromarrival, (decimal)orbitalPeriodDays, rotationPeriodDays, semimajoraxisLs, eccentricity, orbitalinclinationDegrees, periapsisDegrees, rings, reserves, materials, terraformState, axialTiltDegrees) { raw = line, fromLoad = fromLogLoad });
+                                        events.Add(new BodyScannedEvent(timestamp, scantype, name, bodyId, systemName, planetClass, earthMass, radiusKm, gravity, temperatureKelvin, pressureAtm, tidallyLocked, landable, atmosphereClass, atmosphereCompositions, solidCompositions, volcanism, distancefromarrival, (decimal)orbitalPeriodDays, rotationPeriodDays, semimajoraxisLs, eccentricity, orbitalinclinationDegrees, periapsisDegrees, rings, reserves, materials, terraformState, axialTiltDegrees, parents) { raw = line, fromLoad = fromLogLoad });
                                         handled = true;
                                     }
                                 }
@@ -1926,9 +1935,10 @@ namespace EddiJournalMonitor
                             case "SAAScanComplete":
                                 {
                                     string body = JsonParsing.getString(data, "BodyName");
+                                    long? bodyId = JsonParsing.getOptionalLong(data, "BodyID");
                                     int probesUsed = JsonParsing.getInt(data, "ProbesUsed");
                                     int efficiencyTarget = JsonParsing.getInt(data, "EfficiencyTarget");
-                                    events.Add(new BodyMappedEvent(timestamp, body, probesUsed, efficiencyTarget) { raw = line, fromLoad = fromLogLoad });
+                                    events.Add(new BodyMappedEvent(timestamp, body, bodyId, probesUsed, efficiencyTarget) { raw = line, fromLoad = fromLogLoad });
                                     handled = true;
                                     break;
                                 }
