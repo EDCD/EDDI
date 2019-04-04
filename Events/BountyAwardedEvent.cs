@@ -48,9 +48,9 @@ namespace EddiEvents
     public class Reward
     {
         public string faction { get; private set; }
-        public decimal amount { get; private set; }
+        public long amount { get; private set; }
 
-        public Reward(string faction, decimal amount)
+        public Reward(string faction, long amount)
         {
             this.faction = faction;
             this.amount = amount;
