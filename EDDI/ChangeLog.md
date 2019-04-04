@@ -36,6 +36,8 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Revised BodyDetails() function for better interchangeability with events.
       * WAS: `name`*, IS: `bodyname` 
       * WAS: `type`*, IS: `bodytype`
+    * Expanded `bodytype` values to separate `Planet` and `Moon` body types
+    * The `P()` function now converts roman numerals in planet classes (e.g. Class II gas giant) into numbers (e.g. Class 2 gas giant) to ensure proper pronunciation.
     * Revised `Body scanned` event variables for better interchangeability with with the `BodyDetails` function.
       * WAS: `atmospherecomposition`, IS: `atmospherecompositions`
       * WAS: `axialtilt`*, IS: `tilt`

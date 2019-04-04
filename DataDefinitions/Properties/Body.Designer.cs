@@ -88,6 +88,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Moon.
+        /// </summary>
+        public static string Moon {
+            get {
+                return ResourceManager.GetString("Moon", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to None.
         /// </summary>
         public static string None {

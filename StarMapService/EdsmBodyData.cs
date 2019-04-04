@@ -68,6 +68,7 @@ namespace EddiStarMapService
             Body Body = new Body
             {
                 // General items 
+                bodyId = (long?)body["bodyId"],
                 EDSMID = (long?)body["id"],
                 bodyname = (string)body["name"],
                 systemname = system,
@@ -85,6 +86,12 @@ namespace EddiStarMapService
                 tidallylocked = (bool?)body["rotationalPeriodTidallyLocked"] ?? false,
                 tilt = (decimal?)body["axialTilt"] // Degrees
             };
+
+            if (body["parents"] != null)
+            {
+                // Parent body types and IDs
+                Body.parents = body["parents"].ToObject<List<IDictionary<string, object>>>() ?? new List<IDictionary<string, object>>();
+            }
 
             if ((string)body["type"] == "Belt")
             {
@@ -108,7 +115,11 @@ namespace EddiStarMapService
 
             if ((string)body["type"] == "Planet")
             {
-                // Planet-specific items 
+                // EDSM doesn't classify bodies as moons, so we classify them here.
+                Body.bodyType = (bool)Body.parents?.Exists(p => p.ContainsKey("Planet"))
+                                ? BodyType.FromEDName("Moon") : Body.bodyType;
+
+                // Planet and moon specific items 
                 Body.planetClass = PlanetClass.FromName((string)body["subType"]) ?? PlanetClass.None;
                 Body.tidallylocked = (bool?)body["rotationalPeriodTidallyLocked"] ?? false;
                 Body.landable = (bool?)body["isLandable"];

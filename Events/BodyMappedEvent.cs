@@ -23,9 +23,13 @@ namespace EddiEvents
 
         public int efficiencytarget { get; private set; }
 
-        public BodyMappedEvent(DateTime timestamp, string name, int probesUsed, int efficiencyTarget) : base(timestamp, NAME)
+        // Not intended to be user facing
+        public long? bodyId { get; private set; }
+
+        public BodyMappedEvent(DateTime timestamp, string name, long? bodyId, int probesUsed, int efficiencyTarget) : base(timestamp, NAME)
         {
             this.name = name;
+            this.bodyId = bodyId;
             this.probesused = probesUsed;
             this.efficiencytarget = efficiencyTarget;
         }

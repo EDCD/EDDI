@@ -107,6 +107,8 @@ namespace EddiEvents
         public long? estimatedvalue { get; private set; }
 
         // Variables below are not intended to be user facing
+        public long? bodyId { get; private set; }
+        public List<object> parents { get; private set; }
         public AtmosphereClass atmosphereclass { get; private set; }
         public PlanetClass planetClass { get; private set; }
         public TerraformState terraformState { get; private set; }
@@ -127,10 +129,11 @@ namespace EddiEvents
         [JsonIgnore, Obsolete("Use tilt instead")]
         public decimal? axialtilt => tilt;  // This is the object property reported from the BodyDetails() function
 
-        public BodyScannedEvent(DateTime timestamp, string scantype, string bodyName, string systemName, PlanetClass planetClass, decimal? earthmass, decimal? radiusKm, decimal gravity, decimal? temperatureKelvin, decimal? pressureAtm, bool? tidallylocked, bool? landable, AtmosphereClass atmosphereClass, List<AtmosphereComposition> atmosphereComposition, List<SolidComposition> solidCompositions, Volcanism volcanism, decimal distancefromarrival_Ls, decimal orbitalperiodDays, decimal rotationperiodDays, decimal? semimajoraxisAU, decimal? eccentricity, decimal? orbitalinclinationDegrees, decimal? periapsisDegrees, List<Ring> rings, string reserves, List<MaterialPresence> materials, TerraformState terraformstate, decimal? axialtiltDegrees) : base(timestamp, NAME)
+        public BodyScannedEvent(DateTime timestamp, string scantype, string bodyName, long? bodyId, string systemName, PlanetClass planetClass, decimal? earthmass, decimal? radiusKm, decimal gravity, decimal? temperatureKelvin, decimal? pressureAtm, bool? tidallylocked, bool? landable, AtmosphereClass atmosphereClass, List<AtmosphereComposition> atmosphereComposition, List<SolidComposition> solidCompositions, Volcanism volcanism, decimal distancefromarrival_Ls, decimal orbitalperiodDays, decimal rotationperiodDays, decimal? semimajoraxisAU, decimal? eccentricity, decimal? orbitalinclinationDegrees, decimal? periapsisDegrees, List<Ring> rings, string reserves, List<MaterialPresence> materials, TerraformState terraformstate, decimal? axialtiltDegrees, List<object> parents) : base(timestamp, NAME)
         {
             this.scantype = scantype;
             this.bodyname = bodyName;
+            this.bodyId = bodyId;
             this.systemname = systemName;
             this.distance = distancefromarrival_Ls;
             this.planetClass = planetClass;
@@ -156,6 +159,7 @@ namespace EddiEvents
             this.materials = materials;
             this.terraformState = terraformstate;
             this.tilt = axialtiltDegrees;
+            this.parents = parents;
             this.estimatedvalue = estimateValue(scantype == null ? false : scantype.Contains("Detail"));
         }
 

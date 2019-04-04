@@ -115,8 +115,9 @@ namespace EddiEvents
         public SecurityLevel securityLevel { get; private set; } = SecurityLevel.None;
         public StationModel stationModel { get; private set; } = StationModel.None;
         public BodyType bodyType { get; private set; } = BodyType.None;
+        public long? bodyId { get; private set; }
 
-        public LocationEvent(DateTime timestamp, string systemName, decimal x, decimal y, decimal z, long systemAddress, decimal? distancefromstar, string bodyName, BodyType bodytype, bool docked, string station, StationModel stationtype, long? marketId, Faction systemFaction, Faction stationFaction, Economy economy, Economy economy2, SecurityLevel security, long? population, decimal? longitude, decimal? latitude, List<Faction> factions) : base(timestamp, NAME)
+        public LocationEvent(DateTime timestamp, string systemName, decimal x, decimal y, decimal z, long systemAddress, decimal? distancefromstar, string bodyName, long? bodyId, BodyType bodytype, bool docked, string station, StationModel stationtype, long? marketId, Faction systemFaction, Faction stationFaction, Economy economy, Economy economy2, SecurityLevel security, long? population, decimal? longitude, decimal? latitude, List<Faction> factions) : base(timestamp, NAME)
         {
             this.systemname = systemName;
             this.x = x;
@@ -125,6 +126,7 @@ namespace EddiEvents
             this.systemAddress = systemAddress;
             this.distancefromstar = distancefromstar;
             this.bodyname = bodyName;
+            this.bodyId = bodyId;
             this.bodyType = bodytype;
             this.docked = docked;
             this.station = station;
