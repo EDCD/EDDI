@@ -2,6 +2,7 @@
 using EddiDataDefinitions;
 using EddiDataProviderService;
 using EddiEvents;
+using EddiMissionMonitor;
 using EddiStarMapService;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -638,6 +639,28 @@ namespace EddiCrimeMonitor
                 string nearestStation = nearestList.Values.FirstOrDefault();
                 record.station = nearestStation;
             }
+        }
+
+        public string GetIFContactSystem()
+        {
+            string IFSystem = null;
+            decimal IFDistance = 0;
+            List<long> missionids = new List<long>();       // List of mission IDs for the next system
+
+            Station station = GetInterstellarFactorsStation();
+            if (station != null)
+            {
+                StarSystem dest = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystem(station.systemname, true);
+                if (dest != null)
+                {
+                    IFSystem = dest.name;
+                    IFDistance = CalculateDistance(EDDI.Instance?.CurrentStarSystem, dest);
+                    missionids = ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor"))?.GetSystemMissionIds(IFSystem);
+                }
+            }
+
+            EDDI.Instance.enqueueEvent(new RouteDetailsEvent(DateTime.Now, "ifcontact", IFSystem, IFSystem, missionids.Count(), IFDistance, IFDistance, missionids));
+            return IFSystem;
         }
 
         public Station GetInterstellarFactorsStation(int cubeLy = 20)

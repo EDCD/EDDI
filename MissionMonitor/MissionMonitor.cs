@@ -898,6 +898,19 @@ namespace EddiMissionMonitor
             return missions.FirstOrDefault(m => m.missionid == missionid);
         }
 
+        public List<long> GetSystemMissionIds(string system)
+        {
+            List<long> missionids = new List<long>();       // List of mission IDs for the system
+
+            // Get mission IDs associated with the system
+            foreach (Mission mission in missions.Where(m => m.destinationsystem == system
+                || (m.originreturn && m.originsystem == system)).ToList())
+            {
+                missionids.Add(mission.missionid);
+            }
+            return missionids;
+        }
+
         private void AddMission(Mission mission)
         {
             if (mission == null)

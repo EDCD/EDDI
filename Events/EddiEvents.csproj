@@ -73,6 +73,7 @@
     <Compile Include="FSDTargetEvent.cs" />
     <Compile Include="MarketEvent.cs" />
     <Compile Include="OutfittingEvent.cs" />
+    <Compile Include="RouteDetailsEvent.cs" />
     <Compile Include="ShipyardEvent.cs" />
     <Compile Include="SignalDetectedEvent.cs" />
     <Compile Include="FSSDiscoveryScanEvent.cs" />
