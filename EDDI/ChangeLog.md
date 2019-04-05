@@ -6,6 +6,10 @@ Full details of the variables available for each noted event, and VoiceAttack in
   * Galnet monitor
     * Restored multi-lingual access.
 
+### 3.3.7
+  * Speech responder
+    * Preliminary Portuguese version of the default personality script.
+
 ### 3.3.7-rc1
   * Speech responder
     * Fixed some minor errors re plurals etc in the mission reports and fuel check scripts.
