@@ -150,7 +150,7 @@
   </data>
   <data name="sourceURL" xml:space="preserve">
     <value>https://community.elitedangerous.com/en/galnet-rss</value>
-    <comment>The URL the Galnet monitor should access for obtaining new news feed items. Though adding new languages to the Galnet monitor is not yet supported, this helps lay the groundwork for Galnet in more languages in the future.</comment>
+    <comment>The URL the Galnet monitor should access for obtaining new news feed items. Leaving this blank will default the source URL to English</comment>
   </data>
   <data name="contentFilterCgRegex" xml:space="preserve">
     <value>&gt;@"(promised to reward pilots)|(campaign.+will run for one week)|(organisations have set out week-long operations)|(collect.+rewards)|(If.+final target is met earlier than planned, the campaign will end immediately)"</value>
