@@ -158,7 +158,8 @@ namespace GalnetMonitor
                     locales.TryGetValue(configuration.language, out locale);
                     string url = GetGalnetResource("sourceURL");
                     altURL = false;
-                    try {
+                    try
+                    {
                         WebRequest request = WebRequest.Create(url);
                         HttpWebResponse response = (HttpWebResponse)request.GetResponse();
                     }
@@ -284,8 +285,22 @@ namespace GalnetMonitor
 
         private string GetGalnetResource(string basename)
         {
-            CultureInfo ci = locale != null ? CultureInfo.GetCultureInfo(locale) : CultureInfo.InvariantCulture;
-            return resourceManager.GetString(basename, ci) ?? null;
+            try
+            {
+                CultureInfo ci = locale != null ? CultureInfo.GetCultureInfo(locale) : CultureInfo.InvariantCulture;
+                string res = resourceManager.GetString(basename, ci);
+                if (string.IsNullOrEmpty(res))
+                {
+                    // Fallback to our invariant culture if the local language returns an empty result
+                    res = resourceManager.GetString(basename, CultureInfo.InvariantCulture);
+                }
+                return res;
+            }
+            catch (Exception ex)
+            {
+                Logging.Error("Failed to obtain Galnet resource for " + basename, ex);
+                return null;
+            }
         }
 
         public Dictionary<string, string> GetGalnetLocales()
