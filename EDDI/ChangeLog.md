@@ -2,6 +2,10 @@
 
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
+### Development
+  * Voice Attack
+    * Fixed a bug that would incorrectly disable invoked speech while `disablespeechresponder` was set.
+
 ### 3.3.7
   * Speech responder
     * Preliminary Portuguese version of the default personality script.

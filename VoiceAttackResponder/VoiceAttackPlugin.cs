@@ -764,7 +764,7 @@ namespace EddiVoiceAttackResponder
                     Logging.Warn("Unable to find speech responder");
                 }
 
-                speechResponder?.Say(((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip(), script, null, priority, voice, speechResponder.SayOutLoud(), true);
+                speechResponder?.Say(((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip(), script, null, priority, voice, true, true);
             }
             catch (Exception e)
             {
