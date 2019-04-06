@@ -320,11 +320,15 @@ namespace GalnetMonitor
                 {
                     continue;
                 }
+                if (dir.GetFiles().Count() == 0)
+                {
+                    continue;
+                }
                 try
                 {
                     CultureInfo cInfo = new CultureInfo(name);
                     ResourceSet resourceSet = resourceManager.GetResourceSet(cInfo, true, true);
-                    if (resourceSet.GetString("sourceURL") != null)
+                    if (!string.IsNullOrEmpty(resourceSet.GetString("sourceURL")))
                     {
                         satelliteLocales.Add(cInfo.DisplayName, name);
                     }
