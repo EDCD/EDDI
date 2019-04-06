@@ -943,5 +943,19 @@ namespace UnitTests
             Assert.IsNotNull(@event);
             Assert.IsInstanceOfType(@event, typeof(StoredModulesEvent));
         }
+
+        [TestMethod]
+        public void TestJournalSystemScanCompleteEvent()
+        {
+            string line = @"{""timestamp"":""2019-03-10T16:09:36Z"", ""event"":""FSSAllBodiesFound"", ""SystemName"":""Dumbae DN-I d10-6057"", ""SystemAddress"":208127228285531, ""Count"":19 }";
+            List<Event> events = JournalMonitor.ParseJournalEntry(line);
+            Assert.AreEqual(1, events.Count);
+            SystemScanComplete @event = (SystemScanComplete)events[0];
+            Assert.IsNotNull(@event);
+            Assert.IsInstanceOfType(@event, typeof(SystemScanComplete));
+            Assert.AreEqual("Dumbae DN-I d10-6057", @event.systemname);
+            Assert.AreEqual(208127228285531, @event.systemAddress);
+            Assert.AreEqual(19, @event.count);
+        }
     }
 }

@@ -3227,13 +3227,22 @@ namespace EddiJournalMonitor
                                     handled = true;
                                     break;
                                 }
+                            case "FSSAllBodiesFound":
+                                {
+                                    string systemName = JsonParsing.getString(data, "SystemName");
+                                    long systemAddress = JsonParsing.getLong(data, "SystemAddress");
+                                    int count = JsonParsing.getInt(data, "Count");
+                                    events.Add(new SystemScanComplete(timestamp, systemName, systemAddress, count) { raw = line, fromLoad = fromLogLoad });
+                                    handled = true;
+                                    break;
+                                }
+
                             case "Commander":
                             case "Reputation":
                             case "Statistics":
                             case "CodexEntry":
                             case "NpcCrewPaidWage":
                             case "ReservoirReplenished":
-                            case "FSSAllBodiesFound":
                             case "ProspectedAsteroid":
                             case "CrimeVictim":
                             case "Scanned":

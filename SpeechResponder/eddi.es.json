@@ -1942,9 +1942,18 @@
       "priority": 3,
       "responder": false,
       "script": "{_ Fetch from context }\n{set reportsystem to SystemDetails(state.eddi_context_system_system)}\n\n{if !reportsystem.name || reportbody.name = \"\":\n    No tengo la certeza sobre a qué sistema se refiere\n|else:\n    {P(reportsystem.name)} es un sistema \n\n    {if reportsystem.population && reportsystem.population > 0:\r\n\r\n        {if reportsystem.government = \"Colonia prisión\": \r\n          Colonia prisión\r\n        |elif reportsystem.government = \"Anarquía:\r\n          Anárquico\r\n        |elif reportsystem.government = \"Colonia\":\r\n          Colonial\r\n        |elif reportsystem.government = \"Communismo\":\r\n          Comunista\r\n        |elif reportsystem.government = \"Confederación\":\r\n          Confederado\r\n        |elif reportsystem.government = \"Cooperativa\":\r\n          Cooperativo\r\n        |elif reportsystem.government = \"Corporación\":\r\n          Corporativo\r\n        |elif reportsystem.government = \"Democracia\":\r\n          Demócrata\r\n        |elif reportsystem.government = \"Dictadurap\":\r\n          Dictatorial\r\n        |elif reportsystem.government = \"Feudal\":\r\n          Feudal\r\n        |elif reportsystem.government = \"Imperio\":\r\n          Imperialista\r\n        |elif reportsystem.government = \"Patronazgo\":\r\n          Patronal\r\n        |elif reportsystem.government = \"Teocracia\":\r\n          Teocrático\r\n        |elif reportsystem.government = \"Taller\":\r\n          Taller\r\n        |elif reportsystem.government = \"Engineer\":\r\n          Tecnológico\n            \n            \n        {if reportsystem.allegiance = \"La Federación\":\n            de la Federación\n        |elif reportsystem.allegiance = \"El Imperio\":\n            del Imperio\n        |else:\n            independiente\n        }\n\n        |else:\n          \n        }\n        {OneOf(\"de\", \"con una población de\", \"que acoje a\")} \r\n        {Humanise(reportsystem.population)}{if find(Humanise(reportsystem.population),\"coma cinco\") != -1:es}\r\n        de habitantes\n        {if reportsystem.power:\n            , {OneOf(\"alineados con\", \"aliados con\", \"controlados por\")} {P(reportsystem.power)}\n        }.\n\n        {if reportsystem.faction:\n          {P(reportsystem.faction)} es la {OneOf(\"potencia\", \"facción\")} {OneOf(\"dominante\", \"local\", \"que gobierna\")}.\n        }\n\n        {if len(reportsystem.stations) = 0:\n          No hay ninguna estación presente\n        |else:\n            {if len(reportsystem.orbitalstations) = 0:\n                {if len(reportsystem.planetarystations) = 1:\n                    Hay {OneOf(\"una sola\", \"solo una\", \"una solitaria\", \"una\")} estación planetaria\n                |else:\n                    Hay {len(reportsystem.planetarystations)} estaciones planetarias\n                }\n            |elif len(reportsystem.orbitalstations) = 1:\n                Hay {OneOf(\"una sola\", \"solo una\", \"una solitaria\", \"una\")} estación orbital\n                {if len(reportsystem.planetarystations) = 1:\n                    y {OneOf(\"una sola\", \"solo una\", \"una\")} estación planetaria\n                |elif len(reportsystem.planetarystations) > 1:\n                    y {len(reportsystem.planetarystations)} estaciones planetarias\n                }\n            |else:\n                Hay {len(reportsystem.orbitalstations)} estaciones orbitales\n                {if len(reportsystem.planetarystations) = 1:\n                    y {OneOf(\"una sola\", \"solo una\", \"una\")} estación planetaria\n                |elif len(reportsystem.planetarystations) > 1:\n                    y {len(reportsystem.planetarystations)} estaciones planetarias\n                }\n            }\n        }\n        en este sistema\n    |else:\n       {OneOf(\"inhabitado\",\"despoblado\",\"sin habitantes\",\"sin ningún habitante\",\"sin ninguna población\")}\n   }.\n}",
-	 "default": true,
+      "default": true,
       "name": "System report",
       "description": "Función para informar sobre los detalles del sistema estelar contextual (TEST)"
+    },
+    "System scan complete": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "default": true,
+      "name": "System scan complete",
+      "description": "Se activa al completar el escaneo de un sistema estelar"
     },
     "System state changed": {
       "enabled": true,
@@ -1973,7 +1982,7 @@
       "name": "Technology broker",
       "description": "Se activa cuando se utiliza el Broker de Tecnología para desbloquear nuevos elementos"
     },
- 
+
     "Touchdown": {
       "enabled": true,
       "priority": 3,

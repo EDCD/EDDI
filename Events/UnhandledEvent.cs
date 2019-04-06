@@ -12,8 +12,8 @@ namespace EddiEvents
 
         static UnhandledEvent()
         {
-        }
-
+        }   
+        
         public string edType { get; private set; }
 
         public UnhandledEvent(DateTime timestamp, string type) : base(timestamp, NAME)

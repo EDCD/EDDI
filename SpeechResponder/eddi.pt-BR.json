@@ -2189,6 +2189,15 @@
       "name": "System report",
       "description": "Function to report on the details of the contextual star system"
     },
+    "System scan complete": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "default": true,
+      "name": "System scan complete",
+      "description": "Triggered after having identified all bodies in the system"
+    },
     "System state changed": {
       "enabled": true,
       "priority": 3,
