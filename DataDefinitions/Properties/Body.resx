@@ -161,4 +161,8 @@
     <value>Moon</value>
     <comment>Body Type "Moon"</comment>
   </data>
+  <data name="StellarRing" xml:space="preserve">
+    <value>Stellar Ring</value>
+    <comment>Body Type PlanetaryRing</comment>
+  </data>
 </root>

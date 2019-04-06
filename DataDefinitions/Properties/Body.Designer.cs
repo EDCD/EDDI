@@ -158,5 +158,14 @@ namespace EddiDataDefinitions.Properties {
                 return ResourceManager.GetString("Station", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Stellar Ring.
+        /// </summary>
+        public static string StellarRing {
+            get {
+                return ResourceManager.GetString("StellarRing", resourceCulture);
+            }
+        }
     }
 }
