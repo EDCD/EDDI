@@ -29,6 +29,8 @@ namespace GalnetMonitor
 
         private bool running = false;
 
+        public static bool altURL { get; private set; }
+
         public GalnetMonitor()
         {
             // Remove the old configuration file if it still exists
@@ -152,12 +154,24 @@ namespace GalnetMonitor
                 {
                     List<News> newsItems = new List<News>();
                     string firstUid = null;
+                    
+                    locales.TryGetValue(configuration.language, out locale);
+                    string url = GetGalnetResource("sourceURL");
+                    altURL = false;
                     try
                     {
-                        locales.TryGetValue(configuration.language, out locale);
-                        string url = GetGalnetResource("sourceURL");
-
-                        Logging.Debug("Fetching Galnet articles from " + url);
+                        WebRequest request = WebRequest.Create(url);
+                        HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+                    }
+                    catch (WebException wex)
+                    {
+                        Logging.Warn("Exception contacting primary galnet feed, trying alternate: ", wex.Message);
+                        url = GetGalnetResource("alternateURL");
+                        altURL = true;
+                    }
+                    Logging.Debug("Fetching Galnet articles from " + url);
+                    try
+                    { 
                         FeedReader feedReader = new FeedReader(new GalnetFeedItemNormalizer(), true);
                         IEnumerable<FeedItem> items = feedReader.RetrieveFeed(url);
                         if (items != null)
@@ -190,6 +204,7 @@ namespace GalnetMonitor
                     {
                         Logging.Error("Exception attempting to obtain galnet feed: ", xex);
                     }
+                    
 
                     if (firstUid != configuration.lastuuid)
                     {
@@ -250,12 +265,6 @@ namespace GalnetMonitor
                 return GetGalnetResource("categoryPowerplay");
             }
 
-            if (title.StartsWith(GetGalnetResource("titleFilterCg")) ||
-                Regex.IsMatch(content, GetGalnetResource("contentFilterCgRegex")))
-            {
-                return GetGalnetResource("categoryCG");
-            }
-
             if (title.StartsWith(GetGalnetResource("titleFilterStarportStatus")))
             {
                 return GetGalnetResource("categoryStarportStatus");
@@ -265,14 +274,33 @@ namespace GalnetMonitor
             {
                 return GetGalnetResource("categoryWeekInReview");
             }
+            if (title.StartsWith(GetGalnetResource("titleFilterCg")) ||
+                Regex.IsMatch(content, GetGalnetResource("contentFilterCgRegex")))
+            {
+                return GetGalnetResource("categoryCG");
+            }
 
             return GetGalnetResource("categoryArticle");
         }
 
         private string GetGalnetResource(string basename)
         {
-            CultureInfo ci = locale != null ? CultureInfo.GetCultureInfo(locale) : CultureInfo.InvariantCulture;
-            return resourceManager.GetString(basename, ci) ?? null;
+            try
+            {
+                CultureInfo ci = locale != null ? CultureInfo.GetCultureInfo(locale) : CultureInfo.InvariantCulture;
+                string res = resourceManager.GetString(basename, ci);
+                if (string.IsNullOrEmpty(res))
+                {
+                    // Fallback to our invariant culture if the local language returns an empty result
+                    res = resourceManager.GetString(basename, CultureInfo.InvariantCulture);
+                }
+                return res;
+            }
+            catch (Exception ex)
+            {
+                Logging.Error("Failed to obtain Galnet resource for " + basename, ex);
+                return null;
+            }
         }
 
         public Dictionary<string, string> GetGalnetLocales()
