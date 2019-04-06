@@ -16,6 +16,7 @@
             var Station = new BodyType("Station");
             var Belt = new BodyType("Belt");
             var PlanetaryRing = new BodyType("PlanetaryRing");
+            var StellarRing = new BodyType("StellarRing");
         }
 
         public static readonly BodyType None;
