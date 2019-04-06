@@ -5,6 +5,10 @@ Full details of the variables available for each noted event, and VoiceAttack in
 ### Development
   * Galnet monitor
     * Restored multi-lingual access.
+  * Speech responder
+    * Add event `Discovery scan`, triggered when you "honk" the discovery scanner
+  * Voice Attack
+    * Fixed a bug that would incorrectly disable invoked speech while `disablespeechresponder` was set.
 
 ### 3.3.7
   * Speech responder

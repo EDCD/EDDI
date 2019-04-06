@@ -764,7 +764,9 @@ namespace EddiVoiceAttackResponder
                     Logging.Warn("Unable to find speech responder");
                 }
 
-                speechResponder?.Say(((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip(), script, null, priority, voice, speechResponder.SayOutLoud(), true);
+                // sayOutLoud must be true to match the behavior described by the wiki for the `disablespeechresponder` command
+                // i.e. "not talk unless specifically asked for information"
+                speechResponder?.Say(((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip(), script, null, priority, voice, true, true);
             }
             catch (Exception e)
             {
