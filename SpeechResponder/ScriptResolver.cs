@@ -615,7 +615,7 @@ namespace EddiSpeechResponder
                 {
                     result = EDDI.Instance.CurrentStarSystem;
                 }
-                else if (values[0]?.AsString?.ToLowerInvariant() == EDDI.Instance.CurrentStarSystem?.name?.ToLowerInvariant())
+                else if (values[0]?.AsString?.ToLowerInvariant() == EDDI.Instance.CurrentStarSystem?.systemname?.ToLowerInvariant())
                 {
                     result = EDDI.Instance.CurrentStarSystem;
                 }
@@ -634,7 +634,7 @@ namespace EddiSpeechResponder
                 {
                     system = EDDI.Instance.CurrentStarSystem;
                 }
-                else if (values.Count == 1 || string.IsNullOrEmpty(values[1].AsString) || values[1]?.AsString?.ToLowerInvariant() == EDDI.Instance.CurrentStarSystem?.name?.ToLowerInvariant())
+                else if (values.Count == 1 || string.IsNullOrEmpty(values[1].AsString) || values[1]?.AsString?.ToLowerInvariant() == EDDI.Instance.CurrentStarSystem?.systemname?.ToLowerInvariant())
                 {
                     system = EDDI.Instance.CurrentStarSystem;
                 }
@@ -772,7 +772,7 @@ namespace EddiSpeechResponder
                 else
                 {
                     StarSystem system;
-                    if (values.Count == 1 || values[1]?.AsString?.ToLowerInvariant() == EDDI.Instance.CurrentStarSystem?.name?.ToLowerInvariant())
+                    if (values.Count == 1 || values[1]?.AsString?.ToLowerInvariant() == EDDI.Instance.CurrentStarSystem?.systemname?.ToLowerInvariant())
                     {
                         // Current system
                         system = EDDI.Instance.CurrentStarSystem;

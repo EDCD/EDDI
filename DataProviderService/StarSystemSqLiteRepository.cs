@@ -97,7 +97,7 @@ namespace EddiDataProviderService
             List<string> fetchSystems = new List<string>();
             foreach (string name in names)
             {
-                if (fetchIfMissing && systems.FirstOrDefault(s => s.name == name) == null)
+                if (fetchIfMissing && systems.FirstOrDefault(s => s.systemname == name) == null)
                 {
                     fetchSystems.Add(name);
                 }
@@ -112,9 +112,9 @@ namespace EddiDataProviderService
             // Create a new system object for each name that isn't in the database and couldn't be fetched from a server
             foreach (string name in names)
             {
-                if (systems?.Find(s => s?.name == name) == null)
+                if (systems?.Find(s => s?.systemname == name) == null)
                 {
-                    systems.Add(new StarSystem() { name = name });
+                    systems.Add(new StarSystem() { systemname = name });
                 }
             }
 
@@ -137,7 +137,7 @@ namespace EddiDataProviderService
             // If a system isn't found after we've read our local database, we need to fetch it.
             foreach (string name in names)
             {
-                if (fetchIfMissing && systems.FirstOrDefault(s => s.name == name) == null)
+                if (fetchIfMissing && systems.FirstOrDefault(s => s.systemname == name) == null)
                 {
                     fetchSystems.Add(name);
                 }
@@ -374,10 +374,10 @@ namespace EddiDataProviderService
             var update = new List<StarSystem>();
             var insert = new List<StarSystem>();
 
-            var dbSystems = Instance.ReadStarSystems(starSystems.Select(s => s.name).ToArray());
+            var dbSystems = Instance.ReadStarSystems(starSystems.Select(s => s.systemname).ToArray());
             foreach (StarSystem system in starSystems)
             {
-                KeyValuePair<string, string> dbSystem = dbSystems.FirstOrDefault(s => s.Key == system.name);
+                KeyValuePair<string, string> dbSystem = dbSystems.FirstOrDefault(s => s.Key == system.systemname);
                 if (dbSystem.Key == null)
                 {
                     insert.Add(system);
@@ -409,7 +409,7 @@ namespace EddiDataProviderService
         // Triggered when leaving a starsystem - just update lastvisit
         public void LeaveStarSystem(StarSystem system)
         {
-            if (system?.name == null) { return; }
+            if (system?.systemname == null) { return; }
 
             system.lastvisit = DateTime.UtcNow;
             SaveStarSystem(system);
@@ -425,11 +425,11 @@ namespace EddiDataProviderService
             List<StarSystem> updateStarSystems = new List<StarSystem>();
             List<StarSystem> insertStarSystems = new List<StarSystem>();
 
-            var existingStarSystems = Instance.ReadStarSystems(systems.Select(s => s.name).ToArray());
+            var existingStarSystems = Instance.ReadStarSystems(systems.Select(s => s.systemname).ToArray());
             foreach (StarSystem systemToInsertOrUpdate in systems)
             {
                 // Before we insert we attempt to fetch to ensure that we don't have it present
-                if (existingStarSystems.FirstOrDefault(s => s.Key == systemToInsertOrUpdate.name).Value != null)
+                if (existingStarSystems.FirstOrDefault(s => s.Key == systemToInsertOrUpdate.systemname).Value != null)
                 {
                     Logging.Debug("Attempt to insert existing star system - updating instead");
                     updateStarSystems.Add(systemToInsertOrUpdate);
@@ -451,7 +451,7 @@ namespace EddiDataProviderService
                         {
                             foreach (StarSystem system in insertStarSystems)
                             {
-                                Logging.Debug("Inserting new starsystem " + system.name);
+                                Logging.Debug("Inserting new starsystem " + system.systemname);
                                 if (system.lastvisit == null)
                                 {
                                     // DB constraints don't allow this to be null
@@ -460,7 +460,7 @@ namespace EddiDataProviderService
 
                                 cmd.CommandText = INSERT_SQL;
                                 cmd.Prepare();
-                                cmd.Parameters.AddWithValue("@name", system.name);
+                                cmd.Parameters.AddWithValue("@name", system.systemname);
                                 cmd.Parameters.AddWithValue("@totalvisits", system.visits);
                                 cmd.Parameters.AddWithValue("@lastvisit", system.lastvisit ?? DateTime.UtcNow);
                                 cmd.Parameters.AddWithValue("@starsystem", JsonConvert.SerializeObject(system));
@@ -508,7 +508,7 @@ namespace EddiDataProviderService
                                 cmd.Parameters.AddWithValue("@lastvisit", system.lastvisit ?? DateTime.UtcNow);
                                 cmd.Parameters.AddWithValue("@starsystem", JsonConvert.SerializeObject(system));
                                 cmd.Parameters.AddWithValue("@starsystemlastupdated", system.lastupdated);
-                                cmd.Parameters.AddWithValue("@name", system.name);
+                                cmd.Parameters.AddWithValue("@name", system.systemname);
                                 cmd.ExecuteNonQuery();
                             }
                             transaction.Commit();
@@ -542,7 +542,7 @@ namespace EddiDataProviderService
                             {
                                 cmd.CommandText = DELETE_SQL;
                                 cmd.Prepare();
-                                cmd.Parameters.AddWithValue("@name", system.name);
+                                cmd.Parameters.AddWithValue("@name", system.systemname);
                                 cmd.ExecuteNonQuery();
                             }
                             transaction.Commit();

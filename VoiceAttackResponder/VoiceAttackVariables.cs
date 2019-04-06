@@ -341,8 +341,8 @@ namespace EddiVoiceAttackResponder
                     {
                         if (EDDI.Instance.HomeStarSystem != null)
                         {
-                            vaProxy.SetText("Home system", EDDI.Instance.HomeStarSystem.name);
-                            vaProxy.SetText("Home system (spoken)", Translations.StarSystem(EDDI.Instance.HomeStarSystem.name));
+                            vaProxy.SetText("Home system", EDDI.Instance.HomeStarSystem.systemname);
+                            vaProxy.SetText("Home system (spoken)", Translations.StarSystem(EDDI.Instance.HomeStarSystem.systemname));
                         }
                         if (EDDI.Instance.HomeStation != null)
                         {
@@ -763,8 +763,8 @@ namespace EddiVoiceAttackResponder
             Logging.Debug("Setting system information (" + prefix + ")");
             try
             {
-                vaProxy.SetText(prefix + " name", system?.name);
-                vaProxy.SetText(prefix + " name (spoken)", Translations.StarSystem(system?.name));
+                vaProxy.SetText(prefix + " name", system?.systemname);
+                vaProxy.SetText(prefix + " name (spoken)", Translations.StarSystem(system?.systemname));
                 vaProxy.SetDecimal(prefix + " population", system?.population);
                 vaProxy.SetText(prefix + " population (spoken)", Translations.Humanize(system?.population));
                 vaProxy.SetText(prefix + " allegiance", (system?.Faction?.Allegiance ?? Superpower.None).localizedName);
@@ -772,7 +772,7 @@ namespace EddiVoiceAttackResponder
                 vaProxy.SetText(prefix + " faction", system?.Faction?.name);
                 vaProxy.SetText(prefix + " primary economy", system?.primaryeconomy);
                 vaProxy.SetText(prefix + " state", (system?.Faction?.presences
-                    .FirstOrDefault(p => p.systemName == system.name)?.FactionState ?? FactionState.None).localizedName);
+                    .FirstOrDefault(p => p.systemName == system.systemname)?.FactionState ?? FactionState.None).localizedName);
                 vaProxy.SetText(prefix + " security", system?.security);
                 vaProxy.SetText(prefix + " power", system?.power);
                 vaProxy.SetText(prefix + " power (spoken)", Translations.Power(EDDI.Instance.CurrentStarSystem?.power));
