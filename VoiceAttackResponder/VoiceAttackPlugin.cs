@@ -955,12 +955,12 @@ namespace EddiVoiceAttackResponder
                 if (EDDI.Instance.CurrentStarSystem != null)
                 {
                     // Store locally
-                    StarSystem here = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(EDDI.Instance.CurrentStarSystem.name);
+                    StarSystem here = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(EDDI.Instance.CurrentStarSystem.systemname);
                     here.comment = comment == "" ? null : comment;
                     StarSystemSqLiteRepository.Instance.SaveStarSystem(here);
 
                     // Store in EDSM
-                    StarMapService.Instance?.sendStarMapComment(EDDI.Instance.CurrentStarSystem.name, comment);
+                    StarMapService.Instance?.sendStarMapComment(EDDI.Instance.CurrentStarSystem.systemname, comment);
                 }
             }
             catch (Exception e)

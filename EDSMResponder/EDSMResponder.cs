@@ -208,7 +208,7 @@ namespace EddiEdsmResponder
                 } 
                 if (!eventObject.ContainsKey("_systemName"))
                 {
-                    eventObject.Add("_systemName", EDDI.Instance.CurrentStarSystem.name);
+                    eventObject.Add("_systemName", EDDI.Instance.CurrentStarSystem.systemname);
                 }
                 if (!eventObject.ContainsKey("_systemCoordinates"))
                 {

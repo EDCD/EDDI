@@ -647,7 +647,7 @@ namespace EddiCompanionAppService
                         };
                     }
 
-                    Profile.LastStation.systemname = Profile.CurrentStarSystem.name;
+                    Profile.LastStation.systemname = Profile.CurrentStarSystem.systemname;
                     Profile.LastStation.systemAddress = Profile.CurrentStarSystem.systemAddress;
                     Profile.LastStation.marketId = (long?)json["lastStarport"]["id"];
 

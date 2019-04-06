@@ -46,7 +46,7 @@ namespace UnitTests
                     case "Artemis":
                         {
                             StarSystem result = new StarSystem();
-                            result.name = "Artemis";
+                            result.systemname = "Artemis";
                             result.systemAddress = 3107509474002;
                             result.x = 14.28125M;
                             result.y = -63.1875M;
@@ -56,7 +56,7 @@ namespace UnitTests
                     case "Diaguandri":
                         {
                             StarSystem result = new StarSystem();
-                            result.name = "Diaguandri";
+                            result.systemname = "Diaguandri";
                             result.systemAddress = 670417429889;
                             result.x = -41.06250M;
                             result.y = -62.15625M;
@@ -72,7 +72,7 @@ namespace UnitTests
                     case "Sol":
                         {
                             StarSystem result = new StarSystem();
-                            result.name = "Sol";
+                            result.systemname = "Sol";
                             result.systemAddress = 10477373803;
                             result.x = 0.0M;
                             result.y = 0.0M;
@@ -82,7 +82,7 @@ namespace UnitTests
                     case "Pleiades Sector HR-W d1-79":
                         {
                             StarSystem result = new StarSystem();
-                            result.name = "Pleiades Sector HR-W d1-79";
+                            result.systemname = "Pleiades Sector HR-W d1-79";
                             result.systemAddress = 2724879894859;
                             result.x = -80.62500M;
                             result.y = -146.65625M;

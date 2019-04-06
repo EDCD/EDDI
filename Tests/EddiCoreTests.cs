@@ -123,7 +123,7 @@ namespace IntegrationTests
 
             PrivateObject privateObject = new PrivateObject(Eddi.EDDI.Instance);
             privateObject.Invoke("updateCurrentSystem", new object[] { "Grea Bloae HH-T d4-44" });
-            Assert.AreEqual("Grea Bloae HH-T d4-44", EDDI.Instance.CurrentStarSystem?.name);
+            Assert.AreEqual("Grea Bloae HH-T d4-44", EDDI.Instance.CurrentStarSystem?.systemname);
 
             var result = (bool)privateObject.Invoke("eventBodyScanned", new object[] { @event });
             Assert.IsTrue(result);

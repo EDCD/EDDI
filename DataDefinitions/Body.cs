@@ -22,13 +22,15 @@ namespace EddiDataDefinitions
         public long? EDSMID { get; set; }
 
         /// <summary>The localized type of the body </summary>
-        [JsonIgnore, Obsolete("Please use BodyType instead")]
-        public string bodytype => (Type ?? BodyType.None).localizedName;
+        [JsonIgnore, Description("For use with Cottle. Please use BodyType for coding.")]
+        public string bodytype => (bodyType ?? BodyType.None).localizedName;
 
         /// <summary>The body type of the body (e.g. Star or Planet)</summary>
+        [JsonProperty("Type")]
         public BodyType bodyType { get; set; } = BodyType.None;
 
         /// <summary>The name of the body</summary>
+        [JsonProperty("name"), JsonRequired]
         public string bodyname { get; set; }
 
         /// <summary>The short name of the body</summary>
@@ -217,11 +219,10 @@ namespace EddiDataDefinitions
 
         // Deprecated properties (preserved for backwards compatibility with Cottle and database stored values)
 
-        /// <summary>The name of the body</summary>
-        [JsonIgnore, Obsolete("Please use bodyname instead")]
+        // This is a key for legacy json files that cannot be changed without breaking backwards compatibility. 
+        [JsonIgnore, Obsolete("Please use bodyname instead.")]
         public string name => bodyname;
 
-        /// <summary>The body type of the body (e.g. Star or Planet)</summary>
         [JsonIgnore, Obsolete("Please use BodyType instead - Type creates a collision with Event.Type")]
         public BodyType Type => bodyType;
 
@@ -235,8 +236,8 @@ namespace EddiDataDefinitions
         {
             if (bodyname == null)
             {
-                string name = (string)_additionalData["name"];
-                bodyname = name;
+                string name = (string)_additionalData["bodyname"];
+                name = bodyname;
             }
             if (bodyType == null)
             {

@@ -14,7 +14,7 @@ namespace Eddi
 
         private List<string> SystemsBeginningWith(string systemName)
         {
-            return StarMapService.GetStarMapSystemsPartial(systemName, false, false).Select(s => s.name).ToList();
+            return StarMapService.GetStarMapSystemsPartial(systemName, false, false).Select(s => s.systemname).ToList();
         }
 
         internal void TextDidChange(object sender, TextChangedEventArgs e, string oldValue, Action changeHandler)

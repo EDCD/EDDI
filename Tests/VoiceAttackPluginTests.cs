@@ -67,7 +67,7 @@ namespace UnitTests
             StarSystemRepository starSystemRepository = StarSystemSqLiteRepository.Instance;
             StarSystem DBData = starSystemRepository.GetOrFetchStarSystem("Sol", true);
             Assert.IsNotNull(DBData);
-            Assert.AreEqual("Sol", DBData.name);
+            Assert.AreEqual("Sol", DBData.systemname);
         }
 
         [TestMethod]

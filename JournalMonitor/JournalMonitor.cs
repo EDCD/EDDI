@@ -215,7 +215,7 @@ namespace EddiJournalMonitor
 
                                     // Calculate remaining distance to route destination (if it exists)
                                     decimal destDistance = 0;
-                                    string destination = EDDI.Instance.DestinationStarSystem?.name;
+                                    string destination = EDDI.Instance.DestinationStarSystem?.systemname;
                                     if (!string.IsNullOrEmpty(destination))
                                     {
                                         destDistance = EDDI.Instance.getSystemDistanceFromDestination(systemName);
@@ -688,7 +688,7 @@ namespace EddiJournalMonitor
                             case "Scan":
                                 {
                                     string name = JsonParsing.getString(data, "BodyName");
-                                    string systemName = EDDI.Instance?.CurrentStarSystem?.name;
+                                    string systemName = EDDI.Instance?.CurrentStarSystem?.systemname;
                                     string scantype = JsonParsing.getString(data, "ScanType");
                                     decimal distancefromarrival = JsonParsing.getDecimal(data, "DistanceFromArrivalLS");
 
@@ -1064,7 +1064,7 @@ namespace EddiJournalMonitor
                                         {
                                             if (!storedModule.intransit)
                                             {
-                                                StarSystem systemData = systemsData.FirstOrDefault(s => s.name == storedModule.system);
+                                                StarSystem systemData = systemsData.FirstOrDefault(s => s.systemname == storedModule.system);
                                                 Station stationData = systemData?.stations?.FirstOrDefault(s => s.marketId == storedModule.marketid);
                                                 storedModule.station = stationData?.name;
                                             }
@@ -1152,7 +1152,7 @@ namespace EddiJournalMonitor
                                         {
                                             // Include the station and system at which the transfer will arrive
                                             string arrivalStation = EDDI.Instance.CurrentStation?.name ?? string.Empty;
-                                            string arrivalSystem = EDDI.Instance.CurrentStarSystem?.name ?? string.Empty;
+                                            string arrivalSystem = EDDI.Instance.CurrentStarSystem?.systemname ?? string.Empty;
                                             await Task.Delay((int)time * 1000);
                                             EDDI.Instance.enqueueEvent(new ShipArrivedEvent(DateTime.UtcNow, ship, shipId, arrivalSystem, distance, price, time, arrivalStation, fromMarketId, toMarketId));
                                         }
@@ -1189,7 +1189,7 @@ namespace EddiJournalMonitor
                                         {
                                             // Include the station and system at which the transfer will arrive
                                             string arrivalStation = EDDI.Instance.CurrentStation?.name ?? string.Empty;
-                                            string arrivalSystem = EDDI.Instance.CurrentStarSystem?.name ?? string.Empty;
+                                            string arrivalSystem = EDDI.Instance.CurrentStarSystem?.systemname ?? string.Empty;
                                             await Task.Delay((int)transferTime * 1000);
                                             EDDI.Instance.enqueueEvent(new ModuleArrivedEvent(DateTime.UtcNow, ship, shipId, storageSlot, serverId, module, transferCost, transferTime, arrivalSystem, arrivalStation));
                                         }

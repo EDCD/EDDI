@@ -1009,10 +1009,10 @@ namespace Eddi
 
                 // Check if current system is inhabited by or HQ for squadron faction
                 Faction squadronFaction = theEvent.factions.FirstOrDefault(f => (bool)f.presences.
-                    FirstOrDefault(p => p.systemName == CurrentStarSystem.name)?.squadronhomesystem || f.squadronfaction);
+                    FirstOrDefault(p => p.systemName == CurrentStarSystem.systemname)?.squadronhomesystem || f.squadronfaction);
                 if (squadronFaction != null)
                 {
-                    updateSquadronData(squadronFaction, CurrentStarSystem.name);
+                    updateSquadronData(squadronFaction, CurrentStarSystem.systemname);
                 }
             }
 
@@ -1312,15 +1312,15 @@ namespace Eddi
             {
                 return;
             }
-            if (CurrentStarSystem == null || CurrentStarSystem.name != name)
+            if (CurrentStarSystem == null || CurrentStarSystem.systemname != name)
             {
-                if (CurrentStarSystem != null && CurrentStarSystem.name != name)
+                if (CurrentStarSystem != null && CurrentStarSystem.systemname != name)
                 {
                     // We have changed system so update the old one as to when we left
                     StarSystemSqLiteRepository.Instance.LeaveStarSystem(CurrentStarSystem);
                 }
                 LastStarSystem = CurrentStarSystem;
-                if (NextStarSystem?.name == name)
+                if (NextStarSystem?.systemname == name)
                 {
                     CurrentStarSystem = NextStarSystem;
                     NextStarSystem = null;
@@ -1330,14 +1330,14 @@ namespace Eddi
                     CurrentStarSystem = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(name);
                 }
                 setSystemDistanceFromHome(CurrentStarSystem);
-                setSystemDistanceFromDestination(CurrentStarSystem?.name);
+                setSystemDistanceFromDestination(CurrentStarSystem?.systemname);
             }
         }
 
         private void updateCurrentStellarBody(string bodyName, string systemName, long? systemAddress = null)
         {
             // Make sure our system information is up to date
-            if (CurrentStarSystem == null || CurrentStarSystem.name != systemName)
+            if (CurrentStarSystem == null || CurrentStarSystem.systemname != systemName)
             {
                 updateCurrentSystem(systemName);
             }
@@ -1433,7 +1433,7 @@ namespace Eddi
         {
             bool passEvent;
             Logging.Info("Jumped to " + theEvent.system);
-            if (CurrentStarSystem == null || CurrentStarSystem.name != theEvent.system)
+            if (CurrentStarSystem == null || CurrentStarSystem.systemname != theEvent.system)
             {
                 // The 'StartJump' event must have been missed
                 updateCurrentSystem(theEvent.system);
@@ -1464,10 +1464,10 @@ namespace Eddi
 
                 // Check if current system is inhabited by or HQ for squadron faction
                 Faction squadronFaction = theEvent.factions.FirstOrDefault(f => (bool)f.presences.
-                    FirstOrDefault(p => p.systemName == CurrentStarSystem.name)?.squadronhomesystem || f.squadronfaction);
+                    FirstOrDefault(p => p.systemName == CurrentStarSystem.systemname)?.squadronhomesystem || f.squadronfaction);
                 if (squadronFaction != null)
                 {
-                    updateSquadronData(squadronFaction, CurrentStarSystem.name);
+                    updateSquadronData(squadronFaction, CurrentStarSystem.systemname);
                 }
             }
 
@@ -1874,7 +1874,7 @@ namespace Eddi
                         bodyType = BodyType.FromEDName("Star"),
                         bodyname = theEvent.bodyname,
                         bodyId = theEvent.bodyId,
-                        systemname = CurrentStarSystem?.name,
+                        systemname = CurrentStarSystem?.systemname,
                         systemAddress = CurrentStarSystem?.systemAddress
                     };
                     CurrentStarSystem.bodies?.Add(star);
@@ -1919,7 +1919,7 @@ namespace Eddi
                             ? BodyType.FromEDName("Moon") : BodyType.FromEDName("Planet"),
                         bodyname = theEvent.bodyname,
                         bodyId = theEvent.bodyId,
-                        systemname = CurrentStarSystem.name,
+                        systemname = CurrentStarSystem.systemname,
                         systemAddress = CurrentStarSystem?.systemAddress
                     };
                     CurrentStarSystem.bodies.Add(body);
@@ -1966,7 +1966,7 @@ namespace Eddi
         {
             if (theEvent.name.Contains(" Ring"))
             {
-                updateCurrentStellarBody(theEvent.name, CurrentStarSystem?.name, CurrentStarSystem?.systemAddress);
+                updateCurrentStellarBody(theEvent.name, CurrentStarSystem?.systemname, CurrentStarSystem?.systemAddress);
             }
             else
             {
@@ -1975,7 +1975,7 @@ namespace Eddi
                 {
                     body.mapped = theEvent.timestamp;
                     StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
-                    updateCurrentStellarBody(theEvent.name, CurrentStarSystem?.name, CurrentStarSystem?.systemAddress);
+                    updateCurrentStellarBody(theEvent.name, CurrentStarSystem?.systemname, CurrentStarSystem?.systemAddress);
                 }
             }
             return true;
@@ -2022,7 +2022,7 @@ namespace Eddi
 
                             // We don't know if we are docked or not at this point.  Fill in the data if we can, and
                             // let later systems worry about removing it if it's decided that we aren't docked
-                            if (profile.LastStation != null && profile.LastStation.systemname == CurrentStarSystem.name && CurrentStarSystem.stations != null)
+                            if (profile.LastStation != null && profile.LastStation.systemname == CurrentStarSystem.systemname && CurrentStarSystem.stations != null)
                             {
                                 CurrentStation = CurrentStarSystem.stations.FirstOrDefault(s => s.name == profile.LastStation.name);
                                 if (CurrentStation != null)
@@ -2316,7 +2316,7 @@ namespace Eddi
                         }
 
                         // Make sure we know where we are
-                        if (CurrentStarSystem.name.Length < 0)
+                        if (CurrentStarSystem.systemname.Length < 0)
                         {
                             break;
                         }
@@ -2325,7 +2325,7 @@ namespace Eddi
                         ApiTimeStamp = DateTime.UtcNow;
                         long profileTime = (long)DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
                         Logging.Debug("Fetching station profile");
-                        Profile profile = CompanionAppService.Instance.Station(CurrentStarSystem.name);
+                        Profile profile = CompanionAppService.Instance.Station(CurrentStarSystem.systemname);
 
                         // See if it is up-to-date regarding our requirements
                         Logging.Debug("profileStationRequired is " + profileStationRequired + ", profile station is " + profile.LastStation.name);
@@ -2419,9 +2419,9 @@ namespace Eddi
                 //Ignore null & empty systems
                 if (system != null)
                 {
-                    if (system.name != DestinationStarSystem?.name)
+                    if (system.systemname != DestinationStarSystem?.systemname)
                     {
-                        Logging.Debug("Destination star system is " + system.name);
+                        Logging.Debug("Destination star system is " + system.systemname);
                         DestinationStarSystem = system;
                     }
                 }
@@ -2476,11 +2476,11 @@ namespace Eddi
                 //Ignore null & empty systems
                 if (system != null && system.bodies?.Count > 0)
                 {
-                    if (system.name != HomeStarSystem?.name)
+                    if (system.systemname != HomeStarSystem?.systemname)
                     {
                         HomeStarSystem = system;
-                        Logging.Debug("Home star system is " + HomeStarSystem.name);
-                        configuration.HomeSystem = system.name;
+                        Logging.Debug("Home star system is " + HomeStarSystem.systemname);
+                        configuration.HomeSystem = system.systemname;
                     }
                 }
             }
@@ -2520,13 +2520,13 @@ namespace Eddi
                 //Ignore null & empty systems
                 if (system != null && system?.bodies.Count > 0)
                 {
-                    if (system.name != SquadronStarSystem?.name)
+                    if (system.systemname != SquadronStarSystem?.systemname)
                     {
                         SquadronStarSystem = system;
                         if (SquadronStarSystem?.factions != null)
                         {
-                            Logging.Debug("Squadron star system is " + SquadronStarSystem.name);
-                            configuration.SquadronSystem = system.name;
+                            Logging.Debug("Squadron star system is " + SquadronStarSystem.systemname);
+                            configuration.SquadronSystem = system.systemname;
                         }
                     }
                 }
@@ -2561,7 +2561,7 @@ namespace Eddi
                 if ((bool)faction.presences.FirstOrDefault(p => p.systemName == systemName)?.squadronhomesystem)
                 {
                     // Update the squadron system data, if changed
-                    string system = CurrentStarSystem.name;
+                    string system = CurrentStarSystem.systemname;
                     if (configuration.SquadronSystem == null || configuration.SquadronSystem != system)
                     {
                         configuration.SquadronSystem = system;

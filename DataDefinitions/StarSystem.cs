@@ -12,8 +12,9 @@ namespace EddiDataDefinitions
     public class StarSystem
     {
         // General information
+        [JsonProperty("name"), JsonRequired]
+        public string systemname { get; set; }
 
-        public string name { get; set; }
         public long? EDDBID { get; set; } // The ID in EDDB
         public long? EDSMID { get; set; } // The ID in EDSM
 
@@ -61,7 +62,7 @@ namespace EddiDataDefinitions
         public string powerstate { get; set; }
 
         [JsonIgnore]
-        public string state => (Faction?.presences.FirstOrDefault(p => p.systemName == name)?.FactionState ?? FactionState.None).localizedName;
+        public string state => (Faction?.presences.FirstOrDefault(p => p.systemName == systemname)?.FactionState ?? FactionState.None).localizedName;
 
         // Faction details
         public Faction Faction { get; set; } = new Faction();
@@ -114,6 +115,12 @@ namespace EddiDataDefinitions
         // Admin - the last time the data about this system was obtained from remote repository
         public DateTime lastupdated;
 
+        // Deprecated properties (preserved for backwards compatibility with Cottle and database stored values)
+
+        // This is a key for legacy json files that cannot be changed without breaking backwards compatibility. 
+        [JsonIgnore, Obsolete("Please use systemname instead.")]
+        public string name => systemname;
+
         [JsonExtensionData]
         private IDictionary<string, JToken> additionalJsonData;
 
@@ -121,7 +128,7 @@ namespace EddiDataDefinitions
         private void OnDeserialized(StreamingContext context)
         {
             if (Faction == null) { Faction = new Faction(); }
-            FactionPresence factionPresence = Faction.presences.FirstOrDefault(p => p.systemName == name) ?? new FactionPresence();
+            FactionPresence factionPresence = Faction.presences.FirstOrDefault(p => p.systemName == systemname) ?? new FactionPresence();
             if (factionPresence.FactionState == null)
             {
                 // Convert legacy data
@@ -136,7 +143,7 @@ namespace EddiDataDefinitions
             {
                 // get the canonical FactionState object for the given EDName
                 factionPresence.FactionState = 
-                    FactionState.FromEDName(Faction.presences.FirstOrDefault(p => p.systemName == name)?.FactionState.edname ?? "None");
+                    FactionState.FromEDName(Faction.presences.FirstOrDefault(p => p.systemName == systemname)?.FactionState.edname ?? "None");
             }
             additionalJsonData = null;
         }

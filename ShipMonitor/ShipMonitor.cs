@@ -323,7 +323,7 @@ namespace EddiShipMonitor
                     if (storedShip != null)
                     {
                         // Set location of stored ship to the current system
-                        storedShip.starsystem = EDDI.Instance?.CurrentStarSystem?.name;
+                        storedShip.starsystem = EDDI.Instance?.CurrentStarSystem?.systemname;
                         storedShip.station = EDDI.Instance?.CurrentStation?.name;
                     }
                 }
@@ -366,7 +366,7 @@ namespace EddiShipMonitor
                     if (storedShip != null)
                     {
                         // Set location of stored ship to the current sstem
-                        storedShip.starsystem = EDDI.Instance?.CurrentStarSystem?.name;
+                        storedShip.starsystem = EDDI.Instance?.CurrentStarSystem?.systemname;
                         storedShip.station = EDDI.Instance?.CurrentStation?.name;
                     }
                 }

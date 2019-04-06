@@ -346,7 +346,7 @@ namespace UnitTests
             StarSystem system = (StarSystem)starMapService.InvokeStatic("ParseStarMapSystem", new object[] { JObject.FromObject(response), "Shinrarta Dezhra" });
 
             // Test Shinrarta Dezhra
-            Assert.AreEqual("Shinrarta Dezhra", system.name);
+            Assert.AreEqual("Shinrarta Dezhra", system.systemname);
             Assert.AreEqual(4345, system.EDSMID);
             Assert.AreEqual(55.71875M, system.x);
             Assert.AreEqual(17.59375M, system.y);
@@ -356,7 +356,7 @@ namespace UnitTests
             Assert.AreEqual("Pilots Federation", system.Faction.Allegiance.invariantName);
             Assert.AreEqual("Democracy", system.Faction.Government.invariantName);
             Assert.AreEqual("Pilots Federation Local Branch", system.Faction.name);
-            Assert.AreEqual("None", system.Faction.presences.FirstOrDefault(p => p.systemName == system.name)?.FactionState?.invariantName);
+            Assert.AreEqual("None", system.Faction.presences.FirstOrDefault(p => p.systemName == system.systemname)?.FactionState?.invariantName);
             Assert.AreEqual(85206935, system.population);
             Assert.AreEqual("Common", system.Reserve.invariantName);
             Assert.AreEqual("High", system.securityLevel.invariantName);
