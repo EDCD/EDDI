@@ -107,6 +107,11 @@ namespace Eddi
         public Station HomeStation { get; private set; }
         public StarSystem SquadronStarSystem { get; private set; } = new StarSystem();
 
+        // Destination variables
+        public StarSystem DestinationStarSystem { get; private set; }
+        public Station DestinationStation { get; private set; }
+        public decimal DestinationDistance { get; set; }
+
         // Information obtained from the player journal
         public Commander Cmdr { get; private set; } // Also includes information from the configuration and companion app service
         public string Environment { get; set; }
@@ -159,6 +164,7 @@ namespace Eddi
 
                 // Set up the EDDI configuration
                 EDDIConfiguration configuration = EDDIConfiguration.FromFile();
+                updateDestinationSystemStation(configuration);
                 updateHomeSystemStation(configuration);
                 updateSquadronSystem(configuration);
 
@@ -1305,6 +1311,7 @@ namespace Eddi
                     CurrentStarSystem = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(name);
                 }
                 setSystemDistanceFromHome(CurrentStarSystem);
+                setSystemDistanceFromDestination(CurrentStarSystem?.name);
             }
         }
 
@@ -2044,10 +2051,32 @@ namespace Eddi
             if (HomeStarSystem != null && HomeStarSystem.x != null && system.x != null)
             {
                 system.distancefromhome = (decimal)Math.Round(Math.Sqrt(Math.Pow((double)(system.x - HomeStarSystem.x), 2)
-                                                                      + Math.Pow((double)(system.y - HomeStarSystem.y), 2)
-                                                                      + Math.Pow((double)(system.z - HomeStarSystem.z), 2)), 2);
+                    + Math.Pow((double)(system.y - HomeStarSystem.y), 2)
+                    + Math.Pow((double)(system.z - HomeStarSystem.z), 2)), 2);
                 Logging.Debug("Distance from home is " + system.distancefromhome);
             }
+        }
+
+        public decimal getSystemDistanceFromDestination(string system)
+        {
+            decimal distance = 0;
+            if (system != null)
+            {
+                StarSystem starSystem = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(system, true);
+
+                if (DestinationStarSystem != null && DestinationStarSystem.x != null && starSystem != null && starSystem.x != null)
+                {
+                    distance = (decimal)Math.Round(Math.Sqrt(Math.Pow((double)(starSystem.x - DestinationStarSystem.x), 2)
+                        + Math.Pow((double)(starSystem.y - DestinationStarSystem.y), 2)
+                        + Math.Pow((double)(starSystem.z - DestinationStarSystem.z), 2)), 2);
+                }
+            }
+            return distance;
+        }
+
+        public void setSystemDistanceFromDestination(string system)
+        {
+            DestinationDistance = getSystemDistanceFromDestination(system);
         }
 
         /// <summary>Work out the title for the commander in the current system</summary>
@@ -2318,6 +2347,62 @@ namespace Eddi
             RESTART_NO_REBOOT = 64
         }
 
+        public void updateDestinationSystemStation(EDDIConfiguration configuration)
+        {
+            updateDestinationSystem(configuration.DestinationSystem);
+            updateDestinationStation(configuration.DestinationStation);
+        }
+
+        public void updateDestinationSystem(string destinationSystem)
+        {
+            StarSystem system = new StarSystem();
+            EDDIConfiguration configuration = EDDIConfiguration.FromFile();
+            if (destinationSystem != null)
+            {
+                system = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystem(destinationSystem);
+
+                //Ignore null & empty systems
+                if (system != null)
+                {
+                    if (system.name != DestinationStarSystem?.name)
+                    {
+                        Logging.Debug("Destination star system is " + system.name);
+                        DestinationStarSystem = system;
+                    }
+                }
+            }
+            else
+            {
+                DestinationStarSystem = null;
+            }
+            configuration.DestinationSystem = destinationSystem;
+            configuration.ToFile();
+        }
+
+        public void updateDestinationStation(string destinationStation)
+        {
+            EDDIConfiguration configuration = EDDIConfiguration.FromFile();
+            if (destinationStation != null && DestinationStarSystem?.stations != null)
+            {
+                string destinationStationName = destinationStation.Trim();
+                Station station = DestinationStarSystem.stations.FirstOrDefault(s => s.name == destinationStationName);
+                if (station != null)
+                {
+                    if (station.name != DestinationStation?.name)
+                    {
+                        Logging.Debug("Destination station is " + station.name);
+                        DestinationStation = station;
+                    }
+                }
+            }
+            else
+            {
+                DestinationStation = null;
+            }
+            configuration.DestinationStation = destinationStation;
+            configuration.ToFile();
+        }
+
         public void updateHomeSystemStation(EDDIConfiguration configuration)
         {
             updateHomeSystem(configuration);
@@ -2353,7 +2438,6 @@ namespace Eddi
         public EDDIConfiguration updateHomeStation(EDDIConfiguration configuration)
         {
             Logging.Verbose = configuration.Debug;
-            configuration.validHomeStation = false;
             if (HomeStarSystem?.stations != null && configuration.HomeStation != null)
             {
                 string homeStationName = configuration.HomeStation.Trim();
@@ -2363,7 +2447,6 @@ namespace Eddi
                     {
                         HomeStation = station;
                         Logging.Debug("Home station is " + HomeStation.name);
-                        configuration.validHomeStation = true;
                         break;
                     }
                 }
@@ -2374,7 +2457,7 @@ namespace Eddi
         public EDDIConfiguration updateSquadronSystem(EDDIConfiguration configuration)
         {
             Logging.Verbose = configuration.Debug;
-            if (configuration.SquadronSystem != null && configuration.SquadronSystem.Trim().Length > 2)
+            if (configuration.SquadronSystem != null)
             {
                 StarSystem system = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystem(configuration.SquadronSystem.Trim());
 

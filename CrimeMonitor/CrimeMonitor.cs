@@ -641,7 +641,7 @@ namespace EddiCrimeMonitor
             }
         }
 
-        public string GetIFContactSystem()
+        public string GetIFContactRoute()
         {
             string IFSystem = null;
             decimal IFDistance = 0;
@@ -650,13 +650,19 @@ namespace EddiCrimeMonitor
             Station station = GetInterstellarFactorsStation();
             if (station != null)
             {
+                StarSystem curr = EDDI.Instance?.CurrentStarSystem;
                 StarSystem dest = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystem(station.systemname, true);
                 if (dest != null)
                 {
                     IFSystem = dest.name;
-                    IFDistance = CalculateDistance(EDDI.Instance?.CurrentStarSystem, dest);
+                    IFDistance = CalculateDistance(curr, dest);
                     missionids = ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor"))?.GetSystemMissionIds(IFSystem);
                 }
+
+                // Set destination variables
+                EDDI.Instance.updateDestinationSystem(IFSystem);
+                EDDI.Instance.DestinationDistance = IFDistance;
+                EDDI.Instance.updateDestinationStation(null);
             }
 
             EDDI.Instance.enqueueEvent(new RouteDetailsEvent(DateTime.Now, "ifcontact", IFSystem, IFSystem, missionids.Count(), IFDistance, IFDistance, missionids));

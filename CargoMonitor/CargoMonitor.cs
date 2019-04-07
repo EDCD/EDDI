@@ -1132,9 +1132,14 @@ namespace EddiCargoMonitor
                     sourceDistance = (decimal)sourceList.Keys.FirstOrDefault() / 100;
                     sourceSystems = string.Join("_", sourceList.Values);
                     systemsCount = sourceList.Count;
+
+                    // Set destination variables
+                    EDDI.Instance.updateDestinationSystem(sourceSystem);
+                    EDDI.Instance.DestinationDistance = sourceDistance;
+                    EDDI.Instance.updateDestinationStation(null);
                 }
             }
-            EDDI.Instance.enqueueEvent(new MissionsRouteEvent(DateTime.Now, "source", sourceSystem, sourceSystems, systemsCount, sourceDistance, 0, missionids));
+            EDDI.Instance.enqueueEvent(new RouteDetailsEvent(DateTime.Now, "source", sourceSystem, sourceSystems, systemsCount, sourceDistance, 0, missionids));
             return sourceSystem;
         }
 

@@ -267,7 +267,8 @@ namespace EddiSpeechResponder
             {
                 ["va_active"] = EDDI.FromVA,
                 ["vehicle"] = EDDI.Instance.Vehicle,
-                ["environment"] = EDDI.Instance.Environment
+                ["environment"] = EDDI.Instance.Environment,
+                ["destinationdistance"] = EDDI.Instance.DestinationDistance
             };
 
             if (EDDI.Instance.Cmdr != null)
@@ -303,6 +304,16 @@ namespace EddiSpeechResponder
             if (EDDI.Instance.NextStarSystem != null)
             {
                 dict["nextsystem"] = new ReflectionValue(EDDI.Instance.NextStarSystem);
+            }
+
+            if (EDDI.Instance.DestinationStarSystem != null)
+            {
+                dict["destinationsystem"] = new ReflectionValue(EDDI.Instance.DestinationStarSystem);
+            }
+
+            if (EDDI.Instance.DestinationStation != null)
+            {
+                dict["destinationstation"] = new ReflectionValue(EDDI.Instance.DestinationStation);
             }
 
             if (EDDI.Instance.CurrentStation != null)
