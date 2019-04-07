@@ -126,7 +126,7 @@
     <comment>Compromised nav beacon</comment>
   </data>
   <data name="USS" xml:space="preserve">
-    <value>Source de signal non identifiée</value>
+    <value>Source du signal non identifiée</value>
     <comment>Unidentified Signal Source</comment>
   </data>
   <data name="Warzone_PointRace_High" xml:space="preserve">
