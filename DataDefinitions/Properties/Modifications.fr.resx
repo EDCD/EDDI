@@ -120,16 +120,36 @@
   <data name="ArmourAdvanced" xml:space="preserve">
     <value>Alliage Léger </value>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="ArmourExplosive" xml:space="preserve">
+    <value>Blindage Anti-Explosion</value>
+  </data>
+  <data name="ArmourHeavyDuty" xml:space="preserve">
+    <value>Renforts de coque lourd</value>
+  </data>
+  <data name="ArmourKinetic" xml:space="preserve">
+    <value>Résistance cinétique du blindage</value>
+  </data>
+  <data name="ArmourThermic" xml:space="preserve">
+    <value>Résistance thermique du blindage</value>
+  </data>
+  <data name="EngineDirty" xml:space="preserve">
+    <value>Optimisation de réacteur détériorante</value>
+  </data>
+  <data name="EngineReinforced" xml:space="preserve">
+    <value>Renforcement du réacteur</value>
+  </data>
+  <data name="EngineTuned" xml:space="preserve">
+    <value>Optimisation de réacteur propre</value>
+  </data>
+  <data name="FSDFastBoot" xml:space="preserve">
+    <value>Chargement FSD accéléré</value>
+  </data>
+  <data name="FSDinterdictorExpanded" xml:space="preserve">
+    <value>Intercepteur FSD à angle de capture augmenté</value>
+  </data>
+  <data name="FSDinterdictorLongRange" xml:space="preserve">
+    <value>Intercepteur FSD longue portée</value>
+  </data>
   
   
   
