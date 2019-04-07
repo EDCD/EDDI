@@ -123,7 +123,9 @@
   <data name="ArmourExplosive" xml:space="preserve">
     <value>Blindage Anti-Explosion</value>
   </data>
-  
+  <data name="ArmourHeavyDuty" xml:space="preserve">
+    <value>Alliage lourd</value>
+  </data>
   <data name="ArmourKinetic" xml:space="preserve">
     <value>Résistance cinétique du blindage</value>
   </data>
@@ -352,29 +354,75 @@
   <data name="HeatSinkLauncherReinforced" xml:space="preserve">
     <value>Lanceur de dissipateur thermique renforcé</value>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="HeatSinkLauncherShielded" xml:space="preserve">
+    <value>Lanceur de dissipateur thermique blindé</value>
+  </data>
+  <data name="KillWarrantScannerLightWeight" xml:space="preserve">
+    <value>Scanner d'avis de recherches léger</value>
+  </data>
+  <data name="KillWarrantScannerLongRange" xml:space="preserve">
+    <value>Scanner d'avis de recherches longue portée</value>
+  </data>
+  <data name="KillWarrantScannerReinforced" xml:space="preserve">
+    <value>Scanner d'avis de recherches renforcé</value>
+  </data>
+  <data name="KillWarrantScannerShielded" xml:space="preserve">
+    <value>Scanner d'avis de recherches blindé</value>
+  </data>
+  <data name="LifeSupportLightWeight" xml:space="preserve">
+    <value>Système de survie léger</value>
+  </data>
+  <data name="LifeSupportReinforced" xml:space="preserve">
+    <value>Système de survie renforcé</value>
+  </data>
+  <data name="LifeSupportShielded" xml:space="preserve">
+    <value>Système de survie blindé</value>
+  </data>
+  <data name="PointDefencePointDefenceCapacity" xml:space="preserve">
+    <value>Capacité de munition de la défense ponctuelle</value>
+  </data>
+  <data name="PointDefenceLightWeight" xml:space="preserve">
+    <value>Défense ponctuelle légère</value>
+  </data>
+  <data name="PointDefenceReinforced" xml:space="preserve">
+    <value>Défense ponctuelle renforcée</value>
+  </data>
+  <data name="PointDefenceShielded" xml:space="preserve">
+    <value>Défense ponctuelle blindée</value>
+  </data>
+  <data name="RefineriesShielded" xml:space="preserve">
+    <value>Raffinerie blindée</value>
+  </data>
+  <data name="SensorLightWeight" xml:space="preserve">
+    <value>Capteur léger</value>
+  </data>
+  <data name="SurfaceScannerExpanded" xml:space="preserve">
+    <value>Rayon de balayage de sonde élargi</value>
+  </data>
+  <data name="CargoScannerFastScan" xml:space="preserve">
+    <value>Scanner de soute rapide</value>
+  </data>
+  <data name="CargoScannerLongRange" xml:space="preserve">
+    <value>Scanner de soute longue portée</value>
+  </data>
+  <data name="CargoScannerWideAngle" xml:space="preserve">
+    <value>Scanner de soute à angle large</value>
+  </data>
+  <data name="ECMLightWeight" xml:space="preserve">
+    <value>CME léger</value>
+  </data>
+  <data name="ECMReinforced" xml:space="preserve">
+    <value>CME renforcé</value>
+  </data>
+  <data name="KillWarrantScannerFastScan" xml:space="preserve">
+    <value>Scanner d'avis de recherches rapide</value>
+  </data>
+  <data name="KillWarrantScannerWideAngle" xml:space="preserve">
+    <value>Scanner d'avis de recherches à angle large</value>
+  </data>
+  <data name="PAOvercharged" xml:space="preserve">
+    <value>Accélérateur à plasma surchargé</value>
+  </data>
   <data name="ProspectingLimpetLightWeight" xml:space="preserve">
     <value>Drone de prospection léger</value>
   </data>
