@@ -149,7 +149,7 @@
     <comment>Title filter for determining whether an item is a "Week in Review</comment>
   </data>
   <data name="sourceURL" xml:space="preserve">
-    <value>http://elitedangerous-website-backend-production.elitedangerous.com/galnet.rss</value>
+    <value>https://community.elitedangerous.com/en/galnet-rss</value>
     <comment>The URL the Galnet monitor should access for obtaining new news feed items. Leaving this blank will default the source URL to English</comment>
   </data>
   <data name="contentFilterCgRegex" xml:space="preserve">
