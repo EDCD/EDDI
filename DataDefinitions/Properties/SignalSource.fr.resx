@@ -199,7 +199,7 @@
     <comment>Resource Extraction Site</comment>
   </data>
   <data name="MULTIPLAYER_SCENARIO79_TITLE" xml:space="preserve">
-    <value>Site d'extraction de ressources instables</value>
+    <value>Site d'extraction de ressources dangereux</value>
     <comment>Resource Extraction Site [Hazardous]</comment>
   </data>
   <data name="NumberStation" xml:space="preserve">
