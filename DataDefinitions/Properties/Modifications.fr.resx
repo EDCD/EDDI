@@ -123,9 +123,7 @@
   <data name="ArmourExplosive" xml:space="preserve">
     <value>Blindage Anti-Explosion</value>
   </data>
-  <data name="ArmourHeavyDuty" xml:space="preserve">
-    <value>Renforts de coque lourd</value>
-  </data>
+  
   <data name="ArmourKinetic" xml:space="preserve">
     <value>Résistance cinétique du blindage</value>
   </data>
@@ -150,31 +148,81 @@
   <data name="FSDinterdictorLongRange" xml:space="preserve">
     <value>Intercepteur FSD longue portée</value>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="FSDLongRange" xml:space="preserve">
+    <value>Portée FSD améliorée</value>
+  </data>
+  <data name="FSDShielded" xml:space="preserve">
+    <value>FSD renforcé</value>
+  </data>
+  <data name="HullReinforcementAdvanced" xml:space="preserve">
+    <value>Renforcement de coque léger</value>
+  </data>
+  <data name="HullReinforcementExplosive" xml:space="preserve">
+    <value>Renforts de coque Anti-Explosion</value>
+  </data>
+  <data name="HullReinforcementHeavyDuty" xml:space="preserve">
+    <value>Renforts de coque lourd</value>
+  </data>
+  <data name="HullReinforcementKinetic" xml:space="preserve">
+    <value>Renforts de coque Anti-Cinétique</value>
+  </data>
+  <data name="HullReinforcementThermic" xml:space="preserve">
+    <value>Renforts de coque Antithermique</value>
+  </data>
+  <data name="PowerDistributorHighCapacity" xml:space="preserve">
+    <value>Capacité surchargée du répartiteur de puissance</value>
+  </data>
+  <data name="PowerDistributorHighFrequency" xml:space="preserve">
+    <value>Répartiteur de puissance rapide</value>
+  </data>
+  <data name="PowerDistributorPriorityEngine" xml:space="preserve">
+    <value>Optimisation moteur du répartiteur de puissance</value>
+  </data>
+  <data name="PowerDistributorPrioritySystem" xml:space="preserve">
+    <value>Optimisation des systèmes du répartiteur de puissance</value>
+  </data>
+  <data name="PowerDistributorPriorityWeapon" xml:space="preserve">
+    <value>Optimisation des armes du répartiteur de puissance</value>
+  </data>
+  <data name="PowerDistributorShielded" xml:space="preserve">
+    <value>Répartiteur de puissance renforcé</value>
+  </data>
+  <data name="PowerPlantArmoured" xml:space="preserve">
+    <value>Générateur blindé</value>
+  </data>
+  <data name="PowerPlantBoosted" xml:space="preserve">
+    <value>Générateur surchargé</value>
+  </data>
+  <data name="PowerPlantStealth" xml:space="preserve">
+    <value>Générateur basse émission</value>
+  </data>
+  <data name="SensorLongRange" xml:space="preserve">
+    <value>Scanner longue portée</value>
+  </data>
+  <data name="SensorWideAngle" xml:space="preserve">
+    <value>Scanner à angle large</value>
+  </data>
+  <data name="ShieldBoosterExplosive" xml:space="preserve">
+    <value>Survolteur de bouclier Anti-Explosion</value>
+  </data>
+  <data name="ShieldBoosterHeavyDuty" xml:space="preserve">
+    <value>Renforts de coque lourd du survolteur de bouclier</value>
+  </data>
+  <data name="ShieldBoosterKinetic" xml:space="preserve">
+    <value>Résistance cinétique du survolteur de bouclier</value>
+  </data>
+  <data name="ShieldBoosterResistive" xml:space="preserve">
+    <value>Résistances augmentées du survolteur de bouclier</value>
+  </data>
+  <data name="ShieldBoosterThermic" xml:space="preserve">
+    <value>Résistance thermique du survolteur de bouclier</value>
+  </data>
+  <data name="ShieldCellBankRapid" xml:space="preserve">
+    <value>Chargement rapide des Cellules d'énergie</value>
+  </data>
+  <data name="ShieldCellBankSpecialised" xml:space="preserve">
+    <value>Cellules d'énergie spécialisées</value>
+  </data>
   
   
   
