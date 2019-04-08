@@ -96,6 +96,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EddiBgsService", "BgsServic
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EddiCrimeMonitor", "CrimeMonitor\EddiCrimeMonitor.csproj", "{5B11D1B2-6128-4F2B-8EF3-8168089C5EC9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EddiNavigationService", "EddiNavigationService\EddiNavigationService.csproj", "{86C23EBD-C979-4517-BB66-62E103AB13EF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -194,6 +196,10 @@ Global
 		{5B11D1B2-6128-4F2B-8EF3-8168089C5EC9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5B11D1B2-6128-4F2B-8EF3-8168089C5EC9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5B11D1B2-6128-4F2B-8EF3-8168089C5EC9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{86C23EBD-C979-4517-BB66-62E103AB13EF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{86C23EBD-C979-4517-BB66-62E103AB13EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{86C23EBD-C979-4517-BB66-62E103AB13EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{86C23EBD-C979-4517-BB66-62E103AB13EF}.Release|Any CPU.Build.0 = Release|Any CPU
 		{962F6D23-D9D8-44BF-8A65-516889190944}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{962F6D23-D9D8-44BF-8A65-516889190944}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{962F6D23-D9D8-44BF-8A65-516889190944}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -203,9 +209,9 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {28C2EDB6-0FA0-409F-987C-7A24F542D0CF}
-		RESX_ShowErrorsInErrorList = False
-		RESX_AutoCreateNewLanguageFiles = True
 		RESX_TaskErrorCategory = Message
+		RESX_AutoCreateNewLanguageFiles = True
+		RESX_ShowErrorsInErrorList = False
+		SolutionGuid = {28C2EDB6-0FA0-409F-987C-7A24F542D0CF}
 	EndGlobalSection
 EndGlobal

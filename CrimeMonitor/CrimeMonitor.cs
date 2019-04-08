@@ -2,7 +2,6 @@
 using EddiDataDefinitions;
 using EddiDataProviderService;
 using EddiEvents;
-using EddiMissionMonitor;
 using EddiStarMapService;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -236,8 +235,8 @@ namespace EddiCrimeMonitor
             FactionRecord record = GetRecordWithFaction(@event.rewards[0].faction);
             if (record != null)
             {
-                // Calculate amount, before crew profit share and broker fees
-                decimal percentage = (100 - profitShare ?? 0) * (100 - @event.brokerpercentage ?? 0) / 10000;
+                // Calculate amount, broker fees
+                decimal percentage = (100 - (@event.brokerpercentage ?? 0)) / 100;
                 long amount = Convert.ToInt64(@event.rewards[0].amount / percentage);
 
                 List<FactionReport> reports = record.claimReports.Where(r => !r.bounty && r.system != null).ToList();
@@ -283,7 +282,8 @@ namespace EddiCrimeMonitor
             foreach (Reward reward in @event.rewards.ToList())
             {
                 int shipId = EDDI.Instance?.CurrentShip?.LocalId ?? 0;
-                FactionReport report = new FactionReport(@event.timestamp, true, shipId, null, currentSystem.name, reward.amount)
+                long amount = Convert.ToInt64(reward.amount * bonus);
+                FactionReport report = new FactionReport(@event.timestamp, true, shipId, null, currentSystem.name, amount)
                 {
                     victim = @event.faction
                 };
@@ -294,7 +294,7 @@ namespace EddiCrimeMonitor
                     record = AddRecord(reward.faction);
                 }
                 record.claimReports.Add(report);
-                record.claims += Convert.ToInt64((double)reward.amount * bonus);
+                record.claims += amount;
             }
         }
 
@@ -316,13 +316,23 @@ namespace EddiCrimeMonitor
 
             foreach (Reward reward in @event.rewards.ToList())
             {
-                FactionRecord record = GetRecordWithFaction(reward.faction);
+                FactionRecord record = new FactionRecord();
+
+                // Calculate amount, before broker fees
+                decimal percentage = (100 - (@event.brokerpercentage ?? 0)) / 100;
+                long amount = Convert.ToInt64(reward.amount / percentage);
+
+                if (string.IsNullOrEmpty(reward.faction))
+                {
+                    record = criminalrecord.FirstOrDefault(r => r.bountyClaims == amount);
+                }
+                else
+                {
+                    record = GetRecordWithFaction(reward.faction);
+                }
+
                 if (record != null)
                 {
-                    // Calculate amount, before crew profit share and broker fees
-                    decimal percentage = (100 - profitShare ?? 0) * (100 - @event.brokerpercentage ?? 0) / 10000;
-                    long amount = Convert.ToInt64(reward.amount / percentage);
-
                     List<FactionReport> reports = record.claimReports.Where(r => r.bounty && r.system != null).ToList();
                     if (reports != null)
                     {
@@ -639,105 +649,6 @@ namespace EddiCrimeMonitor
                 string nearestStation = nearestList.Values.FirstOrDefault();
                 record.station = nearestStation;
             }
-        }
-
-        public string GetIFContactRoute()
-        {
-            string IFSystem = null;
-            decimal IFDistance = 0;
-            List<long> missionids = new List<long>();       // List of mission IDs for the next system
-
-            Station station = GetInterstellarFactorsStation();
-            if (station != null)
-            {
-                StarSystem curr = EDDI.Instance?.CurrentStarSystem;
-                StarSystem dest = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystem(station.systemname, true);
-                if (dest != null)
-                {
-                    IFSystem = dest.name;
-                    IFDistance = CalculateDistance(curr, dest);
-                    missionids = ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor"))?.GetSystemMissionIds(IFSystem);
-                }
-
-                // Set destination variables
-                EDDI.Instance.updateDestinationSystem(IFSystem);
-                EDDI.Instance.DestinationDistance = IFDistance;
-                EDDI.Instance.updateDestinationStation(null);
-            }
-
-            EDDI.Instance.enqueueEvent(new RouteDetailsEvent(DateTime.Now, "ifcontact", IFSystem, IFSystem, missionids.Count(), IFDistance, IFDistance, missionids));
-            return IFSystem;
-        }
-
-        public Station GetInterstellarFactorsStation(int cubeLy = 20)
-        {
-            StarSystem currentSystem = EDDI.Instance?.CurrentStarSystem;
-            if (currentSystem == null) { return null; }
-
-            // Get the nearest Interstellar Factors system and station
-            List<StarSystem> cubeSystems = StarMapService.GetStarMapSystemsCube(currentSystem.name, cubeLy);
-            if (cubeSystems != null && cubeSystems.Any())
-            {
-                SortedList<decimal, string> nearestList = new SortedList<decimal, string>();
-
-                string shipSize = EDDI.Instance?.CurrentShip?.size ?? "Large";
-                SecurityLevel securityLevel = SecurityLevel.FromName("Low");
-                StationService service = StationService.FromEDName("InterstellarFactorsContact");
-
-                // Find the low security level systems which may contain IF contacts
-                List<string> systemNames = cubeSystems.Where(s => s.securityLevel == securityLevel).Select(s => s.name).ToList();
-                List<StarSystem> IFSystems = DataProviderService.GetSystemsData(systemNames.ToArray(), true, true, true, true, true);
-
-                foreach (StarSystem starsystem in IFSystems)
-                {
-                    // Filter stations which meet the game version and landing pad size requirements
-                    int stationCount = (EDDI.Instance.inHorizons ? starsystem.stations : starsystem.orbitalstations)
-                        .Where(s => s.stationServices.Contains(service) && s.LandingPadCheck(shipSize))
-                        .Count();
-
-                    // Build list to find the IF system nearest to the current system
-                    if (stationCount > 0)
-                    {
-                        decimal distance = CalculateDistance(currentSystem, starsystem);
-                        if (!nearestList.ContainsKey(distance))
-                        {
-                            nearestList.Add(distance, starsystem.name);
-                        }
-                    }
-                }
-
-                // Nearest Interstellar Factors system
-                string nearestSystem = nearestList.Values.FirstOrDefault();
-                if (nearestSystem == null) { return null; }
-                StarSystem IFSystem = IFSystems.FirstOrDefault(s => s.name == nearestSystem);
-
-                // Filter stations within the IF system which meet the game version and landing pad size requirements
-                List<Station> IFStations = EDDI.Instance.inHorizons ? IFSystem.stations : IFSystem.orbitalstations
-                    .Where(s => s.stationServices.Contains(service) && s.LandingPadCheck(shipSize)).ToList();
-
-                // Build list to find the IF station nearest to the main star
-                nearestList.Clear();
-
-                foreach (Station station in IFStations)
-                {
-                    if (!nearestList.ContainsKey(station.distancefromstar ?? 0))
-                    {
-                        nearestList.Add(station.distancefromstar ?? 0, station.name);
-                    }
-                }
-
-                // Interstellar Factors station nearest to the main star
-                string nearestStation = nearestList.Values.FirstOrDefault();
-                return IFSystem.stations.FirstOrDefault(s => s.name == nearestStation);
-            }
-            return null;
-        }
-
-        private decimal CalculateDistance(StarSystem curr, StarSystem dest)
-        {
-            return (decimal)Math.Round(Math.Sqrt(Math.Pow((double)(curr.x - dest.x), 2)
-                + Math.Pow((double)(curr.y - dest.y), 2)
-                + Math.Pow((double)(curr.z - dest.z), 2)), 2);
         }
 
         static void RaiseOnUIThread(EventHandler handler, object sender)

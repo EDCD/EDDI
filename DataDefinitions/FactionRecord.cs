@@ -112,6 +112,11 @@ namespace EddiDataDefinitions
         public List<FactionReport> claimReports { get; set; }
         public List<FactionReport> crimeReports { get; set; }
 
+        public long bountyClaims => claimReports.Where(r => r.bounty && r.system != null).Sum(r => r.amount);
+        public long bondClaims => claimReports.Where(r => !r.bounty && r.system != null).Sum(r => r.amount);
+        public long bountyCrimes => crimeReports.Where(r => r.bounty && r.system != null).Sum(r => r.amount);
+        public long fineCrimes => crimeReports.Where(r => !r.bounty && r.system != null).Sum(r => r.amount);
+
         // Default Constructor
         public FactionRecord() { }
 

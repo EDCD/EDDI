@@ -1,18 +1,19 @@
-﻿using System.Collections.Generic;
-using Cottle.Values;
-using EddiSpeechService;
-using Utilities;
-using Newtonsoft.Json;
-using EddiEvents;
+﻿using Cottle.Values;
 using Eddi;
-using System.Windows.Controls;
-using System;
-using System.Text.RegularExpressions;
-using System.IO;
 using EddiDataDefinitions;
+using EddiEvents;
 using EddiShipMonitor;
+using EddiNavigationService;
+using EddiSpeechService;
 using EddiStatusMonitor;
+using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
+using System.Windows.Controls;
+using Utilities;
 
 namespace EddiSpeechResponder
 {
@@ -265,10 +266,12 @@ namespace EddiSpeechResponder
         {
             Dictionary<string, Cottle.Value> dict = new Dictionary<string, Cottle.Value>
             {
-                ["va_active"] = EDDI.FromVA,
-                ["vehicle"] = EDDI.Instance.Vehicle,
+                ["destinationdistance"] = EDDI.Instance.DestinationDistance,
                 ["environment"] = EDDI.Instance.Environment,
-                ["destinationdistance"] = EDDI.Instance.DestinationDistance
+                ["routedistance"] = Navigation.Instance.routeDistance,
+                ["routelist"] = Navigation.Instance.routeList,
+                ["va_active"] = EDDI.FromVA,
+                ["vehicle"] = EDDI.Instance.Vehicle
             };
 
             if (EDDI.Instance.Cmdr != null)

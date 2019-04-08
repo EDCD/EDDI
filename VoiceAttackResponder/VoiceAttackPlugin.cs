@@ -5,6 +5,7 @@ using EddiDataProviderService;
 using EddiDataDefinitions;
 using EddiMaterialMonitor;
 using EddiMissionMonitor;
+using EddiNavigationService;
 using EddiShipMonitor;
 using EddiSpeechResponder;
 using EddiSpeechService;
@@ -978,17 +979,22 @@ namespace EddiVoiceAttackResponder
                 {
                     case "cancel":
                         {
-                            ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor")).CancelRoute();
+                            Navigation.Instance.CancelRoute();
                         }
                         break;
                     case "expiring":
                         {
-                            ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor")).GetExpiringRoute();
+                            Navigation.Instance.GetExpiringRoute();
+                        }
+                        break;
+                    case "facillitator":
+                        {
+                            Navigation.Instance.GetFacillitatorRoute();
                         }
                         break;
                     case "farthest":
                         {
-                            ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor")).GetFarthestRoute();
+                            Navigation.Instance.GetFarthestRoute();
                         }
                         break;
                     case "most":
@@ -1005,12 +1011,12 @@ namespace EddiVoiceAttackResponder
                         break;
                     case "nearest":
                         {
-                            ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor")).GetNearestRoute();
+                            Navigation.Instance.GetNearestRoute();
                         }
                         break;
                     case "next":
                         {
-                            ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor")).SetNextRoute();
+                            Navigation.Instance.SetNextRoute();
                         }
                         break;
                     case "route":
@@ -1027,18 +1033,18 @@ namespace EddiVoiceAttackResponder
                         break;
                     case "set":
                         {
-                            ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor")).SetRoute(system);
+                            Navigation.Instance.SetRoute(system);
                         }
                         break;
                     case "source":
                         {
                             if (system == null || system == string.Empty)
                             {
-                                ((CargoMonitor)EDDI.Instance.ObtainMonitor("Cargo monitor")).GetSourceRoute();
+                                Navigation.Instance.GetSourceRoute();
                             }
                             else
                             {
-                                ((CargoMonitor)EDDI.Instance.ObtainMonitor("Cargo monitor")).GetSourceRoute(system);
+                                Navigation.Instance.GetSourceRoute(system);
                             }
                         }
                         break;
