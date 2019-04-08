@@ -1891,7 +1891,7 @@ namespace Eddi
                 star.solarmass = theEvent.solarmass;
                 star.solarradius = theEvent.solarradius;
                 star.rings = theEvent.rings;
-                star.scanned = theEvent.timestamp;
+                star.scanned = star.scanned ?? (!theEvent.scantype.Contains("NavBeacon") ? (DateTime?)theEvent.timestamp : null);
 
                 star.setStellarExtras();
 
@@ -1953,7 +1953,7 @@ namespace Eddi
                 }
                 body.reserveLevel = ReserveLevel.FromEDName(theEvent.reserves);
                 body.rings = theEvent.rings;
-                body.scanned = theEvent.timestamp;
+                body.scanned = body.scanned ?? (!theEvent.scantype.Contains("NavBeacon") ? (DateTime?)theEvent.timestamp : null);
 
                 Logging.Debug("Saving data for scanned body " + theEvent.bodyname);
                 StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
