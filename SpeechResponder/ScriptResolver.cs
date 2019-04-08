@@ -680,11 +680,11 @@ namespace EddiSpeechResponder
                         {
                             if (values.Count == 2)
                             {
-                                result = ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor"))?.GetMostRoute(values[1].AsString);
+                                result = Navigation.Instance.GetMostRoute(values[1].AsString);
                             }
                             else
                             {
-                                result = ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor"))?.GetMostRoute();
+                                result = Navigation.Instance.GetMostRoute();
                             }
                         }
                         break;
@@ -702,11 +702,11 @@ namespace EddiSpeechResponder
                         {
                             if (values.Count == 2)
                             {
-                                result = ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor"))?.GetMissionsRoute(values[1].AsString);
+                                result = Navigation.Instance.GetMissionsRoute(values[1].AsString);
                             }
                             else
                             {
-                                result = ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor"))?.GetMissionsRoute();
+                                result = Navigation.Instance.GetMissionsRoute();
                             }
                         }
                         break;
@@ -731,11 +731,11 @@ namespace EddiSpeechResponder
                         {
                             if (values.Count == 2)
                             {
-                                result = ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor"))?.UpdateMissionsRoute(values[1].AsString);
+                                result = Navigation.Instance.UpdateMissionsRoute(values[1].AsString);
                             }
                             else
                             {
-                                result = ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor"))?.UpdateMissionsRoute();
+                                result = Navigation.Instance.UpdateMissionsRoute();
                             }
                         }
                         break;
