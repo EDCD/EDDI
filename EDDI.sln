@@ -96,7 +96,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EddiBgsService", "BgsServic
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EddiCrimeMonitor", "CrimeMonitor\EddiCrimeMonitor.csproj", "{5B11D1B2-6128-4F2B-8EF3-8168089C5EC9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EddiNavigationService", "EddiNavigationService\EddiNavigationService.csproj", "{86C23EBD-C979-4517-BB66-62E103AB13EF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EddiNavigationService", "NavigationService\EddiNavigationService.csproj", "{86C23EBD-C979-4517-BB66-62E103AB13EF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -209,9 +209,9 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		RESX_TaskErrorCategory = Message
-		RESX_AutoCreateNewLanguageFiles = True
-		RESX_ShowErrorsInErrorList = False
 		SolutionGuid = {28C2EDB6-0FA0-409F-987C-7A24F542D0CF}
+		RESX_ShowErrorsInErrorList = False
+		RESX_AutoCreateNewLanguageFiles = True
+		RESX_TaskErrorCategory = Message
 	EndGlobalSection
 EndGlobal
