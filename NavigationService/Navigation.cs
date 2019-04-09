@@ -92,7 +92,7 @@ namespace EddiNavigationService
             return expiringSystem;
         }
 
-        public string GetFacillitatorRoute()
+        public string GetFacilitatorRoute()
         {
             string IFSystem = null;
             string IFStation = null;
@@ -702,7 +702,7 @@ namespace EddiNavigationService
             return destination;
         }
 
-        public string UpdateMissionsRoute(string updateSystem = null)
+        public string UpdateRoute(string updateSystem = null)
         {
             bool update;
             string nextSystem = null;

@@ -987,9 +987,9 @@ namespace EddiVoiceAttackResponder
                             Navigation.Instance.GetExpiringRoute();
                         }
                         break;
-                    case "facillitator":
+                    case "facilitator":
                         {
-                            Navigation.Instance.GetFacillitatorRoute();
+                            Navigation.Instance.GetFacilitatorRoute();
                         }
                         break;
                     case "farthest":
@@ -1052,11 +1052,11 @@ namespace EddiVoiceAttackResponder
                         {
                             if (system == null || system == string.Empty)
                             {
-                                Navigation.Instance.UpdateMissionsRoute();
+                                Navigation.Instance.UpdateRoute();
                             }
                             else
                             {
-                                Navigation.Instance.UpdateMissionsRoute(system);
+                                Navigation.Instance.UpdateRoute(system);
                             }
                         }
                         break;

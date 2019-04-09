@@ -2355,11 +2355,10 @@ namespace Eddi
 
         public void updateDestinationSystem(string destinationSystem)
         {
-            StarSystem system = new StarSystem();
             EDDIConfiguration configuration = EDDIConfiguration.FromFile();
             if (destinationSystem != null)
             {
-                system = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystem(destinationSystem);
+                StarSystem system = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystem(destinationSystem);
 
                 //Ignore null & empty systems
                 if (system != null)
@@ -2370,6 +2369,7 @@ namespace Eddi
                         DestinationStarSystem = system;
                     }
                 }
+                else { destinationSystem = null; }
             }
             else
             {

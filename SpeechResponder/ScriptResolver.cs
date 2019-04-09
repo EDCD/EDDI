@@ -666,9 +666,9 @@ namespace EddiSpeechResponder
                             result = Navigation.Instance.GetExpiringRoute();
                         }
                         break;
-                    case "facillitator":
+                    case "facilitator":
                         {
-                            result = Navigation.Instance.GetFacillitatorRoute();
+                            result = Navigation.Instance.GetFacilitatorRoute();
                         }
                         break;
                     case "farthest":
@@ -731,11 +731,11 @@ namespace EddiSpeechResponder
                         {
                             if (values.Count == 2)
                             {
-                                result = Navigation.Instance.UpdateMissionsRoute(values[1].AsString);
+                                result = Navigation.Instance.UpdateRoute(values[1].AsString);
                             }
                             else
                             {
-                                result = Navigation.Instance.UpdateMissionsRoute();
+                                result = Navigation.Instance.UpdateRoute();
                             }
                         }
                         break;

@@ -31,8 +31,6 @@ namespace EddiMissionMonitor
         private DateTime updateDat;
         public int missionsCount;
         public int? missionWarning;
-        public string missionsRouteList;
-        public decimal missionsRouteDistance;
 
         private static readonly object missionsLock = new object();
         public event EventHandler MissionUpdatedEvent;
@@ -831,10 +829,7 @@ namespace EddiMissionMonitor
             {
                 ["missions"] = new List<Mission>(missions),
                 ["missionsCount"] = missionsCount,
-                ["missionWarning"] = missionWarning,
-                ["missionsRouteList"] = missionsRouteList,
-                ["missionsRouteDistance"] = missionsRouteDistance
-
+                ["missionWarning"] = missionWarning
             };
             return variables;
         }
@@ -850,9 +845,7 @@ namespace EddiMissionMonitor
                     updatedat = updateDat,
                     missions = missions,
                     missionsCount = missionsCount,
-                    missionWarning = missionWarning,
-                    missionsRouteList = missionsRouteList,
-                    missionsRouteDistance = missionsRouteDistance
+                    missionWarning = missionWarning
                 };
                 configuration.ToFile();
             }
@@ -868,8 +861,6 @@ namespace EddiMissionMonitor
                 configuration = configuration ?? MissionMonitorConfiguration.FromFile();
                 missionsCount = configuration.missionsCount;
                 missionWarning = configuration.missionWarning ?? 60;
-                missionsRouteList = configuration.missionsRouteList;
-                missionsRouteDistance = configuration.missionsRouteDistance;
                 updateDat = configuration.updatedat;
 
                 // Build a new missions log
@@ -942,54 +933,6 @@ namespace EddiMissionMonitor
                     }
                 }
             }
-        }
-
-
-        public decimal CalculateDistance(string currentSystem, string destinationSystem)
-        {
-            StarSystem curr = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(currentSystem, true);
-            StarSystem dest = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(destinationSystem, true);
-            return CalculateDistance(curr, dest);
-        }
-
-        private decimal CalculateDistance(StarSystem curr, StarSystem dest)
-        {
-            decimal distance = -1;
-            if (curr != null && dest != null)
-            {
-                distance = (decimal)Math.Round(Math.Sqrt(Math.Pow((double)(curr.x - dest.x), 2)
-                    + Math.Pow((double)(curr.y - dest.y), 2)
-                    + Math.Pow((double)(curr.z - dest.z), 2)), 2);
-
-            }
-            return distance;
-        }
-
-        private decimal CalculateRouteDistance()
-        {
-            List<string> route = missionsRouteList?.Split('_').ToList();
-            decimal distance = 0;
-
-            if (route.Count > 0)
-            {
-                StarSystem curr = EDDI.Instance?.CurrentStarSystem;
-
-                // Get all the route coordinates from EDSM in one request
-                List<StarSystem> starsystems = DataProviderService.GetSystemsData(route.ToArray(), true, false, false, false, false);
-
-                // Get distance to the next system
-                StarSystem dest = starsystems.Find(s => s.name == route[0]);
-                distance = CalculateDistance(curr, dest);
-
-                // Calculate remaining route distance
-                for (int i = 0; i < route.Count() - 1; i++)
-                {
-                    curr = starsystems.Find(s => s.name == route[i]);
-                    dest = starsystems.Find(s => s.name == route[i + 1]);
-                    distance += CalculateDistance(curr, dest);
-                }
-            }
-            return distance;
         }
 
         static void RaiseOnUIThread(EventHandler handler, object sender)

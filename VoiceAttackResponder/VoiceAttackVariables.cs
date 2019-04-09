@@ -760,10 +760,6 @@ namespace EddiVoiceAttackResponder
 
         private static void setStarSystemValues(StarSystem system, string prefix, ref dynamic vaProxy)
         {
-            if (system == null)
-            {
-                return;
-            }
             Logging.Debug("Setting system information (" + prefix + ")");
             try
             {
