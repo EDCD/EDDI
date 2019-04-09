@@ -212,7 +212,7 @@ namespace EddiCrimeMonitor
             {
                 record = AddRecord(@event.awardingfaction);
             }
-            record.claimReports.Add(report);
+            record.factionReports.Add(report);
             record.claims += @event.reward;
         }
 
@@ -239,20 +239,22 @@ namespace EddiCrimeMonitor
                 decimal percentage = (100 - (@event.brokerpercentage ?? 0)) / 100;
                 long amount = Convert.ToInt64(@event.rewards[0].amount / percentage);
 
-                List<FactionReport> reports = record.claimReports.Where(r => !r.bounty && r.system != null).ToList();
+                List<FactionReport> reports = record.factionReports
+                    .Where(r => !r.bounty && r.crimeEDName == "none" && r.system != null).ToList();
                 if (reports != null)
                 {
                     long total = reports.Sum(r => r.amount);
                     if (total < amount)
                     {
-                        FactionReport report = record.claimReports.FirstOrDefault(r => r.system == null);
+                        FactionReport report = record.factionReports
+                            .FirstOrDefault(r =>  r.crimeEDName != "none" && r.system == null);
                         if (report != null)
                         {
                             report.amount -= Math.Min(amount - total, report.amount);
                             if (report.amount == 0) { reports.Add(report); }
                         }
                     }
-                    record.claimReports = record.claimReports.Except(reports).ToList();
+                    record.factionReports = record.factionReports.Except(reports).ToList();
                 }
                 record.claims -= Math.Min(amount, record.claims);
 
@@ -293,7 +295,7 @@ namespace EddiCrimeMonitor
                 {
                     record = AddRecord(reward.faction);
                 }
-                record.claimReports.Add(report);
+                record.factionReports.Add(report);
                 record.claims += amount;
             }
         }
@@ -333,20 +335,22 @@ namespace EddiCrimeMonitor
 
                 if (record != null)
                 {
-                    List<FactionReport> reports = record.claimReports.Where(r => r.bounty && r.system != null).ToList();
+                    List<FactionReport> reports = record.factionReports
+                        .Where(r => r.bounty && r.crimeEDName == "none" && r.system != null).ToList();
                     if (reports != null)
                     {
                         long total = reports.Sum(r => r.amount);
                         if (total < amount)
                         {
-                            FactionReport report = record.claimReports.FirstOrDefault(r => r.system == null);
+                            FactionReport report = record.factionReports
+                                .FirstOrDefault(r => r.crimeEDName != "none" && r.system == null);
                             if (report != null)
                             {
                                 report.amount -= Math.Min(amount - total, report.amount);
                                 if (report.amount == 0) { reports.Add(report); }
                             }
                         }
-                        record.claimReports = record.claimReports.Except(reports).ToList();
+                        record.factionReports = record.factionReports.Except(reports).ToList();
                     }
                     record.claims -= Math.Min(amount, record.claims);
 
@@ -370,7 +374,7 @@ namespace EddiCrimeMonitor
         private void _handleBountyIncurredEvent(BountyIncurredEvent @event)
         {
             int shipId = EDDI.Instance?.CurrentShip?.LocalId ?? 0;
-            Crime crime = Crime.FromEDName(@event.crime);
+            Crime crime = Crime.FromEDName(@event.crimetype);
             string currentSystem = EDDI.Instance?.CurrentStarSystem?.name;
             FactionReport report = new FactionReport(@event.timestamp, true, shipId, crime, currentSystem, @event.bounty)
             {
@@ -382,7 +386,7 @@ namespace EddiCrimeMonitor
             {
                 record = AddRecord(@event.faction);
             }
-            record.crimeReports.Add(report);
+            record.factionReports.Add(report);
             record.bounties += report.amount;
         }
 
@@ -406,10 +410,10 @@ namespace EddiCrimeMonitor
             {
                 if (@event.allbounties || record.faction == @event.faction)
                 {
-                    List<FactionReport> reports = record.crimeReports.Where(r => r.bounty).ToList();
+                    List<FactionReport> reports = record.factionReports.Where(r => r.bounty && r.crimeEDName != "none").ToList();
                     if (reports != null)
                     {
-                        record.crimeReports = record.crimeReports.Except(reports).ToList();
+                        record.factionReports = record.factionReports.Except(reports).ToList();
                     }
                     record.bounties = 0;
 
@@ -433,7 +437,7 @@ namespace EddiCrimeMonitor
         private void _handleFineIncurredEvent(FineIncurredEvent @event)
         {
             int shipId = EDDI.Instance?.CurrentShip?.LocalId ?? 0;
-            Crime crime = Crime.FromEDName(@event.crime);
+            Crime crime = Crime.FromEDName(@event.crimetype);
             string currentSystem = EDDI.Instance?.CurrentStarSystem?.name;
             FactionReport report = new FactionReport(@event.timestamp, false, shipId, crime, currentSystem, @event.fine)
             {
@@ -445,7 +449,7 @@ namespace EddiCrimeMonitor
             {
                 record = AddRecord(@event.faction);
             }
-            record.crimeReports.Add(report);
+            record.factionReports.Add(report);
             record.fines += report.amount;
         }
 
@@ -469,10 +473,10 @@ namespace EddiCrimeMonitor
             {
                 if (@event.allfines || record.faction == @event.faction)
                 {
-                    List<FactionReport> reports = record.crimeReports.Where(r => !r.bounty).ToList();
+                    List<FactionReport> reports = record.factionReports.Where(r => !r.bounty && r.crimeEDName != "none").ToList();
                     if (reports != null)
                     {
-                        record.crimeReports = record.crimeReports.Except(reports).ToList();
+                        record.factionReports = record.factionReports.Except(reports).ToList();
                     }
                     record.bounties = 0;
 
@@ -557,7 +561,7 @@ namespace EddiCrimeMonitor
         private void RemoveRecord(FactionRecord record)
         {
             // Check if claims or crimes are pending
-            if ((record.claimReports?.Any() ?? false) || (record.crimeReports?.Any() ?? false)) { return; }
+            if ((record.factionReports?.Any() ?? false)) { return; }
             {
                 _RemoveRecord(record);
             }

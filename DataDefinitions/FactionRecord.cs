@@ -109,13 +109,19 @@ namespace EddiDataDefinitions
             }
         }
 
-        public List<FactionReport> claimReports { get; set; }
-        public List<FactionReport> crimeReports { get; set; }
+        public List<FactionReport> factionReports { get; set; }
 
-        public long bountyClaims => claimReports.Where(r => r.bounty && r.system != null).Sum(r => r.amount);
-        public long bondClaims => claimReports.Where(r => !r.bounty && r.system != null).Sum(r => r.amount);
-        public long bountyCrimes => crimeReports.Where(r => r.bounty && r.system != null).Sum(r => r.amount);
-        public long fineCrimes => crimeReports.Where(r => !r.bounty && r.system != null).Sum(r => r.amount);
+        [JsonIgnore]
+        public long bountyClaims => factionReports.Where(r => r.bounty && r.crimeEDName == "none" && r.system != null).Sum(r => r.amount);
+
+        [JsonIgnore]
+        public long bondClaims => factionReports.Where(r => !r.bounty && r.crimeEDName == "none" && r.system != null).Sum(r => r.amount);
+
+        [JsonIgnore]
+        public long bountyCrimes => factionReports.Where(r => r.bounty && r.crimeEDName != "none" && r.system != null).Sum(r => r.amount);
+
+        [JsonIgnore]
+        public long fineCrimes => factionReports.Where(r => !r.bounty && r.crimeEDName != "none" && r.system != null).Sum(r => r.amount);
 
         // Default Constructor
         public FactionRecord() { }
@@ -124,8 +130,7 @@ namespace EddiDataDefinitions
         public FactionRecord(string faction)
         {
             this.faction = faction;
-            claimReports = new List<FactionReport>();
-            crimeReports = new List<FactionReport>();
+            factionReports = new List<FactionReport>();
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

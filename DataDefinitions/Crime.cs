@@ -37,7 +37,10 @@ namespace EddiDataDefinitions
             var PassengerWanted = new Crime("passengerWanted");
         }
 
+        // Faction report definition
         public static readonly Crime None = new Crime("none");
+        public static readonly Crime Fine = new Crime("fine");
+        public static readonly Crime Bounty = new Crime("bounty");
 
         // dummy used to ensure that the static constructor has run
         public Crime() : this("")
