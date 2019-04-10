@@ -29,6 +29,26 @@ namespace EddiDataDefinitions
             }
         }
 
+        [JsonProperty("allegiance")]
+        public string allegiance
+        {
+
+            get => Allegiance?.edname ?? Superpower.None.edname;
+            set
+            {
+                Superpower aDef = Superpower.FromEDName(value);
+                this.Allegiance = aDef;
+            }
+        }
+        [JsonIgnore]
+        private Superpower _Allegiance = Superpower.None;
+        [JsonIgnore]
+        public Superpower Allegiance
+        {
+            get { return _Allegiance; }
+            set { _Allegiance = value; }
+        }
+
         // The home system of the faction
         [JsonIgnore]
         private string _system;
@@ -115,13 +135,13 @@ namespace EddiDataDefinitions
         public long bountyClaims => factionReports.Where(r => r.bounty && r.crimeEDName == "none" && r.system != null).Sum(r => r.amount);
 
         [JsonIgnore]
-        public long bondClaims => factionReports.Where(r => !r.bounty && r.crimeEDName == "none" && r.system != null).Sum(r => r.amount);
+        public long bondClaims => factionReports.Where(r => !r.bounty && r.crimeDef == Crime.None && r.system != null).Sum(r => r.amount);
 
         [JsonIgnore]
-        public long bountyCrimes => factionReports.Where(r => r.bounty && r.crimeEDName != "none" && r.system != null).Sum(r => r.amount);
+        public long bountyCrimes => factionReports.Where(r => r.bounty && r.crimeDef != Crime.None && r.system != null).Sum(r => r.amount);
 
         [JsonIgnore]
-        public long fineCrimes => factionReports.Where(r => !r.bounty && r.crimeEDName != "none" && r.system != null).Sum(r => r.amount);
+        public long fineCrimes => factionReports.Where(r => !r.bounty && r.crimeDef != Crime.None && r.system != null).Sum(r => r.amount);
 
         // Default Constructor
         public FactionRecord() { }

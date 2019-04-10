@@ -202,7 +202,7 @@ namespace EddiCrimeMonitor
         {
             int shipId = EDDI.Instance?.CurrentShip?.LocalId ?? 0;
             string currentSystem = EDDI.Instance?.CurrentStarSystem?.name;
-            FactionReport report = new FactionReport(@event.timestamp, false, shipId, null, currentSystem, @event.reward)
+            FactionReport report = new FactionReport(@event.timestamp, false, shipId, Crime.None, currentSystem, @event.reward)
             {
                 victim = @event.victimfaction
             };
@@ -232,30 +232,45 @@ namespace EddiCrimeMonitor
         {
             bool update = false;
 
-            FactionRecord record = GetRecordWithFaction(@event.rewards[0].faction);
+            FactionRecord record = new FactionRecord();
+
+            // Calculate amount, broker fees
+            decimal percentage = (100 - (@event.brokerpercentage ?? 0)) / 100;
+            long amount = Convert.ToInt64(Math.Ceiling(@event.rewards[0].amount / percentage));
+
+            if (string.IsNullOrEmpty(@event.rewards[0].faction))
+            {
+                record = criminalrecord.FirstOrDefault(r => r.bondClaims == amount);
+            }
+            else
+            {
+                record = GetRecordWithFaction(@event.rewards[0].faction);
+            }
+
             if (record != null)
             {
-                // Calculate amount, broker fees
-                decimal percentage = (100 - (@event.brokerpercentage ?? 0)) / 100;
-                long amount = Convert.ToInt64(@event.rewards[0].amount / percentage);
-
                 List<FactionReport> reports = record.factionReports
-                    .Where(r => !r.bounty && r.crimeEDName == "none" && r.system != null).ToList();
+                    .Where(r => !r.bounty && r.crimeDef == Crime.None && r.system != null).ToList();
                 if (reports != null)
                 {
                     long total = reports.Sum(r => r.amount);
+
+                    // Check for discrepancy in logged bond claims
                     if (total < amount)
                     {
+                        // Adjust the discrepancy report & remove when zeroed out
                         FactionReport report = record.factionReports
-                            .FirstOrDefault(r =>  r.crimeEDName != "none" && r.system == null);
+                            .FirstOrDefault(r =>  r.crimeDef != Crime.None && r.system == null);
                         if (report != null)
                         {
                             report.amount -= Math.Min(amount - total, report.amount);
                             if (report.amount == 0) { reports.Add(report); }
                         }
                     }
+                    // Remove associated bonds claims
                     record.factionReports = record.factionReports.Except(reports).ToList();
                 }
+                // Adjust the total claims
                 record.claims -= Math.Min(amount, record.claims);
 
                 RemoveRecord(record);
@@ -285,7 +300,7 @@ namespace EddiCrimeMonitor
             {
                 int shipId = EDDI.Instance?.CurrentShip?.LocalId ?? 0;
                 long amount = Convert.ToInt64(reward.amount * bonus);
-                FactionReport report = new FactionReport(@event.timestamp, true, shipId, null, currentSystem.name, amount)
+                FactionReport report = new FactionReport(@event.timestamp, true, shipId, Crime.None, currentSystem.name, amount)
                 {
                     victim = @event.faction
                 };
@@ -322,7 +337,7 @@ namespace EddiCrimeMonitor
 
                 // Calculate amount, before broker fees
                 decimal percentage = (100 - (@event.brokerpercentage ?? 0)) / 100;
-                long amount = Convert.ToInt64(reward.amount / percentage);
+                long amount = Convert.ToInt64(Math.Ceiling(reward.amount / percentage));
 
                 if (string.IsNullOrEmpty(reward.faction))
                 {
@@ -336,22 +351,27 @@ namespace EddiCrimeMonitor
                 if (record != null)
                 {
                     List<FactionReport> reports = record.factionReports
-                        .Where(r => r.bounty && r.crimeEDName == "none" && r.system != null).ToList();
+                        .Where(r => r.bounty && r.crimeDef == Crime.None && r.system != null).ToList();
                     if (reports != null)
                     {
                         long total = reports.Sum(r => r.amount);
+
+                        // Check for discrepancy in logged bounty claims
                         if (total < amount)
                         {
+                            // Adjust the discrepancy report & remove when zeroed out
                             FactionReport report = record.factionReports
-                                .FirstOrDefault(r => r.crimeEDName != "none" && r.system == null);
+                                .FirstOrDefault(r => r.crimeDef == Crime.None && r.system == null);
                             if (report != null)
                             {
                                 report.amount -= Math.Min(amount - total, report.amount);
                                 if (report.amount == 0) { reports.Add(report); }
                             }
                         }
+                        // Remove associated bounty claims
                         record.factionReports = record.factionReports.Except(reports).ToList();
                     }
+                    // Adjust the total claims
                     record.claims -= Math.Min(amount, record.claims);
 
                     RemoveRecord(record);
@@ -410,7 +430,8 @@ namespace EddiCrimeMonitor
             {
                 if (@event.allbounties || record.faction == @event.faction)
                 {
-                    List<FactionReport> reports = record.factionReports.Where(r => r.bounty && r.crimeEDName != "none").ToList();
+                    // Get all bounty crimes, incluing the discrepancy report
+                    List<FactionReport> reports = record.factionReports.Where(r => r.bounty && r.crimeDef != Crime.None).ToList();
                     if (reports != null)
                     {
                         record.factionReports = record.factionReports.Except(reports).ToList();
@@ -473,7 +494,8 @@ namespace EddiCrimeMonitor
             {
                 if (@event.allfines || record.faction == @event.faction)
                 {
-                    List<FactionReport> reports = record.factionReports.Where(r => !r.bounty && r.crimeEDName != "none").ToList();
+                    // Get all bounty crimes, incluing the discrepancy report
+                    List<FactionReport> reports = record.factionReports.Where(r => !r.bounty && r.crimeDef != Crime.None).ToList();
                     if (reports != null)
                     {
                         record.factionReports = record.factionReports.Except(reports).ToList();
@@ -633,6 +655,7 @@ namespace EddiCrimeMonitor
             if (factionSystem != null)
             {
                 record.system = factionSystem.name;
+                record.Allegiance = factionSystem.factions?.FirstOrDefault(f => f.name == record.faction).Allegiance ?? Superpower.None;
 
                 // Filter stations within the faction system which meet the game version and landing pad size requirements
                 string shipSize = EDDI.Instance?.CurrentShip?.size ?? "Large";
