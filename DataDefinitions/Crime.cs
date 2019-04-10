@@ -39,6 +39,9 @@ namespace EddiDataDefinitions
 
         // Faction report definition
         public static readonly Crime None = new Crime("none");
+        public static readonly Crime Claim = new Crime("claim");
+        public static readonly Crime Fine = new Crime("bounty");
+        public static readonly Crime Bounty = new Crime("fine");
 
         // dummy used to ensure that the static constructor has run
         public Crime() : this("")

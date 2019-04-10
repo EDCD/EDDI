@@ -3,6 +3,7 @@ using EddiDataDefinitions;
 using EddiDataProviderService;
 using EddiEvents;
 using EddiCargoMonitor;
+using EddiCrimeMonitor;
 using EddiMissionMonitor;
 using EddiShipMonitor;
 using Newtonsoft.Json;

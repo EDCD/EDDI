@@ -1,24 +1,25 @@
-﻿using EddiDataDefinitions;
+﻿using EddiEvents;
+using EddiDataDefinitions;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 
-namespace EddiEvents
+namespace EddiCrimeMonitor
 {
-    public class FineIncurredEvent : Event
+    public class BountyIncurredEvent : Event
     {
-        public const string NAME = "Fine incurred";
-        public const string DESCRIPTION = "Triggered when you incur a fine";
-        public const string SAMPLE = "{\"timestamp\":\"2016-06-10T14:32:03Z\",\"event\":\"CommitCrime\",\"CrimeType\":\"fireInNoFireZone\",\"Faction\":\"The Pilots Federation\",\"Victim\":\"Potapinski\",\"Fine\":210}";
+        public const string NAME = "Bounty incurred";
+        public const string DESCRIPTION = "Triggered when you incur a bounty";
+        public const string SAMPLE = "{\"timestamp\":\"2016-06-10T14:32:03Z\",\"event\":\"CommitCrime\",\"CrimeType\":\"assault\",\"Faction\":\"The Pilots Federation\",\"Victim\":\"Potapinski\",\"Bounty\":210}";
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
-        static FineIncurredEvent()
+        static BountyIncurredEvent()
         {
             VARIABLES.Add("crimetype", "The type of crime committed");
             VARIABLES.Add("crime", "The decription of the crime committed");
             VARIABLES.Add("victim", "The name of the victim of the crime");
-            VARIABLES.Add("faction", "The name of the faction issuing the fine");
-            VARIABLES.Add("fine", "The number of credits issued as the fine");
+            VARIABLES.Add("faction", "The name of the faction issuing the bounty");
+            VARIABLES.Add("bounty", "The number of credits issued as the bounty");
         }
 
         [JsonProperty("crimetype")]
@@ -32,16 +33,16 @@ namespace EddiEvents
         [JsonProperty("faction")]
         public string faction { get; private set; }
 
-        [JsonProperty("fine")]
-        public long fine { get; private set; }
+        [JsonProperty("bounty")]
+        public long bounty { get; private set; }
 
-        public FineIncurredEvent(DateTime timestamp, string crimetype, string faction, string victim, long fine) : base(timestamp, NAME)
+        public BountyIncurredEvent(DateTime timestamp, string crimetype, string faction, string victim, long bounty) : base(timestamp, NAME)
         {
             this.crimetype = crimetype;
             this.crime = Crime.FromEDName(crimetype).localizedName;
             this.faction = faction;
             this.victim = victim;
-            this.fine = fine;
+            this.bounty = bounty;
         }
     }
 }

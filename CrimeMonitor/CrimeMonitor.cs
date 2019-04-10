@@ -240,6 +240,7 @@ namespace EddiCrimeMonitor
 
             if (string.IsNullOrEmpty(@event.rewards[0].faction))
             {
+                // Journal event from Interstellar Factor transaction (FDEV bug)
                 record = criminalrecord.FirstOrDefault(r => r.bondClaims == amount);
             }
             else
@@ -249,8 +250,9 @@ namespace EddiCrimeMonitor
 
             if (record != null)
             {
+                // Get all bond claims, excluding the discrepancy report
                 List<FactionReport> reports = record.factionReports
-                    .Where(r => !r.bounty && r.crimeDef == Crime.None && r.system != null).ToList();
+                    .Where(r => !r.bounty && r.crimeDef == Crime.None).ToList();
                 if (reports != null)
                 {
                     long total = reports.Sum(r => r.amount);
@@ -260,7 +262,7 @@ namespace EddiCrimeMonitor
                     {
                         // Adjust the discrepancy report & remove when zeroed out
                         FactionReport report = record.factionReports
-                            .FirstOrDefault(r =>  r.crimeDef != Crime.None && r.system == null);
+                            .FirstOrDefault(r =>  r.crimeDef == Crime.Claim);
                         if (report != null)
                         {
                             report.amount -= Math.Min(amount - total, report.amount);
@@ -341,6 +343,7 @@ namespace EddiCrimeMonitor
 
                 if (string.IsNullOrEmpty(reward.faction))
                 {
+                    // Journal event from Interstellar Factor transaction (FDEV bug)
                     record = criminalrecord.FirstOrDefault(r => r.bountyClaims == amount);
                 }
                 else
@@ -350,8 +353,9 @@ namespace EddiCrimeMonitor
 
                 if (record != null)
                 {
+                    // Get all bounty claims, excluding the discrepancy report
                     List<FactionReport> reports = record.factionReports
-                        .Where(r => r.bounty && r.crimeDef == Crime.None && r.system != null).ToList();
+                        .Where(r => r.bounty && r.crimeDef == Crime.None).ToList();
                     if (reports != null)
                     {
                         long total = reports.Sum(r => r.amount);
@@ -361,7 +365,7 @@ namespace EddiCrimeMonitor
                         {
                             // Adjust the discrepancy report & remove when zeroed out
                             FactionReport report = record.factionReports
-                                .FirstOrDefault(r => r.crimeDef == Crime.None && r.system == null);
+                                .FirstOrDefault(r => r.crimeDef == Crime.Claim);
                             if (report != null)
                             {
                                 report.amount -= Math.Min(amount - total, report.amount);
@@ -431,7 +435,8 @@ namespace EddiCrimeMonitor
                 if (@event.allbounties || record.faction == @event.faction)
                 {
                     // Get all bounty crimes, incluing the discrepancy report
-                    List<FactionReport> reports = record.factionReports.Where(r => r.bounty && r.crimeDef != Crime.None).ToList();
+                    List<FactionReport> reports = record.factionReports
+                        .Where(r => r.bounty && r.crimeDef != Crime.None).ToList();
                     if (reports != null)
                     {
                         record.factionReports = record.factionReports.Except(reports).ToList();
@@ -495,7 +500,8 @@ namespace EddiCrimeMonitor
                 if (@event.allfines || record.faction == @event.faction)
                 {
                     // Get all bounty crimes, incluing the discrepancy report
-                    List<FactionReport> reports = record.factionReports.Where(r => !r.bounty && r.crimeDef != Crime.None).ToList();
+                    List<FactionReport> reports = record.factionReports
+                        .Where(r => !r.bounty && r.crimeDef != Crime.None && r.crimeDef != Crime.Claim).ToList();
                     if (reports != null)
                     {
                         record.factionReports = record.factionReports.Except(reports).ToList();

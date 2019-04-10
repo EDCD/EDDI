@@ -1,4 +1,5 @@
 ﻿using Eddi;
+using EddiCrimeMonitor;
 using EddiDataDefinitions;
 using EddiEvents;
 using Newtonsoft.Json;

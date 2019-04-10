@@ -110,17 +110,18 @@ namespace EddiCrimeMonitor
                     {
                         case 3: // Claims column
                             {
+                                // All claims, including discrepancy report
                                 long claims = record.factionReports
-                                    .Where(r => r.crimeDef == Crime.None)
+                                    .Where(r => r.crimeDef == Crime.None || r.crimeDef == Crime.Claim)
                                     .Sum(r => r.amount);
                                 if (record.claims != claims)
                                 {
                                     // Create/modify 'discrepancy' report if total claims does not equal sum of claim reports
                                     report = record.factionReports
-                                        .FirstOrDefault(r => r.crimeDef == Crime.None && r.system == null);
+                                        .FirstOrDefault(r => r.crimeDef == Crime.Claim);
                                     if (report == null)
                                     {
-                                        report = new FactionReport(DateTime.UtcNow, false, 0, Crime.None, null, 0);
+                                        report = new FactionReport(DateTime.UtcNow, false, 0, Crime.Claim, null, 0);
                                         record.factionReports.Add(report);
                                     }
                                     report.amount += record.claims - claims;
@@ -129,17 +130,18 @@ namespace EddiCrimeMonitor
                             break;
                         case 4: // Fines column
                             {
+                                // All fines, including discrepancy report
                                 long fines = record.factionReports
-                                    .Where(r => r.crimeDef != Crime.None && !r.bounty)
+                                    .Where(r => !r.bounty && r.crimeDef != Crime.None)
                                     .Sum(r => r.amount);
                                 if (record.fines != fines)
                                 {
                                     // Create/modify 'discrepancy' report if total fines does not equal sum of fine reports
                                     report = record.factionReports
-                                        .FirstOrDefault(r => r.crimeDef != Crime.None && !r.bounty && r.system == null);
+                                        .FirstOrDefault(r => r.crimeDef == Crime.Fine);
                                     if (report == null)
                                     {
-                                        report = new FactionReport(DateTime.UtcNow, false, 0, Crime.None, null, 0);
+                                        report = new FactionReport(DateTime.UtcNow, false, 0, Crime.Fine, null, 0);
                                         record.factionReports.Add(report);
                                     }
                                     report.amount += record.fines - fines;
@@ -148,17 +150,18 @@ namespace EddiCrimeMonitor
                             break;
                         case 5: // Bounties column
                             {
+                                // All bounties, including discrepancy report
                                 long bounties = record.factionReports
-                                    .Where(r => r.crimeDef != Crime.None && r.bounty)
+                                    .Where(r => r.bounty && r.crimeDef != Crime.None)
                                     .Sum(r => r.amount);
                                 if (record.bounties != bounties)
                                 {
                                     // Create/modify 'discrepancy' report if total bounties does not equal sum of bonty reports
                                     report = record.factionReports
-                                        .FirstOrDefault(r => r.crimeDef != Crime.None && r.bounty && r.system == null);
+                                        .FirstOrDefault(r => r.crimeDef == Crime.Bounty);
                                     if (report == null)
                                     {
-                                        report = new FactionReport(DateTime.UtcNow, true, 0, Crime.None, null, 0);
+                                        report = new FactionReport(DateTime.UtcNow, true, 0, Crime.Bounty, null, 0);
                                         record.factionReports.Add(report);
                                     }
                                     report.amount += record.bounties - bounties;
@@ -168,7 +171,6 @@ namespace EddiCrimeMonitor
                     }
                 }
             }
-
             // Update the crime monitor's information
             crimeMonitor()?.writeRecord();
         }

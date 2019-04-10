@@ -132,16 +132,28 @@ namespace EddiDataDefinitions
         public List<FactionReport> factionReports { get; set; }
 
         [JsonIgnore]
-        public long bountyClaims => factionReports.Where(r => r.bounty && r.crimeEDName == "none" && r.system != null).Sum(r => r.amount);
+        // All bond claims, excluding the discrepancy report
+        public long bondClaims => factionReports
+            .Where(r => !r.bounty && r.crimeDef == Crime.None)
+            .Sum(r => r.amount);
 
         [JsonIgnore]
-        public long bondClaims => factionReports.Where(r => !r.bounty && r.crimeDef == Crime.None && r.system != null).Sum(r => r.amount);
+        // All bounty claims, excluding the discrepancy report
+        public long bountyClaims => factionReports
+            .Where(r => r.bounty && r.crimeDef == Crime.None)
+            .Sum(r => r.amount);
 
         [JsonIgnore]
-        public long bountyCrimes => factionReports.Where(r => r.bounty && r.crimeDef != Crime.None && r.system != null).Sum(r => r.amount);
+        // All fine crimes, exlcuding the discrepancy report
+        public long fineCrimes => factionReports
+            .Where(r => !r.bounty && r.crimeDef != Crime.None && r.crimeDef != Crime.Fine)
+            .Sum(r => r.amount);
 
         [JsonIgnore]
-        public long fineCrimes => factionReports.Where(r => !r.bounty && r.crimeDef != Crime.None && r.system != null).Sum(r => r.amount);
+        // All bounty crimes, exlcuding the discrepancy report
+        public long bountyCrimes => factionReports
+            .Where(r => r.bounty && r.crimeDef != Crime.None && r.crimeDef != Crime.Bounty)
+            .Sum(r => r.amount);
 
         // Default Constructor
         public FactionRecord() { }
