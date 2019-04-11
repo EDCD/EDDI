@@ -142,8 +142,8 @@ namespace EDDNResponder
 
                 if (edType == "Location" || edType == "FSDJump" || edType == "Docked" || edType == "Scan")
                 {
-                    StripPersonalData(data);
-                    EnrichLocationData(edType, data);
+                    data = StripPersonalData(data);
+                    data = EnrichLocationData(edType, data);
 
                     if (data != null)
                     {
@@ -247,6 +247,8 @@ namespace EDDNResponder
             data.Remove("BoostUsed");
             data.Remove("JumpDist");
             data.Remove("Wanted");
+            data.Remove("Latitude");
+            data.Remove("Longitude");
 
             data.TryGetValue("Factions", out object factionsVal);
             if (factionsVal != null)
@@ -258,6 +260,7 @@ namespace EDDNResponder
                     ((IDictionary<string, object>)faction).Remove("SquadronFaction");
                     ((IDictionary<string, object>)faction).Remove("HappiestSystem");
                     ((IDictionary<string, object>)faction).Remove("HomeSystem");
+                    ((IDictionary<string, object>)faction).Where(x => !x.Key.EndsWith("_Localised")).ToDictionary(x => x.Key, x => x.Value);
                 }
             }
 
@@ -532,11 +535,27 @@ namespace EDDNResponder
 
             Thread thread = new Thread(() =>
             {
+                IRestResponse response = null;
                 try
                 {
-                    IRestResponse response = client.Execute(request);
-                    var content = response.Content; // raw content as string
-                    Logging.Debug("Response content is " + content);
+                    response = client.Execute(request);
+                    if (response != null)
+                    {
+                        Logging.Debug("Response content is " + response.Content);
+                        switch (response.StatusCode)
+                        {
+                            // Invalid status codes are defined at https://github.com/EDSM-NET/EDDN/blob/master/src/eddn/Gateway.py
+                            case System.Net.HttpStatusCode.BadRequest: // Code 400
+                                {
+                                    throw new ArgumentException();
+                                }
+                            case System.Net.HttpStatusCode.UpgradeRequired: // Code 426
+                                {
+                                    Logging.Warn("EDDN schema " + body.schemaRef + " is obsolete");
+                                    break;
+                                }
+                        }
+                    }
                 }
                 catch (ThreadAbortException)
                 {
@@ -544,7 +563,13 @@ namespace EDDNResponder
                 }
                 catch (Exception ex)
                 {
-                    Logging.Warn("Failed to send error to EDDN", ex);
+                    Dictionary<string, object> data = new Dictionary<string, object>
+                    {
+                        { "eddnMessage", JsonConvert.SerializeObject(body?.message) },
+                        { "Response", response?.Content },
+                        { "Exception", ex }
+                    };
+                    Logging.Error("Failed to send data to EDDN", data);
                 }
             })
             {
