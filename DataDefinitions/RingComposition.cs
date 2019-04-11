@@ -17,7 +17,7 @@ namespace EddiDataDefinitions
 
             var Icy = new RingComposition("Icy");
             var Rocky = new RingComposition("Rocky");
-            var Metallic = new RingComposition("Metalic"); // sic
+            var Metallic = new RingComposition("Metallic"); // sic (the journal uses "Metalic", EDSM uses "Metallic")
             var MetalRich = new RingComposition("MetalRich");
         }
 
@@ -27,16 +27,16 @@ namespace EddiDataDefinitions
 
         private RingComposition(string edname): base(edname, edname
             .Replace("eRingClass_", "")
-            .Replace("-", ""))
-            // .Replace("Metalic", "Metallic"))
+            .Replace("-", "")
+            .Replace("Metalic", "Metallic"))
         { }
 
         new public static RingComposition FromEDName(string edname)
         {
             string normalizedEDName = edname
                 .Replace("eRingClass_", "")
-                .Replace("-", "");
-                // .Replace("Metalic", "Metallic");
+                .Replace("-", "")
+                .Replace("Metalic", "Metallic");
             return ResourceBasedLocalizedEDName<RingComposition>.FromEDName(normalizedEDName);
         }
     }
