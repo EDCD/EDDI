@@ -13,7 +13,7 @@ namespace EddiDataDefinitions
 
         /// <summary>The composition of the ring</summary>
         [JsonIgnore, Obsolete("Please use localizedComposition or invariantComposition")]
-        public string composition => Composition.localizedName;
+        public string composition => Composition?.localizedName;
         public RingComposition Composition { get; set; }
         [JsonIgnore]
         public string localizedComposition => Composition?.localizedName;

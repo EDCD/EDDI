@@ -127,7 +127,7 @@ namespace UnitTests
         [TestMethod]
         public void TestJournalStarScan1()
         {
-            string line = @"{ ""timestamp"":""2016-10-27T08:51:23Z"", ""event"":""Scan"", ""BodyName"":""Vela Dark Region FG-Y d3"", ""DistanceFromArrivalLS"":0.000000, ""StarType"":""K"", ""StellarMass"":0.960938, ""Radius"":692146368.000000, ""AbsoluteMagnitude"":5.375961, ""Age_MY"":230, ""SurfaceTemperature"":5108.000000, ""RotationPeriod"":393121.093750, ""Rings"":[ { ""Name"":""Vela Dark Region FG-Y d3 A Belt"", ""RingClass"":""eRingClass_MetalRich"", ""MassMT"":1.2262e+10, ""InnerRad"":1.2288e+09, ""OuterRad"":2.3812e+09 } ] }";
+            string line = @"{ ""timestamp"":""2016-10-27T08:51:23Z"", ""event"":""Scan"", ""BodyName"":""Vela Dark Region FG-Y d3"", ""DistanceFromArrivalLS"":0.000000, ""StarType"":""K"", ""StellarMass"":0.960938, ""Radius"":692146368.000000, ""AbsoluteMagnitude"":5.375961, ""Age_MY"":230, ""SurfaceTemperature"":5108.000000, ""RotationPeriod"":393121.093750, ""Rings"":[ { ""Name"":""Vela Dark Region FG-Y d3 A Belt"", ""RingClass"":""eRingClass_Metalic"", ""MassMT"":1.2262e+10, ""InnerRad"":1.2288e+09, ""OuterRad"":2.3812e+09 } ] }";
             List<Event> events = JournalMonitor.ParseJournalEntry(line);
             Assert.IsTrue(events.Count == 1);
 
@@ -150,6 +150,8 @@ namespace UnitTests
             Assert.AreEqual(7, theEvent.ageprobability);
             Assert.AreEqual(303.548, (double)theEvent.estimatedhabzoneinner, .01);
             Assert.AreEqual(604.861, (double)theEvent.estimatedhabzoneouter, .01);
+            // Ring
+            Assert.AreEqual("Metallic", theEvent.rings[0].Composition.invariantName);
         }
 
         [TestMethod]
