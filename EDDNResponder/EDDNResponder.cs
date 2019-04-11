@@ -249,22 +249,27 @@ namespace EDDNResponder
             data.Remove("Latitude");
             data.Remove("Longitude");
 
+            // Need to remove any keys ending with _Localised
+            data = data.Where(x => !x.Key.EndsWith("_Localised")).ToDictionary(x => x.Key, x => x.Value);
+
             data.TryGetValue("Factions", out object factionsVal);
             if (factionsVal != null)
             {
+                var strippedFactions = new List<object>();
                 var factions = (List<object>)factionsVal;
-                foreach (object faction in factions)
+                foreach (object factionVal in factions)
                 {
-                    ((IDictionary<string, object>)faction).Remove("MyReputation");
-                    ((IDictionary<string, object>)faction).Remove("SquadronFaction");
-                    ((IDictionary<string, object>)faction).Remove("HappiestSystem");
-                    ((IDictionary<string, object>)faction).Remove("HomeSystem");
-                    ((IDictionary<string, object>)faction).Where(x => !x.Key.EndsWith("_Localised")).ToDictionary(x => x.Key, x => x.Value);
+                    IDictionary<string, object> faction = (IDictionary<string, object>)factionVal;
+                    faction.Remove("MyReputation");
+                    faction.Remove("SquadronFaction");
+                    faction.Remove("HappiestSystem");
+                    faction.Remove("HomeSystem");
+                    faction = faction.Where(x => !x.Key.EndsWith("_Localised")).ToDictionary(x => x.Key, x => x.Value);
+                    strippedFactions.Add(faction);
                 }
+                data["Factions"] = strippedFactions;
             }
 
-            // Need to remove any keys ending with _Localised
-            data = data.Where(x => !x.Key.EndsWith("_Localised")).ToDictionary(x => x.Key, x => x.Value);
             return data;
         }
 

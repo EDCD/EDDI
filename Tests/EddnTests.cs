@@ -530,6 +530,7 @@ namespace UnitTests
         [TestMethod]
         public void TestStripPersonalData()
         {
+            // we fail if any key with the value "bad" survives the test
             IDictionary<string, object> data = new Dictionary<string, object>()
             {
                 { "good key", "good" },
