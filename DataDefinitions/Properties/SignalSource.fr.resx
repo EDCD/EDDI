@@ -126,19 +126,19 @@
     <comment>Compromised nav beacon</comment>
   </data>
   <data name="USS" xml:space="preserve">
-    <value>Source de signal non identifié</value>
+    <value>Source du signal non identifiée</value>
     <comment>Unidentified Signal Source</comment>
   </data>
   <data name="Warzone_PointRace_High" xml:space="preserve">
-    <value>Zone de combat à haute intensité</value>
+    <value>Zone de combat de haute intensité</value>
     <comment>Combat Zone (High Intensity)</comment>
   </data>
   <data name="Warzone_PointRace_Med" xml:space="preserve">
-    <value>Zone de combat à intensité moyenne</value>
+    <value>Zone de combat d'intensité moyenne</value>
     <comment>Combat Zone (Medium Intensity)</comment>
   </data>
   <data name="Warzone_PointRace_Low" xml:space="preserve">
-    <value>Zone de combat à faible intensité</value>
+    <value>Zone de combat de faible intensité</value>
     <comment>Combat Zone (Low Intensity)</comment>
   </data>
   
@@ -187,11 +187,11 @@
     <comment>TradingBeacon signal</comment>
   </data>
   <data name="MULTIPLAYER_SCENARIO78_TITLE" xml:space="preserve">
-    <value>Site d'extraction de ressources à haute intensité</value>
+    <value>Site d'extraction de ressources de haute intensité</value>
     <comment>ResourceExtraction Site (High Intensity)</comment>
   </data>
   <data name="MULTIPLAYER_SCENARIO77_TITLE" xml:space="preserve">
-    <value>Site d'extraction de ressources à faible intensité</value>
+    <value>Site d'extraction de ressources de faible intensité</value>
     <comment>Resource Extraction site (Low)</comment>
   </data>
   <data name="MULTIPLAYER_SCENARIO14_TITLE" xml:space="preserve">
@@ -199,7 +199,7 @@
     <comment>Resource Extraction Site</comment>
   </data>
   <data name="MULTIPLAYER_SCENARIO79_TITLE" xml:space="preserve">
-    <value>Site d'extraction de ressources instables</value>
+    <value>Site d'extraction de ressources dangereux</value>
     <comment>Resource Extraction Site [Hazardous]</comment>
   </data>
   <data name="NumberStation" xml:space="preserve">
