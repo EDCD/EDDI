@@ -172,7 +172,7 @@ namespace EddiDataDefinitions
             if (LargestPad == StationLargestPad.FromSize("l")) { return true; }
             else if (LargestPad == StationLargestPad.FromSize("m"))
             {
-                if (shipSize == StationLargestPad.FromSize("l")) { return false; }
+                if (shipSize == StationLargestPad.FromSize("l")) { return false; } else { return true; }
             }
             if (shipSize == StationLargestPad.FromSize("s")) { return true; }
             return false;

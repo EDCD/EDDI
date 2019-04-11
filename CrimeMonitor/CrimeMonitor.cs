@@ -186,6 +186,11 @@ namespace EddiCrimeMonitor
             {
                 handleFinePaidEvent((FinePaidEvent)@event);
             }
+            else if (@event is DiedEvent)
+            {
+                handleDiedEvent((DiedEvent)@event);
+            }
+
         }
 
         private void handleBondAwardedEvent(BondAwardedEvent @event)
@@ -238,10 +243,15 @@ namespace EddiCrimeMonitor
             decimal percentage = (100 - (@event.brokerpercentage ?? 0)) / 100;
             long amount = Convert.ToInt64(Math.Ceiling(@event.rewards[0].amount / percentage));
 
+            // Handle journal event from Interstellar Factors transaction (FDEV bug)
             if (string.IsNullOrEmpty(@event.rewards[0].faction))
             {
-                // Journal event from Interstellar Factor transaction (FDEV bug)
-                record = criminalrecord.FirstOrDefault(r => r.bondClaims == amount);
+                List<string> systemFactions = EDDI.Instance.CurrentStarSystem?.factions.Select(f => f.name).ToList();
+
+                // Get record which matches a system faction and the bond claims amount
+                record = criminalrecord
+                    .Where(r => systemFactions.Contains(r.faction))
+                    .FirstOrDefault(r => r.bondClaims == amount);
             }
             else
             {
@@ -341,10 +351,15 @@ namespace EddiCrimeMonitor
                 decimal percentage = (100 - (@event.brokerpercentage ?? 0)) / 100;
                 long amount = Convert.ToInt64(Math.Ceiling(reward.amount / percentage));
 
+                // Handle journal event from Interstellar Factors transaction (FDEV bug)
                 if (string.IsNullOrEmpty(reward.faction))
                 {
-                    // Journal event from Interstellar Factor transaction (FDEV bug)
-                    record = criminalrecord.FirstOrDefault(r => r.bountyClaims == amount);
+                    List<string> systemFactions = EDDI.Instance.CurrentStarSystem?.factions.Select(f => f.name).ToList();
+
+                    // Get record which matches a system faction and the bounty claims amount
+                    record = criminalrecord
+                        .Where(r => systemFactions.Contains(r.faction))
+                        .FirstOrDefault(r => r.bountyClaims == amount);
                 }
                 else
                 {
@@ -513,6 +528,35 @@ namespace EddiCrimeMonitor
                 }
             }
             return update;
+        }
+
+        private void handleDiedEvent(DiedEvent @event)
+        {
+            if (@event.timestamp > updateDat)
+            {
+                updateDat = @event.timestamp;
+                _handleDiedEvent(@event);
+                writeRecord();
+            }
+        }
+
+        private void _handleDiedEvent(DiedEvent @event)
+        {
+            List<FactionReport> reports = new List<FactionReport>();
+
+            // Remove all pending claims from criminal record
+            foreach (FactionRecord record in criminalrecord.ToList())
+            {
+                reports = record.factionReports
+                    .Where(r => r.crimeDef == Crime.None || r.crimeDef == Crime.Claim)
+                    .ToList();
+                if (reports != null)
+                {
+                    // Remove all pending claims from faction
+                    record.factionReports = record.factionReports.Except(reports).ToList();
+                }
+                record.claims = 0;
+            }
         }
 
         public IDictionary<string, object> GetVariables()
