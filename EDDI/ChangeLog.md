@@ -49,6 +49,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * WAS: `system`*, IS: `systemname`
     * `Star scanned` script revised. Preference added for reporting stellar class. Corrected edit scars. Refactored to reduce redundancies. 
     * `Body volcanism script` revised. Corrected edit scars and added a little more variety to the script.
+    * The `Spacialise()` function no longer adds an extra space at the end of the string.
   * Voice Attack
     * Added `Destination system`, `Destination system distance`, and `Destination station` properties.
 

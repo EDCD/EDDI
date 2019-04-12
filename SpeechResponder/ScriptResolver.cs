@@ -289,7 +289,7 @@ namespace EddiSpeechResponder
                     Sortie = Sortie + c + " ";
                 }
                 UpperSortie = Sortie.ToUpper();
-                return UpperSortie;
+                return UpperSortie.Trim();
 
             }, 1);
 
