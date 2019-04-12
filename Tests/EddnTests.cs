@@ -528,6 +528,73 @@ namespace UnitTests
         }
 
         [TestMethod]
+        public void TestStripPersonalData()
+        {
+            // we fail if any key with the value "bad" survives the test
+            IDictionary<string, object> data = new Dictionary<string, object>()
+            {
+                { "good key", "good" },
+                { "ActiveFine", "bad" },
+                { "CockpitBreach", "bad" },
+                { "BoostUsed", "bad" },
+                { "FuelLevel", "bad" },
+                { "FuelUsed", "bad" },
+                { "JumpDist", "bad" },
+                { "Wanted", "bad" },
+                { "Latitude", "bad" },
+                { "Longitude", "bad" },
+                {
+                    "Factions", new List<object>()
+                    {
+                        new Dictionary<string, object>()
+                        {
+                            { "good key", "good"},
+                            { "MyReputation", "bad" },
+                            { "SquadronFaction", "bad" },
+                            { "HappiestSystem", "bad" },
+                            { "HomeSystem", "bad" },
+                            { "blah_Localised", "bad" },
+                        }
+                    }
+                }
+            };
+
+            EDDNResponder.EDDNResponder responder = makeTestEDDNResponder();
+            var privateObject = new PrivateObject(responder);
+            data = (IDictionary<string, object>)privateObject.Invoke("StripPersonalData", new object[] { data });
+
+            void testKeyValuePair(KeyValuePair<string, object> kvp)
+            {
+                if (kvp.Value as string == "bad")
+                {
+                    Assert.Fail($"key '{kvp.Key}' should have been stripped.");
+                }
+            }
+
+            void testDictionary(IDictionary<string, object>dict)
+            {
+                foreach (KeyValuePair<string, object> kvp in dict)
+                {
+                    var value = kvp.Value;
+                    if (value is string)
+                    {
+                        testKeyValuePair(kvp);
+                    }
+                    if (value is IList<object>)
+                    {
+                        IList<object> list = value as List<object>;
+                        foreach (object item in list)
+                        {
+                            testDictionary((IDictionary<string, object>)item);
+                        }
+                    }
+                }
+            }
+
+            testDictionary(data);
+        }
+
+        [TestMethod]
         public void TestUnhandledEvents()
         {
             string location = @"{ ""timestamp"":""2018-12-16T20:08:31Z"", ""event"":""Location"", ""Docked"":false, ""StarSystem"":""Pleiades Sector GW-W c1-4"", ""SystemAddress"":1183229809290, ""StarPos"":[-81.62500,-151.31250,-383.53125], ""SystemAllegiance"":"""", ""SystemEconomy"":""$economy_None;"", ""SystemEconomy_Localised"":""None"", ""SystemSecondEconomy"":""$economy_None;"", ""SystemSecondEconomy_Localised"":""None"", ""SystemGovernment"":""$government_None;"", ""SystemGovernment_Localised"":""None"", ""SystemSecurity"":""$GAlAXY_MAP_INFO_state_anarchy;"", ""SystemSecurity_Localised"":""Anarchy"", ""Population"":0, ""Body"":""Pleiades Sector GW-W c1-4"", ""BodyID"":0, ""BodyType"":""Star"" }";
