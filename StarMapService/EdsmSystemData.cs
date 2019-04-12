@@ -207,7 +207,7 @@ namespace EddiStarMapService
                     };
                     controllingFaction.presences.Add(new FactionPresence()
                     {
-                        systemName = starSystem.name,
+                        systemName = starSystem.systemname,
                         FactionState = FactionState.FromName((string)information["factionState"]) ?? FactionState.None,
                     });
                     starSystem.Faction = controllingFaction;
