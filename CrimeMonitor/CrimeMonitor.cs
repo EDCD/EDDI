@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows;
 using System.Windows.Data;
@@ -686,7 +687,7 @@ namespace EddiCrimeMonitor
             return factionSystem;
         }
 
-        public void GetFactionData(FactionRecord record, string homeSystem = null, int cubeLy = 100)
+        public void GetFactionData(FactionRecord record, string homeSystem = null)
         {
             if (record == null || record.faction == null || record.faction == Properties.CrimeMonitor.blank_faction) { return; }
             record.station = null;
@@ -696,8 +697,16 @@ namespace EddiCrimeMonitor
                 StarSystem currentSystem = EDDI.Instance?.CurrentStarSystem;
                 if (currentSystem == null) { return; }
 
-                List<StarSystem> cubeSystems = StarMapService.GetStarMapSystemsCube(currentSystem.name, cubeLy, false, false, false, false);
-                homeSystem = cubeSystems.FirstOrDefault(s => record.faction.Contains(s.name))?.name;
+                List<StarSystem> cubeSystems = StarMapService.GetStarMapSystemsCube(currentSystem.name, 200, false, false, false, false);
+                foreach (string system in cubeSystems.Where(s => record.faction.Contains(s.name)).Select(s => s.name).ToList())
+                {
+                    string pattern = @"\b" + Regex.Escape(system) + @"\b";
+                    if (Regex.IsMatch(record.faction, pattern))
+                    {
+                        homeSystem = system;
+                        break;
+                    }
+                }
                 if (homeSystem == null) { return; }
             }
             StarSystem factionSystem = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystem(homeSystem, true);
@@ -705,7 +714,7 @@ namespace EddiCrimeMonitor
             if (factionSystem != null)
             {
                 record.system = factionSystem.name;
-                record.Allegiance = factionSystem.factions?.FirstOrDefault(f => f.name == record.faction).Allegiance ?? Superpower.None;
+                record.Allegiance = factionSystem.factions?.FirstOrDefault(f => f.name == record.faction)?.Allegiance ?? Superpower.None;
 
                 // Filter stations within the faction system which meet the game version and landing pad size requirements
                 string shipSize = EDDI.Instance?.CurrentShip?.size ?? "Large";

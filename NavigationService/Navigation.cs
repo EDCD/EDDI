@@ -170,7 +170,7 @@ namespace EddiNavigationService
                 // Set destination variables
                 UpdateDestinationData(IFSystem, IFStation, IFDistance);
             }
-            EDDI.Instance.enqueueEvent(new RouteDetailsEvent(DateTime.Now, "facillitator", IFSystem, IFSystem, missionids.Count(), IFDistance, IFDistance, missionids));
+            EDDI.Instance.enqueueEvent(new RouteDetailsEvent(DateTime.Now, "facilitator", IFSystem, IFSystem, missionids.Count(), IFDistance, IFDistance, missionids));
             return IFSystem;
         }
 
