@@ -3337,7 +3337,7 @@ namespace EddiJournalMonitor
                     systemName = systemName,
                     FactionState = FactionState.FromEDName(JsonParsing.getString(factionData, "FactionState") ?? "None"),
                 };
-                faction.factionPresences.Add(factionPresense);
+                faction.presences.Add(factionPresense);
             }
 
             // Get the faction allegiance
@@ -3446,7 +3446,7 @@ namespace EddiJournalMonitor
 
                 if (fFaction != null)
                 {
-                    fFaction.factionPresences.Add(factionPresense);
+                    fFaction.presences.Add(factionPresense);
                     factions.Add(fFaction);
                 }
 

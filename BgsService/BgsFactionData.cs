@@ -114,7 +114,7 @@ namespace EddiBgsService
                     }
                 }
 
-                faction.factionPresences.Add(factionPresence);
+                faction.presences.Add(factionPresence);
             }
 
             return faction;

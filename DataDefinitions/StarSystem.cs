@@ -51,7 +51,7 @@ namespace EddiDataDefinitions
         public string powerstate { get; set; }
 
         [JsonIgnore]
-        public string state => (Faction?.factionPresences.FirstOrDefault(p => p.systemName == name).FactionState ?? FactionState.None).localizedName;
+        public string state => (Faction?.presences.FirstOrDefault(p => p.systemName == name).FactionState ?? FactionState.None).localizedName;
 
         // Faction details
         public Faction Faction { get; set; } = new Faction();
@@ -111,14 +111,14 @@ namespace EddiDataDefinitions
         private void OnDeserialized(StreamingContext context)
         {
             if (Faction == null) { Faction = new Faction(); }
-            FactionPresence factionPresence = Faction.factionPresences.FirstOrDefault(p => p.systemName == name) ?? new FactionPresence();
+            FactionPresence factionPresence = Faction.presences.FirstOrDefault(p => p.systemName == name) ?? new FactionPresence();
             if (factionPresence.FactionState == null)
             {
                 // Convert legacy data
                 string name = (string)additionalJsonData?["state"];
                 if (name != null)
                 {
-                    Faction.factionPresences.FirstOrDefault(p => p.systemName == name).FactionState = 
+                    Faction.presences.FirstOrDefault(p => p.systemName == name).FactionState = 
                         FactionState.FromEDName(name ?? "None");
                 }
             }
@@ -126,7 +126,7 @@ namespace EddiDataDefinitions
             {
                 // get the canonical FactionState object for the given EDName
                 factionPresence.FactionState = 
-                    FactionState.FromEDName(Faction.factionPresences.FirstOrDefault(p => p.systemName == name)?.FactionState.edname ?? "None");
+                    FactionState.FromEDName(Faction.presences.FirstOrDefault(p => p.systemName == name)?.FactionState.edname ?? "None");
             }
             additionalJsonData = null;
         }

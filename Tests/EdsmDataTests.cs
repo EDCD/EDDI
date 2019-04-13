@@ -295,8 +295,8 @@ namespace UnitTests
             Assert.AreEqual(702, faction.EDSMID);
             Assert.AreEqual("Independent", faction.Allegiance.invariantName);
             Assert.AreEqual("Democracy", faction.Government.invariantName);
-            Assert.AreEqual(49.8M, faction.factionPresences.FirstOrDefault(p => p.systemName == systemName).influence);
-            Assert.AreEqual("Boom", faction.factionPresences.FirstOrDefault(p => p.systemName == systemName).FactionState.invariantName);
+            Assert.AreEqual(49.8M, faction.presences.FirstOrDefault(p => p.systemName == systemName).influence);
+            Assert.AreEqual("Boom", faction.presences.FirstOrDefault(p => p.systemName == systemName).FactionState.invariantName);
             Assert.IsNotNull(faction.isplayer);
             Assert.IsFalse((bool)faction.isplayer);
             Assert.AreEqual(1539928089, faction.updatedat);
@@ -306,8 +306,8 @@ namespace UnitTests
             Assert.AreEqual(61, faction.EDSMID);
             Assert.AreEqual("Independent", faction.Allegiance.invariantName);
             Assert.AreEqual("Democracy", faction.Government.invariantName);
-            Assert.AreEqual(0M, faction.factionPresences.FirstOrDefault(p => p.systemName == systemName).influence);
-            Assert.AreEqual("None", faction.factionPresences.FirstOrDefault(p => p.systemName == systemName).FactionState.invariantName);
+            Assert.AreEqual(0M, faction.presences.FirstOrDefault(p => p.systemName == systemName).influence);
+            Assert.AreEqual("None", faction.presences.FirstOrDefault(p => p.systemName == systemName).FactionState.invariantName);
             Assert.IsNotNull(faction.isplayer);
             Assert.IsFalse((bool)faction.isplayer);
             Assert.AreEqual(1539923616, faction.updatedat);
@@ -317,8 +317,8 @@ namespace UnitTests
             Assert.AreEqual(434, faction.EDSMID);
             Assert.AreEqual("Federation", faction.Allegiance.invariantName);
             Assert.AreEqual("Corporate", faction.Government.invariantName);
-            Assert.AreEqual(26.1M, faction.factionPresences.FirstOrDefault(p => p.systemName == systemName).influence);
-            Assert.AreEqual("None", faction.factionPresences.FirstOrDefault(p => p.systemName == systemName).FactionState.invariantName);
+            Assert.AreEqual(26.1M, faction.presences.FirstOrDefault(p => p.systemName == systemName).influence);
+            Assert.AreEqual("None", faction.presences.FirstOrDefault(p => p.systemName == systemName).FactionState.invariantName);
             Assert.IsNotNull(faction.isplayer);
             Assert.IsFalse((bool)faction.isplayer);
             Assert.AreEqual(1539928985, faction.updatedat);
@@ -346,7 +346,7 @@ namespace UnitTests
             Assert.AreEqual("Pilots Federation", system.Faction.Allegiance.invariantName);
             Assert.AreEqual("Democracy", system.Faction.Government.invariantName);
             Assert.AreEqual("Pilots Federation Local Branch", system.Faction.name);
-            Assert.AreEqual("None", system.Faction.factionPresences.FirstOrDefault(p => p.systemName == system.name).FactionState.invariantName);
+            Assert.AreEqual("None", system.Faction.presences.FirstOrDefault(p => p.systemName == system.name).FactionState.invariantName);
             Assert.AreEqual(85206935, system.population);
             Assert.AreEqual("Common", system.Reserve.invariantName);
             Assert.AreEqual("High", system.securityLevel.invariantName);

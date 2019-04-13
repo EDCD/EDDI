@@ -74,7 +74,7 @@ namespace EddiStarMapService
                 updatedAt = (DateTime)Dates.fromTimestamp((long?)faction["lastUpdate"])
             };
 
-            Faction.factionPresences.Add(new FactionPresence()
+            Faction.presences.Add(new FactionPresence()
             {
                 systemName = systemName,
                 influence = (decimal?)faction["influence"] * 100, // Convert from a 0-1 range to a percentage
@@ -90,7 +90,7 @@ namespace EddiStarMapService
                 var activeStatesList = (List<object>)activeStatesVal;
                 foreach (IDictionary<string, object> activeState in activeStatesList)
                 {
-                    Faction.factionPresences.FirstOrDefault(p => p.systemName == systemName)?
+                    Faction.presences.FirstOrDefault(p => p.systemName == systemName)?
                         .ActiveStates.Add(FactionState.FromEDName(JsonParsing.getString(activeState, "State") ?? "None"));
                 }
             }
@@ -106,7 +106,7 @@ namespace EddiStarMapService
                         FactionState.FromEDName(JsonParsing.getString(pendingState, "State") ?? "None"),
                         JsonParsing.getInt(pendingState, "Trend")
                     );
-                    Faction.factionPresences.FirstOrDefault(p => p.systemName == systemName)?
+                    Faction.presences.FirstOrDefault(p => p.systemName == systemName)?
                         .PendingStates.Add(pTrendingState);
                 }
             }
@@ -122,7 +122,7 @@ namespace EddiStarMapService
                         FactionState.FromEDName(JsonParsing.getString(recoveringState, "State") ?? "None"),
                         JsonParsing.getInt(recoveringState, "Trend")
                     );
-                    Faction.factionPresences.FirstOrDefault(p => p.systemName == systemName)?
+                    Faction.presences.FirstOrDefault(p => p.systemName == systemName)?
                         .RecoveringStates.Add(rTrendingState);
                 }
             }

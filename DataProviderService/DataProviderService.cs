@@ -108,7 +108,7 @@ namespace EddiDataProviderService
             {
                 foreach (Faction faction in factions)
                 {
-                    faction.factionPresences = faction.factionPresences.Where(f => f.systemName == systemName).ToList();
+                    faction.presences = faction.presences.Where(f => f.systemName == systemName).ToList();
                 }
             }
 

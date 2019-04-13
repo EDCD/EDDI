@@ -43,7 +43,7 @@ namespace UnitTests
 
             // Test The Dark Wheel faction presence data
             string systemName = "Shinrarta Dezhra";
-            FactionPresence factionPresence = faction.factionPresences.FirstOrDefault(p => p.systemName == systemName);
+            FactionPresence factionPresence = faction.presences.FirstOrDefault(p => p.systemName == systemName);
 
             Assert.AreEqual(28.9M, factionPresence?.influence);
             Assert.AreEqual("Boom", factionPresence?.FactionState?.invariantName);
@@ -55,7 +55,7 @@ namespace UnitTests
             Assert.AreEqual("2019-04-13T03:37:17.000Z", factionPresence.updatedAt.ToString(dateTimeStringFormat));
 
             systemName = "LFT 926";
-            factionPresence = faction.factionPresences.FirstOrDefault(p => p.systemName == systemName);
+            factionPresence = faction.presences.FirstOrDefault(p => p.systemName == systemName);
 
             Assert.AreEqual(11.2983M, factionPresence?.influence);
             Assert.AreEqual("Boom", factionPresence?.FactionState?.invariantName);

@@ -7,6 +7,8 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Restored multi-lingual access.
   * Speech responder
     * Add event `Discovery scan`, triggered when you "honk" the discovery scanner
+    * Add new function `GetFaction()` to obtain details about a faction.
+    * Revised faction object to allow reporting faction data spanning multiple star systems
   * Voice Attack
     * Fixed a bug that would incorrectly disable invoked speech while `disablespeechresponder` was set.
 
