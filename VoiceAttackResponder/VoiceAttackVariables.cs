@@ -446,7 +446,8 @@ namespace EddiVoiceAttackResponder
             vaProxy.SetText(prefix + " government", (station?.Faction?.Government ?? Government.None).localizedName);
             vaProxy.SetText(prefix + " allegiance", (station?.Faction?.Allegiance ?? Superpower.None).localizedName);
             vaProxy.SetText(prefix + " faction", station?.Faction?.name);
-            vaProxy.SetText(prefix + " state", (station?.Faction?.FactionState ?? FactionState.None).localizedName);
+            vaProxy.SetText(prefix + " state", (station?.Faction?.factionPresences
+                .FirstOrDefault(p => p.systemName == station.systemname).FactionState ?? FactionState.None).localizedName);
             vaProxy.SetText(prefix + " primary economy", station?.primaryeconomy);
             vaProxy.SetText(prefix + " secondary economy", station?.secondaryeconomy);
             // Services
@@ -733,7 +734,8 @@ namespace EddiVoiceAttackResponder
                 vaProxy.SetText(prefix + " government", (system?.Faction?.Government ?? Government.None).localizedName);
                 vaProxy.SetText(prefix + " faction", system?.Faction?.name);
                 vaProxy.SetText(prefix + " primary economy", system?.primaryeconomy);
-                vaProxy.SetText(prefix + " state", (system?.Faction?.FactionState ?? FactionState.None).localizedName);
+                vaProxy.SetText(prefix + " state", (system?.Faction?.factionPresences
+                    .FirstOrDefault(p => p.systemName == system.name).FactionState ?? FactionState.None).localizedName);
                 vaProxy.SetText(prefix + " security", system?.security);
                 vaProxy.SetText(prefix + " power", system?.power);
                 vaProxy.SetText(prefix + " power (spoken)", Translations.Power(EDDI.Instance.CurrentStarSystem?.power));

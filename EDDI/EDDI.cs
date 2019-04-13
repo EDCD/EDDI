@@ -997,10 +997,11 @@ namespace Eddi
                 }
 
                 // Check if current system is inhabited by or HQ for squadron faction
-                Faction squadronFaction = theEvent.factions.FirstOrDefault(f => f.squadronhomesystem || f.squadronfaction);
+                Faction squadronFaction = theEvent.factions.FirstOrDefault(f => f.factionPresences.
+                    FirstOrDefault(p => p.systemName == CurrentStarSystem.name).squadronhomesystem || f.squadronfaction);
                 if (squadronFaction != null)
                 {
-                    updateSquadronData(squadronFaction);
+                    updateSquadronData(squadronFaction, CurrentStarSystem.name);
                 }
             }
 
@@ -1395,10 +1396,11 @@ namespace Eddi
                 }
 
                 // Check if current system is inhabited by or HQ for squadron faction
-                Faction squadronFaction = theEvent.factions.FirstOrDefault(f => f.squadronhomesystem || f.squadronfaction);
+                Faction squadronFaction = theEvent.factions.FirstOrDefault(f => f.factionPresences.
+                    FirstOrDefault(p => p.systemName == CurrentStarSystem.name).squadronhomesystem || f.squadronfaction);
                 if (squadronFaction != null)
                 {
-                    updateSquadronData(squadronFaction);
+                    updateSquadronData(squadronFaction, CurrentStarSystem.name);
                 }
             }
 
@@ -2389,7 +2391,7 @@ namespace Eddi
             return configuration;
         }
 
-        public void updateSquadronData(Faction faction)
+        public void updateSquadronData(Faction faction, string systemName)
         {
             if (faction != null)
             {
@@ -2409,7 +2411,7 @@ namespace Eddi
                 }
 
                 // Update system, allegiance, & power when in squadron home system
-                if (faction.squadronhomesystem)
+                if (faction.factionPresences.FirstOrDefault(p => p.systemName == systemName).squadronhomesystem)
                 {
                     // Update the squadron system data, if changed
                     string system = CurrentStarSystem.name;

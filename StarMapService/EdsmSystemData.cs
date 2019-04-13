@@ -204,8 +204,12 @@ namespace EddiStarMapService
                         name = (string)information["faction"],
                         Allegiance = Superpower.FromName((string)information["allegiance"]) ?? Superpower.None,
                         Government = Government.FromName((string)information["government"]) ?? Government.None,
-                        FactionState = FactionState.FromName((string)information["factionState"]) ?? FactionState.None
                     };
+                    controllingFaction.factionPresences.Add(new FactionPresence()
+                    {
+                        systemName = starSystem.name,
+                        FactionState = FactionState.FromName((string)information["factionState"]) ?? FactionState.None,
+                    });
                     starSystem.Faction = controllingFaction;
 
                     starSystem.securityLevel = SecurityLevel.FromName((string)information["security"]) ?? SecurityLevel.None;

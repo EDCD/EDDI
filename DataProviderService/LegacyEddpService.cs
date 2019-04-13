@@ -187,11 +187,15 @@ namespace EddiDataProviderService
                                 name = (string)Station["controlling_faction"],
                                 Allegiance = Superpower.FromName((string)Station["allegiance"]) ?? Superpower.None,
                                 Government = Government.FromName((string)Station["government"]) ?? Government.None,
-                                FactionState = FactionState.FromName((string)Station["state"]) ?? FactionState.None
                             },
                             distancefromstar = (long?)Station["distance_to_star"],
                             updatedat = (long?)Station["updated_at"]
                         };
+                        settlement.Faction.factionPresences.Add(new FactionPresence()
+                        {
+                            systemName = system.name,
+                            FactionState = FactionState.FromName((string)Station["state"]) ?? FactionState.None
+                        });
 
                         system.stations.Add(settlement);
                     }
