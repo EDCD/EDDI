@@ -76,12 +76,6 @@ namespace EddiBgsService
         }
     }
 
-    public class BgsEndpoints
-    {
-        /// <summary> The endpoint we will use for faction queries </summary>
-        public static string factionEndpoint = "v4/factions?";
-    }
-
     class PageResponse
     {
         [JsonProperty("page")]
@@ -95,20 +89,5 @@ namespace EddiBgsService
 
         [JsonProperty("docs")]
         public IEnumerable<object> docs { get; set; }
-    }
-
-    public static class BgsFactionParameters
-    {
-        /// <summary> Faction name. </summary>
-        public const string factionName = "name";
-
-        /// <summary> Partial faction name begins with... (at least 1 additional parameter is required) </summary>
-        public const string beginsWith = "beginswith";
-
-        /// <summary> Name of the allegiance. </summary>
-        public const string allegiance = "allegiance";
-
-        /// <summary> Name of the government type. </summary>
-        public const string government = "government";
     }
 }

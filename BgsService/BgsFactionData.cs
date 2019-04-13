@@ -10,6 +10,24 @@ namespace EddiBgsService
 {
     partial class BgsService
     {
+        /// <summary> The endpoint we will use for faction queries </summary>
+        public const string factionEndpoint = "v4/factions?";
+        
+        public static class FactionParameters
+        {
+            /// <summary> Faction name. </summary>
+            public const string factionName = "name";
+
+            /// <summary> Partial faction name begins with... (at least 1 additional parameter is required) </summary>
+            public const string beginsWith = "beginswith";
+
+            /// <summary> Name of the allegiance. </summary>
+            public const string allegiance = "allegiance";
+
+            /// <summary> Name of the government type. </summary>
+            public const string government = "government";
+        }
+
         public static Faction GetFaction(string endpoint, List<KeyValuePair<string, object>> queryList)
         {
             return GetFactions(endpoint, queryList).FirstOrDefault();

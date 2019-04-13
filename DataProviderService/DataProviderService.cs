@@ -99,9 +99,9 @@ namespace EddiDataProviderService
         {
             List<KeyValuePair<string, object>> queryList = new List<KeyValuePair<string, object>>()
             {
-                new KeyValuePair<string, object>(BgsFactionParameters.factionName, factionName)
+                new KeyValuePair<string, object>(BgsService.FactionParameters.factionName, factionName)
             };
-            List<Faction> factions = BgsService.GetFactions(BgsEndpoints.factionEndpoint, queryList);
+            List<Faction> factions = BgsService.GetFactions(BgsService.factionEndpoint, queryList);
 
             // If a systemName is provided, we can filter factions that share a name according to whether they have a presence in a known system
             if (systemName != null && factions.Count > 1)
