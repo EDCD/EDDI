@@ -8,7 +8,7 @@ using System.Linq;
 
 namespace UnitTests
 {
-    // Tests for the EDDB Service
+    // Tests for the EDSM Service
 
     [TestClass]
     public class EdsmDataTests : TestBase

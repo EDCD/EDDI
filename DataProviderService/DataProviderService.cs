@@ -1,4 +1,5 @@
-﻿using EddiDataDefinitions;
+﻿using EddiBgsService;
+using EddiDataDefinitions;
 using EddiStarMapService;
 using System;
 using System.Collections.Generic;
@@ -90,6 +91,31 @@ namespace EddiDataProviderService
                 }
             }
             return stations;
+        }
+
+        ///<summary> Faction data from EliteBGS (allows search by faction name - EDSM can only search by system name). 
+        /// If a systemName is provided, we can filter factions that share a name according to whether they have a presence in a known system </summary>
+        public static Faction GetFactionByName(string factionName, string systemName = null)
+        {
+            List<KeyValuePair<string, object>> queryList = new List<KeyValuePair<string, object>>()
+            {
+                new KeyValuePair<string, object>(BgsFactionParameters.factionName, factionName)
+            };
+            List<Faction> factions = BgsService.GetFactions(BgsEndpoints.factionEndpoint, queryList);
+
+            // If a systemName is provided, we can filter factions that share a name according to whether they have a presence in a known system
+            if (systemName != null && factions.Count > 1)
+            {
+                foreach (Faction faction in factions)
+                {
+                    faction.factionPresences = faction.factionPresences.Where(f => f.systemName == systemName).ToList();
+                }
+            }
+
+            return factions?.FirstOrDefault() ?? new Faction()
+            {
+                name = factionName
+            };
         }
 
         // EDSM flight log synchronization

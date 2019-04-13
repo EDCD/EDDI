@@ -88,6 +88,10 @@
     <Compile Include="SqlLiteBaseRepository.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\BgsService\EddiBgsService.csproj">
+      <Project>{962f6d23-d9d8-44bf-8a65-516889190944}</Project>
+      <Name>EddiBgsService</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DataDefinitions\EddiDataDefinitions.csproj">
       <Project>{0c845b02-e283-43d8-91a7-205ad3397371}</Project>
       <Name>EddiDataDefinitions</Name>

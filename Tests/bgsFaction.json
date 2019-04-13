@@ -1,0 +1,43 @@
+{
+  "_id": "59e7a599d22c775be0fe08df",
+  "name": "The Dark Wheel",
+  "__v": 0,
+  "name_lower": "the dark wheel",
+  "updated_at": "2019-04-13T03:37:17.000Z",
+  "government": "democracy",
+  "allegiance": "independent",
+  "eddb_id": 41917,
+  "faction_presence": [
+    {
+      "system_name": "Shinrarta Dezhra",
+      "system_name_lower": "shinrarta dezhra",
+      "state": "boom",
+      "influence": 0.289,
+      "happiness": "$faction_happinessband2;",
+      "active_states": [
+        {
+          "state": "boom"
+        }
+      ],
+      "pending_states": [],
+      "recovering_states": [],
+      "updated_at": "2019-04-13T03:37:17.000Z"
+    },
+    {
+      "system_name": "LFT 926",
+      "system_name_lower": "lft 926",
+      "state": "boom",
+      "influence": 0.112983,
+      "happiness": "$faction_happinessband2;",
+      "active_states": [],
+      "pending_states": [],
+      "recovering_states": [
+        {
+          "state": "war",
+          "trend": 0
+        }
+      ],
+      "updated_at": "2019-04-13T03:27:28.000Z"
+    }
+  ]
+}
