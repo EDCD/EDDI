@@ -51,7 +51,7 @@ namespace EddiDataDefinitions
         public string powerstate { get; set; }
 
         [JsonIgnore]
-        public string state => (Faction?.presences.FirstOrDefault(p => p.systemName == name).FactionState ?? FactionState.None).localizedName;
+        public string state => (Faction?.presences.FirstOrDefault(p => p.systemName == name)?.FactionState ?? FactionState.None).localizedName;
 
         // Faction details
         public Faction Faction { get; set; } = new Faction();
