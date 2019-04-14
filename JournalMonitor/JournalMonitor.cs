@@ -3325,19 +3325,19 @@ namespace EddiJournalMonitor
                 if (factionData != null) // 3.3.03 or later journal
                 {
                     faction.name = JsonParsing.getString(factionData, "Name");
+
+                    // Get the faction information specific to the star system
+                    FactionPresence factionPresense = new FactionPresence()
+                    {
+                        systemName = systemName,
+                        FactionState = FactionState.FromEDName(JsonParsing.getString(factionData, "FactionState") ?? "None"),
+                    };
+                    faction.presences.Add(factionPresense);
                 }
                 else // per-3.3.03 journal
                 {
                     faction.name = val as string;
                 }
-
-                // Get the faction information specific to the star system
-                FactionPresence factionPresense = new FactionPresence()
-                {
-                    systemName = systemName,
-                    FactionState = FactionState.FromEDName(JsonParsing.getString(factionData, "FactionState") ?? "None"),
-                };
-                faction.presences.Add(factionPresense);
             }
 
             // Get the faction allegiance
