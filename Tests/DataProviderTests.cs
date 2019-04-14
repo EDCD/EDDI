@@ -130,7 +130,7 @@ namespace UnitTests
             Assert.IsNotNull(starSystem.Faction);
             Assert.IsNotNull(starSystem.Faction.Allegiance.invariantName);
             Assert.IsNotNull(starSystem.Faction.Government.invariantName);
-            Assert.IsNotNull(starSystem.Faction.presences.FirstOrDefault(p => p.systemName == starSystem.name).FactionState.invariantName);
+            Assert.IsNotNull(starSystem.Faction.presences.FirstOrDefault(p => p.systemName == starSystem.name)?.FactionState?.invariantName);
             Assert.IsNotNull(starSystem.Faction.name);
             Assert.IsNotNull(starSystem.securityLevel.invariantName);
             Assert.IsNotNull(starSystem.primaryeconomy);

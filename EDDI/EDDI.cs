@@ -997,8 +997,8 @@ namespace Eddi
                 }
 
                 // Check if current system is inhabited by or HQ for squadron faction
-                Faction squadronFaction = theEvent.factions.FirstOrDefault(f => f.presences.
-                    FirstOrDefault(p => p.systemName == CurrentStarSystem.name).squadronhomesystem || f.squadronfaction);
+                Faction squadronFaction = theEvent.factions.FirstOrDefault(f => (bool)f.presences.
+                    FirstOrDefault(p => p.systemName == CurrentStarSystem.name)?.squadronhomesystem || f.squadronfaction);
                 if (squadronFaction != null)
                 {
                     updateSquadronData(squadronFaction, CurrentStarSystem.name);
@@ -1396,8 +1396,8 @@ namespace Eddi
                 }
 
                 // Check if current system is inhabited by or HQ for squadron faction
-                Faction squadronFaction = theEvent.factions.FirstOrDefault(f => f.presences.
-                    FirstOrDefault(p => p.systemName == CurrentStarSystem.name).squadronhomesystem || f.squadronfaction);
+                Faction squadronFaction = theEvent.factions.FirstOrDefault(f => (bool)f.presences.
+                    FirstOrDefault(p => p.systemName == CurrentStarSystem.name)?.squadronhomesystem || f.squadronfaction);
                 if (squadronFaction != null)
                 {
                     updateSquadronData(squadronFaction, CurrentStarSystem.name);
@@ -2411,7 +2411,7 @@ namespace Eddi
                 }
 
                 // Update system, allegiance, & power when in squadron home system
-                if (faction.presences.FirstOrDefault(p => p.systemName == systemName).squadronhomesystem)
+                if ((bool)faction.presences.FirstOrDefault(p => p.systemName == systemName)?.squadronhomesystem)
                 {
                     // Update the squadron system data, if changed
                     string system = CurrentStarSystem.name;
