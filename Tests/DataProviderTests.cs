@@ -2,6 +2,7 @@
 using EddiDataProviderService;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
+using System.Linq;
 
 namespace UnitTests
 {
@@ -129,7 +130,7 @@ namespace UnitTests
             Assert.IsNotNull(starSystem.Faction);
             Assert.IsNotNull(starSystem.Faction.Allegiance.invariantName);
             Assert.IsNotNull(starSystem.Faction.Government.invariantName);
-            Assert.IsNotNull(starSystem.Faction.FactionState.invariantName);
+            Assert.IsNotNull(starSystem.Faction.presences.FirstOrDefault(p => p.systemName == starSystem.name)?.FactionState?.invariantName);
             Assert.IsNotNull(starSystem.Faction.name);
             Assert.IsNotNull(starSystem.securityLevel.invariantName);
             Assert.IsNotNull(starSystem.primaryeconomy);
@@ -154,6 +155,27 @@ namespace UnitTests
             StarSystem starSystem = LegacyEddpService.SetLegacyData(new StarSystem() { name = "No such system"});
             Assert.IsNotNull(starSystem);
             Assert.AreEqual("No such system", starSystem.name);
+        }
+
+        [TestMethod]
+        public void TestBgsFactionsFromName()
+        {
+            // Test a known faction
+            Faction faction1 = DataProviderService.GetFactionByName("The Dark Wheel");
+            Assert.IsNotNull(faction1);
+            Assert.AreEqual("The Dark Wheel", faction1.name);
+            Assert.AreEqual("Democracy", faction1.Government.invariantName);
+            Assert.AreEqual("Independent", faction1.Allegiance.invariantName);
+            Assert.AreEqual(41917, faction1.EDDBID);
+            Assert.AreNotEqual(System.DateTime.MinValue, faction1.updatedAt);
+
+            // Even if the faction does not exist, we should return a basic object
+            Faction faction2 = DataProviderService.GetFactionByName("No such faction");
+            Assert.IsNotNull(faction2);
+            Assert.AreEqual("No such faction", faction2.name);
+            Assert.AreEqual(Government.None, faction2.Government);
+            Assert.AreEqual(Superpower.None, faction2.Allegiance);
+            Assert.AreEqual(System.DateTime.MinValue, faction2.updatedAt);
         }
     }
 }

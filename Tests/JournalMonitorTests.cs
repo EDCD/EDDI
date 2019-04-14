@@ -5,6 +5,7 @@ using EddiMissionMonitor;
 using EddiShipMonitor;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace UnitTests
 {
@@ -225,7 +226,7 @@ namespace UnitTests
             Assert.AreEqual("Orbis", theEvent.stationModel.edname);
             Assert.AreEqual("Donaldson", theEvent.station);
             Assert.AreEqual("Alioth", theEvent.system);
-            Assert.AreEqual("Boom", theEvent.controllingfaction.FactionState.invariantName);
+            Assert.AreEqual("Boom", theEvent.controllingfaction.presences.FirstOrDefault(p => p.systemName == theEvent.system)?.FactionState?.invariantName);
             Assert.AreEqual("Democracy", theEvent.controllingfaction.Government.invariantName);
             Assert.AreEqual("Alliance", theEvent.controllingfaction.Allegiance.invariantName);
             Assert.AreEqual(20, theEvent.stationservices.Count);
@@ -568,6 +569,7 @@ namespace UnitTests
             Assert.AreEqual(23.899260M, jumpedEvent.fuelremaining);
             Assert.AreEqual("EXO", jumpedEvent.faction);
             Assert.AreEqual("Expansion", jumpedEvent.factionstate);
+            Assert.AreEqual("Expansion", jumpedEvent.factions.FirstOrDefault(f => f.name == "EXO")?.presences.FirstOrDefault(p => p.systemName == "Diaguandri")?.FactionState?.invariantName);
         }
 
 

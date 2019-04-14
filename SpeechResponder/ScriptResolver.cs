@@ -765,6 +765,24 @@ namespace EddiSpeechResponder
                 return (result == null ? new ReflectionValue(new object()) : new ReflectionValue(result));
             }, 1, 2);
 
+            store["FactionDetails"] = new NativeFunction((values) =>
+            {
+                Faction result;
+                if (values.Count == 0)
+                {
+                    result = EDDI.Instance.CurrentStarSystem.Faction;
+                }
+                else if (values.Count == 1)
+                {
+                    result = DataProviderService.GetFactionByName(values[0].AsString);
+                }
+                else
+                {
+                    result = DataProviderService.GetFactionByName(values[0].AsString, values[1].AsString);
+                }
+                return (result == null ? new ReflectionValue(new object()) : new ReflectionValue(result));
+            }, 1, 2);
+
             store["SuperpowerDetails"] = new NativeFunction((values) =>
             {
                 Superpower result = Superpower.FromName(values[0].AsString);

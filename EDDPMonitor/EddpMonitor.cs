@@ -8,6 +8,7 @@ using NetMQ.Sockets;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using Utilities;
 
@@ -184,7 +185,7 @@ namespace EddiEddpMonitor
                     if (newfaction != null) { system.Faction.name = newfaction; }
                     if (newallegiance != null) { system.Faction.Allegiance = Superpower.FromName(newallegiance); }
                     if (newgovernment != null) { system.Faction.Government = Government.FromName(newgovernment); }
-                    if (newstate != null) { system.Faction.FactionState = newstate; }
+                    if (newstate != null) { system.Faction.presences.FirstOrDefault(p => p.systemName == systemname).FactionState = newstate; }
                     if (newsecurity != null) { system.securityLevel = SecurityLevel.FromName(newsecurity); }
                     if (neweconomy != null)
                     {

@@ -134,6 +134,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="CapiShipyardTests.cs" />
+    <Compile Include="BgsDataTests.cs" />
     <Compile Include="TelemetryTests.cs" />
     <Compile Include="RedactionTests.cs" />
     <Compile Include="TestBase.cs" />
@@ -164,6 +165,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\BgsService\EddiBgsService.csproj">
+      <Project>{962f6d23-d9d8-44bf-8a65-516889190944}</Project>
+      <Name>EddiBgsService</Name>
+    </ProjectReference>
     <ProjectReference Include="..\CargoMonitor\EddiCargoMonitor.csproj">
       <Project>{c1d256ba-68b9-437a-8907-599c3a388c37}</Project>
       <Name>EddiCargoMonitor</Name>
@@ -271,6 +276,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="fighterLoadout.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="bgsFaction.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="loadout.json">

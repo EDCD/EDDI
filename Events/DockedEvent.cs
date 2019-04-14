@@ -1,6 +1,7 @@
 ﻿using EddiDataDefinitions;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace EddiEvents
 {
@@ -68,7 +69,7 @@ namespace EddiEvents
 
         // Faction properties
         public string faction => controllingfaction?.name;
-        public string factionstate => (controllingfaction?.FactionState ?? FactionState.None).localizedName;
+        public string factionstate => (controllingfaction?.presences.FirstOrDefault(p => p.systemName == system)?.FactionState ?? FactionState.None).localizedName;
         public string allegiance => (controllingfaction?.Allegiance ?? Superpower.None).localizedName;
         public string government => (controllingfaction?.Government ?? Government.None).localizedName;
 

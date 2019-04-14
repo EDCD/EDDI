@@ -4,10 +4,11 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace UnitTests
 {
-    // Tests for the EDDB Service
+    // Tests for the EDSM Service
 
     [TestClass]
     public class EdsmDataTests : TestBase
@@ -282,9 +283,10 @@ namespace UnitTests
             // Test factions data
             string jsonString = System.IO.File.ReadAllText("edsmFactions.json");
             JObject response = JsonConvert.DeserializeObject<JObject>(jsonString);
+            string systemName = (string)response["name"];
 
             PrivateType starMapService = new PrivateType(typeof(StarMapService));
-            List<Faction> factions = (List<Faction>)starMapService.InvokeStatic("ParseStarMapFactions", new object[] { response });
+            List<Faction> factions = (List<Faction>)starMapService.InvokeStatic("ParseStarMapFactions", new object[] { response, systemName });
 
             Assert.IsNotNull(factions);
 
@@ -293,9 +295,10 @@ namespace UnitTests
             Assert.AreEqual(702, faction.EDSMID);
             Assert.AreEqual("Independent", faction.Allegiance.invariantName);
             Assert.AreEqual("Democracy", faction.Government.invariantName);
-            Assert.AreEqual(49.8M, faction.influence);
-            Assert.AreEqual("Boom", faction.FactionState.invariantName);
-            Assert.IsFalse(faction.isplayer);
+            Assert.AreEqual(49.8M, faction.presences.FirstOrDefault(p => p.systemName == systemName)?.influence);
+            Assert.AreEqual("Boom", faction.presences.FirstOrDefault(p => p.systemName == systemName)?.FactionState?.invariantName);
+            Assert.IsNotNull(faction.isplayer);
+            Assert.IsFalse((bool)faction.isplayer);
             Assert.AreEqual(1539928089, faction.updatedat);
 
             // Test The Pilots Federation
@@ -303,9 +306,10 @@ namespace UnitTests
             Assert.AreEqual(61, faction.EDSMID);
             Assert.AreEqual("Independent", faction.Allegiance.invariantName);
             Assert.AreEqual("Democracy", faction.Government.invariantName);
-            Assert.AreEqual(0M, faction.influence);
-            Assert.AreEqual("None", faction.FactionState.invariantName);
-            Assert.IsFalse(faction.isplayer);
+            Assert.AreEqual(0M, faction.presences.FirstOrDefault(p => p.systemName == systemName)?.influence);
+            Assert.AreEqual("None", faction.presences.FirstOrDefault(p => p.systemName == systemName)?.FactionState?.invariantName);
+            Assert.IsNotNull(faction.isplayer);
+            Assert.IsFalse((bool)faction.isplayer);
             Assert.AreEqual(1539923616, faction.updatedat);
 
             // Test LTT 4487 Industry
@@ -313,9 +317,10 @@ namespace UnitTests
             Assert.AreEqual(434, faction.EDSMID);
             Assert.AreEqual("Federation", faction.Allegiance.invariantName);
             Assert.AreEqual("Corporate", faction.Government.invariantName);
-            Assert.AreEqual(26.1M, faction.influence);
-            Assert.AreEqual("None", faction.FactionState.invariantName);
-            Assert.IsFalse(faction.isplayer);
+            Assert.AreEqual(26.1M, faction.presences.FirstOrDefault(p => p.systemName == systemName)?.influence);
+            Assert.AreEqual("None", faction.presences.FirstOrDefault(p => p.systemName == systemName)?.FactionState?.invariantName);
+            Assert.IsNotNull(faction.isplayer);
+            Assert.IsFalse((bool)faction.isplayer);
             Assert.AreEqual(1539928985, faction.updatedat);
         }
 
@@ -341,7 +346,7 @@ namespace UnitTests
             Assert.AreEqual("Pilots Federation", system.Faction.Allegiance.invariantName);
             Assert.AreEqual("Democracy", system.Faction.Government.invariantName);
             Assert.AreEqual("Pilots Federation Local Branch", system.Faction.name);
-            Assert.AreEqual("None", system.Faction.FactionState.invariantName);
+            Assert.AreEqual("None", system.Faction.presences.FirstOrDefault(p => p.systemName == system.name)?.FactionState?.invariantName);
             Assert.AreEqual(85206935, system.population);
             Assert.AreEqual("Common", system.Reserve.invariantName);
             Assert.AreEqual("High", system.securityLevel.invariantName);

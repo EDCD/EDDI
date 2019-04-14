@@ -3,6 +3,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Runtime.Serialization;
 
 namespace EddiDataDefinitions
@@ -49,8 +50,8 @@ namespace EddiDataDefinitions
         public string power { get; set; }
         public string powerstate { get; set; }
 
-        [JsonIgnore, Obsolete("Please use Faction.FactionState instead")]
-        public string state => (Faction?.FactionState ?? FactionState.None).localizedName;
+        [JsonIgnore]
+        public string state => (Faction?.presences.FirstOrDefault(p => p.systemName == name)?.FactionState ?? FactionState.None).localizedName;
 
         // Faction details
         public Faction Faction { get; set; } = new Faction();
@@ -110,19 +111,22 @@ namespace EddiDataDefinitions
         private void OnDeserialized(StreamingContext context)
         {
             if (Faction == null) { Faction = new Faction(); }
-            if (Faction.FactionState == null)
+            FactionPresence factionPresence = Faction.presences.FirstOrDefault(p => p.systemName == name) ?? new FactionPresence();
+            if (factionPresence.FactionState == null)
             {
                 // Convert legacy data
                 string name = (string)additionalJsonData?["state"];
                 if (name != null)
                 {
-                    Faction.FactionState = FactionState.FromEDName(name ?? "None");
+                    Faction.presences.FirstOrDefault(p => p.systemName == name).FactionState = 
+                        FactionState.FromEDName(name ?? "None");
                 }
             }
             else
             {
                 // get the canonical FactionState object for the given EDName
-                Faction.FactionState = FactionState.FromEDName(Faction.FactionState.edname ?? "None");
+                factionPresence.FactionState = 
+                    FactionState.FromEDName(Faction.presences.FirstOrDefault(p => p.systemName == name)?.FactionState.edname ?? "None");
             }
             additionalJsonData = null;
         }

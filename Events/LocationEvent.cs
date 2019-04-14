@@ -1,6 +1,7 @@
 ﻿using EddiDataDefinitions;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace EddiEvents
 {
@@ -80,17 +81,17 @@ namespace EddiEvents
 
         // Pre-3.3.03 faction properties to maintain script/profile backwards compatability
         public string faction => controllingsystemfaction?.name;
-        public string factionstate => (controllingsystemfaction?.FactionState ?? FactionState.None).localizedName;
+        public string factionstate => (controllingsystemfaction?.presences.FirstOrDefault(p => p.systemName == system)?.FactionState ?? FactionState.None).localizedName;
         public string government => (controllingsystemfaction?.Government ?? Government.None).localizedName;
         public string allegiance => (controllingsystemfaction?.Allegiance ?? Superpower.None).localizedName;
 
         // Post-3.3.03 faction properties
         public string systemfaction => controllingsystemfaction?.name;
-        public string systemstate => (controllingsystemfaction?.FactionState ?? FactionState.None).localizedName;
+        public string systemstate => (controllingsystemfaction?.presences.FirstOrDefault(p => p.systemName == system)?.FactionState ?? FactionState.None).localizedName;
         public string systemgovernment => (controllingsystemfaction?.Government ?? Government.None).localizedName;
         public string systemallegiance => (controllingsystemfaction?.Allegiance ?? Superpower.None).localizedName;
         public string stationfaction => controllingstationfaction?.name;
-        public string stationstate => (controllingstationfaction?.FactionState ?? FactionState.None).localizedName;
+        public string stationstate => (controllingstationfaction?.presences.FirstOrDefault(p => p.systemName == system)?.FactionState ?? FactionState.None).localizedName;
         public string stationgovernment => (controllingstationfaction?.Government ?? Government.None).localizedName;
         public string stationallegiancet => (controllingstationfaction?.Allegiance ?? Superpower.None).localizedName;
 
