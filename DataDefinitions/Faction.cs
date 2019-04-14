@@ -36,7 +36,6 @@ namespace EddiDataDefinitions
         /// <summary> The faction's presence in various systems </summary>
         // As this is quite dynamic data and the data we receive at any given time is likely to be incomplete, 
         // we won't save it to the local database at this time.
-        [JsonIgnore]
         public List<FactionPresence> presences { get; set; } = new List<FactionPresence>();
 
         // Pilot and squadron data
