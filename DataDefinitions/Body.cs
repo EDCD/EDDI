@@ -92,7 +92,38 @@ namespace EddiDataDefinitions
         public decimal? semimajoraxis { get; set; }
 
         /// <summary>The parent bodies to this body, if any</summary>
-        public List<IDictionary<string, object>> parents { get; set; }
+        public List<IDictionary<string, object>> parents
+        {
+            get
+            {
+                return _parents;
+            }
+            set
+            {
+                if (bodyType == null)
+                {
+                    if (planetClass != null)
+                    {
+                        if (value.Exists(p => p.ContainsKey("Planet")))
+                        {
+                            bodyType = BodyType.FromEDName("Moon");
+                        }
+                        else if (value.Exists(p => p.ContainsKey("Star")))
+                        {
+                            bodyType = BodyType.FromEDName("Planet");
+                        }
+                    }
+                    else
+                    {
+                        bodyType = BodyType.FromEDName("Star");
+                    }
+                }
+                _parents = value;
+            }
+        }
+
+        [JsonIgnore]
+        private List<IDictionary<string, object>> _parents;
 
         // Star-specific items
 
@@ -184,9 +215,7 @@ namespace EddiDataDefinitions
         /// <summary> the last time the information present changed (in the data source) </summary>
         public long? updatedat { get; set; }
 
-        /// <summary>
-        /// Calculate additonal information for the star
-        /// </summary>
+        /// <summary> Calculate additonal information for the star </summary>
         public void setStellarExtras()
         {
             StarClass starClass = StarClass.FromName(stellarclass);
@@ -223,7 +252,10 @@ namespace EddiDataDefinitions
         [JsonIgnore, Obsolete("Please use bodyname instead.")]
         public string name => bodyname;
 
-        [JsonIgnore, Obsolete("Please use BodyType instead - Type creates a collision with Event.Type")]
+        [JsonIgnore, Obsolete("Please use bodytype instead - type creates a collision with Event.type.")]
+        public string type => bodytype;
+
+        [JsonIgnore, Obsolete("Please use bodyType instead")]
         public BodyType Type => bodyType;
 
         // Convert legacy data

@@ -748,7 +748,14 @@ namespace EddiJournalMonitor
 
                                     // Parent body types and IDs
                                     data.TryGetValue("Parents", out object parentsVal);
-                                    List<object> parents = ((List<object>)parentsVal);
+                                    List<IDictionary<string, object>> parents = new List<IDictionary<string, object>>();
+                                    if (parentsVal != null)
+                                    {
+                                        foreach (IDictionary<string, object> parent in (List<object>)parentsVal)
+                                        {
+                                            parents.Add(parent);
+                                        }
+                                    }
 
                                     // Rings
                                     data.TryGetValue("Rings", out object val);

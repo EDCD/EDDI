@@ -140,7 +140,7 @@ namespace UnitTests
             body = bodies.Find(s => s.bodyname == "Shinrarta Dezhra AB 1 b");
             Assert.AreEqual("AB 1 b", body.shortname);
             Assert.AreEqual(8138660, body.EDSMID);
-            Assert.AreEqual("Planet", body.bodyType.invariantName);
+            Assert.AreEqual("Moon", body.bodyType.invariantName);
             Assert.AreEqual("Icy body", body.planetClass.invariantName);
             Assert.AreEqual(3250.803223, (double)body.distance, 0.01);
             Assert.AreEqual(false, body.landable);

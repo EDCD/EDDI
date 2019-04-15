@@ -88,12 +88,12 @@ namespace UnitTests
             Assert.IsNotNull(sol);
 
             // Ariel has no volcanism
-            Body ariel = sol.planets.Find(b => b.bodyname == "Ariel");
+            Body ariel = sol.bodies.Find(b => b.bodyname == "Ariel");
             Assert.IsNotNull(ariel);
             Assert.IsNull(ariel.volcanism);
 
             // Europa has water magma
-            Body europa = sol.planets.Find(b => b.bodyname == "Europa");
+            Body europa = sol.bodies.Find(b => b.bodyname == "Europa");
             Assert.IsNotNull(europa);
             Assert.IsNotNull(europa.volcanism);
             Assert.AreEqual("Magma", europa.volcanism.invariantType);
