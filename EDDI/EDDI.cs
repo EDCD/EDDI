@@ -1878,6 +1878,7 @@ namespace Eddi
                         systemname = CurrentStarSystem?.systemname,
                         systemAddress = CurrentStarSystem?.systemAddress
                     };
+                    CurrentStarSystem.bodies?.Add(star);
                 }
                 // Our data source may not include system address, so we include it here.
                 star.systemAddress = CurrentStarSystem?.systemAddress;
@@ -1896,7 +1897,6 @@ namespace Eddi
 
                 star.setStellarExtras();
 
-                CurrentStarSystem.bodies?.Add(star);
                 Logging.Debug("Saving data for scanned star " + theEvent.bodyname);
                 StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
             }
@@ -1923,6 +1923,7 @@ namespace Eddi
                         systemname = CurrentStarSystem.systemname,
                         systemAddress = CurrentStarSystem?.systemAddress
                     };
+                    CurrentStarSystem.bodies.Add(body);
                 }
                 // Our data source may not include system address, so we include it here.
                 body.systemAddress = CurrentStarSystem?.systemAddress;
@@ -1956,7 +1957,6 @@ namespace Eddi
                 body.parents = theEvent.parents;
                 body.scanned = body.scanned ?? (theEvent.scantype != null && (bool)!theEvent.scantype?.Contains("NavBeacon") ? (DateTime?)theEvent.timestamp : null);
 
-                CurrentStarSystem.bodies.Add(body);
                 Logging.Debug("Saving data for scanned body " + theEvent.bodyname);
                 StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
             }
