@@ -108,7 +108,7 @@ namespace EddiEvents
 
         // Variables below are not intended to be user facing
         public long? bodyId { get; private set; }
-        public List<object> parents { get; private set; }
+        public List<IDictionary<string, object>> parents { get; private set; }
         public string scantype { get; private set; } // One of AutoScan, Basic, Detailed, NavBeacon, NavBeaconDetail
                                                      // AutoScan events are detailed scans triggered via proximity. 
 
@@ -120,7 +120,7 @@ namespace EddiEvents
         [JsonIgnore, Obsolete("Use rotationalperiod instead")]
         public decimal rotationperiod => rotationalperiod;  // This is the object property reported from the BodyDetails() function
 
-        public StarScannedEvent(DateTime timestamp, string scantype, string name, long? bodyId, string stellarclass, decimal solarmass, decimal radiusKm, decimal absolutemagnitude, string luminosityclass, long ageMegayears, decimal temperatureKelvin, decimal distanceLs, decimal? orbitalperiod, decimal rotationperiod, decimal? semimajoraxis, decimal? eccentricity, decimal? orbitalinclination, decimal? periapsis, List<Ring> rings, bool mainstar, List<object> parents) : base(timestamp, NAME)
+        public StarScannedEvent(DateTime timestamp, string scantype, string name, long? bodyId, string stellarclass, decimal solarmass, decimal radiusKm, decimal absolutemagnitude, string luminosityclass, long ageMegayears, decimal temperatureKelvin, decimal distanceLs, decimal? orbitalperiod, decimal rotationperiod, decimal? semimajoraxis, decimal? eccentricity, decimal? orbitalinclination, decimal? periapsis, List<Ring> rings, bool mainstar, List<IDictionary<string, object>> parents) : base(timestamp, NAME)
         {
             this.scantype = scantype;
             this.bodyname = name;

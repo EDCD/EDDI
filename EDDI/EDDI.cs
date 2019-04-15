@@ -1348,7 +1348,8 @@ namespace Eddi
                 if (body == null)
                 {
                     // We may be near a ring. For rings, we want to select the parent body
-                    List<Body> ringedBodies = CurrentStarSystem.bodies?.Where(b => b?.rings?.Count > 0).ToList();
+                    List<Body> ringedBodies = CurrentStarSystem.bodies?
+                        .Where(b => b?.rings?.Count > 0).ToList();
                     foreach (Body ringedBody in ringedBodies)
                     {
                         Ring ring = ringedBody.rings.FirstOrDefault(r => r.name == bodyName);
@@ -1445,7 +1446,7 @@ namespace Eddi
             CurrentStarSystem.y = theEvent.y;
             CurrentStarSystem.z = theEvent.z;
             CurrentStarSystem.Faction = theEvent.controllingfaction;
-            CurrentStellarBody = CurrentStarSystem.stars.FirstOrDefault(b => b.distance == 0);
+            CurrentStellarBody = CurrentStarSystem.bodies.FirstOrDefault(b => b.distance == 0);
 
             // Update system faction data if available
             if (theEvent.factions != null)
@@ -1835,7 +1836,7 @@ namespace Eddi
             if (theEvent.approaching_surface)
             {
                 // Update the body 
-                Body body = CurrentStarSystem?.planets?.Find(s => s.bodyname == theEvent.bodyname);
+                Body body = CurrentStarSystem?.bodies?.Find(s => s.bodyname == theEvent.bodyname);
                 if (body == null)
                 {
                     // This body is unknown to us, might not be in our data source or we might not have connectivity.  Use a placeholder 
@@ -1863,7 +1864,7 @@ namespace Eddi
             // We just scanned a star.  We can only proceed if we know our current star system
             if (CurrentStarSystem != null)
             {
-                Body star = CurrentStarSystem.stars?.FirstOrDefault(b => b.bodyname == theEvent.bodyname);
+                Body star = CurrentStarSystem.bodies?.FirstOrDefault(b => b.bodyname == theEvent.bodyname);
                 if (star == null)
                 {
                     Logging.Debug("Scanned star " + theEvent.bodyname + " is new - creating");
@@ -1890,6 +1891,7 @@ namespace Eddi
                 star.solarmass = theEvent.solarmass;
                 star.solarradius = theEvent.solarradius;
                 star.rings = theEvent.rings;
+                star.parents = theEvent.parents;
                 star.scanned = star.scanned ?? (!theEvent.scantype.Contains("NavBeacon") ? (DateTime?)theEvent.timestamp : null);
 
                 star.setStellarExtras();
@@ -1906,7 +1908,7 @@ namespace Eddi
             // We just scanned a body.  We can only proceed if we know our current star system
             if (CurrentStarSystem != null)
             {
-                Body body = CurrentStarSystem.planets?.FirstOrDefault(b => b.bodyname == theEvent.bodyname);
+                Body body = CurrentStarSystem.bodies?.FirstOrDefault(b => b.bodyname == theEvent.bodyname);
                 if (body == null)
                 {
                     Logging.Debug("Scanned body " + theEvent.bodyname + " is new - creating");
@@ -1914,7 +1916,7 @@ namespace Eddi
                     body = new Body
                     {
                         EDDBID = -1,
-                        bodyType = (bool)theEvent.parents?.Exists(p => ((IDictionary<string, object>)p).ContainsKey("Planet")) 
+                        bodyType = (bool)theEvent.parents?.Exists(p => p.ContainsKey("Planet")) 
                             ? BodyType.FromEDName("Moon") : BodyType.FromEDName("Planet"),
                         bodyname = theEvent.bodyname,
                         bodyId = theEvent.bodyId,
@@ -1951,7 +1953,8 @@ namespace Eddi
                 }
                 body.reserveLevel = ReserveLevel.FromEDName(theEvent.reserves);
                 body.rings = theEvent.rings;
-                body.scanned = body.scanned ?? (!theEvent.scantype.Contains("NavBeacon") ? (DateTime?)theEvent.timestamp : null);
+                body.parents = theEvent.parents;
+                body.scanned = body.scanned ?? (theEvent.scantype != null && (bool)!theEvent.scantype?.Contains("NavBeacon") ? (DateTime?)theEvent.timestamp : null);
 
                 CurrentStarSystem.bodies.Add(body);
                 Logging.Debug("Saving data for scanned body " + theEvent.bodyname);
@@ -1969,7 +1972,7 @@ namespace Eddi
             }
             else
             {
-                Body body = CurrentStarSystem?.planets?.FirstOrDefault(b => b?.bodyname == theEvent.name);
+                Body body = CurrentStarSystem?.bodies?.FirstOrDefault(b => b?.bodyname == theEvent.name);
                 if (body != null)
                 {
                     body.mapped = theEvent.timestamp;
