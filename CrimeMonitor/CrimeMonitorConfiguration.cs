@@ -1,6 +1,7 @@
 ﻿using EddiDataDefinitions;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using Utilities;
@@ -11,6 +12,7 @@ namespace EddiCrimeMonitor
     public class CrimeMonitorConfiguration
     {
         public ObservableCollection<FactionRecord> criminalrecord { get; set; }
+        public Dictionary<string, string> homeSystems { get; set; }
 
         public long claims { get; set; }
         public long fines { get; set; }
@@ -27,6 +29,7 @@ namespace EddiCrimeMonitor
         public CrimeMonitorConfiguration()
         {
             criminalrecord = new ObservableCollection<FactionRecord>();
+            homeSystems = new Dictionary<string, string>();
         }
 
         /// <summary>

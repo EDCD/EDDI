@@ -32,6 +32,7 @@ namespace EddiCrimeMonitor
         public long fines;
         public long bounties;
         public int? profitShare;
+        public Dictionary<string, string> homeSystems;
         private DateTime updateDat;
 
         private static readonly object recordLock = new object();
@@ -65,6 +66,7 @@ namespace EddiCrimeMonitor
         public CrimeMonitor()
         {
             criminalrecord = new ObservableCollection<FactionRecord>();
+            homeSystems = new Dictionary<string, string>();
             BindingOperations.CollectionRegistering += Record_CollectionRegistering;
             initializeCrimeMonitor();
         }
@@ -586,6 +588,7 @@ namespace EddiCrimeMonitor
                     claims = claims,
                     fines = fines,
                     bounties = bounties,
+                    homeSystems = homeSystems,
                     profitShare = profitShare,
                     updatedat = updateDat
                 };
@@ -605,6 +608,7 @@ namespace EddiCrimeMonitor
                 fines = configuration.fines;
                 bounties = configuration.bounties;
                 profitShare = configuration.profitShare;
+                homeSystems = configuration.homeSystems;
                 updateDat = configuration.updatedat;
 
                 // Build a new criminal record
@@ -692,7 +696,7 @@ namespace EddiCrimeMonitor
             if (record == null || record.faction == null || record.faction == Properties.CrimeMonitor.blank_faction) { return; }
             record.station = null;
 
-            // Get the faction from Elite BGS and set record values
+            // Get the faction from Elite BGS and set faction record values
             Faction faction = DataProviderService.GetFactionByName(record.faction);
             if (faction == null)
             {
@@ -703,36 +707,37 @@ namespace EddiCrimeMonitor
             record.Allegiance = faction.Allegiance ?? Superpower.None;
             List<string> factionSystems = faction.presences.Select(p => p.systemName).ToList();
             record.factionSystems = factionSystems;
-            string factionSystem = null;
 
-            // Prioritize the faction home system
-            if (homeSystem != null && factionSystems.Contains(homeSystem))
+            // 'Home system' is not designated
+            if (homeSystem == null)
             {
-                factionSystem = homeSystem;
-            }
-            else
-            {
-                // Search for home system by matching system within faction name
-                foreach (string system in factionSystems)
+                // Look first in saved home systems
+                if (homeSystems.TryGetValue(record.faction, out string result))
                 {
-                    string pattern = @"\b" + Regex.Escape(system) + @"\b";
-                    if (Regex.IsMatch(record.faction, pattern))
-                    {
-                        factionSystem = system;
-                        break;
-                    }
+                    homeSystem = result;
+                }
+                // Use sytem which is part of faction name. Otherwise, system with highest influence
+                else
+                {
+                    List<FactionPresence> presences = faction.presences.Where(p => factionSystems.Contains(p.systemName)).ToList();
+                    homeSystem = FindHomeSystem(record.faction, factionSystems)
+                        ?? presences.OrderByDescending(p => p.influence).First().systemName;
                 }
             }
-
-            // Otherwise, use faction system with the highest influence
-            if (factionSystem == null)
+            // If 'home system' is deginated, check if system is part of faction presence
+            else if (factionSystems.Contains(homeSystem))
             {
-                List<FactionPresence> presences = faction.presences.Where(p => factionSystems.Contains(p.systemName)).ToList();
-                homeSystem = presences.OrderByDescending(p => p.influence).First().systemName;
+                if (FindHomeSystem(record.faction, factionSystems) == null && !homeSystems.ContainsKey(record.faction))
+                {
+                    // Save home system if not part of faction name and not previous saved
+                    homeSystems.Add(record.faction, homeSystem);
+                }
             }
+            // System not found, exit.
+            else { return; }
 
-            StarSystem factionStarSystem = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystem(factionSystem);
-            record.system = factionSystem;
+            StarSystem factionStarSystem = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystem(homeSystem);
+            record.system = homeSystem;
 
             if (factionStarSystem != null)
             {
@@ -762,6 +767,17 @@ namespace EddiCrimeMonitor
                 string nearestStation = nearestList.Values.FirstOrDefault();
                 record.station = nearestStation;
             }
+        }
+
+        private string FindHomeSystem(string faction, List<string> factionSystems)
+        {
+            // Look for system which is part of faction name
+            foreach (string system in factionSystems)
+            {
+                string pattern = @"\b" + Regex.Escape(system) + @"\b";
+                if (Regex.IsMatch(faction, pattern)) { return system; }
+            }
+            return null;
         }
 
         static void RaiseOnUIThread(EventHandler handler, object sender)
