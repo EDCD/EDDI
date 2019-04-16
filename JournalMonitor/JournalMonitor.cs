@@ -38,6 +38,19 @@ namespace EddiJournalMonitor
             List<Event> events = ParseJournalEntry(line, isLogLoadEvent);
             foreach (Event @event in events)
             {
+                // The DiscoveryScanEvent and SystemScanComplete events may be written before all applicable scans have been queued.
+                // We will wait a short period of time after these events take place so that all scans generated in tandem 
+                // with these events are enqueued before these events are enqueued.
+                if ((@event is DiscoveryScanEvent || @event is SystemScanComplete) && !@event.fromLoad)
+                {
+                    Task.Run(async () =>
+                    {
+                        await Task.Delay(1000);
+                        callback(@event);
+                    });
+                    continue;
+                }
+
                 callback(@event);
             }
         }
