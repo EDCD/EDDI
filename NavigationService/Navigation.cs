@@ -747,12 +747,12 @@ namespace EddiNavigationService
 
         public decimal CalculateDistance(string currentSystem, string destinationSystem)
         {
-            StarSystem curr = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(currentSystem, true);
-            StarSystem dest = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(destinationSystem, true);
+            StarSystem curr = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystem(currentSystem, true);
+            StarSystem dest = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystem(destinationSystem, true);
             return CalculateDistance(curr, dest);
         }
 
-        private decimal CalculateDistance(StarSystem curr, StarSystem dest)
+        public decimal CalculateDistance(StarSystem curr, StarSystem dest)
         {
             decimal distance = -1;
             if (curr != null && dest != null)

@@ -129,6 +129,7 @@ namespace EddiDataDefinitions
             }
         }
 
+        public List<string> factionSystems { get; set; }
         public List<FactionReport> factionReports { get; set; }
 
         [JsonIgnore]

@@ -692,34 +692,61 @@ namespace EddiCrimeMonitor
             if (record == null || record.faction == null || record.faction == Properties.CrimeMonitor.blank_faction) { return; }
             record.station = null;
 
-            if (homeSystem == null)
+            // Get the faction from Elite BGS and set record values
+            Faction faction = DataProviderService.GetFactionByName(record.faction);
+            if (faction == null)
             {
-                StarSystem currentSystem = EDDI.Instance?.CurrentStarSystem;
-                if (currentSystem == null) { return; }
+                record.faction = Properties.CrimeMonitor.blank_faction;
+                record.system = null;
+                return;
+            }
+            record.Allegiance = faction.Allegiance ?? Superpower.None;
+            List<string> factionSystems = faction.presences.Select(p => p.systemName).ToList();
+            record.factionSystems = factionSystems;
+            string factionSystem = null;
 
-                List<StarSystem> cubeSystems = StarMapService.GetStarMapSystemsCube(currentSystem.name, 200, false, false, false, false);
-                foreach (string system in cubeSystems.Where(s => record.faction.Contains(s.name)).Select(s => s.name).ToList())
+            // Prioritize the faction home system
+            if (homeSystem != null && factionSystems.Contains(homeSystem))
+            {
+                factionSystem = homeSystem;
+            }
+            else
+            {
+                // Search for home system by matching system within faction name
+                foreach (string system in factionSystems)
                 {
                     string pattern = @"\b" + Regex.Escape(system) + @"\b";
                     if (Regex.IsMatch(record.faction, pattern))
                     {
-                        homeSystem = system;
+                        factionSystem = system;
                         break;
                     }
                 }
-                if (homeSystem == null) { return; }
             }
-            StarSystem factionSystem = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystem(homeSystem, true);
 
-            if (factionSystem != null)
+            // Otherwise, use faction system with the highest influence
+            if (factionSystem == null)
             {
-                record.system = factionSystem.name;
-                record.Allegiance = factionSystem.factions?.FirstOrDefault(f => f.name == record.faction)?.Allegiance ?? Superpower.None;
+                List<FactionPresence> presences = faction.presences.Where(p => factionSystems.Contains(p.systemName)).ToList();
+                homeSystem = presences.OrderByDescending(p => p.influence).First().systemName;
+            }
 
+            StarSystem factionStarSystem = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystem(factionSystem);
+            record.system = factionSystem;
+
+            if (factionStarSystem != null)
+            {
                 // Filter stations within the faction system which meet the game version and landing pad size requirements
-                string shipSize = EDDI.Instance?.CurrentShip?.size ?? "Large";
-                List<Station> factionStations = EDDI.Instance.inHorizons ? factionSystem.stations : factionSystem.orbitalstations
+                 string shipSize = EDDI.Instance?.CurrentShip?.size ?? "Large";
+                List<Station> factionStations = EDDI.Instance.inHorizons ? factionStarSystem.stations : factionStarSystem.orbitalstations
                     .Where(s => s.LandingPadCheck(shipSize)).ToList();
+
+                // Prioritize controlled stations
+                List<Station> controlledStations = factionStations.Where(s => s.Faction.name == record.faction).ToList();
+                if (controlledStations.Count > 0)
+                {
+                    factionStations = controlledStations;
+                }
 
                 // Build list to find the faction station nearest to the main star
                 SortedList<decimal, string> nearestList = new SortedList<decimal, string>();
