@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="clear_route_button" xml:space="preserve">
+    <value>Clear Route</value>
+  </data>
   <data name="header_destinationstation" xml:space="preserve">
     <value>Destination Station</value>
   </data>
@@ -147,7 +150,13 @@
   <data name="para2" xml:space="preserve">
     <value>Note that if your mission log is incorrect you will need to start or restart Elite and this information will be updated.</value>
   </data>
+  <data name="set_route_button" xml:space="preserve">
+    <value>Set Route</value>
+  </data>
   <data name="tab_mission_warning" xml:space="preserve">
     <value>Mission expiration warning threshold (Minutes):</value>
+  </data>
+  <data name="update_route_button" xml:space="preserve">
+    <value>Update Route</value>
   </data>
 </root>

@@ -16,6 +16,11 @@
             <Label x:Name ="missionWarningLabel" Grid.Row="4" Grid.Column="0" Margin="0,5" VerticalContentAlignment="Center" Content="{x:Static resx:MissionMonitor.tab_mission_warning}"/>
             <TextBox x:Name="missionWarningInt" Grid.Row="4" Grid.Column="0" Margin="0,5" PreviewTextInput="EnsureValidInteger" TextChanged="warningChanged" TextAlignment="Center" VerticalContentAlignment="Center" Height="25" Width="40"/>
         </StackPanel>
+        <UniformGrid DockPanel.Dock="Bottom" Rows="1" Columns="3" Margin="0,5">
+            <Button Margin="10" HorizontalAlignment="Center" Click="setRoute" Content="{x:Static resx:MissionMonitor.set_route_button}" />
+            <Button Margin="10" HorizontalAlignment="Center" Click="updateRoute" Content="{x:Static resx:MissionMonitor.update_route_button}" />
+            <Button Margin="10" HorizontalAlignment="Center" Click="clearRoute" Content="{x:Static resx:MissionMonitor.clear_route_button}" />
+        </UniformGrid>
         <DataGrid Margin="0,5" AutoGenerateColumns="False" x:Name="missionsData" CanUserAddRows="false" CanUserDeleteRows="False" TargetUpdated="missionsUpdated">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="{x:Static resx:MissionMonitor.header_type}" Width="140" IsReadOnly="True" Binding="{Binding Path=localizedType}">

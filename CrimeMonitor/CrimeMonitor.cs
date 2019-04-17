@@ -357,12 +357,7 @@ namespace EddiCrimeMonitor
                 // Handle journal event from Interstellar Factors transaction (FDEV bug)
                 if (string.IsNullOrEmpty(reward.faction))
                 {
-                    List<string> systemFactions = EDDI.Instance.CurrentStarSystem?.factions.Select(f => f.name).ToList();
-
-                    // Get record which matches a system faction and the bounty claims amount
-                    record = criminalrecord
-                        .Where(r => systemFactions.Contains(r.faction))
-                        .FirstOrDefault(r => r.bountyClaims == amount);
+                    record = criminalrecord.FirstOrDefault(r => r.bountyClaims == amount);
                 }
                 else
                 {
@@ -447,19 +442,41 @@ namespace EddiCrimeMonitor
         private bool _handleBountyPaidEvent(BountyPaidEvent @event)
         {
             bool update = false;
+            int shipId = EDDI.Instance?.CurrentShip?.LocalId ?? 0;
 
             foreach (FactionRecord record in criminalrecord.ToList())
             {
-                if (@event.allbounties || record.faction == @event.faction)
+                // If paid at 'Legal Facilities', bounties are grouped by superpower
+                bool match = @event.brokerpercentage == null ? record.faction == @event.faction : record.allegiance == @event.faction;
+                if (@event.allbounties || match)
                 {
-                    // Get all bounty crimes, incluing the discrepancy report
+                    // Get all bounties incurred, excluing the discrepancy report
+                    // Note that all bounties are assigned to the ship, not the commander
                     List<FactionReport> reports = record.factionReports
-                        .Where(r => r.bounty && r.crimeDef != Crime.None).ToList();
+                        .Where(r => r.bounty && r.crimeDef != Crime.None && r.crimeDef != Crime.Bounty && @event.shipid == shipId)
+                        .ToList();
+
                     if (reports != null)
                     {
+                        long total = reports.Sum(r => r.amount);
+
+                        // Check for discrepancy in logged bounties incurred
+                        if (total < @event.amount)
+                        {
+                            // Adjust the discrepancy report & remove when zeroed out
+                            FactionReport report = record.factionReports
+                                .FirstOrDefault(r => r.crimeDef == Crime.Bounty);
+                            if (report != null)
+                            {
+                                report.amount -= Math.Min(@event.amount - total, report.amount);
+                                if (report.amount == 0) { reports.Add(report); }
+                            }
+                        }
+                        // Remove associated bounties
                         record.factionReports = record.factionReports.Except(reports).ToList();
                     }
-                    record.bounties = 0;
+                    // Adjust the total bounties incurred amount
+                    record.bounties -= Math.Min(@event.amount, record.bounties);
 
                     RemoveRecord(record);
                     update = true;
@@ -512,19 +529,41 @@ namespace EddiCrimeMonitor
         private bool _handleFinePaidEvent(FinePaidEvent @event)
         {
             bool update = false;
+            int shipId = EDDI.Instance?.CurrentShip?.LocalId ?? 0;
 
             foreach (FactionRecord record in criminalrecord.ToList())
             {
-                if (@event.allfines || record.faction == @event.faction)
+                // If paid at 'Legal Facilities', fines are grouped by superpower
+                bool match = @event.brokerpercentage == null ? record.faction == @event.faction : record.allegiance == @event.faction;
+                if (@event.allfines || match)
                 {
-                    // Get all bounty crimes, incluing the discrepancy report
+                    // Get all fines incurred, excluing the discrepancy report
+                    // Note that all fines are assigned to the ship, not the commander
                     List<FactionReport> reports = record.factionReports
-                        .Where(r => !r.bounty && r.crimeDef != Crime.None && r.crimeDef != Crime.Claim).ToList();
+                        .Where(r => !r.bounty && r.crimeDef != Crime.None && r.crimeDef != Crime.Fine && @event.shipid == shipId)
+                        .ToList();
+
                     if (reports != null)
                     {
+                        long total = reports.Sum(r => r.amount);
+
+                        // Check for discrepancy in logged fines incurred
+                        if (total < @event.amount)
+                        {
+                            // Adjust the discrepancy report & remove when zeroed out
+                            FactionReport report = record.factionReports
+                                .FirstOrDefault(r => r.crimeDef == Crime.Fine);
+                            if (report != null)
+                            {
+                                report.amount -= Math.Min(@event.amount - total, report.amount);
+                                if (report.amount == 0) { reports.Add(report); }
+                            }
+                        }
+                        // Remove associated fines
                         record.factionReports = record.factionReports.Except(reports).ToList();
                     }
-                    record.bounties = 0;
+                    // Adjust the total fines incurred amount
+                    record.fines -= Math.Min(@event.amount, record.fines);
 
                     RemoveRecord(record);
                     update = true;
@@ -724,12 +763,12 @@ namespace EddiCrimeMonitor
                         ?? presences.OrderByDescending(p => p.influence).First().systemName;
                 }
             }
-            // If 'home system' is deginated, check if system is part of faction presence
+            // If 'home system' is desiginated, check if system is part of faction presence
             else if (factionSystems.Contains(homeSystem))
             {
                 if (FindHomeSystem(record.faction, factionSystems) == null && !homeSystems.ContainsKey(record.faction))
                 {
-                    // Save home system if not part of faction name and not previous saved
+                    // Save home system if not part of faction name and not previously saved
                     homeSystems.Add(record.faction, homeSystem);
                 }
             }
@@ -748,7 +787,7 @@ namespace EddiCrimeMonitor
 
                 // Prioritize controlled stations
                 List<Station> controlledStations = factionStations.Where(s => s.Faction.name == record.faction).ToList();
-                if (controlledStations.Count > 0)
+                if (controlledStations.Count > 0 && controlledStations.Min(s => s.distancefromstar) < 10000)
                 {
                     factionStations = controlledStations;
                 }

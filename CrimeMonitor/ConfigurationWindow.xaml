@@ -54,7 +54,7 @@
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
-                <utility:DataGridNumericColumn Header="{x:Static resx:CrimeMonitor.header_station}" Width="120" IsReadOnly="True" Binding="{Binding Path=station}">
+                <utility:DataGridNumericColumn Header="{x:Static resx:CrimeMonitor.header_station}" Width="150" IsReadOnly="True" Binding="{Binding Path=station}">
                     <DataGridTextColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader">
                             <Setter Property="HorizontalContentAlignment" Value="Center" />

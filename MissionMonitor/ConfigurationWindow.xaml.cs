@@ -2,6 +2,7 @@
 using System;
 using System.Globalization;
 using System.Text.RegularExpressions;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
@@ -48,6 +49,21 @@ namespace EddiMissionMonitor
             {
                 // Bad user input; ignore it
             }
+        }
+
+        private void setRoute(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void updateRoute(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void clearRoute(object sender, RoutedEventArgs e)
+        {
+
         }
 
         private void EnsureValidInteger(object sender, TextCompositionEventArgs e)

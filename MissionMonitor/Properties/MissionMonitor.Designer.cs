@@ -61,6 +61,15 @@ namespace EddiMissionMonitor.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Clear Route.
+        /// </summary>
+        public static string clear_route_button {
+            get {
+                return ResourceManager.GetString("clear_route_button", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Destination Station.
         /// </summary>
         public static string header_destinationstation {
@@ -151,11 +160,29 @@ namespace EddiMissionMonitor.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Set Route.
+        /// </summary>
+        public static string set_route_button {
+            get {
+                return ResourceManager.GetString("set_route_button", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Mission expiration warning threshold (Minutes):.
         /// </summary>
         public static string tab_mission_warning {
             get {
                 return ResourceManager.GetString("tab_mission_warning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Update Route.
+        /// </summary>
+        public static string update_route_button {
+            get {
+                return ResourceManager.GetString("update_route_button", resourceCulture);
             }
         }
     }

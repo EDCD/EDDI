@@ -64,12 +64,12 @@ namespace EddiCrimeMonitor
                         updateButton.Foreground = Brushes.Black;
                         updateButton.FontWeight = FontWeights.Regular;
                     });
+                    crimeMonitor()?.writeRecord();
                 })
                 {
                     IsBackground = true
                 };
                 factionStationThread.Start();
-                crimeMonitor()?.writeRecord();
             }
         }
 
