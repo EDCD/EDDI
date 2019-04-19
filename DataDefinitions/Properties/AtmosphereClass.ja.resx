@@ -117,27 +117,96 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="Ammonia" xml:space="preserve">
+    <value>アンモニア</value>
+    <comment>Atmosphere class "Ammonia"</comment>
+  </data>
+  <data name="AmmoniaAndOxygen" xml:space="preserve">
+    <value>アンモニアおよび酸素</value>
+    <comment>Atmosphere class "Ammonia and oxygen"</comment>
+  </data>
+  <data name="AmmoniaRich" xml:space="preserve">
+    <value>アンモニアに富む</value>
+    <comment>Atmosphere class "Ammonia-rich"</comment>
+  </data>
+  <data name="Argon" xml:space="preserve">
+    <value>アルゴン</value>
+    <comment>Atmosphere class "Argon"</comment>
+  </data>
+  <data name="ArgonRich" xml:space="preserve">
+    <value>アルゴンに富む</value>
+    <comment>Atmosphere class "Argon-rich"</comment>
+  </data>
+  <data name="CarbonDioxide" xml:space="preserve">
+    <value>二酸化炭素</value>
+    <comment>Atmosphere class "Carbon dioxide"</comment>
+  </data>
+  <data name="CarbonDioxideRich" xml:space="preserve">
+    <value>二酸化炭素に富む</value>
+    <comment>Atmosphere class "Carbon dioxide-rich"</comment>
+  </data>
+  <data name="Helium" xml:space="preserve">
+    <value>ヘリウム</value>
+    <comment>Atmosphere class "Helium"</comment>
+  </data>
+  <data name="MetallicVapour" xml:space="preserve">
+    <value>金属蒸気</value>
+    <comment>Atmosphere class "Metallic vapour"</comment>
+  </data>
+  <data name="Methane" xml:space="preserve">
+    <value>メタン</value>
+    <comment>Atmosphere class "Methane"</comment>
+  </data>
+  <data name="MethaneRich" xml:space="preserve">
+    <value>メタンに富む</value>
+    <comment>Atmosphere class "Methane-rich"</comment>
+  </data>
+  <data name="Neon" xml:space="preserve">
+    <value>ネオン</value>
+    <comment>Atmosphere class "Neon"</comment>
+  </data>
+  <data name="NeonRich" xml:space="preserve">
+    <value>ネオンに富む</value>
+    <comment>Atmosphere class "Neon-rich"</comment>
+  </data>
+  <data name="Nitrogen" xml:space="preserve">
+    <value>窒素</value>
+    <comment>Atmosphere class "Nitrogen"</comment>
+  </data>
+  <data name="None" xml:space="preserve">
+    <value>なし</value>
+    <comment>Atmosphere class "None"</comment>
+  </data>
+  <data name="Oxygen" xml:space="preserve">
+    <value>酸素</value>
+    <comment>Atmosphere class "Oxygen"</comment>
+  </data>
+  <data name="SilicateVapour" xml:space="preserve">
+    <value>ケイ酸塩蒸気</value>
+    <comment>Atmosphere class "Silicate vapour"</comment>
+  </data>
+  <data name="SuitableForWaterBasedLife" xml:space="preserve">
+    <value>水生生物に適する</value>
+    <comment>Atmosphere class "Suitable for water-based life"</comment>
+  </data>
+  <data name="SulphurDioxide" xml:space="preserve">
+    <value>二酸化硫黄</value>
+    <comment>Atmosphere class "Sulphur dioxide"</comment>
+  </data>
+  <data name="Water" xml:space="preserve">
+    <value>水</value>
+    <comment>Atmosphere class "Water"</comment>
+  </data>
+  <data name="WaterRich" xml:space="preserve">
+    <value>水に富む</value>
+    <comment>Atmosphere class "Water-rich"</comment>
+  </data>
+  <data name="EarthLike" xml:space="preserve">
+    <value>水生生物に適する</value>
+    <comment>Atmosphere class "EarthLike"</comment>
+  </data>
+  <data name="GasGiant" xml:space="preserve">
+    <value>ガス惑星</value>
+    <comment>Atmosphere class "Gas giant"</comment>
+  </data>
 </root>
