@@ -997,7 +997,7 @@ namespace EddiMissionMonitor
                         case "sightseeing":
                         case "smuggle":
                             {
-                                if (mission.destinationsystems == null || !mission.destinationsystems.Any())
+                                if ((mission.destinationsystems?.Any() ?? false))
                                 {
                                     if (!systems.Contains(mission.destinationsystem))
                                     {
@@ -1189,7 +1189,7 @@ namespace EddiMissionMonitor
             decimal nextDistance = 0;
             List<long> missionids = new List<long>();       // List of mission IDs for the next system
             string currentSystem = EDDI.Instance?.CurrentStarSystem?.name;
-            List<string> route = missionsRouteList?.Split('_').ToList();
+            List<string> route = missionsRouteList?.Split('_').ToList() ?? new List<string>();
 
             if (route.Count == 0) { update = false; }
             else if (updateSystem == null)
@@ -1370,7 +1370,7 @@ namespace EddiMissionMonitor
                             // Check if the system is destination system for 'Active' missions
                             else if (mission.statusEDName == "Active")
                             {
-                                if (mission.destinationsystems != null && mission.destinationsystems.Any())
+                                if ((mission.destinationsystems?.Any() ?? false))
                                 {
                                     if (mission.destinationsystems.Where(d => d.name == system).Any()) { return true; }
                                 }

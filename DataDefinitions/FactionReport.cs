@@ -34,6 +34,10 @@ namespace EddiDataDefinitions
 
         public string system { get; set; }
 
+        public string station { get; set; }
+
+        public string body { get; set; }
+
         public string victim { get; set; }
 
         public long amount { get; set; }
@@ -47,6 +51,8 @@ namespace EddiDataDefinitions
             crimeDef = factionReport.crimeDef;
             crimeEDName = factionReport.crimeEDName;
             system = factionReport.system;
+            station = factionReport.station;
+            body = factionReport.body;
             victim = factionReport.victim;
             amount = factionReport.amount;
             timestamp = factionReport.timestamp;

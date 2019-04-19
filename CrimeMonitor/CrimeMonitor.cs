@@ -212,6 +212,8 @@ namespace EddiCrimeMonitor
             string currentSystem = EDDI.Instance?.CurrentStarSystem?.name;
             FactionReport report = new FactionReport(@event.timestamp, false, shipId, Crime.None, currentSystem, @event.reward)
             {
+                station = EDDI.Instance?.CurrentStation?.name,
+                body = EDDI.Instance?.CurrentStellarBody?.name,
                 victim = @event.victimfaction
             };
 
@@ -317,6 +319,8 @@ namespace EddiCrimeMonitor
                 long amount = Convert.ToInt64(reward.amount * bonus);
                 FactionReport report = new FactionReport(@event.timestamp, true, shipId, Crime.None, currentSystem.name, amount)
                 {
+                    station = EDDI.Instance?.CurrentStation?.name,
+                    body = EDDI.Instance?.CurrentStellarBody?.name,
                     victim = @event.faction
                 };
 
@@ -415,6 +419,8 @@ namespace EddiCrimeMonitor
             string currentSystem = EDDI.Instance?.CurrentStarSystem?.name;
             FactionReport report = new FactionReport(@event.timestamp, true, shipId, crime, currentSystem, @event.bounty)
             {
+                station = EDDI.Instance?.CurrentStation?.name,
+                body = EDDI.Instance?.CurrentStellarBody?.name,
                 victim = @event.victim
             };
 
@@ -502,6 +508,8 @@ namespace EddiCrimeMonitor
             string currentSystem = EDDI.Instance?.CurrentStarSystem?.name;
             FactionReport report = new FactionReport(@event.timestamp, false, shipId, crime, currentSystem, @event.fine)
             {
+                station = EDDI.Instance?.CurrentStation?.name,
+                body = EDDI.Instance?.CurrentStellarBody?.name,
                 victim = @event.victim
             };
 
