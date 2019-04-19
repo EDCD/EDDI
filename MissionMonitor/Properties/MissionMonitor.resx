@@ -120,6 +120,9 @@
   <data name="clear_route_button" xml:space="preserve">
     <value>Clear Route</value>
   </data>
+  <data name="get_route_button" xml:space="preserve">
+    <value>Get Route</value>
+  </data>
   <data name="header_destinationstation" xml:space="preserve">
     <value>Destination Station</value>
   </data>
@@ -144,14 +147,14 @@
   <data name="mission_monitor_name" xml:space="preserve">
     <value>Mission Monitor</value>
   </data>
+  <data name="next_route_button" xml:space="preserve">
+    <value>Next In Route</value>
+  </data>
   <data name="para1" xml:space="preserve">
     <value>Below is a list of all your missions.</value>
   </data>
   <data name="para2" xml:space="preserve">
     <value>Note that if your mission log is incorrect you will need to start or restart Elite and this information will be updated.</value>
-  </data>
-  <data name="set_route_button" xml:space="preserve">
-    <value>Set Route</value>
   </data>
   <data name="tab_mission_warning" xml:space="preserve">
     <value>Mission expiration warning threshold (Minutes):</value>

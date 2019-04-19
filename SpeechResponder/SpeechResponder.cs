@@ -3,7 +3,6 @@ using Eddi;
 using EddiDataDefinitions;
 using EddiEvents;
 using EddiShipMonitor;
-using EddiNavigationService;
 using EddiSpeechService;
 using EddiStatusMonitor;
 using Newtonsoft.Json;
@@ -268,8 +267,6 @@ namespace EddiSpeechResponder
             {
                 ["destinationdistance"] = EDDI.Instance.DestinationDistance,
                 ["environment"] = EDDI.Instance.Environment,
-                ["routedistance"] = Navigation.Instance.routeDistance,
-                ["routelist"] = Navigation.Instance.routeList,
                 ["va_active"] = EDDI.FromVA,
                 ["vehicle"] = EDDI.Instance.Vehicle
             };

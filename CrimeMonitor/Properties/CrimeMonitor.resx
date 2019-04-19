@@ -129,6 +129,9 @@
   <data name="crime_monitor_name" xml:space="preserve">
     <value>Crime Monitor</value>
   </data>
+  <data name="find_button" xml:space="preserve">
+    <value>Find Legal Facilities</value>
+  </data>
   <data name="header_bounties" xml:space="preserve">
     <value>Bounties</value>
   </data>

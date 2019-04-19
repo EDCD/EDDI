@@ -447,7 +447,7 @@ namespace EddiCrimeMonitor
             foreach (FactionRecord record in criminalrecord.ToList())
             {
                 // If paid at 'Legal Facilities', bounties are grouped by superpower
-                bool match = @event.brokerpercentage == null ? record.faction == @event.faction : record.allegiance == @event.faction;
+                bool match = @event.brokerpercentage == null ? record.faction == @event.faction : record.Allegiance.invariantName == @event.faction;
                 if (@event.allbounties || match)
                 {
                     // Get all bounties incurred, excluing the discrepancy report
@@ -534,7 +534,7 @@ namespace EddiCrimeMonitor
             foreach (FactionRecord record in criminalrecord.ToList())
             {
                 // If paid at 'Legal Facilities', fines are grouped by superpower
-                bool match = @event.brokerpercentage == null ? record.faction == @event.faction : record.allegiance == @event.faction;
+                bool match = @event.brokerpercentage == null ? record.faction == @event.faction : record.Allegiance.invariantName == @event.faction;
                 if (@event.allfines || match)
                 {
                     // Get all fines incurred, excluing the discrepancy report
@@ -737,7 +737,7 @@ namespace EddiCrimeMonitor
 
             // Get the faction from Elite BGS and set faction record values
             Faction faction = DataProviderService.GetFactionByName(record.faction);
-            if (faction == null)
+            if (faction.EDDBID == null)
             {
                 record.faction = Properties.CrimeMonitor.blank_faction;
                 record.system = null;

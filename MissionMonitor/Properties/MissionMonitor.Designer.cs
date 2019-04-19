@@ -70,6 +70,15 @@ namespace EddiMissionMonitor.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Get Route.
+        /// </summary>
+        public static string get_route_button {
+            get {
+                return ResourceManager.GetString("get_route_button", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Destination Station.
         /// </summary>
         public static string header_destinationstation {
@@ -142,6 +151,15 @@ namespace EddiMissionMonitor.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Next In Route.
+        /// </summary>
+        public static string next_route_button {
+            get {
+                return ResourceManager.GetString("next_route_button", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Below is a list of all your missions..
         /// </summary>
         public static string para1 {
@@ -156,15 +174,6 @@ namespace EddiMissionMonitor.Properties {
         public static string para2 {
             get {
                 return ResourceManager.GetString("para2", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Set Route.
-        /// </summary>
-        public static string set_route_button {
-            get {
-                return ResourceManager.GetString("set_route_button", resourceCulture);
             }
         }
         

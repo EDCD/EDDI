@@ -97,6 +97,15 @@ namespace EddiCrimeMonitor.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Find Legal Facilities.
+        /// </summary>
+        public static string find_button {
+            get {
+                return ResourceManager.GetString("find_button", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Bounties.
         /// </summary>
         public static string header_bounties {

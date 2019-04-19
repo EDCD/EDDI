@@ -1,5 +1,6 @@
 ﻿using Eddi;
 using EddiDataDefinitions;
+using EddiNavigationService;
 using System;
 using System.Globalization;
 using System.Linq;
@@ -71,6 +72,33 @@ namespace EddiCrimeMonitor
                 };
                 factionStationThread.Start();
             }
+        }
+
+        private void findIFRoute(object sender, RoutedEventArgs e)
+        {
+            Button updateButton = (Button)sender;
+            updateButton.Foreground = Brushes.Red;
+            updateButton.FontWeight = FontWeights.Bold;
+
+            Thread IFRouteThread = new Thread(() =>
+            {
+                string IFSystem = Navigation.Instance.GetFacilitatorRoute();
+                Dispatcher?.Invoke(() =>
+                {
+                    updateButton.Foreground = Brushes.Black;
+                    updateButton.FontWeight = FontWeights.Regular;
+
+                    // If 'next system' found, send to clipboard
+                    if (IFSystem != null)
+                    {
+                        Clipboard.SetData(DataFormats.Text, IFSystem);
+                    }
+                });
+            })
+            {
+                IsBackground = true
+            };
+            IFRouteThread.Start();
         }
 
         private void profitShareChanged(object sender, TextChangedEventArgs e)

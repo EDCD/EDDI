@@ -232,6 +232,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\SpeechResponder.ru.resx" />
   </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>xcopy /y "$(ProjectDir)eddi.json" "$(ProjectDir)$(OutDir)"

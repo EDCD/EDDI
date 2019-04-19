@@ -33,10 +33,10 @@ namespace EddiDataDefinitions
         public string allegiance
         {
 
-            get => Allegiance?.edname ?? Superpower.None.edname;
+            get => Allegiance?.invariantName ?? Superpower.None.invariantName;
             set
             {
-                Superpower aDef = Superpower.FromEDName(value);
+                Superpower aDef = Superpower.FromName(value);
                 this.Allegiance = aDef;
             }
         }

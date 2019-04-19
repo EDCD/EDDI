@@ -2386,7 +2386,7 @@ namespace EddiJournalMonitor
                                     data.TryGetValue("Amount", out object val);
                                     long amount = (long)val;
                                     decimal? brokerpercentage = JsonParsing.getOptionalDecimal(data, "BrokerPercentage");
-                                    bool allBounties = JsonParsing.getBool(data, "AllFines");
+                                    bool allBounties = JsonParsing.getOptionalBool(data, "AllFines") ?? false;
                                     string faction = getFactionName(data, "Faction");
                                     data.TryGetValue("ShipID", out val);
                                     int shipId = (int)(long)val;
@@ -2400,7 +2400,7 @@ namespace EddiJournalMonitor
                                     data.TryGetValue("Amount", out object val);
                                     long amount = (long)val;
                                     decimal? brokerpercentage = JsonParsing.getOptionalDecimal(data, "BrokerPercentage");
-                                    bool allFines = JsonParsing.getBool(data, "AllFines");
+                                    bool allFines = JsonParsing.getOptionalBool(data, "AllFines") ?? false;
                                     string faction = getFactionName(data, "Faction");
                                     data.TryGetValue("ShipID", out val);
                                     int shipId = (int)(long)val;

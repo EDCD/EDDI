@@ -23,8 +23,10 @@
                      VerticalContentAlignment="Center"
                      Height="25" Width="40"/>
         </StackPanel>
-        <UniformGrid DockPanel.Dock="Bottom" Rows="1" Margin="0,5">
+        <UniformGrid DockPanel.Dock="Bottom" Rows="1" Columns="2" Margin="0,5">
             <Button Margin="10" HorizontalAlignment="Center" Click="addRecord" Content="{x:Static resx:CrimeMonitor.add_button}" />
+            <Button Margin="10" HorizontalAlignment="Center" Click="findIFRoute" Content="{x:Static resx:CrimeMonitor.find_button}" />
+
         </UniformGrid>
         <DataGrid Margin="0,5" AutoGenerateColumns="False" x:Name="criminalRecord" CanUserAddRows="false" CanUserDeleteRows="False" TargetUpdated="criminalRecordUpdated">
             <DataGrid.Columns>
