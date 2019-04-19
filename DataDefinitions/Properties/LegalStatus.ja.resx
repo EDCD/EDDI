@@ -117,13 +117,40 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="Clean" xml:space="preserve">
+    <value>潔白</value>
+    <comment>LegalStatus - Clean</comment>
+  </data>
+  <data name="Enemy" xml:space="preserve">
+    <value>敵</value>
+    <comment>LegalStatus - Enemy</comment>
+  </data>
+  <data name="Hunter" xml:space="preserve">
+    <value>ハンター</value>
+    <comment>LegalStatus - Hunter</comment>
+  </data>
+  <data name="Lawless" xml:space="preserve">
+    <value>無法者</value>
+    <comment>LegalStatus - Lawless</comment>
+  </data>
+  <data name="None" xml:space="preserve">
+    <value>なし</value>
+    <comment>LegalStatus - None</comment>
+  </data>
+  <data name="Unknown" xml:space="preserve">
+    <value>不明</value>
+    <comment>LegalStatus - Unknown</comment>
+  </data>
+  <data name="Wanted" xml:space="preserve">
+    <value>指名手配</value>
+    <comment>LegalStatus - Wanted</comment>
+  </data>
+  <data name="WantedEnemy" xml:space="preserve">
+    <value>敵対指名手配</value>
+    <comment>LegalStatus - WantedEnemy</comment>
+  </data>
+  <data name="Warrant" xml:space="preserve">
+    <value>法執行当局</value>
+    <comment>LegalStatus - Warrant</comment>
+  </data>
 </root>
