@@ -117,17 +117,56 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="Ammonia" xml:space="preserve">
+    <value>アンモニア</value>
+    <comment>Atmosphere Composition Ammonia</comment>
+  </data>
+  <data name="CarbonDioxide" xml:space="preserve">
+    <value>二酸化炭素</value>
+    <comment>Atmosphere Composition Carbon_dioxide</comment>
+  </data>
+  <data name="Iron" xml:space="preserve">
+    <value>鉄分</value>
+    <comment>Atmosphere Composition Iron</comment>
+  </data>
+  <data name="Methane" xml:space="preserve">
+    <value>メタン</value>
+    <comment>Atmosphere Composition Methane</comment>
+  </data>
+  <data name="Nitrogen" xml:space="preserve">
+    <value>窒素</value>
+    <comment>Atmosphere Composition Nitrogen</comment>
+  </data>
+  <data name="Silicates" xml:space="preserve">
+    <value>ケイ酸塩</value>
+    <comment>Atmosphere Composition Silicates</comment>
+  </data>
+  <data name="SulphurDioxide" xml:space="preserve">
+    <value>二酸化硫黄</value>
+    <comment>Atmosphere Composition Sulphur Dioxide</comment>
+  </data>
+  <data name="Water" xml:space="preserve">
+    <value>水</value>
+    <comment>Atmosphere Composition Water</comment>
+  </data>
+  <data name="Oxygen" xml:space="preserve">
+    <value>酸素</value>
+    <comment>Atmosphere Composition Oxygen</comment>
+  </data>
+  <data name="Hydrogen" xml:space="preserve">
+    <value>水素</value>
+    <comment>Atmosphere Composition Hydrogen</comment>
+  </data>
+  <data name="Helium" xml:space="preserve">
+    <value>ヘリウム</value>
+    <comment>Atmosphere Composition Helium</comment>
+  </data>
+  <data name="Neon" xml:space="preserve">
+    <value>ネオン</value>
+    <comment>Atmosphere Composition Neon</comment>
+  </data>
+  <data name="Argon" xml:space="preserve">
+    <value>アルゴン</value>
+    <comment>Atmosphere Composition Argon</comment>
+  </data>
 </root>
