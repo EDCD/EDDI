@@ -33,10 +33,6 @@ namespace EddiSpeechResponder
         protected static List<Event> eventQueue = new List<Event>();
         private static readonly object queueLock = new object();
 
-        private static bool ignoreBodyScan;
-
-        private bool enqueueStarScan;
-
         public string ResponderName()
         {
             return "Speech responder";
@@ -144,21 +140,18 @@ namespace EddiSpeechResponder
             Logging.Debug("Received event " + JsonConvert.SerializeObject(@event));
             StatusMonitor statusMonitor = (StatusMonitor)EDDI.Instance.ObtainMonitor("Status monitor");
 
-            if (@event is BodyMappedEvent)
+            if (@event is BodyScannedEvent bodyScannedEvent)
             {
-                ignoreBodyScan = true;
-            }
-            else if (@event is BodyScannedEvent bodyScannedEvent)
-            {
-                if (bodyScannedEvent.scantype.Contains("NavBeacon") || bodyScannedEvent.scantype == "AutoScan")
+                if (bodyScannedEvent.scantype.Contains("NavBeacon"))
                 {
-                    // Suppress scan details from nav beacons and `AutoScan` events.
+                    // Suppress scan details from nav beacons
                     return;
                 }
-                else if (ignoreBodyScan)
+                else if (EDDI.Instance.CurrentStarSystem?.bodies?
+                    .FirstOrDefault(b => b.bodyname == bodyScannedEvent.bodyname)?
+                    .scanned < bodyScannedEvent.timestamp)
                 {
-                    // Suppress surface mapping probes from voicing redundant body scan events.
-                    ignoreBodyScan = false;
+                    // Suppress voicing new scans after the first scan occurrence
                     return;
                 }
             }
@@ -169,16 +162,13 @@ namespace EddiSpeechResponder
                     // Suppress scan details from nav beacons
                     return;
                 }
-                else if (enqueueStarScan)
+                else if (EDDI.Instance.CurrentStarSystem?.bodies?
+                    .FirstOrDefault(s => s.bodyname == starScannedEvent.bodyname)?
+                    .scanned < starScannedEvent.timestamp)
                 {
-                    AddToEventQueue(@event);
+                    // Suppress voicing new scans after the first scan occurrence
                     return;
                 }
-            }
-            else if (@event is JumpedEvent)
-            {
-                TakeTypeFromEventQueue<StarScannedEvent>();
-                enqueueStarScan = true;
             }
             else if (@event is CommunityGoalEvent)
             {
@@ -191,21 +181,6 @@ namespace EddiSpeechResponder
                 {
                     return;
                 }
-            }
-
-            if (statusMonitor?.currentStatus.gui_focus == "fss mode" && statusMonitor?.lastStatus.gui_focus != "fss mode")
-            {
-                // Beginning with Elite Dangerous v. 3.3, the primary star scan is delivered via a Scan with 
-                // scantype `AutoScan` when you jump into the system. Secondary stars may be delivered in a burst 
-                // following an FSSDiscoveryScan. Since each source has a different trigger, we re-order events 
-                // and and report queued star scans when the pilot enters fss mode
-                Say(@event);
-                enqueueStarScan = false;
-                foreach (Event theEvent in TakeTypeFromEventQueue<StarScannedEvent>()?.OrderBy(s => ((StarScannedEvent)s)?.distance))
-                {
-                    Say(theEvent);
-                }
-                return;
             }
 
             Say(@event);
