@@ -117,12 +117,30 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
-  
-  
-  
-  
+  <data name="carbon" xml:space="preserve">
+    <value>表面の試掘、小惑星採掘、氷円環採掘から採取可能</value>
+    <comment>Material location Carbon</comment>
+  </data>
+  <data name="iron" xml:space="preserve">
+    <value>表面の試掘、小惑星採掘もしくは氷円環採掘から採取可能</value>
+    <comment>Material location Iron</comment>
+  </data>
+  <data name="nickel" xml:space="preserve">
+    <value>表面の試掘、小惑星採掘もしくは氷円環採掘から採取可能</value>
+    <comment>Material location Nickel</comment>
+  </data>
+  <data name="phosphorus" xml:space="preserve">
+    <value>表面の試掘、小惑星採掘もしくは氷採掘から採取可能</value>
+    <comment>Material location Phosphorus</comment>
+  </data>
+  <data name="sulphur" xml:space="preserve">
+    <value>表面の試掘、小惑星採掘もしくは氷円環採掘から採取可能</value>
+    <comment>Material location Sulphur</comment>
+  </data>
+  <data name="arsenic" xml:space="preserve">
+    <value>表面の試掘および小惑星採掘、ミッション報酬として入手可能</value>
+    <comment>Material location Arsenic</comment>
+  </data>
   
   
   
