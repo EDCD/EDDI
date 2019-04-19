@@ -154,7 +154,7 @@ namespace GalnetMonitor
                 {
                     List<News> newsItems = new List<News>();
                     string firstUid = null;
-                    
+
                     locales.TryGetValue(configuration.language, out locale);
                     string url = GetGalnetResource("sourceURL");
                     altURL = false;
@@ -170,11 +170,24 @@ namespace GalnetMonitor
                         altURL = true;
                     }
                     Logging.Debug("Fetching Galnet articles from " + url);
+                    IEnumerable<FeedItem> items = null;
                     try
-                    { 
+                    {
                         FeedReader feedReader = new FeedReader(new GalnetFeedItemNormalizer(), true);
-                        IEnumerable<FeedItem> items = feedReader.RetrieveFeed(url);
-                        if (items != null)
+                        items = feedReader.RetrieveFeed(url);
+                    }
+                    catch (WebException wex)
+                    {
+                        Logging.Warn("Exception attempting to obtain galnet feed: ", wex);
+                    }
+                    catch (System.Xml.XmlException xex)
+                    {
+                        Logging.Error("Exception attempting to obtain galnet feed: ", xex);
+                    }
+
+                    if (items != null)
+                    {
+                        try
                         {
                             foreach (GalnetFeedItemNormalizer.ExtendedFeedItem item in items)
                             {
@@ -194,43 +207,39 @@ namespace GalnetMonitor
                                 newsItems.Add(newsItem);
                                 GalnetSqLiteRepository.Instance.SaveNews(newsItem);
                             }
+
+                            if (firstUid != null && firstUid != configuration.lastuuid)
+                            {
+                                Logging.Debug("Updated latest UID to " + firstUid);
+                                configuration.lastuuid = firstUid;
+                                configuration.ToFile();
+                            }
+
+                            if (newsItems.Count > 0)
+                            {
+                                // Spin out event in to a different thread to stop blocking
+                                Thread thread = new Thread(() =>
+                                {
+                                    try
+                                    {
+                                        EDDI.Instance.enqueueEvent(new GalnetNewsPublishedEvent(DateTime.UtcNow, newsItems));
+                                    }
+                                    catch (ThreadAbortException)
+                                    {
+                                        Logging.Debug("Thread aborted");
+                                    }
+                                })
+                                {
+                                    IsBackground = true
+                                };
+                                thread.Start();
+                            }
+
                         }
-                    }
-                    catch (WebException wex)
-                    {
-                        Logging.Warn("Exception attempting to obtain galnet feed: ", wex);
-                    }
-                    catch (System.Xml.XmlException xex)
-                    {
-                        Logging.Error("Exception attempting to obtain galnet feed: ", xex);
-                    }
-                    
-
-                    if (firstUid != configuration.lastuuid)
-                    {
-                        Logging.Debug("Updated latest UID to " + firstUid);
-                        configuration.lastuuid = firstUid;
-                        configuration.ToFile();
-                    }
-
-                    if (newsItems.Count > 0)
-                    {
-                        // Spin out event in to a different thread to stop blocking
-                        Thread thread = new Thread(() =>
+                        catch (Exception ex)
                         {
-                            try
-                            {
-                                EDDI.Instance.enqueueEvent(new GalnetNewsPublishedEvent(DateTime.UtcNow, newsItems));
-                            }
-                            catch (ThreadAbortException)
-                            {
-                                Logging.Debug("Thread aborted");
-                            }
-                        })
-                        {
-                            IsBackground = true
-                        };
-                        thread.Start();
+                            Logging.Error("Exception attempting to handle galnet feed: ", ex);
+                        }
                     }
                 }
             }
