@@ -98,20 +98,68 @@
 	<resheader name="writer">
 		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
 	</resheader>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="Anarchy" xml:space="preserve">
+    <value>無政府</value>
+    <comment>Government type Anarchy</comment>
+  </data>
+  <data name="Colony" xml:space="preserve">
+    <value>植民地</value>
+    <comment>Government type Colony</comment>
+  </data>
+  <data name="Communism" xml:space="preserve">
+    <value>共産主義</value>
+    <comment>Government type Communism</comment>
+  </data>
+  <data name="Confederacy" xml:space="preserve">
+    <value>連邦</value>
+    <comment>Government type Confederacy</comment>
+  </data>
+  <data name="Cooperative" xml:space="preserve">
+    <value>組合</value>
+    <comment>Government type Cooperative</comment>
+  </data>
+  <data name="Corporate" xml:space="preserve">
+    <value>企業</value>
+    <comment>Government type Corporate</comment>
+  </data>
+  <data name="Democracy" xml:space="preserve">
+    <value>民主主義</value>
+    <comment>Government type Democracy</comment>
+  </data>
+  <data name="Dictatorship" xml:space="preserve">
+    <value>独裁</value>
+    <comment>Government type Dictatorship</comment>
+  </data>
+  <data name="Feudal" xml:space="preserve">
+    <value>封建</value>
+    <comment>Government type Feudal</comment>
+  </data>
+  <data name="Imperial" xml:space="preserve">
+    <value>帝政</value>
+    <comment>Government type Imperial</comment>
+  </data>
+  <data name="None" xml:space="preserve">
+    <value>なし</value>
+    <comment>Government type None</comment>
+  </data>
+  <data name="Patronage" xml:space="preserve">
+    <value>利権政治</value>
+    <comment>Government type Patronage</comment>
+  </data>
+  <data name="PrisonColony" xml:space="preserve">
+    <value>流刑植民地</value>
+    <comment>Government type PrisonColony</comment>
+  </data>
+  <data name="Theocracy" xml:space="preserve">
+    <value>神権政治</value>
+    <comment>Government type Theocracy</comment>
+  </data>
+  <data name="Workshop" xml:space="preserve">
+    <value>工場</value>
+    <comment>Government type Workshop</comment>
+  </data>
+  <data name="engineer" xml:space="preserve">
+    <value>技術者</value>
+    <comment>Government type engineer</comment>
+  </data>
 </root>
