@@ -97,9 +97,24 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
-  
-  
-  
+  <data name="HappinessBand1" xml:space="preserve">
+    <value>至福</value>
+    <comment>Elated</comment>
+  </data>
+  <data name="HappinessBand2" xml:space="preserve">
+    <value>幸福</value>
+    <comment>Happy</comment>
+  </data>
+  <data name="HappinessBand3" xml:space="preserve">
+    <value>不満</value>
+    <comment>Discontented</comment>
+  </data>
+  <data name="HappinessBand4" xml:space="preserve">
+    <value>不幸</value>
+    <comment>Unhappy</comment>
+  </data>
+  <data name="HappinessBand5" xml:space="preserve">
+    <value>落胆</value>
+    <comment>Despondent</comment>
+  </data>
 </root>
