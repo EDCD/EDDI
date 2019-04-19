@@ -110,11 +110,26 @@
     <value>初心者</value>
     <comment>Combat rating Novice</comment>
   </data>
-  
-  
-  
-  
-  
+  <data name="Competent" xml:space="preserve">
+    <value>中級者</value>
+    <comment>Combat rating Competent</comment>
+  </data>
+  <data name="Expert" xml:space="preserve">
+    <value>上級者</value>
+    <comment>Combat rating Expert</comment>
+  </data>
+  <data name="Master" xml:space="preserve">
+    <value>マスター</value>
+    <comment>Combat rating Master</comment>
+  </data>
+  <data name="Dangerous" xml:space="preserve">
+    <value>危険</value>
+    <comment>Combat rating Dangerous</comment>
+  </data>
+  <data name="Deadly" xml:space="preserve">
+    <value>致命的</value>
+    <comment>Combat rating Deadly</comment>
+  </data>
   <data name="Elite" xml:space="preserve">
     <value>エリート</value>
     <comment>Combat rating Elite</comment>
