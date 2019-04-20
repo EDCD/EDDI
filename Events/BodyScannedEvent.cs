@@ -12,12 +12,6 @@ namespace EddiEvents
         public const string SAMPLE = @"{ ""timestamp"":""2018-12-03T06:14:45Z"", ""event"":""Scan"", ""ScanType"":""Detailed"", ""BodyName"":""Maia A 2 a"", ""BodyID"":6, ""Parents"":[ {""Star"":5}, {""Star"":1}, {""Null"":0} ], ""DistanceFromArrivalLS"":634.646851, ""TidalLock"":true, ""TerraformState"":"""", ""PlanetClass"":""Metal rich body"", ""Atmosphere"":"""", ""AtmosphereType"":""None"", ""Volcanism"":""major metallic magma volcanism"", ""MassEM"":0.007395, ""Radius"":1032003.750000, ""SurfaceGravity"":2.767483, ""SurfaceTemperature"":1088.117188, ""SurfacePressure"":0.000000, ""Landable"":true, ""Materials"":[ { ""Name"":""iron"", ""Percent"":36.187508 }, { ""Name"":""nickel"", ""Percent"":27.370716 }, { ""Name"":""chromium"", ""Percent"":16.274725 }, { ""Name"":""zinc"", ""Percent"":9.834411 }, { ""Name"":""zirconium"", ""Percent"":4.202116 }, { ""Name"":""niobium"", ""Percent"":2.473223 }, { ""Name"":""molybdenum"", ""Percent"":2.363023 }, { ""Name"":""technetium"", ""Percent"":1.294281 } ], ""Composition"":{ ""Ice"":0.000000, ""Rock"":0.000000, ""Metal"":1.000000 }, ""SemiMajorAxis"":1139188608.000000, ""Eccentricity"":0.003271, ""OrbitalInclination"":-0.020626, ""Periapsis"":49.808826, ""OrbitalPeriod"":104294.210938, ""RotationPeriod"":104295.164063, ""AxialTilt"":-0.087406 }";
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
-        // Scan value calculation constants
-        public const double dssDivider = 2.4;
-        public const double scanDivider = 5.3;
-        public const double scanMultiplier = 3;
-        public const double scanPower = 0.199977;
-
         static BodyScannedEvent()
         {
             VARIABLES.Add("bodyname", "The name of the body that has been scanned");
@@ -50,68 +44,71 @@ namespace EddiEvents
             VARIABLES.Add("estimatedvalue", "The estimated value of the current scan");
         }
 
-        public string bodyname { get; private set; }
+        // Variable names for this event should match the class property names for maximum compatibility with the BodyDetails() function in Cottle
+
+        public string bodyname => body.bodyname;
 
         public string systemname { get; private set; }
 
-        public string shortname => (systemname == null || bodyname == systemname) ? bodyname : bodyname.Replace(systemname, "").Trim();
+        public string shortname => body.shortname;
 
-        public string planettype => planetClass.localizedName;  // This is the object property reported from the BodyDetails() function
+        public string planettype => (body.planetClass ?? PlanetClass.None).localizedName;  // This matches the object property reported from the BodyDetails() function
 
-        public decimal? earthmass { get; private set; }
+        public decimal? earthmass => body.earthmass;
 
-        public decimal? radius { get; private set; }
+        public decimal? radius => body.radius;
 
-        public decimal gravity { get; private set; }
+        public decimal gravity => (decimal)body.gravity;
 
-        public decimal? temperature { get; private set; }
+        public decimal? temperature => body.temperature;
 
-        public decimal? pressure { get; private set; }
+        public decimal? pressure => body.pressure;
 
-        public bool? tidallylocked { get; private set; }
+        public bool? tidallylocked => body.tidallylocked;
 
-        public bool? landable { get; private set; }
+        public bool? landable => body.landable;
 
-        public string atmosphere => atmosphereclass?.localizedName;
+        public string atmosphere => (body.atmosphereclass ?? AtmosphereClass.None).localizedName; // This matches the object property reported from the BodyDetails() function
 
-        public List<AtmosphereComposition> atmospherecompositions { get; private set; }
+        public List<AtmosphereComposition> atmospherecompositions => body.atmospherecompositions;
 
-        public List<SolidComposition> solidcompositions { get; private set; }
+        public List<SolidComposition> solidcompositions => body.solidcompositions;
 
-        public Volcanism volcanism { get; private set; }
+        public Volcanism volcanism => body.volcanism;
 
-        public decimal distance { get; private set; }
+        public decimal distance => (decimal)body.distance;
 
-        public decimal orbitalperiod { get; private set; }
+        public decimal? orbitalperiod => body.orbitalperiod;
 
-        public decimal rotationalperiod { get; private set; }
+        public decimal? rotationalperiod => body.rotationalperiod;
 
-        public decimal? semimajoraxis { get; private set; }
+        public decimal? semimajoraxis => body.semimajoraxis;
 
-        public decimal? eccentricity { get; private set; }
+        public decimal? eccentricity => body.eccentricity;
 
-        public decimal? inclination { get; private set; }
+        public decimal? inclination => body.inclination;
 
-        public decimal? periapsis { get; private set; }
+        public decimal? periapsis => body.periapsis;
 
-        public List<Ring> rings { get; private set; }
+        public List<Ring> rings => body.rings;
 
-        public string reserves { get; private set; }
+        public string reserves => (body.reserveLevel ?? ReserveLevel.None).localizedName; // This matches the object property reported from the BodyDetails() function
 
-        public List<MaterialPresence> materials { get; private set; }
+        public List<MaterialPresence> materials => body.materials;
 
-        public string terraformstate => terraformState.localizedName;
+        public string terraformstate => (terraformState ?? TerraformState.NotTerraformable).localizedName; // This matches the object property reported from the BodyDetails() function
 
-        public decimal? tilt { get; private set; }
+        public decimal? tilt => body.tilt;
 
-        public long? estimatedvalue { get; private set; }
+        public long? estimatedvalue => body.estimatedvalue;
 
         // Variables below are not intended to be user facing
-        public long? bodyId { get; private set; }
-        public List<IDictionary<string, object>> parents { get; private set; }
-        public AtmosphereClass atmosphereclass { get; private set; }
-        public PlanetClass planetClass { get; private set; }
-        public TerraformState terraformState { get; private set; }
+        public Body body { get; private set; }
+        public long? bodyId => body.bodyId;
+        public List<IDictionary<string, object>> parents => body.parents;
+        public AtmosphereClass atmosphereclass => body.atmosphereclass;
+        public PlanetClass planetClass => body.planetClass;
+        public TerraformState terraformState => body.terraformState;
         public string scantype { get; private set; } // One of AutoScan, Basic, Detailed, NavBeacon, NavBeaconDetail
                                                      // AutoScan events are detailed scans triggered via proximity. 
 
@@ -119,146 +116,20 @@ namespace EddiEvents
         [JsonIgnore, Obsolete("Use bodyname instead")]
         public string name => bodyname;
         [JsonIgnore, Obsolete("Use planetClass instead")]
-        public string bodyclass => planetClass.localizedName;
+        public string bodyclass => (body.planetClass ?? PlanetClass.None).localizedName;
         [JsonIgnore, Obsolete("Use distance instead")]
         public decimal distancefromarrival => distance;  // This is the object property reported from the BodyDetails() function
         [JsonIgnore, Obsolete("Use inclination instead")]
         public decimal? orbitalinclination => inclination;  // This is the object property reported from the BodyDetails() function
         [JsonIgnore, Obsolete("Use rotationalperiod instead")]
-        public decimal rotationperiod => rotationalperiod;  // This is the object property reported from the BodyDetails() function
+        public decimal? rotationperiod => rotationalperiod;  // This is the object property reported from the BodyDetails() function
         [JsonIgnore, Obsolete("Use tilt instead")]
         public decimal? axialtilt => tilt;  // This is the object property reported from the BodyDetails() function
 
-        public BodyScannedEvent(DateTime timestamp, string scantype, string bodyName, long? bodyId, string systemName, PlanetClass planetClass, decimal? earthmass, decimal? radiusKm, decimal gravity, decimal? temperatureKelvin, decimal? pressureAtm, bool? tidallylocked, bool? landable, AtmosphereClass atmosphereClass, List<AtmosphereComposition> atmosphereComposition, List<SolidComposition> solidCompositions, Volcanism volcanism, decimal distancefromarrival_Ls, decimal orbitalperiodDays, decimal rotationperiodDays, decimal? semimajoraxisAU, decimal? eccentricity, decimal? orbitalinclinationDegrees, decimal? periapsisDegrees, List<Ring> rings, string reserves, List<MaterialPresence> materials, TerraformState terraformstate, decimal? axialtiltDegrees, List<IDictionary<string, object>> parents) : base(timestamp, NAME)
+        public BodyScannedEvent(DateTime timestamp, string scantype, Body body) : base(timestamp, NAME)
         {
+            this.body = body;
             this.scantype = scantype;
-            this.bodyname = bodyName;
-            this.bodyId = bodyId;
-            this.systemname = systemName;
-            this.distance = distancefromarrival_Ls;
-            this.planetClass = planetClass;
-            this.earthmass = earthmass;
-            this.radius = radiusKm;
-            this.gravity = gravity;
-            this.temperature = temperatureKelvin;
-            this.pressure = pressureAtm;
-            this.tidallylocked = tidallylocked;
-            this.landable = landable;
-            this.atmosphereclass = atmosphereClass;
-            this.atmospherecompositions = atmosphereComposition;
-            this.solidcompositions = solidCompositions;
-            this.volcanism = volcanism;
-            this.orbitalperiod = orbitalperiodDays;
-            this.rotationalperiod = rotationperiodDays;
-            this.semimajoraxis = semimajoraxisAU;
-            this.eccentricity = eccentricity;
-            this.inclination = orbitalinclinationDegrees;
-            this.periapsis = periapsisDegrees;
-            this.rings = rings;
-            this.reserves = reserves;
-            this.materials = materials;
-            this.terraformState = terraformstate;
-            this.tilt = axialtiltDegrees;
-            this.parents = parents;
-            this.estimatedvalue = estimateValue(scantype == null ? false : scantype.Contains("Detail"));
-        }
-
-        private decimal sanitiseCP(decimal cp)
-        {
-            // Trim decimal places appropriately
-            if (cp < .00001M || cp > .9999M)
-            {
-                return Math.Round(cp * 100, 4);
-            }
-            else if (cp < .0001M || cp > .999M)
-            {
-                return Math.Round(cp * 100, 3);
-            }
-            else if (cp < .001M || cp > .99M)
-            {
-                return Math.Round(cp * 100, 2);
-            }
-            else
-            {
-                return Math.Round(cp * 100);
-            }
-        }
-
-        private long? estimateValue(bool detailedScan)
-        {
-            // Credit to MattG's thread at https://forums.frontier.co.uk/showthread.php/232000-Exploration-value-formulae for scan value formulas
-            int baseTypeValue = 720;
-            int terraValue = 0;
-            bool terraformable = false;
-
-            // Override constants for specific types of bodies
-            if (terraformState.edname == "Terraformable")
-            {
-                terraformable = true;
-            }
-            if ( planetClass.edname == "AmmoniaWorld")
-            {
-                // Ammonia worlds
-                baseTypeValue = 232619;
-            }
-            else if ( planetClass.edname == "EarthLikeBody" )
-            {
-                // Earth-like worlds
-                baseTypeValue = 155581;
-                terraValue = 279088;
-            }
-            else if (planetClass.edname == "WaterWorld" )
-            {
-                // Water worlds
-                baseTypeValue = 155581;
-                if (terraformable)
-                {
-                    terraValue = 279088;
-                }
-            }
-            else if (planetClass.edname == "MetalRichBody")
-            {
-                // Metal rich worlds
-                baseTypeValue = 52292;
-            }
-            else if (planetClass.edname == "HighMetalContentBody")
-            {
-                // High metal content worlds
-                baseTypeValue = 23168;
-                if (terraformable)
-                {
-                    terraValue = 241607;
-                }
-            }
-            else if (planetClass.edname == "RockyBody")
-            {
-                // Rocky worlds
-                if (terraformable)
-                {
-                    terraValue = 223971;
-                }
-            }
-            else if (planetClass.edname == "ClassIGasGiant")
-            {
-                // Class I gas giants
-                baseTypeValue = 3974;
-            }
-            else if (planetClass.edname == "ClassIIGasGiant")
-            {
-                // Class II gas giants
-                baseTypeValue = 23168;
-            }
-
-            // Calculate exploration scan values
-            double baseValue = baseTypeValue + (scanMultiplier * baseTypeValue * Math.Pow((double)earthmass, scanPower) / scanDivider);
-            double terraBonusValue = terraValue + (scanMultiplier * terraValue * Math.Pow((double)earthmass, scanPower) / scanDivider);
-            double value = baseValue + terraBonusValue;
-
-            if (detailedScan == false)
-            {
-                value = value / dssDivider;
-            }
-            return (long?)Math.Round(value, 0);
         }
     }
 }

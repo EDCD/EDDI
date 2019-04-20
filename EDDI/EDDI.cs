@@ -1868,36 +1868,18 @@ namespace Eddi
                 if (star == null)
                 {
                     Logging.Debug("Scanned star " + theEvent.bodyname + " is new - creating");
-                    // A new item - set it up
-                    star = new Body
-                    {
-                        EDDBID = -1,
-                        bodyType = BodyType.FromEDName("Star"),
-                        bodyname = theEvent.bodyname,
-                        bodyId = theEvent.bodyId,
-                        systemname = CurrentStarSystem?.systemname,
-                        systemAddress = CurrentStarSystem?.systemAddress
-                    };
-                    CurrentStarSystem.bodies?.Add(star);
+                    CurrentStarSystem.bodies?.Add(theEvent.star);
                 }
-                // Our data source may not include system address, so we include it here.
-                star.systemAddress = CurrentStarSystem?.systemAddress;
+                else
+                {
+                    int index = CurrentStarSystem.bodies.IndexOf(star);
+                    if (index != -1)
+                    {
+                        CurrentStarSystem.bodies[index] = theEvent.star;
+                    }
+                }
 
-                // Update with the information we have
-                star.age = theEvent.age;
-                star.distance = (long?)theEvent.distance;
-                star.luminosityclass = theEvent.luminosityclass;
-                star.temperature = (long?)theEvent.temperature;
-                star.stellarclass = theEvent.stellarclass;
-                star.solarmass = theEvent.solarmass;
-                star.solarradius = theEvent.solarradius;
-                star.rings = theEvent.rings;
-                star.parents = theEvent.parents;
-                star.scanned = star.scanned ?? (!theEvent.scantype.Contains("NavBeacon") ? (DateTime?)theEvent.timestamp : null);
-
-                star.setStellarExtras();
-
-                Logging.Debug("Saving data for scanned star " + theEvent.bodyname);
+                Logging.Debug("Saving data for scanned star " + theEvent.star.bodyname);
                 StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
             }
             return CurrentStarSystem != null;
@@ -1912,50 +1894,22 @@ namespace Eddi
                 if (body == null)
                 {
                     Logging.Debug("Scanned body " + theEvent.bodyname + " is new - creating");
-                    // A new body - set it up
-                    body = new Body
-                    {
-                        EDDBID = -1,
-                        bodyType = (bool)theEvent.parents?.Exists(p => p.ContainsKey("Planet")) 
-                            ? BodyType.FromEDName("Moon") : BodyType.FromEDName("Planet"),
-                        bodyname = theEvent.bodyname,
-                        bodyId = theEvent.bodyId,
-                        systemname = CurrentStarSystem.systemname,
-                        systemAddress = CurrentStarSystem?.systemAddress
-                    };
-                    CurrentStarSystem.bodies.Add(body);
+                    CurrentStarSystem.bodies.Add(theEvent.body);
                 }
-                // Our data source may not include system address, so we include it here.
-                body.systemAddress = CurrentStarSystem?.systemAddress;
-
-                // Update with the information we have
-                body.distance = (long?)theEvent.distance;
-                body.landable = theEvent.landable;
-                body.tidallylocked = theEvent.tidallylocked;
-                body.temperature = (long?)theEvent.temperature;
-                body.periapsis = theEvent.periapsis;
-                body.atmosphereclass = theEvent.atmosphereclass;
-                body.atmospherecompositions = theEvent.atmospherecompositions;
-                body.solidcompositions = theEvent.solidcompositions;
-                body.gravity = theEvent.gravity;
-                body.eccentricity = theEvent.eccentricity;
-                body.inclination = theEvent.inclination;
-                body.orbitalperiod = theEvent.orbitalperiod;
-                body.rotationalperiod = theEvent.rotationalperiod;
-                body.semimajoraxis = theEvent.semimajoraxis;
-                body.pressure = theEvent.pressure;
-                body.terraformState = theEvent.terraformState;
-                body.planetClass = theEvent.planetClass;
-                body.volcanism = theEvent.volcanism;
-                body.materials = new List<MaterialPresence>();
-                foreach (MaterialPresence presence in theEvent.materials)
+                else
                 {
-                    body.materials.Add(new MaterialPresence(presence.definition, presence.percentage));
+                    int index = CurrentStarSystem.bodies.IndexOf(body);
+                    if (index != -1)
+                    {
+                        CurrentStarSystem.bodies[index] = theEvent.body;
+                    }
                 }
-                body.reserveLevel = ReserveLevel.FromEDName(theEvent.reserves);
-                body.rings = theEvent.rings;
-                body.parents = theEvent.parents;
-                body.scanned = body.scanned ?? (theEvent.scantype != null && (bool)!theEvent.scantype?.Contains("NavBeacon") ? (DateTime?)theEvent.timestamp : null);
+
+                // Update the system reserve level, when appropriate
+                if (theEvent.body.reserveLevel != ReserveLevel.None)
+                {
+                    CurrentStarSystem.Reserve = theEvent.body.reserveLevel;
+                }
 
                 Logging.Debug("Saving data for scanned body " + theEvent.bodyname);
                 StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
@@ -1975,6 +1929,7 @@ namespace Eddi
                 Body body = CurrentStarSystem?.bodies?.FirstOrDefault(b => b?.bodyname == theEvent.name);
                 if (body != null)
                 {
+                    body.scanned = body.scanned ?? theEvent.timestamp;
                     body.mapped = theEvent.timestamp;
                     StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
                     updateCurrentStellarBody(theEvent.name, CurrentStarSystem?.systemname, CurrentStarSystem?.systemAddress);

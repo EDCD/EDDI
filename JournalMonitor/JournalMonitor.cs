@@ -725,9 +725,10 @@ namespace EddiJournalMonitor
                             case "Scan":
                                 {
                                     string name = JsonParsing.getString(data, "BodyName");
-                                    string systemName = EDDI.Instance?.CurrentStarSystem?.systemname;
                                     string scantype = JsonParsing.getString(data, "ScanType");
-                                    decimal distancefromarrival = JsonParsing.getDecimal(data, "DistanceFromArrivalLS");
+
+                                    string systemName = EDDI.Instance?.CurrentStarSystem?.systemname;
+                                    long? systemAddress = EDDI.Instance?.CurrentStarSystem?.systemAddress;
 
                                     // Belt
                                     if (name.Contains("Belt Cluster"))
@@ -745,12 +746,13 @@ namespace EddiJournalMonitor
                                     }
 
                                     // Common items
+                                    decimal distanceLs = JsonParsing.getDecimal(data, "DistanceFromArrivalLS");
                                     // Need to convert radius from meters (per journal) to kilometers
                                     decimal radiusKm = JsonParsing.getDecimal(data, "Radius") / 1000;
                                     // Need to convert orbital period from seconds (per journal) to days
                                     decimal? orbitalPeriodDays = ConstantConverters.seconds2days(JsonParsing.getOptionalDecimal(data, "OrbitalPeriod"));
                                     // Need to convert rotation period from seconds (per journal) to days
-                                    decimal rotationPeriodDays = (decimal)ConstantConverters.seconds2days(JsonParsing.getDecimal(data, "RotationPeriod"));
+                                    decimal? rotationPeriodDays = ConstantConverters.seconds2days(JsonParsing.getOptionalDecimal(data, "RotationPeriod"));
                                     // Need to convert meters to light seconds
                                     decimal? semimajoraxisLs = ConstantConverters.meters2ls(JsonParsing.getOptionalDecimal(data, "SemiMajorAxis"));
                                     decimal? eccentricity = JsonParsing.getOptionalDecimal(data, "Eccentricity");
@@ -758,6 +760,7 @@ namespace EddiJournalMonitor
                                     decimal? periapsisDegrees = JsonParsing.getOptionalDecimal(data, "Periapsis");
                                     decimal? axialTiltDegrees = JsonParsing.getOptionalDecimal(data, "AxialTilt");
                                     long? bodyId = JsonParsing.getOptionalLong(data, "BodyID");
+                                    decimal? temperatureKelvin = JsonParsing.getOptionalDecimal(data, "SurfaceTemperature");
 
                                     // Parent body types and IDs
                                     data.TryGetValue("Parents", out object parentsVal);
@@ -791,16 +794,20 @@ namespace EddiJournalMonitor
                                     if (data.ContainsKey("StarType"))
                                     {
                                         // Star
-                                        string starType = JsonParsing.getString(data, "StarType");
+                                        string stellarclass = JsonParsing.getString(data, "StarType");
                                         decimal stellarMass = JsonParsing.getDecimal(data, "StellarMass");
                                         decimal absoluteMagnitude = JsonParsing.getDecimal(data, "AbsoluteMagnitude");
                                         string luminosityClass = JsonParsing.getString(data, "Luminosity");
                                         data.TryGetValue("Age_MY", out val);
                                         long ageMegaYears = (long)val;
-                                        decimal temperatureKelvin = JsonParsing.getDecimal(data, "SurfaceTemperature");
-                                        bool mainstar = distancefromarrival == 0 ? true : false;
 
-                                        events.Add(new StarScannedEvent(timestamp, scantype, name, bodyId, starType, stellarMass, radiusKm, absoluteMagnitude, luminosityClass, ageMegaYears, temperatureKelvin, distancefromarrival, orbitalPeriodDays, rotationPeriodDays, semimajoraxisLs, eccentricity, orbitalinclinationDegrees, periapsisDegrees, rings, mainstar, parents) { raw = line, fromLoad = fromLogLoad });
+                                        Body star = new Body(name, bodyId, parents, distanceLs, stellarclass, stellarMass, radiusKm, absoluteMagnitude, ageMegaYears, temperatureKelvin, luminosityClass, semimajoraxisLs, eccentricity, orbitalinclinationDegrees, periapsisDegrees, orbitalPeriodDays, rotationPeriodDays, axialTiltDegrees, rings, systemName, systemAddress);
+                                        if (scantype != null)
+                                        {
+                                            star.scanned = (!scantype.Contains("NavBeacon")) ? (DateTime?)timestamp : null;
+                                        }
+
+                                        events.Add(new StarScannedEvent(timestamp, scantype, star) { raw = line, fromLoad = fromLogLoad });
                                         handled = true;
                                     }
                                     else if (data.ContainsKey("PlanetClass"))
@@ -814,13 +821,11 @@ namespace EddiJournalMonitor
                                         // MKW: Gravity in the Journal is in m/s; must convert it to G
                                         decimal gravity = ConstantConverters.ms2g(JsonParsing.getDecimal(data, "SurfaceGravity"));
 
-                                        decimal? temperatureKelvin = JsonParsing.getOptionalDecimal(data, "SurfaceTemperature");
-
                                         decimal? pressureAtm = ConstantConverters.pascals2atm(JsonParsing.getOptionalDecimal(data, "SurfacePressure"));
 
                                         bool? landable = JsonParsing.getOptionalBool(data, "Landable") ?? false;
 
-                                        string reserves = JsonParsing.getString(data, "ReserveLevel");
+                                        ReserveLevel reserveLevel = ReserveLevel.FromEDName(JsonParsing.getString(data, "ReserveLevel"));
 
                                         // The "Atmosphere" is most accurately described through the "AtmosphereType" and "AtmosphereComposition" 
                                         // properties, so we use them in preference to "Atmosphere"
@@ -906,7 +911,12 @@ namespace EddiJournalMonitor
                                         TerraformState terraformState = TerraformState.FromEDName(JsonParsing.getString(data, "TerraformState")) ?? TerraformState.NotTerraformable;
                                         Volcanism volcanism = Volcanism.FromName(JsonParsing.getString(data, "Volcanism"));
 
-                                        events.Add(new BodyScannedEvent(timestamp, scantype, name, bodyId, systemName, planetClass, earthMass, radiusKm, gravity, temperatureKelvin, pressureAtm, tidallyLocked, landable, atmosphereClass, atmosphereCompositions, solidCompositions, volcanism, distancefromarrival, (decimal)orbitalPeriodDays, rotationPeriodDays, semimajoraxisLs, eccentricity, orbitalinclinationDegrees, periapsisDegrees, rings, reserves, materials, terraformState, axialTiltDegrees, parents) { raw = line, fromLoad = fromLogLoad });
+                                        Body body = new Body(name, bodyId, parents, distanceLs, tidallyLocked, terraformState, planetClass, atmosphereClass, atmosphereCompositions, volcanism, earthMass, radiusKm, gravity, temperatureKelvin, pressureAtm, landable, materials, solidCompositions, semimajoraxisLs, eccentricity, orbitalinclinationDegrees, periapsisDegrees, orbitalPeriodDays, rotationPeriodDays, axialTiltDegrees, rings, reserveLevel, systemName, systemAddress);
+                                        if (scantype != null)
+                                        {
+                                            body.scanned = (!scantype.Contains("NavBeacon")) ? (DateTime?)timestamp : null;
+                                        }
+                                        events.Add(new BodyScannedEvent(timestamp, scantype, body) { raw = line, fromLoad = fromLogLoad });
                                         handled = true;
                                     }
                                 }
@@ -1988,11 +1998,11 @@ namespace EddiJournalMonitor
                                 break;
                             case "SAAScanComplete":
                                 {
-                                    string body = JsonParsing.getString(data, "BodyName");
+                                    string bodyName = JsonParsing.getString(data, "BodyName");
                                     long? bodyId = JsonParsing.getOptionalLong(data, "BodyID");
                                     int probesUsed = JsonParsing.getInt(data, "ProbesUsed");
                                     int efficiencyTarget = JsonParsing.getInt(data, "EfficiencyTarget");
-                                    events.Add(new BodyMappedEvent(timestamp, body, bodyId, probesUsed, efficiencyTarget) { raw = line, fromLoad = fromLogLoad });
+                                    events.Add(new BodyMappedEvent(timestamp, bodyName, bodyId, probesUsed, efficiencyTarget) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
