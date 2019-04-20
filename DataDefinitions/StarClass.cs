@@ -80,33 +80,33 @@ namespace EddiDataDefinitions
         /// <summary>
         /// Provide the cumulative probability that a star of this class will have a temp equal to or lower than that supplied
         /// </summary>
-        public decimal tempCP(decimal l)
+        public decimal? tempCP(decimal? l)
         {
-            return (decimal)tempdistribution.CumulativeDistribution((double)l);
+            return l == null ? null : (decimal?)tempdistribution.CumulativeDistribution((double)l);
         }
 
         /// <summary>
         /// Provide the cumulative probability that a star of this class will have a temp equal to or lower than that supplied
         /// </summary>
-        public decimal ageCP(decimal l)
+        public decimal? ageCP(decimal? l)
         {
-            return (decimal)agedistribution.CumulativeDistribution((double)l);
+            return l == null ? null : (decimal?)agedistribution.CumulativeDistribution((double)l);
         }
 
         /// <summary>
         /// Provide the cumulative probability that a star of this class will have a stellar radius equal to or lower than that supplied
         /// </summary>
-        public decimal stellarRadiusCP(decimal l)
+        public decimal? stellarRadiusCP(decimal? l)
         {
-            return (decimal)radiusdistribution.CumulativeDistribution((double)l);
+            return l == null ? null : (decimal?)radiusdistribution.CumulativeDistribution((double)l);
         }
 
         /// <summary>
         /// Provide the cumulative probability that a star of this class will have a stellar mass equal to or lower than that supplied
         /// </summary>
-        public decimal stellarMassCP(decimal l)
+        public decimal? stellarMassCP(decimal? l)
         {
-            return (decimal)massdistribution.CumulativeDistribution((double)l);
+            return l == null ? null : (decimal?)massdistribution.CumulativeDistribution((double)l);
         }
 
         public static StarClass FromName(string from)
@@ -126,17 +126,17 @@ namespace EddiDataDefinitions
         /// <summary>
         /// Convert radius in m in to stellar radius
         /// </summary>
-        public static decimal solarradius(decimal radiusKm)
+        public static decimal? solarradius(decimal? radiusKm)
         {
-            return radiusKm * 1000 / Constants.solarRadiusMeters;
+            return radiusKm == null ? null : radiusKm * 1000 / Constants.solarRadiusMeters;
         }
 
         /// <summary>
         /// Convert absolute magnitude in to luminosity
         /// </summary>
-        public static decimal luminosity(decimal absoluteMagnitude)
+        public static decimal? luminosity(decimal? absoluteMagnitude)
         {
-            return (decimal)Math.Pow(Math.Pow(100, 0.2), (Constants.solAbsoluteMagnitude - (double)absoluteMagnitude));
+            return absoluteMagnitude == null ? null : (decimal?)Math.Pow(Math.Pow(100, 0.2), (Constants.solAbsoluteMagnitude - (double)absoluteMagnitude));
         }
 
         public static decimal temperature(decimal luminosity, decimal radius)
@@ -155,24 +155,29 @@ namespace EddiDataDefinitions
             return Convert.ToDecimal(distancels);
         }
 
-        public static decimal sanitiseCP(decimal cp)
+        public static decimal? sanitiseCP(decimal? cp)
         {
+            if (cp == null)
+            {
+                return null;
+            }
+
             // Trim decimal places appropriately
             if (cp < .00001M || cp > .9999M)
             {
-                return Math.Round(cp * 100, 4);
+                return Math.Round((decimal)cp * 100, 4);
             }
             else if (cp < .0001M || cp > .999M)
             {
-                return Math.Round(cp * 100, 3);
+                return Math.Round((decimal)cp * 100, 3);
             }
             else if (cp < .001M || cp > .99M)
             {
-                return Math.Round(cp * 100, 2);
+                return Math.Round((decimal)cp * 100, 2);
             }
             else
             {
-                return Math.Round(cp * 100);
+                return Math.Round((decimal)cp * 100);
             }
         }
     }

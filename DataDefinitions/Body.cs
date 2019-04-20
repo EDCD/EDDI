@@ -22,7 +22,7 @@ namespace EddiDataDefinitions
         public long? EDSMID { get; set; }
 
         /// <summary>The localized type of the body </summary>
-        [JsonIgnore, Description("For use with Cottle. Please use BodyType for coding.")]
+        [JsonIgnore, Obsolete("For use with Cottle. Please use bodyType instead.")]
         public string bodytype => (bodyType ?? BodyType.None).localizedName;
 
         /// <summary>The body type of the body (e.g. Star or Planet)</summary>
@@ -45,9 +45,6 @@ namespace EddiDataDefinitions
         /// <summary>The ID of the system associated with this body in EDDB</summary>
         public long? systemEDDBID { get; set; }
 
-        /// <summary>The age of the body, in millions of years</summary>
-        public long? age { get; set; }
-
         /// <summary>The distance of the body from the arrival star, in light seconds </summary>
         public decimal? distance { get; set; }
 
@@ -67,6 +64,9 @@ namespace EddiDataDefinitions
 
         /// <summary>When we mapped this object, if we have (DateTime)</summary>
         public DateTime? mapped { get; set; }
+
+        /// <summary>The estimated value of the body</summary>
+        public long? estimatedvalue => estimateValue();
 
         // Orbital characteristics
 
@@ -122,13 +122,19 @@ namespace EddiDataDefinitions
             }
         }
 
+        public Body()
+        { }
+
         [JsonIgnore]
         private List<IDictionary<string, object>> _parents;
 
         // Star-specific items
 
+        /// <summary>The age of the body, in millions of years</summary>
+        public long? age { get; set; }
+
         /// <summary>If this body is the main star</summary>
-        public bool? mainstar { get; set; }
+        public bool? mainstar => distance == 0 ? true : false;
 
         /// <summary>The stellar class of the star</summary>
         public string stellarclass { get; set; }
@@ -139,20 +145,62 @@ namespace EddiDataDefinitions
         /// <summary>The solar mass of the star</summary>
         public decimal? solarmass { get; set; }
 
-        /// <summary>The solar radius of the star, compared to Sol</summary>
-        public decimal? solarradius { get; set; }
-
         /// <summary>The absolute magnitude of the star</summary> 
-        public decimal? absoluteMagnitude { get; set; }
+        public decimal? absolutemagnitude { get; set; }
 
-        // Additional information
-        public string chromaticity { get; set; }
-        public decimal? radiusprobability { get; set; }
-        public decimal? massprobability { get; set; }
-        public decimal? tempprobability { get; set; }
-        public decimal? ageprobability { get; set; }
-        public decimal? estimatedhabzoneinner { get; set; }
-        public decimal? estimatedhabzoneouter { get; set; }
+        /// <summary>Class information about the star</summary> 
+        public StarClass starClass => StarClass.FromEDName(stellarclass);
+
+        // Additional calculated star information
+        public string chromaticity => starClass?.chromaticity?.localizedName; // For use with Cottle
+        public decimal? luminosity => StarClass.luminosity(absolutemagnitude);
+        public decimal? radiusprobability => starClass == null ? null : StarClass.sanitiseCP(starClass.stellarRadiusCP(solarradius));
+        public decimal? massprobability => starClass == null ? null : StarClass.sanitiseCP(starClass.stellarMassCP(solarmass));
+        public decimal? tempprobability => starClass == null ? null : StarClass.sanitiseCP(starClass.tempCP(temperature));
+        public decimal? ageprobability => starClass == null ? null : StarClass.sanitiseCP(starClass.ageCP(age));
+        /// <summary>The solar radius of the star, compared to Sol</summary>
+        public decimal? solarradius => StarClass.solarradius(radius);
+        /// <summary>Minimum estimated single-star habitable zone (target black body temperature of 315°K / 42°C / 107°F or less, radius in km)</summary>
+        public decimal? estimatedhabzoneinner => solarmass > 0 && radius > 0 && temperature > 0 ? 
+            (decimal?)StarClass.DistanceFromStarForTemperature(StarClass.maxHabitableTempKelvin, Convert.ToDouble(radius), Convert.ToDouble(temperature)) : null;
+        /// <summary>Maximum estimated single-star habitable zone (target black body temperature of 223.15°K / -50°C / -58°F or more, radius in km)</summary>
+        public decimal? estimatedhabzoneouter => solarmass > 0 && radius > 0 && temperature > 0 ? 
+            (decimal?)StarClass.DistanceFromStarForTemperature(StarClass.minHabitableTempKelvin, Convert.ToDouble(radius), Convert.ToDouble(temperature)) : null;
+
+        /// <summary> Star definition </summary>
+        public Body(string bodyName, long? bodyId, List<IDictionary<string, object>> parents, decimal? distanceLs, string stellarclass, decimal? solarmass, decimal radiusKm, decimal? absolutemagnitude, long? ageMegaYears, decimal? temperatureKelvin, string luminosityclass, decimal? semimajoraxisLs, decimal? eccentricity, decimal? orbitalinclinationDegrees, decimal? periapsisDegrees, decimal? orbitalPeriodDays, decimal? rotationPeriodDays, decimal? axialTiltDegrees, List<Ring> rings = null, string systemName = null, long? systemAddress = null)
+        {
+            this.bodyname = bodyName;
+            this.radius = radiusKm;
+            this.bodyType = BodyType.FromEDName("Star");
+            this.rings = rings;
+            this.temperature = temperatureKelvin;
+            this.bodyId = bodyId;
+
+            // Star specific items
+            this.stellarclass = stellarclass;
+            this.solarmass = solarmass;
+            this.absolutemagnitude = absolutemagnitude;
+            this.luminosityclass = luminosityclass;
+            this.age = ageMegaYears;
+            this.landable = false;
+            this.tidallylocked = false;
+
+            // Orbital characteristics
+            this.distance = distanceLs;
+            this.parents = parents;
+            this.orbitalperiod = orbitalPeriodDays;
+            this.rotationalperiod = rotationPeriodDays;
+            this.semimajoraxis = semimajoraxisLs;
+            this.eccentricity = eccentricity;
+            this.inclination = orbitalinclinationDegrees;
+            this.periapsis = periapsisDegrees;
+            this.tilt = axialTiltDegrees;
+
+            // System details
+            this.systemname = systemName;
+            this.systemAddress = systemAddress;
+        }
 
         // Body-specific items
 
@@ -212,39 +260,177 @@ namespace EddiDataDefinitions
         /// <summary>The reserve level</summary>
         public ReserveLevel reserveLevel { get; set; } = ReserveLevel.None;
 
+        /// <summary> Planet or Moon definition </summary>
+        public Body(string bodyName, long? bodyId, List<IDictionary<string, object>> parents, decimal? distanceLs, bool? tidallylocked, TerraformState terraformstate, PlanetClass planetClass, AtmosphereClass atmosphereClass, List<AtmosphereComposition> atmosphereCompositions, Volcanism volcanism, decimal? earthmass, decimal? radiusKm, decimal gravity, decimal? temperatureKelvin, decimal? pressureAtm, bool? landable, List<MaterialPresence> materials, List<SolidComposition> solidCompositions, decimal? semimajoraxisLs, decimal? eccentricity, decimal? orbitalinclinationDegrees, decimal? periapsisDegrees, decimal? orbitalPeriodDays, decimal? rotationPeriodDays, decimal? axialtiltDegrees, List<Ring> rings, ReserveLevel reserveLevel, string systemName = null, long? systemAddress = null)
+        {
+            this.bodyname = bodyName;
+            this.bodyType = (bool)parents?.Exists(p => p.ContainsKey("Planet"))
+                        ? BodyType.FromEDName("Moon") : BodyType.FromEDName("Planet");
+            this.rings = rings;
+            this.temperature = temperature;
+            this.bodyId = bodyId;
+
+            // Planet or Moon specific items
+            this.planetClass = planetClass;
+            this.earthmass = earthmass;
+            this.radius = radiusKm;
+            this.gravity = gravity;
+            this.temperature = temperatureKelvin;
+            this.pressure = pressureAtm;
+            this.tidallylocked = tidallylocked;
+            this.landable = landable;
+            this.atmosphereclass = atmosphereClass;
+            this.atmospherecompositions = atmosphereCompositions;
+            this.solidcompositions = solidCompositions;
+            this.volcanism = volcanism;
+            this.reserveLevel = reserveLevel;
+            this.materials = materials;
+            this.terraformState = terraformstate;
+
+            // Orbital characteristics
+            this.distance = distanceLs;
+            this.parents = parents;
+            this.orbitalperiod = orbitalPeriodDays;
+            this.rotationalperiod = rotationPeriodDays;
+            this.semimajoraxis = semimajoraxisLs;
+            this.eccentricity = eccentricity;
+            this.inclination = orbitalinclinationDegrees;
+            this.periapsis = periapsisDegrees;
+            this.tilt = axialtiltDegrees;
+
+            // System details
+            this.systemname = systemName; // This is needed to derive the "shortname" property
+            this.systemAddress = systemAddress;
+        }
+
+        // Estimated exploration value calculations
+        private long? estimateValue()
+        {
+            return 0;
+            // throw new NotImplementedException();
+        }
+
+        private long? estimateStarValue(bool detailedScan)
+        {
+            // Scan value calculation constants
+            const double dssDivider = 2.4;
+            const double scanDivider = 66.25;
+
+            // Credit to MattG's thread at https://forums.frontier.co.uk/showthread.php/232000-Exploration-value-formulae for scan value formulas
+            // 'bodyDataConstant' is a derived constant from MattG's thread for calculating scan values.
+            int baseValue = 2880;
+            double value;
+
+            // Override constants for specific types of bodies
+            if ((stellarclass == "H") || (stellarclass == "N"))
+            {
+                // Black holes and Neutron stars
+                baseValue = 54309;
+            }
+            else if (stellarclass.StartsWith("D") && (stellarclass.Length <= 3))
+            {
+                // White dwarves
+                baseValue = 33737;
+            }
+
+            // Calculate exploration scan values
+            value = baseValue + ((double)solarmass * baseValue / scanDivider);
+
+            if (detailedScan == false)
+            {
+                value = value / dssDivider;
+            }
+
+            return (long?)Math.Round(value, 0);
+        }
+
+        private long? estimateBodyValue(bool detailedScan)
+        {
+            // Scan value calculation constants
+            const double dssDivider = 2.4;
+            const double scanDivider = 5.3;
+            const double scanMultiplier = 3;
+            const double scanPower = 0.199977;
+
+            // Credit to MattG's thread at https://forums.frontier.co.uk/showthread.php/232000-Exploration-value-formulae for scan value formulas
+            int baseTypeValue = 720;
+            int terraValue = 0;
+            bool terraformable = false;
+
+            // Override constants for specific types of bodies
+            if (terraformState.edname == "Terraformable")
+            {
+                terraformable = true;
+            }
+            if (planetClass.edname == "AmmoniaWorld")
+            {
+                // Ammonia worlds
+                baseTypeValue = 232619;
+            }
+            else if (planetClass.edname == "EarthLikeBody")
+            {
+                // Earth-like worlds
+                baseTypeValue = 155581;
+                terraValue = 279088;
+            }
+            else if (planetClass.edname == "WaterWorld")
+            {
+                // Water worlds
+                baseTypeValue = 155581;
+                if (terraformable)
+                {
+                    terraValue = 279088;
+                }
+            }
+            else if (planetClass.edname == "MetalRichBody")
+            {
+                // Metal rich worlds
+                baseTypeValue = 52292;
+            }
+            else if (planetClass.edname == "HighMetalContentBody")
+            {
+                // High metal content worlds
+                baseTypeValue = 23168;
+                if (terraformable)
+                {
+                    terraValue = 241607;
+                }
+            }
+            else if (planetClass.edname == "RockyBody")
+            {
+                // Rocky worlds
+                if (terraformable)
+                {
+                    terraValue = 223971;
+                }
+            }
+            else if (planetClass.edname == "ClassIGasGiant")
+            {
+                // Class I gas giants
+                baseTypeValue = 3974;
+            }
+            else if (planetClass.edname == "ClassIIGasGiant")
+            {
+                // Class II gas giants
+                baseTypeValue = 23168;
+            }
+
+            // Calculate exploration scan values
+            double baseValue = baseTypeValue + (scanMultiplier * baseTypeValue * Math.Pow((double)earthmass, scanPower) / scanDivider);
+            double terraBonusValue = terraValue + (scanMultiplier * terraValue * Math.Pow((double)earthmass, scanPower) / scanDivider);
+            double value = baseValue + terraBonusValue;
+
+            if (detailedScan == false)
+            {
+                value = value / dssDivider;
+            }
+            return (long?)Math.Round(value, 0);
+        }
+
+        // Miscellaneous and legacy properties and methods
+
         /// <summary> the last time the information present changed (in the data source) </summary>
         public long? updatedat { get; set; }
-
-        /// <summary> Calculate additonal information for the star </summary>
-        public void setStellarExtras()
-        {
-            StarClass starClass = StarClass.FromName(stellarclass);
-            if (starClass != null)
-            {
-                if (solarmass != null) { massprobability = StarClass.sanitiseCP(starClass.stellarMassCP((decimal)solarmass)); }
-                if (solarradius != null) { radiusprobability = StarClass.sanitiseCP(starClass.stellarRadiusCP((decimal)solarradius)); }
-                if (temperature != null) { tempprobability = StarClass.sanitiseCP(starClass.tempCP((decimal)temperature)); }
-                if (age != null) { ageprobability = StarClass.sanitiseCP(starClass.ageCP((decimal)age)); }
-                chromaticity = starClass.chromaticity.localizedName;
-            }
-            // `estimatedvalue` is only set during scan events.
-            if (radius != 0 && radius != null && temperature != 0 && temperature != null)
-            {
-                // Minimum estimated single-star habitable zone (target black body temperature of 315°K / 42°C / 107°F or less, radius in km)
-                estimatedhabzoneinner = StarClass.DistanceFromStarForTemperature(StarClass.maxHabitableTempKelvin, Convert.ToDouble(radius), Convert.ToDouble(temperature));
-
-                // Maximum estimated single-star habitable zone (target black body temperature of 223.15°K / -50°C / -58°F or more, radius in km)
-                estimatedhabzoneouter = StarClass.DistanceFromStarForTemperature(StarClass.minHabitableTempKelvin, Convert.ToDouble(radius), Convert.ToDouble(temperature));
-            }
-            if (distance != null) { mainstar = distance == 0 ? true : false; }
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        public void NotifyPropertyChanged(string propName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
-        }
 
         // Deprecated properties (preserved for backwards compatibility with Cottle and database stored values)
 
@@ -266,18 +452,29 @@ namespace EddiDataDefinitions
         [OnDeserialized]
         private void OnDeserialized(StreamingContext context)
         {
-            if (bodyname == null)
-            {
-                string name = (string)_additionalData["bodyname"];
-                name = bodyname;
-            }
             if (bodyType == null)
             {
                 _additionalData.TryGetValue("Type", out JToken var);
                 BodyType type = var.ToObject<BodyType>();
                 bodyType = type;
             }
+            if (absolutemagnitude == null)
+            {
+                _additionalData.TryGetValue("absoluteMagnitude", out JToken val);
+                if (val != null)
+                {
+                    decimal? absoluteMagnitude = val.ToObject<decimal?>();
+                    absolutemagnitude = absoluteMagnitude;
+                }
+            }
             _additionalData = null;
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public void NotifyPropertyChanged(string propName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
         }
     }
 }

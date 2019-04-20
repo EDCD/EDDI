@@ -42,7 +42,7 @@ namespace UnitTests
             Assert.IsTrue((bool)star.mainstar);
             Assert.AreEqual(8068, star.age);
             Assert.AreEqual("V", star.luminosityclass);
-            Assert.AreEqual(7.129517, (double)star.absoluteMagnitude, 0.01);
+            Assert.AreEqual(7.129517, (double)star.absolutemagnitude, 0.01);
             Assert.AreEqual(0.648438, (double)star.solarmass, 0.01);
             Assert.AreEqual(0.7666015240833932, (double)star.solarradius, 0.01);
             Assert.AreEqual(4343, (double)star.temperature, 0.01);

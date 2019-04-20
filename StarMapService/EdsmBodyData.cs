@@ -46,7 +46,10 @@ namespace EddiStarMapService
                         try
                         {
                             Body Body = ParseStarMapBody(body, system);
-                            Bodies.Add(Body);
+                            if (Body != null)
+                            {
+                                Bodies.Add(Body);
+                            }
                         }
                         catch (Exception ex)
                         {
@@ -63,78 +66,90 @@ namespace EddiStarMapService
             return Bodies;
         }
 
-        private static Body ParseStarMapBody(JObject body, string system)
+        private static Body ParseStarMapBody(JObject body, string systemName)
         {
-            Body Body = new Body
-            {
-                // General items 
-                bodyId = (long?)body["bodyId"],
-                EDSMID = (long?)body["id"],
-                bodyname = (string)body["name"],
-                systemname = system,
-                bodyType = BodyType.FromName((string)body["type"]) ?? BodyType.None,
-                distance = (decimal?)body["distanceToArrival"], // Light Seconds
-                temperature = (long?)body["surfaceTemperature"], // Kelvin
+            // General items 
+            long? bodyId = (long?)body["bodyId"];
+            long? EDSMID = (long?)body["id"];
+            string bodyname = (string)body["name"];
+            BodyType bodyType = BodyType.FromName((string)body["type"]) ?? BodyType.None;
+            decimal? distanceLs = (decimal?)body["distanceToArrival"]; // Light Seconds
+            decimal? temperatureKelvin = (decimal?)(long?)body["surfaceTemperature"]; // Kelvin
 
-                // Orbital characteristics 
-                orbitalperiod = (decimal?)body["orbitalPeriod"], // Days
-                semimajoraxis = ConstantConverters.au2ls((decimal?)body["semiMajorAxis"]), // Light seconds
-                eccentricity = (decimal?)body["orbitalEccentricity"],
-                inclination = (decimal?)body["orbitalInclination"], // Degrees
-                periapsis = (decimal?)body["argOfPeriapsis"], // Degrees
-                rotationalperiod = (decimal?)body["rotationalPeriod"], // Days
-                tidallylocked = (bool?)body["rotationalPeriodTidallyLocked"] ?? false,
-                tilt = (decimal?)body["axialTilt"] // Degrees
-            };
+            // Orbital characteristics 
+            decimal? orbitalPeriodDays = (decimal?)body["orbitalPeriod"]; // Days
+            decimal? semimajoraxisLs = ConstantConverters.au2ls((decimal?)body["semiMajorAxis"]); // Light seconds
+            decimal? eccentricity = (decimal?)body["orbitalEccentricity"];
+            decimal? orbitalInclinationDegrees = (decimal?)body["orbitalInclination"]; // Degrees
+            decimal? periapsisDegrees = (decimal?)body["argOfPeriapsis"]; // Degrees
+            decimal? rotationPeriodDays = (decimal?)body["rotationalPeriod"]; // Days
+            decimal? axialTiltDegrees = (decimal?)body["axialTilt"]; // Degrees
 
+            List<IDictionary<string, object>> parents = new List<IDictionary<string, object>>();
             if (body["parents"] != null)
             {
                 // Parent body types and IDs
-                Body.parents = body["parents"].ToObject<List<IDictionary<string, object>>>() ?? new List<IDictionary<string, object>>();
+                parents = body["parents"].ToObject<List<IDictionary<string, object>>>() ?? new List<IDictionary<string, object>>();
             }
 
-            if ((string)body["type"] == "Belt")
+            List<Ring> rings = new List<Ring>();
+            if ((JArray)body["rings"] != null || (JArray)body["belts"] != null)
             {
-                // Not interested in asteroid belts, 
-                // no need to add additional information at this time.
+                var ringsData = body["rings"] ?? body["belts"];
+                if (ringsData != null)
+                {
+                    foreach (JObject ring in ringsData)
+                    {
+                        rings.Add(new Ring(
+                            (string)ring["name"],
+                            RingComposition.FromName((string)ring["type"]),
+                            (decimal)ring["mass"],
+                            (decimal)ring["innerRadius"],
+                            (decimal)ring["outerRadius"]
+                        ));
+                    }
+                }
             }
 
             if ((string)body["type"] == "Star")
             {
                 // Star-specific items 
-                Body.stellarclass = ((string)body["subType"]).Split(' ')[0]; // Splits "B (Blue-White) Star" to "B" 
-                Body.mainstar = (bool?)body["isMainStar"];
-                Body.age = (long?)body["age"]; // Age in megayears
-                Body.luminosityclass = (string)body["luminosity"];
-                Body.absoluteMagnitude = (decimal?)body["absoluteMagnitude"];
-                Body.solarmass = (decimal?)body["solarMasses"];
-                Body.solarradius = (decimal?)body["solarRadius"];
-                Body.landable = false;
-                Body.setStellarExtras();
+                string stellarclass = ((string)body["subType"]).Split(' ')[0]; // Splits "B (Blue-White) Star" to "B" 
+                long? ageMegaYears = (long?)body["age"]; // Age in megayears
+                string luminosityclass = (string)body["luminosity"];
+                decimal? absolutemagnitude = (decimal?)body["absoluteMagnitude"];
+                decimal? stellarMass = (decimal?)body["solarMasses"];
+                decimal? solarradius = (decimal?)body["solarRadius"];
+                decimal radiusKm = (decimal)(solarradius != null ? solarradius * Constants.solarRadiusMeters / 1000 : null);
+
+                Body Body = new Body(bodyname, bodyId, parents, distanceLs, stellarclass, stellarMass, radiusKm, absolutemagnitude, ageMegaYears, temperatureKelvin, luminosityclass, semimajoraxisLs, eccentricity, orbitalInclinationDegrees, periapsisDegrees, orbitalPeriodDays, rotationPeriodDays, axialTiltDegrees, rings, systemName, null);
+                Body.EDSMID = EDSMID;
+                DateTime updatedAt = DateTime.SpecifyKind(DateTime.Parse((string)body["updateTime"]), DateTimeKind.Utc);
+                Body.updatedat = updatedAt == null ? null : (long?)(updatedAt.Subtract(new DateTime(1970, 1, 1, 0, 0, 0))).TotalSeconds;
+
+                return Body;
             }
 
             if ((string)body["type"] == "Planet")
             {
-                // EDSM doesn't classify bodies as moons, so we classify them here.
-                Body.bodyType = (bool)Body.parents?.Exists(p => p.ContainsKey("Planet"))
-                                ? BodyType.FromEDName("Moon") : Body.bodyType;
-
                 // Planet and moon specific items 
-                Body.planetClass = PlanetClass.FromName((string)body["subType"]) ?? PlanetClass.None;
-                Body.tidallylocked = (bool?)body["rotationalPeriodTidallyLocked"] ?? false;
-                Body.landable = (bool?)body["isLandable"];
-                Body.gravity = (decimal?)body["gravity"]; // G's
-                Body.earthmass = (decimal?)body["earthMasses"];
-                Body.radius = (decimal?)body["radius"]; // Kilometers
-                Body.terraformState = TerraformState.FromName((string)body["terraformingState"]) ?? TerraformState.NotTerraformable;
+                PlanetClass planetClass = PlanetClass.FromName((string)body["subType"]) ?? PlanetClass.None;
+                bool? tidallylocked = (bool?)body["rotationalPeriodTidallyLocked"] ?? false;
+                bool? landable = (bool?)body["isLandable"];
+                decimal? gravity = (decimal?)body["gravity"]; // G's
+                decimal? earthmass = (decimal?)body["earthMasses"];
+                decimal? radiusKm = (decimal?)body["radius"]; // Kilometers
+                TerraformState terraformState = TerraformState.FromName((string)body["terraformingState"]) ?? TerraformState.NotTerraformable;
+
+                Volcanism volcanism = null;
                 if ((string)body["volcanismType"] != null)
                 {
-                    Body.volcanism = Volcanism.FromName((string)body["volcanismType"]);
+                    volcanism = Volcanism.FromName((string)body["volcanismType"]);
                 }
 
+                List<AtmosphereComposition> atmosphereCompositions = new List<AtmosphereComposition>();
                 if (body["atmosphereComposition"] is JObject)
                 {
-                    List<AtmosphereComposition> atmosphereCompositions = new List<AtmosphereComposition>();
                     var compositions = body["atmosphereComposition"].ToObject<Dictionary<string, decimal?>>();
 
                     foreach (KeyValuePair<string, decimal?> compositionKV in compositions)
@@ -149,25 +164,25 @@ namespace EddiStarMapService
                     if (atmosphereCompositions.Count > 0)
                     {
                         atmosphereCompositions = atmosphereCompositions.OrderByDescending(x => x.percent).ToList();
-                        Body.atmospherecompositions = atmosphereCompositions;
                     }
                 }
-                Body.pressure = (decimal?)body["surfacePressure"];
-                if (((string)body["subType"]).Contains("gas giant") && 
+                decimal? pressureAtm = (decimal?)body["surfacePressure"];
+                AtmosphereClass atmosphereClass = null;
+                if (((string)body["subType"]).Contains("gas giant") &&
                     (string)body["atmosphereType"] == "No atmosphere")
                 {
                     // EDSM classifies any body with an empty string atmosphere property as "No atmosphere". 
                     // However, gas giants also receive an empty string. Fix it, since gas giants have atmospheres. 
-                    Body.atmosphereclass = AtmosphereClass.FromEDName("GasGiant");
+                    atmosphereClass = AtmosphereClass.FromEDName("GasGiant");
                 }
                 else
                 {
-                    Body.atmosphereclass = AtmosphereClass.FromName((string)body["atmosphereType"]);
+                    atmosphereClass = AtmosphereClass.FromName((string)body["atmosphereType"]);
                 }
 
+                List<SolidComposition> solidCompositions = new List<SolidComposition>();
                 if (body["solidComposition"] is JObject)
                 {
-                    List<SolidComposition> bodyCompositions = new List<SolidComposition>();
                     var compositions = body["solidComposition"].ToObject<Dictionary<string, decimal?>>();
 
                     foreach (KeyValuePair<string, decimal?> compositionKV in compositions)
@@ -176,61 +191,45 @@ namespace EddiStarMapService
                         decimal? share = compositionKV.Value;
                         if (composition != null && share != null)
                         {
-                            bodyCompositions.Add(new SolidComposition(composition, (decimal)share));
+                            solidCompositions.Add(new SolidComposition(composition, (decimal)share));
                         }
                     }
-                    if (bodyCompositions.Count > 0)
+                    if (solidCompositions.Count > 0)
                     {
-                        bodyCompositions = bodyCompositions.OrderByDescending(x => x.percent).ToList();
-                        Body.solidcompositions = bodyCompositions;
+                        solidCompositions = solidCompositions.OrderByDescending(x => x.percent).ToList();
                     }
                 }
 
+                List<MaterialPresence> materials = new List<MaterialPresence>();
                 if (body["materials"] is JObject)
                 {
-                    List<MaterialPresence> Materials = new List<MaterialPresence>();
-                    var materials = body["materials"].ToObject<Dictionary<string, decimal?>>();
-                    foreach (KeyValuePair<string, decimal?> materialKV in materials)
+                    var materialsData = body["materials"].ToObject<Dictionary<string, decimal?>>();
+                    foreach (KeyValuePair<string, decimal?> materialKV in materialsData)
                     {
                         Material material = Material.FromName(materialKV.Key);
                         decimal? amount = materialKV.Value;
                         if (material != null && amount != null)
                         {
-                            Materials.Add(new MaterialPresence(material, (decimal)amount));
+                            materials.Add(new MaterialPresence(material, (decimal)amount));
                         }
                     }
-                    if (Materials.Count > 0)
+                    if (materials.Count > 0)
                     {
-                        Body.materials = Materials.OrderByDescending(o => o.percentage).ToList();
+                        materials = materials.OrderByDescending(o => o.percentage).ToList();
                     }
                 }
+                ReserveLevel reserveLevel = ReserveLevel.FromName((string)body["reserveLevel"]) ?? ReserveLevel.None;
+
+                DateTime updatedAt = DateTime.SpecifyKind(DateTime.Parse((string)body["updateTime"]), DateTimeKind.Utc);
+                Body Body = new Body(bodyname, bodyId, parents, distanceLs, tidallylocked, terraformState, planetClass, atmosphereClass, atmosphereCompositions, volcanism, earthmass, radiusKm, (decimal)gravity, temperatureKelvin, pressureAtm, landable, materials, solidCompositions, semimajoraxisLs, eccentricity, orbitalInclinationDegrees, periapsisDegrees, orbitalPeriodDays, rotationPeriodDays, axialTiltDegrees, rings, reserveLevel, systemName, null);
+                Body.EDSMID = EDSMID;
+                Body.updatedat = updatedAt == null ? null : (long?)(updatedAt.Subtract(new DateTime(1970, 1, 1, 0, 0, 0))).TotalSeconds;
+
+                return Body;
             }
 
-            if ((JArray)body["rings"] != null || (JArray)body["belts"] != null)
-            {
-                var rings = body["rings"] ?? body["belts"];
-                if (rings != null)
-                {
-                    List<Ring> Rings = new List<Ring>();
-                    foreach (JObject ring in rings)
-                    {
-                        Rings.Add(new Ring(
-                            (string)ring["name"],
-                            RingComposition.FromName((string)ring["type"]),
-                            (decimal)ring["mass"],
-                            (decimal)ring["innerRadius"],
-                            (decimal)ring["outerRadius"]
-                        ));
-                    }
-                    Body.rings = Rings;
-                }
-            }
-            Body.reserveLevel = ReserveLevel.FromName((string)body["reserveLevel"]) ?? ReserveLevel.None;
 
-            DateTime updatedAt = DateTime.SpecifyKind(DateTime.Parse((string)body["updateTime"]), DateTimeKind.Utc);
-            Body.updatedat = updatedAt == null ? null : (long?)(updatedAt.Subtract(new DateTime(1970, 1, 1, 0, 0, 0))).TotalSeconds;
-
-            return Body;
+            return null;
         }
     }
 }

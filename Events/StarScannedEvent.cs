@@ -11,10 +11,6 @@ namespace EddiEvents
         public const string DESCRIPTION = "Triggered when you complete a scan of a stellar body";
         public static string SAMPLE = "{ \"timestamp\":\"2018-12-01T08:04:24Z\", \"event\":\"Scan\", \"ScanType\":\"AutoScan\", \"BodyName\":\"Arietis Sector UJ-Q b5-2\", \"BodyID\":0, \"DistanceFromArrivalLS\":0.000000, \"StarType\":\"L\", \"StellarMass\":0.218750, \"Radius\":249075072.000000, \"AbsoluteMagnitude\":11.808075, \"Age_MY\":10020, \"SurfaceTemperature\":1937.000000, \"Luminosity\":\"V\", \"RotationPeriod\":119097.164063, \"AxialTilt\":0.000000 }";
 
-        // Scan value calculation constants
-        public const double dssDivider = 2.4;
-        public const double scanDivider = 66.25;
-
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
         static StarScannedEvent()
@@ -49,149 +45,83 @@ namespace EddiEvents
             VARIABLES.Add("mainstar", "True if the star is the main / primary star in the star system");
         }
 
-        public string bodyname { get; private set; }
+        // Variable names for this event should match the class property names for maximum compatibility with the BodyDetails() function in Cottle
 
-        public string stellarclass { get; private set; }
+        public string bodyname => star.bodyname;
 
-        public decimal solarmass{ get; private set; }
+        public string stellarclass => star.stellarclass;
 
-        public decimal massprobability { get; private set; }
+        public decimal solarmass => (decimal)star.solarmass;
 
-        public decimal radius { get; private set; }
+        public decimal? massprobability => star.massprobability;
 
-        public decimal solarradius { get; private set; }
+        public decimal radius => (decimal)star.radius;
 
-        public decimal radiusprobability { get; private set; }
+        public decimal solarradius => (decimal)star.solarradius;
 
-        public decimal absolutemagnitude { get; private set; }
+        public decimal? radiusprobability => star.radiusprobability;
 
-        public decimal luminosity { get; private set; }
-        
-        public string luminosityclass { get; private set; }
+        public decimal absolutemagnitude => (decimal)star.absolutemagnitude;
 
-        public decimal tempprobability { get; private set; }
+        public decimal luminosity => (decimal)star.luminosity;
 
-        public long age { get; private set; }
+        public string luminosityclass => star.luminosityclass;
 
-        public decimal ageprobability { get; private set; }
+        public decimal? tempprobability => star.tempprobability;
 
-        public decimal temperature { get; private set; }
+        public long age => (long)star.age;
 
-        public string chromaticity { get; private set; }
+        public decimal? ageprobability => star.ageprobability;
 
-        public decimal distance { get; private set; }  // Object property matches the BodyDetails() function
+        public decimal temperature => (decimal)star.temperature;
 
-        [Obsolete("Preserved for compatibility with older Cottle scripts only. Use `distance` instead.")]
-        public decimal distancefromarrival => distance;
+        public string chromaticity => star.chromaticity;
 
-        public decimal? orbitalperiod { get; private set; }
+        public decimal distance => (decimal)star.distance;
 
-        public decimal rotationalperiod { get; private set; }
+        public decimal? orbitalperiod => star.orbitalperiod;
 
-        public decimal? semimajoraxis { get; private set; }
+        public decimal rotationalperiod => (decimal)star.rotationalperiod;
 
-        public decimal? eccentricity { get; private set; }
+        public decimal? semimajoraxis => star.semimajoraxis;
 
-        public decimal? inclination { get; private set; }
+        public decimal? eccentricity => star.eccentricity;
 
-        public decimal? periapsis { get; private set; }
+        public decimal? inclination => star.inclination;
 
-        public List<Ring> rings { get; private set; }
+        public decimal? periapsis => star.periapsis;
 
-        public decimal? estimatedhabzoneinner { get; private set; }
+        public List<Ring> rings => star.rings;
 
-        public decimal? estimatedhabzoneouter { get; private set; }
+        public decimal? estimatedhabzoneinner => star.estimatedhabzoneinner;
 
-        public long? estimatedvalue { get; private set; }
+        public decimal? estimatedhabzoneouter => star.estimatedhabzoneouter;
 
-        public bool mainstar { get; private set; }
+        public long? estimatedvalue => star.estimatedvalue;
+
+        public bool mainstar => (bool)star.mainstar;
 
         // Variables below are not intended to be user facing
         public long? bodyId { get; private set; }
         public List<IDictionary<string, object>> parents { get; private set; }
         public string scantype { get; private set; } // One of AutoScan, Basic, Detailed, NavBeacon, NavBeaconDetail
                                                      // AutoScan events are detailed scans triggered via proximity. 
+        public Body star { get; private set; }
 
         // Deprecated, maintained for compatibility with user scripts
         [JsonIgnore, Obsolete("Use bodyname instead")]
-        public string name => bodyname;
+        public string name => bodyname; 
         [JsonIgnore, Obsolete("Use inclination instead")]
-        public decimal? orbitalinclination => inclination;  // This is the object property reported from the BodyDetails() function
+        public decimal? orbitalinclination => inclination;  
         [JsonIgnore, Obsolete("Use rotationalperiod instead")]
-        public decimal rotationperiod => rotationalperiod;  // This is the object property reported from the BodyDetails() function
+        public decimal rotationperiod => rotationalperiod;  
+        [JsonIgnore, Obsolete("Use distance instead")]
+        public decimal distancefromarrival => distance;
 
-        public StarScannedEvent(DateTime timestamp, string scantype, string name, long? bodyId, string stellarclass, decimal solarmass, decimal radiusKm, decimal absolutemagnitude, string luminosityclass, long ageMegayears, decimal temperatureKelvin, decimal distanceLs, decimal? orbitalperiod, decimal rotationperiod, decimal? semimajoraxis, decimal? eccentricity, decimal? orbitalinclination, decimal? periapsis, List<Ring> rings, bool mainstar, List<IDictionary<string, object>> parents) : base(timestamp, NAME)
+        public StarScannedEvent(DateTime timestamp, string scantype, Body star) : base(timestamp, NAME)
         {
+            this.star = star;
             this.scantype = scantype;
-            this.bodyname = name;
-            this.bodyId = bodyId;
-            this.stellarclass = stellarclass;
-            this.solarmass = solarmass;
-            this.radius = radiusKm;
-            this.absolutemagnitude = absolutemagnitude;
-            this.luminosityclass = luminosityclass;         
-            this.age = ageMegayears;
-            this.temperature = temperatureKelvin;
-            this.distance = distanceLs;
-            this.orbitalperiod = orbitalperiod;
-            this.rotationalperiod = rotationperiod;
-            this.semimajoraxis = semimajoraxis;
-            this.eccentricity = eccentricity;
-            this.inclination = orbitalinclination;
-            this.periapsis = periapsis;
-            this.rings = rings;
-            solarradius = StarClass.solarradius(radiusKm);
-            luminosity = StarClass.luminosity(absolutemagnitude);  
-            StarClass starClass = StarClass.FromName(this.stellarclass);
-            if (starClass != null)
-            {
-                massprobability = StarClass.sanitiseCP(starClass.stellarMassCP(solarmass));
-                radiusprobability = StarClass.sanitiseCP(starClass.stellarRadiusCP(this.solarradius));
-                tempprobability = StarClass.sanitiseCP(starClass.tempCP(this.temperature));
-                ageprobability = StarClass.sanitiseCP(starClass.ageCP(this.age));
-                chromaticity = starClass.chromaticity.localizedName;
-            }
-            if (radiusKm != 0 && temperatureKelvin != 0)
-            {
-                // Minimum estimated single-star habitable zone (target black body temperature of 315°K / 42°C / 107°F or less)
-                estimatedhabzoneinner = StarClass.DistanceFromStarForTemperature(StarClass.maxHabitableTempKelvin, Convert.ToDouble(radiusKm), Convert.ToDouble(temperatureKelvin));
-
-                // Maximum estimated single-star habitable zone (target black body temperature of 223.15°K / -50°C / -58°F or more)
-                estimatedhabzoneouter = StarClass.DistanceFromStarForTemperature(StarClass.minHabitableTempKelvin, Convert.ToDouble(radiusKm), Convert.ToDouble(temperatureKelvin));
-            }
-            estimatedvalue = estimateValue(scantype != null ? scantype.Contains("Detail") : false);
-            this.mainstar = mainstar;
-            this.parents = parents;
-        }
-
-        private long? estimateValue(bool detailedScan)
-        {
-            // Credit to MattG's thread at https://forums.frontier.co.uk/showthread.php/232000-Exploration-value-formulae for scan value formulas
-            // 'bodyDataConstant' is a derived constant from MattG's thread for calculating scan values.
-            int baseValue = 2880;
-            double value;
-
-            // Override constants for specific types of bodies
-            if ((stellarclass == "H") || (stellarclass == "N"))
-            {
-                // Black holes and Neutron stars
-                baseValue = 54309;
-            }
-            else if (stellarclass.StartsWith("D") && (stellarclass.Length <= 3))
-            {
-                // White dwarves
-                baseValue = 33737;
-            }
-
-            // Calculate exploration scan values
-            value = baseValue + ((double)solarmass * baseValue / scanDivider);
-
-            if (detailedScan == false)
-            {
-                value = value / dssDivider;
-            }
-
-            return (long?)Math.Round(value, 0);
         }
     }
 }
