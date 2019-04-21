@@ -1898,10 +1898,14 @@ namespace Eddi
                 }
                 else
                 {
+                    // Bodies may be scanned more than once. Preserve the earliest scan DateTime.
+                    DateTime? priorScanDateTime = theEvent.body.scanned;
+
                     int index = CurrentStarSystem.bodies.IndexOf(body);
                     if (index != -1)
                     {
                         CurrentStarSystem.bodies[index] = theEvent.body;
+                        CurrentStarSystem.bodies[index].scanned = priorScanDateTime;
                     }
                 }
 
