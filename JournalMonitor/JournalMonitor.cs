@@ -45,7 +45,7 @@ namespace EddiJournalMonitor
                 {
                     Task.Run(async () =>
                     {
-                        await Task.Delay(1000);
+                        await Task.Delay(1500);
                         callback(@event);
                     });
                     continue;
