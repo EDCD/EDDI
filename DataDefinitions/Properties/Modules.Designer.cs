@@ -79,6 +79,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Advanced Docking Computer.
+        /// </summary>
+        public static string AdvancedDockingComputer {
+            get {
+                return ResourceManager.GetString("AdvancedDockingComputer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Advanced Plasma Accelerator.
         /// </summary>
         public static string AdvancedPlasmaAccelerator {
@@ -1020,6 +1029,15 @@ namespace EddiDataDefinitions.Properties {
         public static string StandardDockingComputer {
             get {
                 return ResourceManager.GetString("StandardDockingComputer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Supercruise Assist.
+        /// </summary>
+        public static string SupercruiseAssist {
+            get {
+                return ResourceManager.GetString("SupercruiseAssist", resourceCulture);
             }
         }
         
