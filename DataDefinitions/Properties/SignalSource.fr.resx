@@ -141,11 +141,11 @@
     <value>Zone de combat de faible intensité</value>
     <comment>Combat Zone (Low Intensity)</comment>
   </data>
-  
-  <data name="USS_Type_Aftermath" xml:space="preserve">
-    <value>Zone de conflit</value>
-    <comment>Aftermatch signal</comment>
+  <data name="USS_Type_Salvage" xml:space="preserve">
+    <value>Émissions dégradées</value>
+    <comment>Salvage signal</comment>
   </data>
+  
   <data name="USS_Type_Anomaly" xml:space="preserve">
     <value>Anomalie</value>
     <comment>Anomaly signal</comment>
