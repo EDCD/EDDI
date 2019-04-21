@@ -7,7 +7,7 @@ namespace EddiCompanionAppService
     /// <summary>Storage of credentials for a single Elite: Dangerous user to access the Companion App</summary>
     public class CompanionAppCredentials
     {
-        const string fileName = "CompanionAPI.json";
+        private const string fileName = "CompanionAPI.json";
 
         [JsonProperty]
         public string accessToken { get; set; }
@@ -26,14 +26,18 @@ namespace EddiCompanionAppService
         static readonly object fileLock = new object();
 
         /// <summary>
-        /// Obtain credentials from a file.  If filepath is not supplied then defaultPath is used
+        /// Obtain credentials from a file. If filepath is not supplied then defaultPath is used.
         /// </summary>
         public static CompanionAppCredentials Load(string filepath=null)
         {
             CompanionAppCredentials credentials = null;
             filepath = filepath ?? defaultPath;
 
-            string data = Files.Read(filepath);
+            string data = null;
+            if (System.IO.File.Exists(filepath))
+            {
+                data = Files.Read(filepath);
+            }
             if (data != null)
             {
                 try
@@ -43,8 +47,10 @@ namespace EddiCompanionAppService
                 catch (Exception ex)
                 {
                     Logging.Debug("Failed to read companion app credentials", ex);
+                    credentials = null;
                 }
             }
+
             if (credentials == null)
             {
                 credentials = new CompanionAppCredentials() {dataPath = filepath};
