@@ -1030,6 +1030,8 @@ namespace EddiDataDefinitions
                 new Module(899990050, "hpt_guardianshard_fixed_gdn_fighter", -1, "ShardCannon", 1, "I", 0, -1),
 
                 // Needs EDDB ID
+                new Module(128935155, "Int_DockingComputer_Advanced", 890, "AdvancedDockingComputer", 1, "E", 13507),
+                new Module(128932273, "Int_SupercruiseAssist", 890, "SupercruiseAssist", 1, "E", 9121),
                 new Module(128671340, "Hpt_MiningLaser_Fixed_Small_Advanced", -1, "MiningLance", 1, "D", 28066, ModuleMount.Fixed),
                 new Module(128671345, "Hpt_MultiCannon_Fixed_Small_Strong", -1, "Enforcer", 1, "F", 11811, ModuleMount.Fixed, 60, 1000),
                 new Module(128793117, "Int_MetaAlloyHullReinforcement_Size1_Class1", -1, "MetaAlloyHullReinforcement", 1, "E", 7501),
