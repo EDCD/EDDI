@@ -3590,7 +3590,7 @@ namespace EddiJournalMonitor
 
         public string LocalizedMonitorName()
         {
-            return EddiJournalMonitor.Properties.JournalMonitor.name;
+            return Properties.JournalMonitor.name;
         }
 
         public string MonitorVersion()
@@ -3600,7 +3600,7 @@ namespace EddiJournalMonitor
 
         public string MonitorDescription()
         {
-            return EddiJournalMonitor.Properties.JournalMonitor.desc;
+            return Properties.JournalMonitor.desc;
         }
 
         public bool IsRequired()
