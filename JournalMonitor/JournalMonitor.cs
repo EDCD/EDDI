@@ -3271,10 +3271,12 @@ namespace EddiJournalMonitor
             catch (Exception ex)
             {
                 Logging.Warn("Failed to parse line: " + ex.ToString());
-                Dictionary<string, object> data = new Dictionary<string, object>();
-                data.Add("event", line);
-                data.Add("exception", ex.Message);
-                data.Add("stacktrace", ex.StackTrace);
+                Dictionary<string, object> data = new Dictionary<string, object>
+                {
+                    { "event", line },
+                    { "exception", ex.Message },
+                    { "stacktrace", ex.StackTrace }
+                };
                 Logging.Error("Exception whilst parsing journal line", data);
             }
             return events;
@@ -3321,8 +3323,7 @@ namespace EddiJournalMonitor
             // Get the faction name and state
             if (data.TryGetValue(type + "Faction", out object val))
             {
-                Dictionary<string, object> factionData = val as Dictionary<string, object>;
-                if (factionData != null) // 3.3.03 or later journal
+                if (val is Dictionary<string, object> factionData) // 3.3.03 or later journal
                 {
                     faction.name = JsonParsing.getString(factionData, "Name");
 
