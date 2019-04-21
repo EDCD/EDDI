@@ -147,13 +147,6 @@ namespace EddiSpeechResponder
                     // Suppress scan details from nav beacons
                     return;
                 }
-                else if (EDDI.Instance.CurrentStarSystem?.bodies?
-                    .FirstOrDefault(b => b.bodyname == bodyScannedEvent.bodyname)?
-                    .scanned < bodyScannedEvent.timestamp)
-                {
-                    // Suppress voicing new scans after the first scan occurrence
-                    return;
-                }
             }
             else if (@event is StarScannedEvent starScannedEvent)
             {

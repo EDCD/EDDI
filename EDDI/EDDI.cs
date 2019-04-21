@@ -1878,6 +1878,7 @@ namespace Eddi
                         CurrentStarSystem.bodies[index] = theEvent.star;
                     }
                 }
+                CurrentStarSystem.bodies = CurrentStarSystem.bodies.OrderBy(s => s.bodyId).ToList();
 
                 Logging.Debug("Saving data for scanned star " + theEvent.star.bodyname);
                 StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
@@ -1898,16 +1899,22 @@ namespace Eddi
                 }
                 else
                 {
-                    // Bodies may be scanned more than once. Preserve the earliest scan DateTime.
-                    DateTime? priorScanDateTime = theEvent.body.scanned;
-
-                    int index = CurrentStarSystem.bodies.IndexOf(body);
-                    if (index != -1)
+                    if (body.scanned == null)
                     {
-                        CurrentStarSystem.bodies[index] = theEvent.body;
-                        CurrentStarSystem.bodies[index].scanned = priorScanDateTime;
+                        int index = CurrentStarSystem.bodies.IndexOf(body);
+                        if (index != -1)
+                        {
+                            // Update our body with the scan data.
+                            CurrentStarSystem.bodies[index] = theEvent.body;
+                        }
+                    }
+                    else
+                    {
+                        // We've already scanned this body. No need to repeat.
+                        return false;
                     }
                 }
+                CurrentStarSystem.bodies = CurrentStarSystem.bodies.OrderBy(b => b.bodyId).ToList();
 
                 // Update the system reserve level, when appropriate
                 if (theEvent.body.reserveLevel != ReserveLevel.None)
@@ -1933,7 +1940,6 @@ namespace Eddi
                 Body body = CurrentStarSystem?.bodies?.FirstOrDefault(b => b?.bodyname == theEvent.name);
                 if (body != null)
                 {
-                    body.scanned = body.scanned ?? theEvent.timestamp;
                     body.mapped = theEvent.timestamp;
                     StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
                     updateCurrentStellarBody(theEvent.name, CurrentStarSystem?.systemname, CurrentStarSystem?.systemAddress);
