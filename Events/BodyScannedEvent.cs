@@ -52,6 +52,8 @@ namespace EddiEvents
 
         public string shortname => body.shortname;
 
+        public string bodytype => (body.bodyType ?? BodyType.None).localizedName;
+
         public string planettype => (body.planetClass ?? PlanetClass.None).localizedName;  // This matches the object property reported from the BodyDetails() function
 
         public decimal? earthmass => body.earthmass;
