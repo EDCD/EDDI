@@ -135,6 +135,7 @@
   <ItemGroup>
     <Compile Include="CapiShipyardTests.cs" />
     <Compile Include="BgsDataTests.cs" />
+    <Compile Include="CrimeMonitorTests.cs" />
     <Compile Include="TelemetryTests.cs" />
     <Compile Include="RedactionTests.cs" />
     <Compile Include="TestBase.cs" />

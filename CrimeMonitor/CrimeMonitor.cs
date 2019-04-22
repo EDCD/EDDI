@@ -268,7 +268,7 @@ namespace EddiCrimeMonitor
                 // Get all bond claims, excluding the discrepancy report
                 List<FactionReport> reports = record.factionReports
                     .Where(r => !r.bounty && r.crimeDef == Crime.None).ToList();
-                if (reports != null)
+                if (reports?.Any() ?? false)
                 {
                     long total = reports.Sum(r => r.amount);
 
@@ -310,8 +310,11 @@ namespace EddiCrimeMonitor
         {
             // 20% bonus for Arissa Lavigny-Duval 'controlled' and 'exploited' systems
             StarSystem currentSystem = EDDI.Instance?.CurrentStarSystem;
-            currentSystem = LegacyEddpService.SetLegacyData(currentSystem, true, false, false);
-            double bonus = currentSystem.power == "Arissa Lavigny-Duval" ? 1.2 : 1.0;
+            if (currentSystem != null)
+            {
+                currentSystem = LegacyEddpService.SetLegacyData(currentSystem, true, false, false);
+            }
+            double bonus = currentSystem?.power == "Arissa Lavigny-Duval" ? 1.2 : 1.0;
 
             foreach (Reward reward in @event.rewards.ToList())
             {
@@ -373,7 +376,7 @@ namespace EddiCrimeMonitor
                     // Get all bounty claims, excluding the discrepancy report
                     List<FactionReport> reports = record.factionReports
                         .Where(r => r.bounty && r.crimeDef == Crime.None).ToList();
-                    if (reports != null)
+                    if (reports?.Any() ?? false)
                     {
                         long total = reports.Sum(r => r.amount);
 
@@ -448,7 +451,6 @@ namespace EddiCrimeMonitor
         private bool _handleBountyPaidEvent(BountyPaidEvent @event)
         {
             bool update = false;
-            int shipId = EDDI.Instance?.CurrentShip?.LocalId ?? 0;
 
             foreach (FactionRecord record in criminalrecord.ToList())
             {
@@ -459,10 +461,10 @@ namespace EddiCrimeMonitor
                     // Get all bounties incurred, excluing the discrepancy report
                     // Note that all bounties are assigned to the ship, not the commander
                     List<FactionReport> reports = record.factionReports
-                        .Where(r => r.bounty && r.crimeDef != Crime.None && r.crimeDef != Crime.Bounty && @event.shipid == shipId)
+                        .Where(r => r.bounty && r.crimeDef != Crime.None && r.crimeDef != Crime.Bounty && r.shipId == @event.shipid)
                         .ToList();
 
-                    if (reports != null)
+                    if (reports?.Any() ?? false)
                     {
                         long total = reports.Sum(r => r.amount);
 
@@ -537,7 +539,6 @@ namespace EddiCrimeMonitor
         private bool _handleFinePaidEvent(FinePaidEvent @event)
         {
             bool update = false;
-            int shipId = EDDI.Instance?.CurrentShip?.LocalId ?? 0;
 
             foreach (FactionRecord record in criminalrecord.ToList())
             {
@@ -548,10 +549,10 @@ namespace EddiCrimeMonitor
                     // Get all fines incurred, excluing the discrepancy report
                     // Note that all fines are assigned to the ship, not the commander
                     List<FactionReport> reports = record.factionReports
-                        .Where(r => !r.bounty && r.crimeDef != Crime.None && r.crimeDef != Crime.Fine && @event.shipid == shipId)
+                        .Where(r => !r.bounty && r.crimeDef != Crime.None && r.crimeDef != Crime.Fine && r.shipId == @event.shipid)
                         .ToList();
 
-                    if (reports != null)
+                    if (reports?.Any() ?? false)
                     {
                         long total = reports.Sum(r => r.amount);
 
@@ -645,7 +646,7 @@ namespace EddiCrimeMonitor
             RaiseOnUIThread(RecordUpdatedEvent, criminalrecord);
         }
 
-        private void readRecord(CrimeMonitorConfiguration configuration = null)
+        public void readRecord(CrimeMonitorConfiguration configuration = null)
         {
             lock (recordLock)
             {
