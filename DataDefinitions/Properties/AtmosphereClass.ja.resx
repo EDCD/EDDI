@@ -117,38 +117,14 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Ammonia" xml:space="preserve">
-    <value>アンモニア</value>
-    <comment>Atmosphere class "Ammonia"</comment>
-  </data>
-  <data name="AmmoniaAndOxygen" xml:space="preserve">
-    <value>アンモニアおよび酸素</value>
-    <comment>Atmosphere class "Ammonia and oxygen"</comment>
-  </data>
-  <data name="AmmoniaRich" xml:space="preserve">
-    <value>アンモニアに富む</value>
-    <comment>Atmosphere class "Ammonia-rich"</comment>
-  </data>
-  <data name="Argon" xml:space="preserve">
-    <value>アルゴン</value>
-    <comment>Atmosphere class "Argon"</comment>
-  </data>
-  <data name="ArgonRich" xml:space="preserve">
-    <value>アルゴンに富む</value>
-    <comment>Atmosphere class "Argon-rich"</comment>
-  </data>
-  <data name="CarbonDioxide" xml:space="preserve">
-    <value>二酸化炭素</value>
-    <comment>Atmosphere class "Carbon dioxide"</comment>
-  </data>
-  <data name="CarbonDioxideRich" xml:space="preserve">
-    <value>二酸化炭素に富む</value>
-    <comment>Atmosphere class "Carbon dioxide-rich"</comment>
-  </data>
-  <data name="Helium" xml:space="preserve">
-    <value>ヘリウム</value>
-    <comment>Atmosphere class "Helium"</comment>
-  </data>
+  
+  
+  
+  
+  
+  
+  
+  
   <data name="MetallicVapour" xml:space="preserve">
     <value>金属蒸気</value>
     <comment>Atmosphere class "Metallic vapour"</comment>
