@@ -36,60 +36,24 @@ namespace Utilities
 
     public class ConstantConverters
     {
+        // NB We can take advantage of the 'lifted' operators in Nullable<T> to have the compiler do our null-checking for us
+
         /// <summary> Convert gravity in m/s to g </summary>
-        public static decimal ms2g (decimal gravity)
-        {
-            return gravity / Constants.earthGravityMetersPerSecondSquared;
-        }
+        public static decimal ms2g(decimal gravity) => gravity / Constants.earthGravityMetersPerSecondSquared;
 
         /// <summary> Convert meters to astronomical units (AU) </summary>
-        public static decimal? meters2au (decimal? meters)
-        {
-            if (meters != null)
-            {
-                return meters / Constants.astronomicalUnitsMeters;
-            }
-            return null;
-        }
+        public static decimal? meters2au(decimal? meters) => meters / Constants.astronomicalUnitsMeters;
 
         /// <summary> Convert meters to light seconds </summary>
-        public static decimal? meters2ls(decimal? meters)
-        {
-            if (meters != null)
-            {
-                return meters / Constants.lightSpeedMetersPerSecond;
-            }
-            return null;
-        }
+        public static decimal? meters2ls(decimal? meters) => meters / Constants.lightSpeedMetersPerSecond;
 
         /// <summary> Convert astronomical units (AU) to light seconds </summary>
-        public static decimal? au2ls(decimal? au)
-        {
-            if (au != null)
-            {
-                return au * Constants.astronomicalUnitsMeters / Constants.lightSpeedMetersPerSecond;
-            }
-            return null;
-        }
+        public static decimal? au2ls(decimal? au) => au * Constants.astronomicalUnitsMeters / Constants.lightSpeedMetersPerSecond;
 
         /// <summary> Convert pressure in Pascals to Earth atmospheres (atm) </summary>
-        public static decimal? pascals2atm (decimal? pressure)
-        {
-            if (pressure != null)
-            {
-                return pressure / Constants.earthPressurePascals;
-            }
-            return null;
-        }
+        public static decimal? pascals2atm(decimal? pressure) => pressure / Constants.earthPressurePascals;
 
-        /// <summary> Convert seconds to days </summary>
-        public static decimal? seconds2days (decimal? seconds)
-        {
-            if (seconds != null)
-            {
-                return seconds / 86400;
-            }
-            return null;
-        }
+        /// <summary> Convert seconds to days -- WARNING do not use for calendar date/time calculations </summary>
+        public static decimal? seconds2days(decimal? seconds) => seconds / 86400;
     }
 }
