@@ -117,14 +117,44 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="Ice" xml:space="preserve">
+    <value>氷</value>
+    <comment>Body Composition "Ice"</comment>
+  </data>
+  <data name="Metal" xml:space="preserve">
+    <value>金属</value>
+    <comment>Body Composition "Metal"</comment>
+  </data>
+  <data name="Planet" xml:space="preserve">
+    <value>惑星</value>
+    <comment>Body Type "Planet"</comment>
+  </data>
+  <data name="Rock" xml:space="preserve">
+    <value>岩石</value>
+    <comment>Body Composition "Rock"</comment>
+  </data>
+  <data name="Star" xml:space="preserve">
+    <value>恒星</value>
+    <comment>Body Type "Star"</comment>
+  </data>
+  <data name="Belt" xml:space="preserve">
+    <value>惑星帯</value>
+    <comment>Body Type "Belt"</comment>
+  </data>
+  <data name="None" xml:space="preserve">
+    <value>なし</value>
+    <comment>None</comment>
+  </data>
+  <data name="Station" xml:space="preserve">
+    <value>ステーション</value>
+    <comment>BodyType "Station"</comment>
+  </data>
+  <data name="Null" xml:space="preserve">
+    <value>なし</value>
+    <comment>BodyType "Null"</comment>
+  </data>
+  <data name="PlanetaryRing" xml:space="preserve">
+    <value>惑星環</value>
+    <comment>Body Type PlanetaryRing</comment>
+  </data>
 </root>
