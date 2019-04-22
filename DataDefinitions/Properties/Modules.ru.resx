@@ -562,6 +562,12 @@
     <value>Сканер состава</value>
     <comment>Module Composition Scanner</comment>
   </data>
-  
-  
+  <data name="SupercruiseAssist" xml:space="preserve">
+    <value>Помощь в гиперкрейсерском режиме</value>
+    <comment>Module SupercruiseAssist</comment>
+  </data>
+  <data name="AdvancedDockingComputer" xml:space="preserve">
+    <value>Улучшенный стыковочный компьютер</value>
+    <comment>Module AdvancedDockingComputer</comment>
+  </data>
 </root>
