@@ -61,11 +61,29 @@ namespace Utilities.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Docked.
+        /// </summary>
+        public static string docked {
+            get {
+                return ResourceManager.GetString("docked", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Fighter.
         /// </summary>
         public static string fighter {
             get {
                 return ResourceManager.GetString("fighter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Landed.
+        /// </summary>
+        public static string landed {
+            get {
+                return ResourceManager.GetString("landed", resourceCulture);
             }
         }
         

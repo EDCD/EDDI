@@ -134,11 +134,6 @@ namespace Eddi
         // The event queue
         public ConcurrentQueue<Event> eventQueue { get; private set; } = new ConcurrentQueue<Event>();
 
-        /// <summary>
-        ///  Special case - trigger our first location event regardless of if it matches our current location
-        /// </summary>
-        private bool firstLocation = true;
-
         private EDDI()
         {
             try
@@ -675,9 +670,9 @@ namespace Eddi
                     {
                         passEvent = eventFileHeader((FileHeaderEvent)@event);
                     }
-                    else if (@event is JumpedEvent)
+                    else if (@event is LocationEvent)
                     {
-                        passEvent = eventJumped((JumpedEvent)@event);
+                        passEvent = eventLocation((LocationEvent)@event);
                     }
                     else if (@event is DockedEvent)
                     {
@@ -687,9 +682,13 @@ namespace Eddi
                     {
                         passEvent = eventUndocked((UndockedEvent)@event);
                     }
-                    else if (@event is LocationEvent)
+                    else if (@event is TouchdownEvent)
                     {
-                        passEvent = eventLocation((LocationEvent)@event);
+                        passEvent = eventTouchdown((TouchdownEvent)@event);
+                    }
+                    else if (@event is LiftoffEvent)
+                    {
+                        passEvent = eventLiftoff((LiftoffEvent)@event);
                     }
                     else if (@event is FSDEngagedEvent)
                     {
@@ -698,6 +697,10 @@ namespace Eddi
                     else if (@event is FSDTargetEvent)
                     {
                         passEvent = eventFSDTarget((FSDTargetEvent)@event);
+                    }
+                    else if (@event is JumpedEvent)
+                    {
+                        passEvent = eventJumped((JumpedEvent)@event);
                     }
                     else if (@event is EnteredSupercruiseEvent)
                     {
@@ -1013,67 +1016,61 @@ namespace Eddi
                 }
             }
 
-            if (theEvent.docked == true || theEvent.bodytype.ToLowerInvariant() == "station")
+            if (theEvent.docked || theEvent.bodytype.ToLowerInvariant() == "station")
             {
-                // In this case body === station and our body information is invalid
+                // In this case body = station and our body information is invalid
                 CurrentStellarBody = null;
 
-                // Force first location update even if it matches with 'firstLocation' bool
-                if (!firstLocation && (CurrentStation != null && CurrentStation.name == theEvent.station))
-                {
-                    // We are already at this station; nothing to do
-                    Logging.Debug("Already at station " + theEvent.station);
-                    return false;
-                }
-                firstLocation = false;
-
                 // Update the station
-                Logging.Debug("Now at station " + theEvent.station);
-                Station station = CurrentStarSystem.stations.Find(s => s.name == theEvent.station);
+                string stationName = theEvent.docked ? theEvent.station : theEvent.body;
+
+                Logging.Debug("Now at station " + stationName);
+                Station station = CurrentStarSystem.stations.Find(s => s.name == stationName);
                 if (station == null)
                 {
                     // This station is unknown to us, might not be in our data source or we might not have connectivity.  Use a placeholder
                     station = new Station
                     {
-                        name = theEvent.station,
+                        name = stationName,
                         systemname = theEvent.system
                     };
                 }
-
-                // Our data source may not include the market id or system address
-                station.marketId = theEvent.marketId;
-                station.systemAddress = theEvent.systemAddress;
-                station.Faction = theEvent.controllingstationfaction;
-
                 CurrentStation = station;
 
-                // Kick off the profile refresh if the companion API is available
-                if (CompanionAppService.Instance.CurrentState == CompanionAppService.State.Authorized)
+                if (theEvent.docked)
                 {
-                    // Refresh station data
-                    if (theEvent.fromLoad) { return true; } // Don't fire this event when loading pre-existing logs
-                    profileUpdateNeeded = true;
-                    profileStationRequired = CurrentStation.name;
-                    Thread updateThread = new Thread(() => conditionallyRefreshProfile())
+                    Environment = Constants.ENVIRONMENT_DOCKED;
+
+                    // Our data source may not include the market id or system address
+                    station.marketId = theEvent.marketId;
+                    station.systemAddress = theEvent.systemAddress;
+                    station.Faction = theEvent.controllingstationfaction;
+
+                    // Kick off the profile refresh if the companion API is available
+                    if (CompanionAppService.Instance.CurrentState == CompanionAppService.State.Authorized)
                     {
-                        IsBackground = true
-                    };
-                    updateThread.Start();
+                        // Refresh station data
+                        if (theEvent.fromLoad) { return true; } // Don't fire this event when loading pre-existing logs
+                        profileUpdateNeeded = true;
+                        profileStationRequired = CurrentStation.name;
+                        Thread updateThread = new Thread(() => conditionallyRefreshProfile())
+                        {
+                            IsBackground = true
+                        };
+                        updateThread.Start();
+                    }
+                }
+                else
+                {
+                    Environment = Constants.ENVIRONMENT_NORMAL_SPACE;
                 }
             }
             else if (theEvent.body != null)
             {
+                Environment = Constants.ENVIRONMENT_NORMAL_SPACE;
+
                 // If we are not at a station then our station information is invalid 
                 CurrentStation = null;
-
-                // Force first location update even if it matches with 'firstLocation' bool 
-                if (!firstLocation && (CurrentStellarBody != null && CurrentStellarBody.name == theEvent.body))
-                {
-                    // We are already at this body; nothing to do 
-                    Logging.Debug("Already at body " + theEvent.body);
-                    return false;
-                }
-                firstLocation = false;
 
                 // Update the body 
                 Logging.Debug("Now at body " + theEvent.body);
@@ -1103,6 +1100,7 @@ namespace Eddi
 
         private bool eventDocked(DockedEvent theEvent)
         {
+            Environment = Constants.ENVIRONMENT_DOCKED;
             updateCurrentSystem(theEvent.system);
 
             // Upon docking, allow manual station updates once
@@ -1164,9 +1162,40 @@ namespace Eddi
 
         private bool eventUndocked(UndockedEvent theEvent)
         {
+            Environment = Constants.ENVIRONMENT_NORMAL_SPACE;
+            Vehicle = Constants.VEHICLE_SHIP;
+
             // Call refreshProfile() to ensure that our ship is up-to-date
             refreshProfile();
 
+            return true;
+        }
+
+        private bool eventTouchdown(TouchdownEvent theEvent)
+        {
+            Environment = Constants.ENVIRONMENT_LANDED;
+            if (theEvent.playercontrolled)
+            {
+                Vehicle = Constants.VEHICLE_SHIP;
+            }
+            else
+            {
+                Vehicle = Constants.VEHICLE_SRV;
+            }
+            return true;
+        }
+
+        private bool eventLiftoff(LiftoffEvent theEvent)
+        {
+            Environment = Constants.ENVIRONMENT_NORMAL_SPACE;
+            if (theEvent.playercontrolled)
+            {
+                Vehicle = Constants.VEHICLE_SHIP;
+            }
+            else
+            {
+                Vehicle = Constants.VEHICLE_SRV;
+            }
             return true;
         }
 
@@ -1435,6 +1464,9 @@ namespace Eddi
             // After jump has completed we are always in supercruise
             Environment = Constants.ENVIRONMENT_SUPERCRUISE;
 
+            // No longer in 'station instance'
+            CurrentStation = null;
+
             return passEvent;
         }
 
@@ -1442,6 +1474,9 @@ namespace Eddi
         {
             Environment = Constants.ENVIRONMENT_SUPERCRUISE;
             updateCurrentSystem(theEvent.system);
+
+            // No longer in 'station instance'
+            CurrentStation = null;
 
             // We are in the ship
             Vehicle = Constants.VEHICLE_SHIP;
@@ -1451,14 +1486,23 @@ namespace Eddi
 
         private bool eventEnteredNormalSpace(EnteredNormalSpaceEvent theEvent)
         {
-            // We won't update CurrentStation with this event, as doing so triggers false / premature updates from the Frontier API
-            CurrentStation = null;
-
             Environment = Constants.ENVIRONMENT_NORMAL_SPACE;
+            updateCurrentSystem(theEvent.system);
 
             if (theEvent.bodytype.ToLowerInvariant() == "station")
             {
-                // In this case body == station 
+                // In this case body == station
+                Station station = CurrentStarSystem.stations.Find(s => s.name == theEvent.body);
+                if (station == null)
+                {
+                    // This station is unknown to us, might not be in our data source or we might not have connectivity.  Use a placeholder
+                    station = new Station
+                    {
+                        name = theEvent.body,
+                        systemname = theEvent.system
+                    };
+                }
+                CurrentStation = station;
             }
             else if (theEvent.body != null)
             {
@@ -1475,7 +1519,6 @@ namespace Eddi
                 }
                 CurrentStellarBody = body;
             }
-            updateCurrentSystem(theEvent.system);
             return true;
         }
 
@@ -1978,7 +2021,7 @@ namespace Eddi
                             }
                         }
 
-                        if (refreshStation && CurrentStation != null)
+                        if (refreshStation && CurrentStation != null && Environment == Constants.ENVIRONMENT_DOCKED)
                         {
                             // Refresh station data
                             profileUpdateNeeded = true;

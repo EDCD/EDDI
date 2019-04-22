@@ -141,4 +141,12 @@
     <value>Normal Space</value>
     <comment>normal_space</comment>
   </data>
+  <data name="docked" xml:space="preserve">
+    <value>Docked</value>
+    <comment>docked</comment>
+  </data>
+  <data name="landed" xml:space="preserve">
+    <value>Landed</value>
+    <comment>landed</comment>
+  </data>
 </root>
