@@ -801,11 +801,10 @@ namespace EddiJournalMonitor
                                         data.TryGetValue("Age_MY", out val);
                                         long ageMegaYears = (long)val;
 
-                                        Body star = new Body(name, bodyId, parents, distanceLs, stellarclass, stellarMass, radiusKm, absoluteMagnitude, ageMegaYears, temperatureKelvin, luminosityClass, semimajoraxisLs, eccentricity, orbitalinclinationDegrees, periapsisDegrees, orbitalPeriodDays, rotationPeriodDays, axialTiltDegrees, rings, systemName, systemAddress);
-                                        if (scantype != null)
+                                        Body star = new Body(name, bodyId, parents, distanceLs, stellarclass, stellarMass, radiusKm, absoluteMagnitude, ageMegaYears, temperatureKelvin, luminosityClass, semimajoraxisLs, eccentricity, orbitalinclinationDegrees, periapsisDegrees, orbitalPeriodDays, rotationPeriodDays, axialTiltDegrees, rings, systemName, systemAddress)
                                         {
-                                            star.scanned = (!scantype.Contains("NavBeacon")) ? (DateTime?)timestamp : null;
-                                        }
+                                            scanned = (DateTime?)timestamp
+                                        };
 
                                         events.Add(new StarScannedEvent(timestamp, scantype, star) { raw = line, fromLoad = fromLogLoad });
                                         handled = true;
@@ -911,11 +910,11 @@ namespace EddiJournalMonitor
                                         TerraformState terraformState = TerraformState.FromEDName(JsonParsing.getString(data, "TerraformState")) ?? TerraformState.NotTerraformable;
                                         Volcanism volcanism = Volcanism.FromName(JsonParsing.getString(data, "Volcanism"));
 
-                                        Body body = new Body(name, bodyId, parents, distanceLs, tidallyLocked, terraformState, planetClass, atmosphereClass, atmosphereCompositions, volcanism, earthMass, radiusKm, gravity, temperatureKelvin, pressureAtm, landable, materials, solidCompositions, semimajoraxisLs, eccentricity, orbitalinclinationDegrees, periapsisDegrees, orbitalPeriodDays, rotationPeriodDays, axialTiltDegrees, rings, reserveLevel, systemName, systemAddress);
-                                        if (scantype != null)
+                                        Body body = new Body(name, bodyId, parents, distanceLs, tidallyLocked, terraformState, planetClass, atmosphereClass, atmosphereCompositions, volcanism, earthMass, radiusKm, gravity, temperatureKelvin, pressureAtm, landable, materials, solidCompositions, semimajoraxisLs, eccentricity, orbitalinclinationDegrees, periapsisDegrees, orbitalPeriodDays, rotationPeriodDays, axialTiltDegrees, rings, reserveLevel, systemName, systemAddress)
                                         {
-                                            body.scanned = (!scantype.Contains("NavBeacon")) ? (DateTime?)timestamp : null;
-                                        }
+                                            scanned = (DateTime?)timestamp
+                                        };
+
                                         events.Add(new BodyScannedEvent(timestamp, scantype, body) { raw = line, fromLoad = fromLogLoad });
                                         handled = true;
                                     }
