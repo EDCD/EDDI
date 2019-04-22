@@ -228,7 +228,7 @@
     <value>Войти</value>
   </data>
   <data name="frontier_api_cant_login_from_va" xml:space="preserve">
-    <value>Для того, что бы Войти, пожалуйста, закройте Voice Attack и запустите E-D-D-I самостоятельно.</value>
+    <value>Для того, что бы Войти, пожалуйста, закройте Voice Attack и запустите EDDI самостоятельно.</value>
   </data>
   <data name="frontierApiStatusLabel" xml:space="preserve">
     <value>Статус Frontier API:</value>
@@ -243,12 +243,12 @@
     <value>Подключение</value>
   </data>
   <data name="frontier_api_close_browser" xml:space="preserve">
-    <value>Вы можете закрыть окно браузера и вернуться в E-D-D-I.</value>
+    <value>Вы можете закрыть окно браузера и вернуться в EDDI.</value>
   </data>
   <data name="frontier_api_reset" xml:space="preserve">
     <value>Соединение сброшено.</value>
   </data>
   <data name="frontier_api_please_authenticate" xml:space="preserve">
-    <value>Пожалуйста, пройдите аутентификацию E-D-D-I подключившись к Frontier API.</value>
+    <value>Пожалуйста, пройдите аутентификацию EDDI подключившись к Frontier API.</value>
   </data>
 </root>

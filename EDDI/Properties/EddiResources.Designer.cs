@@ -144,7 +144,7 @@ namespace Eddi.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to In order to log in, please quit Voice Attack and launch E-D-D-I as a standalone app..
+        ///   Looks up a localized string similar to In order to log in, please quit Voice Attack and launch EDDI as a standalone app..
         /// </summary>
         public static string frontier_api_cant_login_from_va {
             get {
@@ -153,7 +153,7 @@ namespace Eddi.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to You may close your browser window and return to E-D-D-I..
+        ///   Looks up a localized string similar to You may close your browser window and return to EDDI..
         /// </summary>
         public static string frontier_api_close_browser {
             get {
@@ -180,7 +180,7 @@ namespace Eddi.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Please authenticate E-D-D-I&apos;s connection to the Frontier API..
+        ///   Looks up a localized string similar to Please authenticate EDDI&apos;s connection to the Frontier API..
         /// </summary>
         public static string frontier_api_please_authenticate {
             get {

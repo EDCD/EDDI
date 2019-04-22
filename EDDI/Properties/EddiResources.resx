@@ -228,7 +228,7 @@ Please close the other instance and try again.</value>
     <value>Log in</value>
   </data>
   <data name="frontier_api_cant_login_from_va" xml:space="preserve">
-    <value>In order to log in, please quit Voice Attack and launch E-D-D-I as a standalone app.</value>
+    <value>In order to log in, please quit Voice Attack and launch EDDI as a standalone app.</value>
   </data>
   <data name="frontierApiStatusLabel" xml:space="preserve">
     <value>Frontier API status:</value>
@@ -243,12 +243,12 @@ Please close the other instance and try again.</value>
     <value>Connecting</value>
   </data>
   <data name="frontier_api_close_browser" xml:space="preserve">
-    <value>You may close your browser window and return to E-D-D-I.</value>
+    <value>You may close your browser window and return to EDDI.</value>
   </data>
   <data name="frontier_api_reset" xml:space="preserve">
     <value>Connection reset.</value>
   </data>
   <data name="frontier_api_please_authenticate" xml:space="preserve">
-    <value>Please authenticate E-D-D-I's connection to the Frontier API.</value>
+    <value>Please authenticate EDDI's connection to the Frontier API.</value>
   </data>
 </root>

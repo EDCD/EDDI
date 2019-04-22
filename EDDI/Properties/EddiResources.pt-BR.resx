@@ -228,7 +228,7 @@ Por favor, feche a outra instância e tente novamente.</value>
     <value>Entrar</value>
   </data>
   <data name="frontier_api_cant_login_from_va" xml:space="preserve">
-    <value>Para fazer o login, saia do Voice Attack e inicie o E-D-D-I como um aplicativo independente.</value>
+    <value>Para fazer o login, saia do Voice Attack e inicie o EDDI como um aplicativo independente.</value>
   </data>
   <data name="frontierApiStatusLabel" xml:space="preserve">
     <value>Status da API da Frontier:</value>
@@ -243,12 +243,12 @@ Por favor, feche a outra instância e tente novamente.</value>
     <value>Conectando</value>
   </data>
   <data name="frontier_api_close_browser" xml:space="preserve">
-    <value>Você pode fechar a janela do seu navegador e retornar ao E-D-D-I.</value>
+    <value>Você pode fechar a janela do seu navegador e retornar ao EDDI.</value>
   </data>
   <data name="frontier_api_reset" xml:space="preserve">
     <value>Conexão reiniciada.</value>
   </data>
   <data name="frontier_api_please_authenticate" xml:space="preserve">
-    <value>Por favor, autentique a conexão do E-D-D-I com a API da Frontier.</value>
+    <value>Por favor, autentique a conexão do EDDI com a API da Frontier.</value>
   </data>
 </root>
