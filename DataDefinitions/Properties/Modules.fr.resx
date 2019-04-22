@@ -577,6 +577,12 @@
     <value>Scanner de composition</value>
     <comment>Module Composition Scanner</comment>
   </data>
-  
-  
+  <data name="SupercruiseAssist" xml:space="preserve">
+    <value>Super-navigation assistée</value>
+    <comment>Module SupercruiseAssist</comment>
+  </data>
+  <data name="AdvancedDockingComputer" xml:space="preserve">
+    <value>Ordinateur d'appontage avancé</value>
+    <comment>Module AdvancedDockingComputer</comment>
+  </data>
 </root>

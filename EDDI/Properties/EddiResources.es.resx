@@ -243,7 +243,7 @@ Por favor, cierre la otra instancia y pruebe de nuevo.</value>
     <value>Estableciendo conexión</value>
   </data>
   <data name="frontier_api_close_browser" xml:space="preserve">
-    <value>Debe cerrar su navegador y volver a Edi.</value>
+    <value>Debe cerrar su navegador y volver a EDDI.</value>
   </data>
   <data name="frontier_api_reset" xml:space="preserve">
     <value>Conexión restablecida.</value>

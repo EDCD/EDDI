@@ -130,7 +130,7 @@
     <value>EDDI solo funcionará con la versión de VoiceAttack 1.5.12.22 o superior. Tenga en cuenta que esta es una versión beta.</value>
   </data>
   <data name="p3" xml:space="preserve">
-    <value>Una vez haya instalado voiceAttack, deberá habilitar el soporte de complementos. Para hacerlo, haga clic en el ícono de Configuración (llave inglesa) en la esquina superior derecha de VoiceAttack, marcar la opción 'Enable plugin support' y reiniciar VoiceAttack. Debería ver un mensaje en la ventana VoiceAttack a lo largo de las líneas de 'Plugin EDDI 2. x. x initialized'.</value>
+    <value>Una vez haya instalado VoiceAttack, deberá habilitar el soporte de complementos. Para hacerlo, haga clic en el ícono de Configuración (llave inglesa) en la esquina superior derecha de VoiceAttack, marcar la opción 'Enable plugin support' y reiniciar VoiceAttack. Debería ver un mensaje en la ventana VoiceAttack a lo largo de las líneas de 'Plugin EDDI 3. x. x initialized'.</value>
   </data>
   <data name="p4" xml:space="preserve">
     <value>En este punto, puede integrar las variables de EDDI con sus propios scripts de VoiceAttack. Por ejemplo, el nombre de su comandante se almacena en la variable de texto 'Name', por lo que para acceder a él, simplemente use '{TXT:Name}' en sus propios comandos. Hay variables para su comandante, sus naves, el sistema estelar actual, la estación en la que se encuentra y más. Hay una lista completa de todas las variables </value>
