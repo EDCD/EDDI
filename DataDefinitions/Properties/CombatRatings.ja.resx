@@ -98,13 +98,40 @@
 	<resheader name="writer">
 		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
 	</resheader>
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="Harmless" xml:space="preserve">
+    <value>無害</value>
+    <comment>Combat rating Harmless</comment>
+  </data>
+  <data name="MostlyHarmless" xml:space="preserve">
+    <value>ほぼ無害</value>
+    <comment>Combat rating MostlyHarmless</comment>
+  </data>
+  <data name="Novice" xml:space="preserve">
+    <value>初心者</value>
+    <comment>Combat rating Novice</comment>
+  </data>
+  <data name="Competent" xml:space="preserve">
+    <value>中級者</value>
+    <comment>Combat rating Competent</comment>
+  </data>
+  <data name="Expert" xml:space="preserve">
+    <value>上級者</value>
+    <comment>Combat rating Expert</comment>
+  </data>
+  <data name="Master" xml:space="preserve">
+    <value>マスター</value>
+    <comment>Combat rating Master</comment>
+  </data>
+  <data name="Dangerous" xml:space="preserve">
+    <value>危険</value>
+    <comment>Combat rating Dangerous</comment>
+  </data>
+  <data name="Deadly" xml:space="preserve">
+    <value>致命的</value>
+    <comment>Combat rating Deadly</comment>
+  </data>
+  <data name="Elite" xml:space="preserve">
+    <value>エリート</value>
+    <comment>Combat rating Elite</comment>
+  </data>
 </root>
