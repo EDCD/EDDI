@@ -207,11 +207,8 @@ namespace UnitTests
             events = JournalMonitor.ParseJournalEntry(line);
             Assert.IsTrue(events.Count == 1);
             privateObject.Invoke("_handleBountyAwardedEvent", new object[] { events[0], true });
-
-            // Correct for Arissa Lavigny-Duval power bonus
-            long amount = 22265;
             record = crimeMonitor.criminalrecord.FirstOrDefault(r => r.faction == "Calennero State Industries");
-            record.factionReports.FirstOrDefault(r => r.amount == amount).shipId = 10;
+            record.factionReports.FirstOrDefault(r => r.amount == 22265).shipId = 10;
             Assert.AreEqual(2, record.factionReports.Where(r => r.bounty && r.crimeDef == Crime.None).Count());
             Assert.AreEqual(127433, record.bountyClaims);
 
@@ -265,6 +262,7 @@ namespace UnitTests
             record = crimeMonitor.criminalrecord.FirstOrDefault(r => r.faction == "Constitution Party of Aerial");
             Assert.IsNull(record);
 
+            // Bounty Paid Event
             line = "{ \"timestamp\":\"2019-04-14T04:43:05Z\", \"event\":\"PayBounties\", \"Amount\":400, \"Faction\":\"$faction_Empire;\", \"Faction_Localised\":\"Empire\", \"ShipID\":10, \"BrokerPercentage\":25.000000 }";
             events = JournalMonitor.ParseJournalEntry(line);
             Assert.IsTrue(events.Count == 1);

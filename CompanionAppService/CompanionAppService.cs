@@ -620,6 +620,9 @@ namespace EddiCompanionAppService
                     cqcrating = CQCRating.FromRank((int)json["commander"]["rank"]["cqc"]),
                     empirerating = EmpireRating.FromRank((int)json["commander"]["rank"]["empire"]),
                     federationrating = FederationRating.FromRank((int)json["commander"]["rank"]["federation"]),
+                    crimerating = (int)json["commander"]["rank"]["crime"],
+                    servicerating = (int)json["commander"]["rank"]["service"],
+                    powerrating = (int)json["commander"]["rank"]["power"],
 
                     credits = (long)json["commander"]["credits"],
                     debt = (long)json["commander"]["debt"]
