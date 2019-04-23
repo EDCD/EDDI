@@ -306,7 +306,7 @@ namespace EddiCrimeMonitor
             }
         }
 
-        private void _handleBountyAwardedEvent(BountyAwardedEvent @event)
+        private void _handleBountyAwardedEvent(BountyAwardedEvent @event, bool test = false)
         {
             // 20% bonus for Arissa Lavigny-Duval 'controlled' and 'exploited' systems
             StarSystem currentSystem = EDDI.Instance?.CurrentStarSystem;
@@ -314,13 +314,15 @@ namespace EddiCrimeMonitor
             {
                 currentSystem = LegacyEddpService.SetLegacyData(currentSystem, true, false, false);
             }
-            double bonus = currentSystem?.power == "Arissa Lavigny-Duval" ? 1.2 : 1.0;
+
+            // Default to 1.0 for unit testing
+            double bonus = (!test && currentSystem?.power == "Arissa Lavigny-Duval") ? 1.2 : 1.0;
 
             foreach (Reward reward in @event.rewards.ToList())
             {
                 int shipId = EDDI.Instance?.CurrentShip?.LocalId ?? 0;
                 long amount = Convert.ToInt64(reward.amount * bonus);
-                FactionReport report = new FactionReport(@event.timestamp, true, shipId, Crime.None, currentSystem.name, amount)
+                FactionReport report = new FactionReport(@event.timestamp, true, shipId, Crime.None, currentSystem?.name, amount)
                 {
                     station = EDDI.Instance?.CurrentStation?.name,
                     body = EDDI.Instance?.CurrentStellarBody?.name,

@@ -206,21 +206,14 @@ namespace UnitTests
             line = "{ \"timestamp\":\"2019-04-22T03:13:36Z\", \"event\":\"Bounty\", \"Rewards\":[ { \"Faction\":\"Calennero State Industries\", \"Reward\":22265 } ], \"Target\":\"adder\", \"TotalReward\":22265, \"VictimFaction\":\"Natural Amemakarna Movement\" }";
             events = JournalMonitor.ParseJournalEntry(line);
             Assert.IsTrue(events.Count == 1);
-            privateObject.Invoke("_handleBountyAwardedEvent", new object[] { events[0] });
+            privateObject.Invoke("_handleBountyAwardedEvent", new object[] { events[0], true });
 
             // Correct for Arissa Lavigny-Duval power bonus
             long amount = 22265;
-            StarSystem currentSystem = EDDI.Instance?.CurrentStarSystem;
-            if (currentSystem != null)
-            {
-                currentSystem = LegacyEddpService.SetLegacyData(currentSystem, true, false, false);
-                amount = Convert.ToInt64(amount * (currentSystem?.power == "Arissa Lavigny-Duval" ? 1.2 : 1.0));
-            }
-
             record = crimeMonitor.criminalrecord.FirstOrDefault(r => r.faction == "Calennero State Industries");
             record.factionReports.FirstOrDefault(r => r.amount == amount).shipId = 10;
             Assert.AreEqual(2, record.factionReports.Where(r => r.bounty && r.crimeDef == Crime.None).Count());
-            Assert.AreEqual(131886, record.bountyClaims);
+            Assert.AreEqual(127433, record.bountyClaims);
 
             // Fine Incurred Event
             line = "{ \"timestamp\":\"2019-04-22T03:21:46Z\", \"event\":\"CommitCrime\", \"CrimeType\":\"dockingMinorTresspass\", \"Faction\":\"Constitution Party of Aerial\", \"Fine\":400 }";
