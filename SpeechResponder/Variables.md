@@ -573,6 +573,7 @@ A faction object
 
 An object describing the presence and state of a faction within a system
 
+    - `systemName` the system name
     - `state` the faction's current dominant state
     - `ActiveStates` a list of FactionState objects
     - `PendingStates` a list of FactionState objects and trend values

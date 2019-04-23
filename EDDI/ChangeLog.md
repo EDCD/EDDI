@@ -9,7 +9,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
   * Crime Monitor
     * New monitor tracks all bond & bounty awards and fines & bounties incurred.
 	* Monitor attempts to determine the minor faction's 'home system' via its name, but defaults to system presence with highest influence.
-	* Minor faction's 'home system' may be manually entered is archived for future use.
+	* Minor faction's 'home system' may be manually entered and is archived for future use.
     * 'Add Record' button allows manual addition of claims, fines & bounties.
     * 'Find Legal Facilities' button allows standalone users to locate the nearest 'Legal Facilities' contact. 
     * New `FactionRecord` and `FactionReport` properties, available via Cottle scripting. See the `Variables` window for details.
