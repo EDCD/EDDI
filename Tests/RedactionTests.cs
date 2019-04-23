@@ -48,5 +48,41 @@ namespace UnitTests
             string source = @"ice cream %USERNAME% foo %TMP% bar %TEMP% baz %APPDATA% quux %USERNAME% womble";
             TestRoundTrip(source);
         }
+
+        [TestMethod]
+        public void TestMissingEnvVarRedaction()
+        {
+            string oldVal = Environment.GetEnvironmentVariable("HOMEPATH");
+            Environment.SetEnvironmentVariable("HOMEPATH", null);
+            string source = @"C:\EDDI\eddi.json";
+            string redacted = Utilities.Redaction.RedactEnvironmentVariables(source);
+            string expected = source;
+            Assert.AreEqual(expected, redacted);
+            Environment.SetEnvironmentVariable("HOMEPATH", oldVal);
+        }
+
+        [TestMethod]
+        public void TestEmptyEnvVarRedaction()
+        {
+            string oldVal = Environment.GetEnvironmentVariable("HOMEPATH");
+            Environment.SetEnvironmentVariable("HOMEPATH", "");
+            string source = @"C:\EDDI\eddi.json";
+            string redacted = Utilities.Redaction.RedactEnvironmentVariables(source);
+            string expected = source;
+            Assert.AreEqual(expected, redacted);
+            Environment.SetEnvironmentVariable("HOMEPATH", oldVal);
+        }
+
+        [TestMethod]
+        public void TestBackslashEnvVarRedaction()
+        {
+            string oldVal = Environment.GetEnvironmentVariable("HOMEPATH");
+            Environment.SetEnvironmentVariable("HOMEPATH", @"\");
+            string source = @"C:\EDDI\eddi.json";
+            string redacted = Utilities.Redaction.RedactEnvironmentVariables(source);
+            string expected = source;
+            Assert.AreEqual(expected, redacted);
+            Environment.SetEnvironmentVariable("HOMEPATH", oldVal);
+        }
     }
 }

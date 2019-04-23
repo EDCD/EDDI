@@ -52,7 +52,6 @@ namespace Utilities
         {
             data = Redaction.RedactEnvironmentVariables(data);
             method = Redaction.RedactEnvironmentVariables(method);
-            path = Redaction.RedactEnvironmentVariables(path);
             lock (logLock)
             {
                 try
@@ -61,6 +60,7 @@ namespace Utilities
                     {
                         string timestamp = DateTime.UtcNow.ToString("s", System.Globalization.CultureInfo.InvariantCulture);
                         string shortPath = Path.GetFileNameWithoutExtension(path);
+                        shortPath = Redaction.RedactEnvironmentVariables(shortPath);
                         file.WriteLine($"{timestamp} [{errorlevel}] {shortPath}:{method} {data}");
                     }
                 }

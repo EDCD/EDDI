@@ -31,6 +31,10 @@ namespace Utilities
                 return rawString;
             }
             string envVarExpansion = Environment.GetEnvironmentVariable(envVar);
+            if (String.IsNullOrEmpty(envVarExpansion) || envVarExpansion == @"\" )
+            {
+                return rawString;
+            }
             string redacted = rawString.Replace(envVarExpansion, $"%{envVar}%");
             return redacted;
         }
