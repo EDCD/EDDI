@@ -2,9 +2,12 @@
 
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
-### Development
-  * Galnet monitor
+### 3.4
+  * Core
+    * Added localised names for the Advanced Docking Computer and Supercruise Assist modules.
+  * GalNet monitor
     * Restored multi-lingual access.
+    * No longer loses its place if a web request times out or fails.
   * Speech responder
     * Add event `Discovery scan`, triggered when you "honk" the discovery scanner
     * Add new function `GetFaction()` to obtain details about a faction.
