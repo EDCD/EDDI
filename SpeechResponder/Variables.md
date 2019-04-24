@@ -219,10 +219,13 @@ Details of individual faction records, within the `record` object
     - `allegiance` superpower to which the minor faction is aligned
     - `system` faction presence determined by minor faction name or highest influence
     - `station` station nearest to main star, filtered by landing pad & ship size
-    - `claims` total credits for minor faction's unredeemed bond and bounty rewards
+    - `claims` total credits for minor faction's uncollected bond and bounty rewards
     - `fines` total credits for minor faction's unpaid fines incurred
     - `bounties` total credits for minor faction's unpaid bounties incurred
-    - `factionReports` list of individual criminal report events (bond, bounty award, fine, bounty incurred)
+    - `bondsAwarded` list of individual faction reports for uncollected bonds awarded
+    - `bountiesAwarded` list of individual faction reports for uncollected bounties awarded
+    - `finesIncurred` list of individual faction reports for unpaid fines incurred
+    - `bountiesIncurred` list of individual faction reports for unpaid bounties incurred
 
 ### Report
     - `bounty` true if bounty awarded or incurred

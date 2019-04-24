@@ -164,8 +164,8 @@ namespace UnitTests
             record = config.criminalrecord.ToList().FirstOrDefault(r => r.faction == "Calennero State Industries");
             Assert.AreEqual(Superpower.Empire, record.Allegiance);
             Assert.AreEqual("Empire", record.allegiance);
-            Assert.AreEqual(105168, record.bountyClaims);
-            Assert.AreEqual(400, record.fineCrimes);
+            Assert.AreEqual(105168, record.bountiesAmount);
+            Assert.AreEqual(400, record.finesIncurred.Sum(r => r.amount));
 
             // Verify faction report object 
             Assert.AreEqual(2, record.factionReports.Count);
@@ -200,7 +200,7 @@ namespace UnitTests
             privateObject.Invoke("_handleBondAwardedEvent", new object[] { events[0] });
             record = crimeMonitor.criminalrecord.FirstOrDefault(r => r.faction == "Constitution Party of Aerial");
             Assert.AreEqual(3, record.factionReports.Count);
-            Assert.AreEqual(94492, record.bondClaims);
+            Assert.AreEqual(94492, record.bondsAmount);
 
             // Bounty Awarded Event
             line = "{ \"timestamp\":\"2019-04-22T03:13:36Z\", \"event\":\"Bounty\", \"Rewards\":[ { \"Faction\":\"Calennero State Industries\", \"Reward\":22265 } ], \"Target\":\"adder\", \"TotalReward\":22265, \"VictimFaction\":\"Natural Amemakarna Movement\" }";
@@ -210,7 +210,7 @@ namespace UnitTests
             record = crimeMonitor.criminalrecord.FirstOrDefault(r => r.faction == "Calennero State Industries");
             record.factionReports.FirstOrDefault(r => r.amount == 22265).shipId = 10;
             Assert.AreEqual(2, record.factionReports.Where(r => r.bounty && r.crimeDef == Crime.None).Count());
-            Assert.AreEqual(127433, record.bountyClaims);
+            Assert.AreEqual(127433, record.bountiesAmount);
 
             // Fine Incurred Event
             line = "{ \"timestamp\":\"2019-04-22T03:21:46Z\", \"event\":\"CommitCrime\", \"CrimeType\":\"dockingMinorTresspass\", \"Faction\":\"Constitution Party of Aerial\", \"Fine\":400 }";
@@ -220,7 +220,7 @@ namespace UnitTests
             record = crimeMonitor.criminalrecord.FirstOrDefault(r => r.faction == "Constitution Party of Aerial");
             record.factionReports.FirstOrDefault(r => !r.bounty && r.crimeDef != Crime.None).shipId = 10;
             Assert.AreEqual(1, record.factionReports.Where(r => !r.bounty && r.crimeDef != Crime.None).Count());
-            Assert.AreEqual(400, record.fineCrimes);
+            Assert.AreEqual(400, record.finesIncurred.Sum(r => r.amount));
 
             // Bounty Incurred Event
             line = "{ \"timestamp\":\"2019-04-13T03:58:29Z\", \"event\":\"CommitCrime\", \"CrimeType\":\"assault\", \"Faction\":\"Calennero State Industries\", \"Victim\":\"Christofer\", \"Bounty\":400 }";
@@ -230,7 +230,7 @@ namespace UnitTests
             record = crimeMonitor.criminalrecord.FirstOrDefault(r => r.faction == "Calennero State Industries");
             record.factionReports.FirstOrDefault(r => r.bounty && r.crimeDef != Crime.None).shipId = 10;
             Assert.AreEqual(1, record.factionReports.Where(r => r.bounty && r.crimeDef != Crime.None).Count());
-            Assert.AreEqual(400, record.bountyCrimes);
+            Assert.AreEqual(400, record.bountiesIncurred.Sum(r => r.amount));
 
             // Redeem Bond Event
             line = "{ \"timestamp\":\"2019-04-09T10:31:31Z\", \"event\":\"RedeemVoucher\", \"Type\":\"CombatBond\", \"Amount\":94492, \"Factions\":[ { \"Faction\":\"Constitution Party of Aerial\", \"Amount\":94492 } ] }";
@@ -258,7 +258,7 @@ namespace UnitTests
             privateObject.Invoke("_handleFinePaidEvent", new object[] { events[0] });
             record = crimeMonitor.criminalrecord.FirstOrDefault(r => r.faction == "Calennero State Industries");
             Assert.AreEqual(0, record.factionReports.Where(r => !r.bounty && r.crimeDef != Crime.None).Count());
-            Assert.AreEqual(0, record.fineCrimes);
+            Assert.AreEqual(0, record.finesIncurred.Sum(r => r.amount));
             record = crimeMonitor.criminalrecord.FirstOrDefault(r => r.faction == "Constitution Party of Aerial");
             Assert.IsNull(record);
 

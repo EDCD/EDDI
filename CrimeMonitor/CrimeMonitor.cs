@@ -256,7 +256,7 @@ namespace EddiCrimeMonitor
                 // Get record which matches a system faction and the bond claims amount
                 record = criminalrecord
                     .Where(r => systemFactions.Contains(r.faction))
-                    .FirstOrDefault(r => r.bondClaims == amount);
+                    .FirstOrDefault(r => r.bondsAmount == amount);
             }
             else
             {
@@ -366,7 +366,7 @@ namespace EddiCrimeMonitor
                 // Handle journal event from Interstellar Factors transaction (FDEV bug)
                 if (string.IsNullOrEmpty(reward.faction))
                 {
-                    record = criminalrecord.FirstOrDefault(r => r.bountyClaims == amount);
+                    record = criminalrecord.FirstOrDefault(r => r.bountiesAmount == amount);
                 }
                 else
                 {
