@@ -13,8 +13,6 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * 'Add Record' button allows manual addition of claims, fines & bounties.
     * 'Find Legal Facilities' button allows standalone users to locate the nearest 'Legal Facilities' contact. 
     * New `FactionRecord` and `FactionReport` properties, available via Cottle scripting. See the `Variables` window for details.
-  * Galnet monitor
-    * Restored multi-lingual access.
   * Mission Monitor
     * Added 'Find Route', 'Next Route', 'Update Route', and 'Clear Route' buttons to give standalone users access to missions routing functionality.
   * Navigation Service
@@ -22,17 +20,25 @@ Full details of the variables available for each noted event, and VoiceAttack in
 	* Added `facilitator` route type to `RouteDetails()`, which finds and sets the `Destination` properties to the nearest 'Legal Facilities' contact.
     * Destination system, distance & station data populated & maintained by `RouteDetails()`. Distance re-calculated after each jump.
     * The `missionsRouteList` & `missionsRouteDistance` properties simplified to `RouteList` & `RouteDistance`, respectively.
+  * Speech responder
+    * Added `destinationsystem`, `destinationdistance`, and `destinationstation` properties (similar to `system`)
+    * Added `Crime check system` script to report wanted status and 'legal facilities', upon entering the system.
+    * Adedd `Crime check station` script to report 'legal facilities', upon entering normal space, next to station.
+  * Voice Attack
+    * Added `Destination system`, `Destination system distance`, and `Destination station` properties.
+
+### 3.4
+  * Core
+    * Added localised names for the Advanced Docking Computer and Supercruise Assist modules.
+  * Galnet monitor
+    * Restored multi-lingual access.
     * No longer loses its place if a web request times out or fails.
   * Speech responder
     * Added event `Discovery scan`, triggered when you "honk" the discovery scanner
     * Added new function `GetFaction()` to obtain details about a faction.
     * Revised faction object to allow reporting faction data spanning multiple star systems.
-    * Added `destinationsystem`, `destinationdistance`, and `destinationstation` properties (similar to `system`)
-    * Added `Crime check system` script to report wanted status and 'legal facilities', upon entering the system.
-    * Adedd `Crime check station` script to report 'legal facilities', upon entering normal space, next to station.
   * Voice Attack
     * Fixed a bug that would incorrectly disable invoked speech while `disablespeechresponder` was set.
-    * Added `Destination system`, `Destination system distance`, and `Destination station` properties.
 
 ### 3.3.7
   * Speech responder
