@@ -23,7 +23,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
   * Speech responder
     * Added `destinationsystem`, `destinationdistance`, and `destinationstation` properties (similar to `system`)
     * Added `Crime check system` script to report wanted status and 'legal facilities', upon entering the system.
-    * Adedd `Crime check station` script to report 'legal facilities', upon entering normal space, next to station.
+    * Added `Crime check station` script to report 'legal facilities', upon entering normal space, next to station.
   * Voice Attack
     * Added `Destination system`, `Destination system distance`, and `Destination station` properties.
 
