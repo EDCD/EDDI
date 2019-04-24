@@ -100,7 +100,7 @@ namespace EddiNavigationService
 
                     string shipSize = EDDI.Instance?.CurrentShip?.size ?? "Large";
                     SecurityLevel securityLevel = SecurityLevel.FromName("Low");
-                    StationService service = StationService.FromEDName("InterstellarFactorsContact");
+                    string service = "Interstellar Factors Contact";
 
                     // Find the low security level systems which may contain IF contacts
                     List<string> systemNames = cubeSystems.Where(s => s.securityLevel == securityLevel).Select(s => s.name).ToList();
@@ -109,9 +109,9 @@ namespace EddiNavigationService
                     foreach (StarSystem starsystem in IFStarSystems)
                     {
                         // Filter stations which meet the game version and landing pad size requirements
-                        int stationCount = (EDDI.Instance.inHorizons ? starsystem.stations : starsystem.orbitalstations)
-                            .Where(s => s.stationServices.Contains(service) && s.LandingPadCheck(shipSize))
-                            .Count();
+                        List<Station> stations = (EDDI.Instance.inHorizons ? starsystem.stations : starsystem.orbitalstations)
+                            .Where(s => s.stationservices.Count > 0 && s.LandingPadCheck(shipSize)).ToList();
+                        int stationCount = stations.Where(s => s.stationservices.Contains(service)).Count();
 
                         // Build list to find the IF system nearest to the current system
                         if (stationCount > 0)
@@ -133,7 +133,8 @@ namespace EddiNavigationService
 
                         // Filter stations within the IF system which meet the game version and landing pad size requirements
                         List<Station> IFStations = EDDI.Instance.inHorizons ? IFStarSystem.stations : IFStarSystem.orbitalstations
-                            .Where(s => s.stationServices.Contains(service) && s.LandingPadCheck(shipSize)).ToList();
+                            .Where(s => s.stationservices.Count > 0 && s.LandingPadCheck(shipSize)).ToList();
+                        IFStations = IFStations.Where(s => s.stationservices.Contains(service)).ToList();
 
                         // Build list to find the IF station nearest to the main star
                         nearestList.Clear();

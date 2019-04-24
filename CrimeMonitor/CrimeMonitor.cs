@@ -794,7 +794,7 @@ namespace EddiCrimeMonitor
                 // Filter stations within the faction system which meet the game version and landing pad size requirements
                  string shipSize = EDDI.Instance?.CurrentShip?.size ?? "Large";
                 List<Station> factionStations = EDDI.Instance.inHorizons ? factionStarSystem.stations : factionStarSystem.orbitalstations
-                    .Where(s => s.LandingPadCheck(shipSize)).ToList();
+                    .Where(s => s.stationservices.Count > 0 && s.LandingPadCheck(shipSize)).ToList();
 
                 // Prioritize controlled stations
                 List<Station> controlledStations = factionStations.Where(s => s.Faction.name == record.faction).ToList();
