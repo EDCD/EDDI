@@ -265,7 +265,7 @@ namespace EddiSpeechResponder
         {
             Dictionary<string, Cottle.Value> dict = new Dictionary<string, Cottle.Value>
             {
-                ["destinationdistance"] = EDDI.Instance.DestinationDistance,
+                ["destinationdistance"] = EDDI.Instance.DestinationDistanceLy,
                 ["environment"] = EDDI.Instance.Environment,
                 ["va_active"] = EDDI.FromVA,
                 ["vehicle"] = EDDI.Instance.Vehicle

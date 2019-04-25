@@ -143,12 +143,12 @@ FactionDetails() typically takes a single argument of the faction name, but may 
 Common usage of this is to obtain a `Faction` object, providing current specifics of a minor faction, for example:
 
     {set faction to FactionDetails("Lavigny's Legion")}
-	{if faction.name != "":
-	    {faction.name} is present in the
-	    {for presence in faction.presences:
+    {if faction.name != "":
+        {faction.name} is present in the
+        {for presence in faction.presences:
             {presence.systemName},
         }
-		{if len(faction.presences) = 1: system |else: systems}.
+        {if len(faction.presences) = 1: system |else: systems}.
     }		    
 
 ### FederationRatingDetails()
@@ -177,7 +177,7 @@ HaulageDetails() takes one mandatory argument, a mission ID associated with the 
 
 Common usage of this is to provide further information about a particular mission haulage, for example:
 
-    {set haulage to HaulageDetails(event.missionid)}
+	{set haulage to HaulageDetails(event.missionid)}
     {if haulage && haulage.deleivered > 0:
         {set total to haulage.amount + haulage.deleivered}
 	    {haulage.type} mission to the cargo depot is {round(haulage.delivered / total * 100, 0)} percent complete.

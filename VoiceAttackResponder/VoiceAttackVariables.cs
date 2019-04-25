@@ -31,7 +31,7 @@ namespace EddiVoiceAttackResponder
         private static Station DestinationStation { get; set; } = new Station();
         private static Commander Commander { get; set; } = new Commander();
         private static List<Ship> vaShipyard { get; set; } = new List<Ship>();
-        private static decimal DestinationDistance { get; set; }
+        private static decimal DestinationDistanceLy { get; set; }
 
         public static void setEventValues(dynamic vaProxy, Event theEvent, List<string> setKeys)
         {
@@ -293,10 +293,10 @@ namespace EddiVoiceAttackResponder
 
             try
             {
-                if (EDDI.Instance.DestinationDistance != DestinationDistance)
+                if (EDDI.Instance.DestinationDistanceLy != DestinationDistanceLy)
                 {
-                    vaProxy.SetDecimal("Destination system distance", EDDI.Instance.DestinationDistance);
-                    DestinationDistance = EDDI.Instance.DestinationDistance;
+                    vaProxy.SetDecimal("Destination system distance", EDDI.Instance.DestinationDistanceLy);
+                    DestinationDistanceLy = EDDI.Instance.DestinationDistanceLy;
                 }
             }
             catch (Exception ex)

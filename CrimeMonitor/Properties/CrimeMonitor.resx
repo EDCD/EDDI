@@ -153,11 +153,20 @@
   <data name="para1" xml:space="preserve">
     <value>Below is a list of your criminal record.</value>
   </data>
+  <data name="para2" xml:space="preserve">
+    <value>Update - Button updates the minor faction (system, station, etc) information.</value>
+  </data>
+  <data name="para3" xml:space="preserve">
+    <value>Remove - Button allows manual removal of a minor faction record.</value>
+  </data>
+  <data name="para4" xml:space="preserve">
+    <value>Add Record - Button allows manual addition of a minor faction record.</value>
+  </data>
+  <data name="para5" xml:space="preserve">
+    <value>Find Facilities - Button initiates search for  the nearest Interstellar Factors Contact system and station.</value>
+  </data>
   <data name="remove_button" xml:space="preserve">
     <value>Remove</value>
-  </data>
-  <data name="tab_crime_profitshare" xml:space="preserve">
-    <value>Total Crew profit share (percentage):</value>
   </data>
   <data name="update_button" xml:space="preserve">
     <value>Update</value>

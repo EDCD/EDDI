@@ -169,20 +169,47 @@ namespace EddiCrimeMonitor.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Update - Button updates the minor faction (system, station, etc) information..
+        /// </summary>
+        public static string para2 {
+            get {
+                return ResourceManager.GetString("para2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remove - Button allows manual removal of a minor faction record..
+        /// </summary>
+        public static string para3 {
+            get {
+                return ResourceManager.GetString("para3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add Record - Button allows manual addition of a minor faction record..
+        /// </summary>
+        public static string para4 {
+            get {
+                return ResourceManager.GetString("para4", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Find Facilities - Button initiates search for  the nearest Interstellar Factors Contact system and station..
+        /// </summary>
+        public static string para5 {
+            get {
+                return ResourceManager.GetString("para5", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Remove.
         /// </summary>
         public static string remove_button {
             get {
                 return ResourceManager.GetString("remove_button", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Total Crew profit share (percentage):.
-        /// </summary>
-        public static string tab_crime_profitshare {
-            get {
-                return ResourceManager.GetString("tab_crime_profitshare", resourceCulture);
             }
         }
         

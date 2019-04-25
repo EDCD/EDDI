@@ -17,7 +17,6 @@ namespace EddiCrimeMonitor
         public long claims { get; set; }
         public long fines { get; set; }
         public long bounties { get; set; }
-        public int? profitShare { get; set; }
         public DateTime updatedat { get; set; }
 
         [JsonIgnore]
@@ -100,9 +99,6 @@ namespace EddiCrimeMonitor
         /// </summary>
         public void ToFile(string filename = null)
         {
-            // Remove any items that are all NULL
-            //limits = limits.Where(x => x.Value.minimum.HasValue || x.Value.desired.HasValue || x.Value.maximum.HasValue).ToDictionary(x => x.Key, x => x.Value);
-
             if (filename == null)
             {
                 filename = dataPath;

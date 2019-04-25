@@ -156,6 +156,18 @@
   <data name="para2" xml:space="preserve">
     <value>Note that if your mission log is incorrect you will need to start or restart Elite and this information will be updated.</value>
   </data>
+  <data name="para3" xml:space="preserve">
+    <value>Get Route - Button initiates calculation of the 'Nearest Neighbor' algorithm for determining the sohortest missions route.</value>
+  </data>
+  <data name="para4" xml:space="preserve">
+    <value>Next In Route - Button sets the Destination System to the next system in the missions route.</value>
+  </data>
+  <data name="para5" xml:space="preserve">
+    <value>Update Route - Button sets the Destination System to next system in the missions route, if all missions are completed.</value>
+  </data>
+  <data name="para6" xml:space="preserve">
+    <value>Clear Route - Clears the misions route and Destination System.</value>
+  </data>
   <data name="tab_mission_warning" xml:space="preserve">
     <value>Mission expiration warning threshold (Minutes):</value>
   </data>

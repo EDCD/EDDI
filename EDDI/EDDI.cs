@@ -110,7 +110,7 @@ namespace Eddi
         // Destination variables
         public StarSystem DestinationStarSystem { get; private set; }
         public Station DestinationStation { get; private set; }
-        public decimal DestinationDistance { get; set; }
+        public decimal DestinationDistanceLy { get; set; }
 
         // Information obtained from the player journal
         public Commander Cmdr { get; private set; } // Also includes information from the configuration and companion app service
@@ -1034,6 +1034,7 @@ namespace Eddi
                         name = stationName,
                         systemname = theEvent.system
                     };
+                    CurrentStarSystem.stations.Add(station);
                 }
                 CurrentStation = station;
 
@@ -1084,6 +1085,7 @@ namespace Eddi
                         systemname = theEvent.system,
                         systemAddress = theEvent.systemAddress
                     };
+                    CurrentStarSystem.bodies.Add(body);
                 }
 
                 CurrentStellarBody = body;
@@ -1129,6 +1131,7 @@ namespace Eddi
                     name = theEvent.station,
                     systemname = theEvent.system
                 };
+                CurrentStarSystem.stations.Add(station);
             }
 
             // Not all stations in our database will have a system address or market id, so we set them here
@@ -2119,7 +2122,7 @@ namespace Eddi
 
         public void setSystemDistanceFromDestination(string system)
         {
-            DestinationDistance = getSystemDistanceFromDestination(system);
+            DestinationDistanceLy = getSystemDistanceFromDestination(system);
         }
 
         /// <summary>Work out the title for the commander in the current system</summary>

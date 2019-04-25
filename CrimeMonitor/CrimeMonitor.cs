@@ -24,14 +24,11 @@ namespace EddiCrimeMonitor
      */
     public class CrimeMonitor : EDDIMonitor
     {
-        private bool running;
-
         // Observable collection for us to handle changes
         public ObservableCollection<FactionRecord> criminalrecord { get; private set; }
         public long claims;
         public long fines;
         public long bounties;
-        public int? profitShare;
         public Dictionary<string, string> homeSystems;
         private DateTime updateDat;
 
@@ -93,17 +90,15 @@ namespace EddiCrimeMonitor
         public bool NeedsStart()
         {
             // We don't actively do anything, just listen to events
-            return true;
+            return false;
         }
 
         public void Start()
         {
-            _start();
         }
 
         public void Stop()
         {
-            running = false;
         }
 
         public void Reload()
@@ -111,22 +106,6 @@ namespace EddiCrimeMonitor
             readRecord();
             Logging.Info("Reloaded " + MonitorName() + " " + MonitorVersion());
 
-        }
-
-        public void _start()
-        {
-            running = true;
-
-            while (running)
-            {
-                List<FactionRecord> recordList;
-                lock (recordLock)
-                {
-                    recordList = criminalrecord.ToList();
-                }
-
-                Thread.Sleep(5000);
-            }
         }
 
         public UserControl ConfigurationTabItem()
@@ -156,54 +135,53 @@ namespace EddiCrimeMonitor
         {
             Logging.Debug("Received event " + JsonConvert.SerializeObject(@event));
 
-            // Handle the events that we care about
-            if (@event is BondAwardedEvent)
+            // Handle the events that we care about and filter for 'LogLoad'
+            if (@event.timestamp > updateDat)
             {
-                handleBondAwardedEvent((BondAwardedEvent)@event);
+                updateDat = @event.timestamp;
+                if (@event is BondAwardedEvent)
+                {
+                    handleBondAwardedEvent((BondAwardedEvent)@event);
+                }
+                else if (@event is BondRedeemedEvent)
+                {
+                    handleBondRedeemedEvent((BondRedeemedEvent)@event);
+                }
+                else if (@event is BountyAwardedEvent)
+                {
+                    handleBountyAwardedEvent((BountyAwardedEvent)@event);
+                }
+                else if (@event is BountyIncurredEvent)
+                {
+                    handleBountyIncurredEvent((BountyIncurredEvent)@event);
+                }
+                else if (@event is BountyPaidEvent)
+                {
+                    handleBountyPaidEvent((BountyPaidEvent)@event);
+                }
+                else if (@event is BountyRedeemedEvent)
+                {
+                    handleBountyRedeemedEvent((BountyRedeemedEvent)@event);
+                }
+                else if (@event is FineIncurredEvent)
+                {
+                    handleFineIncurredEvent((FineIncurredEvent)@event);
+                }
+                else if (@event is FinePaidEvent)
+                {
+                    handleFinePaidEvent((FinePaidEvent)@event);
+                }
+                else if (@event is DiedEvent)
+                {
+                    handleDiedEvent((DiedEvent)@event);
+                }
             }
-            else if (@event is BondRedeemedEvent)
-            {
-                handleBondRedeemedEvent((BondRedeemedEvent)@event);
-            }
-            else if (@event is BountyAwardedEvent)
-            {
-                handleBountyAwardedEvent((BountyAwardedEvent)@event);
-            }
-            else if (@event is BountyIncurredEvent)
-            {
-                handleBountyIncurredEvent((BountyIncurredEvent)@event);
-            }
-            else if (@event is BountyPaidEvent)
-            {
-                handleBountyPaidEvent((BountyPaidEvent)@event);
-            }
-            else if (@event is BountyRedeemedEvent)
-            {
-                handleBountyRedeemedEvent((BountyRedeemedEvent)@event);
-            }
-            else if (@event is FineIncurredEvent)
-            {
-                handleFineIncurredEvent((FineIncurredEvent)@event);
-            }
-            else if (@event is FinePaidEvent)
-            {
-                handleFinePaidEvent((FinePaidEvent)@event);
-            }
-            else if (@event is DiedEvent)
-            {
-                handleDiedEvent((DiedEvent)@event);
-            }
-
         }
 
         private void handleBondAwardedEvent(BondAwardedEvent @event)
         {
-            if (@event.timestamp > updateDat)
-            {
-                updateDat = @event.timestamp;
-                _handleBondAwardedEvent(@event);
-                writeRecord();
-            }
+            _handleBondAwardedEvent(@event);
+            writeRecord();
         }
 
         private void _handleBondAwardedEvent(BondAwardedEvent @event)
@@ -228,13 +206,9 @@ namespace EddiCrimeMonitor
 
         private void handleBondRedeemedEvent(BondRedeemedEvent @event)
         {
-            if (@event.timestamp > updateDat)
+            if (_handleBondRedeemedEvent(@event))
             {
-                updateDat = @event.timestamp;
-                if (_handleBondRedeemedEvent(@event))
-                {
-                    writeRecord();
-                }
+                writeRecord();
             }
         }
 
@@ -298,12 +272,8 @@ namespace EddiCrimeMonitor
 
         private void handleBountyAwardedEvent(BountyAwardedEvent @event)
         {
-            if (@event.timestamp > updateDat)
-            {
-                updateDat = @event.timestamp;
-                _handleBountyAwardedEvent(@event);
-                writeRecord();
-            }
+            _handleBountyAwardedEvent(@event);
+            writeRecord();
         }
 
         private void _handleBountyAwardedEvent(BountyAwardedEvent @event, bool test = false)
@@ -341,13 +311,9 @@ namespace EddiCrimeMonitor
 
         private void handleBountyRedeemedEvent(BountyRedeemedEvent @event)
         {
-            if (@event.timestamp > updateDat)
+            if (_handleBountyRedeemedEvent(@event))
             {
-                updateDat = @event.timestamp;
-                if (_handleBountyRedeemedEvent(@event))
-                {
-                    writeRecord();
-                }
+                writeRecord();
             }
         }
 
@@ -409,12 +375,8 @@ namespace EddiCrimeMonitor
 
         private void handleBountyIncurredEvent(BountyIncurredEvent @event)
         {
-            if (@event.timestamp > updateDat)
-            {
-                updateDat = @event.timestamp;
-                _handleBountyIncurredEvent(@event);
-                writeRecord();
-            }
+            _handleBountyIncurredEvent(@event);
+            writeRecord();
         }
 
         private void _handleBountyIncurredEvent(BountyIncurredEvent @event)
@@ -440,13 +402,9 @@ namespace EddiCrimeMonitor
 
         private void handleBountyPaidEvent(BountyPaidEvent @event)
         {
-            if (@event.timestamp > updateDat)
+            if (_handleBountyPaidEvent(@event))
             {
-                updateDat = @event.timestamp;
-                if (_handleBountyPaidEvent(@event))
-                {
-                    writeRecord();
-                }
+                writeRecord();
             }
         }
 
@@ -497,12 +455,8 @@ namespace EddiCrimeMonitor
 
         private void handleFineIncurredEvent(FineIncurredEvent @event)
         {
-            if (@event.timestamp > updateDat)
-            {
-                updateDat = @event.timestamp;
-                _handleFineIncurredEvent(@event);
-                writeRecord();
-            }
+            _handleFineIncurredEvent(@event);
+            writeRecord();
         }
 
         private void _handleFineIncurredEvent(FineIncurredEvent @event)
@@ -528,13 +482,9 @@ namespace EddiCrimeMonitor
 
         private void handleFinePaidEvent(FinePaidEvent @event)
         {
-            if (@event.timestamp > updateDat)
+            if (_handleFinePaidEvent(@event))
             {
-                updateDat = @event.timestamp;
-                if (_handleFinePaidEvent(@event))
-                {
-                    writeRecord();
-                }
+                writeRecord();
             }
         }
 
@@ -585,12 +535,8 @@ namespace EddiCrimeMonitor
 
         private void handleDiedEvent(DiedEvent @event)
         {
-            if (@event.timestamp > updateDat)
-            {
-                updateDat = @event.timestamp;
-                _handleDiedEvent(@event);
-                writeRecord();
-            }
+            _handleDiedEvent(@event);
+            writeRecord();
         }
 
         private void _handleDiedEvent(DiedEvent @event)
@@ -639,7 +585,6 @@ namespace EddiCrimeMonitor
                     fines = fines,
                     bounties = bounties,
                     homeSystems = homeSystems,
-                    profitShare = profitShare,
                     updatedat = updateDat
                 };
                 configuration.ToFile();
@@ -657,7 +602,6 @@ namespace EddiCrimeMonitor
                 claims = configuration.claims;
                 fines = configuration.fines;
                 bounties = configuration.bounties;
-                profitShare = configuration.profitShare;
                 homeSystems = configuration.homeSystems;
                 updateDat = configuration.updatedat;
 
@@ -717,28 +661,6 @@ namespace EddiCrimeMonitor
                 return null;
             }
             return criminalrecord.FirstOrDefault(c => c.faction.ToLowerInvariant() == faction.ToLowerInvariant());
-        }
-
-        public StarSystem GetFactionSystem(string faction, int sphereLy = 20)
-        {
-            if (faction == null) { return null; }
-
-            string currentSystem = EDDI.Instance?.CurrentStarSystem?.name;
-            List<Dictionary<string, object>> sphereSystems = StarMapService.GetStarMapSystemsSphere(currentSystem, 0, sphereLy);
-
-            SortedList<decimal, string> nearestList = new SortedList<decimal, string>();
-            foreach (Dictionary<string, object> dict in sphereSystems.ToList())
-            {
-                decimal? dist = dict["distance"] as decimal?;
-                StarSystem system = dict["system"] as StarSystem;
-                if (dist != null && system.Faction.name == faction)
-                {
-                    nearestList.Add(dist ?? 0, system.name);
-                }
-            }
-            string nearestSystem = nearestList.Values.FirstOrDefault();
-            StarSystem factionSystem = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(nearestSystem, true);
-            return factionSystem;
         }
 
         public void GetFactionData(FactionRecord record, string homeSystem = null)

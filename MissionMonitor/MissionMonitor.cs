@@ -1386,7 +1386,7 @@ namespace EddiMissionMonitor
         public void UpdateDestinationData(string system, string station, decimal distance)
         {
             EDDI.Instance.updateDestinationSystem(system);
-            EDDI.Instance.DestinationDistance = distance;
+            EDDI.Instance.DestinationDistanceLy = distance;
             EDDI.Instance.updateDestinationStation(station);
         }
 

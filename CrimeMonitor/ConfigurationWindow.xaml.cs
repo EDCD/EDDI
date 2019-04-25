@@ -31,7 +31,6 @@ namespace EddiCrimeMonitor
             criminalRecord.ItemsSource = crimeMonitor()?.criminalrecord;
 
             CrimeMonitorConfiguration configuration = CrimeMonitorConfiguration.FromFile();
-            crimeProfitShareInt.Text = configuration.profitShare?.ToString(CultureInfo.InvariantCulture);
         }
 
         private void addRecord(object sender, RoutedEventArgs e)
@@ -101,29 +100,6 @@ namespace EddiCrimeMonitor
             IFRouteThread.Start();
         }
 
-        private void profitShareChanged(object sender, TextChangedEventArgs e)
-        {
-            CrimeMonitorConfiguration configuration = CrimeMonitorConfiguration.FromFile();
-            try
-            {
-                int? profitShare = string.IsNullOrWhiteSpace(crimeProfitShareInt.Text) ? 0 : Convert.ToInt32(crimeProfitShareInt.Text, CultureInfo.InvariantCulture);
-                crimeMonitor().profitShare = profitShare;
-                configuration.profitShare = profitShare;
-                configuration.ToFile();
-            }
-            catch
-            {
-                // Bad user input; ignore it
-            }
-        }
-
-        private void EnsureValidInteger(object sender, TextCompositionEventArgs e)
-        {
-            // Match valid characters
-            Regex regex = new Regex(@"[0-9]");
-            // Swallow the character doesn't match the regex
-            e.Handled = !regex.IsMatch(e.Text);
-        }
         private void criminalRecordUpdated(object sender, DataTransferEventArgs e)
         {
             if (e.Source is DataGrid)

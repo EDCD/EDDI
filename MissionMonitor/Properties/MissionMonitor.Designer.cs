@@ -178,6 +178,42 @@ namespace EddiMissionMonitor.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Get Route - Button initiates calculation of the &apos;Nearest Neighbor&apos; algorithm for determining the sohortest missions route..
+        /// </summary>
+        public static string para3 {
+            get {
+                return ResourceManager.GetString("para3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Next In Route - Button sets the Destination System to the next system in the missions route..
+        /// </summary>
+        public static string para4 {
+            get {
+                return ResourceManager.GetString("para4", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Update Route - Button sets the Destination System to next system in the missions route, if all missions are completed..
+        /// </summary>
+        public static string para5 {
+            get {
+                return ResourceManager.GetString("para5", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Clear Route - Clears the misions route and Destination System..
+        /// </summary>
+        public static string para6 {
+            get {
+                return ResourceManager.GetString("para6", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Mission expiration warning threshold (Minutes):.
         /// </summary>
         public static string tab_mission_warning {
