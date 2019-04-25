@@ -157,7 +157,7 @@
     <value>Note that if your mission log is incorrect you will need to start or restart Elite and this information will be updated.</value>
   </data>
   <data name="para3" xml:space="preserve">
-    <value>Get Route - Button initiates calculation of the 'Nearest Neighbor' algorithm for determining the sohortest missions route.</value>
+    <value>Get Route - Button initiates calculation of the 'Nearest Neighbor' algorithm for determining the shortest missions route.</value>
   </data>
   <data name="para4" xml:space="preserve">
     <value>Next In Route - Button sets the Destination System to the next system in the missions route.</value>
