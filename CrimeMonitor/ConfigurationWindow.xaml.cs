@@ -58,7 +58,16 @@ namespace EddiCrimeMonitor
 
                 Thread factionStationThread = new Thread(() =>
                 {
-                    crimeMonitor()?.GetFactionData(record, record.system);
+                    Superpower Allegiance = Superpower.FromNameOrEdName(record.faction);
+                    if (Allegiance == null)
+                    {
+                        crimeMonitor()?.GetFactionData(record, record.system);
+                    }
+                    else
+                    {
+                        record.Allegiance = Allegiance;
+                    }
+
                     Dispatcher?.Invoke(() =>
                     {
                         updateButton.Foreground = Brushes.Black;

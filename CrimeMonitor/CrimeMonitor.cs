@@ -396,8 +396,7 @@ namespace EddiCrimeMonitor
             {
                 record = AddRecord(@event.faction);
             }
-            record.factionReports.Add(report);
-            record.bounties += report.amount;
+            AddCrimeToRecord(record, report);
         }
 
         private void handleBountyPaidEvent(BountyPaidEvent @event)
@@ -418,7 +417,7 @@ namespace EddiCrimeMonitor
                 bool match = @event.brokerpercentage == null ? record.faction == @event.faction : record.Allegiance.invariantName == @event.faction;
                 if (@event.allbounties || match)
                 {
-                    // Get all bounties incurred, excluing the discrepancy report
+                    // Get all bounties incurred, excluding the discrepancy report
                     // Note that all bounties are assigned to the ship, not the commander
                     List<FactionReport> reports = record.factionReports
                         .Where(r => r.bounty && r.crimeDef != Crime.None && r.crimeDef != Crime.Bounty && r.shipId == @event.shipid)
@@ -476,8 +475,7 @@ namespace EddiCrimeMonitor
             {
                 record = AddRecord(@event.faction);
             }
-            record.factionReports.Add(report);
-            record.fines += report.amount;
+            AddCrimeToRecord(record, report);
         }
 
         private void handleFinePaidEvent(FinePaidEvent @event)
@@ -620,7 +618,15 @@ namespace EddiCrimeMonitor
             if (faction == null) { return null; }
 
             FactionRecord record = new FactionRecord(faction);
-            GetFactionData(record);
+            Superpower Allegiance = Superpower.FromNameOrEdName(faction);
+            if (Allegiance == null)
+            {
+                GetFactionData(record);
+            }
+            else
+            {
+                record.Allegiance = Allegiance;
+            }
 
             lock (recordLock)
             {
@@ -651,6 +657,60 @@ namespace EddiCrimeMonitor
                         break;
                     }
                 }
+            }
+        }
+
+        private void AddCrimeToRecord(FactionRecord record, FactionReport report)
+        {
+            long total = record.fines + record.bounties + report.amount;
+            FactionRecord powerRecord = GetRecordWithFaction(record.allegiance);
+
+            if (powerRecord != null || total > 2000000)
+            {
+                // Check if interstellar bounty is active for minor faction
+                if (powerRecord?.interstellarBountyFactions.Contains(record.faction) ?? false)
+                {
+                    _AddCrimeToRecord(powerRecord, report);
+                    return;
+                }
+                else if (powerRecord == null)
+                {
+                    powerRecord = AddRecord(record.allegiance);
+                }
+
+                // Collect all minor faction fines and bounties incurred
+                List<FactionReport> reports = record.factionReports
+                    .Where(r => r.crimeDef != Crime.None && r.crimeDef != Crime.Claim).ToList();
+
+                // Transfer existing fines and bounties incurred to the power record
+                powerRecord.factionReports.AddRange(reports);
+                powerRecord.fines += record.fines;
+                powerRecord.bounties += record.bounties;
+                powerRecord.interstellarBountyFactions.Add(record.faction);
+                record.factionReports = record.factionReports.Except(reports).ToList();
+                record.fines = 0;
+                record.bounties = 0;
+
+                // Add new report to the power record and remove minor faction record if no pending claims
+                _AddCrimeToRecord(powerRecord, report);
+                RemoveRecord(record);
+
+                return;
+            }
+            // Add new report to the minor faction record
+            _AddCrimeToRecord(record, report);
+        }
+
+        private void _AddCrimeToRecord(FactionRecord record, FactionReport report)
+        {
+            record.factionReports.Add(report);
+            if (report.bounty)
+            {
+                record.bounties += report.amount;
+            }
+            else
+            {
+                record.fines += report.amount;
             }
         }
 
