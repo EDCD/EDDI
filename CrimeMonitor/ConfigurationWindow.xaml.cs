@@ -31,7 +31,7 @@ namespace EddiCrimeMonitor
             criminalRecord.ItemsSource = crimeMonitor()?.criminalrecord;
 
             CrimeMonitorConfiguration configuration = CrimeMonitorConfiguration.FromFile();
-            prioritizeOrbitalStations.IsChecked = configuration.prioritizeOrbitalStation;
+            prioritizeOrbitalStations.IsChecked = configuration.prioritizeOrbitalStations;
             maxStationDistanceInt.Text = configuration.maxStationDistanceFromStarLs?.ToString(CultureInfo.InvariantCulture);
         }
 
@@ -113,17 +113,25 @@ namespace EddiCrimeMonitor
 
         private void prioritizeOrbitalStationsEnabled(object sender, RoutedEventArgs e)
         {
-            CrimeMonitorConfiguration configuration = CrimeMonitorConfiguration.FromFile();
-            configuration.prioritizeOrbitalStation = prioritizeOrbitalStations.IsChecked.Value;
-            configuration.ToFile();
+            updateCheckbox();
         }
 
         private void prioritizeOrbitalStationsDisabled(object sender, RoutedEventArgs e)
         {
+            updateCheckbox();
+        }
+
+        private void updateCheckbox()
+        {
             CrimeMonitorConfiguration configuration = CrimeMonitorConfiguration.FromFile();
-            crimeMonitor().prioritizeOrbitalStation = prioritizeOrbitalStations.IsChecked.Value;
-            configuration.prioritizeOrbitalStation = prioritizeOrbitalStations.IsChecked.Value;
-            configuration.ToFile();
+            bool isChecked = prioritizeOrbitalStations.IsChecked.Value;
+            if (configuration.prioritizeOrbitalStations != isChecked)
+            {
+                crimeMonitor().prioritizeOrbitalStations = isChecked;
+                configuration.prioritizeOrbitalStations = isChecked;
+                configuration.ToFile();
+                crimeMonitor().UpdateStations();
+            }
         }
 
         private void maxStationDistance_KeyDown(object sender, KeyEventArgs e)

@@ -29,7 +29,7 @@ namespace EddiCrimeMonitor
         public long fines;
         public long bounties;
         public int? maxStationDistanceFromStarLs;
-        public bool prioritizeOrbitalStation;
+        public bool prioritizeOrbitalStations;
         public Dictionary<string, string> homeSystems;
         private DateTime updateDat;
 
@@ -617,7 +617,7 @@ namespace EddiCrimeMonitor
                     fines = fines,
                     bounties = bounties,
                     maxStationDistanceFromStarLs = maxStationDistanceFromStarLs,
-                    prioritizeOrbitalStation = prioritizeOrbitalStation,
+                    prioritizeOrbitalStations = prioritizeOrbitalStations,
                     homeSystems = homeSystems,
                     updatedat = updateDat
                 };
@@ -637,7 +637,7 @@ namespace EddiCrimeMonitor
                 fines = configuration.fines;
                 bounties = configuration.bounties;
                 maxStationDistanceFromStarLs = configuration.maxStationDistanceFromStarLs;
-                prioritizeOrbitalStation = configuration.prioritizeOrbitalStation;
+                prioritizeOrbitalStations = configuration.prioritizeOrbitalStations;
                 homeSystems = configuration.homeSystems;
                 updateDat = configuration.updatedat;
 
@@ -773,6 +773,7 @@ namespace EddiCrimeMonitor
             {
                 record.faction = Properties.CrimeMonitor.blank_faction;
                 record.system = null;
+                record.station = null;
                 return;
             }
             record.Allegiance = faction.Allegiance ?? Superpower.None;
@@ -795,21 +796,21 @@ namespace EddiCrimeMonitor
                 return;
             }
 
-            // Check saved home systems
+            // Check faction with archived home systems
             if (homeSystems.TryGetValue(record.faction, out string result))
             {
                 record.system = result;
-                record.station = GetFactionStation(homeSystem);
+                record.station = GetFactionStation(result);
                 return;
             }
 
-            // Check for 'home system' via faction presences for qualifying station
+            // Find 'home system' by matching faction name with presence and check for qualifying station
             homeSystem = FindHomeSystem(record.faction, factionSystems);
             if (homeSystem != null)
             {
                 string factionStation = GetFactionStation(homeSystem);
 
-                // Station found meeting user options
+                // Station found meeting game/user requirements
                 if (factionStation != null)
                 {
                     record.system = homeSystem;
@@ -830,7 +831,7 @@ namespace EddiCrimeMonitor
                 }
             }
 
-            // Settle for highest influence faction presence, no station found
+            // Settle for highest influence faction presence, with no station found
             record.system = factionSystems.FirstOrDefault();
             record.station = null;
         }
@@ -845,7 +846,7 @@ namespace EddiCrimeMonitor
                 // Filter stations within the faction system which meet the station type prioritization,
                 // max distance from the main star, game version, and landing pad size requirements
                 string shipSize = EDDI.Instance?.CurrentShip?.size ?? "Large";
-                bool selectStations = !prioritizeOrbitalStation && EDDI.Instance.inHorizons;
+                bool selectStations = !prioritizeOrbitalStations && EDDI.Instance.inHorizons;
 
                 List<Station> factionStations = selectStations ? factionStarSystem.stations : factionStarSystem.orbitalstations
                     .Where(s => s.stationservices.Count > 0 && s.distancefromstar < maxStationDistanceFromStarLs && s.LandingPadCheck(shipSize))

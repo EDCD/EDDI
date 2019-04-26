@@ -18,7 +18,7 @@ namespace EddiCrimeMonitor
         public long fines { get; set; }
         public long bounties { get; set; }
         public int? maxStationDistanceFromStarLs { get; set; }
-        public bool prioritizeOrbitalStation { get; set; }
+        public bool prioritizeOrbitalStations { get; set; }
         public DateTime updatedat { get; set; }
 
         [JsonIgnore]
