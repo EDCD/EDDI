@@ -795,13 +795,16 @@ namespace EddiJournalMonitor
                                     {
                                         // Star
                                         string stellarclass = JsonParsing.getString(data, "StarType");
+                                        int? stellarsubclass = JsonParsing.getOptionalInt(data, "Subclass");
                                         decimal stellarMass = JsonParsing.getDecimal(data, "StellarMass");
                                         decimal absoluteMagnitude = JsonParsing.getDecimal(data, "AbsoluteMagnitude");
                                         string luminosityClass = JsonParsing.getString(data, "Luminosity");
                                         data.TryGetValue("Age_MY", out val);
                                         long ageMegaYears = (long)val;
+                                        bool alreadydiscovered = JsonParsing.getBool(data, "WasDiscovered");
+                                        bool alreadymapped = JsonParsing.getBool(data, "WasMapped");
 
-                                        Body star = new Body(name, bodyId, parents, distanceLs, stellarclass, stellarMass, radiusKm, absoluteMagnitude, ageMegaYears, temperatureKelvin, luminosityClass, semimajoraxisLs, eccentricity, orbitalinclinationDegrees, periapsisDegrees, orbitalPeriodDays, rotationPeriodDays, axialTiltDegrees, rings, systemName, systemAddress)
+                                        Body star = new Body(name, bodyId, parents, distanceLs, stellarclass, stellarsubclass, stellarMass, radiusKm, absoluteMagnitude, ageMegaYears, temperatureKelvin, luminosityClass, semimajoraxisLs, eccentricity, orbitalinclinationDegrees, periapsisDegrees, orbitalPeriodDays, rotationPeriodDays, axialTiltDegrees, rings, alreadydiscovered, alreadymapped, systemName, systemAddress)
                                         {
                                             scanned = (DateTime?)timestamp
                                         };
@@ -909,8 +912,10 @@ namespace EddiJournalMonitor
 
                                         TerraformState terraformState = TerraformState.FromEDName(JsonParsing.getString(data, "TerraformState")) ?? TerraformState.NotTerraformable;
                                         Volcanism volcanism = Volcanism.FromName(JsonParsing.getString(data, "Volcanism"));
+                                        bool alreadydiscovered = JsonParsing.getBool(data, "WasDiscovered");
+                                        bool alreadymapped = JsonParsing.getBool(data, "WasMapped");
 
-                                        Body body = new Body(name, bodyId, parents, distanceLs, tidallyLocked, terraformState, planetClass, atmosphereClass, atmosphereCompositions, volcanism, earthMass, radiusKm, gravity, temperatureKelvin, pressureAtm, landable, materials, solidCompositions, semimajoraxisLs, eccentricity, orbitalinclinationDegrees, periapsisDegrees, orbitalPeriodDays, rotationPeriodDays, axialTiltDegrees, rings, reserveLevel, systemName, systemAddress)
+                                        Body body = new Body(name, bodyId, parents, distanceLs, tidallyLocked, terraformState, planetClass, atmosphereClass, atmosphereCompositions, volcanism, earthMass, radiusKm, gravity, temperatureKelvin, pressureAtm, landable, materials, solidCompositions, semimajoraxisLs, eccentricity, orbitalinclinationDegrees, periapsisDegrees, orbitalPeriodDays, rotationPeriodDays, axialTiltDegrees, rings, reserveLevel, alreadydiscovered, alreadymapped, systemName, systemAddress)
                                         {
                                             scanned = (DateTime?)timestamp
                                         };

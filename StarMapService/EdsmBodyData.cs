@@ -115,6 +115,15 @@ namespace EddiStarMapService
             {
                 // Star-specific items 
                 string stellarclass = ((string)body["subType"]).Split(' ')[0]; // Splits "B (Blue-White) Star" to "B" 
+                int? stellarsubclass = null;
+                string endOfStellarClass = stellarclass.ToCharArray().ElementAt(stellarclass.Length - 1).ToString();
+                if (int.TryParse(endOfStellarClass, out int subclass))
+                {
+                    // If our stellarclass ends in a number, we need to separate the class from the subclass
+                    stellarsubclass = subclass;
+                    stellarclass = stellarclass.Replace(endOfStellarClass, "");
+                }
+
                 long? ageMegaYears = (long?)body["age"]; // Age in megayears
                 string luminosityclass = (string)body["luminosity"];
                 decimal? absolutemagnitude = (decimal?)body["absoluteMagnitude"];
@@ -122,7 +131,7 @@ namespace EddiStarMapService
                 decimal? solarradius = (decimal?)body["solarRadius"];
                 decimal radiusKm = (decimal)(solarradius != null ? solarradius * Constants.solarRadiusMeters / 1000 : null);
 
-                Body Body = new Body(bodyname, bodyId, parents, distanceLs, stellarclass, stellarMass, radiusKm, absolutemagnitude, ageMegaYears, temperatureKelvin, luminosityclass, semimajoraxisLs, eccentricity, orbitalInclinationDegrees, periapsisDegrees, orbitalPeriodDays, rotationPeriodDays, axialTiltDegrees, rings, systemName, null);
+                Body Body = new Body(bodyname, bodyId, parents, distanceLs, stellarclass, stellarsubclass, stellarMass, radiusKm, absolutemagnitude, ageMegaYears, temperatureKelvin, luminosityclass, semimajoraxisLs, eccentricity, orbitalInclinationDegrees, periapsisDegrees, orbitalPeriodDays, rotationPeriodDays, axialTiltDegrees, rings, true, false, systemName, null);
                 Body.EDSMID = EDSMID;
                 DateTime updatedAt = DateTime.SpecifyKind(DateTime.Parse((string)body["updateTime"]), DateTimeKind.Utc);
                 Body.updatedat = updatedAt == null ? null : (long?)(updatedAt.Subtract(new DateTime(1970, 1, 1, 0, 0, 0))).TotalSeconds;
@@ -221,9 +230,11 @@ namespace EddiStarMapService
                 ReserveLevel reserveLevel = ReserveLevel.FromName((string)body["reserveLevel"]) ?? ReserveLevel.None;
 
                 DateTime updatedAt = DateTime.SpecifyKind(DateTime.Parse((string)body["updateTime"]), DateTimeKind.Utc);
-                Body Body = new Body(bodyname, bodyId, parents, distanceLs, tidallylocked, terraformState, planetClass, atmosphereClass, atmosphereCompositions, volcanism, earthmass, radiusKm, (decimal)gravity, temperatureKelvin, pressureAtm, landable, materials, solidCompositions, semimajoraxisLs, eccentricity, orbitalInclinationDegrees, periapsisDegrees, orbitalPeriodDays, rotationPeriodDays, axialTiltDegrees, rings, reserveLevel, systemName, null);
-                Body.EDSMID = EDSMID;
-                Body.updatedat = updatedAt == null ? null : (long?)(updatedAt.Subtract(new DateTime(1970, 1, 1, 0, 0, 0))).TotalSeconds;
+                Body Body = new Body(bodyname, bodyId, parents, distanceLs, tidallylocked, terraformState, planetClass, atmosphereClass, atmosphereCompositions, volcanism, earthmass, radiusKm, (decimal)gravity, temperatureKelvin, pressureAtm, landable, materials, solidCompositions, semimajoraxisLs, eccentricity, orbitalInclinationDegrees, periapsisDegrees, orbitalPeriodDays, rotationPeriodDays, axialTiltDegrees, rings, reserveLevel, true, true, systemName, null)
+                {
+                    EDSMID = EDSMID,
+                    updatedat = updatedAt == null ? null : (long?)(updatedAt.Subtract(new DateTime(1970, 1, 1, 0, 0, 0))).TotalSeconds
+                };
 
                 return Body;
             }

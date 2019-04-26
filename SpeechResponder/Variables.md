@@ -476,11 +476,16 @@ All bodies have the following data:
     - `tidallylocked` true if the body is tidally locked to its parent
     - `temperature` the surface temperature of the body, in Kelvin
 	- `rings` (when applicable) (an array of ring objects)
+    - `scanned` a DateTime value that is set when the body is scanned and unset otherwise.
+    - `mapped` a DateTime value that is set when the body is mapped and unset otherwise.
+    - `alreadyscanned` whether another commander has already submitted a scan of the body to Universal Cartographics
+    - `alreadymapped` whether another commander has already submitted mapping data for the body to Universal Cartographics
 
 In addition, stars have the following data:
 
     - `mainstar` true if this is the main star of the system
     - `stellarclass` the stellar class of the star (M, G, etc)
+    - `stellarsubclass` the stellar subclass of the star (0-9)
     - `solarmass` the solar mass of the star
     - `solarradius` the solar radius of the star, compared to Sol
     - `age` the age of the star in millions of years
