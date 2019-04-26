@@ -31,6 +31,8 @@ namespace EddiCrimeMonitor
             criminalRecord.ItemsSource = crimeMonitor()?.criminalrecord;
 
             CrimeMonitorConfiguration configuration = CrimeMonitorConfiguration.FromFile();
+            prioritizeOrbitalStations.IsChecked = configuration.prioritizeOrbitalStation;
+            maxStationDistanceInt.Text = configuration.maxStationDistanceFromStarLs?.ToString(CultureInfo.InvariantCulture);
         }
 
         private void addRecord(object sender, RoutedEventArgs e)
@@ -107,6 +109,55 @@ namespace EddiCrimeMonitor
                 IsBackground = true
             };
             IFRouteThread.Start();
+        }
+
+        private void prioritizeOrbitalStationsEnabled(object sender, RoutedEventArgs e)
+        {
+            CrimeMonitorConfiguration configuration = CrimeMonitorConfiguration.FromFile();
+            configuration.prioritizeOrbitalStation = prioritizeOrbitalStations.IsChecked.Value;
+            configuration.ToFile();
+        }
+
+        private void prioritizeOrbitalStationsDisabled(object sender, RoutedEventArgs e)
+        {
+            CrimeMonitorConfiguration configuration = CrimeMonitorConfiguration.FromFile();
+            crimeMonitor().prioritizeOrbitalStation = prioritizeOrbitalStations.IsChecked.Value;
+            configuration.prioritizeOrbitalStation = prioritizeOrbitalStations.IsChecked.Value;
+            configuration.ToFile();
+        }
+
+        private void maxStationDistance_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Return)
+            {
+                maxStationDistance_Changed();
+            }
+        }
+
+        private void maxStationDistance_LostFocus(object sender, RoutedEventArgs e)
+        {
+            maxStationDistance_Changed();
+        }
+
+        private void maxStationDistance_Changed()
+        {
+            CrimeMonitorConfiguration configuration = CrimeMonitorConfiguration.FromFile();
+            try
+            {
+                int? distance = string.IsNullOrWhiteSpace(maxStationDistanceInt.Text)
+                    ? 10000 : Convert.ToInt32(maxStationDistanceInt.Text, CultureInfo.InvariantCulture);
+                if (distance != configuration.maxStationDistanceFromStarLs)
+                {
+                    crimeMonitor().maxStationDistanceFromStarLs = distance;
+                    configuration.maxStationDistanceFromStarLs = distance;
+                    configuration.ToFile();
+                    crimeMonitor().UpdateStations();
+                }
+            }
+            catch
+            {
+                // Bad user input; ignore it
+            }
         }
 
         private void criminalRecordUpdated(object sender, DataTransferEventArgs e)
@@ -187,5 +238,14 @@ namespace EddiCrimeMonitor
             // Update the crime monitor's information
             crimeMonitor()?.writeRecord();
         }
+
+        private void EnsureValidInteger(object sender, TextCompositionEventArgs e)
+        {
+            // Match valid characters
+            Regex regex = new Regex(@"[0-9]");
+            // Swallow the character doesn't match the regex
+            e.Handled = !regex.IsMatch(e.Text);
+        }
     }
 }
+

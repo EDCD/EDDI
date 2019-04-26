@@ -2,7 +2,6 @@
 using EddiDataDefinitions;
 using EddiDataProviderService;
 using EddiEvents;
-using EddiStarMapService;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -29,6 +28,8 @@ namespace EddiCrimeMonitor
         public long claims;
         public long fines;
         public long bounties;
+        public int? maxStationDistanceFromStarLs;
+        public bool prioritizeOrbitalStation;
         public Dictionary<string, string> homeSystems;
         private DateTime updateDat;
 
@@ -135,53 +136,53 @@ namespace EddiCrimeMonitor
         {
             Logging.Debug("Received event " + JsonConvert.SerializeObject(@event));
 
-            // Handle the events that we care about and filter for 'LogLoad'
-            if (@event.timestamp > updateDat)
+            // Handle the events that we care about
+            if (@event is BondAwardedEvent)
             {
-                updateDat = @event.timestamp;
-                if (@event is BondAwardedEvent)
-                {
-                    handleBondAwardedEvent((BondAwardedEvent)@event);
-                }
-                else if (@event is BondRedeemedEvent)
-                {
-                    handleBondRedeemedEvent((BondRedeemedEvent)@event);
-                }
-                else if (@event is BountyAwardedEvent)
-                {
-                    handleBountyAwardedEvent((BountyAwardedEvent)@event);
-                }
-                else if (@event is BountyIncurredEvent)
-                {
-                    handleBountyIncurredEvent((BountyIncurredEvent)@event);
-                }
-                else if (@event is BountyPaidEvent)
-                {
-                    handleBountyPaidEvent((BountyPaidEvent)@event);
-                }
-                else if (@event is BountyRedeemedEvent)
-                {
-                    handleBountyRedeemedEvent((BountyRedeemedEvent)@event);
-                }
-                else if (@event is FineIncurredEvent)
-                {
-                    handleFineIncurredEvent((FineIncurredEvent)@event);
-                }
-                else if (@event is FinePaidEvent)
-                {
-                    handleFinePaidEvent((FinePaidEvent)@event);
-                }
-                else if (@event is DiedEvent)
-                {
-                    handleDiedEvent((DiedEvent)@event);
-                }
+                handleBondAwardedEvent((BondAwardedEvent)@event);
+            }
+            else if (@event is BondRedeemedEvent)
+            {
+                handleBondRedeemedEvent((BondRedeemedEvent)@event);
+            }
+            else if (@event is BountyAwardedEvent)
+            {
+                handleBountyAwardedEvent((BountyAwardedEvent)@event);
+            }
+            else if (@event is BountyIncurredEvent)
+            {
+                handleBountyIncurredEvent((BountyIncurredEvent)@event);
+            }
+            else if (@event is BountyPaidEvent)
+            {
+                handleBountyPaidEvent((BountyPaidEvent)@event);
+            }
+            else if (@event is BountyRedeemedEvent)
+            {
+                handleBountyRedeemedEvent((BountyRedeemedEvent)@event);
+            }
+            else if (@event is FineIncurredEvent)
+            {
+                handleFineIncurredEvent((FineIncurredEvent)@event);
+            }
+            else if (@event is FinePaidEvent)
+            {
+                handleFinePaidEvent((FinePaidEvent)@event);
+            }
+            else if (@event is DiedEvent)
+            {
+                handleDiedEvent((DiedEvent)@event);
             }
         }
 
         private void handleBondAwardedEvent(BondAwardedEvent @event)
         {
-            _handleBondAwardedEvent(@event);
-            writeRecord();
+            if (@event.timestamp > updateDat)
+            {
+                updateDat = @event.timestamp;
+                _handleBondAwardedEvent(@event);
+                writeRecord();
+            }
         }
 
         private void _handleBondAwardedEvent(BondAwardedEvent @event)
@@ -206,9 +207,13 @@ namespace EddiCrimeMonitor
 
         private void handleBondRedeemedEvent(BondRedeemedEvent @event)
         {
-            if (_handleBondRedeemedEvent(@event))
+            if (@event.timestamp > updateDat)
             {
-                writeRecord();
+                updateDat = @event.timestamp;
+                if (_handleBondRedeemedEvent(@event))
+                {
+                    writeRecord();
+                }
             }
         }
 
@@ -272,8 +277,12 @@ namespace EddiCrimeMonitor
 
         private void handleBountyAwardedEvent(BountyAwardedEvent @event)
         {
-            _handleBountyAwardedEvent(@event);
-            writeRecord();
+            if (@event.timestamp > updateDat)
+            {
+                updateDat = @event.timestamp;
+                _handleBountyAwardedEvent(@event);
+                writeRecord();
+            }
         }
 
         private void _handleBountyAwardedEvent(BountyAwardedEvent @event, bool test = false)
@@ -311,9 +320,13 @@ namespace EddiCrimeMonitor
 
         private void handleBountyRedeemedEvent(BountyRedeemedEvent @event)
         {
-            if (_handleBountyRedeemedEvent(@event))
+            if (@event.timestamp > updateDat)
             {
-                writeRecord();
+                updateDat = @event.timestamp;
+                if (_handleBountyRedeemedEvent(@event))
+                {
+                    writeRecord();
+                }
             }
         }
 
@@ -375,8 +388,13 @@ namespace EddiCrimeMonitor
 
         private void handleBountyIncurredEvent(BountyIncurredEvent @event)
         {
-            _handleBountyIncurredEvent(@event);
-            writeRecord();
+            if (@event.timestamp > updateDat)
+            {
+                updateDat = @event.timestamp;
+                _handleBountyIncurredEvent(@event);
+                writeRecord();
+            }
+
         }
 
         private void _handleBountyIncurredEvent(BountyIncurredEvent @event)
@@ -401,9 +419,13 @@ namespace EddiCrimeMonitor
 
         private void handleBountyPaidEvent(BountyPaidEvent @event)
         {
-            if (_handleBountyPaidEvent(@event))
+            if (@event.timestamp > updateDat)
             {
-                writeRecord();
+                updateDat = @event.timestamp;
+                if (_handleBountyPaidEvent(@event))
+                {
+                    writeRecord();
+                }
             }
         }
 
@@ -454,8 +476,12 @@ namespace EddiCrimeMonitor
 
         private void handleFineIncurredEvent(FineIncurredEvent @event)
         {
-            _handleFineIncurredEvent(@event);
-            writeRecord();
+            if (@event.timestamp > updateDat)
+            {
+                updateDat = @event.timestamp;
+                _handleFineIncurredEvent(@event);
+                writeRecord();
+            }
         }
 
         private void _handleFineIncurredEvent(FineIncurredEvent @event)
@@ -480,9 +506,13 @@ namespace EddiCrimeMonitor
 
         private void handleFinePaidEvent(FinePaidEvent @event)
         {
-            if (_handleFinePaidEvent(@event))
+            if (@event.timestamp > updateDat)
             {
-                writeRecord();
+                updateDat = @event.timestamp;
+                if (_handleFinePaidEvent(@event))
+                {
+                    writeRecord();
+                }
             }
         }
 
@@ -533,8 +563,12 @@ namespace EddiCrimeMonitor
 
         private void handleDiedEvent(DiedEvent @event)
         {
-            _handleDiedEvent(@event);
-            writeRecord();
+            if (@event.timestamp > updateDat)
+            {
+                updateDat = @event.timestamp;
+                _handleDiedEvent(@event);
+                writeRecord();
+            }
         }
 
         private void _handleDiedEvent(DiedEvent @event)
@@ -582,6 +616,8 @@ namespace EddiCrimeMonitor
                     claims = claims,
                     fines = fines,
                     bounties = bounties,
+                    maxStationDistanceFromStarLs = maxStationDistanceFromStarLs,
+                    prioritizeOrbitalStation = prioritizeOrbitalStation,
                     homeSystems = homeSystems,
                     updatedat = updateDat
                 };
@@ -600,6 +636,8 @@ namespace EddiCrimeMonitor
                 claims = configuration.claims;
                 fines = configuration.fines;
                 bounties = configuration.bounties;
+                maxStationDistanceFromStarLs = configuration.maxStationDistanceFromStarLs;
+                prioritizeOrbitalStation = configuration.prioritizeOrbitalStation;
                 homeSystems = configuration.homeSystems;
                 updateDat = configuration.updatedat;
 
@@ -665,9 +703,11 @@ namespace EddiCrimeMonitor
             long total = record.fines + record.bounties + report.amount;
             FactionRecord powerRecord = GetRecordWithFaction(record.allegiance);
 
+            // Minor faction crimes are converted to an interstellar bounty, owned by the faction's aligned
+            /// superpower, when total fines & bounties incurred exceed 2 million credits
             if (powerRecord != null || total > 2000000)
             {
-                // Check if interstellar bounty is active for minor faction
+                // Check if an interstellar bounty is active for the minor faction
                 if (powerRecord?.interstellarBountyFactions.Contains(record.faction) ?? false)
                 {
                     _AddCrimeToRecord(powerRecord, report);
@@ -697,7 +737,7 @@ namespace EddiCrimeMonitor
 
                 return;
             }
-            // Add new report to the minor faction record
+            // Criteria not met. Add new report to the minor faction record
             _AddCrimeToRecord(record, report);
         }
 
@@ -726,7 +766,6 @@ namespace EddiCrimeMonitor
         public void GetFactionData(FactionRecord record, string homeSystem = null)
         {
             if (record == null || record.faction == null || record.faction == Properties.CrimeMonitor.blank_faction) { return; }
-            record.station = null;
 
             // Get the faction from Elite BGS and set faction record values
             Faction faction = DataProviderService.GetFactionByName(record.faction);
@@ -738,52 +777,79 @@ namespace EddiCrimeMonitor
             }
             record.Allegiance = faction.Allegiance ?? Superpower.None;
             List<string> factionSystems = faction.presences.Select(p => p.systemName).ToList();
+            factionSystems = faction.presences
+                .OrderByDescending(p => p.influence)
+                .Select(p => p.systemName).ToList();
             record.factionSystems = factionSystems;
 
-            // 'Home system' is not designated
-            if (homeSystem == null)
-            {
-                // Look first in saved home systems
-                if (homeSystems.TryGetValue(record.faction, out string result))
-                {
-                    homeSystem = result;
-                }
-                // Use sytem which is part of faction name. Otherwise, system with highest influence
-                else
-                {
-                    List<FactionPresence> presences = faction.presences.Where(p => factionSystems.Contains(p.systemName)).ToList();
-                    homeSystem = FindHomeSystem(record.faction, factionSystems)
-                        ?? presences.OrderByDescending(p => p.influence).First().systemName;
-                }
-            }
             // If 'home system' is desiginated, check if system is part of faction presence
-            else if (factionSystems.Contains(homeSystem))
+            if (homeSystem != null && factionSystems.Contains(homeSystem))
             {
+                record.system = homeSystem;
+                record.station = GetFactionStation(homeSystem);
                 if (FindHomeSystem(record.faction, factionSystems) == null && !homeSystems.ContainsKey(record.faction))
                 {
                     // Save home system if not part of faction name and not previously saved
                     homeSystems.Add(record.faction, homeSystem);
                 }
+                return;
             }
-            // System not found, exit.
-            else { return; }
 
-            StarSystem factionStarSystem = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystem(homeSystem);
-            record.system = homeSystem;
+            // Check saved home systems
+            if (homeSystems.TryGetValue(record.faction, out string result))
+            {
+                record.system = result;
+                record.station = GetFactionStation(homeSystem);
+                return;
+            }
+
+            // Check for 'home system' via faction presences for qualifying station
+            homeSystem = FindHomeSystem(record.faction, factionSystems);
+            if (homeSystem != null)
+            {
+                string factionStation = GetFactionStation(homeSystem);
+
+                // Station found meeting user options
+                if (factionStation != null)
+                {
+                    record.system = homeSystem;
+                    record.station = factionStation;
+                    return;
+                }
+            }
+
+            // Check faction presences, by order of influence, for qualifying station
+            foreach (string system in factionSystems)
+            {
+                string factionStation = GetFactionStation(system);
+                if (factionStation != null)
+                {
+                    record.system = system;
+                    record.station = factionStation;
+                    return;
+                }
+            }
+
+            // Settle for highest influence faction presence, no station found
+            record.system = factionSystems.FirstOrDefault();
+            record.station = null;
+        }
+
+        public string GetFactionStation(string factionSystem)
+        {
+            if (factionSystem == null) { return null; }
+            StarSystem factionStarSystem = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystem(factionSystem);
 
             if (factionStarSystem != null)
             {
-                // Filter stations within the faction system which meet the game version and landing pad size requirements
-                 string shipSize = EDDI.Instance?.CurrentShip?.size ?? "Large";
-                List<Station> factionStations = EDDI.Instance.inHorizons ? factionStarSystem.stations : factionStarSystem.orbitalstations
-                    .Where(s => s.stationservices.Count > 0 && s.LandingPadCheck(shipSize)).ToList();
+                // Filter stations within the faction system which meet the station type prioritization,
+                // max distance from the main star, game version, and landing pad size requirements
+                string shipSize = EDDI.Instance?.CurrentShip?.size ?? "Large";
+                bool selectStations = !prioritizeOrbitalStation && EDDI.Instance.inHorizons;
 
-                // Prioritize controlled stations
-                List<Station> controlledStations = factionStations.Where(s => s.Faction.name == record.faction).ToList();
-                if (controlledStations.Count > 0 && controlledStations.Min(s => s.distancefromstar) < 10000)
-                {
-                    factionStations = controlledStations;
-                }
+                List<Station> factionStations = selectStations ? factionStarSystem.stations : factionStarSystem.orbitalstations
+                    .Where(s => s.stationservices.Count > 0 && s.distancefromstar < maxStationDistanceFromStarLs && s.LandingPadCheck(shipSize))
+                    .ToList();
 
                 // Build list to find the faction station nearest to the main star
                 SortedList<decimal, string> nearestList = new SortedList<decimal, string>();
@@ -796,9 +862,29 @@ namespace EddiCrimeMonitor
                 }
 
                 // Faction station nearest to the main star
-                string nearestStation = nearestList.Values.FirstOrDefault();
-                record.station = nearestStation;
+                return nearestList.Values.FirstOrDefault();
             }
+            return null;
+        }
+
+        public void UpdateStations()
+        {
+            Thread stationUpdateThread = new Thread(() =>
+            {
+                foreach (FactionRecord record in criminalrecord.ToList())
+                {
+                    Superpower Allegiance = Superpower.FromNameOrEdName(record.faction);
+                    if (Allegiance == null)
+                    {
+                        record.station = GetFactionStation(record.system);
+                    }
+                }
+                writeRecord();
+            })
+            {
+                IsBackground = true
+            };
+            stationUpdateThread.Start();
         }
 
         private string FindHomeSystem(string faction, List<string> factionSystems)

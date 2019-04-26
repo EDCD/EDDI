@@ -70,6 +70,24 @@ namespace EddiCrimeMonitor.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Allows manual addition of a minor faction record..
+        /// </summary>
+        public static string add_button_desc {
+            get {
+                return ResourceManager.GetString("add_button_desc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add Record:.
+        /// </summary>
+        public static string add_button_text {
+            get {
+                return ResourceManager.GetString("add_button_text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Enter Faction Name.
         /// </summary>
         public static string blank_faction {
@@ -102,6 +120,24 @@ namespace EddiCrimeMonitor.Properties {
         public static string find_button {
             get {
                 return ResourceManager.GetString("find_button", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Initiates search for  the nearest Interstellar Factors Contact system and station..
+        /// </summary>
+        public static string find_button_desc {
+            get {
+                return ResourceManager.GetString("find_button_desc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Find Legal Facilities:.
+        /// </summary>
+        public static string find_button_text {
+            get {
+                return ResourceManager.GetString("find_button_text", resourceCulture);
             }
         }
         
@@ -160,47 +196,20 @@ namespace EddiCrimeMonitor.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Prioritize Orbital Stations:.
+        /// </summary>
+        public static string orbital_station_checkbox {
+            get {
+                return ResourceManager.GetString("orbital_station_checkbox", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Below is a list of your criminal record..
         /// </summary>
         public static string para1 {
             get {
                 return ResourceManager.GetString("para1", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Update - Button updates the minor faction (system, station, etc) information..
-        /// </summary>
-        public static string para2 {
-            get {
-                return ResourceManager.GetString("para2", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Remove - Button allows manual removal of a minor faction record..
-        /// </summary>
-        public static string para3 {
-            get {
-                return ResourceManager.GetString("para3", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Add Record - Button allows manual addition of a minor faction record..
-        /// </summary>
-        public static string para4 {
-            get {
-                return ResourceManager.GetString("para4", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Find Facilities - Button initiates search for  the nearest Interstellar Factors Contact system and station..
-        /// </summary>
-        public static string para5 {
-            get {
-                return ResourceManager.GetString("para5", resourceCulture);
             }
         }
         
@@ -214,11 +223,56 @@ namespace EddiCrimeMonitor.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Allows manual removal of a minor faction record..
+        /// </summary>
+        public static string remove_button_desc {
+            get {
+                return ResourceManager.GetString("remove_button_desc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remove:.
+        /// </summary>
+        public static string remove_button_text {
+            get {
+                return ResourceManager.GetString("remove_button_text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Max Station Distance From Main Star (Ls):.
+        /// </summary>
+        public static string tab_station_distance {
+            get {
+                return ResourceManager.GetString("tab_station_distance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Update.
         /// </summary>
         public static string update_button {
             get {
                 return ResourceManager.GetString("update_button", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Updates the minor faction (system, station, etc) information..
+        /// </summary>
+        public static string update_button_desc {
+            get {
+                return ResourceManager.GetString("update_button_desc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Update:.
+        /// </summary>
+        public static string update_button_text {
+            get {
+                return ResourceManager.GetString("update_button_text", resourceCulture);
             }
         }
     }

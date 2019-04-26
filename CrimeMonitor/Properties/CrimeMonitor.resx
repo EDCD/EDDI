@@ -120,6 +120,12 @@
   <data name="add_button" xml:space="preserve">
     <value>Add Record</value>
   </data>
+  <data name="add_button_desc" xml:space="preserve">
+    <value>Allows manual addition of a minor faction record.</value>
+  </data>
+  <data name="add_button_text" xml:space="preserve">
+    <value>Add Record:</value>
+  </data>
   <data name="blank_faction" xml:space="preserve">
     <value>Enter Faction Name</value>
   </data>
@@ -131,6 +137,12 @@
   </data>
   <data name="find_button" xml:space="preserve">
     <value>Find Legal Facilities</value>
+  </data>
+  <data name="find_button_desc" xml:space="preserve">
+    <value>Initiates search for  the nearest Interstellar Factors Contact system and station.</value>
+  </data>
+  <data name="find_button_text" xml:space="preserve">
+    <value>Find Legal Facilities:</value>
   </data>
   <data name="header_bounties" xml:space="preserve">
     <value>Bounties</value>
@@ -150,25 +162,31 @@
   <data name="header_system" xml:space="preserve">
     <value>System</value>
   </data>
+  <data name="orbital_station_checkbox" xml:space="preserve">
+    <value>Prioritize Orbital Stations:</value>
+  </data>
   <data name="para1" xml:space="preserve">
     <value>Below is a list of your criminal record.</value>
-  </data>
-  <data name="para2" xml:space="preserve">
-    <value>Update - Button updates the minor faction (system, station, etc) information.</value>
-  </data>
-  <data name="para3" xml:space="preserve">
-    <value>Remove - Button allows manual removal of a minor faction record.</value>
-  </data>
-  <data name="para4" xml:space="preserve">
-    <value>Add Record - Button allows manual addition of a minor faction record.</value>
-  </data>
-  <data name="para5" xml:space="preserve">
-    <value>Find Facilities - Button initiates search for  the nearest Interstellar Factors Contact system and station.</value>
   </data>
   <data name="remove_button" xml:space="preserve">
     <value>Remove</value>
   </data>
+  <data name="remove_button_desc" xml:space="preserve">
+    <value>Allows manual removal of a minor faction record.</value>
+  </data>
+  <data name="remove_button_text" xml:space="preserve">
+    <value>Remove:</value>
+  </data>
+  <data name="tab_station_distance" xml:space="preserve">
+    <value>Max Station Distance From Main Star (Ls):</value>
+  </data>
   <data name="update_button" xml:space="preserve">
     <value>Update</value>
+  </data>
+  <data name="update_button_desc" xml:space="preserve">
+    <value>Updates the minor faction (system, station, etc) information.</value>
+  </data>
+  <data name="update_button_text" xml:space="preserve">
+    <value>Update:</value>
   </data>
 </root>
