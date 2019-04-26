@@ -44,6 +44,8 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * WAS `name`*, IS: `bodyname` 
       * WAS `orbitalinclination`*, IS `inclination`
       * WAS `rotationperiod`*, IS: `rotationalperiod`
+    * Revised `Body scanned` event variables to add new properties `scanned`, `mapped`, `alreadyscanned`, and `alreadymapped`. 
+    * Revised `Star scanned` event variables to add new properties `scanned`, `mapped`, `alreadyscanned`, `alreadymapped, and `stellarsubclass`.
     * Revised `Entered normal space`, `Glide`, `Location`, and `Near surface` event variables for better interchangeability with the `BodyDetails` function.
       * WAS: `body`*, IS: `bodyname` 
       * WAS: `system`*, IS: `systemname`

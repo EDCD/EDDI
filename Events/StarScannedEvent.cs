@@ -51,6 +51,8 @@ namespace EddiEvents
 
         public string stellarclass => star.stellarclass;
 
+        public int? stellarsubclass => star.stellarsubclass;
+
         public decimal solarmass => (decimal)star.solarmass;
 
         public decimal? massprobability => star.massprobability;
@@ -100,6 +102,14 @@ namespace EddiEvents
         public long? estimatedvalue => star.estimatedvalue;
 
         public bool mainstar => (bool)star.mainstar;
+
+        public DateTime? scanned => star.scanned;
+
+        public DateTime? mapped => star.mapped;
+
+        public bool alreadydiscovered => star.alreadydiscovered;
+
+        public bool alreadymapped => star.alreadymapped;
 
         // Variables below are not intended to be user facing
         public long? bodyId { get; private set; }

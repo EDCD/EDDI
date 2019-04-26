@@ -59,8 +59,14 @@ namespace EddiDataDefinitions
 
         // Scan data
 
+        /// <summary>Whether we're the first commander to discover this body</summary>
+        public bool alreadydiscovered { get; set; }
+
         /// <summary>When we scanned this object, if we have (DateTime)</summary>
         public DateTime? scanned { get; set; }
+
+        /// <summary>Whether we're the first commander to map this body</summary>
+        public bool alreadymapped { get; set; }
 
         /// <summary>When we mapped this object, if we have (DateTime)</summary>
         public DateTime? mapped { get; set; }
@@ -139,6 +145,9 @@ namespace EddiDataDefinitions
         /// <summary>The stellar class of the star</summary>
         public string stellarclass { get; set; }
 
+        /// <summary>The stellar subclass of the star (0-9)</summary>
+        public int? stellarsubclass { get; set; }
+
         /// <summary>The Luminosity Class of the Star (since 2.4)</summary>
         public string luminosityclass { get; set; }
 
@@ -168,7 +177,7 @@ namespace EddiDataDefinitions
             (decimal?)StarClass.DistanceFromStarForTemperature(StarClass.minHabitableTempKelvin, Convert.ToDouble(radius), Convert.ToDouble(temperature)) : null;
 
         /// <summary> Star definition </summary>
-        public Body(string bodyName, long? bodyId, List<IDictionary<string, object>> parents, decimal? distanceLs, string stellarclass, decimal? solarmass, decimal radiusKm, decimal? absolutemagnitude, long? ageMegaYears, decimal? temperatureKelvin, string luminosityclass, decimal? semimajoraxisLs, decimal? eccentricity, decimal? orbitalinclinationDegrees, decimal? periapsisDegrees, decimal? orbitalPeriodDays, decimal? rotationPeriodDays, decimal? axialTiltDegrees, List<Ring> rings = null, string systemName = null, long? systemAddress = null)
+        public Body(string bodyName, long? bodyId, List<IDictionary<string, object>> parents, decimal? distanceLs, string stellarclass, int? stellarsubclass, decimal? solarmass, decimal radiusKm, decimal? absolutemagnitude, long? ageMegaYears, decimal? temperatureKelvin, string luminosityclass, decimal? semimajoraxisLs, decimal? eccentricity, decimal? orbitalinclinationDegrees, decimal? periapsisDegrees, decimal? orbitalPeriodDays, decimal? rotationPeriodDays, decimal? axialTiltDegrees, List<Ring> rings, bool alreadydiscovered, bool alreadymapped, string systemName = null, long? systemAddress = null)
         {
             this.bodyname = bodyName;
             this.radius = radiusKm;
@@ -179,6 +188,7 @@ namespace EddiDataDefinitions
 
             // Star specific items
             this.stellarclass = stellarclass;
+            this.stellarsubclass = stellarsubclass;
             this.solarmass = solarmass;
             this.absolutemagnitude = absolutemagnitude;
             this.luminosityclass = luminosityclass;
@@ -200,6 +210,10 @@ namespace EddiDataDefinitions
             // System details
             this.systemname = systemName;
             this.systemAddress = systemAddress;
+
+            // Scan details
+            this.alreadydiscovered = alreadydiscovered;
+            this.alreadymapped = alreadymapped;
         }
 
         // Body-specific items
@@ -261,7 +275,7 @@ namespace EddiDataDefinitions
         public ReserveLevel reserveLevel { get; set; } = ReserveLevel.None;
 
         /// <summary> Planet or Moon definition </summary>
-        public Body(string bodyName, long? bodyId, List<IDictionary<string, object>> parents, decimal? distanceLs, bool? tidallylocked, TerraformState terraformstate, PlanetClass planetClass, AtmosphereClass atmosphereClass, List<AtmosphereComposition> atmosphereCompositions, Volcanism volcanism, decimal? earthmass, decimal? radiusKm, decimal gravity, decimal? temperatureKelvin, decimal? pressureAtm, bool? landable, List<MaterialPresence> materials, List<SolidComposition> solidCompositions, decimal? semimajoraxisLs, decimal? eccentricity, decimal? orbitalinclinationDegrees, decimal? periapsisDegrees, decimal? orbitalPeriodDays, decimal? rotationPeriodDays, decimal? axialtiltDegrees, List<Ring> rings, ReserveLevel reserveLevel, string systemName = null, long? systemAddress = null)
+        public Body(string bodyName, long? bodyId, List<IDictionary<string, object>> parents, decimal? distanceLs, bool? tidallylocked, TerraformState terraformstate, PlanetClass planetClass, AtmosphereClass atmosphereClass, List<AtmosphereComposition> atmosphereCompositions, Volcanism volcanism, decimal? earthmass, decimal? radiusKm, decimal gravity, decimal? temperatureKelvin, decimal? pressureAtm, bool? landable, List<MaterialPresence> materials, List<SolidComposition> solidCompositions, decimal? semimajoraxisLs, decimal? eccentricity, decimal? orbitalinclinationDegrees, decimal? periapsisDegrees, decimal? orbitalPeriodDays, decimal? rotationPeriodDays, decimal? axialtiltDegrees, List<Ring> rings, ReserveLevel reserveLevel, bool alreadydiscovered, bool alreadymapped, string systemName = null, long? systemAddress = null)
         {
             this.bodyname = bodyName;
             this.bodyType = (bool)parents?.Exists(p => p.ContainsKey("Planet"))
@@ -301,6 +315,10 @@ namespace EddiDataDefinitions
             // System details
             this.systemname = systemName; // This is needed to derive the "shortname" property
             this.systemAddress = systemAddress;
+
+            // Scan details
+            this.alreadydiscovered = alreadydiscovered;
+            this.alreadymapped = alreadymapped;
         }
 
         // Estimated exploration value calculations
