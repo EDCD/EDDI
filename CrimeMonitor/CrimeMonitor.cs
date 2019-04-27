@@ -189,11 +189,16 @@ namespace EddiCrimeMonitor
         {
             int shipId = EDDI.Instance?.CurrentShip?.LocalId ?? 0;
             string currentSystem = EDDI.Instance?.CurrentStarSystem?.name;
+
+            // Get the victim faction data
+            Faction faction = DataProviderService.GetFactionByName(@event.victimfaction);
+
             FactionReport report = new FactionReport(@event.timestamp, false, shipId, Crime.None, currentSystem, @event.reward)
             {
                 station = EDDI.Instance?.CurrentStation?.name,
                 body = EDDI.Instance?.CurrentStellarBody?.name,
-                victim = @event.victimfaction
+                victim = @event.victimfaction,
+                victimAllegiance = (faction.Allegiance ?? Superpower.None).invariantName
             };
 
             FactionRecord record = GetRecordWithFaction(@event.awardingfaction);
@@ -297,6 +302,9 @@ namespace EddiCrimeMonitor
             // Default to 1.0 for unit testing
             double bonus = (!test && currentSystem?.power == "Arissa Lavigny-Duval") ? 1.2 : 1.0;
 
+            // Get the victim faction data
+            Faction faction = DataProviderService.GetFactionByName(@event.faction);
+
             foreach (Reward reward in @event.rewards.ToList())
             {
                 int shipId = EDDI.Instance?.CurrentShip?.LocalId ?? 0;
@@ -305,7 +313,8 @@ namespace EddiCrimeMonitor
                 {
                     station = EDDI.Instance?.CurrentStation?.name,
                     body = EDDI.Instance?.CurrentStellarBody?.name,
-                    victim = @event.faction
+                    victim = @event.faction,
+                    victimAllegiance = (faction.Allegiance ?? Superpower.None).invariantName
                 };
 
                 FactionRecord record = GetRecordWithFaction(reward.faction);
@@ -402,6 +411,7 @@ namespace EddiCrimeMonitor
             int shipId = EDDI.Instance?.CurrentShip?.LocalId ?? 0;
             Crime crime = Crime.FromEDName(@event.crimetype);
             string currentSystem = EDDI.Instance?.CurrentStarSystem?.name;
+
             FactionReport report = new FactionReport(@event.timestamp, true, shipId, crime, currentSystem, @event.bounty)
             {
                 station = EDDI.Instance?.CurrentStation?.name,
@@ -849,8 +859,9 @@ namespace EddiCrimeMonitor
                 bool selectStations = !prioritizeOrbitalStations && EDDI.Instance.inHorizons;
 
                 List<Station> factionStations = selectStations ? factionStarSystem.stations : factionStarSystem.orbitalstations
-                    .Where(s => s.stationservices.Count > 0 && s.distancefromstar < maxStationDistanceFromStarLs && s.LandingPadCheck(shipSize))
-                    .ToList();
+                    .Where(s => s.distancefromstar < maxStationDistanceFromStarLs).ToList();
+                factionStations = factionStations.Where(s => s.LandingPadCheck(shipSize)).ToList();
+                factionStations = factionStations.Where(s => s.stationservices.Count > 0).ToList();
 
                 // Build list to find the faction station nearest to the main star
                 SortedList<decimal, string> nearestList = new SortedList<decimal, string>();

@@ -40,6 +40,8 @@ namespace EddiDataDefinitions
 
         public string victim { get; set; }
 
+        public string victimAllegiance { get; set; }
+
         public long amount { get; set; }
 
         public FactionReport() { }
@@ -54,6 +56,7 @@ namespace EddiDataDefinitions
             station = factionReport.station;
             body = factionReport.body;
             victim = factionReport.victim;
+            victimAllegiance = factionReport.victimAllegiance;
             amount = factionReport.amount;
             timestamp = factionReport.timestamp;
         }
