@@ -475,6 +475,7 @@ All bodies have the following data:
     - `distance` the distance from the arrival point in the system, in light seconds
     - `tidallylocked` true if the body is tidally locked to its parent
     - `temperature` the surface temperature of the body, in Kelvin
+    - `density` the density of the body, in kg per cubic meter
 	- `rings` (when applicable) (an array of ring objects)
     - `scanned` a DateTime value that is set when the body is scanned and unset otherwise.
     - `mapped` a DateTime value that is set when the body is mapped and unset otherwise.

@@ -29,6 +29,7 @@ namespace EddiEvents
             VARIABLES.Add("atmospherecompositions", "The composition of the atmosphere of the body that has been scanned (array of AtmosphereComposition objects) (only available if DSS equipped)");
             VARIABLES.Add("solidcompositions", "The composition of the body's solids that has been scanned (array of SolidComposition objects) (only available if DSS equipped)");
             VARIABLES.Add("volcanism", "The volcanism of the body that has been scanned (only available if DSS equipped)");
+            VARIABLES.Add("density", "The average density of the body, in kg per cubic meter");
             VARIABLES.Add("distance", "The distance in LS from the main star");
             VARIABLES.Add("orbitalperiod", "The number of days taken for a full orbit of the main star");
             VARIABLES.Add("rotationalperiod", "The number of days taken for a full rotation");
@@ -101,6 +102,8 @@ namespace EddiEvents
         public string terraformstate => (terraformState ?? TerraformState.NotTerraformable).localizedName; // This matches the object property reported from the BodyDetails() function
 
         public decimal? tilt => body.tilt;
+
+        public decimal? density => body.density;
 
         public long? estimatedvalue => body.estimatedvalue;
 

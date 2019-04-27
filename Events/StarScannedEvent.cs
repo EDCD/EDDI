@@ -30,14 +30,15 @@ namespace EddiEvents
             VARIABLES.Add("age", "The age of the star that has been scanned, in millions of years");
             VARIABLES.Add("ageprobability", "The probablility of finding a star of this class with this age");
             VARIABLES.Add("temperature", "The temperature of the star that has been scanned");
+            VARIABLES.Add("density", "The average density of the star, in kg per cubic meter");
             VARIABLES.Add("distance", "The distance in LS from the main star");
             VARIABLES.Add("distancefromarrival", "The distance in LS from the main star (old - do not use... preserved for compatibility)");
             VARIABLES.Add("orbitalperiod", "The number of seconds taken for a full orbit of the main star");
             VARIABLES.Add("rotationalperiod", "The number of seconds taken for a full rotation");
-            VARIABLES.Add("semimajoraxis", "");
-            VARIABLES.Add("eccentricity", "");
-            VARIABLES.Add("inclination", "");
-            VARIABLES.Add("periapsis", "");
+            VARIABLES.Add("semimajoraxis", "The semi major axis of the star's orbit, in light seconds");
+            VARIABLES.Add("eccentricity", "The orbital eccentricity of the star");
+            VARIABLES.Add("inclination", "The orbital inclination of the star, in degrees");
+            VARIABLES.Add("periapsis", "The argument of periapsis of the star, in degrees");
             VARIABLES.Add("rings", "The star's rings");
             VARIABLES.Add("estimatedvalue", "The estimated value of the current scan");
             VARIABLES.Add("estimatedhabzoneinner", "The estimated inner radius of the habitable zone of the scanned star, in light seconds, not considering other stars in the system");
@@ -98,6 +99,8 @@ namespace EddiEvents
         public decimal? estimatedhabzoneinner => star.estimatedhabzoneinner;
 
         public decimal? estimatedhabzoneouter => star.estimatedhabzoneouter;
+
+        public decimal? density => star.density;
 
         public long? estimatedvalue => star.estimatedvalue;
 
