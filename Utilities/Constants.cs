@@ -34,6 +34,8 @@ namespace Utilities
         public const decimal earthGravityMetersPerSecondSquared = 9.80665M;
         public const long astronomicalUnitsMeters = 149597870700;
         public const decimal earthPressurePascals = 101231.65625M;
+        public const double earthMassKg = 5.9722e24;
+        public const double solMassKg = 1.98847e30;
     }
 
     public class ConstantConverters

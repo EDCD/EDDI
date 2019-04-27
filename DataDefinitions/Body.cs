@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.Serialization;
+using Utilities;
 
 namespace EddiDataDefinitions
 {
@@ -127,6 +128,10 @@ namespace EddiDataDefinitions
                 _parents = value;
             }
         }
+
+        /// <summary> Density in Kg per cubic meter </summary>
+        [JsonIgnore]
+        public decimal? density => GetDensity();
 
         public Body()
         { }
@@ -461,6 +466,37 @@ namespace EddiDataDefinitions
 
         [JsonIgnore, Obsolete("Please use bodyType instead")]
         public BodyType Type => bodyType;
+
+        // Density
+
+        private decimal? GetDensity()
+        {
+            double massKg = 0;
+            double radiusM = 0;
+
+            if (bodyType.invariantName == "Planet")
+            {
+                double radiusKm = Convert.ToDouble(radius);
+                radiusM = (radiusKm * 1000);
+
+                double earthmasses = Convert.ToDouble(earthmass);
+                massKg = earthmasses * Constants.earthMassKg;
+            }
+            else if (bodyType.invariantName == "Star")
+            {
+                double radiusKm = Convert.ToDouble(radius);
+                radiusM = (radiusKm * 1000);
+
+                double solarMasses = Convert.ToDouble(solarmass);
+                massKg = solarMasses * Constants.solMassKg;
+            }
+            if (massKg > 0 && radiusM > 0)
+            {
+                double cubicMeters = 4 / 3 * Math.PI * Math.Pow(radiusM, 3);
+                return (decimal?)(massKg / cubicMeters);
+            }
+            return null;
+        }
 
         // Convert legacy data
 
