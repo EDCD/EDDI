@@ -997,7 +997,7 @@ namespace EddiMissionMonitor
                         case "sightseeing":
                         case "smuggle":
                             {
-                                if ((mission.destinationsystems?.Any() ?? false))
+                                if (!(mission.destinationsystems?.Any() ?? false))
                                 {
                                     if (!systems.Contains(mission.destinationsystem))
                                     {
@@ -1370,7 +1370,7 @@ namespace EddiMissionMonitor
                             // Check if the system is destination system for 'Active' missions
                             else if (mission.statusEDName == "Active")
                             {
-                                if ((mission.destinationsystems?.Any() ?? false))
+                                if (mission.destinationsystems?.Any() ?? false)
                                 {
                                     if (mission.destinationsystems.Where(d => d.name == system).Any()) { return true; }
                                 }
