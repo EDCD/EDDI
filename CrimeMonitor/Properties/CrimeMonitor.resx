@@ -139,7 +139,7 @@
     <value>Find Legal Facilities</value>
   </data>
   <data name="find_button_desc" xml:space="preserve">
-    <value>Initiates search for  the nearest Interstellar Factors Contact system and station.</value>
+    <value>Initiates search for the nearest Interstellar Factors Contact system and station.</value>
   </data>
   <data name="find_button_text" xml:space="preserve">
     <value>Find Legal Facilities:</value>
@@ -166,7 +166,7 @@
     <value>Prioritize Orbital Stations:</value>
   </data>
   <data name="para1" xml:space="preserve">
-    <value>Below is a list of your criminal record.</value>
+    <value>Your criminal record is listed below.</value>
   </data>
   <data name="remove_button" xml:space="preserve">
     <value>Remove</value>

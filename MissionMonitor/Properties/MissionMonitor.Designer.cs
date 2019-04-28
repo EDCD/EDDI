@@ -97,7 +97,7 @@ namespace EddiMissionMonitor.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Iinitiates calculation of the &apos;Nearest Neighbor&apos; algorithm for determining the shortest missions route..
+        ///   Looks up a localized string similar to Initiates calculation of the &apos;Nearest Neighbor&apos; algorithm for determining the shortest mission&apos;s route..
         /// </summary>
         public static string get_route_button_desc {
             get {

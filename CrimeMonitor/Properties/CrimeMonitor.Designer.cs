@@ -124,7 +124,7 @@ namespace EddiCrimeMonitor.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Initiates search for  the nearest Interstellar Factors Contact system and station..
+        ///   Looks up a localized string similar to Initiates search for the nearest Interstellar Factors Contact system and station..
         /// </summary>
         public static string find_button_desc {
             get {
@@ -205,7 +205,7 @@ namespace EddiCrimeMonitor.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Below is a list of your criminal record..
+        ///   Looks up a localized string similar to Your criminal record is listed below..
         /// </summary>
         public static string para1 {
             get {

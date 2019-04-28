@@ -130,7 +130,7 @@
     <value>Get Route</value>
   </data>
   <data name="get_route_button_desc" xml:space="preserve">
-    <value>Iinitiates calculation of the 'Nearest Neighbor' algorithm for determining the shortest missions route.</value>
+    <value>Initiates calculation of the 'Nearest Neighbor' algorithm for determining the shortest mission's route.</value>
   </data>
   <data name="get_route_button_text" xml:space="preserve">
     <value>Get Route:</value>
