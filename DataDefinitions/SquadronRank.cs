@@ -13,6 +13,7 @@ namespace EddiDataDefinitions
             resourceManager = Properties.SquadronRanks.ResourceManager;
             resourceManager.IgnoreCase = false;
 
+            None = new SquadronRank("None", 0);
             var Leader = new SquadronRank("Leader", 1);
             var SeniorOfficer = new SquadronRank("SeniorOfficer", 2);
             var Officer = new SquadronRank("Officer", 3);
@@ -20,7 +21,7 @@ namespace EddiDataDefinitions
             var Rookie = new SquadronRank("Rookie", 5);
         }
 
-        public static readonly SquadronRank None = new SquadronRank("None", 0);
+        public static readonly SquadronRank None;
 
         public int rank { get; private set; }
 

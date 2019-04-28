@@ -66,11 +66,13 @@
     <Compile Include="BeltScannedEvent.cs" />
     <Compile Include="CargoDepotEvent.cs" />
     <Compile Include="CargoWingUpdateEvent.cs" />
-    <Compile Include="BountyPaidEvent.cs" />
+    <Compile Include="CrewPaidWageEvent.cs" />
+    <Compile Include="CrewPromotionEvent.cs" />
     <Compile Include="EngineerContributionEvent.cs" />
     <Compile Include="FSDTargetEvent.cs" />
     <Compile Include="MarketEvent.cs" />
     <Compile Include="OutfittingEvent.cs" />
+    <Compile Include="RouteDetailsEvent.cs" />
     <Compile Include="ShipyardEvent.cs" />
     <Compile Include="SignalDetectedEvent.cs" />
     <Compile Include="FSSDiscoveryScanEvent.cs" />
@@ -110,11 +112,9 @@
     <Compile Include="DataVoucherRedeemedEvent.cs" />
     <Compile Include="MaterialInventoryEvent.cs" />
     <Compile Include="FSDEngagedEvent.cs" />
-    <Compile Include="BondRedeemedEvent.cs" />
     <Compile Include="EmpirePromotionEvent.cs" />
     <Compile Include="FederationPromotionEvent.cs" />
     <Compile Include="TradeVoucherRedeemedEvent.cs" />
-    <Compile Include="BountyRedeemedEvent.cs" />
     <Compile Include="SettlementApproachedEvent.cs" />
     <Compile Include="EnteredCQCEvent.cs" />
     <Compile Include="NPCCargoScanCommencedEvent.cs" />
@@ -129,8 +129,6 @@
     <Compile Include="PowerLeftEvent.cs" />
     <Compile Include="PowerJoinedEvent.cs" />
     <Compile Include="MarketInformationUpdatedEvent.cs" />
-    <Compile Include="BondAwardedEvent.cs" />
-    <Compile Include="FinePaidEvent.cs" />
     <Compile Include="EngineerProgressedEvent.cs" />
     <Compile Include="ModificationCraftedEvent.cs" />
     <Compile Include="MaterialDonatedEvent.cs" />
@@ -165,7 +163,6 @@
     <Compile Include="SRVDockedEvent.cs" />
     <Compile Include="FighterDockedEvent.cs" />
     <Compile Include="FighterLaunchedEvent.cs" />
-    <Compile Include="BountyIncurredEvent .cs" />
     <Compile Include="DockingTimedOutEvent.cs" />
     <Compile Include="DockingDeniedEvent.cs" />
     <Compile Include="DockingGrantedEvent.cs" />
@@ -185,10 +182,8 @@
     <Compile Include="MusicEvent.cs" />
     <Compile Include="TradePromotionEvent.cs" />
     <Compile Include="CombatPromotionEvent.cs" />
-    <Compile Include="FineIncurredEvent.cs" />
     <Compile Include="EnteredNormalSpaceEvent.cs" />
     <Compile Include="EnteredSupercruiseEvent.cs" />
-    <Compile Include="BountyAwardedEvent.cs" />
     <Compile Include="CommanderContinuedEvent.cs" />
     <Compile Include="LiftoffEvent.cs" />
     <Compile Include="TouchdownEvent.cs" />

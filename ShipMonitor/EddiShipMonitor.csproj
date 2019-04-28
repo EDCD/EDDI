@@ -129,6 +129,10 @@
       <Project>{462ED721-1C9C-43FA-8A3F-4C1644363A5A}</Project>
       <Name>EddiCompanionAppService</Name>
     </ProjectReference>
+    <ProjectReference Include="..\CrimeMonitor\EddiCrimeMonitor.csproj">
+      <Project>{5b11d1b2-6128-4f2b-8ef3-8168089c5ec9}</Project>
+      <Name>EddiCrimeMonitor</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DataDefinitions\EddiDataDefinitions.csproj">
       <Project>{0C845B02-E283-43D8-91A7-205AD3397371}</Project>
       <Name>EddiDataDefinitions</Name>

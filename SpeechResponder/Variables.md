@@ -12,7 +12,7 @@ Details of the objects available are as follows:
 
 Information on game state is available at the top level i.e. these values can be accessed directly.
 
-    - `environment` the commander's current environment.  Can be one of "Normal space", "Supercruise" or "Witch space"
+    - `environment` the commander's current environment.  Can be one of "Docked", "Landed", "Normal space", "Supercruise" or "Witch space"
     - `vehicle` the vehicle that is under the commander's control.  Can be one of "Ship", "SRV" or "Fighter"
 
 ---
@@ -201,6 +201,44 @@ Details of an individual mission in the commander's mission log.
     - `expiryseconds` amount of seconds remaining before mission expiration
 
 ---
+
+## Crime & Punishment
+
+The criminal record of commander is available under the `criminalrecord` object.
+
+    - `criminalrecord` list of minor faction records, detailing bond & bounty claims, and fine and bounties incurred
+    - `claims` total credits for all unredeemed bond and bounty rewards
+    - `fines` total credits for all unpaid fines incurred
+    - `bounties` total credits for all unpaid bounties incurred
+
+### Record
+
+Details of individual faction records, within the `record` object
+
+    - `faction` name of the minor faction
+    - `allegiance` superpower to which the minor faction is aligned
+    - `system` faction presence determined by minor faction name or highest influence
+    - `station` station nearest to main star, filtered by landing pad & ship size
+    - `claims` total credits for minor faction's uncollected bond and bounty rewards
+    - `fines` total credits for minor faction's unpaid fines incurred
+    - `bounties` total credits for minor faction's unpaid bounties incurred
+    - `bondsAwarded` list of individual faction reports for uncollected bonds awarded
+    - `bountiesAwarded` list of individual faction reports for uncollected bounties awarded
+    - `finesIncurred` list of individual faction reports for unpaid fines incurred
+    - `bountiesIncurred` list of individual faction reports for unpaid bounties incurred
+
+### Report
+    - `bounty` true if bounty awarded or incurred
+    - `shipId` ship ID in which the 'criminal' event occurred
+    - `crime` localized type of crime committed
+    - `system` system in which the 'criminal' event occurred
+    - `station` nearby station (null if no station nearby)
+    - `body` nearby body (null if no body nearby)
+    - `victim` victim faction
+    - `amount` credits awarded or incurred
+
+---
+
 ## Ship
 
 Information about your current ship is available under the `ship` object.
@@ -376,6 +414,14 @@ Any values might be missing, depending on EDDI's configuration and the informati
 
 Values are the same as for the current starsystem.
 
+#### Destination starsystem
+
+Information about your destination starsystem is available under the `destinationsystem` object.
+
+Any values might be missing, depending on EDDI's configuration and the information available about the system.
+
+Values are the same as for the current starsystem.
+
 #### Home starsystem
 
 Information about your home starsystem is available under the `homesystem` object.
@@ -499,11 +545,19 @@ An orbital or planetary station.
     - `updatedat` the timestamp at which the station information was last updated
     - `commoditiesupdatedat` the timestamp at which the station commodities information was last updated
 
+#### Destination station
+
+Information about your destination station is available under the `destinationstation` object.
+
+Any values might be missing, depending on EDDI's configuration and the information available about the station.
+
+Values are as described in the 'Station' object.
+
 #### Home station
 
 Information about your home station is available under the `homestation` object.
 
-Any values might be missing, depending on EDDI's configuration and the information available about the system.
+Any values might be missing, depending on EDDI's configuration and the information available about the station.
 
 Values are as described in the 'Station' object.
 
@@ -522,6 +576,7 @@ A faction object
 
 An object describing the presence and state of a faction within a system
 
+    - `systemName` the system name
     - `state` the faction's current dominant state
     - `ActiveStates` a list of FactionState objects
     - `PendingStates` a list of FactionState objects and trend values

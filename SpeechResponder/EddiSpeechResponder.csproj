@@ -113,6 +113,10 @@
       <Project>{c1d256ba-68b9-437a-8907-599c3a388c37}</Project>
       <Name>EddiCargoMonitor</Name>
     </ProjectReference>
+    <ProjectReference Include="..\CrimeMonitor\EddiCrimeMonitor.csproj">
+      <Project>{5b11d1b2-6128-4f2b-8ef3-8168089c5ec9}</Project>
+      <Name>EddiCrimeMonitor</Name>
+    </ProjectReference>
     <ProjectReference Include="..\EDDI\Eddi.csproj">
       <Project>{EC7BA042-A370-447F-8C3E-241358CEBCBB}</Project>
       <Name>Eddi</Name>
@@ -140,6 +144,10 @@
     <ProjectReference Include="..\MissionMonitor\EddiMissionMonitor.csproj">
       <Project>{6d01f475-75b8-4fca-9b1d-9ecf5993a32d}</Project>
       <Name>EddiMissionMonitor</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NavigationService\EddiNavigationService.csproj">
+      <Project>{86c23ebd-c979-4517-bb66-62e103ab13ef}</Project>
+      <Name>EddiNavigationService</Name>
     </ProjectReference>
     <ProjectReference Include="..\ShipMonitor\EddiShipMonitor.csproj">
       <Project>{5294706E-E600-4EA1-B904-66A41561E852}</Project>
@@ -223,6 +231,9 @@
       <LastGenOutput>SpeechResponder.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\SpeechResponder.ru.resx" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

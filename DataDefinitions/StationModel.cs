@@ -10,6 +10,7 @@ namespace EddiDataDefinitions
             resourceManager.IgnoreCase = true;
             missingEDNameHandler = (edname) => new StationModel(edname);
 
+            None = new StationModel("None");
             var AsteroidBase = new StationModel("AsteroidBase");
             var Bernal = new StationModel("Bernal");
             var Coriolis = new StationModel("Coriolis");
@@ -23,7 +24,7 @@ namespace EddiDataDefinitions
             var OutpostScientific = new StationModel("OutpostScientific");
         }
 
-        public static readonly StationModel None = new StationModel("None");
+        public static readonly StationModel None;
 
         // dummy used to ensure that the static constructor has run
         public StationModel() : this("")

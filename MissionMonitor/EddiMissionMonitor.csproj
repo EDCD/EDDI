@@ -78,7 +78,6 @@
     <Compile Include="MissionExpiredEvent.cs" />
     <Compile Include="MissionFailedEvent.cs" />
     <Compile Include="MissionRedirectedEvent.cs" />
-    <Compile Include="MissionsRouteEvent.cs" />
     <Compile Include="MissionsEvent.cs" />
     <Compile Include="MissionWarningEvent.cs" />
     <Compile Include="PassengersEvent.cs" />

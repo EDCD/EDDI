@@ -1,8 +1,9 @@
-﻿using Newtonsoft.Json;
+﻿using EddiEvents;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 
-namespace EddiEvents
+namespace EddiCrimeMonitor
 {
     public class FinePaidEvent : Event
     {
@@ -16,7 +17,7 @@ namespace EddiEvents
         {
             VARIABLES.Add("amount", "The amount of the fine paid");
             VARIABLES.Add("brokerpercentage", "Broker percentage (if paid via a Broker)");
-            VARIABLES.Add("allfines", "Whether this payments covers all current fines (true or false)");
+            VARIABLES.Add("allfines", "Whether this payment covers all current fines (true or false)");
             VARIABLES.Add("faction", "The faction to which the fine was paid (if the payment does not cover all current fines)");
             VARIABLES.Add("shipid", "The ship id of the ship associated with the fine");
         }

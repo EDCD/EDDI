@@ -1,4 +1,5 @@
-﻿using EddiDataDefinitions;
+﻿using EddiCrimeMonitor;
+using EddiDataDefinitions;
 using EddiEvents;
 using EddiJournalMonitor;
 using EddiMissionMonitor;

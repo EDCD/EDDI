@@ -23,12 +23,15 @@ namespace EddiVoiceAttackResponder
         private static StarSystem HomeStarSystem { get; set; } = new StarSystem();
         private static StarSystem LastStarSystem { get; set; } = new StarSystem();
         private static StarSystem NextStarSystem { get; set; } = new StarSystem();
+        private static StarSystem DestinationStarSystem { get; set; } = new StarSystem();
         private static StarSystem SquadronStarSystem { get; set; } = new StarSystem();
         private static Body CurrentStellarBody { get; set; } = new Body();
         private static Station CurrentStation { get; set; } = new Station();
         private static Station HomeStation { get; set; } = new Station();
+        private static Station DestinationStation { get; set; } = new Station();
         private static Commander Commander { get; set; } = new Commander();
         private static List<Ship> vaShipyard { get; set; } = new List<Ship>();
+        private static decimal DestinationDistanceLy { get; set; }
 
         public static void setEventValues(dynamic vaProxy, Event theEvent, List<string> setKeys)
         {
@@ -275,6 +278,44 @@ namespace EddiVoiceAttackResponder
                 Logging.Error("Failed to set next system", ex);
             }
 
+            try
+            {
+                if (EDDI.Instance.DestinationStarSystem != DestinationStarSystem)
+                {
+                    setStarSystemValues(EDDI.Instance.DestinationStarSystem, "Destination system", ref vaProxy);
+                    DestinationStarSystem = EDDI.Instance.DestinationStarSystem;
+                }
+            }
+            catch (Exception ex)
+            {
+                Logging.Error("Failed to set destination system", ex);
+            }
+
+            try
+            {
+                if (EDDI.Instance.DestinationDistanceLy != DestinationDistanceLy)
+                {
+                    vaProxy.SetDecimal("Destination system distance", EDDI.Instance.DestinationDistanceLy);
+                    DestinationDistanceLy = EDDI.Instance.DestinationDistanceLy;
+                }
+            }
+            catch (Exception ex)
+            {
+                Logging.Error("Failed to set destination distance", ex);
+            }
+
+            try
+            {
+                if (EDDI.Instance.DestinationStation != DestinationStation)
+                {
+                    setStationValues(EDDI.Instance.DestinationStation, "Destination station", ref vaProxy);
+                    DestinationStation = EDDI.Instance.DestinationStation;
+                }
+            }
+            catch (Exception ex)
+            {
+                Logging.Error("Failed to set destination station", ex);
+            }
             try
             {
                 if (EDDI.Instance.SquadronStarSystem != SquadronStarSystem)
@@ -719,10 +760,6 @@ namespace EddiVoiceAttackResponder
 
         private static void setStarSystemValues(StarSystem system, string prefix, ref dynamic vaProxy)
         {
-            if (system == null)
-            {
-                return;
-            }
             Logging.Debug("Setting system information (" + prefix + ")");
             try
             {

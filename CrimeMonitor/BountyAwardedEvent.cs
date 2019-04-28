@@ -1,8 +1,9 @@
-﻿using Newtonsoft.Json;
+﻿using EddiEvents;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 
-namespace EddiEvents
+namespace EddiCrimeMonitor
 {
     public class BountyAwardedEvent : Event
     {
@@ -42,18 +43,6 @@ namespace EddiEvents
             this.reward = reward;
             this.rewards = rewards;
             this.shared = shared;
-        }
-    }
-
-    public class Reward
-    {
-        public string faction { get; private set; }
-        public decimal amount { get; private set; }
-
-        public Reward(string faction, decimal amount)
-        {
-            this.faction = faction;
-            this.amount = amount;
         }
     }
 }

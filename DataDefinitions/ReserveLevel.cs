@@ -14,6 +14,7 @@ namespace EddiDataDefinitions
             resourceManager.IgnoreCase = true;
             missingEDNameHandler = (edname) => new ReserveLevel(edname);
 
+            None = new ReserveLevel("None");
             var DepletedResources = new ReserveLevel("DepletedResources");
             var LowResources = new ReserveLevel("LowResources");
             var CommonResources = new ReserveLevel("CommonResources");
@@ -21,7 +22,7 @@ namespace EddiDataDefinitions
             var PristineResources = new ReserveLevel("PristineResources");
         }
 
-        public static readonly ReserveLevel None = new ReserveLevel("None");
+        public static readonly ReserveLevel None;
 
         // dummy used to ensure that the static constructor has run
         public ReserveLevel() : this("")

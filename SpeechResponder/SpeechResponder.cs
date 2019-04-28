@@ -1,18 +1,18 @@
-﻿using System.Collections.Generic;
-using Cottle.Values;
-using EddiSpeechService;
-using Utilities;
-using Newtonsoft.Json;
-using EddiEvents;
+﻿using Cottle.Values;
 using Eddi;
-using System.Windows.Controls;
-using System;
-using System.Text.RegularExpressions;
-using System.IO;
 using EddiDataDefinitions;
+using EddiEvents;
 using EddiShipMonitor;
+using EddiSpeechService;
 using EddiStatusMonitor;
+using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
+using System.Windows.Controls;
+using Utilities;
 
 namespace EddiSpeechResponder
 {
@@ -265,9 +265,10 @@ namespace EddiSpeechResponder
         {
             Dictionary<string, Cottle.Value> dict = new Dictionary<string, Cottle.Value>
             {
+                ["destinationdistance"] = EDDI.Instance.DestinationDistanceLy,
+                ["environment"] = EDDI.Instance.Environment,
                 ["va_active"] = EDDI.FromVA,
-                ["vehicle"] = EDDI.Instance.Vehicle,
-                ["environment"] = EDDI.Instance.Environment
+                ["vehicle"] = EDDI.Instance.Vehicle
             };
 
             if (EDDI.Instance.Cmdr != null)
@@ -303,6 +304,16 @@ namespace EddiSpeechResponder
             if (EDDI.Instance.NextStarSystem != null)
             {
                 dict["nextsystem"] = new ReflectionValue(EDDI.Instance.NextStarSystem);
+            }
+
+            if (EDDI.Instance.DestinationStarSystem != null)
+            {
+                dict["destinationsystem"] = new ReflectionValue(EDDI.Instance.DestinationStarSystem);
+            }
+
+            if (EDDI.Instance.DestinationStation != null)
+            {
+                dict["destinationstation"] = new ReflectionValue(EDDI.Instance.DestinationStation);
             }
 
             if (EDDI.Instance.CurrentStation != null)

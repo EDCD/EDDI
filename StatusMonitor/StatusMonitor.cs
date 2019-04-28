@@ -323,6 +323,14 @@ namespace EddiStatusMonitor
                     {
                         EDDI.Instance.Environment = Constants.ENVIRONMENT_SUPERCRUISE;
                     }
+                    else if (thisStatus.docked)
+                    {
+                        EDDI.Instance.Environment = Constants.ENVIRONMENT_DOCKED;
+                    }
+                    else if (thisStatus.landed)
+                    {
+                        EDDI.Instance.Environment = Constants.ENVIRONMENT_LANDED;
+                    }
                     else
                     {
                         EDDI.Instance.Environment = Constants.ENVIRONMENT_NORMAL_SPACE;

@@ -11,6 +11,9 @@ namespace Eddi
         [JsonProperty("beta")]
         public bool Beta { get; set; }
 
+        [JsonProperty("horizons")]
+        public bool Horizons { get; set; }
+
         [JsonIgnore]
         private string dataPath;
 
@@ -20,6 +23,7 @@ namespace Eddi
         public EliteConfiguration()
         {
             Beta = false;
+            Horizons = true;
         }
 
         /// <summary>

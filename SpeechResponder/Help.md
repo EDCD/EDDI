@@ -134,6 +134,23 @@ Common usage of this is to provide further information about your rating, for ex
 
     You have been promoted {ExplorationRatingDetails("Surveyor").rank} times.
 
+### FactionDetails()
+
+This function will provide full information for a minor faction given its name.
+
+FactionDetails() typically takes a single argument of the faction name, but may add a system name for filtering.
+
+Common usage of this is to obtain a `Faction` object, providing current specifics of a minor faction, for example:
+
+    {set faction to FactionDetails("Lavigny's Legion")}
+    {if faction.name != "":
+        {faction.name} is present in the
+        {for presence in faction.presences:
+            {presence.systemName},
+        }
+        {if len(faction.presences) = 1: system |else: systems}.
+    }		    
+
 ### FederationRatingDetails()
 
 This function will provide full information for an federation rating given its name.
@@ -160,7 +177,7 @@ HaulageDetails() takes one mandatory argument, a mission ID associated with the 
 
 Common usage of this is to provide further information about a particular mission haulage, for example:
 
-    {set haulage to HaulageDetails(event.missionid)}
+	{set haulage to HaulageDetails(event.missionid)}
     {if haulage && haulage.deleivered > 0:
         {set total to haulage.amount + haulage.deleivered}
 	    {haulage.type} mission to the cargo depot is {round(haulage.delivered / total * 100, 0)} percent complete.
@@ -281,6 +298,7 @@ This function will produce a destination/route for valid mission destinations, d
 
   * 'cancel' Cancel the currently stored route.
   * 'expiring' Destination of your next expiring mission.
+  * `facilitator` Nearest 'Legal Facilities' contact.
   * 'farthest' Mission destination farthest from your current location.
   * 'most' Nearest system with the most missions.
   * 'nearest' Mission destination nearest to your current location.

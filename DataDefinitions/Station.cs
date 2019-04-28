@@ -166,6 +166,18 @@ namespace EddiDataDefinitions
         }
         private StationLargestPad _LargestPad;
 
+        public bool LandingPadCheck(string size)
+        {
+            StationLargestPad shipSize = StationLargestPad.FromEDName(size);
+            if (LargestPad == StationLargestPad.FromSize("l")) { return true; }
+            else if (LargestPad == StationLargestPad.FromSize("m"))
+            {
+                if (shipSize == StationLargestPad.FromSize("l")) { return false; } else { return true; }
+            }
+            if (shipSize == StationLargestPad.FromSize("s")) { return true; }
+            return false;
+        }
+
         /// <summary>What are the economies at the station, with proportions for each</summary>
         public List<EconomyShare> economyShares { get; set; } = new List<EconomyShare>();
 

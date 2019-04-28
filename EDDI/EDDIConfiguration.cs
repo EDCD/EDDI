@@ -30,6 +30,24 @@ namespace Eddi
         }
 
         [JsonIgnore]
+        private string _DestinationSystem = null;
+        [JsonProperty("destinationSystem")]
+        public string DestinationSystem
+        {
+            get { return _DestinationSystem; }
+            set { _DestinationSystem = value; }
+        }
+
+        [JsonIgnore]
+        private string _DestinationStation = null;
+        [JsonProperty("destinationStation")]
+        public string DestinationStation
+        {
+            get { return _DestinationStation; }
+            set { _DestinationStation = value; }
+        }
+
+        [JsonIgnore]
         private string _SquadronName = null;
         [JsonProperty("squadronName")]
         public string SquadronName
@@ -140,11 +158,6 @@ namespace Eddi
         /// <summary>the current export target for the shipyard</summary>
         [JsonProperty("exporttarget")]
         public string exporttarget { get; set; } = "Coriolis";
-
-        /// <summary> Administrative values </summary>
-        public bool validHomeSystem { get; set; }
-        public bool validHomeStation { get; set; }
-        public bool validSquadronSystem { get; set; }
 
         [JsonIgnore]
         private string dataPath;

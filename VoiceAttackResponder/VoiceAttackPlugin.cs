@@ -5,6 +5,7 @@ using EddiDataProviderService;
 using EddiDataDefinitions;
 using EddiMaterialMonitor;
 using EddiMissionMonitor;
+using EddiNavigationService;
 using EddiShipMonitor;
 using EddiSpeechResponder;
 using EddiSpeechService;
@@ -978,67 +979,72 @@ namespace EddiVoiceAttackResponder
                 {
                     case "cancel":
                         {
-                            ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor")).CancelRoute();
+                            Navigation.Instance.CancelRoute();
                         }
                         break;
                     case "expiring":
                         {
-                            ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor")).GetExpiringRoute();
+                            Navigation.Instance.GetExpiringRoute();
+                        }
+                        break;
+                    case "facilitator":
+                        {
+                            Navigation.Instance.GetFacilitatorRoute();
                         }
                         break;
                     case "farthest":
                         {
-                            ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor")).GetFarthestRoute();
+                            Navigation.Instance.GetFarthestRoute();
                         }
                         break;
                     case "most":
                         {
                             if (system == null || system == string.Empty)
                             {
-                                ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor")).GetMostRoute();
+                                Navigation.Instance.GetMostRoute();
                             }
                             else
                             {
-                                ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor")).GetMostRoute(system);
+                                Navigation.Instance.GetMostRoute(system);
                             }
                         }
                         break;
                     case "nearest":
                         {
-                            ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor")).GetNearestRoute();
+                            Navigation.Instance.GetNearestRoute();
                         }
                         break;
                     case "next":
                         {
-                            ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor")).SetNextRoute();
+                            Navigation.Instance.SetNextRoute();
                         }
                         break;
                     case "route":
                         {
                             if (system == null || system == string.Empty)
                             {
-                                ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor")).GetMissionsRoute();
+                                Navigation.Instance.GetMissionsRoute();
                             }
                             else
                             {
-                                ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor")).GetMissionsRoute(system);
+                                Navigation.Instance.GetMissionsRoute(system);
                             }
                         }
                         break;
                     case "set":
                         {
-                            ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor")).SetRoute(system);
+                            Navigation.Instance.SetRoute(system);
                         }
                         break;
                     case "source":
                         {
                             if (system == null || system == string.Empty)
                             {
-                                ((CargoMonitor)EDDI.Instance.ObtainMonitor("Cargo monitor")).GetSourceRoute();
+                                Navigation.Instance.GetSourceRoute();
                             }
                             else
                             {
-                                ((CargoMonitor)EDDI.Instance.ObtainMonitor("Cargo monitor")).GetSourceRoute(system);
+                                Navigation.Instance.GetSourceRoute(system);
                             }
                         }
                         break;
@@ -1046,11 +1052,11 @@ namespace EddiVoiceAttackResponder
                         {
                             if (system == null || system == string.Empty)
                             {
-                                ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor")).UpdateMissionsRoute();
+                                Navigation.Instance.UpdateRoute();
                             }
                             else
                             {
-                                ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor")).UpdateMissionsRoute(system);
+                                Navigation.Instance.UpdateRoute(system);
                             }
                         }
                         break;

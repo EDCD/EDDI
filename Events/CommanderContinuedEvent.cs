@@ -9,12 +9,13 @@ namespace EddiEvents
     {
         public const string NAME = "Commander continued";
         public const string DESCRIPTION = "Triggered when you continue an existing game";
-        public const string SAMPLE = "{\"timestamp\":\"2016-06-10T14:32:03Z\",\"event\":\"LoadGame\",\"Commander\":\"HRC1\",\"Ship\":\"CobraMkIII\",\"ShipID\":1,\"GameMode\":\"Group\",\"Group\":\"Mobius\",\"Credits\":600120,\"Loan\":0,\"ShipName\":\"jewel of parhoon\",\"ShipIdent\":\"hr-17f\",\"FuelLevel\":3.964024,\"FuelCapacity\":8}";
+        public const string SAMPLE = "{\"timestamp\":\"2016-06-10T14:32:03Z\",\"event\":\"LoadGame\",\"Commander\":\"HRC1\",\"Horizons\":true,\"Ship\":\"CobraMkIII\",\"ShipID\":1,\"GameMode\":\"Group\",\"Group\":\"Mobius\",\"Credits\":600120,\"Loan\":0,\"ShipName\":\"jewel of parhoon\",\"ShipIdent\":\"hr-17f\",\"FuelLevel\":3.964024,\"FuelCapacity\":8}";
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
         static CommanderContinuedEvent()
         {
             VARIABLES.Add("commander", "The commander's name");
+            VARIABLES.Add("horizons", "The game version is 'Horizons'");
             VARIABLES.Add("ship", "The commander's ship");
             VARIABLES.Add("shipid", "The ID of the commander's ship");
             VARIABLES.Add("mode", "The game mode (Open, Group or Solo)");
@@ -27,6 +28,9 @@ namespace EddiEvents
 
         [JsonProperty("commander")]
         public string commander { get; private set; }
+
+        [JsonProperty("horizons")]
+        public bool horizons { get; private set; }
 
         [JsonProperty("ship")]
         public string ship { get; private set; }
@@ -58,9 +62,10 @@ namespace EddiEvents
         [JsonProperty("fuelcapacity")]
         public decimal? fuelcapacity { get; private set; }
 
-        public CommanderContinuedEvent(DateTime timestamp, string commander, int shipId, string ship, string shipName, string shipIdent, GameMode mode, string group, decimal credits, decimal loan, decimal? fuel, decimal? fuelcapacity) : base(timestamp, NAME)
+        public CommanderContinuedEvent(DateTime timestamp, string commander, bool horizons, int shipId, string ship, string shipName, string shipIdent, GameMode mode, string group, decimal credits, decimal loan, decimal? fuel, decimal? fuelcapacity) : base(timestamp, NAME)
         {
             this.commander = commander;
+            this.horizons = horizons;
             this.shipid = shipId;
             this.ship = ShipDefinitions.FromEDModel(ship).model;
             this.shipname = shipName;

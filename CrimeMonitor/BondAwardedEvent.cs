@@ -1,8 +1,9 @@
-﻿using Newtonsoft.Json;
+﻿using EddiEvents;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 
-namespace EddiEvents
+namespace EddiCrimeMonitor
 {
     public class BondAwardedEvent : Event
     {

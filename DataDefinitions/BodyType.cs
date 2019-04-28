@@ -8,6 +8,7 @@
             resourceManager.IgnoreCase = true;
             missingEDNameHandler = (edname) => new BodyType(edname);
 
+            None = new BodyType("None");
             var Null = new BodyType("Null"); // The journal includes references to a "Null" string
             var Planet = new BodyType("Planet");
             var Star = new BodyType("Star");
@@ -16,7 +17,7 @@
             var PlanetaryRing = new BodyType("PlanetaryRing");
         }
 
-        public static readonly BodyType None = new BodyType("None");
+        public static readonly BodyType None;
 
         // dummy used to ensure that the static constructor has run
         public BodyType() : this("")

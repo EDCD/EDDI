@@ -1089,62 +1089,6 @@ namespace EddiCargoMonitor
             checkHaulage = false;
         }
 
-        public string GetSourceRoute(string system = null)
-        {
-            int missionsCount = inventory.Sum(c => c.haulageData.Count());
-
-            // Missions Route Event variables
-            decimal sourceDistance = 0;
-            string sourceSystem = null;
-            string sourceSystems = null;
-            int systemsCount = 0;
-            List<long> missionids = new List<long>();       // List of mission IDs for the next system
-
-            if (missionsCount > 0)
-            {
-                var sourceList = new SortedList<long, string>();
-                StarSystem curr = EDDI.Instance?.CurrentStarSystem;
-                string currentSystem = curr?.name;
-                bool fromHere = system == currentSystem;
-
-                foreach (Cargo cargo in inventory.Where(c => c.haulageData.Any()).ToList())
-                {
-                    foreach (Haulage haulage in cargo.haulageData.Where(h => h.status == "Active" && h.sourcesystem != null).ToList())
-                    {
-                        if (fromHere && haulage.originsystem != currentSystem)
-                        {
-                            break;
-                        }
-
-                        StarSystem dest = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(haulage.sourcesystem, true);
-                        long distance = (long)(CalculateDistance(curr, dest) * 100);
-                        if (!sourceList.TryGetValue(distance, out string val))
-                        {
-                            sourceList.Add(distance, haulage.sourcesystem);
-                        }
-                        missionids.Add(haulage.missionid);
-                    }
-                }
-
-                if (sourceList != null)
-                {
-                    sourceSystem = sourceList.Values.FirstOrDefault();
-                    sourceDistance = (decimal)sourceList.Keys.FirstOrDefault() / 100;
-                    sourceSystems = string.Join("_", sourceList.Values);
-                    systemsCount = sourceList.Count;
-                }
-            }
-            EDDI.Instance.enqueueEvent(new MissionsRouteEvent(DateTime.Now, "source", sourceSystem, sourceSystems, systemsCount, sourceDistance, 0, missionids));
-            return sourceSystem;
-        }
-
-        private decimal CalculateDistance(StarSystem curr, StarSystem dest)
-        {
-            return (decimal)Math.Round(Math.Sqrt(Math.Pow((double)(curr.x - dest.x), 2)
-                + Math.Pow((double)(curr.y - dest.y), 2)
-                + Math.Pow((double)(curr.z - dest.z), 2)), 2);
-        }
-
         static void RaiseOnUIThread(EventHandler handler, object sender)
         {
             if (handler != null)

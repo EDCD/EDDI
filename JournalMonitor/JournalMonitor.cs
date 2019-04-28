@@ -3,6 +3,7 @@ using EddiDataDefinitions;
 using EddiDataProviderService;
 using EddiEvents;
 using EddiCargoMonitor;
+using EddiCrimeMonitor;
 using EddiMissionMonitor;
 using EddiShipMonitor;
 using Newtonsoft.Json;
@@ -213,11 +214,10 @@ namespace EddiJournalMonitor
 
                                     // Calculate remaining distance to route destination (if it exists)
                                     decimal destDistance = 0;
-                                    MissionMonitor missionMonitor = (MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor");
-                                    string destination = missionMonitor?.GetNextSystem();
+                                    string destination = EDDI.Instance.DestinationStarSystem?.name;
                                     if (!string.IsNullOrEmpty(destination))
                                     {
-                                        destDistance = missionMonitor.CalculateDistance(systemName, destination);
+                                        destDistance = EDDI.Instance.getSystemDistanceFromDestination(systemName);
                                     }
 
                                     events.Add(new JumpedEvent(timestamp, systemName, systemAddress, x, y, z, starName, distance, fuelUsed, fuelRemaining, boostUsed, controllingfaction, factions, economy, economy2, security, population, destination, destDistance) { raw = line, fromLoad = fromLogLoad });
@@ -2122,6 +2122,7 @@ namespace EddiJournalMonitor
                             case "LoadGame":
                                 {
                                     string commander = JsonParsing.getString(data, "Commander");
+                                    bool horizons = JsonParsing.getBool(data, "Horizons");
 
                                     data.TryGetValue("ShipID", out object val);
                                     int? shipId = (int?)(long?)val;
@@ -2148,32 +2149,54 @@ namespace EddiJournalMonitor
                                     decimal? fuel = JsonParsing.getOptionalDecimal(data, "FuelLevel");
                                     decimal? fuelCapacity = JsonParsing.getOptionalDecimal(data, "FuelCapacity");
 
-                                    events.Add(new CommanderContinuedEvent(timestamp, commander, (int)shipId, ship, shipName, shipIdent, mode, group, credits, loan, fuel, fuelCapacity) { raw = line, fromLoad = fromLogLoad });
+                                    events.Add(new CommanderContinuedEvent(timestamp, commander, horizons, (int)shipId, ship, shipName, shipIdent, mode, group, credits, loan, fuel, fuelCapacity) { raw = line, fromLoad = fromLogLoad });
                                     handled = true;
                                     break;
                                 }
                             case "CrewHire":
                                 {
                                     string name = JsonParsing.getString(data, "Name");
+                                    long crewid = JsonParsing.getLong(data, "CrewID");
                                     string faction = getFactionName(data, "Faction");
                                     long price = JsonParsing.getLong(data, "Cost");
                                     CombatRating rating = CombatRating.FromRank(JsonParsing.getInt(data, "CombatRank"));
-                                    events.Add(new CrewHiredEvent(timestamp, name, faction, price, rating) { raw = line, fromLoad = fromLogLoad });
+                                    events.Add(new CrewHiredEvent(timestamp, name, crewid, faction, price, rating) { raw = line, fromLoad = fromLogLoad });
                                     handled = true;
                                     break;
                                 }
                             case "CrewFire":
                                 {
                                     string name = JsonParsing.getString(data, "Name");
-                                    events.Add(new CrewFiredEvent(timestamp, name) { raw = line, fromLoad = fromLogLoad });
+                                    long crewid = JsonParsing.getLong(data, "CrewID");
+                                    events.Add(new CrewFiredEvent(timestamp, name, crewid) { raw = line, fromLoad = fromLogLoad });
                                     handled = true;
                                     break;
                                 }
                             case "CrewAssign":
                                 {
                                     string name = JsonParsing.getString(data, "Name");
+                                    long crewid = JsonParsing.getLong(data, "CrewID");
                                     string role = getRole(data, "Role");
-                                    events.Add(new CrewAssignedEvent(timestamp, name, role) { raw = line, fromLoad = fromLogLoad });
+                                    events.Add(new CrewAssignedEvent(timestamp, name, crewid, role) { raw = line, fromLoad = fromLogLoad });
+                                    handled = true;
+                                    break;
+                                }
+                            case "NpcCrewPaidWage":
+                                {
+                                    string name = JsonParsing.getString(data, "NpcCrewName");
+                                    long crewid = JsonParsing.getLong(data, "NpcCrewId");
+                                    long amount = JsonParsing.getLong(data, "Amount");
+                                    events.Add(new CrewPaidWageEvent(timestamp, name, crewid, amount) { raw = line, fromLoad = fromLogLoad });
+                                    handled = true;
+                                    break;
+                                }
+                            case "NpcCrewRank":
+                                {
+                                    string name = JsonParsing.getString(data, "NpcCrewName");
+                                    long crewid = JsonParsing.getLong(data, "NpcCrewId");
+                                    data.TryGetValue("RankCombat", out object val);
+                                    CombatRating rating = CombatRating.FromRank(Convert.ToInt32(val));
+                                    events.Add(new CrewPromotionEvent(timestamp, name, crewid, rating) { raw = line, fromLoad = fromLogLoad });
                                     handled = true;
                                     break;
                                 }
@@ -2363,11 +2386,12 @@ namespace EddiJournalMonitor
                                     data.TryGetValue("Amount", out object val);
                                     long amount = (long)val;
                                     decimal? brokerpercentage = JsonParsing.getOptionalDecimal(data, "BrokerPercentage");
+                                    bool allBounties = JsonParsing.getOptionalBool(data, "AllFines") ?? false;
                                     string faction = getFactionName(data, "Faction");
                                     data.TryGetValue("ShipID", out val);
                                     int shipId = (int)(long)val;
 
-                                    events.Add(new BountyPaidEvent(timestamp, amount, brokerpercentage, faction, shipId) { raw = line, fromLoad = fromLogLoad });
+                                    events.Add(new BountyPaidEvent(timestamp, amount, brokerpercentage, allBounties, faction, shipId) { raw = line, fromLoad = fromLogLoad });
                                     handled = true;
                                     break;
                                 }
@@ -2376,7 +2400,7 @@ namespace EddiJournalMonitor
                                     data.TryGetValue("Amount", out object val);
                                     long amount = (long)val;
                                     decimal? brokerpercentage = JsonParsing.getOptionalDecimal(data, "BrokerPercentage");
-                                    bool allFines = JsonParsing.getBool(data, "AllFines");
+                                    bool allFines = JsonParsing.getOptionalBool(data, "AllFines") ?? false;
                                     string faction = getFactionName(data, "Faction");
                                     data.TryGetValue("ShipID", out val);
                                     int shipId = (int)(long)val;
@@ -3241,7 +3265,6 @@ namespace EddiJournalMonitor
                             case "Reputation":
                             case "Statistics":
                             case "CodexEntry":
-                            case "NpcCrewPaidWage":
                             case "ReservoirReplenished":
                             case "ProspectedAsteroid":
                             case "CrimeVictim":

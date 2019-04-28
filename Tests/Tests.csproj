@@ -135,6 +135,7 @@
   <ItemGroup>
     <Compile Include="CapiShipyardTests.cs" />
     <Compile Include="BgsDataTests.cs" />
+    <Compile Include="CrimeMonitorTests.cs" />
     <Compile Include="TelemetryTests.cs" />
     <Compile Include="RedactionTests.cs" />
     <Compile Include="TestBase.cs" />
@@ -172,6 +173,10 @@
     <ProjectReference Include="..\CargoMonitor\EddiCargoMonitor.csproj">
       <Project>{c1d256ba-68b9-437a-8907-599c3a388c37}</Project>
       <Name>EddiCargoMonitor</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CrimeMonitor\EddiCrimeMonitor.csproj">
+      <Project>{5b11d1b2-6128-4f2b-8ef3-8168089c5ec9}</Project>
+      <Name>EddiCrimeMonitor</Name>
     </ProjectReference>
     <ProjectReference Include="..\EDDI\Eddi.csproj">
       <Project>{ec7ba042-a370-447f-8c3e-241358cebcbb}</Project>

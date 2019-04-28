@@ -37,6 +37,15 @@ namespace EddiDataDefinitions
         /// <summary>The commander's federation rating</summary>
         public FederationRating federationrating { get; set; }
 
+        /// <summary>The commander's crime rating</summary>
+        public int crimerating { get; set; }
+
+        /// <summary>The commander's service rating</summary>
+        public int servicerating { get; set; }
+
+        /// <summary>The commander's powerplay rating</summary>
+        public int powerrating { get; set; }
+
         /// <summary>The commander's squadron name</summary>
         public string squadronname { get; set; }
 

@@ -12,12 +12,13 @@ namespace EddiDataDefinitions
             resourceManager.IgnoreCase = true;
             missingEDNameHandler = (edname) => new StationLargestPad(edname);
 
+            None = new StationLargestPad("None");
             var Large = new StationLargestPad("Large");
             var Medium = new StationLargestPad("Medium");
             var Small = new StationLargestPad("Small");
         }
 
-        public static readonly StationLargestPad None = new StationLargestPad("None");
+        public static readonly StationLargestPad None;
 
         // dummy used to ensure that the static constructor has run
         public StationLargestPad() : this("")

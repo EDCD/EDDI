@@ -1,4 +1,5 @@
 ﻿using Eddi;
+using EddiCrimeMonitor;
 using EddiDataDefinitions;
 using EddiEvents;
 using Newtonsoft.Json;
@@ -351,6 +352,10 @@ namespace EddiShipMonitor
             if (@event.timestamp > updateDat)
             {
                 updateDat = @event.timestamp;
+
+                // Save swapped ship size for minor faction station update
+                string swappedShipSize = GetCurrentShip()?.size;
+
                 // Update our current ship
                 SetCurrentShip(@event.shipid, @event.ship);
 
@@ -371,6 +376,12 @@ namespace EddiShipMonitor
                     RemoveShip(@event.soldshipid);
                 }
                 if (!@event.fromLoad) { writeShips(); }
+
+                // Update stations in minor faction records
+                if (swappedShipSize != "Large" && swappedShipSize != GetCurrentShip()?.size)
+                {
+                    ((CrimeMonitor)EDDI.Instance.ObtainMonitor("Crime monitor"))?.UpdateStations();
+                }
             }
         }
 

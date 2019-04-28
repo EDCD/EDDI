@@ -12,6 +12,7 @@ namespace EddiDataDefinitions
             resourceManager.IgnoreCase = true;
             missingEDNameHandler = (edname) => new Government(edname);
 
+            None = new Government("$government_None;");
             var Anarchy = new Government("$government_Anarchy;");
             var Colony = new Government("$government_Colony;");
             var Communism = new Government("$government_Communism;");
@@ -30,7 +31,7 @@ namespace EddiDataDefinitions
             var Engineer = new Government("$government_engineer;");
         }
 
-        public static readonly Government None = new Government("$government_None;");
+        public static readonly Government None;
 
         // dummy used to ensure that the static constructor has run
         public Government() : this("")

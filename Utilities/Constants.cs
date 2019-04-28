@@ -18,6 +18,8 @@ namespace Utilities
         public static readonly string ENVIRONMENT_WITCH_SPACE = Properties.Utilities.witch_space;
         public static readonly string ENVIRONMENT_SUPERCRUISE = Properties.Utilities.supercruise;
         public static readonly string ENVIRONMENT_NORMAL_SPACE = Properties.Utilities.normal_space;
+        public static readonly string ENVIRONMENT_DOCKED = Properties.Utilities.docked;
+        public static readonly string ENVIRONMENT_LANDED = Properties.Utilities.landed;
 
         public static readonly string VEHICLE_SHIP = Properties.Utilities.ship;
         public static readonly string VEHICLE_SRV = Properties.Utilities.srv;

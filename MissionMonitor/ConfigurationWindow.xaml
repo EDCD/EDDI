@@ -10,13 +10,39 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="800">
     <DockPanel LastChildFill="True" Background="#FFE5E5E5" Margin="0,5">
-        <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Margin="5, 0" Text="{x:Static resx:MissionMonitor.para1}" />
-        <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Margin="5" Text="{x:Static resx:MissionMonitor.para2}" />
+        <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Margin="5,5" Text="{x:Static resx:MissionMonitor.para1}" />
+        <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Margin="5,5" Text="{x:Static resx:MissionMonitor.para2}" />
         <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" VerticalAlignment="Top">
-            <Label x:Name ="missionWarningLabel" Grid.Row="4" Grid.Column="0" Margin="0,5" VerticalContentAlignment="Center" Content="{x:Static resx:MissionMonitor.tab_mission_warning}"/>
-            <TextBox x:Name="missionWarningInt" Grid.Row="4" Grid.Column="0" Margin="0,5" PreviewTextInput="EnsureValidInteger" TextChanged="warningChanged" TextAlignment="Center" VerticalContentAlignment="Center" Height="25" Width="40"/>
+            <Label x:Name ="missionWarningLabel" Grid.Row="4" Grid.Column="0" Margin="0,10" VerticalContentAlignment="Center" Content="{x:Static resx:MissionMonitor.tab_mission_warning}"/>
+            <TextBox x:Name="missionWarningInt" Grid.Row="4" Grid.Column="0" Margin="0,10" PreviewTextInput="EnsureValidInteger" TextChanged="warningChanged" TextAlignment="Center" VerticalContentAlignment="Center" Height="25" Width="40"/>
         </StackPanel>
-        <DataGrid Margin="0,5" AutoGenerateColumns="False" x:Name="missionsData" CanUserAddRows="false" CanUserDeleteRows="False" TargetUpdated="missionsUpdated">
+        <UniformGrid DockPanel.Dock="Bottom" Rows="1" Columns="4" Margin="0,5">
+            <Button Margin="10" HorizontalAlignment="Center" Click="getRoute" Content="{x:Static resx:MissionMonitor.get_route_button}" />
+            <Button Margin="10" HorizontalAlignment="Center" Click="nextInRoute" Content="{x:Static resx:MissionMonitor.next_route_button}" />
+            <Button Margin="10" HorizontalAlignment="Center" Click="updateRoute" Content="{x:Static resx:MissionMonitor.update_route_button}" />
+            <Button Margin="10" HorizontalAlignment="Center" Click="clearRoute" Content="{x:Static resx:MissionMonitor.clear_route_button}" />
+        </UniformGrid>
+        <Grid DockPanel.Dock="Bottom" Margin="5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="120" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <TextBlock Grid.Row="0" Grid.Column="0" TextWrapping="Wrap" Margin="2" Text="{x:Static resx:MissionMonitor.get_route_button_text}" />
+            <TextBlock Grid.Row="0" Grid.Column="1" TextWrapping="Wrap" Margin="2" Text="{x:Static resx:MissionMonitor.get_route_button_desc}" />
+            <TextBlock Grid.Row="1" Grid.Column="0" TextWrapping="Wrap" Margin="2" Text="{x:Static resx:MissionMonitor.next_route_button_text}" />
+            <TextBlock Grid.Row="1" Grid.Column="1" TextWrapping="Wrap" Margin="2" Text="{x:Static resx:MissionMonitor.next_route_button_desc}" />
+            <TextBlock Grid.Row="2" Grid.Column="0" TextWrapping="Wrap" Margin="2" Text="{x:Static resx:MissionMonitor.update_route_button_text}" />
+            <TextBlock Grid.Row="2" Grid.Column="1" TextWrapping="Wrap" Margin="2" Text="{x:Static resx:MissionMonitor.update_route_button_desc}" />
+            <TextBlock Grid.Row="3" Grid.Column="0" TextWrapping="Wrap" Margin="2" Text="{x:Static resx:MissionMonitor.clear_route_button_text}" />
+            <TextBlock Grid.Row="3" Grid.Column="1" TextWrapping="Wrap" Margin="2" Text="{x:Static resx:MissionMonitor.clear_route_button_desc}" />
+        </Grid>
+        <DataGrid Margin="0,10" AutoGenerateColumns="False" x:Name="missionsData" CanUserAddRows="false" CanUserDeleteRows="False" TargetUpdated="missionsUpdated">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="{x:Static resx:MissionMonitor.header_type}" Width="140" IsReadOnly="True" Binding="{Binding Path=localizedType}">
                     <DataGridTextColumn.HeaderStyle>
