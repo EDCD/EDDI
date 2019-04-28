@@ -123,12 +123,24 @@
   
   
   
+  
+  
+  
+  
+  
+  
   <data name="mission_monitor_desc" xml:space="preserve">
     <value>Monitora le informazioni sulle tue missioni.</value>
   </data>
   <data name="mission_monitor_name" xml:space="preserve">
     <value>Missioni</value>
   </data>
+  
+  
+  
+  
+  
+  
   
   
   

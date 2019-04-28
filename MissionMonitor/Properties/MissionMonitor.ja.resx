@@ -117,6 +117,12 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  
+  
+  
+  
+  
+  
   <data name="header_destinationstation" xml:space="preserve">
     <value>行き先のステーション</value>
   </data>
@@ -141,6 +147,9 @@
   <data name="mission_monitor_name" xml:space="preserve">
     <value>Mission Monitor</value>
   </data>
+  
+  
+  
   <data name="para1" xml:space="preserve">
     <value>以下がミッションのリストです。</value>
   </data>
@@ -150,4 +159,7 @@
   <data name="tab_mission_warning" xml:space="preserve">
     <value>ミッション時間切れ警告時間（分）</value>
   </data>
+  
+  
+  
 </root>
