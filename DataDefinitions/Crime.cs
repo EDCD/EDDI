@@ -15,6 +15,10 @@ namespace EddiDataDefinitions
             resourceManager.IgnoreCase = false;
             missingEDNameHandler = (edname) => new Crime(edname);
 
+            None = new Crime("none");
+            Claim = new Crime("claim");
+            Fine = new Crime("fine");
+            Bounty = new Crime("bounty");
             var Assault = new Crime("assault");
             var Murder = new Crime("murder");
             var Piracy = new Crime("piracy");
@@ -38,10 +42,10 @@ namespace EddiDataDefinitions
         }
 
         // Faction report definition
-        public static readonly Crime None = new Crime("none");
-        public static readonly Crime Claim = new Crime("claim");
-        public static readonly Crime Fine = new Crime("bounty");
-        public static readonly Crime Bounty = new Crime("fine");
+        public static readonly Crime None;
+        public static readonly Crime Claim;
+        public static readonly Crime Fine;
+        public static readonly Crime Bounty;
 
         // dummy used to ensure that the static constructor has run
         public Crime() : this("")
