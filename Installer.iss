@@ -53,9 +53,7 @@ Source: "*.resources.dll"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs
 Source: "eddi.json"; DestDir: "{app}"; Flags: ignoreversion
 Source: "eddi.*.json"; DestDir: "{app}"; Flags: ignoreversion
 
-Source: "ChangeLog.md"; DestDir: "{app}"; Flags: ignoreversion
-Source: "Help.md"; DestDir: "{app}"; Flags: ignoreversion
-Source: "Variables.md"; DestDir: "{app}"; Flags: ignoreversion
+Source: "*.md"; DestDir: "{app}"; Flags: ignoreversion
 
 Source: "EDDI.vap"; DestDir: "{app}"; Flags: ignoreversion
 
