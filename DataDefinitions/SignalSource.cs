@@ -8,6 +8,8 @@
             resourceManager.IgnoreCase = true;
             missingEDNameHandler = edname => new SignalSource(edname);
 
+            UnidentifiedSignalSource = new SignalSource("$USS;");
+
             var NavBeacon = new SignalSource("$MULTIPLAYER_SCENARIO42_TITLE;");
             var ResourceExtraction = new SignalSource("$MULTIPLAYER_SCENARIO14_TITLE;");
             var ResourceExtractionLow = new SignalSource("$MULTIPLAYER_SCENARIO77_TITLE;");
@@ -39,7 +41,7 @@
             var NotableStellarPhenomena = new SignalSource("$Fixed_Event_Life_Cloud;");
         }
 
-        public static readonly SignalSource UnidentifiedSignalSource = new SignalSource("$USS;");
+        public static readonly SignalSource UnidentifiedSignalSource;
 
         // dummy used to ensure that the static constructor has run
         public SignalSource() : this("")

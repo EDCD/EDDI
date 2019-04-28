@@ -11,6 +11,7 @@ namespace EddiDataDefinitions
             resourceManager.IgnoreCase = true;
             missingEDNameHandler = (edname) => new PlanetClass(edname);
 
+            None = new PlanetClass("None");
             var AmmoniaWorld = new PlanetClass("AmmoniaWorld");
             var EarthLikeBody = new PlanetClass("EarthLikeBody");
             var GasGiantWithAmmoniaBasedLife = new PlanetClass("GasGiantWithAmmoniaBasedLife");
@@ -32,7 +33,7 @@ namespace EddiDataDefinitions
             var WaterWorld = new PlanetClass("WaterWorld");
         }
 
-        public static readonly PlanetClass None = new PlanetClass("None");
+        public static readonly PlanetClass None;
 
         // dummy used to ensure that the static constructor has run
         public PlanetClass() : this("")

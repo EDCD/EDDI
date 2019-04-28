@@ -9,7 +9,8 @@
         {
             resourceManager = Properties.FactionStates.ResourceManager;
             resourceManager.IgnoreCase = false;
-            
+
+            None = new FactionState("None");
             var Retreat = new FactionState("Retreat");
             var War = new FactionState("War");
             var Lockdown = new FactionState("Lockdown");
@@ -27,7 +28,7 @@
             var Incursion = new FactionState("Incursion");
         }
 
-        public static readonly FactionState None = new FactionState("None");
+        public static readonly FactionState None;
 
         // dummy used to ensure that the static constructor has run
         public FactionState() : this("")

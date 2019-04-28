@@ -15,12 +15,13 @@ namespace EddiDataDefinitions
             resourceManager.IgnoreCase = true;
             missingEDNameHandler = (edname) => new TerraformState(edname);
 
+            NotTerraformable = new TerraformState("NotTerraformable");
             var Terraformable = new TerraformState("Terraformable");
             var Terraforming = new TerraformState("Terraforming");
             var Terraformed = new TerraformState("Terraformed");
         }
 
-        public static readonly TerraformState NotTerraformable = new TerraformState("NotTerraformable");
+        public static readonly TerraformState NotTerraformable;
 
         // dummy used to ensure that the static constructor has run
         public TerraformState() : this("")
