@@ -71,14 +71,14 @@ namespace UnitTests
         [TestMethod]
         public void TestTranslateBody4()
         {
-            Assert.AreEqual(@"H R 7 7 5 6 A B C D E 6 b", Translations.Body("HR 7756 ABCDE 6 b"));
+            Assert.AreEqual(@"H R 7 7 5 6 A B C D E 6 <say-as interpret-as=""characters"">b</say-as>", Translations.Body("HR 7756 ABCDE 6 b"));
             Assert.AreEqual(@"<phoneme alphabet=""ipa"" ph=""hoːˈtel"">hotel</phoneme> <phoneme alphabet=""ipa"" ph=""ˈroːmiˑo"">romeo</phoneme> <phoneme alphabet=""ipa"" ph=""ˈsɛvɛn"">seven</phoneme> <phoneme alphabet=""ipa"" ph=""ˈsɛvɛn"">seven</phoneme> <phoneme alphabet=""ipa"" ph=""ˈfaɪf"">fife</phoneme> <phoneme alphabet=""ipa"" ph=""ˈsɪks"">six</phoneme> <phoneme alphabet=""ipa"" ph=""ˈælfə"">alpha</phoneme> <phoneme alphabet=""ipa"" ph=""ˈbrɑːˈvo"">bravo</phoneme> <phoneme alphabet=""ipa"" ph=""ˈtʃɑːli"">charlie</phoneme> <phoneme alphabet=""ipa"" ph=""ˈdɛltə"">delta</phoneme> <phoneme alphabet=""ipa"" ph=""ˈeko"">echo</phoneme> <phoneme alphabet=""ipa"" ph=""ˈsɪks"">six</phoneme> <phoneme alphabet=""ipa"" ph=""ˈbrɑːˈvo"">bravo</phoneme>", Translations.Body("HR 7756 ABCDE 6 b", true));
         }
 
         [TestMethod]
         public void TestTranslateBody5()
         {
-            Assert.AreEqual(@"Hip 6 3 8 3 5 A B C D 1 c a", Translations.Body("HIP 63835 ABCD 1 c a"));
+            Assert.AreEqual(@"Hip 6 3 8 3 5 A B C D 1 <say-as interpret-as=""characters"">c</say-as> <say-as interpret-as=""characters"">a</say-as>", Translations.Body("HIP 63835 ABCD 1 c a"));
             Assert.AreEqual(@"Hip <phoneme alphabet=""ipa"" ph=""ˈsɪks"">six</phoneme> <phoneme alphabet=""ipa"" ph=""ˈtriː"">tree</phoneme> <phoneme alphabet=""ipa"" ph=""ˈeɪt"">eight</phoneme> <phoneme alphabet=""ipa"" ph=""ˈtriː"">tree</phoneme> <phoneme alphabet=""ipa"" ph=""ˈfaɪf"">fife</phoneme> <phoneme alphabet=""ipa"" ph=""ˈælfə"">alpha</phoneme> <phoneme alphabet=""ipa"" ph=""ˈbrɑːˈvo"">bravo</phoneme> <phoneme alphabet=""ipa"" ph=""ˈtʃɑːli"">charlie</phoneme> <phoneme alphabet=""ipa"" ph=""ˈdɛltə"">delta</phoneme> <phoneme alphabet=""ipa"" ph=""ˈwʌn"">one</phoneme> <phoneme alphabet=""ipa"" ph=""ˈtʃɑːli"">charlie</phoneme> <phoneme alphabet=""ipa"" ph=""ˈælfə"">alpha</phoneme>", Translations.Body("HIP 63835 ABCD 1 c a", true));
         }
 
