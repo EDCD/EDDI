@@ -146,7 +146,7 @@
     <comment>docked</comment>
   </data>
   <data name="landed" xml:space="preserve">
-    <value>Aterrisado</value>
+    <value>Pousado</value>
     <comment>landed</comment>
   </data>
 </root>
