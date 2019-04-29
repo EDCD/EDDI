@@ -159,9 +159,9 @@ namespace UnitTests
             Assert.AreEqual(5108, theEvent.temperature);
             // Stellar extras
             Assert.AreEqual("yellow-orange", theEvent.chromaticity);
-            Assert.AreEqual(50, theEvent.massprobability);
-            Assert.AreEqual(51, theEvent.radiusprobability);
-            Assert.AreEqual(58, theEvent.tempprobability);
+            Assert.AreEqual(99.33M, theEvent.massprobability);
+            Assert.AreEqual(65, theEvent.radiusprobability);
+            Assert.AreEqual(95, theEvent.tempprobability);
             Assert.AreEqual(7, theEvent.ageprobability);
             Assert.AreEqual(303.548, (double)theEvent.estimatedhabzoneinner, .01);
             Assert.AreEqual(604.861, (double)theEvent.estimatedhabzoneouter, .01);
