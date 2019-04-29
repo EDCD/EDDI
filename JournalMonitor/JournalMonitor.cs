@@ -684,17 +684,20 @@ namespace EddiJournalMonitor
                                 break;
                             case "ApproachSettlement":
                                 {
-                                    string name = JsonParsing.getString(data, "Name");
+                                    string settlementname = JsonParsing.getString(data, "Name");
                                     long marketId = JsonParsing.getLong(data, "MarketID");
+                                    long systemAddress = JsonParsing.getLong(data, "SystemAddress");
+                                    string bodyName = JsonParsing.getString(data, "BodyName");
+                                    long? bodyId = JsonParsing.getOptionalLong(data, "BodyID");
                                     // Replace with localised name if available
                                     if (data.TryGetValue("Name_Localised", out object val))
                                     {
-                                        name = (string)val;
+                                        settlementname = (string)val;
                                     }
                                     decimal? latitude = JsonParsing.getOptionalDecimal(data, "Latitude");
                                     decimal? longitude = JsonParsing.getOptionalDecimal(data, "Longitude");
 
-                                    events.Add(new SettlementApproachedEvent(timestamp, name, marketId, latitude, longitude) { raw = line, fromLoad = fromLogLoad });
+                                    events.Add(new SettlementApproachedEvent(timestamp, settlementname, marketId, systemAddress, bodyName, bodyId, latitude, longitude) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;

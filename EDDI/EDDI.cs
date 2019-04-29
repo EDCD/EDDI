@@ -813,6 +813,10 @@ namespace Eddi
                     {
                         passEvent = eventShipyard((ShipyardEvent)@event);
                     }
+                    else if (@event is SettlementApproachedEvent)
+                    {
+                        passEvent = eventSettlementApproached((SettlementApproachedEvent)@event);
+                    }
 
                     // Additional processing is over, send to the event responders if required
                     if (passEvent)
@@ -834,6 +838,24 @@ namespace Eddi
                     Instance.ObtainResponder("EDDN responder").Handle(@event);
                 }
             }
+        }
+
+        private bool eventSettlementApproached(SettlementApproachedEvent @event)
+        {
+            bool passEvent = true;
+            Station station = CurrentStarSystem.stations.Find(s => s.name == @event.name);
+            if (station == null && @event.systemAddress == CurrentStarSystem.systemAddress)
+            {
+                // This settlement is unknown to us, might not be in our data source or we might not have connectivity.  Use a placeholder
+                station = new Station
+                {
+                    name = @event.name,
+                    marketId = @event.marketId,
+                    systemname = CurrentStarSystem.systemname
+                };
+                CurrentStarSystem.stations.Add(station);
+            }
+            return passEvent;
         }
 
         private bool eventFriends(FriendsEvent @event)
@@ -1486,6 +1508,18 @@ namespace Eddi
                 CurrentStarSystem.population = theEvent.population;
             }
 
+            // If we don't have any information about bodies in the system yet, create a basic star from current and saved event data
+            if (CurrentStellarBody == null && !string.IsNullOrEmpty(theEvent.star))
+            {
+                CurrentStellarBody = new Body()
+                {
+                    bodyname = theEvent.star,
+                    bodyType = BodyType.FromEDName("Star"),
+                    stellarclass = LastFSDEngagedEvent?.stellarclass,
+                };
+                CurrentStarSystem.bodies.Add(CurrentStellarBody);
+            }
+
             // Update to most recent information
             if (CurrentStarSystem.lastvisit < theEvent.timestamp)
             {
@@ -1503,18 +1537,6 @@ namespace Eddi
 
             // No longer in 'station instance'
             CurrentStation = null;
-
-            // If we don't have any information about bodies in the system yet, create a basic star from current and saved event data
-            if (CurrentStellarBody == null && !string.IsNullOrEmpty(theEvent.star))
-            {
-                CurrentStellarBody = new Body()
-                {
-                    bodyname = theEvent.star,
-                    bodyType = BodyType.FromEDName("Star"),
-                    stellarclass = LastFSDEngagedEvent?.stellarclass,
-                };
-                CurrentStarSystem.bodies.Add(CurrentStellarBody);
-            }
 
             return passEvent;
         }
