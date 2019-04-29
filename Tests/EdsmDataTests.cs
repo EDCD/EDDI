@@ -60,6 +60,11 @@ namespace UnitTests
             Assert.IsNull(star.scanned);
             Assert.IsNull(star.mapped);
 
+            // Test value estimation
+            Assert.AreEqual(0, star.estimatedvalue);
+            star.scanned = System.DateTime.UtcNow;
+            Assert.AreEqual(1212, star.estimatedvalue);
+
             // Test landable high metal content world
             Body body = bodies.Find(s => s.bodyname == "Shinrarta Dezhra A 1");
             Assert.AreEqual("A 1", body.shortname);
@@ -97,6 +102,13 @@ namespace UnitTests
             Assert.AreEqual(1539922044, body.updatedat);
             Assert.IsNull(body.scanned);
             Assert.IsNull(body.mapped);
+
+            // Test value estimation
+            Assert.AreEqual(0, body.estimatedvalue);
+            body.scanned = System.DateTime.UtcNow;
+            Assert.AreEqual(14849, body.estimatedvalue);
+            body.mapped = System.DateTime.UtcNow;
+            Assert.AreEqual(49497, body.estimatedvalue);
 
             // Test terraformed body
             body = bodies.Find(s => s.bodyname == "Founders World");
@@ -136,6 +148,13 @@ namespace UnitTests
             Assert.IsNull(body.scanned);
             Assert.IsNull(body.mapped);
 
+            // Test value estimation
+            Assert.AreEqual(0, body.estimatedvalue);
+            body.scanned = System.DateTime.UtcNow;
+            Assert.AreEqual(276297, body.estimatedvalue);
+            body.mapped = System.DateTime.UtcNow;
+            Assert.AreEqual(920990, body.estimatedvalue);
+
             // Test volcanic icy body
             body = bodies.Find(s => s.bodyname == "Shinrarta Dezhra AB 1 b");
             Assert.AreEqual("AB 1 b", body.shortname);
@@ -174,6 +193,13 @@ namespace UnitTests
             Assert.AreEqual(1539922044, body.updatedat);
             Assert.IsNull(body.scanned);
             Assert.IsNull(body.mapped);
+
+            // Test value estimation
+            Assert.AreEqual(0, body.estimatedvalue);
+            body.scanned = System.DateTime.UtcNow;
+            Assert.AreEqual(500, body.estimatedvalue);
+            body.mapped = System.DateTime.UtcNow;
+            Assert.AreEqual(1191, body.estimatedvalue);
 
             // Test ringed gas giant
             body = bodies.Find(s => s.bodyname == "Shinrarta Dezhra AB 2");
@@ -217,6 +243,13 @@ namespace UnitTests
             Assert.AreEqual(1539922044, body.updatedat);
             Assert.IsNull(body.scanned);
             Assert.IsNull(body.mapped);
+
+            // Test value estimation
+            Assert.AreEqual(0, body.estimatedvalue);
+            body.scanned = System.DateTime.UtcNow;
+            Assert.AreEqual(4883, body.estimatedvalue);
+            body.mapped = System.DateTime.UtcNow;
+            Assert.AreEqual(16278, body.estimatedvalue);
         }
 
         [TestMethod]

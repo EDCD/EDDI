@@ -72,8 +72,12 @@ namespace EddiDataDefinitions
         /// <summary>When we mapped this object, if we have (DateTime)</summary>
         public DateTime? mapped { get; set; }
 
+        /// <summary>Whether we received an efficiency bonus when mapping this body</summary>
+        public bool mappedEfficiently { get; set; }
+
         /// <summary>The estimated value of the body</summary>
-        public long? estimatedvalue => estimateValue();
+        public long? estimatedvalue => scanned == null ? 0 : 
+            solarmass == null ? estimateBodyValue() : estimateStarValue();
 
         // Orbital characteristics
 
@@ -373,128 +377,113 @@ namespace EddiDataDefinitions
             this.density = GetDensity();
         }
 
-        // Estimated exploration value calculations
-        private long? estimateValue()
+        private long? estimateStarValue()
         {
-            return 0;
-            // throw new NotImplementedException();
-        }
+            // Credit to MattG's thread at https://forums.frontier.co.uk/showthread.php/232000-Exploration-value-formulae for scan value formulas
 
-        private long? estimateStarValue(bool detailedScan)
-        {
             // Scan value calculation constants
-            const double dssDivider = 2.4;
             const double scanDivider = 66.25;
 
-            // Credit to MattG's thread at https://forums.frontier.co.uk/showthread.php/232000-Exploration-value-formulae for scan value formulas
-            // 'bodyDataConstant' is a derived constant from MattG's thread for calculating scan values.
-            int baseValue = 2880;
-            double value;
+            double k = 1200; // base value
+            double result;
 
             // Override constants for specific types of bodies
             if ((stellarclass == "H") || (stellarclass == "N"))
             {
                 // Black holes and Neutron stars
-                baseValue = 54309;
+                k = 22628;
+            }
+            else if (stellarclass == "SuperMassiveBlackHole")
+            {
+                // Supermassive black hole
+                // this is applying the same scaling to the 3.2 value as a normal black hole, not confirmed in game
+                k = 33.5678;
             }
             else if (stellarclass.StartsWith("D") && (stellarclass.Length <= 3))
             {
                 // White dwarves
-                baseValue = 33737;
+                k = 14057;
             }
 
-            // Calculate exploration scan values
-            value = baseValue + ((double)solarmass * baseValue / scanDivider);
-
-            if (detailedScan == false)
-            {
-                value = value / dssDivider;
-            }
-
-            return (long?)Math.Round(value, 0);
+            // Calculate exploration scan values - (k + (m * k / 66.25))
+            result = k + ((double)solarmass * k / scanDivider);
+            return (long?)Math.Round(result, 0);
         }
 
-        private long? estimateBodyValue(bool detailedScan)
+        private long? estimateBodyValue()
         {
-            // Scan value calculation constants
-            const double dssDivider = 2.4;
-            const double scanDivider = 5.3;
-            const double scanMultiplier = 3;
-            const double scanPower = 0.199977;
-
             // Credit to MattG's thread at https://forums.frontier.co.uk/showthread.php/232000-Exploration-value-formulae for scan value formulas
-            int baseTypeValue = 720;
-            int terraValue = 0;
-            bool terraformable = false;
+
+            // Scan value calculation constants
+            const double q = 0.56591828;
+            const double scanPower = 0.2;
+            const double scanMinValue = 500;
+            const double firstDiscoveryMultiplier = 2.6;
+            const double efficientMappingMultiplier = 1.25;
+
+            bool terraformable = terraformState.edname == "Terraformable" || terraformState.edname == "Terraformed";
+            int k = 300; // base value
+            int k_terraformable = 93328;
+            double mappingMultiplier = 1;
 
             // Override constants for specific types of bodies
-            if (terraformState.edname == "Terraformable")
-            {
-                terraformable = true;
-            }
             if (planetClass.edname == "AmmoniaWorld")
             {
                 // Ammonia worlds
-                baseTypeValue = 232619;
+                k = 96932;
             }
-            else if (planetClass.edname == "EarthLikeBody")
+            else if (planetClass.edname == "EarthLikeBody" || planetClass.edname == "WaterWorld")
             {
-                // Earth-like worlds
-                baseTypeValue = 155581;
-                terraValue = 279088;
-            }
-            else if (planetClass.edname == "WaterWorld")
-            {
-                // Water worlds
-                baseTypeValue = 155581;
-                if (terraformable)
-                {
-                    terraValue = 279088;
-                }
+                // Earth-like & water worlds
+                k = 64831;
+                k_terraformable = 116295;
             }
             else if (planetClass.edname == "MetalRichBody")
             {
                 // Metal rich worlds
-                baseTypeValue = 52292;
+                k = 21790;
             }
             else if (planetClass.edname == "HighMetalContentBody")
             {
                 // High metal content worlds
-                baseTypeValue = 23168;
-                if (terraformable)
-                {
-                    terraValue = 241607;
-                }
+                k = 9654;
+                k_terraformable = 100677;
             }
-            else if (planetClass.edname == "RockyBody")
-            {
-                // Rocky worlds
-                if (terraformable)
-                {
-                    terraValue = 223971;
-                }
-            }
-            else if (planetClass.edname == "ClassIGasGiant")
+            else if (planetClass.edname == "SudarskyClassIGasGiant")
             {
                 // Class I gas giants
-                baseTypeValue = 3974;
+                k = 1656;
             }
-            else if (planetClass.edname == "ClassIIGasGiant")
+            else if (planetClass.edname == "SudarskyClassIIGasGiant")
             {
                 // Class II gas giants
-                baseTypeValue = 23168;
+                k = 9654;
+            }
+
+            // Terraformability is a scale from 0-100%, but since we don't know the % we'll assume 100% for the time being.
+            k = terraformable ? (k + k_terraformable) : k;
+
+            if (mapped != null)
+            {
+                if (!alreadydiscovered && !alreadymapped) // First to discover and first to map
+                {
+                    mappingMultiplier = 3.699622554;
+                }
+                else if (!alreadymapped) // Not first to discover but first to map
+                {
+                    mappingMultiplier = 8.0956;
+                }
+                else // Not first to discover or first to map
+                {
+                    mappingMultiplier = 3.3333333333;
+                }
+                mappingMultiplier *= (mappedEfficiently) ? efficientMappingMultiplier : 1;
             }
 
             // Calculate exploration scan values
-            double baseValue = baseTypeValue + (scanMultiplier * baseTypeValue * Math.Pow((double)earthmass, scanPower) / scanDivider);
-            double terraBonusValue = terraValue + (scanMultiplier * terraValue * Math.Pow((double)earthmass, scanPower) / scanDivider);
-            double value = baseValue + terraBonusValue;
-
-            if (detailedScan == false)
-            {
-                value = value / dssDivider;
-            }
-            return (long?)Math.Round(value, 0);
+            double result = Math.Max(scanMinValue, (k + (k * q * Math.Pow((double)earthmass, scanPower))) * mappingMultiplier);
+            result *= (!alreadydiscovered) ? firstDiscoveryMultiplier : 1;
+            return (long?)Math.Round(result, 0);
         }
 
         // Miscellaneous and legacy properties and methods

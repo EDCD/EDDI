@@ -1982,6 +1982,7 @@ namespace Eddi
                 if (body != null)
                 {
                     body.mapped = theEvent.timestamp;
+                    body.mappedEfficiently = theEvent.probesused <= theEvent.efficiencytarget;
                     StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
                     updateCurrentStellarBody(theEvent.name, CurrentStarSystem?.systemname, CurrentStarSystem?.systemAddress);
                 }

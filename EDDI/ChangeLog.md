@@ -6,6 +6,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
   * Core
     * All 'Location' events are now processed (repeats of this event are no longer suppressed).
     * Added `Docked` and `Landed` Environment states. Note that `Environment` follows the ship and `Vehicle` follows the commander.
+    * Updated estimated scanning and mapping value calculations.
   * Crime Monitor
     * New monitor tracks all bond & bounty awards and fines & bounties incurred.
 	* Monitor attempts to determine the minor faction's 'home system' via its name, but defaults to system presence with highest influence.
@@ -36,6 +37,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Revised BodyDetails() function for better interchangeability with events.
       * WAS: `name`*, IS: `bodyname` 
       * WAS: `type`*, IS: `bodytype`
+      * Added `estimatedvalue`
     * Expanded `bodytype` values to separate `Planet` and `Moon` body types
     * The `P()` function now converts roman numerals in planet classes (e.g. Class II gas giant) into numbers (e.g. Class 2 gas giant) to ensure proper pronunciation.
     * Revised `Body scanned` event variables for better interchangeability with with the `BodyDetails` function.
