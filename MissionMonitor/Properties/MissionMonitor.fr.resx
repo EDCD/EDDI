@@ -117,12 +117,20 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="clear_route_button" xml:space="preserve">
+    <value>Effacer la destination</value>
+  </data>
   
+  <data name="clear_route_button_text" xml:space="preserve">
+    <value>Effacer la destination:</value>
+  </data>
+  <data name="get_route_button" xml:space="preserve">
+    <value>Obtenir destination</value>
+  </data>
   
-  
-  
-  
-  
+  <data name="get_route_button_text" xml:space="preserve">
+    <value>Obtenir destination:</value>
+  </data>
   <data name="header_destinationstation" xml:space="preserve">
     <value>Station de destination</value>
   </data>
@@ -147,9 +155,13 @@
   <data name="mission_monitor_name" xml:space="preserve">
     <value>Moniteur de missions</value>
   </data>
+  <data name="next_route_button" xml:space="preserve">
+    <value>Prochaine destination</value>
+  </data>
   
-  
-  
+  <data name="next_route_button_text" xml:space="preserve">
+    <value>Prochaine destination:</value>
+  </data>
   <data name="para1" xml:space="preserve">
     <value>Voici la liste de toutes vos missions.</value>
   </data>
@@ -159,7 +171,11 @@
   <data name="tab_mission_warning" xml:space="preserve">
     <value>Seuil d'alerte d'expiration de mission (Minutes):</value>
   </data>
+  <data name="update_route_button" xml:space="preserve">
+    <value>Mise à jour de la destination</value>
+  </data>
   
-  
-  
+  <data name="update_route_button_text" xml:space="preserve">
+    <value>Mise à jour de la destination:</value>
+  </data>
 </root>
