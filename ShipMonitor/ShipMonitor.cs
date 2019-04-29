@@ -1,4 +1,5 @@
 ﻿using Eddi;
+using EddiCargoMonitor;
 using EddiCrimeMonitor;
 using EddiDataDefinitions;
 using EddiEvents;
@@ -25,6 +26,26 @@ namespace EddiShipMonitor
     public class ShipMonitor : EDDIMonitor
     {
         private static List<string> HARDPOINT_SIZES = new List<string>() { "Huge", "Large", "Medium", "Small", "Tiny" };
+
+        private static Dictionary<string, decimal> ratingConstantFSD = new Dictionary<string, decimal>()
+        {
+            {"A", 12.0M},
+            {"B", 10.0M},
+            {"C", 8.0M},
+            {"D", 10.0M},
+            {"E", 11.0M}
+        };
+
+        private static Dictionary<int, decimal> powerConstantFSD = new Dictionary<int, decimal>()
+        {
+            {2, 2.00M},
+            {3, 2.15M},
+            {4, 2.30M},
+            {5, 2.45M},
+            {6, 2.60M},
+            {7, 2.75M},
+            {8, 2.90M}
+        };
 
         // Observable collection for us to handle changes
         public ObservableCollection<Ship> shipyard { get; private set; }
@@ -469,6 +490,8 @@ namespace EddiShipMonitor
                 ship.value = (long)@event.value;
             }
 
+            ship.unladenmass = @event.unladenmass;
+            ship.maxjumprange = @event.maxjumprange;
             ship.rebuy = @event.rebuy;
 
             // Set the standard modules
@@ -1027,12 +1050,16 @@ namespace EddiShipMonitor
                 if (@event.boostused is null)
                 {
                     Ship ship = GetCurrentShip();
-                    if (@event.fuelused > ship?.maxfuel)
-                    {
-                        ship.maxfuel = @event.fuelused;
-                        ship.maxjump = @event.distance;
-                        if (!@event.fromLoad) { writeShips(); }
-                    }
+
+                    // Get the necessary calculation parameters
+                    ratingConstantFSD.TryGetValue(ship.frameshiftdrive.grade, out decimal ratingConstant);
+                    powerConstantFSD.TryGetValue(ship.frameshiftdrive.@class, out decimal powerConstant);
+                    decimal totalShipMass = ship.unladenmass + ((CargoMonitor)EDDI.Instance.ObtainMonitor("Cargo monitor")).cargoCarried + @event.fuelremaining;
+                    decimal optimalMass = @event.distance * totalShipMass / (decimal)Math.Pow((double)(1000 * @event.fuelused / ratingConstant), 1 / (double)powerConstant);
+
+                    // Max fuel per jump calculated using unladen mass and max jump range w/ just enough fuel to complete max jump
+                    ship.maxfuelperjump = ratingConstant * (decimal)Math.Pow((double)(ship.maxjumprange * (ship.unladenmass + ship.maxfuelperjump) / optimalMass), (double)powerConstant) / 1000;
+                    if (!@event.fromLoad) { writeShips(); }
                 }
             }
         }

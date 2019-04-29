@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 
 namespace EddiEvents
@@ -12,9 +13,13 @@ namespace EddiEvents
 
         static SRVDockedEvent()
         {
+            VARIABLES.Add("id", "The srv's id");
         }
 
-        public SRVDockedEvent(DateTime timestamp) : base(timestamp, NAME)
+        [JsonProperty("id")]
+        public int id { get; private set; }
+
+        public SRVDockedEvent(DateTime timestamp, int id) : base(timestamp, NAME)
         {
         }
     }

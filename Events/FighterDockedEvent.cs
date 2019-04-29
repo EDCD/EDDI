@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 
 namespace EddiEvents
@@ -7,15 +8,21 @@ namespace EddiEvents
     {
         public const string NAME = "Fighter docked";
         public const string DESCRIPTION = "Triggered when you dock a fighter with your ship";
-        public const string SAMPLE = "{\"timestamp\":\"2016-06-10T14:32:03Z\",\"event\":\"DockFighter\"}";
+        public const string SAMPLE = "{\"timestamp\":\"2019-04-29T00:09:17Z\", \"event\":\"DockFighter\", \"ID\":13 }";
+
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
         static FighterDockedEvent()
         {
+            VARIABLES.Add("id", "The fighter's id");
         }
 
-        public FighterDockedEvent(DateTime timestamp) : base(timestamp, NAME)
+        [JsonProperty("id")]
+        public int id { get; private set; }
+
+        public FighterDockedEvent(DateTime timestamp, int id) : base(timestamp, NAME)
         {
+            this.id = id;
         }
     }
 }
