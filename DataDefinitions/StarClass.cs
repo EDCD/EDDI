@@ -1,4 +1,5 @@
 ﻿using MathNet.Numerics.Distributions;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,23 +7,87 @@ using Utilities;
 
 namespace EddiDataDefinitions
 {
-    /// <summary>
-    /// Details of a star class
-    /// </summary>
+    /// <summary> Details of a star class </summary>
+    [JsonObject(MemberSerialization.OptIn)]
     public class StarClass
     {
         static StarClass()
         {
-            // Percentages are obtained from a combination of https://en.wikipedia.org/wiki/Stellar_classification#Harvard_spectral_classification
-            // and http://physics.stackexchange.com/questions/153150/what-does-this-stellar-mass-distribution-mean
+            // Percentages are obtained from analysis of EDSM data dumps
 
-            var O = new StarClass("O", "O", new Chromaticity("blue"), 0.0000009M, new Normal(37.57, 27.50), new Normal(14.52, 29.67), new Normal(49698, 21338), new Normal(138, 262));
-            var B = new StarClass("B", "B", new Chromaticity("blue_white"), 0.039M, new Normal(5.81, 4.52), new Normal(3.36, 13.42), new Normal(16478, 6044), new Normal(237, 289));
-            var A = new StarClass("A", "A", new Chromaticity("blue_white"), 0.18M, new Normal(1.82, 2.78), new Normal(2.29, 16.63), new Normal(8208, 1179), new Normal(1809, 20152));
-            var F = new StarClass("F", "F", new Chromaticity("white"), 0.9M, new Normal(1.30, 0.20), new Normal(1.30, 3.86), new Normal(6743, 531), new Normal(2141, 1662));
-            var G = new StarClass("G", "G", new Chromaticity("yellow_white"), 2.28M, new Normal(0.94, 0.13), new Normal(1.01, 0.76), new Normal(5653, 7672), new Normal(4713, 3892));
-            var K = new StarClass("K", "K", new Chromaticity("yellow_orange"), 3.63M, new Normal(1.04, 45.55), new Normal(0.94, 2.11), new Normal(4452, 3284), new Normal(6291, 4144));
-            var M = new StarClass("M", "M", new Chromaticity("orange_red"), 22.935M, new Normal(0.66, 33.23), new Normal(1.58, 47.11), new Normal(2835, 481), new Normal(6609, 8645));
+            // Main sequence stars
+            var O = new StarClass("O", "O", new Chromaticity("blue"), 0.1834M, new Normal(27.9937, 16.5396), new Normal(20.6821, 44.9745), new Normal(41600.3203, 9085.4503), new Normal(50.9726, 165.4846), new Normal(125921.9908, 313565.6345), new Normal(45.3639, 88.6087), new Normal(0.1478, 0.1188), new Normal(0.4757, 44.9312), new Normal(177.9397, 104.0028), new Normal(7.7017, 16.8997), new Normal(-1.1427e-2, 0.1541), new Normal(199211.1995, 13248479.9374));
+            var B = new StarClass("B", "B", new Chromaticity("blue_white"), 1.4560M, new Normal(5.6894, 5.8101), new Normal(5.2954, 29.7446), new Normal(15840.2149, 5121.1246), new Normal(199.3136, 219.3162), new Normal(321004.0070, 1020712.4560), new Normal(42.4924, 110.6806), new Normal(0.1471, 0.1204), new Normal(-5.5085e-2, 44.7691), new Normal(179.6894, 103.6515), new Normal(1.9669, 11.1182), new Normal(-9.1644e-2, 1.1441), new Normal(189688.5973, 39409448.6809));
+            var A = new StarClass("A", "A", new Chromaticity("blue_white"), 4.7231M, new Normal(1.8456, 3.4379), new Normal(2.6596, 22.0422), new Normal(8130.6223, 915.2419), new Normal(1503.7856, 842.0704), new Normal(651542.9014, 1399519.2511), new Normal(48.0823, 83.6455), new Normal(0.1500, 0.1200), new Normal(0.1771, 45.0112), new Normal(179.5838, 103.7883), new Normal(1.6128, 8.2414), null, new Normal(10216.6301, 3265921.9741));
+            var G = new StarClass("G", "G", new Chromaticity("yellow_white"), 7.3987M, new Normal(0.9292, 0.1118), new Normal(0.9568, 0.1923), new Normal(5542.6589, 226.6528), new Normal(4486.2856, 3844.6356), new Normal(827348.8607, 1786734.2987), new Normal(54.9342, 97.6532), new Normal(0.1506, 0.1192), new Normal(0.1455, 45.1510), new Normal(178.9063, 104.0538), new Normal(3.8195, 1.0036), null, new Normal(2064.8964, 421.6909));
+            var F = new StarClass("F", "F", new Chromaticity("white"), 9.5431M, new Normal(1.2901, 0.1773), new Normal(1.1714, 0.2568), new Normal(6707.5279, 430.4878), new Normal(2073.1217, 1575.9385), new Normal(739063.5215, 1562258.9653), new Normal(52.2959, 90.9813), new Normal(0.1514, 0.1200), new Normal(-0.3446, 45.1041), new Normal(179.2635, 103.6452), new Normal(3.2773, 1.4419), null, new Normal(1560.1034, 334.7799));
+            var K = new StarClass("K", "K", new Chromaticity("yellow_orange"), 19.8426M, new Normal(0.6631, 0.1179), new Normal(0.7709, 0.0971), new Normal(4407.3702, 428.0891), new Normal(6103.5035, 4099.9301), new Normal(896420.9249, 2001416.0167), new Normal(59.0996, 109.6969), new Normal(0.1492, 0.1199), new Normal(-6.4607e-2, 45.1440), new Normal(179.6191, 103.9237), new Normal(3.0749, 0.6474), null, new Normal(2821.3429, 669.8912));
+            var M = new StarClass("M", "M", new Chromaticity("orange_red"), 34.3706M, new Normal(0.3238, 0.0880), new Normal(0.4898, 8.8581e-2), new Normal(2798.9563, 465.8892), new Normal(6682.4941, 4038.6619), new Normal(119388.1482, 2662160.7216), new Normal(62.3285, 122.0310), new Normal(0.1463, 0.1200), new Normal(4.3450e-2, 45.0180), new Normal(179.6047, 103.9123), new Normal(1.9547, 0.4856), null, new Normal(5484.0347, 1662.6711));
+
+            // Brown dwarf stars
+            var L = new StarClass("L", "L", null, 7.8959M, new Normal(0.1405, 3.0319e-2), new Normal(0.2917, 4.2993e-2), new Normal(1657.0901, 201.1004), new Normal(6888.3289, 4016.7241), new Normal(1092620.6559, 2837928.8570), new Normal(71.0564, 144.4794), new Normal(0.1410, 0.1192), new Normal(-0.2232, 44.7961), new Normal(180.4346, 104.0666), new Normal(1.1643, 0.2630), null, new Normal(11107.8391, 2908.0800));
+            var T = new StarClass("T", "T", null, 3.7150M, new Normal(6.9330e-2, 1.7902e-2), new Normal(0.1870, 3.2881e-2), new Normal(1057.8342, 164.6561), new Normal(6867.6947, 4046.7556), new Normal(1112574.7102, 3132592.9665), new Normal(67.6764, 148.2340), new Normal(0.1363, 0.1188), new Normal(0.1625, 44.4773), new Normal(179.9514, 104.0567), new Normal(0.7731, 0.9436), null, new Normal(21125.0376, 6690.6589));
+            var Y = new StarClass("Y", "Y", null, 2.2311M, new Normal(1.8062e-2, 7.9157e-3), new Normal(7.9670e-2, 2.2312e-2), new Normal(454.5517, 121.0346), new Normal(4374.2114, 3916.8039), new Normal(55598.0056, 780107.9438), new Normal(5.6111, 34.0202), new Normal(5.4489e-2, 6.9789e-2), new Normal(3.9017e-2, 20.5480), new Normal(179.0760, 103.5028), new Normal(1.7373, 70.5215), new Normal(7.7326e-3, 1.7308), new Normal(74894.1913, 31745.0274));
+
+            // White dwarf stars
+            var DAO = new StarClass("DAO", "DAO", null, 0M);
+            var DO = new StarClass("DO", "DO", null, 0M);
+            var DOV = new StarClass("DOV", "DOV", null, 0M);
+            var DX = new StarClass("DX", "DX", null, 0M);
+            var DBZ = new StarClass("DBZ", "DBZ", null, 4.6212e-4M, new Normal(0.5156, 7.9121e-2), new Normal(1.3496e-2, 1.9557e-3), new Normal(18439.1493, 3144.4248), new Normal(7111.5522, 1479.7271), new Normal(702970.5139, 2555581.9998), new Normal(25.3692, 46.3077), new Normal(0.1860, 0.1222), new Normal(7.6927, 50.6874), new Normal(167.8366, 111.8558), new Normal(0.9003, 0.3710), null, new Normal(456100655.1289, 216568472.7127));
+            var DQ = new StarClass("DQ", "DQ", null, 7.8396e-5M, new Normal(0.9141, 0.3696), new Normal(8.7890e-3, 5.7166e-3), new Normal(12498.6667, 7309.7840), new Normal(9109.2222, 3694.9320), new Normal(775865.5061, 947315.9560), new Normal(48.1855, 51.8881), new Normal(0.2024, 0.1090), new Normal(-8.5979, 41.5963), new Normal(160.1997, 95.9973), new Normal(-3.2836e-2, 0.1296), new Normal(488195744738.3169, 1782489111033.1870));
+            var DBV = new StarClass("DBV", "DBV", null, 4.6707e-3M, new Normal(0.4789, 8.8277e-2), new Normal(1.4179e-2, 2.1681e-3), new Normal(16251.1878, 3060.9711), new Normal(9051.2665, 1996.0478), new Normal(1222022.8135, 2528391.7818), new Normal(51.2858, 84.2065), new Normal(0.1349, 0.1121), new Normal(3.8307, 45.7360), new Normal(179.1716, 104.6074), new Normal(0.9291, 0.4037), null, new Normal(382811019.4130, 234952364.7493));
+            var DAZ = new StarClass("DAZ", "DAZ", null, 1.9475e-3M, new Normal(0.5204, 0.1084), new Normal(1.3358e-2, 2.1293e-3), new Normal(18139.2930, 3380.8947), new Normal(7162.5414, 1367.8960), new Normal(1273010.3598, 2519206.1163), new Normal(50.7803, 78.3046), new Normal(0.1488, 0.1232), new Normal(-3.0276, 41.9832), new Normal(176.2405, 101.2225), new Normal(1.0306, 0.6822), null, new Normal(714183796.6605, 3223923166.5304));
+            var D = new StarClass("D", "D", null, 4.5140e-3M, new Normal(0.4859, 9.9120e-2), new Normal(1.4100e-2, 2.1892e-3), new Normal(11040.4501, 4634.5036), new Normal(10592.8930, 1972.0722), new Normal(1217500.4232, 2703267.1401), new Normal(49.1024, 87.2530), new Normal(0.1581, 0.1196), new Normal(2.5428, 47.1292), new Normal(176.5749, 101.4257), new Normal(0.9671, 0.3824), new Normal(6.2776e-2, 1.5753), new Normal(514131448.1576, 2811823682.7295));
+            var DAV = new StarClass("DAV", "DAV", null, 1.4107e-2M, new Normal(0.4724, 8.6191e-2), new Normal(1.4356e-2, 2.2332e-3), new Normal(16439.4053, 3055.8190), new Normal(9118.5064, 1985.9490), new Normal(1104758.5624, 2585197.3313), new Normal(43.2329, 78.5159), new Normal(0.1484, 0.1199), new Normal(-8.8104e-2, 45.8943), new Normal(175.9063, 103.4433), new Normal(0.9385, 0.3981), new Normal(-2.2449, 3.6210e-3), new Normal(369264965.5077, 243511402.4034));
+            var DCV = new StarClass("DCV", "DCV", null, 1.6702e-2M, new Normal(0.4895, 8.5065e-2), new Normal(1.4116e-2, 2.1187e-3), new Normal(9796.7916, 1141.6063), new Normal(10545.4430, 1397.5634), new Normal(1052130.8334, 2393011.8690), new Normal(43.7295, 79.2821), new Normal(0.1443, 0.1165), new Normal(-1.7272, 45.6747), new Normal(182.0218, 104.7879), new Normal(0.9495, 0.3933), new Normal(0.2337, 1.8311), new Normal(393456191.6603, 236134688.9734));
+            var DAB = new StarClass("DAB", "DAB", null, 5.4828e-2M, new Normal(0.4852, 8.8866e-2), new Normal(1.4113e-2, 2.1137e-3), new Normal(12061.2517, 3439.9123), new Normal(10267.6623, 1816.7558), new Normal(1132343.2515, 2560358.1479), new Normal(50.9140, 88.4360), new Normal(0.1437, 0.1230), new Normal(-9.6205, 45.3002), new Normal(182.5184, 108.1781), new Normal(0.9153, 0.3910), null, new Normal(390415523.5837, 237931708.9277));
+            var DB = new StarClass("DB", "DB", null, 2.2595e-2M, new Normal(0.4603, 8.5613e-2), new Normal(1.4333e-2, 2.0524e-3), new Normal(16440.3231, 3081.3114), new Normal(9198.5231, 1801.3424), new Normal(1320409.8693, 2644207.0702), new Normal(56.9400, 76.0696), new Normal(0.1121, 9.6670e-2), new Normal(-5.2186, 40.2297), new Normal(177.7932, 108.3856), new Normal(1.0156, 0.3720), null, new Normal(350312527.7430, 350312527.7430));
+            var DA = new StarClass("DA", "DA", null, 0.1276M, new Normal(0.4722, 8.5986e-2), new Normal(1.4261e-2, 2.1408e-3), new Normal(14969.1778, 3777.3808), new Normal(9554.1079, 1931.5951), new Normal(843968.8396, 2199453.9710), new Normal(40.1752, 86.3788), null, null, null, new Normal(0.9424, 0.5064), null, new Normal(371487890.8157, 237774782.0029));
+            var DC = new StarClass("DC", "DC", null, 0.1928M, new Normal(0.5056, 8.8179e-2), new Normal(1.3862e-2, 2.0229e-3), new Normal(7381.2066, 1842.5083), new Normal(11695.9151, 1248.2293), new Normal(973000.5489, 2202761.7875), new Normal(48.0194, 88.8171), new Normal(0.1465, 0.1203), new Normal(0.3344, 44.0084), new Normal(183.0967, 102.6031), new Normal(0.9434, 0.4188), null, new Normal(424315218.5469, 244114720.47301));
+
+            // Proto stars
+            var AEBE = new StarClass("AEBE", "AEBE", null, 0.1163M, new Normal(8.9825, 11.4324), new Normal(0.1774, 0.1068), new Normal(4628.1680, 733.2804), null, new Normal(293048.3165, 677998.7610), new Normal(57.4783, 109.6160), new Normal(0.1608, 0.1240), new Normal(0.7267, 43.8504), new Normal(181.9092, 104.2027), new Normal(6.5743e-2, 4.0609e-2), null, new Normal(3397333.5146, 1266732.6165));
+            var TTS = new StarClass("TTS", "TTS", null, 2.4201M, new Normal(0.3087, 0.3772), new Normal(0.4397, 0.3489), new Normal(2235.6449, 1799.1580), new Normal(88.7435, 63.1993), new Normal(536034.4294, 1964196.1253), new Normal(35.5394, 100.6776), new Normal(0.1047, 0.1071), new Normal(-0.2773, 34.7394), new Normal(179.3374, 103.6242), new Normal(2.0343, 10.0648), new Normal(1.8614e-3, 1.6576), new Normal(18592.2340, 22950.8921));
+
+            // Giant stars
+            var B_BlueWhiteSuperGiant = new StarClass("B_BlueWhiteSuperGiant", "B_BlueWhiteSuperGiant", new Chromaticity("blue-white"), 0M);
+            var G_WhiteSuperGiant = new StarClass("G_WhiteSuperGiant", "G_WhiteSuperGiant", new Chromaticity("yellow_white"), 4.9307e-3M, new Normal(2.7421, 0.9242), new Normal(41.6796, 21.8015), new Normal(5599.6067, 227.7230), new Normal(1281.3333, 1382.3582), new Normal(639133.7743, 1160310.5145), new Normal(55.0959, 85.3018), new Normal(0.1470, 0.1195), new Normal(-5.3075, 45.7029), new Normal(180.3232, 102.8751), new Normal(25.7755, 58.8429), null, new Normal(5.4819, 67.7240));
+            var M_RedSuperGiant = new StarClass("M_RedSuperGiant", "M_RedSuperGiant", new Chromaticity("red"), 4.6459e-3M, new Normal(2.1794, 1.6778), new Normal(75.3733, 155.7319), new Normal(4643.1662, 745.0649), new Normal(2621.7213, 2968.7888), new Normal(770408.7258, 1553737.2816), new Normal(49.4475, 80.7911), new Normal(0.1618, 0.1322), new Normal(-2.0251, 44.6415), new Normal(178.9133, 104.1287), new Normal(153.1046, 552.6377), new Normal(0.1061, 0.1048), new Normal(5.9106e-2, 3.9906e-2));
+            var F_WhiteSuperGiant = new StarClass("F_WhiteSuperGiant", "F_WhiteSuperGiant", new Chromaticity("white"), 6.7792e-3M, new Normal(3.4230, 1.4584), new Normal(45.7071, 38.2061), new Normal(6465.9952, 889.7577), new Normal(1780.2359, 3057.6187), new Normal(627881.9950, 1162182.0077), new Normal(59.5249, 93.1840), new Normal(0.1515, 0.1181), new Normal(-0.5819, 46.4306), new Normal(186.2737, 102.8597), new Normal(44.1226, 100.0856), new Normal(-0.4966, 1.0641), new Normal(3.3610, 19.8130));
+            var K_OrangeGiant = new StarClass("K_OrangeGiant", "K_OrangeGiant", new Chromaticity("yellow-orange"), 6.4396e-2M, new Normal(0.7694, 0.4340), new Normal(16.2841, 14.8475), new Normal(4223.4790, 325.3952), new Normal(7369.1095, 3313.3936), null, null, null, null, null, new Normal(50.1443, 50.3943), null, new Normal(303.0301, 902.8853));
+            var A_BlueWhiteSuperGiant = new StarClass("A_BlueWhiteSuperGiant", "A_BlueWhiteSuperGiant", new Chromaticity("blue_white"), 3.1226e-2M, new Normal(37.7831, 30.1749), new Normal(231.7884, 193.1341), new Normal(16387.9706, 7462.0295), new Normal(580.7508, 714.7829), new Normal(192929.4145, 572426.7729), new Normal(49.0752, 93.4346), new Normal(0.1588, 0.1285), new Normal(0.8903, 46.1076), new Normal(181.8246, 99.8729), new Normal(85.3883, 71.5794), null, new Normal(153339.8823, 3408197.4065));
+            var M_RedGiant = new StarClass("M_RedGiant", "M_RedGiant", new Chromaticity("red"), 0.1637M, new Normal(0.3664, 0.2577), new Normal(4.0907, 10.1551), new Normal(2429.3432, 230.5779), new Normal(7493.5638, 3924.2886), new Normal(1288257.5441, 2798427.6379), new Normal(70.7003, 134.0570), new Normal(0.1420, 0.1212), new Normal(1.5043, 44.3672), new Normal(180.2272, 104.7395), new Normal(16.0463, 40.8132), null, new Normal(4190.7421, 1555.3823));
+
+            // Wolf-Rayet stars
+            var W = new StarClass("W", "W", null, 3.1771e-4M, new Normal(1.2379, 0.4688), new Normal(6.3622, 2.1490), new Normal(109647.8000, 51422.2262), new Normal(8158.3067, 3616.1604), new Normal(1119520.4012, 2033405.3292), new Normal(62.7814, 87.4087), new Normal(0.1681, 0.1192), new Normal(-8.7813, 44.9720), new Normal(193.1803, 102.3475), new Normal(17.6537, 12.8643), new Normal(5.0072e-2, 0.1489), new Normal(21.2786, 27.2465));
+            var WO = new StarClass("WO", "WO", null, 3.0368e-2M, new Normal(88.6796, 17.3809), new Normal(6.5232, 2.0170), new Normal(35732.1662, 18889.7295), null, null, null, null, null, null, new Normal(2.4379, 0.8151), null, new Normal(1191.7744, 1402.3804));
+            var WN = new StarClass("WN", "WN", null, 9.6675e-3M, new Normal(77.8179, 23.8955), new Normal(6.5185, 2.0472), new Normal(35197.0518, 19537.9707), new Normal(2679.3333, 4450.9920), new Normal(92155.0033, 216189.0500), new Normal(52.0221, 100.7424), new Normal(0.1536, 0.1197), new Normal(-3.4974, 44.5403), new Normal(180.0902, 105.6131), new Normal(2.4710, 1.3848), null, new Normal(1072.5309, 1330.4830));
+            var WNC = new StarClass("WNC", "WNC", null, 1.0014e-2M, new Normal(78.4792, 23.3926), new Normal(6.5661, 2.0409), new Normal(35889.3904, 19223.2174), null, new Normal(96450.0000, 204820.2704), new Normal(52.2781, 93.2270), new Normal(0.1499, 0.1181), new Normal(0.5864, 47.4476), new Normal(181.3716, 104.6943), new Normal(2.4432, 0.81991), null, new Normal(1046.4698, 1294.5276));
+            var WC = new StarClass("WC", "WC", null, 1.3583e-2M, new Normal(49.5434, 6.6576), new Normal(6.5385, 2.0138), new Normal(36451.9228, 19666.7883), new Normal(2351.0526, 4062.7411), new Normal(99724.5033, 232516.3450), new Normal(57.6766, 108.7744), new Normal(0.1490, 0.1206), new Normal(1.0021, 45.7077), new Normal(181.2468, 104.0646), new Normal(2.5201, 1.7086), null, new Normal(658.6533, 740.4629));
+
+            // Late sequence stars
+            var MS = new StarClass("MS", "MS", null, 3.5793e-2M, new Normal(1.0989, 0.1339), new Normal(31.0954, 1.4445), new Normal(3045.1761, 229.0416), new Normal(9544.9245, 2419.3438), new Normal(837464.1326, 1748227.6680), new Normal(48.8584, 81.6000), new Normal(0.1542, 0.1204), new Normal(-0.1486, 45.0807), new Normal(181.8764, 103.4754), new Normal(115.8475, 27.5127), null, new Normal(6.8523e-2, 1.4679e-3));
+            var S = new StarClass("S", "S", null, 3.7539e-2M, new Normal(1.1030, 0.1408), new Normal(31.2911, 4.1332), new Normal(3046.8202, 246.0410), new Normal(9509.9362, 2470.5269), new Normal(891556.1526, 1809579.0565), new Normal(52.2572, 86.5575), new Normal(0.1569, 0.1224), new Normal(1.3237, 44.3526), new Normal(181.3828, 103.5767), new Normal(115.7976, 28.9487), null, new Normal(6.8355e-2, 3.3666e-3));
+
+            // Carbon stars
+            var CS = new StarClass("CS", "CS", null, 0M);
+            var CH = new StarClass("CH", "CH", null, 0M);
+            var CHd = new StarClass("CHd", "CHd", null, 0M);
+            var CN = new StarClass("CN", "CN", null, 2.3824e-2M, new Normal(0.9554, 1.6781e-2), new Normal(29.4276, 0.2187), new Normal(2793.0654, 32.9817), new Normal(12888.4661, 132.1427), new Normal(907218.5336, 1884143.2580), new Normal(51.1178, 88.9208), new Normal(0.1486, 0.1169), new Normal(-1.1287, 45.3480), new Normal(180.9031, 101.8753), new Normal(117.0105, 19.0775), null, new Normal(7.0527e-2, 3.3368e-4));
+            var CJ = new StarClass("CJ", "CJ", null, 2.9873e-3M, new Normal(0.9545, 1.7022e-2), new Normal(29.4164, 0.2218), new Normal(2792.5595, 32.5797), new Normal(12879.6973, 137.5649), new Normal(1040207.4729, 2008471.2031), new Normal(52.2986, 87.1051), new Normal(0.1637, 0.1157), new Normal(1.4396, 44.1753), new Normal(178.1415, 99.5373), new Normal(117.5933, 18.8562), null, new Normal(7.0544e-2, 3.3807e-3));
+            var C = new StarClass("C", "C", null, 6.7668e-4M, new Normal(1.2418, 0.5164), new Normal(75.2803, 42.6220), new Normal(2240.4675, 1050.9834), new Normal(11524.3506, 2253.7199), new Normal(1014463.7245, 1978101.8881), new Normal(52.6739, 87.6374), new Normal(0.1711, 0.1328), new Normal(0.6793, 41.9012), new Normal(175.0839, 117.1690), new Normal(148.2721, 109.4990), new Normal(-6.9215e-2, 1.4357e-2), new Normal(3.1400e-2, 6.3184e-2));
+
+            // Compact stars
+            var N = new StarClass("N", "N", null, 4.7256M, new Normal(0.8092, 0.4086), new Normal(1.6034, 1.7300), new Normal(5513871.4142, 8066331.3790), new Normal(6328.6593, 3804.3761), new Normal(1027236.6948, 2193256.3243), new Normal(49.8844, 87.0028), new Normal(0.1514, 0.1209), new Normal(0.3736, 44.8805), new Normal(179.6551, 103.6221), new Normal(209.4898, 22522.5937), null, new Normal(5.0945, 7.7931));
+            var H = new StarClass("H", "H", null, 0.4975M, new Normal(7.7959, 9.4156), new Normal(3.3066e-5, 3.9937e-5), null, new Normal(6351.6006, 4723.0639), new Normal(385734.8745, 894171.6408), new Normal(40.0794, 84.7873), new Normal(0.1481, 0.1191), new Normal(-0.3157, 45.7025), new Normal(179.8994, 104.1987), new Normal(1.3045e-6, 9.5828e-7), null, new Normal(1.5814e18, 1.2975e18));
+            var SuperMassiveBlackHole = new StarClass("SuperMassiveBlackHole", "SuperMassiveBlackHole", null, 0M);
+
+            // Exotic stellar entities
+            var X = new StarClass("X", "X", null, 0M);
+            var RoguePlanet = new StarClass("RoguePlanet", "RoguePlanet", null, 0M);
+            var Nebula = new StarClass("Nebula", "Nebula", null, 0M);
+            var StellarRemnantNebula = new StarClass("StellarRemnantNebula", "StellarRemnantNebula", null, 0M);
         }
 
         // Scan habitable zone constants
@@ -47,13 +112,14 @@ namespace EddiDataDefinitions
 
         private static readonly List<StarClass> CLASSES = new List<StarClass>();
 
+        [JsonRequired]
         public string edname { get; private set; }
 
         public string name { get; private set; }
 
         public Chromaticity chromaticity { get; private set; } = new Chromaticity();
 
-        public decimal percentage { get; private set; }
+        public decimal? percentage { get; private set; }
 
         public IUnivariateDistribution massdistribution { get; private set; }
 
@@ -63,7 +129,23 @@ namespace EddiDataDefinitions
 
         public IUnivariateDistribution agedistribution { get; private set; }
 
-        private StarClass(string edname, string name, Chromaticity chromaticity, decimal percentage, IUnivariateDistribution massdistribution, IUnivariateDistribution radiusdistribution, IUnivariateDistribution tempdistribution, IUnivariateDistribution agedistribution)
+        public IUnivariateDistribution orbitalperioddistribution { get; private set; }
+
+        public IUnivariateDistribution semimajoraxisdistribution { get; private set; }
+
+        public IUnivariateDistribution eccentricitydistribution { get; private set; }
+
+        public IUnivariateDistribution inclinationdistribution { get; private set; }
+
+        public IUnivariateDistribution periapsisdistribution { get; private set; }
+
+        public IUnivariateDistribution rotationalperioddistribution { get; private set; }
+
+        public IUnivariateDistribution tiltdistribution { get; private set; }
+
+        public IUnivariateDistribution densitydistribution { get; private set; }
+
+        private StarClass(string edname, string name, Chromaticity chromaticity, decimal? percentage = null, IUnivariateDistribution massdistribution = null, IUnivariateDistribution radiusdistribution = null, IUnivariateDistribution tempdistribution = null, IUnivariateDistribution agedistribution = null, IUnivariateDistribution orbitalperioddistribution = null, IUnivariateDistribution semimajoraxisdistribution = null, IUnivariateDistribution eccentricitydistribution = null, IUnivariateDistribution inclinationdistribution = null, IUnivariateDistribution periapsisdistribution = null, IUnivariateDistribution rotationalperioddistribution = null, IUnivariateDistribution tiltdistribution = null, IUnivariateDistribution densitydistribution = null)
         {
             this.edname = edname;
             this.name = name;
@@ -72,41 +154,17 @@ namespace EddiDataDefinitions
             this.radiusdistribution = radiusdistribution;
             this.tempdistribution = tempdistribution;
             this.agedistribution = agedistribution;
+            this.orbitalperioddistribution = orbitalperioddistribution;
+            this.semimajoraxisdistribution = semimajoraxisdistribution;
+            this.eccentricitydistribution = eccentricitydistribution;
+            this.inclinationdistribution = inclinationdistribution;
+            this.periapsisdistribution = periapsisdistribution;
+            this.rotationalperioddistribution = rotationalperioddistribution;
+            this.tiltdistribution = tiltdistribution;
+            this.densitydistribution = densitydistribution;
             this.chromaticity = chromaticity;
 
             CLASSES.Add(this);
-        }
-
-        /// <summary>
-        /// Provide the cumulative probability that a star of this class will have a temp equal to or lower than that supplied
-        /// </summary>
-        public decimal? tempCP(decimal? l)
-        {
-            return l == null ? null : (decimal?)tempdistribution.CumulativeDistribution((double)l);
-        }
-
-        /// <summary>
-        /// Provide the cumulative probability that a star of this class will have a temp equal to or lower than that supplied
-        /// </summary>
-        public decimal? ageCP(decimal? l)
-        {
-            return l == null ? null : (decimal?)agedistribution.CumulativeDistribution((double)l);
-        }
-
-        /// <summary>
-        /// Provide the cumulative probability that a star of this class will have a stellar radius equal to or lower than that supplied
-        /// </summary>
-        public decimal? stellarRadiusCP(decimal? l)
-        {
-            return l == null ? null : (decimal?)radiusdistribution.CumulativeDistribution((double)l);
-        }
-
-        /// <summary>
-        /// Provide the cumulative probability that a star of this class will have a stellar mass equal to or lower than that supplied
-        /// </summary>
-        public decimal? stellarMassCP(decimal? l)
-        {
-            return l == null ? null : (decimal?)massdistribution.CumulativeDistribution((double)l);
         }
 
         public static StarClass FromName(string from)
@@ -153,32 +211,6 @@ namespace EddiDataDefinitions
             double distanceMeters = Math.Pow(top / bottom, 0.5);
             double distancels = ( distanceMeters ) / Constants.lightSpeedMetersPerSecond; 
             return Convert.ToDecimal(distancels);
-        }
-
-        public static decimal? sanitiseCP(decimal? cp)
-        {
-            if (cp == null)
-            {
-                return null;
-            }
-
-            // Trim decimal places appropriately
-            if (cp < .00001M || cp > .9999M)
-            {
-                return Math.Round((decimal)cp * 100, 4);
-            }
-            else if (cp < .0001M || cp > .999M)
-            {
-                return Math.Round((decimal)cp * 100, 3);
-            }
-            else if (cp < .001M || cp > .99M)
-            {
-                return Math.Round((decimal)cp * 100, 2);
-            }
-            else
-            {
-                return Math.Round((decimal)cp * 100);
-            }
         }
     }
 }

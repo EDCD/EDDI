@@ -131,13 +131,53 @@ namespace EddiDataDefinitions
 
         /// <summary> Density in Kg per cubic meter </summary>
         [JsonIgnore]
-        public decimal? density => GetDensity();
+        public decimal? density
+        {
+            get { return GetDensity(); }
+            set { _density = value; }
+        }
+        [JsonIgnore]
+        private decimal? _density;
 
         public Body()
         { }
 
         [JsonIgnore]
         private List<IDictionary<string, object>> _parents;
+
+        // Additional calculated statistics
+        [JsonIgnore]
+        public decimal? massprobability => Probability.CumulativeP(starClass == null ? planetClass.massdistribution : starClass.massdistribution, starClass == null ? earthmass : solarmass);
+        [JsonIgnore]
+        public decimal? radiusprobability => Probability.CumulativeP(starClass == null ? planetClass.radiusdistribution : starClass.radiusdistribution, starClass == null ? radius : solarradius);
+        [JsonIgnore]
+        public decimal? tempprobability => Probability.CumulativeP(starClass == null ? planetClass.tempdistribution : starClass.tempdistribution, temperature);
+        [JsonIgnore]
+        public decimal? orbitalperiodprobability => Probability.CumulativeP(starClass == null ? planetClass.orbitalperioddistribution : starClass.orbitalperioddistribution, orbitalperiod);
+        [JsonIgnore]
+        public decimal? semimajoraxisprobability => Probability.CumulativeP(starClass == null ? planetClass.semimajoraxisdistribution : starClass.semimajoraxisdistribution, semimajoraxis);
+        [JsonIgnore]
+        public decimal? eccentricityprobability => Probability.CumulativeP(starClass == null ? planetClass.eccentricitydistribution : starClass.eccentricitydistribution, eccentricity);
+        [JsonIgnore]
+        public decimal? inclinationprobability => Probability.CumulativeP(starClass == null ? planetClass.inclinationdistribution : starClass.inclinationdistribution, inclination);
+        [JsonIgnore]
+        public decimal? periapsisprobability => Probability.CumulativeP(starClass == null ? planetClass.periapsisdistribution : starClass.periapsisdistribution, periapsis);
+        [JsonIgnore]
+        public decimal? rotationalperiodprobability => Probability.CumulativeP(starClass == null ? planetClass.rotationalperioddistribution : starClass.rotationalperioddistribution, rotationalperiod);
+        [JsonIgnore]
+        public decimal? tiltprobability => Probability.CumulativeP(starClass == null ? planetClass.tiltdistribution : starClass.tiltdistribution, tilt);
+        [JsonIgnore]
+        public decimal? densityprobability => Probability.CumulativeP(starClass == null ? planetClass.densitydistribution : starClass.densitydistribution, density);
+
+        // Additional calculated star statistics
+        [JsonIgnore]
+        public decimal? ageprobability => starClass == null ? null : Probability.CumulativeP(starClass.agedistribution, age);
+
+        // Additional calculated planet and moon statistics
+        [JsonIgnore]
+        public decimal? gravityprobability => Probability.CumulativeP(starClass == null ? planetClass.gravitydistribution : null, gravity);
+        [JsonIgnore]
+        public decimal? pressureprobability => Probability.CumulativeP(starClass == null ? planetClass.pressuredistribution : null, pressure);
 
         // Star-specific items
 
@@ -166,18 +206,19 @@ namespace EddiDataDefinitions
         public StarClass starClass => StarClass.FromEDName(stellarclass);
 
         // Additional calculated star information
+        [JsonIgnore]
         public string chromaticity => starClass?.chromaticity?.localizedName; // For use with Cottle
+        [JsonIgnore]
         public decimal? luminosity => StarClass.luminosity(absolutemagnitude);
-        public decimal? radiusprobability => starClass == null ? null : StarClass.sanitiseCP(starClass.stellarRadiusCP(solarradius));
-        public decimal? massprobability => starClass == null ? null : StarClass.sanitiseCP(starClass.stellarMassCP(solarmass));
-        public decimal? tempprobability => starClass == null ? null : StarClass.sanitiseCP(starClass.tempCP(temperature));
-        public decimal? ageprobability => starClass == null ? null : StarClass.sanitiseCP(starClass.ageCP(age));
         /// <summary>The solar radius of the star, compared to Sol</summary>
+        [JsonIgnore]
         public decimal? solarradius => StarClass.solarradius(radius);
         /// <summary>Minimum estimated single-star habitable zone (target black body temperature of 315°K / 42°C / 107°F or less, radius in km)</summary>
+        [JsonIgnore]
         public decimal? estimatedhabzoneinner => solarmass > 0 && radius > 0 && temperature > 0 ? 
             (decimal?)StarClass.DistanceFromStarForTemperature(StarClass.maxHabitableTempKelvin, Convert.ToDouble(radius), Convert.ToDouble(temperature)) : null;
         /// <summary>Maximum estimated single-star habitable zone (target black body temperature of 223.15°K / -50°C / -58°F or more, radius in km)</summary>
+        [JsonIgnore]
         public decimal? estimatedhabzoneouter => solarmass > 0 && radius > 0 && temperature > 0 ? 
             (decimal?)StarClass.DistanceFromStarForTemperature(StarClass.minHabitableTempKelvin, Convert.ToDouble(radius), Convert.ToDouble(temperature)) : null;
 
@@ -219,6 +260,9 @@ namespace EddiDataDefinitions
             // Scan details
             this.alreadydiscovered = alreadydiscovered;
             this.alreadymapped = alreadymapped;
+
+            // Other calculations
+            this.density = GetDensity();
         }
 
         // Body-specific items
@@ -324,6 +368,9 @@ namespace EddiDataDefinitions
             // Scan details
             this.alreadydiscovered = alreadydiscovered;
             this.alreadymapped = alreadymapped;
+
+            // Other calculations
+            this.density = GetDensity();
         }
 
         // Estimated exploration value calculations
@@ -468,13 +515,12 @@ namespace EddiDataDefinitions
         public BodyType Type => bodyType;
 
         // Density
-
         private decimal? GetDensity()
         {
             double massKg = 0;
             double radiusM = 0;
 
-            if (bodyType.invariantName == "Planet")
+            if (bodyType.invariantName != "Star")
             {
                 double radiusKm = Convert.ToDouble(radius);
                 radiusM = (radiusKm * 1000);
@@ -495,7 +541,7 @@ namespace EddiDataDefinitions
                 double cubicMeters = 4 / 3 * Math.PI * Math.Pow(radiusM, 3);
                 return (decimal?)(massKg / cubicMeters);
             }
-            return null;
+            else { return null; }
         }
 
         // Convert legacy data
@@ -521,6 +567,10 @@ namespace EddiDataDefinitions
                     absolutemagnitude = absoluteMagnitude;
                 }
             }
+
+            // Calculate our density if possible to do so.
+            density = GetDensity();
+
             _additionalData = null;
         }
 
