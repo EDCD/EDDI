@@ -117,16 +117,24 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="add_button" xml:space="preserve">
+    <value>Ajouter un enregistrement</value>
+  </data>
+  
+  <data name="add_button_text" xml:space="preserve">
+    <value>Ajouter un enregistrement:</value>
+  </data>
+  
+  
+  <data name="crime_monitor_name" xml:space="preserve">
+    <value>Moniteur de crime</value>
+  </data>
   
   
   
-  
-  
-  
-  
-  
-  
-  
+  <data name="header_bounties" xml:space="preserve">
+    <value>Primes</value>
+  </data>
   
   <data name="header_faction" xml:space="preserve">
     <value>Faction</value>
