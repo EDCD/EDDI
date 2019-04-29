@@ -291,8 +291,9 @@ namespace EddiDataDefinitions
 
         public decimal? fueltankcapacity { get; set; } // Core capacity
         public decimal? fueltanktotalcapacity { get; set; } // Capacity including additional tanks
-        public decimal maxfuel { get; set; }
-        public decimal maxjump { get; set; }
+        public decimal maxjumprange { get; set; }
+        public decimal maxfuelperjump { get; set; }
+        public decimal unladenmass { get; set; }
 
         // Admin
         // The ID in Elite: Dangerous' database
