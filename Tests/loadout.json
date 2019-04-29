@@ -8,6 +8,10 @@
   "HullValue": 13943105,
   "ModulesValue": 111211684,
   "HullHealth": 1,
+  "Hot": false,
+  "UnladenMass": 2400,
+  "CargoCapacity": 64,
+  "MaxJumpRange":  20.326,
   "Rebuy": 6257742,
   "Modules": [
     {
