@@ -128,17 +128,31 @@
   
   
   
+  <data name="header_faction" xml:space="preserve">
+    <value>Faction</value>
+  </data>
+  
+  <data name="header_station" xml:space="preserve">
+    <value>Station</value>
+  </data>
+  <data name="header_system" xml:space="preserve">
+    <value>Système</value>
+  </data>
   
   
+  <data name="remove_button" xml:space="preserve">
+    <value>Supprimer</value>
+  </data>
   
+  <data name="remove_button_text" xml:space="preserve">
+    <value>Supprimer:</value>
+  </data>
   
+  <data name="update_button" xml:space="preserve">
+    <value>Mise à jour</value>
+  </data>
   
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="update_button_text" xml:space="preserve">
+    <value>Mise à jour:</value>
+  </data>
 </root>
