@@ -173,16 +173,6 @@ namespace EddiDataDefinitions
         [JsonIgnore]
         public decimal? densityprobability => Probability.CumulativeP(starClass == null ? planetClass.densitydistribution : starClass.densitydistribution, density);
 
-        // Additional calculated star statistics
-        [JsonIgnore]
-        public decimal? ageprobability => starClass == null ? null : Probability.CumulativeP(starClass.agedistribution, age);
-
-        // Additional calculated planet and moon statistics
-        [JsonIgnore]
-        public decimal? gravityprobability => Probability.CumulativeP(starClass == null ? planetClass.gravitydistribution : null, gravity);
-        [JsonIgnore]
-        public decimal? pressureprobability => Probability.CumulativeP(starClass == null ? planetClass.pressuredistribution : null, pressure);
-
         // Star-specific items
 
         /// <summary>The age of the body, in millions of years</summary>
@@ -267,6 +257,43 @@ namespace EddiDataDefinitions
 
             // Other calculations
             this.density = GetDensity();
+        }
+
+        // Additional calculated star statistics
+        [JsonIgnore]
+        public decimal? ageprobability => starClass == null ? null : Probability.CumulativeP(starClass.agedistribution, age);
+
+        private long? estimateStarValue()
+        {
+            // Credit to MattG's thread at https://forums.frontier.co.uk/showthread.php/232000-Exploration-value-formulae for scan value formulas
+
+            // Scan value calculation constants
+            const double scanDivider = 66.25;
+
+            double k = 1200; // base value
+            double result;
+
+            // Override constants for specific types of bodies
+            if ((stellarclass == "H") || (stellarclass == "N"))
+            {
+                // Black holes and Neutron stars
+                k = 22628;
+            }
+            else if (stellarclass == "SuperMassiveBlackHole")
+            {
+                // Supermassive black hole
+                // this is applying the same scaling to the 3.2 value as a normal black hole, not confirmed in game
+                k = 33.5678;
+            }
+            else if (stellarclass.StartsWith("D") && (stellarclass.Length <= 3))
+            {
+                // White dwarves
+                k = 14057;
+            }
+
+            // Calculate exploration scan values - (k + (m * k / 66.25))
+            result = k + ((double)solarmass * k / scanDivider);
+            return (long?)Math.Round(result, 0);
         }
 
         // Body-specific items
@@ -377,38 +404,11 @@ namespace EddiDataDefinitions
             this.density = GetDensity();
         }
 
-        private long? estimateStarValue()
-        {
-            // Credit to MattG's thread at https://forums.frontier.co.uk/showthread.php/232000-Exploration-value-formulae for scan value formulas
-
-            // Scan value calculation constants
-            const double scanDivider = 66.25;
-
-            double k = 1200; // base value
-            double result;
-
-            // Override constants for specific types of bodies
-            if ((stellarclass == "H") || (stellarclass == "N"))
-            {
-                // Black holes and Neutron stars
-                k = 22628;
-            }
-            else if (stellarclass == "SuperMassiveBlackHole")
-            {
-                // Supermassive black hole
-                // this is applying the same scaling to the 3.2 value as a normal black hole, not confirmed in game
-                k = 33.5678;
-            }
-            else if (stellarclass.StartsWith("D") && (stellarclass.Length <= 3))
-            {
-                // White dwarves
-                k = 14057;
-            }
-
-            // Calculate exploration scan values - (k + (m * k / 66.25))
-            result = k + ((double)solarmass * k / scanDivider);
-            return (long?)Math.Round(result, 0);
-        }
+        // Additional calculated planet and moon statistics
+        [JsonIgnore]
+        public decimal? gravityprobability => Probability.CumulativeP(starClass == null ? planetClass.gravitydistribution : null, gravity);
+        [JsonIgnore]
+        public decimal? pressureprobability => Probability.CumulativeP(starClass == null ? planetClass.pressuredistribution : null, pressure);
 
         private long? estimateBodyValue()
         {
