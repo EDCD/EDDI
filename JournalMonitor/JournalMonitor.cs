@@ -773,6 +773,10 @@ namespace EddiJournalMonitor
                                         }
                                     }
 
+                                    // Scan status
+                                    bool alreadydiscovered = JsonParsing.getOptionalBool(data, "WasDiscovered") ?? true;
+                                    bool alreadymapped = JsonParsing.getOptionalBool(data, "WasMapped") ?? false;
+
                                     // Rings
                                     data.TryGetValue("Rings", out object val);
                                     List<object> ringsData = (List<object>)val;
@@ -801,8 +805,6 @@ namespace EddiJournalMonitor
                                         string luminosityClass = JsonParsing.getString(data, "Luminosity");
                                         data.TryGetValue("Age_MY", out val);
                                         long ageMegaYears = (long)val;
-                                        bool alreadydiscovered = JsonParsing.getBool(data, "WasDiscovered");
-                                        bool alreadymapped = JsonParsing.getBool(data, "WasMapped");
 
                                         Body star = new Body(name, bodyId, parents, distanceLs, stellarclass, stellarsubclass, stellarMass, radiusKm, absoluteMagnitude, ageMegaYears, temperatureKelvin, luminosityClass, semimajoraxisLs, eccentricity, orbitalinclinationDegrees, periapsisDegrees, orbitalPeriodDays, rotationPeriodDays, axialTiltDegrees, rings, alreadydiscovered, alreadymapped, systemName, systemAddress)
                                         {
@@ -912,8 +914,6 @@ namespace EddiJournalMonitor
 
                                         TerraformState terraformState = TerraformState.FromEDName(JsonParsing.getString(data, "TerraformState")) ?? TerraformState.NotTerraformable;
                                         Volcanism volcanism = Volcanism.FromName(JsonParsing.getString(data, "Volcanism"));
-                                        bool alreadydiscovered = JsonParsing.getBool(data, "WasDiscovered");
-                                        bool alreadymapped = JsonParsing.getBool(data, "WasMapped");
 
                                         Body body = new Body(name, bodyId, parents, distanceLs, tidallyLocked, terraformState, planetClass, atmosphereClass, atmosphereCompositions, volcanism, earthMass, radiusKm, gravity, temperatureKelvin, pressureAtm, landable, materials, solidCompositions, semimajoraxisLs, eccentricity, orbitalinclinationDegrees, periapsisDegrees, orbitalPeriodDays, rotationPeriodDays, axialTiltDegrees, rings, reserveLevel, alreadydiscovered, alreadymapped, systemName, systemAddress)
                                         {
