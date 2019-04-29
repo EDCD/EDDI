@@ -122,6 +122,9 @@ namespace Eddi
         public Body CurrentStellarBody { get; private set; }
         public DateTime JournalTimeStamp { get; set; } = DateTime.MinValue;
 
+        // Information from the last jump we initiated (for reference)
+        public FSDEngagedEvent LastFSDEngagedEvent { get; private set; }
+
         // Current vehicle of player
         public string Vehicle { get; set; } = Constants.VEHICLE_SHIP;
         public Ship CurrentShip { get; set; }
@@ -1396,6 +1399,9 @@ namespace Eddi
             // Set the destination system as the current star system
             updateCurrentSystem(@event.system);
 
+            // Save a copy of this event for later reference
+            LastFSDEngagedEvent = @event;
+
             return true;
         }
 
@@ -1446,7 +1452,8 @@ namespace Eddi
             CurrentStarSystem.y = theEvent.y;
             CurrentStarSystem.z = theEvent.z;
             CurrentStarSystem.Faction = theEvent.controllingfaction;
-            CurrentStellarBody = CurrentStarSystem.bodies.FirstOrDefault(b => b.distance == 0);
+            CurrentStellarBody = CurrentStarSystem.bodies.FirstOrDefault(b => b.bodyname == theEvent.star) 
+                ?? CurrentStarSystem.bodies.FirstOrDefault(b => b.distance == 0);
 
             // Update system faction data if available
             if (theEvent.factions != null)
@@ -1496,6 +1503,18 @@ namespace Eddi
 
             // No longer in 'station instance'
             CurrentStation = null;
+
+            // If we don't have any information about bodies in the system yet, create a basic star from current and saved event data
+            if (CurrentStellarBody == null && !string.IsNullOrEmpty(theEvent.star))
+            {
+                CurrentStellarBody = new Body()
+                {
+                    bodyname = theEvent.star,
+                    bodyType = BodyType.FromEDName("Star"),
+                    stellarclass = LastFSDEngagedEvent?.stellarclass,
+                };
+                CurrentStarSystem.bodies.Add(CurrentStellarBody);
+            }
 
             return passEvent;
         }
