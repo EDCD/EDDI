@@ -88,6 +88,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to red.
+        /// </summary>
+        public static string red {
+            get {
+                return ResourceManager.GetString("red", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to white.
         /// </summary>
         public static string white {
