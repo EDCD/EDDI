@@ -991,5 +991,20 @@ namespace UnitTests
             Assert.AreEqual(208127228285531, @event.systemAddress);
             Assert.AreEqual(19, @event.count);
         }
+
+        [TestMethod]
+        public void TestMultiSellExplorationEvent()
+        {
+            string line = @"{ ""timestamp"":""2018-11-14T10:35:35Z"", ""event"":""MultiSellExplorationData"", ""Discovered"":[ { ""SystemName"":""HIP 84742"", ""NumBodies"":23 }, { ""SystemName"":""Col 359 Sector NY-S b20-1"", ""NumBodies"":9 } ], ""BaseValue"":2938186, ""Bonus"":291000, ""TotalEarnings"":3229186 }";
+            List<Event> events = JournalMonitor.ParseJournalEntry(line);
+            Assert.AreEqual(1, events.Count);
+            ExplorationDataSoldEvent @event = (ExplorationDataSoldEvent)events[0];
+            Assert.IsNotNull(@event);
+            Assert.IsInstanceOfType(@event, typeof(ExplorationDataSoldEvent));
+            Assert.AreEqual(2, @event.systems?.Count);
+            Assert.AreEqual(2938186M, @event.reward);
+            Assert.AreEqual(291000M, @event.bonus);
+            Assert.AreEqual(3229186M, @event.total);
+        }
     }
 }

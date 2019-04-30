@@ -56,6 +56,9 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * `Body volcanism script` revised. Corrected edit scars and added a little more variety to the script.
     * The `Spacialise()` function no longer adds an extra space at the end of the string.
     * Enhanced `P()` function to correct mispronunciations of body names ending in "a" or "g".
+    * Updated `Exploration data sold` event and revised script.
+      * Added variable `total`, describing the total credits received (after any wages paid to crew and including for example the 200% bonus if rank 5 with Li Yong Rui)
+      * Removed variable `firsts` (no longer supported by post 3.3 batch selling of exploration data).
   * Voice Attack
     * Added `Destination system`, `Destination system distance`, and `Destination station` properties.
 
