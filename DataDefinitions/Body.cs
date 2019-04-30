@@ -263,6 +263,9 @@ namespace EddiDataDefinitions
         [JsonIgnore]
         public decimal? ageprobability => starClass == null ? null : Probability.CumulativeP(starClass.agedistribution, age);
 
+        [JsonIgnore]
+        public decimal? absolutemagnitudeprobability => starClass == null ? null : Probability.CumulativeP(starClass.absolutemagnitudedistribution, absolutemagnitude);
+
         private long? estimateStarValue()
         {
             // Credit to MattG's thread at https://forums.frontier.co.uk/showthread.php/232000-Exploration-value-formulae for scan value formulas
