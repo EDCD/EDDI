@@ -672,7 +672,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "Exploration data for {len(event.systems)} systems sold for {Humanise(event.reward)} credits\r\n\r\n{if len(event.firsts) > 0:\r\n    , with an additional bonus of {Humanise(event.bonus)} credits for\r\n    {if len(event.firsts) = 1:\r\n        one first discovery\r\n    |else:\r\n        {len(event.firsts)} first discoveries\r\n    }\r\n}\r\n.",
+      "script": "Exploration data for {len(event.systems)} systems sold for {Humanise(event.total)} credits\r\n\r\n{if len(event.bonus) > 0:\r\n    , including a bonus of {Humanise(event.bonus)} credits for first discoveries\r\n}.",
       "default": true,
       "name": "Exploration data sold",
       "description": "Triggered when you sell exploration data"

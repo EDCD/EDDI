@@ -63,6 +63,10 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * `Star scanned` script revised. Preference added for reporting stellar class. Corrected edit scars. Refactored to reduce redundancies. 
     * `Body volcanism script` revised. Corrected edit scars and added a little more variety to the script.
     * The `Spacialise()` function no longer adds an extra space at the end of the string.
+    * Enhanced `P()` function to correct mispronunciations of body names ending in "a" or "g".
+    * Updated `Exploration data sold` event and revised script.
+      * Added variable `total`, describing the total credits received (after any wages paid to crew and including for example the 200% bonus if rank 5 with Li Yong Rui)
+      * Removed variable `firsts` (no longer supported by post 3.3 batch selling of exploration data).
     * Variables from the following scripts have been revised to add new variables and improve consistency between events.
       * `Glide` event (body => bodyname, system => systemname)
       * `Location` event (body => bodyname, system => systemname)

@@ -2023,7 +2023,32 @@ namespace EddiJournalMonitor
                                     decimal reward = (long)val;
                                     data.TryGetValue("Bonus", out val);
                                     decimal bonus = (long)val;
-                                    events.Add(new ExplorationDataSoldEvent(timestamp, systems, firsts, reward, bonus) { raw = line, fromLoad = fromLogLoad });
+                                    data.TryGetValue("TotalEarnings", out val);
+                                    decimal total = (long)val;
+                                    events.Add(new ExplorationDataSoldEvent(timestamp, systems, reward, bonus, total) { raw = line, fromLoad = fromLogLoad });
+                                }
+                                handled = true;
+                                break;
+                            case "MultiSellExplorationData":
+                                {
+                                    List<string> systems = new List<string>();
+                                    data.TryGetValue("Discovered", out object val);
+                                    List<object> discovered = (List<object>)val;
+                                    foreach (Dictionary<string, object> discoveredSystem in discovered)
+                                    {
+                                        string system = JsonParsing.getString(discoveredSystem, "SystemName");
+                                        if (!string.IsNullOrEmpty(system))
+                                        {
+                                            systems.Add(system);
+                                        }
+                                    }
+                                    data.TryGetValue("BaseValue", out val);
+                                    decimal reward = (long)val;
+                                    data.TryGetValue("Bonus", out val);
+                                    decimal bonus = (long)val;
+                                    data.TryGetValue("TotalEarnings", out val);
+                                    decimal total = (long)val;
+                                    events.Add(new ExplorationDataSoldEvent(timestamp, systems, reward, bonus, total) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
