@@ -191,27 +191,40 @@ namespace GalnetMonitor
                         {
                             foreach (GalnetFeedItemNormalizer.ExtendedFeedItem item in items)
                             {
-                                if (firstUid == null)
+                                try
                                 {
-                                    // Obtain the ID of the first item that we read as a marker
-                                    firstUid = item.Id;
-                                }
 
-                                if (item.Id == configuration.lastuuid)
+                                    if (firstUid == null)
+                                    {
+                                        // Obtain the ID of the first item that we read as a marker
+                                        firstUid = item.Id;
+                                    }
+
+                                    if (item.Id == configuration.lastuuid)
+                                    {
+                                        // Reached the first item we have already seen - go no further
+                                        break;
+                                    }
+
+                                    if (item.Title is null || item.GetContent() is null)
+                                    {
+                                        // Skip items which do not contain useful content.
+                                        continue;
+                                    }
+
+                                    News newsItem = new News(item.Id, assignCategory(item.Title, item.GetContent()), item.Title, item.GetContent(), item.PublishDate.DateTime, false);
+                                    newsItems.Add(newsItem);
+                                    GalnetSqLiteRepository.Instance.SaveNews(newsItem);
+                                }
+                                catch (Exception ex)
                                 {
-                                    // Reached the first item we have already seen - go no further
-                                    break;
+                                    Dictionary<string, object> data = new Dictionary<string, object>()
+                                    {
+                                        { "item", item },
+                                        { "exception", ex}
+                                    };
+                                    Logging.Error("Exception handling Galnet news item.", data);
                                 }
-
-                                if (item.Title is null || item.GetContent() is null)
-                                {
-                                    // Skip items which do not contain useful content.
-                                    continue;
-                                }
-
-                                News newsItem = new News(item.Id, assignCategory(item.Title, item.GetContent()), item.Title, item.GetContent(), item.PublishDate.DateTime, false);
-                                newsItems.Add(newsItem);
-                                GalnetSqLiteRepository.Instance.SaveNews(newsItem);
                             }
 
                             if (firstUid != null && firstUid != configuration.lastuuid)
