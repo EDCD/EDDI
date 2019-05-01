@@ -270,6 +270,11 @@ namespace EddiDataDefinitions
         {
             // Credit to MattG's thread at https://forums.frontier.co.uk/showthread.php/232000-Exploration-value-formulae for scan value formulas
 
+            if (stellarclass is null || solarmass is null)
+            {
+                return null;
+            }
+
             // Scan value calculation constants
             const double scanDivider = 66.25;
 
@@ -416,6 +421,11 @@ namespace EddiDataDefinitions
         private long? estimateBodyValue()
         {
             // Credit to MattG's thread at https://forums.frontier.co.uk/showthread.php/232000-Exploration-value-formulae for scan value formulas
+
+            if (earthmass is null || terraformState is null || planetClass is null)
+            {
+                return null;
+            }
 
             // Scan value calculation constants
             const double q = 0.56591828;
