@@ -214,7 +214,11 @@ namespace EddiSpeechResponder
                 if (subtitles)
                 {
                     // Log a tidied version of the speech
-                    log(Regex.Replace(speech, "<.*?>", string.Empty));
+                    string tidiedSpeech = Regex.Replace(speech, "<.*?>", string.Empty).Trim();
+                    if (!string.IsNullOrEmpty(tidiedSpeech))
+                    {
+                        log(tidiedSpeech);
+                    }
                 }
                 if (sayOutLoud && !(subtitles && subtitlesOnly))
                 {
