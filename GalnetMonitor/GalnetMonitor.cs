@@ -203,6 +203,12 @@ namespace GalnetMonitor
                                     break;
                                 }
 
+                                if (item.Title is null || item.GetContent() is null)
+                                {
+                                    // Skip items which do not contain useful content.
+                                    continue;
+                                }
+
                                 News newsItem = new News(item.Id, assignCategory(item.Title, item.GetContent()), item.Title, item.GetContent(), item.PublishDate.DateTime, false);
                                 newsItems.Add(newsItem);
                                 GalnetSqLiteRepository.Instance.SaveNews(newsItem);
@@ -269,24 +275,37 @@ namespace GalnetMonitor
         /// <returns></returns>
         private string assignCategory(string title, string content)
         {
-            if (title.StartsWith(GetGalnetResource("titleFilterPowerplay")))
+            try
             {
-                return GetGalnetResource("categoryPowerplay");
-            }
+                if (title.StartsWith(GetGalnetResource("titleFilterPowerplay")))
+                {
+                    return GetGalnetResource("categoryPowerplay");
+                }
 
-            if (title.StartsWith(GetGalnetResource("titleFilterStarportStatus")))
-            {
-                return GetGalnetResource("categoryStarportStatus");
-            }
+                if (title.StartsWith(GetGalnetResource("titleFilterStarportStatus")))
+                {
+                    return GetGalnetResource("categoryStarportStatus");
+                }
 
-            if (title.StartsWith(GetGalnetResource("titleFilterWeekInReview")))
-            {
-                return GetGalnetResource("categoryWeekInReview");
+                if (title.StartsWith(GetGalnetResource("titleFilterWeekInReview")))
+                {
+                    return GetGalnetResource("categoryWeekInReview");
+                }
+                if (title.StartsWith(GetGalnetResource("titleFilterCg")) ||
+                    Regex.IsMatch(content, GetGalnetResource("contentFilterCgRegex")))
+                {
+                    return GetGalnetResource("categoryCG");
+                }
             }
-            if (title.StartsWith(GetGalnetResource("titleFilterCg")) ||
-                Regex.IsMatch(content, GetGalnetResource("contentFilterCgRegex")))
+            catch (Exception ex)
             {
-                return GetGalnetResource("categoryCG");
+                Dictionary<string, object> data = new Dictionary<string, object>()
+                {
+                    { "title", title },
+                    { "content", content },
+                    { "exception", ex }
+                };
+                Logging.Error("Exception categorizing Galnet article.", data);
             }
 
             return GetGalnetResource("categoryArticle");
