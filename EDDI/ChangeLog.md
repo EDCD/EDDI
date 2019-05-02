@@ -81,6 +81,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Revised `System scan complete` script to recommend bodies for mapping (using the new `Bodies to map` script) while your ship's role is either `exploration` or `multipurpose`
     * Revised `Body atmosphere report` for better handling of Earth-like worlds.
     * Revised `Body mapped` script. By default, the full `Body report` script is now given after this event completes rather than after `Body scanned`. Optionally recommends other bodies in the system for mapping.
+    * Revised `Body materials report` script to optionally report material percent concentrations.
     * Added new script `Bodies mapped` to allow reporting which bodies in the system have already been mapped.
     * Added new script `Bodies to map` to allow reporting recommendations of bodies to map (configurable in the script).
     * The `P()` function now converts roman numerals in planet classes (e.g. Class II gas giant) into numbers (e.g. Class 2 gas giant) to ensure proper pronunciation.
