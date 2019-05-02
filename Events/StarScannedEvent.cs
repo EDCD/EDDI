@@ -24,6 +24,7 @@ namespace EddiEvents
             VARIABLES.Add("solarradius", "The radius of the star that has been scanned, compared to Sol");
             VARIABLES.Add("radiusprobability", "The probablility of finding a star of this class with this radius");
             VARIABLES.Add("absolutemagnitude", "The absolute (bolometric) magnitude of the star that has been scanned");
+            VARIABLES.Add("absolutemagnitudeprobability", "The cumulative probability describing the star's age, relative to other stars of the same stellar class");
             VARIABLES.Add("luminosity", "The luminosity of the star that has been scanned");
             VARIABLES.Add("luminosityclass", "The luminosity class of the star that has been scanned");            
             VARIABLES.Add("tempprobability", "The probablility of finding a star of this class with this temperature");
@@ -31,14 +32,23 @@ namespace EddiEvents
             VARIABLES.Add("ageprobability", "The probablility of finding a star of this class with this age");
             VARIABLES.Add("temperature", "The temperature of the star that has been scanned");
             VARIABLES.Add("density", "The average density of the star, in kg per cubic meter");
+            VARIABLES.Add("densityprobability", "The cumulative probability describing the star's density, relative to other stars of the same stellarclass");
             VARIABLES.Add("distance", "The distance in LS from the main star");
             VARIABLES.Add("distancefromarrival", "The distance in LS from the main star (old - do not use... preserved for compatibility)");
             VARIABLES.Add("orbitalperiod", "The number of seconds taken for a full orbit of the main star");
+            VARIABLES.Add("orbitalperiodprobability", "The cumulative probability describing the star's orbital period about the main star, relative to other stars of the same stellar class");
             VARIABLES.Add("rotationalperiod", "The number of seconds taken for a full rotation");
+            VARIABLES.Add("rotationalperiodprobability", "The cumulative probability describing the stars's rotational period, relative to other stars of the same stellar class");
             VARIABLES.Add("semimajoraxis", "The semi major axis of the star's orbit, in light seconds");
+            VARIABLES.Add("semimajoraxisprobability", "The cumulative probability describing the semi-major axis of the orbit of the star, relative to other stars of the same stellar class");
             VARIABLES.Add("eccentricity", "The orbital eccentricity of the star");
+            VARIABLES.Add("eccentricityprobability", "The cumulative probability describing the star's orbital eccentricity, relative to other stars of the same stellar class");
             VARIABLES.Add("inclination", "The orbital inclination of the star, in degrees");
+            VARIABLES.Add("inclinationprobability", "The cumulative probability describing the star's orbital inclination, relative to other stars of the same stellar class");
             VARIABLES.Add("periapsis", "The argument of periapsis of the star, in degrees");
+            VARIABLES.Add("periapsisprobability", "The cumulative probability describing the stars's argument of periapsis, relative to other stars of the same stellar class");
+            VARIABLES.Add("tilt", "Axial tilt for the star, in degrees (only available if DSS equipped)");
+            VARIABLES.Add("tiltprobability", "The cumulative probability describing the star's orbital tilt, relative to other stars of the same stellar class");
             VARIABLES.Add("rings", "The star's rings");
             VARIABLES.Add("estimatedvalue", "The estimated value of the current scan");
             VARIABLES.Add("estimatedhabzoneinner", "The estimated inner radius of the habitable zone of the scanned star, in light seconds, not considering other stars in the system");
@@ -66,6 +76,8 @@ namespace EddiEvents
 
         public decimal absolutemagnitude => (decimal)star.absolutemagnitude;
 
+        public decimal? absolutemagnitudeprobability => star.absolutemagnitudeprobability;
+
         public decimal luminosity => (decimal)star.luminosity;
 
         public string luminosityclass => star.luminosityclass;
@@ -84,15 +96,27 @@ namespace EddiEvents
 
         public decimal? orbitalperiod => star.orbitalperiod;
 
+        public decimal orbitalperiodprobability => (decimal)star.orbitalperiodprobability;
+
         public decimal rotationalperiod => (decimal)star.rotationalperiod;
+
+        public decimal rotationalperiodprobability => (decimal)star.rotationalperiodprobability;
 
         public decimal? semimajoraxis => star.semimajoraxis;
 
+        public decimal semimajoraxisprobability => (decimal)star.semimajoraxisprobability;
+
         public decimal? eccentricity => star.eccentricity;
+
+        public decimal eccentricityprobability => (decimal)star.eccentricityprobability;
 
         public decimal? inclination => star.inclination;
 
+        public decimal inclinationprobability => (decimal)star.inclinationprobability;
+
         public decimal? periapsis => star.periapsis;
+
+        public decimal periapsisprobability => (decimal)star.periapsisprobability;
 
         public List<Ring> rings => star.rings;
 
@@ -101,6 +125,12 @@ namespace EddiEvents
         public decimal? estimatedhabzoneouter => star.estimatedhabzoneouter;
 
         public decimal? density => star.density;
+
+        public decimal? densityprobability => star.densityprobability;
+
+        public decimal? tilt => star.tilt;
+
+        public decimal tiltyprobability => (decimal)star.tiltprobability;
 
         public long? estimatedvalue => star.estimatedvalue;
 

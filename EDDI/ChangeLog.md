@@ -34,39 +34,51 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Added `Crime check system` script to report wanted status and 'legal facilities', upon entering the system.
     * Added `Crime check station` script to report 'legal facilities', upon entering normal space, next to station.
     * The `P()` function now converts roman numerals in planet classes (e.g. Class II gas giant) into numbers (e.g. Class 2 gas giant) to ensure proper pronunciation.
-    * Revised BodyDetails() function for better interchangeability with events.
+    * Revised `body` object definition returned by the `BodyDetails()` function and revised `Body scanned` and `Star scanned` event values for better interchangeability of object properties with `Body scanned` and `Star scanned` events.
       * WAS: `name`*, IS: `bodyname` 
       * WAS: `type`*, IS: `bodytype`
-      * Added `estimatedvalue`
-    * Expanded `bodytype` values to separate `Planet` and `Moon` body types
-    * The `P()` function now converts roman numerals in planet classes (e.g. Class II gas giant) into numbers (e.g. Class 2 gas giant) to ensure proper pronunciation.
-    * Revised `Body scanned` event variables for better interchangeability with with the `BodyDetails` function.
-      * WAS: `atmospherecomposition`, IS: `atmospherecompositions`
+        * Expanded `bodytype` values to separate `Planet` and `Moon` body types
+      * WAS: `atmospherecomposition`, IS: `atmospherecompositions` (planets and moons only)
       * WAS: `axialtilt`*, IS: `tilt`
-      * WAS: `bodyclass`*, IS: `planettype`
+      * WAS: `bodyclass`*, IS: `planettype` (planets and moons only)
       * WAS: `distancefromarrival`*, IS: `distance`
-      * WAS `name`*, IS: `bodyname` 
       * WAS `orbitalinclination`*, IS `inclination`
       * WAS `rotationperiod`*, IS: `rotationalperiod`
-      * WAS: `solidcomposition`, IS: `solidcompositions`
-    * Revised `Star scanned` event variable for better interchangeability with with the `BodyDetails` function.
-      * WAS: `distancefromarrival`*, IS: `distance`
-      * WAS `name`*, IS: `bodyname` 
-      * WAS `orbitalinclination`*, IS `inclination`
-      * WAS `rotationperiod`*, IS: `rotationalperiod`
-    * Revised `Body scanned` event variables to add new properties `scanned`, `mapped`, `alreadyscanned`, and `alreadymapped`. 
-    * Revised `Star scanned` event variables to add new properties `scanned`, `mapped`, `alreadyscanned`, `alreadymapped, and `stellarsubclass`.
+      * WAS: `solidcomposition`, IS: `solidcompositions` (planets and moons only)
+      * Added `stellarsubclass` (stars only)
+      * Added `density`
+      * Added `scanned`
+      * Added `mapped`
+      * Added `alreadydiscovered` (true if another commander has already submitted a scan of that body to Universal Cartographics)
+      * Added `alreadymapped` (true if another commander has already submitted mapping details of that body to Universal Cartographics)
+      * Added `estimatedvalue` (this was previously only available from the event variables)
+      * Added `massprobability`
+      * Added `radiusprobability`
+      * Added `tempprobability`
+      * Added `orbitalperiodprobability`
+      * Added `semimajoraxisprobability`
+      * Added `eccentricityprobability`
+      * Added `inclinationprobability`
+      * Added `periapsisprobability`
+      * Added `rotationalperiodprobability`
+      * Added `tiltprobability`
+      * Added `densityprobability`
+      * Added `ageprobability` (stars only)
+      * Added `absolutemagnitudeprobability` (stars only)
+      * Added `gravityprobability` (planets and moons only)
+      * Added `pressureprobability` planets and moons only)
     * Revised `Entered normal space`, `Glide`, `Location`, and `Near surface` event variables for better interchangeability with the `BodyDetails` function.
       * WAS: `body`*, IS: `bodyname` 
       * WAS: `system`*, IS: `systemname`
     * Revised `Approached settlement` event to include the `bodyname` of the settlement. 
     * `Star scanned` script revised. Preference added for reporting stellar class. Corrected edit scars. Refactored to reduce redundancies. 
     * `Body volcanism script` revised. Corrected edit scars and added a little more variety to the script.
-    * The `Spacialise()` function no longer adds an extra space at the end of the string.
-    * Enhanced `P()` function to correct mispronunciations of body names ending in "a" or "g".
     * Updated `Exploration data sold` event and revised script.
       * Added variable `total`, describing the total credits received (after any wages paid to crew and including for example the 200% bonus if rank 5 with Li Yong Rui)
-      * Removed variable `firsts` (no longer supported by post 3.3 batch selling of exploration data).
+      * Removed variable `firsts` (it is no longer supported by post 3.3 batch selling of exploration data).
+    * The `P()` function now converts roman numerals in planet classes (e.g. Class II gas giant) into numbers (e.g. Class 2 gas giant) to ensure proper pronunciation.
+    * The `Spacialise()` function no longer adds an extra space at the end of the string.
+    * Enhanced `P()` function to correct mispronunciations of body names ending in "a" or "g"
     * Variables from the following scripts have been revised to add new variables and improve consistency between events.
       * `Glide` event (body => bodyname, system => systemname)
       * `Location` event (body => bodyname, system => systemname)
