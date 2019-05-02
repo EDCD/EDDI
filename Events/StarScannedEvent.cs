@@ -96,27 +96,27 @@ namespace EddiEvents
 
         public decimal? orbitalperiod => star.orbitalperiod;
 
-        public decimal orbitalperiodprobability => (decimal)star.orbitalperiodprobability;
+        public decimal? orbitalperiodprobability => star.orbitalperiodprobability;
 
         public decimal rotationalperiod => (decimal)star.rotationalperiod;
 
-        public decimal rotationalperiodprobability => (decimal)star.rotationalperiodprobability;
+        public decimal? rotationalperiodprobability => star.rotationalperiodprobability;
 
         public decimal? semimajoraxis => star.semimajoraxis;
 
-        public decimal semimajoraxisprobability => (decimal)star.semimajoraxisprobability;
+        public decimal? semimajoraxisprobability => star.semimajoraxisprobability;
 
         public decimal? eccentricity => star.eccentricity;
 
-        public decimal eccentricityprobability => (decimal)star.eccentricityprobability;
+        public decimal? eccentricityprobability => star.eccentricityprobability;
 
         public decimal? inclination => star.inclination;
 
-        public decimal inclinationprobability => (decimal)star.inclinationprobability;
+        public decimal? inclinationprobability => star.inclinationprobability;
 
         public decimal? periapsis => star.periapsis;
 
-        public decimal periapsisprobability => (decimal)star.periapsisprobability;
+        public decimal? periapsisprobability => star.periapsisprobability;
 
         public List<Ring> rings => star.rings;
 
@@ -130,7 +130,7 @@ namespace EddiEvents
 
         public decimal? tilt => star.tilt;
 
-        public decimal tiltyprobability => (decimal)star.tiltprobability;
+        public decimal? tiltyprobability => star.tiltprobability;
 
         public long? estimatedvalue => star.estimatedvalue;
 
