@@ -75,6 +75,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Revised `Body mapped` script. By default, the full `Body report` script is now given after this event completes rather than after `Body scanned`. Optionally recommends other bodies in the system for mapping.
     * Revised `Body materials report` script to optionally report material percent concentrations.
     * Revised `Body report` script to correct some errors identified by users (terraformable bodies will now be reported as such).
+    * Revised `Body scanned` script to include option to use `Body report summary` script.
     * Added new script `Bodies mapped` to allow reporting which bodies in the system have already been mapped.
     * Added new script `Bodies to map` to allow reporting recommendations of bodies to map (configurable in the script).
     * Added new script `Body report summary` to allow reporting of summary body data, taking into account statistically unusual bodies.
