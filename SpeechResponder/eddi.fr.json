@@ -537,7 +537,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{_ This event currently is being written to the journal about 15 seconds after a discovery \"honk\" is completed. _}\r\n{_ Due to the extreme delay between the triggering action and the actual event, we are omitting any default script for the time being. _}",
+      "script": "{_ Fetch from Context _}\r\n{set reportSystem to SystemDetails(state.eddi_context_system_name)}\r\n\r\n{Pause(1000)}\r\n\r\n{if ship.Role.edname = \"Exploration\" || ship.Role.edname = \"Multipurpose\":\r\n    {if reportSystem:\r\n        {set scannedBodies to 0}\r\n        {for body in reportSystem.bodies:\r\n            {if body.scanned:\r\n                {set scannedBodies to scannedBodies + 1}\r\n            }\r\n        }\r\n        {set bodiesToScan to (event.bodies - scannedBodies)}\r\n\r\n        {if event.bodies > 1 && event.bodies != scannedBodies:\r\n            {OneOf(\r\n                \"{scannedBodies} out of {event.bodies} bodies have been scanned\", \r\n                \"{bodiesToScan} {if bodiesToScan > 1: bodies remain |else: body remains} to be scanned\"\r\n            )}\r\n            {Occasionally(3, OneOf(\"here\", \"in this system\"))}.\r\n        }\r\n    }\r\n}",
       "default": true,
       "name": "Discovery scan",
       "description": "Triggered when performing a full system scan (honk)"
