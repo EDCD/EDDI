@@ -8,11 +8,11 @@ namespace EddiDataDefinitions
     /// </summary>
     public class Target
     {
-        /// <summary>The status of the friend</summary>
-        public string status { get; set; } = string.Empty;
-
         // The name of the target
         public string name { get; set; } = string.Empty;
+
+        // The model of the ship
+        public string ship { get; set; }
 
         // The rank of the target
         public string rank => CombatRankDef?.localizedName ?? "unknown combat rank";
