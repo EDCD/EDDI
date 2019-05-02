@@ -455,8 +455,28 @@ All bodies have the following data:
 	- `rings` (when applicable) (an array of ring objects)
     - `scanned` a DateTime value that is set when the body is scanned and unset otherwise.
     - `mapped` a DateTime value that is set when the body is mapped and unset otherwise.
-    - `alreadyscanned` whether another commander has already submitted a scan of the body to Universal Cartographics
+    - `alreadydiscovered` whether another commander has already submitted a scan of the body to Universal Cartographics
     - `alreadymapped` whether another commander has already submitted mapping data for the body to Universal Cartographics
+    - `estimatedvalue` the current estimated value of the body, taking into account scans and mapping.
+    - `periapsis` the argument of periapsis of the body, in degrees (as applicable)
+    - `tilt` the axial tilt of the body, in degrees  (as applicable)
+    - `eccentricity` the orbital eccentricity of the body  (as applicable)
+    - `inclination` the orbital inclination of the body, in degrees (as applicable)
+    - `orbitalperiod` the orbital period of the body, in days  (as applicable)
+    - `rotationalperiod` the rotational period of the body, in days  (as applicable)
+    - `semimajoraxis` the semi-major axis of the body's orbit, in light seconds (as applicable)
+    - `density` the average density of the body, in kilograms per cubic meter
+    - `massprobability` the cumulative probability describing the body's mass, relative to other bodies of the same planet type or stellar class.
+    - `radiusprobability` the cumulative probability describing the body's radius, relative to other bodies of the same planet type or stellar class.
+    - `tempprobability` the cumulative probability describing the body's temperature, relative to other bodies of the same planet type or stellar class.
+    - `orbitalperiodprobability` the cumulative probability describing the body's orbital period, relative to other bodies of the same planet type or stellar class.
+    - `semimajoraxisprobability` the cumulative probability describing the body's semi-major axis, relative to other bodies of the same planet type or stellar class.
+    - `eccentricityprobability` the cumulative probability describing the body's orbital eccentricity, relative to other bodies of the same planet type or stellar class.
+    - `inclinationprobability` the cumulative probability describing the body's orbital inclination, relative to other bodies of the same planet type or stellar class.
+    - `periapsisprobability` the cumulative probability describing the body's argument of periapsis, relative to other bodies of the same planet type or stellar class.
+    - `rotationalperiodprobability` the cumulative probability describing the body's rotational period, relative to other bodies of the same planet type or stellar class.
+    - `tiltprobability` the cumulative probability describing the body's orbital tilt, relative to other bodies of the same planet type or stellar class.
+    - `densityprobability` the cumulative probability describing the body's density, relative to other bodies of the same planet type or stellar class.
 
 In addition, stars have the following data:
 
@@ -466,30 +486,30 @@ In addition, stars have the following data:
     - `solarmass` the solar mass of the star
     - `solarradius` the solar radius of the star, compared to Sol
     - `age` the age of the star in millions of years
+    - `absolutemagnitude` the absolute magnitude of the star (lower is brighter)
+    - `chromaticity` the colour of the star
+    - `luminosity` the calculated luminosity of the star
     - `estimatedhabzoneinner` The estimated inner radius of the habitable zone of the star, in light seconds, not considering other stars in the system
     - `estimatedhabzoneouter` The estimated outer radius of the habitable zone of the star, in light seconds, not considering other stars in the system
+    - `ageprobability` the cumulative probability describing the star's age, relative to other stars of the same stellar class.
+    - `absolutemagnitudeprobability` the cumulative probability describing the star's absolute magnitude, relative to other stars of the same stellar class.
 
 Planets and moons have the following data:
 
-    - `periapsis` the argument of periapsis of the planet, in degrees
     - `atmosphere` the atmosphere of the planet
     - `atmospherecompositions` a list of the elements found in the planet's atmosphere (array of AtmosphereComposition objects)
     - `solidcompositions` a list of the solid types found in the body (array of SolidComposition objects)
-    - `tilt` the axial tilt of the planet, in degrees
     - `earthmass` the earth masses of the planet
     - `gravity` the gravity of the planet, relative to Earth gravity
-    - `eccentricity` the orbital eccentricity of the planet
-    - `inclination` the orbital inclination of the planet, in degrees
-    - `orbitalperiod` the orbital period of the planet, in days
     - `radius` the radius of the planet, in km
-    - `rotationalperiod` the rotational period of the planet, in days
-    - `semimajoraxis` the semi-major axis of the planet's orbit, in light seconds
     - `pressure` the surface pressure on the planet, in Earth atmospheres
     - `terraformstate` the terraforming state of the planet (Not terraformable, Terraformable, Terraforming, Terraformed)
     - `planettype` the type of the planet (Metal-rich body, Earth-like world, etc.)
     - `volcanism` the volcanism of the planet (Volcanism object)
     - `landable` true if the planet can be landed upon
     - `materials` list of materials and their percentage availability on the planet (list of Material objects)
+    - `gravityprobability` the cumulative probability describing the body's gravity, relative to other bodies of the same planet type.
+    - `pressureprobability` the cumulative probability describing the body's atmospheric pressure, relative to other bodies of the same planet type.
 
 #### Atmosphere composition
 
