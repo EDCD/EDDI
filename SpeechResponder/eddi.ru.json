@@ -96,7 +96,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'body')}\r\n{SetState('eddi_context_last_action', 'scan')}\r\n{SetState('eddi_context_body_system', system.name)}\r\n{SetState('eddi_context_body_name', event.name)}\r\n{SetState('eddi_context_last_scan_estimated_value', event.estimatedvalue)}\r\n\r\n{Pause(1000)}\r\n\r\n{OneOf(\"Scan\", \"Analysis\", \"Scan and analysis\")}\r\n{OneOf(\"complete\", \"completed\", \"finished\")}.\r\n\r\n{if ship.Role.edname = \"Exploration\" || ship.Role.edname = \"Multipurpose\":\r\n    {Pause(500)}\r\n    {F(\"Body report\")}\r\n}",
+      "script": "{_ Context _}\r\n{SetState('eddi_context_last_subject', 'body')}\r\n{SetState('eddi_context_last_action', 'scan')}\r\n{SetState('eddi_context_body_system', system.name)}\r\n{SetState('eddi_context_body_name', event.name)}\r\n{SetState('eddi_context_last_scan_estimated_value', event.estimatedvalue)}\r\n\r\n{_ Preferences _}\r\n\r\n{set fullBodyReport to 0}\r\n\r\n{_ Process the event _}\r\n\r\n{if ship.Role.edname = \"Exploration\" || ship.Role.edname = \"Multipurpose\":\r\n    {Pause(500)}\r\n    {if fullBodyReport:\r\n        {F(\"Body report\")}\r\n    |else:\r\n        {F(\"Body report summary\")}\r\n    }\r\n}",
       "default": true,
       "name": "Body scanned",
       "description": "Triggered when you complete a scan of a planetary body"
