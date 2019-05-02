@@ -35,7 +35,7 @@ namespace EddiCrimeMonitor
         public Dictionary<string, string> homeSystems;
         private DateTime updateDat;
 
-        public List<Target> systemTargets = new List<Target>();
+        public List<Target> shipTargets = new List<Target>();
 
         private static readonly object recordLock = new object();
         public event EventHandler RecordUpdatedEvent;
@@ -214,7 +214,7 @@ namespace EddiCrimeMonitor
             if (@event.timestamp > updateDat)
             {
                 updateDat = @event.timestamp;
-                systemTargets.Clear();
+                shipTargets.Clear();
                 targetSystem = @event.system;
                 writeRecord();
             }
@@ -230,15 +230,16 @@ namespace EddiCrimeMonitor
                 Target target = new Target();
                 if (@event.scanstage >= 1)
                 {
-                    target = systemTargets.FirstOrDefault(t => t.name == @event.name);
+                    target = shipTargets.FirstOrDefault(t => t.name == @event.name);
                     if (target == null)
                     {
                         target = new Target(@event.name, @event.combatrankDef);
-                        systemTargets.Add(target);
+                        shipTargets.Add(target);
                     }
                 }
                 if (@event.scanstage >= 3)
                 {
+                    target.ship = @event.ship;
                     target.PowerDef = Power.FromName(@event.faction) ?? Power.None;
                     target.LegalStatusDef = @event.legalstatusDef;
                     target.bounty = @event.bounty;
@@ -484,7 +485,7 @@ namespace EddiCrimeMonitor
             string currentSystem = EDDI.Instance?.CurrentStarSystem?.name;
 
             // Get victim allegiance from the 'Ship targeted' data
-            Target target = systemTargets.FirstOrDefault(t => t.name == @event.victim);
+            Target target = shipTargets.FirstOrDefault(t => t.name == @event.victim);
             Superpower allegiance = (target?.PowerDef ?? Power.None).Allegiance;
 
             FactionReport report = new FactionReport(@event.timestamp, true, shipId, crime, currentSystem, @event.bounty)
@@ -730,7 +731,7 @@ namespace EddiCrimeMonitor
                 ["claims"] = claims,
                 ["fines"] = fines,
                 ["bounties"] = bounties,
-                ["targets"] = systemTargets
+                ["shiptargets"] = shipTargets
             };
             return variables;
         }

@@ -204,16 +204,17 @@ Details of an individual mission in the commander's mission log.
 
 ## Crime & Punishment
 
-The criminal record of commander is available under the `criminalrecord` object.
+The criminal record  and derived properties of commander is available under the `criminalrecord` object.
 
     - `criminalrecord` list of minor faction records, detailing bond & bounty claims, and fine and bounties incurred
     - `claims` total credits for all unredeemed bond and bounty rewards
     - `fines` total credits for all unpaid fines incurred
     - `bounties` total credits for all unpaid bounties incurred
+    - `shiptargets` list of ships targeted within the current system.
 
 ### Record
 
-Details of individual faction records, within the `record` object
+Details of individual faction records, within the `criminalrecord` object
 
     - `faction` name of the minor faction
     - `allegiance` superpower to which the minor faction is aligned
@@ -228,6 +229,9 @@ Details of individual faction records, within the `record` object
     - `bountiesIncurred` list of individual faction reports for unpaid bounties incurred
 
 ### Report
+
+Details of individual minor faction reports, within the `FactionRecord` object.
+
     - `bounty` true if bounty awarded or incurred
     - `shipId` ship ID in which the 'criminal' event occurred
     - `crime` localized type of crime committed
@@ -236,6 +240,18 @@ Details of individual faction records, within the `record` object
     - `body` nearby body (null if no body nearby)
     - `victim` victim faction
     - `amount` credits awarded or incurred
+
+### Target
+
+Details of ship target data, within the `shiptargets` object.
+
+    - `name` name of the pilot
+    - `rank` rank of the pilot
+    - `ship` model of the ship
+    - `power` power ( Aisling Duval, Yuri Grom, Denton Patreus, etc) to which the pilot is pledged
+    - `allegiance` superpower (Empire, Federation, Independent, etc) to which the pilot is aligned
+    - `legalstatus` the legal status (clean, enemy, wanted, warrant, etc) of the pilot
+    - `bounty` total amount of bounties assigned to the pilot
 
 ---
 
