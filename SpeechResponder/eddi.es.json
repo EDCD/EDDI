@@ -29,6 +29,15 @@
       "name": "Blueprint material report",
       "description": "Informa de los materiales requeridos de un plano"
     },
+    "Bodies mapped": {
+      "enabled": true,
+      "priority": 3,
+      "responder": false,
+      "script": "{_ Fetch from Context _}\r\n{set reportSystem to SystemDetails(state.eddi_context_system_name)}\r\n\r\n{_ Build a list of scanned bodies _}\r\n\r\n{set mappedList to []}\r\n\r\n{for body in reportSystem.bodies:\r\n   {if body.mapped:\r\n       {cat(mappedList, [body])} \r\n   }\r\n}\r\n\r\n{_ Begin speaking _}\r\n\r\n{if len(mappedList) > 0:\r\n\r\n    {if len(mappedList) = 1: Body |else: Bodies}\r\n\r\n    {set cur to 0}\r\n    {while cur < len(mappedList):\r\n        {mappedList[cur].shortname}\r\n        {set cur to cur + 1}\r\n        {if cur = len(mappedList) - 1: and\r\n        |elif cur < len(mappedList) - 1:,\r\n        }\r\n    }\r\n\r\n    {if len(mappedList) = 1: has |else: have }\r\n    {set already to Occasionall(2, \"already\")}\r\n    {OneOf(\"{already} been mapped\", \"been mapped {already}\")}.\r\n\r\n|else:\r\n    You have yet to map any bodies in this system.\r\n}\r\n",
+      "default": true,
+      "name": "Bodies mapped",
+      "description": "Reports all the bodies mapped in this system so far"
+    },
     "Body atmosphere report": {
       "enabled": true,
       "priority": 3,
