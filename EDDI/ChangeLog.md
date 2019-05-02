@@ -77,6 +77,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * Added variable `total`, describing the total credits received (after any wages paid to crew and including for example the 200% bonus if rank 5 with Li Yong Rui)
       * Removed variable `firsts` (it is no longer supported by post 3.3 batch selling of exploration data).
     * Revised `Discovery scan` script to report the number of bodies remaining to be scanned while your ship's role is either `exploration` or `multipurpose`.
+    * Revised `System scan complete` script to recommend bodies for mapping (using the new `Bodies to map` script) while your ship's role is either `exploration` or `multipurpose`.
     * The `P()` function now converts roman numerals in planet classes (e.g. Class II gas giant) into numbers (e.g. Class 2 gas giant) to ensure proper pronunciation.
     * The `Spacialise()` function no longer adds an extra space at the end of the string.
     * Enhanced `P()` function to correct mispronunciations of body names ending in "a" or "g"

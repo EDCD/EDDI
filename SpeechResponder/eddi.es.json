@@ -1995,7 +1995,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": null,
+      "script": "{if ship.Role.edname = \"Exploration\" || ship.Role.edname = \"Multipurpose\":\r\n    {set bodiesToMap to F(\"Bodies to map\")}\r\n    {if bodiesToMap:\r\n        {Pause(2000)}\r\n        {bodiesToMap}\r\n    }\r\n}",
       "default": true,
       "name": "System scan complete",
       "description": "Se activa al completar el escaneo de un sistema estelar"
