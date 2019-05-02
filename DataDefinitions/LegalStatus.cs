@@ -13,7 +13,7 @@ namespace EddiDataDefinitions
             resourceManager = Properties.LegalStatus.ResourceManager;
             resourceManager.IgnoreCase = false;
 
-            var None = new LegalStatus("None");
+            None = new LegalStatus("None");
             var Unknown = new LegalStatus("Unknown");
             var Lawless = new LegalStatus("Lawless");
             var Clean = new LegalStatus("Clean");
@@ -23,6 +23,8 @@ namespace EddiDataDefinitions
             var Warrant = new LegalStatus("Warrant");
             var Hunter = new LegalStatus("Hunter");
         }
+
+        public static readonly LegalStatus None;
 
         // dummy used to ensure that the static constructor has run
         public LegalStatus() : this("")

@@ -149,6 +149,7 @@
     <Compile Include="StationLargestPad.cs" />
     <Compile Include="StationService.cs" />
     <Compile Include="StoredModule.cs" />
+    <Compile Include="Target.cs" />
     <Compile Include="TerraformState.cs" />
     <Compile Include="CommodityAmount.cs" />
     <Compile Include="Properties\AtmosphereClass.Designer.cs">

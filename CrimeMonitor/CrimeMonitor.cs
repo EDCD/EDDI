@@ -2,6 +2,7 @@
 using EddiDataDefinitions;
 using EddiDataProviderService;
 using EddiEvents;
+using EddiMissionMonitor;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -30,8 +31,11 @@ namespace EddiCrimeMonitor
         public long bounties;
         public int? maxStationDistanceFromStarLs;
         public bool prioritizeOrbitalStations;
+        public string targetSystem;
         public Dictionary<string, string> homeSystems;
         private DateTime updateDat;
+
+        public List<Target> systemTargets = new List<Target>();
 
         private static readonly object recordLock = new object();
         public event EventHandler RecordUpdatedEvent;
@@ -137,7 +141,19 @@ namespace EddiCrimeMonitor
             Logging.Debug("Received event " + JsonConvert.SerializeObject(@event));
 
             // Handle the events that we care about
-            if (@event is BondAwardedEvent)
+            if (@event is LocationEvent)
+            {
+                handleLocationEvent((LocationEvent)@event);
+            }
+            else if (@event is JumpedEvent)
+            {
+                handleJumpedEvent((JumpedEvent)@event);
+            }
+            else if (@event is ShipTargetedEvent)
+            {
+                handleShipTargetedEvent((ShipTargetedEvent)@event);
+            }
+            else if (@event is BondAwardedEvent)
             {
                 handleBondAwardedEvent((BondAwardedEvent)@event);
             }
@@ -169,9 +185,64 @@ namespace EddiCrimeMonitor
             {
                 handleFinePaidEvent((FinePaidEvent)@event);
             }
+            else if (@event is MissionAbandonedEvent)
+            {
+                handleMissionAbandonedEvent((MissionAbandonedEvent)@event);
+            }
+            else if (@event is MissionFailedEvent)
+            {
+                handleMissionFailedEvent((MissionFailedEvent)@event);
+            }
             else if (@event is DiedEvent)
             {
                 handleDiedEvent((DiedEvent)@event);
+            }
+        }
+
+        private void handleLocationEvent(LocationEvent @event)
+        {
+            if (@event.timestamp > updateDat)
+            {
+                targetSystem = @event.system;
+                updateDat = @event.timestamp;
+                writeRecord();
+            }
+        }
+
+        private void handleJumpedEvent(JumpedEvent @event)
+        {
+            if (@event.timestamp > updateDat)
+            {
+                updateDat = @event.timestamp;
+                systemTargets.Clear();
+                targetSystem = @event.system;
+                writeRecord();
+            }
+        }
+
+        private void handleShipTargetedEvent(ShipTargetedEvent @event)
+        {
+            // System targets list may be 're-built' for the current system from Log Load
+            string currentSystem = EDDI.Instance?.CurrentStarSystem?.name;
+            if (targetSystem == null) { targetSystem = currentSystem; }
+            if (@event.targetlocked && currentSystem == targetSystem)
+            {
+                Target target = new Target();
+                if (@event.scanstage >= 1)
+                {
+                    target = systemTargets.FirstOrDefault(t => t.name == @event.name);
+                    if (target == null)
+                    {
+                        target = new Target(@event.name, @event.combatrankDef);
+                        systemTargets.Add(target);
+                    }
+                }
+                if (@event.scanstage >= 3)
+                {
+                    target.PowerDef = Power.FromName(@event.faction) ?? Power.None;
+                    target.LegalStatusDef = @event.legalstatusDef;
+                    target.bounty = @event.bounty;
+                }
             }
         }
 
@@ -198,7 +269,7 @@ namespace EddiCrimeMonitor
                 station = EDDI.Instance?.CurrentStation?.name,
                 body = EDDI.Instance?.CurrentStellarBody?.name,
                 victim = @event.victimfaction,
-                victimAllegiance = (faction.Allegiance ?? Superpower.None).invariantName
+                victimAllegiance = (faction?.Allegiance ?? Superpower.None).invariantName
             };
 
             FactionRecord record = GetRecordWithFaction(@event.awardingfaction);
@@ -412,11 +483,16 @@ namespace EddiCrimeMonitor
             Crime crime = Crime.FromEDName(@event.crimetype);
             string currentSystem = EDDI.Instance?.CurrentStarSystem?.name;
 
+            // Get victim allegiance from the 'Ship targeted' data
+            Target target = systemTargets.FirstOrDefault(t => t.name == @event.victim);
+            Superpower allegiance = (target?.PowerDef ?? Power.None).Allegiance;
+
             FactionReport report = new FactionReport(@event.timestamp, true, shipId, crime, currentSystem, @event.bounty)
             {
                 station = EDDI.Instance?.CurrentStation?.name,
                 body = EDDI.Instance?.CurrentStellarBody?.name,
-                victim = @event.victim
+                victim = @event.victim,
+                victimAllegiance = allegiance.invariantName
             };
 
             FactionRecord record = GetRecordWithFaction(@event.faction);
@@ -571,6 +647,52 @@ namespace EddiCrimeMonitor
             return update;
         }
 
+        private void handleMissionAbandonedEvent(MissionAbandonedEvent @event)
+        {
+            if (@event.timestamp > updateDat)
+            {
+                updateDat = @event.timestamp;
+                if (_handleMissionAbandonedEvent(@event))
+                {
+                    writeRecord();
+                }
+            }
+        }
+
+        private bool _handleMissionAbandonedEvent(MissionAbandonedEvent @event)
+        {
+            bool update = false;
+
+            if (@event.fine > 0 && @event.missionid != null)
+            {
+                update = AddMissionFineToRecord(@event.timestamp, @event.missionid ?? 0, @event.fine);
+            }
+            return update;
+        }
+
+        private void handleMissionFailedEvent(MissionFailedEvent @event)
+        {
+            if (@event.timestamp > updateDat)
+            {
+                updateDat = @event.timestamp;
+                if (_handleMissionFailedEvent(@event))
+                {
+                    writeRecord();
+                }
+            }
+        }
+
+        private bool _handleMissionFailedEvent(MissionFailedEvent @event)
+        {
+            bool update = false;
+
+            if (@event.fine > 0 && @event.missionid != null)
+            {
+                update = AddMissionFineToRecord(@event.timestamp, @event.missionid ?? 0, @event.fine);
+            }
+            return update;
+        }
+
         private void handleDiedEvent(DiedEvent @event)
         {
             if (@event.timestamp > updateDat)
@@ -607,7 +729,8 @@ namespace EddiCrimeMonitor
                 ["criminalrecord"] = new List<FactionRecord>(criminalrecord),
                 ["claims"] = claims,
                 ["fines"] = fines,
-                ["bounties"] = bounties
+                ["bounties"] = bounties,
+                ["targets"] = systemTargets
             };
             return variables;
         }
@@ -628,6 +751,7 @@ namespace EddiCrimeMonitor
                     bounties = bounties,
                     maxStationDistanceFromStarLs = maxStationDistanceFromStarLs,
                     prioritizeOrbitalStations = prioritizeOrbitalStations,
+                    targetSystem = targetSystem,
                     homeSystems = homeSystems,
                     updatedat = updateDat
                 };
@@ -648,6 +772,7 @@ namespace EddiCrimeMonitor
                 bounties = configuration.bounties;
                 maxStationDistanceFromStarLs = configuration.maxStationDistanceFromStarLs;
                 prioritizeOrbitalStations = configuration.prioritizeOrbitalStations;
+                targetSystem = configuration.targetSystem;
                 homeSystems = configuration.homeSystems;
                 updateDat = configuration.updatedat;
 
@@ -762,6 +887,35 @@ namespace EddiCrimeMonitor
             {
                 record.fines += report.amount;
             }
+        }
+
+        private bool AddMissionFineToRecord(DateTime timestamp, long missionid, long fine)
+        {
+            bool update = false;
+
+            MissionMonitor missionMonitor = (MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor");
+            Mission mission = missionMonitor?.GetMissionWithMissionId(missionid);
+            if (mission?.faction != null)
+            {
+                int shipId = EDDI.Instance?.CurrentShip?.LocalId ?? 0;
+                Crime crime = Crime.FromEDName("missionFine");
+                string currentSystem = EDDI.Instance?.CurrentStarSystem?.name;
+
+                FactionReport report = new FactionReport(timestamp, false, shipId, crime, currentSystem, fine)
+                {
+                    station = EDDI.Instance?.CurrentStation?.name,
+                    body = EDDI.Instance?.CurrentStellarBody?.name,
+                };
+
+                FactionRecord record = GetRecordWithFaction(mission.faction);
+                if (record == null)
+                {
+                    record = AddRecord(mission.faction);
+                }
+                AddCrimeToRecord(record, report);
+                update = true;
+            }
+            return update;
         }
 
         public FactionRecord GetRecordWithFaction(string faction)

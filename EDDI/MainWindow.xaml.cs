@@ -778,7 +778,7 @@ namespace Eddi
             {
                 foreach (Power power in Power.AllOfThem)
                 {
-                    if (configuration.SquadronAllegiance == power.allegiance)
+                    if (configuration.SquadronAllegiance == power.Allegiance)
                     {
                         SquadronPowerOptions.Add(power.localizedName);
                     }
