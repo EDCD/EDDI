@@ -2866,7 +2866,10 @@ namespace EddiJournalMonitor
                                     data.TryGetValue("MissionID", out object val);
                                     long missionid = (long)val;
                                     string name = JsonParsing.getString(data, "Name");
-                                    events.Add(new MissionFailedEvent(timestamp, missionid, name) { raw = line, fromLoad = fromLogLoad });
+                                    data.TryGetValue("Fine", out val);
+                                    long fine = val == null ? 0 : (long)val;
+                                    events.Add(new MissionFailedEvent(timestamp, missionid, name, fine) { raw = line, fromLoad = fromLogLoad });
+
                                 }
                                 handled = true;
                                 break;

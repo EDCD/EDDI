@@ -29,7 +29,7 @@ namespace EddiDataDefinitions
 
         public static readonly Power None;
 
-        public Superpower allegiance { get; private set; }
+        public Superpower Allegiance { get; private set; }
         public string headquarters { get; private set; }
 
         // dummy used to ensure that the static constructor has run
@@ -38,7 +38,7 @@ namespace EddiDataDefinitions
 
         private Power(string edname, Superpower allegiance, string headquarters) : base(edname, edname)
         {
-            this.allegiance = allegiance;
+            this.Allegiance = allegiance;
             this.headquarters = headquarters;
         }
     }

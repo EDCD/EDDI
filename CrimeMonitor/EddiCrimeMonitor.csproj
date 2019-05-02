@@ -85,6 +85,10 @@
       <Project>{2bb41c51-9be0-49c9-91fd-c4e444994ece}</Project>
       <Name>EddiEvents</Name>
     </ProjectReference>
+    <ProjectReference Include="..\MissionMonitor\EddiMissionMonitor.csproj">
+      <Project>{6d01f475-75b8-4fca-9b1d-9ecf5993a32d}</Project>
+      <Name>EddiMissionMonitor</Name>
+    </ProjectReference>
     <ProjectReference Include="..\NavigationService\EddiNavigationService.csproj">
       <Project>{86c23ebd-c979-4517-bb66-62e103ab13ef}</Project>
       <Name>EddiNavigationService</Name>
