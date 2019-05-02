@@ -17,7 +17,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
   * Journal Monitor
     * Added `unladenmass` and `maxjumprange` properties to the `Loadout` event handler.
     * Added `distancefromstar` property to the `Location` event.
-    * Addded vehicle ID for SLF/SRV related events.
+    * Added vehicle ID for SLF/SRV related events.
   * Mission Monitor
     * Added 'Find Route', 'Next Route', 'Update Route', and 'Clear Route' buttons to give standalone users access to missions routing functionality.
   * Navigation Service

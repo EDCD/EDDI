@@ -731,7 +731,7 @@ namespace EddiCrimeMonitor
                 ["claims"] = claims,
                 ["fines"] = fines,
                 ["bounties"] = bounties,
-                ["shiptargets"] = shipTargets
+                ["shiptargets"] = new List<Target>(shipTargets)
             };
             return variables;
         }
