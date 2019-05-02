@@ -72,23 +72,23 @@ namespace EddiEvents
 
         public decimal? earthmass => body.earthmass;
 
-        public decimal massprobability => (decimal)body.massprobability;
+        public decimal? massprobability => body.massprobability;
 
         public decimal? radius => body.radius;
 
-        public decimal radiusprobability => (decimal)body.radiusprobability;
+        public decimal? radiusprobability => body.radiusprobability;
 
         public decimal gravity => (decimal)body.gravity;
 
-        public decimal gravityprobability => (decimal)body.gravityprobability;
+        public decimal? gravityprobability => body.gravityprobability;
 
         public decimal? temperature => body.temperature;
 
-        public decimal tempprobability => (decimal)body.tempprobability;
+        public decimal? tempprobability => body.tempprobability;
 
         public decimal? pressure => body.pressure;
 
-        public decimal pressureprobability => (decimal)body.pressureprobability;
+        public decimal? pressureprobability => body.pressureprobability;
 
         public bool? tidallylocked => body.tidallylocked;
 
@@ -106,27 +106,27 @@ namespace EddiEvents
 
         public decimal? orbitalperiod => body.orbitalperiod;
 
-        public decimal orbitalperiodprobability => (decimal)body.orbitalperiodprobability;
+        public decimal? orbitalperiodprobability => body.orbitalperiodprobability;
 
         public decimal? rotationalperiod => body.rotationalperiod;
 
-        public decimal rotationalperiodprobability => (decimal)body.rotationalperiodprobability;
+        public decimal? rotationalperiodprobability => body.rotationalperiodprobability;
 
         public decimal? semimajoraxis => body.semimajoraxis;
 
-        public decimal eccentricityprobability => (decimal)body.eccentricityprobability;
+        public decimal? eccentricityprobability => body.eccentricityprobability;
 
         public decimal? eccentricity => body.eccentricity;
 
-        public decimal semimajoraxisprobability => (decimal)body.semimajoraxisprobability;
+        public decimal? semimajoraxisprobability => body.semimajoraxisprobability;
 
         public decimal? inclination => body.inclination;
 
-        public decimal inclinationprobability => (decimal)body.inclinationprobability;
+        public decimal? inclinationprobability => body.inclinationprobability;
 
         public decimal? periapsis => body.periapsis;
 
-        public decimal periapsisprobability => (decimal)body.periapsisprobability;
+        public decimal? periapsisprobability => body.periapsisprobability;
 
         public List<Ring> rings => body.rings;
 
@@ -138,11 +138,11 @@ namespace EddiEvents
 
         public decimal? tilt => body.tilt;
 
-        public decimal tiltyprobability => (decimal)body.tiltprobability;
+        public decimal? tiltyprobability => body.tiltprobability;
 
         public decimal? density => body.density;
 
-        public decimal densityprobability => (decimal)body.densityprobability;
+        public decimal? densityprobability => body.densityprobability;
 
         public long? estimatedvalue => body.estimatedvalue;
 
