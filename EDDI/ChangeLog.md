@@ -71,6 +71,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Revised `Discovery scan` script to report the number of bodies remaining to be scanned while your ship's role is either `exploration` or `multipurpose`.
     * Revised `Star report` script to incorporate new variables documented above.
     * Revised `System scan complete` script to recommend bodies for mapping (using the new `Bodies to map` script) while your ship's role is either `exploration` or `multipurpose`.
+    * Added new script `Bodies mapped` to allow reporting which bodies in the system have already been mapped.
     * The `P()` function now converts roman numerals in planet classes (e.g. Class II gas giant) into numbers (e.g. Class 2 gas giant) to ensure proper pronunciation.
     * The `Spacialise()` function no longer adds an extra space at the end of the string.
     * Enhanced `P()` function to correct mispronunciations of body names ending in "a" or "g"
