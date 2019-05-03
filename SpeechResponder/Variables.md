@@ -248,8 +248,9 @@ Details of ship target data, within the `shiptargets` object.
     - `name` name of the pilot
     - `rank` rank of the pilot
     - `ship` model of the ship
+    - `faction` name of the minor faction
+    - `allegiance` superpower to which the minor faction is aligned
     - `power` power ( Aisling Duval, Yuri Grom, Denton Patreus, etc) to which the pilot is pledged
-    - `allegiance` superpower (Empire, Federation, Independent, etc) to which the pilot is aligned
     - `legalstatus` the legal status (clean, enemy, wanted, warrant, etc) of the pilot
     - `bounty` total amount of bounties assigned to the pilot
 

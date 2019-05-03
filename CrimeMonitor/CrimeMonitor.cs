@@ -239,8 +239,15 @@ namespace EddiCrimeMonitor
                 }
                 if (@event.scanstage >= 3)
                 {
+                    if (@event.faction != null)
+                    {
+                        target.faction = @event.faction;
+                        Faction faction = DataProviderService.GetFactionByName(@event.faction);
+                        Power power = Power.FromName(@event.faction);
+                        target.PowerDef = power ?? Power.None;
+                        target.allegiance = (power?.Allegiance ?? faction?.Allegiance)?.invariantName;
+                    }
                     target.ship = @event.ship;
-                    target.PowerDef = Power.FromName(@event.faction) ?? Power.None;
                     target.LegalStatusDef = @event.legalstatusDef;
                     target.bounty = @event.bounty;
                 }
