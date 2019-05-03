@@ -128,17 +128,29 @@
   
   
   
+  <data name="header_faction" xml:space="preserve">
+    <value>Fraktion</value>
+  </data>
+  <data name="header_fines" xml:space="preserve">
+    <value>Bußgeld</value>
+  </data>
+  
+  <data name="header_system" xml:space="preserve">
+    <value>System</value>
+  </data>
+  
+  
+  <data name="remove_button" xml:space="preserve">
+    <value>Entfernen</value>
+  </data>
   
   
   
+  <data name="update_button" xml:space="preserve">
+    <value>Aktualisierung</value>
+  </data>
   
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="update_button_text" xml:space="preserve">
+    <value>Aktualisierung:</value>
+  </data>
 </root>
