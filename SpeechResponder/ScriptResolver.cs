@@ -168,6 +168,14 @@ namespace EddiSpeechResponder
                 string translation = val;
                 if (translation == val)
                 {
+                    translation = Translations.StellarClass(val);
+                }
+                if (translation == val)
+                {
+                    translation = Translations.PlanetClass(val);
+                }
+                if (translation == val)
+                {
                     translation = Translations.Body(val, useICAO);
                 }
                 if (translation == val)
@@ -201,14 +209,6 @@ namespace EddiSpeechResponder
                     {
                         translation = ship.SpokenModel();
                     }
-                }
-                if (translation == val)
-                {
-                    translation = Translations.StellarClass(val);
-                }
-                if (translation == val)
-                {
-                    translation = Translations.PlanetClass(val);
                 }
                 return translation;
             }, 1);
