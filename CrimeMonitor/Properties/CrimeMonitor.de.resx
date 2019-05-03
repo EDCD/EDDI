@@ -129,12 +129,16 @@
   <data name="blank_faction" xml:space="preserve">
     <value>Name der Fraktion</value>
   </data>
-  
+  <data name="crime_monitor_desc" xml:space="preserve">
+    <value>Informationen zu Ihrem Strafregister.</value>
+  </data>
   <data name="crime_monitor_name" xml:space="preserve">
     <value>Verbrechensüberwachung</value>
   </data>
   
-  
+  <data name="find_button_desc" xml:space="preserve">
+    <value>Suche nach dem nächstgelegenen System und Station der interstellaren Vertreter.</value>
+  </data>
   
   
   
