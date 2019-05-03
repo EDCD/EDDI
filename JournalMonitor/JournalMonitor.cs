@@ -3792,7 +3792,6 @@ namespace EddiJournalMonitor
             "Scanned",
             "SendText",
             "ShieldState",
-            "ShipTargeted",
             "Shutdown",
             "SystemsShutdown",
             "UnderAttack",
