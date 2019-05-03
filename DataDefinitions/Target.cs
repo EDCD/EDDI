@@ -17,10 +17,14 @@ namespace EddiDataDefinitions
         // The rank of the target
         public string rank => CombatRankDef?.localizedName ?? "unknown combat rank";
 
-        // The power in which the target is aligned
-        public string power => (PowerDef ?? Power.None).localizedName;
+        // The faction in which the target is aligned
+        public string faction { get; set; }
 
-        public string allegiance => (PowerDef ?? Power.None).Allegiance.localizedName;
+        // The superpower in which the target is aligned
+        public string allegiance { get; set; }
+
+        // The power in which the target is pledged
+        public string power => (PowerDef ?? Power.None).localizedName;
 
         // The legal status of the target
         public string legalstatus => (LegalStatusDef ?? LegalStatus.None).localizedName;
