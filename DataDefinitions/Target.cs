@@ -15,35 +15,36 @@ namespace EddiDataDefinitions
         public string ship { get; set; }
 
         // The rank of the target
-        public string rank => CombatRankDef?.localizedName ?? "unknown combat rank";
+        public CombatRating CombatRank { get; set; }
+        public string rank => CombatRank?.localizedName ?? "unknown combat rank";
 
         // The faction in which the target is aligned
         public string faction { get; set; }
 
         // The superpower in which the target is aligned
-        public string allegiance { get; set; }
+        public Superpower Allegiance { get; set; }
+        public string allegiance => (Allegiance ?? Superpower.None).localizedName;
 
         // The power in which the target is pledged
-        public string power => (PowerDef ?? Power.None).localizedName;
+        public Power Power { get; set; }
+        public string power => (Power ?? Power.None).localizedName;
 
         // The legal status of the target
-        public string legalstatus => (LegalStatusDef ?? LegalStatus.None).localizedName;
+        public LegalStatus LegalStatus { get; set; }
+        public string legalstatus => (LegalStatus ?? LegalStatus.None).localizedName;
 
         // Any bounties assigned to the target
         public int? bounty { get; set; }
-
-        public CombatRating CombatRankDef { get; set; }
-        public LegalStatus LegalStatusDef { get; set; }
-        public Power PowerDef { get; set; }
 
         // Default Constructor
         public Target() { }
 
         [JsonConstructor]
-        public Target(string name, CombatRating combatrank)
+        public Target(string name, CombatRating combatrank, string ship)
         {
             this.name = name;
-            this.CombatRankDef = combatrank;
+            this.CombatRank = combatrank;
+            this.ship = ship;
         }
     }
 }

@@ -233,22 +233,21 @@ namespace EddiCrimeMonitor
                     target = shipTargets.FirstOrDefault(t => t.name == @event.name);
                     if (target == null)
                     {
-                        target = new Target(@event.name, @event.combatrankDef);
+                        target = new Target(@event.name, @event.CombatRank, @event.ship);
                         shipTargets.Add(target);
                     }
                 }
-                if (@event.scanstage >= 3)
+                if (@event.scanstage >= 3 && target.LegalStatus == null)
                 {
+                    target.faction = @event.faction;
                     if (@event.faction != null)
                     {
-                        target.faction = @event.faction;
                         Faction faction = DataProviderService.GetFactionByName(@event.faction);
                         Power power = Power.FromName(@event.faction);
-                        target.PowerDef = power ?? Power.None;
-                        target.allegiance = (power?.Allegiance ?? faction?.Allegiance)?.invariantName;
+                        target.Power = power ?? Power.None;
+                        target.Allegiance = (power?.Allegiance ?? faction?.Allegiance);
                     }
-                    target.ship = @event.ship;
-                    target.LegalStatusDef = @event.legalstatusDef;
+                    target.LegalStatus = @event.LegalStatus;
                     target.bounty = @event.bounty;
                 }
             }
@@ -493,14 +492,13 @@ namespace EddiCrimeMonitor
 
             // Get victim allegiance from the 'Ship targeted' data
             Target target = shipTargets.FirstOrDefault(t => t.name == @event.victim);
-            Superpower allegiance = (target?.PowerDef ?? Power.None).Allegiance;
 
             FactionReport report = new FactionReport(@event.timestamp, true, shipId, crime, currentSystem, @event.bounty)
             {
                 station = EDDI.Instance?.CurrentStation?.name,
                 body = EDDI.Instance?.CurrentStellarBody?.name,
                 victim = @event.victim,
-                victimAllegiance = allegiance.invariantName
+                victimAllegiance = (target?.Allegiance ?? Superpower.None).invariantName
             };
 
             FactionRecord record = GetRecordWithFaction(@event.faction);
