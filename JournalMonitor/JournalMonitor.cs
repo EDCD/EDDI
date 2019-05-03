@@ -3381,6 +3381,7 @@ namespace EddiJournalMonitor
                                 handled = true;
                                 break;
                             case "Commander":
+                            case "DiscoveryScan":
                             case "Reputation":
                             case "Statistics":
                             case "CodexEntry":
