@@ -601,10 +601,11 @@ namespace EddiSpeechService
                 return null;
             }
 
+            string minus = "";
             if (value < 0)
             {
-                // We don't handle negatives at the moment
-                return "" + value;
+                minus = Properties.Phrases.minus + " ";
+                value *= -1;
             }
 
             if (value == 0)
@@ -623,7 +624,7 @@ namespace EddiSpeechService
                     numzeros++;
                 }
                 // Now round it to 2sf
-                return (Math.Round((double)value * 10) / (Math.Pow(10, numzeros + 2))).ToString();
+                return minus + (Math.Round((double)value * 10) / (Math.Pow(10, numzeros + 2))).ToString();
             }
 
             int number;
@@ -635,93 +636,76 @@ namespace EddiSpeechService
                 // Units
                 number = (int)value;
                 order = "";
-                nextDigit = 0;
+                nextDigit = (int)((value - number) * 10);
             }
             else if (digits < 6)
             {
                 // Thousands
                 number = (int)(value / 1000);
-                order = Properties.Phrases.thousand;
+                order = " " + Properties.Phrases.thousand;
                 nextDigit = (((int)value) - (number * 1000)) / 100;
             }
             else if (digits < 9)
             {
                 // Millions
                 number = (int)(value / 1000000);
-                order = Properties.Phrases.million;
+                order = " " + Properties.Phrases.million;
                 nextDigit = (((int)value) - (number * 1000000)) / 100000;
             }
             else if (digits < 12)
             {
                 // Billions
                 number = (int)(value / 1000000000);
-                order = Properties.Phrases.billion;
+                order = " " + Properties.Phrases.billion;
                 nextDigit = (int)(((long)value) - ((long)number * 1000000000)) / 100000000;
             }
             else if (digits < 15)
             {
                 // Trillions
                 number = (int)(value / 1000000000000);
-                order = Properties.Phrases.trillion;
+                order = " " + Properties.Phrases.trillion;
                 nextDigit = (int)(((long)value) - (int)((number * 1000000000000)) / 100000000000);
             }
             else
             {
                 // Quadrillions
                 number = (int)(value / 1000000000000000);
-                order = Properties.Phrases.quadrillion;
+                order = " " + Properties.Phrases.quadrillion;
                 nextDigit = (int)(((long)value) - (int)((number * 1000000000000000)) / 100000000000000);
             }
 
-            if (order == "")
+            // See if we have an exact match
+            if (((decimal)value - (int)value) == 0)
             {
-                return "" + number;
-            }
-            else
-            {
-                // See if we have an exact match
-                if (((long)(((decimal)value) / (decimal)Math.Pow(10, digits - 1))) * (decimal)(Math.Pow(10, digits - 1)) == value)
-                {
-                    return "" + number + " " + order;
-                }
-                if (number > 60)
-                {
-                    if (nextDigit < 6)
-                    {
-                        return Properties.Phrases.over + number + " " + order;
-                    }
-                    else
-                    {
-                        return Properties.Phrases.nearly + (number + 1) + " " + order;
-                    }
-                }
-                switch (nextDigit)
-                {
-                    case 0:
-                        return Properties.Phrases.justover + number + " " + order;
-                    case 1:
-                        return Properties.Phrases.over + number + " " + order;
-                    case 2:
-                        return Properties.Phrases.wellover + number + " " + order;
-                    case 3:
-                        return Properties.Phrases.onthewayto + number + Properties.Phrases.andahalf + order;
-                    case 4:
-                        return Properties.Phrases.nearly + number + Properties.Phrases.andahalf + order;
-                    case 5:
-                        return Properties.Phrases.around + number + Properties.Phrases.andahalf + order;
-                    case 6:
-                        return Properties.Phrases.justover + number + Properties.Phrases.andahalf + order;
-                    case 7:
-                        return Properties.Phrases.wellover + number + Properties.Phrases.andahalf + order;
-                    case 8:
-                        return Properties.Phrases.onthewayto + (number + 1) + " " + order;
-                    case 9:
-                        return Properties.Phrases.nearly + (number + 1) + " " + order;
-                    default:
-                        return Properties.Phrases.around + number + " " + order;
-                }
+                return minus + number + order;
             }
 
+            // Describe decimal values
+            switch (nextDigit)
+            {
+                case 0:
+                    return Properties.Phrases.justover + minus + number + order;
+                case 1:
+                    return Properties.Phrases.over + minus + number + order;
+                case 2:
+                    return Properties.Phrases.wellover + minus + number + order;
+                case 3:
+                    return Properties.Phrases.onthewayto + minus + number + Properties.Phrases.andahalf + order;
+                case 4:
+                    return Properties.Phrases.nearly + minus + number + Properties.Phrases.andahalf + order;
+                case 5:
+                    return Properties.Phrases.around + minus + number + Properties.Phrases.andahalf + order;
+                case 6:
+                    return Properties.Phrases.justover + minus + number + Properties.Phrases.andahalf + order;
+                case 7:
+                    return Properties.Phrases.wellover + minus + number + Properties.Phrases.andahalf + order;
+                case 8:
+                    return Properties.Phrases.onthewayto + minus + (number + 1) + order;
+                case 9:
+                    return Properties.Phrases.nearly + minus + (number + 1) + order;
+                default:
+                    return Properties.Phrases.around + minus + number + order;
+            }
         }
     }
 }
