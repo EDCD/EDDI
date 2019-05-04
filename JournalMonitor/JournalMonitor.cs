@@ -685,7 +685,7 @@ namespace EddiJournalMonitor
                             case "ApproachSettlement":
                                 {
                                     string settlementname = JsonParsing.getString(data, "Name");
-                                    long marketId = JsonParsing.getLong(data, "MarketID");
+                                    long? marketId = JsonParsing.getOptionalLong(data, "MarketID"); // Tourist beacons are reported as settlements without MarketID
                                     long systemAddress = JsonParsing.getLong(data, "SystemAddress");
                                     string bodyName = JsonParsing.getString(data, "BodyName");
                                     long? bodyId = JsonParsing.getOptionalLong(data, "BodyID");
