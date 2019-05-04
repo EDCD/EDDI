@@ -27,11 +27,11 @@ namespace EddiEvents
         public decimal? longitude { get; private set; }
 
         // Not intended to be user facing
-        public long marketId { get; private set; }
+        public long? marketId { get; private set; }
         public long systemAddress { get; private set; }
         public long? bodyId { get; private set; }
 
-        public SettlementApproachedEvent(DateTime timestamp, string name, long marketId, long systemAddress, string bodyName, long? bodyId, decimal? latitude, decimal? longitude) : base(timestamp, NAME)
+        public SettlementApproachedEvent(DateTime timestamp, string name, long? marketId, long systemAddress, string bodyName, long? bodyId, decimal? latitude, decimal? longitude) : base(timestamp, NAME)
         {
             this.name = name;
             this.marketId = marketId;
