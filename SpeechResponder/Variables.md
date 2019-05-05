@@ -13,6 +13,7 @@ Details of the objects available are as follows:
 Information on game state is available at the top level i.e. these values can be accessed directly.
 
     - `environment` the commander's current environment.  Can be one of "Docked", "Landed", "Normal space", "Supercruise" or "Witch space"
+    - `horizons` true when the game version is 'Horizons'
     - `vehicle` the vehicle that is under the commander's control.  Can be one of "Ship", "SRV" or "Fighter"
 
 ---
@@ -210,6 +211,7 @@ The criminal record  and derived properties of commander is available under the 
     - `claims` total credits for all unredeemed bond and bounty rewards
     - `fines` total credits for all unpaid fines incurred
     - `bounties` total credits for all unpaid bounties incurred
+    - `orbitalpriority` true when orbital stations are prioritized over planetary for station selection
     - `shiptargets` list of ships targeted within the current system.
 
 ### Record
@@ -234,7 +236,7 @@ Details of individual minor faction reports, within the `FactionRecord` object.
 
     - `bounty` true if bounty awarded or incurred
     - `shipId` ship ID in which the 'criminal' event occurred
-    - `crime` localized type of crime committed
+    - `crime` localized type of crime committed, 'None' when report is a claim
     - `system` system in which the 'criminal' event occurred
     - `station` nearby station (null if no station nearby)
     - `body` nearby body (null if no body nearby)
