@@ -15,6 +15,7 @@ namespace EddiDataDefinitions
             missingEDNameHandler = (edname) => new LegalStatus(edname);
 
             Clean = new LegalStatus("Clean");
+            None = new LegalStatus("None");
             var Unknown = new LegalStatus("Unknown");
             var Lawless = new LegalStatus("Lawless");
             var Wanted = new LegalStatus("Wanted");
@@ -29,6 +30,7 @@ namespace EddiDataDefinitions
         }
 
         public static readonly LegalStatus Clean;
+        public static readonly LegalStatus None;
 
         // dummy used to ensure that the static constructor has run
         public LegalStatus() : this("")
