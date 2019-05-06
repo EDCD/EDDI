@@ -13,6 +13,16 @@ namespace EddiShipMonitor
     {
         private static List<string> HARDPOINT_SIZES = new List<string>() { "Huge", "Large", "Medium", "Small", "Tiny" };
 
+        private static Dictionary<string, decimal> baseOptimalMass = new Dictionary<string, decimal>()
+        {
+            {"2E", 48.0M}, {"2D", 54.0M}, {"2C", 60.0M}, {"2B", 75.0M}, {"2A", 90.0M},
+            {"3E", 80.0M}, {"3D", 90.0M}, {"3C", 100.0M}, {"3B", 125.0M}, {"3A", 150.0M},
+            {"4E", 280.0M}, {"4D", 315.0M}, {"4C", 350.0M}, {"4B", 438.0M}, {"4A", 525.0M},
+            {"5E", 560.0M}, {"5D", 630.0M}, {"5C", 700.0M}, {"5B", 875.0M}, {"5A", 1050.0M},
+            {"6E", 960.0M}, {"6D", 1080.0M}, {"6C", 1200.0M}, {"6B", 1500.0M}, {"6A", 1800.0M},
+            {"7E", 1440.0M}, {"7D", 1620.0M}, {"7C", 1800.0M}, {"7B", 2250.0M}, {"7A", 2700.0M}
+        };
+
         public static List<Ship> ShipyardFromJson(Ship activeShip, dynamic json)
         {
             List<Ship> shipyard = new List<Ship>();
@@ -100,6 +110,14 @@ namespace EddiShipMonitor
                     }
                     Ship.fueltanktotalcapacity = Ship.fueltankcapacity;
                     Ship.paintjob = (string)(json["modules"]?["PaintJob"]?["name"] ?? null);
+
+                    // Get the ship's FSD optimal mass for jump calculations
+                    string fsd = Ship.frameshiftdrive.@class + Ship.frameshiftdrive.grade;
+                    if (baseOptimalMass.TryGetValue(fsd, out decimal optimalMass))
+                    {
+                        decimal modifier = (decimal?)json["WorkInProgress_modifications"]["OutfittingFieldType_FSDOptimalMass"]["value"] ?? 1;
+                        Ship.optimalmass = optimalMass * modifier;
+                    }
 
                     // Obtain the hardpoints.  Hardpoints can come in any order so first parse them then second put them in the correct order
                     Dictionary<string, Hardpoint> hardpoints = new Dictionary<string, Hardpoint>();

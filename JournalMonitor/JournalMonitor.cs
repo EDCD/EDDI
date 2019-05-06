@@ -464,6 +464,7 @@ namespace EddiJournalMonitor
                                     decimal hullHealth = sensibleHealth(JsonParsing.getDecimal(data, "HullHealth") * 100);
                                     decimal unladenMass = JsonParsing.getOptionalDecimal(data, "UnladenMass") ?? 0;
                                     decimal maxJumpRange = JsonParsing.getOptionalDecimal(data, "MaxJumpRange") ?? 0;
+                                    decimal optimalMass = 0;
 
                                     long rebuy = JsonParsing.getLong(data, "Rebuy");
 
@@ -511,6 +512,13 @@ namespace EddiJournalMonitor
                                             Modifications modification = Modifications.FromEDName(blueprint) ?? Modifications.None;
                                             int level = modified ? JsonParsing.getInt(engineeringData, "Level") : 0;
                                             decimal quality = modified ? JsonParsing.getDecimal(engineeringData, "Quality") : 0;
+
+                                            if (slot == "FrameShiftDrive")
+                                            {
+                                                engineeringData.TryGetValue("Modifiers", out val);
+                                                Dictionary<string, object> modifiersData = (Dictionary<string, object>)val;
+                                                optimalMass = JsonParsing.getOptionalDecimal(modifiersData, "FSDOptimalMass") ?? 0;
+                                            }
 
                                             if (slot.Contains("Hardpoint"))
                                             {
@@ -638,7 +646,7 @@ namespace EddiJournalMonitor
                                             }
                                         }
                                     }
-                                    events.Add(new ShipLoadoutEvent(timestamp, ship, shipId, shipName, shipIdent, hullValue, modulesValue, hullHealth, unladenMass, maxJumpRange, rebuy, hot, compartments, hardpoints, paintjob) { raw = line, fromLoad = fromLogLoad });
+                                    events.Add(new ShipLoadoutEvent(timestamp, ship, shipId, shipName, shipIdent, hullValue, modulesValue, hullHealth, unladenMass, maxJumpRange, optimalMass, rebuy, hot, compartments, hardpoints, paintjob) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
