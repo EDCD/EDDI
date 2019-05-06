@@ -47,6 +47,15 @@ namespace EddiShipMonitor
             {8, 2.90M}
         };
 
+        private static Dictionary<int, decimal> guardianBoostFSD = new Dictionary<int, decimal>()
+        {
+            {1, 4.00M},
+            {2, 6.00M},
+            {3, 7.75M},
+            {4, 9.25M},
+            {5, 10.50M}
+        };
+        
         // Observable collection for us to handle changes
         public ObservableCollection<Ship> shipyard { get; private set; }
         public List<StoredModule> storedmodules { get; private set; }
@@ -492,6 +501,7 @@ namespace EddiShipMonitor
 
             ship.unladenmass = @event.unladenmass;
             ship.maxjumprange = @event.maxjumprange;
+            ship.optimalmass = @event.optimalmass;
             ship.rebuy = @event.rebuy;
 
             // Set the standard modules
@@ -1051,15 +1061,30 @@ namespace EddiShipMonitor
                 {
                     Ship ship = GetCurrentShip();
 
-                    // Get the necessary calculation parameters
-                    ratingConstantFSD.TryGetValue(ship.frameshiftdrive.grade, out decimal ratingConstant);
-                    powerConstantFSD.TryGetValue(ship.frameshiftdrive.@class, out decimal powerConstant);
-                    decimal totalShipMass = ship.unladenmass + ((CargoMonitor)EDDI.Instance.ObtainMonitor("Cargo monitor")).cargoCarried + @event.fuelremaining;
-                    decimal optimalMass = @event.distance * totalShipMass / (decimal)Math.Pow((double)(1000 * @event.fuelused / ratingConstant), 1 / (double)powerConstant);
+                    if (ship.optimalmass == 0)
+                    {
+                        // Get the necessary calculation parameters
+                        ratingConstantFSD.TryGetValue(ship.frameshiftdrive.grade, out decimal ratingConstant);
+                        powerConstantFSD.TryGetValue(ship.frameshiftdrive.@class, out decimal powerConstant);
+                        decimal boostConstant = 0;
+                        Compartment compartment = ship.compartments.FirstOrDefault(c => c.module.edname.Contains("Int_GuardianFSDBooster"));
+                        if (compartment != null)
+                        {
+                            guardianBoostFSD.TryGetValue(compartment.module.@class, out boostConstant);
+                        }
 
-                    // Max fuel per jump calculated using unladen mass and max jump range w/ just enough fuel to complete max jump
-                    ship.maxfuelperjump = ratingConstant * (decimal)Math.Pow((double)(ship.maxjumprange * (ship.unladenmass + ship.maxfuelperjump) / optimalMass), (double)powerConstant) / 1000;
-                    if (!@event.fromLoad) { writeShips(); }
+                        decimal fuelMass = @event.fuelremaining + @event.fuelused;
+                        decimal cargoMass = ((CargoMonitor)EDDI.Instance.ObtainMonitor("Cargo monitor")).cargoCarried;
+                        decimal totalShipMass = ship.unladenmass + fuelMass + cargoMass;
+                        decimal distance = @event.distance - boostConstant;
+                        ship.optimalmass = distance * totalShipMass / (decimal)Math.Pow((double)(1000 * @event.fuelused / ratingConstant), 1 / (double)powerConstant);
+
+                        // Max fuel per jump calculated using unladen mass and max jump range w/ just enough fuel to complete max jump
+                        decimal maxJumpRange = ship.maxjumprange - boostConstant;
+                        decimal jumpMass = ship.unladenmass + ship.maxfuelperjump;
+                        ship.maxfuelperjump = ratingConstant * (decimal)Math.Pow((double)(maxJumpRange * jumpMass / ship.optimalmass), (double)powerConstant) / 1000;
+                        if (!@event.fromLoad) { writeShips(); }
+                    }
                 }
             }
         }
@@ -1138,17 +1163,18 @@ namespace EddiShipMonitor
                         ship = profileCurrentShip;
                         AddShip(ship);
                     }
-                    // Ship launchbay data is exclusively from the API, always update.
+                    // Update launch bays and FSD optimum mass from profile
                     else
                     {
-                        if (profileCurrentShip.launchbays == null || !profileCurrentShip.launchbays.Any())
-                        {
-                            ship.launchbays.Clear();
-                        }
-                        else
+                        if (profileCurrentShip?.launchbays?.Any() ?? false)
                         {
                             ship.launchbays = profileCurrentShip.launchbays;
                         }
+                        else
+                        {
+                            ship.launchbays.Clear();
+                        }
+                        ship.optimalmass = profileCurrentShip.optimalmass;
                     }
                     Logging.Debug("Ship is: " + JsonConvert.SerializeObject(ship));
                 }

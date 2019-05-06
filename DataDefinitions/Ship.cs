@@ -291,8 +291,11 @@ namespace EddiDataDefinitions
 
         public decimal? fueltankcapacity { get; set; } // Core capacity
         public decimal? fueltanktotalcapacity { get; set; } // Capacity including additional tanks
+
+        // Ship jump properties
         public decimal maxjumprange { get; set; }
         public decimal maxfuelperjump { get; set; }
+        public decimal optimalmass { get; set; }
         public decimal unladenmass { get; set; }
 
         // Admin
