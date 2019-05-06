@@ -12,6 +12,7 @@ namespace EddiDataDefinitions
         {
             resourceManager = Properties.LegalStatus.ResourceManager;
             resourceManager.IgnoreCase = false;
+            missingEDNameHandler = (edname) => new LegalStatus(edname);
 
             Clean = new LegalStatus("Clean");
             var Unknown = new LegalStatus("Unknown");
