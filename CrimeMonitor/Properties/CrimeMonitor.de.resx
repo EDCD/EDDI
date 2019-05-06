@@ -140,7 +140,9 @@
     <value>Suche nach dem nächstgelegenen System und Station der interstellaren Vertreter.</value>
   </data>
   
-  
+  <data name="header_bounties" xml:space="preserve">
+    <value>Kopfgeld</value>
+  </data>
   
   <data name="header_faction" xml:space="preserve">
     <value>Fraktion</value>
