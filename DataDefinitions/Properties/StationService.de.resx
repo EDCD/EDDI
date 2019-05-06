@@ -230,7 +230,7 @@
     <comment>Station Service: Station Menu</comment>
   </data>
   <data name="InterstellarFactorsContact" xml:space="preserve">
-    <value>Kontakt zum interstellarer Vertreter</value>
+    <value>Kontakt zum interstellaren Vertreter</value>
     <comment>Station Service: InterstellarFactorsContact</comment>
   </data>
 </root>
