@@ -282,12 +282,12 @@ namespace EddiStatusMonitor
                     {
                         if (fuelData is IDictionary<string, object> fuelInfo)
                         {
-                            decimal? mainFuel = JsonParsing.getOptionalDecimal(fuelInfo, "FuelMain");
-                            decimal? reserveFuel = JsonParsing.getOptionalDecimal(fuelInfo, "FuelReservoir");
-                            status.fuel = mainFuel + reserveFuel;
+                            status.fuelInMainTank = JsonParsing.getOptionalDecimal(fuelInfo, "FuelMain");
+                            status.fuelInReservoir = JsonParsing.getOptionalDecimal(fuelInfo, "FuelReservoir");
                         }
                     }
                     status.cargo_carried = (int?)JsonParsing.getOptionalDecimal(data, "Cargo");
+                    status.legalStatus = LegalStatus.FromEDName(JsonParsing.getString(data, "LegalState")) ?? LegalStatus.Clean;
 
                     // Calculated data
                     SetFuelExtras(status);

@@ -94,8 +94,11 @@ namespace EddiDataDefinitions
         public decimal? longitude;
         public decimal? altitude;
         public decimal? heading;
-        public decimal? fuel;
+        public decimal? fuel => fuelInMainTank + fuelInReservoir;
+        public decimal? fuelInMainTank;
+        public decimal? fuelInReservoir;
         public int? cargo_carried;
+        public string legalstatus => (legalStatus ?? LegalStatus.Clean).localizedName;
 
         // Variables calculated from event data
         public decimal? fuel_percent { get; set; }
@@ -104,6 +107,7 @@ namespace EddiDataDefinitions
         // Admin values
         public Flags flags;
         public DateTime timestamp = DateTime.UtcNow;
+        public LegalStatus legalStatus;
 
         public Status(Flags flags = Flags.None)
         {

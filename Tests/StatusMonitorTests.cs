@@ -119,12 +119,17 @@ namespace UnitTests
         [TestMethod]
         public void TestParseStatusFlagsSupercruise()
         {
-            string line = "{ \"timestamp\":\"2018-03-25T00:39:48Z\", \"event\":\"Status\", \"Flags\":16777240, \"Pips\":[7,1,4], \"FireGroup\":0, \"GuiFocus\":0 }";
+            string line = "{ \"timestamp\":\"2018-03-25T00:39:48Z\", \"event\":\"Status\", \"Flags\":16777240, \"Pips\":[7,1,4], \"FireGroup\":0, \"GuiFocus\":0, \"Fuel\":{ \"FuelMain\":26.589718, \"FuelReservoir\":0.484983 }, \"Cargo\":3.000000, \"LegalState\":\"Clean\" }";
             Status status = ((StatusMonitor)EDDI.Instance.ObtainMonitor("Status monitor")).ParseStatusEntry(line);
 
             // Variables set from status flags (when not signed in, flags are set to '0')
             Assert.AreEqual(status.flags, (Status.Flags)16777240);
             Assert.AreEqual(status.vehicle, "Ship");
+            Assert.AreEqual(26.589718M, status.fuelInMainTank);
+            Assert.AreEqual(0.484983M, status.fuelInReservoir);
+            Assert.AreEqual(26.589718M + 0.484983M, status.fuel);
+            Assert.AreEqual(3, status.cargo_carried);
+            Assert.AreEqual(LegalStatus.Clean, status.legalStatus);
             Assert.IsTrue(status.supercruise);
         }
 
