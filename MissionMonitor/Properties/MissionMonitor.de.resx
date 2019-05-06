@@ -121,7 +121,7 @@
     <value>Route löschen</value>
   </data>
   <data name="clear_route_button_desc" xml:space="preserve">
-    <value>Missionsroute und Ziel löschen.</value>
+    <value>Missionsroute und Zielsystem löschen.</value>
   </data>
   <data name="clear_route_button_text" xml:space="preserve">
     <value>Route löschen:</value>
@@ -129,7 +129,9 @@
   <data name="get_route_button" xml:space="preserve">
     <value>Neue Route</value>
   </data>
-  
+  <data name="get_route_button_desc" xml:space="preserve">
+    <value>Leitet die Berechnung des Algorithmus' 'Nearest Neighbor' zur Bestimmung der kürzesten Missionsroute ein.</value>
+  </data>
   <data name="get_route_button_text" xml:space="preserve">
     <value>Neue Route:</value>
   </data>
@@ -160,7 +162,9 @@
   <data name="next_route_button" xml:space="preserve">
     <value>Nächstes Ziel</value>
   </data>
-  
+  <data name="next_route_button_desc" xml:space="preserve">
+    <value>Setzt das Zielsystem auf das nächste System in der Missionsroute.</value>
+  </data>
   <data name="next_route_button_text" xml:space="preserve">
     <value>Nächstes Ziel:</value>
   </data>
@@ -176,7 +180,9 @@
   <data name="update_route_button" xml:space="preserve">
     <value>Route aktualisieren</value>
   </data>
-  
+  <data name="update_route_button_desc" xml:space="preserve">
+    <value>Setzt das Zielsystem auf das nächste System in der Missionsroute, wenn alle Missionen abgeschlossen sind.</value>
+  </data>
   <data name="update_route_button_text" xml:space="preserve">
     <value>Route aktualisieren:</value>
   </data>
