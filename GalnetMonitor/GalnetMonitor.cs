@@ -158,27 +158,28 @@ namespace GalnetMonitor
                     locales.TryGetValue(configuration.language, out locale);
                     string url = GetGalnetResource("sourceURL");
                     altURL = false;
-                    try
-                    {
-                        WebRequest request = WebRequest.Create(url);
-                        HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-                    }
-                    catch (WebException wex)
-                    {
-                        Logging.Warn("Exception contacting primary galnet feed, trying alternate: ", wex.Message);
-                        url = GetGalnetResource("alternateURL");
-                        altURL = true;
-                    }
+
                     Logging.Debug("Fetching Galnet articles from " + url);
+                    FeedReader feedReader = new FeedReader(new GalnetFeedItemNormalizer(), true);
                     IEnumerable<FeedItem> items = null;
                     try
                     {
-                        FeedReader feedReader = new FeedReader(new GalnetFeedItemNormalizer(), true);
                         items = feedReader.RetrieveFeed(url);
                     }
                     catch (WebException wex)
                     {
-                        Logging.Warn("Exception attempting to obtain galnet feed: ", wex);
+                        Logging.Warn("Exception contacting primary Galnet feed: ", wex);
+                        url = GetGalnetResource("alternateURL");
+                        altURL = true;
+                        Logging.Warn("Trying alternate Galnet feed " + url);
+                        try
+                        {
+                            items = feedReader.RetrieveFeed(url);
+                        }
+                        catch (Exception ex)
+                        {
+                            Logging.Error("Galnet feed exception (alternate url unsuccessful): ", ex);
+                        }
                     }
                     catch (System.Xml.XmlException xex)
                     {
