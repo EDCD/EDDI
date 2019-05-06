@@ -86,7 +86,7 @@ namespace UnitTests
         [TestMethod]
         public void TestParseStatusFlagsSrv()
         {
-            string line = "{ \"timestamp\":\"2018-03-25T00:39:48Z\", \"event\":\"Status\", \"Flags\":69255432, \"Pips\":[2,8,2], \"FireGroup\":0, \"GuiFocus\":0, \"Latitude\":-5.683115, \"Longitude\":-10.957623, \"Heading\":249, \"Altitude\":0}";
+            string line = "{ \"timestamp\":\"2018-03-25T00:39:48Z\", \"event\":\"Status\", \"Flags\":69255432, \"Pips\":[2,8,2], \"FireGroup\":0, \"GuiFocus\":0, \"Latitude\":-5.683115, \"Longitude\":-10.957623, \"Heading\":249, \"Altitude\":0, \"BodyName\":\"Myeia Thaa QI - B d13 - 1 1\", \"PlanetRadius\":2140275.000000}";
             Status status = ((StatusMonitor)EDDI.Instance.ObtainMonitor("Status monitor")).ParseStatusEntry(line);
 
             // Variables set from status flags (when not signed in, flags are set to '0')
@@ -114,6 +114,8 @@ namespace UnitTests
             Assert.IsFalse(status.landing_gear_down);
             Assert.IsFalse(status.landed);
             Assert.IsFalse(status.docked);
+            Assert.AreEqual("Myeia Thaa QI - B d13 - 1 1", status.bodyname);
+            Assert.AreEqual(2140275.000000M, status.planetradius);
         }
 
         [TestMethod]

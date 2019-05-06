@@ -288,6 +288,8 @@ namespace EddiStatusMonitor
                     }
                     status.cargo_carried = (int?)JsonParsing.getOptionalDecimal(data, "Cargo");
                     status.legalStatus = LegalStatus.FromEDName(JsonParsing.getString(data, "LegalState")) ?? LegalStatus.Clean;
+                    status.bodyname = JsonParsing.getString(data, "BodyName");
+                    status.planetradius = JsonParsing.getOptionalDecimal(data, "PlanetRadius");
 
                     // Calculated data
                     SetFuelExtras(status);

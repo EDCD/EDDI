@@ -42,6 +42,7 @@ namespace EddiDataDefinitions
             InSRV = 0x04000000,
             HudAnalysisMode = 0x08000000,
             NightVision = 0x10000000,
+            AltitudeFromAverageRadius = 0x20000000,
         }
 
         // Variables set from status flags (when not signed in, this is set to '0')
@@ -77,6 +78,7 @@ namespace EddiDataDefinitions
         public bool docked => (flags & Flags.Docked) != 0;
         public bool analysis_mode => (flags & Flags.HudAnalysisMode) != 0;
         public bool night_vision => (flags & Flags.NightVision) != 0;
+        public bool altitude_from_average_radius => (flags & Flags.AltitudeFromAverageRadius) != 0;
 
         // FDev changes hardpoints status when the discovery scanner is used in supercruise. 
         // We want to keep hardpoints_deployed false if we are in supercruise.
@@ -94,13 +96,15 @@ namespace EddiDataDefinitions
         public decimal? longitude;
         public decimal? altitude;
         public decimal? heading;
-        public decimal? fuel => fuelInMainTank + fuelInReservoir;
         public decimal? fuelInMainTank;
         public decimal? fuelInReservoir;
         public int? cargo_carried;
         public string legalstatus => (legalStatus ?? LegalStatus.Clean).localizedName;
+        public string bodyname;
+        public decimal? planetradius;
 
         // Variables calculated from event data
+        public decimal? fuel => fuelInMainTank + fuelInReservoir;
         public decimal? fuel_percent { get; set; }
         public int? fuel_seconds { get; set; }
 
