@@ -80,6 +80,10 @@ EDDI makes a large number of values available to augment your existing scripts. 
   * {DEC:Status fuel percent} a decimal value indicating the current percentage of your total fuel capacity remaining, if known
   * {INT:Status fuel rate} an integer value indicating the projected number of seconds of fuel remaining, if known
   * {INT:Status cargo carried} an integer value indicating the number of tons of cargo currently carried, if known
+  * {TXT:Status legal status} the ship's current legal status. Can be one of "Clean", "Illegal cargo", "Speeding", "Wanted", "Hostile", "Passenger wanted", or "Warrant"
+  * {TXT:Status body name} the name of the current body (if landed or in an srv)
+  * {DEC:Status planet radius} the radius of the current body (if landed or in an srv)
+  * {BOOL:Status altitude from average radius} true if the altitude is computed relative to the average radius (which is used at higher altitudes) rather than surface directly below the srv
 
 ## Ship Variables
 

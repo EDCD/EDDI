@@ -956,6 +956,10 @@ namespace EddiVoiceAttackResponder
                 vaProxy.SetDecimal(prefix + " fuel percent", status?.fuel_percent);
                 vaProxy.SetInt(prefix + " fuel rate", status?.fuel_seconds);
                 vaProxy.SetInt(prefix + " cargo carried", status?.cargo_carried);
+                vaProxy.SetText(prefix + " legal status", status?.legalstatus);
+                vaProxy.SetText(prefix + " body name", status?.bodyname);
+                vaProxy.SetDecimal(prefix + " planet radius", status?.planetradius);
+                vaProxy.SetBoolean(prefix + " altitude from average radius", status?.altitude_from_average_radius);
             }
             catch (Exception e)
             {
