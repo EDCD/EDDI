@@ -642,6 +642,18 @@ Any values might be missing, depending on EDDI's configuration.
     - `fuel_percent` a decimal percent value calculated from your current total fuel capacity
     - `fuel_seconds` an integer value projecting the time remaining before you run out of fuel, in seconds
     - `cargo_carried` an integer value of the current cargo you are carrying
+    - `legalstatus` the ship's current legal status. Can be one of 
+      - "Clean", 
+      - "Illegal cargo", 
+      - "Speeding", 
+      - "Wanted", 
+      - "Hostile", 
+      - "Passenger wanted", or 
+      - "Warrant"
+    - `bodyname` the name of the current body (if landed or in an srv)
+    - `planetradius` the radius of the current body (if landed or in an srv)
+    - `altitude_from_average_radius` whether the altitude is reported relative to the surface directly below the srv or relative to the average radius (which is used at higher altitudes)
+
 ---
 ## VoiceDetail
 
