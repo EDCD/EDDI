@@ -902,11 +902,20 @@
       "name": "Jet cone damage",
       "description": "Triggered in normal space when passing through the jet cone from a white dwarf or neutron star causes damage to a ship module"
     },
+    "Jump details": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{_ Jump details }\r\n{_ Triggered when ship jump details are requested }\r\n",
+      "default": true,
+      "name": "Jump details",
+      "description": "Triggered when ship jump details are requested"
+    },
     "Jumped": {
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{_ Jumped }\r\n{_ Triggered when you complete a jump to another system }\r\n\r\n\r\n{_ Context }\r\n{SetState('eddi_context_last_subject', 'jump')}\r\n{SetState('eddi_context_last_action', 'complete')}\r\n{SetState('eddi_context_system_name', system.name)}\r\n{SetState('eddi_context_system_system', system.name)}\r\n{SetState('eddi_context_fuel_remaining', event.fuelremaining)}\r\n{SetState('eddi_context_fuel_used', event.fuelused)}\r\n{SetState('eddi_context_wanted_list', \"\")}\r\n\r\n{if event.destination && event.destination != \"\":\r\n    {if event.destdistance = 0:\r\n        {ShipName()} has arrived at the {P(event.destination)} system.\r\n    |else:\r\n        {set jump_mass to ship.unladenmass + ship.maxfuelperjump}\r\n        {set jump_range to ship.maxjumprange * jump_mass / (jump_mass + cargoCarried)}\r\n        {set jumps_left to ceil(event.destdistance / jump_range)}\r\n        Distance to {P(event.destination)} is {round(event.destdistance, 1)} light years,\r\n        with {jumps_left} {if jumps_left = 1: jump |else: jumps} remaining.\r\n    }\r\n}\r\n\r\n{F('Fuel check')}\r\n\r\n{set state_report to F(\"System state report\")}\r\n{set system_missions to F(\"Mission check system\")}\r\n{set system_crimes to F(\"Crime check system\")}\r\n\r\n{if state_report || system_missions || find(system_crimes, \"Warning\") < 0:\r\n    {Pause(500)}\r\n    Information:\r\n}\r\n\r\n{if state_report:\r\n    {Pause(500)}\r\n    {state_report}\r\n}\r\n{if system_missions:\r\n    {Pause(500)}\r\n    {system_missions}\r\n}\r\n{if system_crimes:\r\n    {Pause(500)}\r\n    {system_crimes}\r\n}\r\n\r\n\r\n",
+      "script": "{_ Jumped }\r\n{_ Triggered when you complete a jump to another system }\r\n\r\n\r\n{_ Context }\r\n{SetState('eddi_context_last_subject', 'jump')}\r\n{SetState('eddi_context_last_action', 'complete')}\r\n{SetState('eddi_context_system_name', system.name)}\r\n{SetState('eddi_context_system_system', system.name)}\r\n{SetState('eddi_context_fuel_remaining', event.fuelremaining)}\r\n{SetState('eddi_context_fuel_used', event.fuelused)}\r\n{SetState('eddi_context_wanted_list', \"\")}\r\n\r\n{if event.destination && event.destination != \"\":\r\n    {if event.destdistance = 0:\r\n        {ShipName()} has arrived at the {P(event.destination)} system.\r\n    |else:\r\n        {set jump_mass to ship.unladenmass + ship.maxfuelperjump}\r\n        {set jump_range to ship.maxjumprange * jump_mass / (jump_mass + cargoCarried)}\r\n        {set jumps_left to ceil(event.destdistance / jump_range)}\r\n        Distance to {P(event.destination)} is {round(event.destdistance, 1)} light years,\r\n        with {jumps_left} {if jumps_left = 1: jump |else: jumps} remaining.\r\n    }\r\n}\r\n\r\n{F('Fuel check')}\r\n\r\n{set state_report to F(\"System state report\")}\r\n{set system_missions to F(\"Mission check system\")}\r\n{set system_crimes to F(\"Crime check system\")}\r\n\r\n{if state_report || system_missions || (system_crimes && find(system_crimes, \"Warning\") < 0):\r\n    {Pause(500)}\r\n    Information:\r\n}\r\n\r\n{if state_report:\r\n    {Pause(500)}\r\n    {state_report}\r\n}\r\n{if system_missions:\r\n    {Pause(500)}\r\n    {system_missions}\r\n}\r\n{if system_crimes:\r\n    {Pause(500)}\r\n    {system_crimes}\r\n}\r\n\r\n\r\n",
       "default": true,
       "name": "Jumped",
       "description": "Triggered when you complete a jump to another system"

@@ -80,6 +80,7 @@ The event that triggered the speech responder.  Information held in here is even
 The inventory of cargo carried within the ship is available under the `inventory` object.
 
     - `inventory` specific details on the cargo being carried
+    - `cargoCarried` total tons of cargo carried
 
 ### Cargo
 
@@ -273,7 +274,6 @@ Any values might be missing, depending on EDDI's configuration.
     - `hot` true if the ship is wanted
     - `rebuy` The rebuy value of the ship, in credits
     - `cargocapacity` the total tonnage cargo capacity
-    - `cargocarried` the current tonnage cargo carried
     - `name` the name of the ship
     - `ident` the identifier of the ship
     - `role` the role of the ship 

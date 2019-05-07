@@ -203,6 +203,19 @@ Common usage of this is to provide clear callsigns and idents for ships, for exa
 
    Ship ident is {ICAO(ship.ident)}.
 
+### JumpDetails()
+
+This function will provide jump information based on your ship loadout and current fuel level.
+
+JumpDetails() triggers a `Jump details` event with the following event properties:
+
+  - `jumprange` single jump distance, limited by max jump range, total mass and current fuel on board
+  - `fuelrange` total jump distance, using all current fuel on board
+  - `jumpsremaining` number of jumps remaining, using all current fuel on board
+  - `maxfuelrange` total jump distance, when completely fueled
+  - `maxjumps` total number of jumps, when completely fueled
+ 
+
 ### List()
 
 This function will return a humanised list of items from an array (e.g. this, that, and the other thing).
@@ -296,40 +309,40 @@ Common usage of this is to provide a pre-recorded custom audio file rather than 
 
 This function will produce a destination/route for valid mission destinations, dependent on the following 'routetype':
 
-  * 'cancel' Cancel the currently stored route.
-  * 'expiring' Destination of your next expiring mission.
+  * `cancel` Cancel the currently stored route.
+  * `expiring` Destination of your next expiring mission.
   * `facilitator` Nearest 'Legal Facilities' contact.
-  * 'farthest' Mission destination farthest from your current location.
-  * 'most' Nearest system with the most missions.
-  * 'nearest' Mission destination nearest to your current location.
-  * 'next' Next destination in the currently stored route.
-  * 'route' 'Traveling Salesman' (RNNA) route for all active missions.
-  * 'set' Set destination route to a single system.
-  * 'source' Mission destination to nearest 'cargo source'.
-  * 'update' Update to the next mission destination, once all missions in current system are completed.
+  * `farthest` Mission destination farthest from your current location.
+  * `most` Nearest system with the most missions.
+  * `nearest` Mission destination nearest to your current location.
+  * `next` Next destination in the currently stored route.
+  * `route` 'Traveling Salesman' (RNNA) route for all active missions.
+  * `set` Set destination route to a single system.
+  * `source` Mission destination to nearest 'cargo source'.
+  * `update` Update to the next mission destination, once all missions in current system are completed.
 
 Upon success of the query, a 'Missions route' event is triggered, providing a following event data:
 
-  * 'routetype' Type of route query (see above).
-  * 'destination' Destination system.
-  * 'distance' Destination distance
-  * 'route' "_" Delimited missions systems list. Results dependent on route type.
-    * 'expiring' Single system meeting 'next expiring' search criteria
-    * 'farthest' Single system meeting 'farthest' search criteria
-    * 'most' Other systems with most number of missions.
-    * 'route' Missions route list
-    * 'set' Single specified system
-    * 'source' list of source systems
-  * 'count' Count of missions, systems, or expiry seconds, depending on route type.
-    * 'expiring' Expiry seconds.
-    * 'farthest' Missions in the system.
-    * 'most' Number of most missions.
-    * 'nearest' Missions in the system.
-    * 'route' Systems in the route.
-    * 'source' Number of source systems.
-    * 'update' Remaining systems in the route.
-  * 'routedistance' Remaining distance of the missions route, if applicable.
-  * 'missionids' Mission ID(s) associated with the destination system.
+  * `routetype` Type of route query (see above).
+  * `destination` Destination system.
+  * `distance` Destination distance
+  * `route` '_' Delimited missions systems list. Results dependent on route type.
+    * `expiring` Single system meeting 'next expiring' search criteria
+    * `farthest` Single system meeting 'farthest' search criteria
+    * `most` Other systems with most number of missions.
+    * `route` Missions route list
+    * `set` Single specified system
+    * `source` list of source systems
+  * `count` Count of missions, systems, or expiry seconds, depending on route type.
+    * `expiring` Expiry seconds.
+    * `farthest` Missions in the system.
+    * `most` Number of most missions.
+    * `nearest` Missions in the system.
+    * `route` Systems in the route.
+    * `source` Number of source systems.
+    * `update` Remaining systems in the route.
+  * `routedistance` Remaining distance of the missions route, if applicable.
+  * `missionids` Mission ID(s) associated with the destination system.
 
 Common usage of this is to provide destination/route details, dependent on the 'routetype', for example:
 

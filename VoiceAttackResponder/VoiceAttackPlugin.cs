@@ -407,12 +407,15 @@ namespace EddiVoiceAttackResponder
                     case "setspeechresponderpersonality":
                         InvokeSetSpeechResponderPersonality(ref vaProxy);
                         break;
+                    case "jumpdetails":
+                        InvokeJumpDetails(ref vaProxy);
+                        break;
                     case "transmit":
                         InvokeTransmit(ref vaProxy);
                         break;
                     case "missionsroute":
                     case "route":
-                        InvokeMissionsRoute(ref vaProxy);
+                        InvokeRouteDetails(ref vaProxy);
                         break;
                 }
             }
@@ -969,7 +972,19 @@ namespace EddiVoiceAttackResponder
             }
         }
 
-        public static void InvokeMissionsRoute(ref dynamic vaProxy)
+        public static void InvokeJumpDetails(ref dynamic vaProxy)
+        {
+            try
+            {
+                ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).JumpDetails();
+            }
+            catch (Exception e)
+            {
+                setStatus(ref vaProxy, "Failed to get jump details", e);
+            }
+        }
+
+        public static void InvokeRouteDetails(ref dynamic vaProxy)
         {
             try
             {
@@ -999,7 +1014,7 @@ namespace EddiVoiceAttackResponder
                         break;
                     case "most":
                         {
-                            if (system == null || system == string.Empty)
+                            if (string.IsNullOrEmpty(system))
                             {
                                 Navigation.Instance.GetMostRoute();
                             }
@@ -1021,7 +1036,7 @@ namespace EddiVoiceAttackResponder
                         break;
                     case "route":
                         {
-                            if (system == null || system == string.Empty)
+                            if (string.IsNullOrEmpty(system))
                             {
                                 Navigation.Instance.GetMissionsRoute();
                             }
@@ -1038,7 +1053,7 @@ namespace EddiVoiceAttackResponder
                         break;
                     case "source":
                         {
-                            if (system == null || system == string.Empty)
+                            if (string.IsNullOrEmpty(system))
                             {
                                 Navigation.Instance.GetSourceRoute();
                             }
@@ -1050,7 +1065,7 @@ namespace EddiVoiceAttackResponder
                         break;
                     case "update":
                         {
-                            if (system == null || system == string.Empty)
+                            if (string.IsNullOrEmpty(system))
                             {
                                 Navigation.Instance.UpdateRoute();
                             }

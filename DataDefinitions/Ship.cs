@@ -286,11 +286,11 @@ namespace EddiDataDefinitions
         public List<Hardpoint> hardpoints { get; set; }
         public List<Compartment> compartments { get; set; }
         public List<LaunchBay> launchbays { get; set; }
-        public decimal activeFuelReservoirCapacity { get; set; }
         public string paintjob { get; set; }
 
         public decimal? fueltankcapacity { get; set; } // Core capacity
         public decimal? fueltanktotalcapacity { get; set; } // Capacity including additional tanks
+        public decimal activeFuelReservoirCapacity { get; set; }
 
         // Ship jump properties
         public decimal maxjumprange { get; set; }
