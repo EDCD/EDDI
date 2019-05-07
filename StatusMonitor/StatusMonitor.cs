@@ -293,6 +293,7 @@ namespace EddiStatusMonitor
                     // Calculated data
                     SetFuelExtras(status);
 
+                    EDDI.Instance.Status = status;
                     return status;
                 }
             }

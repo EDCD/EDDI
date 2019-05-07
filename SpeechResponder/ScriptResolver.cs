@@ -543,6 +543,14 @@ namespace EddiSpeechResponder
                 return (result == null ? new ReflectionValue(new object()) : new ReflectionValue(result));
             }, 1);
 
+            store["JumpDetails"] = new NativeFunction((values) =>
+            {
+                decimal? result = null;
+
+                result = ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).JumpDetails();
+                return (result == null ? new ReflectionValue(new object()) : new ReflectionValue(result));
+            }, 0);
+
             store["CombatRatingDetails"] = new NativeFunction((values) =>
             {
                 CombatRating result = CombatRating.FromName(values[0].AsString);
