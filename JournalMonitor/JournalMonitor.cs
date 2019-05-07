@@ -513,13 +513,6 @@ namespace EddiJournalMonitor
                                             int level = modified ? JsonParsing.getInt(engineeringData, "Level") : 0;
                                             decimal quality = modified ? JsonParsing.getDecimal(engineeringData, "Quality") : 0;
 
-                                            if (slot == "FrameShiftDrive")
-                                            {
-                                                engineeringData.TryGetValue("Modifiers", out val);
-                                                Dictionary<string, object> modifiersData = (Dictionary<string, object>)val;
-                                                optimalMass = JsonParsing.getOptionalDecimal(modifiersData, "FSDOptimalMass") ?? 0;
-                                            }
-
                                             if (slot.Contains("Hardpoint"))
                                             {
                                                 // This is a hardpoint
@@ -642,6 +635,23 @@ namespace EddiJournalMonitor
                                                     module.engineerquality = quality;
                                                     compartment.module = module;
                                                     compartments.Add(compartment);
+                                                }
+
+                                                // Get the optimal mass for the Frame Shift Drive
+                                                if (slot == "FrameShiftDrive")
+                                                {
+                                                    string fsd = module.@class + module.grade;
+                                                    Constants.baseOptimalMass.TryGetValue(fsd, out optimalMass);
+                                                    engineeringData.TryGetValue("Modifiers", out val);
+                                                    List<object> modifiersData = (List<object>)val;
+                                                    foreach (Dictionary<string, object> modifier in modifiersData)
+                                                    {
+                                                        string label = JsonParsing.getString(modifier, "Label");
+                                                        if (label == "FSDOptimalMass")
+                                                        {
+                                                            optimalMass = JsonParsing.getDecimal(modifier, "Value");
+                                                        }
+                                                    }
                                                 }
                                             }
                                         }
