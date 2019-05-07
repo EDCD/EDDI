@@ -26,7 +26,8 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Destination system, distance & station data populated & maintained by `RouteDetails()`. Distance re-calculated after each jump.
     * The `missionsRouteList` & `missionsRouteDistance` properties simplified to `RouteList` & `RouteDistance`, respectively.
   * Ship Monitor
-    * Added `unladenmass` and `maxjumprange` to the `Ship` object.
+    * 3.4 Update `Loadout`journal event additions `unladenmass` and `maxjumprange` included in the `Ship` object.
+    * FSD `optimalmass` retrieved from engineering data and used to calculate `maxfuelperjump` property.
   * Speech responder
     * Added `destinationsystem`, `destinationdistance`, and `destinationstation` properties (similar to `system`)
     * Added `Crime check system` script to report wanted status and 'legal facilities', upon entering the system.
@@ -45,12 +46,14 @@ Full details of the variables available for each noted event, and VoiceAttack in
     - Added `altitude_from_average_radius`, true if the altitude is computed relative to the average radius (which is used at higher altitudes) rather than surface directly below the srv
     * Revised `Jumped` script to provide a (reasonably) accurate jump range, based on total ship mass.
     * Revised `Ship targeted` script to utilize new `shiptargets` object to preclude reporting on previously scanned ships.
+    * Added `RouteDetails()` Cottle function call to provide useful jump infomation based on ship loadout and fuel level.
   * Voice Attack
     * Added `Destination system`, `Destination system distance`, and `Destination station` properties.
     * Added `{TXT:Status legal status}`
     * Added `{TXT:Status body name}`
     * Added `{DEC:Status planet radius}`
     * Added `{BOOL:Status altitude from average radius}`
+    * Added `jumpdetails` plugin invocation to provide useful jump infomation based on ship loadout and fuel level.
 
 ### 3.4
   * Core
