@@ -86,18 +86,13 @@
       <DependentUpon>ShipMonitor.resx</DependentUpon>
     </Compile>
     <Compile Include="ShipAfmuRepairedEvent.cs" />
-    <Compile Include="ShipLightsEvent.cs" />
-    <Compile Include="ShipFsdEvent.cs" />
-    <Compile Include="ShipCargoScoopEvent.cs" />
-    <Compile Include="ShipLandingGearEvent.cs" />
-    <Compile Include="ShipLowFuelEvent.cs" />
+    <Compile Include="ShipLoadoutEvent.cs" />
     <Compile Include="ShipRepairDroneEvent.cs" />
     <Compile Include="ConfigurationWindow.xaml.cs">
       <DependentUpon>ConfigurationWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="FrontierApi.cs" />
     <Compile Include="ShipDeliveredEvent.cs" />
-    <Compile Include="ShipLoadoutEvent.cs" />
     <Compile Include="ShipMonitorConfiguration.cs" />
     <Compile Include="ShipMonitor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

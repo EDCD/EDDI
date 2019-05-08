@@ -1,6 +1,5 @@
 ﻿using Eddi;
 using EddiEvents;
-using EddiShipMonitor;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -540,7 +539,7 @@ namespace EddiStatusMonitor
 
             if (currentStatus.vehicle == Constants.VEHICLE_SHIP)
             {
-                Ship ship = ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor"))?.GetCurrentShip();
+                Ship ship = EDDI.Instance.CurrentShip;
                 if (ship?.fueltanktotalcapacity != null && fuelRemaining != null)
                 {
                     // Fuel recorded in Status.json includes the fuel carried in the Active Fuel Reservoir
