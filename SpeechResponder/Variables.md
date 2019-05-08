@@ -421,6 +421,7 @@ Any values might be missing, depending on EDDI's configuration and the informati
     - `updatedat` the timestamp at which the system information was last updated, expressed as a Unix timestamp in seconds
     - `requirespermit` (If using SystemDetails()) Whether this system requires a permit (as a boolean)
     - `permitname` (If using SystemDetails()) The name of the permit required for visiting this system, if any
+    - `signalsources` a list of signals detected within the starsystem (for the current starsystem only)
 
 #### Last starsystem
 

@@ -168,13 +168,6 @@ namespace EddiSpeechResponder
                 // Disable speech from the community goal event for the time being.
                 return;
             }
-            else if (@event is SignalDetectedEvent)
-            {
-                if (!(statusMonitor?.currentStatus.gui_focus == "fss mode" || statusMonitor?.currentStatus.gui_focus == "saa mode"))
-                {
-                    return;
-                }
-            }
 
             Say(@event);
         }

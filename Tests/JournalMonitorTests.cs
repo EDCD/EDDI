@@ -1006,5 +1006,45 @@ namespace UnitTests
             Assert.AreEqual(291000M, @event.bonus);
             Assert.AreEqual(3229186M, @event.total);
         }
+
+        [TestMethod]
+        public void TestSignalDetectedEvent()
+        {
+            // Test a scenario signal
+            string line = @"{ ""timestamp"":""2019-02-06T07:22:27Z"", ""event"":""FSSSignalDiscovered"", ""SystemAddress"":1177567513979, ""SignalName"":""$MULTIPLAYER_SCENARIO42_TITLE;"", ""SignalName_Localised"":""Nav Beacon"" }";
+            List<Event> events = JournalMonitor.ParseJournalEntry(line);
+            SignalDetectedEvent @event = (SignalDetectedEvent)events[0];
+            Assert.IsNotNull(@event);
+            Assert.IsInstanceOfType(@event, typeof(SignalDetectedEvent));
+            Assert.AreEqual("Nav Beacon", @event.signalSource.invariantName);
+        }
+
+        [TestMethod]
+        public void TestSignalDetectedEvent2()
+        {
+            // Test a USS signal
+            string line = @"{ ""timestamp"":""2019-02-17T19:39:57Z"", ""event"":""FSSSignalDiscovered"", ""SystemAddress"":60276065930987, ""SignalName"":""$USS;"", ""SignalName_Localised"":""Unidentified signal source"", ""USSType"":""$USS_Type_ValuableSalvage;"", ""USSType_Localised"":""Encoded emissions"", ""SpawningState"":""$FactionState_War_desc;"", ""SpawningState_Localised"":""The War state represents a conflict between the controlling faction in a system and a new faction that has expanded into the system."", ""SpawningFaction"":""Colonia Council"", ""ThreatLevel"":0, ""TimeRemaining"":2385.815674 }";
+            List<Event> events = JournalMonitor.ParseJournalEntry(line);
+            SignalDetectedEvent @event = (SignalDetectedEvent)events[0];
+            Assert.IsNotNull(@event);
+            Assert.IsInstanceOfType(@event, typeof(SignalDetectedEvent));
+            Assert.AreEqual("Encoded Emissions", @event.signalSource.invariantName);
+            Assert.AreEqual("War", @event.factionState.invariantName);
+            Assert.AreEqual("Colonia Council", @event.faction);
+            Assert.AreEqual(0, @event.threatlevel);
+            Assert.AreEqual(2385.815674M, @event.secondsremaining);
+        }
+
+        [TestMethod]
+        public void TestSignalDetectedEvent3()
+        {
+            // Test a uniquely named object signal
+            string line = @"{ ""timestamp"":""2019-02-17T19:39:39Z"", ""event"":""FSSSignalDiscovered"", ""SystemAddress"":60276065930987, ""SignalName"":""Samson Class Bulk Cargo Ship GDZ-044"" }";
+            List<Event> events = JournalMonitor.ParseJournalEntry(line);
+            SignalDetectedEvent @event = (SignalDetectedEvent)events[0];
+            Assert.IsNotNull(@event);
+            Assert.IsInstanceOfType(@event, typeof(SignalDetectedEvent));
+            Assert.AreEqual("Samson Class Bulk Cargo Ship GDZ-044", @event.source);
+        }
     }
 }

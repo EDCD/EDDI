@@ -85,6 +85,8 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Revised `Body report` script to correct some errors identified by users (terraformable bodies will now be reported as such).
     * Revised `Body scanned` script to include option to use `Body report summary` script.
     * Revised `Body volcanism report` to touch it up.
+    * Revised `Signal detected` script to allow users to better customize signal detection (particularly for rare signal types).
+    * `Signal detected` events are no longer suppressed outside of fss mode.
     * Added new script `Bodies mapped` to allow reporting which bodies in the system have already been mapped.
     * Added new script `Bodies to map` to allow reporting recommendations of bodies to map (configurable in the script).
     * Added new script `Body report summary` to allow reporting of summary body data, taking into account statistically unusual bodies.

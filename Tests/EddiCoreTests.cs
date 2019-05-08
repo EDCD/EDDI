@@ -1,4 +1,5 @@
 ﻿using Eddi;
+using EddiDataDefinitions;
 using EddiEvents;
 using EddiJournalMonitor;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -161,6 +162,57 @@ namespace IntegrationTests
             privateObject.Invoke("updateCurrentSystem", new object[] { "BD-01 2784" });
             privateObject.Invoke("eventBodyMapped", new object[] { @event });
             Assert.AreEqual("BD-01 2784 10", EDDI.Instance.CurrentStellarBody?.bodyname);
+        }
+
+        [TestMethod]
+        public void TestSignalDetectedDeDuplication()
+        {
+            PrivateObject privateObject = new PrivateObject(EDDI.Instance);
+            JournalMonitor monitor = (JournalMonitor)((List<EDDIMonitor>)privateObject
+                .GetFieldOrProperty("monitors"))
+                .FirstOrDefault(m => m.MonitorName() == "Journal monitor");
+            privateObject.SetFieldOrProperty("CurrentStarSystem", new StarSystem() { systemname = "TestSystem", systemAddress = 6606892846275 });
+            StarSystem currentStarSystem = (StarSystem)privateObject.GetFieldOrProperty("CurrentStarSystem");
+
+            string line0 = @"{ ""timestamp"":""2019-02-04T02:20:28Z"", ""event"":""FSSSignalDiscovered"", ""SystemAddress"":6606892846275, ""SignalName"":""$NumberStation;"", ""SignalName_Localised"":""Unregistered Comms Beacon"" }";
+            string line1 = @"{ ""timestamp"":""2019-02-04T02:25:03Z"", ""event"":""FSSSignalDiscovered"", ""SystemAddress"":6606892846275, ""SignalName"":""$NumberStation;"", ""SignalName_Localised"":""Unregistered Comms Beacon"" }";
+            string line2 = @"{ ""timestamp"":""2019-02-04T02:28:26Z"", ""event"":""FSSSignalDiscovered"", ""SystemAddress"":6606892846275, ""SignalName"":""$Fixed_Event_Life_Ring;"", ""SignalName_Localised"":""Notable stellar phenomena"" }";
+            string line3 = @"{ ""timestamp"":""2019-02-04T02:38:53Z"", ""event"":""FSSSignalDiscovered"", ""SystemAddress"":6606892846275, ""SignalName"":""$Fixed_Event_Life_Ring;"", ""SignalName_Localised"":""Notable stellar phenomena"" }";
+            string line4 = @"{ ""timestamp"":""2019-02-04T02:38:53Z"", ""event"":""FSSSignalDiscovered"", ""SystemAddress"":6606892846275, ""SignalName"":""$NumberStation;"", ""SignalName_Localised"":""Unregistered Comms Beacon"" }";
+
+            List<Event> events = new List<Event>();
+            events.AddRange(JournalMonitor.ParseJournalEntry(line0));
+            events.AddRange(JournalMonitor.ParseJournalEntry(line1));
+            events.AddRange(JournalMonitor.ParseJournalEntry(line2));
+            events.AddRange(JournalMonitor.ParseJournalEntry(line3));
+            events.AddRange(JournalMonitor.ParseJournalEntry(line4));
+            Assert.AreEqual(5, events.Count());
+
+            SignalDetectedEvent event0 = (SignalDetectedEvent)events[0];
+            SignalDetectedEvent event1 = (SignalDetectedEvent)events[1];
+            SignalDetectedEvent event2 = (SignalDetectedEvent)events[2];
+            SignalDetectedEvent event3 = (SignalDetectedEvent)events[3];
+            SignalDetectedEvent event4 = (SignalDetectedEvent)events[4];
+
+            Assert.IsNotNull(event0);
+            Assert.IsInstanceOfType(event0, typeof(SignalDetectedEvent));
+
+            monitor.PostHandle(event0);
+            Assert.AreEqual(1, currentStarSystem.signalsources.Count());
+            Assert.AreEqual("Unregistered Comms Beacon", currentStarSystem.signalsources[0]);
+
+            monitor.PostHandle(event1);
+            Assert.AreEqual(1, currentStarSystem.signalsources.Count());
+
+            monitor.PostHandle(event2);
+            Assert.AreEqual(2, currentStarSystem.signalsources.Count());
+            Assert.AreEqual("Notable Stellar Phenomena", currentStarSystem.signalsources[1]);
+
+            monitor.PostHandle(event3);
+            Assert.AreEqual(2, currentStarSystem.signalsources.Count());
+
+            monitor.PostHandle(event4);
+            Assert.AreEqual(2, currentStarSystem.signalsources.Count());
         }
     }
 }
