@@ -1615,7 +1615,7 @@ namespace EddiShipMonitor
 
             int cargoCarried = ((CargoMonitor)EDDI.Instance.ObtainMonitor("Cargo monitor")).cargoCarried;
             decimal currentFuel = EDDI.Instance.Status.fuel ?? 0;
-            decimal maxFuel = ship.fueltanktotalcapacity + ship.activeFuelReservoirCapacity ?? 0;
+            decimal maxFuel = ship.fueltanktotalcapacity ?? 0;
 
             if (!string.IsNullOrEmpty(type))
             {
