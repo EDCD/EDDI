@@ -117,28 +117,76 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="add_button" xml:space="preserve">
+    <value>Añadir registro</value>
+  </data>
+  <data name="add_button_desc" xml:space="preserve">
+    <value>Permite añadir manualmente un registro de una facción menor.</value>
+  </data>
+  <data name="add_button_text" xml:space="preserve">
+    <value>Añadir registro:</value>
+  </data>
+  <data name="blank_faction" xml:space="preserve">
+    <value>Ingresa el nombre de la facción</value>
+  </data>
+  <data name="crime_monitor_desc" xml:space="preserve">
+    <value>Rastrea la información de tus antecedentes penales.</value>
+  </data>
+  <data name="crime_monitor_name" xml:space="preserve">
+    <value>Monitor de Crimen</value>
+  </data>
+  <data name="find_button" xml:space="preserve">
+    <value>Encuentra Instalaciones Legales</value>
+  </data>
+  <data name="find_button_desc" xml:space="preserve">
+    <value>Inicia la búsqueda del sistema y estación más cercano con contacto de Interstellar Factors.</value>
+  </data>
+  <data name="find_button_text" xml:space="preserve">
+    <value>Encuentra Instalaciones Legales:</value>
+  </data>
+  <data name="header_bounties" xml:space="preserve">
+    <value>Recompensas</value>
+  </data>
+  <data name="header_claims" xml:space="preserve">
+    <value>Reclamaciones</value>
+  </data>
+  <data name="header_faction" xml:space="preserve">
+    <value>Facción</value>
+  </data>
+  <data name="header_fines" xml:space="preserve">
+    <value>Multas</value>
+  </data>
+  <data name="header_station" xml:space="preserve">
+    <value>Estación</value>
+  </data>
+  <data name="header_system" xml:space="preserve">
+    <value>Sistema</value>
+  </data>
+  <data name="orbital_station_checkbox" xml:space="preserve">
+    <value>Prioriza Estaciones Orbitales:</value>
+  </data>
+  <data name="para1" xml:space="preserve">
+    <value>A continuación la lista de tus antecedentes penales.</value>
+  </data>
+  <data name="remove_button" xml:space="preserve">
+    <value>Retirar</value>
+  </data>
+  <data name="remove_button_desc" xml:space="preserve">
+    <value>Permite añadir manualmente un registro de una facción menor.</value>
+  </data>
+  <data name="remove_button_text" xml:space="preserve">
+    <value>Retirar:</value>
+  </data>
+  <data name="tab_station_distance" xml:space="preserve">
+    <value>Max. Distancia de la estación desde la estrella principal (sl):</value>
+  </data>
+  <data name="update_button" xml:space="preserve">
+    <value>Actualizar</value>
+  </data>
+  <data name="update_button_desc" xml:space="preserve">
+    <value>Actualiza la información de la facción menor (sistema, estación, etc.).</value>
+  </data>
+  <data name="update_button_text" xml:space="preserve">
+    <value>Actualizar:</value>
+  </data>
 </root>
