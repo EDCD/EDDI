@@ -303,6 +303,11 @@ Stored ship information
     - `transferprice` price to transfer ship to current location (0 if in transit)
     - `transfertime` time to transfer ship to current location (0 if in transit)
 
+Jump detail
+
+    - `distance` distance of jump range
+    - `jumps` number of jumps for given range
+
 ### Shipyard
 
 The inventory of ships mothballed and available under the `shipyard` object.

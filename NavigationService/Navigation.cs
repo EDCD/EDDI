@@ -110,7 +110,8 @@ namespace EddiNavigationService
                     {
                         // Filter stations which meet the game version and landing pad size requirements
                         List<Station> stations = (EDDI.Instance.inHorizons ? starsystem.stations : starsystem.orbitalstations)
-                            .Where(s => s.stationservices.Count > 0 && s.LandingPadCheck(shipSize)).ToList();
+                            .Where(s => s.stationservices.Count > 0).ToList();
+                        stations = stations.Where(s => s.LandingPadCheck(shipSize)).ToList();
                         int stationCount = stations.Where(s => s.stationservices.Contains(service)).Count();
 
                         // Build list to find the IF system nearest to the current system
@@ -133,7 +134,8 @@ namespace EddiNavigationService
 
                         // Filter stations within the IF system which meet the game version and landing pad size requirements
                         List<Station> IFStations = EDDI.Instance.inHorizons ? IFStarSystem.stations : IFStarSystem.orbitalstations
-                            .Where(s => s.stationservices.Count > 0 && s.LandingPadCheck(shipSize)).ToList();
+                            .Where(s => s.stationservices.Count > 0).ToList();
+                        IFStations = IFStations.Where(s => s.LandingPadCheck(shipSize)).ToList();
                         IFStations = IFStations.Where(s => s.stationservices.Contains(service)).ToList();
 
                         // Build list to find the IF station nearest to the main star

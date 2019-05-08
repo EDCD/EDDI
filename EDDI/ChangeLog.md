@@ -46,7 +46,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
     - Added `altitude_from_average_radius`, true if the altitude is computed relative to the average radius (which is used at higher altitudes) rather than surface directly below the srv
     * Revised `Jumped` script to provide a (reasonably) accurate jump range, based on total ship mass.
     * Revised `Ship targeted` script to utilize new `shiptargets` object to preclude reporting on previously scanned ships.
-    * Added `RouteDetails()` Cottle function call to provide useful jump infomation based on ship loadout and fuel level.
+    * Added `RouteDetails()` Cottle function call to provide useful jump infomation based on ship loadout and fuel level. See `Help` & `Variables` windows for details.
   * Voice Attack
     * Added `Destination system`, `Destination system distance`, and `Destination station` properties.
     * Added `{TXT:Status legal status}`

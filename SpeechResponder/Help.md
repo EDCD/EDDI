@@ -205,16 +205,20 @@ Common usage of this is to provide clear callsigns and idents for ships, for exa
 
 ### JumpDetails()
 
-This function will provide jump information based on your ship loadout and current fuel level.
+This function will provide jump information based on your ship loadout and current fuel level, dependent on the followiing types:
 
-JumpDetails() triggers a `Jump details` event with the following event properties:
+  * `next` range of next jump at current fuel level
+  * `max` range of single jump at 'max fuel'
+  * `total` total range of multiple jumps at current fuel level
+  * `full` total range of multiple jumps at tank and reservoir capacity
 
-  - `jumprange` single jump distance, limited by max jump range, total mass and current fuel on board
-  - `fuelrange` total jump distance, using all current fuel on board
-  - `jumpsremaining` number of jumps remaining, using all current fuel on board
-  - `maxfuelrange` total jump distance, when completely fueled
-  - `maxjumps` total number of jumps, when completely fueled
- 
+ Common usage is to provide distance and number of jumps for a specific query:
+
+    {set detail to JumpDetails("total")}
+    Total jump range at current fuel levels is {round(detail.distance, 1)} light years with {detail.jumps} jumps until empty.
+    {if detail.distance < destdistance:
+	    Warning: Fuel levels insufficient to reach destination. Fuel scooping is required.
+	}
 
 ### List()
 
