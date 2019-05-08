@@ -205,15 +205,6 @@ namespace EddiCrimeMonitor.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Your criminal record is listed below..
-        /// </summary>
-        public static string para1 {
-            get {
-                return ResourceManager.GetString("para1", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Remove.
         /// </summary>
         public static string remove_button {

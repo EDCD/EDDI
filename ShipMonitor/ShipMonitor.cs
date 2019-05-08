@@ -1617,17 +1617,19 @@ namespace EddiShipMonitor
             decimal currentFuel = EDDI.Instance.Status.fuel ?? 0;
             decimal maxFuel = ship.fueltanktotalcapacity + ship.activeFuelReservoirCapacity ?? 0;
 
-            if (type != null)
+            if (!string.IsNullOrEmpty(type))
             {
                 switch (type)
                 {
                     case "next":
                         {
-                            return new JumpDetail( JumpRange(ship, currentFuel, cargoCarried), 1);
+                            decimal distance = JumpRange(ship, currentFuel, cargoCarried);
+                            return new JumpDetail( distance, 1);
                         }
                     case "max":
                         {
-                            return new JumpDetail(JumpRange(ship, ship.maxfuelperjump, cargoCarried), 1);
+                            decimal distance = JumpRange(ship, ship.maxfuelperjump, cargoCarried);
+                            return new JumpDetail(distance, 1);
                         }
                     case "total":
                         {

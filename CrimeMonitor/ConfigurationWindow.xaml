@@ -10,7 +10,6 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="800">
     <DockPanel LastChildFill="True" Background="#FFE5E5E5" Margin="0,5">
-        <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Margin="5, 20" Text="{x:Static resx:CrimeMonitor.para1}" />
         <Grid DockPanel.Dock="Top" Margin="0,5" >
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="250" />

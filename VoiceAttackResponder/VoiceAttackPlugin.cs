@@ -977,10 +977,13 @@ namespace EddiVoiceAttackResponder
             try
             {
                 string type = vaProxy.GetText("Type variable");
-                ShipMonitor.JumpDetail detail = ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).JumpDetails(type);
-                vaProxy.SetDecimal("Ship jump detail distance", detail.distance);
-                vaProxy.SetInt("Ship jump detail jumps", detail.jumps);
-                vaProxy.SetText("Type variable", null);
+                if (!string.IsNullOrEmpty(type))
+                {
+                    ShipMonitor.JumpDetail detail = ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).JumpDetails(type);
+                    vaProxy.SetDecimal("Ship jump detail distance", detail?.distance);
+                    vaProxy.SetInt("Ship jump detail jumps", detail?.jumps);
+                    vaProxy.SetText("Type variable", null);
+                }
             }
             catch (Exception e)
             {

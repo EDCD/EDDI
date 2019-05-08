@@ -33,7 +33,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Added `Crime check system` script to report wanted status and 'legal facilities', upon entering the system.
     * Added `Crime check station` script to report 'legal facilities', upon entering normal space, next to station.
     * Revised `Ship targeted` script to utilize new `shiptargets` object to preclude reporting on previously scanned ships.
-    * Added `RouteDetails()` Cottle function call to provide useful jump infomation based on ship loadout and fuel level.
+    * Added `RouteDetails()` Cottle function call to provide useful jump infomation based on ship loadout and fuel level. See `Help` & `Variables` windows for details.
   * Voice Attack
     * Added `Destination system`, `Destination system distance`, and `Destination station` properties.
     * Added `jumpdetails` plugin invocation to provide useful jump infomation based on ship loadout and fuel level.

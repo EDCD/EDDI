@@ -642,14 +642,17 @@ namespace EddiJournalMonitor
                                                 {
                                                     string fsd = module.@class + module.grade;
                                                     Constants.baseOptimalMass.TryGetValue(fsd, out optimalMass);
-                                                    engineeringData.TryGetValue("Modifiers", out val);
-                                                    List<object> modifiersData = (List<object>)val;
-                                                    foreach (Dictionary<string, object> modifier in modifiersData)
+                                                    if (modified)
                                                     {
-                                                        string label = JsonParsing.getString(modifier, "Label");
-                                                        if (label == "FSDOptimalMass")
+                                                        engineeringData.TryGetValue("Modifiers", out val);
+                                                        List<object> modifiersData = (List<object>)val;
+                                                        foreach (Dictionary<string, object> modifier in modifiersData)
                                                         {
-                                                            optimalMass = JsonParsing.getDecimal(modifier, "Value");
+                                                            string label = JsonParsing.getString(modifier, "Label");
+                                                            if (label == "FSDOptimalMass")
+                                                            {
+                                                                optimalMass = JsonParsing.getDecimal(modifier, "Value");
+                                                            }
                                                         }
                                                     }
                                                 }
