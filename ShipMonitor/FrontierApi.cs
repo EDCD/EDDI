@@ -105,7 +105,8 @@ namespace EddiShipMonitor
                     string fsd = Ship.frameshiftdrive.@class + Ship.frameshiftdrive.grade;
                     if (Constants.baseOptimalMass.TryGetValue(fsd, out decimal optimalMass))
                     {
-                        decimal modifier = (decimal?)json["WorkInProgress_modifications"]["OutfittingFieldType_FSDOptimalMass"]["value"] ?? 1;
+                        decimal modifier = (decimal?)json["modules"]["FrameShiftDrive"]["WorkInProgress_modifications"]?
+                            ["OutfittingFieldType_FSDOptimalMass"]?["value"] ?? 1;
                         Ship.optimalmass = optimalMass * modifier;
                     }
 
