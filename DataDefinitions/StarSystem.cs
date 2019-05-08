@@ -83,6 +83,10 @@ namespace EddiDataDefinitions
 
         // Other data
 
+        /// <summary>Types of signals detected within the system</summary>
+        [JsonIgnore]
+        public List<string> signalsources { get; set; } = new List<string>();
+
         /// <summary>Number of visits</summary>
         public int visits;
 

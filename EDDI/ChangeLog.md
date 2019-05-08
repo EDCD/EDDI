@@ -77,12 +77,14 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Revised `Body report` script to correct some errors identified by users (terraformable bodies will now be reported as such).
     * Revised `Body scanned` script to include option to use `Body report summary` script.
     * Revised `Body volcanism report` to touch it up.
+    * Revised `Signal detected` script to allow users to better customize signal detection (particularly for rare signal types).
     * Added new script `Bodies mapped` to allow reporting which bodies in the system have already been mapped.
     * Added new script `Bodies to map` to allow reporting recommendations of bodies to map (configurable in the script).
     * Added new script `Body report summary` to allow reporting of summary body data, taking into account statistically unusual bodies.
     * The `P()` function now converts roman numerals in planet classes (e.g. Class II gas giant) into numbers (e.g. Class 2 gas giant) to ensure proper pronunciation.
     * The `Spacialise()` function no longer adds an extra space at the end of the string.
     * Enhanced `P()` function to correct mispronunciations of body names ending in "a" or "g"
+    * `Signal detected` events are no longer suppressed outside of fss mode.
 
   * Voice Attack
     * Added `Destination system`, `Destination system distance`, and `Destination station` properties.

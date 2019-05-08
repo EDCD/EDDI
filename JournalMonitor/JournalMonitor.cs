@@ -1945,6 +1945,8 @@ namespace EddiJournalMonitor
                                 break;
                             case "FSSSignalDiscovered":
                                 {
+                                    long? systemAddress = JsonParsing.getLong(data, "SystemAddress");
+
                                     SignalSource source = GetSignalSource(data);
                                     string spawningFaction = getFactionName(data, "SpawningFaction") ?? Superpower.None.localizedName; // the minor faction, if relevant
                                     decimal? secondsRemaining = JsonParsing.getOptionalDecimal(data, "TimeRemaining"); // remaining lifetime in seconds, if relevant
@@ -1957,7 +1959,7 @@ namespace EddiJournalMonitor
                                     int? threatLevel = JsonParsing.getOptionalInt(data, "ThreatLevel") ?? 0;
                                     bool? isStation = JsonParsing.getOptionalBool(data, "IsStation") ?? false;
 
-                                    events.Add(new SignalDetectedEvent(timestamp, source, spawningState, spawningFaction, secondsRemaining, threatLevel, isStation) { raw = line, fromLoad = fromLogLoad });
+                                    events.Add(new SignalDetectedEvent(timestamp, systemAddress, source, spawningState, spawningFaction, secondsRemaining, threatLevel, isStation) { raw = line, fromLoad = fromLogLoad });
                                     handled = true;
                                 }
                                 break;
@@ -3391,13 +3393,15 @@ namespace EddiJournalMonitor
             SignalSource source;
             if (JsonParsing.getString(data, "USSType") != null)
             {
-                source = SignalSource.FromEDName(JsonParsing.getString(data, "USSType"));
-                source.fallbackLocalizedName = JsonParsing.getString(data, "USSType_Localised");
+                string signalSource = JsonParsing.getString(data, "USSType");
+                source = SignalSource.FromEDName(signalSource) ?? new SignalSource();
+                source.fallbackLocalizedName = JsonParsing.getString(data, "USSType_Localised") ?? signalSource;
             }
             else
             {
-                source = SignalSource.FromEDName(JsonParsing.getString(data, "SignalName"));
-                source.fallbackLocalizedName = JsonParsing.getString(data, "SignalName_Localised");
+                string signalSource = JsonParsing.getString(data, "SignalName");
+                source = SignalSource.FromEDName(signalSource) ?? new SignalSource();
+                source.fallbackLocalizedName = JsonParsing.getString(data, "SignalName_Localised") ?? signalSource;
             }
 
             return source;
@@ -3759,6 +3763,25 @@ namespace EddiJournalMonitor
 
         public void PostHandle(Event @event)
         {
+            if (@event is SignalDetectedEvent)
+            {
+                eventSignalDetected((SignalDetectedEvent)@event);
+            }
+        }
+
+        private bool eventSignalDetected(SignalDetectedEvent @event)
+        {
+            if (EDDI.Instance.CurrentStarSystem != null && !@event.fromLoad)
+            {
+                if (EDDI.Instance.CurrentStarSystem.systemAddress == @event.systemAddress)
+                {
+                    if (!EDDI.Instance.CurrentStarSystem.signalsources.Exists(s => s == @event.source))
+                    {
+                        EDDI.Instance.CurrentStarSystem.signalsources.Add(@event.source);
+                    }
+                }
+            }
+            return true;
         }
 
         public void HandleProfile(JObject profile)
