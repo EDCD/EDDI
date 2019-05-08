@@ -329,7 +329,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Superpowers.resx</DependentUpon>
     </Compile>
-    <Compile Include="Status.cs" />
     <Compile Include="Friend.cs" />
     <Compile Include="EconomyShare.cs" />
     <Compile Include="RingComposition.cs" />

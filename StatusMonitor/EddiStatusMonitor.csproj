@@ -55,6 +55,7 @@
     <Compile Include="SilentRunningEvent.cs" />
     <Compile Include="SRVTurretDeployableEvent.cs" />
     <Compile Include="SrvTurretEvent.cs" />
+    <Compile Include="Status.cs" />
     <Compile Include="StatusMonitor.cs" />
   </ItemGroup>
   <ItemGroup>
