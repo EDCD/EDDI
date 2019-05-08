@@ -70,7 +70,6 @@
     <Compile Include="CrewPromotionEvent.cs" />
     <Compile Include="EngineerContributionEvent.cs" />
     <Compile Include="FSDTargetEvent.cs" />
-    <Compile Include="JumpDetailsEvent.cs" />
     <Compile Include="MarketEvent.cs" />
     <Compile Include="OutfittingEvent.cs" />
     <Compile Include="RouteDetailsEvent.cs" />
