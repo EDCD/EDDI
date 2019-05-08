@@ -190,5 +190,8 @@
     <comment>Crime collidedAtSpeedInNoFireZone_hulldamage</comment>
   </data>
   
-  
+  <data name="passengerWanted" xml:space="preserve">
+    <value>Transportando a un pasajero buscado</value>
+    <comment>Crime passengerWanted</comment>
+  </data>
 </root>
