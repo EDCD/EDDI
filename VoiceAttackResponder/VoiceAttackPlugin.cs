@@ -976,7 +976,11 @@ namespace EddiVoiceAttackResponder
         {
             try
             {
-                ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).JumpDetails();
+                string type = vaProxy.GetText("Type variable");
+                ShipMonitor.JumpDetail detail = ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).JumpDetails(type);
+                vaProxy.SetDecimal("Ship jump detail distance", detail.distance);
+                vaProxy.SetInt("Ship jump detail jumps", detail.jumps);
+                vaProxy.SetText("Type variable", null);
             }
             catch (Exception e)
             {
@@ -1076,6 +1080,8 @@ namespace EddiVoiceAttackResponder
                         }
                         break;
                 }
+                vaProxy.SetText("Type variable", null);
+                vaProxy.SetText("System variable", null);
             }
             catch (Exception e)
             {

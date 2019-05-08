@@ -6,7 +6,6 @@ using Cottle.Stores;
 using Cottle.Values;
 using Eddi;
 using EddiCargoMonitor;
-using EddiCrimeMonitor;
 using EddiDataDefinitions;
 using EddiDataProviderService;
 using EddiMissionMonitor;
@@ -545,11 +544,15 @@ namespace EddiSpeechResponder
 
             store["JumpDetails"] = new NativeFunction((values) =>
             {
-                decimal? result = null;
-
-                result = ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).JumpDetails();
+                ShipMonitor.JumpDetail result = new ShipMonitor.JumpDetail();
+                string value = values[0].AsString;
+                if (string.IsNullOrEmpty(value))
+                {
+                    return null;
+                }
+                result = ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).JumpDetails(value);
                 return (result == null ? new ReflectionValue(new object()) : new ReflectionValue(result));
-            }, 0);
+            }, 1);
 
             store["CombatRatingDetails"] = new NativeFunction((values) =>
             {
@@ -748,7 +751,7 @@ namespace EddiSpeechResponder
                         }
                         break;
                 }
-                return (result == null ? new ReflectionValue(new object()) : new ReflectionValue(result));
+                return result == null ? new ReflectionValue(new object()) : new ReflectionValue(result);
             }, 1, 2);
 
             store["StationDetails"] = new NativeFunction((values) =>

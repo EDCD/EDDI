@@ -29,6 +29,8 @@ namespace EddiShipMonitor
 
         // Observable collection for us to handle changes
         public ObservableCollection<Ship> shipyard { get; private set; }
+
+        // List of stored modules from 'Stored modules' event
         public List<StoredModule> storedmodules { get; private set; }
 
         // The ID of the current ship; can be null
@@ -1606,49 +1608,54 @@ namespace EddiShipMonitor
             }
         }
 
-        public decimal JumpDetails()
+        public JumpDetail JumpDetails(string type)
         {
             Ship ship = GetCurrentShip();
-            int cargoCarried = ((CargoMonitor)EDDI.Instance.ObtainMonitor("Cargo monitor")).cargoCarried;
-            decimal? fuelStatus = EDDI.Instance.Status.fuel;
-            decimal? totalFuelCapacity = ship.fueltanktotalcapacity + ship.activeFuelReservoirCapacity;
-            decimal jumpRange = 0;
-            decimal fuelRange = 0;
-            int jumpsRemaining = 0;
-            decimal maxFuelRange = 0;
-            int maxJumps = 0;
-
-            // Ensure max fuel per jump is accurate
             ship.maxfuelperjump = MaxFuelPerJump(ship);
 
-            if (fuelStatus != null)
+            int cargoCarried = ((CargoMonitor)EDDI.Instance.ObtainMonitor("Cargo monitor")).cargoCarried;
+            decimal currentFuel = EDDI.Instance.Status.fuel ?? 0;
+            decimal maxFuel = ship.fueltanktotalcapacity + ship.activeFuelReservoirCapacity ?? 0;
+
+            if (type != null)
             {
-                decimal currentFuel = fuelStatus ?? 0;
-
-                jumpRange = JumpRange(ship, currentFuel, cargoCarried);
-
-                while (currentFuel > 0)
+                switch (type)
                 {
-                    fuelRange += JumpRange(ship, currentFuel, cargoCarried);
-                    currentFuel -= Math.Min(currentFuel, ship.maxfuelperjump);
-                    jumpsRemaining++;
+                    case "next":
+                        {
+                            return new JumpDetail( JumpRange(ship, currentFuel, cargoCarried), 1);
+                        }
+                    case "max":
+                        {
+                            return new JumpDetail(JumpRange(ship, ship.maxfuelperjump, cargoCarried), 1);
+                        }
+                    case "total":
+                        {
+                            decimal total = 0;
+                            int jumps = 0;
+                            while (currentFuel > 0)
+                            {
+                                total += JumpRange(ship, currentFuel, cargoCarried);
+                                jumps++;
+                                currentFuel -= Math.Min(currentFuel, ship.maxfuelperjump);
+                            }
+                            return new JumpDetail(total, jumps);
+                        }
+                    case "full":
+                        {
+                            decimal total = 0;
+                            int jumps = 0;
+                            while (maxFuel > 0)
+                            {
+                                total += JumpRange(ship, maxFuel, cargoCarried);
+                                jumps++;
+                                maxFuel -= Math.Min(maxFuel, ship.maxfuelperjump);
+                            }
+                            return new JumpDetail(total, jumps);
+                        }
                 }
             }
-
-            if (totalFuelCapacity != null)
-            {
-                decimal maxFuel = totalFuelCapacity ?? 0;
-                while (maxFuel > 0)
-                {
-                    maxFuelRange += JumpRange(ship, maxFuel, cargoCarried);
-                    maxFuel -= Math.Min(maxFuel, ship.maxfuelperjump);
-                    maxJumps++;
-                }
-            }
-
-            EDDI.Instance.enqueueEvent(new JumpDetailsEvent(DateTime.UtcNow, jumpRange, fuelRange, jumpsRemaining, maxFuelRange, maxJumps));
-
-            return jumpRange;
+            return null;
         }
 
         private decimal JumpRange(Ship ship, decimal currentFuel, int cargoCarried)
@@ -1724,6 +1731,20 @@ namespace EddiShipMonitor
                 {
                     uiSyncContext.Send(delegate { handler(sender, EventArgs.Empty); }, null);
                 }
+            }
+        }
+
+        public class JumpDetail
+        {
+            public decimal distance { get; private set; }
+            public int jumps { get; private set; }
+
+            public JumpDetail() { }
+
+            public JumpDetail(decimal distance, int jumps)
+            {
+                this.distance = distance;
+                this.jumps = jumps;
             }
         }
     }
