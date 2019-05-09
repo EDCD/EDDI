@@ -1454,7 +1454,10 @@
     <value>Torval reklám szerződések</value>
     <comment>Commodity torvalcommercialcontracts</comment>
   </data>
-  
+  <data name="lavignygarisonsupplies" xml:space="preserve">
+    <value>Lavigny helyőrségi készletek</value>
+    <comment>Commodity lavignygarisonsupplies</comment>
+  </data>
   <data name="lavignycorruptiondossiers" xml:space="preserve">
     <value>Lavigny Korrupciós jelentések</value>
     <comment>Commodity lavignycorruptiondossiers</comment>
@@ -1491,13 +1494,22 @@
     <value>Harmai Ezüst tenger rum</value>
     <comment>Commodity HarmaSilverSeaRum</comment>
   </data>
-  
-  
+  <data name="IllicitConsignment" xml:space="preserve">
+    <value>Kumói csempészcsomag</value>
+    <comment>Commodity IllicitConsignment</comment>
+  </data>
+  <data name="LavignyFieldSupplies" xml:space="preserve">
+    <value>Lavigny harctéri készletek</value>
+    <comment>Commodity LavignyFieldSupplies</comment>
+  </data>
   <data name="LiberalCampaignMaterials" xml:space="preserve">
     <value>Liberális propaganda</value>
     <comment>Commodity LiberalCampaignMaterials</comment>
   </data>
-  
+  <data name="LoanedArms" xml:space="preserve">
+    <value>Jelölt katonai fegyverek</value>
+    <comment>Commodity LoanedArms</comment>
+  </data>
   <data name="MarkedSlaves" xml:space="preserve">
     <value>Megjelölt Rabszolgák</value>
     <comment>Commodity MarkedSlaves</comment>
@@ -1507,15 +1519,30 @@
     <value>Hagymafej minták</value>
     <comment>Commodity OnionheadSamples</comment>
   </data>
-  
-  
-  
+  <data name="OutOfDateGoods" xml:space="preserve">
+    <value>Elavult áruk</value>
+    <comment>Commodity OutOfDateGoods</comment>
+  </data>
+  <data name="PatreusFieldSupplies" xml:space="preserve">
+    <value>Patreus harctéri készletek</value>
+    <comment>Commodity PatreusFieldSupplies</comment>
+  </data>
+  <data name="PatreusGarisonSupplies" xml:space="preserve">
+    <value>Patreus helyőrségi készletek</value>
+    <comment>Commodity PatreusGarisonSupplies</comment>
+  </data>
   <data name="PlatinumAloy" xml:space="preserve">
     <value>Platinaötvözet</value>
     <comment>Commodity PlatinumAloy</comment>
   </data>
-  
-  
+  <data name="RepublicanFieldSupplies" xml:space="preserve">
+    <value>Hudson harctéri készletek</value>
+    <comment>Commodity RepublicanFieldSupplies</comment>
+  </data>
+  <data name="RepublicanGarisonSupplies" xml:space="preserve">
+    <value>Hudson helyőrségi készletek</value>
+    <comment>Commodity RepublicanGarisonSupplies</comment>
+  </data>
   
   
   <data name="SiriusCommercialContracts" xml:space="preserve">
@@ -1538,12 +1565,18 @@
     <value>Jelöletlen katonai utánpótlás</value>
     <comment>Commodity UnmarkedWeapons</comment>
   </data>
-  
+  <data name="UtopianDissident" xml:space="preserve">
+    <value>Utópista disszidens</value>
+    <comment>Commodity UtopianDissident</comment>
+  </data>
   <data name="UtopianFieldSupplies" xml:space="preserve">
     <value>Utopian utánpótlás</value>
     <comment>Commodity UtopianFieldSupplies</comment>
   </data>
-  
+  <data name="UtopianPublicity" xml:space="preserve">
+    <value>Utópia hirdetmény</value>
+    <comment>Commodity UtopianPublicity</comment>
+  </data>
   <data name="PersonalGifts" xml:space="preserve">
     <value>Személyes ajándékok</value>
     <comment>Commodity.PersonalGifts</comment>
