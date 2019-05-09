@@ -702,7 +702,7 @@
     <comment>Commodity IonDistributor</comment>
   </data>
   <data name="Jadeite" xml:space="preserve">
-    <value>Jáde</value>
+    <value>Jádekő</value>
     <comment>Commodity Jadeite</comment>
   </data>
   <data name="JaquesQuinentianStill" xml:space="preserve">
@@ -1357,7 +1357,10 @@
     <value>Vidavantai zsineg</value>
     <comment>Commodity VidavantianLace</comment>
   </data>
-  
+  <data name="LFTVoidExtractCoffee" xml:space="preserve">
+    <value>Űrben termesztett kávé</value>
+    <comment>Commodity VoidExtractCoffee</comment>
+  </data>
   <data name="VolkhabBeeDrones" xml:space="preserve">
     <value>Vokhabi méh drónok</value>
     <comment>Commodity VolkhabBeeDrones</comment>
@@ -1515,8 +1518,14 @@
   
   
   
-  
-  
+  <data name="SiriusCommercialContracts" xml:space="preserve">
+    <value>Szíriuszi reklám szerződések</value>
+    <comment>Commodity SiriusCommercialContracts</comment>
+  </data>
+  <data name="SiriusFranchisePackage" xml:space="preserve">
+    <value>Szíriuszi franchise szerződéscsomag</value>
+    <comment>Commodity SiriusFranchisePackage</comment>
+  </data>
   <data name="SiriusIndustrialEquipment" xml:space="preserve">
     <value>Siriusi ipari berendezés</value>
     <comment>Commodity SiriusIndustrialEquipment</comment>
@@ -1564,13 +1573,34 @@
     <value>Nanogyógyszerek</value>
     <comment>Commodity Nanomedicines</comment>
   </data>
-  
-  
-  
-  
-  
-  
-  
+  <data name="Rhodplumsite" xml:space="preserve">
+    <value>Rodplumszit</value>
+    <comment>Commodity Rhodplumsite</comment>
+  </data>
+  <data name="Serendibite" xml:space="preserve">
+    <value>Szerendibit</value>
+    <comment>Commodity Serendibite</comment>
+  </data>
+  <data name="Monazite" xml:space="preserve">
+    <value>Monacit</value>
+    <comment>Commodity Monazite</comment>
+  </data>
+  <data name="Musgravite" xml:space="preserve">
+    <value>Musgravit</value>
+    <comment>Commodity Musgravite</comment>
+  </data>
+  <data name="Benitoite" xml:space="preserve">
+    <value>Benitoit</value>
+    <comment>Commodity Benitoite</comment>
+  </data>
+  <data name="Grandidierite" xml:space="preserve">
+    <value>Grandidierit</value>
+    <comment>Commodity Grandidierite</comment>
+  </data>
+  <data name="Alexandrite" xml:space="preserve">
+    <value>Alexandrit</value>
+    <comment>Commodity Alexandrite</comment>
+  </data>
   
   
 </root>
