@@ -118,23 +118,23 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="carbon" xml:space="preserve">
-    <value>Bolygófelszíni feltárásból, aszteroid és jéggyűrű bányászatból kinyerve.</value>
+    <value>Bolygó felszínen, aszteroid és jéggyűrű bányászatból kinyerhető.</value>
     <comment>Material location Carbon</comment>
   </data>
   <data name="iron" xml:space="preserve">
-    <value>Bolygófelszíni feltárásból, aszteroid vagy jéggyűrű bányászatból kinyerve.</value>
+    <value>Bolygó felszínen, aszteroid vagy jéggyűrű bányászatból kinyerhető.</value>
     <comment>Material location Iron</comment>
   </data>
   <data name="nickel" xml:space="preserve">
-    <value>Bolygófelszíni feltárásból, aszteroid vagy jéggyűrű bányászatból kinyerve.</value>
+    <value>Bolygó felszínen, aszteroid vagy jéggyűrű bányászatból kinyerhető.</value>
     <comment>Material location Nickel</comment>
   </data>
   <data name="phosphorus" xml:space="preserve">
-    <value>Bolygófelszíni feltárásból, aszteroid vagy jégbányászatból kinyerve.</value>
+    <value>Bolygó felszínen, aszteroid vagy jég bányászatból kinyerhető.</value>
     <comment>Material location Phosphorus</comment>
   </data>
   <data name="sulphur" xml:space="preserve">
-    <value>Bolygófelszíni feltárásból, aszteroid vagy jéggyűrű bányászatból kinyerve.</value>
+    <value>Bolygó felszínen, aszteroid vagy jéggyűrű bányászatból kinyerhető.</value>
     <comment>Material location Sulphur</comment>
   </data>
   
@@ -143,7 +143,7 @@
   
   
   <data name="zinc" xml:space="preserve">
-    <value>Bolygófelszíni feltárásból kinyerve.</value>
+    <value>Bolygó felszínen található.</value>
     <comment>Material location Zinc</comment>
   </data>
   
