@@ -949,9 +949,18 @@
     <value>Hagyma</value>
     <comment>Commodity OnionHead</comment>
   </data>
-  
-  
-  
+  <data name="OnionHeadA" xml:space="preserve">
+    <value>Alfa hagymakivonat</value>
+    <comment>Commodity OnionheadAlphaStrain</comment>
+  </data>
+  <data name="OnionHeadB" xml:space="preserve">
+    <value>Beta hagymakivonat</value>
+    <comment>Commodity OnionheadBetaStrain</comment>
+  </data>
+  <data name="OphiuchiExinoArtefacts" xml:space="preserve">
+    <value>Ophiuch-i Exino műalkotás</value>
+    <comment>Commodity OphiuchExinoArtefacts</comment>
+  </data>
   <data name="OrrerianViciousBrew" xml:space="preserve">
     <value>Orrerian-i gonosz főzet</value>
     <comment>Commodity OrrerianViciousBrew</comment>
@@ -1443,15 +1452,30 @@
     <comment>Commodity torvalcommercialcontracts</comment>
   </data>
   
-  
+  <data name="lavignycorruptiondossiers" xml:space="preserve">
+    <value>Lavigny Korrupciós jelentések</value>
+    <comment>Commodity lavignycorruptiondossiers</comment>
+  </data>
   <data name="Unknown" xml:space="preserve">
     <value>Ismeretlen</value>
     <comment>Commodity Unknown</comment>
   </data>
-  
-  
-  
-  
+  <data name="AislingMediaResources" xml:space="preserve">
+    <value>Aisling biztositott szerződések</value>
+    <comment>Commodity AislingMediaResources</comment>
+  </data>
+  <data name="AllianceLegaslativeContracts" xml:space="preserve">
+    <value>Szøvetségi törvényhozói szerződések</value>
+    <comment>Commodity AllianceLegaslativeContracts</comment>
+  </data>
+  <data name="AllianceTradeAgreements" xml:space="preserve">
+    <value>Szövetségi kereskedelmi megállapodások</value>
+    <comment>Commodity AllianceTradeAgreements</comment>
+  </data>
+  <data name="BuckyballBeerMats" xml:space="preserve">
+    <value>Buckyball Sör alátét</value>
+    <comment>Commodity BuckyballBeerMats</comment>
+  </data>
   
   
   
