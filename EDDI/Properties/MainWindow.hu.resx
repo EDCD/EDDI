@@ -148,7 +148,10 @@
   <data name="verbose_logging_checkbox" xml:space="preserve">
     <value>Széles körű naplózás engedélyezése (csak amennyiben erre felkérést kapott az EDDI fejlesztőitől)</value>
   </data>
-  
+  <data name="verbose_logging_desc" xml:space="preserve">
+    <value>Ha a verbose loggolás engedélyezve van ez létrehoz egy zip archivumot az asztalta amely tartalmazza a logjaidat mely hiba jelentés esetén azzonnal bemasolható a GitHub-ra.
+Személyes infórmációk vagy azonosításra alkalmas adatok nem szerepelnek az archívumban és a log-ban.</value>
+  </data>
   <data name="version_hyperlink" xml:space="preserve">
     <value>Verzió:</value>
   </data>
