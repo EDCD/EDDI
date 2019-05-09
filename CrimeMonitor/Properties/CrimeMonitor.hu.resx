@@ -120,7 +120,9 @@
   <data name="add_button" xml:space="preserve">
     <value>Rekord hozzáadása</value>
   </data>
-  
+  <data name="add_button_desc" xml:space="preserve">
+    <value>Kisebb frakcióról való bejegyzés kézi hozzáadását teszi lehetővé.</value>
+  </data>
   <data name="add_button_text" xml:space="preserve">
     <value>Rekord hozzáadása:</value>
   </data>
@@ -169,7 +171,9 @@
   <data name="remove_button" xml:space="preserve">
     <value>Törlés</value>
   </data>
-  
+  <data name="remove_button_desc" xml:space="preserve">
+    <value>Kisebb frakcióról való bejegyzés kézi eltávolítását teszi lehetővé.</value>
+  </data>
   <data name="remove_button_text" xml:space="preserve">
     <value>Törlés:</value>
   </data>
@@ -179,7 +183,9 @@
   <data name="update_button" xml:space="preserve">
     <value>Frissítés</value>
   </data>
-  
+  <data name="update_button_desc" xml:space="preserve">
+    <value>Kisebb frakció információját (rendszer, állomás, stb.) frissíti.</value>
+  </data>
   <data name="update_button_text" xml:space="preserve">
     <value>Frissítés:</value>
   </data>
