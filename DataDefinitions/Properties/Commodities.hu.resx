@@ -1480,15 +1480,30 @@
   
   
   
+  <data name="GromWarTrophies" xml:space="preserve">
+    <value>Yuri Grom Katonai utánpótlás</value>
+    <comment>Commodity GromWarTrophies</comment>
+  </data>
+  <data name="HarmaSilverSeaRum" xml:space="preserve">
+    <value>Harmai Ezüst tenger rum</value>
+    <comment>Commodity HarmaSilverSeaRum</comment>
+  </data>
   
   
+  <data name="LiberalCampaignMaterials" xml:space="preserve">
+    <value>Liberális propaganda</value>
+    <comment>Commodity LiberalCampaignMaterials</comment>
+  </data>
   
+  <data name="MarkedSlaves" xml:space="preserve">
+    <value>Megjelölt Rabszolgák</value>
+    <comment>Commodity MarkedSlaves</comment>
+  </data>
   
-  
-  
-  
-  
-  
+  <data name="OnionheadSamples" xml:space="preserve">
+    <value>Hagymafej minták</value>
+    <comment>Commodity OnionheadSamples</comment>
+  </data>
   
   
   
@@ -1506,19 +1521,49 @@
     <value>Siriusi ipari berendezés</value>
     <comment>Commodity SiriusIndustrialEquipment</comment>
   </data>
+  <data name="ThargoidScoutTissueSample" xml:space="preserve">
+    <value>Thargoid felderítő szövet minta </value>
+    <comment>Commodity ThargoidScoutTissueSample</comment>
+  </data>
+  <data name="UnmarkedWeapons" xml:space="preserve">
+    <value>Jelöletlen katonai utánpótlás</value>
+    <comment>Commodity UnmarkedWeapons</comment>
+  </data>
   
+  <data name="UtopianFieldSupplies" xml:space="preserve">
+    <value>Utopian utánpótlás</value>
+    <comment>Commodity UtopianFieldSupplies</comment>
+  </data>
   
+  <data name="PersonalGifts" xml:space="preserve">
+    <value>Személyes ajándékok</value>
+    <comment>Commodity.PersonalGifts</comment>
+  </data>
   
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="ancientkey" xml:space="preserve">
+    <value>Ősi kulcs</value>
+    <comment>Commodity Ancient Key</comment>
+  </data>
+  <data name="ThargoidTissueSampleType1" xml:space="preserve">
+    <value>Thargoid küklopsz szövet minta</value>
+    <comment>Commodity ThargoidTissueSampleType1</comment>
+  </data>
+  <data name="ThargoidTissueSampleType2" xml:space="preserve">
+    <value>Thargoid Bazliliszkus szövet minta</value>
+    <comment>Commodity ThargoidTissueSampleType2</comment>
+  </data>
+  <data name="ThargoidTissueSampleType3" xml:space="preserve">
+    <value>Thargoid Medúza szövet minta</value>
+    <comment>Commodity ThargoidTissueSampleType3</comment>
+  </data>
+  <data name="ThargoidTissueSampleType4" xml:space="preserve">
+    <value>Thargoid Hidra szövet minta</value>
+    <comment>Commodity ThargoidTissueSampleType4</comment>
+  </data>
+  <data name="Nanomedicines" xml:space="preserve">
+    <value>Nanogyógyszerek</value>
+    <comment>Commodity Nanomedicines</comment>
+  </data>
   
   
   
