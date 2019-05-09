@@ -126,9 +126,7 @@
   <data name="Assassinate" xml:space="preserve">
     <value>Orgyilkosság</value>
   </data>
-  <data name="AssassinateWing" xml:space="preserve">
-    <value>Kötelék orgyilkosság</value>
-  </data>
+  
   <data name="Collect" xml:space="preserve">
     <value>Begyűjtés</value>
   </data>
@@ -143,11 +141,19 @@
     <value>Szállítás</value>
   </data>
   
+  <data name="Disable" xml:space="preserve">
+    <value>Felszíni létesítmény megbénítása</value>
+  </data>
   
-  
-  
-  
-  
+  <data name="GenericPermit1" xml:space="preserve">
+    <value>Engedély megszerzése</value>
+  </data>
+  <data name="Hack" xml:space="preserve">
+    <value>Feltörés</value>
+  </data>
+  <data name="LongDistanceExpedition" xml:space="preserve">
+    <value>Expedíció</value>
+  </data>
   <data name="Massacre" xml:space="preserve">
     <value>Mészárlás</value>
   </data>
@@ -159,7 +165,9 @@
     <value>Bányászat</value>
   </data>
   
-  
+  <data name="None" xml:space="preserve">
+    <value>Nincs</value>
+  </data>
   <data name="PassengerBulk" xml:space="preserve">
     <value>Szállítás</value>
   </data>
@@ -175,9 +183,11 @@
   <data name="Salvage" xml:space="preserve">
     <value>Zsákmány</value>
   </data>
-  
+  <data name="Scan" xml:space="preserve">
+    <value>Felszíni szkennelés</value>
+  </data>
   <data name="Sightseeing" xml:space="preserve">
-    <value>Városnézés</value>
+    <value>Körutazás</value>
   </data>
   <data name="Smuggle" xml:space="preserve">
     <value>Csempészet</value>
