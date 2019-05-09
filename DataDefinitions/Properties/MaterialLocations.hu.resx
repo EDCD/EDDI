@@ -147,11 +147,39 @@
     <comment>Material location Zinc</comment>
   </data>
   
+  <data name="mercury" xml:space="preserve">
+    <value>Bolygó felszínen található.</value>
+    <comment>Material location Mercury</comment>
+  </data>
   
   
   
+  <data name="tungsten" xml:space="preserve">
+    <value>Bolygó felszínen található.</value>
+    <comment>Material location Tungsten</comment>
+  </data>
+  <data name="ruthenium" xml:space="preserve">
+    <value>Bolygó felszínen található.</value>
+    <comment>Material location Ruthenium</comment>
+  </data>
   
+  <data name="technetium" xml:space="preserve">
+    <value>Bolygó felszínen található.</value>
+    <comment>Material location Technetium</comment>
+  </data>
+  <data name="tellurium" xml:space="preserve">
+    <value>Bolygó felszínen található.</value>
+    <comment>Material location Tellurium</comment>
+  </data>
+  <data name="yttrium" xml:space="preserve">
+    <value>Bolygó felszínen található.</value>
+    <comment>Material location Yttrium</comment>
+  </data>
   
+  <data name="antimony" xml:space="preserve">
+    <value>Bolygó felszínen található.</value>
+    <comment>Material location Antimony</comment>
+  </data>
   
   
   
@@ -248,6 +276,10 @@
   
   
   
+  <data name="boron" xml:space="preserve">
+    <value>Aszteroid bányászattal kinyerhető.</value>
+    <comment>Material location Boron</comment>
+  </data>
   
   
   
@@ -256,16 +288,14 @@
   
   
   
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="lead" xml:space="preserve">
+    <value>Aszteroid bányászatból kinyerhető.</value>
+    <comment>Material location Lead</comment>
+  </data>
+  <data name="rhenium" xml:space="preserve">
+    <value>Aszteroid bányászatból kinyerhető.</value>
+    <comment>Material location Rhenium</comment>
+  </data>
   
   
   
