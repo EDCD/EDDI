@@ -126,14 +126,22 @@
   <data name="Assassinate" xml:space="preserve">
     <value>Orgyilkosság</value>
   </data>
-  
+  <data name="AssassinateWing" xml:space="preserve">
+    <value>Kötelék orgyilkosság</value>
+  </data>
   <data name="Collect" xml:space="preserve">
     <value>Begyűjtés</value>
   </data>
   
-  
-  
-  
+  <data name="CommunityGoal" xml:space="preserve">
+    <value>Közösségi cél</value>
+  </data>
+  <data name="Courier" xml:space="preserve">
+    <value>Adatszállító</value>
+  </data>
+  <data name="Delivery" xml:space="preserve">
+    <value>Szállítás</value>
+  </data>
   
   
   
