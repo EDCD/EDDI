@@ -274,6 +274,28 @@ namespace UnitTests
             data.ToFile();
         }
 
+        [TestMethod]
+        public void TestCrimeShipTargeted()
+        {
+            var privateObject = new PrivateObject(crimeMonitor);
+            line = "{ \"timestamp\":\"2019-04-24T00:13:35Z\", \"event\":\"ShipTargeted\", \"TargetLocked\":true, \"Ship\":\"federation_corvette\", \"Ship_Localised\":\"Federal Corvette\", \"ScanStage\":3, \"PilotName\":\"$npc_name_decorate:#name=Kurt Pettersen;\", \"PilotName_Localised\":\"Kurt Pettersen\", \"PilotRank\":\"Deadly\", \"ShieldHealth\":100.000000, \"HullHealth\":100.000000, \"Faction\":\"Calennero Crew\", \"LegalStatus\":\"Wanted\", \"Bounty\":295785 }";
+            events = JournalMonitor.ParseJournalEntry(line);
+            Assert.IsTrue(events.Count == 1);
+            privateObject.Invoke("handleShipTargetedEvent", new object[] { events[0] });
+            Assert.IsNotNull(crimeMonitor.shipTargets);
+            Target target = crimeMonitor.shipTargets.FirstOrDefault(t => t.name == "Kurt Pettersen");
+            Assert.AreEqual(CombatRating.FromEDName("Deadly"), target.CombatRank);
+            Assert.AreEqual("Calennero Crew", target.faction);
+            Assert.AreEqual(Superpower.Alliance, target.Allegiance);
+            Assert.AreEqual(295785, target.bounty);
+
+            line = "{ \"timestamp\":\"2019-04-24T00:44:32Z\", \"event\":\"FSDJump\", \"StarSystem\":\"HIP 20277\", \"SystemAddress\":84053791442, \"StarPos\":[106.43750,-95.68750,-0.18750], \"SystemAllegiance\":\"Empire\", \"SystemEconomy\":\"$economy_Industrial;\", \"SystemEconomy_Localised\":\"Industrial\", \"SystemSecondEconomy\":\"$economy_Extraction;\", \"SystemSecondEconomy_Localised\":\"Extraction\", \"SystemGovernment\":\"$government_Corporate;\", \"SystemGovernment_Localised\":\"Corporate\", \"SystemSecurity\":\"$SYSTEM_SECURITY_high;\", \"SystemSecurity_Localised\":\"High Security\", \"Population\":11247202, \"Body\":\"HIP 20277\", \"BodyID\":0, \"BodyType\":\"Star\", \"JumpDist\":7.473, \"FuelUsed\":1.140420, \"FuelLevel\":61.122398, \"SystemFaction\":{ \"Name\":\"Calennero State Industries\", \"FactionState\":\"Boom\" } }";
+            events = JournalMonitor.ParseJournalEntry(line);
+            Assert.IsTrue(events.Count == 1);
+            privateObject.Invoke("_handleJumpedEvent", new object[] { events[0] });
+            Assert.AreEqual(0, crimeMonitor.shipTargets.Count);
+        }
+
         [TestCleanup]
         private void StopTestCrimeMonitor()
         {

@@ -214,10 +214,15 @@ namespace EddiCrimeMonitor
             if (@event.timestamp > updateDat)
             {
                 updateDat = @event.timestamp;
-                shipTargets.Clear();
-                targetSystem = @event.system;
+                _handleJumpedEvent(@event);
                 writeRecord();
             }
+        }
+
+        private void _handleJumpedEvent(JumpedEvent @event)
+        {
+            shipTargets.Clear();
+            targetSystem = @event.system;
         }
 
         private void handleShipTargetedEvent(ShipTargetedEvent @event)
