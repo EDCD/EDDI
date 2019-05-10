@@ -281,7 +281,7 @@ namespace EddiStatusMonitor
                     {
                         if (fuelData is IDictionary<string, object> fuelInfo)
                         {
-                            status.fuelInMainTank = JsonParsing.getOptionalDecimal(fuelInfo, "FuelMain");
+                            status.fuelInTanks = JsonParsing.getOptionalDecimal(fuelInfo, "FuelMain");
                             status.fuelInReservoir = JsonParsing.getOptionalDecimal(fuelInfo, "FuelReservoir");
                         }
                     }

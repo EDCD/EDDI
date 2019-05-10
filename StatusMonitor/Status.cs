@@ -96,7 +96,7 @@ namespace EddiDataDefinitions
         public decimal? longitude;
         public decimal? altitude;
         public decimal? heading;
-        public decimal? fuelInMainTank;
+        public decimal? fuelInTanks;
         public decimal? fuelInReservoir;
         public int? cargo_carried;
         public string legalstatus => (legalStatus ?? LegalStatus.Clean).localizedName;
@@ -104,7 +104,7 @@ namespace EddiDataDefinitions
         public decimal? planetradius;
 
         // Variables calculated from event data
-        public decimal? fuel => fuelInMainTank + fuelInReservoir;
+        public decimal? fuel => fuelInTanks + fuelInReservoir;
         public decimal? fuel_percent { get; set; }
         public int? fuel_seconds { get; set; }
 
