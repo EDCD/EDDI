@@ -676,7 +676,7 @@ namespace EddiCrimeMonitor
 
             if (@event.fine > 0 && @event.missionid != null)
             {
-                update = AddMissionFineToRecord(@event.timestamp, @event.missionid ?? 0, @event.fine);
+                update = handleMissionFine(@event.timestamp, @event.missionid ?? 0, @event.fine);
             }
             return update;
         }
@@ -699,7 +699,7 @@ namespace EddiCrimeMonitor
 
             if (@event.fine > 0 && @event.missionid != null)
             {
-                update = AddMissionFineToRecord(@event.timestamp, @event.missionid ?? 0, @event.fine);
+                update = handleMissionFine(@event.timestamp, @event.missionid ?? 0, @event.fine);
             }
             return update;
         }
@@ -901,12 +901,22 @@ namespace EddiCrimeMonitor
             }
         }
 
-        private bool AddMissionFineToRecord(DateTime timestamp, long missionid, long fine)
+        private bool handleMissionFine(DateTime timestamp, long missionid, long fine)
+        {
+            bool update = false;
+            MissionMonitor missionMonitor = (MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor");
+            Mission mission = missionMonitor?.GetMissionWithMissionId(missionid);
+            if (mission != null)
+            {
+                update = _handleMissionFine(timestamp, mission, fine);
+            }
+            return update;
+        }
+
+        public bool _handleMissionFine(DateTime timestamp, Mission mission, long fine)
         {
             bool update = false;
 
-            MissionMonitor missionMonitor = (MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor");
-            Mission mission = missionMonitor?.GetMissionWithMissionId(missionid);
             if (mission?.faction != null)
             {
                 int shipId = EDDI.Instance?.CurrentShip?.LocalId ?? 0;
