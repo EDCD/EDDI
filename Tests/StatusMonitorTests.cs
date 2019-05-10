@@ -127,7 +127,7 @@ namespace UnitTests
             // Variables set from status flags (when not signed in, flags are set to '0')
             Assert.AreEqual(status.flags, (Status.Flags)16777240);
             Assert.AreEqual(status.vehicle, "Ship");
-            Assert.AreEqual(26.589718M, status.fuelInMainTank);
+            Assert.AreEqual(26.589718M, status.fuelInTanks);
             Assert.AreEqual(0.484983M, status.fuelInReservoir);
             Assert.AreEqual(26.589718M + 0.484983M, status.fuel);
             Assert.AreEqual(3, status.cargo_carried);
