@@ -286,7 +286,7 @@ namespace UnitTests
             Target target = crimeMonitor.shipTargets.FirstOrDefault(t => t.name == "Kurt Pettersen");
             Assert.AreEqual(CombatRating.FromEDName("Deadly"), target.CombatRank);
             Assert.AreEqual("Calennero Crew", target.faction);
-            Assert.AreEqual(Superpower.Alliance, target.Allegiance);
+            Assert.AreEqual(Superpower.Independent, target.Allegiance);
             Assert.AreEqual(295785, target.bounty);
 
             line = "{ \"timestamp\":\"2019-04-24T00:44:32Z\", \"event\":\"FSDJump\", \"StarSystem\":\"HIP 20277\", \"SystemAddress\":84053791442, \"StarPos\":[106.43750,-95.68750,-0.18750], \"SystemAllegiance\":\"Empire\", \"SystemEconomy\":\"$economy_Industrial;\", \"SystemEconomy_Localised\":\"Industrial\", \"SystemSecondEconomy\":\"$economy_Extraction;\", \"SystemSecondEconomy_Localised\":\"Extraction\", \"SystemGovernment\":\"$government_Corporate;\", \"SystemGovernment_Localised\":\"Corporate\", \"SystemSecurity\":\"$SYSTEM_SECURITY_high;\", \"SystemSecurity_Localised\":\"High Security\", \"Population\":11247202, \"Body\":\"HIP 20277\", \"BodyID\":0, \"BodyType\":\"Star\", \"JumpDist\":7.473, \"FuelUsed\":1.140420, \"FuelLevel\":61.122398, \"SystemFaction\":{ \"Name\":\"Calennero State Industries\", \"FactionState\":\"Boom\" } }";
