@@ -2,6 +2,7 @@
 using EddiCargoMonitor;
 using EddiCrimeMonitor;
 using EddiDataDefinitions;
+using EddiStatusMonitor;
 using EddiEvents;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -1614,7 +1615,7 @@ namespace EddiShipMonitor
             ship.maxfuelperjump = MaxFuelPerJump(ship);
 
             int cargoCarried = ((CargoMonitor)EDDI.Instance.ObtainMonitor("Cargo monitor")).cargoCarried;
-            decimal currentFuel = EDDI.Instance.Status.fuel ?? 0;
+            decimal? currentFuel = ((StatusMonitor)EDDI.Instance.ObtainMonitor("Status monitor")).currentStatus.fuelInTanks;
             decimal maxFuel = ship.fueltanktotalcapacity ?? 0;
 
             if (!string.IsNullOrEmpty(type))
@@ -1623,8 +1624,8 @@ namespace EddiShipMonitor
                 {
                     case "next":
                         {
-                            decimal distance = JumpRange(ship, currentFuel, cargoCarried);
-                            return new JumpDetail( distance, 1);
+                            decimal distance = JumpRange(ship, currentFuel ?? 0, cargoCarried);
+                            return new JumpDetail(distance, 1);
                         }
                     case "max":
                         {
@@ -1637,9 +1638,9 @@ namespace EddiShipMonitor
                             int jumps = 0;
                             while (currentFuel > 0)
                             {
-                                total += JumpRange(ship, currentFuel, cargoCarried);
+                                total += JumpRange(ship, currentFuel ?? 0, cargoCarried);
                                 jumps++;
-                                currentFuel -= Math.Min(currentFuel, ship.maxfuelperjump);
+                                currentFuel -= Math.Min(currentFuel ?? 0, ship.maxfuelperjump);
                             }
                             return new JumpDetail(total, jumps);
                         }
