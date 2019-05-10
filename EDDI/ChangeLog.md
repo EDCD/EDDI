@@ -47,12 +47,15 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Revised `Jumped` script to provide a (reasonably) accurate jump range, based on total ship mass.
     * Revised `Ship targeted` script to utilize new `shiptargets` object to preclude reporting on previously scanned ships.
     * Added `RouteDetails()` Cottle function call to provide useful jump infomation based on ship loadout and fuel level. See `Help` & `Variables` windows for details.
+    * Revised `Ship targeted` script to utilize new `shiptargets` object to preclude reporting on previously scanned ships.
+    * Added `RouteDetails()` Cottle function call to provide useful jump infomation based on ship loadout and fuel level. See `Help` & `Variables` windows for details.
   * Voice Attack
     * Added `Destination system`, `Destination system distance`, and `Destination station` properties.
     * Added `{TXT:Status legal status}`
     * Added `{TXT:Status body name}`
     * Added `{DEC:Status planet radius}`
     * Added `{BOOL:Status altitude from average radius}`
+    * Added `jumpdetails` plugin invocation to provide useful jump infomation based on ship loadout and fuel level.
     * Added `jumpdetails` plugin invocation to provide useful jump infomation based on ship loadout and fuel level.
 
 ### 3.4
