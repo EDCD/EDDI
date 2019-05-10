@@ -32,6 +32,9 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Added `destinationsystem`, `destinationdistance`, and `destinationstation` properties (similar to `system`)
     * Added `Crime check system` script to report wanted status and 'legal facilities', upon entering the system.
     * Added `Crime check station` script to report 'legal facilities', upon entering normal space, next to station.
+    * Revised `Jumped` script to provide a (reasonably) accurate jump range, based on total ship mass.
+    * Revised `Ship targeted` script to utilize new `shiptargets` object to preclude reporting on previously scanned ships.
+    * Added `RouteDetails()` Cottle function call to provide useful jump infomation based on ship loadout and fuel level. See `Help` & `Variables` windows for details.
   * Status monitor
     - Added `legalstatus`, the ship's current legal status. Can be one of 
       - "Clean", 
@@ -44,11 +47,6 @@ Full details of the variables available for each noted event, and VoiceAttack in
     - Added `bodyname`, the name of the current body (if landed or in an srv)
     - Added `planetradius`, the radius of the current body (if landed or in an srv)
     - Added `altitude_from_average_radius`, true if the altitude is computed relative to the average radius (which is used at higher altitudes) rather than surface directly below the srv
-    * Revised `Jumped` script to provide a (reasonably) accurate jump range, based on total ship mass.
-    * Revised `Ship targeted` script to utilize new `shiptargets` object to preclude reporting on previously scanned ships.
-    * Added `RouteDetails()` Cottle function call to provide useful jump infomation based on ship loadout and fuel level. See `Help` & `Variables` windows for details.
-    * Revised `Ship targeted` script to utilize new `shiptargets` object to preclude reporting on previously scanned ships.
-    * Added `RouteDetails()` Cottle function call to provide useful jump infomation based on ship loadout and fuel level. See `Help` & `Variables` windows for details.
   * Voice Attack
     * Added `Destination system`, `Destination system distance`, and `Destination station` properties.
     * Added `{TXT:Status legal status}`
