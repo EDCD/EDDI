@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 
-namespace EddiShipMonitor
+namespace EddiEvents
 {
     public class ShipFsdEvent : Event
     {

@@ -45,7 +45,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GlideEvent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ShipCargoScoopEvent.cs" />
+    <Compile Include="ShipFsdEvent.cs" />
+    <Compile Include="ShipLandingGearEvent.cs" />
+    <Compile Include="ShipLightsEvent.cs" />
+    <Compile Include="ShipLowFuelEvent.cs" />
+    <Compile Include="SilentRunningEvent.cs" />
+    <Compile Include="SRVTurretDeployableEvent.cs" />
+    <Compile Include="SrvTurretEvent.cs" />
+    <Compile Include="Status.cs" />
     <Compile Include="StatusMonitor.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -60,10 +70,6 @@
     <ProjectReference Include="..\Events\EddiEvents.csproj">
       <Project>{2bb41c51-9be0-49c9-91fd-c4e444994ece}</Project>
       <Name>EddiEvents</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ShipMonitor\EddiShipMonitor.csproj">
-      <Project>{5294706e-e600-4ea1-b904-66a41561e852}</Project>
-      <Name>EddiShipMonitor</Name>
     </ProjectReference>
     <ProjectReference Include="..\Utilities\Utilities.csproj">
       <Project>{cd71dd2a-86ac-44a8-959b-e1c3069966bd}</Project>

@@ -1,6 +1,5 @@
 ﻿using Eddi;
 using EddiEvents;
-using EddiShipMonitor;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -282,12 +281,14 @@ namespace EddiStatusMonitor
                     {
                         if (fuelData is IDictionary<string, object> fuelInfo)
                         {
-                            decimal? mainFuel = JsonParsing.getOptionalDecimal(fuelInfo, "FuelMain");
-                            decimal? reserveFuel = JsonParsing.getOptionalDecimal(fuelInfo, "FuelReservoir");
-                            status.fuel = mainFuel + reserveFuel;
+                            status.fuelInTanks = JsonParsing.getOptionalDecimal(fuelInfo, "FuelMain");
+                            status.fuelInReservoir = JsonParsing.getOptionalDecimal(fuelInfo, "FuelReservoir");
                         }
                     }
                     status.cargo_carried = (int?)JsonParsing.getOptionalDecimal(data, "Cargo");
+                    status.legalStatus = LegalStatus.FromEDName(JsonParsing.getString(data, "LegalState")) ?? LegalStatus.Clean;
+                    status.bodyname = JsonParsing.getString(data, "BodyName");
+                    status.planetradius = JsonParsing.getOptionalDecimal(data, "PlanetRadius");
 
                     // Calculated data
                     SetFuelExtras(status);
@@ -538,7 +539,7 @@ namespace EddiStatusMonitor
 
             if (currentStatus.vehicle == Constants.VEHICLE_SHIP)
             {
-                Ship ship = ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor"))?.GetCurrentShip();
+                Ship ship = EDDI.Instance.CurrentShip;
                 if (ship?.fueltanktotalcapacity != null && fuelRemaining != null)
                 {
                     // Fuel recorded in Status.json includes the fuel carried in the Active Fuel Reservoir

@@ -24,8 +24,24 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Added `destinationsystem`, `destinationdistance`, and `destinationstation` properties (similar to `system`)
     * Added `Crime check system` script to report wanted status and 'legal facilities', upon entering the system.
     * Added `Crime check station` script to report 'legal facilities', upon entering normal space, next to station.
+  * Status monitor
+    - Added `legalstatus`, the ship's current legal status. Can be one of 
+      - "Clean", 
+      - "Illegal cargo", 
+      - "Speeding", 
+      - "Wanted", 
+      - "Hostile", 
+      - "Passenger wanted", or 
+      - "Warrant"
+    - Added `bodyname`, the name of the current body (if landed or in an srv)
+    - Added `planetradius`, the radius of the current body (if landed or in an srv)
+    - Added `altitude_from_average_radius`, true if the altitude is computed relative to the average radius (which is used at higher altitudes) rather than surface directly below the srv
   * Voice Attack
     * Added `Destination system`, `Destination system distance`, and `Destination station` properties.
+    * Added `{TXT:Status legal status}`
+    * Added `{TXT:Status body name}`
+    * Added `{DEC:Status planet radius}`
+    * Added `{BOOL:Status altitude from average radius}`
 
 ### 3.4
   * Core
