@@ -153,8 +153,20 @@
     <value>Mandado</value>
     <comment>LegalStatus - Warrant</comment>
   </data>
-  
-  
-  
-  
+  <data name="IllegalCargo" xml:space="preserve">
+    <value>Carga ilegal</value>
+    <comment>LegalStatus - Illegal cargo</comment>
+  </data>
+  <data name="Speeding" xml:space="preserve">
+    <value>Excesso de velocidade</value>
+    <comment>LegalStatus - Speeding</comment>
+  </data>
+  <data name="Hostile" xml:space="preserve">
+    <value>Hostil</value>
+    <comment>LegalStatus - Hostile</comment>
+  </data>
+  <data name="PassengerWanted" xml:space="preserve">
+    <value>Passageiro procurado</value>
+    <comment>LegalStatus - PassengerWanted</comment>
+  </data>
 </root>
