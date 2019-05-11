@@ -119,7 +119,9 @@
   </resheader>
   
   
-  
+  <data name="p1" xml:space="preserve">
+    <value>EDDI integrálásához a Voice Attack-ba, EDDI-t a Voice Attack könyvtárába kell telepíteni. Az alap útvonal 'C:\Program Files\(x86)\Voice Attack\Apps' Ez az ahova EDDI települ alapból.</value>
+  </data>
   <data name="p2" xml:space="preserve">
     <value>EDDI csak a 1.5.12.22 vagy annál nagyobb verzió számú Voice Attack-kal működik mint plugin. Megjegyzés, ez egy beta kiadás.</value>
   </data>
