@@ -67,6 +67,9 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * Added `absolutemagnitudeprobability` (stars only)
       * Added `gravityprobability` (planets and moons only)
       * Added `pressureprobability` planets and moons only)
+    * Revised `system` object definition
+      * `isgreen` true if bodies in this starsystem contain all elements required for FSD synthesis
+      * `isgold` true if bodies in this starsystem contain all elements available from surface prospecting
     * Revised `Entered normal space`, `Glide`, `Location`, and `Near surface` event variables for better interchangeability with the `BodyDetails` function.
       * WAS: `body`*, IS: `bodyname` 
       * WAS: `system`*, IS: `systemname`
@@ -78,7 +81,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * Removed variable `firsts` (it is no longer supported by post 3.3 batch selling of exploration data).
     * Revised `Discovery scan` script to report the number of bodies remaining to be scanned while your ship's role is either `exploration` or `multipurpose`.
     * Revised `Star report` script to incorporate new variables documented above.
-    * Revised `System scan complete` script to recommend bodies for mapping (using the new `Bodies to map` script) while your ship's role is either `exploration` or `multipurpose`
+    * Revised `System scan complete` script to recommend bodies for mapping (using the new `Bodies to map` script) and to identify `green` and `gold` system discoveries while your ship's role is either `exploration` or `multipurpose`
     * Revised `Body atmosphere report` for better handling of Earth-like worlds.
     * Revised `Body mapped` script. By default, the full `Body report` script is now given after this event completes rather than after `Body scanned`. Optionally recommends other bodies in the system for mapping.
     * Revised `Body materials report` script to optionally report material percent concentrations.
