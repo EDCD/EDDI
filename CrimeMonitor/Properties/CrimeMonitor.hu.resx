@@ -118,13 +118,13 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="add_button" xml:space="preserve">
-    <value>Rekord hozzáadása</value>
+    <value>Bejegyzés hozzáadása</value>
   </data>
   <data name="add_button_desc" xml:space="preserve">
     <value>Kisebb frakcióról való bejegyzés kézi hozzáadását teszi lehetővé.</value>
   </data>
   <data name="add_button_text" xml:space="preserve">
-    <value>Rekord hozzáadása:</value>
+    <value>Bejegyzés hozzáadása:</value>
   </data>
   <data name="blank_faction" xml:space="preserve">
     <value>Frakció neve</value>
@@ -163,7 +163,7 @@
     <value>Rendszer</value>
   </data>
   <data name="orbital_station_checkbox" xml:space="preserve">
-    <value>Keringő állomások előnyben részesítése:</value>
+    <value>Orbitális állomások előnyben részesítése:</value>
   </data>
   <data name="para1" xml:space="preserve">
     <value>A bűnügyi jegyzéked alább látható.</value>
@@ -178,7 +178,7 @@
     <value>Törlés:</value>
   </data>
   <data name="tab_station_distance" xml:space="preserve">
-    <value>Maximum állomástávolság a fő csillagtól (Ls):</value>
+    <value>Maximum állomás távolsága a fő csillagtól (Ls):</value>
   </data>
   <data name="update_button" xml:space="preserve">
     <value>Frissítés</value>
