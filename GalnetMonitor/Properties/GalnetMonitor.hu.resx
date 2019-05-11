@@ -123,7 +123,9 @@
   <data name="language_label" xml:space="preserve">
     <value>Galnet nyelve</value>
   </data>
-  
+  <data name="name" xml:space="preserve">
+    <value>Galnet figyelő</value>
+  </data>
   <data name="p1" xml:space="preserve">
     <value>A nyelv módosítása után előfordulhat, hogy több mint 2 percig is eltarthat mire a Galnet hírei elérhetőek lesznek.</value>
   </data>
@@ -131,12 +133,27 @@
     <value>Galnet hírek olvasása amikor kijelentkezel</value>
   </data>
   
+  <data name="titleFilterCg" xml:space="preserve">
+    <value>Közösségi cél: </value>
+    <comment>Title filter for determining whether an item is a Community Goal related item</comment>
+  </data>
+  <data name="titleFilterStarportStatus" xml:space="preserve">
+    <value>Csillagkikötő státusz frissítés</value>
+    <comment>Title filter for determining whether an item is a Starport Status Update</comment>
+  </data>
+  <data name="titleFilterWeekInReview" xml:space="preserve">
+    <value>Heti összefoglaló</value>
+    <comment>Title filter for determining whether an item is a "Week in Review</comment>
+  </data>
+  <data name="sourceURL" xml:space="preserve">
+    <value>https://community.elitedangerous.com/en/galnet-rss</value>
+    <comment>The URL the Galnet monitor should access for obtaining new news feed items. Leaving this blank will default the source URL to English</comment>
+  </data>
   
-  
-  
-  
-  
-  
+  <data name="categoryArticle" xml:space="preserve">
+    <value>Cikk</value>
+    <comment>Category (as seen by the user): Article</comment>
+  </data>
   
   
   
