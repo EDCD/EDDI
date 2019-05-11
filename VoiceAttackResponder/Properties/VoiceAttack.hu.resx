@@ -125,8 +125,12 @@
   <data name="p2" xml:space="preserve">
     <value>EDDI csak a 1.5.12.22 vagy annál nagyobb verzió számú Voice Attack-kal működik mint plugin. Megjegyzés, ez egy beta kiadás.</value>
   </data>
-  
-  
+  <data name="p3" xml:space="preserve">
+    <value>Ha a Voice Attack telepítésre került be kell kapcsolni a Plugin support-ot. Ehhez kattints a beállitások ikonra (Villáskulcs) a jobb alsó sarokban és pipáld ki az 'Enable plugin support' opciót majd indítsd újra a programot. Miután újraínditottad a Voice Attackot egy üzenet jelenik meg a VoiceAttack ablakban 'Plugin EDDI 2.0.0 initialized'.</value>
+  </data>
+  <data name="p4" xml:space="preserve">
+    <value>Van lehetőséged EDDI változóit a saját Voice Attack scriptjeibe integrálni.Például a parancsnokod neve a 'Name' változóban van tárolva.Tehát ha hozzá akarsz férni ehhez egyszerűen csak használd '{TXT:Name}' a saját paracsodban.Vannak változók a parancsnokodhoz,Hajódhoz,a jelenlegi Csillagredszerhez és Állonáshoz ahol épp tartozkodol és még több.A változok teljes listája elérhető </value>
+  </data>
   <data name="p4_link" xml:space="preserve">
     <value>az EDDI főoldalán</value>
   </data>
