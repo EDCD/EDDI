@@ -244,17 +244,29 @@
   
   
   
+  <data name="HatchBreakerLimpetShielded" xml:space="preserve">
+    <value>Páncélozott hacker drón</value>
+  </data>
+  
+  <data name="HeatSinkLauncherLightWeight" xml:space="preserve">
+    <value>Könyitett hőrelé kilővö</value>
+  </data>
+  <data name="HeatSinkLauncherReinforced" xml:space="preserve">
+    <value>Megerősitett hőrelé kilővö</value>
+  </data>
+  <data name="HeatSinkLauncherShielded" xml:space="preserve">
+    <value>Páncélozott hőrelé kilővö</value>
+  </data>
   
   
   
   
-  
-  
-  
-  
-  
-  
-  
+  <data name="LifeSupportLightWeight" xml:space="preserve">
+    <value>Könyitett létfentartó rendszer</value>
+  </data>
+  <data name="LifeSupportReinforced" xml:space="preserve">
+    <value>Megerősitett létfentartó rendszer</value>
+  </data>
   
   
   
