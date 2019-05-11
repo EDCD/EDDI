@@ -1635,5 +1635,8 @@
     <comment>Commodity Alexandrite</comment>
   </data>
   
-  
+  <data name="UnknownBiologicalMatter" xml:space="preserve">
+    <value>Thargoid biólógiai anyag</value>
+    <comment>Commodity UnknownBiologicalMatter</comment>
+  </data>
 </root>
