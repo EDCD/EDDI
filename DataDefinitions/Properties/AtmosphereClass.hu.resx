@@ -142,7 +142,7 @@
     <comment>Atmosphere class "Carbon dioxide"</comment>
   </data>
   <data name="CarbonDioxideRich" xml:space="preserve">
-    <value>Szén dioxidban dús</value>
+    <value>Szén dioxidban gazdag</value>
     <comment>Atmosphere class "Carbon dioxide-rich"</comment>
   </data>
   <data name="Helium" xml:space="preserve">
@@ -158,7 +158,7 @@
     <comment>Atmosphere class "Methane"</comment>
   </data>
   <data name="MethaneRich" xml:space="preserve">
-    <value>Metándús</value>
+    <value>Metánban gazdag</value>
     <comment>Atmosphere class "Methane-rich"</comment>
   </data>
   <data name="Neon" xml:space="preserve">
@@ -166,7 +166,7 @@
     <comment>Atmosphere class "Neon"</comment>
   </data>
   <data name="NeonRich" xml:space="preserve">
-    <value>Neondús</value>
+    <value>Neonban gazdag</value>
     <comment>Atmosphere class "Neon-rich"</comment>
   </data>
   <data name="Nitrogen" xml:space="preserve">
@@ -174,7 +174,7 @@
     <comment>Atmosphere class "Nitrogen"</comment>
   </data>
   <data name="None" xml:space="preserve">
-    <value>Légkör nélküli</value>
+    <value>Légkörrel nem rendelkező</value>
     <comment>Atmosphere class "None"</comment>
   </data>
   <data name="Oxygen" xml:space="preserve">
