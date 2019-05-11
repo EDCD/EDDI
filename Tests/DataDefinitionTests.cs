@@ -1,5 +1,6 @@
 ﻿using EddiDataDefinitions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Collections.Generic;
 
 namespace UnitTests
 {
@@ -104,6 +105,56 @@ namespace UnitTests
             StationModel model = StationModel.FromEDName("Ocellus");
             Assert.AreEqual("Bernal", model.basename);
             Assert.AreEqual("Ocellus", model.edname);
+        }
+
+        [TestMethod]
+        public void TestStarSystemExplorationGreenGold()
+        {
+            // Set up a body which would trigger the green system condition
+            List<MaterialPresence> materials = new List<MaterialPresence>();
+            materials.Add(new MaterialPresence(Material.FromEDName("carbon"), 0.01M));
+            materials.Add(new MaterialPresence(Material.FromEDName("germanium"), 0.01M));
+            materials.Add(new MaterialPresence(Material.FromEDName("vanadium"), 0.01M));
+            materials.Add(new MaterialPresence(Material.FromEDName("cadmium"), 0.01M));
+            materials.Add(new MaterialPresence(Material.FromEDName("niobium"), 0.01M));
+            materials.Add(new MaterialPresence(Material.FromEDName("arsenic"), 0.01M));
+            materials.Add(new MaterialPresence(Material.FromEDName("yttrium"), 0.01M));
+            materials.Add(new MaterialPresence(Material.FromEDName("polonium"), 0.01M));
+            Body jumponiumBody = new Body()
+            {
+                bodyname = "Jumponium Haven",
+                materials = materials
+            };
+
+            // Set up a body which would trigger the gold system condition
+            materials = new List<MaterialPresence>();
+            foreach (Material material in Material.surfaceElements)
+            {
+                materials.Add(new MaterialPresence(material, 0.01M));
+            }
+            Body goldBody = new Body()
+            {
+                bodyname = "Golden",
+                materials = materials
+            };
+
+            // Test standard system with no bodies included
+            StarSystem starSystem = new StarSystem() { systemname = "testSystem" };
+            Assert.IsFalse((bool)starSystem.isgreen);
+            Assert.IsFalse((bool)starSystem.isgold);
+            Assert.AreEqual(0, starSystem.materialEdNames.Count);
+
+            // Add a body with green materials and re-test
+            starSystem.bodies.Add(jumponiumBody);
+            Assert.IsTrue((bool)starSystem.isgreen);
+            Assert.IsFalse((bool)starSystem.isgold);
+            Assert.AreEqual(8, starSystem.materialEdNames.Count);
+
+            // Add a body with gold materials and re-test
+            starSystem.bodies.Add(goldBody);
+            Assert.IsTrue((bool)starSystem.isgreen);
+            Assert.IsTrue((bool)starSystem.isgold);
+            Assert.AreEqual(25, starSystem.materialEdNames.Count);
         }
     }
 }

@@ -87,6 +87,24 @@ namespace EddiDataDefinitions
         [JsonIgnore]
         public List<string> signalsources { get; set; } = new List<string>();
 
+        /// <summary> Whether the system is a "green" system for exploration (containing all FSD synthesis elements) </summary>
+        public bool? isgreen => materialEdNames?.Count() == 0 ? false :
+            materialEdNames.Intersect(new List<string>()
+            {
+                "carbon",
+                "germanium",
+                "vanadium",
+                "cadmium",
+                "niobium",
+                "arsenic",
+                "yttrium",
+                "polonium"
+            }).Count() == 8;
+
+        /// <summary> Whether the system is a "gold" system for exploration (containing all elements available from planetary surfaces) </summary>
+        public bool? isgold => materialEdNames?.Count() == 0 ? false :
+            Material.surfaceElements.Select(m => m.edname).Intersect(materialEdNames).Count() == Material.surfaceElements.Count();
+
         /// <summary>Number of visits</summary>
         public int visits;
 
@@ -103,10 +121,14 @@ namespace EddiDataDefinitions
         /// <summary>distance from home</summary>
         public decimal? distancefromhome;
 
-        // Admin - the last time the information present changed
+        // Not intended to be user facing - materials available within the system
+        [JsonIgnore]
+        public List<string> materialEdNames => bodies.SelectMany(b => b.materials, (b, m) => m.definition.edname).Distinct().ToList();
+
+        // Not intended to be user facing - the last time the information present changed
         public long? updatedat;
 
-        // Admin - the last time the data about this system was obtained from remote repository
+        // Not intended to be user facing - the last time the data about this system was obtained from remote repository
         public DateTime lastupdated;
 
         // Deprecated properties (preserved for backwards compatibility with Cottle and database stored values)

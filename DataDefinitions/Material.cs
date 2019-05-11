@@ -192,6 +192,10 @@ namespace EddiDataDefinitions
             var UnknownEnergySource = new Material("unknownenergysource", Manufactured, VeryRare);
             var UnknownOrganicCircuitry = new Material("unknownorganiccircuitry", Manufactured, VeryRare);
             var Tg_PropulsionElement = new Material("tg_propulsionelement", Manufactured, VeryRare);
+
+            surfaceElements = AllOfThem
+            .Where(m => m.category == Element)
+            .Where(m => m.greatpctbody != null).ToList();
         }
 
         public MaterialCategory category { get; }
@@ -202,6 +206,8 @@ namespace EddiDataDefinitions
 
         public decimal? goodpctbody { get; }
         public decimal? greatpctbody { get; }
+
+        public static List<Material> surfaceElements { get; } // Elements which are available at a planetary surface and not just in space
 
         // Blueprints for the material; 
         public List<Blueprint> blueprints { get; set; }
