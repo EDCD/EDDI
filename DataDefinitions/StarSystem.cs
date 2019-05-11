@@ -47,7 +47,8 @@ namespace EddiDataDefinitions
         [JsonIgnore]
         public string security => (securityLevel ?? SecurityLevel.None).localizedName;
 
-        public string power { get; set; }
+        public Power Power { get; set; }
+        public string power => (Power ?? Power.None).localizedName;
         public string powerstate { get; set; }
 
         [JsonIgnore]

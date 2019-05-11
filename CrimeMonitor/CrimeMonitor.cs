@@ -248,9 +248,9 @@ namespace EddiCrimeMonitor
                     if (@event.faction != null)
                     {
                         Faction faction = DataProviderService.GetFactionByName(@event.faction);
-                        Power power = Power.FromName(@event.faction);
+                        Power power = Power.FromEDName(@event.faction);
                         target.Power = power ?? Power.None;
-                        target.Allegiance = (power?.Allegiance ?? faction?.Allegiance);
+                        target.Allegiance = power?.Allegiance ?? faction?.Allegiance;
                     }
                     target.LegalStatus = @event.LegalStatus;
                     target.bounty = @event.bounty;
@@ -383,7 +383,7 @@ namespace EddiCrimeMonitor
             }
 
             // Default to 1.0 for unit testing
-            double bonus = (!test && currentSystem?.power == "Arissa Lavigny-Duval") ? 1.2 : 1.0;
+            double bonus = (!test && currentSystem?.Power == Power.FromEDName("ALavignyDuval")) ? 1.2 : 1.0;
 
             // Get the victim faction data
             Faction faction = DataProviderService.GetFactionByName(@event.faction);

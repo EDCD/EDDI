@@ -294,7 +294,15 @@ namespace EddiDataDefinitions
 
         // Ship jump properties
         public decimal maxjumprange { get; set; }
+
+        [JsonIgnore, Obsolete("Please use maxjumprange instead")]
+        public decimal maxjump => maxjumprange;
+
         public decimal maxfuelperjump { get; set; }
+
+        [JsonIgnore, Obsolete("Please use maxfuelperjump instead")]
+        public decimal maxfuel => maxfuelperjump;
+
         public decimal optimalmass { get; set; }
         public decimal unladenmass { get; set; }
 

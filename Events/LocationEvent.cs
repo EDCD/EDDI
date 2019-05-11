@@ -19,7 +19,7 @@ namespace EddiEvents
             VARIABLES.Add("x", "The X co-ordinate of the system in which the commander resides");
             VARIABLES.Add("y", "The Y co-ordinate of the system in which the commander resides");
             VARIABLES.Add("z", "The Z co-ordinate of the system in which the commander resides");
-            VARIABLES.Add("distancefromstar", "The distance from the main star (unless close)");
+            VARIABLES.Add("distancefromstar", "The distance of the nearest body (when close) from the main star");
             VARIABLES.Add("body", "The nearest body to the commander");
             VARIABLES.Add("bodytype", "The type of the nearest body to the commander");
             VARIABLES.Add("docked", "True if the commander is docked");

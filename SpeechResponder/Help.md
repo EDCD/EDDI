@@ -207,10 +207,12 @@ Common usage of this is to provide clear callsigns and idents for ships, for exa
 
 This function will provide jump information based on your ship loadout and current fuel level, dependent on the followiing types:
 
-  * `next` range of next jump at current fuel level
-  * `max` range of single jump at 'max fuel'
-  * `total` total range of multiple jumps at current fuel level
-  * `full` total range of multiple jumps at tank and reservoir capacity
+  * `next` range of next jump at current fuel mass and current laden mass
+  * `max` maximum jump range at minimum fuel mass and current laden mass
+  * `total` total range of multiple jumps from current fuel mass and current laden mass
+  * `full` total range of multiple jumps from maximum fuel mass and current laden mass
+
+  The returned `JumpDetail` object contains properties `distance` and `jumps`.
 
  Common usage is to provide distance and number of jumps for a specific query:
 

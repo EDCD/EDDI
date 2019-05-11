@@ -34,7 +34,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Added `Crime check station` script to report 'legal facilities', upon entering normal space, next to station.
     * Revised `Jumped` script to provide a (reasonably) accurate jump range, based on total ship mass.
     * Revised `Ship targeted` script to utilize new `shiptargets` object to preclude reporting on previously scanned ships.
-    * Added `RouteDetails()` Cottle function call to provide useful jump infomation based on ship loadout and fuel level. See `Help` & `Variables` windows for details.
+    * Added `JumpDetails()` Cottle function call to provide useful jump infomation based on ship loadout and fuel level. See `Help` & `Variables` windows for details.
   * Status monitor
     - Added `legalstatus`, the ship's current legal status. Can be one of 
       - "Clean", 
@@ -53,7 +53,6 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Added `{TXT:Status body name}`
     * Added `{DEC:Status planet radius}`
     * Added `{BOOL:Status altitude from average radius}`
-    * Added `jumpdetails` plugin invocation to provide useful jump infomation based on ship loadout and fuel level.
     * Added `jumpdetails` plugin invocation to provide useful jump infomation based on ship loadout and fuel level.
 
 ### 3.4

@@ -41,5 +41,16 @@ namespace EddiDataDefinitions
             this.Allegiance = allegiance;
             this.headquarters = headquarters;
         }
+
+        public new static Power FromEDName(string edName)
+        {
+            if (edName == null)
+            {
+                return null;
+            }
+
+            string tidiedName = edName.ToLowerInvariant().Replace(" ", "").Replace(".", "").Replace("-", "");
+            return ResourceBasedLocalizedEDName<Power>.FromEDName(tidiedName);
+        }
     }
 }

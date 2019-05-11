@@ -55,7 +55,7 @@ namespace EddiDataProviderService
             system.EDDBID = (long?)json["id"];
             if (setPowerplayData)
             {
-                system.power = (string)json["power"] == "None" ? null : (string)json["power"];
+                system.Power = Power.FromName((string)json["power"]) ?? Power.None;
                 system.powerstate = (string)json["power_state"] == "None" ? null : (string)json["power_state"];
             }
         }

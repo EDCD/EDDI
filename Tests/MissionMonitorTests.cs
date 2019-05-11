@@ -268,7 +268,9 @@ namespace UnitTests
             FactionRecord record = crimeMonitor.criminalrecord.ToList().FirstOrDefault(r => r.faction == mission.faction);
             Assert.IsNotNull(record);
             Assert.AreEqual(50000, record.fines);
-            Assert.AreEqual(Crime.FromEDName("missionFine"), record.factionReports[0].crimeDef);
+            FactionReport report = record.factionReports.FirstOrDefault(r => r.crimeDef == Crime.FromEDName("missionFine"));
+            Assert.IsNotNull(report);
+            Assert.AreEqual(50000, report.amount);
             crimeData.ToFile();
 
             missionMonitor._handleMissionFailedEvent((MissionFailedEvent)events[0]);

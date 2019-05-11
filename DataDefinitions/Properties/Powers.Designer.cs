@@ -70,7 +70,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to A. Lavigny-Duval.
+        ///   Looks up a localized string similar to Arissa Lavigny-Duval.
         /// </summary>
         internal static string ALavignyDuval {
             get {
