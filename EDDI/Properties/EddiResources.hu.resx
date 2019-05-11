@@ -242,7 +242,9 @@ Kérlek zárd be a másikat és próbálkozz újra.</value>
   <data name="frontierApiConnecting" xml:space="preserve">
     <value>Kapcsolódás</value>
   </data>
-  
+  <data name="frontier_api_close_browser" xml:space="preserve">
+    <value>Bezárhatod a böngészőt és vissza térhetsz EDDIhez.</value>
+  </data>
   <data name="frontier_api_reset" xml:space="preserve">
     <value>Újrakapcsolódás.</value>
   </data>
