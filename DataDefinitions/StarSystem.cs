@@ -89,6 +89,7 @@ namespace EddiDataDefinitions
         public List<string> signalsources { get; set; } = new List<string>();
 
         /// <summary> Whether the system is a "green" system for exploration (containing all FSD synthesis elements) </summary>
+        [JsonIgnore]
         public bool? isgreen => materialEdNames?.Count() == 0 ? false :
             materialEdNames.Intersect(new List<string>()
             {
@@ -103,8 +104,13 @@ namespace EddiDataDefinitions
             }).Count() == 8;
 
         /// <summary> Whether the system is a "gold" system for exploration (containing all elements available from planetary surfaces) </summary>
+        [JsonIgnore]
         public bool? isgold => materialEdNames?.Count() == 0 ? false :
             Material.surfaceElements.Select(m => m.edname).Intersect(materialEdNames).Count() == Material.surfaceElements.Count();
+
+        /// <summary>Number of visits</summary>
+        [JsonIgnore]
+        public long estimatedvalue => estimateSystemValue(bodies);
 
         /// <summary>Number of visits</summary>
         public int visits;
@@ -125,6 +131,9 @@ namespace EddiDataDefinitions
         // Not intended to be user facing - materials available within the system
         [JsonIgnore]
         public List<string> materialEdNames => bodies.SelectMany(b => b.materials, (b, m) => m.definition.edname).Distinct().ToList();
+
+        // Not intended to be user facing - discoverable bodies as reported by a discovery scan "honk"
+        public int discoverableBodies = 0;
 
         // Not intended to be user facing - the last time the information present changed
         public long? updatedat;
@@ -176,6 +185,39 @@ namespace EddiDataDefinitions
         public void NotifyPropertyChanged(string propName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
+        }
+
+        private long estimateSystemValue(List<Body> bodies)
+        {
+            // Credit to MattG's thread at https://forums.frontier.co.uk/showthread.php/232000-Exploration-value-formulae for scan value formulas
+
+            if (bodies == null || bodies.Count == 0)
+            {
+                return 0;
+            }
+
+            long value = 0;
+
+            // Add the estimated value for each body
+            foreach (Body body in bodies)
+            {
+                value += body.estimatedvalue;
+            }
+
+            // Bonus for fully discovering a system
+            if (discoverableBodies == bodies.Where(b => b.scanned != null).Count())
+            {
+                value += discoverableBodies * 1000;
+
+                // Bonus for fully mapping a system
+                int mappableBodies = bodies.Where(b => b.bodyType.invariantName != "Star").Count();
+                if (mappableBodies == bodies.Where(b => b.mapped != null).Count())
+                {
+                    value += mappableBodies * 10000;
+                }
+            }
+
+            return value;
         }
     }
 }
