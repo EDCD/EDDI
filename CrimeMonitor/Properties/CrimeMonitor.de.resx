@@ -135,15 +135,21 @@
   <data name="crime_monitor_name" xml:space="preserve">
     <value>Verbrechensüberwachung</value>
   </data>
-  
+  <data name="find_button" xml:space="preserve">
+    <value>Legale Einrichtungen finden</value>
+  </data>
   <data name="find_button_desc" xml:space="preserve">
     <value>Suche nach dem nächstgelegenen System und Station der interstellaren Vertreter.</value>
   </data>
-  
+  <data name="find_button_text" xml:space="preserve">
+    <value>Legale Einrichtungen finden:</value>
+  </data>
   <data name="header_bounties" xml:space="preserve">
     <value>Kopfgeld</value>
   </data>
-  
+  <data name="header_claims" xml:space="preserve">
+    <value>Forderung</value>
+  </data>
   <data name="header_faction" xml:space="preserve">
     <value>Fraktion</value>
   </data>
