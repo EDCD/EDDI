@@ -60,8 +60,9 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * Added `gravityprobability` (planets and moons only)
       * Added `pressureprobability` planets and moons only)
     * Revised `system` object definition
-      * `isgreen` true if bodies in this starsystem contain all elements required for FSD synthesis
-      * `isgold` true if bodies in this starsystem contain all elements available from surface prospecting
+      * Added `isgreen`, true if bodies in this starsystem contain all elements required for FSD synthesis
+      * Added `isgold`, true if bodies in this starsystem contain all elements available from surface prospecting
+      * Added `estimatedvalue`, the estimated exploration value of the starsystem (includes bonuses for fully scanning and mapping)
     * Revised `Entered normal space`, `Glide`, `Location`, and `Near surface` event variables for better interchangeability with the `BodyDetails` function.
       * WAS: `body`*, IS: `bodyname` 
       * WAS: `system`*, IS: `systemname`

@@ -76,7 +76,7 @@ namespace EddiDataDefinitions
         public bool mappedEfficiently { get; set; }
 
         /// <summary>The estimated value of the body</summary>
-        public long? estimatedvalue => scanned == null ? 0 : 
+        public long estimatedvalue => scanned == null ? 0 : 
             solarmass == null ? estimateBodyValue() : estimateStarValue();
 
         // Orbital characteristics
@@ -266,13 +266,13 @@ namespace EddiDataDefinitions
         [JsonIgnore]
         public decimal? absolutemagnitudeprobability => starClass == null ? null : Probability.CumulativeP(starClass.absolutemagnitudedistribution, absolutemagnitude);
 
-        private long? estimateStarValue()
+        private long estimateStarValue()
         {
             // Credit to MattG's thread at https://forums.frontier.co.uk/showthread.php/232000-Exploration-value-formulae for scan value formulas
 
             if (stellarclass is null || solarmass is null)
             {
-                return null;
+                return 0;
             }
 
             // Scan value calculation constants
@@ -301,7 +301,7 @@ namespace EddiDataDefinitions
 
             // Calculate exploration scan values - (k + (m * k / 66.25))
             result = k + ((double)solarmass * k / scanDivider);
-            return (long?)Math.Round(result, 0);
+            return (long)Math.Round(result);
         }
 
         // Body-specific items
@@ -418,13 +418,13 @@ namespace EddiDataDefinitions
         [JsonIgnore]
         public decimal? pressureprobability => Probability.CumulativeP(starClass == null ? planetClass.pressuredistribution : null, pressure);
 
-        private long? estimateBodyValue()
+        private long estimateBodyValue()
         {
             // Credit to MattG's thread at https://forums.frontier.co.uk/showthread.php/232000-Exploration-value-formulae for scan value formulas
 
             if (earthmass is null || terraformState is null || planetClass is null)
             {
-                return null;
+                return 0;
             }
 
             // Scan value calculation constants
@@ -496,7 +496,7 @@ namespace EddiDataDefinitions
             // Calculate exploration scan values
             double result = Math.Max(scanMinValue, (k + (k * q * Math.Pow((double)earthmass, scanPower))) * mappingMultiplier);
             result *= (!alreadydiscovered) ? firstDiscoveryMultiplier : 1;
-            return (long?)Math.Round(result, 0);
+            return (long)Math.Round(result);
         }
 
         // Miscellaneous and legacy properties and methods

@@ -817,6 +817,10 @@ namespace Eddi
                     {
                         passEvent = eventSettlementApproached((SettlementApproachedEvent)@event);
                     }
+                    else if (@event is DiscoveryScanEvent)
+                    {
+                        passEvent = eventDiscoveryScan((DiscoveryScanEvent)@event);
+                    }
 
                     // Additional processing is over, send to the event responders if required
                     if (passEvent)
@@ -838,6 +842,12 @@ namespace Eddi
                     Instance.ObtainResponder("EDDN responder").Handle(@event);
                 }
             }
+        }
+
+        private bool eventDiscoveryScan(DiscoveryScanEvent @event)
+        {
+            CurrentStarSystem.discoverableBodies = @event.bodies;
+            return true;
         }
 
         private bool eventSettlementApproached(SettlementApproachedEvent @event)
