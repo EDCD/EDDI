@@ -117,8 +117,12 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
+  <data name="desc" xml:space="preserve">
+    <value>Olyan reagáló, amely nagyszámú változót generál a VoiceAttack programban, valamint a felhasználó által meghatározott műveleteket indítja el.</value>
+  </data>
+  <data name="name" xml:space="preserve">
+    <value>VoiceAttack reagáló</value>
+  </data>
   <data name="p1" xml:space="preserve">
     <value>EDDI integrálásához a Voice Attack-ba, EDDI-t a Voice Attack könyvtárába kell telepíteni. Az alap útvonal 'C:\Program Files\(x86)\Voice Attack\Apps' Ez az ahova EDDI települ alapból.</value>
   </data>
@@ -134,7 +138,9 @@
   <data name="p4_link" xml:space="preserve">
     <value>az EDDI főoldalán</value>
   </data>
-  
+  <data name="p5" xml:space="preserve">
+    <value>A hang- vagy billentyűzet-műveletekkel kiváltott szkriptek írása mellett olyan parancsfájlokat is írhatsz, amelyek az Eliteben előforduló események váltanak ki. Ha például minden alkalommal szeretnél elindítani egy szkriptet, amikor a „dokkolt” esemény bekövetkezik, akkor írhatsz egy '((EDDI docked))' nevű parancsfájlt” (ügyelj a fájlnév előtti és utáni kettős zárójelekre, hogy elkerüld a véletlen hívást, és a kisbetűs 'd ' in docked parancsütközést). Az események teljes listája elérhető </value>
+  </data>
   <data name="p5_link" xml:space="preserve">
     <value>az EDDI főoldalán</value>
   </data>
