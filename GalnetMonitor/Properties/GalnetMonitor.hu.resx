@@ -132,7 +132,10 @@
   <data name="p2" xml:space="preserve">
     <value>Galnet hírek olvasása amikor kijelentkezel</value>
   </data>
-  
+  <data name="titleFilterPowerplay" xml:space="preserve">
+    <value>Hatalmi játék: érkező frissítés</value>
+    <comment>Title filter for determining whether an item is a Powerplay item</comment>
+  </data>
   <data name="titleFilterCg" xml:space="preserve">
     <value>Közösségi cél: </value>
     <comment>Title filter for determining whether an item is a Community Goal related item</comment>
@@ -154,9 +157,21 @@
     <value>Cikk</value>
     <comment>Category (as seen by the user): Article</comment>
   </data>
-  
-  
-  
-  
+  <data name="categoryPowerplay" xml:space="preserve">
+    <value>Hatalmi játék</value>
+    <comment>Category (as seen by the user): Powerplay</comment>
+  </data>
+  <data name="categoryCG" xml:space="preserve">
+    <value>Közösségi cél</value>
+    <comment>Category (as seen by the user): Community Goal</comment>
+  </data>
+  <data name="categoryStarportStatus" xml:space="preserve">
+    <value>Csillagkikötő státusz frissítés</value>
+    <comment>Category (as seen by the user): Starport Status Update</comment>
+  </data>
+  <data name="categoryWeekInReview" xml:space="preserve">
+    <value>Heti összefoglaló</value>
+    <comment>Category (as seen by the user): Week in Review</comment>
+  </data>
   
 </root>
