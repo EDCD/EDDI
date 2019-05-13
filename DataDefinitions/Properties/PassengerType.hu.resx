@@ -98,7 +98,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AidWorker" xml:space="preserve">
-    <value>Segédmunkás utascsoport</value>
+    <value>Segélymunkás utascsoport</value>
   </data>
   <data name="Business" xml:space="preserve">
     <value>Üzletemberek csoportja</value>
