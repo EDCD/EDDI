@@ -139,31 +139,31 @@
     <value>Magas fémtartalmú bolygó</value>
   </data>
   <data name="IcyBody" xml:space="preserve">
-    <value>Jégbolygó</value>
+    <value>Jéges bolygó</value>
   </data>
   <data name="MetalRichBody" xml:space="preserve">
     <value>Fémben gazdag bolygó</value>
   </data>
   <data name="RockyBody" xml:space="preserve">
-    <value>Szikla bolygó</value>
+    <value>Sziklás bolygó</value>
   </data>
   <data name="RockyIceBody" xml:space="preserve">
     <value>Köves-jeges bolygó</value>
   </data>
   <data name="SudarskyClassIGasGiant" xml:space="preserve">
-    <value>I. osztályú gázóriás</value>
+    <value>1es osztályú gázóriás</value>
   </data>
   <data name="SudarskyClassIIGasGiant" xml:space="preserve">
-    <value>II. osztályú gázóriás</value>
+    <value>2es osztályú gázóriás</value>
   </data>
   <data name="SudarskyClassIIIGasGiant" xml:space="preserve">
-    <value>III. osztályú gázóriás</value>
+    <value>3as osztályú gázóriás</value>
   </data>
   <data name="SudarskyClassIVGasGiant" xml:space="preserve">
-    <value>IV. osztályú gázóriás</value>
+    <value>4es osztályú gázóriás</value>
   </data>
   <data name="SudarskyClassVGasGiant" xml:space="preserve">
-    <value>V. osztályú gázóriás</value>
+    <value>5ös osztályú gázóriás</value>
   </data>
   <data name="WaterGiant" xml:space="preserve">
     <value>Víz óriás</value>
