@@ -126,11 +126,15 @@
   <data name="Assassinate" xml:space="preserve">
     <value>Orgyilkosság</value>
   </data>
-  
+  <data name="AssassinateWing" xml:space="preserve">
+    <value>Orgyilkosság kötelékben</value>
+  </data>
   <data name="Collect" xml:space="preserve">
     <value>Begyűjtés</value>
   </data>
-  
+  <data name="CollectWing" xml:space="preserve">
+    <value>Begyűjtés kötelékben</value>
+  </data>
   <data name="CommunityGoal" xml:space="preserve">
     <value>Közösségi cél</value>
   </data>
@@ -140,11 +144,15 @@
   <data name="Delivery" xml:space="preserve">
     <value>Szállítás</value>
   </data>
-  
+  <data name="DeliveryWing" xml:space="preserve">
+    <value>Szállítás kötelékben</value>
+  </data>
   <data name="Disable" xml:space="preserve">
     <value>Felszíni létesítmény megbénítása</value>
   </data>
-  
+  <data name="DisableWing" xml:space="preserve">
+    <value>Kiiktatás kötelékben</value>
+  </data>
   <data name="GenericPermit1" xml:space="preserve">
     <value>Engedély megszerzése</value>
   </data>
@@ -160,11 +168,15 @@
   <data name="MassacreThargoid" xml:space="preserve">
     <value>Thargoid mészárlás</value>
   </data>
-  
+  <data name="MassacreWing" xml:space="preserve">
+    <value>Mészárlás kötelékben</value>
+  </data>
   <data name="Mining" xml:space="preserve">
     <value>Bányászat</value>
   </data>
-  
+  <data name="MiningWing" xml:space="preserve">
+    <value>Bányászat kötelékben</value>
+  </data>
   <data name="None" xml:space="preserve">
     <value>Nincs</value>
   </data>
