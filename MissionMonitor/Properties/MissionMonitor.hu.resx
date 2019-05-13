@@ -157,7 +157,7 @@
     <value>Nyomonköveti a küldetéseid.</value>
   </data>
   <data name="mission_monitor_name" xml:space="preserve">
-    <value>Küldetés figyelés</value>
+    <value>Küldetés Monitor</value>
   </data>
   <data name="next_route_button" xml:space="preserve">
     <value>Következő útvonalon</value>
