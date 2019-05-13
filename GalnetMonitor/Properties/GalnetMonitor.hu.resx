@@ -152,7 +152,11 @@
     <value>https://community.elitedangerous.com/en/galnet-rss</value>
     <comment>The URL the Galnet monitor should access for obtaining new news feed items. Leaving this blank will default the source URL to English</comment>
   </data>
-  
+  <data name="contentFilterCgRegex" xml:space="preserve">
+    <value>&gt;@"(igért pilóta jutalmazás)|(a kampány.+egy hétig tart)|(a szervezetek heti tevékenységeket dolgoztak ki)|(gyűjtés.+jutalmak)|
+(Ha.+végső cél a tervezettnél korábban teljesül, a kampány azonnal befejeződik)"</value>
+    <comment>Regex filter for determining whether an item's contents match a Community Goal related item.</comment>
+  </data>
   <data name="categoryArticle" xml:space="preserve">
     <value>Cikk</value>
     <comment>Category (as seen by the user): Article</comment>
