@@ -519,11 +519,15 @@ namespace EddiStatusMonitor
                 fuelLog?.RemoveAll(log => (DateTime.UtcNow - log.Key).TotalMinutes > trackingMinutes);
             }
             fuelLog.Add(new KeyValuePair<DateTime, decimal?>(timestamp, fuel));
+            if (fuelLog.Count > 1)
+            {
+                decimal? fuelConsumed = fuelLog.FirstOrDefault().Value - fuelLog.LastOrDefault().Value;
+                TimeSpan timespan = fuelLog.LastOrDefault().Key - fuelLog.FirstOrDefault().Key;
 
-            decimal? fuelConsumed = fuelLog.First().Value - fuelLog.Last().Value;
-            TimeSpan timespan = fuelLog.Last().Key - fuelLog.First().Key;
-
-            return timespan.Seconds == 0 ? null : fuelConsumed / timespan.Seconds; // Return tons of fuel consumed per second
+                return timespan.Seconds == 0 ? null : fuelConsumed / timespan.Seconds; // Return tons of fuel consumed per second
+            }
+            // Insufficient data, return 0.
+            return 0;
         }
 
         private void FuelPercentAndTime(decimal? fuelRemaining, decimal? fuelPerSecond, out decimal? fuel_percent, out int? fuel_seconds)
