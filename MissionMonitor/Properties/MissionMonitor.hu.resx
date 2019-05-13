@@ -117,12 +117,20 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="clear_route_button" xml:space="preserve">
+    <value>Útvonal törlése</value>
+  </data>
   
+  <data name="clear_route_button_text" xml:space="preserve">
+    <value>Útvonal törlése:</value>
+  </data>
+  <data name="get_route_button" xml:space="preserve">
+    <value>Útvonal felvétele</value>
+  </data>
   
-  
-  
-  
-  
+  <data name="get_route_button_text" xml:space="preserve">
+    <value>Útvonal felvétele:</value>
+  </data>
   <data name="header_destinationstation" xml:space="preserve">
     <value>Célállomás</value>
   </data>
@@ -141,19 +149,37 @@
   <data name="header_type" xml:space="preserve">
     <value>Típus</value>
   </data>
-  
-  
-  
-  
-  
+  <data name="mission_monitor_desc" xml:space="preserve">
+    <value>Nyomonköveti a küldetéseid.</value>
+  </data>
+  <data name="mission_monitor_name" xml:space="preserve">
+    <value>Küldetés figyelés</value>
+  </data>
+  <data name="next_route_button" xml:space="preserve">
+    <value>Következő útvonalon</value>
+  </data>
+  <data name="next_route_button_desc" xml:space="preserve">
+    <value>Beállítja a célrendszert a küldetések útvonalán a következő rendszerre.</value>
+  </data>
+  <data name="next_route_button_text" xml:space="preserve">
+    <value>Következő útvonalon:</value>
+  </data>
   <data name="para1" xml:space="preserve">
     <value>Az alábbi lista tartalmazza az összes küldetésed.</value>
   </data>
   <data name="para2" xml:space="preserve">
     <value>Megjegyzés: Ha a küldetéslista nem helyes vagy inkorrekt. Indítsd el vagy indítsd újra az Elitet, és ezek az információk frissítve lesznek.</value>
   </data>
-  
-  
-  
-  
+  <data name="tab_mission_warning" xml:space="preserve">
+    <value>Küldetés lejárat figyelmeztetési határ (perc):</value>
+  </data>
+  <data name="update_route_button" xml:space="preserve">
+    <value>Útvonal frissítése</value>
+  </data>
+  <data name="update_route_button_desc" xml:space="preserve">
+    <value>Beállítja a célrendszert a küldetések útvonalán a következő rendszerre, ha az összes küldetés teljesítésre került.</value>
+  </data>
+  <data name="update_route_button_text" xml:space="preserve">
+    <value>Útvonal frissítése:</value>
+  </data>
 </root>
