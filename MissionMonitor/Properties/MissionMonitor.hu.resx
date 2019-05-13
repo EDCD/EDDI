@@ -120,14 +120,18 @@
   <data name="clear_route_button" xml:space="preserve">
     <value>Útvonal törlése</value>
   </data>
-  
+  <data name="clear_route_button_desc" xml:space="preserve">
+    <value>Törli a küldetések útvonalát és a célrendszert.</value>
+  </data>
   <data name="clear_route_button_text" xml:space="preserve">
     <value>Útvonal törlése:</value>
   </data>
   <data name="get_route_button" xml:space="preserve">
     <value>Útvonal felvétele</value>
   </data>
-  
+  <data name="get_route_button_desc" xml:space="preserve">
+    <value>Elindítja a 'legközelebbi szomszéd' algoritmus segítségével a legrövidebb küldetési útvonal meghatározását.</value>
+  </data>
   <data name="get_route_button_text" xml:space="preserve">
     <value>Útvonal felvétele:</value>
   </data>
