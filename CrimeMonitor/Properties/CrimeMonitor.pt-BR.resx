@@ -165,9 +165,6 @@
   <data name="orbital_station_checkbox" xml:space="preserve">
     <value>Priorizar Estações Orbitais:</value>
   </data>
-  <data name="para1" xml:space="preserve">
-    <value>Seu registro criminal é listado abaixo.</value>
-  </data>
   <data name="remove_button" xml:space="preserve">
     <value>Remover</value>
   </data>
