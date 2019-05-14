@@ -165,9 +165,6 @@
   <data name="orbital_station_checkbox" xml:space="preserve">
     <value>Priorisierte Orbitalstationen:</value>
   </data>
-  <data name="para1" xml:space="preserve">
-    <value>Ihr Vorstrafenregister ist unten aufgeführt.</value>
-  </data>
   <data name="remove_button" xml:space="preserve">
     <value>Entfernen</value>
   </data>
