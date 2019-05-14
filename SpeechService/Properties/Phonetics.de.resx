@@ -167,14 +167,8 @@
   
   
   
-  <data name="Chi" xml:space="preserve">
-    <value>ʃi</value>
-    <comment>Optional phonetic pronunciation for Chi</comment>
-  </data>
-  <data name="ChiPersei_Chi" xml:space="preserve">
-    <value>ʃi</value>
-    <comment>Optional phonetic pronunciation for ChiPersei_Chi</comment>
-  </data>
+  
+  
   
   
   
@@ -262,10 +256,7 @@
     <value>pruː</value>
     <comment>Optional phonetic pronunciation for PruEuq_Pru</comment>
   </data>
-  <data name="Puppis" xml:space="preserve">
-    <value>puppis</value>
-    <comment>Optional phonetic pronunciation for Puppis</comment>
-  </data>
+  
   
   <data name="Rho" xml:space="preserve">
     <value>rəʊ</value>
