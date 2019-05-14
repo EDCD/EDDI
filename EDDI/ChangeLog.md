@@ -4,7 +4,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
 
 ### Development
   * Core
-    * All 'Location' events are now processed.
+    * All `Location` events are now processed.
     * Added `Docked` and `Landed` Environment states. Note that `Environment` follows the ship and `Vehicle` follows the commander.
   * Crime Monitor
     * New monitor tracks all bond & bounty awards and fines & bounties incurred.
@@ -13,6 +13,11 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * 'Add Record' button allows manual addition of claims, fines & bounties.
     * 'Find Legal Facilities' button allows standalone users to locate the nearest 'Legal Facilities' contact. 
     * New `FactionRecord` and `FactionReport` properties, available via Cottle scripting. See the `Variables` window for details.
+    * Tracks all ships targeted within the current system. Data available in `shiptargets` as a list of `Target` properties.
+  * Journal Monitor
+    * Added `unladenmass` and `maxjumprange` properties to the `Loadout` event handler.
+    * Added `distancefromstar` property to the `Location` event.
+    * Added vehicle ID for SLF/SRV related events.
   * Mission Monitor
     * Added 'Find Route', 'Next Route', 'Update Route', and 'Clear Route' buttons to give standalone users access to missions routing functionality.
   * Navigation Service
@@ -20,10 +25,16 @@ Full details of the variables available for each noted event, and VoiceAttack in
 	* Added `facilitator` route type to `RouteDetails()`, which finds and sets the `Destination` properties to the nearest 'Legal Facilities' contact.
     * Destination system, distance & station data populated & maintained by `RouteDetails()`. Distance re-calculated after each jump.
     * The `missionsRouteList` & `missionsRouteDistance` properties simplified to `RouteList` & `RouteDistance`, respectively.
+  * Ship Monitor
+    * 3.4 Update `Loadout`journal event additions `unladenmass` and `maxjumprange` included in the `Ship` object.
+    * FSD `optimalmass` retrieved from engineering data and used to calculate `maxfuelperjump` property.
   * Speech responder
     * Added `destinationsystem`, `destinationdistance`, and `destinationstation` properties (similar to `system`)
     * Added `Crime check system` script to report wanted status and 'legal facilities', upon entering the system.
     * Added `Crime check station` script to report 'legal facilities', upon entering normal space, next to station.
+    * Revised `Jumped` script to provide a (reasonably) accurate jump range, based on total ship mass.
+    * Revised `Ship targeted` script to utilize new `shiptargets` object to preclude reporting on previously scanned ships.
+    * Added `JumpDetails()` Cottle function call to provide useful jump infomation based on ship loadout and fuel level. See `Help` & `Variables` windows for details.
   * Status monitor
     - Added `legalstatus`, the ship's current legal status. Can be one of 
       - "Clean", 
@@ -42,6 +53,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Added `{TXT:Status body name}`
     * Added `{DEC:Status planet radius}`
     * Added `{BOOL:Status altitude from average radius}`
+    * Added `jumpdetails` plugin invocation to provide useful jump infomation based on ship loadout and fuel level.
 
 ### 3.4
   * Core

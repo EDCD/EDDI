@@ -22,6 +22,9 @@ namespace EddiShipMonitor
             VARIABLES.Add("modulesvalue", "The value of the ship's modules (less hull)");
             VARIABLES.Add("value", "The total value of the ship (hull + modules)");
             VARIABLES.Add("hullhealth", "The health of the ship's hull");
+            VARIABLES.Add("unladenmass", "The unladen mass of the ship");
+            VARIABLES.Add("maxjumprange", "The max unlaiden jump range of the ship");
+            VARIABLES.Add("optimalmass", "The optimal mass value of the frame shift drive");
             VARIABLES.Add("rebuy", "The rebuy value of the ship");
             VARIABLES.Add("hot", "True if the ship is `hot`");
             VARIABLES.Add("paintjob", "The paintjob of the ship");
@@ -36,6 +39,9 @@ namespace EddiShipMonitor
         public long? value => hullvalue + modulesvalue;
         public long? hullvalue { get; private set; }
         public long? modulesvalue { get; private set; }
+        public decimal unladenmass { get; private set; }
+        public decimal maxjumprange { get; private set; }
+        public decimal optimalmass { get; private set; }
         public long rebuy { get; private set; }
         public decimal hullhealth { get; private set; }
         public bool hot { get; private set; }
@@ -43,7 +49,7 @@ namespace EddiShipMonitor
         public List<Hardpoint> hardpoints { get; private set;  }
         public List<Compartment> compartments { get; private set; }
 
-        public ShipLoadoutEvent(DateTime timestamp, string ship, int? shipId, string shipName, string shipIdent, long? hullValue, long? modulesValue, decimal hullHealth, long rebuy, bool hot, List<Compartment> compartments, List<Hardpoint> hardpoints, string paintjob) : base(timestamp, NAME)
+        public ShipLoadoutEvent(DateTime timestamp, string ship, int? shipId, string shipName, string shipIdent, long? hullValue, long? modulesValue, decimal hullHealth, decimal unladenmass, decimal maxjumprange, decimal optimalmass, long rebuy, bool hot, List<Compartment> compartments, List<Hardpoint> hardpoints, string paintjob) : base(timestamp, NAME)
         {
             this.ship = ShipDefinitions.FromEDModel(ship).model;
             this.shipid = shipId;
@@ -52,6 +58,9 @@ namespace EddiShipMonitor
             this.hullvalue = hullValue;
             this.modulesvalue = modulesValue;
             this.hullhealth = hullHealth;
+            this.unladenmass = unladenmass;
+            this.maxjumprange = maxjumprange;
+            this.optimalmass = optimalmass;
             this.rebuy = rebuy;
             this.hot = hot;
             this.paintjob = paintjob;

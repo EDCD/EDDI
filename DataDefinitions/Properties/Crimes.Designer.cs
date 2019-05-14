@@ -205,6 +205,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Mission fine.
+        /// </summary>
+        public static string missionFine {
+            get {
+                return ResourceManager.GetString("missionFine", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Murder.
         /// </summary>
         public static string murder {

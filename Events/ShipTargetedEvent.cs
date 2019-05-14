@@ -40,13 +40,13 @@ namespace EddiEvents
         public string name { get; private set; }
 
         [JsonProperty("rank")]
-        public string rank => combatrankDef?.localizedName ?? "unknown combat rank";
+        public string rank => CombatRank?.localizedName ?? "unknown combat rank";
 
         [JsonProperty("faction")]
         public string faction { get; private set; }
 
         [JsonProperty("legalstatus")]
-        public string legalstatus => legalstatusDef?.localizedName ?? "unknown legal status";
+        public string legalstatus => (LegalStatus ?? LegalStatus.None).localizedName;
 
         [JsonProperty("bounty")]
         public int? bounty { get; private set; }
@@ -63,8 +63,8 @@ namespace EddiEvents
         [JsonProperty("subsystemhealth")]
         public decimal? subsystemhealth { get; private set; }
 
-        public CombatRating combatrankDef { get; }
-        public LegalStatus legalstatusDef { get; }
+        public CombatRating CombatRank { get; }
+        public LegalStatus LegalStatus { get; }
 
         public ShipTargetedEvent(DateTime timestamp, bool targetlocked, string ship, int? scanstage, string name, CombatRating rank, string faction, LegalStatus legalstatus, int? bounty, decimal? shieldhealth, decimal? hullhealth, string subsystem, decimal? subsystemhealth) : base(timestamp, NAME)
         {
@@ -72,9 +72,9 @@ namespace EddiEvents
             this.ship = ship;
             this.scanstage = scanstage;
             this.name = name;
-            this.combatrankDef = rank;
+            this.CombatRank = rank;
             this.faction = faction;
-            this.legalstatusDef = legalstatus;
+            this.LegalStatus = legalstatus;
             this.bounty = bounty;
             this.shieldhealth = shieldhealth;
             this.hullhealth = hullhealth;

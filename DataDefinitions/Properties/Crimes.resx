@@ -197,4 +197,8 @@
     <value>Carrying a wanted person</value>
     <comment>Crime passengerWanted</comment>
   </data>
+  <data name="missionFine" xml:space="preserve">
+    <value>Mission fine</value>
+    <comment>Crime missionFine</comment>
+  </data>
 </root>

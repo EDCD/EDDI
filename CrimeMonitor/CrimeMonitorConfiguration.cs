@@ -19,6 +19,7 @@ namespace EddiCrimeMonitor
         public long bounties { get; set; }
         public int? maxStationDistanceFromStarLs { get; set; }
         public bool prioritizeOrbitalStations { get; set; }
+        public string targetSystem { get; set; }
         public DateTime updatedat { get; set; }
 
         [JsonIgnore]

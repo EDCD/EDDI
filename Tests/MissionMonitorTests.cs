@@ -1,5 +1,6 @@
 ﻿using EddiDataDefinitions;
 using EddiEvents;
+using EddiCrimeMonitor;
 using EddiJournalMonitor;
 using EddiMissionMonitor;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -155,7 +156,7 @@ namespace UnitTests
         public void TestMissionEventsScenario()
         {
             // Save original data
-            MissionMonitorConfiguration data = MissionMonitorConfiguration.FromFile();
+            MissionMonitorConfiguration missionData = MissionMonitorConfiguration.FromFile();
 
             missionMonitor.initializeMissionMonitor(new MissionMonitorConfiguration());
 
@@ -258,6 +259,20 @@ namespace UnitTests
             line = @"{ ""timestamp"":""2018-08-26T00:50:48Z"", ""event"":""MissionFailed"", ""Name"":""Mission_Collect_Industrial"", ""Fine"":50000, ""MissionID"":413748324 }";
             events = JournalMonitor.ParseJournalEntry(line);
             Assert.IsTrue(events.Count == 1);
+
+            CrimeMonitorConfiguration crimeData = CrimeMonitorConfiguration.FromFile();
+            CrimeMonitor crimeMonitor = new CrimeMonitor();
+            mission = missionMonitor.missions.ToList().FirstOrDefault(m => m.missionid == 413748324);
+            long fine = ((MissionFailedEvent)events[0]).fine;
+            crimeMonitor._handleMissionFine(events[0].timestamp, mission, fine);
+            FactionRecord record = crimeMonitor.criminalrecord.ToList().FirstOrDefault(r => r.faction == mission.faction);
+            Assert.IsNotNull(record);
+            Assert.AreEqual(50000, record.fines);
+            FactionReport report = record.factionReports.FirstOrDefault(r => r.crimeDef == Crime.FromEDName("missionFine"));
+            Assert.IsNotNull(report);
+            Assert.AreEqual(50000, report.amount);
+            crimeData.ToFile();
+
             missionMonitor._handleMissionFailedEvent((MissionFailedEvent)events[0]);
             Assert.AreEqual(4, missionMonitor.missions.Count);
 
@@ -269,7 +284,7 @@ namespace UnitTests
             Assert.AreEqual(1000000, mcEvent.donation);
 
             // Restore original data
-            data.ToFile();
+            missionData.ToFile();
         }
 
         [TestMethod]

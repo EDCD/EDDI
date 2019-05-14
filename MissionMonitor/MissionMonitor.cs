@@ -188,6 +188,16 @@ namespace EddiMissionMonitor
 
         public void PostHandle(Event @event)
         {
+            if (@event is MissionAbandonedEvent)
+            {
+                //
+                handleMissionAbandonedEvent((MissionAbandonedEvent)@event);
+            }
+            else if (@event is MissionFailedEvent)
+            {
+                //
+                handleMissionFailedEvent((MissionFailedEvent)@event);
+            }
         }
 
         public void PreHandle(Event @event)
@@ -220,11 +230,6 @@ namespace EddiMissionMonitor
                 //
                 handleCargoDepotEvent((CargoDepotEvent)@event);
             }
-            else if (@event is MissionAbandonedEvent)
-            {
-                //
-                handleMissionAbandonedEvent((MissionAbandonedEvent)@event);
-            }
             else if (@event is MissionAcceptedEvent)
             {
                 //
@@ -239,11 +244,6 @@ namespace EddiMissionMonitor
             {
                 //
                 handleMissionExpiredEvent((MissionExpiredEvent)@event);
-            }
-            else if (@event is MissionFailedEvent)
-            {
-                //
-                handleMissionFailedEvent((MissionFailedEvent)@event);
             }
             else if (@event is MissionRedirectedEvent)
             {

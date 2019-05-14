@@ -2,6 +2,7 @@
 using EddiDataDefinitions;
 using EddiDataProviderService;
 using EddiEvents;
+using EddiMissionMonitor;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -30,8 +31,11 @@ namespace EddiCrimeMonitor
         public long bounties;
         public int? maxStationDistanceFromStarLs;
         public bool prioritizeOrbitalStations;
+        public string targetSystem;
         public Dictionary<string, string> homeSystems;
         private DateTime updateDat;
+
+        public List<Target> shipTargets = new List<Target>();
 
         private static readonly object recordLock = new object();
         public event EventHandler RecordUpdatedEvent;
@@ -137,7 +141,19 @@ namespace EddiCrimeMonitor
             Logging.Debug("Received event " + JsonConvert.SerializeObject(@event));
 
             // Handle the events that we care about
-            if (@event is BondAwardedEvent)
+            if (@event is LocationEvent)
+            {
+                handleLocationEvent((LocationEvent)@event);
+            }
+            else if (@event is JumpedEvent)
+            {
+                handleJumpedEvent((JumpedEvent)@event);
+            }
+            else if (@event is ShipTargetedEvent)
+            {
+                handleShipTargetedEvent((ShipTargetedEvent)@event);
+            }
+            else if (@event is BondAwardedEvent)
             {
                 handleBondAwardedEvent((BondAwardedEvent)@event);
             }
@@ -169,9 +185,76 @@ namespace EddiCrimeMonitor
             {
                 handleFinePaidEvent((FinePaidEvent)@event);
             }
+            else if (@event is MissionAbandonedEvent)
+            {
+                handleMissionAbandonedEvent((MissionAbandonedEvent)@event);
+            }
+            else if (@event is MissionFailedEvent)
+            {
+                handleMissionFailedEvent((MissionFailedEvent)@event);
+            }
             else if (@event is DiedEvent)
             {
                 handleDiedEvent((DiedEvent)@event);
+            }
+        }
+
+        private void handleLocationEvent(LocationEvent @event)
+        {
+            if (@event.timestamp > updateDat)
+            {
+                targetSystem = @event.system;
+                updateDat = @event.timestamp;
+                writeRecord();
+            }
+        }
+
+        private void handleJumpedEvent(JumpedEvent @event)
+        {
+            if (@event.timestamp > updateDat)
+            {
+                updateDat = @event.timestamp;
+                _handleJumpedEvent(@event);
+                writeRecord();
+            }
+        }
+
+        private void _handleJumpedEvent(JumpedEvent @event)
+        {
+            shipTargets.Clear();
+            targetSystem = @event.system;
+        }
+
+        private void handleShipTargetedEvent(ShipTargetedEvent @event)
+        {
+            // System targets list may be 're-built' for the current system from Log Load
+            string currentSystem = EDDI.Instance?.CurrentStarSystem?.name;
+            if (targetSystem == null) { targetSystem = currentSystem; }
+            if (@event.targetlocked && currentSystem == targetSystem)
+            {
+                Target target = new Target();
+                if (@event.scanstage >= 1)
+                {
+                    target = shipTargets.FirstOrDefault(t => t.name == @event.name);
+                    if (target == null)
+                    {
+                        target = new Target(@event.name, @event.CombatRank, @event.ship);
+                        shipTargets.Add(target);
+                    }
+                }
+                if (@event.scanstage >= 3 && target.LegalStatus == null)
+                {
+                    target.faction = @event.faction;
+                    if (@event.faction != null)
+                    {
+                        Faction faction = DataProviderService.GetFactionByName(@event.faction);
+                        Power power = Power.FromEDName(@event.faction);
+                        target.Power = power ?? Power.None;
+                        target.Allegiance = power?.Allegiance ?? faction?.Allegiance;
+                    }
+                    target.LegalStatus = @event.LegalStatus;
+                    target.bounty = @event.bounty;
+                }
             }
         }
 
@@ -198,7 +281,7 @@ namespace EddiCrimeMonitor
                 station = EDDI.Instance?.CurrentStation?.name,
                 body = EDDI.Instance?.CurrentStellarBody?.name,
                 victim = @event.victimfaction,
-                victimAllegiance = (faction.Allegiance ?? Superpower.None).invariantName
+                victimAllegiance = (faction?.Allegiance ?? Superpower.None).invariantName
             };
 
             FactionRecord record = GetRecordWithFaction(@event.awardingfaction);
@@ -300,7 +383,7 @@ namespace EddiCrimeMonitor
             }
 
             // Default to 1.0 for unit testing
-            double bonus = (!test && currentSystem?.power == "Arissa Lavigny-Duval") ? 1.2 : 1.0;
+            double bonus = (!test && currentSystem?.Power == Power.FromEDName("ALavignyDuval")) ? 1.2 : 1.0;
 
             // Get the victim faction data
             Faction faction = DataProviderService.GetFactionByName(@event.faction);
@@ -412,11 +495,15 @@ namespace EddiCrimeMonitor
             Crime crime = Crime.FromEDName(@event.crimetype);
             string currentSystem = EDDI.Instance?.CurrentStarSystem?.name;
 
+            // Get victim allegiance from the 'Ship targeted' data
+            Target target = shipTargets.FirstOrDefault(t => t.name == @event.victim);
+
             FactionReport report = new FactionReport(@event.timestamp, true, shipId, crime, currentSystem, @event.bounty)
             {
                 station = EDDI.Instance?.CurrentStation?.name,
                 body = EDDI.Instance?.CurrentStellarBody?.name,
-                victim = @event.victim
+                victim = @event.victim,
+                victimAllegiance = (target?.Allegiance ?? Superpower.None).invariantName
             };
 
             FactionRecord record = GetRecordWithFaction(@event.faction);
@@ -571,6 +658,52 @@ namespace EddiCrimeMonitor
             return update;
         }
 
+        private void handleMissionAbandonedEvent(MissionAbandonedEvent @event)
+        {
+            if (@event.timestamp > updateDat)
+            {
+                updateDat = @event.timestamp;
+                if (_handleMissionAbandonedEvent(@event))
+                {
+                    writeRecord();
+                }
+            }
+        }
+
+        private bool _handleMissionAbandonedEvent(MissionAbandonedEvent @event)
+        {
+            bool update = false;
+
+            if (@event.fine > 0 && @event.missionid != null)
+            {
+                update = handleMissionFine(@event.timestamp, @event.missionid ?? 0, @event.fine);
+            }
+            return update;
+        }
+
+        private void handleMissionFailedEvent(MissionFailedEvent @event)
+        {
+            if (@event.timestamp > updateDat)
+            {
+                updateDat = @event.timestamp;
+                if (_handleMissionFailedEvent(@event))
+                {
+                    writeRecord();
+                }
+            }
+        }
+
+        private bool _handleMissionFailedEvent(MissionFailedEvent @event)
+        {
+            bool update = false;
+
+            if (@event.fine > 0 && @event.missionid != null)
+            {
+                update = handleMissionFine(@event.timestamp, @event.missionid ?? 0, @event.fine);
+            }
+            return update;
+        }
+
         private void handleDiedEvent(DiedEvent @event)
         {
             if (@event.timestamp > updateDat)
@@ -607,7 +740,9 @@ namespace EddiCrimeMonitor
                 ["criminalrecord"] = new List<FactionRecord>(criminalrecord),
                 ["claims"] = claims,
                 ["fines"] = fines,
-                ["bounties"] = bounties
+                ["bounties"] = bounties,
+                ["orbitalpriority"] = prioritizeOrbitalStations,
+                ["shiptargets"] = new List<Target>(shipTargets)
             };
             return variables;
         }
@@ -628,6 +763,7 @@ namespace EddiCrimeMonitor
                     bounties = bounties,
                     maxStationDistanceFromStarLs = maxStationDistanceFromStarLs,
                     prioritizeOrbitalStations = prioritizeOrbitalStations,
+                    targetSystem = targetSystem,
                     homeSystems = homeSystems,
                     updatedat = updateDat
                 };
@@ -648,6 +784,7 @@ namespace EddiCrimeMonitor
                 bounties = configuration.bounties;
                 maxStationDistanceFromStarLs = configuration.maxStationDistanceFromStarLs;
                 prioritizeOrbitalStations = configuration.prioritizeOrbitalStations;
+                targetSystem = configuration.targetSystem;
                 homeSystems = configuration.homeSystems;
                 updateDat = configuration.updatedat;
 
@@ -764,6 +901,45 @@ namespace EddiCrimeMonitor
             }
         }
 
+        private bool handleMissionFine(DateTime timestamp, long missionid, long fine)
+        {
+            bool update = false;
+            MissionMonitor missionMonitor = (MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor");
+            Mission mission = missionMonitor?.GetMissionWithMissionId(missionid);
+            if (mission != null)
+            {
+                update = _handleMissionFine(timestamp, mission, fine);
+            }
+            return update;
+        }
+
+        public bool _handleMissionFine(DateTime timestamp, Mission mission, long fine)
+        {
+            bool update = false;
+
+            if (mission?.faction != null)
+            {
+                int shipId = EDDI.Instance?.CurrentShip?.LocalId ?? 0;
+                Crime crime = Crime.FromEDName("missionFine");
+                string currentSystem = EDDI.Instance?.CurrentStarSystem?.name;
+
+                FactionReport report = new FactionReport(timestamp, false, shipId, crime, currentSystem, fine)
+                {
+                    station = EDDI.Instance?.CurrentStation?.name,
+                    body = EDDI.Instance?.CurrentStellarBody?.name,
+                };
+
+                FactionRecord record = GetRecordWithFaction(mission.faction);
+                if (record == null)
+                {
+                    record = AddRecord(mission.faction);
+                }
+                AddCrimeToRecord(record, report);
+                update = true;
+            }
+            return update;
+        }
+
         public FactionRecord GetRecordWithFaction(string faction)
         {
             if (faction == null)
@@ -856,12 +1032,17 @@ namespace EddiCrimeMonitor
                 // Filter stations within the faction system which meet the station type prioritization,
                 // max distance from the main star, game version, and landing pad size requirements
                 string shipSize = EDDI.Instance?.CurrentShip?.size ?? "Large";
-                bool selectStations = !prioritizeOrbitalStations && EDDI.Instance.inHorizons;
 
-                List<Station> factionStations = selectStations ? factionStarSystem.stations : factionStarSystem.orbitalstations
-                    .Where(s => s.distancefromstar < maxStationDistanceFromStarLs).ToList();
+                List<Station> factionStations = EDDI.Instance.inHorizons ? factionStarSystem.stations : factionStarSystem.orbitalstations
+                    .Where(s => s.stationservices.Count > 0).ToList();
+                factionStations = factionStations.Where(s => s.distancefromstar < maxStationDistanceFromStarLs).ToList();
                 factionStations = factionStations.Where(s => s.LandingPadCheck(shipSize)).ToList();
-                factionStations = factionStations.Where(s => s.stationservices.Count > 0).ToList();
+                
+                // If available, prioritize orbital stations over planetary
+                if (prioritizeOrbitalStations && EDDI.Instance.inHorizons && factionStations.Where(s => s.IsStarport()).Count() > 0)
+                {
+                    factionStations = factionStations.Where(s => s.IsStarport()).ToList();
+                }
 
                 // Build list to find the faction station nearest to the main star
                 SortedList<decimal, string> nearestList = new SortedList<decimal, string>();

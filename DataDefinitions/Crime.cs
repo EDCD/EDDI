@@ -39,6 +39,7 @@ namespace EddiDataDefinitions
             var CollidedWithDamage = new Crime("collidedAtSpeedInNoFireZone_hulldamage");
             var RecklessWeaponsDischarge = new Crime("recklessWeaponsDischarge");
             var PassengerWanted = new Crime("passengerWanted");
+            var MissionFine = new Crime("missionFine");
         }
 
         // Faction report definition

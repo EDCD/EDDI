@@ -407,12 +407,15 @@ namespace EddiVoiceAttackResponder
                     case "setspeechresponderpersonality":
                         InvokeSetSpeechResponderPersonality(ref vaProxy);
                         break;
+                    case "jumpdetails":
+                        InvokeJumpDetails(ref vaProxy);
+                        break;
                     case "transmit":
                         InvokeTransmit(ref vaProxy);
                         break;
                     case "missionsroute":
                     case "route":
-                        InvokeMissionsRoute(ref vaProxy);
+                        InvokeRouteDetails(ref vaProxy);
                         break;
                 }
             }
@@ -969,7 +972,26 @@ namespace EddiVoiceAttackResponder
             }
         }
 
-        public static void InvokeMissionsRoute(ref dynamic vaProxy)
+        public static void InvokeJumpDetails(ref dynamic vaProxy)
+        {
+            try
+            {
+                string type = vaProxy.GetText("Type variable");
+                if (!string.IsNullOrEmpty(type))
+                {
+                    ShipMonitor.JumpDetail detail = ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).JumpDetails(type);
+                    vaProxy.SetDecimal("Ship jump detail distance", detail?.distance);
+                    vaProxy.SetInt("Ship jump detail jumps", detail?.jumps);
+                    vaProxy.SetText("Type variable", null);
+                }
+            }
+            catch (Exception e)
+            {
+                setStatus(ref vaProxy, "Failed to get jump details", e);
+            }
+        }
+
+        public static void InvokeRouteDetails(ref dynamic vaProxy)
         {
             try
             {
@@ -999,7 +1021,7 @@ namespace EddiVoiceAttackResponder
                         break;
                     case "most":
                         {
-                            if (system == null || system == string.Empty)
+                            if (string.IsNullOrEmpty(system))
                             {
                                 Navigation.Instance.GetMostRoute();
                             }
@@ -1021,7 +1043,7 @@ namespace EddiVoiceAttackResponder
                         break;
                     case "route":
                         {
-                            if (system == null || system == string.Empty)
+                            if (string.IsNullOrEmpty(system))
                             {
                                 Navigation.Instance.GetMissionsRoute();
                             }
@@ -1038,7 +1060,7 @@ namespace EddiVoiceAttackResponder
                         break;
                     case "source":
                         {
-                            if (system == null || system == string.Empty)
+                            if (string.IsNullOrEmpty(system))
                             {
                                 Navigation.Instance.GetSourceRoute();
                             }
@@ -1050,7 +1072,7 @@ namespace EddiVoiceAttackResponder
                         break;
                     case "update":
                         {
-                            if (system == null || system == string.Empty)
+                            if (string.IsNullOrEmpty(system))
                             {
                                 Navigation.Instance.UpdateRoute();
                             }
@@ -1061,6 +1083,8 @@ namespace EddiVoiceAttackResponder
                         }
                         break;
                 }
+                vaProxy.SetText("Type variable", null);
+                vaProxy.SetText("System variable", null);
             }
             catch (Exception e)
             {

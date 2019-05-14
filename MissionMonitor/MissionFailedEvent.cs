@@ -16,6 +16,7 @@ namespace EddiMissionMonitor
         {
             VARIABLES.Add("missionid", "The ID of the mission");
             VARIABLES.Add("name", "The name of the mission");
+            VARIABLES.Add("fine", "The fine levied");
         }
 
         [JsonProperty("missionid")]
@@ -24,10 +25,14 @@ namespace EddiMissionMonitor
         [JsonProperty("name")]
         public string name { get; private set; }
 
-        public MissionFailedEvent(DateTime timestamp, long? missionid, string name) : base(timestamp, NAME)
+        [JsonProperty("fine")]
+        public long fine { get; private set; }
+
+        public MissionFailedEvent(DateTime timestamp, long? missionid, string name, long fine) : base(timestamp, NAME)
         {
             this.missionid = missionid;
             this.name = name;
+            this.fine = fine;
         }
     }
 }

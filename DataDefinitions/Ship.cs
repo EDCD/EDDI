@@ -286,13 +286,25 @@ namespace EddiDataDefinitions
         public List<Hardpoint> hardpoints { get; set; }
         public List<Compartment> compartments { get; set; }
         public List<LaunchBay> launchbays { get; set; }
-        public decimal activeFuelReservoirCapacity { get; set; }
         public string paintjob { get; set; }
 
         public decimal? fueltankcapacity { get; set; } // Core capacity
         public decimal? fueltanktotalcapacity { get; set; } // Capacity including additional tanks
-        public decimal maxfuel { get; set; }
-        public decimal maxjump { get; set; }
+        public decimal activeFuelReservoirCapacity { get; set; }
+
+        // Ship jump properties
+        public decimal maxjumprange { get; set; }
+
+        [JsonIgnore, Obsolete("Please use maxjumprange instead")]
+        public decimal maxjump => maxjumprange;
+
+        public decimal maxfuelperjump { get; set; }
+
+        [JsonIgnore, Obsolete("Please use maxfuelperjump instead")]
+        public decimal maxfuel => maxfuelperjump;
+
+        public decimal optimalmass { get; set; }
+        public decimal unladenmass { get; set; }
 
         // Admin
         // The ID in Elite: Dangerous' database

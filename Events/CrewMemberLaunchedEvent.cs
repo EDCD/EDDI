@@ -8,7 +8,7 @@ namespace EddiEvents
     {
         public const string NAME = "Crew member launched";
         public const string DESCRIPTION = "Triggered when a crew member launches the fighter";
-        public const string SAMPLE = @"{ ""timestamp"":""2017-03-09T12:28:10Z"", ""event"":""CrewLaunchFighter"", ""Crew"":""M. Volgrand"" }";
+        public const string SAMPLE = "{\"timestamp\":\"2017-03-09T12:28:10Z\", \"event\":\"CrewLaunchFighter\", \"Crew\":\"M. Volgrand\", \"ID\":13}";
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
         static CrewMemberLaunchedEvent()
@@ -19,9 +19,13 @@ namespace EddiEvents
         [JsonProperty("crew")]
         public string crew { get; private set; }
 
-        public CrewMemberLaunchedEvent(DateTime timestamp, string crew) : base(timestamp, NAME)
+        [JsonProperty("id")]
+        public int id { get; private set; }
+
+        public CrewMemberLaunchedEvent(DateTime timestamp, string crew, int id) : base(timestamp, NAME)
         {
             this.crew = crew;
+            this.id = id;
         }
     }
 }

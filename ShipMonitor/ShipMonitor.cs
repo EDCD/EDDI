@@ -1,6 +1,8 @@
 ﻿using Eddi;
+using EddiCargoMonitor;
 using EddiCrimeMonitor;
 using EddiDataDefinitions;
+using EddiStatusMonitor;
 using EddiEvents;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -28,6 +30,8 @@ namespace EddiShipMonitor
 
         // Observable collection for us to handle changes
         public ObservableCollection<Ship> shipyard { get; private set; }
+
+        // List of stored modules from 'Stored modules' event
         public List<StoredModule> storedmodules { get; private set; }
 
         // The ID of the current ship; can be null
@@ -241,10 +245,6 @@ namespace EddiShipMonitor
             else if (@event is StoredModulesEvent)
             {
                 handleStoredModulesEvent((StoredModulesEvent)@event);
-            }
-            else if (@event is JumpedEvent)
-            {
-                handleJumpedEvent((JumpedEvent)@event);
             }
             else if (@event is BountyIncurredEvent)
             {
@@ -468,8 +468,9 @@ namespace EddiShipMonitor
             {
                 ship.value = (long)@event.value;
             }
-
             ship.rebuy = @event.rebuy;
+            ship.unladenmass = @event.unladenmass;
+            ship.maxjumprange = @event.maxjumprange;
 
             // Set the standard modules
             Compartment compartment = @event.compartments.FirstOrDefault(c => c.name == "Armour");
@@ -506,6 +507,8 @@ namespace EddiShipMonitor
             if (compartment != null)
             {
                 ship.frameshiftdrive = compartment.module;
+                ship.optimalmass = @event.optimalmass;
+                ship.maxfuelperjump = MaxFuelPerJump(ship);
             }
 
             compartment = @event.compartments.FirstOrDefault(c => c.name == "LifeSupport");
@@ -1019,24 +1022,6 @@ namespace EddiShipMonitor
             }
         }
 
-        private void handleJumpedEvent(JumpedEvent @event)
-        {
-            if (@event.timestamp > updateDat)
-            {
-                updateDat = @event.timestamp;
-                if (@event.boostused is null)
-                {
-                    Ship ship = GetCurrentShip();
-                    if (@event.fuelused > ship?.maxfuel)
-                    {
-                        ship.maxfuel = @event.fuelused;
-                        ship.maxjump = @event.distance;
-                        if (!@event.fromLoad) { writeShips(); }
-                    }
-                }
-            }
-        }
-
         private void handleBountyIncurredEvent(BountyIncurredEvent @event)
         {
             if (@event.timestamp > updateDat)
@@ -1111,17 +1096,18 @@ namespace EddiShipMonitor
                         ship = profileCurrentShip;
                         AddShip(ship);
                     }
-                    // Ship launchbay data is exclusively from the API, always update.
+                    // Update launch bays and FSD optimum mass from profile
                     else
                     {
-                        if (profileCurrentShip.launchbays == null || !profileCurrentShip.launchbays.Any())
-                        {
-                            ship.launchbays.Clear();
-                        }
-                        else
+                        if (profileCurrentShip?.launchbays?.Any() ?? false)
                         {
                             ship.launchbays = profileCurrentShip.launchbays;
                         }
+                        else
+                        {
+                            ship.launchbays.Clear();
+                        }
+                        ship.optimalmass = profileCurrentShip.optimalmass;
                     }
                     Logging.Debug("Ship is: " + JsonConvert.SerializeObject(ship));
                 }
@@ -1623,6 +1609,92 @@ namespace EddiShipMonitor
             }
         }
 
+        public JumpDetail JumpDetails(string type)
+        {
+            Ship ship = GetCurrentShip();
+            ship.maxfuelperjump = MaxFuelPerJump(ship);
+
+            int cargoCarried = ((CargoMonitor)EDDI.Instance.ObtainMonitor("Cargo monitor")).cargoCarried;
+            decimal? currentFuel = ((StatusMonitor)EDDI.Instance.ObtainMonitor("Status monitor")).currentStatus.fuelInTanks;
+            decimal maxFuel = ship.fueltanktotalcapacity ?? 0;
+
+            if (!string.IsNullOrEmpty(type))
+            {
+                switch (type)
+                {
+                    case "next":
+                        {
+                            decimal distance = JumpRange(ship, currentFuel ?? 0, cargoCarried);
+                            return new JumpDetail(distance, 1);
+                        }
+                    case "max":
+                        {
+                            decimal distance = JumpRange(ship, ship.maxfuelperjump, cargoCarried);
+                            return new JumpDetail(distance, 1);
+                        }
+                    case "total":
+                        {
+                            decimal total = 0;
+                            int jumps = 0;
+                            while (currentFuel > 0)
+                            {
+                                total += JumpRange(ship, currentFuel ?? 0, cargoCarried);
+                                jumps++;
+                                currentFuel -= Math.Min(currentFuel ?? 0, ship.maxfuelperjump);
+                            }
+                            return new JumpDetail(total, jumps);
+                        }
+                    case "full":
+                        {
+                            decimal total = 0;
+                            int jumps = 0;
+                            while (maxFuel > 0)
+                            {
+                                total += JumpRange(ship, maxFuel, cargoCarried);
+                                jumps++;
+                                maxFuel -= Math.Min(maxFuel, ship.maxfuelperjump);
+                            }
+                            return new JumpDetail(total, jumps);
+                        }
+                }
+            }
+            return null;
+        }
+
+        private decimal JumpRange(Ship ship, decimal currentFuel, int cargoCarried)
+        {
+            decimal boostConstant = 0;
+            Module module = ship.compartments.FirstOrDefault(c => c.module.edname.Contains("Int_GuardianFSDBooster"))?.module;
+            if (module != null)
+            {
+                Constants.guardianBoostFSD.TryGetValue(module.@class, out boostConstant);
+            }
+
+            Constants.ratingConstantFSD.TryGetValue(ship.frameshiftdrive.grade, out decimal ratingConstant);
+            Constants.powerConstantFSD.TryGetValue(ship.frameshiftdrive.@class, out decimal powerConstant);
+            decimal massRatio = ship.optimalmass / (ship.unladenmass + currentFuel + cargoCarried);
+            decimal fuel = Math.Min(currentFuel, ship.maxfuelperjump);
+
+            return (decimal)Math.Pow((double)(1000 * fuel / ratingConstant), (double)(1 / powerConstant)) * massRatio + boostConstant;
+        }
+
+        private decimal MaxFuelPerJump(Ship ship)
+        {
+            // Max fuel per jump calculated using unladen mass and max jump range w/ just enough fuel to complete max jump
+            decimal boostConstant = 0;
+            Module module = ship.compartments.FirstOrDefault(c => c.module.edname.Contains("Int_GuardianFSDBooster"))?.module;
+            if (module != null)
+            {
+                Constants.guardianBoostFSD.TryGetValue(module.@class, out boostConstant);
+            }
+            Constants.ratingConstantFSD.TryGetValue(ship.frameshiftdrive.grade, out decimal ratingConstant);
+            Constants.powerConstantFSD.TryGetValue(ship.frameshiftdrive.@class, out decimal powerConstant);
+            decimal maxJumpRange = ship.maxjumprange - boostConstant;
+            decimal massRatio = (ship.unladenmass + ship.maxfuelperjump) / ship.optimalmass;
+
+            return ratingConstant * (decimal)Math.Pow((double)(maxJumpRange * massRatio), (double)powerConstant) / 1000;
+        }
+
         /// <summary> See if we're in a fighter </summary>
         private bool inFighter(string model)
         {
@@ -1662,6 +1734,20 @@ namespace EddiShipMonitor
                 {
                     uiSyncContext.Send(delegate { handler(sender, EventArgs.Empty); }, null);
                 }
+            }
+        }
+
+        public class JumpDetail
+        {
+            public decimal distance { get; private set; }
+            public int jumps { get; private set; }
+
+            public JumpDetail() { }
+
+            public JumpDetail(decimal distance, int jumps)
+            {
+                this.distance = distance;
+                this.jumps = jumps;
             }
         }
     }
