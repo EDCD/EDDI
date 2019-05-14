@@ -165,9 +165,6 @@
   <data name="orbital_station_checkbox" xml:space="preserve">
     <value>Orbitális állomások előnyben részesítése:</value>
   </data>
-  <data name="para1" xml:space="preserve">
-    <value>A bűnügyi jegyzéked alább látható.</value>
-  </data>
   <data name="remove_button" xml:space="preserve">
     <value>Törlés</value>
   </data>
