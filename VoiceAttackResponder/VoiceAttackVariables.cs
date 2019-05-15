@@ -820,7 +820,7 @@ namespace EddiVoiceAttackResponder
         private static void setBodyValues(Body body, string prefix, dynamic vaProxy)
         {
             Logging.Debug("Setting body information (" + prefix + ")");
-            if (body.bodyType.invariantName == "Star") { vaProxy.SetText(prefix + " stellar class", body?.stellarclass); }
+            if (body?.bodyType?.invariantName == "Star") { vaProxy.SetText(prefix + " stellar class", body?.stellarclass); }
             if (body?.age == null)
             {
                 vaProxy.SetDecimal(prefix + " age", null);

@@ -522,26 +522,30 @@ namespace EddiDataDefinitions
             double massKg = 0;
             double radiusM = 0;
 
-            if (bodyType.invariantName != "Star")
+            if (bodyType != null)
             {
-                double radiusKm = Convert.ToDouble(radius);
-                radiusM = (radiusKm * 1000);
+                if (bodyType.invariantName != "Star")
+                {
+                    double radiusKm = Convert.ToDouble(radius);
+                    radiusM = (radiusKm * 1000);
 
-                double earthmasses = Convert.ToDouble(earthmass);
-                massKg = earthmasses * Constants.earthMassKg;
-            }
-            else if (bodyType.invariantName == "Star")
-            {
-                double radiusKm = Convert.ToDouble(radius);
-                radiusM = (radiusKm * 1000);
+                    double earthmasses = Convert.ToDouble(earthmass);
+                    massKg = earthmasses * Constants.earthMassKg;
+                }
+                else if (bodyType.invariantName == "Star")
+                {
+                    double radiusKm = Convert.ToDouble(radius);
+                    radiusM = (radiusKm * 1000);
 
-                double solarMasses = Convert.ToDouble(solarmass);
-                massKg = solarMasses * Constants.solMassKg;
-            }
-            if (massKg > 0 && radiusM > 0)
-            {
-                double cubicMeters = 4 / 3 * Math.PI * Math.Pow(radiusM, 3);
-                return (decimal?)(massKg / cubicMeters);
+                    double solarMasses = Convert.ToDouble(solarmass);
+                    massKg = solarMasses * Constants.solMassKg;
+                }
+                if (massKg > 0 && radiusM > 0)
+                {
+                    double cubicMeters = 4 / 3 * Math.PI * Math.Pow(radiusM, 3);
+                    return (decimal?)(massKg / cubicMeters);
+                }
+                else { return null; }
             }
             else { return null; }
         }
