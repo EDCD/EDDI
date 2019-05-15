@@ -858,7 +858,7 @@ namespace EddiVoiceAttackResponder
             vaProxy.SetDecimal(prefix + " rotational period", body?.rotationalperiod);
             vaProxy.SetDecimal(prefix + " semi major axis", body?.semimajoraxis);
             // Star specific items 
-            if (body.bodyType.invariantName == "Star")
+            if (body?.bodyType?.invariantName == "Star")
             {
                 vaProxy.SetBoolean(prefix + " main star", body?.mainstar);
                 vaProxy.SetText(prefix + " stellar class", body?.stellarclass);
@@ -874,7 +874,7 @@ namespace EddiVoiceAttackResponder
                 vaProxy.SetDecimal(prefix + " estimated outer hab zone", body?.estimatedhabzoneouter);
             }
             // Body specific items 
-            if (body.bodyType.invariantName == "Planet")
+            if (body?.bodyType?.invariantName == "Planet")
             {
                 vaProxy.SetDecimal(prefix + " periapsis", body?.periapsis);
                 vaProxy.SetText(prefix + " atmosphere", (body?.atmosphereclass ?? AtmosphereClass.None).localizedName);
