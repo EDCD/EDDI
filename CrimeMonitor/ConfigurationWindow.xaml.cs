@@ -92,7 +92,7 @@ namespace EddiCrimeMonitor
 
             Thread IFRouteThread = new Thread(() =>
             {
-                string IFSystem = Navigation.Instance.GetFacilitatorRoute();
+                string IFSystem = Navigation.Instance.GetServiceRoute("facilitator");
                 Dispatcher?.Invoke(() =>
                 {
                     updateButton.Foreground = Brushes.Black;

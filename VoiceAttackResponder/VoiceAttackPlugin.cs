@@ -1004,6 +1004,11 @@ namespace EddiVoiceAttackResponder
                             Navigation.Instance.CancelRoute();
                         }
                         break;
+                    case "encoded":
+                        {
+                            Navigation.Instance.GetServiceRoute("encoded");
+                        }
+                        break;
                     case "expiring":
                         {
                             Navigation.Instance.GetExpiringRoute();
@@ -1011,12 +1016,27 @@ namespace EddiVoiceAttackResponder
                         break;
                     case "facilitator":
                         {
-                            Navigation.Instance.GetFacilitatorRoute();
+                            Navigation.Instance.GetServiceRoute("facilitator");
                         }
                         break;
                     case "farthest":
                         {
                             Navigation.Instance.GetFarthestRoute();
+                        }
+                        break;
+                    case "guardian":
+                        {
+                            Navigation.Instance.GetServiceRoute("guardian");
+                        }
+                        break;
+                    case "human":
+                        {
+                            Navigation.Instance.GetServiceRoute("human");
+                        }
+                        break;
+                    case "manufactured":
+                        {
+                            Navigation.Instance.GetServiceRoute("manufactured");
                         }
                         break;
                     case "most":
@@ -1039,6 +1059,11 @@ namespace EddiVoiceAttackResponder
                     case "next":
                         {
                             Navigation.Instance.SetNextRoute();
+                        }
+                        break;
+                    case "raw":
+                        {
+                            Navigation.Instance.GetServiceRoute("raw");
                         }
                         break;
                     case "route":

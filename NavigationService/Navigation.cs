@@ -17,6 +17,17 @@ namespace EddiNavigationService
         private CargoMonitor cargoMonitor = (CargoMonitor)EDDI.Instance.ObtainMonitor("Cargo monitor");
         private MissionMonitor missionMonitor = (MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor");
 
+
+        private static Dictionary<string, dynamic> ServiceFilter = new Dictionary<string, dynamic>()
+        {
+            { "encoded", new {econ = new List<string>() {"High Tech", "Military"}, population = 1000000, security = new List<string>() {"Medium", "High"}, service = "Material Trader", cubeLy = 40} },
+            { "facilitator", new {econ = new List<string>(), population = 0, security = new List<string>() {"Low"}, service = "Interstellar Factors Contact", cubeLy = 25} },
+            { "manufactured", new {econ = new List<string>() {"Industrial"}, population = 1000000, security = new List<string>() {"Medium", "High"}, service = "Material Trader", cubeLy = 40} },
+            { "raw", new {econ = new List<string>() {"Extraction", "Refinery"}, population = 1000000, security = new List<string>() {"Medium", "High"}, service = "Material Trader", cubeLy = 40} },
+            { "guardian", new {econ = new List<string>() {"High Tech"}, population = 10000000, security = new List<string>()  {"High"}, service = "Technology Broker", cubeLy = 80} },
+            { "human", new {econ = new List<string>() {"Industrial"}, population = 10000000, security = new List<string>() {"High"}, service = "Technology Broker", cubeLy = 80} }
+        };
+
         private static Navigation instance;
         private static readonly object instanceLock = new object();
         public static Navigation Instance
@@ -80,87 +91,6 @@ namespace EddiNavigationService
             }
             EDDI.Instance.enqueueEvent(new RouteDetailsEvent(DateTime.Now, "expiring", expiringSystem, expiringSystem, expiringSeconds, expiringDistance, expiringDistance, missionids));
             return expiringSystem;
-        }
-
-        public string GetFacilitatorRoute()
-        {
-            string IFSystem = null;
-            string IFStation = null;
-            decimal IFDistance = 0;
-            List<long> missionids = new List<long>();       // List of mission IDs for the next system
-
-            StarSystem currentSystem = EDDI.Instance?.CurrentStarSystem;
-            if (currentSystem != null)
-            {
-                // Get the nearest Interstellar Factors system and station
-                List<StarSystem> cubeSystems = StarMapService.GetStarMapSystemsCube(currentSystem.name, 25);
-                if (cubeSystems != null && cubeSystems.Any())
-                {
-                    SortedList<decimal, string> nearestList = new SortedList<decimal, string>();
-
-                    string shipSize = EDDI.Instance?.CurrentShip?.size ?? "Large";
-                    SecurityLevel securityLevel = SecurityLevel.FromName("Low");
-                    string service = "Interstellar Factors Contact";
-
-                    // Find the low security level systems which may contain IF contacts
-                    List<string> systemNames = cubeSystems.Where(s => s.securityLevel == securityLevel).Select(s => s.name).ToList();
-                    List<StarSystem> IFStarSystems = DataProviderService.GetSystemsData(systemNames.ToArray(), true, true, true, true, true);
-
-                    foreach (StarSystem starsystem in IFStarSystems)
-                    {
-                        // Filter stations which meet the game version and landing pad size requirements
-                        List<Station> stations = (EDDI.Instance.inHorizons ? starsystem.stations : starsystem.orbitalstations)
-                            .Where(s => s.stationservices.Count > 0).ToList();
-                        stations = stations.Where(s => s.LandingPadCheck(shipSize)).ToList();
-                        int stationCount = stations.Where(s => s.stationservices.Contains(service)).Count();
-
-                        // Build list to find the IF system nearest to the current system
-                        if (stationCount > 0)
-                        {
-                            decimal distance = CalculateDistance(currentSystem, starsystem);
-                            if (!nearestList.ContainsKey(distance))
-                            {
-                                nearestList.Add(distance, starsystem.name);
-                            }
-                        }
-                    }
-
-                    // Nearest Interstellar Factors system
-                    IFSystem = nearestList.Values.FirstOrDefault();
-                    if (IFSystem != null)
-                    {
-                        StarSystem IFStarSystem = IFStarSystems.FirstOrDefault(s => s.name == IFSystem);
-                        IFDistance = nearestList.Keys.FirstOrDefault();
-
-                        // Filter stations within the IF system which meet the game version and landing pad size requirements
-                        List<Station> IFStations = EDDI.Instance.inHorizons ? IFStarSystem.stations : IFStarSystem.orbitalstations
-                            .Where(s => s.stationservices.Count > 0).ToList();
-                        IFStations = IFStations.Where(s => s.LandingPadCheck(shipSize)).ToList();
-                        IFStations = IFStations.Where(s => s.stationservices.Contains(service)).ToList();
-
-                        // Build list to find the IF station nearest to the main star
-                        nearestList.Clear();
-
-                        foreach (Station station in IFStations)
-                        {
-                            if (!nearestList.ContainsKey(station.distancefromstar ?? 0))
-                            {
-                                nearestList.Add(station.distancefromstar ?? 0, station.name);
-                            }
-                        }
-
-                        // Interstellar Factors station is nearest to the main star
-                        IFStation = nearestList.Values.FirstOrDefault();
-                    }
-                }
-                // Get mission IDs for 'insterstallar factors' system
-                missionids = ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor"))?.GetSystemMissionIds(IFSystem);
-
-                // Set route and destination variables
-                missionMonitor.SetNavigationData(IFSystem, IFStation, IFDistance);
-            }
-            EDDI.Instance.enqueueEvent(new RouteDetailsEvent(DateTime.Now, "facilitator", IFSystem, IFSystem, missionids.Count(), IFDistance, IFDistance, missionids));
-            return IFSystem;
         }
 
         public string GetFarthestRoute()
@@ -373,6 +303,92 @@ namespace EddiNavigationService
             }
             EDDI.Instance.enqueueEvent(new RouteDetailsEvent(DateTime.Now, "nearest", nearestSystem, nearestSystem, missionids.Count(), nearestDistance, nearestDistance, missionids));
             return nearestSystem;
+        }
+
+        public string GetServiceRoute(string serviceType)
+        {
+            string ServiceSystem = null;
+            string ServiceStation = null;
+            decimal ServiceDistance = 0;
+            List<long> missionids = new List<long>();       // List of mission IDs for the next system
+            
+            StarSystem currentSystem = EDDI.Instance?.CurrentStarSystem;
+            if (currentSystem != null)
+            {
+                // Get the nearest service system and station
+                ServiceFilter.TryGetValue(serviceType, out dynamic filter);
+                string shipSize = EDDI.Instance?.CurrentShip?.size ?? "Large";
+                List<StarSystem> cubeSystems = StarMapService.GetStarMapSystemsCube(currentSystem.name, filter.cubeLy);
+                if (cubeSystems?.Any() ?? false)
+                {
+                    SortedList<decimal, string> nearestList = new SortedList<decimal, string>();
+                    cubeSystems = cubeSystems.Where(s => s.population >= filter.population).ToList();
+                    cubeSystems = cubeSystems.Where(s => filter.security.Contains(s.security)).ToList();
+                    if (serviceType != "facilitator")
+                    {
+                        cubeSystems = cubeSystems
+                            .Where(s => filter.econ.Contains(s.Economies.FirstOrDefault(e => e.invariantName != "None")?.invariantName))
+                            .ToList();
+                    }
+                    List<string> systemNames = cubeSystems.Select(s => s.name).ToList();
+                    List<StarSystem> ServiceStarSystems = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystems(systemNames.ToArray(), true, false);
+
+                    foreach (StarSystem starsystem in ServiceStarSystems)
+                    {
+                        // Filter stations which meet the game version and landing pad size requirements
+                         List<Station> stations = (EDDI.Instance.inHorizons ? starsystem.stations : starsystem.orbitalstations)
+                             .Where(s => s.stationservices.Count > 0).ToList();
+                        if (serviceType == "facilitator") { stations = stations.Where(s => s.LandingPadCheck(shipSize)).ToList(); }
+                        int stationCount = stations.Where(s => s.stationservices.Contains(filter.service)).Count();
+
+                        // Build list to find the 'service' system nearest to the current system
+                         if (stationCount > 0)
+                        {
+                            decimal distance = CalculateDistance(currentSystem, starsystem);
+                            if (!nearestList.ContainsKey(distance))
+                            {
+                                nearestList.Add(distance, starsystem.name);
+                            }
+                        }
+                    }
+
+                    // Nearest system meeting the service request
+                    ServiceSystem = nearestList.Values.FirstOrDefault();
+                    if (ServiceSystem != null)
+                    {
+                        StarSystem TraderStarSystem = ServiceStarSystems.FirstOrDefault(s => s.name == ServiceSystem);
+                        ServiceDistance = nearestList.Keys.FirstOrDefault();
+
+                        // Filter stations which meet the game version and landing pad size requirements
+                         List<Station> ServiceStations = EDDI.Instance.inHorizons ? TraderStarSystem.stations : TraderStarSystem.orbitalstations
+                             .Where(s => s.stationservices.Count > 0).ToList();
+                        if (serviceType == "facilitator") { ServiceStations = ServiceStations.Where(s => s.LandingPadCheck(shipSize)).ToList(); }
+                        ServiceStations = ServiceStations.Where(s => s.stationservices.Contains(filter.service)).ToList();
+
+                        // Build list to find the station nearest to the main star
+                         nearestList.Clear();
+
+                        foreach (Station station in ServiceStations)
+                        {
+                            if (!nearestList.ContainsKey(station.distancefromstar ?? 0))
+                            {
+                                nearestList.Add(station.distancefromstar ?? 0, station.name);
+                            }
+                        }
+
+                        // Station is nearest to the main star which meets the service query
+                         ServiceStation = nearestList.Values.FirstOrDefault();
+                    }
+
+                    // Get mission IDs for 'service' system
+                    missionids = ((MissionMonitor)EDDI.Instance.ObtainMonitor("Mission monitor"))?.GetSystemMissionIds(ServiceSystem);
+
+                     // Set route and destination variables
+                    missionMonitor.SetNavigationData(ServiceSystem, ServiceStation, ServiceDistance);
+                }
+            }
+            EDDI.Instance.enqueueEvent(new RouteDetailsEvent(DateTime.Now, serviceType, ServiceSystem, ServiceSystem, missionids.Count(), ServiceDistance, ServiceDistance, missionids));
+            return ServiceSystem;
         }
 
         public string GetSourceRoute(string system = null)
