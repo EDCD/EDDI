@@ -92,7 +92,9 @@ namespace EddiCrimeMonitor
 
             Thread IFRouteThread = new Thread(() =>
             {
-                string IFSystem = Navigation.Instance.GetServiceRoute("facilitator");
+                int distance = crimeMonitor().maxStationDistanceFromStarLs ?? 10000;
+                bool isChecked = crimeMonitor().prioritizeOrbitalStations;
+                string IFSystem = Navigation.Instance.GetServiceRoute("facilitator", distance, isChecked);
                 Dispatcher?.Invoke(() =>
                 {
                     updateButton.Foreground = Brushes.Black;

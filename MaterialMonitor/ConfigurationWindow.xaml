@@ -12,6 +12,22 @@
     <DockPanel LastChildFill="True" Background="#FFE5E5E5" Margin="0,5">
         <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Margin="5,0" Text="{x:Static resx:MaterialMonitor.p1}"/>
         <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Margin ="5" Text="{x:Static resx:MaterialMonitor.p2}"/>
+        <Grid DockPanel.Dock="Top" Margin="0,5" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="250" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Label x:Name ="maxStationDistanceLabel" Grid.Row="0" Grid.Column="0" Margin="0,5" VerticalContentAlignment="Center" Content="{x:Static resx:MaterialMonitor.tab_station_distance}"/>
+            <TextBox x:Name="maxStationDistanceInt" Grid.Row="0" Grid.Column="1" Margin="0,5"
+                     PreviewTextInput="EnsureValidInteger"
+                     KeyDown="maxStationDistance_KeyDown"
+                     LostFocus="maxStationDistance_LostFocus"
+                     TextAlignment="Center"
+                     VerticalContentAlignment="Center" Height="25" Width="60"/>
+        </Grid>
         <UniformGrid DockPanel.Dock="Bottom" Rows="1" Columns="5" Margin="0,5">
             <Button Margin="10" HorizontalAlignment="Center" Click="findEncoded" Content="{x:Static resx:MaterialMonitor.find_encoded_button}" />
             <Button Margin="10" HorizontalAlignment="Center" Click="findGuardian" Content="{x:Static resx:MaterialMonitor.find_guardian_button}" />
