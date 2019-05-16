@@ -311,7 +311,6 @@ namespace EddiNavigationService
             string ServiceStation = null;
             decimal ServiceDistance = 0;
             List<long> missionids = new List<long>();       // List of mission IDs for the next system
-            SortedList<decimal, string> nearestList = new SortedList<decimal, string>();
 
             StarSystem currentSystem = EDDI.Instance?.CurrentStarSystem;
             if (currentSystem != null)
@@ -319,7 +318,7 @@ namespace EddiNavigationService
                 string shipSize = EDDI.Instance?.CurrentShip?.size ?? "Large";
                 ServiceFilter.TryGetValue(serviceType, out dynamic filter);
 
-                StarSystem ServiceStarSystem = GetServicesystem(serviceType, maxStationDistance, prioritizeOrbitalStations);
+                StarSystem ServiceStarSystem = GetServiceSystem(serviceType, maxStationDistance, prioritizeOrbitalStations);
                 if (ServiceStarSystem != null)
                 {
                     ServiceSystem = ServiceStarSystem.name;
@@ -333,8 +332,7 @@ namespace EddiNavigationService
                     ServiceStations = ServiceStations.Where(s => s.stationservices.Contains(filter.service)).ToList();
 
                     // Build list to find the station nearest to the main star
-                    nearestList.Clear();
-
+                    SortedList<decimal, string> nearestList = new SortedList<decimal, string>();
                     foreach (Station station in ServiceStations)
                     {
                         if (!nearestList.ContainsKey(station.distancefromstar ?? 0))
@@ -357,15 +355,17 @@ namespace EddiNavigationService
             return ServiceSystem;
         }
 
-        public StarSystem GetServicesystem(string serviceType, int maxStationDistance, bool prioritizeOrbitalStations)
+        public StarSystem GetServiceSystem(string serviceType, int maxStationDistance, bool prioritizeOrbitalStations)
         {
             StarSystem currentSystem = EDDI.Instance?.CurrentStarSystem;
             if (currentSystem != null)
             {
+                // Get the filter parameters
                 string shipSize = EDDI.Instance?.CurrentShip?.size ?? "Large";
                 ServiceFilter.TryGetValue(serviceType, out dynamic filter);
                 int cubeLy = filter.cubeLy;
 
+                //
                 List<string> checkedSystems = new List<string>();
                 string ServiceSystem = null;
                 int maxTries = 5;
@@ -375,7 +375,7 @@ namespace EddiNavigationService
                     List<StarSystem> cubeSystems = StarMapService.GetStarMapSystemsCube(currentSystem.name, cubeLy);
                     if (cubeSystems?.Any() ?? false)
                     {
-                        SortedList<decimal, string> nearestList = new SortedList<decimal, string>();
+                        // Filter systems using search parameters
                         cubeSystems = cubeSystems.Where(s => s.population >= filter.population).ToList();
                         cubeSystems = cubeSystems.Where(s => filter.security.Contains(s.security)).ToList();
                         if (serviceType != "facilitator")
@@ -384,13 +384,16 @@ namespace EddiNavigationService
                                 .Where(s => filter.econ.Contains(s.Economies.FirstOrDefault(e => e.invariantName != "None")?.invariantName))
                                 .ToList();
                         }
+
+                        // Retreive systems in current radius which have not been previously checked
                         List<string> systemNames = cubeSystems.Select(s => s.name).Except(checkedSystems).ToList();
                         List<StarSystem> StarSystems = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystems(systemNames.ToArray(), true, false);
                         checkedSystems.AddRange(systemNames);
 
+                        SortedList<decimal, string> nearestList = new SortedList<decimal, string>();
                         foreach (StarSystem starsystem in StarSystems)
                         {
-                            // Filter stations within the faction system which meet the station type prioritization,
+                            // Filter stations within the system which meet the station type prioritization,
                             // max distance from the main star, game version, and landing pad size requirements
                             List<Station> stations = !prioritizeOrbitalStations && EDDI.Instance.inHorizons ? starsystem.stations : starsystem.orbitalstations
                                  .Where(s => s.stationservices.Count > 0).ToList();
@@ -398,7 +401,7 @@ namespace EddiNavigationService
                             if (serviceType == "facilitator") { stations = stations.Where(s => s.LandingPadCheck(shipSize)).ToList(); }
                             int stationCount = stations.Where(s => s.stationservices.Contains(filter.service)).Count();
 
-                            // Build list to find the 'service' system nearest to the current system
+                            // Build list to find the 'service' system nearest to the current system, meeting station requirements
                             if (stationCount > 0)
                             {
                                 decimal distance = CalculateDistance(currentSystem, starsystem);
@@ -408,12 +411,17 @@ namespace EddiNavigationService
                                 }
                             }
                         }
+
+                        // Nearest 'service' system
                         ServiceSystem = nearestList.Values.FirstOrDefault();
                         if (ServiceSystem != null)
                         {
                             return StarSystems.FirstOrDefault(s => s.name == ServiceSystem);
                         }
                     }
+
+                    // Increase search radius in 10 Ly increments (up to 50 Ly)
+                    // until the required 'service' is found
                     cubeLy += 10;
                     maxTries--;
                 }

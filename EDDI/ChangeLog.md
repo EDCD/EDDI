@@ -18,11 +18,15 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Added `unladenmass` and `maxjumprange` properties to the `Loadout` event handler.
     * Added `distancefromstar` property to the `Location` event.
     * Added vehicle ID for SLF/SRV related events.
+  * Material Monitor
+    * Added 'Find' buttons for the nearest `encoded`, `manufactured` & `raw`  Materials Traders and `guardian` & `human` Technology Brokers.
   * Mission Monitor
     * Added 'Find Route', 'Next Route', 'Update Route', and 'Clear Route' buttons to give standalone users access to missions routing functionality.
   * Navigation Service
     * Consolidated all `RouteDetails()` functionality.
 	* Added `facilitator` route type to `RouteDetails()`, which finds and sets the `Destination` properties to the nearest 'Legal Facilities' contact.
+	* Added `encoded`, `manufactured` & `raw` to `RouteDetails()`, which finds and sets the `Destination` properties to the nearest Materials Trader.
+	* Added `guardian` & `human` to `RouteDetails()`, which finds and sets the `Destination` properties to the nearest Technology Broker.
     * Destination system, distance & station data populated & maintained by `RouteDetails()`. Distance re-calculated after each jump.
     * The `missionsRouteList` & `missionsRouteDistance` properties simplified to `RouteList` & `RouteDistance`, respectively.
   * Ship Monitor
@@ -33,6 +37,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Added `Crime check system` script to report wanted status and 'legal facilities', upon entering the system.
     * Added `Crime check station` script to report 'legal facilities', upon entering normal space, next to station.
     * Revised `Jumped` script to provide a (reasonably) accurate jump range, based on total ship mass.
+    * Revised `Route details` script to handle new `encoded`, guardian`, `human`, `maunfactured` and `raw` route queries.
     * Revised `Ship targeted` script to utilize new `shiptargets` object to preclude reporting on previously scanned ships.
     * Added `JumpDetails()` Cottle function call to provide useful jump infomation based on ship loadout and fuel level. See `Help` & `Variables` windows for details.
   * Status monitor
