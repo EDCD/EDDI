@@ -348,12 +348,17 @@ Common usage of this is to provide a pre-recorded custom audio file rather than 
 This function will produce a destination/route for valid mission destinations, dependent on the following 'routetype':
 
   * `cancel` Cancel the currently stored route.
+  * `encoded` Nearest encoded materials trader.
   * `expiring` Destination of your next expiring mission.
   * `facilitator` Nearest 'Legal Facilities' contact.
   * `farthest` Mission destination farthest from your current location.
+  * `guardian` Nearest guardian technology broker.
+  * `human` Nearest human technology broker.
+  * `manufactured` Nearest manufactured materials trader.
   * `most` Nearest system with the most missions.
   * `nearest` Mission destination nearest to your current location.
   * `next` Next destination in the currently stored route.
+  * `raw` Nearest raw materials trader.
   * `route` 'Traveling Salesman' (RNNA) route for all active missions.
   * `set` Set destination route to a single system.
   * `source` Mission destination to nearest 'cargo source'.
