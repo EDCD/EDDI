@@ -187,6 +187,15 @@ namespace EddiMaterialMonitor.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Note: Restrictive station distance setting may significanlty increase search time.
+        /// </summary>
+        public static string p3 {
+            get {
+                return ResourceManager.GetString("p3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Max Station Distance From Main Star (Ls):.
         /// </summary>
         public static string tab_station_distance {
