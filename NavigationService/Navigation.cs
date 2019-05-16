@@ -305,7 +305,7 @@ namespace EddiNavigationService
             return nearestSystem;
         }
 
-        public string GetServiceRoute(string serviceType)
+        public string GetServiceRoute(string serviceType, int maxStationDistance, bool prioritizeOrbitalStations = false)
         {
             string ServiceSystem = null;
             string ServiceStation = null;
@@ -331,18 +331,20 @@ namespace EddiNavigationService
                             .ToList();
                     }
                     List<string> systemNames = cubeSystems.Select(s => s.name).ToList();
-                    List<StarSystem> ServiceStarSystems = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystems(systemNames.ToArray(), true, false);
+                    List<StarSystem> StarSystems = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystems(systemNames.ToArray(), true, false);
 
-                    foreach (StarSystem starsystem in ServiceStarSystems)
+                    foreach (StarSystem starsystem in StarSystems)
                     {
-                        // Filter stations which meet the game version and landing pad size requirements
-                         List<Station> stations = (EDDI.Instance.inHorizons ? starsystem.stations : starsystem.orbitalstations)
+                        // Filter stations within the faction system which meet the station type prioritization,
+                        // max distance from the main star, game version, and landing pad size requirements
+                        List<Station> stations = !prioritizeOrbitalStations && EDDI.Instance.inHorizons ? starsystem.stations : starsystem.orbitalstations
                              .Where(s => s.stationservices.Count > 0).ToList();
+                        stations = stations.Where(s => s.distancefromstar <= maxStationDistance).ToList();
                         if (serviceType == "facilitator") { stations = stations.Where(s => s.LandingPadCheck(shipSize)).ToList(); }
                         int stationCount = stations.Where(s => s.stationservices.Contains(filter.service)).Count();
 
                         // Build list to find the 'service' system nearest to the current system
-                         if (stationCount > 0)
+                        if (stationCount > 0)
                         {
                             decimal distance = CalculateDistance(currentSystem, starsystem);
                             if (!nearestList.ContainsKey(distance))
@@ -356,12 +358,13 @@ namespace EddiNavigationService
                     ServiceSystem = nearestList.Values.FirstOrDefault();
                     if (ServiceSystem != null)
                     {
-                        StarSystem TraderStarSystem = ServiceStarSystems.FirstOrDefault(s => s.name == ServiceSystem);
+                        StarSystem ServiceStarSystem = StarSystems.FirstOrDefault(s => s.name == ServiceSystem);
                         ServiceDistance = nearestList.Keys.FirstOrDefault();
 
                         // Filter stations which meet the game version and landing pad size requirements
-                         List<Station> ServiceStations = EDDI.Instance.inHorizons ? TraderStarSystem.stations : TraderStarSystem.orbitalstations
+                         List<Station> ServiceStations = !prioritizeOrbitalStations && EDDI.Instance.inHorizons ? ServiceStarSystem.stations : ServiceStarSystem.orbitalstations
                              .Where(s => s.stationservices.Count > 0).ToList();
+                        ServiceStations = ServiceStations.Where(s => s.distancefromstar <= maxStationDistance).ToList();
                         if (serviceType == "facilitator") { ServiceStations = ServiceStations.Where(s => s.LandingPadCheck(shipSize)).ToList(); }
                         ServiceStations = ServiceStations.Where(s => s.stationservices.Contains(filter.service)).ToList();
 

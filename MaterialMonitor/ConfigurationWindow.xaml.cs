@@ -25,7 +25,11 @@ namespace EddiMaterialMonitor
         public ConfigurationWindow()
         {
             InitializeComponent();
+
             materialsData.ItemsSource = materialMonitor()?.inventory;
+
+            MaterialMonitorConfiguration configuration = MaterialMonitorConfiguration.FromFile();
+            maxStationDistanceInt.Text = configuration.maxStationDistanceFromStarLs?.ToString(CultureInfo.InvariantCulture);
         }
 
         private void findEncoded(object sender, RoutedEventArgs e)
@@ -75,9 +79,10 @@ namespace EddiMaterialMonitor
 
         private void findService(Button button, string service)
         {
+            int distance = materialMonitor().maxStationDistanceFromStarLs ?? 10000;
             Thread findServiceThread = new Thread(() =>
             {
-                string nextSystem = Navigation.Instance.GetServiceRoute(service);
+                string nextSystem = Navigation.Instance.GetServiceRoute(service, distance);
                 Dispatcher?.Invoke(() =>
                 {
                     button.Foreground = Brushes.Black;
@@ -96,10 +101,51 @@ namespace EddiMaterialMonitor
             findServiceThread.Start();
         }
 
+        private void maxStationDistance_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Return)
+            {
+                maxStationDistance_Changed();
+            }
+        }
+
+        private void maxStationDistance_LostFocus(object sender, RoutedEventArgs e)
+        {
+            maxStationDistance_Changed();
+        }
+
+        private void maxStationDistance_Changed()
+        {
+            MaterialMonitorConfiguration configuration = MaterialMonitorConfiguration.FromFile();
+            try
+            {
+                int? distance = string.IsNullOrWhiteSpace(maxStationDistanceInt.Text)
+                    ? 10000 : Convert.ToInt32(maxStationDistanceInt.Text, CultureInfo.InvariantCulture);
+                if (distance != configuration.maxStationDistanceFromStarLs)
+                {
+                    materialMonitor().maxStationDistanceFromStarLs = distance;
+                    configuration.maxStationDistanceFromStarLs = distance;
+                    configuration.ToFile();
+                }
+            }
+            catch
+            {
+                // Bad user input; ignore it
+            }
+        }
+
         private void materialsUpdated(object sender, DataTransferEventArgs e)
         {
             // Update the material monitor's information
             materialMonitor()?.writeMaterials();
+        }
+
+        private void EnsureValidInteger(object sender, TextCompositionEventArgs e)
+        {
+            // Match valid characters
+            Regex regex = new Regex(@"[0-9]");
+            // Swallow the character doesn't match the regex
+            e.Handled = !regex.IsMatch(e.Text);
         }
     }
 }

@@ -187,6 +187,15 @@ namespace EddiMaterialMonitor.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Max Station Distance From Main Star (Ls):.
+        /// </summary>
+        public static string tab_station_distance {
+            get {
+                return ResourceManager.GetString("tab_station_distance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Type.
         /// </summary>
         public static string type_header {

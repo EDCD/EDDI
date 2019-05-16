@@ -1,5 +1,6 @@
 ﻿using Eddi;
 using EddiCargoMonitor;
+using EddiCrimeMonitor;
 using EddiEvents;
 using EddiDataProviderService;
 using EddiDataDefinitions;
@@ -995,6 +996,9 @@ namespace EddiVoiceAttackResponder
         {
             try
             {
+                CrimeMonitor crimeMonitor = (CrimeMonitor)EDDI.Instance.ObtainMonitor("Crime monitor");
+                MaterialMonitor materialMonitor = (MaterialMonitor)EDDI.Instance.ObtainMonitor("Material monitor");
+                int materialDistance = materialMonitor.maxStationDistanceFromStarLs ?? 10000;
                 string type = vaProxy.GetText("Type variable");
                 string system = vaProxy.GetText("System variable");
                 switch (type)
@@ -1006,7 +1010,7 @@ namespace EddiVoiceAttackResponder
                         break;
                     case "encoded":
                         {
-                            Navigation.Instance.GetServiceRoute("encoded");
+                            Navigation.Instance.GetServiceRoute("encoded", materialDistance);
                         }
                         break;
                     case "expiring":
@@ -1016,7 +1020,9 @@ namespace EddiVoiceAttackResponder
                         break;
                     case "facilitator":
                         {
-                            Navigation.Instance.GetServiceRoute("facilitator");
+                            int distance = crimeMonitor.maxStationDistanceFromStarLs ?? 10000;
+                            bool isChecked = crimeMonitor.prioritizeOrbitalStations;
+                            Navigation.Instance.GetServiceRoute("facilitator", distance, isChecked);
                         }
                         break;
                     case "farthest":
@@ -1026,17 +1032,17 @@ namespace EddiVoiceAttackResponder
                         break;
                     case "guardian":
                         {
-                            Navigation.Instance.GetServiceRoute("guardian");
+                            Navigation.Instance.GetServiceRoute("guardian", materialDistance);
                         }
                         break;
                     case "human":
                         {
-                            Navigation.Instance.GetServiceRoute("human");
+                            Navigation.Instance.GetServiceRoute("human", materialDistance);
                         }
                         break;
                     case "manufactured":
                         {
-                            Navigation.Instance.GetServiceRoute("manufactured");
+                            Navigation.Instance.GetServiceRoute("manufactured", materialDistance);
                         }
                         break;
                     case "most":
@@ -1063,7 +1069,7 @@ namespace EddiVoiceAttackResponder
                         break;
                     case "raw":
                         {
-                            Navigation.Instance.GetServiceRoute("raw");
+                            Navigation.Instance.GetServiceRoute("raw", materialDistance);
                         }
                         break;
                     case "route":
