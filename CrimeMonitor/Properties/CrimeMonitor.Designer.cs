@@ -205,6 +205,15 @@ namespace EddiCrimeMonitor.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Note: Restrictive station distance setting may significanlty increase search time.
+        /// </summary>
+        public static string p1 {
+            get {
+                return ResourceManager.GetString("p1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Remove.
         /// </summary>
         public static string remove_button {
