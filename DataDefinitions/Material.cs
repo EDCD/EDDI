@@ -203,6 +203,10 @@ namespace EddiDataDefinitions
         public decimal? goodpctbody { get; }
         public decimal? greatpctbody { get; }
 
+        // The body with the greatest percent concentration (for the MaterialDetails() function).
+        public string bodyname { get; set; }
+        public string bodyshortname { get; set; }
+
         // Blueprints for the material; 
         public List<Blueprint> blueprints { get; set; }
 
@@ -230,6 +234,27 @@ namespace EddiDataDefinitions
                 Logging.Info("Unknown material symbol " + from);
             }
             return result;
+        }
+
+        public static Body highestPercentBody(string materialEdName, List<Body> bodies)
+        {
+            Body bestBody = null;
+            decimal percentage = 0;
+            foreach (Body body in bodies.ToList().OrderBy(b => b.distance))
+            {
+                foreach (MaterialPresence materialPresence in body.materials)
+                {
+                    if (materialPresence?.definition?.edname == materialEdName)
+                    {
+                        if (materialPresence.percentage > percentage)
+                        {
+                            percentage = materialPresence.percentage;
+                            bestBody = body;
+                        }
+                    }
+                }
+            }
+            return bestBody;
         }
     }
 }
