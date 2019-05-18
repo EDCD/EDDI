@@ -1,6 +1,5 @@
 ﻿using Newtonsoft.Json;
 using System;
-using Utilities;
 
 namespace EddiDataDefinitions
 {
@@ -156,27 +155,6 @@ namespace EddiDataDefinitions
             this.hoppercapacity = AmmoHopperCapacity;
             this.modified = false;
             ModulesByEliteID[EDID] = this;
-        }
-
-        public bool IsPowerPlay()
-        {
-            return PowerPlayModules.Contains(this.edname);
-        }
-
-        public static Module FromOutfittingInfo(OutfittingInfo item)
-        {
-            Module module = new Module(FromEliteID(item.id) ?? FromEDName(item.name) ?? new Module());
-            if (module.invariantName == null)
-            {
-                // Unknown module; report the full object so that we can update the definitions
-                Logging.Info("Module definition error: " + item.name);
-
-                // Create a basic module & supplement from the info available
-                module = new Module(item.id, item.name, -1, item.name, -1, "", item.buyprice);
-            }
-            module.price = item.buyprice;
-
-            return module;
         }
     }
 }

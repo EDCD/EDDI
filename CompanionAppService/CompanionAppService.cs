@@ -678,7 +678,7 @@ namespace EddiCompanionAppService
                                 long id = (long)moduleJson["id"];
                                 string edName = (string)moduleJson["name"];
 
-                                Module Module = new Module(Module.FromEliteID(id) ?? Module.FromEDName(edName) ?? new Module());
+                                Module Module = new Module(Module.FromEliteID(id, moduleJson) ?? Module.FromEDName(edName, moduleJson) ?? new Module());
                                 if (Module.invariantName == null)
                                 {
                                     // Unknown module; report the full object so that we can update the definitions
