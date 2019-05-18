@@ -147,7 +147,7 @@ namespace EDDNResponder
 
                     if (data != null)
                     {
-                        SendToEDDN(data);
+                        SendToEDDN("https://eddn.edcd.io/schemas/journal/1", data);
                     }
                 }
             }
@@ -296,16 +296,24 @@ namespace EDDNResponder
             return data;
         }
 
-        private static void SendToEDDN(IDictionary<string, object> data)
+        private static void SendToEDDN(string schema, IDictionary<string, object> data)
         {
-            EDDNBody body = new EDDNBody
+            try
             {
-                header = generateHeader(),
-                schemaRef = "https://eddn.edcd.io/schemas/journal/1" + (EDDI.Instance.ShouldUseTestEndpoints() ? "/test" : ""),
-                message = data
-            };
-
-            sendMessage(body);
+                EDDNBody body = new EDDNBody
+                {
+                    header = generateHeader(),
+                    schemaRef = schema + (EDDI.Instance.ShouldUseTestEndpoints() ? "/test" : ""),
+                    message = data
+                };
+                Logging.Debug("EDDN message is: " + JsonConvert.SerializeObject(body));
+                sendMessage(body);
+            }
+            catch (Exception ex)
+            {
+                data.Add(new KeyValuePair<string, object>("Exception", ex));
+                Logging.Error("Unable to send message to EDDN, schema " + schema, data);
+            }
         }
 
         private void handleMarketInformationUpdatedEvent(MarketInformationUpdatedEvent theEvent)
@@ -370,15 +378,7 @@ namespace EDDNResponder
                         data.Add("prohibited", EDDI.Instance.CurrentStation.prohibited);
                     }
 
-                    EDDNBody body = new EDDNBody
-                    {
-                        header = generateHeader(),
-                        schemaRef = "https://eddn.edcd.io/schemas/commodity/3" + (EDDI.Instance.ShouldUseTestEndpoints() ? "/test" : ""),
-                        message = data
-                    };
-
-                    Logging.Debug("EDDN message is: " + JsonConvert.SerializeObject(body));
-                    sendMessage(body);
+                    SendToEDDN("https://eddn.edcd.io/schemas/commodity/3", data);
                 }
             }
         }
@@ -456,14 +456,7 @@ namespace EDDNResponder
                         { "modules", eddnModules }
                     };
 
-                    EDDNBody body = new EDDNBody
-                    {
-                        header = generateHeader(),
-                        schemaRef = "https://eddn.edcd.io/schemas/outfitting/2" + (EDDI.Instance.ShouldUseTestEndpoints() ? "/test" : ""),
-                        message = data
-                    };
-
-                    sendMessage(body);
+                    SendToEDDN("https://eddn.edcd.io/schemas/outfitting/2", data);
                 }
             }
         }
@@ -490,14 +483,7 @@ namespace EDDNResponder
                         { "ships", eddnShips }
                     };
 
-                    EDDNBody body = new EDDNBody
-                    {
-                        header = generateHeader(),
-                        schemaRef = "https://eddn.edcd.io/schemas/shipyard/2" + (EDDI.Instance.ShouldUseTestEndpoints() ? "/test" : ""),
-                        message = data
-                    };
-
-                    sendMessage(body);
+                    SendToEDDN("https://eddn.edcd.io/schemas/shipyard/2", data);
                 }
             }
         }
