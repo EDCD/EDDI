@@ -134,7 +134,7 @@ namespace EDDNResponder
             {
                 if (edType == "Docked" && systemName != null && stationName != null && marketId != null)
                 {
-                    if (EDDI.Instance.CurrentStation.name == stationName && EDDI.Instance.CurrentStation.systemAddress == systemAddress)
+                    if (EDDI.Instance.CurrentStation?.name == stationName && EDDI.Instance.CurrentStarSystem?.systemAddress == systemAddress)
                     {
                         try
                         {
