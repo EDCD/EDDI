@@ -381,7 +381,8 @@ namespace EDDNResponder
                         { "timestamp", DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ") },
                         { "systemName", systemName },
                         { "stationName", stationName },
-                        { "marketId", marketId }
+                        { "marketId", marketId },
+                        { "horizons", EDDI.Instance.inHorizons}
                     };
                     if (eddnEconomies.Count > 0)
                     {
@@ -468,7 +469,8 @@ namespace EDDNResponder
                         { "systemName", systemName },
                         { "stationName", stationName },
                         { "marketId", marketId },
-                        { "modules", eddnModules }
+                        { "modules", eddnModules },
+                        { "horizons", EDDI.Instance.inHorizons}
                     };
 
                     SendToEDDN("https://eddn.edcd.io/schemas/outfitting/2", data);
@@ -495,7 +497,8 @@ namespace EDDNResponder
                         { "systemName", systemName },
                         { "stationName", stationName },
                         { "marketId", marketId },
-                        { "ships", eddnShips }
+                        { "ships", eddnShips },
+                        { "horizons", EDDI.Instance.inHorizons}
                     };
 
                     SendToEDDN("https://eddn.edcd.io/schemas/shipyard/2", data);
