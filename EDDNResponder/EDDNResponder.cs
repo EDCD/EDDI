@@ -134,10 +134,25 @@ namespace EDDNResponder
             {
                 if (edType == "Docked" && systemName != null && stationName != null && marketId != null)
                 {
-                    // Send station data from the CAPI servers
-                    sendCommodityInformation();
-                    sendOutfittingInformation();
-                    sendShipyardInformation();
+                    if (EDDI.Instance.CurrentStation.name == stationName && EDDI.Instance.CurrentStation.systemAddress == systemAddress)
+                    {
+                        try
+                        {
+                            // Send station data from the CAPI servers
+                            sendCommodityInformation();
+                            sendOutfittingInformation();
+                            sendShipyardInformation();
+                        }
+                        catch (Exception ex)
+                        {
+                            Dictionary<string, object> exdata = new Dictionary<string, object>
+                            {
+                                { "Responder state", this },
+                                { "Exception", ex }
+                            };
+                            Logging.Error("Failed to send Frontier API data to EDDN", exdata);
+                        }
+                    }
                 }
 
                 if (edType == "Location" || edType == "FSDJump" || edType == "Docked" || edType == "Scan")
@@ -468,7 +483,7 @@ namespace EDDNResponder
                 List<string> eddnShips = new List<string>();
                 foreach (Ship ship in EDDI.Instance.CurrentStation.shipyard)
                 {
-                        eddnShips.Add(ship.EDName);
+                    eddnShips.Add(ship.EDName);
                 }
 
                 // Only send the message if we have ships
