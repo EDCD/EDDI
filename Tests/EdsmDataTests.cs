@@ -397,12 +397,12 @@ namespace UnitTests
             JObject response = JsonConvert.DeserializeObject<JObject>(jsonString);
 
             PrivateType starMapService = new PrivateType(typeof(StarMapService));
-            Dictionary<string, object> traffic = (Dictionary<string, object>)starMapService.InvokeStatic("ParseStarMapTraffic", new object[] { response });
+            Traffic traffic = (Traffic)starMapService.InvokeStatic("ParseStarMapTraffic", new object[] { response });
 
             Assert.IsNotNull(traffic);
-            Assert.AreEqual(9631, (long?)traffic["total"]);
-            Assert.AreEqual(892, (long?)traffic["week"]);
-            Assert.AreEqual(193, (long?)traffic["day"]);
+            Assert.AreEqual(9631, traffic.total);
+            Assert.AreEqual(892, traffic.week);
+            Assert.AreEqual(193, traffic.day);
         }
 
         [TestMethod]
@@ -414,12 +414,12 @@ namespace UnitTests
             JObject response = JsonConvert.DeserializeObject<JObject>(jsonString);
 
             PrivateType starMapService = new PrivateType(typeof(StarMapService));
-            Dictionary<string, object> deaths = (Dictionary<string, object>)starMapService.InvokeStatic("ParseStarMapDeaths", new object[] { response });
+            Traffic deaths = (Traffic)starMapService.InvokeStatic("ParseStarMapDeaths", new object[] { response });
 
             Assert.IsNotNull(deaths);
-            Assert.AreEqual(1068, (long?)deaths["total"]);
-            Assert.AreEqual(31, (long?)deaths["week"]);
-            Assert.AreEqual(4, (long?)deaths["day"]);
+            Assert.AreEqual(1068, deaths.total);
+            Assert.AreEqual(31, deaths.week);
+            Assert.AreEqual(4, deaths.day);
         }
     }
 }

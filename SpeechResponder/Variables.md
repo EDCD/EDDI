@@ -679,15 +679,24 @@ Any values might be missing, depending on EDDI's configuration.
     - `altitude_from_average_radius` true if the altitude is computed relative to the average radius (which is used at higher altitudes) rather than surface directly below the srv
 
 ---
+## Traffic
+
+An object returned from the `TrafficDetails` function. Contains traffic / deaths / hostility information (as specified by the function call) over various time periods:
+
+    - `day` over the past day
+    - `week` over the past week
+    - `total` over all time
+
+---
 ## VoiceDetail
 
 An object returned from the `VoiceDetails` function.
 
 Any values might be missing, depending on the information available about the voice.
 
-- `name` the name of the voice
-- `culturename` the local / native name of the voice culture (as recognized by a native speaker)
-- `cultureinvariantname` the invariant name of the voice culture (English)
-- `culturecode` the two letter language code and two letter region code of the voice culture
-- `gender` the gender of the voice
+    - `name` the name of the voice
+    - `culturename` the local / native name of the voice culture (as recognized by a native speaker)
+    - `cultureinvariantname` the invariant name of the voice culture (English)
+    - `culturecode` the two letter language code and two letter region code of the voice culture
+    - `gender` the gender of the voice
 ---

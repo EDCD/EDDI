@@ -97,6 +97,8 @@ namespace EddiDataProviderService
         /// If a systemName is provided, we can filter factions that share a name according to whether they have a presence in a known system </summary>
         public static Faction GetFactionByName(string factionName, string systemName = null)
         {
+            if (string.IsNullOrEmpty(factionName)) { return null; }
+
             List<KeyValuePair<string, object>> queryList = new List<KeyValuePair<string, object>>()
             {
                 new KeyValuePair<string, object>(BgsService.FactionParameters.factionName, factionName)
@@ -116,6 +118,24 @@ namespace EddiDataProviderService
             {
                 name = factionName
             };
+        }
+
+        public static Traffic GetSystemTraffic(string systemName, long? edsmId = null)
+        {
+            if (string.IsNullOrEmpty(systemName)) { return null; }
+            return StarMapService.GetStarMapTraffic(systemName, edsmId);
+        }
+
+        public static Traffic GetSystemDeaths(string systemName, long? edsmId = null)
+        {
+            if (string.IsNullOrEmpty(systemName)) { return null; }
+            return StarMapService.GetStarMapDeaths(systemName, edsmId);
+        }
+
+        public static Traffic GetSystemHostility(string systemName, long? edsmId = null)
+        {
+            if (string.IsNullOrEmpty(systemName)) { return null; }
+            return StarMapService.GetStarMapHostility(systemName, edsmId);
         }
 
         // EDSM flight log synchronization
