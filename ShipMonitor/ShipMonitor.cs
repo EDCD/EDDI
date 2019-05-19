@@ -41,7 +41,7 @@ namespace EddiShipMonitor
 
         private static readonly object shipyardLock = new object();
         public event EventHandler ShipyardUpdatedEvent;
-        private DateTime updateDat;
+        private DateTime updatedAt;
 
         public string MonitorName()
         {
@@ -283,9 +283,9 @@ namespace EddiShipMonitor
 
         private void handleCommanderContinuedEvent(CommanderContinuedEvent @event)
         {
-            if (@event.timestamp > updateDat)
+            if (@event.timestamp > updatedAt)
             {
-                updateDat = @event.timestamp;
+                updatedAt = @event.timestamp;
                 if (!inFighter(@event.ship) && !inBuggy(@event.ship))
                 {
                     SetCurrentShip(@event.shipid, @event.ship);
@@ -311,9 +311,9 @@ namespace EddiShipMonitor
 
         private void handleShipPurchasedEvent(ShipPurchasedEvent @event)
         {
-            if (@event.timestamp > updateDat)
+            if (@event.timestamp > updatedAt)
             {
-                updateDat = @event.timestamp;
+                updatedAt = @event.timestamp;
                 // We don't have a ship ID for the new ship at this point so just handle what we did with our old ship
                 if (@event.storedshipid != null)
                 {
@@ -337,9 +337,9 @@ namespace EddiShipMonitor
 
         private void handleShipDeliveredEvent(ShipDeliveredEvent @event)
         {
-            if (@event.timestamp > updateDat)
+            if (@event.timestamp > updatedAt)
             {
-                updateDat = @event.timestamp;
+                updatedAt = @event.timestamp;
                 // Set this as our current ship
                 SetCurrentShip(@event.shipid, @event.ship);
                 if (!@event.fromLoad) { writeShips(); }
@@ -348,9 +348,9 @@ namespace EddiShipMonitor
 
         private void handleShipSwappedEvent(ShipSwappedEvent @event)
         {
-            if (@event.timestamp > updateDat)
+            if (@event.timestamp > updatedAt)
             {
-                updateDat = @event.timestamp;
+                updatedAt = @event.timestamp;
 
                 // Save swapped ship size for minor faction station update
                 string swappedShipSize = GetCurrentShip()?.size;
@@ -386,9 +386,9 @@ namespace EddiShipMonitor
 
         private void handleShipRenamedEvent(ShipRenamedEvent @event)
         {
-            if (@event.timestamp > updateDat)
+            if (@event.timestamp > updatedAt)
             {
-                updateDat = @event.timestamp;
+                updatedAt = @event.timestamp;
                 Ship ship = GetShip(@event.shipid);
                 if (ship != null)
                 {
@@ -401,9 +401,9 @@ namespace EddiShipMonitor
 
         private void handleShipSoldEvent(ShipSoldEvent @event)
         {
-            if (@event.timestamp > updateDat)
+            if (@event.timestamp > updatedAt)
             {
-                updateDat = @event.timestamp;
+                updatedAt = @event.timestamp;
                 RemoveShip(@event.shipid);
                 if (!@event.fromLoad) { writeShips(); }
             }
@@ -411,9 +411,9 @@ namespace EddiShipMonitor
 
         private void handleShipSoldOnRebuyEvent(ShipSoldOnRebuyEvent @event)
         {
-            if (@event.timestamp > updateDat)
+            if (@event.timestamp > updatedAt)
             {
-                updateDat = @event.timestamp;
+                updatedAt = @event.timestamp;
                 RemoveShip(@event.shipid);
                 if (!@event.fromLoad) { writeShips(); }
             }
@@ -421,9 +421,9 @@ namespace EddiShipMonitor
 
         private void handleShipLoadoutEvent(ShipLoadoutEvent @event)
         {
-            if (@event.timestamp > updateDat)
+            if (@event.timestamp > updatedAt)
             {
-                updateDat = @event.timestamp;
+                updatedAt = @event.timestamp;
                 if (!inFighter(@event.ship) && !inBuggy(@event.ship))
                 {
                     Ship ship = ParseShipLoadoutEvent(@event);
@@ -564,9 +564,9 @@ namespace EddiShipMonitor
 
         private void handleStoredShipsEvent(StoredShipsEvent @event)
         {
-            if (@event.timestamp > updateDat)
+            if (@event.timestamp > updatedAt)
             {
-                updateDat = @event.timestamp;
+                updatedAt = @event.timestamp;
                 if (@event.shipyard != null)
                 {
                     //Check for ships missing from the shipyard
@@ -621,9 +621,9 @@ namespace EddiShipMonitor
 
         private void handleStoredModulesEvent(StoredModulesEvent @event)
         {
-            if (@event.timestamp > updateDat)
+            if (@event.timestamp > updatedAt)
             {
-                updateDat = @event.timestamp;
+                updatedAt = @event.timestamp;
                 if (@event.storedmodules != null)
                 {
                     storedmodules = @event.storedmodules;
@@ -634,9 +634,9 @@ namespace EddiShipMonitor
 
         private void handleShipRebootedEvent(ShipRebootedEvent @event)
         {
-            if (@event.timestamp > updateDat)
+            if (@event.timestamp > updatedAt)
             {
-                updateDat = @event.timestamp;
+                updatedAt = @event.timestamp;
                 Ship ship = GetCurrentShip();
                 if (ship == null)
                 {
@@ -739,9 +739,9 @@ namespace EddiShipMonitor
 
         private void handleModulePurchasedEvent(ModulePurchasedEvent @event)
         {
-            if (@event.timestamp > updateDat)
+            if (@event.timestamp > updatedAt)
             {
-                updateDat = @event.timestamp;
+                updatedAt = @event.timestamp;
                 Ship ship = GetShip(@event.shipid) ?? @event.shipDefinition;
                 ship.LocalId = ship.LocalId == 0 ? (int)@event.shipid : ship.LocalId;
                 AddModule(ship, @event.slot, @event.buymodule);
@@ -751,9 +751,9 @@ namespace EddiShipMonitor
 
         private void handleModuleRetrievedEvent(ModuleRetrievedEvent @event)
         {
-            if (@event.timestamp > updateDat)
+            if (@event.timestamp > updatedAt)
             {
-                updateDat = @event.timestamp;
+                updatedAt = @event.timestamp;
                 Ship ship = GetShip(@event.shipid) ?? @event.shipDefinition;
                 ship.LocalId = ship.LocalId == 0 ? (int)@event.shipid : ship.LocalId;
                 AddModule(ship, @event.slot, @event.module);
@@ -763,9 +763,9 @@ namespace EddiShipMonitor
 
         private void handleModuleSoldEvent(ModuleSoldEvent @event)
         {
-            if (@event.timestamp > updateDat)
+            if (@event.timestamp > updatedAt)
             {
-                updateDat = @event.timestamp;
+                updatedAt = @event.timestamp;
                 Ship ship = GetShip(@event.shipid) ?? @event.shipDefinition;
                 ship.LocalId = ship.LocalId == 0 ? (int)@event.shipid : ship.LocalId;
                 RemoveModule(ship, @event.slot);
@@ -780,9 +780,9 @@ namespace EddiShipMonitor
 
         private void handleModuleStoredEvent(ModuleStoredEvent @event)
         {
-            if (@event.timestamp > updateDat)
+            if (@event.timestamp > updatedAt)
             {
-                updateDat = @event.timestamp;
+                updatedAt = @event.timestamp;
                 Ship ship = GetShip(@event.shipid) ?? @event.shipDefinition;
                 ship.LocalId = ship.LocalId == 0 ? (int)@event.shipid : ship.LocalId;
                 RemoveModule(ship, @event.slot, @event.replacementmodule);
@@ -792,9 +792,9 @@ namespace EddiShipMonitor
 
         private void handleModulesStoredEvent(ModulesStoredEvent @event)
         {
-            if (@event.timestamp > updateDat)
+            if (@event.timestamp > updatedAt)
             {
-                updateDat = @event.timestamp;
+                updatedAt = @event.timestamp;
                 Ship ship = GetShip(@event.shipid) ?? @event.shipDefinition;
                 ship.LocalId = ship.LocalId == 0 ? (int)@event.shipid : ship.LocalId;
                 foreach (string slot in @event.slots)
@@ -807,9 +807,9 @@ namespace EddiShipMonitor
 
         private void handleModuleSwappedEvent(ModuleSwappedEvent @event)
         {
-            if (@event.timestamp > updateDat)
+            if (@event.timestamp > updatedAt)
             {
-                updateDat = @event.timestamp;
+                updatedAt = @event.timestamp;
                 Ship ship = GetShip(@event.shipid);
 
                 string fromSlot = @event.fromslot;
@@ -874,9 +874,9 @@ namespace EddiShipMonitor
 
         private void handleModuleInfoEvent(ModuleInfoEvent @event)
         {
-            if (@event.timestamp > updateDat)
+            if (@event.timestamp > updatedAt)
             {
-                updateDat = @event.timestamp;
+                updatedAt = @event.timestamp;
                 Ship ship = GetCurrentShip();
                 if (ship != null)
                 {
@@ -992,9 +992,9 @@ namespace EddiShipMonitor
 
         private void handleBountyIncurredEvent(BountyIncurredEvent @event)
         {
-            if (@event.timestamp > updateDat)
+            if (@event.timestamp > updatedAt)
             {
-                updateDat = @event.timestamp;
+                updatedAt = @event.timestamp;
                 Ship ship = GetCurrentShip();
                 if (ship != null)
                 {
@@ -1006,9 +1006,9 @@ namespace EddiShipMonitor
 
         private void handleBountyPaidEvent(BountyPaidEvent @event)
         {
-            if (@event.timestamp > updateDat)
+            if (@event.timestamp > updatedAt)
             {
-                updateDat = @event.timestamp;
+                updatedAt = @event.timestamp;
                 Ship ship = GetShip(@event.shipid);
                 if (ship != null)
                 {
@@ -1028,10 +1028,10 @@ namespace EddiShipMonitor
 
         private void posthandleShipLoadoutEvent(ShipLoadoutEvent @event)
         {
-            if (@event.timestamp > updateDat)
+            if (@event.timestamp > updatedAt)
             {
                 /// The ship may have Frontier API specific data, request a profile refresh from the Frontier API shortly after switching
-                updateDat = @event.timestamp;
+                updatedAt = @event.timestamp;
                 refreshProfileDelayed();
             }
         }
@@ -1132,7 +1132,7 @@ namespace EddiShipMonitor
                     currentshipid = currentShipId,
                     shipyard = shipyard,
                     storedmodules = storedmodules,
-                    updatedat = updateDat
+                    updatedat = updatedAt
                 };
                 configuration.ToFile();
             }
@@ -1146,7 +1146,7 @@ namespace EddiShipMonitor
             {
                 // Obtain current inventory from configuration
                 ShipMonitorConfiguration configuration = ShipMonitorConfiguration.FromFile();
-                updateDat = configuration.updatedat;
+                updatedAt = configuration.updatedat;
 
                 // Build a new shipyard
                 List<Ship> newShiplist = configuration.shipyard.OrderBy(s => s.model).ToList();
