@@ -1389,10 +1389,10 @@ namespace EddiShipMonitor
                     {
                         { "slot", slot },
                         { "module", module },
-                        { "exception", ex.Message },
-                        { "stacktrace", ex.StackTrace }
+                        { "exception", ex },
                     };
                     Logging.Error("Failed to add module to ship.", data);
+                    throw;
                 }
             }
             else
@@ -1418,8 +1418,7 @@ namespace EddiShipMonitor
                 {
                     for (int j = 1; j <= 8; j++)
                     {
-                        compartments.TryGetValue("Slot" + i.ToString("00") + "_Size" + j, out Compartment cpt);
-                        if (cpt != null)
+                        if (compartments.TryGetValue("Slot" + i.ToString("00") + "_Size" + j, out Compartment cpt))
                         {
                             ship.compartments.Add(cpt);
                         }
@@ -1428,14 +1427,13 @@ namespace EddiShipMonitor
 
                 for (int i = 1; i <= 3; i++)
                 {
-                    compartments.TryGetValue("Military" + i.ToString("00"), out Compartment cpt);
-                    if (cpt != null)
+                    if (compartments.TryGetValue("Military" + i.ToString("00"), out Compartment cpt))
                     {
                         ship.compartments.Add(cpt);
                     }
                 }
             }
-            catch (Exception ex)
+            catch (ArgumentException ex)
             {
                 Dictionary<string, object> data = new Dictionary<string, object>()
                 {
@@ -1448,33 +1446,21 @@ namespace EddiShipMonitor
 
         private static int getCompartmentSize(string slot, int? militarySlotSize)
         {
-            try
+            // Compartment slots are in the form of "Slotnn_Sizen" or "Militarynn"
+            if ((bool)slot?.Contains("Slot"))
             {
-                // Compartment slots are in the form of "Slotnn_Sizen" or "Militarynn"
-                if ((bool)slot?.Contains("Slot"))
+                Match matches = Regex.Match(slot, @"Size([0-9]+)");
+                if (matches.Success)
                 {
-                    Match matches = Regex.Match(slot, @"Size([0-9]+)");
-                    if (matches.Success)
-                    {
-                        return int.Parse(matches.Groups[1].Value);
-                    }
-                }
-                else if ((bool)slot?.Contains("Military") && militarySlotSize != null)
-                {
-                    return (int)militarySlotSize;
+                    return int.Parse(matches.Groups[1].Value);
                 }
             }
-            catch (Exception ex)
+            else if ((bool)slot?.Contains("Military") && militarySlotSize != null)
             {
-                Dictionary<string, object> data = new Dictionary<string, object>()
-                {
-                    { "Exception", ex },
-                    { "Slot", slot }
-                };
-                Logging.Error("Failed to identify ship compartment size", data);
+                return (int)militarySlotSize;
             }
             // Compartment size could not be determined
-            Logging.Warn("Ship compartment slot size could not be determined for " + slot);
+            Logging.Error("Ship compartment slot size could not be determined for " + slot);
             return -1;
         }
 
@@ -1495,15 +1481,14 @@ namespace EddiShipMonitor
                 {
                     for (int i = 1; i <= 12; i++)
                     {
-                        hardpoints.TryGetValue(size + "Hardpoint" + i, out Hardpoint hp);
-                        if (hp != null)
+                        if (hardpoints.TryGetValue(size + "Hardpoint" + i, out Hardpoint hp))
                         {
                             ship.hardpoints.Add(hp);
                         }
                     }
                 }
             }
-            catch (Exception ex)
+            catch (ArgumentException ex)
             {
                 Dictionary<string, object> data = new Dictionary<string, object>()
                 {
@@ -1516,41 +1501,28 @@ namespace EddiShipMonitor
 
         private static int getHardpointSize(string slot)
         {
-            try
+            if ((bool)slot?.StartsWith("Tiny"))
             {
-                if ((bool)slot?.StartsWith("Tiny"))
-                {
-                    return 0;
-                }
-                else if ((bool)slot?.StartsWith("Small"))
-                {
-                    return 1;
-                }
-                else if ((bool)slot?.StartsWith("Medium"))
-                {
-                    return 2;
-                }
-                else if ((bool)slot?.StartsWith("Large"))
-                {
-                    return 3;
-                }
-                else if ((bool)slot?.StartsWith("Huge"))
-                {
-                    return 4;
-                }
+                return 0;
             }
-            catch (Exception ex)
+            else if ((bool)slot?.StartsWith("Small"))
             {
-                Dictionary<string, object> data = new Dictionary<string, object>()
-                {
-                    { "Exception", ex },
-                    { "Slot", slot }
-                };
-                Logging.Error("Failed to identify ship hardpoint size", data);
+                return 1;
             }
-
+            else if ((bool)slot?.StartsWith("Medium"))
+            {
+                return 2;
+            }
+            else if ((bool)slot?.StartsWith("Large"))
+            {
+                return 3;
+            }
+            else if ((bool)slot?.StartsWith("Huge"))
+            {
+                return 4;
+            }
             // Hardpoint size could not be determined
-            Logging.Warn("Ship hardpoint slot size could not be determined for " + slot);
+            Logging.Error("Ship hardpoint slot size could not be determined for " + slot);
             return -1;
         }
 
@@ -1637,10 +1609,10 @@ namespace EddiShipMonitor
                     {
                         { "slot", slot },
                         { "replacement", replacement },
-                        { "exception", ex.Message },
-                        { "stacktrace", ex.StackTrace }
+                        { "exception", ex },
                     };
                     Logging.Error("Failed to remove module from ship.", data);
+                    throw;
                 }
             }
             else
@@ -1715,7 +1687,7 @@ namespace EddiShipMonitor
             decimal massRatio = ship.optimalmass / (ship.unladenmass + currentFuel + cargoCarried);
             decimal fuel = Math.Min(currentFuel, ship.maxfuelperjump);
 
-            return (decimal)Math.Pow((double)(1000 * fuel / ratingConstant), (double)(1 / powerConstant)) * massRatio + boostConstant;
+            return ((decimal)Math.Pow((double)(1000 * fuel / ratingConstant), (double)(1 / powerConstant)) * massRatio) + boostConstant;
         }
 
         private decimal MaxFuelPerJump(Ship ship)
