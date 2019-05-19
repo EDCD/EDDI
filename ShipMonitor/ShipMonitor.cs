@@ -26,7 +26,7 @@ namespace EddiShipMonitor
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1001:TypesThatOwnDisposableFieldsShouldBeDisposable")]
     public class ShipMonitor : EDDIMonitor
     {
-        private static List<string> HARDPOINT_SIZES = new List<string>() { "Huge", "Large", "Medium", "Small", "Tiny" };
+        private static readonly List<string> HARDPOINT_SIZES = new List<string>() { "Huge", "Large", "Medium", "Small", "Tiny" };
 
         // Observable collection for us to handle changes
         public ObservableCollection<Ship> shipyard { get; private set; }
@@ -36,7 +36,6 @@ namespace EddiShipMonitor
 
         // The ID of the current ship; can be null
         private int? currentShipId;
-        private int? currentProfileId;
 
         private const int profileRefreshDelaySeconds = 20;
 
@@ -1048,7 +1047,6 @@ namespace EddiShipMonitor
 
             if (profileCurrentShip != null)
             {
-                currentProfileId = profileCurrentShip.LocalId;
                 if (currentShipId == null)
                 {
                     // This means that we don't have any info so far; set our active ship
