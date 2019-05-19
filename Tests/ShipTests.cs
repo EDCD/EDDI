@@ -270,6 +270,29 @@ namespace UnitTests
             Assert.IsNull(@event.tomodule);
             Assert.AreEqual("Krait Mk. II", @event.ship);
             Assert.AreEqual(81, @event.shipid);
+
+            // Obtain our ship monitor and save its state
+            ShipMonitor shipMonitor = (ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor");
+            ObservableCollection<Ship> shipyard = shipMonitor.shipyard;
+            PrivateObject privateObject = new PrivateObject(shipMonitor);
+            privateObject.SetFieldOrProperty("updatedAt", DateTime.MinValue);
+
+            // Set up our ship
+            Ship ship = new Ship() { model = @event.ship, LocalId = (int)@event.shipid };
+            ship.compartments.Add(new Compartment() { name = @event.fromslot, size = 3, module = @event.frommodule });
+            ship.compartments.Add(new Compartment() { name = @event.toslot, size = 3, module = @event.tomodule });
+            privateObject.Invoke("RemoveShip", new object[] { (int)@event.shipid });
+            privateObject.Invoke("AddShip", new object[] { ship });
+
+            // Test the event handler
+            Assert.AreEqual(@event.frommodule, ship.compartments.FirstOrDefault(c => c.name == @event.fromslot)?.module);
+            Assert.AreEqual(@event.tomodule, ship.compartments.FirstOrDefault(c => c.name == @event.toslot)?.module);
+            privateObject.Invoke("handleModuleSwappedEvent", new object[] { @event });
+            Assert.AreEqual(@event.frommodule, ship.compartments.FirstOrDefault(c => c.name == @event.toslot)?.module);
+            Assert.AreEqual(@event.tomodule, ship.compartments.FirstOrDefault(c => c.name == @event.fromslot)?.module);
+
+            // Restore our ship monitor to its original state
+            privateObject.SetFieldOrProperty("shipyard", shipyard);
         }
 
         [TestMethod]
