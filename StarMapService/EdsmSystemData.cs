@@ -14,27 +14,7 @@ namespace EddiStarMapService
         public static StarSystem GetStarMapSystem(string system, bool showCoordinates = true, bool showSystemInformation = true)
         {
             if (system == null) { return null; }
-            var client = new RestClient(baseUrl);
-            var request = new RestRequest("api-v1/system", Method.POST);
-            request.AddParameter("systemName", system);
-            request.AddParameter("showId", 1);
-            request.AddParameter("showCoordinates", showCoordinates ? 1 : 0);
-            request.AddParameter("showInformation", showSystemInformation ? 1 : 0);
-            request.AddParameter("showPermit", showSystemInformation ? 1 : 0);
-            var clientResponse = client.Execute<JObject>(request);
-            if (clientResponse.IsSuccessful)
-            {
-                var token = JToken.Parse(clientResponse.Content);
-                if (token is JObject response)
-                {
-                    return ParseStarMapSystem(response, system);
-                }
-            }
-            else
-            {
-                Logging.Debug("EDSM responded with " + clientResponse.ErrorMessage, clientResponse.ErrorException);
-            }
-            return null;
+            return GetStarMapSystems(new string[] { system }, showCoordinates, showSystemInformation).FirstOrDefault();
         }
 
         /// <summary> At least one system name is required. </summary>

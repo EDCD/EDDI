@@ -113,10 +113,13 @@ namespace EddiDataDefinitions
         public long estimatedvalue => estimateSystemValue(bodies);
 
         /// <summary>Number of visits</summary>
-        public int visits;
+        public int visits => visitLog.Count();
 
         /// <summary>Time of last visit</summary>
-        public DateTime? lastvisit;
+        public DateTime? lastvisit => visitLog.LastOrDefault();
+
+        /// <summary>Visit log</summary>
+        public SortedSet<DateTime> visitLog { get; set; } = new SortedSet<DateTime>();
 
         /// <summary>Time of last visit, expressed as a Unix timestamp in seconds</summary>
         [JsonIgnore]

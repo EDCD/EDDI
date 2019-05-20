@@ -10,7 +10,7 @@ using Utilities;
 namespace EddiDataProviderService
 {
     /// <summary>Access data services<summary>
-    public class DataProviderService
+    public static class DataProviderService
     {
         // Uses the EDSM data service and legacy EDDP data
         public static StarSystem GetSystemData(string system, bool showCoordinates = true, bool showSystemInformation = true, bool showBodies = true, bool showStations = true, bool showFactions = true)
@@ -142,52 +142,91 @@ namespace EddiDataProviderService
         // EDSM flight log synchronization
         public static void syncFromStarMapService (DateTime? lastSync = null, IProgress<string> progress = null)
         {
-            Logging.Info("Syncing from EDSM");
-
-            try
+            if (StarMapService.Instance != null)
             {
-                Dictionary<string, StarMapLogInfo> systems = StarMapService.Instance.getStarMapLog(lastSync);
-                Dictionary<string, string> comments = StarMapService.Instance.getStarMapComments();
+                Logging.Info("Syncing from EDSM");
 
-                int total = systems.Count;
-                int i = 0;
-
-                while (i < total)
+                try
                 {
-                    int batchSize = Math.Min(total, StarMapService.syncBatchSize);
-                    syncEdsmLogBatch(systems.Skip(i).Take(batchSize).ToDictionary(x => x.Key, x => x.Value), comments);
-                    i = i + batchSize;
+                    List<StarMapResponseLogEntry> flightLogs = StarMapService.Instance.getStarMapLog(lastSync);
+                    Dictionary<string, string> comments = StarMapService.Instance.getStarMapComments();
+                    int total = flightLogs.Count;
+                    int i = 0;
+
+                    while (i < total)
+                    {
+                        int batchSize = Math.Min(total, StarMapService.syncBatchSize);
+                        List<StarMapResponseLogEntry> flightLogBatch = flightLogs.Skip(i).Take(batchSize).ToList();
+                        string[] batchNames = flightLogBatch.Select(x => x.system).ToArray();
+                        List<StarSystem> batchsystems = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystems(batchNames, false);
+                        syncEdsmLogBatch(batchsystems, flightLogBatch, comments);
+                        i += batchSize;
+                    }
+                    Logging.Info("EDSM sync completed");
                 }
-                Logging.Info("EDSM sync completed");
-            }
-            catch (EDSMException edsme)
-            {
-                Logging.Debug("EDSM error received: " + edsme.Message);
-            }
-            catch (ThreadAbortException e)
-            {
-                Logging.Debug("EDSM update stopped by user: " + e.Message);
+                catch (EDSMException edsme)
+                {
+                    Logging.Debug("EDSM error received: " + edsme.Message);
+                }
+                catch (ThreadAbortException e)
+                {
+                    Logging.Debug("EDSM update stopped by user: " + e.Message);
+                }
             }
         }
 
-        public static void syncEdsmLogBatch(Dictionary<string, StarMapLogInfo> systems, Dictionary<string, string> comments)
+        // EDSM flight log synchronization (single star system)
+        public static StarSystem syncFromStarMapService(StarSystem starSystem)
         {
-            List<StarSystem> batchSystems = new List<StarSystem>();
-            string[] batchNames = systems.Select(x => x.Key).ToArray();
-            List<StarSystem> starSystems = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystems(batchNames, false);
-            foreach (string name in batchNames)
+            if (StarMapService.Instance != null)
             {
-                StarSystem CurrentStarSystem = starSystems.FirstOrDefault(s => s.systemname == name);
-                if (CurrentStarSystem == null) { continue; }
-                CurrentStarSystem.visits = systems[name].visits;
-                CurrentStarSystem.lastvisit = systems[name].lastVisit;
-                if (comments.ContainsKey(name))
+                Logging.Debug("Syncing from EDSM for star system " + starSystem.name);
+
+                try
                 {
-                    CurrentStarSystem.comment = comments[name];
+                    List<StarMapResponseLogEntry> flightLogs = StarMapService.Instance.getStarMapLog(null, starSystem.name);
+                    Dictionary<string, string> comments = StarMapService.Instance.getStarMapComments();
+
+                    foreach (StarMapResponseLogEntry flightLog in flightLogs)
+                    {
+                        starSystem.visitLog.Add(flightLog.date);
+                    }
+                    if (comments.ContainsKey(starSystem.name))
+                    {
+                        starSystem.comment = comments[starSystem.name];
+                    }
+
+                    Logging.Debug("EDSM sync completed");
                 }
-                batchSystems.Add(CurrentStarSystem);
+                catch (EDSMException edsme)
+                {
+                    Logging.Debug("EDSM error received: " + edsme.Message);
+                }
+                catch (ThreadAbortException e)
+                {
+                    Logging.Debug("EDSM update stopped by user: " + e.Message);
+                }
             }
-            saveFromStarMapService(batchSystems);
+            return starSystem;
+        }
+
+        public static void syncEdsmLogBatch(List<StarSystem> batchSystems, List<StarMapResponseLogEntry> flightLogBatch, Dictionary<string, string> comments)
+        {
+            List<StarSystem> syncedSystems = new List<StarSystem>();
+            foreach (StarMapResponseLogEntry flightLog in flightLogBatch)
+            {
+                StarSystem CurrentStarSystem = batchSystems.FirstOrDefault(s => s.name == flightLog.system);
+                if (CurrentStarSystem != null)
+                {
+                    CurrentStarSystem.visitLog.Add(flightLog.date);
+                    if (comments.ContainsKey(flightLog.system))
+                    {
+                        CurrentStarSystem.comment = comments[flightLog.system];
+                    }
+                    syncedSystems.Add(CurrentStarSystem);
+                }
+            }
+            saveFromStarMapService(syncedSystems);
         }
 
         public static void saveFromStarMapService (List<StarSystem> syncSystems)

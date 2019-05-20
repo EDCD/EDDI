@@ -44,8 +44,6 @@ namespace EddiStarMapService
                     {
                         if (instance == null)
                         {
-                            Logging.Debug("No StarMapService instance: creating one");
-
                             // Set up the star map service
                             StarMapConfiguration starMapCredentials = StarMapConfiguration.FromFile();
                             if (!string.IsNullOrEmpty(starMapCredentials?.apiKey))
@@ -57,6 +55,14 @@ namespace EddiStarMapService
                                     instance = new StarMapService(starMapCredentials.apiKey, commanderName);
                                     Logging.Info("Configuring EDDI access to EDSM profile data");
                                 }
+                                else
+                                {
+                                    Logging.Info("No StarMapService instance: Commander name not set.");
+                                }
+                            }
+                            else
+                            {
+                                Logging.Info("No StarMapService instance: API key not set.");
                             }
                         }
                     }
@@ -220,21 +226,28 @@ namespace EddiStarMapService
             return vals;
         }
 
-        public Dictionary<string, StarMapLogInfo> getStarMapLog(DateTime? since = null)
+        public List<StarMapResponseLogEntry> getStarMapLog(DateTime? since = null, string systemName = null)
         {
             var client = new RestClient(baseUrl);
             var request = new RestRequest("api-logs-v1/get-logs", Method.POST);
             request.AddParameter("apiKey", apiKey);
             request.AddParameter("commanderName", commanderName);
-            if (since.HasValue)
-            {
-                request.AddParameter("startdatetime", since.Value.ToString("yyyy-MM-dd HH:mm:ss"));
-            }
-            else
+            if (!since.HasValue && string.IsNullOrEmpty(systemName))
             {
                 /// Though not documented in the api, Anthor from EDSM has confirmed that this 
                 /// unpublished parameter is valid and overrides "startdatetime" and "enddatetime".
                 request.AddParameter("fullSync", 1);
+            }
+            else
+            {
+                if (since.HasValue)
+                {
+                    request.AddParameter("startdatetime", since.Value.ToString("yyyy-MM-dd HH:mm:ss"));
+                }
+                if (!string.IsNullOrEmpty(systemName))
+                {
+                    request.AddParameter("systemName", systemName);
+                }
             }
             var starMapLogResponse = client.Execute<StarMapLogResponse>(request);
             StarMapLogResponse response = starMapLogResponse.Data;
@@ -254,36 +267,14 @@ namespace EddiStarMapService
                 throw new EDSMException();
             }
 
-            Dictionary<string, StarMapLogInfo> vals = new Dictionary<string, StarMapLogInfo>();
             if (response != null && response.logs != null)
             {
-                foreach (StarMapResponseLogEntry entry in response.logs)
-                {
-                    if (vals.ContainsKey(entry.system))
-                    {
-                        vals[entry.system].visits = vals[entry.system].visits + 1;
-                        if (entry.date > vals[entry.system].lastVisit)
-                        {
-                            vals[entry.system].previousVisit = vals[entry.system].lastVisit;
-                            vals[entry.system].lastVisit = entry.date;
-                        }
-                        else if (vals[entry.system].previousVisit == null || entry.date > vals[entry.system].previousVisit)
-                        {
-                            vals[entry.system].previousVisit = entry.date;
-                        }
-                    }
-                    else
-                    {
-                        vals[entry.system] = new StarMapLogInfo
-                        {
-                            system = entry.system,
-                            visits = 1,
-                            lastVisit = entry.date
-                        };
-                    }
-                }
+                return response.logs;
             }
-            return vals;
+            else
+            {
+                return null;
+            }
         }
     }
    
@@ -306,15 +297,7 @@ namespace EddiStarMapService
         public List<StarMapResponseLogEntry> logs { get; set; }
     }
 
-    public class StarMapLogInfo
-    {
-        public string system { get; set; }
-        public int visits { get; set; }
-        public DateTime lastVisit { get; set; }
-        public DateTime? previousVisit { get; set; }
-    }
-
-    class StarMapResponseLogEntry
+    public class StarMapResponseLogEntry
     {
         public string system { get; set; }
         public DateTime date { get; set; }

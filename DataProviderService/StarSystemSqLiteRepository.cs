@@ -185,38 +185,45 @@ namespace EddiDataProviderService
 
                     // Determine whether our data is stale (We won't deserialize the the entire system if it's stale) 
                     IDictionary<string, object> system = Deserializtion.DeserializeData(data);
-                    system.TryGetValue("visits", out object visitVal);
+                    system.TryGetValue("visitLog", out object visitVal);
                     system.TryGetValue("comment", out object commentVal);
                     system.TryGetValue("lastvisit", out object lastVisitVal);
                     system.TryGetValue("lastupdated", out object lastUpdatedVal);
                     system.TryGetValue("systemAddress", out object systemAddressVal);
 
-                    int visits = (int)(long)visitVal;
+                    List<object> visitVals = (List<object>)visitVal;
+                    SortedSet<DateTime> visitLog = visitVals == null ? null : 
+                        new SortedSet<DateTime>(visitVals.ConvertAll(o => Convert.ToDateTime(o)));
                     string comment = (string)commentVal ?? "";
                     DateTime? lastvisit = (DateTime?)lastVisitVal;
                     DateTime? lastupdated = (DateTime?)lastUpdatedVal;
                     long? systemAddress = (long?)systemAddressVal;
 
+                    bool syncEdsmLogs = false;
                     if (lastvisit == null || lastupdated == null || comment == "")
                     {
-                        if (Instance.OldDataFormat(name, ref visits, comment, ref lastupdated, ref lastvisit))
+                        if (Instance.OldDataFormat(name, comment, ref lastupdated, ref lastvisit))
                         {
                             needToUpdate = true;
                         }
+                    }
+                    if (visitLog == null && lastvisit != null)
+                    {
+                        syncEdsmLogs = true;
                     }
 
                     if (refreshIfOutdated && lastupdated < DateTime.UtcNow.AddHours(-1))
                     {
                         // Data is stale
                         StarSystem updatedResult = DataProviderService.GetSystemData(name);
-                        if (updatedResult.systemAddress == null && systemAddress != null)
+                        if (updatedResult.systemAddress != null && updatedResult.x != null && updatedResult.y != null && updatedResult.z != null)
                         {
-                            // The "updated" data might be a basic system, empty except for the name. If so, return the old result.
-                            updatedResult = DeserializeStarSystem(name, data, ref needToUpdate);
+                            needToUpdate = true;
                         }
                         else
                         {
-                            needToUpdate = true;
+                            // The "updated" data might be a basic system, empty except for the name. If so, return the old result.
+                            updatedResult = DeserializeStarSystem(name, data, ref needToUpdate);
                         }
                         result = updatedResult;
                     }
@@ -226,9 +233,15 @@ namespace EddiDataProviderService
                         result = DeserializeStarSystem(name, data, ref needToUpdate);
                     }
 
-                    result.visits = visits;
+                    if (syncEdsmLogs)
+                    {
+                        // Old data format - synchronize EDSM flight logs and comments
+                        result = DataProviderService.syncFromStarMapService(result);
+                        needToUpdate = true;
+                    }
+
+                    result.visitLog = result.visitLog ?? visitLog;
                     result.comment = comment;
-                    result.lastvisit = lastvisit;
                     result.lastupdated = DateTime.UtcNow;
 
                     if (needToUpdate)
@@ -242,7 +255,7 @@ namespace EddiDataProviderService
             return results;
         }
 
-        private bool OldDataFormat(string name, ref int visits, string comment, ref DateTime? lastupdated, ref DateTime? lastvisit)
+        private bool OldDataFormat(string name, string comment, ref DateTime? lastupdated, ref DateTime? lastvisit)
         {
             bool result = false;
             using (var con = SimpleDbConnection())
@@ -260,7 +273,6 @@ namespace EddiDataProviderService
                             if (lastvisit == null)
                             {
                                 // Old-style system; need to update
-                                visits = rdr.GetInt32(0);
                                 lastvisit = rdr.GetDateTime(1);
                                 result = true;
                             }
@@ -406,12 +418,10 @@ namespace EddiDataProviderService
             Instance.updateStarSystems(update);
         }
 
-        // Triggered when leaving a starsystem - just update lastvisit
+        // Triggered when leaving a starsystem - just save the star system
         public void LeaveStarSystem(StarSystem system)
         {
             if (system?.systemname == null) { return; }
-
-            system.lastvisit = DateTime.UtcNow;
             SaveStarSystem(system);
         }
 
@@ -452,12 +462,6 @@ namespace EddiDataProviderService
                             foreach (StarSystem system in insertStarSystems)
                             {
                                 Logging.Debug("Inserting new starsystem " + system.systemname);
-                                if (system.lastvisit == null)
-                                {
-                                    // DB constraints don't allow this to be null
-                                    system.lastvisit = DateTime.UtcNow;
-                                }
-
                                 cmd.CommandText = INSERT_SQL;
                                 cmd.Prepare();
                                 cmd.Parameters.AddWithValue("@name", system.systemname);
