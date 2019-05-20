@@ -123,5 +123,7 @@
   <data name="name" xml:space="preserve">
     <value>EDDN Responder</value>
   </data>
-  
+  <data name="errPosition" xml:space="preserve">
+    <value>位置が特定できないため、探査データを送信できません。位置の再取得のため、ジャンプするか、リログしてください。</value>
+  </data>
 </root>
