@@ -99,6 +99,8 @@ namespace Eddi
         private ConcurrentBag<EDDIResponder> activeResponders = new ConcurrentBag<EDDIResponder>();
         private static readonly object responderLock = new object();
 
+        public string vaVersion { get; set; }
+
         // Information obtained from the companion app service
         public DateTime ApiTimeStamp { get; private set; }
 

@@ -163,6 +163,10 @@ namespace EddiVoiceAttackResponder
                     EDDI.Instance.enqueueEvent(@event);
                 }
 
+                // Set a variable indicating the version of VoiceAttack in use
+                System.Version v = vaProxy.VAVersion;
+                EDDI.Instance.vaVersion = v.ToString();
+
                 // Set a variable indicating whether EDDI is speaking
                 try
                 {

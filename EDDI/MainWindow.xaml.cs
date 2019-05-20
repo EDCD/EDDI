@@ -1070,8 +1070,12 @@ namespace Eddi
 
         private async void createGithubIssueClicked(object sender, RoutedEventArgs e)
         {
-            // Write out useful information to the log before procedding
+            // Write out useful information to the log before proceeding
             Logging.Info("EDDI version: " + Constants.EDDI_VERSION);
+            if (fromVA)
+            {
+                Logging.Info("VoiceAttack version: " + EDDI.Instance.vaVersion);
+            }
             Logging.Info("Commander name: " + (EDDI.Instance.Cmdr != null ? EDDI.Instance.Cmdr.name : "unknown"));
 
             // Prepare a truncated log file for export if verbose logging is enabled
@@ -1079,7 +1083,7 @@ namespace Eddi
             {
                 Logging.Debug("Preparing log for export.");
                 var progress = new Progress<string>(s => githubIssueButton.Content = Properties.EddiResources.preparing_log + s);
-                await Task.Factory.StartNew(() => prepareLog(progress), TaskCreationOptions.LongRunning);
+                await Task.Factory.StartNew(() => prepareLogs(progress), TaskCreationOptions.LongRunning);
             }
 
             createGithubIssue();
@@ -1091,29 +1095,57 @@ namespace Eddi
             changeLog.Show();
         }
 
-        public static void prepareLog(IProgress<string> progress)
+        public static void prepareLogs(IProgress<string> progress)
         {
             try
             {
                 string issueLogDir = Constants.DATA_DIR + @"\logexport\";
-                string issueLogFile = issueLogDir + "eddi_issue.log";
+                Directory.CreateDirectory(issueLogDir);
+
                 string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @"\eddi_issue.zip";
 
-                // Create a temporary issue log file, delete any remnants from prior issue reporting
+                // Create temporary, truncated issue log files
+                prepareLog(issueLogDir + "eddi.log", Constants.DATA_DIR + @"\eddi.log");
+                prepareLog(issueLogDir + "eddi1.log", Constants.DATA_DIR + @"\eddi1.log");
+
+                // Zip our log files and send them to the desktop so that it can be added to the Github issue
+                File.Delete(desktopPath);
+                ZipFile.CreateFromDirectory(issueLogDir, desktopPath);
+
+                // Clear temporary issue log files & the temporary directory
+                foreach (string filePath in Directory.GetFiles(issueLogDir))
+                {
+                    File.Delete(filePath);
+                }
+                Directory.Delete(issueLogDir);
+
+                progress.Report(Properties.EddiResources.done);
+            }
+            catch (Exception ex)
+            {
+                progress.Report(Properties.EddiResources.failed);
+                Logging.Error("Failed to prepare log", ex);
+
+            }
+        }
+
+        private static void prepareLog(string toTruncatedLogPath, string fromLogPath)
+        {
+            if (File.Exists(fromLogPath))
+            {
                 lock (logLock)
                 {
-                    Directory.CreateDirectory(issueLogDir);
-                    File.WriteAllText(issueLogFile, File.ReadAllText(Constants.DATA_DIR + @"\eddi.log"));
+                    File.WriteAllText(toTruncatedLogPath, File.ReadAllText(fromLogPath));
                 }
 
                 // Truncate log files more than the specified size MB in size
                 const long maxLogSizeBytes = 0x200000; // 2 MB
-                FileInfo logFile = new FileInfo(issueLogFile);
+                FileInfo logFile = new FileInfo(toTruncatedLogPath);
                 if (logFile.Length > maxLogSizeBytes)
                 {
                     using (MemoryStream ms = new MemoryStream((int)maxLogSizeBytes))
                     {
-                        using (FileStream issueLog = new FileStream(issueLogFile, FileMode.Open, FileAccess.ReadWrite))
+                        using (FileStream issueLog = new FileStream(toTruncatedLogPath, FileMode.Open, FileAccess.ReadWrite))
                         {
                             issueLog.Seek(-1 * maxLogSizeBytes, SeekOrigin.End);
                             // advance to after next line end
@@ -1134,22 +1166,6 @@ namespace Eddi
                         }
                     }
                 }
-
-                // Copy the issue log & zip it to the desktop so that it can be added to the Github issue
-                File.Delete(desktopPath);
-                ZipFile.CreateFromDirectory(issueLogDir, desktopPath);
-
-                // Clear the temporary issue log file & directory
-                File.Delete(issueLogFile);
-                Directory.Delete(issueLogDir);
-
-                progress.Report(Properties.EddiResources.done);
-            }
-            catch (Exception ex)
-            {
-                progress.Report(Properties.EddiResources.failed);
-                Logging.Error("Failed to prepare log", ex);
-
             }
         }
 
