@@ -1040,7 +1040,9 @@ namespace Eddi
 
                 if (theEvent.docked)
                 {
+                    // We are docked and in the ship
                     Environment = Constants.ENVIRONMENT_DOCKED;
+                    Vehicle = Constants.VEHICLE_SHIP;
 
                     // Our data source may not include the market id or system address
                     station.marketId = theEvent.marketId;
@@ -1102,7 +1104,6 @@ namespace Eddi
 
         private bool eventDocked(DockedEvent theEvent)
         {
-            Environment = Constants.ENVIRONMENT_DOCKED;
             updateCurrentSystem(theEvent.system);
 
             // Upon docking, allow manual station updates once
@@ -1110,14 +1111,15 @@ namespace Eddi
             allowOutfittingUpdate = true;
             allowShipyardUpdate = true;
 
-            if (CurrentStation != null && CurrentStation.name == theEvent.station)
+            if (Environment == Constants.ENVIRONMENT_DOCKED)
             {
                 // We are already at this station; nothing to do
                 Logging.Debug("Already at station " + theEvent.station);
                 return false;
             }
 
-            // We are in the ship
+            // We are docked and in the ship
+            Environment = Constants.ENVIRONMENT_DOCKED;
             Vehicle = Constants.VEHICLE_SHIP;
 
             // Update the station
