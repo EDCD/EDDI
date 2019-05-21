@@ -98,7 +98,13 @@ namespace EddiDataDefinitions
             }
             else
             {
-                Ship.model = model;
+                string edModel = null;
+                EddbModelMap?.TryGetValue(model, out edModel);
+                if (edModel != null)
+                {
+                    model = edModel;
+                }
+                Ship = FromEDModel(model);
             }
             return Ship;
         }
@@ -129,5 +135,49 @@ namespace EddiDataDefinitions
             }
             return Ship;
         }
+
+        // EDDB model names may not match either EDDI's model name strings or FDev's EDName strings. 
+        private static readonly Dictionary<string, string> EddbModelMap = new Dictionary<string, string>()
+        {   
+            // Map EDDB model names back to ednames here (format: EDDB model name, EDName)
+            { "Adder", "Adder" },
+            { "Anaconda", "Anaconda" },
+            { "Asp Explorer", "Asp" },
+            { "Asp Scout", "Asp_Scout" },
+            { "Beluga Liner", "BelugaLiner" },
+            { "Cobra Mk. III", "CobraMkIII" },
+            { "Cobra MK IV", "CobraMkIV" },
+            { "Diamondback Explorer", "DiamondbackXL" },
+            { "Diamondback Scout", "Diamondback" },
+            { "Dolphin", "Dolphin" },
+            { "Eagle Mk. II", "Eagle" },
+            { "Federal Assault Ship", "Federation_Dropship_MkII" },
+            { "Federal Corvette", "Federation_Corvette" },
+            { "Federal Dropship", "Federation_Dropship" },
+            { "Federal Gunship", "Federation_Gunship" },
+            { "Fer-de-Lance", "FerDeLance" },
+            { "Imperial Clipper", "Empire_Trader" },
+            { "Imperial Courier", "Empire_Courier" },
+            { "Imperial Cutter", "Cutter" },
+            { "Imperial Eagle", "Empire_Eagle" },
+            { "Hauler", "Hauler" },
+            { "Keelback", "Independant_Trader" },
+            { "Orca", "Orca" },
+            { "Python", "Python" },
+            { "Sidewinder Mk. I", "Sidewinder" },
+            { "Type-6 Transporter", "Type6" },
+            { "Type-7 Transporter", "Type7" },
+            { "Type-9 Heavy", "Type9" },
+            { "Viper Mk III", "Viper" },
+            { "Viper MK IV", "Viper_MkIV" },
+            { "Vulture", "Vulture" },
+            { "Type-10 Defender", "Type9_Military" },
+            { "Alliance Chieftain", "TypeX" },
+            { "Alliance Challenger", "TypeX_2" },
+            { "Alliance Crusader", "TypeX_3" },
+            { "Krait MkII", "Krait_MkII" },
+            { "Krait Phantom", "Krait_Light" },
+            { "Mamba", "Mamba" },
+        };
     }
 }
