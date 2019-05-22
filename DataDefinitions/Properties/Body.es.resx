@@ -141,16 +141,28 @@
     <value>Cinturón</value>
     <comment>Body Type "Belt"</comment>
   </data>
-  
+  <data name="None" xml:space="preserve">
+    <value>Cuerpo</value>
+    <comment>None</comment>
+  </data>
   <data name="Station" xml:space="preserve">
     <value>Estación</value>
     <comment>BodyType "Station"</comment>
   </data>
-  
+  <data name="Null" xml:space="preserve">
+    <value>Cuerpo</value>
+    <comment>BodyType "Null"</comment>
+  </data>
   <data name="PlanetaryRing" xml:space="preserve">
     <value>Anillo planetario</value>
     <comment>Body Type PlanetaryRing</comment>
   </data>
-  
-  
+  <data name="Moon" xml:space="preserve">
+    <value>Luna</value>
+    <comment>Body Type "Moon"</comment>
+  </data>
+  <data name="StellarRing" xml:space="preserve">
+    <value>Anillo estelar</value>
+    <comment>Body Type PlanetaryRing</comment>
+  </data>
 </root>
