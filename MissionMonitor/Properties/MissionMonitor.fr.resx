@@ -120,14 +120,18 @@
   <data name="clear_route_button" xml:space="preserve">
     <value>Effacer la destination</value>
   </data>
-  
+  <data name="clear_route_button_desc" xml:space="preserve">
+    <value>Efface l'itinéraire des missions et le système de destination.</value>
+  </data>
   <data name="clear_route_button_text" xml:space="preserve">
     <value>Effacer la destination:</value>
   </data>
   <data name="get_route_button" xml:space="preserve">
     <value>Obtenir destination</value>
   </data>
-  
+  <data name="get_route_button_desc" xml:space="preserve">
+    <value>Lance le calcul de l'algorithme du "Voisin le plus proche" pour déterminer l'itinéraire le plus court de la mission.</value>
+  </data>
   <data name="get_route_button_text" xml:space="preserve">
     <value>Obtenir destination:</value>
   </data>
@@ -158,7 +162,9 @@
   <data name="next_route_button" xml:space="preserve">
     <value>Prochaine destination</value>
   </data>
-  
+  <data name="next_route_button_desc" xml:space="preserve">
+    <value>Définit le système de destination sur le système suivant dans l'itinéraire des missions.</value>
+  </data>
   <data name="next_route_button_text" xml:space="preserve">
     <value>Prochaine destination:</value>
   </data>
@@ -174,7 +180,9 @@
   <data name="update_route_button" xml:space="preserve">
     <value>Mise à jour de la destination</value>
   </data>
-  
+  <data name="update_route_button_desc" xml:space="preserve">
+    <value>Définit le système de destination sur le système suivant dans l'itinéraire des missions, si toutes les missions sont terminées.</value>
+  </data>
   <data name="update_route_button_text" xml:space="preserve">
     <value>Mise à jour de la destination:</value>
   </data>
