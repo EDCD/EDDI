@@ -209,5 +209,8 @@
     <value>Géante gazeuse</value>
     <comment>Atmosphere class "Gas giant"</comment>
   </data>
-  
+  <data name="AmmoniaOxygen" xml:space="preserve">
+    <value>Ammoniac et oxygène</value>
+    <comment>Atmosphere class "Ammonia oxygen"</comment>
+  </data>
 </root>
