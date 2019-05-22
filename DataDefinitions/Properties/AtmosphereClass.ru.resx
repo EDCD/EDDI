@@ -123,7 +123,7 @@
   </data>
   <data name="AmmoniaAndOxygen" xml:space="preserve">
     <value>Аммиак и кислород</value>
-    <comment>Atmosphere class "Ammonia and oxygen"</comment>
+    <comment>Atmosphere class "Ammonia and oxygen" (obsolete - see "AmmoniaOxygen")</comment>
   </data>
   <data name="AmmoniaRich" xml:space="preserve">
     <value>Аммиако-насыщенный</value>
@@ -209,4 +209,5 @@
     <value>Газовый гигант</value>
     <comment>Atmosphere class "Gas giant"</comment>
   </data>
+  
 </root>
