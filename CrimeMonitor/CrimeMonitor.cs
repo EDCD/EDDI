@@ -782,7 +782,7 @@ namespace EddiCrimeMonitor
                 claims = configuration.claims;
                 fines = configuration.fines;
                 bounties = configuration.bounties;
-                maxStationDistanceFromStarLs = configuration.maxStationDistanceFromStarLs ?? 10000;
+                maxStationDistanceFromStarLs = configuration.maxStationDistanceFromStarLs ?? Constants.maxStationDistanceDefault;
                 prioritizeOrbitalStations = configuration.prioritizeOrbitalStations;
                 targetSystem = configuration.targetSystem;
                 homeSystems = configuration.homeSystems;

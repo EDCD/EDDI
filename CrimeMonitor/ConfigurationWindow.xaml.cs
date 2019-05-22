@@ -11,6 +11,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
+using Utilities;
 
 namespace EddiCrimeMonitor
 {
@@ -92,7 +93,7 @@ namespace EddiCrimeMonitor
 
             Thread IFRouteThread = new Thread(() =>
             {
-                int distance = crimeMonitor().maxStationDistanceFromStarLs ?? 10000;
+                int distance = crimeMonitor().maxStationDistanceFromStarLs ?? Constants.maxStationDistanceDefault;
                 bool isChecked = crimeMonitor().prioritizeOrbitalStations;
                 string IFSystem = Navigation.Instance.GetServiceRoute("facilitator", distance, isChecked);
                 Dispatcher?.Invoke(() =>

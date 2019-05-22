@@ -8,6 +8,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
+using Utilities;
 
 namespace EddiMissionMonitor
 {
@@ -42,7 +43,8 @@ namespace EddiMissionMonitor
             MissionMonitorConfiguration configuration = MissionMonitorConfiguration.FromFile();
             try
             {
-                int? warning = string.IsNullOrWhiteSpace(missionWarningInt.Text) ? 60 : Convert.ToInt32(missionWarningInt.Text, CultureInfo.InvariantCulture);
+                int? warning = string.IsNullOrWhiteSpace(missionWarningInt.Text) ? Constants.missionWarningDefault
+                    : Convert.ToInt32(missionWarningInt.Text, CultureInfo.InvariantCulture);
                 missionMonitor().missionWarning = warning;
                 configuration.missionWarning = warning;
                 configuration.ToFile();

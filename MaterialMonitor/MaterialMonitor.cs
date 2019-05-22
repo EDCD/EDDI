@@ -400,7 +400,7 @@ namespace EddiMaterialMonitor
             {
                 // Obtain current inventory from  configuration
                 MaterialMonitorConfiguration configuration = MaterialMonitorConfiguration.FromFile();
-                maxStationDistanceFromStarLs = configuration.maxStationDistanceFromStarLs ?? 10000;
+                maxStationDistanceFromStarLs = configuration.maxStationDistanceFromStarLs ?? Constants.maxStationDistanceDefault;
 
                 // Build a new inventory
                 List<MaterialAmount> newInventory = new List<MaterialAmount>();

@@ -29,7 +29,7 @@
                      LostFocus="maxStationDistance_LostFocus"
                      TextAlignment="Center"
                      VerticalContentAlignment="Center" Height="25" Width="60"/>
-            <TextBlock Grid.Row="1" Grid.Column="2" Margin="20" TextWrapping="Wrap" Text="{x:Static resx:CrimeMonitor.p1}" VerticalAlignment="Center"/>
+            <TextBlock Grid.Row="1" Grid.Column="2" Margin="10,0" TextWrapping="Wrap" Text="{x:Static resx:CrimeMonitor.p1}" VerticalAlignment="Center"/>
         </Grid>
         <Grid DockPanel.Dock="Top" Margin="5" >
             <Grid.ColumnDefinitions>

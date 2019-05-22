@@ -108,7 +108,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
       * `Location` event (body => bodyname, system => systemname)
       * `Near surface` event (body => bodyname, system => systemname)
     * Revised `Jumped` script to provide a (reasonably) accurate jump range, based on total ship mass.
-    * Revised `Route details` script to handle new `encoded`, guardian`, `human`, `maunfactured` and `raw` route queries.
+    * Revised `Route details` script to handle new `encoded`, guardian`, `human`, `manufactured` and `raw` route queries.
     * Revised `Ship targeted` script to utilize new `shiptargets` object to preclude reporting on previously scanned ships.
     * Added `JumpDetails()` Cottle function call to provide useful jump infomation based on ship loadout and fuel level. See `Help` & `Variables` windows for details.
     * Added `TrafficDetails()` Cottle function call to provide information on traffic, deaths, and hostilities in a star system. See `Help` & `Variables` windows for details.
