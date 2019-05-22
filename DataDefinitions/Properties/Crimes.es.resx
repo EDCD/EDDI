@@ -190,12 +190,15 @@
     <comment>Crime collidedAtSpeedInNoFireZone_hulldamage</comment>
   </data>
   <data name="recklessWeaponsDischarge" xml:space="preserve">
-    <value>Violación de zona de fuergo restringido</value>
+    <value>Disparo imprudente de armas</value>
     <comment>Crime recklessWeaponsDischarge</comment>
   </data>
   <data name="passengerWanted" xml:space="preserve">
     <value>Transportando a un pasajero buscado</value>
     <comment>Crime passengerWanted</comment>
   </data>
-  
+  <data name="missionFine" xml:space="preserve">
+    <value>Multa de misión</value>
+    <comment>Crime missionFine</comment>
+  </data>
 </root>
