@@ -160,7 +160,7 @@
     <value>Note that if your inventory is incorrect you will need to start or restart Elite and this information will be updated.</value>
   </data>
   <data name="p3" xml:space="preserve">
-    <value>Note: Restrictive station distance setting may significanlty increase search time</value>
+    <value>Tip: Maximize the allowed station distance to minimize search times.</value>
   </data>
   <data name="tab_station_distance" xml:space="preserve">
     <value>Max Station Distance From Main Star (Ls):</value>

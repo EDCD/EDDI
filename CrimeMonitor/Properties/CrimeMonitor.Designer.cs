@@ -205,7 +205,7 @@ namespace EddiCrimeMonitor.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Note: Restrictive station distance setting may significanlty increase search time.
+        ///   Looks up a localized string similar to Tip: Maximize the allowed station distance to minimize search times..
         /// </summary>
         public static string p1 {
             get {

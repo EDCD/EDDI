@@ -9,6 +9,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
+using Utilities;
 
 namespace EddiMaterialMonitor
 {
@@ -79,7 +80,7 @@ namespace EddiMaterialMonitor
 
         private void findService(Button button, string service)
         {
-            int distance = materialMonitor().maxStationDistanceFromStarLs ?? 10000;
+            int distance = materialMonitor().maxStationDistanceFromStarLs ?? Constants.maxStationDistanceDefault;
             Thread findServiceThread = new Thread(() =>
             {
                 string nextSystem = Navigation.Instance.GetServiceRoute(service, distance);
