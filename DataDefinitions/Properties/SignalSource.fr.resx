@@ -214,8 +214,7 @@
     <value>Poste d'écoute</value>
     <comment>ListeningPost</comment>
   </data>
-  <data name="NotableStellarPhenomena" xml:space="preserve">
-    <value>Phénomène Stellaire Remarquable</value>
-    <comment>Notable Stellar Phenomena</comment>
-  </data>
+  
+  
+  
 </root>
