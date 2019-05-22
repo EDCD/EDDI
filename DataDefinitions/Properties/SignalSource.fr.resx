@@ -214,7 +214,13 @@
     <value>Poste d'écoute</value>
     <comment>ListeningPost</comment>
   </data>
+  <data name="Fixed_Event_Life_Cloud" xml:space="preserve">
+    <value>Phénomène Stellaire Remarquable</value>
+    <comment>Notable Stellar Phenomena</comment>
+  </data>
   
-  
-  
+  <data name="Fixed_Event_Life_Ring" xml:space="preserve">
+    <value>Phénomène Stellaire Remarquable</value>
+    <comment>Notable Stellar Phenomena</comment>
+  </data>
 </root>
