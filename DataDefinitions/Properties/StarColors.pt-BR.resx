@@ -121,5 +121,8 @@
     <value>laranja avermelhado</value>
     <comment>Star color orange_red</comment>
   </data>
-  
+  <data name="red" xml:space="preserve">
+    <value>vermelha</value>
+    <comment>Star color red</comment>
+  </data>
 </root>
