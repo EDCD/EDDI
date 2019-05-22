@@ -141,20 +141,16 @@
     <value>Ceinture</value>
     <comment>Body Type "Belt"</comment>
   </data>
-  <data name="None" xml:space="preserve">
-    <value>Aucun</value>
-    <comment>None</comment>
-  </data>
+  
   <data name="Station" xml:space="preserve">
     <value>Station</value>
     <comment>BodyType "Station"</comment>
   </data>
-  <data name="Null" xml:space="preserve">
-    <value>Aucun</value>
-    <comment>BodyType "Null"</comment>
-  </data>
+  
   <data name="PlanetaryRing" xml:space="preserve">
     <value>Anneau planétaire</value>
     <comment>Body Type PlanetaryRing</comment>
   </data>
+  
+  
 </root>
