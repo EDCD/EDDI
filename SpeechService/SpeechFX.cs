@@ -58,6 +58,10 @@ namespace EddiSpeechService
                 int radioGain = radio ? 7 : 0;
                 source = source.AppendSource(x => new DmoCompressorEffect(x) { Gain = effectsLevel / 15 + radioGain });
             }
+            else
+            {
+                source = source.AppendSource(x => new DmoCompressorEffect(x) { Gain = 5 });
+            }
 
             return source;
         }
