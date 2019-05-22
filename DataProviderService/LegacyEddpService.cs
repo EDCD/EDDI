@@ -140,10 +140,11 @@ namespace EddiDataProviderService
             List<Ship> shipyard = new List<Ship>();
             foreach (string sellingShip in sellingShips)
             {
+                // If EDName is not set, don't add the ship to the shipyard.
                 Ship ship = ShipDefinitions.FromModel(sellingShip);
-                if (ship != null) { shipyard.Add(ship); }
+                if (ship?.EDName != null) { shipyard.Add(ship); }
             }
-            return shipyard;
+            return shipyard.Distinct().ToList();
         }
 
         private static List<Module> ModulesFromEDDP(JObject Station)
