@@ -120,22 +120,36 @@
   <data name="add_button" xml:space="preserve">
     <value>Ajouter un enregistrement</value>
   </data>
-  
+  <data name="add_button_desc" xml:space="preserve">
+    <value>Permet l'ajout manuel d'un enregistrement de faction mineure.</value>
+  </data>
   <data name="add_button_text" xml:space="preserve">
     <value>Ajouter un enregistrement:</value>
   </data>
-  
-  
+  <data name="blank_faction" xml:space="preserve">
+    <value>Entrez le nom de la Faction</value>
+  </data>
+  <data name="crime_monitor_desc" xml:space="preserve">
+    <value>Suivre les informations sur votre casier judiciaire.</value>
+  </data>
   <data name="crime_monitor_name" xml:space="preserve">
     <value>Moniteur de crime</value>
   </data>
-  
-  
-  
+  <data name="find_button" xml:space="preserve">
+    <value>Trouver des installations juridiques</value>
+  </data>
+  <data name="find_button_desc" xml:space="preserve">
+    <value>Lance la recherche de système et de station le plus proche de facteurs interstellaires.</value>
+  </data>
+  <data name="find_button_text" xml:space="preserve">
+    <value>Trouver des installations juridiques:</value>
+  </data>
   <data name="header_bounties" xml:space="preserve">
     <value>Primes</value>
   </data>
-  
+  <data name="header_claims" xml:space="preserve">
+    <value>Réclamations</value>
+  </data>
   <data name="header_faction" xml:space="preserve">
     <value>Faction</value>
   </data>
@@ -146,19 +160,27 @@
   <data name="header_system" xml:space="preserve">
     <value>Système</value>
   </data>
-  
+  <data name="orbital_station_checkbox" xml:space="preserve">
+    <value>Prioriser les stations orbitales:</value>
+  </data>
   <data name="remove_button" xml:space="preserve">
     <value>Supprimer</value>
   </data>
-  
+  <data name="remove_button_desc" xml:space="preserve">
+    <value>Permet la suppression manuelle d'un enregistrement de faction mineure.</value>
+  </data>
   <data name="remove_button_text" xml:space="preserve">
     <value>Supprimer:</value>
   </data>
-  
+  <data name="tab_station_distance" xml:space="preserve">
+    <value>Distance maximale de la station par rapport à l'étoile principale (Ls):</value>
+  </data>
   <data name="update_button" xml:space="preserve">
     <value>Mise à jour</value>
   </data>
-  
+  <data name="update_button_desc" xml:space="preserve">
+    <value>Met à jour les informations de la faction mineure (système, station, etc).</value>
+  </data>
   <data name="update_button_text" xml:space="preserve">
     <value>Mise à jour:</value>
   </data>
