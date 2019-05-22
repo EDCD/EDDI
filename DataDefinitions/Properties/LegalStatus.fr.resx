@@ -153,8 +153,20 @@
     <value>Autorisé</value>
     <comment>LegalStatus - Warrant</comment>
   </data>
-  
-  
-  
-  
+  <data name="IllegalCargo" xml:space="preserve">
+    <value>Cargaison illégale</value>
+    <comment>LegalStatus - Illegal cargo</comment>
+  </data>
+  <data name="Speeding" xml:space="preserve">
+    <value>Excès de vitesse</value>
+    <comment>LegalStatus - Speeding</comment>
+  </data>
+  <data name="Hostile" xml:space="preserve">
+    <value>Hostile</value>
+    <comment>LegalStatus - Hostile</comment>
+  </data>
+  <data name="PassengerWanted" xml:space="preserve">
+    <value>Passager recherché</value>
+    <comment>LegalStatus - PassengerWanted</comment>
+  </data>
 </root>
