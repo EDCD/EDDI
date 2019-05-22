@@ -61,6 +61,33 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Capital Ship.
+        /// </summary>
+        public static string FIXED_EVENT_CAPSHIP {
+            get {
+                return ResourceManager.GetString("FIXED-EVENT_CAPSHIP", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Notable Stellar Phenomena.
+        /// </summary>
+        public static string Fixed_Event_Life_Cloud {
+            get {
+                return ResourceManager.GetString("Fixed_Event_Life_Cloud", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Notable Stellar Phenomena.
+        /// </summary>
+        public static string Fixed_Event_Life_Ring {
+            get {
+                return ResourceManager.GetString("Fixed_Event_Life_Ring", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Listening Post.
         /// </summary>
         public static string ListeningPost {
@@ -120,15 +147,6 @@ namespace EddiDataDefinitions.Properties {
         public static string MULTIPLAYER_SCENARIO80_TITLE {
             get {
                 return ResourceManager.GetString("MULTIPLAYER_SCENARIO80_TITLE", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Notable Stellar Phenomena.
-        /// </summary>
-        public static string NotableStellarPhenomena {
-            get {
-                return ResourceManager.GetString("NotableStellarPhenomena", resourceCulture);
             }
         }
         

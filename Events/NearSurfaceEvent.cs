@@ -15,23 +15,31 @@ namespace EddiEvents
         static NearSurfaceEvent()
         {
             VARIABLES.Add("approaching_surface", "A boolean value. True if you are entering the gravity well and and false if you are leaving");
-            VARIABLES.Add("system", "The name of the starsystem");
-            VARIABLES.Add("body", "The name of the body");
+            VARIABLES.Add("systemname", "The name of the starsystem");
+            VARIABLES.Add("bodyname", "The name of the body");
         }
 
         public bool approaching_surface { get; private set; }
-        public string system { get; private set; }
-        public string body { get; private set; }
+        public string systemname { get; private set; }
+        public string bodyname { get; private set; }
 
-        // Admin
+        // Deprecated, maintained for compatibility with user scripts
+        [JsonIgnore, Obsolete("Use systemname instead")]
+        public string system => systemname;
+        [JsonIgnore, Obsolete("Use bodyname instead")]
+        public string body => bodyname;
+
+        // Variables below are not intended to be user facing
         public long systemAddress { get; private set; }
+        public long? bodyId { get; private set; }
 
-        public NearSurfaceEvent(DateTime timestamp, bool approachingSurface, string system, long systemAddress, string body) : base(timestamp, NAME)
+        public NearSurfaceEvent(DateTime timestamp, bool approachingSurface, string systemName, long systemAddress, string bodyName, long? bodyId) : base(timestamp, NAME)
         {
             this.approaching_surface = approachingSurface;
-            this.system = system;
+            this.systemname = systemName;
             this.systemAddress = systemAddress;
-            this.body = body;
+            this.bodyname = bodyName;
+            this.bodyId = bodyId;
         }
     }
 }

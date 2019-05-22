@@ -88,7 +88,16 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to None.
+        ///   Looks up a localized string similar to Moon.
+        /// </summary>
+        public static string Moon {
+            get {
+                return ResourceManager.GetString("Moon", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Body.
         /// </summary>
         public static string None {
             get {
@@ -97,7 +106,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to None.
+        ///   Looks up a localized string similar to Body.
         /// </summary>
         public static string Null {
             get {
@@ -147,6 +156,15 @@ namespace EddiDataDefinitions.Properties {
         public static string Station {
             get {
                 return ResourceManager.GetString("Station", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Stellar Ring.
+        /// </summary>
+        public static string StellarRing {
+            get {
+                return ResourceManager.GetString("StellarRing", resourceCulture);
             }
         }
     }

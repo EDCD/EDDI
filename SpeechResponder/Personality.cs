@@ -271,10 +271,8 @@ namespace EddiSpeechResponder
             // Report missing scripts, except those we have specifically named
             string[] ignoredEventKeys = {
 
-                // Only exists so that the count on nav beacon scans comes out right
-                "Belt scanned",
-
                 // Deprecated events
+                "Belt scanned",
                 "Jumping",
                 "Modification applied",
                 "Status",

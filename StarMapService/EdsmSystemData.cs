@@ -172,7 +172,7 @@ namespace EddiStarMapService
         {
             StarSystem starSystem = new StarSystem
             {
-                name = (string)response["name"],
+                systemname = (string)response["name"],
                 systemAddress = (long?)response["id64"],
                 EDSMID = (long?)response["id"]
             };
@@ -207,7 +207,7 @@ namespace EddiStarMapService
                     };
                     controllingFaction.presences.Add(new FactionPresence()
                     {
-                        systemName = starSystem.name,
+                        systemName = starSystem.systemname,
                         FactionState = FactionState.FromName((string)information["factionState"]) ?? FactionState.None,
                     });
                     starSystem.Faction = controllingFaction;

@@ -38,6 +38,19 @@ namespace EddiJournalMonitor
             List<Event> events = ParseJournalEntry(line, isLogLoadEvent);
             foreach (Event @event in events)
             {
+                // The DiscoveryScanEvent and SystemScanComplete events may be written before all applicable scans have been queued.
+                // We will wait a short period of time after these events take place so that all scans generated in tandem 
+                // with these events are enqueued before these events are enqueued.
+                if ((@event is DiscoveryScanEvent || @event is SystemScanComplete) && !@event.fromLoad)
+                {
+                    Task.Run(async () =>
+                    {
+                        await Task.Delay(1500);
+                        callback(@event);
+                    });
+                    continue;
+                }
+
                 callback(@event);
             }
         }
@@ -179,8 +192,9 @@ namespace EddiJournalMonitor
                                     string system = JsonParsing.getString(data, "StarSystem");
                                     long systemAddress = JsonParsing.getLong(data, "SystemAddress");
                                     string body = JsonParsing.getString(data, "Body");
+                                    long? bodyId = JsonParsing.getOptionalLong(data, "BodyID");
                                     BodyType bodyType = BodyType.FromEDName(JsonParsing.getString(data, "BodyType") ?? "None");
-                                    events.Add(new EnteredNormalSpaceEvent(timestamp, system, systemAddress, body, bodyType) { raw = line, fromLoad = fromLogLoad });
+                                    events.Add(new EnteredNormalSpaceEvent(timestamp, system, systemAddress, body, bodyId, bodyType) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
@@ -214,7 +228,7 @@ namespace EddiJournalMonitor
 
                                     // Calculate remaining distance to route destination (if it exists)
                                     decimal destDistance = 0;
-                                    string destination = EDDI.Instance.DestinationStarSystem?.name;
+                                    string destination = EDDI.Instance.DestinationStarSystem?.systemname;
                                     if (!string.IsNullOrEmpty(destination))
                                     {
                                         destDistance = EDDI.Instance.getSystemDistanceFromDestination(systemName);
@@ -243,6 +257,7 @@ namespace EddiJournalMonitor
                                     decimal? distFromStarLs = JsonParsing.getOptionalDecimal(data, "DistFromStarLS");
 
                                     string body = JsonParsing.getString(data, "Body");
+                                    long? bodyId = JsonParsing.getOptionalLong(data, "BodyID");
                                     BodyType bodyType = BodyType.FromEDName(JsonParsing.getString(data, "BodyType"));
                                     bool docked = JsonParsing.getBool(data, "Docked");
                                     Faction systemfaction = getFaction(data, "System", systemName);
@@ -269,7 +284,7 @@ namespace EddiJournalMonitor
                                         factions = getFactions(factionsVal, systemName);
                                     }
 
-                                    events.Add(new LocationEvent(timestamp, systemName, x, y, z, systemAddress, distFromStarLs, body, bodyType, docked, station, stationtype, marketId, systemfaction, stationfaction, economy, economy2, security, population, longitude, latitude, factions) { raw = line, fromLoad = fromLogLoad });
+                                    events.Add(new LocationEvent(timestamp, systemName, x, y, z, systemAddress, distFromStarLs, body, bodyId, bodyType, docked, station, stationtype, marketId, systemfaction, stationfaction, economy, economy2, security, population, longitude, latitude, factions) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
@@ -676,7 +691,8 @@ namespace EddiJournalMonitor
                                     string system = JsonParsing.getString(data, "StarSystem");
                                     long systemAddress = JsonParsing.getLong(data, "SystemAddress");
                                     string body = JsonParsing.getString(data, "Body");
-                                    events.Add(new NearSurfaceEvent(timestamp, true, system, systemAddress, body) { raw = line, fromLoad = fromLogLoad });
+                                    long? bodyId = JsonParsing.getOptionalLong(data, "BodyID");
+                                    events.Add(new NearSurfaceEvent(timestamp, true, system, systemAddress, body, bodyId) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
@@ -685,54 +701,84 @@ namespace EddiJournalMonitor
                                     string system = JsonParsing.getString(data, "StarSystem");
                                     long systemAddress = JsonParsing.getLong(data, "SystemAddress");
                                     string body = JsonParsing.getString(data, "Body");
-                                    events.Add(new NearSurfaceEvent(timestamp, false, system, systemAddress, body) { raw = line, fromLoad = fromLogLoad });
+                                    long? bodyId = JsonParsing.getOptionalLong(data, "BodyID");
+                                    events.Add(new NearSurfaceEvent(timestamp, false, system, systemAddress, body, bodyId) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
                             case "ApproachSettlement":
                                 {
-                                    string name = JsonParsing.getString(data, "Name");
-                                    long marketId = JsonParsing.getLong(data, "MarketID");
+                                    string settlementname = JsonParsing.getString(data, "Name");
+                                    long? marketId = JsonParsing.getOptionalLong(data, "MarketID"); // Tourist beacons are reported as settlements without MarketID
+                                    long systemAddress = JsonParsing.getLong(data, "SystemAddress");
+                                    string bodyName = JsonParsing.getString(data, "BodyName");
+                                    long? bodyId = JsonParsing.getOptionalLong(data, "BodyID");
                                     // Replace with localised name if available
                                     if (data.TryGetValue("Name_Localised", out object val))
                                     {
-                                        name = (string)val;
+                                        settlementname = (string)val;
                                     }
                                     decimal? latitude = JsonParsing.getOptionalDecimal(data, "Latitude");
                                     decimal? longitude = JsonParsing.getOptionalDecimal(data, "Longitude");
 
-                                    events.Add(new SettlementApproachedEvent(timestamp, name, marketId, latitude, longitude) { raw = line, fromLoad = fromLogLoad });
+                                    events.Add(new SettlementApproachedEvent(timestamp, settlementname, marketId, systemAddress, bodyName, bodyId, latitude, longitude) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
                             case "Scan":
                                 {
                                     string name = JsonParsing.getString(data, "BodyName");
-                                    string systemName = EDDI.Instance?.CurrentStarSystem?.name;
                                     string scantype = JsonParsing.getString(data, "ScanType");
-                                    decimal distancefromarrival = JsonParsing.getDecimal(data, "DistanceFromArrivalLS");
+
+                                    string systemName = EDDI.Instance?.CurrentStarSystem?.systemname;
+                                    long? systemAddress = EDDI.Instance?.CurrentStarSystem?.systemAddress;
 
                                     // Belt
                                     if (name.Contains("Belt Cluster"))
                                     {
-                                        events.Add(new BeltScannedEvent(timestamp, scantype, name, distancefromarrival) { raw = line, fromLoad = fromLogLoad });
+                                        // We don't do anything with belt cluster scans at this time.
+                                        handled = true;
+                                        break;
+                                    }
+
+                                    if (name.Contains(" Ring"))
+                                    {
+                                        // We don't do anything with ring scans at this time.
                                         handled = true;
                                         break;
                                     }
 
                                     // Common items
+                                    decimal distanceLs = JsonParsing.getDecimal(data, "DistanceFromArrivalLS");
                                     // Need to convert radius from meters (per journal) to kilometers
                                     decimal radiusKm = JsonParsing.getDecimal(data, "Radius") / 1000;
                                     // Need to convert orbital period from seconds (per journal) to days
                                     decimal? orbitalPeriodDays = ConstantConverters.seconds2days(JsonParsing.getOptionalDecimal(data, "OrbitalPeriod"));
                                     // Need to convert rotation period from seconds (per journal) to days
-                                    decimal rotationPeriodDays = (decimal)ConstantConverters.seconds2days(JsonParsing.getDecimal(data, "RotationPeriod"));
+                                    decimal? rotationPeriodDays = ConstantConverters.seconds2days(JsonParsing.getOptionalDecimal(data, "RotationPeriod"));
                                     // Need to convert meters to light seconds
                                     decimal? semimajoraxisLs = ConstantConverters.meters2ls(JsonParsing.getOptionalDecimal(data, "SemiMajorAxis"));
                                     decimal? eccentricity = JsonParsing.getOptionalDecimal(data, "Eccentricity");
                                     decimal? orbitalinclinationDegrees = JsonParsing.getOptionalDecimal(data, "OrbitalInclination");
                                     decimal? periapsisDegrees = JsonParsing.getOptionalDecimal(data, "Periapsis");
                                     decimal? axialTiltDegrees = JsonParsing.getOptionalDecimal(data, "AxialTilt");
+                                    long? bodyId = JsonParsing.getOptionalLong(data, "BodyID");
+                                    decimal? temperatureKelvin = JsonParsing.getOptionalDecimal(data, "SurfaceTemperature");
+
+                                    // Parent body types and IDs
+                                    data.TryGetValue("Parents", out object parentsVal);
+                                    List<IDictionary<string, object>> parents = new List<IDictionary<string, object>>();
+                                    if (parentsVal != null)
+                                    {
+                                        foreach (IDictionary<string, object> parent in (List<object>)parentsVal)
+                                        {
+                                            parents.Add(parent);
+                                        }
+                                    }
+
+                                    // Scan status
+                                    bool alreadydiscovered = JsonParsing.getOptionalBool(data, "WasDiscovered") ?? true;
+                                    bool alreadymapped = JsonParsing.getOptionalBool(data, "WasMapped") ?? false;
 
                                     // Rings
                                     data.TryGetValue("Rings", out object val);
@@ -755,19 +801,23 @@ namespace EddiJournalMonitor
                                     if (data.ContainsKey("StarType"))
                                     {
                                         // Star
-                                        string starType = JsonParsing.getString(data, "StarType");
+                                        string stellarclass = JsonParsing.getString(data, "StarType");
+                                        int? stellarsubclass = JsonParsing.getOptionalInt(data, "Subclass");
                                         decimal stellarMass = JsonParsing.getDecimal(data, "StellarMass");
                                         decimal absoluteMagnitude = JsonParsing.getDecimal(data, "AbsoluteMagnitude");
                                         string luminosityClass = JsonParsing.getString(data, "Luminosity");
                                         data.TryGetValue("Age_MY", out val);
                                         long ageMegaYears = (long)val;
-                                        decimal temperatureKelvin = JsonParsing.getDecimal(data, "SurfaceTemperature");
-                                        bool mainstar = distancefromarrival == 0 ? true : false;
 
-                                        events.Add(new StarScannedEvent(timestamp, scantype, name, starType, stellarMass, radiusKm, absoluteMagnitude, luminosityClass, ageMegaYears, temperatureKelvin, distancefromarrival, orbitalPeriodDays, rotationPeriodDays, semimajoraxisLs, eccentricity, orbitalinclinationDegrees, periapsisDegrees, rings, mainstar) { raw = line, fromLoad = fromLogLoad });
+                                        Body star = new Body(name, bodyId, parents, distanceLs, stellarclass, stellarsubclass, stellarMass, radiusKm, absoluteMagnitude, ageMegaYears, temperatureKelvin, luminosityClass, semimajoraxisLs, eccentricity, orbitalinclinationDegrees, periapsisDegrees, orbitalPeriodDays, rotationPeriodDays, axialTiltDegrees, rings, alreadydiscovered, alreadymapped, systemName, systemAddress)
+                                        {
+                                            scanned = (DateTime?)timestamp
+                                        };
+
+                                        events.Add(new StarScannedEvent(timestamp, scantype, star) { raw = line, fromLoad = fromLogLoad });
                                         handled = true;
                                     }
-                                    else
+                                    else if (data.ContainsKey("PlanetClass"))
                                     {
                                         // Body
                                         bool? tidallyLocked = JsonParsing.getOptionalBool(data, "TidalLock") ?? false;
@@ -778,13 +828,11 @@ namespace EddiJournalMonitor
                                         // MKW: Gravity in the Journal is in m/s; must convert it to G
                                         decimal gravity = ConstantConverters.ms2g(JsonParsing.getDecimal(data, "SurfaceGravity"));
 
-                                        decimal? temperatureKelvin = JsonParsing.getOptionalDecimal(data, "SurfaceTemperature");
-
                                         decimal? pressureAtm = ConstantConverters.pascals2atm(JsonParsing.getOptionalDecimal(data, "SurfacePressure"));
 
                                         bool? landable = JsonParsing.getOptionalBool(data, "Landable") ?? false;
 
-                                        string reserves = JsonParsing.getString(data, "ReserveLevel");
+                                        ReserveLevel reserveLevel = ReserveLevel.FromEDName(JsonParsing.getString(data, "ReserveLevel"));
 
                                         // The "Atmosphere" is most accurately described through the "AtmosphereType" and "AtmosphereComposition" 
                                         // properties, so we use them in preference to "Atmosphere"
@@ -870,7 +918,12 @@ namespace EddiJournalMonitor
                                         TerraformState terraformState = TerraformState.FromEDName(JsonParsing.getString(data, "TerraformState")) ?? TerraformState.NotTerraformable;
                                         Volcanism volcanism = Volcanism.FromName(JsonParsing.getString(data, "Volcanism"));
 
-                                        events.Add(new BodyScannedEvent(timestamp, scantype, name, systemName, planetClass, earthMass, radiusKm, gravity, temperatureKelvin, pressureAtm, tidallyLocked, landable, atmosphereClass, atmosphereCompositions, solidCompositions, volcanism, distancefromarrival, (decimal)orbitalPeriodDays, rotationPeriodDays, semimajoraxisLs, eccentricity, orbitalinclinationDegrees, periapsisDegrees, rings, reserves, materials, terraformState, axialTiltDegrees) { raw = line, fromLoad = fromLogLoad });
+                                        Body body = new Body(name, bodyId, parents, distanceLs, tidallyLocked, terraformState, planetClass, atmosphereClass, atmosphereCompositions, volcanism, earthMass, radiusKm, gravity, temperatureKelvin, pressureAtm, landable, materials, solidCompositions, semimajoraxisLs, eccentricity, orbitalinclinationDegrees, periapsisDegrees, orbitalPeriodDays, rotationPeriodDays, axialTiltDegrees, rings, reserveLevel, alreadydiscovered, alreadymapped, systemName, systemAddress)
+                                        {
+                                            scanned = (DateTime?)timestamp
+                                        };
+
+                                        events.Add(new BodyScannedEvent(timestamp, scantype, body) { raw = line, fromLoad = fromLogLoad });
                                         handled = true;
                                     }
                                 }
@@ -1072,7 +1125,7 @@ namespace EddiJournalMonitor
                                         {
                                             if (!storedModule.intransit)
                                             {
-                                                StarSystem systemData = systemsData.FirstOrDefault(s => s.name == storedModule.system);
+                                                StarSystem systemData = systemsData.FirstOrDefault(s => s.systemname == storedModule.system);
                                                 Station stationData = systemData?.stations?.FirstOrDefault(s => s.marketId == storedModule.marketid);
                                                 storedModule.station = stationData?.name;
                                             }
@@ -1160,7 +1213,7 @@ namespace EddiJournalMonitor
                                         {
                                             // Include the station and system at which the transfer will arrive
                                             string arrivalStation = EDDI.Instance.CurrentStation?.name ?? string.Empty;
-                                            string arrivalSystem = EDDI.Instance.CurrentStarSystem?.name ?? string.Empty;
+                                            string arrivalSystem = EDDI.Instance.CurrentStarSystem?.systemname ?? string.Empty;
                                             await Task.Delay((int)time * 1000);
                                             EDDI.Instance.enqueueEvent(new ShipArrivedEvent(DateTime.UtcNow, ship, shipId, arrivalSystem, distance, price, time, arrivalStation, fromMarketId, toMarketId));
                                         }
@@ -1197,7 +1250,7 @@ namespace EddiJournalMonitor
                                         {
                                             // Include the station and system at which the transfer will arrive
                                             string arrivalStation = EDDI.Instance.CurrentStation?.name ?? string.Empty;
-                                            string arrivalSystem = EDDI.Instance.CurrentStarSystem?.name ?? string.Empty;
+                                            string arrivalSystem = EDDI.Instance.CurrentStarSystem?.systemname ?? string.Empty;
                                             await Task.Delay((int)transferTime * 1000);
                                             EDDI.Instance.enqueueEvent(new ModuleArrivedEvent(DateTime.UtcNow, ship, shipId, storageSlot, serverId, module, transferCost, transferTime, arrivalSystem, arrivalStation));
                                         }
@@ -1926,6 +1979,8 @@ namespace EddiJournalMonitor
                                 break;
                             case "FSSSignalDiscovered":
                                 {
+                                    long? systemAddress = JsonParsing.getLong(data, "SystemAddress");
+
                                     SignalSource source = GetSignalSource(data);
                                     string spawningFaction = getFactionName(data, "SpawningFaction") ?? Superpower.None.localizedName; // the minor faction, if relevant
                                     decimal? secondsRemaining = JsonParsing.getOptionalDecimal(data, "TimeRemaining"); // remaining lifetime in seconds, if relevant
@@ -1938,7 +1993,7 @@ namespace EddiJournalMonitor
                                     int? threatLevel = JsonParsing.getOptionalInt(data, "ThreatLevel") ?? 0;
                                     bool? isStation = JsonParsing.getOptionalBool(data, "IsStation") ?? false;
 
-                                    events.Add(new SignalDetectedEvent(timestamp, source, spawningState, spawningFaction, secondsRemaining, threatLevel, isStation) { raw = line, fromLoad = fromLogLoad });
+                                    events.Add(new SignalDetectedEvent(timestamp, systemAddress, source, spawningState, spawningFaction, secondsRemaining, threatLevel, isStation) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
@@ -1952,10 +2007,11 @@ namespace EddiJournalMonitor
                                 break;
                             case "SAAScanComplete":
                                 {
-                                    string body = JsonParsing.getString(data, "BodyName");
+                                    string bodyName = JsonParsing.getString(data, "BodyName");
+                                    long? bodyId = JsonParsing.getOptionalLong(data, "BodyID");
                                     int probesUsed = JsonParsing.getInt(data, "ProbesUsed");
                                     int efficiencyTarget = JsonParsing.getInt(data, "EfficiencyTarget");
-                                    events.Add(new BodyMappedEvent(timestamp, body, probesUsed, efficiencyTarget) { raw = line, fromLoad = fromLogLoad });
+                                    events.Add(new BodyMappedEvent(timestamp, bodyName, bodyId, probesUsed, efficiencyTarget) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
@@ -1969,7 +2025,32 @@ namespace EddiJournalMonitor
                                     decimal reward = (long)val;
                                     data.TryGetValue("Bonus", out val);
                                     decimal bonus = (long)val;
-                                    events.Add(new ExplorationDataSoldEvent(timestamp, systems, firsts, reward, bonus) { raw = line, fromLoad = fromLogLoad });
+                                    data.TryGetValue("TotalEarnings", out val);
+                                    decimal total = (long)val;
+                                    events.Add(new ExplorationDataSoldEvent(timestamp, systems, reward, bonus, total) { raw = line, fromLoad = fromLogLoad });
+                                }
+                                handled = true;
+                                break;
+                            case "MultiSellExplorationData":
+                                {
+                                    List<string> systems = new List<string>();
+                                    data.TryGetValue("Discovered", out object val);
+                                    List<object> discovered = (List<object>)val;
+                                    foreach (Dictionary<string, object> discoveredSystem in discovered)
+                                    {
+                                        string system = JsonParsing.getString(discoveredSystem, "SystemName");
+                                        if (!string.IsNullOrEmpty(system))
+                                        {
+                                            systems.Add(system);
+                                        }
+                                    }
+                                    data.TryGetValue("BaseValue", out val);
+                                    decimal reward = (long)val;
+                                    data.TryGetValue("Bonus", out val);
+                                    decimal bonus = (long)val;
+                                    data.TryGetValue("TotalEarnings", out val);
+                                    decimal total = (long)val;
+                                    events.Add(new ExplorationDataSoldEvent(timestamp, systems, reward, bonus, total) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
@@ -3302,6 +3383,7 @@ namespace EddiJournalMonitor
                                 handled = true;
                                 break;
                             case "Commander":
+                            case "DiscoveryScan":
                             case "Reputation":
                             case "Statistics":
                             case "CodexEntry":
@@ -3351,13 +3433,15 @@ namespace EddiJournalMonitor
             SignalSource source;
             if (JsonParsing.getString(data, "USSType") != null)
             {
-                source = SignalSource.FromEDName(JsonParsing.getString(data, "USSType"));
-                source.fallbackLocalizedName = JsonParsing.getString(data, "USSType_Localised");
+                string signalSource = JsonParsing.getString(data, "USSType");
+                source = SignalSource.FromEDName(signalSource) ?? new SignalSource();
+                source.fallbackLocalizedName = JsonParsing.getString(data, "USSType_Localised") ?? signalSource;
             }
             else
             {
-                source = SignalSource.FromEDName(JsonParsing.getString(data, "SignalName"));
-                source.fallbackLocalizedName = JsonParsing.getString(data, "SignalName_Localised");
+                string signalSource = JsonParsing.getString(data, "SignalName");
+                source = SignalSource.FromEDName(signalSource) ?? new SignalSource();
+                source.fallbackLocalizedName = JsonParsing.getString(data, "SignalName_Localised") ?? signalSource;
             }
 
             return source;
@@ -3719,6 +3803,25 @@ namespace EddiJournalMonitor
 
         public void PostHandle(Event @event)
         {
+            if (@event is SignalDetectedEvent)
+            {
+                eventSignalDetected((SignalDetectedEvent)@event);
+            }
+        }
+
+        private bool eventSignalDetected(SignalDetectedEvent @event)
+        {
+            if (EDDI.Instance.CurrentStarSystem != null && !@event.fromLoad)
+            {
+                if (EDDI.Instance.CurrentStarSystem.systemAddress == @event.systemAddress)
+                {
+                    if (!EDDI.Instance.CurrentStarSystem.signalsources.Exists(s => s == @event.source))
+                    {
+                        EDDI.Instance.CurrentStarSystem.signalsources.Add(@event.source);
+                    }
+                }
+            }
+            return true;
         }
 
         public void HandleProfile(JObject profile)

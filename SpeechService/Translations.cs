@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EddiDataDefinitions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -143,6 +144,31 @@ namespace EddiSpeechService
             return val != "TTS" ? val : val.Replace("TTS", "T T S");
         }
 
+        public static string PlanetClass(string val)
+        {
+            if (val == null)
+            {
+                return null;
+            }
+
+            // Properly handle roman numerals in planet classes
+            foreach (PlanetClass planetClass in EddiDataDefinitions.PlanetClass.AllOfThem)
+            {
+                if (val.Contains(planetClass.localizedName))
+                {
+                    string numeralToNumber = planetClass.localizedName
+                        .Replace(" I ", " 1 ")
+                        .Replace(" II ", " 2 ")
+                        .Replace(" III ", " 3 ")
+                        .Replace(" IV ", " 4 ")
+                        .Replace(" V ", " 5 ")
+                        .Replace(" VI ", " 6 ");
+                    val = val.Replace(planetClass.localizedName, numeralToNumber);
+                }
+            }
+            return val;
+        }
+
         private static Dictionary<string, string[]> CONSTELLATION_PRONUNCIATIONS = new Dictionary<string, string[]>()
         {
             { "Alrai" , new string[] { Properties.Phonetics.Alrai } },
@@ -260,7 +286,9 @@ namespace EddiSpeechService
                         }
                         else if (PLANET.IsMatch(part))
                         {
-                            // The part is a planet; turn it in to ICAO if required
+                            // The part is a planet; 
+
+                            // turn it in to ICAO if required
                             results.Add(useICAO ? ICAO(part, true) : part);
                         }
                         else if (part == "Belt" || part == "Cluster")
@@ -275,8 +303,15 @@ namespace EddiSpeechService
                         }
                         else if (TEXT.IsMatch(part))
                         {
-                            // The part is uppercase; turn it in to ICAO if required
-                            results.Add(useICAO ? ICAO(part) : part);
+                            // turn it in to ICAO if required
+                            if (useICAO)
+                            {
+                                results.Add(ICAO(part));
+                            }
+                            else
+                            {
+                                results.Add(sayAsLettersOrNumbers(part));
+                            }
                         }
                         else
                         {
@@ -592,6 +627,18 @@ namespace EddiSpeechService
             }
 
             return String.Join(" ", elements);
+        }
+
+        private static string sayAsLettersOrNumbers(string part)
+        {
+            if (int.TryParse(part, out int digit))
+            {
+                return @"<say-as interpret-as=""number"">" + part + @"</say-as>";
+            }
+            else
+            {
+                return @"<say-as interpret-as=""characters"">" + part + @"</say-as>";
+            }
         }
 
         public static string Humanize(decimal? value)

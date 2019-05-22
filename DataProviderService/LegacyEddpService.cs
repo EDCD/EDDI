@@ -24,7 +24,7 @@ namespace EddiDataProviderService
 
         public static StarSystem SetLegacyData(StarSystem system, bool setPowerplayData = true, bool setBodyData = true, bool setStationData = true)
         {
-            JObject response = GetData(system.name);
+            JObject response = GetData(system.systemname);
             if (response != null)
             {
                 SetStarSystemLegacyData(system, response, setPowerplayData);
@@ -68,7 +68,7 @@ namespace EddiDataProviderService
                 foreach (Body body in system.bodies.ToList())
                 {
                     JObject Body = response["bodies"].Children<JObject>()
-                        .FirstOrDefault(o => o["name"] != null && o["name"].ToString() == body.name);
+                        .FirstOrDefault(o => o["name"] != null && o["name"].ToString() == body.bodyname);
 
                     if (Body != null)
                     {
@@ -178,7 +178,7 @@ namespace EddiDataProviderService
                         {
                             name = (string)Station["name"],
                             EDDBID = (long)Station["id"],
-                            systemname = system.name,
+                            systemname = system.systemname,
                             hasdocking = false,
                             Model = StationModel.FromName((string)Station["type"]) ?? StationModel.None,
                             Economies = new List<Economy> { Economy.FromName((string)Station["primary_economy"]), Economy.None },
@@ -193,7 +193,7 @@ namespace EddiDataProviderService
                         };
                         settlement.Faction.presences.Add(new FactionPresence()
                         {
-                            systemName = system.name,
+                            systemName = system.systemname,
                             FactionState = FactionState.FromName((string)Station["state"]) ?? FactionState.None
                         });
 

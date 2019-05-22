@@ -4,8 +4,9 @@ Full details of the variables available for each noted event, and VoiceAttack in
 
 ### Development
   * Core
-    * All `Location` events are now processed.
+    * All 'Location' events are now processed (repeats of this event are no longer suppressed).
     * Added `Docked` and `Landed` Environment states. Note that `Environment` follows the ship and `Vehicle` follows the commander.
+    * Updated estimated scanning and mapping value calculations.
   * Crime Monitor
     * New monitor tracks all bond & bounty awards and fines & bounties incurred.
 	* Monitor attempts to determine the minor faction's 'home system' via its name, but defaults to system presence with highest influence.
@@ -32,6 +33,74 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Added `destinationsystem`, `destinationdistance`, and `destinationstation` properties (similar to `system`)
     * Added `Crime check system` script to report wanted status and 'legal facilities', upon entering the system.
     * Added `Crime check station` script to report 'legal facilities', upon entering normal space, next to station.
+    * The `P()` function now converts roman numerals in planet classes (e.g. Class II gas giant) into numbers (e.g. Class 2 gas giant) to ensure proper pronunciation.
+    * Revised `body` object definition returned by the `BodyDetails()` function and revised `Body scanned` and `Star scanned` event values for better interchangeability of object properties with `Body scanned` and `Star scanned` events.
+      * WAS: `name`*, IS: `bodyname` 
+      * WAS: `type`*, IS: `bodytype`
+        * Expanded `bodytype` values to separate `Planet` and `Moon` body types
+      * WAS: `atmospherecomposition`, IS: `atmospherecompositions` (planets and moons only)
+      * WAS: `axialtilt`*, IS: `tilt`
+      * WAS: `bodyclass`*, IS: `planettype` (planets and moons only)
+      * WAS: `distancefromarrival`*, IS: `distance`
+      * WAS `orbitalinclination`*, IS `inclination`
+      * WAS `rotationperiod`*, IS: `rotationalperiod`
+      * WAS: `solidcomposition`, IS: `solidcompositions` (planets and moons only)
+      * Added `stellarsubclass` (stars only)
+      * Added `density`
+      * Added `scanned`
+      * Added `mapped`
+      * Added `alreadydiscovered` (true if another commander has already submitted a scan of that body to Universal Cartographics)
+      * Added `alreadymapped` (true if another commander has already submitted mapping details of that body to Universal Cartographics)
+      * Added `estimatedvalue` (this was previously only available from the event variables)
+      * Added `massprobability`
+      * Added `radiusprobability`
+      * Added `tempprobability`
+      * Added `orbitalperiodprobability`
+      * Added `semimajoraxisprobability`
+      * Added `eccentricityprobability`
+      * Added `inclinationprobability`
+      * Added `periapsisprobability`
+      * Added `rotationalperiodprobability`
+      * Added `tiltprobability`
+      * Added `densityprobability`
+      * Added `ageprobability` (stars only)
+      * Added `absolutemagnitudeprobability` (stars only)
+      * Added `gravityprobability` (planets and moons only)
+      * Added `pressureprobability` planets and moons only)
+    * Revised `system` object definition
+      * Added `isgreen`, true if bodies in this starsystem contain all elements required for FSD synthesis
+      * Added `isgold`, true if bodies in this starsystem contain all elements available from surface prospecting
+      * Added `estimatedvalue`, the estimated exploration value of the starsystem (includes bonuses for fully scanning and mapping)
+    * Revised `Entered normal space`, `Glide`, `Location`, and `Near surface` event variables for better interchangeability with the `BodyDetails` function.
+      * WAS: `body`*, IS: `bodyname` 
+      * WAS: `system`*, IS: `systemname`
+    * Revised `Approached settlement` event to include the `bodyname` of the settlement. 
+    * `Star scanned` script revised. Preference added for reporting stellar class. Corrected edit scars. Refactored to reduce redundancies. 
+    * `Body volcanism script` revised. Corrected edit scars and added a little more variety to the script.
+    * Updated `Exploration data sold` event and revised script.
+      * Added variable `total`, describing the total credits received (after any wages paid to crew and including for example the 200% bonus if rank 5 with Li Yong Rui)
+      * Removed variable `firsts` (it is no longer supported by post 3.3 batch selling of exploration data).
+    * Revised `Discovery scan` script to report the number of bodies remaining to be scanned while your ship's role is either `exploration` or `multipurpose`.
+    * Revised `Star report` script to incorporate new variables documented above.
+    * Revised `System scan complete` script to recommend bodies for mapping (using the new `Bodies to map` script) and to identify `green` and `gold` system discoveries while your ship's role is either `exploration` or `multipurpose`
+    * Revised `Body atmosphere report` for better handling of Earth-like worlds.
+    * Revised `Body mapped` script. By default, the full `Body report` script is now given after this event completes rather than after `Body scanned`. Optionally recommends other bodies in the system for mapping.
+    * Revised `Body materials report` script to optionally report material percent concentrations.
+    * Revised `Body report` script to correct some errors identified by users (terraformable bodies will now be reported as such).
+    * Revised `Body scanned` script to include option to use `Body report summary` script.
+    * Revised `Body volcanism report` to touch it up.
+    * Revised `Signal detected` script to allow users to better customize signal detection (particularly for rare signal types).
+    * `Signal detected` events are no longer suppressed outside of fss mode.
+    * Added new script `Bodies mapped` to allow reporting which bodies in the system have already been mapped.
+    * Added new script `Bodies to map` to allow reporting recommendations of bodies to map (configurable in the script).
+    * Added new script `Body report summary` to allow reporting of summary body data, taking into account statistically unusual bodies.
+    * The `P()` function now converts roman numerals in planet classes (e.g. Class II gas giant) into numbers (e.g. Class 2 gas giant) to ensure proper pronunciation.
+    * The `Spacialise()` function no longer adds an extra space at the end of the string.
+    * Enhanced `P()` function to correct mispronunciations of body names ending in "a" or "g"
+    * Variables from the following scripts have been revised to add new variables and improve consistency between events.
+      * `Glide` event (body => bodyname, system => systemname)
+      * `Location` event (body => bodyname, system => systemname)
+      * `Near surface` event (body => bodyname, system => systemname)
     * Revised `Jumped` script to provide a (reasonably) accurate jump range, based on total ship mass.
     * Revised `Ship targeted` script to utilize new `shiptargets` object to preclude reporting on previously scanned ships.
     * Added `JumpDetails()` Cottle function call to provide useful jump infomation based on ship loadout and fuel level. See `Help` & `Variables` windows for details.
@@ -55,6 +124,8 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Added `{BOOL:Status altitude from average radius}`
     * Added `jumpdetails` plugin invocation to provide useful jump infomation based on ship loadout and fuel level.
 
+    \* For noted properties, old property names are preserved for legacy script compatibility
+
 ### 3.4
   * Core
     * Added localised names for the Advanced Docking Computer and Supercruise Assist modules.
@@ -62,7 +133,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Restored multi-lingual access.
     * No longer loses its place if a web request times out or fails.
   * Speech responder
-    * Added event `Discovery scan`, triggered when you "honk" the discovery scanner
+    * Added event `System scan complete`, triggered when all bodies in the star system have been discovered.
     * Added new function `GetFaction()` to obtain details about a faction.
     * Revised faction object to allow reporting faction data spanning multiple star systems.
   * Voice Attack

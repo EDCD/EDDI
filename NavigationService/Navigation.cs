@@ -93,7 +93,7 @@ namespace EddiNavigationService
             if (currentSystem != null)
             {
                 // Get the nearest Interstellar Factors system and station
-                List<StarSystem> cubeSystems = StarMapService.GetStarMapSystemsCube(currentSystem.name, 25);
+                List<StarSystem> cubeSystems = StarMapService.GetStarMapSystemsCube(currentSystem.systemname, 25);
                 if (cubeSystems != null && cubeSystems.Any())
                 {
                     SortedList<decimal, string> nearestList = new SortedList<decimal, string>();
@@ -103,7 +103,7 @@ namespace EddiNavigationService
                     string service = "Interstellar Factors Contact";
 
                     // Find the low security level systems which may contain IF contacts
-                    List<string> systemNames = cubeSystems.Where(s => s.securityLevel == securityLevel).Select(s => s.name).ToList();
+                    List<string> systemNames = cubeSystems.Where(s => s.securityLevel == securityLevel).Select(s => s.systemname).ToList();
                     List<StarSystem> IFStarSystems = DataProviderService.GetSystemsData(systemNames.ToArray(), true, true, true, true, true);
 
                     foreach (StarSystem starsystem in IFStarSystems)
@@ -120,7 +120,7 @@ namespace EddiNavigationService
                             decimal distance = CalculateDistance(currentSystem, starsystem);
                             if (!nearestList.ContainsKey(distance))
                             {
-                                nearestList.Add(distance, starsystem.name);
+                                nearestList.Add(distance, starsystem.systemname);
                             }
                         }
                     }
@@ -129,7 +129,7 @@ namespace EddiNavigationService
                     IFSystem = nearestList.Values.FirstOrDefault();
                     if (IFSystem != null)
                     {
-                        StarSystem IFStarSystem = IFStarSystems.FirstOrDefault(s => s.name == IFSystem);
+                        StarSystem IFStarSystem = IFStarSystems.FirstOrDefault(s => s.systemname == IFSystem);
                         IFDistance = nearestList.Keys.FirstOrDefault();
 
                         // Filter stations within the IF system which meet the game version and landing pad size requirements
@@ -286,7 +286,7 @@ namespace EddiNavigationService
                 mostDistance = mostList.Keys.FirstOrDefault();
 
                 // Calculate the missions route using the 'Repetitive Nearest Neighbor' Algorithim (RNNA)
-                mostList.Add(0, curr?.name);
+                mostList.Add(0, curr?.systemname);
                 if (missionMonitor.CalculateRNNA(mostList.Values.ToList(), homeSystem))
                 {
                     routeList = missionMonitor.missionsRouteList;
@@ -391,7 +391,7 @@ namespace EddiNavigationService
             {
                 var sourceList = new SortedList<long, string>();
                 StarSystem curr = EDDI.Instance?.CurrentStarSystem;
-                string currentSystem = curr?.name;
+                string currentSystem = curr?.systemname;
                 bool fromHere = system == currentSystem;
 
                 foreach (Cargo cargo in inventory.Where(c => c.haulageData.Any()).ToList())
@@ -444,10 +444,10 @@ namespace EddiNavigationService
                 StarSystem curr = EDDI.Instance?.CurrentStarSystem;
                 StarSystem dest = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(system, true);
 
-                if (dest != null && system != curr.name)
+                if (dest != null && system != curr.systemname)
                 {
                     distance = CalculateDistance(curr, dest);
-                    destination = dest.name;
+                    destination = dest.systemname;
                 }
                 // Get mission IDs for 'next' system
                 missionids = missionMonitor.GetSystemMissionIds(destination);

@@ -67,7 +67,7 @@ namespace UnitTests
             StarSystemRepository starSystemRepository = StarSystemSqLiteRepository.Instance;
             StarSystem DBData = starSystemRepository.GetOrFetchStarSystem("Sol", true);
             Assert.IsNotNull(DBData);
-            Assert.AreEqual("Sol", DBData.name);
+            Assert.AreEqual("Sol", DBData.systemname);
         }
 
         [TestMethod]
@@ -88,12 +88,12 @@ namespace UnitTests
             Assert.IsNotNull(sol);
 
             // Ariel has no volcanism
-            Body ariel = sol.bodies.Find(b => b.name == "Ariel");
+            Body ariel = sol.bodies.Find(b => b.bodyname == "Ariel");
             Assert.IsNotNull(ariel);
             Assert.IsNull(ariel.volcanism);
 
             // Europa has water magma
-            Body europa = sol.bodies.Find(b => b.name == "Europa");
+            Body europa = sol.bodies.Find(b => b.bodyname == "Europa");
             Assert.IsNotNull(europa);
             Assert.IsNotNull(europa.volcanism);
             Assert.AreEqual("Magma", europa.volcanism.invariantType);

@@ -489,7 +489,8 @@ namespace EddiSpeechService
             result = Regex.Replace(result, "<(/transmit)>", "XXXXX$1YYYYY");
             result = Regex.Replace(result, "<(voice.*?)>", "XXXXX$1YYYYY");
             result = Regex.Replace(result, "<(/voice)>", "XXXXX$1YYYYY");
-
+            result = Regex.Replace(result, "<(say-as.*?)>", "XXXXX$1YYYYY");
+            result = Regex.Replace(result, "<(/say-as)>", "XXXXX$1YYYYY");
             // Now escape anything that is still present
             result = SecurityElement.Escape(result);
 

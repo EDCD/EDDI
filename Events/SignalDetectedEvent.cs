@@ -32,15 +32,17 @@ namespace EddiEvents
         // Not intended to be user facing
         public SignalSource signalSource { get; private set; }
         public FactionState factionState { get; private set; }
+        public long? systemAddress { get; private set; }
 
-        public SignalDetectedEvent(DateTime timestamp, SignalSource source, FactionState factionState, string faction, decimal? secondsRemaining, int? threatlevel, bool? isStation) : base(timestamp, NAME)
+        public SignalDetectedEvent(DateTime timestamp, long? systemAddress, SignalSource source, FactionState factionState, string faction, decimal? secondsRemaining, int? threatlevel, bool? isStation) : base(timestamp, NAME)
         {
+            this.systemAddress = systemAddress;
             this.signalSource = source;
             this.factionState = factionState;
             this.faction = faction;
-            this.secondsremaining = secondsRemaining == null ? null : (decimal?)Math.Round((decimal)secondsRemaining);
-            this.threatlevel = (int)threatlevel;
-            this.stationsignal = (bool)isStation;
+            this.secondsremaining = secondsRemaining;
+            this.threatlevel = Convert.ToInt32(threatlevel);
+            this.stationsignal = Convert.ToBoolean(isStation);
         }
     }
 }

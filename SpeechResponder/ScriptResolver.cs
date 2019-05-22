@@ -168,6 +168,14 @@ namespace EddiSpeechResponder
                 string translation = val;
                 if (translation == val)
                 {
+                    translation = Translations.StellarClass(val);
+                }
+                if (translation == val)
+                {
+                    translation = Translations.PlanetClass(val);
+                }
+                if (translation == val)
+                {
                     translation = Translations.Body(val, useICAO);
                 }
                 if (translation == val)
@@ -201,10 +209,6 @@ namespace EddiSpeechResponder
                     {
                         translation = ship.SpokenModel();
                     }
-                }
-                if (translation == val)
-                {
-                    translation = Translations.StellarClass(val);
                 }
                 return translation;
             }, 1);
@@ -284,7 +288,7 @@ namespace EddiSpeechResponder
                     Sortie = Sortie + c + " ";
                 }
                 UpperSortie = Sortie.ToUpper();
-                return UpperSortie;
+                return UpperSortie.Trim();
 
             }, 1);
 
@@ -380,7 +384,7 @@ namespace EddiSpeechResponder
                 if (Entree == "")
                 { return ""; }
 
-                char[] vowels = { 'a', 'à', 'â', 'ä', 'e', 'ê', 'é', 'è', 'ë', 'i', 'î', 'ï', 'o', 'ô', 'ö', 'u', 'ù', 'û', 'ü', 'œ', 'y' };
+                char[] vowels = { 'a', 'à', 'â', 'ä', 'e', 'ê', 'é', 'è', 'ë', 'i', 'î', 'ï', 'o', 'ô', 'ö', 'u', 'ù', 'û', 'ü', 'œ' };
                 char firstCharacter = Entree.ToLower().ToCharArray().ElementAt(0);
                 Boolean result = vowels.Contains(firstCharacter);
 
@@ -611,7 +615,7 @@ namespace EddiSpeechResponder
                 {
                     result = EDDI.Instance.CurrentStarSystem;
                 }
-                else if (values[0]?.AsString?.ToLowerInvariant() == EDDI.Instance.CurrentStarSystem?.name?.ToLowerInvariant())
+                else if (values[0]?.AsString?.ToLowerInvariant() == EDDI.Instance.CurrentStarSystem?.systemname?.ToLowerInvariant())
                 {
                     result = EDDI.Instance.CurrentStarSystem;
                 }
@@ -630,7 +634,7 @@ namespace EddiSpeechResponder
                 {
                     system = EDDI.Instance.CurrentStarSystem;
                 }
-                else if (values.Count == 1 || string.IsNullOrEmpty(values[1].AsString) || values[1]?.AsString?.ToLowerInvariant() == EDDI.Instance.CurrentStarSystem?.name?.ToLowerInvariant())
+                else if (values.Count == 1 || string.IsNullOrEmpty(values[1].AsString) || values[1]?.AsString?.ToLowerInvariant() == EDDI.Instance.CurrentStarSystem?.systemname?.ToLowerInvariant())
                 {
                     system = EDDI.Instance.CurrentStarSystem;
                 }
@@ -639,12 +643,7 @@ namespace EddiSpeechResponder
                     // Named system
                     system = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(values[1].AsString, true);
                 }
-                Body result = system?.bodies?.Find(v => v.name?.ToLowerInvariant() == values[0].AsString?.ToLowerInvariant());
-                if (result != null && result.Type.invariantName == "Star" && result.chromaticity == null)
-                {
-                    // Need to set our internal extras for the star
-                    result.setStellarExtras();
-                }
+                Body result = system?.bodies?.Find(v => v.bodyname?.ToLowerInvariant() == values[0].AsString?.ToLowerInvariant());
                 return (result == null ? new ReflectionValue(new object()) : new ReflectionValue(result));
             }, 1, 2);
 
@@ -768,7 +767,7 @@ namespace EddiSpeechResponder
                 else
                 {
                     StarSystem system;
-                    if (values.Count == 1 || values[1]?.AsString?.ToLowerInvariant() == EDDI.Instance.CurrentStarSystem?.name?.ToLowerInvariant())
+                    if (values.Count == 1 || values[1]?.AsString?.ToLowerInvariant() == EDDI.Instance.CurrentStarSystem?.systemname?.ToLowerInvariant())
                     {
                         // Current system
                         system = EDDI.Instance.CurrentStarSystem;

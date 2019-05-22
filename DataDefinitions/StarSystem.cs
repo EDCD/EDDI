@@ -12,8 +12,9 @@ namespace EddiDataDefinitions
     public class StarSystem
     {
         // General information
+        [JsonProperty("name"), JsonRequired]
+        public string systemname { get; set; }
 
-        public string name { get; set; }
         public long? EDDBID { get; set; } // The ID in EDDB
         public long? EDSMID { get; set; } // The ID in EDSM
 
@@ -26,7 +27,7 @@ namespace EddiDataDefinitions
         /// <summary>Unique 64 bit id value for system</summary>
         public long? systemAddress { get; set; }
 
-        /// <summary>Details of bodies (stars/planets)</summary>
+        /// <summary>Details of bodies (stars/planets/moons)</summary>
         public List<Body> bodies { get; set; }
 
         /// <summary>The reserve level applicable to the system's rings</summary>
@@ -52,7 +53,7 @@ namespace EddiDataDefinitions
         public string powerstate { get; set; }
 
         [JsonIgnore]
-        public string state => (Faction?.presences.FirstOrDefault(p => p.systemName == name)?.FactionState ?? FactionState.None).localizedName;
+        public string state => (Faction?.presences.FirstOrDefault(p => p.systemName == systemname)?.FactionState ?? FactionState.None).localizedName;
 
         // Faction details
         public Faction Faction { get; set; } = new Faction();
@@ -83,6 +84,34 @@ namespace EddiDataDefinitions
 
         // Other data
 
+        /// <summary>Types of signals detected within the system</summary>
+        [JsonIgnore]
+        public List<string> signalsources { get; set; } = new List<string>();
+
+        /// <summary> Whether the system is a "green" system for exploration (containing all FSD synthesis elements) </summary>
+        [JsonIgnore]
+        public bool? isgreen => materialEdNames?.Count() == 0 ? false :
+            materialEdNames.Intersect(new List<string>()
+            {
+                "carbon",
+                "germanium",
+                "vanadium",
+                "cadmium",
+                "niobium",
+                "arsenic",
+                "yttrium",
+                "polonium"
+            }).Count() == 8;
+
+        /// <summary> Whether the system is a "gold" system for exploration (containing all elements available from planetary surfaces) </summary>
+        [JsonIgnore]
+        public bool? isgold => materialEdNames?.Count() == 0 ? false :
+            Material.surfaceElements.Select(m => m.edname).Intersect(materialEdNames).Count() == Material.surfaceElements.Count();
+
+        /// <summary>Number of visits</summary>
+        [JsonIgnore]
+        public long estimatedvalue => estimateSystemValue(bodies);
+
         /// <summary>Number of visits</summary>
         public int visits;
 
@@ -99,11 +128,24 @@ namespace EddiDataDefinitions
         /// <summary>distance from home</summary>
         public decimal? distancefromhome;
 
-        // Admin - the last time the information present changed
+        // Not intended to be user facing - materials available within the system
+        [JsonIgnore]
+        public List<string> materialEdNames => bodies.SelectMany(b => b.materials, (b, m) => m.definition.edname).Distinct().ToList();
+
+        // Not intended to be user facing - discoverable bodies as reported by a discovery scan "honk"
+        public int discoverableBodies = 0;
+
+        // Not intended to be user facing - the last time the information present changed
         public long? updatedat;
 
-        // Admin - the last time the data about this system was obtained from remote repository
+        // Not intended to be user facing - the last time the data about this system was obtained from remote repository
         public DateTime lastupdated;
+
+        // Deprecated properties (preserved for backwards compatibility with Cottle and database stored values)
+
+        // This is a key for legacy json files that cannot be changed without breaking backwards compatibility. 
+        [JsonIgnore, Obsolete("Please use systemname instead.")]
+        public string name => systemname;
 
         [JsonExtensionData]
         private IDictionary<string, JToken> additionalJsonData;
@@ -112,7 +154,7 @@ namespace EddiDataDefinitions
         private void OnDeserialized(StreamingContext context)
         {
             if (Faction == null) { Faction = new Faction(); }
-            FactionPresence factionPresence = Faction.presences.FirstOrDefault(p => p.systemName == name) ?? new FactionPresence();
+            FactionPresence factionPresence = Faction.presences.FirstOrDefault(p => p.systemName == systemname) ?? new FactionPresence();
             if (factionPresence.FactionState == null)
             {
                 // Convert legacy data
@@ -127,7 +169,7 @@ namespace EddiDataDefinitions
             {
                 // get the canonical FactionState object for the given EDName
                 factionPresence.FactionState = 
-                    FactionState.FromEDName(Faction.presences.FirstOrDefault(p => p.systemName == name)?.FactionState.edname ?? "None");
+                    FactionState.FromEDName(Faction.presences.FirstOrDefault(p => p.systemName == systemname)?.FactionState.edname ?? "None");
             }
             additionalJsonData = null;
         }
@@ -143,6 +185,39 @@ namespace EddiDataDefinitions
         public void NotifyPropertyChanged(string propName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
+        }
+
+        private long estimateSystemValue(List<Body> bodies)
+        {
+            // Credit to MattG's thread at https://forums.frontier.co.uk/showthread.php/232000-Exploration-value-formulae for scan value formulas
+
+            if (bodies == null || bodies.Count == 0)
+            {
+                return 0;
+            }
+
+            long value = 0;
+
+            // Add the estimated value for each body
+            foreach (Body body in bodies)
+            {
+                value += body.estimatedvalue;
+            }
+
+            // Bonus for fully discovering a system
+            if (discoverableBodies == bodies.Where(b => b.scanned != null).Count())
+            {
+                value += discoverableBodies * 1000;
+
+                // Bonus for fully mapping a system
+                int mappableBodies = bodies.Where(b => b.bodyType.invariantName != "Star").Count();
+                if (mappableBodies == bodies.Where(b => b.mapped != null).Count())
+                {
+                    value += mappableBodies * 10000;
+                }
+            }
+
+            return value;
         }
     }
 }

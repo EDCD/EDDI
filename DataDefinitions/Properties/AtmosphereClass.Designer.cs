@@ -79,6 +79,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ammonia and oxygen.
+        /// </summary>
+        public static string AmmoniaOxygen {
+            get {
+                return ResourceManager.GetString("AmmoniaOxygen", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ammonia-rich.
         /// </summary>
         public static string AmmoniaRich {

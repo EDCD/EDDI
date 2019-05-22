@@ -32,17 +32,17 @@ namespace UnitTests
             Assert.IsNotNull(bodies);
 
             // Test our main star and belt
-            Body star = bodies.Find(s => s.name == "Shinrarta Dezhra");
+            Body star = bodies.Find(s => s.bodyname == "Shinrarta Dezhra");
             Assert.AreEqual("Shinrarta Dezhra", star.shortname);
             Assert.AreEqual(14923, star.EDSMID);
-            Assert.AreEqual("Star", star.Type.invariantName);
+            Assert.AreEqual("Star", star.bodyType.invariantName);
             Assert.AreEqual("K", star.stellarclass);
             Assert.AreEqual("Shinrarta Dezhra", star.systemname);
             Assert.AreEqual(0, star.distance);
             Assert.IsTrue((bool)star.mainstar);
             Assert.AreEqual(8068, star.age);
             Assert.AreEqual("V", star.luminosityclass);
-            Assert.AreEqual(7.129517, (double)star.absoluteMagnitude, 0.01);
+            Assert.AreEqual(7.129517, (double)star.absolutemagnitude, 0.01);
             Assert.AreEqual(0.648438, (double)star.solarmass, 0.01);
             Assert.AreEqual(0.7666015240833932, (double)star.solarradius, 0.01);
             Assert.AreEqual(4343, (double)star.temperature, 0.01);
@@ -57,12 +57,19 @@ namespace UnitTests
             Assert.AreEqual(1, star.rings?.Count);
             Assert.AreEqual("Rocky", star.rings[0].invariantComposition);
             Assert.AreEqual(1522275140, star.updatedat);
+            Assert.IsNull(star.scanned);
+            Assert.IsNull(star.mapped);
+
+            // Test value estimation
+            Assert.AreEqual(0, star.estimatedvalue);
+            star.scanned = System.DateTime.UtcNow;
+            Assert.AreEqual(1212, star.estimatedvalue);
 
             // Test landable high metal content world
-            Body body = bodies.Find(s => s.name == "Shinrarta Dezhra A 1");
+            Body body = bodies.Find(s => s.bodyname == "Shinrarta Dezhra A 1");
             Assert.AreEqual("A 1", body.shortname);
             Assert.AreEqual(7058, body.EDSMID);
-            Assert.AreEqual("Planet", body.Type.invariantName);
+            Assert.AreEqual("Planet", body.bodyType.invariantName);
             Assert.AreEqual("High metal content world", body.planetClass.invariantName);
             Assert.AreEqual(40.472694, (double)body.distance, 0.01);
             Assert.IsTrue((bool)body.landable);
@@ -93,12 +100,21 @@ namespace UnitTests
             Assert.AreEqual("Arsenic", body.materials[7].name);
             Assert.AreEqual(2.16406, (double)body.materials[7].percentage, 0.01);
             Assert.AreEqual(1539922044, body.updatedat);
+            Assert.IsNull(body.scanned);
+            Assert.IsNull(body.mapped);
+
+            // Test value estimation
+            Assert.AreEqual(0, body.estimatedvalue);
+            body.scanned = System.DateTime.UtcNow;
+            Assert.AreEqual(14849, body.estimatedvalue);
+            body.mapped = System.DateTime.UtcNow;
+            Assert.AreEqual(49497, body.estimatedvalue);
 
             // Test terraformed body
-            body = bodies.Find(s => s.name == "Founders World");
+            body = bodies.Find(s => s.bodyname == "Founders World");
             Assert.AreEqual("Founders World", body.shortname);
             Assert.AreEqual(12765, body.EDSMID);
-            Assert.AreEqual("Planet", body.Type.invariantName);
+            Assert.AreEqual("Planet", body.bodyType.invariantName);
             Assert.AreEqual("Earth-like world", body.planetClass.invariantName);
             Assert.AreEqual(324.465424, (double)body.distance, 0.01);
             Assert.AreEqual(false, body.landable);
@@ -129,12 +145,21 @@ namespace UnitTests
             Assert.AreEqual(0.373026, (double)body.tilt, 0.01);
             Assert.AreEqual(0, body.materials.Count);
             Assert.AreEqual(1539922044, body.updatedat);
+            Assert.IsNull(body.scanned);
+            Assert.IsNull(body.mapped);
+
+            // Test value estimation
+            Assert.AreEqual(0, body.estimatedvalue);
+            body.scanned = System.DateTime.UtcNow;
+            Assert.AreEqual(276297, body.estimatedvalue);
+            body.mapped = System.DateTime.UtcNow;
+            Assert.AreEqual(920990, body.estimatedvalue);
 
             // Test volcanic icy body
-            body = bodies.Find(s => s.name == "Shinrarta Dezhra AB 1 b");
+            body = bodies.Find(s => s.bodyname == "Shinrarta Dezhra AB 1 b");
             Assert.AreEqual("AB 1 b", body.shortname);
             Assert.AreEqual(8138660, body.EDSMID);
-            Assert.AreEqual("Planet", body.Type.invariantName);
+            Assert.AreEqual("Moon", body.bodyType.invariantName);
             Assert.AreEqual("Icy body", body.planetClass.invariantName);
             Assert.AreEqual(3250.803223, (double)body.distance, 0.01);
             Assert.AreEqual(false, body.landable);
@@ -166,12 +191,21 @@ namespace UnitTests
             Assert.AreEqual(-0.287234, (double)body.tilt, 0.01);
             Assert.AreEqual(0, body.materials.Count);
             Assert.AreEqual(1539922044, body.updatedat);
+            Assert.IsNull(body.scanned);
+            Assert.IsNull(body.mapped);
+
+            // Test value estimation
+            Assert.AreEqual(0, body.estimatedvalue);
+            body.scanned = System.DateTime.UtcNow;
+            Assert.AreEqual(500, body.estimatedvalue);
+            body.mapped = System.DateTime.UtcNow;
+            Assert.AreEqual(1191, body.estimatedvalue);
 
             // Test ringed gas giant
-            body = bodies.Find(s => s.name == "Shinrarta Dezhra AB 2");
+            body = bodies.Find(s => s.bodyname == "Shinrarta Dezhra AB 2");
             Assert.AreEqual("AB 2", body.shortname);
             Assert.AreEqual(8138626, body.EDSMID);
-            Assert.AreEqual("Planet", body.Type.invariantName);
+            Assert.AreEqual("Planet", body.bodyType.invariantName);
             Assert.AreEqual("Class I gas giant", body.planetClass.invariantName);
             Assert.AreEqual(3767.557861, (double)body.distance, 0.01);
             Assert.AreEqual(false, body.landable);
@@ -207,6 +241,15 @@ namespace UnitTests
             Assert.AreEqual(273390, body.rings[0].outerradius);
             Assert.AreEqual("Common", body.reserveLevel.invariantName);
             Assert.AreEqual(1539922044, body.updatedat);
+            Assert.IsNull(body.scanned);
+            Assert.IsNull(body.mapped);
+
+            // Test value estimation
+            Assert.AreEqual(0, body.estimatedvalue);
+            body.scanned = System.DateTime.UtcNow;
+            Assert.AreEqual(4883, body.estimatedvalue);
+            body.mapped = System.DateTime.UtcNow;
+            Assert.AreEqual(16278, body.estimatedvalue);
         }
 
         [TestMethod]
@@ -336,7 +379,7 @@ namespace UnitTests
             StarSystem system = (StarSystem)starMapService.InvokeStatic("ParseStarMapSystem", new object[] { JObject.FromObject(response), "Shinrarta Dezhra" });
 
             // Test Shinrarta Dezhra
-            Assert.AreEqual("Shinrarta Dezhra", system.name);
+            Assert.AreEqual("Shinrarta Dezhra", system.systemname);
             Assert.AreEqual(4345, system.EDSMID);
             Assert.AreEqual(55.71875M, system.x);
             Assert.AreEqual(17.59375M, system.y);
@@ -346,7 +389,7 @@ namespace UnitTests
             Assert.AreEqual("Pilots Federation", system.Faction.Allegiance.invariantName);
             Assert.AreEqual("Democracy", system.Faction.Government.invariantName);
             Assert.AreEqual("Pilots Federation Local Branch", system.Faction.name);
-            Assert.AreEqual("None", system.Faction.presences.FirstOrDefault(p => p.systemName == system.name)?.FactionState?.invariantName);
+            Assert.AreEqual("None", system.Faction.presences.FirstOrDefault(p => p.systemName == system.systemname)?.FactionState?.invariantName);
             Assert.AreEqual(85206935, system.population);
             Assert.AreEqual("Common", system.Reserve.invariantName);
             Assert.AreEqual("High", system.securityLevel.invariantName);

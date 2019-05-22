@@ -217,7 +217,15 @@
     <value>Listening Post</value>
     <comment>ListeningPost</comment>
   </data>
-  <data name="NotableStellarPhenomena" xml:space="preserve">
+  <data name="Fixed_Event_Life_Cloud" xml:space="preserve">
+    <value>Notable Stellar Phenomena</value>
+    <comment>Notable Stellar Phenomena</comment>
+  </data>
+  <data name="FIXED-EVENT_CAPSHIP" xml:space="preserve">
+    <value>Capital Ship</value>
+    <comment>Capital Ship</comment>
+  </data>
+  <data name="Fixed_Event_Life_Ring" xml:space="preserve">
     <value>Notable Stellar Phenomena</value>
     <comment>Notable Stellar Phenomena</comment>
   </data>

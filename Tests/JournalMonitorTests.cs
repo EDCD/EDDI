@@ -36,8 +36,8 @@ namespace UnitTests
             Assert.IsInstanceOfType(events[0], typeof(BodyScannedEvent));
             BodyScannedEvent ev = events[0] as BodyScannedEvent;
             Assert.IsNotNull(ev);
-            Assert.AreEqual("Grea Bloae HH-T d4-44 4", ev.name);
-            Assert.AreEqual((decimal)703.763611, ev.distancefromarrival);
+            Assert.AreEqual("Grea Bloae HH-T d4-44 4", ev.bodyname);
+            Assert.AreEqual((decimal)703.763611, ev.distance);
             Assert.IsNotNull(ev.tidallylocked);
             Assert.IsFalse((bool)ev.tidallylocked);
             Assert.AreEqual("Candidate for terraforming", ev.terraformState.invariantName);
@@ -55,10 +55,10 @@ namespace UnitTests
             Assert.IsFalse((bool)ev.landable);
             Assert.AreEqual(703.679898444943, (double)ev.semimajoraxis, 0.01);
             Assert.AreEqual((decimal)0.000248, ev.eccentricity);
-            Assert.AreEqual((decimal)0.015659, ev.orbitalinclination);
+            Assert.AreEqual((decimal)0.015659, ev.inclination);
             Assert.AreEqual((decimal)104.416656, ev.periapsis);
             Assert.AreEqual(564.827, (double)ev.orbitalperiod, 0.01);
-            Assert.AreEqual(0.91947, (double)ev.rotationperiod, 0.01);
+            Assert.AreEqual(0.91947, (double)ev.rotationalperiod, 0.01);
         }
 
         [TestMethod]
@@ -119,15 +119,30 @@ namespace UnitTests
             BodyScannedEvent ev = events[0] as BodyScannedEvent;
             Assert.IsNotNull(ev);
             Assert.AreEqual("Carbon dioxide", ev.atmosphereclass.invariantName);
-            Assert.AreEqual(96.5M, ev.atmospherecomposition[0].percent);
-            Assert.AreEqual("Rock", ev.solidcomposition[0].invariantName);
-            Assert.AreEqual(70M, ev.solidcomposition[0].percent);
+            Assert.AreEqual(96.5M, ev.atmospherecompositions[0].percent);
+            Assert.AreEqual("Rock", ev.solidcompositions[0].invariantName);
+            Assert.AreEqual(70M, ev.solidcompositions[0].percent);
+        }
+
+        [TestMethod]
+        public void TestJournalPlanetScan4()
+        {
+            // Test new scan data from game version 3.4.
+            string line = @"{ ""timestamp"":""2019-04-12T04:42:10Z"", ""event"":""Scan"", ""ScanType"":""AutoScan"", ""BodyName"":""HR 1185 A 1"", ""BodyID"":4, ""Parents"":[ {""Null"":3}, {""Star"":1}, {""Null"":0} ], ""DistanceFromArrivalLS"":45.276505, ""TidalLock"":true, ""TerraformState"":"""", ""PlanetClass"":""High metal content body"", ""Atmosphere"":""hot thick silicate vapour atmosphere"", ""AtmosphereType"":""SilicateVapour"", ""AtmosphereComposition"":[ { ""Name"":""Silicates"", ""Percent"":99.989662 } ], ""Volcanism"":""major silicate vapour geysers volcanism"", ""MassEM"":2.428317, ""Radius"":8014977.000000, ""SurfaceGravity"":15.066424, ""SurfaceTemperature"":4894.569336, ""SurfacePressure"":6359968768.000000, ""Landable"":false, ""Composition"":{ ""Ice"":0.000073, ""Rock"":0.671092, ""Metal"":0.322412 }, ""SemiMajorAxis"":15315170.000000, ""Eccentricity"":0.021248, ""OrbitalInclination"":-4.599963, ""Periapsis"":144.548447, ""OrbitalPeriod"":27184.082031, ""RotationPeriod"":39590.453125, ""AxialTilt"":0.120614, ""WasDiscovered"":true, ""WasMapped"":true }";
+            List<Event> events = JournalMonitor.ParseJournalEntry(line);
+            Assert.IsTrue(events.Count == 1);
+            Assert.IsInstanceOfType(events[0], typeof(BodyScannedEvent));
+            BodyScannedEvent ev = events[0] as BodyScannedEvent;
+            Assert.IsNotNull(ev);
+            Assert.AreEqual("Planet", ev.body.bodyType.invariantName);
+            Assert.IsTrue(ev.alreadydiscovered);
+            Assert.IsTrue(ev.alreadymapped);
         }
 
         [TestMethod]
         public void TestJournalStarScan1()
         {
-            string line = @"{ ""timestamp"":""2016-10-27T08:51:23Z"", ""event"":""Scan"", ""BodyName"":""Vela Dark Region FG-Y d3"", ""DistanceFromArrivalLS"":0.000000, ""StarType"":""K"", ""StellarMass"":0.960938, ""Radius"":692146368.000000, ""AbsoluteMagnitude"":5.375961, ""Age_MY"":230, ""SurfaceTemperature"":5108.000000, ""RotationPeriod"":393121.093750, ""Rings"":[ { ""Name"":""Vela Dark Region FG-Y d3 A Belt"", ""RingClass"":""eRingClass_MetalRich"", ""MassMT"":1.2262e+10, ""InnerRad"":1.2288e+09, ""OuterRad"":2.3812e+09 } ] }";
+            string line = @"{ ""timestamp"":""2016-10-27T08:51:23Z"", ""event"":""Scan"", ""BodyName"":""Vela Dark Region FG-Y d3"", ""DistanceFromArrivalLS"":0.000000, ""StarType"":""K"", ""StellarMass"":0.960938, ""Radius"":692146368.000000, ""AbsoluteMagnitude"":5.375961, ""Age_MY"":230, ""SurfaceTemperature"":5108.000000, ""RotationPeriod"":393121.093750, ""Rings"":[ { ""Name"":""Vela Dark Region FG-Y d3 A Belt"", ""RingClass"":""eRingClass_Metalic"", ""MassMT"":1.2262e+10, ""InnerRad"":1.2288e+09, ""OuterRad"":2.3812e+09 } ] }";
             List<Event> events = JournalMonitor.ParseJournalEntry(line);
             Assert.IsTrue(events.Count == 1);
 
@@ -135,7 +150,7 @@ namespace UnitTests
 
             Assert.AreEqual(230, theEvent.age);
             Assert.IsNull(theEvent.eccentricity);
-            Assert.AreEqual("Vela Dark Region FG-Y d3", theEvent.name);
+            Assert.AreEqual("Vela Dark Region FG-Y d3", theEvent.bodyname);
             Assert.IsNull(theEvent.orbitalperiod);
             Assert.AreEqual(692146.368000000M, theEvent.radius);
             Assert.IsNull(theEvent.semimajoraxis);
@@ -144,12 +159,14 @@ namespace UnitTests
             Assert.AreEqual(5108, theEvent.temperature);
             // Stellar extras
             Assert.AreEqual("yellow-orange", theEvent.chromaticity);
-            Assert.AreEqual(50, theEvent.massprobability);
-            Assert.AreEqual(51, theEvent.radiusprobability);
-            Assert.AreEqual(58, theEvent.tempprobability);
+            Assert.AreEqual(99.33M, theEvent.massprobability);
+            Assert.AreEqual(65, theEvent.radiusprobability);
+            Assert.AreEqual(95, theEvent.tempprobability);
             Assert.AreEqual(7, theEvent.ageprobability);
             Assert.AreEqual(303.548, (double)theEvent.estimatedhabzoneinner, .01);
             Assert.AreEqual(604.861, (double)theEvent.estimatedhabzoneouter, .01);
+            // Ring
+            Assert.AreEqual("Metallic", theEvent.rings[0].Composition.invariantName);
         }
 
         [TestMethod]
@@ -163,6 +180,19 @@ namespace UnitTests
             Assert.AreEqual((decimal)659162.816, theEvent.radius);
             Assert.AreEqual(StarClass.solarradius((decimal)659162.816000000), theEvent.solarradius);
             Assert.AreEqual(0.94775, (double)theEvent.solarradius, 0.01);
+        }
+
+        [TestMethod]
+        public void TestJournalStarScan3()
+        {
+            // Gamer version 3.4
+            string line = @"{ ""timestamp"":""2019-04-12T04:49:10Z"", ""event"":""Scan"", ""ScanType"":""Detailed"", ""BodyName"":""Pleiades Sector MN-T c3-14 B"", ""BodyID"":2, ""Parents"":[ {""Null"":0} ], ""DistanceFromArrivalLS"":84306.257813, ""StarType"":""M"", ""Subclass"":8, ""StellarMass"":0.246094, ""Radius"":316421920.000000, ""AbsoluteMagnitude"":10.680222, ""Age_MY"":702, ""SurfaceTemperature"":2228.000000, ""Luminosity"":""Va"", ""SemiMajorAxis"":20863141281792.000000, ""Eccentricity"":0.278661, ""OrbitalInclination"":-103.465088, ""Periapsis"":32.983871, ""OrbitalPeriod"":104334450688.000000, ""RotationPeriod"":212050.531250, ""AxialTilt"":0.000000, ""WasDiscovered"":true, ""WasMapped"":false }";
+            List<Event> events = JournalMonitor.ParseJournalEntry(line);
+            Assert.IsTrue(events.Count == 1);
+
+            StarScannedEvent theEvent = (StarScannedEvent)events[0];
+            Assert.AreEqual(8, theEvent.stellarsubclass);
+            Assert.IsTrue(theEvent.alreadydiscovered);
         }
 
         [TestMethod]
@@ -455,9 +485,9 @@ namespace UnitTests
             List<Event> events = JournalMonitor.ParseJournalEntry(line);
             Assert.IsTrue(events.Count == 1);
             EnteredNormalSpaceEvent normalSpaceEvent = (EnteredNormalSpaceEvent)events[0];
-            Assert.AreEqual("Vonarburg Co-operative", normalSpaceEvent.body);
+            Assert.AreEqual("Vonarburg Co-operative", normalSpaceEvent.bodyname);
             Assert.AreEqual("Station", normalSpaceEvent.bodytype);
-            Assert.AreEqual("Wyrd", normalSpaceEvent.system);
+            Assert.AreEqual("Wyrd", normalSpaceEvent.systemname);
             Assert.AreEqual(5031654888146, normalSpaceEvent.systemAddress);
         }
 
@@ -643,7 +673,7 @@ namespace UnitTests
 	            ""event"": ""Location"",
 	            ""Docked"": true,
 	            ""MarketID"": 3223343616,
-	            ""StationName"": ""RayGateway"",
+	            ""StationName"": ""Ray Gateway"",
 	            ""StationType"": ""Coriolis"",
 	            ""StarSystem"": ""Diaguandri"",
 	            ""SystemAddress"": 670417429889,
@@ -662,11 +692,11 @@ namespace UnitTests
 	            ""SystemSecurity"": ""$SYSTEM_SECURITY_medium;"",
 	            ""SystemSecurity_Localised"": ""MediumSecurity"",
 	            ""Population"": 10303479,
-	            ""Body"": ""RayGateway"",
+	            ""Body"": ""Ray Gateway"",
 	            ""BodyID"": 32,
 	            ""BodyType"": ""Station"",
 	            ""Factions"": [{
-		            ""Name"": ""DiaguandriInterstellar"",
+		            ""Name"": ""Diaguandri Interstellar"",
 		            ""FactionState"": ""None"",
 		            ""Government"": ""Corporate"",
 		            ""Influence"": 0.090000,
@@ -677,28 +707,28 @@ namespace UnitTests
 		            }]
 	            },
 	            {
-		            ""Name"": ""People'sMET20Liberals"",
+		            ""Name"": ""People's MET 20 Liberals"",
 		            ""FactionState"": ""Boom"",
 		            ""Government"": ""Democracy"",
 		            ""Influence"": 0.206000,
 		         ""Allegiance"": ""Federation""
 	            },
 	            {
-		            ""Name"": ""PilotsFederationLocalBranch"",
+		            ""Name"": ""Pilots Federation Local Branch"",
 		            ""FactionState"": ""None"",
 		            ""Government"": ""Democracy"",
 		            ""Influence"": 0.000000,
 		            ""Allegiance"": ""PilotsFederation""
 	            },
 	            {
-		            ""Name"": ""NaturalDiaguandriRegulatoryState"",
+		            ""Name"": ""Natural Diaguandri Regulatory State"",
 		            ""FactionState"": ""Boom"",
 		            ""Government"": ""Dictatorship"",
 		            ""Influence"": 0.072000,
 		            ""Allegiance"": ""Independent""
 	            },
 	            {
-		            ""Name"": ""CartelofDiaguandri"",
+		            ""Name"": ""Cartel of Diaguandri"",
 		            ""FactionState"": ""Bust"",
 		            ""Government"": ""Anarchy"",
 		            ""Influence"": 0.121000,
@@ -713,7 +743,7 @@ namespace UnitTests
 		            }]
 	            },
 	            {
-		            ""Name"": ""RevolutionaryPartyofDiaguandri"",
+		            ""Name"": ""Revolutionary Party of Diaguandri"",
 		            ""FactionState"": ""Boom"",
 		            ""Government"": ""Democracy"",
 		            ""Influence"": 0.181000,
@@ -724,7 +754,7 @@ namespace UnitTests
 		            }]
 	            },
 	            {
-		            ""Name"": ""TheBrotherhoodoftheDarkCircle"",
+		            ""Name"": ""The Brotherhood of the Dark Circle"",
 		            ""FactionState"": ""Boom"",
 		            ""Government"": ""Corporate"",
 		            ""Influence"": 0.086000,
@@ -755,7 +785,7 @@ namespace UnitTests
             Assert.IsTrue(events.Count == 1);
             LocationEvent @event = (LocationEvent)events[0];
 
-            Assert.AreEqual("RayGateway", @event.body);
+            Assert.AreEqual("Ray Gateway", @event.bodyname);
             Assert.AreEqual("Station", @event.bodyType.invariantName);
             Assert.AreEqual(true, @event.docked);
             Assert.AreEqual("High Tech", @event.Economy.invariantName);
@@ -774,9 +804,9 @@ namespace UnitTests
             Assert.AreEqual(3223343616, @event.marketId);
             Assert.AreEqual(10303479, @event.population);
             Assert.AreEqual("Medium", @event.securityLevel.invariantName);
-            Assert.AreEqual("RayGateway", @event.station);
+            Assert.AreEqual("Ray Gateway", @event.station);
             Assert.AreEqual("Coriolis Starport", @event.stationModel.invariantName);
-            Assert.AreEqual("Diaguandri", @event.system);
+            Assert.AreEqual("Diaguandri", @event.systemname);
             Assert.AreEqual(670417429889, @event.systemAddress);
             Assert.AreEqual(-41.06250M, @event.x);
             Assert.AreEqual(-62.15625M, @event.y);
@@ -790,17 +820,17 @@ namespace UnitTests
             List<Event> events = JournalMonitor.ParseJournalEntry(line);
             NearSurfaceEvent @event = (NearSurfaceEvent)events[0];
 
-            Assert.AreEqual("Ageno", @event.system);
+            Assert.AreEqual("Ageno", @event.systemname);
             Assert.AreEqual(18262335038849, @event.systemAddress);
-            Assert.AreEqual("Ageno B 2 a", @event.body);
+            Assert.AreEqual("Ageno B 2 a", @event.bodyname);
 
             string line2 = @"{ ""timestamp"":""2018 - 07 - 24T07: 08:58Z"", ""event"":""LeaveBody"", ""StarSystem"":""Ageno"", ""SystemAddress"":18262335038849, ""Body"":""Ageno B 2 a"", ""BodyID"":17 }";
             events = JournalMonitor.ParseJournalEntry(line2);
             NearSurfaceEvent @event2 = (NearSurfaceEvent)events[0];
 
-            Assert.AreEqual("Ageno", @event2.system);
+            Assert.AreEqual("Ageno", @event2.systemname);
             Assert.AreEqual(18262335038849, @event2.systemAddress);
-            Assert.AreEqual("Ageno B 2 a", @event2.body);
+            Assert.AreEqual("Ageno B 2 a", @event2.bodyname);
         }
 
         [TestMethod]
@@ -819,11 +849,12 @@ namespace UnitTests
         [TestMethod]
         public void TestSettlementApproachedEvent()
         {
-            string line = @"{ ""timestamp"":""2018-11-04T03:11:56Z"", ""event"":""ApproachSettlement"", ""Name"":""Bulmer Enterprise"", ""MarketID"":3510380288, ""Latitude"":-23.121552, ""Longitude"":-98.177559 }";
+            string line = @"{ ""timestamp"":""2018-11-04T03:11:56Z"", ""event"":""ApproachSettlement"", ""Name"":""Bulmer Enterprise"", ""MarketID"":3510380288, ""SystemAddress"": 670417429889, ""Latitude"":-23.121552, ""Longitude"":-98.177559 }";
             List<Event> events = JournalMonitor.ParseJournalEntry(line);
             SettlementApproachedEvent @event = (SettlementApproachedEvent)events[0];
 
             Assert.AreEqual(3510380288, @event.marketId);
+            Assert.AreEqual(670417429889, @event.systemAddress);
             Assert.AreEqual("Bulmer Enterprise", @event.name);
             Assert.AreEqual(-23.121552M, @event.latitude);
             Assert.AreEqual(-98.177559M, @event.longitude);
@@ -959,6 +990,61 @@ namespace UnitTests
             Assert.AreEqual("Dumbae DN-I d10-6057", @event.systemname);
             Assert.AreEqual(208127228285531, @event.systemAddress);
             Assert.AreEqual(19, @event.count);
+        }
+
+        [TestMethod]
+        public void TestMultiSellExplorationEvent()
+        {
+            string line = @"{ ""timestamp"":""2018-11-14T10:35:35Z"", ""event"":""MultiSellExplorationData"", ""Discovered"":[ { ""SystemName"":""HIP 84742"", ""NumBodies"":23 }, { ""SystemName"":""Col 359 Sector NY-S b20-1"", ""NumBodies"":9 } ], ""BaseValue"":2938186, ""Bonus"":291000, ""TotalEarnings"":3229186 }";
+            List<Event> events = JournalMonitor.ParseJournalEntry(line);
+            Assert.AreEqual(1, events.Count);
+            ExplorationDataSoldEvent @event = (ExplorationDataSoldEvent)events[0];
+            Assert.IsNotNull(@event);
+            Assert.IsInstanceOfType(@event, typeof(ExplorationDataSoldEvent));
+            Assert.AreEqual(2, @event.systems?.Count);
+            Assert.AreEqual(2938186M, @event.reward);
+            Assert.AreEqual(291000M, @event.bonus);
+            Assert.AreEqual(3229186M, @event.total);
+        }
+
+        [TestMethod]
+        public void TestSignalDetectedEvent()
+        {
+            // Test a scenario signal
+            string line = @"{ ""timestamp"":""2019-02-06T07:22:27Z"", ""event"":""FSSSignalDiscovered"", ""SystemAddress"":1177567513979, ""SignalName"":""$MULTIPLAYER_SCENARIO42_TITLE;"", ""SignalName_Localised"":""Nav Beacon"" }";
+            List<Event> events = JournalMonitor.ParseJournalEntry(line);
+            SignalDetectedEvent @event = (SignalDetectedEvent)events[0];
+            Assert.IsNotNull(@event);
+            Assert.IsInstanceOfType(@event, typeof(SignalDetectedEvent));
+            Assert.AreEqual("Nav Beacon", @event.signalSource.invariantName);
+        }
+
+        [TestMethod]
+        public void TestSignalDetectedEvent2()
+        {
+            // Test a USS signal
+            string line = @"{ ""timestamp"":""2019-02-17T19:39:57Z"", ""event"":""FSSSignalDiscovered"", ""SystemAddress"":60276065930987, ""SignalName"":""$USS;"", ""SignalName_Localised"":""Unidentified signal source"", ""USSType"":""$USS_Type_ValuableSalvage;"", ""USSType_Localised"":""Encoded emissions"", ""SpawningState"":""$FactionState_War_desc;"", ""SpawningState_Localised"":""The War state represents a conflict between the controlling faction in a system and a new faction that has expanded into the system."", ""SpawningFaction"":""Colonia Council"", ""ThreatLevel"":0, ""TimeRemaining"":2385.815674 }";
+            List<Event> events = JournalMonitor.ParseJournalEntry(line);
+            SignalDetectedEvent @event = (SignalDetectedEvent)events[0];
+            Assert.IsNotNull(@event);
+            Assert.IsInstanceOfType(@event, typeof(SignalDetectedEvent));
+            Assert.AreEqual("Encoded Emissions", @event.signalSource.invariantName);
+            Assert.AreEqual("War", @event.factionState.invariantName);
+            Assert.AreEqual("Colonia Council", @event.faction);
+            Assert.AreEqual(0, @event.threatlevel);
+            Assert.AreEqual(2385.815674M, @event.secondsremaining);
+        }
+
+        [TestMethod]
+        public void TestSignalDetectedEvent3()
+        {
+            // Test a uniquely named object signal
+            string line = @"{ ""timestamp"":""2019-02-17T19:39:39Z"", ""event"":""FSSSignalDiscovered"", ""SystemAddress"":60276065930987, ""SignalName"":""Samson Class Bulk Cargo Ship GDZ-044"" }";
+            List<Event> events = JournalMonitor.ParseJournalEntry(line);
+            SignalDetectedEvent @event = (SignalDetectedEvent)events[0];
+            Assert.IsNotNull(@event);
+            Assert.IsInstanceOfType(@event, typeof(SignalDetectedEvent));
+            Assert.AreEqual("Samson Class Bulk Cargo Ship GDZ-044", @event.source);
         }
     }
 }

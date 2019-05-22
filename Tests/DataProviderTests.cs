@@ -48,7 +48,7 @@ namespace UnitTests
 
             StarSystem system = JsonConvert.DeserializeObject<StarSystem>(legagySystemSql);
             Assert.IsNotNull(system);
-            Assert.AreEqual("Macay", system.name);
+            Assert.AreEqual("Macay", system.systemname);
             Assert.AreEqual(8898081, system.population);
             Assert.AreEqual(2, system.stations.Count);
             Assert.AreEqual(0, system.bodies.Count);
@@ -62,7 +62,7 @@ namespace UnitTests
 
             StarSystem system = JsonConvert.DeserializeObject<StarSystem>(legagySystemSql);
             Assert.IsNotNull(system);
-            Assert.AreEqual("Lazdongand", system.name);
+            Assert.AreEqual("Lazdongand", system.systemname);
             Assert.AreEqual(75005, system.population);
             Assert.AreEqual(3, system.stations.Count);
             Assert.AreEqual(0, system.bodies.Count);
@@ -76,7 +76,7 @@ namespace UnitTests
 
             StarSystem system = JsonConvert.DeserializeObject<StarSystem>(legagySystemSql);
             Assert.IsNotNull(system);
-            Assert.AreEqual("Aphros", system.name);
+            Assert.AreEqual("Aphros", system.systemname);
             Assert.AreEqual(0, system.population);
             Assert.AreEqual(0, system.stations.Count);
             Assert.AreEqual(8, system.bodies.Count);
@@ -90,7 +90,7 @@ namespace UnitTests
 
             StarSystem system = JsonConvert.DeserializeObject<StarSystem>(legagySystemSql);
 
-            Assert.AreEqual("Zhu Baba", system.name);
+            Assert.AreEqual("Zhu Baba", system.systemname);
             Assert.AreEqual(159918, system.population);
             Assert.AreEqual(0, system.stations.Count);
             Assert.AreEqual(30, system.bodies.Count);
@@ -121,7 +121,7 @@ namespace UnitTests
             // Test system & body data in a complete star system
             StarSystem starSystem = DataProviderService.GetSystemData("Sol");
 
-            Assert.AreEqual("Sol", starSystem.name);
+            Assert.AreEqual("Sol", starSystem.systemname);
             Assert.AreEqual(17072, starSystem.EDDBID);
             Assert.AreEqual((decimal)0, starSystem.x);
             Assert.AreEqual((decimal)0, starSystem.y);
@@ -130,7 +130,7 @@ namespace UnitTests
             Assert.IsNotNull(starSystem.Faction);
             Assert.IsNotNull(starSystem.Faction.Allegiance.invariantName);
             Assert.IsNotNull(starSystem.Faction.Government.invariantName);
-            Assert.IsNotNull(starSystem.Faction.presences.FirstOrDefault(p => p.systemName == starSystem.name)?.FactionState?.invariantName);
+            Assert.IsNotNull(starSystem.Faction.presences.FirstOrDefault(p => p.systemName == starSystem.systemname)?.FactionState?.invariantName);
             Assert.IsNotNull(starSystem.Faction.name);
             Assert.IsNotNull(starSystem.securityLevel.invariantName);
             Assert.IsNotNull(starSystem.primaryeconomy);
@@ -152,9 +152,9 @@ namespace UnitTests
         [TestMethod]
         public void TestNullLegacy()
         {
-            StarSystem starSystem = LegacyEddpService.SetLegacyData(new StarSystem() { name = "No such system"});
+            StarSystem starSystem = LegacyEddpService.SetLegacyData(new StarSystem() { systemname = "No such system"});
             Assert.IsNotNull(starSystem);
-            Assert.AreEqual("No such system", starSystem.name);
+            Assert.AreEqual("No such system", starSystem.systemname);
         }
 
         [TestMethod]
