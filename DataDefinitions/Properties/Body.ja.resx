@@ -141,20 +141,16 @@
     <value>惑星帯</value>
     <comment>Body Type "Belt"</comment>
   </data>
-  <data name="None" xml:space="preserve">
-    <value>なし</value>
-    <comment>None</comment>
-  </data>
+  
   <data name="Station" xml:space="preserve">
     <value>ステーション</value>
     <comment>BodyType "Station"</comment>
   </data>
-  <data name="Null" xml:space="preserve">
-    <value>なし</value>
-    <comment>BodyType "Null"</comment>
-  </data>
+  
   <data name="PlanetaryRing" xml:space="preserve">
     <value>惑星環</value>
     <comment>Body Type PlanetaryRing</comment>
   </data>
+  
+  
 </root>
