@@ -123,7 +123,7 @@
   </data>
   <data name="AmmoniaAndOxygen" xml:space="preserve">
     <value>アンモニアおよび酸素</value>
-    <comment>Atmosphere class "Ammonia and oxygen"</comment>
+    <comment>Atmosphere class "Ammonia and oxygen" (obsolete - see "AmmoniaOxygen")</comment>
   </data>
   <data name="AmmoniaRich" xml:space="preserve">
     <value>アンモニアに富む</value>
@@ -209,4 +209,5 @@
     <value>ガス惑星</value>
     <comment>Atmosphere class "Gas giant"</comment>
   </data>
+  
 </root>
