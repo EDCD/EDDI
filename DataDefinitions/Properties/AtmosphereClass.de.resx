@@ -209,5 +209,8 @@
     <value>Gasriese</value>
     <comment>Atmosphere class "Gas giant"</comment>
   </data>
-  
+  <data name="AmmoniaOxygen" xml:space="preserve">
+    <value>Ammoniak und Sauerstoff</value>
+    <comment>Atmosphere class "Ammonia oxygen"</comment>
+  </data>
 </root>
