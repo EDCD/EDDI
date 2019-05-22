@@ -175,7 +175,7 @@
     <value>Retirar:</value>
   </data>
   <data name="tab_station_distance" xml:space="preserve">
-    <value>Max. Distancia de la estación desde la estrella principal (sl):</value>
+    <value>Max. Distancia de la estación desde la estrella principal (sL):</value>
   </data>
   <data name="update_button" xml:space="preserve">
     <value>Actualizar</value>
