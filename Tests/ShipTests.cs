@@ -108,7 +108,7 @@ namespace UnitTests
             // Start a ship monitor
             ShipMonitor shipMonitor = new ShipMonitor();
             PrivateObject privateObject = new PrivateObject(shipMonitor);
-            privateObject.SetFieldOrProperty("updateDat", DateTime.MinValue);
+            privateObject.SetFieldOrProperty("updatedAt", DateTime.MinValue);
 
             // Log in
             SendEvents(@"{ ""timestamp"":""2017-04-24T08:10:21Z"", ""event"":""LoadGame"", ""Commander"":""McDonald"", ""Horizons"":true,""Ship"":""SideWinder"", ""ShipID"":901, ""ShipName"":"""", ""ShipIdent"":"""", ""FuelLevel"":2.000000, ""FuelCapacity"":2.000000, ""GameMode"":""Solo"", ""Credits"":1637243231, ""Loan"":0 }", shipMonitor);
@@ -270,6 +270,29 @@ namespace UnitTests
             Assert.IsNull(@event.tomodule);
             Assert.AreEqual("Krait Mk. II", @event.ship);
             Assert.AreEqual(81, @event.shipid);
+
+            // Obtain our ship monitor and save its state
+            ShipMonitor shipMonitor = (ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor");
+            ObservableCollection<Ship> shipyard = shipMonitor.shipyard;
+            PrivateObject privateObject = new PrivateObject(shipMonitor);
+            privateObject.SetFieldOrProperty("updatedAt", DateTime.MinValue);
+
+            // Set up our ship
+            Ship ship = new Ship() { model = @event.ship, LocalId = (int)@event.shipid };
+            ship.compartments.Add(new Compartment() { name = @event.fromslot, size = 3, module = @event.frommodule });
+            ship.compartments.Add(new Compartment() { name = @event.toslot, size = 3, module = @event.tomodule });
+            privateObject.Invoke("RemoveShip", new object[] { (int)@event.shipid });
+            privateObject.Invoke("AddShip", new object[] { ship });
+
+            // Test the event handler
+            Assert.AreEqual(@event.frommodule, ship.compartments.FirstOrDefault(c => c.name == @event.fromslot)?.module);
+            Assert.AreEqual(@event.tomodule, ship.compartments.FirstOrDefault(c => c.name == @event.toslot)?.module);
+            privateObject.Invoke("handleModuleSwappedEvent", new object[] { @event });
+            Assert.AreEqual(@event.frommodule, ship.compartments.FirstOrDefault(c => c.name == @event.toslot)?.module);
+            Assert.AreEqual(@event.tomodule, ship.compartments.FirstOrDefault(c => c.name == @event.fromslot)?.module);
+
+            // Restore our ship monitor to its original state
+            privateObject.SetFieldOrProperty("shipyard", shipyard);
         }
 
         [TestMethod]
@@ -341,7 +364,7 @@ namespace UnitTests
 
             // Update the shipyard
             privateObject.SetFieldOrProperty("shipyard", new ObservableCollection<Ship>(newShiplist));
-            privateObject.SetFieldOrProperty("updateDat", DateTime.MinValue);
+            privateObject.SetFieldOrProperty("updatedAt", DateTime.MinValue);
 
             shipMonitor.SetCurrentShip(configuration.currentshipid);
             Assert.AreEqual(81, shipMonitor.GetCurrentShip().LocalId);
@@ -403,7 +426,7 @@ namespace UnitTests
         {
             var privateObject = new PrivateObject(new ShipMonitor());
             privateObject.SetFieldOrProperty("shipyard", new ObservableCollection<Ship>());
-            privateObject.SetFieldOrProperty("updateDat", DateTime.MinValue);
+            privateObject.SetFieldOrProperty("updatedAt", DateTime.MinValue);
 
             string data = System.IO.File.ReadAllText("loadout.json");
             List<Event> events = JournalMonitor.ParseJournalEntry(data);

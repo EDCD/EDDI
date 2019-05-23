@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiDataDefinitions
 {
@@ -738,6 +739,8 @@ namespace EddiDataDefinitions
                 new Module(128671288, "Int_DroneControl_Prospector_Size7_Class5", 1453, "ProspectorLimpetController", 7, "A", 6998400),
                 new Module(128671321, "Hpt_Slugshot_Gimbal_Large", 1454, "FragmentCannon", 3, "C", 1751040, ModuleMount.Gimballed),
                 new Module(128671322, "Hpt_Slugshot_Turret_Large", 1455, "FragmentCannon", 3, "C", 5836800, ModuleMount.Turreted),
+                new Module(128671340, "Hpt_MiningLaser_Fixed_Small_Advanced", 1479, "MiningLance", 1, "D", 28066, ModuleMount.Fixed),
+                new Module(128671345, "Hpt_MultiCannon_Fixed_Small_Strong", 1481, "Enforcer", 1, "F", 11811, ModuleMount.Fixed, 60, 1000),
                 new Module(128671832, "DiamondBackXL_Armour_Grade1", 1456, "LightweightAlloy", 1, "I", 0, 128671831),
                 new Module(128671833, "DiamondBackXL_Armour_Grade2", 1457, "ReinforcedAlloy", 1, "I", 800000, 128671831),
                 new Module(128671834, "DiamondBackXL_Armour_Grade3", 1458, "MilitaryGradeComposite", 1, "I", 1800000, 128671831),
@@ -905,12 +908,22 @@ namespace EddiDataDefinitions
                 new Module(128788700, "Hpt_ATDumbfireMissile_Fixed_Large", 1623, "AXMissileRack", 3, "A", 1288780, ModuleMount.Fixed),
                 new Module(128788705, "Hpt_ATDumbfireMissile_Turret_Large", 1624, "AXMissileRack", 3, "A", 3866338, ModuleMount.Turreted),
                 new Module(128788702, "Hpt_ATMultiCannon_Fixed_Large", 1625, "AX Multi-Cannon", 3, "C", 1126044, ModuleMount.Fixed),
-                new Module(128793060, "Hpt_ATMultiCannon_Turret_Large", 1626, "AX Multi-Cannon", 3, "E", 3642224, ModuleMount.Turreted),
                 new Module(128785621, "Type9_Military_Armour_Grade1", 1627, "LightweightAlloy", 1, "I", 0, 128785619),
                 new Module(128785622, "Type9_Military_Armour_Grade2", 1628, "ReinforcedAlloy", 1, "I", 48654583, 128785619),
                 new Module(128785623, "Type9_Military_Armour_Grade3", 1629, "MilitaryGradeComposite", 1, "I", 109472813, 128785619),
                 new Module(128785624, "Type9_Military_Armour_Mirrored", 1630, "MirroredSurfaceComposite", 1, "I", 258720748, 128785619),
                 new Module(128785625, "Type9_Military_Armour_Reactive", 1631, "ReactiveSurfaceComposite", 1, "I", 283830162, 128785619),
+                new Module(128793060, "Hpt_ATMultiCannon_Turret_Large", 1626, "AX Multi-Cannon", 3, "E", 3642224, ModuleMount.Turreted),
+                new Module(128793117, "Int_MetaAlloyHullReinforcement_Size1_Class1", 1664, "MetaAlloyHullReinforcement", 1, "E", 7501),
+                new Module(128793118, "Int_MetaAlloyHullReinforcement_Size1_Class2", 1665, "MetaAlloyHullReinforcement", 1, "D", 22500),
+                new Module(128793119, "Int_MetaAlloyHullReinforcement_Size2_Class1", 1666, "MetaAlloyHullReinforcement", 2, "E", 18000),
+                new Module(128793120, "Int_MetaAlloyHullReinforcement_Size2_Class2", 1667, "MetaAlloyHullReinforcement", 2, "D", 54000),
+                new Module(128793121, "Int_MetaAlloyHullReinforcement_Size3_Class1", 1668, "MetaAlloyHullReinforcement", 3, "E", 42000),
+                new Module(128793122, "Int_MetaAlloyHullReinforcement_Size3_Class2", 1669, "MetaAlloyHullReinforcement", 3, "D", 126000),
+                new Module(128793123, "Int_MetaAlloyHullReinforcement_Size4_Class1", 1670, "MetaAlloyHullReinforcement", 4, "E", 97501),
+                new Module(128793124, "Int_MetaAlloyHullReinforcement_Size4_Class2", 1671, "MetaAlloyHullReinforcement", 4, "D", 292500),
+                new Module(128793125, "Int_MetaAlloyHullReinforcement_Size5_Class1", 1672, "MetaAlloyHullReinforcement", 5, "E", 225001),
+                new Module(128793126, "Int_MetaAlloyHullReinforcement_Size5_Class2", 1673, "MetaAlloyHullReinforcement", 5, "D", 675001),
                 new Module(128793941, "Int_DroneControl_Decontamination_Size1_Class1", 1632, "DecontaminationLimpetController", 1, "E", 3600),
                 new Module(128793942, "Int_DroneControl_Decontamination_Size3_Class1", 1633, "DecontaminationLimpetController", 3, "E", 16201),
                 new Module(128793943, "Int_DroneControl_Decontamination_Size5_Class1", 1634, "DecontaminationLimpetController", 5, "E", 145801),
@@ -919,11 +932,109 @@ namespace EddiDataDefinitions
                 new Module(128841592, "Int_DroneControl_Recon_Size3_Class1", 1637, "ReconLimpetController", 3, "E", 8200),
                 new Module(128841593, "Int_DroneControl_Recon_Size5_Class1", 1638, "ReconLimpetController", 5, "E", 75800),
                 new Module(128841594, "Int_DroneControl_Recon_Size7_Class1", 1639, "ReconLimpetController", 7, "E", 612200),
+                new Module(128816569, "Krait_mkii_Armour_Grade1", 1645, "LightweightAlloy", 1, "I", 0, 128816567),
+                new Module(128816570, "Krait_mkii_Armour_Grade2", 1646, "ReinforcedAlloy", 1, "I", 22791270, 128816567),
+                new Module(128816571, "Krait_mkii_Armour_Grade3", 1647, "MilitaryGradeComposite", 1, "I", 51280360, 128816567),
+                new Module(128816572, "Krait_mkii_Armour_Mirrored", 1648, "MirroredSurfaceComposite", 1, "I", 121192590, 128816567),
+                new Module(128816573, "Krait_mkii_Armour_Reactive", 1649, "ReactiveSurfaceComposite", 1, "I", 134297570, 128816567),
                 new Module(128816576, "TypeX_Armour_Grade1", 1640, "LightweightAlloy", 1, "I", 0, 128816574),
                 new Module(128816577, "TypeX_Armour_Grade2", 1641, "ReinforcedAlloy", 1, "I", 7752900, 128816574),
                 new Module(128816578, "TypeX_Armour_Grade3", 1642, "MilitaryGradeComposite", 1, "I", 17444026, 128816574),
                 new Module(128816579, "TypeX_Armour_Mirrored", 1643, "MirroredSurfaceComposite", 1, "I", 41226050, 128816574),
                 new Module(128816580, "TypeX_Armour_Reactive", 1644, "ReactiveSurfaceComposite", 1, "I", 45683967, 128816574),
+                new Module(128816583, "TypeX_2_Armour_Grade1", 1659, "LightweightAlloy", 1, "I", 0, 128816581),
+                new Module(128816584, "TypeX_2_Armour_Grade2", 1660, "ReinforcedAlloy", 1, "I", 9146537, 128816581),
+                new Module(128816585, "TypeX_2_Armour_Grade3", 1661, "MilitaryGradeComposite", 1, "I", 20579707, 128816581),
+                new Module(128816586, "TypeX_2_Armour_Mirrored", 1662, "MirroredSurfaceComposite", 1, "I", 48636709, 128816581),
+                new Module(128816587, "TypeX_2_Armour_Reactive", 1663, "ReactiveSurfaceComposite", 1, "I", 53895966, 128816581),
+                new Module(128816590, "TypeX_3_Armour_Grade1", 1650, "LightweightAlloy", 1, "I", 0, 128816588),
+                new Module(128816591, "TypeX_3_Armour_Grade2", 1651, "ReinforcedAlloy", 1, "I", 12188900, 128816588),
+                new Module(128816592, "TypeX_3_Armour_Grade3", 1652, "MilitaryGradeComposite", 1, "I", 27425027, 128816588),
+                new Module(128816593, "TypeX_3_Armour_Mirrored", 1653, "MirroredSurfaceComposite", 1, "I", 64814481, 128816588),
+                new Module(128816594, "TypeX_3_Armour_Reactive", 1654, "ReactiveSurfaceComposite", 1, "I", 71823099, 128816588),
+                new Module(128833687, "Hpt_Guardian_GaussCannon_Fixed_Medium", 1698, "GuardianGaussCannon", 2, "B", 543801, ModuleMount.Fixed),
+                new Module(128833944, "Int_CorrosionProofCargoRack_Size4_Class1", 1699, "CorrosionResistantCargoRack", 4, "E", 94329),
+                new Module(128833945, "Int_GuardianHullReinforcement_Size1_Class1", 1700, "GuardianHullReinforcement", 1, "E", 10000),
+                new Module(128833946, "Int_GuardianHullReinforcement_Size1_Class2", 1701, "GuardianHullReinforcement", 1, "D", 30000),
+                new Module(128833947, "Int_GuardianHullReinforcement_Size2_Class1", 1702, "GuardianHullReinforcement", 2, "E", 24000),
+                new Module(128833948, "Int_GuardianHullReinforcement_Size2_Class2", 1703, "GuardianHullReinforcement", 2, "D", 72000),
+                new Module(128833949, "Int_GuardianHullReinforcement_Size3_Class1", 1704, "GuardianHullReinforcement", 3, "E", 57600),
+                new Module(128833950, "Int_GuardianHullReinforcement_Size3_Class2", 1705, "GuardianHullReinforcement", 3, "D", 172800),
+                new Module(128833951, "Int_GuardianHullReinforcement_Size4_Class1", 1706, "GuardianHullReinforcement", 4, "E", 138240),
+                new Module(128833952, "Int_GuardianHullReinforcement_Size4_Class2", 1707, "GuardianHullReinforcement", 4, "D", 414720),
+                new Module(128833953, "Int_GuardianHullReinforcement_Size5_Class1", 1708, "GuardianHullReinforcement", 5, "E", 331776),
+                new Module(128833954, "Int_GuardianHullReinforcement_Size5_Class2", 1709, "GuardianHullReinforcement", 5, "D", 995328),
+                new Module(128833955, "Int_GuardianModuleReinforcement_Size1_Class1", 1710, "GuardianModuleReinforcement", 1, "E", 10000),
+                new Module(128833956, "Int_GuardianModuleReinforcement_Size1_Class2", 1711, "GuardianModuleReinforcement", 1, "D", 30000),
+                new Module(128833957, "Int_GuardianModuleReinforcement_Size2_Class1", 1712, "GuardianModuleReinforcement", 2, "E", 24000),
+                new Module(128833958, "Int_GuardianModuleReinforcement_Size2_Class2", 1713, "GuardianModuleReinforcement", 2, "D", 72000),
+                new Module(128833959, "Int_GuardianModuleReinforcement_Size3_Class1", 1714, "GuardianModuleReinforcement", 3, "E", 57600),
+                new Module(128833960, "Int_GuardianModuleReinforcement_Size3_Class2", 1715, "GuardianModuleReinforcement", 3, "D", 172800),
+                new Module(128833961, "Int_GuardianModuleReinforcement_Size4_Class1", 1716, "GuardianModuleReinforcement", 4, "E", 138240),
+                new Module(128833962, "Int_GuardianModuleReinforcement_Size4_Class2", 1717, "GuardianModuleReinforcement", 4, "D", 414720),
+                new Module(128833963, "Int_GuardianModuleReinforcement_Size5_Class1", 1718, "GuardianModuleReinforcement", 5, "E", 331776),
+                new Module(128833964, "Int_GuardianModuleReinforcement_Size5_Class2", 1719, "GuardianModuleReinforcement", 5, "D", 995328),
+                new Module(128833965, "Int_GuardianShieldReinforcement_Size1_Class1", 1720, "GuardianShieldReinforcement", 1, "E", 10000),
+                new Module(128833966, "Int_GuardianShieldReinforcement_Size1_Class2", 1721, "GuardianShieldReinforcement", 1, "D", 30000),
+                new Module(128833967, "Int_GuardianShieldReinforcement_Size2_Class1", 1722, "GuardianShieldReinforcement", 2, "E", 24000),
+                new Module(128833968, "Int_GuardianShieldReinforcement_Size2_Class2", 1723, "GuardianShieldReinforcement", 2, "D", 72000),
+                new Module(128833969, "Int_GuardianShieldReinforcement_Size3_Class1", 1724, "GuardianShieldReinforcement", 3, "E", 57600),
+                new Module(128833970, "Int_GuardianShieldReinforcement_Size3_Class2", 1725, "GuardianShieldReinforcement", 3, "D", 172800),
+                new Module(128833971, "Int_GuardianShieldReinforcement_Size4_Class1", 1726, "GuardianShieldReinforcement", 4, "E", 138240),
+                new Module(128833972, "Int_GuardianShieldReinforcement_Size4_Class2", 1727, "GuardianShieldReinforcement", 4, "D", 414720),
+                new Module(128833973, "Int_GuardianShieldReinforcement_Size5_Class1", 1728, "GuardianShieldReinforcement", 5, "E", 331776),
+                new Module(128833974, "Int_GuardianShieldReinforcement_Size5_Class2", 1729, "GuardianShieldReinforcement", 5, "D", 995328),
+                new Module(128833975, "Int_GuardianFSDBooster_Size1", 1730, "GuardianFsdBooster", 1, "H", 395896),
+                new Module(128833976, "Int_GuardianFSDBooster_Size2", 1731, "GuardianFsdBooster", 2, "H", 790257),
+                new Module(128833977, "Int_GuardianFSDBooster_Size3", 1732, "GuardianFsdBooster", 3, "H", 1579920),
+                new Module(128833978, "Int_GuardianFSDBooster_Size4", 1733, "GuardianFsdBooster", 4, "H", 3163887),
+                new Module(128833979, "Int_GuardianFSDBooster_Size5", 1734, "GuardianFsdBooster", 5, "H", 6321023),
+                new Module(128833980, "Int_GuardianPowerDistributor_Size1", 1735, "GuardianPowerDistributor", 1, "A", 35940),
+                new Module(128833981, "Int_GuardianPowerDistributor_Size2", 1736, "GuardianPowerDistributor", 2, "A", 97929),
+                new Module(128833982, "Int_GuardianPowerDistributor_Size3", 1737, "GuardianPowerDistributor", 3, "A", 273223),
+                new Module(128833983, "Int_GuardianPowerDistributor_Size4", 1738, "GuardianPowerDistributor", 4, "A", 762291),
+                new Module(128833984, "Int_GuardianPowerDistributor_Size5", 1739, "GuardianPowerDistributor", 5, "A", 2126788),
+                new Module(128833985, "Int_GuardianPowerDistributor_Size6", 1740, "GuardianPowerDistributor", 6, "A", 5933735),
+                new Module(128833986, "Int_GuardianPowerDistributor_Size7", 1741, "GuardianPowerDistributor", 7, "A", 16555121),
+                new Module(128833987, "Int_GuardianPowerDistributor_Size8", 1742, "GuardianPowerDistributor", 8, "A", 46188786),
+                new Module(128833988, "Int_GuardianPowerplant_Size2", 1743, "GuardianPowerPlant", 2, "A", 192165),
+                new Module(128833989, "Int_GuardianPowerplant_Size3", 1744, "GuardianPowerPlant", 3, "A", 576493),
+                new Module(128833990, "Int_GuardianPowerplant_Size4", 1745, "GuardianPowerPlant", 4, "A", 1729480),
+                new Module(128833991, "Int_GuardianPowerplant_Size5", 1746, "GuardianPowerPlant", 5, "A", 5188441),
+                new Module(128833992, "Int_GuardianPowerplant_Size6", 1747, "GuardianPowerPlant", 6, "A", 15565317),
+                new Module(128833993, "Int_GuardianPowerplant_Size7", 1748, "GuardianPowerPlant", 7, "A", 46695951),
+                new Module(128833994, "Int_GuardianPowerplant_Size8", 1749, "GuardianPowerPlant", 8, "A", 138600000),
+                new Module(128833995, "Hpt_CausticMissile_Fixed_Medium", 1750, "EnzymeMissileRack", 2, "B", 580500),
+                new Module(128833996, "Hpt_FlechetteLauncher_Fixed_Medium", 1751, "FlechetteLauncher", 2, "B", 344916, ModuleMount.Fixed),
+                new Module(128833998, "Hpt_Guardian_PlasmaLauncher_Fixed_Medium", 1753, "GuardianPlasmaCharger", 2, "B", 498210, ModuleMount.Fixed),
+                new Module(128833999, "Hpt_Guardian_PlasmaLauncher_Turret_Medium", 1754, "GuardianPlasmaCharger", 2, "E", 1601542, ModuleMount.Turreted),
+                new Module(128839283, "Krait_Light_Armour_Grade1", 1768, "LightweightAlloy", 1, "I", 0, 128839281),
+                new Module(128839284, "Krait_Light_Armour_Grade2", 1769, "ReinforcedAlloy", 1, "I", 0, 128839281),
+                new Module(128839285, "Krait_Light_Armour_Grade3", 1770, "MilitaryGradeComposite", 1, "I", 0, 128839281),
+                new Module(128839286, "Krait_Light_Armour_Mirrored", 1771, "MirroredSurfaceComposite", 1, "I", 0, 128839281),
+                new Module(128839287, "Krait_Light_Armour_Reactive", 1772, "ReactiveSurfaceComposite", 1, "I", 0, 128839281),
+                new Module(128834000, "Hpt_Guardian_ShardCannon_Fixed_Medium", 1755, "ShardCannon", 2, "A", 445560, ModuleMount.Fixed),
+                new Module(128834001, "Hpt_Guardian_ShardCannon_Turret_Medium", 1756, "ShardCannon", 2, "A", 1722825, ModuleMount.Turreted),
+                new Module(128834002, "Hpt_PlasmaShockCannon_Fixed_Medium", 1757, "ShockCannon", 2, "D", 358313, ModuleMount.Fixed),
+                new Module(128834003, "Hpt_PlasmaShockCannon_Gimbal_Medium", 1758, "ShockCannon", 2, "D", 495963, ModuleMount.Gimballed),
+                new Module(128834004, "Hpt_PlasmaShockCannon_Turret_Medium", 1759, "ShockCannon", 2, "D", 1192698, ModuleMount.Turreted),
+                new Module(128834778, "Hpt_Guardian_ShardCannon_Fixed_Large", 1760, "ShardCannon", 3, "C", 1461350, ModuleMount.Fixed),
+                new Module(128834779, "Hpt_Guardian_ShardCannon_Turret_Large", 1761, "ShardCannon", 3, "D", 5865026, ModuleMount.Turreted),
+                new Module(128834780, "Hpt_PlasmaShockCannon_Fixed_Large", 1762, "ShockCannon", 3, "C", 14300793, ModuleMount.Fixed),
+                new Module(128834781, "Hpt_PlasmaShockCannon_Gimbal_Large", 1763, "ShockCannon", 3, "D", 2225169, ModuleMount.Gimballed),
+                new Module(128834782, "Hpt_PlasmaShockCannon_Turret_Large", 1764, "ShockCannon", 3, "D", 5188441, ModuleMount.Turreted),
+                new Module(128834783, "Hpt_Guardian_PlasmaLauncher_Fixed_Large", 1765, "GuardianPlasmaCharger", 3, "C", 1248946, ModuleMount.Fixed),
+                new Module(128834784, "Hpt_Guardian_PlasmaLauncher_Turret_Large", 1766, "GuardianPlasmaCharger", 3, "D", 5188441, ModuleMount.Turreted),
+                new Module(128891606, "Hpt_Guardian_PlasmaLauncher_Turret_Small", 1780, "GuardianPlasmaCharger", 1, "F", 478910, ModuleMount.Turreted),
+                new Module(128891607, "Hpt_Guardian_PlasmaLauncher_Fixed_Small", 1781, "GuardianPlasmaCharger", 1, "D", 174626, ModuleMount.Fixed),
+                new Module(128891608, "Hpt_Guardian_ShardCannon_Turret_Small", 1782, "ShardCannon", 1, "F", 496669, ModuleMount.Turreted),
+                new Module(128891609, "Hpt_Guardian_ShardCannon_Fixed_Small", 1783, "ShardCannon", 1, "D", 150040, ModuleMount.Fixed),
+                new Module(128891610, "Hpt_Guardian_GaussCannon_Fixed_Small", 1784, "GuardianGaussCannon", 1, "D", 165474, ModuleMount.Fixed),
+                new Module(128915981, "Mamba_Armour_Grade1", 1798, "LightweightAlloy", 1, "I", 0, 128915979),
+                new Module(128915982, "Mamba_Armour_Grade2", 1799, "ReinforcedAlloy", 1, "I", 0, 128915979),
+                new Module(128915983, "Mamba_Armour_Grade3", 1800, "MilitaryGradeComposite", 1, "I", 0, 128915979),
+                new Module(128915984, "Mamba_Armour_Mirrored", 1801, "MirroredSurfaceComposite", 1, "I", 0, 128915979),
+                new Module(128915985, "Mamba_Armour_Reactive", 1802, "ReactiveSurfaceComposite", 1, "I", 0, 128915979),
 
                 // Various free modules that show up in SRVs, fighters and training; not used anywhere but note them here so that they do not throw errors when encountered
                 new Module(128666643, "Int_CargoRack_Size2_Class1_free", -1, "CargoRack", 2, "E", 0),
@@ -1030,137 +1141,31 @@ namespace EddiDataDefinitions
                 new Module(899990050, "hpt_guardianshard_fixed_gdn_fighter", -1, "ShardCannon", 1, "I", 0, -1),
 
                 // Needs EDDB ID
-                new Module(128935155, "Int_DockingComputer_Advanced", 890, "AdvancedDockingComputer", 1, "E", 13507),
-                new Module(128932273, "Int_SupercruiseAssist", 890, "SupercruiseAssist", 1, "E", 9121),
-                new Module(128671340, "Hpt_MiningLaser_Fixed_Small_Advanced", -1, "MiningLance", 1, "D", 28066, ModuleMount.Fixed),
-                new Module(128671345, "Hpt_MultiCannon_Fixed_Small_Strong", -1, "Enforcer", 1, "F", 11811, ModuleMount.Fixed, 60, 1000),
-                new Module(128793117, "Int_MetaAlloyHullReinforcement_Size1_Class1", -1, "MetaAlloyHullReinforcement", 1, "E", 7501),
-                new Module(128793118, "Int_MetaAlloyHullReinforcement_Size1_Class2", -1, "MetaAlloyHullReinforcement", 1, "D", 22500),
-                new Module(128793119, "Int_MetaAlloyHullReinforcement_Size2_Class1", -1, "MetaAlloyHullReinforcement", 2, "E", 18000),
-                new Module(128793120, "Int_MetaAlloyHullReinforcement_Size2_Class2", -1, "MetaAlloyHullReinforcement", 2, "D", 54000),
-                new Module(128793121, "Int_MetaAlloyHullReinforcement_Size3_Class1", -1, "MetaAlloyHullReinforcement", 3, "E", 42000),
-                new Module(128793122, "Int_MetaAlloyHullReinforcement_Size3_Class2", -1, "MetaAlloyHullReinforcement", 3, "D", 126000),
-                new Module(128793123, "Int_MetaAlloyHullReinforcement_Size4_Class1", -1, "MetaAlloyHullReinforcement", 4, "E", 97501),
-                new Module(128793124, "Int_MetaAlloyHullReinforcement_Size4_Class2", -1, "MetaAlloyHullReinforcement", 4, "D", 292500),
-                new Module(128793125, "Int_MetaAlloyHullReinforcement_Size5_Class1", -1, "MetaAlloyHullReinforcement", 5, "E", 225001),
-                new Module(128793126, "Int_MetaAlloyHullReinforcement_Size5_Class2", -1, "MetaAlloyHullReinforcement", 5, "D", 675001),
-                new Module(128816569, "Krait_mkii_Armour_Grade1", -1, "LightweightAlloy", 1, "I", 0, 128816567),
-                new Module(128816570, "Krait_mkii_Armour_Grade2", -1, "ReinforcedAlloy", 1, "I", 22791270, 128816567),
-                new Module(128816571, "Krait_mkii_Armour_Grade3", -1, "MilitaryGradeComposite", 1, "I", 51280360, 128816567),
-                new Module(128816572, "Krait_mkii_Armour_Mirrored", -1, "MirroredSurfaceComposite", 1, "I", 121192590, 128816567),
-                new Module(128816573, "Krait_mkii_Armour_Reactive", -1, "ReactiveSurfaceComposite", 1, "I", 134297570, 128816567),
-                new Module(128816583, "TypeX_2_Armour_Grade1", -1, "LightweightAlloy", 1, "I", 0, 128816581),
-                new Module(128816584, "TypeX_2_Armour_Grade2", -1, "ReinforcedAlloy", 1, "I", 9146537, 128816581),
-                new Module(128816585, "TypeX_2_Armour_Grade3", -1, "MilitaryGradeComposite", 1, "I", 20579707, 128816581),
-                new Module(128816586, "TypeX_2_Armour_Mirrored", -1, "MirroredSurfaceComposite", 1, "I", 48636709, 128816581),
-                new Module(128816587, "TypeX_2_Armour_Reactive", -1, "ReactiveSurfaceComposite", 1, "I", 53895966, 128816581),
-                new Module(128816590, "TypeX_3_Armour_Grade1", -1, "LightweightAlloy", 1, "I", 0, 128816588),
-                new Module(128816591, "TypeX_3_Armour_Grade2", -1, "ReinforcedAlloy", 1, "I", 12188900, 128816588),
-                new Module(128816592, "TypeX_3_Armour_Grade3", -1, "MilitaryGradeComposite", 1, "I", 27425027, 128816588),
-                new Module(128816593, "TypeX_3_Armour_Mirrored", -1, "MirroredSurfaceComposite", 1, "I", 64814481, 128816588),
-                new Module(128816594, "TypeX_3_Armour_Reactive", -1, "ReactiveSurfaceComposite", 1, "I", 71823099, 128816588),
-                new Module(128833687, "Hpt_Guardian_GaussCannon_Fixed_Medium", -1, "GuardianGaussCannon", 2, "B", 543801, ModuleMount.Fixed),
-                new Module(128833944, "Int_CorrosionProofCargoRack_Size4_Class1", -1, "CorrosionResistantCargoRack", 4, "E", 94329),
-                new Module(128833945, "Int_GuardianHullReinforcement_Size1_Class1", -1, "GuardianHullReinforcement", 1, "E", 10000),
-                new Module(128833946, "Int_GuardianHullReinforcement_Size1_Class2", -1, "GuardianHullReinforcement", 1, "D", 30000),
-                new Module(128833947, "Int_GuardianHullReinforcement_Size2_Class1", -1, "GuardianHullReinforcement", 2, "E", 24000),
-                new Module(128833948, "Int_GuardianHullReinforcement_Size2_Class2", -1, "GuardianHullReinforcement", 2, "D", 72000),
-                new Module(128833949, "Int_GuardianHullReinforcement_Size3_Class1", -1, "GuardianHullReinforcement", 3, "E", 57600),
-                new Module(128833950, "Int_GuardianHullReinforcement_Size3_Class2", -1, "GuardianHullReinforcement", 3, "D", 172800),
-                new Module(128833951, "Int_GuardianHullReinforcement_Size4_Class1", -1, "GuardianHullReinforcement", 4, "E", 138240),
-                new Module(128833952, "Int_GuardianHullReinforcement_Size4_Class2", -1, "GuardianHullReinforcement", 4, "D", 414720),
-                new Module(128833953, "Int_GuardianHullReinforcement_Size5_Class1", -1, "GuardianHullReinforcement", 5, "E", 331776),
-                new Module(128833954, "Int_GuardianHullReinforcement_Size5_Class2", -1, "GuardianHullReinforcement", 5, "D", 995328),
-                new Module(128833955, "Int_GuardianModuleReinforcement_Size1_Class1", -1, "GuardianModuleReinforcement", 1, "E", 10000),
-                new Module(128833956, "Int_GuardianModuleReinforcement_Size1_Class2", -1, "GuardianModuleReinforcement", 1, "D", 30000),
-                new Module(128833957, "Int_GuardianModuleReinforcement_Size2_Class1", -1, "GuardianModuleReinforcement", 2, "E", 24000),
-                new Module(128833958, "Int_GuardianModuleReinforcement_Size2_Class2", -1, "GuardianModuleReinforcement", 2, "D", 72000),
-                new Module(128833959, "Int_GuardianModuleReinforcement_Size3_Class1", -1, "GuardianModuleReinforcement", 3, "E", 57600),
-                new Module(128833960, "Int_GuardianModuleReinforcement_Size3_Class2", -1, "GuardianModuleReinforcement", 3, "D", 172800),
-                new Module(128833961, "Int_GuardianModuleReinforcement_Size4_Class1", -1, "GuardianModuleReinforcement", 4, "E", 138240),
-                new Module(128833962, "Int_GuardianModuleReinforcement_Size4_Class2", -1, "GuardianModuleReinforcement", 4, "D", 414720),
-                new Module(128833963, "Int_GuardianModuleReinforcement_Size5_Class1", -1, "GuardianModuleReinforcement", 5, "E", 331776),
-                new Module(128833964, "Int_GuardianModuleReinforcement_Size5_Class2", -1, "GuardianModuleReinforcement", 5, "D", 995328),
-                new Module(128833965, "Int_GuardianShieldReinforcement_Size1_Class1", -1, "GuardianShieldReinforcement", 1, "E", 10000),
-                new Module(128833966, "Int_GuardianShieldReinforcement_Size1_Class2", -1, "GuardianShieldReinforcement", 1, "D", 30000),
-                new Module(128833967, "Int_GuardianShieldReinforcement_Size2_Class1", -1, "GuardianShieldReinforcement", 2, "E", 24000),
-                new Module(128833968, "Int_GuardianShieldReinforcement_Size2_Class2", -1, "GuardianShieldReinforcement", 2, "D", 72000),
-                new Module(128833969, "Int_GuardianShieldReinforcement_Size3_Class1", -1, "GuardianShieldReinforcement", 3, "E", 57600),
-                new Module(128833970, "Int_GuardianShieldReinforcement_Size3_Class2", -1, "GuardianShieldReinforcement", 3, "D", 172800),
-                new Module(128833971, "Int_GuardianShieldReinforcement_Size4_Class1", -1, "GuardianShieldReinforcement", 4, "E", 138240),
-                new Module(128833972, "Int_GuardianShieldReinforcement_Size4_Class2", -1, "GuardianShieldReinforcement", 4, "D", 414720),
-                new Module(128833973, "Int_GuardianShieldReinforcement_Size5_Class1", -1, "GuardianShieldReinforcement", 5, "E", 331776),
-                new Module(128833974, "Int_GuardianShieldReinforcement_Size5_Class2", -1, "GuardianShieldReinforcement", 5, "D", 995328),
-                new Module(128833975, "Int_GuardianFSDBooster_Size1", -1, "GuardianFsdBooster", 1, "H", 395896),
-                new Module(128833976, "Int_GuardianFSDBooster_Size2", -1, "GuardianFsdBooster", 2, "H", 790257),
-                new Module(128833977, "Int_GuardianFSDBooster_Size3", -1, "GuardianFsdBooster", 3, "H", 1579920),
-                new Module(128833978, "Int_GuardianFSDBooster_Size4", -1, "GuardianFsdBooster", 4, "H", 3163887),
-                new Module(128833979, "Int_GuardianFSDBooster_Size5", -1, "GuardianFsdBooster", 5, "H", 6321023),
-                new Module(128833980, "Int_GuardianPowerDistributor_Size1", -1, "GuardianPowerDistributor", 1, "A", 35940),
-                new Module(128833981, "Int_GuardianPowerDistributor_Size2", -1, "GuardianPowerDistributor", 2, "A", 97929),
-                new Module(128833982, "Int_GuardianPowerDistributor_Size3", -1, "GuardianPowerDistributor", 3, "A", 273223),
-                new Module(128833983, "Int_GuardianPowerDistributor_Size4", -1, "GuardianPowerDistributor", 4, "A", 762291),
-                new Module(128833984, "Int_GuardianPowerDistributor_Size5", -1, "GuardianPowerDistributor", 5, "A", 2126788),
-                new Module(128833985, "Int_GuardianPowerDistributor_Size6", -1, "GuardianPowerDistributor", 6, "A", 5933735),
-                new Module(128833986, "Int_GuardianPowerDistributor_Size7", -1, "GuardianPowerDistributor", 7, "A", 16555121),
-                new Module(128833987, "Int_GuardianPowerDistributor_Size8", -1, "GuardianPowerDistributor", 8, "A", 46188786),
-                new Module(128833988, "Int_GuardianPowerplant_Size2", -1, "GuardianPowerPlant", 2, "A", 192165),
-                new Module(128833989, "Int_GuardianPowerplant_Size3", -1, "GuardianPowerPlant", 3, "A", 576493),
-                new Module(128833990, "Int_GuardianPowerplant_Size4", -1, "GuardianPowerPlant", 4, "A", 1729480),
-                new Module(128833991, "Int_GuardianPowerplant_Size5", -1, "GuardianPowerPlant", 5, "A", 5188441),
-                new Module(128833992, "Int_GuardianPowerplant_Size6", -1, "GuardianPowerPlant", 6, "A", 15565317),
-                new Module(128833993, "Int_GuardianPowerplant_Size7", -1, "GuardianPowerPlant", 7, "A", 46695951),
-                new Module(128833994, "Int_GuardianPowerplant_Size8", -1, "GuardianPowerPlant", 8, "A", 138600000),
-                new Module(128833995, "Hpt_CausticMissile_Fixed_Medium", -1, "EnzymeMissileRack", 2, "B", 580500),
-                new Module(128833996, "Hpt_FlechetteLauncher_Fixed_Medium", -1, "FlechetteLauncher", 2, "B", 344916, ModuleMount.Fixed),
-                new Module(128833998, "Hpt_Guardian_PlasmaLauncher_Fixed_Medium", -1, "GuardianPlasmaCharger", 2, "B", 498210, ModuleMount.Fixed),
-                new Module(128833999, "Hpt_Guardian_PlasmaLauncher_Turret_Medium", -1, "GuardianPlasmaCharger", 2, "E", 1601542, ModuleMount.Turreted),
-                new Module(128834000, "Hpt_Guardian_ShardCannon_Fixed_Medium", -1, "ShardCannon", 2, "A", 445560, ModuleMount.Fixed),
-                new Module(128834001, "Hpt_Guardian_ShardCannon_Turret_Medium", -1, "ShardCannon", 2, "A", 1722825, ModuleMount.Turreted),
-                new Module(128834002, "Hpt_PlasmaShockCannon_Fixed_Medium", -1, "ShockCannon", 2, "D", 358313, ModuleMount.Fixed),
-                new Module(128834003, "Hpt_PlasmaShockCannon_Gimbal_Medium", -1, "ShockCannon", 2, "D", 495963, ModuleMount.Gimballed),
-                new Module(128834004, "Hpt_PlasmaShockCannon_Turret_Medium", -1, "ShockCannon", 2, "D", 1192698, ModuleMount.Turreted),
-                new Module(128834778, "Hpt_Guardian_ShardCannon_Fixed_Large", -1, "ShardCannon", 3, "C", 1461350, ModuleMount.Fixed),
-                new Module(128834779, "Hpt_Guardian_ShardCannon_Turret_Large", -1, "ShardCannon", 3, "D", 5865026, ModuleMount.Turreted),
-                new Module(128834783, "Hpt_Guardian_PlasmaLauncher_Fixed_Large", -1, "GuardianPlasmaCharger", 3, "C", 1248946, ModuleMount.Fixed),
-                new Module(128834779, "Hpt_Guardian_ShardCannon_Turret_Large", -1, "ShardCannon", 3, "D", 5865026, ModuleMount.Turreted),
-                new Module(128834780, "Hpt_PlasmaShockCannon_Fixed_Large", -1, "ShockCannon", 3, "C", 14300793, ModuleMount.Fixed),
-                new Module(128834781, "Hpt_PlasmaShockCannon_Gimbal_Large", -1, "ShockCannon", 3, "D", 2225169, ModuleMount.Gimballed),
-                new Module(128834782, "Hpt_PlasmaShockCannon_Turret_Large", -1, "ShockCannon", 3, "D", 5188441, ModuleMount.Turreted),
-                new Module(128834784, "Hpt_Guardian_PlasmaLauncher_Turret_Large", -1, "GuardianPlasmaCharger", 3, "D", 5188441, ModuleMount.Turreted),
-                new Module(128891606, "Hpt_Guardian_PlasmaLauncher_Turret_Small", -1, "GuardianPlasmaCharger", 1, "F", 478910, ModuleMount.Turreted),
-                new Module(128891607, "Hpt_Guardian_PlasmaLauncher_Fixed_Small", -1, "GuardianPlasmaCharger", 1, "D", 174626, ModuleMount.Fixed),
-                new Module(128891608, "Hpt_Guardian_ShardCannon_Turret_Small", -1, "ShardCannon", 1, "F", 496669, ModuleMount.Turreted),
-                new Module(128891609, "Hpt_Guardian_ShardCannon_Fixed_Small", -1, "ShardCannon", 1, "D", 150040, ModuleMount.Fixed),
-                new Module(128891610, "Hpt_Guardian_GaussCannon_Fixed_Small", -1, "GuardianGaussCannon", 1, "D", 165474, ModuleMount.Fixed),
+                new Module(128935155, "Int_DockingComputer_Advanced", -1, "AdvancedDockingComputer", 1, "E", 13507),
+                new Module(128932273, "Int_SupercruiseAssist", -1, "SupercruiseAssist", 1, "E", 9121),
 
-                // Needs EDDB ID & pricing
-                new Module(128839283, "Krait_Light_Armour_Grade1", -1, "LightweightAlloy", 1, "I", 0, 128839281),
-                new Module(128839284, "Krait_Light_Armour_Grade2", -1, "ReinforcedAlloy", 1, "I", 0, 128839281),
-                new Module(128839285, "Krait_Light_Armour_Grade3", -1, "MilitaryGradeComposite", 1, "I", 0, 128839281),
-                new Module(128839286, "Krait_Light_Armour_Mirrored", -1, "MirroredSurfaceComposite", 1, "I", 0, 128839281),
-                new Module(128839287, "Krait_Light_Armour_Reactive", -1, "ReactiveSurfaceComposite", 1, "I", 0, 128839281),
-                new Module(128891603, "Hpt_PlasmaShockCannon_Turret_Small", -1, "ShockCannon", 1, "F", 0, ModuleMount.Turreted),
-                new Module(128891604, "Hpt_PlasmaShockCannon_Gimbal_Small", -1, "ShockCannon", 1, "E", 0, ModuleMount.Gimballed),
-                new Module(128891605, "Hpt_PlasmaShockCannon_Fixed_Small", -1, "ShockCannon", 1, "D", 0, ModuleMount.Fixed),
-                new Module(128915458, "Hpt_Mining_AbrBlstr_Fixed_Small", -1, "AbrasionBlaster", 1, "D", 0, ModuleMount.Fixed),
-                new Module(128915459, "Hpt_Mining_AbrBlstr_Turret_Small", -1, "AbrasionBlaster", 1, "D", 0, ModuleMount.Turreted),
-                new Module(128915460, "Hpt_Mining_SeismChrgWarhd_Fixed_Medium", -1, "SeismicCharge", 2, "B", 0, ModuleMount.Fixed),
-                new Module(128915461, "Hpt_Mining_SeismChrgWarhd_Turret_Medium", -1, "SeismicCharge", 2, "B", 0, ModuleMount.Turreted),
-                new Module(128915454, "Hpt_Mining_SubSurfDispMisle_Fixed_Small", -1, "DisplacementMissile", 1, "B", 0, ModuleMount.Fixed),
-                new Module(128915455, "Hpt_Mining_SubSurfDispMisle_Turret_Small", -1, "DisplacementMissile", 1, "B", 0, ModuleMount.Turreted),
-                new Module(128915456, "Hpt_Mining_SubSurfDispMisle_Fixed_Medium", -1, "DisplacementMissile", 2, "B", 0, ModuleMount.Fixed),
-                new Module(128915457, "Hpt_Mining_SubSurfDispMisle_Turret_Medium", -1, "DisplacementMissile", 2, "A", 0, ModuleMount.Turreted),
-                new Module(128915718, "Hpt_mrascanner_Size0_Class1", -1, "PulseWave", 0, "E", 0),
-                new Module(128915719, "Hpt_mrascanner_Size0_Class2", -1, "PulseWave", 0, "D", 0),
-                new Module(128915720, "Hpt_mrascanner_Size0_Class3", -1, "PulseWave", 0, "C", 0),
-                new Module(128915721, "Hpt_mrascanner_Size0_Class4", -1, "PulseWave", 0, "B", 0),
-                new Module(128915722, "Hpt_mrascanner_Size0_Class5", -1, "PulseWave", 0, "A", 0),
-                new Module(128915981, "Mamba_Armour_Grade1", -1, "LightweightAlloy", 1, "I", 0, 128915979),
-                new Module(128915982, "Mamba_Armour_Grade2", -1, "ReinforcedAlloy", 1, "I", 0, 128915979),
-                new Module(128915983, "Mamba_Armour_Grade3", -1, "MilitaryGradeComposite", 1, "I", 0, 128915979),
-                new Module(128915984, "Mamba_Armour_Mirrored", -1, "MirroredSurfaceComposite", 1, "I", 0, 128915979),
-                new Module(128915985, "Mamba_Armour_Reactive", -1, "ReactiveSurfaceComposite", 1, "I", 0, 128915979),
+                // Needs pricing
+                new Module(128064258, "Int_ShieldGenerator_Size1_Class1", 1804, "ShieldGenerator", 1, "E", 0),
+                new Module(128064259, "Int_ShieldGenerator_Size1_Class2", 1805, "ShieldGenerator", 1, "D", 0),
+                new Module(128064260, "Int_ShieldGenerator_Size1_Class3", 1806, "ShieldGenerator", 1, "C", 0),
+                new Module(128066402, "Int_DroneControl_ResourceSiphon", 1803, "HatchBreakerLimpetController", 1, "I", 0),
+                new Module(128833997, "Hpt_FlechetteLauncher_Turret_Medium", 1752, "FlechetteLauncher", 2, "B", 0, ModuleMount.Turreted),
+                new Module(128891603, "Hpt_PlasmaShockCannon_Turret_Small", 1777, "ShockCannon", 1, "F", 0, ModuleMount.Turreted),
+                new Module(128891604, "Hpt_PlasmaShockCannon_Gimbal_Small", 1778, "ShockCannon", 1, "E", 0, ModuleMount.Gimballed),
+                new Module(128891605, "Hpt_PlasmaShockCannon_Fixed_Small", 1779, "ShockCannon", 1, "D", 0, ModuleMount.Fixed),
+                new Module(128915454, "Hpt_Mining_SubSurfDispMisle_Fixed_Small", 1785, "DisplacementMissile", 1, "B", 0, ModuleMount.Fixed),
+                new Module(128915455, "Hpt_Mining_SubSurfDispMisle_Turret_Small", 1786, "DisplacementMissile", 1, "B", 0, ModuleMount.Turreted),
+                new Module(128915456, "Hpt_Mining_SubSurfDispMisle_Fixed_Medium", 1787, "DisplacementMissile", 2, "B", 0, ModuleMount.Fixed),
+                new Module(128915457, "Hpt_Mining_SubSurfDispMisle_Turret_Medium", 1788, "DisplacementMissile", 2, "A", 0, ModuleMount.Turreted),
+                new Module(128915458, "Hpt_Mining_AbrBlstr_Fixed_Small", 1789, "AbrasionBlaster", 1, "D", 0, ModuleMount.Fixed),
+                new Module(128915459, "Hpt_Mining_AbrBlstr_Turret_Small", 1790, "AbrasionBlaster", 1, "D", 0, ModuleMount.Turreted),
+                new Module(128915460, "Hpt_Mining_SeismChrgWarhd_Fixed_Medium", 1791, "SeismicCharge", 2, "B", 0, ModuleMount.Fixed),
+                new Module(128915461, "Hpt_Mining_SeismChrgWarhd_Turret_Medium", 1792, "SeismicCharge", 2, "B", 0, ModuleMount.Turreted),
+                new Module(128915718, "Hpt_mrascanner_Size0_Class1", 1793, "PulseWave", 0, "E", 0),
+                new Module(128915719, "Hpt_mrascanner_Size0_Class2", 1794, "PulseWave", 0, "D", 0),
+                new Module(128915720, "Hpt_mrascanner_Size0_Class3", 1795, "PulseWave", 0, "C", 0),
+                new Module(128915721, "Hpt_mrascanner_Size0_Class4", 1796, "PulseWave", 0, "B", 0),
+                new Module(128915722, "Hpt_mrascanner_Size0_Class5", 1797, "PulseWave", 0, "A", 0),
             };
         }
 
@@ -1188,6 +1193,11 @@ namespace EddiDataDefinitions
             "Hpt_PulseLaser_Fixed_Medium_Disruptor", // Disruptor
         };
 
+        public bool IsPowerPlay()
+        {
+            return PowerPlayModules.Contains(this.edname);
+        }
+
         private static string NormalizedEDName(string rawEDName)
         {
             return rawEDName.ToLowerInvariant()
@@ -1197,25 +1207,49 @@ namespace EddiDataDefinitions
                 ;
         }
         
-        new public static Module FromEDName(string rawEDName)
+        public static Module FromEDName(string rawEDName, object rawData = null)
         {
             if (rawEDName == null || rawEDName == "Null") { return null; }
             string edName = NormalizedEDName(rawEDName);
-            return ResourceBasedLocalizedEDName<Module>.FromEDName(edName);
-        }
-
-        public static Module FromEliteID(long eliteID)
-        {
-            ModulesByEliteID.TryGetValue(eliteID, out Module module);
+            Module module = ResourceBasedLocalizedEDName<Module>.FromEDName(edName);
+            if (module == null)
+            {
+                // Unknown module; report the full object so that we can update the definitions
+                Logging.Error("Unknown module edname: " + rawEDName, rawData);
+            }
             return module;
         }
 
-        public static Module FromEddbID(long eddbId)
+        public static Module FromEliteID(long eliteID, object rawData = null)
+        {
+            ModulesByEliteID.TryGetValue(eliteID, out Module module);
+            if (module == null)
+            {
+                // Unknown module; report the full object so that we can update the definitions
+                Logging.Error("Unknown module Elite ID: " + eliteID, rawData);
+            }
+            return module;
+        }
+
+        public static Module FromEddbID(long eddbId, object rawData = null)
         {
             lock (resourceLock)
             {
                 return AllOfThem.Find(x => x.EDDBID == eddbId) ?? null;
             }
+        }
+
+        public static Module FromOutfittingInfo(OutfittingInfo item)
+        {
+            Module module = new Module(FromEliteID(item.id, item) ?? FromEDName(item.name, item) ?? new Module());
+            if (module.invariantName == null)
+            {
+                // Create a basic module & supplement from the info available
+                module = new Module(item.id, item.name, -1, item.name, -1, "", item.buyprice);
+            }
+            module.price = item.buyprice;
+
+            return module;
         }
     }
 }
