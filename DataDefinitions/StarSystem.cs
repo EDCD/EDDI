@@ -151,7 +151,7 @@ namespace EddiDataDefinitions
                 }
             }
         }
-        private readonly object bodyLock;
+        private readonly object bodyLock = new object();
 
         // Not intended to be user facing - discoverable bodies as reported by a discovery scan "honk"
         public int discoverableBodies = 0;
