@@ -205,7 +205,7 @@ Common usage of this is to provide clear callsigns and idents for ships, for exa
 
 ### JumpDetails()
 
-This function will provide jump information based on your ship loadout and current fuel level, dependent on the followiing types:
+This function will provide jump information based on your ship loadout and current fuel level, dependent on the following types:
 
   * `next` range of next jump at current fuel mass and current laden mass
   * `max` maximum jump range at minimum fuel mass and current laden mass
@@ -268,6 +268,28 @@ MissionDetails() takes a single argument of the mission ID for which you want mo
 Common usage of this is to provide detailed information about a previously accepted mission, for example:
 
     {set mission to MissionDetails(event.missionid)}
+
+### TrafficDetails()
+
+This function will provide information on traffic and hostilities in a star system.
+
+TrafficDetails() takes one mandatory argument and one optional argument.
+
+The first mandatory argument is the name of the star system. The second optional argument defines different data sets that are available:
+
+  * `traffic` the number of ships that have passed through the star system (this is the default if no second argument is provided)
+  * `deaths` the number of ships passing through the star system which have been destroyed
+  * `hostility` the percent of ships passing through the star system which have been destroyed
+
+  The returned `Traffic` object contains properties representing various timespans: `day`, `week` and `total`.
+
+Common usage is to provide information about traffic and hostilities within a star system, for example:
+
+    {set trafficDetails to TrafficDetails(system.name)}
+    {if trafficDetails.day > 0: At least {trafficDetails.day} ships have passed through {system.name} today. }
+
+    {set deathDetails to TrafficDetails(system.name, "deaths")}
+    {if deathDetails.week > 0: At least {deathDetails.week} ships have been destroyed in {system.name} this week. }
 
 ### OneOf()
 

@@ -933,6 +933,35 @@ namespace EddiSpeechResponder
                 return (result == null ? new ReflectionValue(new object()) : new ReflectionValue(result));
             }, 1);
 
+            store["TrafficDetails"] = new NativeFunction((values) =>
+            {
+                Traffic result = null;
+                string systemName = values[0].AsString;
+                if (!string.IsNullOrEmpty(systemName))
+                {
+                    if (values.Count == 2)
+                    {
+                        if (values[1].AsString == "traffic")
+                        {
+                            result = DataProviderService.GetSystemTraffic(systemName);
+                        }
+                        if (values[1].AsString == "deaths")
+                        {
+                            result = DataProviderService.GetSystemDeaths(systemName);
+                        }
+                        else if (values[1].AsString == "hostility")
+                        {
+                            result = DataProviderService.GetSystemHostility(systemName);
+                        }
+                    }
+                    if (result == null)
+                    {
+                        result = DataProviderService.GetSystemTraffic(systemName);
+                    }
+                }
+                return (result == null ? new ReflectionValue(new object()) : new ReflectionValue(result));
+            }, 1, 2);
+
             store["GalnetNewsArticle"] = new NativeFunction((values) =>
             {
                 News result = GalnetSqLiteRepository.Instance.GetArticle(values[0].AsString);
