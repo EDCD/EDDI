@@ -210,7 +210,11 @@
   <data name="view_script_title" xml:space="preserve">
     <value>Szkript megtekintése</value>
   </data>
+  <data name="header_priority" xml:space="preserve">
+    <value>Prioritás</value>
+  </data>
   
-  
-  
+  <data name="speechResponderHelpHere" xml:space="preserve">
+    <value>itt.</value>
+  </data>
 </root>
