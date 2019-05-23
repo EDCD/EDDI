@@ -146,14 +146,14 @@
                 <DataGridTemplateColumn>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Button Click="updateRecord" Width="60" Content="{x:Static resx:CrimeMonitor.update_button}" />
+                            <Button Click="updateRecord" MinWidth="60" HorizontalAlignment="Center" Content="{x:Static resx:CrimeMonitor.update_button}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
                 <DataGridTemplateColumn>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Button Click="removeRecord" Width="60" Content="{x:Static resx:CrimeMonitor.remove_button}" />
+                            <Button Click="removeRecord" MinWidth="60" HorizontalAlignment="Center" Content="{x:Static resx:CrimeMonitor.remove_button}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
