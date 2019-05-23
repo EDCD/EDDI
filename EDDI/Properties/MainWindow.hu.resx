@@ -251,12 +251,24 @@ Személyes infórmációk vagy azonosításra alkalmas adatok nem szerepelnek az
   <data name="tab_commander_squadron_name" xml:space="preserve">
     <value>Osztag név:</value>
   </data>
-  
-  
-  
-  
-  
-  
+  <data name="tab_commander_squadron_system" xml:space="preserve">
+    <value>Osztag rendszere:</value>
+  </data>
+  <data name="tab_commander_squadron_allegiance" xml:space="preserve">
+    <value>Osztag hűség:</value>
+  </data>
+  <data name="tab_commander_squadron_faction" xml:space="preserve">
+    <value>Osztag vállalata:</value>
+  </data>
+  <data name="tab_commander_squadron_power" xml:space="preserve">
+    <value>Osztag hatalmi erő:</value>
+  </data>
+  <data name="tab_commander_squadron_rank" xml:space="preserve">
+    <value>Osztag rangja:</value>
+  </data>
+  <data name="tab_commander_squadron_id" xml:space="preserve">
+    <value>Osztag azonosító:</value>
+  </data>
   <data name="no_station" xml:space="preserve">
     <value>Nincs állomás</value>
   </data>
