@@ -248,7 +248,9 @@ Személyes infórmációk vagy azonosításra alkalmas adatok nem szerepelnek az
   <data name="tab_commander_par1" xml:space="preserve">
     <value>Megadhatja a rendszer és állomás nevét amit leginkább az otthonának tekint. Ha megteszi, akkor ezen rendszer és állomás adatai elérhetőek lesznek az EDDI reagálóinak.</value>
   </data>
-  
+  <data name="tab_commander_squadron_name" xml:space="preserve">
+    <value>Osztag név:</value>
+  </data>
   
   
   
