@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.Serialization;
+using Utilities;
 
 namespace EddiDataDefinitions
 {
@@ -130,7 +131,27 @@ namespace EddiDataDefinitions
 
         // Not intended to be user facing - materials available within the system
         [JsonIgnore]
-        public List<string> materialEdNames => bodies.SelectMany(b => b.materials, (b, m) => m.definition.edname).Distinct().ToList();
+        public List<string> materialEdNames
+        {
+            get
+            {
+                try
+                {
+                    List<Body> bodiesList = null;
+                    lock (bodyLock)
+                    {
+                        bodiesList = bodies;
+                    }
+                    return bodiesList.SelectMany(b => b.materials, (b, m) => m.definition.edname).Distinct().ToList();
+                }
+                catch (InvalidOperationException ex)
+                {
+                    Logging.Error("Error aggregating system materials list.", ex);
+                    return new List<string>();
+                }
+            }
+        }
+        private readonly object bodyLock;
 
         // Not intended to be user facing - discoverable bodies as reported by a discovery scan "honk"
         public int discoverableBodies = 0;
