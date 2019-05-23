@@ -134,10 +134,25 @@ namespace EDDNResponder
             {
                 if (edType == "Docked" && systemName != null && stationName != null && marketId != null)
                 {
-                    // Send station data from the CAPI servers
-                    sendCommodityInformation();
-                    sendOutfittingInformation();
-                    sendShipyardInformation();
+                    if (EDDI.Instance.CurrentStation?.name == stationName && EDDI.Instance.CurrentStarSystem?.systemAddress == systemAddress)
+                    {
+                        try
+                        {
+                            // Send station data from the CAPI servers
+                            sendCommodityInformation();
+                            sendOutfittingInformation();
+                            sendShipyardInformation();
+                        }
+                        catch (Exception ex)
+                        {
+                            Dictionary<string, object> exdata = new Dictionary<string, object>
+                            {
+                                { "Responder state", this },
+                                { "Exception", ex }
+                            };
+                            Logging.Error("Failed to send Frontier API data to EDDN", exdata);
+                        }
+                    }
                 }
 
                 if (edType == "Location" || edType == "FSDJump" || edType == "Docked" || edType == "Scan")
@@ -147,7 +162,7 @@ namespace EDDNResponder
 
                     if (data != null)
                     {
-                        SendToEDDN(data);
+                        SendToEDDN("https://eddn.edcd.io/schemas/journal/1", data);
                     }
                 }
             }
@@ -296,16 +311,24 @@ namespace EDDNResponder
             return data;
         }
 
-        private static void SendToEDDN(IDictionary<string, object> data)
+        private static void SendToEDDN(string schema, IDictionary<string, object> data)
         {
-            EDDNBody body = new EDDNBody
+            try
             {
-                header = generateHeader(),
-                schemaRef = "https://eddn.edcd.io/schemas/journal/1" + (EDDI.Instance.ShouldUseTestEndpoints() ? "/test" : ""),
-                message = data
-            };
-
-            sendMessage(body);
+                EDDNBody body = new EDDNBody
+                {
+                    header = generateHeader(),
+                    schemaRef = schema + (EDDI.Instance.ShouldUseTestEndpoints() ? "/test" : ""),
+                    message = data
+                };
+                Logging.Debug("EDDN message is: " + JsonConvert.SerializeObject(body));
+                sendMessage(body);
+            }
+            catch (Exception ex)
+            {
+                data.Add(new KeyValuePair<string, object>("Exception", ex));
+                Logging.Error("Unable to send message to EDDN, schema " + schema, data);
+            }
         }
 
         private void handleMarketInformationUpdatedEvent(MarketInformationUpdatedEvent theEvent)
@@ -358,7 +381,8 @@ namespace EDDNResponder
                         { "timestamp", DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ") },
                         { "systemName", systemName },
                         { "stationName", stationName },
-                        { "marketId", marketId }
+                        { "marketId", marketId },
+                        { "horizons", EDDI.Instance.inHorizons}
                     };
                     if (eddnEconomies.Count > 0)
                     {
@@ -370,15 +394,7 @@ namespace EDDNResponder
                         data.Add("prohibited", EDDI.Instance.CurrentStation.prohibited);
                     }
 
-                    EDDNBody body = new EDDNBody
-                    {
-                        header = generateHeader(),
-                        schemaRef = "https://eddn.edcd.io/schemas/commodity/3" + (EDDI.Instance.ShouldUseTestEndpoints() ? "/test" : ""),
-                        message = data
-                    };
-
-                    Logging.Debug("EDDN message is: " + JsonConvert.SerializeObject(body));
-                    sendMessage(body);
+                    SendToEDDN("https://eddn.edcd.io/schemas/commodity/3", data);
                 }
             }
         }
@@ -453,17 +469,11 @@ namespace EDDNResponder
                         { "systemName", systemName },
                         { "stationName", stationName },
                         { "marketId", marketId },
-                        { "modules", eddnModules }
+                        { "modules", eddnModules },
+                        { "horizons", EDDI.Instance.inHorizons}
                     };
 
-                    EDDNBody body = new EDDNBody
-                    {
-                        header = generateHeader(),
-                        schemaRef = "https://eddn.edcd.io/schemas/outfitting/2" + (EDDI.Instance.ShouldUseTestEndpoints() ? "/test" : ""),
-                        message = data
-                    };
-
-                    sendMessage(body);
+                    SendToEDDN("https://eddn.edcd.io/schemas/outfitting/2", data);
                 }
             }
         }
@@ -475,7 +485,7 @@ namespace EDDNResponder
                 List<string> eddnShips = new List<string>();
                 foreach (Ship ship in EDDI.Instance.CurrentStation.shipyard)
                 {
-                        eddnShips.Add(ship.EDName);
+                    eddnShips.Add(ship.EDName);
                 }
 
                 // Only send the message if we have ships
@@ -487,17 +497,11 @@ namespace EDDNResponder
                         { "systemName", systemName },
                         { "stationName", stationName },
                         { "marketId", marketId },
-                        { "ships", eddnShips }
+                        { "ships", eddnShips },
+                        { "horizons", EDDI.Instance.inHorizons}
                     };
 
-                    EDDNBody body = new EDDNBody
-                    {
-                        header = generateHeader(),
-                        schemaRef = "https://eddn.edcd.io/schemas/shipyard/2" + (EDDI.Instance.ShouldUseTestEndpoints() ? "/test" : ""),
-                        message = data
-                    };
-
-                    sendMessage(body);
+                    SendToEDDN("https://eddn.edcd.io/schemas/shipyard/2", data);
                 }
             }
         }

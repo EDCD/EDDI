@@ -924,7 +924,7 @@ namespace Eddi
                     data.Add("event", JsonConvert.SerializeObject(@event));
                     data.Add("exception", ex.Message);
                     data.Add("stacktrace", ex.StackTrace);
-                    Logging.Error("Monitor failed to handle event " + @event.type, data);
+                    Logging.Error(monitor.MonitorName() + " failed to handle event " + @event.type, data);
                 }
             }
         }
@@ -944,7 +944,7 @@ namespace Eddi
                         }
                         catch (Exception ex)
                         {
-                            Logging.Error("Responder failed to handle event " + JsonConvert.SerializeObject(@event), ex);
+                            Logging.Error(responder.ResponderName() + " failed to handle event " + JsonConvert.SerializeObject(@event), ex);
                         }
                     });
                     responderTasks.Add(responderTask);
@@ -955,7 +955,7 @@ namespace Eddi
                     data.Add("event", JsonConvert.SerializeObject(@event));
                     data.Add("exception", ex.Message);
                     data.Add("stacktrace", ex.StackTrace);
-                    Logging.Error("Responder failed to handle event " + @event.type, data);
+                    Logging.Error(responder.ResponderName() + " failed to handle event " + @event.type, data);
                 }
             }
             await Task.WhenAll(responderTasks.ToArray());
@@ -976,7 +976,7 @@ namespace Eddi
                         }
                         catch (Exception ex)
                         {
-                            Logging.Error("Monitor failed to post-handle event " + JsonConvert.SerializeObject(@event), ex);
+                            Logging.Error(monitor.MonitorName() + " failed to post-handle event " + JsonConvert.SerializeObject(@event), ex);
                         }
                     });
                     monitorTasks.Add(monitorTask);
@@ -992,7 +992,7 @@ namespace Eddi
                     data.Add("event", JsonConvert.SerializeObject(@event));
                     data.Add("exception", ex.Message);
                     data.Add("stacktrace", ex.StackTrace);
-                    Logging.Error("Monitor failed to post-handle event " + @event.type, data);
+                    Logging.Error(monitor.MonitorName() + " failed to post-handle event " + @event.type, data);
                 }
                 await Task.WhenAll(monitorTasks.ToArray());
             }
