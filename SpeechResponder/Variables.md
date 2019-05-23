@@ -142,6 +142,8 @@ A material.
     - `category` the category of the material (Element, Data or Manufactured)
     - `rarity` the rarity of the material
     - `blueprints` the blueprints for which the material is used (this is an array of blueprint objects)
+    - `bodyname` the body name with the highest known concentration of the material within the specified system (only available when using the MaterialDetails() function)
+    - `bodyshortname` the shortened body name with the highest known concentration of the material within the specified system (only available when using the MaterialDetails() function)
 
 #### Blueprint
 

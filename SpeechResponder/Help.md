@@ -243,11 +243,21 @@ Log() takes a single argument of the string to log.
 
 This function will provide full information for a material given its name.
 
-MaterialDetails() takes a single argument of the material for which you want more information.
+MaterialDetails() takes either one or two arguments. 
+
+The first argument is the name of the material for which you want more information. 
 
 Common usage of this is to provide further information about a material, for example:
 
     Iron is a {MaterialDetails("Iron").rarity.name} material.
+
+The second argument, the name of a star system, is optional. If provided then the `bodyname` and `bodyshortname` properties in the resulting `Material` object will return details from body with the highest concentration of the material within the specified star system.
+
+Common usage of this is to provide recommendations for material gathering.
+
+    {set materialName to "Iron"}
+    {set details to MaterialDetails(materialName, system.name)}
+    The best place to find {materialName} in {system.name} is on {if details.bodyname != details.bodyshortname: body} {details.bodyshortname}.
 
 ### MissionDetails()
 

@@ -858,18 +858,16 @@ namespace EddiSpeechResponder
 
             store["MaterialDetails"] = new NativeFunction((values) =>
             {
-                if (string.IsNullOrEmpty(values[0].AsString))
+                Material result = Material.FromName(values[0].AsString);             
+                if (result.edname != null && values[1].AsString != null)
                 {
-                    return new ReflectionValue(new object());
-                }
-
-                Material result = Material.FromName(values[0].AsString);
-                if (result == null)
-                {
-                    result = Material.FromName(values[0].AsString);
+                    StarSystem starSystem = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(values[1].AsString, true);
+                    Body body = Material.highestPercentBody(result.edname, starSystem.bodies);
+                    result.bodyname = body.name;
+                    result.bodyshortname = body.shortname;
                 }
                 return (result == null ? new ReflectionValue(new object()) : new ReflectionValue(result));
-            }, 1);
+            }, 1, 2);
 
             store["CommodityMarketDetails"] = new NativeFunction((values) =>
             {

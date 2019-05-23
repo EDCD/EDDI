@@ -104,6 +104,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Revised `Jumped` script to provide a (reasonably) accurate jump range, based on total ship mass.
     * Revised `Ship targeted` script to utilize new `shiptargets` object to preclude reporting on previously scanned ships.
     * Added `JumpDetails()` Cottle function call to provide useful jump infomation based on ship loadout and fuel level. See `Help` & `Variables` windows for details.
+    * The `MaterialDetails()` function has been revised to optionally recommend the body with highest concentration of a material, given a material name and starsystem name.
   * Status monitor
     - Added `legalstatus`, the ship's current legal status. Can be one of 
       - "Clean", 
