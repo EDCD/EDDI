@@ -121,5 +121,8 @@
     <value>narancsvörös</value>
     <comment>Star color orange_red</comment>
   </data>
-  
+  <data name="red" xml:space="preserve">
+    <value>vörös</value>
+    <comment>Star color red</comment>
+  </data>
 </root>
