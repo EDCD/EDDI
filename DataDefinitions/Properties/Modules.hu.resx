@@ -545,7 +545,10 @@
     <value>Őrző ötvözet</value>
     <comment>Module GuardianHullReinforcement</comment>
   </data>
-  
+  <data name="GuardianModuleReinforcement" xml:space="preserve">
+    <value>Őrző modulerősítés</value>
+    <comment>Module GuardianModuleReinforcement</comment>
+  </data>
   <data name="GuardianShieldReinforcement" xml:space="preserve">
     <value>Őrző pajzs megerősítés</value>
     <comment>Module GuardianShieldReinforcement</comment>
