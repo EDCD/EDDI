@@ -140,7 +140,7 @@ namespace EddiDataDefinitions
                     List<Body> bodiesList = null;
                     lock (bodyLock)
                     {
-                        bodiesList = bodies;
+                        bodiesList = new List<Body>(bodies);
                     }
                     return bodiesList.SelectMany(b => b.materials, (b, m) => m.definition.edname).Distinct().ToList();
                 }
