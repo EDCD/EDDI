@@ -15,6 +15,8 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * 'Find Legal Facilities' button allows standalone users to locate the nearest 'Legal Facilities' contact. 
     * New `FactionRecord` and `FactionReport` properties, available via Cottle scripting. See the `Variables` window for details.
     * Tracks all ships targeted within the current system. Data available in `shiptargets` as a list of `Target` properties.
+  * Galnet monitor
+    * Fixed bugs causing the Galnet monitor to occasionally reset the read status of articles.
   * Journal Monitor
     * Added `unladenmass` and `maxjumprange` properties to the `Loadout` event handler.
     * Added `distancefromstar` property to the `Location` event.
