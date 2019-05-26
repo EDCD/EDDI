@@ -1,6 +1,8 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using EddiSpeechService;
 using System.Linq;
+using System.Collections.Generic;
+using EddiVoiceAttackResponder;
 
 namespace UnitTests
 {
@@ -130,6 +132,290 @@ namespace UnitTests
             {
                 Assert.AreEqual("Ship refueled", result2.eventType);
             }
+        }
+
+        [TestMethod]
+        public void TestPathingString1()
+        {
+            string pathingString = @"There are [4;5] lights";
+            List<string> pathingOptions = new List<string>() {
+                "There are 4 lights"
+                , "There are 5 lights"
+            };
+
+            HashSet<string> pathingResults = new HashSet<string>();
+            for (int i = 0; i < 1000; i++)
+            {
+                string pathedString = VoiceAttackPlugin.SpeechFromScript(pathingString);
+                pathingResults.Add(pathedString);
+            }
+
+            Assert.IsTrue(pathingResults.SetEquals(new HashSet<string>(pathingOptions)));
+        }
+
+        [TestMethod]
+        public void TestPathingString2()
+        {
+            string pathingString = @"There are [4;5;] lights";
+            List<string> pathingOptions = new List<string>() {
+                "There are 4 lights"
+                , "There are 5 lights"
+                , "There are  lights"
+            };
+
+            HashSet<string> pathingResults = new HashSet<string>();
+            for (int i = 0; i < 1000; i++)
+            {
+                string pathedString = VoiceAttackPlugin.SpeechFromScript(pathingString);
+                pathingResults.Add(pathedString);
+            }
+
+            Assert.IsTrue(pathingResults.SetEquals(new HashSet<string>(pathingOptions)));
+        }
+
+        [TestMethod]
+        public void TestPathingString3()
+        {
+            string pathingString = @"There [are;might be;could be] [4;5;] lights;It's dark in here;";
+            List<string> pathingOptions = new List<string>() {
+                "There are 4 lights"
+                , "There are 5 lights"
+                , "There are  lights"
+                ,"There might be 4 lights"
+                , "There might be 5 lights"
+                , "There might be  lights"
+                ,"There could be 4 lights"
+                , "There could be 5 lights"
+                , "There could be  lights"
+                , "It's dark in here"
+                , ""
+            };
+
+            HashSet<string> pathingResults = new HashSet<string>();
+            for (int i = 0; i < 1000; i++)
+            {
+                string pathedString = VoiceAttackPlugin.SpeechFromScript(pathingString);
+                pathingResults.Add(pathedString);
+            }
+
+            Assert.IsTrue(pathingResults.SetEquals(new HashSet<string>(pathingOptions)));
+        }
+
+        [TestMethod]
+        public void TestPathingString4()
+        {
+            string pathingString = @";;;;;;Seven;;;";
+            List<string> pathingOptions = new List<string>() {
+                ""
+                , "Seven"
+            };
+
+            int sevenCount = 0;
+            for (int i = 0; i < 10000; i++)
+            {
+                string pathedString = VoiceAttackPlugin.SpeechFromScript(pathingString);
+                if (pathedString == "Seven")
+                {
+                    sevenCount++;
+                }
+            }
+
+            Assert.IsTrue(sevenCount > 750);
+            Assert.IsTrue(sevenCount < 1500);
+        }
+
+        [TestMethod]
+        public void TestPathingString5()
+        {
+            string pathingString = @"You leave me [no choice].";
+            List<string> pathingOptions = new List<string>() {
+                "You leave me no choice."
+            };
+
+            HashSet<string> pathingResults = new HashSet<string>();
+            for (int i = 0; i < 1000; i++)
+            {
+                string pathedString = VoiceAttackPlugin.SpeechFromScript(pathingString);
+                pathingResults.Add(pathedString);
+            }
+
+            Assert.IsTrue(pathingResults.SetEquals(new HashSet<string>(pathingOptions)));
+        }
+
+        [TestMethod]
+        public void TestPathingString6()
+        {
+            string pathingString = @"[There can be only one.]";
+            List<string> pathingOptions = new List<string>() {
+                "There can be only one."
+            };
+
+            HashSet<string> pathingResults = new HashSet<string>();
+            for (int i = 0; i < 1000; i++)
+            {
+                string pathedString = VoiceAttackPlugin.SpeechFromScript(pathingString);
+                pathingResults.Add(pathedString);
+            }
+
+            Assert.IsTrue(pathingResults.SetEquals(new HashSet<string>(pathingOptions)));
+        }
+
+        [TestMethod]
+        public void TestPathingString7()
+        {
+            string pathingString = @"[{TXT:Ship model} {TXT:Ship callsign (spoken)};This is {TXT:Ship model} {TXT:Ship callsign (spoken)}] [requesting docking permission;requesting docking clearance;requesting permission to dock;requesting clearance to dock].";
+            List<string> pathingOptions = new List<string>() {
+                "{TXT:Ship model} {TXT:Ship callsign (spoken)} requesting docking permission."
+                ,"This is {TXT:Ship model} {TXT:Ship callsign (spoken)} requesting docking permission."
+                ,"{TXT:Ship model} {TXT:Ship callsign (spoken)} requesting docking clearance."
+                ,"This is {TXT:Ship model} {TXT:Ship callsign (spoken)} requesting docking clearance."
+                ,"{TXT:Ship model} {TXT:Ship callsign (spoken)} requesting clearance to dock."
+                ,"This is {TXT:Ship model} {TXT:Ship callsign (spoken)} requesting clearance to dock."
+                ,"{TXT:Ship model} {TXT:Ship callsign (spoken)} requesting permission to dock."
+                ,"This is {TXT:Ship model} {TXT:Ship callsign (spoken)} requesting permission to dock."
+            };
+
+            HashSet<string> pathingResults = new HashSet<string>();
+            for (int i = 0; i < 1000; i++)
+            {
+                string pathedString = VoiceAttackPlugin.SpeechFromScript(pathingString);
+                pathingResults.Add(pathedString);
+            }
+
+            Assert.IsTrue(pathingResults.SetEquals(new HashSet<string>(pathingOptions)));
+        }
+
+        [TestMethod]
+        public void TestSectorTranslations()
+        {
+            Assert.AreEqual("Swoiwns N Y dash B a 95 dash 0", Translations.StarSystem("Swoiwns NY-B a95-0"));
+            Assert.AreEqual("P P M 5 2 8 7", Translations.StarSystem("PPM 5287"));
+        }
+
+        [TestMethod]
+        public void TestSpeechHumanize1()
+        {
+            Assert.AreEqual("on the way to 12 and a half thousand", Translations.Humanize(12345));
+        }
+
+        [TestMethod]
+        public void TestSpeechHumanize2()
+        {
+            Assert.AreEqual(null, Translations.Humanize(null));
+        }
+
+        [TestMethod]
+        public void TestSpeechHumanize3()
+        {
+            Assert.AreEqual("zero", Translations.Humanize(0));
+        }
+
+        [TestMethod]
+        public void TestSpeechHumanize4()
+        {
+            Assert.AreEqual("0.16", Translations.Humanize(0.15555555M));
+        }
+
+        [TestMethod]
+        public void TestSpeechHumanize5()
+        {
+            Assert.AreEqual("0.016", Translations.Humanize(0.015555555M));
+        }
+
+        [TestMethod]
+        public void TestSpeechHumanize6()
+        {
+            Assert.AreEqual("0.0016", Translations.Humanize(0.0015555555M));
+        }
+
+        [TestMethod]
+        public void TestSpeechHumanize7()
+        {
+            Assert.AreEqual("51 million", Translations.Humanize(51000000));
+        }
+
+        [TestMethod]
+        public void TestSpeechHumanize8()
+        {
+            Assert.AreEqual("just over 51 million", Translations.Humanize(51000001));
+        }
+
+        [TestMethod]
+        public void TestSpeechHumanize9()
+        {
+            Assert.AreEqual("10 thousand", Translations.Humanize(10000));
+        }
+
+        [TestMethod]
+        public void TestSpeechHumanize10()
+        {
+            Assert.AreEqual("100 thousand", Translations.Humanize(100000));
+        }
+
+        [TestMethod]
+        public void TestSpeechHumanize11()
+        {
+            Assert.AreEqual("on the way to minus 12 and a half thousand", Translations.Humanize(-12345));
+        }
+
+        [TestMethod]
+        public void TestSpeechHumanize12()
+        {
+            Assert.AreEqual("minus 0.16", Translations.Humanize(-0.15555555M));
+        }
+
+        [TestMethod]
+        public void TestSpeechHumanize13()
+        {
+            Assert.AreEqual("minus 0.016", Translations.Humanize(-0.015555555M));
+        }
+
+        [TestMethod]
+        public void TestSpeechHumanize14()
+        {
+            Assert.AreEqual("minus 0.0016", Translations.Humanize(-0.0015555555M));
+        }
+
+        [TestMethod]
+        public void TestSpeechHumanize15()
+        {
+            Assert.AreEqual("minus 51 million", Translations.Humanize(-51000000));
+        }
+
+        [TestMethod]
+        public void TestSpeechHumanize16()
+        {
+            Assert.AreEqual("just over minus 51 million", Translations.Humanize(-51000001));
+        }
+
+        [TestMethod]
+        public void TestSpeechHumanize17()
+        {
+            Assert.AreEqual("minus 10 thousand", Translations.Humanize(-10000));
+        }
+
+        [TestMethod]
+        public void TestSpeechHumanize18()
+        {
+            Assert.AreEqual("minus 100 thousand", Translations.Humanize(-100000));
+        }
+
+        [TestMethod]
+        public void TestSpeechHumanize19()
+        {
+            Assert.AreEqual("over minus 12", Translations.Humanize(-12.1M));
+        }
+
+        [TestMethod]
+        public void TestSpeechHumanize20()
+        {
+            Assert.AreEqual("just over minus 12", Translations.Humanize(-12.01M));
+        }
+
+        [TestMethod]
+        public void TestTranslationVesper()
+        {
+            Assert.AreEqual(Translations.StarSystem("VESPER-M4"), "Vesper M 4");
         }
     }
 }

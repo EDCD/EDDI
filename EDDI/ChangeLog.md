@@ -39,6 +39,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Added `destinationsystem`, `destinationdistance`, and `destinationstation` properties (similar to `system`)
     * Added `Crime check system` script to report wanted status and 'legal facilities', upon entering the system.
     * Added `Crime check station` script to report 'legal facilities', upon entering normal space, next to station.
+    * The `Humanise()` function now supports negative numbers.
     * The `P()` function now converts roman numerals in planet classes (e.g. Class II gas giant) into numbers (e.g. Class 2 gas giant) to ensure proper pronunciation.
     * Revised `body` object definition returned by the `BodyDetails()` function and revised `Body scanned` and `Star scanned` event values for better interchangeability of object properties with `Body scanned` and `Star scanned` events.
       * WAS: `name`*, IS: `bodyname` 
