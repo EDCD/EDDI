@@ -98,7 +98,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="DataLink" xml:space="preserve">
-    <value>Adatpont</value>
+    <value>Adat link</value>
     <comment>Data scan type DataLink</comment>
   </data>
   <data name="DataPoint" xml:space="preserve">
@@ -138,8 +138,7 @@
     <comment>Data scan type AncientCodex</comment>
   </data>
   <data name="DataPointHVT" xml:space="preserve">
-    <value>Nagy értékű célpont
-Hvt (High Value Target) Nagy Értékű Cél.</value>
+    <value>Nagy értékű adat pont.</value>
     <comment>Data scan type DataPointHVT</comment>
   </data>
   <data name="TgTransmitter" xml:space="preserve">

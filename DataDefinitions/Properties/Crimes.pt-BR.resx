@@ -189,6 +189,16 @@
     <value>Colisão resultando em dano</value>
     <comment>Crime collidedAtSpeedInNoFireZone_hulldamage</comment>
   </data>
-  
-  
+  <data name="recklessWeaponsDischarge" xml:space="preserve">
+    <value>Disparo imprudente de armas</value>
+    <comment>Crime recklessWeaponsDischarge</comment>
+  </data>
+  <data name="passengerWanted" xml:space="preserve">
+    <value>Carregando uma pessoa procurada</value>
+    <comment>Crime passengerWanted</comment>
+  </data>
+  <data name="missionFine" xml:space="preserve">
+    <value>Multa de missão</value>
+    <comment>Crime missionFine</comment>
+  </data>
 </root>

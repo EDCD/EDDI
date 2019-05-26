@@ -541,15 +541,42 @@
     <value>Enzim rakéta kilövő</value>
     <comment>Module EnzymeMissileRack</comment>
   </data>
+  <data name="GuardianHullReinforcement" xml:space="preserve">
+    <value>Őrző ötvözet</value>
+    <comment>Module GuardianHullReinforcement</comment>
+  </data>
+  <data name="GuardianModuleReinforcement" xml:space="preserve">
+    <value>Őrző modulerősítés</value>
+    <comment>Module GuardianModuleReinforcement</comment>
+  </data>
+  <data name="GuardianShieldReinforcement" xml:space="preserve">
+    <value>Őrző pajzs megerősítés</value>
+    <comment>Module GuardianShieldReinforcement</comment>
+  </data>
+  <data name="ShipIntegrity" xml:space="preserve">
+    <value>Hajó integrítás</value>
+    <comment>This is the "Ship Integrity" field in the Advanced Repair screen</comment>
+  </data>
+  <data name="PulseWave" xml:space="preserve">
+    <value>Pulzus hullám analizáló</value>
+    <comment>Module Pulse Wave Scanner</comment>
+  </data>
+  <data name="SeismicCharge" xml:space="preserve">
+    <value>Szejzmikus töltet kilövő</value>
+    <comment>Module Seismic Charge</comment>
+  </data>
+  <data name="DisplacementMissile" xml:space="preserve">
+    <value>Kőzet romboló rakéta</value>
+    <comment>Module Displacement Missile</comment>
+  </data>
   
+  <data name="CompositionScanner" xml:space="preserve">
+    <value>Kompoziciós szkenner</value>
+    <comment>Module Composition Scanner</comment>
+  </data>
   
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="AdvancedDockingComputer" xml:space="preserve">
+    <value>Fejlesztett dokkoló kompjuter</value>
+    <comment>Module AdvancedDockingComputer</comment>
+  </data>
 </root>

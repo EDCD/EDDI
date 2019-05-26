@@ -123,7 +123,7 @@
   </data>
   <data name="AmmoniaAndOxygen" xml:space="preserve">
     <value>Ammoniac et oxygène</value>
-    <comment>Atmosphere class "Ammonia and oxygen"</comment>
+    <comment>Atmosphere class "Ammonia and oxygen" (obsolete - see "AmmoniaOxygen")</comment>
   </data>
   <data name="AmmoniaRich" xml:space="preserve">
     <value>Riche en ammoniac</value>
@@ -208,5 +208,9 @@
   <data name="GasGiant" xml:space="preserve">
     <value>Géante gazeuse</value>
     <comment>Atmosphere class "Gas giant"</comment>
+  </data>
+  <data name="AmmoniaOxygen" xml:space="preserve">
+    <value>Ammoniac et oxygène</value>
+    <comment>Atmosphere class "Ammonia oxygen"</comment>
   </data>
 </root>

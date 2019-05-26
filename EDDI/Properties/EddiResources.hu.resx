@@ -224,13 +224,29 @@ Kérlek zárd be a másikat és próbálkozz újra.</value>
   <data name="safe_mode" xml:space="preserve">
     <value>Biztonsági mód - frissítés szükséges.</value>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="login" xml:space="preserve">
+    <value>Bejelentkezés</value>
+  </data>
+  <data name="frontier_api_cant_login_from_va" xml:space="preserve">
+    <value>A Bejelentkezéshez kérlek lépj ki a Voice Attack-ból és indítsd EDDI-t önállóan.</value>
+  </data>
+  <data name="frontierApiStatusLabel" xml:space="preserve">
+    <value>Frontier API státusz:</value>
+  </data>
+  <data name="frontierApiConnected" xml:space="preserve">
+    <value>Csatlakozva</value>
+  </data>
+  <data name="frontierApiNotConnected" xml:space="preserve">
+    <value>Nincs kapcsolat</value>
+  </data>
+  <data name="frontierApiConnecting" xml:space="preserve">
+    <value>Kapcsolódás</value>
+  </data>
+  <data name="frontier_api_close_browser" xml:space="preserve">
+    <value>Bezárhatod a böngészőt és vissza térhetsz EDDIhez.</value>
+  </data>
+  <data name="frontier_api_reset" xml:space="preserve">
+    <value>Újrakapcsolódás.</value>
+  </data>
   
 </root>
