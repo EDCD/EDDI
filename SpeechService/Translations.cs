@@ -367,7 +367,7 @@ namespace EddiSpeechService
             }
             else if (starSystem.StartsWith("Gliese "))
             {
-                starSystem = starSystem.Replace(".", Properties.Phrases.point);
+                starSystem = starSystem.Replace(".", " " + Properties.Phrases.point + " ");
             }
             else if (SECTOR.IsMatch(starSystem))
             {
