@@ -163,6 +163,7 @@
   <data name="orbital_station_checkbox" xml:space="preserve">
     <value>Prioriser les stations orbitales:</value>
   </data>
+  
   <data name="remove_button" xml:space="preserve">
     <value>Supprimer</value>
   </data>
