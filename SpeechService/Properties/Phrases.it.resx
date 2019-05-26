@@ -97,24 +97,54 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
+  <data name="andahalf" xml:space="preserve">
+    <value>e mezzo</value>
+    <comment/>
+  </data>
+  <data name="around" xml:space="preserve">
+    <value>circa</value>
+    <comment/>
+  </data>
   <data name="billion" xml:space="preserve">
     <value>miliardi di</value>
     <comment/>
   </data>
-  
-  
+  <data name="dash" xml:space="preserve">
+    <value>trattino</value>
+    <comment/>
+  </data>
+  <data name="justover" xml:space="preserve">
+    <value>poco più di</value>
+    <comment/>
+  </data>
   <data name="million" xml:space="preserve">
     <value>milioni di</value>
     <comment/>
   </data>
-  
-  
-  
-  
-  
-  
+  <data name="minus" xml:space="preserve">
+    <value>meno di</value>
+    <comment/>
+  </data>
+  <data name="nearly" xml:space="preserve">
+    <value>quasi</value>
+    <comment/>
+  </data>
+  <data name="onthewayto" xml:space="preserve">
+    <value>circa</value>
+    <comment/>
+  </data>
+  <data name="over" xml:space="preserve">
+    <value>più di</value>
+    <comment/>
+  </data>
+  <data name="plus" xml:space="preserve">
+    <value>più di</value>
+    <comment/>
+  </data>
+  <data name="point" xml:space="preserve">
+    <value>punto</value>
+    <comment/>
+  </data>
   <data name="quadrillion" xml:space="preserve">
     <value>quadrillioni di</value>
     <comment/>
@@ -127,7 +157,10 @@
     <value>trilioni di</value>
     <comment/>
   </data>
-  
+  <data name="wellover" xml:space="preserve">
+    <value>ben più di</value>
+    <comment/>
+  </data>
   <data name="zero" xml:space="preserve">
     <value>zero</value>
     <comment/>
