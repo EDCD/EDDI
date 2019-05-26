@@ -19,7 +19,7 @@ namespace EddiSpeechService.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class Phrases {
@@ -61,7 +61,7 @@ namespace EddiSpeechService.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to  and a half .
+        ///   Looks up a localized string similar to and a half.
         /// </summary>
         public static string andahalf {
             get {
@@ -70,7 +70,7 @@ namespace EddiSpeechService.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to around .
+        ///   Looks up a localized string similar to around.
         /// </summary>
         public static string around {
             get {
@@ -88,7 +88,7 @@ namespace EddiSpeechService.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to  dash .
+        ///   Looks up a localized string similar to dash.
         /// </summary>
         public static string dash {
             get {
@@ -97,7 +97,7 @@ namespace EddiSpeechService.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to just over .
+        ///   Looks up a localized string similar to just over.
         /// </summary>
         public static string justover {
             get {
@@ -115,7 +115,7 @@ namespace EddiSpeechService.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to  minus .
+        ///   Looks up a localized string similar to minus.
         /// </summary>
         public static string minus {
             get {
@@ -124,7 +124,7 @@ namespace EddiSpeechService.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to nearly .
+        ///   Looks up a localized string similar to nearly.
         /// </summary>
         public static string nearly {
             get {
@@ -133,7 +133,7 @@ namespace EddiSpeechService.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to on the way to .
+        ///   Looks up a localized string similar to on the way to.
         /// </summary>
         public static string onthewayto {
             get {
@@ -142,7 +142,7 @@ namespace EddiSpeechService.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to over .
+        ///   Looks up a localized string similar to over.
         /// </summary>
         public static string over {
             get {
@@ -151,7 +151,7 @@ namespace EddiSpeechService.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to  plus .
+        ///   Looks up a localized string similar to plus.
         /// </summary>
         public static string plus {
             get {
@@ -160,7 +160,7 @@ namespace EddiSpeechService.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to  point .
+        ///   Looks up a localized string similar to point.
         /// </summary>
         public static string point {
             get {
@@ -196,7 +196,7 @@ namespace EddiSpeechService.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to well over .
+        ///   Looks up a localized string similar to well over.
         /// </summary>
         public static string wellover {
             get {

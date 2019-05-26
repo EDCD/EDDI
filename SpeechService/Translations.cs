@@ -328,7 +328,7 @@ namespace EddiSpeechService
                 || starSystem.StartsWith("HD ")
                 )
             {
-                starSystem = starSystem.Replace("-", Properties.Phrases.dash);
+                starSystem = starSystem.Replace("-", " " + Properties.Phrases.dash + " ");
             }
             else if (starSystem.StartsWith("Gliese "))
             {
@@ -372,7 +372,7 @@ namespace EddiSpeechService
                 {
                     secondPiece = ICAO(secondPiece, true);
                 }
-                secondPiece = secondPiece.Replace("-", Properties.Phrases.dash);
+                secondPiece = secondPiece.Replace("-", " " + Properties.Phrases.dash + " ");
                 starSystem = firstPiece + subPiece + " " + secondPiece;
             }
             else if (starSystem.StartsWith("2MASS ")
@@ -398,9 +398,9 @@ namespace EddiSpeechService
                 starSystem = starSystem.Replace("Csi ", "CSI ")
                                        .Replace("WISE ", "Wise ")
                                        .Replace("2MASS ", "2 mass ")
-                                       .Replace("+", Properties.Phrases.plus)
-                                       .Replace("-", Properties.Phrases.minus)
-                                       .Replace(".", Properties.Phrases.point);
+                                       .Replace("+", " " + Properties.Phrases.plus + " ")
+                                       .Replace("-", " " + Properties.Phrases.minus + " ")
+                                       .Replace(".", " " + Properties.Phrases.point + " ");
             }
             else
             {
@@ -591,7 +591,7 @@ namespace EddiSpeechService
                 }
             }
 
-            return String.Join(" ", elements);
+            return String.Join(" ", elements).Trim();
         }
 
         public static string Humanize(decimal? value)
@@ -643,39 +643,39 @@ namespace EddiSpeechService
                 // Thousands
                 number = (int)(value / 1000);
                 order = " " + Properties.Phrases.thousand;
-                nextDigit = (((int)value) - (number * 1000)) / 100;
+                nextDigit = (int)((value - (number * 1000)) / 100);
             }
             else if (digits < 9)
             {
                 // Millions
                 number = (int)(value / 1000000);
                 order = " " + Properties.Phrases.million;
-                nextDigit = (((int)value) - (number * 1000000)) / 100000;
+                nextDigit = (int)((value - (number * 1000000)) / 100000);
             }
             else if (digits < 12)
             {
                 // Billions
                 number = (int)(value / 1000000000);
                 order = " " + Properties.Phrases.billion;
-                nextDigit = (int)(((long)value) - ((long)number * 1000000000)) / 100000000;
+                nextDigit = (int)((value - (number * 1000000000)) / 100000000);
             }
             else if (digits < 15)
             {
                 // Trillions
                 number = (int)(value / 1000000000000);
                 order = " " + Properties.Phrases.trillion;
-                nextDigit = (int)(((long)value) - (int)((number * 1000000000000)) / 100000000000);
+                nextDigit = (int)((value - (number * 1000000000000)) / 100000000000);
             }
             else
             {
                 // Quadrillions
                 number = (int)(value / 1000000000000000);
                 order = " " + Properties.Phrases.quadrillion;
-                nextDigit = (int)(((long)value) - (int)((number * 1000000000000000)) / 100000000000000);
+                nextDigit = (int)((value - (number * 1000000000000000)) / 100000000000000);
             }
 
             // See if we have an exact match
-            if (((decimal)value - (int)value) == 0)
+            if (((long)(((decimal)value) / (decimal)Math.Pow(10, digits - 1))) * (decimal)(Math.Pow(10, digits - 1)) == value)
             {
                 return minus + number + order;
             }
@@ -684,27 +684,27 @@ namespace EddiSpeechService
             switch (nextDigit)
             {
                 case 0:
-                    return Properties.Phrases.justover + minus + number + order;
+                    return Properties.Phrases.justover + " " + minus + number + order;
                 case 1:
-                    return Properties.Phrases.over + minus + number + order;
+                    return Properties.Phrases.over + " " + minus + number + order;
                 case 2:
-                    return Properties.Phrases.wellover + minus + number + order;
+                    return Properties.Phrases.wellover + " " + minus + number + order;
                 case 3:
-                    return Properties.Phrases.onthewayto + minus + number + Properties.Phrases.andahalf + order;
+                    return Properties.Phrases.onthewayto + " " + minus + number + " " + Properties.Phrases.andahalf + order;
                 case 4:
-                    return Properties.Phrases.nearly + minus + number + Properties.Phrases.andahalf + order;
+                    return Properties.Phrases.nearly + " " + minus + number + " " + Properties.Phrases.andahalf + order;
                 case 5:
-                    return Properties.Phrases.around + minus + number + Properties.Phrases.andahalf + order;
+                    return Properties.Phrases.around + " " + minus + number + " " + Properties.Phrases.andahalf + order;
                 case 6:
-                    return Properties.Phrases.justover + minus + number + Properties.Phrases.andahalf + order;
+                    return Properties.Phrases.justover + " " + minus + number + " " + Properties.Phrases.andahalf + order;
                 case 7:
-                    return Properties.Phrases.wellover + minus + number + Properties.Phrases.andahalf + order;
+                    return Properties.Phrases.wellover + " " + minus + number + " " + Properties.Phrases.andahalf + order;
                 case 8:
-                    return Properties.Phrases.onthewayto + minus + (number + 1) + order;
+                    return Properties.Phrases.onthewayto + " " + minus + (number + 1) + order;
                 case 9:
-                    return Properties.Phrases.nearly + minus + (number + 1) + order;
+                    return Properties.Phrases.nearly + " " + minus + (number + 1) + order;
                 default:
-                    return Properties.Phrases.around + minus + number + order;
+                    return Properties.Phrases.around + " " + minus + number + order;
             }
         }
     }
