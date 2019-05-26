@@ -79,6 +79,51 @@ namespace EddiMaterialMonitor.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Find Encoded Trader.
+        /// </summary>
+        public static string find_encoded_button {
+            get {
+                return ResourceManager.GetString("find_encoded_button", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Find Guardian Broker.
+        /// </summary>
+        public static string find_guardian_button {
+            get {
+                return ResourceManager.GetString("find_guardian_button", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Find Human Broker.
+        /// </summary>
+        public static string find_human_button {
+            get {
+                return ResourceManager.GetString("find_human_button", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Find Manufactured Trader.
+        /// </summary>
+        public static string find_manufactured_button {
+            get {
+                return ResourceManager.GetString("find_manufactured_button", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Find Raw Trader.
+        /// </summary>
+        public static string find_raw_button {
+            get {
+                return ResourceManager.GetString("find_raw_button", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Inventory.
         /// </summary>
         public static string inventory_header {
@@ -138,6 +183,24 @@ namespace EddiMaterialMonitor.Properties {
         public static string p2 {
             get {
                 return ResourceManager.GetString("p2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tip: Maximize the allowed station distance to minimize search times..
+        /// </summary>
+        public static string p3 {
+            get {
+                return ResourceManager.GetString("p3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Max Station Distance From Main Star (Ls):.
+        /// </summary>
+        public static string tab_station_distance {
+            get {
+                return ResourceManager.GetString("tab_station_distance", resourceCulture);
             }
         }
         

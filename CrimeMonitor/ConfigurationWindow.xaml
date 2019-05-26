@@ -14,6 +14,7 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="250" />
                 <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
@@ -28,6 +29,7 @@
                      LostFocus="maxStationDistance_LostFocus"
                      TextAlignment="Center"
                      VerticalContentAlignment="Center" Height="25" Width="60"/>
+            <TextBlock Grid.Row="1" Grid.Column="2" Margin="10,0" TextWrapping="Wrap" Text="{x:Static resx:CrimeMonitor.p1}" VerticalAlignment="Center"/>
         </Grid>
         <Grid DockPanel.Dock="Top" Margin="5" >
             <Grid.ColumnDefinitions>
@@ -144,14 +146,14 @@
                 <DataGridTemplateColumn>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Button Click="updateRecord" Width="60" Content="{x:Static resx:CrimeMonitor.update_button}" />
+                            <Button Click="updateRecord" MinWidth="60" HorizontalAlignment="Center" Content="{x:Static resx:CrimeMonitor.update_button}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
                 <DataGridTemplateColumn>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Button Click="removeRecord" Width="60" Content="{x:Static resx:CrimeMonitor.remove_button}" />
+                            <Button Click="removeRecord" MinWidth="60" HorizontalAlignment="Center" Content="{x:Static resx:CrimeMonitor.remove_button}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>

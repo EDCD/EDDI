@@ -6,8 +6,10 @@ using Cottle.Stores;
 using Cottle.Values;
 using Eddi;
 using EddiCargoMonitor;
+using EddiCrimeMonitor;
 using EddiDataDefinitions;
 using EddiDataProviderService;
+using EddiMaterialMonitor;
 using EddiMissionMonitor;
 using EddiNavigationService;
 using EddiShipMonitor;
@@ -554,7 +556,7 @@ namespace EddiSpeechResponder
                 {
                     return null;
                 }
-                result = ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).JumpDetails(value);
+                result = ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor"))?.JumpDetails(value);
                 return (result == null ? new ReflectionValue(new object()) : new ReflectionValue(result));
             }, 1);
 
@@ -658,6 +660,9 @@ namespace EddiSpeechResponder
 
             store["RouteDetails"] = new NativeFunction((values) =>
             {
+                CrimeMonitor crimeMonitor = (CrimeMonitor)EDDI.Instance.ObtainMonitor("Crime monitor");
+                MaterialMonitor materialMonitor = (MaterialMonitor)EDDI.Instance.ObtainMonitor("Material monitor");
+                int materialDistance = materialMonitor.maxStationDistanceFromStarLs ?? 10000;
                 string result = null;
                 string value = values[0].AsString;
                 if (value == null || value == "")
@@ -671,6 +676,11 @@ namespace EddiSpeechResponder
                             Navigation.Instance.CancelRoute();
                         }
                         break;
+                    case "encoded":
+                        {
+                            result = Navigation.Instance.GetServiceRoute("encoded", materialDistance);
+                        }
+                        break;
                     case "expiring":
                         {
                             result = Navigation.Instance.GetExpiringRoute();
@@ -678,12 +688,29 @@ namespace EddiSpeechResponder
                         break;
                     case "facilitator":
                         {
-                            result = Navigation.Instance.GetFacilitatorRoute();
+                            int distance = crimeMonitor.maxStationDistanceFromStarLs ?? 10000;
+                            bool isChecked = crimeMonitor.prioritizeOrbitalStations;
+                            result = Navigation.Instance.GetServiceRoute("facilitator", distance, isChecked);
                         }
                         break;
                     case "farthest":
                         {
                             result = Navigation.Instance.GetFarthestRoute();
+                        }
+                        break;
+                    case "guardian":
+                        {
+                            result = Navigation.Instance.GetServiceRoute("guardian", materialDistance);
+                        }
+                        break;
+                    case "human":
+                        {
+                            result = Navigation.Instance.GetServiceRoute("human", materialDistance);
+                        }
+                        break;
+                    case "manufactured":
+                        {
+                            result = Navigation.Instance.GetServiceRoute("manufactured", materialDistance);
                         }
                         break;
                     case "most":
@@ -706,6 +733,11 @@ namespace EddiSpeechResponder
                     case "next":
                         {
                             result = Navigation.Instance.SetNextRoute();
+                        }
+                        break;
+                    case "raw":
+                        {
+                            result = Navigation.Instance.GetServiceRoute("raw", materialDistance);
                         }
                         break;
                     case "route":
@@ -904,6 +936,7 @@ namespace EddiSpeechResponder
 
             store["CargoDetails"] = new NativeFunction((values) =>
             {
+                CargoMonitor cargoMonitor = (CargoMonitor)EDDI.Instance.ObtainMonitor("Cargo monitor");
                 Cottle.Value value = values[0];
                 Cargo result = null;
                 string edname = string.Empty;
@@ -911,11 +944,11 @@ namespace EddiSpeechResponder
                 if (value.Type == Cottle.ValueContent.String)
                 {
                     edname = CommodityDefinition.FromNameOrEDName(value.AsString).edname;
-                    result = ((CargoMonitor)EDDI.Instance.ObtainMonitor("Cargo monitor"))?.GetCargoWithEDName(edname);
+                    result = cargoMonitor?.GetCargoWithEDName(edname);
                 }
                 else if (value.Type == Cottle.ValueContent.Number)
                 {
-                    result = ((CargoMonitor)EDDI.Instance.ObtainMonitor("Cargo monitor"))?.GetCargoWithMissionId((long)value.AsNumber);
+                    result = cargoMonitor?.GetCargoWithMissionId((long)value.AsNumber);
                 }
                 return (result == null ? new ReflectionValue(new object()) : new ReflectionValue(result));
             }, 1);

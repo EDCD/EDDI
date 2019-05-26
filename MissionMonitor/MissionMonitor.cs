@@ -144,7 +144,7 @@ namespace EddiMissionMonitor
                             {
                                 EDDI.Instance.enqueueEvent(new MissionExpiredEvent(DateTime.UtcNow, mission.missionid, mission.name));
                             }
-                            else if (mission.expiry < DateTime.UtcNow.AddMinutes(missionWarning ?? 60))
+                            else if (mission.expiry < DateTime.UtcNow.AddMinutes(missionWarning ?? Constants.missionWarningDefault))
                             {
                                 if (!mission.expiring)
                                 {
@@ -867,7 +867,7 @@ namespace EddiMissionMonitor
                 // Obtain current missions inventory from configuration
                 configuration = configuration ?? MissionMonitorConfiguration.FromFile();
                 missionsCount = configuration.missionsCount;
-                missionWarning = configuration.missionWarning ?? 60;
+                missionWarning = configuration.missionWarning ?? Constants.missionWarningDefault;
                 missionsRouteList = configuration.missionsRouteList;
                 missionsRouteDistance = configuration.missionsRouteDistance;
                 updateDat = configuration.updatedat;

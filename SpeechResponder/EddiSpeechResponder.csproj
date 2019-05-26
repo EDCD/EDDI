@@ -141,6 +141,10 @@
       <Project>{72B6F41D-0107-4D3A-8603-C3EDDA1C5243}</Project>
       <Name>EddiJournalMonitor</Name>
     </ProjectReference>
+    <ProjectReference Include="..\MaterialMonitor\EddiMaterialMonitor.csproj">
+      <Project>{a2401e3a-586a-41ff-8237-3fb598c5fcf9}</Project>
+      <Name>EddiMaterialMonitor</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MissionMonitor\EddiMissionMonitor.csproj">
       <Project>{6d01f475-75b8-4fca-9b1d-9ecf5993a32d}</Project>
       <Name>EddiMissionMonitor</Name>
