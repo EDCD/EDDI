@@ -225,7 +225,7 @@ namespace EddiDataDefinitions
         {
             try
             {
-                return new List<Body>(bodies).SelectMany(b => b.materials, (b, m) => m.definition.edname).Distinct().ToList();
+                return bodies.SelectMany(b => b.materials, (b, m) => m.definition.edname).Distinct().ToList();
             }
             catch (InvalidOperationException ex)
             {
