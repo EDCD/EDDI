@@ -541,26 +541,23 @@ namespace EddiCrimeMonitor
                     List<FactionReport> reports = record.factionReports
                         .Where(r => r.bounty && r.crimeDef != Crime.None && r.crimeDef != Crime.Bounty && r.shipId == @event.shipid)
                         .ToList();
+                    long total = reports?.Sum(r => r.amount) ?? 0;
 
-                    if (reports?.Any() ?? false)
+                    // Check for discrepancy in logged bounties incurred
+                    if (total < @event.amount)
                     {
-                        long total = reports.Sum(r => r.amount);
-
-                        // Check for discrepancy in logged bounties incurred
-                        if (total < @event.amount)
+                        // Adjust the discrepancy report & remove when zeroed out
+                        FactionReport report = record.factionReports
+                            .FirstOrDefault(r => r.crimeDef == Crime.Bounty);
+                        if (report != null)
                         {
-                            // Adjust the discrepancy report & remove when zeroed out
-                            FactionReport report = record.factionReports
-                                .FirstOrDefault(r => r.crimeDef == Crime.Bounty);
-                            if (report != null)
-                            {
-                                report.amount -= Math.Min(@event.amount - total, report.amount);
-                                if (report.amount == 0) { reports.Add(report); }
-                            }
+                            report.amount -= Math.Min(@event.amount - total, report.amount);
+                            if (report.amount == 0) { reports.Add(report); }
                         }
-                        // Remove associated bounties
-                        record.factionReports = record.factionReports.Except(reports).ToList();
                     }
+                    // Remove associated bounties
+                    record.factionReports = record.factionReports.Except(reports).ToList();
+
                     // Adjust the total bounties incurred amount
                     record.bounties -= Math.Min(@event.amount, record.bounties);
 
@@ -623,31 +620,28 @@ namespace EddiCrimeMonitor
                 bool match = @event.brokerpercentage == null ? record.faction == @event.faction : record.Allegiance.invariantName == @event.faction;
                 if (@event.allfines || match)
                 {
-                    // Get all fines incurred, excluing the discrepancy report
+                    // Get all fines incurred, excluding the discrepancy report
                     // Note that all fines are assigned to the ship, not the commander
                     List<FactionReport> reports = record.factionReports
                         .Where(r => !r.bounty && r.crimeDef != Crime.None && r.crimeDef != Crime.Fine && r.shipId == @event.shipid)
                         .ToList();
+                    long total = reports?.Sum(r => r.amount) ?? 0;
 
-                    if (reports?.Any() ?? false)
+                    // Check for discrepancy in logged fines incurred
+                    if (total < @event.amount)
                     {
-                        long total = reports.Sum(r => r.amount);
-
-                        // Check for discrepancy in logged fines incurred
-                        if (total < @event.amount)
+                        // Adjust the discrepancy report & remove when zeroed out
+                        FactionReport report = record.factionReports
+                            .FirstOrDefault(r => r.crimeDef == Crime.Fine);
+                        if (report != null)
                         {
-                            // Adjust the discrepancy report & remove when zeroed out
-                            FactionReport report = record.factionReports
-                                .FirstOrDefault(r => r.crimeDef == Crime.Fine);
-                            if (report != null)
-                            {
-                                report.amount -= Math.Min(@event.amount - total, report.amount);
-                                if (report.amount == 0) { reports.Add(report); }
-                            }
+                            report.amount -= Math.Min(@event.amount - total, report.amount);
+                            if (report.amount == 0) { reports.Add(report); }
                         }
-                        // Remove associated fines
-                        record.factionReports = record.factionReports.Except(reports).ToList();
                     }
+                    // Remove associated fines
+                    record.factionReports = record.factionReports.Except(reports).ToList();
+
                     // Adjust the total fines incurred amount
                     record.fines -= Math.Min(@event.amount, record.fines);
 

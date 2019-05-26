@@ -895,7 +895,7 @@ namespace EddiSpeechResponder
                 {
                     StarSystem starSystem = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(values[1].AsString, true);
                     Body body = Material.highestPercentBody(result.edname, starSystem.bodies);
-                    result.bodyname = body.name;
+                    result.bodyname = body.bodyname;
                     result.bodyshortname = body.shortname;
                 }
                 return (result == null ? new ReflectionValue(new object()) : new ReflectionValue(result));

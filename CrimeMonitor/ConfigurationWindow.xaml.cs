@@ -192,6 +192,7 @@ namespace EddiCrimeMonitor
                                 if (record.claims != claims)
                                 {
                                     // Create/modify 'discrepancy' report if total claims does not equal sum of claim reports
+                                    long amount = record.claims - claims;
                                     report = record.factionReports
                                         .FirstOrDefault(r => r.crimeDef == Crime.Claim);
                                     if (report == null)
@@ -199,7 +200,8 @@ namespace EddiCrimeMonitor
                                         report = new FactionReport(DateTime.UtcNow, false, 0, Crime.Claim, null, 0);
                                         record.factionReports.Add(report);
                                     }
-                                    report.amount += record.claims - claims;
+                                    report.amount += amount;
+                                    if (report.amount == 0) { record.factionReports.Remove(report); }
                                 }
                             }
                             break;
@@ -212,14 +214,15 @@ namespace EddiCrimeMonitor
                                 if (record.fines != fines)
                                 {
                                     // Create/modify 'discrepancy' report if total fines does not equal sum of fine reports
-                                    report = record.factionReports
-                                        .FirstOrDefault(r => r.crimeDef == Crime.Fine);
+                                    long amount = record.fines - fines;
+                                    report = record.factionReports.FirstOrDefault(r => r.crimeDef == Crime.Fine);
                                     if (report == null)
                                     {
                                         report = new FactionReport(DateTime.UtcNow, false, 0, Crime.Fine, null, 0);
                                         record.factionReports.Add(report);
                                     }
-                                    report.amount += record.fines - fines;
+                                    report.amount += amount;
+                                    if (report.amount == 0) { record.factionReports.Remove(report); }
                                 }
                             }
                             break;
@@ -232,6 +235,7 @@ namespace EddiCrimeMonitor
                                 if (record.bounties != bounties)
                                 {
                                     // Create/modify 'discrepancy' report if total bounties does not equal sum of bonty reports
+                                    long amount = record.bounties - bounties;
                                     report = record.factionReports
                                         .FirstOrDefault(r => r.crimeDef == Crime.Bounty);
                                     if (report == null)
@@ -239,7 +243,8 @@ namespace EddiCrimeMonitor
                                         report = new FactionReport(DateTime.UtcNow, true, 0, Crime.Bounty, null, 0);
                                         record.factionReports.Add(report);
                                     }
-                                    report.amount += record.bounties - bounties;
+                                    report.amount += amount;
+                                    if (report.amount == 0) { record.factionReports.Remove(report); }
                                 }
                             }
                             break;
@@ -259,4 +264,3 @@ namespace EddiCrimeMonitor
         }
     }
 }
-

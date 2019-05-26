@@ -321,7 +321,7 @@ namespace EddiNavigationService
                 StarSystem ServiceStarSystem = GetServiceSystem(serviceType, maxStationDistance, prioritizeOrbitalStations);
                 if (ServiceStarSystem != null)
                 {
-                    ServiceSystem = ServiceStarSystem.name;
+                    ServiceSystem = ServiceStarSystem.systemname;
                     ServiceDistance = CalculateDistance(currentSystem, ServiceStarSystem);
 
                     // Filter stations which meet the game version and landing pad size requirements
@@ -372,7 +372,7 @@ namespace EddiNavigationService
 
                 while (ServiceSystem == null && maxTries > 0)
                 {
-                    List<StarSystem> cubeSystems = StarMapService.GetStarMapSystemsCube(currentSystem.name, cubeLy);
+                    List<StarSystem> cubeSystems = StarMapService.GetStarMapSystemsCube(currentSystem.systemname, cubeLy);
                     if (cubeSystems?.Any() ?? false)
                     {
                         // Filter systems using search parameters
@@ -386,7 +386,7 @@ namespace EddiNavigationService
                         }
 
                         // Retreive systems in current radius which have not been previously checked
-                        List<string> systemNames = cubeSystems.Select(s => s.name).Except(checkedSystems).ToList();
+                        List<string> systemNames = cubeSystems.Select(s => s.systemname).Except(checkedSystems).ToList();
                         List<StarSystem> StarSystems = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystems(systemNames.ToArray(), true, false);
                         checkedSystems.AddRange(systemNames);
 
@@ -407,7 +407,7 @@ namespace EddiNavigationService
                                 decimal distance = CalculateDistance(currentSystem, starsystem);
                                 if (!nearestList.ContainsKey(distance))
                                 {
-                                    nearestList.Add(distance, starsystem.name);
+                                    nearestList.Add(distance, starsystem.systemname);
                                 }
                             }
                         }
@@ -416,7 +416,7 @@ namespace EddiNavigationService
                         ServiceSystem = nearestList.Values.FirstOrDefault();
                         if (ServiceSystem != null)
                         {
-                            return StarSystems.FirstOrDefault(s => s.name == ServiceSystem);
+                            return StarSystems.FirstOrDefault(s => s.systemname == ServiceSystem);
                         }
                     }
 
