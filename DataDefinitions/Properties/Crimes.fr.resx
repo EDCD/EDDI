@@ -189,6 +189,13 @@
     <value>Collision entraînant des dommages</value>
     <comment>Crime collidedAtSpeedInNoFireZone_hulldamage</comment>
   </data>
-  
+  <data name="recklessWeaponsDischarge" xml:space="preserve">
+    <value>Tir involontaire</value>
+    <comment>Crime recklessWeaponsDischarge</comment>
+  </data>
+  <data name="passengerWanted" xml:space="preserve">
+    <value>Transport de personne recherchée</value>
+    <comment>Crime passengerWanted</comment>
+  </data>
   
 </root>

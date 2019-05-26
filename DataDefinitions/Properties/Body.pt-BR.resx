@@ -142,7 +142,7 @@
     <comment>Body Type "Belt"</comment>
   </data>
   <data name="None" xml:space="preserve">
-    <value>Nenhum</value>
+    <value>Corpo</value>
     <comment>None</comment>
   </data>
   <data name="Station" xml:space="preserve">
@@ -150,11 +150,19 @@
     <comment>BodyType "Station"</comment>
   </data>
   <data name="Null" xml:space="preserve">
-    <value>Nenhum</value>
+    <value>Corpo</value>
     <comment>BodyType "Null"</comment>
   </data>
   <data name="PlanetaryRing" xml:space="preserve">
     <value>Anel Planetário</value>
+    <comment>Body Type PlanetaryRing</comment>
+  </data>
+  <data name="Moon" xml:space="preserve">
+    <value>Lua</value>
+    <comment>Body Type "Moon"</comment>
+  </data>
+  <data name="StellarRing" xml:space="preserve">
+    <value>Anel estelar</value>
     <comment>Body Type PlanetaryRing</comment>
   </data>
 </root>

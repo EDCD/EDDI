@@ -134,7 +134,7 @@
     <comment>Commodity category IndustrialMaterials</comment>
   </data>
   <data name="Machinery" xml:space="preserve">
-    <value>Szerkezet</value>
+    <value>Gépipar</value>
     <comment>Commodity category Machinery</comment>
   </data>
   <data name="Medicines" xml:space="preserve">
@@ -146,7 +146,7 @@
     <comment>Commodity category Metals</comment>
   </data>
   <data name="Minerals" xml:space="preserve">
-    <value>Ásványok</value>
+    <value>Ásványi anyagok</value>
     <comment>Commodity category Minerals</comment>
   </data>
   <data name="Narcotics" xml:space="preserve">

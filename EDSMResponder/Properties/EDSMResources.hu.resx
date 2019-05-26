@@ -147,7 +147,9 @@
   <data name="log_button_fetching_progress" xml:space="preserve">
     <value>Napló beszerzése </value>
   </data>
-  
+  <data name="name" xml:space="preserve">
+    <value>EDSM reagáló</value>
+  </data>
   <data name="p1" xml:space="preserve">
     <value>Az EDSM-hez való csatlakozáshoz regisztráció szükséges. Amint ez megvan, meg lehet szerezni az API kulcsot a kis portréra kattintva a jobb felső sarokban ahol a 'My API key'-t kell kiválasztani</value>
   </data>

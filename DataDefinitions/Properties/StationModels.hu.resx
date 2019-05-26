@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AsteroidBase" xml:space="preserve">
-    <value>Aszteroid Bázis</value>
+    <value>Aszteroida bázis</value>
     <comment>An Asteroid Base</comment>
   </data>
   
@@ -126,16 +126,37 @@
     <value>Coriolis állomás</value>
     <comment>A Coriolis Starport</comment>
   </data>
+  <data name="Megaship" xml:space="preserve">
+    <value>Megahajó</value>
+    <comment>A Megaship</comment>
+  </data>
   
-  
-  
+  <data name="Outpost" xml:space="preserve">
+    <value>Előőrs</value>
+    <comment>An Outpost</comment>
+  </data>
   <data name="SurfaceStation" xml:space="preserve">
     <value>Felszíni állomás</value>
     <comment>A Surface Station</comment>
   </data>
-  
-  
-  
-  
-  
+  <data name="None" xml:space="preserve">
+    <value>Imeretlen állomás</value>
+    <comment>Unknown Station</comment>
+  </data>
+  <data name="CraterPort" xml:space="preserve">
+    <value>Felszíni kikötő</value>
+    <comment>A Surface Port</comment>
+  </data>
+  <data name="CraterOutpost" xml:space="preserve">
+    <value>Felszíni előörs</value>
+    <comment>A Surface Outpost</comment>
+  </data>
+  <data name="MegaShipCivilian" xml:space="preserve">
+    <value>Civil megahajó</value>
+    <comment>A Civilian Megaship</comment>
+  </data>
+  <data name="OutpostScientific" xml:space="preserve">
+    <value>Kutató előőrs</value>
+    <comment>A Scientific Outpost (currently, Talos 1 &amp; Talos 2 in Peregrina)</comment>
+  </data>
 </root>

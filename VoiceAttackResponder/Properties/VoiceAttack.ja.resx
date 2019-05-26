@@ -129,7 +129,9 @@
   <data name="p2" xml:space="preserve">
     <value>EDDIの統合は、VoiceAttack 1.5.12.22以上で動作します。この機能はベータ版です。</value>
   </data>
-  
+  <data name="p3" xml:space="preserve">
+    <value>VoiceAttackをインストールした後、プラグインのサポートを有効にする必要があります。そのためには、VoiceAttackの右上隅にある設定アイコン（スパナ）をクリックして、'Enable plugin support'オプションをチェックし、VoiceAttackを再起動する必要があります。 VoiceAttackウインドウの「Plugin EDDI 2.0.0 initialized」の行に沿ってメッセージが表示されます。</value>
+  </data>
   <data name="p4" xml:space="preserve">
     <value>この時点で、EDDIの変数を、VoiceAttackスクリプトと統合することができます。 例えば、コマンダーの名前は 'Name'テキスト変数に格納されてるので、あなた自身のコマンドで '{TXT：Name}'を使うだけです。コマンダー名、船、現在の星系とステーションなどのための変数があります。 変数の完全なリストは、 </value>
   </data>

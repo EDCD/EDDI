@@ -229,5 +229,8 @@
     <value>Menú de la estación</value>
     <comment>Station Service: Station Menu</comment>
   </data>
-  
+  <data name="InterstellarFactorsContact" xml:space="preserve">
+    <value>Contacto de Interstellar Factors</value>
+    <comment>Station Service: InterstellarFactorsContact</comment>
+  </data>
 </root>

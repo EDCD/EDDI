@@ -107,7 +107,7 @@
     <comment>Rarity verycommon</comment>
   </data>
   <data name="common" xml:space="preserve">
-    <value>általános</value>
+    <value>közönséges</value>
     <comment>Rarity common</comment>
   </data>
   <data name="rare" xml:space="preserve">

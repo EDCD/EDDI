@@ -135,7 +135,9 @@
   <data name="max_dist_ship_header" xml:space="preserve">
     <value>A hajótól való maximális távolság</value>
   </data>
-  
+  <data name="name" xml:space="preserve">
+    <value>EDDP monitor</value>
+  </data>
   <data name="name_header" xml:space="preserve">
     <value>Név</value>
   </data>

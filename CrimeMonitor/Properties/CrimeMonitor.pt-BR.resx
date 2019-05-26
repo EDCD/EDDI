@@ -117,104 +117,73 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="active_personality" xml:space="preserve">
-    <value>Aktív személyiség</value>
+  <data name="add_button" xml:space="preserve">
+    <value>Adicionar Registro</value>
   </data>
-  <data name="button_cancel" xml:space="preserve">
-    <value>Mégsem</value>
+  <data name="add_button_desc" xml:space="preserve">
+    <value>Permite a adição manual de um registro de facção menor.</value>
   </data>
-  <data name="button_copy" xml:space="preserve">
-    <value>Személyiség másolása</value>
+  <data name="add_button_text" xml:space="preserve">
+    <value>Adicionar Registro:</value>
   </data>
-  <data name="button_delete" xml:space="preserve">
-    <value>Személyiség törlése</value>
+  <data name="blank_faction" xml:space="preserve">
+    <value>Insira o Nome da Facção</value>
   </data>
-  <data name="button_new" xml:space="preserve">
-    <value>Új szkript létrehozása</value>
+  <data name="crime_monitor_desc" xml:space="preserve">
+    <value>Acompanhe informações sobre o seu registro criminal.</value>
   </data>
-  <data name="button_ok" xml:space="preserve">
-    <value>OK</value>
+  <data name="crime_monitor_name" xml:space="preserve">
+    <value>Monitor de Crimes</value>
   </data>
-  <data name="compare_script_button" xml:space="preserve">
-    <value>Összehasonlítás az alap beállítással</value>
+  <data name="find_button" xml:space="preserve">
+    <value>Encontre Instalações Legais</value>
   </data>
-  <data name="compare_script_title" xml:space="preserve">
-    <value>Összehasonlítás az alap szkripttel</value>
+  <data name="find_button_desc" xml:space="preserve">
+    <value>Inicia a busca pelo sistema e estação de Contato de Agentes Interestelares mais próximos.</value>
   </data>
-  <data name="default_is_read_only" xml:space="preserve">
-    <value>Az alap személyiséget nem lehet módosítani. Ha szeretne változtatni rajta, hozzon létre egy másolatot.</value>
+  <data name="find_button_text" xml:space="preserve">
+    <value>Encontre Instalações Legais:</value>
   </data>
-  <data name="default_personality_script_filename" xml:space="preserve">
-    <value>eddi.hu.json</value>
-    <comment>Suggest "eddi.&lt;culture-code&gt;.json" e.g. "eddi.fr.json"</comment>
+  <data name="header_bounties" xml:space="preserve">
+    <value>Recompensas</value>
   </data>
-  <data name="delete_personality_caption" xml:space="preserve">
-    <value>Személyiség törlése</value>
+  <data name="header_claims" xml:space="preserve">
+    <value>Reivindicações</value>
   </data>
-  <data name="delete_personality_message" xml:space="preserve">
-    <value>Biztos benne , hogy törölni szeretné a "{0}" személyiséget?</value>
+  <data name="header_faction" xml:space="preserve">
+    <value>Facção</value>
   </data>
-  <data name="delete_script" xml:space="preserve">
-    <value>Törlés</value>
+  <data name="header_fines" xml:space="preserve">
+    <value>Multas</value>
   </data>
-  <data name="delete_script_caption" xml:space="preserve">
-    <value>Szkript törlése</value>
+  <data name="header_station" xml:space="preserve">
+    <value>Estação</value>
   </data>
-  <data name="delete_script_message" xml:space="preserve">
-    <value>Biztos benne, hogy törölni szeretné a "{0}" szkriptet?</value>
+  <data name="header_system" xml:space="preserve">
+    <value>Sistema</value>
   </data>
-  
-  <data name="edit_script" xml:space="preserve">
-    <value>Szerkesztés</value>
+  <data name="orbital_station_checkbox" xml:space="preserve">
+    <value>Priorizar Estações Orbitais:</value>
   </data>
-  <data name="edit_script_caption" xml:space="preserve">
-    <value>Szkript szerkesztése</value>
+  <data name="remove_button" xml:space="preserve">
+    <value>Remover</value>
   </data>
-  <data name="header_description" xml:space="preserve">
-    <value>Leírás</value>
+  <data name="remove_button_desc" xml:space="preserve">
+    <value>Permite a remoção manual de um registro de facção menor.</value>
   </data>
-  <data name="header_enabled" xml:space="preserve">
-    <value>Engedélyezve</value>
+  <data name="remove_button_text" xml:space="preserve">
+    <value>Remover:</value>
   </data>
-  <data name="header_name" xml:space="preserve">
-    <value>Név</value>
+  <data name="tab_station_distance" xml:space="preserve">
+    <value>Distância Máxima da Estação em Relação à Estrela Principal (sL):</value>
   </data>
-  <data name="help_button" xml:space="preserve">
-    <value>Súgó</value>
+  <data name="update_button" xml:space="preserve">
+    <value>Atualizar</value>
   </data>
-  <data name="name" xml:space="preserve">
-    <value>Beszéd reagáló</value>
+  <data name="update_button_desc" xml:space="preserve">
+    <value>Atualiza a informação da facção menor (sistema, estação, etc).</value>
   </data>
-  <data name="reset_script_button" xml:space="preserve">
-    <value>Alapbeállítások visszaállítása</value>
-  </data>
-  <data name="script_variables_button" xml:space="preserve">
-    <value>Változók</value>
-    <comment>button that shows help for script variables</comment>
-  </data>
-  <data name="subs" xml:space="preserve">
-    <value>Szöveges másolatot ír a beszédről az %APPDATA%\EDDI\speechresponder.out fájlba</value>
-  </data>
-  <data name="subs_only" xml:space="preserve">
-    <value>Ne beszéljen hangosan, amikor a szöveg a fenti módon van a fájlba írva</value>
-  </data>
-  <data name="test_script" xml:space="preserve">
-    <value>Teszt</value>
-  </data>
-  <data name="test_script_button" xml:space="preserve">
-    <value>Szkript tesztelése</value>
-  </data>
-  <data name="view_script" xml:space="preserve">
-    <value>Nézet</value>
-  </data>
-  <data name="view_script_title" xml:space="preserve">
-    <value>Szkript megtekintése</value>
-  </data>
-  <data name="header_priority" xml:space="preserve">
-    <value>Prioritás</value>
-  </data>
-  
-  <data name="speechResponderHelpHere" xml:space="preserve">
-    <value>itt.</value>
+  <data name="update_button_text" xml:space="preserve">
+    <value>Atualizar:</value>
   </data>
 </root>

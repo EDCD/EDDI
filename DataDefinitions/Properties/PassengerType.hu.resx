@@ -97,31 +97,45 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
+  <data name="AidWorker" xml:space="preserve">
+    <value>Segélymunkás utascsoport</value>
+  </data>
   <data name="Business" xml:space="preserve">
     <value>Üzletemberek csoportja</value>
   </data>
   <data name="Celebrity" xml:space="preserve">
     <value>Celeb</value>
   </data>
-  
-  
+  <data name="CEO" xml:space="preserve">
+    <value>Vezérigazgató</value>
+  </data>
+  <data name="Criminal" xml:space="preserve">
+    <value>Bűnöző</value>
+  </data>
   <data name="Doctor" xml:space="preserve">
     <value>Orvos</value>
   </data>
   <data name="Explorer" xml:space="preserve">
     <value>Felfedező</value>
   </data>
-  
-  
+  <data name="General" xml:space="preserve">
+    <value>Katonai hadvezér</value>
+  </data>
+  <data name="HeadOfState" xml:space="preserve">
+    <value>Államfő</value>
+  </data>
   <data name="Medical" xml:space="preserve">
     <value>Orvosi csoport</value>
   </data>
-  
-  <data name="PrisonerOfWar" xml:space="preserve">
-    <value>Háborús bűnös</value>
+  <data name="Politician" xml:space="preserve">
+    <value>Politikai utascsoport</value>
   </data>
-  
+  <data name="PrisonerOfWar" xml:space="preserve">
+    <value>Hadifogoly</value>
+  </data>
+  <data name="Protestor" xml:space="preserve">
+    <value>Tüntető utascsoport</value>
+  </data>
   <data name="Rebel" xml:space="preserve">
     <value>Felkelő utascsoport</value>
   </data>

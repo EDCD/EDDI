@@ -148,7 +148,10 @@
   <data name="verbose_logging_checkbox" xml:space="preserve">
     <value>Széles körű naplózás engedélyezése (csak amennyiben erre felkérést kapott az EDDI fejlesztőitől)</value>
   </data>
-  
+  <data name="verbose_logging_desc" xml:space="preserve">
+    <value>Ha a verbose loggolás engedélyezve van ez létrehoz egy zip archivumot az asztalta amely tartalmazza a logjaidat mely hiba jelentés esetén azzonnal bemasolható a GitHub-ra.
+Személyes infórmációk vagy azonosításra alkalmas adatok nem szerepelnek az archívumban és a log-ban.</value>
+  </data>
   <data name="version_hyperlink" xml:space="preserve">
     <value>Verzió:</value>
   </data>
@@ -158,11 +161,15 @@
   <data name="choose_lang_label" xml:space="preserve">
     <value>EDDI felület nyelve (EDDI újraindítása szükséges):</value>
   </data>
-  
+  <data name="tab_frontier_desc" xml:space="preserve">
+    <value>A Frontier-nek van egy API-ja amely engedélyezi adatok begyűjtését a birtokolt hajókról, az aktuális állomás piacáról és egyéb hasznos információkról. Ezek az adatok máshol nem elérhetőek. Ha azt szeretné, hogy az EDDI hozzáférjen ezekhez akkor meg kell adnia a Frontier-nél regisztrált email címét és jelszavát.</value>
+  </data>
   <data name="tab_frontier_header" xml:space="preserve">
     <value>Frontier API</value>
   </data>
-  
+  <data name="tab_frontier_reset_desc" xml:space="preserve">
+    <value>Ha problémája adódik a kapcsolattal újraíndithatja és újra bejelentkezhet, ami feltehetőleg megoldja a gondot.</value>
+  </data>
   <data name="tab_tts_desc" xml:space="preserve">
     <value>Az EDDI egy szöveg felovasó motort használ, ami feldolgozza a hangot a hajó sérülési állapotának és pilótafülkéjének méretéhez megfelelően. Ennek paramétereit itt állíthatja be.</value>
   </data>
@@ -241,12 +248,28 @@
   <data name="tab_commander_par1" xml:space="preserve">
     <value>Megadhatja a rendszer és állomás nevét amit leginkább az otthonának tekint. Ha megteszi, akkor ezen rendszer és állomás adatai elérhetőek lesznek az EDDI reagálóinak.</value>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="tab_commander_squadron_name" xml:space="preserve">
+    <value>Osztag név:</value>
+  </data>
+  <data name="tab_commander_squadron_system" xml:space="preserve">
+    <value>Osztag rendszere:</value>
+  </data>
+  <data name="tab_commander_squadron_allegiance" xml:space="preserve">
+    <value>Osztag hűség:</value>
+  </data>
+  <data name="tab_commander_squadron_faction" xml:space="preserve">
+    <value>Osztag vállalata:</value>
+  </data>
+  <data name="tab_commander_squadron_power" xml:space="preserve">
+    <value>Osztag hatalmi erő:</value>
+  </data>
+  <data name="tab_commander_squadron_rank" xml:space="preserve">
+    <value>Osztag rangja:</value>
+  </data>
+  <data name="tab_commander_squadron_id" xml:space="preserve">
+    <value>Osztag azonosító:</value>
+  </data>
+  <data name="no_station" xml:space="preserve">
+    <value>Nincs állomás</value>
+  </data>
 </root>

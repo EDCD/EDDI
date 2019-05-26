@@ -218,7 +218,15 @@
     <comment>ListeningPost</comment>
   </data>
   <data name="Fixed_Event_Life_Cloud" xml:space="preserve">
-    <value>Fenômeno Estrelar Notável</value>
+    <value>Fenômeno Estelar Notável</value>
+    <comment>Notable Stellar Phenomena</comment>
+  </data>
+  <data name="FIXED-EVENT_CAPSHIP" xml:space="preserve">
+    <value>Nave Capital</value>
+    <comment>Capital Ship</comment>
+  </data>
+  <data name="Fixed_Event_Life_Ring" xml:space="preserve">
+    <value>Fenômeno Estelar Notável</value>
     <comment>Notable Stellar Phenomena</comment>
   </data>
 </root>

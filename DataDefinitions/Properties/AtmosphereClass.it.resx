@@ -123,7 +123,7 @@
   </data>
   <data name="AmmoniaAndOxygen" xml:space="preserve">
     <value>Ammoniaca ed ossigeno</value>
-    <comment>Atmosphere class "Ammonia and oxygen"</comment>
+    <comment>Atmosphere class "Ammonia and oxygen" (obsolete - see "AmmoniaOxygen")</comment>
   </data>
   <data name="AmmoniaRich" xml:space="preserve">
     <value>Ricca di Ammoniaca</value>

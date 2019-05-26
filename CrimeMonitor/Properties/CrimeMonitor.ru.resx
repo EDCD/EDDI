@@ -117,104 +117,27 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="active_personality" xml:space="preserve">
-    <value>Aktív személyiség</value>
-  </data>
-  <data name="button_cancel" xml:space="preserve">
-    <value>Mégsem</value>
-  </data>
-  <data name="button_copy" xml:space="preserve">
-    <value>Személyiség másolása</value>
-  </data>
-  <data name="button_delete" xml:space="preserve">
-    <value>Személyiség törlése</value>
-  </data>
-  <data name="button_new" xml:space="preserve">
-    <value>Új szkript létrehozása</value>
-  </data>
-  <data name="button_ok" xml:space="preserve">
-    <value>OK</value>
-  </data>
-  <data name="compare_script_button" xml:space="preserve">
-    <value>Összehasonlítás az alap beállítással</value>
-  </data>
-  <data name="compare_script_title" xml:space="preserve">
-    <value>Összehasonlítás az alap szkripttel</value>
-  </data>
-  <data name="default_is_read_only" xml:space="preserve">
-    <value>Az alap személyiséget nem lehet módosítani. Ha szeretne változtatni rajta, hozzon létre egy másolatot.</value>
-  </data>
-  <data name="default_personality_script_filename" xml:space="preserve">
-    <value>eddi.hu.json</value>
-    <comment>Suggest "eddi.&lt;culture-code&gt;.json" e.g. "eddi.fr.json"</comment>
-  </data>
-  <data name="delete_personality_caption" xml:space="preserve">
-    <value>Személyiség törlése</value>
-  </data>
-  <data name="delete_personality_message" xml:space="preserve">
-    <value>Biztos benne , hogy törölni szeretné a "{0}" személyiséget?</value>
-  </data>
-  <data name="delete_script" xml:space="preserve">
-    <value>Törlés</value>
-  </data>
-  <data name="delete_script_caption" xml:space="preserve">
-    <value>Szkript törlése</value>
-  </data>
-  <data name="delete_script_message" xml:space="preserve">
-    <value>Biztos benne, hogy törölni szeretné a "{0}" szkriptet?</value>
-  </data>
   
-  <data name="edit_script" xml:space="preserve">
-    <value>Szerkesztés</value>
-  </data>
-  <data name="edit_script_caption" xml:space="preserve">
-    <value>Szkript szerkesztése</value>
-  </data>
-  <data name="header_description" xml:space="preserve">
-    <value>Leírás</value>
-  </data>
-  <data name="header_enabled" xml:space="preserve">
-    <value>Engedélyezve</value>
-  </data>
-  <data name="header_name" xml:space="preserve">
-    <value>Név</value>
-  </data>
-  <data name="help_button" xml:space="preserve">
-    <value>Súgó</value>
-  </data>
-  <data name="name" xml:space="preserve">
-    <value>Beszéd reagáló</value>
-  </data>
-  <data name="reset_script_button" xml:space="preserve">
-    <value>Alapbeállítások visszaállítása</value>
-  </data>
-  <data name="script_variables_button" xml:space="preserve">
-    <value>Változók</value>
-    <comment>button that shows help for script variables</comment>
-  </data>
-  <data name="subs" xml:space="preserve">
-    <value>Szöveges másolatot ír a beszédről az %APPDATA%\EDDI\speechresponder.out fájlba</value>
-  </data>
-  <data name="subs_only" xml:space="preserve">
-    <value>Ne beszéljen hangosan, amikor a szöveg a fenti módon van a fájlba írva</value>
-  </data>
-  <data name="test_script" xml:space="preserve">
-    <value>Teszt</value>
-  </data>
-  <data name="test_script_button" xml:space="preserve">
-    <value>Szkript tesztelése</value>
-  </data>
-  <data name="view_script" xml:space="preserve">
-    <value>Nézet</value>
-  </data>
-  <data name="view_script_title" xml:space="preserve">
-    <value>Szkript megtekintése</value>
-  </data>
-  <data name="header_priority" xml:space="preserve">
-    <value>Prioritás</value>
-  </data>
   
-  <data name="speechResponderHelpHere" xml:space="preserve">
-    <value>itt.</value>
-  </data>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
 </root>

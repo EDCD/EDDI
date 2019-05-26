@@ -156,5 +156,7 @@
     <value>Saját</value>
     <comment>Tons of owned cargo carried</comment>
   </data>
-  
+  <data name="para3" xml:space="preserve">
+    <value>Megjegyzés: Azoknál a kötelék küldetéseknél, ahol még nem teljesült a gyűjtés vagy szállítás feltétele, az áru 'Ismeretlen' jelzésű lesz. Az áru összegyűjtésekor vagy leszállításakor frissül.</value>
+  </data>
 </root>

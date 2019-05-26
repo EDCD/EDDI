@@ -117,12 +117,24 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
-  
-  
-  
-  
+  <data name="clear_route_button" xml:space="preserve">
+    <value>Limpiar ruta</value>
+  </data>
+  <data name="clear_route_button_desc" xml:space="preserve">
+    <value>Limpiar ruta de misiones y sistema destino.</value>
+  </data>
+  <data name="clear_route_button_text" xml:space="preserve">
+    <value>Limpiar ruta:</value>
+  </data>
+  <data name="get_route_button" xml:space="preserve">
+    <value>Obtener ruta</value>
+  </data>
+  <data name="get_route_button_desc" xml:space="preserve">
+    <value>Inicia el cálculo del algoritmo 'Vecino más próximo' para determinar la ruta más corta de la misión.</value>
+  </data>
+  <data name="get_route_button_text" xml:space="preserve">
+    <value>Obtener ruta:</value>
+  </data>
   <data name="header_destinationstation" xml:space="preserve">
     <value>Estación de Destino</value>
   </data>
@@ -147,9 +159,15 @@
   <data name="mission_monitor_name" xml:space="preserve">
     <value>Monitor de Misiones</value>
   </data>
-  
-  
-  
+  <data name="next_route_button" xml:space="preserve">
+    <value>Siguiente destino</value>
+  </data>
+  <data name="next_route_button_desc" xml:space="preserve">
+    <value>Establece el Sistema Destino al siguiente sistema de la ruta de misiones.</value>
+  </data>
+  <data name="next_route_button_text" xml:space="preserve">
+    <value>Siguiente destino:</value>
+  </data>
   <data name="para1" xml:space="preserve">
     <value>A continuación tienes una lista de todas tus misiones.</value>
   </data>
@@ -159,7 +177,13 @@
   <data name="tab_mission_warning" xml:space="preserve">
     <value>Umbral de advertencia de caducidad de la misión (en minutos):</value>
   </data>
-  
-  
-  
+  <data name="update_route_button" xml:space="preserve">
+    <value>Actualizar ruta</value>
+  </data>
+  <data name="update_route_button_desc" xml:space="preserve">
+    <value>Establece el Sistema Destino en el siguiente sistema de la ruta de misiones, si se han completado todas las misiones.</value>
+  </data>
+  <data name="update_route_button_text" xml:space="preserve">
+    <value>Actualizar ruta:</value>
+  </data>
 </root>

@@ -189,6 +189,13 @@
     <value>Ütközéssel való sérülés okozása</value>
     <comment>Crime collidedAtSpeedInNoFireZone_hulldamage</comment>
   </data>
-  
+  <data name="recklessWeaponsDischarge" xml:space="preserve">
+    <value>Meggondolatlan fegyverhasználat</value>
+    <comment>Crime recklessWeaponsDischarge</comment>
+  </data>
+  <data name="passengerWanted" xml:space="preserve">
+    <value>Körözött személy szállítása</value>
+    <comment>Crime passengerWanted</comment>
+  </data>
   
 </root>
