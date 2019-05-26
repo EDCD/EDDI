@@ -387,36 +387,39 @@ namespace EddiNavigationService
 
                         // Retreive systems in current radius which have not been previously checked
                         List<string> systemNames = cubeSystems.Select(s => s.systemname).Except(checkedSystems).ToList();
-                        List<StarSystem> StarSystems = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystems(systemNames.ToArray(), true, false);
-                        checkedSystems.AddRange(systemNames);
-
-                        SortedList<decimal, string> nearestList = new SortedList<decimal, string>();
-                        foreach (StarSystem starsystem in StarSystems)
+                        if (systemNames.Count > 0)
                         {
-                            // Filter stations within the system which meet the station type prioritization,
-                            // max distance from the main star, game version, and landing pad size requirements
-                            List<Station> stations = !prioritizeOrbitalStations && EDDI.Instance.inHorizons ? starsystem.stations : starsystem.orbitalstations
-                                 .Where(s => s.stationservices.Count > 0).ToList();
-                            stations = stations.Where(s => s.distancefromstar <= maxStationDistance).ToList();
-                            if (serviceType == "facilitator") { stations = stations.Where(s => s.LandingPadCheck(shipSize)).ToList(); }
-                            int stationCount = stations.Where(s => s.stationservices.Contains(filter.service)).Count();
+                            List<StarSystem> StarSystems = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystems(systemNames.ToArray(), true, false);
+                            checkedSystems.AddRange(systemNames);
 
-                            // Build list to find the 'service' system nearest to the current system, meeting station requirements
-                            if (stationCount > 0)
+                            SortedList<decimal, string> nearestList = new SortedList<decimal, string>();
+                            foreach (StarSystem starsystem in StarSystems)
                             {
-                                decimal distance = CalculateDistance(currentSystem, starsystem);
-                                if (!nearestList.ContainsKey(distance))
+                                // Filter stations within the system which meet the station type prioritization,
+                                // max distance from the main star, game version, and landing pad size requirements
+                                List<Station> stations = !prioritizeOrbitalStations && EDDI.Instance.inHorizons ? starsystem.stations : starsystem.orbitalstations
+                                     .Where(s => s.stationservices.Count > 0).ToList();
+                                stations = stations.Where(s => s.distancefromstar <= maxStationDistance).ToList();
+                                if (serviceType == "facilitator") { stations = stations.Where(s => s.LandingPadCheck(shipSize)).ToList(); }
+                                int stationCount = stations.Where(s => s.stationservices.Contains(filter.service)).Count();
+
+                                // Build list to find the 'service' system nearest to the current system, meeting station requirements
+                                if (stationCount > 0)
                                 {
-                                    nearestList.Add(distance, starsystem.systemname);
+                                    decimal distance = CalculateDistance(currentSystem, starsystem);
+                                    if (!nearestList.ContainsKey(distance))
+                                    {
+                                        nearestList.Add(distance, starsystem.systemname);
+                                    }
                                 }
                             }
-                        }
 
-                        // Nearest 'service' system
-                        ServiceSystem = nearestList.Values.FirstOrDefault();
-                        if (ServiceSystem != null)
-                        {
-                            return StarSystems.FirstOrDefault(s => s.systemname == ServiceSystem);
+                            // Nearest 'service' system
+                            ServiceSystem = nearestList.Values.FirstOrDefault();
+                            if (ServiceSystem != null)
+                            {
+                                return StarSystems.FirstOrDefault(s => s.systemname == ServiceSystem);
+                            }
                         }
                     }
 
