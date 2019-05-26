@@ -401,6 +401,18 @@ namespace UnitTests
         }
 
         [TestMethod]
+        public void TestSpeechHumanize19()
+        {
+            Assert.AreEqual("over minus 12", Translations.Humanize(-12.1M));
+        }
+
+        [TestMethod]
+        public void TestSpeechHumanize20()
+        {
+            Assert.AreEqual("just over minus 12", Translations.Humanize(-12.01M));
+        }
+
+        [TestMethod]
         public void TestTranslationVesper()
         {
             Assert.AreEqual(Translations.StarSystem("VESPER-M4"), "Vesper M 4");
