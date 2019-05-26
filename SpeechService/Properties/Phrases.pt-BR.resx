@@ -65,20 +65,20 @@
           <xsd:element name="data">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"/>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" msdata:Ordinal="1" />
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute name="name" type="xsd:string" msdata:Ordinal="1"/>
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"/>
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="resheader">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" />
+              <xsd:attribute name="name" type="xsd:string" use="required"/>
             </xsd:complexType>
           </xsd:element>
         </xsd:choice>
@@ -97,72 +97,39 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="andahalf" xml:space="preserve">
-    <value>e meio</value>
-    <comment />
-  </data>
-  <data name="around" xml:space="preserve">
-    <value>cerca de</value>
-    <comment />
-  </data>
+  
+  
   <data name="billion" xml:space="preserve">
     <value>bilhões</value>
-    <comment />
+    <comment/>
   </data>
-  <data name="dash" xml:space="preserve">
-    <value>traço</value>
-    <comment />
-  </data>
-  <data name="justover" xml:space="preserve">
-    <value>mais de</value>
-    <comment />
-  </data>
+  
+  
   <data name="million" xml:space="preserve">
     <value>milhões</value>
-    <comment />
+    <comment/>
   </data>
-  <data name="minus" xml:space="preserve">
-    <value>menos</value>
-    <comment />
-  </data>
-  <data name="nearly" xml:space="preserve">
-    <value>quase</value>
-    <comment />
-  </data>
-  <data name="onthewayto" xml:space="preserve">
-    <value>perto de</value>
-    <comment />
-  </data>
-  <data name="over" xml:space="preserve">
-    <value>mais de</value>
-    <comment />
-  </data>
-  <data name="plus" xml:space="preserve">
-    <value>mais</value>
-    <comment />
-  </data>
-  <data name="point" xml:space="preserve">
-    <value>ponto</value>
-    <comment />
-  </data>
+  
+  
+  
+  
+  
+  
   <data name="quadrillion" xml:space="preserve">
     <value>quadrilhão</value>
-    <comment />
+    <comment/>
   </data>
   <data name="thousand" xml:space="preserve">
     <value>mil</value>
-    <comment />
+    <comment/>
   </data>
   <data name="trillion" xml:space="preserve">
     <value>trilhão</value>
-    <comment />
+    <comment/>
   </data>
-  <data name="wellover" xml:space="preserve">
-    <value>bem mais que</value>
-    <comment />
-  </data>
+  
   <data name="zero" xml:space="preserve">
     <value>zero</value>
-    <comment />
+    <comment/>
   </data>
 </root>
