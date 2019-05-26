@@ -137,12 +137,7 @@ namespace EddiDataDefinitions
             {
                 try
                 {
-                    List<Body> bodiesList = null;
-                    lock (bodyLock)
-                    {
-                        bodiesList = new List<Body>(bodies);
-                    }
-                    return bodiesList.SelectMany(b => b.materials, (b, m) => m.definition.edname).Distinct().ToList();
+                    return new List<Body>(bodies).SelectMany(b => b.materials, (b, m) => m.definition.edname).Distinct().ToList();
                 }
                 catch (InvalidOperationException ex)
                 {
@@ -151,7 +146,6 @@ namespace EddiDataDefinitions
                 }
             }
         }
-        private readonly object bodyLock = new object();
 
         // Not intended to be user facing - discoverable bodies as reported by a discovery scan "honk"
         public int discoverableBodies = 0;
