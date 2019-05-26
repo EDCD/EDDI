@@ -681,6 +681,7 @@ namespace EddiSpeechService
             }
 
             // Describe decimal values
+            string andahalf = " " + Properties.Phrases.andahalf;
             switch (nextDigit)
             {
                 case 0:
@@ -690,15 +691,15 @@ namespace EddiSpeechService
                 case 2:
                     return Properties.Phrases.wellover + " " + minus + number + order;
                 case 3:
-                    return Properties.Phrases.onthewayto + " " + minus + number + " " + Properties.Phrases.andahalf + order;
+                    return Properties.Phrases.onthewayto + " " + minus + number + andahalf + order;
                 case 4:
-                    return Properties.Phrases.nearly + " " + minus + number + " " + Properties.Phrases.andahalf + order;
+                    return Properties.Phrases.nearly + " " + minus + number + andahalf + order;
                 case 5:
-                    return Properties.Phrases.around + " " + minus + number + " " + Properties.Phrases.andahalf + order;
+                    return Properties.Phrases.around + " " + minus + number + andahalf + order;
                 case 6:
-                    return Properties.Phrases.justover + " " + minus + number + " " + Properties.Phrases.andahalf + order;
+                    return Properties.Phrases.justover + " " + minus + number + andahalf + order;
                 case 7:
-                    return Properties.Phrases.wellover + " " + minus + number + " " + Properties.Phrases.andahalf + order;
+                    return Properties.Phrases.wellover + " " + minus + number + andahalf + order;
                 case 8:
                     return Properties.Phrases.onthewayto + " " + minus + (number + 1) + order;
                 case 9:
