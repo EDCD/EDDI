@@ -131,21 +131,7 @@ namespace EddiDataDefinitions
 
         // Not intended to be user facing - materials available within the system
         [JsonIgnore]
-        public List<string> materialEdNames
-        {
-            get
-            {
-                try
-                {
-                    return new List<Body>(bodies).SelectMany(b => b.materials, (b, m) => m.definition.edname).Distinct().ToList();
-                }
-                catch (InvalidOperationException ex)
-                {
-                    Logging.Error("Error aggregating system materials list.", ex);
-                    return new List<string>();
-                }
-            }
-        }
+        public List<string> materialEdNames => getSystemMaterials(bodies);
 
         // Not intended to be user facing - discoverable bodies as reported by a discovery scan "honk"
         public int discoverableBodies = 0;
@@ -233,6 +219,19 @@ namespace EddiDataDefinitions
             }
 
             return value;
+        }
+
+        private List<string> getSystemMaterials(List<Body> bodies)
+        {
+            try
+            {
+                return new List<Body>(bodies).SelectMany(b => b.materials, (b, m) => m.definition.edname).Distinct().ToList();
+            }
+            catch (InvalidOperationException ex)
+            {
+                Logging.Error("Error aggregating system materials list.", ex);
+                return new List<string>();
+            }
         }
     }
 }
