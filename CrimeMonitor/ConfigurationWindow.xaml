@@ -143,14 +143,14 @@
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </utility:DataGridNumericColumn>
-                <DataGridTemplateColumn>
+                <DataGridTemplateColumn MinWidth="60">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <Button Click="updateRecord" MinWidth="60" HorizontalAlignment="Center" Content="{x:Static resx:CrimeMonitor.update_button}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTemplateColumn>
+                <DataGridTemplateColumn MinWidth="60">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <Button Click="removeRecord" MinWidth="60" HorizontalAlignment="Center" Content="{x:Static resx:CrimeMonitor.remove_button}" />
