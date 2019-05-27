@@ -123,11 +123,21 @@
   <data name="desired_header" xml:space="preserve">
     <value>Desejado</value>
   </data>
-  
-  
-  
-  
-  
+  <data name="find_encoded_button" xml:space="preserve">
+    <value>Encontrar Mercante de Codificados</value>
+  </data>
+  <data name="find_guardian_button" xml:space="preserve">
+    <value>Encontrar Mercante Guardian</value>
+  </data>
+  <data name="find_human_button" xml:space="preserve">
+    <value>Encontrar Mercante Humano</value>
+  </data>
+  <data name="find_manufactured_button" xml:space="preserve">
+    <value>Encontrar Mercante de Manufaturados</value>
+  </data>
+  <data name="find_raw_button" xml:space="preserve">
+    <value>Encontrar Mercante de Brutos</value>
+  </data>
   <data name="inventory_header" xml:space="preserve">
     <value>Inventário</value>
   </data>
@@ -149,8 +159,12 @@
   <data name="p2" xml:space="preserve">
     <value>Note que, se seu inventário estiver incorreto, você precisará iniciar ou reiniciar o Elite e essas informações serão atualizadas.</value>
   </data>
-  
-  
+  <data name="p3" xml:space="preserve">
+    <value>Dica: Maximize a distância de estação permitida para minimizar os tempos de busca.</value>
+  </data>
+  <data name="tab_station_distance" xml:space="preserve">
+    <value>Distância Máxima da Estrela Principal até a Estação (sL):</value>
+  </data>
   <data name="type_header" xml:space="preserve">
     <value>Tipo</value>
   </data>
