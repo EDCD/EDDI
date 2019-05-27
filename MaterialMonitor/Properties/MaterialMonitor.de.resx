@@ -127,16 +127,16 @@
     <value>Händler für verschlüsselte Daten finden</value>
   </data>
   <data name="find_guardian_button" xml:space="preserve">
-    <value>Vermittler für Guardian-Technik</value>
+    <value>Guardian-Broker finden</value>
   </data>
   <data name="find_human_button" xml:space="preserve">
     <value>Vermittler für menschliche Technik finden</value>
   </data>
   <data name="find_manufactured_button" xml:space="preserve">
-    <value>Händler für bearbeitete Materialien</value>
+    <value>Händler für bearbeitete Materialien finden</value>
   </data>
   <data name="find_raw_button" xml:space="preserve">
-    <value>Händler für unbearbeitete Materialien finden</value>
+    <value>Händler für Rohmaterialien finden</value>
   </data>
   <data name="inventory_header" xml:space="preserve">
     <value>Vorrat</value>
