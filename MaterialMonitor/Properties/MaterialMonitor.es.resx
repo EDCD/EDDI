@@ -123,7 +123,9 @@
   <data name="desired_header" xml:space="preserve">
     <value>Deseado</value>
   </data>
-  
+  <data name="find_encoded_button" xml:space="preserve">
+    <value>Encontrar Mercader de Codificados</value>
+  </data>
   
   
   
