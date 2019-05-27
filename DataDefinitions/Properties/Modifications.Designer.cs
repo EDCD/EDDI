@@ -19,7 +19,7 @@ namespace EddiDataDefinitions.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Modifications {
@@ -556,6 +556,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Miscellaneous Light Weight.
+        /// </summary>
+        internal static string MiscLightWeight {
+            get {
+                return ResourceManager.GetString("MiscLightWeight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to None.
         /// </summary>
         internal static string None {
@@ -723,6 +732,15 @@ namespace EddiDataDefinitions.Properties {
         internal static string RefineriesShielded {
             get {
                 return ResourceManager.GetString("RefineriesShielded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Expanded Probe Scanning Radius.
+        /// </summary>
+        internal static string SensorExpanded {
+            get {
+                return ResourceManager.GetString("SensorExpanded", resourceCulture);
             }
         }
         

@@ -68,6 +68,7 @@
             var LifeSupportLightWeight = new Modifications("LifeSupport_LightWeight");
             var LifeSupportReinforced = new Modifications("LifeSupport_Reinforced");
             var LifeSupportShielded = new Modifications("LifeSupport_Shielded");
+            var MiscLightWeight = new Modifications("Misc_LightWeight");
             var PAOvercharged = new Modifications("PA_Overcharged");
             var PointDefenseLightWeight = new Modifications("PointDefense_LightWeight");
             var PointDefensePointDefenseCapacity = new Modifications("PointDefense_PointDefenseCapacity");
@@ -86,9 +87,10 @@
             var ProspectingLimpetReinforced = new Modifications("ProspectingLimpet_Reinforced");
             var ProspectingLimpetShielded = new Modifications("ProspectingLimpet_Shielded");
             var RefineriesShielded = new Modifications("Refineries_Shielded");
-            var SensorLightWeight = new Modifications("Sensor_Sensor_LightWeight");
-            var SensorLongRange = new Modifications("Sensor_Sensor_LongRange");
-            var SensorWideAngle = new Modifications("Sensor_Sensor_WideAngle");
+            var SensorExpanded = new Modifications("Sensor_Expanded");
+            var SensorLightWeight = new Modifications("Sensor_LightWeight");
+            var SensorLongRange = new Modifications("Sensor_LongRange");
+            var SensorWideAngle = new Modifications("Sensor_WideAngle");
             var ShieldBoosterExplosive = new Modifications("ShieldBooster_Explosive");
             var ShieldBoosterHeavyDuty = new Modifications("ShieldBooster_HeavyDuty");
             var ShieldBoosterKinetic = new Modifications("ShieldBooster_Kinetic");
@@ -125,7 +127,7 @@
         public Modifications() : this("")
         { }
 
-        private Modifications(string edname) : base(edname, edname.Replace("_", ""))
+        private Modifications(string edname) : base(edname, edname.Replace("Sensor_Sensor_", "Sensor_").Replace("_", ""))
         { }
     }
 }
