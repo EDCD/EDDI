@@ -119,7 +119,7 @@
     <comment>Trade rating Merchant</comment>
   </data>
   <data name="Broker" xml:space="preserve">
-    <value>Großhändler</value>
+    <value>Vermittler</value>
     <comment>Trade rating Broker</comment>
   </data>
   <data name="Entrepreneur" xml:space="preserve">
