@@ -165,7 +165,9 @@
   <data name="orbital_station_checkbox" xml:space="preserve">
     <value>Priorisierte Orbitalstationen:</value>
   </data>
-  
+  <data name="p1" xml:space="preserve">
+    <value>Tip: Maximiere die erlaubte Stationsentfernung zur Minimierung der Suchzeiten.</value>
+  </data>
   <data name="remove_button" xml:space="preserve">
     <value>Entfernen</value>
   </data>
