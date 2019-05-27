@@ -130,7 +130,7 @@
     <value>Encontrar Mercante Guardian</value>
   </data>
   <data name="find_human_button" xml:space="preserve">
-    <value>Encontrar Mercante Humano</value>
+    <value>Encontrar Mediador Humano</value>
   </data>
   <data name="find_manufactured_button" xml:space="preserve">
     <value>Encontrar Mercante de Manufaturados</value>
