@@ -22,8 +22,11 @@ namespace EddiStarMapService
             var clientResponse = client.Execute<JObject>(request);
             if (clientResponse.IsSuccessful)
             {
-                JObject response = JObject.Parse(clientResponse.Content);
-                return ParseStarMapFactions(response, systemName);
+                var token = JToken.Parse(clientResponse.Content);
+                if (token is JObject response)
+                {
+                    return ParseStarMapFactions(response, systemName);
+                }
             }
             else
             {

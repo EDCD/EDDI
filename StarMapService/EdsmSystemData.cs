@@ -24,8 +24,11 @@ namespace EddiStarMapService
             var clientResponse = client.Execute<JObject>(request);
             if (clientResponse.IsSuccessful)
             {
-                JObject response = JObject.Parse(clientResponse.Content);
-                return ParseStarMapSystem(response, system);
+                var token = JToken.Parse(clientResponse.Content);
+                if (token is JObject response)
+                {
+                    return ParseStarMapSystem(response, system);
+                }
             }
             else
             {
@@ -51,16 +54,19 @@ namespace EddiStarMapService
             var clientResponse = client.Execute<List<JObject>>(request);
             if (clientResponse.IsSuccessful)
             {
-                JArray responses = JArray.Parse(clientResponse.Content);
-                List<StarSystem> starSystems = new List<StarSystem>();
-                foreach (JObject response in responses)
+                var token = JToken.Parse(clientResponse.Content);
+                if (token is JArray responses)
                 {
-                    if (response != null)
+                    List<StarSystem> starSystems = new List<StarSystem>();
+                    foreach (JObject response in responses)
                     {
-                        starSystems.Add(ParseStarMapSystem(response, (string)response["name"]));
+                        if (response != null)
+                        {
+                            starSystems.Add(ParseStarMapSystem(response, (string)response["name"]));
+                        }
                     }
+                    return starSystems;
                 }
-                return starSystems;
             }
             else
             {
@@ -85,16 +91,19 @@ namespace EddiStarMapService
             var clientResponse = client.Execute<List<JObject>>(request);
             if (clientResponse.IsSuccessful)
             {
-                JArray responses = JArray.Parse(clientResponse.Content);
-                List<StarSystem> starSystems = new List<StarSystem>();
-                foreach (JObject response in responses)
+                var token = JToken.Parse(clientResponse.Content);
+                if (token is JArray responses)
                 {
-                    if (response != null)
+                    List<StarSystem> starSystems = new List<StarSystem>();
+                    foreach (JObject response in responses)
                     {
-                        starSystems.Add(ParseStarMapSystem(response, (string)response["name"]));
+                        if (response != null)
+                        {
+                            starSystems.Add(ParseStarMapSystem(response, (string)response["name"]));
+                        }
                     }
+                    return starSystems;
                 }
-                return starSystems;
             }
             else
             {
@@ -119,18 +128,21 @@ namespace EddiStarMapService
             var clientResponse = client.Execute<List<JObject>>(request);
             if (clientResponse.IsSuccessful)
             {
-                JArray responses = JArray.Parse(clientResponse.Content);
-                List<Dictionary<string, object>> distantSystems = new List<Dictionary<string, object>>();
-                foreach (JObject response in responses)
+                var token = JToken.Parse(clientResponse.Content);
+                if (token is JArray responses)
                 {
-                    Dictionary<string, object> distantSystem = new Dictionary<string, object>()
+                    List<Dictionary<string, object>> distantSystems = new List<Dictionary<string, object>>();
+                    foreach (JObject response in responses)
                     {
-                        { "distance", (decimal)response["distance"] },
-                        { "system", ParseStarMapSystem(response, (string)response["name"]) }
-                    };
-                    distantSystems.Add(distantSystem);
+                        Dictionary<string, object> distantSystem = new Dictionary<string, object>()
+                        {
+                            { "distance", (decimal)response["distance"] },
+                            { "system", ParseStarMapSystem(response, (string)response["name"]) }
+                        };
+                        distantSystems.Add(distantSystem);
+                    }
+                    return distantSystems;
                 }
-                return distantSystems;
             }
             else
             {
@@ -154,16 +166,19 @@ namespace EddiStarMapService
             var clientResponse = client.Execute<List<JObject>>(request);
             if (clientResponse.IsSuccessful)
             {
-                JArray responses = JArray.Parse(clientResponse.Content);
-                List<StarSystem> starSystems = new List<StarSystem>();
-                foreach (JObject response in responses)
+                var token = JToken.Parse(clientResponse.Content);
+                if (token is JArray responses)
                 {
-                    if (response != null)
+                    List<StarSystem> starSystems = new List<StarSystem>();
+                    foreach (JObject response in responses)
                     {
-                        starSystems.Add(ParseStarMapSystem(response, (string)response["name"]));
+                        if (response != null)
+                        {
+                            starSystems.Add(ParseStarMapSystem(response, (string)response["name"]));
+                        }
                     }
+                    return starSystems;
                 }
-                return starSystems;
             }
             return null;
         }
