@@ -662,7 +662,7 @@ namespace EddiSpeechResponder
             {
                 CrimeMonitor crimeMonitor = (CrimeMonitor)EDDI.Instance.ObtainMonitor("Crime monitor");
                 MaterialMonitor materialMonitor = (MaterialMonitor)EDDI.Instance.ObtainMonitor("Material monitor");
-                int materialDistance = materialMonitor.maxStationDistanceFromStarLs ?? 10000;
+                int materialMonitorDistance = materialMonitor.maxStationDistanceFromStarLs ?? Constants.maxStationDistanceDefault;
                 string result = null;
                 string value = values[0].AsString;
                 if (value == null || value == "")
@@ -678,7 +678,7 @@ namespace EddiSpeechResponder
                         break;
                     case "encoded":
                         {
-                            result = Navigation.Instance.GetServiceRoute("encoded", materialDistance);
+                            result = Navigation.Instance.GetServiceRoute("encoded", materialMonitorDistance);
                         }
                         break;
                     case "expiring":
@@ -700,17 +700,17 @@ namespace EddiSpeechResponder
                         break;
                     case "guardian":
                         {
-                            result = Navigation.Instance.GetServiceRoute("guardian", materialDistance);
+                            result = Navigation.Instance.GetServiceRoute("guardian", materialMonitorDistance);
                         }
                         break;
                     case "human":
                         {
-                            result = Navigation.Instance.GetServiceRoute("human", materialDistance);
+                            result = Navigation.Instance.GetServiceRoute("human", materialMonitorDistance);
                         }
                         break;
                     case "manufactured":
                         {
-                            result = Navigation.Instance.GetServiceRoute("manufactured", materialDistance);
+                            result = Navigation.Instance.GetServiceRoute("manufactured", materialMonitorDistance);
                         }
                         break;
                     case "most":
@@ -737,7 +737,7 @@ namespace EddiSpeechResponder
                         break;
                     case "raw":
                         {
-                            result = Navigation.Instance.GetServiceRoute("raw", materialDistance);
+                            result = Navigation.Instance.GetServiceRoute("raw", materialMonitorDistance);
                         }
                         break;
                     case "route":
@@ -890,13 +890,16 @@ namespace EddiSpeechResponder
 
             store["MaterialDetails"] = new NativeFunction((values) =>
             {
-                Material result = Material.FromName(values[0].AsString);             
-                if (result.edname != null && values[1].AsString != null)
+                Material result = Material.FromName(values[0].AsString);
+                if (result.edname != null && values.Count == 2)
                 {
                     StarSystem starSystem = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(values[1].AsString, true);
-                    Body body = Material.highestPercentBody(result.edname, starSystem.bodies);
-                    result.bodyname = body.bodyname;
-                    result.bodyshortname = body.shortname;
+                    if (starSystem != null)
+                    {
+                        Body body = Material.highestPercentBody(result.edname, starSystem.bodies);
+                        result.bodyname = body.bodyname;
+                        result.bodyshortname = body.shortname;
+                    }
                 }
                 return (result == null ? new ReflectionValue(new object()) : new ReflectionValue(result));
             }, 1, 2);
