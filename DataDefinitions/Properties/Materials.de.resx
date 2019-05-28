@@ -602,27 +602,27 @@
     <comment>Material boron</comment>
   </data>
   <data name="guardian_powercell" xml:space="preserve">
-    <value>Guardian Energiezelle</value>
+    <value>Guardian-Energiezelle</value>
     <comment>Material guardian_powercell</comment>
   </data>
   <data name="guardian_weaponblueprint" xml:space="preserve">
-    <value>Guardian Waffenbauplan</value>
+    <value>Guardian-Waffenbauplan</value>
     <comment>Material guardian_weaponblueprint</comment>
   </data>
   <data name="guardian_vesselblueprint" xml:space="preserve">
-    <value>Guardian Schiffsbauplan</value>
+    <value>Guardian-Schiffsbauplan</value>
     <comment>Material guardian_vesselblueprint</comment>
   </data>
   <data name="guardian_techcomponent" xml:space="preserve">
-    <value>Guardian Technologiekomponente</value>
+    <value>Guardian-Technologiekomponente</value>
     <comment>Material guardian_techcomponent</comment>
   </data>
   <data name="guardian_powerconduit" xml:space="preserve">
-    <value>Guardian Energieleiter</value>
+    <value>Guardian-Energieleiter</value>
     <comment>Material guardian_powerconduit</comment>
   </data>
   <data name="guardian_moduleblueprint" xml:space="preserve">
-    <value>Guardian Modulbauplan</value>
+    <value>Guardian-Modulbauplan</value>
     <comment>Material guardian_moduleblueprint</comment>
   </data>
   <data name="guardian_sentinel_weaponparts" xml:space="preserve">
@@ -630,7 +630,7 @@
     <comment>Material guardian_sentinel_weaponparts</comment>
   </data>
   <data name="guardian_sentinel_wreckagecomponents" xml:space="preserve">
-    <value>Guardian-Wache Trümmerteile</value>
+    <value>Guardian-Wächter Trümmerteile</value>
     <comment>Material guardian_sentinel_wreckagecomponents</comment>
   </data>
   <data name="lead" xml:space="preserve">

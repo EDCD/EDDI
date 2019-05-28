@@ -133,7 +133,7 @@
     <value>Informationen zu Ihrem Strafregister.</value>
   </data>
   <data name="crime_monitor_name" xml:space="preserve">
-    <value>Verbrechensüberwachung</value>
+    <value>Verbrechens-Überwachung</value>
   </data>
   <data name="find_button" xml:space="preserve">
     <value>Legale Einrichtungen finden</value>
@@ -165,7 +165,9 @@
   <data name="orbital_station_checkbox" xml:space="preserve">
     <value>Priorisierte Orbitalstationen:</value>
   </data>
-  
+  <data name="p1" xml:space="preserve">
+    <value>Tip: Maximiere die erlaubte Stationsentfernung zur Minimierung der Suchzeiten.</value>
+  </data>
   <data name="remove_button" xml:space="preserve">
     <value>Entfernen</value>
   </data>
