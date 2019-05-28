@@ -18,6 +18,7 @@ namespace EddiDataDefinitions
 
             None = new AtmosphereClass("None");
             var Ammonia = new AtmosphereClass("Ammonia");
+            var AmmoniaOxygen = new AtmosphereClass("AmmoniaOxygen");
             var AmmoniaAndOxygen = new AtmosphereClass("AmmoniaAndOxygen");
             var AmmoniaRich = new AtmosphereClass("AmmoniaRich");
             var Argon = new AtmosphereClass("Argon");

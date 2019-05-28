@@ -432,4 +432,10 @@
   <data name="ProspectingLimpetShielded" xml:space="preserve">
     <value>Shielded Prospecting Limpet</value>
   </data>
+  <data name="MiscLightWeight" xml:space="preserve">
+    <value>Miscellaneous Light Weight</value>
+  </data>
+  <data name="SensorExpanded" xml:space="preserve">
+    <value>Expanded Probe Scanning Radius</value>
+  </data>
 </root>
