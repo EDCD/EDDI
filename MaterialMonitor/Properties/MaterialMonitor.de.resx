@@ -130,7 +130,7 @@
     <value>Guardian-Broker finden</value>
   </data>
   <data name="find_human_button" xml:space="preserve">
-    <value>Vermittler für menschliche Technik finden</value>
+    <value>Broker für menschliche Technik finden</value>
   </data>
   <data name="find_manufactured_button" xml:space="preserve">
     <value>Händler für gefertigte Materialien finden</value>
