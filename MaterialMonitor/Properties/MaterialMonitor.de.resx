@@ -133,7 +133,7 @@
     <value>Vermittler für menschliche Technik finden</value>
   </data>
   <data name="find_manufactured_button" xml:space="preserve">
-    <value>Händler für bearbeitete Materialien finden</value>
+    <value>Händler für gefertigte Materialien finden</value>
   </data>
   <data name="find_raw_button" xml:space="preserve">
     <value>Händler für Rohmaterialien finden</value>
