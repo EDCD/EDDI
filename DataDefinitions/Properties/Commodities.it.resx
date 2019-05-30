@@ -1261,14 +1261,38 @@
     <value>Testa di Cipolla Lucaniana</value>
     <comment>Commodity TransgenicOnionHead</comment>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="TrinketsOfFortune" xml:space="preserve">
+    <value>Ciondolo della Fortuna Segreta</value>
+    <comment>Commodity TrinketsOfFortune</comment>
+  </data>
+  <data name="UnknownArtifact" xml:space="preserve">
+    <value>Sensore Thargoid</value>
+    <comment>Commodity UnknownArtifact</comment>
+  </data>
+  <data name="UnknownArtifact2" xml:space="preserve">
+    <value>Sonda Thargoid</value>
+    <comment>Commodity UnknownArtifact2</comment>
+  </data>
+  <data name="UnknownArtifact3" xml:space="preserve">
+    <value>Collegamento Thargoid</value>
+    <comment>Commodity UnknownArtifact3</comment>
+  </data>
+  <data name="UnknownResin" xml:space="preserve">
+    <value>Resina Thargoid</value>
+    <comment>Commodity UnknownResin</comment>
+  </data>
+  <data name="UnknownTechnologySamples" xml:space="preserve">
+    <value>Campione Tecnologico Thargoid</value>
+    <comment>Commodity UnknownTechnologySamples</comment>
+  </data>
+  <data name="UnstableDataCore" xml:space="preserve">
+    <value>Nucleo di Dati Instabile</value>
+    <comment>Commodity UnstableDataCore</comment>
+  </data>
+  <data name="Uraninite" xml:space="preserve">
+    <value>Uraninite</value>
+    <comment>Commodity Uraninite</comment>
+  </data>
   <data name="Uranium" xml:space="preserve">
     <value>Uranio</value>
     <comment>Commodity Uranium</comment>
@@ -1277,22 +1301,70 @@
     <value>Artefatto antico</value>
     <comment>Commodity USSCargoAncientArtefact</comment>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="USSCargoBlackBox" xml:space="preserve">
+    <value>Scatola Nera</value>
+    <comment>Commodity USSCargoBlackBox</comment>
+  </data>
+  <data name="USSCargoExperimentalChemicals" xml:space="preserve">
+    <value>Materiale Chimico Sperimentale</value>
+    <comment>Commodity USSCargoExperimentalChemicals</comment>
+  </data>
+  <data name="USSCargoMilitaryPlans" xml:space="preserve">
+    <value>Piani Militari</value>
+    <comment>Commodity USSCargoMilitaryPlans</comment>
+  </data>
+  <data name="USSCargoPrototypeTech" xml:space="preserve">
+    <value>Tecnologia Sperimentale</value>
+    <comment>Commodity USSCargoPrototypeTech</comment>
+  </data>
+  <data name="USSCargoRareArtwork" xml:space="preserve">
+    <value>Opera d'Arte Rara</value>
+    <comment>Commodity USSCargoRareArtwork</comment>
+  </data>
+  <data name="USSCargoRebelTransmissions" xml:space="preserve">
+    <value>Trasmissioni Ribelli</value>
+    <comment>Commodity USSCargoRebelTransmissions</comment>
+  </data>
+  <data name="USSCargoTechnicalBlueprints" xml:space="preserve">
+    <value>Progetti Tecnici</value>
+    <comment>Commodity USSCargoTechnicalBlueprints</comment>
+  </data>
+  <data name="USSCargoTradeData" xml:space="preserve">
+    <value>Dati Commerciali</value>
+    <comment>Commodity USSCargoTradeData</comment>
+  </data>
+  <data name="UszaianTreeGrub" xml:space="preserve">
+    <value>Larvalbero Uszaianiana</value>
+    <comment>Commodity UszaianTreeGrub</comment>
+  </data>
+  <data name="UtgaroarMillenialEggs" xml:space="preserve">
+    <value>Uova Millenarie Utgaroaresi</value>
+    <comment>Commodity UtgaroarMillenialEggs</comment>
+  </data>
+  <data name="UzumokuLow_GWings" xml:space="preserve">
+    <value>Alianti a bassa gravità Uzumokuensi</value>
+    <comment>Commodity UzumokuLow_GWings</comment>
+  </data>
+  <data name="VegaSlimweed" xml:space="preserve">
+    <value>Gramigna Dimagrante Vegana</value>
+    <comment>Commodity VegaSlimweed</comment>
+  </data>
+  <data name="VHerculisBodyRub" xml:space="preserve">
+    <value>Spugna Corpo di V Herculis</value>
+    <comment>Commodity VHerculisBodyRub</comment>
+  </data>
+  <data name="VidavantianLace" xml:space="preserve">
+    <value>Stringhe Vidavantiane</value>
+    <comment>Commodity VidavantianLace</comment>
+  </data>
+  <data name="LFTVoidExtractCoffee" xml:space="preserve">
+    <value>Estratto a Vuoto di Caffè</value>
+    <comment>Commodity VoidExtractCoffee</comment>
+  </data>
+  <data name="VolkhabBeeDrones" xml:space="preserve">
+    <value>Fuchi di Volkhab</value>
+    <comment>Commodity VolkhabBeeDrones</comment>
+  </data>
   <data name="Water" xml:space="preserve">
     <value>Acqua</value>
     <comment>Commodity Water</comment>
@@ -1301,19 +1373,46 @@
     <value>Depuratori d'acqua</value>
     <comment>Commodity WaterPurifiers</comment>
   </data>
-  
-  
+  <data name="WatersOfShintara" xml:space="preserve">
+    <value>Acque di Shintara</value>
+    <comment>Commodity WatersOfShintara</comment>
+  </data>
+  <data name="WheemeteWheatCakes" xml:space="preserve">
+    <value>Torte di Frumento Wheemeteano</value>
+    <comment>Commodity WheemeteWheatCakes</comment>
+  </data>
   <data name="Wine" xml:space="preserve">
     <value>Vino</value>
     <comment>Commodity Wine</comment>
   </data>
-  
-  
-  
-  
-  
-  
-  
+  <data name="WitchhaulKobeBeef" xml:space="preserve">
+    <value>Manzo Kobe di Witchhaul</value>
+    <comment>Commodity WitchhaulKobeBeef</comment>
+  </data>
+  <data name="WolfFesh" xml:space="preserve">
+    <value>Polverina di Lupo</value>
+    <comment>Commodity WolfFesh</comment>
+  </data>
+  <data name="WreckageComponents" xml:space="preserve">
+    <value>Rottami Recuperabili</value>
+    <comment>Commodity WreckageComponents</comment>
+  </data>
+  <data name="WuthieloKuFroth" xml:space="preserve">
+    <value>Schiuma di Wuthielo Ku</value>
+    <comment>Commodity WuthieloKuFroth</comment>
+  </data>
+  <data name="xihecompanions" xml:space="preserve">
+    <value>Animali da Compagnia Biomorfici Xiheani</value>
+    <comment>Commodity xihecompanions</comment>
+  </data>
+  <data name="YasoKondiLeaf" xml:space="preserve">
+    <value>Foglie Yaso Kondiane</value>
+    <comment>Commodity YasoKondiLeaf</comment>
+  </data>
+  <data name="RajukruStoves" xml:space="preserve">
+    <value>Stufe Bruciatutto di Rajukru</value>
+    <comment>Commodity RajukruStoves</comment>
+  </data>
   <data name="KinagoInstruments" xml:space="preserve">
     <value>Violino Kinagoense</value>
     <comment>Commodity KinagoInstruments</comment>
@@ -1518,17 +1617,56 @@
     <value>Campione di Tessuto di Ciclope Thargoid</value>
     <comment>Commodity ThargoidTissueSampleType1</comment>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="ThargoidTissueSampleType2" xml:space="preserve">
+    <value>Campione di Tessuto di Basilisco Thargoid</value>
+    <comment>Commodity ThargoidTissueSampleType2</comment>
+  </data>
+  <data name="ThargoidTissueSampleType3" xml:space="preserve">
+    <value>Campione di Tessuto di Medusa Thargoid</value>
+    <comment>Commodity ThargoidTissueSampleType3</comment>
+  </data>
+  <data name="ThargoidTissueSampleType4" xml:space="preserve">
+    <value>Campione di Tessuto di Idra Thargoid</value>
+    <comment>Commodity ThargoidTissueSampleType4</comment>
+  </data>
+  <data name="Nanomedicines" xml:space="preserve">
+    <value>Nanomedicinali</value>
+    <comment>Commodity Nanomedicines</comment>
+  </data>
+  <data name="Rhodplumsite" xml:space="preserve">
+    <value>Rhodplumsite</value>
+    <comment>Commodity Rhodplumsite</comment>
+  </data>
+  <data name="Serendibite" xml:space="preserve">
+    <value>Serendibite</value>
+    <comment>Commodity Serendibite</comment>
+  </data>
+  <data name="Monazite" xml:space="preserve">
+    <value>Monazite</value>
+    <comment>Commodity Monazite</comment>
+  </data>
+  <data name="Musgravite" xml:space="preserve">
+    <value>Magnesiotaaffeite-6N'3S</value>
+    <comment>Commodity Musgravite</comment>
+  </data>
+  <data name="Benitoite" xml:space="preserve">
+    <value>Benitoite</value>
+    <comment>Commodity Benitoite</comment>
+  </data>
+  <data name="Grandidierite" xml:space="preserve">
+    <value>Grandidierite</value>
+    <comment>Commodity Grandidierite</comment>
+  </data>
+  <data name="Alexandrite" xml:space="preserve">
+    <value>Alessandrite</value>
+    <comment>Commodity Alexandrite</comment>
+  </data>
+  <data name="Opal" xml:space="preserve">
+    <value>Opali del Vuoto</value>
+    <comment>Commodity Opal</comment>
+  </data>
+  <data name="UnknownBiologicalMatter" xml:space="preserve">
+    <value>Materiale Biologico Thargoid</value>
+    <comment>Commodity UnknownBiologicalMatter</comment>
+  </data>
 </root>
