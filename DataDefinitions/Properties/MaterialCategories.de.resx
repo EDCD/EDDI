@@ -134,7 +134,7 @@
     <comment>Material category Unknown</comment>
   </data>
   <data name="Encoded" xml:space="preserve">
-    <value>Kodiert</value>
+    <value>Verschlüsselt</value>
     <comment>Material category Encoded</comment>
   </data>
 </root>

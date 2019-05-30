@@ -432,4 +432,10 @@
   <data name="ProspectingLimpetShielded" xml:space="preserve">
     <value>Drone de Prospecção Protegido</value>
   </data>
+  <data name="MiscLightWeight" xml:space="preserve">
+    <value>Peso Leve Variado</value>
+  </data>
+  <data name="SensorExpanded" xml:space="preserve">
+    <value>Expansão do raio de escaneamento da sonda</value>
+  </data>
 </root>
