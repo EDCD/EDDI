@@ -67,6 +67,7 @@ Source: "System.Data.SQLite.dll.config"; DestDir: "{app}"; Flags: ignoreversion
 [InstallDelete]
 Type: files; Name: "{app}\Eddi.exe"
 Type: files; Name: "{app}\EDDI.ico"
+Type: files; Name: "{app}\Eddi*.dll"
 Type: files; Name: "{app}\EddiNetLogMonitor.dll"
 Type: files; Name: "{app}\Newtonsoft.Json.xml"
 Type: files; Name: "{app}\CommonMark.xml"
