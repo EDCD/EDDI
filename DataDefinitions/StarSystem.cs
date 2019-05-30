@@ -2,6 +2,7 @@
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.Serialization;
@@ -28,7 +29,13 @@ namespace EddiDataDefinitions
         public long? systemAddress { get; set; }
 
         /// <summary>Details of bodies (stars/planets/moons)</summary>
-        public List<Body> bodies { get; set; }
+        public ImmutableList<Body> bodies { get; private set; }
+        public void AddBody(Body body)
+        {
+            ImmutableList<Body> newBodies = bodies.Add(body);
+            AddMaterialsOnBody(body);
+            bodies = newBodies;
+        }
 
         /// <summary>The reserve level applicable to the system's rings</summary>
         public ReserveLevel Reserve { get; set; } = ReserveLevel.None;
@@ -185,7 +192,7 @@ namespace EddiDataDefinitions
 
         public StarSystem()
         {
-            bodies = new List<Body>();
+            bodies = ImmutableList.Create<Body>();
             stations = new List<Station>();
         }
 
@@ -196,7 +203,7 @@ namespace EddiDataDefinitions
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
         }
 
-        private long estimateSystemValue(List<Body> bodies)
+        private long estimateSystemValue(IList<Body> bodies)
         {
             // Credit to MattG's thread at https://forums.frontier.co.uk/showthread.php/232000-Exploration-value-formulae for scan value formulas
 
