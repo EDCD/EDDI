@@ -166,6 +166,15 @@ namespace EddiDataDefinitions
         [OnDeserialized]
         private void OnDeserialized(StreamingContext context)
         {
+            OnFactionDeserialized();
+
+            AddMaterialsOnBodies(bodies);
+
+            additionalJsonData = null;
+        }
+
+        private void OnFactionDeserialized()
+        {
             if (Faction == null) { Faction = new Faction(); }
             FactionPresence factionPresence = Faction.presences.FirstOrDefault(p => p.systemName == systemname) ?? new FactionPresence();
             if (factionPresence.FactionState == null)
@@ -174,20 +183,16 @@ namespace EddiDataDefinitions
                 string name = (string)additionalJsonData?["state"];
                 if (name != null)
                 {
-                    Faction.presences.FirstOrDefault(p => p.systemName == name).FactionState = 
+                    Faction.presences.FirstOrDefault(p => p.systemName == name).FactionState =
                         FactionState.FromEDName(name ?? "None");
                 }
             }
             else
             {
                 // get the canonical FactionState object for the given EDName
-                factionPresence.FactionState = 
+                factionPresence.FactionState =
                     FactionState.FromEDName(Faction.presences.FirstOrDefault(p => p.systemName == systemname)?.FactionState.edname ?? "None");
             }
-
-            AddMaterialsOnBodies(bodies);
-
-            additionalJsonData = null;
         }
 
         public StarSystem()
