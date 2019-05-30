@@ -646,10 +646,12 @@ namespace Eddi
             }
             catch (Exception ex)
             {
-                Dictionary<string, object> data = new Dictionary<string, object>();
-                data.Add("event", JsonConvert.SerializeObject(@event));
-                data.Add("exception", ex.Message);
-                data.Add("stacktrace", ex.StackTrace);
+                Dictionary<string, object> data = new Dictionary<string, object>
+                {
+                    { "event", JsonConvert.SerializeObject(@event) },
+                    { "exception", ex.Message },
+                    { "stacktrace", ex.StackTrace }
+                };
                 Logging.Error("Failed to enqueue event", data);
             }
         }
@@ -832,10 +834,12 @@ namespace Eddi
                 }
                 catch (Exception ex)
                 {
-                    Dictionary<string, object> data = new Dictionary<string, object>();
-                    data.Add("event", JsonConvert.SerializeObject(@event));
-                    data.Add("exception", ex.Message);
-                    data.Add("stacktrace", ex.StackTrace);
+                    Dictionary<string, object> data = new Dictionary<string, object>
+                    {
+                        { "event", JsonConvert.SerializeObject(@event) },
+                        { "exception", ex.Message },
+                        { "stacktrace", ex.StackTrace }
+                    };
 
                     Logging.Error("EDDI core failed to handle event " + @event.type, data);
 
@@ -922,10 +926,12 @@ namespace Eddi
                 }
                 catch (Exception ex)
                 {
-                    Dictionary<string, object> data = new Dictionary<string, object>();
-                    data.Add("event", JsonConvert.SerializeObject(@event));
-                    data.Add("exception", ex.Message);
-                    data.Add("stacktrace", ex.StackTrace);
+                    Dictionary<string, object> data = new Dictionary<string, object>
+                    {
+                        { "event", JsonConvert.SerializeObject(@event) },
+                        { "exception", ex.Message },
+                        { "stacktrace", ex.StackTrace }
+                    };
                     Logging.Error(monitor.MonitorName() + " failed to handle event " + @event.type, data);
                 }
             }
@@ -953,10 +959,12 @@ namespace Eddi
                 }
                 catch (Exception ex)
                 {
-                    Dictionary<string, object> data = new Dictionary<string, object>();
-                    data.Add("event", JsonConvert.SerializeObject(@event));
-                    data.Add("exception", ex.Message);
-                    data.Add("stacktrace", ex.StackTrace);
+                    Dictionary<string, object> data = new Dictionary<string, object>
+                    {
+                        { "event", JsonConvert.SerializeObject(@event) },
+                        { "exception", ex.Message },
+                        { "stacktrace", ex.StackTrace }
+                    };
                     Logging.Error(responder.ResponderName() + " failed to handle event " + @event.type, data);
                 }
             }
@@ -990,10 +998,12 @@ namespace Eddi
                 }
                 catch (Exception ex)
                 {
-                    Dictionary<string, object> data = new Dictionary<string, object>();
-                    data.Add("event", JsonConvert.SerializeObject(@event));
-                    data.Add("exception", ex.Message);
-                    data.Add("stacktrace", ex.StackTrace);
+                    Dictionary<string, object> data = new Dictionary<string, object>
+                    {
+                        { "event", JsonConvert.SerializeObject(@event) },
+                        { "exception", ex.Message },
+                        { "stacktrace", ex.StackTrace }
+                    };
                     Logging.Error(monitor.MonitorName() + " failed to post-handle event " + @event.type, data);
                 }
                 await Task.WhenAll(monitorTasks.ToArray());
@@ -2106,10 +2116,12 @@ namespace Eddi
                             }
                             catch (Exception ex)
                             {
-                                Dictionary<string, object> data = new Dictionary<string, object>();
-                                data.Add("message", ex.Message);
-                                data.Add("stacktrace", ex.StackTrace);
-                                data.Add("profile", JsonConvert.SerializeObject(profile));
+                                Dictionary<string, object> data = new Dictionary<string, object>
+                                {
+                                    { "message", ex.Message },
+                                    { "stacktrace", ex.StackTrace },
+                                    { "profile", JsonConvert.SerializeObject(profile) }
+                                };
                                 Logging.Error("Monitor " + monitor.MonitorName() + " failed to handle profile.", data);
                                 success = false;
                             }
