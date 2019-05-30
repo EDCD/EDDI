@@ -29,7 +29,22 @@ namespace EddiDataDefinitions
         public long? systemAddress { get; set; }
 
         /// <summary>Details of bodies (stars/planets/moons)</summary>
-        public ImmutableList<Body> bodies { get; private set; }
+        private ImmutableList<Body> _bodies;
+        public ImmutableList<Body> bodies
+        {
+            get => _bodies;
+            set
+            {
+                if (value == _bodies)
+                {
+                    return;
+                }
+                materialsAvailable.Clear();
+                AddMaterialsOnBodies(value);
+                _bodies = value;
+            }
+        }
+
         public void AddBody(Body body)
         {
             ImmutableList<Body> newBodies = bodies.Add(body);
