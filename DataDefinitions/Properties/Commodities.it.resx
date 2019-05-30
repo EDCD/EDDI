@@ -705,9 +705,18 @@
     <value>Giadeite</value>
     <comment>Commodity Jadeite</comment>
   </data>
-  
-  
-  
+  <data name="JaquesQuinentianStill" xml:space="preserve">
+    <value>Distillatore Portatile Jacques Quinenziano</value>
+    <comment>Commodity JaquesQuinentianStill</comment>
+  </data>
+  <data name="JaradharrePuzzleBox" xml:space="preserve">
+    <value>Mosaico in scatola Jaradharriano</value>
+    <comment>Commodity JaradharrePuzzleBox</comment>
+  </data>
+  <data name="JarouaRice" xml:space="preserve">
+    <value>Riso di Jaroua</value>
+    <comment>Commodity JarouaRice</comment>
+  </data>
   
   
   
