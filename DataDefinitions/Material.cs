@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using Utilities;
 
@@ -193,12 +194,11 @@ namespace EddiDataDefinitions
             var UnknownOrganicCircuitry = new Material("unknownorganiccircuitry", Manufactured, VeryRare);
             var Tg_PropulsionElement = new Material("tg_propulsionelement", Manufactured, VeryRare);
 
-            surfaceElements = new HashSet<Material>(AllOfThem
+            surfaceElements = ImmutableHashSet.ToImmutableHashSet<Material>(AllOfThem
                 .Where(m => m.category == Element)
                 .Where(m => m.greatpctbody != null).ToList());
 
-            jumponiumElements = new HashSet<Material>
-            {
+            jumponiumElements = ImmutableHashSet.Create<Material>(
                 Carbon,
                 Germanium,
                 Vanadium,
@@ -206,8 +206,8 @@ namespace EddiDataDefinitions
                 Niobium,
                 Arsenic,
                 Yttrium,
-                Polonium
-            };
+                Polonium                
+            );
         }
 
         public MaterialCategory category { get; }
@@ -223,8 +223,8 @@ namespace EddiDataDefinitions
         public string bodyname { get; set; }
         public string bodyshortname { get; set; }
 
-        public static HashSet<Material> surfaceElements { get; } // Elements which are available at a planetary surface and not just in space
-        public static HashSet<Material> jumponiumElements { get; } // Elements which are used for FSD injection
+        public static ImmutableHashSet<Material> surfaceElements { get; } // Elements which are available at a planetary surface and not just in space
+        public static ImmutableHashSet<Material> jumponiumElements { get; } // Elements which are used for FSD injection
 
         // Blueprints for the material; 
         public List<Blueprint> blueprints { get; set; }
