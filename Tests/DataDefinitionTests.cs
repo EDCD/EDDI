@@ -108,7 +108,15 @@ namespace UnitTests
         }
 
         [TestMethod]
-        public void TestStarSystemExplorationGreenGold()
+        public void TestEmptySystemGreenGold()
+        {
+            StarSystem starSystem = new StarSystem() { systemname = "testSystem" };
+            Assert.IsFalse((bool)starSystem.isgreen, "empty system should not be green");
+            Assert.IsFalse((bool)starSystem.isgold, "empty system should not be gold");
+        }
+
+        [TestMethod]
+        public void TestGreenSystemGreenGold()
         {
             // Set up a body which would trigger the green system condition
             List<MaterialPresence> materials = new List<MaterialPresence>();
@@ -126,8 +134,18 @@ namespace UnitTests
                 materials = materials
             };
 
+            // Add a body with green materials and re-test
+            StarSystem starSystem = new StarSystem() { systemname = "testSystem" };
+            starSystem.bodies.Add(jumponiumBody);
+            Assert.IsTrue((bool)starSystem.isgreen, "green system should be green");
+            Assert.IsFalse((bool)starSystem.isgold, "green system should be gold");
+        }
+
+        [TestMethod]
+        public void TestGoldSystemGreenGold()
+        {
             // Set up a body which would trigger the gold system condition
-            materials = new List<MaterialPresence>();
+            List<MaterialPresence> materials = new List<MaterialPresence>();
             foreach (Material material in Material.surfaceElements)
             {
                 materials.Add(new MaterialPresence(material, 0.01M));
@@ -138,20 +156,11 @@ namespace UnitTests
                 materials = materials
             };
 
-            // Test standard system with no bodies included
-            StarSystem starSystem = new StarSystem() { systemname = "testSystem" };
-            Assert.IsFalse((bool)starSystem.isgreen);
-            Assert.IsFalse((bool)starSystem.isgold);
-
-            // Add a body with green materials and re-test
-            starSystem.bodies.Add(jumponiumBody);
-            Assert.IsTrue((bool)starSystem.isgreen);
-            Assert.IsFalse((bool)starSystem.isgold);
-
             // Add a body with gold materials and re-test
+            StarSystem starSystem = new StarSystem() { systemname = "testSystem" };
             starSystem.bodies.Add(goldBody);
-            Assert.IsTrue((bool)starSystem.isgreen);
-            Assert.IsTrue((bool)starSystem.isgold);
+            Assert.IsTrue((bool)starSystem.isgreen, "gold system should be green");
+            Assert.IsTrue((bool)starSystem.isgold, "gold system should be gold");
         }
     }
 }
