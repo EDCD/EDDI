@@ -35,8 +35,11 @@ namespace EddiStarMapService
             var clientResponse = client.Execute<Dictionary<string, object>>(request);
             if (clientResponse.IsSuccessful)
             {
-                JObject response = JObject.Parse(clientResponse.Content);
-                return ParseStarMapTraffic(response);
+                var token = JToken.Parse(clientResponse.Content);
+                if (token is JObject response)
+                {
+                    return ParseStarMapTraffic(response);
+                }
             }
             return null;
         }
@@ -58,8 +61,11 @@ namespace EddiStarMapService
             var clientResponse = client.Execute<Dictionary<string, object>>(request);
             if (clientResponse.IsSuccessful)
             {
-                JObject response = JObject.Parse(clientResponse.Content);
-                return ParseStarMapDeaths(response);
+                var token = JToken.Parse(clientResponse.Content);
+                if (token is JObject response)
+                {
+                    return ParseStarMapDeaths(response);
+                }
             }
             return null;
         }

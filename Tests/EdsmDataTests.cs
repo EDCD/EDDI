@@ -422,6 +422,21 @@ namespace UnitTests
         }
 
         [TestMethod]
+        public void TestSystemsCubeUnknown()
+        {
+            string systemName = "No such system";
+            try
+            {
+                List<StarSystem> starSystems = StarMapService.GetStarMapSystemsCube(systemName, 15, false, false, false, false);
+                Assert.IsNull(starSystems);
+            }
+            catch (System.Exception)
+            {
+                Assert.Fail();
+            }
+        }
+
+        [TestMethod]
         public void TestUnknown()
         {
             // Unknown systems shall return null from here. We create a synthetic system in DataProviderService.cs if this returns null;
