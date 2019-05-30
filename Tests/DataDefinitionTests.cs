@@ -142,19 +142,16 @@ namespace UnitTests
             StarSystem starSystem = new StarSystem() { systemname = "testSystem" };
             Assert.IsFalse((bool)starSystem.isgreen);
             Assert.IsFalse((bool)starSystem.isgold);
-            Assert.AreEqual(0, starSystem.materialEdNames.Count);
 
             // Add a body with green materials and re-test
             starSystem.bodies.Add(jumponiumBody);
             Assert.IsTrue((bool)starSystem.isgreen);
             Assert.IsFalse((bool)starSystem.isgold);
-            Assert.AreEqual(8, starSystem.materialEdNames.Count);
 
             // Add a body with gold materials and re-test
             starSystem.bodies.Add(goldBody);
             Assert.IsTrue((bool)starSystem.isgreen);
             Assert.IsTrue((bool)starSystem.isgold);
-            Assert.AreEqual(25, starSystem.materialEdNames.Count);
         }
     }
 }

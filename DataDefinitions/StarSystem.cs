@@ -90,23 +90,11 @@ namespace EddiDataDefinitions
 
         /// <summary> Whether the system is a "green" system for exploration (containing all FSD synthesis elements) </summary>
         [JsonIgnore]
-        public bool? isgreen => materialEdNames?.Count() == 0 ? false :
-            materialEdNames.Intersect(new List<string>()
-            {
-                "carbon",
-                "germanium",
-                "vanadium",
-                "cadmium",
-                "niobium",
-                "arsenic",
-                "yttrium",
-                "polonium"
-            }).Count() == 8;
+        public bool? isgreen => materialsAvailable.SetEquals(Material.jumponiumElements);
 
         /// <summary> Whether the system is a "gold" system for exploration (containing all elements available from planetary surfaces) </summary>
         [JsonIgnore]
-        public bool? isgold => materialEdNames?.Count() == 0 ? false :
-            Material.surfaceElements.Select(m => m.edname).Intersect(materialEdNames).Count() == Material.surfaceElements.Count();
+        public bool? isgold => materialsAvailable.SetEquals(Material.surfaceElements);
 
         /// <summary>Number of visits</summary>
         [JsonIgnore]
@@ -130,7 +118,25 @@ namespace EddiDataDefinitions
 
         // Not intended to be user facing - materials available within the system
         [JsonIgnore]
-        public List<string> materialEdNames => bodies.SelectMany(b => b.materials, (b, m) => m.definition.edname).Distinct().ToList();
+        private HashSet<Material> materialsAvailable = new HashSet<Material>();
+
+        private void AddMaterialsOnBody(Body body)
+        {
+            if (body?.materials == null) {return;}
+            foreach (MaterialPresence presence in body.materials)
+            {
+                materialsAvailable.Add(presence.definition);
+            }
+        }
+
+        private void AddMaterialsOnBodies(IEnumerable<Body> bodies)
+        {
+            if (bodies == null) { return; }
+            foreach (Body body in bodies)
+            {
+                AddMaterialsOnBody(body);
+            }
+        }
 
         // Not intended to be user facing - discoverable bodies as reported by a discovery scan "honk"
         public int discoverableBodies = 0;
@@ -171,6 +177,9 @@ namespace EddiDataDefinitions
                 factionPresence.FactionState = 
                     FactionState.FromEDName(Faction.presences.FirstOrDefault(p => p.systemName == systemname)?.FactionState.edname ?? "None");
             }
+
+            AddMaterialsOnBodies(bodies);
+
             additionalJsonData = null;
         }
 

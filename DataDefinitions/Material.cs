@@ -193,9 +193,21 @@ namespace EddiDataDefinitions
             var UnknownOrganicCircuitry = new Material("unknownorganiccircuitry", Manufactured, VeryRare);
             var Tg_PropulsionElement = new Material("tg_propulsionelement", Manufactured, VeryRare);
 
-            surfaceElements = AllOfThem
-            .Where(m => m.category == Element)
-            .Where(m => m.greatpctbody != null).ToList();
+            surfaceElements = new HashSet<Material>(AllOfThem
+                .Where(m => m.category == Element)
+                .Where(m => m.greatpctbody != null).ToList());
+
+            jumponiumElements = new HashSet<Material>
+            {
+                Carbon,
+                Germanium,
+                Vanadium,
+                Cadmium,
+                Niobium,
+                Arsenic,
+                Yttrium,
+                Polonium
+            };
         }
 
         public MaterialCategory category { get; }
@@ -211,7 +223,8 @@ namespace EddiDataDefinitions
         public string bodyname { get; set; }
         public string bodyshortname { get; set; }
 
-        public static List<Material> surfaceElements { get; } // Elements which are available at a planetary surface and not just in space
+        public static HashSet<Material> surfaceElements { get; } // Elements which are available at a planetary surface and not just in space
+        public static HashSet<Material> jumponiumElements { get; } // Elements which are used for FSD injection
 
         // Blueprints for the material; 
         public List<Blueprint> blueprints { get; set; }
