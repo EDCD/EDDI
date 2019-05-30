@@ -90,11 +90,11 @@ namespace EddiDataDefinitions
 
         /// <summary> Whether the system is a "green" system for exploration (containing all FSD synthesis elements) </summary>
         [JsonIgnore]
-        public bool? isgreen => materialsAvailable.SetEquals(Material.jumponiumElements);
+        public bool isgreen => materialsAvailable.SetEquals(Material.jumponiumElements);
 
         /// <summary> Whether the system is a "gold" system for exploration (containing all elements available from planetary surfaces) </summary>
         [JsonIgnore]
-        public bool? isgold => materialsAvailable.SetEquals(Material.surfaceElements);
+        public bool isgold => materialsAvailable.SetEquals(Material.surfaceElements);
 
         /// <summary>Number of visits</summary>
         [JsonIgnore]
