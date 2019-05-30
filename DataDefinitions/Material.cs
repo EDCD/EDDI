@@ -194,11 +194,11 @@ namespace EddiDataDefinitions
             var UnknownOrganicCircuitry = new Material("unknownorganiccircuitry", Manufactured, VeryRare);
             var Tg_PropulsionElement = new Material("tg_propulsionelement", Manufactured, VeryRare);
 
-            surfaceElements = ImmutableHashSet.ToImmutableHashSet<Material>(AllOfThem
+            surfaceElements = ImmutableHashSet.ToImmutableHashSet(AllOfThem
                 .Where(m => m.category == Element)
                 .Where(m => m.greatpctbody != null).ToList());
 
-            jumponiumElements = ImmutableHashSet.Create<Material>(
+            jumponiumElements = ImmutableHashSet.Create(
                 Carbon,
                 Germanium,
                 Vanadium,
