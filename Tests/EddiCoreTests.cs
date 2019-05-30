@@ -127,8 +127,7 @@ namespace IntegrationTests
             Assert.AreEqual("Grea Bloae HH-T d4-44", EDDI.Instance.CurrentStarSystem?.systemname);
 
             var result = (bool)privateObject.Invoke("eventBodyScanned", new object[] { @event });
-
-            EddiDataDefinitions.Body body = EDDI.Instance.CurrentStarSystem.bodies.FirstOrDefault(b => b.bodyname == "Grea Bloae HH-T d4-44 4");
+            Body body = EDDI.Instance.CurrentStarSystem.bodies.FirstOrDefault(b => b.bodyname == "Grea Bloae HH-T d4-44 4");
             Assert.AreEqual(@event.timestamp, body.scanned);
         }
 
