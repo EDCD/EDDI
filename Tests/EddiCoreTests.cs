@@ -143,7 +143,7 @@ namespace IntegrationTests
 
             PrivateObject privateObject = new PrivateObject(Eddi.EDDI.Instance);
             privateObject.Invoke("updateCurrentStellarBody", new object[] { @event.bodyname, @event.systemname, @event.systemAddress });
-            Assert.AreEqual("HIP 17704 4 A Ring", EDDI.Instance.CurrentStellarBody?.bodyname);
+            Assert.AreEqual("HIP 17704 4", EDDI.Instance.CurrentStellarBody?.bodyname);
         }
 
         [TestMethod]
@@ -159,7 +159,7 @@ namespace IntegrationTests
             PrivateObject privateObject = new PrivateObject(Eddi.EDDI.Instance);
             privateObject.Invoke("updateCurrentSystem", new object[] { "BD-01 2784" });
             privateObject.Invoke("eventBodyMapped", new object[] { @event });
-            Assert.AreEqual("BD-01 2784 10 A Ring", EDDI.Instance.CurrentStellarBody?.bodyname);
+            Assert.AreEqual("BD-01 2784 10", EDDI.Instance.CurrentStellarBody?.bodyname);
         }
 
         [TestMethod]
