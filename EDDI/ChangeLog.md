@@ -2,6 +2,9 @@
 
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
+  * Speech responder
+    * Revised the `System scan complete` script to reduce verbosity and increase variety.
+
 ### 3.4.1-b2
   * Core
     * Reconfigured the installer to improve backwards compatibility between EDDI versions
