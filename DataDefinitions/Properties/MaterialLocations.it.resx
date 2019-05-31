@@ -369,8 +369,14 @@
     <value>Ottenuto dalla scansione di Scie verso Iperspazio e di radiofari di dati codificati o come ricompensa per Missioni.</value>
     <comment>Material location Datamined Wake Exceptions</comment>
   </data>
-  
-  
+  <data name="embeddedfirmware" xml:space="preserve">
+    <value>Ottenuto dalla scansione di Collegamenti Dati in basi superficiali o come ricompensa per missioni.</value>
+    <comment>Material location Modified Embedded Firmware</comment>
+  </data>
+  <data name="shieldfrequencydata" xml:space="preserve">
+    <value>Ottenuto dalla scansione di Vascelli o come ricompensa per missioni.</value>
+    <comment>Material location Peculiar Shield Frequency Data</comment>
+  </data>
   <data name="basicconductors" xml:space="preserve">
     <value>Ottenuto dai rottami di Vascelli da Trasporto</value>
     <comment>Material location Basic Conductors</comment>
@@ -379,7 +385,10 @@
     <value>Ottenuto dai rottami di Vascelli da Trasporto</value>
     <comment>Material location Chemical Storage Units</comment>
   </data>
-  
+  <data name="compactcomposites" xml:space="preserve">
+    <value>Ottenuto da sorgenti di segnale degradate, inclusi segnali di superficie.</value>
+    <comment>Material location Compact Composites</comment>
+  </data>
   <data name="crystalshards" xml:space="preserve">
     <value>Ottenuto dai rottami di Vascelli da Battaglia o da sorgenti di segnale di superficie.</value>
     <comment>Material location Crystal Shards</comment>
@@ -520,8 +529,14 @@
     <value>Ottenuto dai rottami di Autorità di sistema e/o Vascelli da Battaglia o da sorgenti di segnale con tracce di allontanamento di convogli o come ricompensa per missioni.</value>
     <comment>Material location Polymer Capacitors</comment>
   </data>
-  
-  
+  <data name="fedproprietarycomposites" xml:space="preserve">
+    <value>Ottenuto da sorgenti di segnale di grado elevato in sistemi sotto controllo Federale, o come ricompensa per missioni in sistemi Federali sotto elezioni.</value>
+    <comment>Material location Proprietary Composites</comment>
+  </data>
+  <data name="protolightalloys" xml:space="preserve">
+    <value>Ottenuto da sorgenti di segnale di grado elevato in sistemi con economia rampante o come ricompensa per missioni.</value>
+    <comment>Material location Proto Light Alloys</comment>
+  </data>
   <data name="refinedfocuscrystals" xml:space="preserve">
     <value>Ottenuto dai rottami in sorgenti di segnale con combattimenti attivi o come ricompensa per missioni.</value>
     <comment>Material location Refined Focus Crystals</comment>
@@ -534,7 +549,10 @@
     <value>Ottenuto dai misteriosi artefatti di superficie della specie Aliena nota come i Thargoid.</value>
     <comment>Material location Thargoid Technological Components</comment>
   </data>
-  
+  <data name="biotechconductors" xml:space="preserve">
+    <value>Ottenuto come ricompensa per missioni.</value>
+    <comment>Material location Biotech conductors</comment>
+  </data>
   <data name="fedcorecomposites" xml:space="preserve">
     <value>Ottenuto da sorgenti di segnale di grado elevato in sistemi sotto controllo Federale o dai rottami di Vascelli da combattimento Federali.</value>
     <comment>Material location Core Dynamics Composites</comment>
@@ -543,13 +561,34 @@
     <value>Ottenuto dai rottami di grandi Vascelli da Battaglia o come ricompensa per missioni, specialmente in sistemi con economia rampante.</value>
     <comment>Material location Exquisite Focus Crystals</comment>
   </data>
-  
-  
-  
-  
-  
-  
-  
+  <data name="imperialshielding" xml:space="preserve">
+    <value>Ottenuto da sorgenti di segnale di grado elevato in sistemi sotto controllo Imperiale, o come ricompensa per missioni.</value>
+    <comment>Material location Imperial Shielding</comment>
+  </data>
+  <data name="improvisedcomponents" xml:space="preserve">
+    <value>Ottenuto da sorgenti di segnale di grado elevato in sistemi indipendenti, sistemi con economia rampante, sistemi afflitti da rivolte civili e guerra, anche civile, o epidemie o come ricompensa per missioni.</value>
+    <comment>Material location Improvised Components</comment>
+  </data>
+  <data name="militarygradealloys" xml:space="preserve">
+    <value>Ottenuto da sorgenti di segnale di grado elevato in sistemi in guerra, anche civile, o come ricompensa per missioni.</value>
+    <comment>Material location Military Grade Alloys</comment>
+  </data>
+  <data name="militarysupercapacitors" xml:space="preserve">
+    <value>Ottenuto da sorgenti di segnale di grado elevato in sistemi in guerra, anche civile, o come ricompensa per missioni.</value>
+    <comment>Material location Military Supercapacitors</comment>
+  </data>
+  <data name="pharmaceuticalisolators" xml:space="preserve">
+    <value>Ottenuto da sorgenti di segnale di grado elevato in sistemi in rivolta o come ricompensa per missioni.</value>
+    <comment>Material location Pharmaceutical Isolators</comment>
+  </data>
+  <data name="protoheatradiators" xml:space="preserve">
+    <value>Ottenuto da sorgenti di segnale in sistemi con economia rampante o come ricompensa per missioni.</value>
+    <comment>Material location Proto Heat Radiators</comment>
+  </data>
+  <data name="protoradiolicalloys" xml:space="preserve">
+    <value>Ottenuto da sorgenti di segnale in sistemi con economia rampante.</value>
+    <comment>Material location Proto Radiolic Alloys</comment>
+  </data>
   <data name="unknownenergysource" xml:space="preserve">
     <value>Ottenuto dai misteriosi artefatti di superficie della specie Aliena nota come i Thargoid.</value>
     <comment>Material location unknownenergysource</comment>
@@ -558,7 +597,10 @@
     <value>Ottenuto dai misteriosi artefatti di superficie della specie Aliena nota come i Thargoid.</value>
     <comment>Material location Thargoid Organic Circuitry</comment>
   </data>
-  
+  <data name="boron" xml:space="preserve">
+    <value>Ottenuto da Estrazione da Asteroidi.</value>
+    <comment>Material location Boron</comment>
+  </data>
   <data name="guardian_powercell" xml:space="preserve">
     <value>Ottenuto dalle Antiche Rovine della specie Aliena nota come i Guardiani.</value>
     <comment>Material location guardian_powercell</comment>
@@ -591,8 +633,14 @@
     <value>Ottenuto dalle Antiche Rovine della specie Aliena nota come i Guardiani.</value>
     <comment>Material location guardian_sentinel_wreckagecomponents</comment>
   </data>
-  
-  
+  <data name="lead" xml:space="preserve">
+    <value>Ottenuto da Estrazione da Asteroidi.</value>
+    <comment>Material location Lead</comment>
+  </data>
+  <data name="rhenium" xml:space="preserve">
+    <value>Ottenuto da Estrazione da Asteroidi.</value>
+    <comment>Material location Rhenium</comment>
+  </data>
   <data name="tg_propulsionelement" xml:space="preserve">
     <value>Ottenuto da rottami di Vascelli Thargoid.</value>
     <comment>Material location tg_propulsionelement</comment>
