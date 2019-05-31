@@ -124,19 +124,19 @@
     <value>Gewünscht</value>
   </data>
   <data name="find_encoded_button" xml:space="preserve">
-    <value>Händler für verschlüsselte Daten finden</value>
+    <value>Händler - Encoded Data</value>
   </data>
   <data name="find_guardian_button" xml:space="preserve">
-    <value>Guardian-Broker finden</value>
+    <value>Guardian Broker</value>
   </data>
   <data name="find_human_button" xml:space="preserve">
-    <value>Broker für menschliche Technik finden</value>
+    <value>Human Broker</value>
   </data>
   <data name="find_manufactured_button" xml:space="preserve">
-    <value>Händler für gefertigte Materialien finden</value>
+    <value>Händler - gefert. Materialien</value>
   </data>
   <data name="find_raw_button" xml:space="preserve">
-    <value>Händler für Rohmaterialien finden</value>
+    <value>Händler - Rohmaterialien</value>
   </data>
   <data name="inventory_header" xml:space="preserve">
     <value>Vorrat</value>
