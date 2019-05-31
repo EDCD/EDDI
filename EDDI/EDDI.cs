@@ -1933,14 +1933,14 @@ namespace Eddi
                 if (star == null)
                 {
                     Logging.Debug("Scanned star " + theEvent.bodyname + " is new - creating");
-                    CurrentStarSystem.bodies?.Add(theEvent.star);
+                    CurrentStarSystem.AddBody(theEvent.star);
                 }
                 else
                 {
                     int index = CurrentStarSystem.bodies.IndexOf(star);
                     if (index != -1)
                     {
-                        CurrentStarSystem.AddBody(theEvent.star);
+                        CurrentStarSystem.UpdateBodyAt(index, theEvent.star);
                     }
                 }
                 CurrentStarSystem.SortBodiesByID();
@@ -1960,7 +1960,7 @@ namespace Eddi
                 if (body == null)
                 {
                     Logging.Debug("Scanned body " + theEvent.bodyname + " is new - creating");
-                    CurrentStarSystem.bodies.Add(theEvent.body);
+                    CurrentStarSystem.AddBody(theEvent.body);
                 }
                 else
                 {
@@ -1970,7 +1970,7 @@ namespace Eddi
                         if (index != -1)
                         {
                             // Update our body with the scan data.
-                            CurrentStarSystem.AddBody(theEvent.body);
+                            CurrentStarSystem.UpdateBodyAt(index, theEvent.body);
                         }
                     }
                     else

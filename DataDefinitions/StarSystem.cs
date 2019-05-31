@@ -39,22 +39,26 @@ namespace EddiDataDefinitions
                 {
                     return;
                 }
-                materialsAvailable.Clear();
-                AddMaterialsOnBodies(value);
+                materialsAvailable = MaterialsOnBodies(value);
                 _bodies = value;
             }
         }
 
         public void SortBodiesByID()
         {
-            ImmutableList<Body> newBodies = bodies.Sort((lhs, rhs) => (int)(lhs.bodyId - rhs.bodyId));
+            ImmutableList<Body> newBodies = bodies.Sort((lhs, rhs) => Math.Sign((lhs.bodyId - rhs.bodyId) ?? 0));
             bodies = newBodies;
         }
 
         public void AddBody(Body body)
         {
             ImmutableList<Body> newBodies = bodies.Add(body);
-            AddMaterialsOnBody(body);
+            bodies = newBodies;
+        }
+
+        public void UpdateBodyAt(int index, Body updatedBody)
+        {
+            ImmutableList<Body> newBodies = bodies.SetItem(index, updatedBody);
             bodies = newBodies;
         }
 
@@ -148,22 +152,19 @@ namespace EddiDataDefinitions
         [JsonIgnore]
         private HashSet<Material> materialsAvailable = new HashSet<Material>();
 
-        private void AddMaterialsOnBody(Body body)
+        private HashSet<Material> MaterialsOnBodies(IEnumerable<Body> bodies)
         {
-            if (body?.materials == null) {return;}
-            foreach (MaterialPresence presence in body.materials)
-            {
-                materialsAvailable.Add(presence.definition);
-            }
-        }
-
-        private void AddMaterialsOnBodies(IEnumerable<Body> bodies)
-        {
-            if (bodies == null) { return; }
+            HashSet<Material> result = new HashSet<Material>();
+            if (bodies == null) { return result; }
             foreach (Body body in bodies)
             {
-                AddMaterialsOnBody(body);
+                if (body?.materials == null) { continue; }
+                foreach (MaterialPresence presence in body.materials)
+                {
+                    result.Add(presence.definition);
+                }
             }
+            return result;
         }
 
         // Not intended to be user facing - discoverable bodies as reported by a discovery scan "honk"
@@ -189,7 +190,7 @@ namespace EddiDataDefinitions
         {
             OnFactionDeserialized();
 
-            AddMaterialsOnBodies(bodies);
+            materialsAvailable = MaterialsOnBodies(bodies);
 
             additionalJsonData = null;
         }
