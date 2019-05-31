@@ -189,7 +189,16 @@
     <value>Collisione con conseguente danneggiamento di proprietà</value>
     <comment>Crime collidedAtSpeedInNoFireZone_hulldamage</comment>
   </data>
-  
-  
-  
+  <data name="recklessWeaponsDischarge" xml:space="preserve">
+    <value>Utilizzo Avventato delle Armi</value>
+    <comment>Crime recklessWeaponsDischarge</comment>
+  </data>
+  <data name="passengerWanted" xml:space="preserve">
+    <value>Trasporto di Persona Ricercata</value>
+    <comment>Crime passengerWanted</comment>
+  </data>
+  <data name="missionFine" xml:space="preserve">
+    <value>Multa relativa a Missione</value>
+    <comment>Crime missionFine</comment>
+  </data>
 </root>
