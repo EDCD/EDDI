@@ -705,29 +705,74 @@
     <value>Giadeite</value>
     <comment>Commodity Jadeite</comment>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="JaquesQuinentianStill" xml:space="preserve">
+    <value>Distillatore Portatile Jacques Quinenziano</value>
+    <comment>Commodity JaquesQuinentianStill</comment>
+  </data>
+  <data name="JaradharrePuzzleBox" xml:space="preserve">
+    <value>Mosaico in scatola Jaradharriano</value>
+    <comment>Commodity JaradharrePuzzleBox</comment>
+  </data>
+  <data name="JarouaRice" xml:space="preserve">
+    <value>Riso di Jaroua</value>
+    <comment>Commodity JarouaRice</comment>
+  </data>
+  <data name="JotunMookah" xml:space="preserve">
+    <value>Mookah di Jotun</value>
+    <comment>Commodity JotunMookah</comment>
+  </data>
+  <data name="KamitraCigars" xml:space="preserve">
+    <value>Sigari di Kamitra</value>
+    <comment>Commodity KamitraCigars</comment>
+  </data>
+  <data name="KamorinHistoricWeapons" xml:space="preserve">
+    <value>Armi d'epoca Kamoriniane</value>
+    <comment>Commodity KamorinHistoricWeapons</comment>
+  </data>
+  <data name="KaretiiCouture" xml:space="preserve">
+    <value>Acconciatura Karetiiana</value>
+    <comment>Commodity KaretiiCouture</comment>
+  </data>
+  <data name="KarsukiLocusts" xml:space="preserve">
+    <value>Locuste Karsukiane</value>
+    <comment>Commodity KarsukiLocusts</comment>
+  </data>
+  <data name="KonggaAle" xml:space="preserve">
+    <value>Birra di Kongga</value>
+    <comment>Commodity KonggaAle</comment>
+  </data>
+  <data name="KoroKungPellets" xml:space="preserve">
+    <value>Fertilizzante di Koro Kung</value>
+    <comment>Commodity KoroKungPellets</comment>
+  </data>
   <data name="Landmines" xml:space="preserve">
     <value>Mine</value>
     <comment>Commodity Landmines</comment>
   </data>
-  
-  
-  
+  <data name="Lanthanum" xml:space="preserve">
+    <value>Lantanio</value>
+    <comment>Commodity Lanthanum</comment>
+  </data>
+  <data name="LargeExplorationDataCash" xml:space="preserve">
+    <value>Contenitore Grande di dati ricavati dalla sorveglianza</value>
+    <comment>Commodity LargeExplorationDataCash</comment>
+  </data>
+  <data name="LavianBrandy" xml:space="preserve">
+    <value>Brandy Laviano</value>
+    <comment>Commodity LavianBrandy</comment>
+  </data>
   <data name="Leather" xml:space="preserve">
     <value>Cuoio</value>
     <comment>Commodity Leather</comment>
   </data>
-  
-  
+  <data name="LeestianEvilJuice" xml:space="preserve">
+    <value>Succo Maligno Leestiano</value>
+    <comment>Commodity LeestianEvilJuice</comment>
+  </data>
+  <data name="Lepidolite" xml:space="preserve">
+    <value>Lepidolite</value>
+    <comment>Commodity Lepidolite</comment>
+  </data>
   <data name="LiquidOxygen" xml:space="preserve">
     <value>Ossigeno liquido</value>
     <comment>Commodity LiquidOxygen</comment>
@@ -736,60 +781,222 @@
     <value>Liquore</value>
     <comment>Commodity Liquor</comment>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="Lithium" xml:space="preserve">
+    <value>Litio</value>
+    <comment>Commodity Lithium</comment>
+  </data>
+  <data name="LithiumHydroxide" xml:space="preserve">
+    <value>Idrossido di Litio</value>
+    <comment>Commodity LithiumHydroxide</comment>
+  </data>
+  <data name="LiveHecateSeaWorms" xml:space="preserve">
+    <value>Vermi di mare Hecatiani vivi</value>
+    <comment>Commodity LiveHecateSeaWorms</comment>
+  </data>
+  <data name="LowTemperatureDiamond" xml:space="preserve">
+    <value>Diamanti a bassa temperatura</value>
+    <comment>Commodity LowTemperatureDiamond</comment>
+  </data>
+  <data name="LTTHypersweet" xml:space="preserve">
+    <value>Iperdolci di LTT</value>
+    <comment>Commodity LTTHypersweet</comment>
+  </data>
+  <data name="LyraeWeed" xml:space="preserve">
+    <value>Gramigna Lyraeana</value>
+    <comment>Commodity LyraeWeed</comment>
+  </data>
+  <data name="MagneticEmitterCoil" xml:space="preserve">
+    <value>Avvolgimenti Emettitori Magnetici</value>
+    <comment>Commodity MagneticEmitterCoil</comment>
+  </data>
+  <data name="MarineSupplies" xml:space="preserve">
+    <value>Equipaggiamento marino</value>
+    <comment>Commodity MarineSupplies</comment>
+  </data>
+  <data name="MasterChefs" xml:space="preserve">
+    <value>Capo Cuoco</value>
+    <comment>Commodity MasterChefs</comment>
+  </data>
+  <data name="MechucosHighTea" xml:space="preserve">
+    <value>Tè Superiore di Mechucos</value>
+    <comment>Commodity MechucosHighTea</comment>
+  </data>
+  <data name="MedbStarlube" xml:space="preserve">
+    <value>Stellalubrificante di Medb</value>
+    <comment>Commodity MedbStarlube</comment>
+  </data>
+  <data name="MedicalDiagnosticEquipment" xml:space="preserve">
+    <value>Equipaggiamento diagnostico medico</value>
+    <comment>Commodity MedicalDiagnosticEquipment</comment>
+  </data>
+  <data name="MetaAlloys" xml:space="preserve">
+    <value>Meta-Leghe</value>
+    <comment>Commodity MetaAlloys</comment>
+  </data>
+  <data name="MethaneClathrate" xml:space="preserve">
+    <value>Clatrato di metano</value>
+    <comment>Commodity MethaneClathrate</comment>
+  </data>
+  <data name="MethanolMonohydrateCrystals" xml:space="preserve">
+    <value>Monoidrato di Metanolo</value>
+    <comment>Commodity MethanolMonohydrateCrystals</comment>
+  </data>
+  <data name="MicroControllers" xml:space="preserve">
+    <value>Micro controllori</value>
+    <comment>Commodity MicroControllers</comment>
+  </data>
+  <data name="MilitaryGradeFabrics" xml:space="preserve">
+    <value>Tessuto di qualità militare</value>
+    <comment>Commodity MilitaryGradeFabrics</comment>
+  </data>
+  <data name="MilitaryIntelligence" xml:space="preserve">
+    <value>Spionaggio Militare</value>
+    <comment>Commodity MilitaryIntelligence</comment>
+  </data>
+  <data name="MineralExtractors" xml:space="preserve">
+    <value>Estrattori di Minerali</value>
+    <comment>Commodity MineralExtractors</comment>
+  </data>
+  <data name="MineralOil" xml:space="preserve">
+    <value>Olio Minerale</value>
+    <comment>Commodity MineralOil</comment>
+  </data>
+  <data name="ModularTerminals" xml:space="preserve">
+    <value>Terminali Modulari</value>
+    <comment>Commodity ModularTerminals</comment>
+  </data>
+  <data name="Moissanite" xml:space="preserve">
+    <value>Moissanite</value>
+    <comment>Commodity Moissanite</comment>
+  </data>
+  <data name="MokojingBeastFeast" xml:space="preserve">
+    <value>Banchetto Bestiale di Mokojing</value>
+    <comment>Commodity MokojingBeastFeast</comment>
+  </data>
+  <data name="MomusBogSpaniel" xml:space="preserve">
+    <value>Botolo di palude Momusiano</value>
+    <comment>Commodity MomusBogSpaniel</comment>
+  </data>
+  <data name="MotronaExperienceJelly" xml:space="preserve">
+    <value>Gelatina Esperienziale Motroniana</value>
+    <comment>Commodity MotronaExperienceJelly</comment>
+  </data>
+  <data name="MukusubiiChitinOs" xml:space="preserve">
+    <value>Bis-Chitina Mukusubiiana</value>
+    <comment>Commodity MukusubiiChitin_Os</comment>
+  </data>
+  <data name="MulachiGiantFungus" xml:space="preserve">
+    <value>Funghi giganti di Mulachi</value>
+    <comment>Commodity MulachiGiantFungus</comment>
+  </data>
+  <data name="MuTomImager" xml:space="preserve">
+    <value>Visualizzatore di Mappe Muoniano</value>
+    <comment>Commodity MuTomImager</comment>
+  </data>
+  <data name="MysteriousIdol" xml:space="preserve">
+    <value>Idolo Misterioso</value>
+    <comment>Commodity MysteriousIdol</comment>
+  </data>
+  <data name="Nanobreakers" xml:space="preserve">
+    <value>Nanodemolitori</value>
+    <comment>Commodity Nanobreakers</comment>
+  </data>
+  <data name="NaturalFabrics" xml:space="preserve">
+    <value>Tessuti Naturali</value>
+    <comment>Commodity NaturalFabrics</comment>
+  </data>
+  <data name="NeofabricInsulation" xml:space="preserve">
+    <value>Isolante Neotessile</value>
+    <comment>Commodity NeofabricInsulation</comment>
+  </data>
+  <data name="NeritusBerries" xml:space="preserve">
+    <value>Bacche Neritusiane</value>
+    <comment>Commodity NeritusBerries</comment>
+  </data>
+  <data name="NerveAgents" xml:space="preserve">
+    <value>Agenti Nervini</value>
+    <comment>Commodity NerveAgents</comment>
+  </data>
+  <data name="NgadandariFireOpals" xml:space="preserve">
+    <value>Opali di Fuoco Ngadandariane</value>
+    <comment>Commodity NgadandariFireOpals</comment>
+  </data>
+  <data name="NgunaModernAntiques" xml:space="preserve">
+    <value>Modernariato Ngunanese</value>
+    <comment>Commodity NgunaModernAntiques</comment>
+  </data>
+  <data name="NjangariSaddles" xml:space="preserve">
+    <value>Selle Njangariane</value>
+    <comment>Commodity NjangariSaddles</comment>
+  </data>
+  <data name="NonEuclidianExotanks" xml:space="preserve">
+    <value>Esocontenitori non Euclidei</value>
+    <comment>Commodity NonEuclidianExotanks</comment>
+  </data>
+  <data name="NonLethalWeapons" xml:space="preserve">
+    <value>Armi non Letali</value>
+    <comment>Commodity NonLethalWeapons</comment>
+  </data>
+  <data name="OccupiedCryoPod" xml:space="preserve">
+    <value>Capsula di Salvataggio Occupata</value>
+    <comment>Commodity OccupiedCryoPod</comment>
+  </data>
+  <data name="OchoengChillies" xml:space="preserve">
+    <value>Peperoncini Ochoenghiani</value>
+    <comment>Commodity OchoengChillies</comment>
+  </data>
+  <data name="OnionHead" xml:space="preserve">
+    <value>Testa di Cipolla</value>
+    <comment>Commodity OnionHead</comment>
+  </data>
+  <data name="OnionHeadA" xml:space="preserve">
+    <value>Distillato Alfa di Testa di Cipolla</value>
+    <comment>Commodity OnionheadAlphaStrain</comment>
+  </data>
+  <data name="OnionHeadB" xml:space="preserve">
+    <value>Distillato Beta di Testa di Cipolla</value>
+    <comment>Commodity OnionheadBetaStrain</comment>
+  </data>
+  <data name="OphiuchiExinoArtefacts" xml:space="preserve">
+    <value>Artefatti Esotici di Ofiuco</value>
+    <comment>Commodity OphiuchExinoArtefacts</comment>
+  </data>
+  <data name="OrrerianViciousBrew" xml:space="preserve">
+    <value>Birraccia Orreriana</value>
+    <comment>Commodity OrrerianViciousBrew</comment>
+  </data>
+  <data name="Osmium" xml:space="preserve">
+    <value>Osmio</value>
+    <comment>Commodity Osmium</comment>
+  </data>
+  <data name="Painite" xml:space="preserve">
+    <value>Painite</value>
+    <comment>Commodity Painite</comment>
+  </data>
+  <data name="Palladium" xml:space="preserve">
+    <value>Palladio</value>
+    <comment>Commodity Palladium</comment>
+  </data>
+  <data name="PantaaPrayerSticks" xml:space="preserve">
+    <value>Bastoncini da Preghiera Pantaani</value>
+    <comment>Commodity PantaaPrayerSticks</comment>
+  </data>
+  <data name="PavonisEarGrubs" xml:space="preserve">
+    <value>Larva Auricolare di Pavonis</value>
+    <comment>Commodity PavonisEarGrubs</comment>
+  </data>
+  <data name="PerformanceEnhancers" xml:space="preserve">
+    <value>Incrementatori di Prestazione</value>
+    <comment>Commodity PerformanceEnhancers</comment>
+  </data>
+  <data name="PersonalEffects" xml:space="preserve">
+    <value>Effetti Personali</value>
+    <comment>Commodity PersonalEffects</comment>
+  </data>
+  <data name="PersonalWeapons" xml:space="preserve">
+    <value>Armi Personali</value>
+    <comment>Commodity PersonalWeapons</comment>
+  </data>
   <data name="Pesticides" xml:space="preserve">
     <value>Pesticidi</value>
     <comment>Commodity Pesticides</comment>
@@ -798,42 +1005,102 @@
     <value>Platino</value>
     <comment>Commodity Platinum</comment>
   </data>
-  
+  <data name="PoliticalPrisoner" xml:space="preserve">
+    <value>Prigionieri Politici</value>
+    <comment>Commodity PoliticalPrisoner</comment>
+  </data>
   <data name="Polymers" xml:space="preserve">
     <value>Polimeri</value>
     <comment>Commodity Polymers</comment>
   </data>
-  
+  <data name="PowerConverter" xml:space="preserve">
+    <value>Convertitore di Potenza</value>
+    <comment>Commodity PowerConverter</comment>
+  </data>
   <data name="PowerGenerators" xml:space="preserve">
     <value>Generatori Elettrici</value>
     <comment>Commodity PowerGenerators</comment>
   </data>
-  
-  
-  
+  <data name="PowerGridAssembly" xml:space="preserve">
+    <value>Giunto per Griglie di Energia</value>
+    <comment>Commodity PowerGridAssembly</comment>
+  </data>
+  <data name="PowerTransferConduits" xml:space="preserve">
+    <value>Circuito di Trasferimento Potenza</value>
+    <comment>Commodity PowerTransferConduits</comment>
+  </data>
+  <data name="Praseodymium" xml:space="preserve">
+    <value>Praseodimio</value>
+    <comment>Commodity Praseodymium</comment>
+  </data>
   <data name="PreciousGems" xml:space="preserve">
     <value>Gemme preziose</value>
     <comment>Commodity PreciousGems</comment>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="ProgenitorCells" xml:space="preserve">
+    <value>Cellule Progenitrici</value>
+    <comment>Commodity ProgenitorCells</comment>
+  </data>
+  <data name="ProhibitedResearchMaterials" xml:space="preserve">
+    <value>Materiali di ricerca Vietati</value>
+    <comment>Commodity ProhibitedResearchMaterials</comment>
+  </data>
+  <data name="Pyrophyllite" xml:space="preserve">
+    <value>Pirofillite</value>
+    <comment>Commodity Pyrophyllite</comment>
+  </data>
+  <data name="RadiationBaffle" xml:space="preserve">
+    <value>Deflettore di Radiazioni</value>
+    <comment>Commodity RadiationBaffle</comment>
+  </data>
+  <data name="RapaBaoSnakeSkins" xml:space="preserve">
+    <value>Pelle di Rettile di Rapa Bao</value>
+    <comment>Commodity RapaBaoSnakeSkins</comment>
+  </data>
+  <data name="ReactiveArmour" xml:space="preserve">
+    <value>Armatura Reattiva</value>
+    <comment>Commodity ReactiveArmour</comment>
+  </data>
+  <data name="ReinforcedMountingPlate" xml:space="preserve">
+    <value>Placca di montaggio rinforzata</value>
+    <comment>Commodity ReinforcedMountingPlate</comment>
+  </data>
+  <data name="ResonatingSeparators" xml:space="preserve">
+    <value>Separatori Risonanti</value>
+    <comment>Commodity ResonatingSeparators</comment>
+  </data>
   <data name="Robotics" xml:space="preserve">
     <value>Robotica</value>
     <comment>Commodity Robotics</comment>
   </data>
-  
-  
-  
-  
-  
-  
-  
+  <data name="RusaniOldSmokey" xml:space="preserve">
+    <value>Vecchio Fumoso Rusaniano</value>
+    <comment>Commodity RusaniOldSmokey</comment>
+  </data>
+  <data name="Rutile" xml:space="preserve">
+    <value>Rutilo</value>
+    <comment>Commodity Rutile</comment>
+  </data>
+  <data name="Samarium" xml:space="preserve">
+    <value>Samario</value>
+    <comment>Commodity Samarium</comment>
+  </data>
+  <data name="SanumaDecorativeMeat" xml:space="preserve">
+    <value>Carne decorativa Sanumanese</value>
+    <comment>Commodity SanumaDecorativeMeat</comment>
+  </data>
+  <data name="SAP8CoreContainer" xml:space="preserve">
+    <value>Contenitore Nucleico SAP 8</value>
+    <comment>Commodity SAP8CoreContainer</comment>
+  </data>
+  <data name="SaxonWine" xml:space="preserve">
+    <value>Vino Sassone</value>
+    <comment>Commodity SaxonWine</comment>
+  </data>
+  <data name="ScientificResearch" xml:space="preserve">
+    <value>Ricerche Scientifiche</value>
+    <comment>Commodity ScientificResearch</comment>
+  </data>
   <data name="ScientificSamples" xml:space="preserve">
     <value>Campioni Scientifici</value>
     <comment>Commodity ScientificSamples</comment>
@@ -842,70 +1109,190 @@
     <value>Rottame</value>
     <comment>Commodity Scrap</comment>
   </data>
-  
+  <data name="Semiconductors" xml:space="preserve">
+    <value>Semiconduttori</value>
+    <comment>Commodity Semiconductors</comment>
+  </data>
   <data name="Silver" xml:space="preserve">
     <value>Argento</value>
     <comment>Commodity Silver</comment>
   </data>
-  
+  <data name="SkimerComponents" xml:space="preserve">
+    <value>Componenti di Skimmer</value>
+    <comment>Commodity SkimerComponents</comment>
+  </data>
   <data name="Slaves" xml:space="preserve">
     <value>Schiavi</value>
     <comment>Commodity Slaves</comment>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="SmallExplorationDataCash" xml:space="preserve">
+    <value>Contenitore piccolo di Dati di Sorveglianza</value>
+    <comment>Commodity SmallExplorationDataCash</comment>
+  </data>
+  <data name="SoontillRelics" xml:space="preserve">
+    <value>Reliquie Soontilliane</value>
+    <comment>Commodity SoontillRelics</comment>
+  </data>
+  <data name="SothisCrystallineGold" xml:space="preserve">
+    <value>Oro Cristallino di Sothis</value>
+    <comment>Commodity SothisCrystallineGold</comment>
+  </data>
+  <data name="SpacePioneerRelics" xml:space="preserve">
+    <value>Reliquie dei Pionieri dello Spazio</value>
+    <comment>Commodity SpacePioneerRelics</comment>
+  </data>
+  <data name="StructuralRegulators" xml:space="preserve">
+    <value>Regolatori Strutturali</value>
+    <comment>Commodity StructuralRegulators</comment>
+  </data>
+  <data name="Superconductors" xml:space="preserve">
+    <value>Superconduttori</value>
+    <comment>Commodity Superconductors</comment>
+  </data>
+  <data name="SurfaceStabilisers" xml:space="preserve">
+    <value>Stabilizzatori di Superficie</value>
+    <comment>Commodity SurfaceStabilisers</comment>
+  </data>
+  <data name="SurvivalEquipment" xml:space="preserve">
+    <value>Equipaggiamento di Sopravvivenza</value>
+    <comment>Commodity SurvivalEquipment</comment>
+  </data>
   <data name="SyntheticFabrics" xml:space="preserve">
     <value>Tessuti sintetici</value>
     <comment>Commodity SyntheticFabrics</comment>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="SyntheticMeat" xml:space="preserve">
+    <value>Carne sintetica</value>
+    <comment>Commodity SyntheticMeat</comment>
+  </data>
+  <data name="SyntheticReagents" xml:space="preserve">
+    <value>Reagenti Sintetici</value>
+    <comment>Commodity SyntheticReagents</comment>
+  </data>
+  <data name="Taaffeite" xml:space="preserve">
+    <value>Taffeite</value>
+    <comment>Commodity Taaffeite</comment>
+  </data>
+  <data name="TacticalData" xml:space="preserve">
+    <value>Dati Tattici</value>
+    <comment>Commodity TacticalData</comment>
+  </data>
+  <data name="TanmarkTranquilTea" xml:space="preserve">
+    <value>Tisana Tranquillante Tanmarkiana</value>
+    <comment>Commodity TanmarkTranquilTea</comment>
+  </data>
+  <data name="Tantalum" xml:space="preserve">
+    <value>Tantalio</value>
+    <comment>Commodity Tantalum</comment>
+  </data>
+  <data name="TarachTorSpice" xml:space="preserve">
+    <value>Spezia di Tarach</value>
+    <comment>Commodity TarachTorSpice</comment>
+  </data>
+  <data name="TauriChimes" xml:space="preserve">
+    <value>Campane del Toro</value>
+    <comment>Commodity TauriChimes</comment>
+  </data>
   <data name="Tea" xml:space="preserve">
     <value>Te'</value>
     <comment>Commodity Tea</comment>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="TelemetrySuite" xml:space="preserve">
+    <value>Tuta Telemetrica</value>
+    <comment>Commodity TelemetrySuite</comment>
+  </data>
+  <data name="TerrainEnrichmentSystems" xml:space="preserve">
+    <value>Sistemi di arricchimento del Terreno</value>
+    <comment>Commodity TerrainEnrichmentSystems</comment>
+  </data>
+  <data name="TerraMaterBloodBores" xml:space="preserve">
+    <value>Orifizi Sanguinanti di Terra Mater</value>
+    <comment>Commodity TerraMaterBloodBores</comment>
+  </data>
+  <data name="Thallium" xml:space="preserve">
+    <value>Tallio</value>
+    <comment>Commodity Thallium</comment>
+  </data>
+  <data name="TheHuttonMug" xml:space="preserve">
+    <value>La Tazza di Hutton</value>
+    <comment>Commodity TheHuttonMug</comment>
+  </data>
+  <data name="ThermalCoolingUnits" xml:space="preserve">
+    <value>Unità di Dissipazione Termica</value>
+    <comment>Commodity ThermalCoolingUnits</comment>
+  </data>
+  <data name="Thorium" xml:space="preserve">
+    <value>Torio</value>
+    <comment>Commodity Thorium</comment>
+  </data>
+  <data name="ThrutisCream" xml:space="preserve">
+    <value>Crema di Thrutis</value>
+    <comment>Commodity ThrutisCream</comment>
+  </data>
+  <data name="TiegfriesSynthSilk" xml:space="preserve">
+    <value>Seta Sintetica Tiegfriesiana</value>
+    <comment>Commodity TiegfriesSynthSilk</comment>
+  </data>
+  <data name="TimeCapsule" xml:space="preserve">
+    <value>Capsula Temporale</value>
+    <comment>Commodity TimeCapsule</comment>
+  </data>
+  <data name="TiolceWaste2PasteUnits" xml:space="preserve">
+    <value>Unità di Riciclaggio Tiolcese</value>
+    <comment>Commodity TiolceWaste2PasteUnits</comment>
+  </data>
+  <data name="Titanium" xml:space="preserve">
+    <value>Titanio</value>
+    <comment>Commodity Titanium</comment>
+  </data>
   <data name="Tobacco" xml:space="preserve">
     <value>Tabacco</value>
     <comment>Commodity Tobacco</comment>
   </data>
-  
+  <data name="ToxandjiVirocide" xml:space="preserve">
+    <value>Virocida Toxandjiano</value>
+    <comment>Commodity ToxandjiVirocide</comment>
+  </data>
   <data name="ToxicWaste" xml:space="preserve">
     <value>Rifiuti tossici</value>
     <comment>Commodity ToxicWaste</comment>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="TransgenicOnionHead" xml:space="preserve">
+    <value>Testa di Cipolla Lucaniana</value>
+    <comment>Commodity TransgenicOnionHead</comment>
+  </data>
+  <data name="TrinketsOfFortune" xml:space="preserve">
+    <value>Ciondolo della Fortuna Segreta</value>
+    <comment>Commodity TrinketsOfFortune</comment>
+  </data>
+  <data name="UnknownArtifact" xml:space="preserve">
+    <value>Sensore Thargoid</value>
+    <comment>Commodity UnknownArtifact</comment>
+  </data>
+  <data name="UnknownArtifact2" xml:space="preserve">
+    <value>Sonda Thargoid</value>
+    <comment>Commodity UnknownArtifact2</comment>
+  </data>
+  <data name="UnknownArtifact3" xml:space="preserve">
+    <value>Collegamento Thargoid</value>
+    <comment>Commodity UnknownArtifact3</comment>
+  </data>
+  <data name="UnknownResin" xml:space="preserve">
+    <value>Resina Thargoid</value>
+    <comment>Commodity UnknownResin</comment>
+  </data>
+  <data name="UnknownTechnologySamples" xml:space="preserve">
+    <value>Campione Tecnologico Thargoid</value>
+    <comment>Commodity UnknownTechnologySamples</comment>
+  </data>
+  <data name="UnstableDataCore" xml:space="preserve">
+    <value>Nucleo di Dati Instabile</value>
+    <comment>Commodity UnstableDataCore</comment>
+  </data>
+  <data name="Uraninite" xml:space="preserve">
+    <value>Uraninite</value>
+    <comment>Commodity Uraninite</comment>
+  </data>
   <data name="Uranium" xml:space="preserve">
     <value>Uranio</value>
     <comment>Commodity Uranium</comment>
@@ -914,22 +1301,70 @@
     <value>Artefatto antico</value>
     <comment>Commodity USSCargoAncientArtefact</comment>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="USSCargoBlackBox" xml:space="preserve">
+    <value>Scatola Nera</value>
+    <comment>Commodity USSCargoBlackBox</comment>
+  </data>
+  <data name="USSCargoExperimentalChemicals" xml:space="preserve">
+    <value>Materiale Chimico Sperimentale</value>
+    <comment>Commodity USSCargoExperimentalChemicals</comment>
+  </data>
+  <data name="USSCargoMilitaryPlans" xml:space="preserve">
+    <value>Piani Militari</value>
+    <comment>Commodity USSCargoMilitaryPlans</comment>
+  </data>
+  <data name="USSCargoPrototypeTech" xml:space="preserve">
+    <value>Tecnologia Sperimentale</value>
+    <comment>Commodity USSCargoPrototypeTech</comment>
+  </data>
+  <data name="USSCargoRareArtwork" xml:space="preserve">
+    <value>Opera d'Arte Rara</value>
+    <comment>Commodity USSCargoRareArtwork</comment>
+  </data>
+  <data name="USSCargoRebelTransmissions" xml:space="preserve">
+    <value>Trasmissioni Ribelli</value>
+    <comment>Commodity USSCargoRebelTransmissions</comment>
+  </data>
+  <data name="USSCargoTechnicalBlueprints" xml:space="preserve">
+    <value>Progetti Tecnici</value>
+    <comment>Commodity USSCargoTechnicalBlueprints</comment>
+  </data>
+  <data name="USSCargoTradeData" xml:space="preserve">
+    <value>Dati Commerciali</value>
+    <comment>Commodity USSCargoTradeData</comment>
+  </data>
+  <data name="UszaianTreeGrub" xml:space="preserve">
+    <value>Larvalbero Uszaianiana</value>
+    <comment>Commodity UszaianTreeGrub</comment>
+  </data>
+  <data name="UtgaroarMillenialEggs" xml:space="preserve">
+    <value>Uova Millenarie Utgaroaresi</value>
+    <comment>Commodity UtgaroarMillenialEggs</comment>
+  </data>
+  <data name="UzumokuLow_GWings" xml:space="preserve">
+    <value>Alianti a bassa gravità Uzumokuensi</value>
+    <comment>Commodity UzumokuLow_GWings</comment>
+  </data>
+  <data name="VegaSlimweed" xml:space="preserve">
+    <value>Gramigna Dimagrante Vegana</value>
+    <comment>Commodity VegaSlimweed</comment>
+  </data>
+  <data name="VHerculisBodyRub" xml:space="preserve">
+    <value>Spugna Corpo di V Herculis</value>
+    <comment>Commodity VHerculisBodyRub</comment>
+  </data>
+  <data name="VidavantianLace" xml:space="preserve">
+    <value>Stringhe Vidavantiane</value>
+    <comment>Commodity VidavantianLace</comment>
+  </data>
+  <data name="LFTVoidExtractCoffee" xml:space="preserve">
+    <value>Estratto a Vuoto di Caffè</value>
+    <comment>Commodity VoidExtractCoffee</comment>
+  </data>
+  <data name="VolkhabBeeDrones" xml:space="preserve">
+    <value>Fuchi di Volkhab</value>
+    <comment>Commodity VolkhabBeeDrones</comment>
+  </data>
   <data name="Water" xml:space="preserve">
     <value>Acqua</value>
     <comment>Commodity Water</comment>
@@ -938,84 +1373,300 @@
     <value>Depuratori d'acqua</value>
     <comment>Commodity WaterPurifiers</comment>
   </data>
-  
-  
+  <data name="WatersOfShintara" xml:space="preserve">
+    <value>Acque di Shintara</value>
+    <comment>Commodity WatersOfShintara</comment>
+  </data>
+  <data name="WheemeteWheatCakes" xml:space="preserve">
+    <value>Torte di Frumento Wheemeteano</value>
+    <comment>Commodity WheemeteWheatCakes</comment>
+  </data>
   <data name="Wine" xml:space="preserve">
     <value>Vino</value>
     <comment>Commodity Wine</comment>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="WitchhaulKobeBeef" xml:space="preserve">
+    <value>Manzo Kobe di Witchhaul</value>
+    <comment>Commodity WitchhaulKobeBeef</comment>
+  </data>
+  <data name="WolfFesh" xml:space="preserve">
+    <value>Polverina di Lupo</value>
+    <comment>Commodity WolfFesh</comment>
+  </data>
+  <data name="WreckageComponents" xml:space="preserve">
+    <value>Rottami Recuperabili</value>
+    <comment>Commodity WreckageComponents</comment>
+  </data>
+  <data name="WuthieloKuFroth" xml:space="preserve">
+    <value>Schiuma di Wuthielo Ku</value>
+    <comment>Commodity WuthieloKuFroth</comment>
+  </data>
+  <data name="xihecompanions" xml:space="preserve">
+    <value>Animali da Compagnia Biomorfici Xiheani</value>
+    <comment>Commodity xihecompanions</comment>
+  </data>
+  <data name="YasoKondiLeaf" xml:space="preserve">
+    <value>Foglie Yaso Kondiane</value>
+    <comment>Commodity YasoKondiLeaf</comment>
+  </data>
+  <data name="RajukruStoves" xml:space="preserve">
+    <value>Stufe Bruciatutto di Rajukru</value>
+    <comment>Commodity RajukruStoves</comment>
+  </data>
+  <data name="KinagoInstruments" xml:space="preserve">
+    <value>Violino Kinagoense</value>
+    <comment>Commodity KinagoInstruments</comment>
+  </data>
+  <data name="KachiriginLeaches" xml:space="preserve">
+    <value>Sanguisughe Filtranti Kachiriginiane</value>
+    <comment>Commodity KachiriginLeaches</comment>
+  </data>
+  <data name="VanayequiRhinoFur" xml:space="preserve">
+    <value>Pelliccia di Ceratomorfi Vanayequiani</value>
+    <comment>Commodity VanayequiRhinoFur</comment>
+  </data>
+  <data name="ZeesszeAntGlue" xml:space="preserve">
+    <value>Colla di Larve Formicali Zeesszeesi</value>
+    <comment>Commodity ZeesszeAntGlue</comment>
+  </data>
+  <data name="aislingpromotionalmaterials" xml:space="preserve">
+    <value>Materiali per il Programma di Aisling</value>
+    <comment>Commodity aislingpromotionalmaterials</comment>
+  </data>
+  <data name="alliancelegaslativerecords" xml:space="preserve">
+    <value>Compendio Legislativo dell'Alleanza</value>
+    <comment>Commodity alliancelegaslativerecords</comment>
+  </data>
+  <data name="imperialprisoner" xml:space="preserve">
+    <value>Prigionieri Imperiali</value>
+    <comment>Commodity imperialprisoner</comment>
+  </data>
+  <data name="torvaldeeds" xml:space="preserve">
+    <value>Le Azioni di Torval</value>
+    <comment>Commodity torvaldeeds</comment>
+  </data>
+  <data name="aislingmediamaterials" xml:space="preserve">
+    <value>Materiale Mediatico di Aisling</value>
+    <comment>Commodity aislingmediamaterials</comment>
+  </data>
+  <data name="undergroundsupport" xml:space="preserve">
+    <value>Supporto Clandestino di Grom</value>
+    <comment>Commodity undergroundsupport</comment>
+  </data>
+  <data name="torvalcommercialcontracts" xml:space="preserve">
+    <value>Contratti Commerciali di Torval</value>
+    <comment>Commodity torvalcommercialcontracts</comment>
+  </data>
+  <data name="lavignygarisonsupplies" xml:space="preserve">
+    <value>Forniture per le Fortezze di Lavigny</value>
+    <comment>Commodity lavignygarisonsupplies</comment>
+  </data>
+  <data name="lavignycorruptiondossiers" xml:space="preserve">
+    <value>Rapporti di Corruzione di Lavigny</value>
+    <comment>Commodity lavignycorruptiondossiers</comment>
+  </data>
+  <data name="Unknown" xml:space="preserve">
+    <value>Sconosciuto</value>
+    <comment>Commodity Unknown</comment>
+  </data>
+  <data name="AislingMediaResources" xml:space="preserve">
+    <value>Contratti Sigillati di Aisling</value>
+    <comment>Commodity AislingMediaResources</comment>
+  </data>
+  <data name="AllianceLegaslativeContracts" xml:space="preserve">
+    <value>Contratti Legislativi dell'Alleanza</value>
+    <comment>Commodity AllianceLegaslativeContracts</comment>
+  </data>
+  <data name="AllianceTradeAgreements" xml:space="preserve">
+    <value>Accordi Commerciali dell'Alleanza</value>
+    <comment>Commodity AllianceTradeAgreements</comment>
+  </data>
+  <data name="BuckyballBeerMats" xml:space="preserve">
+    <value>Sottobicchieri Buckyball</value>
+    <comment>Commodity BuckyballBeerMats</comment>
+  </data>
+  <data name="CounterCultureSupport" xml:space="preserve">
+    <value>Forniture per i Rivoltosi</value>
+    <comment>Commodity CounterCultureSupport</comment>
+  </data>
+  <data name="FederalAid" xml:space="preserve">
+    <value>Aiuti Federali Liberali</value>
+    <comment>Commodity FederalAid</comment>
+  </data>
+  <data name="FederalTradeContracts" xml:space="preserve">
+    <value>Pacchetti Liberali Federali</value>
+    <comment>Commodity FederalTradeContracts</comment>
+  </data>
+  <data name="GromCounterIntelligence" xml:space="preserve">
+    <value>Controspionaggio di Grom</value>
+    <comment>Commodity GromCounterIntelligence</comment>
+  </data>
+  <data name="GromWarTrophies" xml:space="preserve">
+    <value>Forniture Militari di Yuri Grom</value>
+    <comment>Commodity GromWarTrophies</comment>
+  </data>
+  <data name="HarmaSilverSeaRum" xml:space="preserve">
+    <value>Rum Mare d'Argento Harmaniano</value>
+    <comment>Commodity HarmaSilverSeaRum</comment>
+  </data>
+  <data name="IllicitConsignment" xml:space="preserve">
+    <value>Pacchetti di Contrabbando Kumoani</value>
+    <comment>Commodity IllicitConsignment</comment>
+  </data>
+  <data name="LavignyFieldSupplies" xml:space="preserve">
+    <value>Forniture da Campo di Lavigny</value>
+    <comment>Commodity LavignyFieldSupplies</comment>
+  </data>
+  <data name="LiberalCampaignMaterials" xml:space="preserve">
+    <value>Propaganda Liberale</value>
+    <comment>Commodity LiberalCampaignMaterials</comment>
+  </data>
+  <data name="LoanedArms" xml:space="preserve">
+    <value>Armi Militari Marchiate</value>
+    <comment>Commodity LoanedArms</comment>
+  </data>
+  <data name="MarkedSlaves" xml:space="preserve">
+    <value>Schiavi Marchiati</value>
+    <comment>Commodity MarkedSlaves</comment>
+  </data>
+  <data name="OnionheadDerivatives" xml:space="preserve">
+    <value>Derivati della Testa di Cipolla</value>
+    <comment>Commodity OnionheadDerivatives</comment>
+  </data>
+  <data name="OnionheadSamples" xml:space="preserve">
+    <value>Campioni di Testa di Cipolla</value>
+    <comment>Commodity OnionheadSamples</comment>
+  </data>
+  <data name="OutOfDateGoods" xml:space="preserve">
+    <value>Beni Scaduti</value>
+    <comment>Commodity OutOfDateGoods</comment>
+  </data>
+  <data name="PatreusFieldSupplies" xml:space="preserve">
+    <value>Forniture da Campo di Patreus</value>
+    <comment>Commodity PatreusFieldSupplies</comment>
+  </data>
+  <data name="PatreusGarisonSupplies" xml:space="preserve">
+    <value>Forniture da Fortezza di Patreus</value>
+    <comment>Commodity PatreusGarisonSupplies</comment>
+  </data>
+  <data name="PlatinumAloy" xml:space="preserve">
+    <value>Lega di Platino</value>
+    <comment>Commodity PlatinumAloy</comment>
+  </data>
+  <data name="RepublicanFieldSupplies" xml:space="preserve">
+    <value>Forniture da Campo di Hudson</value>
+    <comment>Commodity RepublicanFieldSupplies</comment>
+  </data>
+  <data name="RepublicanGarisonSupplies" xml:space="preserve">
+    <value>Forniture da Fortezza di Hudson</value>
+    <comment>Commodity RepublicanGarisonSupplies</comment>
+  </data>
+  <data name="RestrictedIntel" xml:space="preserve">
+    <value>Informazioni Riservate di Hudson</value>
+    <comment>Commodity RestrictedIntel</comment>
+  </data>
+  <data name="RestrictedPackage" xml:space="preserve">
+    <value>Pacchetti Riservati del Nucleo</value>
+    <comment>Commodity RestrictedPackage</comment>
+  </data>
+  <data name="SiriusCommercialContracts" xml:space="preserve">
+    <value>Contratti Corporativi di Sirius</value>
+    <comment>Commodity SiriusCommercialContracts</comment>
+  </data>
+  <data name="SiriusFranchisePackage" xml:space="preserve">
+    <value>Pacchetti di Sirius in Franchigia</value>
+    <comment>Commodity SiriusFranchisePackage</comment>
+  </data>
+  <data name="SiriusIndustrialEquipment" xml:space="preserve">
+    <value>Equipaggiamento Industriale di Sirius</value>
+    <comment>Commodity SiriusIndustrialEquipment</comment>
+  </data>
+  <data name="ThargoidScoutTissueSample" xml:space="preserve">
+    <value>Campione di Tessuto di Esploratore Thargoid</value>
+    <comment>Commodity ThargoidScoutTissueSample</comment>
+  </data>
+  <data name="UnmarkedWeapons" xml:space="preserve">
+    <value>Forniture Military non marchiate</value>
+    <comment>Commodity UnmarkedWeapons</comment>
+  </data>
+  <data name="UtopianDissident" xml:space="preserve">
+    <value>Dissidenti Utopiani</value>
+    <comment>Commodity UtopianDissident</comment>
+  </data>
+  <data name="UtopianFieldSupplies" xml:space="preserve">
+    <value>Forniture Utopiane</value>
+    <comment>Commodity UtopianFieldSupplies</comment>
+  </data>
+  <data name="UtopianPublicity" xml:space="preserve">
+    <value>Pubblicità Utopiana</value>
+    <comment>Commodity UtopianPublicity</comment>
+  </data>
+  <data name="PersonalGifts" xml:space="preserve">
+    <value>Doni Personali</value>
+    <comment>Commodity.PersonalGifts</comment>
+  </data>
+  <data name="ShansCharisOrchid" xml:space="preserve">
+    <value>Orchidea Gratitudine di Shan</value>
+    <comment>Commodity ShansCharisOrchid</comment>
+  </data>
   <data name="ancientkey" xml:space="preserve">
     <value>Chiavi Antiche</value>
     <comment>Commodity Ancient Key</comment>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="ThargoidTissueSampleType1" xml:space="preserve">
+    <value>Campione di Tessuto di Ciclope Thargoid</value>
+    <comment>Commodity ThargoidTissueSampleType1</comment>
+  </data>
+  <data name="ThargoidTissueSampleType2" xml:space="preserve">
+    <value>Campione di Tessuto di Basilisco Thargoid</value>
+    <comment>Commodity ThargoidTissueSampleType2</comment>
+  </data>
+  <data name="ThargoidTissueSampleType3" xml:space="preserve">
+    <value>Campione di Tessuto di Medusa Thargoid</value>
+    <comment>Commodity ThargoidTissueSampleType3</comment>
+  </data>
+  <data name="ThargoidTissueSampleType4" xml:space="preserve">
+    <value>Campione di Tessuto di Idra Thargoid</value>
+    <comment>Commodity ThargoidTissueSampleType4</comment>
+  </data>
+  <data name="Nanomedicines" xml:space="preserve">
+    <value>Nanomedicinali</value>
+    <comment>Commodity Nanomedicines</comment>
+  </data>
+  <data name="Rhodplumsite" xml:space="preserve">
+    <value>Rhodplumsite</value>
+    <comment>Commodity Rhodplumsite</comment>
+  </data>
+  <data name="Serendibite" xml:space="preserve">
+    <value>Serendibite</value>
+    <comment>Commodity Serendibite</comment>
+  </data>
+  <data name="Monazite" xml:space="preserve">
+    <value>Monazite</value>
+    <comment>Commodity Monazite</comment>
+  </data>
+  <data name="Musgravite" xml:space="preserve">
+    <value>Magnesiotaaffeite-6N'3S</value>
+    <comment>Commodity Musgravite</comment>
+  </data>
+  <data name="Benitoite" xml:space="preserve">
+    <value>Benitoite</value>
+    <comment>Commodity Benitoite</comment>
+  </data>
+  <data name="Grandidierite" xml:space="preserve">
+    <value>Grandidierite</value>
+    <comment>Commodity Grandidierite</comment>
+  </data>
+  <data name="Alexandrite" xml:space="preserve">
+    <value>Alessandrite</value>
+    <comment>Commodity Alexandrite</comment>
+  </data>
+  <data name="Opal" xml:space="preserve">
+    <value>Opali del Vuoto</value>
+    <comment>Commodity Opal</comment>
+  </data>
+  <data name="UnknownBiologicalMatter" xml:space="preserve">
+    <value>Materiale Biologico Thargoid</value>
+    <comment>Commodity UnknownBiologicalMatter</comment>
+  </data>
 </root>
