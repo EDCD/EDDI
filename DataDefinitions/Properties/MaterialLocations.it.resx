@@ -421,7 +421,10 @@
     <value>Ottenuto dai rottami di Vascelli da Battaglia o in sorgenti di segnale susseguenti a combattimenti.</value>
     <comment>Material location Flawed Focus Crystals</comment>
   </data>
-  
+  <data name="galvanisingalloys" xml:space="preserve">
+    <value>Ottenuto dai rottami di Vascelli da Battaglia o come ricompensa per missioni, specialmente in sistemi sotto elezioni.</value>
+    <comment>Material location Galvanising Alloys</comment>
+  </data>
   <data name="heatdispersionplate" xml:space="preserve">
     <value>Ottenuto dai rottami di Vascelli da Trasporto in sorgenti di segnale, specialmente in sistemi con economia rampante o come ricompensa per missioni</value>
     <comment>Material location Heat Dispersion Plate</comment>
@@ -430,12 +433,18 @@
     <value>Ottenuto dai rottami di Autorità di sistema e/o Vascelli da Battaglia.</value>
     <comment>Material location heatresistantceramics</comment>
   </data>
-  
+  <data name="hybridcapacitors" xml:space="preserve">
+    <value>Ottenuto dai rottami di grandi Vascelli da Battaglia, tipicamente Anaconda o Federal Corvette o come ricompensa per missioni.</value>
+    <comment>Material location Hybrid Capacitors</comment>
+  </data>
   <data name="mechanicalequipment" xml:space="preserve">
     <value>Ottenuto dai rottami di Vascelli da Trasporto, specialmente in sistemi con economia rampante</value>
     <comment>Material location Mechanical Equipment</comment>
   </data>
-  
+  <data name="shieldemitters" xml:space="preserve">
+    <value>Ottenuto dai rottami di Vascelli da Battaglia o in sorgenti di segnale, specialmente in sistemi con economia rampante.</value>
+    <comment>Material location Shield Emitters</comment>
+  </data>
   <data name="unknowncarapace" xml:space="preserve">
     <value>Ottenuto dai misteriosi artefatti di superficie della specie Aliena nota come i Thargoid.</value>
     <comment>Material location Thargoid Carapace</comment>
@@ -452,12 +461,18 @@
     <value>Ottenuto dai rottami di Autorità di sistema e/o Vascelli da Battaglia o da sorgenti di emissione degradate in sistemi anarchici vicini a sistemi popolati.</value>
     <comment>Material location Electrochemical Arrays</comment>
   </data>
-  
+  <data name="focuscrystals" xml:space="preserve">
+    <value>Ottenuto dai rottami di Vascelli da Battaglia, specialmente in sistemi ad elevato livello di sicurezza.</value>
+    <comment>Material location Focus Crystals</comment>
+  </data>
   <data name="heatexchangers" xml:space="preserve">
     <value>Ottenuto dai rottami di Vascelli da Trasporto, specialmente in sistemi anarchici vicini a sistemi popolati</value>
     <comment>Material location Heat Exchangers</comment>
   </data>
-  
+  <data name="highdensitycomposites" xml:space="preserve">
+    <value>Ottenuto dai rottami di grandi Vascelli da Battaglia, tipicamente Anaconda o Federal Corvette. Sono disponibili anche a Dav's Hope.</value>
+    <comment>Material location High Density Composites</comment>
+  </data>
   <data name="mechanicalcomponents" xml:space="preserve">
     <value>Ottenuto dai rottami di Vascelli da Trasporto, specialmente in sistemi a basso livello di sicurezza. Sono disponibili anche a Dav's Hope.</value>
     <comment>Material location Mechanical Components</comment>
