@@ -50,9 +50,8 @@ namespace EddiDataProviderService
                         body.systemname = starSystem.systemname;
                         body.systemAddress = starSystem.systemAddress;
                         body.systemEDDBID = starSystem.EDDBID;
-                        starSystem.AddBody(body);
                     }
-                    starSystem.SortBodiesByID();
+                    starSystem.AddBodies(bodies);
                 }
 
                 if (starSystem?.population > 0)

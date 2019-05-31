@@ -1943,7 +1943,6 @@ namespace Eddi
                         CurrentStarSystem.UpdateBodyAt(index, theEvent.star);
                     }
                 }
-                CurrentStarSystem.SortBodiesByID();
 
                 Logging.Debug("Saving data for scanned star " + theEvent.star.bodyname);
                 StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
@@ -1979,7 +1978,6 @@ namespace Eddi
                         return false;
                     }
                 }
-                CurrentStarSystem.SortBodiesByID();
 
                 // Update the system reserve level, when appropriate
                 if (theEvent.body.reserveLevel != ReserveLevel.None)
