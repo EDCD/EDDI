@@ -222,7 +222,7 @@
     <comment>Material location Anomalous Bulk Scan Data</comment>
   </data>
   <data name="disruptedwakeechoes" xml:space="preserve">
-    <value>Ottenuto dalla scansione di Scie verso Iperspazio o come Ricompensa per Missioni, specialmente in sistemi con economia rampante</value>
+    <value>Ottenuto dalla scansione di Scie verso Iperspazio o come ricompensa per Missioni, specialmente in sistemi con economie rampanti</value>
     <comment>Material location Atypical Disrupted Wake Echoes</comment>
   </data>
   <data name="shieldcyclerecordings" xml:space="preserve">
@@ -233,32 +233,110 @@
     <value>Ottenuto dalla scansione di Vascelli da Trasporto, Sorgenti di segnali o come ricompensa per Missioni</value>
     <comment>Material location Exceptional Scrambled Emission Data</comment>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="legacyfirmware" xml:space="preserve">
+    <value>Ottenuto dalla scansione di Centri trasmissione Dati in Superficie, Satelliti in orbita attorno ad Installazioni o analoghi terrestri e come ricompensa per Missioni</value>
+    <comment>Material location Specialised Legacy Firmware</comment>
+  </data>
+  <data name="encryptedfiles" xml:space="preserve">
+    <value>Ottenuto da Sorgenti di Segnali, anche di superficie, o come ricompensa per Missioni. Tendono ad essere più comuni in sistemi con Economia Rampante</value>
+    <comment>Material location Unusual Encrypted Files</comment>
+  </data>
+  <data name="ancienthistoricaldata" xml:space="preserve">
+    <value>Ottenuto dalla scansione delle Antiche Rovine della specie Aliena nota come i Guardiani</value>
+    <comment>Material location Pattern Gamma Obelisk Data</comment>
+  </data>
+  <data name="fsdtelemetry" xml:space="preserve">
+    <value>Ottenuto dalla scansione di Scie verso Iperspazio o come ricompensa per Missioni</value>
+    <comment>Material location Anomalous FSD Telemetry</comment>
+  </data>
+  <data name="shieldsoakanalysis" xml:space="preserve">
+    <value>Ottenuto dalla scansione di Vascelli da Trasporto o come ricompensa per Missioni, specialmente in Sistemi con Economia Rampante</value>
+    <comment>Material location Inconsistent Shield Soak Analysis</comment>
+  </data>
+  <data name="archivedemissiondata" xml:space="preserve">
+    <value>Ottenuto da Sorgenti di Segnali o come ricompensa per missioni, specialmente in sistemi con economie rampanti</value>
+    <comment>Material location Irregular Emission Data</comment>
+  </data>
+  <data name="consumerfirmware" xml:space="preserve">
+    <value>Ottenuto dalla scansione di Collegamenti Dati in basi di superficie o dalla scansione di radiofari privati in sorgenti di segnali codificate e/o come ricompensa per missioni in sistemi che siano sotto elezioni o in guerra civile</value>
+    <comment>Material location Modified Consumer Firmware</comment>
+  </data>
+  <data name="encryptioncodes" xml:space="preserve">
+    <value>Ottenuto dalla scansione di Centri trasmissione Dati in Superficie, Satelliti in orbita attorno ad Installazioni o analoghi terrestri e come ricompensa per Missioni, specialmente in sistemi con economia rampante</value>
+    <comment>Material location Tagged Encryption Codes</comment>
+  </data>
+  <data name="scanarchives" xml:space="preserve">
+    <value>Ottenuto dalla scansione di Vascelli da Trasporto specialmente in Sistemi con Economia Rampante</value>
+    <comment>Material location Unidentified Scan Archives</comment>
+  </data>
+  <data name="ancientculturaldata" xml:space="preserve">
+    <value>Ottenuto dalle Antiche Rovine della specie Aliena nota come i Guardiani</value>
+    <comment>Material location Pattern Beta Obelisk Data</comment>
+  </data>
+  <data name="tg_structuraldata" xml:space="preserve">
+    <value>Ottenuto dai misteriosi artefatti di superficie della specie Aliena nota come i Thargoid</value>
+    <comment>Material location Thargoid Structural Data</comment>
+  </data>
+  <data name="scandatabanks" xml:space="preserve">
+    <value>Ottenuto dalla scansione di Vascelli da Trasporto Grandi, tipicamente Tipo-7 e Tipo-9, e dalla scansione di Collegamenti Dati in basi di superficie</value>
+    <comment>Material location Classified Scan Databanks</comment>
+  </data>
+  <data name="industrialfirmware" xml:space="preserve">
+    <value>Ottenuto dalla scansione di Collegamenti Dati in basi di superficie o come ricompensa per missioni</value>
+    <comment>Material location Cracked Industrial Firmware</comment>
+  </data>
+  <data name="symmetrickeys" xml:space="preserve">
+    <value>Ottenuto dalla scansione di Collegamenti Dati in basi di superficie o in Sorgenti di Segnale o come ricompensa per missioni</value>
+    <comment>Material location Open Symmetric Keys</comment>
+  </data>
+  <data name="wakesolutions" xml:space="preserve">
+    <value>Ottenuto dalla scansione di Scie verso Iperspazio o come ricompensa per Missioni, specialmente in sistemi con economie rampanti</value>
+    <comment>Material location Strange Wake Solutions</comment>
+  </data>
+  <data name="emissiondata" xml:space="preserve">
+    <value>Ottenuto dalla scansione di Vascelli da Battaglia o in Sorgenti di Segnale specialmente in sistemi con economia rampante o sotto elezioni</value>
+    <comment>Material location Unexpected Emission Data</comment>
+  </data>
+  <data name="shielddensityreports" xml:space="preserve">
+    <value>Ottenuto dalla scansione di Vascelli da Battaglia</value>
+    <comment>Material location Untypical Shield Scans</comment>
+  </data>
+  <data name="ancientbiologicaldata" xml:space="preserve">
+    <value>Ottenuto dalle Antiche Rovine della specie Aliena nota come i Guardiani</value>
+    <comment>Material location Pattern Alpha Obelisk Data</comment>
+  </data>
+  <data name="tg_compositiondata" xml:space="preserve">
+    <value>Ottenuto dai misteriosi artefatti di superficie della specie Aliena nota come i Thargoid</value>
+    <comment>Material location Thargoid Material Composition Data</comment>
+  </data>
+  <data name="unknownshipsignature" xml:space="preserve">
+    <value>Ottenuto dai misteriosi artefatti di superficie della specie Aliena nota come i Thargoid o dalla scansione di Vascelli Thargoid</value>
+    <comment>Material location Thargoid Ship Signature</comment>
+  </data>
+  <data name="shieldpatternanalysis" xml:space="preserve">
+    <value>Ottenuto dalla scansione di Autorità di sistema e/o Vascelli da Battaglia o come ricompensa per missioni, specialmente in sistemi con economia rampante</value>
+    <comment>Material location Aberrant Shield Pattern Analysis</comment>
+  </data>
+  <data name="encryptionarchives" xml:space="preserve">
+    <value>Ottenuto dalla scansione di Collegamenti Dati in basi superficiali</value>
+    <comment>Material location Atypical Encryption Archives</comment>
+  </data>
+  <data name="decodedemissiondata" xml:space="preserve">
+    <value>Ottenuto dalla scansione di Autorità di sistema o come ricompensa per missioni</value>
+    <comment>Material location Decoded Emission Data</comment>
+  </data>
+  <data name="encodedscandata" xml:space="preserve">
+    <value>Ottenuto dalla scansione di Collegamenti Dati in basi superficiali o come ricompensa per missioni</value>
+    <comment>Material location Divergent Scan Data</comment>
+  </data>
+  <data name="hyperspacetrajectories" xml:space="preserve">
+    <value>Ottenuto dalla scansione di Scie verso Iperspazio</value>
+    <comment>Material location Eccentric Hyperspace Trajectories</comment>
+  </data>
+  <data name="securityfirmware" xml:space="preserve">
+    <value>Ottenuto dalla scansione di Collegamenti Dati in basi di superficie o come ricompensa per missioni</value>
+    <comment>Material location Security Firmware Patch</comment>
+  </data>
   
   
   
