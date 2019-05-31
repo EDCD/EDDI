@@ -52,7 +52,7 @@ namespace EddiDataProviderService
                         body.systemEDDBID = starSystem.EDDBID;
                         starSystem.bodies.Add(body);
                     }
-                    starSystem.bodies = starSystem.bodies.OrderBy(b => b.bodyId).ToList();
+                    starSystem.SortBodiesByID();
                 }
 
                 if (starSystem?.population > 0)

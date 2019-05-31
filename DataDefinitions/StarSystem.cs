@@ -45,6 +45,12 @@ namespace EddiDataDefinitions
             }
         }
 
+        public void SortBodiesByID()
+        {
+            ImmutableList<Body> newBodies = bodies.Sort((lhs, rhs) => (int)(lhs.bodyId - rhs.bodyId));
+            bodies = newBodies;
+        }
+
         public void AddBody(Body body)
         {
             ImmutableList<Body> newBodies = bodies.Add(body);

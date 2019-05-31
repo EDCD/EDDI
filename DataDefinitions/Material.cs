@@ -255,7 +255,7 @@ namespace EddiDataDefinitions
             return result;
         }
 
-        public static Body highestPercentBody(string materialEdName, List<Body> bodies)
+        public static Body highestPercentBody(string materialEdName, IList<Body> bodies)
         {
             Body bestBody = null;
             decimal percentage = 0;

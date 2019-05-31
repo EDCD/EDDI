@@ -132,7 +132,7 @@ namespace UnitTests
 
             // Add a body with green materials and re-test
             StarSystem starSystem = new StarSystem() { systemname = "testSystem" };
-            starSystem.bodies.Add(jumponiumBody);
+            starSystem.AddBody(jumponiumBody);
             Assert.IsTrue(starSystem.isgreen, "green system should be green");
             Assert.IsFalse(starSystem.isgold, "green system should be gold");
         }
@@ -154,7 +154,7 @@ namespace UnitTests
 
             // Add a body with gold materials and re-test
             StarSystem starSystem = new StarSystem() { systemname = "testSystem" };
-            starSystem.bodies.Add(goldBody);
+            starSystem.AddBody(goldBody);
             Assert.IsTrue(starSystem.isgreen, "gold system should be green");
             Assert.IsTrue(starSystem.isgold, "gold system should be gold");
         }

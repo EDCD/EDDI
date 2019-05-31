@@ -1940,10 +1940,10 @@ namespace Eddi
                     int index = CurrentStarSystem.bodies.IndexOf(star);
                     if (index != -1)
                     {
-                        CurrentStarSystem.bodies[index] = theEvent.star;
+                        CurrentStarSystem.AddBody(theEvent.star);
                     }
                 }
-                CurrentStarSystem.bodies = CurrentStarSystem.bodies.OrderBy(s => s.bodyId).ToList();
+                CurrentStarSystem.SortBodiesByID();
 
                 Logging.Debug("Saving data for scanned star " + theEvent.star.bodyname);
                 StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
@@ -1970,7 +1970,7 @@ namespace Eddi
                         if (index != -1)
                         {
                             // Update our body with the scan data.
-                            CurrentStarSystem.bodies[index] = theEvent.body;
+                            CurrentStarSystem.AddBody(theEvent.body);
                         }
                     }
                     else
@@ -1979,7 +1979,7 @@ namespace Eddi
                         return false;
                     }
                 }
-                CurrentStarSystem.bodies = CurrentStarSystem.bodies.OrderBy(b => b.bodyId).ToList();
+                CurrentStarSystem.SortBodiesByID();
 
                 // Update the system reserve level, when appropriate
                 if (theEvent.body.reserveLevel != ReserveLevel.None)
