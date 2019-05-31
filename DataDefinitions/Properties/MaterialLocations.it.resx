@@ -365,7 +365,10 @@
     <value>Ottenuto dalla scansione Collegamenti Dati in basi di superficie, dalla scansione di Autorità di sistema e/o Vascelli da Battaglia o come ricompensa per missioni, specialmente in sistemi con economia rampante.</value>
     <comment>Material location Classified Scan Fragment</comment>
   </data>
-  
+  <data name="dataminedwake" xml:space="preserve">
+    <value>Ottenuto dalla scansione di Scie verso Iperspazio e di radiofari di dati codificati o come ricompensa per Missioni.</value>
+    <comment>Material location Datamined Wake Exceptions</comment>
+  </data>
   
   
   <data name="basicconductors" xml:space="preserve">
@@ -477,12 +480,18 @@
     <value>Ottenuto dai rottami di Vascelli da Trasporto, specialmente in sistemi a basso livello di sicurezza. Sono disponibili anche a Dav's Hope.</value>
     <comment>Material location Mechanical Components</comment>
   </data>
-  
+  <data name="phasealloys" xml:space="preserve">
+    <value>Ottenuto dai rottami di Vascelli da Battaglia o in sorgenti di segnale in sistemi con economia rampante.</value>
+    <comment>Material location Phase Alloys</comment>
+  </data>
   <data name="precipitatedalloys" xml:space="preserve">
     <value>Ottenuto dai rottami di Autorità di sistema e/o Vascelli da Battaglia o come ricompensa per missioni.</value>
     <comment>Material location Precipitated Alloys</comment>
   </data>
-  
+  <data name="shieldingsensors" xml:space="preserve">
+    <value>Ottenuto dai rottami di Vascelli da Battaglia o come ricompensa per missioni.</value>
+    <comment>Material location Shielding Sensors</comment>
+  </data>
   <data name="unknownenergycell" xml:space="preserve">
     <value>Ottenuto dai misteriosi artefatti di superficie della specie Aliena nota come i Thargoid.</value>
     <comment>Material location Thargoid Energy Cell</comment>
@@ -491,7 +500,10 @@
     <value>Ottenuto dai rottami di Vascelli da Trasporto Grandi, tipicamente Tipo-7 e Tipo-9, specialmente in sistemi anarchici o che soffrano di epidemie. Sono disponibili anche a Dav's Hope.</value>
     <comment>Material location Chemical Manipulators</comment>
   </data>
-  
+  <data name="compoundshielding" xml:space="preserve">
+    <value>Ottenuto dai rottami di grandi Vascelli da Battaglia o come ricompensa per missioni e da sorgenti di emissioni codificate, specialmente in sistemi con livello di sicurezza elevato, sistemi con economia rampante e sistemi in cerca di ritirarsi e consolidare il potere. Sono ache disponibili a Dav's Hope.</value>
+    <comment>Material location Compound Shielding</comment>
+  </data>
   <data name="conductivepolymers" xml:space="preserve">
     <value>Ottenuto dai rottami di Grandi Vascelli da Trasporto merci e passeggeri, come Tipo-9 e Beluga, da sorgenti di segnale di superficie e come ricompensa per missioni. Sono disponibili anche a Dav's Hope.</value>
     <comment>Material location Conductive Polymers</comment>
@@ -510,15 +522,27 @@
   </data>
   
   
-  
-  
+  <data name="refinedfocuscrystals" xml:space="preserve">
+    <value>Ottenuto dai rottami in sorgenti di segnale con combattimenti attivi o come ricompensa per missioni.</value>
+    <comment>Material location Refined Focus Crystals</comment>
+  </data>
+  <data name="thermicalloys" xml:space="preserve">
+    <value>Ottenuto dai rottami di grandi Vascelli da Battaglia o come ricompensa per missioni.</value>
+    <comment>Material location Thermic Alloys</comment>
+  </data>
   <data name="unknowntechnologycomponents" xml:space="preserve">
     <value>Ottenuto dai misteriosi artefatti di superficie della specie Aliena nota come i Thargoid.</value>
     <comment>Material location Thargoid Technological Components</comment>
   </data>
   
-  
-  
+  <data name="fedcorecomposites" xml:space="preserve">
+    <value>Ottenuto da sorgenti di segnale di grado elevato in sistemi sotto controllo Federale o dai rottami di Vascelli da combattimento Federali.</value>
+    <comment>Material location Core Dynamics Composites</comment>
+  </data>
+  <data name="exquisitefocuscrystals" xml:space="preserve">
+    <value>Ottenuto dai rottami di grandi Vascelli da Battaglia o come ricompensa per missioni, specialmente in sistemi con economia rampante.</value>
+    <comment>Material location Exquisite Focus Crystals</comment>
+  </data>
   
   
   
