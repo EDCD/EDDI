@@ -19,7 +19,7 @@ namespace EddiDataDefinitions.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class Modules {
@@ -84,6 +84,15 @@ namespace EddiDataDefinitions.Properties {
         public static string AdvancedDockingComputer {
             get {
                 return ResourceManager.GetString("AdvancedDockingComputer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Advanced Multi-Cannon.
+        /// </summary>
+        public static string AdvancedMultiCannon {
+            get {
+                return ResourceManager.GetString("AdvancedMultiCannon", resourceCulture);
             }
         }
         
@@ -723,15 +732,6 @@ namespace EddiDataDefinitions.Properties {
         public static string Multi_Cannon {
             get {
                 return ResourceManager.GetString("Multi_Cannon", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Multi-Cannon.
-        /// </summary>
-        public static string Multicannon {
-            get {
-                return ResourceManager.GetString("Multicannon", resourceCulture);
             }
         }
         
