@@ -138,7 +138,7 @@ namespace UnitTests
             Assert.IsNotNull(starSystem.stations.Count);
             Assert.IsNotNull(starSystem);
             Assert.IsNotNull(starSystem.bodies);
-            Assert.IsFalse(starSystem.bodies.Count == 0);
+            Assert.AreNotEqual(0, starSystem.bodies.Count);
         }
 
         [TestMethod]
