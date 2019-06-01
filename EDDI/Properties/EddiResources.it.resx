@@ -197,20 +197,57 @@
   <data name="update_server_unreachable" xml:space="preserve">
     <value>Impossibile connettersi al server per l'aggiornamento. Qualora riaccadesse si prega di controllare il forum per appurare se sia un problema noto.</value>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="already_running_alert_body_text" xml:space="preserve">
+    <value>E' consentita una soloa istanza di EDDI alla volta.
+Si prega di chiudere l'altra istanza e riprovare.</value>
+  </data>
+  <data name="already_running_alert_title" xml:space="preserve">
+    <value>EDDI è già avviato</value>
+  </data>
+  <data name="problem_load_monitor" xml:space="preserve">
+    <value>Caricamento controllore: {0} , fallito</value>
+    <comment>Weapon mount type problem_load_monitor</comment>
+  </data>
+  <data name="problem_load_monitor_file" xml:space="preserve">
+    <value>Caricamento controllore fallito. Si prega di assicurarsi che {0} non sia su una rete in condivisione o esso stesso condiviso.</value>
+    <comment>Weapon mount type problem_load_monitor_file</comment>
+  </data>
+  <data name="Commander" xml:space="preserve">
+    <value>Comandante</value>
+    <comment>Vocative form of "Commander"</comment>
+  </data>
+  <data name="system_language" xml:space="preserve">
+    <value>Automatico</value>
+    <comment>The user's system language</comment>
+  </data>
+  <data name="safe_mode" xml:space="preserve">
+    <value>Modalità sicura - Aggiornamento necessario.</value>
+  </data>
+  <data name="login" xml:space="preserve">
+    <value>Connessione</value>
+  </data>
+  <data name="frontier_api_cant_login_from_va" xml:space="preserve">
+    <value>Per effettuare la connessione si prega di chiudere VoiceAttack e avviare EDDI come applicazione singola.</value>
+  </data>
+  <data name="frontierApiStatusLabel" xml:space="preserve">
+    <value>Stato della Chiave API Frontier:</value>
+  </data>
+  <data name="frontierApiConnected" xml:space="preserve">
+    <value>Connesso</value>
+  </data>
+  <data name="frontierApiNotConnected" xml:space="preserve">
+    <value>Non Connesso</value>
+  </data>
+  <data name="frontierApiConnecting" xml:space="preserve">
+    <value>In Connessione</value>
+  </data>
+  <data name="frontier_api_close_browser" xml:space="preserve">
+    <value>Si può adesso chiudere la finestra di browser e tornare ad EDDI.</value>
+  </data>
+  <data name="frontier_api_reset" xml:space="preserve">
+    <value>Connessione ristabilita.</value>
+  </data>
+  <data name="frontier_api_please_authenticate" xml:space="preserve">
+    <value>Si prega di autenticare la connessione di EDDI alla Chiave API Frontier.</value>
+  </data>
 </root>
