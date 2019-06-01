@@ -169,8 +169,12 @@
   <data name="tab_frontier_reset_desc" xml:space="preserve">
     <value>Se si riscontrassero problemi con la connessione è possibile reimpostarla e riconnettersi nuovamente. Questo dovrebbe eliminare tali problemi.</value>
   </data>
-  
-  
+  <data name="tab_tts_desc" xml:space="preserve">
+    <value>EDDI utilizza il proprio sintetizzatore vocale che processa la voce rispettando determinate caratteristiche come i danni patiti dalla nave in uso al momento e la dimensione della sua cabina di guida. Qui è possibile modificare i vari parametri vocali.</value>
+  </data>
+  <data name="tab_tts_distort_label" xml:space="preserve">
+    <value>Degrada la voce in base ai danni subiti dalla nave:</value>
+  </data>
   <data name="tab_tts_header" xml:space="preserve">
     <value>Sintesi vocale</value>
   </data>
