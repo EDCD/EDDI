@@ -134,7 +134,7 @@ namespace UnitTests
             StarSystem starSystem = new StarSystem() { systemname = "testSystem" };
             starSystem.AddBody(jumponiumBody);
             Assert.IsTrue(starSystem.isgreen, "green system should be green");
-            Assert.IsFalse(starSystem.isgold, "green system should be gold");
+            Assert.IsFalse(starSystem.isgold, "green system should not be gold");
         }
 
         [TestMethod]
