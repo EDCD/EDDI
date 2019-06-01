@@ -123,18 +123,43 @@
   <data name="EDDI_status_label" xml:space="preserve">
     <value>Situazione di EDDI: </value>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="paragraph_0" xml:space="preserve">
+    <value>presenta diverse caratteristiche che possono essere configurate separatamente. Ci sono tre diversi tipi di oggetti.</value>
+  </data>
+  <data name="paragraph_1" xml:space="preserve">
+    <value>Il primo gruppo riceve e gestisce le informazioni di base utilizzate da EDDI. Le schede relative sono: i 'Dettagli relativi al Comandante', la 'Chiave API di Frontier' e la 'Sintesi Vocale'. Occorre aprire ognuna di queste schede e configurarla così che EDDI abbia accesso completo alle informazioni di Elite: Dangerous.</value>
+  </data>
+  <data name="paragraph_2" xml:space="preserve">
+    <value>Il secondo gruppo riceve informazioni riguardanti gli eventi. Le schede di questo gruppo sono riconoscibili in quanto terminano con 'Monitor'. Esse ricevono dati ed eventi da diverse sorgenti e richiedono una configurazione minima ma necessaria prima di poter funzionare.</value>
+  </data>
+  <data name="paragraph_3" xml:space="preserve">
+    <value>Il terzo gruppo reagisce agli eventi. Ne fanno parte le schede che contengono la parola 'Assistente'. Queste ultime presentano svariati livelli di configurazione ma sono già funzionanti di default.</value>
+  </data>
+  <data name="paragraph_4" xml:space="preserve">
+    <value>Puoi informarti meglio su come EDDI funziona sul</value>
+  </data>
+  <data name="report_issue" xml:space="preserve">
+    <value>Riporta un problema</value>
+  </data>
+  <data name="troubleshoot_common_issues" xml:space="preserve">
+    <value>Risoluzione dei Problemi più comuni</value>
+    <comment>A hyperlink to the troubleshooting URL (in english)</comment>
+  </data>
+  <data name="verbose_logging_checkbox" xml:space="preserve">
+    <value>Abilita connessione dettagliata (solo nel caso in cui questa sia stata richiesta dagli sviluppatori di EDDI)</value>
+  </data>
+  <data name="verbose_logging_desc" xml:space="preserve">
+    <value>Se la connessione dettagliata è abilitata verrà creato sul desktop un archivio .zip della connessione. questo archivio andrà incollato nel rapporto di problema su GitHub. Tale archivio non contiene alcuna informazione che consenta l'identificazione personale.</value>
+  </data>
+  <data name="version_hyperlink" xml:space="preserve">
+    <value>Versione:</value>
+  </data>
+  <data name="wiki_hyperlink" xml:space="preserve">
+    <value>progetto Wiki</value>
+  </data>
+  <data name="choose_lang_label" xml:space="preserve">
+    <value>Seleziona la lingua di EDDI (richiede il riavvio dell'applicazione):</value>
+  </data>
   
   
   
