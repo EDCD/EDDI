@@ -154,7 +154,7 @@
     <value>Internationales Phonetisches Alphabet</value>
   </data>
   <data name="name" xml:space="preserve">
-    <value>Schiff-Überwachung</value>
+    <value>! Überwachung Schiff</value>
   </data>
   <data name="p1" xml:space="preserve">
     <value>Dies erlaubt Ihnen Ihre Schiffe zu sehen und ihnen individuelle Rollen zuweisen. Die Informationen werden "Antwort"-Gebern zur Verfügung gestellt und in Skripten zur Anpassung von Aktionen verwendet.</value>
