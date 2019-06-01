@@ -160,9 +160,15 @@
   <data name="choose_lang_label" xml:space="preserve">
     <value>Seleziona la lingua di EDDI (richiede il riavvio dell'applicazione):</value>
   </data>
-  
-  
-  
+  <data name="tab_frontier_desc" xml:space="preserve">
+    <value>Frontier ha una chiave API che permette ad EDDI di ricevere informazioni riguardanti la tua nave, il mercato della stazione corrente e numerosi altri dati. Questi dati non vengono messi a disposizione altrove. Se si desidera che EDDI ottenga tali informazioni è necessario cliccare sul bottone 'Login' e concedere ad EDDI l'autorizzazione ad accedere a questi dati sui server di Frontier.</value>
+  </data>
+  <data name="tab_frontier_header" xml:space="preserve">
+    <value>Chiave API di Frontier</value>
+  </data>
+  <data name="tab_frontier_reset_desc" xml:space="preserve">
+    <value>Se si riscontrassero problemi con la connessione è possibile reimpostarla e riconnettersi nuovamente. Questo dovrebbe eliminare tali problemi.</value>
+  </data>
   
   
   <data name="tab_tts_header" xml:space="preserve">
