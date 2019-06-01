@@ -2,6 +2,10 @@
 
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
+### Development
+  * Speech responder
+    * Revised the `Body report summary script` script to resolve a couple of minor bugs.
+
 ### 3.4.1-b2
   * Core
     * Reconfigured the installer to improve backwards compatibility between EDDI versions
