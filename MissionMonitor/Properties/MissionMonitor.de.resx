@@ -157,7 +157,7 @@
     <value>Informationen zum Fortschritt Ihren Missionen.</value>
   </data>
   <data name="mission_monitor_name" xml:space="preserve">
-    <value>! Überwachung Aufträge</value>
+    <value># Überwachung Aufträge</value>
   </data>
   <data name="next_route_button" xml:space="preserve">
     <value>Nächstes Ziel</value>
