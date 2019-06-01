@@ -144,7 +144,9 @@
   <data name="new_watch" xml:space="preserve">
     <value>Nuovo Controllo</value>
   </data>
-  
+  <data name="p1" xml:space="preserve">
+    <value>E' possibile creare, modificare e cancellare i Controlli qui sotto. Quando EDDI riceve informazioni riguardanti un cambiamento da qualche parte nella galassia, esso lo compara con ognuno dei Controlli attivi e, se le informazioni soddisfano tutti i criteri selezionati per un determinato Controllo, EDDI avvierà un 'Evento'. Si fa notare però che le informazioni vengono raccolte da EDDN il quale, a sua volta, le riceve da Comandanti che utilizzino programmi come EDDI, per cui riporterà solamente informazioni di cui la rete sia a conoscenza.</value>
+  </data>
   <data name="state_header" xml:space="preserve">
     <value>Stato</value>
   </data>
