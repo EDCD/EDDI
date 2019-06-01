@@ -1538,6 +1538,7 @@ namespace Eddi
                 CurrentStellarBody = new Body()
                 {
                     bodyname = theEvent.star,
+                    bodyId = 0,
                     bodyType = BodyType.FromEDName("Star"),
                     stellarclass = LastFSDEngagedEvent?.stellarclass,
                 };
