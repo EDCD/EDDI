@@ -133,7 +133,7 @@
     <value>Informationen zu Ihrem Strafregister.</value>
   </data>
   <data name="crime_monitor_name" xml:space="preserve">
-    <value>Verbrechens-Überwachung</value>
+    <value>! Überwachung Verbrechen</value>
   </data>
   <data name="find_button" xml:space="preserve">
     <value>Legale Einrichtungen finden</value>
