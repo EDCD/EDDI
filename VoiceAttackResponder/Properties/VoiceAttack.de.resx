@@ -145,6 +145,6 @@
     <value>auf der EDDI-Hauptseite</value>
   </data>
   <data name="run_eddi_standalone" xml:space="preserve">
-    <value>Bitte beenden Sie VoiceAttack und führen Sie Eddi eigenständig aus, um ein Upgrade durchzuführen.</value>
+    <value>Bitte beenden Sie VoiceAttack und führen Sie EDDI eigenständig aus, um ein Upgrade durchzuführen.</value>
   </data>
 </root>
