@@ -101,6 +101,6 @@
     <value>Überwacht das Elite:Dangerous 'journal.log für die meisten Ereignisse. Dies sollte nicht deaktiviert werden, es sei denn, Du bist Dir sicher und weißt was Du tust. Durch das Deaktivieren werden viele Funktionen in EDDI nicht mehr funktionieren</value>
   </data>
   <data name="name" xml:space="preserve">
-    <value>Journal-Überwachung</value>
+    <value>! Überwachung Journal</value>
   </data>
 </root>
