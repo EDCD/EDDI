@@ -118,10 +118,10 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="desc" xml:space="preserve">
-    <value>Ein "Antwort"-Geber (responder), der innerhalb von VoiceAttack eine große Anzahl von Variablen erzeugt und benutzerdefinierte Aktionen auslöst.</value>
+    <value>Ein Programmteil (_Info an...), das innerhalb von VoiceAttack eine große Anzahl von Variablen erzeugt und benutzerdefinierte Aktionen auslöst.</value>
   </data>
   <data name="name" xml:space="preserve">
-    <value>Info an VoiceAttack</value>
+    <value>_Info an VoiceAttack</value>
   </data>
   <data name="p1" xml:space="preserve">
     <value>Um EDDI in VoiceAttack zu integrieren, muss EDDI im VoiceAttack-Verzeichnis "Apps" installiert werden. Der Standardpfad hierfür lautet 'C: \ Programme (x86) \ VoiceAttack \ Apps'. Dies passiert bei der Standartinstallation von EDDI.</value>
