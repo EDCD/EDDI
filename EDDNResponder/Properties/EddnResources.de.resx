@@ -121,7 +121,7 @@
     <value>Sendet Stations-, Sprung- und Scaninformation an EDDN. EDDN ist ein Drittanbieter-Tool, dass Informationen über Sonnensysteme und Marktpreise sammelt und diese für die meisten Handelstools und Sternenkataloge, wie zum Beispiel EDDB, zur Verfügung stellt.</value>
   </data>
   <data name="name" xml:space="preserve">
-    <value>Info an EDDN</value>
+    <value>_Info an EDDN</value>
   </data>
   <data name="errPosition" xml:space="preserve">
     <value>Entschuldigung, Commander: Ich habe den Überblick verloren und möchte, dass Sie Ihre Position mit einem High-Wake oder einem Re-Login wiederherstellen, bevor ich mit dem Hochladen der Erkundungsdaten fortfahren kann.</value>
