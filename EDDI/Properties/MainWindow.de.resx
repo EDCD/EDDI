@@ -130,10 +130,10 @@
     <value>Die erste Gruppe enthält und verwaltet Basisinformationen, die von EDDI verwendet werden. Dazu gehören die Registerkarten 'Commander Details', 'Frontier API' und 'Text-to-Speech'. Sie sollten diese durchgehen und so konfigurieren, dass EDDI vollen Zugriff auf Ihr ELITE hat. Achtung: Sicherheitsrelevante Informationen.</value>
   </data>
   <data name="paragraph_2" xml:space="preserve">
-    <value>Die zweite Gruppe enthält Ereignisinformationen. Dies sind die Registerkarten, die mit "-Überwachung" enden. Sie erhalten Ereignisse von verschiedenen Orten und benötigen nur eine minimale Konfiguration, müssen aber abgeschlossen sein, bevor sie funktionieren.</value>
+    <value>Die zweite Gruppe enthält Ereignisinformationen. Dies sind die Registerkarten, die mit "! Überwachung" beginnen. Sie erhalten Ereignisse von verschiedenen Orten und benötigen nur eine minimale Konfiguration, müssen aber abgeschlossen sein, bevor sie funktionieren.</value>
   </data>
   <data name="paragraph_3" xml:space="preserve">
-    <value>Die dritte Gruppe reagiert auf Ereignisse (Reiterkarte mit "Info an ..." bzw. "Antwort auf ..."). Diese haben unterschiedliche Ausbaustufen, funktionieren aber sofort.</value>
+    <value>Die dritte Gruppe reagiert auf Ereignisse (Reiterkarte mit "_Info an..." bzw. "Sprachausgabe auf..."). Diese haben unterschiedliche Ausbaustufen, funktionieren aber sofort.</value>
   </data>
   <data name="paragraph_4" xml:space="preserve">
     <value>Mehr über die Funktionsweise von EDDI erfahren Sie auf der Seite</value>
@@ -215,7 +215,7 @@
     <value>Phonetische Sprache deaktivieren:</value>
   </data>
   <data name="tab_tts_disable_phonetic_speech_note" xml:space="preserve">
-    <value>(Dies deaktiviert alle Funktionen mit SSML-Sprach-Tags, wie in der Hilfedatei unter der Reiterkarte "Antwort auf Ereignisse" angegeben.)</value>
+    <value>(Dies deaktiviert alle Funktionen mit SSML-Sprach-Tags, wie in der Hilfedatei unter der Reiterkarte "Sprachausgabe auf Ereignisse" angegeben.)</value>
   </data>
   <data name="tab_tts_icao_desc" xml:space="preserve">
     <value>EDDI kann die Aussprache laut ICAO verwenden, zum Beispiel "alpha" statt "A", wenn man Stern- und Körpernamen sagt. Dies kann das Verständnis der Systemnamen erleichtern, dauert jedoch länger. Wenn Sie die ICAO-Aussprache hören möchten, aktivieren Sie die Option unten. Beachten Sie, dass dies nicht funktioniert, wenn Sie die phonetische Sprache oben deaktiviert haben.</value>
