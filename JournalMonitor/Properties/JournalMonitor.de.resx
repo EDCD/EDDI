@@ -98,7 +98,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="desc" xml:space="preserve">
-    <value>Überwacht das Elite:Dangerous 'journal.log für die meisten Ereignisse. Dies sollte nicht deaktiviert werden, es sei denn, Du bist Dir sicher und weißt was Du tust. Durch das Deaktivieren werden viele Funktionen in EDDI nicht mehr funktionieren</value>
+    <value>"! Überwachung Journal" - Überwacht das Elite:Dangerous 'journal.log für die meisten Ereignisse. Dies sollte nicht deaktiviert werden, es sei denn, Du bist Dir sicher und weißt was Du tust. Durch das Deaktivieren werden viele Funktionen in EDDI nicht mehr funktionieren</value>
   </data>
   <data name="name" xml:space="preserve">
     <value>! Überwachung Journal</value>
