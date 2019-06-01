@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="desc" xml:space="preserve">
-    <value>Überwacht Galnet auf neue Nachrichten und generiert ein "Galnet Nachrichten publiziert" -Ereignis, wenn neue Nachrichten veröffentlicht werden.</value>
+    <value>"! Überwachung GalNet" - Überwacht GalNet auf neue Nachrichten und generiert ein "Galnet Nachrichten publiziert" -Ereignis, wenn neue Nachrichten veröffentlicht werden.</value>
   </data>
   <data name="language_label" xml:space="preserve">
     <value>Sprache für Galnet-Artikel</value>
