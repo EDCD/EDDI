@@ -164,7 +164,7 @@
     <value>Die Frontier API ermöglicht EDDI Informationen über Ihre Schiffe, den Markt der aktuellen Station und andere Dinge zu erhalten. Diese Daten sind an anderer Stelle nicht verfügbar. Wenn Sie möchten, dass EDDI diese Informationen verwenden kann, müssen Sie auf die Schaltfläche Login klicken und EDDI für diese Daten auf dem Server von Frontier autorisieren.</value>
   </data>
   <data name="tab_frontier_header" xml:space="preserve">
-    <value>Frontier API</value>
+    <value>'Frontier API'</value>
   </data>
   <data name="tab_frontier_reset_desc" xml:space="preserve">
     <value>Wenn Sie Probleme mit Ihrer Verbindung feststellen, können Sie diese möglicherweise durch zurücksetzen und erneutes Anmelden beheben.</value>
@@ -176,7 +176,7 @@
     <value>Verzerren Sie die Stimme bei Schiffsschäden:</value>
   </data>
   <data name="tab_tts_header" xml:space="preserve">
-    <value>Text-to-Speech</value>
+    <value>'Text-to-Speech'</value>
   </data>
   <data name="tab_tts_level_label" xml:space="preserve">
     <value>Level der Sprachverzerrung:</value>
@@ -224,7 +224,7 @@
     <value>ICAO aktivieren:</value>
   </data>
   <data name="tab_commander_details_header" xml:space="preserve">
-    <value>Commander Details</value>
+    <value>'Commander Details'</value>
   </data>
   <data name="tab_commander_gender" xml:space="preserve">
     <value>Bevorzugtes Geschlecht für Pronomen und Titel:</value>
