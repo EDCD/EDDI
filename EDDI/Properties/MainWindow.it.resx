@@ -117,8 +117,12 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
+  <data name="access_beta" xml:space="preserve">
+    <value>Accedi a versioni BETA di EDDI</value>
+  </data>
+  <data name="EDDI_status_label" xml:space="preserve">
+    <value>Situazione di EDDI: </value>
+  </data>
   
   
   
