@@ -29,11 +29,11 @@ namespace EddiDataDefinitions
         public long? systemAddress { get; set; }
 
         /// <summary>Details of bodies (stars/planets/moons)</summary>
-        private ImmutableList<Body> _bodies;
+        [JsonProperty] // Required to deserialize to the private setter
         public ImmutableList<Body> bodies
         {
             get => _bodies;
-            set
+            private set
             {
                 if (value == _bodies)
                 {
@@ -43,29 +43,31 @@ namespace EddiDataDefinitions
                 _bodies = value;
             }
         }
+        private ImmutableList<Body> _bodies;
 
-        public void SortBodiesByID()
+        public void AddOrUpdateBody(Body body)
         {
-            ImmutableList<Body> newBodies = bodies.Sort(Body.CompareById);
-            bodies = newBodies;
+            Body oldBody = bodies.FirstOrDefault(b => b.bodyname == body.bodyname);
+            if (oldBody != null)
+            {
+                bodies = bodies.Remove(oldBody);
+            }
+            var newBodies = bodies.Add(body);
+            bodies = newBodies.Sort(Body.CompareById);
         }
 
-        public void AddBody(Body body)
+        public void AddOrUpdateBodies(IEnumerable<Body> bodyList)
         {
-            ImmutableList<Body> newBodies = bodies.Add(body).Sort(Body.CompareById);
-            bodies = newBodies;
-        }
-
-        public void AddBodies(IEnumerable<Body> bodyList)
-        {
-            ImmutableList<Body> newBodies = bodies.AddRange(bodyList).Sort(Body.CompareById);
-            bodies = newBodies;
-        }
-
-        public void UpdateBodyAt(int index, Body updatedBody)
-        {
-            ImmutableList<Body> newBodies = bodies.SetItem(index, updatedBody).Sort(Body.CompareById);
-            bodies = newBodies;
+            var oldBodies = from oldBody in bodies
+                            join newBody in bodyList
+                            on oldBody.bodyname equals newBody.bodyname
+                            select oldBody;
+            if (oldBodies?.Count() > 0)
+            {
+                bodies = bodies.RemoveRange(oldBodies);
+            }
+            var newBodies = bodies.AddRange(bodyList);
+            bodies = newBodies.Sort(Body.CompareById);
         }
 
         /// <summary>The reserve level applicable to the system's rings</summary>
@@ -87,6 +89,7 @@ namespace EddiDataDefinitions
         public string security => (securityLevel ?? SecurityLevel.None).localizedName;
 
         public Power Power { get; set; }
+        [JsonIgnore]
         public string power => (Power ?? Power.None).localizedName;
         public string powerstate { get; set; }
 

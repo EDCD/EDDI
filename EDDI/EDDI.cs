@@ -1541,7 +1541,7 @@ namespace Eddi
                     bodyType = BodyType.FromEDName("Star"),
                     stellarclass = LastFSDEngagedEvent?.stellarclass,
                 };
-                CurrentStarSystem.bodies.Add(CurrentStellarBody);
+                CurrentStarSystem.AddOrUpdateBody(CurrentStellarBody);
             }
 
             // Update to most recent information
@@ -1933,15 +1933,11 @@ namespace Eddi
                 if (star == null)
                 {
                     Logging.Debug("Scanned star " + theEvent.bodyname + " is new - creating");
-                    CurrentStarSystem.AddBody(theEvent.star);
+                    CurrentStarSystem.AddOrUpdateBody(theEvent.star);
                 }
                 else
                 {
-                    int index = CurrentStarSystem.bodies.IndexOf(star);
-                    if (index != -1)
-                    {
-                        CurrentStarSystem.UpdateBodyAt(index, theEvent.star);
-                    }
+                    CurrentStarSystem.AddOrUpdateBody(theEvent.star);
                 }
 
                 Logging.Debug("Saving data for scanned star " + theEvent.star.bodyname);
@@ -1959,18 +1955,13 @@ namespace Eddi
                 if (body == null)
                 {
                     Logging.Debug("Scanned body " + theEvent.bodyname + " is new - creating");
-                    CurrentStarSystem.AddBody(theEvent.body);
+                    CurrentStarSystem.AddOrUpdateBody(theEvent.body);
                 }
                 else
                 {
                     if (body.scanned == null)
                     {
-                        int index = CurrentStarSystem.bodies.IndexOf(body);
-                        if (index != -1)
-                        {
-                            // Update our body with the scan data.
-                            CurrentStarSystem.UpdateBodyAt(index, theEvent.body);
-                        }
+                        CurrentStarSystem.AddOrUpdateBody(theEvent.body);
                     }
                     else
                     {
