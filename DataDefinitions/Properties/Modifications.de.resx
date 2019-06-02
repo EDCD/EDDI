@@ -432,6 +432,10 @@
   <data name="ProspectingLimpetShielded" xml:space="preserve">
     <value>Abgeschirmte Sammeldrohne</value>
   </data>
-  
-  
+  <data name="MiscLightWeight" xml:space="preserve">
+    <value>Sonstiges Leichtgewicht</value>
+  </data>
+  <data name="SensorExpanded" xml:space="preserve">
+    <value>Erweiterter Scannradius</value>
+  </data>
 </root>
