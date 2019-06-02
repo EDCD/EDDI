@@ -167,7 +167,7 @@
     <value>! Frontier API</value>
   </data>
   <data name="tab_frontier_reset_desc" xml:space="preserve">
-    <value>Wenn Sie Probleme mit Ihrer Verbindung feststellen, können Sie diese möglicherweise durch zurücksetzen und erneutes Anmelden beheben.</value>
+    <value>Wenn Sie Probleme mit Ihrer Verbindung feststellen, können Sie diese möglicherweise durch Zurücksetzen und erneutes Anmelden beheben.</value>
   </data>
   <data name="tab_tts_desc" xml:space="preserve">
     <value>EDDI verwendet eine eigene Text-to-Speech-Engine, die die Stimme abhängig von Merkmalen wie Schiffsbeschädigung und Größe des Cockpits verarbeitet. Hier können Sie die Parameter der Stimme einstellen.</value>
