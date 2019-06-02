@@ -57,7 +57,7 @@ namespace IntegrationTests
     }
 }
 
-    namespace UnitTests
+namespace UnitTests
 {
     [TestClass]
     public class EddiCoreTests : TestBase
@@ -93,7 +93,7 @@ namespace IntegrationTests
             Assert.IsInstanceOfType(@event, typeof(JumpedEvent));
 
             PrivateObject privateObject = new PrivateObject(Eddi.EDDI.Instance);
-            var result = (bool)privateObject.Invoke("eventJumped", new object[] { @event });
+            bool result = (bool)privateObject.Invoke("eventJumped", new object[] { @event });
             Assert.IsTrue(result);
         }
 
@@ -108,7 +108,7 @@ namespace IntegrationTests
             Assert.IsInstanceOfType(@event, typeof(LocationEvent));
 
             PrivateObject privateObject = new PrivateObject(Eddi.EDDI.Instance);
-            var result = (bool)privateObject.Invoke("eventLocation", new object[] { @event });
+            bool result = (bool)privateObject.Invoke("eventLocation", new object[] { @event });
             Assert.IsTrue(result);
         }
 
@@ -125,8 +125,9 @@ namespace IntegrationTests
             PrivateObject privateObject = new PrivateObject(Eddi.EDDI.Instance);
             privateObject.Invoke("updateCurrentSystem", new object[] { "Grea Bloae HH-T d4-44" });
             Assert.AreEqual("Grea Bloae HH-T d4-44", EDDI.Instance.CurrentStarSystem?.systemname);
+            new PrivateObject(EDDI.Instance.CurrentStarSystem).SetFieldOrProperty("bodies", new List<Body>());
 
-            var result = (bool)privateObject.Invoke("eventBodyScanned", new object[] { @event });
+            bool result = (bool)privateObject.Invoke("eventBodyScanned", new object[] { @event });
             Assert.IsTrue(result);
 
             EddiDataDefinitions.Body body = EDDI.Instance.CurrentStarSystem.bodies.FirstOrDefault(b => b.bodyname == "Grea Bloae HH-T d4-44 4");
