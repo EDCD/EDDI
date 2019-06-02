@@ -379,7 +379,7 @@
     <value>Abgeschirmte Lebenserhaltung</value>
   </data>
   <data name="PointDefencePointDefenceCapacity" xml:space="preserve">
-    <value>Punkt Verteidigung Munitionskapazität</value>
+    <value>Kapazität der Punktverteidigung</value>
   </data>
   <data name="PointDefenceLightWeight" xml:space="preserve">
     <value>Leichte Punktverteidigung</value>
