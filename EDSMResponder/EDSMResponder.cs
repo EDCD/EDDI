@@ -107,7 +107,7 @@ namespace EddiEdsmResponder
                 {
                     Logging.Error("Failed to prepare event meta-data for submittal to EDSM", ex);
                 }
-                if (eventData != null && !EDDI.Instance.ShouldUseTestEndpoints())
+                if (eventData != null && !EDDI.Instance.inBeta)
                 {
                     StarMapService.Instance.sendEvent(eventData);
                 }
