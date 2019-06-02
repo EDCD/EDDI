@@ -18,8 +18,9 @@ namespace EddiDataProviderService
             if (system == null || string.IsNullOrEmpty(system)) { return null; }
 
             StarSystem starSystem = StarMapService.GetStarMapSystem(system, showCoordinates, showSystemInformation);
-            starSystem = GetSystemExtras(starSystem, showSystemInformation, showBodies, showStations, showFactions) ?? new StarSystem() { systemname = system };
-            return starSystem;
+            starSystem = GetSystemExtras(starSystem, showSystemInformation, showBodies, showStations, showFactions);
+            starSystem = SyncEdsmLogsAndComments(new List<StarSystem>() { starSystem })?.FirstOrDefault();
+            return starSystem ?? new StarSystem() { systemname = system };
         }
 
         public static List<StarSystem> GetSystemsData(string[] systemNames, bool showCoordinates = true, bool showSystemInformation = true, bool showBodies = true, bool showStations = true, bool showFactions = true)
@@ -35,7 +36,8 @@ namespace EddiDataProviderService
                     fullStarSystems.Add(GetSystemExtras(starSystems.Find(s => s.systemname == systemName), showSystemInformation, showBodies, showStations, showFactions) ?? new StarSystem() { systemname = systemName });
                 }
             }
-            return starSystems;
+            fullStarSystems = SyncEdsmLogsAndComments(fullStarSystems);
+            return fullStarSystems;
         }
 
         private static StarSystem GetSystemExtras(StarSystem starSystem, bool showInformation, bool showBodies, bool showStations, bool showFactions)
@@ -73,8 +75,33 @@ namespace EddiDataProviderService
 
                 starSystem = LegacyEddpService.SetLegacyData(starSystem, showInformation, showBodies, showStations);
             }
-
             return starSystem;
+        }
+
+        private static List<StarSystem> SyncEdsmLogsAndComments(List<StarSystem> starSystems)
+        {
+            // Identify systems that need updated flight logs from EDSM
+            List<StarSystem> syncSystems = new List<StarSystem>();
+            foreach (StarSystem starSystem in starSystems)
+            {
+                if (starSystem?.visitLog == null && starSystem?.lastvisit != null)
+                {
+                    syncSystems.Add(starSystem);
+                }
+            }
+
+            if (syncSystems.Count > 0)
+            {
+                // Synchronize EDSM flight logs and comments for applicable star systems
+                syncSystems = syncFromStarMapService(syncSystems);
+                foreach (StarSystem starSystem in syncSystems)
+                {
+                    StarSystem systemToUpdate = starSystems.FirstOrDefault(s => s.systemname == starSystem.systemname);
+                    systemToUpdate = starSystem;
+                }
+            }
+
+            return starSystems;
         }
 
         private static List<Station> SetStationFactionData(List<Station> stations, List<Faction> factions)
@@ -140,7 +167,7 @@ namespace EddiDataProviderService
         }
 
         // EDSM flight log synchronization
-        public static void syncFromStarMapService (DateTime? lastSync = null, IProgress<string> progress = null)
+        public static void syncFromStarMapService(DateTime? lastSync = null, IProgress<string> progress = null)
         {
             if (StarMapService.Instance != null)
             {
@@ -175,28 +202,30 @@ namespace EddiDataProviderService
             }
         }
 
-        // EDSM flight log synchronization (single star system)
-        public static StarSystem syncFromStarMapService(StarSystem starSystem)
+        // EDSM flight log synchronization (named star systems)
+        public static List<StarSystem> syncFromStarMapService(List<StarSystem> starSystems)
         {
-            if (StarMapService.Instance != null)
+            if (StarMapService.Instance != null && starSystems.Count > 0)
             {
-                Logging.Debug("Syncing from EDSM for star system " + starSystem.name);
-
                 try
                 {
-                    List<StarMapResponseLogEntry> flightLogs = StarMapService.Instance.getStarMapLog(null, starSystem.name);
-                    Dictionary<string, string> comments = StarMapService.Instance.getStarMapComments();
+                    List<StarMapResponseLogEntry> flightLogs = StarMapService.Instance.getStarMapLog(null, starSystems.Select(s => s.systemname).ToArray());
 
-                    foreach (StarMapResponseLogEntry flightLog in flightLogs)
+                    foreach (StarSystem starSystem in starSystems)
                     {
-                        starSystem.visitLog.Add(flightLog.date);
+                        if (starSystem?.systemname != null)
+                        {
+                            Logging.Debug("Syncing star system " + starSystem.systemname + " from EDSM.");
+                            foreach (StarMapResponseLogEntry flightLog in flightLogs)
+                            {
+                                if (flightLog.system == starSystem.systemname)
+                                {
+                                    starSystem.visitLog.Add(flightLog.date);
+                                }
+                            }
+                            starSystem.comment = StarMapService.Instance.getStarMapComment(starSystem.systemname);
+                        }
                     }
-                    if (comments.ContainsKey(starSystem.name))
-                    {
-                        starSystem.comment = comments[starSystem.name];
-                    }
-
-                    Logging.Debug("EDSM sync completed");
                 }
                 catch (EDSMException edsme)
                 {
@@ -207,7 +236,7 @@ namespace EddiDataProviderService
                     Logging.Debug("EDSM update stopped by user: " + e.Message);
                 }
             }
-            return starSystem;
+            return starSystems;
         }
 
         public static void syncEdsmLogBatch(List<StarSystem> batchSystems, List<StarMapResponseLogEntry> flightLogBatch, Dictionary<string, string> comments)
@@ -215,7 +244,7 @@ namespace EddiDataProviderService
             List<StarSystem> syncedSystems = new List<StarSystem>();
             foreach (StarMapResponseLogEntry flightLog in flightLogBatch)
             {
-                StarSystem CurrentStarSystem = batchSystems.FirstOrDefault(s => s.name == flightLog.system);
+                StarSystem CurrentStarSystem = batchSystems.FirstOrDefault(s => s.systemname == flightLog.system);
                 if (CurrentStarSystem != null)
                 {
                     CurrentStarSystem.visitLog.Add(flightLog.date);
@@ -229,7 +258,7 @@ namespace EddiDataProviderService
             saveFromStarMapService(syncedSystems);
         }
 
-        public static void saveFromStarMapService (List<StarSystem> syncSystems)
+        public static void saveFromStarMapService(List<StarSystem> syncSystems)
         {
             StarSystemSqLiteRepository.Instance.SaveStarSystems(syncSystems);
             StarMapConfiguration starMapConfiguration = StarMapConfiguration.FromFile();

@@ -226,13 +226,13 @@ namespace EddiStarMapService
             return vals;
         }
 
-        public List<StarMapResponseLogEntry> getStarMapLog(DateTime? since = null, string systemName = null)
+        public List<StarMapResponseLogEntry> getStarMapLog(DateTime? since = null, string[] systemNames = null)
         {
             var client = new RestClient(baseUrl);
             var request = new RestRequest("api-logs-v1/get-logs", Method.POST);
             request.AddParameter("apiKey", apiKey);
             request.AddParameter("commanderName", commanderName);
-            if (!since.HasValue && string.IsNullOrEmpty(systemName))
+            if (!since.HasValue)
             {
                 /// Though not documented in the api, Anthor from EDSM has confirmed that this 
                 /// unpublished parameter is valid and overrides "startdatetime" and "enddatetime".
@@ -240,14 +240,7 @@ namespace EddiStarMapService
             }
             else
             {
-                if (since.HasValue)
-                {
-                    request.AddParameter("startdatetime", since.Value.ToString("yyyy-MM-dd HH:mm:ss"));
-                }
-                if (!string.IsNullOrEmpty(systemName))
-                {
-                    request.AddParameter("systemName", systemName);
-                }
+                request.AddParameter("startdatetime", since.Value.ToString("yyyy-MM-dd HH:mm:ss"));
             }
             var starMapLogResponse = client.Execute<StarMapLogResponse>(request);
             StarMapLogResponse response = starMapLogResponse.Data;
@@ -269,6 +262,10 @@ namespace EddiStarMapService
 
             if (response != null && response.logs != null)
             {
+                if (systemNames?.Count() > 0)
+                {
+                    response.logs.RemoveAll(s => !systemNames.Contains(s.system));
+                }
                 return response.logs;
             }
             else

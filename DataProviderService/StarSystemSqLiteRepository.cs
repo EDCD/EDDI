@@ -168,7 +168,7 @@ namespace EddiDataProviderService
             if (names.Count() == 0) { return null; }
 
             List<StarSystem> results = new List<StarSystem>();
-            List<StarSystem> systemsToUpdate = new List<StarSystem>();
+            List<string> systemsToUpdate = new List<string>();
             List<KeyValuePair<string, string>> dataSets = Instance.ReadStarSystems(names);
 
             foreach (KeyValuePair<string, string> kv in dataSets)
@@ -189,7 +189,6 @@ namespace EddiDataProviderService
                     system.TryGetValue("comment", out object commentVal);
                     system.TryGetValue("lastvisit", out object lastVisitVal);
                     system.TryGetValue("lastupdated", out object lastUpdatedVal);
-                    system.TryGetValue("systemAddress", out object systemAddressVal);
 
                     List<object> visitVals = (List<object>)visitVal;
                     SortedSet<DateTime> visitLog = visitVals == null ? null : 
@@ -197,65 +196,82 @@ namespace EddiDataProviderService
                     string comment = (string)commentVal ?? "";
                     DateTime? lastvisit = (DateTime?)lastVisitVal;
                     DateTime? lastupdated = (DateTime?)lastUpdatedVal;
-                    long? systemAddress = (long?)systemAddressVal;
 
-                    bool syncEdsmLogs = false;
-                    if (lastvisit == null || lastupdated == null || comment == "")
+                    if (refreshIfOutdated)
                     {
-                        if (Instance.OldDataFormat(name, comment, ref lastupdated, ref lastvisit))
+                        if (lastupdated < DateTime.UtcNow.AddHours(-1))
                         {
+                            // Data is stale
+                            needToUpdate = true;
+                        }
+                        else if (lastupdated == null)
+                        {
+                            // Data is old format, need to refresh
+                            if (Instance.OldDbFormat(name, comment, ref lastupdated))
+                            {
+                                needToUpdate = true;
+                            }
+                        }
+                        else if (visitLog == null && lastvisit != null)
+                        {
+                            // Data is old format, need to refresh
                             needToUpdate = true;
                         }
                     }
-                    if (visitLog == null && lastvisit != null)
-                    {
-                        syncEdsmLogs = true;
-                    }
-
-                    if (refreshIfOutdated && lastupdated < DateTime.UtcNow.AddHours(-1))
-                    {
-                        // Data is stale
-                        StarSystem updatedResult = DataProviderService.GetSystemData(name);
-                        if (updatedResult.systemAddress != null && updatedResult.x != null && updatedResult.y != null && updatedResult.z != null)
-                        {
-                            needToUpdate = true;
-                        }
-                        else
-                        {
-                            // The "updated" data might be a basic system, empty except for the name. If so, return the old result.
-                            updatedResult = DeserializeStarSystem(name, data, ref needToUpdate);
-                        }
-                        result = updatedResult;
-                    }
-                    else
-                    {
-                        // Data is fresh
-                        result = DeserializeStarSystem(name, data, ref needToUpdate);
-                    }
-
-                    if (syncEdsmLogs)
-                    {
-                        // Old data format - synchronize EDSM flight logs and comments
-                        result = DataProviderService.syncFromStarMapService(result);
-                        needToUpdate = true;
-                    }
-
-                    result.visitLog = result.visitLog ?? visitLog;
-                    result.comment = comment;
-                    result.lastupdated = DateTime.UtcNow;
 
                     if (needToUpdate)
                     {
-                        systemsToUpdate.Add(result);
+                        // We'll need to update this star system
+                        systemsToUpdate.Add(name);
+                    }
+                    else
+                    {
+                        // Deserialize the old result
+                        result = DeserializeStarSystem(name, data, ref needToUpdate);
+                        if (result != null)
+                        {
+                            results.Add(result);
+                        }
                     }
                 }
-                results.Add(result);
             }
-            Instance.updateStarSystems(systemsToUpdate);
+
+            if (systemsToUpdate.Count > 0)
+            {
+                List<StarSystem> updatedSystems = DataProviderService.GetSystemsData(systemsToUpdate.ToArray());
+
+                // If the newly fetched star system is an empty object except (for the object name), reject it
+                List<string> systemsToRevert = new List<string>();
+                foreach (StarSystem starSystem in updatedSystems)
+                {
+                    if (starSystem.systemAddress == null || starSystem.x == null || starSystem.y == null || starSystem.z == null)
+                    {
+                        systemsToRevert.Add(starSystem.systemname);
+                    }
+                }
+                updatedSystems.RemoveAll(s => systemsToRevert.Contains(s.systemname));
+
+                // Return old results when new results have been rejected
+                foreach (string systemName in systemsToRevert)
+                {
+                    results.Add(GetStarSystem(systemName, false));
+                }
+
+                // Add our updated systems to our results
+                results.AddRange(updatedSystems);
+
+                // Save changes to our star systems
+                Instance.updateStarSystems(updatedSystems); 
+            }
+
+            foreach (StarSystem starSystem in results)
+            {
+                starSystem.lastupdated = DateTime.UtcNow;
+            }
             return results;
         }
 
-        private bool OldDataFormat(string name, string comment, ref DateTime? lastupdated, ref DateTime? lastvisit)
+        private bool OldDbFormat(string name, string comment, ref DateTime? lastupdated)
         {
             bool result = false;
             using (var con = SimpleDbConnection())
@@ -270,12 +286,6 @@ namespace EddiDataProviderService
                     {
                         if (rdr.Read())
                         {
-                            if (lastvisit == null)
-                            {
-                                // Old-style system; need to update
-                                lastvisit = rdr.GetDateTime(1);
-                                result = true;
-                            }
                             if (lastupdated == null)
                             {
                                 lastupdated = rdr.GetDateTime(4);
@@ -361,7 +371,6 @@ namespace EddiDataProviderService
                 try
                 {
                     result = DataProviderService.GetSystemData(systemName);
-                    needToUpdate = true;
                 }
                 catch (Exception ex)
                 {
