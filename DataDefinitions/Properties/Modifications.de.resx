@@ -301,7 +301,7 @@
     <value>Abgeschirmter Fracht-Scanner</value>
   </data>
   <data name="ChaffLauncherChaffCapacity" xml:space="preserve">
-    <value>Kapazität der Düppel Munition</value>
+    <value>Düppel-Kapazität</value>
   </data>
   <data name="ChaffLauncherLightWeight" xml:space="preserve">
     <value>Leichter Chaff-Werfer</value>
