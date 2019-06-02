@@ -187,6 +187,6 @@
     <value>"Minor faction"-Informationen (System, Station ect.) aktualisieren.</value>
   </data>
   <data name="update_button_text" xml:space="preserve">
-    <value>Aktualisierung:</value>
+    <value>Update:</value>
   </data>
 </root>
