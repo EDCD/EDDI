@@ -133,13 +133,13 @@
     <value>Hitzebeständige Panzerung</value>
   </data>
   <data name="EngineDirty" xml:space="preserve">
-    <value>Dreckiges Antriebs-Tuning</value>
+    <value>Dirty Drive Tuning</value>
   </data>
   <data name="EngineReinforced" xml:space="preserve">
     <value>Anstriebsstärkung</value>
   </data>
   <data name="EngineTuned" xml:space="preserve">
-    <value>Sauberes Antriebs-Tuning</value>
+    <value>Clean Drive Tuning</value>
   </data>
   <data name="FSDFastBoot" xml:space="preserve">
     <value>Schnellere FSA-Start-Sequenz</value>
@@ -304,13 +304,13 @@
     <value>Düppel-Kapazität</value>
   </data>
   <data name="ChaffLauncherLightWeight" xml:space="preserve">
-    <value>Leichter Chaff-Werfer</value>
+    <value>Leichter Düppel-Werfer</value>
   </data>
   <data name="ChaffLauncherReinforced" xml:space="preserve">
-    <value>Verstärkter Chaff-Werfer</value>
+    <value>Verstärkter Düppel-Werfer</value>
   </data>
   <data name="ChaffLauncherShielded" xml:space="preserve">
-    <value>Abgeschirmter Chaff-Werfer</value>
+    <value>Abgeschirmter Düppel-Werfer</value>
   </data>
   <data name="CollectionLimpetLightWeight" xml:space="preserve">
     <value>Leichte Sammeldrohnen-Steuerung</value>
@@ -346,7 +346,7 @@
     <value>Abgeschirmte Frachtlukenbrecherdrohnen-Steuerung</value>
   </data>
   <data name="HeatSinkLauncherHeatSinkCapacity" xml:space="preserve">
-    <value>Kapazität der Kühlkörper-Munition</value>
+    <value>Kühlkörper-Kapazität</value>
   </data>
   <data name="HeatSinkLauncherLightWeight" xml:space="preserve">
     <value>Leichter Kühlkörperwerfer</value>
