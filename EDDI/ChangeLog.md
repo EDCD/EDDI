@@ -2,6 +2,10 @@
 
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
+### Development
+  * EDSM responder
+    * Improved EDSM synchronization for system visits and comments
+
 ### 3.4.1-b2
   * Core
     * Reconfigured the installer to improve backwards compatibility between EDDI versions

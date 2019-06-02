@@ -44,6 +44,8 @@ namespace EddiStarMapService
                     {
                         if (instance == null)
                         {
+                            Logging.Debug("No StarMapService instance: creating one");
+
                             // Set up the star map service
                             StarMapConfiguration starMapCredentials = StarMapConfiguration.FromFile();
                             if (!string.IsNullOrEmpty(starMapCredentials?.apiKey))
@@ -57,12 +59,12 @@ namespace EddiStarMapService
                                 }
                                 else
                                 {
-                                    Logging.Info("No StarMapService instance: Commander name not set.");
+                                    Logging.Warn("No StarMapService instance: Commander name not set.");
                                 }
                             }
                             else
                             {
-                                Logging.Info("No StarMapService instance: API key not set.");
+                                Logging.Warn("No StarMapService instance: API key not set.");
                             }
                         }
                     }
@@ -232,15 +234,24 @@ namespace EddiStarMapService
             var request = new RestRequest("api-logs-v1/get-logs", Method.POST);
             request.AddParameter("apiKey", apiKey);
             request.AddParameter("commanderName", commanderName);
-            if (!since.HasValue)
+            if (systemNames?.Count() == 1)
             {
-                /// Though not documented in the api, Anthor from EDSM has confirmed that this 
-                /// unpublished parameter is valid and overrides "startdatetime" and "enddatetime".
-                request.AddParameter("fullSync", 1);
+                /// When a single system name is provided, the api responds with 
+                /// the complete flight logs for that star system
+                request.AddParameter("systemName", systemNames[0]);
             }
             else
             {
-                request.AddParameter("startdatetime", since.Value.ToString("yyyy-MM-dd HH:mm:ss"));
+                if (since.HasValue)
+                {
+                    request.AddParameter("startdatetime", since.Value.ToString("yyyy-MM-dd HH:mm:ss"));
+                }
+                else
+                {
+                    /// Though not documented in the api, Anthor from EDSM has confirmed that this 
+                    /// unpublished parameter is valid and overrides "startdatetime" and "enddatetime".
+                    request.AddParameter("fullSync", 1);
+                }
             }
             var starMapLogResponse = client.Execute<StarMapLogResponse>(request);
             StarMapLogResponse response = starMapLogResponse.Data;
@@ -260,7 +271,7 @@ namespace EddiStarMapService
                 throw new EDSMException();
             }
 
-            if (response != null && response.logs != null)
+            if (response?.logs != null)
             {
                 if (systemNames?.Count() > 0)
                 {
