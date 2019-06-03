@@ -204,19 +204,19 @@
     <value>Test</value>
   </data>
   <data name="test_script_button" xml:space="preserve">
-    <value>Script testen</value>
+    <value>Skript testen</value>
   </data>
   <data name="view_script" xml:space="preserve">
     <value>Ansicht</value>
   </data>
   <data name="view_script_title" xml:space="preserve">
-    <value>Script ansehen</value>
+    <value>Skript ansehen</value>
   </data>
   <data name="header_priority" xml:space="preserve">
     <value>Priorität</value>
   </data>
   <data name="speechResponderHelp" xml:space="preserve">
-    <value>Informationen über Funktionen der Ereignisantworten lesen Sie</value>
+    <value>Informationen über die Funktionen der Ereignisantworten lesen Sie</value>
   </data>
   <data name="speechResponderHelpHere" xml:space="preserve">
     <value>hier.</value>
