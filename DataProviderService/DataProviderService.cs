@@ -33,7 +33,7 @@ namespace EddiDataProviderService
             {
                 if (!string.IsNullOrEmpty(systemName))
                 {
-                    fullStarSystems.Add(GetSystemExtras(starSystems.Find(s => s.systemname == systemName), showSystemInformation, showBodies, showStations, showFactions) ?? new StarSystem() { systemname = systemName });
+                    fullStarSystems.Add(GetSystemExtras(starSystems.Find(s => s?.systemname == systemName), showSystemInformation, showBodies, showStations, showFactions) ?? new StarSystem() { systemname = systemName });
                 }
             }
             fullStarSystems = SyncEdsmLogsAndComments(fullStarSystems);
