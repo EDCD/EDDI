@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="desc" xml:space="preserve">
-    <value>Verfolgen Sie Informationen über Ihre Schiffe.</value>
+    <value>Informationen über Ihre Schiffe.</value>
   </data>
   <data name="export_it_button" xml:space="preserve">
     <value>Export</value>
@@ -166,7 +166,7 @@
     <value>. Zum Beispiel, wenn Ihr Schiff 'Pride of Achenar' genannt wurde, dann wäre Ihr gesprochener Name 'praɪdɒvˈakɜːnɑ' (bitte beachten Sie, keine Leerzeichen in der phonetischen Version).</value>
   </data>
   <data name="p4" xml:space="preserve">
-    <value>Bitte beachten Sie, wenn Sie den Zugriff auf die Frontier-API nicht konfiguriert haben, einige der folgenden Daten ungenau oder nicht verfügbar sind. Wenn Sie vor der Installation von EDDI mehrere Schiffe hatten, müssen Sie diese als primäres Schiff eintauschen und einige Augenblicke warten, bis die kompletten Informationen vollständig verfügbar sind.</value>
+    <value>Bitte beachten Sie, wenn Sie den Zugriff auf die Frontier-API nicht konfiguriert haben, werden einige der folgenden Daten ungenau oder nicht verfügbar seien. Wenn Sie vor der Installation von EDDI mehrere Schiffe hatten, müssen Sie diese als primäres Schiff eintauschen und einige Augenblicke warten, bis die kompletten Informationen vollständig verfügbar sind.</value>
   </data>
   <data name="ship_ready" xml:space="preserve">
     <value>{0} ist bereit.</value>
