@@ -353,10 +353,6 @@
     <value>Pacote de Reforço de Módulo</value>
     <comment>Module ModuleReinforcementPackage</comment>
   </data>
-  <data name="Multicannon" xml:space="preserve">
-    <value>Canhão de Repetição</value>
-    <comment>Module Multicannon</comment>
-  </data>
   <data name="Multi_Cannon" xml:space="preserve">
     <value>Canhão de Repetição</value>
     <comment>Module Multi_Cannon</comment>
@@ -585,4 +581,5 @@
     <value>Computador de docagem avançado</value>
     <comment>Module AdvancedDockingComputer</comment>
   </data>
+  
 </root>
