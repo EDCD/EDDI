@@ -29,11 +29,11 @@ namespace EddiDataDefinitions
         public long? systemAddress { get; set; }
 
         /// <summary>Details of bodies (stars/planets/moons)</summary>
-        private ImmutableList<Body> _bodies;
+        [JsonProperty] // Required to deserialize to the private setter
         public ImmutableList<Body> bodies
         {
             get => _bodies;
-            set
+            private set
             {
                 if (value == _bodies)
                 {
@@ -43,6 +43,7 @@ namespace EddiDataDefinitions
                 _bodies = value;
             }
         }
+        private ImmutableList<Body> _bodies;
 
         public void AddBody(Body body)
         {
