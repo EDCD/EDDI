@@ -6,6 +6,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
   * Speech responder
     * Fixed an issue where star chromaticity wasn't being translated correctly.
     * Revised the `Star report` script to resolve a couple of minor bugs. 
+    * Revised the `Body report summary script` script to resolve a couple of minor bugs.
 
 ### 3.4.1-b2
   * Core
