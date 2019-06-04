@@ -353,10 +353,6 @@
     <value>Pack de renforcement de Modules</value>
     <comment>Module ModuleReinforcementPackage</comment>
   </data>
-  <data name="Multicannon" xml:space="preserve">
-    <value>Multi-canon</value>
-    <comment>Module Multicannon</comment>
-  </data>
   <data name="Multi_Cannon" xml:space="preserve">
     <value>Multi-canon</value>
     <comment>Module Multi_Cannon</comment>
@@ -585,4 +581,5 @@
     <value>Ordinateur d'appontage avancé</value>
     <comment>Module AdvancedDockingComputer</comment>
   </data>
+  
 </root>
