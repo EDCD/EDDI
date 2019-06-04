@@ -277,14 +277,26 @@
     <value>Caricatore al Plasma dei Guardiani</value>
     <comment>Module GuardianPlasmaCharger</comment>
   </data>
-  
+  <data name="GuardianPowerPlant" xml:space="preserve">
+    <value>Generatore di Energia dei Guardiani</value>
+    <comment>Module GuardianPowerPlant</comment>
+  </data>
   <data name="HatchBreakerLimpetController" xml:space="preserve">
     <value>Controllore Automi di Manomissione Portelli</value>
     <comment>Module HatchBreakerLimpetController</comment>
   </data>
-  
-  
-  
+  <data name="HeatSinkLauncher" xml:space="preserve">
+    <value>Emettitore Dispersori di Calore</value>
+    <comment>Module HeatSinkLauncher</comment>
+  </data>
+  <data name="HullReinforcementPackage" xml:space="preserve">
+    <value>Sistema di Rafforzamento Chiglia</value>
+    <comment>Module HullReinforcementPackage</comment>
+  </data>
+  <data name="ImperialHammer" xml:space="preserve">
+    <value>Martello Imperiale</value>
+    <comment>Module ImperialHammer</comment>
+  </data>
   <data name="IntermediateDiscoveryScanner" xml:space="preserve">
     <value>Scanner di Esplorazione Intermedio</value>
     <comment>Module IntermediateDiscoveryScanner</comment>
@@ -293,7 +305,10 @@
     <value>Scanner di Mandati di Eliminazione</value>
     <comment>Module KillWarrantScanner</comment>
   </data>
-  
+  <data name="LifeSupport" xml:space="preserve">
+    <value>Supporto Vita</value>
+    <comment>Module LifeSupport</comment>
+  </data>
   
   <data name="LuxuryClassPassengerCabin" xml:space="preserve">
     <value>Cabina Passeggeri di Classe Lusso</value>
@@ -303,6 +318,20 @@
     <value>Analizzatore di Inventario</value>
     <comment>Module ManifestScanner</comment>
   </data>
+  <data name="MetaAlloyHullReinforcement" xml:space="preserve">
+    <value>Rafforzamento Chiglia in Meta-Lega</value>
+    <comment>Module MetaAlloyHullReinforcement</comment>
+  </data>
+  
+  
+  
+  
+  
+  
+  <data name="ModuleReinforcementPackage" xml:space="preserve">
+    <value>Rafforzamento Moduli Interni</value>
+    <comment>Module ModuleReinforcementPackage</comment>
+  </data>
   
   
   
@@ -311,16 +340,14 @@
   
   
   
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="PowerDistributor" xml:space="preserve">
+    <value>Distributore di Energia</value>
+    <comment>Module PowerDistributor</comment>
+  </data>
+  <data name="PowerPlant" xml:space="preserve">
+    <value>Generatore di Energia</value>
+    <comment>Module PowerPlant</comment>
+  </data>
   
   <data name="ProspectorLimpetController" xml:space="preserve">
     <value>Controllore Automi di Prospezione</value>
@@ -374,14 +401,29 @@
   </data>
   
   
+  <data name="GuardianFsdBooster" xml:space="preserve">
+    <value>Evoluzione FSD dei Guardiani</value>
+    <comment>Module GuardianFsdBooster</comment>
+  </data>
+  <data name="GuardianPowerDistributor" xml:space="preserve">
+    <value>Distributore di Energia dei Guardiani</value>
+    <comment>Module GuardianPowerDistributor</comment>
+  </data>
   
   
   
-  
-  
-  
-  
-  
+  <data name="GuardianHullReinforcement" xml:space="preserve">
+    <value>Rafforzamento Chiglia dei Guardiani</value>
+    <comment>Module GuardianHullReinforcement</comment>
+  </data>
+  <data name="GuardianModuleReinforcement" xml:space="preserve">
+    <value>Rafforzamento Moduli Interni dei Guardiani</value>
+    <comment>Module GuardianModuleReinforcement</comment>
+  </data>
+  <data name="GuardianShieldReinforcement" xml:space="preserve">
+    <value>Rafforzamento Scudi dei Guardiani</value>
+    <comment>Module GuardianShieldReinforcement</comment>
+  </data>
   
   <data name="PulseWave" xml:space="preserve">
     <value>Scanner ad Impulso d'Onda</value>
