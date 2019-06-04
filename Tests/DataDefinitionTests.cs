@@ -158,5 +158,33 @@ namespace UnitTests
             Assert.IsTrue(starSystem.isgreen, "gold system should be green");
             Assert.IsTrue(starSystem.isgold, "gold system should be gold");
         }
+
+        [TestMethod]
+        public void TestAddOrUpdateBodyAdd()
+        {
+            StarSystem starSystem = new StarSystem() { systemname = "testSystem" };
+            Body body = new Body() { bodyname = "testSystem 1" };
+
+            starSystem.AddOrUpdateBody(body);
+
+            Assert.AreEqual(1, starSystem.bodies.Count);
+        }
+
+        [TestMethod]
+        public void TestAddOrUpdateBodyUpdate()
+        {
+            StarSystem starSystem = new StarSystem() { systemname = "testSystem" };
+            Body body = new Body() { bodyname = "testSystem 1" };
+            starSystem.AddOrUpdateBody(body);
+            BodyType moon = BodyType.FromEDName("Moon");
+            Body updatedBody = new Body() { bodyname = "testSystem 1", bodyType = moon };
+
+            starSystem.AddOrUpdateBody(updatedBody);
+
+            Assert.AreEqual(1, starSystem.bodies.Count);
+            Body actualBody = starSystem.bodies[0];
+            Assert.AreEqual("testSystem 1", actualBody.bodyname);
+            Assert.AreEqual(moon, actualBody.bodyType);
+        }
     }
 }

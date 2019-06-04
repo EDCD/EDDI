@@ -28,7 +28,7 @@ namespace EddiDataDefinitions
         /// <summary>Unique 64 bit id value for system</summary>
         public long? systemAddress { get; set; }
 
-        /// <summary>Details of bodies (stars/planets/moons)</summary>
+        /// <summary>Details of bodies (stars/planets/moons), kept sorted by ID</summary>
         [JsonProperty] // Required to deserialize to the private setter
         public ImmutableList<Body> bodies
         {
@@ -65,6 +65,23 @@ namespace EddiDataDefinitions
         {
             var builder = bodies.ToBuilder();
             builder[index] = updatedBody;
+            builder.Sort(Body.CompareById);
+            bodies = builder.ToImmutable();
+        }
+
+        public void AddOrUpdateBody(Body body)
+        {
+            // although `bodies` is kept sorted by ID, IDs can be null so bodyname should be the unique identifier
+            var builder = bodies.ToBuilder();
+            int index = builder.FindIndex(b => b.bodyname == body.bodyname);
+            if (index >= 0)
+            {
+                builder[index] = body;
+            }
+            else
+            {
+                builder.Add(body);
+            }
             builder.Sort(Body.CompareById);
             bodies = builder.ToImmutable();
         }
