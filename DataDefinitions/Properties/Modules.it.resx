@@ -165,8 +165,14 @@
     <value>Portellone di carico</value>
     <comment>Module CargoHatch</comment>
   </data>
-  
-  
+  <data name="CargoRack" xml:space="preserve">
+    <value>Modulo di Stoccaggio</value>
+    <comment>Module CargoRack</comment>
+  </data>
+  <data name="VoicePack_Celeste" xml:space="preserve">
+    <value>Celeste</value>
+    <comment>Module Celeste</comment>
+  </data>
   
   
   
