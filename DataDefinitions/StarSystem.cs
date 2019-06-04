@@ -45,18 +45,28 @@ namespace EddiDataDefinitions
         }
         private ImmutableList<Body> _bodies;
 
-        public void AddBody(Body body)
+        public void AddOrUpdateBody(Body body)
         {
             var builder = bodies.ToBuilder();
-            builder.Add(body);
+            putBodyOnBuilder(body, builder);
             builder.Sort(Body.CompareById);
             bodies = builder.ToImmutable();
         }
 
-        public void AddOrUpdateBody(Body body)
+        public void AddOrUpdateBodies(IEnumerable<Body> newBodies)
+        {
+            var builder = bodies.ToBuilder();
+            foreach (Body body in newBodies)
+            {
+                putBodyOnBuilder(body, builder);
+            }
+            builder.Sort(Body.CompareById);
+            bodies = builder.ToImmutable();
+        }
+
+        private static void putBodyOnBuilder(Body body, ImmutableList<Body>.Builder builder)
         {
             // although `bodies` is kept sorted by ID, IDs can be null so bodyname should be the unique identifier
-            var builder = bodies.ToBuilder();
             int index = builder.FindIndex(b => b.bodyname == body.bodyname);
             if (index >= 0)
             {
@@ -66,8 +76,6 @@ namespace EddiDataDefinitions
             {
                 builder.Add(body);
             }
-            builder.Sort(Body.CompareById);
-            bodies = builder.ToImmutable();
         }
 
         /// <summary>The reserve level applicable to the system's rings</summary>

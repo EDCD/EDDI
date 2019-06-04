@@ -1541,7 +1541,7 @@ namespace Eddi
                     bodyType = BodyType.FromEDName("Star"),
                     stellarclass = LastFSDEngagedEvent?.stellarclass,
                 };
-                CurrentStarSystem.AddBody(CurrentStellarBody);
+                CurrentStarSystem.AddOrUpdateBody(CurrentStellarBody);
             }
 
             // Update to most recent information
