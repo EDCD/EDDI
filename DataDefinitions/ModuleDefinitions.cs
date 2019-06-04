@@ -1119,9 +1119,9 @@ namespace EddiDataDefinitions
                 new Module(899990033, "Hpt_PulseLaser_Gimbal_Fed_Fighter", -1, "PulseLaser", 1, "I", 0, -1),
                 new Module(899990034, "Hpt_PulseLaser_Gimbal_Indie_Fighter", -1, "PulseLaser", 1, "I", 0, -1),
                 new Module(899990040, "Hpt_ATMulticannon_Fixed_Indie_Fighter", -1, "ATMulticannon", 1, "I", 0, -1),
-                new Module(899990050, "Hpt_Multicannon_Fixed_Empire_Fighter", -1, "Multicannon", 1, "I", 0, -1),
-                new Module(899990051, "Hpt_Multicannon_Fixed_Fed_Fighter", -1, "Multicannon", 1, "I", 0, -1),
-                new Module(899990052, "Hpt_Multicannon_Fixed_Indie_Fighter", -1, "Multicannon", 1, "I", 0, -1),
+                new Module(899990050, "Hpt_Multicannon_Fixed_Empire_Fighter", -1, "Multi_Cannon", 1, "I", 0, -1),
+                new Module(899990051, "Hpt_Multicannon_Fixed_Fed_Fighter", -1, "Multi_Cannon", 1, "I", 0, -1),
+                new Module(899990052, "Hpt_Multicannon_Fixed_Indie_Fighter", -1, "Multi_Cannon", 1, "I", 0, -1),
                 new Module(899990059, "Empire_Fighter_Armour_Standard", -1, "FighterArmour", 1, "I", 0, -1),
                 new Module(899990060, "Federation_Fighter_Armour_Standard", -1, "FighterArmour", 1, "I", 0, -1),
                 new Module(899990070, "Independent_Fighter_Armour_Standard", -1, "FighterArmour", 1, "I", 0, -1),
@@ -1166,6 +1166,10 @@ namespace EddiDataDefinitions
                 new Module(128915720, "Hpt_mrascanner_Size0_Class3", 1795, "PulseWave", 0, "C", 0),
                 new Module(128915721, "Hpt_mrascanner_Size0_Class4", 1796, "PulseWave", 0, "B", 0),
                 new Module(128915722, "Hpt_mrascanner_Size0_Class5", 1797, "PulseWave", 0, "A", 0),
+
+                // Needs EDDB ID and pricing
+                new Module(128935980, "Hpt_MultiCannon_Fixed_Medium_Advanced", -1, "AdvancedMultiCannon", 2, "E", 0, ModuleMount.Fixed),
+                new Module(128935981, "Hpt_MultiCannon_Fixed_Small_Advanced", -1, "AdvancedMultiCannon", 1, "F", 0, ModuleMount.Fixed),
             };
         }
 

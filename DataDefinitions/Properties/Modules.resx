@@ -353,10 +353,6 @@
     <value>Module Reinforcement Package</value>
     <comment>Module ModuleReinforcementPackage</comment>
   </data>
-  <data name="Multicannon" xml:space="preserve">
-    <value>Multi-Cannon</value>
-    <comment>Module Multicannon</comment>
-  </data>
   <data name="Multi_Cannon" xml:space="preserve">
     <value>Multi-Cannon</value>
     <comment>Module Multi_Cannon</comment>
@@ -584,5 +580,9 @@
   <data name="AdvancedDockingComputer" xml:space="preserve">
     <value>Advanced Docking Computer</value>
     <comment>Module AdvancedDockingComputer</comment>
+  </data>
+  <data name="AdvancedMultiCannon" xml:space="preserve">
+    <value>Advanced Multi-Cannon</value>
+    <comment>Module Advanced Multi-Cannon (from the `Bridging the Gap` initiative)</comment>
   </data>
 </root>

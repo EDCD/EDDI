@@ -60,45 +60,45 @@
             : and then encoded with base64 encoding.
     -->
   <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
           <xsd:element name="metadata">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0"/>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
               </xsd:sequence>
-              <xsd:attribute name="name" use="required" type="xsd:string"/>
-              <xsd:attribute name="type" type="xsd:string"/>
-              <xsd:attribute name="mimetype" type="xsd:string"/>
-              <xsd:attribute ref="xml:space"/>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="assembly">
             <xsd:complexType>
-              <xsd:attribute name="alias" type="xsd:string"/>
-              <xsd:attribute name="name" type="xsd:string"/>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="data">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"/>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"/>
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"/>
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"/>
-              <xsd:attribute ref="xml:space"/>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="resheader">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required"/>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
             </xsd:complexType>
           </xsd:element>
         </xsd:choice>
@@ -201,7 +201,6 @@
     <value>Дезинтегратор</value>
     <comment>Module Cytoscrambler</comment>
   </data>
-  
   <data name="DecontaminationLimpetController" xml:space="preserve">
     <value>Очищение</value>
     <comment>Module DecontaminationLimpetController</comment>
@@ -294,7 +293,6 @@
     <value>«Молот»</value>
     <comment>Module ImperialHammer</comment>
   </data>
-  
   <data name="KillWarrantScanner" xml:space="preserve">
     <value>Сканер преступников</value>
     <comment>Module KillWarrantScanner</comment>
@@ -346,10 +344,6 @@
   <data name="ModuleReinforcementPackage" xml:space="preserve">
     <value>Набор для усиления модуля</value>
     <comment>Module ModuleReinforcementPackage</comment>
-  </data>
-  <data name="Multicannon" xml:space="preserve">
-    <value>Многоствольное орудие</value>
-    <comment>Module Multicannon</comment>
   </data>
   <data name="Multi_Cannon" xml:space="preserve">
     <value>Многоствольное орудие</value>
@@ -431,7 +425,6 @@
     <value>Контроллер дрона геологоразведки</value>
     <comment>Module ResearchLimpetController</comment>
   </data>
-  
   <data name="Sensors" xml:space="preserve">
     <value>Сенсоры</value>
     <comment>Module Sensors</comment>
@@ -456,7 +449,6 @@
     <value>Пусковая шоковых мин</value>
     <comment>Module ShockMineLauncher</comment>
   </data>
-  
   <data name="StandardDockingComputer" xml:space="preserve">
     <value>Стыковочный компьютер</value>
     <comment>Module StandardDockingComputer</comment>
@@ -505,7 +497,6 @@
     <value>Автоматическая плазменная пушка</value>
     <comment>Module PlasmaRepeater (fighter module)</comment>
   </data>
-  
   <data name="GuardianFsdBooster" xml:space="preserve">
     <value>Ускоритель FSD Guardians</value>
     <comment>Module GuardianFsdBooster</comment>
