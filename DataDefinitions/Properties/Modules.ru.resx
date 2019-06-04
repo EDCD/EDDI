@@ -347,10 +347,6 @@
     <value>Набор для усиления модуля</value>
     <comment>Module ModuleReinforcementPackage</comment>
   </data>
-  <data name="Multicannon" xml:space="preserve">
-    <value>Многоствольное орудие</value>
-    <comment>Module Multicannon</comment>
-  </data>
   <data name="Multi_Cannon" xml:space="preserve">
     <value>Многоствольное орудие</value>
     <comment>Module Multi_Cannon</comment>
@@ -570,4 +566,5 @@
     <value>Улучшенный стыковочный компьютер</value>
     <comment>Module AdvancedDockingComputer</comment>
   </data>
+  
 </root>
