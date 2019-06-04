@@ -339,7 +339,6 @@
   
   
   
-  
   <data name="PowerDistributor" xml:space="preserve">
     <value>Distributore di Energia</value>
     <comment>Module PowerDistributor</comment>
@@ -436,6 +435,7 @@
     <value>Analizzatore di Composizione</value>
     <comment>Module Composition Scanner</comment>
   </data>
+  
   
   
 </root>
