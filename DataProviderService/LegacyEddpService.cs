@@ -75,6 +75,7 @@ namespace EddiDataProviderService
                         body.EDDBID = (long?)Body["id"];
                         body.systemEDDBID = system.EDDBID;
                     }
+                    system.AddOrUpdateBody(body);
                 }
             }
         }

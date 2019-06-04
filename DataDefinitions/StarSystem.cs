@@ -53,22 +53,6 @@ namespace EddiDataDefinitions
             bodies = builder.ToImmutable();
         }
 
-        public void AddBodies(IEnumerable<Body> bodyList)
-        {
-            var builder = bodies.ToBuilder();
-            builder.AddRange(bodyList);
-            builder.Sort(Body.CompareById);
-            bodies = builder.ToImmutable();
-        }
-
-        public void UpdateBodyAt(int index, Body updatedBody)
-        {
-            var builder = bodies.ToBuilder();
-            builder[index] = updatedBody;
-            builder.Sort(Body.CompareById);
-            bodies = builder.ToImmutable();
-        }
-
         public void AddOrUpdateBody(Body body)
         {
             // although `bodies` is kept sorted by ID, IDs can be null so bodyname should be the unique identifier
