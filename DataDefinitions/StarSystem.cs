@@ -46,20 +46,26 @@ namespace EddiDataDefinitions
 
         public void AddBody(Body body)
         {
-            ImmutableList<Body> newBodies = bodies.Add(body).Sort(Body.CompareById);
-            bodies = newBodies;
+            var builder = bodies.ToBuilder();
+            builder.Add(body);
+            builder.Sort(Body.CompareById);
+            bodies = builder.ToImmutable();
         }
 
         public void AddBodies(IEnumerable<Body> bodyList)
         {
-            ImmutableList<Body> newBodies = bodies.AddRange(bodyList).Sort(Body.CompareById);
-            bodies = newBodies;
+            var builder = bodies.ToBuilder();
+            builder.AddRange(bodyList);
+            builder.Sort(Body.CompareById);
+            bodies = builder.ToImmutable();
         }
 
         public void UpdateBodyAt(int index, Body updatedBody)
         {
-            ImmutableList<Body> newBodies = bodies.SetItem(index, updatedBody).Sort(Body.CompareById);
-            bodies = newBodies;
+            var builder = bodies.ToBuilder();
+            builder[index] = updatedBody;
+            builder.Sort(Body.CompareById);
+            bodies = builder.ToImmutable();
         }
 
         /// <summary>The reserve level applicable to the system's rings</summary>
