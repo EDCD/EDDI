@@ -166,16 +166,10 @@ namespace EddiDataProviderService
 
                     // Determine whether our data is stale (We won't deserialize the the entire system if it's stale) 
                     IDictionary<string, object> system = Deserializtion.DeserializeData(data);
-                    system.TryGetValue("visitLog", out object visitVal);
                     system.TryGetValue("comment", out object commentVal);
-                    system.TryGetValue("lastvisit", out object lastVisitVal);
                     system.TryGetValue("lastupdated", out object lastUpdatedVal);
 
-                    List<object> visitVals = (List<object>)visitVal;
-                    SortedSet<DateTime> visitLog = visitVals == null ? null : 
-                        new SortedSet<DateTime>(visitVals.ConvertAll(o => Convert.ToDateTime(o)));
                     string comment = (string)commentVal ?? "";
-                    DateTime? lastvisit = (DateTime?)lastVisitVal;
                     DateTime? lastupdated = (DateTime?)lastUpdatedVal;
 
                     if (refreshIfOutdated)
@@ -192,11 +186,6 @@ namespace EddiDataProviderService
                             {
                                 needToUpdate = true;
                             }
-                        }
-                        else if (visitLog == null && lastvisit != null)
-                        {
-                            // Data is old format, need to refresh
-                            needToUpdate = true;
                         }
                     }
 
@@ -239,7 +228,7 @@ namespace EddiDataProviderService
                 }
 
                 // Synchronize EDSM visits and comments
-                updatedSystems = DataProviderService.SyncEdsmLogsAndComments(updatedSystems);
+                updatedSystems = DataProviderService.syncFromStarMapService(updatedSystems);
 
                 // Add our updated systems to our results
                 results.AddRange(updatedSystems);

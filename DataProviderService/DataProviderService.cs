@@ -76,32 +76,6 @@ namespace EddiDataProviderService
             return starSystem;
         }
 
-        public static List<StarSystem> SyncEdsmLogsAndComments(List<StarSystem> starSystems)
-        {
-            // Identify systems with the old visit log format that need updated flight logs from EDSM
-            List<StarSystem> syncSystems = new List<StarSystem>();
-            foreach (StarSystem starSystem in starSystems)
-            {
-                if (starSystem?.visitLog == null && starSystem?.lastvisit != null)
-                {
-                    syncSystems.Add(starSystem);
-                }
-            }
-
-            if (syncSystems.Count > 0)
-            {
-                // Synchronize EDSM flight logs and comments for applicable star systems
-                syncSystems = syncFromStarMapService(syncSystems);
-                foreach (StarSystem starSystem in syncSystems)
-                {
-                    StarSystem systemToUpdate = starSystems.FirstOrDefault(s => s.systemname == starSystem.systemname);
-                    systemToUpdate = starSystem;
-                }
-            }
-
-            return starSystems;
-        }
-
         private static List<Station> SetStationFactionData(List<Station> stations, List<Faction> factions)
         {
             // EDSM doesn't provide full faction information (like faction state) from the stations endpoint data
