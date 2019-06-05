@@ -19,7 +19,6 @@ namespace EddiDataProviderService
 
             StarSystem starSystem = StarMapService.GetStarMapSystem(system, showCoordinates, showSystemInformation);
             starSystem = GetSystemExtras(starSystem, showSystemInformation, showBodies, showStations, showFactions);
-            starSystem = SyncEdsmLogsAndComments(new List<StarSystem>() { starSystem })?.FirstOrDefault();
             return starSystem ?? new StarSystem() { systemname = system };
         }
 
@@ -36,7 +35,6 @@ namespace EddiDataProviderService
                     fullStarSystems.Add(GetSystemExtras(starSystems.Find(s => s?.systemname == systemName), showSystemInformation, showBodies, showStations, showFactions) ?? new StarSystem() { systemname = systemName });
                 }
             }
-            fullStarSystems = SyncEdsmLogsAndComments(fullStarSystems);
             return fullStarSystems;
         }
 
@@ -78,9 +76,9 @@ namespace EddiDataProviderService
             return starSystem;
         }
 
-        private static List<StarSystem> SyncEdsmLogsAndComments(List<StarSystem> starSystems)
+        public static List<StarSystem> SyncEdsmLogsAndComments(List<StarSystem> starSystems)
         {
-            // Identify systems that need updated flight logs from EDSM
+            // Identify systems with the old visit log format that need updated flight logs from EDSM
             List<StarSystem> syncSystems = new List<StarSystem>();
             foreach (StarSystem starSystem in starSystems)
             {

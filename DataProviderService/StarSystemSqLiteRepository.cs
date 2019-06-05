@@ -88,26 +88,7 @@ namespace EddiDataProviderService
 
         public List<StarSystem> GetOrCreateStarSystems(string[] names, bool fetchIfMissing = true, bool refreshIfOutdated = true)
         {
-            if (names.Count() == 0) { return null; }
-
-            // Get (and update if required) systems already in our database
-            List<StarSystem> systems = Instance.GetStarSystems(names, refreshIfOutdated);
-
-            // If a system isn't found after we've read our local database, we need to fetch it.
-            List<string> fetchSystems = new List<string>();
-            foreach (string name in names)
-            {
-                if (fetchIfMissing && systems.FirstOrDefault(s => s.systemname == name) == null)
-                {
-                    fetchSystems.Add(name);
-                }
-            }
-            List<StarSystem> fetchedSystems = DataProviderService.GetSystemsData(fetchSystems.ToArray());
-            if (fetchedSystems?.Count > 0)
-            {
-                Instance.insertStarSystems(fetchedSystems);
-                systems.AddRange(fetchedSystems);
-            }
+            List<StarSystem> systems = GetOrFetchStarSystems(names, fetchIfMissing, refreshIfOutdated);
 
             // Create a new system object for each name that isn't in the database and couldn't be fetched from a server
             foreach (string name in names)
@@ -132,9 +113,9 @@ namespace EddiDataProviderService
             if (names.Count() == 0) { return null; }
 
             List<StarSystem> systems = Instance.GetStarSystems(names, refreshIfOutdated);
-            List<string> fetchSystems = new List<string>();
 
             // If a system isn't found after we've read our local database, we need to fetch it.
+            List<string> fetchSystems = new List<string>();
             foreach (string name in names)
             {
                 if (fetchIfMissing && systems.FirstOrDefault(s => s.systemname == name) == null)
@@ -256,6 +237,9 @@ namespace EddiDataProviderService
                 {
                     results.Add(GetStarSystem(systemName, false));
                 }
+
+                // Synchronize EDSM visits and comments
+                updatedSystems = DataProviderService.SyncEdsmLogsAndComments(updatedSystems);
 
                 // Add our updated systems to our results
                 results.AddRange(updatedSystems);
