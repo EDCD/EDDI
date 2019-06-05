@@ -154,7 +154,7 @@
     <comment>Module BurstLaser</comment>
   </data>
   <data name="BusinessClassPassengerCabin" xml:space="preserve">
-    <value>Cabina per passeggeri di classe bisness</value>
+    <value>Cabina per passeggeri di classe Business</value>
     <comment>Module BusinessClassPassengerCabin</comment>
   </data>
   <data name="Cannon" xml:space="preserve">
@@ -165,13 +165,173 @@
     <value>Portellone di carico</value>
     <comment>Module CargoHatch</comment>
   </data>
+  <data name="CargoRack" xml:space="preserve">
+    <value>Modulo di Stoccaggio</value>
+    <comment>Module CargoRack</comment>
+  </data>
+  <data name="VoicePack_Celeste" xml:space="preserve">
+    <value>Celeste</value>
+    <comment>Module Celeste</comment>
+  </data>
+  <data name="ChaffLauncher" xml:space="preserve">
+    <value>Emettitore Chaff</value>
+    <comment>Module ChaffLauncher</comment>
+  </data>
+  <data name="CockpitCanopy" xml:space="preserve">
+    <value>Cupolino della Cabina di Pilotaggio</value>
+    <comment>Module CockpitCanopy</comment>
+  </data>
+  <data name="Cockpit" xml:space="preserve">
+    <value>Cabina di Pilotaggio</value>
+    <comment>Module Cockpit</comment>
+  </data>
+  <data name="CollectorLimpetController" xml:space="preserve">
+    <value>Controllore Automi di Raccolta</value>
+    <comment>Module CollectorLimpetController</comment>
+  </data>
+  <data name="Colouredstringlights" xml:space="preserve">
+    <value>Striscia di Luci colorate</value>
+    <comment>Module Colouredstringlights</comment>
+  </data>
+  <data name="CorrosionResistantCargoRack" xml:space="preserve">
+    <value>Modulo di Stoccaggio a prova di Corrosione</value>
+    <comment>Module CorrosionResistantCargoRack</comment>
+  </data>
+  <data name="Cytoscrambler" xml:space="preserve">
+    <value>Demodulatore Rapido</value>
+    <comment>Module Cytoscrambler</comment>
+  </data>
+  <data name="DataLinkScanner" xml:space="preserve">
+    <value>Analizzatore Connessione Dati</value>
+    <comment>Module DataLinkScanner</comment>
+  </data>
+  <data name="DecontaminationLimpetController" xml:space="preserve">
+    <value>Controllore Automi di Decontaminazione</value>
+    <comment>Module DecontaminationLimpetController</comment>
+  </data>
+  <data name="DetailedSurfaceScanner" xml:space="preserve">
+    <value>Scanner di Superficie Avanzato</value>
+    <comment>Module DetailedSurfaceScanner</comment>
+  </data>
+  <data name="Disruptor" xml:space="preserve">
+    <value>Disturbatore</value>
+    <comment>Module Disruptor</comment>
+  </data>
+  <data name="EconomyClassPassengerCabin" xml:space="preserve">
+    <value>Cabina Passeggeri di Classe Economica</value>
+    <comment>Module EconomyClassPassengerCabin</comment>
+  </data>
+  <data name="ElectronicCountermeasure" xml:space="preserve">
+    <value>Contromisure Elettroniche</value>
+    <comment>Module ElectronicCountermeasure</comment>
+  </data>
+  <data name="EnhancedPerformanceThrusters" xml:space="preserve">
+    <value>Propulsori a Prestazioni Incrementate</value>
+    <comment>Module EnhancedPerformanceThrusters</comment>
+  </data>
+  <data name="FighterArmour" xml:space="preserve">
+    <value>Armatura per Caccia</value>
+    <comment>Module FighterArmour</comment>
+  </data>
+  <data name="FighterHangar" xml:space="preserve">
+    <value>Rimessa per Caccia</value>
+    <comment>Module FighterHangar</comment>
+  </data>
+  <data name="FirstClassPassengerCabin" xml:space="preserve">
+    <value>Cabina Passeggeri di Prima Classe</value>
+    <comment>Module FirstClassPassengerCabin</comment>
+  </data>
+  <data name="FragmentCannon" xml:space="preserve">
+    <value>Cannone a Frammentazione</value>
+    <comment>Module FragmentCannon</comment>
+  </data>
+  <data name="FrameShiftDriveInterdictor" xml:space="preserve">
+    <value>Disattivatore di Motore a Modulazione di Sistema</value>
+    <comment>Module FrameShiftDriveInterdictor</comment>
+  </data>
+  <data name="FrameShiftDrive" xml:space="preserve">
+    <value>Motore a Modulazione di Sistema</value>
+    <comment>Module FrameShiftDrive</comment>
+  </data>
+  <data name="FrameShiftWakeScanner" xml:space="preserve">
+    <value>Analizzatore di Tracce di Motore a Modulazione di Sistema</value>
+    <comment>Module FrameShiftWakeScanner</comment>
+  </data>
+  <data name="FuelScoop" xml:space="preserve">
+    <value>Concentratore di Carburante</value>
+    <comment>Module FuelScoop</comment>
+  </data>
+  <data name="FuelTank" xml:space="preserve">
+    <value>Contenitore di Carburante</value>
+    <comment>Module FuelTank</comment>
+  </data>
+  <data name="FuelTransferLimpetController" xml:space="preserve">
+    <value>Controllore Automi di Trasferimento Carburante</value>
+    <comment>Module FuelTransferLimpetController</comment>
+  </data>
+  <data name="GuardianGaussCannon" xml:space="preserve">
+    <value>Cannone Gauss dei Guardiani</value>
+    <comment>Module GuardianGaussCannon</comment>
+  </data>
+  <data name="GuardianPlasmaCharger" xml:space="preserve">
+    <value>Caricatore al Plasma dei Guardiani</value>
+    <comment>Module GuardianPlasmaCharger</comment>
+  </data>
+  <data name="GuardianPowerPlant" xml:space="preserve">
+    <value>Generatore di Energia dei Guardiani</value>
+    <comment>Module GuardianPowerPlant</comment>
+  </data>
+  <data name="HatchBreakerLimpetController" xml:space="preserve">
+    <value>Controllore Automi di Manomissione Portelli</value>
+    <comment>Module HatchBreakerLimpetController</comment>
+  </data>
+  <data name="HeatSinkLauncher" xml:space="preserve">
+    <value>Emettitore Dispersori di Calore</value>
+    <comment>Module HeatSinkLauncher</comment>
+  </data>
+  <data name="HullReinforcementPackage" xml:space="preserve">
+    <value>Sistema di Rafforzamento Chiglia</value>
+    <comment>Module HullReinforcementPackage</comment>
+  </data>
+  <data name="ImperialHammer" xml:space="preserve">
+    <value>Martello Imperiale</value>
+    <comment>Module ImperialHammer</comment>
+  </data>
+  <data name="IntermediateDiscoveryScanner" xml:space="preserve">
+    <value>Scanner di Esplorazione Intermedio</value>
+    <comment>Module IntermediateDiscoveryScanner</comment>
+  </data>
+  <data name="KillWarrantScanner" xml:space="preserve">
+    <value>Scanner di Mandati di Eliminazione</value>
+    <comment>Module KillWarrantScanner</comment>
+  </data>
+  <data name="LifeSupport" xml:space="preserve">
+    <value>Supporto Vita</value>
+    <comment>Module LifeSupport</comment>
+  </data>
   
+  <data name="LuxuryClassPassengerCabin" xml:space="preserve">
+    <value>Cabina Passeggeri di Classe Lusso</value>
+    <comment>Module LuxuryClassPassengerCabin</comment>
+  </data>
+  <data name="ManifestScanner" xml:space="preserve">
+    <value>Analizzatore di Inventario</value>
+    <comment>Module ManifestScanner</comment>
+  </data>
+  <data name="MetaAlloyHullReinforcement" xml:space="preserve">
+    <value>Rafforzamento Chiglia in Meta-Lega</value>
+    <comment>Module MetaAlloyHullReinforcement</comment>
+  </data>
   
   
   
   
   
   
+  <data name="ModuleReinforcementPackage" xml:space="preserve">
+    <value>Rafforzamento Moduli Interni</value>
+    <comment>Module ModuleReinforcementPackage</comment>
+  </data>
   
   
   
@@ -179,13 +339,37 @@
   
   
   
+  <data name="PowerDistributor" xml:space="preserve">
+    <value>Distributore di Energia</value>
+    <comment>Module PowerDistributor</comment>
+  </data>
+  <data name="PowerPlant" xml:space="preserve">
+    <value>Generatore di Energia</value>
+    <comment>Module PowerPlant</comment>
+  </data>
   
+  <data name="ProspectorLimpetController" xml:space="preserve">
+    <value>Controllore Automi di Prospezione</value>
+    <comment>Module ProspectorLimpetController</comment>
+  </data>
   
   
   
+  <data name="ReconLimpetController" xml:space="preserve">
+    <value>Controllore Automi di Ricognizione</value>
+    <comment>Module ReconLimpetController</comment>
+  </data>
   
   
   
+  <data name="RepairLimpetController" xml:space="preserve">
+    <value>Controllore Automi di Riparazione</value>
+    <comment>Module RepairLimpetController</comment>
+  </data>
+  <data name="ResearchLimpetController" xml:space="preserve">
+    <value>Controllore Automi di Ricerca</value>
+    <comment>Module ResearchLimpetController</comment>
+  </data>
   
   
   
@@ -195,79 +379,66 @@
   
   
   
+  <data name="Thrusters" xml:space="preserve">
+    <value>Propulsori</value>
+    <comment>Module Thrusters</comment>
+  </data>
   
   
   
   
+  <data name="XenoScanner" xml:space="preserve">
+    <value>Analizzatore Alieni</value>
+    <comment>Module XenoScanner</comment>
+  </data>
   
   
   
+  <data name="AdvancedDiscoveryScanner" xml:space="preserve">
+    <value>Scanner di Esplorazione Avanzato</value>
+    <comment>Module AdvancedDiscoveryScanner</comment>
+  </data>
   
   
+  <data name="GuardianFsdBooster" xml:space="preserve">
+    <value>Evoluzione FSD dei Guardiani</value>
+    <comment>Module GuardianFsdBooster</comment>
+  </data>
+  <data name="GuardianPowerDistributor" xml:space="preserve">
+    <value>Distributore di Energia dei Guardiani</value>
+    <comment>Module GuardianPowerDistributor</comment>
+  </data>
   
   
   
+  <data name="GuardianHullReinforcement" xml:space="preserve">
+    <value>Rafforzamento Chiglia dei Guardiani</value>
+    <comment>Module GuardianHullReinforcement</comment>
+  </data>
+  <data name="GuardianModuleReinforcement" xml:space="preserve">
+    <value>Rafforzamento Moduli Interni dei Guardiani</value>
+    <comment>Module GuardianModuleReinforcement</comment>
+  </data>
+  <data name="GuardianShieldReinforcement" xml:space="preserve">
+    <value>Rafforzamento Scudi dei Guardiani</value>
+    <comment>Module GuardianShieldReinforcement</comment>
+  </data>
   
+  <data name="PulseWave" xml:space="preserve">
+    <value>Scanner ad Impulso d'Onda</value>
+    <comment>Module Pulse Wave Scanner</comment>
+  </data>
   
   
   
+  <data name="CompositionScanner" xml:space="preserve">
+    <value>Analizzatore di Composizione</value>
+    <comment>Module Composition Scanner</comment>
+  </data>
   
   
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="AdvancedMultiCannon" xml:space="preserve">
+    <value>Cannone a Ripetizione Avanzato</value>
+    <comment>Module Advanced Multi-Cannon (from the `Bridging the Gap` initiative)</comment>
+  </data>
 </root>
