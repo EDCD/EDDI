@@ -65,7 +65,7 @@ namespace EddiDataProviderService
             // Set data not currently available from EDSM: EDDBID
             if (response["bodies"] is JArray)
             {
-                foreach (Body body in system.bodies.ToList())
+                foreach (Body body in system.bodies)
                 {
                     JObject Body = response["bodies"].Children<JObject>()
                         .FirstOrDefault(o => o["name"] != null && o["name"].ToString() == body.bodyname);
@@ -75,6 +75,7 @@ namespace EddiDataProviderService
                         body.EDDBID = (long?)Body["id"];
                         body.systemEDDBID = system.EDDBID;
                     }
+                    system.AddOrUpdateBody(body);
                 }
             }
         }

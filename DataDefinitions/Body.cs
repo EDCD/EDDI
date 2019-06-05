@@ -15,7 +15,9 @@ namespace EddiDataDefinitions
     {
         /// <summary>The ID of this body in the star system</summary>
         public long? bodyId { get; set; }
-        
+
+        public static int CompareById(Body lhs, Body rhs) => Math.Sign((lhs.bodyId - rhs.bodyId) ?? 0);
+
         /// <summary>The ID of this body in EDDB</summary>
         public long? EDDBID { get; set; }
 

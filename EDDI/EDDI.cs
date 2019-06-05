@@ -1498,8 +1498,8 @@ namespace Eddi
             CurrentStarSystem.y = theEvent.y;
             CurrentStarSystem.z = theEvent.z;
             CurrentStarSystem.Faction = theEvent.controllingfaction;
-            CurrentStellarBody = CurrentStarSystem.bodies.FirstOrDefault(b => b.bodyname == theEvent.star) 
-                ?? CurrentStarSystem.bodies.FirstOrDefault(b => b.distance == 0);
+            CurrentStellarBody = CurrentStarSystem.bodies.Find(b => b.bodyname == theEvent.star) 
+                ?? CurrentStarSystem.bodies.Find(b => b.distance == 0);
 
             // Update system faction data if available
             if (theEvent.factions != null)
@@ -1509,7 +1509,7 @@ namespace Eddi
                 // Update station controlling faction data
                 foreach (Station station in CurrentStarSystem.stations)
                 {
-                    Faction stationFaction = theEvent.factions.FirstOrDefault(f => f.name == station.Faction.name);
+                    Faction stationFaction = theEvent.factions.Find(f => f.name == station.Faction.name);
                     if (stationFaction != null)
                     {
                         station.Faction = stationFaction;
@@ -1517,8 +1517,8 @@ namespace Eddi
                 }
 
                 // Check if current system is inhabited by or HQ for squadron faction
-                Faction squadronFaction = theEvent.factions.FirstOrDefault(f => (bool)f.presences.
-                    FirstOrDefault(p => p.systemName == CurrentStarSystem.systemname)?.squadronhomesystem || f.squadronfaction);
+                Faction squadronFaction = theEvent.factions.Find(f => (bool)f.presences.
+                    Find(p => p.systemName == CurrentStarSystem.systemname)?.squadronhomesystem || f.squadronfaction);
                 if (squadronFaction != null)
                 {
                     updateSquadronData(squadronFaction, CurrentStarSystem.systemname);
@@ -1541,7 +1541,7 @@ namespace Eddi
                     bodyType = BodyType.FromEDName("Star"),
                     stellarclass = LastFSDEngagedEvent?.stellarclass,
                 };
-                CurrentStarSystem.bodies.Add(CurrentStellarBody);
+                CurrentStarSystem.AddOrUpdateBody(CurrentStellarBody);
             }
 
             // Update to most recent information
@@ -1927,71 +1927,24 @@ namespace Eddi
         private bool eventStarScanned(StarScannedEvent theEvent)
         {
             // We just scanned a star.  We can only proceed if we know our current star system
-            if (CurrentStarSystem != null)
-            {
-                Body star = CurrentStarSystem.bodies?.FirstOrDefault(b => b.bodyname == theEvent.bodyname);
-                if (star == null)
-                {
-                    Logging.Debug("Scanned star " + theEvent.bodyname + " is new - creating");
-                    CurrentStarSystem.bodies?.Add(theEvent.star);
-                }
-                else
-                {
-                    int index = CurrentStarSystem.bodies.IndexOf(star);
-                    if (index != -1)
-                    {
-                        CurrentStarSystem.bodies[index] = theEvent.star;
-                    }
-                }
-                CurrentStarSystem.bodies = CurrentStarSystem.bodies.OrderBy(s => s.bodyId).ToList();
+            if (CurrentStarSystem == null) { return false; }
 
-                Logging.Debug("Saving data for scanned star " + theEvent.star.bodyname);
-                StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
-            }
-            return CurrentStarSystem != null;
+            CurrentStarSystem.AddOrUpdateBody(theEvent.star);
+            StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
+            return true;
         }
 
         private bool eventBodyScanned(BodyScannedEvent theEvent)
         {
             // We just scanned a body.  We can only proceed if we know our current star system
-            if (CurrentStarSystem != null)
-            {
-                Body body = CurrentStarSystem.bodies?.FirstOrDefault(b => b.bodyname == theEvent.bodyname);
-                if (body == null)
-                {
-                    Logging.Debug("Scanned body " + theEvent.bodyname + " is new - creating");
-                    CurrentStarSystem.bodies.Add(theEvent.body);
-                }
-                else
-                {
-                    if (body.scanned == null)
-                    {
-                        int index = CurrentStarSystem.bodies.IndexOf(body);
-                        if (index != -1)
-                        {
-                            // Update our body with the scan data.
-                            CurrentStarSystem.bodies[index] = theEvent.body;
-                        }
-                    }
-                    else
-                    {
-                        // We've already scanned this body. No need to repeat.
-                        return false;
-                    }
-                }
-                CurrentStarSystem.bodies = CurrentStarSystem.bodies.OrderBy(b => b.bodyId).ToList();
+            if (CurrentStarSystem == null) { return false; }
 
-                // Update the system reserve level, when appropriate
-                if (theEvent.body.reserveLevel != ReserveLevel.None)
-                {
-                    CurrentStarSystem.Reserve = theEvent.body.reserveLevel;
-                }
+            CurrentStarSystem.AddOrUpdateBody(theEvent.body);
 
-                Logging.Debug("Saving data for scanned body " + theEvent.bodyname);
-                StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
-            }
+            Logging.Debug("Saving data for scanned body " + theEvent.bodyname);
+            StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
 
-            return CurrentStarSystem != null;
+            return true;
         }
 
         private bool eventBodyMapped(BodyMappedEvent theEvent)
@@ -2002,13 +1955,16 @@ namespace Eddi
             }
             else
             {
-                Body body = CurrentStarSystem?.bodies?.FirstOrDefault(b => b?.bodyname == theEvent.name);
-                if (body != null)
+                if (CurrentStarSystem != null)
                 {
-                    body.mapped = theEvent.timestamp;
-                    body.mappedEfficiently = theEvent.probesused <= theEvent.efficiencytarget;
-                    StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
-                    updateCurrentStellarBody(theEvent.name, CurrentStarSystem?.systemname, CurrentStarSystem?.systemAddress);
+                    Body body = CurrentStarSystem.bodies.Find(b => b.bodyname == theEvent.name);
+                    if (body != null)
+                    {
+                        body.mapped = theEvent.timestamp;
+                        body.mappedEfficiently = theEvent.probesused <= theEvent.efficiencytarget;
+                        StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
+                        updateCurrentStellarBody(theEvent.name, CurrentStarSystem?.systemname, CurrentStarSystem?.systemAddress);
+                    }
                 }
             }
             return true;

@@ -108,26 +108,40 @@ namespace UnitTests
         }
 
         [TestMethod]
-        public void TestStarSystemExplorationGreenGold()
+        public void TestEmptySystemGreenGold()
+        {
+            StarSystem starSystem = new StarSystem() { systemname = "testSystem" };
+            Assert.IsFalse(starSystem.isgreen, "empty system should not be green");
+            Assert.IsFalse(starSystem.isgold, "empty system should not be gold");
+        }
+
+        [TestMethod]
+        public void TestGreenSystemGreenGold()
         {
             // Set up a body which would trigger the green system condition
             List<MaterialPresence> materials = new List<MaterialPresence>();
-            materials.Add(new MaterialPresence(Material.FromEDName("carbon"), 0.01M));
-            materials.Add(new MaterialPresence(Material.FromEDName("germanium"), 0.01M));
-            materials.Add(new MaterialPresence(Material.FromEDName("vanadium"), 0.01M));
-            materials.Add(new MaterialPresence(Material.FromEDName("cadmium"), 0.01M));
-            materials.Add(new MaterialPresence(Material.FromEDName("niobium"), 0.01M));
-            materials.Add(new MaterialPresence(Material.FromEDName("arsenic"), 0.01M));
-            materials.Add(new MaterialPresence(Material.FromEDName("yttrium"), 0.01M));
-            materials.Add(new MaterialPresence(Material.FromEDName("polonium"), 0.01M));
+            foreach (Material material in Material.jumponiumElements)
+            {
+                materials.Add(new MaterialPresence(material, 0.01M));
+            }
             Body jumponiumBody = new Body()
             {
                 bodyname = "Jumponium Haven",
                 materials = materials
             };
 
+            // Add a body with green materials and re-test
+            StarSystem starSystem = new StarSystem() { systemname = "testSystem" };
+            starSystem.AddOrUpdateBody(jumponiumBody);
+            Assert.IsTrue(starSystem.isgreen, "green system should be green");
+            Assert.IsFalse(starSystem.isgold, "green system should not be gold");
+        }
+
+        [TestMethod]
+        public void TestGoldSystemGreenGold()
+        {
             // Set up a body which would trigger the gold system condition
-            materials = new List<MaterialPresence>();
+            List<MaterialPresence> materials = new List<MaterialPresence>();
             foreach (Material material in Material.surfaceElements)
             {
                 materials.Add(new MaterialPresence(material, 0.01M));
@@ -138,23 +152,39 @@ namespace UnitTests
                 materials = materials
             };
 
-            // Test standard system with no bodies included
-            StarSystem starSystem = new StarSystem() { systemname = "testSystem" };
-            Assert.IsFalse((bool)starSystem.isgreen);
-            Assert.IsFalse((bool)starSystem.isgold);
-            Assert.AreEqual(0, starSystem.materialEdNames.Count);
-
-            // Add a body with green materials and re-test
-            starSystem.bodies.Add(jumponiumBody);
-            Assert.IsTrue((bool)starSystem.isgreen);
-            Assert.IsFalse((bool)starSystem.isgold);
-            Assert.AreEqual(8, starSystem.materialEdNames.Count);
-
             // Add a body with gold materials and re-test
-            starSystem.bodies.Add(goldBody);
-            Assert.IsTrue((bool)starSystem.isgreen);
-            Assert.IsTrue((bool)starSystem.isgold);
-            Assert.AreEqual(25, starSystem.materialEdNames.Count);
+            StarSystem starSystem = new StarSystem() { systemname = "testSystem" };
+            starSystem.AddOrUpdateBody(goldBody);
+            Assert.IsTrue(starSystem.isgreen, "gold system should be green");
+            Assert.IsTrue(starSystem.isgold, "gold system should be gold");
+        }
+
+        [TestMethod]
+        public void TestAddOrUpdateBodyAdd()
+        {
+            StarSystem starSystem = new StarSystem() { systemname = "testSystem" };
+            Body body = new Body() { bodyname = "testSystem 1" };
+
+            starSystem.AddOrUpdateBody(body);
+
+            Assert.AreEqual(1, starSystem.bodies.Count);
+        }
+
+        [TestMethod]
+        public void TestAddOrUpdateBodyUpdate()
+        {
+            StarSystem starSystem = new StarSystem() { systemname = "testSystem" };
+            Body body = new Body() { bodyname = "testSystem 1" };
+            starSystem.AddOrUpdateBody(body);
+            BodyType moon = BodyType.FromEDName("Moon");
+            Body updatedBody = new Body() { bodyname = "testSystem 1", bodyType = moon };
+
+            starSystem.AddOrUpdateBody(updatedBody);
+
+            Assert.AreEqual(1, starSystem.bodies.Count);
+            Body actualBody = starSystem.bodies[0];
+            Assert.AreEqual("testSystem 1", actualBody.bodyname);
+            Assert.AreEqual(moon, actualBody.bodyType);
         }
     }
 }

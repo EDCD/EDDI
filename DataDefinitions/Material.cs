@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using Utilities;
 
@@ -193,9 +194,20 @@ namespace EddiDataDefinitions
             var UnknownOrganicCircuitry = new Material("unknownorganiccircuitry", Manufactured, VeryRare);
             var Tg_PropulsionElement = new Material("tg_propulsionelement", Manufactured, VeryRare);
 
-            surfaceElements = AllOfThem
-            .Where(m => m.category == Element)
-            .Where(m => m.greatpctbody != null).ToList();
+            surfaceElements = ImmutableHashSet.ToImmutableHashSet(AllOfThem
+                .Where(m => m.category == Element)
+                .Where(m => m.greatpctbody != null).ToList());
+
+            jumponiumElements = ImmutableHashSet.Create(
+                Carbon,
+                Germanium,
+                Vanadium,
+                Cadmium,
+                Niobium,
+                Arsenic,
+                Yttrium,
+                Polonium                
+            );
         }
 
         public MaterialCategory category { get; }
@@ -211,7 +223,8 @@ namespace EddiDataDefinitions
         public string bodyname { get; set; }
         public string bodyshortname { get; set; }
 
-        public static List<Material> surfaceElements { get; } // Elements which are available at a planetary surface and not just in space
+        public static ImmutableHashSet<Material> surfaceElements { get; } // Elements which are available at a planetary surface and not just in space
+        public static ImmutableHashSet<Material> jumponiumElements { get; } // Elements which are used for FSD injection
 
         // Blueprints for the material; 
         public List<Blueprint> blueprints { get; set; }
@@ -242,7 +255,7 @@ namespace EddiDataDefinitions
             return result;
         }
 
-        public static Body highestPercentBody(string materialEdName, List<Body> bodies)
+        public static Body highestPercentBody(string materialEdName, IList<Body> bodies)
         {
             Body bestBody = null;
             decimal percentage = 0;

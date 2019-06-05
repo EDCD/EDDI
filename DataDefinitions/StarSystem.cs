@@ -2,6 +2,7 @@
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.Serialization;
@@ -27,8 +28,61 @@ namespace EddiDataDefinitions
         /// <summary>Unique 64 bit id value for system</summary>
         public long? systemAddress { get; set; }
 
-        /// <summary>Details of bodies (stars/planets/moons)</summary>
-        public List<Body> bodies { get; set; }
+        /// <summary>Details of bodies (stars/planets/moons), kept sorted by ID</summary>
+        [JsonProperty] // Required to deserialize to the private setter
+        public ImmutableList<Body> bodies
+        {
+            get => _bodies;
+            private set
+            {
+                if (value == _bodies)
+                {
+                    return;
+                }
+                materialsAvailable = MaterialsOnBodies(value);
+                _bodies = value;
+            }
+        }
+        private ImmutableList<Body> _bodies;
+
+        public void AddOrUpdateBody(Body body)
+        {
+            var builder = bodies.ToBuilder();
+            internalAddOrUpdateBody(body, builder);
+            builder.Sort(Body.CompareById);
+            bodies = builder.ToImmutable();
+        }
+
+        public void AddOrUpdateBodies(IEnumerable<Body> newBodies)
+        {
+            var builder = bodies.ToBuilder();
+            foreach (Body body in newBodies)
+            {
+                internalAddOrUpdateBody(body, builder);
+            }
+            builder.Sort(Body.CompareById);
+            bodies = builder.ToImmutable();
+        }
+
+        private void internalAddOrUpdateBody(Body body, ImmutableList<Body>.Builder builder)
+        {
+            // although `bodies` is kept sorted by ID, IDs can be null so bodyname should be the unique identifier
+            int index = builder.FindIndex(b => b.bodyname == body.bodyname);
+            if (index >= 0)
+            {
+                builder[index] = body;
+            }
+            else
+            {
+                builder.Add(body);
+            }
+
+            // Update the system reserve level, when appropriate
+            if (body.reserveLevel != ReserveLevel.None)
+            {
+                Reserve = body.reserveLevel;
+            }
+        }
 
         /// <summary>The reserve level applicable to the system's rings</summary>
         public ReserveLevel Reserve { get; set; } = ReserveLevel.None;
@@ -49,6 +103,7 @@ namespace EddiDataDefinitions
         public string security => (securityLevel ?? SecurityLevel.None).localizedName;
 
         public Power Power { get; set; }
+        [JsonIgnore]
         public string power => (Power ?? Power.None).localizedName;
         public string powerstate { get; set; }
 
@@ -90,23 +145,11 @@ namespace EddiDataDefinitions
 
         /// <summary> Whether the system is a "green" system for exploration (containing all FSD synthesis elements) </summary>
         [JsonIgnore]
-        public bool? isgreen => materialEdNames?.Count() == 0 ? false :
-            materialEdNames.Intersect(new List<string>()
-            {
-                "carbon",
-                "germanium",
-                "vanadium",
-                "cadmium",
-                "niobium",
-                "arsenic",
-                "yttrium",
-                "polonium"
-            }).Count() == 8;
+        public bool isgreen => materialsAvailable.IsSupersetOf(Material.jumponiumElements);
 
         /// <summary> Whether the system is a "gold" system for exploration (containing all elements available from planetary surfaces) </summary>
         [JsonIgnore]
-        public bool? isgold => materialEdNames?.Count() == 0 ? false :
-            Material.surfaceElements.Select(m => m.edname).Intersect(materialEdNames).Count() == Material.surfaceElements.Count();
+        public bool isgold => materialsAvailable.IsSupersetOf(Material.surfaceElements);
 
         /// <summary>Number of visits</summary>
         [JsonIgnore]
@@ -130,7 +173,22 @@ namespace EddiDataDefinitions
 
         // Not intended to be user facing - materials available within the system
         [JsonIgnore]
-        public List<string> materialEdNames => bodies.SelectMany(b => b.materials, (b, m) => m.definition.edname).Distinct().ToList();
+        private HashSet<Material> materialsAvailable = new HashSet<Material>();
+
+        private HashSet<Material> MaterialsOnBodies(IEnumerable<Body> bodies)
+        {
+            HashSet<Material> result = new HashSet<Material>();
+            if (bodies == null) { return result; }
+            foreach (Body body in bodies)
+            {
+                if (body?.materials == null) { continue; }
+                foreach (MaterialPresence presence in body.materials)
+                {
+                    result.Add(presence.definition);
+                }
+            }
+            return result;
+        }
 
         // Not intended to be user facing - discoverable bodies as reported by a discovery scan "honk"
         public int discoverableBodies = 0;
@@ -153,6 +211,15 @@ namespace EddiDataDefinitions
         [OnDeserialized]
         private void OnDeserialized(StreamingContext context)
         {
+            OnFactionDeserialized();
+
+            materialsAvailable = MaterialsOnBodies(bodies);
+
+            additionalJsonData = null;
+        }
+
+        private void OnFactionDeserialized()
+        {
             if (Faction == null) { Faction = new Faction(); }
             FactionPresence factionPresence = Faction.presences.FirstOrDefault(p => p.systemName == systemname) ?? new FactionPresence();
             if (factionPresence.FactionState == null)
@@ -161,22 +228,21 @@ namespace EddiDataDefinitions
                 string name = (string)additionalJsonData?["state"];
                 if (name != null)
                 {
-                    Faction.presences.FirstOrDefault(p => p.systemName == name).FactionState = 
+                    Faction.presences.FirstOrDefault(p => p.systemName == name).FactionState =
                         FactionState.FromEDName(name ?? "None");
                 }
             }
             else
             {
                 // get the canonical FactionState object for the given EDName
-                factionPresence.FactionState = 
+                factionPresence.FactionState =
                     FactionState.FromEDName(Faction.presences.FirstOrDefault(p => p.systemName == systemname)?.FactionState.edname ?? "None");
             }
-            additionalJsonData = null;
         }
 
         public StarSystem()
         {
-            bodies = new List<Body>();
+            bodies = ImmutableList.Create<Body>();
             stations = new List<Station>();
         }
 
@@ -187,7 +253,7 @@ namespace EddiDataDefinitions
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
         }
 
-        private long estimateSystemValue(List<Body> bodies)
+        private long estimateSystemValue(IList<Body> bodies)
         {
             // Credit to MattG's thread at https://forums.frontier.co.uk/showthread.php/232000-Exploration-value-formulae for scan value formulas
 
