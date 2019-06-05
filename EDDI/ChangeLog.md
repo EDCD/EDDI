@@ -2,11 +2,12 @@
 
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
-### Development
+### 3.4.1-rc1
   * EDSM responder
     * Improved EDSM synchronization for system visits and comments
   * Speech responder
     * Fixed an issue where star chromaticity wasn't being translated correctly.
+    * Fixed an issue where certain scan scripts such as 'Star scanned' would sometimes give an error message.
     * Revised the `Star report` script to resolve a couple of minor bugs. 
     * Revised the `Body report summary script` script to resolve a couple of minor bugs.
     * Revised the `System scan complete` script to reduce verbosity and increase variety.
