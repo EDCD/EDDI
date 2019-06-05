@@ -1941,12 +1941,6 @@ namespace Eddi
 
             CurrentStarSystem.AddOrUpdateBody(theEvent.body);
 
-            // Update the system reserve level, when appropriate
-            if (theEvent.body.reserveLevel != ReserveLevel.None)
-            {
-                CurrentStarSystem.Reserve = theEvent.body.reserveLevel;
-            }
-
             Logging.Debug("Saving data for scanned body " + theEvent.bodyname);
             StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
 

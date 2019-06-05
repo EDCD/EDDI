@@ -48,7 +48,7 @@ namespace EddiDataDefinitions
         public void AddOrUpdateBody(Body body)
         {
             var builder = bodies.ToBuilder();
-            putBodyOnBuilder(body, builder);
+            internalAddOrUpdateBody(body, builder);
             builder.Sort(Body.CompareById);
             bodies = builder.ToImmutable();
         }
@@ -58,13 +58,13 @@ namespace EddiDataDefinitions
             var builder = bodies.ToBuilder();
             foreach (Body body in newBodies)
             {
-                putBodyOnBuilder(body, builder);
+                internalAddOrUpdateBody(body, builder);
             }
             builder.Sort(Body.CompareById);
             bodies = builder.ToImmutable();
         }
 
-        private static void putBodyOnBuilder(Body body, ImmutableList<Body>.Builder builder)
+        private void internalAddOrUpdateBody(Body body, ImmutableList<Body>.Builder builder)
         {
             // although `bodies` is kept sorted by ID, IDs can be null so bodyname should be the unique identifier
             int index = builder.FindIndex(b => b.bodyname == body.bodyname);
@@ -75,6 +75,12 @@ namespace EddiDataDefinitions
             else
             {
                 builder.Add(body);
+            }
+
+            // Update the system reserve level, when appropriate
+            if (body.reserveLevel != ReserveLevel.None)
+            {
+                Reserve = body.reserveLevel;
             }
         }
 
