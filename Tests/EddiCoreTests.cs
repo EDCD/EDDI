@@ -57,7 +57,7 @@ namespace IntegrationTests
     }
 }
 
-    namespace UnitTests
+namespace UnitTests
 {
     [TestClass]
     public class EddiCoreTests : TestBase
@@ -125,6 +125,7 @@ namespace IntegrationTests
             PrivateObject privateObject = new PrivateObject(Eddi.EDDI.Instance);
             privateObject.Invoke("updateCurrentSystem", new object[] { "Grea Bloae HH-T d4-44" });
             Assert.AreEqual("Grea Bloae HH-T d4-44", EDDI.Instance.CurrentStarSystem?.systemname);
+            new PrivateObject(EDDI.Instance.CurrentStarSystem).SetFieldOrProperty("bodies", new List<Body>());
 
             var result = (bool)privateObject.Invoke("eventBodyScanned", new object[] { @event });
             Body body = EDDI.Instance.CurrentStarSystem.bodies.FirstOrDefault(b => b.bodyname == "Grea Bloae HH-T d4-44 4");
@@ -158,7 +159,8 @@ namespace IntegrationTests
 
             PrivateObject privateObject = new PrivateObject(Eddi.EDDI.Instance);
             privateObject.Invoke("updateCurrentSystem", new object[] { "BD-01 2784" });
-            privateObject.Invoke("eventBodyMapped", new object[] { @event });
+            var result = (bool)privateObject.Invoke("eventBodyMapped", new object[] { @event });
+            Assert.IsTrue(result);
             Assert.AreEqual("BD-01 2784 10", EDDI.Instance.CurrentStellarBody?.bodyname);
         }
 

@@ -103,26 +103,31 @@ namespace EddiEdsmResponder
 
         public static void obtainEdsmLogs(IProgress<string> progress)
         {
-            try
+            if (StarMapService.Instance != null)
             {
-                Dictionary<string, StarMapLogInfo> systems = StarMapService.Instance.getStarMapLog();
-                Dictionary<string, string> comments = StarMapService.Instance.getStarMapComments();
-                int total = systems.Count;
-                int i = 0;
-
-                string[] systemNames = systems.Keys.ToArray();
-                while (i < total)
+                try
                 {
-                    int batchSize = Math.Min(total, StarMapService.syncBatchSize);
-                    DataProviderService.syncEdsmLogBatch(systems.Skip(i).Take(batchSize).ToDictionary(x => x.Key, x => x.Value), comments);
-                    i = i + batchSize;
-                    progress.Report($"{Properties.EDSMResources.log_button_fetching_progress} {i}/{total}");
+                    List<StarMapResponseLogEntry> flightLogs = StarMapService.Instance.getStarMapLog();
+                    Dictionary<string, string> comments = StarMapService.Instance.getStarMapComments();
+                    int total = flightLogs.Count;
+                    int i = 0;
+
+                    while (i < total)
+                    {
+                        int batchSize = Math.Min(total, StarMapService.syncBatchSize);
+                        List<StarMapResponseLogEntry> flightLogBatch = flightLogs.Skip(i).Take(batchSize).ToList();
+                        string[] batchNames = flightLogBatch.Select(x => x.system).ToArray();
+                        List<StarSystem> batchsystems = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystems(batchNames, true, false);
+                        DataProviderService.syncEdsmLogBatch(batchsystems, flightLogs.Skip(i).Take(batchSize).ToList(), comments);
+                        i += batchSize;
+                        progress.Report($"{Properties.EDSMResources.log_button_fetching_progress} {i}/{total}");
+                    }
+                    progress.Report(Properties.EDSMResources.log_button_fetched);
                 }
-                progress.Report(Properties.EDSMResources.log_button_fetched);
-            }
-            catch (EDSMException edsme)
-            {
-                progress.Report(Properties.EDSMResources.log_button_error_received + edsme.Message);
+                catch (EDSMException edsme)
+                {
+                    progress.Report(Properties.EDSMResources.log_button_error_received + edsme.Message);
+                }
             }
         }
     }

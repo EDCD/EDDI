@@ -156,14 +156,17 @@ namespace EddiDataDefinitions
         public long estimatedvalue => estimateSystemValue(bodies);
 
         /// <summary>Number of visits</summary>
-        public int visits;
+        public int visits => visitLog.Count();
 
         /// <summary>Time of last visit</summary>
-        public DateTime? lastvisit;
+        public DateTime? lastvisit => visitLog.LastOrDefault();
+
+        /// <summary>Visit log</summary>
+        public SortedSet<DateTime> visitLog { get; set; } = new SortedSet<DateTime>();
 
         /// <summary>Time of last visit, expressed as a Unix timestamp in seconds</summary>
         [JsonIgnore]
-        public long? lastVisitSeconds => (visits > 1 && lastvisit != null) ? (long?)((DateTime)lastvisit).Subtract(new DateTime(1970, 1, 1)).TotalSeconds : null;
+        public long? lastVisitSeconds => lastvisit > DateTime.MinValue ? (long?)((DateTime)lastvisit).Subtract(new DateTime(1970, 1, 1)).TotalSeconds : null;
 
         /// <summary>comment on this starsystem</summary>
         public string comment;

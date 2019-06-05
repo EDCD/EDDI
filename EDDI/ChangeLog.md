@@ -3,6 +3,8 @@
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
 ### Development
+  * EDSM responder
+    * Improved EDSM synchronization for system visits and comments
   * Speech responder
     * Fixed an issue where star chromaticity wasn't being translated correctly.
     * Revised the `Star report` script to resolve a couple of minor bugs. 

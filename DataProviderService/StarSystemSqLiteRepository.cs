@@ -88,26 +88,7 @@ namespace EddiDataProviderService
 
         public List<StarSystem> GetOrCreateStarSystems(string[] names, bool fetchIfMissing = true, bool refreshIfOutdated = true)
         {
-            if (names.Count() == 0) { return null; }
-
-            // Get (and update if required) systems already in our database
-            List<StarSystem> systems = Instance.GetStarSystems(names, refreshIfOutdated);
-
-            // If a system isn't found after we've read our local database, we need to fetch it.
-            List<string> fetchSystems = new List<string>();
-            foreach (string name in names)
-            {
-                if (fetchIfMissing && systems.FirstOrDefault(s => s.systemname == name) == null)
-                {
-                    fetchSystems.Add(name);
-                }
-            }
-            List<StarSystem> fetchedSystems = DataProviderService.GetSystemsData(fetchSystems.ToArray());
-            if (fetchedSystems?.Count > 0)
-            {
-                Instance.insertStarSystems(fetchedSystems);
-                systems.AddRange(fetchedSystems);
-            }
+            List<StarSystem> systems = GetOrFetchStarSystems(names, fetchIfMissing, refreshIfOutdated);
 
             // Create a new system object for each name that isn't in the database and couldn't be fetched from a server
             foreach (string name in names)
@@ -132,9 +113,9 @@ namespace EddiDataProviderService
             if (names.Count() == 0) { return null; }
 
             List<StarSystem> systems = Instance.GetStarSystems(names, refreshIfOutdated);
-            List<string> fetchSystems = new List<string>();
 
             // If a system isn't found after we've read our local database, we need to fetch it.
+            List<string> fetchSystems = new List<string>();
             foreach (string name in names)
             {
                 if (fetchIfMissing && systems.FirstOrDefault(s => s.systemname == name) == null)
@@ -168,7 +149,7 @@ namespace EddiDataProviderService
             if (names.Count() == 0) { return null; }
 
             List<StarSystem> results = new List<StarSystem>();
-            List<StarSystem> systemsToUpdate = new List<StarSystem>();
+            List<string> systemsToUpdate = new List<string>();
             List<KeyValuePair<string, string>> dataSets = Instance.ReadStarSystems(names);
 
             foreach (KeyValuePair<string, string> kv in dataSets)
@@ -185,64 +166,85 @@ namespace EddiDataProviderService
 
                     // Determine whether our data is stale (We won't deserialize the the entire system if it's stale) 
                     IDictionary<string, object> system = Deserializtion.DeserializeData(data);
-                    system.TryGetValue("visits", out object visitVal);
                     system.TryGetValue("comment", out object commentVal);
-                    system.TryGetValue("lastvisit", out object lastVisitVal);
                     system.TryGetValue("lastupdated", out object lastUpdatedVal);
-                    system.TryGetValue("systemAddress", out object systemAddressVal);
 
-                    int visits = (int)(long)visitVal;
                     string comment = (string)commentVal ?? "";
-                    DateTime? lastvisit = (DateTime?)lastVisitVal;
                     DateTime? lastupdated = (DateTime?)lastUpdatedVal;
-                    long? systemAddress = (long?)systemAddressVal;
 
-                    if (lastvisit == null || lastupdated == null || comment == "")
+                    if (refreshIfOutdated)
                     {
-                        if (Instance.OldDataFormat(name, ref visits, comment, ref lastupdated, ref lastvisit))
+                        if (lastupdated < DateTime.UtcNow.AddHours(-1))
                         {
+                            // Data is stale
                             needToUpdate = true;
                         }
-                    }
-
-                    if (refreshIfOutdated && lastupdated < DateTime.UtcNow.AddHours(-1))
-                    {
-                        // Data is stale
-                        StarSystem updatedResult = DataProviderService.GetSystemData(name);
-                        if (updatedResult.systemAddress == null && systemAddress != null)
+                        else if (lastupdated == null)
                         {
-                            // The "updated" data might be a basic system, empty except for the name. If so, return the old result.
-                            updatedResult = DeserializeStarSystem(name, data, ref needToUpdate);
+                            // Data is old format, need to refresh
+                            if (Instance.OldDbFormat(name, comment, ref lastupdated))
+                            {
+                                needToUpdate = true;
+                            }
                         }
-                        else
-                        {
-                            needToUpdate = true;
-                        }
-                        result = updatedResult;
                     }
-                    else
-                    {
-                        // Data is fresh
-                        result = DeserializeStarSystem(name, data, ref needToUpdate);
-                    }
-
-                    result.visits = visits;
-                    result.comment = comment;
-                    result.lastvisit = lastvisit;
-                    result.lastupdated = DateTime.UtcNow;
 
                     if (needToUpdate)
                     {
-                        systemsToUpdate.Add(result);
+                        // We'll need to update this star system
+                        systemsToUpdate.Add(name);
+                    }
+                    else
+                    {
+                        // Deserialize the old result
+                        result = DeserializeStarSystem(name, data, ref needToUpdate);
+                        if (result != null)
+                        {
+                            results.Add(result);
+                        }
                     }
                 }
-                results.Add(result);
             }
-            Instance.updateStarSystems(systemsToUpdate);
+
+            if (systemsToUpdate.Count > 0)
+            {
+                List<StarSystem> updatedSystems = DataProviderService.GetSystemsData(systemsToUpdate.ToArray());
+
+                // If the newly fetched star system is an empty object except (for the object name), reject it
+                List<string> systemsToRevert = new List<string>();
+                foreach (StarSystem starSystem in updatedSystems)
+                {
+                    if (starSystem.systemAddress == null || starSystem.x == null || starSystem.y == null || starSystem.z == null)
+                    {
+                        systemsToRevert.Add(starSystem.systemname);
+                    }
+                }
+                updatedSystems.RemoveAll(s => systemsToRevert.Contains(s.systemname));
+
+                // Return old results when new results have been rejected
+                foreach (string systemName in systemsToRevert)
+                {
+                    results.Add(GetStarSystem(systemName, false));
+                }
+
+                // Synchronize EDSM visits and comments
+                updatedSystems = DataProviderService.syncFromStarMapService(updatedSystems);
+
+                // Add our updated systems to our results
+                results.AddRange(updatedSystems);
+
+                // Save changes to our star systems
+                Instance.updateStarSystems(updatedSystems); 
+            }
+
+            foreach (StarSystem starSystem in results)
+            {
+                starSystem.lastupdated = DateTime.UtcNow;
+            }
             return results;
         }
 
-        private bool OldDataFormat(string name, ref int visits, string comment, ref DateTime? lastupdated, ref DateTime? lastvisit)
+        private bool OldDbFormat(string name, string comment, ref DateTime? lastupdated)
         {
             bool result = false;
             using (var con = SimpleDbConnection())
@@ -257,13 +259,6 @@ namespace EddiDataProviderService
                     {
                         if (rdr.Read())
                         {
-                            if (lastvisit == null)
-                            {
-                                // Old-style system; need to update
-                                visits = rdr.GetInt32(0);
-                                lastvisit = rdr.GetDateTime(1);
-                                result = true;
-                            }
                             if (lastupdated == null)
                             {
                                 lastupdated = rdr.GetDateTime(4);
@@ -349,7 +344,6 @@ namespace EddiDataProviderService
                 try
                 {
                     result = DataProviderService.GetSystemData(systemName);
-                    needToUpdate = true;
                 }
                 catch (Exception ex)
                 {
@@ -406,12 +400,10 @@ namespace EddiDataProviderService
             Instance.updateStarSystems(update);
         }
 
-        // Triggered when leaving a starsystem - just update lastvisit
+        // Triggered when leaving a starsystem - just save the star system
         public void LeaveStarSystem(StarSystem system)
         {
             if (system?.systemname == null) { return; }
-
-            system.lastvisit = DateTime.UtcNow;
             SaveStarSystem(system);
         }
 
@@ -452,12 +444,6 @@ namespace EddiDataProviderService
                             foreach (StarSystem system in insertStarSystems)
                             {
                                 Logging.Debug("Inserting new starsystem " + system.systemname);
-                                if (system.lastvisit == null)
-                                {
-                                    // DB constraints don't allow this to be null
-                                    system.lastvisit = DateTime.UtcNow;
-                                }
-
                                 cmd.CommandText = INSERT_SQL;
                                 cmd.Prepare();
                                 cmd.Parameters.AddWithValue("@name", system.systemname);

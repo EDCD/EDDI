@@ -1023,13 +1023,6 @@ namespace Eddi
             CurrentStarSystem.z = theEvent.z;
             setSystemDistanceFromHome(CurrentStarSystem);
 
-            // Increment system visits if this event is newer than the last visit we were already aware of
-            if (CurrentStarSystem.lastvisit < theEvent.timestamp)
-            {
-                CurrentStarSystem.lastvisit = theEvent.timestamp;
-                CurrentStarSystem.visits++;
-            }
-
             // Update the mutable system data from the journal
             if (theEvent.population != null)
             {
@@ -1545,11 +1538,7 @@ namespace Eddi
             }
 
             // Update to most recent information
-            if (CurrentStarSystem.lastvisit < theEvent.timestamp)
-            {
-                CurrentStarSystem.lastvisit = theEvent.timestamp;
-                CurrentStarSystem.visits++;
-            }
+            CurrentStarSystem.visitLog.Add(theEvent.timestamp);
             CurrentStarSystem.updatedat = (long)theEvent.timestamp.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
             StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
 
