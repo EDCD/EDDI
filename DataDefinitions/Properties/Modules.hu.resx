@@ -565,7 +565,10 @@
     <value>Kőzet romboló rakéta</value>
     <comment>Module Displacement Missile</comment>
   </data>
-  
+  <data name="AbrasionBlaster" xml:space="preserve">
+    <value>Külszíni fejtőágyú</value>
+    <comment>Module Abrasion Blaster</comment>
+  </data>
   <data name="CompositionScanner" xml:space="preserve">
     <value>Kompoziciós szkenner</value>
     <comment>Module Composition Scanner</comment>
