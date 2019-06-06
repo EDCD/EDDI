@@ -518,7 +518,7 @@
     <comment>Module Hpt_MultiCannon_Fixed_Small_Strong</comment>
   </data>
   <data name="GuardianFsdBooster" xml:space="preserve">
-    <value>Potencisador do Motor de Distorção de Fase Guardian</value>
+    <value>Potenciador do Motor de Distorção de Fase Guardian</value>
     <comment>Module GuardianFsdBooster</comment>
   </data>
   <data name="GuardianPowerDistributor" xml:space="preserve">
