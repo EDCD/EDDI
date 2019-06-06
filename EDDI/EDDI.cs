@@ -1916,15 +1916,14 @@ namespace Eddi
         private bool eventStarScanned(StarScannedEvent theEvent)
         {
             // We just scanned a star.  We can only proceed if we know our current star system
-            if (CurrentStarSystem != null)
+            if (CurrentStarSystem == null) { return false; }
+
+            Body star = CurrentStarSystem?.bodies?.Find(s => s.bodyname == theEvent.bodyname);
+            if (star?.scanned is null)
             {
-                Body star = CurrentStarSystem?.bodies?.Find(s => s.bodyname == theEvent.bodyname);
-                if (star?.scanned is null)
-                {
-                    CurrentStarSystem.AddOrUpdateBody(theEvent.star);
-                    StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
-                    return true;
-                }
+                CurrentStarSystem.AddOrUpdateBody(theEvent.star);
+                StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
+                return true;
             }
             return false;
         }
@@ -1932,20 +1931,19 @@ namespace Eddi
         private bool eventBodyScanned(BodyScannedEvent theEvent)
         {
             // We just scanned a body.  We can only proceed if we know our current star system
-            if (CurrentStarSystem != null)
-            {
-                // Add this body if it hasn't been previously added to our database, but don't
-                // replace prior data which isn't re-obtainable from this event. 
-                // (e.g. alreadydiscovered, scanned, alreadymapped, mapped, mappedEfficiently, etc.)
-                Body body = CurrentStarSystem?.bodies?.Find(s => s.bodyname == theEvent.bodyname);
-                if (body?.scanned is null)
-                {
-                    CurrentStarSystem.AddOrUpdateBody(theEvent.body);
+            if (CurrentStarSystem == null) { return false; }
 
-                    Logging.Debug("Saving data for scanned body " + theEvent.bodyname);
-                    StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
-                    return true;
-                }
+            // Add this body if it hasn't been previously added to our database, but don't
+            // replace prior data which isn't re-obtainable from this event. 
+            // (e.g. alreadydiscovered, scanned, alreadymapped, mapped, mappedEfficiently, etc.)
+            Body body = CurrentStarSystem?.bodies?.Find(s => s.bodyname == theEvent.bodyname);
+            if (body?.scanned is null)
+            {
+                CurrentStarSystem.AddOrUpdateBody(theEvent.body);
+
+                Logging.Debug("Saving data for scanned body " + theEvent.bodyname);
+                StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
+                return true;
             }
             return false;
         }
