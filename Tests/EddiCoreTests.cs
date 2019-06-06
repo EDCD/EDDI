@@ -126,9 +126,15 @@ namespace UnitTests
             privateObject.Invoke("updateCurrentSystem", new object[] { "Grea Bloae HH-T d4-44" });
             Assert.AreEqual("Grea Bloae HH-T d4-44", EDDI.Instance.CurrentStarSystem?.systemname);
 
+            // Set up conditions to test the first scan of the body
+            EDDI.Instance.CurrentStarSystem.bodies.Find(b => b.bodyname == "Grea Bloae HH-T d4-44 4").scanned = null;
             var result = (bool)privateObject.Invoke("eventBodyScanned", new object[] { @event });
-            Body body = EDDI.Instance.CurrentStarSystem.bodies.FirstOrDefault(b => b.bodyname == "Grea Bloae HH-T d4-44 4");
-            Assert.AreEqual(@event.timestamp, body.scanned);
+            Assert.AreEqual(@event.timestamp, EDDI.Instance.CurrentStarSystem.bodies.Find(b => b.bodyname == "Grea Bloae HH-T d4-44 4").scanned);
+
+            // Re-scanning the same body shouldn't replace the first scan's data
+            BodyScannedEvent @event2 = new BodyScannedEvent(@event.timestamp.AddSeconds(60), @event.scantype, @event.body);
+            result = (bool)privateObject.Invoke("eventBodyScanned", new object[] { @event2 });
+            Assert.AreEqual(@event.timestamp, EDDI.Instance.CurrentStarSystem.bodies.Find(b => b.bodyname == "Grea Bloae HH-T d4-44 4").scanned);
         }
 
         [TestMethod]
