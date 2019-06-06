@@ -1916,7 +1916,7 @@ namespace Eddi
         private bool eventStarScanned(StarScannedEvent theEvent)
         {
             // We just scanned a star.  We can only proceed if we know our current star system
-            if (CurrentStarSystem == null)
+            if (CurrentStarSystem != null)
             {
                 Body star = CurrentStarSystem?.bodies?.Find(s => s.bodyname == theEvent.bodyname);
                 if (star?.scanned is null)
