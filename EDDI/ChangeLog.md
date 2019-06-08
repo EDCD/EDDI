@@ -2,6 +2,10 @@
 
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
+### Development
+  * Speech responder
+    * Fixed an issue with character encoding in the French personality file.
+
 ### 3.4.1-rc1
   * EDSM responder
     * Improved EDSM synchronization for system visits and comments
