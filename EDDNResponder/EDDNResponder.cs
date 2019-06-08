@@ -485,8 +485,12 @@ namespace EDDNResponder
                 List<string> eddnShips = new List<string>();
                 foreach (Ship ship in EDDI.Instance.CurrentStation.shipyard)
                 {
-                    eddnShips.Add(ship.EDName);
+                    if (ship?.EDName != null)
+                    {
+                        eddnShips.Add(ship.EDName);
+                    }
                 }
+                eddnShips = eddnShips?.Distinct()?.ToList();
 
                 // Only send the message if we have ships
                 if (eddnShips.Count > 0)
