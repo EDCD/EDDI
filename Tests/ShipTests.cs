@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using Utilities;
 
 namespace UnitTests
 {
@@ -415,6 +416,41 @@ namespace UnitTests
             }
 
             Assert.AreEqual("Multipurpose", Role.MultiPurpose.edname);
+        }
+
+        [TestMethod]
+        [DeploymentItem("loadout.json")]
+        public void TestShipMonitorDeserializationMatchesSerialization()
+        {
+            var privateObject = new PrivateObject(new ShipMonitor());
+            privateObject.SetFieldOrProperty("shipyard", new ObservableCollection<Ship>());
+            privateObject.SetFieldOrProperty("updatedAt", DateTime.MinValue);
+
+            string data = System.IO.File.ReadAllText("loadout.json");
+            List<Event> events = JournalMonitor.ParseJournalEntry(data);
+            ShipLoadoutEvent loadoutEvent = events[0] as ShipLoadoutEvent;
+            object[] loadoutArgs = new object[] { loadoutEvent };
+            privateObject.Invoke("handleShipLoadoutEvent", loadoutArgs);
+
+            Ship originalShip = EDDI.Instance.CurrentShip;
+
+            if (originalShip != null)
+            {
+                string originalShipString = JsonConvert.SerializeObject(originalShip);
+                Ship deserializedShip = JsonConvert.DeserializeObject<Ship>(originalShipString);
+                if (originalShip != null && deserializedShip != null)
+                {
+                    Assert.IsTrue(JsonParsing.compareJsonEquality(originalShip, deserializedShip, true, out string mutatedProperty, Array.Empty<string>()));
+                    if (!string.IsNullOrEmpty(mutatedProperty))
+                    {
+                        Assert.Fail("Deserialized ship doesn't match original ship for property " + mutatedProperty);
+                    }
+                }
+            }
+            else
+            {
+                Assert.Fail("Failed to get ship");
+            }
         }
 
         [TestMethod]

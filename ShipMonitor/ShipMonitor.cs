@@ -447,7 +447,7 @@ namespace EddiShipMonitor
             {
                 // The ship is unknown - create it
                 Logging.Debug("Unknown ship ID " + @event.shipid);
-                ship = ShipDefinitions.FromEDModel(@event.ship);
+                ship = @event.shipDefinition;
                 ship.LocalId = (int)@event.shipid;
                 ship.Role = Role.MultiPurpose;
             }

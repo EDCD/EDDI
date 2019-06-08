@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 
 namespace Utilities
@@ -167,6 +168,51 @@ namespace Utilities
             object val;
             data.TryGetValue(key, out val);
             return (string)val;
+        }
+
+        public static bool compareJsonEquality<T>(T self, T to, bool jsonIgnore, out string mutatedPropertyName, string[] ignore = null) where T : class
+        {
+            mutatedPropertyName = string.Empty;
+            if (self != null && to != null)
+            {
+                Type type = typeof(T);
+                List<string> ignoreList = new List<string>(ignore);
+                foreach (System.Reflection.PropertyInfo pi in type.GetProperties(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance))
+                {
+                    if (jsonIgnore)
+                    {
+                        var attributes = pi.GetCustomAttributes(true);
+                        foreach (var attribute in attributes)
+                        {
+                            if (attribute is JsonIgnoreAttribute)
+                            {
+                                ignoreList.Add(pi.Name);
+                            }
+                        }
+                    }
+
+                    if (!ignoreList.Contains(pi.Name))
+                    {
+                        object selfValue = type.GetProperty(pi.Name).GetValue(self, null);
+                        object toValue = type.GetProperty(pi.Name).GetValue(to, null);
+
+                        if (selfValue != toValue && (selfValue == null || !selfValue.Equals(toValue)))
+                        {
+                            if (selfValue is object || selfValue is object[] || selfValue is List<object>)
+                            {
+                                if (compareJsonEquality(selfValue, toValue, jsonIgnore, out mutatedPropertyName, ignore))
+                                {
+                                    continue;
+                                }
+                            }
+                            mutatedPropertyName = pi.Name;
+                            return false;
+                        }
+                    }
+                }
+                return true;
+            }
+            return self == to;
         }
     }
 }
