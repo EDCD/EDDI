@@ -2,6 +2,10 @@
 
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
+### Development
+  * EDSM responder
+    * Fixed a bug that caused EDSM synchronization to slow to a crawl and could spawn multiple copies of star systems within EDDI's database. Deleting `EDDI.sqlite` from `%APPDATA/EDDI` is resynchronizing is recommended for all pilots who tested version 3.4.1-rc1.
+
 ### 3.4.1-rc1
   * EDSM responder
     * Improved EDSM synchronization for system visits and comments
