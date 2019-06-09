@@ -41,11 +41,11 @@ namespace EddiDataDefinitions
 
         /// <summary>The primary economy of the station</summary>
         [JsonIgnore]
-        public string primaryeconomy => (Economies?.Count > 0 && Economies[0] != null ? Economies[0] : Economy.None).localizedName;
+        public string primaryeconomy => (economyShares?.Count > 0 && economyShares[0] != null ? economyShares[0].economy : Economy.None).localizedName;
 
         /// <summary>The secondary economy of the station</summary>
         [JsonIgnore]
-        public string secondaryeconomy => (Economies?.Count > 1 && Economies[1] != null ? Economies[1] : Economy.None).localizedName;
+        public string secondaryeconomy => (economyShares?.Count > 1 && economyShares[1] != null ? economyShares[1].economy : Economy.None).localizedName;
 
         /// <summary>How far this is from the star, in light seconds</summary>
         public decimal? distancefromstar { get; set; }
@@ -179,43 +179,49 @@ namespace EddiDataDefinitions
         }
 
         /// <summary>What are the economies at the station, with proportions for each</summary>
-        public List<EconomyShare> economyShares { get; set; } = new List<EconomyShare>();
+        public List<EconomyShare> economyShares
+        {
+            // Per FDev comments, the BGS does have multiple minor variations of each economy type,
+            // e.g. a system can have two distinct economies rendered as follows "StationEconomies":  
+            // [ { "Name": "$economy_Refinery;", "Proportion": 0.84 }, { "Name": "$economy_Refinery;", "Proportion": 0.16 }
+            // We consolidate them here.
+            get { return _economyShares ?? new List<EconomyShare>(2); }
+            set
+            {
+                List<EconomyShare> updatedEconomyShares = new List<EconomyShare>();
+                foreach (EconomyShare newEconomyShare in value)
+                {
+                    EconomyShare alreadyAddedEconomyShare = updatedEconomyShares.FirstOrDefault(e => e.economy == newEconomyShare.economy);
+                    if (alreadyAddedEconomyShare != null)
+                    {
+                        updatedEconomyShares.Remove(alreadyAddedEconomyShare);
+                        updatedEconomyShares.Add(new EconomyShare(newEconomyShare.economy, alreadyAddedEconomyShare.proportion + newEconomyShare.proportion));
+                    }
+                    else if (newEconomyShare != null)
+                    {
+                        updatedEconomyShares.Add(newEconomyShare);
+                    }
+                }
+                _economyShares = updatedEconomyShares;
+            }
+        }
+        [JsonIgnore]
+        private List<EconomyShare> _economyShares;
 
         /// <summary>What are the localized economies at the stations</summary>
+        [JsonIgnore]
         public List<string> economies
         {
             get
             {
-                if (economyShares.Count > 0)
+                List<string> localizedEconomiesFromShares = new List<string>(2);
+                foreach (EconomyShare economyShare in economyShares)
                 {
-                    List<string> localizedEconomiesFromShares = new List<string>();
-                    foreach (EconomyShare economyShare in economyShares)
-                    {
-                        localizedEconomiesFromShares.Add(economyShare.economy.localizedName);
-                    }
-                    return localizedEconomiesFromShares;
+                    localizedEconomiesFromShares.Add(economyShare.economy.localizedName);
                 }
-                else
-                {
-                    List<string> localizedEconomies = new List<string>();
-                    if (Economies != null)
-                    {
-                        foreach (Economy economy in Economies)
-                        {
-                            localizedEconomies.Add((economy ?? Economy.None).localizedName);
-                        }
-                    }
-                    else
-                    {
-                        localizedEconomies = new List<string>() { Economy.None.localizedName, Economy.None.localizedName };
-                    }
-                    return localizedEconomies;
-                };
+                return localizedEconomiesFromShares;
             }
         }
-
-        /// <summary>What are the economies at the station, without proportions for each</summary>
-        public List<Economy> Economies { get; set; } = new List<Economy>() { Economy.None, Economy.None };
 
         /// <summary>Which commodities are bought/sold by the station</summary>
         public List<CommodityMarketQuote> commodities { get; set; }

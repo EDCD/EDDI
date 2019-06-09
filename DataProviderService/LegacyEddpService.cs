@@ -183,7 +183,7 @@ namespace EddiDataProviderService
                             systemname = system.systemname,
                             hasdocking = false,
                             Model = StationModel.FromName((string)Station["type"]) ?? StationModel.None,
-                            Economies = new List<Economy> { Economy.FromName((string)Station["primary_economy"]), Economy.None },
+                            economyShares = new List<EconomyShare> { new EconomyShare(Economy.FromName((string)Station["primary_economy"]) ?? Economy.None, 0) },
                             Faction = new Faction
                             {
                                 name = (string)Station["controlling_faction"],

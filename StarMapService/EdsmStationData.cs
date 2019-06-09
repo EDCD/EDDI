@@ -91,12 +91,12 @@ namespace EddiStarMapService
                 Government = Government.FromName((string)station["government"]) ?? Government.None,
             };
 
-            List<Economy> Economies = new List<Economy>()
+            List<EconomyShare> economyShares = new List<EconomyShare>()
             {
-                Economy.FromName((string)station["economy"]) ?? Economy.None,
-                Economy.FromName((string)station["secondEconomy"]) ?? Economy.None
+                { new EconomyShare(Economy.FromName((string)station["economy"]) ?? Economy.None, 0) },
+                { new EconomyShare(Economy.FromName((string)station["secondEconomy"]) ?? Economy.None, 0) }
             };
-            Station.Economies = Economies;
+            Station.economyShares = economyShares;
 
             List<StationService> stationServices = new List<StationService>();
             if ((bool?)station["haveMarket"] is true)
