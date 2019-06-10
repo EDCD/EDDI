@@ -97,24 +97,64 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="AidWorker" xml:space="preserve">
+    <value>Comitiva di Volontariato</value>
+  </data>
+  <data name="Business" xml:space="preserve">
+    <value>Comitiva di Uomini d'Affari</value>
+  </data>
+  <data name="Celebrity" xml:space="preserve">
+    <value>Celebrità</value>
+  </data>
+  <data name="CEO" xml:space="preserve">
+    <value>Amministratore Delegato</value>
+  </data>
+  <data name="Criminal" xml:space="preserve">
+    <value>Criminale</value>
+  </data>
+  <data name="Doctor" xml:space="preserve">
+    <value>Dottore</value>
+  </data>
+  <data name="Explorer" xml:space="preserve">
+    <value>Esploratore</value>
+  </data>
+  <data name="General" xml:space="preserve">
+    <value>Generale Militare</value>
+  </data>
+  <data name="HeadOfState" xml:space="preserve">
+    <value>Capo di Stato</value>
+  </data>
+  <data name="Medical" xml:space="preserve">
+    <value>Squadra Medica</value>
+  </data>
+  <data name="Politician" xml:space="preserve">
+    <value>Comitiva di Politici</value>
+  </data>
+  <data name="PrisonerOfWar" xml:space="preserve">
+    <value>Prigionieri di Guerra</value>
+  </data>
+  <data name="Protestor" xml:space="preserve">
+    <value>Comitiva di Manifestanti</value>
+  </data>
+  <data name="Rebel" xml:space="preserve">
+    <value>Comitiva di Ribelli</value>
+  </data>
+  <data name="Refugee" xml:space="preserve">
+    <value>Comitiva di Rifugiati</value>
+  </data>
+  <data name="Scientist" xml:space="preserve">
+    <value>Team di Scienziati</value>
+  </data>
+  <data name="Security" xml:space="preserve">
+    <value>Squadra di Sicurezza</value>
+  </data>
+  <data name="Terrorist" xml:space="preserve">
+    <value>Leader dei Ribelli</value>
+  </data>
+  <data name="Tourist" xml:space="preserve">
+    <value>Ricco Viaggiatore</value>
+  </data>
+  <data name="Whistleblower" xml:space="preserve">
+    <value>Prigioniero Politico</value>
+  </data>
 </root>
