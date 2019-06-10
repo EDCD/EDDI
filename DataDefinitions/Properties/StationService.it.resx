@@ -209,10 +209,28 @@
     <value>Missione all'Attracco</value>
     <comment>Station Service: OnDockMission</comment>
   </data>
-  
-  
-  
-  
-  
-  
+  <data name="Powerplay" xml:space="preserve">
+    <value>Intrigo di Potere</value>
+    <comment>Station Service: Powerplay</comment>
+  </data>
+  <data name="SearchAndRescue" xml:space="preserve">
+    <value>Ricerca e Soccorso</value>
+    <comment>Station Service: SearchAndRescue</comment>
+  </data>
+  <data name="TechBroker" xml:space="preserve">
+    <value>Mediatore di Tecnologia</value>
+    <comment>Station Service: TechBroker</comment>
+  </data>
+  <data name="MaterialTrader" xml:space="preserve">
+    <value>Commerciante di Materiali</value>
+    <comment>Station Service: Material Trader</comment>
+  </data>
+  <data name="StationMenu" xml:space="preserve">
+    <value>Menu di Stazione</value>
+    <comment>Station Service: Station Menu</comment>
+  </data>
+  <data name="InterstellarFactorsContact" xml:space="preserve">
+    <value>Contatti verso Agenzie Interstellari</value>
+    <comment>Station Service: InterstellarFactorsContact</comment>
+  </data>
 </root>
