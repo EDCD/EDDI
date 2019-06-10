@@ -147,7 +147,9 @@
   <data name="DeliveryWing" xml:space="preserve">
     <value>Consegna di gruppo</value>
   </data>
-  
+  <data name="Disable" xml:space="preserve">
+    <value>Disabilita Installazione di Superficie</value>
+  </data>
   
   
   
