@@ -12,24 +12,27 @@ namespace EddiDataProviderService
 {
     public class StarSystemSqLiteRepository : SqLiteBaseRepository, StarSystemRepository
     {
+        private const long SCHEMA_VERSION = 2;
+        private const string TABLE_GET_SCHEMA_VERSION_SQL = @"PRAGMA user_version;";
+        private readonly static string TABLE_SET_SCHEMA_VERSION_SQL = @"PRAGMA user_version = " + SCHEMA_VERSION + ";";
+
+        // Append new table columns to the end of the list to maximize compatibility with schema version 0.
         // systemaddress and edsmid must each be unique. 
         // Furthermore, any combination of name, systemaddress, and edsmid must also be unique.
-        private const string CREATE_SQL = @"
-                    CREATE TABLE IF NOT EXISTS starsystems(
+        private const string CREATE_TABLE_SQL = @" 
+                    CREATE TABLE IF NOT EXISTS starsystems
+                    (
                         name TEXT NOT NULL,
-                        systemaddress INT,
-                        edsmid INT,
                         totalvisits INT NOT NULL,
                         lastvisit DATETIME,
                         starsystem TEXT NOT NULL,
                         starsystemlastupdated DATETIME NOT NULL,
                         comment TEXT,
-                        CONSTRAINT systemaddress_unique UNIQUE (systemaddress),
-                        CONSTRAINT edsmid_unique UNIQUE (edsmid),
+                        systemaddress INT UNIQUE,
+                        edsmid INT UNIQUE,
                         CONSTRAINT combined_uniques UNIQUE (name, systemaddress, edsmid)
-                     );
-                     ";
-        private const string CREATE_INDEX_SQL = @"
+                     );";
+        private const string CREATE_INDEX_SQL = @" 
                     CREATE INDEX IF NOT EXISTS 
                         starsystems_idx_1 ON starsystems(name);
                     CREATE UNIQUE INDEX IF NOT EXISTS 
@@ -37,67 +40,67 @@ namespace EddiDataProviderService
                     CREATE UNIQUE INDEX IF NOT EXISTS 
                         starsystems_idx_3 ON starsystems(edsmid);
                     ";
-        private const string INSERT_SQL = @"
-                    INSERT INTO starsystems(
+        private const string TABLE_INFO_SQL = @"PRAGMA table_info(starsystems)";
+        private const string REPLACE_TABLE_SQL = @" 
+                    PRAGMA foreign_keys=off;
+                    BEGIN TRANSACTION;
+                    DROP TABLE IF EXISTS old_starsystems;
+                    ALTER TABLE starsystems RENAME TO old_starsystems;"
+            + CREATE_TABLE_SQL + INSERT_SQL + @"
+                    SELECT DISTINCT
                         name,
-                        systemaddress,
-                        edsmid,
                         totalvisits,
                         lastvisit,
                         starsystem,
                         starsystemlastupdated,
-                        comment
-                    )
-                    VALUES(
-                        @name, 
-                        @systemaddress,
-                        @edsmid,
-                        @totalvisits, 
-                        @lastvisit, 
-                        @starsystem, 
-                        @starsystemlastupdated,
-                        @comment
-                    );
-                    PRAGMA optimize;
+                        comment,
+                        systemaddress,
+                        edsmid
+                    FROM old_starsystems;
+                    DROP TABLE old_starsystems;
+                    COMMIT;
+                    PRAGMA foreign_keys=on; 
+                    VACUUM;
                     ";
-        private const string UPDATE_SQL = @"
+
+        private const string INSERT_SQL = @" 
+                    INSERT INTO starsystems
+                    (
+                        name,
+                        totalvisits,
+                        lastvisit,
+                        starsystem,
+                        starsystemlastupdated,
+                        comment,
+                        systemaddress,
+                        edsmid
+                    )";
+        private const string UPDATE_SQL = @" 
                     UPDATE starsystems
                     SET 
-                        systemaddress = @systemaddress,
-                        edsmid = @edsmid,
                         totalvisits = @totalvisits,
                         lastvisit = @lastvisit,
                         starsystem = @starsystem,
                         starsystemlastupdated = @starsystemlastupdated,
-                        comment = @comment
+                        comment = @comment,
+                        systemaddress = @systemaddress,
+                        edsmid = @edsmid
                     " + WHERE_SQL;
         private const string DELETE_SQL = @"DELETE FROM starsystems" + WHERE_SQL + @"PRAGMA optimize;";
-        private const string SELECT_SQL = @"SELECT * FROM starsystems" + WHERE_SQL;
-        private const string SELECT_BY_NAME_SQL = @"SELECT * FROM starsystems WHERE LOWER(name) = LOWER(@name)";
-        private const string TABLE_SQL = @"PRAGMA table_info(starsystems)";
-        private const string ALTER_ADD_NON_UNIQUE_COLUMNS_SQL = @"ALTER TABLE starsystems ADD COLUMN comment TEXT";
-        private const string UPDATE_TABLE_SQL = @"
-                    PRAGMA foreign_keys=off;
-                    BEGIN TRANSACTION;
-                    DROP TABLE old_starsystems;
-                    ALTER TABLE starsystems RENAME TO old_starsystems;"
-                    + CREATE_SQL +
-                    @"INSERT OR IGNORE INTO 
-                        starsystems 
-                    SELECT DISTINCT * FROM 
-                        old_starsystems;
-                    COMMIT;
-                    PRAGMA foreign_keys=on;
-                    ";
-        private const string DELETE_DUPLICATE_NAMES_SQL = @"
-                    DELETE FROM starsystems
-                    WHERE starsystemlastupdated NOT IN
+        private const string SELECT_SQL = @"SELECT * FROM starsystems" + WHERE_SQL + @"PRAGMA optimize;";
+        private const string SELECT_BY_NAME_SQL = @"SELECT * FROM starsystems WHERE LOWER(name) = LOWER(@name);";
+        private const string VALUES_SQL = @" 
+                    VALUES
                     (
-                        SELECT MAX(starsystemlastupdated)
-                        FROM starsystems
-                        GROUP BY name
-                    );
-                    ";
+                        @name, 
+                        @totalvisits, 
+                        @lastvisit, 
+                        @starsystem, 
+                        @starsystemlastupdated,
+                        @comment,
+                        @systemaddress,
+                        @edsmid
+                    )";
         // Prefer unique columns `systemaddress` and `edsmid` over non-unique column `name`
         private const string WHERE_SQL = @" 
                     WHERE 
@@ -106,14 +109,14 @@ namespace EddiDataProviderService
                             WHEN @edsmid IS NOT NULL THEN edsmid = @edsmid 
                         ELSE
                             LOWER(name) = LOWER(@name)
-                        END;
+                        END; 
                     ";
 
         private static StarSystemSqLiteRepository instance;
 
         private StarSystemSqLiteRepository()
         {
-            CreateDatabase();
+            CreateOrUpdateDatabase();
         }
 
         private static readonly object instanceLock = new object();
@@ -554,7 +557,7 @@ namespace EddiDataProviderService
                             foreach (StarSystem system in insertStarSystems)
                             {
                                 Logging.Debug("Inserting new starsystem " + system.systemname);
-                                cmd.CommandText = INSERT_SQL;
+                                cmd.CommandText = INSERT_SQL + VALUES_SQL;
                                 cmd.Prepare();
                                 cmd.Parameters.AddWithValue("@name", system.systemname);
                                 cmd.Parameters.AddWithValue("@systemaddress", system.systemAddress);
@@ -660,7 +663,9 @@ namespace EddiDataProviderService
             }
         }
 
-        private static void CreateDatabase()
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2100:Review SQL queries for security vulnerabilities")]
+        // The schema version is a constant set at the top of the file, thus usage here is perfectly correct.
+        private static void CreateOrUpdateDatabase()
         {
             using (var con = SimpleDbConnection())
             {
@@ -668,68 +673,46 @@ namespace EddiDataProviderService
                 {
                     con.Open();
 
-                    // Check for obsolete star system repository conditions requiring tables to be replaced
-                    bool updateTables = true;
-                    using (var cmd = new SQLiteCommand(TABLE_SQL, con))
+                    using (var cmd = new SQLiteCommand(CREATE_TABLE_SQL, con))
                     {
-                        using (SQLiteDataReader rdr = cmd.ExecuteReader())
-                        {
-                            for (int i = 0; i < rdr.FieldCount; i++)
-                            {
-                                if (rdr.GetName(i) == "systemaddress")
-                                {
-                                    updateTables = false;
-                                    break;
-                                }
-                            }
-                        }
+                        Logging.Debug("Preparing starsystem repository");
+                        cmd.ExecuteNonQuery();
                     }
 
-                    // Update or create our star system repository
-                    if (updateTables)
+                    // Get schema version 
+                    long schemaVersion = 0;
+                    using (var cmd = new SQLiteCommand(TABLE_GET_SCHEMA_VERSION_SQL, con))
                     {
-                        Logging.Info("Updating starsystem repository (1)");
-                        using (var cmd = new SQLiteCommand(DELETE_DUPLICATE_NAMES_SQL, con))
-                        {
-                            cmd.ExecuteNonQuery();
-                        }
-                        using (var cmd = new SQLiteCommand(UPDATE_TABLE_SQL, con))
-                        {
-                            cmd.ExecuteNonQuery();
-                        }
+                        schemaVersion = (long)cmd.ExecuteScalar();
+                        Logging.Debug("Starsystem repository is schema version " + schemaVersion);
                     }
-                    else
+                    if (schemaVersion > SCHEMA_VERSION)
                     {
-                        using (var cmd = new SQLiteCommand(CREATE_SQL, con))
-                        {
-                            Logging.Debug("Creating starsystem repository");
-                            cmd.ExecuteNonQuery();
-                        }
+                        Logging.Warn("Starsystem schema version not recognized, aborting.");
+                        throw new NotImplementedException();
                     }
 
-                    // Check for updates that can be performed in-place (without replacing tables)
-                    bool addTableColumns = true;
-                    using (var cmd = new SQLiteCommand(TABLE_SQL, con))
+                    // Apply any necessary updates
+                    if (schemaVersion < 1)
                     {
-                        using (SQLiteDataReader rdr = cmd.ExecuteReader())
-                        {
-                            while (rdr.Read())
-                            {
-                                if ("comment" == rdr.GetString(1))
-                                {
-                                    addTableColumns = false;
-                                    break;
-                                }
-                            }
-                        }
+                        Logging.Debug("Updating starsystem repository to schema version 1");
+                        AddColumnIfMissing(con, "comment");
+                        schemaVersion = 1;
                     }
-                    if (addTableColumns)
+                    if (schemaVersion < 2)
                     {
-                        Logging.Info("Updating starsystem repository (1)");
-                        using (var cmd = new SQLiteCommand(ALTER_ADD_NON_UNIQUE_COLUMNS_SQL, con))
+                        Logging.Debug("Updating starsystem repository to schema version 2");
+
+                        // Allocate our new columns
+                        AddColumnIfMissing(con, "systemaddress");
+                        AddColumnIfMissing(con, "edsmid");
+
+                        // We have to replace our table with a new copy to assign our new columns as unique
+                        using (var cmd = new SQLiteCommand(REPLACE_TABLE_SQL, con))
                         {
                             cmd.ExecuteNonQuery();
                         }
+                        schemaVersion = 2;
                     }
 
                     // Add our indices
@@ -738,13 +721,76 @@ namespace EddiDataProviderService
                         Logging.Debug("Creating starsystem index");
                         cmd.ExecuteNonQuery();
                     }
+
+                    // Set schema version 
+                    using (var cmd = new SQLiteCommand(TABLE_SET_SCHEMA_VERSION_SQL, con))
+                    {
+                        Logging.Info("Starsystem repository schema is version " + schemaVersion);
+                        cmd.ExecuteNonQuery();
+                    }
                 }
                 catch (SQLiteException ex)
                 {
                     handleSqlLiteException(con, ex);
                 }
             }
-            Logging.Debug("Created starsystem repository");
+            Logging.Debug("Starsystem repository ready.");
+        }
+
+        /// <summary> Valid columnNames are "systemaddress", "edsmid", and "comment" </summary>
+        private static bool AddColumnIfMissing(SQLiteConnection con, string columnName)
+        {
+            bool result = false;
+
+            // Parameters like `DISTINCT` cannot be set on columns by this method
+            string command = string.Empty;
+            switch (columnName)
+            {
+                case "systemaddress":
+                    command = @"ALTER TABLE starsystems ADD COLUMN systemaddress INT";
+                    break;
+                case "edsmid":
+                    command = @"ALTER TABLE starsystems ADD COLUMN edsmid int";
+                    break;
+                case "comment":
+                    command = @"ALTER TABLE starsystems ADD COLUMN comment TEXT;";
+                    break;
+            }
+            if (!string.IsNullOrEmpty(command))
+            {
+                bool columnExists = false;
+                using (var cmd = new SQLiteCommand(TABLE_INFO_SQL, con))
+                {
+                    using (SQLiteDataReader rdr = cmd.ExecuteReader())
+                    {
+                        while (rdr.Read())
+                        {
+                            if (columnName == rdr.GetString(1))
+                            {
+                                columnExists = true;
+                                break;
+                            }
+                        }
+                    }
+                }
+                if (!columnExists)
+                {
+                    Logging.Debug("Updating starsystem repository with new column " + columnName);
+                    try
+                    {
+                        using (var cmd = new SQLiteCommand(command, con))
+                        {
+                            cmd.ExecuteNonQuery();
+                        }
+                        result = true;
+                    }
+                    catch (SQLiteException ex)
+                    {
+                        handleSqlLiteException(con, ex);
+                    }
+                }
+            }
+            return result;
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times")]
@@ -763,7 +809,7 @@ namespace EddiDataProviderService
                     handleSqlLiteException(con, ex);
                 }
             }
-            CreateDatabase();
+            CreateOrUpdateDatabase();
             var updateLogs = Task.Run(() => DataProviderService.syncFromStarMapService());
         }
 
@@ -784,7 +830,7 @@ namespace EddiDataProviderService
             }
             finally
             {
-                con.BeginTransaction()?.Dispose();
+                con.Dispose();
             }
         }
     }
