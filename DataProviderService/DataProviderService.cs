@@ -192,6 +192,17 @@ namespace EddiDataProviderService
                             {
                                 if (flightLog.system == starSystem.systemname)
                                 {
+                                    if (starSystem.EDSMID == null)
+                                    {
+                                        starSystem.EDSMID = flightLog.systemId;
+                                    }
+                                    else
+                                    {
+                                        if (starSystem.EDSMID != flightLog.systemId)
+                                        {
+                                            continue;
+                                        }
+                                    }
                                     starSystem.visitLog.Add(flightLog.date);
                                 }
                             }
@@ -226,6 +237,17 @@ namespace EddiDataProviderService
                 {
                     foreach (StarMapResponseLogEntry flightLog in flightLogBatch.Where(log => log.system == starSystem.systemname))
                     {
+                        if (starSystem.EDSMID == null)
+                        {
+                            starSystem.EDSMID = flightLog.systemId;
+                        }
+                        else
+                        {
+                            if (starSystem.EDSMID != flightLog.systemId)
+                            {
+                                continue;
+                            }
+                        }
                         starSystem.visitLog.Add(flightLog.date);
                         if (comments.ContainsKey(flightLog.system))
                         {

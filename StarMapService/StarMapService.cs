@@ -307,7 +307,9 @@ namespace EddiStarMapService
 
     public class StarMapResponseLogEntry
     {
-        public string system { get; set; }
+        public string system { get; set; } // System name
+
+        public long systemId { get; set; } // EDSM ID
         public DateTime date { get; set; }
     }
 
