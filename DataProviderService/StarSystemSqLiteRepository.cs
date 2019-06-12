@@ -36,9 +36,9 @@ namespace EddiDataProviderService
                     CREATE INDEX IF NOT EXISTS 
                         starsystems_idx_1 ON starsystems(name);
                     CREATE UNIQUE INDEX IF NOT EXISTS 
-                        starsystems_idx_2 ON starsystems(systemaddress);
+                        starsystems_idx_2 ON starsystems(systemaddress) WHERE systemaddress IS NOT NULL;
                     CREATE UNIQUE INDEX IF NOT EXISTS 
-                        starsystems_idx_3 ON starsystems(edsmid);
+                        starsystems_idx_3 ON starsystems(edsmid) WHERE edsmid IS NOT NULL;
                     ";
         private const string TABLE_INFO_SQL = @"PRAGMA table_info(starsystems)";
         private const string REPLACE_TABLE_SQL = @" 
@@ -46,7 +46,7 @@ namespace EddiDataProviderService
                     BEGIN TRANSACTION;
                     DROP TABLE IF EXISTS old_starsystems;
                     ALTER TABLE starsystems RENAME TO old_starsystems;"
-            + CREATE_TABLE_SQL + INSERT_SQL + @"
+                    + CREATE_TABLE_SQL + INSERT_SQL + @"
                     SELECT DISTINCT
                         name,
                         totalvisits,
@@ -61,7 +61,7 @@ namespace EddiDataProviderService
                     COMMIT;
                     PRAGMA foreign_keys=on; 
                     VACUUM;
-                    ";
+                    PRAGMA optimize;";
 
         private const string INSERT_SQL = @" 
                     INSERT INTO starsystems
@@ -77,18 +77,17 @@ namespace EddiDataProviderService
                     )";
         private const string UPDATE_SQL = @" 
                     UPDATE starsystems
-                    SET 
-                        totalvisits = @totalvisits,
-                        lastvisit = @lastvisit,
-                        starsystem = @starsystem,
-                        starsystemlastupdated = @starsystemlastupdated,
-                        comment = @comment,
-                        systemaddress = @systemaddress,
-                        edsmid = @edsmid
-                    " + WHERE_SQL;
-        private const string DELETE_SQL = @"DELETE FROM starsystems" + WHERE_SQL + @"PRAGMA optimize;";
-        private const string SELECT_SQL = @"SELECT * FROM starsystems" + WHERE_SQL + @"PRAGMA optimize;";
-        private const string SELECT_BY_NAME_SQL = @"SELECT * FROM starsystems WHERE LOWER(name) = LOWER(@name);";
+                        SET 
+                            totalvisits = @totalvisits,
+                            lastvisit = @lastvisit,
+                            starsystem = @starsystem,
+                            starsystemlastupdated = @starsystemlastupdated,
+                            comment = @comment,
+                            systemaddress = @systemaddress,
+                            edsmid = @edsmid
+                    ";
+        private const string DELETE_SQL = @"DELETE FROM starsystems ";
+        private const string SELECT_SQL = @"SELECT * FROM starsystems ";
         private const string VALUES_SQL = @" 
                     VALUES
                     (
@@ -101,16 +100,9 @@ namespace EddiDataProviderService
                         @systemaddress,
                         @edsmid
                     )";
-        // Prefer unique columns `systemaddress` and `edsmid` over non-unique column `name`
-        private const string WHERE_SQL = @" 
-                    WHERE 
-                        CASE 
-                            WHEN @systemaddress IS NOT NULL THEN systemaddress = @systemaddress
-                            WHEN @edsmid IS NOT NULL THEN edsmid = @edsmid 
-                        ELSE
-                            LOWER(name) = LOWER(@name)
-                        END; 
-                    ";
+        private const string WHERE_SYSTEMADDRESS = @"WHERE systemaddress = @systemaddress; PRAGMA optimize;";
+        private const string WHERE_EDSMID = @"WHERE edsmid = @edsmid; PRAGMA optimize;";
+        private const string WHERE_NAME = @"WHERE LOWER(name) = LOWER(@name); PRAGMA optimize;";
 
         private static StarSystemSqLiteRepository instance;
 
@@ -311,7 +303,7 @@ namespace EddiDataProviderService
                 con.Open();
                 using (var cmd = new SQLiteCommand(con))
                 {
-                    cmd.CommandText = SELECT_BY_NAME_SQL;
+                    cmd.CommandText = SELECT_SQL + WHERE_NAME;
                     cmd.Prepare();
                     cmd.Parameters.AddWithValue("@name", name);
                     using (SQLiteDataReader rdr = cmd.ExecuteReader())
@@ -358,7 +350,7 @@ namespace EddiDataProviderService
                         {
                             try
                             {
-                                cmd.CommandText = SELECT_BY_NAME_SQL;
+                                cmd.CommandText = SELECT_SQL + WHERE_NAME;
                                 cmd.Prepare();
                                 cmd.Parameters.AddWithValue("@name", name);
                                 using (SQLiteDataReader rdr = cmd.ExecuteReader())
@@ -405,7 +397,18 @@ namespace EddiDataProviderService
                         {
                             try
                             {
-                                cmd.CommandText = SELECT_SQL;
+                                if (starSystem.systemAddress != null)
+                                {
+                                    cmd.CommandText = SELECT_SQL + WHERE_SYSTEMADDRESS;
+                                }
+                                else if (starSystem.EDSMID != null)
+                                {
+                                    cmd.CommandText = SELECT_SQL + WHERE_EDSMID;
+                                }
+                                else
+                                {
+                                    cmd.CommandText = SELECT_SQL + WHERE_NAME;
+                                }
                                 cmd.Prepare();
                                 cmd.Parameters.AddWithValue("@name", starSystem.systemname);
                                 cmd.Parameters.AddWithValue("@systemaddress", starSystem.systemAddress);
@@ -437,6 +440,7 @@ namespace EddiDataProviderService
             }
             return results;
         }
+
 
         private static StarSystem DeserializeStarSystem(string systemName, string data, ref bool needToUpdate)
         {
@@ -604,16 +608,27 @@ namespace EddiDataProviderService
                         {
                             foreach (StarSystem system in systems)
                             {
-                                cmd.CommandText = UPDATE_SQL;
+                                if (system.systemAddress != null)
+                                {
+                                    cmd.CommandText = UPDATE_SQL + WHERE_SYSTEMADDRESS;
+                                }
+                                else if (system.EDSMID != null)
+                                {
+                                    cmd.CommandText = UPDATE_SQL + WHERE_EDSMID;
+                                }
+                                else
+                                {
+                                    cmd.CommandText = UPDATE_SQL + WHERE_NAME;
+                                }
                                 cmd.Prepare();
                                 cmd.Parameters.AddWithValue("@name", system.systemname);
-                                cmd.Parameters.AddWithValue("@systemaddress", system.systemAddress);
-                                cmd.Parameters.AddWithValue("@edsmid", system.EDSMID);
                                 cmd.Parameters.AddWithValue("@totalvisits", system.visits);
                                 cmd.Parameters.AddWithValue("@lastvisit", system.lastvisit ?? DateTime.UtcNow);
                                 cmd.Parameters.AddWithValue("@starsystem", JsonConvert.SerializeObject(system));
                                 cmd.Parameters.AddWithValue("@starsystemlastupdated", system.lastupdated);
                                 cmd.Parameters.AddWithValue("@comment", system.comment);
+                                cmd.Parameters.AddWithValue("@systemaddress", system.systemAddress);
+                                cmd.Parameters.AddWithValue("@edsmid", system.EDSMID);
                                 cmd.ExecuteNonQuery();
                             }
                             transaction.Commit();
@@ -645,12 +660,27 @@ namespace EddiDataProviderService
                         {
                             foreach (StarSystem system in systems)
                             {
-                                cmd.CommandText = DELETE_SQL;
-                                cmd.Prepare();
-                                cmd.Parameters.AddWithValue("@name", system.systemname);
-                                cmd.Parameters.AddWithValue("@systemaddress", system.systemAddress);
-                                cmd.Parameters.AddWithValue("@edsmid", system.EDSMID);
-                                cmd.ExecuteNonQuery();
+                                if (system.systemAddress != null)
+                                {
+                                    cmd.CommandText = DELETE_SQL + WHERE_SYSTEMADDRESS;
+                                    cmd.Prepare();
+                                    cmd.Parameters.AddWithValue("@systemaddress", system.systemAddress);
+                                    cmd.ExecuteNonQuery();
+                                }
+                                else if (system.EDSMID != null)
+                                {
+                                    cmd.CommandText = DELETE_SQL + WHERE_EDSMID;
+                                    cmd.Prepare();
+                                    cmd.Parameters.AddWithValue("@edsmid", system.EDSMID);
+                                    cmd.ExecuteNonQuery();
+                                }
+                                else
+                                {
+                                    cmd.CommandText = DELETE_SQL + WHERE_NAME;
+                                    cmd.Prepare();
+                                    cmd.Parameters.AddWithValue("@name", system.systemname);
+                                    cmd.ExecuteNonQuery();
+                                }
                             }
                             transaction.Commit();
                         }
