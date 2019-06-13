@@ -1215,7 +1215,7 @@ namespace EddiJournalMonitor
                                             string arrivalStation = EDDI.Instance.CurrentStation?.name ?? string.Empty;
                                             string arrivalSystem = EDDI.Instance.CurrentStarSystem?.systemname ?? string.Empty;
                                             await Task.Delay((int)time * 1000);
-                                            EDDI.Instance.enqueueEvent(new ShipArrivedEvent(DateTime.UtcNow, ship, shipId, arrivalSystem, distance, price, time, arrivalStation, fromMarketId, toMarketId));
+                                            EDDI.Instance.enqueueEvent(new ShipArrivedEvent(DateTime.UtcNow, ship, shipId, arrivalSystem, distance, price, time, arrivalStation, fromMarketId, toMarketId) { fromLoad = fromLogLoad });
                                         }
                                     }
                                 }
@@ -1252,7 +1252,7 @@ namespace EddiJournalMonitor
                                             string arrivalStation = EDDI.Instance.CurrentStation?.name ?? string.Empty;
                                             string arrivalSystem = EDDI.Instance.CurrentStarSystem?.systemname ?? string.Empty;
                                             await Task.Delay((int)transferTime * 1000);
-                                            EDDI.Instance.enqueueEvent(new ModuleArrivedEvent(DateTime.UtcNow, ship, shipId, storageSlot, serverId, module, transferCost, transferTime, arrivalSystem, arrivalStation));
+                                            EDDI.Instance.enqueueEvent(new ModuleArrivedEvent(DateTime.UtcNow, ship, shipId, storageSlot, serverId, module, transferCost, transferTime, arrivalSystem, arrivalStation) { fromLoad = fromLogLoad });
                                         }
                                     }
                                 }
