@@ -23,7 +23,7 @@ namespace EddiDataProviderService
         private const string CREATE_TABLE_SQL = @" 
                     CREATE TABLE IF NOT EXISTS starsystems
                     (
-                        name TEXT NOT NULL,
+                        name TEXT NOT NULL COLLATE NOCASE,
                         totalvisits INT NOT NULL,
                         lastvisit DATETIME,
                         starsystem TEXT NOT NULL,
@@ -35,7 +35,7 @@ namespace EddiDataProviderService
                      );";
         private const string CREATE_INDEX_SQL = @" 
                     CREATE INDEX IF NOT EXISTS 
-                        starsystems_idx_1 ON starsystems(name);
+                        starsystems_idx_1 ON starsystems(name COLLATE NOCASE);
                     CREATE UNIQUE INDEX IF NOT EXISTS 
                         starsystems_idx_2 ON starsystems(systemaddress) WHERE systemaddress IS NOT NULL;
                     CREATE UNIQUE INDEX IF NOT EXISTS 
@@ -103,7 +103,7 @@ namespace EddiDataProviderService
                     )";
         private const string WHERE_SYSTEMADDRESS = @"WHERE systemaddress = @systemaddress; PRAGMA optimize;";
         private const string WHERE_EDSMID = @"WHERE edsmid = @edsmid; PRAGMA optimize;";
-        private const string WHERE_NAME = @"WHERE LOWER(name) = LOWER(@name); PRAGMA optimize;";
+        private const string WHERE_NAME = @"WHERE name = @name; PRAGMA optimize;";
 
         private static StarSystemSqLiteRepository instance;
 
@@ -271,7 +271,7 @@ namespace EddiDataProviderService
                 List<string> systemsToRevert = new List<string>();
                 foreach (StarSystem starSystem in updatedSystems)
                 {
-                    if (starSystem.systemAddress == null || starSystem.x == null || starSystem.y == null || starSystem.z == null)
+                    if (starSystem.systemAddress == null)
                     {
                         systemsToRevert.Add(starSystem.systemname);
                     }
