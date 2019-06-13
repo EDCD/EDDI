@@ -4,7 +4,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
 
 ### Development
   * EDSM responder
-    * Fixed a bug that caused EDSM synchronization to slow to a crawl and could spawn multiple copies of star systems within EDDI's database. Deleting `EDDI.sqlite` from `%APPDATA/EDDI` is resynchronizing is recommended for all pilots who tested version 3.4.1-rc1.
+    * Fixed a bug that caused EDSM synchronization to slow to a crawl and optimized database access. Resynchronizing with EDSM will speed database access and is recommended for all pilots.
 
 ### 3.4.1-rc1
   * EDSM responder
