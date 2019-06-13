@@ -12,9 +12,10 @@ namespace EddiDataProviderService
 {
     public class StarSystemSqLiteRepository : SqLiteBaseRepository, StarSystemRepository
     {
-        private const long SCHEMA_VERSION = 2;
         private const string TABLE_GET_SCHEMA_VERSION_SQL = @"PRAGMA user_version;";
-        private readonly static string TABLE_SET_SCHEMA_VERSION_SQL = @"PRAGMA user_version = " + SCHEMA_VERSION + ";";
+        private const string TABLE_SET_SCHEMA_VERSION_SQL = @"PRAGMA user_version = ";
+
+        public long SCHEMA_VERSION { get; private set; } = 0;
 
         // Append new table columns to the end of the list to maximize compatibility with schema version 0.
         // systemaddress and edsmid must each be unique. 
@@ -107,9 +108,7 @@ namespace EddiDataProviderService
         private static StarSystemSqLiteRepository instance;
 
         private StarSystemSqLiteRepository()
-        {
-            CreateOrUpdateDatabase();
-        }
+        { }
 
         private static readonly object instanceLock = new object();
         public static StarSystemSqLiteRepository Instance
@@ -124,6 +123,7 @@ namespace EddiDataProviderService
                         {
                             Logging.Debug("No StarSystemSqLiteRepository instance: creating one");
                             instance = new StarSystemSqLiteRepository();
+                            CreateOrUpdateDatabase();
                         }
                     }
                 }
@@ -178,7 +178,7 @@ namespace EddiDataProviderService
             List<StarSystem> fetchedSystems = DataProviderService.GetSystemsData(fetchSystems.ToArray());
             if (fetchedSystems?.Count > 0)
             {
-                Instance.insertStarSystems(fetchedSystems);
+                Instance.SaveStarSystems(fetchedSystems);
                 systems.AddRange(fetchedSystems);
             }
 
@@ -219,9 +219,13 @@ namespace EddiDataProviderService
                     IDictionary<string, object> system = Deserializtion.DeserializeData(data);
                     system.TryGetValue("comment", out object commentVal);
                     system.TryGetValue("lastupdated", out object lastUpdatedVal);
+                    system.TryGetValue("systemAddress", out object systemAddressVal);
+                    system.TryGetValue("EDSMID", out object edsmIdVal);
 
                     string comment = (string)commentVal ?? "";
                     DateTime? lastupdated = (DateTime?)lastUpdatedVal;
+                    long? systemAddress = (long?)systemAddressVal;
+                    long? edsmId = (long?)edsmIdVal;
 
                     if (refreshIfOutdated)
                     {
@@ -230,19 +234,21 @@ namespace EddiDataProviderService
                             // Data is stale
                             needToUpdate = true;
                         }
-                        else if (lastupdated == null)
+                        else if (lastupdated is null)
                         {
-                            // Data is old format, need to refresh
-                            if (Instance.OldDbFormat(name, comment, ref lastupdated))
-                            {
-                                needToUpdate = true;
-                            }
+                            // We have no record of ever updating this star system
+                            needToUpdate = true;
+                        }
+                        else if (SCHEMA_VERSION >= 2 && (systemAddress is null || edsmId is null))
+                        {
+                            // Obtain data for optimized data searches starting with schema version 2
+                            needToUpdate = true;
                         }
                     }
 
                     if (needToUpdate)
                     {
-                        // We'll need to update this star system
+                        // We want to update this star system
                         systemsToUpdate.Add(name);
                     }
                     else
@@ -285,7 +291,7 @@ namespace EddiDataProviderService
                 results.AddRange(updatedSystems);
 
                 // Save changes to our star systems
-                Instance.updateStarSystems(updatedSystems); 
+                Instance.updateStarSystems(updatedSystems);
             }
 
             foreach (StarSystem starSystem in results)
@@ -293,45 +299,6 @@ namespace EddiDataProviderService
                 starSystem.lastupdated = DateTime.UtcNow;
             }
             return results;
-        }
-
-        private bool OldDbFormat(string name, string comment, ref DateTime? lastupdated)
-        {
-            bool result = false;
-            using (var con = SimpleDbConnection())
-            {
-                con.Open();
-                using (var cmd = new SQLiteCommand(con))
-                {
-                    cmd.CommandText = SELECT_SQL + WHERE_NAME;
-                    cmd.Prepare();
-                    cmd.Parameters.AddWithValue("@name", name);
-                    using (SQLiteDataReader rdr = cmd.ExecuteReader())
-                    {
-                        if (rdr.Read())
-                        {
-                            if (lastupdated == null)
-                            {
-                                lastupdated = rdr.GetDateTime(4);
-                                result = true;
-                            }
-                            if (string.IsNullOrEmpty(comment))
-                            {
-                                for (int i = 0; i < rdr.FieldCount; i++)
-                                {
-                                    if (rdr.GetName(i) == "comment")
-                                    {
-                                        comment = rdr.GetString(i);
-                                        result = true;
-                                        break;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            return result;
         }
 
         private List<KeyValuePair<string, string>> ReadStarSystems(string[] names)
@@ -381,11 +348,11 @@ namespace EddiDataProviderService
             return results;
         }
 
-        private List<KeyValuePair<string, string>> ReadStarSystems(List<StarSystem> starSystems)
+        private List<StarSystemDatabaseResult> ReadStarSystems(List<StarSystem> starSystems)
         {
             if (starSystems.Count() == 0) { return null; }
 
-            List<KeyValuePair<string, string>> results = new List<KeyValuePair<string, string>>();
+            List<StarSystemDatabaseResult> results = new List<StarSystemDatabaseResult>();
             using (var con = SimpleDbConnection())
             {
                 con.Open();
@@ -417,13 +384,32 @@ namespace EddiDataProviderService
                                 {
                                     if (rdr.Read())
                                     {
+                                        string systemName = null;
+                                        long? systemAddress = null;
+                                        long? edsmId = null;
+                                        string starSystemJson = null;
                                         for (int i = 0; i < rdr.FieldCount; i++)
                                         {
+                                            if (rdr.GetName(i) == "name")
+                                            {
+                                                systemName = rdr.GetString(i);
+                                            }
+                                            if (SCHEMA_VERSION >= 2 && rdr.GetName(i) == "systemaddress")
+                                            {
+                                                systemAddress = rdr.GetInt32(i);
+                                            }
+                                            if (SCHEMA_VERSION >= 2 && rdr.GetName(i) == "edsmid")
+                                            {
+                                                edsmId = rdr.GetInt32(i);
+                                            }
                                             if (rdr.GetName(i) == "starsystem")
                                             {
-                                                results.Add(new KeyValuePair<string, string>(starSystem.systemname, rdr.GetString(i)));
-                                                break;
+                                                starSystemJson = rdr.GetString(i);
                                             }
+                                        }
+                                        if ((systemAddress != null || edsmId != null || systemName != null) && starSystemJson != null)
+                                        {
+                                            results.Add(new StarSystemDatabaseResult(systemName, systemAddress, edsmId, starSystemJson));
                                         }
                                     }
                                 }
@@ -488,22 +474,23 @@ namespace EddiDataProviderService
             var dbSystems = Instance.ReadStarSystems(starSystems);
             foreach (StarSystem system in starSystems)
             {
-                KeyValuePair<string, string> dbSystem = dbSystems.FirstOrDefault(s => s.Key == system.systemname);
-                if (dbSystem.Key == null)
+                StarSystemDatabaseResult dbSystem = dbSystems.FirstOrDefault(s => 
+                    s.systemAddress != null && s.systemAddress == system.systemAddress ? true :
+                    s.edsmId != null && s.edsmId == system.EDSMID ? true : 
+                    s.systemName == system.systemname ? true : false);
+
+                if (dbSystem?.starSystemJson is null || 
+                    (dbSystem.systemAddress is null && dbSystem.edsmId is null))
                 {
+                    // If we're updating to schema version 2, systemAddress and edsmId will both be null. 
+                    // Use our delete method to purge all obsolete copies of the star system from the database,
+                    // then re-add the star system.
+                    delete.Add(system);
                     insert.Add(system);
                 }
                 else
                 {
-                    if (dbSystem.Value == null)
-                    {
-                        delete.Add(system);
-                        insert.Add(system);
-                    }
-                    else
-                    {
-                        update.Add(system);
-                    }
+                    update.Add(system);
                 }
             }
 
@@ -531,24 +518,6 @@ namespace EddiDataProviderService
                 return;
             }
 
-            List<StarSystem> updateStarSystems = new List<StarSystem>();
-            List<StarSystem> insertStarSystems = new List<StarSystem>();
-
-            var existingStarSystems = Instance.ReadStarSystems(systems);
-            foreach (StarSystem systemToInsertOrUpdate in systems)
-            {
-                // Before we insert we attempt to fetch to ensure that we don't have it present
-                if (existingStarSystems.FirstOrDefault(s => s.Key == systemToInsertOrUpdate.systemname).Value != null)
-                {
-                    Logging.Debug("Attempt to insert existing star system - updating instead");
-                    updateStarSystems.Add(systemToInsertOrUpdate);
-                }
-                else
-                {
-                    insertStarSystems.Add(systemToInsertOrUpdate);
-                }
-            }
-
             using (var con = SimpleDbConnection())
             {
                 try
@@ -558,7 +527,7 @@ namespace EddiDataProviderService
                     {
                         using (var transaction = con.BeginTransaction())
                         {
-                            foreach (StarSystem system in insertStarSystems)
+                            foreach (StarSystem system in systems)
                             {
                                 Logging.Debug("Inserting new starsystem " + system.systemname);
                                 cmd.CommandText = INSERT_SQL + VALUES_SQL;
@@ -581,12 +550,6 @@ namespace EddiDataProviderService
                 {
                     handleSqlLiteException(con, ex);
                 }
-            }
-
-            // Update applicable systems
-            if (updateStarSystems?.Count > 0)
-            {
-                Instance.updateStarSystems(updateStarSystems);
             }
         }
 
@@ -660,6 +623,7 @@ namespace EddiDataProviderService
                         {
                             foreach (StarSystem system in systems)
                             {
+                                // Delete all possible variations of this data from the database.
                                 if (system.systemAddress != null)
                                 {
                                     cmd.CommandText = DELETE_SQL + WHERE_SYSTEMADDRESS;
@@ -667,14 +631,14 @@ namespace EddiDataProviderService
                                     cmd.Parameters.AddWithValue("@systemaddress", system.systemAddress);
                                     cmd.ExecuteNonQuery();
                                 }
-                                else if (system.EDSMID != null)
+                                if (system.EDSMID != null)
                                 {
                                     cmd.CommandText = DELETE_SQL + WHERE_EDSMID;
                                     cmd.Prepare();
                                     cmd.Parameters.AddWithValue("@edsmid", system.EDSMID);
                                     cmd.ExecuteNonQuery();
                                 }
-                                else
+                                if (!string.IsNullOrEmpty(system.systemname))
                                 {
                                     cmd.CommandText = DELETE_SQL + WHERE_NAME;
                                     cmd.Prepare();
@@ -710,26 +674,20 @@ namespace EddiDataProviderService
                     }
 
                     // Get schema version 
-                    long schemaVersion = 0;
                     using (var cmd = new SQLiteCommand(TABLE_GET_SCHEMA_VERSION_SQL, con))
                     {
-                        schemaVersion = (long)cmd.ExecuteScalar();
-                        Logging.Debug("Starsystem repository is schema version " + schemaVersion);
-                    }
-                    if (schemaVersion > SCHEMA_VERSION)
-                    {
-                        Logging.Warn("Starsystem schema version not recognized, aborting.");
-                        throw new NotImplementedException();
+                        Instance.SCHEMA_VERSION = (long)cmd.ExecuteScalar();
+                        Logging.Debug("Starsystem repository is schema version " + Instance.SCHEMA_VERSION);
                     }
 
                     // Apply any necessary updates
-                    if (schemaVersion < 1)
+                    if (Instance.SCHEMA_VERSION < 1)
                     {
                         Logging.Debug("Updating starsystem repository to schema version 1");
                         AddColumnIfMissing(con, "comment");
-                        schemaVersion = 1;
+                        Instance.SCHEMA_VERSION = 1;
                     }
-                    if (schemaVersion < 2)
+                    if (Instance.SCHEMA_VERSION < 2)
                     {
                         Logging.Debug("Updating starsystem repository to schema version 2");
 
@@ -742,7 +700,7 @@ namespace EddiDataProviderService
                         {
                             cmd.ExecuteNonQuery();
                         }
-                        schemaVersion = 2;
+                        Instance.SCHEMA_VERSION = 2;
                     }
 
                     // Add our indices
@@ -753,9 +711,9 @@ namespace EddiDataProviderService
                     }
 
                     // Set schema version 
-                    using (var cmd = new SQLiteCommand(TABLE_SET_SCHEMA_VERSION_SQL, con))
+                    using (var cmd = new SQLiteCommand(TABLE_SET_SCHEMA_VERSION_SQL + Instance.SCHEMA_VERSION + ";", con))
                     {
-                        Logging.Info("Starsystem repository schema is version " + schemaVersion);
+                        Logging.Info("Starsystem repository schema is version " + Instance.SCHEMA_VERSION);
                         cmd.ExecuteNonQuery();
                     }
                 }
@@ -861,6 +819,23 @@ namespace EddiDataProviderService
             finally
             {
                 con.Dispose();
+            }
+        }
+
+        protected internal class StarSystemDatabaseResult
+        {
+            // Data as read from columns in our database
+            public string systemName { get; private set; } = null;
+            public long? systemAddress { get; private set; } = null;
+            public long? edsmId { get; private set; } = null;
+            public string starSystemJson { get; private set; } = null;
+
+            public StarSystemDatabaseResult(string systemName, long? systemAddress, long? edsmId, string starSystemJson)
+            {
+                this.systemName = systemName;
+                this.systemAddress = systemAddress;
+                this.edsmId = edsmId;
+                this.starSystemJson = starSystemJson;
             }
         }
     }
