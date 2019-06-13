@@ -4,15 +4,15 @@ namespace EDDNResponder
 {
     class EDDNEconomy
     {
-        public string Name;
-        public string Name_Localized;
-        public decimal Proportion = 0M;
+        // Schema ref.: https://github.com/EDSM-NET/EDDN/blob/b21bdf76e549ea9e69fedf3ad6434b2fcdc5a5e7/schemas/commodity-v3.0.json#L105
+
+        public string name;
+        public decimal proportion = 0M;
 
         public EDDNEconomy(EconomyShare economyShareEconomy)
         {
-            Name = economyShareEconomy.economy.edname;
-            Name_Localized = economyShareEconomy.economy.fallbackLocalizedName;
-            Proportion = economyShareEconomy.proportion;
+            name = economyShareEconomy.economy.edname;
+            proportion = economyShareEconomy.proportion;
         }
     }
 }
