@@ -3386,9 +3386,12 @@ namespace EddiJournalMonitor
                             case "DiscoveryScan":
                             case "Reputation":
                             case "Statistics":
+                            case "CodexDiscovery":
                             case "CodexEntry":
                             case "ReservoirReplenished":
+                            case "Powerplay":
                             case "ProspectedAsteroid":
+                            case "AsteroidCracked":
                             case "CrimeVictim":
                             case "Scanned":
                                 // we silently ignore these, but forward them to the responders
