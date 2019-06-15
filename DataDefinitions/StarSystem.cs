@@ -45,6 +45,12 @@ namespace EddiDataDefinitions
         }
         private ImmutableList<Body> _bodies;
 
+        public Body BodyWithID(long bodyID)
+        {
+            Body result = bodies.Find(b => b.bodyId == bodyID);
+            return result;
+        }
+
         public void AddOrUpdateBody(Body body)
         {
             var builder = bodies.ToBuilder();
