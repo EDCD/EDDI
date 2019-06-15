@@ -87,9 +87,12 @@ namespace EddiBgsService
                     systemName = (string)presenceJson["system_name"],
                     influence = (decimal?)(double?)presenceJson["influence"] * 100, // Convert from a 0-1 range to a percentage
                     FactionState = FactionState.FromEDName((string)presenceJson["state"]) ?? FactionState.None,
-                    Happiness = Happiness.FromEDName((string)presenceJson["happiness"]) ?? Happiness.None,
-                    updatedAt = (DateTime)presenceJson["updated_at"],
                 };
+
+                // These properties may not be present in the json, so we pass them after initializing our FactionPresence object.
+                factionPresence.Happiness = Happiness.FromEDName(JsonParsing.getString(presenceJson, "happiness")) ?? Happiness.None;
+                presenceJson.TryGetValue("updated_at", out object updatedVal);
+                factionPresence.updatedAt = (DateTime?)updatedVal ?? DateTime.MinValue;
 
                 // Active states
                 presenceJson.TryGetValue("active_states", out object activeStatesVal);
