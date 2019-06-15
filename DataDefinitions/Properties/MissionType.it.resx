@@ -136,7 +136,7 @@
     <value>Raccolta di gruppo</value>
   </data>
   <data name="CommunityGoal" xml:space="preserve">
-    <value>Obiettivo comunitario</value>
+    <value>Obiettivo Comunitario</value>
   </data>
   <data name="Courier" xml:space="preserve">
     <value>Trasporto dati</value>
@@ -147,24 +147,64 @@
   <data name="DeliveryWing" xml:space="preserve">
     <value>Consegna di gruppo</value>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="Disable" xml:space="preserve">
+    <value>Disabilitazione Installazione di Superficie</value>
+  </data>
+  <data name="DisableWing" xml:space="preserve">
+    <value>Disabilitazione di Gruppo</value>
+  </data>
+  <data name="GenericPermit1" xml:space="preserve">
+    <value>Acquisizione di Permesso</value>
+  </data>
+  <data name="Hack" xml:space="preserve">
+    <value>Hackeraggio</value>
+  </data>
+  <data name="LongDistanceExpedition" xml:space="preserve">
+    <value>Spedizione</value>
+  </data>
+  <data name="Massacre" xml:space="preserve">
+    <value>Massacro</value>
+  </data>
+  <data name="MassacreThargoid" xml:space="preserve">
+    <value>Massacra Thargoid</value>
+  </data>
+  <data name="MassacreWing" xml:space="preserve">
+    <value>Massacro di Gruppo</value>
+  </data>
+  <data name="Mining" xml:space="preserve">
+    <value>Estrazione di Minerali</value>
+  </data>
+  <data name="MiningWing" xml:space="preserve">
+    <value>Estrazione di Minerali in Gruppo</value>
+  </data>
+  <data name="None" xml:space="preserve">
+    <value>Nessuno</value>
+  </data>
+  <data name="PassengerBulk" xml:space="preserve">
+    <value>Trasporta</value>
+  </data>
+  <data name="PassengerVIP" xml:space="preserve">
+    <value>Trasporta</value>
+  </data>
+  <data name="Piracy" xml:space="preserve">
+    <value>Pirateria</value>
+  </data>
+  <data name="Rescue" xml:space="preserve">
+    <value>Salvataggio</value>
+  </data>
+  <data name="Salvage" xml:space="preserve">
+    <value>Recupero</value>
+  </data>
+  <data name="Scan" xml:space="preserve">
+    <value>Scansione di Superficie</value>
+  </data>
+  <data name="Sightseeing" xml:space="preserve">
+    <value>Viaggio Turistico</value>
+  </data>
+  <data name="Smuggle" xml:space="preserve">
+    <value>Contrabbando</value>
+  </data>
+  <data name="Special" xml:space="preserve">
+    <value>Speciale</value>
+  </data>
 </root>

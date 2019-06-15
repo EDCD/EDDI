@@ -170,7 +170,7 @@
     <comment>NonHuman signal</comment>
   </data>
   <data name="USS_Type_WeaponsFire" xml:space="preserve">
-    <value>Uso de armas detectado</value>
+    <value>Uso de armas</value>
     <comment>WeaponsFire signal</comment>
   </data>
   <data name="USS_Type_MissionTarget" xml:space="preserve">

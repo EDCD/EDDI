@@ -121,7 +121,16 @@
     <value>Pirata</value>
     <comment>Superpower type Pirate</comment>
   </data>
-  
-  
-  
+  <data name="Guardian" xml:space="preserve">
+    <value>dei Guardiani</value>
+    <comment>Superpower type Guardian</comment>
+  </data>
+  <data name="Thargoid" xml:space="preserve">
+    <value>dei Thargoid</value>
+    <comment>Superpower type Thargoid</comment>
+  </data>
+  <data name="PilotsFederation" xml:space="preserve">
+    <value>della Federazione dei Piloti</value>
+    <comment>Superpower type Pilots Federation</comment>
+  </data>
 </root>
