@@ -35,6 +35,7 @@ namespace EddiEvents
         {
             this.name = name;
             this.body = body;
+            body.mapped = timestamp;
             this.probesused = probesUsed;
             this.efficiencytarget = efficiencyTarget;
         }
