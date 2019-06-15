@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EddiDataDefinitions;
+using System;
 using System.Collections.Generic;
 
 namespace EddiEvents
@@ -15,6 +16,7 @@ namespace EddiEvents
             VARIABLES.Add("name", "The name of the body that has been mapped");
             VARIABLES.Add("probesused", "The number of probes used to map the body");
             VARIABLES.Add("efficiencytarget", "The efficiency target for the number of probes used to map the body");
+            VARIABLES.Add("estimatedvalue", "The estimated value of the mapped body");
         }
 
         public string name { get; private set; }
@@ -23,13 +25,16 @@ namespace EddiEvents
 
         public int efficiencytarget { get; private set; }
 
-        // Not intended to be user facing
-        public long? bodyId { get; private set; }
+        public long estimatedvalue => body.estimatedvalue;
 
-        public BodyMappedEvent(DateTime timestamp, string name, long? bodyId, int probesUsed, int efficiencyTarget) : base(timestamp, NAME)
+        // Not intended to be user facing
+        public Body body { get; private set; }
+        public long? bodyId => body.bodyId;
+
+        public BodyMappedEvent(DateTime timestamp, string name, Body body, int probesUsed, int efficiencyTarget) : base(timestamp, NAME)
         {
             this.name = name;
-            this.bodyId = bodyId;
+            this.body = body;
             this.probesused = probesUsed;
             this.efficiencytarget = efficiencyTarget;
         }

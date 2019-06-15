@@ -2011,7 +2011,9 @@ namespace EddiJournalMonitor
                                     long? bodyId = JsonParsing.getOptionalLong(data, "BodyID");
                                     int probesUsed = JsonParsing.getInt(data, "ProbesUsed");
                                     int efficiencyTarget = JsonParsing.getInt(data, "EfficiencyTarget");
-                                    events.Add(new BodyMappedEvent(timestamp, bodyName, bodyId, probesUsed, efficiencyTarget) { raw = line, fromLoad = fromLogLoad });
+                                    StarSystem system = EDDI.Instance?.CurrentStarSystem;
+                                    Body body = system.BodyWithID(bodyId ?? 0);
+                                    events.Add(new BodyMappedEvent(timestamp, bodyName, body, probesUsed, efficiencyTarget) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
