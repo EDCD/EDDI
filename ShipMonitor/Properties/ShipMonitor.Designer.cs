@@ -19,7 +19,7 @@ namespace EddiShipMonitor.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class ShipMonitor {
@@ -300,6 +300,15 @@ namespace EddiShipMonitor.Properties {
         public static string p4 {
             get {
                 return ResourceManager.GetString("p4", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to EDDI can send an export of your ship&apos;s data to Coriolis or EDShipyard (3rd Party tools). Select the tool you prefer..
+        /// </summary>
+        public static string p5 {
+            get {
+                return ResourceManager.GetString("p5", resourceCulture);
             }
         }
         
