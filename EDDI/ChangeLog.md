@@ -5,6 +5,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
 ### Development
   * Speech responder
     * Fixed an issue with character encoding in the French personality file.
+    * Revised the `System report` script to gracefully handle the system power being "None".
 
 ### 3.4.1-rc1
   * EDSM responder
