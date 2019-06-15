@@ -949,6 +949,7 @@ namespace EddiMissionMonitor
             // Clear route and destination variables
             missionsRouteList = null;
             missionsRouteDistance = 0;
+            UpdateDestinationData(missionsRouteList, null, missionsRouteDistance);
 
             EDDI.Instance.enqueueEvent(new RouteDetailsEvent(DateTime.Now, "cancel", null, missionsRouteList, 0, 0, missionsRouteDistance, null));
         }
