@@ -3395,6 +3395,10 @@ namespace EddiJournalMonitor
                             case "AsteroidCracked":
                             case "CrimeVictim":
                             case "Scanned":
+                            case "WingAdd":
+                            case "WingInvite":
+                            case "WingJoin":
+                            case "WingLeave":
                                 // we silently ignore these, but forward them to the responders
                                 break;
                             default:
