@@ -3384,6 +3384,7 @@ namespace EddiJournalMonitor
                                 break;
                             case "Commander":
                             case "DiscoveryScan":
+                            case "EngineerLegacyConvert":
                             case "Reputation":
                             case "Statistics":
                             case "CodexDiscovery":
