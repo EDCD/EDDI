@@ -3384,13 +3384,21 @@ namespace EddiJournalMonitor
                                 break;
                             case "Commander":
                             case "DiscoveryScan":
+                            case "EngineerLegacyConvert":
                             case "Reputation":
                             case "Statistics":
+                            case "CodexDiscovery":
                             case "CodexEntry":
                             case "ReservoirReplenished":
+                            case "Powerplay":
                             case "ProspectedAsteroid":
+                            case "AsteroidCracked":
                             case "CrimeVictim":
                             case "Scanned":
+                            case "WingAdd":
+                            case "WingInvite":
+                            case "WingJoin":
+                            case "WingLeave":
                                 // we silently ignore these, but forward them to the responders
                                 break;
                             default:
