@@ -1140,7 +1140,7 @@ namespace Eddi
                 }
 
                 // Truncate log files more than the specified size MB in size
-                const long maxLogSizeBytes = 0x200000; // 2 MB
+                const long maxLogSizeBytes = 5 * 1024 * 1024; // 5 MB (before zipping)
                 FileInfo logFile = new FileInfo(toTruncatedLogPath);
                 if (logFile.Length > maxLogSizeBytes)
                 {
