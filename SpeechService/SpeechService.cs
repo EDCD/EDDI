@@ -459,11 +459,18 @@ namespace EddiSpeechService
             DirectoryInfo dir = new DirectoryInfo(directory);
             foreach (FileInfo file in dir.GetFiles("*.lexicon", SearchOption.AllDirectories))
             {
+                try
+                {
                 string json = Files.Read(file.FullName);
                 var result = JsonConvert.DeserializeObject<List<Lexeme>>(json);
                 lexemes.RemoveAll(l => result.Select(r => r.name).Contains(l.name)
                     && result.Select(r => r.culture).Contains(l.culture));
                 lexemes.AddRange(result);
+                }
+                catch (Exception ex)
+                {
+                    Logging.Error("Invalid .lexicon file: " + file.FullName);
+                }
             }
         }
 
