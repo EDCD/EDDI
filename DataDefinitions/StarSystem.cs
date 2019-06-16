@@ -45,8 +45,9 @@ namespace EddiDataDefinitions
         }
         private ImmutableList<Body> _bodies;
 
-        public Body BodyWithID(long bodyID)
+        public Body BodyWithID(long? bodyID)
         {
+            if (bodyID is null) { return null; }
             Body result = bodies.Find(b => b.bodyId == bodyID);
             return result;
         }

@@ -25,7 +25,7 @@ namespace EddiEvents
 
         public int efficiencytarget { get; private set; }
 
-        public long estimatedvalue => body.estimatedvalue;
+        public long estimatedvalue => body?.estimatedvalue ?? 0;
 
         // Not intended to be user facing
         public Body body { get; private set; }
