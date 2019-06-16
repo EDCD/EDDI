@@ -61,6 +61,8 @@ namespace EddiEvents
 
         // Variable names for this event should match the class property names for maximum compatibility with the BodyDetails() function in Cottle
 
+        public string name => body.bodyname;
+
         public string bodyname => body.bodyname;
 
         public string systemname { get; private set; }
