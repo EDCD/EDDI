@@ -6,6 +6,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
   * Speech responder
     * Fixed an issue with character encoding in the French personality file.
     * Revised the `System report` script to gracefully handle the system power being "None".
+    * The `Body mapped` event now makes available all of the same body data as `Body scanned`.
 
 ### 3.4.1-rc1
   * EDSM responder
