@@ -138,6 +138,38 @@ namespace UnitTests
         }
 
         [TestMethod]
+        public void TestBodyMappedEventHandler()
+        {
+            string line = @"{ ""timestamp"":""2016 - 11 - 01T18: 49:07Z"", ""event"":""Scan"", ""ScanType"":""Detailed"", ""BodyName"":""Grea Bloae HH-T d4-44 4"", ""BodyID"":3, ""DistanceFromArrivalLS"":703.763611, ""TidalLock"":false, ""TerraformState"":""Terraformable"", ""PlanetClass"":""High metal content body"", ""Atmosphere"":""hot thick carbon dioxide atmosphere"", ""Volcanism"":""minor metallic magma volcanism"", ""MassEM"":2.171783, ""Radius"":7622170.500000, ""SurfaceGravity"":14.899396, ""SurfaceTemperature"":836.165466, ""SurfacePressure"":33000114.000000, ""Landable"":false, ""SemiMajorAxis"":210957926400.000000, ""Eccentricity"":0.000248, ""OrbitalInclination"":0.015659, ""Periapsis"":104.416656, ""OrbitalPeriod"":48801056.000000, ""RotationPeriod"":79442.242188 }";
+            List<Event> events = JournalMonitor.ParseJournalEntry(line);
+            Assert.AreEqual(1, events.Count);
+            BodyScannedEvent @event = (BodyScannedEvent)events[0];
+            Assert.IsNotNull(@event);
+            Assert.IsInstanceOfType(@event, typeof(BodyScannedEvent));
+
+            PrivateObject privateObject = new PrivateObject(Eddi.EDDI.Instance);
+            privateObject.Invoke("updateCurrentSystem", new object[] { "Grea Bloae HH-T d4-44" });
+            Assert.AreEqual("Grea Bloae HH-T d4-44", EDDI.Instance.CurrentStarSystem?.systemname);
+
+            // Set up conditions to test the first scan of the body
+            EDDI.Instance.CurrentStarSystem.bodies.Find(b => b.bodyname == "Grea Bloae HH-T d4-44 4").scanned = null;
+            var result = (bool)privateObject.Invoke("eventBodyScanned", new object[] { @event });
+            Assert.AreEqual(@event.timestamp, EDDI.Instance.CurrentStarSystem.bodies.Find(b => b.bodyname == "Grea Bloae HH-T d4-44 4").scanned);
+            long event1EstimatedValue = EDDI.Instance.CurrentStarSystem.bodies.Find(b => b.bodyname == "Grea Bloae HH-T d4-44 4").estimatedvalue;
+
+            // Map the body
+            string line2 = @"{ ""timestamp"":""2016 - 11 - 01T18: 59:07Z"", ""event"":""SAAScanComplete"", ""BodyName"":""Grea Bloae HH-T d4-44 4"", ""BodyID"":3, ""ProbesUsed"":5, ""EfficiencyTarget"":6 }";
+            events = JournalMonitor.ParseJournalEntry(line2);
+            Assert.AreEqual(1, events.Count);
+            BodyMappedEvent @event2 = (BodyMappedEvent)events[0];
+            result = (bool)privateObject.Invoke("eventBodyMapped", new object[] { @event2 });
+
+            Assert.AreEqual(@event.timestamp, EDDI.Instance.CurrentStarSystem.bodies.Find(b => b.bodyname == "Grea Bloae HH-T d4-44 4").scanned);
+            Assert.AreEqual(@event2.timestamp, EDDI.Instance.CurrentStarSystem.bodies.Find(b => b.bodyname == "Grea Bloae HH-T d4-44 4").mapped);
+            Assert.IsTrue(EDDI.Instance.CurrentStarSystem.bodies.Find(b => b.bodyname == "Grea Bloae HH-T d4-44 4").estimatedvalue > event1EstimatedValue);
+        }
+
+        [TestMethod]
         public void TestRingCurrentBody()
         {
             string line = @"{ ""timestamp"":""2018-12-02T07:59:04Z"", ""event"":""SupercruiseExit"", ""StarSystem"":""HIP 17704"", ""SystemAddress"":246119654564, ""Body"":""HIP 17704 4 A Ring"", ""BodyID"":18, ""BodyType"":""PlanetaryRing"" }";
