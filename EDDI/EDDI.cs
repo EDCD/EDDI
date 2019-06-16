@@ -1950,20 +1950,20 @@ namespace Eddi
 
         private bool eventBodyMapped(BodyMappedEvent theEvent)
         {
-            if (theEvent.name.Contains(" Ring"))
+            if (theEvent.body.bodyname.Contains(" Ring"))
             {
-                updateCurrentStellarBody(theEvent.name, CurrentStarSystem?.systemname, CurrentStarSystem?.systemAddress);
+                updateCurrentStellarBody(theEvent.bodyName, CurrentStarSystem?.systemname, CurrentStarSystem?.systemAddress);
             }
             else
             {
                 if (CurrentStarSystem != null)
                 {
-                    Body body = CurrentStarSystem.bodies.Find(b => b.bodyname == theEvent.name);
+                    Body body = CurrentStarSystem.bodies.Find(b => b.bodyname == theEvent.bodyName);
                     if (body?.mapped is null && !(theEvent.body is null))
                     {
                         CurrentStarSystem.AddOrUpdateBody(theEvent.body);
                         StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
-                        updateCurrentStellarBody(theEvent.name, CurrentStarSystem?.systemname, CurrentStarSystem?.systemAddress);
+                        updateCurrentStellarBody(theEvent.bodyName, CurrentStarSystem?.systemname, CurrentStarSystem?.systemAddress);
                     }
                 }
             }

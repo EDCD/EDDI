@@ -160,10 +160,13 @@ namespace EddiEvents
         public int efficiencytarget { get; private set; }
 
         // Not intended to be user facing
+        public string bodyName { get; private set; }
+
         public Body body { get; private set; }
 
         public BodyMappedEvent(DateTime timestamp, string bodyName, Body body, int probesUsed, int efficiencyTarget) : base(timestamp, NAME)
         {
+            this.bodyName = bodyName;
             this.body = body;
             this.probesused = probesUsed;
             this.efficiencytarget = efficiencyTarget;
