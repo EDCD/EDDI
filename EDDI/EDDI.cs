@@ -1959,10 +1959,9 @@ namespace Eddi
                 if (CurrentStarSystem != null)
                 {
                     Body body = CurrentStarSystem.bodies.Find(b => b.bodyname == theEvent.name);
-                    if (body != null)
+                    if (body?.mapped is null && !(theEvent.body is null))
                     {
-                        body.mapped = theEvent.timestamp;
-                        body.mappedEfficiently = theEvent.probesused <= theEvent.efficiencytarget;
+                        CurrentStarSystem.AddOrUpdateBody(theEvent.body);
                         StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
                         updateCurrentStellarBody(theEvent.name, CurrentStarSystem?.systemname, CurrentStarSystem?.systemAddress);
                     }
