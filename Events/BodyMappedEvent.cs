@@ -25,7 +25,6 @@ namespace EddiEvents
 
         public int efficiencytarget { get; private set; }
 
-        // #1362 this doesn't seem to be updated in time
         public long estimatedvalue => body.estimatedvalue;
 
         // Not intended to be user facing
@@ -36,10 +35,8 @@ namespace EddiEvents
         {
             this.name = name;
             this.body = body;
-            body.mapped = timestamp;
             this.probesused = probesUsed;
             this.efficiencytarget = efficiencyTarget;
         }
-
     }
 }
