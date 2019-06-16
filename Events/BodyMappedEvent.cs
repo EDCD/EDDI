@@ -25,6 +25,7 @@ namespace EddiEvents
 
         public int efficiencytarget { get; private set; }
 
+        // #1362 this doesn't seem to be updated in time
         public long estimatedvalue => body.estimatedvalue;
 
         // Not intended to be user facing
