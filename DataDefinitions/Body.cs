@@ -37,6 +37,7 @@ namespace EddiDataDefinitions
         public string bodyname { get; set; }
 
         /// <summary>The short name of the body</summary>
+        [JsonIgnore]
         public string shortname => (systemname == null || bodyname == systemname) ? bodyname : bodyname.Replace(systemname, "").Trim();
 
         /// <summary>The name of the system in which the body resides</summary>
@@ -78,6 +79,7 @@ namespace EddiDataDefinitions
         public bool mappedEfficiently { get; set; }
 
         /// <summary>The estimated value of the body</summary>
+        [JsonIgnore]
         public long estimatedvalue => scanned == null ? 0 : 
             solarmass == null ? estimateBodyValue() : estimateStarValue();
 
@@ -181,6 +183,7 @@ namespace EddiDataDefinitions
         public long? age { get; set; }
 
         /// <summary>If this body is the main star</summary>
+        [JsonIgnore]
         public bool? mainstar => distance == 0 ? true : false;
 
         /// <summary>The stellar class of the star</summary>
