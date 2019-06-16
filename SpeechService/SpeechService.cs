@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
+using System.Linq;
 using System.Security;
 using System.Speech.Synthesis;
 using System.Text;
@@ -61,6 +62,8 @@ namespace EddiSpeechService
             }
         }
 
+        public List<Lexeme> lexemes { get; private set; } = new List<Lexeme>();
+
         private static SpeechService instance;
         private static readonly object instanceLock = new object();
         public static SpeechService Instance
@@ -75,6 +78,7 @@ namespace EddiSpeechService
                         {
                             Logging.Debug("No Speech service instance: creating one");
                             instance = new SpeechService();
+                            instance.AddOrUpdateLexicons();
                         }
                     }
                 }
@@ -126,7 +130,7 @@ namespace EddiSpeechService
                 // Queue the current speech
                 EddiSpeech queuingSpeech = new EddiSpeech(message, ship, priority, voice, radio, eventType);
                 speechQueue.Enqueue(queuingSpeech);
-                 
+
                 // Check the first item in the speech queue
                 if (speechQueue.TryPeek(out EddiSpeech peekedSpeech))
                 {
@@ -334,64 +338,68 @@ namespace EddiSpeechService
             {
                 if (synth == null) { synth = new SpeechSynthesizer(); };
                 var synthThread = new Thread(() =>
-            {
-                try
                 {
-                    if (voice != null)
+                    try
                     {
-                        try
+                        if (voice != null)
                         {
-                            Logging.Debug("Selecting voice " + voice);
-                            var timeout = new CancellationTokenSource();
-                            Task t = Task.Run(() => selectVoice(voice), timeout.Token);
-                            if (!t.Wait(TimeSpan.FromSeconds(2)))
+                            try
                             {
-                                timeout.Cancel();
-                                Logging.Warn("Failed to select voice " + voice + " (timed out)");
+                                Logging.Debug("Selecting voice " + voice);
+                                var timeout = new CancellationTokenSource();
+                                Task t = Task.Run(() => selectVoice(voice), timeout.Token);
+                                if (!t.Wait(TimeSpan.FromSeconds(2)))
+                                {
+                                    timeout.Cancel();
+                                    Logging.Warn("Failed to select voice " + voice + " (timed out)");
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                Logging.Warn("Failed to select voice " + voice, ex);
                             }
                         }
-                        catch (Exception ex)
+                        Logging.Debug("Configuration is " + configuration == null ? "<null>" : JsonConvert.SerializeObject(configuration));
+                        synth.Rate = configuration.Rate;
+                        synth.Volume = configuration.Volume;
+
+                        synth.SetOutputToWaveStream(stream);
+
+                        if (!configuration.DisableSsml)
                         {
-                            Logging.Warn("Failed to select voice " + voice, ex);
+                            Logging.Debug("Obtaining best guess culture");
+                            string culture = @" xml:lang=""" + bestGuessCulture() + @"""";
+                            Logging.Debug("Best guess culture is " + culture);
+
+                            // Keep XML version at 1.0. Version 1.1 is not recommended for general use. https://en.wikipedia.org/wiki/XML#Versions
+                            string ssmlHeader = @"<?xml version=""1.0"" encoding=""UTF-8""?>";
+
+                            speech = ssmlHeader + @"<speak version=""1.0"" xmlns=""http://www.w3.org/2001/10/synthesis""" + culture + ">" 
+                                + escapeSsml(ApplyLexicons(speech, synth.Voice.Culture.IetfLanguageTag)) + @"</speak>";
+                            Logging.Debug("Feeding SSML to synthesizer: " + escapeSsml(speech));
+                            synth.SpeakSsml(speech);
                         }
+                        else
+                        {
+                            Logging.Debug("Feeding normal text to synthesizer: " + speech);
+                            synth.Speak(speech);
+                        }
+                        stream.ToArray();
                     }
-                    Logging.Debug("Configuration is " + configuration == null ? "<null>" : JsonConvert.SerializeObject(configuration));
-                    synth.Rate = configuration.Rate;
-                    synth.Volume = configuration.Volume;
-
-                    synth.SetOutputToWaveStream(stream);
-
-                    // Keep XML version at 1.0. Version 1.1 is not recommended for general use. https://en.wikipedia.org/wiki/XML#Versions
-                    if (speech.Contains("<"))
+                    catch (ThreadAbortException)
                     {
-                        Logging.Debug("Obtaining best guess culture");
-                        string culture = @" xml:lang=""" + bestGuessCulture() + @"""";
-                        Logging.Debug("Best guess culture is " + culture);
-                        speech = @"<?xml version=""1.0"" encoding=""UTF-8""?><speak version=""1.0"" xmlns=""http://www.w3.org/2001/10/synthesis""" + culture + ">" + escapeSsml(speech) + @"</speak>";
-                        Logging.Debug("Feeding SSML to synthesizer: " + escapeSsml(speech));
-                        synth.SpeakSsml(speech);
+                        Logging.Debug("Thread aborted");
                     }
-                    else
+                    catch (Exception ex)
                     {
-                        Logging.Debug("Feeding normal text to synthesizer: " + speech);
-                        synth.Speak(speech);
+                        Logging.Warn("Speech failed: ", ex);
+                        var badSpeech = new Dictionary<string, object>() {
+                                {"speech", speech},
+                        };
+                        string badSpeechJSON = JsonConvert.SerializeObject(badSpeech);
+                        Logging.Info("Speech failed", badSpeechJSON, "", "");
                     }
-                    stream.ToArray();
-                }
-                catch (ThreadAbortException)
-                {
-                    Logging.Debug("Thread aborted");
-                }
-                catch (Exception ex)
-                {
-                    Logging.Warn("Speech failed: ", ex);
-                    var badSpeech = new Dictionary<string, object>() {
-                            {"speech", speech},
-                    };
-                    string badSpeechJSON = JsonConvert.SerializeObject(badSpeech);
-                    Logging.Info("Speech failed", badSpeechJSON, "", "");
-                }
-            });
+                });
                 synthThread.Start();
                 synthThread.Join();
                 stream.Position = 0;
@@ -435,6 +443,54 @@ namespace EddiSpeechService
                 }
             }
             return guess;
+        }
+
+        private void AddOrUpdateLexicons()
+        {
+            // Add lexicons from our installation directory
+            AddLexiconsFromDirectory(new FileInfo(System.Reflection.Assembly.GetExecutingAssembly().Location).DirectoryName + @"\lexicons");
+
+            // Add lexicons from our user configuration (allowing these to overwrite any prior lexeme values)
+            AddLexiconsFromDirectory(Constants.DATA_DIR + @"\lexicons");
+        }
+
+        private void AddLexiconsFromDirectory(string directory)
+        {
+            DirectoryInfo dir = new DirectoryInfo(directory);
+            foreach (FileInfo file in dir.GetFiles("*.lexicon", SearchOption.AllDirectories))
+            {
+                string json = Files.Read(file.FullName);
+                var result = JsonConvert.DeserializeObject<List<Lexeme>>(json);
+                lexemes.RemoveAll(l => result.Select(r => r.name).Contains(l.name)
+                    && result.Select(r => r.culture).Contains(l.culture));
+                lexemes.AddRange(result);
+            }
+        }
+
+        public string ApplyLexicons(string val, string culture)
+        {
+            if (string.IsNullOrEmpty(val))
+            {
+                return null;
+            }
+
+            // Search out and replace text defined by our lexicons
+            foreach (Lexeme lexeme in lexemes.Where(l => l.culture == culture))
+            {
+                if (val.Contains(lexeme.name))
+                {
+                    StringBuilder sb = new StringBuilder();
+                    sb.Append("<phoneme alphabet=\"ipa\" ph=\"");
+                    sb.Append(lexeme.ipa);
+                    sb.Append("\">");
+                    sb.Append(lexeme.name);
+                    sb.Append("</phoneme>");
+                    var replacement = sb.ToString();
+                    val = val.Replace(lexeme.name, replacement);
+                }
+            }
+
+            return val;
         }
 
         private void StartSpeech(ref ISoundOut soundout, int priority)
@@ -557,7 +613,7 @@ namespace EddiSpeechService
         public void StartOrContinueSpeaking()
         {
             if (!eddiSpeaking)
-            {   
+            {
                 // Put everything in a thread
                 Thread speechThread = new Thread(() =>
                 {
@@ -611,5 +667,12 @@ namespace EddiSpeechService
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
         }
+    }
+
+    public class Lexeme
+    {
+        public string name { get; set; }
+        public string ipa { get; set; }
+        public string culture { get; set; }
     }
 }
