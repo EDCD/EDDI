@@ -117,19 +117,45 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="ArmourAdvanced" xml:space="preserve">
+    <value>Corazza Leggera </value>
+  </data>
+  <data name="ArmourExplosive" xml:space="preserve">
+    <value>Corazza Resistente alle Esplosioni</value>
+  </data>
+  <data name="ArmourHeavyDuty" xml:space="preserve">
+    <value>Corazza Robusta</value>
+  </data>
+  <data name="ArmourKinetic" xml:space="preserve">
+    <value>Corazza Resistente alle Munizioni Cinetiche</value>
+  </data>
+  <data name="ArmourThermic" xml:space="preserve">
+    <value>Corazza Resistente alle Munizioni Termiche</value>
+  </data>
+  <data name="EngineDirty" xml:space="preserve">
+    <value>Elaborazione Motore Estrema</value>
+  </data>
+  <data name="EngineReinforced" xml:space="preserve">
+    <value>Motore Rinforzato</value>
+  </data>
+  <data name="EngineTuned" xml:space="preserve">
+    <value>Elaborazione Motore Raffinata</value>
+  </data>
+  <data name="FSDFastBoot" xml:space="preserve">
+    <value>Sequenza di Avvio FSD Accelerata</value>
+  </data>
+  <data name="FSDinterdictorExpanded" xml:space="preserve">
+    <value>Arco di Influenza di Interdizione FSD Ampliato</value>
+  </data>
+  <data name="FSDinterdictorLongRange" xml:space="preserve">
+    <value>Raggio di Influenza di Interdizione FSD Estremizzato</value>
+  </data>
+  <data name="FSDLongRange" xml:space="preserve">
+    <value>Raggio di Interdizione FSD Incrementato</value>
+  </data>
+  <data name="FSDShielded" xml:space="preserve">
+    <value>Interdittore FSD Rinforzato</value>
+  </data>
   
   
   
