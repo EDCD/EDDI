@@ -156,11 +156,21 @@
   <data name="FSDShielded" xml:space="preserve">
     <value>Interdittore FSD Rinforzato</value>
   </data>
-  
-  
-  
-  
-  
+  <data name="HullReinforcementAdvanced" xml:space="preserve">
+    <value>Rinforzo Scafo Alleggerito</value>
+  </data>
+  <data name="HullReinforcementExplosive" xml:space="preserve">
+    <value>Rinforzo Scafo Resistente a Munizioni Esplosive</value>
+  </data>
+  <data name="HullReinforcementHeavyDuty" xml:space="preserve">
+    <value>Rinforzo Scafo Robusto</value>
+  </data>
+  <data name="HullReinforcementKinetic" xml:space="preserve">
+    <value>Rinforzo Scafo Resistente a Munizioni Cinetiche</value>
+  </data>
+  <data name="HullReinforcementThermic" xml:space="preserve">
+    <value>Rinforzo Scafo Resistente a Munizioni Termiche</value>
+  </data>
   
   
   
