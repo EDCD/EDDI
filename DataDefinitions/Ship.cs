@@ -196,6 +196,11 @@ namespace EddiDataDefinitions
                 // get the canonical role object for the given EDName
                 Role = Role.FromEDName(Role.edname);
             }
+            if (EDName is null && !(model is null)) // legacy shipmonitor JSON may not include EDName or EDID
+            {
+                Ship template = ShipDefinitions.FromModel(model);
+                EDName = EDName ?? template?.EDName;
+            }
             additionalJsonData = null;
         }
 
@@ -311,7 +316,6 @@ namespace EddiDataDefinitions
         [JsonIgnore]
         public long EDID { get; set; }
         // The name in Elite: Dangerous' database
-        [JsonIgnore]
         public string EDName { get; set; }
 
         public Ship()

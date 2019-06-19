@@ -14,7 +14,7 @@ namespace EddiShipMonitor
 
         static ShipLoadoutEvent()
         {
-            VARIABLES.Add("ship", "The ship");
+            VARIABLES.Add("ship", "The ship model");
             VARIABLES.Add("shipid", "The ID of the ship");
             VARIABLES.Add("shipname", "The name of the ship");
             VARIABLES.Add("shipident", "The identification string of the ship");
@@ -33,7 +33,7 @@ namespace EddiShipMonitor
         }
 
         public int? shipid { get; private set; }
-        public string ship { get; private set; }
+        public string ship => shipDefinition?.model;
         public string shipname { get; private set; }
         public string shipident { get; private set; }
         public long? value => hullvalue + modulesvalue;
@@ -49,9 +49,12 @@ namespace EddiShipMonitor
         public List<Hardpoint> hardpoints { get; private set;  }
         public List<Compartment> compartments { get; private set; }
 
+        // Not intended to be user facing
+        public Ship shipDefinition;
+
         public ShipLoadoutEvent(DateTime timestamp, string ship, int? shipId, string shipName, string shipIdent, long? hullValue, long? modulesValue, decimal hullHealth, decimal unladenmass, decimal maxjumprange, decimal optimalmass, long rebuy, bool hot, List<Compartment> compartments, List<Hardpoint> hardpoints, string paintjob) : base(timestamp, NAME)
         {
-            this.ship = ShipDefinitions.FromEDModel(ship).model;
+            this.shipDefinition = ShipDefinitions.FromEDModel(ship);
             this.shipid = shipId;
             this.shipname = shipName;
             this.shipident = shipIdent;
