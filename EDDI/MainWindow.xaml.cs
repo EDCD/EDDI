@@ -1077,6 +1077,7 @@ namespace Eddi
                 Logging.Info("VoiceAttack version: " + EDDI.Instance.vaVersion);
             }
             Logging.Info("Commander name: " + (EDDI.Instance.Cmdr != null ? EDDI.Instance.Cmdr.name : "unknown"));
+            Logging.Info("Current culture: " + CultureInfo.DefaultThreadCurrentCulture.IetfLanguageTag ?? "unknown");
 
             // Prepare a truncated log file for export if verbose logging is enabled
             if (eddiVerboseLogging.IsChecked.Value)
@@ -1139,7 +1140,7 @@ namespace Eddi
                 }
 
                 // Truncate log files more than the specified size MB in size
-                const long maxLogSizeBytes = 0x200000; // 2 MB
+                const long maxLogSizeBytes = 5 * 1024 * 1024; // 5 MB (before zipping)
                 FileInfo logFile = new FileInfo(toTruncatedLogPath);
                 if (logFile.Length > maxLogSizeBytes)
                 {
