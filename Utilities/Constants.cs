@@ -16,15 +16,15 @@ namespace Utilities
 
         public static readonly string DATA_DIR = Environment.GetEnvironmentVariable("AppData") + "\\" + EDDI_NAME;
 
-        public static readonly string ENVIRONMENT_WITCH_SPACE = Properties.Utilities.witch_space;
-        public static readonly string ENVIRONMENT_SUPERCRUISE = Properties.Utilities.supercruise;
-        public static readonly string ENVIRONMENT_NORMAL_SPACE = Properties.Utilities.normal_space;
-        public static readonly string ENVIRONMENT_DOCKED = Properties.Utilities.docked;
-        public static readonly string ENVIRONMENT_LANDED = Properties.Utilities.landed;
+        public static readonly string ENVIRONMENT_WITCH_SPACE = "Witch Space";
+        public static readonly string ENVIRONMENT_SUPERCRUISE = "Supercruise";
+        public static readonly string ENVIRONMENT_NORMAL_SPACE = "Normal Space";
+        public static readonly string ENVIRONMENT_DOCKED = "Docked";
+        public static readonly string ENVIRONMENT_LANDED = "Landed";
 
-        public static readonly string VEHICLE_SHIP = Properties.Utilities.ship;
-        public static readonly string VEHICLE_SRV = Properties.Utilities.srv;
-        public static readonly string VEHICLE_FIGHTER = Properties.Utilities.fighter;
+        public static readonly string VEHICLE_SHIP = "Ship";
+        public static readonly string VEHICLE_SRV = "SRV";
+        public static readonly string VEHICLE_FIGHTER = "Fighter";
 
         //Option defualts
         public const int maxStationDistanceDefault = 10000;
