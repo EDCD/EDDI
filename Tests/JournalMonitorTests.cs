@@ -267,6 +267,35 @@ namespace UnitTests
         }
 
         [TestMethod]
+        public void TestJournalDockedDuplicateEconomies()
+        {
+            string line = @"{ ""timestamp"":""2018-04-01T05:21:24Z"", ""event"":""Docked"", ""StationName"":""Katzenstein Dock"", ""StationType"":""Coriolis"", ""StarSystem"":""36 Ophiuchi"", ""SystemAddress"":1865903245675, ""MarketID"":3228939264, ""StationFaction"":{ ""Name"":""36 Ophiuchi Future"", ""FactionState"":""Boom"" }, ""StationGovernment"":""$government_Democracy;"", ""StationGovernment_Localised"":""Democracy"", ""StationAllegiance"":""Federation"", ""StationServices"":[ ""Dock"", ""Autodock"", ""BlackMarket"", ""Commodities"", ""Contacts"", ""Exploration"", ""Missions"", ""Outfitting"", ""CrewLounge"", ""Rearm"", ""Refuel"", ""Repair"", ""Shipyard"", ""Tuning"", ""Workshop"", ""MissionsGenerated"", ""FlightController"", ""StationOperations"", ""Powerplay"", ""SearchAndRescue"", ""StationMenu"" ], ""StationEconomy"":""$economy_Refinery;"", ""StationEconomy_Localised"":""Refinery"", ""StationEconomies"":[ { ""Name"":""$economy_Refinery;"", ""Name_Localised"":""Refinery"", ""Proportion"":0.84 }, { ""Name"":""$economy_Refinery;"", ""Name_Localised"":""Refinery"", ""Proportion"":0.16 } ], ""DistFromStarLS"":4217877.0 }";
+            List<Event> events = JournalMonitor.ParseJournalEntry(line);
+            Assert.IsTrue(events.Count == 1);
+
+            DockedEvent theEvent = (DockedEvent)events[0];
+
+            Assert.AreEqual("Coriolis", theEvent.stationModel.edname);
+            Assert.AreEqual("Katzenstein Dock", theEvent.station);
+            Assert.AreEqual("36 Ophiuchi", theEvent.system);
+            Assert.AreEqual("Boom", theEvent.controllingfaction.presences.FirstOrDefault(p => p.systemName == theEvent.system)?.FactionState?.invariantName);
+            Assert.AreEqual("Democracy", theEvent.controllingfaction.Government.invariantName);
+            Assert.AreEqual("Federation", theEvent.controllingfaction.Allegiance.invariantName);
+            Assert.AreEqual(21, theEvent.stationservices.Count);
+            Assert.AreEqual(2, theEvent.economyShares.Count);
+            Assert.AreEqual("Refinery", theEvent.economyShares[0].economy.invariantName);
+            Assert.AreEqual(0.84M, theEvent.economyShares[0].proportion);
+            Assert.AreEqual("Refinery", theEvent.economyShares[1].economy.invariantName);
+            Assert.AreEqual(0.16M, theEvent.economyShares[1].proportion);
+
+            // The Station definition should consolidate the economy shares above. Test that now. 
+            Station testStation = new Station() { name = "testStation", economyShares = theEvent.economyShares };
+            Assert.AreEqual(1, testStation.economyShares.Count);
+            Assert.AreEqual("Refinery", testStation.economyShares[0].economy.invariantName);
+            Assert.AreEqual(1.00M, testStation.economyShares[0].proportion);
+        }
+
+        [TestMethod]
         public void TestJournalDockingCancelled()
         {
             string line = @"{ ""timestamp"":""2018-06-04T07:43:11Z"", ""event"":""DockingCancelled"", ""MarketID"":3227840768, ""StationName"":""Laval Terminal"", ""StationType"":""Orbis"" }";
