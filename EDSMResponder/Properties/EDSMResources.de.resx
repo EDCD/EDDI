@@ -148,7 +148,7 @@
     <value>Protokoll abrufen </value>
   </data>
   <data name="name" xml:space="preserve">
-    <value>Info an EDSM</value>
+    <value>_Info an EDSM</value>
   </data>
   <data name="p1" xml:space="preserve">
     <value>Um sich mit EDSM zu verbinden, müssen Sie bei EDSM registriert sein und ein Konto eingerichtet haben. Haben Sie dies getan, erhalten Sie Ihren API-Schlüssel, indem Sie auf Ihr Portrait in der oberen rechten Ecke des Bildschirms klicken und "Mein API-Schlüssel" auswählen</value>
