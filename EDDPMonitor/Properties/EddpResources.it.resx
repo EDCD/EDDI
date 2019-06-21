@@ -117,24 +117,36 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
+  <data name="anything" xml:space="preserve">
+    <value>(ogni cosa)</value>
+  </data>
   <data name="delete_btn" xml:space="preserve">
     <value>Cancella</value>
   </data>
-  
+  <data name="desc" xml:space="preserve">
+    <value>Tiene sotto controllo EDDP cercando cambiamenti nel governo e nello stato di un sistema e genera eventi che siano in accordo con la lista di controllo.</value>
+  </data>
   <data name="faction_header" xml:space="preserve">
     <value>Fazione</value>
   </data>
-  
-  
+  <data name="max_dist_home_header" xml:space="preserve">
+    <value>Massima distanza dalla base</value>
+  </data>
+  <data name="max_dist_ship_header" xml:space="preserve">
+    <value>Massima distanza dalla nave</value>
+  </data>
   <data name="name" xml:space="preserve">
     <value>EDDP</value>
   </data>
   <data name="name_header" xml:space="preserve">
     <value>Nome</value>
   </data>
-  
-  
+  <data name="new_watch" xml:space="preserve">
+    <value>Nuovo Controllo</value>
+  </data>
+  <data name="p1" xml:space="preserve">
+    <value>E' possibile creare, modificare e cancellare i Controlli qui sotto. Quando EDDI riceve informazioni riguardanti un cambiamento da qualche parte nella galassia, esso lo compara con ognuno dei Controlli attivi e, se le informazioni soddisfano tutti i criteri selezionati per un determinato Controllo, EDDI avvierà un 'Evento'. Si fa notare però che le informazioni vengono raccolte da EDDN il quale, a sua volta, le riceve da Comandanti che utilizzino programmi come EDDI, per cui riporterà solamente informazioni di cui la rete sia a conoscenza.</value>
+  </data>
   <data name="state_header" xml:space="preserve">
     <value>Stato</value>
   </data>
