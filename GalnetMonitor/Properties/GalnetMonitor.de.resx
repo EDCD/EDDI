@@ -118,13 +118,13 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="desc" xml:space="preserve">
-    <value>Überwacht Galnet auf neue Nachrichten und generiert ein "Galnet Nachrichten publiziert" -Ereignis, wenn neue Nachrichten veröffentlicht werden.</value>
+    <value>"# Überwachung GalNet" - Überwacht GalNet auf neue Nachrichten und generiert ein "Galnet Nachrichten publiziert" -Ereignis, wenn neue Nachrichten veröffentlicht werden.</value>
   </data>
   <data name="language_label" xml:space="preserve">
     <value>Sprache für Galnet-Artikel</value>
   </data>
   <data name="name" xml:space="preserve">
-    <value>Galnet-Überwachung</value>
+    <value># Überwachung GalNet</value>
   </data>
   <data name="p1" xml:space="preserve">
     <value>Bitte beachten Sie, dass es nach dem Ändern der Sprache bis zu 2 Minuten dauern kann, bis neue Galnet-Artikel verfügbar sind.</value>
