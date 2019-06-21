@@ -133,13 +133,13 @@
     <value>Hitzebeständige Panzerung</value>
   </data>
   <data name="EngineDirty" xml:space="preserve">
-    <value>Dreckiges Antriebs-Tuning</value>
+    <value>Dirty Drive Tuning</value>
   </data>
   <data name="EngineReinforced" xml:space="preserve">
     <value>Anstriebsstärkung</value>
   </data>
   <data name="EngineTuned" xml:space="preserve">
-    <value>Sauberes Antriebs-Tuning</value>
+    <value>Clean Drive Tuning</value>
   </data>
   <data name="FSDFastBoot" xml:space="preserve">
     <value>Schnellere FSA-Start-Sequenz</value>
@@ -301,16 +301,16 @@
     <value>Abgeschirmter Fracht-Scanner</value>
   </data>
   <data name="ChaffLauncherChaffCapacity" xml:space="preserve">
-    <value>Kapazität der Düppel Munition</value>
+    <value>Düppel-Kapazität</value>
   </data>
   <data name="ChaffLauncherLightWeight" xml:space="preserve">
-    <value>Leichter Chaff-Werfer</value>
+    <value>Leichter Düppel-Werfer</value>
   </data>
   <data name="ChaffLauncherReinforced" xml:space="preserve">
-    <value>Verstärkter Chaff-Werfer</value>
+    <value>Verstärkter Düppel-Werfer</value>
   </data>
   <data name="ChaffLauncherShielded" xml:space="preserve">
-    <value>Abgeschirmter Chaff-Werfer</value>
+    <value>Abgeschirmter Düppel-Werfer</value>
   </data>
   <data name="CollectionLimpetLightWeight" xml:space="preserve">
     <value>Leichte Sammeldrohnen-Steuerung</value>
@@ -346,7 +346,7 @@
     <value>Abgeschirmte Frachtlukenbrecherdrohnen-Steuerung</value>
   </data>
   <data name="HeatSinkLauncherHeatSinkCapacity" xml:space="preserve">
-    <value>Kapazität der Kühlkörper-Munition</value>
+    <value>Kühlkörper-Kapazität</value>
   </data>
   <data name="HeatSinkLauncherLightWeight" xml:space="preserve">
     <value>Leichter Kühlkörperwerfer</value>
@@ -379,7 +379,7 @@
     <value>Abgeschirmte Lebenserhaltung</value>
   </data>
   <data name="PointDefencePointDefenceCapacity" xml:space="preserve">
-    <value>Punkt Verteidigung Munitionskapazität</value>
+    <value>Kapazität der Punktverteidigung</value>
   </data>
   <data name="PointDefenceLightWeight" xml:space="preserve">
     <value>Leichte Punktverteidigung</value>
@@ -432,6 +432,10 @@
   <data name="ProspectingLimpetShielded" xml:space="preserve">
     <value>Abgeschirmte Sammeldrohne</value>
   </data>
-  
-  
+  <data name="MiscLightWeight" xml:space="preserve">
+    <value>Sonstiges Leichtgewicht</value>
+  </data>
+  <data name="SensorExpanded" xml:space="preserve">
+    <value>Erweiterter Scannradius</value>
+  </data>
 </root>
