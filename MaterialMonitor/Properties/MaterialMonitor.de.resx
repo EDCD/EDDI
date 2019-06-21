@@ -124,19 +124,19 @@
     <value>Gewünscht</value>
   </data>
   <data name="find_encoded_button" xml:space="preserve">
-    <value>Händler für verschlüsselte Daten finden</value>
+    <value>Händler - Encoded Data</value>
   </data>
   <data name="find_guardian_button" xml:space="preserve">
-    <value>Guardian-Broker finden</value>
+    <value>Guardian Broker</value>
   </data>
   <data name="find_human_button" xml:space="preserve">
-    <value>Broker für menschliche Technik finden</value>
+    <value>Human Broker</value>
   </data>
   <data name="find_manufactured_button" xml:space="preserve">
-    <value>Händler für gefertigte Materialien finden</value>
+    <value>Händler - gefert. Materialien</value>
   </data>
   <data name="find_raw_button" xml:space="preserve">
-    <value>Händler für Rohmaterialien finden</value>
+    <value>Händler - Rohmaterialien</value>
   </data>
   <data name="inventory_header" xml:space="preserve">
     <value>Vorrat</value>
@@ -148,7 +148,7 @@
     <value>Minimum</value>
   </data>
   <data name="name" xml:space="preserve">
-    <value>Material-Überwachung</value>
+    <value># Überwachung Material</value>
   </data>
   <data name="name_header" xml:space="preserve">
     <value>Name</value>
@@ -157,7 +157,7 @@
     <value>Nachfolgend finden Sie eine Liste aller bekannten Materialien. Sie können die einzelnen Werte für Minimum, Gewünscht und Maximum einstellen. EDDI wird Sie benachrichtigen, wenn einer der eingestellte Wert überschritten wird.</value>
   </data>
   <data name="p2" xml:space="preserve">
-    <value>Bitte beachten Sie, dass bei fehlerhafter Anzeige des Bestands, Elite gestartet oder neu gestartet werden muss, um die Daten zu aktualisieren.</value>
+    <value>Bitte beachten Sie, dass bei fehlerhafter Anzeige des Bestands, Elite neu gestartet werden muss, um die Daten zu aktualisieren.</value>
   </data>
   <data name="p3" xml:space="preserve">
     <value>Tip: Maximiere die erlaubte Stationsentfernung zur Minimierung der Suchzeiten.</value>
