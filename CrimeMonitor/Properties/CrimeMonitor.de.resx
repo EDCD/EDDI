@@ -133,7 +133,7 @@
     <value>Informationen zu Ihrem Strafregister.</value>
   </data>
   <data name="crime_monitor_name" xml:space="preserve">
-    <value>Verbrechens-Überwachung</value>
+    <value># Überwachung Verbrechen</value>
   </data>
   <data name="find_button" xml:space="preserve">
     <value>Legale Einrichtungen finden</value>
@@ -163,7 +163,7 @@
     <value>System</value>
   </data>
   <data name="orbital_station_checkbox" xml:space="preserve">
-    <value>Priorisierte Orbitalstationen:</value>
+    <value>Vorrangig Orbitalstationen:</value>
   </data>
   <data name="p1" xml:space="preserve">
     <value>Tip: Maximiere die erlaubte Stationsentfernung zur Minimierung der Suchzeiten.</value>
@@ -181,12 +181,12 @@
     <value>Maximale Entfernung der Station vom Hauptstern (Ls):</value>
   </data>
   <data name="update_button" xml:space="preserve">
-    <value>Aktualisierung</value>
+    <value>Update</value>
   </data>
   <data name="update_button_desc" xml:space="preserve">
     <value>"Minor faction"-Informationen (System, Station ect.) aktualisieren.</value>
   </data>
   <data name="update_button_text" xml:space="preserve">
-    <value>Aktualisierung:</value>
+    <value>Update:</value>
   </data>
 </root>
