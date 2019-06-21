@@ -117,31 +117,73 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="clear_route_button" xml:space="preserve">
+    <value>Cancella la Rotta</value>
+  </data>
+  <data name="clear_route_button_desc" xml:space="preserve">
+    <value>Cancella la Rotta di missione ed il sistema di destinazione.</value>
+  </data>
+  <data name="clear_route_button_text" xml:space="preserve">
+    <value>Cancella la Rotta:</value>
+  </data>
+  <data name="get_route_button" xml:space="preserve">
+    <value>Ottieni la Rotta</value>
+  </data>
+  <data name="get_route_button_desc" xml:space="preserve">
+    <value>Avvia i calcoli dell'algoritmo 'Vicino Prossimo' per determinare la rotta di missione più breve.</value>
+  </data>
+  <data name="get_route_button_text" xml:space="preserve">
+    <value>Ottieni la Rotta:</value>
+  </data>
+  <data name="header_destinationstation" xml:space="preserve">
+    <value>Stazione di Arrivo</value>
+  </data>
+  <data name="header_destinationsystem" xml:space="preserve">
+    <value>Sistema di Arrivo</value>
+  </data>
+  <data name="header_missionid" xml:space="preserve">
+    <value>Identificativo Missione</value>
+  </data>
+  <data name="header_remaining" xml:space="preserve">
+    <value>Rimanente</value>
+  </data>
+  <data name="header_status" xml:space="preserve">
+    <value>Stato</value>
+  </data>
+  <data name="header_type" xml:space="preserve">
+    <value>Tipo</value>
+  </data>
   <data name="mission_monitor_desc" xml:space="preserve">
     <value>Monitora le informazioni sulle tue missioni.</value>
   </data>
   <data name="mission_monitor_name" xml:space="preserve">
     <value>Missioni</value>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="next_route_button" xml:space="preserve">
+    <value>Prossima tappa della rotta</value>
+  </data>
+  <data name="next_route_button_desc" xml:space="preserve">
+    <value>Imposta come Sistema di Destinazione il prossimo sistema nella rotta di missione.</value>
+  </data>
+  <data name="next_route_button_text" xml:space="preserve">
+    <value>Prossima tappa della rotta:</value>
+  </data>
+  <data name="para1" xml:space="preserve">
+    <value>Qui sotto troverai una lista di tutte le tue missioni.</value>
+  </data>
+  <data name="para2" xml:space="preserve">
+    <value>Nota che, se il tuo diario di missione non fosse corretto, dovresti avviare, o riavviare, Elite per aggiornare le informazioni.</value>
+  </data>
+  <data name="tab_mission_warning" xml:space="preserve">
+    <value>Soglia di avvertimento di missione che sta per scadere (in Minuti):</value>
+  </data>
+  <data name="update_route_button" xml:space="preserve">
+    <value>Aggiorna Rotta</value>
+  </data>
+  <data name="update_route_button_desc" xml:space="preserve">
+    <value>Imposta come Sistema di Destinazione il prossimo sistema nella rotta di missione, se tutte le missioni sono completate.</value>
+  </data>
+  <data name="update_route_button_text" xml:space="preserve">
+    <value>Aggiorna Rotta:</value>
+  </data>
 </root>
