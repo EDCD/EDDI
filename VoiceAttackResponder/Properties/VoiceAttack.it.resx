@@ -117,16 +117,30 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
-  
-  
-  
-  
+  <data name="desc" xml:space="preserve">
+    <value>Un risponditore che genera un elevato numero di variabili all'interno di VoiceAttack e di azioni scatenanti definite dall'utente.</value>
+  </data>
+  <data name="name" xml:space="preserve">
+    <value>Risponditore VoiceAttack.</value>
+  </data>
+  <data name="p1" xml:space="preserve">
+    <value>Per integrare EDDI con VoiceAttack, EDDI deve essere installato all'interno della Cartella 'Apps' di VoiceAttack. Il percorso standard di questa cartella è: 'C.\Programmi (x86)\VoiceAttack\Apps' ed è l'indirizzo di default a cui verrà installato EDDI.</value>
+  </data>
+  <data name="p2" xml:space="preserve">
+    <value>EDDI funzionerà solamente con VoiceAttack di versione 1.5.12.22 o superiore. E' da notare che questa è una versione beta.</value>
+  </data>
+  <data name="p3" xml:space="preserve">
+    <value>Una volta che VoceAttack sia installato avrai bisogno di abilitare il supporto per i plugin. Per farlo clicca sull'icona di Impostazioni (una chiave inglese) nell'angolo in basso a destra della finestra di VoiceAttack, attiva l'opzione 'Abilita supporto Plugin' e riavvia VoiceAttack. Dovresti vedere un messaggio tipo 'Plugin EDDI 2.0.0 avviato'.</value>
+  </data>
+  <data name="p4" xml:space="preserve">
+    <value>A questo punto puoi itegrare le variabili di EDDI con i tuoi script di VoiceAttack personalizzati. Per esempio, il tuo nome di comandante è contenuto nella variabile 'Nome' e per accedervi devi usare '{TXT:Name}' all'interno del tuo comando. Esistono variabili riguardanti il tuo comandante, la tua nave, il sistema stellare in cui ti trovi e la stazione a cui si attraccato e così via. Una lista completa di variabili è disponibile.</value>
+  </data>
   <data name="p4_link" xml:space="preserve">
     <value>sul sito di EDDI</value>
   </data>
-  
+  <data name="p5" xml:space="preserve">
+    <value>Oltre a scrivere script che puoi attivare con la voce o combinazioni di tasti, potrai anche scriverne che siano attivati da eventi all'interno di Elite. Ad esempio se tu volessi attivare uno script ogni volta che l'evento 'Attraccato' occorre, dovresti scriverne uno chiamato '((EDDI docked))' (nota la doppia parentesi attorno al nome per evitare di attivarlo accidentalmente e la 'd' minuscola in docked). Una lista completa di eventi è disponibile.</value>
+  </data>
   <data name="p5_link" xml:space="preserve">
     <value>sul sito di EDDI</value>
   </data>
