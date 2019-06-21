@@ -124,7 +124,7 @@
     <value>Löschen</value>
   </data>
   <data name="desc" xml:space="preserve">
-    <value>Überwache EDDP bezüglich Veränderungen der Kontrolle von Systemen und deren Stati, und erstelle eine Benachrichtigung, wenn die Überwachungskriterien mit den Informationen von EDDP übereinstimmen.</value>
+    <value>"# Überwachung EDDP" - Überwacht Veränderungen der Kontrolle von Systemen und deren Stati, und erstellt eine Benachrichtigung, wenn die Überwachungskriterien mit den Informationen von EDDP übereinstimmen.</value>
   </data>
   <data name="faction_header" xml:space="preserve">
     <value>Fraktion</value>
@@ -136,7 +136,7 @@
     <value>Max. Entfernung vom Schiff</value>
   </data>
   <data name="name" xml:space="preserve">
-    <value>EDDP-Überwachung</value>
+    <value># Überwachung EDDP</value>
   </data>
   <data name="name_header" xml:space="preserve">
     <value>Name</value>
