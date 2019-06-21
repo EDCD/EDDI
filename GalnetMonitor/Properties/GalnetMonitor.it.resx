@@ -117,23 +117,64 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
+  <data name="desc" xml:space="preserve">
+    <value>Tiene sotto controllo Galnet alla ricerca di nuovi articoli e genera un evento 'Notizie di Galnet Aggiornate' quando nuovi articoli siano pubblicati.</value>
+  </data>
+  <data name="language_label" xml:space="preserve">
+    <value>Lingua degli articoli di Galnet</value>
+  </data>
   <data name="name" xml:space="preserve">
     <value>Galnet</value>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="p1" xml:space="preserve">
+    <value>Tieni conto del fatto che, dopo aver modificato le impostazioni di lingua, possono volerci alcuni minuti per poter ottenere nuovi articoli da Galnet.</value>
+  </data>
+  <data name="p2" xml:space="preserve">
+    <value>Leggi gli articoli di Galnet quando sei disconnesso</value>
+  </data>
+  <data name="titleFilterPowerplay" xml:space="preserve">
+    <value>Intrighi di Potere: aggiornamento in arrivo</value>
+    <comment>Title filter for determining whether an item is a Powerplay item</comment>
+  </data>
+  <data name="titleFilterCg" xml:space="preserve">
+    <value>Obiettivo Comunitario: </value>
+    <comment>Title filter for determining whether an item is a Community Goal related item</comment>
+  </data>
+  <data name="titleFilterStarportStatus" xml:space="preserve">
+    <value>Aggiornamento sulla condizione del Porto Stellare</value>
+    <comment>Title filter for determining whether an item is a Starport Status Update</comment>
+  </data>
+  <data name="titleFilterWeekInReview" xml:space="preserve">
+    <value>La Settimana in Breve</value>
+    <comment>Title filter for determining whether an item is a "Week in Review</comment>
+  </data>
+  <data name="sourceURL" xml:space="preserve">
+    <value>https://community.elitedangerous.com/en/galnet-rss</value>
+    <comment>The URL the Galnet monitor should access for obtaining new news feed items. Leaving this blank will default the source URL to English</comment>
+  </data>
+  <data name="contentFilterCgRegex" xml:space="preserve">
+    <value>&gt;@"(si ripromette di compensare i piloti)|(campagna.+continuerà per una settimana)|(gli organizzatori hanno lanciato una serie di operazioni che dureranno una settimana)|(Ottieni.+ricompensa)|(se.+l'obiettivo finale fosse raggiunto in anticipo, la campagna terminerà immediatamente)"</value>
+    <comment>Regex filter for determining whether an item's contents match a Community Goal related item.</comment>
+  </data>
+  <data name="categoryArticle" xml:space="preserve">
+    <value>Articolo</value>
+    <comment>Category (as seen by the user): Article</comment>
+  </data>
+  <data name="categoryPowerplay" xml:space="preserve">
+    <value>Intrigo di Potere</value>
+    <comment>Category (as seen by the user): Powerplay</comment>
+  </data>
+  <data name="categoryCG" xml:space="preserve">
+    <value>Obiettivo Comunitario</value>
+    <comment>Category (as seen by the user): Community Goal</comment>
+  </data>
+  <data name="categoryStarportStatus" xml:space="preserve">
+    <value>Aggiornamento sulla condizione del Porto Stellare</value>
+    <comment>Category (as seen by the user): Starport Status Update</comment>
+  </data>
+  <data name="categoryWeekInReview" xml:space="preserve">
+    <value>La Settimana in Breve</value>
+    <comment>Category (as seen by the user): Week in Review</comment>
+  </data>
   
 </root>
