@@ -123,11 +123,21 @@
   <data name="desired_header" xml:space="preserve">
     <value>Desiderato</value>
   </data>
-  
-  
-  
-  
-  
+  <data name="find_encoded_button" xml:space="preserve">
+    <value>Trova il Mercante di Dati</value>
+  </data>
+  <data name="find_guardian_button" xml:space="preserve">
+    <value>Trova l'intermediario di Tecnologia dei Guardiani</value>
+  </data>
+  <data name="find_human_button" xml:space="preserve">
+    <value>Trova l'intermediario di Tecnologia Umana</value>
+  </data>
+  <data name="find_manufactured_button" xml:space="preserve">
+    <value>Trova il Mercante di Manufatti</value>
+  </data>
+  <data name="find_raw_button" xml:space="preserve">
+    <value>Trova il Mercante di Minerali</value>
+  </data>
   <data name="inventory_header" xml:space="preserve">
     <value>Inventario</value>
   </data>
@@ -149,8 +159,12 @@
   <data name="p2" xml:space="preserve">
     <value>Se il tuo inventario è errato, sarà necessario avviare o riavviare Elite affinché l'informazione venga aggiornata.</value>
   </data>
-  
-  
+  <data name="p3" xml:space="preserve">
+    <value>Consiglio: Aumenta la distanza consentita fra stella e stazione per ridurre i tempi di ricerca.</value>
+  </data>
+  <data name="tab_station_distance" xml:space="preserve">
+    <value>Massima distanza consentita fra stella principale e stazione (in Ls):</value>
+  </data>
   <data name="type_header" xml:space="preserve">
     <value>Tipo</value>
   </data>
