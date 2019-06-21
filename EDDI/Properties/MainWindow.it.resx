@@ -117,49 +117,118 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="access_beta" xml:space="preserve">
+    <value>Accedi a versioni BETA di EDDI</value>
+  </data>
+  <data name="EDDI_status_label" xml:space="preserve">
+    <value>Situazione di EDDI: </value>
+  </data>
+  <data name="paragraph_0" xml:space="preserve">
+    <value>presenta diverse caratteristiche che possono essere configurate separatamente. Ci sono tre diversi tipi di oggetti.</value>
+  </data>
+  <data name="paragraph_1" xml:space="preserve">
+    <value>Il primo gruppo riceve e gestisce le informazioni di base utilizzate da EDDI. Le schede relative sono: i 'Dettagli relativi al Comandante', la 'Chiave API di Frontier' e la 'Sintesi Vocale'. Occorre aprire ognuna di queste schede e configurarla così che EDDI abbia accesso completo alle informazioni di Elite: Dangerous.</value>
+  </data>
+  <data name="paragraph_2" xml:space="preserve">
+    <value>Il secondo gruppo riceve informazioni riguardanti gli eventi. Le schede di questo gruppo sono riconoscibili in quanto terminano con 'Monitor'. Esse ricevono dati ed eventi da diverse sorgenti e richiedono una configurazione minima ma necessaria prima di poter funzionare.</value>
+  </data>
+  <data name="paragraph_3" xml:space="preserve">
+    <value>Il terzo gruppo reagisce agli eventi. Ne fanno parte le schede che contengono la parola 'Assistente'. Queste ultime presentano svariati livelli di configurazione ma sono già funzionanti di default.</value>
+  </data>
+  <data name="paragraph_4" xml:space="preserve">
+    <value>Puoi informarti meglio su come EDDI funziona sul</value>
+  </data>
+  <data name="report_issue" xml:space="preserve">
+    <value>Riporta un problema</value>
+  </data>
+  <data name="troubleshoot_common_issues" xml:space="preserve">
+    <value>Risoluzione dei Problemi più comuni</value>
+    <comment>A hyperlink to the troubleshooting URL (in english)</comment>
+  </data>
+  <data name="verbose_logging_checkbox" xml:space="preserve">
+    <value>Abilita connessione dettagliata (solo nel caso in cui questa sia stata richiesta dagli sviluppatori di EDDI)</value>
+  </data>
+  <data name="verbose_logging_desc" xml:space="preserve">
+    <value>Se la connessione dettagliata è abilitata verrà creato sul desktop un archivio .zip della connessione. questo archivio andrà incollato nel rapporto di problema su GitHub. Tale archivio non contiene alcuna informazione che consenta l'identificazione personale.</value>
+  </data>
+  <data name="version_hyperlink" xml:space="preserve">
+    <value>Versione:</value>
+  </data>
+  <data name="wiki_hyperlink" xml:space="preserve">
+    <value>progetto Wiki</value>
+  </data>
+  <data name="choose_lang_label" xml:space="preserve">
+    <value>Seleziona la lingua di EDDI (richiede il riavvio dell'applicazione):</value>
+  </data>
+  <data name="tab_frontier_desc" xml:space="preserve">
+    <value>Frontier ha una chiave API che permette ad EDDI di ricevere informazioni riguardanti la tua nave, il mercato della stazione corrente e numerosi altri dati. Questi dati non vengono messi a disposizione altrove. Se si desidera che EDDI ottenga tali informazioni è necessario cliccare sul bottone 'Login' e concedere ad EDDI l'autorizzazione ad accedere a questi dati sui server di Frontier.</value>
+  </data>
+  <data name="tab_frontier_header" xml:space="preserve">
+    <value>Chiave API di Frontier</value>
+  </data>
+  <data name="tab_frontier_reset_desc" xml:space="preserve">
+    <value>Se si riscontrassero problemi con la connessione è possibile reimpostarla e riconnettersi nuovamente. Questo dovrebbe eliminare tali problemi.</value>
+  </data>
+  <data name="tab_tts_desc" xml:space="preserve">
+    <value>EDDI utilizza il proprio sintetizzatore vocale che elabora la voce rispettando determinate caratteristiche come i danni patiti dalla nave in uso al momento e la dimensione della sua cabina di guida. Qui è possibile modificare i vari parametri vocali.</value>
+  </data>
+  <data name="tab_tts_distort_label" xml:space="preserve">
+    <value>Degrada la voce in base ai danni subiti dalla nave:</value>
+  </data>
   <data name="tab_tts_header" xml:space="preserve">
     <value>Sintesi vocale</value>
   </data>
-  
-  
-  
-  
-  
-  
+  <data name="tab_tts_level_label" xml:space="preserve">
+    <value>Livello di elaborazione della voce:</value>
+  </data>
+  <data name="tab_tts_phonetic_speech_desc" xml:space="preserve">
+    <value>EDDI utilizza la dizione fonetica per pronunciare diverse parole non standardizzate e per gestire le pause fra le frasi. Alcune voci, spesso quelle di Microsoft, hanno dei problemi con la dizione vocale e possono bloccare o far decadere EDDI. Qualora si incontrassero problemi ascrivibili a questo caso si può provare a selezionare l'opzione qui sotto.</value>
+  </data>
+  <data name="tab_tts_rate_label" xml:space="preserve">
+    <value>Velocità di pronuncia:</value>
+  </data>
+  <data name="tab_tts_test_button" xml:space="preserve">
+    <value>Prova Voce</value>
+  </data>
+  <data name="tab_tts_test_damaged_button" xml:space="preserve">
+    <value>Prova Voce (danni notevoli)</value>
+  </data>
+  <data name="tab_tts_test_ship_label" xml:space="preserve">
+    <value>Prova Voce con navi differenti:</value>
+  </data>
   <data name="tab_tts_voice_label" xml:space="preserve">
     <value>Voce:</value>
   </data>
-  
-  
+  <data name="tab_tts_volume_label" xml:space="preserve">
+    <value>Volume del parlato:</value>
+  </data>
+  <data name="upgrade_button" xml:space="preserve">
+    <value>Aggiorna EDDI</value>
+  </data>
   <data name="reset_button" xml:space="preserve">
     <value>Resetta</value>
   </data>
-  
-  
-  
-  
-  
-  
-  
+  <data name="tab_tts_test_desc" xml:space="preserve">
+    <value>Qui sotto è possibile provare come la voce suonerà. Resta da notare che, qualora la voce scelta risultasse non compatibile, al suo posto verrà utilizzata la voce di default.</value>
+  </data>
+  <data name="tab_tts_disable_phonetic_speech_label" xml:space="preserve">
+    <value>Disabilita Dizione Fonetica:</value>
+  </data>
+  <data name="tab_tts_disable_phonetic_speech_note" xml:space="preserve">
+    <value>(questo disabiliterà ogni funzione che utilizzi le schede di pronuncia SSML, come specificato nel file di Aiuto Sintesi Vocale)</value>
+  </data>
+  <data name="tab_tts_icao_desc" xml:space="preserve">
+    <value>EDDI è in grado di utilizzare ICAO, ad esempio utilizzando 'alfa' al posto di 'a', quando pronuncia i nomi di stelle o corpi celesti. Questo potrebbe rendere più facile comprendere i suddetti nomi, ma renderà la dizione considerevolmente più lunga. Per sentire la pronuncia ICAO selezionare l'opzione qui sotto. Notare che essa non funzionerà se la Dizione Fonetica è stata disabilitata.</value>
+  </data>
+  <data name="tab_tts_icao_label" xml:space="preserve">
+    <value>Abilita ICAO:</value>
+  </data>
+  <data name="tab_commander_details_header" xml:space="preserve">
+    <value>Dettagli relativi al Comandante</value>
+  </data>
+  <data name="tab_commander_gender" xml:space="preserve">
+    <value>Genere preferito per pronomi o titoli:</value>
+  </data>
   <data name="tab_commander_gender_f" xml:space="preserve">
     <value>Femminile</value>
   </data>
@@ -169,16 +238,36 @@
   <data name="tab_commander_gender_n" xml:space="preserve">
     <value>Nessuno</value>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="tab_commander_home_station" xml:space="preserve">
+    <value>Stazione di Base:</value>
+  </data>
+  <data name="tab_commander_home_system" xml:space="preserve">
+    <value>Sistema di Base:</value>
+  </data>
+  <data name="tab_commander_par1" xml:space="preserve">
+    <value>E' possobile fornire il nome di Sistema che si consideri come 'Base' ed anche quello di una stazione al suo interno con il medesimo intento. In questo modo le informazioni riguardanti questi particolari sistema e stazione saranno resi disponibili all'assistente di EDDI.</value>
+  </data>
+  <data name="tab_commander_squadron_name" xml:space="preserve">
+    <value>Nome Squadriglia:</value>
+  </data>
+  <data name="tab_commander_squadron_system" xml:space="preserve">
+    <value>Sistema Squadriglia:</value>
+  </data>
+  <data name="tab_commander_squadron_allegiance" xml:space="preserve">
+    <value>Alleanza Squadriglia:</value>
+  </data>
+  <data name="tab_commander_squadron_faction" xml:space="preserve">
+    <value>Fazione Squadriglia:</value>
+  </data>
+  <data name="tab_commander_squadron_power" xml:space="preserve">
+    <value>Potere Squadriglia:</value>
+  </data>
+  <data name="tab_commander_squadron_rank" xml:space="preserve">
+    <value>Rango Squadriglia:</value>
+  </data>
+  <data name="tab_commander_squadron_id" xml:space="preserve">
+    <value>Identificativo Squadrglia:</value>
+  </data>
   <data name="no_station" xml:space="preserve">
     <value>Nessuna stazione</value>
   </data>
