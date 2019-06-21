@@ -117,25 +117,43 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
+  <data name="active_personality" xml:space="preserve">
+    <value>Personalità attiva</value>
+  </data>
   <data name="button_cancel" xml:space="preserve">
     <value>Annulla</value>
   </data>
-  
-  
-  
+  <data name="button_copy" xml:space="preserve">
+    <value>Copia personalità</value>
+  </data>
+  <data name="button_delete" xml:space="preserve">
+    <value>Cancella personalità</value>
+  </data>
+  <data name="button_new" xml:space="preserve">
+    <value>Crea un nuovo Script</value>
+  </data>
   <data name="button_ok" xml:space="preserve">
     <value>OK</value>
   </data>
-  
-  
-  
+  <data name="compare_script_button" xml:space="preserve">
+    <value>Paragona con il Default</value>
+  </data>
+  <data name="compare_script_title" xml:space="preserve">
+    <value>Comparazione con lo Script di default</value>
+  </data>
+  <data name="default_is_read_only" xml:space="preserve">
+    <value>La personalità di default non può essere modificata. Se desideri apportarvi dei cambiamenti, creane una copia.</value>
+  </data>
   <data name="default_personality_script_filename" xml:space="preserve">
     <value>eddi.it.json</value>
     <comment>Suggest "eddi.&lt;culture-code&gt;.json" e.g. "eddi.fr.json"</comment>
   </data>
-  
-  
+  <data name="delete_personality_caption" xml:space="preserve">
+    <value>Cancella personalità</value>
+  </data>
+  <data name="delete_personality_message" xml:space="preserve">
+    <value>Vuoi davvero cancellare la personalità "{0}"?</value>
+  </data>
   <data name="delete_script" xml:space="preserve">
     <value>Cancella</value>
   </data>
@@ -145,7 +163,9 @@
   <data name="delete_script_message" xml:space="preserve">
     <value>Sei sicuro di voler cancellare questi "{0}" script?</value>
   </data>
-  
+  <data name="desc" xml:space="preserve">
+    <value>Risponde ad eventi con frasi generate da Script basate sulle informazioni nell'evento. Non tutti gli eventi hanno risposte generate da Script. Se uno Script di risposta è vuoto i suoi bottoni 'Prova' e 'Vedi' sono disabilitati. Gli Script basati su Eventi possono essere disabilitati o ricevere una differente Priorità ma non cancellati.</value>
+  </data>
   <data name="edit_script" xml:space="preserve">
     <value>Modifica</value>
   </data>
@@ -177,7 +197,9 @@
   <data name="subs" xml:space="preserve">
     <value>Produce una copia scritta delle stringhe lette dall'assistente vocale nel file %APPDATA%\EDDI\speechresponder.out</value>
   </data>
-  
+  <data name="subs_only" xml:space="preserve">
+    <value>Non pronunciare le frasi quando il testo viene aggiunto al File come sopra.</value>
+  </data>
   <data name="test_script" xml:space="preserve">
     <value>Test</value>
   </data>
@@ -190,7 +212,13 @@
   <data name="view_script_title" xml:space="preserve">
     <value>Visualizza Script</value>
   </data>
-  
-  
-  
+  <data name="header_priority" xml:space="preserve">
+    <value>Priorità</value>
+  </data>
+  <data name="speechResponderHelp" xml:space="preserve">
+    <value>Leggi qui delle funzioni del Risponditore automatico.</value>
+  </data>
+  <data name="speechResponderHelpHere" xml:space="preserve">
+    <value>Qui.</value>
+  </data>
 </root>
