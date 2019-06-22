@@ -52,5 +52,18 @@ namespace EddiDataDefinitions
             string tidiedName = edName.ToLowerInvariant().Replace(" ", "").Replace(".", "").Replace("-", "");
             return ResourceBasedLocalizedEDName<Power>.FromEDName(tidiedName);
         }
+
+        new public static Power FromName(string name)
+        {
+            if (name == null)
+            {
+                return null;
+            }
+
+            // The player journal records an abbreviated version of Arissa's name. Fix that here to match our unabbreviated version.
+            string tidiedName = name.Replace("A. Lavigny-Duval", "Arissa Lavigny-Duval");
+
+            return ResourceBasedLocalizedEDName<Power>.FromName(tidiedName);
+        }
     }
 }

@@ -248,7 +248,7 @@ namespace EddiCrimeMonitor
                     if (@event.faction != null)
                     {
                         Faction faction = DataProviderService.GetFactionByName(@event.faction);
-                        Power power = Power.FromEDName(@event.faction);
+                        Power power = Power.FromName(@event.faction);
                         target.Power = power ?? Power.None;
                         target.Allegiance = power?.Allegiance ?? faction?.Allegiance;
                     }
