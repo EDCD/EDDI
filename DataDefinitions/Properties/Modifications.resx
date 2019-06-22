@@ -202,7 +202,7 @@
     <value>Long-Range Sensor</value>
   </data>
   <data name="SensorWideAngle" xml:space="preserve">
-    <value>Wide Angle Sensor</value>
+    <value>Wide Angle Scanner</value>
   </data>
   <data name="ShieldBoosterExplosive" xml:space="preserve">
     <value>Blast Resistant Shield Booster</value>
@@ -277,7 +277,8 @@
     <value>Light Weight Wake Scanner</value>
   </data>
   <data name="WakeScannerLongRange" xml:space="preserve">
-    <value>Long-Range Wake Scanner</value>
+    <value>Long-Range Scanner
+</value>
   </data>
   <data name="WakeScannerReinforced" xml:space="preserve">
     <value>Reinforced Wake Scanner</value>
@@ -286,7 +287,7 @@
     <value>Shielded Wake Scanner</value>
   </data>
   <data name="WakeScannerWideAngle" xml:space="preserve">
-    <value>Wide Angle Wake Scanner</value>
+    <value>Wide Angle Scanner</value>
   </data>
   <data name="AFMShielded" xml:space="preserve">
     <value>Shielded Maintenance Unit</value>
@@ -361,7 +362,7 @@
     <value>Light Weight Kill Warrant Scanner</value>
   </data>
   <data name="KillWarrantScannerLongRange" xml:space="preserve">
-    <value>Long-Range Kill Warrant Scanner</value>
+    <value>Long-Range Scanner</value>
   </data>
   <data name="KillWarrantScannerReinforced" xml:space="preserve">
     <value>Reinforced Kill Warrant Scanner</value>
@@ -403,10 +404,10 @@
     <value>Fast Cargo Scanner</value>
   </data>
   <data name="CargoScannerLongRange" xml:space="preserve">
-    <value>Long Range Cargo Scanner</value>
+    <value>Long-Range Scanner</value>
   </data>
   <data name="CargoScannerWideAngle" xml:space="preserve">
-    <value>Wide Angle Cargo Scanner</value>
+    <value>Wide Angle Scanner</value>
   </data>
   <data name="ECMLightWeight" xml:space="preserve">
     <value>Light Weight Electronic Counter Measures</value>
@@ -418,7 +419,7 @@
     <value>Fast Kill Warrant Scanner</value>
   </data>
   <data name="KillWarrantScannerWideAngle" xml:space="preserve">
-    <value>Wide Angle Kill Warrant Scanner</value>
+    <value>Wide Angle Scanner</value>
   </data>
   <data name="PAOvercharged" xml:space="preserve">
     <value>Overcharged Plasma Accelerator</value>
