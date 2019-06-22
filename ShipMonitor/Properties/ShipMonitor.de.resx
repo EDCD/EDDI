@@ -210,5 +210,7 @@
     <value>Heiß</value>
     <comment>Ship is Hot</comment>
   </data>
-  
+  <data name="p5" xml:space="preserve">
+    <value>EDDI kann Deine aktuelle Schiffskonfiguration an Coriolis oder EDShipyard (3rd Party tools) senden. Wähle dein favorisiertes Tool.</value>
+  </data>
 </root>
