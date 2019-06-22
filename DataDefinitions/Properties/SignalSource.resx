@@ -229,4 +229,8 @@
     <value>Notable Stellar Phenomena</value>
     <comment>Notable Stellar Phenomena</comment>
   </data>
+  <data name="ListeningPost:#index=1" xml:space="preserve">
+    <value>Listening Post</value>
+    <comment>Listening Post:#Index=1</comment>
+  </data>
 </root>

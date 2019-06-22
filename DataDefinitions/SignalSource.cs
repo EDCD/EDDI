@@ -37,6 +37,7 @@
 
             var UnregisteredCommsBeacon = new SignalSource("NumberStation");
             var ListeningPost = new SignalSource("ListeningPost");
+            var ListeningPostIndex1 = new SignalSource("ListeningPost:#index=1");
 
             var NotableStellarPhenomenaCloud = new SignalSource("Fixed_Event_Life_Cloud");
             var NotableStellarPhenomenaRing = new SignalSource("Fixed_Event_Life_Ring");
