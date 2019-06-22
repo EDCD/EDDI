@@ -52,30 +52,6 @@ namespace UnitTests
         }
 
         [TestMethod]
-        public void TestBlueprintMaterialsFromJson()
-        {
-            string json = @"{
-	""Thermal resistant Bulkheads grade 5"": {
-
-        ""materials"": [{
-				""amount"": 1,
-				""material"": ""Proto Heat Radiators""
-
-            }, {
-				""amount"": 1,
-				""material"": ""Molybdenum""
-			}, {
-				""amount"": 1,
-				""material"": ""Phase Alloys""
-			}
-		]
-	}
-}";
-            Dictionary<string, BlueprintMaterials> blueprints = JsonConvert.DeserializeObject<Dictionary<string, BlueprintMaterials>>(json);
-            Assert.AreEqual(1, blueprints.Count);
-        }
-
-        [TestMethod]
         public void TestMaterialAmountFromJson()
         {
             string json = @"{
