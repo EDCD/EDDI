@@ -432,11 +432,12 @@ namespace EddiDataDefinitions
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times")] // this usage is perfectly correct
         public string EDShipyardUri()
         {
+            // Once Coriolis supports POSTing, we can switch to POSTing to https://edsy.org/import
+
             if (raw != null)
             {
                 // Generate an EDShipyard import URI to retain as much information as possible
-                
-                string uri = "http://www.edshipyard.com/";
+                string uri = "https://edsy.org/";
 
                 // Take the ship's JSON, gzip it, then turn it in to base64 and attach it to the base uri
                 string unescapedraw = raw.Replace(@"\""", @"""");

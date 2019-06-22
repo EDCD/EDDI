@@ -8,6 +8,8 @@ Full details of the variables available for each noted event, and VoiceAttack in
   * Speech responder
     * Fixed an issue with character encoding in the French personality file.
     * Revised the `System report` script to gracefully handle the system power being "None".
+  * Ship monitor
+    * Reinstated export to [EDShipyard](https://www.edsy.org) as it's developer has returned. 
 
 ### 3.4.1-rc1
   * EDSM responder
