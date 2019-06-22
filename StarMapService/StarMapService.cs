@@ -93,8 +93,16 @@ namespace EddiStarMapService
                     StarMapLogResponse response = clientResponse.Data;
                     if (response?.msgnum != 100)
                     {
-                        Logging.Warn("EDSM responded with " + response?.msg ?? clientResponse?.ErrorMessage);
+                        if (response?.msg != null)
+                        {
+                            Logging.Warn("EDSM responded with " + response?.msg);
+                        }
+                        else
+                        {
+                            Logging.Warn(clientResponse?.ErrorMessage);
+                        }
                     }
+                    Thread.Sleep(200); // Add a buffer to prevent time outs.
                 }
                 catch (ThreadAbortException)
                 {
