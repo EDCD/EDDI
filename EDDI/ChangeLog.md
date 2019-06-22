@@ -8,6 +8,8 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Revised the `System report` script to gracefully handle the system power being "None".
     * Revised `Blueprint make report` and `Blueprint material report` scripts to reference localized and updated blueprint data.
     * Updated documentation for the `BlueprintDetails()` function and `blueprint` object, available via [Help](https://github.com/EDCD/EDDI/blob/master/SpeechResponder/Help.md) and [Variables](https://github.com/EDCD/EDDI/blob/master/SpeechResponder/Variables.md) in the SpeechResponder.
+  * VoiceAttack responder
+    * Updated EDDI.vap commands for invoking the `Blueprint make report` and `Blueprint material report` scripts.
     
 ### 3.4.1-rc1
   * EDSM responder
