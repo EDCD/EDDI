@@ -8,6 +8,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
   * Speech responder
     * Fixed an issue with character encoding in the French personality file.
     * Revised the `System report` script to gracefully handle the system power being "None".
+    * The `Body mapped` event now makes available all of the same body data as `Body scanned`.
   * Ship monitor
     * Reinstated export to [EDShipyard](https://www.edsy.org) as it's developer has returned. 
 
