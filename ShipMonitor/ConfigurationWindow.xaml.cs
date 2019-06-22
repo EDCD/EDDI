@@ -26,7 +26,6 @@ namespace EddiShipMonitor
         {
             InitializeComponent();
             shipData.ItemsSource = shipMonitor().shipyard;
-
             EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
             string exporttarget = eddiConfiguration.exporttarget;
             Logging.Debug("Export target from configuration: " + exporttarget);

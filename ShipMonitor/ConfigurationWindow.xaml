@@ -24,13 +24,20 @@
             </FlowDocument>
         </RichTextBox>
         <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Margin="5"  Text="{x:Static resx:ShipMonitor.p4}" VerticalAlignment="Top"/>
-        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" VerticalAlignment="Top">
-            <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Margin="5"  Text="{x:Static resx:ShipMonitor.p5}" VerticalAlignment="Top"/>
-            <ComboBox x:Name="exportComboBox" Background="#FFE5E5E5" SelectionChanged="onExportTargetChanged" SelectedValuePath="Content" IsEditable="False" IsReadOnly="True" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" VerticalAlignment="Center">
+        <Grid DockPanel.Dock="Top">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <TextBlock TextWrapping="Wrap" Text="{x:Static resx:ShipMonitor.p5}" Margin="5, 0, 0, 0" VerticalAlignment="Top"/>
+            <ComboBox x:Name="exportComboBox" Grid.Column="1" Margin="5, 0, 0, 0" Background="#FFE5E5E5" SelectionChanged="onExportTargetChanged" SelectedValuePath="Content" IsEditable="False" IsReadOnly="True" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center" VerticalAlignment="Center" HorizontalAlignment="Right">
                 <ComboBoxItem>Coriolis</ComboBoxItem>
                 <ComboBoxItem>EDShipyard</ComboBoxItem>
             </ComboBox>
-        </StackPanel>
+        </Grid >
         <DataGrid Margin="0,5" AutoGenerateColumns="False" x:Name="shipData" CanUserAddRows="false" CanUserDeleteRows="False" TargetUpdated="shipsUpdated">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="{x:Static resx:ShipMonitor.header_name}" IsReadOnly="True" Binding="{Binding Path=name}"></DataGridTextColumn>
