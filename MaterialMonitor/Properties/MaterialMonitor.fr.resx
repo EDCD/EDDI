@@ -124,8 +124,12 @@
     <value>Désiré</value>
   </data>
   
-  
-  
+  <data name="find_guardian_button" xml:space="preserve">
+    <value>Trouver un courtier en technologie Guardian</value>
+  </data>
+  <data name="find_human_button" xml:space="preserve">
+    <value>Trouver un courtier en technologie humaine</value>
+  </data>
   
   
   <data name="inventory_header" xml:space="preserve">
