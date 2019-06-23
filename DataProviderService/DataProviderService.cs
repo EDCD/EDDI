@@ -147,7 +147,7 @@ namespace EddiDataProviderService
                     List<StarMapResponseLogEntry> flightLogs = StarMapService.Instance.getStarMapLog(lastSync);
                     if (flightLogs.Count > 0)
                     {
-                        Logging.Info("Syncing from EDSM");
+                        Logging.Debug("Syncing from EDSM");
                         Dictionary<string, string> comments = StarMapService.Instance.getStarMapComments();
                         int total = flightLogs.Count;
                         int i = 0;
