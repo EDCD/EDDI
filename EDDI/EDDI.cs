@@ -785,6 +785,10 @@ namespace Eddi
                     {
                         passEvent = eventBodyMapped((BodyMappedEvent)@event);
                     }
+                    else if (@event is RingMappedEvent)
+                    {
+                        passEvent = eventRingMapped((RingMappedEvent)@event);
+                    }
                     else if (@event is VehicleDestroyedEvent)
                     {
                         passEvent = eventVehicleDestroyed((VehicleDestroyedEvent)@event);
@@ -1950,26 +1954,25 @@ namespace Eddi
 
         private bool eventBodyMapped(BodyMappedEvent theEvent)
         {
-            if (theEvent.body.bodyname.Contains(" Ring"))
+            if (CurrentStarSystem != null)
             {
-                updateCurrentStellarBody(theEvent.bodyName, CurrentStarSystem?.systemname, CurrentStarSystem?.systemAddress);
-            }
-            else
-            {
-                if (CurrentStarSystem != null)
+                Body body = CurrentStarSystem.bodies.Find(b => b.bodyname == theEvent.bodyName);
+                if (body?.mapped is null && !(theEvent.body is null))
                 {
-                    Body body = CurrentStarSystem.bodies.Find(b => b.bodyname == theEvent.bodyName);
-                    if (body?.mapped is null && !(theEvent.body is null))
-                    {
-                        CurrentStarSystem.AddOrUpdateBody(theEvent.body);
-                        StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
-                        updateCurrentStellarBody(theEvent.bodyName, CurrentStarSystem?.systemname, CurrentStarSystem?.systemAddress);
-                    }
+                    CurrentStarSystem.AddOrUpdateBody(theEvent.body);
+                    StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
+                    updateCurrentStellarBody(theEvent.bodyName, CurrentStarSystem?.systemname, CurrentStarSystem?.systemAddress);
                 }
             }
             return true;
         }
 
+        private bool eventRingMapped(RingMappedEvent theEvent)
+        {
+            updateCurrentStellarBody(theEvent.ringname, CurrentStarSystem?.systemname, CurrentStarSystem?.systemAddress);
+            return true;
+        }
+        
         /// <summary>Obtain information from the companion API and use it to refresh our own data</summary>
         public bool refreshProfile(bool refreshStation = false)
         {

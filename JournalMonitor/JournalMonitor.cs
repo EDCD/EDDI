@@ -2012,16 +2012,38 @@ namespace EddiJournalMonitor
                                     int probesUsed = JsonParsing.getInt(data, "ProbesUsed");
                                     int efficiencyTarget = JsonParsing.getInt(data, "EfficiencyTarget");
 
-                                    // Prepare updated body for inclusion in our star system
+                                    // Target may be either a ring or a body
                                     StarSystem system = EDDI.Instance?.CurrentStarSystem;
-                                    Body body = system?.BodyWithID(bodyId);
-                                    if (!(body is null))
+                                    Body body = null;
+                                    
+                                    if (bodyName.EndsWith(" Ring"))
                                     {
-                                        body.mapped = timestamp;
-                                        body.mappedEfficiently = probesUsed <= efficiencyTarget;
+                                        // We've mapped a ring. 
+                                        Ring ring = null;
+                                        List<Body> ringedBodies = system.bodies?.Where(b => b?.rings?.Count > 0).ToList();
+                                        foreach (Body ringedBody in ringedBodies)
+                                        {
+                                            ring = ringedBody.rings.FirstOrDefault(r => r.name == bodyName);
+                                            if (ring != null)
+                                            {
+                                                body = ringedBody;
+                                                break;
+                                            }
+                                        }
+                                        events.Add(new RingMappedEvent(timestamp, bodyName, ring, body, probesUsed, efficiencyTarget) { raw = line, fromLoad = fromLogLoad });
                                     }
-
-                                    events.Add(new BodyMappedEvent(timestamp, bodyName, body, probesUsed, efficiencyTarget) { raw = line, fromLoad = fromLogLoad });
+                                    else
+                                    {
+                                        // Prepare updated map details to update the body in our star system
+                                        body = system?.BodyWithID(bodyId);
+                                        if (!(body is null))
+                                        {
+                                            body.scanned = body.scanned ?? timestamp;
+                                            body.mapped = timestamp;
+                                            body.mappedEfficiently = probesUsed <= efficiencyTarget;
+                                            events.Add(new BodyMappedEvent(timestamp, bodyName, body, probesUsed, efficiencyTarget) { raw = line, fromLoad = fromLogLoad });
+                                        }
+                                    }
                                 }
                                 handled = true;
                                 break;
