@@ -210,5 +210,7 @@
     <value>Chaud</value>
     <comment>Ship is Hot</comment>
   </data>
-  
+  <data name="p5" xml:space="preserve">
+    <value>EDDI peut exporter les données de votre navire vers Coriolis ou EDShipyard (outils tiers). Sélectionnez l'outil que vous préférez.</value>
+  </data>
 </root>
