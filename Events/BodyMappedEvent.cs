@@ -61,101 +61,101 @@ namespace EddiEvents
 
         // Variable names for this event should match the class property names for maximum compatibility with the BodyDetails() function in Cottle
 
-        public string name => body.bodyname;
+        public string name => body?.bodyname;
 
-        public string bodyname => body.bodyname;
+        public string bodyname => body?.bodyname ?? bodyName;
 
         public string systemname { get; private set; }
 
-        public string shortname => body.shortname;
+        public string shortname => body?.shortname;
 
-        public string bodytype => (body.bodyType ?? BodyType.None).localizedName;
+        public string bodytype => (body?.bodyType ?? BodyType.None).localizedName;
 
-        public string planettype => (body.planetClass ?? PlanetClass.None).localizedName;  // This matches the object property reported from the BodyDetails() function
+        public string planettype => (body?.planetClass ?? PlanetClass.None).localizedName;  // This matches the object property reported from the BodyDetails() function
 
-        public decimal? earthmass => body.earthmass;
+        public decimal? earthmass => body?.earthmass;
 
-        public decimal? massprobability => body.massprobability;
+        public decimal? massprobability => body?.massprobability;
 
-        public decimal? radius => body.radius;
+        public decimal? radius => body?.radius;
 
-        public decimal? radiusprobability => body.radiusprobability;
+        public decimal? radiusprobability => body?.radiusprobability;
 
-        public decimal gravity => (decimal)body.gravity;
+        public decimal gravity => (decimal)body?.gravity;
 
-        public decimal? gravityprobability => body.gravityprobability;
+        public decimal? gravityprobability => body?.gravityprobability;
 
-        public decimal? temperature => body.temperature;
+        public decimal? temperature => body?.temperature;
 
-        public decimal? tempprobability => body.tempprobability;
+        public decimal? tempprobability => body?.tempprobability;
 
-        public decimal? pressure => body.pressure;
+        public decimal? pressure => body?.pressure;
 
-        public decimal? pressureprobability => body.pressureprobability;
+        public decimal? pressureprobability => body?.pressureprobability;
 
-        public bool? tidallylocked => body.tidallylocked;
+        public bool? tidallylocked => body?.tidallylocked;
 
-        public bool? landable => body.landable;
+        public bool? landable => body?.landable;
 
-        public string atmosphere => (body.atmosphereclass ?? AtmosphereClass.None).localizedName; // This matches the object property reported from the BodyDetails() function
+        public string atmosphere => (body?.atmosphereclass ?? AtmosphereClass.None).localizedName; // This matches the object property reported from the BodyDetails() function
 
-        public List<AtmosphereComposition> atmospherecompositions => body.atmospherecompositions;
+        public List<AtmosphereComposition> atmospherecompositions => body?.atmospherecompositions;
 
-        public List<SolidComposition> solidcompositions => body.solidcompositions;
+        public List<SolidComposition> solidcompositions => body?.solidcompositions;
 
-        public Volcanism volcanism => body.volcanism;
+        public Volcanism volcanism => body?.volcanism;
 
-        public decimal distance => (decimal)body.distance;
+        public decimal distance => (decimal)body?.distance;
 
-        public decimal? orbitalperiod => body.orbitalperiod;
+        public decimal? orbitalperiod => body?.orbitalperiod;
 
-        public decimal? orbitalperiodprobability => body.orbitalperiodprobability;
+        public decimal? orbitalperiodprobability => body?.orbitalperiodprobability;
 
-        public decimal? rotationalperiod => body.rotationalperiod;
+        public decimal? rotationalperiod => body?.rotationalperiod;
 
-        public decimal? rotationalperiodprobability => body.rotationalperiodprobability;
+        public decimal? rotationalperiodprobability => body?.rotationalperiodprobability;
 
-        public decimal? semimajoraxis => body.semimajoraxis;
+        public decimal? semimajoraxis => body?.semimajoraxis;
 
-        public decimal? eccentricityprobability => body.eccentricityprobability;
+        public decimal? eccentricityprobability => body?.eccentricityprobability;
 
-        public decimal? eccentricity => body.eccentricity;
+        public decimal? eccentricity => body?.eccentricity;
 
-        public decimal? semimajoraxisprobability => body.semimajoraxisprobability;
+        public decimal? semimajoraxisprobability => body?.semimajoraxisprobability;
 
-        public decimal? inclination => body.inclination;
+        public decimal? inclination => body?.inclination;
 
-        public decimal? inclinationprobability => body.inclinationprobability;
+        public decimal? inclinationprobability => body?.inclinationprobability;
 
-        public decimal? periapsis => body.periapsis;
+        public decimal? periapsis => body?.periapsis;
 
-        public decimal? periapsisprobability => body.periapsisprobability;
+        public decimal? periapsisprobability => body?.periapsisprobability;
 
-        public List<Ring> rings => body.rings;
+        public List<Ring> rings => body?.rings;
 
-        public string reserves => (body.reserveLevel ?? ReserveLevel.None).localizedName; // This matches the object property reported from the BodyDetails() function
+        public string reserves => (body?.reserveLevel ?? ReserveLevel.None).localizedName; // This matches the object property reported from the BodyDetails() function
 
-        public List<MaterialPresence> materials => body.materials;
+        public List<MaterialPresence> materials => body?.materials;
 
-        public string terraformstate => (body.terraformState ?? TerraformState.NotTerraformable).localizedName; // This matches the object property reported from the BodyDetails() function
+        public string terraformstate => (body?.terraformState ?? TerraformState.NotTerraformable).localizedName; // This matches the object property reported from the BodyDetails() function
 
-        public decimal? tilt => body.tilt;
+        public decimal? tilt => body?.tilt;
 
-        public decimal? tiltyprobability => body.tiltprobability;
+        public decimal? tiltyprobability => body?.tiltprobability;
 
-        public decimal? density => body.density;
+        public decimal? density => body?.density;
 
-        public decimal? densityprobability => body.densityprobability;
+        public decimal? densityprobability => body?.densityprobability;
 
-        public long? estimatedvalue => body.estimatedvalue;
+        public long? estimatedvalue => body?.estimatedvalue;
 
-        public DateTime? scanned => body.scanned;
+        public DateTime? scanned => body?.scanned;
 
-        public DateTime? mapped => body.mapped;
+        public DateTime? mapped => body?.mapped;
 
-        public bool alreadydiscovered => body.alreadydiscovered;
+        public bool alreadydiscovered => body?.alreadydiscovered ?? false;
 
-        public bool alreadymapped => body.alreadymapped;
+        public bool alreadymapped => body?.alreadymapped ?? false;
 
         public int probesused { get; private set; }
 
