@@ -234,6 +234,7 @@ namespace EddiStarMapService
             var request = new RestRequest("api-logs-v1/get-logs", Method.POST);
             request.AddParameter("apiKey", apiKey);
             request.AddParameter("commanderName", commanderName);
+            request.AddParameter("showId", 1); // Obtain EDSM IDs
             if (systemNames?.Count() == 1)
             {
                 /// When a single system name is provided, the api responds with 
