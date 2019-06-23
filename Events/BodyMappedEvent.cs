@@ -81,7 +81,7 @@ namespace EddiEvents
 
         public decimal? radiusprobability => body?.radiusprobability;
 
-        public decimal gravity => (decimal)body?.gravity;
+        public decimal? gravity => body?.gravity;
 
         public decimal? gravityprobability => body?.gravityprobability;
 
@@ -105,7 +105,7 @@ namespace EddiEvents
 
         public Volcanism volcanism => body?.volcanism;
 
-        public decimal distance => (decimal)body?.distance;
+        public decimal? distance => body?.distance;
 
         public decimal? orbitalperiod => body?.orbitalperiod;
 
