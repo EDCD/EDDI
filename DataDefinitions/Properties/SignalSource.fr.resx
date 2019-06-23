@@ -218,7 +218,10 @@
     <value>Phénomène Stellaire Remarquable</value>
     <comment>Notable Stellar Phenomena</comment>
   </data>
-  
+  <data name="FIXED-EVENT_CAPSHIP" xml:space="preserve">
+    <value>Vaisseau Capital</value>
+    <comment>Capital Ship</comment>
+  </data>
   <data name="Fixed_Event_Life_Ring" xml:space="preserve">
     <value>Phénomène Stellaire Remarquable</value>
     <comment>Notable Stellar Phenomena</comment>
