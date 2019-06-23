@@ -390,17 +390,17 @@ namespace EddiDataProviderService
                                         string starSystemJson = null;
                                         for (int i = 0; i < rdr.FieldCount; i++)
                                         {
-                                            if (rdr.GetName(i) == "name")
-                                            {
-                                                systemName = rdr.GetString(i);
-                                            }
                                             if (SCHEMA_VERSION >= 2 && rdr.GetName(i) == "systemaddress")
                                             {
-                                                systemAddress = rdr.GetInt32(i);
+                                                systemAddress = rdr.IsDBNull(i) ? null : (long?)rdr.GetInt64(i);
                                             }
                                             if (SCHEMA_VERSION >= 2 && rdr.GetName(i) == "edsmid")
                                             {
-                                                edsmId = rdr.GetInt32(i);
+                                                edsmId = rdr.IsDBNull(i) ? null : (long?)rdr.GetInt64(i);
+                                            }
+                                            if (rdr.GetName(i) == "name")
+                                            {
+                                                systemName = rdr.GetString(i);
                                             }
                                             if (rdr.GetName(i) == "starsystem")
                                             {
