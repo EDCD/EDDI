@@ -5,6 +5,8 @@ Full details of the variables available for each noted event, and VoiceAttack in
 ### Development
   * Cargo monitor
     * Fixed a bug that could disable the cargo monitor with translated versions of EDDI.
+  * EDSM responder
+    * Fixed a bug that caused EDSM synchronization to slow to a crawl and optimized database access. Resynchronizing with EDSM will speed database access and is recommended for all pilots.
   * Speech responder
     * Fixed an issue with character encoding in the French personality file.
     * Revised the `System report` script to gracefully handle the system power being "None".
