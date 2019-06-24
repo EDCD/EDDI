@@ -1,4 +1,4 @@
-﻿# CHANGE LOG
+﻿# Change Log
 
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
@@ -6,14 +6,14 @@ Full details of the variables available for each noted event, and VoiceAttack in
   * Cargo monitor
     * Fixed a bug that could disable the cargo monitor with translated versions of EDDI.
   * EDSM responder
-    * Fixed a bug that caused EDSM synchronization to slow to a crawl and optimized database access. Resynchronizing with EDSM will speed database access and is recommended for all pilots.
+    * Fixed a bug that caused EDSM synchronization to slow to a crawl, and optimized database access. Resynchronizing with EDSM will speed database access and is recommended for all pilots.
   * Speech responder
-    * Fixed an issue with character encoding in the French personality file.
-    * Revised the `System report` script to gracefully handle the system power being "None".
+    * Fixed the character encoding in the French personality file.
+    * Revised the `System report` script to gracefully handle systems with no controlling power.
     * The `Body mapped` event now makes available all of the same body data as `Body scanned`.
     * Added new event `Ring mapped` (the `Body mapped` event will no longer trigger when probing a ring).
   * Ship monitor
-    * Reinstated export to [EDShipyard](https://www.edsy.org) as it's developer has returned. 
+    * Reinstated ship export to [EDShipyard](https://www.edsy.org), as its developer has returned. 
 
 ### 3.4.1-rc1
   * EDSM responder
@@ -85,10 +85,13 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * New `FactionRecord` and `FactionReport` properties, available via Cottle scripting. See the `Variables` window for details.
     * Tracks all ships you have targeted within the current system. Data available in `shiptargets` as a list of `Target` properties.
   * Galnet monitor
+    
     * Fixed a bug causing the Galnet monitor to occasionally reset the read status of articles.
   * Material Monitor
+    
     * Added 'Find' buttons for the nearest `encoded`, `manufactured` & `raw`  Materials Traders and `guardian` & `human` Technology Brokers.
   * Mission Monitor
+    
     * Added 'Find Route', 'Next Route', 'Update Route', and 'Clear Route' buttons to give standalone users access to missions routing functionality.
   * Navigation Service
     * Consolidated all `RouteDetails()` functionality.
@@ -343,6 +346,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * This has been disabled for the time being, due to changes that Frontier made to the authentication protocol without any transition period.
       * Unfortunately this means that EDDI is temporarily blind to market, outfitting and shipyard data. We will rectify this in EDDI 3.3.1 by reading the local journal files, but that will require visiting the screens in question in-game.
   * Ship monitor
+    
     * Added new value to the current ship: `ident`
   * Speech responder
     * Fixed system messages triggering the `Message received` event.
@@ -1841,3 +1845,4 @@ Full details of the variables available for each noted event, and VoiceAttack in
 
 ## 0.5.0
 Initial release
+
