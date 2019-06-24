@@ -11,6 +11,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Fixed an issue with character encoding in the French personality file.
     * Revised the `System report` script to gracefully handle the system power being "None".
     * The `Body mapped` event now makes available all of the same body data as `Body scanned`.
+    * Added new event `Ring mapped` (the `Body mapped` event will no longer trigger when probing a ring).
   * Ship monitor
     * Reinstated export to [EDShipyard](https://www.edsy.org) as it's developer has returned. 
 

@@ -190,13 +190,13 @@ namespace UnitTests
             string line = @"{ ""timestamp"":""2018-12-16T23:04:38Z"", ""event"":""SAAScanComplete"", ""BodyName"":""BD-01 2784 10 A Ring"", ""BodyID"":42, ""ProbesUsed"":1, ""EfficiencyTarget"":0 }";
             List<Event> events = JournalMonitor.ParseJournalEntry(line);
             Assert.AreEqual(1, events.Count);
-            BodyMappedEvent @event = (BodyMappedEvent)events[0];
+            RingMappedEvent @event = (RingMappedEvent)events[0];
             Assert.IsNotNull(@event);
-            Assert.IsInstanceOfType(@event, typeof(BodyMappedEvent));
+            Assert.IsInstanceOfType(@event, typeof(RingMappedEvent));
 
             PrivateObject privateObject = new PrivateObject(Eddi.EDDI.Instance);
             privateObject.Invoke("updateCurrentSystem", new object[] { "BD-01 2784" });
-            privateObject.Invoke("eventBodyMapped", new object[] { @event });
+            privateObject.Invoke("eventRingMapped", new object[] { @event });
             Assert.AreEqual("BD-01 2784 10", EDDI.Instance.CurrentStellarBody?.bodyname);
         }
 

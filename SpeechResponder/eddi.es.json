@@ -1595,6 +1595,15 @@
       "name": "Report last scan value",
       "description": "Informa sobre el valor estimado del último cuerpo celeste escaneado"
     },
+    "Ring mapped": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{_ Context}\r\n{SetState('eddi_context_last_action', 'scan')}\r\n{SetState('eddi_context_last_subject', 'ring')}\r\n{SetState('eddi_context_body_system', system.name)}\r\n{SetState('eddi_context_ring_name', event.ringname)}\r\n\r\n{_ Process the event _}\r\n\r\n{if ship.Role.edname = \"Exploration\" || ship.Role.edname = \"Multipurpose\":\r\n\r\n    {Pause(3000)}\r\n\r\n    {OneOf(\"mapping\", \"probing\", \"scanning\")}\r\n    of {event.reserves} {event.composition} ring\r\n    {OneOf(\"is\", \"is now\")}\r\n    {OneOf(\"complete\", \"finished\")}.\r\n}",
+      "default": true,
+      "name": "Ring mapped",
+      "description": "Triggered after mapping a ring with the Surface Area Analysis scanner"
+    },
     "Route details": {
       "enabled": true,
       "priority": 3,
