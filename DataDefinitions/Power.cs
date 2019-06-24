@@ -50,7 +50,7 @@ namespace EddiDataDefinitions
             }
 
             string tidiedName = edName.ToLowerInvariant().Replace(" ", "").Replace(".", "").Replace("-", "");
-            return ResourceBasedLocalizedEDName<Power>.FromEDName(tidiedName);
+            return AllOfThem.FirstOrDefault(v => v.edname == tidiedName);
         }
     }
 }
