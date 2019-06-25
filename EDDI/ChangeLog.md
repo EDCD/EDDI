@@ -2,7 +2,7 @@
 
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
-### Development
+### 3.4.1-rc2
   * Cargo monitor
     * Fixed a bug that could disable the cargo monitor with translated versions of EDDI.
   * EDSM responder
