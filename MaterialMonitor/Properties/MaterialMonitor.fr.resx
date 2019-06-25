@@ -124,8 +124,12 @@
     <value>Désiré</value>
   </data>
   
-  
-  
+  <data name="find_guardian_button" xml:space="preserve">
+    <value>Trouver un courtier en technologie Guardian</value>
+  </data>
+  <data name="find_human_button" xml:space="preserve">
+    <value>Trouver un courtier en technologie humaine</value>
+  </data>
   
   
   <data name="inventory_header" xml:space="preserve">
@@ -149,8 +153,12 @@
   <data name="p2" xml:space="preserve">
     <value>À noter que si votre inventaire est incorrect, vous devez démarrer ou redémarrer Elite: Dangerous pour que les informations se mettent à jour.</value>
   </data>
-  
-  
+  <data name="p3" xml:space="preserve">
+    <value>Conseil: maximisez la distance autorisée pour les stations afin de minimiser les temps de recherche.</value>
+  </data>
+  <data name="tab_station_distance" xml:space="preserve">
+    <value>Distance maximale de la station par rapport à l'étoile principale (Ls):</value>
+  </data>
   <data name="type_header" xml:space="preserve">
     <value>Type</value>
   </data>

@@ -168,18 +168,36 @@
   <data name="p4" xml:space="preserve">
     <value>Se non hai configurato l'accesso all'API di Frontier alcuni dei dati sotto saranno inaccurati o non disponibili. Inoltre, se hai più navi prima dell'installazione di EDDI avrai bisogno di impostarle come navi principali ed attendere alcuni momenti prima che tutte le informazioni siano disponibili.</value>
   </data>
-  
-  
-  
-  
+  <data name="ship_ready" xml:space="preserve">
+    <value>{0} resta a disposizione.</value>
+  </data>
+  <data name="ipa_resource1" xml:space="preserve">
+    <value>http://www.internationalphoneticalphabet.org/ipa-sounds/ipa-chart-with-sounds/</value>
+  </data>
+  <data name="ipa_resource2" xml:space="preserve">
+    <value>https://tophonetics.com/</value>
+  </data>
+  <data name="ipa_resource3" xml:space="preserve">
+    <value>https://easypronunciation.com/en/english-phonetic-transcription-converter</value>
+  </data>
   <data name="ipa_page_p1" xml:space="preserve">
     <value>Il</value>
   </data>
-  
-  
-  
-  
-  
+  <data name="ipa_resource1_title" xml:space="preserve">
+    <value>Tabella IPA completa di suoni</value>
+  </data>
+  <data name="ipa_resource2_title" xml:space="preserve">
+    <value>Traduttore da Inglese a IPA - ToPhonetics.com</value>
+  </data>
+  <data name="ipa_resource3_title" xml:space="preserve">
+    <value>Traduttore da Inglese a IPA - EasyPronunciation.com</value>
+  </data>
+  <data name="ipa_page_comments" xml:space="preserve">
+    <value>Dizionari online potrebbero includere la corretta pronuncia IPA per le parole più comuni. Le risorse qui sotto potrebbero essere utilizzate per generare pronunce personalizzate di parole meno comuni.</value>
+  </data>
+  <data name="ipa_page_p2" xml:space="preserve">
+    <value>è un sistema alfabetico di notazione fonetica basata principalmente sull'alfabeto latino. Venne inventato dall'Associazione Fonetica Internazionale verso la fine del 19° secolo come un mezzo per rappresentare il suono del linguaggio parlato in maniera codificata.</value>
+  </data>
   <data name="header_hot" xml:space="preserve">
     <value>Stato</value>
     <comment>Header for column showing whether ship is Hot or Clean</comment>
@@ -192,4 +210,5 @@
     <value>Ricercato</value>
     <comment>Ship is Hot</comment>
   </data>
+  
 </root>

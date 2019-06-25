@@ -117,9 +117,13 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
+  <data name="desc" xml:space="preserve">
+    <value>Invia informazioni riguardanti stazioni visitate, salti effettuati e scansioni di sistemi a EDDN. EDDN è uno strumento di terze parti che raccoglie informazioni su sistemi e mercati e fornisce questi dati a altri strumenti di negoziazione e di esplorazione come EDDB.</value>
+  </data>
   <data name="name" xml:space="preserve">
     <value>EDDN</value>
   </data>
-  
+  <data name="errPosition" xml:space="preserve">
+    <value>Sono spiacente Comandante: ho perso il filo ed ho bisogno che tu mi comunichi la tua posizione saltando verso un'altro sistema o che tu ti riconnetta al gioco prima che io possa ricominciare a mettere in rete i dati esplorativi.</value>
+  </data>
 </root>

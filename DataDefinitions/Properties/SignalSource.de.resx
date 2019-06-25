@@ -229,4 +229,8 @@
     <value>Bemerkenswerte Sternenphänomene</value>
     <comment>Notable Stellar Phenomena</comment>
   </data>
+  <data name="ListeningPost:#index=1" xml:space="preserve">
+    <value>Horchposten</value>
+    <comment>Listening Post:#Index=1</comment>
+  </data>
 </root>

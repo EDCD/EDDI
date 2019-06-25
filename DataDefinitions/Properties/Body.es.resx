@@ -163,6 +163,6 @@
   </data>
   <data name="StellarRing" xml:space="preserve">
     <value>Anillo estelar</value>
-    <comment>Body Type PlanetaryRing</comment>
+    <comment>Body Type StellarRing</comment>
   </data>
 </root>
