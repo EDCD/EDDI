@@ -883,13 +883,18 @@ namespace Eddi
             else
             {
                 upgradeButton.Visibility = Visibility.Collapsed;
-                if (CompanionAppService.Instance.CurrentState != CompanionAppService.State.Authorized)
-                {
-                    statusText.Text = Properties.EddiResources.frontier_api_nok;
-                }
-                else if (!EDDI.running)
+                var capiState = CompanionAppService.Instance.CurrentState;
+                if (!EDDI.running)
                 {
                     statusText.Text = Properties.EddiResources.safe_mode;
+                }
+                else if (capiState == CompanionAppService.State.NoClientIDConfigured)
+                {
+                    statusText.Text = Properties.EddiResources.frontier_api_not_enabled;
+                }
+                else if (capiState != CompanionAppService.State.Authorized)
+                {
+                    statusText.Text = Properties.EddiResources.frontier_api_nok;
                 }
                 else
                 {
@@ -916,6 +921,12 @@ namespace Eddi
                     companionAppButton.Content = Properties.MainWindow.reset_button;
                     companionAppButton.IsEnabled = true;
                     companionAppText.Text = Properties.MainWindow.tab_frontier_reset_desc;
+                    break;
+                case CompanionAppService.State.NoClientIDConfigured:
+                    companionAppStatusValue.Text = Properties.EddiResources.frontierApiNotEnabled;
+                    companionAppButton.Content = Properties.EddiResources.login;
+                    companionAppButton.IsEnabled = false;
+                    companionAppText.Text = Properties.MainWindow.tab_frontier_not_enabled_desc;
                     break;
             }
         }

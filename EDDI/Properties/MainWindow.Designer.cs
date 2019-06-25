@@ -313,7 +313,16 @@ namespace Eddi.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to If you are experiencing problems with your connection you can reset it and log back in again, which can clear the problem.
+        ///   Looks up a localized string similar to The Frontier API is not enabled in this build of EDDI..
+        /// </summary>
+        public static string tab_frontier_not_enabled_desc {
+            get {
+                return ResourceManager.GetString("tab_frontier_not_enabled_desc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to If you are experiencing problems with your connection you can reset it and log back in again, which can clear the problem..
         /// </summary>
         public static string tab_frontier_reset_desc {
             get {

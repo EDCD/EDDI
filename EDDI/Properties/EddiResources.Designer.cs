@@ -171,6 +171,15 @@ namespace Eddi.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Frontier API connection not enabled.
+        /// </summary>
+        public static string frontier_api_not_enabled {
+            get {
+                return ResourceManager.GetString("frontier_api_not_enabled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Your connection to the Frontier API is operational, Commander {0}..
         /// </summary>
         public static string frontier_api_ok {
@@ -225,6 +234,15 @@ namespace Eddi.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Not Enabled.
+        /// </summary>
+        public static string frontierApiNotEnabled {
+            get {
+                return ResourceManager.GetString("frontierApiNotEnabled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Frontier API status:.
         /// </summary>
         public static string frontierApiStatusLabel {
@@ -261,7 +279,7 @@ namespace Eddi.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Log in.
+        ///   Looks up a localized string similar to Log In.
         /// </summary>
         public static string login {
             get {
@@ -279,7 +297,7 @@ namespace Eddi.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Log out.
+        ///   Looks up a localized string similar to Log Out.
         /// </summary>
         public static string logout {
             get {

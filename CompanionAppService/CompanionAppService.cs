@@ -44,7 +44,8 @@ namespace EddiCompanionAppService
         {
             LoggedOut,
             AwaitingCallback,
-            Authorized
+            Authorized,
+            NoClientIDConfigured,
         };
         private State _currentState;
         public State CurrentState
@@ -60,7 +61,7 @@ namespace EddiCompanionAppService
         }
         public delegate void StateChangeHandler(State oldState, State newState);
 
-        // This is not a UI event handler so I consider that CA1009 is just unnecessary ceremony for no benfit.
+        // This is not a UI event handler so I consider that CA1009 is just unnecessary ceremony for no benefit.
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1009:DeclareEventHandlersCorrectly")]
         public event StateChangeHandler StateChanged;
 
@@ -97,6 +98,11 @@ namespace EddiCompanionAppService
             void logger(string message) => Logging.Error(message);
             URLResponder = new CustomURLResponder(Constants.EDDI_URL_PROTOCOL, handleCallbackUrl, logger, appPath);
             clientID = ClientId.ID;
+            if (clientID == null)
+            {
+                CurrentState = State.NoClientIDConfigured;
+                return;
+            }
 
             try
             {
@@ -480,7 +486,6 @@ namespace EddiCompanionAppService
             return cachedProfile;
         }
 
-
         private string obtainProfile(string url)
         {
             DateTime expiry = Credentials?.tokenExpiry.AddSeconds(-60) ?? DateTime.MinValue;
@@ -522,6 +527,7 @@ namespace EddiCompanionAppService
         private void relogin()
         {
             // Need to log in again.
+            if (clientID == null) { return; }
             Logout();
             Login();
             if (CurrentState != State.Authorized)

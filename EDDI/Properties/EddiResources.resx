@@ -149,7 +149,7 @@
     <value>Unable to log in. This is usually a temporary issue with Frontier's service; please try again later</value>
   </data>
   <data name="logout" xml:space="preserve">
-    <value>Log out</value>
+    <value>Log Out</value>
   </data>
   <data name="operational" xml:space="preserve">
     <value>Operational</value>
@@ -225,7 +225,7 @@ Please close the other instance and try again.</value>
     <value>Safe mode - upgrade required.</value>
   </data>
   <data name="login" xml:space="preserve">
-    <value>Log in</value>
+    <value>Log In</value>
   </data>
   <data name="frontier_api_cant_login_from_va" xml:space="preserve">
     <value>In order to log in, please quit Voice Attack and launch EDDI as a standalone app.</value>
@@ -250,5 +250,13 @@ Please close the other instance and try again.</value>
   </data>
   <data name="frontier_api_please_authenticate" xml:space="preserve">
     <value>Please authenticate EDDI's connection to the Frontier API.</value>
+  </data>
+  <data name="frontierApiNotEnabled" xml:space="preserve">
+    <value>Not Enabled</value>
+    <comment>Displayed when the Frontier API is not enabled because the current build has no OAuth ClientID configured.</comment>
+  </data>
+  <data name="frontier_api_not_enabled" xml:space="preserve">
+    <value>Frontier API connection not enabled</value>
+    <comment>Displayed when the Frontier API is not enabled because the current build has no OAuth ClientID configured.</comment>
   </data>
 </root>
