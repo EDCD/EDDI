@@ -148,9 +148,7 @@
   <data name="login_nok_frontier_service" xml:space="preserve">
     <value>Képtelen vagyok bejelentkezni. Ez gyakran egy időszakos hiba a Frontier szerverével. kérlek próbáld meg késöbb</value>
   </data>
-  <data name="logout" xml:space="preserve">
-    <value>Kijelentkezés</value>
-  </data>
+  
   <data name="operational" xml:space="preserve">
     <value>Működik</value>
   </data>
@@ -224,9 +222,7 @@ Kérlek zárd be a másikat és próbálkozz újra.</value>
   <data name="safe_mode" xml:space="preserve">
     <value>Biztonsági mód - frissítés szükséges.</value>
   </data>
-  <data name="login" xml:space="preserve">
-    <value>Bejelentkezés</value>
-  </data>
+  
   <data name="frontier_api_cant_login_from_va" xml:space="preserve">
     <value>A Bejelentkezéshez kérlek lépj ki a Voice Attack-ból és indítsd EDDI-t önállóan.</value>
   </data>
@@ -248,5 +244,7 @@ Kérlek zárd be a másikat és próbálkozz újra.</value>
   <data name="frontier_api_reset" xml:space="preserve">
     <value>Újrakapcsolódás.</value>
   </data>
+  
+  
   
 </root>
