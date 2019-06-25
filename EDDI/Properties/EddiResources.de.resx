@@ -148,9 +148,7 @@
   <data name="login_nok_frontier_service" xml:space="preserve">
     <value>Anmeldung nicht möglich. Dies ist normalerweise ein vorübergehendes Problem mit dem Dienst von Frontier. Bitte versuchen Sie es später erneut</value>
   </data>
-  <data name="logout" xml:space="preserve">
-    <value>Abmelden</value>
-  </data>
+  
   <data name="operational" xml:space="preserve">
     <value>Betriebsbereit</value>
   </data>
@@ -224,9 +222,7 @@ Bitte schließe die andere Instanz und versuche es noch einmal.</value>
   <data name="safe_mode" xml:space="preserve">
     <value>Abgesicherter Modus - Upgrade erforderlich.</value>
   </data>
-  <data name="login" xml:space="preserve">
-    <value>Log in</value>
-  </data>
+  
   <data name="frontier_api_cant_login_from_va" xml:space="preserve">
     <value>Um sich anzumelden, beenden Sie bitte Voice Attack und starten Sie EDDI eigenständig.</value>
   </data>
@@ -251,4 +247,6 @@ Bitte schließe die andere Instanz und versuche es noch einmal.</value>
   <data name="frontier_api_please_authenticate" xml:space="preserve">
     <value>Bitte authentifizieren Sie EDDI's Verbindung zur Frontier API.</value>
   </data>
+  
+  
 </root>
