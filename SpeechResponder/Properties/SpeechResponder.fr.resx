@@ -221,5 +221,7 @@
   <data name="speechResponderHelpHere" xml:space="preserve">
     <value>ici.</value>
   </data>
-  
+  <data name="localizedAnd" xml:space="preserve">
+    <value>et</value>
+  </data>
 </root>
