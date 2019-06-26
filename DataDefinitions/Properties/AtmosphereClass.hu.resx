@@ -209,5 +209,8 @@
     <value>Gázóriás</value>
     <comment>Atmosphere class "Gas giant"</comment>
   </data>
-  
+  <data name="AmmoniaOxygen" xml:space="preserve">
+    <value>Ammónia és oxigén</value>
+    <comment>Atmosphere class "Ammonia oxygen"</comment>
+  </data>
 </root>
