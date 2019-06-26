@@ -200,5 +200,7 @@
     <value>Forró</value>
     <comment>Ship is Hot</comment>
   </data>
-  
+  <data name="p5" xml:space="preserve">
+    <value>Az EDDI exportálni tudja hajóid adatait a Coriolis vagy EDShipyard oldalára (harmadik fél általi alkalmazások). Válaszd ki a számodra megfelelőt.</value>
+  </data>
 </root>
