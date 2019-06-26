@@ -197,5 +197,8 @@
     <value>Körözött személy szállítása</value>
     <comment>Crime passengerWanted</comment>
   </data>
-  
+  <data name="missionFine" xml:space="preserve">
+    <value>Küldetési bírság</value>
+    <comment>Crime missionFine</comment>
+  </data>
 </root>
