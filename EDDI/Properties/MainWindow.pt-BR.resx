@@ -271,5 +271,8 @@
   <data name="no_station" xml:space="preserve">
     <value>Sem Estação</value>
   </data>
-  
+  <data name="tab_frontier_not_enabled_desc" xml:space="preserve">
+    <value>A API da Frontier não está habilitada nesta versão do EDDI.</value>
+    <comment>Displayed when the Frontier API is not enabled because the current build has no OAuth ClientID configured.</comment>
+  </data>
 </root>
