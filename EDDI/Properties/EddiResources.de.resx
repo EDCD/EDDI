@@ -255,5 +255,8 @@ Bitte schließe die andere Instanz und versuche es noch einmal.</value>
     <value>Nicht möglich</value>
     <comment>Displayed when the Frontier API is not enabled because the current build has no OAuth ClientID configured.</comment>
   </data>
-  
+  <data name="frontier_api_not_enabled" xml:space="preserve">
+    <value>Die Frontier-API-Verbindung ist nicht betriebsbereit</value>
+    <comment>Displayed when the Frontier API is not enabled because the current build has no OAuth ClientID configured.</comment>
+  </data>
 </root>
