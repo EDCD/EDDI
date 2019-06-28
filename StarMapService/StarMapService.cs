@@ -17,7 +17,7 @@ namespace EddiStarMapService
         // Set the maximum batch size we will use for syncing before we write systems to our sql database
         public const int syncBatchSize = 50;
 
-        public static string commanderEliteName { get; set; }
+        public static string commanderFrontierApiName { get; set; }
 
         private string commanderName { get; set; }
         private string apiKey { get; set; }
@@ -51,7 +51,7 @@ namespace EddiStarMapService
                             if (!string.IsNullOrEmpty(starMapCredentials?.apiKey))
                             {
                                 // Commander name might come from EDSM credentials or from the game and companion app
-                                string commanderName = starMapCredentials?.commanderName ?? commanderEliteName;
+                                string commanderName = starMapCredentials?.commanderName ?? commanderFrontierApiName;
                                 if (!string.IsNullOrEmpty(commanderName))
                                 {
                                     instance = new StarMapService(starMapCredentials.apiKey, commanderName);
