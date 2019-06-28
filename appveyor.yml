@@ -18,3 +18,4 @@ test:
     - Speech
     - DocGen
     - Network
+    - Credentials

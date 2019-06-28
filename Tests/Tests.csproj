@@ -158,6 +158,7 @@
     <Compile Include="EddiCoreTests.cs" />
     <Compile Include="CargoMonitorTests.cs" />
     <Compile Include="MaterialMonitorTests.cs" />
+    <Compile Include="OAuthClientIDTests.cs" />
     <Compile Include="VersioningTests.cs" />
     <Compile Include="DataProviderTests.cs" />
     <Compile Include="SpeechTests.cs" />
