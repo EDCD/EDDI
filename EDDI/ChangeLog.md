@@ -2,9 +2,6 @@
 
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
-### Development
-  * Behave gracefully if the Frontier API is not configured in a given build and disable the relevant UI with an explanation.
-
 ### 3.4.1-rc3
   * Amended a configuration error in the Frontier API module.
 
