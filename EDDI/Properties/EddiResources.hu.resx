@@ -249,4 +249,12 @@ Kérlek zárd be a másikat és próbálkozz újra.</value>
     <value>Újrakapcsolódás.</value>
   </data>
   
+  <data name="frontierApiNotEnabled" xml:space="preserve">
+    <value>Nincs engedélyezve</value>
+    <comment>Displayed when the Frontier API is not enabled because the current build has no OAuth ClientID configured.</comment>
+  </data>
+  <data name="frontier_api_not_enabled" xml:space="preserve">
+    <value>Frontier API kapcsolat nincs engedélyezve</value>
+    <comment>Displayed when the Frontier API is not enabled because the current build has no OAuth ClientID configured.</comment>
+  </data>
 </root>

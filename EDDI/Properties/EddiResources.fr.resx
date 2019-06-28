@@ -148,9 +148,7 @@
   <data name="login_nok_frontier_service" xml:space="preserve">
     <value>Impossible de se connecter. Ceci est généralement dû à un problème temporaire avec les serveurs de Frontier. Veuillez réessayer ultérieurement.</value>
   </data>
-  <data name="logout" xml:space="preserve">
-    <value>Déconnexion</value>
-  </data>
+  
   <data name="operational" xml:space="preserve">
     <value>Opérationnel</value>
   </data>
@@ -224,9 +222,7 @@ Veuillez fermer l'autre instance et réessayer.</value>
   <data name="safe_mode" xml:space="preserve">
     <value>Mode sans échec - mise à jour requise.</value>
   </data>
-  <data name="login" xml:space="preserve">
-    <value>S'identifier</value>
-  </data>
+  
   <data name="frontier_api_cant_login_from_va" xml:space="preserve">
     <value>Pour vous connecter, veuillez quitter VoiceAttack et lancez EDDI en tant qu'application autonome.</value>
   </data>
@@ -251,4 +247,6 @@ Veuillez fermer l'autre instance et réessayer.</value>
   <data name="frontier_api_please_authenticate" xml:space="preserve">
     <value>Veuillez authentifier la connexion d'EDDI à l'API Frontier.</value>
   </data>
+  
+  
 </root>

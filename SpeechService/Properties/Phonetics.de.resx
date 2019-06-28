@@ -149,7 +149,8 @@
     <comment>Optional phonetic pronunciation for BeiDou_Bei</comment>
   </data>
   <data name="BeiDou_Dou" xml:space="preserve">
-    <value>ˈduː</value>
+    <value>ˈduː
+</value>
     <comment>Optional phonetic pronunciation for BeiDou_Dou</comment>
   </data>
   

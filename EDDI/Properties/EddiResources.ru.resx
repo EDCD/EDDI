@@ -148,9 +148,7 @@
   <data name="login_nok_frontier_service" xml:space="preserve">
     <value>Невозможно залогиниться. Возможно проблема с сервисами Frontier, пожулайста, попробуйте позже</value>
   </data>
-  <data name="logout" xml:space="preserve">
-    <value>Отключиться</value>
-  </data>
+  
   <data name="operational" xml:space="preserve">
     <value>Работает</value>
   </data>
@@ -224,9 +222,7 @@
   <data name="safe_mode" xml:space="preserve">
     <value>Бозопасный режим - необходимо обновление.</value>
   </data>
-  <data name="login" xml:space="preserve">
-    <value>Войти</value>
-  </data>
+  
   <data name="frontier_api_cant_login_from_va" xml:space="preserve">
     <value>Для того, что бы Войти, пожалуйста, закройте Voice Attack и запустите EDDI самостоятельно.</value>
   </data>
@@ -251,4 +247,6 @@
   <data name="frontier_api_please_authenticate" xml:space="preserve">
     <value>Пожалуйста, пройдите аутентификацию EDDI подключившись к Frontier API.</value>
   </data>
+  
+  
 </root>

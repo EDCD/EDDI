@@ -165,7 +165,9 @@
   <data name="orbital_station_checkbox" xml:space="preserve">
     <value>Orbitális állomások előnyben részesítése:</value>
   </data>
-  
+  <data name="p1" xml:space="preserve">
+    <value>Tipp: maximalizálja az engedélyezett állomás távolságát a keresési idő minimalizálása érdekében.</value>
+  </data>
   <data name="remove_button" xml:space="preserve">
     <value>Törlés</value>
   </data>

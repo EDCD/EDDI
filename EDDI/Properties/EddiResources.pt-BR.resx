@@ -251,4 +251,12 @@ Por favor, feche a outra instância e tente novamente.</value>
   <data name="frontier_api_please_authenticate" xml:space="preserve">
     <value>Por favor, autentique a conexão do EDDI com a API da Frontier.</value>
   </data>
+  <data name="frontierApiNotEnabled" xml:space="preserve">
+    <value>Não Ativado</value>
+    <comment>Displayed when the Frontier API is not enabled because the current build has no OAuth ClientID configured.</comment>
+  </data>
+  <data name="frontier_api_not_enabled" xml:space="preserve">
+    <value>Conexão com a API da Frontier não está ativada</value>
+    <comment>Displayed when the Frontier API is not enabled because the current build has no OAuth ClientID configured.</comment>
+  </data>
 </root>
