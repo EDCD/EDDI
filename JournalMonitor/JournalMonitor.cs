@@ -226,6 +226,14 @@ namespace EddiJournalMonitor
                                         factions = getFactions(factionsVal, systemName);
                                     }
 
+                                    // Parse conflicts array data
+                                    List<Conflict> conflicts = new List<Conflict>();
+                                    data.TryGetValue("Conflicts", out object conflictsVal);
+                                    if (conflictsVal != null)
+                                    {
+                                        conflicts = getConflicts(conflictsVal, factions);
+                                    }
+
                                     // Calculate remaining distance to route destination (if it exists)
                                     decimal destDistance = 0;
                                     string destination = EDDI.Instance.DestinationStarSystem?.systemname;
@@ -234,7 +242,7 @@ namespace EddiJournalMonitor
                                         destDistance = EDDI.Instance.getSystemDistanceFromDestination(systemName);
                                     }
 
-                                    events.Add(new JumpedEvent(timestamp, systemName, systemAddress, x, y, z, starName, distance, fuelUsed, fuelRemaining, boostUsed, controllingfaction, factions, economy, economy2, security, population, destination, destDistance) { raw = line, fromLoad = fromLogLoad });
+                                    events.Add(new JumpedEvent(timestamp, systemName, systemAddress, x, y, z, starName, distance, fuelUsed, fuelRemaining, boostUsed, controllingfaction, factions, conflicts, economy, economy2, security, population, destination, destDistance) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
@@ -3467,26 +3475,6 @@ namespace EddiJournalMonitor
             return events;
         }
 
-        private static SignalSource GetSignalSource(IDictionary<string, object> data)
-        {
-            // The source may be a direct source or a USS. If a USS, we want the USS type.
-            SignalSource source;
-            if (JsonParsing.getString(data, "USSType") != null)
-            {
-                string signalSource = JsonParsing.getString(data, "USSType");
-                source = SignalSource.FromEDName(signalSource) ?? new SignalSource();
-                source.fallbackLocalizedName = JsonParsing.getString(data, "USSType_Localised") ?? signalSource;
-            }
-            else
-            {
-                string signalSource = JsonParsing.getString(data, "SignalName");
-                source = SignalSource.FromEDName(signalSource) ?? new SignalSource();
-                source.fallbackLocalizedName = JsonParsing.getString(data, "SignalName_Localised") ?? signalSource;
-            }
-
-            return source;
-        }
-
         private static Superpower getAllegiance(IDictionary<string, object> data, string key)
         {
             data.TryGetValue(key, out object val);
@@ -3495,7 +3483,39 @@ namespace EddiJournalMonitor
             return Superpower.FromNameOrEdName((string)val);
         }
 
-        private static string getFactionName(IDictionary<string, object> data, string key)
+        private static List<Conflict> getConflicts(object conflictsVal, List<Faction> factions)
+        {
+            if (conflictsVal is null || factions is null) { return null; }
+
+            List<Conflict> conflicts = new List<Conflict>();
+            var conflictsList = conflictsVal as List<object>;
+            foreach (IDictionary<string, object> conflictDetail in conflictsList)
+            {
+                FactionState conflictType = FactionState.FromEDName(JsonParsing.getString(conflictDetail, "WarType")) ?? FactionState.None;
+                string status = JsonParsing.getString(conflictDetail, "Status");
+
+                // Faction 1
+                conflictDetail.TryGetValue("Faction1", out object faction1Val);
+                Dictionary<string, object> faction1Detail = (Dictionary<string, object>)faction1Val;
+                string faction1Name = JsonParsing.getString(faction1Detail, "Name");
+                Faction faction1 = factions.Find(f => f.name == faction1Name);
+                string faction1Stake = JsonParsing.getString(faction1Detail, "Stake");
+                int faction1DaysWon = JsonParsing.getInt(faction1Detail, "WonDays");
+
+                // Faction 2
+                conflictDetail.TryGetValue("Faction2", out object faction2Val);
+                Dictionary<string, object> faction2Detail = (Dictionary<string, object>)faction2Val;
+                string faction2Name = JsonParsing.getString(faction2Detail, "Name");
+                Faction faction2 = factions.Find(f => f.name == faction2Name);
+                string faction2Stake = JsonParsing.getString(faction2Detail, "Stake");
+                int faction2DaysWon = JsonParsing.getInt(faction2Detail, "WonDays");
+
+                conflicts.Add(new Conflict(conflictType, status, faction1, faction1Stake, faction1DaysWon, faction2, faction2Stake, faction2DaysWon));
+            }
+            return conflicts;
+        }
+
+            private static string getFactionName(IDictionary<string, object> data, string key)
         {
             string faction = JsonParsing.getString(data, key);
             // Might be a superpower...
@@ -3641,6 +3661,26 @@ namespace EddiJournalMonitor
             }
 
             return factions;
+        }
+
+        private static SignalSource GetSignalSource(IDictionary<string, object> data)
+        {
+            // The source may be a direct source or a USS. If a USS, we want the USS type.
+            SignalSource source;
+            if (JsonParsing.getString(data, "USSType") != null)
+            {
+                string signalSource = JsonParsing.getString(data, "USSType");
+                source = SignalSource.FromEDName(signalSource) ?? new SignalSource();
+                source.fallbackLocalizedName = JsonParsing.getString(data, "USSType_Localised") ?? signalSource;
+            }
+            else
+            {
+                string signalSource = JsonParsing.getString(data, "SignalName");
+                source = SignalSource.FromEDName(signalSource) ?? new SignalSource();
+                source.fallbackLocalizedName = JsonParsing.getString(data, "SignalName_Localised") ?? signalSource;
+            }
+
+            return source;
         }
 
         private static string npcSpeechBy(string from, string message)

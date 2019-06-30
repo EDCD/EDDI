@@ -67,7 +67,9 @@ namespace EddiEvents
 
         public List<Faction> factions { get; private set; }
 
-        // Faction properties
+        public List<Conflict> conflicts { get; private set; }
+
+        // Controlling faction properties
         public string faction => controllingfaction?.name;
         public string factionstate => (controllingfaction?.presences.FirstOrDefault(p => p.systemName == system)?.FactionState ?? FactionState.None).localizedName;
         public string allegiance => (controllingfaction?.Allegiance ?? Superpower.None).localizedName;
@@ -81,7 +83,7 @@ namespace EddiEvents
         public SecurityLevel securityLevel { get; private set; } = SecurityLevel.None;
         public FactionState factionState { get; private set; } = FactionState.None;
 
-        public JumpedEvent(DateTime timestamp, string system, long systemAddress, decimal x, decimal y, decimal z, string star, decimal distance, decimal fuelused, decimal fuelremaining, int? boostUsed, Faction controllingfaction, List<Faction> factions, Economy economy, Economy economy2, SecurityLevel security, long? population, string destination, decimal destdistance) : base(timestamp, NAME)
+        public JumpedEvent(DateTime timestamp, string system, long systemAddress, decimal x, decimal y, decimal z, string star, decimal distance, decimal fuelused, decimal fuelremaining, int? boostUsed, Faction controllingfaction, List<Faction> factions, List<Conflict> conflicts, Economy economy, Economy economy2, SecurityLevel security, long? population, string destination, decimal destdistance) : base(timestamp, NAME)
         {
             this.system = system;
             this.systemAddress = systemAddress;
@@ -95,6 +97,7 @@ namespace EddiEvents
             this.boostused = boostUsed;
             this.controllingfaction = controllingfaction;
             this.factions = factions;
+            this.conflicts = conflicts;
             this.Economy = (economy ?? Economy.None);
             this.Economy2 = (economy2 ?? Economy.None);
             this.securityLevel = (security ?? SecurityLevel.None);

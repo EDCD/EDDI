@@ -128,6 +128,9 @@ namespace EddiDataDefinitions
         [JsonIgnore, Obsolete("Please use Faction.Government instead")]
         public string government => Faction.government;
 
+        [JsonIgnore]
+        public List<Conflict> conflicts { get; set; }
+
         /// <summary>Details of stations</summary>
         public List<Station> stations { get; set; }
 
