@@ -2,6 +2,11 @@
 
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
+### Development
+  * Speech responder
+    * The `FSDJump` event now includes a `conflicts` property, containing a list of `conflict` objects.
+    * Revised the `System state report` script to describe all factions in the system rather than just the controlling faction and to describe any conflicts between system factions. 
+
 ### 3.4.1
   * Amended a configuration error in the Frontier API module.
 

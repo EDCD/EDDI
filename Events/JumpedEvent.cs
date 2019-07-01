@@ -32,6 +32,8 @@ namespace EddiEvents
             VARIABLES.Add("population", "The population of the system to which the commander has jumped");
             VARIABLES.Add("destination", "The route destination system, if any");
             VARIABLES.Add("destdistance", "The distance to the destination system)");
+            VARIABLES.Add("factions", "A list of faction objects describing the factions in the star system");
+            VARIABLES.Add("conflicts", "A list of conflict objects describing any conflicts between factions in the star system");
         }
 
         public string system { get; private set; }
