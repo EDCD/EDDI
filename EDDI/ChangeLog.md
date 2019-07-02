@@ -2,6 +2,10 @@
 
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
+### Development
+  * Speech responder
+    * Fixed a bug with the `Bodies mapped` script. 
+
 ### 3.4.1
   * Amended a configuration error in the Frontier API module.
 
