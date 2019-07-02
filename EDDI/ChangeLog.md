@@ -2,6 +2,10 @@
 
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
+### Development
+  * Speech responder
+    * Updated the `Galnet news published` script to add an option (enabled by default) to read article titles rather than full article text.
+
 ### 3.4.1
   * Amended a configuration error in the Frontier API module.
 
