@@ -150,7 +150,7 @@
     <comment>BodyType "Station"</comment>
   </data>
   <data name="Null" xml:space="preserve">
-    <value>Corpo</value>
+    <value>Corpo Celeste</value>
     <comment>BodyType "Null"</comment>
   </data>
   <data name="PlanetaryRing" xml:space="preserve">
@@ -158,7 +158,7 @@
     <comment>Body Type PlanetaryRing</comment>
   </data>
   <data name="Moon" xml:space="preserve">
-    <value>Luna</value>
+    <value>Satellite</value>
     <comment>Body Type "Moon"</comment>
   </data>
   <data name="StellarRing" xml:space="preserve">
