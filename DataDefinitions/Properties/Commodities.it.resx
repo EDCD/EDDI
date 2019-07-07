@@ -806,7 +806,7 @@
     <comment>Commodity LyraeWeed</comment>
   </data>
   <data name="MagneticEmitterCoil" xml:space="preserve">
-    <value>Avvolgimenti Emettitori Magnetici</value>
+    <value>Bobine per Emettitori Magnetici</value>
     <comment>Commodity MagneticEmitterCoil</comment>
   </data>
   <data name="MarineSupplies" xml:space="preserve">
@@ -814,7 +814,7 @@
     <comment>Commodity MarineSupplies</comment>
   </data>
   <data name="MasterChefs" xml:space="preserve">
-    <value>Capo Cuoco</value>
+    <value>Capo Cuochi</value>
     <comment>Commodity MasterChefs</comment>
   </data>
   <data name="MechucosHighTea" xml:space="preserve">
@@ -822,7 +822,7 @@
     <comment>Commodity MechucosHighTea</comment>
   </data>
   <data name="MedbStarlube" xml:space="preserve">
-    <value>Stellalubrificante di Medb</value>
+    <value>Stella lubrificante di Medb</value>
     <comment>Commodity MedbStarlube</comment>
   </data>
   <data name="MedicalDiagnosticEquipment" xml:space="preserve">
@@ -830,7 +830,7 @@
     <comment>Commodity MedicalDiagnosticEquipment</comment>
   </data>
   <data name="MetaAlloys" xml:space="preserve">
-    <value>Meta-Leghe</value>
+    <value>Meta Leghe</value>
     <comment>Commodity MetaAlloys</comment>
   </data>
   <data name="MethaneClathrate" xml:space="preserve">
@@ -850,7 +850,7 @@
     <comment>Commodity MilitaryGradeFabrics</comment>
   </data>
   <data name="MilitaryIntelligence" xml:space="preserve">
-    <value>Spionaggio Militare</value>
+    <value>Dati segreti militari</value>
     <comment>Commodity MilitaryIntelligence</comment>
   </data>
   <data name="MineralExtractors" xml:space="preserve">
@@ -882,7 +882,7 @@
     <comment>Commodity MotronaExperienceJelly</comment>
   </data>
   <data name="MukusubiiChitinOs" xml:space="preserve">
-    <value>Bis-Chitina Mukusubiiana</value>
+    <value>Bis Chitina Mukusubiiana</value>
     <comment>Commodity MukusubiiChitin_Os</comment>
   </data>
   <data name="MulachiGiantFungus" xml:space="preserve">
@@ -1194,7 +1194,7 @@
     <comment>Commodity TauriChimes</comment>
   </data>
   <data name="Tea" xml:space="preserve">
-    <value>Te'</value>
+    <value>Tè</value>
     <comment>Commodity Tea</comment>
   </data>
   <data name="TelemetrySuite" xml:space="preserve">
@@ -1610,7 +1610,7 @@
     <comment>Commodity ShansCharisOrchid</comment>
   </data>
   <data name="ancientkey" xml:space="preserve">
-    <value>Chiavi Antiche</value>
+    <value>Chiave Antica</value>
     <comment>Commodity Ancient Key</comment>
   </data>
   <data name="ThargoidTissueSampleType1" xml:space="preserve">
