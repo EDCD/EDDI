@@ -304,22 +304,9 @@ namespace EddiShipMonitor
             {
                 subslot = subslot,
                 EDName = (string)json["name"],
-                name = (string)json["locName"],
-                rebuilds = (int)json["rebuilds"]
+                rebuilds = (int)json["rebuilds"],
+                loadout = (string)json["loadout"]
             };
-
-            string loadout = (string)json["loadoutName"];
-            loadout = loadout.Replace("(", "").Replace("&NBSP", "").Replace(")", "");
-            string[] loadoutParts = loadout.Split(';');
-            vehicle.loadout = loadoutParts[0];
-            if (loadoutParts.Length > 1)
-            {
-                vehicle.mount = loadoutParts[1];
-            }
-            else
-            {
-                vehicle.mount = "";
-            }
 
             return vehicle;
         }
