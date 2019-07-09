@@ -2,6 +2,10 @@
 
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
+### Development
+  * Core
+    * Fixed a bug that could cause EDDI to crash / not load with some Windows language settings. 
+
 ### 3.4.1
   * Amended a configuration error in the Frontier API module.
 
