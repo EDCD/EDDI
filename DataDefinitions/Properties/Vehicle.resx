@@ -117,13 +117,25 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="federation_figther" xml:space="preserve">
-    <value>Condor</value>
+  <data name="Empire" xml:space="preserve">
+    <value>GU-97 </value>
   </data>
-  <data name="independent_fighter" xml:space="preserve">
+  <data name="Federation" xml:space="preserve">
+    <value>F63 Condor</value>
+  </data>
+  <data name="GdnHybridV1" xml:space="preserve">
+    <value>XG7 Trident</value>
+  </data>
+  <data name="GdnHybridV2" xml:space="preserve">
+    <value>XG8 Javalin</value>
+  </data>
+  <data name="GdnHybridV3" xml:space="preserve">
+    <value>XG9 Lance</value>
+  </data>
+  <data name="Independent" xml:space="preserve">
     <value>Taipan</value>
   </data>
-  <data name="testbuggy" xml:space="preserve">
+  <data name="TestBuggy" xml:space="preserve">
     <value>SRV Scarab</value>
   </data>
 </root>

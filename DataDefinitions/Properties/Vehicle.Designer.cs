@@ -61,29 +61,65 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Condor.
+        ///   Looks up a localized string similar to GU-97 .
         /// </summary>
-        internal static string federation_figther {
+        internal static string Empire {
             get {
-                return ResourceManager.GetString("federation_figther", resourceCulture);
+                return ResourceManager.GetString("Empire", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to F63 Condor.
+        /// </summary>
+        internal static string Federation {
+            get {
+                return ResourceManager.GetString("Federation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to XG7 Trident.
+        /// </summary>
+        internal static string GdnHybridV1 {
+            get {
+                return ResourceManager.GetString("GdnHybridV1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to XG8 Javalin.
+        /// </summary>
+        internal static string GdnHybridV2 {
+            get {
+                return ResourceManager.GetString("GdnHybridV2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to XG9 Lance.
+        /// </summary>
+        internal static string GdnHybridV3 {
+            get {
+                return ResourceManager.GetString("GdnHybridV3", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Taipan.
         /// </summary>
-        internal static string independent_fighter {
+        internal static string Independent {
             get {
-                return ResourceManager.GetString("independent_fighter", resourceCulture);
+                return ResourceManager.GetString("Independent", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to SRV Scarab.
         /// </summary>
-        internal static string testbuggy {
+        internal static string TestBuggy {
             get {
-                return ResourceManager.GetString("testbuggy", resourceCulture);
+                return ResourceManager.GetString("TestBuggy", resourceCulture);
             }
         }
     }

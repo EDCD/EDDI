@@ -300,13 +300,10 @@ namespace EddiShipMonitor
 
         public static Vehicle VehicleFromJson(int subslot, dynamic json)
         {
-            Vehicle vehicle = new Vehicle
-            {
-                subslot = subslot,
-                EDName = (string)json["name"],
-                rebuilds = (int)json["rebuilds"],
-                loadout = (string)json["loadout"]
-            };
+            Vehicle vehicle = Vehicle.FromEDName((string)json["name"]);
+            vehicle.subslot = subslot;
+            vehicle.loadout = (string)json["loadout"];
+            vehicle.rebuilds = (int)json["rebuilds"];
 
             return vehicle;
         }
