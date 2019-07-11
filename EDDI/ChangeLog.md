@@ -2,6 +2,10 @@
 
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
+### Development
+  * Speech responder
+    * Increased EDDI's maximum volume level. Users who prefer prior volume levels should set volume to approximately 80% of the new maximum.
+
 ### 3.4.1
   * Amended a configuration error in the Frontier API module.
 

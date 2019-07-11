@@ -53,14 +53,15 @@ namespace EddiSpeechService
             }
 
             // Adjust gain
+            int standardGain = 10;
             if (effectsLevel != 0 && chorusLevel != 0)
             {
                 int radioGain = radio ? 7 : 0;
-                source = source.AppendSource(x => new DmoCompressorEffect(x) { Gain = effectsLevel / 15 + radioGain });
+                source = source.AppendSource(x => new DmoCompressorEffect(x) { Gain = effectsLevel / 15 + radioGain + standardGain });
             }
             else
             {
-                source = source.AppendSource(x => new DmoCompressorEffect(x) { Gain = 5 });
+                source = source.AppendSource(x => new DmoCompressorEffect(x) { Gain = standardGain });
             }
 
             return source;
