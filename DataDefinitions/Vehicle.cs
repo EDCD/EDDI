@@ -1,76 +1,51 @@
 ﻿using Newtonsoft.Json;
-using System;
-using System.Linq;
+using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace EddiDataDefinitions
 {
-    public class Vehicle : ResourceBasedLocalizedEDName<Vehicle>
+    public class Vehicle
     {
-        static Vehicle()
-        {
-            resourceManager = Properties.Vehicle.ResourceManager;
-            resourceManager.IgnoreCase = false;
-
-            var Empire = new Vehicle("Empire");
-            var Federation = new Vehicle("Federation");
-            var GdnHybridV1 = new Vehicle("GdnHybridV1");
-            var GdnHybridV2 = new Vehicle("GdnHybridV2");
-            var GdnHybridV3 = new Vehicle("GdnHybridV3");
-            var Independent = new Vehicle("Independent");
-            var TestBuggy = new Vehicle("TestBuggy");
-        }
-
         // Definition of the vehicle
         public int subslot { get; set; }
         public string loadout { get; set; }
         public int rebuilds { get; set; }
 
-        // dummy used to ensure that the static constructor has run
-        public Vehicle() : this("")
-        { }
-
-        private Vehicle(string edname) : base(edname, edname)
-        { }
-
-        public new static Vehicle FromEDName(string edName)
-        {
-            if (edName == null)
-            {
-                return null;
-            }
-
-            string tidiedName = edName.ToLowerInvariant().Replace("_fighter", "").Replace("_", "");
-            return AllOfThem.FirstOrDefault(v => v.edname.ToLowerInvariant() == tidiedName);
-        }
+        [JsonIgnore]
+        private VehicleDefinition definition;
 
         public static Vehicle FromLoadoutName(string loadout)
         {
             if (loadout == null) { return null; }
 
-            Vehicle vehicle = new Vehicle();
             string tidiedLoadout = loadout.ToLowerInvariant()
                 .Replace("_fighter_loadout", "")
                 .Replace("_name", "");
             List<string> parts = tidiedLoadout.Split('_').ToList();
+
+            Vehicle vehicle = new Vehicle();
             if (parts.Count == 2)
             {
-                vehicle = AllOfThem.FirstOrDefault(v => v.edname.ToLowerInvariant() == parts[0]);
+                vehicle.definition = VehicleDefinition.FromEDName(parts[0]);
                 vehicle.loadout = parts[1];
             }
 
             return vehicle;
         }
 
-        public static Vehicle FromJson(int subslot, dynamic json)
+        public static Vehicle FromJson(int subslot, JObject json)
         {
             if (json is null) { return null; }
 
             string edName = (string)json["EDName"];
-            Vehicle vehicle = FromEDName(edName);
-            vehicle.loadout = (string)json["loadout"];
-            vehicle.rebuilds = (int)json["rebuilds"];
-            vehicle.subslot = subslot;
+            Vehicle vehicle = new Vehicle()
+            {
+                loadout = (string)json["loadout"],
+                rebuilds = (int)json["rebuilds"],
+                subslot = subslot,
+                definition = VehicleDefinition.FromEDName(edName),
+            };
 
             return vehicle;
         }

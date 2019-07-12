@@ -360,6 +360,7 @@
     <Compile Include="TargetType.cs" />
     <Compile Include="Vehicle.cs" />
     <Compile Include="AtmosphereClass.cs" />
+    <Compile Include="VehicleDefinition.cs" />
     <Compile Include="Volcanism.cs" />
     <Compile Include="Properties\AtmosphereComposition.Designer.cs">
       <DependentUpon>AtmosphereComposition.resx</DependentUpon>

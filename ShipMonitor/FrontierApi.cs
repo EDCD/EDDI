@@ -287,7 +287,7 @@ namespace EddiShipMonitor
                 {
                     for (int subslot = 0; subslot <= 5; subslot++)
                     {
-                        if (json.Value.TryGetValue("SubSlot" + subslot, out JToken value))
+                        if (json.Value.TryGetValue("SubSlot" + subslot, out JObject value))
                         {
                             launchbay.vehicles.Add(Vehicle.FromJson(subslot, value));
                         }
