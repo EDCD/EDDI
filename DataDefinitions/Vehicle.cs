@@ -66,9 +66,8 @@ namespace EddiDataDefinitions
         {
             if (json is null) { return null; }
 
-            string name = (string)json["name"];
-            string tidiedName = name.ToLowerInvariant().Replace("_fighter", "").Replace("_", "");
-            Vehicle vehicle = AllOfThem.FirstOrDefault(v => v.edname.ToLowerInvariant() == tidiedName);
+            string edName = (string)json["EDName"];
+            Vehicle vehicle = FromEDName(edName);
             vehicle.loadout = (string)json["loadout"];
             vehicle.rebuilds = (int)json["rebuilds"];
             vehicle.subslot = subslot;
