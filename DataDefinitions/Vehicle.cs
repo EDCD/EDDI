@@ -9,9 +9,9 @@ namespace EddiDataDefinitions
     public class Vehicle
     {
         // Definition of the vehicle
-        public int subslot { get; set; }
-        public string loadout { get; set; }
-        public int rebuilds { get; set; }
+        public int subslot { get; private set; }
+        public string loadout { get; private set; }
+        public int rebuilds { get; private set; }
 
         [JsonIgnore]
         public string localizedName => definition.localizedName;
