@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -12,6 +13,16 @@ namespace EddiDataDefinitions
         public string loadout { get; set; }
         public int rebuilds { get; set; }
 
+        [JsonIgnore]
+        public string localizedName => definition.localizedName;
+
+        [JsonIgnore]
+        public string invariantName => definition.invariantName;
+
+        [JsonIgnore]
+        [Obsolete("Please be explicit and use localizedName or invariantName")]
+        public string name => localizedName;
+        
         [JsonIgnore]
         private VehicleDefinition definition;
 
