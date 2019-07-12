@@ -197,11 +197,11 @@ namespace UnitTests
             string jsonString = File.ReadAllText("vehicle.json");
             JObject json = JsonConvert.DeserializeObject<JObject>(jsonString);
             Vehicle v0 = Vehicle.FromJson(0, json);
-            Assert.AreEqual(0, v0.subslot);
+            Assert.AreEqual(0, v0.subslot, "testing v0 subslot from JSON");
 
             Vehicle v1 = Vehicle.FromJson(1, json);
-            Assert.AreEqual(1, v1.subslot);
-            Assert.AreEqual(0, v0.subslot);
+            Assert.AreEqual(1, v1.subslot, "testing v1 subslot from JSON");
+            Assert.AreEqual(0, v0.subslot, "testing v0 subslot after setting v1 subslot");
         }
     }
 }
