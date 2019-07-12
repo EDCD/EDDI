@@ -49,7 +49,7 @@ namespace EddiDataDefinitions
         {
             if (json is null) { return null; }
 
-            string edName = (string)json["EDName"];
+            string edName = (string)json["name"];
             Vehicle vehicle = new Vehicle()
             {
                 loadout = (string)json["loadout"],
