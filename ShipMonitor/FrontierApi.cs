@@ -289,23 +289,13 @@ namespace EddiShipMonitor
                     {
                         if (json.Value.TryGetValue("SubSlot" + subslot, out JToken value))
                         {
-                            launchbay.vehicles.Add(VehicleFromJson(subslot, value));
+                            launchbay.vehicles.Add(Vehicle.FromJson(subslot, value));
                         }
                     }
                 }
             }
 
             return launchbay;
-        }
-
-        public static Vehicle VehicleFromJson(int subslot, dynamic json)
-        {
-            Vehicle vehicle = Vehicle.FromEDName((string)json["name"]);
-            vehicle.subslot = subslot;
-            vehicle.loadout = (string)json["loadout"];
-            vehicle.rebuilds = (int)json["rebuilds"];
-
-            return vehicle;
         }
     }
 }

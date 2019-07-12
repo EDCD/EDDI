@@ -11,7 +11,6 @@ namespace EddiDataDefinitions
         {
             resourceManager = Properties.Vehicle.ResourceManager;
             resourceManager.IgnoreCase = false;
-            missingEDNameHandler = (edname) => new Vehicle(edname);
 
             var Empire = new Vehicle("Empire");
             var Federation = new Vehicle("Federation");
@@ -33,13 +32,6 @@ namespace EddiDataDefinitions
 
         private Vehicle(string edname) : base(edname, edname)
         { }
-
-        private Vehicle(string edname, int subslot, string loadout, int rebuilds) : base(edname, edname)
-        {
-            this.subslot = subslot;
-            this.loadout = loadout;
-            this.rebuilds = rebuilds;
-        }
 
         public new static Vehicle FromEDName(string edName)
         {
@@ -69,5 +61,20 @@ namespace EddiDataDefinitions
 
             return vehicle;
         }
+
+        public static Vehicle FromJson(int subslot, dynamic json)
+        {
+            if (json is null) { return null; }
+
+            string name = (string)json["name"];
+            string tidiedName = name.ToLowerInvariant().Replace("_fighter", "").Replace("_", "");
+            Vehicle vehicle = AllOfThem.FirstOrDefault(v => v.edname.ToLowerInvariant() == tidiedName);
+            vehicle.loadout = (string)json["loadout"];
+            vehicle.rebuilds = (int)json["rebuilds"];
+            vehicle.subslot = subslot;
+
+            return vehicle;
+        }
+
     }
 }
