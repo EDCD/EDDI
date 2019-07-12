@@ -45,7 +45,7 @@ namespace EddiDataDefinitions
             return vehicle;
         }
 
-        public static Vehicle FromJson(int subslot, JObject json)
+        public static Vehicle FromJson(int subslot, dynamic json)
         {
             if (json is null) { return null; }
 
