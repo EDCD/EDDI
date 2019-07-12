@@ -1,6 +1,9 @@
 ﻿using EddiDataDefinitions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
+using System.IO;
 
 namespace UnitTests
 {
@@ -185,6 +188,20 @@ namespace UnitTests
             Body actualBody = starSystem.bodies[0];
             Assert.AreEqual("testSystem 1", actualBody.bodyname);
             Assert.AreEqual(moon, actualBody.bodyType);
+        }
+
+        [TestMethod]
+        [DeploymentItem("vehicle.json")]
+        public void TestVehicleProperties()
+        {
+            string jsonString = File.ReadAllText("vehicle.json");
+            JObject json = JsonConvert.DeserializeObject<JObject>(jsonString);
+            Vehicle v0 = Vehicle.FromJson(0, json);
+            Assert.AreEqual(0, v0.subslot);
+
+            Vehicle v1 = Vehicle.FromJson(1, json);
+            Assert.AreEqual(1, v1.subslot);
+            Assert.AreEqual(0, v0.subslot);
         }
     }
 }
