@@ -9,7 +9,6 @@ using System.Collections.Generic;
 namespace UnitTests
 {
     [TestClass]
-    [DeploymentItem(@"x86\SQLite.Interop.dll", "x86")]
     public class VoiceAttackPluginTests : TestBase
     {
         [TestInitialize]
@@ -45,10 +44,10 @@ namespace UnitTests
         }
 
         [TestMethod]
-        [DeploymentItem(@"..\..\starsystems.txt")]
         public void TestTranslateStarSystemsStability()
         {
-            string[] starSystems = System.IO.File.ReadAllLines(@"starsystems.txt");
+            string[] starSystems = Tests.Properties.Resources.starsystems.Split(new[] { '\r', '\n' });
+
             foreach (string starSystem in starSystems)
             {
                 Translations.StarSystem(starSystem);

@@ -9,15 +9,13 @@ namespace UnitTests
 {
     [TestClass]
     // this class is pure and doesn't need TestBase.MakeSafe()
-    [DeploymentItem("Abasheli Barracks.json")]
-    public class CapiShipyardTests
+    public class CapiShipyardTests : TestBase
     {
         [TestMethod]
         public void TestShips()
         {
             // Test factions data
-            string jsonString = System.IO.File.ReadAllText("Abasheli Barracks.json");
-            JObject json = JsonConvert.DeserializeObject<JObject>(jsonString);
+            JObject json = DeserializeJsonResource<JObject>(Tests.Properties.Resources.Abasheli_Barracks);
             List<Ship> ships = CompanionAppService.ShipyardFromProfile(json);
             Assert.AreEqual(8, ships.Count);
         }

@@ -37,16 +37,14 @@ namespace UnitTests
         }
 
         [TestMethod]
-        [DeploymentItem("sqlStarSystem1.json")]
         public void TestLegacySystem1()
         {
             /// Test legacy data that may be stored in user's local sql databases. 
             /// Legacy data includes all data stored in user's sql databases prior to version 3.0.1-b2
             /// Note that data structures were reorganized at this time to support internationalization.
 
-            string legagySystemSql = System.IO.File.ReadAllText("sqlStarSystem1.json");
+            StarSystem system = DeserializeJsonResource<StarSystem>(Tests.Properties.Resources.sqlStarSystem1);
 
-            StarSystem system = JsonConvert.DeserializeObject<StarSystem>(legagySystemSql);
             Assert.IsNotNull(system);
             Assert.AreEqual("Macay", system.systemname);
             Assert.AreEqual(8898081, system.population);
@@ -55,12 +53,10 @@ namespace UnitTests
         }
 
         [TestMethod]
-        [DeploymentItem("sqlStarSystem2.json")]
         public void TestLegacySystem2()
         {
-            string legagySystemSql = System.IO.File.ReadAllText("sqlStarSystem2.json");
+            StarSystem system = DeserializeJsonResource<StarSystem>(Tests.Properties.Resources.sqlStarSystem2);
 
-            StarSystem system = JsonConvert.DeserializeObject<StarSystem>(legagySystemSql);
             Assert.IsNotNull(system);
             Assert.AreEqual("Lazdongand", system.systemname);
             Assert.AreEqual(75005, system.population);
@@ -69,12 +65,10 @@ namespace UnitTests
         }
 
         [TestMethod]
-        [DeploymentItem("sqlStarSystem3.json")]
         public void TestLegacySystem3()
         {
-            string legagySystemSql = System.IO.File.ReadAllText("sqlStarSystem3.json");
+            StarSystem system = DeserializeJsonResource<StarSystem>(Tests.Properties.Resources.sqlStarSystem3);
 
-            StarSystem system = JsonConvert.DeserializeObject<StarSystem>(legagySystemSql);
             Assert.IsNotNull(system);
             Assert.AreEqual("Aphros", system.systemname);
             Assert.AreEqual(0, system.population);
@@ -83,12 +77,9 @@ namespace UnitTests
         }
 
         [TestMethod]
-        [DeploymentItem("sqlStarSystem4.json")]
         public void TestLegacySystem4()
         {
-            string legagySystemSql = System.IO.File.ReadAllText("sqlStarSystem4.json");
-
-            StarSystem system = JsonConvert.DeserializeObject<StarSystem>(legagySystemSql);
+            StarSystem system = DeserializeJsonResource<StarSystem>(Tests.Properties.Resources.sqlStarSystem4);
 
             Assert.AreEqual("Zhu Baba", system.systemname);
             Assert.AreEqual(159918, system.population);
@@ -97,14 +88,11 @@ namespace UnitTests
         }
 
         [TestMethod]
-        [DeploymentItem("sqlStarSystem1.json")]
         public void TestLegacyData()
         {
             /// Test legacy data from api.eddp.co 
+            StarSystem system = DeserializeJsonResource<StarSystem>(Tests.Properties.Resources.sqlStarSystem1);
 
-            string legagySystemSql = System.IO.File.ReadAllText("sqlStarSystem1.json");
-
-            StarSystem system = JsonConvert.DeserializeObject<StarSystem>(legagySystemSql);
             Assert.AreEqual("Nijland Terminal", system.stations[0].name);
             Assert.IsNull(system.stations[0].EDDBID);
             Assert.AreEqual("Pinzon Hub", system.stations[1].name);

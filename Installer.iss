@@ -45,7 +45,7 @@ Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescrip
 Source: "EDDI.exe"; DestDir: "{app}"; Flags: ignoreversion
 
 Source: "x86\*.*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs replacesameversion
-Source: "*.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "*.dll"; DestDir: "{app}"; Flags: ignoreversion; Excludes: "Tests.dll"
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 Source: "*.resources.dll"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs replacesameversion

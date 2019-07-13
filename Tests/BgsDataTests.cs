@@ -20,15 +20,12 @@ namespace UnitTests
         }
 
         [TestMethod]
-        [DeploymentItem("bgsFaction.json")]
         public void TestFaction()
         {
             string dateTimeStringFormat = "yyyy'-'MM'-'dd'T'HH':'mm':'ss.fff'Z'";
 
             // Test factions data
-            string jsonString = System.IO.File.ReadAllText("bgsFaction.json");
-            JObject response = JsonConvert.DeserializeObject<JObject>(jsonString);
-
+            JObject response = DeserializeJsonResource<JObject>(Tests.Properties.Resources.bgsFaction);
             PrivateType bgsService = new PrivateType(typeof(BgsService));
             Faction faction = (Faction)bgsService.InvokeStatic("ParseFaction", new object[] { response });
 
