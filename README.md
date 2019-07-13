@@ -1,4 +1,5 @@
-﻿[![Build status](https://ci.appveyor.com/api/projects/status/28rh2y2fhgedk8m3/branch/develop?svg=true)](https://ci.appveyor.com/project/richardbuckle/eddi/branch/develop) [![Crowdin](https://d322cqt584bo4o.cloudfront.net/eddi/localized.svg)](https://crowdin.com/project/eddi)
+﻿[![Build status](https://ci.appveyor.com/api/projects/status/28rh2y2fhgedk8m3/branch/develop?svg=true)](https://ci.appveyor.com/project/richardbuckle/eddi/branch/develop) [![Crowdin](https://d322cqt584bo4o.cloudfront.net/eddi/localized.svg)](https://crowdin.com/project/eddi) [![codecov](https://codecov.io/gh/EDCD/EDDI/branch/develop/graph/badge.svg)](https://codecov.io/gh/EDCD/EDDI)
+
 
 # EDDI: The Elite Dangerous Data Interface
 
