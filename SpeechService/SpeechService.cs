@@ -375,7 +375,7 @@ namespace EddiSpeechService
                             string ssmlHeader = @"<?xml version=""1.0"" encoding=""UTF-8""?>";
 
                             speech = ssmlHeader + @"<speak version=""1.0"" xmlns=""http://www.w3.org/2001/10/synthesis""" + culture + ">" 
-                                + escapeSsml(ApplyLexicons(speech, synth.Voice.Culture.IetfLanguageTag)) + @"</speak>";
+                                + escapeSsml(ApplyLexicons(speech)) + @"</speak>";
                             Logging.Debug("Feeding SSML to synthesizer: " + escapeSsml(speech));
                             synth.SpeakSsml(speech);
                         }
@@ -463,8 +463,7 @@ namespace EddiSpeechService
                 {
                 string json = Files.Read(file.FullName);
                 var result = JsonConvert.DeserializeObject<List<Lexeme>>(json);
-                lexemes.RemoveAll(l => result.Select(r => r.name).Contains(l.name)
-                    && result.Select(r => r.culture).Contains(l.culture));
+                lexemes.RemoveAll(l => result.Select(r => r.name).Contains(l.name));
                 lexemes.AddRange(result);
                 }
                 catch (Exception ex)
