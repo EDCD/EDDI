@@ -457,19 +457,26 @@ namespace EddiSpeechService
         private void AddLexiconsFromDirectory(string directory)
         {
             DirectoryInfo dir = new DirectoryInfo(directory);
-            foreach (FileInfo file in dir.GetFiles("*.lexicon", SearchOption.AllDirectories))
+            if (dir.Exists)
             {
-                try
+                foreach (FileInfo file in dir.GetFiles("*.lexicon", SearchOption.AllDirectories))
                 {
-                string json = Files.Read(file.FullName);
-                var result = JsonConvert.DeserializeObject<List<Lexeme>>(json);
-                lexemes.RemoveAll(l => result.Select(r => r.name).Contains(l.name));
-                lexemes.AddRange(result);
+                    try
+                    {
+                        string json = Files.Read(file.FullName);
+                        var result = JsonConvert.DeserializeObject<List<Lexeme>>(json);
+                        lexemes.RemoveAll(l => result.Select(r => r.name).Contains(l.name));
+                        lexemes.AddRange(result);
+                    }
+                    catch (Exception ex)
+                    {
+                        Logging.Error("Invalid .lexicon file: " + file.FullName, ex);
+                    }
                 }
-                catch (Exception ex)
-                {
-                    Logging.Error("Invalid .lexicon file: " + file.FullName, ex);
-                }
+            }
+            else
+            {
+                dir.Create();
             }
         }
 
