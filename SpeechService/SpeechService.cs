@@ -474,7 +474,7 @@ namespace EddiSpeechService
             }
         }
 
-        public string ApplyLexicons(string val, string culture)
+        public string ApplyLexicons(string val)
         {
             if (string.IsNullOrEmpty(val))
             {
@@ -482,7 +482,7 @@ namespace EddiSpeechService
             }
 
             // Search out and replace text defined by our lexicons
-            foreach (Lexeme lexeme in lexemes.Where(l => l.culture == culture))
+            foreach (Lexeme lexeme in lexemes)
             {
                 if (val.Contains(lexeme.name))
                 {
@@ -680,6 +680,5 @@ namespace EddiSpeechService
     {
         public string name { get; set; }
         public string ipa { get; set; }
-        public string culture { get; set; }
     }
 }
