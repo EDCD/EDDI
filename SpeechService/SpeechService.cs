@@ -468,7 +468,7 @@ namespace EddiSpeechService
                 }
                 catch (Exception ex)
                 {
-                    Logging.Error("Invalid .lexicon file: " + file.FullName);
+                    Logging.Error("Invalid .lexicon file: " + file.FullName, ex);
                 }
             }
         }
