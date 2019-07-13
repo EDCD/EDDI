@@ -26,8 +26,8 @@ test_script:
  - cd bin\Release
  - .packages\OpenCover.4.7.922\tools\OpenCover.Console.exe -register:user -target:vstest.console.exe -targetargs:"Tests.dll /logger:Appveyor /tests:UnitTests /Parallel /InIsolation" -mergebyhash -skipautoprops -output:coverage.xml -filter:"+[Eddi*]* +[Utilities*]* -[Tests*]*"
 after_test:
-  - ps: |
+ # Our CodeCov token is "c0cc9048-1cdc-464b-b2fa-dac79464e1c4" 
+ - ps: |
       $env:PATH = 'C:\msys64\usr\bin;' + $env:PATH
       Invoke-WebRequest -Uri 'https://codecov.io/bash' -OutFile codecov.sh
       bash codecov.sh -f "coverage.xml" -t c0cc9048-1cdc-464b-b2fa-dac79464e1c4
-	  # Our CodeCov token is "c0cc9048-1cdc-464b-b2fa-dac79464e1c4" 
