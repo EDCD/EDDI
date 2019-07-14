@@ -83,10 +83,15 @@ namespace EddiBgsService
             {
                 IDictionary<string, object> presenceJson = (IDictionary<string, object>)presence;
                 FactionPresence factionPresence = new FactionPresence()
+                /*
+                factionPresence.systemName = (string)presenceJson["system_name"];
+                factionPresence.influence = (decimal?)(double?)presenceJson["influence"] * 100;
+                factionPresence.FactionState = FactionState.FromEDName((string)presenceJson["state"]) ?? FactionState.None;
+                */
                 {
-                    systemName = (string)presenceJson["system_name"],
-                    influence = (decimal?)(double?)presenceJson["influence"] * 100, // Convert from a 0-1 range to a percentage
-                    FactionState = FactionState.FromEDName((string)presenceJson["state"]) ?? FactionState.None,
+                    systemName = JsonParsing.getString(presenceJson, "system_name"),
+                    influence = (JsonParsing.getOptionalDecimal(presenceJson, "influence") ?? 0) * 100, // Convert from a 0-1 range to a percentage
+                    FactionState = FactionState.FromEDName(JsonParsing.getString(presenceJson, "state")) ?? FactionState.None,
                 };
 
                 // These properties may not be present in the json, so we pass them after initializing our FactionPresence object.
