@@ -10,18 +10,18 @@ coverage:
   status:
     project: yes
     patch: yes
-    changes: yes
+    changes: no
 
 parsers:
   gcov:
     branch_detection:
       conditional: yes
       loop: yes
-      method: no
-      macro: no
+      method: yes
+      macro: yes
 
 comment:
-  layout: "header, reach, diff, files"
+  layout: "header, diff, trends, uncovered"
   behavior: new
   require_changes: no
 
