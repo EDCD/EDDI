@@ -9,8 +9,6 @@ skip_commits:
     - docs/*
     - '**/*.html'
     - '**/*.md'
-# Do not build feature branches with open Pull Requests
-skip_branch_with_pr: true
 image: 
 - Visual Studio 2017
 configuration: Release
