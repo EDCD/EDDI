@@ -1,6 +1,6 @@
 codecov:
   notify:
-    require_ci_to_pass: yes
+    require_ci_to_pass: no
 
 coverage:
   precision: 2
@@ -10,7 +10,7 @@ coverage:
   status:
     project: yes
     patch: yes
-    changes: no
+    changes: yes
 
 parsers:
   gcov:
@@ -23,7 +23,7 @@ parsers:
 comment:
   layout: "header, diff, trends, uncovered"
   behavior: new
-  require_changes: no
+  require_changes: no 
 
 # Available parameters:
 
@@ -167,7 +167,8 @@ comment:
 # comment:
 #   layout: header, diff, trends, uncovered
 #   branches: *
-#   behavior: default # default = posts once then update, posts new if delete
-#                     # once = post once then updates
-#                     # new = delete old, post new
-#                     # spammy = post new
+#   behavior: default   # default = posts once then update, posts new if delete
+#                       # once = post once then updates
+#                       # new = delete old, post new
+#                       # spammy = post new
+#   require_changes: no # whether codecov will post a comment requiring changes if a PR doesn't meet the minimum coverage threshold
