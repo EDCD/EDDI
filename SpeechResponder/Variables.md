@@ -438,7 +438,7 @@ Values are the same as for the current starsystem.
 
 #### Next starsystem
 
-Information about your next targeted starsystem is available under the `nextsystem` object.
+Information about your next targeted starsystem is available under the `nextsystem` object. When you begin a jump to a targeted system, the information is transferred to the current `system` object.
 
 Any values might be missing, depending on EDDI's configuration and the information avaialable about the system.
 
