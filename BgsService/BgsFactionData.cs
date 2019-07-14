@@ -12,7 +12,7 @@ namespace EddiBgsService
     {
         /// <summary> The endpoint we will use for faction queries </summary>
         public const string factionEndpoint = "v4/factions?";
-        
+
         public static class FactionParameters
         {
             /// <summary> Faction name. </summary>
@@ -69,81 +69,94 @@ namespace EddiBgsService
 
         private static Faction ParseFaction(object response)
         {
-            IDictionary<string, object> factionJson = Deserializtion.DeserializeData(response.ToString());
-            Faction faction = new Faction
+            try
             {
-                EDDBID = (long)factionJson["eddb_id"],
-                name = (string)factionJson["name"],
-                updatedAt = (DateTime)factionJson["updated_at"],
-                Government = Government.FromName((string)factionJson["government"]),
-                Allegiance = Superpower.FromName((string)factionJson["allegiance"]),
-            };
-
-            foreach (object presence in (List<object>)factionJson["faction_presence"])
-            {
-                IDictionary<string, object> presenceJson = (IDictionary<string, object>)presence;
-                FactionPresence factionPresence = new FactionPresence()
-                /*
-                factionPresence.systemName = (string)presenceJson["system_name"];
-                factionPresence.influence = (decimal?)(double?)presenceJson["influence"] * 100;
-                factionPresence.FactionState = FactionState.FromEDName((string)presenceJson["state"]) ?? FactionState.None;
-                */
+                IDictionary<string, object> factionJson = Deserializtion.DeserializeData(response.ToString());
+                Faction faction = new Faction
                 {
-                    systemName = JsonParsing.getString(presenceJson, "system_name"),
-                    influence = (JsonParsing.getOptionalDecimal(presenceJson, "influence") ?? 0) * 100, // Convert from a 0-1 range to a percentage
-                    FactionState = FactionState.FromEDName(JsonParsing.getString(presenceJson, "state")) ?? FactionState.None,
+                    EDDBID = (long)factionJson["eddb_id"],
+                    name = (string)factionJson["name"],
+                    updatedAt = (DateTime)factionJson["updated_at"],
+                    Government = Government.FromName((string)factionJson["government"]),
+                    Allegiance = Superpower.FromName((string)factionJson["allegiance"]),
                 };
 
-                // These properties may not be present in the json, so we pass them after initializing our FactionPresence object.
-                factionPresence.Happiness = Happiness.FromEDName(JsonParsing.getString(presenceJson, "happiness")) ?? Happiness.None;
-                presenceJson.TryGetValue("updated_at", out object updatedVal);
-                factionPresence.updatedAt = (DateTime?)updatedVal ?? DateTime.MinValue;
-
-                // Active states
-                presenceJson.TryGetValue("active_states", out object activeStatesVal);
-                if (activeStatesVal != null)
+                foreach (object presence in (List<object>)factionJson["faction_presence"])
                 {
-                    var activeStatesList = (List<object>)activeStatesVal;
-                    foreach (IDictionary<string, object> activeState in activeStatesList)
+                    IDictionary<string, object> presenceJson = (IDictionary<string, object>)presence;
+                    FactionPresence factionPresence = new FactionPresence()
+                    /*
+                    factionPresence.systemName = (string)presenceJson["system_name"];
+                    factionPresence.influence = (decimal?)(double?)presenceJson["influence"] * 100;
+                    factionPresence.FactionState = FactionState.FromEDName((string)presenceJson["state"]) ?? FactionState.None;
+                    */
                     {
-                        factionPresence.ActiveStates.Add(FactionState.FromEDName(JsonParsing.getString(activeState, "state") ?? "None"));
+                        systemName = JsonParsing.getString(presenceJson, "system_name"),
+                        influence = (JsonParsing.getOptionalDecimal(presenceJson, "influence") ?? 0) * 100, // Convert from a 0-1 range to a percentage
+                        FactionState = FactionState.FromEDName(JsonParsing.getString(presenceJson, "state")) ?? FactionState.None,
+                    };
+
+                    // These properties may not be present in the json, so we pass them after initializing our FactionPresence object.
+                    factionPresence.Happiness = Happiness.FromEDName(JsonParsing.getString(presenceJson, "happiness")) ?? Happiness.None;
+                    presenceJson.TryGetValue("updated_at", out object updatedVal);
+                    factionPresence.updatedAt = (DateTime?)updatedVal ?? DateTime.MinValue;
+
+                    // Active states
+                    presenceJson.TryGetValue("active_states", out object activeStatesVal);
+                    if (activeStatesVal != null)
+                    {
+                        var activeStatesList = (List<object>)activeStatesVal;
+                        foreach (IDictionary<string, object> activeState in activeStatesList)
+                        {
+                            factionPresence.ActiveStates.Add(FactionState.FromEDName(JsonParsing.getString(activeState, "state") ?? "None"));
+                        }
                     }
+
+                    // Pending states
+                    presenceJson.TryGetValue("pending_states", out object pendingStatesVal);
+                    if (pendingStatesVal != null)
+                    {
+                        var pendingStatesList = (List<object>)pendingStatesVal;
+                        foreach (IDictionary<string, object> pendingState in pendingStatesList)
+                        {
+                            FactionTrendingState pTrendingState = new FactionTrendingState(
+                                FactionState.FromEDName(JsonParsing.getString(pendingState, "state") ?? "None"),
+                                JsonParsing.getInt(pendingState, "trend")
+                            );
+                            factionPresence.PendingStates.Add(pTrendingState);
+                        }
+                    }
+
+                    // Recovering states
+                    presenceJson.TryGetValue("recovering_states", out object recoveringStatesVal);
+                    if (recoveringStatesVal != null)
+                    {
+                        var recoveringStatesList = (List<object>)recoveringStatesVal;
+                        foreach (IDictionary<string, object> recoveringState in recoveringStatesList)
+                        {
+                            FactionTrendingState rTrendingState = new FactionTrendingState(
+                                FactionState.FromEDName(JsonParsing.getString(recoveringState, "state") ?? "None"),
+                                JsonParsing.getInt(recoveringState, "trend")
+                            );
+                            factionPresence.RecoveringStates.Add(rTrendingState);
+                        }
+                    }
+
+                    faction.presences.Add(factionPresence);
                 }
 
-                // Pending states
-                presenceJson.TryGetValue("pending_states", out object pendingStatesVal);
-                if (pendingStatesVal != null)
-                {
-                    var pendingStatesList = (List<object>)pendingStatesVal;
-                    foreach (IDictionary<string, object> pendingState in pendingStatesList)
-                    {
-                        FactionTrendingState pTrendingState = new FactionTrendingState(
-                            FactionState.FromEDName(JsonParsing.getString(pendingState, "state") ?? "None"),
-                            JsonParsing.getInt(pendingState, "trend")
-                        );
-                        factionPresence.PendingStates.Add(pTrendingState);
-                    }
-                }
-
-                // Recovering states
-                presenceJson.TryGetValue("recovering_states", out object recoveringStatesVal);
-                if (recoveringStatesVal != null)
-                {
-                    var recoveringStatesList = (List<object>)recoveringStatesVal;
-                    foreach (IDictionary<string, object> recoveringState in recoveringStatesList)
-                    {
-                        FactionTrendingState rTrendingState = new FactionTrendingState(
-                            FactionState.FromEDName(JsonParsing.getString(recoveringState, "state") ?? "None"),
-                            JsonParsing.getInt(recoveringState, "trend")
-                        );
-                        factionPresence.RecoveringStates.Add(rTrendingState);
-                    }
-                }
-
-                faction.presences.Add(factionPresence);
+                return faction;
             }
-
-            return faction;
+            catch (Exception ex)
+            {
+                Dictionary<string, object> data = new Dictionary<string, object>()
+                {
+                    { "input", response },
+                    { "exception", ex } 
+                };
+                Logging.Error("Failed to parse BGS faction data.", data);
+                return null;
+            }
         }
     }
 }
