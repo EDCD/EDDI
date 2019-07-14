@@ -62,7 +62,7 @@ namespace EddiSpeechService
             }
         }
 
-        public List<Lexeme> lexemes { get; private set; } = new List<Lexeme>();
+        public SortedList<string, string> lexemes { get; private set; } = new SortedList<string, string>();
 
         private static SpeechService instance;
         private static readonly object instanceLock = new object();
@@ -464,9 +464,12 @@ namespace EddiSpeechService
                     try
                     {
                         string json = Files.Read(file.FullName);
-                        var result = JsonConvert.DeserializeObject<List<Lexeme>>(json);
-                        lexemes.RemoveAll(l => result.Select(r => r.name).Contains(l.name));
-                        lexemes.AddRange(result);
+                        var result = JsonConvert.DeserializeObject<SortedList<string, string>>(json);
+                        foreach (var kvPair in result)
+                        {
+                            lexemes.Remove(kvPair.Key);
+                            lexemes.Add(kvPair.Key, kvPair.Value);
+                        }
                     }
                     catch (Exception ex)
                     {
@@ -487,19 +490,21 @@ namespace EddiSpeechService
                 return null;
             }
 
-            // Search out and replace text defined by our lexicons
-            foreach (Lexeme lexeme in lexemes)
+            foreach (KeyValuePair<string, string> lexeme in lexemes)
             {
-                if (val.Contains(lexeme.name))
+                // Search out and replace text defined by our lexicons
+                // Ignore text that is enclosed in SSML or just a portion of another word
+                Match match = Regex.Match(val, @"(?:>\b" + lexeme.Key + @"\b<)|(\b" + lexeme.Key + @"\b)", RegexOptions.IgnoreCase);
+                if (match != null && match.Success)
                 {
                     StringBuilder sb = new StringBuilder();
                     sb.Append("<phoneme alphabet=\"ipa\" ph=\"");
-                    sb.Append(lexeme.ipa);
+                    sb.Append(lexeme.Value);
                     sb.Append("\">");
-                    sb.Append(lexeme.name);
+                    sb.Append(match.Value);
                     sb.Append("</phoneme>");
                     var replacement = sb.ToString();
-                    val = val.Replace(lexeme.name, replacement);
+                    val = Regex.Replace(val, lexeme.Key, replacement, RegexOptions.IgnoreCase);
                 }
             }
 
@@ -682,9 +687,11 @@ namespace EddiSpeechService
         }
     }
 
-    public class Lexeme
+    class ReverseComparer : IComparer<string>
     {
-        public string name { get; set; }
-        public string ipa { get; set; }
+        public int Compare(string x, string y)
+        {
+            return -x.CompareTo(y);
+        }
     }
 }
