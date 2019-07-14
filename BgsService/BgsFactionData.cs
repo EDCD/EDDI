@@ -85,11 +85,6 @@ namespace EddiBgsService
                 {
                     IDictionary<string, object> presenceJson = (IDictionary<string, object>)presence;
                     FactionPresence factionPresence = new FactionPresence()
-                    /*
-                    factionPresence.systemName = (string)presenceJson["system_name"];
-                    factionPresence.influence = (decimal?)(double?)presenceJson["influence"] * 100;
-                    factionPresence.FactionState = FactionState.FromEDName((string)presenceJson["state"]) ?? FactionState.None;
-                    */
                     {
                         systemName = JsonParsing.getString(presenceJson, "system_name"),
                         influence = (JsonParsing.getOptionalDecimal(presenceJson, "influence") ?? 0) * 100, // Convert from a 0-1 range to a percentage
