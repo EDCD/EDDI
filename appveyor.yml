@@ -24,7 +24,7 @@ build:
 test_script:
  # File path must be updated if OpenCover package version is updated
  - cd bin\Release
- - .\..\..\packages\OpenCover.4.7.922\tools\OpenCover.Console.exe -register:user -target:vstest.console.exe -targetargs:"Tests.dll /logger:Appveyor /tests:UnitTests /Parallel /InIsolation" -mergebyhash -skipautoprops -output:coverage.xml -filter:"+[Eddi*]* +[Utilities*]* -[Eddi*]*Properties -[Tests*]*"
+ - .\..\..\packages\OpenCover.4.7.922\tools\OpenCover.Console.exe -register:user -target:vstest.console.exe -targetargs:"Tests.dll /logger:Appveyor /tests:UnitTests /Parallel /InIsolation" -mergebyhash -skipautoprops -output:coverage.xml -excludeByFile:*.Designer.cs;*.xaml -filter:"+[Eddi*]* +[Utilities*]* -[Tests*]*"
 after_test:
  # Our CodeCov token is "c0cc9048-1cdc-464b-b2fa-dac79464e1c4" 
  - ps: |
