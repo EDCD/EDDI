@@ -16,8 +16,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EddiDataDefinitions", "Data
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{21887F65-3357-4D63-890C-CDDBDDD9DB14}"
 	ProjectSection(SolutionItems) = preProject
+		.codecov.yml = .codecov.yml
 		appveyor.yml = appveyor.yml
-		codecov.yml = codecov.yml
 		docs\Contributing.md = docs\Contributing.md
 		Contributors.md = Contributors.md
 		images\Directory.jpg = images\Directory.jpg
@@ -216,9 +216,9 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {28C2EDB6-0FA0-409F-987C-7A24F542D0CF}
-		RESX_ShowErrorsInErrorList = False
-		RESX_AutoCreateNewLanguageFiles = True
 		RESX_TaskErrorCategory = Message
+		RESX_AutoCreateNewLanguageFiles = True
+		RESX_ShowErrorsInErrorList = False
+		SolutionGuid = {28C2EDB6-0FA0-409F-987C-7A24F542D0CF}
 	EndGlobalSection
 EndGlobal
