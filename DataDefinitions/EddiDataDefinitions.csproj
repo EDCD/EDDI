@@ -74,6 +74,12 @@
     <Compile Include="BlueprintMaterials.cs" />
     <Compile Include="BodyType.cs" />
     <Compile Include="CargoInfo.cs" />
+    <Compile Include="LoadoutDescription.cs" />
+    <Compile Include="Properties\LoadoutDescription.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>LoadoutDescription.resx</DependentUpon>
+    </Compile>
     <Compile Include="Properties\Vehicle.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -447,6 +453,10 @@
     <EmbeddedResource Include="Properties\Happiness.ru.resx" />
     <EmbeddedResource Include="Properties\LegalStatus.pt-BR.resx" />
     <EmbeddedResource Include="Properties\LegalStatus.ru.resx" />
+    <EmbeddedResource Include="Properties\LoadoutDescription.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>LoadoutDescription.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\MaterialCategories.pt-BR.resx" />
     <EmbeddedResource Include="Properties\MaterialCategories.ru.resx" />
     <EmbeddedResource Include="Properties\MaterialLocations.de.resx" />

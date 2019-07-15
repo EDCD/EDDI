@@ -1,8 +1,7 @@
 ﻿{
-  "EDName": "testbuggy",
-  "name": "SRV Scarab",
-  "loadout": "Starter",
-  "mount": "",
-  "subslot": 0,
+  "name": "testbuggy",
+  "locName": "SRV Scarab",
+  "loadout": "starter",
+  "loadoutName": "Starter",
   "rebuilds": 1
 }
