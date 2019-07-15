@@ -2,6 +2,9 @@
 
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
+### 3.4.2-b1
+  * Added vehicle (SLF & SRV) definition and loadout description localization
+
 ### 3.4.1
   * Amended a configuration error in the Frontier API module.
 
