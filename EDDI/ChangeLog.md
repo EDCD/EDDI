@@ -4,6 +4,8 @@ Full details of the variables available for each noted event, and VoiceAttack in
 
 ### Development
   * Fixed a crash that could occur when looking up information about specific factions. 
+  * Speech Responder
+    * Amended Federal and Imperial promotion scripts.
 
 ### 3.4.1
   * Amended a configuration error in the Frontier API module.
