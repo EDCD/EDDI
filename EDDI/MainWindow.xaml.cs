@@ -683,14 +683,14 @@ namespace Eddi
         private void squadronFactionDropDownUpdated(object sender, SelectionChangedEventArgs e)
         {
             EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
-            string squadronFaction = squadronFactionDropDown.SelectedItem?.ToString();
+            string squadronFaction = squadronFactionDropDown.SelectedItem?.ToString(); // This can be a localized "None"
 
             if (eddiConfiguration.SquadronFaction != squadronFaction)
             {
-                eddiConfiguration.SquadronFaction = squadronFaction == "None" ? null : squadronFaction;
+                eddiConfiguration.SquadronFaction = squadronFaction == Power.None.localizedName ? null : squadronFaction;
                 EDDI.Instance.Cmdr.squadronfaction = eddiConfiguration.SquadronFaction;
 
-                if (squadronFaction != "None")
+                if (squadronFaction != Power.None.localizedName)
                 {
                     StarSystem system = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(eddiConfiguration.SquadronSystem, true);
                     Faction faction = system.factions.Find(f => f.name == squadronFaction);

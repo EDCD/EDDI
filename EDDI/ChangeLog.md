@@ -6,6 +6,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
   * Core
     * Application startup no longer waits for network operations to respond before displaying the UI.
     * Fixed a crash that could occur when looking up information about specific factions. 
+    * Fixed a bug that could cause EDDI to crash / not load with some Windows language settings. 
   * Speech responder
     * Revised `Blueprint make report` and `Blueprint material report` scripts to reference localized and updated blueprint data.
     * Updated documentation for the `BlueprintDetails()` function and `blueprint` object, available via [Help](https://github.com/EDCD/EDDI/blob/master/SpeechResponder/Help.md) and [Variables](https://github.com/EDCD/EDDI/blob/master/SpeechResponder/Variables.md) in the SpeechResponder.
