@@ -3,7 +3,9 @@
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
 ### Development
-  * Fixed a crash that could occur when looking up information about specific factions. 
+  * Core
+    * Fixed a crash that could occur when looking up information about specific factions. 
+    * The `SystemScanCompleted` event will now only trigger once per star system (there is an FDev journal bug that could otherwise trigger this event multiple times in a row)
 
 ### 3.4.1
   * Amended a configuration error in the Frontier API module.
