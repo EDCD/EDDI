@@ -302,7 +302,11 @@ namespace Eddi
             foreach (DirectoryInfo dir in subDirs)
             {
                 string name = dir.Name;
-                if (name == "x86" || name == "x64" || !dir.GetFiles().Select(f => f.Extension).Contains(".dll"))
+                if (
+                    name == "x86" 
+                    || name == "x64" 
+                    || !dir.GetFiles().Any(f => f.Extension.Equals(".dll"))
+                    )
                 {
                     continue;
                 }
