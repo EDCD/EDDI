@@ -250,5 +250,36 @@ namespace UnitTests
             monitor.PostHandle(event4);
             Assert.AreEqual(2, currentStarSystem.signalsources.Count());
         }
+
+        [TestMethod]
+        public void TestMultiSystemScanCompleted()
+        {
+            // If the game writes the `FSSAllBodiesFound` event multiple times for a single star system, 
+            // we will take the first and reject any repetitions within the same star system.
+
+            string line = @"{ ""timestamp"":""2019 - 07 - 01T19: 30:17Z"", ""event"":""FSSAllBodiesFound"", ""SystemName"":""Pyria Thua IX-L d7-3"", ""SystemAddress"":113321713859, ""Count"":4 }";
+            List<Event> events = JournalMonitor.ParseJournalEntry(line);
+            SystemScanComplete @event = (SystemScanComplete)events[0];
+            Assert.IsNotNull(@event);
+            Assert.IsInstanceOfType(@event, typeof(SystemScanComplete));
+
+            PrivateObject privateObject = new PrivateObject(EDDI.Instance);
+            privateObject.SetFieldOrProperty("CurrentStarSystem", new StarSystem() { systemname = "TestSystem" });
+            Assert.IsFalse(EDDI.Instance.CurrentStarSystem.systemScanCompleted);
+
+            // Test whether the first `SystemScanCompleted` event is accepted and passed to monitors / responders
+            var eventPassed = (bool)privateObject.Invoke("eventSystemScanComplete", new object[] { @event });
+            Assert.IsTrue(EDDI.Instance.CurrentStarSystem.systemScanCompleted);
+            Assert.IsTrue(eventPassed);
+
+            // Test a second `SystemScanCompleted` event to make sure the repetition is surpressed and not passed to monitors / responders
+            eventPassed = (bool)privateObject.Invoke("eventSystemScanComplete", new object[] { @event });
+            Assert.IsTrue(EDDI.Instance.CurrentStarSystem.systemScanCompleted);
+            Assert.IsFalse(eventPassed);
+
+            // Switch systems and verify that the `systemScanCompleted` bool returns to it's default state
+            privateObject.SetFieldOrProperty("CurrentStarSystem", new StarSystem() { systemname = "TestSystem2" });
+            Assert.IsFalse(EDDI.Instance.CurrentStarSystem.systemScanCompleted);
+        }
     }
 }

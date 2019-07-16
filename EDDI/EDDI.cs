@@ -840,6 +840,10 @@ namespace Eddi
                     {
                         passEvent = eventDiscoveryScan((DiscoveryScanEvent)@event);
                     }
+                    else if (@event is SystemScanComplete)
+                    {
+                        passEvent = eventSystemScanComplete((SystemScanComplete)@event);
+                    }
 
                     // Additional processing is over, send to the event responders if required
                     if (passEvent)
@@ -863,6 +867,19 @@ namespace Eddi
                     Instance.ObtainResponder("EDDN responder").Handle(@event);
                 }
             }
+        }
+
+        private bool eventSystemScanComplete(SystemScanComplete @event)
+        {
+            // There is a bug in the player journal output (as of player journal v.25) that can cause the `SystemScanComplete` event to fire multiple times 
+            // in rapid succession when performing a system scan of a star system with only stars and no other bodies.
+            if (CurrentStarSystem != null && (bool)CurrentStarSystem?.systemScanCompleted)
+            {
+                // We will suppress repetitions of the event within the same star system.
+                return false;
+            }
+            CurrentStarSystem.systemScanCompleted = true;
+            return true;
         }
 
         private bool eventDiscoveryScan(DiscoveryScanEvent @event)
