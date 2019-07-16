@@ -3515,7 +3515,7 @@ namespace EddiJournalMonitor
             return conflicts;
         }
 
-            private static string getFactionName(IDictionary<string, object> data, string key)
+        private static string getFactionName(IDictionary<string, object> data, string key)
         {
             string faction = JsonParsing.getString(data, key);
             // Might be a superpower...
