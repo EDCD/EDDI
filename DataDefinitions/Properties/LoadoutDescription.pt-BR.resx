@@ -117,24 +117,64 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="EmpireFour" xml:space="preserve">
+    <value>lasers contínuos guiados e lançador de dissipador térmico</value>
+  </data>
+  <data name="EmpireOne" xml:space="preserve">
+    <value>lasers contínuos fixos e lançador de dissipador térmico</value>
+  </data>
+  <data name="EmpireThree" xml:space="preserve">
+    <value>lasers de pulso fixos e defesa de ponto</value>
+  </data>
+  <data name="EmpireTwo" xml:space="preserve">
+    <value>repetidores de plasma fixos e lançador de chaff</value>
+  </data>
+  <data name="EmpireZero" xml:space="preserve">
+    <value>lasers de pulso guiados e lançador de chaff</value>
+  </data>
+  <data name="FederationFour" xml:space="preserve">
+    <value>lasers contínuos guiados e lançador de dissipador térmico</value>
+  </data>
+  <data name="FederationOne" xml:space="preserve">
+    <value>lasers de pulso fixos e lançadores de dissipador térmico</value>
+  </data>
+  <data name="FederationThree" xml:space="preserve">
+    <value>repeditores de plasma fixos e defesa de ponto</value>
+  </data>
+  <data name="FederationTwo" xml:space="preserve">
+    <value>canhões de repetição fixos e lançador de chaff</value>
+  </data>
+  <data name="FederationZero" xml:space="preserve">
+    <value>lasers de pulso guiados e lançador de chaff</value>
+  </data>
+  <data name="GdnHybridV1" xml:space="preserve">
+    <value>canhões automáticos de plasma</value>
+  </data>
+  <data name="GdnHybridV2" xml:space="preserve">
+    <value>lançadores de fragmentos</value>
+  </data>
+  <data name="GdnHybridV3" xml:space="preserve">
+    <value>canhões de foco gauss</value>
+  </data>
+  <data name="IndependentAT" xml:space="preserve">
+    <value>canhões anti xeno fixos</value>
+  </data>
+  <data name="IndependentFour" xml:space="preserve">
+    <value>lasers contínuos guiados e lançador de dissipador térmico</value>
+  </data>
+  <data name="IndependentOne" xml:space="preserve">
+    <value>lasers contínuos guiados e lançador de dissipador térmico</value>
+  </data>
+  <data name="IndependentThree" xml:space="preserve">
+    <value>lasers de pulso fixo e defesa de ponto</value>
+  </data>
+  <data name="IndependentTwo" xml:space="preserve">
+    <value>repetidores de plasma fixos e lançador de chaff</value>
+  </data>
+  <data name="IndependentZero" xml:space="preserve">
+    <value>lasers de pulso guiados e lançador de chaff</value>
+  </data>
+  <data name="Starter" xml:space="preserve">
+    <value>repetidores de plasma duplos</value>
+  </data>
 </root>
