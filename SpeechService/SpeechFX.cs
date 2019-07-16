@@ -53,7 +53,7 @@ namespace EddiSpeechService
             }
 
             // Adjust gain
-            int standardGain = 10;
+            const int standardGain = 10;
             if (effectsLevel != 0 && chorusLevel != 0)
             {
                 int radioGain = radio ? 7 : 0;
