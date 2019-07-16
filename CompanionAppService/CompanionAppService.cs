@@ -67,6 +67,7 @@ namespace EddiCompanionAppService
 
         public CompanionAppCredentials Credentials;
         public bool inBeta { get; set; } = false;
+        public bool active => CurrentState == State.Authorized;
 
         private static CompanionAppService instance;
         private string clientID; // we are not allowed to check the client ID into version control or publish it to 3rd parties
