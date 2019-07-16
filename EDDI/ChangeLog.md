@@ -4,7 +4,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
 
 ### Development
   * Speech responder
-    * Increased EDDI's maximum volume level. Users who prefer prior volume levels should set volume to approximately 80% of the new maximum.
+    * Increased EDDI's maximum volume level. Users who prefer prior volume levels should set volume to approximately 80% of their former setting.
 
 ### 3.4.1
   * Amended a configuration error in the Frontier API module.
