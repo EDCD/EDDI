@@ -9,6 +9,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.IO.Compression;
+using System.Linq;
 using System.Speech.Synthesis;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -301,7 +302,11 @@ namespace Eddi
             foreach (DirectoryInfo dir in subDirs)
             {
                 string name = dir.Name;
-                if (name == "x86" || name == "x64")
+                if (
+                    name == "x86" 
+                    || name == "x64" 
+                    || !dir.GetFiles().Any(f => f.Extension.Equals(".dll"))
+                    )
                 {
                     continue;
                 }
