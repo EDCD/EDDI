@@ -5,6 +5,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
 ### Development
   * Core
     * Application startup no longer waits for network operations to respond before displaying the UI.
+    * Added vehicle (SLF & SRV) definition and loadout description localization
     * Fixed a crash that could occur when looking up information about specific factions. 
     * Fixed a bug that could cause EDDI to crash / not load with some Windows language settings. 
   * Speech responder

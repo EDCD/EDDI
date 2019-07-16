@@ -75,6 +75,17 @@
     <Compile Include="BodyType.cs" />
     <Compile Include="CargoInfo.cs" />
     <Compile Include="Conflict.cs" />
+    <Compile Include="LoadoutDescription.cs" />
+    <Compile Include="Properties\LoadoutDescription.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>LoadoutDescription.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Vehicle.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Vehicle.resx</DependentUpon>
+    </Compile>
     <Compile Include="Traffic.cs" />
     <Compile Include="FactionRecord.cs" />
     <Compile Include="FactionReport.cs" />
@@ -355,6 +366,7 @@
     <Compile Include="TargetType.cs" />
     <Compile Include="Vehicle.cs" />
     <Compile Include="AtmosphereClass.cs" />
+    <Compile Include="VehicleDefinition.cs" />
     <Compile Include="Volcanism.cs" />
     <Compile Include="Properties\AtmosphereComposition.Designer.cs">
       <DependentUpon>AtmosphereComposition.resx</DependentUpon>
@@ -441,6 +453,10 @@
     <EmbeddedResource Include="Properties\Happiness.ru.resx" />
     <EmbeddedResource Include="Properties\LegalStatus.pt-BR.resx" />
     <EmbeddedResource Include="Properties\LegalStatus.ru.resx" />
+    <EmbeddedResource Include="Properties\LoadoutDescription.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>LoadoutDescription.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\MaterialCategories.pt-BR.resx" />
     <EmbeddedResource Include="Properties\MaterialCategories.ru.resx" />
     <EmbeddedResource Include="Properties\MaterialLocations.de.resx" />
@@ -880,6 +896,10 @@
       <LastGenOutput>TradeRatings.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\TradeRatings.ru.resx" />
+    <EmbeddedResource Include="Properties\Vehicle.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Vehicle.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Volcanism.de.resx" />
     <EmbeddedResource Include="Properties\Volcanism.es.resx" />
     <EmbeddedResource Include="Properties\Volcanism.fr.resx" />

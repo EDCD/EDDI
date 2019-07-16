@@ -1,35 +1,59 @@
-﻿namespace EddiDataDefinitions
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace EddiDataDefinitions
 {
     public class Vehicle
     {
         // Definition of the vehicle
-        public string EDName { get; set; }
-        public string name { get; set; }
-        public string loadout { get; set; }
-        public string  mount{ get; set; }
-        public int subslot { get; set; }
-        public int rebuilds { get; set; }
+        public int subslot { get; private set; }
+        public string loadout { get; private set; }
+        public int rebuilds { get; private set; }
 
-        public Vehicle() { }
+        [JsonIgnore]
+        private VehicleDefinition definition;
 
-        public Vehicle(Vehicle Vehicle)
+        [JsonIgnore]
+        public string localizedName => definition?.localizedName;
+
+        [JsonIgnore]
+        public string invariantName => definition?.invariantName;
+
+        [JsonIgnore]
+        [Obsolete("Please be explicit and use localizedName or invariantName")]
+        public string name => localizedName;
+        
+        [JsonIgnore]
+        private LoadoutDescription loadoutDescription;
+
+        [JsonIgnore]
+        public string localizedDescription => loadoutDescription?.localizedName;
+
+        [JsonIgnore]
+        [Obsolete("Please be explicit and use localizedDescription")]
+        public string description => localizedDescription;
+
+        public static Vehicle FromJson(int subslot, dynamic json)
         {
-            this.EDName = Vehicle.EDName;
-            this.name = Vehicle.name;
-            this.loadout = Vehicle.loadout;
-            this.mount = Vehicle.mount;
-            this.subslot = Vehicle.subslot;
-            this.rebuilds = Vehicle.rebuilds;
+            if (json is null) { return null; }
+
+            string edName = (string)json["name"];
+            string loadoutName = (string)json["loadoutName"];
+
+            Vehicle vehicle = new Vehicle()
+            {
+                loadout = (string)json["loadout"],
+                rebuilds = (int)json["rebuilds"],
+                subslot = subslot,
+                definition = VehicleDefinition.FromEDName(edName),
+                loadoutDescription = LoadoutDescription.FromLoadoutName(loadoutName)
+            };
+
+            return vehicle;
         }
 
-        public Vehicle(string EDName, string Name, string Loadout, string Mount, int SubSlot, int Rebuilds)
-        {
-            this.EDName = EDName;
-            this.name = Name;
-            this.loadout = Loadout;
-            this.mount = Mount;
-            this.subslot = SubSlot;
-            this.rebuilds = Rebuilds;
-        }
     }
 }

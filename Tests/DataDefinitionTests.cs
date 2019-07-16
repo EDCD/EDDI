@@ -1,7 +1,10 @@
-﻿using EddiDataDefinitions;
+using EddiDataDefinitions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.Linq;
+using System.IO;
 
 namespace UnitTests
 {
@@ -266,6 +269,22 @@ namespace UnitTests
             long blueprintId = -1;
             Blueprint blueprint = Blueprint.FromEliteID(blueprintId);
             Assert.IsNull(blueprint);
+        }
+
+        [TestMethod]
+        [DeploymentItem("vehicle.json")]
+        public void TestVehicleProperties()
+        {
+            string jsonString = File.ReadAllText("vehicle.json");
+            JObject json = JsonConvert.DeserializeObject<JObject>(jsonString);
+            Vehicle v0 = Vehicle.FromJson(0, json);
+            Assert.AreEqual(0, v0.subslot, "testing v0 subslot from JSON");
+            Assert.AreEqual(v0.localizedName, "SRV Scarab");
+            Assert.AreEqual(v0.localizedDescription, "dual plasma repeaters");
+
+            Vehicle v1 = Vehicle.FromJson(1, json);
+            Assert.AreEqual(1, v1.subslot, "testing v1 subslot from JSON");
+            Assert.AreEqual(0, v0.subslot, "testing v0 subslot after setting v1 subslot");
         }
     }
 }
