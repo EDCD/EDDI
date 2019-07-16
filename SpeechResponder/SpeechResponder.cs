@@ -1,5 +1,6 @@
 ﻿using Cottle.Values;
 using Eddi;
+using EddiCompanionAppService;
 using EddiDataDefinitions;
 using EddiEvents;
 using EddiShipMonitor;
@@ -225,6 +226,7 @@ namespace EddiSpeechResponder
         {
             Dictionary<string, Cottle.Value> dict = new Dictionary<string, Cottle.Value>
             {
+                ["capi_active"] = CompanionAppService.Instance.active,
                 ["destinationdistance"] = EDDI.Instance.DestinationDistanceLy,
                 ["environment"] = EDDI.Instance.Environment,
                 ["horizons"] = EDDI.Instance.inHorizons,

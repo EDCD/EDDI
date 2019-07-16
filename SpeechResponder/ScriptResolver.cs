@@ -1110,6 +1110,13 @@ namespace EddiSpeechResponder
                 return "";
             }, 2);
 
+            store["RefreshProfile"] = new NativeFunction((values) =>
+            {
+                bool stationRefresh = (values.Count == 0 ? false : values[0].AsBoolean);
+                EDDI.Instance.refreshProfile(stationRefresh);
+                return "";
+            }, 0, 1);
+            
             // Variables
             foreach (KeyValuePair<string, Cottle.Value> entry in vars)
             {
