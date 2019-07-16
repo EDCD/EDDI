@@ -9,7 +9,7 @@ namespace EddiEvents
     {
         public const string NAME = "Federation promotion";
         public const string DESCRIPTION = "Triggered when your rank increases with the Federation";
-        public const string SAMPLE = "{ \"timestamp\":\"2017-10-06T23:47:32Z\", \"event\":\"Promotion\", \"Federation\":13 }";
+        public const string SAMPLE = "{ \"timestamp\":\"2017-10-06T23:47:32Z\", \"event\":\"Promotion\", \"Federation\":5 }";
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
         static FederationPromotionEvent()
