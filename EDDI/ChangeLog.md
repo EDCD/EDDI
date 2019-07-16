@@ -9,6 +9,8 @@ Full details of the variables available for each noted event, and VoiceAttack in
   * Speech responder
     * Revised `Blueprint make report` and `Blueprint material report` scripts to reference localized and updated blueprint data.
     * Updated documentation for the `BlueprintDetails()` function and `blueprint` object, available via [Help](https://github.com/EDCD/EDDI/blob/master/SpeechResponder/Help.md) and [Variables](https://github.com/EDCD/EDDI/blob/master/SpeechResponder/Variables.md) in the SpeechResponder.
+    * The `FSDJump` event now includes a `conflicts` property, containing a list of `conflict` objects.
+    * Revised the `System state report` script to describe all factions in the system rather than just the controlling faction and to describe any conflicts between system factions. 
   * VoiceAttack responder
     * Updated EDDI.vap commands for invoking the `Blueprint make report` and `Blueprint material report` scripts.
 

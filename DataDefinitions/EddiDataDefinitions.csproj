@@ -74,6 +74,7 @@
     <Compile Include="BlueprintTemplate.cs" />
     <Compile Include="BodyType.cs" />
     <Compile Include="CargoInfo.cs" />
+    <Compile Include="Conflict.cs" />
     <Compile Include="Traffic.cs" />
     <Compile Include="FactionRecord.cs" />
     <Compile Include="FactionReport.cs" />

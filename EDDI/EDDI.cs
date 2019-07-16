@@ -1508,6 +1508,7 @@ namespace Eddi
             CurrentStarSystem.Faction = theEvent.controllingfaction;
             CurrentStellarBody = CurrentStarSystem.bodies.Find(b => b.bodyname == theEvent.star) 
                 ?? CurrentStarSystem.bodies.Find(b => b.distance == 0);
+            CurrentStarSystem.conflicts = theEvent.conflicts;
 
             // Update system faction data if available
             if (theEvent.factions != null)

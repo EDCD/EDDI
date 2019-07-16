@@ -250,7 +250,7 @@ namespace EddiSpeechResponder
                 {
                     foreach (KeyValuePair<Cottle.Value, Cottle.Value> value in values[0].Fields)
                     {
-                        string valueString = value.Value.ToString();
+                        string valueString = value.Value.AsString;
                         if (value.Key == 0)
                         {
                             output = valueString;
@@ -261,7 +261,7 @@ namespace EddiSpeechResponder
                         }
                         else
                         {
-                            output = $"{output}{(values.Count() > 2 ? "," : "")} {localisedAnd} {valueString}";
+                            output = $"{output}{(values[0].Fields.Count() > 2 ? "," : "")} {localisedAnd} {valueString}";
                         }
                     }
                 }
