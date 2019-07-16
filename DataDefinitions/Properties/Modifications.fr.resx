@@ -433,5 +433,7 @@
     <value>Drone de prospection blindé</value>
   </data>
   
-  
+  <data name="SensorExpanded" xml:space="preserve">
+    <value>Rayon de balayage de sonde élargi</value>
+  </data>
 </root>
