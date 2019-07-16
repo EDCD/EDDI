@@ -4,6 +4,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
 
 ### Development
   * Core
+    * Application startup no longer waits for network operations to respond before displaying the UI.
     * Fixed a crash that could occur when looking up information about specific factions. 
   * Speech responder
     * Revised `Blueprint make report` and `Blueprint material report` scripts to reference localized and updated blueprint data.
