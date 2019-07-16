@@ -179,9 +179,7 @@
   <data name="SensorLongRange" xml:space="preserve">
     <value>Növelt hatótávú szenzor</value>
   </data>
-  <data name="SensorWideAngle" xml:space="preserve">
-    <value>Szélessávú szenzor</value>
-  </data>
+  
   <data name="ShieldBoosterExplosive" xml:space="preserve">
     <value>Robbanásálló pajzs erősítő</value>
   </data>

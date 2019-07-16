@@ -117,52 +117,64 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Ice" xml:space="preserve">
-    <value>Ghiaccio</value>
-    <comment>Body Composition "Ice"</comment>
+  <data name="EmpireFour" xml:space="preserve">
+    <value>lasers contínuos guiados e lançador de dissipador térmico</value>
   </data>
-  <data name="Metal" xml:space="preserve">
-    <value>Metallo</value>
-    <comment>Body Composition "Metal"</comment>
+  <data name="EmpireOne" xml:space="preserve">
+    <value>lasers contínuos fixos e lançador de dissipador térmico</value>
   </data>
-  <data name="Planet" xml:space="preserve">
-    <value>Pianeta</value>
-    <comment>Body Type "Planet"</comment>
+  <data name="EmpireThree" xml:space="preserve">
+    <value>lasers de pulso fixos e defesa de ponto</value>
   </data>
-  <data name="Rock" xml:space="preserve">
-    <value>Roccia</value>
-    <comment>Body Composition "Rock"</comment>
+  <data name="EmpireTwo" xml:space="preserve">
+    <value>repetidores de plasma fixos e lançador de chaff</value>
   </data>
-  <data name="Star" xml:space="preserve">
-    <value>Stella</value>
-    <comment>Body Type "Star"</comment>
+  <data name="EmpireZero" xml:space="preserve">
+    <value>lasers de pulso guiados e lançador de chaff</value>
   </data>
-  <data name="Belt" xml:space="preserve">
-    <value>Cintura</value>
-    <comment>Body Type "Belt"</comment>
+  <data name="FederationFour" xml:space="preserve">
+    <value>lasers contínuos guiados e lançador de dissipador térmico</value>
   </data>
-  <data name="None" xml:space="preserve">
-    <value>Corpo Celeste</value>
-    <comment>None</comment>
+  <data name="FederationOne" xml:space="preserve">
+    <value>lasers de pulso fixos e lançadores de dissipador térmico</value>
   </data>
-  <data name="Station" xml:space="preserve">
-    <value>Stazione</value>
-    <comment>BodyType "Station"</comment>
+  <data name="FederationThree" xml:space="preserve">
+    <value>repeditores de plasma fixos e defesa de ponto</value>
   </data>
-  <data name="Null" xml:space="preserve">
-    <value>Corpo Celeste</value>
-    <comment>BodyType "Null"</comment>
+  <data name="FederationTwo" xml:space="preserve">
+    <value>canhões de repetição fixos e lançador de chaff</value>
   </data>
-  <data name="PlanetaryRing" xml:space="preserve">
-    <value>Anello planetario</value>
-    <comment>Body Type PlanetaryRing</comment>
+  <data name="FederationZero" xml:space="preserve">
+    <value>lasers de pulso guiados e lançador de chaff</value>
   </data>
-  <data name="Moon" xml:space="preserve">
-    <value>Satellite</value>
-    <comment>Body Type "Moon"</comment>
+  <data name="GdnHybridV1" xml:space="preserve">
+    <value>canhões automáticos de plasma</value>
   </data>
-  <data name="StellarRing" xml:space="preserve">
-    <value>Anello Stellare</value>
-    <comment>Body Type StellarRing</comment>
+  <data name="GdnHybridV2" xml:space="preserve">
+    <value>lançadores de fragmentos</value>
+  </data>
+  <data name="GdnHybridV3" xml:space="preserve">
+    <value>canhões de foco gauss</value>
+  </data>
+  <data name="IndependentAT" xml:space="preserve">
+    <value>canhões anti xeno fixos</value>
+  </data>
+  <data name="IndependentFour" xml:space="preserve">
+    <value>lasers contínuos guiados e lançador de dissipador térmico</value>
+  </data>
+  <data name="IndependentOne" xml:space="preserve">
+    <value>lasers contínuos guiados e lançador de dissipador térmico</value>
+  </data>
+  <data name="IndependentThree" xml:space="preserve">
+    <value>lasers de pulso fixo e defesa de ponto</value>
+  </data>
+  <data name="IndependentTwo" xml:space="preserve">
+    <value>repetidores de plasma fixos e lançador de chaff</value>
+  </data>
+  <data name="IndependentZero" xml:space="preserve">
+    <value>lasers de pulso guiados e lançador de chaff</value>
+  </data>
+  <data name="Starter" xml:space="preserve">
+    <value>repetidores de plasma duplos</value>
   </data>
 </root>

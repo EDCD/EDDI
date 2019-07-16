@@ -202,7 +202,7 @@
     <value>Scanner de Longo Alcance</value>
   </data>
   <data name="SensorWideAngle" xml:space="preserve">
-    <value>Sensor de Ângulo Amplo</value>
+    <value>Scanner de Ângulo Amplo</value>
   </data>
   <data name="ShieldBoosterExplosive" xml:space="preserve">
     <value>Potenciador de Escudo Resistência à Explosão</value>
@@ -277,7 +277,8 @@
     <value>Scanner Leve</value>
   </data>
   <data name="WakeScannerLongRange" xml:space="preserve">
-    <value>Scanner de longa distância</value>
+    <value>Scanner de Longo Alcance
+</value>
   </data>
   <data name="WakeScannerReinforced" xml:space="preserve">
     <value>Scanner Reforçado</value>
@@ -361,7 +362,7 @@
     <value>Scanner Leve</value>
   </data>
   <data name="KillWarrantScannerLongRange" xml:space="preserve">
-    <value>Scanner de longa distância</value>
+    <value>Scanner de Longo Alcance</value>
   </data>
   <data name="KillWarrantScannerReinforced" xml:space="preserve">
     <value>Scanner Reforçado</value>
@@ -403,7 +404,7 @@
     <value>Scanner Rápido</value>
   </data>
   <data name="CargoScannerLongRange" xml:space="preserve">
-    <value>Scanner de Longa Distância</value>
+    <value>Scanner de Longo Alcance</value>
   </data>
   <data name="CargoScannerWideAngle" xml:space="preserve">
     <value>Scanner de Ângulo Amplo</value>
