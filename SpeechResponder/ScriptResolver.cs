@@ -965,9 +965,11 @@ namespace EddiSpeechResponder
 
             store["BlueprintDetails"] = new NativeFunction((values) =>
             {
-                BlueprintMaterials result = BlueprintMaterials.FromName(values[0].AsString);
+                string blueprintName = values[0].AsString;
+                int blueprintGrade = Convert.ToInt32(values[1].AsNumber);
+                Blueprint result = Blueprint.FromNameAndGrade(blueprintName, blueprintGrade);
                 return (result == null ? new ReflectionValue(new object()) : new ReflectionValue(result));
-            }, 1);
+            }, 2);
 
             store["TrafficDetails"] = new NativeFunction((values) =>
             {

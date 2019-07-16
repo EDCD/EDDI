@@ -133,7 +133,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Long Range Cargo Scanner.
+        ///   Looks up a localized string similar to Long-Range Scanner.
         /// </summary>
         internal static string CargoScannerLongRange {
             get {
@@ -160,7 +160,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Wide Angle Cargo Scanner.
+        ///   Looks up a localized string similar to Wide Angle Scanner.
         /// </summary>
         internal static string CargoScannerWideAngle {
             get {
@@ -493,7 +493,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Long-Range Kill Warrant Scanner.
+        ///   Looks up a localized string similar to Long-Range Scanner.
         /// </summary>
         internal static string KillWarrantScannerLongRange {
             get {
@@ -520,7 +520,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Wide Angle Kill Warrant Scanner.
+        ///   Looks up a localized string similar to Wide Angle Scanner.
         /// </summary>
         internal static string KillWarrantScannerWideAngle {
             get {
@@ -763,7 +763,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Wide Angle Sensor.
+        ///   Looks up a localized string similar to Wide Angle Scanner.
         /// </summary>
         internal static string SensorWideAngle {
             get {
@@ -898,7 +898,8 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Long-Range Wake Scanner.
+        ///   Looks up a localized string similar to Long-Range Scanner
+        ///.
         /// </summary>
         internal static string WakeScannerLongRange {
             get {
@@ -925,7 +926,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Wide Angle Wake Scanner.
+        ///   Looks up a localized string similar to Wide Angle Scanner.
         /// </summary>
         internal static string WakeScannerWideAngle {
             get {

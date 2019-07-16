@@ -1,6 +1,7 @@
 ﻿using EddiDataDefinitions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace UnitTests
 {
@@ -185,6 +186,86 @@ namespace UnitTests
             Body actualBody = starSystem.bodies[0];
             Assert.AreEqual("testSystem 1", actualBody.bodyname);
             Assert.AreEqual(moon, actualBody.bodyType);
+        }
+
+        [TestMethod]
+        public void TestBlueprintFromEdNameAndGrade()
+        {
+            string blueprintName = "WakeScanner_Fast Scan_3";
+            string blueprintTemplate = "Sensor_FastScan";
+            int grade = 3;
+            Blueprint blueprint = Blueprint.FromEDNameAndGrade(blueprintName, grade);
+            Assert.IsNotNull(blueprint);
+            Assert.AreEqual(grade, blueprint.grade);
+            Assert.AreEqual(blueprintTemplate, blueprint.blueprintTemplate?.edname);
+            Assert.AreEqual(3, blueprint.materials.Count);
+            Assert.IsTrue(blueprint.materials.Select(m => m.edname).Contains("phosphorus"));
+            Assert.IsTrue(blueprint.materials.Select(m => m.edname).Contains("uncutfocuscrystals"));
+            Assert.IsTrue(blueprint.materials.Select(m => m.edname).Contains("symmetrickeys"));
+        }
+
+        [TestMethod]
+        public void TestBlueprintFromTemplateEdNameAndGrade()
+        {
+            // We should also be able to handle receiving a template name rather than a blueprint name while still providing essential info.
+            string blueprintTemplate = "Sensor_FastScan";
+            int grade = 3;
+            Blueprint blueprintFromTemplate = Blueprint.FromEDNameAndGrade(blueprintTemplate, grade);
+            Assert.IsNotNull(blueprintFromTemplate);
+            Assert.AreEqual(grade, blueprintFromTemplate.grade);
+            Assert.AreEqual(blueprintTemplate, blueprintFromTemplate.blueprintTemplate.edname);
+            Assert.AreEqual(3, blueprintFromTemplate.materials.Count);
+            string[] materials = blueprintFromTemplate.materials.Select(m => m.edname).ToArray();
+            Assert.IsTrue(materials.Contains("phosphorus"));
+            Assert.IsTrue(materials.Contains("uncutfocuscrystals"));
+            Assert.IsTrue(materials.Contains("symmetrickeys"));
+        }
+
+        [TestMethod]
+        public void TestBlueprintNameAndGrade()
+        {
+            string blueprintName = "Dirty Drive Tuning";
+            int grade = 5;
+            Blueprint blueprint = Blueprint.FromNameAndGrade(blueprintName, grade);
+            Assert.IsNotNull(blueprint);
+            Assert.AreEqual(128673659, blueprint.blueprintId);
+            Assert.AreEqual(grade, blueprint.grade);
+            Assert.AreEqual("Engine_Dirty", blueprint.blueprintTemplate?.edname);
+            Assert.AreEqual(3, blueprint.materials.Count);
+            Assert.IsTrue(blueprint.materials.Select(m => m.edname).Contains("industrialfirmware"));
+            Assert.IsTrue(blueprint.materials.Select(m => m.edname).Contains("cadmium"));
+            Assert.IsTrue(blueprint.materials.Select(m => m.edname).Contains("pharmaceuticalisolators"));
+        }
+
+        [TestMethod]
+        public void TestBlueprintBadNameAndGrade()
+        {
+            string blueprintName = "No such blueprint";
+            int grade = 5;
+            Blueprint blueprint = Blueprint.FromNameAndGrade(blueprintName, grade);
+            Assert.IsNull(blueprint);
+        }
+
+        [TestMethod]
+        public void TestBlueprintFromBlueprintID()
+        {
+            long blueprintId = 128740124;
+            Blueprint blueprint = Blueprint.FromEliteID(blueprintId);
+            Assert.IsNotNull(blueprint);
+            Assert.AreEqual(3, blueprint.grade);
+            Assert.IsNotNull(blueprint.blueprintTemplate);
+            Assert.AreEqual(3, blueprint.materials.Count);
+            Assert.IsTrue(blueprint.materials.Select(m => m.edname).Contains("phosphorus"));
+            Assert.IsTrue(blueprint.materials.Select(m => m.edname).Contains("uncutfocuscrystals"));
+            Assert.IsTrue(blueprint.materials.Select(m => m.edname).Contains("symmetrickeys"));
+        }
+
+        [TestMethod]
+        public void TestBlueprintFromBadBlueprintID()
+        {
+            long blueprintId = -1;
+            Blueprint blueprint = Blueprint.FromEliteID(blueprintId);
+            Assert.IsNull(blueprint);
         }
     }
 }

@@ -56,15 +56,18 @@ namespace EddiDataDefinitions
         [JsonProperty]
         public string modificationEDName
         {
-            get => engineermodification?.edname ?? Modifications.None.edname;
+            get => engineermodification?.edname ?? Blueprint.None.edname;
             set
             {
-                Modifications mDef = Modifications.FromEDName(value);
+                Blueprint mDef = Blueprint.FromEliteID(blueprintId) ?? 
+                    Blueprint.FromEDNameAndGrade(value, engineerlevel);
                 this.engineermodification = mDef;
             }
         }
         [JsonIgnore]
-        public Modifications engineermodification { get; set; }
+        public Blueprint engineermodification { get; set; }
+        [JsonProperty]
+        public long blueprintId { get; set; }
         [JsonProperty]
         public int engineerlevel { get; set; }
         [JsonProperty]

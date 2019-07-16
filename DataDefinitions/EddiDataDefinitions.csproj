@@ -71,7 +71,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AtmosphereComposition.cs" />
-    <Compile Include="BlueprintMaterials.cs" />
+    <Compile Include="BlueprintTemplate.cs" />
     <Compile Include="BodyType.cs" />
     <Compile Include="CargoInfo.cs" />
     <Compile Include="Traffic.cs" />
@@ -79,7 +79,6 @@
     <Compile Include="FactionReport.cs" />
     <Compile Include="Happiness.cs" />
     <Compile Include="MarketInfo.cs" />
-    <Compile Include="Modifications.cs" />
     <Compile Include="OutfittingInfo.cs" />
     <Compile Include="Properties\Happiness.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -512,6 +511,12 @@
     <EmbeddedResource Include="Properties\MissionStatus.ru.resx" />
     <EmbeddedResource Include="Properties\MissionType.pt-BR.resx" />
     <EmbeddedResource Include="Properties\MissionType.ru.resx" />
+    <EmbeddedResource Include="Properties\Modifications.de.resx" />
+    <EmbeddedResource Include="Properties\Modifications.es.resx" />
+    <EmbeddedResource Include="Properties\Modifications.fr.resx" />
+    <EmbeddedResource Include="Properties\Modifications.hu.resx" />
+    <EmbeddedResource Include="Properties\Modifications.it.resx" />
+    <EmbeddedResource Include="Properties\Modifications.ja.resx" />
     <EmbeddedResource Include="Properties\Modifications.pt-BR.resx" />
     <EmbeddedResource Include="Properties\Modifications.resx">
       <Generator>ResXFileCodeGenerator</Generator>

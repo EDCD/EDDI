@@ -23,6 +23,17 @@ EDDI uses the idea of context to attempt to keep track of what it is talking abo
 
 In addition to the basic Cottle features EDDI has a number of features that provide added functionality and specific information for Elite: Dangerous.  Details of these functions are as follows:
 
+### BlueprintDetails()
+
+This function will provide full information for a blueprint, given its name and grade.
+
+BlueprintDetails() takes two mandatory arguments: the name of the blueprint and the grade to retrieve. 
+
+Common usage of this is to provide further information about a blueprint, for example:
+
+    {set blueprint to BlueprintDetails("Dirty Drive Tuning", 5)}
+    {len(blueprint.materials)} {if len(blueprint.materials) > 1: different materials are |else: material is} required to produce {blueprint.localizedName}.
+
 ### BodyDetails()
 
 This function will provide full information for a body given its name.

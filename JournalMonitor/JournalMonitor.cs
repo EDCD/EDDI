@@ -524,8 +524,10 @@ namespace EddiJournalMonitor
                                             bool modified = val != null ? true : false;
                                             Dictionary<string, object> engineeringData = (Dictionary<string, object>)val;
                                             string blueprint = modified ? JsonParsing.getString(engineeringData, "BlueprintName") : null;
-                                            Modifications modification = Modifications.FromEDName(blueprint) ?? Modifications.None;
+                                            long blueprintId = modified ? JsonParsing.getLong(engineeringData, "BlueprintID") : 0;
                                             int level = modified ? JsonParsing.getInt(engineeringData, "Level") : 0;
+                                            Blueprint modification = Blueprint.FromEliteID(blueprintId, engineeringData) 
+                                                ?? Blueprint.FromEDNameAndGrade(blueprint, level) ?? Blueprint.None;
                                             decimal quality = modified ? JsonParsing.getDecimal(engineeringData, "Quality") : 0;
 
                                             if (slot.Contains("Hardpoint"))
@@ -1101,8 +1103,8 @@ namespace EddiJournalMonitor
                                             item.TryGetValue("EngineerModifications", out val);
                                             bool modified = val != null ? true : false;
                                             module.modified = modified;
-                                            module.engineermodification = Modifications.FromEDName((string)val) ?? Modifications.None;
                                             module.engineerlevel = modified ? JsonParsing.getInt(item, "Level") : 0;
+                                            module.engineermodification = Blueprint.FromEDNameAndGrade((string)val, module.engineerlevel) ?? Blueprint.None;
                                             module.engineerquality = modified? JsonParsing.getDecimal(item, "Quality") : 0;
 
                                             StoredModule storedModule = new StoredModule
@@ -1284,8 +1286,8 @@ namespace EddiJournalMonitor
                                             module.hot = JsonParsing.getBool(data, "Hot");
                                             string engineerModifications = JsonParsing.getString(data, "EngineerModifications");
                                             module.modified = engineerModifications != null;
-                                            module.engineermodification = Modifications.FromEDName(engineerModifications) ?? Modifications.None;
                                             module.engineerlevel = JsonParsing.getOptionalInt(data, "Level") ?? 0;
+                                            module.engineermodification = Blueprint.FromEDName(engineerModifications) ?? Blueprint.None;
                                             module.engineerquality = JsonParsing.getOptionalDecimal(data, "Quality") ?? 0;
                                             modules.Add(module);
                                         }
@@ -1334,8 +1336,8 @@ namespace EddiJournalMonitor
                                     module.hot = JsonParsing.getBool(data, "Hot");
                                     string engineerModifications = JsonParsing.getString(data, "EngineerModifications");
                                     module.modified = engineerModifications != null;
-                                    module.engineermodification = Modifications.FromEDName(engineerModifications) ?? Modifications.None;
                                     module.engineerlevel = JsonParsing.getOptionalInt(data, "Level") ?? 0;
+                                    module.engineermodification = Blueprint.FromEDNameAndGrade(engineerModifications, module.engineerlevel) ?? Blueprint.None;
                                     module.engineerquality = JsonParsing.getOptionalDecimal(data, "Quality") ?? 0;
 
                                     // Set retrieved module defaults
@@ -1402,8 +1404,8 @@ namespace EddiJournalMonitor
                                     module.hot = JsonParsing.getBool(data, "Hot");
                                     string engineerModifications = JsonParsing.getString(data, "EngineerModifications");
                                     module.modified = engineerModifications != null;
-                                    module.engineermodification = Modifications.FromEDName(engineerModifications) ?? Modifications.None;
                                     module.engineerlevel = JsonParsing.getOptionalInt(data, "Level") ?? 0;
+                                    module.engineermodification = Blueprint.FromEDNameAndGrade(engineerModifications, module.engineerlevel) ?? Blueprint.None;
                                     module.engineerquality = JsonParsing.getOptionalDecimal(data, "Quality") ?? 0;
 
                                     data.TryGetValue("Cost", out val);
