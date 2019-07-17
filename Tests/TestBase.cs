@@ -1,7 +1,9 @@
 ﻿using Eddi;
 using EddiEvents;
+using Newtonsoft.Json.Linq;
 using Rollbar;
 using System;
+using System.IO;
 
 namespace UnitTests
 {
@@ -17,6 +19,24 @@ namespace UnitTests
 
             // Don't write to permanent storage
             Utilities.Files.unitTesting = true;
+        }
+
+        public static T DeserializeJsonResource<T>(byte[] data) where T : class
+        {
+            using (var stream = new MemoryStream(data))
+            {
+                using (var reader = new StreamReader(stream, System.Text.Encoding.UTF8))
+                {
+                    if (typeof(T) == typeof(string))
+                    {
+                        return Newtonsoft.Json.JsonSerializer.Create().Deserialize(reader, typeof(JObject)).ToString() as T;
+                    }
+                    else
+                    {
+                        return Newtonsoft.Json.JsonSerializer.Create().Deserialize(reader, typeof(T)) as T;
+                    }
+                }
+            }
         }
     }
 }

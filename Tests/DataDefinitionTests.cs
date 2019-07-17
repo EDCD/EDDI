@@ -1,16 +1,15 @@
 using EddiDataDefinitions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.Linq;
-using System.IO;
+using Tests.Properties;
 
 namespace UnitTests
 {
     [TestClass]
     // this class is pure and doesn't need TestBase.MakeSafe()
-    public class DataDefinitionTests
+    public class DataDefinitionTests : TestBase
     {
         [TestMethod]
         public void TestDataDefinitionReactiveArmour()
@@ -271,11 +270,9 @@ namespace UnitTests
         }
 
         [TestMethod]
-        [DeploymentItem("vehicle.json")]
         public void TestVehicleProperties()
         {
-            string jsonString = File.ReadAllText("vehicle.json");
-            JObject json = JsonConvert.DeserializeObject<JObject>(jsonString);
+            JObject json = DeserializeJsonResource<JObject>(Resources.vehicle);
             Vehicle v0 = Vehicle.FromJson(0, json);
             Assert.AreEqual(0, v0.subslot, "testing v0 subslot from JSON");
             Assert.AreEqual(v0.localizedName, "SRV Scarab");
