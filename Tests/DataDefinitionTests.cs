@@ -195,7 +195,6 @@ namespace UnitTests
         public void TestBlueprintFromEdNameAndGrade()
         {
             string blueprintName = "WakeScanner_Fast Scan_3";
-            string blueprintTemplate = "Sensor_FastScan";
             int grade = 3;
             Blueprint blueprint = Blueprint.FromEDNameAndGrade(blueprintName, grade);
             Assert.IsNotNull(blueprint);
