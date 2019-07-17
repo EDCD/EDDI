@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using Utilities;
+using Tests.Properties;
 
 namespace UnitTests
 {
@@ -71,13 +72,9 @@ namespace UnitTests
         }
 
         [TestMethod]
-        [DeploymentItem("eddi.json")]
-        [DeploymentItem("loadout.json")]
-        [DeploymentItem(@"x86\SQLite.Interop.dll", "x86")]
-        [DeploymentItem(@"x64\SQLite.Interop.dll", "x64")]
         public void TestLoadoutParsing()
         {
-            string data = System.IO.File.ReadAllText("loadout.json");
+            string data = DeserializeJsonResource<string>(Resources.loadout);
 
             List<Event> events = JournalMonitor.ParseJournalEntry(data);
             Assert.AreEqual(1, events.Count);
@@ -338,18 +335,13 @@ namespace UnitTests
         }
 
         [TestMethod]
-        [DeploymentItem("shipMonitor.json")]
         public void TestShipMonitorDeserialization()
         {
             // Read from our test item "shipMonitor.json"
             ShipMonitorConfiguration configuration = new ShipMonitorConfiguration();
             try
             {
-                string data = System.IO.File.ReadAllText("shipMonitor.json");
-                if (data != null)
-                {
-                    configuration = JsonConvert.DeserializeObject<ShipMonitorConfiguration>(data);
-                }
+                configuration = DeserializeJsonResource<ShipMonitorConfiguration>(Resources.shipMonitor);
             }
             catch (Exception)
             {
@@ -397,18 +389,13 @@ namespace UnitTests
         }
 
         [TestMethod]
-        [DeploymentItem("shipMonitor.json")]
         public void TestShipMonitorDeserializationDoesntMutateStatics()
         {
             // Read from our test item "shipMonitor.json"
             ShipMonitorConfiguration configuration = new ShipMonitorConfiguration();
             try
             {
-                string data = System.IO.File.ReadAllText("shipMonitor.json");
-                if (data != null)
-                {
-                    configuration = JsonConvert.DeserializeObject<ShipMonitorConfiguration>(data);
-                }
+                configuration = DeserializeJsonResource<ShipMonitorConfiguration>(Resources.shipMonitor);
             }
             catch (Exception)
             {
@@ -419,14 +406,13 @@ namespace UnitTests
         }
 
         [TestMethod]
-        [DeploymentItem("loadout.json")]
         public void TestShipMonitorDeserializationMatchesSerialization()
         {
             var privateObject = new PrivateObject(new ShipMonitor());
             privateObject.SetFieldOrProperty("shipyard", new ObservableCollection<Ship>());
             privateObject.SetFieldOrProperty("updatedAt", DateTime.MinValue);
 
-            string data = System.IO.File.ReadAllText("loadout.json");
+            string data = DeserializeJsonResource<string>(Resources.loadout);
             List<Event> events = JournalMonitor.ParseJournalEntry(data);
             ShipLoadoutEvent loadoutEvent = events[0] as ShipLoadoutEvent;
             object[] loadoutArgs = new object[] { loadoutEvent };
@@ -454,23 +440,20 @@ namespace UnitTests
         }
 
         [TestMethod]
-        [DeploymentItem("loadout.json")]
-        [DeploymentItem("fighterLoadout.json")]
-        [DeploymentItem(@"x86\SQLite.Interop.dll", "x86")]
-        [DeploymentItem(@"x64\SQLite.Interop.dll", "x64")]
         public void TestFighterLoadoutEvent()
         {
             var privateObject = new PrivateObject(new ShipMonitor());
             privateObject.SetFieldOrProperty("shipyard", new ObservableCollection<Ship>());
             privateObject.SetFieldOrProperty("updatedAt", DateTime.MinValue);
 
-            string data = System.IO.File.ReadAllText("loadout.json");
+            string data = DeserializeJsonResource<string>(Resources.loadout);
+
             List<Event> events = JournalMonitor.ParseJournalEntry(data);
             ShipLoadoutEvent loadoutEvent = events[0] as ShipLoadoutEvent;
             object[] loadoutArgs = new object[] { loadoutEvent };
             privateObject.Invoke("handleShipLoadoutEvent", loadoutArgs);
 
-            string data2 = System.IO.File.ReadAllText("fighterLoadout.json");
+            string data2 = DeserializeJsonResource<string>(Resources.fighterLoadout);
             events = JournalMonitor.ParseJournalEntry(data2);
             ShipLoadoutEvent fighterLoadoutEvent = events[0] as ShipLoadoutEvent;
             object[] fighterLoadoutArgs = new object[] { fighterLoadoutEvent };

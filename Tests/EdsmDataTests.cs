@@ -1,10 +1,10 @@
 ﻿using EddiDataDefinitions;
 using EddiStarMapService;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.Linq;
+using Tests.Properties;
 
 namespace UnitTests
 {
@@ -20,11 +20,9 @@ namespace UnitTests
         }
 
         [TestMethod]
-        [DeploymentItem("edsmBodies.json")]
         public void TestBodies()
         {
-            string jsonString = System.IO.File.ReadAllText("edsmBodies.json");
-            JObject response = JsonConvert.DeserializeObject<JObject>(jsonString);
+            JObject response = DeserializeJsonResource<JObject>(Resources.edsmBodies);
 
             PrivateType starMapService = new PrivateType(typeof(StarMapService));
             List<Body> bodies = (List<Body>)starMapService.InvokeStatic("ParseStarMapBodies", new object[] { response });
@@ -253,12 +251,10 @@ namespace UnitTests
         }
 
         [TestMethod]
-        [DeploymentItem("edsmStations.json")]
         public void TestStations()
         {
             // Test stations data
-            string jsonString = System.IO.File.ReadAllText("edsmStations.json");
-            JObject response = JsonConvert.DeserializeObject<JObject>(jsonString);
+            JObject response = DeserializeJsonResource<JObject>(Resources.edsmStations);
 
             PrivateType starMapService = new PrivateType(typeof(StarMapService));
             List<Station> stations = (List<Station>)starMapService.InvokeStatic("ParseStarMapStations", new object[] { response });
@@ -320,12 +316,11 @@ namespace UnitTests
         }
 
         [TestMethod]
-        [DeploymentItem("edsmFactions.json")]
         public void TestFactions()
         {
             // Test factions data
-            string jsonString = System.IO.File.ReadAllText("edsmFactions.json");
-            JObject response = JsonConvert.DeserializeObject<JObject>(jsonString);
+            JObject response = DeserializeJsonResource<JObject>(Resources.edsmFactions);
+
             string systemName = (string)response["name"];
 
             PrivateType starMapService = new PrivateType(typeof(StarMapService));
@@ -368,12 +363,10 @@ namespace UnitTests
         }
 
         [TestMethod]
-        [DeploymentItem("edsmSystem.json")]
         public void TestSystem()
         {
             // Test system
-            string jsonString = System.IO.File.ReadAllText("edsmSystem.json");
-            Dictionary<string, object> response = JsonConvert.DeserializeObject<Dictionary<string, object>>(jsonString);
+            Dictionary<string, object> response = DeserializeJsonResource<Dictionary<string, object>>(Tests.Properties.Resources.edsmSystem);
 
             PrivateType starMapService = new PrivateType(typeof(StarMapService));
             StarSystem system = (StarSystem)starMapService.InvokeStatic("ParseStarMapSystem", new object[] { JObject.FromObject(response), "Shinrarta Dezhra" });
@@ -447,12 +440,10 @@ namespace UnitTests
         }
 
         [TestMethod]
-        [DeploymentItem("edsmTraffic.json")]
         public void TestTraffic()
         {
             // Test pilot traffic data
-            string jsonString = System.IO.File.ReadAllText("edsmTraffic.json");
-            JObject response = JsonConvert.DeserializeObject<JObject>(jsonString);
+            JObject response = DeserializeJsonResource<JObject>(Resources.edsmTraffic);
 
             PrivateType starMapService = new PrivateType(typeof(StarMapService));
             Traffic traffic = (Traffic)starMapService.InvokeStatic("ParseStarMapTraffic", new object[] { response });
@@ -464,12 +455,10 @@ namespace UnitTests
         }
 
         [TestMethod]
-        [DeploymentItem("edsmDeaths.json")]
         public void TestDeaths()
         {
             // Test pilot mortality data
-            string jsonString = System.IO.File.ReadAllText("edsmDeaths.json");
-            JObject response = JsonConvert.DeserializeObject<JObject>(jsonString);
+            JObject response = DeserializeJsonResource<JObject>(Resources.edsmDeaths);
 
             PrivateType starMapService = new PrivateType(typeof(StarMapService));
             Traffic deaths = (Traffic)starMapService.InvokeStatic("ParseStarMapDeaths", new object[] { response });

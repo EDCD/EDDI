@@ -5,11 +5,11 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using Tests.Properties;
 
 namespace UnitTests
 {
     [TestClass]
-    [DeploymentItem(@"x86\SQLite.Interop.dll", "x86")]
     public class VoiceAttackPluginTests : TestBase
     {
         [TestInitialize]
@@ -45,10 +45,10 @@ namespace UnitTests
         }
 
         [TestMethod]
-        [DeploymentItem(@"..\..\starsystems.txt")]
         public void TestTranslateStarSystemsStability()
         {
-            string[] starSystems = System.IO.File.ReadAllLines(@"starsystems.txt");
+            string[] starSystems = Resources.starsystems.Split(new[] { '\r', '\n' });
+
             foreach (string starSystem in starSystems)
             {
                 Translations.StarSystem(starSystem);

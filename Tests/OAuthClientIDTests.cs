@@ -1,6 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace UnitTests
+namespace OAuthClientIDTests
 {
     [TestClass]
     public class OAuthClientIDTests
