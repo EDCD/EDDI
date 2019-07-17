@@ -160,6 +160,42 @@ namespace UnitTests
         }
 
         [TestMethod]
+        public void TestMajorFiedDifferences()
+        {
+            Version v1 = new Version(1, 5, 7, "b", 5);
+            Version v2 = new Version(2, 3, 4, "a", 4); // major is greater, all subordinates are lesser
+            Assert.IsTrue(v1 < v2);
+            Assert.IsTrue(v2 > v1);
+        }
+
+        [TestMethod]
+        public void TestMinorFiedDifferences()
+        {
+            Version v1 = new Version(1, 2, 5, "b", 5);
+            Version v2 = new Version(1, 3, 4, "a", 4); // minor is greater, all subordinates are lesser
+            Assert.IsTrue(v1 < v2);
+            Assert.IsTrue(v2 > v1);
+        }
+
+        [TestMethod]
+        public void TestPatchDifferences()
+        {
+            Version v1 = new Version(1, 2, 3, "b", 5);
+            Version v2 = new Version(1, 2, 4, "a", 4); // patch is greater, all subordinates are lesser
+            Assert.IsTrue(v1 < v2);
+            Assert.IsTrue(v2 > v1);
+        }
+
+        [TestMethod]
+        public void TestPhaseDifferences()
+        {
+            Version v1 = new Version(1, 2, 3, "a", 5);
+            Version v2 = new Version(1, 2, 3, "b", 4); // phase is greater, all subordinates are lesser
+            Assert.IsTrue(v1 < v2);
+            Assert.IsTrue(v2 > v1);
+        }
+
+        [TestMethod]
         public void TestIterationLessThan()
         {
             Version v1 = new Version(1, 2, 3, "b", 4);
