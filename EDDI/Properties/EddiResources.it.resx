@@ -148,7 +148,9 @@
   <data name="login_nok_frontier_service" xml:space="preserve">
     <value>Impossibile connettersi. Tale problema occorre solitamente quando vi è un problema temporaneo con i server Frontier; si prega di riprovare più tardi</value>
   </data>
-  
+  <data name="logout" xml:space="preserve">
+    <value>Disconnetti</value>
+  </data>
   <data name="operational" xml:space="preserve">
     <value>Funzionante</value>
   </data>
@@ -221,7 +223,9 @@ Si prega di chiudere l'altra istanza e riprovare.</value>
   <data name="safe_mode" xml:space="preserve">
     <value>Modalità sicura - Aggiornamento necessario.</value>
   </data>
-  
+  <data name="login" xml:space="preserve">
+    <value>Connetti</value>
+  </data>
   <data name="frontier_api_cant_login_from_va" xml:space="preserve">
     <value>Per effettuare la connessione si prega di chiudere VoiceAttack e avviare EDDI come applicazione singola.</value>
   </data>
