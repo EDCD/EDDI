@@ -8,7 +8,7 @@ For EDDI to work with VoiceAttack it must be installed as a VoiceAttack plugin. 
 
 VoiceAttack must be configured to use plugins.  To do so you must click on the Settings icon (a spanner) in the top-right corner of the VoiceAttack and check the 'Enable plugin support' option and restart VoiceAttack.
 
-If EDDI is installed in the correct location and plugin support is enabled you should see a message when starting VoiceAttack along the lines of `Plugin EDDI 2.3.0 initialized`.
+If EDDI is installed in the correct location and plugin support is enabled you should see a message when starting VoiceAttack along the lines of `Plugin EDDI 3.4.1 initialized`.
 
 ## EDDI's VoiceAttack Profile
 
