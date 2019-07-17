@@ -134,6 +134,16 @@ namespace UnitTests
         }
 
         [TestMethod]
+        public void TestHashCodeIsStable()
+        {
+            Version v1 = new Version(1, 2, 3, "b", 4);
+            Version v2 = new Version(1, 2, 3, "b", 4);
+            int hash1 = v1.GetHashCode();
+            int hash2 = v2.GetHashCode();
+            Assert.AreEqual(hash1, hash2);
+        }
+
+        [TestMethod]
         public void TestInequalityToObject()
         {
             Version v1 = new Version(1, 2, 3, "b", 4);
