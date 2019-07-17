@@ -891,8 +891,8 @@ namespace Eddi
         private bool eventSettlementApproached(SettlementApproachedEvent @event)
         {
             bool passEvent = true;
-            Station station = CurrentStarSystem.stations.Find(s => s.name == @event.name);
-            if (station == null && @event.systemAddress == CurrentStarSystem.systemAddress)
+            Station station = CurrentStarSystem?.stations?.Find(s => s.name == @event.name);
+            if (station == null && @event.systemAddress == CurrentStarSystem?.systemAddress)
             {
                 // This settlement is unknown to us, might not be in our data source or we might not have connectivity.  Use a placeholder
                 station = new Station
