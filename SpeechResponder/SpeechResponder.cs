@@ -226,7 +226,7 @@ namespace EddiSpeechResponder
         {
             Dictionary<string, Cottle.Value> dict = new Dictionary<string, Cottle.Value>
             {
-                ["capi_active"] = CompanionAppService.Instance.active,
+                ["capi_active"] = CompanionAppService.Instance?.active ?? false,
                 ["destinationdistance"] = EDDI.Instance.DestinationDistanceLy,
                 ["environment"] = EDDI.Instance.Environment,
                 ["horizons"] = EDDI.Instance.inHorizons,

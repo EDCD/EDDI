@@ -418,7 +418,7 @@ namespace EddiVoiceAttackResponder
             // Set miscellaneous values
             try
             {
-                vaProxy.SetBool("cAPI active", CompanionAppService.Instance.active);
+                vaProxy.SetBoolean("cAPI active", CompanionAppService.Instance?.active ?? false);
                 vaProxy.SetText("Environment", EDDI.Instance.Environment);
                 vaProxy.SetText("Vehicle", EDDI.Instance.Vehicle);
                 vaProxy.SetText("EDDI version", Constants.EDDI_VERSION.ToString());
