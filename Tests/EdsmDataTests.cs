@@ -1,10 +1,10 @@
 ﻿using EddiDataDefinitions;
 using EddiStarMapService;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.Linq;
+using Tests.Properties;
 
 namespace UnitTests
 {
@@ -22,7 +22,7 @@ namespace UnitTests
         [TestMethod]
         public void TestBodies()
         {
-            JObject response = DeserializeJsonResource<JObject>(Tests.Properties.Resources.edsmBodies);
+            JObject response = DeserializeJsonResource<JObject>(Resources.edsmBodies);
 
             PrivateType starMapService = new PrivateType(typeof(StarMapService));
             List<Body> bodies = (List<Body>)starMapService.InvokeStatic("ParseStarMapBodies", new object[] { response });
@@ -254,7 +254,7 @@ namespace UnitTests
         public void TestStations()
         {
             // Test stations data
-            JObject response = DeserializeJsonResource<JObject>(Tests.Properties.Resources.edsmStations);
+            JObject response = DeserializeJsonResource<JObject>(Resources.edsmStations);
 
             PrivateType starMapService = new PrivateType(typeof(StarMapService));
             List<Station> stations = (List<Station>)starMapService.InvokeStatic("ParseStarMapStations", new object[] { response });
@@ -319,7 +319,7 @@ namespace UnitTests
         public void TestFactions()
         {
             // Test factions data
-            JObject response = DeserializeJsonResource<JObject>(Tests.Properties.Resources.edsmFactions);
+            JObject response = DeserializeJsonResource<JObject>(Resources.edsmFactions);
 
             string systemName = (string)response["name"];
 
@@ -443,7 +443,7 @@ namespace UnitTests
         public void TestTraffic()
         {
             // Test pilot traffic data
-            JObject response = DeserializeJsonResource<JObject>(Tests.Properties.Resources.edsmTraffic);
+            JObject response = DeserializeJsonResource<JObject>(Resources.edsmTraffic);
 
             PrivateType starMapService = new PrivateType(typeof(StarMapService));
             Traffic traffic = (Traffic)starMapService.InvokeStatic("ParseStarMapTraffic", new object[] { response });
@@ -458,7 +458,7 @@ namespace UnitTests
         public void TestDeaths()
         {
             // Test pilot mortality data
-            JObject response = DeserializeJsonResource<JObject>(Tests.Properties.Resources.edsmDeaths);
+            JObject response = DeserializeJsonResource<JObject>(Resources.edsmDeaths);
 
             PrivateType starMapService = new PrivateType(typeof(StarMapService));
             Traffic deaths = (Traffic)starMapService.InvokeStatic("ParseStarMapDeaths", new object[] { response });

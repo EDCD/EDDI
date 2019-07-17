@@ -4,6 +4,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
+using Tests.Properties;
 
 namespace UnitTests
 {
@@ -15,7 +16,7 @@ namespace UnitTests
         public void TestShips()
         {
             // Test factions data
-            JObject json = DeserializeJsonResource<JObject>(Tests.Properties.Resources.Abasheli_Barracks);
+            JObject json = DeserializeJsonResource<JObject>(Resources.Abasheli_Barracks);
             List<Ship> ships = CompanionAppService.ShipyardFromProfile(json);
             Assert.AreEqual(8, ships.Count);
         }

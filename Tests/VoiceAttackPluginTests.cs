@@ -5,6 +5,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using Tests.Properties;
 
 namespace UnitTests
 {
@@ -46,7 +47,7 @@ namespace UnitTests
         [TestMethod]
         public void TestTranslateStarSystemsStability()
         {
-            string[] starSystems = Tests.Properties.Resources.starsystems.Split(new[] { '\r', '\n' });
+            string[] starSystems = Resources.starsystems.Split(new[] { '\r', '\n' });
 
             foreach (string starSystem in starSystems)
             {

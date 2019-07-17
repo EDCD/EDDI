@@ -1,10 +1,9 @@
 ﻿using EddiBgsService;
 using EddiDataDefinitions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using System.Collections.Generic;
 using System.Linq;
+using Tests.Properties;
 
 namespace UnitTests
 {
@@ -25,7 +24,7 @@ namespace UnitTests
             string dateTimeStringFormat = "yyyy'-'MM'-'dd'T'HH':'mm':'ss.fff'Z'";
 
             // Test factions data
-            JObject response = DeserializeJsonResource<JObject>(Tests.Properties.Resources.bgsFaction);
+            JObject response = DeserializeJsonResource<JObject>(Resources.bgsFaction);
             PrivateType bgsService = new PrivateType(typeof(BgsService));
             Faction faction = (Faction)bgsService.InvokeStatic("ParseFaction", new object[] { response });
 

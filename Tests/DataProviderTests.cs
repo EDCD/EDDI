@@ -1,8 +1,8 @@
 ﻿using EddiDataDefinitions;
 using EddiDataProviderService;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Newtonsoft.Json;
 using System.Linq;
+using Tests.Properties;
 
 namespace UnitTests
 {
@@ -43,7 +43,7 @@ namespace UnitTests
             /// Legacy data includes all data stored in user's sql databases prior to version 3.0.1-b2
             /// Note that data structures were reorganized at this time to support internationalization.
 
-            StarSystem system = DeserializeJsonResource<StarSystem>(Tests.Properties.Resources.sqlStarSystem1);
+            StarSystem system = DeserializeJsonResource<StarSystem>(Resources.sqlStarSystem1);
 
             Assert.IsNotNull(system);
             Assert.AreEqual("Macay", system.systemname);
@@ -55,7 +55,7 @@ namespace UnitTests
         [TestMethod]
         public void TestLegacySystem2()
         {
-            StarSystem system = DeserializeJsonResource<StarSystem>(Tests.Properties.Resources.sqlStarSystem2);
+            StarSystem system = DeserializeJsonResource<StarSystem>(Resources.sqlStarSystem2);
 
             Assert.IsNotNull(system);
             Assert.AreEqual("Lazdongand", system.systemname);
@@ -67,7 +67,7 @@ namespace UnitTests
         [TestMethod]
         public void TestLegacySystem3()
         {
-            StarSystem system = DeserializeJsonResource<StarSystem>(Tests.Properties.Resources.sqlStarSystem3);
+            StarSystem system = DeserializeJsonResource<StarSystem>(Resources.sqlStarSystem3);
 
             Assert.IsNotNull(system);
             Assert.AreEqual("Aphros", system.systemname);
@@ -79,7 +79,7 @@ namespace UnitTests
         [TestMethod]
         public void TestLegacySystem4()
         {
-            StarSystem system = DeserializeJsonResource<StarSystem>(Tests.Properties.Resources.sqlStarSystem4);
+            StarSystem system = DeserializeJsonResource<StarSystem>(Resources.sqlStarSystem4);
 
             Assert.AreEqual("Zhu Baba", system.systemname);
             Assert.AreEqual(159918, system.population);
@@ -91,7 +91,7 @@ namespace UnitTests
         public void TestLegacyData()
         {
             /// Test legacy data from api.eddp.co 
-            StarSystem system = DeserializeJsonResource<StarSystem>(Tests.Properties.Resources.sqlStarSystem1);
+            StarSystem system = DeserializeJsonResource<StarSystem>(Resources.sqlStarSystem1);
 
             Assert.AreEqual("Nijland Terminal", system.stations[0].name);
             Assert.IsNull(system.stations[0].EDDBID);

@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using Utilities;
+using Tests.Properties;
 
 namespace UnitTests
 {
@@ -73,7 +74,7 @@ namespace UnitTests
         [TestMethod]
         public void TestLoadoutParsing()
         {
-            string data = DeserializeJsonResource<string>(Tests.Properties.Resources.loadout);
+            string data = DeserializeJsonResource<string>(Resources.loadout);
 
             List<Event> events = JournalMonitor.ParseJournalEntry(data);
             Assert.AreEqual(1, events.Count);
@@ -340,7 +341,7 @@ namespace UnitTests
             ShipMonitorConfiguration configuration = new ShipMonitorConfiguration();
             try
             {
-                configuration = DeserializeJsonResource<ShipMonitorConfiguration>(Tests.Properties.Resources.shipMonitor);
+                configuration = DeserializeJsonResource<ShipMonitorConfiguration>(Resources.shipMonitor);
             }
             catch (Exception)
             {
@@ -394,7 +395,7 @@ namespace UnitTests
             ShipMonitorConfiguration configuration = new ShipMonitorConfiguration();
             try
             {
-                configuration = DeserializeJsonResource<ShipMonitorConfiguration>(Tests.Properties.Resources.shipMonitor);
+                configuration = DeserializeJsonResource<ShipMonitorConfiguration>(Resources.shipMonitor);
             }
             catch (Exception)
             {
@@ -411,7 +412,7 @@ namespace UnitTests
             privateObject.SetFieldOrProperty("shipyard", new ObservableCollection<Ship>());
             privateObject.SetFieldOrProperty("updatedAt", DateTime.MinValue);
 
-            string data = DeserializeJsonResource<string>(Tests.Properties.Resources.loadout);
+            string data = DeserializeJsonResource<string>(Resources.loadout);
             List<Event> events = JournalMonitor.ParseJournalEntry(data);
             ShipLoadoutEvent loadoutEvent = events[0] as ShipLoadoutEvent;
             object[] loadoutArgs = new object[] { loadoutEvent };
@@ -445,14 +446,14 @@ namespace UnitTests
             privateObject.SetFieldOrProperty("shipyard", new ObservableCollection<Ship>());
             privateObject.SetFieldOrProperty("updatedAt", DateTime.MinValue);
 
-            string data = DeserializeJsonResource<string>(Tests.Properties.Resources.loadout);
+            string data = DeserializeJsonResource<string>(Resources.loadout);
 
             List<Event> events = JournalMonitor.ParseJournalEntry(data);
             ShipLoadoutEvent loadoutEvent = events[0] as ShipLoadoutEvent;
             object[] loadoutArgs = new object[] { loadoutEvent };
             privateObject.Invoke("handleShipLoadoutEvent", loadoutArgs);
 
-            string data2 = DeserializeJsonResource<string>(Tests.Properties.Resources.fighterLoadout);
+            string data2 = DeserializeJsonResource<string>(Resources.fighterLoadout);
             events = JournalMonitor.ParseJournalEntry(data2);
             ShipLoadoutEvent fighterLoadoutEvent = events[0] as ShipLoadoutEvent;
             object[] fighterLoadoutArgs = new object[] { fighterLoadoutEvent };
