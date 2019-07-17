@@ -160,7 +160,7 @@ namespace UnitTests
         }
 
         [TestMethod]
-        public void TestLessThan()
+        public void TestIterationLessThan()
         {
             Version v1 = new Version(1, 2, 3, "b", 4);
             Version v2 = new Version(1, 2, 3, "b", 5);
@@ -168,7 +168,7 @@ namespace UnitTests
         }
 
         [TestMethod]
-        public void TestLessThanOrEqual()
+        public void TestIterationLessThanOrEqual()
         {
             Version v1 = new Version(1, 2, 3, "b", 4);
             Version v2 = new Version(1, 2, 3, "b", 4);
@@ -176,7 +176,7 @@ namespace UnitTests
         }
 
         [TestMethod]
-        public void TestGreaterThan()
+        public void TestIterationGreaterThan()
         {
             Version v1 = new Version(1, 2, 3, "b", 4);
             Version v2 = new Version(1, 2, 3, "b", 5);
@@ -184,7 +184,7 @@ namespace UnitTests
         }
 
         [TestMethod]
-        public void TestGreaterThanOrEqual()
+        public void TestIterationGreaterThanOrEqual()
         {
             Version v1 = new Version(1, 2, 3, "b", 4);
             Version v2 = new Version(1, 2, 3, "b", 4);
