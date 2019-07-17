@@ -14,7 +14,7 @@ namespace EddiSpeechService
         public string StandardVoice { get; set; }
 
         [JsonProperty("volume")]
-        public int Volume { get; set; } = 100;
+        public int Volume { get; set; } = 80;
 
         [JsonProperty("effectsLevel")]
         public int EffectsLevel { get; set; } = 50;
