@@ -200,7 +200,7 @@ namespace UnitTests
             Blueprint blueprint = Blueprint.FromEDNameAndGrade(blueprintName, grade);
             Assert.IsNotNull(blueprint);
             Assert.AreEqual(grade, blueprint.grade);
-            Assert.AreEqual(blueprintTemplate, blueprint.blueprintTemplate?.edname);
+            Assert.AreEqual("SensorFastScan", blueprint.blueprintTemplate?.edname);
             Assert.AreEqual(3, blueprint.materials.Count);
             Assert.IsTrue(blueprint.materials.Select(m => m.edname).Contains("phosphorus"));
             Assert.IsTrue(blueprint.materials.Select(m => m.edname).Contains("uncutfocuscrystals"));
@@ -216,7 +216,7 @@ namespace UnitTests
             Blueprint blueprintFromTemplate = Blueprint.FromEDNameAndGrade(blueprintTemplate, grade);
             Assert.IsNotNull(blueprintFromTemplate);
             Assert.AreEqual(grade, blueprintFromTemplate.grade);
-            Assert.AreEqual(blueprintTemplate, blueprintFromTemplate.blueprintTemplate.edname);
+            Assert.AreEqual("SensorFastScan", blueprintFromTemplate.blueprintTemplate.edname);
             Assert.AreEqual(3, blueprintFromTemplate.materials.Count);
             string[] materials = blueprintFromTemplate.materials.Select(m => m.edname).ToArray();
             Assert.IsTrue(materials.Contains("phosphorus"));
@@ -233,7 +233,7 @@ namespace UnitTests
             Assert.IsNotNull(blueprint);
             Assert.AreEqual(128673659, blueprint.blueprintId);
             Assert.AreEqual(grade, blueprint.grade);
-            Assert.AreEqual("Engine_Dirty", blueprint.blueprintTemplate?.edname);
+            Assert.AreEqual("EngineDirty", blueprint.blueprintTemplate?.edname);
             Assert.AreEqual(3, blueprint.materials.Count);
             Assert.IsTrue(blueprint.materials.Select(m => m.edname).Contains("industrialfirmware"));
             Assert.IsTrue(blueprint.materials.Select(m => m.edname).Contains("cadmium"));
