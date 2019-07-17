@@ -160,7 +160,7 @@ namespace UnitTests
         }
 
         [TestMethod]
-        public void TestMajorFiedDifferences()
+        public void TestMajorFieldDifferences()
         {
             Version v1 = new Version(1, 5, 7, "b", 5);
             Version v2 = new Version(2, 3, 4, "a", 4); // major is greater, all subordinates are lesser
@@ -169,7 +169,7 @@ namespace UnitTests
         }
 
         [TestMethod]
-        public void TestMinorFiedDifferences()
+        public void TestMinorFieldDifferences()
         {
             Version v1 = new Version(1, 2, 5, "b", 5);
             Version v2 = new Version(1, 3, 4, "a", 4); // minor is greater, all subordinates are lesser
