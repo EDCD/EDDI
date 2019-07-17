@@ -250,6 +250,12 @@ Si prega di chiudere l'altra istanza e riprovare.</value>
   <data name="frontier_api_please_authenticate" xml:space="preserve">
     <value>Si prega di autenticare la connessione di EDDI alla Chiave API Frontier.</value>
   </data>
-  
-  
+  <data name="frontierApiNotEnabled" xml:space="preserve">
+    <value>Non abilitata</value>
+    <comment>Displayed when the Frontier API is not enabled because the current build has no OAuth ClientID configured.</comment>
+  </data>
+  <data name="frontier_api_not_enabled" xml:space="preserve">
+    <value>Connessione all'API di Frontier non abilitata</value>
+    <comment>Displayed when the Frontier API is not enabled because the current build has no OAuth ClientID configured.</comment>
+  </data>
 </root>
