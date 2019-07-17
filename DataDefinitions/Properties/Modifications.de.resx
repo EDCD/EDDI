@@ -276,7 +276,10 @@
   <data name="WakeScannerLightWeight" xml:space="preserve">
     <value>Leichter Sogwolken-Scanner</value>
   </data>
-  
+  <data name="WakeScannerLongRange" xml:space="preserve">
+    <value>Langstreckenscanner
+</value>
+  </data>
   <data name="WakeScannerReinforced" xml:space="preserve">
     <value>Verstärkter Sogwolken-Scanner</value>
   </data>
