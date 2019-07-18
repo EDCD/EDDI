@@ -1514,7 +1514,10 @@
     <value>Megjelölt Rabszolgák</value>
     <comment>Commodity MarkedSlaves</comment>
   </data>
-  
+  <data name="OnionheadDerivatives" xml:space="preserve">
+    <value>Hagymafejű származékok</value>
+    <comment>Commodity OnionheadDerivatives</comment>
+  </data>
   <data name="OnionheadSamples" xml:space="preserve">
     <value>Hagymafej minták</value>
     <comment>Commodity OnionheadSamples</comment>
@@ -1581,7 +1584,10 @@
     <value>Személyes ajándékok</value>
     <comment>Commodity.PersonalGifts</comment>
   </data>
-  
+  <data name="ShansCharisOrchid" xml:space="preserve">
+    <value>Shan's Charisi Orchidea</value>
+    <comment>Commodity ShansCharisOrchid</comment>
+  </data>
   <data name="ancientkey" xml:space="preserve">
     <value>Ősi kulcs</value>
     <comment>Commodity Ancient Key</comment>
@@ -1634,7 +1640,10 @@
     <value>Alexandrit</value>
     <comment>Commodity Alexandrite</comment>
   </data>
-  
+  <data name="Opal" xml:space="preserve">
+    <value>Void opál</value>
+    <comment>Commodity Opal</comment>
+  </data>
   <data name="UnknownBiologicalMatter" xml:space="preserve">
     <value>Thargoid biólógiai anyag</value>
     <comment>Commodity UnknownBiologicalMatter</comment>
