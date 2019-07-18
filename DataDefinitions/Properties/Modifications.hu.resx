@@ -179,7 +179,9 @@
   <data name="SensorLongRange" xml:space="preserve">
     <value>Növelt hatótávú szenzor</value>
   </data>
-  
+  <data name="SensorWideAngle" xml:space="preserve">
+    <value>Szélessávú szenzor</value>
+  </data>
   <data name="ShieldBoosterExplosive" xml:space="preserve">
     <value>Robbanásálló pajzs erősítő</value>
   </data>
@@ -220,10 +222,15 @@
   
   
   
+  <data name="WakeScannerLongRange" xml:space="preserve">
+    <value>Megnövelt hatótávú szenzor
+</value>
+  </data>
   
   
-  
-  
+  <data name="WakeScannerWideAngle" xml:space="preserve">
+    <value>Szélessávú szenzor</value>
+  </data>
   
   
   
@@ -256,7 +263,9 @@
     <value>Páncélozott hőrelé kilővö</value>
   </data>
   
-  
+  <data name="KillWarrantScannerLongRange" xml:space="preserve">
+    <value>Megnövelt hatótávú szenzor</value>
+  </data>
   
   
   <data name="LifeSupportLightWeight" xml:space="preserve">
@@ -274,12 +283,18 @@
   
   
   
+  <data name="CargoScannerLongRange" xml:space="preserve">
+    <value>Megnövelt hatótávú szenzor</value>
+  </data>
+  <data name="CargoScannerWideAngle" xml:space="preserve">
+    <value>Szélessávú szenzor</value>
+  </data>
   
   
   
-  
-  
-  
+  <data name="KillWarrantScannerWideAngle" xml:space="preserve">
+    <value>Szélessávú szenzor</value>
+  </data>
   
   
   
