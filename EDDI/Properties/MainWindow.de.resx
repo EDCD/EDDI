@@ -127,13 +127,13 @@
     <value>hat eine Reihe von Funktionen, die separat konfiguriert werden können. Es gibt drei verschiedene Arten von Funktionen.</value>
   </data>
   <data name="paragraph_1" xml:space="preserve">
-    <value>Die erste Gruppe enthält und verwaltet Basisinformationen, die von EDDI verwendet werden. Dazu gehören die Registerkarten "! Commander Details", "! Frontier API" und "! Text-to-Speech". Sie sollten diese durchgehen und so konfigurieren, dass EDDI vollen Zugriff auf Ihr ELITE hat. Achtung: Sicherheitsrelevante Informationen.</value>
+    <value>Die erste Gruppe enthält und verwaltet Basisinformationen, die von EDDI verwendet werden. Dazu gehören die Registerkarten "! Commander Details", "! Frontier API" und "! Text-to-Speech". Sie sollten diese durchgehen und so konfigurieren, dass EDDI vollen Zugriff auf Ihr ELITE hat. Achtung: Sicherheitsrelevante Informationen!</value>
   </data>
   <data name="paragraph_2" xml:space="preserve">
-    <value>Die zweite Gruppe enthält Ereignisinformationen. Dies sind die Registerkarten, die mit "# Überwachung" beginnen. Sie erhalten Ereignisse von verschiedenen Orten und benötigen nur eine minimale Konfiguration, müssen aber abgeschlossen sein, bevor sie funktionieren.</value>
+    <value>Die zweite Gruppe enthält Ereignisinformationen. Dies sind die Registerkarten, die mit "# Überwachung" beginnen. Sie enthalten Ereignisse von verschiedenen Orten und benötigen nur eine minimale Konfiguration, müssen aber abgeschlossen sein, bevor sie funktionieren.</value>
   </data>
   <data name="paragraph_3" xml:space="preserve">
-    <value>Die dritte Gruppe reagiert auf Ereignisse (Reiterkarte mit "_Info an..." bzw. "_Sprachausgabe auf..."). Diese haben unterschiedliche Ausbaustufen, funktionieren aber sofort.</value>
+    <value>Die dritte Gruppe reagiert auf Ereignisse (Reiterkarte mit " Info an..." bzw. " Sprachausgabe auf..."). Diese haben unterschiedliche Ausbaustufen, funktionieren aber sofort.</value>
   </data>
   <data name="paragraph_4" xml:space="preserve">
     <value>Mehr über die Funktionsweise von EDDI erfahren Sie auf der Seite</value>
