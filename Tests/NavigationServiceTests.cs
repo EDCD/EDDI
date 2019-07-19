@@ -38,7 +38,7 @@ namespace UnitTests
 
             // Set a route to an unknown star system and verify detination details
             // Result should be a null system at zero distance to clear, clearing the route.
-            Navigation.Instance.SetRoute("Test System");
+            Navigation.Instance.SetRoute("No Such System");
             StarSystem destinationSystem2 = (StarSystem)eddiInstance.GetFieldOrProperty("DestinationStarSystem");
             decimal destinationDistanceLY2 = (decimal)eddiInstance.GetFieldOrProperty("DestinationDistanceLy");
             Assert.IsNull(destinationSystem2);

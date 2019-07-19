@@ -501,10 +501,16 @@ namespace EddiNavigationService
                 StarSystem curr = EDDI.Instance?.CurrentStarSystem;
                 StarSystem dest = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(system, true);
 
-                if (dest != null && system != curr.systemname)
+                if (system != curr.systemname 
+                    && dest.x != null && dest.y != null && dest.z != null 
+                    && curr.x != null && curr.y != null && curr.z != null)
                 {
                     distance = CalculateDistance(curr, dest);
                     destination = dest.systemname;
+                }
+                else
+                {
+                    Logging.Warn("Star system " + system + " not found, route could not be set.");
                 }
                 // Get mission IDs for 'next' system
                 missionids = missionMonitor.GetSystemMissionIds(destination);
