@@ -1,12 +1,10 @@
 ﻿using EddiDataDefinitions;
-using EddiEvents;
 using EddiCrimeMonitor;
 using EddiMaterialMonitor;
 using EddiMissionMonitor;
 using EddiNavigationService;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Collections.Generic;
-using System.Linq;
+
 
 namespace UnitTests
 {
