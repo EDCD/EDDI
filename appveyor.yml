@@ -17,6 +17,7 @@ nuget:
 before_build:
 - cmd: nuget restore
 build:
+  project: EDDI.sln      # path to Visual Studio solution or project
   parallel: true
   verbosity: minimal
 test_script:
