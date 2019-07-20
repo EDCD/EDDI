@@ -12,9 +12,7 @@ coverage:
     project: yes
       default:
 	    threshold: 10%
-	patch: yes
-      default:
-	    threshold: 10%
+	patch: off
     changes: off
 
 parsers:
