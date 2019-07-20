@@ -8,9 +8,13 @@ coverage:
   round: down
   range: "25...80"
 
-  status:
+  status: 
     project: yes
-    patch: yes
+      default:
+	    threshold: 10%
+	patch: yes
+      default:
+	    threshold: 10%
     changes: no
 
 parsers:
@@ -113,7 +117,7 @@ comment:
 #       default:
 #         against: parent
 #         target: auto
-#         threshold: 1%
+#         threshold: 1% # the amount that coverage can drop while still posting a success
 #         branches:
 #           - master
 #         if_no_uploads: error
