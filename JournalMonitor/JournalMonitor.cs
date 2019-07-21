@@ -2594,7 +2594,7 @@ namespace EddiJournalMonitor
                                     decimal total = JsonParsing.getDecimal(data, "Total");
                                     bool full = EDDI.Instance.CurrentShip?.fueltanktotalcapacity == null
                                         ? false
-                                        : Math.Round(total) == EDDI.Instance.CurrentShip.fueltanktotalcapacity;
+                                        : total == (EDDI.Instance.CurrentShip.fueltanktotalcapacity ?? 0M);
 
                                     events.Add(new ShipRefuelledEvent(timestamp, "Scoop", null, amount, total, full) { raw = line, fromLoad = fromLogLoad });
                                 }
