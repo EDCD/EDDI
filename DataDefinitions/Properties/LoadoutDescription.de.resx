@@ -148,13 +148,13 @@
     <value>kardanische Pulslaser und Düppelwerfer</value>
   </data>
   <data name="GdnHybridV1" xml:space="preserve">
-    <value>automatische Plasmakanonen</value>
+    <value>Auto-Plasmakanonen</value>
   </data>
   <data name="GdnHybridV2" xml:space="preserve">
-    <value>Splitterwerfer</value>
+    <value>Fragmentwerfer</value>
   </data>
   <data name="GdnHybridV3" xml:space="preserve">
-    <value>fokussierte Gauskanonen</value>
+    <value>Gaus-Fokuskanonen</value>
   </data>
   <data name="IndependentAT" xml:space="preserve">
     <value>starre Anti-Xeno-Mehrfachkanone</value>
