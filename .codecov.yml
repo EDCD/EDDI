@@ -1,29 +1,33 @@
 codecov:
-  notify:
-    require_ci_to_pass: no
+  token: c0cc9048-1cdc-464b-b2fa-dac79464e1c4
+  notify: no
+#    require_ci_to_pass: no
 
 coverage:
   precision: 2
   round: down
   range: "25...80"
 
-  status:
+  status: 
     project: yes
-    patch: yes
-    changes: yes
+      default:
+	    threshold: 10%
+	patch: off
+    changes: off
 
 parsers:
   gcov:
     branch_detection:
       conditional: yes
       loop: yes
-      method: yes
-      macro: yes
+      method: no
+      macro: no
 
 comment:
-  layout: "header, diff, trends, uncovered"
-  behavior: new
+  layout: "header, diff, changes, tree"
+  behavior: default
   require_changes: no 
+  branch: !l10n_develop # never post comments if the PR head is on the l10n_develop branch
 
 # Available parameters:
 
@@ -112,7 +116,7 @@ comment:
 #       default:
 #         against: parent
 #         target: auto
-#         threshold: 1%
+#         threshold: 1% # the amount that coverage can drop while still posting a success
 #         branches:
 #           - master
 #         if_no_uploads: error
