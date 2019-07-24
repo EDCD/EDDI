@@ -117,24 +117,64 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="EmpireFour" xml:space="preserve">
+    <value>kardanische Strahlenlaser und Kühlkörperwerfer</value>
+  </data>
+  <data name="EmpireOne" xml:space="preserve">
+    <value>starre Strahlenlaser und Kühlkörperwerfer</value>
+  </data>
+  <data name="EmpireThree" xml:space="preserve">
+    <value>starre Pulslaser und Punktverteidigung</value>
+  </data>
+  <data name="EmpireTwo" xml:space="preserve">
+    <value>starre Plasmawerfer und Düppelwerfer</value>
+  </data>
+  <data name="EmpireZero" xml:space="preserve">
+    <value>kardanische Pulslaser und Düppelwerfer</value>
+  </data>
+  <data name="FederationFour" xml:space="preserve">
+    <value>kardanische Strahlenlaser und Kühlkörperwerfer</value>
+  </data>
+  <data name="FederationOne" xml:space="preserve">
+    <value>starre Pulslaser und Kühlkörperwerfer</value>
+  </data>
+  <data name="FederationThree" xml:space="preserve">
+    <value>starre Plasmawerfer und Punktverteidigung</value>
+  </data>
+  <data name="FederationTwo" xml:space="preserve">
+    <value>starre Mehrfachkanone und Düppelwerfer</value>
+  </data>
+  <data name="FederationZero" xml:space="preserve">
+    <value>kardanische Pulslaser und Düppelwerfer</value>
+  </data>
+  <data name="GdnHybridV1" xml:space="preserve">
+    <value>Auto-Plasmakanonen</value>
+  </data>
+  <data name="GdnHybridV2" xml:space="preserve">
+    <value>Fragmentwerfer</value>
+  </data>
+  <data name="GdnHybridV3" xml:space="preserve">
+    <value>Gaus-Fokuskanonen</value>
+  </data>
+  <data name="IndependentAT" xml:space="preserve">
+    <value>starre Anti-Xeno-Mehrfachkanone</value>
+  </data>
+  <data name="IndependentFour" xml:space="preserve">
+    <value>kardanische Strahlenlaser und Kühlkörper</value>
+  </data>
+  <data name="IndependentOne" xml:space="preserve">
+    <value>starre Strahlenlaser und Kühlkörperwerfer</value>
+  </data>
+  <data name="IndependentThree" xml:space="preserve">
+    <value>starre Pulslaser und Punktverteidigung</value>
+  </data>
+  <data name="IndependentTwo" xml:space="preserve">
+    <value>starre Plasmawerfer und Düppelwerfer</value>
+  </data>
+  <data name="IndependentZero" xml:space="preserve">
+    <value>kardanische Pulslaser und Düppelwerfer</value>
+  </data>
+  <data name="Starter" xml:space="preserve">
+    <value>Doppel-Plasmawerfer</value>
+  </data>
 </root>
