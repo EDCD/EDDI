@@ -413,6 +413,24 @@ namespace UnitTests
         }
 
         [TestMethod]
+        public void TestSpeechHumanize21()
+        {
+            Assert.AreEqual("just over 436 trillion", Translations.Humanize(4.36156E14M));
+        }
+
+        [TestMethod]
+        public void TestSpeechHumanize22()
+        {
+            Assert.AreEqual("on the way to 946 billion", Translations.Humanize(9.4571E11M));
+        }
+
+        [TestMethod]
+        public void TestSpeechHumanize23()
+        {
+            Assert.AreEqual("nearly 67 quadrillion", Translations.Humanize(6.6816E16M));
+        }
+
+        [TestMethod]
         public void TestTranslationVesper()
         {
             Assert.AreEqual(Translations.StarSystem("VESPER-M4"), "Vesper M 4");
