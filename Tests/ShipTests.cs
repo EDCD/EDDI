@@ -523,5 +523,30 @@ namespace UnitTests
                 }
             }
         }
+
+        [TestMethod]
+        public void TestShipRefuelledEvent_Scooping()
+        {
+            PrivateObject privateObject = new PrivateObject(EDDI.Instance);
+            privateObject.SetFieldOrProperty("CurrentShip", ShipDefinitions.FromEDModel("Asp"));
+            Ship currentShip = (Ship)privateObject.GetFieldOrProperty("CurrentShip");
+            currentShip.fueltanktotalcapacity = 32M;
+
+            string line1 = "{ \"timestamp\":\"2019 - 07 - 21T16: 28:35Z\", \"event\":\"FuelScoop\", \"Scooped\":5.001066, \"Total\":31.552881 }";
+            string line2 = "{ \"timestamp\":\"2019 - 07 - 21T16: 28:35Z\", \"event\":\"FuelScoop\", \"Scooped\":0.447121, \"Total\":32.000000 }";
+
+            List<Event> events = JournalMonitor.ParseJournalEntry(line1);
+            ShipRefuelledEvent @event1 = (ShipRefuelledEvent)events[0];
+            Assert.AreEqual(5.001066M, @event1.amount);
+            Assert.AreEqual(31.552881M, @event1.total);
+            Assert.IsFalse(@event1.full);
+            Assert.AreEqual("Ship refuelled", @event1.type);
+
+            events = JournalMonitor.ParseJournalEntry(line2);
+            ShipRefuelledEvent @event2 = (ShipRefuelledEvent)events[0];
+            Assert.AreEqual(0.447121M, @event2.amount);
+            Assert.AreEqual(32.000000M, @event2.total);
+            Assert.IsTrue(event2.full);
+        }
     }
 }
