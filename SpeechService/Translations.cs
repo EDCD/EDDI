@@ -678,7 +678,6 @@ namespace EddiSpeechService
             int nextDigit;
             string order;
             int digits = (int)Math.Log10((double)value);
-            bool morePreciseDecimalValues = digits < 10;
             if (digits < 3)
             {
                 // Units
@@ -729,7 +728,7 @@ namespace EddiSpeechService
             }
 
             // Describe decimal values
-            if (morePreciseDecimalValues)
+            if (number < 100)
             {
                 string andahalf = " " + Properties.Phrases.andahalf;
                 switch (nextDigit)
@@ -747,7 +746,7 @@ namespace EddiSpeechService
                     case 5:
                         return Properties.Phrases.around + " " + minus + number + andahalf + order;
                     case 6:
-                        return Properties.Phrases.justover + " " + minus + number + andahalf + order;
+                        return Properties.Phrases.over + " " + minus + number + andahalf + order;
                     case 7:
                         return Properties.Phrases.wellover + " " + minus + number + andahalf + order;
                     case 8:
@@ -756,6 +755,7 @@ namespace EddiSpeechService
                         return Properties.Phrases.nearly + " " + minus + (number + 1) + order;
                 }
             }
+           // Describe (less precisely) decimal values for more complex numbers
             else
             {
                 if (nextDigit < 2)
