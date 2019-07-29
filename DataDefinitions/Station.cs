@@ -166,9 +166,8 @@ namespace EddiDataDefinitions
         }
         private StationLargestPad _LargestPad;
 
-        public bool LandingPadCheck(string size)
+        public bool LandingPadCheck(StationLargestPad shipSize)
         {
-            StationLargestPad shipSize = StationLargestPad.FromEDName(size);
             if (LargestPad == StationLargestPad.Large) { return true; }
             else if (LargestPad == StationLargestPad.Medium)
             {

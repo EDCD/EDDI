@@ -35,7 +35,7 @@ namespace EddiDataDefinitions
 
         /// <summary>the size of this ship</summary>
         [JsonIgnore]
-        public string size { get; set; }
+        public StationLargestPad size { get; set; }
 
         /// <summary>the size of the military compartment slots</summary>
         [JsonIgnore]
@@ -334,7 +334,7 @@ namespace EddiDataDefinitions
             phoneticmanufacturer = PhoneticManufacturer;
             model = Model;
             phoneticmodel = PhoneticModel;
-            size = Size;
+            size = StationLargestPad.FromEDName(Size);
             militarysize = MilitarySize;
             health = 100M;
             hardpoints = new List<Hardpoint>();

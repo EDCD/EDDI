@@ -84,21 +84,17 @@ namespace EddiSpeechService
             int echoDelay = 50; // Default
             if (ship != null)
             {
-                if (ship.size == "Small")
+                if (ship.size == StationLargestPad.Small)
                 {
                     echoDelay = 50;
                 }
-                else if (ship.size == "Medium")
+                else if (ship.size == StationLargestPad.Medium)
                 {
                     echoDelay = 100;
                 }
-                else if (ship.size == "Large")
+                else if (ship.size == StationLargestPad.Large)
                 {
                     echoDelay = 200;
-                }
-                else if (ship.size == "Huge")
-                {
-                    echoDelay = 400;
                 }
             }
             return echoDelay;
