@@ -295,7 +295,7 @@ namespace UnitTests
         [TestMethod]
         public void TestSpeechHumanize1()
         {
-            Assert.AreEqual("on the way to 12 and a half thousand", Translations.Humanize(12345));
+            Assert.AreEqual("well over minus 12 thousand", Translations.Humanize(-12345));
         }
 
         [TestMethod]
@@ -331,7 +331,7 @@ namespace UnitTests
         [TestMethod]
         public void TestSpeechHumanize7()
         {
-            Assert.AreEqual("51 million", Translations.Humanize(51000000));
+            Assert.AreEqual("minus 51 million", Translations.Humanize(-51000000));
         }
 
         [TestMethod]
@@ -355,88 +355,52 @@ namespace UnitTests
         [TestMethod]
         public void TestSpeechHumanize11()
         {
-            Assert.AreEqual("on the way to minus 12 and a half thousand", Translations.Humanize(-12345));
+            Assert.AreEqual("minus 0.16", Translations.Humanize(-0.15555555M));
         }
 
         [TestMethod]
         public void TestSpeechHumanize12()
         {
-            Assert.AreEqual("minus 0.16", Translations.Humanize(-0.15555555M));
+            Assert.AreEqual("minus 0.016", Translations.Humanize(-0.015555555M));
         }
 
         [TestMethod]
         public void TestSpeechHumanize13()
         {
-            Assert.AreEqual("minus 0.016", Translations.Humanize(-0.015555555M));
+            Assert.AreEqual("minus 0.0016", Translations.Humanize(-0.0015555555M));
         }
 
         [TestMethod]
         public void TestSpeechHumanize14()
         {
-            Assert.AreEqual("minus 0.0016", Translations.Humanize(-0.0015555555M));
+            Assert.AreEqual("over minus 12", Translations.Humanize(-12.1M));
         }
 
         [TestMethod]
         public void TestSpeechHumanize15()
         {
-            Assert.AreEqual("minus 51 million", Translations.Humanize(-51000000));
+            Assert.AreEqual("just over minus 12", Translations.Humanize(-12.01M));
         }
 
         [TestMethod]
         public void TestSpeechHumanize16()
         {
-            Assert.AreEqual("just over minus 51 million", Translations.Humanize(-51000001));
+            Assert.AreEqual("just over 436 trillion", Translations.Humanize(4.36156E14M));
         }
 
         [TestMethod]
         public void TestSpeechHumanize17()
         {
-            Assert.AreEqual("minus 10 thousand", Translations.Humanize(-10000));
+            Assert.AreEqual("well over 945 billion", Translations.Humanize(9.4571E11M));
         }
 
         [TestMethod]
         public void TestSpeechHumanize18()
         {
-            Assert.AreEqual("minus 100 thousand", Translations.Humanize(-100000));
+            Assert.AreEqual("over 912 quadrillion", Translations.Humanize(9.1235E17M));
         }
 
-        [TestMethod]
         public void TestSpeechHumanize19()
-        {
-            Assert.AreEqual("over minus 12", Translations.Humanize(-12.1M));
-        }
-
-        [TestMethod]
-        public void TestSpeechHumanize20()
-        {
-            Assert.AreEqual("just over minus 12", Translations.Humanize(-12.01M));
-        }
-
-        [TestMethod]
-        public void TestSpeechHumanize21()
-        {
-            Assert.AreEqual("just over 436 trillion", Translations.Humanize(4.36156E14M));
-        }
-
-        [TestMethod]
-        public void TestSpeechHumanize22()
-        {
-            Assert.AreEqual("on the way to 946 billion", Translations.Humanize(9.4571E11M));
-        }
-
-        [TestMethod]
-        public void TestSpeechHumanize23()
-        {
-            Assert.AreEqual("well over 669 quadrillion", Translations.Humanize(6.6956E17M));
-        }
-
-        [TestMethod]
-        public void TestSpeechHumanize24()
-        {
-            Assert.AreEqual("over 912 million", Translations.Humanize(9.1235E8M));
-        }
-
-        public void TestSpeechHumanize25()
         {
             Assert.AreEqual("nearly 646 thousand", Translations.Humanize(6.459E5M));
         }

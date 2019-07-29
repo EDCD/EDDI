@@ -736,21 +736,19 @@ namespace EddiSpeechService
                     case 0:
                         return Properties.Phrases.justover + " " + minus + number + order;
                     case 1:
-                        return Properties.Phrases.over + " " + minus + number + order;
                     case 2:
-                        return Properties.Phrases.wellover + " " + minus + number + order;
+                        return Properties.Phrases.over + " " + minus + number + order;
                     case 3:
-                        return Properties.Phrases.onthewayto + " " + minus + number + andahalf + order;
+                        return Properties.Phrases.wellover + " " + minus + number + order;
                     case 4:
                         return Properties.Phrases.nearly + " " + minus + number + andahalf + order;
                     case 5:
                         return Properties.Phrases.around + " " + minus + number + andahalf + order;
                     case 6:
-                        return Properties.Phrases.over + " " + minus + number + andahalf + order;
                     case 7:
-                        return Properties.Phrases.wellover + " " + minus + number + andahalf + order;
+                        return Properties.Phrases.over + " " + minus + number + andahalf + order;
                     case 8:
-                        return Properties.Phrases.onthewayto + " " + minus + (number + 1) + order;
+                        return Properties.Phrases.wellover + " " + minus + number + andahalf + order;
                     case 9:
                         return Properties.Phrases.nearly + " " + minus + (number + 1) + order;
                 }
@@ -762,17 +760,13 @@ namespace EddiSpeechService
                 {
                     return Properties.Phrases.justover + " " + minus + number + order;
                 }
-                else if (nextDigit < 4)
+                else if (nextDigit < 6)
                 {
                     return Properties.Phrases.over + " " + minus + number + order;
                 }
-                else if (nextDigit < 6)
-                {
-                    return Properties.Phrases.wellover + " " + minus + number + order;
-                }
                 else if (nextDigit < 8)
                 {
-                    return Properties.Phrases.onthewayto + " " + minus + (number + 1) + order;
+                    return Properties.Phrases.wellover + " " + minus + number + order;
                 }
                 else if (nextDigit < 10)
                 {
