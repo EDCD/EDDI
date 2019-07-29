@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="desc" xml:space="preserve">
-    <value>Ein Programmteil (_Info an...), das innerhalb von VoiceAttack eine große Anzahl von Variablen erzeugt und benutzerdefinierte Aktionen auslöst.</value>
+    <value>Ein Programmteil ( Info an... ), das innerhalb von VoiceAttack eine große Anzahl von Variablen erzeugt und benutzerdefinierte Aktionen auslöst.</value>
   </data>
   <data name="name" xml:space="preserve">
     <value>_Info an VoiceAttack</value>
