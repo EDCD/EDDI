@@ -4,40 +4,30 @@ namespace EddiDataDefinitions
 {
     /// <summary> Station's largest landing pad size </summary>
     [JsonObject(MemberSerialization.OptIn)]
-    public class StationLargestPad : ResourceBasedLocalizedEDName<StationLargestPad>
+    public class LandingPadSize : ResourceBasedLocalizedEDName<LandingPadSize>
     {
-        static StationLargestPad()
+        static LandingPadSize()
         {
             resourceManager = Properties.StationLargestPad.ResourceManager;
             resourceManager.IgnoreCase = true;
-            missingEDNameHandler = (edname) => new StationLargestPad(edname);
+            missingEDNameHandler = (edname) => new LandingPadSize(edname);
 
-            None = new StationLargestPad("None");
-            var Large = new StationLargestPad("Large");
-            var Medium = new StationLargestPad("Medium");
-            var Small = new StationLargestPad("Small");
+            None = new LandingPadSize("None");
+            Large = new LandingPadSize("Large");
+            Medium = new LandingPadSize("Medium");
+            Small = new LandingPadSize("Small");
         }
 
-        public static readonly StationLargestPad None;
+        public static readonly LandingPadSize None;
+        public static readonly LandingPadSize Large;
+        public static readonly LandingPadSize Medium;
+        public static readonly LandingPadSize Small;
 
         // dummy used to ensure that the static constructor has run
-        public StationLargestPad() : this("")
+        public LandingPadSize() : this("")
         { }
 
-        private StationLargestPad(string edname) : base(edname, edname)
+        private LandingPadSize(string edname) : base(edname, edname)
         { }
-
-        public static StationLargestPad FromSize(string value)
-        {
-            // Map old values from when we had an enum and map abbreviated sizes
-            string size = string.Empty;
-            if (value == "0" || value == null) { size = "None"; }
-            value = value?.ToLowerInvariant();
-            if (value == "1" || value == "s") { size = "Small"; }
-            if (value == "2" || value == "m") { size = "Medium"; }
-            if (value == "3" || value == "l") { size = "Large"; }
-
-            return FromName(size);
-        }
     }
 }

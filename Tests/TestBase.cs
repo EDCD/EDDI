@@ -21,6 +21,7 @@ namespace UnitTests
             Utilities.Files.unitTesting = true;
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times")]
         public static T DeserializeJsonResource<T>(byte[] data) where T : class
         {
             using (var stream = new MemoryStream(data))

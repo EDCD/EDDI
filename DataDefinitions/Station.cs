@@ -138,43 +138,42 @@ namespace EddiDataDefinitions
         public StationModel Model { get; set; } = StationModel.None;
 
         /// <summary>What is the largest ship that can land here?</summary>
-        [JsonIgnore, Obsolete("Please use StationLargestPad instead")]
+        [JsonIgnore, Obsolete("Please use LargestPad instead")]
         public string largestpad => LargestPad.localizedName;
         // This field isn't always provided, so we derive it from the station model when it's not explicitly set.
-        public StationLargestPad LargestPad
+        public LandingPadSize LargestPad
         {
             get
             {
                 if (_LargestPad != null)
                 {
-                    return _LargestPad ?? StationLargestPad.None;
+                    return _LargestPad ?? LandingPadSize.None;
                 }
                 if (Model.edname == "None")
                 {
-                    return StationLargestPad.None;
+                    return LandingPadSize.None;
                 }
                 if (Model.edname == "Outpost")
                 {
-                    return StationLargestPad.FromSize("m");
+                    return LandingPadSize.Medium;
                 }
-                return StationLargestPad.FromSize("l");
+                return LandingPadSize.Large;
             }
             set
             {
-                _LargestPad = value ?? StationLargestPad.None;
+                _LargestPad = value ?? LandingPadSize.None;
             }
         }
-        private StationLargestPad _LargestPad;
+        private LandingPadSize _LargestPad;
 
-        public bool LandingPadCheck(string size)
+        public bool LandingPadCheck(LandingPadSize shipSize)
         {
-            StationLargestPad shipSize = StationLargestPad.FromEDName(size);
-            if (LargestPad == StationLargestPad.FromSize("l")) { return true; }
-            else if (LargestPad == StationLargestPad.FromSize("m"))
+            if (LargestPad == LandingPadSize.Large) { return true; }
+            else if (LargestPad == LandingPadSize.Medium)
             {
-                if (shipSize == StationLargestPad.FromSize("l")) { return false; } else { return true; }
+                if (shipSize == LandingPadSize.Large) { return false; } else { return true; }
             }
-            if (shipSize == StationLargestPad.FromSize("s")) { return true; }
+            if (shipSize == LandingPadSize.Small) { return true; }
             return false;
         }
 
