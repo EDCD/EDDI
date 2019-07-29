@@ -688,37 +688,37 @@ namespace EddiSpeechService
             else if (digits < 6)
             {
                 // Thousands
-                number = (int)(value / 1000);
+                number = (int)(value / 1E3M);
                 order = " " + Properties.Phrases.thousand;
-                nextDigit = (int)((value - (number * 1000)) / 100);
+                nextDigit = (int)((value - (number * 1E3M)) / 1E2M);
             }
             else if (digits < 9)
             {
                 // Millions
-                number = (int)(value / 1000000);
+                number = (int)(value / 1E6M);
                 order = " " + Properties.Phrases.million;
-                nextDigit = (int)((value - (number * 1000000)) / 100000);
+                nextDigit = (int)((value - (number * 1E6M)) / 1E5M);
             }
             else if (digits < 12)
             {
                 // Billions
-                number = (int)(value / 1000000000);
+                number = (int)(value / 1E9M);
                 order = " " + Properties.Phrases.billion;
-                nextDigit = (int)((value - (number * 1000000000)) / 100000000);
+                nextDigit = (int)((value - (number * 1E9M)) / 1E8M);
             }
             else if (digits < 15)
             {
                 // Trillions
-                number = (int)(value / 1000000000000);
+                number = (int)(value / 1E12M);
                 order = " " + Properties.Phrases.trillion;
-                nextDigit = (int)((value - (number * 1000000000000)) / 100000000000);
+                nextDigit = (int)((value - (number * 1E12M)) / 1E11M);
             }
             else
             {
                 // Quadrillions
-                number = (int)(value / 1000000000000000);
+                number = (int)(value / 1E15M);
                 order = " " + Properties.Phrases.quadrillion;
-                nextDigit = (int)((value - (number * 1000000000000000)) / 100000000000000);
+                nextDigit = (int)((value - (number * 1E15M)) / 1E14M);
             }
 
             // See if we have an exact match
@@ -728,32 +728,52 @@ namespace EddiSpeechService
             }
 
             // Describe decimal values
-            string andahalf = " " + Properties.Phrases.andahalf;
-            switch (nextDigit)
+            if (number < 100)
             {
-                case 0:
-                    return Properties.Phrases.justover + " " + minus + number + order;
-                case 1:
-                    return Properties.Phrases.over + " " + minus + number + order;
-                case 2:
-                    return Properties.Phrases.wellover + " " + minus + number + order;
-                case 3:
-                    return Properties.Phrases.onthewayto + " " + minus + number + andahalf + order;
-                case 4:
-                    return Properties.Phrases.nearly + " " + minus + number + andahalf + order;
-                case 5:
-                    return Properties.Phrases.around + " " + minus + number + andahalf + order;
-                case 6:
-                    return Properties.Phrases.justover + " " + minus + number + andahalf + order;
-                case 7:
-                    return Properties.Phrases.wellover + " " + minus + number + andahalf + order;
-                case 8:
-                    return Properties.Phrases.onthewayto + " " + minus + (number + 1) + order;
-                case 9:
-                    return Properties.Phrases.nearly + " " + minus + (number + 1) + order;
-                default:
-                    return Properties.Phrases.around + " " + minus + number + order;
+                string andahalf = " " + Properties.Phrases.andahalf;
+                switch (nextDigit)
+                {
+                    case 0:
+                        return Properties.Phrases.justover + " " + minus + number + order;
+                    case 1:
+                    case 2:
+                        return Properties.Phrases.over + " " + minus + number + order;
+                    case 3:
+                        return Properties.Phrases.wellover + " " + minus + number + order;
+                    case 4:
+                        return Properties.Phrases.nearly + " " + minus + number + andahalf + order;
+                    case 5:
+                        return Properties.Phrases.around + " " + minus + number + andahalf + order;
+                    case 6:
+                    case 7:
+                        return Properties.Phrases.over + " " + minus + number + andahalf + order;
+                    case 8:
+                        return Properties.Phrases.wellover + " " + minus + number + andahalf + order;
+                    case 9:
+                        return Properties.Phrases.nearly + " " + minus + (number + 1) + order;
+                }
             }
+           // Describe (less precisely) decimal values for more complex numbers
+            else
+            {
+                if (nextDigit < 2)
+                {
+                    return Properties.Phrases.justover + " " + minus + number + order;
+                }
+                else if (nextDigit < 6)
+                {
+                    return Properties.Phrases.over + " " + minus + number + order;
+                }
+                else if (nextDigit < 8)
+                {
+                    return Properties.Phrases.wellover + " " + minus + number + order;
+                }
+                else if (nextDigit < 10)
+                {
+                    return Properties.Phrases.nearly + " " + minus + (number + 1) + order;
+                }
+            }
+            return Properties.Phrases.around + " " + minus + number + order;
         }
     }
 }

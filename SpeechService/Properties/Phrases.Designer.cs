@@ -133,15 +133,6 @@ namespace EddiSpeechService.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to on the way to.
-        /// </summary>
-        public static string onthewayto {
-            get {
-                return ResourceManager.GetString("onthewayto", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to over.
         /// </summary>
         public static string over {
