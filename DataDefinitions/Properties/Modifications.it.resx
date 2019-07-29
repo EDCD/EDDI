@@ -181,6 +181,9 @@
   
   
   
+  <data name="SensorWideAngle" xml:space="preserve">
+    <value>Scanner con angolo di intercettazione ampliato</value>
+  </data>
   
   
   
@@ -205,8 +208,15 @@
   
   
   
+  <data name="WakeScannerLongRange" xml:space="preserve">
+    <value>Scanner con raggio di intercettazione aumentato
+</value>
+  </data>
   
   
+  <data name="WakeScannerWideAngle" xml:space="preserve">
+    <value>Scanner con angolo di intercettazione ampliato</value>
+  </data>
   
   
   
@@ -231,6 +241,9 @@
   
   
   
+  <data name="KillWarrantScannerLongRange" xml:space="preserve">
+    <value>Scanner con raggio di intercettazione aumentato</value>
+  </data>
   
   
   
@@ -244,16 +257,18 @@
   
   
   
+  <data name="CargoScannerLongRange" xml:space="preserve">
+    <value>Scanner con raggio di intercettazione aumentato</value>
+  </data>
+  <data name="CargoScannerWideAngle" xml:space="preserve">
+    <value>Scanner con angolo di intercettazione ampliato</value>
+  </data>
   
   
   
-  
-  
-  
-  
-  
-  
-  
+  <data name="KillWarrantScannerWideAngle" xml:space="preserve">
+    <value>Scanner con angolo di intercettazione ampliato</value>
+  </data>
   
   
   
