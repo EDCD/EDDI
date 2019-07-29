@@ -155,9 +155,9 @@ namespace EddiDataDefinitions
                 }
                 if (Model.edname == "Outpost")
                 {
-                    return StationLargestPad.FromSize("m");
+                    return StationLargestPad.Medium;
                 }
-                return StationLargestPad.FromSize("l");
+                return StationLargestPad.Large;
             }
             set
             {
@@ -169,12 +169,12 @@ namespace EddiDataDefinitions
         public bool LandingPadCheck(string size)
         {
             StationLargestPad shipSize = StationLargestPad.FromEDName(size);
-            if (LargestPad == StationLargestPad.FromSize("l")) { return true; }
-            else if (LargestPad == StationLargestPad.FromSize("m"))
+            if (LargestPad == StationLargestPad.Large) { return true; }
+            else if (LargestPad == StationLargestPad.Medium)
             {
-                if (shipSize == StationLargestPad.FromSize("l")) { return false; } else { return true; }
+                if (shipSize == StationLargestPad.Large) { return false; } else { return true; }
             }
-            if (shipSize == StationLargestPad.FromSize("s")) { return true; }
+            if (shipSize == StationLargestPad.Small) { return true; }
             return false;
         }
 

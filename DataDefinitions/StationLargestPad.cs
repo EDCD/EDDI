@@ -13,12 +13,15 @@ namespace EddiDataDefinitions
             missingEDNameHandler = (edname) => new StationLargestPad(edname);
 
             None = new StationLargestPad("None");
-            var Large = new StationLargestPad("Large");
-            var Medium = new StationLargestPad("Medium");
-            var Small = new StationLargestPad("Small");
+            Large = new StationLargestPad("Large");
+            Medium = new StationLargestPad("Medium");
+            Small = new StationLargestPad("Small");
         }
 
         public static readonly StationLargestPad None;
+        public static readonly StationLargestPad Large;
+        public static readonly StationLargestPad Medium;
+        public static readonly StationLargestPad Small;
 
         // dummy used to ensure that the static constructor has run
         public StationLargestPad() : this("")
@@ -26,18 +29,5 @@ namespace EddiDataDefinitions
 
         private StationLargestPad(string edname) : base(edname, edname)
         { }
-
-        public static StationLargestPad FromSize(string value)
-        {
-            // Map old values from when we had an enum and map abbreviated sizes
-            string size = string.Empty;
-            if (value == "0" || value == null) { size = "None"; }
-            value = value?.ToLowerInvariant();
-            if (value == "1" || value == "s") { size = "Small"; }
-            if (value == "2" || value == "m") { size = "Medium"; }
-            if (value == "3" || value == "l") { size = "Large"; }
-
-            return FromName(size);
-        }
     }
 }
