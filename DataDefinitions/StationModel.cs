@@ -34,6 +34,12 @@ namespace EddiDataDefinitions
         private StationModel(string edname) : base(edname, edname.Replace(" Starport", "").Replace("Ocellus", "Bernal"))
         {}
 
+        new public static StationModel FromEDName(string from)
+        {
+            string tidiedFrom = from.Replace(" Starport", "").Replace("Ocellus", "Bernal");
+            return ResourceBasedLocalizedEDName<StationModel>.FromEDName(tidiedFrom);
+        }
+
         new public static StationModel FromName(string from)
         {
             if (from == null)
