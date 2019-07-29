@@ -4,30 +4,30 @@ namespace EddiDataDefinitions
 {
     /// <summary> Station's largest landing pad size </summary>
     [JsonObject(MemberSerialization.OptIn)]
-    public class StationLargestPad : ResourceBasedLocalizedEDName<StationLargestPad>
+    public class LandingPadSize : ResourceBasedLocalizedEDName<LandingPadSize>
     {
-        static StationLargestPad()
+        static LandingPadSize()
         {
             resourceManager = Properties.StationLargestPad.ResourceManager;
             resourceManager.IgnoreCase = true;
-            missingEDNameHandler = (edname) => new StationLargestPad(edname);
+            missingEDNameHandler = (edname) => new LandingPadSize(edname);
 
-            None = new StationLargestPad("None");
-            Large = new StationLargestPad("Large");
-            Medium = new StationLargestPad("Medium");
-            Small = new StationLargestPad("Small");
+            None = new LandingPadSize("None");
+            Large = new LandingPadSize("Large");
+            Medium = new LandingPadSize("Medium");
+            Small = new LandingPadSize("Small");
         }
 
-        public static readonly StationLargestPad None;
-        public static readonly StationLargestPad Large;
-        public static readonly StationLargestPad Medium;
-        public static readonly StationLargestPad Small;
+        public static readonly LandingPadSize None;
+        public static readonly LandingPadSize Large;
+        public static readonly LandingPadSize Medium;
+        public static readonly LandingPadSize Small;
 
         // dummy used to ensure that the static constructor has run
-        public StationLargestPad() : this("")
+        public LandingPadSize() : this("")
         { }
 
-        private StationLargestPad(string edname) : base(edname, edname)
+        private LandingPadSize(string edname) : base(edname, edname)
         { }
     }
 }
