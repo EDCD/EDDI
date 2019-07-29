@@ -134,7 +134,69 @@ namespace UnitTests
         }
 
         [TestMethod]
-        public void TestLessThan()
+        public void TestHashCodeIsStable()
+        {
+            Version v1 = new Version(1, 2, 3, "b", 4);
+            Version v2 = new Version(1, 2, 3, "b", 4);
+            int hash1 = v1.GetHashCode();
+            int hash2 = v2.GetHashCode();
+            Assert.AreEqual(hash1, hash2);
+        }
+
+        [TestMethod]
+        public void TestInequalityToObject()
+        {
+            Version v1 = new Version(1, 2, 3, "b", 4);
+            object o = new object();
+            Assert.IsFalse(v1.Equals(o));
+        }
+
+        [TestMethod]
+        public void TestEqualityToObject()
+        {
+            Version v1 = new Version(1, 2, 3, "b", 4);
+            object o = new Version(1, 2, 3, "b", 4);
+            Assert.IsTrue(v1.Equals(o));
+        }
+
+        [TestMethod]
+        public void TestMajorFieldDifferences()
+        {
+            Version v1 = new Version(1, 5, 7, "b", 5);
+            Version v2 = new Version(2, 3, 4, "a", 4); // major is greater, all subordinates are lesser
+            Assert.IsTrue(v1 < v2);
+            Assert.IsTrue(v2 > v1);
+        }
+
+        [TestMethod]
+        public void TestMinorFieldDifferences()
+        {
+            Version v1 = new Version(1, 2, 5, "b", 5);
+            Version v2 = new Version(1, 3, 4, "a", 4); // minor is greater, all subordinates are lesser
+            Assert.IsTrue(v1 < v2);
+            Assert.IsTrue(v2 > v1);
+        }
+
+        [TestMethod]
+        public void TestPatchDifferences()
+        {
+            Version v1 = new Version(1, 2, 3, "b", 5);
+            Version v2 = new Version(1, 2, 4, "a", 4); // patch is greater, all subordinates are lesser
+            Assert.IsTrue(v1 < v2);
+            Assert.IsTrue(v2 > v1);
+        }
+
+        [TestMethod]
+        public void TestPhaseDifferences()
+        {
+            Version v1 = new Version(1, 2, 3, "a", 5);
+            Version v2 = new Version(1, 2, 3, "b", 4); // phase is greater, all subordinates are lesser
+            Assert.IsTrue(v1 < v2);
+            Assert.IsTrue(v2 > v1);
+        }
+
+        [TestMethod]
+        public void TestIterationLessThan()
         {
             Version v1 = new Version(1, 2, 3, "b", 4);
             Version v2 = new Version(1, 2, 3, "b", 5);
@@ -142,7 +204,7 @@ namespace UnitTests
         }
 
         [TestMethod]
-        public void TestLessThanOrEqual()
+        public void TestIterationLessThanOrEqual()
         {
             Version v1 = new Version(1, 2, 3, "b", 4);
             Version v2 = new Version(1, 2, 3, "b", 4);
@@ -150,7 +212,7 @@ namespace UnitTests
         }
 
         [TestMethod]
-        public void TestGreaterThan()
+        public void TestIterationGreaterThan()
         {
             Version v1 = new Version(1, 2, 3, "b", 4);
             Version v2 = new Version(1, 2, 3, "b", 5);
@@ -158,7 +220,7 @@ namespace UnitTests
         }
 
         [TestMethod]
-        public void TestGreaterThanOrEqual()
+        public void TestIterationGreaterThanOrEqual()
         {
             Version v1 = new Version(1, 2, 3, "b", 4);
             Version v2 = new Version(1, 2, 3, "b", 4);

@@ -216,3 +216,6 @@ ModelManifest.xml
 
 # Auto-generated resource manager
 Documentation.chw
+
+# AxoCover
+.axoCover/runs
