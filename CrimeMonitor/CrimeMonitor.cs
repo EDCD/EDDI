@@ -1025,7 +1025,7 @@ namespace EddiCrimeMonitor
             {
                 // Filter stations within the faction system which meet the station type prioritization,
                 // max distance from the main star, game version, and landing pad size requirements
-                string shipSize = EDDI.Instance?.CurrentShip?.size ?? "Large";
+                EddiDataDefinitions.Size shipSize = EDDI.Instance?.CurrentShip?.Size ?? EddiDataDefinitions.Size.Large;
                 List<Station> factionStations = !prioritizeOrbitalStations && EDDI.Instance.inHorizons ? factionStarSystem.stations : factionStarSystem.orbitalstations
                     .Where(s => s.stationservices.Count > 0).ToList();
                 factionStations = factionStations.Where(s => s.distancefromstar <= maxStationDistanceFromStarLs).ToList();

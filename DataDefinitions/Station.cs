@@ -141,40 +141,39 @@ namespace EddiDataDefinitions
         [JsonIgnore, Obsolete("Please use StationLargestPad instead")]
         public string largestpad => LargestPad.localizedName;
         // This field isn't always provided, so we derive it from the station model when it's not explicitly set.
-        public StationLargestPad LargestPad
+        public Size LargestPad
         {
             get
             {
                 if (_LargestPad != null)
                 {
-                    return _LargestPad ?? StationLargestPad.None;
+                    return _LargestPad ?? Size.None;
                 }
                 if (Model.edname == "None")
                 {
-                    return StationLargestPad.None;
+                    return Size.None;
                 }
                 if (Model.edname == "Outpost")
                 {
-                    return StationLargestPad.Medium;
+                    return Size.Medium;
                 }
-                return StationLargestPad.Large;
+                return Size.Large;
             }
             set
             {
-                _LargestPad = value ?? StationLargestPad.None;
+                _LargestPad = value ?? Size.None;
             }
         }
-        private StationLargestPad _LargestPad;
+        private Size _LargestPad;
 
-        public bool LandingPadCheck(string size)
+        public bool LandingPadCheck(Size shipSize)
         {
-            StationLargestPad shipSize = StationLargestPad.FromEDName(size);
-            if (LargestPad == StationLargestPad.Large) { return true; }
-            else if (LargestPad == StationLargestPad.Medium)
+            if (LargestPad == Size.Large) { return true; }
+            else if (LargestPad == Size.Medium)
             {
-                if (shipSize == StationLargestPad.Large) { return false; } else { return true; }
+                if (shipSize == Size.Large) { return false; } else { return true; }
             }
-            if (shipSize == StationLargestPad.Small) { return true; }
+            if (shipSize == Size.Small) { return true; }
             return false;
         }
 

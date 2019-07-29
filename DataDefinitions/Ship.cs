@@ -33,9 +33,13 @@ namespace EddiDataDefinitions
         [JsonIgnore]
         public List<Translation> phoneticmodel { get; set; }
 
+        /// <summary>the localized size of this ship</summary>
+        [JsonIgnore]
+        public string size => Size.localizedName;
+
         /// <summary>the size of this ship</summary>
         [JsonIgnore]
-        public string size { get; set; }
+        public Size Size { get; set; }
 
         /// <summary>the size of the military compartment slots</summary>
         [JsonIgnore]
@@ -326,7 +330,7 @@ namespace EddiDataDefinitions
             launchbays = new List<LaunchBay>();
         }
 
-        public Ship(long EDID, string EDName, string Manufacturer, List<Translation> PhoneticManufacturer, string Model, List<Translation> PhoneticModel, string Size, int? MilitarySize, decimal reservoirFuelTankSize)
+        public Ship(long EDID, string EDName, string Manufacturer, List<Translation> PhoneticManufacturer, string Model, List<Translation> PhoneticModel, Size Size, int? MilitarySize, decimal reservoirFuelTankSize)
         {
             this.EDID = EDID;
             this.EDName = EDName;
@@ -334,7 +338,7 @@ namespace EddiDataDefinitions
             phoneticmanufacturer = PhoneticManufacturer;
             model = Model;
             phoneticmodel = PhoneticModel;
-            size = Size;
+            this.Size = Size;
             militarysize = MilitarySize;
             health = 100M;
             hardpoints = new List<Hardpoint>();
@@ -470,7 +474,7 @@ namespace EddiDataDefinitions
                 manufacturer = template.manufacturer;
                 phoneticmanufacturer = template.phoneticmanufacturer;
                 phoneticmodel = template.phoneticmodel;
-                size = template.size;
+                Size = template.Size;
                 militarysize = template.militarysize;
                 activeFuelReservoirCapacity = template.activeFuelReservoirCapacity;
                 if (Role == null)

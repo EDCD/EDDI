@@ -315,7 +315,7 @@ namespace EddiNavigationService
             StarSystem currentSystem = EDDI.Instance?.CurrentStarSystem;
             if (currentSystem != null)
             {
-                string shipSize = EDDI.Instance?.CurrentShip?.size ?? "Large";
+                Size shipSize = EDDI.Instance?.CurrentShip?.Size ?? Size.Large;
                 ServiceFilter.TryGetValue(serviceType, out dynamic filter);
 
                 StarSystem ServiceStarSystem = GetServiceSystem(serviceType, maxStationDistance, prioritizeOrbitalStations);
@@ -361,7 +361,7 @@ namespace EddiNavigationService
             if (currentSystem != null)
             {
                 // Get the filter parameters
-                string shipSize = EDDI.Instance?.CurrentShip?.size ?? "Large";
+                Size shipSize = EDDI.Instance?.CurrentShip?.Size ?? Size.Large;
                 ServiceFilter.TryGetValue(serviceType, out dynamic filter);
                 int cubeLy = filter.cubeLy;
 

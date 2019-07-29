@@ -2,6 +2,10 @@
 
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
+### Development
+  * Core
+    * Ship size is now localized. 
+
 ### 3.4.2-b1
   * Core
     * Application startup no longer waits for network operations to respond before displaying the UI.
