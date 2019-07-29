@@ -1092,8 +1092,9 @@ namespace Eddi
             {
                 Logging.Info("VoiceAttack version: " + EDDI.Instance.vaVersion);
             }
-            Logging.Info("Commander name: " + (EDDI.Instance.Cmdr != null ? EDDI.Instance.Cmdr.name : "unknown"));
-            Logging.Info("Current culture: " + CultureInfo.DefaultThreadCurrentCulture.IetfLanguageTag ?? "unknown");
+            Logging.Info("Commander name: " + (EDDI.Instance.Cmdr != null ? EDDI.Instance.Cmdr.name : "null"));
+            Logging.Info("Default UI culture: " + (CultureInfo.DefaultThreadCurrentUICulture?.IetfLanguageTag ?? "automatic"));
+            Logging.Info("Current UI culture: " + (CultureInfo.CurrentUICulture?.IetfLanguageTag ?? "null"));
 
             // Prepare a truncated log file for export if verbose logging is enabled
             if (eddiVerboseLogging.IsChecked.Value)
