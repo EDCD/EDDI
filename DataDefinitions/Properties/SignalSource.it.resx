@@ -145,5 +145,8 @@
   
   
   
-  
+  <data name="ListeningPost:#index=1" xml:space="preserve">
+    <value>Stazione di Ascolto</value>
+    <comment>Listening Post:#Index=1</comment>
+  </data>
 </root>
