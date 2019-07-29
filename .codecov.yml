@@ -1,4 +1,5 @@
 codecov:
+  branch: develop
   token: c0cc9048-1cdc-464b-b2fa-dac79464e1c4
   notify: no
 #    require_ci_to_pass: no
@@ -24,10 +25,10 @@ parsers:
       macro: no
 
 comment:
-  layout: "header, diff, changes, tree"
+  layout: "header, diff"
   behavior: default
-  require_changes: no 
-  branch: !l10n_develop # never post comments if the PR head is on the l10n_develop branch
+  require_changes: no
+  branches: improbablyNamed # suppress commenting for all branches w/ a sane name
 
 # Available parameters:
 
