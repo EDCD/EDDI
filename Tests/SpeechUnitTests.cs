@@ -3,6 +3,7 @@ using EddiSpeechService;
 using System.Linq;
 using System.Collections.Generic;
 using EddiVoiceAttackResponder;
+using System.Collections.Concurrent;
 
 namespace UnitTests
 {
@@ -409,6 +410,33 @@ namespace UnitTests
         public void TestTranslationVesper()
         {
             Assert.AreEqual(Translations.StarSystem("VESPER-M4"), "Vesper M 4");
+        }
+
+        [TestMethod]
+        public void TestSpeechQueue_DequeueSpeechOfType()
+        {
+            PrivateObject privateObject = new PrivateObject(SpeechQueue.Instance);
+            privateObject.Invoke("DequeueAllSpeech", System.Array.Empty<object>());
+            privateObject.Invoke("Enqueue", new object[] { new EddiSpeech("Test speech 1", null, 3, null, false, null) });
+            privateObject.Invoke("Enqueue", new object[] { new EddiSpeech("Test speech 2", null, 4, null, false, "Hull damaged") });
+            privateObject.Invoke("Enqueue", new object[] { new EddiSpeech("Test speech 3", null, 3, null, false, "Body scanned") });
+
+            List<ConcurrentQueue<EddiSpeech>> priorityQueues = (List<ConcurrentQueue<EddiSpeech>>)privateObject.GetFieldOrProperty("priorityQueues");
+            Assert.AreEqual(3, priorityQueues.SelectMany(q => q).Count());
+            try
+            {
+                // Only the speech of type "Hull damaged" should be removed, null types and other types should remain in place.
+                privateObject.Invoke("DequeueSpeechOfType", new object[] { "Hull damaged" });
+                Assert.AreEqual(2, priorityQueues.SelectMany(q => q).Count());
+                // Verify that the order of remaining speech of the same priority is unchanged.
+                Assert.AreEqual("Test speech 1", priorityQueues[3].First().message);
+                Assert.AreEqual("Test speech 3", priorityQueues[3].Last().message);
+            }
+            catch (System.Exception)
+            {
+                Assert.Fail();
+            }
+            privateObject.Invoke("DequeueAllSpeech", System.Array.Empty<object>());
         }
     }
 }
