@@ -2,7 +2,7 @@ codecov:
   branch: develop
   token: c0cc9048-1cdc-464b-b2fa-dac79464e1c4
   notify: no
-#    require_ci_to_pass: no
+  #    require_ci_to_pass: no
 
 coverage:
   precision: 2
@@ -12,8 +12,8 @@ coverage:
   status: 
     project: yes
       default:
-	    threshold: 10%
-	patch: off
+        threshold: 10%
+    patch: off
     changes: off
 
 parsers:
@@ -24,11 +24,7 @@ parsers:
       method: no
       macro: no
 
-comment:
-  layout: "header, diff"
-  behavior: default
-  require_changes: no
-  branches: improbablyNamed # suppress commenting for all branches w/ a sane name
+comment: off
 
 # Available parameters:
 
