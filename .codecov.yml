@@ -16,6 +16,11 @@ coverage:
     patch: off
     changes: off
 
+  ignore: 
+    - "*.xaml"
+    - "VoiceAttackPlugin.cs"
+    - "VoiceAttackVariables.cs"
+
 parsers:
   gcov:
     branch_detection:
