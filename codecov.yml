@@ -21,14 +21,6 @@ coverage:
     - "VoiceAttackResponder/VoiceAttackPlugin.cs"
     - "VoiceAttackResponder/VoiceAttackVariables.cs"
 
-parsers:
-  gcov:
-    branch_detection:
-      conditional: yes
-      loop: yes
-      method: no
-      macro: no
-
 comment: off
 
 # Available parameters:

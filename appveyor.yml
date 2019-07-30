@@ -40,8 +40,8 @@ on_success:
  # Our CodeCov token is "c0cc9048-1cdc-464b-b2fa-dac79464e1c4" 
  - ps: |
       cd TestResults
-      choco install python
-      pip install codecov
-      .\codecov -f coverage.xml -t c0cc9048-1cdc-464b-b2fa-dac79464e1c4
+      $env:PATH = 'C:\msys64\usr\bin;' + $env:PATH
+      Invoke-WebRequest -Uri 'https://codecov.io/bash' -OutFile codecov.sh
+      bash codecov.sh -f coverage.xml -t c0cc9048-1cdc-464b-b2fa-dac79464e1c4
 
 # Reference: https://www.appveyor.com/docs/appveyor-yml/
