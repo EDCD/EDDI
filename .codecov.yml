@@ -17,9 +17,9 @@ coverage:
     changes: off
 
   ignore: 
-    - "*.xaml"
-    - "VoiceAttackPlugin.cs"
-    - "VoiceAttackVariables.cs"
+    - "**/*.xaml"
+    - "**/VoiceAttackPlugin.cs"
+    - "**/VoiceAttackVariables.cs"
 
 parsers:
   gcov:
