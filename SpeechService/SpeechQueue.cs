@@ -116,7 +116,7 @@ namespace EddiSpeechService
 
         private void filterSpeechQueue(string type, ref ConcurrentQueue<EddiSpeech> speechQueue, EddiSpeech eddiSpeech)
         {
-            if (!(bool)eddiSpeech?.eventType?.Contains(type))
+            if (!(eddiSpeech.eventType == type))
             {
                 speechQueue.Enqueue(eddiSpeech);
             }

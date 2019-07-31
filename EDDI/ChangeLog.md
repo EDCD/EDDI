@@ -2,6 +2,10 @@
 
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
+### Development
+  * Speech responder
+    * Fixed a bug with speech queues that could in some circumstances cause EDDI to crash in the middle of combat.
+
 ### 3.4.2-b1
   * Core
     * Application startup no longer waits for network operations to respond before displaying the UI.
