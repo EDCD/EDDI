@@ -6,6 +6,8 @@ namespace EddiDataDefinitions
     {
         static StationModel()
         {
+            // Note: The same station may use the model "Ocellus" for one event and "Bernal" for another. 
+
             resourceManager = Properties.StationModels.ResourceManager;
             resourceManager.IgnoreCase = true;
             missingEDNameHandler = (edname) => new StationModel(edname);
@@ -16,6 +18,7 @@ namespace EddiDataDefinitions
             var Coriolis = new StationModel("Coriolis");
             var Megaship = new StationModel("Megaship");
             var MegaShipCivilian = new StationModel("MegaShipCivilian");
+            var Ocellus = new StationModel("Ocellus");
             var Orbis = new StationModel("Orbis");
             var Outpost = new StationModel("Outpost");
             var SurfaceStation = new StationModel("SurfaceStation");
@@ -30,8 +33,7 @@ namespace EddiDataDefinitions
         public StationModel() : this("")
         {}
 
-        // The same station may use the model "Ocellus" for one event and "Bernal" for another. 
-        private StationModel(string edname) : base(edname, edname.Replace(" Starport", "").Replace("Ocellus", "Bernal"))
+        private StationModel(string edname) : base(edname, edname.Replace(" Starport", ""))
         {}
 
         new public static StationModel FromName(string from)
@@ -45,8 +47,9 @@ namespace EddiDataDefinitions
             Dictionary<string, string> modelTranslations = new Dictionary<string, string>()
             {
                 { "Coriolis Starport", "Coriolis" },
-                // Ocellus starports are described by the journal as "Bernal"
-                { "Ocellus Starport", "Bernal" }, 
+                // Ocellus starports are described by the journal as either "Bernal" or "Ocellus"
+                { "Bernal Starport", "Bernal" },
+                { "Ocellus Starport", "Ocellus" }, 
                 { "Orbis Starport", "Orbis" },
                 // The journal doesn't provide details on the type of outpost (military, civilian, scientific, etc.)
                 // Types are likely derived from the station primary economy, but mixing these into the model name does not add value.

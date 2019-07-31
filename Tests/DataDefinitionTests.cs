@@ -105,9 +105,18 @@ namespace UnitTests
         [TestMethod]
         public void TestOcellusStationModel()
         {
+            // The same station may use the model "Ocellus" for one event and "Bernal" for another. 
+
             StationModel model = StationModel.FromEDName("Ocellus");
-            Assert.AreEqual("Bernal", model.basename);
+            Assert.AreEqual("Ocellus", model.basename);
             Assert.AreEqual("Ocellus", model.edname);
+
+            StationModel model2 = StationModel.FromEDName("Bernal");
+            Assert.AreEqual("Bernal", model2.basename);
+            Assert.AreEqual("Bernal", model2.edname);
+
+            // Regardless of whether the edname is "Ocellus" or "Bernal", the output should be the same.
+            Assert.AreEqual(model.invariantName, model2.invariantName);
         }
 
         [TestMethod]

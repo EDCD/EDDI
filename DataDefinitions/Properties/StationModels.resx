@@ -123,7 +123,7 @@
   </data>
   <data name="Bernal" xml:space="preserve">
     <value>Ocellus Starport</value>
-    <comment>An Ocellus Starsport</comment>
+    <comment>An Ocellus Starport (FDev sometimes use "Bernal" and sometimes use "Ocellus")</comment>
   </data>
   <data name="Coriolis" xml:space="preserve">
     <value>Coriolis Starport</value>
@@ -164,5 +164,9 @@
   <data name="OutpostScientific" xml:space="preserve">
     <value>Scientific Outpost</value>
     <comment>A Scientific Outpost (currently, Talos 1 &amp; Talos 2 in Peregrina)</comment>
+  </data>
+  <data name="Ocellus" xml:space="preserve">
+    <value>Ocellus Starport</value>
+    <comment>An Ocellus Starport</comment>
   </data>
 </root>
