@@ -141,16 +141,28 @@
     <value>Kisbolygó öv</value>
     <comment>Body Type "Belt"</comment>
   </data>
-  
+  <data name="None" xml:space="preserve">
+    <value>Test</value>
+    <comment>None</comment>
+  </data>
   <data name="Station" xml:space="preserve">
     <value>Állomás</value>
     <comment>BodyType "Station"</comment>
   </data>
-  
+  <data name="Null" xml:space="preserve">
+    <value>Test</value>
+    <comment>BodyType "Null"</comment>
+  </data>
   <data name="PlanetaryRing" xml:space="preserve">
     <value>Bolygó gyűrű</value>
     <comment>Body Type PlanetaryRing</comment>
   </data>
-  
-  
+  <data name="Moon" xml:space="preserve">
+    <value>Hold</value>
+    <comment>Body Type "Moon"</comment>
+  </data>
+  <data name="StellarRing" xml:space="preserve">
+    <value>Csillaggyűrű</value>
+    <comment>Body Type StellarRing</comment>
+  </data>
 </root>
