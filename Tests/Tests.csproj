@@ -140,6 +140,7 @@
     <Compile Include="CapiShipyardTests.cs" />
     <Compile Include="BgsDataTests.cs" />
     <Compile Include="CrimeMonitorTests.cs" />
+    <Compile Include="NavigationServiceTests.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -235,6 +236,10 @@
     <ProjectReference Include="..\MissionMonitor\EddiMissionMonitor.csproj">
       <Project>{6d01f475-75b8-4fca-9b1d-9ecf5993a32d}</Project>
       <Name>EddiMissionMonitor</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NavigationService\EddiNavigationService.csproj">
+      <Project>{86c23ebd-c979-4517-bb66-62e103ab13ef}</Project>
+      <Name>EddiNavigationService</Name>
     </ProjectReference>
     <ProjectReference Include="..\ShipMonitor\EddiShipMonitor.csproj">
       <Project>{5294706E-E600-4EA1-B904-66A41561E852}</Project>
