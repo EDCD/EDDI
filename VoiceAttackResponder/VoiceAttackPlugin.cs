@@ -1068,7 +1068,7 @@ namespace EddiVoiceAttackResponder
                         break;
                     case "next":
                         {
-                            Navigation.Instance.SetNextRoute();
+                            Navigation.Instance.GetNextInRoute();
                         }
                         break;
                     case "raw":
@@ -1090,7 +1090,14 @@ namespace EddiVoiceAttackResponder
                         break;
                     case "set":
                         {
-                            Navigation.Instance.SetRoute(system);
+                            if (string.IsNullOrEmpty(system))
+                            {
+                                Navigation.Instance.SetRoute();
+                            }
+                            else
+                            {
+                                Navigation.Instance.SetRoute(system);
+                            }
                         }
                         break;
                     case "source":

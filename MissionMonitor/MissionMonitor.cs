@@ -902,11 +902,14 @@ namespace EddiMissionMonitor
         {
             List<long> missionids = new List<long>();       // List of mission IDs for the system
 
-            // Get mission IDs associated with the system
-            foreach (Mission mission in missions.Where(m => m.destinationsystem == system
-                || (m.originreturn && m.originsystem == system)).ToList())
+            if (system != null)
             {
-                missionids.Add(mission.missionid);
+                // Get mission IDs associated with the system
+                foreach (Mission mission in missions.Where(m => m.destinationsystem == system
+                    || (m.originreturn && m.originsystem == system)).ToList())
+                {
+                    missionids.Add(mission.missionid);
+                }
             }
             return missionids;
         }
@@ -1032,9 +1035,6 @@ namespace EddiMissionMonitor
 
                     // Get mission IDs for 'next' system
                     missionids = GetSystemMissionIds(nextSystem);
-
-                    // Set destination variables
-                    UpdateDestinationData(nextSystem, null, nextDistance);
                 }
                 else
                 {
@@ -1155,7 +1155,12 @@ namespace EddiMissionMonitor
             return found;
         }
 
-        public string SetNextRoute()
+        public string GetNextInRoute()
+        {
+            return missionsRouteList?.Split('_')[0];
+        }
+
+        public string SetNextInRoute()
         {
             string nextSystem = missionsRouteList?.Split('_')[0];
             decimal nextDistance = 0;
@@ -1336,11 +1341,10 @@ namespace EddiMissionMonitor
             return false;
         }
 
-        public void SetNavigationData(string system, string station, decimal distance)
+        public void SetMissionsRouteData(string system, decimal distance)
         {
             missionsRouteList = system;
             missionsRouteDistance = distance;
-            UpdateDestinationData(system, station, distance);
             writeMissions();
         }
 

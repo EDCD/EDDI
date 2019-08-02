@@ -732,7 +732,7 @@ namespace EddiSpeechResponder
                         break;
                     case "next":
                         {
-                            result = Navigation.Instance.SetNextRoute();
+                            result = Navigation.Instance.GetNextInRoute();
                         }
                         break;
                     case "raw":
@@ -754,7 +754,14 @@ namespace EddiSpeechResponder
                         break;
                     case "set":
                         {
-                            result = Navigation.Instance.SetRoute(values[1].AsString);
+                            if (values.Count == 2)
+                            {
+                                result = Navigation.Instance.SetRoute(values[1].AsString);
+                            }
+                            else
+                            {
+                                result = Navigation.Instance.SetRoute();
+                            }
                         }
                         break;
                     case "source":
