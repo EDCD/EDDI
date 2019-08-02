@@ -954,7 +954,7 @@ namespace EddiMissionMonitor
             missionsRouteDistance = 0;
             UpdateDestinationData(missionsRouteList, null, missionsRouteDistance);
 
-            EDDI.Instance.enqueueEvent(new RouteDetailsEvent(DateTime.Now, "cancel", null, missionsRouteList, 0, 0, missionsRouteDistance, null));
+            EDDI.Instance.enqueueEvent(new RouteDetailsEvent(DateTime.Now, "cancel", null, null, missionsRouteList, 0, 0, missionsRouteDistance, null));
         }
 
         public string GetMissionsRoute(string homeSystem = null)
@@ -1041,7 +1041,7 @@ namespace EddiMissionMonitor
                     Logging.Debug("Unable to meet missions route calculation criteria");
                 }
             }
-            EDDI.Instance.enqueueEvent(new RouteDetailsEvent(DateTime.Now, "route", nextSystem, missionsRouteList, routeCount, nextDistance, missionsRouteDistance, missionids));
+            EDDI.Instance.enqueueEvent(new RouteDetailsEvent(DateTime.Now, "route", nextSystem, null, missionsRouteList, routeCount, nextDistance, missionsRouteDistance, missionids));
             return nextSystem;
         }
 
@@ -1184,7 +1184,7 @@ namespace EddiMissionMonitor
                 // Set destination variables
                 UpdateDestinationData(nextSystem, null, nextDistance);
             }
-            EDDI.Instance.enqueueEvent(new RouteDetailsEvent(DateTime.Now, "next", nextSystem, missionsRouteList, count, nextDistance, missionsRouteDistance, missionids));
+            EDDI.Instance.enqueueEvent(new RouteDetailsEvent(DateTime.Now, "next", nextSystem, null, missionsRouteList, count, nextDistance, missionsRouteDistance, missionids));
             return nextSystem;
         }
 
@@ -1227,7 +1227,7 @@ namespace EddiMissionMonitor
                     UpdateDestinationData(nextSystem, null, nextDistance);
                 }
             }
-            EDDI.Instance.enqueueEvent(new RouteDetailsEvent(DateTime.Now, "update", nextSystem, missionsRouteList, route.Count, nextDistance, missionsRouteDistance, missionids));
+            EDDI.Instance.enqueueEvent(new RouteDetailsEvent(DateTime.Now, "update", nextSystem, null, missionsRouteList, route.Count, nextDistance, missionsRouteDistance, missionids));
             return nextSystem;
         }
 

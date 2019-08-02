@@ -196,6 +196,15 @@ namespace EddiMaterialMonitor.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Set Destination.
+        /// </summary>
+        public static string set_dest_button {
+            get {
+                return ResourceManager.GetString("set_dest_button", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Max Station Distance From Main Star (Ls):.
         /// </summary>
         public static string tab_station_distance {

@@ -141,6 +141,18 @@ namespace EddiMaterialMonitor
             materialMonitor()?.writeMaterials();
         }
 
+        private void setDestination(object sender, RoutedEventArgs e)
+        {
+            string system = Navigation.Instance.SetRoute();
+
+            // If 'destination system' found, send to clipboard
+            if (system != null)
+            {
+                Clipboard.SetData(DataFormats.Text, system);
+            }
+
+        }
+
         private void EnsureValidInteger(object sender, TextCompositionEventArgs e)
         {
             // Match valid characters

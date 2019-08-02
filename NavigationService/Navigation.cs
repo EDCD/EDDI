@@ -59,7 +59,7 @@ namespace EddiNavigationService
             missionMonitor.SetMissionsRouteData(null, 0);
             missionMonitor.UpdateDestinationData(null, null, 0);
 
-            EDDI.Instance.enqueueEvent(new RouteDetailsEvent(DateTime.Now, "cancel", null, null, 0, 0, 0, null));
+            EDDI.Instance.enqueueEvent(new RouteDetailsEvent(DateTime.Now, "cancel", null, null, null, 0, 0, 0, null));
         }
 
         public string GetExpiringRoute()
@@ -95,7 +95,7 @@ namespace EddiNavigationService
 
 
             }
-            EDDI.Instance.enqueueEvent(new RouteDetailsEvent(DateTime.Now, "expiring", searchSystem, searchSystem, expiringSeconds, searchDistance, searchDistance, missionids));
+            EDDI.Instance.enqueueEvent(new RouteDetailsEvent(DateTime.Now, "expiring", searchSystem, null, searchSystem, expiringSeconds, searchDistance, searchDistance, missionids));
             return searchSystem;
         }
 
@@ -148,7 +148,7 @@ namespace EddiNavigationService
                 // Set missions route variables
                 missionMonitor.SetMissionsRouteData(searchSystem, searchDistance);
             }
-            EDDI.Instance.enqueueEvent(new RouteDetailsEvent(DateTime.Now, "farthest", searchSystem, searchSystem, missionids.Count(), searchDistance, searchDistance, missionids));
+            EDDI.Instance.enqueueEvent(new RouteDetailsEvent(DateTime.Now, "farthest", searchSystem, null, searchSystem, missionids.Count(), searchDistance, searchDistance, missionids));
             return searchSystem;
         }
 
@@ -252,7 +252,7 @@ namespace EddiNavigationService
                 // Get mission IDs for 'most' system
                 missionids = missionMonitor.GetSystemMissionIds(searchSystem);
             }
-            EDDI.Instance.enqueueEvent(new RouteDetailsEvent(DateTime.Now, "most", searchSystem, routeList, mostCount, searchDistance, routeDistance, missionids));
+            EDDI.Instance.enqueueEvent(new RouteDetailsEvent(DateTime.Now, "most", searchSystem, null, routeList, mostCount, searchDistance, routeDistance, missionids));
             return searchSystem;
         }
 
@@ -316,7 +316,7 @@ namespace EddiNavigationService
                 // Set missions route variables
                 missionMonitor.SetMissionsRouteData(searchSystem, searchDistance);
             }
-            EDDI.Instance.enqueueEvent(new RouteDetailsEvent(DateTime.Now, "nearest", searchSystem, searchSystem, missionids.Count(), searchDistance, searchDistance, missionids));
+            EDDI.Instance.enqueueEvent(new RouteDetailsEvent(DateTime.Now, "nearest", searchSystem, null, searchSystem, missionids.Count(), searchDistance, searchDistance, missionids));
             return searchSystem;
         }
 
@@ -366,7 +366,7 @@ namespace EddiNavigationService
                     missionMonitor.SetMissionsRouteData(searchSystem, searchDistance);
                 }
             }
-            EDDI.Instance.enqueueEvent(new RouteDetailsEvent(DateTime.Now, serviceType, searchSystem, searchSystem, missionids.Count(), searchDistance, searchDistance, missionids));
+            EDDI.Instance.enqueueEvent(new RouteDetailsEvent(DateTime.Now, serviceType, searchSystem, searchStation, searchSystem, missionids.Count(), searchDistance, searchDistance, missionids));
             return searchSystem;
         }
 
@@ -497,7 +497,7 @@ namespace EddiNavigationService
                     missionMonitor.SetMissionsRouteData(searchSystem, searchDistance);
                 }
             }
-            EDDI.Instance.enqueueEvent(new RouteDetailsEvent(DateTime.Now, "source", searchSystem, sourceSystems, systemsCount, searchDistance, 0, missionids));
+            EDDI.Instance.enqueueEvent(new RouteDetailsEvent(DateTime.Now, "source", searchSystem, null, sourceSystems, systemsCount, searchDistance, 0, missionids));
             return searchSystem;
         }
 
@@ -525,7 +525,7 @@ namespace EddiNavigationService
 
             if (system == null)
             {
-                system = searchSystem;
+                destination = searchSystem;
                 station = searchStation;
                 distance = searchDistance;
             }
@@ -547,7 +547,7 @@ namespace EddiNavigationService
             missionMonitor.SetMissionsRouteData(destination, distance);
             missionMonitor.UpdateDestinationData(destination, station, distance);
 
-            EDDI.Instance.enqueueEvent(new RouteDetailsEvent(DateTime.Now, "set", destination, destination, 1, distance, distance, missionids));
+            EDDI.Instance.enqueueEvent(new RouteDetailsEvent(DateTime.Now, "set", destination, station, destination, 1, distance, distance, missionids));
             return destination;
         }
 
