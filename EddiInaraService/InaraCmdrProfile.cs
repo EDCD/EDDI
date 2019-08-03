@@ -33,6 +33,26 @@ namespace EddiInaraService
         }
     }
 
+    // Documentation: https://inara.cz/inara-api-docs/
+    public class getCommanderProfile : InaraAPIEvent
+    {
+        public getCommanderProfile(DateTime timestamp, string searchName)
+        {
+            // Returns basic information about commander from Inara like ranks, 
+            // squadron, a link to the commander's Inara profile, etc. 
+            if (string.IsNullOrEmpty(searchName))
+            {
+                return;
+            }
+            eventName = "getCommanderProfile";
+            eventTimeStamp = timestamp;
+            eventData = new Dictionary<string, object>()
+            {
+                { "searchName", searchName }
+            };
+        }
+    }
+
     public class InaraCmdr
     {
         public int userID { get; set; }
