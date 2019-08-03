@@ -2475,8 +2475,9 @@ namespace EddiJournalMonitor
                             case "NewCommander":
                                 {
                                     string name = JsonParsing.getString(data, "Name");
+                                    string frontierID = JsonParsing.getString(data, "FID");
                                     string package = JsonParsing.getString(data, "Package");
-                                    events.Add(new CommanderStartedEvent(timestamp, name, package) { raw = line, fromLoad = fromLogLoad });
+                                    events.Add(new CommanderStartedEvent(timestamp, name, frontierID, package) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
