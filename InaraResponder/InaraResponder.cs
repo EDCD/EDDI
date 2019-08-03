@@ -176,11 +176,17 @@ namespace EddiInaraResponder
         private void handleMissionCompletedEvent(MissionCompletedEvent @event)
         {
             // Send aquired permits to Inara
+            if (!string.IsNullOrEmpty(@event.rewardPermit))
+            {
+            }
             if (@event.permitsawarded.Count > 0)
             {
-
+                foreach (string systemName in @event.permitsawarded)
+                {
+                    if (string.IsNullOrEmpty(systemName)) { continue; }
+                    InaraService.Instance.EnqueueAPIEvent(new addCommanderPermit(@event.timestamp, systemName));
+                }
             }
-            throw new NotImplementedException();
         }
 
         public static event EventHandler ApplicationExit;
