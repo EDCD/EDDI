@@ -185,6 +185,7 @@ namespace Utilities
                     // Repeated data should be matched even if timestamps differ, so remove journal event timestamps here.
                     // Strip module data that is not useful to report for more consistent matching
                     // Strip commodity data that is not useful to report for more consistent matching
+                    // Strip any property described as an "apiKey"
                     string[] filterProperties = new string[]
                     {
                         "timestamp",
@@ -197,7 +198,8 @@ namespace Utilities
                         "sellprice",
                         "demand",
                         "demandbracket",
-                        "StatusFlags"
+                        "StatusFlags",
+                        "apiKey"
                     };
 
                     foreach (string property in filterProperties)
