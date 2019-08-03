@@ -10,11 +10,15 @@ namespace EddiInaraService
 {
     public partial class InaraService
     {
+        // API Documenation: https://inara.cz/inara-api-docs/
+
         private string commanderName { get; set; }
-        private long? commanderFrontierID { get; set; }
+        private string commanderFrontierID { get; set; }
         private string apiKey { get; set; }
 
-        public InaraService(string apikey, string commandername = null, long? commanderfrontierID = null)
+        private const string readonlyAPIkey = "9efrgisivgw8kksoosowo48kwkkw04skwcgo840";
+
+        public InaraService(string apikey, string commandername = null, string commanderfrontierID = null)
         {
             apiKey = apikey?.Trim();
             commanderName = commandername?.Trim();
@@ -37,25 +41,30 @@ namespace EddiInaraService
 
                             // Set up the Inara service
                             InaraConfiguration inaraCredentials = InaraConfiguration.FromFile();
-                            if (!string.IsNullOrEmpty(inaraCredentials?.apiKey))
+                            // commanderName: In-game CMDR name of user (not set by user, get this from journals or 
+                            // cAPI to ensure it is a correct in-game name to avoid future problems). It is recommended 
+                            // to be always set when no generic API key is used (otherwise some events may not work).
+                            string commanderName = inaraCredentials?.commanderName;
+                            // commanderFrontierID: Commander's unique Frontier ID (is provided by journals since 3.3)
+                            // in the format: 'F123456'. When not known, set nothing.
+                            string commanderFrontierID = inaraCredentials?.commanderFrontierID;
+                            if (!string.IsNullOrEmpty(inaraCredentials.apiKey) && !string.IsNullOrEmpty(commanderName))
                             {
-                                // Commander name might come from EDSM credentials or from the game and companion app
-                                string commanderName = inaraCredentials?.commanderName;
-                                string commanderFrontierID = inaraCredentials?.commanderFrontierID;
-                                if (!string.IsNullOrEmpty(commanderName))
-                                {
-                                    instance = new InaraService(inaraCredentials.apiKey, commanderName);
-                                    Logging.Info("Configuring EDDI access to Inara profile data");
-                                }
-                                else
-                                {
-                                    instance = new InaraService(inaraCredentials.apiKey);
-                                    Logging.Warn("InaraService instance is limited: Commander name not set.");
-                                }
+                                instance = new InaraService(inaraCredentials.apiKey ?? readonlyAPIkey, commanderName, commanderFrontierID);
+                                Logging.Info("Configuring EDDI access to Inara profile data");
                             }
                             else
                             {
-                                Logging.Warn("No InaraService instance: API key not set.");
+
+                                instance = new InaraService(readonlyAPIkey);
+                                if (string.IsNullOrEmpty(inaraCredentials.apiKey))
+                                {
+                                    Logging.Warn("Configuring Inara service for limited access: API key not set.");
+                                }
+                                if (string.IsNullOrEmpty(commanderName))
+                                {
+                                    Logging.Warn("Configuring Inara service for limited access: Commander name not set.");
+                                }
                             }
                         }
                     }
