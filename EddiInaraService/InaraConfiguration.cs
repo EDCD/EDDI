@@ -9,16 +9,32 @@ namespace EddiInaraService
     public class InaraConfiguration
     {
         [JsonProperty("apiKey")]
-        public string apiKey { get; set; }
+        public string apiKey
+        {
+            get { return _apiKey ?? readonlyAPIkey; }
+            set { _apiKey = value; }
+        }
+
+        [JsonIgnore]
+        private string _apiKey { get; set; }
+
         [JsonProperty("commanderName")]
         public string commanderName { get; set; }
+
+        [JsonProperty("commanderFrontierID")]
+        public string commanderFrontierID { get; set; }
+
         [JsonProperty("lastSync")]
+        DateTime lastSync { get; set; }
 
         [JsonIgnore]
         private string dataPath;
 
         [JsonIgnore]
         static readonly object fileLock = new object();
+
+        [JsonIgnore]
+        private const string readonlyAPIkey = "9efrgisivgw8kksoosowo48kwkkw04skwcgo840";
 
         /// <summary>
         /// Obtain credentials from a file.  If the file name is not supplied the the default
