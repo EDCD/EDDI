@@ -2306,10 +2306,8 @@ namespace EddiJournalMonitor
 
                                     GameMode mode = GameMode.FromEDName(JsonParsing.getString(data, "GameMode"));
                                     string group = JsonParsing.getString(data, "Group");
-                                    data.TryGetValue("Credits", out val);
-                                    decimal credits = (long)val;
-                                    data.TryGetValue("Loan", out val);
-                                    decimal loan = (long)val;
+                                    long credits = (long)JsonParsing.getOptionalLong(data, "Credits");
+                                    long loan = (long)JsonParsing.getOptionalLong(data, "Loan");
                                     decimal? fuel = JsonParsing.getOptionalDecimal(data, "FuelLevel");
                                     decimal? fuelCapacity = JsonParsing.getOptionalDecimal(data, "FuelCapacity");
 

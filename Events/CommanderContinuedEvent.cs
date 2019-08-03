@@ -59,10 +59,10 @@ namespace EddiEvents
         public string group { get; private set; }
 
         [JsonProperty("credits")]
-        public decimal credits { get; private set; }
+        public long credits { get; private set; }
 
         [JsonProperty("loan")]
-        public decimal loan { get; private set; }
+        public long loan { get; private set; }
 
         [JsonProperty("fuel")]
         public decimal? fuel { get; private set; }
@@ -73,7 +73,7 @@ namespace EddiEvents
         // Not intended to be user facing
         public string frontierID { get; private set; }
 
-        public CommanderContinuedEvent(DateTime timestamp, string commander, string frontierID, bool horizons, int shipId, string ship, string shipName, string shipIdent, bool? startedLanded, bool? startDead, GameMode mode, string group, decimal credits, decimal loan, decimal? fuel, decimal? fuelcapacity) : base(timestamp, NAME)
+        public CommanderContinuedEvent(DateTime timestamp, string commander, string frontierID, bool horizons, int shipId, string ship, string shipName, string shipIdent, bool? startedLanded, bool? startDead, GameMode mode, string group, long credits, long loan, decimal? fuel, decimal? fuelcapacity) : base(timestamp, NAME)
         {
             this.commander = commander;
             this.frontierID = frontierID;
