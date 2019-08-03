@@ -5,6 +5,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
 ### Development
   * Speech responder
     * Added new event `Commander loading`, triggered at the very beginning of loading a game.
+    * Updated the `Commander continued` event with new properties `startlanded` and `startdead` (true if starting the game either landed or dead, respectively).
 
 ### 3.4.3-b2
   * Core
