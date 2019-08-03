@@ -1,73 +1,68 @@
 ﻿using EddiDataDefinitions;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 
 namespace EddiInaraService
 {
-    partial class InaraAPIEvent
+    // Documentation: https://inara.cz/inara-api-docs/
+    // Inara API events related to adding friends, removing friends, and obtaining commander profiles
+    public class getCommanderProfile : InaraAPIEvent
     {
-        // Documentation: https://inara.cz/inara-api-docs/
-        // Inara API events related to adding friends, removing friends, and obtaining commander profiles
-
-        public InaraAPIevent getCommanderProfile(DateTime timestamp, string searchName)
+        public getCommanderProfile(DateTime timestamp, string searchName)
         {
             // Returns basic information about commander from Inara like ranks, 
             // squadron, a link to the commander's Inara profile, etc. 
             if (string.IsNullOrEmpty(searchName))
             {
-                return null;
+                return;
             }
-            return new InaraAPIevent()
+            eventName = "getCommanderProfile";
+            eventTimeStamp = timestamp;
+            eventData = new Dictionary<string, object>()
             {
-                eventName = "getCommanderProfile",
-                timestamp = timestamp,
-                eventData = new Dictionary<string, object>()
-                {
-                    { "searchName", searchName }
-                }
+                { "searchName", searchName }
             };
         }
+    }
 
-        /*
-        public InaraAPIevent addCommanderFriend(DateTime timestamp, string friendName, string gamePlatform)
+    public class addCommanderFriend : InaraAPIEvent
+    {
+        public addCommanderFriend(DateTime timestamp, string friendName, string gamePlatform)
         {
             // Adds a friend request to the target commander on Inara. 
             // The request may not be performed when such commander is not found under his/her in-game name.
             if (string.IsNullOrEmpty(friendName) || string.IsNullOrEmpty(gamePlatform))
             {
-                return null;
+                return;
             }
-            return new InaraAPIevent()
+            eventName = "addCommanderFriend";
+            eventTimeStamp = timestamp;
+            eventData = new Dictionary<string, object>()
             {
-                eventName = "addCommanderFriend",
-                timestamp = timestamp,
-                eventData = new Dictionary<string, object>()
-                {
-                    { "commanderName", friendName },
-                    { "gamePlatform", gamePlatform}
-                }
+                { "commanderName", friendName },
+                { "gamePlatform", gamePlatform}
             };
         }
+    }
 
-        public InaraAPIevent delCommanderFriend(DateTime timestamp, string friendName, string gamePlatform)
+    public class delCommanderFriend : InaraAPIEvent
+    {
+        public delCommanderFriend(DateTime timestamp, string friendName, string gamePlatform)
         {
             // Removes a target commander from the friends list on Inara. 
             // The request may not be performed when such commander is not found under his/her in-game name.
             if (string.IsNullOrEmpty(friendName) || string.IsNullOrEmpty(gamePlatform))
             {
-                return null;
+                return;
             }
-            return new InaraAPIevent()
+            eventName = "delCommanderFriend";
+            eventTimeStamp = timestamp;
+            eventData = new Dictionary<string, object>()
             {
-                eventName = "delCommanderFriend",
-                timestamp = timestamp,
-                eventData = new Dictionary<string, object>()
-                {
-                    { "commanderName", friendName },
-                    { "gamePlatform", gamePlatform}
-                }
+                { "commanderName", friendName },
+                { "gamePlatform", gamePlatform}
             };
         }
-        */
     }
 }
