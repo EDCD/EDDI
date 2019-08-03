@@ -153,10 +153,13 @@ namespace EddiInaraService
             {
                 queue.Add(pendingEvent);
             }
-            await Task.Run(() => Instance.SendEventBatch(ref queue, inBeta));
-            InaraConfiguration inaraConfiguration = InaraConfiguration.FromFile();
-            inaraConfiguration.lastSync = DateTime.UtcNow;
-            inaraConfiguration.ToFile();
+            if (queue.Count > 0)
+            {
+                await Task.Run(() => Instance.SendEventBatch(ref queue, inBeta));
+                InaraConfiguration inaraConfiguration = InaraConfiguration.FromFile();
+                inaraConfiguration.lastSync = DateTime.UtcNow;
+                inaraConfiguration.ToFile();
+            }
         }
 
         public void EnqueueAPIEvent(InaraAPIEvent inaraAPIEvent)

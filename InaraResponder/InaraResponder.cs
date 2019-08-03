@@ -52,7 +52,23 @@ namespace EddiInaraResponder
 
         public void Reload()
         {
+            Stop();
             InaraService.Reload();
+            updateThread = new Thread(() => BackgroundSync())
+            {
+                Name = "Inara sync",
+                IsBackground = true
+            };
+            updateThread.Start();
+        }
+
+        private void BackgroundSync()
+        {
+            while (InaraService.Instance != null)
+            {
+                Thread.Sleep(60000);
+                InaraService.Instance.SendQueuedAPIEventsAsync(EDDI.Instance.ShouldUseTestEndpoints());
+            }
         }
 
         public UserControl ConfigurationTabItem()
