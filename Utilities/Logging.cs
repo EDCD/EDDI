@@ -199,7 +199,8 @@ namespace Utilities
                         "demand",
                         "demandbracket",
                         "StatusFlags",
-                        "apiKey"
+                        "apiKey",
+                        "frontierID"
                     };
 
                     foreach (string property in filterProperties)
