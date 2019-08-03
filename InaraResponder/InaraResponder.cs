@@ -92,10 +92,14 @@ namespace EddiInaraResponder
                 {
                     Logging.Debug("Handling event " + JsonConvert.SerializeObject(theEvent));
 
-                    // This event will start or restart our instance of InaraService
-                    if (theEvent is CommanderLoadingEvent commanderEvent)
+                    // These events will start or restart our instance of InaraService
+                    if (theEvent is CommanderLoadingEvent commanderLoadingEvent)
                     {
-                        handleCommanderEvent(commanderEvent);
+                        handleCommanderLoadingEvent(commanderLoadingEvent);
+                    }
+                    else if (theEvent is CommanderStartedEvent commanderStartedEvent)
+                    {
+                        handleCommanderStartedEvent(commanderStartedEvent);
                     }
                     else if (InaraService.Instance != null)
                     {
@@ -118,7 +122,19 @@ namespace EddiInaraResponder
             }
         }
 
-        private void handleCommanderEvent(CommanderLoadingEvent @event)
+        private void handleCommanderStartedEvent(CommanderStartedEvent @event)
+        {
+            InaraConfiguration inaraConfiguration = InaraConfiguration.FromFile();
+            inaraConfiguration.commanderName = @event.name;
+            inaraConfiguration.commanderFrontierID = @event.frontierID;
+            inaraConfiguration.ToFile();
+            if (inaraConfiguration.commanderFrontierID != InaraService.Instance.commanderFrontierID)
+            {
+                InaraService.Reload();
+            }
+        }
+
+        private void handleCommanderLoadingEvent(CommanderLoadingEvent @event)
         {
             InaraConfiguration inaraConfiguration = InaraConfiguration.FromFile();
             inaraConfiguration.commanderName = @event.name;
@@ -132,6 +148,11 @@ namespace EddiInaraResponder
 
         private void handleMissionCompletedEvent(MissionCompletedEvent @event)
         {
+            // Send aquired permits to Inara
+            if (@event.permitsawarded.Count > 0)
+            {
+
+            }
             throw new NotImplementedException();
         }
     }
