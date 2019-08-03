@@ -139,6 +139,7 @@
   <ItemGroup>
     <Compile Include="CapiShipyardTests.cs" />
     <Compile Include="BgsDataTests.cs" />
+    <Compile Include="InaraTests.cs" />
     <Compile Include="CrimeMonitorTests.cs" />
     <Compile Include="NavigationServiceTests.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
@@ -189,6 +190,10 @@
       <Project>{5b11d1b2-6128-4f2b-8ef3-8168089c5ec9}</Project>
       <Name>EddiCrimeMonitor</Name>
     </ProjectReference>
+    <ProjectReference Include="..\EddiInaraService\EddiInaraService.csproj">
+      <Project>{19ab6841-aa93-4d23-be6d-4cb6883cdf62}</Project>
+      <Name>EddiInaraService</Name>
+    </ProjectReference>
     <ProjectReference Include="..\EDDI\Eddi.csproj">
       <Project>{ec7ba042-a370-447f-8c3e-241358cebcbb}</Project>
       <Name>Eddi</Name>
@@ -224,6 +229,10 @@
     <ProjectReference Include="..\GalnetMonitor\EddiGalnetMonitor.csproj">
       <Project>{93b946c8-3f78-465a-8cc4-c0fc4127b762}</Project>
       <Name>EddiGalnetMonitor</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\InaraResponder\EddiInaraResponder.csproj">
+      <Project>{11bef9d3-91a4-4522-9581-bcc2a1f5eec7}</Project>
+      <Name>EddiInaraResponder</Name>
     </ProjectReference>
     <ProjectReference Include="..\JournalMonitor\EddiJournalMonitor.csproj">
       <Project>{72b6f41d-0107-4d3a-8603-c3edda1c5243}</Project>
