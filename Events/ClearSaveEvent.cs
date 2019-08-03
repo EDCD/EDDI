@@ -8,7 +8,7 @@ namespace EddiEvents
     {
         public const string NAME = "Cleared save";
         public const string DESCRIPTION = "Triggered when you clear your save";
-        public const string SAMPLE = "{\"timestamp\":\"2016-06-10T14:32:03Z\",\"event\":\"ClearSaveGame\",\"Name\":\"HRC1\"}";
+        public const string SAMPLE = "{\"timestamp\":\"2016-06-10T14:32:03Z\",\"event\":\"ClearSaveGame\",\"FID\":\"F0000000\",\"Name\":\"HRC1\"}";
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
         static ClearedSaveEvent()
