@@ -12,8 +12,8 @@ namespace EddiInaraService
     {
         // API Documenation: https://inara.cz/inara-api-docs/
 
-        private string commanderName { get; set; }
-        private string commanderFrontierID { get; set; }
+        public string commanderName { get; set; }
+        public string commanderFrontierID { get; set; }
         private string apiKey { get; set; }
 
         private const string readonlyAPIkey = "9efrgisivgw8kksoosowo48kwkkw04skwcgo840";
@@ -37,8 +37,6 @@ namespace EddiInaraService
                     {
                         if (instance == null)
                         {
-                            Logging.Debug("No Inara service instance: creating one");
-
                             // Set up the Inara service
                             InaraConfiguration inaraCredentials = InaraConfiguration.FromFile();
                             // commanderName: In-game CMDR name of user (not set by user, get this from journals or 
@@ -55,7 +53,6 @@ namespace EddiInaraService
                             }
                             else
                             {
-
                                 instance = new InaraService(readonlyAPIkey);
                                 if (string.IsNullOrEmpty(inaraCredentials.apiKey))
                                 {
@@ -71,6 +68,13 @@ namespace EddiInaraService
                 }
                 return instance;
             }
+        }
+
+        public static void Reload()
+        {
+            Logging.Debug("Creating new Inara service instance.");
+            instance = null;
+            _ = Instance;
         }
 
         // If you need to do some testing on Inara's API, please set the `inBeta` boolean header property to true.

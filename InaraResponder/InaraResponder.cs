@@ -2,6 +2,8 @@
 using EddiDataProviderService;
 using EddiEvents;
 using EddiInaraService;
+using EddiMissionMonitor;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -49,7 +51,9 @@ namespace EddiInaraResponder
         }
 
         public void Reload()
-        { }
+        {
+            InaraService.Reload();
+        }
 
         public UserControl ConfigurationTabItem()
         {
@@ -82,10 +86,53 @@ namespace EddiInaraResponder
                 return;
             }
 
-            if (InaraService.Instance != null)
+            if (!(theEvent is null))
             {
-                throw new NotImplementedException();
+                try
+                {
+                    Logging.Debug("Handling event " + JsonConvert.SerializeObject(theEvent));
+
+                    // This event will start or restart our instance of InaraService
+                    if (theEvent is CommanderLoadingEvent commanderEvent)
+                    {
+                        handleCommanderEvent(commanderEvent);
+                    }
+                    else if (InaraService.Instance != null)
+                    {
+                        if (theEvent is MissionCompletedEvent missionCompletedEvent)
+                        {
+                            handleMissionCompletedEvent(missionCompletedEvent);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Dictionary<string, object> data = new Dictionary<string, object>
+                        {
+                            { "event", JsonConvert.SerializeObject(theEvent) },
+                            { "exception", ex.Message },
+                            { "stacktrace", ex.StackTrace }
+                        };
+                    Logging.Error("Failed to handle event " + theEvent.type, data);
+                }
             }
+        }
+
+        private void handleCommanderEvent(CommanderLoadingEvent @event)
+        {
+            InaraConfiguration inaraConfiguration = InaraConfiguration.FromFile();
+            inaraConfiguration.commanderName = @event.name;
+            inaraConfiguration.commanderFrontierID = @event.frontierID;
+            inaraConfiguration.ToFile();
+            if (inaraConfiguration.commanderFrontierID != InaraService.Instance.commanderFrontierID)
+            {
+                InaraService.Reload();
+            }
+        }
+
+        private void handleMissionCompletedEvent(MissionCompletedEvent @event)
+        {
+            throw new NotImplementedException();
         }
     }
 }
