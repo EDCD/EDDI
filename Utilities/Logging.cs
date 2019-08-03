@@ -185,7 +185,7 @@ namespace Utilities
                     // Repeated data should be matched even if timestamps differ, so remove journal event timestamps here.
                     // Strip module data that is not useful to report for more consistent matching
                     // Strip commodity data that is not useful to report for more consistent matching
-                    // Strip any property described as an "apiKey"
+                    // Strip other sensitive data like "apiKey" or "frontierID"
                     string[] filterProperties = new string[]
                     {
                         "timestamp",
