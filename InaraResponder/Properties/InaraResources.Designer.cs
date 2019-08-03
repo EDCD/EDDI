@@ -88,7 +88,7 @@ namespace EddiInaraResponder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Inara responder.
+        ///   Looks up a localized string similar to Inara Responder.
         /// </summary>
         public static string name {
             get {
