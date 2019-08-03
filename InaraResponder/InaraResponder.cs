@@ -46,6 +46,9 @@ namespace EddiInaraResponder
 
         public bool Start()
         {
+            // Set up an event handler to send any pending events when the application exits.
+            ApplicationExit += new EventHandler(this.OnApplicationExit);
+
             Reload();
             return InaraService.Instance != null;
         }
@@ -178,6 +181,13 @@ namespace EddiInaraResponder
 
             }
             throw new NotImplementedException();
+        }
+
+        public static event EventHandler ApplicationExit;
+
+        private void OnApplicationExit(object sender, EventArgs e)
+        {
+            InaraService.Instance.SendQueuedAPIEventsAsync(EDDI.Instance.ShouldUseTestEndpoints());
         }
     }
 }
