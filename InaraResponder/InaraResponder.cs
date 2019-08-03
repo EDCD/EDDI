@@ -64,10 +64,18 @@ namespace EddiInaraResponder
 
         private void BackgroundSync()
         {
-            while (InaraService.Instance != null)
+            try
             {
-                Thread.Sleep(60000);
-                InaraService.Instance.SendQueuedAPIEventsAsync(EDDI.Instance.ShouldUseTestEndpoints());
+                while (InaraService.Instance != null)
+                {
+                    InaraService.Instance.SendQueuedAPIEventsAsync(EDDI.Instance.ShouldUseTestEndpoints());
+                    Thread.Sleep(120000);
+                }
+            }
+            catch (ThreadAbortException tax)
+            {
+                Thread.ResetAbort();
+                Logging.Debug("Thread aborted", tax);
             }
         }
 
