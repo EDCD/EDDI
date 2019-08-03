@@ -1,9 +1,9 @@
 ﻿using Newtonsoft.Json;
 using RestSharp;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
+using System.Threading.Tasks;
 using Utilities;
 
 namespace EddiInaraService
@@ -12,11 +12,13 @@ namespace EddiInaraService
     {
         // API Documenation: https://inara.cz/inara-api-docs/
 
-        public string commanderName { get; set; }
-        public string commanderFrontierID { get; set; }
+        public string commanderName { get; private set; }
+        public string commanderFrontierID { get; private set; }
         private string apiKey { get; set; }
 
         private const string readonlyAPIkey = "9efrgisivgw8kksoosowo48kwkkw04skwcgo840";
+
+        private ConcurrentQueue<InaraAPIEvent> queuedAPIEvents { get; set; } = new ConcurrentQueue<InaraAPIEvent>();
 
         public InaraService(string apikey, string commandername = null, string commanderfrontierID = null)
         {
@@ -26,6 +28,7 @@ namespace EddiInaraService
         }
 
         private static readonly object instanceLock = new object();
+
         private static InaraService instance;
         public static InaraService Instance
         {
@@ -140,6 +143,44 @@ namespace EddiInaraService
             {
                 Logging.Warn("Inara responded with: " + inaraResponse.eventStatusText, JsonConvert.SerializeObject(inaraResponse.eventData));
                 return false;
+            }
+        }
+
+        public async void SendQueuedAPIEventsAsync(bool inBeta)
+        {
+            List<InaraAPIEvent> queue = new List<InaraAPIEvent>();
+            while (Instance.queuedAPIEvents.TryDequeue(out InaraAPIEvent pendingEvent))
+            {
+                queue.Add(pendingEvent);
+            }
+            await Task.Run(() => Instance.SendEventBatch(ref queue, inBeta));
+            InaraConfiguration inaraConfiguration = InaraConfiguration.FromFile();
+            inaraConfiguration.lastSync = DateTime.UtcNow;
+            inaraConfiguration.ToFile();
+        }
+
+        public void EnqueueAPIEvent(InaraAPIEvent inaraAPIEvent)
+        {
+            InaraConfiguration inaraConfiguration = InaraConfiguration.FromFile();
+            if (inaraAPIEvent.eventTimeStamp > inaraConfiguration.lastSync)
+            {
+                Instance.queuedAPIEvents.Enqueue(inaraAPIEvent);
+            }
+        }
+
+        public void DequeueAPIEventsOfType(string eventName)
+        {
+            List<InaraAPIEvent> queue = new List<InaraAPIEvent>();
+            while (Instance.queuedAPIEvents.TryDequeue(out InaraAPIEvent pendingEvent))
+            {
+                if (pendingEvent.eventName != eventName)
+                {
+                    queue.Add(pendingEvent);
+                }
+            }
+            foreach (InaraAPIEvent inaraAPIEvent in queue)
+            {
+                Instance.EnqueueAPIEvent(inaraAPIEvent);
             }
         }
     }

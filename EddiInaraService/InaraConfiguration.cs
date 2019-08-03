@@ -18,7 +18,7 @@ namespace EddiInaraService
         public string commanderFrontierID { get; set; }
 
         [JsonProperty("lastSync")]
-        DateTime lastSync { get; set; }
+        public DateTime lastSync { get; set; }
 
         [JsonIgnore]
         private string dataPath;
