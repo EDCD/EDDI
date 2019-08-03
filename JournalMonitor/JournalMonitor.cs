@@ -2467,7 +2467,8 @@ namespace EddiJournalMonitor
                             case "ClearSavedGame":
                                 {
                                     string name = JsonParsing.getString(data, "Name");
-                                    events.Add(new ClearedSaveEvent(timestamp, name) { raw = line, fromLoad = fromLogLoad });
+                                    string frontierID = JsonParsing.getString(data, "FID");
+                                    events.Add(new ClearedSaveEvent(timestamp, name, frontierID) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
