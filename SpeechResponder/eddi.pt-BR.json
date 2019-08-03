@@ -263,6 +263,15 @@
       "name": "Commander continued",
       "description": "Triggered when you continue an existing game"
     },
+    "Commander loading": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "default": true,
+      "name": "Commander loading",
+      "description": "Triggered at the very beginning of loading a game"
+    },
     "Commander progress": {
       "enabled": true,
       "priority": 3,

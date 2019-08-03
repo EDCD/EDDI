@@ -65,6 +65,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CommanderLoadingEvent.cs" />
     <Compile Include="RingMappedEvent.cs" />
     <Compile Include="BodyMappedEvent.cs" />
     <Compile Include="CargoDepotEvent.cs" />

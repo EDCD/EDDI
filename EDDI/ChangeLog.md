@@ -2,6 +2,10 @@
 
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
+### Development
+  * Speech responder
+    * Added new event `Commander loading`, triggered at the very beginning of loading a game.
+
 ### 3.4.3-b2
   * Core
     * Removed in-process .dll accidentally included with release 3.4.3-b1.
