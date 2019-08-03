@@ -11,6 +11,11 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Fixed inadvertently disabled hyperlink "Read about the speech responder's functions here".
 
 ### 3.4.3
+### Development
+  * Speech responder
+    * Added new event `Commander loading`, triggered at the very beginning of loading a game.
+
+### 3.4.3-b2
   * Core
     * Removed in-process .dll accidentally included with release 3.4.3-b1.
 

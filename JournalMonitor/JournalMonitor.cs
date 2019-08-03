@@ -3430,6 +3430,13 @@ namespace EddiJournalMonitor
                                 handled = true;
                                 break;
                             case "Commander":
+                                {
+                                    string name = JsonParsing.getString(data, "Name");
+                                    string frontierID = JsonParsing.getString(data, "FID");
+                                    events.Add(new CommanderLoadingEvent(timestamp, name, frontierID) { raw = line, fromLoad = fromLogLoad });
+                                }
+                                handled = true;
+                                break;
                             case "DiscoveryScan":
                             case "EngineerLegacyConvert":
                             case "Reputation":
