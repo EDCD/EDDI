@@ -47,7 +47,7 @@ namespace EddiInaraResponder
         public bool Start()
         {
             // Set up an event handler to send any pending events when the application exits.
-            ApplicationExit += new EventHandler(this.OnApplicationExit);
+            AppDomain.CurrentDomain.ProcessExit += new EventHandler(OnApplicationExit);
 
             Reload();
             return InaraService.Instance != null;
@@ -130,7 +130,11 @@ namespace EddiInaraResponder
                     }
                     else if (InaraService.Instance != null)
                     {
-                        if (theEvent is MissionCompletedEvent missionCompletedEvent)
+                        if (theEvent is CommanderContinuedEvent commanderContinuedEvent)
+                        {
+                            handleCommanderContinuedEvent(commanderContinuedEvent);
+                        }
+                        else if (theEvent is MissionCompletedEvent missionCompletedEvent)
                         {
                             handleMissionCompletedEvent(missionCompletedEvent);
                         }
@@ -149,8 +153,15 @@ namespace EddiInaraResponder
             }
         }
 
+        private void handleCommanderContinuedEvent(CommanderContinuedEvent @event)
+        {
+            // Send the commander's current credits and loans to Inara
+            InaraService.Instance.EnqueueAPIEvent(new setCommanderCredits(@event.timestamp, @event.credits, @event.loan));
+        }
+
         private void handleCommanderStartedEvent(CommanderStartedEvent @event)
         {
+            // Start or restart the Inara service
             InaraConfiguration inaraConfiguration = InaraConfiguration.FromFile();
             inaraConfiguration.commanderName = @event.name;
             inaraConfiguration.commanderFrontierID = @event.frontierID;
@@ -163,6 +174,7 @@ namespace EddiInaraResponder
 
         private void handleCommanderLoadingEvent(CommanderLoadingEvent @event)
         {
+            // Start or restart the Inara service
             InaraConfiguration inaraConfiguration = InaraConfiguration.FromFile();
             inaraConfiguration.commanderName = @event.name;
             inaraConfiguration.commanderFrontierID = @event.frontierID;
@@ -176,9 +188,6 @@ namespace EddiInaraResponder
         private void handleMissionCompletedEvent(MissionCompletedEvent @event)
         {
             // Send aquired permits to Inara
-            if (!string.IsNullOrEmpty(@event.rewardPermit))
-            {
-            }
             if (@event.permitsawarded.Count > 0)
             {
                 foreach (string systemName in @event.permitsawarded)
@@ -189,9 +198,7 @@ namespace EddiInaraResponder
             }
         }
 
-        public static event EventHandler ApplicationExit;
-
-        private void OnApplicationExit(object sender, EventArgs e)
+        void OnApplicationExit(object sender, EventArgs e)
         {
             InaraService.Instance.SendQueuedAPIEventsAsync(EDDI.Instance.ShouldUseTestEndpoints());
         }
