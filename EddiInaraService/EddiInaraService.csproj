@@ -52,7 +52,6 @@
     <Compile Include="InaraAPIEventsMaterials.cs" />
     <Compile Include="InaraAPIEventsPersonalProfile.cs" />
     <Compile Include="InaraAPIEventsCargo.cs" />
-    <Compile Include="InaraAPIEventsSocial.cs" />
     <Compile Include="InaraService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="InaraConfiguration.cs" />
