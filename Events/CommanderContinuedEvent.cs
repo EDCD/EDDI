@@ -24,6 +24,8 @@ namespace EddiEvents
             VARIABLES.Add("loan", "The current loan the commander has");
             VARIABLES.Add("fuel", "The current fuel level of the commander's vehicle");
             VARIABLES.Add("fuelcapacity", "The total fuel capacity of the commander's vehicle");
+            VARIABLES.Add("startlanded", "True if the commander is starting landed");
+            VARIABLES.Add("startdead", "True if the commander is starting dead / at the rebuy screen");
         }
 
         [JsonProperty("commander")]
@@ -44,6 +46,12 @@ namespace EddiEvents
         [JsonProperty("shipident")]
         public string shipident { get; private set; }
 
+        [JsonProperty("startlanded")]
+        public bool startlanded { get; private set; }
+
+        [JsonProperty("startdead")]
+        public bool startdead { get; private set; }
+
         [JsonProperty("mode")]
         public string mode { get; private set; }
 
@@ -62,14 +70,20 @@ namespace EddiEvents
         [JsonProperty("fuelcapacity")]
         public decimal? fuelcapacity { get; private set; }
 
-        public CommanderContinuedEvent(DateTime timestamp, string commander, bool horizons, int shipId, string ship, string shipName, string shipIdent, GameMode mode, string group, decimal credits, decimal loan, decimal? fuel, decimal? fuelcapacity) : base(timestamp, NAME)
+        // Not intended to be user facing
+        public string frontierID { get; private set; }
+
+        public CommanderContinuedEvent(DateTime timestamp, string commander, string frontierID, bool horizons, int shipId, string ship, string shipName, string shipIdent, bool? startedLanded, bool? startDead, GameMode mode, string group, decimal credits, decimal loan, decimal? fuel, decimal? fuelcapacity) : base(timestamp, NAME)
         {
             this.commander = commander;
+            this.frontierID = frontierID;
             this.horizons = horizons;
             this.shipid = shipId;
             this.ship = ShipDefinitions.FromEDModel(ship).model;
             this.shipname = shipName;
             this.shipident = shipIdent;
+            this.startlanded = (bool)startedLanded;
+            this.startdead = (bool)startDead;
             this.mode = (mode == null ? null : mode.localizedName);
             this.group = group;
             this.credits = credits;

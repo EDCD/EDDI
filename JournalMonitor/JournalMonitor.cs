@@ -2282,6 +2282,7 @@ namespace EddiJournalMonitor
                             case "LoadGame":
                                 {
                                     string commander = JsonParsing.getString(data, "Commander");
+                                    string frontierID = JsonParsing.getString(data, "FID");
                                     bool horizons = JsonParsing.getBool(data, "Horizons");
 
                                     data.TryGetValue("ShipID", out object val);
@@ -2300,6 +2301,9 @@ namespace EddiJournalMonitor
                                     string shipName = JsonParsing.getString(data, "ShipName");
                                     string shipIdent = JsonParsing.getString(data, "ShipIdent");
 
+                                    bool? startedLanded = JsonParsing.getOptionalBool(data, "StartedLanded");
+                                    bool? startDead = JsonParsing.getOptionalBool(data, "StartDead");
+
                                     GameMode mode = GameMode.FromEDName(JsonParsing.getString(data, "GameMode"));
                                     string group = JsonParsing.getString(data, "Group");
                                     data.TryGetValue("Credits", out val);
@@ -2309,7 +2313,7 @@ namespace EddiJournalMonitor
                                     decimal? fuel = JsonParsing.getOptionalDecimal(data, "FuelLevel");
                                     decimal? fuelCapacity = JsonParsing.getOptionalDecimal(data, "FuelCapacity");
 
-                                    events.Add(new CommanderContinuedEvent(timestamp, commander, horizons, (int)shipId, ship, shipName, shipIdent, mode, group, credits, loan, fuel, fuelCapacity) { raw = line, fromLoad = fromLogLoad });
+                                    events.Add(new CommanderContinuedEvent(timestamp, commander, frontierID, horizons, (int)shipId, ship, shipName, shipIdent, startedLanded, startDead, mode, group, credits, loan, fuel, fuelCapacity) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
