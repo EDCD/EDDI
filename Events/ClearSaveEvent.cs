@@ -19,9 +19,13 @@ namespace EddiEvents
         [JsonProperty("name")]
         public string name { get; private set; }
 
-        public ClearedSaveEvent(DateTime timestamp, string name) : base(timestamp, NAME)
+        // Not intended to be user facing
+        public string frontierID { get; private set; }
+
+        public ClearedSaveEvent(DateTime timestamp, string name, string frontierID) : base(timestamp, NAME)
         {
             this.name = name;
+            this.frontierID = frontierID;
         }
     }
 }
