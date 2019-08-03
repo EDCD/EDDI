@@ -127,7 +127,7 @@
     <value>Send details of your travels to Inara (https://inara.cz). Inara is a third party tool that provides provides information on Pilots Federation members and generates a shareable profile detailing your own status and achievements. </value>
   </data>
   <data name="name" xml:space="preserve">
-    <value>Inara responder</value>
+    <value>Inara Responder</value>
   </data>
   <data name="p1" xml:space="preserve">
     <value />
