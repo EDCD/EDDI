@@ -18,7 +18,7 @@ namespace EddiInaraResponder
     public class InaraResponder : EDDIResponder
     {
         private Thread updateThread;
-
+        private bool bgSyncRunning;
         public string ResponderName()
         {
             return "Inara responder";
@@ -57,28 +57,29 @@ namespace EddiInaraResponder
         {
             Stop();
             InaraService.Reload();
-            updateThread = new Thread(() => BackgroundSync())
-            {
-                Name = "Inara sync",
-                IsBackground = true
-            };
-            updateThread.Start();
-        }
-
-        private void BackgroundSync()
-        {
             try
             {
-                while (InaraService.Instance != null)
+                updateThread = new Thread(() => BackgroundSync())
                 {
-                    InaraService.Instance.SendQueuedAPIEventsAsync(EDDI.Instance.ShouldUseTestEndpoints());
-                    Thread.Sleep(120000);
-                }
+                    Name = "Inara sync",
+                    IsBackground = true
+                };
+                updateThread.Start();
             }
             catch (ThreadAbortException tax)
             {
                 Thread.ResetAbort();
                 Logging.Debug("Thread aborted", tax);
+            }
+        }
+
+        private void BackgroundSync()
+        {
+            bgSyncRunning = true;
+            while (bgSyncRunning)
+            {
+                InaraService.Instance.SendQueuedAPIEventsAsync(EDDI.Instance.ShouldUseTestEndpoints());
+                Thread.Sleep(120000);
             }
         }
 
@@ -89,6 +90,7 @@ namespace EddiInaraResponder
 
         public void Stop()
         {
+            bgSyncRunning = false;
             updateThread?.Abort();
             updateThread = null;
         }
