@@ -70,31 +70,20 @@ namespace EddiInaraService
 
     public class setCommanderRankEngineer : InaraAPIEvent
     {
-        public setCommanderRankEngineer(DateTime timestamp, string engineerName, string rankStage, int? rankValue = 0)
+        // Progress events may contain data about a single engineer
+        public setCommanderRankEngineer(DateTime timestamp, Dictionary<string, object> engineerEventData)
         {
-            // Sets rank progress with the individual Engineer. 
-            // If there is a newer value already stored (compared by timestamp), the update is ignored.
-            // Rank stage possible values are: ['Invited', 'Acquainted', 'Unlocked', 'Barred'] (matching the journal)
-            if (engineerName is null
-                || (string.IsNullOrEmpty(rankStage) && rankValue is null)
-                || rankValue < 0 || rankValue > 5)
-            {
-                return;
-            }
             eventName = "setCommanderRankEngineer";
             eventTimeStamp = timestamp;
-            eventData = new Dictionary<string, object>()
-            {
-                { "engineerName", engineerName }
-            };
-            if (!string.IsNullOrEmpty(rankStage))
-            {
-                ((Dictionary<string, object>)eventData).Add("rankStage", rankStage);
-            }
-            if (rankValue > 0)
-            {
-                ((Dictionary<string, object>)eventData).Add("rankValue", (int)rankValue);
-            }
+            eventData = engineerEventData;
+        }
+
+        // Startup events will contain data about all known engineers
+        public setCommanderRankEngineer(DateTime timestamp, List<Dictionary<string, object>> engineerEventData)
+        {
+            eventName = "setCommanderRankEngineer";
+            eventTimeStamp = timestamp;
+            eventData = engineerEventData;
         }
     }
 

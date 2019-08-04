@@ -16,6 +16,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Added new event `Commander loading`, triggered at the very beginning of loading a game.
     * Added new event `Statistics`, triggered while loading a game.
     * Updated the `Commander continued` event with new properties `startlanded` and `startdead` (true if starting the game either landed or dead, respectively).
+    * The event `Engineer progressed` shall now be written at startup (with empty values), signaling that engineer data has been loaded.
 
 ### 3.4.3-b2
   * Core
