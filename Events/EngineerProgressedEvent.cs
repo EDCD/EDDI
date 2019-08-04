@@ -21,13 +21,13 @@ namespace EddiEvents
             VARIABLES.Add("progresstype", "The type of progress that is applicable (Rank/Stage)");
         }
 
-        public string engineer => Engineer.name;
+        public string engineer => Engineer?.name;
 
-        public int? rank => Engineer.rank;
+        public int? rank => Engineer?.rank;
 
-        public int? rankprogress => Engineer.rankprogress;
+        public int? rankprogress => Engineer?.rankprogress;
 
-        public string stage => Engineer.stage;
+        public string stage => Engineer?.stage;
 
         public string progresstype { get; private set; }
 

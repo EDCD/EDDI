@@ -2252,20 +2252,21 @@ namespace EddiJournalMonitor
                                     if (val != null)
                                     {
                                         // This is a startup entry. 
-                                        // Update engineer progress / status data but do not generate events.
+                                        // Update engineer progress / status data
                                         List<object> engineers = (List<object>)val;
                                         foreach (IDictionary<string, object> engineerData in engineers)
                                         {
                                             Engineer engineer = parseEngineer(engineerData);
                                             Engineer.AddOrUpdate(engineer);
                                         }
+                                        // Generate an event to pass the data
+                                        events.Add(new EngineerProgressedEvent(timestamp, null, null) { raw = line, fromLoad = fromLogLoad });
                                     }
                                     else
                                     {
                                         // This is a progress entry.
                                         Engineer engineer = parseEngineer(data);
                                         Engineer lastEngineer = Engineer.FromNameOrId(engineer.name, engineer.id);
-
                                         if (engineer.rank != null && engineer.rank != lastEngineer?.rank)
                                         {
                                             events.Add(new EngineerProgressedEvent(timestamp, engineer, "Rank") { raw = line, fromLoad = fromLogLoad });

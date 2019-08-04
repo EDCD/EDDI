@@ -136,6 +136,10 @@ namespace EddiInaraResponder
                         {
                             handleCommanderContinuedEvent(commanderContinuedEvent);
                         }
+                        else if (theEvent is EngineerProgressedEvent engineerProgressedEvent)
+                        {
+                            handleEngineerProgressedEvent(engineerProgressedEvent);
+                        }
                         else if (theEvent is MissionCompletedEvent missionCompletedEvent)
                         {
                             handleMissionCompletedEvent(missionCompletedEvent);
@@ -157,6 +161,47 @@ namespace EddiInaraResponder
                     Logging.Error("Failed to handle event " + theEvent.type, data);
                 }
             }
+        }
+
+        private void handleEngineerProgressedEvent(EngineerProgressedEvent @event)
+        {
+            // Send engineer rank progress to Inara
+            IDictionary<string, object> data = Deserializtion.DeserializeData(@event.raw);
+            data.TryGetValue("Engineers", out object val);
+            if (val != null)
+            {
+                // This is a startup entry. 
+                List<Dictionary<string, object>> eventData = new List<Dictionary<string, object>>();
+                List<object> engineers = (List<object>)val;
+                foreach (IDictionary<string, object> engineerData in engineers)
+                {
+                    Dictionary<string, object> engineer = parseEngineerInara(engineerData);
+
+                    eventData.Add(engineer);
+                }
+                InaraService.Instance.EnqueueAPIEvent(new setCommanderRankEngineer(@event.timestamp, eventData));
+            }
+            else
+            {
+                // This is a progress entry.
+                Dictionary<string, object> eventData = parseEngineerInara(data);
+                InaraService.Instance.EnqueueAPIEvent(new setCommanderRankEngineer(@event.timestamp, eventData));
+            }
+        }
+
+        private static Dictionary<string, object> parseEngineerInara(IDictionary<string, object> engineerData)
+        {
+            Dictionary<string, object> engineer = new Dictionary<string, object>()
+            {
+                { "engineerName", JsonParsing.getString(engineerData, "Engineer") },
+                { "rankStage", JsonParsing.getString(engineerData, "Progress") }
+            };
+            int? rank = JsonParsing.getOptionalInt(engineerData, "Rank");
+            if (!(rank is null))
+            {
+                engineer.Add("rankValue", rank);
+            }
+            return engineer;
         }
 
         private void handleStatisticsEvent(StatisticsEvent @event)
