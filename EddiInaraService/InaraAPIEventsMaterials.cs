@@ -7,6 +7,7 @@ namespace EddiInaraService
     // Documentation: https://inara.cz/inara-api-docs/
     // Inara API events related to manipulating the commander's material inventory
 
+        /*
     public class addCommanderInventoryMaterialsItem : InaraAPIEvent
     {
         public addCommanderInventoryMaterialsItem(DateTime timestamp, Material material, int itemCount)
@@ -93,4 +94,5 @@ namespace EddiInaraService
             };
         }
     }
+    */
 }

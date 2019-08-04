@@ -9,6 +9,11 @@ namespace EddiInaraService
 {
     public partial class InaraService
     {
+        // Documentation: https://inara.cz/inara-api-docs/
+
+        // Returns basic information about commander from Inara like ranks, 
+        // squadron, a link to the commander's Inara profile, etc. 
+
         public InaraCmdr GetCommanderProfile(string commanderName, bool inBeta)
         {
             return GetCommanderProfiles(new string[] { commanderName }, inBeta)?.FirstOrDefault();
@@ -21,7 +26,10 @@ namespace EddiInaraService
             List<InaraAPIEvent> events = new List<InaraAPIEvent>();
             foreach (string commanderName in commanderNames)
             {
-                events.Add(new getCommanderProfile(DateTime.UtcNow, commanderName));
+                events.Add(new InaraAPIEvent(DateTime.UtcNow, "getCommanderProfile", new Dictionary<string, object>()
+                {
+                    { "searchName", commanderName }
+                }));
             }
             List<InaraResponse> responses = SendEventBatch(ref events, inBeta);
             foreach (InaraResponse inaraResponse in responses)
@@ -30,26 +38,6 @@ namespace EddiInaraService
                 cmdrs.Add(JsonConvert.DeserializeObject<InaraCmdr>(jsonCmdr));
             }
             return cmdrs;
-        }
-    }
-
-    // Documentation: https://inara.cz/inara-api-docs/
-    public class getCommanderProfile : InaraAPIEvent
-    {
-        public getCommanderProfile(DateTime timestamp, string searchName)
-        {
-            // Returns basic information about commander from Inara like ranks, 
-            // squadron, a link to the commander's Inara profile, etc. 
-            if (string.IsNullOrEmpty(searchName))
-            {
-                return;
-            }
-            eventName = "getCommanderProfile";
-            eventTimeStamp = timestamp;
-            eventData = new Dictionary<string, object>()
-            {
-                { "searchName", searchName }
-            };
         }
     }
 

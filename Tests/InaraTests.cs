@@ -24,8 +24,8 @@ namespace Apitests
         {
             List<InaraAPIEvent> inaraAPIEvents = new List<InaraAPIEvent>()
             {
-                { new getCommanderProfile(DateTime.UtcNow, "No such name") },
-                { new getCommanderProfile(DateTime.UtcNow, "Artie") }
+                { new InaraAPIEvent(DateTime.UtcNow, "getCommanderProfile", new Dictionary<string, object>() { { "searchName", "No such name" } })},
+                { new InaraAPIEvent(DateTime.UtcNow, "getCommanderProfile", new Dictionary<string, object>() { { "searchName", "Artie" } })}
             };
             List<InaraResponse> responses = InaraService.Instance.SendEventBatch(ref inaraAPIEvents, true);
 
