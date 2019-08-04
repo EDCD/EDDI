@@ -83,6 +83,7 @@
     <Compile Include="SquadronRankEvent.cs" />
     <Compile Include="SquadronStartupEvent.cs" />
     <Compile Include="SquadronStatusEvent.cs" />
+    <Compile Include="StatisticsEvent.cs" />
     <Compile Include="UnhandledEvent.cs" />
     <Compile Include="FighterRebuiltEvent.cs" />
     <Compile Include="JetConeDamageEvent.cs" />

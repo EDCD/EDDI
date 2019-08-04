@@ -47,10 +47,10 @@ namespace EddiEvents
         public string shipident { get; private set; }
 
         [JsonProperty("startlanded")]
-        public bool startlanded { get; private set; }
+        public bool? startlanded { get; private set; }
 
         [JsonProperty("startdead")]
-        public bool startdead { get; private set; }
+        public bool? startdead { get; private set; }
 
         [JsonProperty("mode")]
         public string mode { get; private set; }
@@ -82,8 +82,8 @@ namespace EddiEvents
             this.ship = ShipDefinitions.FromEDModel(ship).model;
             this.shipname = shipName;
             this.shipident = shipIdent;
-            this.startlanded = (bool)startedLanded;
-            this.startdead = (bool)startDead;
+            this.startlanded = startedLanded;
+            this.startdead = startDead;
             this.mode = (mode == null ? null : mode.localizedName);
             this.group = group;
             this.credits = credits;

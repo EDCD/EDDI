@@ -2000,6 +2000,15 @@
       "name": "Station report",
       "description": "Function to report on the details of the current station"
     },
+    "Statistics": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "default": true,
+      "name": "Statistics",
+      "description": "Statistics provided at the beginning of a game session"
+    },
     "Swapout check": {
       "enabled": true,
       "priority": 3,
