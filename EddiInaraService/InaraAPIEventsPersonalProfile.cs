@@ -89,35 +89,14 @@ namespace EddiInaraService
 
     public class setCommanderRankPilot : InaraAPIEvent
     {
-        public setCommanderRankPilot(DateTime timestamp, string rankName, int rankValue = 0, float rankProgress = 0)
+        public setCommanderRankPilot(DateTime timestamp, List<Dictionary<string, object>> pilotEventData)
         {
             // Sets commander Elite and Navy ranks. You can set just rank or its progress or both at once. 
             // If there is a newer value already stored (compared by timestamp), the update is ignored. 
             // Possible star system permits tied to ranks are awarded to the commander automatically.
-            // Pilots federation/Navy rank name as are in the journals (["combat", "trade", "explore", "cqc", "federation", "empire"]) 
-            // Rank value (range [0..8] for Pilots federation ranks, range [0..14] for Navy ranks)
-            // Rank progress (range: [0..1], which corresponds to 0% - 100%)
-            if (rankName is null
-                || rankValue < 0 || rankValue > 8
-                || rankProgress < 0 || rankProgress > 1
-                || rankValue + rankProgress == 0)
-            {
-                return;
-            }
             eventName = "setCommanderRankPilot";
             eventTimeStamp = timestamp;
-            eventData = new Dictionary<string, object>()
-                {
-                    { "rankName", rankName }
-                };
-            if (rankValue > 0)
-            {
-                ((Dictionary<string, object>)eventData).Add("rankValue", rankValue);
-            }
-            if (rankProgress > 0)
-            {
-                ((Dictionary<string, object>)eventData).Add("rankProgress", rankProgress);
-            }
+            eventData = pilotEventData;
         }
     }
 
