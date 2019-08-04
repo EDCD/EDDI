@@ -7,6 +7,7 @@ namespace EddiInaraService
     // Documentation: https://inara.cz/inara-api-docs/
     // Inara API events related to manipulating the commander's cargo
 
+        /*
     public class addCommanderInventoryCargoItem : InaraAPIEvent
     {
         public addCommanderInventoryCargoItem(DateTime timestamp, CommodityDefinition commodityDefinition, int itemCount, bool isStolen, long? missionGameID = null)
@@ -114,4 +115,5 @@ namespace EddiInaraService
             }
         }
     }
+    */
 }

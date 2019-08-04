@@ -15,6 +15,8 @@ using Utilities;
 
 namespace EddiInaraResponder
 {
+    // Documentation: https://inara.cz/inara-api-docs/
+
     public class InaraResponder : EDDIResponder
     {
         private Thread updateThread;
@@ -175,7 +177,7 @@ namespace EddiInaraResponder
         {
             // Pilots federation/Navy rank name as are in the journals (["combat", "trade", "explore", "cqc", "federation", "empire"]) 
             // Rank progress (range: [0..1], which corresponds to 0% - 100%) (In the journal, these are given out of 100)
-            List<Dictionary<string, object>> rankData = new List<Dictionary<string, object>>()
+            List<Dictionary<string, object>> eventData = new List<Dictionary<string, object>>()
             {
                 new Dictionary<string, object>()
                 {
@@ -208,14 +210,14 @@ namespace EddiInaraResponder
                     { "rankProgress", @event.cqc / 100 }
                 }
             };
-            InaraService.Instance.EnqueueAPIEvent(new setCommanderRankPilot(@event.timestamp, rankData));
+            InaraService.Instance.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "setCommanderRankPilot", eventData));
         }
 
         private void handleCommanderRatingsEvent(CommanderRatingsEvent @event)
         {
             // Pilots federation/Navy rank name as are in the journals (["combat", "trade", "explore", "cqc", "federation", "empire"]) 
             // Rank value (range [0..8] for Pilots federation ranks, range [0..14] for Navy ranks)
-            List<Dictionary<string, object>> rankData = new List<Dictionary<string, object>>()
+            List<Dictionary<string, object>> eventData = new List<Dictionary<string, object>>()
             {
                 new Dictionary<string, object>()
                 {
@@ -248,7 +250,7 @@ namespace EddiInaraResponder
                     { "rankValue", @event.cqc.rank }
                 }
             };
-            InaraService.Instance.EnqueueAPIEvent(new setCommanderRankPilot(@event.timestamp, rankData));
+            InaraService.Instance.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "setCommanderRankPilot", eventData));
         }
 
         private void handleEngineerProgressedEvent(EngineerProgressedEvent @event)
@@ -258,7 +260,7 @@ namespace EddiInaraResponder
             data.TryGetValue("Engineers", out object val);
             if (val != null)
             {
-                // This is a startup entry. 
+                // This is a startup entry, containing data about all known engineers
                 List<Dictionary<string, object>> eventData = new List<Dictionary<string, object>>();
                 List<object> engineers = (List<object>)val;
                 foreach (IDictionary<string, object> engineerData in engineers)
@@ -267,13 +269,13 @@ namespace EddiInaraResponder
 
                     eventData.Add(engineer);
                 }
-                InaraService.Instance.EnqueueAPIEvent(new setCommanderRankEngineer(@event.timestamp, eventData));
+                InaraService.Instance.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "setCommanderRankEngineer", eventData));
             }
             else
             {
-                // This is a progress entry.
+                // This is a progress entry, containing data about a single engineer
                 Dictionary<string, object> eventData = parseEngineerInara(data);
-                InaraService.Instance.EnqueueAPIEvent(new setCommanderRankEngineer(@event.timestamp, eventData));
+                InaraService.Instance.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "setCommanderRankEngineer", eventData));
             }
         }
 
@@ -295,17 +297,28 @@ namespace EddiInaraResponder
         private void handleStatisticsEvent(StatisticsEvent @event)
         {
             // Send the commanders game statistics to Inara
-            // Prepare and send the raw event, less the event name and timestamp. 
+            // Prepare and send the raw event, less the event name and timestamp. Please note that the statistics 
+            // are always overridden as a whole, so any partial updates will cause erasing of the rest.
             IDictionary<string, object> data = Deserializtion.DeserializeData(@event.raw);
             data.Remove("timestamp");
             data.Remove("event");
-            InaraService.Instance.EnqueueAPIEvent(new setCommanderGameStatistics(@event.timestamp, JsonConvert.SerializeObject(data)));
+            InaraService.Instance.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "setCommanderGameStatistics", (Dictionary<string, object>)data));
         }
 
         private void handleCommanderContinuedEvent(CommanderContinuedEvent @event)
         {
-            // Send the commander's current credits and loans to Inara
-            InaraService.Instance.EnqueueAPIEvent(new setCommanderCredits(@event.timestamp, @event.credits, @event.loan));
+            // Sets current credits and loans. A record is added to the credits log (if the value differs).
+            // Warning: Do NOT set credits/assets unless you are absolutely sure they are correct. 
+            // The journals currently doesn't contain crew wage cuts, so credit gains are very probably off 
+            // for most of the players. Also, please, do not send each minor credits change, as it will 
+            // spam player's credits log with unusable data and they won't be most likely very happy about it. 
+            // It may be good to set credits just on the session start, session end and on the big changes 
+            // or in hourly intervals.
+            InaraService.Instance.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "setCommanderCredits", new Dictionary<string, object>()
+            {
+                { "commanderCredits", @event.credits },
+                { "commanderLoan", @event.loan }
+            }));
         }
 
         private void handleCommanderStartedEvent(CommanderStartedEvent @event)
@@ -336,13 +349,16 @@ namespace EddiInaraResponder
 
         private void handleMissionCompletedEvent(MissionCompletedEvent @event)
         {
-            // Send aquired permits to Inara
+            // Adds star system permit for the commander. You do not need to handle permits granted for the 
+            // Pilots Federation or Navy rank promotion, but you should handle any other ways (like mission 
+            // rewards).
             if (@event.permitsawarded.Count > 0)
             {
+                Dictionary<string, object> eventData = new Dictionary<string, object>();
                 foreach (string systemName in @event.permitsawarded)
                 {
                     if (string.IsNullOrEmpty(systemName)) { continue; }
-                    InaraService.Instance.EnqueueAPIEvent(new addCommanderPermit(@event.timestamp, systemName));
+                    InaraService.Instance.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "addCommanderPermit", new Dictionary<string, object>() { { "starsystemName", systemName } }));
                 }
             }
         }

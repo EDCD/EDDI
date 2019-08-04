@@ -213,7 +213,7 @@ namespace EddiInaraService
         public int eventCustomID { get; set; } // Optional index
     }
 
-    public abstract class InaraAPIEvent
+    public class InaraAPIEvent
     {
         public string eventName { get; set; }
 
@@ -221,14 +221,27 @@ namespace EddiInaraService
 
         public object eventData { get; set; }
 
-        public int eventCustomID { get; set; } // Optional index
+        public int? eventCustomID { get; set; } // Optional index
 
         // Helper properties
 
         [JsonIgnore]
         public DateTime eventTimeStamp { get; set; }
 
-        public InaraAPIEvent()
-        { }
+        public InaraAPIEvent(DateTime eventTimeStamp, string eventName, Dictionary<string, object> eventData, int? eventCustomID = null)
+        {
+            this.eventTimeStamp = eventTimeStamp;
+            this.eventName = eventName;
+            this.eventData = eventData;
+            this.eventCustomID = eventCustomID;
+        }
+
+        public InaraAPIEvent(DateTime eventTimeStamp, string eventName, List<Dictionary<string, object>> eventData, int? eventCustomID = null)
+        {
+            this.eventTimeStamp = eventTimeStamp;
+            this.eventName = eventName;
+            this.eventData = eventData;
+            this.eventCustomID = eventCustomID;
+        }
     }
 }
