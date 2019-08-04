@@ -140,6 +140,10 @@ namespace EddiInaraResponder
                         {
                             handleMissionCompletedEvent(missionCompletedEvent);
                         }
+                        else if (theEvent is StatisticsEvent statisticsEvent)
+                        {
+                            handleStatisticsEvent(statisticsEvent);
+                        }
                     }
                 }
                 catch (Exception ex)
@@ -153,6 +157,16 @@ namespace EddiInaraResponder
                     Logging.Error("Failed to handle event " + theEvent.type, data);
                 }
             }
+        }
+
+        private void handleStatisticsEvent(StatisticsEvent @event)
+        {
+            // Send the commanders game statistics to Inara
+            // Prepare and send the raw event, less the event name and timestamp. 
+            IDictionary<string, object> statsData = Deserializtion.DeserializeData(@event.raw);
+            statsData.Remove("timestamp");
+            statsData.Remove("event");
+            InaraService.Instance.EnqueueAPIEvent(new setCommanderGameStatistics(@event.timestamp, JsonConvert.SerializeObject(statsData)));
         }
 
         private void handleCommanderContinuedEvent(CommanderContinuedEvent @event)
