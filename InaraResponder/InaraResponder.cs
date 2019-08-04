@@ -136,6 +136,14 @@ namespace EddiInaraResponder
                         {
                             handleCommanderContinuedEvent(commanderContinuedEvent);
                         }
+                        else if (theEvent is CommanderProgressEvent commanderProgressEvent)
+                        {
+                            handleCommanderProgressEvent(commanderProgressEvent);
+                        }
+                        else if (theEvent is CommanderRatingsEvent commanderRatingsEvent)
+                        {
+                            handleCommanderRatingsEvent(commanderRatingsEvent);
+                        }
                         else if (theEvent is EngineerProgressedEvent engineerProgressedEvent)
                         {
                             handleEngineerProgressedEvent(engineerProgressedEvent);
@@ -161,6 +169,86 @@ namespace EddiInaraResponder
                     Logging.Error("Failed to handle event " + theEvent.type, data);
                 }
             }
+        }
+
+        private void handleCommanderProgressEvent(CommanderProgressEvent @event)
+        {
+            // Pilots federation/Navy rank name as are in the journals (["combat", "trade", "explore", "cqc", "federation", "empire"]) 
+            // Rank progress (range: [0..1], which corresponds to 0% - 100%) (In the journal, these are given out of 100)
+            List<Dictionary<string, object>> rankData = new List<Dictionary<string, object>>()
+            {
+                new Dictionary<string, object>()
+                {
+                    { "rankName", "combat" },
+                    { "rankProgress", @event.combat / 100 }
+                },
+                new Dictionary<string, object>()
+                {
+                    { "rankName", "trade" },
+                    { "rankProgress", @event.trade / 100 }
+                },
+                new Dictionary<string, object>()
+                {
+                    { "rankName", "explore" },
+                    { "rankProgress", @event.exploration / 100 }
+                },
+                new Dictionary<string, object>()
+                {
+                    { "rankName", "empire" },
+                    { "rankProgress", @event.empire / 100 }
+                },
+                new Dictionary<string, object>()
+                {
+                    { "rankName", "federation" },
+                    { "rankProgress", @event.federation / 100 }
+                },
+                new Dictionary<string, object>()
+                {
+                    { "rankName", "cqc" },
+                    { "rankProgress", @event.cqc / 100 }
+                }
+            };
+            InaraService.Instance.EnqueueAPIEvent(new setCommanderRankPilot(@event.timestamp, rankData));
+        }
+
+        private void handleCommanderRatingsEvent(CommanderRatingsEvent @event)
+        {
+            // Pilots federation/Navy rank name as are in the journals (["combat", "trade", "explore", "cqc", "federation", "empire"]) 
+            // Rank value (range [0..8] for Pilots federation ranks, range [0..14] for Navy ranks)
+            List<Dictionary<string, object>> rankData = new List<Dictionary<string, object>>()
+            {
+                new Dictionary<string, object>()
+                {
+                    { "rankName", "combat" },
+                    { "rankValue", @event.combat.rank }
+                },
+                new Dictionary<string, object>()
+                {
+                    { "rankName", "trade" },
+                    { "rankValue", @event.trade.rank }
+                },
+                new Dictionary<string, object>()
+                {
+                    { "rankName", "explore" },
+                    { "rankValue", @event.exploration.rank }
+                },
+                new Dictionary<string, object>()
+                {
+                    { "rankName", "empire" },
+                    { "rankValue", @event.empire.rank }
+                },
+                new Dictionary<string, object>()
+                {
+                    { "rankName", "federation" },
+                    { "rankValue", @event.federation.rank }
+                },
+                new Dictionary<string, object>()
+                {
+                    { "rankName", "cqc" },
+                    { "rankValue", @event.cqc.rank }
+                }
+            };
+            InaraService.Instance.EnqueueAPIEvent(new setCommanderRankPilot(@event.timestamp, rankData));
         }
 
         private void handleEngineerProgressedEvent(EngineerProgressedEvent @event)
@@ -208,10 +296,10 @@ namespace EddiInaraResponder
         {
             // Send the commanders game statistics to Inara
             // Prepare and send the raw event, less the event name and timestamp. 
-            IDictionary<string, object> statsData = Deserializtion.DeserializeData(@event.raw);
-            statsData.Remove("timestamp");
-            statsData.Remove("event");
-            InaraService.Instance.EnqueueAPIEvent(new setCommanderGameStatistics(@event.timestamp, JsonConvert.SerializeObject(statsData)));
+            IDictionary<string, object> data = Deserializtion.DeserializeData(@event.raw);
+            data.Remove("timestamp");
+            data.Remove("event");
+            InaraService.Instance.EnqueueAPIEvent(new setCommanderGameStatistics(@event.timestamp, JsonConvert.SerializeObject(data)));
         }
 
         private void handleCommanderContinuedEvent(CommanderContinuedEvent @event)
