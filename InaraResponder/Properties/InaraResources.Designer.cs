@@ -70,15 +70,6 @@ namespace EddiInaraResponder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Commander Name:.
-        /// </summary>
-        public static string cmd_name_label {
-            get {
-                return ResourceManager.GetString("cmd_name_label", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Send details of your travels to Inara (https://inara.cz). Inara is a third party tool that provides provides information on Pilots Federation members and generates a shareable profile detailing your own status and achievements. .
         /// </summary>
         public static string desc {
@@ -111,15 +102,6 @@ namespace EddiInaraResponder.Properties {
         public static string p2 {
             get {
                 return ResourceManager.GetString("p2", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to .
-        /// </summary>
-        public static string p3 {
-            get {
-                return ResourceManager.GetString("p3", resourceCulture);
             }
         }
     }

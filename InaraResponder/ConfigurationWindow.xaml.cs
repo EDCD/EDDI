@@ -16,12 +16,6 @@ namespace EddiInaraResponder
 
             InaraConfiguration inaraConfiguration = InaraConfiguration.FromFile();
             inaraApiKeyTextBox.Text = inaraConfiguration.apiKey;
-            inaraCommanderNameTextBox.Text = inaraConfiguration.commanderName;
-        }
-
-        private void inaraCommanderNameChanged(object sender, TextChangedEventArgs e)
-        {
-            updateInaraConfiguration();
         }
 
         private void inaraApiKeyChanged(object sender, TextChangedEventArgs e)
@@ -35,10 +29,6 @@ namespace EddiInaraResponder
             if (!string.IsNullOrWhiteSpace(inaraApiKeyTextBox.Text))
             {
                 inaraConfiguration.apiKey = inaraApiKeyTextBox.Text.Trim();
-            }
-            if (!string.IsNullOrWhiteSpace(inaraCommanderNameTextBox.Text))
-            {
-                inaraConfiguration.commanderName = inaraCommanderNameTextBox.Text.Trim();
             }
             inaraConfiguration.ToFile();
             EDDI.Instance.Reload("Inara responder");

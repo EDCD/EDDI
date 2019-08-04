@@ -120,9 +120,6 @@
   <data name="api_key_label" xml:space="preserve">
     <value>API Key:</value>
   </data>
-  <data name="cmd_name_label" xml:space="preserve">
-    <value>Commander Name:</value>
-  </data>
   <data name="desc" xml:space="preserve">
     <value>Send details of your travels to Inara (https://inara.cz). Inara is a third party tool that provides provides information on Pilots Federation members and generates a shareable profile detailing your own status and achievements. </value>
   </data>
@@ -133,9 +130,6 @@
     <value />
   </data>
   <data name="p2" xml:space="preserve">
-    <value />
-  </data>
-  <data name="p3" xml:space="preserve">
     <value />
   </data>
 </root>
