@@ -3440,10 +3440,152 @@ namespace EddiJournalMonitor
                                 }
                                 handled = true;
                                 break;
+                            case "Statistics":
+                                {
+                                    Statistics statistics = new Statistics();
+
+                                    data.TryGetValue("Bank_Account", out object bankAccountVal);
+                                    Dictionary<string, object> bankaccount = (Dictionary<string, object>)bankAccountVal;
+                                    statistics.bankaccount.wealth = JsonParsing.getOptionalLong(bankaccount, "Current_Wealth");
+                                    statistics.bankaccount.spentonships = JsonParsing.getOptionalLong(bankaccount, "Spent_On_Ships");
+                                    statistics.bankaccount.spentonoutfitting = JsonParsing.getOptionalLong(bankaccount, "Spent_On_Outfitting");
+                                    statistics.bankaccount.spentonrepairs = JsonParsing.getOptionalLong(bankaccount, "Spent_On_Repairs");
+                                    statistics.bankaccount.spentonfuel = JsonParsing.getOptionalLong(bankaccount, "Spent_On_Fuel");
+                                    statistics.bankaccount.spentonammoconsumables = JsonParsing.getOptionalLong(bankaccount, "Spent_On_Ammo_Consumables");
+                                    statistics.bankaccount.spentoninsurance = JsonParsing.getOptionalLong(bankaccount, "Spent_On_Insurance");
+                                    statistics.bankaccount.insuranceclaims = JsonParsing.getOptionalLong(bankaccount, "Insurance_Claims");
+                                    statistics.bankaccount.ownedshipcount = JsonParsing.getOptionalLong(bankaccount, "Owned_Ship_Count");
+
+                                    data.TryGetValue("Combat", out object combatVal);
+                                    Dictionary<string, object> combat = (Dictionary<string, object>)combatVal;
+                                    statistics.combat.bountiesclaimed = JsonParsing.getOptionalLong(combat, "Bounties_Claimed");
+                                    statistics.combat.bountyhuntingprofit = JsonParsing.getOptionalDecimal(combat, "Bounty_Hunting_Profit");
+                                    statistics.combat.combatbonds = JsonParsing.getOptionalLong(combat, "Combat_Bonds");
+                                    statistics.combat.combatbondprofits = JsonParsing.getOptionalLong(combat, "Combat_Bond_Profits");
+                                    statistics.combat.assassinations = JsonParsing.getOptionalLong(combat, "Assassinations");
+                                    statistics.combat.assassinationprofits = JsonParsing.getOptionalLong(combat, "Assassination_Profits");
+                                    statistics.combat.highestsinglereward = JsonParsing.getOptionalLong(combat, "Highest_Single_Reward");
+                                    statistics.combat.skimmerskilled = JsonParsing.getOptionalLong(combat, "Skimmers_Killed");
+
+                                    data.TryGetValue("Crime", out object crimeVal);
+                                    Dictionary<string, object> crime = (Dictionary<string, object>)crimeVal;
+                                    statistics.crime.notoriety = JsonParsing.getOptionalInt(crime, "Notoriety");
+                                    statistics.crime.fines = JsonParsing.getOptionalLong(crime, "Fines");
+                                    statistics.crime.totalfines = JsonParsing.getOptionalLong(crime, "Total_Fines");
+                                    statistics.crime.bountiesreceived = JsonParsing.getOptionalLong(crime, "Bounties_Received");
+                                    statistics.crime.totalbounties = JsonParsing.getOptionalLong(crime, "Total_Bounties");
+                                    statistics.crime.highestbounty = JsonParsing.getOptionalLong(crime, "Highest_Bounty");
+
+                                    data.TryGetValue("Smuggling", out object smugglingVal);
+                                    Dictionary<string, object> smuggling = (Dictionary<string, object>)smugglingVal;
+                                    statistics.smuggling.blackmarketstradedwith = JsonParsing.getOptionalLong(smuggling, "Black_Markets_Traded_With");
+                                    statistics.smuggling.blackmarketprofits = JsonParsing.getOptionalLong(smuggling, "Black_Markets_Profits");
+                                    statistics.smuggling.resourcessmuggled = JsonParsing.getOptionalLong(smuggling, "Resources_Smuggled");
+                                    statistics.smuggling.averageprofit = JsonParsing.getOptionalDecimal(smuggling, "Average_Profit");
+                                    statistics.smuggling.highestsingletransaction = JsonParsing.getOptionalLong(smuggling, "Highest_Single_Transaction");
+
+                                    data.TryGetValue("Trading", out object tradingVal);
+                                    Dictionary<string, object> trading = (Dictionary<string, object>)tradingVal;
+                                    statistics.trading.marketstradedwith = JsonParsing.getOptionalLong(trading, "Markets_Traded_With");
+                                    statistics.trading.marketprofits = JsonParsing.getOptionalLong(trading, "Market_Profits");
+                                    statistics.trading.resourcestraded = JsonParsing.getOptionalLong(trading, "Resources_Traded");
+                                    statistics.trading.averageprofit = JsonParsing.getOptionalDecimal(trading, "Average_Profit");
+                                    statistics.trading.highestsingletransaction = JsonParsing.getOptionalLong(trading, "Highest_Single_Transaction");
+
+                                    data.TryGetValue("Mining", out object miningVal);
+                                    Dictionary<string, object> mining = (Dictionary<string, object>)miningVal;
+                                    statistics.mining.profits = JsonParsing.getOptionalLong(mining, "Mining_Profits");
+                                    statistics.mining.quantitymined = JsonParsing.getOptionalLong(mining, "Quantity_Mined");
+                                    statistics.mining.materialscollected = JsonParsing.getOptionalLong(mining, "Materials_Collected");
+
+                                    data.TryGetValue("Exploration", out object explorationVal);
+                                    Dictionary<string, object> exploration = (Dictionary<string, object>)explorationVal;
+                                    statistics.exploration.systemsvisited = JsonParsing.getOptionalLong(exploration, "Systems_Visited");
+                                    statistics.exploration.profits = JsonParsing.getOptionalLong(exploration, "Exploration_Profits");
+                                    statistics.exploration.planetsscannedlevel2 = JsonParsing.getOptionalLong(exploration, "Planets_Scanned_To_Level_2");
+                                    statistics.exploration.planetsscannedlevel3 = JsonParsing.getOptionalLong(exploration, "Planets_Scanned_To_Level_3");
+                                    statistics.exploration.highestpayout = JsonParsing.getOptionalLong(exploration, "Highest_Payout");
+                                    statistics.exploration.totalhyperspacedistance = JsonParsing.getOptionalDecimal(exploration, "Total_Hyperspace_Distance");
+                                    statistics.exploration.totalhyperspacejumps = JsonParsing.getOptionalLong(exploration, "Total_Hyperspace_Jumps");
+                                    statistics.exploration.greatestdistancefromstart = JsonParsing.getOptionalDecimal(exploration, "Greatest_Distance_From_Start");
+                                    statistics.exploration.timeplayedseconds = JsonParsing.getOptionalLong(exploration, "Time_Played");
+
+                                    data.TryGetValue("Passengers", out object passengersVal);
+                                    Dictionary<string, object> passengers = (Dictionary<string, object>)passengersVal;
+                                    statistics.passengers.accepted = JsonParsing.getOptionalLong(passengers, "Passengers_Missions_Accepted");
+                                    statistics.passengers.disgruntled = JsonParsing.getOptionalLong(passengers, "Passengers_Missions_Disgruntled");
+                                    statistics.passengers.bulk = JsonParsing.getOptionalLong(passengers, "Passengers_Missions_Bulk");
+                                    statistics.passengers.vip = JsonParsing.getOptionalLong(passengers, "Passengers_Missions_VIP");
+                                    statistics.passengers.delivered = JsonParsing.getOptionalLong(passengers, "Passengers_Missions_Delivered");
+                                    statistics.passengers.ejected = JsonParsing.getOptionalLong(passengers, "Passengers_Missions_Ejected");
+
+                                    data.TryGetValue("Search_And_Rescue", out object searchAndRescueVal);
+                                    Dictionary<string, object> searchAndRescue = (Dictionary<string, object>)searchAndRescueVal;
+                                    statistics.searchandrescue.traded = JsonParsing.getOptionalLong(searchAndRescue, "SearchRescue_Traded");
+                                    statistics.searchandrescue.profit = JsonParsing.getOptionalLong(searchAndRescue, "SearchRescue_Profit");
+                                    statistics.searchandrescue.count = JsonParsing.getOptionalLong(searchAndRescue, "SearchRescue_Count");
+
+                                    data.TryGetValue("TG_ENCOUNTERS", out object thargoidVal);
+                                    Dictionary<string, object> thargoid = (Dictionary<string, object>)thargoidVal;
+                                    statistics.thargoidencounters.wakesscanned = JsonParsing.getOptionalLong(thargoid, "TG_ENCOUNTER_WAKES");
+                                    statistics.thargoidencounters.imprints = JsonParsing.getOptionalLong(thargoid, "TG_ENCOUNTER_IMPRINT");
+                                    statistics.thargoidencounters.totalencounters = JsonParsing.getOptionalLong(thargoid, "TG_ENCOUNTER_TOTAL");
+                                    statistics.thargoidencounters.lastsystem = JsonParsing.getString(thargoid, "TG_ENCOUNTER_TOTAL_LAST_SYSTEM");
+                                    statistics.thargoidencounters.lastshipmodel = JsonParsing.getString(thargoid, "TG_ENCOUNTER_TOTAL_LAST_SHIP");
+                                    statistics.thargoidencounters.lasttimestamp = DateTime.Parse(JsonParsing.getString(thargoid, "TG_ENCOUNTER_TOTAL_LAST_TIMESTAMP"));
+
+                                    data.TryGetValue("Crafting", out object craftingVal);
+                                    Dictionary<string, object> crafting = (Dictionary<string, object>)craftingVal;
+                                    statistics.crafting.countofusedengineers = JsonParsing.getOptionalLong(crafting, "Count_Of_Used_Engineers");
+                                    statistics.crafting.recipesgenerated = JsonParsing.getOptionalLong(crafting, "Recipes_Generated");
+                                    statistics.crafting.recipesgeneratedrank1 = JsonParsing.getOptionalLong(crafting, "Recipes_Generated_Rank_1");
+                                    statistics.crafting.recipesgeneratedrank2 = JsonParsing.getOptionalLong(crafting, "Recipes_Generated_Rank_2");
+                                    statistics.crafting.recipesgeneratedrank3 = JsonParsing.getOptionalLong(crafting, "Recipes_Generated_Rank_3");
+                                    statistics.crafting.recipesgeneratedrank4 = JsonParsing.getOptionalLong(crafting, "Recipes_Generated_Rank_4");
+                                    statistics.crafting.recipesgeneratedrank5 = JsonParsing.getOptionalLong(crafting, "Recipes_Generated_Rank_5");
+
+                                    data.TryGetValue("Crew", out object crewVal);
+                                    Dictionary<string, object> crew = (Dictionary<string, object>)crewVal;
+                                    statistics.npccrew.totalwages = JsonParsing.getOptionalLong(crew, "NpcCrew_TotalWages");
+                                    statistics.npccrew.hired = JsonParsing.getOptionalLong(crew, "NpcCrew_Hired");
+                                    statistics.npccrew.fired = JsonParsing.getOptionalLong(crew, "NpcCrew_Fired");
+                                    statistics.npccrew.died = JsonParsing.getOptionalLong(crew, "NpcCrew_Died");
+
+                                    data.TryGetValue("Multicrew", out object multicrewVal);
+                                    Dictionary<string, object> multicrew = (Dictionary<string, object>)multicrewVal;
+                                    statistics.multicrew.timetotalseconds = JsonParsing.getOptionalLong(multicrew, "Multicrew_Time_Total");
+                                    statistics.multicrew.gunnertimetotalseconds = JsonParsing.getOptionalLong(multicrew, "Multicrew_Gunner_Time_Total");
+                                    statistics.multicrew.fightertimetotalseconds = JsonParsing.getOptionalLong(multicrew, "Multicrew_Fighter_Time_Total");
+                                    statistics.multicrew.multicrewcreditstotal = JsonParsing.getOptionalLong(multicrew, "Multicrew_Credits_Total");
+                                    statistics.multicrew.multicrewfinestotal = JsonParsing.getOptionalLong(multicrew, "Multicrew_Fines_Total");
+
+                                    data.TryGetValue("Material_Trader_Stats", out object materialTraderVal);
+                                    Dictionary<string, object> materialtrader = (Dictionary<string, object>)materialTraderVal;
+                                    statistics.materialtrader.tradescompleted = JsonParsing.getOptionalLong(materialtrader, "Trades_Completed");
+                                    statistics.materialtrader.materialstraded = JsonParsing.getOptionalLong(materialtrader, "Materials_Traded");
+                                    statistics.materialtrader.encodedmaterialstraded = JsonParsing.getOptionalLong(materialtrader, "Encoded_Materials_Traded");
+                                    statistics.materialtrader.rawmaterialstraded = JsonParsing.getOptionalLong(materialtrader, "Raw_Materials_Traded");
+                                    statistics.materialtrader.grade1materialstraded = JsonParsing.getOptionalLong(materialtrader, "Grade_1_Materials_Traded");
+                                    statistics.materialtrader.grade2materialstraded = JsonParsing.getOptionalLong(materialtrader, "Grade_2_Materials_Traded");
+                                    statistics.materialtrader.grade3materialstraded = JsonParsing.getOptionalLong(materialtrader, "Grade_3_Materials_Traded");
+                                    statistics.materialtrader.grade4materialstraded = JsonParsing.getOptionalLong(materialtrader, "Grade_4_Materials_Traded");
+                                    statistics.materialtrader.grade5materialstraded = JsonParsing.getOptionalLong(materialtrader, "Grade_5_Materials_Traded");
+
+                                    data.TryGetValue("CQC", out object cqcVal);
+                                    Dictionary<string, object> cqc = (Dictionary<string, object>)cqcVal;
+                                    statistics.cqc.creditsearned = JsonParsing.getOptionalLong(cqc, "CQC_Credits_Earned");
+                                    statistics.cqc.timeplayedseconds = JsonParsing.getOptionalLong(cqc, "CQC_Time_Played");
+                                    statistics.cqc.killdeathratio = JsonParsing.getOptionalDecimal(cqc, "CQC_KD");
+                                    statistics.cqc.kills = JsonParsing.getOptionalLong(cqc, "CQC_Kills");
+                                    statistics.cqc.winlossratio = JsonParsing.getOptionalDecimal(cqc, "CQC_WL");
+
+                                    events.Add(new StatisticsEvent(timestamp, statistics) { raw = line, fromLoad = fromLogLoad });
+                                }
+                                handled = true;
+                                break;
                             case "DiscoveryScan":
                             case "EngineerLegacyConvert":
                             case "Reputation":
-                            case "Statistics":
                             case "CodexDiscovery":
                             case "CodexEntry":
                             case "ReservoirReplenished":

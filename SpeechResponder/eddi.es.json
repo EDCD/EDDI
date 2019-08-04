@@ -1991,6 +1991,15 @@
       "name": "Station report",
       "description": "Función para informar sobre los detalles de la actual estación espacial"
     },
+    "Statistics": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "default": true,
+      "name": "Statistics",
+      "description": "Statistics provided at the beginning of a game session"
+    },
     "Swapout check": {
       "enabled": true,
       "priority": 3,
