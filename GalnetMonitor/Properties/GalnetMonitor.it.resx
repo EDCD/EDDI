@@ -141,7 +141,7 @@
     <comment>Title filter for determining whether an item is a Community Goal related item</comment>
   </data>
   <data name="titleFilterStarportStatus" xml:space="preserve">
-    <value>Aggiornamento sulla condizione del Porto Stellare</value>
+    <value>Aggiornamento sulla condizione della Stazione Spaziale</value>
     <comment>Title filter for determining whether an item is a Starport Status Update</comment>
   </data>
   <data name="titleFilterWeekInReview" xml:space="preserve">
@@ -169,7 +169,7 @@
     <comment>Category (as seen by the user): Community Goal</comment>
   </data>
   <data name="categoryStarportStatus" xml:space="preserve">
-    <value>Aggiornamento sulla condizione del Porto Stellare</value>
+    <value>Aggiornamento sulla condizione della Stazione Spaziale</value>
     <comment>Category (as seen by the user): Starport Status Update</comment>
   </data>
   <data name="categoryWeekInReview" xml:space="preserve">

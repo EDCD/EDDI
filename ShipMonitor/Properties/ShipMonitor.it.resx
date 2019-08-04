@@ -210,5 +210,7 @@
     <value>Ricercato</value>
     <comment>Ship is Hot</comment>
   </data>
-  
+  <data name="p5" xml:space="preserve">
+    <value>EDDI può inviare i dati relativi alla tua nave a Coriolis oppure a EDShipyard (strumenti di terze parti). Scegli lo strumento che preferisci.</value>
+  </data>
 </root>
