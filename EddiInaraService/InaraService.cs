@@ -119,18 +119,31 @@ namespace EddiInaraService
 
             Logging.Debug("Sending to Inara: " + client.BuildUri(request).AbsoluteUri);
             var clientResponse = client.Execute<InaraResponses>(request);
-            InaraResponses response = clientResponse.Data;
-            if (validateResponse(response.header))
+            if (clientResponse.IsSuccessful)
             {
-                foreach (InaraResponse inaraResponse in response.events)
+                InaraResponses response = clientResponse.Data;
+                if (validateResponse(response.header))
                 {
-                    if (validateResponse(inaraResponse))
+                    foreach (InaraResponse inaraResponse in response.events)
                     {
-                        inaraResponses.Add(inaraResponse);
+                        if (validateResponse(inaraResponse))
+                        {
+                            inaraResponses.Add(inaraResponse);
+                        }
                     }
                 }
+                return inaraResponses;
             }
-            return inaraResponses;
+            else
+            {
+                Logging.Warn("Unable to connect to the Inara server.", clientResponse.ErrorMessage);
+                foreach (InaraAPIEvent inaraAPIEvent in events)
+                {
+                    // Re-enqueue and send at a later time.
+                    EnqueueAPIEvent(inaraAPIEvent);
+                }
+                return null;
+            }
         }
 
         private static bool validateResponse(InaraResponse inaraResponse)
