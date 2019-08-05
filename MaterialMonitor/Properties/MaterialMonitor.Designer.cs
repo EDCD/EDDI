@@ -61,6 +61,15 @@ namespace EddiMaterialMonitor.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cancel Destination.
+        /// </summary>
+        public static string cancel_dest_button {
+            get {
+                return ResourceManager.GetString("cancel_dest_button", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Track the amount of materials and generate events when limits are reached..
         /// </summary>
         public static string desc {

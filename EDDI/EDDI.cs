@@ -1479,7 +1479,7 @@ namespace Eddi
         private bool eventFSDTarget(FSDTargetEvent @event)
         {
             // Set and prepare data about the next star system
-            NextStarSystem = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(@event.system);
+            NextStarSystem = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystem(@event.system);
             return true;
         }
 
@@ -2141,9 +2141,9 @@ namespace Eddi
             decimal distance = 0;
             if (system != null)
             {
-                StarSystem starSystem = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(system, true);
+                StarSystem starSystem = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystem(system, true);
 
-                if (DestinationStarSystem != null && DestinationStarSystem.x != null && starSystem != null && starSystem.x != null)
+                if (DestinationStarSystem?.x != null && starSystem?.x != null)
                 {
                     distance = (decimal)Math.Round(Math.Sqrt(Math.Pow((double)(starSystem.x - DestinationStarSystem.x), 2)
                         + Math.Pow((double)(starSystem.y - DestinationStarSystem.y), 2)

@@ -141,6 +141,11 @@ namespace EddiMaterialMonitor
             materialMonitor()?.writeMaterials();
         }
 
+        private void cancelDestination(object sender, RoutedEventArgs e)
+        {
+            Navigation.Instance.CancelRoute();
+        }
+
         private void setDestination(object sender, RoutedEventArgs e)
         {
             string system = Navigation.Instance.SetRoute();
@@ -150,7 +155,6 @@ namespace EddiMaterialMonitor
             {
                 Clipboard.SetData(DataFormats.Text, system);
             }
-
         }
 
         private void EnsureValidInteger(object sender, TextCompositionEventArgs e)

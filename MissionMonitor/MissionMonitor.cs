@@ -1281,7 +1281,7 @@ namespace EddiMissionMonitor
         public decimal CalculateDistance(StarSystem curr, StarSystem dest)
         {
             decimal distance = -1;
-            if (curr != null && dest != null)
+            if (curr?.x != null && dest?.x != null)
             {
                 distance = (decimal)Math.Round(Math.Sqrt(Math.Pow((double)(curr.x - dest.x), 2)
                     + Math.Pow((double)(curr.y - dest.y), 2)

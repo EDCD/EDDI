@@ -12,13 +12,16 @@
     <DockPanel LastChildFill="True" Background="#FFE5E5E5" Margin="0,5">
         <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Margin="5,0" Text="{x:Static resx:MaterialMonitor.p1}"/>
         <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Margin ="5" Text="{x:Static resx:MaterialMonitor.p2}"/>
-        <UniformGrid DockPanel.Dock="Bottom" Rows="1" Columns="6" Margin="0,5">
-            <Button Margin="10" HorizontalAlignment="Center" Click="findEncoded" Content="{x:Static resx:MaterialMonitor.find_encoded_button}" />
-            <Button Margin="10" HorizontalAlignment="Center" Click="findGuardian" Content="{x:Static resx:MaterialMonitor.find_guardian_button}" />
-            <Button Margin="10" HorizontalAlignment="Center" Click="findHuman" Content="{x:Static resx:MaterialMonitor.find_human_button}" />
-            <Button Margin="10" HorizontalAlignment="Center" Click="findManufactured" Content="{x:Static resx:MaterialMonitor.find_manufactured_button}" />
-            <Button Margin="10" HorizontalAlignment="Center" Click="findRaw" Content="{x:Static resx:MaterialMonitor.find_raw_button}" />
-            <Button Margin="10" HorizontalAlignment="Center" Click="setDestination" Content="{x:Static resx:MaterialMonitor.set_dest_button}" />
+        <UniformGrid DockPanel.Dock="Bottom" Rows="1" Columns="2" Margin="240,5">
+            <Button VerticalAlignment="Center" HorizontalAlignment="Center" Click="setDestination" Content="{x:Static resx:MaterialMonitor.set_dest_button}" />
+            <Button VerticalAlignment="Center" HorizontalAlignment="Center" Click="cancelDestination" Content="{x:Static resx:MaterialMonitor.cancel_dest_button}" />
+        </UniformGrid>
+        <UniformGrid DockPanel.Dock="Bottom" Rows="1" Columns="5" Margin="0,5">
+            <Button HorizontalAlignment="Center" Click="findEncoded" Content="{x:Static resx:MaterialMonitor.find_encoded_button}" />
+            <Button HorizontalAlignment="Center" Click="findGuardian" Content="{x:Static resx:MaterialMonitor.find_guardian_button}" />
+            <Button HorizontalAlignment="Center" Click="findHuman" Content="{x:Static resx:MaterialMonitor.find_human_button}" />
+            <Button HorizontalAlignment="Center" Click="findManufactured" Content="{x:Static resx:MaterialMonitor.find_manufactured_button}" />
+            <Button HorizontalAlignment="Center" Click="findRaw" Content="{x:Static resx:MaterialMonitor.find_raw_button}" />
         </UniformGrid>
         <Grid DockPanel.Dock="Bottom" Margin="0,5" >
             <Grid.ColumnDefinitions>

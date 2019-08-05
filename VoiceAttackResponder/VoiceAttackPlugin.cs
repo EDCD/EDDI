@@ -963,7 +963,7 @@ namespace EddiVoiceAttackResponder
                 if (EDDI.Instance.CurrentStarSystem != null)
                 {
                     // Store locally
-                    StarSystem here = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(EDDI.Instance.CurrentStarSystem.systemname);
+                    StarSystem here = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystem(EDDI.Instance.CurrentStarSystem.systemname);
                     here.comment = comment == "" ? null : comment;
                     StarSystemSqLiteRepository.Instance.SaveStarSystem(here);
 
@@ -1005,6 +1005,8 @@ namespace EddiVoiceAttackResponder
                 int materialDistance = materialMonitor.maxStationDistanceFromStarLs ?? 10000;
                 string type = vaProxy.GetText("Type variable");
                 string system = vaProxy.GetText("System variable");
+                string station = vaProxy.GetText("Station variable");
+
                 switch (type)
                 {
                     case "cancel":
@@ -1096,7 +1098,14 @@ namespace EddiVoiceAttackResponder
                             }
                             else
                             {
-                                Navigation.Instance.SetRoute(system);
+                                if (string.IsNullOrEmpty(station))
+                                {
+                                    Navigation.Instance.SetRoute(system);
+                                }
+                                else
+                                {
+                                    Navigation.Instance.SetRoute(system, station);
+                                }
                             }
                         }
                         break;
