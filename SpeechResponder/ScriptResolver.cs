@@ -673,7 +673,7 @@ namespace EddiSpeechResponder
                 {
                     case "cancel":
                         {
-                            Navigation.Instance.CancelRoute();
+                            Navigation.Instance.CancelDestination();
                         }
                         break;
                     case "encoded":
@@ -756,15 +756,15 @@ namespace EddiSpeechResponder
                         {
                             if (values.Count == 3)
                             {
-                                result = Navigation.Instance.SetRoute(values[1].AsString, values[2].AsString);
+                                result = Navigation.Instance.SetDestination(values[1].AsString, values[2].AsString);
                             }
                             else if (values.Count == 2)
                             {
-                                result = Navigation.Instance.SetRoute(values[1].AsString);
+                                result = Navigation.Instance.SetDestination(values[1].AsString);
                             }
                             else
                             {
-                                result = Navigation.Instance.SetRoute();
+                                result = Navigation.Instance.SetDestination();
                             }
                         }
                         break;

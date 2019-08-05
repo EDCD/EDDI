@@ -952,9 +952,10 @@ namespace EddiMissionMonitor
             // Clear route and destination variables
             missionsRouteList = null;
             missionsRouteDistance = 0;
-            UpdateDestinationData(missionsRouteList, null, missionsRouteDistance);
+            string destination = EDDI.Instance?.DestinationStarSystem?.systemname;
+            UpdateDestinationData(null, null, 0);
 
-            EDDI.Instance.enqueueEvent(new RouteDetailsEvent(DateTime.Now, "cancel", null, null, missionsRouteList, 0, 0, missionsRouteDistance, null));
+            EDDI.Instance.enqueueEvent(new RouteDetailsEvent(DateTime.Now, "cancel", destination, null, null, 0, 0, 0, null));
         }
 
         public string GetMissionsRoute(string homeSystem = null)

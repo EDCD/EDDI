@@ -1011,7 +1011,7 @@ namespace EddiVoiceAttackResponder
                 {
                     case "cancel":
                         {
-                            Navigation.Instance.CancelRoute();
+                            Navigation.Instance.CancelDestination();
                         }
                         break;
                     case "encoded":
@@ -1094,17 +1094,17 @@ namespace EddiVoiceAttackResponder
                         {
                             if (string.IsNullOrEmpty(system))
                             {
-                                Navigation.Instance.SetRoute();
+                                Navigation.Instance.SetDestination();
                             }
                             else
                             {
                                 if (string.IsNullOrEmpty(station))
                                 {
-                                    Navigation.Instance.SetRoute(system);
+                                    Navigation.Instance.SetDestination(system);
                                 }
                                 else
                                 {
-                                    Navigation.Instance.SetRoute(system, station);
+                                    Navigation.Instance.SetDestination(system, station);
                                 }
                             }
                         }

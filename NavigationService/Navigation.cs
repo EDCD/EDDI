@@ -53,13 +53,17 @@ namespace EddiNavigationService
             }
         }
 
-        public void CancelRoute()
+        public void CancelDestination()
         {
             // Clear missions route variables
+            searchSystem = null;
+            searchStation = null;
+            searchDistance = 0;
             missionMonitor.SetMissionsRouteData(null, 0);
-            missionMonitor.UpdateDestinationData(null, null, 0);
+            string destination = EDDI.Instance?.DestinationStarSystem?.systemname;
+            UpdateDestinationData(null, null, 0);
 
-            EDDI.Instance.enqueueEvent(new RouteDetailsEvent(DateTime.Now, "cancel", null, null, null, 0, 0, 0, null));
+            EDDI.Instance.enqueueEvent(new RouteDetailsEvent(DateTime.Now, "cancel", destination, null, null, 0, 0, 0, null));
         }
 
         public string GetExpiringRoute()
@@ -152,6 +156,21 @@ namespace EddiNavigationService
             return searchSystem;
         }
 
+        public string GetMissionsRoute(string homeSystem = null)
+        {
+            searchSystem = missionMonitor.GetMissionsRoute(homeSystem);
+            searchStation = null;
+            searchDistance = 0;
+
+            if (searchSystem != null)
+            {
+                StarSystem curr = EDDI.Instance?.CurrentStarSystem;
+                StarSystem dest = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystem(searchSystem, true);
+                searchDistance = CalculateDistance(curr, dest);
+            }
+            return searchSystem;
+        }
+
         public string GetMostRoute(string homeSystem = null)
         {
             searchSystem = null;
@@ -235,17 +254,14 @@ namespace EddiNavigationService
                         searchSystem = routeList?.Split('_')[0];
                         searchDistance = mostList.Keys[mostList.Values.ToList().IndexOf(searchSystem)];
                     }
-
-                    // Set destination variables (route already set)
-                    missionMonitor.UpdateDestinationData(searchSystem, null, searchDistance);
                 }
                 else
                 {
-                    routeList = searchSystem;
-                    routeDistance = searchDistance;
                     Logging.Debug("Unable to meet missions route calculation criteria");
 
                     // Set missions route variables
+                    routeList = searchSystem;
+                    routeDistance = searchDistance;
                     missionMonitor.SetMissionsRouteData(searchSystem, searchDistance);
                 }
 
@@ -253,21 +269,6 @@ namespace EddiNavigationService
                 missionids = missionMonitor.GetSystemMissionIds(searchSystem);
             }
             EDDI.Instance.enqueueEvent(new RouteDetailsEvent(DateTime.Now, "most", searchSystem, null, routeList, mostCount, searchDistance, routeDistance, missionids));
-            return searchSystem;
-        }
-
-        public string GetMissionsRoute(string homeSystem = null)
-        {
-            searchSystem =  missionMonitor.GetMissionsRoute(homeSystem);
-            searchStation = null;
-            searchDistance = 0;
-
-            if (searchSystem != null)
-            {
-                StarSystem curr = EDDI.Instance?.CurrentStarSystem;
-                StarSystem dest = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystem(searchSystem, true);
-                searchDistance = CalculateDistance(curr, dest);
-            }
             return searchSystem;
         }
 
@@ -520,50 +521,62 @@ namespace EddiNavigationService
             return searchSystem;
         }
 
-        public string SetRoute(string system = null, string station = null)
+        public string SetDestination(string system = null, string station = null)
         {
+            decimal distance = 0;
             List<long> missionids = new List<long>();       // List of mission IDs for the next system
 
             if (system != null)
             {
-                searchSystem = null;
-                searchDistance = 0;
                 StarSystem curr = EDDI.Instance?.CurrentStarSystem;
                 StarSystem dest = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystem(system, true);
-
                 if (curr?.x != null && dest?.x != null && system != curr.systemname)
                 {
-                    searchSystem = dest.systemname;
-                    searchStation = station;
-                    searchDistance = CalculateDistance(curr, dest);
+                    distance = CalculateDistance(curr, dest);
+                }
+                else
+                {
+                    system = null;
+                    station = null;
                 }
             }
-
-            if (searchSystem != null)
+            else if (searchSystem != null)
             {
-                // Get mission IDs for 'next' system
-                missionids = missionMonitor.GetSystemMissionIds(searchSystem);
-
-                // Set missions route and destination variables
-                missionMonitor.SetMissionsRouteData(searchSystem, searchDistance);
-                missionMonitor.UpdateDestinationData(searchSystem, searchStation, searchDistance);
+                system = searchSystem;
+                station = searchStation;
+                distance = searchDistance;
             }
-            EDDI.Instance.enqueueEvent(new RouteDetailsEvent(DateTime.Now, "set", searchSystem, searchStation, searchSystem, 1, searchDistance, searchDistance, missionids));
+
+            // Get mission IDs for 'set' system
+            missionids = missionMonitor.GetSystemMissionIds(system);
+
+            // Set missions route and destination variables
+            missionMonitor.SetMissionsRouteData(system, distance);
+            UpdateDestinationData(system, station, distance);
+
+            // Clear 'search' variables
+            searchSystem = null;
+            searchStation = null;
+            searchDistance = 0;
+
+            EDDI.Instance.enqueueEvent(new RouteDetailsEvent(DateTime.Now, "set", system, station, system, 1, distance, distance, missionids));
             return searchSystem;
         }
 
         public string UpdateRoute(string updateSystem = null)
         {
-            searchSystem = missionMonitor.UpdateRoute(updateSystem);
+            searchSystem = null;
             searchStation = null;
             searchDistance = 0;
-            if (searchSystem != null)
-            {
-                StarSystem curr = EDDI.Instance?.CurrentStarSystem;
-                StarSystem dest = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystem(searchSystem, true);
-                searchDistance = CalculateDistance(curr, dest);
-            }
-            return searchSystem;
+
+            return missionMonitor.UpdateRoute(updateSystem);
+        }
+
+        public void UpdateDestinationData(string system, string station, decimal distance)
+        {
+            EDDI.Instance.updateDestinationSystem(system);
+            EDDI.Instance.DestinationDistanceLy = distance;
+            EDDI.Instance.updateDestinationStation(station);
         }
 
         public decimal CalculateDistance(StarSystem curr, StarSystem dest)

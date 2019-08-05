@@ -143,12 +143,12 @@ namespace EddiMaterialMonitor
 
         private void cancelDestination(object sender, RoutedEventArgs e)
         {
-            Navigation.Instance.CancelRoute();
+            Navigation.Instance.CancelDestination();
         }
 
         private void setDestination(object sender, RoutedEventArgs e)
         {
-            string system = Navigation.Instance.SetRoute();
+            string system = Navigation.Instance.SetDestination();
 
             // If 'destination system' found, send to clipboard
             if (system != null)
