@@ -51,12 +51,19 @@ namespace EddiDataProviderService
         private static void SetStarSystemLegacyData(StarSystem system, JObject json, bool setPowerplayData)
         {
             // Set data not currently available from EDSM: Powerplay data and EDDBID
-            // TODO: Translatable powerplay states
+            // Note: EDDB does not report the following powerplay state ednames: 
+            // `HomeSystem`, `InPrepareRadius`, `Prepared`
+            // We can identify `HomeSystem` from static data, but  `InPrepareRadius` and `Prepared`
+            // are only available from the `Jumped` and `Location` events:
+            // 
             system.EDDBID = (long?)json["id"];
             if (setPowerplayData)
             {
                 system.Power = Power.FromName((string)json["power"]) ?? Power.None;
-                system.powerstate = (string)json["power_state"] == "None" ? null : (string)json["power_state"];
+                system.powerState = (string)json["power_state"] == "None" ? PowerplayState.None 
+                    : system.systemname == system.Power?.headquarters ? PowerplayState.HomeSystem 
+                    : PowerplayState.FromName((string)json["power_state"]);
+
             }
         }
 
