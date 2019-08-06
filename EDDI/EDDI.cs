@@ -1088,6 +1088,10 @@ namespace Eddi
                 }
             }
 
+            // (When pledged) Powerplay information
+            CurrentStarSystem.Power = theEvent.Power;
+            CurrentStarSystem.powerState = theEvent.powerState;
+
             if (theEvent.docked || theEvent.bodytype.ToLowerInvariant() == "station")
             {
                 // In this case body = station and our body information is invalid
@@ -1586,6 +1590,10 @@ namespace Eddi
                 };
                 CurrentStarSystem.AddOrUpdateBody(CurrentStellarBody);
             }
+
+            // (When pledged) Powerplay information
+            CurrentStarSystem.Power = theEvent.Power;
+            CurrentStarSystem.powerState = theEvent.powerState;
 
             // Update to most recent information
             CurrentStarSystem.visitLog.Add(theEvent.timestamp);

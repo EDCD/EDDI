@@ -242,7 +242,12 @@ namespace EddiJournalMonitor
                                         destDistance = EDDI.Instance.getSystemDistanceFromDestination(systemName);
                                     }
 
-                                    events.Add(new JumpedEvent(timestamp, systemName, systemAddress, x, y, z, starName, distance, fuelUsed, fuelRemaining, boostUsed, controllingfaction, factions, conflicts, economy, economy2, security, population, destination, destDistance) { raw = line, fromLoad = fromLogLoad });
+                                    // Powerplay data (if pledged)
+                                    Power powerplayPower = new Power();
+                                    PowerplayState powerplayState = null;
+                                    getPowerplayData(data, out powerplayPower, out powerplayState);
+
+                                    events.Add(new JumpedEvent(timestamp, systemName, systemAddress, x, y, z, starName, distance, fuelUsed, fuelRemaining, boostUsed, controllingfaction, factions, conflicts, economy, economy2, security, population, destination, destDistance, powerplayPower, powerplayState) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
@@ -292,7 +297,12 @@ namespace EddiJournalMonitor
                                         factions = getFactions(factionsVal, systemName);
                                     }
 
-                                    events.Add(new LocationEvent(timestamp, systemName, x, y, z, systemAddress, distFromStarLs, body, bodyId, bodyType, docked, station, stationtype, marketId, systemfaction, stationfaction, economy, economy2, security, population, longitude, latitude, factions) { raw = line, fromLoad = fromLogLoad });
+                                    // Powerplay data (if pledged)
+                                    Power powerplayPower = new Power();
+                                    PowerplayState powerplayState = null;
+                                    getPowerplayData(data, out powerplayPower, out powerplayState);
+
+                                    events.Add(new LocationEvent(timestamp, systemName, x, y, z, systemAddress, distFromStarLs, body, bodyId, bodyType, docked, station, stationtype, marketId, systemfaction, stationfaction, economy, economy2, security, population, longitude, latitude, factions, powerplayPower, powerplayState) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
@@ -3584,13 +3594,25 @@ namespace EddiJournalMonitor
                                 }
                                 handled = true;
                                 break;
+                            case "Powerplay":
+                                /*
+                                {
+                                    string power = JsonParsing.getString(data, "Power");
+                                    int rank = JsonParsing.getInt(data, "Rank");
+                                    int merits = JsonParsing.getInt(data, "Merits");
+                                    int votes = JsonParsing.getInt(data, "Votes");
+                                    long timepledged = JsonParsing.getLong(data, "TimePledged");
+                                    events.Add(new PowerplayEvent(timestamp, power, rank, merits, votes, timepledged) { raw = line, fromLoad = fromLogLoad });
+                                }
+                                handled = true;
+                                break;
+                                */
                             case "DiscoveryScan":
                             case "EngineerLegacyConvert":
                             case "Reputation":
                             case "CodexDiscovery":
                             case "CodexEntry":
                             case "ReservoirReplenished":
-                            case "Powerplay":
                             case "ProspectedAsteroid":
                             case "AsteroidCracked":
                             case "CrimeVictim":
@@ -3610,7 +3632,7 @@ namespace EddiJournalMonitor
                     catch (Exception ex)
                     {
                         // Something went wrong, but an unhandled event will still be passed to the responders.
-                        Logging.Warn($"{ex.Message}/r/nRaw event:/r/n{line}");
+                        Logging.Warn($"{ex.Message}/r/nRaw event:/r/n{line}", ex);
                     }
 
                     if (!handled)
@@ -3635,6 +3657,22 @@ namespace EddiJournalMonitor
                 Logging.Error("Exception whilst parsing journal line", data);
             }
             return events;
+        }
+
+        private static void getPowerplayData(IDictionary<string, object> data, out Power powerplayPower, out PowerplayState powerplayState)
+        {
+            powerplayPower = new Power();
+            data.TryGetValue("Powers", out object powersVal);
+            // There can be more than one power listed for a system when the system is being contested
+            // If so, the power state will be `Contested` and the power name will be null.
+            if (powersVal is List<object> powerNames)
+            {
+                if (powerNames.Count == 1)
+                {
+                    powerplayPower = Power.FromEDName((string)powerNames[0]);
+                }
+            }
+            powerplayState = PowerplayState.FromEDName(JsonParsing.getString(data, "PowerplayState")) ?? PowerplayState.None;
         }
 
         private static Superpower getAllegiance(IDictionary<string, object> data, string key)
