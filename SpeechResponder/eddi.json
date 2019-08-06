@@ -654,7 +654,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{if event.progresstype = \"Stage\":\r\n    {if event.stage = \"Known\":\r\n        The Engineer {event.engineer} {OneOf(\"has sent you a message.\", \"has made contact.\")}\r\n    |elif event.stage = \"Invited\":\r\n        {event.engineer} has invited you to their base.\r\n    |elif event.stage = \"Unlocked\":\r\n        {event.engineer} has granted you access to their services.\r\n    |elif event.stage = \"Barred\":\r\n        {event.engineer} has barred you.\r\n    }\r\n|else:\r\n    {event.engineer} has granted you access to grade {event.rank} blueprints.\r\n}\r\n",
+      "script": "{if event.progresstype = \"Stage\":\r\n\r\n    {if event.stage = \"Known\":\r\n        The Engineer {event.engineer} has sent you a message.\r\n    |elif event.stage = \"Invited\":\r\n        Workshop invitation received from {event.engineer}.\r\n    |elif event.stage = \"Unlocked\":\r\n        {event.engineer} has granted you access to workshop facilities.\r\n    |elif event.stage = \"Barred\":\r\n        {event.engineer} has {OneOf(\"barred\", \"restricted\")} your access to workshop facilities.\r\n    }\r\n\r\n|elif event.Engineer:\r\n\r\n    {event.engineer} has\r\n    {OneOf(\"given\", \"granted\")}\r\n    you access to grade {event.rank} blueprints.\r\n\r\n}",
       "default": true,
       "name": "Engineer progressed",
       "description": "Triggered when you reach a new rank with an engineer"

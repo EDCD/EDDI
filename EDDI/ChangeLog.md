@@ -10,7 +10,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Added new event `Statistics`, triggered while loading a game.
     * Updated the `Commander continued` event with new properties `startlanded` and `startdead` (true if starting the game either landed or dead, respectively).
     * Updated the `System report` script to enhance the description of powerplay status.
-    * The event `Engineer progressed` shall now be written at startup (with empty values), signaling that engineer data has been loaded.
+    * Updated the `Engineer progressed` event to stay silent by default when written at startup (with empty values, signaling that engineer data has been loaded).
 
 ### 3.4.3-b2
   * Core
