@@ -33,7 +33,7 @@
       "enabled": true,
       "priority": 3,
       "responder": false,
-      "script": "{_ Fetch from Context _}\r\n{set reportSystem to SystemDetails(state.eddi_context_system_name)}\r\n\r\n{_ Build a list of scanned bodies _}\r\n\r\n{set mappedList to []}\r\n{for body in reportSystem.bodies:\r\n   {if body.mapped:\r\n       {set mappedList to cat(mappedList, [P(body.shortname)])} \r\n   }\r\n}\r\n\r\n{_ Begin speaking _}\r\n\r\n{if len(mappedList) > 0:\r\n    {if len(mappedList) = 1: Body |else: Bodies}\r\n    {List(mappedList)}\r\n    {if len(mappedList) = 1: has |else: have }\r\n    {set already to Occasionall(2, \"already\")}\r\n    {OneOf(\"{already} been mapped\", \"been mapped {already}\")}.\r\n|else:\r\n    You have yet to map any bodies in this system.\r\n}\r\n",
+      "script": "{_ Fetch from Context _}\r\n{set reportSystem to SystemDetails(state.eddi_context_system_name)}\r\n\r\n{_ Build a list of scanned bodies _}\r\n\r\n{set mappedList to []}\r\n{for body in reportSystem.bodies:\r\n   {if body.mapped:\r\n       {set mappedList to cat(mappedList, [P(body.shortname)])} \r\n   }\r\n}\r\n\r\n{_ Begin speaking _}\r\n\r\n{if len(mappedList) > 0:\r\n    {if len(mappedList) = 1: Body |else: Bodies}\r\n    {List(mappedList)}\r\n    {if len(mappedList) = 1: has |else: have }\r\n    {set already to Occasionally(2, \"already\")}\r\n    {OneOf(\"{already} been mapped\", \"been mapped {already}\")}.\r\n|else:\r\n    You have yet to map any bodies in this system.\r\n}\r\n",
       "default": true,
       "name": "Bodies mapped",
       "description": "Reports all the bodies mapped in this system so far"
