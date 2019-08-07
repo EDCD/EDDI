@@ -963,7 +963,10 @@ namespace Eddi
         {
             Cmdr.Power = @event.Power;
             Cmdr.powerrating = @event.rank;
-            Cmdr.powermerits = @event.merits;
+            if (!@event.fromLoad)
+            {
+                Cmdr.powermerits = @event.merits;
+            }
             return true;
         }
 
