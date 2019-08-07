@@ -508,16 +508,25 @@ namespace EddiNavigationService
 
         public string GetNextInRoute()
         {
-            searchSystem = missionMonitor.GetNextInRoute();
+            string routeList = missionMonitor.missionsRouteList;
+            decimal routeDistance = missionMonitor.missionsRouteDistance;
+            int count = 0;
+            List<long> missionids = new List<long>();       // List of mission IDs for the next system
+
+            searchSystem = routeList?.Split('_')[0];
             searchStation = null;
             searchDistance = 0;
-
             if (searchSystem != null)
             {
                 StarSystem curr = EDDI.Instance?.CurrentStarSystem;
                 StarSystem dest = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystem(searchSystem, true);
                 searchDistance = CalculateDistance(curr, dest);
+                count = routeList.Split('_').Count();
+
+                // Get mission IDs for 'next' system
+                missionids = missionMonitor.GetSystemMissionIds(searchSystem);
             }
+            EDDI.Instance.enqueueEvent(new RouteDetailsEvent(DateTime.Now, "next", searchSystem, searchStation, routeList, count, searchDistance, routeDistance, missionids));
             return searchSystem;
         }
 
@@ -533,11 +542,13 @@ namespace EddiNavigationService
                 if (curr?.x != null && dest?.x != null && system != curr.systemname)
                 {
                     distance = CalculateDistance(curr, dest);
+                    missionMonitor.SetMissionsRouteData(system, distance);
                 }
                 else
                 {
                     system = null;
                     station = null;
+                    missionMonitor.SetMissionsRouteData(null, 0);
                 }
             }
             else if (searchSystem != null)
@@ -550,8 +561,7 @@ namespace EddiNavigationService
             // Get mission IDs for 'set' system
             missionids = missionMonitor.GetSystemMissionIds(system);
 
-            // Set missions route and destination variables
-            missionMonitor.SetMissionsRouteData(system, distance);
+            // Set destination variables
             UpdateDestinationData(system, station, distance);
 
             // Clear 'search' variables
@@ -559,7 +569,9 @@ namespace EddiNavigationService
             searchStation = null;
             searchDistance = 0;
 
-            EDDI.Instance.enqueueEvent(new RouteDetailsEvent(DateTime.Now, "set", system, station, system, 1, distance, distance, missionids));
+            string route = missionMonitor.missionsRouteList;
+            int count = route.Split('_').Count();
+            EDDI.Instance.enqueueEvent(new RouteDetailsEvent(DateTime.Now, "set", system, station, route, count, distance, distance, missionids));
             return searchSystem;
         }
 

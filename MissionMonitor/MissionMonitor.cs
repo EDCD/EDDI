@@ -1156,11 +1156,6 @@ namespace EddiMissionMonitor
             return found;
         }
 
-        public string GetNextInRoute()
-        {
-            return missionsRouteList?.Split('_')[0];
-        }
-
         public string SetNextInRoute()
         {
             string nextSystem = missionsRouteList?.Split('_')[0];
@@ -1172,11 +1167,7 @@ namespace EddiMissionMonitor
             {
                 StarSystem curr = EDDI.Instance?.CurrentStarSystem;
                 StarSystem dest = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystem(nextSystem, true);
-
-                if (dest != null && nextSystem != curr.systemname)
-                {
-                    nextDistance = CalculateDistance(curr, dest);
-                }
+                nextDistance = CalculateDistance(curr, dest);
                 count = missionsRouteList.Split('_').Count();
 
                 // Get mission IDs for 'next' system
@@ -1185,7 +1176,7 @@ namespace EddiMissionMonitor
                 // Set destination variables
                 UpdateDestinationData(nextSystem, null, nextDistance);
             }
-            EDDI.Instance.enqueueEvent(new RouteDetailsEvent(DateTime.Now, "next", nextSystem, null, missionsRouteList, count, nextDistance, missionsRouteDistance, missionids));
+            EDDI.Instance.enqueueEvent(new RouteDetailsEvent(DateTime.Now, "set", nextSystem, null, missionsRouteList, count, nextDistance, missionsRouteDistance, missionids));
             return nextSystem;
         }
 
@@ -1281,7 +1272,7 @@ namespace EddiMissionMonitor
 
         public decimal CalculateDistance(StarSystem curr, StarSystem dest)
         {
-            decimal distance = -1;
+            decimal distance = 0;
             if (curr?.x != null && dest?.x != null)
             {
                 distance = (decimal)Math.Round(Math.Sqrt(Math.Pow((double)(curr.x - dest.x), 2)
@@ -1342,9 +1333,9 @@ namespace EddiMissionMonitor
             return false;
         }
 
-        public void SetMissionsRouteData(string system, decimal distance)
+        public void SetMissionsRouteData(string list, decimal distance)
         {
-            missionsRouteList = system;
+            missionsRouteList = list;
             missionsRouteDistance = distance;
             writeMissions();
         }
