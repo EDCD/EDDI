@@ -122,5 +122,14 @@ namespace EddiDataDefinitions.Properties {
                 return ResourceManager.GetString("Prepared", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Turmoil.
+        /// </summary>
+        public static string Turmoil {
+            get {
+                return ResourceManager.GetString("Turmoil", resourceCulture);
+            }
+        }
     }
 }

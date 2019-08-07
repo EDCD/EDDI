@@ -52,10 +52,10 @@ namespace EddiDataProviderService
         {
             // Set data not currently available from EDSM: Powerplay data and EDDBID
             // Note: EDDB does not report the following powerplay state ednames: 
-            // `HomeSystem`, `InPrepareRadius`, `Prepared`
-            // We can identify `HomeSystem` from static data, but  `InPrepareRadius` and `Prepared`
+            // `HomeSystem`, `InPrepareRadius`, `Prepared`, `Turmoil`
+            // We can identify `HomeSystem` from static data, but  `InPrepareRadius`, `Prepared`, and `Turmoil`
             // are only available from the `Jumped` and `Location` events:
-            // 
+            // When in conflict, EDDB does not report the names of the conflicting powers.
             system.EDDBID = (long?)json["id"];
             if (setPowerplayData)
             {

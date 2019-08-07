@@ -15,6 +15,7 @@
             var Exploited = new PowerplayState("Exploited");
             var InPrepareRadius = new PowerplayState("InPrepareRadius");
             var Prepared = new PowerplayState("Prepared");
+            var Turmoil = new PowerplayState("Turmoil");
         }
 
         public static readonly PowerplayState None;
