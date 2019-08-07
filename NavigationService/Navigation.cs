@@ -569,9 +569,10 @@ namespace EddiNavigationService
             searchStation = null;
             searchDistance = 0;
 
-            string route = missionMonitor.missionsRouteList;
-            int count = route.Split('_').Count();
-            EDDI.Instance.enqueueEvent(new RouteDetailsEvent(DateTime.Now, "set", system, station, route, count, distance, distance, missionids));
+            string routeList = missionMonitor.missionsRouteList;
+            decimal routeDistance = missionMonitor.missionsRouteDistance;
+            int count = routeList.Split('_').Count();
+            EDDI.Instance.enqueueEvent(new RouteDetailsEvent(DateTime.Now, "set", system, station, routeList, count, distance, routeDistance, missionids));
             return searchSystem;
         }
 
