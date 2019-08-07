@@ -47,6 +47,7 @@ Any values might be missing, depending on EDDI's configuration.
     - `squadronfaction` the faction within the squadron system to which the commander's squadron is aligned
     - `friends` the commander's friends observed during the play session (this is a list of Friend objects)
     - `engineers` the commander's relations with engineers, including any ranks or progression recorded during the play session (this is a list of Engineer objects)
+    - `power` (if pledged) the power which the commander serves
 
 ### Engineer
 

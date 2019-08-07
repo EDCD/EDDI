@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EddiDataDefinitions;
+using System;
 using System.Collections.Generic;
 
 namespace EddiEvents
@@ -17,13 +18,17 @@ namespace EddiEvents
             VARIABLES.Add("amount", "The salary claimed");
         }
 
-        public string power { get; private set; }
+        public string power => (Power ?? Power.None).localizedName;
 
         public int amount { get; private set; }
 
-        public PowerSalaryClaimedEvent(DateTime timestamp, string power, int amount) : base(timestamp, NAME)
+        // Not intended to be user facing
+
+        public Power Power { get; private set; }
+
+        public PowerSalaryClaimedEvent(DateTime timestamp, Power Power, int amount) : base(timestamp, NAME)
         {
-            this.power = power;
+            this.Power = Power;
             this.amount = amount;
         }
     }

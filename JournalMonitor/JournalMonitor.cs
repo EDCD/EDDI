@@ -3276,7 +3276,7 @@ namespace EddiJournalMonitor
                                 break;
                             case "PowerplayJoin":
                                 {
-                                    string power = JsonParsing.getString(data, "Power");
+                                    Power power = Power.FromEDName(JsonParsing.getString(data, "Power"));
 
                                     events.Add(new PowerJoinedEvent(timestamp, power) { raw = line, fromLoad = fromLogLoad });
                                 }
@@ -3284,7 +3284,7 @@ namespace EddiJournalMonitor
                                 break;
                             case "PowerplayLeave":
                                 {
-                                    string power = JsonParsing.getString(data, "Power");
+                                    Power power = Power.FromEDName(JsonParsing.getString(data, "Power"));
 
                                     events.Add(new PowerLeftEvent(timestamp, power) { raw = line, fromLoad = fromLogLoad });
 
@@ -3293,16 +3293,16 @@ namespace EddiJournalMonitor
                                 break;
                             case "PowerplayDefect":
                                 {
-                                    string frompower = JsonParsing.getString(data, "FromPower");
-                                    string topower = JsonParsing.getString(data, "ToPower");
+                                    Power fromPower = Power.FromEDName(JsonParsing.getString(data, "FromPower"));
+                                    Power toPower = Power.FromEDName(JsonParsing.getString(data, "ToPower"));
 
-                                    events.Add(new PowerDefectedEvent(timestamp, frompower, topower) { raw = line, fromLoad = fromLogLoad });
+                                    events.Add(new PowerDefectedEvent(timestamp, fromPower, toPower) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
                             case "PowerplayVote":
                                 {
-                                    string power = JsonParsing.getString(data, "Power");
+                                    Power power = Power.FromEDName(JsonParsing.getString(data, "Power"));
                                     string system = JsonParsing.getString(data, "System");
                                     data.TryGetValue("Votes", out object val);
                                     int amount = (int)(long)val;
@@ -3313,7 +3313,7 @@ namespace EddiJournalMonitor
                                 break;
                             case "PowerplaySalary":
                                 {
-                                    string power = JsonParsing.getString(data, "Power");
+                                    Power power = Power.FromEDName(JsonParsing.getString(data, "Power"));
                                     data.TryGetValue("Amount", out object val);
                                     int amount = (int)(long)val;
 
@@ -3323,7 +3323,7 @@ namespace EddiJournalMonitor
                                 break;
                             case "PowerplayCollect":
                                 {
-                                    string power = JsonParsing.getString(data, "Power");
+                                    Power power = Power.FromEDName(JsonParsing.getString(data, "Power"));
                                     CommodityDefinition commodity = CommodityDefinition.FromEDName(JsonParsing.getString(data, "Type"));
                                     commodity.fallbackLocalizedName = JsonParsing.getString(data, "Type_Localised");
                                     data.TryGetValue("Count", out object val);
@@ -3335,7 +3335,7 @@ namespace EddiJournalMonitor
                                 break;
                             case "PowerplayDeliver":
                                 {
-                                    string power = JsonParsing.getString(data, "Power");
+                                    Power power = Power.FromEDName(JsonParsing.getString(data, "Power"));
                                     CommodityDefinition commodity = CommodityDefinition.FromEDName(JsonParsing.getString(data, "Type"));
                                     commodity.fallbackLocalizedName = JsonParsing.getString(data, "Type_Localised");
                                     data.TryGetValue("Count", out object val);
@@ -3347,7 +3347,7 @@ namespace EddiJournalMonitor
                                 break;
                             case "PowerplayFastTrack":
                                 {
-                                    string power = JsonParsing.getString(data, "Power");
+                                    Power power = Power.FromEDName(JsonParsing.getString(data, "Power"));
                                     data.TryGetValue("Cost", out object val);
                                     int amount = (int)(long)val;
 
@@ -3357,7 +3357,7 @@ namespace EddiJournalMonitor
                                 break;
                             case "PowerplayVoucher":
                                 {
-                                    string power = JsonParsing.getString(data, "Power");
+                                    Power power = Power.FromEDName(JsonParsing.getString(data, "Power"));
                                     data.TryGetValue("Systems", out object val);
                                     List<string> systems = ((List<object>)val).Cast<string>().ToList();
 
@@ -3595,18 +3595,18 @@ namespace EddiJournalMonitor
                                 handled = true;
                                 break;
                             case "Powerplay":
-                                /*
                                 {
-                                    string power = JsonParsing.getString(data, "Power");
-                                    int rank = JsonParsing.getInt(data, "Rank");
+                                    // Per the journal, this is written at startup. In actuallity, it can also be written whenever switching FSD states
+                                    // and needs to be filtered to prevent 
+                                    Power power = Power.FromEDName(JsonParsing.getString(data, "Power"));
+                                    int rank = JsonParsing.getInt(data, "Rank") + 1; // This is zero based in the journal but not in the Frontier API. Adding +1 here synchronizes the two.
                                     int merits = JsonParsing.getInt(data, "Merits");
                                     int votes = JsonParsing.getInt(data, "Votes");
-                                    long timepledged = JsonParsing.getLong(data, "TimePledged");
-                                    events.Add(new PowerplayEvent(timestamp, power, rank, merits, votes, timepledged) { raw = line, fromLoad = fromLogLoad });
+                                    TimeSpan timePledged = TimeSpan.FromSeconds(JsonParsing.getLong(data, "TimePledged"));
+                                    events.Add(new PowerplayEvent(timestamp, power, rank, merits, votes, timePledged) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
-                                */
                             case "DiscoveryScan":
                             case "EngineerLegacyConvert":
                             case "Reputation":
