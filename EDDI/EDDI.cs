@@ -961,18 +961,10 @@ namespace Eddi
 
         private bool eventPowerplay(PowerplayEvent @event)
         {
-            bool passEvent = false;
             Cmdr.Power = @event.Power;
             Cmdr.powerrating = @event.rank;
-            if (Cmdr.powermerits is null)
-            {
-                // Since powermerits are set from this event before any other type of powerplay journal entry (and 
-                // are not given currently by the Frontier API), we can conclude that this is the first instance of the 
-                // `Powerplay` event seen in this game session.
-                passEvent = true;
-            }
             Cmdr.powermerits = @event.merits;
-            return passEvent;
+            return true;
         }
 
         private bool eventSystemScanComplete(SystemScanComplete @event)
