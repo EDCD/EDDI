@@ -844,6 +844,34 @@ namespace Eddi
                     {
                         passEvent = eventSystemScanComplete((SystemScanComplete)@event);
                     }
+                    else if (@event is PowerplayEvent)
+                    {
+                        passEvent = eventPowerplay((PowerplayEvent)@event);
+                    }
+                    else if (@event is PowerDefectedEvent)
+                    {
+                        passEvent = eventPowerDefected((PowerDefectedEvent)@event);
+                    }
+                    else if (@event is PowerJoinedEvent)
+                    {
+                        passEvent = eventPowerJoined((PowerJoinedEvent)@event);
+                    }
+                    else if (@event is PowerLeftEvent)
+                    {
+                        passEvent = eventPowerLeft((PowerLeftEvent)@event);
+                    }
+                    else if (@event is PowerPreparationVoteCast)
+                    {
+                        passEvent = eventPowerPreparationVoteCast((PowerPreparationVoteCast)@event);
+                    }
+                    else if (@event is PowerSalaryClaimedEvent)
+                    {
+                        passEvent = eventPowerSalaryClaimed((PowerSalaryClaimedEvent)@event);
+                    }
+                    else if (@event is PowerVoucherReceivedEvent)
+                    {
+                        passEvent = eventPowerVoucherReceived((PowerVoucherReceivedEvent)@event);
+                    }
 
                     // Additional processing is over, send to the event responders if required
                     if (passEvent)
@@ -867,6 +895,84 @@ namespace Eddi
                     Instance.ObtainResponder("EDDN responder").Handle(@event);
                 }
             }
+        }
+
+        private bool eventPowerVoucherReceived(PowerVoucherReceivedEvent @event)
+        {
+            Cmdr.Power = @event.Power;
+            return true;
+        }
+
+        private bool eventPowerSalaryClaimed(PowerSalaryClaimedEvent @event)
+        {
+            Cmdr.Power = @event.Power;
+            return true;
+        }
+
+        private bool eventPowerPreparationVoteCast(PowerPreparationVoteCast @event)
+        {
+            Cmdr.Power = @event.Power;
+            return true;
+        }
+
+        private bool eventPowerLeft(PowerLeftEvent @event)
+        {
+            Cmdr.Power = Power.None;
+            Cmdr.powermerits = null;
+            Cmdr.powerrating = 0;
+            return true;
+        }
+
+        private bool eventPowerJoined(PowerJoinedEvent @event)
+        {
+            Cmdr.Power = @event.Power;
+            Cmdr.powermerits = 0;
+            Cmdr.powerrating = 1;
+            return true;
+        }
+
+        private bool eventPowerDefected(PowerDefectedEvent @event)
+        {
+            Cmdr.Power = @event.toPower;
+            // Merits are halved upon defection
+            Cmdr.powermerits = (int)Math.Round((double)Cmdr.powermerits / 2, 0);
+            if (Cmdr.powermerits > 10000)
+            {
+                Cmdr.powerrating = 4;
+            }
+            if (Cmdr.powermerits > 1500)
+            {
+                Cmdr.powerrating = 3;
+            }
+            if (Cmdr.powermerits > 750)
+            {
+                Cmdr.powerrating = 2;
+            }
+            if (Cmdr.powermerits > 100)
+            {
+                Cmdr.powerrating = 1;
+            }
+            else
+            {
+                Cmdr.powerrating = 0;
+            }
+            return true;
+        }
+
+        private bool eventPowerplay(PowerplayEvent @event)
+        {
+            bool passEvent = false;
+            Cmdr.Power = @event.Power;
+            Cmdr.powerrating = @event.rank;
+            if (Cmdr.powermerits is null)
+            {
+                // Since powermerits are set from this event before any other type of powerplay journal entry (and 
+                // are not given currently by the Frontier API), we can conclude that this is the first instance of the 
+                // `Powerplay` event seen in this game session.
+                passEvent = true;
+            }
+            Cmdr.powermerits = @event.merits;
+            return passEvent;
         }
 
         private bool eventSystemScanComplete(SystemScanComplete @event)

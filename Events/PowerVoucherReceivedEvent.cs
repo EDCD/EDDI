@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EddiDataDefinitions;
+using System;
 using System.Collections.Generic;
 
 namespace EddiEvents
@@ -17,13 +18,17 @@ namespace EddiEvents
             VARIABLES.Add("systems", "The systems for which the commander is turning in the vouchers");
         }
 
-        public string power { get; private set; }
+        public string power => (Power ?? Power.None).localizedName;
 
         public List<string> systems { get; private set; }
 
-        public PowerVoucherReceivedEvent(DateTime timestamp, string power, List<string> systems) : base(timestamp, NAME)
+        // Not intended to be user facing
+
+        public Power Power { get; private set; }
+
+        public PowerVoucherReceivedEvent(DateTime timestamp, Power Power, List<string> systems) : base(timestamp, NAME)
         {
-            this.power = power;
+            this.Power = Power;
             this.systems = systems;
         }
     }
