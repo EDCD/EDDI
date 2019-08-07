@@ -158,9 +158,17 @@ namespace EddiInaraResponder
                         {
                             handleStatisticsEvent(statisticsEvent);
                         }
-                        else if (theEvent is PowerplayEvent)
+                        else if (theEvent is PowerplayEvent powerplayEvent)
                         {
-
+                            handlePowerplayEvent(powerplayEvent);
+                        }
+                        else if (theEvent is PowerLeftEvent powerLeftEvent)
+                        {
+                            handlePowerLeftEvent(powerLeftEvent);
+                        }
+                        else if (theEvent is PowerJoinedEvent powerJoinedEvent)
+                        {
+                            handlePowerJoinedEvent(powerJoinedEvent);
                         }
                     }
                 }
@@ -175,6 +183,33 @@ namespace EddiInaraResponder
                     Logging.Error("Failed to handle event " + theEvent.type, data);
                 }
             }
+        }
+
+        private void handlePowerJoinedEvent(PowerJoinedEvent @event)
+        {
+            InaraService.Instance.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "setCommanderRankPower", new Dictionary<string, object>()
+            {
+                { "powerName", @event.Power.invariantName },
+                { "rankValue", 1 }
+            }));
+        }
+
+        private void handlePowerLeftEvent(PowerLeftEvent @event)
+        {
+            InaraService.Instance.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "setCommanderRankPower", new Dictionary<string, object>()
+            {
+                { "powerName", @event.Power.invariantName },
+                { "rankValue", 0 }
+            }));
+        }
+
+        private void handlePowerplayEvent(PowerplayEvent @event)
+        {
+            InaraService.Instance.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "setCommanderRankPower", new Dictionary<string, object>()
+            {
+                { "powerName", @event.Power.invariantName },
+                { "rankValue", @event.rank }
+            }));
         }
 
         private void handleCommanderProgressEvent(CommanderProgressEvent @event)
