@@ -3596,14 +3596,20 @@ namespace EddiJournalMonitor
                                 break;
                             case "Powerplay":
                                 {
-                                    // Per the journal, this is written at startup. In actuallity, it can also be written whenever switching FSD states
-                                    // and needs to be filtered to prevent 
                                     Power power = Power.FromEDName(JsonParsing.getString(data, "Power"));
                                     int rank = JsonParsing.getInt(data, "Rank") + 1; // This is zero based in the journal but not in the Frontier API. Adding +1 here synchronizes the two.
                                     int merits = JsonParsing.getInt(data, "Merits");
                                     int votes = JsonParsing.getInt(data, "Votes");
                                     TimeSpan timePledged = TimeSpan.FromSeconds(JsonParsing.getLong(data, "TimePledged"));
-                                    events.Add(new PowerplayEvent(timestamp, power, rank, merits, votes, timePledged) { raw = line, fromLoad = fromLogLoad });
+
+                                    // Per the journal, this is written at startup. In actuallity, it can also be written whenever switching FSD states
+                                    // and needs to be filtered to prevent redundant outputs.
+                                    bool firstUpdate = false;
+                                    if (EDDI.Instance.Cmdr.powermerits is null && !fromLogLoad)
+                                    {
+                                        firstUpdate = true;
+                                    }
+                                    events.Add(new PowerplayEvent(timestamp, power, rank, merits, votes, timePledged, firstUpdate) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;

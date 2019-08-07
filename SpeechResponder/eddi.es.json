@@ -1581,10 +1581,10 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "You are pledged to {P(event.power)}. \r\nYou have served for \r\n{if event.timepledgedweeks > 1:\r\n    {Humanise(event.timepledgedweeks)} weeks \r\n|elif event.timepledgedweeks = 1:\r\n    one week \r\n|elif event.timepledgeddays > 1:\r\n    {Humanise(event.timepledgeddays)} days\r\n|elif event.timepledgeddays = 1:\r\n    one day\r\n|else:\r\n    less than one day\r\n}\r\nand are at rank {event.rank} with \r\n{if event.merits > 0:\r\n    {Humanise(event.merits)}\r\n|else:\r\n    no\r\n}\r\naccumulated merits.",
+      "script": "{if event.firstupdate:\r\n    You are pledged to {P(event.power)}. \r\n    You have served for \r\n    {if event.timepledgedweeks > 1:\r\n        {Humanise(event.timepledgedweeks)} weeks \r\n    |elif event.timepledgedweeks = 1:\r\n        one week \r\n    |elif event.timepledgeddays > 1:\r\n        {Humanise(event.timepledgeddays)} days\r\n    |elif event.timepledgeddays = 1:\r\n        one day\r\n    |else:\r\n        less than one day\r\n    }\r\n    and are at rank {event.rank} with \r\n    {if event.merits > 0:\r\n        {Humanise(event.merits)}\r\n    |else:\r\n        no\r\n    }\r\n    accumulated merits.\r\n}",
       "default": true,
       "name": "Powerplay",
-      "description": "Triggered when loading the game (if pledged to a power)"
+      "description": "Triggered periodically when pledged to a power"
     },
     "Repair drone": {
       "enabled": true,
