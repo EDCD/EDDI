@@ -158,6 +158,10 @@ namespace EddiInaraResponder
                         {
                             handleStatisticsEvent(statisticsEvent);
                         }
+                        else if (theEvent is PowerplayEvent)
+                        {
+
+                        }
                     }
                 }
                 catch (Exception ex)
