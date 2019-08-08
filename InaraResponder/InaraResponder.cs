@@ -5,6 +5,7 @@ using EddiDataProviderService;
 using EddiEvents;
 using EddiInaraService;
 using EddiMissionMonitor;
+using EddiShipMonitor;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -262,6 +263,10 @@ namespace EddiInaraResponder
                         {
                             handleTechnologyBrokerEvent(technologyBrokerEvent);
                         }
+                        else if (theEvent is StoredModulesEvent storedModulesEvent)
+                        {
+                            handleStoredModulesEvent(storedModulesEvent);
+                        }
                     }
                 }
                 catch (Exception ex)
@@ -275,6 +280,25 @@ namespace EddiInaraResponder
                     Logging.Error("Failed to handle event " + theEvent.type, data);
                 }
             }
+        }
+
+        private void handleStoredModulesEvent(StoredModulesEvent @event)
+        {
+            List<Dictionary<string, object>> eventData = new List<Dictionary<string, object>>();
+            foreach (StoredModule storedModule in @event.storedmodules)
+            {
+                eventData.Add(new Dictionary<string, object>()
+                {
+                    { "itemName", storedModule?.module?.edname },
+                    { "itemValue", storedModule?.module?.value },
+                    { "isHot", storedModule?.module?.hot },
+                    { "starsystemName", storedModule.system },
+                    { "stationName", storedModule?.station },
+                    { "marketID", storedModule?.marketid },
+                    { "engineering", storedModule.rawEngineering }
+                });                
+            }
+            InaraService.Instance.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "setCommanderStorageModules", eventData));
         }
 
         private void handleMaterialInventoryEvent(MaterialInventoryEvent @event)

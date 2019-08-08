@@ -1120,6 +1120,7 @@ namespace EddiJournalMonitor
                                             };
                                             item.TryGetValue("EngineerModifications", out val);
                                             bool modified = val != null ? true : false;
+                                            object rawModifications = val;
                                             module.modified = modified;
                                             module.engineerlevel = modified ? JsonParsing.getInt(item, "Level") : 0;
                                             module.engineermodification = Blueprint.FromEDNameAndGrade((string)val, module.engineerlevel) ?? Blueprint.None;
@@ -1133,7 +1134,8 @@ namespace EddiJournalMonitor
                                                 system = JsonParsing.getString(item, "StarSystem"),
                                                 marketid = JsonParsing.getOptionalLong(item, "MarketID"),
                                                 transfercost = JsonParsing.getOptionalLong(item, "TransferCost"),
-                                                transfertime = JsonParsing.getOptionalLong(item, "TransferTime")
+                                                transfertime = JsonParsing.getOptionalLong(item, "TransferTime"),
+                                                rawEngineering = rawModifications
                                             };
                                             storedModules.Add(storedModule);
                                         }
