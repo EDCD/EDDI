@@ -170,6 +170,10 @@ namespace EddiInaraResponder
                         {
                             handlePowerJoinedEvent(powerJoinedEvent);
                         }
+                        else if (theEvent is CommanderReputationEvent commanderReputationEvent)
+                        {
+                            handleCommanderReputationEvent(commanderReputationEvent);
+                        }
                     }
                 }
                 catch (Exception ex)
@@ -183,6 +187,41 @@ namespace EddiInaraResponder
                     Logging.Error("Failed to handle event " + theEvent.type, data);
                 }
             }
+        }
+
+        private void handleCommanderReputationEvent(CommanderReputationEvent @event)
+        {
+            InaraService.Instance.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "setCommanderReputationMajorFaction", new List<Dictionary<string, object>>()
+            {
+                {
+                    new Dictionary<string, object>()
+                    {
+                        { "majorfactionName", "empire" },
+                        { "majorfactionReputation", @event.empire }
+                    }
+                },
+                {
+                    new Dictionary<string, object>()
+                    {
+                        { "majorfactionName", "federation" },
+                        { "majorfactionReputation", @event.federation }
+                    }
+                },
+                {
+                    new Dictionary<string, object>()
+                    {
+                        { "majorfactionName", "independent" },
+                        { "majorfactionReputation", @event.independent }
+                    }
+                },
+                {
+                    new Dictionary<string, object>()
+                    {
+                        { "majorfactionName", "alliance" },
+                        { "majorfactionReputation", @event.alliance }
+                    }
+                }
+            }));
         }
 
         private void handlePowerJoinedEvent(PowerJoinedEvent @event)
