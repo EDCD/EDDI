@@ -1,4 +1,5 @@
 ﻿using Eddi;
+using EddiDataDefinitions;
 using EddiDataProviderService;
 using EddiEvents;
 using EddiInaraService;
@@ -174,6 +175,14 @@ namespace EddiInaraResponder
                         {
                             handleCommanderReputationEvent(commanderReputationEvent);
                         }
+                        else if (theEvent is JumpedEvent jumpedEvent)
+                        {
+                            handleJumpedEvent(jumpedEvent);
+                        }
+                        else if (theEvent is LocationEvent locationEvent)
+                        {
+                            handleLocationEvent(locationEvent);
+                        }
                     }
                 }
                 catch (Exception ex)
@@ -187,6 +196,33 @@ namespace EddiInaraResponder
                     Logging.Error("Failed to handle event " + theEvent.type, data);
                 }
             }
+        }
+
+        private void handleLocationEvent(LocationEvent @event)
+        {
+            List<Dictionary<string, object>> eventData = minorFactionReputation(@event.factions);
+            InaraService.Instance.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "setCommanderReputationMinorFaction", eventData));
+        }
+
+        private void handleJumpedEvent(JumpedEvent @event)
+        {
+            List<Dictionary<string, object>> eventData = minorFactionReputation(@event.factions);
+            InaraService.Instance.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "setCommanderReputationMinorFaction", eventData));
+        }
+
+        private static List<Dictionary<string, object>> minorFactionReputation(List<Faction> factions)
+        {
+            // Reputation progress in a range: [-1..1], which corresponds to a reputation range from -100% (hostile) to 100% (allied).
+            List<Dictionary<string, object>> eventData = new List<Dictionary<string, object>>();
+            foreach (Faction faction in factions)
+            {
+                eventData.Add(new Dictionary<string, object>()
+                {
+                    { "minorfactionName", faction.name },
+                    { "minorfactionReputation", (decimal)(faction.myreputation / 100) }
+                });
+            }
+            return eventData;
         }
 
         private void handleCommanderReputationEvent(CommanderReputationEvent @event)
