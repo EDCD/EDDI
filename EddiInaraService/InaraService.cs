@@ -18,16 +18,13 @@ namespace EddiInaraService
 
         private const string readonlyAPIkey = "9efrgisivgw8kksoosowo48kwkkw04skwcgo840";
 
-        public DateTime lastSync { get; private set; }
-
         private ConcurrentQueue<InaraAPIEvent> queuedAPIEvents { get; set; } = new ConcurrentQueue<InaraAPIEvent>();
 
-        public InaraService(string apikey, DateTime lastSync, string commandername = null, string commanderfrontierID = null)
+        public InaraService(string apikey, string commandername = null, string commanderfrontierID = null)
         {
             apiKey = apikey?.Trim();
             commanderName = commandername?.Trim();
             commanderFrontierID = commanderfrontierID;
-            this.lastSync = lastSync;
         }
 
         private static readonly object instanceLock = new object();
@@ -52,15 +49,14 @@ namespace EddiInaraService
                             // commanderFrontierID: Commander's unique Frontier ID (is provided by journals since 3.3)
                             // in the format: 'F123456'. When not known, set nothing.
                             string commanderFrontierID = inaraCredentials?.commanderFrontierID;
-                            DateTime lastSync = inaraCredentials?.lastSync ?? DateTime.MinValue;
                             if (!string.IsNullOrEmpty(inaraCredentials.apiKey) && !string.IsNullOrEmpty(commanderName))
                             {
-                                instance = new InaraService(inaraCredentials.apiKey ?? readonlyAPIkey, lastSync, commanderName, commanderFrontierID);
+                                instance = new InaraService(inaraCredentials.apiKey ?? readonlyAPIkey, commanderName, commanderFrontierID);
                                 Logging.Info("Configuring EDDI access to Inara profile data");
                             }
                             else
                             {
-                                instance = new InaraService(readonlyAPIkey, lastSync);
+                                instance = new InaraService(readonlyAPIkey);
                                 if (string.IsNullOrEmpty(inaraCredentials.apiKey))
                                 {
                                     Logging.Warn("Configuring Inara service for limited access: API key not set.");
@@ -177,7 +173,6 @@ namespace EddiInaraService
                 inaraConfiguration.lastSync = DateTime.UtcNow;
                 inaraConfiguration.ToFile();
             }
-            lastSync = DateTime.UtcNow;
         }
 
         public void EnqueueAPIEvent(InaraAPIEvent inaraAPIEvent)

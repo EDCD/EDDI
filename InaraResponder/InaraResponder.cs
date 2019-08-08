@@ -119,7 +119,8 @@ namespace EddiInaraResponder
                 return;
             }
 
-            if (InaraService.Instance.lastSync > theEvent.timestamp)
+            InaraConfiguration inaraConfiguration = InaraConfiguration.FromFile();
+            if (inaraConfiguration?.lastSync > theEvent.timestamp)
             {
                 return;
             }
@@ -229,6 +230,38 @@ namespace EddiInaraResponder
                         {
                             handleMissionCompletedEvent(missionCompletedEvent);
                         }
+                        else if (theEvent is MaterialInventoryEvent materialInventoryEvent)
+                        {
+                            handleMaterialInventoryEvent(materialInventoryEvent);
+                        }
+                        else if (theEvent is MaterialCollectedEvent materialCollectedEvent)
+                        {
+                            handleMaterialCollectedEvent(materialCollectedEvent);
+                        }
+                        else if (theEvent is MaterialDiscardedEvent materialDiscardedEvent)
+                        {
+                            handleMaterialDiscardedEvent(materialDiscardedEvent);
+                        }
+                        else if (theEvent is MaterialDonatedEvent materialDonatedEvent)
+                        {
+                            handleMaterialDonatedEvent(materialDonatedEvent);
+                        }
+                        else if (theEvent is MaterialTradedEvent materialTradedEvent)
+                        {
+                            handleMaterialTradedEvent(materialTradedEvent);
+                        }
+                        else if (theEvent is SynthesisedEvent synthesisedEvent)
+                        {
+                            handleSynthesisedEvent(synthesisedEvent);
+                        }
+                        else if (theEvent is ModificationCraftedEvent modificationCraftedEvent)
+                        {
+                            handleModificationCraftedEvent(modificationCraftedEvent);
+                        }
+                        else if (theEvent is TechnologyBrokerEvent technologyBrokerEvent)
+                        {
+                            handleTechnologyBrokerEvent(technologyBrokerEvent);
+                        }
                     }
                 }
                 catch (Exception ex)
@@ -242,6 +275,128 @@ namespace EddiInaraResponder
                     Logging.Error("Failed to handle event " + theEvent.type, data);
                 }
             }
+        }
+
+        private void handleMaterialInventoryEvent(MaterialInventoryEvent @event)
+        {
+            List<Dictionary<string, object>> eventData = new List<Dictionary<string, object>>();
+            foreach (MaterialAmount materialAmount in @event.inventory)
+            {
+                eventData.Add(new Dictionary<string, object>()
+                {
+                    { "itemName", materialAmount?.edname },
+                    { "itemCount", materialAmount.amount }
+                });
+            }
+            InaraService.Instance.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "setCommanderInventoryMaterials", eventData));
+        }
+
+        private void handleModificationCraftedEvent(ModificationCraftedEvent @event)
+        {
+            if (@event.materials?.Count > 0)
+            {
+                foreach (MaterialAmount materialAmount in @event.materials)
+                {
+                    InaraService.Instance.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "delCommanderInventoryMaterialsItem", new Dictionary<string, object>()
+                    {
+                        { "itemName", materialAmount?.edname },
+                        { "itemCount", materialAmount.amount }
+                    }));
+                }
+            }
+            if (@event.commodities?.Count > 0)
+            {
+                foreach (CommodityAmount commodityAmount in @event.commodities)
+                {
+                    InaraService.Instance.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "delCommanderInventoryCargoItem", new Dictionary<string, object>()
+                    {
+                        { "itemName", commodityAmount?.commodityDefinition?.edname },
+                        { "itemCount", commodityAmount.amount }
+                    }));
+                }
+            }
+        }
+
+        private void handleSynthesisedEvent(SynthesisedEvent @event)
+        {
+            if (@event.materials?.Count > 0)
+            {
+                foreach (MaterialAmount materialAmount in @event.materials)
+                {
+                    InaraService.Instance.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "delCommanderInventoryMaterialsItem", new Dictionary<string, object>()
+                    {
+                        { "itemName", materialAmount?.edname },
+                        { "itemCount", materialAmount.amount }
+                    }));
+                }
+            }
+        }
+
+        private void handleMaterialDonatedEvent(MaterialDonatedEvent @event)
+        {
+            InaraService.Instance.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "delCommanderInventoryMaterialsItem", new Dictionary<string, object>()
+            {
+                { "itemName", @event.edname },
+                { "itemCount", @event.amount }
+            }));
+        }
+
+        private void handleMaterialDiscardedEvent(MaterialDiscardedEvent @event)
+        {
+            InaraService.Instance.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "delCommanderInventoryMaterialsItem", new Dictionary<string, object>()
+            {
+                { "itemName", @event.edname },
+                { "itemCount", @event.amount }
+            }));
+        }
+
+        private void handleMaterialTradedEvent(MaterialTradedEvent @event)
+        {
+            InaraService.Instance.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "delCommanderInventoryMaterialsItem", new Dictionary<string, object>()
+            {
+                { "itemName", @event.paid_edname },
+                { "itemCount", @event.paid_quantity }
+            }));
+            InaraService.Instance.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "addCommanderInventoryMaterialsItem", new Dictionary<string, object>()
+            {
+                { "itemName", @event.received_edname },
+                { "itemCount", @event.received_quantity }
+            }));
+        }
+
+        private void handleTechnologyBrokerEvent(TechnologyBrokerEvent @event)
+        {
+            if (@event.materials?.Count > 0)
+            {
+                foreach (MaterialAmount materialAmount in @event.materials)
+                {
+                    InaraService.Instance.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "delCommanderInventoryMaterialsItem", new Dictionary<string, object>()
+                    {
+                        { "itemName", materialAmount?.edname },
+                        { "itemCount", materialAmount.amount }
+                    }));
+                }
+            }
+            if (@event.commodities?.Count > 0)
+            {
+                foreach (CommodityAmount commodityAmount in @event.commodities)
+                {
+                    InaraService.Instance.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "delCommanderInventoryCargoItem", new Dictionary<string, object>()
+                    {
+                        { "itemName", commodityAmount?.commodityDefinition?.edname },
+                        { "itemCount", commodityAmount.amount }
+                    }));
+                }
+            }
+        }
+
+        private void handleMaterialCollectedEvent(MaterialCollectedEvent @event)
+        {
+            InaraService.Instance.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "addCommanderInventoryMaterialsItem", new Dictionary<string, object>()
+            {
+                { "itemName", @event.edname },
+                { "itemCount", @event.amount }
+            }));
         }
 
         private void handleCargoEvent(CargoEvent @event)
@@ -274,18 +429,29 @@ namespace EddiInaraResponder
 
         private void handleEngineerContributedEvent(EngineerContributedEvent @event)
         {
-            InaraService.Instance.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "delCommanderInventoryCargoItem", new Dictionary<string, object>()
+            if (@event.contributiontype == "Commodity")
             {
-                { "itemName", @event.commodityAmount?.commodityDefinition?.invariantName },
-                { "itemCount", @event.amount }
-            }));
+                InaraService.Instance.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "delCommanderInventoryCargoItem", new Dictionary<string, object>()
+                {
+                    { "itemName", @event.commodityAmount?.commodityDefinition?.edname },
+                    { "itemCount", @event.amount }
+                }));
+            }
+            else if (@event.contributiontype == "Material")
+            {
+                InaraService.Instance.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "delCommanderInventoryMaterialsItem", new Dictionary<string, object>()
+                {
+                    { "itemName", @event.materialAmount?.edname },
+                    { "itemCount", @event.amount }
+                }));
+            }
         }
 
         private void handleCommoditySoldEvent(CommoditySoldEvent @event)
         {
             InaraService.Instance.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "delCommanderInventoryCargoItem", new Dictionary<string, object>()
             {
-                { "itemName", @event.commodityDefinition?.invariantName },
+                { "itemName", @event.commodityDefinition?.edname },
                 { "itemCount", @event.amount },
                 { "isStolen", @event.stolen }
             }));
@@ -295,7 +461,7 @@ namespace EddiInaraResponder
         {
             InaraService.Instance.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "delCommanderInventoryCargoItem", new Dictionary<string, object>()
             {
-                { "itemName", @event.commodityDefinition?.invariantName },
+                { "itemName", @event.commodityDefinition?.edname },
                 { "itemCount", @event.amount },
                 { "missionGameID", @event.missionid }
             }));
@@ -307,7 +473,7 @@ namespace EddiInaraResponder
             {
                 InaraService.Instance.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "addCommanderInventoryCargoItem", new Dictionary<string, object>()
                 {
-                    { "itemName", @event.commodityDefinition?.invariantName },
+                    { "itemName", @event.commodityDefinition?.edname },
                     { "itemCount", @event.amount },
                     { "isStolen", false },
                     { "missionGameID", @event.missionid }
@@ -317,7 +483,7 @@ namespace EddiInaraResponder
             {
                 InaraService.Instance.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "delCommanderInventoryCargoItem", new Dictionary<string, object>()
                 {
-                    { "itemName", @event.commodityDefinition?.invariantName },
+                    { "itemName", @event.commodityDefinition?.edname },
                     { "itemCount", @event.amount },
                     { "isStolen", false },
                     { "missionGameID", @event.missionid }
@@ -329,7 +495,7 @@ namespace EddiInaraResponder
         {
             InaraService.Instance.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "addCommanderInventoryCargoItem", new Dictionary<string, object>()
             {
-                { "itemName", @event.commodityDefinition?.invariantName },
+                { "itemName", @event.commodityDefinition?.edname },
                 { "itemCount", 1 },
                 { "isStolen", false }
             }));
@@ -339,7 +505,7 @@ namespace EddiInaraResponder
         {
             InaraService.Instance.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "addCommanderInventoryCargoItem", new Dictionary<string, object>()
             {
-                { "itemName", @event.commodityDefinition?.invariantName },
+                { "itemName", @event.commodityDefinition?.edname },
                 { "itemCount", @event.amount },
                 { "isStolen", false }
             }));
@@ -349,7 +515,7 @@ namespace EddiInaraResponder
         {
             InaraService.Instance.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "addCommanderInventoryCargoItem", new Dictionary<string, object>()
             {
-                { "itemName", @event.commodityDefinition?.invariantName },
+                { "itemName", @event.commodityDefinition?.edname },
                 { "itemCount", 1 },
                 { "isStolen", @event.stolen },
                 { "missionGameID", @event.missionid }
@@ -634,14 +800,37 @@ namespace EddiInaraResponder
                     InaraService.Instance.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "addCommanderPermit", new Dictionary<string, object>() { { "starsystemName", systemName } }));
                 }
             }
+            if (@event.materialsrewards?.Count > 0)
+            {
+                foreach (MaterialAmount materialAmount in @event.materialsrewards)
+                {
+                    InaraService.Instance.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "addCommanderInventoryMaterialsItem", new Dictionary<string, object>()
+                    {
+                        { "itemName", materialAmount?.edname },
+                        { "itemCount", materialAmount.amount },
+                        { "isStolen", false },
+                        { "missionGameID", @event.missionid }
+                    }));
+                }
+            }
+            if (@event.commodityrewards?.Count > 0)
+            {
+                foreach (CommodityAmount commodityAmount in @event.commodityrewards)
+                {
+                    InaraService.Instance.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "addCommanderInventoryCargoItem", new Dictionary<string, object>()
+                    {
+                        { "itemName", commodityAmount?.commodityDefinition?.edname },
+                        { "itemCount", commodityAmount.amount },
+                        { "isStolen", false },
+                        { "missionGameID", @event.missionid }
+                    }));
+                }
+            }
         }
 
         void OnApplicationExit(object sender, EventArgs e)
         {
             InaraService.Instance.SendQueuedAPIEventsAsync(EDDI.Instance.ShouldUseTestEndpoints());
-            InaraConfiguration inaraConfiguration = InaraConfiguration.FromFile();
-            inaraConfiguration.lastSync = InaraService.Instance.lastSync;
-            inaraConfiguration.ToFile();
         }
     }
 }
