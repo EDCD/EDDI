@@ -1,7 +1,6 @@
 ﻿using Eddi;
 using EddiCargoMonitor;
 using EddiDataDefinitions;
-using EddiDataProviderService;
 using EddiEvents;
 using EddiInaraService;
 using EddiMissionMonitor;
@@ -9,10 +8,7 @@ using EddiShipMonitor;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Controls;
 using Utilities;
 
