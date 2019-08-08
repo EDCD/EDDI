@@ -60,6 +60,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\CargoMonitor\EddiCargoMonitor.csproj">
+      <Project>{C1D256BA-68B9-437A-8907-599C3A388C37}</Project>
+      <Name>EddiCargoMonitor</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DataDefinitions\EddiDataDefinitions.csproj">
       <Project>{0C845B02-E283-43D8-91A7-205AD3397371}</Project>
       <Name>EddiDataDefinitions</Name>
