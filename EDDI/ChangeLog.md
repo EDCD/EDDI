@@ -7,6 +7,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * The `Location` and `Jumped` events contain new properties `power` and `powerstate`. 
     * Fixed a bug with speech queues that could in some circumstances cause EDDI to crash in the middle of combat.
     * Added new event `Commander loading`, triggered at the very beginning of loading a game.
+    * Added new event `Commander reputation`, triggered when your reputation is reported.
     * Added new event `Statistics`, triggered while loading a game.
     * Added new event `Powerplay`, triggered while loading the game (if pledged).
     * Updated the `Commander continued` event with new properties `startlanded` and `startdead` (true if starting the game either landed or dead, respectively).

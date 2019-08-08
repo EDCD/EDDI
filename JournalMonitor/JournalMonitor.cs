@@ -3613,9 +3613,18 @@ namespace EddiJournalMonitor
                                 }
                                 handled = true;
                                 break;
+                            case "Reputation":
+                                {
+                                    decimal empire = JsonParsing.getDecimal(data, "Empire");
+                                    decimal federation = JsonParsing.getDecimal(data, "Federation");
+                                    decimal independent = JsonParsing.getDecimal(data, "Independent");
+                                    decimal alliance = JsonParsing.getDecimal(data, "Alliance");
+                                    events.Add(new CommanderReputationEvent(timestamp, empire, federation, independent, alliance) { raw = line, fromLoad = fromLogLoad });
+                                }
+                                handled = true;
+                                break;
                             case "DiscoveryScan":
                             case "EngineerLegacyConvert":
-                            case "Reputation":
                             case "CodexDiscovery":
                             case "CodexEntry":
                             case "ReservoirReplenished":

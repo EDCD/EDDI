@@ -263,6 +263,15 @@
       "name": "Commander ratings",
       "description": "Se activa cuando se informa de tu clasificación"
     },
+    "Commander reputation": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{_ A note on thresholds... _}\r\n{_ -100.. -90: hostile _}\r\n{_ -90.. -35: unfriendly _}\r\n{_ -35..+ 4: neutral _}\r\n{_ +4..+35: cordial _}\r\n{_ +35..+90: friendly _}\r\n{_ +90..+100: allied _}\r\n",
+      "default": true,
+      "name": "Commander reputation",
+      "description": "Triggered when your reputation is reported"
+    },
     "Commander started": {
       "enabled": true,
       "priority": 3,
