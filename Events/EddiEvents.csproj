@@ -65,6 +65,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CommanderReputationEvent.cs" />
     <Compile Include="PowerplayEvent.cs" />
     <Compile Include="CommanderLoadingEvent.cs" />
     <Compile Include="RingMappedEvent.cs" />
