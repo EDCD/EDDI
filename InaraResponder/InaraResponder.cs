@@ -8,6 +8,7 @@ using EddiShipMonitor;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Threading;
 using System.Windows.Controls;
 using Utilities;
@@ -22,7 +23,7 @@ namespace EddiInaraResponder
         private bool bgSyncRunning;
         public string ResponderName()
         {
-            return "Inara responder";
+            return Properties.InaraResources.ResourceManager.GetString("name", CultureInfo.InvariantCulture);
         }
 
         public string LocalizedResponderName()
@@ -263,6 +264,38 @@ namespace EddiInaraResponder
                         {
                             handleStoredModulesEvent(storedModulesEvent);
                         }
+                        else if (theEvent is ShipPurchasedEvent shipPurchasedEvent)
+                        {
+                            handleShipPurchasedEvent(shipPurchasedEvent);
+                        }
+                        else if (theEvent is ShipDeliveredEvent shipDeliveredEvent)
+                        {
+                            handleShipDeliveredEvent(shipDeliveredEvent);
+                        }
+                        else if (theEvent is ShipSoldEvent shipSoldEvent)
+                        {
+                            handleShipSoldEvent(shipSoldEvent);
+                        }
+                        else if (theEvent is ShipSoldOnRebuyEvent shipSoldOnRebuyEvent)
+                        {
+                            handleShipSoldOnRebuyEvent(shipSoldOnRebuyEvent);
+                        }
+                        else if (theEvent is ShipSwappedEvent shipSwappedEvent)
+                        {
+                            handleShipSwappedEvent(shipSwappedEvent);
+                        }
+                        else if (theEvent is ShipLoadoutEvent shipLoadoutEvent)
+                        {
+                            handleShipLoadoutEvent(shipLoadoutEvent);
+                        }
+                        else if (theEvent is ShipRenamedEvent shipRenamedEvent)
+                        {
+                            handleShipRenamedEvent(shipRenamedEvent);
+                        }
+                        else if (theEvent is ShipTransferInitiatedEvent shipTransferInitiatedEvent)
+                        {
+                            handleShipTransferInitiatedEvent(shipTransferInitiatedEvent);
+                        }
                     }
                 }
                 catch (Exception ex)
@@ -275,6 +308,156 @@ namespace EddiInaraResponder
                         };
                     Logging.Error("Failed to handle event " + theEvent.type, data);
                 }
+            }
+        }
+
+        private void handleShipTransferInitiatedEvent(ShipTransferInitiatedEvent @event)
+        {
+            InaraService.Instance.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "setCommanderShipTransfer", new Dictionary<string, object>()
+            {
+                { "shipType", @event.ship },
+                { "shipGameID", @event.shipid },
+                { "starsystemName", EDDI.Instance.CurrentStarSystem?.systemname },
+                { "stationName", EDDI.Instance.CurrentStation?.name },
+                { "marketID", EDDI.Instance.CurrentStation?.marketId },
+                { "transferTime", @event.time }
+            }));
+        }
+
+        private void handleShipRenamedEvent(ShipRenamedEvent @event)
+        {
+            Ship currentShip = ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship Monitor")).GetShip(@event.shipid);
+            Dictionary<string, object> currentShipData = new Dictionary<string, object>()
+            {
+                { "shipType", currentShip.EDName },
+                { "shipGameID", currentShip.LocalId },
+                { "shipName", currentShip.name },
+                { "shipIdent", currentShip.ident },
+                { "isHot", currentShip.hot },
+                { "isCurrentShip", true }
+            };
+            InaraService.Instance.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "setCommanderShip", currentShipData));
+        }
+
+        private void handleShipLoadoutEvent(ShipLoadoutEvent @event)
+        {
+            Ship currentShip = ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship Monitor")).GetShip(@event.shipid);
+            Dictionary<string, object> currentShipData = new Dictionary<string, object>()
+            {
+                { "shipType", currentShip.EDName },
+                { "shipGameID", currentShip.LocalId },
+                { "shipName", currentShip.name },
+                { "shipIdent", currentShip.ident },
+                { "isHot", currentShip.hot },
+                { "isCurrentShip", true },
+                { "shipHullValue", @event.hullvalue },
+                { "shipModulesValue", @event.modulesvalue },
+                { "shipRebuyCost", @event.rebuy }
+            };
+            InaraService.Instance.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "setCommanderShip", currentShipData));
+            IDictionary<string, object> rawShipObj = Deserializtion.DeserializeData(@event.raw);
+            rawShipObj.TryGetValue("Modules", out object modulesVal);
+            InaraService.Instance.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "setCommanderShipLoadout", new Dictionary<string, object>()
+            {
+                { "shipType", @event.ship },
+                { "shipGameID", @event.shipid },
+                { "shipLoadout", modulesVal }
+            }));
+        }
+
+        private void handleShipSwappedEvent(ShipSwappedEvent @event)
+        {
+            if (!string.IsNullOrEmpty(@event.storedship))
+            {
+                Ship storedShip = ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship Monitor")).GetShip(@event.storedshipid);
+                Dictionary<string, object> storedShipData = new Dictionary<string, object>()
+                {
+                    { "shipType", storedShip.EDName },
+                    { "shipGameID", storedShip.LocalId },
+                    { "shipName", storedShip.name },
+                    { "shipIdent", storedShip.ident },
+                    { "isHot", storedShip.hot },
+                    { "isCurrentShip", true },
+                    { "starsystemName", EDDI.Instance.CurrentStarSystem?.systemname },
+                    { "stationName", EDDI.Instance.CurrentStation?.name },
+                    { "marketID", EDDI.Instance.CurrentStation?.marketId }
+                };
+                InaraService.Instance.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "setCommanderShip", storedShipData));
+            }
+            else if (!string.IsNullOrEmpty(@event.soldship))
+            {
+                InaraService.Instance.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "delCommanderShip", new Dictionary<string, object>()
+                {
+                    { "shipType", @event.storedship },
+                    { "shipGameID", @event.storedshipid }
+                }));
+            }
+            Ship currentShip = ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship Monitor")).GetShip(@event.shipid);
+            Dictionary<string, object> currentShipData = new Dictionary<string, object>()
+            {
+                { "shipType", currentShip.EDName },
+                { "shipGameID", currentShip.LocalId },
+                { "shipName", currentShip.name },
+                { "shipIdent", currentShip.ident },
+                { "isHot", currentShip.hot },
+                { "isCurrentShip", true }
+            };
+            InaraService.Instance.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "setCommanderShip", currentShipData));
+        }
+
+        private void handleShipSoldOnRebuyEvent(ShipSoldOnRebuyEvent @event)
+        {
+            InaraService.Instance.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "delCommanderShip", new Dictionary<string, object>()
+            {
+                { "shipType", @event.ship },
+                { "shipGameID", @event.shipid }
+            }));
+        }
+
+        private void handleShipSoldEvent(ShipSoldEvent @event)
+        {
+            InaraService.Instance.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "delCommanderShip", new Dictionary<string, object>()
+            {
+                { "shipType", @event.ship },
+                { "shipGameID", @event.shipid }
+            }));
+        }
+
+        private void handleShipDeliveredEvent(ShipDeliveredEvent @event)
+        {
+            InaraService.Instance.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "addCommanderShip", new Dictionary<string, object>()
+            {
+                { "shipType", @event.ship },
+                { "shipGameID", @event.shipid }
+            }));
+        }
+
+        private void handleShipPurchasedEvent(ShipPurchasedEvent @event)
+        {
+            if (!string.IsNullOrEmpty(@event.storedship))
+            {
+                Ship storedShip = ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship Monitor")).GetShip(@event.storedshipid);
+                Dictionary<string, object> storedShipData = new Dictionary<string, object>()
+                {
+                    { "shipType", storedShip.EDName },
+                    { "shipGameID", storedShip.LocalId },
+                    { "shipName", storedShip.name },
+                    { "shipIdent", storedShip.ident },
+                    { "isHot", storedShip.hot },
+                    { "isCurrentShip", true },
+                    { "starsystemName", EDDI.Instance.CurrentStarSystem?.systemname },
+                    { "stationName", EDDI.Instance.CurrentStation?.name },
+                    { "marketID", EDDI.Instance.CurrentStation?.marketId }
+                };
+                InaraService.Instance.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "setCommanderShip", storedShipData));
+            }
+            else if (!string.IsNullOrEmpty(@event.soldship))
+            {
+                InaraService.Instance.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "delCommanderShip", new Dictionary<string, object>()
+                {
+                    { "shipType", @event.storedship },
+                    { "shipGameID", @event.storedshipid }
+                }));
             }
         }
 
