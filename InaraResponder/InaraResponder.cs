@@ -296,6 +296,10 @@ namespace EddiInaraResponder
                         {
                             handleShipTransferInitiatedEvent(shipTransferInitiatedEvent);
                         }
+                        else if (theEvent is DockedEvent dockedEvent)
+                        {
+                            handleDockedEvent(dockedEvent);
+                        }
                     }
                 }
                 catch (Exception ex)
@@ -309,6 +313,24 @@ namespace EddiInaraResponder
                     Logging.Error("Failed to handle event " + theEvent.type, data);
                 }
             }
+        }
+
+        private void handleDockedEvent(DockedEvent @event)
+        {
+            // Don't add this at the session start after Location, per guidance from Inara. 
+            if (@event.station != firstDockedLocation)
+            {
+                Ship currentShip = ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship Monitor")).GetCurrentShip();
+                InaraService.Instance.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "addCommanderTravelDock", new Dictionary<string, object>()
+                {
+                    { "starsystemName", @event.system },
+                    { "stationName", @event.station },
+                    { "marketID", @event.marketId },
+                    { "shipType", currentShip.model },
+                    { "shipGameID", currentShip.LocalId }
+                }));
+            }
+            firstDockedLocation = null;
         }
 
         private void handleShipTransferInitiatedEvent(ShipTransferInitiatedEvent @event)
@@ -727,14 +749,35 @@ namespace EddiInaraResponder
 
         private void handleLocationEvent(LocationEvent @event)
         {
-            List<Dictionary<string, object>> eventData = minorFactionReputations(@event.factions);
-            InaraService.Instance.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "setCommanderReputationMinorFaction", eventData));
+            List<Dictionary<string, object>> minorFactionData = minorFactionReputations(@event.factions);
+            InaraService.Instance.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "setCommanderReputationMinorFaction", minorFactionData));
+            InaraService.Instance.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "setCommanderTravelLocation", new Dictionary<string, object>()
+            {
+                { "starsystemName", @event.systemname },
+                { "stationName", @event.station },
+                { "marketID", @event.marketId }
+            }));
+            if (@event.docked)
+            {
+                // Set our docked lcoation for reference by the `Docked` event.
+                firstDockedLocation = @event.station;
+            }
         }
+        string firstDockedLocation = null;
 
         private void handleJumpedEvent(JumpedEvent @event)
         {
-            List<Dictionary<string, object>> eventData = minorFactionReputations(@event.factions);
-            InaraService.Instance.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "setCommanderReputationMinorFaction", eventData));
+            List<Dictionary<string, object>> minorFactionData = minorFactionReputations(@event.factions);
+            InaraService.Instance.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "setCommanderReputationMinorFaction", minorFactionData));
+
+            Ship currentShip = ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship Monitor")).GetCurrentShip();
+            InaraService.Instance.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "addCommanderTravelFSDJump", new Dictionary<string, object>()
+            {
+                { "starsystemName", @event.system },
+                { "jumpDistance", @event.distance },
+                { "shipType", currentShip.model },
+                { "shipGameID", currentShip.LocalId }
+            }));
         }
 
         private static List<Dictionary<string, object>> minorFactionReputations(List<Faction> factions)
