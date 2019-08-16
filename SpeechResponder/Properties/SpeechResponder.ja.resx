@@ -221,5 +221,7 @@
   <data name="speechResponderHelpHere" xml:space="preserve">
     <value>こちらを参照してください。</value>
   </data>
-  
+  <data name="localizedAnd" xml:space="preserve">
+    <value>and</value>
+  </data>
 </root>
