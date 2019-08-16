@@ -121,7 +121,7 @@
     <value>記録を追加</value>
   </data>
   <data name="add_button_desc" xml:space="preserve">
-    <value>マイナーファクションの記録を手動で入力可能</value>
+    <value>マイナーファクションの情報を手動で削除可能</value>
   </data>
   <data name="add_button_text" xml:space="preserve">
     <value>記録を追加:</value>
@@ -135,22 +135,58 @@
   <data name="crime_monitor_name" xml:space="preserve">
     <value>Crime Monitor</value>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="find_button" xml:space="preserve">
+    <value>Legal Facilitiesを検索</value>
+  </data>
+  <data name="find_button_desc" xml:space="preserve">
+    <value>Interstellar Factors Contactが存在する最寄りの星系およびステーションの検索を開始します。</value>
+  </data>
+  <data name="find_button_text" xml:space="preserve">
+    <value>Legal Facilitiesを検索:</value>
+  </data>
+  <data name="header_bounties" xml:space="preserve">
+    <value>懸賞金</value>
+  </data>
+  <data name="header_claims" xml:space="preserve">
+    <value>報奨金</value>
+  </data>
+  <data name="header_faction" xml:space="preserve">
+    <value>ファクション</value>
+  </data>
+  <data name="header_fines" xml:space="preserve">
+    <value>罰金</value>
+  </data>
+  <data name="header_station" xml:space="preserve">
+    <value>ステーション</value>
+  </data>
+  <data name="header_system" xml:space="preserve">
+    <value>星系</value>
+  </data>
+  <data name="orbital_station_checkbox" xml:space="preserve">
+    <value>軌道ステーションを優先:</value>
+  </data>
+  <data name="p1" xml:space="preserve">
+    <value>注：ステーションまでの最大距離を指定して、検索時間を短縮します。</value>
+  </data>
+  <data name="remove_button" xml:space="preserve">
+    <value>削除</value>
+  </data>
+  <data name="remove_button_desc" xml:space="preserve">
+    <value>マイナーファクションの記録を手動で削除可能</value>
+  </data>
+  <data name="remove_button_text" xml:space="preserve">
+    <value>削除:</value>
+  </data>
+  <data name="tab_station_distance" xml:space="preserve">
+    <value>主星からステーションまでの最大距離(Ls):</value>
+  </data>
+  <data name="update_button" xml:space="preserve">
+    <value>更新</value>
+  </data>
+  <data name="update_button_desc" xml:space="preserve">
+    <value>マイナーファクションの情報（星系、ステーションなど）を更新します。</value>
+  </data>
+  <data name="update_button_text" xml:space="preserve">
+    <value>更新:</value>
+  </data>
 </root>
