@@ -123,11 +123,21 @@
   <data name="desired_header" xml:space="preserve">
     <value>要求数</value>
   </data>
-  
-  
-  
-  
-  
+  <data name="find_encoded_button" xml:space="preserve">
+    <value>Encodedトレーダーを検索</value>
+  </data>
+  <data name="find_guardian_button" xml:space="preserve">
+    <value>GuardianのTech Brokerを検索</value>
+  </data>
+  <data name="find_human_button" xml:space="preserve">
+    <value>HumanのTech Brokerを検索</value>
+  </data>
+  <data name="find_manufactured_button" xml:space="preserve">
+    <value>Manufacturedトレーダーを検索</value>
+  </data>
+  <data name="find_raw_button" xml:space="preserve">
+    <value>Rawトレーダーを検索</value>
+  </data>
   <data name="inventory_header" xml:space="preserve">
     <value>保有数</value>
   </data>
@@ -149,8 +159,12 @@
   <data name="p2" xml:space="preserve">
     <value>実際の内容と一致しない場合、情報の更新のため、ゲーム本体を起動または再起動する必要があります。</value>
   </data>
-  
-  
+  <data name="p3" xml:space="preserve">
+    <value>注：ステーションまでの最大距離を指定して、検索時間を短縮します。</value>
+  </data>
+  <data name="tab_station_distance" xml:space="preserve">
+    <value>主星からステーションまでの最大距離(Ls):</value>
+  </data>
   <data name="type_header" xml:space="preserve">
     <value>種類</value>
   </data>
