@@ -117,12 +117,24 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
-  
-  
-  
-  
+  <data name="add_button" xml:space="preserve">
+    <value>記録を追加</value>
+  </data>
+  <data name="add_button_desc" xml:space="preserve">
+    <value>マイナーファクションの記録を手動で入力可能</value>
+  </data>
+  <data name="add_button_text" xml:space="preserve">
+    <value>記録を追加:</value>
+  </data>
+  <data name="blank_faction" xml:space="preserve">
+    <value>ファクション名を入力</value>
+  </data>
+  <data name="crime_monitor_desc" xml:space="preserve">
+    <value>あなたの犯罪の情報を表示します。</value>
+  </data>
+  <data name="crime_monitor_name" xml:space="preserve">
+    <value>Crime Monitor</value>
+  </data>
   
   
   
