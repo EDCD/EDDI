@@ -117,6 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  
   <data name="desc" xml:space="preserve">
     <value>Beobachte die Materialmenge und sende eine Benachrichtigung, wenn der eingestellte Grenzwert erreicht wird.</value>
   </data>
@@ -162,6 +163,7 @@
   <data name="p3" xml:space="preserve">
     <value>Tip: Maximiere die erlaubte Stationsentfernung zur Minimierung der Suchzeiten.</value>
   </data>
+  
   <data name="tab_station_distance" xml:space="preserve">
     <value>Max. Entfernung der Stat. vom Hauptstern (Ls):</value>
   </data>

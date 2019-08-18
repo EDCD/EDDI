@@ -117,6 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  
   <data name="desc" xml:space="preserve">
     <value>マテリアルの量を監視し、保有上限に達したとき通知します。</value>
   </data>
@@ -162,6 +163,7 @@
   <data name="p3" xml:space="preserve">
     <value>注：ステーションまでの最大距離を指定して、検索時間を短縮します。</value>
   </data>
+  
   <data name="tab_station_distance" xml:space="preserve">
     <value>主星からステーションまでの最大距離(Ls):</value>
   </data>
