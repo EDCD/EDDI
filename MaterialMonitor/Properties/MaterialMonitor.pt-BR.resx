@@ -117,6 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  
   <data name="desc" xml:space="preserve">
     <value>Acompanha a quantidade de materiais e gera eventos quando os limites são atingidos.</value>
   </data>
@@ -162,6 +163,7 @@
   <data name="p3" xml:space="preserve">
     <value>Dica: Maximize a distância de estação permitida para minimizar os tempos de busca.</value>
   </data>
+  
   <data name="tab_station_distance" xml:space="preserve">
     <value>Distância Máxima da Estrela Principal até a Estação (sL):</value>
   </data>
