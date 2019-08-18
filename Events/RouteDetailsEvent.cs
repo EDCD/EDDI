@@ -15,6 +15,7 @@ namespace EddiEvents
         {
             VARIABLES.Add("routetype", "Type of route query");
             VARIABLES.Add("system", "The destination system");
+            VARIABLES.Add("station", "The destination station, if applicable");
             VARIABLES.Add("route", "Delimited systems list, if applicable");
             VARIABLES.Add("count", "Count of missions, systems, or expiry seconds, depending on route type");
             VARIABLES.Add("distance", "The distance to the destination system");
@@ -26,6 +27,8 @@ namespace EddiEvents
 
         public string system { get; private set; }
 
+        public string station { get; private set; }
+
         public string route { get; private set; }
 
         public long count { get; private set; }
@@ -36,10 +39,11 @@ namespace EddiEvents
 
         public List<long> missionids { get; private set; }
 
-        public RouteDetailsEvent(DateTime timestamp, string routetype, string system, string route, long count, decimal distance, decimal routedistance, List<long> missionids) : base(timestamp, NAME)
+        public RouteDetailsEvent(DateTime timestamp, string routetype, string system, string station, string route, long count, decimal distance, decimal routedistance, List<long> missionids) : base(timestamp, NAME)
         {
             this.routetype = routetype;
             this.system = system;
+            this.station = station;
             this.route = route;
             this.count = count;
             this.distance = distance;

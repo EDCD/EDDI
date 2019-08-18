@@ -963,7 +963,7 @@ namespace EddiVoiceAttackResponder
                 if (EDDI.Instance.CurrentStarSystem != null)
                 {
                     // Store locally
-                    StarSystem here = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(EDDI.Instance.CurrentStarSystem.systemname);
+                    StarSystem here = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystem(EDDI.Instance.CurrentStarSystem.systemname);
                     here.comment = comment == "" ? null : comment;
                     StarSystemSqLiteRepository.Instance.SaveStarSystem(here);
 
@@ -1005,11 +1005,13 @@ namespace EddiVoiceAttackResponder
                 int materialDistance = materialMonitor.maxStationDistanceFromStarLs ?? 10000;
                 string type = vaProxy.GetText("Type variable");
                 string system = vaProxy.GetText("System variable");
+                string station = vaProxy.GetText("Station variable");
+
                 switch (type)
                 {
                     case "cancel":
                         {
-                            Navigation.Instance.CancelRoute();
+                            Navigation.Instance.CancelDestination();
                         }
                         break;
                     case "encoded":
@@ -1068,7 +1070,7 @@ namespace EddiVoiceAttackResponder
                         break;
                     case "next":
                         {
-                            Navigation.Instance.SetNextRoute();
+                            Navigation.Instance.GetNextInRoute();
                         }
                         break;
                     case "raw":
@@ -1090,7 +1092,21 @@ namespace EddiVoiceAttackResponder
                         break;
                     case "set":
                         {
-                            Navigation.Instance.SetRoute(system);
+                            if (string.IsNullOrEmpty(system))
+                            {
+                                Navigation.Instance.SetDestination();
+                            }
+                            else
+                            {
+                                if (string.IsNullOrEmpty(station))
+                                {
+                                    Navigation.Instance.SetDestination(system);
+                                }
+                                else
+                                {
+                                    Navigation.Instance.SetDestination(system, station);
+                                }
+                            }
                         }
                         break;
                     case "source":

@@ -84,7 +84,7 @@ namespace EddiMissionMonitor
 
         private void nextInRoute(object sender, RoutedEventArgs e)
         {
-            string nextSystem = missionMonitor().SetNextRoute();
+            string nextSystem = missionMonitor().SetNextInRoute();
 
             // If 'next system' found, send to clipboard
             if (nextSystem != null)

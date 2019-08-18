@@ -623,7 +623,7 @@ namespace EddiSpeechResponder
                 }
                 else
                 {
-                    result = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(values[0].AsString, true);
+                    result = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystem(values[0].AsString, true);
                 }
                 setSystemDistanceFromHome(result);
                 return (result == null ? new ReflectionValue(new object()) : new ReflectionValue(result));
@@ -643,7 +643,7 @@ namespace EddiSpeechResponder
                 else
                 {
                     // Named system
-                    system = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(values[1].AsString, true);
+                    system = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystem(values[1].AsString, true);
                 }
                 Body result = system?.bodies?.Find(v => v.bodyname?.ToLowerInvariant() == values[0].AsString?.ToLowerInvariant());
                 return (result == null ? new ReflectionValue(new object()) : new ReflectionValue(result));
@@ -673,7 +673,7 @@ namespace EddiSpeechResponder
                 {
                     case "cancel":
                         {
-                            Navigation.Instance.CancelRoute();
+                            Navigation.Instance.CancelDestination();
                         }
                         break;
                     case "encoded":
@@ -732,7 +732,7 @@ namespace EddiSpeechResponder
                         break;
                     case "next":
                         {
-                            result = Navigation.Instance.SetNextRoute();
+                            result = Navigation.Instance.GetNextInRoute();
                         }
                         break;
                     case "raw":
@@ -754,7 +754,18 @@ namespace EddiSpeechResponder
                         break;
                     case "set":
                         {
-                            result = Navigation.Instance.SetRoute(values[1].AsString);
+                            if (values.Count == 3)
+                            {
+                                result = Navigation.Instance.SetDestination(values[1].AsString, values[2].AsString);
+                            }
+                            else if (values.Count == 2)
+                            {
+                                result = Navigation.Instance.SetDestination(values[1].AsString);
+                            }
+                            else
+                            {
+                                result = Navigation.Instance.SetDestination();
+                            }
                         }
                         break;
                     case "source":
@@ -783,7 +794,7 @@ namespace EddiSpeechResponder
                         break;
                 }
                 return result == null ? new ReflectionValue(new object()) : new ReflectionValue(result);
-            }, 1, 2);
+            }, 1, 3);
 
             store["StationDetails"] = new NativeFunction((values) =>
             {
@@ -807,7 +818,7 @@ namespace EddiSpeechResponder
                     else
                     {
                         // Named system
-                        system = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(values[1].AsString, true);
+                        system = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystem(values[1].AsString, true);
                     }
                     result = system != null && system.stations != null ? system.stations.FirstOrDefault(v => v.name.ToLowerInvariant() == values[0].AsString.ToLowerInvariant()) : null;
                 }
@@ -893,7 +904,7 @@ namespace EddiSpeechResponder
                 Material result = Material.FromName(values[0].AsString);
                 if (result.edname != null && values.Count == 2)
                 {
-                    StarSystem starSystem = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(values[1].AsString, true);
+                    StarSystem starSystem = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystem(values[1].AsString, true);
                     if (starSystem != null)
                     {
                         Body body = Material.highestPercentBody(result.edname, starSystem.bodies);
@@ -929,7 +940,7 @@ namespace EddiSpeechResponder
                 else if (values.Count == 3)
                 {
                     // Named commodity, named station, named system 
-                    StarSystem system = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(values[2].AsString);
+                    StarSystem system = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystem(values[2].AsString);
                     string stationName = values[1].AsString;
                     Station station = system?.stations?.FirstOrDefault(v => v.name == stationName);
                     result = CommodityDetails(values[0].AsString, station);
@@ -1060,19 +1071,20 @@ namespace EddiSpeechResponder
             store["Distance"] = new NativeFunction((values) =>
             {
                 decimal result = 0;
-                Cottle.Value value = values[0];
-                if (values.Count == 2 && value.Type == Cottle.ValueContent.String)
+                Cottle.Value value_0 = values[0];
+                Cottle.Value value_1 = values[1];
+                if (values.Count == 2 && value_0.Type == Cottle.ValueContent.String && value_1.Type == Cottle.ValueContent.String)
                 {
-                    StarSystem curr = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(values[0].AsString, true);
-                    StarSystem dest = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(values[1].AsString, true);
-                    if (curr != null & dest != null)
+                    StarSystem curr = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystem(values[0].AsString, true);
+                    StarSystem dest = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystem(values[1].AsString, true);
+                    if (curr?.x != null && dest?.x != null)
                     {
                         result = (decimal)Math.Round(Math.Sqrt(Math.Pow((double)(curr.x - dest.x), 2)
                                     + Math.Pow((double)(curr.y - dest.y), 2)
                                     + Math.Pow((double)(curr.z - dest.z), 2)), 2);
                     }
                 }
-                else if (values.Count == 6 && value.Type == Cottle.ValueContent.Number)
+                else if (values.Count == 6 && value_0.Type == Cottle.ValueContent.Number && value_1.Type == Cottle.ValueContent.Number)
                 {
                     result = (decimal)Math.Round(Math.Sqrt(Math.Pow((double)(values[0].AsNumber - values[3].AsNumber), 2)
                                 + Math.Pow((double)(values[1].AsNumber - values[4].AsNumber), 2)

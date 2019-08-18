@@ -692,10 +692,10 @@ namespace Eddi
 
                 if (squadronFaction != Power.None.localizedName)
                 {
-                    StarSystem system = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(eddiConfiguration.SquadronSystem, true);
-                    Faction faction = system.factions.Find(f => f.name == squadronFaction);
+                    StarSystem system = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystem(eddiConfiguration.SquadronSystem, true);
+                    Faction faction = system?.factions.Find(f => f.name == squadronFaction);
 
-                    if (eddiConfiguration.SquadronAllegiance != faction.Allegiance)
+                    if (faction != null && eddiConfiguration.SquadronAllegiance != faction.Allegiance)
                     {
                         eddiConfiguration.SquadronAllegiance = faction.Allegiance;
                         eddiConfiguration.ToFile();
@@ -759,7 +759,7 @@ namespace Eddi
 
             if (configuration.SquadronSystem != null)
             {
-                StarSystem system = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(configuration.SquadronSystem, false);
+                StarSystem system = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystem(configuration.SquadronSystem, false);
                 if (system?.factions != null)
                 {
                     foreach (Faction faction in system.factions)

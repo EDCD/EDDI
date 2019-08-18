@@ -16,6 +16,11 @@ Information on game state is available at the top level i.e. these values can be
     - `horizons` true when the game version is 'Horizons'
     - `vehicle` the vehicle that is under the commander's control.  Can be one of "Ship", "SRV" or "Fighter"
 
+## EDDI states
+
+    - `capi_active` true when the companion API is active
+    - `va_active` true when the Voice Attack plug-in is active
+
 ---
 
 ## Commander

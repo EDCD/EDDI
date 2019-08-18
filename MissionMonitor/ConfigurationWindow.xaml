@@ -17,10 +17,10 @@
             <TextBox x:Name="missionWarningInt" Grid.Row="4" Grid.Column="0" Margin="0,10" PreviewTextInput="EnsureValidInteger" TextChanged="warningChanged" TextAlignment="Center" VerticalContentAlignment="Center" Height="25" Width="40"/>
         </StackPanel>
         <UniformGrid DockPanel.Dock="Bottom" Rows="1" Columns="4" Margin="0,5">
-            <Button Margin="10" HorizontalAlignment="Center" Click="getRoute" Content="{x:Static resx:MissionMonitor.get_route_button}" />
-            <Button Margin="10" HorizontalAlignment="Center" Click="nextInRoute" Content="{x:Static resx:MissionMonitor.next_route_button}" />
-            <Button Margin="10" HorizontalAlignment="Center" Click="updateRoute" Content="{x:Static resx:MissionMonitor.update_route_button}" />
-            <Button Margin="10" HorizontalAlignment="Center" Click="clearRoute" Content="{x:Static resx:MissionMonitor.clear_route_button}" />
+            <Button HorizontalAlignment="Center" Click="getRoute" Content="{x:Static resx:MissionMonitor.get_route_button}" />
+            <Button HorizontalAlignment="Center" Click="nextInRoute" Content="{x:Static resx:MissionMonitor.next_route_button}" />
+            <Button HorizontalAlignment="Center" Click="updateRoute" Content="{x:Static resx:MissionMonitor.update_route_button}" />
+            <Button HorizontalAlignment="Center" Click="clearRoute" Content="{x:Static resx:MissionMonitor.clear_route_button}" />
         </UniformGrid>
         <Grid DockPanel.Dock="Bottom" Margin="5">
             <Grid.ColumnDefinitions>

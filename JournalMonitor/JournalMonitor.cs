@@ -1129,19 +1129,22 @@ namespace EddiJournalMonitor
                                         }
 
                                         string[] systemNames = storedModules.Where(s => !string.IsNullOrEmpty(s.system)).Select(s => s.system).Distinct().ToArray();
-                                        List<StarSystem> systemsData = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystems(systemNames);
-                                        List<StoredModule> storedModulesHolder = new List<StoredModule>();
-                                        foreach (StoredModule storedModule in storedModules)
+                                        List<StarSystem> systemsData = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystems(systemNames);
+                                        if (systemsData?.Any() ?? false)
                                         {
-                                            if (!storedModule.intransit)
+                                            List<StoredModule> storedModulesHolder = new List<StoredModule>();
+                                            foreach (StoredModule storedModule in storedModules)
                                             {
-                                                StarSystem systemData = systemsData.FirstOrDefault(s => s.systemname == storedModule.system);
-                                                Station stationData = systemData?.stations?.FirstOrDefault(s => s.marketId == storedModule.marketid);
-                                                storedModule.station = stationData?.name;
+                                                if (!storedModule.intransit)
+                                                {
+                                                    StarSystem systemData = systemsData.FirstOrDefault(s => s.systemname == storedModule.system);
+                                                    Station stationData = systemData?.stations?.FirstOrDefault(s => s.marketId == storedModule.marketid);
+                                                    storedModule.station = stationData?.name;
+                                                }
+                                                storedModulesHolder.Add(storedModule);
                                             }
-                                            storedModulesHolder.Add(storedModule);
+                                            storedModules = storedModulesHolder;
                                         }
-                                        storedModules = storedModulesHolder;
                                     }
                                     events.Add(new StoredModulesEvent(timestamp, marketId, station, system, storedModules) { raw = line, fromLoad = fromLogLoad });
                                 }

@@ -46,8 +46,8 @@
             <TextBlock Grid.Row="1" Grid.Column="1" TextWrapping="Wrap" Margin="2" Text="{x:Static resx:CrimeMonitor.remove_button_desc}" />
         </Grid>
         <UniformGrid DockPanel.Dock="Bottom" Rows="1" Columns="2" Margin="0,5">
-            <Button Margin="5" HorizontalAlignment="Center" Click="addRecord" Content="{x:Static resx:CrimeMonitor.add_button}" />
-            <Button Margin="5" HorizontalAlignment="Center" Click="findIFRoute" Content="{x:Static resx:CrimeMonitor.find_button}" />
+            <Button HorizontalAlignment="Center" Click="addRecord" Content="{x:Static resx:CrimeMonitor.add_button}" />
+            <Button HorizontalAlignment="Center" Click="findIFRoute" Content="{x:Static resx:CrimeMonitor.find_button}" />
         </UniformGrid>
         <Grid DockPanel.Dock="Bottom" Margin="5">
             <Grid.ColumnDefinitions>
