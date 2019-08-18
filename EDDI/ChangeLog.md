@@ -2,9 +2,14 @@
 
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
-### Development
+### 3.4.2-rc1
+  * Core
+	* Fixed issues around navigation routing, including the `Jumped` script not updating correctly.
+  * Material monitor
+    * Added `Set` and `Clear` destination buttons.
   * Speech responder
     * Fixed a bug with speech queues that could in some circumstances cause EDDI to crash in the middle of combat.
+	* Revised `Route details` script.
 
 ### 3.4.2-b1
   * Core
