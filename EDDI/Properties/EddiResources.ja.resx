@@ -148,7 +148,9 @@
   <data name="login_nok_frontier_service" xml:space="preserve">
     <value>ログインに失敗しました。これは、普通はFrontierのサーバに問題があります。後ほど、もう一度お試しください。</value>
   </data>
-  
+  <data name="logout" xml:space="preserve">
+    <value>ログアウト</value>
+  </data>
   <data name="operational" xml:space="preserve">
     <value>稼働中</value>
   </data>
@@ -220,7 +222,9 @@
   <data name="safe_mode" xml:space="preserve">
     <value>セーフモード - 更新が必要です。</value>
   </data>
-  
+  <data name="login" xml:space="preserve">
+    <value>ログイン</value>
+  </data>
   <data name="frontier_api_cant_login_from_va" xml:space="preserve">
     <value>ログインするために、Voice Attackを終了してから、EDDIを起動してください。</value>
   </data>
@@ -245,6 +249,12 @@
   <data name="frontier_api_please_authenticate" xml:space="preserve">
     <value>Frontier APIで、EDDIの接続を認証してください。</value>
   </data>
-  
-  
+  <data name="frontierApiNotEnabled" xml:space="preserve">
+    <value>有効になっていません。</value>
+    <comment>Displayed when the Frontier API is not enabled because the current build has no OAuth ClientID configured.</comment>
+  </data>
+  <data name="frontier_api_not_enabled" xml:space="preserve">
+    <value>Frontier API 接続が有効になっていません。</value>
+    <comment>Displayed when the Frontier API is not enabled because the current build has no OAuth ClientID configured.</comment>
+  </data>
 </root>
