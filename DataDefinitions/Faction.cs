@@ -48,7 +48,7 @@ namespace EddiDataDefinitions
         public bool? isplayer { get; set; }
 
         /// <summary> The last time the information present changed </summary> 
-        public long? updatedat => Dates.fromDateTimeStringToSeconds(updatedAt.ToString());
+        public long? updatedat => Dates.fromDateTimeToSeconds(updatedAt);
         public DateTime updatedAt { get; set; }
     }
 
@@ -95,7 +95,7 @@ namespace EddiDataDefinitions
         public string happiness => (Happiness ?? Happiness.None).localizedName;
 
         /// <summary> The last time the information present changed </summary> 
-        public long? updatedat => Dates.fromDateTimeStringToSeconds(updatedAt.ToString());
+        public long? updatedat => Dates.fromDateTimeToSeconds(updatedAt);
         public DateTime updatedAt { get; set; }
 
         // Pilot and squadron data
