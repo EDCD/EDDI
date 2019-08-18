@@ -370,7 +370,6 @@ namespace EDDNResponder
         {
             if (EDDI.Instance.CurrentStation != null && EDDI.Instance.CurrentStation.commodities != null && EDDI.Instance.CurrentStation.commodities.Count > 0)
             {
-                List<EDDNEconomy> eddnEconomies = prepareEconomyInformation();
                 List<EDDNCommodity> eddnCommodities = prepareCommodityInformation();
 
                 // Only send the message if we have commodities
@@ -384,10 +383,6 @@ namespace EDDNResponder
                         { "marketId", marketId },
                         { "horizons", EDDI.Instance.inHorizons}
                     };
-                    if (eddnEconomies.Count > 0)
-                    {
-                        data.Add("economies", eddnEconomies);
-                    }
                     data.Add("commodities", eddnCommodities);
                     if (EDDI.Instance.CurrentStation.prohibited?.Count > 0 && EDDI.Instance.CurrentStation.name == stationName)
                     {
@@ -397,21 +392,6 @@ namespace EDDNResponder
                     SendToEDDN("https://eddn.edcd.io/schemas/commodity/3", data);
                 }
             }
-        }
-
-        private static List<EDDNEconomy> prepareEconomyInformation()
-        {
-            List<EDDNEconomy> eddnEconomies = new List<EDDNEconomy>();
-            if (EDDI.Instance.CurrentStation.economyShares != null)
-            {
-                foreach (EconomyShare economy in EDDI.Instance.CurrentStation.economyShares)
-                {
-                    EDDNEconomy eddnEconomy = new EDDNEconomy(economy);
-                    eddnEconomies.Add(eddnEconomy);
-                }
-            }
-
-            return eddnEconomies;
         }
 
         private static List<EDDNCommodity> prepareCommodityInformation()
