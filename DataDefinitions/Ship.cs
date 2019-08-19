@@ -353,11 +353,11 @@ namespace EddiDataDefinitions
         {
             string model = (defaultname ?? SpokenModel()) ?? "ship";
             string result = ("your " + model);
-            if (!string.IsNullOrEmpty(phoneticname))
+            if (!string.IsNullOrWhiteSpace(phoneticname))
             {
                 result = "<phoneme alphabet=\"ipa\" ph=\"" + phoneticname + "\">" + name + "</phoneme>";
             }
-            else if (!string.IsNullOrEmpty(name))
+            else if (!string.IsNullOrWhiteSpace(name))
             {
                 result = name;
             }
