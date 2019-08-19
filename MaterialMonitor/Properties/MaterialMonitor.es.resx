@@ -117,7 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
+  <data name="cancel_dest_button" xml:space="preserve">
+    <value>Cancelar destino</value>
+  </data>
   <data name="desc" xml:space="preserve">
     <value>Recoge la cantidad de sus materiales y genera eventos cuando se alcanzan los límites</value>
   </data>
@@ -163,7 +165,9 @@
   <data name="p3" xml:space="preserve">
     <value>Sugerencia: Maximiza la distancia permitida de la estación para minimizar los tiempos de búsqueda.</value>
   </data>
-  
+  <data name="set_dest_button" xml:space="preserve">
+    <value>Elegir destino</value>
+  </data>
   <data name="tab_station_distance" xml:space="preserve">
     <value>Distancia máxima de la estación desde la estrella principal (sL):</value>
   </data>

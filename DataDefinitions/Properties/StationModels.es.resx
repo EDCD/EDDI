@@ -165,5 +165,8 @@
     <value>Puerto espacial científico</value>
     <comment>A Scientific Outpost (currently, Talos 1 &amp; Talos 2 in Peregrina)</comment>
   </data>
-  
+  <data name="Ocellus" xml:space="preserve">
+    <value>Puerto Espacial Ocellus</value>
+    <comment>An Ocellus Starport</comment>
+  </data>
 </root>
