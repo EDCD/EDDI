@@ -201,7 +201,9 @@
   <data name="SensorLongRange" xml:space="preserve">
     <value>Sensores de largo alcance</value>
   </data>
-  
+  <data name="SensorWideAngle" xml:space="preserve">
+    <value>Escáner de ángulo amplio</value>
+  </data>
   <data name="ShieldBoosterExplosive" xml:space="preserve">
     <value>Potenciador de escudos resistencia explosiva</value>
   </data>
@@ -274,14 +276,19 @@
   <data name="WakeScannerLightWeight" xml:space="preserve">
     <value>Escáner de estelas de salto ligero</value>
   </data>
-  
+  <data name="WakeScannerLongRange" xml:space="preserve">
+    <value>Escáner de largo alcance
+</value>
+  </data>
   <data name="WakeScannerReinforced" xml:space="preserve">
     <value>Escáner de estelas de salto reforzado</value>
   </data>
   <data name="WakeScannerShielded" xml:space="preserve">
     <value>Escáner de estelas de salto blindado</value>
   </data>
-  
+  <data name="WakeScannerWideAngle" xml:space="preserve">
+    <value>Escáner de ángulo amplio</value>
+  </data>
   <data name="AFMShielded" xml:space="preserve">
     <value>Unidad de automantenimiento blindada</value>
   </data>
@@ -354,7 +361,9 @@
   <data name="KillWarrantScannerLightWeight" xml:space="preserve">
     <value>Escáner de registro criminal ligero</value>
   </data>
-  
+  <data name="KillWarrantScannerLongRange" xml:space="preserve">
+    <value>Escáner de largo alcance</value>
+  </data>
   <data name="KillWarrantScannerReinforced" xml:space="preserve">
     <value>Escáner de registro criminal reforzado</value>
   </data>
@@ -394,8 +403,12 @@
   <data name="CargoScannerFastScan" xml:space="preserve">
     <value>Escáner de manifiesto rápido</value>
   </data>
-  
-  
+  <data name="CargoScannerLongRange" xml:space="preserve">
+    <value>Escáner de largo alcance</value>
+  </data>
+  <data name="CargoScannerWideAngle" xml:space="preserve">
+    <value>Escáner de ángulo amplio</value>
+  </data>
   <data name="ECMLightWeight" xml:space="preserve">
     <value>Contramedidas electronicas Ligero</value>
   </data>
@@ -405,7 +418,9 @@
   <data name="KillWarrantScannerFastScan" xml:space="preserve">
     <value>Escáner Detector de Recompensas</value>
   </data>
-  
+  <data name="KillWarrantScannerWideAngle" xml:space="preserve">
+    <value>Escáner de largo alcance</value>
+  </data>
   <data name="PAOvercharged" xml:space="preserve">
     <value>Acelerador de Plasma sobrecargado</value>
   </data>
