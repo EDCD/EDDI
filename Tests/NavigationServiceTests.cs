@@ -1,9 +1,10 @@
 ﻿using EddiDataDefinitions;
 using EddiNavigationService;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using UnitTests;
 
 
-namespace UnitTests
+namespace IntegrationTests
 {
     [TestClass]
     public class NavigationServiceTests : TestBase
@@ -53,9 +54,9 @@ namespace UnitTests
             string system = (string)navInstance.GetFieldOrProperty("searchSystem");
             string station = (string)navInstance.GetFieldOrProperty("searchStation");
             decimal distance = (decimal)navInstance.GetFieldOrProperty("searchDistance");
-            Assert.AreEqual("Alpha Centauri", system);
-            Assert.AreEqual("al-Din Prospect", station);
-            Assert.AreEqual(4.38M, distance);
+            Assert.AreEqual("WISE 0855-0714", system);
+            Assert.AreEqual("Yamazaki Landing", station);
+            Assert.AreEqual(7.17M, distance);
 
             // Manufactured Materials Trader
             Navigation.Instance.GetServiceRoute("manufactured", 10000);
