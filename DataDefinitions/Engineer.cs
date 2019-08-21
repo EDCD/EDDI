@@ -53,6 +53,7 @@ namespace EddiDataDefinitions
         public static readonly Engineer TianaFortune = new Engineer(300270, "Tiana Fortune");
         public static readonly Engineer MelBrandon = new Engineer(300280, "Mel Brandon");
         public static readonly Engineer EtienneDorn = new Engineer(300290, "Etienne Dorn");
+        public static readonly Engineer ChloeSedesi = new Engineer(300300, "Chloe Sedesi");
 
         public static Engineer FromName(string from)
         {
