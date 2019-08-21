@@ -117,7 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
+  <data name="cancel_dest_button" xml:space="preserve">
+    <value>Úti cél törlése</value>
+  </data>
   <data name="desc" xml:space="preserve">
     <value>Az anyagok mennyiségének figyelése és esemény generálása amennyiben az az előre beállított értéket elérte.</value>
   </data>
@@ -151,7 +153,9 @@
     <value>Megjegyzés: Ha a leltár nem helyes vagy inkorrekt. Indítsd el vagy indítsd újra az Elitet, és ezek az információk frissítve lesznek.</value>
   </data>
   
-  
+  <data name="set_dest_button" xml:space="preserve">
+    <value>Úti cél megadása</value>
+  </data>
   
   <data name="type_header" xml:space="preserve">
     <value>Típus</value>
