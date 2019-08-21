@@ -961,13 +961,17 @@ namespace Eddi
 
         private bool eventPowerplay(PowerplayEvent @event)
         {
-            Cmdr.Power = @event.Power;
-            Cmdr.powerrating = @event.rank;
-            if (!@event.fromLoad)
+            if (!@event.fromLoad && (Cmdr.Power != @event.Power || Cmdr.powerrating != @event.rank || Cmdr.powermerits != @event.merits))
             {
+                Cmdr.Power = @event.Power;
+                Cmdr.powerrating = @event.rank;
                 Cmdr.powermerits = @event.merits;
+                return true;
             }
-            return true;
+            else
+            {
+                return false;
+            }
         }
 
         private bool eventSystemScanComplete(SystemScanComplete @event)
