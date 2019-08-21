@@ -1190,7 +1190,7 @@
     <comment>Commodity TarachTorSpice</comment>
   </data>
   <data name="TauriChimes" xml:space="preserve">
-    <value>Campane del Toro</value>
+    <value>Campane di Tauri</value>
     <comment>Commodity TauriChimes</comment>
   </data>
   <data name="Tea" xml:space="preserve">
@@ -1586,7 +1586,7 @@
     <comment>Commodity ThargoidScoutTissueSample</comment>
   </data>
   <data name="UnmarkedWeapons" xml:space="preserve">
-    <value>Forniture Military non marchiate</value>
+    <value>Forniture Militari non registrate</value>
     <comment>Commodity UnmarkedWeapons</comment>
   </data>
   <data name="UtopianDissident" xml:space="preserve">
