@@ -3445,6 +3445,7 @@ namespace EddiJournalMonitor
                             case "WingInvite":
                             case "WingJoin":
                             case "WingLeave":
+                            case "SharedBookmarkToSquadron":
                                 // we silently ignore these, but forward them to the responders
                                 break;
                             default:
