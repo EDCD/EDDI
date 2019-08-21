@@ -3648,15 +3648,7 @@ namespace EddiJournalMonitor
                                     int merits = JsonParsing.getInt(data, "Merits");
                                     int votes = JsonParsing.getInt(data, "Votes");
                                     TimeSpan timePledged = TimeSpan.FromSeconds(JsonParsing.getLong(data, "TimePledged"));
-
-                                    // Per the journal, this is written at startup. In actuallity, it can also be written whenever switching FSD states
-                                    // and needs to be filtered to prevent redundant outputs.
-                                    bool firstUpdate = false;
-                                    if (EDDI.Instance.Cmdr.powermerits is null && !fromLogLoad)
-                                    {
-                                        firstUpdate = true;
-                                    }
-                                    events.Add(new PowerplayEvent(timestamp, power, rank, merits, votes, timePledged, firstUpdate) { raw = line, fromLoad = fromLogLoad });
+                                    events.Add(new PowerplayEvent(timestamp, power, rank, merits, votes, timePledged) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
@@ -4254,6 +4246,7 @@ namespace EddiJournalMonitor
             "MaterialDiscovered",
             "Music",
             "NpcCrewRank",
+            "Powerplay",
             "ReceiveText",
             "Scanned",
             "SendText",

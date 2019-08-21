@@ -19,7 +19,6 @@ namespace EddiEvents
             VARIABLES.Add("merits", "Your merits with the power");
             VARIABLES.Add("timepledgeddays", "The amount of time that you've been pledged, in days");
             VARIABLES.Add("timepledgedweeks", "The amount of time that you've been pledged, in weeks");
-            VARIABLES.Add("firstupdate", "Whether this is the first powerplay update logged in the current play session");
         }
 
         public string power => Power?.localizedName;
@@ -28,20 +27,18 @@ namespace EddiEvents
         public int votes { get; private set; }
         public int timepledgeddays => (int)Math.Floor(timePledged.TotalDays);
         public decimal timepledgedweeks => (decimal)Math.Round((double)timepledgeddays / 7, 1);
-        public bool firstupdate { get; private set; }
 
         // Not intended to be user facing
         public Power Power { get; private set; }
         public TimeSpan timePledged { get; private set; }
 
-        public PowerplayEvent(DateTime timestamp, Power Power, int rank, int merits, int votes, TimeSpan timePledged, bool firstUpdate) : base(timestamp, NAME)
+        public PowerplayEvent(DateTime timestamp, Power Power, int rank, int merits, int votes, TimeSpan timePledged) : base(timestamp, NAME)
         {
             this.Power = Power;
             this.rank = rank;
             this.merits = merits;
             this.votes = votes;
             this.timePledged = timePledged;
-            this.firstupdate = firstUpdate;
         }
     }
 }
