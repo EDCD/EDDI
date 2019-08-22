@@ -30,13 +30,11 @@ namespace EddiSpeechResponder
                 markdown = "";
             }
 
-            string description;
-            if (Events.DESCRIPTIONS.TryGetValue(scriptName, out description))
+            if (Events.DESCRIPTIONS.TryGetValue(scriptName, out string description))
             {
                 // The user is editing an event, add event-specific information
                 markdown += "\n\n## " + scriptName + " event\n\n" + description + ".\n\n";
-                IDictionary<string, string> variables;
-                if (Events.VARIABLES.TryGetValue(scriptName, out variables))
+                if (Events.VARIABLES.TryGetValue(scriptName, out IDictionary<string, string> variables))
                 {
                     if (variables.Count == 0)
                     {

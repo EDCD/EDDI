@@ -12,8 +12,7 @@ namespace Utilities
 
         public static decimal getDecimal(IDictionary<string, object> data, string key)
         {
-            object val;
-            data.TryGetValue(key, out val);
+            data.TryGetValue(key, out object val);
             return getDecimal(key, val);
         }
 
@@ -36,8 +35,7 @@ namespace Utilities
 
         public static decimal? getOptionalDecimal(IDictionary<string, object> data, string key)
         {
-            object val;
-            data.TryGetValue(key, out val);
+            data.TryGetValue(key, out object val);
             return getOptionalDecimal(key, val);
         }
 
@@ -60,8 +58,7 @@ namespace Utilities
 
         public static int getInt(IDictionary<string, object> data, string key)
         {
-            object val;
-            data.TryGetValue(key, out val);
+            data.TryGetValue(key, out object val);
             return getInt(key, val);
         }
 
@@ -80,8 +77,7 @@ namespace Utilities
 
         public static int? getOptionalInt(IDictionary<string, object> data, string key)
         {
-            object val;
-            data.TryGetValue(key, out val);
+            data.TryGetValue(key, out object val);
             return getOptionalInt(key, val);
         }
 
@@ -104,8 +100,7 @@ namespace Utilities
 
         public static long getLong(IDictionary<string, object> data, string key)
         {
-            object val;
-            data.TryGetValue(key, out val);
+            data.TryGetValue(key, out object val);
             return getLong(key, val);
         }
 
@@ -120,8 +115,7 @@ namespace Utilities
 
         public static long? getOptionalLong(IDictionary<string, object> data, string key)
         {
-            object val;
-            data.TryGetValue(key, out val);
+            data.TryGetValue(key, out object val);
             if (val == null)
             {
                 return null;
@@ -136,8 +130,7 @@ namespace Utilities
 
         public static bool getBool(IDictionary<string, object> data, string key)
         {
-            object val;
-            data.TryGetValue(key, out val);
+            data.TryGetValue(key, out object val);
             return getBool(key, val);
         }
 
@@ -152,8 +145,7 @@ namespace Utilities
 
         public static bool? getOptionalBool(IDictionary<string, object> data, string key)
         {
-            object val;
-            if (data.TryGetValue(key, out val))
+            if (data.TryGetValue(key, out object val))
             {
                 return val as bool?;
             }
@@ -165,8 +157,7 @@ namespace Utilities
 
         public static string getString(IDictionary<string, object> data, string key)
         {
-            object val;
-            data.TryGetValue(key, out val);
+            data.TryGetValue(key, out object val);
             return (string)val;
         }
 

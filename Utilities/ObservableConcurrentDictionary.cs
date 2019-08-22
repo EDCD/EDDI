@@ -108,7 +108,7 @@ namespace Utilities
 
         void ICollection<KeyValuePair<TKey, TValue>>.Clear()
         {
-            ((ICollection<KeyValuePair<TKey, TValue>>)_dictionary).Clear();
+            _dictionary.Clear();
             NotifyObserversOfChange();
         }
 
@@ -124,7 +124,7 @@ namespace Utilities
 
         int ICollection<KeyValuePair<TKey, TValue>>.Count
         {
-            get { return ((ICollection<KeyValuePair<TKey, TValue>>)_dictionary).Count; }
+            get { return _dictionary.Count; }
         }
 
         bool ICollection<KeyValuePair<TKey, TValue>>.IsReadOnly
@@ -134,20 +134,19 @@ namespace Utilities
 
         bool ICollection<KeyValuePair<TKey, TValue>>.Remove(KeyValuePair<TKey, TValue> item)
         {
-            TValue temp;
-            return TryRemoveWithNotification(item.Key, out temp);
+            return TryRemoveWithNotification(item.Key, out TValue temp);
         }
         #endregion
 
         #region IEnumerable<KeyValuePair<TKey,TValue>> Members
         IEnumerator<KeyValuePair<TKey, TValue>> IEnumerable<KeyValuePair<TKey, TValue>>.GetEnumerator()
         {
-            return ((ICollection<KeyValuePair<TKey, TValue>>)_dictionary).GetEnumerator();
+            return _dictionary.GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return ((ICollection<KeyValuePair<TKey, TValue>>)_dictionary).GetEnumerator();
+            return _dictionary.GetEnumerator();
         }
         #endregion
 
@@ -169,8 +168,7 @@ namespace Utilities
 
         public bool Remove(TKey key)
         {
-            TValue temp;
-            return TryRemoveWithNotification(key, out temp);
+            return TryRemoveWithNotification(key, out TValue temp);
         }
 
         public bool TryGetValue(TKey key, out TValue value)

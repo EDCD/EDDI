@@ -111,9 +111,9 @@ namespace UnitTests
 
             Assert.AreEqual("Sol", starSystem.systemname);
             Assert.AreEqual(17072, starSystem.EDDBID);
-            Assert.AreEqual((decimal)0, starSystem.x);
-            Assert.AreEqual((decimal)0, starSystem.y);
-            Assert.AreEqual((decimal)0, starSystem.z);
+            Assert.AreEqual(0M, starSystem.x);
+            Assert.AreEqual(0M, starSystem.y);
+            Assert.AreEqual(0M, starSystem.z);
             Assert.IsNotNull(starSystem.population);
             Assert.IsNotNull(starSystem.Faction);
             Assert.IsNotNull(starSystem.Faction.Allegiance.invariantName);

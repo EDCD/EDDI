@@ -302,7 +302,7 @@ namespace EddiShipMonitor
                     setShipIdent(ship, @event.shipident);
                     if (@event.fuelcapacity.HasValue)
                     {
-                        ship.fueltanktotalcapacity = (decimal?)@event.fuelcapacity;
+                        ship.fueltanktotalcapacity = @event.fuelcapacity;
                     }
                     if (!@event.fromLoad) { writeShips(); }
                 }

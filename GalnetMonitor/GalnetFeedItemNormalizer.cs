@@ -34,8 +34,7 @@ namespace GalnetMonitor
             var alternatelink = item.Links.FirstOrDefault(l => l.RelationshipType == null || l.RelationshipType.Equals("alternate", StringComparison.OrdinalIgnoreCase));
 
             Uri itemuri = null;
-            Uri parsed;
-            if (alternatelink == null && !Uri.TryCreate(item.Id, UriKind.Absolute, out parsed))
+            if (alternatelink == null && !Uri.TryCreate(item.Id, UriKind.Absolute, out Uri parsed))
             {
                 itemuri = parsed;
             }

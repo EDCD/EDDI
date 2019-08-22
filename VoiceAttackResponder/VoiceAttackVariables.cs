@@ -697,7 +697,7 @@ namespace EddiVoiceAttackResponder
             vaProxy.SetDecimal(name + " value", module?.value);
             if (module != null && module.price < module.value)
             {
-                decimal discount = Math.Round((1 - (((decimal)module.price) / ((decimal)module.value))) * 100, 1);
+                decimal discount = Math.Round((1 - (module.price / ((decimal)module.value))) * 100, 1);
                 vaProxy.SetDecimal(name + " discount", discount > 0.01M ? discount : (decimal?)null);
             }
             else
@@ -787,7 +787,7 @@ namespace EddiVoiceAttackResponder
                 vaProxy.SetDecimal(prefix + " Z", system?.z);
                 vaProxy.SetInt(prefix + " visits", system?.visits);
                 vaProxy.SetDate(prefix + " previous visit", system?.visits > 1 ? system.lastvisit : null);
-                vaProxy.SetDecimal(prefix + " minutes since previous visit", system?.visits > 1 && system?.lastvisit.HasValue == true ? (decimal)(long)(DateTime.UtcNow - system.lastvisit.Value).TotalMinutes : (decimal?)null);
+                vaProxy.SetDecimal(prefix + " minutes since previous visit", system?.visits > 1 && system?.lastvisit.HasValue == true ? (long)(DateTime.UtcNow - system.lastvisit.Value).TotalMinutes : (decimal?)null);
                 vaProxy.SetText(prefix + " comment", system?.comment);
                 vaProxy.SetDecimal(prefix + " distance from home", system?.distancefromhome);
 

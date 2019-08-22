@@ -213,7 +213,7 @@ namespace EddiDataProviderService
                     string name = kv.Key;
 
                     // Old versions of the data could have a string "No volcanism" for volcanism.  If so we remove it
-                    string data = ((string)kv.Value)?.Replace(@"""No volcanism""", "null");
+                    string data = kv.Value?.Replace(@"""No volcanism""", "null");
 
                     // Determine whether our data is stale (We won't deserialize the the entire system if it's stale) 
                     IDictionary<string, object> system = Deserializtion.DeserializeData(data);

@@ -125,8 +125,8 @@ namespace UnitTests
             Status status = ((StatusMonitor)EDDI.Instance.ObtainMonitor("Status monitor")).ParseStatusEntry(line);
 
             // Variables set from status flags (when not signed in, flags are set to '0')
-            Assert.AreEqual(status.flags, (Status.Flags)16777240);
-            Assert.AreEqual(status.vehicle, "Ship");
+            Assert.AreEqual((Status.Flags)16777240, status.flags);
+            Assert.AreEqual("Ship", status.vehicle);
             Assert.AreEqual(26.589718M, status.fuelInTanks);
             Assert.AreEqual(0.484983M, status.fuelInReservoir);
             Assert.AreEqual(26.589718M + 0.484983M, status.fuel);
@@ -141,9 +141,9 @@ namespace UnitTests
             string line = "{ \"timestamp\":\"2018-03-25T00:39:48Z\", \"event\":\"Status\", \"Flags\":16842765, \"Pips\":[5,2,5], \"FireGroup\":0, \"GuiFocus\":0 }";
             Status status = ((StatusMonitor)EDDI.Instance.ObtainMonitor("Status monitor")).ParseStatusEntry(line);
 
-            Assert.AreEqual(status.pips_sys, (decimal)2.5);
-            Assert.AreEqual(status.pips_eng, (decimal)1);
-            Assert.AreEqual(status.pips_wea, (decimal)2.5);
+            Assert.AreEqual(2.5M, status.pips_sys);
+            Assert.AreEqual(1M, status.pips_eng);
+            Assert.AreEqual(2.5M, status.pips_wea);
         }
 
         [TestMethod]
@@ -152,7 +152,7 @@ namespace UnitTests
             string line = "{ \"timestamp\":\"2018-03-25T00:39:48Z\", \"event\":\"Status\", \"Flags\":16842765, \"Pips\":[5,2,5], \"FireGroup\":1, \"GuiFocus\":0 }";
             Status status = ((StatusMonitor)EDDI.Instance.ObtainMonitor("Status monitor")).ParseStatusEntry(line);
 
-            Assert.AreEqual(status.firegroup, 1);
+            Assert.AreEqual(1, status.firegroup);
         }
 
         [TestMethod]
@@ -161,7 +161,7 @@ namespace UnitTests
             string line = "{ \"timestamp\":\"2018-03-25T00:39:48Z\", \"event\":\"Status\", \"Flags\":16842765, \"Pips\":[5,2,5], \"FireGroup\":1, \"GuiFocus\":5 }";
             Status status = ((StatusMonitor)EDDI.Instance.ObtainMonitor("Status monitor")).ParseStatusEntry(line);
 
-            Assert.AreEqual(status.gui_focus, "station services");
+            Assert.AreEqual("station services", status.gui_focus);
         }
 
         [TestMethod]
@@ -182,10 +182,10 @@ namespace UnitTests
             string line = "{ \"timestamp\":\"2018-03-25T00:39:48Z\", \"event\":\"Status\", \"Flags\":69255432, \"Pips\":[2,8,2], \"FireGroup\":0, \"GuiFocus\":0, \"Latitude\":-5.683115, \"Longitude\":-10.957623, \"Heading\":249, \"Altitude\":0}";
             Status status = ((StatusMonitor)EDDI.Instance.ObtainMonitor("Status monitor")).ParseStatusEntry(line);
 
-            Assert.AreEqual(status.latitude, (decimal)-5.683115);
-            Assert.AreEqual(status.longitude, (decimal)-10.957623);
-            Assert.AreEqual(status.altitude, (decimal)0);
-            Assert.AreEqual(status.heading, (decimal)249);
+            Assert.AreEqual(-5.683115M, status.latitude);
+            Assert.AreEqual(-10.957623M, status.longitude);
+            Assert.AreEqual(0M, status.altitude);
+            Assert.AreEqual(249M, status.heading);
         }
 
         [TestMethod]

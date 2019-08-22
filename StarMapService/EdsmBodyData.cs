@@ -77,7 +77,7 @@ namespace EddiStarMapService
             string bodyname = (string)body["name"];
             BodyType bodyType = BodyType.FromName((string)body["type"]) ?? BodyType.None;
             decimal? distanceLs = (decimal?)body["distanceToArrival"]; // Light Seconds
-            decimal? temperatureKelvin = (decimal?)(long?)body["surfaceTemperature"]; // Kelvin
+            decimal? temperatureKelvin = (long?)body["surfaceTemperature"]; // Kelvin
 
             // Orbital characteristics 
             decimal? orbitalPeriodDays = (decimal?)body["orbitalPeriod"]; // Days
