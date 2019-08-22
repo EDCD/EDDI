@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace EddiMissionMonitor
 {
-    public class MissionRedirectedEvent: Event
+    public class MissionRedirectedEvent : Event
     {
         public const string NAME = "Mission redirected";
         public const string DESCRIPTION = "Triggered when a mission is redirected";
@@ -18,7 +18,7 @@ namespace EddiMissionMonitor
             VARIABLES.Add("newdestinationstation", "The new destination station for the mission");
             VARIABLES.Add("olddestinationstation", "The old destination station for the mission");
             VARIABLES.Add("newdestinationsystem", "The new destination system for the mission");
-            VARIABLES.Add("olddestinationsystem", "The old destination system for the mission");            
+            VARIABLES.Add("olddestinationsystem", "The old destination system for the mission");
         }
 
         public long? missionid { get; private set; }

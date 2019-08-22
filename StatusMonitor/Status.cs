@@ -46,7 +46,7 @@ namespace EddiDataDefinitions
         }
 
         // Variables set from status flags (when not signed in, this is set to '0')
-        public string vehicle => 
+        public string vehicle =>
                 ((flags & Flags.InSRV) != 0) ? Constants.VEHICLE_SRV
                 : ((flags & Flags.InFighter) != 0) ? Constants.VEHICLE_FIGHTER
                 : ((flags & Flags.InMainShip) != 0) ? Constants.VEHICLE_SHIP

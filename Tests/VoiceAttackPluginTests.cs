@@ -29,7 +29,7 @@ namespace UnitTests
             Dictionary<string, bool?> booleanValues = new Dictionary<string, bool?>();
             Dictionary<string, DateTime?> dateTimeValues = new Dictionary<string, DateTime?>();
             Dictionary<string, object> extendedValues = new Dictionary<string, object>();
-//            VoiceAttackPlugin.VA_Init1(ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
+            //            VoiceAttackPlugin.VA_Init1(ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
         }
 
         [TestMethod]

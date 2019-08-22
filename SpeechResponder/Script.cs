@@ -28,7 +28,7 @@ namespace EddiSpeechResponder
         public bool Enabled
         {
             get { return enabled; }
-            set { enabled = value;  OnPropertyChanged("Enabled"); }
+            set { enabled = value; OnPropertyChanged("Enabled"); }
         }
 
         [JsonIgnore]
@@ -69,7 +69,8 @@ namespace EddiSpeechResponder
         }
 
         [JsonIgnore]
-        public IList<int> Priorities {
+        public IList<int> Priorities
+        {
             get { return priorities; }
             set { if (priorities != value) { priorities = value; OnPropertyChanged("Priorities"); }; }
         }

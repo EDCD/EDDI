@@ -18,7 +18,7 @@ namespace EddiEvents
         }
 
         [JsonProperty("rating")]
-        public string rating{ get; private set; }
+        public string rating { get; private set; }
 
         public CombatPromotionEvent(DateTime timestamp, CombatRating rating) : base(timestamp, NAME)
         {

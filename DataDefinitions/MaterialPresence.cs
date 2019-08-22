@@ -25,13 +25,13 @@ namespace EddiDataDefinitions
         {
             this.definition = definition;
             this.material = definition?.localizedName;
-            this.rarity= definition?.rarity;
+            this.rarity = definition?.rarity;
             this.percentage = percentage;
         }
 
         [JsonConstructor]
         public MaterialPresence(string material, decimal percentage)
             : this(Material.FromName(material), percentage)
-        {}
+        { }
     }
 }

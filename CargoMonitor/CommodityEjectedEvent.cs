@@ -23,7 +23,7 @@ namespace EddiCargoMonitor
         }
 
         [JsonProperty("commodity")]
-        public string commodity => commodityDefinition?.localizedName ?? "unknown commodity"; 
+        public string commodity => commodityDefinition?.localizedName ?? "unknown commodity";
 
         [JsonProperty("amount")]
         public int amount { get; }

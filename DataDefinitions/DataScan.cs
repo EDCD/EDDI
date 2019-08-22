@@ -1,7 +1,3 @@
-using System.Collections.Generic;
-using System.Linq;
-using Utilities;
-
 namespace EddiDataDefinitions
 {
     /// <summary>
@@ -31,9 +27,9 @@ namespace EddiDataDefinitions
 
         // dummy used to ensure that the static constructor has run
         public DataScan() : this("")
-        {}
+        { }
 
         private DataScan(string edname) : base(edname, edname.Replace("$Datascan_", "").Replace(";", ""))
-        {}
+        { }
     }
 }

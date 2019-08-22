@@ -832,12 +832,12 @@ namespace EddiDataDefinitions
 
         // Not intended to be user facing
         public BlueprintTemplate blueprintTemplate { get; private set; }
-        
+
         // dummy used to ensure that the static constructor has run
         public Blueprint() : this(-1, "", "", -1)
         { }
 
-        private Blueprint(long? blueprintId, string edname, string templateEdName, int grade) : 
+        private Blueprint(long? blueprintId, string edname, string templateEdName, int grade) :
             base(edname, edname.Replace("Sensor_Sensor_", "Sensor_").Replace("_", "").Replace(" ", "").Replace("1", "").Replace("2", "").Replace("3", "").Replace("4", "").Replace("5", ""))
         {
             this.grade = grade;

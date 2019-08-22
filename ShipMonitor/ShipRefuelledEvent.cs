@@ -25,7 +25,7 @@ namespace EddiShipMonitor
 
         public long? price { get; private set; }
 
-        public decimal amount{ get; private set; }
+        public decimal amount { get; private set; }
 
         public decimal? total { get; private set; }
 

@@ -1,8 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Utilities;
-
-namespace EddiDataDefinitions
+﻿namespace EddiDataDefinitions
 {
     public class Rarity : ResourceBasedLocalizedEDName<Rarity>
     {
@@ -30,7 +26,7 @@ namespace EddiDataDefinitions
 
         // dummy used to ensure that the static constructor has run
         public Rarity() : this("", 0)
-        {}
+        { }
 
         private Rarity(string edname, int level) : base(edname, edname)
         {

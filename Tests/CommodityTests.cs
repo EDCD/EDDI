@@ -163,7 +163,7 @@ namespace UnitTests
                 CommodityMarketQuote commodity = JsonConvert.DeserializeObject<CommodityMarketQuote>(legacyCommodity);
                 Assert.Fail("Expected invalid commodity JSON to throw");
             }
-            catch 
+            catch
             {
                 // passed
             }

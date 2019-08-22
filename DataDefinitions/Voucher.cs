@@ -25,6 +25,6 @@ namespace EddiDataDefinitions
         { }
 
         private Voucher(string edname) : base(edname, edname)
-        {}
+        { }
     }
 }

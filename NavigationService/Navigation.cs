@@ -1,7 +1,7 @@
 ﻿using Eddi;
+using EddiCargoMonitor;
 using EddiDataDefinitions;
 using EddiDataProviderService;
-using EddiCargoMonitor;
 using EddiEvents;
 using EddiMissionMonitor;
 using EddiStarMapService;

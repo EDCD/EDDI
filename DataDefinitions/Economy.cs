@@ -33,9 +33,9 @@ namespace EddiDataDefinitions
 
         // dummy used to ensure that the static constructor has run
         public Economy() : this("")
-        {}
+        { }
 
         private Economy(string edname) : base(edname, edname.Replace("$economy_", "").Replace(";", ""))
-        {}
+        { }
     }
 }

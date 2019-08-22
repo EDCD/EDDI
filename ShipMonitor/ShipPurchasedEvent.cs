@@ -31,7 +31,7 @@ namespace EddiShipMonitor
         public long price { get; private set; }
 
         [JsonProperty("soldship")]
-        public string  soldship { get; private set; }
+        public string soldship { get; private set; }
 
         [JsonProperty("soldshipid")]
         public int? soldshipid { get; private set; }

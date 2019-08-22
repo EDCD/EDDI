@@ -31,10 +31,10 @@ namespace EddiDataDefinitions
 
         // dummy used to ensure that the static constructor has run
         public StationModel() : this("")
-        {}
+        { }
 
         private StationModel(string edname) : base(edname, edname.Replace(" Starport", ""))
-        {}
+        { }
 
         new public static StationModel FromName(string from)
         {
@@ -49,7 +49,7 @@ namespace EddiDataDefinitions
                 { "Coriolis Starport", "Coriolis" },
                 // Ocellus starports are described by the journal as either "Bernal" or "Ocellus"
                 { "Bernal Starport", "Bernal" },
-                { "Ocellus Starport", "Ocellus" }, 
+                { "Ocellus Starport", "Ocellus" },
                 { "Orbis Starport", "Orbis" },
                 // The journal doesn't provide details on the type of outpost (military, civilian, scientific, etc.)
                 // Types are likely derived from the station primary economy, but mixing these into the model name does not add value.

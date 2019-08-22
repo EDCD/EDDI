@@ -1210,7 +1210,7 @@ namespace EddiDataDefinitions
                 .Replace("_Name;", "") // Trailer for types from repair events
                 ;
         }
-        
+
         public static Module FromEDName(string rawEDName, object rawData = null)
         {
             if (rawEDName == null || rawEDName == "Null") { return null; }

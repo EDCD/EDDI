@@ -1,8 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Utilities;
-
-namespace EddiDataDefinitions
+﻿namespace EddiDataDefinitions
 {
     /// <summary>
     /// Crime types
@@ -50,9 +46,9 @@ namespace EddiDataDefinitions
 
         // dummy used to ensure that the static constructor has run
         public Crime() : this("")
-        {}
+        { }
 
         private Crime(string edname) : base(edname, edname)
-        {}
+        { }
     }
 }

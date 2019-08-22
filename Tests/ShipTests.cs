@@ -9,8 +9,8 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using Utilities;
 using Tests.Properties;
+using Utilities;
 
 namespace UnitTests
 {
@@ -85,7 +85,7 @@ namespace UnitTests
 
             ShipMonitor shipMonitor = new ShipMonitor();
             var privateObject = new PrivateObject(shipMonitor);
-            object[] args = new object[]{loadoutEvent};
+            object[] args = new object[] { loadoutEvent };
             Ship ship = privateObject.Invoke("ParseShipLoadoutEvent", args) as Ship;
             Assert.AreEqual("Peppermint", ship.name);
             Assert.AreEqual("Int_FuelScoop_Size7_Class5", ship.compartments[0].module.edname);
@@ -487,9 +487,9 @@ namespace UnitTests
             object[] moduleArgs = new object[] { ship, @event.slot, @event.buymodule };
             privateObject.Invoke("AddModule", moduleArgs);
 
-            foreach (Compartment  compartment in ship.compartments)
+            foreach (Compartment compartment in ship.compartments)
             {
-                if (compartment?.name == "Military01" )
+                if (compartment?.name == "Military01")
                 {
                     Assert.AreEqual("Guardian Shield Reinforcement", compartment.module?.invariantName);
                 }

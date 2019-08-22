@@ -22,7 +22,7 @@ namespace EddiMissionMonitor
         [JsonProperty("missions")]
         public List<Mission> missions { get; private set; }
 
-       public MissionsEvent(DateTime timestamp, List<Mission> missions) : base(timestamp, NAME)
+        public MissionsEvent(DateTime timestamp, List<Mission> missions) : base(timestamp, NAME)
         {
             this.missions = missions;
         }

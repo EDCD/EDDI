@@ -24,9 +24,9 @@ namespace EddiDataDefinitions
 
         // dummy used to ensure that the static constructor has run
         public Happiness() : this("")
-        {}
+        { }
 
         private Happiness(string edname) : base(edname, edname.Replace("$Faction_", "").Replace(";", ""))
-        {}
+        { }
     }
 }

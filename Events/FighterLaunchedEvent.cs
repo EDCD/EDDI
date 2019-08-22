@@ -10,7 +10,7 @@ namespace EddiEvents
         public const string DESCRIPTION = "Triggered when you launch a fighter from your ship";
         public const string SAMPLE = "{\"timestamp\":\"2019-04-29T00:07:46Z\", \"event\":\"LaunchFighter\", \"Loadout\":\"four\", \"ID\":13, \"PlayerControlled\":false}";
 
-    public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
+        public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
         static FighterLaunchedEvent()
         {

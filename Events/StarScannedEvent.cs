@@ -26,7 +26,7 @@ namespace EddiEvents
             VARIABLES.Add("absolutemagnitude", "The absolute (bolometric) magnitude of the star that has been scanned");
             VARIABLES.Add("absolutemagnitudeprobability", "The cumulative probability describing the star's age, relative to other stars of the same stellar class");
             VARIABLES.Add("luminosity", "The luminosity of the star that has been scanned");
-            VARIABLES.Add("luminosityclass", "The luminosity class of the star that has been scanned");            
+            VARIABLES.Add("luminosityclass", "The luminosity class of the star that has been scanned");
             VARIABLES.Add("tempprobability", "The probablility of finding a star of this class with this temperature");
             VARIABLES.Add("age", "The age of the star that has been scanned, in millions of years");
             VARIABLES.Add("ageprobability", "The probablility of finding a star of this class with this age");
@@ -153,11 +153,11 @@ namespace EddiEvents
 
         // Deprecated, maintained for compatibility with user scripts
         [JsonIgnore, Obsolete("Use bodyname instead")]
-        public string name => bodyname; 
+        public string name => bodyname;
         [JsonIgnore, Obsolete("Use inclination instead")]
-        public decimal? orbitalinclination => inclination;  
+        public decimal? orbitalinclination => inclination;
         [JsonIgnore, Obsolete("Use rotationalperiod instead")]
-        public decimal rotationperiod => rotationalperiod;  
+        public decimal rotationperiod => rotationalperiod;
         [JsonIgnore, Obsolete("Use distance instead")]
         public decimal distancefromarrival => distance;
 

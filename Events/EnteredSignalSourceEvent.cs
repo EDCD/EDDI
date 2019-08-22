@@ -23,7 +23,7 @@ namespace EddiEvents
         public string localizedsource => signalSource.localizedName ?? signalSource.fallbackLocalizedName ?? signalSource.edname;
 
         [JsonProperty("threat")]
-        public int threat{ get; private set; }
+        public int threat { get; private set; }
 
         // Not intended to be user facing
         public SignalSource signalSource { get; private set; }

@@ -28,6 +28,6 @@ namespace EddiDataDefinitions
         { }
 
         private SecurityLevel(string edname) : base(edname, edname.Replace("$", "").Replace(";", ""))
-        {}
+        { }
     }
 }

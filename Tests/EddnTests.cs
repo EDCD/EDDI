@@ -41,7 +41,7 @@ namespace UnitTests
 
             public StarSystem GetStarSystem(string name, bool refreshIfOutdated = true)
             {
-                switch(name)
+                switch (name)
                 {
                     case "Artemis":
                         {
@@ -571,7 +571,7 @@ namespace UnitTests
                 }
             }
 
-            void testDictionary(IDictionary<string, object>dict)
+            void testDictionary(IDictionary<string, object> dict)
             {
                 foreach (KeyValuePair<string, object> kvp in dict)
                 {

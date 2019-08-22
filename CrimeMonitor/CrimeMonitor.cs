@@ -12,8 +12,8 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows;
-using System.Windows.Data;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Threading;
 using Utilities;
 
@@ -344,7 +344,7 @@ namespace EddiCrimeMonitor
                     {
                         // Adjust the discrepancy report & remove when zeroed out
                         FactionReport report = record.factionReports
-                            .FirstOrDefault(r =>  r.crimeDef == Crime.Claim);
+                            .FirstOrDefault(r => r.crimeDef == Crime.Claim);
                         if (report != null)
                         {
                             report.amount -= Math.Min(amount - total, report.amount);

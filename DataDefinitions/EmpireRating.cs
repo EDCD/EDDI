@@ -19,10 +19,10 @@ namespace EddiDataDefinitions
 
             // dummy used to ensure that the static constructor has run
             public MaleRank() : this("")
-            {}
+            { }
 
             public MaleRank(string edname) : base(edname, edname)
-            {}
+            { }
         }
 
         public class FemaleRank : ResourceBasedLocalizedEDName<EmpireRating.FemaleRank>
@@ -79,7 +79,7 @@ namespace EddiDataDefinitions
                 return null;
             }
 
-            EmpireRating result = AllOfThem.FirstOrDefault(v => 
+            EmpireRating result = AllOfThem.FirstOrDefault(v =>
                 v.maleRank.invariantName == from
                 || v.maleRank.localizedName == from
                 );

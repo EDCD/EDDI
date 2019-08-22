@@ -474,12 +474,12 @@ namespace EddiDataProviderService
             var dbSystems = Instance.ReadStarSystems(starSystems);
             foreach (StarSystem system in starSystems)
             {
-                StarSystemDatabaseResult dbSystem = dbSystems.FirstOrDefault(s => 
+                StarSystemDatabaseResult dbSystem = dbSystems.FirstOrDefault(s =>
                     s.systemAddress != null && s.systemAddress == system.systemAddress ? true :
-                    s.edsmId != null && s.edsmId == system.EDSMID ? true : 
+                    s.edsmId != null && s.edsmId == system.EDSMID ? true :
                     s.systemName == system.systemname ? true : false);
 
-                if (dbSystem?.starSystemJson is null || 
+                if (dbSystem?.starSystemJson is null ||
                     (dbSystem.systemAddress is null && dbSystem.edsmId is null))
                 {
                     // If we're updating to schema version 2, systemAddress and edsmId will both be null. 

@@ -1,5 +1,4 @@
 ﻿using EddiDataDefinitions;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -147,7 +146,7 @@ namespace EddiBgsService
                 Dictionary<string, object> data = new Dictionary<string, object>()
                 {
                     { "input", response },
-                    { "exception", ex } 
+                    { "exception", ex }
                 };
                 Logging.Error("Failed to parse BGS faction data.", data);
                 return null;

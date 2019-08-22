@@ -78,7 +78,8 @@ namespace EddiDataDefinitions
 
         /// <summary>Does this station have refuel facilities?</summary>
         [JsonIgnore]
-        public bool? hasrefuel {
+        public bool? hasrefuel
+        {
             get { return stationServices.Exists(s => s?.edname == "Refuel"); }
             set { if (value is true) { stationServices.Add(StationService.FromEDName("Refuel")); } }
         }

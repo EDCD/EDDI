@@ -1,8 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Utilities;
-
-namespace EddiDataDefinitions
+﻿namespace EddiDataDefinitions
 {
     /// <summary>
     /// Terraform States
@@ -25,9 +21,9 @@ namespace EddiDataDefinitions
 
         // dummy used to ensure that the static constructor has run
         public TerraformState() : this("")
-        {}
+        { }
 
         private TerraformState(string edname) : base(edname, edname)
-        {}
+        { }
     }
 }

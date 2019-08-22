@@ -29,10 +29,10 @@ namespace EddiShipMonitor
 
         [JsonProperty("price")]
         public long price { get; private set; }
-        
+
         [JsonProperty("system")]
-        public string system { get; private set; }     
-        
+        public string system { get; private set; }
+
         // Admin
         public long marketId { get; private set; }
 

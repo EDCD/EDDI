@@ -26,7 +26,7 @@ namespace EddiEvents
         public string bodytype => (bodyType ?? BodyType.None).localizedName;
 
         [JsonProperty("body")]
-        public string bodyname{ get; private set; }
+        public string bodyname { get; private set; }
 
         // Deprecated, maintained for compatibility with user scripts
         [JsonIgnore, Obsolete("Use systemname instead")]

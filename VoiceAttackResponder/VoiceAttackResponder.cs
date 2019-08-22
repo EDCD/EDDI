@@ -1,9 +1,9 @@
 ﻿using Eddi;
-using Utilities;
 using EddiEvents;
 using Newtonsoft.Json;
 using System;
 using System.Windows.Controls;
+using Utilities;
 
 namespace EddiVoiceAttackResponder
 {
@@ -57,7 +57,7 @@ namespace EddiVoiceAttackResponder
 
         public bool Start()
         {
-            if (EDDI.FromVA) 
+            if (EDDI.FromVA)
             {
                 return true;
             }

@@ -26,7 +26,7 @@ namespace EddiEddpMonitor
         /// Obtain configuration from a file.  If the file name is not supplied the the default
         /// path of Constants.Data_DIR\eddpmonitor.json is used
         /// </summary>
-        public static EddpConfiguration FromFile(string filename=null)
+        public static EddpConfiguration FromFile(string filename = null)
         {
             if (filename == null)
             {
@@ -72,7 +72,7 @@ namespace EddiEddpMonitor
         /// when reading in the configuration will be used, or the default path of 
         /// Constants.Data_DIR\eddpmonitor.json will be used
         /// </summary>
-        public void ToFile(string filename=null)
+        public void ToFile(string filename = null)
         {
             if (filename == null)
             {

@@ -1,17 +1,17 @@
-﻿using EddiEvents;
-using EddiDataDefinitions;
+﻿using EddiDataDefinitions;
+using EddiEvents;
 using System;
 using System.Collections.Generic;
 
 namespace EddiMissionMonitor
 {
-    public class MissionCompletedEvent: Event
+    public class MissionCompletedEvent : Event
     {
         public const string NAME = "Mission completed";
         public const string DESCRIPTION = "Triggered when you complete a mission";
         public const string SAMPLE = @"{ ""timestamp"":""2016-12-02T13:04:35Z"", ""event"":""MissionCompleted"", ""Faction"":""Values Party of Syntec"", ""Name"":""Mission_Courier_Boom_name"", ""MissionID"":55868124, ""DestinationSystem"":""Syntec"", ""DestinationStation"":""Leavitt City"", ""Reward"":20020, ""CommodityReward"":[ { ""Name"": ""ModularTerminals"", ""Count"": 4 } ] }";
 
-    public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
+        public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
         static MissionCompletedEvent()
         {

@@ -22,7 +22,7 @@ namespace EddiSpeechResponder
         public string ScriptName
         {
             get { return scriptName; }
-            set { scriptName = value;  OnPropertyChanged("ScriptName");  }
+            set { scriptName = value; OnPropertyChanged("ScriptName"); }
         }
         private string scriptDescription;
         public string ScriptDescription
@@ -162,7 +162,7 @@ namespace EddiSpeechResponder
             else if (sample is Event)
             {
                 // It's a direct event
-                sampleEvents = new List<Event>(){ (Event)sample };
+                sampleEvents = new List<Event>() { (Event)sample };
             }
             else
             {

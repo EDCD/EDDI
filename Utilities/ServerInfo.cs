@@ -11,12 +11,12 @@ namespace Utilities
         /// <summary>
         /// Instance information for production
         /// </summary>
-        public InstanceInfo production { get;  set; }
+        public InstanceInfo production { get; set; }
 
         /// <summary>
         /// Instance information for beta
         /// </summary>
-        public InstanceInfo beta { get;  set; }
+        public InstanceInfo beta { get; set; }
 
         /// <summary>
         /// Production releases

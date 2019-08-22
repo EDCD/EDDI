@@ -55,7 +55,7 @@ namespace EDDNResponder
         }
 
         public EDDNResponder() : this(EddiDataProviderService.StarSystemSqLiteRepository.Instance)
-        {}
+        { }
 
         public EDDNResponder(StarSystemRepository starSystemRepository)
         {

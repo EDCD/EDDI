@@ -30,7 +30,7 @@ namespace UnitTests
         [TestMethod]
         public void TestDataDefinitionMaterialName1()
         {
-            Material material  = Material.FromName("Cracked Industrial Firmware");
+            Material material = Material.FromName("Cracked Industrial Firmware");
             Assert.AreEqual("Cracked Industrial Firmware", material.invariantName);
             Assert.IsNotNull(material.rarity);
         }

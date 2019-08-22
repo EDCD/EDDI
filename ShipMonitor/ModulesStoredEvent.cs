@@ -37,7 +37,7 @@ namespace EddiShipMonitor
         public long marketId { get; private set; }
         public Ship shipDefinition { get; private set; }
 
-        public ModulesStoredEvent(DateTime timestamp, string ship, int? shipid, List<string> slots, List<Module> modules, long marketId ) : base(timestamp, NAME)
+        public ModulesStoredEvent(DateTime timestamp, string ship, int? shipid, List<string> slots, List<Module> modules, long marketId) : base(timestamp, NAME)
         {
             this.shipDefinition = ShipDefinitions.FromEDModel(ship);
             this.shipid = shipid;

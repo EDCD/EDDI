@@ -1,7 +1,4 @@
-﻿using System.Linq;
-using Utilities;
-
-namespace EddiDataDefinitions
+﻿namespace EddiDataDefinitions
 {
     /// <summary>
     /// Legal Status

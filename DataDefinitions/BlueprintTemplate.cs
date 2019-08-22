@@ -1,6 +1,4 @@
-﻿using Newtonsoft.Json;
-using System.Collections.Generic;
-using Utilities;
+﻿using System.Collections.Generic;
 
 namespace EddiDataDefinitions
 {

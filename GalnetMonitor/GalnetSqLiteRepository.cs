@@ -175,7 +175,7 @@ namespace GalnetMonitor
                             else
                             {
                                 cmd.CommandText = SELECT_ALL_UNREAD_SQL;
-                            } 
+                            }
                         }
                         cmd.Prepare();
                         cmd.Parameters.AddWithValue("@category", category);

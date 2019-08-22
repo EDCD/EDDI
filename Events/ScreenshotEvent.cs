@@ -27,12 +27,12 @@ namespace EddiEvents
         public int height { get; private set; }
         public string system { get; private set; }
         public string body { get; private set; }
-        
+
         [JsonProperty("longitude")]
         public decimal? longitude { get; private set; }
 
         [JsonProperty("latitude")]
-        public decimal? latitude { get; private set; }     
+        public decimal? latitude { get; private set; }
 
         public ScreenshotEvent(DateTime timestamp, string filename, int width, int height, string system, string body, decimal? longitude, decimal? latitude) : base(timestamp, NAME)
         {

@@ -18,7 +18,7 @@ namespace Utilities
         public static void Debug(string message, Exception ex, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "") => Debug(message, ex.ToString(), memberName, filePath);
     }
 
-    public partial class Logging: _Rollbar
+    public partial class Logging : _Rollbar
     {
         public static readonly string LogFile = Constants.DATA_DIR + @"\eddi.log";
         public static bool Verbose { get; set; } = false;

@@ -85,7 +85,7 @@ namespace EddiStarMapService
             });
 
             IDictionary<string, object> factionDetail = faction.ToObject<IDictionary<string, object>>();
-            
+
             // Active states
             factionDetail.TryGetValue("ActiveStates", out object activeStatesVal);
             if (activeStatesVal != null)

@@ -1,7 +1,6 @@
 ﻿using EddiCompanionAppService;
 using EddiDataDefinitions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using Tests.Properties;

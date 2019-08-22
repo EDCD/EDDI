@@ -99,7 +99,8 @@ namespace EddiDataDefinitions
             {
                 amount = "Major";
                 from = from.Replace("major ", "");
-            } else if (from.StartsWith("minor "))
+            }
+            else if (from.StartsWith("minor "))
             {
                 amount = "Minor";
                 from = from.Replace("minor ", "");
@@ -111,7 +112,8 @@ namespace EddiDataDefinitions
             {
                 type = "Geysers";
                 from = from.Replace(" geysers", "");
-            } else if (from.EndsWith(" magma"))
+            }
+            else if (from.EndsWith(" magma"))
             {
                 type = "Magma";
                 from = from.Replace(" magma", "");

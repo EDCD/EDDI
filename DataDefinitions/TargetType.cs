@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace EddiDataDefinitions
+﻿namespace EddiDataDefinitions
 {
     /// <summary>
     /// Target types

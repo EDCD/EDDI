@@ -1,7 +1,7 @@
-﻿using System.Windows.Controls;
-using EddiEvents;
-using System.Collections.Generic;
+﻿using EddiEvents;
 using Newtonsoft.Json.Linq;
+using System.Collections.Generic;
+using System.Windows.Controls;
 
 namespace Eddi
 {

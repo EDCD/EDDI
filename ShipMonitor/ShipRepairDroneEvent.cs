@@ -20,7 +20,7 @@ namespace EddiShipMonitor
         public decimal? hull { get; private set; }
         public decimal? cockpit { get; private set; }
         public decimal? corrosion { get; private set; }
-        
+
         public ShipRepairDroneEvent(DateTime timestamp, decimal? hull, decimal? cockpit, decimal? corrosion) : base(timestamp, NAME)
         {
             this.hull = hull;

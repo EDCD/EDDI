@@ -413,7 +413,7 @@ namespace UnitTests
         [TestMethod]
         public void TestJournalPlayerLocalChat()
         {
-           string line = @"{ ""timestamp"":""2017 - 10 - 12T20: 39:25Z"", ""event"":""ReceiveText"", ""From"":""Rebecca Lansing"", ""Message"":""Hi there"", ""Channel"":""local"" }";
+            string line = @"{ ""timestamp"":""2017 - 10 - 12T20: 39:25Z"", ""event"":""ReceiveText"", ""From"":""Rebecca Lansing"", ""Message"":""Hi there"", ""Channel"":""local"" }";
             List<Event> events = JournalMonitor.ParseJournalEntry(line);
             Assert.IsTrue(events.Count == 1);
 

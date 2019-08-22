@@ -126,7 +126,7 @@ namespace EddiSpeechService
                 // Queue the current speech
                 EddiSpeech queuingSpeech = new EddiSpeech(message, ship, priority, voice, radio, eventType);
                 speechQueue.Enqueue(queuingSpeech);
-                 
+
                 // Check the first item in the speech queue
                 if (speechQueue.TryPeek(out EddiSpeech peekedSpeech))
                 {
@@ -557,7 +557,7 @@ namespace EddiSpeechService
         public void StartOrContinueSpeaking()
         {
             if (!eddiSpeaking)
-            {   
+            {
                 // Put everything in a thread
                 Thread speechThread = new Thread(() =>
                 {

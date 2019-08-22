@@ -18,7 +18,7 @@ namespace EddiEvents
         }
 
         [JsonProperty("rating")]
-        public string rating{ get; private set; }
+        public string rating { get; private set; }
 
         public ExplorationPromotionEvent(DateTime timestamp, ExplorationRating rating) : base(timestamp, NAME)
         {

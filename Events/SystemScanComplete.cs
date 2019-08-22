@@ -22,7 +22,7 @@ namespace EddiEvents
 
         [JsonProperty("count")]
         public int count { get; private set; }
-               
+
         [JsonProperty("systemaddress")]
         public long systemAddress { get; private set; }
 

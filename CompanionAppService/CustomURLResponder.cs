@@ -185,7 +185,7 @@ namespace EddiCompanionAppService
             switch (type)
             {
                 case DDEMsgType.XTYP_CONNECT:
-                    bool isValid = (NativeMethods.DdeCmpStringHandles(hsz1, TopicHandle) == 0 
+                    bool isValid = (NativeMethods.DdeCmpStringHandles(hsz1, TopicHandle) == 0
                                  && NativeMethods.DdeCmpStringHandles(hsz2, ServerNameHandle) == 0);
                     return new IntPtr(isValid ? 1 : 0);
                 case DDEMsgType.XTYP_EXECUTE:
@@ -201,7 +201,7 @@ namespace EddiCompanionAppService
         private string FromDdeStringHandle(IntPtr handle)
         {
             byte[] raw = DataFromDdeHandle(handle);
-            char[] trimNulls = {'\0'};
+            char[] trimNulls = { '\0' };
             string s = System.Text.Encoding.Unicode.GetString(raw).TrimEnd(trimNulls);
             return s;
         }

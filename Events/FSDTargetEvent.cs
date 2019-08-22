@@ -21,7 +21,7 @@ namespace EddiEvents
 
         [JsonProperty("systemaddress")]
         public long systemAddress { get; private set; }
-        
+
         public FSDTargetEvent(DateTime timestamp, string system, long systemAddress) : base(timestamp, NAME)
         {
             this.system = system;

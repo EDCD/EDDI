@@ -1,13 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Utilities;
-
-namespace EddiDataDefinitions
+﻿namespace EddiDataDefinitions
 {
     /// <summary>
     /// Ring compositions
     /// </summary>
-    public class RingComposition: ResourceBasedLocalizedEDName<RingComposition>
+    public class RingComposition : ResourceBasedLocalizedEDName<RingComposition>
     {
         static RingComposition()
         {
@@ -23,9 +19,9 @@ namespace EddiDataDefinitions
 
         // dummy used to ensure that the static constructor has run
         public RingComposition() : this("")
-        {}
+        { }
 
-        private RingComposition(string edname): base(edname, edname
+        private RingComposition(string edname) : base(edname, edname
             .Replace("eRingClass_", "")
             .Replace("-", "")
             .Replace("Metalic", "Metallic"))

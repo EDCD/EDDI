@@ -28,7 +28,7 @@ namespace EddiCompanionAppService
         /// <summary>
         /// Obtain credentials from a file. If filepath is not supplied then defaultPath is used.
         /// </summary>
-        public static CompanionAppCredentials Load(string filepath=null)
+        public static CompanionAppCredentials Load(string filepath = null)
         {
             CompanionAppCredentials credentials = null;
             filepath = filepath ?? defaultPath;
@@ -53,7 +53,7 @@ namespace EddiCompanionAppService
 
             if (credentials == null)
             {
-                credentials = new CompanionAppCredentials() {dataPath = filepath};
+                credentials = new CompanionAppCredentials() { dataPath = filepath };
                 credentials.Save();
             }
 
@@ -74,7 +74,7 @@ namespace EddiCompanionAppService
         /// Write credentials to a file. If the filename is not supplied then the object's
         /// dataPath will be used, failing that, the class's defaultPath.
         /// </summary>
-        public void Save(string filename=null)
+        public void Save(string filename = null)
         {
             filename = filename ?? dataPath ?? defaultPath;
 

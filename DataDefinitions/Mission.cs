@@ -122,7 +122,7 @@ namespace EddiDataDefinitions
         // The system in which the mission was accepted
         public string originsystem { get; set; }
 
-		// The station in which the mission was accepted
+        // The station in which the mission was accepted
         public string originstation { get; set; }
 
         // Mission returns to origin
@@ -145,9 +145,9 @@ namespace EddiDataDefinitions
         public string commodity { get; set; }
         public int? amount { get; set; }
 
-		// THe destination system of the mission
+        // THe destination system of the mission
         private string _destinationsystem;
-		public string destinationsystem
+        public string destinationsystem
         {
             get
             {
@@ -163,9 +163,9 @@ namespace EddiDataDefinitions
             }
         }
 
-		// The destination station of the mission
+        // The destination station of the mission
         private string _destinationstation;
-		public string destinationstation
+        public string destinationstation
         {
             get
             {
@@ -227,10 +227,10 @@ namespace EddiDataDefinitions
         [JsonConstructor]
         // Main Constructor
         public Mission(long MissionId, string Name, DateTime? expiry, MissionStatus Status, bool Shared = false)
-		{
-			this.missionid = MissionId;
-			this. name = Name;
-			this.expiry = expiry?.ToUniversalTime();
+        {
+            this.missionid = MissionId;
+            this.name = Name;
+            this.expiry = expiry?.ToUniversalTime();
             this.statusDef = Status;
             this.shared = Shared;
             this.expiring = false;

@@ -35,10 +35,10 @@ namespace EddiDataDefinitions
 
         // dummy used to ensure that the static constructor has run
         public Government() : this("")
-        {}
+        { }
 
         private Government(string edname) : base(edname, edname.Replace("$government_", "").Replace(";", ""))
-        {}
+        { }
 
         new public static Government FromName(string from)
         {

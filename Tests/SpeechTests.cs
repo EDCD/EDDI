@@ -6,7 +6,6 @@ using Eddi;
 using EddiDataDefinitions;
 using EddiSpeechResponder;
 using EddiSpeechService;
-using EddiVoiceAttackResponder;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using System.IO;
@@ -150,7 +149,7 @@ namespace SpeechTests
                 "Zemina Torval",
                 "Li Yong-Rui"
             };
-            foreach(string powerName in powerNames)
+            foreach (string powerName in powerNames)
             {
                 speaker.Say(ship, Translations.Power(powerName) + ".");
             }

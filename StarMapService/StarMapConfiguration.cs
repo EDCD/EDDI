@@ -25,7 +25,7 @@ namespace EddiStarMapService
         /// Obtain credentials from a file.  If the file name is not supplied the the default
         /// path of Constants.Data_DIR\edsm.json is used
         /// </summary>
-        public static StarMapConfiguration FromFile(string filename=null)
+        public static StarMapConfiguration FromFile(string filename = null)
         {
             if (filename == null)
             {
@@ -73,7 +73,7 @@ namespace EddiStarMapService
         /// when reading in the credentials will be used, or the default path of 
         /// Constants.Data_DIR\credentials.json will be used
         /// </summary>
-        public void ToFile(string filename=null)
+        public void ToFile(string filename = null)
         {
             if (filename == null)
             {

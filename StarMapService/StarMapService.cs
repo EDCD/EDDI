@@ -1,11 +1,10 @@
-﻿using EddiDataDefinitions;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using RestSharp;
 using RestSharp.Serializers;
 using System;
-using System.Linq;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using Utilities;
 
@@ -76,7 +75,7 @@ namespace EddiStarMapService
         public void sendEvent(string eventData)
         {
             // The EDSM responder has a `inBeta` flag that it checks prior to sending data via this method.  
-            var client = new RestClient(baseUrl); 
+            var client = new RestClient(baseUrl);
             var request = new RestRequest("api-journal-v1", Method.POST);
             request.AddParameter("commanderName", commanderName);
             request.AddParameter("apiKey", apiKey);
@@ -294,11 +293,11 @@ namespace EddiStarMapService
             }
         }
     }
-   
+
     // response from the Star Map log API
     class StarMapResponse
     {
-        public string content{ get; set; }
+        public string content { get; set; }
         public Dictionary<string, object> data { get; set; }
         public bool isSuccessful { get; set; }
         public string errorMessage { get; set; }

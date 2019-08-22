@@ -32,7 +32,7 @@ namespace EddiShipMonitor
         /// Obtain ships configuration from a file.  If the file name is not supplied the the default
         /// path of Constants.Data_DIR\shipmonitor.json is used
         /// </summary>
-        public static ShipMonitorConfiguration FromFile(string filename=null)
+        public static ShipMonitorConfiguration FromFile(string filename = null)
         {
             if (filename == null)
             {
@@ -107,7 +107,7 @@ namespace EddiShipMonitor
         /// when reading in the configuration will be used, or the default path of 
         /// Constants.Data_DIR\shipmonitor.json will be used
         /// </summary>
-        public void ToFile(string filename=null)
+        public void ToFile(string filename = null)
         {
             if (filename == null)
             {

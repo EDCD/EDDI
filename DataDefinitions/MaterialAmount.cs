@@ -36,7 +36,9 @@ namespace EddiDataDefinitions
 
         [JsonIgnore]
         private int _amount;
-        public int amount { get
+        public int amount
+        {
+            get
             {
                 return _amount;
             }
@@ -122,28 +124,28 @@ namespace EddiDataDefinitions
                 }
             }
         }
-        
+
         [JsonExtensionData]
         private IDictionary<string, JToken> _additionalData = new Dictionary<string, JToken>();
 
         [OnDeserialized]
         private void OnDeserialized(StreamingContext context)
         {
-            if(material == null)
+            if (material == null)
             {
                 string materialName = (string)_additionalData["material"];
                 material = materialName;
             }
             _additionalData = null;
         }
-        
-        public MaterialAmount(Material material, int amount) 
+
+        public MaterialAmount(Material material, int amount)
             : this(material.edname, amount, null, null, null)
-        {}
+        { }
 
         public MaterialAmount(Material material, int amount, int? minimum, int? desired, int? maximum)
             : this(material.edname, amount, minimum, desired, maximum)
-        {}
+        { }
 
         [JsonConstructor]
         public MaterialAmount(string edname, int amount, int? minimum, int? desired, int? maximum)

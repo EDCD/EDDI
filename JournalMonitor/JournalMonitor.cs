@@ -1,9 +1,9 @@
 ﻿using Eddi;
+using EddiCargoMonitor;
+using EddiCrimeMonitor;
 using EddiDataDefinitions;
 using EddiDataProviderService;
 using EddiEvents;
-using EddiCargoMonitor;
-using EddiCrimeMonitor;
 using EddiMissionMonitor;
 using EddiShipMonitor;
 using Newtonsoft.Json;
@@ -466,11 +466,11 @@ namespace EddiJournalMonitor
                                     {
                                         Logging.Error("Failed to map cargo type " + commodityName + " to commodity definition", line);
                                     }
-                                long? missionid = JsonParsing.getOptionalLong(data, "MissionID");
+                                    long? missionid = JsonParsing.getOptionalLong(data, "MissionID");
                                     data.TryGetValue("Count", out object val);
                                     int amount = (int)(long)val;
                                     bool abandoned = JsonParsing.getBool(data, "Abandoned");
-                                events.Add(new CommodityEjectedEvent(timestamp, commodity, amount, missionid, abandoned) { raw = line, fromLoad = fromLogLoad });
+                                    events.Add(new CommodityEjectedEvent(timestamp, commodity, amount, missionid, abandoned) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
@@ -534,7 +534,7 @@ namespace EddiJournalMonitor
                                             string blueprint = modified ? JsonParsing.getString(engineeringData, "BlueprintName") : null;
                                             long blueprintId = modified ? JsonParsing.getLong(engineeringData, "BlueprintID") : 0;
                                             int level = modified ? JsonParsing.getInt(engineeringData, "Level") : 0;
-                                            Blueprint modification = Blueprint.FromEliteID(blueprintId, engineeringData) 
+                                            Blueprint modification = Blueprint.FromEliteID(blueprintId, engineeringData)
                                                 ?? Blueprint.FromEDNameAndGrade(blueprint, level) ?? Blueprint.None;
                                             decimal quality = modified ? JsonParsing.getDecimal(engineeringData, "Quality") : 0;
 
@@ -1046,7 +1046,7 @@ namespace EddiJournalMonitor
                                     long marketId = JsonParsing.getLong(data, "MarketID");
                                     string system = JsonParsing.getString(data, "StarSystem");
                                     string station = JsonParsing.getString(data, "StationName");
-                                    
+
                                     List<Ship> shipyard = new List<Ship>();
                                     foreach (var type in Enum.GetNames(typeof(ShipyardType)))
                                     {
@@ -1113,7 +1113,7 @@ namespace EddiJournalMonitor
                                             module.modified = modified;
                                             module.engineerlevel = modified ? JsonParsing.getInt(item, "Level") : 0;
                                             module.engineermodification = Blueprint.FromEDNameAndGrade((string)val, module.engineerlevel) ?? Blueprint.None;
-                                            module.engineerquality = modified? JsonParsing.getDecimal(item, "Quality") : 0;
+                                            module.engineerquality = modified ? JsonParsing.getDecimal(item, "Quality") : 0;
 
                                             StoredModule storedModule = new StoredModule
                                             {
@@ -1977,7 +1977,7 @@ namespace EddiJournalMonitor
                                     long systemAddress = JsonParsing.getLong(data, "SystemAddress");
                                     data.TryGetValue("NumBodies", out object val);
                                     int numbodies = (int)(long)val;
-                                    events.Add(new NavBeaconScanEvent(timestamp, systemAddress, numbodies) { raw = line, fromLoad = fromLogLoad }); 
+                                    events.Add(new NavBeaconScanEvent(timestamp, systemAddress, numbodies) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
@@ -2028,7 +2028,7 @@ namespace EddiJournalMonitor
                                     // Target may be either a ring or a body
                                     StarSystem system = EDDI.Instance?.CurrentStarSystem;
                                     Body body = null;
-                                    
+
                                     if (bodyName.EndsWith(" Ring"))
                                     {
                                         // We've mapped a ring. 
@@ -2769,7 +2769,7 @@ namespace EddiJournalMonitor
                                 {
                                     long cgid = JsonParsing.getLong(data, "CGID");
 
-	                                events.Add(new MissionAbandonedEvent(timestamp, cgid, "MISSION_CommunityGoal", 0));
+                                    events.Add(new MissionAbandonedEvent(timestamp, cgid, "MISSION_CommunityGoal", 0));
                                 }
                                 handled = true;
                                 break;
@@ -2990,9 +2990,9 @@ namespace EddiJournalMonitor
                                     data.TryGetValue("MissionID", out object val);
                                     long missionid = (long)val;
                                     string name = JsonParsing.getString(data, "Name");
-	                                data.TryGetValue("Fine", out val);
-	                                long fine = val == null ? 0 : (long)val;
-	                                events.Add(new MissionAbandonedEvent(timestamp, missionid, name, fine) { raw = line, fromLoad = fromLogLoad });
+                                    data.TryGetValue("Fine", out val);
+                                    long fine = val == null ? 0 : (long)val;
+                                    events.Add(new MissionAbandonedEvent(timestamp, missionid, name, fine) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
@@ -3225,11 +3225,11 @@ namespace EddiJournalMonitor
                                 break;
                             case "Cargo":
                                 {
-	                                bool update = false;
-	                                List<CargoInfo> inventory = new List<CargoInfo>();
+                                    bool update = false;
+                                    List<CargoInfo> inventory = new List<CargoInfo>();
 
-	                                string vessel = JsonParsing.getString(data, "Vessel") ?? EDDI.Instance?.Vehicle;
-	                                int cargocarried = JsonParsing.getInt(data, "Count");
+                                    string vessel = JsonParsing.getString(data, "Vessel") ?? EDDI.Instance?.Vehicle;
+                                    int cargocarried = JsonParsing.getInt(data, "Count");
                                     data.TryGetValue("Inventory", out object val);
                                     if (val != null)
                                     {
@@ -3237,18 +3237,18 @@ namespace EddiJournalMonitor
                                         foreach (Dictionary<string, object> cargoJson in inventoryJson)
                                         {
                                             string name = JsonParsing.getString(cargoJson, "Name");
-	                                        long? missionid = JsonParsing.getOptionalLong(cargoJson, "MissionID");
-	                                        int count = JsonParsing.getInt(cargoJson, "Count");
-	                                        int stolen = JsonParsing.getInt(cargoJson, "Stolen");
-	                                        CargoInfo info = new CargoInfo(name, missionid, count, stolen);
-	                                        inventory.Add(info);
+                                            long? missionid = JsonParsing.getOptionalLong(cargoJson, "MissionID");
+                                            int count = JsonParsing.getInt(cargoJson, "Count");
+                                            int stolen = JsonParsing.getInt(cargoJson, "Stolen");
+                                            CargoInfo info = new CargoInfo(name, missionid, count, stolen);
+                                            inventory.Add(info);
                                         }
                                     }
-	                                else
-	                                {
-	                                    inventory = CargoInfoReader.FromFile().Inventory;
-	                                    update = true;
-	                                }
+                                    else
+                                    {
+                                        inventory = CargoInfoReader.FromFile().Inventory;
+                                        update = true;
+                                    }
 
                                     // Protect against out of date Cargo.json files during 'LogLoad'
                                     if (cargocarried == inventory.Sum(i => i.count))

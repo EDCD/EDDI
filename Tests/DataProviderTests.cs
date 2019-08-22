@@ -140,7 +140,7 @@ namespace UnitTests
         [TestMethod]
         public void TestNullLegacy()
         {
-            StarSystem starSystem = LegacyEddpService.SetLegacyData(new StarSystem() { systemname = "No such system"});
+            StarSystem starSystem = LegacyEddpService.SetLegacyData(new StarSystem() { systemname = "No such system" });
             Assert.IsNotNull(starSystem);
             Assert.AreEqual("No such system", starSystem.systemname);
         }

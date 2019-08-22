@@ -80,7 +80,7 @@ namespace EddiDataDefinitions
 
         /// <summary>The estimated value of the body</summary>
         [JsonIgnore]
-        public long estimatedvalue => scanned == null ? 0 : 
+        public long estimatedvalue => scanned == null ? 0 :
             solarmass == null ? estimateBodyValue() : estimateStarValue();
 
         // Orbital characteristics
@@ -214,11 +214,11 @@ namespace EddiDataDefinitions
         public decimal? solarradius => StarClass.solarradius(radius);
         /// <summary>Minimum estimated single-star habitable zone (target black body temperature of 315°K / 42°C / 107°F or less, radius in km)</summary>
         [JsonIgnore]
-        public decimal? estimatedhabzoneinner => solarmass > 0 && radius > 0 && temperature > 0 ? 
+        public decimal? estimatedhabzoneinner => solarmass > 0 && radius > 0 && temperature > 0 ?
             (decimal?)StarClass.DistanceFromStarForTemperature(StarClass.maxHabitableTempKelvin, Convert.ToDouble(radius), Convert.ToDouble(temperature)) : null;
         /// <summary>Maximum estimated single-star habitable zone (target black body temperature of 223.15°K / -50°C / -58°F or more, radius in km)</summary>
         [JsonIgnore]
-        public decimal? estimatedhabzoneouter => solarmass > 0 && radius > 0 && temperature > 0 ? 
+        public decimal? estimatedhabzoneouter => solarmass > 0 && radius > 0 && temperature > 0 ?
             (decimal?)StarClass.DistanceFromStarForTemperature(StarClass.minHabitableTempKelvin, Convert.ToDouble(radius), Convert.ToDouble(temperature)) : null;
 
         /// <summary> Star definition </summary>

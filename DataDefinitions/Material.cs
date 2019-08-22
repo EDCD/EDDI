@@ -206,7 +206,7 @@ namespace EddiDataDefinitions
                 Niobium,
                 Arsenic,
                 Yttrium,
-                Polonium                
+                Polonium
             );
         }
 

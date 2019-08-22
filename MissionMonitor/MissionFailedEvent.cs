@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace EddiMissionMonitor
 {
-    public class MissionFailedEvent: Event
+    public class MissionFailedEvent : Event
     {
         public const string NAME = "Mission failed";
         public const string DESCRIPTION = "Triggered when you fail a mission";

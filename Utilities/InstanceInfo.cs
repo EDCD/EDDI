@@ -8,21 +8,21 @@
         /// <summary>
         /// The current version of the product
         /// </summary>
-        public string version { get;  set; }
+        public string version { get; set; }
 
         /// <summary>
         /// The URL for the current version of the product
         /// </summary>
-        public string url { get;  set; }
+        public string url { get; set; }
 
         /// <summary>
         /// The minimum supported version of the product
         /// </summary>
-        public string minversion { get;  set; }
+        public string minversion { get; set; }
 
         /// <summary>
         /// The message of the day
         /// </summary>
-        public string motd { get;  set; }
+        public string motd { get; set; }
     }
 }

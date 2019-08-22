@@ -51,7 +51,7 @@
         public SignalSource() : this("")
         { }
 
-        private SignalSource (string edname) : base(edname, edname)
+        private SignalSource(string edname) : base(edname, edname)
         { }
 
         new public static SignalSource FromEDName(string from)

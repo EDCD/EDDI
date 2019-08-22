@@ -1,8 +1,5 @@
 ﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace EddiDataDefinitions
 {
@@ -25,7 +22,7 @@ namespace EddiDataDefinitions
         [JsonIgnore]
         [Obsolete("Please be explicit and use localizedName or invariantName")]
         public string name => localizedName;
-        
+
         [JsonIgnore]
         private LoadoutDescription loadoutDescription;
 

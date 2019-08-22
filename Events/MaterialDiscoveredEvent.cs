@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace EddiEvents
 {
-    public class MaterialDiscoveredEvent: Event
+    public class MaterialDiscoveredEvent : Event
     {
         public const string NAME = "Material discovered";
         public const string DESCRIPTION = "Triggered when you discover a material";

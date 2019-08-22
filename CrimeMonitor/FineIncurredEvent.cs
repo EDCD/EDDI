@@ -1,5 +1,5 @@
-﻿using EddiEvents;
-using EddiDataDefinitions;
+﻿using EddiDataDefinitions;
+using EddiEvents;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;

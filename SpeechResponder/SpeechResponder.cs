@@ -63,7 +63,7 @@ namespace EddiSpeechResponder
                 personality = Personality.FromName(configuration.Personality);
             }
             if (personality == null)
-            { 
+            {
                 personality = Personality.Default();
             }
             scriptResolver = new ScriptResolver(personality?.Scripts);

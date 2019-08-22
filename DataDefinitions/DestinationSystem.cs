@@ -1,8 +1,4 @@
-﻿using Newtonsoft.Json;
-using System;
-using System.Linq;
-
-namespace EddiDataDefinitions
+﻿namespace EddiDataDefinitions
 {
     public class DestinationSystem
     {

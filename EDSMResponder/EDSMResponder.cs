@@ -1,7 +1,6 @@
 ﻿using Eddi;
 using EddiDataProviderService;
 using EddiEvents;
-using EddiShipMonitor;
 using EddiStarMapService;
 using Newtonsoft.Json;
 using System.Collections.Generic;
@@ -205,7 +204,7 @@ namespace EddiEdsmResponder
                 if (!eventObject.ContainsKey("_systemAddress"))
                 {
                     eventObject.Add("_systemAddress", EDDI.Instance.CurrentStarSystem.systemAddress);
-                } 
+                }
                 if (!eventObject.ContainsKey("_systemName"))
                 {
                     eventObject.Add("_systemName", EDDI.Instance.CurrentStarSystem.systemname);
@@ -227,7 +226,7 @@ namespace EddiEdsmResponder
                 if (!eventObject.ContainsKey("_marketId"))
                 {
                     eventObject.Add("_marketId", EDDI.Instance.CurrentStation.marketId);
-                } 
+                }
                 if (!eventObject.ContainsKey("_stationName"))
                 {
                     eventObject.Add("_stationName", EDDI.Instance.CurrentStation.name);

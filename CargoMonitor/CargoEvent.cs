@@ -16,7 +16,7 @@ namespace EddiCargoMonitor
         static CargoEvent()
         {
         }
-        
+
         public bool update { get; private set; }
         public string vessel { get; private set; }
         public List<CargoInfo> inventory { get; private set; }

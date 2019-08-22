@@ -1,9 +1,9 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using EddiSpeechService;
-using System.Linq;
-using System.Collections.Generic;
+﻿using EddiSpeechService;
 using EddiVoiceAttackResponder;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace UnitTests
 {

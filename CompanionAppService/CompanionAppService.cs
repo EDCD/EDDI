@@ -50,7 +50,7 @@ namespace EddiCompanionAppService
         private State _currentState;
         public State CurrentState
         {
-            get =>_currentState;
+            get => _currentState;
             private set
             {
                 if (_currentState == value) { return; }
@@ -450,7 +450,7 @@ namespace EddiCompanionAppService
                     cachedProfile.LastStation.commodities = CommodityQuotesFromProfile(marketJson);
                     cachedProfile.LastStation.prohibited = ProhibitedCommoditiesFromProfile(marketJson);
                 }
-                
+
                 if (cachedProfile.LastStation.hasoutfitting ?? false)
                 {
                     Logging.Debug("Getting station outfitting data");
@@ -641,7 +641,7 @@ namespace EddiCompanionAppService
 
                 if (json["lastStarport"] != null)
                 {
-                    Profile.LastStation =  Profile.CurrentStarSystem.stations.Find(s => s.name == (string)json["lastStarport"]["name"]);
+                    Profile.LastStation = Profile.CurrentStarSystem.stations.Find(s => s.name == (string)json["lastStarport"]["name"]);
                     if (Profile.LastStation == null)
                     {
                         // Don't have a station so make one up

@@ -42,9 +42,9 @@
 
         // dummy used to ensure that the static constructor has run
         public FactionState() : this("")
-        {}
+        { }
 
         private FactionState(string edname) : base(edname, edname)
-        {}
+        { }
     }
 }

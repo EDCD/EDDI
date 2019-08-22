@@ -1,4 +1,5 @@
 ﻿using Eddi;
+using EddiDataDefinitions;
 using EddiEvents;
 using Newtonsoft.Json.Linq;
 using System;
@@ -6,12 +7,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
-using System.Windows.Controls;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
+using System.Windows.Controls;
 using Utilities;
-using EddiDataDefinitions;
-using System.Text;
 
 namespace EddiStatusMonitor
 {
@@ -354,13 +354,13 @@ namespace EddiStatusMonitor
                     bool deployable = !thisStatus.srv_under_ship;
                     EDDI.Instance.enqueueEvent(new SRVTurretDeployableEvent(thisStatus.timestamp, deployable));
                 }
-                if (thisStatus.fsd_status != lastStatus.fsd_status 
-                    && thisStatus.vehicle == Constants.VEHICLE_SHIP 
+                if (thisStatus.fsd_status != lastStatus.fsd_status
+                    && thisStatus.vehicle == Constants.VEHICLE_SHIP
                     && !thisStatus.docked)
                 {
                     if (thisStatus.fsd_status == "ready")
                     {
-                        switch(lastStatus.fsd_status)
+                        switch (lastStatus.fsd_status)
                         {
                             case "charging":
                                 if (!jumping && thisStatus.supercruise == lastStatus.supercruise)
@@ -385,8 +385,8 @@ namespace EddiStatusMonitor
                 if (thisStatus.low_fuel != lastStatus.low_fuel)
                 {
                     // Don't trigger 'low fuel' event when fuel exceeds 25% or when we're not in our ship
-                    if (thisStatus.low_fuel 
-                        && thisStatus.vehicle == Constants.VEHICLE_SHIP) 
+                    if (thisStatus.low_fuel
+                        && thisStatus.vehicle == Constants.VEHICLE_SHIP)
                     {
                         EDDI.Instance.enqueueEvent(new ShipLowFuelEvent(thisStatus.timestamp));
                     }

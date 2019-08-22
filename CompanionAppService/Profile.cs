@@ -15,7 +15,7 @@ namespace EddiCompanionAppService
         public Commander Cmdr { get; set; }
 
         /// <summary>The current starsystem</summary>
-        public StarSystem CurrentStarSystem{ get; set; }
+        public StarSystem CurrentStarSystem { get; set; }
 
         /// <summary>The last station the commander docked at</summary>
         public Station LastStation { get; set; }

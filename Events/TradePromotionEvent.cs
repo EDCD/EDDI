@@ -18,7 +18,7 @@ namespace EddiEvents
         }
 
         [JsonProperty("rating")]
-        public string rating{ get; private set; }
+        public string rating { get; private set; }
 
         public TradePromotionEvent(DateTime timestamp, TradeRating rating) : base(timestamp, NAME)
         {

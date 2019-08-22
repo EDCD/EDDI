@@ -1487,7 +1487,7 @@ namespace Eddi
         {
             // Test whether we're in beta by checking the filename, version described by the header, 
             // and certain version / build combinations
-            inBeta = 
+            inBeta =
                 (
                     @event.filename.Contains("Beta") ||
                     @event.version.Contains("Beta") ||
@@ -1523,7 +1523,7 @@ namespace Eddi
             CurrentStarSystem.y = theEvent.y;
             CurrentStarSystem.z = theEvent.z;
             CurrentStarSystem.Faction = theEvent.controllingfaction;
-            CurrentStellarBody = CurrentStarSystem.bodies.Find(b => b.bodyname == theEvent.star) 
+            CurrentStellarBody = CurrentStarSystem.bodies.Find(b => b.bodyname == theEvent.star)
                 ?? CurrentStarSystem.bodies.Find(b => b.distance == 0);
             CurrentStarSystem.conflicts = theEvent.conflicts;
 
@@ -2001,7 +2001,7 @@ namespace Eddi
             updateCurrentStellarBody(theEvent.ringname, CurrentStarSystem?.systemname, CurrentStarSystem?.systemAddress);
             return true;
         }
-        
+
         /// <summary>Obtain information from the companion API and use it to refresh our own data</summary>
         public bool refreshProfile(bool refreshStation = false)
         {

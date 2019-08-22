@@ -1,9 +1,9 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using EddiEvents;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using EddiEvents;
 using System.Collections.Generic;
-using System.Linq;
 using System.IO;
+using System.Linq;
 
 namespace GeneratorTests
 {

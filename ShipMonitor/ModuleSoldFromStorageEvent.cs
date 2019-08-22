@@ -29,7 +29,7 @@ namespace EddiShipMonitor
         public Module module { get; private set; }
         public long price { get; private set; }
 
-        public ModuleSoldFromStorageEvent(DateTime timestamp, string ship, int? shipid, int storageslot, long serverid, Module module, long price ): base(timestamp, NAME)
+        public ModuleSoldFromStorageEvent(DateTime timestamp, string ship, int? shipid, int storageslot, long serverid, Module module, long price) : base(timestamp, NAME)
         {
             this.ship = ShipDefinitions.FromEDModel(ship).model;
             this.shipid = shipid;

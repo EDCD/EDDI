@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using Utilities;
 
 namespace EddiDataDefinitions
@@ -30,7 +29,7 @@ namespace EddiDataDefinitions
             var ViceAdmiral = new FederationRating("ViceAdmiral", 13);
             var Admiral = new FederationRating("Admiral", 14);
         }
-        
+
         public int rank { get; private set; }
 
         // dummy used to ensure that the static constructor has run

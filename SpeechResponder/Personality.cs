@@ -238,7 +238,7 @@ namespace EddiSpeechResponder
                         scriptHolder.Add(kv.Key);
                     }
                     else if (kv.Value.Name == "Crew member role change") // This name is mismatched to the key (should be "changed"), 
-                        // so EDDI couldn't match the script name to the .json key correctly. The default script has been corrected.
+                                                                         // so EDDI couldn't match the script name to the .json key correctly. The default script has been corrected.
                     {
                         scriptHolder.Add(kv.Key);
                     }
@@ -256,7 +256,7 @@ namespace EddiSpeechResponder
                     fixedScripts.Remove(script);
                 }
                 // Also add any secondary scripts in the default personality that aren't present in the list
-                if (defaultPersonality?.Scripts != null )
+                if (defaultPersonality?.Scripts != null)
                 {
                     foreach (KeyValuePair<string, Script> kv in defaultPersonality?.Scripts)
                     {

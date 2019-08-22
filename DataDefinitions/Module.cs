@@ -59,7 +59,7 @@ namespace EddiDataDefinitions
             get => engineermodification?.edname ?? Blueprint.None.edname;
             set
             {
-                Blueprint mDef = Blueprint.FromEliteID(blueprintId) ?? 
+                Blueprint mDef = Blueprint.FromEliteID(blueprintId) ??
                     Blueprint.FromEDNameAndGrade(value, engineerlevel);
                 this.engineermodification = mDef;
             }
@@ -96,7 +96,7 @@ namespace EddiDataDefinitions
         }
 
         public Module() : base("", "")
-        {}
+        { }
 
         public Module(Module Module) : base(Module.edname, Module.basename)
         {

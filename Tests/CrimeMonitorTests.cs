@@ -1,11 +1,9 @@
 ﻿using Eddi;
 using EddiCrimeMonitor;
 using EddiDataDefinitions;
-using EddiDataProviderService;
 using EddiEvents;
 using EddiJournalMonitor;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 

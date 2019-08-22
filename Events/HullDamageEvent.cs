@@ -18,7 +18,7 @@ namespace EddiEvents
             VARIABLES.Add("health", "The percentage health of the hull");
         }
 
-        public string vehicle{ get; private set; }
+        public string vehicle { get; private set; }
 
         public bool? piloted { get; private set; }
 

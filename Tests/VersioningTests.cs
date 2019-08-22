@@ -37,7 +37,7 @@ namespace UnitTests
             {
                 Version v = new Version(1, 2, 3, "invalid", 4);
             }
-            catch(System.ArgumentException)
+            catch (System.ArgumentException)
             {
                 // pass
                 return;

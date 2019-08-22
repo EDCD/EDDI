@@ -10,8 +10,8 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading;
 using System.Windows;
-using System.Windows.Data;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Threading;
 using Utilities;
 

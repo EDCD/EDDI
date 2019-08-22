@@ -423,11 +423,11 @@ namespace EddiDataDefinitions
 
         // The average price of a commodity can change - thus this cannot be read only.
         // Instead, this value should be updated whenever revised data is received.
-        public int avgprice { get; set; } 
+        public int avgprice { get; set; }
 
         // dummy used to ensure that the static constructor has run
         public CommodityDefinition() : this(0, null, "", Unknown)
-        {}
+        { }
 
         internal CommodityDefinition(long EliteID, long? EDDBID, string edname, CommodityCategory Category, int AveragePrice = 0, bool Rare = false) : base(edname, edname)
         {
@@ -445,7 +445,7 @@ namespace EddiDataDefinitions
             {
                 return CommoditiesByEliteID[id];
             }
-            catch(KeyNotFoundException)
+            catch (KeyNotFoundException)
             {
                 Logging.Info($"Unrecognized Commodity Definition EliteID {id}");
                 throw;
@@ -459,7 +459,7 @@ namespace EddiDataDefinitions
                 ?.Replace("_name;", "") // Trailer for types from mining and mission events
                 ?.Replace(" name;", "");
         }
-        
+
         public static CommodityDefinition FromNameOrEDName(string name)
         {
             if (name == null)
@@ -473,7 +473,7 @@ namespace EddiDataDefinitions
             {
                 return null;
             }
-            
+
             // Now try to fetch the commodity by either ED or real name
             CommodityDefinition result = null;
             if (normalizedName != null)
@@ -500,7 +500,7 @@ namespace EddiDataDefinitions
 
         new public static CommodityDefinition FromEDName(string rawName)
         {
-            string edName = NormalizedName(rawName); 
+            string edName = NormalizedName(rawName);
             return ResourceBasedLocalizedEDName<CommodityDefinition>.FromEDName(edName);
         }
     }

@@ -29,7 +29,7 @@ namespace EddiMaterialMonitor
         /// Obtain materials configuration from a file.  If the file name is not supplied the the default
         /// path of Constants.Data_DIR\materialmonitor.json is used
         /// </summary>
-        public static MaterialMonitorConfiguration FromFile(string filename=null)
+        public static MaterialMonitorConfiguration FromFile(string filename = null)
         {
             if (filename == null)
             {
@@ -71,7 +71,7 @@ namespace EddiMaterialMonitor
         /// when reading in the configuration will be used, or the default path of 
         /// Constants.Data_DIR\materialmonitor.json will be used
         /// </summary>
-        public void ToFile(string filename=null)
+        public void ToFile(string filename = null)
         {
             // Remove any items that are all NULL
             //limits = limits.Where(x => x.Value.minimum.HasValue || x.Value.desired.HasValue || x.Value.maximum.HasValue).ToDictionary(x => x.Key, x => x.Value);

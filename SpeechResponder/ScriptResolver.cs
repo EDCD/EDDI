@@ -1128,7 +1128,7 @@ namespace EddiSpeechResponder
                 EDDI.Instance.refreshProfile(stationRefresh);
                 return "";
             }, 0, 1);
-            
+
             // Variables
             foreach (KeyValuePair<string, Cottle.Value> entry in vars)
             {

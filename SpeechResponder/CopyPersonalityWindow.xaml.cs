@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel;
 using System.Windows;
-using Utilities;
 
 namespace EddiSpeechResponder
 {
@@ -15,7 +14,7 @@ namespace EddiSpeechResponder
         public string PersonalityName
         {
             get { return personalityName; }
-            set { personalityName = value;  OnPropertyChanged("PersonalityName");  }
+            set { personalityName = value; OnPropertyChanged("PersonalityName"); }
         }
         private string personalityDescription;
         public string PersonalityDescription

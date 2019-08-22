@@ -1,6 +1,6 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.IO;
-using Newtonsoft.Json;
 using Utilities;
 
 namespace EddiSpeechService
@@ -23,7 +23,7 @@ namespace EddiSpeechService
         public bool DistortOnDamage { get; set; } = true;
 
         [JsonProperty("rate")]
-        public int Rate{ get; set; } = 0;
+        public int Rate { get; set; } = 0;
 
         [JsonProperty("disablessml")]
         public bool DisableSsml { get; set; } = false;

@@ -1,7 +1,6 @@
 ﻿using Eddi;
 using EddiDataDefinitions;
 using EddiDataProviderService;
-using EddiEddpMonitor;
 using EddiEvents;
 using NetMQ;
 using NetMQ.Sockets;

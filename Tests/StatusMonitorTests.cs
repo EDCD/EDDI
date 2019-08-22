@@ -207,7 +207,7 @@ namespace UnitTests
             Assert.AreEqual(true, status.analysis_mode);
             Assert.AreEqual("saa mode", status.gui_focus);
         }
-        
+
         [TestMethod]
         public void TestParseStatusFlagsNightMode()
         {

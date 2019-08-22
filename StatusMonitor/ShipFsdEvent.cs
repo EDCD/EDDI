@@ -1,5 +1,4 @@
-﻿using EddiEvents;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 

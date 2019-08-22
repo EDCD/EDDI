@@ -1,15 +1,14 @@
-﻿using System;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
-using System.Text.RegularExpressions;
-using Utilities;
 using System.ComponentModel;
-using System.Text;
 using System.IO;
 using System.IO.Compression;
-using System.Linq;
 using System.Runtime.Serialization;
-using Newtonsoft.Json.Linq;
+using System.Text;
+using System.Text.RegularExpressions;
+using Utilities;
 
 namespace EddiDataDefinitions
 {
@@ -43,7 +42,7 @@ namespace EddiDataDefinitions
 
         /// <summary>the total tonnage cargo capacity</summary>
         public int cargocapacity { get; set; }
- 
+
         private long _value;
         /// <summary>the value of the ship without cargo, in credits</summary>
         public long value
@@ -186,7 +185,7 @@ namespace EddiDataDefinitions
         [OnDeserialized]
         private void OnDeserialized(StreamingContext context)
         {
-            if(Role == null) // legacy shipmonitor JSON
+            if (Role == null) // legacy shipmonitor JSON
             {
                 string roleName = (string)additionalJsonData["role"];
                 Role = Role.FromEDName(roleName) ?? Role.FromName(roleName);
@@ -208,7 +207,8 @@ namespace EddiDataDefinitions
         /// The raw JSON from the companion API for this ship
         /// </summary>
         private string _raw;
-        public string raw {
+        public string raw
+        {
             get
             {
                 return _raw;
@@ -216,7 +216,7 @@ namespace EddiDataDefinitions
             set
             {
                 if (_raw != value)
-                { 
+                {
                     _raw = value;
                     NotifyPropertyChanged("RawIsNotNull");
                 }

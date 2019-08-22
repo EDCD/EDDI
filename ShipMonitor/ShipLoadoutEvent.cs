@@ -46,7 +46,7 @@ namespace EddiShipMonitor
         public decimal hullhealth { get; private set; }
         public bool hot { get; private set; }
         public string paintjob { get; private set; }
-        public List<Hardpoint> hardpoints { get; private set;  }
+        public List<Hardpoint> hardpoints { get; private set; }
         public List<Compartment> compartments { get; private set; }
 
         // Not intended to be user facing
