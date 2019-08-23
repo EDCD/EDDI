@@ -15,6 +15,7 @@ namespace EddiInaraService
         public string commanderName { get; private set; }
         public string commanderFrontierID { get; private set; }
         private string apiKey { get; set; }
+        public DateTime lastSync { get; set; }
 
         private const string readonlyAPIkey = "9efrgisivgw8kksoosowo48kwkkw04skwcgo840";
 
@@ -169,15 +170,16 @@ namespace EddiInaraService
             if (queue.Count > 0)
             {
                 await Task.Run(() => Instance.SendEventBatch(ref queue, inBeta));
+                Instance.lastSync = DateTime.UtcNow;
                 InaraConfiguration inaraConfiguration = InaraConfiguration.FromFile();
-                inaraConfiguration.lastSync = DateTime.UtcNow;
+                inaraConfiguration.lastSync = Instance.lastSync;
                 inaraConfiguration.ToFile();
             }
         }
 
         public void EnqueueAPIEvent(InaraAPIEvent inaraAPIEvent)
         {
-            if (!(inaraAPIEvent is null))
+            if (!(inaraAPIEvent is null) && lastSync < inaraAPIEvent.eventTimeStamp)
             {
                 Instance.queuedAPIEvents.Enqueue(inaraAPIEvent);
             }

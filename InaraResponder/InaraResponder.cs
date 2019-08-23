@@ -118,7 +118,7 @@ namespace EddiInaraResponder
             }
 
             InaraConfiguration inaraConfiguration = InaraConfiguration.FromFile();
-            if (inaraConfiguration?.lastSync > theEvent.timestamp)
+            if (InaraService.Instance?.lastSync > theEvent.timestamp)
             {
                 return;
             }
