@@ -1820,7 +1820,7 @@ namespace EddiJournalMonitor
                                 {
                                     string stationName = JsonParsing.getString(data, "StationName");
                                     string stationType = JsonParsing.getString(data, "StationType");
-                                    long marketId = JsonParsing.getLong(data, "MarketID");
+                                    long? marketId = JsonParsing.getOptionalLong(data, "MarketID");
                                     events.Add(new DockingCancelledEvent(timestamp, stationName, stationType, marketId) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
