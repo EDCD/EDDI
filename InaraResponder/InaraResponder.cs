@@ -300,6 +300,10 @@ namespace EddiInaraResponder
                         {
                             handleDockedEvent(dockedEvent);
                         }
+                        else if (theEvent is MissionAcceptedEvent missionAcceptedEvent)
+                        {
+                            handleMissionAcceptedEvent(missionAcceptedEvent);
+                        }
                     }
                 }
                 catch (Exception ex)
@@ -313,6 +317,72 @@ namespace EddiInaraResponder
                     Logging.Error("Failed to handle event " + theEvent.type, data);
                 }
             }
+        }
+
+        private void handleMissionAcceptedEvent(MissionAcceptedEvent @event)
+        {
+            IDictionary<string, object> rawMissionObj = Deserializtion.DeserializeData(@event.raw);
+            string commodity = JsonParsing.getString(rawMissionObj, "Commodity");
+            int? commodityCount = JsonParsing.getOptionalInt(rawMissionObj, "Count");
+            int? killCount = JsonParsing.getOptionalInt(rawMissionObj, "KillCount");
+            int? passengerCount = JsonParsing.getOptionalInt(rawMissionObj, "PassengerCount");
+            Dictionary<string, object> eventData = new Dictionary<string, object>()
+            {
+                { "missionName", @event.name },
+                { "missionGameID", @event.missionid },
+                { "missionExpiry", @event.expiry },
+                { "influenceGain", @event.influence },
+                { "reputationGain", @event.reputation }
+            };
+            if (EDDI.Instance.CurrentStarSystem != null)
+            {
+                eventData.Add("starsystemNameOrigin", EDDI.Instance.CurrentStarSystem?.systemname);
+            }
+            if (EDDI.Instance.CurrentStation != null)
+            {
+                eventData.Add("stationNameOrigin", EDDI.Instance.CurrentStation?.name);
+            }
+            if (!string.IsNullOrEmpty(@event.faction))
+            {
+                eventData.Add("minorfactionNameOrigin", @event.faction);
+            }
+            if (!string.IsNullOrEmpty(@event.destinationsystem))
+            {
+                eventData.Add("starsystemNameTarget", @event.destinationsystem);
+            }
+            if (!string.IsNullOrEmpty(@event.destinationstation))
+            {
+                eventData.Add("stationNameTarget", @event.destinationstation);
+            }
+            if (!string.IsNullOrEmpty(commodity))
+            {
+                eventData.Add("commodityName", commodity);
+                eventData.Add("commodityCount", commodityCount);
+            }
+            if (passengerCount > 0)
+            {
+                eventData.Add("passengerCount", passengerCount);
+                eventData.Add("passengerType", @event.passengertype);
+                eventData.Add("passengerIsVIP", @event.passengervips);
+                eventData.Add("passengerIsWanted", @event.passengerwanted);
+            }
+            if (killCount > 0)
+            {
+                eventData.Add("killCount", killCount);
+            }
+            if (!string.IsNullOrEmpty(@event.target))
+            {
+                eventData.Add("targetName", @event.target);
+            }
+            if (!string.IsNullOrEmpty(@event.targettype))
+            {
+                eventData.Add("targetType", @event.targettype);
+            }
+            if (!string.IsNullOrEmpty(@event.targetfaction))
+            {
+                eventData.Add("minorfactionNameTarget", @event.targetfaction);
+            }
+            InaraService.Instance.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "addCommanderMission", eventData));
         }
 
         private void handleDockedEvent(DockedEvent @event)
