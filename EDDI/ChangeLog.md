@@ -2,6 +2,12 @@
 
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
+### 3.4.3-b1
+  * Core
+    * Reinstated the `Glide` event.
+  * Speech responder
+    * Fixed display artefacts on the priority column when scrolling.
+
 ### 3.4.2
   * Core
 	* Fixed issues around navigation routing, including the `Jumped` script not updating correctly.
