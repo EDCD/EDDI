@@ -186,7 +186,7 @@
     <comment>Module Cockpit</comment>
   </data>
   <data name="CollectorLimpetController" xml:space="preserve">
-    <value>Controllore Automi di Raccolta</value>
+    <value>Controllore Droni di Raccolta</value>
     <comment>Module CollectorLimpetController</comment>
   </data>
   <data name="Colouredstringlights" xml:space="preserve">
@@ -206,7 +206,7 @@
     <comment>Module DataLinkScanner</comment>
   </data>
   <data name="DecontaminationLimpetController" xml:space="preserve">
-    <value>Controllore Automi di Decontaminazione</value>
+    <value>Controllore Droni di Decontaminazione</value>
     <comment>Module DecontaminationLimpetController</comment>
   </data>
   <data name="DetailedSurfaceScanner" xml:space="preserve">
