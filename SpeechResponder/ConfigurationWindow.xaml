@@ -85,7 +85,7 @@
                 </TextBlock.Style>
             </TextBlock>
         </Grid>
-        <DataGrid Margin="0,5" IsReadOnly="True" AutoGenerateColumns="False" x:Name="scriptsData" CanUserAddRows="false" ItemsSource="{Binding Personality.Scripts}">
+        <DataGrid Margin="0,5" IsReadOnly="True" AutoGenerateColumns="False" x:Name="scriptsData" CanUserAddRows="false" ItemsSource="{Binding Personality.Scripts}" EnableRowVirtualization="False">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="{x:Static resx:SpeechResponder.header_name}" Binding="{Binding Path=Value.Name}" SortDirection="Ascending" />
                 <DataGridTemplateColumn Header="{x:Static resx:SpeechResponder.header_enabled}">
