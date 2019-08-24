@@ -474,6 +474,11 @@ namespace EddiSpeechService
             {
                 station = STATION_MODEL_FIXES[station];
             }
+            // Strip "+", "++", and "+++" from station name suffixes
+            if (station.EndsWith("+"))
+            {
+                station = station.Replace(" +++", "").Replace(" ++", "").Replace(" +", "");
+            }
             return station;
         }
 
