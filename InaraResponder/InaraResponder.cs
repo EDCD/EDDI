@@ -304,6 +304,10 @@ namespace EddiInaraResponder
                         {
                             handleMissionAcceptedEvent(missionAcceptedEvent);
                         }
+                        else if (theEvent is MissionAbandonedEvent missionAbandonedEvent)
+                        {
+                            handleMissionAbandonedEvent(missionAbandonedEvent);
+                        }
                     }
                 }
                 catch (Exception ex)
@@ -317,6 +321,16 @@ namespace EddiInaraResponder
                     Logging.Error("Failed to handle event " + theEvent.type, data);
                 }
             }
+        }
+
+        private void handleMissionAbandonedEvent(MissionAbandonedEvent @event)
+        {
+            InaraService.Instance.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "setCommanderMissionAbandoned", new Dictionary<string, object>()
+            {
+                { "missionGameID", @event.missionid }
+            }));
+
+            throw new NotImplementedException();
         }
 
         private void handleMissionAcceptedEvent(MissionAcceptedEvent @event)
