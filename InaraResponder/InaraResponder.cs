@@ -308,7 +308,10 @@ namespace EddiInaraResponder
                         {
                             handleMissionCompletedEvent(missionCompletedEvent);
                         }
-
+                        else if (theEvent is MissionFailedEvent missionFailedEvent)
+                        {
+                            handleMissionFailedEvent(missionFailedEvent);
+                        }
                     }
                 }
                 catch (Exception ex)
@@ -324,14 +327,20 @@ namespace EddiInaraResponder
             }
         }
 
+        private void handleMissionFailedEvent(MissionFailedEvent @event)
+        {
+            InaraService.Instance.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "setCommanderMissionFailed", new Dictionary<string, object>()
+            {
+                { "missionGameID", @event.missionid }
+            }));
+        }
+
         private void handleMissionAbandonedEvent(MissionAbandonedEvent @event)
         {
             InaraService.Instance.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "setCommanderMissionAbandoned", new Dictionary<string, object>()
             {
                 { "missionGameID", @event.missionid }
             }));
-
-            throw new NotImplementedException();
         }
 
         private void handleMissionAcceptedEvent(MissionAcceptedEvent @event)
