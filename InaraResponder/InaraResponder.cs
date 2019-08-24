@@ -224,10 +224,6 @@ namespace EddiInaraResponder
                         {
                             handleSearchAndRescueEvent(searchAndRescueEvent);
                         }
-                        else if (theEvent is MissionCompletedEvent missionCompletedEvent)
-                        {
-                            handleMissionCompletedEvent(missionCompletedEvent);
-                        }
                         else if (theEvent is MaterialInventoryEvent materialInventoryEvent)
                         {
                             handleMaterialInventoryEvent(materialInventoryEvent);
@@ -308,6 +304,11 @@ namespace EddiInaraResponder
                         {
                             handleMissionAbandonedEvent(missionAbandonedEvent);
                         }
+                        else if (theEvent is MissionCompletedEvent missionCompletedEvent)
+                        {
+                            handleMissionCompletedEvent(missionCompletedEvent);
+                        }
+
                     }
                 }
                 catch (Exception ex)
@@ -1123,7 +1124,6 @@ namespace EddiInaraResponder
             // rewards).
             if (@event.permitsawarded.Count > 0)
             {
-                Dictionary<string, object> eventData = new Dictionary<string, object>();
                 foreach (string systemName in @event.permitsawarded)
                 {
                     if (string.IsNullOrEmpty(systemName)) { continue; }
@@ -1156,6 +1156,81 @@ namespace EddiInaraResponder
                     }));
                 }
             }
+
+            IDictionary<string, object> missionCompletedObj = Deserializtion.DeserializeData(@event.raw);
+            Dictionary<string, object> eventData = new Dictionary<string, object>() { { "missionGameID", @event.missionid } };
+            if (@event.donation > 0)
+            {
+                eventData.Add("donationCredits", @event.donation);
+            }
+            if (@event.reward > 0)
+            {
+                eventData.Add("rewardCredits", @event.reward);
+            }
+            if (@event.permitsawarded.Count > 0)
+            {
+                eventData.Add("rewardPermits", @event.permitsawarded);
+            }
+            if (@event.commodityrewards.Count > 0)
+            {
+                List<Dictionary<string, object>> rewardCommodities = new List<Dictionary<string, object>>();
+                missionCompletedObj.TryGetValue("CommodityReward", out object commodityRewardVal);
+                foreach (Dictionary<string, object> commodityRewardData in (List<object>)commodityRewardVal)
+                {
+                    string commodityName = JsonParsing.getString(commodityRewardData, "Name");
+                    int commodityCount = JsonParsing.getInt(commodityRewardData, "Count");
+                    rewardCommodities.Add(new Dictionary<string, object>()
+                    {
+                        { "itemName", commodityName },
+                        { "itemCount", commodityCount }
+                    });
+                }
+                eventData.Add("rewardCommodities", rewardCommodities);
+            }
+            if (@event.materialsrewards.Count > 0)
+            {
+                List<Dictionary<string, object>> rewardMaterials = new List<Dictionary<string, object>>();
+                missionCompletedObj.TryGetValue("MaterialsReward", out object materialsRewardVal);
+                foreach (Dictionary<string, object> materialRewardData in (List<object>)materialsRewardVal)
+                {
+                    string materialName = JsonParsing.getString(materialRewardData, "Name");
+                    int materialCount = JsonParsing.getInt(materialRewardData, "Count");
+                    rewardMaterials.Add(new Dictionary<string, object>()
+                    {
+                        { "itemName", materialName },
+                        { "itemCount", materialCount }
+                    });
+                }
+                eventData.Add("rewardMaterials", rewardMaterials);
+            }
+            missionCompletedObj.TryGetValue("FactionEffects", out object factionEffectsVal);
+            if (factionEffectsVal is List<object> factionEffects)
+            {
+                List<Dictionary<string, object>> minorfactionEffects = new List<Dictionary<string, object>>();
+                foreach (Dictionary<string, object> factionEffect in factionEffects)
+                {
+                    string factionName = JsonParsing.getString(factionEffect, "Faction");
+                    Dictionary<string, object> minorfactionEffect = new Dictionary<string, object>() { { "minorfactionName", factionName } };
+                    factionEffect.TryGetValue("Effect", out object effectsVal);
+                    if (effectsVal is List<object> effects)
+                    {
+                        foreach (Dictionary<string, object> effect in effects)
+                        {
+                            effect.TryGetValue("Influence", out object influenceVal);
+                            if (influenceVal is Dictionary<string, object> influenceData)
+                            {
+                                string influence = JsonParsing.getString(influenceData, "Influence");
+                                minorfactionEffect.Add("influenceGain", influence);
+                            }
+                            string reputation = JsonParsing.getString(effect, "Reputation");
+                            minorfactionEffect.Add("reputationGain", reputation);
+                        }
+                    }
+                    minorfactionEffects.Add(minorfactionEffect);
+                }
+                eventData.Add("minorfactionEffects", minorfactionEffects);
+            }
+            InaraService.Instance.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "setCommanderMissionCompleted", eventData));
         }
 
         void OnApplicationExit(object sender, EventArgs e)
