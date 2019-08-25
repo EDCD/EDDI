@@ -141,16 +141,28 @@
     <value>Пояс</value>
     <comment>Body Type "Belt"</comment>
   </data>
-  
+  <data name="None" xml:space="preserve">
+    <value>Тело</value>
+    <comment>None</comment>
+  </data>
   <data name="Station" xml:space="preserve">
     <value>Станция</value>
     <comment>BodyType "Station"</comment>
   </data>
-  
+  <data name="Null" xml:space="preserve">
+    <value>Тело</value>
+    <comment>BodyType "Null"</comment>
+  </data>
   <data name="PlanetaryRing" xml:space="preserve">
     <value>Кольцо планеты</value>
     <comment>Body Type PlanetaryRing</comment>
   </data>
-  
-  
+  <data name="Moon" xml:space="preserve">
+    <value>Луна</value>
+    <comment>Body Type "Moon"</comment>
+  </data>
+  <data name="StellarRing" xml:space="preserve">
+    <value>Кольца</value>
+    <comment>Body Type StellarRing</comment>
+  </data>
 </root>
