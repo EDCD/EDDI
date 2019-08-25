@@ -1265,10 +1265,12 @@ namespace Eddi
 
         private bool eventMarket(MarketEvent theEvent)
         {
-            if (allowMarketUpdate && CurrentStation != null && CurrentStation.marketId == theEvent.marketId)
+            if (allowMarketUpdate)
             {
                 MarketInfoReader info = MarketInfoReader.FromFile();
-                if (info != null)
+                if (info != null && info.MarketID == theEvent.marketId 
+                    && info.StarSystem == theEvent.system 
+                    && info.StationName == theEvent.station)
                 {
                     List<CommodityMarketQuote> quotes = new List<CommodityMarketQuote>();
                     foreach (MarketInfo item in info.Items)
@@ -1282,18 +1284,21 @@ namespace Eddi
 
                     if (quotes != null && info.Items.Count == quotes.Count)
                     {
-                        // Update the current station commodities
-                        allowMarketUpdate = false;
-                        CurrentStation.commodities = quotes;
-                        CurrentStation.commoditiesupdatedat = (long)DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
+                        if (CurrentStation?.marketId == theEvent.marketId)
+                        {
+                            // Update the current station commodities
+                            allowMarketUpdate = false;
+                            CurrentStation.commodities = quotes;
+                            CurrentStation.commoditiesupdatedat = (long)DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
 
-                        // Update the current station information in our backend DB
-                        Logging.Debug("Star system information updated from remote server; updating local copy");
-                        StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
+                            // Update the current station information in our backend DB
+                            Logging.Debug("Star system information updated from remote server; updating local copy");
+                            StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
+                        }
 
                         // Post an update event for new market data
                         if (theEvent.fromLoad) { return true; } // Don't fire this event when loading pre-existing logs
-                        Event @event = new MarketInformationUpdatedEvent(DateTime.UtcNow, "market");
+                        Event @event = new MarketInformationUpdatedEvent(DateTime.UtcNow, inHorizons, theEvent.system, theEvent.station, theEvent.marketId, quotes, null, null, null);
                         enqueueEvent(@event);
                     }
                     return true;
@@ -1304,10 +1309,13 @@ namespace Eddi
 
         private bool eventOutfitting(OutfittingEvent theEvent)
         {
-            if (allowOutfittingUpdate && CurrentStation != null && CurrentStation.marketId == theEvent.marketId)
+            if (allowOutfittingUpdate)
             {
                 OutfittingInfoReader info = OutfittingInfoReader.FromFile();
-                if (info.Items != null)
+                if (info.Items != null && info.MarketID == theEvent.marketId 
+                    && info.StarSystem == theEvent.system 
+                    && info.StationName == theEvent.station 
+                    && info.Horizons == Instance.inHorizons)
                 {
                     List<EddiDataDefinitions.Module> modules = new List<EddiDataDefinitions.Module>();
                     foreach (OutfittingInfo item in info.Items)
@@ -1321,18 +1329,21 @@ namespace Eddi
 
                     if (modules != null && info.Items.Count == modules.Count)
                     {
-                        // Update the current station outfitting
-                        allowOutfittingUpdate = false;
-                        CurrentStation.outfitting = modules;
-                        CurrentStation.outfittingupdatedat = (long)DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
+                        if (CurrentStation?.marketId == theEvent.marketId)
+                        {
+                            // Update the current station outfitting
+                            allowOutfittingUpdate = false;
+                            CurrentStation.outfitting = modules;
+                            CurrentStation.outfittingupdatedat = (long)DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
 
-                        // Update the current station information in our backend DB
-                        Logging.Debug("Star system information updated from remote server; updating local copy");
-                        StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
+                            // Update the current station information in our backend DB
+                            Logging.Debug("Star system information updated from remote server; updating local copy");
+                            StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
+                        }
 
                         // Post an update event for new outfitting data
                         if (theEvent.fromLoad) { return true; } // Don't fire this event when loading pre-existing logs
-                        Event @event = new MarketInformationUpdatedEvent(DateTime.UtcNow, "outfitting");
+                        Event @event = new MarketInformationUpdatedEvent(DateTime.UtcNow, inHorizons, theEvent.system, theEvent.station, theEvent.marketId, null, null, modules, null);
                         enqueueEvent(@event);
                     }
                     return true;
@@ -1343,10 +1354,13 @@ namespace Eddi
 
         private bool eventShipyard(ShipyardEvent theEvent)
         {
-            if (allowShipyardUpdate && CurrentStation != null && CurrentStation.marketId == theEvent.marketId)
+            if (allowShipyardUpdate)
             {
                 ShipyardInfoReader info = ShipyardInfoReader.FromFile();
-                if (info.PriceList != null)
+                if (info.PriceList != null && info.MarketID == theEvent.marketId 
+                    && info.StarSystem == theEvent.system 
+                    && info.StationName == theEvent.station 
+                    && info.Horizons == Instance.inHorizons)
                 {
                     List<Ship> ships = new List<Ship>();
                     foreach (ShipyardInfo item in info.PriceList)
@@ -1360,18 +1374,21 @@ namespace Eddi
 
                     if (ships != null && info.PriceList.Count == ships.Count)
                     {
-                        // Update the current station shipyard
-                        allowShipyardUpdate = false;
-                        CurrentStation.shipyard = ships;
-                        CurrentStation.shipyardupdatedat = (long)DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
+                        if (CurrentStation?.marketId == theEvent.marketId)
+                        {
+                            // Update the current station shipyard
+                            allowShipyardUpdate = false;
+                            CurrentStation.shipyard = ships;
+                            CurrentStation.shipyardupdatedat = (long)DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
 
-                        // Update the current station information in our backend DB
-                        Logging.Debug("Star system information updated from remote server; updating local copy");
-                        StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
+                            // Update the current station information in our backend DB
+                            Logging.Debug("Star system information updated from remote server; updating local copy");
+                            StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
+                        }
 
                         // Post an update event for new shipyard data
                         if (theEvent.fromLoad) { return true; } // Don't fire this event when loading pre-existing logs
-                        Event @event = new MarketInformationUpdatedEvent(DateTime.UtcNow, "shipyard");
+                        Event @event = new MarketInformationUpdatedEvent(DateTime.UtcNow, inHorizons, theEvent.system, theEvent.station, theEvent.marketId, null, null, null, ships);
                         enqueueEvent(@event);
                     }
                     return true;
@@ -2043,7 +2060,7 @@ namespace Eddi
 
                             // We don't know if we are docked or not at this point.  Fill in the data if we can, and
                             // let later systems worry about removing it if it's decided that we aren't docked
-                            if (profile.LastStation != null && profile.LastStation.systemname == CurrentStarSystem.systemname && CurrentStarSystem.stations != null)
+                            if (profile.LastStation?.systemname == CurrentStarSystem.systemname && CurrentStarSystem.stations != null)
                             {
                                 CurrentStation = CurrentStarSystem.stations.FirstOrDefault(s => s.name == profile.LastStation.name);
                                 if (CurrentStation != null)
@@ -2330,7 +2347,7 @@ namespace Eddi
                     if (profileUpdateNeeded)
                     {
                         // See if we still need this particular update
-                        if (profileStationRequired != null && (CurrentStation == null || CurrentStation.name != profileStationRequired))
+                        if ((profileStationRequired != null && (CurrentStation?.name != profileStationRequired)) || Environment != Constants.ENVIRONMENT_DOCKED)
                         {
                             Logging.Debug("No longer at requested station; giving up on update");
                             profileUpdateNeeded = false;
@@ -2345,40 +2362,48 @@ namespace Eddi
                         }
 
                         // We do need to fetch an updated profile; do so
-                        ApiTimeStamp = DateTime.UtcNow;
-                        long profileTime = (long)DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
-                        Logging.Debug("Fetching station profile");
-                        Profile profile = CompanionAppService.Instance.Station(CurrentStarSystem.systemname);
-
-                        // See if it is up-to-date regarding our requirements
-                        Logging.Debug("profileStationRequired is " + profileStationRequired + ", profile station is " + profile.LastStation.name);
-
-                        if (profileStationRequired != null && profileStationRequired == profile.LastStation.name)
+                        Profile profile = CompanionAppService.Instance?.Profile();
+                        if (profile != null)
                         {
-                            // We have the required station information
-                            Logging.Debug("Current station matches profile information; updating info");
-                            CurrentStation.commodities = profile.LastStation.commodities;
-                            CurrentStation.economyShares = profile.LastStation.economyShares;
-                            CurrentStation.prohibited = profile.LastStation.prohibited;
-                            CurrentStation.commoditiesupdatedat = profileTime;
-                            CurrentStation.outfitting = profile.LastStation.outfitting;
-                            CurrentStation.shipyard = profile.LastStation.shipyard;
-                            CurrentStation.updatedat = profileTime;
+                            if ((bool)profile.json["commander"]["docked"])
+                            {
+                                ApiTimeStamp = DateTime.UtcNow;
+                                long profileTime = (long)DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
 
-                            // Update the current station information in our backend DB
-                            Logging.Debug("Star system information updated from remote server; updating local copy");
-                            StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
+                                Logging.Debug("Fetching station profile");
+                                Profile stationProfile = CompanionAppService.Instance.Station(CurrentStarSystem.systemname);
 
-                            // Post an update event
-                            Event @event = new MarketInformationUpdatedEvent(DateTime.UtcNow, "profile");
-                            enqueueEvent(@event);
+                                // See if it is up-to-date regarding our requirements
+                                Logging.Debug("profileStationRequired is " + profileStationRequired + ", profile station is " + stationProfile.LastStation.name);
 
-                            profileUpdateNeeded = false;
-                            allowMarketUpdate = false;
-                            allowOutfittingUpdate = false;
-                            allowShipyardUpdate = false;
+                                if (profileStationRequired != null && profileStationRequired == stationProfile.LastStation.name)
+                                {
+                                    // We have the required station information
+                                    Logging.Debug("Current station matches profile information; updating info");
+                                    CurrentStation.commodities = stationProfile.LastStation.commodities;
+                                    CurrentStation.economyShares = stationProfile.LastStation.economyShares;
+                                    CurrentStation.prohibited = stationProfile.LastStation.prohibited;
+                                    CurrentStation.commoditiesupdatedat = profileTime;
+                                    CurrentStation.outfitting = stationProfile.LastStation.outfitting;
+                                    CurrentStation.shipyard = stationProfile.LastStation.shipyard;
+                                    CurrentStation.updatedat = profileTime;
 
-                            break;
+                                    // Update the current station information in our backend DB
+                                    Logging.Debug("Star system information updated from remote server; updating local copy");
+                                    StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
+
+                                    // Post an update event
+                                    Event @event = new MarketInformationUpdatedEvent(DateTime.UtcNow, inHorizons, stationProfile.CurrentStarSystem.systemname, stationProfile.LastStation.name, stationProfile.LastStation.marketId, stationProfile.LastStation.commodities, stationProfile.LastStation.prohibited, stationProfile.LastStation.outfitting, stationProfile.LastStation.shipyard);
+                                    enqueueEvent(@event);
+
+                                    profileUpdateNeeded = false;
+                                    allowMarketUpdate = false;
+                                    allowOutfittingUpdate = false;
+                                    allowShipyardUpdate = false;
+
+                                    break;
+                                }
+                            }
                         }
 
                         // No luck; sleep and try again

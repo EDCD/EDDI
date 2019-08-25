@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EddiDataDefinitions;
+using System;
 using System.Collections.Generic;
 
 namespace EddiEvents
@@ -15,12 +16,32 @@ namespace EddiEvents
         {
         }
 
-        // Update type - `market`, `outfitting`, `profile`, or `shipyard`
-        public string update { get; private set; }
+        public bool inHorizons { get; private set; }
 
-        public MarketInformationUpdatedEvent(DateTime timestamp, string update) : base(timestamp, NAME)
+        public string starSystem { get; private set; }
+
+        public string stationName { get; private set; }
+
+        public long? marketId { get; private set; }
+
+        public List<CommodityMarketQuote> commodities { get; private set; }
+
+        public List<string> prohibitedCommodities { get; private set; }
+
+        public List<Module> outfitting { get; private set; }
+
+        public List<Ship> shipyard { get; private set; }
+
+        public MarketInformationUpdatedEvent(DateTime timestamp, bool inHorizons, string starSystem, string stationName, long? marketId, List<CommodityMarketQuote> commodities, List<string> prohibitedCommodities, List<Module> outfitting, List<Ship> shipyard) : base(timestamp, NAME)
         {
-            this.update = update;
+            this.inHorizons = inHorizons;
+            this.starSystem = starSystem;
+            this.stationName = stationName;
+            this.marketId = marketId;
+            this.commodities = commodities;
+            this.prohibitedCommodities = prohibitedCommodities;
+            this.outfitting = outfitting;
+            this.shipyard = shipyard;
         }
     }
 }
