@@ -117,28 +117,52 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="add_button" xml:space="preserve">
+    <value>Добавить запись</value>
+  </data>
+  
+  <data name="add_button_text" xml:space="preserve">
+    <value>Добавить запись:</value>
+  </data>
+  <data name="blank_faction" xml:space="preserve">
+    <value>Ввести название фракции</value>
+  </data>
+  <data name="crime_monitor_desc" xml:space="preserve">
+    <value>Получение информации о ваших преступлениях.</value>
+  </data>
+  <data name="crime_monitor_name" xml:space="preserve">
+    <value>Монитор преступлений</value>
+  </data>
   
   
   
   
   
+  <data name="header_faction" xml:space="preserve">
+    <value>Фракция</value>
+  </data>
+  
+  <data name="header_station" xml:space="preserve">
+    <value>Станция</value>
+  </data>
+  <data name="header_system" xml:space="preserve">
+    <value>Система</value>
+  </data>
   
   
+  <data name="remove_button" xml:space="preserve">
+    <value>Удалить</value>
+  </data>
   
+  <data name="remove_button_text" xml:space="preserve">
+    <value>Удалить:</value>
+  </data>
   
+  <data name="update_button" xml:space="preserve">
+    <value>Обновить</value>
+  </data>
   
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="update_button_text" xml:space="preserve">
+    <value>Обновить:</value>
+  </data>
 </root>
