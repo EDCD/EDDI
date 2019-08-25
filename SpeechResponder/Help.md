@@ -214,6 +214,14 @@ Common usage of this is to provide clear callsigns and idents for ships, for exa
 
    Ship ident is {ICAO(ship.ident)}.
 
+### InaraDetails()
+
+This function will provide records from https://inara.cz for commanders with profiles on that website. Some values may be missing, depending on the completeness of the records and on the commander's sharing settings on https://inara.cz.
+
+InaraDetails() takes one argument: the name of the commander to look up on Inara.cz.
+
+Common usage of this is to provide details about other commanders. See the 'inaracmdr' object for variable details.
+
 ### JumpDetails()
 
 This function will provide jump information based on your ship loadout and current fuel level, dependent on the following types:

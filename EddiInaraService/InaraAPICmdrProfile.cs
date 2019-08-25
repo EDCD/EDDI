@@ -2,8 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EddiInaraService
 {
@@ -14,12 +12,12 @@ namespace EddiInaraService
         // Returns basic information about commander from Inara like ranks, 
         // squadron, a link to the commander's Inara profile, etc. 
 
-        public InaraCmdr GetCommanderProfile(string commanderName, bool inBeta)
+        public InaraCmdr GetCommanderProfile(string commanderName)
         {
-            return GetCommanderProfiles(new string[] { commanderName }, inBeta)?.FirstOrDefault();
+            return GetCommanderProfiles(new string[] { commanderName } )?.FirstOrDefault();
         }
 
-        public List<InaraCmdr> GetCommanderProfiles(string[] commanderNames, bool inBeta)
+        public List<InaraCmdr> GetCommanderProfiles(string[] commanderNames)
         {
             List<InaraCmdr> cmdrs = new List<InaraCmdr>();
 
@@ -31,7 +29,7 @@ namespace EddiInaraService
                     { "searchName", commanderName }
                 }));
             }
-            List<InaraResponse> responses = SendEventBatch(ref events, inBeta);
+            List<InaraResponse> responses = SendEventBatch(ref events);
             foreach (InaraResponse inaraResponse in responses)
             {
                 string jsonCmdr = JsonConvert.SerializeObject(inaraResponse.eventData);
@@ -43,31 +41,64 @@ namespace EddiInaraService
 
     public class InaraCmdr
     {
-        public int userID { get; set; }
-        public string userName { get; set; }
-        public string commanderName { get; set; }
-        public List<InaraCmdrRanks> commanderRanksPilot { get; set; }
-        public string preferredAllegianceName { get; set; }
-        public string preferredPowerName { get; set; }
-        public InaraCmdrSquadron commanderSquadron { get; set; }
-        public string preferredGameRole { get; set; }
-        public string avatarImageURL { get; set; }
-        public string inaraURL { get; set; }
+        [JsonProperty("userID")]
+        public int id { get; set; }
+
+        [JsonProperty("userName")]
+        public string username { get; set; }
+
+        [JsonProperty("commanderName")]
+        public string commandername { get; set; }
+
+        [JsonProperty("commanderRanksPilot")]
+        public List<InaraCmdrRanks> commanderranks { get; set; }
+
+        [JsonProperty("preferredAllegianceName")]
+        public string preferredallegiance { get; set; }
+
+        [JsonProperty("preferredPowerName")]
+        public string preferredpower { get; set; }
+
+        [JsonProperty("commanderSquadron")]
+        public InaraCmdrSquadron squadron { get; set; }
+
+        [JsonProperty("preferredGameRole")]
+        public string preferredrole { get; set; }
+
+        [JsonProperty("avatarImageURL")]
+        public string imageurl { get; set; }
+
+        [JsonProperty("inaraURL")]
+        public string url { get; set; }
     }
 
     public class InaraCmdrRanks
     {
-        public string rankName { get; set; }
-        public int rankValue { get; set; }
-        public double rankProgress { get; set; }
+        [JsonProperty("rankName")]
+        public string rank { get; set; }
+
+        [JsonProperty("rankValue")]
+        public int rankvalue { get; set; }
+
+        [JsonProperty("rankProgress")]
+        public double progress { get; set; }
     }
 
     public class InaraCmdrSquadron
     {
-        public int SquadronID { get; set; }
-        public string SquadronName { get; set; }
-        public int SquadronMembersCount { get; set; }
-        public string SquadronMemberRank { get; set; }
-        public string inaraURL { get; set; }
+        [JsonProperty("SquadronID")]
+        public int id { get; set; }
+
+        [JsonProperty("SquadronName")]
+        public string name { get; set; }
+
+        [JsonProperty("SquadronMembersCount")]
+        public int memberscount { get; set; }
+
+        [JsonProperty("SquadronMemberRank")]
+        public string squadronrank { get; set; }
+
+        [JsonProperty("inaraURL")]
+        public string url { get; set; }
     }
 }

@@ -9,6 +9,7 @@ using EddiCargoMonitor;
 using EddiCrimeMonitor;
 using EddiDataDefinitions;
 using EddiDataProviderService;
+using EddiInaraService;
 using EddiMaterialMonitor;
 using EddiMissionMonitor;
 using EddiNavigationService;
@@ -1128,6 +1129,19 @@ namespace EddiSpeechResponder
                 EDDI.Instance.refreshProfile(stationRefresh);
                 return "";
             }, 0, 1);
+
+            store["InaraDetails"] = new NativeFunction((values) =>
+            {
+                if (values[0].AsString is string commanderName)
+                {
+                    if (!string.IsNullOrWhiteSpace(commanderName))
+                    {
+                        InaraCmdr result = InaraService.Instance.GetCommanderProfile(commanderName);
+                        return result == null ? new ReflectionValue(new object()) : new ReflectionValue(result);
+                    }
+                }
+                return "";
+            }, 1);
 
             // Variables
             foreach (KeyValuePair<string, Cottle.Value> entry in vars)
