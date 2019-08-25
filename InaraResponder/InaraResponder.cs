@@ -364,7 +364,7 @@ namespace EddiInaraResponder
             else
             {
                 // The player escaped
-                InaraService.Instance.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "addCommanderCombatInterdicted", new Dictionary<string, object>()
+                InaraService.Instance.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "addCommanderCombatInterdictionEscape", new Dictionary<string, object>()
                 {
                     { "starsystemName", EDDI.Instance.CurrentStarSystem.systemname },
                     { "opponentName", @event.interdictor },
