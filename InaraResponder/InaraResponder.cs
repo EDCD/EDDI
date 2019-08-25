@@ -320,6 +320,10 @@ namespace EddiInaraResponder
                         {
                             handleShipInterdictionEvent(shipInterdictionEvent);
                         }
+                        else if (theEvent is KilledEvent killedEvent)
+                        {
+                            handleKilledEvent(killedEvent);
+                        }
                     }
                 }
                 catch (Exception ex)
@@ -333,6 +337,15 @@ namespace EddiInaraResponder
                     Logging.Error("Failed to handle event " + theEvent.type, data);
                 }
             }
+        }
+
+        private void handleKilledEvent(KilledEvent @event)
+        {
+            InaraService.Instance.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "addCommanderCombatKill", new Dictionary<string, object>()
+            {
+                { "starsystemName", EDDI.Instance.CurrentStarSystem.systemname },
+                { "opponentName", @event.victim }
+            }));
         }
 
         private void handleShipInterdictionEvent(ShipInterdictionEvent @event)
