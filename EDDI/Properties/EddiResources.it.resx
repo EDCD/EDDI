@@ -161,10 +161,10 @@
     <value>E' disponibile la versione {0}</value>
   </data>
   <data name="voice_test_damage" xml:space="preserve">
-    <value>Danni importanti a {0}.</value>
+    <value>Danni importanti al tuo {0}.</value>
   </data>
   <data name="voice_test_ship" xml:space="preserve">
-    <value>Ecco come suonerò usando {0}.</value>
+    <value>Ecco come suonerò nel tuo {0}.</value>
   </data>
   <data name="plugin_enabled" xml:space="preserve">
     <value>Plugin Abilitato</value>
@@ -198,7 +198,7 @@
     <value>Impossibile connettersi al server per l'aggiornamento. Qualora riaccadesse si prega di controllare il forum per appurare se sia un problema noto.</value>
   </data>
   <data name="already_running_alert_body_text" xml:space="preserve">
-    <value>E' consentita una soloa istanza di EDDI alla volta.
+    <value>E' consentita una sola istanza di EDDI alla volta.
 Si prega di chiudere l'altra istanza e riprovare.</value>
   </data>
   <data name="already_running_alert_title" xml:space="preserve">
