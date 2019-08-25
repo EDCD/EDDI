@@ -324,6 +324,10 @@ namespace EddiInaraResponder
                         {
                             handleKilledEvent(killedEvent);
                         }
+                        else if (theEvent is CommunityGoalEvent communityGoalEvent)
+                        {
+                            handleCommunityGoalEvent(communityGoalEvent);
+                        }
                     }
                 }
                 catch (Exception ex)
@@ -336,6 +340,40 @@ namespace EddiInaraResponder
                         };
                     Logging.Error("Failed to handle event " + theEvent.type, data);
                 }
+            }
+        }
+
+        private void handleCommunityGoalEvent(CommunityGoalEvent @event)
+        {
+            for (int i = 0; i < @event.cgid?.Count; i++)
+            {
+                Dictionary<string, object> cgEventData = new Dictionary<string, object>()
+                {
+                    { "communitygoalGameID", @event.cgid[i] },
+                    { "communitygoalName", @event.name[i] },
+                    { "starsystemName", @event.system[i] },
+                    { "stationName", @event.station[i] },
+                    { "goalExpiry", @event.expiryDateTime[i].ToString("yyyy-MM-ddTHH:mm:ssZ") },
+                    { "tierReached", int.Parse(@event.tier[i].Replace("Tier ", "")) },
+                    { "tierMax",int.Parse(@event.maxtier[i].Replace("Tier ", "")) },
+                    { "isCompleted", @event.iscomplete[i] },
+                    { "contributorsNum", @event.contributors[i] },
+                    { "contributionsTotal", @event.total[i] }
+                };
+                if (@event.topranksize != null)
+                {
+                    cgEventData.Add("topRankSize", @event.topranksize);
+                }
+                InaraService.Instance.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "setCommunityGoal", cgEventData));
+
+                InaraService.Instance.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "setCommanderCommunityGoalProgress", new Dictionary<string, object>()
+                {
+                    { "communitygoalGameID", @event.cgid[i] },
+                    { "contribution", @event.contribution[i] },
+                    { "percentileBand", @event.percentileband[i] },
+                    { "percentileBandReward", @event.tierreward[i] },
+                    { "isTopRank", @event.toprank[i] }
+                }));
             }
         }
 

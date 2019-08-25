@@ -2728,11 +2728,14 @@ namespace EddiJournalMonitor
                                     List<string> system = new List<string>();
                                     List<string> station = new List<string>();
                                     List<long> expiry = new List<long>();
+                                    List<DateTime> expiryDateTimes = new List<DateTime>();
                                     List<bool> iscomplete = new List<bool>();
                                     List<int> total = new List<int>();
                                     List<int> contribution = new List<int>();
                                     List<int> contributors = new List<int>();
                                     List<decimal> percentileband = new List<decimal>();
+                                    List<string> maxtier = new List<string>();
+                                    List<long?> maxtierreward = new List<long?>();
 
                                     List<int?> topranksize = new List<int?>();
                                     List<bool?> toprank = new List<bool?>();
@@ -2748,6 +2751,7 @@ namespace EddiJournalMonitor
                                         system.Add(JsonParsing.getString(goaldata, "SystemName"));
                                         station.Add(JsonParsing.getString(goaldata, "MarketName"));
                                         DateTime expiryDateTime = ((DateTime)goaldata["Expiry"]).ToUniversalTime();
+                                        expiryDateTimes.Add(expiryDateTime);
                                         long expiryseconds = (long)(expiryDateTime - timestamp).TotalSeconds;
                                         expiry.Add(expiryseconds);
                                         iscomplete.Add(JsonParsing.getBool(goaldata, "IsComplete"));
@@ -2755,6 +2759,13 @@ namespace EddiJournalMonitor
                                         contribution.Add(JsonParsing.getInt(goaldata, "PlayerContribution"));
                                         contributors.Add(JsonParsing.getInt(goaldata, "NumContributors"));
                                         percentileband.Add(JsonParsing.getDecimal(goaldata, "PlayerPercentileBand"));
+
+                                        // Top tier rewards
+
+                                        goaldata.TryGetValue("TierMax", out val);
+                                        maxtier.Add(JsonParsing.getString((Dictionary<string, object>)val, "Name"));
+                                        long? maxreward = (string)val == "" ? 0 : JsonParsing.getOptionalLong((Dictionary<string, object>)val, "Bonus");
+                                        maxtierreward.Add(maxreward);
 
                                         // If the community goal is constructed with a fixed-size top rank (ie max reward for top 10 players)
 
@@ -2764,11 +2775,12 @@ namespace EddiJournalMonitor
                                         // If the community goal has reached the first success tier
 
                                         goaldata.TryGetValue("TierReached", out val);
-                                        tier.Add((string)val);
-                                        tierreward.Add(JsonParsing.getOptionalLong(goaldata, "Bonus"));
+                                        tier.Add(JsonParsing.getString((Dictionary<string, object>)val, "Name"));
+                                        long? reward = (string)val == "" ? 0 : JsonParsing.getOptionalLong((Dictionary<string, object>)val, "Bonus");
+                                        tierreward.Add(reward);
                                     }
 
-                                    events.Add(new CommunityGoalEvent(timestamp, cgid, name, system, station, expiry, iscomplete, total, contribution, contributors, percentileband, topranksize, toprank, tier, tierreward) { raw = line, fromLoad = fromLogLoad });
+                                    events.Add(new CommunityGoalEvent(timestamp, cgid, name, system, station, expiry, expiryDateTimes, iscomplete, total, contribution, contributors, percentileband, topranksize, toprank, tier, tierreward, maxtier, maxtierreward) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
