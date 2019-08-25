@@ -170,7 +170,7 @@
     <value>Se si riscontrassero problemi con la connessione è possibile reimpostarla e riconnettersi nuovamente. Questo dovrebbe eliminare tali problemi.</value>
   </data>
   <data name="tab_tts_desc" xml:space="preserve">
-    <value>EDDI utilizza il proprio sintetizzatore vocale che elabora la voce rispettando determinate caratteristiche come i danni patiti dalla nave in uso al momento e la dimensione della sua cabina di guida. Qui è possibile modificare i vari parametri vocali.</value>
+    <value>EDDI utilizza il proprio sintetizzatore vocale che elabora le frasi in base a determinate condizioni, come i danni patiti dalla nave in uso al momento e la dimensione della sua cabina di guida. Qui è possibile modificare i vari parametri vocali.</value>
   </data>
   <data name="tab_tts_distort_label" xml:space="preserve">
     <value>Degrada la voce in base ai danni subiti dalla nave:</value>
@@ -182,7 +182,7 @@
     <value>Livello di elaborazione della voce:</value>
   </data>
   <data name="tab_tts_phonetic_speech_desc" xml:space="preserve">
-    <value>EDDI utilizza la dizione fonetica per pronunciare diverse parole non standardizzate e per gestire le pause fra le frasi. Alcune voci, spesso quelle di Microsoft, hanno dei problemi con la dizione vocale e possono bloccare o far decadere EDDI. Qualora si incontrassero problemi ascrivibili a questo caso si può provare a selezionare l'opzione qui sotto.</value>
+    <value>EDDI utilizza la dizione fonetica per pronunciare diverse parole non standardizzate e per gestire le pause fra le frasi. Alcune voci, spesso quelle di Microsoft, hanno dei problemi con la dizione vocale e possono bloccare o far crashare EDDI. Qualora si incontrassero problemi ascrivibili a questo caso si può provare a selezionare l'opzione qui sotto</value>
   </data>
   <data name="tab_tts_rate_label" xml:space="preserve">
     <value>Velocità di pronuncia:</value>
@@ -245,7 +245,7 @@
     <value>Sistema di Base:</value>
   </data>
   <data name="tab_commander_par1" xml:space="preserve">
-    <value>E' possobile fornire il nome di Sistema che si consideri come 'Base' ed anche quello di una stazione al suo interno con il medesimo intento. In questo modo le informazioni riguardanti questi particolari sistema e stazione saranno resi disponibili all'assistente di EDDI.</value>
+    <value>E' possibile fornire il nome di Sistema che si consideri come 'Base' ed anche quello di una stazione al suo interno con il medesimo intento. In questo modo le informazioni riguardanti questi particolari sistema e stazione saranno resi disponibili all'assistente di EDDI.</value>
   </data>
   <data name="tab_commander_squadron_name" xml:space="preserve">
     <value>Nome Squadriglia:</value>
