@@ -2347,7 +2347,7 @@ namespace Eddi
                     if (profileUpdateNeeded)
                     {
                         // See if we still need this particular update
-                        if ((profileStationRequired != null && (CurrentStation?.name != profileStationRequired)) || Environment != Constants.ENVIRONMENT_DOCKED)
+                        if (profileStationRequired != null && (CurrentStation?.name != profileStationRequired))
                         {
                             Logging.Debug("No longer at requested station; giving up on update");
                             profileUpdateNeeded = false;
@@ -2365,7 +2365,8 @@ namespace Eddi
                         Profile profile = CompanionAppService.Instance?.Profile();
                         if (profile != null)
                         {
-                            if ((bool)profile.json["commander"]["docked"])
+                            // If we're docked, the lastStation information is located within the lastSystem identified by the profile
+                            if ((bool)profile.json["commander"]["docked"] &&  Environment == Constants.ENVIRONMENT_DOCKED)
                             {
                                 ApiTimeStamp = DateTime.UtcNow;
                                 long profileTime = (long)DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
@@ -2373,7 +2374,11 @@ namespace Eddi
                                 Logging.Debug("Fetching station profile");
                                 Profile stationProfile = CompanionAppService.Instance.Station(CurrentStarSystem.systemname);
 
-                                // See if it is up-to-date regarding our requirements
+                                // Post an update event
+                                Event @event = new MarketInformationUpdatedEvent(DateTime.UtcNow, inHorizons, stationProfile.CurrentStarSystem.systemname, stationProfile.LastStation.name, stationProfile.LastStation.marketId, stationProfile.LastStation.commodities, stationProfile.LastStation.prohibited, stationProfile.LastStation.outfitting, stationProfile.LastStation.shipyard);
+                                enqueueEvent(@event);
+
+                                // See if we need to update our current station
                                 Logging.Debug("profileStationRequired is " + profileStationRequired + ", profile station is " + stationProfile.LastStation.name);
 
                                 if (profileStationRequired != null && profileStationRequired == stationProfile.LastStation.name)
@@ -2391,10 +2396,6 @@ namespace Eddi
                                     // Update the current station information in our backend DB
                                     Logging.Debug("Star system information updated from remote server; updating local copy");
                                     StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
-
-                                    // Post an update event
-                                    Event @event = new MarketInformationUpdatedEvent(DateTime.UtcNow, inHorizons, stationProfile.CurrentStarSystem.systemname, stationProfile.LastStation.name, stationProfile.LastStation.marketId, stationProfile.LastStation.commodities, stationProfile.LastStation.prohibited, stationProfile.LastStation.outfitting, stationProfile.LastStation.shipyard);
-                                    enqueueEvent(@event);
 
                                     profileUpdateNeeded = false;
                                     allowMarketUpdate = false;
