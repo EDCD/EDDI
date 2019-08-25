@@ -3,7 +3,7 @@ using EddiCompanionAppService;
 using EddiDataDefinitions;
 using EddiDataProviderService;
 using EddiEvents;
-using EddiSpeechService; // Used in release but not in debug.
+using EddiSpeechService;
 using Newtonsoft.Json;
 using RestSharp;
 using System;
@@ -238,6 +238,7 @@ namespace EDDNResponder
                 {
                     invalidState = true;
 #if DEBUG
+                    var _ = SpeechService.Instance; // just a dummy to stop the using statement from being pruned
 #else
                     Logging.Warn("The EDDN responder is in an invalid state and is unable to send messages.", JsonConvert.SerializeObject(this) + " Event: " + JsonConvert.SerializeObject(data));
                     SpeechService.Instance.Say(null, EddiEddnResponder.Properties.EddnResources.errPosition);
