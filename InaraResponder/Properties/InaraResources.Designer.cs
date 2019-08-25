@@ -88,7 +88,7 @@ namespace EddiInaraResponder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to To connect to Inara you need to have registered an account with them. Once you have done this you can obtain your API key by clicking on the &apos;SETTINGS&apos; shortcut in the website header and then clicking on &apos;INARA API&apos; in the left panel..
         /// </summary>
         public static string p1 {
             get {
@@ -97,7 +97,7 @@ namespace EddiInaraResponder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to Once you have entered your API key, EDDI will begin to transmit game session data to Inara..
         /// </summary>
         public static string p2 {
             get {

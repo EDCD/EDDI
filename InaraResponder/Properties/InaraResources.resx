@@ -127,9 +127,9 @@
     <value>Inara Responder</value>
   </data>
   <data name="p1" xml:space="preserve">
-    <value />
+    <value>To connect to Inara you need to have registered an account with them. Once you have done this you can obtain your API key by clicking on the 'SETTINGS' shortcut in the website header and then clicking on 'INARA API' in the left panel.</value>
   </data>
   <data name="p2" xml:space="preserve">
-    <value />
+    <value>Once you have entered your API key, EDDI will begin to transmit game session data to Inara.</value>
   </data>
 </root>
