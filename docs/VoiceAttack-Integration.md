@@ -309,66 +309,82 @@ There are a large number of events available.  Full details of the variables ava
 
 EDDI's VoiceAttack plugin allows you to access its features in your own profile.  Details of these functions are laid out below.
 
+![](../images/VoiceAttack-PluginView.jpg)
+
 ## say
 
-This function uses EDDI's voice to read a script.  
-- The script should be a text variable with the name 'Script'. 
-- The script priority is an optional integer variable with the name 'Priority'.
+This function uses EDDI's voice to read a script. It takes one mandatory and two optional parameters.
+- 'Script' (text variable) is a mandatory parameter containing the script to be read. 
+- 'Priority' (integer variable) is an optional parameter defining the priority of the invoked speech (defaults to 3).
+- 'Voice' (text variable) is an optional parameter defining the name of the voice you want to use.  Note that when you set this variable it will continue to be used until you unset it, at which point EDDI will use the voice configured in its text-to-speech settings.
 
-If you want to use a different voice to the standard one then you can set the name of the voice you want to use in a text variable with the name 'Voice'.  Note that when you set this variable it will continue to be used until you unset it, at which point EDDI will use the voice configured in its text-to-speech settings.
-
-To use this function in your own commands use the 'Execute an external plugin function' command with the plugin context set to 'say'.
+To use this function in your own commands use the 'Execute an external plugin function' command with the plugin context set to 'say' and passing the parameters described above.
 
 ## speech
 
-This function uses EDDI's voice to read a Speech Responder script.  
-- The name of the script should be a text variable with the name 'Script'.
-- The script priority is an optional integer variable with the name 'Priority'.
-
-If you want to use a different voice to the standard one then you can set the name of the voice you want to use in a text variable with the name 'Voice'.  Note that when you set this variable it will continue to be used until you unset it, at which point EDDI will use the voice configured in its text-to-speech settings.
-
-To use this function in your own commands use the 'Execute an external plugin function' command with the plugin context set to 'speech'.
+This function uses EDDI's voice to read a Speech Responder script. It takes one mandatory and two optional parameters.
+- 'Script' (text variable) is a mandatory parameter containing the name of the script to invoke. 
+- 'Priority' (integer variable) is an optional parameter defining the priority of the invoked speech (defaults to 3).
+- 'Voice' (text variable) is an optional parameter defining the name of the voice you want to use.  Note that when you set this variable it will continue to be used until you unset it, at which point EDDI will use the voice configured in its text-to-speech settings.
+ 
+To use this function in your own commands use the 'Execute an external plugin function' command with the plugin context set to 'say' and passing the parameters described above.
 
 ## shutup
 
-This function stops any active EDDI speech.
+This function stops any active EDDI speech. There are no parameters.
 
 To use this function in your own commands use the 'Execute an external plugin function' command with the plugin context set to 'shutup'.
 
 ## disablespeechresponder
 
-This function tells the speech responder to not talk unless specifically asked for information.  This lasts until either VoiceAttack is restarted or an enablespeechresponder call is made.
+This function tells the speech responder to not talk unless specifically asked for information. There are no parameters. This lasts until either VoiceAttack is restarted or an enablespeechresponder call is made.
 
 To use this function in your own commands use the 'Execute an external plugin function' command with the plugin context set to 'disablespeechresponder'.
 
 ## enablespeechresponder
 
-This function tells the speech responder to respond normally to events.
+This function tells the speech responder to respond normally to events. There are no parameters.
 
 To use this function in your own commands use the 'Execute an external plugin function' command with the plugin context set to 'enablespeechresponder'.
 
 ## setspeechresponderpersonality
 
-This function changes the speech responder's personality.  The name of the personality should be a text variable with the name 'Personality'.
+This function changes the speech responder's personality. It takes one mandatory parameter.
+- 'Personality' (text variable) is a mandatory parameter containing the name of the personality to invoke.
 
 Note that unlike enablespeechresponder and disablespeechresponder any changes made here are persistent.
 
-To use this function in your own commands use the 'Execute an external plugin function' command with the plugin context set to 'setspeechresponderpersonality'.
+To use this function in your own commands use the 'Execute an external plugin function' command with the plugin context set to 'setspeechresponderpersonality' and passing the 'Personality' parameter.
 
 ## setstate
 
-This function pushes a state variable to EDDI's internal session state, allowing it to be shared with other responders.
+This function pushes a state variable to EDDI's internal session state, allowing it to be shared with other responders. It takes two mandatory parameters.
+- 'State variable' (text variable) is a mandatory parameter containing the name of the VoiceAttack variable to store in EDDI.
+- The variable to store in EDDI (integer, boolean, decimal, or text variable), as referenced by the 'State variable' parameter.
 
-To use this function in your own commands use the 'Execute an external plugin function' command with the plugin context set to 'setstate'.  This function will read the text variable "State variable" and store the VoiceAttack variable named in there as a state variable.  For example, if you wanted to store the VoiceAttack boolean variable "Verbose" as a state variable you would:
+To use this function in your own commands use the 'Execute an external plugin function' command with the plugin context set to 'setstate' and passing the parameters described above. This function will read the text variable 'State variable' and store the VoiceAttack variable named in there as a state variable.  
 
+For example, if you wanted to store the VoiceAttack boolean variable "Verbose" as a state variable you would:
+
+    * set the boolean variable "Verbose" to the desired value
     * set the text variable "State variable" to "Verbose"
-    * call EDDI with the context set to "setstate"
+    * call EDDI with the context set to "setstate" and passing the text variable parameter "State variable"
+
+![](../images/VoiceAttack-PluginView-SetState.jpg)
 
 This function only supports integers, booleans, decimals and strings as state values.  The name of the value will be altered if necessary to ensure that it is all lower-case, and that spaces are replace by underscores.  For example, if you attempt to store a state variable "My variable" it will be stored as "my_variable".
 
-State variables are made available in VoiceAttack with the prefix 'EDDI state'.  For example, to access the text variable stored in the last paragraph you would use '{TXT:EDDI state my_variable}'.
+State variables are made available in VoiceAttack with the prefix 'EDDI state'.  For example, to access the text variable stored in the last paragraph you would use '\{TXT:EDDI state my_variable\}'.
+
+To access the same variable from within EDDI's Speech Responder, you would call '\{state.my_variable\}'.
 
 Please note that state is transient, and is purposefully not persisted beyond the running instance of EDDI.  This means that every time you start VoiceAttack the state will be empty.  Also, because EDDI responders run asynchronously and concurrently there is no guarantee that, for example, the speech responder for an event will finish before the VoiceAttack responder for an event starts (or vice versa).
 
 ## coriolis, edshipyard, eddbsystem, or eddbstation
 Looks up the current ship, the current starsystem, or the current station (as applicable). A web uri is written to {TXT: EDDI uri} and, unless {BOOL:EDDI open uri in browser} has been set to false, the uri is opened in the default browser.
+
+## inara
+Looks up a named commander on the website Inara.cz. It takes one mandatory parameter.
+- 'Name' (text variable) is a mandatory parameter containing the name of the commander to look up on Inara.cz.
+
+A web uri is written to {TXT: EDDI uri} and, unless {BOOL:EDDI open uri in browser} has been set to false, the uri is opened in the default browser.

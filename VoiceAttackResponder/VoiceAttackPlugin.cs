@@ -4,6 +4,7 @@ using EddiCrimeMonitor;
 using EddiDataDefinitions;
 using EddiDataProviderService;
 using EddiEvents;
+using EddiInaraService;
 using EddiMaterialMonitor;
 using EddiMissionMonitor;
 using EddiNavigationService;
@@ -422,12 +423,40 @@ namespace EddiVoiceAttackResponder
                     case "route":
                         InvokeRouteDetails(ref vaProxy);
                         break;
+                    case "inara":
+                        InvokeInaraProfileDetails(ref vaProxy);
+                        break;
                 }
             }
             catch (Exception e)
             {
                 Logging.Error("Failed to invoke context " + vaProxy.Context, e);
                 vaProxy.WriteToLog("Failed to invoke context " + vaProxy.Context, "red");
+            }
+        }
+
+        private static void InvokeInaraProfileDetails(ref dynamic vaProxy)
+        {
+            string commanderName = vaProxy.GetText("Name");
+            if (commanderName == null)
+            {
+                return;
+            }
+            try
+            {
+                InaraCmdr profile = InaraService.Instance.GetCommanderProfile(commanderName);
+                if (profile != null)
+                {
+                    OpenOrStoreURI(ref vaProxy, profile.url);
+                }
+                else
+                {
+                    Logging.Debug("No information on commander " + commanderName);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logging.Warn("Failed to obtain Inara details on commander " + commanderName, ex);
             }
         }
 
