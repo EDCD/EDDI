@@ -44,4 +44,6 @@ EDSM - If you have registered with the Elite Dangerous Star Map (“EDSM”) (https:
 
 Coriolis / EDShipyard - If you choose to export your ship loadout data to a third party service like Coriolis or EDShipyard, the app will transmit ship loadout and livery data. Personally identifiable information like your in-game “Cmdr” name, in-game location, etc. will not be transferred.
 
+Inara - If you have registered with the Inara website (https://inara.cz) and provide this app with appropriate credentials from this service, this app can transmit your Commander details to the Inara website. You can control how much of this information is visible to other people via your Inara website settings (https://inara.cz/settings/).
+
 VoiceAttack - If you are running the app as a plugin for VoiceAttack, this app will register appropriate variables in the VoiceAttack app which may include your Commander details. These variables are not persistent / stored between sessions of the VoiceAttack app.
