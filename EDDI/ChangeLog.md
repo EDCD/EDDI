@@ -17,6 +17,8 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Updated the `System report` script to enhance the description of powerplay status.
     * Updated the `Engineer progressed` event to stay silent by default when written at startup (with empty values, signaling that engineer data has been loaded).
     * Updated the `Bodies mapped` script to correct a typo.
+  * VoiceAttack responder
+    * Added new plugin function `inara`, allowing commanders to look up the Inara profiles of other commanders in their browsers.
 
 ### 3.4.3-b2
   * Core
