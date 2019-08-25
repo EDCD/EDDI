@@ -21,6 +21,7 @@ namespace EddiInaraResponder
     {
         private Thread updateThread;
         private bool bgSyncRunning;
+
         public string ResponderName()
         {
             return Properties.InaraResources.ResourceManager.GetString("name", CultureInfo.InvariantCulture);
@@ -117,7 +118,6 @@ namespace EddiInaraResponder
                 return;
             }
 
-            InaraConfiguration inaraConfiguration = InaraConfiguration.FromFile();
             if (InaraService.Instance?.lastSync > theEvent.timestamp)
             {
                 return;
