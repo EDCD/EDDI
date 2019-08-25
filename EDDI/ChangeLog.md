@@ -3,6 +3,8 @@
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
 ### Development
+  * Core
+    * Added new `Inara Responder`.
   * Speech responder
     * The `Location` and `Jumped` events contain new properties `power` and `powerstate`. 
     * Fixed a bug with speech queues that could in some circumstances cause EDDI to crash in the middle of combat.
