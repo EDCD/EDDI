@@ -42,12 +42,12 @@ namespace Apitests
         public void TestGetCmdrProfiles()
         {
             List<InaraCmdr> inaraCmdrs = InaraService.Instance
-                .GetCommanderProfiles(new string[] { "No such name", "Artie" }, true);
+                .GetCommanderProfiles(new string[] { "No such name", "Artie" });
             Assert.AreEqual(1, inaraCmdrs.Count);
-            Assert.AreEqual("Artie", inaraCmdrs[0].userName);
-            Assert.AreEqual(1, inaraCmdrs[0].userID);
-            Assert.AreEqual("Artie", inaraCmdrs[0].commanderName);
-            Assert.AreEqual(@"https://inara.cz/cmdr/1/", inaraCmdrs[0].inaraURL);
+            Assert.AreEqual("Artie", inaraCmdrs[0].username);
+            Assert.AreEqual(1, inaraCmdrs[0].id);
+            Assert.AreEqual("Artie", inaraCmdrs[0].commandername);
+            Assert.AreEqual(@"https://inara.cz/cmdr/1/", inaraCmdrs[0].url);
         }
     }
 }
