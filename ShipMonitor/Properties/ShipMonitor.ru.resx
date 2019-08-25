@@ -210,5 +210,7 @@
     <value>Горячий</value>
     <comment>Ship is Hot</comment>
   </data>
-  
+  <data name="p5" xml:space="preserve">
+    <value>EDDI может экспортировать данные вашего корабля на Coriolis или EDShipyard (сторонние инструменты). Выберите инструмент, который вы предпочитаете.</value>
+  </data>
 </root>
