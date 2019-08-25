@@ -21,8 +21,9 @@ namespace EddiInaraService
 
         private ConcurrentQueue<InaraAPIEvent> queuedAPIEvents { get; set; } = new ConcurrentQueue<InaraAPIEvent>();
 
-        public InaraService(string apikey, string commandername = null, string commanderfrontierID = null)
+        public InaraService(DateTime lastSync, string apikey, string commandername = null, string commanderfrontierID = null)
         {
+            this.lastSync = lastSync;
             apiKey = apikey?.Trim();
             commanderName = commandername?.Trim();
             commanderFrontierID = commanderfrontierID;
@@ -50,21 +51,22 @@ namespace EddiInaraService
                             // commanderFrontierID: Commander's unique Frontier ID (is provided by journals since 3.3)
                             // in the format: 'F123456'. When not known, set nothing.
                             string commanderFrontierID = inaraCredentials?.commanderFrontierID;
+                            DateTime lastSync = inaraCredentials.lastSync;
                             if (!string.IsNullOrEmpty(inaraCredentials.apiKey) && !string.IsNullOrEmpty(commanderName))
                             {
-                                instance = new InaraService(inaraCredentials.apiKey ?? readonlyAPIkey, commanderName, commanderFrontierID);
+                                instance = new InaraService(lastSync, inaraCredentials.apiKey ?? readonlyAPIkey, commanderName, commanderFrontierID);
                                 Logging.Info("Configuring EDDI access to Inara profile data");
                             }
                             else
                             {
-                                instance = new InaraService(readonlyAPIkey);
+                                instance = new InaraService(lastSync, readonlyAPIkey);
                                 if (string.IsNullOrEmpty(inaraCredentials.apiKey))
                                 {
                                     Logging.Warn("Configuring Inara service for limited access: API key not set.");
                                 }
                                 if (string.IsNullOrEmpty(commanderName))
                                 {
-                                    Logging.Warn("Configuring Inara service for limited access: Commander name not set.");
+                                    Logging.Warn("Configuring Inara service for limited access: Commander name not detected.");
                                 }
                             }
                         }
