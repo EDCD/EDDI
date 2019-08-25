@@ -12,6 +12,8 @@ Full details of the variables available for each noted event, and VoiceAttack in
 
 ### 3.4.3
 ### Development
+  * Core
+    * Added new `Inara Responder`.
   * Speech responder
     * The `Location` and `Jumped` events contain new properties `power` and `powerstate`. 
     * Fixed a bug with speech queues that could in some circumstances cause EDDI to crash in the middle of combat.
