@@ -735,6 +735,19 @@ namespace EddiInaraResponder
         private void handleDiedEvent(DiedEvent @event)
         {
             InaraService.Instance.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "setCommanderInventoryCargo", new List<Dictionary<string, object>>()));
+            Dictionary<string, object> diedEventData = new Dictionary<string, object>()
+            {
+                { "starsystemName", EDDI.Instance.CurrentStarSystem.systemname }
+            };
+            if (@event.commanders?.Count > 1)
+            {
+                diedEventData.Add("wingOpponentNames", @event.commanders);
+            }
+            else if (@event.commanders?.Count == 1)
+            {
+                diedEventData.Add("opponentName", @event.commanders[0]);
+            }
+            InaraService.Instance.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "addCommanderCombatDeath", diedEventData));
         }
 
         private void handleSearchAndRescueEvent(SearchAndRescueEvent @event)
