@@ -1196,7 +1196,6 @@ namespace EddiDataDefinitions
             "Hpt_MultiCannon_Fixed_Small_Strong", // Enforcer cannon 
             "Hpt_PulseLaser_Fixed_Medium_Disruptor", // Disruptor
         };
-
         public bool IsPowerPlay()
         {
             return PowerPlayModules.Contains(this.edname);

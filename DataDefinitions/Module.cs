@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 
 namespace EddiDataDefinitions
 {
@@ -72,6 +73,10 @@ namespace EddiDataDefinitions
         public int engineerlevel { get; set; }
         [JsonProperty]
         public decimal engineerquality { get; set; }
+        [JsonProperty]
+        public string engineerExperimentalEffectEDName { get; set; }
+        [JsonProperty]
+        public List<EngineeringModifier> modifiers { get; set; }
         [JsonIgnore]
         public string localizedModification => engineermodification?.localizedName ?? null;
 
@@ -119,6 +124,8 @@ namespace EddiDataDefinitions
             this.engineermodification = Module.engineermodification;
             this.engineerlevel = Module.engineerlevel;
             this.engineerquality = Module.engineerquality;
+            this.engineerExperimentalEffectEDName = Module.engineerExperimentalEffectEDName;
+            this.modifiers = Module.modifiers;
         }
 
         public Module(long EDID, string edname, long EDDBID, string basename, int Class, string Grade, long Value) : base(edname, basename)
@@ -159,5 +166,13 @@ namespace EddiDataDefinitions
             this.modified = false;
             ModulesByEliteID[EDID] = this;
         }
+    }
+
+    public class EngineeringModifier
+    {
+        public string EDName { get; set; }
+        public decimal currentValue { get; set; }
+        public decimal originalValue { get; set; }
+        public bool lessIsGood { get; set; }
     }
 }
