@@ -153,6 +153,7 @@ namespace EddiInaraService
         {
             if (inaraResponse.eventStatus == 200)
             {
+                // 200 - Ok
                 return true;
             }
             else
@@ -162,7 +163,17 @@ namespace EddiInaraService
                     { "InaraAPIEvent", indexedEvents.Find(e => e.eventCustomID == inaraResponse.eventCustomID) },
                     { "InaraResponse", inaraResponse }
                 };
-                Logging.Warn("Inara responded with: " + inaraResponse.eventStatusText, JsonConvert.SerializeObject(data));
+                if (inaraResponse.eventStatus == 400)
+                {
+                    // 400 - Error (you probably did something wrong, there are properties missing, etc. The event was skipped or whole batch cancelled on failed authorization.)
+                    Logging.Error("Inara responded with: " + inaraResponse.eventStatusText, JsonConvert.SerializeObject(data));
+                }
+                else
+                {
+                    // 202 - Warning (everything is OK, but there may be multiple results for the input properties, etc.)
+                    // 204 - 'Soft' error (everything was formally OK, but there are no results for the properties set, etc.)
+                    Logging.Warn("Inara responded with: " + inaraResponse.eventStatusText, JsonConvert.SerializeObject(data));
+                }
                 return false;
             }
         }
