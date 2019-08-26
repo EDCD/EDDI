@@ -9,7 +9,7 @@ namespace Eddi
     public class OutfittingInfoReader
     {
         public string timestamp { get; set; }
-        public DateTime timeStamp => DateTime.Parse("yyyy-MM-ddTHH:mm:ssZ");
+        public DateTime timeStamp => DateTime.Parse(timestamp);
         public long MarketID { get; set; }
         public string StationName { get; set; }
         public string StarSystem { get; set; }
