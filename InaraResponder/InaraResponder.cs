@@ -333,11 +333,11 @@ namespace EddiInaraResponder
                 catch (Exception ex)
                 {
                     Dictionary<string, object> data = new Dictionary<string, object>
-                        {
-                            { "event", JsonConvert.SerializeObject(theEvent) },
-                            { "exception", ex.Message },
-                            { "stacktrace", ex.StackTrace }
-                        };
+                    {
+                        { "exception", ex.Message },
+                        { "stacktrace", ex.StackTrace },
+                        { "event", JsonConvert.SerializeObject(theEvent) }
+                    };
                     Logging.Error("Failed to handle event " + theEvent.type, data);
                 }
             }
