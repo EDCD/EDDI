@@ -125,11 +125,11 @@ namespace EddiInaraService
             if (clientResponse.IsSuccessful)
             {
                 InaraResponses response = clientResponse.Data;
-                if (validateResponse(response.header))
+                if (validateResponse(response.header, ref indexedEvents))
                 {
                     foreach (InaraResponse inaraResponse in response.events)
                     {
-                        if (validateResponse(inaraResponse))
+                        if (validateResponse(inaraResponse, ref indexedEvents))
                         {
                             inaraResponses.Add(inaraResponse);
                         }
@@ -149,7 +149,7 @@ namespace EddiInaraService
             }
         }
 
-        private static bool validateResponse(InaraResponse inaraResponse)
+        private static bool validateResponse(InaraResponse inaraResponse, ref List<InaraAPIEvent> indexedEvents)
         {
             if (inaraResponse.eventStatus == 200)
             {
@@ -157,7 +157,12 @@ namespace EddiInaraService
             }
             else
             {
-                Logging.Warn("Inara responded with: " + inaraResponse.eventStatusText, JsonConvert.SerializeObject(inaraResponse.eventData));
+                Dictionary<string, object> data = new Dictionary<string, object>()
+                {
+                    { "InaraAPIEvent", indexedEvents.Find(e => e.eventCustomID == inaraResponse.eventCustomID) },
+                    { "InaraResponse", inaraResponse }
+                };
+                Logging.Warn("Inara responded with: " + inaraResponse.eventStatusText, JsonConvert.SerializeObject(data));
                 return false;
             }
         }
