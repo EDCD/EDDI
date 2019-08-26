@@ -538,15 +538,36 @@ namespace EddiJournalMonitor
                                             int? hopper = JsonParsing.getOptionalInt(moduleData, "AmmoInHopper");
 
                                             // Engineering modifications
-                                            moduleData.TryGetValue("Engineering", out val);
-                                            bool modified = val != null ? true : false;
-                                            Dictionary<string, object> engineeringData = (Dictionary<string, object>)val;
+                                            moduleData.TryGetValue("Engineering", out object engineeringVal);
+                                            bool modified = engineeringVal != null ? true : false;
+                                            Dictionary<string, object> engineeringData = (Dictionary<string, object>)engineeringVal;
                                             string blueprint = modified ? JsonParsing.getString(engineeringData, "BlueprintName") : null;
                                             long blueprintId = modified ? JsonParsing.getLong(engineeringData, "BlueprintID") : 0;
                                             int level = modified ? JsonParsing.getInt(engineeringData, "Level") : 0;
                                             Blueprint modification = Blueprint.FromEliteID(blueprintId, engineeringData)
                                                 ?? Blueprint.FromEDNameAndGrade(blueprint, level) ?? Blueprint.None;
                                             decimal quality = modified ? JsonParsing.getDecimal(engineeringData, "Quality") : 0;
+                                            string experimentalEffect = modified ? JsonParsing.getString(engineeringData, "ExperimentalEffect") : null;
+                                            List<EngineeringModifier> modifiers = new List<EngineeringModifier>();
+                                            if (modified)
+                                            {
+                                                engineeringData.TryGetValue("Modifiers", out object modifiersVal);
+                                                List<object> modifiersData = (List<object>)modifiersVal;
+                                                foreach (Dictionary<string, object> modifier in modifiersData)
+                                                {
+                                                    string edname = JsonParsing.getString(modifier, "Label");
+                                                    decimal currentValue = JsonParsing.getDecimal(modifier, "Value");
+                                                    decimal originalValue = JsonParsing.getDecimal(modifier, "OriginalValue");
+                                                    bool lessIsGood = JsonParsing.getInt(modifier, "LessIsGood") == 1 ? true : false;
+                                                    modifiers.Add(new EngineeringModifier()
+                                                    {
+                                                        EDName = edname,
+                                                        currentValue = currentValue,
+                                                        originalValue = originalValue,
+                                                        lessIsGood = lessIsGood
+                                                    });
+                                                }
+                                            }
 
                                             if (slot.Contains("Hardpoint"))
                                             {
@@ -591,6 +612,8 @@ namespace EddiJournalMonitor
                                                     module.engineermodification = modification;
                                                     module.engineerlevel = level;
                                                     module.engineerquality = quality;
+                                                    module.engineerExperimentalEffectEDName = experimentalEffect;
+                                                    module.modifiers = modifiers;
                                                     hardpoint.module = module;
                                                     hardpoints.Add(hardpoint);
                                                 }
@@ -679,14 +702,11 @@ namespace EddiJournalMonitor
                                                     Constants.baseOptimalMass.TryGetValue(fsd, out optimalMass);
                                                     if (modified)
                                                     {
-                                                        engineeringData.TryGetValue("Modifiers", out val);
-                                                        List<object> modifiersData = (List<object>)val;
-                                                        foreach (Dictionary<string, object> modifier in modifiersData)
+                                                        foreach (EngineeringModifier modifier in modifiers)
                                                         {
-                                                            string label = JsonParsing.getString(modifier, "Label");
-                                                            if (label == "FSDOptimalMass")
+                                                            if (modifier.EDName == "FSDOptimalMass")
                                                             {
-                                                                optimalMass = JsonParsing.getDecimal(modifier, "Value");
+                                                                optimalMass = modifier.currentValue;
                                                             }
                                                         }
                                                     }

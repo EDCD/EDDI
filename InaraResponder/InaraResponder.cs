@@ -568,13 +568,64 @@ namespace EddiInaraResponder
                 { "shipRebuyCost", @event.rebuy }
             };
             InaraService.Instance.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "setCommanderShip", currentShipData));
-            IDictionary<string, object> rawShipObj = Deserializtion.DeserializeData(@event.raw);
-            rawShipObj.TryGetValue("Modules", out object modulesVal);
+
+            List<Dictionary<string, object>> modulesData = new List<Dictionary<string, object>>();
+            foreach (Compartment compartment in @event.compartments)
+            {
+                Module module = compartment.module;
+                Dictionary<string, object> moduleData;
+                if (module != null)
+                {
+                    moduleData = new Dictionary<string, object>()
+                    {
+                        { "slotName", compartment.name },
+                        { "itemName", module.edname },
+                        { "itemValue", module.value },
+                        { "itemHealth", module.health / 100 }, // From 0 - 1
+                        { "isOn", module.enabled },
+                        { "isHot", module.hot },
+                        { "itemPriority", module.priority },
+                        { "itemAmmoClip", module.clipcapacity },
+                        { "itemAmmoHopper", module.hoppercapacity }
+                    };
+                    if (module.modified)
+                    {
+                        List<Dictionary<string, object>> modifiers = new List<Dictionary<string, object>>();
+                        foreach (EngineeringModifier modifier in module.modifiers)
+                        {
+                            modifiers.Add(new Dictionary<string, object>()
+                            {
+                                { "name", modifier.EDName },
+                                { "value", modifier.currentValue },
+                                { "originalValue", modifier.originalValue },
+                                { "lessIsGood", modifier.lessIsGood }
+                            });
+                        }
+                        Dictionary<string, object> engineering = new Dictionary<string, object>()
+                        {
+                            { "blueprintName", module.modificationEDName },
+                            { "blueprintLevel", module.engineerlevel },
+                            { "blueprintQuality", module.engineerquality },
+                            { "experimentalEffect", module.engineerExperimentalEffectEDName },
+                            { "modifiers", modifiers }
+                        };
+                        moduleData.Add("engineering", engineering);
+                    }
+                }
+                else
+                {
+                    moduleData = new Dictionary<string, object>()
+                    {
+                        { "slotName", compartment.name }
+                    };
+                }
+                modulesData.Add(moduleData);
+            }
             InaraService.Instance.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "setCommanderShipLoadout", new Dictionary<string, object>()
             {
                 { "shipType", @event.ship },
                 { "shipGameID", @event.shipid },
-                { "shipLoadout", modulesVal }
+                { "shipLoadout", modulesData }
             }));
         }
 
@@ -990,6 +1041,11 @@ namespace EddiInaraResponder
             List<Dictionary<string, object>> eventData = new List<Dictionary<string, object>>();
             foreach (Faction faction in factions)
             {
+                if (faction.myreputation == 0)
+                {
+                    // Skip posting updates for factions where the commander has no reputation modifier.
+                    continue;
+                }
                 eventData.Add(new Dictionary<string, object>()
                 {
                     { "minorfactionName", faction?.name },
