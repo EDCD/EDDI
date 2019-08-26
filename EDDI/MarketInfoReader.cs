@@ -1,5 +1,6 @@
 ﻿using EddiDataDefinitions;
 using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using Utilities;
 
@@ -7,6 +8,8 @@ namespace Eddi
 {
     public class MarketInfoReader
     {
+        public string timestamp { get; set; }
+        public DateTime timeStamp => DateTime.Parse("yyyy-MM-ddTHH:mm:ssZ");
         public long MarketID { get; set; }
         public string StationName { get; set; }
         public string StarSystem { get; set; }

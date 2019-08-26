@@ -633,6 +633,8 @@ namespace EddiCompanionAppService
                     debt = (long)json["commander"]["debt"]
                 };
                 Profile.Cmdr = Commander;
+                Profile.docked = (bool)json["commander"]["docked"];
+                Profile.alive = (bool)json["commander"]["alive"];
 
                 string systemName = json["lastSystem"] == null ? null : (string)json["lastSystem"]["name"];
                 if (systemName != null)

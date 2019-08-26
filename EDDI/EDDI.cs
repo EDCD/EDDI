@@ -1298,7 +1298,7 @@ namespace Eddi
 
                         // Post an update event for new market data
                         if (theEvent.fromLoad) { return true; } // Don't fire this event when loading pre-existing logs
-                        Event @event = new MarketInformationUpdatedEvent(DateTime.UtcNow, inHorizons, theEvent.system, theEvent.station, theEvent.marketId, quotes, null, null, null);
+                        Event @event = new MarketInformationUpdatedEvent(info.timeStamp, inHorizons, theEvent.system, theEvent.station, theEvent.marketId, quotes, null, null, null);
                         enqueueEvent(@event);
                     }
                     return true;
@@ -1343,7 +1343,7 @@ namespace Eddi
 
                         // Post an update event for new outfitting data
                         if (theEvent.fromLoad) { return true; } // Don't fire this event when loading pre-existing logs
-                        Event @event = new MarketInformationUpdatedEvent(DateTime.UtcNow, inHorizons, theEvent.system, theEvent.station, theEvent.marketId, null, null, modules, null);
+                        Event @event = new MarketInformationUpdatedEvent(info.timeStamp, inHorizons, theEvent.system, theEvent.station, theEvent.marketId, null, null, modules, null);
                         enqueueEvent(@event);
                     }
                     return true;
@@ -1388,7 +1388,7 @@ namespace Eddi
 
                         // Post an update event for new shipyard data
                         if (theEvent.fromLoad) { return true; } // Don't fire this event when loading pre-existing logs
-                        Event @event = new MarketInformationUpdatedEvent(DateTime.UtcNow, inHorizons, theEvent.system, theEvent.station, theEvent.marketId, null, null, null, ships);
+                        Event @event = new MarketInformationUpdatedEvent(info.timeStamp, inHorizons, theEvent.system, theEvent.station, theEvent.marketId, null, null, null, ships);
                         enqueueEvent(@event);
                     }
                     return true;
@@ -2058,13 +2058,12 @@ namespace Eddi
                             CurrentStarSystem = profile?.CurrentStarSystem;
                             setSystemDistanceFromHome(CurrentStarSystem);
 
-                            // We don't know if we are docked or not at this point.  Fill in the data if we can, and
-                            // let later systems worry about removing it if it's decided that we aren't docked
-                            if (profile.LastStation?.systemname == CurrentStarSystem.systemname && CurrentStarSystem.stations != null)
+                            if (profile.docked && profile.CurrentStarSystem?.systemname == CurrentStarSystem.systemname && CurrentStarSystem.stations != null)
                             {
                                 CurrentStation = CurrentStarSystem.stations.FirstOrDefault(s => s.name == profile.LastStation.name);
                                 if (CurrentStation != null)
                                 {
+                                    // Only set the current station if it is not present, otherwise we leave it to events
                                     Logging.Debug("Set current station to " + CurrentStation.name);
                                     CurrentStation.updatedat = profileTime;
                                     updatedCurrentStarSystem = true;
@@ -2366,7 +2365,7 @@ namespace Eddi
                         if (profile != null)
                         {
                             // If we're docked, the lastStation information is located within the lastSystem identified by the profile
-                            if ((bool)profile.json["commander"]["docked"] &&  Environment == Constants.ENVIRONMENT_DOCKED)
+                            if (profile.docked && Environment == Constants.ENVIRONMENT_DOCKED)
                             {
                                 ApiTimeStamp = DateTime.UtcNow;
                                 long profileTime = (long)DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
