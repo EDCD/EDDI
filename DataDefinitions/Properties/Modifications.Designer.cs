@@ -115,6 +115,204 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Efficient Beam Laser.
+        /// </summary>
+        internal static string BeamLaserEfficient {
+            get {
+                return ResourceManager.GetString("BeamLaserEfficient", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Light Weight Beam Laser.
+        /// </summary>
+        internal static string BeamLaserLightWeight {
+            get {
+                return ResourceManager.GetString("BeamLaserLightWeight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Long Range Beam Laser.
+        /// </summary>
+        internal static string BeamLaserLongRange {
+            get {
+                return ResourceManager.GetString("BeamLaserLongRange", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Overcharged Beam Laser.
+        /// </summary>
+        internal static string BeamLaserOvercharged {
+            get {
+                return ResourceManager.GetString("BeamLaserOvercharged", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Short Range Beam Laser.
+        /// </summary>
+        internal static string BeamLaserShortRange {
+            get {
+                return ResourceManager.GetString("BeamLaserShortRange", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sturdy Beam Laser.
+        /// </summary>
+        internal static string BeamLaserSturdy {
+            get {
+                return ResourceManager.GetString("BeamLaserSturdy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Efficient Burst Laser.
+        /// </summary>
+        internal static string BurstLaserEfficient {
+            get {
+                return ResourceManager.GetString("BurstLaserEfficient", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Focused Burst Laser.
+        /// </summary>
+        internal static string BurstLaserFocused {
+            get {
+                return ResourceManager.GetString("BurstLaserFocused", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Light Weight Burst Laser.
+        /// </summary>
+        internal static string BurstLaserLightWeight {
+            get {
+                return ResourceManager.GetString("BurstLaserLightWeight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Long Range Burst Laser.
+        /// </summary>
+        internal static string BurstLaserLongRange {
+            get {
+                return ResourceManager.GetString("BurstLaserLongRange", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Overcharged Burst Laser.
+        /// </summary>
+        internal static string BurstLaserOvercharged {
+            get {
+                return ResourceManager.GetString("BurstLaserOvercharged", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rapid Fire Burst Laser.
+        /// </summary>
+        internal static string BurstLaserRapidFire {
+            get {
+                return ResourceManager.GetString("BurstLaserRapidFire", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Short Range Burst Laser.
+        /// </summary>
+        internal static string BurstLaserShortRange {
+            get {
+                return ResourceManager.GetString("BurstLaserShortRange", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sturdy Burst Laser.
+        /// </summary>
+        internal static string BurstLaserSturdy {
+            get {
+                return ResourceManager.GetString("BurstLaserSturdy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Efficient Cannon.
+        /// </summary>
+        internal static string CannonEfficient {
+            get {
+                return ResourceManager.GetString("CannonEfficient", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to High Capacity Cannon.
+        /// </summary>
+        internal static string CannonHighCapacity {
+            get {
+                return ResourceManager.GetString("CannonHighCapacity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Light Weight Cannon.
+        /// </summary>
+        internal static string CannonLightWeight {
+            get {
+                return ResourceManager.GetString("CannonLightWeight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Long Range Cannon.
+        /// </summary>
+        internal static string CannonLongRange {
+            get {
+                return ResourceManager.GetString("CannonLongRange", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Overcharged Cannon.
+        /// </summary>
+        internal static string CannonOvercharged {
+            get {
+                return ResourceManager.GetString("CannonOvercharged", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rapid Fire Cannon.
+        /// </summary>
+        internal static string CannonRapidFire {
+            get {
+                return ResourceManager.GetString("CannonRapidFire", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Short Range Cannon.
+        /// </summary>
+        internal static string CannonShortRange {
+            get {
+                return ResourceManager.GetString("CannonShortRange", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sturdy Cannon.
+        /// </summary>
+        internal static string CannonSturdy {
+            get {
+                return ResourceManager.GetString("CannonSturdy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Fast Cargo Scanner.
         /// </summary>
         internal static string CargoScannerFastScan {
@@ -282,6 +480,69 @@ namespace EddiDataDefinitions.Properties {
         internal static string EngineTuned {
             get {
                 return ResourceManager.GetString("EngineTuned", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Double Shot Frag Cannon.
+        /// </summary>
+        internal static string FragCannonDoubleShot {
+            get {
+                return ResourceManager.GetString("FragCannonDoubleShot", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Efficient Frag Cannon.
+        /// </summary>
+        internal static string FragCannonEfficient {
+            get {
+                return ResourceManager.GetString("FragCannonEfficient", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to High Capacity Frag Cannon.
+        /// </summary>
+        internal static string FragCannonHighCapacity {
+            get {
+                return ResourceManager.GetString("FragCannonHighCapacity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Light Weight Frag Cannon.
+        /// </summary>
+        internal static string FragCannonLightWeight {
+            get {
+                return ResourceManager.GetString("FragCannonLightWeight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Overcharged Frag Cannon.
+        /// </summary>
+        internal static string FragCannonOvercharged {
+            get {
+                return ResourceManager.GetString("FragCannonOvercharged", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rapid Fire Frag Cannon.
+        /// </summary>
+        internal static string FragCannonRapidFire {
+            get {
+                return ResourceManager.GetString("FragCannonRapidFire", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sturdy Frag Cannon.
+        /// </summary>
+        internal static string FragCannonSturdy {
+            get {
+                return ResourceManager.GetString("FragCannonSturdy", resourceCulture);
             }
         }
         
@@ -556,11 +817,155 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to High Capacity Mine.
+        /// </summary>
+        internal static string MineHighCapacity {
+            get {
+                return ResourceManager.GetString("MineHighCapacity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Light Weight Mine.
+        /// </summary>
+        internal static string MineLightWeight {
+            get {
+                return ResourceManager.GetString("MineLightWeight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rapid Fire Mine.
+        /// </summary>
+        internal static string MineRapidFire {
+            get {
+                return ResourceManager.GetString("MineRapidFire", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sturdy Mine.
+        /// </summary>
+        internal static string MineSturdy {
+            get {
+                return ResourceManager.GetString("MineSturdy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Miscellaneous Light Weight.
         /// </summary>
         internal static string MiscLightWeight {
             get {
                 return ResourceManager.GetString("MiscLightWeight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to High Capacity Missile.
+        /// </summary>
+        internal static string MissileHighCapacity {
+            get {
+                return ResourceManager.GetString("MissileHighCapacity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Light Weight Missile.
+        /// </summary>
+        internal static string MissileLightWeight {
+            get {
+                return ResourceManager.GetString("MissileLightWeight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rapid Fire Missile.
+        /// </summary>
+        internal static string MissileRapidFire {
+            get {
+                return ResourceManager.GetString("MissileRapidFire", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sturdy Missile.
+        /// </summary>
+        internal static string MissileSturdy {
+            get {
+                return ResourceManager.GetString("MissileSturdy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Efficient Multi-Cannon.
+        /// </summary>
+        internal static string MulticannonEfficient {
+            get {
+                return ResourceManager.GetString("MulticannonEfficient", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to High Capacity Multi-Cannon.
+        /// </summary>
+        internal static string MulticannonHighCapacity {
+            get {
+                return ResourceManager.GetString("MulticannonHighCapacity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Light Weight Multi-Cannon.
+        /// </summary>
+        internal static string MulticannonLightWeight {
+            get {
+                return ResourceManager.GetString("MulticannonLightWeight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Long Range Multi-Cannon.
+        /// </summary>
+        internal static string MulticannonLongRange {
+            get {
+                return ResourceManager.GetString("MulticannonLongRange", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Overcharged Multi-Cannon.
+        /// </summary>
+        internal static string MulticannonOvercharged {
+            get {
+                return ResourceManager.GetString("MulticannonOvercharged", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rapid Fire Multi-Cannon.
+        /// </summary>
+        internal static string MulticannonRapidFire {
+            get {
+                return ResourceManager.GetString("MulticannonRapidFire", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Short Range Multi-Cannon.
+        /// </summary>
+        internal static string MulticannonShortRange {
+            get {
+                return ResourceManager.GetString("MulticannonShortRange", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sturdy Multi-Cannon.
+        /// </summary>
+        internal static string MulticannonSturdy {
+            get {
+                return ResourceManager.GetString("MulticannonSturdy", resourceCulture);
             }
         }
         
@@ -579,6 +984,78 @@ namespace EddiDataDefinitions.Properties {
         internal static string PAOvercharged {
             get {
                 return ResourceManager.GetString("PAOvercharged", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Efficient Plasma Accelerator.
+        /// </summary>
+        internal static string PlasmaAcceleratorEfficient {
+            get {
+                return ResourceManager.GetString("PlasmaAcceleratorEfficient", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Focused Plasma Accelerator.
+        /// </summary>
+        internal static string PlasmaAcceleratorFocused {
+            get {
+                return ResourceManager.GetString("PlasmaAcceleratorFocused", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Light Weight Plasma Accelerator.
+        /// </summary>
+        internal static string PlasmaAcceleratorLightWeight {
+            get {
+                return ResourceManager.GetString("PlasmaAcceleratorLightWeight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Long Range Plasma Accelerator.
+        /// </summary>
+        internal static string PlasmaAcceleratorLongRange {
+            get {
+                return ResourceManager.GetString("PlasmaAcceleratorLongRange", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Overcharged Plasma Accelerator.
+        /// </summary>
+        internal static string PlasmaAcceleratorOvercharged {
+            get {
+                return ResourceManager.GetString("PlasmaAcceleratorOvercharged", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rapid Fire Plasma Accelerator.
+        /// </summary>
+        internal static string PlasmaAcceleratorRapidFire {
+            get {
+                return ResourceManager.GetString("PlasmaAcceleratorRapidFire", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Short Range Plasma Accelerator.
+        /// </summary>
+        internal static string PlasmaAcceleratorShortRange {
+            get {
+                return ResourceManager.GetString("PlasmaAcceleratorShortRange", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sturdy Plasma Accelerator.
+        /// </summary>
+        internal static string PlasmaAcceleratorSturdy {
+            get {
+                return ResourceManager.GetString("PlasmaAcceleratorSturdy", resourceCulture);
             }
         }
         
@@ -723,6 +1200,123 @@ namespace EddiDataDefinitions.Properties {
         internal static string ProspectingLimpetShielded {
             get {
                 return ResourceManager.GetString("ProspectingLimpetShielded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Efficient Pulse Laser.
+        /// </summary>
+        internal static string PulseLaserEfficient {
+            get {
+                return ResourceManager.GetString("PulseLaserEfficient", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Focused Pulse Laser.
+        /// </summary>
+        internal static string PulseLaserFocused {
+            get {
+                return ResourceManager.GetString("PulseLaserFocused", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Light Weight Pulse Laser.
+        /// </summary>
+        internal static string PulseLaserLightWeight {
+            get {
+                return ResourceManager.GetString("PulseLaserLightWeight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Long Range Pulse Laser.
+        /// </summary>
+        internal static string PulseLaserLongRange {
+            get {
+                return ResourceManager.GetString("PulseLaserLongRange", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Overcharged Pulse Laser.
+        /// </summary>
+        internal static string PulseLaserOvercharged {
+            get {
+                return ResourceManager.GetString("PulseLaserOvercharged", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rapid Fire Pulse Laser.
+        /// </summary>
+        internal static string PulseLaserRapidFire {
+            get {
+                return ResourceManager.GetString("PulseLaserRapidFire", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Short Range Pulse Laser.
+        /// </summary>
+        internal static string PulseLaserShortRange {
+            get {
+                return ResourceManager.GetString("PulseLaserShortRange", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sturdy Pulse Laser.
+        /// </summary>
+        internal static string PulseLaserSturdy {
+            get {
+                return ResourceManager.GetString("PulseLaserSturdy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to High Capacity Rail Gun.
+        /// </summary>
+        internal static string RailGunHighCapacity {
+            get {
+                return ResourceManager.GetString("RailGunHighCapacity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Light Weight Rail Gun.
+        /// </summary>
+        internal static string RailGunLightWeight {
+            get {
+                return ResourceManager.GetString("RailGunLightWeight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Long Range Rail Gun.
+        /// </summary>
+        internal static string RailGunLongRange {
+            get {
+                return ResourceManager.GetString("RailGunLongRange", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Short Range Rail Gun.
+        /// </summary>
+        internal static string RailGunShortRange {
+            get {
+                return ResourceManager.GetString("RailGunShortRange", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sturdy Rail Gun.
+        /// </summary>
+        internal static string RailGunSturdy {
+            get {
+                return ResourceManager.GetString("RailGunSturdy", resourceCulture);
             }
         }
         
@@ -876,6 +1470,24 @@ namespace EddiDataDefinitions.Properties {
         internal static string SurfaceScannerExpanded {
             get {
                 return ResourceManager.GetString("SurfaceScannerExpanded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Light Weight Torpedo.
+        /// </summary>
+        internal static string TorpedoLightWeight {
+            get {
+                return ResourceManager.GetString("TorpedoLightWeight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sturdy Torpedo.
+        /// </summary>
+        internal static string TorpedoSturdy {
+            get {
+                return ResourceManager.GetString("TorpedoSturdy", resourceCulture);
             }
         }
         
