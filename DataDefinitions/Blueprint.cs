@@ -468,11 +468,11 @@ namespace EddiDataDefinitions
             var ShieldGeneratorThermic3 = new Blueprint(128673842, "ShieldGeneratorThermic3", "ShieldGeneratorThermic", 3);
             var ShieldGeneratorThermic4 = new Blueprint(128673843, "ShieldGeneratorThermic4", "ShieldGeneratorThermic", 4);
             var ShieldGeneratorThermic5 = new Blueprint(128673844, "ShieldGeneratorThermic5", "ShieldGeneratorThermic", 5);
-            var FragCannonDoubleShot1 = new Blueprint(128673435, "FragCannonDouble Shot1", "WeaponDoubleShot", 1);
-            var FragCannonDoubleShot2 = new Blueprint(128673436, "FragCannonDouble Shot2", "WeaponDoubleShot", 2);
-            var FragCannonDoubleShot3 = new Blueprint(128673437, "FragCannonDouble Shot3", "WeaponDoubleShot", 3);
-            var FragCannonDoubleShot4 = new Blueprint(128673438, "FragCannonDouble Shot4", "WeaponDoubleShot", 4);
-            var FragCannonDoubleShot5 = new Blueprint(128673439, "FragCannonDouble Shot5", "WeaponDoubleShot", 5);
+            var FragCannonDoubleShot1 = new Blueprint(128673435, "FragCannonDoubleShot1", "WeaponDoubleShot", 1);
+            var FragCannonDoubleShot2 = new Blueprint(128673436, "FragCannonDoubleShot2", "WeaponDoubleShot", 2);
+            var FragCannonDoubleShot3 = new Blueprint(128673437, "FragCannonDoubleShot3", "WeaponDoubleShot", 3);
+            var FragCannonDoubleShot4 = new Blueprint(128673438, "FragCannonDoubleShot4", "WeaponDoubleShot", 4);
+            var FragCannonDoubleShot5 = new Blueprint(128673439, "FragCannonDoubleShot5", "WeaponDoubleShot", 5);
             var BeamLaserEfficient1 = new Blueprint(128739087, "BeamLaserEfficient1", "WeaponEfficient", 1);
             var BeamLaserEfficient2 = new Blueprint(128739088, "BeamLaserEfficient2", "WeaponEfficient", 2);
             var BeamLaserEfficient3 = new Blueprint(128739089, "BeamLaserEfficient3", "WeaponEfficient", 3);
@@ -828,7 +828,7 @@ namespace EddiDataDefinitions
         public long? blueprintId { get; private set; }
 
         [JsonIgnore]
-        public List<MaterialAmount> materials => grade > 0 && grade <= blueprintTemplate?.byGrade?.Count ? blueprintTemplate?.byGrade[grade] : null;
+        public List<MaterialAmount> materials => grade > 0 && grade <= blueprintTemplate?.byGrade?.Count ? blueprintTemplate?.byGrade[grade] : new List<MaterialAmount>();
 
         // Not intended to be user facing
         public BlueprintTemplate blueprintTemplate { get; private set; }
