@@ -1622,6 +1622,15 @@
       "name": "Report last scan value",
       "description": "Informa sobre el valor estimado del último cuerpo celeste escaneado"
     },
+    "Ring hotspots detected": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "default": true,
+      "name": "Ring hotspots detected",
+      "description": "Triggered when hotspots are detected in a ring"
+    },
     "Ring mapped": {
       "enabled": true,
       "priority": 3,
@@ -2017,6 +2026,15 @@
       "default": true,
       "name": "Statistics",
       "description": "Statistics provided at the beginning of a game session"
+    },
+    "Surface signals detected": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "default": true,
+      "name": "Surface signals detected",
+      "description": "Triggered when surface signal sources are detected"
     },
     "Swapout check": {
       "enabled": true,

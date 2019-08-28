@@ -19,7 +19,7 @@ namespace EddiDataDefinitions.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class SignalSource {
@@ -66,6 +66,15 @@ namespace EddiDataDefinitions.Properties {
         public static string FIXED_EVENT_CAPSHIP {
             get {
                 return ResourceManager.GetString("FIXED-EVENT_CAPSHIP", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pirate Activity.
+        /// </summary>
+        public static string FIXED_EVENT_HIGHTHREATSCENARIO_T5 {
+            get {
+                return ResourceManager.GetString("FIXED_EVENT_HIGHTHREATSCENARIO_T5", resourceCulture);
             }
         }
         
@@ -156,6 +165,24 @@ namespace EddiDataDefinitions.Properties {
         public static string NumberStation {
             get {
                 return ResourceManager.GetString("NumberStation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Biological Surface Signal.
+        /// </summary>
+        public static string SAA_SignalType_Biological {
+            get {
+                return ResourceManager.GetString("SAA_SignalType_Biological", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Geological Surface Signal.
+        /// </summary>
+        public static string SAA_SignalType_Geological {
+            get {
+                return ResourceManager.GetString("SAA_SignalType_Geological", resourceCulture);
             }
         }
         
