@@ -43,6 +43,10 @@
             var NotableStellarPhenomenaRing = new SignalSource("Fixed_Event_Life_Ring");
 
             var CapShip = new SignalSource("FIXED_EVENT_CAPSHIP");
+            var PirateAttack = new SignalSource("FIXED_EVENT_HIGHTHREATSCENARIO_T5");
+
+            var Biological = new SignalSource("SAA_SignalType_Biological"); //Speculative
+            var Geological = new SignalSource("SAA_SignalType_Geological");
         }
 
         public static readonly SignalSource UnidentifiedSignalSource;
@@ -56,9 +60,12 @@
 
         new public static SignalSource FromEDName(string from)
         {
-            if (from.Contains("$"))
+            if (from != null)
             {
-                return ResourceBasedLocalizedEDName<SignalSource>.FromEDName(from.Replace("$", "").Replace(";", ""));
+                if (from.Contains("$"))
+                {
+                    return ResourceBasedLocalizedEDName<SignalSource>.FromEDName(from.Replace("$", "").Replace(";", ""));
+                }
             }
             return null;
         }

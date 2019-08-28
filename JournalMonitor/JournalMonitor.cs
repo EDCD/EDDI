@@ -3428,6 +3428,45 @@ namespace EddiJournalMonitor
                                 }
                                 handled = true;
                                 break;
+                            case "SAASignalsFound":
+                                {
+                                    long systemAddress = JsonParsing.getLong(data, "SystemAddress");
+                                    string bodyName = JsonParsing.getString(data, "BodyName");
+                                    long bodyId = JsonParsing.getLong(data, "BodyID");
+                                    data.TryGetValue("Signals", out object signalsVal);
+
+                                    if (bodyName.EndsWith(" Ring"))
+                                    {
+                                        // This is the mining hotspots from a ring that we've mapped
+                                        List<CommodityAmount> hotspots = new List<CommodityAmount>();
+                                        foreach (Dictionary<string, object> signal in (List<object>)signalsVal)
+                                        {
+                                            string commodityEdName = JsonParsing.getString(signal, "Type");
+                                            CommodityDefinition type = CommodityDefinition.FromEDName(commodityEdName);
+                                            type.fallbackLocalizedName = JsonParsing.getString(signal, "Type_Localised");
+                                            int amount = JsonParsing.getInt(signal, "Count");
+                                            hotspots.Add(new CommodityAmount(type, amount));
+                                        }
+                                        events.Add(new RingHotspotsEvent(timestamp, systemAddress, bodyName, bodyId, hotspots) { raw = line, fromLoad = fromLogLoad });
+                                    }
+                                    else
+                                    {
+                                        // This is surface signal sources from a body that we've mapped
+                                        List<SignalAmount> surfaceSignals = new List<SignalAmount>();
+                                        foreach (Dictionary<string, object> signal in (List<object>)signalsVal)
+                                        {
+                                            SignalSource source;
+                                            string signalSource = JsonParsing.getString(signal, "Type");
+                                            source = SignalSource.FromEDName(signalSource) ?? new SignalSource();
+                                            source.fallbackLocalizedName = JsonParsing.getString(signal, "Type_Localised") ?? signalSource;
+                                            int amount = JsonParsing.getInt(signal, "Count");
+                                            surfaceSignals.Add(new SignalAmount(source, amount));
+                                        }
+                                        events.Add(new SurfaceSignalsEvent(timestamp, systemAddress, bodyName, bodyId, surfaceSignals) { raw = line, fromLoad = fromLogLoad });
+                                    }
+                                }
+                                handled = true;
+                                break;
                             case "Commander":
                             case "DiscoveryScan":
                             case "EngineerLegacyConvert":
@@ -3446,7 +3485,6 @@ namespace EddiJournalMonitor
                             case "WingJoin":
                             case "WingLeave":
                             case "SharedBookmarkToSquadron":
-                            case "SAASignalsFound":
                                 // we silently ignore these, but forward them to the responders
                                 break;
                             default:
@@ -3687,9 +3725,10 @@ namespace EddiJournalMonitor
                 source = SignalSource.FromEDName(signalSource) ?? new SignalSource();
                 source.fallbackLocalizedName = JsonParsing.getString(data, "SignalName_Localised") ?? signalSource;
             }
-
             return source;
         }
+
+
 
         private static string npcSpeechBy(string from, string message)
         {

@@ -74,6 +74,7 @@
     <Compile Include="BlueprintTemplate.cs" />
     <Compile Include="BodyType.cs" />
     <Compile Include="CargoInfo.cs" />
+    <Compile Include="SignalAmount.cs" />
     <Compile Include="Conflict.cs" />
     <Compile Include="LoadoutDescription.cs" />
     <Compile Include="Properties\LoadoutDescription.Designer.cs">

@@ -77,6 +77,8 @@
     <Compile Include="OutfittingEvent.cs" />
     <Compile Include="RouteDetailsEvent.cs" />
     <Compile Include="ShipyardEvent.cs" />
+    <Compile Include="RingHotspotsEvent.cs" />
+    <Compile Include="SurfaceSignalsEvent.cs" />
     <Compile Include="SignalDetectedEvent.cs" />
     <Compile Include="FSSDiscoveryScanEvent.cs" />
     <Compile Include="SquadronRankEvent.cs" />

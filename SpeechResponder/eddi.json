@@ -1604,6 +1604,15 @@
       "name": "Report last scan value",
       "description": "Report the estimated value of the last body scanned"
     },
+    "Ring hotspots detected": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "default": true,
+      "name": "Ring hotspots detected",
+      "description": "Triggered when hotspots are detected in a ring"
+    },
     "Ring mapped": {
       "enabled": true,
       "priority": 3,
@@ -1990,6 +1999,15 @@
       "default": true,
       "name": "Station report",
       "description": "Function to report on the details of the current station"
+    },
+    "Surface signals detected": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "default": true,
+      "name": "Surface signals detected",
+      "description": "Triggered when surface signal sources are detected"
     },
     "Swapout check": {
       "enabled": true,
