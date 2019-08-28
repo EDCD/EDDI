@@ -8,7 +8,7 @@ namespace EddiEvents
     {
         public const string NAME = "Body mapped";
         public const string DESCRIPTION = "Triggered after mapping a body with the Surface Area Analysis scanner";
-        public const string SAMPLE = @"{ ""timestamp"":""2018-10-05T15:06:12Z"", ""event"":""SAAScanComplete"", ""BodyName"":""Eranin 5"", ""BodyID"":5, ""ProbesUsed"":6, ""EfficiencyTarget"":9 }";
+        public const string SAMPLE = @"{ ""timestamp"":""2018-10-05T15:06:12Z"", ""event"":""SAAScanComplete"", ""BodyName"":""Eranin 5"", ""BodyID"":5, ""SystemAddress"":2832631632594, ""ProbesUsed"":6, ""EfficiencyTarget"":9 }";
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
         static BodyMappedEvent()
@@ -165,11 +165,13 @@ namespace EddiEvents
         public string bodyName { get; private set; }
 
         public Body body { get; private set; }
+        public long? systemAddress { get; private set; }
 
-        public BodyMappedEvent(DateTime timestamp, string bodyName, Body body, int probesUsed, int efficiencyTarget) : base(timestamp, NAME)
+        public BodyMappedEvent(DateTime timestamp, string bodyName, Body body, long? systemAddress, int probesUsed, int efficiencyTarget) : base(timestamp, NAME)
         {
             this.bodyName = bodyName;
             this.body = body;
+            this.systemAddress = systemAddress;
             this.probesused = probesUsed;
             this.efficiencytarget = efficiencyTarget;
         }

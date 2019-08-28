@@ -2007,7 +2007,7 @@ namespace Eddi
                 {
                     CurrentStarSystem.AddOrUpdateBody(theEvent.body);
                     StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
-                    updateCurrentStellarBody(theEvent.bodyName, CurrentStarSystem?.systemname, CurrentStarSystem?.systemAddress);
+                    updateCurrentStellarBody(theEvent.bodyName, CurrentStarSystem?.systemname, theEvent?.systemAddress);
                 }
             }
             return true;
@@ -2015,7 +2015,7 @@ namespace Eddi
 
         private bool eventRingMapped(RingMappedEvent theEvent)
         {
-            updateCurrentStellarBody(theEvent.ringname, CurrentStarSystem?.systemname, CurrentStarSystem?.systemAddress);
+            updateCurrentStellarBody(theEvent.ringname, CurrentStarSystem?.systemname, theEvent.systemAddress);
             return true;
         }
 

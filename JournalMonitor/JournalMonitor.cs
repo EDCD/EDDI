@@ -2022,6 +2022,7 @@ namespace EddiJournalMonitor
                                 {
                                     string bodyName = JsonParsing.getString(data, "BodyName");
                                     long? bodyId = JsonParsing.getOptionalLong(data, "BodyID");
+                                    long? systemAddress = JsonParsing.getOptionalLong(data, "SystemAddress");
                                     int probesUsed = JsonParsing.getInt(data, "ProbesUsed");
                                     int efficiencyTarget = JsonParsing.getInt(data, "EfficiencyTarget");
 
@@ -2043,7 +2044,7 @@ namespace EddiJournalMonitor
                                                 break;
                                             }
                                         }
-                                        events.Add(new RingMappedEvent(timestamp, bodyName, ring, body, probesUsed, efficiencyTarget) { raw = line, fromLoad = fromLogLoad });
+                                        events.Add(new RingMappedEvent(timestamp, bodyName, ring, body, systemAddress, probesUsed, efficiencyTarget) { raw = line, fromLoad = fromLogLoad });
                                     }
                                     else
                                     {
@@ -2054,7 +2055,7 @@ namespace EddiJournalMonitor
                                             body.scanned = body.scanned ?? timestamp;
                                             body.mapped = timestamp;
                                             body.mappedEfficiently = probesUsed <= efficiencyTarget;
-                                            events.Add(new BodyMappedEvent(timestamp, bodyName, body, probesUsed, efficiencyTarget) { raw = line, fromLoad = fromLogLoad });
+                                            events.Add(new BodyMappedEvent(timestamp, bodyName, body, systemAddress, probesUsed, efficiencyTarget) { raw = line, fromLoad = fromLogLoad });
                                         }
                                     }
                                 }
