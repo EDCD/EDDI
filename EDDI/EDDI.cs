@@ -1966,7 +1966,7 @@ namespace Eddi
         private bool eventStarScanned(StarScannedEvent theEvent)
         {
             // We just scanned a star.  We can only proceed if we know our current star system
-            updateCurrentSystem(theEvent.star.systemname);
+            updateCurrentSystem(theEvent.star?.systemname);
             if (CurrentStarSystem == null) { return false; }
 
             Body star = CurrentStarSystem?.bodies?.Find(s => s.bodyname == theEvent.bodyname);
@@ -1982,7 +1982,7 @@ namespace Eddi
         private bool eventBodyScanned(BodyScannedEvent theEvent)
         {
             // We just scanned a body.  We can only proceed if we know our current star system
-            updateCurrentSystem(theEvent.body.systemname);
+            updateCurrentSystem(theEvent.body?.systemname);
             if (CurrentStarSystem == null) { return false; }
 
             // Add this body if it hasn't been previously added to our database, but don't
