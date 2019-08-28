@@ -2000,14 +2000,14 @@ namespace Eddi
 
         private bool eventBodyMapped(BodyMappedEvent theEvent)
         {
-            if (CurrentStarSystem != null)
+            if (CurrentStarSystem != null && theEvent.systemAddress == CurrentStarSystem?.systemAddress)
             {
                 Body body = CurrentStarSystem.bodies.Find(b => b.bodyname == theEvent.bodyName);
                 if (body?.mapped is null && !(theEvent.body is null))
                 {
                     CurrentStarSystem.AddOrUpdateBody(theEvent.body);
                     StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
-                    updateCurrentStellarBody(theEvent.bodyName, CurrentStarSystem?.systemname, theEvent?.systemAddress);
+                    updateCurrentStellarBody(theEvent.bodyName, CurrentStarSystem?.systemname, CurrentStarSystem?.systemAddress);
                 }
             }
             return true;
@@ -2015,7 +2015,10 @@ namespace Eddi
 
         private bool eventRingMapped(RingMappedEvent theEvent)
         {
-            updateCurrentStellarBody(theEvent.ringname, CurrentStarSystem?.systemname, theEvent.systemAddress);
+            if (CurrentStarSystem != null && theEvent.systemAddress == CurrentStarSystem?.systemAddress)
+            {
+                updateCurrentStellarBody(theEvent.ringname, CurrentStarSystem?.systemname, CurrentStarSystem?.systemAddress);
+            }
             return true;
         }
 
