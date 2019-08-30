@@ -110,7 +110,10 @@ namespace EddiSpeechResponder
             EDDI.Instance.SpeechResponderModalWait = true;
             editScriptWindow.ShowDialog();
             EDDI.Instance.SpeechResponderModalWait = false;
-            scriptsData.Items.Refresh();
+            if ((bool)editScriptWindow.DialogResult)
+            {
+                scriptsData.Items.Refresh();
+            }
         }
 
         private void viewScript(object sender, RoutedEventArgs e)
