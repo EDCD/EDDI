@@ -112,6 +112,7 @@ namespace EddiSpeechResponder
             EDDI.Instance.SpeechResponderModalWait = false;
             if ((bool)editScriptWindow.DialogResult)
             {
+                updateScriptsConfiguration();
                 scriptsData.Items.Refresh();
             }
         }
