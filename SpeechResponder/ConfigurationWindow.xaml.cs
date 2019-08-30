@@ -78,7 +78,13 @@ namespace EddiSpeechResponder
 
         private void eddiScriptsUpdated(object sender, RoutedEventArgs e)
         {
-            updateScriptsConfiguration();
+            if (sender is CheckBox checkbox)
+            {
+                if (checkbox.IsLoaded)
+                {
+                    updateScriptsConfiguration();
+                }
+            }
         }
 
         private void eddiScriptsUpdated(object sender, DataTransferEventArgs e)
@@ -88,9 +94,12 @@ namespace EddiSpeechResponder
 
         private void eddiScriptsUpdated(object sender, SelectionChangedEventArgs e)
         {
-            if (e.RemovedItems.Count > 0)
+            if (sender is ComboBox comboBox)
             {
-                updateScriptsConfiguration();
+                if (comboBox.IsLoaded && (comboBox.IsDropDownOpen || comboBox.IsKeyboardFocused))
+                {
+                    updateScriptsConfiguration();
+                }
             }
         }
 
