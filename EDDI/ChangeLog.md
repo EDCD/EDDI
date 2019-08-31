@@ -5,8 +5,10 @@ Full details of the variables available for each noted event, and VoiceAttack in
 ### 3.4.3-b1
   * Core
     * Reinstated the `Glide` event.
+    * Fixed a bug preventing the `Material use report` script from executing correctly. 
   * Speech responder
     * Fixed display artefacts on the priority column when scrolling.
+    * Touched up spacing irregularities in the `Material use report`.
 
 ### 3.4.2
   * Core
