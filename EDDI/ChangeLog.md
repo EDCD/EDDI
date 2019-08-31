@@ -2,6 +2,10 @@
 
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
+### 3.4.3-b2
+  * Core
+    * Removed in-process .dll accidentally included with release 3.4.3-b1.
+
 ### 3.4.3-b1
   * Core
     * Reinstated the `Glide` event.
