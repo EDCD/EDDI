@@ -63,7 +63,6 @@ namespace EddiMaterialMonitor
         {
             BindingOperations.CollectionRegistering += Inventory_CollectionRegistering;
             readMaterials();
-            populateMaterialBlueprints();
             Logging.Info("Initialised " + MonitorName() + " " + MonitorVersion());
         }
 
@@ -452,23 +451,6 @@ namespace EddiMaterialMonitor
                 foreach (MaterialAmount ma in newInventory)
                 {
                     inventory.Add(ma);
-                }
-            }
-        }
-
-        private void populateMaterialBlueprints()
-        {
-            string data = Net.DownloadString(Constants.EDDI_SERVER_URL + "materialuses.json");
-            if (data != null)
-            {
-                Dictionary<string, List<Blueprint>> blueprints = JsonConvert.DeserializeObject<Dictionary<string, List<Blueprint>>>(data);
-                foreach (KeyValuePair<string, List<Blueprint>> kv in blueprints)
-                {
-                    Material material = Material.AllOfThem.FirstOrDefault(m => m.invariantName == kv.Key);
-                    if (material != null)
-                    {
-                        material.blueprints = kv.Value;
-                    }
                 }
             }
         }

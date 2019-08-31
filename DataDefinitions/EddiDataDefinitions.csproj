@@ -536,7 +536,7 @@
     <EmbeddedResource Include="Properties\Modifications.ja.resx" />
     <EmbeddedResource Include="Properties\Modifications.pt-BR.resx" />
     <EmbeddedResource Include="Properties\Modifications.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
+      <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Modifications.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Modifications.ru.resx" />

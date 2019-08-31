@@ -227,7 +227,9 @@ namespace EddiDataDefinitions
         public static ImmutableHashSet<Material> jumponiumElements { get; } // Elements which are used for FSD injection
 
         // Blueprints for the material; 
-        public List<Blueprint> blueprints { get; set; }
+        public List<Blueprint> blueprints => Blueprint.AllOfThem
+            .Where(bp => bp.materials?.Where(ma => ma.edname == this.edname).Count() > 0)
+            .ToList();
 
         // Location of the material (localized)
         public string location => Properties.MaterialLocations.ResourceManager.GetString(edname);
