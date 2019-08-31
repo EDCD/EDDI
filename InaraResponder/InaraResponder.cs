@@ -1004,8 +1004,11 @@ namespace EddiInaraResponder
 
         private void handleLocationEvent(LocationEvent @event)
         {
-            List<Dictionary<string, object>> minorFactionData = minorFactionReputations(@event.factions);
-            InaraService.Instance.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "setCommanderReputationMinorFaction", minorFactionData));
+            List<Dictionary<string, object>> minorFactionRepData = minorFactionReputations(@event.factions);
+            if (minorFactionRepData.Count > 0)
+            {
+                InaraService.Instance.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "setCommanderReputationMinorFaction", minorFactionRepData));
+            }
             InaraService.Instance.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "setCommanderTravelLocation", new Dictionary<string, object>()
             {
                 { "starsystemName", @event.systemname },
@@ -1022,9 +1025,11 @@ namespace EddiInaraResponder
 
         private void handleJumpedEvent(JumpedEvent @event)
         {
-            List<Dictionary<string, object>> minorFactionData = minorFactionReputations(@event.factions);
-            InaraService.Instance.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "setCommanderReputationMinorFaction", minorFactionData));
-
+            List<Dictionary<string, object>> minorFactionRepData = minorFactionReputations(@event.factions);
+            if (minorFactionRepData.Count > 0)
+            {
+                InaraService.Instance.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "setCommanderReputationMinorFaction", minorFactionRepData));
+            }
             Ship currentShip = ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship Monitor")).GetCurrentShip();
             InaraService.Instance.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "addCommanderTravelFSDJump", new Dictionary<string, object>()
             {
