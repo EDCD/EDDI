@@ -3688,6 +3688,7 @@ namespace EddiJournalMonitor
                             case "CodexDiscovery":
                             case "CodexEntry":
                             case "ReservoirReplenished":
+                            case "RestockVehicle":
                             case "ProspectedAsteroid":
                             case "AsteroidCracked":
                             case "CrimeVictim":
