@@ -446,10 +446,18 @@
     <value>Effizienter Strahlenlaser</value>
   </data>
   
-  
-  
-  
-  
+  <data name="CannonEfficient" xml:space="preserve">
+    <value>Effiziente Kanone</value>
+  </data>
+  <data name="FragCannonEfficient" xml:space="preserve">
+    <value>Effiziente Splitterkanone</value>
+  </data>
+  <data name="MulticannonEfficient" xml:space="preserve">
+    <value>Effizientes Mehrfachgeschütz</value>
+  </data>
+  <data name="PlasmaAcceleratorEfficient" xml:space="preserve">
+    <value>Effizienter Plasmabeschleuniger</value>
+  </data>
   
   
   
