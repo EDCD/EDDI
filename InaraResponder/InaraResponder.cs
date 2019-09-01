@@ -355,7 +355,6 @@ namespace EddiInaraResponder
                     { "stationName", @event.station[i] },
                     { "goalExpiry", @event.expiryDateTime[i].ToString("yyyy-MM-ddTHH:mm:ssZ") },
                     { "tierReached", int.Parse(@event.tier[i].Replace("Tier ", "")) },
-                    { "tierMax",int.Parse(@event.maxtier[i].Replace("Tier ", "")) },
                     { "isCompleted", @event.iscomplete[i] },
                     { "contributorsNum", @event.contributors[i] },
                     { "contributionsTotal", @event.total[i] }
@@ -366,14 +365,17 @@ namespace EddiInaraResponder
                 }
                 InaraService.Instance.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "setCommunityGoal", cgEventData));
 
-                InaraService.Instance.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "setCommanderCommunityGoalProgress", new Dictionary<string, object>()
+                if (@event.contribution[i] > 0)
                 {
-                    { "communitygoalGameID", @event.cgid[i] },
-                    { "contribution", @event.contribution[i] },
-                    { "percentileBand", @event.percentileband[i] },
-                    { "percentileBandReward", @event.tierreward[i] },
-                    { "isTopRank", @event.toprank[i] }
-                }));
+                    InaraService.Instance.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "setCommanderCommunityGoalProgress", new Dictionary<string, object>()
+                    {
+                        { "communitygoalGameID", @event.cgid[i] },
+                        { "contribution", @event.contribution[i] },
+                        { "percentileBand", @event.percentileband[i] },
+                        { "percentileBandReward", @event.tierreward[i] },
+                        { "isTopRank", @event.toprank[i] }
+                    }));
+                }
             }
         }
 
