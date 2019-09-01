@@ -2782,10 +2782,13 @@ namespace EddiJournalMonitor
 
                                         // Top tier rewards
 
-                                        goaldata.TryGetValue("TierMax", out val);
-                                        maxtier.Add(JsonParsing.getString((Dictionary<string, object>)val, "Name"));
-                                        long? maxreward = (string)val == "" ? 0 : JsonParsing.getOptionalLong((Dictionary<string, object>)val, "Bonus");
-                                        maxtierreward.Add(maxreward);
+                                        goaldata.TryGetValue("TierMax", out object maxTierVal);
+                                        if (maxTierVal != null)
+                                        {
+                                            maxtier.Add(JsonParsing.getString((Dictionary<string, object>)maxTierVal, "Name"));
+                                            long? maxreward = (string)maxTierVal == "" ? 0 : JsonParsing.getOptionalLong((Dictionary<string, object>)maxTierVal, "Bonus");
+                                            maxtierreward.Add(maxreward);
+                                        }
 
                                         // If the community goal is constructed with a fixed-size top rank (ie max reward for top 10 players)
 
@@ -2794,10 +2797,13 @@ namespace EddiJournalMonitor
 
                                         // If the community goal has reached the first success tier
 
-                                        goaldata.TryGetValue("TierReached", out val);
-                                        tier.Add(JsonParsing.getString((Dictionary<string, object>)val, "Name"));
-                                        long? reward = (string)val == "" ? 0 : JsonParsing.getOptionalLong((Dictionary<string, object>)val, "Bonus");
-                                        tierreward.Add(reward);
+                                        goaldata.TryGetValue("TierReached", out object tierReachedVal);
+                                        if (tierReachedVal != null)
+                                        {
+                                            tier.Add(JsonParsing.getString((Dictionary<string, object>)tierReachedVal, "Name"));
+                                            long? reward = (string)tierReachedVal == "" ? 0 : JsonParsing.getOptionalLong((Dictionary<string, object>)tierReachedVal, "Bonus");
+                                            tierreward.Add(reward);
+                                        }
                                     }
 
                                     events.Add(new CommunityGoalEvent(timestamp, cgid, name, system, station, expiry, expiryDateTimes, iscomplete, total, contribution, contributors, percentileband, topranksize, toprank, tier, tierreward, maxtier, maxtierreward) { raw = line, fromLoad = fromLogLoad });
