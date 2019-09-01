@@ -395,7 +395,7 @@
     <value>Abgeschirmte Raffinerie</value>
   </data>
   <data name="SensorLightWeight" xml:space="preserve">
-    <value>Leichgewichtsensor</value>
+    <value>Leichter Sensor</value>
   </data>
   <data name="SurfaceScannerExpanded" xml:space="preserve">
     <value>Erweiterter Scannradius</value>
@@ -410,7 +410,7 @@
     <value>Weitwinkelscanner</value>
   </data>
   <data name="ECMLightWeight" xml:space="preserve">
-    <value>Leichte elektronische Gegenmaße</value>
+    <value>Leichte elektronische Gegenmaßnahme</value>
   </data>
   <data name="ECMReinforced" xml:space="preserve">
     <value>Verstärkte elektronische Gegenmaßnahmen</value>
@@ -434,7 +434,7 @@
     <value>Abgeschirmte Sammeldrohne</value>
   </data>
   <data name="MiscLightWeight" xml:space="preserve">
-    <value>Sonstiges Leichtgewicht</value>
+    <value>Sonstiger Leichtbau</value>
   </data>
   <data name="SensorExpanded" xml:space="preserve">
     <value>Erweiterter Scannradius</value>
@@ -479,37 +479,37 @@
   
   
   <data name="BeamLaserLightWeight" xml:space="preserve">
-    <value>Leichtbau Strahlenlaser</value>
+    <value>Leichter Strahlenlaser</value>
   </data>
   <data name="BurstLaserLightWeight" xml:space="preserve">
-    <value>Leichtbau Salvenlaser</value>
+    <value>Leichter Salvenlaser</value>
   </data>
   <data name="CannonLightWeight" xml:space="preserve">
-    <value>Leichtbau Kanone</value>
+    <value>Leichte Kanone</value>
   </data>
   <data name="FragCannonLightWeight" xml:space="preserve">
-    <value>Leichtbau Splitterkanone</value>
+    <value>Leichte Splitterkanone</value>
   </data>
   <data name="MineLightWeight" xml:space="preserve">
-    <value>Leichtbau-Mine</value>
+    <value>Leichte Mine</value>
   </data>
   <data name="MissileLightWeight" xml:space="preserve">
-    <value>Leichtbau Rakete</value>
+    <value>Leichte Rakete</value>
   </data>
   <data name="MulticannonLightWeight" xml:space="preserve">
-    <value>Leichtbau Mehrzweckgeschütz</value>
+    <value>Leichtes Mehrzweckgeschütz</value>
   </data>
   <data name="PlasmaAcceleratorLightWeight" xml:space="preserve">
-    <value>Leichtbau Plasmabeschleuniger</value>
+    <value>Leichter Plasmabeschleuniger</value>
   </data>
   <data name="PulseLaserLightWeight" xml:space="preserve">
-    <value>Leichtbau Pulslaser</value>
+    <value>Leichter Pulslaser</value>
   </data>
   <data name="RailGunLightWeight" xml:space="preserve">
-    <value>Leichtbau Schinenkanone</value>
+    <value>Leichte Schinenkanone</value>
   </data>
   <data name="TorpedoLightWeight" xml:space="preserve">
-    <value>Leichtbau Torpedo</value>
+    <value>Leichter Torpedo</value>
   </data>
   <data name="BeamLaserLongRange" xml:space="preserve">
     <value>Langstrecken-Strahlenlaser</value>
@@ -601,14 +601,34 @@
   <data name="BeamLaserSturdy" xml:space="preserve">
     <value>Stabiler Strahlenlaser</value>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="BurstLaserSturdy" xml:space="preserve">
+    <value>Stabiler Salvenlaser</value>
+  </data>
+  <data name="CannonSturdy" xml:space="preserve">
+    <value>Stabile Kanone</value>
+  </data>
+  <data name="FragCannonSturdy" xml:space="preserve">
+    <value>Stabile Splitterkanone</value>
+  </data>
+  <data name="MineSturdy" xml:space="preserve">
+    <value>Stabile Mine</value>
+  </data>
+  <data name="MissileSturdy" xml:space="preserve">
+    <value>Stabile Rakete</value>
+  </data>
+  <data name="MulticannonSturdy" xml:space="preserve">
+    <value>Stabiles Mehrzweckgeschütz</value>
+  </data>
+  <data name="PlasmaAcceleratorSturdy" xml:space="preserve">
+    <value>Stabiler Plasmabeschleuniger</value>
+  </data>
+  <data name="PulseLaserSturdy" xml:space="preserve">
+    <value>Stabiler Pulslaser</value>
+  </data>
+  <data name="RailGunSturdy" xml:space="preserve">
+    <value>Stabile Schinenkanone</value>
+  </data>
+  <data name="TorpedoSturdy" xml:space="preserve">
+    <value>Stabiler Torpedo</value>
+  </data>
 </root>
