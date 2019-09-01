@@ -2754,8 +2754,6 @@ namespace EddiJournalMonitor
                                     List<int> contribution = new List<int>();
                                     List<int> contributors = new List<int>();
                                     List<decimal> percentileband = new List<decimal>();
-                                    List<string> maxtier = new List<string>();
-                                    List<long?> maxtierreward = new List<long?>();
 
                                     List<int?> topranksize = new List<int?>();
                                     List<bool?> toprank = new List<bool?>();
@@ -2779,17 +2777,7 @@ namespace EddiJournalMonitor
                                         contribution.Add(JsonParsing.getInt(goaldata, "PlayerContribution"));
                                         contributors.Add(JsonParsing.getInt(goaldata, "NumContributors"));
                                         percentileband.Add(JsonParsing.getDecimal(goaldata, "PlayerPercentileBand"));
-
-                                        // Top tier rewards
-
-                                        goaldata.TryGetValue("TierMax", out object maxTierVal);
-                                        if (maxTierVal != null)
-                                        {
-                                            maxtier.Add(JsonParsing.getString((Dictionary<string, object>)maxTierVal, "Name"));
-                                            long? maxreward = (string)maxTierVal == "" ? 0 : JsonParsing.getOptionalLong((Dictionary<string, object>)maxTierVal, "Bonus");
-                                            maxtierreward.Add(maxreward);
-                                        }
-
+ 
                                         // If the community goal is constructed with a fixed-size top rank (ie max reward for top 10 players)
 
                                         topranksize.Add(JsonParsing.getOptionalInt(goaldata, "TopRankSize"));
@@ -2797,16 +2785,11 @@ namespace EddiJournalMonitor
 
                                         // If the community goal has reached the first success tier
 
-                                        goaldata.TryGetValue("TierReached", out object tierReachedVal);
-                                        if (tierReachedVal != null)
-                                        {
-                                            tier.Add(JsonParsing.getString((Dictionary<string, object>)tierReachedVal, "Name"));
-                                            long? reward = (string)tierReachedVal == "" ? 0 : JsonParsing.getOptionalLong((Dictionary<string, object>)tierReachedVal, "Bonus");
-                                            tierreward.Add(reward);
-                                        }
+                                        tier.Add(JsonParsing.getString(goaldata, "TierReached"));
+                                        tierreward.Add(JsonParsing.getOptionalLong(goaldata, "Bonus"));
                                     }
 
-                                    events.Add(new CommunityGoalEvent(timestamp, cgid, name, system, station, expiry, expiryDateTimes, iscomplete, total, contribution, contributors, percentileband, topranksize, toprank, tier, tierreward, maxtier, maxtierreward) { raw = line, fromLoad = fromLogLoad });
+                                    events.Add(new CommunityGoalEvent(timestamp, cgid, name, system, station, expiry, expiryDateTimes, iscomplete, total, contribution, contributors, percentileband, topranksize, toprank, tier, tierreward) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
