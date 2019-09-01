@@ -439,8 +439,12 @@
   <data name="SensorExpanded" xml:space="preserve">
     <value>Erweiterter Scannradius</value>
   </data>
-  
-  
+  <data name="FragCannonDoubleShot" xml:space="preserve">
+    <value>Doppelschuss-Splitterkanone</value>
+  </data>
+  <data name="BeamLaserEfficient" xml:space="preserve">
+    <value>Effizienter Strahlenlaser</value>
+  </data>
   
   
   
