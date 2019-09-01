@@ -491,46 +491,116 @@
     <value>Leichtbau Splitterkanone</value>
   </data>
   <data name="MineLightWeight" xml:space="preserve">
-    <value>Leichtbau Miene</value>
+    <value>Leichtbau-Mine</value>
   </data>
   <data name="MissileLightWeight" xml:space="preserve">
     <value>Leichtbau Rakete</value>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="MulticannonLightWeight" xml:space="preserve">
+    <value>Leichtbau Mehrzweckgeschütz</value>
+  </data>
+  <data name="PlasmaAcceleratorLightWeight" xml:space="preserve">
+    <value>Leichtbau Plasmabeschleuniger</value>
+  </data>
+  <data name="PulseLaserLightWeight" xml:space="preserve">
+    <value>Leichtbau Pulslaser</value>
+  </data>
+  <data name="RailGunLightWeight" xml:space="preserve">
+    <value>Leichtbau Schinenkanone</value>
+  </data>
+  <data name="TorpedoLightWeight" xml:space="preserve">
+    <value>Leichtbau Torpedo</value>
+  </data>
+  <data name="BeamLaserLongRange" xml:space="preserve">
+    <value>Langstrecken-Strahlenlaser</value>
+  </data>
+  <data name="BurstLaserLongRange" xml:space="preserve">
+    <value>Langstrecken-Salvenlaser</value>
+  </data>
+  <data name="CannonLongRange" xml:space="preserve">
+    <value>Langstrecken-Kanone</value>
+  </data>
+  <data name="MulticannonLongRange" xml:space="preserve">
+    <value>Langstrecken-Mehrzweckgeschütz</value>
+  </data>
+  <data name="PlasmaAcceleratorLongRange" xml:space="preserve">
+    <value>Langstrecken-Plasmabeschleuniger</value>
+  </data>
+  <data name="PulseLaserLongRange" xml:space="preserve">
+    <value>Langstrecken-Pulslaser</value>
+  </data>
+  <data name="RailGunLongRange" xml:space="preserve">
+    <value>Langstrecken-Schinenkanone</value>
+  </data>
+  <data name="BeamLaserOvercharged" xml:space="preserve">
+    <value>Überladungs-Strahlenlaser</value>
+  </data>
+  <data name="BurstLaserOvercharged" xml:space="preserve">
+    <value>Überladungs-Salvenlaser</value>
+  </data>
+  <data name="CannonOvercharged" xml:space="preserve">
+    <value>Überladungs-Kanone</value>
+  </data>
+  <data name="FragCannonOvercharged" xml:space="preserve">
+    <value>Überladungs-Splitterkanone</value>
+  </data>
+  <data name="MulticannonOvercharged" xml:space="preserve">
+    <value>Überladungs-Mehrzweckgeschütz</value>
+  </data>
+  <data name="PlasmaAcceleratorOvercharged" xml:space="preserve">
+    <value>Überladungs-Plasmabeschleuniger</value>
+  </data>
+  <data name="PulseLaserOvercharged" xml:space="preserve">
+    <value>Überladungs-Pulslaser</value>
+  </data>
+  <data name="BurstLaserRapidFire" xml:space="preserve">
+    <value>Schnellfeuer-Salvenlaser</value>
+  </data>
+  <data name="CannonRapidFire" xml:space="preserve">
+    <value>Schnellfeuer-Kanone</value>
+  </data>
+  <data name="FragCannonRapidFire" xml:space="preserve">
+    <value>Schnellfeuer-Splitterkanone</value>
+  </data>
+  <data name="MineRapidFire" xml:space="preserve">
+    <value>Schnellfeuer-Mine</value>
+  </data>
+  <data name="MissileRapidFire" xml:space="preserve">
+    <value>Schnellfeuer-Rakete</value>
+  </data>
+  <data name="MulticannonRapidFire" xml:space="preserve">
+    <value>Schnellfeuer-Mehrzweckgeschütz</value>
+  </data>
+  <data name="PlasmaAcceleratorRapidFire" xml:space="preserve">
+    <value>Schnellfeuer-Plasmabeschleuniger</value>
+  </data>
+  <data name="PulseLaserRapidFire" xml:space="preserve">
+    <value>Schnellfeuer-Pulslaser</value>
+  </data>
+  <data name="BeamLaserShortRange" xml:space="preserve">
+    <value>Kurzstrecken-Strahlenlaser</value>
+  </data>
+  <data name="BurstLaserShortRange" xml:space="preserve">
+    <value>Kurzstrecken-Salvenlaser</value>
+  </data>
+  <data name="CannonShortRange" xml:space="preserve">
+    <value>Kurzstrecken-Kanone</value>
+  </data>
+  <data name="MulticannonShortRange" xml:space="preserve">
+    <value>Kurzstrecken-Mehrzweckgeschütz</value>
+  </data>
+  <data name="PlasmaAcceleratorShortRange" xml:space="preserve">
+    <value>Kurzstrecken-Plasmabeschleuniger</value>
+  </data>
+  <data name="PulseLaserShortRange" xml:space="preserve">
+    <value>Kurzstrecken-Pulslaser</value>
+  </data>
+  <data name="RailGunShortRange" xml:space="preserve">
+    <value>Kurzstrecken-Schienenkanone</value>
+  </data>
+  <data name="BeamLaserSturdy" xml:space="preserve">
+    <value>Stabiler Strahlenlaser</value>
+  </data>
   
   
   
