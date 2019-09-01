@@ -1048,9 +1048,9 @@ namespace EddiInaraResponder
             List<Dictionary<string, object>> eventData = new List<Dictionary<string, object>>();
             foreach (Faction faction in factions)
             {
-                if (faction.myreputation == 0)
+                if (faction.myreputation > -0.05M && faction.myreputation < 0.05M)
                 {
-                    // Skip posting updates for factions where the commander has no reputation modifier.
+                    // Skip posting updates for factions where the commander has a near neutral reputation modifier (less than 5%).
                     continue;
                 }
                 eventData.Add(new Dictionary<string, object>()
