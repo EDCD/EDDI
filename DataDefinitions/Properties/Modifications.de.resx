@@ -445,7 +445,9 @@
   <data name="BeamLaserEfficient" xml:space="preserve">
     <value>Effizienter Strahlenlaser</value>
   </data>
-  
+  <data name="BurstLaserEfficient" xml:space="preserve">
+    <value>Effizienter Salvenlaser</value>
+  </data>
   <data name="CannonEfficient" xml:space="preserve">
     <value>Effiziente Kanone</value>
   </data>
@@ -458,22 +460,42 @@
   <data name="PlasmaAcceleratorEfficient" xml:space="preserve">
     <value>Effizienter Plasmabeschleuniger</value>
   </data>
+  <data name="PulseLaserEfficient" xml:space="preserve">
+    <value>Effizienter Pulslaser</value>
+  </data>
+  <data name="BurstLaserFocused" xml:space="preserve">
+    <value>Fokussierter Salvenlaser</value>
+  </data>
+  <data name="PlasmaAcceleratorFocused" xml:space="preserve">
+    <value>Fokussierter Plasmabeschleuniger</value>
+  </data>
+  <data name="PulseLaserFocused" xml:space="preserve">
+    <value>Fokussierter Pulslaser</value>
+  </data>
   
   
   
   
   
   
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="BeamLaserLightWeight" xml:space="preserve">
+    <value>Leichtbau Strahlenlaser</value>
+  </data>
+  <data name="BurstLaserLightWeight" xml:space="preserve">
+    <value>Leichtbau Salvenlaser</value>
+  </data>
+  <data name="CannonLightWeight" xml:space="preserve">
+    <value>Leichtbau Kanone</value>
+  </data>
+  <data name="FragCannonLightWeight" xml:space="preserve">
+    <value>Leichtbau Splitterkanone</value>
+  </data>
+  <data name="MineLightWeight" xml:space="preserve">
+    <value>Leichtbau Miene</value>
+  </data>
+  <data name="MissileLightWeight" xml:space="preserve">
+    <value>Leichtbau Rakete</value>
+  </data>
   
   
   
