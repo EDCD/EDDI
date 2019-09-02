@@ -15,8 +15,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
   * Core
     * Added new `Inara Responder`.
   * Speech responder
-    * The `Location` and `Jumped` events contain new properties `power` and `powerstate`. 
-    * Fixed a bug with speech queues that could in some circumstances cause EDDI to crash in the middle of combat.
+    * The `Location` and `Jumped` events contain new properties `power` and `powerstate` (if pledged). 
     * Added new event `Commander loading`, triggered at the very beginning of loading a game.
     * Added new event `Commander reputation`, triggered when your reputation is reported.
     * Added new event `Statistics`, triggered while loading a game.
