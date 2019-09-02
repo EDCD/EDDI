@@ -117,24 +117,64 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="EmpireFour" xml:space="preserve">
+    <value>láseres de rayo asistidos y eyector térmico</value>
+  </data>
+  <data name="EmpireOne" xml:space="preserve">
+    <value>láseres de rayo fijos y eyector térmico</value>
+  </data>
+  <data name="EmpireThree" xml:space="preserve">
+    <value>láseres de pulso fijos y punto de defensa</value>
+  </data>
+  <data name="EmpireTwo" xml:space="preserve">
+    <value>repetidores de plasma fijos y señuelos</value>
+  </data>
+  <data name="EmpireZero" xml:space="preserve">
+    <value>láseres de pulso asistidos y señuelos</value>
+  </data>
+  <data name="FederationFour" xml:space="preserve">
+    <value>láseres de rayos asistidos y eyector térmico</value>
+  </data>
+  <data name="FederationOne" xml:space="preserve">
+    <value>láseres de pulso fijos y eyector térmico</value>
+  </data>
+  <data name="FederationThree" xml:space="preserve">
+    <value>repetidores de plasma fijos y punto de defensa</value>
+  </data>
+  <data name="FederationTwo" xml:space="preserve">
+    <value>multi-cañónes fijos y señuelos</value>
+  </data>
+  <data name="FederationZero" xml:space="preserve">
+    <value>láseres de pulso asistidos y señuelos</value>
+  </data>
+  <data name="GdnHybridV1" xml:space="preserve">
+    <value>cañón automático de plasma</value>
+  </data>
+  <data name="GdnHybridV2" xml:space="preserve">
+    <value>lanzadores de esquirlas</value>
+  </data>
+  <data name="GdnHybridV3" xml:space="preserve">
+    <value>cañones de foco gauss</value>
+  </data>
+  <data name="IndependentAT" xml:space="preserve">
+    <value>multi-cañones fijos anti-xenon</value>
+  </data>
+  <data name="IndependentFour" xml:space="preserve">
+    <value>láseres de rayo asistidos y eyector de térmico</value>
+  </data>
+  <data name="IndependentOne" xml:space="preserve">
+    <value>láseres de rayo fijos y eyector de calor</value>
+  </data>
+  <data name="IndependentThree" xml:space="preserve">
+    <value>láseres de pulso fijos y punto de defensa</value>
+  </data>
+  <data name="IndependentTwo" xml:space="preserve">
+    <value>repetidores de plasma fijos y señuelos</value>
+  </data>
+  <data name="IndependentZero" xml:space="preserve">
+    <value>láseres de pulso asistidos y señuelos</value>
+  </data>
+  <data name="Starter" xml:space="preserve">
+    <value>repetidores de plasma dual</value>
+  </data>
 </root>
