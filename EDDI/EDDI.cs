@@ -961,7 +961,7 @@ namespace Eddi
 
         private bool eventPowerplay(PowerplayEvent @event)
         {
-            if (Cmdr.Power != @event.Power || Cmdr.powerrating != @event.rank || Cmdr.powermerits != @event.merits)
+            if (Cmdr.powermerits is null)
             {
                 // Per the journal, this is written at startup. In actuality, it can also be written whenever switching FSD states
                 // and needs to be filtered to prevent redundant outputs.
