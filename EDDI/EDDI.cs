@@ -1196,8 +1196,8 @@ namespace Eddi
             }
 
             // (When pledged) Powerplay information
-            CurrentStarSystem.Power = theEvent.Power;
-            CurrentStarSystem.powerState = theEvent.powerState;
+            CurrentStarSystem.Power = theEvent.Power is null ? CurrentStarSystem.Power : theEvent.Power;
+            CurrentStarSystem.powerState = theEvent.powerState is null ? CurrentStarSystem.powerState : theEvent.powerState;
 
             if (theEvent.docked || theEvent.bodytype.ToLowerInvariant() == "station")
             {
@@ -1699,8 +1699,8 @@ namespace Eddi
             }
 
             // (When pledged) Powerplay information
-            CurrentStarSystem.Power = theEvent.Power;
-            CurrentStarSystem.powerState = theEvent.powerState;
+            CurrentStarSystem.Power = theEvent.Power is null ? CurrentStarSystem.Power : theEvent.Power;
+            CurrentStarSystem.powerState = theEvent.powerState is null ? CurrentStarSystem.powerState : theEvent.powerState;
 
             // Update to most recent information
             CurrentStarSystem.visitLog.Add(theEvent.timestamp);
