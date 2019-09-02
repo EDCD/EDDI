@@ -47,27 +47,27 @@ namespace EddiSpeechService
         }
 
         // Fixes to avoid issues with some of the more strangely-named systems
-        private static Dictionary<string, string> STAR_SYSTEM_FIXES = new Dictionary<string, string>()
+        private static readonly Dictionary<string, string> STAR_SYSTEM_FIXES = new Dictionary<string, string>()
         {
             { "VESPER-M4", "Vesper M 4" }, // Stop Vesper being treated as a sector
             { "Sagittarius A*", "Sagittarius A- Star" }, // Allow the * to be parsed out
         };
 
         // Fixes to avoid issues with pronunciation of station model names
-        private static Dictionary<string, string> STATION_MODEL_FIXES = new Dictionary<string, string>()
+        private static readonly Dictionary<string, string> STATION_MODEL_FIXES = new Dictionary<string, string>()
         {
             { "Orbis Starport", "Or-bis Starport" }, // Stop "Or-bis" from sometimes being pronounced as "Or-bise"
             { "Megaship", "Mega-ship" } // Stop "Mega-Ship" from sometimes being pronounced as "Meg-AH-ship"
         };
 
         // Fixes to avoid issues with some of the more strangely-named factions
-        private static Dictionary<string, string> FACTION_FIXES = new Dictionary<string, string>()
+        private static readonly Dictionary<string, string> FACTION_FIXES = new Dictionary<string, string>()
         {
             { "SCORPIONS ORDER", "Scorpions Order" }, // Stop it being treated as a sector
             { "Federation Unite!", "Federation Unite"} // Stop pausing at the end of Unite!
         };
 
-        private static Dictionary<string, string[]> STAR_SYSTEM_PRONUNCIATIONS = new Dictionary<string, string[]>()
+        private static readonly Dictionary<string, string[]> STAR_SYSTEM_PRONUNCIATIONS = new Dictionary<string, string[]>()
         {
             { "Achenar", new string[] { Properties.Phonetics.achenar } },
             { "Acihault", new string[] { Properties.Phonetics.acihault } },
@@ -168,7 +168,7 @@ namespace EddiSpeechService
             return val;
         }
 
-        private static Dictionary<string, string[]> CONSTELLATION_PRONUNCIATIONS = new Dictionary<string, string[]>()
+        private static readonly Dictionary<string, string[]> CONSTELLATION_PRONUNCIATIONS = new Dictionary<string, string[]>()
         {
             { "Alrai" , new string[] { Properties.Phonetics.Alrai } },
             { "Antliae" , new string[] { Properties.Phonetics.Antliae } },
@@ -212,16 +212,16 @@ namespace EddiSpeechService
         };
 
         // Various handy regexes so we don't keep recreating them
-        private static Regex ALPHA_THEN_NUMERIC = new Regex(@"[A-Za-z][0-9]");
-        private static Regex UPPERCASE = new Regex(@"([A-Z]{2,})|(?:([A-Z])(?:\s|$))");
-        private static Regex TEXT = new Regex(@"([A-Za-z]{1,3}(?:\s|$))");
-        private static Regex DIGIT = new Regex(@"\d+(?:\s|$)");
-        private static Regex THREE_OR_MORE_DIGITS = new Regex(@"\d{3,}");
-        private static Regex DECIMAL_DIGITS = new Regex(@"( point )(\d{2,})");
-        private static Regex SECTOR = new Regex("(.*) ([A-Za-z][A-Za-z]-[A-Za-z] .*)");
-        private static Regex PLANET = new Regex(@"[A-Za-z](?=[^A-Za-z])");
-        private static Regex SUBSTARS = new Regex(@"^A[BCDE]?[CDE]?[DE]?[E]?|B[CDE]?[DE]?[E]?|C[DE]?[E]?|D[E]?$");
-        private static Regex BODY = new Regex(@"^(.*?) ([A-E]+ )?(Belt(?:\s|$)|Cluster(?:\s|$)|\d{1,2}(?:\s|$)|[A-Za-z](?:\s|$)){1,12}$", RegexOptions.IgnoreCase);
+        private static readonly Regex ALPHA_THEN_NUMERIC = new Regex(@"[A-Za-z][0-9]");
+        private static readonly Regex UPPERCASE = new Regex(@"([A-Z]{2,})|(?:([A-Z])(?:\s|$))");
+        private static readonly Regex TEXT = new Regex(@"([A-Za-z]{1,3}(?:\s|$))");
+        private static readonly Regex DIGIT = new Regex(@"\d+(?:\s|$)");
+        private static readonly Regex THREE_OR_MORE_DIGITS = new Regex(@"\d{3,}");
+        private static readonly Regex DECIMAL_DIGITS = new Regex(@"( point )(\d{2,})");
+        private static readonly Regex SECTOR = new Regex("(.*) ([A-Za-z][A-Za-z]-[A-Za-z] .*)");
+        private static readonly Regex PLANET = new Regex(@"[A-Za-z](?=[^A-Za-z])");
+        private static readonly Regex SUBSTARS = new Regex(@"^A[BCDE]?[CDE]?[DE]?[E]?|B[CDE]?[DE]?[E]?|C[DE]?[E]?|D[E]?$");
+        private static readonly Regex BODY = new Regex(@"^(.*?) ([A-E]+ )?(Belt(?:\s|$)|Cluster(?:\s|$)|\d{1,2}(?:\s|$)|[A-Za-z](?:\s|$)){1,12}$", RegexOptions.IgnoreCase);
 
         /// <summary>Fix up faction names</summary>
         public static string Faction(string faction)
@@ -633,7 +633,7 @@ namespace EddiSpeechService
 
         private static string sayAsLettersOrNumbers(string part)
         {
-            if (int.TryParse(part, out int digit))
+            if (int.TryParse(part, out _))
             {
                 return @"<say-as interpret-as=""number"">" + part + @"</say-as>";
             }
@@ -666,7 +666,6 @@ namespace EddiSpeechService
             {
                 // Work out how many 0s to begin with
                 int numzeros = -1;
-                decimal testval = (decimal)value;
                 while (value < 1)
                 {
                     value *= 10;
