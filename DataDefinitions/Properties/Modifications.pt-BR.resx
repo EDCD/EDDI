@@ -439,39 +439,105 @@
   <data name="SensorExpanded" xml:space="preserve">
     <value>Expansão do raio de escaneamento da sonda</value>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="FragCannonDoubleShot" xml:space="preserve">
+    <value>Canhão de Fragmentação de Tiro Duplo</value>
+  </data>
+  <data name="BeamLaserEfficient" xml:space="preserve">
+    <value>Laser Contínuo Eficiente</value>
+  </data>
+  <data name="BurstLaserEfficient" xml:space="preserve">
+    <value>Laser de Rajada Eficiente</value>
+  </data>
+  <data name="CannonEfficient" xml:space="preserve">
+    <value>Canhão Eficiente</value>
+  </data>
+  <data name="FragCannonEfficient" xml:space="preserve">
+    <value>Canhão de Fragmentação Eficiente</value>
+  </data>
+  <data name="MulticannonEfficient" xml:space="preserve">
+    <value>Canhão de Repetição Eficiente</value>
+  </data>
+  <data name="PlasmaAcceleratorEfficient" xml:space="preserve">
+    <value>Acelerador de Plasma Eficiente</value>
+  </data>
+  <data name="PulseLaserEfficient" xml:space="preserve">
+    <value>Laser de Pulso Eficiente</value>
+  </data>
+  <data name="BurstLaserFocused" xml:space="preserve">
+    <value>Laser de Rajada Focado</value>
+  </data>
+  <data name="PlasmaAcceleratorFocused" xml:space="preserve">
+    <value>Acelerador de Plasma Focado</value>
+  </data>
+  <data name="PulseLaserFocused" xml:space="preserve">
+    <value>Laser de Pulso Focado</value>
+  </data>
+  <data name="CannonHighCapacity" xml:space="preserve">
+    <value>Canhão de Alta Capacidade</value>
+  </data>
+  <data name="FragCannonHighCapacity" xml:space="preserve">
+    <value>Canhão de Fragmentação de Alta Capacidade</value>
+  </data>
+  <data name="MineHighCapacity" xml:space="preserve">
+    <value>Mina de Alta Capacidade</value>
+  </data>
+  <data name="MissileHighCapacity" xml:space="preserve">
+    <value>Míssel de Alta Capacidade</value>
+  </data>
+  <data name="MulticannonHighCapacity" xml:space="preserve">
+    <value>Canhão de Repetição de Alta Capacidade</value>
+  </data>
+  <data name="RailGunHighCapacity" xml:space="preserve">
+    <value>Canhão Elétrico de Alta Capacidade</value>
+  </data>
+  <data name="BeamLaserLightWeight" xml:space="preserve">
+    <value>Laser Contínuo Leve</value>
+  </data>
+  <data name="BurstLaserLightWeight" xml:space="preserve">
+    <value>Laser de Rajada Leve</value>
+  </data>
+  <data name="CannonLightWeight" xml:space="preserve">
+    <value>Canhão Leve</value>
+  </data>
+  <data name="FragCannonLightWeight" xml:space="preserve">
+    <value>Canhão de Fragmentação Leve</value>
+  </data>
+  <data name="MineLightWeight" xml:space="preserve">
+    <value>Mina Leve</value>
+  </data>
+  <data name="MissileLightWeight" xml:space="preserve">
+    <value>Míssel Leve</value>
+  </data>
+  <data name="MulticannonLightWeight" xml:space="preserve">
+    <value>Canhão de Repetição Leve</value>
+  </data>
+  <data name="PlasmaAcceleratorLightWeight" xml:space="preserve">
+    <value>Acelerador de Plasma Leve</value>
+  </data>
+  <data name="PulseLaserLightWeight" xml:space="preserve">
+    <value>Laser de Pulso Leve</value>
+  </data>
+  <data name="RailGunLightWeight" xml:space="preserve">
+    <value>Canhão Elétrico Leve</value>
+  </data>
+  <data name="TorpedoLightWeight" xml:space="preserve">
+    <value>Torpedo Leve</value>
+  </data>
+  <data name="BeamLaserLongRange" xml:space="preserve">
+    <value>Laser Contínuo de Longo Alcance</value>
+  </data>
+  <data name="BurstLaserLongRange" xml:space="preserve">
+    <value>Laser de Rajada de Longo Alcance</value>
+  </data>
+  <data name="CannonLongRange" xml:space="preserve">
+    <value>Canhão de Longo Alcance</value>
+  </data>
+  <data name="MulticannonLongRange" xml:space="preserve">
+    <value>Canhão de Repetição de Longo Alcance</value>
+  </data>
+  <data name="PlasmaAcceleratorLongRange" xml:space="preserve">
+    <value>Acelerador de Plasma de Longo Alcance</value>
+  </data>
   
   
   
