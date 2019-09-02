@@ -464,13 +464,13 @@
     <value>Laser de Pulso Eficiente</value>
   </data>
   <data name="BurstLaserFocused" xml:space="preserve">
-    <value>Laser de Rajada Focado</value>
+    <value>Laser de Rajada Com Foco</value>
   </data>
   <data name="PlasmaAcceleratorFocused" xml:space="preserve">
-    <value>Acelerador de Plasma Focado</value>
+    <value>Acelerador de Plasma Com Foco</value>
   </data>
   <data name="PulseLaserFocused" xml:space="preserve">
-    <value>Laser de Pulso Focado</value>
+    <value>Laser de Pulso Com Foco</value>
   </data>
   <data name="CannonHighCapacity" xml:space="preserve">
     <value>Canhão de Alta Capacidade</value>
@@ -536,41 +536,111 @@
     <value>Canhão de Repetição de Longo Alcance</value>
   </data>
   <data name="PlasmaAcceleratorLongRange" xml:space="preserve">
-    <value>Acelerador de Plasma de Longo Alcance</value>
+    <value>Acelerador de Plasma de Longa Distância</value>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="PulseLaserLongRange" xml:space="preserve">
+    <value>Laser de Pulso de Longa Distância</value>
+  </data>
+  <data name="RailGunLongRange" xml:space="preserve">
+    <value>Canhão Elétrico de Longa Distância</value>
+  </data>
+  <data name="BeamLaserOvercharged" xml:space="preserve">
+    <value>Laser Contínuo Sobrecarregado</value>
+  </data>
+  <data name="BurstLaserOvercharged" xml:space="preserve">
+    <value>Laser de Rajada Sobrecarregado</value>
+  </data>
+  <data name="CannonOvercharged" xml:space="preserve">
+    <value>Canhão Sobrecarregado</value>
+  </data>
+  <data name="FragCannonOvercharged" xml:space="preserve">
+    <value>Canhão de Fragmentação Sobrecarregado</value>
+  </data>
+  <data name="MulticannonOvercharged" xml:space="preserve">
+    <value>Canhão de Repetição Sobrecarregado</value>
+  </data>
+  <data name="PlasmaAcceleratorOvercharged" xml:space="preserve">
+    <value>Acelerador de Plasma Sobrecarregado</value>
+  </data>
+  <data name="PulseLaserOvercharged" xml:space="preserve">
+    <value>Laser de Pulso Sobrecarregado</value>
+  </data>
+  <data name="BurstLaserRapidFire" xml:space="preserve">
+    <value>Laser de Rajada de Disparo Rápido</value>
+  </data>
+  <data name="CannonRapidFire" xml:space="preserve">
+    <value>Canhão de Disparo Rápido</value>
+  </data>
+  <data name="FragCannonRapidFire" xml:space="preserve">
+    <value>Canhão de Fragmentação de Disparo Rápido</value>
+  </data>
+  <data name="MineRapidFire" xml:space="preserve">
+    <value>Mina de Disparo Rápido</value>
+  </data>
+  <data name="MissileRapidFire" xml:space="preserve">
+    <value>Míssel de Disparo Rápido</value>
+  </data>
+  <data name="MulticannonRapidFire" xml:space="preserve">
+    <value>Canhão de Repetição de Disparo Rápido</value>
+  </data>
+  <data name="PlasmaAcceleratorRapidFire" xml:space="preserve">
+    <value>Acelerador de Plasma de Disparo Rápido</value>
+  </data>
+  <data name="PulseLaserRapidFire" xml:space="preserve">
+    <value>Laser de Pulso de Disparo Rápido</value>
+  </data>
+  <data name="BeamLaserShortRange" xml:space="preserve">
+    <value>Laser Contínuo de Curto Alcance</value>
+  </data>
+  <data name="BurstLaserShortRange" xml:space="preserve">
+    <value>Laser de Rajada de Curto Alcance</value>
+  </data>
+  <data name="CannonShortRange" xml:space="preserve">
+    <value>Canhão de Curto Alcance</value>
+  </data>
+  <data name="MulticannonShortRange" xml:space="preserve">
+    <value>Canhão de Repetição de Curto Alcance</value>
+  </data>
+  <data name="PlasmaAcceleratorShortRange" xml:space="preserve">
+    <value>Acelerador de Plasma de Curto Alcance</value>
+  </data>
+  <data name="PulseLaserShortRange" xml:space="preserve">
+    <value>Laser de Pulso de Curto Alcance</value>
+  </data>
+  <data name="RailGunShortRange" xml:space="preserve">
+    <value>Canhão Elétrico de Curto Alcance</value>
+  </data>
+  <data name="BeamLaserSturdy" xml:space="preserve">
+    <value>Laser Contínuo Robusto</value>
+  </data>
+  <data name="BurstLaserSturdy" xml:space="preserve">
+    <value>Laser de Rajada Robusto</value>
+  </data>
+  <data name="CannonSturdy" xml:space="preserve">
+    <value>Canhão Robusto</value>
+  </data>
+  <data name="FragCannonSturdy" xml:space="preserve">
+    <value>Canhão de Fragmentação Robusto</value>
+  </data>
+  <data name="MineSturdy" xml:space="preserve">
+    <value>Mina Robusta</value>
+  </data>
+  <data name="MissileSturdy" xml:space="preserve">
+    <value>Míssel Robusto</value>
+  </data>
+  <data name="MulticannonSturdy" xml:space="preserve">
+    <value>Canhão de Repetição Robusto</value>
+  </data>
+  <data name="PlasmaAcceleratorSturdy" xml:space="preserve">
+    <value>Acelerador de Plasma Robusto</value>
+  </data>
+  <data name="PulseLaserSturdy" xml:space="preserve">
+    <value>Laser de Pulso Robusto</value>
+  </data>
+  <data name="RailGunSturdy" xml:space="preserve">
+    <value>Canhão Elétrico Robusto</value>
+  </data>
+  <data name="TorpedoSturdy" xml:space="preserve">
+    <value>Torpedo Robusto</value>
+  </data>
 </root>
