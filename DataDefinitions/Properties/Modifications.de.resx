@@ -472,8 +472,12 @@
   <data name="PulseLaserFocused" xml:space="preserve">
     <value>Fokussierter Pulslaser</value>
   </data>
-  
-  
+  <data name="CannonHighCapacity" xml:space="preserve">
+    <value>Hochleistungskanone</value>
+  </data>
+  <data name="FragCannonHighCapacity" xml:space="preserve">
+    <value>Hochleistungs-Splitterkanone</value>
+  </data>
   
   
   
