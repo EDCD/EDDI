@@ -478,10 +478,18 @@
   <data name="FragCannonHighCapacity" xml:space="preserve">
     <value>Hochleistungs-Splitterkanone</value>
   </data>
-  
-  
-  
-  
+  <data name="MineHighCapacity" xml:space="preserve">
+    <value>Hochleistungsmine</value>
+  </data>
+  <data name="MissileHighCapacity" xml:space="preserve">
+    <value>Hochleistungsrakete</value>
+  </data>
+  <data name="MulticannonHighCapacity" xml:space="preserve">
+    <value>Hochleistungs-Mehrzweckgeschütz</value>
+  </data>
+  <data name="RailGunHighCapacity" xml:space="preserve">
+    <value>Hochleistungsschienenkanone</value>
+  </data>
   <data name="BeamLaserLightWeight" xml:space="preserve">
     <value>Leichter Strahlenlaser</value>
   </data>
