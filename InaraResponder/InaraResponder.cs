@@ -22,6 +22,9 @@ namespace EddiInaraResponder
         private Thread updateThread;
         private bool bgSyncRunning;
 
+        // Background sync interval in milliseconds
+        private const int backgroundSyncMs = 5 * 1000;
+
         public string ResponderName()
         {
             return Properties.InaraResources.ResourceManager.GetString("name", CultureInfo.InvariantCulture);
@@ -82,7 +85,7 @@ namespace EddiInaraResponder
             while (bgSyncRunning)
             {
                 InaraService.Instance.SendQueuedAPIEventsAsync(EDDI.Instance.ShouldUseTestEndpoints());
-                Thread.Sleep(120000);
+                Thread.Sleep(backgroundSyncMs);
             }
         }
 
@@ -524,6 +527,7 @@ namespace EddiInaraResponder
                 }));
             }
             firstDockedLocation = null;
+            InaraService.Instance.SendQueuedAPIEventsAsync(EDDI.Instance.ShouldUseTestEndpoints());
         }
 
         private void handleShipTransferInitiatedEvent(ShipTransferInitiatedEvent @event)
