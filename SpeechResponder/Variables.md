@@ -728,6 +728,8 @@ Any values might be missing, depending on EDDI's configuration.
     - `bodyname` the name of the current body (if landed or in an srv)
     - `planetradius` the radius of the current body (if landed or in an srv)
     - `altitude_from_average_radius` true if the altitude is computed relative to the average radius (which is used at higher altitudes) rather than surface directly below the srv
+    - `hyperspace` true if jumping between star systems
+    - `srv_highbeam` true if the lights in your SRV are set to the high beam mode.
 
 ---
 ## Traffic
