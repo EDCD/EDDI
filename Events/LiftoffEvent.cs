@@ -16,6 +16,7 @@ namespace EddiEvents
             VARIABLES.Add("longitude", "The longitude from where the ship has lifted off");
             VARIABLES.Add("latitude", "The latitude from where the ship has lifted off");
             VARIABLES.Add("playercontrolled", "True if the ship is controlled by the player");
+            VARIABLES.Add("nearestdestination", "The nearest location from where the ship has lifted off");
         }
 
         [JsonProperty("longitude")]
@@ -27,11 +28,15 @@ namespace EddiEvents
         [JsonProperty("playercontrolled")]
         public bool playercontrolled { get; private set; }
 
-        public LiftoffEvent(DateTime timestamp, decimal? longitude, decimal? latitude, bool playercontrolled) : base(timestamp, NAME)
+        [JsonProperty("nearestdestination")]
+        public string nearestdestination { get; private set; }
+
+        public LiftoffEvent(DateTime timestamp, decimal? longitude, decimal? latitude, bool playercontrolled, string nearestDestination) : base(timestamp, NAME)
         {
             this.longitude = longitude;
             this.latitude = latitude;
             this.playercontrolled = playercontrolled;
+            this.nearestdestination = nearestDestination;
         }
     }
 }

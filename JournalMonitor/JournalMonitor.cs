@@ -167,7 +167,8 @@ namespace EddiJournalMonitor
                                     decimal? latitude = JsonParsing.getOptionalDecimal(data, "Latitude");
                                     decimal? longitude = JsonParsing.getOptionalDecimal(data, "Longitude");
                                     bool playercontrolled = JsonParsing.getOptionalBool(data, "PlayerControlled") ?? true;
-                                    events.Add(new TouchdownEvent(timestamp, longitude, latitude, playercontrolled) { raw = line, fromLoad = fromLogLoad });
+                                    string nearestDestination = JsonParsing.getString(data, "NearestDestination");
+                                    events.Add(new TouchdownEvent(timestamp, longitude, latitude, playercontrolled, nearestDestination) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
@@ -176,7 +177,8 @@ namespace EddiJournalMonitor
                                     decimal? latitude = JsonParsing.getOptionalDecimal(data, "Latitude");
                                     decimal? longitude = JsonParsing.getOptionalDecimal(data, "Longitude");
                                     bool playercontrolled = JsonParsing.getOptionalBool(data, "PlayerControlled") ?? true;
-                                    events.Add(new LiftoffEvent(timestamp, longitude, latitude, playercontrolled) { raw = line, fromLoad = fromLogLoad });
+                                    string nearestDestination = JsonParsing.getString(data, "NearestDestination");
+                                    events.Add(new LiftoffEvent(timestamp, longitude, latitude, playercontrolled, nearestDestination) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
