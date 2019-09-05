@@ -196,7 +196,7 @@ namespace EddiSpeechResponder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Respond to events with scripted speech based on the information in the event. Not all events have scripted responses. If a script response is empty, its &apos;Test&apos; and &apos;View&apos; buttons are disabled. Event-based scripts can be disabled or re-prioritized but not deleted..
+        ///   Looks up a localized string similar to Respond to events with scripted speech based on the information in the event. Not all events have scripted responses. If a script response is empty, its &apos;Test&apos; and &apos;View&apos; buttons are disabled. If a script response differs from the default, it&apos;s name shall be written in bold text. Event-based scripts can be disabled or re-prioritized but not deleted..
         /// </summary>
         public static string desc {
             get {

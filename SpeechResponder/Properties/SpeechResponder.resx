@@ -164,7 +164,7 @@
     <value>Are you sure you want to delete the "{0}" script ?</value>
   </data>
   <data name="desc" xml:space="preserve">
-    <value>Respond to events with scripted speech based on the information in the event. Not all events have scripted responses. If a script response is empty, its 'Test' and 'View' buttons are disabled. Event-based scripts can be disabled or re-prioritized but not deleted.</value>
+    <value>Respond to events with scripted speech based on the information in the event. Not all events have scripted responses. If a script response is empty, its 'Test' and 'View' buttons are disabled. If a script response differs from the default, it's name shall be written in bold text. Event-based scripts can be disabled or re-prioritized but not deleted.</value>
   </data>
   <data name="edit_script" xml:space="preserve">
     <value>Edit</value>
