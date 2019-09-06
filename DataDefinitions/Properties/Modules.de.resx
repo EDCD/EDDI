@@ -250,11 +250,11 @@
     <comment>Module FrameShiftDriveInterdictor</comment>
   </data>
   <data name="FrameShiftDrive" xml:space="preserve">
-    <value>Frameshiftantrieb</value>
+    <value>Frame Shift Antrieb</value>
     <comment>Module FrameShiftDrive</comment>
   </data>
   <data name="FrameShiftWakeScanner" xml:space="preserve">
-    <value>FS-Sogwolkenscanner</value>
+    <value>Sogwolkenscanner</value>
     <comment>Module FrameShiftWakeScanner</comment>
   </data>
   <data name="FuelScoop" xml:space="preserve">
