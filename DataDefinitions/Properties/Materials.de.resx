@@ -218,7 +218,7 @@
     <comment>Material polonium</comment>
   </data>
   <data name="bulkscandata" xml:space="preserve">
-    <value>Anormale Massen-Scan-Daten</value>
+    <value>Anormale Massenskenndaten</value>
     <comment>Material bulkscandata</comment>
   </data>
   <data name="disruptedwakeechoes" xml:space="preserve">
@@ -226,7 +226,7 @@
     <comment>Material disruptedwakeechoes</comment>
   </data>
   <data name="shieldcyclerecordings" xml:space="preserve">
-    <value>Gestörte-Schildzyklus-Aufzeichnung</value>
+    <value>Gestörte-Schildzyklus-Aufzeichnungen</value>
     <comment>Material shieldcyclerecordings</comment>
   </data>
   <data name="scrambledemissiondata" xml:space="preserve">
@@ -278,7 +278,7 @@
     <comment>Material tg_structuraldata</comment>
   </data>
   <data name="scandatabanks" xml:space="preserve">
-    <value>Scandatenbank unter Verschluss</value>
+    <value>Scanndatenbank unter Verschluss</value>
     <comment>Material scandatabanks</comment>
   </data>
   <data name="industrialfirmware" xml:space="preserve">
@@ -298,7 +298,7 @@
     <comment>Material emissiondata</comment>
   </data>
   <data name="shielddensityreports" xml:space="preserve">
-    <value>Untypische Schildscans</value>
+    <value>Untypische Schildskenns</value>
     <comment>Material shielddensityreports</comment>
   </data>
   <data name="ancientbiologicaldata" xml:space="preserve">
@@ -326,7 +326,7 @@
     <comment>Material decodedemissiondata</comment>
   </data>
   <data name="encodedscandata" xml:space="preserve">
-    <value>Divergente Scandaten</value>
+    <value>Divergente Scanndaten</value>
     <comment>Material encodedscandata</comment>
   </data>
   <data name="hyperspacetrajectories" xml:space="preserve">
