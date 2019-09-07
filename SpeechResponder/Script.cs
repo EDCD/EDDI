@@ -53,7 +53,7 @@ namespace EddiSpeechResponder
         }
 
         [JsonIgnore]
-        public bool IsDeleteable => !isDefault;
+        public bool IsDeleteable => !isDefault && !responder;
 
         [JsonIgnore]
         public string Value
