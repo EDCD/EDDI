@@ -626,11 +626,11 @@
     <comment>Material guardian_moduleblueprint</comment>
   </data>
   <data name="guardian_sentinel_weaponparts" xml:space="preserve">
-    <value>Guardian-Wache Waffenteile</value>
+    <value>Waffenteile der Guardian Wächter</value>
     <comment>Material guardian_sentinel_weaponparts</comment>
   </data>
   <data name="guardian_sentinel_wreckagecomponents" xml:space="preserve">
-    <value>Guardian-Wächter Trümmerteile</value>
+    <value>Trümmerteile der Guardian Wächter</value>
     <comment>Material guardian_sentinel_wreckagecomponents</comment>
   </data>
   <data name="lead" xml:space="preserve">
@@ -650,11 +650,11 @@
     <comment>Material tg_biomechanicalconduits</comment>
   </data>
   <data name="tg_weaponparts" xml:space="preserve">
-    <value>Thargoiden Waffenteile</value>
+    <value>Waffenteile der Thargoiden</value>
     <comment>Material tg_weaponparts</comment>
   </data>
   <data name="tg_wreckagecomponents" xml:space="preserve">
-    <value>Thargoiden Wrackteile</value>
+    <value>Wrackteile der Thargoiden</value>
     <comment>Material tg_wreckagecomponents</comment>
   </data>
   <data name="tg_shipflightdata" xml:space="preserve">
