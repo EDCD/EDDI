@@ -224,4 +224,10 @@
   <data name="localizedAnd" xml:space="preserve">
     <value>and</value>
   </data>
+  <data name="reset_script" xml:space="preserve">
+    <value>Reset</value>
+  </data>
+  <data name="reset_script_message" xml:space="preserve">
+    <value>Are you sure you want to reset the "{0}" script ?</value>
+  </data>
 </root>

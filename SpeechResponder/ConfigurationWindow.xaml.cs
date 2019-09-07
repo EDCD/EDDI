@@ -163,6 +163,22 @@ namespace EddiSpeechResponder
             }
         }
 
+        private void resetOrDeleteScript(object sender, RoutedEventArgs e)
+        {
+            Script script = ((KeyValuePair<string, Script>)((Button)e.Source).DataContext).Value;
+            if (script != null)
+            {
+                if (script.IsResetable)
+                {
+                    resetScript(sender, e);
+                }
+                else
+                {
+                    deleteScript(sender, e);
+                }
+            }
+        }
+
         private void deleteScript(object sender, RoutedEventArgs e)
         {
             EDDI.Instance.SpeechResponderModalWait = true;
@@ -175,21 +191,32 @@ namespace EddiSpeechResponder
                 case MessageBoxResult.Yes:
                     // Remove the script from the list
                     Personality.Scripts.Remove(script.Name);
-                    Personality.ToFile();
-                    EDDI.Instance.Reload("Speech responder");
+                    updateScriptsConfiguration();
                     // We updated a property of the personality but not the personality itself so need to manually update items
                     scriptsData.Items.Refresh();
                     break;
             }
             EDDI.Instance.SpeechResponderModalWait = false;
         }
-
         private void resetScript(object sender, RoutedEventArgs e)
         {
             Script script = ((KeyValuePair<string, Script>)((Button)e.Source).DataContext).Value;
-            script.Value = null;
-            eddiScriptsUpdated(sender, e);
-            scriptsData.Items.Refresh();
+            // Resetting the script resets it to its value in the default personality
+            if (Personality.Scripts.ContainsKey(script.Name))
+            {
+                string messageBoxText = string.Format(Properties.SpeechResponder.reset_script_message, script.Name);
+                string caption = Properties.SpeechResponder.reset_script_button;
+                MessageBoxResult result = MessageBox.Show(messageBoxText, caption, MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                switch (result)
+                {
+                    case MessageBoxResult.Yes:
+                        script.Value = script.defaultValue;
+                        Personality.Scripts[script.Name] = script;
+                        updateScriptsConfiguration();
+                        scriptsData.Items.Refresh();
+                        break;
+                }
+            }
         }
 
         private void updateScriptsConfiguration()

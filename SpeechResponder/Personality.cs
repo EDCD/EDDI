@@ -310,22 +310,13 @@ namespace EddiSpeechResponder
             {
                 if (defaultScript != null)
                 {
+                    // Set the default value of our script
+                    script.defaultValue = defaultScript.Value;
+
                     if (defaultScript.Responder)
                     {
                         // This is a responder script so update the description
                         script.Description = defaultScript.Description;
-                    }
-
-                    if (script.Default)
-                    {
-                        // This is a default script so take the latest value
-                        script.Value = defaultScript.Value;
-                    }
-
-                    if (script.Value == defaultScript.Value)
-                    {
-                        // Ensure this is flaged as a default script (pre 2-3 didn't have this flag)
-                        script.Default = true;
                     }
                 }
             }

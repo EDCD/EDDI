@@ -48,6 +48,8 @@ namespace EddiSpeechResponder
             set { responder = value; OnPropertyChanged("Responder"); }
         }
 
+        public string ScriptDefaultValue;
+
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged(string name)
         {
@@ -77,16 +79,15 @@ namespace EddiSpeechResponder
                 ScriptName = script.Name;
                 ScriptDescription = script.Description;
                 ScriptValue = script.Value;
+                ScriptDefaultValue = script.defaultValue;
                 Responder = script.Responder;
             }
 
-            // See if there is a default for this script
-            Personality defaultPersonality = Personality.Default();
-            defaultPersonality.Scripts.TryGetValue(scriptName, out Script defaultScript);
-            if (defaultScript == null || defaultScript.Value == null)
+            // See if there is the default value for this script is empty
+            if (string.IsNullOrWhiteSpace(ScriptDefaultValue))
             {
                 // No default; disable reset and show
-                showDefaultButton.IsEnabled = false;
+                showDiffButton.IsEnabled = false;
                 resetToDefaultButton.IsEnabled = false;
             }
         }
@@ -101,8 +102,8 @@ namespace EddiSpeechResponder
             }
             else
             {
-                // Fetch the default script and mark this as default if it matches
-                script = new Script(scriptName, scriptDescription, script == null ? false : script.Responder, scriptValue, script.Priority, false);
+                // Update the script
+                script = new Script(scriptName, scriptDescription, script == null ? false : script.Responder, scriptValue, script.Priority, script.defaultValue);
                 Script defaultScript = null;
                 if (Personality.Default().Scripts?.TryGetValue(script.Name, out defaultScript) ?? false)
                 {
@@ -140,9 +141,7 @@ namespace EddiSpeechResponder
         private void resetButtonClick(object sender, RoutedEventArgs e)
         {
             // Resetting the script resets it to its value in the default personality
-            Personality defaultPersonality = Personality.Default();
-            defaultPersonality.Scripts.TryGetValue(scriptName, out Script defaultScript);
-            ScriptValue = defaultScript.Value;
+            ScriptValue = ScriptDefaultValue;
         }
 
         private void testButtonClick(object sender, RoutedEventArgs e)
@@ -190,13 +189,11 @@ namespace EddiSpeechResponder
             }
         }
 
-        private void showDefaultButtonClick(object sender, RoutedEventArgs e)
+        private void showDiffButtonClick(object sender, RoutedEventArgs e)
         {
-            Personality defaultPersonality = Personality.Default();
-            if (defaultPersonality.Scripts.TryGetValue(scriptName, out Script defaultScript))
+            if (!string.IsNullOrWhiteSpace(ScriptDefaultValue))
             {
-                new ShowDiffWindow(defaultScript.Value, ScriptValue).Show();
-                //new ShowScriptWindow(defaultScript.Value).Show();
+                new ShowDiffWindow(ScriptDefaultValue, ScriptValue).Show();
             }
         }
     }

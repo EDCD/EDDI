@@ -286,11 +286,29 @@ namespace EddiSpeechResponder.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Reset.
+        /// </summary>
+        public static string reset_script {
+            get {
+                return ResourceManager.GetString("reset_script", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Reset to default.
         /// </summary>
         public static string reset_script_button {
             get {
                 return ResourceManager.GetString("reset_script_button", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to reset the &quot;{0}&quot; script ?.
+        /// </summary>
+        public static string reset_script_message {
+            get {
+                return ResourceManager.GetString("reset_script_message", resourceCulture);
             }
         }
         

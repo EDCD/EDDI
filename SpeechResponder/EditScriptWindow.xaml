@@ -30,7 +30,7 @@
             <UniformGrid Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Rows="1" Columns="3" Width="770" Margin="0,0,0,10" HorizontalAlignment="Center">
                 <Button x:Name="testButton" FontSize="18" Content="{x:Static resx:SpeechResponder.test_script_button}" VerticalAlignment="Top" Click="testButtonClick" Margin="0,0,5,0"/>
                 <Button x:Name="resetToDefaultButton" FontSize="18" Content="{x:Static resx:SpeechResponder.reset_script_button}" VerticalAlignment="Top" Click="resetButtonClick" Margin="5,0,5,0"/>
-                <Button x:Name="showDefaultButton" FontSize="18" Content="{x:Static resx:SpeechResponder.compare_script_button}" VerticalAlignment="Top" Click="showDefaultButtonClick" Margin="5,0,0,0"/>
+                <Button x:Name="showDiffButton" FontSize="18" Content="{x:Static resx:SpeechResponder.compare_script_button}" VerticalAlignment="Top" Click="showDiffButtonClick" Margin="5,0,0,0"/>
             </UniformGrid>
             <UniformGrid Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Rows="1" Columns="4" Width="770" Margin="0,0,0,10" HorizontalAlignment="Center">
                 <Button x:Name="acceptButton" FontSize="18" Content="{x:Static resx:SpeechResponder.button_ok}" VerticalAlignment="Top" Click="acceptButtonClick" Margin="0,0,5,0"/>
