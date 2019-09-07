@@ -170,7 +170,7 @@
     <comment>Material mercury</comment>
   </data>
   <data name="molybdenum" xml:space="preserve">
-    <value>Molybdän</value>
+    <value>Molybdeen</value>
     <comment>Material molybdenum</comment>
   </data>
   <data name="niobium" xml:space="preserve">
@@ -190,7 +190,7 @@
     <comment>Material ruthenium</comment>
   </data>
   <data name="selenium" xml:space="preserve">
-    <value>Selen</value>
+    <value>See.leen</value>
     <comment>Material selenium</comment>
   </data>
   <data name="technetium" xml:space="preserve">
