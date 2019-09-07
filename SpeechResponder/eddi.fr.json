@@ -185,7 +185,7 @@
     "Cargo scoop": {
       "enabled": true,
       "priority": 3,
-      "responder": false,
+      "responder": true,
       "script": "{_ Context }\r\n\r\n{if state.cargo_scoop= \"fermée\":\r\n {SetState(\"cargo_scoop\", \"ouverte\")}\r\n|else : {SetState(\"cargo_scoop\", \"fermée\")}\r\n}\r\n\r\nécoutille de soute {state.cargo_scoop}.",
       "default": true,
       "name": "Cargo scoop",
@@ -959,7 +959,7 @@
     "Landing gear": {
       "enabled": true,
       "priority": 3,
-      "responder": false,
+      "responder": true,
       "script": "{_ Context }\r\n\r\n{if state.landing_gear= \"sortis\":\r\n {SetState(\"landing_gear\", \"rentré\")}\r\n|else : {SetState(\"landing_gear\", \"sortis\")}\r\n}\r\n\r\nTrain d'atérissage {state.landing_gear}.",
       "default": true,
       "name": "Landing gear",
@@ -986,7 +986,7 @@
     "Lights": {
       "enabled": true,
       "priority": 2,
-      "responder": false,
+      "responder": true,
       "script": "{_ Context }\r\n\r\n{if state.phares= \"allumés\":\r\n {SetState(\"phares\", \"éteints\")}\r\n|else : {SetState(\"phares\", \"allumés\")}\r\n}\r\n\r\n{OneOf(\"Phares \",\"Projecteurs \")} {state.phares}.",
       "default": true,
       "name": "Lights",
