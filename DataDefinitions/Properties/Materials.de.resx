@@ -206,7 +206,7 @@
     <comment>Material yttrium</comment>
   </data>
   <data name="zirconium" xml:space="preserve">
-    <value>Zirkonium</value>
+    <value>Zirconium</value>
     <comment>Material zirconium</comment>
   </data>
   <data name="antimony" xml:space="preserve">
@@ -218,7 +218,7 @@
     <comment>Material polonium</comment>
   </data>
   <data name="bulkscandata" xml:space="preserve">
-    <value>Anormale Massenskenndaten</value>
+    <value>Anormale Massen-Scan-Daten</value>
     <comment>Material bulkscandata</comment>
   </data>
   <data name="disruptedwakeechoes" xml:space="preserve">
@@ -250,7 +250,7 @@
     <comment>Material fsdtelemetry</comment>
   </data>
   <data name="shieldsoakanalysis" xml:space="preserve">
-    <value>Inkonsistente Schildleistungsanalyse</value>
+    <value>Inkonsistente Schildleistungsanalysen</value>
     <comment>Material shieldsoakanalysis</comment>
   </data>
   <data name="archivedemissiondata" xml:space="preserve">
@@ -278,7 +278,7 @@
     <comment>Material tg_structuraldata</comment>
   </data>
   <data name="scandatabanks" xml:space="preserve">
-    <value>Scanndatenbank unter Verschluss</value>
+    <value>Scan-Datenbanken unter Verschluss</value>
     <comment>Material scandatabanks</comment>
   </data>
   <data name="industrialfirmware" xml:space="preserve">
@@ -298,7 +298,7 @@
     <comment>Material emissiondata</comment>
   </data>
   <data name="shielddensityreports" xml:space="preserve">
-    <value>Untypische Schildskenns</value>
+    <value>Untypische Schildscans</value>
     <comment>Material shielddensityreports</comment>
   </data>
   <data name="ancientbiologicaldata" xml:space="preserve">
