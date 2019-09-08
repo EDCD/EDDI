@@ -301,6 +301,7 @@ namespace EddiSpeechResponder
             fixedScripts = fixedScripts.OrderBy(s => s.Key).ToDictionary(s => s.Key, s => s.Value);
 
             personality.Scripts = fixedScripts;
+            personality.ToFile();
         }
 
         public static Script UpgradeScript(Script personalityScript, Script defaultScript)
