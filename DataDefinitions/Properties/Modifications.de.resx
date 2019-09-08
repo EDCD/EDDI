@@ -314,13 +314,13 @@
     <value>Abgeschirmter Düppel-Werfer</value>
   </data>
   <data name="CollectionLimpetLightWeight" xml:space="preserve">
-    <value>Leichte Sammeldrohnen-Steuerung</value>
+    <value>Leichte Sammeldrohne</value>
   </data>
   <data name="CollectionLimpetReinforced" xml:space="preserve">
-    <value>Verstärkte Sammeldrohnen-Steuerung</value>
+    <value>Verstärkte Sammeldrohne</value>
   </data>
   <data name="CollectionLimpetShielded" xml:space="preserve">
-    <value>Abgeschirmte Sammeldrohnen-Steuerung</value>
+    <value>Abgeschirmte Sammeldrohne</value>
   </data>
   <data name="ECMShielded" xml:space="preserve">
     <value>Abgeschirmte elektronische Gegenmaßnahmen</value>
@@ -329,22 +329,22 @@
     <value>Abgeschirmter Treibstoffsammler</value>
   </data>
   <data name="FuelTransferLimpetLightWeight" xml:space="preserve">
-    <value>Leichte Treibstoffübertragungsdrohnen-Steuerung</value>
+    <value>Leichte Treibstofftransferdrohne</value>
   </data>
   <data name="FuelTransferLimpetReinforced" xml:space="preserve">
-    <value>Verstärkte Treibstoffübertragungsdrohnen-Steuerung</value>
+    <value>Verstärkte Treibstofftransferdrohne</value>
   </data>
   <data name="FuelTransferLimpetShielded" xml:space="preserve">
-    <value>Abgeschirmte Treibstoffübertragungsdrohnen-Steuerung</value>
+    <value>Abgeschirmte Treibstofftransferdrohne</value>
   </data>
   <data name="HatchBreakerLimpetLightWeight" xml:space="preserve">
-    <value>Leichte Frachtlukenbrecherdrohnen-Steuerung</value>
+    <value>Leichte Frachtlukenbrecherdrohne</value>
   </data>
   <data name="HatchBreakerLimpetReinforced" xml:space="preserve">
-    <value>Verstärkte Frachtlukenbrecherdrohnen-Steuerung</value>
+    <value>Verstärkte Frachtlukenbrecherdrohne</value>
   </data>
   <data name="HatchBreakerLimpetShielded" xml:space="preserve">
-    <value>Abgeschirmte Frachtlukenbrecherdrohnen-Steuerung</value>
+    <value>Abgeschirmte Frachtlukenbrecherdrohne</value>
   </data>
   <data name="HeatSinkLauncherHeatSinkCapacity" xml:space="preserve">
     <value>Kühlkörper-Kapazität</value>
@@ -425,13 +425,13 @@
     <value>Optimierter Plasmabeschleuniger</value>
   </data>
   <data name="ProspectingLimpetLightWeight" xml:space="preserve">
-    <value>Leichte Sammeldrohne</value>
+    <value>Leichte Erzsucherdrohne</value>
   </data>
   <data name="ProspectingLimpetReinforced" xml:space="preserve">
-    <value>Verstärkte Sammeldrohne</value>
+    <value>Verstärkte Erzsucherdrohne</value>
   </data>
   <data name="ProspectingLimpetShielded" xml:space="preserve">
-    <value>Abgeschirmte Sammeldrohne</value>
+    <value>Abgeschirmte Erzsucherdrohne</value>
   </data>
   <data name="MiscLightWeight" xml:space="preserve">
     <value>Sonstiger Leichtbau</value>
