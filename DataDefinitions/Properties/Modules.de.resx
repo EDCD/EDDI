@@ -126,7 +126,7 @@
     <comment>Module ATMulticannon</comment>
   </data>
   <data name="AutoField_MaintenanceUnit" xml:space="preserve">
-    <value>Automatische Feldwartung</value>
+    <value>Automatische Feldwartungs-Einheit</value>
     <comment>Module AutoField_MaintenanceUnit</comment>
   </data>
   <data name="AXMissileRack" xml:space="preserve">
@@ -266,7 +266,7 @@
     <comment>Module FuelTank</comment>
   </data>
   <data name="FuelTransferLimpetController" xml:space="preserve">
-    <value>Steuerung Treibstofftransferdrohne</value>
+    <value>Treibstofftransfer-Drohnenstrg.</value>
     <comment>Module FuelTransferLimpetController</comment>
   </data>
   <data name="GuardianGaussCannon" xml:space="preserve">
@@ -282,7 +282,7 @@
     <comment>Module GuardianPowerPlant</comment>
   </data>
   <data name="HatchBreakerLimpetController" xml:space="preserve">
-    <value>Steuerung Frachtlukenöffner</value>
+    <value>Steuereinheit Ladelukenöffner-Drohne</value>
     <comment>Module HatchBreakerLimpetController</comment>
   </data>
   <data name="HeatSinkLauncher" xml:space="preserve">
@@ -530,11 +530,11 @@
     <comment>Module ShardCannon</comment>
   </data>
   <data name="FlechetteLauncher" xml:space="preserve">
-    <value>Flechet Werfer</value>
+    <value>Flechettewerfer</value>
     <comment>Modile FlechetteLauncher</comment>
   </data>
   <data name="EnzymeMissileRack" xml:space="preserve">
-    <value>Biologisches Raketengestell</value>
+    <value>Enzymraketenwerfer</value>
     <comment>Module EnzymeMissileRack</comment>
   </data>
   <data name="GuardianHullReinforcement" xml:space="preserve">
