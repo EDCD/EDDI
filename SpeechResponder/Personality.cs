@@ -315,8 +315,9 @@ namespace EddiSpeechResponder
 
                     if (defaultScript.Responder)
                     {
-                        // This is a responder script so update the description
+                        // This is a responder script so update applicable parameters
                         script.Description = defaultScript.Description;
+                        script.Responder = defaultScript.Responder;
                     }
                 }
             }

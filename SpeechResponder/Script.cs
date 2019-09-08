@@ -40,7 +40,7 @@ namespace EddiSpeechResponder
         public bool Responder
         {
             get { return responder; }
-            private set { responder = value; OnPropertyChanged("Responder"); }
+            set { responder = value; OnPropertyChanged("Responder"); }
         }
 
         [JsonIgnore]
