@@ -170,7 +170,7 @@
     <comment>Material mercury</comment>
   </data>
   <data name="molybdenum" xml:space="preserve">
-    <value>Molybdän</value>
+    <value>Molibdän</value>
     <comment>Material molybdenum</comment>
   </data>
   <data name="niobium" xml:space="preserve">
@@ -190,7 +190,7 @@
     <comment>Material ruthenium</comment>
   </data>
   <data name="selenium" xml:space="preserve">
-    <value>See.leen</value>
+    <value>Selen</value>
     <comment>Material selenium</comment>
   </data>
   <data name="technetium" xml:space="preserve">
@@ -382,11 +382,11 @@
     <comment>Material basicconductors</comment>
   </data>
   <data name="chemicalstorageunits" xml:space="preserve">
-    <value>Chemische Lagereinheiten</value>
+    <value>Lagerungseinheiten für Chemiestoffe</value>
     <comment>Material chemicalstorageunits</comment>
   </data>
   <data name="compactcomposites" xml:space="preserve">
-    <value>Kompakt-Komposit</value>
+    <value>Kompaktkomposite</value>
     <comment>Material compactcomposites</comment>
   </data>
   <data name="crystalshards" xml:space="preserve">
@@ -410,7 +410,7 @@
     <comment>Material salvagedalloys</comment>
   </data>
   <data name="temperedalloys" xml:space="preserve">
-    <value>Gehärtete Legierungen</value>
+    <value>Vergütete Legierungen</value>
     <comment>Material temperedalloys</comment>
   </data>
   <data name="wornshieldemitters" xml:space="preserve">
@@ -478,7 +478,7 @@
     <comment>Material focuscrystals</comment>
   </data>
   <data name="heatexchangers" xml:space="preserve">
-    <value>Wärmetauscher</value>
+    <value>Wärmeaustauscher</value>
     <comment>Material heatexchangers</comment>
   </data>
   <data name="highdensitycomposites" xml:space="preserve">
@@ -570,7 +570,7 @@
     <comment>Material improvisedcomponents</comment>
   </data>
   <data name="militarygradealloys" xml:space="preserve">
-    <value>Militärqualitätslegierung</value>
+    <value>Militärqualitätslegierungen</value>
     <comment>Material militarygradealloys</comment>
   </data>
   <data name="militarysupercapacitors" xml:space="preserve">
