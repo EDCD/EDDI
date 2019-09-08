@@ -162,7 +162,7 @@
     <comment>Module Cannon</comment>
   </data>
   <data name="CargoHatch" xml:space="preserve">
-    <value>Ladeluke</value>
+    <value>Frachtluke</value>
     <comment>Module CargoHatch</comment>
   </data>
   <data name="CargoRack" xml:space="preserve">
@@ -186,7 +186,7 @@
     <comment>Module Cockpit</comment>
   </data>
   <data name="CollectorLimpetController" xml:space="preserve">
-    <value>Steuerung Sammeldrohnen</value>
+    <value>Steuerung Sammeldrohne</value>
     <comment>Module CollectorLimpetController</comment>
   </data>
   <data name="Colouredstringlights" xml:space="preserve">
@@ -206,7 +206,7 @@
     <comment>Module DataLinkScanner</comment>
   </data>
   <data name="DecontaminationLimpetController" xml:space="preserve">
-    <value>Steuerung Entseuchungsdrohnen</value>
+    <value>Steuerung Entseuchungsdrohne</value>
     <comment>Module DecontaminationLimpetController</comment>
   </data>
   <data name="DetailedSurfaceScanner" xml:space="preserve">
@@ -250,7 +250,7 @@
     <comment>Module FrameShiftDriveInterdictor</comment>
   </data>
   <data name="FrameShiftDrive" xml:space="preserve">
-    <value>Frame Shift Antrieb</value>
+    <value>Frameshiftantrieb</value>
     <comment>Module FrameShiftDrive</comment>
   </data>
   <data name="FrameShiftWakeScanner" xml:space="preserve">
@@ -266,7 +266,7 @@
     <comment>Module FuelTank</comment>
   </data>
   <data name="FuelTransferLimpetController" xml:space="preserve">
-    <value>Steuerung Treibstofftransferdrohnen</value>
+    <value>Steuerung Treibstofftransferdrohne</value>
     <comment>Module FuelTransferLimpetController</comment>
   </data>
   <data name="GuardianGaussCannon" xml:space="preserve">
@@ -282,7 +282,7 @@
     <comment>Module GuardianPowerPlant</comment>
   </data>
   <data name="HatchBreakerLimpetController" xml:space="preserve">
-    <value>Steuerung Ladelukenöffner</value>
+    <value>Steuerung Frachtlukenöffner</value>
     <comment>Module HatchBreakerLimpetController</comment>
   </data>
   <data name="HeatSinkLauncher" xml:space="preserve">
@@ -338,7 +338,7 @@
     <comment>Module MiningLance</comment>
   </data>
   <data name="MiningLaser" xml:space="preserve">
-    <value>Erzabbaulaser</value>
+    <value>Abbaulaser</value>
     <comment>Module MiningLaser</comment>
   </data>
   <data name="MirroredSurfaceComposite" xml:space="preserve">
@@ -394,11 +394,11 @@
     <comment>Module PrismaticShieldGenerator</comment>
   </data>
   <data name="ProspectorLimpetController" xml:space="preserve">
-    <value>Steuerung Erzsucherdrohnen</value>
+    <value>Drohnensteuerung Erzsucher</value>
     <comment>Module ProspectorLimpetController</comment>
   </data>
   <data name="PulseLaser" xml:space="preserve">
-    <value>Pulslaser</value>
+    <value>Impulslaser</value>
     <comment>Module PulseLaser</comment>
   </data>
   <data name="RailGun" xml:space="preserve">
@@ -410,7 +410,7 @@
     <comment>Module ReactiveSurfaceComposite</comment>
   </data>
   <data name="ReconLimpetController" xml:space="preserve">
-    <value>Steuerung Aufklärungsdrohnen</value>
+    <value>Steuerung Aufklärungsdrohne</value>
     <comment>Module ReconLimpetController</comment>
   </data>
   <data name="Refinery" xml:space="preserve">
@@ -426,11 +426,11 @@
     <comment>Module RemoteReleaseFlakLauncher</comment>
   </data>
   <data name="RepairLimpetController" xml:space="preserve">
-    <value>Steuerung Reparaturdrohnen</value>
+    <value>Steuerung Reparaturdrohne</value>
     <comment>Module RepairLimpetController</comment>
   </data>
   <data name="ResearchLimpetController" xml:space="preserve">
-    <value>Steuerung Forschungsdrohnen</value>
+    <value>Steuerung Forschungsdrohne</value>
     <comment>Module ResearchLimpetController</comment>
   </data>
   <data name="RocketPropelledFSDDisruptor" xml:space="preserve">
