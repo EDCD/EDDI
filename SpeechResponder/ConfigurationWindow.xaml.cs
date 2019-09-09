@@ -168,7 +168,7 @@ namespace EddiSpeechResponder
             Script script = ((KeyValuePair<string, Script>)((Button)e.Source).DataContext).Value;
             if (script != null)
             {
-                if (script.IsResetable)
+                if (script.IsResettable)
                 {
                     resetScript(sender, e);
                 }

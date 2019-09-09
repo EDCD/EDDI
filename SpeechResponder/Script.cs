@@ -47,16 +47,16 @@ namespace EddiSpeechResponder
         public bool Default => Value == defaultValue;
 
         [JsonIgnore]
-        public bool IsResetableOrDeletable
+        public bool IsResettableOrDeletable
         {
-            get { resetableOrDeletable = !Default || (!Responder && string.IsNullOrWhiteSpace(defaultValue)); return resetableOrDeletable; }
-            set { resetableOrDeletable = value; OnPropertyChanged("IsResetableOrDeletable"); }
+            get { resettableOrDeletable = !Default || (!Responder && string.IsNullOrWhiteSpace(defaultValue)); return resettableOrDeletable; }
+            set { resettableOrDeletable = value; OnPropertyChanged("IsResettableOrDeletable"); }
         }
         [JsonIgnore]
-        private bool resetableOrDeletable;
+        private bool resettableOrDeletable;
 
         [JsonIgnore]
-        public bool IsResetable => Responder || (!Responder && !string.IsNullOrWhiteSpace(defaultValue));
+        public bool IsResettable => Responder || (!Responder && !string.IsNullOrWhiteSpace(defaultValue));
 
         [JsonIgnore]
         public string Value
