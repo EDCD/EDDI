@@ -416,7 +416,7 @@
     <value>Verstärkte elektronische Gegenmaßnahmen</value>
   </data>
   <data name="KillWarrantScannerFastScan" xml:space="preserve">
-    <value>Beschleunigter Tötungsbefehlscanner</value>
+    <value>Beschleunigter Tötungsbefehl-Scanner</value>
   </data>
   <data name="KillWarrantScannerWideAngle" xml:space="preserve">
     <value>Weitwinkelscanner</value>
