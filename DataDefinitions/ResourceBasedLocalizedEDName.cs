@@ -69,7 +69,7 @@ namespace EddiDataDefinitions
     }
 
     [JsonObject(MemberSerialization.OptIn), JsonConverter(typeof(JsonConverterFromEDName))]
-    public class ResourceBasedLocalizedEDName<T> where T : ResourceBasedLocalizedEDName<T>, new()
+    public abstract class ResourceBasedLocalizedEDName<T> where T : ResourceBasedLocalizedEDName<T>, new()
     {
         static ResourceBasedLocalizedEDName()
         {
@@ -78,7 +78,13 @@ namespace EddiDataDefinitions
                 AllOfThem = new List<T>();
             }
         }
-        public static readonly List<T> AllOfThem;
+        public static List<T> AllOfThem
+        {
+            get { EnsureSubClassStaticConstructorHasRun(); return allOfThem; }
+            private set { allOfThem = value; }
+        }
+        private static List<T> allOfThem;
+
         protected static ResourceManager resourceManager;
         protected static Func<string, T> missingEDNameHandler;
         public static readonly object resourceLock = new object();
@@ -116,14 +122,14 @@ namespace EddiDataDefinitions
             {
                 lock (resourceLock)
                 {
-                    AllOfThem.Add(this as T);
+                    allOfThem.Add(this as T);
                 }
             }
         }
 
         private static void EnsureSubClassStaticConstructorHasRun()
         {
-            if (AllOfThem.Count == 0)
+            if (allOfThem.Count == 0)
             {
                 T dummy = new T();
             }
@@ -141,7 +147,7 @@ namespace EddiDataDefinitions
             T result;
             lock (resourceLock)
             {
-                result = AllOfThem.FirstOrDefault(
+                result = allOfThem.FirstOrDefault(
                     v =>
                     v.localizedName.ToLowerInvariant() == from
                     || v.invariantName.ToLowerInvariant() == from);
@@ -161,7 +167,7 @@ namespace EddiDataDefinitions
             T result;
             lock (resourceLock)
             {
-                result = AllOfThem.FirstOrDefault(
+                result = allOfThem.FirstOrDefault(
                     v => v.edname
                     .ToLowerInvariant()
                     .Replace(";", "") == tidiedFrom);
