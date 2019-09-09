@@ -55,6 +55,8 @@ namespace EddiEvents
             VARIABLES.Add("tilt", "Axial tilt for the body, in degrees (only available if DSS equipped)");
             VARIABLES.Add("tiltprobability", "The cumulative probability describing the body's orbital tilt, relative to other bodies of the same planet type");
             VARIABLES.Add("estimatedvalue", "The estimated value of the current scan");
+            VARIABLES.Add("alreadydiscovered", "Whether this body's scan data has already been registered with Universal Cartographics");
+            VARIABLES.Add("alreadymapped", "Whether this body's map data has already been registered with Universal Cartographics");
             VARIABLES.Add("probesused", "The number of probes used to map the body");
             VARIABLES.Add("efficiencytarget", "The efficiency target for the number of probes used to map the body");
         }
