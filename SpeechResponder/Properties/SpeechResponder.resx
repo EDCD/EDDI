@@ -152,7 +152,7 @@
     <value>Delete Personality</value>
   </data>
   <data name="delete_personality_message" xml:space="preserve">
-    <value>Are you sure you want to delete the "{0}" personality ?</value>
+    <value>Are you sure you want to delete the "{0}" personality?</value>
   </data>
   <data name="delete_script" xml:space="preserve">
     <value>Delete</value>
@@ -161,7 +161,7 @@
     <value>Delete script</value>
   </data>
   <data name="delete_script_message" xml:space="preserve">
-    <value>Are you sure you want to delete the "{0}" script ?</value>
+    <value>Are you sure you want to delete the "{0}" script?</value>
   </data>
   <data name="desc" xml:space="preserve">
     <value>Respond to events with scripted speech based on the information in the event. Not all events have scripted responses. If a script response is empty, its 'Test' and 'View' buttons are disabled. Event-based scripts can be disabled or re-prioritized but not deleted.</value>
@@ -228,6 +228,6 @@
     <value>Reset</value>
   </data>
   <data name="reset_script_message" xml:space="preserve">
-    <value>Are you sure you want to reset the "{0}" script ?</value>
+    <value>Are you sure you want to reset the "{0}" script?</value>
   </data>
 </root>
