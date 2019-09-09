@@ -126,11 +126,11 @@
     <comment>Module ATMulticannon</comment>
   </data>
   <data name="AutoField_MaintenanceUnit" xml:space="preserve">
-    <value>Automatische Feldwartung</value>
+    <value>Automatische Feldwartungs-Einheit</value>
     <comment>Module AutoField_MaintenanceUnit</comment>
   </data>
   <data name="AXMissileRack" xml:space="preserve">
-    <value>AX Raketengestell</value>
+    <value>AX Raketenrampe</value>
     <comment>Module AXMissileRack</comment>
   </data>
   <data name="AXMulti_Cannon" xml:space="preserve">
@@ -138,7 +138,7 @@
     <comment>Module AXMulti_Cannon</comment>
   </data>
   <data name="BasicDiscoveryScanner" xml:space="preserve">
-    <value>Einfacher Aufklärungsscanner</value>
+    <value>Erkundungsscanner</value>
     <comment>Module BasicDiscoveryScanner</comment>
   </data>
   <data name="BeamLaser" xml:space="preserve">
@@ -154,7 +154,7 @@
     <comment>Module BurstLaser</comment>
   </data>
   <data name="BusinessClassPassengerCabin" xml:space="preserve">
-    <value>Business Klasse Passagierkabine</value>
+    <value>Business-Klasse-Passagierkabine</value>
     <comment>Module BusinessClassPassengerCabin</comment>
   </data>
   <data name="Cannon" xml:space="preserve">
@@ -162,11 +162,11 @@
     <comment>Module Cannon</comment>
   </data>
   <data name="CargoHatch" xml:space="preserve">
-    <value>Ladeluke</value>
+    <value>Frachtluke</value>
     <comment>Module CargoHatch</comment>
   </data>
   <data name="CargoRack" xml:space="preserve">
-    <value>Laderaum</value>
+    <value>Frachtgestell</value>
     <comment>Module CargoRack</comment>
   </data>
   <data name="VoicePack_Celeste" xml:space="preserve">
@@ -174,7 +174,7 @@
     <comment>Module Celeste</comment>
   </data>
   <data name="ChaffLauncher" xml:space="preserve">
-    <value>Düppelwerfer</value>
+    <value>Düppel-Werfer</value>
     <comment>Module ChaffLauncher</comment>
   </data>
   <data name="CockpitCanopy" xml:space="preserve">
@@ -186,7 +186,7 @@
     <comment>Module Cockpit</comment>
   </data>
   <data name="CollectorLimpetController" xml:space="preserve">
-    <value>Steuerung Sammeldrohnen</value>
+    <value>Steuerung Sammeldrohne</value>
     <comment>Module CollectorLimpetController</comment>
   </data>
   <data name="Colouredstringlights" xml:space="preserve">
@@ -194,7 +194,7 @@
     <comment>Module Colouredstringlights</comment>
   </data>
   <data name="CorrosionResistantCargoRack" xml:space="preserve">
-    <value>korrosionsbeständiger Laderaum</value>
+    <value>Korrosionsbeständiges Frachtgestell</value>
     <comment>Module CorrosionResistantCargoRack</comment>
   </data>
   <data name="Cytoscrambler" xml:space="preserve">
@@ -202,15 +202,15 @@
     <comment>Module Cytoscrambler</comment>
   </data>
   <data name="DataLinkScanner" xml:space="preserve">
-    <value>Datenlinkscanner</value>
+    <value>Datenlink-Scanner</value>
     <comment>Module DataLinkScanner</comment>
   </data>
   <data name="DecontaminationLimpetController" xml:space="preserve">
-    <value>Steuerung Entseuchungsdrohnen</value>
+    <value>Steuerung Entseuchungsdrohne</value>
     <comment>Module DecontaminationLimpetController</comment>
   </data>
   <data name="DetailedSurfaceScanner" xml:space="preserve">
-    <value>Oberflächenscanner</value>
+    <value>Detail-Oberflächenscanner</value>
     <comment>Module DetailedSurfaceScanner</comment>
   </data>
   <data name="Disruptor" xml:space="preserve">
@@ -222,7 +222,7 @@
     <comment>Module EconomyClassPassengerCabin</comment>
   </data>
   <data name="ElectronicCountermeasure" xml:space="preserve">
-    <value>Elektronische Gegenmaßnahme</value>
+    <value>Elektr. Gegenmaßnahmen</value>
     <comment>Module ElectronicCountermeasure</comment>
   </data>
   <data name="EnhancedPerformanceThrusters" xml:space="preserve">
@@ -230,15 +230,15 @@
     <comment>Module EnhancedPerformanceThrusters</comment>
   </data>
   <data name="FighterArmour" xml:space="preserve">
-    <value>Jägerpanzerung</value>
+    <value>Fighter-Panzerung</value>
     <comment>Module FighterArmour</comment>
   </data>
   <data name="FighterHangar" xml:space="preserve">
-    <value>Jägerhangar</value>
+    <value>Fighter-Hangar</value>
     <comment>Module FighterHangar</comment>
   </data>
   <data name="FirstClassPassengerCabin" xml:space="preserve">
-    <value>Erste Klasse Passagierkabine</value>
+    <value>Erste-Klasse-Passagierkabine</value>
     <comment>Module FirstClassPassengerCabin</comment>
   </data>
   <data name="FragmentCannon" xml:space="preserve">
@@ -246,7 +246,7 @@
     <comment>Module FragmentCannon</comment>
   </data>
   <data name="FrameShiftDriveInterdictor" xml:space="preserve">
-    <value>Frameshift Unterbrecher</value>
+    <value>Frameshiftantrieb-Unterbrecher</value>
     <comment>Module FrameShiftDriveInterdictor</comment>
   </data>
   <data name="FrameShiftDrive" xml:space="preserve">
@@ -266,7 +266,7 @@
     <comment>Module FuelTank</comment>
   </data>
   <data name="FuelTransferLimpetController" xml:space="preserve">
-    <value>Treibstofftransfer-Drohnensteuerung</value>
+    <value>Treibstofftransfer-Drohnenstrg.</value>
     <comment>Module FuelTransferLimpetController</comment>
   </data>
   <data name="GuardianGaussCannon" xml:space="preserve">
@@ -282,7 +282,7 @@
     <comment>Module GuardianPowerPlant</comment>
   </data>
   <data name="HatchBreakerLimpetController" xml:space="preserve">
-    <value>Steuereinheit Ladelukenöffner</value>
+    <value>Steuereinheit Ladelukenöffner-Drohne</value>
     <comment>Module HatchBreakerLimpetController</comment>
   </data>
   <data name="HeatSinkLauncher" xml:space="preserve">
@@ -290,7 +290,7 @@
     <comment>Module HeatSinkLauncher</comment>
   </data>
   <data name="HullReinforcementPackage" xml:space="preserve">
-    <value>Rumpfhüllenverstärkung</value>
+    <value>Rumpfhüllenverstärkung (Paket)</value>
     <comment>Module HullReinforcementPackage</comment>
   </data>
   <data name="ImperialHammer" xml:space="preserve">
@@ -302,7 +302,7 @@
     <comment>Module IntermediateDiscoveryScanner</comment>
   </data>
   <data name="KillWarrantScanner" xml:space="preserve">
-    <value>Tötungsbefehlscanner</value>
+    <value>Tötungsbefehl-Scanner</value>
     <comment>Module KillWarrantScanner</comment>
   </data>
   <data name="LifeSupport" xml:space="preserve">
@@ -318,7 +318,7 @@
     <comment>Module LuxuryClassPassengerCabin</comment>
   </data>
   <data name="ManifestScanner" xml:space="preserve">
-    <value>Frachtscanner</value>
+    <value>Verzeichnisscanner</value>
     <comment>Module ManifestScanner</comment>
   </data>
   <data name="MetaAlloyHullReinforcement" xml:space="preserve">
@@ -338,7 +338,7 @@
     <comment>Module MiningLance</comment>
   </data>
   <data name="MiningLaser" xml:space="preserve">
-    <value>Erzabbaulaser</value>
+    <value>Abbaulaser</value>
     <comment>Module MiningLaser</comment>
   </data>
   <data name="MirroredSurfaceComposite" xml:space="preserve">
@@ -346,11 +346,11 @@
     <comment>Module MirroredSurfaceComposite</comment>
   </data>
   <data name="MissileRack" xml:space="preserve">
-    <value>Raketengestell</value>
+    <value>Raketenrampe</value>
     <comment>Module MissileRack</comment>
   </data>
   <data name="ModuleReinforcementPackage" xml:space="preserve">
-    <value>Modulverstärkung</value>
+    <value>Modulverstärkung (Paket)</value>
     <comment>Module ModuleReinforcementPackage</comment>
   </data>
   <data name="Multi_Cannon" xml:space="preserve">
@@ -370,7 +370,7 @@
     <comment>Module PlanetaryApproachSuite</comment>
   </data>
   <data name="PlanetaryVehicleHangar" xml:space="preserve">
-    <value>Planetenfahrzeughangar</value>
+    <value>Planetenfahrzeug-Hangar</value>
     <comment>Module PlanetaryVehicleHangar</comment>
   </data>
   <data name="PlasmaAccelerator" xml:space="preserve">
@@ -398,7 +398,7 @@
     <comment>Module ProspectorLimpetController</comment>
   </data>
   <data name="PulseLaser" xml:space="preserve">
-    <value>Pulslaser</value>
+    <value>Impulslaser</value>
     <comment>Module PulseLaser</comment>
   </data>
   <data name="RailGun" xml:space="preserve">
@@ -410,7 +410,7 @@
     <comment>Module ReactiveSurfaceComposite</comment>
   </data>
   <data name="ReconLimpetController" xml:space="preserve">
-    <value>Steuerung Aufklärungsdrohnen</value>
+    <value>Steuerung Aufklärungsdrohne</value>
     <comment>Module ReconLimpetController</comment>
   </data>
   <data name="Refinery" xml:space="preserve">
@@ -426,11 +426,11 @@
     <comment>Module RemoteReleaseFlakLauncher</comment>
   </data>
   <data name="RepairLimpetController" xml:space="preserve">
-    <value>Steuerung Reparaturdrohnen</value>
+    <value>Steuerung Reparaturdrohne</value>
     <comment>Module RepairLimpetController</comment>
   </data>
   <data name="ResearchLimpetController" xml:space="preserve">
-    <value>Steuerung Forschungsdrohnen</value>
+    <value>Steuerung Forschungsdrohne</value>
     <comment>Module ResearchLimpetController</comment>
   </data>
   <data name="RocketPropelledFSDDisruptor" xml:space="preserve">
@@ -530,11 +530,11 @@
     <comment>Module ShardCannon</comment>
   </data>
   <data name="FlechetteLauncher" xml:space="preserve">
-    <value>Flechet Werfer</value>
+    <value>Flechettewerfer</value>
     <comment>Modile FlechetteLauncher</comment>
   </data>
   <data name="EnzymeMissileRack" xml:space="preserve">
-    <value>Biologisches Raketengestell</value>
+    <value>Enzymraketenwerfer</value>
     <comment>Module EnzymeMissileRack</comment>
   </data>
   <data name="GuardianHullReinforcement" xml:space="preserve">
@@ -554,23 +554,23 @@
     <comment>This is the "Ship Integrity" field in the Advanced Repair screen</comment>
   </data>
   <data name="PulseWave" xml:space="preserve">
-    <value>Pulswellenanalysator</value>
+    <value>Impulswellen-Analysator</value>
     <comment>Module Pulse Wave Scanner</comment>
   </data>
   <data name="SeismicCharge" xml:space="preserve">
-    <value>Seismischer Ladungswerfer</value>
+    <value>Seismischer Ladewerfer</value>
     <comment>Module Seismic Charge</comment>
   </data>
   <data name="DisplacementMissile" xml:space="preserve">
-    <value>Untergrund-Verschiebungsrakete</value>
+    <value>Untergrund-Verdrängungsrakete</value>
     <comment>Module Displacement Missile</comment>
   </data>
   <data name="AbrasionBlaster" xml:space="preserve">
-    <value>Abriebstrahler</value>
+    <value>Abrasionsblaster</value>
     <comment>Module Abrasion Blaster</comment>
   </data>
   <data name="CompositionScanner" xml:space="preserve">
-    <value>Kompositionsscanner</value>
+    <value>Zusammensetzungsscanner</value>
     <comment>Module Composition Scanner</comment>
   </data>
   <data name="SupercruiseAssist" xml:space="preserve">
