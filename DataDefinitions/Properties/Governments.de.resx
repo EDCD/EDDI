@@ -139,7 +139,7 @@
     <comment>Government type Imperial</comment>
   </data>
   <data name="None" xml:space="preserve">
-    <value>keine</value>
+    <value>Keine</value>
     <comment>Government type None</comment>
   </data>
   <data name="Patronage" xml:space="preserve">
