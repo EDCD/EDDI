@@ -2,6 +2,14 @@
 
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
+### 3.4.4-b1
+  * Core
+    * Fixed a bug whereby the list of any given class of data definitions could be accessed before it was populated. This manifested as the Material monitor only showing owned materials on first run.
+  * Cargo monitor
+    * Fixed #1465 whereby (for example) when a limpet launch frees cargo space which the refinery immediately uses, the Cargo monitor got out of sync.
+  * Speech responder
+    * Fixed inadvertently disabled hyperlink "Read about the speech responder's functions here".
+
 ### 3.4.3
   * Core
     * Removed in-process .dll accidentally included with release 3.4.3-b1.
