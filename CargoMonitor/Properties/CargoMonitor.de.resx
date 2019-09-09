@@ -128,7 +128,7 @@
     <comment>Tons of haulage (mission cargo) carried</comment>
   </data>
   <data name="header_name" xml:space="preserve">
-    <value>Name</value>
+    <value>Waren</value>
     <comment>Name of cargo, such as "Gold"</comment>
   </data>
   <data name="header_need" xml:space="preserve">
