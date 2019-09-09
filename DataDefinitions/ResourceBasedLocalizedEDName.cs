@@ -131,7 +131,7 @@ namespace EddiDataDefinitions
         {
             if (allOfThem.Count == 0)
             {
-                T dummy = new T();
+                T _ = new T();
             }
         }
 
