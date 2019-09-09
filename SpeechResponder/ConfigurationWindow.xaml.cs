@@ -335,14 +335,8 @@ namespace EddiSpeechResponder
 
         private void SpeechResponderHelp_Click(object sender, RoutedEventArgs e)
         {
-            if (sender is CheckBox checkBox)
-            {
-                if (checkBox.IsLoaded)
-                {
-                    MarkdownWindow speechResponderHelpWindow = new MarkdownWindow("speechResponderHelp.md");
-                    speechResponderHelpWindow.Show();
-                }
-            }
+            MarkdownWindow speechResponderHelpWindow = new MarkdownWindow("speechResponderHelp.md");
+            speechResponderHelpWindow.Show();
         }
     }
 }
