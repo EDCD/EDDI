@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="None" xml:space="preserve">
-    <value>kein</value>
+    <value>Keiner</value>
     <comment>Faction state None</comment>
   </data>
   <data name="Retreat" xml:space="preserve">
