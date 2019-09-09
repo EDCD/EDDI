@@ -124,7 +124,7 @@
     <value># Überwachung Fracht</value>
   </data>
   <data name="header_haulage" xml:space="preserve">
-    <value>Beförderung</value>
+    <value>Transport</value>
     <comment>Tons of haulage (mission cargo) carried</comment>
   </data>
   <data name="header_name" xml:space="preserve">
