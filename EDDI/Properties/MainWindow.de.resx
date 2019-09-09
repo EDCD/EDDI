@@ -248,22 +248,22 @@
     <value>Sie können den Namen eines bestimmten Systems und einer Station in diesem System, das Sie als Ihr Zuhause betrachten, angeben. Wenn Sie dies tun, werden die Informationen über dieses System und diese Station den Ansprechpartnern von EDDI zur Verfügung gestellt.</value>
   </data>
   <data name="tab_commander_squadron_name" xml:space="preserve">
-    <value>Geschwadername:</value>
+    <value>Geschwader-Name:</value>
   </data>
   <data name="tab_commander_squadron_system" xml:space="preserve">
-    <value>Geschwadersystem:</value>
+    <value>Geschwader-System:</value>
   </data>
   <data name="tab_commander_squadron_allegiance" xml:space="preserve">
-    <value>Geschwaderzugehörigkeit:</value>
+    <value>Geschwader-Treue:</value>
   </data>
   <data name="tab_commander_squadron_faction" xml:space="preserve">
-    <value>Geschwaderfraktion:</value>
+    <value>Geschwader-Fraktion:</value>
   </data>
   <data name="tab_commander_squadron_power" xml:space="preserve">
     <value>Geschwader-Power:</value>
   </data>
   <data name="tab_commander_squadron_rank" xml:space="preserve">
-    <value>Geschwaderrank:</value>
+    <value>Geschwader-Rank:</value>
   </data>
   <data name="tab_commander_squadron_id" xml:space="preserve">
     <value>Geschwader-ID:</value>
