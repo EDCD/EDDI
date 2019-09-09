@@ -142,7 +142,7 @@
     <comment>Station Service: Contacts</comment>
   </data>
   <data name="Exploration" xml:space="preserve">
-    <value>Kartografie</value>
+    <value>Universal Cartographics</value>
     <comment>Station Service: Exploration</comment>
   </data>
   <data name="Initiatives" xml:space="preserve">
@@ -158,7 +158,7 @@
     <comment>Station Service: Outfitting</comment>
   </data>
   <data name="CrewLounge" xml:space="preserve">
-    <value>Mannschaftsraum</value>
+    <value>Crewlounge</value>
     <comment>Station Service: CrewLounge</comment>
   </data>
   <data name="Rearm" xml:space="preserve">
@@ -214,7 +214,7 @@
     <comment>Station Service: Powerplay</comment>
   </data>
   <data name="SearchAndRescue" xml:space="preserve">
-    <value>Search and Rescue</value>
+    <value>Such- und Rettungsteam</value>
     <comment>Station Service: SearchAndRescue</comment>
   </data>
   <data name="TechBroker" xml:space="preserve">
