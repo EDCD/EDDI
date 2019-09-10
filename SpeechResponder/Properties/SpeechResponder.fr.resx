@@ -151,18 +151,14 @@
   <data name="delete_personality_caption" xml:space="preserve">
     <value>Supprimer le profil</value>
   </data>
-  <data name="delete_personality_message" xml:space="preserve">
-    <value>Êtes vous sur de vouloir supprimer le profil "{0}" ?</value>
-  </data>
+  
   <data name="delete_script" xml:space="preserve">
     <value>Supprimer</value>
   </data>
   <data name="delete_script_caption" xml:space="preserve">
     <value>Supprimer le script</value>
   </data>
-  <data name="delete_script_message" xml:space="preserve">
-    <value>Êtes vous sur de vouloir supprimer le script "{0}" ?</value>
-  </data>
+  
   <data name="desc" xml:space="preserve">
     <value>Répond aux événements avec un dialogue scripté basé sur les informations de l'événement. Tous les événements n'ont pas de réponses scriptées. Si un script de réponse est vide, les boutons 'Tester' et 'Voir' sont désactivés. Les scripts basés sur des événements peuvent être désactivés ou redéfinis, mais pas supprimés.</value>
   </data>
@@ -224,4 +220,6 @@
   <data name="localizedAnd" xml:space="preserve">
     <value>et</value>
   </data>
+  
+  
 </root>
