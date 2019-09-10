@@ -151,14 +151,18 @@
   <data name="delete_personality_caption" xml:space="preserve">
     <value>Személyiség törlése</value>
   </data>
-  
+  <data name="delete_personality_message" xml:space="preserve">
+    <value>Biztos benne, hogy törölni szeretné a(z) "{0}" személyiséget?</value>
+  </data>
   <data name="delete_script" xml:space="preserve">
     <value>Törlés</value>
   </data>
   <data name="delete_script_caption" xml:space="preserve">
     <value>Szkript törlése</value>
   </data>
-  
+  <data name="delete_script_message" xml:space="preserve">
+    <value>Biztos benne, hogy törölni szeretné a(z) "{0}" szkriptet?</value>
+  </data>
   
   <data name="edit_script" xml:space="preserve">
     <value>Szerkesztés</value>
@@ -216,6 +220,10 @@
   <data name="localizedAnd" xml:space="preserve">
     <value>és</value>
   </data>
-  
-  
+  <data name="reset_script" xml:space="preserve">
+    <value>Visszaállítás</value>
+  </data>
+  <data name="reset_script_message" xml:space="preserve">
+    <value>Biztos benne, szeretné visszaállítani a(z) "{0}" szkriptet?</value>
+  </data>
 </root>
