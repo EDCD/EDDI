@@ -132,7 +132,7 @@ namespace Eddi
         public Ship CurrentShip { get; set; }
 
         // Our main window, made accessible via the applicable EDDI Instance
-        public MainWindow MainWindow { get; internal set; }
+        public MainWindow MainWindow => (MainWindow)System.Windows.Application.Current.MainWindow;
 
         public ObservableConcurrentDictionary<string, object> State = new ObservableConcurrentDictionary<string, object>();
 
