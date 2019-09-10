@@ -133,9 +133,13 @@
     <value>Hőálló páncálzat</value>
   </data>
   
+  <data name="EngineReinforced" xml:space="preserve">
+    <value>Megerősített hajtómű</value>
+  </data>
   
-  
-  
+  <data name="FSDFastBoot" xml:space="preserve">
+    <value>Gyors újraindítású FSD szekvencia</value>
+  </data>
   
   
   <data name="FSDLongRange" xml:space="preserve">
@@ -207,7 +211,9 @@
   <data name="ShieldGeneratorThermic" xml:space="preserve">
     <value>Hőálló pajzsok</value>
   </data>
-  
+  <data name="WeaponDoubleShot" xml:space="preserve">
+    <value>Dupla lövés</value>
+  </data>
   
   
   <data name="WeaponHighCapacity" xml:space="preserve">
