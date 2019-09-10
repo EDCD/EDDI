@@ -242,7 +242,6 @@ namespace Eddi
             LoadAndSortTabs(eddiConfiguration);
 
             RestoreWindowState();
-            EDDI.Instance.MainWindow = this;
             EDDI.Instance.Start();
         }
 
