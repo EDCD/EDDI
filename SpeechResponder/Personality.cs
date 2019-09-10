@@ -301,6 +301,7 @@ namespace EddiSpeechResponder
             fixedScripts = fixedScripts.OrderBy(s => s.Key).ToDictionary(s => s.Key, s => s.Value);
 
             personality.Scripts = fixedScripts;
+            personality.ToFile();
         }
 
         public static Script UpgradeScript(Script personalityScript, Script defaultScript)
@@ -310,22 +311,14 @@ namespace EddiSpeechResponder
             {
                 if (defaultScript != null)
                 {
+                    // Set the default value of our script
+                    script.defaultValue = defaultScript.Value;
+
                     if (defaultScript.Responder)
                     {
-                        // This is a responder script so update the description
+                        // This is a responder script so update applicable parameters
                         script.Description = defaultScript.Description;
-                    }
-
-                    if (script.Default)
-                    {
-                        // This is a default script so take the latest value
-                        script.Value = defaultScript.Value;
-                    }
-
-                    if (script.Value == defaultScript.Value)
-                    {
-                        // Ensure this is flaged as a default script (pre 2-3 didn't have this flag)
-                        script.Default = true;
+                        script.Responder = defaultScript.Responder;
                     }
                 }
             }

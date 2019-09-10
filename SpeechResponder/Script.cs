@@ -19,8 +19,6 @@ namespace EddiSpeechResponder
         private bool responder;
         [JsonProperty("script")]
         private string script;
-        [JsonProperty("default")]
-        private bool isDefault;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -42,18 +40,23 @@ namespace EddiSpeechResponder
         public bool Responder
         {
             get { return responder; }
-            private set { responder = value; OnPropertyChanged("Responder"); }
+            set { responder = value; OnPropertyChanged("Responder"); }
         }
 
         [JsonIgnore]
-        public bool Default
+        public bool Default => Value == defaultValue;
+
+        [JsonIgnore]
+        public bool IsResettableOrDeletable
         {
-            get { return isDefault; }
-            set { isDefault = value; OnPropertyChanged("Default"); }
+            get { resettableOrDeletable = !Default || (!Responder && string.IsNullOrWhiteSpace(defaultValue)); return resettableOrDeletable; }
+            set { resettableOrDeletable = value; OnPropertyChanged("IsResettableOrDeletable"); }
         }
+        [JsonIgnore]
+        private bool resettableOrDeletable;
 
         [JsonIgnore]
-        public bool IsDeleteable => !isDefault;
+        public bool IsResettable => Responder || (!Responder && !string.IsNullOrWhiteSpace(defaultValue));
 
         [JsonIgnore]
         public string Value
@@ -61,6 +64,9 @@ namespace EddiSpeechResponder
             get { return script; }
             set { script = value; OnPropertyChanged("Value"); }
         }
+
+        [JsonIgnore]
+        public string defaultValue;
 
         [JsonIgnore]
         public bool HasValue
@@ -78,7 +84,7 @@ namespace EddiSpeechResponder
         [JsonIgnore]
         private IList<int> priorities;
 
-        public Script(string name, string description, bool responder, string script, int priority = 3, bool Default = false)
+        public Script(string name, string description, bool responder, string script, int priority = 3, string defaultScript = null)
         {
             Name = name;
             Description = description;
@@ -86,7 +92,7 @@ namespace EddiSpeechResponder
             Value = script;
             Priority = priority;
             Enabled = true;
-            this.Default = Default;
+            defaultValue = defaultScript;
 
             Priorities = new List<int>();
             for (int i = 1; i <= SpeechService.Instance.speechQueue.priorityQueues.Count - 1; i++)

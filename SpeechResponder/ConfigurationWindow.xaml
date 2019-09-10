@@ -144,7 +144,18 @@
                 <DataGridTemplateColumn>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Button IsEnabled="{Binding Path=Value.IsDeleteable}" Click="deleteScript" Content="{x:Static resx:SpeechResponder.delete_script}" />
+                            <Button IsEnabled="{Binding Path=Value.IsResettableOrDeletable}" Click="resetOrDeleteScript">
+                                <Button.Style>
+                                    <Style TargetType="{x:Type Button}">
+                                        <Setter Property="Content" Value="{x:Static resx:SpeechResponder.delete_script}" />
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Path=Value.IsResettable}" Value="True">
+                                                <Setter Property="Content" Value="{x:Static resx:SpeechResponder.reset_script}" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Button.Style>
+                            </Button>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>

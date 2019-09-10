@@ -185,7 +185,7 @@
     "Cargo scoop": {
       "enabled": true,
       "priority": 3,
-      "responder": false,
+      "responder": true,
       "script": null,
       "default": true,
       "name": "Cargo scoop",
@@ -959,7 +959,7 @@
     "Landing gear": {
       "enabled": true,
       "priority": 3,
-      "responder": false,
+      "responder": true,
       "script": null,
       "default": true,
       "name": "Landing gear",
@@ -986,7 +986,7 @@
     "Lights": {
       "enabled": true,
       "priority": 3,
-      "responder": false,
+      "responder": true,
       "script": null,
       "default": true,
       "name": "Lights",
