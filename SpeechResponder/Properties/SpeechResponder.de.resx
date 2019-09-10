@@ -151,14 +151,18 @@
   <data name="delete_personality_caption" xml:space="preserve">
     <value>Charakter löschen</value>
   </data>
-  
+  <data name="delete_personality_message" xml:space="preserve">
+    <value>Sind Sie sicher, dass sie den Charakter "{0}" löschen möchten?</value>
+  </data>
   <data name="delete_script" xml:space="preserve">
     <value>Löschen</value>
   </data>
   <data name="delete_script_caption" xml:space="preserve">
     <value>Skript löschen</value>
   </data>
-  
+  <data name="delete_script_message" xml:space="preserve">
+    <value>Möchten Sie Skript "{0} wirklich löschen?</value>
+  </data>
   <data name="desc" xml:space="preserve">
     <value>Reaktion auf Ereignisse mit einer Skript-Sprache (Cottle, https://r3c.github.io/cottle/), die auf den Informationen im Ereignis basiert. Nicht alle Ereignisse haben Antwort-Skripte. Wenn ein Antwort-Skript leer ist, sind die Schaltflächen 'Test' und 'Ansicht' deaktiviert. Ereignisbasierte Skripte können deaktiviert oder bearbeitet, jedoch nicht gelöscht werden.</value>
   </data>
@@ -220,6 +224,10 @@
   <data name="localizedAnd" xml:space="preserve">
     <value>und</value>
   </data>
-  
-  
+  <data name="reset_script" xml:space="preserve">
+    <value>Reset</value>
+  </data>
+  <data name="reset_script_message" xml:space="preserve">
+    <value>Möchten Sie Skript "{0} wirklich zurücksetzen?</value>
+  </data>
 </root>
