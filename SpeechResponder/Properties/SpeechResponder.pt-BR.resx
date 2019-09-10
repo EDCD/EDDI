@@ -151,18 +151,14 @@
   <data name="delete_personality_caption" xml:space="preserve">
     <value>Remover Personalidade</value>
   </data>
-  <data name="delete_personality_message" xml:space="preserve">
-    <value>Tem certeza que deseja excluir a personalidade "{0}"?</value>
-  </data>
+  
   <data name="delete_script" xml:space="preserve">
     <value>Excluir</value>
   </data>
   <data name="delete_script_caption" xml:space="preserve">
     <value>Excluir script</value>
   </data>
-  <data name="delete_script_message" xml:space="preserve">
-    <value>Tem certeza que deseja excluir o script "{0}"?</value>
-  </data>
+  
   <data name="desc" xml:space="preserve">
     <value>Responde a eventos com fala programada com base nas informações do evento. Nem todos os eventos possuem respostas programadas. Se uma resposta de script estiver vazia, seus botões "Testar" e "Ver" estarão desativados. Scripts baseados em eventos podem ser desabilitados ou repriorizados, mas não apagados.</value>
   </data>
@@ -224,4 +220,6 @@
   <data name="localizedAnd" xml:space="preserve">
     <value>e</value>
   </data>
+  
+  
 </root>
