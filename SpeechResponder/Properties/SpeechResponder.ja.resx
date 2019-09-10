@@ -151,18 +151,14 @@
   <data name="delete_personality_caption" xml:space="preserve">
     <value>パーソナリティを削除</value>
   </data>
-  <data name="delete_personality_message" xml:space="preserve">
-    <value>パーソナリティ "{0}" を削除しますか？</value>
-  </data>
+  
   <data name="delete_script" xml:space="preserve">
     <value>削除</value>
   </data>
   <data name="delete_script_caption" xml:space="preserve">
     <value>スクリプトを削除</value>
   </data>
-  <data name="delete_script_message" xml:space="preserve">
-    <value>スクリプト "{0}" を削除しますか？</value>
-  </data>
+  
   <data name="desc" xml:space="preserve">
     <value>イベントの情報に基づき、スクリプトによる音声でイベントに応答します。 すべてのイベントが設定された応答を返すわけではありません。 スクリプト応答が空の場合、「テスト」と 「閲覧」ボタンは無効になります。イベントに基づくスクリプトは無効化または優先度が再設定されますが、削除されません。</value>
   </data>
@@ -224,4 +220,6 @@
   <data name="localizedAnd" xml:space="preserve">
     <value>and</value>
   </data>
+  
+  
 </root>
