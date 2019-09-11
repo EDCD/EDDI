@@ -161,7 +161,7 @@
     <value>Skript löschen</value>
   </data>
   <data name="delete_script_message" xml:space="preserve">
-    <value>Möchten Sie Skript "{0} wirklich löschen?</value>
+    <value>Sind Sie sicher, dass sie Skript "{0}" löschen möchten?</value>
   </data>
   <data name="desc" xml:space="preserve">
     <value>Reaktion auf Ereignisse mit einer Skript-Sprache (Cottle, https://r3c.github.io/cottle/), die auf den Informationen im Ereignis basiert. Nicht alle Ereignisse haben Antwort-Skripte. Wenn ein Antwort-Skript leer ist, sind die Schaltflächen 'Test' und 'Ansicht' deaktiviert. Ereignisbasierte Skripte können deaktiviert oder bearbeitet, jedoch nicht gelöscht werden.</value>
