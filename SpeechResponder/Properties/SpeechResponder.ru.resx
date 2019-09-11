@@ -151,18 +151,14 @@
   <data name="delete_personality_caption" xml:space="preserve">
     <value>Удалить персональность</value>
   </data>
-  <data name="delete_personality_message" xml:space="preserve">
-    <value>Вы уверены, что вы хотите удалить персональность "{0}"?</value>
-  </data>
+  
   <data name="delete_script" xml:space="preserve">
     <value>Удалить</value>
   </data>
   <data name="delete_script_caption" xml:space="preserve">
     <value>Удалить скрипт</value>
   </data>
-  <data name="delete_script_message" xml:space="preserve">
-    <value>Вы уверены, что вы хотите удалить Скрипт "{0}"?</value>
-  </data>
+  
   <data name="desc" xml:space="preserve">
     <value>Отвечает на события с помощью скриптовой речи на основе информации в событии. Не у всех событий есть скриптовые ответы. Если скрипт ответа пуст, то кнопки «Тест» и «Просмотр» отключены. Скрипты могут быть отключены, или им можно поменять приоритет, но не удалить.</value>
   </data>
@@ -219,5 +215,7 @@
   <data name="speechResponderHelpHere" xml:space="preserve">
     <value>здесь.</value>
   </data>
+  
+  
   
 </root>

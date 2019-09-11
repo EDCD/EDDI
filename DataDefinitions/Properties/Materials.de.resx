@@ -170,7 +170,7 @@
     <comment>Material mercury</comment>
   </data>
   <data name="molybdenum" xml:space="preserve">
-    <value>Molybdän</value>
+    <value>Molibdän</value>
     <comment>Material molybdenum</comment>
   </data>
   <data name="niobium" xml:space="preserve">
@@ -206,7 +206,7 @@
     <comment>Material yttrium</comment>
   </data>
   <data name="zirconium" xml:space="preserve">
-    <value>Zirkonium</value>
+    <value>Zirconium</value>
     <comment>Material zirconium</comment>
   </data>
   <data name="antimony" xml:space="preserve">
@@ -226,7 +226,7 @@
     <comment>Material disruptedwakeechoes</comment>
   </data>
   <data name="shieldcyclerecordings" xml:space="preserve">
-    <value>Gestörte-Schildzyklus-Aufzeichnung</value>
+    <value>Gestörte-Schildzyklus-Aufzeichnungen</value>
     <comment>Material shieldcyclerecordings</comment>
   </data>
   <data name="scrambledemissiondata" xml:space="preserve">
@@ -250,7 +250,7 @@
     <comment>Material fsdtelemetry</comment>
   </data>
   <data name="shieldsoakanalysis" xml:space="preserve">
-    <value>Inkonsistente Schildleistungsanalyse</value>
+    <value>Inkonsistente Schildleistungsanalysen</value>
     <comment>Material shieldsoakanalysis</comment>
   </data>
   <data name="archivedemissiondata" xml:space="preserve">
@@ -278,7 +278,7 @@
     <comment>Material tg_structuraldata</comment>
   </data>
   <data name="scandatabanks" xml:space="preserve">
-    <value>Scandatenbank unter Verschluss</value>
+    <value>Scan-Datenbanken unter Verschluss</value>
     <comment>Material scandatabanks</comment>
   </data>
   <data name="industrialfirmware" xml:space="preserve">
@@ -326,7 +326,7 @@
     <comment>Material decodedemissiondata</comment>
   </data>
   <data name="encodedscandata" xml:space="preserve">
-    <value>Divergente Scandaten</value>
+    <value>Divergente Scanndaten</value>
     <comment>Material encodedscandata</comment>
   </data>
   <data name="hyperspacetrajectories" xml:space="preserve">
@@ -382,11 +382,11 @@
     <comment>Material basicconductors</comment>
   </data>
   <data name="chemicalstorageunits" xml:space="preserve">
-    <value>Chemische Lagereinheiten</value>
+    <value>Lagerungseinheiten für Chemiestoffe</value>
     <comment>Material chemicalstorageunits</comment>
   </data>
   <data name="compactcomposites" xml:space="preserve">
-    <value>Kompakt-Komposit</value>
+    <value>Kompaktkomposite</value>
     <comment>Material compactcomposites</comment>
   </data>
   <data name="crystalshards" xml:space="preserve">
@@ -410,7 +410,7 @@
     <comment>Material salvagedalloys</comment>
   </data>
   <data name="temperedalloys" xml:space="preserve">
-    <value>Gehärtete Legierungen</value>
+    <value>Vergütete Legierungen</value>
     <comment>Material temperedalloys</comment>
   </data>
   <data name="wornshieldemitters" xml:space="preserve">
@@ -478,7 +478,7 @@
     <comment>Material focuscrystals</comment>
   </data>
   <data name="heatexchangers" xml:space="preserve">
-    <value>Wärmetauscher</value>
+    <value>Wärmeaustauscher</value>
     <comment>Material heatexchangers</comment>
   </data>
   <data name="highdensitycomposites" xml:space="preserve">
@@ -570,7 +570,7 @@
     <comment>Material improvisedcomponents</comment>
   </data>
   <data name="militarygradealloys" xml:space="preserve">
-    <value>Militärqualitätslegierung</value>
+    <value>Militärqualitätslegierungen</value>
     <comment>Material militarygradealloys</comment>
   </data>
   <data name="militarysupercapacitors" xml:space="preserve">
@@ -626,11 +626,11 @@
     <comment>Material guardian_moduleblueprint</comment>
   </data>
   <data name="guardian_sentinel_weaponparts" xml:space="preserve">
-    <value>Guardian-Wache Waffenteile</value>
+    <value>Waffenteile der Guardian Wächter</value>
     <comment>Material guardian_sentinel_weaponparts</comment>
   </data>
   <data name="guardian_sentinel_wreckagecomponents" xml:space="preserve">
-    <value>Guardian-Wächter Trümmerteile</value>
+    <value>Trümmerteile der Guardian Wächter</value>
     <comment>Material guardian_sentinel_wreckagecomponents</comment>
   </data>
   <data name="lead" xml:space="preserve">
@@ -650,11 +650,11 @@
     <comment>Material tg_biomechanicalconduits</comment>
   </data>
   <data name="tg_weaponparts" xml:space="preserve">
-    <value>Thargoiden Waffenteile</value>
+    <value>Waffenteile der Thargoiden</value>
     <comment>Material tg_weaponparts</comment>
   </data>
   <data name="tg_wreckagecomponents" xml:space="preserve">
-    <value>Thargoiden Wrackteile</value>
+    <value>Wrackteile der Thargoiden</value>
     <comment>Material tg_wreckagecomponents</comment>
   </data>
   <data name="tg_shipflightdata" xml:space="preserve">
