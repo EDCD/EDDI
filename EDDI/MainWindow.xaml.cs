@@ -1053,6 +1053,9 @@ namespace Eddi
                 // to empty somewhere between here and OnClosed.
                 SaveWindowState();
 
+                // Unregister applicable event handlers
+                CompanionAppService.Instance.StateChanged -= companionApiStatusChanged;
+
                 if (!fromVA)
                 {
                     // When in OnClosed(), if the EDDI window was closed while minimized
