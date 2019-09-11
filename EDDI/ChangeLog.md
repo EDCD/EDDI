@@ -30,7 +30,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
   * VoiceAttack responder
     * Added new plugin function `inara`, allowing commanders to look up the Inara profiles of other commanders in their browsers.
 
-### 3.4.3-b2
+### 3.4.3
   * Core
     * Removed in-process .dll accidentally included with release 3.4.3-b1.
 
