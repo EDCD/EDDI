@@ -1943,11 +1943,14 @@ namespace Eddi
             configuration.ToFile();
 
             // Update the squadron UI data
-            Instance.MainWindow?.Dispatcher?.Invoke(new Action(() =>
+            if (Instance.MainWindow?.Dispatcher != null)
             {
-                Instance.MainWindow.eddiSquadronNameText.Text = theEvent.name;
-                Instance.MainWindow.squadronRankDropDown.SelectedItem = rank.localizedName;
-            }));
+                Instance.MainWindow.Dispatcher.Invoke(new Action(() =>
+                {
+                    Instance.MainWindow.eddiSquadronNameText.Text = theEvent.name;
+                    Instance.MainWindow.squadronRankDropDown.SelectedItem = rank.localizedName;
+                }));
+            }
 
             // Update the commander object, if it exists
             if (Cmdr != null)
@@ -1973,12 +1976,15 @@ namespace Eddi
                         configuration.SquadronRank = rank;
 
                         // Update the squadron UI data
-                        Instance.MainWindow?.Dispatcher?.Invoke(new Action(() =>
+                        if (Instance.MainWindow?.Dispatcher != null)
                         {
-                            Instance.MainWindow.eddiSquadronNameText.Text = theEvent.name;
-                            Instance.MainWindow.squadronRankDropDown.SelectedItem = rank.localizedName;
-                            configuration = Instance.MainWindow.resetSquadronRank(configuration);
-                        }));
+                            Instance.MainWindow.Dispatcher.Invoke(new Action(() =>
+                            {
+                                Instance.MainWindow.eddiSquadronNameText.Text = theEvent.name;
+                                Instance.MainWindow.squadronRankDropDown.SelectedItem = rank.localizedName;
+                                configuration = Instance.MainWindow.resetSquadronRank(configuration);
+                            }));
+                        }
 
                         // Update the commander object, if it exists
                         if (Cmdr != null)
@@ -1994,10 +2000,13 @@ namespace Eddi
                         configuration.SquadronName = theEvent.name;
 
                         // Update the squadron UI data
-                        Instance.MainWindow?.Dispatcher?.Invoke(new Action(() =>
+                        if (Instance.MainWindow?.Dispatcher != null)
                         {
-                            Instance.MainWindow.eddiSquadronNameText.Text = theEvent.name;
-                        }));
+                            Instance.MainWindow.Dispatcher.Invoke(new Action(() =>
+                            {
+                                Instance.MainWindow.eddiSquadronNameText.Text = theEvent.name;
+                            }));
+                        }
 
                         // Update the commander object, if it exists
                         if (Cmdr != null)
@@ -2015,12 +2024,15 @@ namespace Eddi
                         configuration.SquadronID = null;
 
                         // Update the squadron UI data
-                        Instance.MainWindow?.Dispatcher?.Invoke(new Action(() =>
+                        if (Instance.MainWindow?.Dispatcher != null)
                         {
-                            Instance.MainWindow.eddiSquadronNameText.Text = string.Empty;
-                            Instance.MainWindow.eddiSquadronIDText.Text = string.Empty;
-                            configuration = Instance.MainWindow.resetSquadronRank(configuration);
-                        }));
+                            Instance.MainWindow.Dispatcher.Invoke(new Action(() =>
+                            {
+                                Instance.MainWindow.eddiSquadronNameText.Text = string.Empty;
+                                Instance.MainWindow.eddiSquadronIDText.Text = string.Empty;
+                                configuration = Instance.MainWindow.resetSquadronRank(configuration);
+                            }));
+                        }
 
                         // Update the commander object, if it exists
                         if (Cmdr != null)
@@ -2045,11 +2057,14 @@ namespace Eddi
             configuration.ToFile();
 
             // Update the squadron UI data
-            Instance.MainWindow?.Dispatcher?.Invoke(new Action(() =>
+            if (Instance.MainWindow?.Dispatcher != null)
             {
-                Instance.MainWindow.eddiSquadronNameText.Text = theEvent.name;
-                Instance.MainWindow.squadronRankDropDown.SelectedItem = rank.localizedName;
-            }));
+                Instance.MainWindow.Dispatcher.Invoke(new Action(() =>
+                {
+                    Instance.MainWindow.eddiSquadronNameText.Text = theEvent.name;
+                    Instance.MainWindow.squadronRankDropDown.SelectedItem = rank.localizedName;
+                }));
+            }
 
             // Update the commander object, if it exists
             if (Cmdr != null)
@@ -2772,10 +2787,13 @@ namespace Eddi
                 {
                     configuration.SquadronFaction = faction.name;
 
-                    Instance.MainWindow?.Dispatcher?.Invoke(new Action(() =>
+                    if (Instance.MainWindow?.Dispatcher != null)
                     {
-                        Instance.MainWindow.squadronFactionDropDown.SelectedItem = faction.name;
-                    }));
+                        Instance.MainWindow.Dispatcher.Invoke(new Action(() =>
+                        {
+                            Instance.MainWindow.squadronFactionDropDown.SelectedItem = faction.name;
+                        }));
+                    }
 
                     Cmdr.squadronfaction = faction.name;
                 }
@@ -2789,11 +2807,14 @@ namespace Eddi
                     {
                         configuration.SquadronSystem = system;
 
-                        Instance.MainWindow?.Dispatcher?.Invoke(new Action(() =>
+                        if (Instance.MainWindow?.Dispatcher != null)
                         {
-                            Instance.MainWindow.squadronSystemDropDown.Text = system;
-                            Instance.MainWindow.ConfigureSquadronFactionOptions(configuration);
-                        }));
+                            Instance.MainWindow.Dispatcher.Invoke(new Action(() =>
+                            {
+                                Instance.MainWindow.squadronSystemDropDown.Text = system;
+                                Instance.MainWindow.ConfigureSquadronFactionOptions(configuration);
+                            }));
+                        }
 
                         configuration = updateSquadronSystem(configuration);
                     }
@@ -2821,11 +2842,14 @@ namespace Eddi
                         {
                             configuration.SquadronPower = power;
 
-                            Instance.MainWindow?.Dispatcher?.Invoke(new Action(() =>
+                            if (Instance.MainWindow?.Dispatcher != null)
                             {
-                                Instance.MainWindow.squadronPowerDropDown.SelectedItem = power.localizedName;
-                                Instance.MainWindow.ConfigureSquadronPowerOptions(configuration);
-                            }));
+                                Instance.MainWindow.Dispatcher.Invoke(new Action(() =>
+                                {
+                                    Instance.MainWindow.squadronPowerDropDown.SelectedItem = power.localizedName;
+                                    Instance.MainWindow.ConfigureSquadronPowerOptions(configuration);
+                                }));
+                            }
                         }
                     }
                 }
