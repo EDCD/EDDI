@@ -121,12 +121,24 @@
     <value>Minori</value>
     <comment>Minor reserves</comment>
   </data>
-  
-  
-  
+  <data name="None" xml:space="preserve">
+    <value>Nessuna</value>
+    <comment>No reserves (no rings present)</comment>
+  </data>
+  <data name="CommonResources" xml:space="preserve">
+    <value>Comuni</value>
+    <comment>Common reserves</comment>
+  </data>
+  <data name="MajorResources" xml:space="preserve">
+    <value>Maggiori</value>
+    <comment>Major reserves</comment>
+  </data>
   <data name="PristineResources" xml:space="preserve">
     <value>Intonse</value>
     <comment>Pristine reserves</comment>
   </data>
-  
+  <data name="DepletedResources" xml:space="preserve">
+    <value>Esaurite</value>
+    <comment>Depleted Reserves</comment>
+  </data>
 </root>
