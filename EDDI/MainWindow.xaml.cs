@@ -1055,6 +1055,7 @@ namespace Eddi
 
                 // Unregister applicable event handlers
                 CompanionAppService.Instance.StateChanged -= companionApiStatusChanged;
+                VaWindowStateChange = null;
 
                 if (!fromVA)
                 {
