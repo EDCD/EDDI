@@ -59,6 +59,14 @@ namespace EddiInaraResponder
             return InaraService.Instance != null;
         }
 
+        public void Stop()
+        {
+            bgSyncRunning = false;
+            updateThread?.Abort();
+            updateThread = null;
+            SendQueuedAPIEventsAsync();
+        }
+
         public void Reload()
         {
             Stop();
@@ -92,14 +100,6 @@ namespace EddiInaraResponder
         public UserControl ConfigurationTabItem()
         {
             return new ConfigurationWindow();
-        }
-
-        public void Stop()
-        {
-            bgSyncRunning = false;
-            updateThread?.Abort();
-            updateThread = null;
-            SendQueuedAPIEventsAsync();
         }
 
         public void Handle(Event theEvent)
