@@ -84,7 +84,7 @@ namespace EddiInaraResponder
             bgSyncRunning = true;
             while (bgSyncRunning)
             {
-                InaraService.Instance.SendQueuedAPIEventsAsync(EDDI.Instance.ShouldUseTestEndpoints());
+                SendQueuedAPIEventsAsync();
                 Thread.Sleep(syncIntervalMilliSeconds);
             }
         }
@@ -99,6 +99,7 @@ namespace EddiInaraResponder
             bgSyncRunning = false;
             updateThread?.Abort();
             updateThread = null;
+            SendQueuedAPIEventsAsync();
         }
 
         public void Handle(Event theEvent)
@@ -1419,9 +1420,14 @@ namespace EddiInaraResponder
             InaraService.Instance.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "setCommanderMissionCompleted", eventData));
         }
 
-        void OnApplicationExit(object sender, EventArgs e)
+        private void SendQueuedAPIEventsAsync()
         {
             InaraService.Instance.SendQueuedAPIEventsAsync(EDDI.Instance.ShouldUseTestEndpoints());
+        }
+
+        internal void OnApplicationExit(object sender, EventArgs e)
+        {
+            SendQueuedAPIEventsAsync();
         }
     }
 }
