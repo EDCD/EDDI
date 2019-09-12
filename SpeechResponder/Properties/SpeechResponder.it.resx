@@ -151,14 +151,18 @@
   <data name="delete_personality_caption" xml:space="preserve">
     <value>Cancella personalità</value>
   </data>
-  
+  <data name="delete_personality_message" xml:space="preserve">
+    <value>Sei sicuro di voler eliminare la personalità "{0}"?</value>
+  </data>
   <data name="delete_script" xml:space="preserve">
     <value>Cancella</value>
   </data>
   <data name="delete_script_caption" xml:space="preserve">
     <value>Cancella script</value>
   </data>
-  
+  <data name="delete_script_message" xml:space="preserve">
+    <value>Sei sicuro di voler eliminare lo script "{0}"?</value>
+  </data>
   <data name="desc" xml:space="preserve">
     <value>Risponde ad eventi con frasi generate da Script basate sulle informazioni nell'evento. Non tutti gli eventi hanno risposte generate da Script. Se uno Script di risposta è vuoto i suoi bottoni 'Prova' e 'Vedi' sono disabilitati. Gli Script basati su Eventi possono essere disabilitati o ricevere una differente Priorità ma non cancellati.</value>
   </data>
