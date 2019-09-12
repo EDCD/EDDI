@@ -309,7 +309,10 @@
     <value>Supporto Vita</value>
     <comment>Module LifeSupport</comment>
   </data>
-  
+  <data name="LightweightAlloy" xml:space="preserve">
+    <value>Lega Alleggerita</value>
+    <comment>Module LightweightAlloy</comment>
+  </data>
   <data name="LuxuryClassPassengerCabin" xml:space="preserve">
     <value>Cabina Passeggeri di Classe Lusso</value>
     <comment>Module LuxuryClassPassengerCabin</comment>
@@ -322,23 +325,62 @@
     <value>Rafforzamento Chiglia in Meta-Lega</value>
     <comment>Module MetaAlloyHullReinforcement</comment>
   </data>
-  
-  
-  
-  
-  
-  
+  <data name="MilitaryGradeComposite" xml:space="preserve">
+    <value>Lega Composita di tipo Militare</value>
+    <comment>Module MilitaryGradeComposite</comment>
+  </data>
+  <data name="MineLauncher" xml:space="preserve">
+    <value>Lancia Mine</value>
+    <comment>Module MineLauncher</comment>
+  </data>
+  <data name="MiningLance" xml:space="preserve">
+    <value>Lancia Mineraria</value>
+    <comment>Module MiningLance</comment>
+  </data>
+  <data name="MiningLaser" xml:space="preserve">
+    <value>Laser Minerario</value>
+    <comment>Module MiningLaser</comment>
+  </data>
+  <data name="MirroredSurfaceComposite" xml:space="preserve">
+    <value>Composito a superficie riflettente</value>
+    <comment>Module MirroredSurfaceComposite</comment>
+  </data>
+  <data name="MissileRack" xml:space="preserve">
+    <value>Porta Missili</value>
+    <comment>Module MissileRack</comment>
+  </data>
   <data name="ModuleReinforcementPackage" xml:space="preserve">
     <value>Rafforzamento Moduli Interni</value>
     <comment>Module ModuleReinforcementPackage</comment>
   </data>
-  
-  
-  
-  
-  
-  
-  
+  <data name="Multi_Cannon" xml:space="preserve">
+    <value>Cannone a ripetizione</value>
+    <comment>Module Multi_Cannon</comment>
+  </data>
+  <data name="Pacifier" xml:space="preserve">
+    <value>Pacificatore</value>
+    <comment>Module Pacifier</comment>
+  </data>
+  <data name="Pack_Hound" xml:space="preserve">
+    <value>Cane da Caccia</value>
+    <comment>Module Pack_Hound</comment>
+  </data>
+  <data name="PlanetaryApproachSuite" xml:space="preserve">
+    <value>Sistema per Approccio Planetario</value>
+    <comment>Module PlanetaryApproachSuite</comment>
+  </data>
+  <data name="PlanetaryVehicleHangar" xml:space="preserve">
+    <value>Rimessa per Veicoli di Superficie</value>
+    <comment>Module PlanetaryVehicleHangar</comment>
+  </data>
+  <data name="PlasmaAccelerator" xml:space="preserve">
+    <value>Acceleratore di Plasma</value>
+    <comment>Module PlasmaAccelerator</comment>
+  </data>
+  <data name="PointDefence" xml:space="preserve">
+    <value>Difesa anti Aerea</value>
+    <comment>Module PointDefence</comment>
+  </data>
   <data name="PowerDistributor" xml:space="preserve">
     <value>Distributore di Energia</value>
     <comment>Module PowerDistributor</comment>
@@ -347,21 +389,42 @@
     <value>Generatore di Energia</value>
     <comment>Module PowerPlant</comment>
   </data>
-  
+  <data name="PrismaticShieldGenerator" xml:space="preserve">
+    <value>Generatore di Scudi Prismatici</value>
+    <comment>Module PrismaticShieldGenerator</comment>
+  </data>
   <data name="ProspectorLimpetController" xml:space="preserve">
     <value>Controllore Automi di Prospezione</value>
     <comment>Module ProspectorLimpetController</comment>
   </data>
-  
-  
-  
+  <data name="PulseLaser" xml:space="preserve">
+    <value>Laser ad Impulso</value>
+    <comment>Module PulseLaser</comment>
+  </data>
+  <data name="RailGun" xml:space="preserve">
+    <value>Cannone a Rotaia</value>
+    <comment>Module RailGun</comment>
+  </data>
+  <data name="ReactiveSurfaceComposite" xml:space="preserve">
+    <value>Composito con Superficie Reattiva</value>
+    <comment>Module ReactiveSurfaceComposite</comment>
+  </data>
   <data name="ReconLimpetController" xml:space="preserve">
     <value>Controllore Automi di Ricognizione</value>
     <comment>Module ReconLimpetController</comment>
   </data>
-  
-  
-  
+  <data name="Refinery" xml:space="preserve">
+    <value>Raffineria</value>
+    <comment>Module Refinery</comment>
+  </data>
+  <data name="ReinforcedAlloy" xml:space="preserve">
+    <value>Lega Rinforzata</value>
+    <comment>Module ReinforcedAlloy</comment>
+  </data>
+  <data name="RemoteReleaseFlakLauncher" xml:space="preserve">
+    <value>Contraerea a rilascio Remotato</value>
+    <comment>Module RemoteReleaseFlakLauncher</comment>
+  </data>
   <data name="RepairLimpetController" xml:space="preserve">
     <value>Controllore Automi di Riparazione</value>
     <comment>Module RepairLimpetController</comment>
@@ -370,9 +433,18 @@
     <value>Controllore Automi di Ricerca</value>
     <comment>Module ResearchLimpetController</comment>
   </data>
-  
-  
-  
+  <data name="RocketPropelledFSDDisruptor" xml:space="preserve">
+    <value>Perturbatore FSD con propulsione a Razzo</value>
+    <comment>Module RocketPropelledFSDDisruptor</comment>
+  </data>
+  <data name="Sensors" xml:space="preserve">
+    <value>Sensori</value>
+    <comment>Module Sensors</comment>
+  </data>
+  <data name="ShieldBooster" xml:space="preserve">
+    <value>Incrementatore di Scudi</value>
+    <comment>Module ShieldBooster</comment>
+  </data>
   
   
   

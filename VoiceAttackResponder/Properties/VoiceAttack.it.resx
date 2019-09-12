@@ -133,7 +133,7 @@
     <value>Una volta che VoceAttack sia installato avrai bisogno di abilitare il supporto per i plugin. Per farlo clicca sull'icona di Impostazioni (una chiave inglese) nell'angolo in basso a destra della finestra di VoiceAttack, attiva l'opzione 'Abilita supporto Plugin' e riavvia VoiceAttack. Dovresti vedere un messaggio tipo 'Plugin EDDI 2.0.0 avviato'.</value>
   </data>
   <data name="p4" xml:space="preserve">
-    <value>A questo punto puoi itegrare le variabili di EDDI con i tuoi script di VoiceAttack personalizzati. Per esempio, il tuo nome di comandante è contenuto nella variabile 'Nome' e per accedervi devi usare '{TXT:Name}' all'interno del tuo comando. Esistono variabili riguardanti il tuo comandante, la tua nave, il sistema stellare in cui ti trovi e la stazione a cui si attraccato e così via. Una lista completa di variabili è disponibile.</value>
+    <value>A questo punto puoi integrare le variabili di EDDI con i tuoi script di VoiceAttack personalizzati. Per esempio, il tuo nome di comandante è contenuto nella variabile 'Nome' e per accedervi devi usare '{TXT:Name}' all'interno del tuo comando. Esistono variabili riguardanti il tuo comandante, la tua nave, il sistema stellare in cui ti trovi e la stazione a cui si attraccato e così via. Una lista completa di variabili è disponibile </value>
   </data>
   <data name="p4_link" xml:space="preserve">
     <value>sul sito di EDDI</value>

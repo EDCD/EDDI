@@ -137,7 +137,7 @@
     <value>La connessione con Chiave API Frontier è ora operative, Comandante {0}.</value>
   </data>
   <data name="if_using_va" xml:space="preserve">
-    <value>Se si sta usando VoiceAttack è necessario chiedere questa finestra PRIMA di avviare VoiceAttack per far si che questi cambiamenti abbiano effetti. Questa finestra è visibile dall'interno di VoiceAttack con il comando 'Configura EDDI'.</value>
+    <value>Se si sta usando VoiceAttack è necessario chiudere questa finestra PRIMA di avviare VoiceAttack per far si che i cambiamenti apportati abbiano effetto. Questa finestra è visibile dall'interno di VoiceAttack con il comando 'Configura EDDI'.</value>
   </data>
   <data name="invalid_station" xml:space="preserve">
     <value>Stazione non Valida</value>

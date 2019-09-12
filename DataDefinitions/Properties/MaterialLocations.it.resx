@@ -118,51 +118,51 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="carbon" xml:space="preserve">
-    <value>Ottenuto da Prospezione in Superficie o Estrazione da Asteroidi e Anelli Ghiacciati</value>
+    <value>Ottenuto da Prospezione in Superficie o Estrazione da Asteroidi e Anelli Ghiacciati.</value>
     <comment>Material location Carbon</comment>
   </data>
   <data name="iron" xml:space="preserve">
-    <value>Ottenuto da Prospezione in Superficie o Estrazione da Asteroidi o da Anelli Ghiacciati</value>
+    <value>Ottenuto da Prospezione in Superficie o Estrazione da Asteroidi o da Anelli Ghiacciati.</value>
     <comment>Material location Iron</comment>
   </data>
   <data name="nickel" xml:space="preserve">
-    <value>Ottenuto da Prospezione in Superficie o Estrazione da Asteroidi o Anelli Ghiacciati</value>
+    <value>Ottenuto da Prospezione in Superficie o Estrazione da Asteroidi o Anelli Ghiacciati.</value>
     <comment>Material location Nickel</comment>
   </data>
   <data name="phosphorus" xml:space="preserve">
-    <value>Ottenuto da Prospezione in Superficie o Estrazione da Asteroidi e Anelli Ghiacciati</value>
+    <value>Ottenuto da Prospezione in Superficie o Estrazione da Asteroidi e Anelli Ghiacciati.</value>
     <comment>Material location Phosphorus</comment>
   </data>
   <data name="sulphur" xml:space="preserve">
-    <value>Ottenuto da Prospezione in Superficie o Estrazione da Asteroidi e Anelli Ghiacciati</value>
+    <value>Ottenuto da Prospezione in Superficie o Estrazione da Asteroidi e Anelli Ghiacciati.</value>
     <comment>Material location Sulphur</comment>
   </data>
   <data name="arsenic" xml:space="preserve">
-    <value>Ottenuto da Prospezione in Superficie o Estrazione da Asteroidi o come ricompensa per una Missione</value>
+    <value>Ottenuto da Prospezione in Superficie o Estrazione da Asteroidi o come ricompensa per una Missione.</value>
     <comment>Material location Arsenic</comment>
   </data>
   <data name="chromium" xml:space="preserve">
-    <value>Ottenuto da Prospezione in Superficie o Estrazione da Asteroidi in Anelli Rocciosi e/o Ghiacciati</value>
+    <value>Ottenuto da Prospezione in Superficie o Estrazione da Asteroidi in Anelli Rocciosi e/o Ghiacciati.</value>
     <comment>Material location Chromium</comment>
   </data>
   <data name="germanium" xml:space="preserve">
-    <value>Ottenuto da Prospezione in Superficie o come ricompensa per Missioni, specialmente in Sistemi affetti da Epidemie</value>
+    <value>Ottenuto da Prospezione in Superficie o come ricompensa per Missioni, specialmente in Sistemi affetti da Epidemie.</value>
     <comment>Material location Germanium</comment>
   </data>
   <data name="manganese" xml:space="preserve">
-    <value>Ottenuto da Prospezione in Superficie o come ricompensa per Missioni</value>
+    <value>Ottenuto da Prospezione in Superficie o come ricompensa per Missioni.</value>
     <comment>Material location Manganese</comment>
   </data>
   <data name="vanadium" xml:space="preserve">
-    <value>Ottenuto da Prospezione in Superficie o Estrazione in Anelli Puramente Metallici e/o Ghiacciati</value>
+    <value>Ottenuto da Prospezione in Superficie o Estrazione in Anelli Puramente Metallici e/o Ghiacciati.</value>
     <comment>Material location Vanadium</comment>
   </data>
   <data name="zinc" xml:space="preserve">
-    <value>Ottenuto da Prospezione in Superficie</value>
+    <value>Ottenuto da Prospezione in Superficie.</value>
     <comment>Material location Zinc</comment>
   </data>
   <data name="cadmium" xml:space="preserve">
-    <value>Ottenuto da Prospezione in Superficie o Estrazione da Asteroidi</value>
+    <value>Ottenuto da Prospezione in Superficie o Estrazione da Asteroidi.</value>
     <comment>Material location Cadmium</comment>
   </data>
   <data name="mercury" xml:space="preserve">
@@ -170,75 +170,75 @@
     <comment>Material location Mercury</comment>
   </data>
   <data name="molybdenum" xml:space="preserve">
-    <value>Ottenuto da Prospezione in Superficie o Estrazione da Asteroidi</value>
+    <value>Ottenuto da Prospezione in Superficie o Estrazione da Asteroidi.</value>
     <comment>Material location Molybdenum</comment>
   </data>
   <data name="niobium" xml:space="preserve">
-    <value>Ottenuto da Prospezione in Superficie o Estrazione da Asteroidi</value>
+    <value>Ottenuto da Prospezione in Superficie o Estrazione da Asteroidi.</value>
     <comment>Material location Niobium</comment>
   </data>
   <data name="tin" xml:space="preserve">
-    <value>Ottenuto da Prospezione in Superficie o Estrazione da Asteroidi in aree con Riserve Intoccate</value>
+    <value>Ottenuto da Prospezione in Superficie o Estrazione da Asteroidi in aree con Riserve Intonse.</value>
     <comment>Material location Tin</comment>
   </data>
   <data name="tungsten" xml:space="preserve">
-    <value>Ottenuto da Prospezione in Superficie</value>
+    <value>Ottenuto da Prospezione in Superficie.</value>
     <comment>Material location Tungsten</comment>
   </data>
   <data name="ruthenium" xml:space="preserve">
-    <value>Ottenuto da Prospezione in Superficie</value>
+    <value>Ottenuto da Prospezione in Superficie.</value>
     <comment>Material location Ruthenium</comment>
   </data>
   <data name="selenium" xml:space="preserve">
-    <value>Ottenuto da Prospezione in Superficie o come ricompensa per Missioni</value>
+    <value>Ottenuto da Prospezione in Superficie o come ricompensa per Missioni.</value>
     <comment>Material location Selenium</comment>
   </data>
   <data name="technetium" xml:space="preserve">
-    <value>Ottenuto da Prospezione in Superficie</value>
+    <value>Ottenuto da Prospezione in Superficie.</value>
     <comment>Material location Technetium</comment>
   </data>
   <data name="tellurium" xml:space="preserve">
-    <value>Ottenuto da Prospezione in Superficie</value>
+    <value>Ottenuto da Prospezione in Superficie.</value>
     <comment>Material location Tellurium</comment>
   </data>
   <data name="yttrium" xml:space="preserve">
-    <value>Ottenuto da Prospezione in Superficie</value>
+    <value>Ottenuto da Prospezione in Superficie.</value>
     <comment>Material location Yttrium</comment>
   </data>
   <data name="zirconium" xml:space="preserve">
-    <value>Ottenuto da Prospezione in Superficie o Estrazione da Asteroidi</value>
+    <value>Ottenuto da Prospezione in Superficie o Estrazione da Asteroidi.</value>
     <comment>Material location Zirconium</comment>
   </data>
   <data name="antimony" xml:space="preserve">
-    <value>Ottenuto da Prospezione in Superficie</value>
+    <value>Ottenuto da Prospezione in Superficie.</value>
     <comment>Material location Antimony</comment>
   </data>
   <data name="polonium" xml:space="preserve">
-    <value>Ottenuto da Prospezione in Superficie o come ricompensa per Missioni</value>
+    <value>Ottenuto da Prospezione in Superficie o come ricompensa per Missioni.</value>
     <comment>Material location Polonium</comment>
   </data>
   <data name="bulkscandata" xml:space="preserve">
-    <value>Ottenuto dalla scansione di Vascelli da Trasporto o come ricompensa per Missioni</value>
+    <value>Ottenuto dalla scansione di Vascelli da Trasporto o come ricompensa per Missioni.</value>
     <comment>Material location Anomalous Bulk Scan Data</comment>
   </data>
   <data name="disruptedwakeechoes" xml:space="preserve">
-    <value>Ottenuto dalla scansione di Scie verso Iperspazio o come ricompensa per Missioni, specialmente in sistemi con economie rampanti</value>
+    <value>Ottenuto dalla scansione di Traccie di Salto verso Iperspazio o come ricompensa per Missioni, specialmente in sistemi con economie rampanti.</value>
     <comment>Material location Atypical Disrupted Wake Echoes</comment>
   </data>
   <data name="shieldcyclerecordings" xml:space="preserve">
-    <value>Ottenuto dalla scansione di Vascelli da Trasporto o come ricompensa per Missioni</value>
+    <value>Ottenuto dalla scansione di Vascelli da Trasporto o come ricompensa per Missioni.</value>
     <comment>Material location Distorted Shield Cycle Recordings</comment>
   </data>
   <data name="scrambledemissiondata" xml:space="preserve">
-    <value>Ottenuto dalla scansione di Vascelli da Trasporto, Sorgenti di segnali o come ricompensa per Missioni</value>
+    <value>Ottenuto dalla scansione di Vascelli da Trasporto, Sorgenti di segnali o come ricompensa per Missioni.</value>
     <comment>Material location Exceptional Scrambled Emission Data</comment>
   </data>
   <data name="legacyfirmware" xml:space="preserve">
-    <value>Ottenuto dalla scansione di Centri trasmissione Dati in Superficie, Satelliti in orbita attorno ad Installazioni o analoghi terrestri abitati e come ricompensa per Missioni</value>
+    <value>Ottenuto dalla scansione di Centri trasmissione Dati in Superficie, Satelliti in orbita attorno ad Installazioni o analoghi terrestri abitati e come ricompensa per Missioni.</value>
     <comment>Material location Specialised Legacy Firmware</comment>
   </data>
   <data name="encryptedfiles" xml:space="preserve">
-    <value>Ottenuto da Sorgenti di Segnali, anche di superficie, o come ricompensa per Missioni. Tendono ad essere più comuni in sistemi con Economia Rampante</value>
+    <value>Ottenuto da Sorgenti di Segnali, anche di superficie, o come ricompensa per Missioni. Tendono ad essere più comuni in sistemi con Economia Rampante.</value>
     <comment>Material location Unusual Encrypted Files</comment>
   </data>
   <data name="ancienthistoricaldata" xml:space="preserve">
@@ -246,71 +246,71 @@
     <comment>Material location Pattern Gamma Obelisk Data</comment>
   </data>
   <data name="fsdtelemetry" xml:space="preserve">
-    <value>Ottenuto dalla scansione di Scie verso Iperspazio o come ricompensa per Missioni</value>
+    <value>Ottenuto dalla scansione di Traccie di Salto verso Iperspazio o come ricompensa per Missioni.</value>
     <comment>Material location Anomalous FSD Telemetry</comment>
   </data>
   <data name="shieldsoakanalysis" xml:space="preserve">
-    <value>Ottenuto dalla scansione di Vascelli da Trasporto o come ricompensa per Missioni, specialmente in Sistemi con Economia Rampante</value>
+    <value>Ottenuto dalla scansione di Vascelli da Trasporto o come ricompensa per Missioni, specialmente in Sistemi con Economia Rampante.</value>
     <comment>Material location Inconsistent Shield Soak Analysis</comment>
   </data>
   <data name="archivedemissiondata" xml:space="preserve">
-    <value>Ottenuto da Sorgenti di Segnali o come ricompensa per missioni, specialmente in sistemi con economie rampanti</value>
+    <value>Ottenuto da Sorgenti di Segnali o come ricompensa per missioni, specialmente in sistemi con economie rampanti.</value>
     <comment>Material location Irregular Emission Data</comment>
   </data>
   <data name="consumerfirmware" xml:space="preserve">
-    <value>Ottenuto dalla scansione di Collegamenti Dati in basi di superficie o dalla scansione di radiofari privati in sorgenti di segnali codificate e/o come ricompensa per missioni in sistemi che siano sotto elezioni o in guerra civile</value>
+    <value>Ottenuto dalla scansione di Collegamenti Dati in basi di superficie o dalla scansione di radiofari privati in sorgenti di segnali codificate e/o come ricompensa per missioni in sistemi che siano sotto elezioni o in guerra civile.</value>
     <comment>Material location Modified Consumer Firmware</comment>
   </data>
   <data name="encryptioncodes" xml:space="preserve">
-    <value>Ottenuto dalla scansione di Centri trasmissione Dati in Superficie, Satelliti in orbita attorno ad Installazioni o analoghi terrestri abitati e come ricompensa per Missioni, specialmente in sistemi con economia rampante</value>
+    <value>Ottenuto dalla scansione di Centri trasmissione Dati in Superficie, Satelliti in orbita attorno ad Installazioni o analoghi terrestri abitati e come ricompensa per Missioni, specialmente in sistemi con economia rampante.</value>
     <comment>Material location Tagged Encryption Codes</comment>
   </data>
   <data name="scanarchives" xml:space="preserve">
-    <value>Ottenuto dalla scansione di Vascelli da Trasporto specialmente in Sistemi con Economia Rampante</value>
+    <value>Ottenuto dalla scansione di Vascelli da Trasporto specialmente in Sistemi con Economia Rampante.</value>
     <comment>Material location Unidentified Scan Archives</comment>
   </data>
   <data name="ancientculturaldata" xml:space="preserve">
-    <value>Ottenuto dalle Antiche Rovine della specie Aliena nota come i Guardiani</value>
+    <value>Ottenuto dalle Antiche Rovine della specie Aliena nota come i Guardiani.</value>
     <comment>Material location Pattern Beta Obelisk Data</comment>
   </data>
   <data name="tg_structuraldata" xml:space="preserve">
-    <value>Ottenuto dai misteriosi artefatti di superficie della specie Aliena nota come i Thargoid</value>
+    <value>Ottenuto dai misteriosi artefatti di superficie della specie Aliena nota come i Thargoid.</value>
     <comment>Material location Thargoid Structural Data</comment>
   </data>
   <data name="scandatabanks" xml:space="preserve">
-    <value>Ottenuto dalla scansione di Vascelli da Trasporto Grandi, tipicamente Tipo-7 e Tipo-9, e dalla scansione di Collegamenti Dati in basi di superficie</value>
+    <value>Ottenuto dalla scansione di Vascelli da Trasporto Grandi, tipicamente Tipo-7 e Tipo-9, e dalla scansione di Collegamenti Dati in basi di superficie.</value>
     <comment>Material location Classified Scan Databanks</comment>
   </data>
   <data name="industrialfirmware" xml:space="preserve">
-    <value>Ottenuto dalla scansione di Collegamenti Dati in basi di superficie o come ricompensa per missioni</value>
+    <value>Ottenuto dalla scansione di Collegamenti Dati in basi di superficie o come ricompensa per missioni.</value>
     <comment>Material location Cracked Industrial Firmware</comment>
   </data>
   <data name="symmetrickeys" xml:space="preserve">
-    <value>Ottenuto dalla scansione di Collegamenti Dati in basi di superficie o in Sorgenti di Segnale o come ricompensa per missioni</value>
+    <value>Ottenuto dalla scansione di Collegamenti Dati in basi di superficie o in Sorgenti di Segnale o come ricompensa per missioni.</value>
     <comment>Material location Open Symmetric Keys</comment>
   </data>
   <data name="wakesolutions" xml:space="preserve">
-    <value>Ottenuto dalla scansione di Scie verso Iperspazio o come ricompensa per Missioni, specialmente in sistemi con economie rampanti</value>
+    <value>Ottenuto dalla scansione di Scie verso Iperspazio o come ricompensa per Missioni, specialmente in sistemi con economie rampanti.</value>
     <comment>Material location Strange Wake Solutions</comment>
   </data>
   <data name="emissiondata" xml:space="preserve">
-    <value>Ottenuto dalla scansione di Vascelli da Battaglia o in Sorgenti di Segnale specialmente in sistemi con economia rampante o sotto elezioni</value>
+    <value>Ottenuto dalla scansione di Vascelli da Battaglia o in Sorgenti di Segnale specialmente in sistemi con economia rampante o sotto elezioni.</value>
     <comment>Material location Unexpected Emission Data</comment>
   </data>
   <data name="shielddensityreports" xml:space="preserve">
-    <value>Ottenuto dalla scansione di Vascelli da Battaglia</value>
+    <value>Ottenuto dalla scansione di Vascelli da Battaglia.</value>
     <comment>Material location Untypical Shield Scans</comment>
   </data>
   <data name="ancientbiologicaldata" xml:space="preserve">
-    <value>Ottenuto dalle Antiche Rovine della specie Aliena nota come i Guardiani</value>
+    <value>Ottenuto dalle Antiche Rovine della specie Aliena nota come i Guardiani.</value>
     <comment>Material location Pattern Alpha Obelisk Data</comment>
   </data>
   <data name="tg_compositiondata" xml:space="preserve">
-    <value>Ottenuto dai misteriosi artefatti di superficie della specie Aliena nota come i Thargoid</value>
+    <value>Ottenuto dai misteriosi artefatti di superficie della specie Aliena nota come i Thargoid.</value>
     <comment>Material location Thargoid Material Composition Data</comment>
   </data>
   <data name="unknownshipsignature" xml:space="preserve">
-    <value>Ottenuto dai misteriosi artefatti di superficie della specie Aliena nota come i Thargoid o dalla scansione di Vascelli Thargoid</value>
+    <value>Ottenuto dai misteriosi artefatti di superficie della specie Aliena nota come i Thargoid o dalla scansione di Vascelli Thargoid.</value>
     <comment>Material location Thargoid Ship Signature</comment>
   </data>
   <data name="shieldpatternanalysis" xml:space="preserve">
@@ -318,47 +318,47 @@
     <comment>Material location Aberrant Shield Pattern Analysis</comment>
   </data>
   <data name="encryptionarchives" xml:space="preserve">
-    <value>Ottenuto dalla scansione di Collegamenti Dati in basi superficiali</value>
+    <value>Ottenuto dalla scansione di Collegamenti Dati in basi di superficie.</value>
     <comment>Material location Atypical Encryption Archives</comment>
   </data>
   <data name="decodedemissiondata" xml:space="preserve">
-    <value>Ottenuto dalla scansione di Autorità di sistema o come ricompensa per missioni</value>
+    <value>Ottenuto dalla scansione di Autorità di sistema o come ricompensa per missioni.</value>
     <comment>Material location Decoded Emission Data</comment>
   </data>
   <data name="encodedscandata" xml:space="preserve">
-    <value>Ottenuto dalla scansione di Collegamenti Dati in basi superficiali o come ricompensa per missioni</value>
+    <value>Ottenuto dalla scansione di Collegamenti Dati in basi di superficie o come ricompensa per missioni.</value>
     <comment>Material location Divergent Scan Data</comment>
   </data>
   <data name="hyperspacetrajectories" xml:space="preserve">
-    <value>Ottenuto dalla scansione di Scie verso Iperspazio</value>
+    <value>Ottenuto dalla scansione di Traccie di Salto verso Iperspazio.</value>
     <comment>Material location Eccentric Hyperspace Trajectories</comment>
   </data>
   <data name="securityfirmware" xml:space="preserve">
-    <value>Ottenuto dalla scansione di Collegamenti Dati in basi di superficie o come ricompensa per missioni</value>
+    <value>Ottenuto dalla scansione di Collegamenti Dati in basi di superficie o come ricompensa per missioni.</value>
     <comment>Material location Security Firmware Patch</comment>
   </data>
   <data name="ancientlanguagedata" xml:space="preserve">
-    <value>Ottenuto dalle Antiche Rovine della specie Aliena nota come i Guardiani</value>
+    <value>Ottenuto dalle Antiche Rovine della specie Aliena nota come i Guardiani.</value>
     <comment>Material location Pattern Delta Obelisk Data</comment>
   </data>
   <data name="ancienttechnologicaldata" xml:space="preserve">
-    <value>Ottenuto dalle Antiche Rovine della specie Aliena nota come i Guardiani</value>
+    <value>Ottenuto dalle Antiche Rovine della specie Aliena nota come i Guardiani.</value>
     <comment>Material location Pattern Epsilon Obelisk Data</comment>
   </data>
   <data name="tg_residuedata" xml:space="preserve">
-    <value>Ottenuto dai misteriosi artefatti di superficie della specie Aliena nota come i Thargoid</value>
+    <value>Ottenuto dai misteriosi artefatti di superficie della specie Aliena nota come i Thargoid.</value>
     <comment>Material location Thargoid Residue Data</comment>
   </data>
   <data name="unknownwakedata" xml:space="preserve">
-    <value>Ottenuto dalla scansione di Scie lasciate da Vascelli Thargoid</value>
+    <value>Ottenuto dalla scansione di Traccie di Salto lasciate da Vascelli Thargoid.</value>
     <comment>Material location Thargoid Wake Data</comment>
   </data>
   <data name="compactemissionsdata" xml:space="preserve">
-    <value>Ottenuto dalla scansione di Vascelli da Battaglia e/o di Radiofari dello spazio profondo o da sorgenti di trasmissioni codificate o come ricompensa per missioni</value>
+    <value>Ottenuto dalla scansione di Vascelli da Battaglia e/o di Radiofari dello spazio profondo o da sorgenti di trasmissioni codificate o come ricompensa per missioni.</value>
     <comment>Material location Abnormal Compact Emissions Data</comment>
   </data>
   <data name="adaptiveencryptors" xml:space="preserve">
-    <value>Ottenuto dalla scansione di Satelliti in orbita attorno ad Installazioni o analoghi terrestri abitati e come ricompensa per Missioni, specialmente a seguito di missioni di scansione planetarie</value>
+    <value>Ottenuto dalla scansione di Satelliti in orbita attorno ad Installazioni o analoghi terrestri abitati e come ricompensa per Missioni, specialmente a seguito di missioni di scansione planetarie.</value>
     <comment>Material location Adaptive Encryptors Capture</comment>
   </data>
   <data name="classifiedscandata" xml:space="preserve">
@@ -366,7 +366,7 @@
     <comment>Material location Classified Scan Fragment</comment>
   </data>
   <data name="dataminedwake" xml:space="preserve">
-    <value>Ottenuto dalla scansione di Scie verso Iperspazio e di radiofari di dati codificati o come ricompensa per Missioni.</value>
+    <value>Ottenuto dalla scansione di Traccie di Salto verso Iperspazio e di radiofari di dati codificati o come ricompensa per Missioni.</value>
     <comment>Material location Datamined Wake Exceptions</comment>
   </data>
   <data name="embeddedfirmware" xml:space="preserve">
@@ -378,11 +378,11 @@
     <comment>Material location Peculiar Shield Frequency Data</comment>
   </data>
   <data name="basicconductors" xml:space="preserve">
-    <value>Ottenuto dai rottami di Vascelli da Trasporto</value>
+    <value>Ottenuto dai rottami di Vascelli da Trasporto.</value>
     <comment>Material location Basic Conductors</comment>
   </data>
   <data name="chemicalstorageunits" xml:space="preserve">
-    <value>Ottenuto dai rottami di Vascelli da Trasporto</value>
+    <value>Ottenuto dai rottami di Vascelli da Trasporto.</value>
     <comment>Material location Chemical Storage Units</comment>
   </data>
   <data name="compactcomposites" xml:space="preserve">
@@ -398,11 +398,11 @@
     <comment>Material location Grid Resistors</comment>
   </data>
   <data name="heatconductionwiring" xml:space="preserve">
-    <value>Ottenuto dai rottami di Vascelli da Trasporto, in sorgenti di segnale o come ricompensa per missioni</value>
+    <value>Ottenuto dai rottami di Vascelli da Trasporto, in sorgenti di segnale o come ricompensa per missioni.</value>
     <comment>Material location Heat Conduction Wiring</comment>
   </data>
   <data name="mechanicalscrap" xml:space="preserve">
-    <value>Ottenuto dai rottami di Vascelli da Trasporto o come ricompensa per missioni</value>
+    <value>Ottenuto dai rottami di Vascelli da Trasporto o come ricompensa per missioni.</value>
     <comment>Material location Mechanical Scrap</comment>
   </data>
   <data name="salvagedalloys" xml:space="preserve">
@@ -418,11 +418,11 @@
     <comment>Material location Worn Shield Emitters</comment>
   </data>
   <data name="chemicalprocessors" xml:space="preserve">
-    <value>Ottenuto dai rottami di Vascelli da Trasporto o come ricompensa per missioni</value>
+    <value>Ottenuto dai rottami di Vascelli da Trasporto o come ricompensa per missioni.</value>
     <comment>Material location Chemical Processors</comment>
   </data>
   <data name="conductivecomponents" xml:space="preserve">
-    <value>Ottenuto dai rottami di Vascelli da Trasporto, specialmente in sistemi anarchici vicini a sistemi popolati</value>
+    <value>Ottenuto dai rottami di Vascelli da Trasporto, specialmente in sistemi anarchici vicini a sistemi popolati. </value>
     <comment>Material location Conductive Components</comment>
   </data>
   <data name="filamentcomposites" xml:space="preserve">
@@ -438,7 +438,7 @@
     <comment>Material location Galvanising Alloys</comment>
   </data>
   <data name="heatdispersionplate" xml:space="preserve">
-    <value>Ottenuto dai rottami di Vascelli da Trasporto in sorgenti di segnale, specialmente in sistemi con economia rampante o come ricompensa per missioni</value>
+    <value>Ottenuto dai rottami di Vascelli da Trasporto in sorgenti di segnale, specialmente in sistemi con economia rampante o come ricompensa per missioni.</value>
     <comment>Material location Heat Dispersion Plate</comment>
   </data>
   <data name="heatresistantceramics" xml:space="preserve">
@@ -450,7 +450,7 @@
     <comment>Material location Hybrid Capacitors</comment>
   </data>
   <data name="mechanicalequipment" xml:space="preserve">
-    <value>Ottenuto dai rottami di Vascelli da Trasporto, specialmente in sistemi con economia rampante</value>
+    <value>Ottenuto dai rottami di Vascelli da Trasporto, specialmente in sistemi con economia rampante.</value>
     <comment>Material location Mechanical Equipment</comment>
   </data>
   <data name="shieldemitters" xml:space="preserve">
@@ -462,11 +462,11 @@
     <comment>Material location Thargoid Carapace</comment>
   </data>
   <data name="chemicaldistillery" xml:space="preserve">
-    <value>Ottenuto dai rottami di Vascelli da Trasporto</value>
+    <value>Ottenuto dai rottami di Vascelli da Trasporto.</value>
     <comment>Material location Chemical Distillery</comment>
   </data>
   <data name="conductiveceramics" xml:space="preserve">
-    <value>Ottenuto dai rottami di Vascelli da Trasporto, specialmente in sistemi anarchici vicini a sistemi popolati. Sono disponibili anche a Dav's Hope</value>
+    <value>Ottenuto dai rottami di Vascelli da Trasporto, specialmente in sistemi anarchici vicini a sistemi popolati. Sono disponibili anche a Dav's Hope.</value>
     <comment>Material location Conductive Ceramics</comment>
   </data>
   <data name="electrochemicalarrays" xml:space="preserve">
@@ -478,7 +478,7 @@
     <comment>Material location Focus Crystals</comment>
   </data>
   <data name="heatexchangers" xml:space="preserve">
-    <value>Ottenuto dai rottami di Vascelli da Trasporto, specialmente in sistemi anarchici vicini a sistemi popolati</value>
+    <value>Ottenuto dai rottami di Vascelli da Trasporto, specialmente in sistemi anarchici vicini a sistemi popolati.</value>
     <comment>Material location Heat Exchangers</comment>
   </data>
   <data name="highdensitycomposites" xml:space="preserve">
@@ -510,7 +510,7 @@
     <comment>Material location Chemical Manipulators</comment>
   </data>
   <data name="compoundshielding" xml:space="preserve">
-    <value>Ottenuto dai rottami di grandi Vascelli da Battaglia o come ricompensa per missioni e da sorgenti di emissioni codificate, specialmente in sistemi con livello di sicurezza elevato, sistemi con economia rampante e sistemi in cerca di ritirarsi e consolidare il potere. Sono ache disponibili a Dav's Hope.</value>
+    <value>Ottenuto dai rottami di grandi Vascelli da Battaglia o come ricompensa per missioni e da sorgenti di emissioni codificate, specialmente in sistemi con livello di sicurezza elevato, sistemi con economia rampante e sistemi in cerca di ritirarsi e consolidare il potere. Sono anche disponibili a Dav's Hope.</value>
     <comment>Material location Compound Shielding</comment>
   </data>
   <data name="conductivepolymers" xml:space="preserve">

@@ -157,7 +157,7 @@
     <value>Monitora le informazioni sulle tue missioni.</value>
   </data>
   <data name="mission_monitor_name" xml:space="preserve">
-    <value>Missioni</value>
+    <value>Controllore Missioni</value>
   </data>
   <data name="next_route_button" xml:space="preserve">
     <value>Prossima tappa della rotta</value>
