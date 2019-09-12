@@ -35,7 +35,7 @@ namespace EddiInaraService
                     {
                         if (instance == null)
                         {
-                            instance = NewInaraService();
+                            instance = new InaraService();
                         }
                     }
                 }
@@ -57,18 +57,20 @@ namespace EddiInaraService
             commanderFrontierID = commanderfrontierID;
         }
 
-        private static InaraService NewInaraService()
+        private InaraService()
         {
-            InaraService instance = null;
             // Set up the Inara service
             InaraConfiguration inaraCredentials = InaraConfiguration.FromFile();
+
             // commanderName: In-game CMDR name of user (not set by user, get this from journals or 
             // cAPI to ensure it is a correct in-game name to avoid future problems). It is recommended 
             // to be always set when no generic API key is used (otherwise some events may not work).
             string commanderName = inaraCredentials?.commanderName;
+
             // commanderFrontierID: Commander's unique Frontier ID (is provided by journals since 3.3)
             // in the format: 'F123456'. When not known, set nothing.
             string commanderFrontierID = inaraCredentials?.commanderFrontierID;
+
             DateTime lastSync = inaraCredentials.lastSync;
             if (!string.IsNullOrEmpty(inaraCredentials.apiKey) && !string.IsNullOrEmpty(commanderName))
             {
@@ -87,7 +89,6 @@ namespace EddiInaraService
                     Logging.Warn("Configuring Inara service for limited access: Commander name not detected.");
                 }
             }
-            return instance;
         }
 
         // If you need to do some testing on Inara's API, please set the `inBeta` boolean header property to true.
