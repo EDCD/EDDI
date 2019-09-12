@@ -23,7 +23,7 @@ namespace EddiInaraResponder
         private bool bgSyncRunning;
 
         // Background sync interval in milliseconds
-        private const int syncIntervalMilliSeconds = 5 * 1000;
+        private const int syncIntervalMilliSeconds = 60 * 5 * 1000; // 5 minutes
 
         public string ResponderName()
         {
