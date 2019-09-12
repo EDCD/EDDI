@@ -318,47 +318,47 @@
     <comment>Material location Aberrant Shield Pattern Analysis</comment>
   </data>
   <data name="encryptionarchives" xml:space="preserve">
-    <value>Ottenuto dalla scansione di Collegamenti Dati in basi superficiali</value>
+    <value>Ottenuto dalla scansione di Collegamenti Dati in basi di superficie.</value>
     <comment>Material location Atypical Encryption Archives</comment>
   </data>
   <data name="decodedemissiondata" xml:space="preserve">
-    <value>Ottenuto dalla scansione di Autorità di sistema o come ricompensa per missioni</value>
+    <value>Ottenuto dalla scansione di Autorità di sistema o come ricompensa per missioni.</value>
     <comment>Material location Decoded Emission Data</comment>
   </data>
   <data name="encodedscandata" xml:space="preserve">
-    <value>Ottenuto dalla scansione di Collegamenti Dati in basi superficiali o come ricompensa per missioni</value>
+    <value>Ottenuto dalla scansione di Collegamenti Dati in basi superficiali o come ricompensa per missioni.</value>
     <comment>Material location Divergent Scan Data</comment>
   </data>
   <data name="hyperspacetrajectories" xml:space="preserve">
-    <value>Ottenuto dalla scansione di Scie verso Iperspazio</value>
+    <value>Ottenuto dalla scansione di Scie verso Iperspazio.</value>
     <comment>Material location Eccentric Hyperspace Trajectories</comment>
   </data>
   <data name="securityfirmware" xml:space="preserve">
-    <value>Ottenuto dalla scansione di Collegamenti Dati in basi di superficie o come ricompensa per missioni</value>
+    <value>Ottenuto dalla scansione di Collegamenti Dati in basi di superficie o come ricompensa per missioni.</value>
     <comment>Material location Security Firmware Patch</comment>
   </data>
   <data name="ancientlanguagedata" xml:space="preserve">
-    <value>Ottenuto dalle Antiche Rovine della specie Aliena nota come i Guardiani</value>
+    <value>Ottenuto dalle Antiche Rovine della specie Aliena nota come i Guardiani.</value>
     <comment>Material location Pattern Delta Obelisk Data</comment>
   </data>
   <data name="ancienttechnologicaldata" xml:space="preserve">
-    <value>Ottenuto dalle Antiche Rovine della specie Aliena nota come i Guardiani</value>
+    <value>Ottenuto dalle Antiche Rovine della specie Aliena nota come i Guardiani.</value>
     <comment>Material location Pattern Epsilon Obelisk Data</comment>
   </data>
   <data name="tg_residuedata" xml:space="preserve">
-    <value>Ottenuto dai misteriosi artefatti di superficie della specie Aliena nota come i Thargoid</value>
+    <value>Ottenuto dai misteriosi artefatti di superficie della specie Aliena nota come i Thargoid.</value>
     <comment>Material location Thargoid Residue Data</comment>
   </data>
   <data name="unknownwakedata" xml:space="preserve">
-    <value>Ottenuto dalla scansione di Scie lasciate da Vascelli Thargoid</value>
+    <value>Ottenuto dalla scansione di Scie lasciate da Vascelli Thargoid.</value>
     <comment>Material location Thargoid Wake Data</comment>
   </data>
   <data name="compactemissionsdata" xml:space="preserve">
-    <value>Ottenuto dalla scansione di Vascelli da Battaglia e/o di Radiofari dello spazio profondo o da sorgenti di trasmissioni codificate o come ricompensa per missioni</value>
+    <value>Ottenuto dalla scansione di Vascelli da Battaglia e/o di Radiofari dello spazio profondo o da sorgenti di trasmissioni codificate o come ricompensa per missioni.</value>
     <comment>Material location Abnormal Compact Emissions Data</comment>
   </data>
   <data name="adaptiveencryptors" xml:space="preserve">
-    <value>Ottenuto dalla scansione di Satelliti in orbita attorno ad Installazioni o analoghi terrestri abitati e come ricompensa per Missioni, specialmente a seguito di missioni di scansione planetarie</value>
+    <value>Ottenuto dalla scansione di Satelliti in orbita attorno ad Installazioni o analoghi terrestri abitati e come ricompensa per Missioni, specialmente a seguito di missioni di scansione planetarie.</value>
     <comment>Material location Adaptive Encryptors Capture</comment>
   </data>
   <data name="classifiedscandata" xml:space="preserve">
@@ -378,11 +378,11 @@
     <comment>Material location Peculiar Shield Frequency Data</comment>
   </data>
   <data name="basicconductors" xml:space="preserve">
-    <value>Ottenuto dai rottami di Vascelli da Trasporto</value>
+    <value>Ottenuto dai rottami di Vascelli da Trasporto.</value>
     <comment>Material location Basic Conductors</comment>
   </data>
   <data name="chemicalstorageunits" xml:space="preserve">
-    <value>Ottenuto dai rottami di Vascelli da Trasporto</value>
+    <value>Ottenuto dai rottami di Vascelli da Trasporto.</value>
     <comment>Material location Chemical Storage Units</comment>
   </data>
   <data name="compactcomposites" xml:space="preserve">
@@ -398,11 +398,11 @@
     <comment>Material location Grid Resistors</comment>
   </data>
   <data name="heatconductionwiring" xml:space="preserve">
-    <value>Ottenuto dai rottami di Vascelli da Trasporto, in sorgenti di segnale o come ricompensa per missioni</value>
+    <value>Ottenuto dai rottami di Vascelli da Trasporto, in sorgenti di segnale o come ricompensa per missioni.</value>
     <comment>Material location Heat Conduction Wiring</comment>
   </data>
   <data name="mechanicalscrap" xml:space="preserve">
-    <value>Ottenuto dai rottami di Vascelli da Trasporto o come ricompensa per missioni</value>
+    <value>Ottenuto dai rottami di Vascelli da Trasporto o come ricompensa per missioni.</value>
     <comment>Material location Mechanical Scrap</comment>
   </data>
   <data name="salvagedalloys" xml:space="preserve">
@@ -418,11 +418,11 @@
     <comment>Material location Worn Shield Emitters</comment>
   </data>
   <data name="chemicalprocessors" xml:space="preserve">
-    <value>Ottenuto dai rottami di Vascelli da Trasporto o come ricompensa per missioni</value>
+    <value>Ottenuto dai rottami di Vascelli da Trasporto o come ricompensa per missioni.</value>
     <comment>Material location Chemical Processors</comment>
   </data>
   <data name="conductivecomponents" xml:space="preserve">
-    <value>Ottenuto dai rottami di Vascelli da Trasporto, specialmente in sistemi anarchici vicini a sistemi popolati</value>
+    <value>Ottenuto dai rottami di Vascelli da Trasporto, specialmente in sistemi anarchici vicini a sistemi popolati. </value>
     <comment>Material location Conductive Components</comment>
   </data>
   <data name="filamentcomposites" xml:space="preserve">
@@ -438,7 +438,7 @@
     <comment>Material location Galvanising Alloys</comment>
   </data>
   <data name="heatdispersionplate" xml:space="preserve">
-    <value>Ottenuto dai rottami di Vascelli da Trasporto in sorgenti di segnale, specialmente in sistemi con economia rampante o come ricompensa per missioni</value>
+    <value>Ottenuto dai rottami di Vascelli da Trasporto in sorgenti di segnale, specialmente in sistemi con economia rampante o come ricompensa per missioni.</value>
     <comment>Material location Heat Dispersion Plate</comment>
   </data>
   <data name="heatresistantceramics" xml:space="preserve">
@@ -450,7 +450,7 @@
     <comment>Material location Hybrid Capacitors</comment>
   </data>
   <data name="mechanicalequipment" xml:space="preserve">
-    <value>Ottenuto dai rottami di Vascelli da Trasporto, specialmente in sistemi con economia rampante</value>
+    <value>Ottenuto dai rottami di Vascelli da Trasporto, specialmente in sistemi con economia rampante.</value>
     <comment>Material location Mechanical Equipment</comment>
   </data>
   <data name="shieldemitters" xml:space="preserve">
@@ -462,11 +462,11 @@
     <comment>Material location Thargoid Carapace</comment>
   </data>
   <data name="chemicaldistillery" xml:space="preserve">
-    <value>Ottenuto dai rottami di Vascelli da Trasporto</value>
+    <value>Ottenuto dai rottami di Vascelli da Trasporto.</value>
     <comment>Material location Chemical Distillery</comment>
   </data>
   <data name="conductiveceramics" xml:space="preserve">
-    <value>Ottenuto dai rottami di Vascelli da Trasporto, specialmente in sistemi anarchici vicini a sistemi popolati. Sono disponibili anche a Dav's Hope</value>
+    <value>Ottenuto dai rottami di Vascelli da Trasporto, specialmente in sistemi anarchici vicini a sistemi popolati. Sono disponibili anche a Dav's Hope.</value>
     <comment>Material location Conductive Ceramics</comment>
   </data>
   <data name="electrochemicalarrays" xml:space="preserve">
@@ -478,7 +478,7 @@
     <comment>Material location Focus Crystals</comment>
   </data>
   <data name="heatexchangers" xml:space="preserve">
-    <value>Ottenuto dai rottami di Vascelli da Trasporto, specialmente in sistemi anarchici vicini a sistemi popolati</value>
+    <value>Ottenuto dai rottami di Vascelli da Trasporto, specialmente in sistemi anarchici vicini a sistemi popolati.</value>
     <comment>Material location Heat Exchangers</comment>
   </data>
   <data name="highdensitycomposites" xml:space="preserve">
