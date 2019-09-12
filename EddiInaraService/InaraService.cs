@@ -50,14 +50,6 @@ namespace EddiInaraService
             _ = Instance;
         }
 
-        private InaraService(DateTime lastSync, string apikey, string commandername = null, string commanderfrontierID = null)
-        {
-            this.lastSync = lastSync;
-            apiKey = apikey?.Trim();
-            commanderName = commandername?.Trim();
-            commanderFrontierID = commanderfrontierID;
-        }
-
         private InaraService()
         {
             // Set up the Inara service
