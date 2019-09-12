@@ -22,14 +22,6 @@ namespace EddiInaraService
 
         private ConcurrentQueue<InaraAPIEvent> queuedAPIEvents { get; set; } = new ConcurrentQueue<InaraAPIEvent>();
 
-        public InaraService(DateTime lastSync, string apikey, string commandername = null, string commanderfrontierID = null)
-        {
-            this.lastSync = lastSync;
-            apiKey = apikey?.Trim();
-            commanderName = commandername?.Trim();
-            commanderFrontierID = commanderfrontierID;
-        }
-
         private static readonly object instanceLock = new object();
 
         private static InaraService instance;
@@ -49,6 +41,20 @@ namespace EddiInaraService
                 }
                 return instance;
             }
+        }
+
+        public static void Start()
+        {
+            Logging.Debug("Creating new Inara service instance.");
+            _ = Instance;
+        }
+
+        private InaraService(DateTime lastSync, string apikey, string commandername = null, string commanderfrontierID = null)
+        {
+            this.lastSync = lastSync;
+            apiKey = apikey?.Trim();
+            commanderName = commandername?.Trim();
+            commanderFrontierID = commanderfrontierID;
         }
 
         private static InaraService NewInaraService()
