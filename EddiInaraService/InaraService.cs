@@ -77,7 +77,7 @@ namespace EddiInaraService
             }
         }
 
-        public static void Reload()
+        public static void Start()
         {
             Logging.Debug("Creating new Inara service instance.");
             instance = null;
