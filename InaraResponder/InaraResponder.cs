@@ -23,7 +23,7 @@ namespace EddiInaraResponder
         private bool bgSyncRunning;
 
         // Background sync interval in milliseconds
-        private const int backgroundSyncMs = 5 * 1000;
+        private const int syncIntervalMilliSeconds = 5 * 1000;
 
         public string ResponderName()
         {
@@ -85,7 +85,7 @@ namespace EddiInaraResponder
             while (bgSyncRunning)
             {
                 InaraService.Instance.SendQueuedAPIEventsAsync(EDDI.Instance.ShouldUseTestEndpoints());
-                Thread.Sleep(backgroundSyncMs);
+                Thread.Sleep(syncIntervalMilliSeconds);
             }
         }
 
