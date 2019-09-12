@@ -43,37 +43,42 @@ namespace EddiInaraService
                     {
                         if (instance == null)
                         {
-                            // Set up the Inara service
-                            InaraConfiguration inaraCredentials = InaraConfiguration.FromFile();
-                            // commanderName: In-game CMDR name of user (not set by user, get this from journals or 
-                            // cAPI to ensure it is a correct in-game name to avoid future problems). It is recommended 
-                            // to be always set when no generic API key is used (otherwise some events may not work).
-                            string commanderName = inaraCredentials?.commanderName;
-                            // commanderFrontierID: Commander's unique Frontier ID (is provided by journals since 3.3)
-                            // in the format: 'F123456'. When not known, set nothing.
-                            string commanderFrontierID = inaraCredentials?.commanderFrontierID;
-                            DateTime lastSync = inaraCredentials.lastSync;
-                            if (!string.IsNullOrEmpty(inaraCredentials.apiKey) && !string.IsNullOrEmpty(commanderName))
-                            {
-                                instance = new InaraService(lastSync, inaraCredentials.apiKey ?? readonlyAPIkey, commanderName, commanderFrontierID);
-                                Logging.Info("Configuring EDDI access to Inara profile data");
-                            }
-                            else
-                            {
-                                instance = new InaraService(lastSync, readonlyAPIkey);
-                                if (string.IsNullOrEmpty(inaraCredentials.apiKey))
-                                {
-                                    Logging.Warn("Configuring Inara service for limited access: API key not set.");
-                                }
-                                if (string.IsNullOrEmpty(commanderName))
-                                {
-                                    Logging.Warn("Configuring Inara service for limited access: Commander name not detected.");
-                                }
-                            }
+                            instance = new InaraService();
                         }
                     }
                 }
                 return instance;
+            }
+        }
+
+        private InaraService()
+        {
+            // Set up the Inara service
+            InaraConfiguration inaraCredentials = InaraConfiguration.FromFile();
+            // commanderName: In-game CMDR name of user (not set by user, get this from journals or 
+            // cAPI to ensure it is a correct in-game name to avoid future problems). It is recommended 
+            // to be always set when no generic API key is used (otherwise some events may not work).
+            string commanderName = inaraCredentials?.commanderName;
+            // commanderFrontierID: Commander's unique Frontier ID (is provided by journals since 3.3)
+            // in the format: 'F123456'. When not known, set nothing.
+            string commanderFrontierID = inaraCredentials?.commanderFrontierID;
+            DateTime lastSync = inaraCredentials.lastSync;
+            if (!string.IsNullOrEmpty(inaraCredentials.apiKey) && !string.IsNullOrEmpty(commanderName))
+            {
+                instance = new InaraService(lastSync, inaraCredentials.apiKey ?? readonlyAPIkey, commanderName, commanderFrontierID);
+                Logging.Info("Configuring EDDI access to Inara profile data");
+            }
+            else
+            {
+                instance = new InaraService(lastSync, readonlyAPIkey);
+                if (string.IsNullOrEmpty(inaraCredentials.apiKey))
+                {
+                    Logging.Warn("Configuring Inara service for limited access: API key not set.");
+                }
+                if (string.IsNullOrEmpty(commanderName))
+                {
+                    Logging.Warn("Configuring Inara service for limited access: Commander name not detected.");
+                }
             }
         }
 
