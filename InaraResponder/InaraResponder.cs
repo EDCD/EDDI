@@ -62,7 +62,7 @@ namespace EddiInaraResponder
         public void Reload()
         {
             Stop();
-            InaraService.Reload();
+            InaraService.Start();
             try
             {
                 updateThread = new Thread(() => BackgroundSync())
@@ -1287,7 +1287,7 @@ namespace EddiInaraResponder
             inaraConfiguration.ToFile();
             if (inaraConfiguration.commanderFrontierID != InaraService.Instance.commanderFrontierID)
             {
-                InaraService.Reload();
+                InaraService.Start();
             }
         }
 
@@ -1300,7 +1300,7 @@ namespace EddiInaraResponder
             inaraConfiguration.ToFile();
             if (inaraConfiguration.commanderFrontierID != InaraService.Instance.commanderFrontierID)
             {
-                InaraService.Reload();
+                InaraService.Start();
             }
         }
 
