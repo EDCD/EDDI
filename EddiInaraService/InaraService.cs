@@ -77,13 +77,6 @@ namespace EddiInaraService
             }
         }
 
-        public static void Start()
-        {
-            Logging.Debug("Creating new Inara service instance.");
-            instance = null;
-            _ = Instance;
-        }
-
         // If you need to do some testing on Inara's API, please set the `inBeta` boolean header property to true.
         public List<InaraResponse> SendEventBatch(ref List<InaraAPIEvent> events, bool inBeta = false)
         {
