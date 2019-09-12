@@ -43,7 +43,7 @@ namespace EddiInaraService
                     {
                         if (instance == null)
                         {
-                            instance = new InaraService();
+                            instance = NewInaraService();
                         }
                     }
                 }
@@ -51,8 +51,9 @@ namespace EddiInaraService
             }
         }
 
-        private InaraService()
+        private static InaraService NewInaraService()
         {
+            InaraService instance = null;
             // Set up the Inara service
             InaraConfiguration inaraCredentials = InaraConfiguration.FromFile();
             // commanderName: In-game CMDR name of user (not set by user, get this from journals or 
@@ -80,6 +81,7 @@ namespace EddiInaraService
                     Logging.Warn("Configuring Inara service for limited access: Commander name not detected.");
                 }
             }
+            return instance;
         }
 
         // If you need to do some testing on Inara's API, please set the `inBeta` boolean header property to true.
