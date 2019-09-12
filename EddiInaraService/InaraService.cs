@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Eddi;
+using Newtonsoft.Json;
 using RestSharp;
 using System;
 using System.Collections.Concurrent;
@@ -95,6 +96,8 @@ namespace EddiInaraService
         // If you need to do some testing on Inara's API, please set the `inBeta` boolean header property to true.
         public List<InaraResponse> SendEventBatch(ref List<InaraAPIEvent> events, bool inBeta = false)
         {
+            if (EDDI.Instance.inBeta) { return null; }
+
             List<InaraResponse> inaraResponses = new List<InaraResponse>();
 
             if (string.IsNullOrEmpty(apiKey))
