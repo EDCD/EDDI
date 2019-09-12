@@ -117,34 +117,118 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="MULTIPLAYER_SCENARIO42_TITLE" xml:space="preserve">
+    <value>Faro di navigazione</value>
+    <comment>Nav beacon</comment>
+  </data>
+  <data name="MULTIPLAYER_SCENARIO80_TITLE" xml:space="preserve">
+    <value>Faro di navigazione Compromesso</value>
+    <comment>Compromised nav beacon</comment>
+  </data>
+  <data name="USS" xml:space="preserve">
+    <value>Sorgente di segnale sconosciuto</value>
+    <comment>Unidentified Signal Source</comment>
+  </data>
+  <data name="Warzone_PointRace_High" xml:space="preserve">
+    <value>Zona di combattimenti ad alta intensità</value>
+    <comment>Combat Zone (High Intensity)</comment>
+  </data>
+  <data name="Warzone_PointRace_Med" xml:space="preserve">
+    <value>Zona di combattimenti a media intensità</value>
+    <comment>Combat Zone (Medium Intensity)</comment>
+  </data>
+  <data name="Warzone_PointRace_Low" xml:space="preserve">
+    <value>Zona di combattimenti a bassa intensità</value>
+    <comment>Combat Zone (Low Intensity)</comment>
+  </data>
+  <data name="USS_Type_Salvage" xml:space="preserve">
+    <value>Emissione Degradata</value>
+    <comment>Salvage signal</comment>
+  </data>
+  <data name="USS_Type_Aftermath" xml:space="preserve">
+    <value>Postumi di Combattimento</value>
+    <comment>Aftermatch signal</comment>
+  </data>
+  <data name="USS_Type_Anomaly" xml:space="preserve">
+    <value>Anomalia</value>
+    <comment>Anomaly signal</comment>
+  </data>
+  <data name="USS_Type_Ceremonial" xml:space="preserve">
+    <value>Comunicazioni Cerimoniali</value>
+    <comment>Ceremonial signal</comment>
+  </data>
+  <data name="USS_Type_VeryValuableSalvage" xml:space="preserve">
+    <value>Emissioni di Grado Elevato</value>
+    <comment>VeryValuable signal</comment>
+  </data>
+  <data name="USS_Type_ValuableSalvage" xml:space="preserve">
+    <value>Emissioni Codificate</value>
+    <comment>Valuable signal</comment>
+  </data>
+  <data name="USS_Type_NonHuman" xml:space="preserve">
+    <value>Sorgente di segnale non umana</value>
+    <comment>NonHuman signal</comment>
+  </data>
+  <data name="USS_Type_WeaponsFire" xml:space="preserve">
+    <value>Colpi di Arma da Fuoco</value>
+    <comment>WeaponsFire signal</comment>
+  </data>
+  <data name="USS_Type_MissionTarget" xml:space="preserve">
+    <value>Obiettivo Missione</value>
+    <comment>MissionTarget signal</comment>
+  </data>
+  <data name="USS_Type_Convoy" xml:space="preserve">
+    <value>Traccie di Convoglio in dispersione rilevate</value>
+    <comment>Convoy signal</comment>
+  </data>
+  <data name="USS_Type_DistressSignal" xml:space="preserve">
+    <value>Chiamata di Soccorso</value>
+    <comment>Distress signal</comment>
+  </data>
+  <data name="USS_Type_TradingBeacon" xml:space="preserve">
+    <value>Faro di Commercio</value>
+    <comment>TradingBeacon signal</comment>
+  </data>
+  <data name="MULTIPLAYER_SCENARIO78_TITLE" xml:space="preserve">
+    <value>Sito di estrazione mineraria ad alta pericolosità</value>
+    <comment>ResourceExtraction Site (High Intensity)</comment>
+  </data>
+  <data name="MULTIPLAYER_SCENARIO77_TITLE" xml:space="preserve">
+    <value>Sito di estrazione mineraria a bassa pericolosità</value>
+    <comment>Resource Extraction site (Low)</comment>
+  </data>
+  <data name="MULTIPLAYER_SCENARIO14_TITLE" xml:space="preserve">
+    <value>Sito di estrazione mineraria</value>
+    <comment>Resource Extraction Site</comment>
+  </data>
+  <data name="MULTIPLAYER_SCENARIO79_TITLE" xml:space="preserve">
+    <value>Sito di estrazione mineraria ad altissima pericolosità</value>
+    <comment>Resource Extraction Site [Hazardous]</comment>
+  </data>
+  <data name="NumberStation" xml:space="preserve">
+    <value>Faro di Comunicazione non Registrato</value>
+    <comment>NumberStation</comment>
+  </data>
+  <data name="Warzone_TG" xml:space="preserve">
+    <value>Zona di combattimento Alieni</value>
+    <comment>Thargoid conflict zone</comment>
+  </data>
+  <data name="ListeningPost" xml:space="preserve">
+    <value>Locazione di Ascolto</value>
+    <comment>ListeningPost</comment>
+  </data>
+  <data name="Fixed_Event_Life_Cloud" xml:space="preserve">
+    <value>Notevole Fenomeno Stellare</value>
+    <comment>Notable Stellar Phenomena</comment>
+  </data>
+  <data name="FIXED-EVENT_CAPSHIP" xml:space="preserve">
+    <value>Mega Bastimento</value>
+    <comment>Capital Ship</comment>
+  </data>
+  <data name="Fixed_Event_Life_Ring" xml:space="preserve">
+    <value>Notevole Fenomeno Stellare</value>
+    <comment>Notable Stellar Phenomena</comment>
+  </data>
   <data name="ListeningPost:#index=1" xml:space="preserve">
     <value>Stazione di Ascolto</value>
     <comment>Listening Post:#Index=1</comment>
