@@ -453,18 +453,42 @@
     <value>Generatore di Scudi</value>
     <comment>Module ShieldGenerator</comment>
   </data>
-  
-  
-  
-  
+  <data name="ShockCannon" xml:space="preserve">
+    <value>Cannone a Ripetizione con Autoricarica</value>
+    <comment>Module ShockCannon</comment>
+  </data>
+  <data name="ShockMineLauncher" xml:space="preserve">
+    <value>Lancia Mine Devianti</value>
+    <comment>Module ShockMineLauncher</comment>
+  </data>
+  <data name="ShutdownFieldNeutraliser" xml:space="preserve">
+    <value>Neutralizzatore di Campo Elettro-Inibitore</value>
+    <comment>Module ShutdownFieldNeutraliser</comment>
+  </data>
+  <data name="StandardDockingComputer" xml:space="preserve">
+    <value>Computer di Attracco Standard</value>
+    <comment>Module StandardDockingComputer</comment>
+  </data>
   <data name="Thrusters" xml:space="preserve">
     <value>Propulsori</value>
     <comment>Module Thrusters</comment>
   </data>
-  
-  
-  
-  
+  <data name="TorpedoPylon" xml:space="preserve">
+    <value>Lancia Torpedo</value>
+    <comment>Module TorpedoPylon</comment>
+  </data>
+  <data name="VoicePack_Verity" xml:space="preserve">
+    <value>Verity</value>
+    <comment>Module Verity</comment>
+  </data>
+  <data name="VoicePack_Victor" xml:space="preserve">
+    <value>Victor</value>
+    <comment>Module Victor</comment>
+  </data>
+  <data name="Whitestringlights" xml:space="preserve">
+    <value>Stiscia di Lucine Bianche</value>
+    <comment>Module Whitestringlights</comment>
+  </data>
   <data name="XenoScanner" xml:space="preserve">
     <value>Analizzatore Alieni</value>
     <comment>Module XenoScanner</comment>
@@ -487,7 +511,10 @@
     <comment>Module GuardianPowerDistributor</comment>
   </data>
   
-  
+  <data name="FlechetteLauncher" xml:space="preserve">
+    <value>Lancia Flechètte</value>
+    <comment>Modile FlechetteLauncher</comment>
+  </data>
   
   <data name="GuardianHullReinforcement" xml:space="preserve">
     <value>Rafforzamento Chiglia dei Guardiani</value>
@@ -506,7 +533,10 @@
     <value>Scanner ad Impulso d'Onda</value>
     <comment>Module Pulse Wave Scanner</comment>
   </data>
-  
+  <data name="SeismicCharge" xml:space="preserve">
+    <value>Lancia Granate Sismiche</value>
+    <comment>Module Seismic Charge</comment>
+  </data>
   
   
   <data name="CompositionScanner" xml:space="preserve">
