@@ -1085,6 +1085,8 @@ namespace Eddi
                 SpeechService.Instance.ShutUp();
                 System.Windows.Application.Current.Shutdown();
             }
+
+            EDDI.Instance.MainWindow = null;
         }
 
         private void EnsureValidDecimal(object sender, TextCompositionEventArgs e)
