@@ -117,6 +117,10 @@ namespace GalnetMonitor
             return new ConfigurationWindow();
         }
 
+        public void OnClosingConfigurationTabItem()
+        {
+        }
+
         private void monitor()
         {
             const int inGameOnlyStartDelayMilliSecs = 5 * 60 * 1000; // 5 mins

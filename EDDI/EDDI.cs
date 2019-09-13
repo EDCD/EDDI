@@ -132,7 +132,7 @@ namespace Eddi
         public Ship CurrentShip { get; set; }
 
         // Our main window, made accessible via the applicable EDDI Instance
-        public MainWindow MainWindow => (MainWindow)System.Windows.Application.Current.MainWindow;
+        public MainWindow MainWindow { get; internal set; }
 
         public ObservableConcurrentDictionary<string, object> State = new ObservableConcurrentDictionary<string, object>();
 
@@ -1943,7 +1943,7 @@ namespace Eddi
             configuration.ToFile();
 
             // Update the squadron UI data
-            if (Instance.MainWindow?.Dispatcher != null)
+            if (Instance.MainWindow != null)
             {
                 Instance.MainWindow.Dispatcher.Invoke(new Action(() =>
                 {
@@ -1976,7 +1976,7 @@ namespace Eddi
                         configuration.SquadronRank = rank;
 
                         // Update the squadron UI data
-                        if (Instance.MainWindow?.Dispatcher != null)
+                        if (Instance.MainWindow != null)
                         {
                             Instance.MainWindow.Dispatcher.Invoke(new Action(() =>
                             {
@@ -2000,7 +2000,7 @@ namespace Eddi
                         configuration.SquadronName = theEvent.name;
 
                         // Update the squadron UI data
-                        if (Instance.MainWindow?.Dispatcher != null)
+                        if (Instance.MainWindow != null)
                         {
                             Instance.MainWindow.Dispatcher.Invoke(new Action(() =>
                             {
@@ -2024,7 +2024,7 @@ namespace Eddi
                         configuration.SquadronID = null;
 
                         // Update the squadron UI data
-                        if (Instance.MainWindow?.Dispatcher != null)
+                        if (Instance.MainWindow != null)
                         {
                             Instance.MainWindow.Dispatcher.Invoke(new Action(() =>
                             {
@@ -2057,7 +2057,7 @@ namespace Eddi
             configuration.ToFile();
 
             // Update the squadron UI data
-            if (Instance.MainWindow?.Dispatcher != null)
+            if (Instance.MainWindow != null)
             {
                 Instance.MainWindow.Dispatcher.Invoke(new Action(() =>
                 {
@@ -2787,7 +2787,7 @@ namespace Eddi
                 {
                     configuration.SquadronFaction = faction.name;
 
-                    if (Instance.MainWindow?.Dispatcher != null)
+                    if (Instance.MainWindow != null)
                     {
                         Instance.MainWindow.Dispatcher.Invoke(new Action(() =>
                         {
@@ -2807,7 +2807,7 @@ namespace Eddi
                     {
                         configuration.SquadronSystem = system;
 
-                        if (Instance.MainWindow?.Dispatcher != null)
+                        if (Instance.MainWindow != null)
                         {
                             Instance.MainWindow.Dispatcher.Invoke(new Action(() =>
                             {
@@ -2842,7 +2842,7 @@ namespace Eddi
                         {
                             configuration.SquadronPower = power;
 
-                            if (Instance.MainWindow?.Dispatcher != null)
+                            if (Instance.MainWindow != null)
                             {
                                 Instance.MainWindow.Dispatcher.Invoke(new Action(() =>
                                 {
