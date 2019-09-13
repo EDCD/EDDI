@@ -260,7 +260,10 @@
   
   
   
-  
+  <data name="crystalshards" xml:space="preserve">
+    <value>Frammenti di Cristallo</value>
+    <comment>Material crystalshards</comment>
+  </data>
   
   
   
