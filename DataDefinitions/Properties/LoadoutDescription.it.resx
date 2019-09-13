@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="EmpireFour" xml:space="preserve">
-    <value>raggi laser a sospensione cardanica e dispersore di calore</value>
+    <value>raggi laser gimballati e dispersore di calore</value>
   </data>
   <data name="EmpireOne" xml:space="preserve">
     <value>raggi laser a sospensione fissa e dispersore di calore</value>
@@ -129,9 +129,15 @@
   <data name="EmpireTwo" xml:space="preserve">
     <value>ripetitore al plasma a sospensione fissa e dispersore di bersagli fantasma</value>
   </data>
-  
-  
-  
+  <data name="EmpireZero" xml:space="preserve">
+    <value>laser ad Impulso gimballati e dispersore di calore</value>
+  </data>
+  <data name="FederationFour" xml:space="preserve">
+    <value>raggi laser gimballati e dispersori di calore</value>
+  </data>
+  <data name="FederationOne" xml:space="preserve">
+    <value>laser ad impulso a sospensione fissa e dispersore di calore</value>
+  </data>
   
   
   
