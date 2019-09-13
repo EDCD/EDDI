@@ -225,7 +225,10 @@
     <value>Echi Atipici in Traccie di Salto Disturbate</value>
     <comment>Material disruptedwakeechoes</comment>
   </data>
-  
+  <data name="shieldcyclerecordings" xml:space="preserve">
+    <value>Registrazioni dei Cicli degli Scudi Distorti</value>
+    <comment>Material shieldcyclerecordings</comment>
+  </data>
   <data name="scrambledemissiondata" xml:space="preserve">
     <value>Dati da Emissioni Codificate Eccezionali</value>
     <comment>Material scrambledemissiondata</comment>
@@ -242,8 +245,14 @@
     <value>Dati da Obelisco del Sentiero Gamma (Storia)</value>
     <comment>Material ancienthistoricaldata</comment>
   </data>
-  
-  
+  <data name="fsdtelemetry" xml:space="preserve">
+    <value>Telemetria Anomala FSD</value>
+    <comment>Material fsdtelemetry</comment>
+  </data>
+  <data name="shieldsoakanalysis" xml:space="preserve">
+    <value>Analisi di Prove di Carico Incoerenti sugli Scudi</value>
+    <comment>Material shieldsoakanalysis</comment>
+  </data>
   <data name="archivedemissiondata" xml:space="preserve">
     <value>Dati da Emissioni Irregolari</value>
     <comment>Material archivedemissiondata</comment>
@@ -256,7 +265,10 @@
     <value>Codici Crittografici Dedicati</value>
     <comment>Material encryptioncodes</comment>
   </data>
-  
+  <data name="scanarchives" xml:space="preserve">
+    <value>Archivi di Scansioni non Identificate</value>
+    <comment>Material scanarchives</comment>
+  </data>
   <data name="ancientculturaldata" xml:space="preserve">
     <value>Dati da Obelisco del Sentiero Beta (Cultura)</value>
     <comment>Material ancientculturaldata</comment>
@@ -273,7 +285,10 @@
     <value>Firmware Industriale Craccato</value>
     <comment>Material industrialfirmware</comment>
   </data>
-  
+  <data name="symmetrickeys" xml:space="preserve">
+    <value>Chiavi Simmetriche Aperte</value>
+    <comment>Material symmetrickeys</comment>
+  </data>
   <data name="wakesolutions" xml:space="preserve">
     <value>Strane Soluzioni di Traccie di Salto</value>
     <comment>Material wakesolutions</comment>
@@ -282,7 +297,10 @@
     <value>Dati da Emissioni Inaspettate</value>
     <comment>Material emissiondata</comment>
   </data>
-  
+  <data name="shielddensityreports" xml:space="preserve">
+    <value>Scansioni di Scudi non Tipici</value>
+    <comment>Material shielddensityreports</comment>
+  </data>
   <data name="ancientbiologicaldata" xml:space="preserve">
     <value>Dati da Obelisco del Sentiero Alfa (Biologia)</value>
     <comment>Material ancientbiologicaldata</comment>
@@ -295,7 +313,10 @@
     <value>Segno Caratteristico di Nave Thargoid</value>
     <comment>Material unknownshipsignature</comment>
   </data>
-  
+  <data name="shieldpatternanalysis" xml:space="preserve">
+    <value>Analisi di Tracciati Aberranti degli Scudi</value>
+    <comment>Material shieldpatternanalysis</comment>
+  </data>
   <data name="encryptionarchives" xml:space="preserve">
     <value>Archivi di Crittografia Atipici</value>
     <comment>Material encryptionarchives</comment>
@@ -308,7 +329,10 @@
     <value>Dati a Scansione Divergente</value>
     <comment>Material encodedscandata</comment>
   </data>
-  
+  <data name="hyperspacetrajectories" xml:space="preserve">
+    <value>Traiettorie Ecentriche verso Iperspazio</value>
+    <comment>Material hyperspacetrajectories</comment>
+  </data>
   <data name="securityfirmware" xml:space="preserve">
     <value>Patch a Firmware di Sicurezza</value>
     <comment>Material securityfirmware</comment>
@@ -353,8 +377,14 @@
     <value>Peculiari Frequenze Operazionali degli Scudi</value>
     <comment>Material shieldfrequencydata</comment>
   </data>
-  
-  
+  <data name="basicconductors" xml:space="preserve">
+    <value>Conduttori di Base</value>
+    <comment>Material basicconductors</comment>
+  </data>
+  <data name="chemicalstorageunits" xml:space="preserve">
+    <value>Unità di Stoccaggio Materiali Chimici</value>
+    <comment>Material chemicalstorageunits</comment>
+  </data>
   <data name="compactcomposites" xml:space="preserve">
     <value>Compositi Compatti</value>
     <comment>Material compactcomposites</comment>
@@ -379,69 +409,210 @@
     <value>Leghe di Recupero</value>
     <comment>Material salvagedalloys</comment>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="temperedalloys" xml:space="preserve">
+    <value>Leghe Temprate</value>
+    <comment>Material temperedalloys</comment>
+  </data>
+  <data name="wornshieldemitters" xml:space="preserve">
+    <value>Emettitori di Scudo Esausti</value>
+    <comment>Material wornshieldemitters</comment>
+  </data>
+  <data name="chemicalprocessors" xml:space="preserve">
+    <value>Processori Chimici</value>
+    <comment>Material chemicalprocessors</comment>
+  </data>
+  <data name="conductivecomponents" xml:space="preserve">
+    <value>Componenti Conduttivi</value>
+    <comment>Material conductivecomponents</comment>
+  </data>
+  <data name="filamentcomposites" xml:space="preserve">
+    <value>Compositi Filamentosi</value>
+    <comment>Material filamentcomposites</comment>
+  </data>
+  <data name="uncutfocuscrystals" xml:space="preserve">
+    <value>Cristalli Focalizzanti Rovinati</value>
+    <comment>Material uncutfocuscrystals</comment>
+  </data>
+  <data name="galvanisingalloys" xml:space="preserve">
+    <value>Leghe Galvanizzanti</value>
+    <comment>Material galvanisingalloys</comment>
+  </data>
+  <data name="heatdispersionplate" xml:space="preserve">
+    <value>Placca di Dispersione Calore</value>
+    <comment>Material heatdispersionplate</comment>
+  </data>
+  <data name="heatresistantceramics" xml:space="preserve">
+    <value>Ceramiche Resistenti al Calore</value>
+    <comment>Material heatresistantceramics</comment>
+  </data>
+  <data name="hybridcapacitors" xml:space="preserve">
+    <value>Capacitori Ibridi</value>
+    <comment>Material hybridcapacitors</comment>
+  </data>
+  <data name="mechanicalequipment" xml:space="preserve">
+    <value>Equipaggiamenti Meccanici</value>
+    <comment>Material mechanicalequipment</comment>
+  </data>
+  <data name="shieldemitters" xml:space="preserve">
+    <value>Emettitori di Scudo</value>
+    <comment>Material shieldemitters</comment>
+  </data>
   <data name="unknowncarapace" xml:space="preserve">
     <value>Carapace Thargoid</value>
     <comment>Material unknowncarapace</comment>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="chemicaldistillery" xml:space="preserve">
+    <value>Distilleria Chimica</value>
+    <comment>Material chemicaldistillery</comment>
+  </data>
+  <data name="conductiveceramics" xml:space="preserve">
+    <value>Ceramiche Conduttive</value>
+    <comment>Material conductiveceramics</comment>
+  </data>
+  <data name="electrochemicalarrays" xml:space="preserve">
+    <value>Vettori Elettrochimici</value>
+    <comment>Material electrochemicalarrays</comment>
+  </data>
+  <data name="focuscrystals" xml:space="preserve">
+    <value>Cristalli Focalizzanti</value>
+    <comment>Material focuscrystals</comment>
+  </data>
+  <data name="heatexchangers" xml:space="preserve">
+    <value>Scambiatori di Calore</value>
+    <comment>Material heatexchangers</comment>
+  </data>
+  <data name="highdensitycomposites" xml:space="preserve">
+    <value>Compositi ad Elevata Densità</value>
+    <comment>Material highdensitycomposites</comment>
+  </data>
+  <data name="mechanicalcomponents" xml:space="preserve">
+    <value>Componenti Meccaniche</value>
+    <comment>Material mechanicalcomponents</comment>
+  </data>
+  <data name="phasealloys" xml:space="preserve">
+    <value>Leghe Fasiche</value>
+    <comment>Material phasealloys</comment>
+  </data>
+  <data name="precipitatedalloys" xml:space="preserve">
+    <value>Leghe Precipitate</value>
+    <comment>Material precipitatedalloys</comment>
+  </data>
+  <data name="shieldingsensors" xml:space="preserve">
+    <value>Sensori Protettivi</value>
+    <comment>Material shieldingsensors</comment>
+  </data>
   <data name="unknownenergycell" xml:space="preserve">
     <value>Cella di Energia Thargoid</value>
     <comment>Material unknownenergycell</comment>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="chemicalmanipulators" xml:space="preserve">
+    <value>Manipolatori Chimici</value>
+    <comment>Material chemicalmanipulators</comment>
+  </data>
+  <data name="compoundshielding" xml:space="preserve">
+    <value>Composti Protettivi</value>
+    <comment>Material compoundshielding</comment>
+  </data>
+  <data name="conductivepolymers" xml:space="preserve">
+    <value>Polimeri Conduttivi</value>
+    <comment>Material conductivepolymers</comment>
+  </data>
+  <data name="configurablecomponents" xml:space="preserve">
+    <value>Componenti Configurabili</value>
+    <comment>Material configurablecomponents</comment>
+  </data>
+  <data name="heatvanes" xml:space="preserve">
+    <value>Alette Anti-Calore</value>
+    <comment>Material heatvanes</comment>
+  </data>
+  <data name="polymercapacitors" xml:space="preserve">
+    <value>Capacitori Polimerici</value>
+    <comment>Material polymercapacitors</comment>
+  </data>
+  <data name="fedproprietarycomposites" xml:space="preserve">
+    <value>Compositi di Proprietà</value>
+    <comment>Material fedproprietarycomposites</comment>
+  </data>
+  <data name="protolightalloys" xml:space="preserve">
+    <value>Leghe Proto Alleggerite</value>
+    <comment>Material protolightalloys</comment>
+  </data>
+  <data name="refinedfocuscrystals" xml:space="preserve">
+    <value>Cristalli Focalizzanti Raffinati</value>
+    <comment>Material refinedfocuscrystals</comment>
+  </data>
+  <data name="thermicalloys" xml:space="preserve">
+    <value>Leghe Termiche</value>
+    <comment>Material thermicalloys</comment>
+  </data>
   <data name="unknowntechnologycomponents" xml:space="preserve">
     <value>Componente di Tecnologia Thargoid</value>
     <comment>Material unknowntechnologycomponents</comment>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="biotechconductors" xml:space="preserve">
+    <value>Conduttori Bio-Tecnologici</value>
+    <comment>Material biotechconductors</comment>
+  </data>
+  <data name="fedcorecomposites" xml:space="preserve">
+    <value>Compositi della Core Dynamics</value>
+    <comment>Material fedcorecomposites</comment>
+  </data>
+  <data name="exquisitefocuscrystals" xml:space="preserve">
+    <value>Cristalli Focalizzanti Squisiti</value>
+    <comment>Material exquisitefocuscrystals</comment>
+  </data>
+  <data name="imperialshielding" xml:space="preserve">
+    <value>Protettivi Imperiali</value>
+    <comment>Material imperialshielding</comment>
+  </data>
+  <data name="improvisedcomponents" xml:space="preserve">
+    <value>Componenti Improvvisati</value>
+    <comment>Material improvisedcomponents</comment>
+  </data>
+  <data name="militarygradealloys" xml:space="preserve">
+    <value>Leghe di Qualità Materiale</value>
+    <comment>Material militarygradealloys</comment>
+  </data>
+  <data name="militarysupercapacitors" xml:space="preserve">
+    <value>Supercapacitori Militari</value>
+    <comment>Material militarysupercapacitors</comment>
+  </data>
+  <data name="pharmaceuticalisolators" xml:space="preserve">
+    <value>Isolatori Farmaceutici</value>
+    <comment>Material pharmaceuticalisolators</comment>
+  </data>
+  <data name="protoheatradiators" xml:space="preserve">
+    <value>Radiatori Anti-Calore</value>
+    <comment>Material protoheatradiators</comment>
+  </data>
+  <data name="protoradiolicalloys" xml:space="preserve">
+    <value>Leghe Proto Irradiate</value>
+    <comment>Material protoradiolicalloys</comment>
+  </data>
+  <data name="unknownenergysource" xml:space="preserve">
+    <value>Frammenti di Sensore</value>
+    <comment>Material unknownenergysource</comment>
+  </data>
   <data name="unknownorganiccircuitry" xml:space="preserve">
     <value>Circuiteria Organica Thargoid</value>
     <comment>Material unknownorganiccircuitry</comment>
   </data>
-  
-  
-  
-  
+  <data name="boron" xml:space="preserve">
+    <value>Boro</value>
+    <comment>Material boron</comment>
+  </data>
+  <data name="guardian_powercell" xml:space="preserve">
+    <value>Cella di Ricarica dei Guardiani</value>
+    <comment>Material guardian_powercell</comment>
+  </data>
+  <data name="guardian_weaponblueprint" xml:space="preserve">
+    <value>Progetto di Arma dei Guardiani</value>
+    <comment>Material guardian_weaponblueprint</comment>
+  </data>
+  <data name="guardian_vesselblueprint" xml:space="preserve">
+    <value>Progetto di Vascello dei Guardiani</value>
+    <comment>Material guardian_vesselblueprint</comment>
+  </data>
   
   
   
