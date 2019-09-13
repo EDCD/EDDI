@@ -221,38 +221,98 @@
     <value>Dati da Scansione di Pacchetti di Dati Anomali</value>
     <comment>Material bulkscandata</comment>
   </data>
+  <data name="disruptedwakeechoes" xml:space="preserve">
+    <value>Echi Atipici in Traccie di Salto Disturbate</value>
+    <comment>Material disruptedwakeechoes</comment>
+  </data>
+  
+  <data name="scrambledemissiondata" xml:space="preserve">
+    <value>Dati da Emissioni Codificate Eccezionali</value>
+    <comment>Material scrambledemissiondata</comment>
+  </data>
+  <data name="legacyfirmware" xml:space="preserve">
+    <value>Firmware Obsoleto Specializzato</value>
+    <comment>Material legacyfirmware</comment>
+  </data>
+  <data name="encryptedfiles" xml:space="preserve">
+    <value>Cartelle Crittografate Inusuali</value>
+    <comment>Material encryptedfiles</comment>
+  </data>
+  <data name="ancienthistoricaldata" xml:space="preserve">
+    <value>Dati da Obelisco del Sentiero Gamma (Storia)</value>
+    <comment>Material ancienthistoricaldata</comment>
+  </data>
   
   
+  <data name="archivedemissiondata" xml:space="preserve">
+    <value>Dati da Emissioni Irregolari</value>
+    <comment>Material archivedemissiondata</comment>
+  </data>
+  <data name="consumerfirmware" xml:space="preserve">
+    <value>Firmware Seriale Modificato</value>
+    <comment>Material consumerfirmware</comment>
+  </data>
+  <data name="encryptioncodes" xml:space="preserve">
+    <value>Codici Crittografici Dedicati</value>
+    <comment>Material encryptioncodes</comment>
+  </data>
   
+  <data name="ancientculturaldata" xml:space="preserve">
+    <value>Dati da Obelisco del Sentiero Beta (Cultura)</value>
+    <comment>Material ancientculturaldata</comment>
+  </data>
+  <data name="tg_structuraldata" xml:space="preserve">
+    <value>Dati Strutturali Thargoid</value>
+    <comment>Material tg_structuraldata</comment>
+  </data>
+  <data name="scandatabanks" xml:space="preserve">
+    <value>Banche Dati da Scansioni Codificate</value>
+    <comment>Material scandatabanks</comment>
+  </data>
+  <data name="industrialfirmware" xml:space="preserve">
+    <value>Firmware Industriale Craccato</value>
+    <comment>Material industrialfirmware</comment>
+  </data>
   
+  <data name="wakesolutions" xml:space="preserve">
+    <value>Strane Soluzioni di Traccie di Salto</value>
+    <comment>Material wakesolutions</comment>
+  </data>
+  <data name="emissiondata" xml:space="preserve">
+    <value>Dati da Emissioni Inaspettate</value>
+    <comment>Material emissiondata</comment>
+  </data>
   
+  <data name="ancientbiologicaldata" xml:space="preserve">
+    <value>Dati da Obelisco del Sentiero Alfa (Biologia)</value>
+    <comment>Material ancientbiologicaldata</comment>
+  </data>
+  <data name="tg_compositiondata" xml:space="preserve">
+    <value>Dati da Composizione Materiale Thargoid</value>
+    <comment>Material tg_compositiondata</comment>
+  </data>
+  <data name="unknownshipsignature" xml:space="preserve">
+    <value>Segno Caratteristico di Nave Thargoid</value>
+    <comment>Material unknownshipsignature</comment>
+  </data>
   
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="encryptionarchives" xml:space="preserve">
+    <value>Archivi di Crittografia Atipici</value>
+    <comment>Material encryptionarchives</comment>
+  </data>
+  <data name="decodedemissiondata" xml:space="preserve">
+    <value>Dati da Emissioni Decodificate</value>
+    <comment>Material decodedemissiondata</comment>
+  </data>
   <data name="encodedscandata" xml:space="preserve">
     <value>Dati a Scansione Divergente</value>
     <comment>Material encodedscandata</comment>
   </data>
   
-  
+  <data name="securityfirmware" xml:space="preserve">
+    <value>Patch a Firmware di Sicurezza</value>
+    <comment>Material securityfirmware</comment>
+  </data>
   <data name="ancientlanguagedata" xml:space="preserve">
     <value>Dati da Obelisco del Sentiero Delta (Linguistica)</value>
     <comment>Material ancientlanguagedata</comment>
@@ -273,7 +333,10 @@
     <value>Dati da Emissione Compatta Anormale</value>
     <comment>Material compactemissionsdata</comment>
   </data>
-  
+  <data name="adaptiveencryptors" xml:space="preserve">
+    <value>Ricezioni da Crittografatori Adattivi</value>
+    <comment>Material adaptiveencryptors</comment>
+  </data>
   <data name="classifiedscandata" xml:space="preserve">
     <value>Frammenti di Scansioni Classificate</value>
     <comment>Material classifiedscandata</comment>
@@ -282,7 +345,10 @@
     <value>Eccezioni ai Dati di Traccia da Salto</value>
     <comment>Material dataminedwake</comment>
   </data>
-  
+  <data name="embeddedfirmware" xml:space="preserve">
+    <value>Firmware Incorporato Modificato</value>
+    <comment>Material embeddedfirmware</comment>
+  </data>
   <data name="shieldfrequencydata" xml:space="preserve">
     <value>Peculiari Frequenze Operazionali degli Scudi</value>
     <comment>Material shieldfrequencydata</comment>
@@ -310,6 +376,38 @@
   
   
   
+  <data name="unknowncarapace" xml:space="preserve">
+    <value>Carapace Thargoid</value>
+    <comment>Material unknowncarapace</comment>
+  </data>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <data name="unknownenergycell" xml:space="preserve">
+    <value>Cella di Energia Thargoid</value>
+    <comment>Material unknownenergycell</comment>
+  </data>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <data name="unknowntechnologycomponents" xml:space="preserve">
+    <value>Componente di Tecnologia Thargoid</value>
+    <comment>Material unknowntechnologycomponents</comment>
+  </data>
   
   
   
@@ -321,30 +419,10 @@
   
   
   
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="unknownorganiccircuitry" xml:space="preserve">
+    <value>Circuiteria Organica Thargoid</value>
+    <comment>Material unknownorganiccircuitry</comment>
+  </data>
   
   
   
