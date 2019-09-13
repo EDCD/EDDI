@@ -109,11 +109,6 @@ namespace EddiShipMonitor
 
         public void EnableConfigBinding()
         {
-            BindingOperations.CollectionRegistering += Shipyard_CollectionRegistering;
-        }
-
-        private void Shipyard_CollectionRegistering(object sender, CollectionRegisteringEventArgs e)
-        {
             if (Application.Current != null)
             {
                 // Synchronize this collection between threads
@@ -128,7 +123,6 @@ namespace EddiShipMonitor
 
         public void DisableConfigBinding()
         {
-            BindingOperations.CollectionRegistering -= Shipyard_CollectionRegistering;
             if (Application.Current != null)
             {
                 // Synchronize this collection between threads
