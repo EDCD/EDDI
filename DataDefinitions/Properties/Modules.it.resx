@@ -150,7 +150,7 @@
     <comment>Module Bi_WeaveShieldGenerator</comment>
   </data>
   <data name="BurstLaser" xml:space="preserve">
-    <value>Laser a raffica</value>
+    <value>Laser Esplosivo</value>
     <comment>Module BurstLaser</comment>
   </data>
   <data name="BusinessClassPassengerCabin" xml:space="preserve">
