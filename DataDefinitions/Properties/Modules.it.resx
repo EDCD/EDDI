@@ -378,7 +378,7 @@
     <comment>Module PlasmaAccelerator</comment>
   </data>
   <data name="PointDefence" xml:space="preserve">
-    <value>Difesa anti Aerea</value>
+    <value>Punto di Difesa Automatizzata</value>
     <comment>Module PointDefence</comment>
   </data>
   <data name="PowerDistributor" xml:space="preserve">
