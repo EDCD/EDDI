@@ -23,7 +23,7 @@ namespace IntegrationTests
                 { new InaraAPIEvent(DateTime.UtcNow, "getCommanderProfile", new Dictionary<string, object>() { { "searchName", "No such name" } })},
                 { new InaraAPIEvent(DateTime.UtcNow, "getCommanderProfile", new Dictionary<string, object>() { { "searchName", "Artie" } })}
             };
-            List<InaraResponse> responses = InaraService.Instance.SendEventBatch(ref inaraAPIEvents, true);
+            List<InaraResponse> responses = InaraService.Instance.SendEventBatch(ref inaraAPIEvents, sendEvenForBetaGame:true);
 
             // Check that appropriate response IDs were assigned to each API event
             Assert.AreEqual(0, inaraAPIEvents[0].eventCustomID);

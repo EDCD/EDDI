@@ -29,7 +29,7 @@ namespace EddiInaraService
                     { "searchName", commanderName }
                 }));
             }
-            List<InaraResponse> responses = SendEventBatch(ref events);
+            List<InaraResponse> responses = SendEventBatch(ref events, sendEvenForBetaGame:true);
             foreach (InaraResponse inaraResponse in responses)
             {
                 string jsonCmdr = JsonConvert.SerializeObject(inaraResponse.eventData);
