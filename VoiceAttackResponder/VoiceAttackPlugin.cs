@@ -524,10 +524,6 @@ namespace EddiVoiceAttackResponder
                     {
                         vaProxy.WriteToLog("The EDDI window cannot be closed at this time.", "orange");
                     }
-                    else
-                    {
-                        VA_MainWindow.Closing -= eddiClosing;
-                    }
                     break;
                 default:
                     vaProxy.WriteToLog("Plugin context \"" + (string)vaProxy.Context + "\" not recognized.", "orange");
