@@ -217,6 +217,10 @@
     <value>Polonio</value>
     <comment>Material polonium</comment>
   </data>
+  <data name="bulkscandata" xml:space="preserve">
+    <value>Dati da Scansione di Pacchetti di Dati Anomali</value>
+    <comment>Material bulkscandata</comment>
+  </data>
   
   
   
@@ -243,20 +247,46 @@
   
   
   
+  <data name="encodedscandata" xml:space="preserve">
+    <value>Dati a Scansione Divergente</value>
+    <comment>Material encodedscandata</comment>
+  </data>
   
   
+  <data name="ancientlanguagedata" xml:space="preserve">
+    <value>Dati da Obelisco del Sentiero Delta (Linguistica)</value>
+    <comment>Material ancientlanguagedata</comment>
+  </data>
+  <data name="ancienttechnologicaldata" xml:space="preserve">
+    <value>Dati da Obelisco del Sentiero Epsilon (Tecnologia)</value>
+    <comment>Material ancienttechnologicaldata</comment>
+  </data>
+  <data name="tg_residuedata" xml:space="preserve">
+    <value>Dati Residui Thargoid</value>
+    <comment>Material tg_residuedata</comment>
+  </data>
+  <data name="unknownwakedata" xml:space="preserve">
+    <value>Dati Traccia di Salto Thargoid</value>
+    <comment>Material unknownwakedata</comment>
+  </data>
+  <data name="compactemissionsdata" xml:space="preserve">
+    <value>Dati da Emissione Compatta Anormale</value>
+    <comment>Material compactemissionsdata</comment>
+  </data>
   
+  <data name="classifiedscandata" xml:space="preserve">
+    <value>Frammenti di Scansioni Classificate</value>
+    <comment>Material classifiedscandata</comment>
+  </data>
+  <data name="dataminedwake" xml:space="preserve">
+    <value>Eccezioni ai Dati di Traccia da Salto</value>
+    <comment>Material dataminedwake</comment>
+  </data>
   
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="shieldfrequencydata" xml:space="preserve">
+    <value>Peculiari Frequenze Operazionali degli Scudi</value>
+    <comment>Material shieldfrequencydata</comment>
+  </data>
   
   
   
