@@ -226,7 +226,7 @@
     <comment>Material disruptedwakeechoes</comment>
   </data>
   <data name="shieldcyclerecordings" xml:space="preserve">
-    <value>Registrazioni dei Cicli degli Scudi Distorti</value>
+    <value>Registrazioni di Cicli Distorti degli Scudi</value>
     <comment>Material shieldcyclerecordings</comment>
   </data>
   <data name="scrambledemissiondata" xml:space="preserve">
@@ -330,7 +330,7 @@
     <comment>Material encodedscandata</comment>
   </data>
   <data name="hyperspacetrajectories" xml:space="preserve">
-    <value>Traiettorie Ecentriche verso Iperspazio</value>
+    <value>Traiettorie Eccentriche verso Iperspazio</value>
     <comment>Material hyperspacetrajectories</comment>
   </data>
   <data name="securityfirmware" xml:space="preserve">
@@ -450,7 +450,7 @@
     <comment>Material hybridcapacitors</comment>
   </data>
   <data name="mechanicalequipment" xml:space="preserve">
-    <value>Equipaggiamenti Meccanici</value>
+    <value>Equipaggiamento Meccanico</value>
     <comment>Material mechanicalequipment</comment>
   </data>
   <data name="shieldemitters" xml:space="preserve">
@@ -510,7 +510,7 @@
     <comment>Material chemicalmanipulators</comment>
   </data>
   <data name="compoundshielding" xml:space="preserve">
-    <value>Composti Protettivi</value>
+    <value>Composto Protettivo</value>
     <comment>Material compoundshielding</comment>
   </data>
   <data name="conductivepolymers" xml:space="preserve">
@@ -613,12 +613,30 @@
     <value>Progetto di Vascello dei Guardiani</value>
     <comment>Material guardian_vesselblueprint</comment>
   </data>
-  
-  
-  
-  
-  
-  
+  <data name="guardian_techcomponent" xml:space="preserve">
+    <value>Componenti di Tecnologia dei Guardiani</value>
+    <comment>Material guardian_techcomponent</comment>
+  </data>
+  <data name="guardian_powerconduit" xml:space="preserve">
+    <value>Condotte di Potenza dei Guardiani</value>
+    <comment>Material guardian_powerconduit</comment>
+  </data>
+  <data name="guardian_moduleblueprint" xml:space="preserve">
+    <value>Progetto di Modulo dei Guardiani</value>
+    <comment>Material guardian_moduleblueprint</comment>
+  </data>
+  <data name="guardian_sentinel_weaponparts" xml:space="preserve">
+    <value>Parti di Arma Sentinella dei Guardiani</value>
+    <comment>Material guardian_sentinel_weaponparts</comment>
+  </data>
+  <data name="guardian_sentinel_wreckagecomponents" xml:space="preserve">
+    <value>Componenti di Rottami di Sentinella dei Guardiani</value>
+    <comment>Material guardian_sentinel_wreckagecomponents</comment>
+  </data>
+  <data name="lead" xml:space="preserve">
+    <value>Piombo</value>
+    <comment>Material lead</comment>
+  </data>
   <data name="rhenium" xml:space="preserve">
     <value>Renio</value>
     <comment>Material rhenium</comment>
