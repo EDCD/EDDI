@@ -88,7 +88,7 @@ namespace EddiInaraService
         // If you need to do some testing on Inara's API, please set the `inBeta` boolean header property to true.
         public List<InaraResponse> SendEventBatch(ref List<InaraAPIEvent> events, bool inBeta = false)
         {
-            if (EDDI.Instance.inBeta) { return null; }
+            if (EDDI.Instance.gameIsBeta) { return null; }
 
             List<InaraResponse> inaraResponses = new List<InaraResponse>();
 

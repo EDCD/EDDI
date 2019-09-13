@@ -116,7 +116,7 @@ namespace EddiInaraResponder
                 return;
             }
 
-            if (EDDI.Instance.inBeta)
+            if (EDDI.Instance.gameIsBeta)
             {
                 // We don't send data whilst in beta
                 return;

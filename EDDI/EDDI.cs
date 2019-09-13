@@ -46,13 +46,13 @@ namespace Eddi
         public bool inCrew { get; private set; } = false;
         public bool inHorizons { get; private set; } = true;
 
-        private bool _inBeta = false;
-        public bool inBeta
+        private bool _gameIsBeta = false;
+        public bool gameIsBeta
         {
-            get => _inBeta;
+            get => _gameIsBeta;
             private set
             {
-                _inBeta = value;
+                _gameIsBeta = value;
                 CompanionAppService.Instance.inBeta = value;
             }
         }
@@ -157,8 +157,8 @@ namespace Eddi
                 Cmdr = new Commander();
                 // Set up the Elite configuration
                 EliteConfiguration eliteConfiguration = EliteConfiguration.FromFile();
-                inBeta = eliteConfiguration.Beta;
-                Logging.Info(inBeta ? "On beta" : "On live");
+                gameIsBeta = eliteConfiguration.Beta;
+                Logging.Info(gameIsBeta ? "On beta" : "On live");
                 inHorizons = eliteConfiguration.Horizons;
 
                 // Retrieve commander preferences
@@ -244,7 +244,7 @@ namespace Eddi
             return true;
 #else
             // use test endpoints if the game is in beta or EDDI is not release candidate or final
-            return EDDI.Instance.inBeta || (Constants.EDDI_VERSION.phase < Utilities.Version.TestPhase.rc);
+            return EDDI.Instance.gameIsBeta || (Constants.EDDI_VERSION.phase < Utilities.Version.TestPhase.rc);
 #endif
         }
 
@@ -1615,7 +1615,7 @@ namespace Eddi
         {
             // Test whether we're in beta by checking the filename, version described by the header, 
             // and certain version / build combinations
-            inBeta =
+            gameIsBeta =
                 (
                     @event.filename.Contains("Beta") ||
                     @event.version.Contains("Beta") ||
@@ -1627,9 +1627,9 @@ namespace Eddi
                         )
                     )
                 );
-            Logging.Info(inBeta ? "On beta" : "On live");
+            Logging.Info(gameIsBeta ? "On beta" : "On live");
             EliteConfiguration config = EliteConfiguration.FromFile();
-            config.Beta = inBeta;
+            config.Beta = gameIsBeta;
             config.ToFile();
 
             return true;
