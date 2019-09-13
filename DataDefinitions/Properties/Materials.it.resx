@@ -355,15 +355,30 @@
   </data>
   
   
-  
+  <data name="compactcomposites" xml:space="preserve">
+    <value>Compositi Compatti</value>
+    <comment>Material compactcomposites</comment>
+  </data>
   <data name="crystalshards" xml:space="preserve">
     <value>Frammenti di Cristallo</value>
     <comment>Material crystalshards</comment>
   </data>
-  
-  
-  
-  
+  <data name="gridresistors" xml:space="preserve">
+    <value>Resistori a Griglia</value>
+    <comment>Material gridresistors</comment>
+  </data>
+  <data name="heatconductionwiring" xml:space="preserve">
+    <value>Cablaggi Conduttori di Calore</value>
+    <comment>Material heatconductionwiring</comment>
+  </data>
+  <data name="mechanicalscrap" xml:space="preserve">
+    <value>Rottami Meccanici</value>
+    <comment>Material mechanicalscrap</comment>
+  </data>
+  <data name="salvagedalloys" xml:space="preserve">
+    <value>Leghe di Recupero</value>
+    <comment>Material salvagedalloys</comment>
+  </data>
   
   
   
