@@ -154,7 +154,7 @@
     <value>Raggio di Interdizione FSD Incrementato</value>
   </data>
   <data name="FSDShielded" xml:space="preserve">
-    <value>Interdittore FSD Rinforzato</value>
+    <value>Interdittore FSD Protetto</value>
   </data>
   <data name="HullReinforcementAdvanced" xml:space="preserve">
     <value>Rinforzo Scafo Alleggerito</value>
@@ -225,17 +225,35 @@
   
   
   
+  <data name="CollectionLimpetLightWeight" xml:space="preserve">
+    <value>Controllore Droni di Raccolta Alleggerito</value>
+  </data>
+  <data name="CollectionLimpetReinforced" xml:space="preserve">
+    <value>Controllore Droni di Raccolta Rinforzato</value>
+  </data>
+  <data name="CollectionLimpetShielded" xml:space="preserve">
+    <value>Controllore Droni di Raccolta Protetto</value>
+  </data>
   
   
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="FuelTransferLimpetLightWeight" xml:space="preserve">
+    <value>Controllore Droni di Rifornimento Alleggerito</value>
+  </data>
+  <data name="FuelTransferLimpetReinforced" xml:space="preserve">
+    <value>Controllore Droni di Rifornimento Rinforzato</value>
+  </data>
+  <data name="FuelTransferLimpetShielded" xml:space="preserve">
+    <value>Controllore Droni di Rifornimento Protetto</value>
+  </data>
+  <data name="HatchBreakerLimpetLightWeight" xml:space="preserve">
+    <value>Controllore Droni di Manomissione Portelli Alleggerito</value>
+  </data>
+  <data name="HatchBreakerLimpetReinforced" xml:space="preserve">
+    <value>Controllore Droni di Manomissione Portelli Rinforzato</value>
+  </data>
+  <data name="HatchBreakerLimpetShielded" xml:space="preserve">
+    <value>Controllore Droni di Manomissione Portelli Protetto</value>
+  </data>
   
   
   
@@ -270,9 +288,15 @@
     <value>Scanner con angolo di intercettazione ampliato</value>
   </data>
   
-  
-  
-  
+  <data name="ProspectingLimpetLightWeight" xml:space="preserve">
+    <value>Controllore Droni di Prospezione Alleggerito</value>
+  </data>
+  <data name="ProspectingLimpetReinforced" xml:space="preserve">
+    <value>Controllore Droni di Prospezione Rinforzato</value>
+  </data>
+  <data name="ProspectingLimpetShielded" xml:space="preserve">
+    <value>Drone di Prospezione Protetto</value>
+  </data>
   
   
   
