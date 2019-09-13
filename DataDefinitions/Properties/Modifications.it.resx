@@ -171,18 +171,62 @@
   <data name="HullReinforcementThermic" xml:space="preserve">
     <value>Rinforzo Scafo Resistente a Munizioni Termiche</value>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="PowerDistributorHighCapacity" xml:space="preserve">
+    <value>Distributore di Energia ad Elevata Capacità di Carica</value>
+  </data>
+  <data name="PowerDistributorHighFrequency" xml:space="preserve">
+    <value>Distributore di Energia a Carica Aumentata</value>
+  </data>
+  <data name="PowerDistributorPriorityEngine" xml:space="preserve">
+    <value>Distributore di Energia Focalizzato sui Propulsori</value>
+  </data>
+  <data name="PowerDistributorPrioritySystem" xml:space="preserve">
+    <value>Distributore di Energia Focalizzato sui Sistemi</value>
+  </data>
+  <data name="PowerDistributorPriorityWeapon" xml:space="preserve">
+    <value>Distributore di Energia Focalizzato sulle Armi</value>
+  </data>
+  <data name="PowerDistributorShielded" xml:space="preserve">
+    <value>Distributore di Energia Protetto</value>
+  </data>
+  <data name="PowerPlantArmoured" xml:space="preserve">
+    <value>Generatore di Energia Rinforzato</value>
+  </data>
+  <data name="PowerPlantBoosted" xml:space="preserve">
+    <value>Generatore di Energia Sovraccaricato</value>
+  </data>
+  <data name="PowerPlantStealth" xml:space="preserve">
+    <value>Generatore di Energia a Bassa Emissione</value>
+  </data>
+  <data name="SensorLongRange" xml:space="preserve">
+    <value>Sensore a Lungo Raggio</value>
+  </data>
   <data name="SensorWideAngle" xml:space="preserve">
     <value>Scanner con angolo di intercettazione ampliato</value>
+  </data>
+  <data name="ShieldBoosterExplosive" xml:space="preserve">
+    <value>Incrementatore di Scudi Resistente alle Esplosioni</value>
+  </data>
+  <data name="ShieldBoosterHeavyDuty" xml:space="preserve">
+    <value>Incrementatore di Scudi Robusto</value>
+  </data>
+  <data name="ShieldBoosterKinetic" xml:space="preserve">
+    <value>Incrementatore di Scudi Resistente ad Armi Cinetiche</value>
+  </data>
+  <data name="ShieldBoosterResistive" xml:space="preserve">
+    <value>Incrementatore di Scudi a Resistenza Aumentata</value>
+  </data>
+  <data name="ShieldBoosterThermic" xml:space="preserve">
+    <value>Incrementatore di Scudi Resistente ai Danni Termici</value>
+  </data>
+  <data name="ShieldCellBankRapid" xml:space="preserve">
+    <value>Celle di Ricarica Scudi ad Effetto Accelerato</value>
+  </data>
+  <data name="ShieldCellBankSpecialised" xml:space="preserve">
+    <value>Celle di Ricarica Scudi Specializzate</value>
+  </data>
+  <data name="ShieldGeneratorKinetic" xml:space="preserve">
+    <value>Scudi Resistenti ad Armi cinetiche</value>
   </data>
   
   
@@ -192,15 +236,9 @@
   
   
   
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="WeaponLongRange" xml:space="preserve">
+    <value>Arma a Lungo Raggio</value>
+  </data>
   
   
   
@@ -335,13 +373,27 @@
   
   
   
-  
-  
-  
-  
-  
-  
-  
+  <data name="BeamLaserLongRange" xml:space="preserve">
+    <value>Laser a Lungo Raggio</value>
+  </data>
+  <data name="BurstLaserLongRange" xml:space="preserve">
+    <value>Laser Esplosivo a Lungo Raggio</value>
+  </data>
+  <data name="CannonLongRange" xml:space="preserve">
+    <value>Cannone a Lungo Raggio</value>
+  </data>
+  <data name="MulticannonLongRange" xml:space="preserve">
+    <value>Cannone a Ripetizione a Lungo Raggio</value>
+  </data>
+  <data name="PlasmaAcceleratorLongRange" xml:space="preserve">
+    <value>Acceleratore al Plasma a Lungo Raggio</value>
+  </data>
+  <data name="PulseLaserLongRange" xml:space="preserve">
+    <value>Laser ad Impulso a Lungo Raggio</value>
+  </data>
+  <data name="RailGunLongRange" xml:space="preserve">
+    <value>Cannone a Binario a Lungo Raggio</value>
+  </data>
   
   
   
