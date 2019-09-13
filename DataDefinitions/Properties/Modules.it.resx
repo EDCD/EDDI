@@ -445,8 +445,14 @@
     <value>Incrementatore di Scudi</value>
     <comment>Module ShieldBooster</comment>
   </data>
-  
-  
+  <data name="ShieldCellBank" xml:space="preserve">
+    <value>Celle di Ricarica Scudi</value>
+    <comment>Module ShieldCellBank</comment>
+  </data>
+  <data name="ShieldGenerator" xml:space="preserve">
+    <value>Generatore di Scudi</value>
+    <comment>Module ShieldGenerator</comment>
+  </data>
   
   
   
