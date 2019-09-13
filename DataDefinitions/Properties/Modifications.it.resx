@@ -267,10 +267,18 @@
   
   
   
-  
-  
-  
-  
+  <data name="PointDefencePointDefenceCapacity" xml:space="preserve">
+    <value>Capacità Munizioni per Punto di Difesa Automatizzata</value>
+  </data>
+  <data name="PointDefenceLightWeight" xml:space="preserve">
+    <value>Punto di Difesa Automatizzata Alleggerito</value>
+  </data>
+  <data name="PointDefenceReinforced" xml:space="preserve">
+    <value>Punto di Difesa Automatizzata Rinforzato</value>
+  </data>
+  <data name="PointDefenceShielded" xml:space="preserve">
+    <value>Punto di Difesa Automatizzata Protetto</value>
+  </data>
   
   
   
