@@ -69,7 +69,6 @@ namespace EddiCrimeMonitor
         {
             criminalrecord = new ObservableCollection<FactionRecord>();
             homeSystems = new Dictionary<string, string>();
-            BindingOperations.CollectionRegistering += Record_CollectionRegistering;
             initializeCrimeMonitor();
         }
 
@@ -79,19 +78,6 @@ namespace EddiCrimeMonitor
             Logging.Info("Initialised " + MonitorName() + " " + MonitorVersion());
         }
 
-        private void Record_CollectionRegistering(object sender, CollectionRegisteringEventArgs e)
-        {
-            if (Application.Current != null)
-            {
-                // Synchronize this collection between threads
-                BindingOperations.EnableCollectionSynchronization(criminalrecord, recordLock);
-            }
-            else
-            {
-                // If started from VoiceAttack, the dispatcher is on a different thread. Invoke synchronization there.
-                Dispatcher.CurrentDispatcher.Invoke(() => { BindingOperations.EnableCollectionSynchronization(criminalrecord, recordLock); });
-            }
-        }
         public bool NeedsStart()
         {
             // We don't actively do anything, just listen to events
@@ -115,17 +101,47 @@ namespace EddiCrimeMonitor
 
         public UserControl ConfigurationTabItem()
         {
+            EnableConfigBinding();
             return new ConfigurationWindow();
         }
 
-        public void EnableConfigBinding(MainWindow configWindow)
+        public void OnClosingConfigurationTabItem()
         {
-            configWindow.Dispatcher.Invoke(() => { BindingOperations.EnableCollectionSynchronization(criminalrecord, recordLock); });
+            DisableConfigBinding();
         }
 
-        public void DisableConfigBinding(MainWindow configWindow)
+        public void EnableConfigBinding()
         {
-            configWindow.Dispatcher.Invoke(() => { BindingOperations.DisableCollectionSynchronization(criminalrecord); });
+            BindingOperations.CollectionRegistering += Record_CollectionRegistering;
+        }
+
+        private void Record_CollectionRegistering(object sender, CollectionRegisteringEventArgs e)
+        {
+            if (Application.Current != null)
+            {
+                // Synchronize this collection between threads
+                BindingOperations.EnableCollectionSynchronization(criminalrecord, recordLock);
+            }
+            else
+            {
+                // If started from VoiceAttack, the dispatcher is on a different thread. Invoke synchronization there.
+                Dispatcher.CurrentDispatcher.Invoke(() => { BindingOperations.EnableCollectionSynchronization(criminalrecord, recordLock); });
+            }
+        }
+
+        public void DisableConfigBinding()
+        {
+            BindingOperations.CollectionRegistering -= Record_CollectionRegistering;
+            if (Application.Current != null)
+            {
+                // Synchronize this collection between threads
+                BindingOperations.DisableCollectionSynchronization(criminalrecord);
+            }
+            else
+            {
+                // If started from VoiceAttack, the dispatcher is on a different thread. Invoke synchronization there.
+                Dispatcher.CurrentDispatcher.Invoke(() => { BindingOperations.DisableCollectionSynchronization(criminalrecord); });
+            }
         }
 
         public void HandleProfile(JObject profile)

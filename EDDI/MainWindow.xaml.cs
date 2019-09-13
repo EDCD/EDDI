@@ -239,6 +239,7 @@ namespace Eddi
             LoadAndSortTabs(eddiConfiguration);
 
             RestoreWindowState();
+            EDDI.Instance.MainWindow = this;
             EDDI.Instance.Start();
         }
 
@@ -1056,6 +1057,13 @@ namespace Eddi
                 // Unregister applicable event handlers
                 CompanionAppService.Instance.StateChanged -= companionApiStatusChanged;
                 VaWindowStateChange = null;
+
+                // Remove monitor-specific configuration items
+                foreach (EDDIMonitor monitor in EDDI.Instance.monitors)
+                {
+                    Logging.Debug("Cleaning up tab elements for " + monitor.MonitorName());
+                    monitor.OnClosingConfigurationTabItem();
+                }
 
                 if (!fromVA)
                 {

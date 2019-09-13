@@ -61,23 +61,8 @@ namespace EddiMaterialMonitor
 
         public MaterialMonitor()
         {
-            BindingOperations.CollectionRegistering += Inventory_CollectionRegistering;
             readMaterials();
             Logging.Info("Initialised " + MonitorName() + " " + MonitorVersion());
-        }
-
-        private void Inventory_CollectionRegistering(object sender, CollectionRegisteringEventArgs e)
-        {
-            if (Application.Current != null)
-            {
-                // Synchronize this collection between threads
-                BindingOperations.EnableCollectionSynchronization(inventory, inventoryLock);
-            }
-            else
-            {
-                // If started from VoiceAttack, the dispatcher is on a different thread. Invoke synchronization there.
-                Dispatcher.CurrentDispatcher.Invoke(() => { BindingOperations.EnableCollectionSynchronization(inventory, inventoryLock); });
-            }
         }
 
         public bool NeedsStart()
@@ -102,17 +87,47 @@ namespace EddiMaterialMonitor
 
         public UserControl ConfigurationTabItem()
         {
+            EnableConfigBinding();
             return new ConfigurationWindow();
         }
 
-        public void EnableConfigBinding(MainWindow configWindow)
+        public void OnClosingConfigurationTabItem()
         {
-            configWindow.Dispatcher.Invoke(() => { BindingOperations.EnableCollectionSynchronization(inventory, inventoryLock); });
+            DisableConfigBinding();
         }
 
-        public void DisableConfigBinding(MainWindow configWindow)
+        public void EnableConfigBinding()
         {
-            configWindow.Dispatcher.Invoke(() => { BindingOperations.DisableCollectionSynchronization(inventory); });
+            BindingOperations.CollectionRegistering += Inventory_CollectionRegistering;
+        }
+
+        private void Inventory_CollectionRegistering(object sender, CollectionRegisteringEventArgs e)
+        {
+            if (Application.Current != null)
+            {
+                // Synchronize this collection between threads
+                BindingOperations.EnableCollectionSynchronization(inventory, inventoryLock);
+            }
+            else
+            {
+                // If started from VoiceAttack, the dispatcher is on a different thread. Invoke synchronization there.
+                Dispatcher.CurrentDispatcher.Invoke(() => { BindingOperations.EnableCollectionSynchronization(inventory, inventoryLock); });
+            }
+        }
+
+        public void DisableConfigBinding()
+        {
+            BindingOperations.CollectionRegistering -= Inventory_CollectionRegistering;
+            if (Application.Current != null)
+            {
+                // Synchronize this collection between threads
+                BindingOperations.DisableCollectionSynchronization(inventory);
+            }
+            else
+            {
+                // If started from VoiceAttack, the dispatcher is on a different thread. Invoke synchronization there.
+                Dispatcher.CurrentDispatcher.Invoke(() => { BindingOperations.DisableCollectionSynchronization(inventory); });
+            }
         }
 
         public void PreHandle(Event @event)
