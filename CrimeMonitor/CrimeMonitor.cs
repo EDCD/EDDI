@@ -112,11 +112,6 @@ namespace EddiCrimeMonitor
 
         public void EnableConfigBinding()
         {
-            BindingOperations.CollectionRegistering += Record_CollectionRegistering;
-        }
-
-        private void Record_CollectionRegistering(object sender, CollectionRegisteringEventArgs e)
-        {
             if (Application.Current != null)
             {
                 // Synchronize this collection between threads
@@ -131,7 +126,6 @@ namespace EddiCrimeMonitor
 
         public void DisableConfigBinding()
         {
-            BindingOperations.CollectionRegistering -= Record_CollectionRegistering;
             if (Application.Current != null)
             {
                 // Synchronize this collection between threads

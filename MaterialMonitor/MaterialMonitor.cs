@@ -98,11 +98,6 @@ namespace EddiMaterialMonitor
 
         public void EnableConfigBinding()
         {
-            BindingOperations.CollectionRegistering += Inventory_CollectionRegistering;
-        }
-
-        private void Inventory_CollectionRegistering(object sender, CollectionRegisteringEventArgs e)
-        {
             if (Application.Current != null)
             {
                 // Synchronize this collection between threads
@@ -117,7 +112,6 @@ namespace EddiMaterialMonitor
 
         public void DisableConfigBinding()
         {
-            BindingOperations.CollectionRegistering -= Inventory_CollectionRegistering;
             if (Application.Current != null)
             {
                 // Synchronize this collection between threads
