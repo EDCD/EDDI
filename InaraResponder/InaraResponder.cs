@@ -528,7 +528,7 @@ namespace EddiInaraResponder
                 }));
             }
             firstDockedLocation = null;
-            InaraService.Instance.SendQueuedAPIEventsAsync(EDDI.Instance.ShouldUseTestEndpoints());
+            InaraService.Instance.SendQueuedAPIEventsAsync();
         }
 
         private void handleShipTransferInitiatedEvent(ShipTransferInitiatedEvent @event)
@@ -1422,7 +1422,7 @@ namespace EddiInaraResponder
 
         private void SendQueuedAPIEventsAsync()
         {
-            InaraService.Instance.SendQueuedAPIEventsAsync(EDDI.Instance.ShouldUseTestEndpoints());
+            InaraService.Instance.SendQueuedAPIEventsAsync();
         }
 
         internal void OnApplicationExit(object sender, EventArgs e)

@@ -238,13 +238,15 @@ namespace Eddi
             }
         }
 
+        public bool EddiIsBeta() => Constants.EDDI_VERSION.phase < Utilities.Version.TestPhase.rc;
+
         public bool ShouldUseTestEndpoints()
         {
 #if DEBUG
             return true;
 #else
             // use test endpoints if the game is in beta or EDDI is not release candidate or final
-            return EDDI.Instance.gameIsBeta || (Constants.EDDI_VERSION.phase < Utilities.Version.TestPhase.rc);
+            return EDDI.Instance.gameIsBeta || EddiIsBeta();
 #endif
         }
 

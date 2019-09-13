@@ -85,11 +85,11 @@ namespace EddiInaraService
             }
         }
 
-        // If you need to do some testing on Inara's API, please set the `inBeta` boolean header property to true.
-        public List<InaraResponse> SendEventBatch(ref List<InaraAPIEvent> events, bool inBeta = false)
+        // If you need to do some testing on Inara's API, please set the `isDeveloped` boolean header property to true.
+        public List<InaraResponse> SendEventBatch(ref List<InaraAPIEvent> events)
         {
             if (EDDI.Instance.gameIsBeta) { return null; }
-
+            bool eddiIsBeta = EDDI.Instance.EddiIsBeta();
             List<InaraResponse> inaraResponses = new List<InaraResponse>();
 
             if (string.IsNullOrEmpty(apiKey))
@@ -114,8 +114,8 @@ namespace EddiInaraService
                 {
                     { "appName", "EDDI" },
                     { "appVersion", Constants.EDDI_VERSION.ToString() },
-                    { "isDeveloped", !inBeta },
-                    { "commanderName", commanderName ?? (inBeta ? "TestCmdr" : null) },
+                    { "isDeveloped", !eddiIsBeta },
+                    { "commanderName", commanderName ?? (eddiIsBeta ? "TestCmdr" : null) },
                     { "commanderFrontierID", commanderFrontierID },
                     { "APIkey", apiKey }
                 },
@@ -184,7 +184,7 @@ namespace EddiInaraService
             }
         }
 
-        public async void SendQueuedAPIEventsAsync(bool inBeta = false)
+        public async void SendQueuedAPIEventsAsync()
         {
             List<InaraAPIEvent> queue = new List<InaraAPIEvent>();
             while (Instance.queuedAPIEvents.TryDequeue(out InaraAPIEvent pendingEvent))
@@ -193,7 +193,7 @@ namespace EddiInaraService
             }
             if (queue.Count > 0)
             {
-                await Task.Run(() => Instance.SendEventBatch(ref queue, inBeta));
+                await Task.Run(() => Instance.SendEventBatch(ref queue));
                 Instance.lastSync = queue.Max(e => e.eventTimeStamp);
                 InaraConfiguration inaraConfiguration = InaraConfiguration.FromFile();
                 inaraConfiguration.lastSync = Instance.lastSync;
