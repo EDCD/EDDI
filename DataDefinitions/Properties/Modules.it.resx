@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AdvancedPlasmaAccelerator" xml:space="preserve">
-    <value>Acceleratore di Plasma Avanzato</value>
+    <value>Acceleratore al Plasma Avanzato</value>
     <comment>Module AdvancedPlasmaAccelerator</comment>
   </data>
   <data name="ATMulticannon" xml:space="preserve">
@@ -374,7 +374,7 @@
     <comment>Module PlanetaryVehicleHangar</comment>
   </data>
   <data name="PlasmaAccelerator" xml:space="preserve">
-    <value>Acceleratore di Plasma</value>
+    <value>Acceleratore al Plasma</value>
     <comment>Module PlasmaAccelerator</comment>
   </data>
   <data name="PointDefence" xml:space="preserve">
