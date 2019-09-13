@@ -228,41 +228,91 @@
   <data name="ShieldGeneratorKinetic" xml:space="preserve">
     <value>Scudi Resistenti ad Armi cinetiche</value>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="ShieldGeneratorOptimised" xml:space="preserve">
+    <value>Scudi Avanzati a Basso Consumo</value>
+  </data>
+  <data name="ShieldGeneratorReinforced" xml:space="preserve">
+    <value>Scudi Rinforzati</value>
+  </data>
+  <data name="ShieldGeneratorThermic" xml:space="preserve">
+    <value>Scudi Resistenti ad Armi Termiche</value>
+  </data>
+  <data name="WeaponDoubleShot" xml:space="preserve">
+    <value>Doppio Colpo</value>
+  </data>
+  <data name="WeaponEfficient" xml:space="preserve">
+    <value>Arma Efficiente</value>
+  </data>
+  <data name="WeaponFocused" xml:space="preserve">
+    <value>Arma Focalizzata</value>
+  </data>
+  <data name="WeaponHighCapacity" xml:space="preserve">
+    <value>Caricatore ad Alta Capacità</value>
+  </data>
+  <data name="WeaponLightWeight" xml:space="preserve">
+    <value>Fissaggio Alleggerito</value>
+  </data>
   <data name="WeaponLongRange" xml:space="preserve">
     <value>Arma a Lungo Raggio</value>
   </data>
-  
-  
-  
-  
-  
-  
-  
+  <data name="WeaponOvercharged" xml:space="preserve">
+    <value>Arma Sovraccaricata</value>
+  </data>
+  <data name="WeaponRapidFire" xml:space="preserve">
+    <value>Modifica a Fuoco Rapido</value>
+  </data>
+  <data name="WeaponShortRange" xml:space="preserve">
+    <value>Blaster a Corto Raggio</value>
+  </data>
+  <data name="WeaponSturdy" xml:space="preserve">
+    <value>Montaggio Resistente</value>
+  </data>
+  <data name="None" xml:space="preserve">
+    <value>Nessuna Modifica</value>
+  </data>
+  <data name="WakeScannerFastScan" xml:space="preserve">
+    <value>Scanner di Traccie di Salto Rapido</value>
+  </data>
+  <data name="WakeScannerLightWeight" xml:space="preserve">
+    <value>Scanner di Traccie di Salto Alleggerito</value>
+  </data>
   <data name="WakeScannerLongRange" xml:space="preserve">
     <value>Scanner con raggio di intercettazione aumentato
 </value>
   </data>
-  
-  
+  <data name="WakeScannerReinforced" xml:space="preserve">
+    <value>Scanner di Traccie di Salto Rinforzato</value>
+  </data>
+  <data name="WakeScannerShielded" xml:space="preserve">
+    <value>Scanner di Traccie di Salto Protetto</value>
+  </data>
   <data name="WakeScannerWideAngle" xml:space="preserve">
     <value>Scanner con angolo di intercettazione ampliato</value>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="AFMShielded" xml:space="preserve">
+    <value>Unità di Manutenzione Protetta</value>
+  </data>
+  <data name="CargoScannerLightWeight" xml:space="preserve">
+    <value>Scanner di Carico Alleggerito</value>
+  </data>
+  <data name="CargoScannerReinforced" xml:space="preserve">
+    <value>Scanner di Carico Rinforzato</value>
+  </data>
+  <data name="CargoScannerShielded" xml:space="preserve">
+    <value>Scanner di Carico Protetto</value>
+  </data>
+  <data name="ChaffLauncherChaffCapacity" xml:space="preserve">
+    <value>Capacità Munizioni Bersagli Fantasma</value>
+  </data>
+  <data name="ChaffLauncherLightWeight" xml:space="preserve">
+    <value>Lanciatore Bersagli Fantasma Alleggerito</value>
+  </data>
+  <data name="ChaffLauncherReinforced" xml:space="preserve">
+    <value>Lanciatore Bersagli Fantasma Rinforzato</value>
+  </data>
+  <data name="ChaffLauncherShielded" xml:space="preserve">
+    <value>Lanciatore Bersagli Fantasma Protetto</value>
+  </data>
   <data name="CollectionLimpetLightWeight" xml:space="preserve">
     <value>Controllore Droni di Raccolta Alleggerito</value>
   </data>
@@ -272,8 +322,12 @@
   <data name="CollectionLimpetShielded" xml:space="preserve">
     <value>Controllore Droni di Raccolta Protetto</value>
   </data>
-  
-  
+  <data name="ECMShielded" xml:space="preserve">
+    <value>Contromisure Elettroniche Protette</value>
+  </data>
+  <data name="FuelScoopShielded" xml:space="preserve">
+    <value>Concentratore di Carburante Protetto</value>
+  </data>
   <data name="FuelTransferLimpetLightWeight" xml:space="preserve">
     <value>Controllore Droni di Rifornimento Alleggerito</value>
   </data>
@@ -292,19 +346,39 @@
   <data name="HatchBreakerLimpetShielded" xml:space="preserve">
     <value>Controllore Droni di Manomissione Portelli Protetto</value>
   </data>
-  
-  
-  
-  
-  
+  <data name="HeatSinkLauncherHeatSinkCapacity" xml:space="preserve">
+    <value>Capacità Munizioni Dispersori di Calore</value>
+  </data>
+  <data name="HeatSinkLauncherLightWeight" xml:space="preserve">
+    <value>Emettitore Dispersori di Calore Alleggerito</value>
+  </data>
+  <data name="HeatSinkLauncherReinforced" xml:space="preserve">
+    <value>Emettitore Dispersori di Calore Rinforzato</value>
+  </data>
+  <data name="HeatSinkLauncherShielded" xml:space="preserve">
+    <value>Emettitore Dispersori di Calore Protetto</value>
+  </data>
+  <data name="KillWarrantScannerLightWeight" xml:space="preserve">
+    <value>Scanner di Mandati di Eliminazione Alleggerito</value>
+  </data>
   <data name="KillWarrantScannerLongRange" xml:space="preserve">
     <value>Scanner con raggio di intercettazione aumentato</value>
   </data>
-  
-  
-  
-  
-  
+  <data name="KillWarrantScannerReinforced" xml:space="preserve">
+    <value>Scanner di Mandati di Eliminazione Rinforzato</value>
+  </data>
+  <data name="KillWarrantScannerShielded" xml:space="preserve">
+    <value>Scanner di Mandati di Eliminazione Protetto</value>
+  </data>
+  <data name="LifeSupportLightWeight" xml:space="preserve">
+    <value>Supporto Vitale Alleggerito</value>
+  </data>
+  <data name="LifeSupportReinforced" xml:space="preserve">
+    <value>Supporto Vitale Rinforzato</value>
+  </data>
+  <data name="LifeSupportShielded" xml:space="preserve">
+    <value>Supporto Vitale Protetto</value>
+  </data>
   <data name="PointDefencePointDefenceCapacity" xml:space="preserve">
     <value>Capacità Munizioni per Punto di Difesa Automatizzata</value>
   </data>
@@ -317,23 +391,39 @@
   <data name="PointDefenceShielded" xml:space="preserve">
     <value>Punto di Difesa Automatizzata Protetto</value>
   </data>
-  
-  
-  
-  
+  <data name="RefineriesShielded" xml:space="preserve">
+    <value>Raffineria Protetta</value>
+  </data>
+  <data name="SensorLightWeight" xml:space="preserve">
+    <value>Sensori Alleggeriti</value>
+  </data>
+  <data name="SurfaceScannerExpanded" xml:space="preserve">
+    <value>Sonde con Raggio di Scansione Espanso</value>
+  </data>
+  <data name="CargoScannerFastScan" xml:space="preserve">
+    <value>Scanner di Carico Rapido</value>
+  </data>
   <data name="CargoScannerLongRange" xml:space="preserve">
     <value>Scanner con raggio di intercettazione aumentato</value>
   </data>
   <data name="CargoScannerWideAngle" xml:space="preserve">
     <value>Scanner con angolo di intercettazione ampliato</value>
   </data>
-  
-  
-  
+  <data name="ECMLightWeight" xml:space="preserve">
+    <value>Contromisure Elettroniche Alleggerite</value>
+  </data>
+  <data name="ECMReinforced" xml:space="preserve">
+    <value>Contromisure Elettroniche rinforzate</value>
+  </data>
+  <data name="KillWarrantScannerFastScan" xml:space="preserve">
+    <value>Scanner di Mandati di Eliminazione Rapido</value>
+  </data>
   <data name="KillWarrantScannerWideAngle" xml:space="preserve">
     <value>Scanner con angolo di intercettazione ampliato</value>
   </data>
-  
+  <data name="PAOvercharged" xml:space="preserve">
+    <value>Acceleratore al Plasma Sovraccaricato</value>
+  </data>
   <data name="ProspectingLimpetLightWeight" xml:space="preserve">
     <value>Controllore Droni di Prospezione Alleggerito</value>
   </data>
@@ -344,6 +434,40 @@
     <value>Drone di Prospezione Protetto</value>
   </data>
   
+  <data name="SensorExpanded" xml:space="preserve">
+    <value>Sonde con Raggio di Scansione Espanso</value>
+  </data>
+  <data name="FragCannonDoubleShot" xml:space="preserve">
+    <value>Cannone a Frammentazione a Doppio Colpo</value>
+  </data>
+  <data name="BeamLaserEfficient" xml:space="preserve">
+    <value>Laser Efficiente</value>
+  </data>
+  <data name="BurstLaserEfficient" xml:space="preserve">
+    <value>Laser Esplosivo Efficiente</value>
+  </data>
+  <data name="CannonEfficient" xml:space="preserve">
+    <value>Cannone Efficiente</value>
+  </data>
+  <data name="FragCannonEfficient" xml:space="preserve">
+    <value>Cannone a Frammentazione Efficiente</value>
+  </data>
+  <data name="MulticannonEfficient" xml:space="preserve">
+    <value>Cannone a ripetizione Efficiente</value>
+  </data>
+  <data name="PlasmaAcceleratorEfficient" xml:space="preserve">
+    <value>Acceleratore al Plasma Efficiente</value>
+  </data>
+  <data name="PulseLaserEfficient" xml:space="preserve">
+    <value>Laser ad Impulso Efficiente</value>
+  </data>
+  
+  <data name="PlasmaAcceleratorFocused" xml:space="preserve">
+    <value>Acceleratore al Plasma Focalizzato</value>
+  </data>
+  <data name="PulseLaserFocused" xml:space="preserve">
+    <value>Laser ad Impulso Focalizzato</value>
+  </data>
   
   
   
@@ -357,20 +481,12 @@
   
   
   
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="PlasmaAcceleratorLightWeight" xml:space="preserve">
+    <value>Acceleratore al Plasma Alleggerito</value>
+  </data>
+  <data name="PulseLaserLightWeight" xml:space="preserve">
+    <value>Laser ad Impulso Alleggerito</value>
+  </data>
   
   
   <data name="BeamLaserLongRange" xml:space="preserve">
@@ -399,6 +515,34 @@
   
   
   
+  <data name="PlasmaAcceleratorOvercharged" xml:space="preserve">
+    <value>Acceleratore al Plasma Sovraccaricato</value>
+  </data>
+  <data name="PulseLaserOvercharged" xml:space="preserve">
+    <value>Laser ad Impulso Sovraccaricato</value>
+  </data>
+  
+  
+  
+  
+  
+  
+  <data name="PlasmaAcceleratorRapidFire" xml:space="preserve">
+    <value>Acceleratore al Plasma a Fuoco Rapido</value>
+  </data>
+  <data name="PulseLaserRapidFire" xml:space="preserve">
+    <value>Laser ad Impulso a Fuoco Rapido</value>
+  </data>
+  
+  
+  
+  
+  <data name="PlasmaAcceleratorShortRange" xml:space="preserve">
+    <value>Acceleratore al Plasma a Corto Raggio</value>
+  </data>
+  <data name="PulseLaserShortRange" xml:space="preserve">
+    <value>Laser ad Impulso a Corto Raggio</value>
+  </data>
   
   
   
@@ -407,23 +551,9 @@
   
   
   
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="PlasmaAcceleratorSturdy" xml:space="preserve">
+    <value>Acceleratore al Plasma Robusto</value>
+  </data>
   
   
   
