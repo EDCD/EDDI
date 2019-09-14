@@ -583,7 +583,7 @@ namespace EddiInaraResponder
             {
                 if (hardpoint != null)
                 {
-                    Dictionary<string, object> moduleData = getModuleData(hardpoint.name, hardpoint.module);
+                    Dictionary<string, object> moduleData = GetModuleData(hardpoint.name, hardpoint.module);
                     modulesData.Add(moduleData);
                 }
             }
@@ -591,7 +591,7 @@ namespace EddiInaraResponder
             {
                 if (compartment != null)
                 {
-                    Dictionary<string, object> moduleData = getModuleData(compartment.name, compartment.module);
+                    Dictionary<string, object> moduleData = GetModuleData(compartment.name, compartment.module);
                     modulesData.Add(moduleData);
                 }
             }
@@ -603,7 +603,7 @@ namespace EddiInaraResponder
             }));
         }
 
-        private static Dictionary<string, object> getModuleData(string slotName, Module module)
+        private static Dictionary<string, object> GetModuleData(string slotName, Module module)
         {
             Dictionary<string, object> moduleData;
             if (module is null)
@@ -613,40 +613,44 @@ namespace EddiInaraResponder
                     { "slotName", slotName }
                 };
             }
-            moduleData = new Dictionary<string, object>()
-                    {
-                        { "slotName", slotName },
-                        { "itemName", module.edname },
-                        { "itemValue", module.value },
-                        { "itemHealth", module.health / 100 }, // From 0 - 1
-                        { "isOn", module.enabled },
-                        { "isHot", module.hot },
-                        { "itemPriority", module.priority },
-                        { "itemAmmoClip", module.clipcapacity },
-                        { "itemAmmoHopper", module.hoppercapacity }
-                    };
-            if (module.modified)
+            else
             {
-                List<Dictionary<string, object>> modifiers = new List<Dictionary<string, object>>();
-                foreach (EngineeringModifier modifier in module.modifiers)
+                moduleData = new Dictionary<string, object>()
                 {
-                    modifiers.Add(new Dictionary<string, object>()
-                            {
-                                { "name", modifier.EDName },
-                                { "value", modifier.currentValue },
-                                { "originalValue", modifier.originalValue },
-                                { "lessIsGood", modifier.lessIsGood }
-                            });
-                }
-                Dictionary<string, object> engineering = new Dictionary<string, object>()
+                    {"slotName", slotName},
+                    {"itemName", module.edname},
+                    {"itemValue", module.value},
+                    {"itemHealth", module.health / 100}, // From 0 - 1
+                    {"isOn", module.enabled},
+                    {"isHot", module.hot},
+                    {"itemPriority", module.priority},
+                    {"itemAmmoClip", module.clipcapacity},
+                    {"itemAmmoHopper", module.hoppercapacity}
+                };
+                if (module.modified)
+                {
+                    List<Dictionary<string, object>> modifiers = new List<Dictionary<string, object>>();
+                    foreach (EngineeringModifier modifier in module.modifiers)
+                    {
+                        modifiers.Add(new Dictionary<string, object>()
                         {
-                            { "blueprintName", module.modificationEDName },
-                            { "blueprintLevel", module.engineerlevel },
-                            { "blueprintQuality", module.engineerquality },
-                            { "experimentalEffect", module.engineerExperimentalEffectEDName },
-                            { "modifiers", modifiers }
-                        };
-                moduleData.Add("engineering", engineering);
+                            {"name", modifier.EDName},
+                            {"value", modifier.currentValue},
+                            {"originalValue", modifier.originalValue},
+                            {"lessIsGood", modifier.lessIsGood}
+                        });
+                    }
+
+                    Dictionary<string, object> engineering = new Dictionary<string, object>()
+                    {
+                        {"blueprintName", module.modificationEDName},
+                        {"blueprintLevel", module.engineerlevel},
+                        {"blueprintQuality", module.engineerquality},
+                        {"experimentalEffect", module.engineerExperimentalEffectEDName},
+                        {"modifiers", modifiers}
+                    };
+                    moduleData.Add("engineering", engineering);
+                }
             }
             return moduleData;
         }
