@@ -8,6 +8,9 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Fixed a general bug concerning order of initialisation, which manifested as the Material monitor only showing owned materials on first run.
   * Cargo Monitor
     * Fixed #1465 whereby (for example) when a limpet launch frees cargo space which the refinery immediately uses, the Cargo monitor got out of sync.
+  * Inara Responder
+    * Simply paste in your Inara API key to have EDDI upload your Commander's progress to Inara. Uploads are batched for every 5 minutes to save bandwith on both your machine and the Inara servers.
+	* EDDI can now also get commander details from Inara, which are accessible via Cottle and VA functions as described below.
   * Speech Responder
     * Fixed inadvertently disabled hyperlink "Read about the speech responder's functions here".
     * The `Location` and `Jumped` events contain new properties `power` and `powerstate` (if pledged). 
@@ -21,7 +24,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Updated the `Engineer progressed` event to stay silent by default when written at startup (with empty values, signaling that engineer data has been loaded).
     * Updated the `Bodies mapped` script to correct a typo.
   * Speech Service
-    * Added new function `InaraDetails` for looking up commander details on Inara](https://inara.cz).
+    * Added new function `InaraDetails` for looking up commander details on [Inara](https://inara.cz).
   * VoiceAttack Responder
     * Added new plugin function `inara`, allowing commanders to look up the Inara profiles of other commanders in their browsers.
 
