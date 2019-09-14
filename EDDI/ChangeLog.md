@@ -23,6 +23,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Updated the `System report` script to enhance the description of powerplay status.
     * Updated the `Engineer progressed` event to stay silent by default when written at startup (with empty values, signaling that engineer data has been loaded).
     * Updated the `Bodies mapped` script to correct a typo.
+    * Replaced the `List launchbays` script with script `Launchbay report` (changed to conform to naming conventions for similar scripts). Added protection in script against empty launchbay data.
   * Speech Service
     * Added new function `InaraDetails` for looking up commander details on [Inara](https://inara.cz).
   * Translations
