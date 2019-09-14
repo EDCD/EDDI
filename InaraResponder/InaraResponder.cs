@@ -553,6 +553,7 @@ namespace EddiInaraResponder
                 { "shipGameID", currentShip.LocalId },
                 { "shipName", currentShip.name },
                 { "shipIdent", currentShip.ident },
+                { "shipRole", currentShip.Role.invariantName },
                 { "isHot", currentShip.hot },
                 { "isCurrentShip", true }
             };
@@ -568,6 +569,7 @@ namespace EddiInaraResponder
                 { "shipGameID", currentShip.LocalId },
                 { "shipName", currentShip.name },
                 { "shipIdent", currentShip.ident },
+                { "shipRole", currentShip.Role.invariantName },
                 { "isHot", currentShip.hot },
                 { "isCurrentShip", true },
                 { "shipHullValue", @event.hullvalue },
@@ -661,6 +663,7 @@ namespace EddiInaraResponder
                     { "shipName", storedShip.name },
                     { "shipIdent", storedShip.ident },
                     { "isHot", storedShip.hot },
+                    { "shipRole", storedShip.Role.invariantName },
                     { "isCurrentShip", true },
                     { "starsystemName", EDDI.Instance.CurrentStarSystem?.systemname },
                     { "stationName", EDDI.Instance.CurrentStation?.name },
@@ -683,6 +686,7 @@ namespace EddiInaraResponder
                 { "shipGameID", currentShip.LocalId },
                 { "shipName", currentShip.name },
                 { "shipIdent", currentShip.ident },
+                { "shipRole", currentShip.Role.invariantName },
                 { "isHot", currentShip.hot },
                 { "isCurrentShip", true }
             };
@@ -730,6 +734,7 @@ namespace EddiInaraResponder
                     { "shipName", storedShip.name },
                     { "shipIdent", storedShip.ident },
                     { "isHot", storedShip.hot },
+                    { "shipRole", storedShip.Role.invariantName },
                     { "isCurrentShip", true },
                     { "starsystemName", EDDI.Instance.CurrentStarSystem?.systemname },
                     { "stationName", EDDI.Instance.CurrentStation?.name },
