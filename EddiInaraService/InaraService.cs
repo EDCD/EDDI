@@ -213,22 +213,6 @@ namespace EddiInaraService
                 Instance.queuedAPIEvents.Enqueue(inaraAPIEvent);
             }
         }
-
-        public void DequeueAPIEventsOfType(string eventName)
-        {
-            List<InaraAPIEvent> queue = new List<InaraAPIEvent>();
-            while (Instance.queuedAPIEvents.TryDequeue(out InaraAPIEvent pendingEvent))
-            {
-                if (pendingEvent.eventName != eventName)
-                {
-                    queue.Add(pendingEvent);
-                }
-            }
-            foreach (InaraAPIEvent inaraAPIEvent in queue)
-            {
-                Instance.EnqueueAPIEvent(inaraAPIEvent);
-            }
-        }
     }
 
     internal class InaraSendJson
