@@ -54,15 +54,16 @@ namespace EddiInaraService
         {
             // Set up the Inara service
             InaraConfiguration inaraCredentials = InaraConfiguration.FromFile();
+            if (inaraCredentials == null) { return; }
 
             // commanderName: In-game CMDR name of user (not set by user, get this from journals or 
             // cAPI to ensure it is a correct in-game name to avoid future problems). It is recommended 
             // to be always set when no generic API key is used (otherwise some events may not work).
-            commanderName = inaraCredentials?.commanderName;
+            commanderName = inaraCredentials.commanderName;
 
             // commanderFrontierID: Commander's unique Frontier ID (is provided by journals since 3.3)
             // in the format: 'F123456'. When not known, set nothing.
-            commanderFrontierID = inaraCredentials?.commanderFrontierID;
+            commanderFrontierID = inaraCredentials.commanderFrontierID;
 
             lastSync = inaraCredentials.lastSync;
             apiKey = inaraCredentials.apiKey;
@@ -78,6 +79,7 @@ namespace EddiInaraService
                 {
                     Logging.Info("Configuring Inara service for limited access: API key not set.");
                 }
+
                 if (string.IsNullOrEmpty(commanderName))
                 {
                     Logging.Info("Configuring Inara service for limited access: Commander name not detected.");
@@ -182,7 +184,7 @@ namespace EddiInaraService
                     // 202 - Warning (everything is OK, but there may be multiple results for the input properties, etc.)
                     // 204 - 'Soft' error (everything was formally OK, but there are no results for the properties set, etc.)
                     // Inara may also return null as it undergoes a nightly manintenance cycle where the servers go offline temporarily.
-                    Logging.Warn("Inara responded with: " + inaraResponse.eventStatusText ?? "(No response)", JsonConvert.SerializeObject(data));
+                    Logging.Warn("Inara responded with: " + (inaraResponse.eventStatusText ?? "(No response)"), JsonConvert.SerializeObject(data));
 
                 }
                 return false;
