@@ -43,8 +43,17 @@ namespace EddiDataDefinitions
         /// <summary>The commander's service rating</summary>
         public int servicerating { get; set; }
 
-        /// <summary>The commander's powerplay rating</summary>
+        /// <summary>The commander's powerplay power (if pledged)</summary>
+        public Power Power { get; set; }
+
+        /// <summary>The commander's powerplay power (localized) (if pledged)</summary>
+        public string power => (Power ?? Power.None)?.localizedName;
+
+        /// <summary>The commander's powerplay rating (if pledged)</summary>
         public int powerrating { get; set; }
+
+        /// <summary>The commander's powerplay merits (if pledged)</summary>
+        public int? powermerits { get; set; }
 
         /// <summary>The commander's squadron name</summary>
         public string squadronname { get; set; }

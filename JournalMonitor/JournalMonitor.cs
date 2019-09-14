@@ -242,7 +242,12 @@ namespace EddiJournalMonitor
                                         destDistance = EDDI.Instance.getSystemDistanceFromDestination(systemName);
                                     }
 
-                                    events.Add(new JumpedEvent(timestamp, systemName, systemAddress, x, y, z, starName, distance, fuelUsed, fuelRemaining, boostUsed, controllingfaction, factions, conflicts, economy, economy2, security, population, destination, destDistance) { raw = line, fromLoad = fromLogLoad });
+                                    // Powerplay data (if pledged)
+                                    Power powerplayPower = new Power();
+                                    PowerplayState powerplayState = null;
+                                    getPowerplayData(data, out powerplayPower, out powerplayState);
+
+                                    events.Add(new JumpedEvent(timestamp, systemName, systemAddress, x, y, z, starName, distance, fuelUsed, fuelRemaining, boostUsed, controllingfaction, factions, conflicts, economy, economy2, security, population, destination, destDistance, powerplayPower, powerplayState) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
@@ -292,7 +297,12 @@ namespace EddiJournalMonitor
                                         factions = getFactions(factionsVal, systemName);
                                     }
 
-                                    events.Add(new LocationEvent(timestamp, systemName, x, y, z, systemAddress, distFromStarLs, body, bodyId, bodyType, docked, station, stationtype, marketId, systemfaction, stationfaction, economy, economy2, security, population, longitude, latitude, factions) { raw = line, fromLoad = fromLogLoad });
+                                    // Powerplay data (if pledged)
+                                    Power powerplayPower = new Power();
+                                    PowerplayState powerplayState = null;
+                                    getPowerplayData(data, out powerplayPower, out powerplayState);
+
+                                    events.Add(new LocationEvent(timestamp, systemName, x, y, z, systemAddress, distFromStarLs, body, bodyId, bodyType, docked, station, stationtype, marketId, systemfaction, stationfaction, economy, economy2, security, population, longitude, latitude, factions, powerplayPower, powerplayState) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
@@ -528,15 +538,36 @@ namespace EddiJournalMonitor
                                             int? hopper = JsonParsing.getOptionalInt(moduleData, "AmmoInHopper");
 
                                             // Engineering modifications
-                                            moduleData.TryGetValue("Engineering", out val);
-                                            bool modified = val != null ? true : false;
-                                            Dictionary<string, object> engineeringData = (Dictionary<string, object>)val;
+                                            moduleData.TryGetValue("Engineering", out object engineeringVal);
+                                            bool modified = engineeringVal != null ? true : false;
+                                            Dictionary<string, object> engineeringData = (Dictionary<string, object>)engineeringVal;
                                             string blueprint = modified ? JsonParsing.getString(engineeringData, "BlueprintName") : null;
                                             long blueprintId = modified ? JsonParsing.getLong(engineeringData, "BlueprintID") : 0;
                                             int level = modified ? JsonParsing.getInt(engineeringData, "Level") : 0;
                                             Blueprint modification = Blueprint.FromEliteID(blueprintId, engineeringData)
                                                 ?? Blueprint.FromEDNameAndGrade(blueprint, level) ?? Blueprint.None;
                                             decimal quality = modified ? JsonParsing.getDecimal(engineeringData, "Quality") : 0;
+                                            string experimentalEffect = modified ? JsonParsing.getString(engineeringData, "ExperimentalEffect") : null;
+                                            List<EngineeringModifier> modifiers = new List<EngineeringModifier>();
+                                            if (modified)
+                                            {
+                                                engineeringData.TryGetValue("Modifiers", out object modifiersVal);
+                                                List<object> modifiersData = (List<object>)modifiersVal;
+                                                foreach (Dictionary<string, object> modifier in modifiersData)
+                                                {
+                                                    string edname = JsonParsing.getString(modifier, "Label");
+                                                    decimal currentValue = JsonParsing.getDecimal(modifier, "Value");
+                                                    decimal originalValue = JsonParsing.getDecimal(modifier, "OriginalValue");
+                                                    bool lessIsGood = JsonParsing.getInt(modifier, "LessIsGood") == 1 ? true : false;
+                                                    modifiers.Add(new EngineeringModifier()
+                                                    {
+                                                        EDName = edname,
+                                                        currentValue = currentValue,
+                                                        originalValue = originalValue,
+                                                        lessIsGood = lessIsGood
+                                                    });
+                                                }
+                                            }
 
                                             if (slot.Contains("Hardpoint"))
                                             {
@@ -578,9 +609,12 @@ namespace EddiJournalMonitor
                                                     module.ammoinclip = clip;
                                                     module.ammoinhopper = hopper;
                                                     module.modified = modified;
+                                                    module.modificationEDName = blueprint;
                                                     module.engineermodification = modification;
                                                     module.engineerlevel = level;
                                                     module.engineerquality = quality;
+                                                    module.engineerExperimentalEffectEDName = experimentalEffect;
+                                                    module.modifiers = modifiers;
                                                     hardpoint.module = module;
                                                     hardpoints.Add(hardpoint);
                                                 }
@@ -655,6 +689,7 @@ namespace EddiJournalMonitor
                                                     module.ammoinclip = clip;
                                                     module.ammoinhopper = hopper;
                                                     module.modified = modified;
+                                                    module.modificationEDName = blueprint;
                                                     module.engineermodification = modification;
                                                     module.engineerlevel = level;
                                                     module.engineerquality = quality;
@@ -669,14 +704,11 @@ namespace EddiJournalMonitor
                                                     Constants.baseOptimalMass.TryGetValue(fsd, out optimalMass);
                                                     if (modified)
                                                     {
-                                                        engineeringData.TryGetValue("Modifiers", out val);
-                                                        List<object> modifiersData = (List<object>)val;
-                                                        foreach (Dictionary<string, object> modifier in modifiersData)
+                                                        foreach (EngineeringModifier modifier in modifiers)
                                                         {
-                                                            string label = JsonParsing.getString(modifier, "Label");
-                                                            if (label == "FSDOptimalMass")
+                                                            if (modifier.EDName == "FSDOptimalMass")
                                                             {
-                                                                optimalMass = JsonParsing.getDecimal(modifier, "Value");
+                                                                optimalMass = modifier.currentValue;
                                                             }
                                                         }
                                                     }
@@ -1109,11 +1141,11 @@ namespace EddiJournalMonitor
                                                 hot = JsonParsing.getOptionalBool(item, "Hot") ?? false
                                             };
                                             item.TryGetValue("EngineerModifications", out val);
-                                            bool modified = val != null ? true : false;
-                                            module.modified = modified;
-                                            module.engineerlevel = modified ? JsonParsing.getInt(item, "Level") : 0;
-                                            module.engineermodification = Blueprint.FromEDNameAndGrade((string)val, module.engineerlevel) ?? Blueprint.None;
-                                            module.engineerquality = modified ? JsonParsing.getDecimal(item, "Quality") : 0;
+                                            module.modificationEDName = JsonParsing.getString(item, "EngineerModifications");
+                                            module.modified = !string.IsNullOrEmpty(module.modificationEDName);
+                                            module.engineerlevel = module.modified ? JsonParsing.getInt(item, "Level") : 0;
+                                            module.engineermodification = Blueprint.FromEDNameAndGrade(module.modificationEDName, module.engineerlevel) ?? Blueprint.None;
+                                            module.engineerquality = module.modified ? JsonParsing.getDecimal(item, "Quality") : 0;
 
                                             StoredModule storedModule = new StoredModule
                                             {
@@ -1808,7 +1840,7 @@ namespace EddiJournalMonitor
                                 {
                                     string stationName = JsonParsing.getString(data, "StationName");
                                     string stationType = JsonParsing.getString(data, "StationType");
-                                    long marketId = JsonParsing.getLong(data, "MarketID");
+                                    long? marketId = JsonParsing.getOptionalLong(data, "MarketID");
                                     events.Add(new DockingCancelledEvent(timestamp, stationName, stationType, marketId) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
@@ -2252,20 +2284,21 @@ namespace EddiJournalMonitor
                                     if (val != null)
                                     {
                                         // This is a startup entry. 
-                                        // Update engineer progress / status data but do not generate events.
+                                        // Update engineer progress / status data
                                         List<object> engineers = (List<object>)val;
                                         foreach (IDictionary<string, object> engineerData in engineers)
                                         {
                                             Engineer engineer = parseEngineer(engineerData);
                                             Engineer.AddOrUpdate(engineer);
                                         }
+                                        // Generate an event to pass the data
+                                        events.Add(new EngineerProgressedEvent(timestamp, null, null) { raw = line, fromLoad = fromLogLoad });
                                     }
                                     else
                                     {
                                         // This is a progress entry.
                                         Engineer engineer = parseEngineer(data);
                                         Engineer lastEngineer = Engineer.FromNameOrId(engineer.name, engineer.id);
-
                                         if (engineer.rank != null && engineer.rank != lastEngineer?.rank)
                                         {
                                             events.Add(new EngineerProgressedEvent(timestamp, engineer, "Rank") { raw = line, fromLoad = fromLogLoad });
@@ -2282,6 +2315,7 @@ namespace EddiJournalMonitor
                             case "LoadGame":
                                 {
                                     string commander = JsonParsing.getString(data, "Commander");
+                                    string frontierID = JsonParsing.getString(data, "FID");
                                     bool horizons = JsonParsing.getBool(data, "Horizons");
 
                                     data.TryGetValue("ShipID", out object val);
@@ -2300,16 +2334,17 @@ namespace EddiJournalMonitor
                                     string shipName = JsonParsing.getString(data, "ShipName");
                                     string shipIdent = JsonParsing.getString(data, "ShipIdent");
 
+                                    bool? startedLanded = JsonParsing.getOptionalBool(data, "StartedLanded");
+                                    bool? startDead = JsonParsing.getOptionalBool(data, "StartDead");
+
                                     GameMode mode = GameMode.FromEDName(JsonParsing.getString(data, "GameMode"));
                                     string group = JsonParsing.getString(data, "Group");
-                                    data.TryGetValue("Credits", out val);
-                                    decimal credits = (long)val;
-                                    data.TryGetValue("Loan", out val);
-                                    decimal loan = (long)val;
+                                    long credits = (long)JsonParsing.getOptionalLong(data, "Credits");
+                                    long loan = (long)JsonParsing.getOptionalLong(data, "Loan");
                                     decimal? fuel = JsonParsing.getOptionalDecimal(data, "FuelLevel");
                                     decimal? fuelCapacity = JsonParsing.getOptionalDecimal(data, "FuelCapacity");
 
-                                    events.Add(new CommanderContinuedEvent(timestamp, commander, horizons, (int)shipId, ship, shipName, shipIdent, mode, group, credits, loan, fuel, fuelCapacity) { raw = line, fromLoad = fromLogLoad });
+                                    events.Add(new CommanderContinuedEvent(timestamp, commander, frontierID, horizons, (int)shipId, ship, shipName, shipIdent, startedLanded, startDead, mode, group, credits, loan, fuel, fuelCapacity) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
@@ -2467,15 +2502,17 @@ namespace EddiJournalMonitor
                             case "ClearSavedGame":
                                 {
                                     string name = JsonParsing.getString(data, "Name");
-                                    events.Add(new ClearedSaveEvent(timestamp, name) { raw = line, fromLoad = fromLogLoad });
+                                    string frontierID = JsonParsing.getString(data, "FID");
+                                    events.Add(new ClearedSaveEvent(timestamp, name, frontierID) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
                             case "NewCommander":
                                 {
                                     string name = JsonParsing.getString(data, "Name");
+                                    string frontierID = JsonParsing.getString(data, "FID");
                                     string package = JsonParsing.getString(data, "Package");
-                                    events.Add(new CommanderStartedEvent(timestamp, name, package) { raw = line, fromLoad = fromLogLoad });
+                                    events.Add(new CommanderStartedEvent(timestamp, name, frontierID, package) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
@@ -2711,6 +2748,7 @@ namespace EddiJournalMonitor
                                     List<string> system = new List<string>();
                                     List<string> station = new List<string>();
                                     List<long> expiry = new List<long>();
+                                    List<DateTime> expiryDateTimes = new List<DateTime>();
                                     List<bool> iscomplete = new List<bool>();
                                     List<int> total = new List<int>();
                                     List<int> contribution = new List<int>();
@@ -2731,6 +2769,7 @@ namespace EddiJournalMonitor
                                         system.Add(JsonParsing.getString(goaldata, "SystemName"));
                                         station.Add(JsonParsing.getString(goaldata, "MarketName"));
                                         DateTime expiryDateTime = ((DateTime)goaldata["Expiry"]).ToUniversalTime();
+                                        expiryDateTimes.Add(expiryDateTime);
                                         long expiryseconds = (long)(expiryDateTime - timestamp).TotalSeconds;
                                         expiry.Add(expiryseconds);
                                         iscomplete.Add(JsonParsing.getBool(goaldata, "IsComplete"));
@@ -2738,7 +2777,7 @@ namespace EddiJournalMonitor
                                         contribution.Add(JsonParsing.getInt(goaldata, "PlayerContribution"));
                                         contributors.Add(JsonParsing.getInt(goaldata, "NumContributors"));
                                         percentileband.Add(JsonParsing.getDecimal(goaldata, "PlayerPercentileBand"));
-
+ 
                                         // If the community goal is constructed with a fixed-size top rank (ie max reward for top 10 players)
 
                                         topranksize.Add(JsonParsing.getOptionalInt(goaldata, "TopRankSize"));
@@ -2746,12 +2785,11 @@ namespace EddiJournalMonitor
 
                                         // If the community goal has reached the first success tier
 
-                                        goaldata.TryGetValue("TierReached", out val);
-                                        tier.Add((string)val);
+                                        tier.Add(JsonParsing.getString(goaldata, "TierReached"));
                                         tierreward.Add(JsonParsing.getOptionalLong(goaldata, "Bonus"));
                                     }
 
-                                    events.Add(new CommunityGoalEvent(timestamp, cgid, name, system, station, expiry, iscomplete, total, contribution, contributors, percentileband, topranksize, toprank, tier, tierreward) { raw = line, fromLoad = fromLogLoad });
+                                    events.Add(new CommunityGoalEvent(timestamp, cgid, name, system, station, expiry, expiryDateTimes, iscomplete, total, contribution, contributors, percentileband, topranksize, toprank, tier, tierreward) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
@@ -3261,7 +3299,7 @@ namespace EddiJournalMonitor
                                 break;
                             case "PowerplayJoin":
                                 {
-                                    string power = JsonParsing.getString(data, "Power");
+                                    Power power = Power.FromEDName(JsonParsing.getString(data, "Power"));
 
                                     events.Add(new PowerJoinedEvent(timestamp, power) { raw = line, fromLoad = fromLogLoad });
                                 }
@@ -3269,7 +3307,7 @@ namespace EddiJournalMonitor
                                 break;
                             case "PowerplayLeave":
                                 {
-                                    string power = JsonParsing.getString(data, "Power");
+                                    Power power = Power.FromEDName(JsonParsing.getString(data, "Power"));
 
                                     events.Add(new PowerLeftEvent(timestamp, power) { raw = line, fromLoad = fromLogLoad });
 
@@ -3278,16 +3316,16 @@ namespace EddiJournalMonitor
                                 break;
                             case "PowerplayDefect":
                                 {
-                                    string frompower = JsonParsing.getString(data, "FromPower");
-                                    string topower = JsonParsing.getString(data, "ToPower");
+                                    Power fromPower = Power.FromEDName(JsonParsing.getString(data, "FromPower"));
+                                    Power toPower = Power.FromEDName(JsonParsing.getString(data, "ToPower"));
 
-                                    events.Add(new PowerDefectedEvent(timestamp, frompower, topower) { raw = line, fromLoad = fromLogLoad });
+                                    events.Add(new PowerDefectedEvent(timestamp, fromPower, toPower) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
                             case "PowerplayVote":
                                 {
-                                    string power = JsonParsing.getString(data, "Power");
+                                    Power power = Power.FromEDName(JsonParsing.getString(data, "Power"));
                                     string system = JsonParsing.getString(data, "System");
                                     data.TryGetValue("Votes", out object val);
                                     int amount = (int)(long)val;
@@ -3298,7 +3336,7 @@ namespace EddiJournalMonitor
                                 break;
                             case "PowerplaySalary":
                                 {
-                                    string power = JsonParsing.getString(data, "Power");
+                                    Power power = Power.FromEDName(JsonParsing.getString(data, "Power"));
                                     data.TryGetValue("Amount", out object val);
                                     int amount = (int)(long)val;
 
@@ -3308,7 +3346,7 @@ namespace EddiJournalMonitor
                                 break;
                             case "PowerplayCollect":
                                 {
-                                    string power = JsonParsing.getString(data, "Power");
+                                    Power power = Power.FromEDName(JsonParsing.getString(data, "Power"));
                                     CommodityDefinition commodity = CommodityDefinition.FromEDName(JsonParsing.getString(data, "Type"));
                                     commodity.fallbackLocalizedName = JsonParsing.getString(data, "Type_Localised");
                                     data.TryGetValue("Count", out object val);
@@ -3320,7 +3358,7 @@ namespace EddiJournalMonitor
                                 break;
                             case "PowerplayDeliver":
                                 {
-                                    string power = JsonParsing.getString(data, "Power");
+                                    Power power = Power.FromEDName(JsonParsing.getString(data, "Power"));
                                     CommodityDefinition commodity = CommodityDefinition.FromEDName(JsonParsing.getString(data, "Type"));
                                     commodity.fallbackLocalizedName = JsonParsing.getString(data, "Type_Localised");
                                     data.TryGetValue("Count", out object val);
@@ -3332,7 +3370,7 @@ namespace EddiJournalMonitor
                                 break;
                             case "PowerplayFastTrack":
                                 {
-                                    string power = JsonParsing.getString(data, "Power");
+                                    Power power = Power.FromEDName(JsonParsing.getString(data, "Power"));
                                     data.TryGetValue("Cost", out object val);
                                     int amount = (int)(long)val;
 
@@ -3342,7 +3380,7 @@ namespace EddiJournalMonitor
                                 break;
                             case "PowerplayVoucher":
                                 {
-                                    string power = JsonParsing.getString(data, "Power");
+                                    Power power = Power.FromEDName(JsonParsing.getString(data, "Power"));
                                     data.TryGetValue("Systems", out object val);
                                     List<string> systems = ((List<object>)val).Cast<string>().ToList();
 
@@ -3429,14 +3467,228 @@ namespace EddiJournalMonitor
                                 handled = true;
                                 break;
                             case "Commander":
+                                {
+                                    string name = JsonParsing.getString(data, "Name");
+                                    string frontierID = JsonParsing.getString(data, "FID");
+                                    events.Add(new CommanderLoadingEvent(timestamp, name, frontierID) { raw = line, fromLoad = fromLogLoad });
+                                }
+                                handled = true;
+                                break;
+                            case "Statistics":
+                                {
+                                    Statistics statistics = new Statistics();
+
+                                    data.TryGetValue("Bank_Account", out object bankAccountVal);
+                                    Dictionary<string, object> bankaccount = (Dictionary<string, object>)bankAccountVal;
+                                    if (bankaccount.Count > 0)
+                                    {
+                                        statistics.bankaccount.wealth = JsonParsing.getOptionalLong(bankaccount, "Current_Wealth");
+                                        statistics.bankaccount.spentonships = JsonParsing.getOptionalLong(bankaccount, "Spent_On_Ships");
+                                        statistics.bankaccount.spentonoutfitting = JsonParsing.getOptionalLong(bankaccount, "Spent_On_Outfitting");
+                                        statistics.bankaccount.spentonrepairs = JsonParsing.getOptionalLong(bankaccount, "Spent_On_Repairs");
+                                        statistics.bankaccount.spentonfuel = JsonParsing.getOptionalLong(bankaccount, "Spent_On_Fuel");
+                                        statistics.bankaccount.spentonammoconsumables = JsonParsing.getOptionalLong(bankaccount, "Spent_On_Ammo_Consumables");
+                                        statistics.bankaccount.spentoninsurance = JsonParsing.getOptionalLong(bankaccount, "Spent_On_Insurance");
+                                        statistics.bankaccount.insuranceclaims = JsonParsing.getOptionalLong(bankaccount, "Insurance_Claims");
+                                        statistics.bankaccount.ownedshipcount = JsonParsing.getOptionalLong(bankaccount, "Owned_Ship_Count");
+                                    }
+
+                                    data.TryGetValue("Combat", out object combatVal);
+                                    Dictionary<string, object> combat = (Dictionary<string, object>)combatVal;
+                                    if (combat.Count > 0)
+                                    {
+                                        statistics.combat.bountiesclaimed = JsonParsing.getOptionalLong(combat, "Bounties_Claimed");
+                                        statistics.combat.bountyhuntingprofit = JsonParsing.getOptionalDecimal(combat, "Bounty_Hunting_Profit");
+                                        statistics.combat.combatbonds = JsonParsing.getOptionalLong(combat, "Combat_Bonds");
+                                        statistics.combat.combatbondprofits = JsonParsing.getOptionalLong(combat, "Combat_Bond_Profits");
+                                        statistics.combat.assassinations = JsonParsing.getOptionalLong(combat, "Assassinations");
+                                        statistics.combat.assassinationprofits = JsonParsing.getOptionalLong(combat, "Assassination_Profits");
+                                        statistics.combat.highestsinglereward = JsonParsing.getOptionalLong(combat, "Highest_Single_Reward");
+                                        statistics.combat.skimmerskilled = JsonParsing.getOptionalLong(combat, "Skimmers_Killed");
+                                    }
+
+                                    data.TryGetValue("Crime", out object crimeVal);
+                                    Dictionary<string, object> crime = (Dictionary<string, object>)crimeVal;
+                                    if (crime.Count > 0)
+                                    {
+                                        statistics.crime.notoriety = JsonParsing.getOptionalInt(crime, "Notoriety");
+                                        statistics.crime.fines = JsonParsing.getOptionalLong(crime, "Fines");
+                                        statistics.crime.totalfines = JsonParsing.getOptionalLong(crime, "Total_Fines");
+                                        statistics.crime.bountiesreceived = JsonParsing.getOptionalLong(crime, "Bounties_Received");
+                                        statistics.crime.totalbounties = JsonParsing.getOptionalLong(crime, "Total_Bounties");
+                                        statistics.crime.highestbounty = JsonParsing.getOptionalLong(crime, "Highest_Bounty");
+                                    }
+
+                                    data.TryGetValue("Smuggling", out object smugglingVal);
+                                    Dictionary<string, object> smuggling = (Dictionary<string, object>)smugglingVal;
+                                    if (smuggling.Count > 0)
+                                    {
+                                        statistics.smuggling.blackmarketstradedwith = JsonParsing.getOptionalLong(smuggling, "Black_Markets_Traded_With");
+                                        statistics.smuggling.blackmarketprofits = JsonParsing.getOptionalLong(smuggling, "Black_Markets_Profits");
+                                        statistics.smuggling.resourcessmuggled = JsonParsing.getOptionalLong(smuggling, "Resources_Smuggled");
+                                        statistics.smuggling.averageprofit = JsonParsing.getOptionalDecimal(smuggling, "Average_Profit");
+                                        statistics.smuggling.highestsingletransaction = JsonParsing.getOptionalLong(smuggling, "Highest_Single_Transaction");
+                                    }
+
+                                    data.TryGetValue("Trading", out object tradingVal);
+                                    Dictionary<string, object> trading = (Dictionary<string, object>)tradingVal;
+                                    if (trading.Count > 0)
+                                    {
+                                        statistics.trading.marketstradedwith = JsonParsing.getOptionalLong(trading, "Markets_Traded_With");
+                                        statistics.trading.marketprofits = JsonParsing.getOptionalLong(trading, "Market_Profits");
+                                        statistics.trading.resourcestraded = JsonParsing.getOptionalLong(trading, "Resources_Traded");
+                                        statistics.trading.averageprofit = JsonParsing.getOptionalDecimal(trading, "Average_Profit");
+                                        statistics.trading.highestsingletransaction = JsonParsing.getOptionalLong(trading, "Highest_Single_Transaction");
+                                    }
+
+                                    data.TryGetValue("Mining", out object miningVal);
+                                    Dictionary<string, object> mining = (Dictionary<string, object>)miningVal;
+                                    if (mining.Count > 0)
+                                    {
+                                        statistics.mining.profits = JsonParsing.getOptionalLong(mining, "Mining_Profits");
+                                        statistics.mining.quantitymined = JsonParsing.getOptionalLong(mining, "Quantity_Mined");
+                                        statistics.mining.materialscollected = JsonParsing.getOptionalLong(mining, "Materials_Collected");
+                                    }
+
+                                    data.TryGetValue("Exploration", out object explorationVal);
+                                    Dictionary<string, object> exploration = (Dictionary<string, object>)explorationVal;
+                                    if (exploration.Count > 0)
+                                    {
+                                        statistics.exploration.systemsvisited = JsonParsing.getOptionalLong(exploration, "Systems_Visited");
+                                        statistics.exploration.profits = JsonParsing.getOptionalLong(exploration, "Exploration_Profits");
+                                        statistics.exploration.planetsscannedlevel2 = JsonParsing.getOptionalLong(exploration, "Planets_Scanned_To_Level_2");
+                                        statistics.exploration.planetsscannedlevel3 = JsonParsing.getOptionalLong(exploration, "Planets_Scanned_To_Level_3");
+                                        statistics.exploration.highestpayout = JsonParsing.getOptionalLong(exploration, "Highest_Payout");
+                                        statistics.exploration.totalhyperspacedistance = JsonParsing.getOptionalDecimal(exploration, "Total_Hyperspace_Distance");
+                                        statistics.exploration.totalhyperspacejumps = JsonParsing.getOptionalLong(exploration, "Total_Hyperspace_Jumps");
+                                        statistics.exploration.greatestdistancefromstart = JsonParsing.getOptionalDecimal(exploration, "Greatest_Distance_From_Start");
+                                        statistics.exploration.timeplayedseconds = JsonParsing.getOptionalLong(exploration, "Time_Played");
+                                    }
+
+                                    data.TryGetValue("Passengers", out object passengersVal);
+                                    Dictionary<string, object> passengers = (Dictionary<string, object>)passengersVal;
+                                    if (passengers.Count > 0)
+                                    {
+                                        statistics.passengers.accepted = JsonParsing.getOptionalLong(passengers, "Passengers_Missions_Accepted");
+                                        statistics.passengers.disgruntled = JsonParsing.getOptionalLong(passengers, "Passengers_Missions_Disgruntled");
+                                        statistics.passengers.bulk = JsonParsing.getOptionalLong(passengers, "Passengers_Missions_Bulk");
+                                        statistics.passengers.vip = JsonParsing.getOptionalLong(passengers, "Passengers_Missions_VIP");
+                                        statistics.passengers.delivered = JsonParsing.getOptionalLong(passengers, "Passengers_Missions_Delivered");
+                                        statistics.passengers.ejected = JsonParsing.getOptionalLong(passengers, "Passengers_Missions_Ejected");
+                                    }
+
+                                    data.TryGetValue("Search_And_Rescue", out object searchAndRescueVal);
+                                    Dictionary<string, object> searchAndRescue = (Dictionary<string, object>)searchAndRescueVal;
+                                    if (searchAndRescue.Count > 0)
+                                    {
+                                        statistics.searchandrescue.traded = JsonParsing.getOptionalLong(searchAndRescue, "SearchRescue_Traded");
+                                        statistics.searchandrescue.profit = JsonParsing.getOptionalLong(searchAndRescue, "SearchRescue_Profit");
+                                        statistics.searchandrescue.count = JsonParsing.getOptionalLong(searchAndRescue, "SearchRescue_Count");
+                                    }
+
+                                    data.TryGetValue("TG_ENCOUNTERS", out object thargoidVal);
+                                    Dictionary<string, object> thargoid = (Dictionary<string, object>)thargoidVal;
+                                    if (thargoid.Count > 0)
+                                    {
+                                        statistics.thargoidencounters.wakesscanned = JsonParsing.getOptionalLong(thargoid, "TG_ENCOUNTER_WAKES");
+                                        statistics.thargoidencounters.imprints = JsonParsing.getOptionalLong(thargoid, "TG_ENCOUNTER_IMPRINT");
+                                        statistics.thargoidencounters.totalencounters = JsonParsing.getOptionalLong(thargoid, "TG_ENCOUNTER_TOTAL");
+                                        statistics.thargoidencounters.lastsystem = JsonParsing.getString(thargoid, "TG_ENCOUNTER_TOTAL_LAST_SYSTEM");
+                                        statistics.thargoidencounters.lastshipmodel = JsonParsing.getString(thargoid, "TG_ENCOUNTER_TOTAL_LAST_SHIP");
+                                        statistics.thargoidencounters.lasttimestamp = DateTime.Parse(JsonParsing.getString(thargoid, "TG_ENCOUNTER_TOTAL_LAST_TIMESTAMP"));
+                                    }
+
+                                    data.TryGetValue("Crafting", out object craftingVal);
+                                    Dictionary<string, object> crafting = (Dictionary<string, object>)craftingVal;
+                                    if (crafting.Count > 0)
+                                    {
+                                        statistics.crafting.countofusedengineers = JsonParsing.getOptionalLong(crafting, "Count_Of_Used_Engineers");
+                                        statistics.crafting.recipesgenerated = JsonParsing.getOptionalLong(crafting, "Recipes_Generated");
+                                        statistics.crafting.recipesgeneratedrank1 = JsonParsing.getOptionalLong(crafting, "Recipes_Generated_Rank_1");
+                                        statistics.crafting.recipesgeneratedrank2 = JsonParsing.getOptionalLong(crafting, "Recipes_Generated_Rank_2");
+                                        statistics.crafting.recipesgeneratedrank3 = JsonParsing.getOptionalLong(crafting, "Recipes_Generated_Rank_3");
+                                        statistics.crafting.recipesgeneratedrank4 = JsonParsing.getOptionalLong(crafting, "Recipes_Generated_Rank_4");
+                                        statistics.crafting.recipesgeneratedrank5 = JsonParsing.getOptionalLong(crafting, "Recipes_Generated_Rank_5");
+                                    }
+
+                                    data.TryGetValue("Crew", out object crewVal);
+                                    Dictionary<string, object> crew = (Dictionary<string, object>)crewVal;
+                                    if (crew.Count > 0)
+                                    {
+                                        statistics.npccrew.totalwages = JsonParsing.getOptionalLong(crew, "NpcCrew_TotalWages");
+                                        statistics.npccrew.hired = JsonParsing.getOptionalLong(crew, "NpcCrew_Hired");
+                                        statistics.npccrew.fired = JsonParsing.getOptionalLong(crew, "NpcCrew_Fired");
+                                        statistics.npccrew.died = JsonParsing.getOptionalLong(crew, "NpcCrew_Died");
+                                    }
+
+                                    data.TryGetValue("Multicrew", out object multicrewVal);
+                                    Dictionary<string, object> multicrew = (Dictionary<string, object>)multicrewVal;
+                                    if (multicrew.Count > 0)
+                                    {
+                                        statistics.multicrew.timetotalseconds = JsonParsing.getOptionalLong(multicrew, "Multicrew_Time_Total");
+                                        statistics.multicrew.gunnertimetotalseconds = JsonParsing.getOptionalLong(multicrew, "Multicrew_Gunner_Time_Total");
+                                        statistics.multicrew.fightertimetotalseconds = JsonParsing.getOptionalLong(multicrew, "Multicrew_Fighter_Time_Total");
+                                        statistics.multicrew.multicrewcreditstotal = JsonParsing.getOptionalLong(multicrew, "Multicrew_Credits_Total");
+                                        statistics.multicrew.multicrewfinestotal = JsonParsing.getOptionalLong(multicrew, "Multicrew_Fines_Total");
+                                    }
+
+                                    data.TryGetValue("Material_Trader_Stats", out object materialTraderVal);
+                                    Dictionary<string, object> materialtrader = (Dictionary<string, object>)materialTraderVal;
+                                    if (materialtrader.Count > 0)
+                                    {
+                                        statistics.materialtrader.tradescompleted = JsonParsing.getOptionalLong(materialtrader, "Trades_Completed");
+                                        statistics.materialtrader.materialstraded = JsonParsing.getOptionalLong(materialtrader, "Materials_Traded");
+                                        statistics.materialtrader.encodedmaterialstraded = JsonParsing.getOptionalLong(materialtrader, "Encoded_Materials_Traded");
+                                        statistics.materialtrader.rawmaterialstraded = JsonParsing.getOptionalLong(materialtrader, "Raw_Materials_Traded");
+                                        statistics.materialtrader.grade1materialstraded = JsonParsing.getOptionalLong(materialtrader, "Grade_1_Materials_Traded");
+                                        statistics.materialtrader.grade2materialstraded = JsonParsing.getOptionalLong(materialtrader, "Grade_2_Materials_Traded");
+                                        statistics.materialtrader.grade3materialstraded = JsonParsing.getOptionalLong(materialtrader, "Grade_3_Materials_Traded");
+                                        statistics.materialtrader.grade4materialstraded = JsonParsing.getOptionalLong(materialtrader, "Grade_4_Materials_Traded");
+                                        statistics.materialtrader.grade5materialstraded = JsonParsing.getOptionalLong(materialtrader, "Grade_5_Materials_Traded");
+                                    }
+
+                                    data.TryGetValue("CQC", out object cqcVal);
+                                    Dictionary<string, object> cqc = (Dictionary<string, object>)cqcVal;
+                                    if (cqc.Count > 0)
+                                    {
+                                        statistics.cqc.creditsearned = JsonParsing.getOptionalLong(cqc, "CQC_Credits_Earned");
+                                        statistics.cqc.timeplayedseconds = JsonParsing.getOptionalLong(cqc, "CQC_Time_Played");
+                                        statistics.cqc.killdeathratio = JsonParsing.getOptionalDecimal(cqc, "CQC_KD");
+                                        statistics.cqc.kills = JsonParsing.getOptionalLong(cqc, "CQC_Kills");
+                                        statistics.cqc.winlossratio = JsonParsing.getOptionalDecimal(cqc, "CQC_WL");
+                                    }
+
+                                    events.Add(new StatisticsEvent(timestamp, statistics) { raw = line, fromLoad = fromLogLoad });
+                                }
+                                handled = true;
+                                break;
+                            case "Powerplay":
+                                {
+                                    Power power = Power.FromEDName(JsonParsing.getString(data, "Power"));
+                                    int rank = JsonParsing.getInt(data, "Rank") + 1; // This is zero based in the journal but not in the Frontier API. Adding +1 here synchronizes the two.
+                                    int merits = JsonParsing.getInt(data, "Merits");
+                                    int votes = JsonParsing.getInt(data, "Votes");
+                                    TimeSpan timePledged = TimeSpan.FromSeconds(JsonParsing.getLong(data, "TimePledged"));
+                                    events.Add(new PowerplayEvent(timestamp, power, rank, merits, votes, timePledged) { raw = line, fromLoad = fromLogLoad });
+                                }
+                                handled = true;
+                                break;
+                            case "Reputation":
+                                {
+                                    decimal empire = JsonParsing.getDecimal(data, "Empire");
+                                    decimal federation = JsonParsing.getDecimal(data, "Federation");
+                                    decimal independent = JsonParsing.getDecimal(data, "Independent");
+                                    decimal alliance = JsonParsing.getDecimal(data, "Alliance");
+                                    events.Add(new CommanderReputationEvent(timestamp, empire, federation, independent, alliance) { raw = line, fromLoad = fromLogLoad });
+                                }
+                                handled = true;
+                                break;
                             case "DiscoveryScan":
                             case "EngineerLegacyConvert":
-                            case "Reputation":
-                            case "Statistics":
                             case "CodexDiscovery":
                             case "CodexEntry":
                             case "ReservoirReplenished":
-                            case "Powerplay":
+                            case "RestockVehicle":
                             case "ProspectedAsteroid":
                             case "AsteroidCracked":
                             case "CrimeVictim":
@@ -3456,7 +3708,7 @@ namespace EddiJournalMonitor
                     catch (Exception ex)
                     {
                         // Something went wrong, but an unhandled event will still be passed to the responders.
-                        Logging.Warn($"{ex.Message}/r/nRaw event:/r/n{line}");
+                        Logging.Warn($"{ex.Message}/r/nRaw event:/r/n{line}", ex);
                     }
 
                     if (!handled)
@@ -3481,6 +3733,22 @@ namespace EddiJournalMonitor
                 Logging.Error("Exception whilst parsing journal line", data);
             }
             return events;
+        }
+
+        private static void getPowerplayData(IDictionary<string, object> data, out Power powerplayPower, out PowerplayState powerplayState)
+        {
+            powerplayPower = new Power();
+            data.TryGetValue("Powers", out object powersVal);
+            // There can be more than one power listed for a system when the system is being contested
+            // If so, the power state will be `Contested` and the power name will be null.
+            if (powersVal is List<object> powerNames)
+            {
+                if (powerNames.Count == 1)
+                {
+                    powerplayPower = Power.FromEDName((string)powerNames[0]);
+                }
+            }
+            powerplayState = PowerplayState.FromEDName(JsonParsing.getString(data, "PowerplayState")) ?? PowerplayState.None;
         }
 
         private static Superpower getAllegiance(IDictionary<string, object> data, string key)
@@ -4000,6 +4268,7 @@ namespace EddiJournalMonitor
             "MaterialDiscovered",
             "Music",
             "NpcCrewRank",
+            "Powerplay",
             "ReceiveText",
             "Scanned",
             "SendText",

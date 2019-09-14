@@ -25,13 +25,13 @@ namespace EddiShipMonitor
         }
 
         [JsonProperty("ship")]
-        public string ship { get; private set; }
+        public string ship => shipDefinition?.model;
 
         [JsonProperty("price")]
         public long price { get; private set; }
 
         [JsonProperty("soldship")]
-        public string soldship { get; private set; }
+        public string soldship => soldShipDefinition?.model;
 
         [JsonProperty("soldshipid")]
         public int? soldshipid { get; private set; }
@@ -40,22 +40,25 @@ namespace EddiShipMonitor
         public long? soldprice { get; private set; }
 
         [JsonProperty("storedship")]
-        public string storedship { get; private set; }
+        public string storedship => storedShipDefinition?.model;
 
         [JsonProperty("storedshipid")]
         public int? storedshipid { get; private set; }
 
-        // Admin
+        // Not intended to be user facing
+        public Ship shipDefinition { get; private set; }
+        public Ship storedShipDefinition { get; private set; }
+        public Ship soldShipDefinition { get; private set; }
         public long marketId { get; private set; }
 
         public ShipPurchasedEvent(DateTime timestamp, string ship, long price, string soldShip, int? soldShipId, long? soldPrice, string storedShip, int? storedShipId, long marketId) : base(timestamp, NAME)
         {
-            this.ship = ShipDefinitions.FromEDModel(ship).model;
+            this.shipDefinition = ShipDefinitions.FromEDModel(ship);
+            this.storedShipDefinition = ShipDefinitions.FromEDModel(storedship);
+            this.soldShipDefinition = ShipDefinitions.FromEDModel(soldship);
             this.price = price;
-            this.soldship = soldShip;
             this.soldshipid = soldShipId;
             this.soldprice = soldPrice;
-            this.storedship = storedShip;
             this.storedshipid = storedShipId;
             this.marketId = marketId;
         }

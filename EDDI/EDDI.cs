@@ -46,13 +46,13 @@ namespace Eddi
         public bool inCrew { get; private set; } = false;
         public bool inHorizons { get; private set; } = true;
 
-        private bool _inBeta = false;
-        public bool inBeta
+        private bool _gameIsBeta = false;
+        public bool gameIsBeta
         {
-            get => _inBeta;
+            get => _gameIsBeta;
             private set
             {
-                _inBeta = value;
+                _gameIsBeta = value;
                 CompanionAppService.Instance.inBeta = value;
             }
         }
@@ -157,8 +157,8 @@ namespace Eddi
                 Cmdr = new Commander();
                 // Set up the Elite configuration
                 EliteConfiguration eliteConfiguration = EliteConfiguration.FromFile();
-                inBeta = eliteConfiguration.Beta;
-                Logging.Info(inBeta ? "On beta" : "On live");
+                gameIsBeta = eliteConfiguration.Beta;
+                Logging.Info(gameIsBeta ? "On beta" : "On live");
                 inHorizons = eliteConfiguration.Horizons;
 
                 // Retrieve commander preferences
@@ -238,13 +238,15 @@ namespace Eddi
             }
         }
 
+        public bool EddiIsBeta() => Constants.EDDI_VERSION.phase < Utilities.Version.TestPhase.rc;
+
         public bool ShouldUseTestEndpoints()
         {
 #if DEBUG
             return true;
 #else
             // use test endpoints if the game is in beta or EDDI is not release candidate or final
-            return EDDI.Instance.inBeta || (Constants.EDDI_VERSION.phase < Utilities.Version.TestPhase.rc);
+            return EDDI.Instance.gameIsBeta || EddiIsBeta();
 #endif
         }
 
@@ -844,6 +846,34 @@ namespace Eddi
                     {
                         passEvent = eventSystemScanComplete((SystemScanComplete)@event);
                     }
+                    else if (@event is PowerplayEvent)
+                    {
+                        passEvent = eventPowerplay((PowerplayEvent)@event);
+                    }
+                    else if (@event is PowerDefectedEvent)
+                    {
+                        passEvent = eventPowerDefected((PowerDefectedEvent)@event);
+                    }
+                    else if (@event is PowerJoinedEvent)
+                    {
+                        passEvent = eventPowerJoined((PowerJoinedEvent)@event);
+                    }
+                    else if (@event is PowerLeftEvent)
+                    {
+                        passEvent = eventPowerLeft((PowerLeftEvent)@event);
+                    }
+                    else if (@event is PowerPreparationVoteCast)
+                    {
+                        passEvent = eventPowerPreparationVoteCast((PowerPreparationVoteCast)@event);
+                    }
+                    else if (@event is PowerSalaryClaimedEvent)
+                    {
+                        passEvent = eventPowerSalaryClaimed((PowerSalaryClaimedEvent)@event);
+                    }
+                    else if (@event is PowerVoucherReceivedEvent)
+                    {
+                        passEvent = eventPowerVoucherReceived((PowerVoucherReceivedEvent)@event);
+                    }
 
                     // Additional processing is over, send to the event responders if required
                     if (passEvent)
@@ -866,6 +896,85 @@ namespace Eddi
                     // to the EDDN responder to maintain it's integrity.
                     Instance.ObtainResponder("EDDN responder").Handle(@event);
                 }
+            }
+        }
+
+        private bool eventPowerVoucherReceived(PowerVoucherReceivedEvent @event)
+        {
+            Cmdr.Power = @event.Power;
+            return true;
+        }
+
+        private bool eventPowerSalaryClaimed(PowerSalaryClaimedEvent @event)
+        {
+            Cmdr.Power = @event.Power;
+            return true;
+        }
+
+        private bool eventPowerPreparationVoteCast(PowerPreparationVoteCast @event)
+        {
+            Cmdr.Power = @event.Power;
+            return true;
+        }
+
+        private bool eventPowerLeft(PowerLeftEvent @event)
+        {
+            Cmdr.Power = Power.None;
+            Cmdr.powermerits = null;
+            Cmdr.powerrating = 0;
+            return true;
+        }
+
+        private bool eventPowerJoined(PowerJoinedEvent @event)
+        {
+            Cmdr.Power = @event.Power;
+            Cmdr.powermerits = 0;
+            Cmdr.powerrating = 1;
+            return true;
+        }
+
+        private bool eventPowerDefected(PowerDefectedEvent @event)
+        {
+            Cmdr.Power = @event.toPower;
+            // Merits are halved upon defection
+            Cmdr.powermerits = (int)Math.Round((double)Cmdr.powermerits / 2, 0);
+            if (Cmdr.powermerits > 10000)
+            {
+                Cmdr.powerrating = 4;
+            }
+            if (Cmdr.powermerits > 1500)
+            {
+                Cmdr.powerrating = 3;
+            }
+            if (Cmdr.powermerits > 750)
+            {
+                Cmdr.powerrating = 2;
+            }
+            if (Cmdr.powermerits > 100)
+            {
+                Cmdr.powerrating = 1;
+            }
+            else
+            {
+                Cmdr.powerrating = 0;
+            }
+            return true;
+        }
+
+        private bool eventPowerplay(PowerplayEvent @event)
+        {
+            if (Cmdr.powermerits is null)
+            {
+                // Per the journal, this is written at startup. In actuality, it can also be written whenever switching FSD states
+                // and needs to be filtered to prevent redundant outputs.
+                Cmdr.Power = @event.Power;
+                Cmdr.powerrating = @event.rank;
+                Cmdr.powermerits = @event.merits;
+                return true;
+            }
+            else
+            {
+                return false;
             }
         }
 
@@ -1087,6 +1196,10 @@ namespace Eddi
                     updateSquadronData(squadronFaction, CurrentStarSystem.systemname);
                 }
             }
+
+            // (When pledged) Powerplay information
+            CurrentStarSystem.Power = theEvent.Power is null ? CurrentStarSystem.Power : theEvent.Power;
+            CurrentStarSystem.powerState = theEvent.powerState is null ? CurrentStarSystem.powerState : theEvent.powerState;
 
             if (theEvent.docked || theEvent.bodytype.ToLowerInvariant() == "station")
             {
@@ -1504,7 +1617,7 @@ namespace Eddi
         {
             // Test whether we're in beta by checking the filename, version described by the header, 
             // and certain version / build combinations
-            inBeta =
+            gameIsBeta =
                 (
                     @event.filename.Contains("Beta") ||
                     @event.version.Contains("Beta") ||
@@ -1516,9 +1629,9 @@ namespace Eddi
                         )
                     )
                 );
-            Logging.Info(inBeta ? "On beta" : "On live");
+            Logging.Info(gameIsBeta ? "On beta" : "On live");
             EliteConfiguration config = EliteConfiguration.FromFile();
-            config.Beta = inBeta;
+            config.Beta = gameIsBeta;
             config.ToFile();
 
             return true;
@@ -1586,6 +1699,10 @@ namespace Eddi
                 };
                 CurrentStarSystem.AddOrUpdateBody(CurrentStellarBody);
             }
+
+            // (When pledged) Powerplay information
+            CurrentStarSystem.Power = theEvent.Power is null ? CurrentStarSystem.Power : theEvent.Power;
+            CurrentStarSystem.powerState = theEvent.powerState is null ? CurrentStarSystem.powerState : theEvent.powerState;
 
             // Update to most recent information
             CurrentStarSystem.visitLog.Add(theEvent.timestamp);

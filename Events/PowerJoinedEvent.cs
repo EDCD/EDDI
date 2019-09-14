@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EddiDataDefinitions;
+using System;
 using System.Collections.Generic;
 
 namespace EddiEvents
@@ -16,11 +17,15 @@ namespace EddiEvents
             VARIABLES.Add("power", "The name of the power that the commander has joined");
         }
 
-        public string power { get; private set; }
+        public string power => (Power ?? Power.None).localizedName;
 
-        public PowerJoinedEvent(DateTime timestamp, string power) : base(timestamp, NAME)
+        // Not intended to be user facing
+
+        public Power Power { get; private set; }
+
+        public PowerJoinedEvent(DateTime timestamp, Power Power) : base(timestamp, NAME)
         {
-            this.power = power;
+            this.Power = Power;
         }
     }
 }

@@ -47,6 +47,7 @@ Any values might be missing, depending on EDDI's configuration.
     - `squadronfaction` the faction within the squadron system to which the commander's squadron is aligned
     - `friends` the commander's friends observed during the play session (this is a list of Friend objects)
     - `engineers` the commander's relations with engineers, including any ranks or progression recorded during the play session (this is a list of Engineer objects)
+    - `power` (if pledged) the power which the commander serves
 
 ### Engineer
 
@@ -263,6 +264,33 @@ Details of ship target data, within the `shiptargets` object.
     - `power` power ( Aisling Duval, Yuri Grom, Denton Patreus, etc) to which the pilot is pledged
     - `legalstatus` the legal status (clean, enemy, wanted, warrant, etc) of the pilot
     - `bounty` total amount of bounties assigned to the pilot
+
+---
+
+## Inara
+
+Details of any available commander records from https://inara.cz, within the `inaracmdr` object.
+Some values may be missing, depending on the completeness of the records and on the commander's sharing settings on https://inara.cz.
+
+    - `username` The commander's Inara username
+    - `commandername` The commander name
+    - `commanderranks` The commander's last reported ranks (this is a list of `inaracmdrranks` objects)
+    - `preferredallegiance` The commander's last reported preferred allegiance
+    - `preferredpower` The commander's last reported preferred allegiance
+    - `squadron` The commander's last reported Inara squadron (this is an `inaracmdrsquadron` object)
+    - `preferredrole` The commander's last reported in-game role
+    - `url` The url of the commander's profile on https://inara.cz
+
+### InaraCmdrRanks
+    - `rank` The name of the rank
+    - `rankvalue` The rank as an integer value    
+    - `progress` The process which has been made toward's the commander's next advancement in the rank
+
+### InaraCmdrSquadron
+    - `name` The commander's last reported squadron name
+    - `memberscount` The commander's squadron's last reported membership count
+    - `squadronrank` The commander's last reported rank with their Inara squadron
+    - `url` The url of the commander's squadron's profile on https://inara.ca
 
 ---
 

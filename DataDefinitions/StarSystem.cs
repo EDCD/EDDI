@@ -109,10 +109,17 @@ namespace EddiDataDefinitions
         [JsonIgnore]
         public string security => (securityLevel ?? SecurityLevel.None).localizedName;
 
+        /// <summary> The powerplay power exerting influence within the system (null if contested)</summary>
         public Power Power { get; set; }
+
         [JsonIgnore]
         public string power => (Power ?? Power.None).localizedName;
-        public string powerstate { get; set; }
+
+        /// <summary> The state of powerplay within the system </summary>
+        public PowerplayState powerState { get; set; }
+
+        [JsonIgnore]
+        public string powerstate => (powerState ?? PowerplayState.None).localizedName;
 
         [JsonIgnore]
         public string state => (Faction?.presences.FirstOrDefault(p => p.systemName == systemname)?.FactionState ?? FactionState.None).localizedName;
@@ -186,7 +193,7 @@ namespace EddiDataDefinitions
 
         /// <summary>Whether a system scan has already been completed for this system in the current play session</summary>
         [JsonIgnore]
-        public bool systemScanCompleted;
+        public bool systemScanCompleted;     
 
         // Not intended to be user facing - materials available within the system
         [JsonIgnore]

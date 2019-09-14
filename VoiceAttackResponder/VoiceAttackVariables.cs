@@ -533,6 +533,7 @@ namespace EddiVoiceAttackResponder
                 vaProxy.SetText("Squadron allegiance", cmdr?.squadronallegiance?.localizedName);
                 vaProxy.SetText("Squadron power", cmdr?.squadronpower?.localizedName);
                 vaProxy.SetText("Squadron faction", cmdr?.squadronfaction);
+                vaProxy.SetText("Power", cmdr?.Power?.localizedName);
 
                 // Backwards-compatibility with 1.x
                 vaProxy.SetText("System rank", cmdr?.title);

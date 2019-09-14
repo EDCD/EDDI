@@ -11,6 +11,26 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Fixed inadvertently disabled hyperlink "Read about the speech responder's functions here".
 
 ### 3.4.3
+### Development
+  * Core
+    * Added new `Inara Responder`.
+  * Speech responder
+    * The `Location` and `Jumped` events contain new properties `power` and `powerstate` (if pledged). 
+    * Added new event `Commander loading`, triggered at the very beginning of loading a game.
+    * Added new event `Commander reputation`, triggered when your reputation is reported.
+    * Added new event `Statistics`, triggered while loading a game.
+    * Added new event `Powerplay`, triggered while loading the game (if pledged).
+    * Updated the `Commander continued` event with new properties `startlanded` and `startdead` (true if starting the game either landed or dead, respectively).
+    * Updated the `Community goal` event with new properties `maxtier` and `maxtierrewards`.
+    * Updated the `System report` script to enhance the description of powerplay status.
+    * Updated the `Engineer progressed` event to stay silent by default when written at startup (with empty values, signaling that engineer data has been loaded).
+    * Updated the `Bodies mapped` script to correct a typo.
+  * Speech service
+    * Added new function `InaraDetails` for looking up commander details on https://inara.cz. 
+  * VoiceAttack responder
+    * Added new plugin function `inara`, allowing commanders to look up the Inara profiles of other commanders in their browsers.
+
+### 3.4.3
   * Core
     * Removed in-process .dll accidentally included with release 3.4.3-b1.
 

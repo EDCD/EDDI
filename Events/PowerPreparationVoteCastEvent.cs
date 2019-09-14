@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EddiDataDefinitions;
+using System;
 using System.Collections.Generic;
 
 namespace EddiEvents
@@ -18,15 +19,19 @@ namespace EddiEvents
             VARIABLES.Add("amount", "The number of votes cast for the system");
         }
 
-        public string power { get; private set; }
+        public string power => (Power ?? Power.None).localizedName;
 
         public string system { get; private set; }
 
         public int amount { get; private set; }
 
-        public PowerPreparationVoteCast(DateTime timestamp, string power, string system, int amount) : base(timestamp, NAME)
+        // Not intended to be user facing
+
+        public Power Power { get; private set; }
+
+        public PowerPreparationVoteCast(DateTime timestamp, Power Power, string system, int amount) : base(timestamp, NAME)
         {
-            this.power = power;
+            this.Power = Power;
             this.system = system;
             this.amount = amount;
         }

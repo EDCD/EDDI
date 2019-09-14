@@ -27,30 +27,34 @@ namespace EddiShipMonitor
         public int? shipid { get; private set; }
 
         [JsonProperty("ship")]
-        public string ship { get; private set; }
+        public string ship => shipDefinition?.model;
 
         [JsonProperty("soldshipid")]
         public int? soldshipid { get; private set; }
 
         [JsonProperty("soldship")]
-        public string soldship { get; private set; }
+        public string soldship => soldShipDefinition?.model;
 
         [JsonProperty("storedshipid")]
         public int? storedshipid { get; private set; }
 
         [JsonProperty("storedship")]
-        public string storedship { get; private set; }
+        public string storedship => storedShipDefinition?.model;
 
-        // Admin
+        // Not intended to be user facing
+        public Ship shipDefinition { get; private set; }
+        public Ship storedShipDefinition { get; private set; }
+        public Ship soldShipDefinition { get; private set; }
+
         public long marketId { get; private set; }
 
         public ShipSwappedEvent(DateTime timestamp, string ship, int shipId, string soldship, int? soldshipid, string storedship, int? storedshipid, long marketId) : base(timestamp, NAME)
         {
-            this.ship = ShipDefinitions.FromEDModel(ship).model;
+            this.shipDefinition = ShipDefinitions.FromEDModel(ship);
+            this.storedShipDefinition = ShipDefinitions.FromEDModel(storedship);
+            this.soldShipDefinition = ShipDefinitions.FromEDModel(soldship);
             this.shipid = shipId;
-            this.soldship = soldship;
             this.soldshipid = soldshipid;
-            this.storedship = storedship;
             this.storedshipid = storedshipid;
             this.marketId = marketId;
         }

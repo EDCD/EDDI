@@ -87,7 +87,7 @@ namespace EddiEdsmResponder
                 return;
             }
 
-            if (EDDI.Instance.inBeta)
+            if (EDDI.Instance.gameIsBeta)
             {
                 // We don't send data whilst in beta
                 return;
@@ -106,7 +106,7 @@ namespace EddiEdsmResponder
                 {
                     Logging.Error("Failed to prepare event meta-data for submittal to EDSM", ex);
                 }
-                if (eventData != null && !EDDI.Instance.inBeta)
+                if (eventData != null && !EDDI.Instance.gameIsBeta)
                 {
                     StarMapService.Instance.sendEvent(eventData);
                 }

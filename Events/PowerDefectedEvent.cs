@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EddiDataDefinitions;
+using System;
 using System.Collections.Generic;
 
 namespace EddiEvents
@@ -17,14 +18,19 @@ namespace EddiEvents
             VARIABLES.Add("topower", "The name of the power that the commander has defected to");
         }
 
-        public string frompower { get; private set; }
+        public string frompower => (fromPower ?? Power.None)?.localizedName;
 
-        public string topower { get; private set; }
+        public string topower => (toPower ?? Power.None)?.localizedName;
 
-        public PowerDefectedEvent(DateTime timestamp, string frompower, string topower) : base(timestamp, NAME)
+        // Not intended to be user facing
+
+        public Power fromPower { get; private set; }
+        public Power toPower { get; private set; }
+
+        public PowerDefectedEvent(DateTime timestamp, Power fromPower, Power toPower) : base(timestamp, NAME)
         {
-            this.frompower = frompower;
-            this.topower = topower;
+            this.fromPower = fromPower;
+            this.toPower = toPower;
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using EddiEvents;
+﻿using EddiDataDefinitions;
+using EddiEvents;
 using System;
 using System.Collections.Generic;
 
@@ -18,13 +19,17 @@ namespace EddiCargoMonitor
             VARIABLES.Add("amount", "The number of credits spent fast tracking");
         }
 
-        public string power { get; }
+        public string power => (Power ?? Power.None).localizedName;
 
-        public int amount { get; }
+        public int amount { get; private set; }
+        
+        // Not intended to be user facing
 
-        public PowerCommodityFastTrackedEvent(DateTime timestamp, string power, int amount) : base(timestamp, NAME)
+        public Power Power { get; private set; }
+
+        public PowerCommodityFastTrackedEvent(DateTime timestamp, Power Power, int amount) : base(timestamp, NAME)
         {
-            this.power = power;
+            this.Power = Power;
             this.amount = amount;
         }
     }

@@ -74,6 +74,13 @@
     <Compile Include="BlueprintTemplate.cs" />
     <Compile Include="BodyType.cs" />
     <Compile Include="CargoInfo.cs" />
+    <Compile Include="PowerplayState.cs" />
+    <Compile Include="Properties\PowerplayState.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PowerplayState.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Statistics.cs" />
     <Compile Include="Conflict.cs" />
     <Compile Include="LoadoutDescription.cs" />
     <Compile Include="Properties\LoadoutDescription.Designer.cs">
@@ -552,6 +559,10 @@
     <EmbeddedResource Include="Properties\Rarities.ru.resx" />
     <EmbeddedResource Include="Properties\ReserveLevel.pt-BR.resx" />
     <EmbeddedResource Include="Properties\ReserveLevel.ru.resx" />
+    <EmbeddedResource Include="Properties\PowerplayState.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>PowerplayState.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\RingCompositions.pt-BR.resx" />
     <EmbeddedResource Include="Properties\RingCompositions.ru.resx" />
     <EmbeddedResource Include="Properties\SecurityLevels.pt-BR.resx" />

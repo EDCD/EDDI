@@ -33,7 +33,7 @@
       "enabled": true,
       "priority": 3,
       "responder": false,
-      "script": "{_ Fetch from Context _}\r\n{set reportSystem to SystemDetails(state.eddi_context_system_name)}\r\n\r\n{_ Build a list of scanned bodies _}\r\n\r\n{set mappedList to []}\r\n{for body in reportSystem.bodies:\r\n   {if body.mapped:\r\n       {set mappedList to cat(mappedList, [P(body.shortname)])} \r\n   }\r\n}\r\n\r\n{_ Begin speaking _}\r\n\r\n{if len(mappedList) > 0:\r\n    {if len(mappedList) = 1: Body |else: Bodies}\r\n    {List(mappedList)}\r\n    {if len(mappedList) = 1: has |else: have }\r\n    {set already to Occasionall(2, \"already\")}\r\n    {OneOf(\"{already} been mapped\", \"been mapped {already}\")}.\r\n|else:\r\n    You have yet to map any bodies in this system.\r\n}\r\n",
+      "script": "{_ Fetch from Context _}\r\n{set reportSystem to SystemDetails(state.eddi_context_system_name)}\r\n\r\n{_ Build a list of scanned bodies _}\r\n\r\n{set mappedList to []}\r\n{for body in reportSystem.bodies:\r\n   {if body.mapped:\r\n       {set mappedList to cat(mappedList, [P(body.shortname)])} \r\n   }\r\n}\r\n\r\n{_ Begin speaking _}\r\n\r\n{if len(mappedList) > 0:\r\n    {if len(mappedList) = 1: Body |else: Bodies}\r\n    {List(mappedList)}\r\n    {if len(mappedList) = 1: has |else: have }\r\n    {set already to Occasionally(2, \"already\")}\r\n    {OneOf(\"{already} been mapped\", \"been mapped {already}\")}.\r\n|else:\r\n    You have yet to map any bodies in this system.\r\n}\r\n",
       "default": true,
       "name": "Bodies mapped",
       "description": "Reports all the bodies mapped in this system so far"
@@ -236,6 +236,15 @@
       "name": "Commander continued",
       "description": "Triggered when you continue an existing game"
     },
+    "Commander loading": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "default": true,
+      "name": "Commander loading",
+      "description": "Triggered at the very beginning of loading a game"
+    },
     "Commander progress": {
       "enabled": true,
       "priority": 3,
@@ -253,6 +262,15 @@
       "default": true,
       "name": "Commander ratings",
       "description": "Triggered when your ratings are reported"
+    },
+    "Commander reputation": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{_ A note on thresholds... _}\r\n{_ -100.. -90: hostile _}\r\n{_ -90.. -35: unfriendly _}\r\n{_ -35..+ 4: neutral _}\r\n{_ +4..+35: cordial _}\r\n{_ +35..+90: friendly _}\r\n{_ +90..+100: allied _}\r\n",
+      "default": true,
+      "name": "Commander reputation",
+      "description": "Triggered when your reputation is reported"
     },
     "Commander started": {
       "enabled": true,
@@ -645,7 +663,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{if event.progresstype = \"Stage\":\r\n    {if event.stage = \"Known\":\r\n        The Engineer {event.engineer} {OneOf(\"has sent you a message.\", \"has made contact.\")}\r\n    |elif event.stage = \"Invited\":\r\n        {event.engineer} has invited you to their base.\r\n    |elif event.stage = \"Unlocked\":\r\n        {event.engineer} has granted you access to their services.\r\n    |elif event.stage = \"Barred\":\r\n        {event.engineer} has barred you.\r\n    }\r\n|else:\r\n    {event.engineer} has granted you access to grade {event.rank} blueprints.\r\n}\r\n",
+      "script": "{if event.progresstype = \"Stage\":\r\n\r\n    {if event.stage = \"Known\":\r\n        The Engineer {event.engineer} has sent you a message.\r\n    |elif event.stage = \"Invited\":\r\n        Workshop invitation received from {event.engineer}.\r\n    |elif event.stage = \"Unlocked\":\r\n        {event.engineer} has granted you access to workshop facilities.\r\n    |elif event.stage = \"Barred\":\r\n        {event.engineer} has {OneOf(\"barred\", \"restricted\")} your access to workshop facilities.\r\n    }\r\n\r\n|elif event.Engineer:\r\n\r\n    {event.engineer} has\r\n    {OneOf(\"given\", \"granted\")}\r\n    you access to grade {event.rank} blueprints.\r\n\r\n}",
       "default": true,
       "name": "Engineer progressed",
       "description": "Triggered when you reach a new rank with an engineer"
@@ -1577,6 +1595,15 @@
       "name": "Power voucher received",
       "description": "Triggered when a commander turns in combat vouchers against an opposing power"
     },
+    "Powerplay": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "You are pledged to {P(event.power)}. \r\nYou have served for \r\n{if event.timepledgedweeks > 1:\r\n    {Humanise(event.timepledgedweeks)} weeks \r\n|elif event.timepledgedweeks = 1:\r\n    one week \r\n|elif event.timepledgeddays > 1:\r\n    {Humanise(event.timepledgeddays)} days\r\n|elif event.timepledgeddays = 1:\r\n    one day\r\n|else:\r\n    less than one day\r\n}\r\nand are at rank {event.rank} with \r\n{if event.merits > 0:\r\n    {Humanise(event.merits)}\r\n|else:\r\n    no\r\n}\r\naccumulated merits.\r\n",
+      "default": true,
+      "name": "Powerplay",
+      "description": "Triggered periodically when pledged to a power"
+    },
     "Repair drone": {
       "enabled": true,
       "priority": 3,
@@ -1991,6 +2018,15 @@
       "name": "Station report",
       "description": "Function to report on the details of the current station"
     },
+    "Statistics": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "default": true,
+      "name": "Statistics",
+      "description": "Statistics provided at the beginning of a game session"
+    },
     "Swapout check": {
       "enabled": true,
       "priority": 3,
@@ -2031,7 +2067,7 @@
       "enabled": true,
       "priority": 3,
       "responder": false,
-      "script": "{_ Fetch from context }\r\n{set reportsystem to SystemDetails(state.eddi_context_system_system)}\r\n\r\n{if !reportsystem.name || reportbody.name = \"\":\r\n    I'm not sure which system you are asking about.\r\n|else:\r\n    {P(reportsystem.name)} is\r\n\r\n    {if reportsystem.population && reportsystem.population > 0:\r\n        {if reportsystem.allegiance = \"Federation\":\r\n            a Federation\r\n        |elif reportsystem.allegiance = \"Empire\":\r\n            an Empire\r\n        |else:\r\n            an independent\r\n        }\r\n        {if reportsystem.government != \"None\":\r\n            {reportsystem.government}\r\n        |else:\r\n            system\r\n        }\r\n        {OneOf(\"of\", \"with a population of\", \"home to\", \"supporting\")} {Humanise(reportsystem.population)} {OneOf(\"people\", \"souls\")}\r\n        {if reportsystem.Power.invariantName != \"None\":\r\n            , {OneOf(\"aligned to\", \"allied with\", \"controlled by\")} {P(reportsystem.power)}\r\n        }.\r\n\r\n        {if reportsystem.faction:\r\n          {P(reportsystem.faction)} is the {OneOf(\"controlling\", \"local\", \"immediate\")} {OneOf(\"power\", \"faction\")}.\r\n        }\r\n\r\n        {if len(reportsystem.stations) = 0:\r\n          There are no stations present\r\n        |else:\r\n            {if len(reportsystem.orbitalstations) = 0:\r\n                {if len(reportsystem.planetarystations) = 1:\r\n                    There is {OneOf(\"a single\", \"a lone\", \"just one\", \"one\")} planetary station\r\n                |else:\r\n                    There are {len(reportsystem.planetarystations)} planetary stations\r\n                }\r\n            |elif len(reportsystem.orbitalstations) = 1:\r\n                There is {OneOf(\"a single\", \"a lone\", \"just one\", \"one\")} orbital station\r\n                {if len(reportsystem.planetarystations) = 1:\r\n                    and {OneOf(\"a lone\", \"a single\", \"one\")} planetary station\r\n                |elif len(reportsystem.planetarystations) > 1:\r\n                    and {len(reportsystem.planetarystations)} planetary stations\r\n                }\r\n            |else:\r\n                There are {len(reportsystem.orbitalstations)} orbital stations\r\n                {if len(reportsystem.planetarystations) = 1:\r\n                    and {OneOf(\"a lone\", \"a single\", \"one\")} planetary station\r\n                |elif len(reportsystem.planetarystations) > 1:\r\n                    and {len(reportsystem.planetarystations)} planetary stations\r\n                }\r\n            }\r\n        }\r\n        in this system\r\n    |else:\r\n       unpopulated\r\n   }.\r\n}",
+      "script": "{_ Fetch from context }\r\n{set reportsystem to SystemDetails(state.eddi_context_system_system)}\r\n\r\n{if !reportsystem.name || reportbody.name = \"\":\r\n    I'm not sure which system you are asking about.\r\n|else:\r\n    {P(reportsystem.name)} is\r\n\r\n    {if reportsystem.population && reportsystem.population > 0:\r\n        {if reportsystem.allegiance = \"Federation\":\r\n            a Federation\r\n        |elif reportsystem.allegiance = \"Empire\":\r\n            an Empire\r\n        |else:\r\n            an independent\r\n        }\r\n        {if reportsystem.government != \"None\":\r\n            {reportsystem.government}\r\n        |else:\r\n            system\r\n        }\r\n        {OneOf(\"of\", \"with a population of\", \"home to\", \"supporting\")} {Humanise(reportsystem.population)} {OneOf(\"people\", \"souls\")}\r\n        {if reportsystem.powerState.invariantName != \"None\":\r\n            {if reportsystem.powerState.invariantName = \"Home System\"\r\n                , and is home to {P(reportsystem.power)}\r\n            |elif reportsystem.powerState.invariantName = \"Control\"\r\n                , and is {OneOf(\"allied with\", \"controlled by\")} {P(reportsystem.power)}\r\n            |elif reportsystem.powerState.invariantName = \"Exploited\"\r\n                , and is {OneOf(\"aligned to\", \"within the influence of\")} {P(reportsystem.power)}\r\n            |elif reportsystem.powerState.invariantName = \"Contested\":\r\n                , and is contested by multiple powers\r\n            }\r\n        }.\r\n\r\n        {if reportsystem.faction:\r\n          {P(reportsystem.faction)} is the {OneOf(\"controlling\", \"local\", \"immediate\")} {OneOf(\"power\", \"faction\")}.\r\n        }\r\n\r\n        {if len(reportsystem.stations) = 0:\r\n          There are no stations present\r\n        |else:\r\n            {if len(reportsystem.orbitalstations) = 0:\r\n                {if len(reportsystem.planetarystations) = 1:\r\n                    There is {OneOf(\"a single\", \"a lone\", \"just one\", \"one\")} planetary station\r\n                |else:\r\n                    There are {len(reportsystem.planetarystations)} planetary stations\r\n                }\r\n            |elif len(reportsystem.orbitalstations) = 1:\r\n                There is {OneOf(\"a single\", \"a lone\", \"just one\", \"one\")} orbital station\r\n                {if len(reportsystem.planetarystations) = 1:\r\n                    and {OneOf(\"a lone\", \"a single\", \"one\")} planetary station\r\n                |elif len(reportsystem.planetarystations) > 1:\r\n                    and {len(reportsystem.planetarystations)} planetary stations\r\n                }\r\n            |else:\r\n                There are {len(reportsystem.orbitalstations)} orbital stations\r\n                {if len(reportsystem.planetarystations) = 1:\r\n                    and {OneOf(\"a lone\", \"a single\", \"one\")} planetary station\r\n                |elif len(reportsystem.planetarystations) > 1:\r\n                    and {len(reportsystem.planetarystations)} planetary stations\r\n                }\r\n            }\r\n        }\r\n        in this system\r\n    |else:\r\n       unpopulated\r\n   }.\r\n}",
       "default": true,
       "name": "System report",
       "description": "Function to report on the details of the contextual star system"
