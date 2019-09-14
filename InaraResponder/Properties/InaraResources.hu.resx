@@ -117,64 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="EmpireFour" xml:space="preserve">
-    <value>raggi laser gimballati e dispersore di calore</value>
-  </data>
-  <data name="EmpireOne" xml:space="preserve">
-    <value>raggi laser a sospensione fissa e dispersore di calore</value>
-  </data>
-  <data name="EmpireThree" xml:space="preserve">
-    <value>laser ad impulso a sospensione fissa e punto di difesa automatizzata</value>
-  </data>
-  <data name="EmpireTwo" xml:space="preserve">
-    <value>ripetitore al plasma a sospensione fissa e dispersore di bersagli fantasma</value>
-  </data>
-  <data name="EmpireZero" xml:space="preserve">
-    <value>laser ad Impulso gimballato e dispersore di calore</value>
-  </data>
-  <data name="FederationFour" xml:space="preserve">
-    <value>laser gimballato e dispersore di calore</value>
-  </data>
-  <data name="FederationOne" xml:space="preserve">
-    <value>laser ad impulso a sospensione fissa e dispersore di calore</value>
-  </data>
-  <data name="FederationThree" xml:space="preserve">
-    <value>ripetitore al plasma a sospensione fissa e punto di difesa automatizzata</value>
-  </data>
-  <data name="FederationTwo" xml:space="preserve">
-    <value>cannone a ripetizione a sospensione fissa e dispersore di bersagli fantasma</value>
-  </data>
-  <data name="FederationZero" xml:space="preserve">
-    <value>laser ad impulso gimballato e dispersore di calore</value>
-  </data>
-  <data name="GdnHybridV1" xml:space="preserve">
-    <value>auto cannone al plasma</value>
-  </data>
-  <data name="GdnHybridV2" xml:space="preserve">
-    <value>lancia frammenti</value>
-  </data>
-  <data name="GdnHybridV3" xml:space="preserve">
-    <value>cannone gauss focalizzato</value>
-  </data>
-  <data name="IndependentAT" xml:space="preserve">
-    <value>cannone a ripetizione AX a sospensione fissa</value>
-  </data>
-  <data name="IndependentFour" xml:space="preserve">
-    <value>laser gimballato e dispersore di calore</value>
-  </data>
-  <data name="IndependentOne" xml:space="preserve">
-    <value>laser a sospensione fissa e dispersore di calore</value>
-  </data>
-  <data name="IndependentThree" xml:space="preserve">
-    <value>laser ad impulso a sospensione fissa e punto di difesa automatizzata</value>
-  </data>
-  <data name="IndependentTwo" xml:space="preserve">
-    <value>ripetitore al plasma a sospensione fissa e dispersore di bersagli fantasma</value>
-  </data>
-  <data name="IndependentZero" xml:space="preserve">
-    <value>laser ad Impulso gimballato e dispersore di calore</value>
-  </data>
-  <data name="Starter" xml:space="preserve">
-    <value>doppio ripetitore al plasma</value>
-  </data>
+  
+  
+  
+  
+  
 </root>

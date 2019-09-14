@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AdvancedPlasmaAccelerator" xml:space="preserve">
-    <value>Acceleratore di Plasma Avanzato</value>
+    <value>Acceleratore al Plasma Avanzato</value>
     <comment>Module AdvancedPlasmaAccelerator</comment>
   </data>
   <data name="ATMulticannon" xml:space="preserve">
@@ -130,7 +130,7 @@
     <comment>Module AutoField_MaintenanceUnit</comment>
   </data>
   <data name="AXMissileRack" xml:space="preserve">
-    <value>Tubi di lancio missilistici A X</value>
+    <value>Porta Missili AX</value>
     <comment>Module AXMissileRack</comment>
   </data>
   <data name="AXMulti_Cannon" xml:space="preserve">
@@ -150,7 +150,7 @@
     <comment>Module Bi_WeaveShieldGenerator</comment>
   </data>
   <data name="BurstLaser" xml:space="preserve">
-    <value>Laser a raffica</value>
+    <value>Laser Esplosivo</value>
     <comment>Module BurstLaser</comment>
   </data>
   <data name="BusinessClassPassengerCabin" xml:space="preserve">
@@ -246,7 +246,7 @@
     <comment>Module FragmentCannon</comment>
   </data>
   <data name="FrameShiftDriveInterdictor" xml:space="preserve">
-    <value>Disattivatore di Motore a Modulazione di Sistema</value>
+    <value>Interdittore FSD</value>
     <comment>Module FrameShiftDriveInterdictor</comment>
   </data>
   <data name="FrameShiftDrive" xml:space="preserve">
@@ -266,7 +266,7 @@
     <comment>Module FuelTank</comment>
   </data>
   <data name="FuelTransferLimpetController" xml:space="preserve">
-    <value>Controllore Automi di Trasferimento Carburante</value>
+    <value>Controllore Droni di Trasferimento Carburante</value>
     <comment>Module FuelTransferLimpetController</comment>
   </data>
   <data name="GuardianGaussCannon" xml:space="preserve">
@@ -282,7 +282,7 @@
     <comment>Module GuardianPowerPlant</comment>
   </data>
   <data name="HatchBreakerLimpetController" xml:space="preserve">
-    <value>Controllore Automi di Manomissione Portelli</value>
+    <value>Controllore Droni di Manomissione Portelli</value>
     <comment>Module HatchBreakerLimpetController</comment>
   </data>
   <data name="HeatSinkLauncher" xml:space="preserve">
@@ -306,7 +306,7 @@
     <comment>Module KillWarrantScanner</comment>
   </data>
   <data name="LifeSupport" xml:space="preserve">
-    <value>Supporto Vita</value>
+    <value>Supporto Vitale</value>
     <comment>Module LifeSupport</comment>
   </data>
   <data name="LightweightAlloy" xml:space="preserve">
@@ -374,11 +374,11 @@
     <comment>Module PlanetaryVehicleHangar</comment>
   </data>
   <data name="PlasmaAccelerator" xml:space="preserve">
-    <value>Acceleratore di Plasma</value>
+    <value>Acceleratore al Plasma</value>
     <comment>Module PlasmaAccelerator</comment>
   </data>
   <data name="PointDefence" xml:space="preserve">
-    <value>Difesa anti Aerea</value>
+    <value>Punto di Difesa Automatizzata</value>
     <comment>Module PointDefence</comment>
   </data>
   <data name="PowerDistributor" xml:space="preserve">
@@ -394,7 +394,7 @@
     <comment>Module PrismaticShieldGenerator</comment>
   </data>
   <data name="ProspectorLimpetController" xml:space="preserve">
-    <value>Controllore Automi di Prospezione</value>
+    <value>Controllore Droni di Prospezione</value>
     <comment>Module ProspectorLimpetController</comment>
   </data>
   <data name="PulseLaser" xml:space="preserve">
@@ -410,7 +410,7 @@
     <comment>Module ReactiveSurfaceComposite</comment>
   </data>
   <data name="ReconLimpetController" xml:space="preserve">
-    <value>Controllore Automi di Ricognizione</value>
+    <value>Controllore Droni di Ricognizione</value>
     <comment>Module ReconLimpetController</comment>
   </data>
   <data name="Refinery" xml:space="preserve">
@@ -426,11 +426,11 @@
     <comment>Module RemoteReleaseFlakLauncher</comment>
   </data>
   <data name="RepairLimpetController" xml:space="preserve">
-    <value>Controllore Automi di Riparazione</value>
+    <value>Controllore Droni di Riparazione</value>
     <comment>Module RepairLimpetController</comment>
   </data>
   <data name="ResearchLimpetController" xml:space="preserve">
-    <value>Controllore Automi di Ricerca</value>
+    <value>Controllore Droni di Ricerca</value>
     <comment>Module ResearchLimpetController</comment>
   </data>
   <data name="RocketPropelledFSDDisruptor" xml:space="preserve">
@@ -445,33 +445,78 @@
     <value>Incrementatore di Scudi</value>
     <comment>Module ShieldBooster</comment>
   </data>
-  
-  
-  
-  
-  
-  
+  <data name="ShieldCellBank" xml:space="preserve">
+    <value>Celle di Ricarica Scudi</value>
+    <comment>Module ShieldCellBank</comment>
+  </data>
+  <data name="ShieldGenerator" xml:space="preserve">
+    <value>Generatore di Scudi</value>
+    <comment>Module ShieldGenerator</comment>
+  </data>
+  <data name="ShockCannon" xml:space="preserve">
+    <value>Cannone a Ripetizione con Autoricarica</value>
+    <comment>Module ShockCannon</comment>
+  </data>
+  <data name="ShockMineLauncher" xml:space="preserve">
+    <value>Lancia Mine Devianti</value>
+    <comment>Module ShockMineLauncher</comment>
+  </data>
+  <data name="ShutdownFieldNeutraliser" xml:space="preserve">
+    <value>Neutralizzatore di Campo Elettro-Inibitore</value>
+    <comment>Module ShutdownFieldNeutraliser</comment>
+  </data>
+  <data name="StandardDockingComputer" xml:space="preserve">
+    <value>Computer di Attracco Standard</value>
+    <comment>Module StandardDockingComputer</comment>
+  </data>
   <data name="Thrusters" xml:space="preserve">
     <value>Propulsori</value>
     <comment>Module Thrusters</comment>
   </data>
-  
-  
-  
-  
+  <data name="TorpedoPylon" xml:space="preserve">
+    <value>Lancia Torpedo</value>
+    <comment>Module TorpedoPylon</comment>
+  </data>
+  <data name="VoicePack_Verity" xml:space="preserve">
+    <value>Verity</value>
+    <comment>Module Verity</comment>
+  </data>
+  <data name="VoicePack_Victor" xml:space="preserve">
+    <value>Victor</value>
+    <comment>Module Victor</comment>
+  </data>
+  <data name="Whitestringlights" xml:space="preserve">
+    <value>Striscia di Lucine Bianche</value>
+    <comment>Module Whitestringlights</comment>
+  </data>
   <data name="XenoScanner" xml:space="preserve">
     <value>Analizzatore Alieni</value>
     <comment>Module XenoScanner</comment>
   </data>
-  
-  
-  
+  <data name="Fixed" xml:space="preserve">
+    <value>a puntamento fisso</value>
+    <comment>Weapon mount type Fixed</comment>
+  </data>
+  <data name="Gimballed" xml:space="preserve">
+    <value>a puntamento gimballato</value>
+    <comment>Weapon mount type Gimballed</comment>
+  </data>
+  <data name="Turreted" xml:space="preserve">
+    <value>a torretta</value>
+    <comment>Weapon mount type Turreted</comment>
+  </data>
   <data name="AdvancedDiscoveryScanner" xml:space="preserve">
     <value>Scanner di Esplorazione Avanzato</value>
     <comment>Module AdvancedDiscoveryScanner</comment>
   </data>
-  
-  
+  <data name="PlasmaRepeater" xml:space="preserve">
+    <value>Ripetitore al Plasma</value>
+    <comment>Module PlasmaRepeater (fighter module)</comment>
+  </data>
+  <data name="Enforcer" xml:space="preserve">
+    <value>Cannone Coercitivo</value>
+    <comment>Module Hpt_MultiCannon_Fixed_Small_Strong</comment>
+  </data>
   <data name="GuardianFsdBooster" xml:space="preserve">
     <value>Evoluzione FSD dei Guardiani</value>
     <comment>Module GuardianFsdBooster</comment>
@@ -480,9 +525,18 @@
     <value>Distributore di Energia dei Guardiani</value>
     <comment>Module GuardianPowerDistributor</comment>
   </data>
-  
-  
-  
+  <data name="ShardCannon" xml:space="preserve">
+    <value>Cannone a Frammentazione</value>
+    <comment>Module ShardCannon</comment>
+  </data>
+  <data name="FlechetteLauncher" xml:space="preserve">
+    <value>Lancia Flechètte</value>
+    <comment>Modile FlechetteLauncher</comment>
+  </data>
+  <data name="EnzymeMissileRack" xml:space="preserve">
+    <value>Porta Missili Corrosivi</value>
+    <comment>Module EnzymeMissileRack</comment>
+  </data>
   <data name="GuardianHullReinforcement" xml:space="preserve">
     <value>Rafforzamento Chiglia dei Guardiani</value>
     <comment>Module GuardianHullReinforcement</comment>
@@ -495,20 +549,38 @@
     <value>Rafforzamento Scudi dei Guardiani</value>
     <comment>Module GuardianShieldReinforcement</comment>
   </data>
-  
+  <data name="ShipIntegrity" xml:space="preserve">
+    <value>Integrità della Nave</value>
+    <comment>This is the "Ship Integrity" field in the Advanced Repair screen</comment>
+  </data>
   <data name="PulseWave" xml:space="preserve">
     <value>Scanner ad Impulso d'Onda</value>
     <comment>Module Pulse Wave Scanner</comment>
   </data>
-  
-  
-  
+  <data name="SeismicCharge" xml:space="preserve">
+    <value>Lancia Granate Sismiche</value>
+    <comment>Module Seismic Charge</comment>
+  </data>
+  <data name="DisplacementMissile" xml:space="preserve">
+    <value>Proiettile Dislocante Iposuperficiale</value>
+    <comment>Module Displacement Missile</comment>
+  </data>
+  <data name="AbrasionBlaster" xml:space="preserve">
+    <value>Blaster Abrasivo</value>
+    <comment>Module Abrasion Blaster</comment>
+  </data>
   <data name="CompositionScanner" xml:space="preserve">
     <value>Analizzatore di Composizione</value>
     <comment>Module Composition Scanner</comment>
   </data>
-  
-  
+  <data name="SupercruiseAssist" xml:space="preserve">
+    <value>Assistente Iperguida</value>
+    <comment>Module SupercruiseAssist</comment>
+  </data>
+  <data name="AdvancedDockingComputer" xml:space="preserve">
+    <value>Computer di Attracco Avanzato</value>
+    <comment>Module AdvancedDockingComputer</comment>
+  </data>
   <data name="AdvancedMultiCannon" xml:space="preserve">
     <value>Cannone a Ripetizione Avanzato</value>
     <comment>Module Advanced Multi-Cannon (from the `Bridging the Gap` initiative)</comment>
