@@ -30,7 +30,7 @@ namespace EddiCargoMonitor
 
         public Power Power { get; private set; }
 
-        public CommodityDefinition commodityDefinition { get; private set;  }
+        public CommodityDefinition commodityDefinition { get; private set; }
 
         public PowerCommodityDeliveredEvent(DateTime timestamp, Power Power, CommodityDefinition commodity, int amount) : base(timestamp, NAME)
         {

@@ -1381,8 +1381,8 @@ namespace Eddi
             if (allowMarketUpdate)
             {
                 MarketInfoReader info = MarketInfoReader.FromFile();
-                if (info != null && info.MarketID == theEvent.marketId 
-                    && info.StarSystem == theEvent.system 
+                if (info != null && info.MarketID == theEvent.marketId
+                    && info.StarSystem == theEvent.system
                     && info.StationName == theEvent.station)
                 {
                     List<CommodityMarketQuote> quotes = new List<CommodityMarketQuote>();
@@ -1425,9 +1425,9 @@ namespace Eddi
             if (allowOutfittingUpdate)
             {
                 OutfittingInfoReader info = OutfittingInfoReader.FromFile();
-                if (info.Items != null && info.MarketID == theEvent.marketId 
-                    && info.StarSystem == theEvent.system 
-                    && info.StationName == theEvent.station 
+                if (info.Items != null && info.MarketID == theEvent.marketId
+                    && info.StarSystem == theEvent.system
+                    && info.StationName == theEvent.station
                     && info.Horizons == Instance.inHorizons)
                 {
                     List<EddiDataDefinitions.Module> modules = new List<EddiDataDefinitions.Module>();
@@ -1470,9 +1470,9 @@ namespace Eddi
             if (allowShipyardUpdate)
             {
                 ShipyardInfoReader info = ShipyardInfoReader.FromFile();
-                if (info.PriceList != null && info.MarketID == theEvent.marketId 
-                    && info.StarSystem == theEvent.system 
-                    && info.StationName == theEvent.station 
+                if (info.PriceList != null && info.MarketID == theEvent.marketId
+                    && info.StarSystem == theEvent.system
+                    && info.StationName == theEvent.station
                     && info.Horizons == Instance.inHorizons)
                 {
                     List<Ship> ships = new List<Ship>();

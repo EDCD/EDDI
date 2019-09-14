@@ -22,7 +22,7 @@ namespace EddiCargoMonitor
         public string power => (Power ?? Power.None).localizedName;
 
         public int amount { get; private set; }
-        
+
         // Not intended to be user facing
 
         public Power Power { get; private set; }

@@ -1,6 +1,5 @@
 ﻿using Eddi;
 using EddiInaraService;
-using System.Windows;
 using System.Windows.Controls;
 
 namespace EddiInaraResponder

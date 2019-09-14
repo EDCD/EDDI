@@ -244,8 +244,7 @@ namespace EddiJournalMonitor
 
                                     // Powerplay data (if pledged)
                                     Power powerplayPower = new Power();
-                                    PowerplayState powerplayState = null;
-                                    getPowerplayData(data, out powerplayPower, out powerplayState);
+                                    getPowerplayData(data, out powerplayPower, out PowerplayState powerplayState);
 
                                     events.Add(new JumpedEvent(timestamp, systemName, systemAddress, x, y, z, starName, distance, fuelUsed, fuelRemaining, boostUsed, controllingfaction, factions, conflicts, economy, economy2, security, population, destination, destDistance, powerplayPower, powerplayState) { raw = line, fromLoad = fromLogLoad });
                                 }
@@ -299,8 +298,7 @@ namespace EddiJournalMonitor
 
                                     // Powerplay data (if pledged)
                                     Power powerplayPower = new Power();
-                                    PowerplayState powerplayState = null;
-                                    getPowerplayData(data, out powerplayPower, out powerplayState);
+                                    getPowerplayData(data, out powerplayPower, out PowerplayState powerplayState);
 
                                     events.Add(new LocationEvent(timestamp, systemName, x, y, z, systemAddress, distFromStarLs, body, bodyId, bodyType, docked, station, stationtype, marketId, systemfaction, stationfaction, economy, economy2, security, population, longitude, latitude, factions, powerplayPower, powerplayState) { raw = line, fromLoad = fromLogLoad });
                                 }
@@ -2777,7 +2775,7 @@ namespace EddiJournalMonitor
                                         contribution.Add(JsonParsing.getInt(goaldata, "PlayerContribution"));
                                         contributors.Add(JsonParsing.getInt(goaldata, "NumContributors"));
                                         percentileband.Add(JsonParsing.getDecimal(goaldata, "PlayerPercentileBand"));
- 
+
                                         // If the community goal is constructed with a fixed-size top rank (ie max reward for top 10 players)
 
                                         topranksize.Add(JsonParsing.getOptionalInt(goaldata, "TopRankSize"));

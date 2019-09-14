@@ -1404,7 +1404,7 @@ namespace EddiInaraResponder
                 missionCompletedObj.TryGetValue("CommodityReward", out object commodityRewardVal);
                 if (commodityRewardVal != null)
                 {
-                    foreach (Dictionary<string, object> commodityRewardData in (List<object>) commodityRewardVal)
+                    foreach (Dictionary<string, object> commodityRewardData in (List<object>)commodityRewardVal)
                     {
                         string commodityName = JsonParsing.getString(commodityRewardData, "Name");
                         int commodityCount = JsonParsing.getInt(commodityRewardData, "Count");
@@ -1423,7 +1423,7 @@ namespace EddiInaraResponder
                 missionCompletedObj.TryGetValue("MaterialsReward", out object materialsRewardVal);
                 if (materialsRewardVal != null)
                 {
-                    foreach (Dictionary<string, object> materialRewardData in (List<object>) materialsRewardVal)
+                    foreach (Dictionary<string, object> materialRewardData in (List<object>)materialsRewardVal)
                     {
                         string materialName = JsonParsing.getString(materialRewardData, "Name");
                         int materialCount = JsonParsing.getInt(materialRewardData, "Count");

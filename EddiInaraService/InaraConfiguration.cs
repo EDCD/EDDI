@@ -30,7 +30,7 @@ namespace EddiInaraService
         /// Obtain credentials from a file.  If the file name is not supplied the the default
         /// path of Constants.Data_DIR\inara.json is used
         /// </summary>
-        public static InaraConfiguration FromFile(string filename=null)
+        public static InaraConfiguration FromFile(string filename = null)
         {
             if (filename == null)
             {
@@ -77,7 +77,7 @@ namespace EddiInaraService
         /// when reading in the credentials will be used, or the default path of 
         /// Constants.Data_DIR\inara.json will be used
         /// </summary>
-        public void ToFile(string filename=null)
+        public void ToFile(string filename = null)
         {
             if (filename == null)
             {

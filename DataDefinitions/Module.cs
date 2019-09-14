@@ -61,11 +61,11 @@ namespace EddiDataDefinitions
         {
             get
             {
-                return engineerModification ?? Blueprint.FromEliteID(blueprintId) ?? Blueprint.FromEDNameAndGrade(modificationEDName, engineerlevel); 
+                return engineerModification ?? Blueprint.FromEliteID(blueprintId) ?? Blueprint.FromEDNameAndGrade(modificationEDName, engineerlevel);
             }
             set
             {
-                engineerModification = value; 
+                engineerModification = value;
             }
         }
         [JsonIgnore]

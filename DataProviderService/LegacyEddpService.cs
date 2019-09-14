@@ -60,8 +60,8 @@ namespace EddiDataProviderService
             if (setPowerplayData)
             {
                 system.Power = Power.FromName((string)json["power"]) ?? Power.None;
-                system.powerState = (string)json["power_state"] == "None" ? PowerplayState.None 
-                    : system.systemname == system.Power?.headquarters ? PowerplayState.HomeSystem 
+                system.powerState = (string)json["power_state"] == "None" ? PowerplayState.None
+                    : system.systemname == system.Power?.headquarters ? PowerplayState.HomeSystem
                     : PowerplayState.FromName((string)json["power_state"]);
 
             }
