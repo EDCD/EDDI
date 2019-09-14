@@ -250,6 +250,10 @@ namespace EddiSpeechResponder
                     {
                         scriptHolder.Add(kv.Key);
                     }
+                    else if (kv.Value.Name == "List launchbays") // Replaced by "Launchbay report" script
+                    {
+                        scriptHolder.Add(kv.Key);
+                    }
                 }
                 foreach (string script in scriptHolder)
                 {
