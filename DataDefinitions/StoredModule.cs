@@ -20,8 +20,6 @@
 
         public long? transfertime { get; set; }
 
-        public object rawEngineering { get; set; }
-
         public StoredModule()
         { }
 
@@ -35,7 +33,6 @@
             this.station = StoredModule.station;
             this.transfercost = StoredModule.transfercost;
             this.transfertime = StoredModule.transfertime;
-            this.rawEngineering = StoredModule.rawEngineering;
         }
     }
 }

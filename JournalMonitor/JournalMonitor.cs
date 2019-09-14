@@ -609,6 +609,7 @@ namespace EddiJournalMonitor
                                                     module.ammoinclip = clip;
                                                     module.ammoinhopper = hopper;
                                                     module.modified = modified;
+                                                    module.modificationEDName = blueprint;
                                                     module.engineermodification = modification;
                                                     module.engineerlevel = level;
                                                     module.engineerquality = quality;
@@ -688,6 +689,7 @@ namespace EddiJournalMonitor
                                                     module.ammoinclip = clip;
                                                     module.ammoinhopper = hopper;
                                                     module.modified = modified;
+                                                    module.modificationEDName = blueprint;
                                                     module.engineermodification = modification;
                                                     module.engineerlevel = level;
                                                     module.engineerquality = quality;
@@ -1139,12 +1141,11 @@ namespace EddiJournalMonitor
                                                 hot = JsonParsing.getOptionalBool(item, "Hot") ?? false
                                             };
                                             item.TryGetValue("EngineerModifications", out val);
-                                            bool modified = val != null ? true : false;
-                                            object rawModifications = val;
-                                            module.modified = modified;
-                                            module.engineerlevel = modified ? JsonParsing.getInt(item, "Level") : 0;
-                                            module.engineermodification = Blueprint.FromEDNameAndGrade((string)val, module.engineerlevel) ?? Blueprint.None;
-                                            module.engineerquality = modified ? JsonParsing.getDecimal(item, "Quality") : 0;
+                                            module.modificationEDName = JsonParsing.getString(item, "EngineerModifications");
+                                            module.modified = !string.IsNullOrEmpty(module.modificationEDName);
+                                            module.engineerlevel = module.modified ? JsonParsing.getInt(item, "Level") : 0;
+                                            module.engineermodification = Blueprint.FromEDNameAndGrade(module.modificationEDName, module.engineerlevel) ?? Blueprint.None;
+                                            module.engineerquality = module.modified ? JsonParsing.getDecimal(item, "Quality") : 0;
 
                                             StoredModule storedModule = new StoredModule
                                             {
@@ -1154,8 +1155,7 @@ namespace EddiJournalMonitor
                                                 system = JsonParsing.getString(item, "StarSystem"),
                                                 marketid = JsonParsing.getOptionalLong(item, "MarketID"),
                                                 transfercost = JsonParsing.getOptionalLong(item, "TransferCost"),
-                                                transfertime = JsonParsing.getOptionalLong(item, "TransferTime"),
-                                                rawEngineering = rawModifications
+                                                transfertime = JsonParsing.getOptionalLong(item, "TransferTime")
                                             };
                                             storedModules.Add(storedModule);
                                         }

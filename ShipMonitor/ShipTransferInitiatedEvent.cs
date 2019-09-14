@@ -27,7 +27,7 @@ namespace EddiShipMonitor
         public int? shipid { get; private set; }
 
         [JsonProperty("ship")]
-        public string ship { get; private set; }
+        public string ship => shipDefinition.model;
 
         [JsonProperty("system")]
         public string system { get; private set; }
@@ -44,10 +44,11 @@ namespace EddiShipMonitor
         // Admin
         public long fromMarketId { get; private set; }
         public long toMarketId { get; private set; }
+        public Ship shipDefinition { get; private set; }
 
         public ShipTransferInitiatedEvent(DateTime timestamp, string ship, int? shipid, string system, decimal distance, long? price, long? time, long fromMarketId, long toMarketId) : base(timestamp, NAME)
         {
-            this.ship = ShipDefinitions.FromEDModel(ship).model;
+            this.shipDefinition = ShipDefinitions.FromEDModel(ship);
             this.shipid = shipid;
             this.system = system;
             this.distance = distance;

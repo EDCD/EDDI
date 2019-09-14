@@ -55,18 +55,21 @@ namespace EddiDataDefinitions
         [JsonProperty]
         public bool modified { get; set; } // If the module has been modified
         [JsonProperty]
-        public string modificationEDName
+        public string modificationEDName { get; set; }
+        [JsonIgnore]
+        public Blueprint engineermodification
         {
-            get => engineermodification?.edname ?? Blueprint.None.edname;
+            get
+            {
+                return engineerModification ?? Blueprint.FromEliteID(blueprintId) ?? Blueprint.FromEDNameAndGrade(modificationEDName, engineerlevel); 
+            }
             set
             {
-                Blueprint mDef = Blueprint.FromEliteID(blueprintId) ??
-                    Blueprint.FromEDNameAndGrade(value, engineerlevel);
-                this.engineermodification = mDef;
+                engineerModification = value; 
             }
         }
         [JsonIgnore]
-        public Blueprint engineermodification { get; set; }
+        private Blueprint engineerModification;
         [JsonProperty]
         public long blueprintId { get; set; }
         [JsonProperty]

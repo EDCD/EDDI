@@ -523,7 +523,7 @@ namespace EddiInaraResponder
                     { "starsystemName", @event.system },
                     { "stationName", @event.station },
                     { "marketID", @event.marketId },
-                    { "shipType", currentShip.model },
+                    { "shipType", currentShip.EDName },
                     { "shipGameID", currentShip.LocalId }
                 }));
             }
@@ -535,7 +535,7 @@ namespace EddiInaraResponder
         {
             InaraService.Instance.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "setCommanderShipTransfer", new Dictionary<string, object>()
             {
-                { "shipType", @event.ship },
+                { "shipType", @event.shipDefinition?.EDName ?? @event.ship },
                 { "shipGameID", @event.shipid },
                 { "starsystemName", EDDI.Instance.CurrentStarSystem?.systemname },
                 { "stationName", EDDI.Instance.CurrentStation?.name },
@@ -577,15 +577,43 @@ namespace EddiInaraResponder
             InaraService.Instance.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "setCommanderShip", currentShipData));
 
             List<Dictionary<string, object>> modulesData = new List<Dictionary<string, object>>();
+            foreach (Hardpoint hardpoint in @event.hardpoints)
+            {
+                if (hardpoint != null)
+                {
+                    Dictionary<string, object> moduleData = getModuleData(hardpoint.name, hardpoint.module);
+                    modulesData.Add(moduleData);
+                }
+            }
             foreach (Compartment compartment in @event.compartments)
             {
-                Module module = compartment.module;
-                Dictionary<string, object> moduleData;
-                if (module != null)
+                if (compartment != null)
                 {
-                    moduleData = new Dictionary<string, object>()
+                    Dictionary<string, object> moduleData = getModuleData(compartment.name, compartment.module);
+                    modulesData.Add(moduleData);
+                }
+            }
+            InaraService.Instance.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "setCommanderShipLoadout", new Dictionary<string, object>()
+            {
+                { "shipType", @event.shipDefinition?.EDName ?? @event.ship },
+                { "shipGameID", @event.shipid },
+                { "shipLoadout", modulesData }
+            }));
+        }
+
+        private static Dictionary<string, object> getModuleData(string slotName, Module module)
+        {
+            Dictionary<string, object> moduleData;
+            if (module is null)
+            {
+                moduleData = new Dictionary<string, object>()
+                {
+                    { "slotName", slotName }
+                };
+            }
+            moduleData = new Dictionary<string, object>()
                     {
-                        { "slotName", compartment.name },
+                        { "slotName", slotName },
                         { "itemName", module.edname },
                         { "itemValue", module.value },
                         { "itemHealth", module.health / 100 }, // From 0 - 1
@@ -595,20 +623,20 @@ namespace EddiInaraResponder
                         { "itemAmmoClip", module.clipcapacity },
                         { "itemAmmoHopper", module.hoppercapacity }
                     };
-                    if (module.modified)
-                    {
-                        List<Dictionary<string, object>> modifiers = new List<Dictionary<string, object>>();
-                        foreach (EngineeringModifier modifier in module.modifiers)
-                        {
-                            modifiers.Add(new Dictionary<string, object>()
+            if (module.modified)
+            {
+                List<Dictionary<string, object>> modifiers = new List<Dictionary<string, object>>();
+                foreach (EngineeringModifier modifier in module.modifiers)
+                {
+                    modifiers.Add(new Dictionary<string, object>()
                             {
                                 { "name", modifier.EDName },
                                 { "value", modifier.currentValue },
                                 { "originalValue", modifier.originalValue },
                                 { "lessIsGood", modifier.lessIsGood }
                             });
-                        }
-                        Dictionary<string, object> engineering = new Dictionary<string, object>()
+                }
+                Dictionary<string, object> engineering = new Dictionary<string, object>()
                         {
                             { "blueprintName", module.modificationEDName },
                             { "blueprintLevel", module.engineerlevel },
@@ -616,24 +644,9 @@ namespace EddiInaraResponder
                             { "experimentalEffect", module.engineerExperimentalEffectEDName },
                             { "modifiers", modifiers }
                         };
-                        moduleData.Add("engineering", engineering);
-                    }
-                }
-                else
-                {
-                    moduleData = new Dictionary<string, object>()
-                    {
-                        { "slotName", compartment.name }
-                    };
-                }
-                modulesData.Add(moduleData);
+                moduleData.Add("engineering", engineering);
             }
-            InaraService.Instance.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "setCommanderShipLoadout", new Dictionary<string, object>()
-            {
-                { "shipType", @event.ship },
-                { "shipGameID", @event.shipid },
-                { "shipLoadout", modulesData }
-            }));
+            return moduleData;
         }
 
         private void handleShipSwappedEvent(ShipSwappedEvent @event)
@@ -659,7 +672,7 @@ namespace EddiInaraResponder
             {
                 InaraService.Instance.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "delCommanderShip", new Dictionary<string, object>()
                 {
-                    { "shipType", @event.storedship },
+                    { "shipType", @event.soldShipDefinition?.EDName ?? @event.soldship },
                     { "shipGameID", @event.storedshipid }
                 }));
             }
@@ -680,7 +693,7 @@ namespace EddiInaraResponder
         {
             InaraService.Instance.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "delCommanderShip", new Dictionary<string, object>()
             {
-                { "shipType", @event.ship },
+                { "shipType", @event.shipDefinition?.EDName ?? @event.ship },
                 { "shipGameID", @event.shipid }
             }));
         }
@@ -689,7 +702,7 @@ namespace EddiInaraResponder
         {
             InaraService.Instance.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "delCommanderShip", new Dictionary<string, object>()
             {
-                { "shipType", @event.ship },
+                { "shipType", @event.shipDefinition?.EDName ?? @event.ship },
                 { "shipGameID", @event.shipid }
             }));
         }
@@ -698,13 +711,15 @@ namespace EddiInaraResponder
         {
             InaraService.Instance.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "addCommanderShip", new Dictionary<string, object>()
             {
-                { "shipType", @event.ship },
+                { "shipType", @event.shipDefinition?.EDName ?? @event.ship },
                 { "shipGameID", @event.shipid }
             }));
         }
 
         private void handleShipPurchasedEvent(ShipPurchasedEvent @event)
         {
+            // The new ship is handled by responding to `ShipDeliveredEvent`. 
+            // In this event, we simply remove the old ship data. 
             if (!string.IsNullOrEmpty(@event.storedship))
             {
                 Ship storedShip = ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship Monitor")).GetShip(@event.storedshipid);
@@ -726,8 +741,8 @@ namespace EddiInaraResponder
             {
                 InaraService.Instance.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "delCommanderShip", new Dictionary<string, object>()
                 {
-                    { "shipType", @event.storedship },
-                    { "shipGameID", @event.storedshipid }
+                    { "shipType", @event.soldShipDefinition?.EDName },
+                    { "shipGameID", @event.soldshipid }
                 }));
             }
         }
@@ -737,16 +752,30 @@ namespace EddiInaraResponder
             List<Dictionary<string, object>> eventData = new List<Dictionary<string, object>>();
             foreach (StoredModule storedModule in @event.storedmodules)
             {
-                eventData.Add(new Dictionary<string, object>()
+                Dictionary<string, object> moduleData = new Dictionary<string, object>()
                 {
                     { "itemName", storedModule?.module?.edname },
                     { "itemValue", storedModule?.module?.value },
                     { "isHot", storedModule?.module?.hot },
                     { "starsystemName", storedModule.system },
                     { "stationName", storedModule?.station },
-                    { "marketID", storedModule?.marketid },
-                    { "engineering", storedModule.rawEngineering }
-                });                
+                    { "marketID", storedModule?.marketid }
+                };
+                if ((bool)storedModule?.module?.modified)
+                {
+                    Dictionary<string, object> engineering = new Dictionary<string, object>()
+                    {
+                        { "blueprintName", storedModule?.module?.modificationEDName },
+                        { "blueprintLevel", storedModule?.module?.engineerlevel },
+                        { "blueprintQuality", storedModule?.module?.engineerquality }
+                    };
+                    if (!string.IsNullOrEmpty(storedModule?.module?.engineerExperimentalEffectEDName))
+                    {
+                        engineering.Add("experimentalEffect", storedModule.module.engineerExperimentalEffectEDName);
+                    }
+                    moduleData.Add("engineering", engineering);
+                }
+                eventData.Add(moduleData);
             }
             InaraService.Instance.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "setCommanderStorageModules", eventData));
         }
@@ -1042,7 +1071,7 @@ namespace EddiInaraResponder
             {
                 { "starsystemName", @event.system },
                 { "jumpDistance", @event.distance },
-                { "shipType", currentShip.model },
+                { "shipType", currentShip.EDName },
                 { "shipGameID", currentShip.LocalId }
             }));
         }

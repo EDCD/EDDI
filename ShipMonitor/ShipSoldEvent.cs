@@ -22,7 +22,7 @@ namespace EddiShipMonitor
         }
 
         [JsonProperty("ship")]
-        public string ship { get; private set; }
+        public string ship => shipDefinition?.model;
 
         [JsonProperty("shipid")]
         public int? shipid { get; private set; }
@@ -33,12 +33,13 @@ namespace EddiShipMonitor
         [JsonProperty("system")]
         public string system { get; private set; }
 
-        // Admin
+        // Not intended to be user facing
+        public Ship shipDefinition { get; private set; }
         public long marketId { get; private set; }
 
         public ShipSoldEvent(DateTime timestamp, string ship, int shipId, long price, string system, long marketId) : base(timestamp, NAME)
         {
-            this.ship = ShipDefinitions.FromEDModel(ship).model;
+            this.shipDefinition = ShipDefinitions.FromEDModel(ship);
             this.shipid = shipId;
             this.price = price;
             this.system = system;
