@@ -983,6 +983,15 @@
       "name": "Landing pad report",
       "description": "Informa sobre la ubicación de la pista de aterrizaje asignada"
     },
+    "Launchbay report": {
+      "enabled": true,
+      "priority": 3,
+      "responder": false,
+      "script": "{for launchbay in ship.launchbays:\n    Tienes un hangar de tamaño {launchbay.size}, de tipo {launchbay.type}.\n    {for vehicle in launchbay.vehicles:\n        Tiene un {P(vehicle.name)} con {vehicle.loadout} de carga\n\n        {if type(vehicle.mount) != null:\n            {if vehicle.mount = 'F':\n                , y armas fijas\n            |elif vehicle.mount = 'G':\n                , y armas de seguimiento\n            }\n        }\n        .{_ full stop}\n\n        {if vehicle.rebuilds != null:\n            {if vehicle.rebuilds = 1:\n                Solo puedes imprimir uno más.\n            |elif vehicle.rebuilds = 0:\n                Falta material para su impresión.\n            |else:\n                Quedan {vehicle.rebuilds} cargas de impresión restantes.\n            }\n        }\n\n        {Pause(500)}\n    }\n}\n",
+      "default": true,
+      "name": "Launchbay report",
+      "description": "Describe el contenido de las bahías con vehículos de la nave."
+    },
     "Liftoff": {
       "enabled": true,
       "priority": 3,
@@ -1036,15 +1045,6 @@
       "default": true,
       "name": "Limpet sold",
       "description": "Se activa cuando vende drones en una estación espacial"
-    },
-    "List launchbays": {
-      "enabled": true,
-      "priority": 3,
-      "responder": false,
-      "script": "{for launchbay in ship.launchbays:\n    Tienes un hangar de tamaño {launchbay.size}, de tipo {launchbay.type}.\n    {for vehicle in launchbay.vehicles:\n        Tiene un {P(vehicle.name)} con {vehicle.loadout} de carga\n\n        {if type(vehicle.mount) != null:\n            {if vehicle.mount = 'F':\n                , y armas fijas\n            |elif vehicle.mount = 'G':\n                , y armas de seguimiento\n            }\n        }\n        .{_ full stop}\n\n        {if vehicle.rebuilds != null:\n            {if vehicle.rebuilds = 1:\n                Solo puedes imprimir uno más.\n            |elif vehicle.rebuilds = 0:\n                Falta material para su impresión.\n            |else:\n                Quedan {vehicle.rebuilds} cargas de impresión restantes.\n            }\n        }\n\n        {Pause(500)}\n    }\n}\n",
-      "default": true,
-      "name": "List launchbays",
-      "description": "Describe el contenido de las bahías con vehículos de la nave."
     },
     "Location": {
       "enabled": true,

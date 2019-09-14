@@ -992,6 +992,15 @@
       "name": "Landing pad report",
       "description": "Report on the location of a landing pad"
     },
+    "Launchbay report": {
+      "enabled": true,
+      "priority": 3,
+      "responder": false,
+      "script": "{if capi_active:\r\n    {if len(ship.launchbays) > 0:\r\n        {set hanger_count to 0}\r\n        {for launchbay in ship.launchbays:\r\n            {set hangar to: size {launchbay.size} {P(launchbay.type)} hangar}\r\n            {set hangar_count to hangar_count + 1}\r\n            {set vehicles to []}\r\n            {set vehicles_count to []}\r\n            {if len(launchbay.vehicles) > 0:\r\n                {for vehicle in launchbay.vehicles:\r\n                    {set variant to cat(vehicle.name, \"_\")}\r\n                    {set variant to cat(variant, vehicle.description)}\r\n                    {set here to find(vehicles , variant)}\r\n                    {if here > -1:\r\n                        {set number to vehicles_count[here] + 1}\r\n                        {set vehicles_count to union(vehicles_count, [here:number])}\r\n                    |else:\r\n                        {set vehicles to cat(vehicles , [variant])}\r\n                        {set vehicles_count to cat(vehicles_count, [1])}\r\n                    }\r\n                }\r\n            }\r\n\r\n            {if len(vehicles) > 0:\r\n                {if hangar_count = 1: You have |else: and} a {hangar}, holding\r\n                {set cur to 0}\r\n                {while cur < len(vehicles):\r\n                    {set count to vehicles_count[cur]}\r\n                    {set name to split(vehicles[cur], \"_\")[0]}\r\n                    {set description to split(vehicles[cur], \"_\")[1]}\r\n                    {count} {if count = 1: {P(name)} |else: {P(name)}s}, with {description}\r\n                    {set cur to cur + 1}\r\n                    {if cur = len(vehicles)-1: and |elif cur < len(vehicles): ,}\r\n                }\r\n            |else:\r\n                {if hangar_count = 1: You have |else: and} an empty {hangar}\r\n                You have an empty {hangar}\r\n            }\r\n            {if hangar_count = len(ship.launchbays): . |else: ,}\r\n        }\r\n    }\r\n|else:\r\n    Hangar status is not available.\r\n    {Pause(500)}\r\n    Please verify connection to the pilot's federation database.\r\n}\r\n",
+      "default": true,
+      "name": "Launchbay report",
+      "description": "Describes the contents of each launchbay in the ship"
+    },
     "Liftoff": {
       "enabled": true,
       "priority": 3,
@@ -1045,15 +1054,6 @@
       "default": true,
       "name": "Limpet sold",
       "description": "Triggered when you sell limpets to a station"
-    },
-    "Launchbay report": {
-      "enabled": true,
-      "priority": 3,
-      "responder": false,
-      "script": "{if capi_active:\r\n    {if len(ship.launchbays) > 0:\r\n        {set hanger_count to 0}\r\n        {for launchbay in ship.launchbays:\r\n            {set hangar to: size {launchbay.size} {P(launchbay.type)} hangar}\r\n            {set hangar_count to hangar_count + 1}\r\n            {set vehicles to []}\r\n            {set vehicles_count to []}\r\n            {if len(launchbay.vehicles) > 0:\r\n                {for vehicle in launchbay.vehicles:\r\n                    {set variant to cat(vehicle.name, \"_\")}\r\n                    {set variant to cat(variant, vehicle.description)}\r\n                    {set here to find(vehicles , variant)}\r\n                    {if here > -1:\r\n                        {set number to vehicles_count[here] + 1}\r\n                        {set vehicles_count to union(vehicles_count, [here:number])}\r\n                    |else:\r\n                        {set vehicles to cat(vehicles , [variant])}\r\n                        {set vehicles_count to cat(vehicles_count, [1])}\r\n                    }\r\n                }\r\n            }\r\n\r\n            {if len(vehicles) > 0:\r\n                {if hangar_count = 1: You have |else: and} a {hangar}, holding\r\n                {set cur to 0}\r\n                {while cur < len(vehicles):\r\n                    {set count to vehicles_count[cur]}\r\n                    {set name to split(vehicles[cur], \"_\")[0]}\r\n                    {set description to split(vehicles[cur], \"_\")[1]}\r\n                    {count} {if count = 1: {P(name)} |else: {P(name)}s}, with {description}\r\n                    {set cur to cur + 1}\r\n                    {if cur = len(vehicles)-1: and |elif cur < len(vehicles): ,}\r\n                }\r\n            |else:\r\n                {if hangar_count = 1: You have |else: and} an empty {hangar}\r\n                You have an empty {hangar}\r\n            }\r\n            {if hangar_count = len(ship.launchbays): . |else: ,}\r\n        }\r\n    }\r\n|else:\r\n    Hangar status is not available.\r\n    {Pause(500)}\r\n    Please verify connection to the pilot's federation database.\r\n}\r\n",
-      "default": true,
-      "name": "Launchbay report",
-      "description": "Describes the contents of each launchbay in the ship"
     },
     "Location": {
       "enabled": true,
