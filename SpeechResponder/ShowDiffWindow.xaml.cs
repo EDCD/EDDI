@@ -24,11 +24,11 @@ namespace EddiSpeechResponder
                 };
                 if (diffItem.type == "Deleted")
                 {
-                    tr.ApplyPropertyValue(TextElement.BackgroundProperty, "#FFF8FF");
+                    tr.ApplyPropertyValue(TextElement.BackgroundProperty, Brushes.LightCoral);
                 }
                 else if (diffItem.type == "Inserted")
                 {
-                    tr.ApplyPropertyValue(TextElement.BackgroundProperty, "#F8FFF8");
+                    tr.ApplyPropertyValue(TextElement.BackgroundProperty, Brushes.LightGreen);
                 }
             }
         }
