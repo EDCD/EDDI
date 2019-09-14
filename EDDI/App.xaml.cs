@@ -21,13 +21,14 @@ namespace Eddi
             StartRollbar(); // do immediately to initialize error reporting
             ApplyAnyOverrideCulture(); // this must be done before any UI is generated
 
-            MainWindow mainWindow = null;
+#pragma warning disable IDE0067 // Dispose objects before losing scope
             Mutex eddiMutex = new Mutex(true, Constants.EDDI_SYSTEM_MUTEX_NAME, out bool firstOwner);
+#pragma warning restore IDE0067 // Dispose objects before losing scope
 
             if (firstOwner)
             {
                 App app = new App();
-                mainWindow = new MainWindow();
+                MainWindow mainWindow = new MainWindow();
                 app.Run(mainWindow);
                 eddiMutex.ReleaseMutex();
             }

@@ -21,7 +21,7 @@ namespace EddiJournalMonitor
 {
     public class JournalMonitor : LogMonitor, EDDIMonitor
     {
-        private static Regex JsonRegex = new Regex(@"^{.*}$", RegexOptions.Singleline);
+        private static readonly Regex JsonRegex = new Regex(@"^{.*}$", RegexOptions.Singleline);
         public JournalMonitor() : base(GetSavedGamesDir(), @"^Journal.*\.[0-9\.]+\.log$", (result, isLogLoadEvent) =>
         ForwardJournalEntry(result, EDDI.Instance.enqueueEvent, isLogLoadEvent))
         { }
@@ -4234,7 +4234,7 @@ namespace EddiJournalMonitor
             return compartment;
         }
 
-        private static string[] ignoredLogLoadEvents = new string[]
+        private static readonly string[] ignoredLogLoadEvents = new string[]
         {
             // We ignore these events when parsing / loading a log for a game session already in process.
             "AfmuRepairs",
