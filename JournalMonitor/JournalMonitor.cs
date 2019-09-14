@@ -3480,7 +3480,7 @@ namespace EddiJournalMonitor
 
                                     data.TryGetValue("Bank_Account", out object bankAccountVal);
                                     Dictionary<string, object> bankaccount = (Dictionary<string, object>)bankAccountVal;
-                                    if (bankaccount.Count > 0)
+                                    if (bankaccount?.Count > 0)
                                     {
                                         statistics.bankaccount.wealth = JsonParsing.getOptionalLong(bankaccount, "Current_Wealth");
                                         statistics.bankaccount.spentonships = JsonParsing.getOptionalLong(bankaccount, "Spent_On_Ships");
@@ -3495,7 +3495,7 @@ namespace EddiJournalMonitor
 
                                     data.TryGetValue("Combat", out object combatVal);
                                     Dictionary<string, object> combat = (Dictionary<string, object>)combatVal;
-                                    if (combat.Count > 0)
+                                    if (combat?.Count > 0)
                                     {
                                         statistics.combat.bountiesclaimed = JsonParsing.getOptionalLong(combat, "Bounties_Claimed");
                                         statistics.combat.bountyhuntingprofit = JsonParsing.getOptionalDecimal(combat, "Bounty_Hunting_Profit");
@@ -3509,7 +3509,7 @@ namespace EddiJournalMonitor
 
                                     data.TryGetValue("Crime", out object crimeVal);
                                     Dictionary<string, object> crime = (Dictionary<string, object>)crimeVal;
-                                    if (crime.Count > 0)
+                                    if (crime?.Count > 0)
                                     {
                                         statistics.crime.notoriety = JsonParsing.getOptionalInt(crime, "Notoriety");
                                         statistics.crime.fines = JsonParsing.getOptionalLong(crime, "Fines");
@@ -3521,7 +3521,7 @@ namespace EddiJournalMonitor
 
                                     data.TryGetValue("Smuggling", out object smugglingVal);
                                     Dictionary<string, object> smuggling = (Dictionary<string, object>)smugglingVal;
-                                    if (smuggling.Count > 0)
+                                    if (smuggling?.Count > 0)
                                     {
                                         statistics.smuggling.blackmarketstradedwith = JsonParsing.getOptionalLong(smuggling, "Black_Markets_Traded_With");
                                         statistics.smuggling.blackmarketprofits = JsonParsing.getOptionalLong(smuggling, "Black_Markets_Profits");
@@ -3532,7 +3532,7 @@ namespace EddiJournalMonitor
 
                                     data.TryGetValue("Trading", out object tradingVal);
                                     Dictionary<string, object> trading = (Dictionary<string, object>)tradingVal;
-                                    if (trading.Count > 0)
+                                    if (trading?.Count > 0)
                                     {
                                         statistics.trading.marketstradedwith = JsonParsing.getOptionalLong(trading, "Markets_Traded_With");
                                         statistics.trading.marketprofits = JsonParsing.getOptionalLong(trading, "Market_Profits");
@@ -3543,7 +3543,7 @@ namespace EddiJournalMonitor
 
                                     data.TryGetValue("Mining", out object miningVal);
                                     Dictionary<string, object> mining = (Dictionary<string, object>)miningVal;
-                                    if (mining.Count > 0)
+                                    if (mining?.Count > 0)
                                     {
                                         statistics.mining.profits = JsonParsing.getOptionalLong(mining, "Mining_Profits");
                                         statistics.mining.quantitymined = JsonParsing.getOptionalLong(mining, "Quantity_Mined");
@@ -3552,7 +3552,7 @@ namespace EddiJournalMonitor
 
                                     data.TryGetValue("Exploration", out object explorationVal);
                                     Dictionary<string, object> exploration = (Dictionary<string, object>)explorationVal;
-                                    if (exploration.Count > 0)
+                                    if (exploration?.Count > 0)
                                     {
                                         statistics.exploration.systemsvisited = JsonParsing.getOptionalLong(exploration, "Systems_Visited");
                                         statistics.exploration.profits = JsonParsing.getOptionalLong(exploration, "Exploration_Profits");
@@ -3567,7 +3567,7 @@ namespace EddiJournalMonitor
 
                                     data.TryGetValue("Passengers", out object passengersVal);
                                     Dictionary<string, object> passengers = (Dictionary<string, object>)passengersVal;
-                                    if (passengers.Count > 0)
+                                    if (passengers?.Count > 0)
                                     {
                                         statistics.passengers.accepted = JsonParsing.getOptionalLong(passengers, "Passengers_Missions_Accepted");
                                         statistics.passengers.disgruntled = JsonParsing.getOptionalLong(passengers, "Passengers_Missions_Disgruntled");
@@ -3579,7 +3579,7 @@ namespace EddiJournalMonitor
 
                                     data.TryGetValue("Search_And_Rescue", out object searchAndRescueVal);
                                     Dictionary<string, object> searchAndRescue = (Dictionary<string, object>)searchAndRescueVal;
-                                    if (searchAndRescue.Count > 0)
+                                    if (searchAndRescue?.Count > 0)
                                     {
                                         statistics.searchandrescue.traded = JsonParsing.getOptionalLong(searchAndRescue, "SearchRescue_Traded");
                                         statistics.searchandrescue.profit = JsonParsing.getOptionalLong(searchAndRescue, "SearchRescue_Profit");
@@ -3588,7 +3588,7 @@ namespace EddiJournalMonitor
 
                                     data.TryGetValue("TG_ENCOUNTERS", out object thargoidVal);
                                     Dictionary<string, object> thargoid = (Dictionary<string, object>)thargoidVal;
-                                    if (thargoid.Count > 0)
+                                    if (thargoid?.Count > 0)
                                     {
                                         statistics.thargoidencounters.wakesscanned = JsonParsing.getOptionalLong(thargoid, "TG_ENCOUNTER_WAKES");
                                         statistics.thargoidencounters.imprints = JsonParsing.getOptionalLong(thargoid, "TG_ENCOUNTER_IMPRINT");
@@ -3600,7 +3600,7 @@ namespace EddiJournalMonitor
 
                                     data.TryGetValue("Crafting", out object craftingVal);
                                     Dictionary<string, object> crafting = (Dictionary<string, object>)craftingVal;
-                                    if (crafting.Count > 0)
+                                    if (crafting?.Count > 0)
                                     {
                                         statistics.crafting.countofusedengineers = JsonParsing.getOptionalLong(crafting, "Count_Of_Used_Engineers");
                                         statistics.crafting.recipesgenerated = JsonParsing.getOptionalLong(crafting, "Recipes_Generated");
@@ -3613,7 +3613,7 @@ namespace EddiJournalMonitor
 
                                     data.TryGetValue("Crew", out object crewVal);
                                     Dictionary<string, object> crew = (Dictionary<string, object>)crewVal;
-                                    if (crew.Count > 0)
+                                    if (crew?.Count > 0)
                                     {
                                         statistics.npccrew.totalwages = JsonParsing.getOptionalLong(crew, "NpcCrew_TotalWages");
                                         statistics.npccrew.hired = JsonParsing.getOptionalLong(crew, "NpcCrew_Hired");
@@ -3623,7 +3623,7 @@ namespace EddiJournalMonitor
 
                                     data.TryGetValue("Multicrew", out object multicrewVal);
                                     Dictionary<string, object> multicrew = (Dictionary<string, object>)multicrewVal;
-                                    if (multicrew.Count > 0)
+                                    if (multicrew?.Count > 0)
                                     {
                                         statistics.multicrew.timetotalseconds = JsonParsing.getOptionalLong(multicrew, "Multicrew_Time_Total");
                                         statistics.multicrew.gunnertimetotalseconds = JsonParsing.getOptionalLong(multicrew, "Multicrew_Gunner_Time_Total");
@@ -3634,7 +3634,7 @@ namespace EddiJournalMonitor
 
                                     data.TryGetValue("Material_Trader_Stats", out object materialTraderVal);
                                     Dictionary<string, object> materialtrader = (Dictionary<string, object>)materialTraderVal;
-                                    if (materialtrader.Count > 0)
+                                    if (materialtrader?.Count > 0)
                                     {
                                         statistics.materialtrader.tradescompleted = JsonParsing.getOptionalLong(materialtrader, "Trades_Completed");
                                         statistics.materialtrader.materialstraded = JsonParsing.getOptionalLong(materialtrader, "Materials_Traded");
@@ -3649,7 +3649,7 @@ namespace EddiJournalMonitor
 
                                     data.TryGetValue("CQC", out object cqcVal);
                                     Dictionary<string, object> cqc = (Dictionary<string, object>)cqcVal;
-                                    if (cqc.Count > 0)
+                                    if (cqc?.Count > 0)
                                     {
                                         statistics.cqc.creditsearned = JsonParsing.getOptionalLong(cqc, "CQC_Credits_Earned");
                                         statistics.cqc.timeplayedseconds = JsonParsing.getOptionalLong(cqc, "CQC_Time_Played");
