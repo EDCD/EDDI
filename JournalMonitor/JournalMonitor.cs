@@ -3802,9 +3802,9 @@ namespace EddiJournalMonitor
             Faction faction = new Faction();
 
             // Get the faction name and state
-            if (data.TryGetValue(type + "Faction", out object val))
+            if (data.TryGetValue(type + "Faction", out object factionVal))
             {
-                if (val is Dictionary<string, object> factionData) // 3.3.03 or later journal
+                if (factionVal is Dictionary<string, object> factionData) // 3.3.03 or later journal
                 {
                     faction.name = JsonParsing.getString(factionData, "Name");
 
@@ -3818,18 +3818,18 @@ namespace EddiJournalMonitor
                 }
                 else // per-3.3.03 journal
                 {
-                    faction.name = val as string;
+                    faction.name = factionVal as string;
                 }
             }
 
             // Get the faction allegiance
-            if (data.TryGetValue(type + "Allegiance", out val))
+            if (data.TryGetValue(type + "Allegiance", out _))
             {
                 faction.Allegiance = getAllegiance(data, type + "Allegiance");
             }
 
             // Station controlling faction government not discretely available in 'Location' event
-            else if (data.TryGetValue("Factions", out val))
+            else if (data.TryGetValue("Factions", out object val))
             {
                 var factionsList = val as List<object>;
                 foreach (IDictionary<string, object> factionDetail in factionsList)
@@ -3959,7 +3959,7 @@ namespace EddiJournalMonitor
 
         private static string npcSpeechBy(string from, string message)
         {
-            string by = null;
+            string by;
             if (message.StartsWith("$AmbushedPilot_"))
             {
                 by = "Ambushed pilot";
