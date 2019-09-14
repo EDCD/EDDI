@@ -113,9 +113,13 @@ namespace EddiInaraService
             {
                 header = new Dictionary<string, object>()
                 {
+                    // Per private conversation with Artie and per Inara API docs, the `isDeveloped` property
+                    // should (counterintuitively) be set to true when the an application is in development.
+                    // Quote: `it's "true" because the app "is (being) developed"`
+                    // Quote: `isDeveloped is meant as "the app is currently being developed and may be broken`
                     { "appName", "EDDI" },
                     { "appVersion", Constants.EDDI_VERSION.ToString() },
-                    { "isDeveloped", !eddiIsBeta },
+                    { "isDeveloped", eddiIsBeta },
                     { "commanderName", commanderName ?? (eddiIsBeta ? "TestCmdr" : null) },
                     { "commanderFrontierID", commanderFrontierID },
                     { "APIkey", apiKey }
