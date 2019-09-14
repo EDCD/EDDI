@@ -1108,5 +1108,14 @@ namespace UnitTests
             StatisticsEvent statisticsEvent = (StatisticsEvent)events[0];
             Assert.AreEqual(7083, statisticsEvent.multicrew.timetotalseconds);
         }
+
+        [TestMethod]
+        public void TestReputationWithoutIndependent()
+        {
+            string line = @"{ ""timestamp"":""2019 - 09 - 13T23: 08:20Z"", ""event"":""Reputation"", ""Empire"":18.287001, ""Federation"":75.703102, ""Alliance"":1.179020 }";
+            List<Event> events = JournalMonitor.ParseJournalEntry(line);
+            CommanderReputationEvent reputationEvent = (CommanderReputationEvent)events[0];
+            Assert.AreEqual(18.287001M, reputationEvent.empire);
+        }
     }
 }
