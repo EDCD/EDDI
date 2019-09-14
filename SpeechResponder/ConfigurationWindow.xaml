@@ -92,7 +92,7 @@
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <Border IsEnabled="{Binding Path=Value.Responder}">
-                                <CheckBox HorizontalAlignment="Center" VerticalAlignment="Center" IsChecked="{Binding Path=Value.Enabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=Personality.IsEditable}" Checked="eddiScriptsUpdated" Unchecked="eddiScriptsUpdated" />
+                                <CheckBox HorizontalAlignment="Center" VerticalAlignment="Center" IsChecked="{Binding Path=Value.Enabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=Personality.IsEditable}" Checked="eddiScriptsEnabledUpdated" Unchecked="eddiScriptsEnabledUpdated" />
                             </Border>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
@@ -100,7 +100,7 @@
                 <DataGridTemplateColumn x:Name="Priorities" Header="{x:Static resx:SpeechResponder.header_priority}">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <ComboBox SelectedValue="{Binding Path=Value.Priority, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ItemsSource="{Binding Path=Value.Priorities}" SelectionChanged="eddiScriptsUpdated">
+                            <ComboBox SelectedValue="{Binding Path=Value.Priority, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ItemsSource="{Binding Path=Value.Priorities}" SelectionChanged="eddiScriptsPriorityUpdated">
                                 <ComboBox.Style>
                                     <Style TargetType="{x:Type ComboBox}">
                                         <Setter Property="Opacity"  Value="1" />
