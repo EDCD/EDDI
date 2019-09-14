@@ -1110,7 +1110,7 @@ namespace EddiInaraResponder
         private void handleCommanderReputationEvent(CommanderReputationEvent @event)
         {
             // Reputation progress in a range: [-1..1], which corresponds to a reputation range from -100% (hostile) to 100% (allied).
-            InaraService.Instance.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "setCommanderReputationMajorFaction", new List<Dictionary<string, object>>()
+            List<Dictionary<string, object>> eventData = new List<Dictionary<string, object>>()
             {
                 {
                     new Dictionary<string, object>()
@@ -1140,7 +1140,8 @@ namespace EddiInaraResponder
                         { "majorfactionReputation", @event.alliance / 100 }
                     }
                 }
-            }));
+            };
+            InaraService.Instance.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "setCommanderReputationMajorFaction", eventData));
         }
 
         private void handlePowerJoinedEvent(PowerJoinedEvent @event)
