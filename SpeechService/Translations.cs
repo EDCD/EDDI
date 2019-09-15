@@ -360,7 +360,8 @@ namespace EddiSpeechService
                 || starSystem.StartsWith("ADS ")
                 || starSystem.StartsWith("HR ")
                 || starSystem.StartsWith("HD ")
-                )
+                || starSystem.StartsWith("Luyten ")
+            )
             {
                 starSystem = starSystem.Replace("-", " " + Properties.Phrases.dash + " ");
             }
