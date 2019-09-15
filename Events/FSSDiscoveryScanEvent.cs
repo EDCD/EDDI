@@ -16,18 +16,21 @@ namespace EddiEvents
         static DiscoveryScanEvent()
         {
             // VARIABLES.Add("progress", "The percentage of the system that has been discovered");
-            VARIABLES.Add("bodies", "The total number of bodies in the system");
+            VARIABLES.Add("discoverablebodies", "The total number of discoverable bodies in the system");
             VARIABLES.Add("nonbodies", "The number of non-body signals");
         }
 
         public decimal progress { get; private set; }
-        public int bodies { get; private set; }
+        public int discoverablebodies { get; private set; }
         public int nonbodies { get; private set; }
 
-        public DiscoveryScanEvent(DateTime timestamp, decimal progress, int bodies, int nonbodies) : base(timestamp, NAME)
+        [Obsolete("Please use `discoverablebodies` instead")]
+        public int bodies => discoverablebodies;
+
+        public DiscoveryScanEvent(DateTime timestamp, decimal progress, int discoverablebodies, int nonbodies) : base(timestamp, NAME)
         {
             this.progress = Math.Floor(progress * 100); // multiplied by 100 to convert to percentage
-            this.bodies = bodies;
+            this.discoverablebodies = discoverablebodies;
             this.nonbodies = nonbodies;
         }
     }

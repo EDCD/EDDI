@@ -214,8 +214,9 @@ namespace EddiDataDefinitions
             return result;
         }
 
-        // Not intended to be user facing - discoverable bodies as reported by a discovery scan "honk"
-        public int discoverableBodies = 0;
+        // Discoverable bodies as reported by a discovery scan "honk"
+        [JsonProperty("discoverableBodies")]
+        public int discoverablebodies;
 
         // Not intended to be user facing - the last time the information present changed
         public long? updatedat;
@@ -295,9 +296,9 @@ namespace EddiDataDefinitions
             }
 
             // Bonus for fully discovering a system
-            if (discoverableBodies == bodies.Where(b => b.scanned != null).Count())
+            if (discoverablebodies == bodies.Where(b => b.scanned != null).Count())
             {
-                value += discoverableBodies * 1000;
+                value += discoverablebodies * 1000;
 
                 // Bonus for fully mapping a system
                 int mappableBodies = bodies.Where(b => b.bodyType.invariantName != "Star").Count();

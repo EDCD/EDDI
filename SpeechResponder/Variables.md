@@ -460,6 +460,7 @@ Any values might be missing, depending on EDDI's configuration and the informati
     - `isgreen` true if bodies in this starsystem contain all elements required for FSD synthesis
     - `isgold` true if bodies in this starsystem contain all elements available from surface prospecting
     - `estimatedvalue` the estimated exploration value of the starsystem (includes bonuses for fully scanning and mapping)
+    - `discoverablebodies` the percentage of bodies which have been discovered within the system (only available after a discovery scan)
 
 #### Last starsystem
 
