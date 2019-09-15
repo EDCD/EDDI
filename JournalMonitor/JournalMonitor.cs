@@ -3827,10 +3827,9 @@ namespace EddiJournalMonitor
             {
                 faction.Allegiance = getAllegiance(data, type + "Allegiance");
             }
-
-            // Station controlling faction government not discretely available in 'Location' event
             else if (data.TryGetValue("Factions", out object val))
             {
+                // Station controlling faction government not discretely available in 'Location' event
                 var factionsList = val as List<object>;
                 foreach (IDictionary<string, object> factionDetail in factionsList)
                 {
