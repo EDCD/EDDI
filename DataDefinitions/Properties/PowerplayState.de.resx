@@ -97,18 +97,28 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
+  <data name="None" xml:space="preserve">
+    <value>Nichts</value>
+  </data>
   <data name="Contested" xml:space="preserve">
     <value>Umkämpft</value>
   </data>
-  
-  
+  <data name="Controlled" xml:space="preserve">
+    <value>Kontrolle</value>
+  </data>
+  <data name="Exploited" xml:space="preserve">
+    <value>Ausgenutzt</value>
+  </data>
   <data name="HomeSystem" xml:space="preserve">
     <value>Heimatsystem</value>
   </data>
-  
+  <data name="InPrepareRadius" xml:space="preserve">
+    <value>Im Vorbereitungsradius</value>
+  </data>
   <data name="Prepared" xml:space="preserve">
     <value>Vorbereitet</value>
   </data>
-  
+  <data name="Turmoil" xml:space="preserve">
+    <value>Aufruhr</value>
+  </data>
 </root>
