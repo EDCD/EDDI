@@ -121,7 +121,7 @@
     <value>Le modifiche apportate qui avranno effetto automaticamente in VoiceAttack. Al termine, è possibile chiudere questa finestra.</value>
   </data>
   <data name="complete" xml:space="preserve">
-    <value>Completa</value>
+    <value>Completato</value>
     <comment>This is the adjective not the verb</comment>
   </data>
   <data name="done" xml:space="preserve">
