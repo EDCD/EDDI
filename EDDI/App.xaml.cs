@@ -84,16 +84,27 @@ namespace Eddi
 
         public static void ApplyAnyOverrideCulture()
         {
+            string overrideCultureName = null;
             try
             {
-                string overrideCultureName = Eddi.Properties.Settings.Default.OverrideCulture;
+                // Use Eddi.Properties.Settings if an override culture isn't set in our configuration
+                EDDIConfiguration configuration = EDDIConfiguration.FromFile();
+                if (configuration.OverrideCulture is null && !string.IsNullOrEmpty(Eddi.Properties.Settings.Default.OverrideCulture))
+                {
+                    configuration.OverrideCulture = Eddi.Properties.Settings.Default.OverrideCulture;
+                    configuration.ToFile();
+                }
+
+                overrideCultureName = configuration.OverrideCulture;
+
                 // we are using the InvariantCulture name "" to mean user's culture
-                CultureInfo overrideCulture = String.IsNullOrEmpty(overrideCultureName) ? null : new CultureInfo(overrideCultureName);
+                CultureInfo overrideCulture = string.IsNullOrEmpty(overrideCultureName) ? null : new CultureInfo(overrideCultureName);
                 ApplyCulture(overrideCulture);
             }
             catch
             {
                 ApplyCulture(null);
+                Debug.WriteLine("Culture [{0}] not available", overrideCultureName);
             }
         }
 
