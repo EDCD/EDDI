@@ -126,6 +126,10 @@
   <data name="name" xml:space="preserve">
     <value>Risponditore Inara</value>
   </data>
-  
-  
+  <data name="p1" xml:space="preserve">
+    <value>Per connetterti ad Inara devi prima registravi un profilo. Una volta completata la registrazione puoi ottenere la tua chiave API cliccando sul tab 'Settings' nell'intestazione del sito e quindi scegliendo 'INARA API' dal pannello di sinistra.</value>
+  </data>
+  <data name="p2" xml:space="preserve">
+    <value>Una volta inserita la tua chiave API, EDDI inizierà a comunicare i dati relativi alle tue sessioni di gioco ad Inara.</value>
+  </data>
 </root>
