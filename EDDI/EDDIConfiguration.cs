@@ -159,6 +159,9 @@ namespace Eddi
         [JsonProperty("exporttarget")]
         public string exporttarget { get; set; } = "Coriolis";
 
+        [JsonProperty("OverrideCulture")]
+        public string OverrideCulture { get; set; }
+
         [JsonIgnore]
         private string dataPath;
 

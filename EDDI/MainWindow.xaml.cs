@@ -178,10 +178,12 @@ namespace Eddi
                 // Allow the EDDI VA plugin to change window state
                 VaWindowStateChange = new vaWindowStateChangeDelegate(OnVaWindowStateChange);
                 heroText.Text = Properties.EddiResources.change_affect_va;
+                chooseLanguageText.Text = Properties.MainWindow.choose_lang_label_va;
             }
             else
             {
                 heroText.Text = Properties.EddiResources.if_using_va;
+                chooseLanguageText.Text = Properties.MainWindow.choose_lang_label;
             }
 
             EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
@@ -222,11 +224,12 @@ namespace Eddi
             List<LanguageDef> langs = GetAvailableLangs(); // already correctly sorted
             chooseLanguageDropDown.ItemsSource = langs;
             chooseLanguageDropDown.DisplayMemberPath = "displayName";
-            chooseLanguageDropDown.SelectedItem = langs.Find(l => l.ci.Name == Eddi.Properties.Settings.Default.OverrideCulture);
+            chooseLanguageDropDown.SelectedItem = langs.Find(l => l.ci.Name == eddiConfiguration.OverrideCulture);
             chooseLanguageDropDown.SelectionChanged += (sender, e) =>
             {
                 LanguageDef cultureDef = (LanguageDef)chooseLanguageDropDown.SelectedItem;
-                Eddi.Properties.Settings.Default.OverrideCulture = cultureDef.ci.Name;
+                eddiConfiguration.OverrideCulture = cultureDef.ci.Name;
+                eddiConfiguration.ToFile();
             };
 
             // Configure the Frontier API tab
