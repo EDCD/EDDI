@@ -61,10 +61,6 @@
       <Project>{0C845B02-E283-43D8-91A7-205AD3397371}</Project>
       <Name>EddiDataDefinitions</Name>
     </ProjectReference>
-    <ProjectReference Include="..\EDDI\Eddi.csproj">
-      <Project>{ec7ba042-a370-447f-8c3e-241358cebcbb}</Project>
-      <Name>Eddi</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Utilities\Utilities.csproj">
       <Project>{cd71dd2a-86ac-44a8-959b-e1c3069966bd}</Project>
       <Name>Utilities</Name>

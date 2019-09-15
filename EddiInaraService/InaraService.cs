@@ -1,4 +1,4 @@
-﻿using Eddi;
+﻿using EddiDataDefinitions;
 using Newtonsoft.Json;
 using RestSharp;
 using System;
@@ -44,13 +44,18 @@ namespace EddiInaraService
             }
         }
 
-        public static void Start()
+        private static bool eddiInBeta;
+        private static bool gameInBeta;
+
+        public static void Start(bool gameIsBeta = false, bool eddiIsBeta = false)
         {
             Logging.Debug("Creating new Inara service instance.");
+            eddiInBeta = eddiIsBeta;
+            gameInBeta = gameIsBeta;
             _ = Instance;
         }
 
-        private InaraService()
+        protected InaraService()
         {
             // Set up the Inara service
             InaraConfiguration inaraCredentials = InaraConfiguration.FromFile();
@@ -90,9 +95,8 @@ namespace EddiInaraService
         // If you need to do some testing on Inara's API, please set the `isDeveloped` boolean header property to true.
         public List<InaraResponse> SendEventBatch(ref List<InaraAPIEvent> events, bool sendEvenForBetaGame = false)
         {
-            if (!sendEvenForBetaGame && EDDI.Instance.gameIsBeta) { return null; }
+            if (!sendEvenForBetaGame && gameInBeta) { return null; }
 
-            bool eddiIsBeta = EDDI.Instance.EddiIsBeta();
             List<InaraResponse> inaraResponses = new List<InaraResponse>();
 
             if (string.IsNullOrEmpty(apiKey))
@@ -121,8 +125,8 @@ namespace EddiInaraService
                     // Quote: `isDeveloped is meant as "the app is currently being developed and may be broken`
                     { "appName", "EDDI" },
                     { "appVersion", Constants.EDDI_VERSION.ToString() },
-                    { "isDeveloped", eddiIsBeta },
-                    { "commanderName", commanderName ?? (eddiIsBeta ? "TestCmdr" : null) },
+                    { "isDeveloped", eddiInBeta },
+                    { "commanderName", commanderName ?? (eddiInBeta ? "TestCmdr" : null) },
                     { "commanderFrontierID", commanderFrontierID },
                     { "APIkey", apiKey }
                 },
@@ -240,37 +244,5 @@ namespace EddiInaraService
         public object eventData { get; set; }
 
         public int eventCustomID { get; set; } // Optional index
-    }
-
-    public class InaraAPIEvent
-    {
-        public string eventName { get; set; }
-
-        public string eventTimestamp => eventTimeStamp.ToString("s") + "Z";
-
-        public object eventData { get; set; }
-
-        public int? eventCustomID { get; set; } // Optional index
-
-        // Helper properties
-
-        [JsonIgnore]
-        public DateTime eventTimeStamp { get; set; }
-
-        public InaraAPIEvent(DateTime eventTimeStamp, string eventName, Dictionary<string, object> eventData, int? eventCustomID = null)
-        {
-            this.eventTimeStamp = eventTimeStamp;
-            this.eventName = eventName;
-            this.eventData = eventData;
-            this.eventCustomID = eventCustomID;
-        }
-
-        public InaraAPIEvent(DateTime eventTimeStamp, string eventName, List<Dictionary<string, object>> eventData, int? eventCustomID = null)
-        {
-            this.eventTimeStamp = eventTimeStamp;
-            this.eventName = eventName;
-            this.eventData = eventData;
-            this.eventCustomID = eventCustomID;
-        }
     }
 }

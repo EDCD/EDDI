@@ -4,7 +4,6 @@ using EddiCrimeMonitor;
 using EddiDataDefinitions;
 using EddiDataProviderService;
 using EddiEvents;
-using EddiInaraService;
 using EddiMaterialMonitor;
 using EddiMissionMonitor;
 using EddiNavigationService;

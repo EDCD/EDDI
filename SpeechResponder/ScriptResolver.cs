@@ -9,7 +9,6 @@ using EddiCargoMonitor;
 using EddiCrimeMonitor;
 using EddiDataDefinitions;
 using EddiDataProviderService;
-using EddiInaraService;
 using EddiMaterialMonitor;
 using EddiMissionMonitor;
 using EddiNavigationService;

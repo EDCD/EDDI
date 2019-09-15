@@ -1,9 +1,8 @@
 ﻿using Eddi;
-using EddiEvents;
 using Newtonsoft.Json.Linq;
 using Rollbar;
-using System;
 using System.IO;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace UnitTests
 {
@@ -14,11 +13,12 @@ namespace UnitTests
             // Prevent telemetry data from being reported based on test results
             RollbarLocator.RollbarInstance.Config.Enabled = false;
 
-            // Set ourselves as in beta to stop sending data to remote systems
-            EDDI.Instance.enqueueEvent(new FileHeaderEvent(DateTime.Now, "JournalBeta.txt", "beta", "beta"));
-
-            // Don't write to permanent storage
+            // Don't write to permanent storage (do this before we initialize our EDDI instance)
             Utilities.Files.unitTesting = true;
+
+            // Set ourselves as in a beta game session to stop automatic sending of data to remote systems
+            PrivateObject privateObject = new PrivateObject(EDDI.Instance);
+            privateObject.SetFieldOrProperty("gameIsBeta", true );
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times")]

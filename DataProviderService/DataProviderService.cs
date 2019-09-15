@@ -268,4 +268,7 @@ namespace EddiDataProviderService
             starMapConfiguration.ToFile();
         }
     }
+
+    public class InaraService : EddiInaraService.InaraService
+    { }
 }

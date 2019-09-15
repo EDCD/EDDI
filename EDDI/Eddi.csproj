@@ -245,6 +245,10 @@
       <Project>{c5f48807-921b-456d-a9e4-a0282e5e8cf1}</Project>
       <Name>EddiDataProviderService</Name>
     </ProjectReference>
+    <ProjectReference Include="..\EddiInaraService\EddiInaraService.csproj">
+      <Project>{19AB6841-AA93-4D23-BE6D-4CB6883CDF62}</Project>
+      <Name>EddiInaraService</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Events\EddiEvents.csproj">
       <Project>{2BB41C51-9BE0-49C9-91FD-C4E444994ECE}</Project>
       <Name>EddiEvents</Name>

@@ -99,6 +99,10 @@
       <Project>{0c845b02-e283-43d8-91a7-205ad3397371}</Project>
       <Name>EddiDataDefinitions</Name>
     </ProjectReference>
+    <ProjectReference Include="..\EddiInaraService\EddiInaraService.csproj">
+      <Project>{19ab6841-aa93-4d23-be6d-4cb6883cdf62}</Project>
+      <Name>EddiInaraService</Name>
+    </ProjectReference>
     <ProjectReference Include="..\StarMapService\EddiStarMapService.csproj">
       <Project>{6614e6ad-65ae-49fc-850b-9df79d1cc998}</Project>
       <Name>EddiStarMapService</Name>

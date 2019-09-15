@@ -2,7 +2,6 @@
 using EddiCargoMonitor;
 using EddiDataDefinitions;
 using EddiEvents;
-using EddiInaraService;
 using EddiMissionMonitor;
 using EddiShipMonitor;
 using Newtonsoft.Json;
@@ -11,6 +10,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Threading;
 using System.Windows.Controls;
+using EddiInaraService;
 using Utilities;
 
 namespace EddiInaraResponder
@@ -70,7 +70,7 @@ namespace EddiInaraResponder
         public void Reload()
         {
             Stop();
-            InaraService.Start();
+            InaraService.Start(EDDI.Instance.gameIsBeta, EDDI.Instance.EddiIsBeta());
             try
             {
                 updateThread = new Thread(BackgroundSync)
@@ -1320,7 +1320,7 @@ namespace EddiInaraResponder
             inaraConfiguration.ToFile();
             if (inaraConfiguration.commanderFrontierID != InaraService.Instance.commanderFrontierID)
             {
-                InaraService.Start();
+                InaraService.Start(EDDI.Instance.gameIsBeta, EDDI.Instance.EddiIsBeta());
             }
         }
 
@@ -1333,7 +1333,7 @@ namespace EddiInaraResponder
             inaraConfiguration.ToFile();
             if (inaraConfiguration.commanderFrontierID != InaraService.Instance.commanderFrontierID)
             {
-                InaraService.Start();
+                InaraService.Start(EDDI.Instance.gameIsBeta, EDDI.Instance.EddiIsBeta());
             }
         }
 
