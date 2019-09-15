@@ -121,10 +121,10 @@
     <value>Informazioni sul tuo carico.</value>
   </data>
   <data name="cargo_monitor_name" xml:space="preserve">
-    <value>Cargo</value>
+    <value>Controllore Cargo</value>
   </data>
   <data name="header_haulage" xml:space="preserve">
-    <value>Trasporto</value>
+    <value>Trasporto per Conto Terzi</value>
     <comment>Tons of haulage (mission cargo) carried</comment>
   </data>
   <data name="header_name" xml:space="preserve">
