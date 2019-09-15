@@ -120,6 +120,10 @@
   
   
   
-  
-  
+  <data name="p1" xml:space="preserve">
+    <value>Um sich mit Inara zu verbinden können, brauchen Sie ein Konto bei Inara. Nachdem Sie dieses Konto erstellt haben, erhalten sie Ihren API-Schlüssel, indem Sie auf die Verknüpfung "EINSTELLUNGEN" im Kopf der Website und dann auf "INARA-API" im linken Bereich klicken.</value>
+  </data>
+  <data name="p2" xml:space="preserve">
+    <value>Sobald Sie Ihren API-Schlüssel eingegeben haben, beginnt EDDI, die Daten der Spielsitzung an Inara zu übertragen.</value>
+  </data>
 </root>
