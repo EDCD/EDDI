@@ -40,9 +40,7 @@ namespace EddiEddpMonitor
             StatesPlusNone = new List<KeyValuePair<string, FactionState>>();
             StatesPlusNone.Add(new KeyValuePair<string, FactionState>(Properties.EddpResources.anything, null));
             StatesPlusNone.AddRange(FactionState.AllOfThem.OrderBy(x => x.localizedName).Select(x => new KeyValuePair<string, FactionState>(x.localizedName, x)));
-
             configurationFromFile();
-
             InitializeComponent();
         }
 
@@ -57,14 +55,15 @@ namespace EddiEddpMonitor
             Watches = watches;
         }
 
-        private void eddpWatchesUpdated(object sender, RoutedEventArgs e)
-        {
-            updateWatchesConfiguration();
-        }
-
         private void eddpWatchesUpdated(object sender, DataTransferEventArgs e)
         {
-            updateWatchesConfiguration();
+            if (sender is DataGrid dataGrid)
+            {
+                if (dataGrid.IsLoaded)
+                {
+                    updateWatchesConfiguration();
+                }
+            }
         }
 
         private void eddpStateChanged(object sender, SelectionChangedEventArgs e)

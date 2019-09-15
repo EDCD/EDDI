@@ -76,7 +76,7 @@ namespace EddiSpeechResponder
             }
         }
 
-        private void eddiScriptsUpdated(object sender, RoutedEventArgs e)
+        private void eddiScriptsEnabledUpdated(object sender, RoutedEventArgs e)
         {
             if (sender is CheckBox checkbox)
             {
@@ -87,12 +87,7 @@ namespace EddiSpeechResponder
             }
         }
 
-        private void eddiScriptsUpdated(object sender, DataTransferEventArgs e)
-        {
-            updateScriptsConfiguration();
-        }
-
-        private void eddiScriptsUpdated(object sender, SelectionChangedEventArgs e)
+        private void eddiScriptsPriorityUpdated(object sender, SelectionChangedEventArgs e)
         {
             if (sender is ComboBox comboBox)
             {
