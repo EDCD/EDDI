@@ -476,23 +476,35 @@ namespace UnitTests
             string line1 = "{ \"timestamp\":\"2017-08-24T17:22:03Z\", \"event\":\"Friends\", \"Status\":\"Online\", \"Name\":\"_Testy_McTest_\" }";
             string line2 = "{ \"timestamp\":\"2017-08-24T17:22:03Z\", \"event\":\"Friends\", \"Status\":\"Offline\", \"Name\":\"_Testy_McTest_\" }";
 
+            // Setup
+            Eddi.EDDI eddiInstance = Eddi.EDDI.Instance;
+            Friend[] preexistingFriends = eddiInstance.Cmdr.friends.ToArray();
+            PrivateObject privateEddiInstance = new PrivateObject(eddiInstance);
+            bool eventFriends(FriendsEvent friendsEvent)
+            {
+                return (bool)privateEddiInstance.Invoke("eventFriends", new object[] { friendsEvent });
+            }
+
+            // Act
             List<Event> events1 = JournalMonitor.ParseJournalEntry(line1);
             List<Event> events2 = JournalMonitor.ParseJournalEntry(line2);
 
+            // Both should generate one event
             Assert.AreEqual(1, events1.Count);
             Assert.AreEqual(1, events2.Count);
+            FriendsEvent event1 = (FriendsEvent)events1[0];
+            FriendsEvent event2 = (FriendsEvent)events2[0];
+            Assert.AreEqual("Online", event1.status);
+            Assert.AreEqual("Offline", event2.status);
 
-            FriendsEvent @event = (FriendsEvent)events2[0];
-            Friend testFriend = new Friend
-            {
-                name = @event.name,
-                status = @event.status
-            };
-
-            Assert.AreEqual("Offline", @event.status);
+            // The first event should be suppressed at the EDDI level
+            bool passEvent1 = eventFriends(event1);
+            bool passEvent2 = eventFriends(event2);
+            Assert.IsFalse(passEvent1);
+            Assert.IsTrue(passEvent2);
 
             // Clean up
-            Eddi.EDDI.Instance.Cmdr.friends.Remove(testFriend);
+            eddiInstance.Cmdr.friends = new List<Friend>(preexistingFriends);
         }
 
         [TestMethod]
