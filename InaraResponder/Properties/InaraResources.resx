@@ -121,7 +121,7 @@
     <value>API Key:</value>
   </data>
   <data name="desc" xml:space="preserve">
-    <value>Send details of your travels to Inara (https://inara.cz). Inara is a third party tool that provides provides information on Pilots Federation members and generates a shareable profile detailing your own status and achievements. </value>
+    <value>Send details of your travels to Inara (https://inara.cz). Inara is a third party tool that provides information on Pilots Federation members and generates a shareable profile detailing your own status and achievements. </value>
   </data>
   <data name="name" xml:space="preserve">
     <value>Inara Responder</value>
