@@ -1110,35 +1110,27 @@ namespace EddiInaraResponder
         private void handleCommanderReputationEvent(CommanderReputationEvent @event)
         {
             // Reputation progress in a range: [-1..1], which corresponds to a reputation range from -100% (hostile) to 100% (allied).
-            List<Dictionary<string, object>> eventData = new List<Dictionary<string, object>>()
+            List<Dictionary<string, object>> eventData = new List<Dictionary<string, object>>
             {
+                new Dictionary<string, object>
                 {
-                    new Dictionary<string, object>()
-                    {
-                        { "majorfactionName", "empire" },
-                        { "majorfactionReputation", @event.empire / 100 }
-                    }
+                    { "majorfactionName", "empire" },
+                    { "majorfactionReputation", @event.empire / 100 }
                 },
+                new Dictionary<string, object>
                 {
-                    new Dictionary<string, object>()
-                    {
-                        { "majorfactionName", "federation" },
-                        { "majorfactionReputation", @event.federation / 100 }
-                    }
+                    { "majorfactionName", "federation" },
+                    { "majorfactionReputation", @event.federation / 100 }
                 },
+                new Dictionary<string, object>
                 {
-                    new Dictionary<string, object>()
-                    {
-                        { "majorfactionName", "independent" },
-                        { "majorfactionReputation", @event.independent / 100 }
-                    }
+                    { "majorfactionName", "independent" },
+                    { "majorfactionReputation", @event.independent / 100 }
                 },
+                new Dictionary<string, object>
                 {
-                    new Dictionary<string, object>()
-                    {
-                        { "majorfactionName", "alliance" },
-                        { "majorfactionReputation", @event.alliance / 100 }
-                    }
+                    { "majorfactionName", "alliance" },
+                    { "majorfactionReputation", @event.alliance / 100 }
                 }
             };
             InaraService.Instance.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "setCommanderReputationMajorFaction", eventData));
