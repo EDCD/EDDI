@@ -1129,21 +1129,18 @@ namespace EddiInaraResponder
                 {
                     new Dictionary<string, object>()
                     {
+                        { "majorfactionName", "independent" },
+                        { "majorfactionReputation", @event.independent / 100 }
+                    }
+                },
+                {
+                    new Dictionary<string, object>()
+                    {
                         { "majorfactionName", "alliance" },
                         { "majorfactionReputation", @event.alliance / 100 }
                     }
                 }
             };
-
-            // the independent faction rep is optional because it is not currently being added to the journal
-            if (@event.independent != null)
-            {
-                eventData.Add(new Dictionary<string, object>()
-                    {
-                        { "majorfactionName", "independent" },
-                        { "majorfactionReputation", @event.independent / 100 }
-                    });
-            }
             InaraService.Instance.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "setCommanderReputationMajorFaction", eventData));
         }
 

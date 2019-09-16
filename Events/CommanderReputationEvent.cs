@@ -26,12 +26,12 @@ namespace EddiEvents
         public decimal federation { get; private set; }
 
         [JsonProperty("independent")]
-        public decimal? independent { get; private set; }
+        public decimal independent { get; private set; }
 
         [JsonProperty("alliance")]
         public decimal alliance { get; private set; }
 
-        public CommanderReputationEvent(DateTime timestamp, decimal empire, decimal federation, decimal? independent, decimal alliance) : base(timestamp, NAME)
+        public CommanderReputationEvent(DateTime timestamp, decimal empire, decimal federation, decimal independent, decimal alliance) : base(timestamp, NAME)
         {
             this.empire = empire;
             this.federation = federation;

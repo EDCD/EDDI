@@ -1129,7 +1129,7 @@ namespace UnitTests
             Assert.AreEqual(18.287001M, reputationEvent.empire);
             Assert.AreEqual(75.703102M, reputationEvent.federation);
             Assert.AreEqual(1.179020M, reputationEvent.alliance);
-            Assert.IsNull(reputationEvent.independent);
+            Assert.AreEqual(0M, reputationEvent.independent);
         }
     }
 }

@@ -3673,10 +3673,10 @@ namespace EddiJournalMonitor
                                 break;
                             case "Reputation":
                                 {
-                                    decimal empire = JsonParsing.getDecimal(data, "Empire");
-                                    decimal federation = JsonParsing.getDecimal(data, "Federation");
-                                    decimal? independent = JsonParsing.getOptionalDecimal(data, "Independent");
-                                    decimal alliance = JsonParsing.getDecimal(data, "Alliance");
+                                    decimal empire = JsonParsing.getOptionalDecimal(data, "Empire") ?? 0;
+                                    decimal federation = JsonParsing.getOptionalDecimal(data, "Federation") ?? 0;
+                                    decimal independent = JsonParsing.getOptionalDecimal(data, "Independent") ?? 0;
+                                    decimal alliance = JsonParsing.getOptionalDecimal(data, "Alliance") ?? 0;
                                     events.Add(new CommanderReputationEvent(timestamp, empire, federation, independent, alliance) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
