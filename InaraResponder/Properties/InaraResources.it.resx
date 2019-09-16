@@ -120,9 +120,7 @@
   <data name="api_key_label" xml:space="preserve">
     <value>Chiave API:</value>
   </data>
-  <data name="desc" xml:space="preserve">
-    <value>Invia i dettagli relativi ai tuoi viaggi ad Inara (https://inara.cz). Inara è uno strumento di terze parti che provvede informazioni sui membri della Federazione dei Piloti ed elabora un profilo che esprima il tuo stato ed i traguardi da te raggiunti. </value>
-  </data>
+  
   <data name="name" xml:space="preserve">
     <value>Risponditore Inara</value>
   </data>
