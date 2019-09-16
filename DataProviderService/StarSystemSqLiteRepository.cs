@@ -201,7 +201,7 @@ namespace EddiDataProviderService
             if (!names.Any()) { return null; }
 
             List<StarSystem> results = new List<StarSystem>();
-            List<KeyValuePair<string, string>> systemsToUpdate = new List<KeyValuePair<string, string>>();
+            List<KeyValuePair<string, object>> systemsToUpdate = new List<KeyValuePair<string, object>>();
             List<KeyValuePair<string, string>> dataSets = Instance.ReadStarSystems(names);
 
             bool needToUpdate = false;
@@ -246,7 +246,7 @@ namespace EddiDataProviderService
                     if (needToUpdate)
                     {
                         // We want to update this star system (don't deserialize the old result at this time)
-                        systemsToUpdate.Add(new KeyValuePair<string, string>(name, kv.Value));
+                        systemsToUpdate.Add(new KeyValuePair<string, object>(name, system));
                     }
                     else
                     {
@@ -283,26 +283,32 @@ namespace EddiDataProviderService
                 // Update properties that aren't synced from the server and that we want to preserve
                 foreach (StarSystem updatedSystem in updatedSystems)
                 {
-                    foreach (KeyValuePair<string, string> systemToUpdate in systemsToUpdate)
+                    foreach (KeyValuePair<string, object> systemToUpdate in systemsToUpdate)
                     {
                         if (updatedSystem.systemname == systemToUpdate.Key)
                         {
-                            StarSystem oldStarSystem = DeserializeStarSystem(systemToUpdate.Key, systemToUpdate.Value, ref needToUpdate);
+                            Dictionary<string, object> oldStarSystem = (Dictionary<string, object>) systemToUpdate.Value;
+
                             if (oldStarSystem != null)
                             {
                                 // Carry over StarSystem properties that we want to preserve (e.g. visits and comments)
-                                updatedSystem.visitLog = oldStarSystem.visitLog;
-                                updatedSystem.comment = oldStarSystem.comment;
-                                updatedSystem.distancefromhome = oldStarSystem.distancefromhome;
-                                updatedSystem.discoverableBodies = oldStarSystem.discoverableBodies;
+                                oldStarSystem.TryGetValue("visitLog", out object visitLogVal);
+                                updatedSystem.visitLog = JsonConvert.DeserializeObject<SortedSet<DateTime>>(JsonConvert.SerializeObject(visitLogVal));
+                                updatedSystem.comment = JsonParsing.getString(oldStarSystem, "comment");
+                                updatedSystem.distancefromhome = JsonParsing.getOptionalDecimal(oldStarSystem, "distancefromhome");
+                                updatedSystem.discoverableBodies = JsonParsing.getInt(oldStarSystem, "discoverableBodies");
 
                                 // Carry over Body properties that we want to preserve (e.g. exploration data)
-                                updatedSystem.PreserveBodyData(oldStarSystem.bodies, updatedSystem.bodies);
+                                oldStarSystem.TryGetValue("bodies", out object bodiesVal);
+                                List<Body> oldBodies = JsonConvert.DeserializeObject<List<Body>>(JsonConvert.SerializeObject(bodiesVal));
+                                updatedSystem.PreserveBodyData(oldBodies, updatedSystem.bodies);
 
                                 // Carry over Faction properties that we want to preserve (e.g. reputation data)
+                                oldStarSystem.TryGetValue("factions", out object factionsVal);
+                                List<Faction> oldFactions = JsonConvert.DeserializeObject<List<Faction>>(JsonConvert.SerializeObject(factionsVal));
                                 foreach (var updatedFaction in updatedSystem.factions)
                                 {
-                                    foreach (var oldFaction in oldStarSystem.factions)
+                                    foreach (var oldFaction in oldFactions)
                                     {
                                         if (updatedFaction.name == oldFaction.name)
                                         {

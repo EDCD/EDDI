@@ -91,7 +91,7 @@ namespace EddiDataDefinitions
             }
         }
 
-        public void PreserveBodyData(ImmutableList<Body> oldBodies, ImmutableList<Body> newBodies)
+        public void PreserveBodyData(List<Body> oldBodies, ImmutableList<Body> newBodies)
         {
             // Update `bodies` with new server data, except preserve properties not available via the server
             var newBodyBuilder = newBodies.ToBuilder();
@@ -304,6 +304,7 @@ namespace EddiDataDefinitions
         public StarSystem()
         {
             bodies = ImmutableList.Create<Body>();
+            factions = new List<Faction>();
             stations = new List<Station>();
         }
 
