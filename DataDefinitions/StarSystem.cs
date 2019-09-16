@@ -91,6 +91,44 @@ namespace EddiDataDefinitions
             }
         }
 
+        public void PreserveBodyData(ImmutableList<Body> oldBodies, ImmutableList<Body> newBodies)
+        {
+            // Update `bodies` with new server data, except preserve properties not available via the server
+            var newBodyBuilder = newBodies.ToBuilder();
+            foreach (Body oldBody in oldBodies)
+            {
+                int index = newBodyBuilder.FindIndex(b => b.bodyname == oldBody.bodyname);
+                if (oldBody.scanned != null)
+                {
+                    if (oldBody.scanned != newBodyBuilder[index].scanned)
+                    {
+                        newBodyBuilder[index].scanned = oldBody.scanned;
+                    }
+                    if (oldBody.alreadydiscovered != newBodyBuilder[index].alreadydiscovered)
+                    {
+                        newBodyBuilder[index].alreadydiscovered = oldBody.alreadydiscovered;
+                    }
+                }
+                if (oldBody.mapped != null)
+                {
+                    if (oldBody.mapped != newBodyBuilder[index].mapped)
+                    {
+                        newBodyBuilder[index].mapped = oldBody.mapped;
+                    }
+                    if (oldBody.alreadymapped != newBodyBuilder[index].alreadymapped)
+                    {
+                        newBodyBuilder[index].alreadymapped = oldBody.alreadymapped;
+                    }
+                    if (oldBody.mappedEfficiently != newBodyBuilder[index].mappedEfficiently)
+                    {
+                        newBodyBuilder[index].mappedEfficiently = oldBody.mappedEfficiently;
+                    }
+                }
+            }
+            newBodyBuilder.Sort(Body.CompareById);
+            bodies = newBodyBuilder.ToImmutable();
+        }
+
         /// <summary>The reserve level applicable to the system's rings</summary>
         public ReserveLevel Reserve { get; set; } = ReserveLevel.None;
         [JsonIgnore]
@@ -249,11 +287,10 @@ namespace EddiDataDefinitions
             if (factionPresence.FactionState == null)
             {
                 // Convert legacy data
-                string name = (string)additionalJsonData?["state"];
-                if (name != null)
+                string factionState = (string)additionalJsonData?["state"];
+                if (factionState != null)
                 {
-                    Faction.presences.FirstOrDefault(p => p.systemName == name).FactionState =
-                        FactionState.FromEDName(name ?? "None");
+                    factionPresence.FactionState = FactionState.FromEDName(factionState) ?? FactionState.None;
                 }
             }
             else
@@ -295,13 +332,13 @@ namespace EddiDataDefinitions
             }
 
             // Bonus for fully discovering a system
-            if (discoverableBodies == bodies.Where(b => b.scanned != null).Count())
+            if (discoverableBodies == bodies.Count(b => b.scanned != null))
             {
                 value += discoverableBodies * 1000;
 
                 // Bonus for fully mapping a system
-                int mappableBodies = bodies.Where(b => b.bodyType.invariantName != "Star").Count();
-                if (mappableBodies == bodies.Where(b => b.mapped != null).Count())
+                int mappableBodies = bodies.Count(b => b.bodyType.invariantName != "Star");
+                if (mappableBodies == bodies.Count(b => b.mapped != null))
                 {
                     value += mappableBodies * 10000;
                 }
