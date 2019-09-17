@@ -280,6 +280,9 @@ namespace EddiDataProviderService
                     results.Add(GetStarSystem(systemName, false));
                 }
 
+                // Synchronize EDSM visits and comments
+                updatedSystems = DataProviderService.syncFromStarMapService(updatedSystems);
+                
                 // Update properties that aren't synced from the server and that we want to preserve
                 foreach (StarSystem updatedSystem in updatedSystems)
                 {
@@ -291,10 +294,7 @@ namespace EddiDataProviderService
 
                             if (oldStarSystem != null)
                             {
-                                // Carry over StarSystem properties that we want to preserve (e.g. visits and comments)
-                                oldStarSystem.TryGetValue("visitLog", out object visitLogVal);
-                                updatedSystem.visitLog = JsonConvert.DeserializeObject<SortedSet<DateTime>>(JsonConvert.SerializeObject(visitLogVal));
-                                updatedSystem.comment = JsonParsing.getString(oldStarSystem, "comment");
+                                // Carry over StarSystem properties that we want to preserve
                                 updatedSystem.discoverableBodies = JsonParsing.getInt(oldStarSystem, "discoverableBodies");
 
                                 // Carry over Body properties that we want to preserve (e.g. exploration data)
