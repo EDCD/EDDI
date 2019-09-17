@@ -146,7 +146,7 @@
     <comment>Module BeamLaser</comment>
   </data>
   <data name="Bi_WeaveShieldGenerator" xml:space="preserve">
-    <value>Generatore di scudo B UEIV</value>
+    <value>Generatore di Scudo Interlacciato</value>
     <comment>Module Bi_WeaveShieldGenerator</comment>
   </data>
   <data name="BurstLaser" xml:space="preserve">

@@ -97,12 +97,28 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="None" xml:space="preserve">
+    <value>Nenhum</value>
+  </data>
+  <data name="Contested" xml:space="preserve">
+    <value>Contestado</value>
+  </data>
+  <data name="Controlled" xml:space="preserve">
+    <value>Controlado</value>
+  </data>
+  <data name="Exploited" xml:space="preserve">
+    <value>Explorado</value>
+  </data>
+  <data name="HomeSystem" xml:space="preserve">
+    <value>Sistema de Origem</value>
+  </data>
+  <data name="InPrepareRadius" xml:space="preserve">
+    <value>No Raio de Preparação</value>
+  </data>
+  <data name="Prepared" xml:space="preserve">
+    <value>Preparado</value>
+  </data>
+  <data name="Turmoil" xml:space="preserve">
+    <value>Desordem</value>
+  </data>
 </root>

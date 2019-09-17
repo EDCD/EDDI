@@ -206,7 +206,7 @@
     <value>Aggiorna EDDI</value>
   </data>
   <data name="reset_button" xml:space="preserve">
-    <value>Resetta</value>
+    <value>Reimposta</value>
   </data>
   <data name="tab_tts_test_desc" xml:space="preserve">
     <value>Qui sotto è possibile provare come la voce suonerà. Resta da notare che, qualora la voce scelta risultasse non compatibile, al suo posto verrà utilizzata la voce di default.</value>
