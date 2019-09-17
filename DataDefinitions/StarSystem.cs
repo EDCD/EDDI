@@ -227,6 +227,7 @@ namespace EddiDataDefinitions
         public string comment;
 
         /// <summary>distance from home</summary>
+        [JsonIgnore]
         public decimal? distancefromhome;
 
         /// <summary>Whether a system scan has already been completed for this system in the current play session</summary>
