@@ -20,6 +20,7 @@ namespace EddiEvents
             VARIABLES.Add("name", "The name of the pilot");
             VARIABLES.Add("rank", "The rank of the pilot");
             VARIABLES.Add("faction", "The faction of the pilot");
+            VARIABLES.Add("power", "The aligned power of the pilot (if player is pledged)");
             VARIABLES.Add("legalstatus", "The legal status of the pilot");
             VARIABLES.Add("shieldhealth", "The health of the shields");
             VARIABLES.Add("hullhealth", "The health of the hull");
@@ -45,6 +46,9 @@ namespace EddiEvents
         [JsonProperty("faction")]
         public string faction { get; private set; }
 
+        [JsonProperty("power")]
+        public string power => (Power ?? Power.None).localizedName;
+
         [JsonProperty("legalstatus")]
         public string legalstatus => (LegalStatus ?? LegalStatus.None).localizedName;
 
@@ -65,8 +69,9 @@ namespace EddiEvents
 
         public CombatRating CombatRank { get; }
         public LegalStatus LegalStatus { get; }
+        public Power Power { get; }
 
-        public ShipTargetedEvent(DateTime timestamp, bool targetlocked, string ship, int? scanstage, string name, CombatRating rank, string faction, LegalStatus legalstatus, int? bounty, decimal? shieldhealth, decimal? hullhealth, string subsystem, decimal? subsystemhealth) : base(timestamp, NAME)
+        public ShipTargetedEvent(DateTime timestamp, bool targetlocked, string ship, int? scanstage, string name, CombatRating rank, string faction, Power power, LegalStatus legalstatus, int? bounty, decimal? shieldhealth, decimal? hullhealth, string subsystem, decimal? subsystemhealth) : base(timestamp, NAME)
         {
             this.targetlocked = targetlocked;
             this.ship = ship;
@@ -74,6 +79,7 @@ namespace EddiEvents
             this.name = name;
             this.CombatRank = rank;
             this.faction = faction;
+            this.Power = power;
             this.LegalStatus = legalstatus;
             this.bounty = bounty;
             this.shieldhealth = shieldhealth;

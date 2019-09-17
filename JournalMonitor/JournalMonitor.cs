@@ -1905,6 +1905,8 @@ namespace EddiJournalMonitor
                             case "ShipTargeted":
                                 {
                                     bool targetlocked = JsonParsing.getBool(data, "TargetLocked");
+
+                                    // Target locked
                                     int? scanstage = JsonParsing.getOptionalInt(data, "ScanStage");
                                     string ship = JsonParsing.getString(data, "Ship");
                                     if (ship != null)
@@ -1926,26 +1928,24 @@ namespace EddiJournalMonitor
                                             }
                                         }
                                     }
+
+                                    // Scan stage >= 1
                                     string name = JsonParsing.getString(data, "PilotName_Localised");
-                                    CombatRating rank = new CombatRating();
-                                    string pilotRank = JsonParsing.getString(data, "PilotRank");
-                                    if (pilotRank != null)
-                                    {
-                                        rank = CombatRating.FromEDName(pilotRank);
-                                    }
+                                    CombatRating rank = CombatRating.FromEDName(JsonParsing.getString(data, "PilotRank"));
+
+                                    // Scan stage >= 2
                                     decimal? shieldHealth = JsonParsing.getOptionalDecimal(data, "ShieldHealth");
                                     decimal? hullHealth = JsonParsing.getOptionalDecimal(data, "HullHealth");
+
+                                    // Scan stage >= 3
                                     string faction = JsonParsing.getString(data, "Faction");
-                                    LegalStatus legalStatus = new LegalStatus();
-                                    string pilotLegalStatus = JsonParsing.getString(data, "LegalStatus");
-                                    if (pilotLegalStatus != null)
-                                    {
-                                        legalStatus = LegalStatus.FromEDName(pilotLegalStatus);
-                                    }
+                                    LegalStatus legalStatus = LegalStatus.FromEDName(JsonParsing.getString(data, "LegalStatus")) ?? LegalStatus.None;
+                                    Power power = Power.FromEDName(JsonParsing.getString(data, "Power")) ?? Power.None;
                                     int? bounty = JsonParsing.getOptionalInt(data, "Bounty");
                                     string subSystem = JsonParsing.getString(data, "Subsystem_Localised");
                                     decimal? subSystemHealth = JsonParsing.getOptionalDecimal(data, "SubsystemHealth");
-                                    events.Add(new ShipTargetedEvent(timestamp, targetlocked, ship, scanstage, name, rank, faction, legalStatus, bounty, shieldHealth, hullHealth, subSystem, subSystemHealth) { raw = line, fromLoad = fromLogLoad });
+
+                                    events.Add(new ShipTargetedEvent(timestamp, targetlocked, ship, scanstage, name, rank, faction, power, legalStatus, bounty, shieldHealth, hullHealth, subSystem, subSystemHealth) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
