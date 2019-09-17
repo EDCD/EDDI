@@ -3673,10 +3673,10 @@ namespace EddiJournalMonitor
                                 break;
                             case "Reputation":
                                 {
-                                    decimal empire = JsonParsing.getDecimal(data, "Empire");
-                                    decimal federation = JsonParsing.getDecimal(data, "Federation");
-                                    decimal independent = JsonParsing.getDecimal(data, "Independent");
-                                    decimal alliance = JsonParsing.getDecimal(data, "Alliance");
+                                    decimal empire = JsonParsing.getOptionalDecimal(data, "Empire") ?? 0;
+                                    decimal federation = JsonParsing.getOptionalDecimal(data, "Federation") ?? 0;
+                                    decimal independent = JsonParsing.getOptionalDecimal(data, "Independent") ?? 0;
+                                    decimal alliance = JsonParsing.getOptionalDecimal(data, "Alliance") ?? 0;
                                     events.Add(new CommanderReputationEvent(timestamp, empire, federation, independent, alliance) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
@@ -3802,9 +3802,9 @@ namespace EddiJournalMonitor
             Faction faction = new Faction();
 
             // Get the faction name and state
-            if (data.TryGetValue(type + "Faction", out object val))
+            if (data.TryGetValue(type + "Faction", out object factionVal))
             {
-                if (val is Dictionary<string, object> factionData) // 3.3.03 or later journal
+                if (factionVal is Dictionary<string, object> factionData) // 3.3.03 or later journal
                 {
                     faction.name = JsonParsing.getString(factionData, "Name");
 
@@ -3818,19 +3818,18 @@ namespace EddiJournalMonitor
                 }
                 else // per-3.3.03 journal
                 {
-                    faction.name = val as string;
+                    faction.name = factionVal as string;
                 }
             }
 
             // Get the faction allegiance
-            if (data.TryGetValue(type + "Allegiance", out val))
+            if (data.TryGetValue(type + "Allegiance", out _))
             {
                 faction.Allegiance = getAllegiance(data, type + "Allegiance");
             }
-
-            // Station controlling faction government not discretely available in 'Location' event
-            else if (data.TryGetValue("Factions", out val))
+            else if (data.TryGetValue("Factions", out object val))
             {
+                // Station controlling faction government not discretely available in 'Location' event
                 var factionsList = val as List<object>;
                 foreach (IDictionary<string, object> factionDetail in factionsList)
                 {
@@ -3959,7 +3958,7 @@ namespace EddiJournalMonitor
 
         private static string npcSpeechBy(string from, string message)
         {
-            string by = null;
+            string by;
             if (message.StartsWith("$AmbushedPilot_"))
             {
                 by = "Ambushed pilot";

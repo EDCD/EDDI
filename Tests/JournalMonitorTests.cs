@@ -473,27 +473,38 @@ namespace UnitTests
         [TestMethod]
         public void TestFriends()
         {
-            string line = "{ \"timestamp\":\"2017-08-24T17:22:03Z\", \"event\":\"Friends\", \"Status\":\"Online\", \"Name\":\"_Testy_McTest_\" }";
+            string line1 = "{ \"timestamp\":\"2017-08-24T17:22:03Z\", \"event\":\"Friends\", \"Status\":\"Online\", \"Name\":\"_Testy_McTest_\" }";
             string line2 = "{ \"timestamp\":\"2017-08-24T17:22:03Z\", \"event\":\"Friends\", \"Status\":\"Offline\", \"Name\":\"_Testy_McTest_\" }";
 
-            List<Event> events = JournalMonitor.ParseJournalEntry(line);
-            events = JournalMonitor.ParseJournalEntry(line2);
-
-            /// Since this friend is unknown to us, the first time we see this friend no event should trigger. 
-            /// Only the second line, registering the status as offline, should be registered as an event.
-            Assert.IsTrue(events.Count == 1);
-
-            FriendsEvent @event = (FriendsEvent)events[0];
-            Friend testFriend = new Friend
+            // Setup
+            Eddi.EDDI eddiInstance = Eddi.EDDI.Instance;
+            Friend[] preexistingFriends = eddiInstance.Cmdr.friends.ToArray();
+            PrivateObject privateEddiInstance = new PrivateObject(eddiInstance);
+            bool eventFriends(FriendsEvent friendsEvent)
             {
-                name = @event.name,
-                status = @event.status
-            };
+                return (bool)privateEddiInstance.Invoke("eventFriends", new object[] { friendsEvent });
+            }
 
-            Assert.AreEqual("Offline", @event.status);
+            // Act
+            List<Event> events1 = JournalMonitor.ParseJournalEntry(line1);
+            List<Event> events2 = JournalMonitor.ParseJournalEntry(line2);
+
+            // Both should generate one event
+            Assert.AreEqual(1, events1.Count);
+            Assert.AreEqual(1, events2.Count);
+            FriendsEvent event1 = (FriendsEvent)events1[0];
+            FriendsEvent event2 = (FriendsEvent)events2[0];
+            Assert.AreEqual("Online", event1.status);
+            Assert.AreEqual("Offline", event2.status);
+
+            // The first event should be suppressed at the EDDI level
+            bool passEvent1 = eventFriends(event1);
+            bool passEvent2 = eventFriends(event2);
+            Assert.IsFalse(passEvent1);
+            Assert.IsTrue(passEvent2);
 
             // Clean up
-            Eddi.EDDI.Instance.Cmdr.friends.Remove(testFriend);
+            eddiInstance.Cmdr.friends = new List<Friend>(preexistingFriends);
         }
 
         [TestMethod]
@@ -1107,6 +1118,18 @@ namespace UnitTests
             Assert.AreEqual(1, events.Count);
             StatisticsEvent statisticsEvent = (StatisticsEvent)events[0];
             Assert.AreEqual(7083, statisticsEvent.multicrew.timetotalseconds);
+        }
+
+        [TestMethod]
+        public void TestReputationWithoutIndependent()
+        {
+            string line = @"{ ""timestamp"":""2019 - 09 - 13T23: 08:20Z"", ""event"":""Reputation"", ""Empire"":18.287001, ""Federation"":75.703102, ""Alliance"":1.179020 }";
+            List<Event> events = JournalMonitor.ParseJournalEntry(line);
+            CommanderReputationEvent reputationEvent = (CommanderReputationEvent)events[0];
+            Assert.AreEqual(18.287001M, reputationEvent.empire);
+            Assert.AreEqual(75.703102M, reputationEvent.federation);
+            Assert.AreEqual(1.179020M, reputationEvent.alliance);
+            Assert.AreEqual(0M, reputationEvent.independent);
         }
     }
 }
