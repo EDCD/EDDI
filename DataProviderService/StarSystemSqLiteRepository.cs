@@ -295,7 +295,6 @@ namespace EddiDataProviderService
                                 oldStarSystem.TryGetValue("visitLog", out object visitLogVal);
                                 updatedSystem.visitLog = JsonConvert.DeserializeObject<SortedSet<DateTime>>(JsonConvert.SerializeObject(visitLogVal));
                                 updatedSystem.comment = JsonParsing.getString(oldStarSystem, "comment");
-                                updatedSystem.distancefromhome = JsonParsing.getOptionalDecimal(oldStarSystem, "distancefromhome");
                                 updatedSystem.discoverableBodies = JsonParsing.getInt(oldStarSystem, "discoverableBodies");
 
                                 // Carry over Body properties that we want to preserve (e.g. exploration data)
