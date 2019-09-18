@@ -192,7 +192,7 @@ namespace EddiNavigationService
                 List<int> systemsCount = new List<int>();   // Count of missions per system
                 foreach (Mission mission in missions.Where(m => m.statusEDName == "Active").ToList())
                 {
-                    if (mission.destinationsystems != null && mission.destinationsystems.Any())
+                    if (mission.destinationsystems?.Any() ?? false)
                     {
                         foreach (DestinationSystem system in mission.destinationsystems)
                         {
@@ -231,7 +231,7 @@ namespace EddiNavigationService
                     if (systemsCount[i] == mostCount)
                     {
                         dest = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystem(systems[i], true);
-                        if (dest != null && dest.x != null)
+                        if (dest?.x != null)
                         {
                             mostList.Add(CalculateDistance(curr, dest), systems[i]);
                         }
@@ -322,6 +322,42 @@ namespace EddiNavigationService
                 missionMonitor.SetMissionsRouteData(searchSystem, searchDistance);
             }
             EDDI.Instance.enqueueEvent(new RouteDetailsEvent(DateTime.Now, "nearest", searchSystem, null, searchSystem, missionids.Count(), searchDistance, searchDistance, missionids));
+            return searchSystem;
+        }
+
+        public string GetScoopRoute(decimal totalJumpRange)
+        {
+            searchSystem = null;
+            searchStation = null;
+            searchDistance = 0;
+
+            int radiusLy = (int)Math.Ceiling(totalJumpRange);
+            int searchCount = 0;
+
+            StarSystem currentSystem = EDDI.Instance?.CurrentStarSystem;
+            if (currentSystem != null)
+            {
+                List<Dictionary<string, object>> sphereSystems = StarMapService.GetStarMapSystemsSphere(currentSystem.systemname, 0, radiusLy);
+                sphereSystems = sphereSystems.Where(kvp => (kvp["system"] as StarSystem).scoopable).ToList();
+                searchCount = sphereSystems.Count;
+                if (searchCount > 0)
+                {
+                    SortedList<decimal, string> nearestList = new SortedList<decimal, string>();
+                    foreach (Dictionary<string, object> system in sphereSystems)
+                    {
+                        decimal distance = (decimal)system["distance"];
+                        if (!nearestList.ContainsKey(distance))
+                        {
+                            nearestList.Add(distance, (system["system"] as StarSystem).systemname);
+                        }
+                    }
+
+                    // Nearest 'scoopable' system
+                    searchSystem = nearestList.Values.FirstOrDefault();
+                    searchDistance = nearestList.Keys.FirstOrDefault();
+                }
+            }
+            EDDI.Instance.enqueueEvent(new RouteDetailsEvent(DateTime.Now, "scoop", searchSystem, null, searchSystem, searchCount, searchDistance, totalJumpRange, null));
             return searchSystem;
         }
 
