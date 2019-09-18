@@ -19,7 +19,7 @@ namespace EddiDataDefinitions.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class SignalSource {
@@ -65,7 +65,7 @@ namespace EddiDataDefinitions.Properties {
         /// </summary>
         public static string FIXED_EVENT_CAPSHIP {
             get {
-                return ResourceManager.GetString("FIXED-EVENT_CAPSHIP", resourceCulture);
+                return ResourceManager.GetString("FIXED_EVENT_CAPSHIP", resourceCulture);
             }
         }
         
@@ -102,6 +102,15 @@ namespace EddiDataDefinitions.Properties {
         public static string ListeningPost {
             get {
                 return ResourceManager.GetString("ListeningPost", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Listening Post.
+        /// </summary>
+        public static string ListeningPost_index1 {
+            get {
+                return ResourceManager.GetString("ListeningPost_index1", resourceCulture);
             }
         }
         
@@ -183,6 +192,15 @@ namespace EddiDataDefinitions.Properties {
         public static string SAA_SignalType_Geological {
             get {
                 return ResourceManager.GetString("SAA_SignalType_Geological", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Human Surface Signal.
+        /// </summary>
+        public static string SAA_SignalType_Human {
+            get {
+                return ResourceManager.GetString("SAA_SignalType_Human", resourceCulture);
             }
         }
         

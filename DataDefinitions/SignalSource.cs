@@ -37,7 +37,7 @@
 
             var UnregisteredCommsBeacon = new SignalSource("NumberStation");
             var ListeningPost = new SignalSource("ListeningPost");
-            var ListeningPostIndex1 = new SignalSource("ListeningPost:#index=1");
+            var ListeningPostIndex1 = new SignalSource("ListeningPost_index1");
 
             var NotableStellarPhenomenaCloud = new SignalSource("Fixed_Event_Life_Cloud");
             var NotableStellarPhenomenaRing = new SignalSource("Fixed_Event_Life_Ring");
@@ -47,6 +47,8 @@
 
             var Biological = new SignalSource("SAA_SignalType_Biological"); //Speculative
             var Geological = new SignalSource("SAA_SignalType_Geological");
+            var Human = new SignalSource("SAA_SignalType_Human");
+
         }
 
         public static readonly SignalSource UnidentifiedSignalSource;
@@ -64,7 +66,12 @@
             {
                 if (from.Contains("$"))
                 {
-                    return ResourceBasedLocalizedEDName<SignalSource>.FromEDName(from.Replace("$", "").Replace(";", ""));
+                    return ResourceBasedLocalizedEDName<SignalSource>.FromEDName(from
+                        .Replace("#", "_")
+                        .Replace("$", "")
+                        .Replace("=", "")
+                        .Replace(":", "")
+                        .Replace(";", ""));
                 }
             }
             return null;
