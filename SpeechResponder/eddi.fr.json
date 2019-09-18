@@ -1617,7 +1617,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": null,
+      "script": "{set hotspots to []}\r\n{for hotspot in event.hotspots: \r\n    {set hotspot_desc to: \r\n        {hotspot.amount} of {hotspot.commodity}\r\n    }\r\n    {set hotspots to cat(hotspots, [hotspot_desc])}\r\n}\r\n\r\nHotspots detected.\r\n{List(hotspots)}",
       "default": true,
       "name": "Ring hotspots detected",
       "description": "Triggered when hotspots are detected in a ring"
@@ -2004,7 +2004,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": null,
+      "script": "{set surfacesignals to []}\r\n{for signal in event.surfacesignals: \r\n    {set surfacesignals_desc to: \r\n        {signal.amount} {signal.source}{if signal.amount > 1:s}\r\n    }\r\n    {set surfacesignals to cat(surfacesignals, [surfacesignals_desc])}\r\n}\r\n\r\n{List(surfacesignals)} detected.",
       "default": true,
       "name": "Surface signals detected",
       "description": "Triggered when surface signal sources are detected"
