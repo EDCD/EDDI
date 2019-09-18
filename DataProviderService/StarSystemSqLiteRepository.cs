@@ -295,7 +295,7 @@ namespace EddiDataProviderService
                             if (oldStarSystem != null)
                             {
                                 // Carry over StarSystem properties that we want to preserve
-                                updatedSystem.discoverableBodies = JsonParsing.getInt(oldStarSystem, "discoverableBodies");
+                                updatedSystem.totalbodies = JsonParsing.getInt(oldStarSystem, "discoverableBodies");
 
                                 // Carry over Body properties that we want to preserve (e.g. exploration data)
                                 oldStarSystem.TryGetValue("bodies", out object bodiesVal);

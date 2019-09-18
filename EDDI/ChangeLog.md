@@ -2,34 +2,49 @@
 
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
-### 3.4.4-b1
+### 3.5.0-b1
   * Core
     * Added new `Inara Responder`.
+    * Language setting are now preserved across both Standalone and Voice Attack modes of operation.
     * Fixed a general bug concerning order of initialisation, which manifested as the Material monitor only showing owned materials on first run.
+    * Ensure exploration results are preserved when refreshing a 'stale' star system and the data is not yet available on the server.
+    * Star system name now available as `systemname` in `Body scanned` and `Star scanned` events.
+    * `totalbodies` now referenceable (within `StarSystem` object) after a discovery scan (honk).
   * Cargo Monitor
     * Fixed #1465 whereby (for example) when a limpet launch frees cargo space which the refinery immediately uses, the Cargo monitor got out of sync.
+  * Events
+    * Added new event `Commander loading`, triggered at the very beginning of loading a game.
+    * Added new event `Commander reputation`, triggered when your reputation is reported.
+    * Added new event `Ring hotspots detected`, triggered when hotspot signals are detected in a ring during a SAA scan.
+    * Added new event `Powerplay`, triggered while loading the game (if pledged).
+    * Added new event `Statistics`, triggered while loading a game.
+    * Added new event `Surface signals detected`, triggered when surface biological and/or geological signals are detected on a body during SAA scan.
+    * Updated the `Commander continued` event with new properties `startlanded` and `startdead` (true if starting the game either landed or dead, respectively).
+    * Updated the `Community goal` event with new properties `maxtier` and `maxtierrewards`.
+    * Updated the `Liftoff` and `Touchdown` events with new `nearestdestination` property.
+    * Updated the `Location` and `Jumped` events contain new properties `power` and `powerstate` (if pledged).
+    * Updated the `Next jump` (`FSDTarget` journal) event with new `jumpsremaininginroute` property.
+    * Updated the `Ship targeted` event with new `power` property (if pledged).
   * Inara Responder
     * Simply paste in your Inara API key to have EDDI upload your Commander's progress to Inara. Uploads are batched for every 5 minutes to save bandwidth on both your machine and the Inara servers, and any outstanding events are sent upon game exit.
 	* EDDI can now also get commander details from Inara, which are accessible via Cottle and VA functions as described below.
   * Speech Responder
-    * Fixed inadvertently disabled hyperlink in the UI "Read about the speech responder's functions here".
-    * The `Location` and `Jumped` events contain new properties `power` and `powerstate` (if pledged). 
-    * Added new event `Commander loading`, triggered at the very beginning of loading a game.
-    * Added new event `Commander reputation`, triggered when your reputation is reported.
-    * Added new event `Statistics`, triggered while loading a game.
-    * Added new event `Powerplay`, triggered while loading the game (if pledged).
-    * Updated the `Commander continued` event with new properties `startlanded` and `startdead` (true if starting the game either landed or dead, respectively).
-    * Updated the `Community goal` event with new properties `maxtier` and `maxtierrewards`.
-    * Updated the `System report` script to enhance the description of powerplay status.
-    * Updated the `Engineer progressed` event to stay silent by default when written at startup (with empty values, signaling that engineer data has been loaded).
-    * Updated the `Bodies mapped` script to correct a typo.
+    * UI revised to either `Delete` or `Reset` as script, as appropriate.
     * Replaced the `List launchbays` script with script `Launchbay report` (changed to conform to naming conventions for similar scripts). Added protection in script against empty launchbay data.
+    * Fixed inadvertently disabled hyperlink in the UI "Read about the speech responder's functions here".
+    * Updated the `Bodies mapped` script to correct a typo.
+    * Updated the `Engineer progressed` event to stay silent by default when written at startup (with empty values, signaling that engineer data has been loaded).
+    * Updated the `Jumped` script to use `jumpsremaininginroute`.
+    * Updated the `System report` script to enhance the description of powerplay status.
   * Speech Service
     * Added new function `InaraDetails` for looking up commander details on [Inara](https://inara.cz).
+  * Status Monitor
+    Added new `hyperspace` and `srv_high_beams` properties.
   * Translations
     * Italian translation is now complete.
   * VoiceAttack Responder
     * Added new plugin function `inara`, allowing commanders to look up the Inara profiles of other commanders in their browsers.
+    * Added new `Status hyperspace` and `Status srv high beams` properties.
 
 ### 3.4.3
   * Core
