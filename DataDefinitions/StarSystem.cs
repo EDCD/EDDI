@@ -129,6 +129,9 @@ namespace EddiDataDefinitions
             bodies = newBodyBuilder.ToImmutable();
         }
 
+        /// <summary>True if the main star in the system is scoopable</summary>
+        public bool scoopable => bodies.Where(b => b.scoopable && b.distance == 0).Count() > 0;
+
         /// <summary>The reserve level applicable to the system's rings</summary>
         public ReserveLevel Reserve { get; set; } = ReserveLevel.None;
         [JsonIgnore]
