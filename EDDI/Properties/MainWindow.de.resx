@@ -275,5 +275,7 @@
     <value>Die Frontier API ist in dieser EDDI Version nicht möglich.</value>
     <comment>Displayed when the Frontier API is not enabled because the current build has no OAuth ClientID configured.</comment>
   </data>
-  
+  <data name="choose_lang_label_va" xml:space="preserve">
+    <value>Wähle die Sprache von EDDI (erfordert einen Neustart von EDDI):</value>
+  </data>
 </root>
