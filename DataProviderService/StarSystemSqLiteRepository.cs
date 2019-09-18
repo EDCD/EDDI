@@ -15,7 +15,7 @@ namespace EddiDataProviderService
         private const string TABLE_GET_SCHEMA_VERSION_SQL = @"PRAGMA user_version;";
         private const string TABLE_SET_SCHEMA_VERSION_SQL = @"PRAGMA user_version = ";
 
-        public long SCHEMA_VERSION { get; private set; } = 0;
+        public long SCHEMA_VERSION { get; private set; }
 
         // Append new table columns to the end of the list to maximize compatibility with schema version 0.
         // systemaddress and edsmid must each be unique. 
@@ -134,11 +134,12 @@ namespace EddiDataProviderService
         public StarSystem GetOrCreateStarSystem(string name, bool fetchIfMissing = true, bool refreshIfOutdated = true)
         {
             if (name == string.Empty) { return null; }
-            return GetOrCreateStarSystems(new string[] { name }, fetchIfMissing, refreshIfOutdated).FirstOrDefault();
+            return GetOrCreateStarSystems(new[] { name }, fetchIfMissing, refreshIfOutdated).FirstOrDefault();
         }
 
         public List<StarSystem> GetOrCreateStarSystems(string[] names, bool fetchIfMissing = true, bool refreshIfOutdated = true)
         {
+            if (!names.Any()) { return null; }
             List<StarSystem> systems = GetOrFetchStarSystems(names, fetchIfMissing, refreshIfOutdated);
 
             // Create a new system object for each name that isn't in the database and couldn't be fetched from a server
@@ -146,7 +147,7 @@ namespace EddiDataProviderService
             {
                 if (systems?.Find(s => s?.systemname == name) == null)
                 {
-                    systems.Add(new StarSystem() { systemname = name });
+                    systems?.Add(new StarSystem() { systemname = name });
                 }
             }
 
@@ -156,12 +157,12 @@ namespace EddiDataProviderService
         public StarSystem GetOrFetchStarSystem(string name, bool fetchIfMissing = true, bool refreshIfOutdated = true)
         {
             if (name == string.Empty) { return null; }
-            return GetOrFetchStarSystems(new string[] { name }, fetchIfMissing, refreshIfOutdated).FirstOrDefault();
+            return GetOrFetchStarSystems(new[] { name }, fetchIfMissing, refreshIfOutdated).FirstOrDefault();
         }
 
         public List<StarSystem> GetOrFetchStarSystems(string[] names, bool fetchIfMissing = true, bool refreshIfOutdated = true)
         {
-            if (names.Count() == 0) { return null; }
+            if (!names.Any()) { return null; }
 
             List<StarSystem> systems = Instance.GetStarSystems(names, refreshIfOutdated);
 
@@ -188,7 +189,7 @@ namespace EddiDataProviderService
         public StarSystem GetStarSystem(string name, bool refreshIfOutdated = true)
         {
             if (name == string.Empty) { return null; }
-            return GetStarSystems(new string[] { name }, refreshIfOutdated).FirstOrDefault();
+            return GetStarSystems(new[] { name }, refreshIfOutdated).FirstOrDefault();
         }
 
         public List<StarSystem> GetStarSystems(string[] names, bool refreshIfOutdated = true)
@@ -197,18 +198,16 @@ namespace EddiDataProviderService
             {
                 return null;
             }
-            if (names.Count() == 0) { return null; }
+            if (!names.Any()) { return null; }
 
             List<StarSystem> results = new List<StarSystem>();
-            List<string> systemsToUpdate = new List<string>();
+            List<KeyValuePair<string, object>> systemsToUpdate = new List<KeyValuePair<string, object>>();
             List<KeyValuePair<string, string>> dataSets = Instance.ReadStarSystems(names);
 
+            bool needToUpdate = false;
             foreach (KeyValuePair<string, string> kv in dataSets)
             {
-                bool needToUpdate = false;
-                StarSystem result = null;
-
-                if (kv.Value != null && kv.Value != "")
+                if (!string.IsNullOrEmpty(kv.Value))
                 {
                     string name = kv.Key;
 
@@ -217,12 +216,10 @@ namespace EddiDataProviderService
 
                     // Determine whether our data is stale (We won't deserialize the the entire system if it's stale) 
                     IDictionary<string, object> system = Deserializtion.DeserializeData(data);
-                    system.TryGetValue("comment", out object commentVal);
                     system.TryGetValue("lastupdated", out object lastUpdatedVal);
                     system.TryGetValue("systemAddress", out object systemAddressVal);
                     system.TryGetValue("EDSMID", out object edsmIdVal);
 
-                    string comment = (string)commentVal ?? "";
                     DateTime? lastupdated = (DateTime?)lastUpdatedVal;
                     long? systemAddress = (long?)systemAddressVal;
                     long? edsmId = (long?)edsmIdVal;
@@ -248,13 +245,13 @@ namespace EddiDataProviderService
 
                     if (needToUpdate)
                     {
-                        // We want to update this star system
-                        systemsToUpdate.Add(name);
+                        // We want to update this star system (don't deserialize the old result at this time)
+                        systemsToUpdate.Add(new KeyValuePair<string, object>(name, system));
                     }
                     else
                     {
                         // Deserialize the old result
-                        result = DeserializeStarSystem(name, data, ref needToUpdate);
+                        StarSystem result = DeserializeStarSystem(name, data, ref needToUpdate);
                         if (result != null)
                         {
                             results.Add(result);
@@ -265,9 +262,10 @@ namespace EddiDataProviderService
 
             if (systemsToUpdate.Count > 0)
             {
-                List<StarSystem> updatedSystems = DataProviderService.GetSystemsData(systemsToUpdate.ToArray());
+                List<StarSystem> updatedSystems = DataProviderService.GetSystemsData(systemsToUpdate.Select(s => s.Key).ToArray());
 
                 // If the newly fetched star system is an empty object except (for the object name), reject it
+                // Return old results when new results have been rejected
                 List<string> systemsToRevert = new List<string>();
                 foreach (StarSystem starSystem in updatedSystems)
                 {
@@ -277,8 +275,6 @@ namespace EddiDataProviderService
                     }
                 }
                 updatedSystems.RemoveAll(s => systemsToRevert.Contains(s.systemname));
-
-                // Return old results when new results have been rejected
                 foreach (string systemName in systemsToRevert)
                 {
                     results.Add(GetStarSystem(systemName, false));
@@ -286,6 +282,51 @@ namespace EddiDataProviderService
 
                 // Synchronize EDSM visits and comments
                 updatedSystems = DataProviderService.syncFromStarMapService(updatedSystems);
+                
+                // Update properties that aren't synced from the server and that we want to preserve
+                foreach (StarSystem updatedSystem in updatedSystems)
+                {
+                    foreach (KeyValuePair<string, object> systemToUpdate in systemsToUpdate)
+                    {
+                        if (updatedSystem.systemname == systemToUpdate.Key)
+                        {
+                            Dictionary<string, object> oldStarSystem = (Dictionary<string, object>) systemToUpdate.Value;
+
+                            if (oldStarSystem != null)
+                            {
+                                // Carry over StarSystem properties that we want to preserve
+                                updatedSystem.discoverableBodies = JsonParsing.getInt(oldStarSystem, "discoverableBodies");
+
+                                // Carry over Body properties that we want to preserve (e.g. exploration data)
+                                oldStarSystem.TryGetValue("bodies", out object bodiesVal);
+                                List<Body> oldBodies = JsonConvert.DeserializeObject<List<Body>>(JsonConvert.SerializeObject(bodiesVal));
+                                updatedSystem.PreserveBodyData(oldBodies, updatedSystem.bodies);
+
+                                // Carry over Faction properties that we want to preserve (e.g. reputation data)
+                                oldStarSystem.TryGetValue("factions", out object factionsVal);
+                                List<Faction> oldFactions = JsonConvert.DeserializeObject<List<Faction>>(JsonConvert.SerializeObject(factionsVal));
+                                foreach (var updatedFaction in updatedSystem.factions)
+                                {
+                                    foreach (var oldFaction in oldFactions)
+                                    {
+                                        if (updatedFaction.name == oldFaction.name)
+                                        {
+                                            updatedFaction.myreputation = oldFaction.myreputation;
+                                        }
+                                    }
+                                }
+
+                                // No station data needs to be carried over at this time.
+                            }
+                        }
+                    }
+                }
+                
+                // Update the `lastupdated` timestamps for the systems we have updated
+                foreach (StarSystem starSystem in updatedSystems)
+                {
+                    starSystem.lastupdated = DateTime.UtcNow;
+                }
 
                 // Add our updated systems to our results
                 results.AddRange(updatedSystems);
@@ -293,17 +334,12 @@ namespace EddiDataProviderService
                 // Save changes to our star systems
                 Instance.updateStarSystems(updatedSystems);
             }
-
-            foreach (StarSystem starSystem in results)
-            {
-                starSystem.lastupdated = DateTime.UtcNow;
-            }
             return results;
         }
 
         private List<KeyValuePair<string, string>> ReadStarSystems(string[] names)
         {
-            if (names.Count() == 0) { return null; }
+            if (!names.Any()) { return null; }
 
             List<KeyValuePair<string, string>> results = new List<KeyValuePair<string, string>>();
             using (var con = SimpleDbConnection())
@@ -311,7 +347,7 @@ namespace EddiDataProviderService
                 con.Open();
                 using (var cmd = new SQLiteCommand(con))
                 {
-                    using (var transaction = con.BeginTransaction())
+                    using (con.BeginTransaction())
                     {
                         foreach (string name in names)
                         {
@@ -350,7 +386,7 @@ namespace EddiDataProviderService
 
         private List<StarSystemDatabaseResult> ReadStarSystems(List<StarSystem> starSystems)
         {
-            if (starSystems.Count() == 0) { return null; }
+            if (!starSystems.Any()) { return null; }
 
             List<StarSystemDatabaseResult> results = new List<StarSystemDatabaseResult>();
             using (var con = SimpleDbConnection())
@@ -358,7 +394,7 @@ namespace EddiDataProviderService
                 con.Open();
                 using (var cmd = new SQLiteCommand(con))
                 {
-                    using (var transaction = con.BeginTransaction())
+                    using (con.BeginTransaction())
                     {
                         foreach (StarSystem starSystem in starSystems)
                         {
@@ -432,13 +468,14 @@ namespace EddiDataProviderService
         {
             if (systemName == string.Empty || data == string.Empty) { return null; }
 
-            StarSystem result = null;
+            StarSystem result;
             try
             {
                 result = JsonConvert.DeserializeObject<StarSystem>(data);
                 if (result == null)
                 {
                     Logging.Info("Failed to obtain system for " + systemName + " from the SQLiteRepository");
+                    needToUpdate = true;
                 }
             }
             catch (Exception)
@@ -447,6 +484,8 @@ namespace EddiDataProviderService
                 try
                 {
                     result = DataProviderService.GetSystemData(systemName);
+                    result = DataProviderService.syncFromStarMapService(new List<StarSystem> { result })?.FirstOrDefault(); // Synchronize EDSM visits and comments
+                    needToUpdate = true;
                 }
                 catch (Exception ex)
                 {
@@ -460,12 +499,12 @@ namespace EddiDataProviderService
         public void SaveStarSystem(StarSystem starSystem)
         {
             if (starSystem == null) { return; }
-            SaveStarSystems(new List<StarSystem>() { starSystem });
+            SaveStarSystems(new List<StarSystem> { starSystem });
         }
 
         public void SaveStarSystems(List<StarSystem> starSystems)
         {
-            if (starSystems.Count() == 0) { return; }
+            if (!starSystems.Any()) { return; }
 
             var delete = new List<StarSystem>();
             var update = new List<StarSystem>();
@@ -475,12 +514,12 @@ namespace EddiDataProviderService
             foreach (StarSystem system in starSystems)
             {
                 StarSystemDatabaseResult dbSystem = dbSystems.FirstOrDefault(s =>
-                    s.systemAddress != null && s.systemAddress == system.systemAddress ? true :
-                    s.edsmId != null && s.edsmId == system.EDSMID ? true :
-                    s.systemName == system.systemname ? true : false);
+                    s.systemAddress != null && s.systemAddress == system.systemAddress || 
+                    s.edsmId != null && s.edsmId == system.EDSMID || 
+                    s.systemName == system.systemname);
 
                 if (dbSystem?.starSystemJson is null ||
-                    (dbSystem.systemAddress is null && dbSystem.edsmId is null))
+                    dbSystem?.systemAddress is null && dbSystem?.edsmId is null)
                 {
                     // If we're updating to schema version 2, systemAddress and edsmId will both be null. 
                     // Use our delete method to purge all obsolete copies of the star system from the database,
@@ -726,10 +765,8 @@ namespace EddiDataProviderService
         }
 
         /// <summary> Valid columnNames are "systemaddress", "edsmid", and "comment" </summary>
-        private static bool AddColumnIfMissing(SQLiteConnection con, string columnName)
+        private static void AddColumnIfMissing(SQLiteConnection con, string columnName)
         {
-            bool result = false;
-
             // Parameters like `DISTINCT` cannot be set on columns by this method
             string command = string.Empty;
             switch (columnName)
@@ -770,7 +807,6 @@ namespace EddiDataProviderService
                         {
                             cmd.ExecuteNonQuery();
                         }
-                        result = true;
                     }
                     catch (SQLiteException ex)
                     {
@@ -778,7 +814,6 @@ namespace EddiDataProviderService
                     }
                 }
             }
-            return result;
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times")]
@@ -798,7 +833,7 @@ namespace EddiDataProviderService
                 }
             }
             CreateOrUpdateDatabase();
-            var updateLogs = Task.Run(() => DataProviderService.syncFromStarMapService());
+            Task.Run(() => DataProviderService.syncFromStarMapService());
         }
 
         private static void handleSqlLiteException(SQLiteConnection con, SQLiteException ex)
@@ -825,10 +860,10 @@ namespace EddiDataProviderService
         protected internal class StarSystemDatabaseResult
         {
             // Data as read from columns in our database
-            public string systemName { get; private set; } = null;
-            public long? systemAddress { get; private set; } = null;
-            public long? edsmId { get; private set; } = null;
-            public string starSystemJson { get; private set; } = null;
+            public string systemName { get; private set; }
+            public long? systemAddress { get; private set; }
+            public long? edsmId { get; private set; }
+            public string starSystemJson { get; private set; }
 
             public StarSystemDatabaseResult(string systemName, long? systemAddress, long? edsmId, string starSystemJson)
             {

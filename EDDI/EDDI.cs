@@ -2119,13 +2119,10 @@ namespace Eddi
         {
             if (CurrentStarSystem != null)
             {
-                Body body = CurrentStarSystem.bodies.Find(b => b.bodyname == theEvent.bodyName);
-                if (body?.mapped is null && !(theEvent.body is null))
-                {
-                    CurrentStarSystem.AddOrUpdateBody(theEvent.body);
-                    StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
-                    updateCurrentStellarBody(theEvent.bodyName, CurrentStarSystem?.systemname, CurrentStarSystem?.systemAddress);
-                }
+                // We've already updated the body (via the journal monitor) if the CurrentStarSystem isn't null
+                // Here, we just need to save the data and update our current stellar body
+                StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
+                updateCurrentStellarBody(theEvent.bodyName, CurrentStarSystem?.systemname, CurrentStarSystem?.systemAddress);
             }
             return true;
         }
