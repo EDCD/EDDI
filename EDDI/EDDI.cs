@@ -927,6 +927,12 @@ namespace Eddi
             Cmdr.Power = Power.None;
             Cmdr.powermerits = null;
             Cmdr.powerrating = 0;
+
+            // Store power merits
+            EDDIConfiguration configuration = EDDIConfiguration.FromFile();
+            configuration.powerMerits = Cmdr.powermerits;
+            configuration.ToFile();
+
             return true;
         }
 
@@ -935,6 +941,12 @@ namespace Eddi
             Cmdr.Power = @event.Power;
             Cmdr.powermerits = 0;
             Cmdr.powerrating = 1;
+
+            // Store power merits
+            EDDIConfiguration configuration = EDDIConfiguration.FromFile();
+            configuration.powerMerits = Cmdr.powermerits;
+            configuration.ToFile();
+
             return true;
         }
 
@@ -963,6 +975,12 @@ namespace Eddi
             {
                 Cmdr.powerrating = 0;
             }
+
+            // Store power merits
+            EDDIConfiguration configuration = EDDIConfiguration.FromFile();
+            configuration.powerMerits = Cmdr.powermerits;
+            configuration.ToFile();
+
             return true;
         }
 
@@ -975,6 +993,12 @@ namespace Eddi
                 Cmdr.Power = @event.Power;
                 Cmdr.powerrating = @event.rank;
                 Cmdr.powermerits = @event.merits;
+
+                // Store power merits
+                EDDIConfiguration configuration = EDDIConfiguration.FromFile();
+                configuration.powerMerits = @event.merits;
+                configuration.ToFile();
+
                 return true;
             }
             else
@@ -2165,6 +2189,7 @@ namespace Eddi
                         if (configuration != null)
                         {
                             Cmdr.gender = configuration.Gender;
+                            Cmdr.powermerits = configuration.powerMerits;
                             Cmdr.squadronname = configuration.SquadronName;
                             Cmdr.squadronid = configuration.SquadronID;
                             Cmdr.squadronrank = configuration.SquadronRank;
