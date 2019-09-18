@@ -223,6 +223,11 @@ namespace Eddi
                         Logging.Info("EDDI access to the Frontier API is not enabled.");
                     }
                 });
+                Task.Run(() =>
+                {
+                    // Set up the Inara service
+                    EddiInaraService.InaraService.Start(gameIsBeta, EddiIsBeta());
+                });
 
                 // Make sure that our essential tasks have completed before we start
                 Task.WaitAll(essentialAsyncTasks.ToArray());
