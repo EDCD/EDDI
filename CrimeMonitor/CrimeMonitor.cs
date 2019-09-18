@@ -245,13 +245,12 @@ namespace EddiCrimeMonitor
                 if (@event.scanstage >= 3 && target.LegalStatus == null)
                 {
                     target.faction = @event.faction;
-                    if (@event.faction != null)
-                    {
-                        Faction faction = DataProviderService.GetFactionByName(@event.faction);
-                        Power power = Power.FromEDName(@event.faction);
-                        target.Power = power ?? Power.None;
-                        target.Allegiance = power?.Allegiance ?? faction?.Allegiance;
-                    }
+                    Faction faction = DataProviderService.GetFactionByName(@event.faction);
+                    target.Power = @event.Power ?? Power.None;
+
+                    // Prioritize power allegiance (when present) over faction
+                    target.Allegiance = @event.Power?.Allegiance ?? faction?.Allegiance;
+
                     target.LegalStatus = @event.LegalStatus;
                     target.bounty = @event.bounty;
                 }
