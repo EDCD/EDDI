@@ -81,6 +81,7 @@
       <DependentUpon>PowerplayState.resx</DependentUpon>
     </Compile>
     <Compile Include="Statistics.cs" />
+    <Compile Include="SignalAmount.cs" />
     <Compile Include="Conflict.cs" />
     <Compile Include="LoadoutDescription.cs" />
     <Compile Include="Properties\LoadoutDescription.Designer.cs">
