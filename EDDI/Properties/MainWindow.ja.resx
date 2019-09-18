@@ -275,4 +275,5 @@
     <value>このEDDIのビルドでは、Frontier APIが有効になっていません。</value>
     <comment>Displayed when the Frontier API is not enabled because the current build has no OAuth ClientID configured.</comment>
   </data>
+  
 </root>
