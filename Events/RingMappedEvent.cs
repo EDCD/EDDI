@@ -8,7 +8,7 @@ namespace EddiEvents
     {
         public const string NAME = "Ring mapped";
         public const string DESCRIPTION = "Triggered after mapping a ring with the Surface Area Analysis scanner";
-        public const string SAMPLE = @"{ ""timestamp"":""2019-06-23T03:16:29Z"", ""event"":""SAAScanComplete"", ""BodyName"":""Kopernik A 3 A Ring"", ""BodyID"":16, ""ProbesUsed"":1, ""EfficiencyTarget"":0 }";
+        public const string SAMPLE = @"{ ""timestamp"":""2019-06-23T03:16:29Z"", ""event"":""SAAScanComplete"", ""BodyName"":""Kopernik A 3 A Ring"", ""BodyID"":16, ""SystemAddress"":42324886570137, ""ProbesUsed"":1, ""EfficiencyTarget"":0 }";
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
         static RingMappedEvent()
@@ -41,12 +41,14 @@ namespace EddiEvents
         // Not intended to be user facing
         public Ring ring { get; private set; }
         public Body body { get; private set; }
+        public long? systemAddress { get; private set; }
 
-        public RingMappedEvent(DateTime timestamp, string ringName, Ring ring, Body body, int probesUsed, int efficiencyTarget) : base(timestamp, NAME)
+        public RingMappedEvent(DateTime timestamp, string ringName, Ring ring, Body body, long? systemAddress, int probesUsed, int efficiencyTarget) : base(timestamp, NAME)
         {
             this.ringname = ringName;
             this.ring = ring;
             this.body = body;
+            this.systemAddress = systemAddress;
             this.probesused = probesUsed;
             this.efficiencytarget = efficiencyTarget;
         }
