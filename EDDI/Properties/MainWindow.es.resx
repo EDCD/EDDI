@@ -275,4 +275,5 @@
     <value>La API de Frontier está desactivada para esta versión de EDDI.</value>
     <comment>Displayed when the Frontier API is not enabled because the current build has no OAuth ClientID configured.</comment>
   </data>
+  
 </root>
