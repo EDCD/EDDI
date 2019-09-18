@@ -77,7 +77,7 @@ namespace EddiStatusMonitor
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times")] // this usage is perfectly correct
         public void start()
         {
-            if (Directory == null || Directory.Trim() == "")
+            if (string.IsNullOrWhiteSpace(Directory))
             {
                 return;
             }
@@ -302,7 +302,7 @@ namespace EddiStatusMonitor
                 Logging.Warn("Failed to parse Status.json line: " + ex.ToString());
                 Logging.Error("", ex);
             }
-            return status = null;
+            return null;
         }
 
         public void handleStatus(Status thisStatus)
@@ -321,7 +321,11 @@ namespace EddiStatusMonitor
                 // Update environment and vehicle information
                 if (EDDI.Instance.Environment != Constants.ENVIRONMENT_WITCH_SPACE)
                 {
-                    if (thisStatus.supercruise)
+                    if (thisStatus.hyperspace)
+                    {
+                        EDDI.Instance.Environment = Constants.ENVIRONMENT_WITCH_SPACE;
+                    }
+                    else if (thisStatus.supercruise)
                     {
                         EDDI.Instance.Environment = Constants.ENVIRONMENT_SUPERCRUISE;
                     }
