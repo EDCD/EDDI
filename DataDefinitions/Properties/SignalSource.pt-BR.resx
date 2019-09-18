@@ -233,7 +233,16 @@
     <value>Posto de Escuta</value>
     <comment>Listening Post:#Index=1</comment>
   </data>
-  
-  
-  
+  <data name="FIXED_EVENT_HIGHTHREATSCENARIO_T5" xml:space="preserve">
+    <value>Atividade Pirata</value>
+    <comment>Pirate Activity Detected [Threat 5]</comment>
+  </data>
+  <data name="SAA_SignalType_Biological" xml:space="preserve">
+    <value>Sinal Biológico de Superfície</value>
+    <comment>Biological Surface Signal</comment>
+  </data>
+  <data name="SAA_SignalType_Geological" xml:space="preserve">
+    <value>Sinal Geológico de Superfície</value>
+    <comment>Geological Surface Signal</comment>
+  </data>
 </root>
