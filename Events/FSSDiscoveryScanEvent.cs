@@ -16,7 +16,7 @@ namespace EddiEvents
         static DiscoveryScanEvent()
         {
             // VARIABLES.Add("progress", "The percentage of the system that has been discovered");
-            VARIABLES.Add("discoverablebodies", "the total number of discoverable bodies within the system");
+            VARIABLES.Add("totalbodies", "the total number of discoverable bodies within the system");
             VARIABLES.Add("nonbodies", "The number of non-body signals");
         }
 
