@@ -216,7 +216,7 @@ namespace EddiDataDefinitions
 
         // Discoverable bodies as reported by a discovery scan "honk"
         [JsonProperty("discoverableBodies")]
-        public int discoverablebodies;
+        public int totalbodies;
 
         // Not intended to be user facing - the last time the information present changed
         public long? updatedat;
@@ -296,9 +296,9 @@ namespace EddiDataDefinitions
             }
 
             // Bonus for fully discovering a system
-            if (discoverablebodies == bodies.Where(b => b.scanned != null).Count())
+            if (totalbodies == bodies.Where(b => b.scanned != null).Count())
             {
-                value += discoverablebodies * 1000;
+                value += totalbodies * 1000;
 
                 // Bonus for fully mapping a system
                 int mappableBodies = bodies.Where(b => b.bodyType.invariantName != "Star").Count();

@@ -995,7 +995,7 @@ namespace Eddi
         {
             if (CurrentStarSystem != null)
             {
-                CurrentStarSystem.discoverablebodies = @event.discoverablebodies;
+                CurrentStarSystem.totalbodies = @event.totalbodies;
                 StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
             }
             return true;
