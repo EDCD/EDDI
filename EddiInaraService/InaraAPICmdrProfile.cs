@@ -1,5 +1,4 @@
-﻿using EddiDataDefinitions;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,21 +12,21 @@ namespace EddiInaraService
         // Returns basic information about commander from Inara like ranks, 
         // squadron, a link to the commander's Inara profile, etc. 
 
-        public InaraCmdr GetCommanderProfile(string commanderName)
+        public InaraCmdr GetCommanderProfile(string cmdrName)
         {
-            return GetCommanderProfiles(new string[] { commanderName })?.FirstOrDefault();
+            return GetCommanderProfiles(new string[] { cmdrName })?.FirstOrDefault();
         }
 
-        public List<InaraCmdr> GetCommanderProfiles(string[] commanderNames)
+        public List<InaraCmdr> GetCommanderProfiles(string[] cmdrNames)
         {
             List<InaraCmdr> cmdrs = new List<InaraCmdr>();
 
             List<InaraAPIEvent> events = new List<InaraAPIEvent>();
-            foreach (string commanderName in commanderNames)
+            foreach (string cmdrName in cmdrNames)
             {
                 events.Add(new InaraAPIEvent(DateTime.UtcNow, "getCommanderProfile", new Dictionary<string, object>()
                 {
-                    { "searchName", commanderName }
+                    { "searchName", cmdrName }
                 }));
             }
             List<InaraResponse> responses = SendEventBatch(ref events, sendEvenForBetaGame: true);

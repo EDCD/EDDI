@@ -443,7 +443,7 @@ namespace EddiVoiceAttackResponder
             }
             try
             {
-                InaraCmdr profile = InaraService.Instance.GetCommanderProfile(commanderName);
+                var profile = EddiInaraService.InaraService.Instance.GetCommanderProfile(commanderName);
                 if (profile != null)
                 {
                     OpenOrStoreURI(ref vaProxy, profile.url);

@@ -1,5 +1,4 @@
-﻿using EddiDataDefinitions;
-using EddiInaraService;
+﻿using EddiInaraService;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;

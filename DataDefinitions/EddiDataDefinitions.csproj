@@ -74,8 +74,6 @@
     <Compile Include="BlueprintTemplate.cs" />
     <Compile Include="BodyType.cs" />
     <Compile Include="CargoInfo.cs" />
-    <Compile Include="InaraCmdr.cs" />
-    <Compile Include="InaraAPIEvent.cs" />
     <Compile Include="PowerplayState.cs" />
     <Compile Include="Properties\PowerplayState.Designer.cs">
       <AutoGen>True</AutoGen>
