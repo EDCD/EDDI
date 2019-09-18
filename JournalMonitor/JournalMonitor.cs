@@ -45,7 +45,13 @@ namespace EddiJournalMonitor
                 {
                     Task.Run(async () =>
                     {
-                        await Task.Delay(1500);
+                        int timeout;
+                        do
+                        {
+                            await Task.Delay(1500);
+                            timeout =+ 1;
+                        }
+                        while (EDDI.Instance.CurrentStarSystem.bodies.Count == 0 && timeout < 3);
                         callback(@event);
                     });
                     continue;
@@ -2014,8 +2020,8 @@ namespace EddiJournalMonitor
                             case "FSSDiscoveryScan":
                                 {
                                     decimal progress = JsonParsing.getDecimal(data, "Progress"); // value from 0-1
-                                    int bodyCount = JsonParsing.getInt(data, "BodyCount"); // number of stellar bodies in system
-                                    int nonBodyCount = JsonParsing.getInt(data, "NonBodyCount"); // Number of non-body signals found
+                                    int bodyCount = JsonParsing.getInt(data, "BodyCount"); // total number of stellar bodies in system
+                                    int nonBodyCount = JsonParsing.getInt(data, "NonBodyCount"); // total number of non-body signals found
                                     events.Add(new DiscoveryScanEvent(timestamp, progress, bodyCount, nonBodyCount) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;

@@ -993,7 +993,11 @@ namespace Eddi
 
         private bool eventDiscoveryScan(DiscoveryScanEvent @event)
         {
-            CurrentStarSystem.discoverableBodies = @event.bodies;
+            if (CurrentStarSystem != null)
+            {
+                CurrentStarSystem.totalbodies = @event.totalbodies;
+                StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
+            }
             return true;
         }
 
