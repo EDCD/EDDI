@@ -221,7 +221,10 @@
     <value>Bemerkenswerte Sternenphänomene</value>
     <comment>Notable Stellar Phenomena</comment>
   </data>
-  
+  <data name="FIXED_EVENT_CAPSHIP" xml:space="preserve">
+    <value>Großkampfschiff</value>
+    <comment>Capital Ship</comment>
+  </data>
   <data name="Fixed_Event_Life_Ring" xml:space="preserve">
     <value>Bemerkenswerte Sternenphänomene</value>
     <comment>Notable Stellar Phenomena</comment>
@@ -238,6 +241,12 @@
     <value>Geologisches Oberflächensignal</value>
     <comment>Geological Surface Signal</comment>
   </data>
-  
-  
+  <data name="ListeningPost_index1" xml:space="preserve">
+    <value>Horchposten</value>
+    <comment>ListeningPost_index1</comment>
+  </data>
+  <data name="SAA_SignalType_Human" xml:space="preserve">
+    <value>Menschliches Oberflächensignal</value>
+    <comment>Human Surface Signal</comment>
+  </data>
 </root>
