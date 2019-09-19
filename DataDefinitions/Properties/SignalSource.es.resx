@@ -221,7 +221,10 @@
     <value>Fenómeno Estelar Notable</value>
     <comment>Notable Stellar Phenomena</comment>
   </data>
-  
+  <data name="FIXED_EVENT_CAPSHIP" xml:space="preserve">
+    <value>Nave Capital</value>
+    <comment>Capital Ship</comment>
+  </data>
   <data name="Fixed_Event_Life_Ring" xml:space="preserve">
     <value>Fenómeno Estelar Notable</value>
     <comment>Notable Stellar Phenomena</comment>
@@ -229,6 +232,12 @@
   
   
   
-  
-  
+  <data name="ListeningPost_index1" xml:space="preserve">
+    <value>Puesto de escucha</value>
+    <comment>ListeningPost_index1</comment>
+  </data>
+  <data name="SAA_SignalType_Human" xml:space="preserve">
+    <value>Señal de Superficie Humana</value>
+    <comment>Human Surface Signal</comment>
+  </data>
 </root>
