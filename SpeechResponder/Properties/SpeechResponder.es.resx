@@ -151,14 +151,18 @@
   <data name="delete_personality_caption" xml:space="preserve">
     <value>Eliminar Personalidad</value>
   </data>
-  
+  <data name="delete_personality_message" xml:space="preserve">
+    <value>¿Seguro que quiere eliminar la personalidad "{0}"?</value>
+  </data>
   <data name="delete_script" xml:space="preserve">
     <value>Eliminar</value>
   </data>
   <data name="delete_script_caption" xml:space="preserve">
     <value>Eliminar script</value>
   </data>
-  
+  <data name="delete_script_message" xml:space="preserve">
+    <value>¿Seguro que quiere eliminar el script "{0}"?</value>
+  </data>
   <data name="desc" xml:space="preserve">
     <value>Responde a los eventos con una respuesta scriptada basada en la información del evento. No todos los eventos tienen respuestas scriptada. Si un script de respuesta está vacío, sus botones `Test' y `Ver' estarán desactivados. Los scripts basados en eventos pueden deshabilitarse o volver a priorizarse, pero no eliminarse.</value>
   </data>
@@ -220,6 +224,10 @@
   <data name="localizedAnd" xml:space="preserve">
     <value>y</value>
   </data>
-  
-  
+  <data name="reset_script" xml:space="preserve">
+    <value>Reiniciar</value>
+  </data>
+  <data name="reset_script_message" xml:space="preserve">
+    <value>¿Seguro que quiere eliminar el script "{0}"?</value>
+  </data>
 </root>
