@@ -221,12 +221,18 @@
     <value>Notevole Fenomeno Stellare</value>
     <comment>Notable Stellar Phenomena</comment>
   </data>
-  
+  <data name="FIXED_EVENT_CAPSHIP" xml:space="preserve">
+    <value>Mega Bastimento</value>
+    <comment>Capital Ship</comment>
+  </data>
   <data name="Fixed_Event_Life_Ring" xml:space="preserve">
     <value>Notevole Fenomeno Stellare</value>
     <comment>Notable Stellar Phenomena</comment>
   </data>
-  
+  <data name="FIXED_EVENT_HIGHTHREATSCENARIO_T5" xml:space="preserve">
+    <value>Attività Piratesca</value>
+    <comment>Pirate Activity Detected [Threat 5]</comment>
+  </data>
   
   
   
