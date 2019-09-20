@@ -304,14 +304,20 @@ namespace EddiDataProviderService
 
                                 // Carry over Faction properties that we want to preserve (e.g. reputation data)
                                 oldStarSystem.TryGetValue("factions", out object factionsVal);
-                                List<Faction> oldFactions = JsonConvert.DeserializeObject<List<Faction>>(JsonConvert.SerializeObject(factionsVal));
-                                foreach (var updatedFaction in updatedSystem.factions)
+                                if (factionsVal != null)
                                 {
-                                    foreach (var oldFaction in oldFactions)
+                                    List<Faction> oldFactions = JsonConvert.DeserializeObject<List<Faction>>(JsonConvert.SerializeObject(factionsVal));
+                                    if (oldFactions?.Count > 0)
                                     {
-                                        if (updatedFaction.name == oldFaction.name)
+                                        foreach (var updatedFaction in updatedSystem.factions)
                                         {
-                                            updatedFaction.myreputation = oldFaction.myreputation;
+                                            foreach (var oldFaction in oldFactions)
+                                            {
+                                                if (updatedFaction.name == oldFaction.name)
+                                                {
+                                                    updatedFaction.myreputation = oldFaction.myreputation;
+                                                }
+                                            }
                                         }
                                     }
                                 }
