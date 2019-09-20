@@ -276,5 +276,7 @@ Személyes infórmációk vagy azonosításra alkalmas adatok nem szerepelnek az
     <value>A Frontier API nincs engedélyezve ebben az EDDI változatban.</value>
     <comment>Displayed when the Frontier API is not enabled because the current build has no OAuth ClientID configured.</comment>
   </data>
-  
+  <data name="choose_lang_label_va" xml:space="preserve">
+    <value>Válassza ki az EDDI nyelvét (a VoiceAttack újraindítását igényli):</value>
+  </data>
 </root>
