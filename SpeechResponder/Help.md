@@ -379,23 +379,22 @@ This function will produce a destination/route for valid mission destinations, d
   * `next` Next destination in the currently stored route.
   * `raw` Nearest raw materials trader.
   * `route` 'Traveling Salesman' (RNNA) route for all active missions.
+  * `scoop` 'Nearest scoopable star system.
   * `set` Set destination route to a single system.
   * `source` Mission destination to nearest 'cargo source'.
-  * `update` Update to the next mission destination, once all missions in current system are completed.
+  * `update` Update to the next mission route destination, once all 
+missions in current system are completed.
 
 Upon success of the query, a 'Missions route' event is triggered, providing a following event data:
 
   * `routetype` Type of route query (see above).
   * `destination` Destination system.
   * `distance` Destination distance
-  * `route` '_' Delimited missions systems list. Results dependent on route type.
-    * `expiring` Single system meeting 'next expiring' search criteria
-    * `farthest` Single system meeting 'farthest' search criteria
+  * `route` '_' Delimited multiple systems list, dependent on route type. Otherwise, contains destination system.
     * `most` Other systems with most number of missions.
     * `route` Missions route list
-    * `set` Single specified system
-    * `source` list of source systems
-  * `count` Count of missions, systems, or expiry seconds, depending on route type.
+    * `source` Other systems designated as a source for a mission.
+    * `count` Count of missions, systems, or expiry seconds, depending on route type.
     * `expiring` Expiry seconds.
     * `farthest` Missions in the system.
     * `most` Number of most missions.
@@ -403,7 +402,7 @@ Upon success of the query, a 'Missions route' event is triggered, providing a fo
     * `route` Systems in the route.
     * `source` Number of source systems.
     * `update` Remaining systems in the route.
-  * `routedistance` Remaining distance of the missions route, if applicable.
+  * `routedistance` Remaining distance of the route, if applicable.
   * `missionids` Mission ID(s) associated with the destination system.
 
 Common usage of this is to provide destination/route details, dependent on the 'routetype', for example:

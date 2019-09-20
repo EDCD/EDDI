@@ -325,39 +325,45 @@ namespace EddiNavigationService
             return searchSystem;
         }
 
-        public string GetScoopRoute(decimal totalJumpRange)
+        public string GetScoopRoute(decimal searchRadius)
         {
             searchSystem = null;
             searchStation = null;
             searchDistance = 0;
-
-            int radiusLy = (int)Math.Ceiling(totalJumpRange);
             int searchCount = 0;
+            int searchIncrement = (int)Math.Ceiling(searchRadius / 4);
 
             StarSystem currentSystem = EDDI.Instance?.CurrentStarSystem;
             if (currentSystem != null)
             {
-                List<Dictionary<string, object>> sphereSystems = StarMapService.GetStarMapSystemsSphere(currentSystem.systemname, 0, radiusLy);
-                sphereSystems = sphereSystems.Where(kvp => (kvp["system"] as StarSystem).scoopable).ToList();
-                searchCount = sphereSystems.Count;
-                if (searchCount > 0)
+                for (int i = 0; i < 4; i++)
                 {
-                    SortedList<decimal, string> nearestList = new SortedList<decimal, string>();
-                    foreach (Dictionary<string, object> system in sphereSystems)
+                    int startRadius = i * searchIncrement;
+                    int endRadius = (i + 1) * searchIncrement;
+                    List<Dictionary<string, object>> sphereSystems = StarMapService.GetStarMapSystemsSphere(currentSystem.systemname, startRadius, endRadius);
+                    sphereSystems = sphereSystems.Where(kvp => (kvp["system"] as StarSystem).scoopable).ToList();
+                    searchCount = sphereSystems.Count;
+                    if (searchCount > 0)
                     {
-                        decimal distance = (decimal)system["distance"];
-                        if (!nearestList.ContainsKey(distance))
+                        SortedList<decimal, string> nearestList = new SortedList<decimal, string>();
+                        foreach (Dictionary<string, object> system in sphereSystems)
                         {
-                            nearestList.Add(distance, (system["system"] as StarSystem).systemname);
+                            decimal distance = (decimal)system["distance"];
+                            if (!nearestList.ContainsKey(distance))
+                            {
+                                nearestList.Add(distance, (system["system"] as StarSystem).systemname);
+                            }
                         }
-                    }
 
-                    // Nearest 'scoopable' system
-                    searchSystem = nearestList.Values.FirstOrDefault();
-                    searchDistance = nearestList.Keys.FirstOrDefault();
+                        // Nearest 'scoopable' system
+                        searchSystem = nearestList.Values.FirstOrDefault();
+                        searchDistance = nearestList.Keys.FirstOrDefault();
+
+                        break;
+                    }
                 }
             }
-            EDDI.Instance.enqueueEvent(new RouteDetailsEvent(DateTime.Now, "scoop", searchSystem, null, searchSystem, searchCount, searchDistance, totalJumpRange, null));
+            EDDI.Instance.enqueueEvent(new RouteDetailsEvent(DateTime.Now, "scoop", searchSystem, null, searchSystem, searchCount, searchDistance, searchDistance, null));
             return searchSystem;
         }
 
