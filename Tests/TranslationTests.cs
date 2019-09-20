@@ -50,7 +50,7 @@ namespace UnitTests
         [TestMethod]
         public void TestTranslateBody1()
         {
-            Assert.AreEqual(@"<phoneme alphabet=""ipa"" ph=""ʃɪnˈrɑːrtə"">Shinrarta</phoneme> <phoneme alphabet=""ipa"" ph=""ˈdezɦrə"">Dezhra</phoneme> A 1", Translations.Body("Shinrarta Dezhra A 1"));
+            Assert.AreEqual(@"<phoneme alphabet=""ipa"" ph=""ʃɪnˈrɑːrtə"">Shinrarta</phoneme> <phoneme alphabet=""ipa"" ph=""ˈdezɦrə"">Dezhra</phoneme> <say-as interpret-as=""characters"">A</say-as> 1", Translations.Body("Shinrarta Dezhra A 1"));
             Assert.AreEqual(@"<phoneme alphabet=""ipa"" ph=""ʃɪnˈrɑːrtə"">Shinrarta</phoneme> <phoneme alphabet=""ipa"" ph=""ˈdezɦrə"">Dezhra</phoneme> <phoneme alphabet=""ipa"" ph=""ˈælfə"">alpha</phoneme> <phoneme alphabet=""ipa"" ph=""ˈwʌn"">one</phoneme>", Translations.Body("Shinrarta Dezhra A 1", true));
         }
 
@@ -64,7 +64,7 @@ namespace UnitTests
         [TestMethod]
         public void TestTranslateBody3()
         {
-            Assert.AreEqual(@"Coll 1 0 7 Sector A I dash H b 40 dash 6 A B 3", Translations.Body("Col 107 Sector AI-H b40-6 A B 3"));
+            Assert.AreEqual(@"Coll 1 0 7 Sector A I dash H b 40 dash 6 <say-as interpret-as=""characters"">A</say-as> <say-as interpret-as=""characters"">B</say-as> 3", Translations.Body("Col 107 Sector AI-H b40-6 A B 3"));
             Assert.AreEqual(@"Coll <phoneme alphabet=""ipa"" ph=""ˈwʌn"">one</phoneme> <phoneme alphabet=""ipa"" ph=""ˈzɪərəʊ"">zero</phoneme> <phoneme alphabet=""ipa"" ph=""ˈsɛvɛn"">seven</phoneme> Sector <phoneme alphabet=""ipa"" ph=""ˈælfə"">alpha</phoneme> <phoneme alphabet=""ipa"" ph=""ˈindiˑɑ"">india</phoneme> dash <phoneme alphabet=""ipa"" ph=""hoːˈtel"">hotel</phoneme> <phoneme alphabet=""ipa"" ph=""ˈbrɑːˈvo"">bravo</phoneme> <phoneme alphabet=""ipa"" ph=""ˈfoʊ.ər"">fawer</phoneme> <phoneme alphabet=""ipa"" ph=""ˈzɪərəʊ"">zero</phoneme> dash <phoneme alphabet=""ipa"" ph=""ˈsɪks"">six</phoneme> <phoneme alphabet=""ipa"" ph=""ˈælfə"">alpha</phoneme> <phoneme alphabet=""ipa"" ph=""ˈbrɑːˈvo"">bravo</phoneme> <phoneme alphabet=""ipa"" ph=""ˈtriː"">tree</phoneme>", Translations.Body("Col 107 Sector AI-H b40-6 AB 3", true));
         }
 
@@ -85,14 +85,14 @@ namespace UnitTests
         [TestMethod]
         public void TestTranslateBody6()
         {
-            Assert.AreEqual(@"Boewnst T Q dash K d 9 dash 7 4 0 A A Belt", Translations.Body("Boewnst TQ-K d9-740 A A Belt"));
+            Assert.AreEqual(@"Boewnst T Q dash K d 9 dash 7 4 0 <say-as interpret-as=""characters"">A</say-as> <say-as interpret-as=""characters"">A</say-as> Belt", Translations.Body("Boewnst TQ-K d9-740 A A Belt"));
             Assert.AreEqual(@"Boewnst <phoneme alphabet=""ipa"" ph=""ˈtænɡo"">tango</phoneme> <phoneme alphabet=""ipa"" ph=""keˈbek"">quebec</phoneme> dash <phoneme alphabet=""ipa"" ph=""ˈkiːlo"">kilo</phoneme> <phoneme alphabet=""ipa"" ph=""ˈdɛltə"">delta</phoneme> <phoneme alphabet=""ipa"" ph=""ˈnaɪnər"">niner</phoneme> dash <phoneme alphabet=""ipa"" ph=""ˈsɛvɛn"">seven</phoneme> <phoneme alphabet=""ipa"" ph=""ˈfoʊ.ər"">fawer</phoneme> <phoneme alphabet=""ipa"" ph=""ˈzɪərəʊ"">zero</phoneme> <phoneme alphabet=""ipa"" ph=""ˈælfə"">alpha</phoneme> <phoneme alphabet=""ipa"" ph=""ˈælfə"">alpha</phoneme> Belt", Translations.Body("Boewnst TQ-K d9-740 A A Belt", true));
         }
 
         [TestMethod]
         public void TestTranslateBody7()
         {
-            Assert.AreEqual(@"Calea B A Belt Cluster 1", Translations.Body("Calea B A Belt Cluster 1"));
+            Assert.AreEqual(@"Calea <say-as interpret-as=""characters"">B</say-as> <say-as interpret-as=""characters"">A</say-as> Belt Cluster 1", Translations.Body("Calea B A Belt Cluster 1"));
             Assert.AreEqual(@"Calea <phoneme alphabet=""ipa"" ph=""ˈbrɑːˈvo"">bravo</phoneme> <phoneme alphabet=""ipa"" ph=""ˈælfə"">alpha</phoneme> Belt Cluster <phoneme alphabet=""ipa"" ph=""ˈwʌn"">one</phoneme>", Translations.Body("Calea B A Belt Cluster 1", true));
         }
 
@@ -178,6 +178,20 @@ namespace UnitTests
         {
             Assert.AreEqual("Or-bis Starport", Translations.Station("Orbis Starport"));
             Assert.AreEqual("Mega-ship", Translations.Station("Megaship"));
+        }
+
+        [TestMethod]
+        public void TestTranslateRing()
+        {
+            Assert.AreEqual(@"Oponner 6 <say-as interpret-as=""characters"">A</say-as> Ring", Translations.Body("Oponner 6 A Ring", false));
+            Assert.AreEqual(@"Oponner <phoneme alphabet=""ipa"" ph=""ˈsɪks"">six</phoneme> <phoneme alphabet=""ipa"" ph=""ˈælfə"">alpha</phoneme> Ring", Translations.Body("Oponner 6 A Ring", true));
+        }
+
+        [TestMethod]
+        public void TestTranslateBelt()
+        {
+            Assert.AreEqual(@"Wolf 2 0 2 <say-as interpret-as=""characters"">A</say-as> Belt Cluster 1", Translations.Body("Wolf 202 A Belt Cluster 1", false));
+            Assert.AreEqual(@"Wolf <phoneme alphabet=""ipa"" ph=""ˈtuː"">two</phoneme> <phoneme alphabet=""ipa"" ph=""ˈzɪərəʊ"">zero</phoneme> <phoneme alphabet=""ipa"" ph=""ˈtuː"">two</phoneme> <phoneme alphabet=""ipa"" ph=""ˈælfə"">alpha</phoneme> Belt Cluster <phoneme alphabet=""ipa"" ph=""ˈwʌn"">one</phoneme>", Translations.Body("Wolf 202 A Belt Cluster 1", true));
         }
     }
 }
