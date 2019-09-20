@@ -106,9 +106,17 @@
   <data name="Controlled" xml:space="preserve">
     <value>Irányított</value>
   </data>
+  <data name="Exploited" xml:space="preserve">
+    <value>Hasznosított</value>
+  </data>
+  <data name="HomeSystem" xml:space="preserve">
+    <value>Honos rendszer</value>
+  </data>
   
-  
-  
-  
-  
+  <data name="Prepared" xml:space="preserve">
+    <value>Előkészített</value>
+  </data>
+  <data name="Turmoil" xml:space="preserve">
+    <value>Zavargás</value>
+  </data>
 </root>
