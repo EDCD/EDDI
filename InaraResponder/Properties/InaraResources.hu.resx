@@ -117,8 +117,12 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
+  <data name="api_key_label" xml:space="preserve">
+    <value>API kulcs:</value>
+  </data>
+  <data name="desc" xml:space="preserve">
+    <value>Az utazásaid részleteit elküldi az Inara oldalára (https://inara.cz). Az Inara egy harmadik féltől származó eszköz, amely információkat szolgáltat a Pilóták Szövetségének tagjairól, és megosztható profilt hoz létre, amely részletezi a saját státusod és eredményeid. </value>
+  </data>
   
   
   
