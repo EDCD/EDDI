@@ -350,6 +350,11 @@ namespace EddiDataDefinitions
             var PowerPlantStealth3 = new Blueprint(128673772, "PowerPlantStealth3", "PowerPlantStealth", 3);
             var PowerPlantStealth4 = new Blueprint(128673773, "PowerPlantStealth4", "PowerPlantStealth", 4);
             var PowerPlantStealth5 = new Blueprint(128673774, "PowerPlantStealth5", "PowerPlantStealth", 5);
+            var SurfaceProbeScanningRadius1 = new Blueprint(128740142, "SensorExpanded1", "SensorExpanded", 1);
+            var SurfaceProbeScanningRadius2 = new Blueprint(128740143, "SensorExpanded2", "SensorExpanded", 2);
+            var SurfaceProbeScanningRadius3 = new Blueprint(128740144, "SensorExpanded3", "SensorExpanded", 3);
+            var SurfaceProbeScanningRadius4 = new Blueprint(128740145, "SensorExpanded4", "SensorExpanded", 4);
+            var SurfaceProbeScanningRadius5 = new Blueprint(128740146, "SensorExpanded5", "SensorExpanded", 5);
             var SurfaceScannerExpanded1 = new Blueprint(128740147, "SurfaceScannerExpanded1", "SensorExpanded", 1);
             var SurfaceScannerExpanded2 = new Blueprint(128740148, "SurfaceScannerExpanded2", "SensorExpanded", 2);
             var SurfaceScannerExpanded3 = new Blueprint(128740149, "SurfaceScannerExpanded3", "SensorExpanded", 3);
