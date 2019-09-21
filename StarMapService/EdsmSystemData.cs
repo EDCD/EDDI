@@ -93,7 +93,7 @@ namespace EddiStarMapService
         }
 
         /// <summary> Get star systems around a specified system in a sphere or shell, with a maximum radius of 200 light years. </summary>
-        public static List<Dictionary<string, object>> GetStarMapSystemsSphere(string starSystem, int minRadiusLy = 0, int maxRadiusLy = 200, bool showEdsmId = true, bool showCoordinates = true, bool showInformation = true, bool showPermit = true)
+        public static List<Dictionary<string, object>> GetStarMapSystemsSphere(string starSystem, int minRadiusLy = 0, int maxRadiusLy = 200, bool showEdsmId = true, bool showCoordinates = true, bool showPrimaryStar = true, bool showInformation = true, bool showPermit = true)
         {
             if (starSystem == null) { return null; }
             var client = new RestClient(baseUrl);
@@ -103,6 +103,7 @@ namespace EddiStarMapService
             request.AddParameter("radius", maxRadiusLy);
             request.AddParameter("showId", showEdsmId ? 1 : 0);
             request.AddParameter("showCoordinates", showCoordinates ? 1 : 0);
+            request.AddParameter("showPrimaryStar", showPrimaryStar ? 1 : 0);
             request.AddParameter("showInformation", showInformation ? 1 : 0);
             request.AddParameter("showPermit", showPermit ? 1 : 0);
             var clientResponse = client.Execute<List<JObject>>(request);
@@ -132,7 +133,7 @@ namespace EddiStarMapService
         }
 
         /// <summary> Get star systems around a specified system in a cube, with a maximum cube size of 200 light years. </summary>
-        public static List<StarSystem> GetStarMapSystemsCube(string starSystem, int cubeLy = 200, bool showEdsmId = true, bool showCoordinates = true, bool showInformation = true, bool showPermit = true)
+        public static List<StarSystem> GetStarMapSystemsCube(string starSystem, int cubeLy = 200, bool showEdsmId = true, bool showCoordinates = true, bool showPrimaryStar = true, bool showInformation = true, bool showPermit = true)
         {
             if (starSystem == null) { return null; }
             var client = new RestClient(baseUrl);
@@ -141,6 +142,7 @@ namespace EddiStarMapService
             request.AddParameter("size", cubeLy);
             request.AddParameter("showId", showEdsmId ? 1 : 0);
             request.AddParameter("showCoordinates", showCoordinates ? 1 : 0);
+            request.AddParameter("showPrimaryStar", showPrimaryStar ? 1 : 0);
             request.AddParameter("showInformation", showInformation ? 1 : 0);
             request.AddParameter("showPermit", showPermit ? 1 : 0);
             var clientResponse = client.Execute<List<JObject>>(request);
@@ -178,6 +180,18 @@ namespace EddiStarMapService
                 starSystem.x = coords["x"];
                 starSystem.y = coords["y"];
                 starSystem.z = coords["z"];
+            }
+
+            if (response["primaryStar"] is JObject primarystar)
+            {
+                Body primaryStar = new Body()
+                {
+                    bodyname = (string)primarystar["name"],
+                    bodyType = BodyType.FromEDName("Star"),
+                    distance = 0,
+                    stellarclass = ((string)primarystar["type"])?.Split(' ')[0]
+                };
+                starSystem.AddOrUpdateBody(primaryStar);
             }
 
             if ((bool?)response["requirePermit"] is true)

@@ -1118,6 +1118,12 @@ namespace EddiVoiceAttackResponder
                             }
                         }
                         break;
+                    case "scoop":
+                        {
+                            ShipMonitor.JumpDetail detail = ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).JumpDetails("total");
+                            Navigation.Instance.GetScoopRoute(detail.distance);
+                        }
+                        break;
                     case "set":
                         {
                             if (string.IsNullOrEmpty(system))

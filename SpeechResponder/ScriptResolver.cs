@@ -752,6 +752,19 @@ namespace EddiSpeechResponder
                             }
                         }
                         break;
+                    case "scoop":
+                        {
+                            if (values.Count == 2)
+                            {
+                                result = Navigation.Instance.GetScoopRoute(values[1].AsNumber);
+                            }
+                            else
+                            {
+                                ShipMonitor.JumpDetail detail = ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).JumpDetails("total");
+                                result = Navigation.Instance.GetScoopRoute(detail.distance);
+                            }
+                        }
+                        break;
                     case "set":
                         {
                             if (values.Count == 3)

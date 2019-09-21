@@ -206,6 +206,8 @@ namespace EddiDataDefinitions
 
         // Additional calculated star information
         [JsonIgnore]
+        public bool scoopable => !string.IsNullOrEmpty(stellarclass) && "KGBFOAM".Contains(stellarclass);
+        [JsonIgnore]
         public string chromaticity => starClass?.chromaticity?.localizedName; // For use with Cottle
         [JsonIgnore]
         public decimal? luminosity => StarClass.luminosity(absolutemagnitude);
