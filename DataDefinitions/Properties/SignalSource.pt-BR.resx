@@ -221,7 +221,7 @@
     <value>Fenômeno Estelar Notável</value>
     <comment>Notable Stellar Phenomena</comment>
   </data>
-  <data name="FIXED-EVENT_CAPSHIP" xml:space="preserve">
+  <data name="FIXED_EVENT_CAPSHIP" xml:space="preserve">
     <value>Nave Capital</value>
     <comment>Capital Ship</comment>
   </data>
@@ -229,8 +229,24 @@
     <value>Fenômeno Estelar Notável</value>
     <comment>Notable Stellar Phenomena</comment>
   </data>
-  <data name="ListeningPost:#index=1" xml:space="preserve">
+  <data name="FIXED_EVENT_HIGHTHREATSCENARIO_T5" xml:space="preserve">
+    <value>Atividade Pirata</value>
+    <comment>Pirate Activity Detected [Threat 5]</comment>
+  </data>
+  <data name="SAA_SignalType_Biological" xml:space="preserve">
+    <value>Sinal Biológico de Superfície</value>
+    <comment>Biological Surface Signal</comment>
+  </data>
+  <data name="SAA_SignalType_Geological" xml:space="preserve">
+    <value>Sinal Geológico de Superfície</value>
+    <comment>Geological Surface Signal</comment>
+  </data>
+  <data name="ListeningPost_index1" xml:space="preserve">
     <value>Posto de Escuta</value>
-    <comment>Listening Post:#Index=1</comment>
+    <comment>ListeningPost_index1</comment>
+  </data>
+  <data name="SAA_SignalType_Human" xml:space="preserve">
+    <value>Sinal Humano de Superfície</value>
+    <comment>Human Surface Signal</comment>
   </data>
 </root>
