@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="LowResources" xml:space="preserve">
-    <value>Geringe</value>
+    <value>Gering</value>
     <comment>Minor reserves</comment>
   </data>
   <data name="None" xml:space="preserve">
@@ -126,15 +126,15 @@
     <comment>No reserves (no rings present)</comment>
   </data>
   <data name="CommonResources" xml:space="preserve">
-    <value>Mittlere</value>
+    <value>Gewöhnlich</value>
     <comment>Common reserves</comment>
   </data>
   <data name="MajorResources" xml:space="preserve">
-    <value>Große</value>
+    <value>Groß</value>
     <comment>Major reserves</comment>
   </data>
   <data name="PristineResources" xml:space="preserve">
-    <value>Unverbraucht</value>
+    <value>Unberührt</value>
     <comment>Pristine reserves</comment>
   </data>
   <data name="DepletedResources" xml:space="preserve">
