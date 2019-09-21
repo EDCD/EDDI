@@ -332,6 +332,7 @@ namespace EddiNavigationService
             searchDistance = 0;
             int searchCount = 0;
             int searchIncrement = (int)Math.Ceiling(searchRadius / 4);
+            int endRadius = 0;
 
             StarSystem currentSystem = EDDI.Instance?.CurrentStarSystem;
             if (currentSystem != null)
@@ -339,7 +340,7 @@ namespace EddiNavigationService
                 for (int i = 0; i < 4; i++)
                 {
                     int startRadius = i * searchIncrement;
-                    int endRadius = (i + 1) * searchIncrement;
+                    endRadius = (i + 1) * searchIncrement;
                     List<Dictionary<string, object>> sphereSystems = StarMapService.GetStarMapSystemsSphere(currentSystem.systemname, startRadius, endRadius);
                     sphereSystems = sphereSystems.Where(kvp => (kvp["system"] as StarSystem).scoopable).ToList();
                     searchCount = sphereSystems.Count;
@@ -363,7 +364,7 @@ namespace EddiNavigationService
                     }
                 }
             }
-            EDDI.Instance.enqueueEvent(new RouteDetailsEvent(DateTime.Now, "scoop", searchSystem, null, searchSystem, searchCount, searchDistance, searchDistance, null));
+            EDDI.Instance.enqueueEvent(new RouteDetailsEvent(DateTime.Now, "scoop", searchSystem, null, searchSystem, searchCount, searchDistance, endRadius, null));
             return searchSystem;
         }
 
