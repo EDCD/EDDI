@@ -219,10 +219,10 @@ namespace EddiSpeechService
         private static readonly Regex THREE_OR_MORE_DIGITS = new Regex(@"\d{3,}");
         private static readonly Regex DECIMAL_DIGITS = new Regex(@"( point )(\d{2,})");
         private static readonly Regex SECTOR = new Regex("(.*) ([A-Za-z][A-Za-z]-[A-Za-z] .*)");
-        private static readonly Regex PLANET = new Regex(@"[A-Za-z](?=[^A-Za-z])");
+        private static readonly Regex PLANET = new Regex(@"^[A-Za-z]$");
         private static readonly Regex SUBSTARS = new Regex(@"^A[BCDE]?[CDE]?[DE]?[E]?|B[CDE]?[DE]?[E]?|C[DE]?[E]?|D[E]?$");
-        private static readonly Regex BODY = new Regex(@"^(.*?) ([A-E]+ )?(Belt(?:\s|$)|Cluster(?:\s|$)|\d{1,2}(?:\s|$)|[A-Za-z](?:\s|$)){1,12}$", RegexOptions.IgnoreCase);
-
+        private static readonly Regex BODY = new Regex(@"^(.*?) ([A-E]+ ){0,2}(Belt(?:\s|$)|Cluster(?:\s|$)|Ring|\d{1,2}(?:\s|$)|[A-Za-z](?:\s|$)){1,12}$", RegexOptions.IgnoreCase);
+        
         /// <summary>Fix up faction names</summary>
         public static string Faction(string faction)
         {
@@ -276,21 +276,35 @@ namespace EddiSpeechService
                 {
                     for (int j = 0; j < match.Groups[i].Captures.Count; j++)
                     {
-                        string part = match.Groups[i].Captures[j].Value.Trim();
+                        var part = match.Groups[i].Captures[j].Value.Trim();
+                        var lastPart = j > 0 ? match.Groups[i].Captures[j - 1].Value.Trim()
+                            : i > 2 && match.Groups[i - 1].Captures.Count > 0 ? match.Groups[i - 1].Captures[match.Groups[i - 1].Captures.Count - 1].Value.Trim()
+                            : null;
+                        var nextPart = j < match.Groups[i].Captures.Count - 1 ? match.Groups[i].Captures[j + 1].Value.Trim()
+                            : i < match.Groups.Count - 1 ? match.Groups[i + 1].Captures[0].Value.Trim()
+                            : null;
 
                         if (DIGIT.IsMatch(part))
                         {
                             // The part is a number; turn it in to ICAO if required
                             results.Add(useICAO ? ICAO(part, true) : part);
                         }
-                        else if (PLANET.IsMatch(part))
+                        else if (PLANET.IsMatch(part) || lastPart == "Cluster" || nextPart == "Ring" || nextPart == "Belt" )
                         {
-                            // The part is a planet; 
+                            // The part represents a body, possibly part of the name of a moon, ring, (stellar) belt, or belt cluster; 
+                            // e.g. "Pru Aescs NC-M d7-192 A A Belt", "Prai Flyou JQ-F b30-3 B Belt Cluster 9", "Oopailks NV-X c17-1 AB 6 A Ring"
 
                             // turn it in to ICAO if required
-                            results.Add(useICAO ? ICAO(part, true) : part);
+                            if (useICAO)
+                            {
+                                results.Add(ICAO(part, true));
+                            }
+                            else
+                            {
+                                results.Add(sayAsLettersOrNumbers(part));
+                            }
                         }
-                        else if (part == "Belt" || part == "Cluster")
+                        else if (part == "Belt" || part == "Cluster" || part == "Ring")
                         {
                             // Pass as-is
                             results.Add(part);
