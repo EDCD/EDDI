@@ -138,7 +138,7 @@
     <comment>Pristine reserves</comment>
   </data>
   <data name="DepletedResources" xml:space="preserve">
-    <value>Erschöpfte</value>
+    <value>Erschöpft</value>
     <comment>Depleted Reserves</comment>
   </data>
 </root>
