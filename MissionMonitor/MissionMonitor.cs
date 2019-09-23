@@ -1272,13 +1272,13 @@ namespace EddiMissionMonitor
 
         public decimal CalculateDistance(StarSystem curr, StarSystem dest)
         {
+            double square(double x) => x * x;
             decimal distance = 0;
             if (curr?.x != null && dest?.x != null)
             {
-                distance = (decimal)Math.Round(Math.Sqrt(Math.Pow((double)(curr.x - dest.x), 2)
-                    + Math.Pow((double)(curr.y - dest.y), 2)
-                    + Math.Pow((double)(curr.z - dest.z), 2)), 2);
-
+                distance = (decimal)Math.Round(Math.Sqrt(square((double)(curr.x - dest.x))
+                            + square((double)(curr.y - dest.y))
+                            + square((double)(curr.z - dest.z))), 2);
             }
             return distance;
         }

@@ -30,8 +30,6 @@ namespace EddiEvents
             VARIABLES.Add("government", "The government of the system to which the commander has jumped");
             VARIABLES.Add("security", "The security of the system to which the commander has jumped");
             VARIABLES.Add("population", "The population of the system to which the commander has jumped");
-            VARIABLES.Add("destination", "The route destination system, if any");
-            VARIABLES.Add("destdistance", "The distance to the destination system)");
             VARIABLES.Add("factions", "A list of faction objects describing the factions in the star system");
             VARIABLES.Add("conflicts", "A list of conflict objects describing any conflicts between factions in the star system");
             VARIABLES.Add("power", "(Only when pledged) The powerplay power exerting influence over the star system. If the star system is `Contested`, this will be empty");
@@ -65,10 +63,6 @@ namespace EddiEvents
 
         public long? population { get; private set; }
 
-        public string destination { get; private set; }
-
-        public decimal destdistance { get; private set; }
-
         public List<Faction> factions { get; private set; }
 
         public List<Conflict> conflicts { get; private set; }
@@ -93,7 +87,7 @@ namespace EddiEvents
         public Power Power { get; private set; }
         public PowerplayState powerState { get; private set; }
 
-        public JumpedEvent(DateTime timestamp, string system, long systemAddress, decimal x, decimal y, decimal z, string star, decimal distance, decimal fuelused, decimal fuelremaining, int? boostUsed, Faction controllingfaction, List<Faction> factions, List<Conflict> conflicts, Economy economy, Economy economy2, SecurityLevel security, long? population, string destination, decimal destdistance, Power powerplayPower, PowerplayState powerplayState) : base(timestamp, NAME)
+        public JumpedEvent(DateTime timestamp, string system, long systemAddress, decimal x, decimal y, decimal z, string star, decimal distance, decimal fuelused, decimal fuelremaining, int? boostUsed, Faction controllingfaction, List<Faction> factions, List<Conflict> conflicts, Economy economy, Economy economy2, SecurityLevel security, long? population, Power powerplayPower, PowerplayState powerplayState) : base(timestamp, NAME)
         {
             this.system = system;
             this.systemAddress = systemAddress;
@@ -112,8 +106,6 @@ namespace EddiEvents
             this.Economy2 = (economy2 ?? Economy.None);
             this.securityLevel = (security ?? SecurityLevel.None);
             this.population = population;
-            this.destination = destination;
-            this.destdistance = destdistance;
             this.Power = powerplayPower;
             this.powerState = powerplayState;
         }

@@ -242,19 +242,11 @@ namespace EddiJournalMonitor
                                         conflicts = getConflicts(conflictsVal, factions);
                                     }
 
-                                    // Calculate remaining distance to route destination (if it exists)
-                                    decimal destDistance = 0;
-                                    string destination = EDDI.Instance.DestinationStarSystem?.systemname;
-                                    if (!string.IsNullOrEmpty(destination))
-                                    {
-                                        destDistance = EDDI.Instance.getSystemDistanceFromDestination(systemName);
-                                    }
-
                                     // Powerplay data (if pledged)
                                     Power powerplayPower = new Power();
                                     getPowerplayData(data, out powerplayPower, out PowerplayState powerplayState);
 
-                                    events.Add(new JumpedEvent(timestamp, systemName, systemAddress, x, y, z, starName, distance, fuelUsed, fuelRemaining, boostUsed, controllingfaction, factions, conflicts, economy, economy2, security, population, destination, destDistance, powerplayPower, powerplayState) { raw = line, fromLoad = fromLogLoad });
+                                    events.Add(new JumpedEvent(timestamp, systemName, systemAddress, x, y, z, starName, distance, fuelUsed, fuelRemaining, boostUsed, controllingfaction, factions, conflicts, economy, economy2, security, population, powerplayPower, powerplayState) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;

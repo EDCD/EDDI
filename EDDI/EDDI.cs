@@ -1195,7 +1195,6 @@ namespace Eddi
             CurrentStarSystem.x = theEvent.x;
             CurrentStarSystem.y = theEvent.y;
             CurrentStarSystem.z = theEvent.z;
-            setSystemDistanceFromHome(CurrentStarSystem);
 
             // Update the mutable system data from the journal
             if (theEvent.population != null)
@@ -1567,7 +1566,7 @@ namespace Eddi
                     CurrentStarSystem = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(name);
                 }
                 setSystemDistanceFromHome(CurrentStarSystem);
-                setSystemDistanceFromDestination(CurrentStarSystem?.systemname);
+                setSystemDistanceFromDestination(CurrentStarSystem);
             }
         }
 
@@ -1743,6 +1742,7 @@ namespace Eddi
             StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
 
             setSystemDistanceFromHome(CurrentStarSystem);
+            setSystemDistanceFromDestination(CurrentStarSystem);
             setCommanderTitle();
 
             // After jump has completed we are always in supercruise
@@ -2210,6 +2210,8 @@ namespace Eddi
                         {
                             CurrentStarSystem = profile?.CurrentStarSystem;
                             setSystemDistanceFromHome(CurrentStarSystem);
+                            setSystemDistanceFromDestination(CurrentStarSystem);
+
 
                             if (profile.docked && profile.CurrentStarSystem?.systemname == CurrentStarSystem.systemname && CurrentStarSystem.stations != null)
                             {
@@ -2296,35 +2298,27 @@ namespace Eddi
 
         private void setSystemDistanceFromHome(StarSystem system)
         {
-            if (HomeStarSystem != null && HomeStarSystem.x != null && system.x != null)
-            {
-                system.distancefromhome = (decimal)Math.Round(Math.Sqrt(Math.Pow((double)(system.x - HomeStarSystem.x), 2)
-                    + Math.Pow((double)(system.y - HomeStarSystem.y), 2)
-                    + Math.Pow((double)(system.z - HomeStarSystem.z), 2)), 2);
-                Logging.Debug("Distance from home is " + system.distancefromhome);
-            }
+            system.distancefromhome = getSystemDistance(system, HomeStarSystem);
+            Logging.Debug("Distance from home is " + system.distancefromhome);
         }
 
-        public decimal getSystemDistanceFromDestination(string system)
+        public void setSystemDistanceFromDestination(StarSystem system)
         {
-            decimal distance = 0;
-            if (system != null)
-            {
-                StarSystem starSystem = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystem(system, true);
+            DestinationDistanceLy = getSystemDistance(system, DestinationStarSystem);
+            Logging.Debug("Distance from destination system is " + DestinationDistanceLy);
+        }
 
-                if (DestinationStarSystem?.x != null && starSystem?.x != null)
-                {
-                    distance = (decimal)Math.Round(Math.Sqrt(Math.Pow((double)(starSystem.x - DestinationStarSystem.x), 2)
-                        + Math.Pow((double)(starSystem.y - DestinationStarSystem.y), 2)
-                        + Math.Pow((double)(starSystem.z - DestinationStarSystem.z), 2)), 2);
-                }
+        public decimal getSystemDistance(StarSystem curr, StarSystem dest)
+        {
+            double square(double x) => x * x;
+            decimal distance = 0;
+            if (curr?.x != null && dest?.x != null)
+            {
+                distance = (decimal)Math.Round(Math.Sqrt(square((double)(curr.x - dest.x))
+                            + square((double)(curr.y - dest.y))
+                            + square((double)(curr.z - dest.z))), 2);
             }
             return distance;
-        }
-
-        public void setSystemDistanceFromDestination(string system)
-        {
-            DestinationDistanceLy = getSystemDistanceFromDestination(system);
         }
 
         /// <summary>Work out the title for the commander in the current system</summary>
