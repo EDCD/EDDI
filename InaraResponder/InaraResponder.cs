@@ -634,13 +634,24 @@ namespace EddiInaraResponder
                     List<Dictionary<string, object>> modifiers = new List<Dictionary<string, object>>();
                     foreach (EngineeringModifier modifier in module.modifiers)
                     {
-                        modifiers.Add(new Dictionary<string, object>()
+                        if (modifier.currentValue != null)
                         {
-                            {"name", modifier.EDName},
-                            {"value", modifier.currentValue},
-                            {"originalValue", modifier.originalValue},
-                            {"lessIsGood", modifier.lessIsGood}
-                        });
+                            modifiers.Add(new Dictionary<string, object>()
+                            {
+                                { "name", modifier.EDName },
+                                { "value", modifier.currentValue },
+                                { "originalValue", modifier.originalValue },
+                                { "lessIsGood", modifier.lessIsGood }
+                            });
+                        }
+                        else if (!string.IsNullOrEmpty(modifier.valueStr))
+                        {
+                            modifiers.Add(new Dictionary<string, object>()
+                            {
+                                { "name", modifier.EDName },
+                                { "valueStr", modifier.valueStr }
+                            });
+                        }
                     }
 
                     Dictionary<string, object> engineering = new Dictionary<string, object>()

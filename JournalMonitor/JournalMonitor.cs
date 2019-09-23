@@ -562,15 +562,17 @@ namespace EddiJournalMonitor
                                                 foreach (Dictionary<string, object> modifier in modifiersData)
                                                 {
                                                     string edname = JsonParsing.getString(modifier, "Label");
-                                                    decimal currentValue = JsonParsing.getDecimal(modifier, "Value");
-                                                    decimal originalValue = JsonParsing.getDecimal(modifier, "OriginalValue");
-                                                    bool lessIsGood = JsonParsing.getInt(modifier, "LessIsGood") == 1 ? true : false;
+                                                    decimal? currentValue = JsonParsing.getOptionalDecimal(modifier, "Value");
+                                                    decimal? originalValue = JsonParsing.getOptionalDecimal(modifier, "OriginalValue");
+                                                    bool lessIsGood = JsonParsing.getOptionalInt(modifier, "LessIsGood") == 1;
+                                                    string valueStr = JsonParsing.getString(modifier, "ValueStr");
                                                     modifiers.Add(new EngineeringModifier()
                                                     {
                                                         EDName = edname,
                                                         currentValue = currentValue,
                                                         originalValue = originalValue,
-                                                        lessIsGood = lessIsGood
+                                                        lessIsGood = lessIsGood,
+                                                        valueStr = valueStr
                                                     });
                                                 }
                                             }
@@ -714,7 +716,7 @@ namespace EddiJournalMonitor
                                                         {
                                                             if (modifier.EDName == "FSDOptimalMass")
                                                             {
-                                                                optimalMass = modifier.currentValue;
+                                                                optimalMass = (decimal)modifier.currentValue;
                                                             }
                                                         }
                                                     }
