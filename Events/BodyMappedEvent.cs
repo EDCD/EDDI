@@ -67,7 +67,7 @@ namespace EddiEvents
 
         public string bodyname => body?.bodyname ?? bodyName;
 
-        public string systemname { get; private set; }
+        public string systemname => body?.systemname;
 
         public string shortname => body?.shortname;
 

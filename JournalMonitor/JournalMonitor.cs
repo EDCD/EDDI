@@ -778,7 +778,7 @@ namespace EddiJournalMonitor
                                     string name = JsonParsing.getString(data, "BodyName");
                                     string scantype = JsonParsing.getString(data, "ScanType");
 
-                                    string systemName = JsonParsing.getString(data, "SystemName");
+                                    string systemName = JsonParsing.getString(data, "StarSystem");
                                     long? systemAddress = JsonParsing.getOptionalLong(data, "SystemAddress");
 
                                     // Belt
