@@ -48,9 +48,9 @@
             var NotableStellarPhenomenaCloud = new SignalSource("Fixed_Event_Life_Cloud");
             var NotableStellarPhenomenaRing = new SignalSource("Fixed_Event_Life_Ring");
 
-            var Biological = new SignalSource("SAA_SignalType_Biological"); //Speculative
+            var Biological = new SignalSource("SAA_SignalType_Biological");
             var Geological = new SignalSource("SAA_SignalType_Geological");
-            var Guardian = new SignalSource("SAA_SignalType_Guardian"); // Speculative
+            var Guardian = new SignalSource("SAA_SignalType_Guardian");
             var Human = new SignalSource("SAA_SignalType_Human");
             var Thargoid = new SignalSource("SAA_SignalType_Thargoid");
 
