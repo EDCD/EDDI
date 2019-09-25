@@ -293,6 +293,7 @@ namespace EddiStatusMonitor
 
                     // Calculated data
                     SetFuelExtras(status);
+                    SetSlope(status);
 
                     return status;
                 }
@@ -578,6 +579,28 @@ namespace EddiStatusMonitor
                 fuel_seconds = (fuelPerSecond is null || fuelPerSecond == 0) ? null : (int?)(srvFuelTankCapacity / fuelPerSecond);
             }
             return; // At present, fighters do not appear to consume fuel.
+        }
+
+        private void SetSlope(Status status)
+        {
+            status.slope = null;
+            if (lastStatus.planetradius != null && lastStatus?.altitude != null && lastStatus?.latitude != null && lastStatus?.longitude != null)
+            {
+                double radius = (double)status.planetradius / 1000;
+                double currentLat = (double)(status.latitude ?? 0) * Math.PI / 180;
+                double currentLong = (double)(status.longitude ?? 0) * Math.PI / 180;
+                double lastLat = (double)(lastStatus.latitude ?? 0) * Math.PI / 180;
+                double lastLong = (double)(lastStatus.longitude ?? 0) * Math.PI / 180;
+                double deltaAlt = (double)((status.altitude ?? 0) - (lastStatus.altitude ?? 0)) / 1000;
+
+                // Calculate distance traveled using Law of Haversines
+                double a = Math.Pow(Math.Sin((currentLat - lastLat) / 2), 2)
+                    + Math.Cos(currentLat) * Math.Cos(lastLat) * Math.Pow(Math.Sin((currentLong - lastLong) / 2), 2);
+                double c = 2 * Math.Atan2(Math.Sqrt(a), Math.Sqrt(1 - a));
+                double distance = c * radius;
+                double slope = Math.Atan2(deltaAlt, distance) * 180 / Math.PI;
+                status.slope = Math.Round((decimal)slope, 1);
+            }
         }
     }
 }
