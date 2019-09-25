@@ -14,6 +14,7 @@ namespace EddiEvents
 
         static BodyScannedEvent()
         {
+            VARIABLES.Add("scantype", "The type of scan event (AutoScan, Basic, Detailed, NavBeacon, NavBeaconDetail)");
             VARIABLES.Add("bodyname", "The name of the body that has been scanned");
             VARIABLES.Add("systemname", "The name of the system containing the scanned body");
             VARIABLES.Add("shortname", "The short name of the body, less the system name");
@@ -61,6 +62,9 @@ namespace EddiEvents
         }
 
         // Variable names for this event should match the class property names for maximum compatibility with the BodyDetails() function in Cottle
+
+        public string scantype { get; private set; } // One of AutoScan, Basic, Detailed, NavBeacon, NavBeaconDetail
+                                                     // AutoScan events are detailed scans triggered via proximity. 
 
         public string bodyname => body.bodyname;
 
@@ -163,8 +167,6 @@ namespace EddiEvents
         public AtmosphereClass atmosphereclass => body.atmosphereclass;
         public PlanetClass planetClass => body.planetClass;
         public TerraformState terraformState => body.terraformState;
-        public string scantype { get; private set; } // One of AutoScan, Basic, Detailed, NavBeacon, NavBeaconDetail
-                                                     // AutoScan events are detailed scans triggered via proximity. 
 
         // Deprecated, maintained for compatibility with user scripts
         [JsonIgnore, Obsolete("Use bodyname instead")]
