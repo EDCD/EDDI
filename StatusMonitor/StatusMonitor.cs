@@ -424,9 +424,12 @@ namespace EddiStatusMonitor
                     if (!gliding && lastEnteredNormalSpaceEvent != null)
                     {
                         // We're not already gliding and we have data from a prior `EnteredNormalSpace` event
-                        if (currentStatus.fsd_status == "ready" && currentStatus.altitude < 25000 && currentStatus.altitude < lastStatus.altitude)
+                        if (currentStatus.fsd_status == "ready" 
+                            && currentStatus.slope >= -60 && currentStatus.slope <= -5
+                            && currentStatus.altitude < 100000
+                            && currentStatus.altitude < lastStatus.altitude)
                         {
-                            // The FSD status is `ready`, altitude is less than 25000 meters, and we are dropping
+                            // The FSD status is `ready`, altitude is less than 100000 meters, and we are dropping
                             gliding = true;
                             EnteredNormalSpaceEvent theEvent = lastEnteredNormalSpaceEvent;
                             EDDI.Instance.enqueueEvent(new GlideEvent(DateTime.UtcNow, gliding, theEvent.systemname, theEvent.systemAddress, theEvent.bodyname, theEvent.bodyType) { fromLoad = theEvent.fromLoad });
