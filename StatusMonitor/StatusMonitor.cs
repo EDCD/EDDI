@@ -324,18 +324,22 @@ namespace EddiStatusMonitor
                     if (thisStatus.hyperspace)
                     {
                         EDDI.Instance.Environment = Constants.ENVIRONMENT_WITCH_SPACE;
+                        gliding = false;
                     }
                     else if (thisStatus.supercruise)
                     {
                         EDDI.Instance.Environment = Constants.ENVIRONMENT_SUPERCRUISE;
+                        gliding = false;
                     }
                     else if (thisStatus.docked)
                     {
                         EDDI.Instance.Environment = Constants.ENVIRONMENT_DOCKED;
+                        gliding = false;
                     }
                     else if (thisStatus.landed)
                     {
                         EDDI.Instance.Environment = Constants.ENVIRONMENT_LANDED;
+                        gliding = false;
                     }
                     else
                     {
