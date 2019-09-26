@@ -54,6 +54,18 @@
             var Human = new SignalSource("SAA_SignalType_Human");
             var Thargoid = new SignalSource("SAA_SignalType_Thargoid");
 
+            var AncientGuardianRuins = new SignalSource("Ancient");
+            var GuardianStructureT1 = new SignalSource("Ancient_Tiny_001");
+            var GuardianStructureT2 = new SignalSource("Ancient_Tiny_002");
+            var GuardianStructureT3 = new SignalSource("Ancient_Tiny_003");
+            var GuardianStructureS1 = new SignalSource("Ancient_Small_001");
+            var GuardianStructureS2 = new SignalSource("Ancient_Small_002");
+            var GuardianStructureS3 = new SignalSource("Ancient_Small_003");
+            var GuardianStructureS4 = new SignalSource("Ancient_Small_004"); // Speculative
+            var GuardianStructureS5 = new SignalSource("Ancient_Small_005");
+            var GuardianStructureM1 = new SignalSource("Ancient_Medium_001"); // Speculative
+            var GuardianStructureM2 = new SignalSource("Ancient_Medium_002");
+            var GuardianStructureM3 = new SignalSource("Ancient_Medium_003");
             var ThargoidBarnacle = new SignalSource("Settlement_Unflattened_Unknown");
         }
 

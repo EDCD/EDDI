@@ -61,6 +61,114 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ancient Ruins.
+        /// </summary>
+        public static string Ancient {
+            get {
+                return ResourceManager.GetString("Ancient", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Guardian Structure.
+        /// </summary>
+        public static string Ancient_Medium_001 {
+            get {
+                return ResourceManager.GetString("Ancient_Medium_001", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Guardian Structure.
+        /// </summary>
+        public static string Ancient_Medium_002 {
+            get {
+                return ResourceManager.GetString("Ancient_Medium_002", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Guardian Structure.
+        /// </summary>
+        public static string Ancient_Medium_003 {
+            get {
+                return ResourceManager.GetString("Ancient_Medium_003", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Guardian Structure.
+        /// </summary>
+        public static string Ancient_Small_001 {
+            get {
+                return ResourceManager.GetString("Ancient_Small_001", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Guardian Structure.
+        /// </summary>
+        public static string Ancient_Small_002 {
+            get {
+                return ResourceManager.GetString("Ancient_Small_002", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Guardian Structure.
+        /// </summary>
+        public static string Ancient_Small_003 {
+            get {
+                return ResourceManager.GetString("Ancient_Small_003", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Guardian Structure.
+        /// </summary>
+        public static string Ancient_Small_004 {
+            get {
+                return ResourceManager.GetString("Ancient_Small_004", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Guardian Structure.
+        /// </summary>
+        public static string Ancient_Small_005 {
+            get {
+                return ResourceManager.GetString("Ancient_Small_005", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Guardian Structure.
+        /// </summary>
+        public static string Ancient_Tiny_001 {
+            get {
+                return ResourceManager.GetString("Ancient_Tiny_001", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Guardian Structure.
+        /// </summary>
+        public static string Ancient_Tiny_002 {
+            get {
+                return ResourceManager.GetString("Ancient_Tiny_002", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Guardian Structure.
+        /// </summary>
+        public static string Ancient_Tiny_003 {
+            get {
+                return ResourceManager.GetString("Ancient_Tiny_003", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Capital Ship.
         /// </summary>
         public static string FIXED_EVENT_CAPSHIP {
