@@ -90,11 +90,18 @@
                         .Replace("$", "")
                         .Replace(";", "");
 
+                    // Extract any sub-type from the name (e.g. $SAA_Unknown_Signal:#type=$SAA_SignalType_Geological;:#index=3; )
+                    if (tidiedFrom.Contains(":#type="))
+                    {
+                        string[] fromArray = tidiedFrom.Split(new[] { ":#type=" }, System.StringSplitOptions.None);
+                        tidiedFrom = fromArray[1];
+                    }
+
                     // Extract any index value which might be present and then strip the index value
                     int indexResult = 0;
                     if (tidiedFrom.Contains(":#index="))
                     {
-                        string[] fromArray = tidiedFrom.Split(new string[] { ":#index=" }, System.StringSplitOptions.None);
+                        string[] fromArray = tidiedFrom.Split(new[] { ":#index=" }, System.StringSplitOptions.None);
                         if (int.TryParse(fromArray[1], out indexResult)) { }
                         tidiedFrom = fromArray[0];
                     }
