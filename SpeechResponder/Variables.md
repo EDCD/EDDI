@@ -740,6 +740,7 @@ Any values might be missing, depending on EDDI's configuration.
     - `longitude` a decimal value indicating the ship's current longitude (if near a surface)
     - `altitude` a decimal value indicating the ship's current altitude (if in flight near a surface)
     - `heading` a decimal value indicating the ship's current heading (if near a surface)
+    - `slope` a decimal value indicating the ship's current slope relative to the horizon (if near a surface)
     - `analysis_mode` a boolean value indicating whether the ship's HUD is currently in Analysis Mode
     - `night_vision` a boolean value indicating whether night vision is currently active
     - `fuel` a decimal value indicating the ship's current fuel (including fuel in the active fuel reservoir)
