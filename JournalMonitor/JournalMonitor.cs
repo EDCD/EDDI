@@ -771,15 +771,15 @@ namespace EddiJournalMonitor
                                     long systemAddress = JsonParsing.getLong(data, "SystemAddress");
                                     string bodyName = JsonParsing.getString(data, "BodyName");
                                     long? bodyId = JsonParsing.getOptionalLong(data, "BodyID");
-                                    // Replace with localised name if available
-                                    if (data.TryGetValue("Name_Localised", out object val))
-                                    {
-                                        settlementname = (string)val;
-                                    }
+
+                                    // The settlement name may be a proper name or a generic signal type.
+                                    SignalSource settlementName = SignalSource.FromEDName(settlementname) ?? new SignalSource();
+                                    settlementName.fallbackLocalizedName = JsonParsing.getString(data, "Name_Localised") ?? settlementname;
+
                                     decimal? latitude = JsonParsing.getOptionalDecimal(data, "Latitude");
                                     decimal? longitude = JsonParsing.getOptionalDecimal(data, "Longitude");
 
-                                    events.Add(new SettlementApproachedEvent(timestamp, settlementname, marketId, systemAddress, bodyName, bodyId, latitude, longitude) { raw = line, fromLoad = fromLogLoad });
+                                    events.Add(new SettlementApproachedEvent(timestamp, settlementName, marketId, systemAddress, bodyName, bodyId, latitude, longitude) { raw = line, fromLoad = fromLogLoad });
                                 }
                                 handled = true;
                                 break;
