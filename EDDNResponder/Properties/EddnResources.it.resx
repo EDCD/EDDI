@@ -121,7 +121,7 @@
     <value>Invia informazioni riguardanti stazioni visitate, salti effettuati e scansioni di sistemi a EDDN. EDDN è uno strumento di terze parti che raccoglie informazioni su sistemi e mercati e fornisce questi dati a altri strumenti di negoziazione e di esplorazione come EDDB.</value>
   </data>
   <data name="name" xml:space="preserve">
-    <value>EDDN</value>
+    <value>Assistente EDDN</value>
   </data>
   <data name="errPosition" xml:space="preserve">
     <value>Sono spiacente Comandante: ho perso il filo ed ho bisogno che tu mi comunichi la tua posizione saltando verso un'altro sistema o che tu ti riconnetta al gioco prima che io possa ricominciare a mettere in rete i dati esplorativi.</value>
