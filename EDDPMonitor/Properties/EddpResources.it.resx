@@ -136,7 +136,7 @@
     <value>Massima distanza dalla nave</value>
   </data>
   <data name="name" xml:space="preserve">
-    <value>Controllore EDDP</value>
+    <value>Monitoraggio EDDP</value>
   </data>
   <data name="name_header" xml:space="preserve">
     <value>Nome</value>
