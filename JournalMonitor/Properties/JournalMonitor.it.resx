@@ -101,6 +101,6 @@
     <value>Monitora il journal.log di Elite: Dangerous per la gestione molti eventi. Non dovrebbe essere disabilitato a meno che tu non sia sicuro di ciò che stai facendo, dato che interromperesti molte funzionalità di EDDI.</value>
   </data>
   <data name="name" xml:space="preserve">
-    <value>Controllore del Giornale di Bordo</value>
+    <value>Monitoraggio Giornale di Bordo</value>
   </data>
 </root>
