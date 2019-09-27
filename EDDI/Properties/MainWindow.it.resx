@@ -130,7 +130,7 @@
     <value>Il primo gruppo riceve e gestisce le informazioni di base utilizzate da EDDI. Le schede relative sono: i 'Dettagli relativi al Comandante', la 'Chiave API di Frontier' e la 'Sintesi Vocale'. Occorre aprire ognuna di queste schede e configurarla così che EDDI abbia accesso completo alle informazioni di Elite: Dangerous.</value>
   </data>
   <data name="paragraph_2" xml:space="preserve">
-    <value>Il secondo gruppo riceve informazioni riguardanti gli eventi. Le schede di questo gruppo sono riconoscibili in quanto terminano con 'Monitor'. Esse ricevono dati ed eventi da diverse sorgenti e richiedono una configurazione minima ma necessaria prima di poter funzionare.</value>
+    <value>Il secondo gruppo riceve informazioni riguardanti gli eventi. Le schede di questo gruppo sono riconoscibili in quanto iniziano con 'Monitoraggio'. Esse ricevono dati ed eventi da diverse sorgenti e richiedono una configurazione minima ma necessaria prima di poter funzionare.</value>
   </data>
   <data name="paragraph_3" xml:space="preserve">
     <value>Il terzo gruppo reagisce agli eventi. Ne fanno parte le schede che contengono la parola 'Assistente'. Queste ultime presentano svariati livelli di configurazione ma sono già funzionanti di default.</value>
