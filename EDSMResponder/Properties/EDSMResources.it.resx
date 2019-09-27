@@ -148,7 +148,7 @@
     <value>Ottengo dati </value>
   </data>
   <data name="name" xml:space="preserve">
-    <value>EDSM</value>
+    <value>Assistente EDSM</value>
   </data>
   <data name="p1" xml:space="preserve">
     <value>Per collegare EDSM occorre registrarvi un account. Una volta registrato sarà possibile ottenere una chiave API facendo click sul ritratto personale nell'angolo in alto a destra dello schermo e quindi scegliendo 'My API Key'</value>
