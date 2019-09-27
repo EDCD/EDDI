@@ -24,6 +24,9 @@ namespace EddiSpeechResponder
         [JsonIgnore]
         public bool IsDefault { get; set; } = false;
 
+        [JsonIgnore]
+        public bool IsCustom => !IsDefault;
+
         [JsonProperty("scripts")]
         public Dictionary<string, Script> Scripts { get; private set; }
 

@@ -144,7 +144,16 @@
                 <DataGridTemplateColumn>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Button IsEnabled="{Binding Path=Value.IsResettableOrDeletable}" Click="resetOrDeleteScript">
+                            <Button Click="resetOrDeleteScript">
+                                <Button.Resources>
+                                    <local:BooleanAndConverter x:Key="booleanAndConverter" />
+                                </Button.Resources>
+                                <Button.IsEnabled>
+                                    <MultiBinding Converter="{StaticResource booleanAndConverter }">
+                                        <Binding Path="Personality.IsCustom" RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}" />
+                                        <Binding Path="Value.IsResettableOrDeletable" /> 
+                                    </MultiBinding>
+                                </Button.IsEnabled>
                                 <Button.Style>
                                     <Style TargetType="{x:Type Button}">
                                         <Setter Property="Content" Value="{x:Static resx:SpeechResponder.delete_script}" />
