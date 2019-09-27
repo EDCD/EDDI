@@ -625,20 +625,18 @@
           "type": "SRV",
           "vehicles": [
             {
-              "EDName": "testbuggy",
-              "name": "SRV Scarab",
-              "loadout": "Starter",
-              "mount": "",
               "subslot": 0,
-              "rebuilds": 1
+              "loadout": "starter",
+              "rebuilds": 1,
+              "vehicleDefinition": "TestBuggy",
+              "loadoutDescription": "Starter"
             },
             {
-              "EDName": "testbuggy",
-              "name": "SRV Scarab",
-              "loadout": "Starter",
-              "mount": "",
               "subslot": 1,
-              "rebuilds": 1
+              "loadout": "starter",
+              "rebuilds": 1,
+              "vehicleDefinition": "TestBuggy",
+              "loadoutDescription": "Starter"
             }
           ]
         }
