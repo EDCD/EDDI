@@ -121,7 +121,7 @@
     <value>Informazioni sul tuo carico.</value>
   </data>
   <data name="cargo_monitor_name" xml:space="preserve">
-    <value>Controllore Cargo</value>
+    <value>Monitoraggio Cargo</value>
   </data>
   <data name="header_haulage" xml:space="preserve">
     <value>Trasporto per Conto Terzi</value>
