@@ -15,9 +15,11 @@ namespace EddiEvents
 
         static StarScannedEvent()
         {
+            VARIABLES.Add("scantype", "The type of scan event (AutoScan, Basic, Detailed, NavBeacon, NavBeaconDetail)");
             VARIABLES.Add("bodyname", "The name of the star that has been scanned");
             VARIABLES.Add("chromaticity", "The apparent colour of the star that has been scanned");
             VARIABLES.Add("stellarclass", "The stellar class of the star that has been scanned (O, G, etc)");
+            VARIABLES.Add("scoopable", "True if the star is scoopable (K, G, B, F, O, A, M)");
             VARIABLES.Add("solarmass", "The mass of the star that has been scanned, relative to Sol's mass");
             VARIABLES.Add("massprobability", "The probablility of finding a star of this class with this mass");
             VARIABLES.Add("radius", "The radius of the star that has been scanned, in metres");
@@ -58,9 +60,14 @@ namespace EddiEvents
 
         // Variable names for this event should match the class property names for maximum compatibility with the BodyDetails() function in Cottle
 
+        public string scantype { get; private set; } // One of AutoScan, Basic, Detailed, NavBeacon, NavBeaconDetail
+                                                     // AutoScan events are detailed scans triggered via proximity. 
+
         public string bodyname => star.bodyname;
 
         public string stellarclass => star.stellarclass;
+
+        public bool scoopable => star.scoopable;
 
         public int? stellarsubclass => star.stellarsubclass;
 
@@ -147,8 +154,6 @@ namespace EddiEvents
         // Variables below are not intended to be user facing
         public long? bodyId { get; private set; }
         public List<IDictionary<string, object>> parents { get; private set; }
-        public string scantype { get; private set; } // One of AutoScan, Basic, Detailed, NavBeacon, NavBeaconDetail
-                                                     // AutoScan events are detailed scans triggered via proximity. 
         public Body star { get; private set; }
 
         // Deprecated, maintained for compatibility with user scripts

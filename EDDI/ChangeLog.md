@@ -19,6 +19,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Added new event `Powerplay`, triggered while loading the game (if pledged).
     * Added new event `Statistics`, triggered while loading a game.
     * Added new event `Surface signals detected`, triggered when surface biological and/or geological signals are detected on a body during SAA scan.
+    * Updated the `Body scanned` and `Star scanned` events with new property `scantype` (AutoScan, Basic, Detailed, NavBeacon, NavBeaconDetail)
     * Updated the `Commander continued` event with new properties `startlanded` and `startdead` (true if starting the game either landed or dead, respectively).
     * Updated the `Community goal` event with new properties `maxtier` and `maxtierrewards`.
     * Updated the `Liftoff` and `Touchdown` events with new `nearestdestination` property.
