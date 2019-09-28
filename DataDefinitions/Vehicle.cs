@@ -12,11 +12,11 @@ namespace EddiDataDefinitions
 
         public string vehicleDefinition
         {
-            get => vehicleDef.edname;
+            get => vehicleDef?.edname;
             set
             {
                 VehicleDefinition vDef = VehicleDefinition.FromEDName(value);
-                this.vehicleDef = vDef;
+                vehicleDef = vDef;
             }
         }
 
@@ -31,15 +31,15 @@ namespace EddiDataDefinitions
 
         [JsonIgnore]
         [Obsolete("Please be explicit and use localizedName or invariantName")]
-        public string name => localizedName;
+        public string name => localizedName ?? string.Empty;
 
         public string loadoutDescription
         {
-            get => descriptionDef.edname;
+            get => descriptionDef?.edname;
             set
             {
                 LoadoutDescription dDef = LoadoutDescription.FromEDName(value);
-                this.descriptionDef = dDef;
+                descriptionDef = dDef;
             }
         }
 
@@ -51,7 +51,7 @@ namespace EddiDataDefinitions
 
         [JsonIgnore]
         [Obsolete("Please be explicit and use localizedDescription")]
-        public string description => localizedDescription;
+        public string description => localizedDescription ?? string.Empty;
 
         public static Vehicle FromJson(int subslot, dynamic json)
         {
