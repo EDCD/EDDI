@@ -241,12 +241,27 @@
     <value>Segnale di Superficie di tipo Geologico</value>
     <comment>Geological Surface Signal</comment>
   </data>
-  <data name="ListeningPost_index1" xml:space="preserve">
-    <value>Stazione di Ascolto</value>
-    <comment>ListeningPost_index1</comment>
-  </data>
   <data name="SAA_SignalType_Human" xml:space="preserve">
     <value>Segnale di Superficie di tipo Umano</value>
     <comment>Human Surface Signal</comment>
   </data>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
 </root>
