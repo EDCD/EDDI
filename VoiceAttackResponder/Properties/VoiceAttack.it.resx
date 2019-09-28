@@ -121,7 +121,7 @@
     <value>Un risponditore che genera un elevato numero di variabili all'interno di VoiceAttack e di azioni scatenanti definite dall'utente.</value>
   </data>
   <data name="name" xml:space="preserve">
-    <value>Risponditore VoiceAttack.</value>
+    <value>Assistente VoiceAttack</value>
   </data>
   <data name="p1" xml:space="preserve">
     <value>Per integrare EDDI con VoiceAttack, EDDI deve essere installato all'interno della Cartella 'Apps' di VoiceAttack. Il percorso standard di questa cartella è: 'C.\Programmi (x86)\VoiceAttack\Apps' ed è l'indirizzo di default a cui verrà installato EDDI.</value>

@@ -124,7 +124,7 @@
     <value>Lingua degli articoli di Galnet</value>
   </data>
   <data name="name" xml:space="preserve">
-    <value>Controllore Galnet</value>
+    <value>Monitoraggio Galnet</value>
   </data>
   <data name="p1" xml:space="preserve">
     <value>Tieni conto del fatto che, dopo aver modificato le impostazioni di lingua, possono volerci alcuni minuti per poter ottenere nuovi articoli da Galnet.</value>
@@ -176,5 +176,8 @@
     <value>La Settimana in Breve</value>
     <comment>Category (as seen by the user): Week in Review</comment>
   </data>
-  
+  <data name="alternateURL" xml:space="preserve">
+    <value>http://elitedangerous-website-backend-production.elitedangerous.com/galnet.rss</value>
+    <comment>The URL the Galnet monitor should access for obtaining new news feed items, should sourceURL be unavailable.</comment>
+  </data>
 </root>
