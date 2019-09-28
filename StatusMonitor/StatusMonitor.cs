@@ -293,6 +293,7 @@ namespace EddiStatusMonitor
 
                     // Calculated data
                     SetFuelExtras(status);
+                    SetSlope(status);
 
                     return status;
                 }
@@ -324,18 +325,22 @@ namespace EddiStatusMonitor
                     if (thisStatus.hyperspace)
                     {
                         EDDI.Instance.Environment = Constants.ENVIRONMENT_WITCH_SPACE;
+                        gliding = false;
                     }
                     else if (thisStatus.supercruise)
                     {
                         EDDI.Instance.Environment = Constants.ENVIRONMENT_SUPERCRUISE;
+                        gliding = false;
                     }
                     else if (thisStatus.docked)
                     {
                         EDDI.Instance.Environment = Constants.ENVIRONMENT_DOCKED;
+                        gliding = false;
                     }
                     else if (thisStatus.landed)
                     {
                         EDDI.Instance.Environment = Constants.ENVIRONMENT_LANDED;
+                        gliding = false;
                     }
                     else
                     {
@@ -419,9 +424,12 @@ namespace EddiStatusMonitor
                     if (!gliding && lastEnteredNormalSpaceEvent != null)
                     {
                         // We're not already gliding and we have data from a prior `EnteredNormalSpace` event
-                        if (currentStatus.fsd_status == "ready" && currentStatus.altitude < 25000 && currentStatus.altitude < lastStatus.altitude)
+                        if (currentStatus.fsd_status == "ready" 
+                            && currentStatus.slope >= -60 && currentStatus.slope <= -5
+                            && currentStatus.altitude < 100000
+                            && currentStatus.altitude < lastStatus.altitude)
                         {
-                            // The FSD status is `ready`, altitude is less than 25000 meters, and we are dropping
+                            // The FSD status is `ready`, altitude is less than 100000 meters, and we are dropping
                             gliding = true;
                             EnteredNormalSpaceEvent theEvent = lastEnteredNormalSpaceEvent;
                             EDDI.Instance.enqueueEvent(new GlideEvent(DateTime.UtcNow, gliding, theEvent.systemname, theEvent.systemAddress, theEvent.bodyname, theEvent.bodyType) { fromLoad = theEvent.fromLoad });
@@ -574,6 +582,33 @@ namespace EddiStatusMonitor
                 fuel_seconds = (fuelPerSecond is null || fuelPerSecond == 0) ? null : (int?)(srvFuelTankCapacity / fuelPerSecond);
             }
             return; // At present, fighters do not appear to consume fuel.
+        }
+
+        private void SetSlope(Status status)
+        {
+            status.slope = null;
+            if (lastStatus.planetradius != null && lastStatus?.altitude != null && lastStatus?.latitude != null && lastStatus?.longitude != null)
+            {
+                double square(double x) => x * x;
+
+                double radius = (double)status.planetradius / 1000;
+                double deltaAlt = (double)((status.altitude ?? 0) - (lastStatus.altitude ?? 0)) / 1000;
+
+                // Convert latitude & longitude to radians
+                double currentLat = (double)(status.latitude ?? 0) * Math.PI / 180;
+                double lastLat = (double)(lastStatus.latitude ?? 0) * Math.PI / 180;
+                double deltaLat = currentLat - lastLat;
+                double deltaLong = (double)((status.longitude ?? 0) - (lastStatus.longitude ?? 0)) * Math.PI / 180;
+
+                // Calculate distance traveled using Law of Haversines
+                double a = square(Math.Sin(deltaLat / 2)) + Math.Cos(currentLat) * Math.Cos(lastLat) * square(Math.Sin(deltaLong / 2));
+                double c = 2 * Math.Atan2(Math.Sqrt(a), Math.Sqrt(1 - a));
+                double distance = c * radius;
+
+                // Calculate the slope angle
+                double slope = Math.Atan2(deltaAlt, distance) * 180 / Math.PI;
+                status.slope = Math.Round((decimal)slope, 1);
+            }
         }
     }
 }

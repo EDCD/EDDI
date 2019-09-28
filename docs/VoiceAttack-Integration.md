@@ -76,6 +76,7 @@ EDDI makes a large number of values available to augment your existing scripts. 
   * {DEC:Status longitude} a decimal value indicating the ship's current longitude (if near a surface)
   * {DEC:Status altitude} a decimal value indicating the ship's current altitude (if in flight near a surface)
   * {DEC:Status heading} a decimal value indicating the ship's current heading (if near a surface)
+  * {DEC:Status slope} a decimal value indicating the ship's current slope relative to the horizon (if near a surface)
   * {DEC:Status fuel} a decimal value indicating the tons of fuel currently carried by your ship, if known
   * {DEC:Status fuel percent} a decimal value indicating the current percentage of your total fuel capacity remaining, if known
   * {INT:Status fuel rate} an integer value indicating the projected number of seconds of fuel remaining, if known

@@ -108,6 +108,7 @@ namespace EddiDataDefinitions
         public decimal? planetradius;
 
         // Variables calculated from event data
+        public decimal? slope { get; set; }
         public decimal? fuel => fuelInTanks + fuelInReservoir;
         public decimal? fuel_percent { get; set; }
         public int? fuel_seconds { get; set; }

@@ -965,6 +965,7 @@ namespace EddiVoiceAttackResponder
                 vaProxy.SetDecimal(prefix + " longitude", status?.longitude);
                 vaProxy.SetDecimal(prefix + " altitude", status?.altitude);
                 vaProxy.SetDecimal(prefix + " heading", status?.heading);
+                vaProxy.SetDecimal(prefix + " slope", status?.slope);
                 vaProxy.SetDecimal(prefix + " fuel", status?.fuel);
                 vaProxy.SetDecimal(prefix + " fuel percent", status?.fuel_percent);
                 vaProxy.SetInt(prefix + " fuel rate", status?.fuel_seconds);
