@@ -19,7 +19,7 @@ namespace EddiDataDefinitions.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class SignalSource {
@@ -61,6 +61,114 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ancient Ruins.
+        /// </summary>
+        public static string Ancient {
+            get {
+                return ResourceManager.GetString("Ancient", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Guardian Structure.
+        /// </summary>
+        public static string Ancient_Medium_001 {
+            get {
+                return ResourceManager.GetString("Ancient_Medium_001", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Guardian Structure.
+        /// </summary>
+        public static string Ancient_Medium_002 {
+            get {
+                return ResourceManager.GetString("Ancient_Medium_002", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Guardian Structure.
+        /// </summary>
+        public static string Ancient_Medium_003 {
+            get {
+                return ResourceManager.GetString("Ancient_Medium_003", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Guardian Structure.
+        /// </summary>
+        public static string Ancient_Small_001 {
+            get {
+                return ResourceManager.GetString("Ancient_Small_001", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Guardian Structure.
+        /// </summary>
+        public static string Ancient_Small_002 {
+            get {
+                return ResourceManager.GetString("Ancient_Small_002", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Guardian Structure.
+        /// </summary>
+        public static string Ancient_Small_003 {
+            get {
+                return ResourceManager.GetString("Ancient_Small_003", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Guardian Structure.
+        /// </summary>
+        public static string Ancient_Small_004 {
+            get {
+                return ResourceManager.GetString("Ancient_Small_004", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Guardian Structure.
+        /// </summary>
+        public static string Ancient_Small_005 {
+            get {
+                return ResourceManager.GetString("Ancient_Small_005", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Guardian Structure.
+        /// </summary>
+        public static string Ancient_Tiny_001 {
+            get {
+                return ResourceManager.GetString("Ancient_Tiny_001", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Guardian Structure.
+        /// </summary>
+        public static string Ancient_Tiny_002 {
+            get {
+                return ResourceManager.GetString("Ancient_Tiny_002", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Guardian Structure.
+        /// </summary>
+        public static string Ancient_Tiny_003 {
+            get {
+                return ResourceManager.GetString("Ancient_Tiny_003", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Capital Ship.
         /// </summary>
         public static string FIXED_EVENT_CAPSHIP {
@@ -70,11 +178,47 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Checkpoint.
+        /// </summary>
+        public static string FIXED_EVENT_CHECKPOINT {
+            get {
+                return ResourceManager.GetString("FIXED_EVENT_CHECKPOINT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Convoy Beacon.
+        /// </summary>
+        public static string FIXED_EVENT_CONVOY {
+            get {
+                return ResourceManager.GetString("FIXED_EVENT_CONVOY", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Pirate Activity.
         /// </summary>
         public static string FIXED_EVENT_HIGHTHREATSCENARIO_T5 {
             get {
                 return ResourceManager.GetString("FIXED_EVENT_HIGHTHREATSCENARIO_T5", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pirate Activity.
+        /// </summary>
+        public static string FIXED_EVENT_HIGHTHREATSCENARIO_T6 {
+            get {
+                return ResourceManager.GetString("FIXED_EVENT_HIGHTHREATSCENARIO_T6", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pirate Activity.
+        /// </summary>
+        public static string FIXED_EVENT_HIGHTHREATSCENARIO_T7 {
+            get {
+                return ResourceManager.GetString("FIXED_EVENT_HIGHTHREATSCENARIO_T7", resourceCulture);
             }
         }
         
@@ -102,15 +246,6 @@ namespace EddiDataDefinitions.Properties {
         public static string ListeningPost {
             get {
                 return ResourceManager.GetString("ListeningPost", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Listening Post.
-        /// </summary>
-        public static string ListeningPost_index1 {
-            get {
-                return ResourceManager.GetString("ListeningPost_index1", resourceCulture);
             }
         }
         
@@ -196,11 +331,38 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Guardian Surface Signal.
+        /// </summary>
+        public static string SAA_SignalType_Guardian {
+            get {
+                return ResourceManager.GetString("SAA_SignalType_Guardian", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Human Surface Signal.
         /// </summary>
         public static string SAA_SignalType_Human {
             get {
                 return ResourceManager.GetString("SAA_SignalType_Human", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Thargoid Surface Signal.
+        /// </summary>
+        public static string SAA_SignalType_Thargoid {
+            get {
+                return ResourceManager.GetString("SAA_SignalType_Thargoid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Thargoid Barnacle.
+        /// </summary>
+        public static string Settlement_Unflattened_Unknown {
+            get {
+                return ResourceManager.GetString("Settlement_Unflattened_Unknown", resourceCulture);
             }
         }
         

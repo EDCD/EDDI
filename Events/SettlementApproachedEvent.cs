@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using EddiDataDefinitions;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 
@@ -20,8 +21,7 @@ namespace EddiEvents
             VARIABLES.Add("latitude", "The latitude coordinate of the settlement (if given)");
         }
 
-        [JsonProperty("name")]
-        public string name { get; private set; }
+        [JsonProperty("name")] public string name => settlementName.localizedName;
         public string bodyname { get; private set; }
         public decimal? latitude { get; private set; }
         public decimal? longitude { get; private set; }
@@ -30,10 +30,11 @@ namespace EddiEvents
         public long? marketId { get; private set; }
         public long systemAddress { get; private set; }
         public long? bodyId { get; private set; }
+        public SignalSource settlementName { get; private set; }
 
-        public SettlementApproachedEvent(DateTime timestamp, string name, long? marketId, long systemAddress, string bodyName, long? bodyId, decimal? latitude, decimal? longitude) : base(timestamp, NAME)
+        public SettlementApproachedEvent(DateTime timestamp, SignalSource settlementName, long? marketId, long systemAddress, string bodyName, long? bodyId, decimal? latitude, decimal? longitude) : base(timestamp, NAME)
         {
-            this.name = name;
+            this.settlementName = settlementName;
             this.marketId = marketId;
             this.systemAddress = systemAddress;
             this.bodyname = bodyName;

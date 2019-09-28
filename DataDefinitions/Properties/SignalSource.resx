@@ -241,12 +241,84 @@
     <value>Geological Surface Signal</value>
     <comment>Geological Surface Signal</comment>
   </data>
-  <data name="ListeningPost_index1" xml:space="preserve">
-    <value>Listening Post</value>
-    <comment>ListeningPost_index1</comment>
-  </data>
   <data name="SAA_SignalType_Human" xml:space="preserve">
     <value>Human Surface Signal</value>
     <comment>Human Surface Signal</comment>
+  </data>
+  <data name="SAA_SignalType_Thargoid" xml:space="preserve">
+    <value>Thargoid Surface Signal</value>
+    <comment>Thargoid Surface Signal</comment>
+  </data>
+  <data name="Settlement_Unflattened_Unknown" xml:space="preserve">
+    <value>Thargoid Barnacle</value>
+    <comment>Thargoid Barnacle</comment>
+  </data>
+  <data name="FIXED_EVENT_CHECKPOINT" xml:space="preserve">
+    <value>Checkpoint</value>
+    <comment>Checkpoint</comment>
+  </data>
+  <data name="FIXED_EVENT_CONVOY" xml:space="preserve">
+    <value>Convoy Beacon</value>
+    <comment>Convoy Beacon	</comment>
+  </data>
+  <data name="FIXED_EVENT_HIGHTHREATSCENARIO_T6" xml:space="preserve">
+    <value>Pirate Activity</value>
+    <comment>Pirate Activity</comment>
+  </data>
+  <data name="FIXED_EVENT_HIGHTHREATSCENARIO_T7" xml:space="preserve">
+    <value>Pirate Activity</value>
+    <comment>Pirate Activity</comment>
+  </data>
+  <data name="SAA_SignalType_Guardian" xml:space="preserve">
+    <value>Guardian Surface Signal</value>
+    <comment>Guardian Surface Signal</comment>
+  </data>
+  <data name="Ancient_Tiny_003" xml:space="preserve">
+    <value>Guardian Structure</value>
+    <comment>Guardian Structure</comment>
+  </data>
+  <data name="Ancient" xml:space="preserve">
+    <value>Ancient Ruins</value>
+    <comment>Ancient (Guardian) Ruins</comment>
+  </data>
+  <data name="Ancient_Small_005" xml:space="preserve">
+    <value>Guardian Structure</value>
+    <comment>Guardian Structure</comment>
+  </data>
+  <data name="Ancient_Small_001" xml:space="preserve">
+    <value>Guardian Structure</value>
+    <comment>Guardian Structure</comment>
+  </data>
+  <data name="Ancient_Tiny_001" xml:space="preserve">
+    <value>Guardian Structure</value>
+    <comment>Guardian Structure</comment>
+  </data>
+  <data name="Ancient_Small_002" xml:space="preserve">
+    <value>Guardian Structure</value>
+    <comment>Guardian Structure</comment>
+  </data>
+  <data name="Ancient_Small_003" xml:space="preserve">
+    <value>Guardian Structure</value>
+    <comment>Guardian Structure</comment>
+  </data>
+  <data name="Ancient_Tiny_002" xml:space="preserve">
+    <value>Guardian Structure</value>
+    <comment>Guardian Structure</comment>
+  </data>
+  <data name="Ancient_Medium_003" xml:space="preserve">
+    <value>Guardian Structure</value>
+    <comment>Guardian Structure</comment>
+  </data>
+  <data name="Ancient_Small_004" xml:space="preserve">
+    <value>Guardian Structure</value>
+    <comment>Guardian Structure</comment>
+  </data>
+  <data name="Ancient_Medium_001" xml:space="preserve">
+    <value>Guardian Structure</value>
+    <comment>Guardian Structure</comment>
+  </data>
+  <data name="Ancient_Medium_002" xml:space="preserve">
+    <value>Guardian Structure</value>
+    <comment>Guardian Structure</comment>
   </data>
 </root>

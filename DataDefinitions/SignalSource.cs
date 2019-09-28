@@ -11,11 +11,12 @@
             UnidentifiedSignalSource = new SignalSource("USS");
 
             var NavBeacon = new SignalSource("MULTIPLAYER_SCENARIO42_TITLE");
+            var CompromisedNavBeacon = new SignalSource("MULTIPLAYER_SCENARIO80_TITLE");
+
             var ResourceExtraction = new SignalSource("MULTIPLAYER_SCENARIO14_TITLE");
             var ResourceExtractionLow = new SignalSource("MULTIPLAYER_SCENARIO77_TITLE");
             var ResourceExtractionHigh = new SignalSource("MULTIPLAYER_SCENARIO78_TITLE");
             var ResourceExtractionHazardous = new SignalSource("MULTIPLAYER_SCENARIO79_TITLE");
-            var CompromisedNavBeacon = new SignalSource("MULTIPLAYER_SCENARIO80_TITLE");
 
             var CombatZoneHigh = new SignalSource("Warzone_PointRace_High");
             var CombatZoneMedium = new SignalSource("Warzone_PointRace_Med");
@@ -37,21 +38,40 @@
 
             var UnregisteredCommsBeacon = new SignalSource("NumberStation");
             var ListeningPost = new SignalSource("ListeningPost");
-            var ListeningPostIndex1 = new SignalSource("ListeningPost_index1");
 
+            var CapShip = new SignalSource("FIXED_EVENT_CAPSHIP");
+            var Checkpoint = new SignalSource("FIXED_EVENT_CHECKPOINT");
+            var ConvoyBeacon = new SignalSource("FIXED_EVENT_CONVOY");
+            var PirateAttackT5 = new SignalSource("FIXED_EVENT_HIGHTHREATSCENARIO_T5");
+            var PirateAttackT6 = new SignalSource("FIXED_EVENT_HIGHTHREATSCENARIO_T6");
+            var PirateAttackT7 = new SignalSource("FIXED_EVENT_HIGHTHREATSCENARIO_T7");
             var NotableStellarPhenomenaCloud = new SignalSource("Fixed_Event_Life_Cloud");
             var NotableStellarPhenomenaRing = new SignalSource("Fixed_Event_Life_Ring");
 
-            var CapShip = new SignalSource("FIXED_EVENT_CAPSHIP");
-            var PirateAttack = new SignalSource("FIXED_EVENT_HIGHTHREATSCENARIO_T5");
-
-            var Biological = new SignalSource("SAA_SignalType_Biological"); //Speculative
+            var Biological = new SignalSource("SAA_SignalType_Biological");
             var Geological = new SignalSource("SAA_SignalType_Geological");
+            var Guardian = new SignalSource("SAA_SignalType_Guardian");
             var Human = new SignalSource("SAA_SignalType_Human");
+            var Thargoid = new SignalSource("SAA_SignalType_Thargoid");
 
+            var AncientGuardianRuins = new SignalSource("Ancient");
+            var GuardianStructureT1 = new SignalSource("Ancient_Tiny_001");
+            var GuardianStructureT2 = new SignalSource("Ancient_Tiny_002");
+            var GuardianStructureT3 = new SignalSource("Ancient_Tiny_003");
+            var GuardianStructureS1 = new SignalSource("Ancient_Small_001");
+            var GuardianStructureS2 = new SignalSource("Ancient_Small_002");
+            var GuardianStructureS3 = new SignalSource("Ancient_Small_003");
+            var GuardianStructureS4 = new SignalSource("Ancient_Small_004"); // Speculative
+            var GuardianStructureS5 = new SignalSource("Ancient_Small_005");
+            var GuardianStructureM1 = new SignalSource("Ancient_Medium_001"); // Speculative
+            var GuardianStructureM2 = new SignalSource("Ancient_Medium_002");
+            var GuardianStructureM3 = new SignalSource("Ancient_Medium_003");
+            var ThargoidBarnacle = new SignalSource("Settlement_Unflattened_Unknown");
         }
 
         public static readonly SignalSource UnidentifiedSignalSource;
+
+        public int index;
 
         // dummy used to ensure that the static constructor has run
         public SignalSource() : this("")
@@ -60,18 +80,39 @@
         private SignalSource(string edname) : base(edname, edname)
         { }
 
-        new public static SignalSource FromEDName(string from)
+        public new static SignalSource FromEDName(string from)
         {
             if (from != null)
             {
                 if (from.Contains("$"))
                 {
-                    return ResourceBasedLocalizedEDName<SignalSource>.FromEDName(from
-                        .Replace("#", "_")
+                    string tidiedFrom = from
                         .Replace("$", "")
-                        .Replace("=", "")
-                        .Replace(":", "")
-                        .Replace(";", ""));
+                        .Replace(";", "");
+
+                    // Extract any sub-type from the name (e.g. $SAA_Unknown_Signal:#type=$SAA_SignalType_Geological;:#index=3; )
+                    if (tidiedFrom.Contains(":#type="))
+                    {
+                        string[] fromArray = tidiedFrom.Split(new[] { ":#type=" }, System.StringSplitOptions.None);
+                        tidiedFrom = fromArray[1];
+                    }
+
+                    // Extract any index value which might be present and then strip the index value
+                    int indexResult = 0;
+                    if (tidiedFrom.Contains(":#index="))
+                    {
+                        string[] fromArray = tidiedFrom.Split(new[] { ":#index=" }, System.StringSplitOptions.None);
+                        if (int.TryParse(fromArray[1], out indexResult)) { }
+                        tidiedFrom = fromArray[0];
+                    }
+
+                    // Find our signal source
+                    SignalSource result = ResourceBasedLocalizedEDName<SignalSource>.FromEDName(tidiedFrom);
+
+                    // Include our index value with our result
+                    result.index = indexResult;
+
+                    return result;
                 }
             }
             return null;

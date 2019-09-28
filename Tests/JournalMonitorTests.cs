@@ -1131,5 +1131,46 @@ namespace UnitTests
             Assert.AreEqual(1.179020M, reputationEvent.alliance);
             Assert.AreEqual(0M, reputationEvent.independent);
         }
+
+        [TestMethod]
+        public void TestSurfaceSignalsEvent()
+        {
+	        string line = "{ \"timestamp\":\"2019-09-24T02:40:34Z\", \"event\":\"SAASignalsFound\", \"BodyName\":\"HIP 41908 AB 1 c a\", \"SystemAddress\":61461226668, \"BodyID\":11, \"Signals\":[ { \"Type\":\"$SAA_SignalType_Biological;\", \"Type_Localised\":\"Biological\", \"Count\":16 }, { \"Type\":\"$SAA_SignalType_Geological;\", \"Type_Localised\":\"Geological\", \"Count\":17 }, { \"Type\":\"$SAA_SignalType_Human;\", \"Type_Localised\":\"Human\", \"Count\":4 } ] }";
+	        List<Event> events = JournalMonitor.ParseJournalEntry(line);
+	        SurfaceSignalsEvent surfaceSignalEvent = (SurfaceSignalsEvent)events[0];
+	        Assert.AreEqual("HIP 41908 AB 1 c a", surfaceSignalEvent.bodyname);
+	        Assert.AreEqual(61461226668, surfaceSignalEvent.systemAddress);
+	        Assert.AreEqual(3, surfaceSignalEvent.surfacesignals.Count);
+	        Assert.AreEqual("Biological Surface Signal", surfaceSignalEvent.surfacesignals[0].signalSource.invariantName);
+	        Assert.AreEqual(16, surfaceSignalEvent.surfacesignals[0].amount);
+	        Assert.AreEqual("Geological Surface Signal", surfaceSignalEvent.surfacesignals[1].signalSource.invariantName);
+	        Assert.AreEqual(17, surfaceSignalEvent.surfacesignals[1].amount);
+	        Assert.AreEqual("Human Surface Signal", surfaceSignalEvent.surfacesignals[2].signalSource.invariantName);
+	        Assert.AreEqual(4, surfaceSignalEvent.surfacesignals[2].amount);
+        }
+
+        [TestMethod]
+        public void TestTouchdownEventBio()
+        {
+	        string line = "{ \"timestamp\":\"2019 - 09 - 26T06: 42:43Z\", \"event\":\"Touchdown\", \"PlayerControlled\":true, \"Latitude\":-44.165684, \"Longitude\":-123.219307, \"NearestDestination\":\"$SAA_Unknown_Signal:#type=$SAA_SignalType_Biological;:#index=15;\", \"NearestDestination_Localised\":\"Surface signal: Biological (15)\" }";
+	        List<Event> events = JournalMonitor.ParseJournalEntry(line);
+	        TouchdownEvent @event = (TouchdownEvent)events[0];
+	        Assert.IsTrue(@event.playercontrolled);
+	        Assert.AreEqual(-44.165684M, @event.latitude);
+	        Assert.AreEqual(-123.219307M, @event.longitude);
+	        Assert.AreEqual("Biological Surface Signal", @event.nearestDestination.invariantName);
+        }
+
+        [TestMethod]
+        public void TestTouchdownEventGuardian()
+        {
+	        string line = "{ \"timestamp\":\"2019 - 09 - 26T04: 55:43Z\", \"event\":\"Touchdown\", \"PlayerControlled\":true, \"Latitude\":-44.464405, \"Longitude\":-95.072144, \"NearestDestination\":\"$Ancient_Tiny_003:#index=1;\", \"NearestDestination_Localised\":\"Guardian Structure\" }";
+	        List<Event> events = JournalMonitor.ParseJournalEntry(line);
+	        TouchdownEvent @event = (TouchdownEvent)events[0];
+	        Assert.IsTrue(@event.playercontrolled);
+	        Assert.AreEqual(-44.464405M, @event.latitude);
+	        Assert.AreEqual(-95.072144M, @event.longitude);
+	        Assert.AreEqual("Guardian Structure", @event.nearestDestination.invariantName);
+        }
     }
 }

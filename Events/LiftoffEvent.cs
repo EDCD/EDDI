@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using EddiDataDefinitions;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 
@@ -29,14 +30,18 @@ namespace EddiEvents
         public bool playercontrolled { get; private set; }
 
         [JsonProperty("nearestdestination")]
-        public string nearestdestination { get; private set; }
+        public string nearestdestination => nearestDestination.localizedName;
 
-        public LiftoffEvent(DateTime timestamp, decimal? longitude, decimal? latitude, bool playercontrolled, string nearestDestination) : base(timestamp, NAME)
+        // Not intended to be user facing
+
+        public SignalSource nearestDestination { get; private set; }
+
+        public LiftoffEvent(DateTime timestamp, decimal? longitude, decimal? latitude, bool playercontrolled, SignalSource nearestDestination) : base(timestamp, NAME)
         {
             this.longitude = longitude;
             this.latitude = latitude;
             this.playercontrolled = playercontrolled;
-            this.nearestdestination = nearestDestination;
+            this.nearestDestination = nearestDestination;
         }
     }
 }
