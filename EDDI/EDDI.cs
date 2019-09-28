@@ -1374,7 +1374,7 @@ namespace Eddi
             station.economyShares = theEvent.economyShares;
 
             // Update other station information available from the event
-            station.Model = StationModel.FromEDName(theEvent.model);
+            station.Model = theEvent.stationModel;
             station.stationServices = theEvent.stationServices;
             station.distancefromstar = theEvent.distancefromstar;
 
