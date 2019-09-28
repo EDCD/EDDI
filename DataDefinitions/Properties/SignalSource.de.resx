@@ -241,12 +241,27 @@
     <value>Geologisches Oberflächensignal</value>
     <comment>Geological Surface Signal</comment>
   </data>
-  <data name="ListeningPost_index1" xml:space="preserve">
-    <value>Horchposten</value>
-    <comment>ListeningPost_index1</comment>
-  </data>
   <data name="SAA_SignalType_Human" xml:space="preserve">
     <value>Menschliches Oberflächensignal</value>
     <comment>Human Surface Signal</comment>
   </data>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
 </root>
