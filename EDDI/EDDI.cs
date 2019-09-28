@@ -707,6 +707,10 @@ namespace Eddi
                     {
                         passEvent = eventUndocked((UndockedEvent)@event);
                     }
+                    else if (@event is DockingRequestedEvent dockingRequestedEvent)
+                    {
+                        passEvent = eventDockingRequested(dockingRequestedEvent);
+                    }
                     else if (@event is TouchdownEvent)
                     {
                         passEvent = eventTouchdown((TouchdownEvent)@event);
@@ -1307,6 +1311,25 @@ namespace Eddi
             return true;
         }
 
+        private bool eventDockingRequested(DockingRequestedEvent theEvent)
+        {
+            Station station = CurrentStarSystem.stations.Find(s => s.name == theEvent.station);
+            if (station == null)
+            {
+                // This station is unknown to us, might not be in our data source or we might not have connectivity.  Use a placeholder
+                station = new Station
+                {
+                    name = theEvent.station,
+                    marketId = theEvent.marketId,
+                    systemname = CurrentStarSystem.systemname,
+                    systemAddress = CurrentStarSystem.systemAddress
+                };
+                CurrentStarSystem.stations.Add(station);
+            }
+            station.Model = theEvent.stationDefinition;
+            return true;
+        }
+
         private bool eventDocked(DockedEvent theEvent)
         {
             updateCurrentSystem(theEvent.system);
@@ -1349,6 +1372,11 @@ namespace Eddi
             station.Faction = theEvent.controllingfaction;
             station.stationServices = theEvent.stationServices;
             station.economyShares = theEvent.economyShares;
+
+            // Update other station information available from the event
+            station.Model = StationModel.FromEDName(theEvent.model);
+            station.stationServices = theEvent.stationServices;
+            station.distancefromstar = theEvent.distancefromstar;
 
             CurrentStation = station;
             CurrentStellarBody = null;
