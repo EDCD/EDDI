@@ -386,6 +386,9 @@ namespace UnitTests
             Assert.AreEqual("Bi-Weave Shield Generator", ship2.compartments[0].module.invariantName);
             Assert.AreEqual("SRV", ship2.launchbays[0].type);
             Assert.AreEqual(2, ship2.launchbays[0].vehicles.Count());
+            Assert.AreEqual("TestBuggy", ship2.launchbays[0].vehicles[0].vehicleDefinition);
+            Assert.AreEqual("Starter", ship2.launchbays[0].vehicles[0].loadoutDescription);
+            Assert.AreEqual("dual plasma repeaters", ship2.launchbays[0].vehicles[0].localizedDescription);
         }
 
         [TestMethod]

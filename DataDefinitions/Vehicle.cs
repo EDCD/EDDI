@@ -10,28 +10,48 @@ namespace EddiDataDefinitions
         public string loadout { get; private set; }
         public int rebuilds { get; private set; }
 
-        [JsonIgnore]
-        private VehicleDefinition definition;
+        public string vehicleDefinition
+        {
+            get => vehicleDef?.edname;
+            set
+            {
+                VehicleDefinition vDef = VehicleDefinition.FromEDName(value);
+                vehicleDef = vDef;
+            }
+        }
 
         [JsonIgnore]
-        public string localizedName => definition?.localizedName;
+        private VehicleDefinition vehicleDef;
 
         [JsonIgnore]
-        public string invariantName => definition?.invariantName;
+        public string localizedName => vehicleDef?.localizedName;
+
+        [JsonIgnore]
+        public string invariantName => vehicleDef?.invariantName;
 
         [JsonIgnore]
         [Obsolete("Please be explicit and use localizedName or invariantName")]
-        public string name => localizedName;
+        public string name => localizedName ?? string.Empty;
+
+        public string loadoutDescription
+        {
+            get => descriptionDef?.edname;
+            set
+            {
+                LoadoutDescription dDef = LoadoutDescription.FromEDName(value);
+                descriptionDef = dDef;
+            }
+        }
 
         [JsonIgnore]
-        private LoadoutDescription loadoutDescription;
+        private LoadoutDescription descriptionDef;
 
         [JsonIgnore]
-        public string localizedDescription => loadoutDescription?.localizedName;
+        public string localizedDescription => descriptionDef?.localizedName;
 
         [JsonIgnore]
         [Obsolete("Please be explicit and use localizedDescription")]
-        public string description => localizedDescription;
+        public string description => localizedDescription ?? string.Empty;
 
         public static Vehicle FromJson(int subslot, dynamic json)
         {
@@ -45,8 +65,8 @@ namespace EddiDataDefinitions
                 loadout = (string)json["loadout"],
                 rebuilds = (int)json["rebuilds"],
                 subslot = subslot,
-                definition = VehicleDefinition.FromEDName(edName),
-                loadoutDescription = LoadoutDescription.FromLoadoutName(loadoutName)
+                vehicleDef = VehicleDefinition.FromEDName(edName),
+                descriptionDef = LoadoutDescription.FromLoadoutName(loadoutName)
             };
 
             return vehicle;
