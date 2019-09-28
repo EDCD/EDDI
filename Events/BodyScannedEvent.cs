@@ -64,7 +64,7 @@ namespace EddiEvents
 
         public string bodyname => body.bodyname;
 
-        public string systemname { get; private set; }
+        public string systemname => body.systemname;
 
         public string shortname => body.shortname;
 
@@ -165,6 +165,8 @@ namespace EddiEvents
         public TerraformState terraformState => body.terraformState;
         public string scantype { get; private set; } // One of AutoScan, Basic, Detailed, NavBeacon, NavBeaconDetail
                                                      // AutoScan events are detailed scans triggered via proximity. 
+
+        public long? systemAddress => body.systemAddress;
 
         // Deprecated, maintained for compatibility with user scripts
         [JsonIgnore, Obsolete("Use bodyname instead")]
