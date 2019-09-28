@@ -39,7 +39,8 @@ Full details of the variables available for each noted event, and VoiceAttack in
   * Speech Service
     * Added new function `InaraDetails` for looking up commander details on [Inara](https://inara.cz).
   * Status Monitor
-    Added new `hyperspace` and `srv_high_beams` properties.
+    * Added new `hyperspace` and `srv_high_beams` properties.
+    * Added new `slope` property (relative to the horizon and only if near a surface)
   * Translations
     * Italian translation is now complete.
   * VoiceAttack Responder
