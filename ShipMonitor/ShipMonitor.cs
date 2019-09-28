@@ -1028,10 +1028,9 @@ namespace EddiShipMonitor
 
         private void posthandleShipLoadoutEvent(ShipLoadoutEvent @event)
         {
-            if (@event.timestamp > updatedAt)
+            if (!@event.fromLoad)
             {
                 /// The ship may have Frontier API specific data, request a profile refresh from the Frontier API shortly after switching
-                updatedAt = @event.timestamp;
                 refreshProfileDelayed();
             }
         }
