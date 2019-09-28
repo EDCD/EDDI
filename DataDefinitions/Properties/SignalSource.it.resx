@@ -245,11 +245,26 @@
     <value>Segnale di Superficie di tipo Umano</value>
     <comment>Human Surface Signal</comment>
   </data>
-  
-  
-  
-  
-  
+  <data name="SAA_SignalType_Thargoid" xml:space="preserve">
+    <value>Segnale di superficie dei Thargoid</value>
+    <comment>Thargoid Surface Signal</comment>
+  </data>
+  <data name="Settlement_Unflattened_Unknown" xml:space="preserve">
+    <value>Cirripede Thargoid</value>
+    <comment>Thargoid Barnacle</comment>
+  </data>
+  <data name="FIXED_EVENT_CHECKPOINT" xml:space="preserve">
+    <value>Posto di Controllo</value>
+    <comment>Checkpoint</comment>
+  </data>
+  <data name="FIXED_EVENT_CONVOY" xml:space="preserve">
+    <value>Faro di navigazione per convogli</value>
+    <comment>Convoy Beacon	</comment>
+  </data>
+  <data name="FIXED_EVENT_HIGHTHREATSCENARIO_T6" xml:space="preserve">
+    <value>Attività Piratesca</value>
+    <comment>Pirate Activity</comment>
+  </data>
   
   
   
