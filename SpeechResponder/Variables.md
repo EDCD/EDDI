@@ -484,7 +484,9 @@ Information about your destination starsystem is available under the `destinatio
 
 Any values might be missing, depending on EDDI's configuration and the information available about the system.
 
-Values are the same as for the current starsystem.
+Values are the same as for the current starsystem. Additional values include:
+
+    `destinationdistance` the distance in LY from the commander's destination system
 
 #### Home starsystem
 

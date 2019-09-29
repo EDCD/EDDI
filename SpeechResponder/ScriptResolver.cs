@@ -1083,28 +1083,42 @@ namespace EddiSpeechResponder
 
             store["Distance"] = new NativeFunction((values) =>
             {
+                double square(double x) => x * x;
                 decimal result = 0;
-                Cottle.Value value_0 = values[0];
-                Cottle.Value value_1 = values[1];
-                if (values.Count == 2 && value_0.Type == Cottle.ValueContent.String && value_1.Type == Cottle.ValueContent.String)
+                bool numVal = values[0].Type == Cottle.ValueContent.Number;
+                bool stringVal = values[0].Type == Cottle.ValueContent.String;
+
+                StarSystem curr = new StarSystem();
+                StarSystem dest = new StarSystem();
+                if (values.Count == 1 && stringVal)
                 {
-                    StarSystem curr = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystem(values[0].AsString, true);
-                    StarSystem dest = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystem(values[1].AsString, true);
-                    if (curr?.x != null && dest?.x != null)
-                    {
-                        result = (decimal)Math.Round(Math.Sqrt(Math.Pow((double)(curr.x - dest.x), 2)
-                                    + Math.Pow((double)(curr.y - dest.y), 2)
-                                    + Math.Pow((double)(curr.z - dest.z), 2)), 2);
-                    }
+                    curr = EDDI.Instance?.CurrentStarSystem;
+                    dest = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystem(values[0].AsString, true);
                 }
-                else if (values.Count == 6 && value_0.Type == Cottle.ValueContent.Number && value_1.Type == Cottle.ValueContent.Number)
+                else if (values.Count == 2 && stringVal)
                 {
-                    result = (decimal)Math.Round(Math.Sqrt(Math.Pow((double)(values[0].AsNumber - values[3].AsNumber), 2)
-                                + Math.Pow((double)(values[1].AsNumber - values[4].AsNumber), 2)
-                                + Math.Pow((double)(values[2].AsNumber - values[5].AsNumber), 2)), 2);
+                    curr = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystem(values[0].AsString, true);
+                    dest = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystem(values[1].AsString, true);
                 }
+                else if (values.Count == 6 && numVal)
+                {
+                    curr.x = values[0].AsNumber;
+                    curr.y = values[1].AsNumber;
+                    curr.z = values[2].AsNumber;
+                    dest.x = values[3].AsNumber;
+                    dest.y = values[4].AsNumber;
+                    dest.z = values[5].AsNumber;
+                }
+
+                if (curr?.x != null && dest?.x != null)
+                {
+                    result = (decimal)Math.Round(Math.Sqrt(square((double)(curr.x - dest.x))
+                                + square((double)(curr.y - dest.y))
+                                + square((double)(curr.z - dest.z))), 2);
+                }
+
                 return new ReflectionValue(result);
-            }, 2, 6);
+            }, 1, 6);
 
             store["Log"] = new NativeFunction((values) =>
             {
