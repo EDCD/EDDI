@@ -22,6 +22,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Updated the `Body scanned` and `Star scanned` events with new property `scantype` (AutoScan, Basic, Detailed, NavBeacon, NavBeaconDetail)
     * Updated the `Commander continued` event with new properties `startlanded` and `startdead` (true if starting the game either landed or dead, respectively).
     * Updated the `Community goal` event with new properties `maxtier` and `maxtierrewards`.
+    * Updated the `Jumped` event to remove the properties `destination` and `destdistance` (this data is now available via the `destinationsystem` object).
     * Updated the `Liftoff` and `Touchdown` events with new `nearestdestination` property.
     * Updated the `Location` and `Jumped` events contain new properties `power` and `powerstate` (if pledged).
     * Updated the `Next jump` (`FSDTarget` journal) event with new `jumpsremaininginroute` property.
@@ -35,7 +36,10 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Fixed inadvertently disabled hyperlink in the UI "Read about the speech responder's functions here".
     * Updated the `Bodies mapped` script to correct a typo.
     * Updated the `Engineer progressed` event to stay silent by default when written at startup (with empty values, signaling that engineer data has been loaded).
-    * Updated the `Jumped` script to use `jumpsremaininginroute`.
+    * Updated the `Fuel check` script to reduce verbosity and when very low on fuel to recommend the nearest known scoopable star system.
+    * Updated the `FSD engaged` script to report jumps remaining until you arrive at your selected destination. 
+    * Updated the `Next jump` script to provide contextual information for the `FSD engaged` script.
+    * Updated the `Jumped` script to use `jumpsremaininginroute` and to remove obsolete properties `destination` and `destdistance`.
     * Updated the `System report` script to enhance the description of powerplay status.
   * Speech Service
     * Added new function `InaraDetails` for looking up commander details on [Inara](https://inara.cz).
@@ -47,6 +51,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
   * VoiceAttack Responder
     * Added new plugin function `inara`, allowing commanders to look up the Inara profiles of other commanders in their browsers.
     * Added new `Status hyperspace` and `Status srv high beams` properties.
+    * Added new `Status slope` property (relative to the horizon and only if near a surface)
 
 ### 3.4.3
   * Core
