@@ -246,7 +246,7 @@
     <comment>Human Surface Signal</comment>
   </data>
   <data name="SAA_SignalType_Thargoid" xml:space="preserve">
-    <value>Thargoiden Bodensignal</value>
+    <value>Thargoiden Oberflächensignal</value>
     <comment>Thargoid Surface Signal</comment>
   </data>
   
@@ -258,7 +258,7 @@
   
   
   <data name="SAA_SignalType_Guardian" xml:space="preserve">
-    <value>Guardian Bodensignal</value>
+    <value>Guardian Oberflächensignal</value>
     <comment>Guardian Surface Signal</comment>
   </data>
   
