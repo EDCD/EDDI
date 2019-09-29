@@ -791,6 +791,7 @@ namespace EddiVoiceAttackResponder
                 vaProxy.SetDecimal(prefix + " minutes since previous visit", system?.visits > 1 && system?.lastvisit.HasValue == true ? (long)(DateTime.UtcNow - system.lastvisit.Value).TotalMinutes : (decimal?)null);
                 vaProxy.SetText(prefix + " comment", system?.comment);
                 vaProxy.SetDecimal(prefix + " distance from home", system?.distancefromhome);
+                vaProxy.SetBoolean(prefix + " scoopable", system?.scoopable);
 
                 if (system != null)
                 {
@@ -876,6 +877,7 @@ namespace EddiVoiceAttackResponder
                 vaProxy.SetDecimal(prefix + " age probability", body?.ageprobability);
                 vaProxy.SetDecimal(prefix + " estimated inner hab zone", body?.estimatedhabzoneinner);
                 vaProxy.SetDecimal(prefix + " estimated outer hab zone", body?.estimatedhabzoneouter);
+                vaProxy.SetBoolean(prefix + " scoopable", body?.scoopable);
             }
             // Body specific items 
             if (body?.bodyType?.invariantName == "Planet")
