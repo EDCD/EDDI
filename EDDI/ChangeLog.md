@@ -36,7 +36,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Fixed inadvertently disabled hyperlink in the UI "Read about the speech responder's functions here".
     * Updated the `Bodies mapped` script to correct a typo.
     * Updated the `Engineer progressed` event to stay silent by default when written at startup (with empty values, signaling that engineer data has been loaded).
-    * Updated the `Fuel check` script to reduce verbosity and when very low on fuel to recommend the nearest known scoopable star system.
+    * Updated the `Fuel check` script to reduce verbosity and when very low on fuel to recommend the nearest known star system with a scoopable primary star.
     * Updated the `FSD engaged` script to report jumps remaining until you arrive at your selected destination. 
     * Updated the `Next jump` script to provide contextual information for the `FSD engaged` script.
     * Updated the `Jumped` script to use `jumpsremaininginroute` and to remove obsolete properties `destination` and `destdistance`.
