@@ -156,15 +156,22 @@ namespace EddiShipMonitor
             {
                 return ValidationResult.ValidResult;
             }
-            string val = value.ToString();
-            if (ipaRegex.Match(val).Success)
+            // string val = value.ToString();
+            char[] chars = value.ToString().ToCharArray();
+
+            foreach (var val in chars)
             {
-                return ValidationResult.ValidResult;
+                var c = val.ToString();
+                if (!IPA_REGEX.Match(c).Success)
+                {
+                    if (c == " ")
+                    {
+                        return new ValidationResult(false, "Spaces are not permitted. Use ˈ instead.");
+                    }
+                    return new ValidationResult(false, c + " is not a valid IPA character.");
+                }
             }
-            else
-            {
-                return new ValidationResult(false, "Invalid IPA");
-            }
+            return ValidationResult.ValidResult;
         }
     }
 }
