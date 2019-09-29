@@ -245,15 +245,27 @@
     <value>Menschliches Oberflächensignal</value>
     <comment>Human Surface Signal</comment>
   </data>
+  <data name="SAA_SignalType_Thargoid" xml:space="preserve">
+    <value>Thargoiden Bodensignal</value>
+    <comment>Thargoid Surface Signal</comment>
+  </data>
+  
+  <data name="FIXED_EVENT_CHECKPOINT" xml:space="preserve">
+    <value>Kontrollpunkt</value>
+    <comment>Checkpoint</comment>
+  </data>
   
   
   
+  <data name="SAA_SignalType_Guardian" xml:space="preserve">
+    <value>Guardian Bodensignal</value>
+    <comment>Guardian Surface Signal</comment>
+  </data>
   
-  
-  
-  
-  
-  
+  <data name="Ancient" xml:space="preserve">
+    <value>Uralte Ruinen</value>
+    <comment>Ancient (Guardian) Ruins</comment>
+  </data>
   
   
   
