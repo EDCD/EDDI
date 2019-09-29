@@ -255,25 +255,64 @@
     <comment>Checkpoint</comment>
   </data>
   
-  
-  
+  <data name="FIXED_EVENT_HIGHTHREATSCENARIO_T6" xml:space="preserve">
+    <value>Piratenaktivität</value>
+    <comment>Pirate Activity</comment>
+  </data>
+  <data name="FIXED_EVENT_HIGHTHREATSCENARIO_T7" xml:space="preserve">
+    <value>Piratenaktivität</value>
+    <comment>Pirate Activity</comment>
+  </data>
   <data name="SAA_SignalType_Guardian" xml:space="preserve">
     <value>Guardian Oberflächensignal</value>
     <comment>Guardian Surface Signal</comment>
   </data>
-  
+  <data name="Ancient_Tiny_003" xml:space="preserve">
+    <value>Guardian Gebäude</value>
+    <comment>Guardian Structure</comment>
+  </data>
   <data name="Ancient" xml:space="preserve">
     <value>Uralte Ruinen</value>
     <comment>Ancient (Guardian) Ruins</comment>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="Ancient_Small_005" xml:space="preserve">
+    <value>Guardian Gebäude</value>
+    <comment>Guardian Structure</comment>
+  </data>
+  <data name="Ancient_Small_001" xml:space="preserve">
+    <value>Guardian Gebäude</value>
+    <comment>Guardian Structure</comment>
+  </data>
+  <data name="Ancient_Tiny_001" xml:space="preserve">
+    <value>Guardian Gebäude</value>
+    <comment>Guardian Structure</comment>
+  </data>
+  <data name="Ancient_Small_002" xml:space="preserve">
+    <value>Guardian Gebäude</value>
+    <comment>Guardian Structure</comment>
+  </data>
+  <data name="Ancient_Small_003" xml:space="preserve">
+    <value>Guardian Gebäude</value>
+    <comment>Guardian Structure</comment>
+  </data>
+  <data name="Ancient_Tiny_002" xml:space="preserve">
+    <value>Guardian Gebäude</value>
+    <comment>Guardian Structure</comment>
+  </data>
+  <data name="Ancient_Medium_003" xml:space="preserve">
+    <value>Guardian Gebäude</value>
+    <comment>Guardian Structure</comment>
+  </data>
+  <data name="Ancient_Small_004" xml:space="preserve">
+    <value>Guardian Gebäude</value>
+    <comment>Guardian Structure</comment>
+  </data>
+  <data name="Ancient_Medium_001" xml:space="preserve">
+    <value>Guardian Gebäude</value>
+    <comment>Guardian Structure</comment>
+  </data>
+  <data name="Ancient_Medium_002" xml:space="preserve">
+    <value>Guardian Gebäude</value>
+    <comment>Guardian Structure</comment>
+  </data>
 </root>
