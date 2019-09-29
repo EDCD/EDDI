@@ -331,7 +331,7 @@ namespace EddiNavigationService
             searchStation = null;
             searchDistance = 0;
             int searchCount = 0;
-            int searchIncrement = (int)Math.Ceiling(searchRadius / 4);
+            int searchIncrement = (int)Math.Ceiling(Math.Min(searchRadius, 100) / 4);
             int endRadius = 0;
 
             StarSystem currentSystem = EDDI.Instance?.CurrentStarSystem;
