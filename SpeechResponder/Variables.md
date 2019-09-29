@@ -461,7 +461,7 @@ Any values might be missing, depending on EDDI's configuration and the informati
     - `isgold` true if bodies in this starsystem contain all elements available from surface prospecting
     - `estimatedvalue` the estimated exploration value of the starsystem (includes bonuses for fully scanning and mapping)
     - `totalbodies` the total number of discoverable bodies within the system (only available after a discovery scan)
-    - `scoopable` true if a fuel scoop equipped ship can refuel at the main star in this starsystem
+    - `scoopable` true if a fuel scoop equipped ship can refuel at a star in this starsystem
 
 #### Last starsystem
 
