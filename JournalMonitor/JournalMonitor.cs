@@ -560,23 +560,37 @@ namespace EddiJournalMonitor
                                             if (modified)
                                             {
                                                 engineeringData.TryGetValue("Modifiers", out object modifiersVal);
-                                                List<object> modifiersData = (List<object>)modifiersVal;
+                                                List<object> modifiersData = (List<object>) modifiersVal;
                                                 foreach (Dictionary<string, object> modifier in modifiersData)
                                                 {
-                                                    string edname = JsonParsing.getString(modifier, "Label");
-                                                    decimal currentValue = JsonParsing.getDecimal(modifier, "Value");
-                                                    decimal originalValue = JsonParsing.getDecimal(modifier, "OriginalValue");
-                                                    bool lessIsGood = JsonParsing.getInt(modifier, "LessIsGood") == 1 ? true : false;
-                                                    modifiers.Add(new EngineeringModifier()
+                                                    try
                                                     {
-                                                        EDName = edname,
-                                                        currentValue = currentValue,
-                                                        originalValue = originalValue,
-                                                        lessIsGood = lessIsGood
-                                                    });
+                                                        string edname = JsonParsing.getString(modifier, "Label");
+                                                        decimal? currentValue = JsonParsing.getOptionalDecimal(modifier, "Value");
+                                                        decimal? originalValue = JsonParsing.getOptionalDecimal(modifier, "OriginalValue");
+                                                        bool lessIsGood = JsonParsing.getOptionalInt(modifier, "LessIsGood") == 1;
+                                                        string valueStr = JsonParsing.getString(modifier, "ValueStr");
+                                                        modifiers.Add(new EngineeringModifier()
+                                                        {
+                                                            EDName = edname,
+                                                            currentValue = currentValue,
+                                                            originalValue = originalValue,
+                                                            lessIsGood = lessIsGood,
+                                                            valueStr = valueStr
+                                                        });
+                                                    }
+                                                    catch (Exception e)
+                                                    {
+                                                        Dictionary<string, object> modVal = new Dictionary<string, object>()
+                                                            {
+                                                                { "Exception", e },
+                                                                { "Module", item },
+                                                                { "Engineering", engineeringData }
+                                                            };
+                                                        Logging.Error("Failed to parse engineering modification", modVal);
+                                                    }
                                                 }
                                             }
-
                                             if (slot.Contains("Hardpoint"))
                                             {
                                                 // This is a hardpoint
@@ -716,7 +730,7 @@ namespace EddiJournalMonitor
                                                         {
                                                             if (modifier.EDName == "FSDOptimalMass")
                                                             {
-                                                                optimalMass = modifier.currentValue;
+                                                                optimalMass = (decimal)modifier.currentValue;
                                                             }
                                                         }
                                                     }

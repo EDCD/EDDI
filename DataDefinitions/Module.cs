@@ -174,8 +174,9 @@ namespace EddiDataDefinitions
     public class EngineeringModifier
     {
         public string EDName { get; set; }
-        public decimal currentValue { get; set; }
-        public decimal originalValue { get; set; }
+        public decimal? currentValue { get; set; }
+        public decimal? originalValue { get; set; }
         public bool lessIsGood { get; set; }
+        public string valueStr { get; set; }
     }
 }
