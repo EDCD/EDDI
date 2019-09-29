@@ -244,7 +244,10 @@
     <value>Percebe Thargoide</value>
     <comment>Thargoid Barnacle</comment>
   </data>
-  
+  <data name="FIXED_EVENT_CHECKPOINT" xml:space="preserve">
+    <value>Punto de control</value>
+    <comment>Checkpoint</comment>
+  </data>
   <data name="FIXED_EVENT_CONVOY" xml:space="preserve">
     <value>Baliza de convoy</value>
     <comment>Convoy Beacon	</comment>
@@ -297,7 +300,16 @@
     <value>Estructura Guardian</value>
     <comment>Guardian Structure</comment>
   </data>
-  
-  
-  
+  <data name="Ancient_Small_004" xml:space="preserve">
+    <value>Estructura Guardian</value>
+    <comment>Guardian Structure</comment>
+  </data>
+  <data name="Ancient_Medium_001" xml:space="preserve">
+    <value>Estructura Guardian</value>
+    <comment>Guardian Structure</comment>
+  </data>
+  <data name="Ancient_Medium_002" xml:space="preserve">
+    <value>Estructura Guardian</value>
+    <comment>Guardian Structure</comment>
+  </data>
 </root>
