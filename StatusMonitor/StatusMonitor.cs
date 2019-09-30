@@ -587,27 +587,30 @@ namespace EddiStatusMonitor
         private void SetSlope(Status status)
         {
             status.slope = null;
-            if (lastStatus.planetradius != null && lastStatus?.altitude != null && lastStatus?.latitude != null && lastStatus?.longitude != null)
+            if (lastStatus?.planetradius != null && lastStatus?.altitude != null && lastStatus?.latitude != null && lastStatus?.longitude != null)
             {
-                double square(double x) => x * x;
+                if (status.planetradius != null && status.altitude != null && status.latitude != null && status.longitude != null)
+                {
+                    double square(double x) => x * x;
 
-                double radius = (double)status.planetradius / 1000;
-                double deltaAlt = (double)((status.altitude ?? 0) - (lastStatus.altitude ?? 0)) / 1000;
+                    double radius = (double)status.planetradius / 1000;
+                    double deltaAlt = (double)(status.altitude - lastStatus.altitude) / 1000;
 
-                // Convert latitude & longitude to radians
-                double currentLat = (double)(status.latitude ?? 0) * Math.PI / 180;
-                double lastLat = (double)(lastStatus.latitude ?? 0) * Math.PI / 180;
-                double deltaLat = currentLat - lastLat;
-                double deltaLong = (double)((status.longitude ?? 0) - (lastStatus.longitude ?? 0)) * Math.PI / 180;
+                    // Convert latitude & longitude to radians
+                    double currentLat = (double)status.latitude * Math.PI / 180;
+                    double lastLat = (double)lastStatus.latitude * Math.PI / 180;
+                    double deltaLat = currentLat - lastLat;
+                    double deltaLong = (double)(status.longitude - lastStatus.longitude) * Math.PI / 180;
 
-                // Calculate distance traveled using Law of Haversines
-                double a = square(Math.Sin(deltaLat / 2)) + Math.Cos(currentLat) * Math.Cos(lastLat) * square(Math.Sin(deltaLong / 2));
-                double c = 2 * Math.Atan2(Math.Sqrt(a), Math.Sqrt(1 - a));
-                double distance = c * radius;
+                    // Calculate distance traveled using Law of Haversines
+                    double a = square(Math.Sin(deltaLat / 2)) + Math.Cos(currentLat) * Math.Cos(lastLat) * square(Math.Sin(deltaLong / 2));
+                    double c = 2 * Math.Atan2(Math.Sqrt(a), Math.Sqrt(1 - a));
+                    double distance = c * radius;
 
-                // Calculate the slope angle
-                double slope = Math.Atan2(deltaAlt, distance) * 180 / Math.PI;
-                status.slope = Math.Round((decimal)slope, 1);
+                    // Calculate the slope angle
+                    double slope = Math.Atan2(deltaAlt, distance) * 180 / Math.PI;
+                    status.slope = Math.Round((decimal)slope, 1);
+                }
             }
         }
     }
