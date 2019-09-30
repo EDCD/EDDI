@@ -1860,7 +1860,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{set hotspots to []}\r\n{for hotspot in event.hotspots: \r\n    {set hotspot_desc to: \r\n        {hotspot.amount} of {hotspot.commodity}\r\n    }\r\n    {set hotspots to cat(hotspots, [hotspot_desc])}\r\n}\r\n\r\nHotspots detected.\r\n{List(hotspots)}",
+      "script": "{if ship.Role.invariantName = \"Miner\" || ship.Role.invariantName = \"Multipurpose\":\r\n    {set hotspots to []}\r\n    {for hotspot in event.hotspots: \r\n        {set hotspot_desc to: \r\n            {hotspot.amount} of {hotspot.commodity}\r\n        }\r\n        {set hotspots to cat(hotspots, [hotspot_desc])}\r\n    }\r\n\r\n    Hotspots detected.\r\n    {List(hotspots)}\r\n}",
       "default": true,
       "name": "Ring hotspots detected",
       "description": "Triggered when hotspots are detected in a ring"
