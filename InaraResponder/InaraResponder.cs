@@ -397,10 +397,11 @@ namespace EddiInaraResponder
         private void handleShipInterdictionEvent(ShipInterdictionEvent @event)
         {
             // If the player successfully performed an interdiction
+            // opponentName: Name of the target (commander or NPC). If there is no 'Inderticted' property in the journal event, use just 'Power' or 'Faction' property instead. 
             InaraService.Instance.EnqueueAPIEvent(new InaraAPIEvent(@event.timestamp, "addCommanderCombatInterdiction", new Dictionary<string, object>()
             {
                 { "starsystemName", EDDI.Instance.CurrentStarSystem.systemname },
-                { "opponentName", @event.interdictee },
+                { "opponentName", @event.interdictee ?? @event.faction ?? @event.power }, // Ordered from more precise to less precise
                 { "isPlayer", @event.iscommander },
                 { "isSuccess", @event.succeeded }
             }));
