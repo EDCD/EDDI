@@ -441,15 +441,12 @@ namespace EddiDataDefinitions
 
         public static CommodityDefinition CommodityDefinitionFromEliteID(long id)
         {
-            try
+            if (CommoditiesByEliteID.TryGetValue(id, out CommodityDefinition commodityDefinition))
             {
-                return CommoditiesByEliteID[id];
+                return commodityDefinition;
             }
-            catch (KeyNotFoundException)
-            {
-                Logging.Info($"Unrecognized Commodity Definition EliteID {id}");
-                throw;
-            }
+            Logging.Info($"Unrecognized Commodity Definition EliteID {id}");
+            return null;
         }
 
         private static string NormalizedName(string rawName)
