@@ -1693,7 +1693,7 @@ namespace EddiShipMonitor
         {
             // Max fuel per jump calculated using unladen mass and max jump range w/ just enough fuel to complete max jump
             decimal boostConstant = 0;
-            Module module = ship.compartments.FirstOrDefault(c => c.module.edname.Contains("Int_GuardianFSDBooster"))?.module;
+            Module module = ship.compartments.FirstOrDefault(c => c?.module?.edname != null && c.module.edname.Contains("Int_GuardianFSDBooster"))?.module;
             if (module != null)
             {
                 Constants.guardianBoostFSD.TryGetValue(module.@class, out boostConstant);
