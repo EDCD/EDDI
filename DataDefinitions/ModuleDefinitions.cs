@@ -1170,6 +1170,8 @@ namespace EddiDataDefinitions
                 // Needs EDDB ID and pricing
                 new Module(128935980, "Hpt_MultiCannon_Fixed_Medium_Advanced", -1, "AdvancedMultiCannon", 2, "E", 0, ModuleMount.Fixed),
                 new Module(128935981, "Hpt_MultiCannon_Fixed_Small_Advanced", -1, "AdvancedMultiCannon", 1, "F", 0, ModuleMount.Fixed),
+                new Module(128935982, "Hpt_DumbfireMissileRack_Fixed_Small_Advanced", -1, "AdvancedMissileRack", 1, "B", 0, ModuleMount.Fixed),
+                new Module(128935983, "Hpt_DumbfireMissileRack_Fixed_Medium_Advanced", -1, "AdvancedMissileRack", 2, "B", 0, ModuleMount.Fixed),
             };
         }
 
