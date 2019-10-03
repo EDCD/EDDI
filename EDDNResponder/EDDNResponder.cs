@@ -130,14 +130,14 @@ namespace EDDNResponder
             GetLocationData(data);
 
             // Confirm the data in memory is as accurate as possible
-            if (edType == "Docked" || edType == "Scan")
+            if (edType == "Docked" || edType == "Scan" || edType == "SAASignalsFound")
             {
                 CheckLocationData(data);
             }
 
             if (LocationIsSet())
             {
-                if (edType == "Location" || edType == "FSDJump" || edType == "Docked" || edType == "Scan")
+                if (edType == "Location" || edType == "FSDJump" || edType == "Docked" || edType == "Scan" || edType == "SAASignalsFound")
                 {
                     data = StripPersonalData(data);
                     data = EnrichLocationData(edType, data);
