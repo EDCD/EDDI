@@ -20,7 +20,29 @@ namespace EDDNResponder
     /// </summary>
     public class EDDNResponder : EDDIResponder
     {
-        // We will strip these personal keys
+        // We support sending these events to EDDN. These events contain full location data. 
+        private static readonly string[] fullLocationEvents =
+        {
+            "FSDJump",
+            "Location"
+        };
+
+        // We support sending these events to EDDN. These events contain partial location data... location data will need to be enriched. 
+        private static readonly string[] partialLocationEvents =
+        {
+            "Docked",
+            "SAASignalsFound",
+            "Scan"
+        };
+
+        // These events must be ignored to prevent enriching events with incorrect location data
+        private static readonly string[] ignoredEvents =
+        {
+            "FSDTarget", // FSDTarget events describing the system we are targeting rather than the system we are in
+            "StartJump"  // Scan events can register after StartJump and before we actually leave the originating system
+        };
+
+        // We will strip these personal keys (plus any localized properties) before sending data to EDDN
         private static readonly string[] personalKeys = 
         {
             "ActiveFine",
@@ -130,16 +152,12 @@ namespace EDDNResponder
             IDictionary<string, object> data = Deserializtion.DeserializeData(theEvent.raw);
             string edType = JsonParsing.getString(data, "event");
 
-            if (edType == "FSDTarget" || edType == "StartJump")
+            // Ignore any events that we've blacklisted for contaminating our location data
+            if (ignoredEvents.Contains(edType)) { return; }
+
+            // We always start location data fresh when handling events containing complete location data
+            if (fullLocationEvents.Contains(edType))
             {
-                // FSDTarget events describing the system we are targetting rather than the system we are in.
-                // Scan events can register after StartJump and before we actually leave the originating system.
-                // These must be ignored.
-                return;
-            }
-            else if (edType == "Location" || edType == "FSDJump")
-            {
-                // We always start fresh from Location and FSDJump events
                 invalidState = false;
                 ClearLocation();
             }
@@ -147,15 +165,15 @@ namespace EDDNResponder
             // Except as noted above, always attempt to obtain available location data from the active event 
             GetLocationData(data);
 
-            // Confirm the data in memory is as accurate as possible
-            if (edType == "Docked" || edType == "Scan" || edType == "SAASignalsFound")
+            // Confirm the location data in memory is as accurate as possible when handling an event with partial location data
+            if (partialLocationEvents.Contains(edType))
             {
                 CheckLocationData(data);
             }
 
             if (LocationIsSet())
             {
-                if (edType == "Location" || edType == "FSDJump" || edType == "Docked" || edType == "Scan" || edType == "SAASignalsFound")
+                if (fullLocationEvents.Contains(edType) || partialLocationEvents.Contains(edType))
                 {
                     data = StripPersonalData(data);
                     data = EnrichLocationData(edType, data);
