@@ -20,6 +20,8 @@ namespace EDDNResponder
     /// </summary>
     public class EDDNResponder : EDDIResponder
     {
+        // Schema reference: https://github.com/EDSM-NET/EDDN/tree/master/schemas
+
         // We support sending these events to EDDN. These events contain full location data. 
         private static readonly string[] fullLocationEvents =
         {
