@@ -76,6 +76,12 @@ namespace EDDNResponder
                 return;
             }
 
+            if (theEvent.fromLoad)
+            {
+                // Don't do anything with data acquired during log loading
+                return;
+            }
+
             Logging.Debug("Received event " + JsonConvert.SerializeObject(theEvent));
 
             if (theEvent is MarketInformationUpdatedEvent)
