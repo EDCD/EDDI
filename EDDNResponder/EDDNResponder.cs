@@ -240,29 +240,42 @@ namespace EDDNResponder
             data.Remove("Wanted");
             data.Remove("Latitude");
             data.Remove("Longitude");
+            data.Remove("MyReputation");
+            data.Remove("SquadronFaction");
+            data.Remove("HappiestSystem");
+            data.Remove("HomeSystem");
 
             // Need to remove any keys ending with _Localised
             data = data.Where(x => !x.Key.EndsWith("_Localised")).ToDictionary(x => x.Key, x => x.Value);
 
-            data.TryGetValue("Factions", out object factionsVal);
-            if (factionsVal != null)
+            // Need to remove personal data from any Dictionary or List type child objects
+            IDictionary<string, object> fixedData = new Dictionary<string, object>();
+            foreach (KeyValuePair<string, object> item in data)
             {
-                var strippedFactions = new List<object>();
-                var factions = (List<object>)factionsVal;
-                foreach (object factionVal in factions)
+                if (item.Value is Dictionary<string, object> dict)
                 {
-                    IDictionary<string, object> faction = (IDictionary<string, object>)factionVal;
-                    faction.Remove("MyReputation");
-                    faction.Remove("SquadronFaction");
-                    faction.Remove("HappiestSystem");
-                    faction.Remove("HomeSystem");
-                    faction = faction.Where(x => !x.Key.EndsWith("_Localised")).ToDictionary(x => x.Key, x => x.Value);
-                    strippedFactions.Add(faction);
+                    fixedData.Add(item.Key, StripPersonalData(dict));
+                    continue;
                 }
-                data["Factions"] = strippedFactions;
+                if (item.Value is List<object> list)
+                {
+                    List<object> newList = new List<object>();
+                    for (int i = 0; i < list.Count; i++)
+                    {
+                        if (list[i] is Dictionary<string, object> listDict)
+                        {
+                            newList.Add(StripPersonalData(listDict));
+                            continue;
+                        }
+                        newList.Add(list[i]);
+                    }
+                    fixedData.Add(item.Key, newList);
+                    continue;
+                }
+                fixedData.Add(item);
             }
 
-            return data;
+            return fixedData;
         }
 
         private IDictionary<string, object> EnrichLocationData(string edType, IDictionary<string, object> data)
