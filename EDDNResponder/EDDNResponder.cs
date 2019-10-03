@@ -450,7 +450,7 @@ namespace EDDNResponder
                         eddnShips.Add(ship.EDName);
                     }
                 }
-                eddnShips = eddnShips?.Distinct()?.ToList();
+                eddnShips = eddnShips.Distinct().ToList();
 
                 // Only send the message if we have ships
                 if (eddnShips.Count > 0)
