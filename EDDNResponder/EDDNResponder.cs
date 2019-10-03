@@ -39,13 +39,13 @@ namespace EDDNResponder
         };
 
         // We keep track of the starsystem information locally
-        public string systemName { get; private set; } = null;
-        public long? systemAddress { get; private set; } = null;
-        public decimal? systemX { get; private set; } = null;
-        public decimal? systemY { get; private set; } = null;
-        public decimal? systemZ { get; private set; } = null;
-        public string stationName { get; private set; } = null;
-        public long? marketId { get; private set; } = null;
+        public string systemName { get; private set; }
+        public long? systemAddress { get; private set; }
+        public decimal? systemX { get; private set; }
+        public decimal? systemY { get; private set; }
+        public decimal? systemZ { get; private set; }
+        public string stationName { get; private set; }
+        public long? marketId { get; private set; }
 
         public bool invalidState { get; private set; }
 
@@ -71,7 +71,7 @@ namespace EDDNResponder
             return EddiEddnResponder.Properties.EddnResources.desc;
         }
 
-        public EDDNResponder() : this(EddiDataProviderService.StarSystemSqLiteRepository.Instance)
+        public EDDNResponder() : this(StarSystemSqLiteRepository.Instance)
         { }
 
         public EDDNResponder(StarSystemRepository starSystemRepository)
@@ -401,7 +401,7 @@ namespace EDDNResponder
                 }
                 EDDNCommodity eddnCommodity = new EDDNCommodity(quote);
                 eddnCommodities.Add(eddnCommodity);
-            };
+            }
             return eddnCommodities;
         }
 
