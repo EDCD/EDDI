@@ -412,9 +412,9 @@ namespace EDDNResponder
                 List<string> eddnModules = new List<string>();
                 foreach (Module module in theEvent.outfitting)
                 {
-                    if ((!module.IsPowerPlay())
+                    if (!module.IsPowerPlay()
                         && (module.EDName.StartsWith("Int_") || module.EDName.StartsWith("Hpt_") || module.EDName.Contains("_Armour_"))
-                        && (!(module.EDName == "Int_PlanetApproachSuite")))
+                        && module.EDName != "Int_PlanetApproachSuite")
                     {
                         eddnModules.Add(module.EDName);
                     }
