@@ -20,6 +20,24 @@ namespace EDDNResponder
     /// </summary>
     public class EDDNResponder : EDDIResponder
     {
+        // We will strip these personal keys
+        private static readonly string[] personalKeys = 
+        {
+            "ActiveFine",
+            "CockpitBreach",
+            "BoostUsed",
+            "FuelLevel",
+            "FuelUsed",
+            "JumpDist",
+            "Wanted",
+            "Latitude",
+            "Longitude",
+            "MyReputation",
+            "SquadronFaction",
+            "HappiestSystem",
+            "HomeSystem"
+        };
+
         // We keep track of the starsystem information locally
         public string systemName { get; private set; } = null;
         public long? systemAddress { get; private set; } = null;
@@ -236,20 +254,8 @@ namespace EDDNResponder
 
         private IDictionary<string, object> StripPersonalData(IDictionary<string, object> data)
         {
-            // Need to strip a number of entries
-            data.Remove("ActiveFine");
-            data.Remove("CockpitBreach");
-            data.Remove("BoostUsed");
-            data.Remove("FuelLevel");
-            data.Remove("FuelUsed");
-            data.Remove("JumpDist");
-            data.Remove("Wanted");
-            data.Remove("Latitude");
-            data.Remove("Longitude");
-            data.Remove("MyReputation");
-            data.Remove("SquadronFaction");
-            data.Remove("HappiestSystem");
-            data.Remove("HomeSystem");
+            // Need to strip a number of personal entries
+            foreach (var personalKey in personalKeys) { data.Remove(personalKey); }
 
             // Need to remove any keys ending with _Localised
             data = data.Where(x => !x.Key.EndsWith("_Localised")).ToDictionary(x => x.Key, x => x.Value);
