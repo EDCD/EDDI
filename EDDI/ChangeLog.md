@@ -52,6 +52,7 @@ Full details of the variables available for each noted event, and VoiceAttack in
     * Added new plugin function `inara`, allowing commanders to look up the Inara profiles of other commanders in their browsers.
     * Added new `Status hyperspace` and `Status srv high beams` properties.
     * Added new `Status slope` property (relative to the horizon and only if near a surface)
+    * Fixed 'cadmium' typo in EDDI.vap file
 
 ### 3.4.3
   * Core
