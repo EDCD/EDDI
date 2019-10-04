@@ -1669,5 +1669,8 @@
     <value>Materiale Biologico Thargoid</value>
     <comment>Commodity UnknownBiologicalMatter</comment>
   </data>
-  
+  <data name="RockforthFertiliser" xml:space="preserve">
+    <value>Fertilizzante Rockforth</value>
+    <comment>Commodity RockforthFertiliser</comment>
+  </data>
 </root>
