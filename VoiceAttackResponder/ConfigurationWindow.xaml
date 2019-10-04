@@ -7,12 +7,12 @@
              xmlns:resx="clr-namespace:EddiVoiceAttackResponder.Properties"
              mc:Ignorable="d" 
              d:DesignHeight="600" d:DesignWidth="800">
-    <DockPanel LastChildFill="True" Background="#FFE5E5E5">
+    <DockPanel LastChildFill="True" Background="{StaticResource NeutralBackgroundBrush}">
         <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Margin="10" Text="{x:Static resx:VoiceAttack.p1}" VerticalAlignment="Top"/>
         <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Margin="10" Text="{x:Static resx:VoiceAttack.p2}" VerticalAlignment="Top"/>
         <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Margin="10" Text="{x:Static resx:VoiceAttack.p3}" VerticalAlignment="Top"/>
-        <RichTextBox DockPanel.Dock="Top" Margin="5"  IsReadOnly="True" IsDocumentEnabled="True" Background="#FFE5E5E5" BorderThickness="0">
-            <FlowDocument Background="#FFE5E5E5">
+        <RichTextBox DockPanel.Dock="Top" Margin="5"  IsReadOnly="True" IsDocumentEnabled="True" Background="{StaticResource NeutralBackgroundBrush}" BorderThickness="0">
+            <FlowDocument Background="{StaticResource NeutralBackgroundBrush}">
                 <Paragraph>
                     <Run Text="{x:Static resx:VoiceAttack.p4}" />
                     <Hyperlink Click="VAVariablesClicked">
@@ -20,8 +20,8 @@
                     </Hyperlink>.</Paragraph>
             </FlowDocument>
         </RichTextBox>
-        <RichTextBox DockPanel.Dock="Top" Margin="5"  IsReadOnly="True" IsDocumentEnabled="True" Background="#FFE5E5E5" BorderThickness="0">
-            <FlowDocument Background="#FFE5E5E5">
+        <RichTextBox DockPanel.Dock="Top" Margin="5"  IsReadOnly="True" IsDocumentEnabled="True" Background="{StaticResource NeutralBackgroundBrush}" BorderThickness="0">
+            <FlowDocument Background="{StaticResource NeutralBackgroundBrush}">
                 <Paragraph>
                     <Run Text="{x:Static resx:VoiceAttack.p5}" />
                     <Hyperlink Click="VAVariablesClicked">

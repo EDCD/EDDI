@@ -12,17 +12,21 @@
         mc:Ignorable="d"
         Title="EDDI" ResizeMode="CanResizeWithGrip" Width="928" Height="600" MinWidth="928" MinHeight="600">
     <Window.Resources>
+        <!-- Colors and simple brushes -->
+        <Color x:Key="DeepPurple" A="0xff" R="0x43" G="0x35" B="0x5d"/>
+        <SolidColorBrush x:Key="NeutralBackgroundBrush" Color="{x:Static SystemColors.ControlLightColor}"/>
         <SolidColorBrush x:Key="DataGridLineBrush" Color="LightGray"/>
+        <!-- Gradients -->
+        <LinearGradientBrush x:Key="DockPanelBackgroundBrush" EndPoint="0.5,1.0" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0.0">
+            <GradientStop Color="Black" Offset="0.0"/>
+            <GradientStop Color="{StaticResource DeepPurple}" Offset="1.0"/>
+        </LinearGradientBrush>
+        <!-- Styles -->
         <Style TargetType="DataGrid">
             <Setter Property="AlternatingRowBackground" Value="AliceBlue"/>
             <Setter Property="HorizontalGridLinesBrush" Value="{StaticResource DataGridLineBrush}"/>
             <Setter Property="VerticalGridLinesBrush" Value="{StaticResource DataGridLineBrush}"/>
         </Style>
-        <Color x:Key="DeepPurple" A="0xff" R="0x43" G="0x35" B="0x5d"></Color>
-        <LinearGradientBrush x:Key="DockPanelBackgroundBrush" EndPoint="0.5,1.0" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0.0">
-            <GradientStop Color="Black" Offset="0.0"/>
-            <GradientStop Color="{StaticResource DeepPurple}" Offset="1.0"/>
-        </LinearGradientBrush>
     </Window.Resources>
     <DockPanel LastChildFill="True" Background="{StaticResource DockPanelBackgroundBrush}">
         <TabControl x:Name="tabControl" DockPanel.Dock="Top" TabStripPlacement="Left">
@@ -33,8 +37,8 @@
                 </Style>
             </TabControl.Resources>
             <TabItem Header="EDDI">
-                <DockPanel LastChildFill="True" Background="#FFE5E5E5">
-                    <DockPanel LastChildFill="True" Background="#FFE5E5E5" DockPanel.Dock="Bottom" Margin="5">
+                <DockPanel LastChildFill="True" Background="{StaticResource NeutralBackgroundBrush}">
+                    <DockPanel LastChildFill="True" Background="{StaticResource NeutralBackgroundBrush}" DockPanel.Dock="Bottom" Margin="5">
                         <TextBlock DockPanel.Dock="Left" VerticalAlignment="Center" Text="{x:Static resx:MainWindow.EDDI_status_label}"/>
                         <TextBlock x:Name="versionText" VerticalAlignment="Center" DockPanel.Dock="Right"/>
                         <Label Height="28" Margin="0,0,0,0" Name="Version" DockPanel.Dock="Right" VerticalAlignment="Center">
@@ -45,8 +49,8 @@
                         <Button x:Name="upgradeButton" VerticalAlignment="Center" DockPanel.Dock="Left" Visibility="Collapsed" Margin="10,0,10,0" Foreground="Orange" Click="upgradeClicked" Content="{x:Static resx:MainWindow.upgrade_button}"></Button>
                         <TextBlock x:Name="statusText" VerticalAlignment="Center" DockPanel.Dock="Left" Text="{x:Static resx:EddiResources.operational}"/>
                     </DockPanel>
-                    <RichTextBox DockPanel.Dock="Top" Margin="5"  IsReadOnly="True" IsDocumentEnabled="True" Background="#FFE5E5E5" BorderThickness="0">
-                        <FlowDocument Background="#FFE5E5E5">
+                    <RichTextBox DockPanel.Dock="Top" Margin="5"  IsReadOnly="True" IsDocumentEnabled="True" Background="{StaticResource NeutralBackgroundBrush}" BorderThickness="0">
+                        <FlowDocument Background="{StaticResource NeutralBackgroundBrush}">
                             <Paragraph>
                                 <Hyperlink Click="EDDIClicked">EDDI</Hyperlink>
                                 <Run Text="{x:Static resx:MainWindow.paragraph_0}" />
@@ -96,7 +100,7 @@
                 </DockPanel>
             </TabItem>
             <TabItem Header="{x:Static resx:MainWindow.tab_commander_details_header}">
-                <DockPanel LastChildFill="True" Background="#FFE5E5E5">
+                <DockPanel LastChildFill="True" Background="{StaticResource NeutralBackgroundBrush}">
                     <Grid Margin="5">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="120" />
@@ -197,7 +201,7 @@
                 </DockPanel>
             </TabItem>
             <TabItem Header="{x:Static resx:MainWindow.tab_frontier_header}">
-                <DockPanel LastChildFill="True" Background="#FFE5E5E5">
+                <DockPanel LastChildFill="True" Background="{StaticResource NeutralBackgroundBrush}">
                     <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Margin="5" Text="{x:Static resx:MainWindow.tab_frontier_desc}" VerticalAlignment="Top"/>
                     <Grid DockPanel.Dock="Top">
                         <Grid.ColumnDefinitions>
@@ -229,7 +233,7 @@
                 </DockPanel>
             </TabItem>
             <TabItem Header="{x:Static resx:MainWindow.tab_tts_header}">
-                <DockPanel LastChildFill="True" Background="#FFE5E5E5">
+                <DockPanel LastChildFill="True" Background="{StaticResource NeutralBackgroundBrush}">
                     <TextBlock x:Name="ttsText" DockPanel.Dock="Top" TextWrapping="Wrap" Margin="5" Text="{x:Static resx:MainWindow.tab_tts_desc}" />
                     <Grid>
                         <Grid.ColumnDefinitions>

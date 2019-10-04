@@ -9,7 +9,7 @@
              xmlns:utility="clr-namespace:Utilities;assembly=Utilities"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="800">
-    <DockPanel LastChildFill="True" Background="#FFE5E5E5" Margin="0,5">
+    <DockPanel LastChildFill="True" Background="{StaticResource NeutralBackgroundBrush}" Margin="0,5">
         <Grid DockPanel.Dock="Top" Margin="0,5" >
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="250" />

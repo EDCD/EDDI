@@ -7,7 +7,7 @@
              xmlns:resx="clr-namespace:EddiSpeechResponder.Properties"
              mc:Ignorable="d" 
              d:DesignHeight="600" d:DesignWidth="800">
-    <DockPanel LastChildFill="True" Background="#FFE5E5E5" Margin="-10">
+    <DockPanel LastChildFill="True" Background="{StaticResource NeutralBackgroundBrush}" Margin="-10">
         <Grid DockPanel.Dock="Top" Margin="0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
@@ -23,8 +23,8 @@
                     <CheckBox x:Name="subtitlesOnlyCheckbox" Margin="0" VerticalAlignment="Center" Checked="subtitlesOnlyEnabled" Unchecked="subtitlesOnlyDisabled"/>
                 </StackPanel>
             </StackPanel>
-            <RichTextBox x:Name="speechResponderHelp" DockPanel.Dock="Left" Grid.Column="1" Width="Auto" Margin="5"  IsReadOnly="True" IsDocumentEnabled="True" Background="#FFE5E5E5" BorderThickness="0">
-                <FlowDocument Background="#FFE5E5E5">
+            <RichTextBox x:Name="speechResponderHelp" DockPanel.Dock="Left" Grid.Column="1" Width="Auto" Margin="5"  IsReadOnly="True" IsDocumentEnabled="True" Background="{StaticResource NeutralBackgroundBrush}" BorderThickness="0">
+                <FlowDocument Background="{StaticResource NeutralBackgroundBrush}">
                     <Paragraph>
                         <TextBlock TextWrapping="Wrap">
                             <Run Text="{x:Static resx:SpeechResponder.speechResponderHelp}"/>

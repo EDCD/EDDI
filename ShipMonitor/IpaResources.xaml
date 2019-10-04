@@ -13,9 +13,9 @@
              MaxHeight="450"
              SizeToContent="WidthAndHeight"
              d:DesignHeight="300" d:DesignWidth="400">
-    <DockPanel LastChildFill="True" Background="#FFE5E5E5" Margin="0">
-        <RichTextBox DockPanel.Dock="Top" Margin="0"  IsReadOnly="True" IsDocumentEnabled="True" Background="#FFE5E5E5" BorderThickness="0">
-            <FlowDocument Background="#FFE5E5E5">
+    <DockPanel LastChildFill="True" Background="{StaticResource NeutralBackgroundBrush}" Margin="0">
+        <RichTextBox DockPanel.Dock="Top" Margin="0"  IsReadOnly="True" IsDocumentEnabled="True" Background="{StaticResource NeutralBackgroundBrush}" BorderThickness="0">
+            <FlowDocument Background="{StaticResource NeutralBackgroundBrush}">
                 <Paragraph >
                     <Run Text="{x:Static resx:ShipMonitor.ipa_page_p1}" />
                     <Hyperlink Click="pageClicked" >
@@ -26,8 +26,8 @@
             </FlowDocument>
         </RichTextBox>
         <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Margin="5"  Text="{x:Static resx:ShipMonitor.ipa_page_comments}" VerticalAlignment="Top"/>
-        <RichTextBox DockPanel.Dock="Bottom" Margin="0, 10"  IsReadOnly="True" IsDocumentEnabled="True" Background="#FFE5E5E5" BorderThickness="0">
-            <FlowDocument Background="#FFE5E5E5">
+        <RichTextBox DockPanel.Dock="Bottom" Margin="0, 10"  IsReadOnly="True" IsDocumentEnabled="True" Background="{StaticResource NeutralBackgroundBrush}" BorderThickness="0">
+            <FlowDocument Background="{StaticResource NeutralBackgroundBrush}">
                 <Paragraph >
                     <Hyperlink Click="resource1Clicked" >
                         <Run Text="{x:Static resx:ShipMonitor.ipa_resource1_title}" />

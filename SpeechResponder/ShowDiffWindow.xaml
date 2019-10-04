@@ -8,7 +8,7 @@
              Title="{x:Static resx:SpeechResponder.compare_script_title}" 
              ResizeMode="CanResizeWithGrip"
              Height="600" Width="800"
-             Background="#FFE5E5E5" >
+             Background="{StaticResource NeutralBackgroundBrush}" >
     <RichTextBox x:Name="scriptText" Background="Transparent" BorderThickness="0" Margin="5" IsReadOnly="True" FontFamily="Consolas">
         <RichTextBox.Resources>
             <Style TargetType="{x:Type Paragraph}">

@@ -9,7 +9,7 @@
              xmlns:resx="clr-namespace:EddiEddpMonitor.Properties"
              mc:Ignorable="d" 
              d:DesignHeight="600" d:DesignWidth="800">
-    <DockPanel LastChildFill="True" Background="#FFE5E5E5" Margin="0,5">
+    <DockPanel LastChildFill="True" Background="{StaticResource NeutralBackgroundBrush}" Margin="0,5">
         <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Margin="5, 0, 0, 10"  Text="{x:Static resx:EddpResources.p1}" VerticalAlignment="Top"/>
         <UniformGrid DockPanel.Dock="Bottom" Rows="1" Margin="0,5">
             <Button Margin="10" HorizontalAlignment="Center" Click="eddpAddWatch" Content="{x:Static resx:EddpResources.new_watch}" />

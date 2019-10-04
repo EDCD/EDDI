@@ -12,7 +12,7 @@
         WindowStyle="ToolWindow"
         Height="200" Width="300"
         >
-    <DockPanel LastChildFill="True" Background="#FFE5E5E5">
+    <DockPanel LastChildFill="True" Background="{StaticResource NeutralBackgroundBrush}">
         <Grid DockPanel.Dock="Top">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />

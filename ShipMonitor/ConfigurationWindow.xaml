@@ -10,10 +10,10 @@
              xmlns:utility="clr-namespace:Utilities;assembly=Utilities"
              mc:Ignorable="d" 
              d:DesignHeight="600" d:DesignWidth="800">
-    <DockPanel LastChildFill="True" Background="#FFE5E5E5" Margin="0">
+    <DockPanel LastChildFill="True" Background="{StaticResource NeutralBackgroundBrush}" Margin="0">
         <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Margin="5"  Text="{x:Static resx:ShipMonitor.p1}" VerticalAlignment="Top"/>
-        <RichTextBox DockPanel.Dock="Top" Margin="0"  IsReadOnly="True" IsDocumentEnabled="True" Background="#FFE5E5E5" BorderThickness="0">
-            <FlowDocument Background="#FFE5E5E5">
+        <RichTextBox DockPanel.Dock="Top" Margin="0"  IsReadOnly="True" IsDocumentEnabled="True" Background="{StaticResource NeutralBackgroundBrush}" BorderThickness="0">
+            <FlowDocument Background="{StaticResource NeutralBackgroundBrush}">
                 <Paragraph >
                     <Run Text="{x:Static resx:ShipMonitor.p2}" />
                     <Hyperlink Click="ipaClicked" >
@@ -33,7 +33,7 @@
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
             <TextBlock TextWrapping="Wrap" Text="{x:Static resx:ShipMonitor.p5}" Margin="5, 0, 0, 0" VerticalAlignment="Top"/>
-            <ComboBox x:Name="exportComboBox" Grid.Column="1" Margin="5, 0, 0, 0" Background="#FFE5E5E5" SelectionChanged="onExportTargetChanged" SelectedValuePath="Content" IsEditable="False" IsReadOnly="True" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center" VerticalAlignment="Center" HorizontalAlignment="Right">
+            <ComboBox x:Name="exportComboBox" Grid.Column="1" Margin="5, 0, 0, 0" Background="{StaticResource NeutralBackgroundBrush}" SelectionChanged="onExportTargetChanged" SelectedValuePath="Content" IsEditable="False" IsReadOnly="True" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center" VerticalAlignment="Center" HorizontalAlignment="Right">
                 <ComboBoxItem>Coriolis</ComboBoxItem>
                 <ComboBoxItem>EDShipyard</ComboBoxItem>
             </ComboBox>

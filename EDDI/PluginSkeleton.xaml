@@ -7,7 +7,7 @@
              xmlns:resx="clr-namespace:Eddi.Properties"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="400">
-    <DockPanel x:Name="panel" LastChildFill="False" Background="#FFE5E5E5">
+    <DockPanel x:Name="panel" LastChildFill="False" Background="{StaticResource NeutralBackgroundBrush}">
         <TextBlock DockPanel.Dock="Top" x:Name="plugindescription" TextWrapping="Wrap" Margin="5" />
         <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="5">
             <CheckBox x:Name="pluginenabled" Checked="pluginenabled_Checked" Unchecked="pluginenabled_Unchecked"></CheckBox>

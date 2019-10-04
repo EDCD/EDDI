@@ -8,7 +8,7 @@
         mc:Ignorable="d"
         ResizeMode="CanResizeWithGrip"
         Title="{x:Static resx:SpeechResponder.view_script_title}" Height="600" Width="800">
-    <DockPanel LastChildFill="True" Background="#FFE5E5E5">
+    <DockPanel LastChildFill="True" Background="{StaticResource NeutralBackgroundBrush}">
         <Grid DockPanel.Dock="Top">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
