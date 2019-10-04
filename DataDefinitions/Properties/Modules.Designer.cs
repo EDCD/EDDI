@@ -88,6 +88,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Advanced Missile Rack.
+        /// </summary>
+        public static string AdvancedMissileRack {
+            get {
+                return ResourceManager.GetString("AdvancedMissileRack", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Advanced Multi-Cannon.
         /// </summary>
         public static string AdvancedMultiCannon {
