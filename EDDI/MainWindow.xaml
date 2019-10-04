@@ -18,14 +18,12 @@
             <Setter Property="HorizontalGridLinesBrush" Value="{StaticResource DataGridLineBrush}"/>
             <Setter Property="VerticalGridLinesBrush" Value="{StaticResource DataGridLineBrush}"/>
         </Style>
+        <LinearGradientBrush x:Key="DockPanelBackgroundBrush" EndPoint="0.5,1.0" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0.0">
+            <GradientStop Color="Black" Offset="0.0"/>
+            <GradientStop Color="#FF4E355D" Offset="1.0"/>
+        </LinearGradientBrush>
     </Window.Resources>
-    <DockPanel LastChildFill="True">
-        <DockPanel.Background>
-            <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
-                <GradientStop Color="Black"/>
-                <GradientStop Color="#FF4E355D" Offset="1"/>
-            </LinearGradientBrush>
-        </DockPanel.Background>
+    <DockPanel LastChildFill="True" Background="{StaticResource DockPanelBackgroundBrush}">
         <TabControl x:Name="tabControl" DockPanel.Dock="Top" TabStripPlacement="Left">
             <TabControl.Resources>
                 <Style TargetType="TabItem">
