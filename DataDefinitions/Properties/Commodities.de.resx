@@ -1669,5 +1669,8 @@
     <value>Thargoidenmaterie</value>
     <comment>Commodity UnknownBiologicalMatter</comment>
   </data>
-  
+  <data name="RockforthFertiliser" xml:space="preserve">
+    <value>Rockforth Dünger</value>
+    <comment>Commodity RockforthFertiliser</comment>
+  </data>
 </root>
